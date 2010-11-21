@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_xasp_N_ELEMS 0
-#if !defined(zx_xasp__ELEM_MAX) && zx_xasp_N_ELEMS == 0
-#define zx_xasp__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_xasp_el_tab[zx_xasp__ELEM_MAX];
-struct zx_el_tok* zx_xasp_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- xasp_XACMLAuthzDecisionQuery -------------------------- */
 /* refby( zx_e_Body_s ) */
 #ifndef zx_xasp_XACMLAuthzDecisionQuery_EXT

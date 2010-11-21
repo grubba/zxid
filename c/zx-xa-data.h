@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_xa_N_ELEMS 0
-#if !defined(zx_xa__ELEM_MAX) && zx_xa_N_ELEMS == 0
-#define zx_xa__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_xa_el_tab[zx_xa__ELEM_MAX];
-struct zx_el_tok* zx_xa_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- xa_Action -------------------------- */
 /* refby( zx_xa_Actions_s ) */
 #ifndef zx_xa_Action_EXT

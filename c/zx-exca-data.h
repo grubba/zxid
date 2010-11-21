@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_exca_N_ELEMS 0
-#if !defined(zx_exca__ELEM_MAX) && zx_exca_N_ELEMS == 0
-#define zx_exca__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_exca_el_tab[zx_exca__ELEM_MAX];
-struct zx_el_tok* zx_exca_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- exca_InclusiveNamespaces -------------------------- */
 /* refby( zx_ds_Transform_s ) */
 #ifndef zx_exca_InclusiveNamespaces_EXT

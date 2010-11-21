@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_xasa_N_ELEMS 0
-#if !defined(zx_xasa__ELEM_MAX) && zx_xasa_N_ELEMS == 0
-#define zx_xasa__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_xasa_el_tab[zx_xasa__ELEM_MAX];
-struct zx_el_tok* zx_xasa_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- xasa_XACMLAuthzDecisionStatement -------------------------- */
 /* refby( zx_sa11_Assertion_s zx_sa_Assertion_s zx_ff12_Assertion_s ) */
 #ifndef zx_xasa_XACMLAuthzDecisionStatement_EXT

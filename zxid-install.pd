@@ -133,7 +133,7 @@ B. swig from swig.org (only for build process and only if you
    want scripting interfaces)
 C. perl from cpan.org (only for build process and only if you
    want to generate code from .sg)
-D. plaindoc from http://mercnet.pt/plaindoc/pd.html (only for
+D. plaindoc from http://zxid.org/plaindoc/pd.html (only for
    build process, for code generation from .sg, and for documentation)
 
 Although technically not needed to build zxid, you will need an IdP
@@ -672,7 +672,7 @@ features in that gcc series). If you hit compile time problems with
 ----------------------------------
 
 The xsd2sg.pl tool, distributed as part of Plaindoc
-(http://mercnet.pt/plaindoc/pd.html) system, is at the heart of the
+(http://zxid.org/plaindoc/pd.html) system, is at the heart of the
 ZXID code generation. Unfortunately the tool is still in flux. What
 follows is general outline valid as of March 2007.
 
@@ -1330,7 +1330,7 @@ Following companies provide consultancy and support contracts for
 ZXID:
 
 * symlabs.com
-* mercnet.pt
+* Levelview, Lda.
 
 <<zxid-ref.pd>>
 <<doc-end.pd>>

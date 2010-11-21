@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_sec_N_ELEMS 0
-#if !defined(zx_sec__ELEM_MAX) && zx_sec_N_ELEMS == 0
-#define zx_sec__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_sec_el_tab[zx_sec__ELEM_MAX];
-struct zx_el_tok* zx_sec_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- sec_Token -------------------------- */
 /* refby( zx_ps_ResolveInput_s zx_di_SecurityContext_s zx_ps_AddKnownEntityRequest_s zx_ps_TestMembershipRequest_s zx_ps_ResolveOutput_s zx_im_MappingInput_s zx_im_MappingOutput_s ) */
 #ifndef zx_sec_Token_EXT

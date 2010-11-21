@@ -43,6 +43,10 @@
 #define fdtype int
 #endif
 
+#ifndef ZXDECL
+#define ZXDECL
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -61,9 +65,7 @@ struct zx_ns_s {
   int url_len;              /* 0 = end of nstab */
   int prefix_len;
   const char* prefix;
-  struct zx_el_tok* (*elem2tok)(const char* name, int len);  /* Pointer to the (xsd2sg + gperf generated) perfect hash function for determining tok in namespace */
-  struct zx_el_tok* el_tab; /* Table of element names (for perfoect hash). */
-  struct zx_ns_s* n;        /* For holding runtime equivalences as a linked list. */
+  struct zx_ns_s* n;        /* Next: For holding runtime equivalences as a linked list. */
   struct zx_ns_s* master;   /* For a runtime equivalence, pointer to the master entry. */
   struct zx_ns_s* seen;     /* Pointer to other "seen" namespaces with same prefix (stack) */
   struct zx_ns_s* seen_n;   /* Next prefix in seen structure (list) */
@@ -233,7 +235,7 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 #define ZX_TOK_NO_ATTR   (-7)
 #define ZX_TOK_ATTR_ERR  (-6)
 #define ZX_TOK_XMLNS     (-4)
-#define zx_root_ELEM            0x00fffffc
+  /*#define zx_root_ELEM            0x00fffffc*/
 #define ZX_TOK_DATA             0x0000fffd
 #define ZX_TOK_ATTR_NOT_FOUND   0x0000fffe
 #define ZX_TOK_NOT_FOUND        0x0000ffff
@@ -246,10 +248,12 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 
 struct zx_el_tok {
   const char* name;
-  int siz;  /* struct size to help allocation */
+  int max_siz;  /* max struct size to help allocation */
   //struct zx_elem_s* (*dec)(struct zx_ctx* c, struct zx_elem_s* x); /* funcptr to decode switch */
 };
 struct zx_at_tok { const char* name; };
+
+  /*struct zx_el_tok* zx_elem2tok(register const char *str, register unsigned int len);*/
 
 /*struct zx_note_s* zx_clone_any(struct zx_ctx* c, struct zx_note_s* n, int dup_strs); TBD */
 /*void zx_free_any(struct zx_ctx* c, struct zx_note_s* n, int free_strs); TBD */

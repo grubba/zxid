@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_ff12_N_ELEMS 0
-#if !defined(zx_ff12__ELEM_MAX) && zx_ff12_N_ELEMS == 0
-#define zx_ff12__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_ff12_el_tab[zx_ff12__ELEM_MAX];
-struct zx_el_tok* zx_ff12_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- ff12_Assertion -------------------------- */
 /* refby( zx_wsse_Security_s zx_b_TargetIdentity_s zx_sa11_Advice_s zx_sec_Token_s zx_tas3_Credentials_s zx_sa_Advice_s ) */
 #ifndef zx_ff12_Assertion_EXT

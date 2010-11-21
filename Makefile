@@ -40,8 +40,8 @@ all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxencdect
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000070
-ZXIDREL=0.70
+ZXIDVERSION=0x000071
+ZXIDREL=0.71
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -362,7 +362,7 @@ CFLAGS+= $(CDEF) $(CDIR)
 
 ZXIDHDRS=zx.h zxid.h zxidnoswig.h c/zxidvers.h
 ZXID_LIB_OBJ=zxidsimp.$(OBJ_EXT) zxidpool.$(OBJ_EXT) zxidpsso.$(OBJ_EXT) zxidsso.$(OBJ_EXT) zxidslo.$(OBJ_EXT) zxiddec.$(OBJ_EXT) zxidspx.$(OBJ_EXT) zxididpx.$(OBJ_EXT) zxidmni.$(OBJ_EXT) zxidpep.$(OBJ_EXT) zxidpdp.$(OBJ_EXT) zxidmk.$(OBJ_EXT) zxida7n.$(OBJ_EXT) zxidses.$(OBJ_EXT) zxiduser.$(OBJ_EXT) zxidcgi.$(OBJ_EXT) zxidconf.$(OBJ_EXT) zxidecp.$(OBJ_EXT) zxidcdc.$(OBJ_EXT) zxidloc.$(OBJ_EXT) zxidlib.$(OBJ_EXT) zxidmeta.$(OBJ_EXT) zxidcurl.$(OBJ_EXT) zxidepr.$(OBJ_EXT) zxida7n.$(OBJ_EXT) ykcrc.$(OBJ_EXT) ykaes.$(OBJ_EXT) $(PLATFORM_OBJ)
-ZX_OBJ=zxlibdec.$(OBJ_EXT) zxlib.$(OBJ_EXT) zxns.$(OBJ_EXT) zxutil.$(OBJ_EXT) zxlog.$(OBJ_EXT) zxsig.$(OBJ_EXT) zxcrypto.$(OBJ_EXT) c/license.$(OBJ_EXT) c/zx-attrs.$(OBJ_EXT)  c/zx-ns.$(OBJ_EXT)
+ZX_OBJ=zxlibdec.$(OBJ_EXT) zxlib.$(OBJ_EXT) zxns.$(OBJ_EXT) zxutil.$(OBJ_EXT) zxlog.$(OBJ_EXT) zxsig.$(OBJ_EXT) zxcrypto.$(OBJ_EXT) c/license.$(OBJ_EXT)  c/zx-ns.$(OBJ_EXT)  c/zx-attrs.$(OBJ_EXT)  c/zx-elems.$(OBJ_EXT)
 WSF_OBJ=zxidmkwsf.$(OBJ_EXT) zxidwsf.$(OBJ_EXT) zxidwsc.$(OBJ_EXT) zxidwsp.$(OBJ_EXT) zxiddi.$(OBJ_EXT) zxidim.$(OBJ_EXT) zxidps.$(OBJ_EXT)
 SMIME_LIB_OBJ=certauth.$(OBJ_EXT) keygen.$(OBJ_EXT) pkcs12.$(OBJ_EXT) smime-enc.$(OBJ_EXT) smime-qry.$(OBJ_EXT) smime-vfy.$(OBJ_EXT) smimemime.$(OBJ_EXT) smimeutil.$(OBJ_EXT)
 
@@ -624,68 +624,122 @@ ZX_GEN_H=\
  c/zx-xsi-data.h  c/zx-xs-data.h    c/zx-xml-data.h \
  c/zx-tas3-data.h  c/zx-tas3sol-data.h c/zx-shibmd-data.h c/zx-idpdisc-data.h
 
+ZX_GEN_GETPUT_C= \
+ c/zx-is-getput.c \
+ c/zx-di12-getput.c c/zx-sa11-getput.c c/zx-sp11-getput.c \
+ c/zx-a-getput.c \
+ c/zx-is12-getput.c \
+ c/zx-sbf-getput.c  c/zx-wsse-getput.c \
+ c/zx-ac-getput.c \
+ c/zx-lu-getput.c \
+ c/zx-ds-getput.c c/zx-wsu-getput.c \
+ c/zx-b-getput.c c/zx-m20-getput.c \
+ c/zx-e-getput.c c/zx-sec-getput.c   c/zx-xenc-getput.c \
+ c/zx-b12-getput.c c/zx-ff12-aux.c    c/zx-md-getput.c   c/zx-sec12-enc.c \
+ c/zx-sec12-getput.c \
+ c/zx-ff12-getput.c \
+ c/zx-getput.c \
+ c/zx-di-getput.c c/zx-sa-getput.c   c/zx-sp-getput.c \
+ c/zx-sp11-aux.c \
+ c/zx-ecp-getput.c \
+ c/zx-paos-getput.c \
+ c/zx-dap-getput.c \
+ c/zx-ps-getput.c \
+ c/zx-im-getput.c \
+ c/zx-as-getput.c \
+ c/zx-subs-getput.c \
+ c/zx-dst-getput.c \
+ c/zx-cb-getput.c \
+ c/zx-cdm-getput.c \
+ c/zx-gl-getput.c \
+ c/zx-mm7-getput.c \
+ c/zx-wst-getput.c \
+ c/zx-wsp-getput.c \
+ c/zx-wsc-getput.c \
+ c/zx-xa-getput.c \
+ c/zx-xac-getput.c \
+ c/zx-xasa-getput.c \
+ c/zx-xasacd1-getput.c \
+ c/zx-xasp-getput.c \
+ c/zx-xaspcd1-getput.c \
+ c/zx-dp-getput.c \
+ c/zx-pmm-getput.c \
+ c/zx-prov-getput.c \
+ c/zx-idp-getput.c \
+ c/zx-shps-getput.c \
+ c/zx-exca-getput.c \
+ c/zx-hrxml-getput.c \
+ c/zx-idhrxml-getput.c \
+ c/zx-demomed-getput.c \
+ c/zx-xsi-getput.c \
+ c/zx-xs-getput.c \
+ c/zx-xml-getput.c \
+ c/zx-tas3-getput.c \
+ c/zx-tas3sol-getput.c \
+ c/zx-shibmd-getput.c \
+ c/zx-idpdisc-getput.c
+
 ZX_GEN_C= \
  c/zx-a-aux.c      c/zx-di12-dec.c    c/zx-is-enc.c      c/zx-sa11-dec.c     c/zx-sp11-dec.c \
- c/zx-a-dec.c      c/zx-di12-enc.c    c/zx-is-getput.c   c/zx-sa11-enc.c     c/zx-sp11-enc.c \
- c/zx-a-enc.c      c/zx-di12-getput.c c/zx-is12-aux.c    c/zx-sa11-getput.c  c/zx-sp11-getput.c \
- c/zx-a-getput.c   c/zx-is12-dec.c    c/zx-sbf-aux.c     c/zx-wsse-aux.c \
+ c/zx-a-dec.c      c/zx-di12-enc.c    c/zx-sa11-enc.c     c/zx-sp11-enc.c \
+ c/zx-a-enc.c      c/zx-is12-aux.c \
+ c/zx-is12-dec.c   c/zx-sbf-aux.c     c/zx-wsse-aux.c \
  c/zx-ac-aux.c     c/zx-is12-enc.c    c/zx-sbf-dec.c     c/zx-wsse-dec.c \
- c/zx-ac-dec.c     c/zx-is12-getput.c c/zx-sbf-enc.c     c/zx-wsse-enc.c \
- c/zx-ac-enc.c     c/zx-lu-aux.c      c/zx-sbf-getput.c  c/zx-wsse-getput.c \
- c/zx-ac-getput.c  c/zx-ds-aux.c      c/zx-lu-dec.c      c/zx-wsu-aux.c \
+ c/zx-ac-dec.c     c/zx-sbf-enc.c     c/zx-wsse-enc.c \
+ c/zx-ac-enc.c     c/zx-lu-aux.c \
+ c/zx-ds-aux.c      c/zx-lu-dec.c      c/zx-wsu-aux.c \
  c/zx-ds-dec.c     c/zx-lu-enc.c      c/zx-wsu-dec.c \
- c/zx-aux.c        c/zx-ds-enc.c      c/zx-lu-getput.c   c/zx-wsu-enc.c \
- c/zx-b-aux.c      c/zx-ds-getput.c   c/zx-m20-aux.c     c/zx-wsu-getput.c \
+ c/zx-aux.c        c/zx-ds-enc.c      c/zx-wsu-enc.c \
+ c/zx-b-aux.c      c/zx-m20-aux.c \
  c/zx-b-dec.c      c/zx-e-aux.c       c/zx-m20-dec.c     c/zx-sec-aux.c      c/zx-xenc-aux.c \
  c/zx-b-enc.c      c/zx-e-dec.c       c/zx-m20-enc.c     c/zx-sec-dec.c      c/zx-xenc-dec.c \
- c/zx-b-getput.c   c/zx-e-enc.c       c/zx-m20-getput.c  c/zx-sec-enc.c      c/zx-xenc-enc.c \
- c/zx-b12-aux.c    c/zx-e-getput.c    c/zx-md-aux.c      c/zx-sec-getput.c   c/zx-xenc-getput.c \
+ c/zx-e-enc.c      c/zx-sec-enc.c     c/zx-xenc-enc.c \
+ c/zx-b12-aux.c    c/zx-md-aux.c \
  c/zx-b12-dec.c    c/zx-md-dec.c      c/zx-sec12-aux.c \
  c/zx-b12-enc.c    c/zx-enc.c         c/zx-md-enc.c      c/zx-sec12-dec.c \
- c/zx-b12-getput.c c/zx-ff12-aux.c    c/zx-md-getput.c   c/zx-sec12-enc.c \
- c/zx-dec.c        c/zx-ff12-dec.c                       c/zx-sec12-getput.c \
+ c/zx-ff12-aux.c   c/zx-sec12-enc.c \
+ c/zx-dec.c        c/zx-ff12-dec.c \
  c/zx-di-aux.c     c/zx-ff12-enc.c    c/zx-sa-aux.c      c/zx-sp-aux.c \
- c/zx-di-dec.c     c/zx-ff12-getput.c c/zx-sa-dec.c      c/zx-sp-dec.c \
- c/zx-di-enc.c     c/zx-getput.c      c/zx-sa-enc.c      c/zx-sp-enc.c \
- c/zx-di-getput.c  c/zx-is-aux.c      c/zx-sa-getput.c   c/zx-sp-getput.c \
+ c/zx-di-dec.c     c/zx-sa-dec.c      c/zx-sp-dec.c \
+ c/zx-di-enc.c     c/zx-sa-enc.c      c/zx-sp-enc.c      c/zx-is-aux.c \
  c/zx-di12-aux.c   c/zx-is-dec.c      c/zx-sa11-aux.c    c/zx-sp11-aux.c \
- c/zx-ecp-aux.c    c/zx-ecp-dec.c     c/zx-ecp-enc.c     c/zx-ecp-getput.c \
- c/zx-paos-aux.c   c/zx-paos-dec.c    c/zx-paos-enc.c    c/zx-paos-getput.c \
- c/zx-dap-aux.c    c/zx-dap-dec.c     c/zx-dap-enc.c     c/zx-dap-getput.c \
- c/zx-ps-aux.c     c/zx-ps-dec.c      c/zx-ps-enc.c      c/zx-ps-getput.c \
- c/zx-im-aux.c     c/zx-im-dec.c      c/zx-im-enc.c      c/zx-im-getput.c \
- c/zx-as-aux.c     c/zx-as-dec.c      c/zx-as-enc.c      c/zx-as-getput.c \
- c/zx-subs-aux.c   c/zx-subs-dec.c    c/zx-subs-enc.c    c/zx-subs-getput.c \
- c/zx-dst-aux.c    c/zx-dst-dec.c     c/zx-dst-enc.c     c/zx-dst-getput.c \
- c/zx-cb-aux.c     c/zx-cb-dec.c      c/zx-cb-enc.c      c/zx-cb-getput.c \
- c/zx-cdm-aux.c    c/zx-cdm-dec.c     c/zx-cdm-enc.c     c/zx-cdm-getput.c \
- c/zx-gl-aux.c     c/zx-gl-dec.c      c/zx-gl-enc.c      c/zx-gl-getput.c \
- c/zx-mm7-aux.c    c/zx-mm7-dec.c     c/zx-mm7-enc.c     c/zx-mm7-getput.c \
- c/zx-wst-aux.c    c/zx-wst-dec.c     c/zx-wst-enc.c     c/zx-wst-getput.c \
- c/zx-wsp-aux.c    c/zx-wsp-dec.c     c/zx-wsp-enc.c     c/zx-wsp-getput.c \
- c/zx-wsc-aux.c    c/zx-wsc-dec.c     c/zx-wsc-enc.c     c/zx-wsc-getput.c \
- c/zx-xa-aux.c     c/zx-xa-dec.c      c/zx-xa-enc.c      c/zx-xa-getput.c \
- c/zx-xac-aux.c    c/zx-xac-dec.c     c/zx-xac-enc.c     c/zx-xac-getput.c \
- c/zx-xasa-aux.c   c/zx-xasa-dec.c    c/zx-xasa-enc.c    c/zx-xasa-getput.c \
- c/zx-xasacd1-aux.c   c/zx-xasacd1-dec.c    c/zx-xasacd1-enc.c    c/zx-xasacd1-getput.c \
- c/zx-xasp-aux.c   c/zx-xasp-dec.c    c/zx-xasp-enc.c    c/zx-xasp-getput.c \
- c/zx-xaspcd1-aux.c   c/zx-xaspcd1-dec.c    c/zx-xaspcd1-enc.c    c/zx-xaspcd1-getput.c \
- c/zx-dp-aux.c     c/zx-dp-dec.c      c/zx-dp-enc.c      c/zx-dp-getput.c \
- c/zx-pmm-aux.c    c/zx-pmm-dec.c     c/zx-pmm-enc.c     c/zx-pmm-getput.c \
- c/zx-prov-aux.c   c/zx-prov-dec.c    c/zx-prov-enc.c    c/zx-prov-getput.c \
- c/zx-idp-aux.c    c/zx-idp-dec.c     c/zx-idp-enc.c     c/zx-idp-getput.c \
- c/zx-shps-aux.c   c/zx-shps-dec.c    c/zx-shps-enc.c    c/zx-shps-getput.c \
- c/zx-exca-aux.c   c/zx-exca-dec.c    c/zx-exca-enc.c    c/zx-exca-getput.c \
- c/zx-hrxml-aux.c  c/zx-hrxml-dec.c   c/zx-hrxml-enc.c   c/zx-hrxml-getput.c \
- c/zx-idhrxml-aux.c c/zx-idhrxml-dec.c c/zx-idhrxml-enc.c c/zx-idhrxml-getput.c \
- c/zx-demomed-aux.c c/zx-demomed-dec.c c/zx-demomed-enc.c c/zx-demomed-getput.c \
- c/zx-xsi-aux.c     c/zx-xsi-dec.c     c/zx-xsi-enc.c     c/zx-xsi-getput.c \
- c/zx-xs-aux.c      c/zx-xs-dec.c      c/zx-xs-enc.c      c/zx-xs-getput.c \
- c/zx-xml-aux.c     c/zx-xml-dec.c     c/zx-xml-enc.c     c/zx-xml-getput.c \
- c/zx-tas3-aux.c    c/zx-tas3-dec.c    c/zx-tas3-enc.c    c/zx-tas3-getput.c \
- c/zx-tas3sol-aux.c c/zx-tas3sol-dec.c c/zx-tas3sol-enc.c c/zx-tas3sol-getput.c \
- c/zx-shibmd-aux.c  c/zx-shibmd-dec.c  c/zx-shibmd-enc.c  c/zx-shibmd-getput.c \
- c/zx-idpdisc-aux.c  c/zx-idpdisc-dec.c  c/zx-idpdisc-enc.c  c/zx-idpdisc-getput.c
+ c/zx-ecp-aux.c    c/zx-ecp-dec.c     c/zx-ecp-enc.c \
+ c/zx-paos-aux.c   c/zx-paos-dec.c    c/zx-paos-enc.c \
+ c/zx-dap-aux.c    c/zx-dap-dec.c     c/zx-dap-enc.c \
+ c/zx-ps-aux.c     c/zx-ps-dec.c      c/zx-ps-enc.c \
+ c/zx-im-aux.c     c/zx-im-dec.c      c/zx-im-enc.c \
+ c/zx-as-aux.c     c/zx-as-dec.c      c/zx-as-enc.c \
+ c/zx-subs-aux.c   c/zx-subs-dec.c    c/zx-subs-enc.c \
+ c/zx-dst-aux.c    c/zx-dst-dec.c     c/zx-dst-enc.c \
+ c/zx-cb-aux.c     c/zx-cb-dec.c      c/zx-cb-enc.c \
+ c/zx-cdm-aux.c    c/zx-cdm-dec.c     c/zx-cdm-enc.c \
+ c/zx-gl-aux.c     c/zx-gl-dec.c      c/zx-gl-enc.c \
+ c/zx-mm7-aux.c    c/zx-mm7-dec.c     c/zx-mm7-enc.c \
+ c/zx-wst-aux.c    c/zx-wst-dec.c     c/zx-wst-enc.c \
+ c/zx-wsp-aux.c    c/zx-wsp-dec.c     c/zx-wsp-enc.c \
+ c/zx-wsc-aux.c    c/zx-wsc-dec.c     c/zx-wsc-enc.c \
+ c/zx-xa-aux.c     c/zx-xa-dec.c      c/zx-xa-enc.c \
+ c/zx-xac-aux.c    c/zx-xac-dec.c     c/zx-xac-enc.c \
+ c/zx-xasa-aux.c   c/zx-xasa-dec.c    c/zx-xasa-enc.c\
+ c/zx-xasacd1-aux.c   c/zx-xasacd1-dec.c    c/zx-xasacd1-enc.c \
+ c/zx-xasp-aux.c   c/zx-xasp-dec.c    c/zx-xasp-enc.c \
+ c/zx-xaspcd1-aux.c   c/zx-xaspcd1-dec.c    c/zx-xaspcd1-enc.c \
+ c/zx-dp-aux.c     c/zx-dp-dec.c      c/zx-dp-enc.c \
+ c/zx-pmm-aux.c    c/zx-pmm-dec.c     c/zx-pmm-enc.c \
+ c/zx-prov-aux.c   c/zx-prov-dec.c    c/zx-prov-enc.c \
+ c/zx-idp-aux.c    c/zx-idp-dec.c     c/zx-idp-enc.c \
+ c/zx-shps-aux.c   c/zx-shps-dec.c    c/zx-shps-enc.c \
+ c/zx-exca-aux.c   c/zx-exca-dec.c    c/zx-exca-enc.c \
+ c/zx-hrxml-aux.c  c/zx-hrxml-dec.c   c/zx-hrxml-enc.c \
+ c/zx-idhrxml-aux.c c/zx-idhrxml-dec.c c/zx-idhrxml-enc.c \
+ c/zx-demomed-aux.c c/zx-demomed-dec.c c/zx-demomed-enc.c \
+ c/zx-xsi-aux.c     c/zx-xsi-dec.c     c/zx-xsi-enc.c \
+ c/zx-xs-aux.c      c/zx-xs-dec.c      c/zx-xs-enc.c \
+ c/zx-xml-aux.c     c/zx-xml-dec.c     c/zx-xml-enc.c \
+ c/zx-tas3-aux.c    c/zx-tas3-dec.c    c/zx-tas3-enc.c \
+ c/zx-tas3sol-aux.c c/zx-tas3sol-dec.c c/zx-tas3sol-enc.c \
+ c/zx-shibmd-aux.c  c/zx-shibmd-dec.c  c/zx-shibmd-enc.c \
+ c/zx-idpdisc-aux.c  c/zx-idpdisc-dec.c  c/zx-idpdisc-enc.c
 
 ifeq ($(ENA_GEN),1)
 
@@ -703,7 +757,7 @@ ifeq ($(ENA_GEN),1)
 #  -W arg  Word array name
 #  -N arg  Lookup function name
 
-c/zx-ns.gperf c/zx-attrs.gperf $(ZX_GEN_GPERF) $(ZX_GEN_C) $(ZX_GEN_H): $(ZX_SG) dec-templ.c enc-templ.c aux-templ.c getput-templ.c
+c/zx-ns.gperf c/zx-attrs.gperf c/zx-elems.gperf $(ZX_GEN_C) $(ZX_GEN_H): $(ZX_SG) dec-templ.c enc-templ.c aux-templ.c getput-templ.c
 	@ls $(XSD2SG_PL) || ( echo "You need to install xsd2sg.pl from Plaindoc distribution at http://zxid.org/plaindoc/pd.html. Not found $(XSD2SG)" && exit 2 )
 	$(XSD2SG) -z zx -gen c/zx -p zx_ $(ZX_ROOTS) -S $(ZX_SG) >junk
 
@@ -711,27 +765,24 @@ c/zx-ns.c: c/zx-ns.gperf
 	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
 	$(GPERF) $< | $(PERL) ./sed-zxid.pl nss >$@
 
-c/%.c: c/%.gperf
-	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
-	$(GPERF) -l $< | $(PERL) ./sed-zxid.pl elems >$@
-
-#	cat $@ | $(PERL) gen-consts-from-gperf-output.pl zx_ _ELEM zx_el_tab >>$(@:.c=-data.h)
-
-#c/zx-elems.c: c/zx-elems.gperf    *** old, unified table. Modern is per namespace tables.
-#	$(GPERF) -t -T -D -C -l -G -W zx_elems -N zx_elem2tok $< | $(PERL) ./sed-zxid.pl elems >$@
+#c/%.c: c/%.gperf
+#	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
+#	$(GPERF) -l $< | $(PERL) ./sed-zxid.pl elems >$@
 
 c/zx-attrs.c: c/zx-attrs.gperf
 	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
-	$(GPERF) -D -l $< | $(PERL) ./sed-zxid.pl attrs >$@
+	$(GPERF) $< | $(PERL) ./sed-zxid.pl attrs >$@
 
-c/zx-const-elems.h: $(ZX_GEN_GPERF:.gperf=.c)
-	cat $^ | $(PERL) gen-consts-from-gperf-output.pl zx_ '_ELEM' $(ZX_GEN_GPERF:c/zx-%.gperf=zx_%_el_tab) >$@
+c/zx-elems.c: c/zx-elems.gperf
+	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
+	$(GPERF) $< | $(PERL) ./sed-zxid.pl elems >$@
 
-c/zx-const.h: c/zx-ns.c c/zx-attrs.c c/zx-const-elems.h
-	cat c/zx-ns.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _NS zx_ns_tab >$@
-	cat c/zx-attrs.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _ATTR zx_at_tab >>$@
-	cat c/zx-const-elems.h >>$@
+c/zx-const.h: c/zx-ns.c c/zx-attrs.c c/zx-elems.c
+	$(PERL) ./gen-consts-from-gperf-output.pl zx_ $^ >$@
 
+#	cat c/zx-ns.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _NS zx_ns_tab >$@
+#	cat c/zx-attrs.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _ATTR zx_at_tab >>$@
+#	cat c/zx-elems.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _ELEM zx_el_tab >>$@
 
 #c/zx-const.h: c/zx-attrs.c c/zx-ns.c
 #	cat c/zx-attrs.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _ATTR zx_at_tab >$@
@@ -1214,10 +1265,10 @@ $(LIBZXID_A): $(ZXID_LIB_OBJ) $(ZX_OBJ)
 else
 
 ifeq ($(TARGET),win32cl)
-$(LIBZXID_A): $(ZX_GEN_C:.c=.obj) $(ZX_GEN_GPERF:.gperf=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
+$(LIBZXID_A): $(ZX_GEN_C:.c=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
 	$(AR) $(OUTOPT)zxid.lib $^
 else
-$(LIBZXID_A): $(ZX_GEN_C:.c=.o) $(ZX_GEN_GPERF:.gperf=.o) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
+$(LIBZXID_A): $(ZX_GEN_C:.c=.o) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
 	$(AR) $(LIBZXID_A) $^
 endif
 endif

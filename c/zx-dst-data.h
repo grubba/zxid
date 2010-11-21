@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_dst_N_ELEMS 0
-#if !defined(zx_dst__ELEM_MAX) && zx_dst_N_ELEMS == 0
-#define zx_dst__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_dst_el_tab[zx_dst__ELEM_MAX];
-struct zx_el_tok* zx_dst_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- dst_TestResult -------------------------- */
 /* refby( zx_dap_QueryResponse_s zx_idhrxml_QueryResponse_s ) */
 #ifndef zx_dst_TestResult_EXT

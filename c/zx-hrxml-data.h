@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_hrxml_N_ELEMS 0
-#if !defined(zx_hrxml__ELEM_MAX) && zx_hrxml_N_ELEMS == 0
-#define zx_hrxml__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_hrxml_el_tab[zx_hrxml__ELEM_MAX];
-struct zx_el_tok* zx_hrxml_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- hrxml_AccountingCode -------------------------- */
 /* refby( zx_hrxml_OrganizationalUnit_s zx_hrxml_RelatedOrganizationalUnit_s ) */
 #ifndef zx_hrxml_AccountingCode_EXT

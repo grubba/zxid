@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_cb_N_ELEMS 0
-#if !defined(zx_cb__ELEM_MAX) && zx_cb_N_ELEMS == 0
-#define zx_cb__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_cb_el_tab[zx_cb__ELEM_MAX];
-struct zx_el_tok* zx_cb_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- cb_By -------------------------- */
 /* refby( ) */
 #ifndef zx_cb_By_EXT

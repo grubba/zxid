@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_gl_N_ELEMS 0
-#if !defined(zx_gl__ELEM_MAX) && zx_gl_N_ELEMS == 0
-#define zx_gl__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_gl_el_tab[zx_gl__ELEM_MAX];
-struct zx_el_tok* zx_gl_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- gl_AreaComparison -------------------------- */
 /* refby( zx_gl_QueryItem_s zx_gl_ItemSelection_s ) */
 #ifndef zx_gl_AreaComparison_EXT

@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_is_N_ELEMS 0
-#if !defined(zx_is__ELEM_MAX) && zx_is_N_ELEMS == 0
-#define zx_is__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_is_el_tab[zx_is__ELEM_MAX];
-struct zx_el_tok* zx_is_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- is_Confirm -------------------------- */
 /* refby( zx_is_Inquiry_s ) */
 #ifndef zx_is_Confirm_EXT

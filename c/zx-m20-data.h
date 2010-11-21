@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_m20_N_ELEMS 0
-#if !defined(zx_m20__ELEM_MAX) && zx_m20_N_ELEMS == 0
-#define zx_m20__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_m20_el_tab[zx_m20__ELEM_MAX];
-struct zx_el_tok* zx_m20_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- m20_AdditionalMetaLocation -------------------------- */
 /* refby( zx_m20_SPDescriptor_s zx_m20_IDPDescriptor_s ) */
 #ifndef zx_m20_AdditionalMetaLocation_EXT

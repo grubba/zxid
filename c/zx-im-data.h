@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_im_N_ELEMS 0
-#if !defined(zx_im__ELEM_MAX) && zx_im_N_ELEMS == 0
-#define zx_im__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_im_el_tab[zx_im__ELEM_MAX];
-struct zx_el_tok* zx_im_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- im_IdentityMappingRequest -------------------------- */
 /* refby( zx_e_Body_s ) */
 #ifndef zx_im_IdentityMappingRequest_EXT

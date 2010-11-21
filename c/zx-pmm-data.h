@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_pmm_N_ELEMS 0
-#if !defined(zx_pmm__ELEM_MAX) && zx_pmm_N_ELEMS == 0
-#define zx_pmm__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_pmm_el_tab[zx_pmm__ELEM_MAX];
-struct zx_el_tok* zx_pmm_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- pmm_PMActivate -------------------------- */
 /* refby( zx_e_Body_s ) */
 #ifndef zx_pmm_PMActivate_EXT

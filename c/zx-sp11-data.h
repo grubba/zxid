@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_sp11_N_ELEMS 0
-#if !defined(zx_sp11__ELEM_MAX) && zx_sp11_N_ELEMS == 0
-#define zx_sp11__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_sp11_el_tab[zx_sp11__ELEM_MAX];
-struct zx_el_tok* zx_sp11_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- sp11_AttributeQuery -------------------------- */
 /* refby( zx_sp11_Request_s ) */
 #ifndef zx_sp11_AttributeQuery_EXT

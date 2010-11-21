@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_idp_N_ELEMS 0
-#if !defined(zx_idp__ELEM_MAX) && zx_idp_N_ELEMS == 0
-#define zx_idp__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_idp_el_tab[zx_idp__ELEM_MAX];
-struct zx_el_tok* zx_idp_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- idp_AssertionItem -------------------------- */
 /* refby( zx_idp_GetAssertionResponseItem_s ) */
 #ifndef zx_idp_AssertionItem_EXT

@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_md_N_ELEMS 0
-#if !defined(zx_md__ELEM_MAX) && zx_md_N_ELEMS == 0
-#define zx_md__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_md_el_tab[zx_md__ELEM_MAX];
-struct zx_el_tok* zx_md_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- md_AdditionalMetadataLocation -------------------------- */
 /* refby( zx_md_EntityDescriptor_s ) */
 #ifndef zx_md_AdditionalMetadataLocation_EXT

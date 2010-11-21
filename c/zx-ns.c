@@ -1,4 +1,4 @@
-/* C code produced by gperf version 3.0.1 */
+/* C code produced by gperf version 3.0.3 */
 /* Command-line: gperf c/zx-ns.gperf  */
 /* Computed positions: -k'13-14,19,22,25,29' */
 
@@ -128,152 +128,155 @@ struct zx_ns_s zx_ns_tab[] =
     {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
     {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
     {""}, {""}, {""},
-#line 80 "c/zx-ns.gperf"
-    {"urn:x-demo:me:2006-01", sizeof("urn:x-demo:me:2006-01")-1, sizeof("demomed")-1, "demomed", zx_demomed_elem2tok, zx_demomed_el_tab, 0, 0, 0, 0, 0, 0, 0},
+#line 78 "c/zx-ns.gperf"
+    {"urn:x-demo:me:2006-01", sizeof("urn:x-demo:me:2006-01")-1, sizeof("demomed")-1, "demomed", 0,0,0,0,0,0,0},
     {""},
-#line 87 "c/zx-ns.gperf"
-    {"urn:liberty:sec:2003-08", sizeof("urn:liberty:sec:2003-08")-1, sizeof("sec12")-1, "sec12", zx_sec12_elem2tok, zx_sec12_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 61 "c/zx-ns.gperf"
-    {"urn:liberty:ssos:2006-08", sizeof("urn:liberty:ssos:2006-08")-1, sizeof("subs")-1, "subs", zx_subs_elem2tok, zx_subs_el_tab, 0, 0, 0, 0, 0, 0, 0},
-    {""}, {""}, {""},
-#line 62 "c/zx-ns.gperf"
-    {"urn:liberty:dst:2006-08", sizeof("urn:liberty:dst:2006-08")-1, sizeof("dst")-1, "dst", zx_dst_elem2tok, zx_dst_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 76 "c/zx-ns.gperf"
-    {"urn:liberty:prov:2006-12", sizeof("urn:liberty:prov:2006-12")-1, sizeof("prov")-1, "prov", zx_prov_elem2tok, zx_prov_el_tab, 0, 0, 0, 0, 0, 0, 0},
-    {""}, {""},
-#line 73 "c/zx-ns.gperf"
-    {"urn:liberty:dp:2006-12", sizeof("urn:liberty:dp:2006-12")-1, sizeof("dp")-1, "dp", zx_dp_elem2tok, zx_dp_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 63 "c/zx-ns.gperf"
-    {"urn:liberty:ims:2006-08", sizeof("urn:liberty:ims:2006-08")-1, sizeof("im")-1, "im", zx_im_elem2tok, zx_im_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 54 "c/zx-ns.gperf"
-    {"urn:liberty:sb", sizeof("urn:liberty:sb")-1, sizeof("sbf")-1, "sbf", zx_sbf_elem2tok, zx_sbf_el_tab, 0, 0, 0, 0, 0, 0, 0},
-    {""},
-#line 42 "c/zx-ns.gperf"
-    {"urn:oasis:names:tc:SAML:2.0:metadata", sizeof("urn:oasis:names:tc:SAML:2.0:metadata")-1, sizeof("md")-1, "md", zx_md_elem2tok, zx_md_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 64 "c/zx-ns.gperf"
-    {"urn:liberty:ps:2006-08", sizeof("urn:liberty:ps:2006-08")-1, sizeof("ps")-1, "ps", zx_ps_elem2tok, zx_ps_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 75 "c/zx-ns.gperf"
-    {"urn:liberty:pmm:2006-12", sizeof("urn:liberty:pmm:2006-12")-1, sizeof("pmm")-1, "pmm", zx_pmm_elem2tok, zx_pmm_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 77 "c/zx-ns.gperf"
-    {"urn:liberty:shps:2006-12", sizeof("urn:liberty:shps:2006-12")-1, sizeof("shps")-1, "shps", zx_shps_elem2tok, zx_shps_el_tab, 0, 0, 0, 0, 0, 0, 0},
-    {""},
-#line 39 "c/zx-ns.gperf"
-    {"urn:oasis:names:tc:SAML:2.0:protocol", sizeof("urn:oasis:names:tc:SAML:2.0:protocol")-1, sizeof("sp")-1, "sp", zx_sp_elem2tok, zx_sp_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 58 "c/zx-ns.gperf"
-    {"urn:liberty:is:2006-08", sizeof("urn:liberty:is:2006-08")-1, sizeof("is")-1, "is", zx_is_elem2tok, zx_is_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 56 "c/zx-ns.gperf"
-    {"urn:liberty:security:2006-08", sizeof("urn:liberty:security:2006-08")-1, sizeof("sec")-1, "sec", zx_sec_elem2tok, zx_sec_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 70 "c/zx-ns.gperf"
-    {"urn:liberty:id-sis-cb:2004-10", sizeof("urn:liberty:id-sis-cb:2004-10")-1, sizeof("cb")-1, "cb", zx_cb_elem2tok, zx_cb_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 46 "c/zx-ns.gperf"
-    {"urn:oasis:names:tc:xacml:2.0:policy:schema:os", sizeof("urn:oasis:names:tc:xacml:2.0:policy:schema:os")-1, sizeof("xa")-1, "xa", zx_xa_elem2tok, zx_xa_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 45 "c/zx-ns.gperf"
-    {"urn:oasis:names:tc:xacml:2.0:context:schema:os", sizeof("urn:oasis:names:tc:xacml:2.0:context:schema:os")-1, sizeof("xac")-1, "xac", zx_xac_elem2tok, zx_xac_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 89 "c/zx-ns.gperf"
-    {"urn:liberty:is:2003-08", sizeof("urn:liberty:is:2003-08")-1, sizeof("is12")-1, "is12", zx_is12_elem2tok, zx_is12_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 74 "c/zx-ns.gperf"
-    {"urn:liberty:idp:2006-12", sizeof("urn:liberty:idp:2006-12")-1, sizeof("idp")-1, "idp", zx_idp_elem2tok, zx_idp_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 40 "c/zx-ns.gperf"
-    {"urn:oasis:names:tc:SAML:2.0:profiles:SSO:ecp", sizeof("urn:oasis:names:tc:SAML:2.0:profiles:SSO:ecp")-1, sizeof("ecp")-1, "ecp", zx_ecp_elem2tok, zx_ecp_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 57 "c/zx-ns.gperf"
-    {"urn:liberty:disco:2006-08", sizeof("urn:liberty:disco:2006-08")-1, sizeof("di")-1, "di", zx_di_elem2tok, zx_di_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 81 "c/zx-ns.gperf"
-    {"urn:oasis:names:tc:SAML:1.0:protocol", sizeof("urn:oasis:names:tc:SAML:1.0:protocol")-1, sizeof("sp11")-1, "sp11", zx_sp11_elem2tok, zx_sp11_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 55 "c/zx-ns.gperf"
-    {"urn:liberty:sb:2006-08", sizeof("urn:liberty:sb:2006-08")-1, sizeof("b")-1, "b", zx_b_elem2tok, zx_b_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 83 "c/zx-ns.gperf"
-    {"urn:liberty:iff:2003-08", sizeof("urn:liberty:iff:2003-08")-1, sizeof("ff12")-1, "ff12", zx_ff12_elem2tok, zx_ff12_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 79 "c/zx-ns.gperf"
-    {"urn:id-sis-idhrxml:2007-06:dst-2.1", sizeof("urn:id-sis-idhrxml:2007-06:dst-2.1")-1, sizeof("idhrxml")-1, "idhrxml", zx_idhrxml_elem2tok, zx_idhrxml_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 88 "c/zx-ns.gperf"
-    {"urn:liberty:disco:2003-08", sizeof("urn:liberty:disco:2003-08")-1, sizeof("di12")-1, "di12", zx_di12_elem2tok, zx_di12_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 51 "c/zx-ns.gperf"
-    {"http://www.w3.org/2005/08/addressing", sizeof("http://www.w3.org/2005/08/addressing")-1, sizeof("a")-1, "a", zx_a_elem2tok, zx_a_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 86 "c/zx-ns.gperf"
-    {"urn:liberty:sb:2003-08", sizeof("urn:liberty:sb:2003-08")-1, sizeof("b12")-1, "b12", zx_b12_elem2tok, zx_b12_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 60 "c/zx-ns.gperf"
-    {"urn:liberty:id-sis-dap:2006-08:dst-2.1", sizeof("urn:liberty:id-sis-dap:2006-08:dst-2.1")-1, sizeof("dap")-1, "dap", zx_dap_elem2tok, zx_dap_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 36 "c/zx-ns.gperf"
-    {"http://www.w3.org/2001/10/xml-exc-c14n#", sizeof("http://www.w3.org/2001/10/xml-exc-c14n#")-1, sizeof("exca")-1, "exca", zx_exca_elem2tok, zx_exca_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 34 "c/zx-ns.gperf"
-    {"http://www.w3.org/2000/09/xmldsig#", sizeof("http://www.w3.org/2000/09/xmldsig#")-1, sizeof("ds")-1, "ds", zx_ds_elem2tok, zx_ds_el_tab, 0, 0, 0, 0, 0, 0, 0},
-    {""},
-#line 68 "c/zx-ns.gperf"
-    {"http://www.w3.org/2001/XMLSchema", sizeof("http://www.w3.org/2001/XMLSchema")-1, sizeof("xs")-1, "xs", zx_xs_elem2tok, zx_xs_el_tab, 0, 0, 0, 0, 0, 0, 0},
 #line 85 "c/zx-ns.gperf"
-    {"urn:liberty:metadata:2004-12", sizeof("urn:liberty:metadata:2004-12")-1, sizeof("m20")-1, "m20", zx_m20_elem2tok, zx_m20_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 41 "c/zx-ns.gperf"
-    {"urn:liberty:paos:2006-08", sizeof("urn:liberty:paos:2006-08")-1, sizeof("paos")-1, "paos", zx_paos_elem2tok, zx_paos_el_tab, 0, 0, 0, 0, 0, 0, 0},
+    {"urn:liberty:sec:2003-08", sizeof("urn:liberty:sec:2003-08")-1, sizeof("sec12")-1, "sec12", 0,0,0,0,0,0,0},
+#line 59 "c/zx-ns.gperf"
+    {"urn:liberty:ssos:2006-08", sizeof("urn:liberty:ssos:2006-08")-1, sizeof("subs")-1, "subs", 0,0,0,0,0,0,0},
+    {""}, {""}, {""},
+#line 60 "c/zx-ns.gperf"
+    {"urn:liberty:dst:2006-08", sizeof("urn:liberty:dst:2006-08")-1, sizeof("dst")-1, "dst", 0,0,0,0,0,0,0},
+#line 74 "c/zx-ns.gperf"
+    {"urn:liberty:prov:2006-12", sizeof("urn:liberty:prov:2006-12")-1, sizeof("prov")-1, "prov", 0,0,0,0,0,0,0},
     {""}, {""},
-#line 65 "c/zx-ns.gperf"
-    {"urn:liberty:sa:2006-08", sizeof("urn:liberty:sa:2006-08")-1, sizeof("as")-1, "as", zx_as_elem2tok, zx_as_el_tab, 0, 0, 0, 0, 0, 0, 0},
+#line 71 "c/zx-ns.gperf"
+    {"urn:liberty:dp:2006-12", sizeof("urn:liberty:dp:2006-12")-1, sizeof("dp")-1, "dp", 0,0,0,0,0,0,0},
+#line 61 "c/zx-ns.gperf"
+    {"urn:liberty:ims:2006-08", sizeof("urn:liberty:ims:2006-08")-1, sizeof("im")-1, "im", 0,0,0,0,0,0,0},
+#line 52 "c/zx-ns.gperf"
+    {"urn:liberty:sb", sizeof("urn:liberty:sb")-1, sizeof("sbf")-1, "sbf", 0,0,0,0,0,0,0},
     {""},
-#line 49 "c/zx-ns.gperf"
-    {"urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:protocol:cd-01", sizeof("urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:protocol:cd-01")-1, sizeof("xaspcd1")-1, "xaspcd1", zx_xaspcd1_elem2tok, zx_xaspcd1_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 50 "c/zx-ns.gperf"
-    {"urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:assertion:cd-01", sizeof("urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:assertion:cd-01")-1, sizeof("xasacd1")-1, "xasacd1", zx_xasacd1_elem2tok, zx_xasacd1_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 67 "c/zx-ns.gperf"
-    {"http://www.w3.org/2001/XMLSchema-instance", sizeof("http://www.w3.org/2001/XMLSchema-instance")-1, sizeof("xsi")-1, "xsi", zx_xsi_elem2tok, zx_xsi_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 38 "c/zx-ns.gperf"
-    {"urn:oasis:names:tc:SAML:2.0:assertion", sizeof("urn:oasis:names:tc:SAML:2.0:assertion")-1, sizeof("sa")-1, "sa", zx_sa_elem2tok, zx_sa_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 35 "c/zx-ns.gperf"
-    {"http://www.w3.org/2001/04/xmlenc#", sizeof("http://www.w3.org/2001/04/xmlenc#")-1, sizeof("xenc")-1, "xenc", zx_xenc_elem2tok, zx_xenc_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 44 "c/zx-ns.gperf"
-    {"urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol", sizeof("urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol")-1, sizeof("idpdisc")-1, "idpdisc", zx_idpdisc_elem2tok, zx_idpdisc_el_tab, 0, 0, 0, 0, 0, 0, 0},
-    {""}, {""},
-#line 84 "c/zx-ns.gperf"
-    {"urn:liberty:ac:2004-12", sizeof("urn:liberty:ac:2004-12")-1, sizeof("ac")-1, "ac", zx_ac_elem2tok, zx_ac_el_tab, 0, 0, 0, 0, 0, 0, 0},
-    {""},
-#line 47 "c/zx-ns.gperf"
-    {"urn:oasis:xacml:2.0:saml:assertion:schema:os", sizeof("urn:oasis:xacml:2.0:saml:assertion:schema:os")-1, sizeof("xasa")-1, "xasa", zx_xasa_elem2tok, zx_xasa_el_tab, 0, 0, 0, 0, 0, 0, 0},
+#line 40 "c/zx-ns.gperf"
+    {"urn:oasis:names:tc:SAML:2.0:metadata", sizeof("urn:oasis:names:tc:SAML:2.0:metadata")-1, sizeof("md")-1, "md", 0,0,0,0,0,0,0},
+#line 62 "c/zx-ns.gperf"
+    {"urn:liberty:ps:2006-08", sizeof("urn:liberty:ps:2006-08")-1, sizeof("ps")-1, "ps", 0,0,0,0,0,0,0},
+#line 73 "c/zx-ns.gperf"
+    {"urn:liberty:pmm:2006-12", sizeof("urn:liberty:pmm:2006-12")-1, sizeof("pmm")-1, "pmm", 0,0,0,0,0,0,0},
+#line 75 "c/zx-ns.gperf"
+    {"urn:liberty:shps:2006-12", sizeof("urn:liberty:shps:2006-12")-1, sizeof("shps")-1, "shps", 0,0,0,0,0,0,0},
     {""},
 #line 37 "c/zx-ns.gperf"
-    {"http://schemas.xmlsoap.org/soap/envelope/", sizeof("http://schemas.xmlsoap.org/soap/envelope/")-1, sizeof("e")-1, "e", zx_e_elem2tok, zx_e_el_tab, 0, 0, 0, 0, 0, 0, 0},
+    {"urn:oasis:names:tc:SAML:2.0:protocol", sizeof("urn:oasis:names:tc:SAML:2.0:protocol")-1, sizeof("sp")-1, "sp", 0,0,0,0,0,0,0},
+#line 56 "c/zx-ns.gperf"
+    {"urn:liberty:is:2006-08", sizeof("urn:liberty:is:2006-08")-1, sizeof("is")-1, "is", 0,0,0,0,0,0,0},
+#line 54 "c/zx-ns.gperf"
+    {"urn:liberty:security:2006-08", sizeof("urn:liberty:security:2006-08")-1, sizeof("sec")-1, "sec", 0,0,0,0,0,0,0},
+#line 68 "c/zx-ns.gperf"
+    {"urn:liberty:id-sis-cb:2004-10", sizeof("urn:liberty:id-sis-cb:2004-10")-1, sizeof("cb")-1, "cb", 0,0,0,0,0,0,0},
+#line 44 "c/zx-ns.gperf"
+    {"urn:oasis:names:tc:xacml:2.0:policy:schema:os", sizeof("urn:oasis:names:tc:xacml:2.0:policy:schema:os")-1, sizeof("xa")-1, "xa", 0,0,0,0,0,0,0},
+#line 43 "c/zx-ns.gperf"
+    {"urn:oasis:names:tc:xacml:2.0:context:schema:os", sizeof("urn:oasis:names:tc:xacml:2.0:context:schema:os")-1, sizeof("xac")-1, "xac", 0,0,0,0,0,0,0},
+#line 87 "c/zx-ns.gperf"
+    {"urn:liberty:is:2003-08", sizeof("urn:liberty:is:2003-08")-1, sizeof("is12")-1, "is12", 0,0,0,0,0,0,0},
+#line 72 "c/zx-ns.gperf"
+    {"urn:liberty:idp:2006-12", sizeof("urn:liberty:idp:2006-12")-1, sizeof("idp")-1, "idp", 0,0,0,0,0,0,0},
+#line 38 "c/zx-ns.gperf"
+    {"urn:oasis:names:tc:SAML:2.0:profiles:SSO:ecp", sizeof("urn:oasis:names:tc:SAML:2.0:profiles:SSO:ecp")-1, sizeof("ecp")-1, "ecp", 0,0,0,0,0,0,0},
+#line 55 "c/zx-ns.gperf"
+    {"urn:liberty:disco:2006-08", sizeof("urn:liberty:disco:2006-08")-1, sizeof("di")-1, "di", 0,0,0,0,0,0,0},
+#line 79 "c/zx-ns.gperf"
+    {"urn:oasis:names:tc:SAML:1.0:protocol", sizeof("urn:oasis:names:tc:SAML:1.0:protocol")-1, sizeof("sp11")-1, "sp11", 0,0,0,0,0,0,0},
+#line 53 "c/zx-ns.gperf"
+    {"urn:liberty:sb:2006-08", sizeof("urn:liberty:sb:2006-08")-1, sizeof("b")-1, "b", 0,0,0,0,0,0,0},
+#line 81 "c/zx-ns.gperf"
+    {"urn:liberty:iff:2003-08", sizeof("urn:liberty:iff:2003-08")-1, sizeof("ff12")-1, "ff12", 0,0,0,0,0,0,0},
+#line 77 "c/zx-ns.gperf"
+    {"urn:id-sis-idhrxml:2007-06:dst-2.1", sizeof("urn:id-sis-idhrxml:2007-06:dst-2.1")-1, sizeof("idhrxml")-1, "idhrxml", 0,0,0,0,0,0,0},
+#line 86 "c/zx-ns.gperf"
+    {"urn:liberty:disco:2003-08", sizeof("urn:liberty:disco:2003-08")-1, sizeof("di12")-1, "di12", 0,0,0,0,0,0,0},
+#line 49 "c/zx-ns.gperf"
+    {"http://www.w3.org/2005/08/addressing", sizeof("http://www.w3.org/2005/08/addressing")-1, sizeof("a")-1, "a", 0,0,0,0,0,0,0},
+#line 84 "c/zx-ns.gperf"
+    {"urn:liberty:sb:2003-08", sizeof("urn:liberty:sb:2003-08")-1, sizeof("b12")-1, "b12", 0,0,0,0,0,0,0},
+#line 58 "c/zx-ns.gperf"
+    {"urn:liberty:id-sis-dap:2006-08:dst-2.1", sizeof("urn:liberty:id-sis-dap:2006-08:dst-2.1")-1, sizeof("dap")-1, "dap", 0,0,0,0,0,0,0},
+#line 34 "c/zx-ns.gperf"
+    {"http://www.w3.org/2001/10/xml-exc-c14n#", sizeof("http://www.w3.org/2001/10/xml-exc-c14n#")-1, sizeof("exca")-1, "exca", 0,0,0,0,0,0,0},
+#line 32 "c/zx-ns.gperf"
+    {"http://www.w3.org/2000/09/xmldsig#", sizeof("http://www.w3.org/2000/09/xmldsig#")-1, sizeof("ds")-1, "ds", 0,0,0,0,0,0,0},
+    {""},
+#line 66 "c/zx-ns.gperf"
+    {"http://www.w3.org/2001/XMLSchema", sizeof("http://www.w3.org/2001/XMLSchema")-1, sizeof("xs")-1, "xs", 0,0,0,0,0,0,0},
+#line 83 "c/zx-ns.gperf"
+    {"urn:liberty:metadata:2004-12", sizeof("urn:liberty:metadata:2004-12")-1, sizeof("m20")-1, "m20", 0,0,0,0,0,0,0},
+#line 39 "c/zx-ns.gperf"
+    {"urn:liberty:paos:2006-08", sizeof("urn:liberty:paos:2006-08")-1, sizeof("paos")-1, "paos", 0,0,0,0,0,0,0},
+    {""}, {""},
+#line 63 "c/zx-ns.gperf"
+    {"urn:liberty:sa:2006-08", sizeof("urn:liberty:sa:2006-08")-1, sizeof("as")-1, "as", 0,0,0,0,0,0,0},
+    {""},
+#line 47 "c/zx-ns.gperf"
+    {"urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:protocol:cd-01", sizeof("urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:protocol:cd-01")-1, sizeof("xaspcd1")-1, "xaspcd1", 0,0,0,0,0,0,0},
+#line 48 "c/zx-ns.gperf"
+    {"urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:assertion:cd-01", sizeof("urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:assertion:cd-01")-1, sizeof("xasacd1")-1, "xasacd1", 0,0,0,0,0,0,0},
+#line 65 "c/zx-ns.gperf"
+    {"http://www.w3.org/2001/XMLSchema-instance", sizeof("http://www.w3.org/2001/XMLSchema-instance")-1, sizeof("xsi")-1, "xsi", 0,0,0,0,0,0,0},
+#line 36 "c/zx-ns.gperf"
+    {"urn:oasis:names:tc:SAML:2.0:assertion", sizeof("urn:oasis:names:tc:SAML:2.0:assertion")-1, sizeof("sa")-1, "sa", 0,0,0,0,0,0,0},
+#line 33 "c/zx-ns.gperf"
+    {"http://www.w3.org/2001/04/xmlenc#", sizeof("http://www.w3.org/2001/04/xmlenc#")-1, sizeof("xenc")-1, "xenc", 0,0,0,0,0,0,0},
+#line 42 "c/zx-ns.gperf"
+    {"urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol", sizeof("urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol")-1, sizeof("idpdisc")-1, "idpdisc", 0,0,0,0,0,0,0},
+    {""}, {""},
 #line 82 "c/zx-ns.gperf"
-    {"urn:oasis:names:tc:SAML:1.0:assertion", sizeof("urn:oasis:names:tc:SAML:1.0:assertion")-1, sizeof("sa11")-1, "sa11", zx_sa11_elem2tok, zx_sa11_el_tab, 0, 0, 0, 0, 0, 0, 0},
+    {"urn:liberty:ac:2004-12", sizeof("urn:liberty:ac:2004-12")-1, sizeof("ac")-1, "ac", 0,0,0,0,0,0,0},
+    {""},
+#line 45 "c/zx-ns.gperf"
+    {"urn:oasis:xacml:2.0:saml:assertion:schema:os", sizeof("urn:oasis:xacml:2.0:saml:assertion:schema:os")-1, sizeof("xasa")-1, "xasa", 0,0,0,0,0,0,0},
+    {""},
+#line 35 "c/zx-ns.gperf"
+    {"http://schemas.xmlsoap.org/soap/envelope/", sizeof("http://schemas.xmlsoap.org/soap/envelope/")-1, sizeof("e")-1, "e", 0,0,0,0,0,0,0},
+#line 80 "c/zx-ns.gperf"
+    {"urn:oasis:names:tc:SAML:1.0:assertion", sizeof("urn:oasis:names:tc:SAML:1.0:assertion")-1, sizeof("sa11")-1, "sa11", 0,0,0,0,0,0,0},
+    {""},
+#line 89 "c/zx-ns.gperf"
+    {"http://schemas.xmlsoap.org/ws/2004/09/policy", sizeof("http://schemas.xmlsoap.org/ws/2004/09/policy")-1, sizeof("wsp")-1, "wsp", 0,0,0,0,0,0,0},
+    {""}, {""}, {""}, {""},
+#line 88 "c/zx-ns.gperf"
+    {"http://docs.oasis-open.org/ws-sx/ws-trust/200512/", sizeof("http://docs.oasis-open.org/ws-sx/ws-trust/200512/")-1, sizeof("wst")-1, "wst", 0,0,0,0,0,0,0},
+    {""},
+#line 76 "c/zx-ns.gperf"
+    {"http://ns.hr-xml.org/2007-04-15", sizeof("http://ns.hr-xml.org/2007-04-15")-1, sizeof("hrxml")-1, "hrxml", 0,0,0,0,0,0,0},
+#line 41 "c/zx-ns.gperf"
+    {"urn:mace:shibboleth:metadata:1.0", sizeof("urn:mace:shibboleth:metadata:1.0")-1, sizeof("shibmd")-1, "shibmd", 0,0,0,0,0,0,0},
+#line 46 "c/zx-ns.gperf"
+    {"urn:oasis:xacml:2.0:saml:protocol:schema:os", sizeof("urn:oasis:xacml:2.0:saml:protocol:schema:os")-1, sizeof("xasp")-1, "xasp", 0,0,0,0,0,0,0},
+#line 57 "c/zx-ns.gperf"
+    {"urn:liberty:util:2006-08", sizeof("urn:liberty:util:2006-08")-1, sizeof("lu")-1, "lu", 0,0,0,0,0,0,0},
+#line 67 "c/zx-ns.gperf"
+    {"http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-6-MM7-1-4", sizeof("http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-6-MM7-1-4")-1, sizeof("mm7")-1, "mm7", 0,0,0,0,0,0,0},
     {""},
 #line 91 "c/zx-ns.gperf"
-    {"http://schemas.xmlsoap.org/ws/2004/09/policy", sizeof("http://schemas.xmlsoap.org/ws/2004/09/policy")-1, sizeof("wsp")-1, "wsp", zx_wsp_elem2tok, zx_wsp_el_tab, 0, 0, 0, 0, 0, 0, 0},
-    {""}, {""}, {""}, {""},
-#line 90 "c/zx-ns.gperf"
-    {"http://docs.oasis-open.org/ws-sx/ws-trust/200512/", sizeof("http://docs.oasis-open.org/ws-sx/ws-trust/200512/")-1, sizeof("wst")-1, "wst", zx_wst_elem2tok, zx_wst_el_tab, 0, 0, 0, 0, 0, 0, 0},
+    {"http://tas3.eu/tas3/200911/", sizeof("http://tas3.eu/tas3/200911/")-1, sizeof("tas3")-1, "tas3", 0,0,0,0,0,0,0},
     {""},
-#line 78 "c/zx-ns.gperf"
-    {"http://ns.hr-xml.org/2007-04-15", sizeof("http://ns.hr-xml.org/2007-04-15")-1, sizeof("hrxml")-1, "hrxml", zx_hrxml_elem2tok, zx_hrxml_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 43 "c/zx-ns.gperf"
-    {"urn:mace:shibboleth:metadata:1.0", sizeof("urn:mace:shibboleth:metadata:1.0")-1, sizeof("shibmd")-1, "shibmd", zx_shibmd_elem2tok, zx_shibmd_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 48 "c/zx-ns.gperf"
-    {"urn:oasis:xacml:2.0:saml:protocol:schema:os", sizeof("urn:oasis:xacml:2.0:saml:protocol:schema:os")-1, sizeof("xasp")-1, "xasp", zx_xasp_elem2tok, zx_xasp_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 59 "c/zx-ns.gperf"
-    {"urn:liberty:util:2006-08", sizeof("urn:liberty:util:2006-08")-1, sizeof("lu")-1, "lu", zx_lu_elem2tok, zx_lu_el_tab, 0, 0, 0, 0, 0, 0, 0},
 #line 69 "c/zx-ns.gperf"
-    {"http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-6-MM7-1-4", sizeof("http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-6-MM7-1-4")-1, sizeof("mm7")-1, "mm7", zx_mm7_elem2tok, zx_mm7_el_tab, 0, 0, 0, 0, 0, 0, 0},
+    {"urn:liberty:cb:conceptual-data-model:2004-10", sizeof("urn:liberty:cb:conceptual-data-model:2004-10")-1, sizeof("cdm")-1, "cdm", 0,0,0,0,0,0,0},
     {""},
-#line 93 "c/zx-ns.gperf"
-    {"http://tas3.eu/tas3/200911/", sizeof("http://tas3.eu/tas3/200911/")-1, sizeof("tas3")-1, "tas3", zx_tas3_elem2tok, zx_tas3_el_tab, 0, 0, 0, 0, 0, 0, 0},
+#line 90 "c/zx-ns.gperf"
+    {"http://docs.oasis-open.org/ws-sx/ws-secureconversation/200512", sizeof("http://docs.oasis-open.org/ws-sx/ws-secureconversation/200512")-1, sizeof("wsc")-1, "wsc", 0,0,0,0,0,0,0},
+#line 64 "c/zx-ns.gperf"
+    {"http://www.w3.org/XML/1998/namespace", sizeof("http://www.w3.org/XML/1998/namespace")-1, sizeof("xml")-1, "xml", 0,0,0,0,0,0,0},
     {""},
-#line 71 "c/zx-ns.gperf"
-    {"urn:liberty:cb:conceptual-data-model:2004-10", sizeof("urn:liberty:cb:conceptual-data-model:2004-10")-1, sizeof("cdm")-1, "cdm", zx_cdm_elem2tok, zx_cdm_el_tab, 0, 0, 0, 0, 0, 0, 0},
-    {""},
+#line 70 "c/zx-ns.gperf"
+    {"urn:liberty:id-sis-gl:2005-07", sizeof("urn:liberty:id-sis-gl:2005-07")-1, sizeof("gl")-1, "gl", 0,0,0,0,0,0,0},
 #line 92 "c/zx-ns.gperf"
-    {"http://docs.oasis-open.org/ws-sx/ws-secureconversation/200512", sizeof("http://docs.oasis-open.org/ws-sx/ws-secureconversation/200512")-1, sizeof("wsc")-1, "wsc", zx_wsc_elem2tok, zx_wsc_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 66 "c/zx-ns.gperf"
-    {"http://www.w3.org/XML/1998/namespace", sizeof("http://www.w3.org/XML/1998/namespace")-1, sizeof("xml")-1, "xml", zx_xml_elem2tok, zx_xml_el_tab, 0, 0, 0, 0, 0, 0, 0},
-    {""},
-#line 72 "c/zx-ns.gperf"
-    {"urn:liberty:id-sis-gl:2005-07", sizeof("urn:liberty:id-sis-gl:2005-07")-1, sizeof("gl")-1, "gl", zx_gl_elem2tok, zx_gl_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 94 "c/zx-ns.gperf"
-    {"http://tas3.eu/tas3sol/200911/", sizeof("http://tas3.eu/tas3sol/200911/")-1, sizeof("tas3sol")-1, "tas3sol", zx_tas3sol_elem2tok, zx_tas3sol_el_tab, 0, 0, 0, 0, 0, 0, 0},
+    {"http://tas3.eu/tas3sol/200911/", sizeof("http://tas3.eu/tas3sol/200911/")-1, sizeof("tas3sol")-1, "tas3sol", 0,0,0,0,0,0,0},
     {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
     {""}, {""}, {""}, {""}, {""}, {""},
-#line 52 "c/zx-ns.gperf"
-    {"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", sizeof("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd")-1, sizeof("wsse")-1, "wsse", zx_wsse_elem2tok, zx_wsse_el_tab, 0, 0, 0, 0, 0, 0, 0},
-#line 53 "c/zx-ns.gperf"
-    {"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd", sizeof("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd")-1, sizeof("wsu")-1, "wsu", zx_wsu_elem2tok, zx_wsu_el_tab, 0, 0, 0, 0, 0, 0, 0}
+#line 50 "c/zx-ns.gperf"
+    {"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", sizeof("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd")-1, sizeof("wsse")-1, "wsse", 0,0,0,0,0,0,0},
+#line 51 "c/zx-ns.gperf"
+    {"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd", sizeof("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd")-1, sizeof("wsu")-1, "wsu", 0,0,0,0,0,0,0}
   };
 
 #ifdef __GNUC__
 __inline
+#ifdef __GNUC_STDC_INLINE__
+__attribute__ ((__gnu_inline__))
+#endif
 #endif
 struct zx_ns_s *
 zx_url2ns (str, len)
@@ -294,6 +297,6 @@ zx_url2ns (str, len)
     }
   return 0;
 }
-#line 95 "c/zx-ns.gperf"
+#line 93 "c/zx-ns.gperf"
 
 /* EOF */

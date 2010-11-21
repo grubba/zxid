@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_wsu_N_ELEMS 0
-#if !defined(zx_wsu__ELEM_MAX) && zx_wsu_N_ELEMS == 0
-#define zx_wsu__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_wsu_el_tab[zx_wsu__ELEM_MAX];
-struct zx_el_tok* zx_wsu_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- wsu_Created -------------------------- */
 /* refby( zx_wst_Lifetime_s zx_wsu_Timestamp_s ) */
 #ifndef zx_wsu_Created_EXT

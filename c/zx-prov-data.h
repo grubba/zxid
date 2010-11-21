@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_prov_N_ELEMS 0
-#if !defined(zx_prov__ELEM_MAX) && zx_prov_N_ELEMS == 0
-#define zx_prov__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_prov_el_tab[zx_prov__ELEM_MAX];
-struct zx_el_tok* zx_prov_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- prov_CallbackEPR -------------------------- */
 /* refby( zx_prov_UpdateEPRItem_s zx_prov_PMGetDescriptor_s ) */
 #ifndef zx_prov_CallbackEPR_EXT

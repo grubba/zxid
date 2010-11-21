@@ -1,49 +1,20 @@
-/* generated file, do not edit! zx_ _NS
+/* generated file, do not edit! zx_
  * $Id$ */
-#ifndef _zx__NS
-#define _zx__NS
-/* 0: zx_ns_tab */
-#define zx_pad_0_NS	0x00000000
-#define zx_pad_1_NS	0x00010000
-#define zx_pad_2_NS	0x00020000
-#define zx_pad_3_NS	0x00030000
-#define zx_pad_4_NS	0x00040000
-#define zx_pad_5_NS	0x00050000
-#define zx_pad_6_NS	0x00060000
-#define zx_pad_7_NS	0x00070000
-#define zx_pad_8_NS	0x00080000
-#define zx_pad_9_NS	0x00090000
-#define zx_pad_10_NS	0x000a0000
-#define zx_pad_11_NS	0x000b0000
-#define zx_pad_12_NS	0x000c0000
-#define zx_pad_13_NS	0x000d0000
-#define zx_pad_14_NS	0x000e0000
-#define zx_pad_15_NS	0x000f0000
-#define zx_pad_16_NS	0x00100000
-#define zx_pad_17_NS	0x00110000
-#define zx_pad_18_NS	0x00120000
-#define zx_pad_19_NS	0x00130000
-#define zx_pad_20_NS	0x00140000
+#ifndef _zx_consts
+#define _zx_consts
+/* namespaces */
 #define zx_demomed_NS	0x00150000
-#define zx_pad_22_NS	0x00160000
 #define zx_sec12_NS	0x00170000
 #define zx_subs_NS	0x00180000
-#define zx_pad_25_NS	0x00190000
-#define zx_pad_26_NS	0x001a0000
-#define zx_pad_27_NS	0x001b0000
 #define zx_dst_NS	0x001c0000
 #define zx_prov_NS	0x001d0000
-#define zx_pad_30_NS	0x001e0000
-#define zx_pad_31_NS	0x001f0000
 #define zx_dp_NS	0x00200000
 #define zx_im_NS	0x00210000
 #define zx_sbf_NS	0x00220000
-#define zx_pad_35_NS	0x00230000
 #define zx_md_NS	0x00240000
 #define zx_ps_NS	0x00250000
 #define zx_pmm_NS	0x00260000
 #define zx_shps_NS	0x00270000
-#define zx_pad_40_NS	0x00280000
 #define zx_sp_NS	0x00290000
 #define zx_is_NS	0x002a0000
 #define zx_sec_NS	0x002b0000
@@ -64,4574 +35,2017 @@
 #define zx_dap_NS	0x003a0000
 #define zx_exca_NS	0x003b0000
 #define zx_ds_NS	0x003c0000
-#define zx_pad_61_NS	0x003d0000
 #define zx_xs_NS	0x003e0000
 #define zx_m20_NS	0x003f0000
 #define zx_paos_NS	0x00400000
-#define zx_pad_65_NS	0x00410000
-#define zx_pad_66_NS	0x00420000
 #define zx_as_NS	0x00430000
-#define zx_pad_68_NS	0x00440000
 #define zx_xaspcd1_NS	0x00450000
 #define zx_xasacd1_NS	0x00460000
 #define zx_xsi_NS	0x00470000
 #define zx_sa_NS	0x00480000
 #define zx_xenc_NS	0x00490000
 #define zx_idpdisc_NS	0x004a0000
-#define zx_pad_75_NS	0x004b0000
-#define zx_pad_76_NS	0x004c0000
 #define zx_ac_NS	0x004d0000
-#define zx_pad_78_NS	0x004e0000
 #define zx_xasa_NS	0x004f0000
-#define zx_pad_80_NS	0x00500000
 #define zx_e_NS	0x00510000
 #define zx_sa11_NS	0x00520000
-#define zx_pad_83_NS	0x00530000
 #define zx_wsp_NS	0x00540000
-#define zx_pad_85_NS	0x00550000
-#define zx_pad_86_NS	0x00560000
-#define zx_pad_87_NS	0x00570000
-#define zx_pad_88_NS	0x00580000
 #define zx_wst_NS	0x00590000
-#define zx_pad_90_NS	0x005a0000
 #define zx_hrxml_NS	0x005b0000
 #define zx_shibmd_NS	0x005c0000
 #define zx_xasp_NS	0x005d0000
 #define zx_lu_NS	0x005e0000
 #define zx_mm7_NS	0x005f0000
-#define zx_pad_96_NS	0x00600000
 #define zx_tas3_NS	0x00610000
-#define zx_pad_98_NS	0x00620000
 #define zx_cdm_NS	0x00630000
-#define zx_pad_100_NS	0x00640000
 #define zx_wsc_NS	0x00650000
 #define zx_xml_NS	0x00660000
-#define zx_pad_103_NS	0x00670000
 #define zx_gl_NS	0x00680000
 #define zx_tas3sol_NS	0x00690000
-#define zx_pad_106_NS	0x006a0000
-#define zx_pad_107_NS	0x006b0000
-#define zx_pad_108_NS	0x006c0000
-#define zx_pad_109_NS	0x006d0000
-#define zx_pad_110_NS	0x006e0000
-#define zx_pad_111_NS	0x006f0000
-#define zx_pad_112_NS	0x00700000
-#define zx_pad_113_NS	0x00710000
-#define zx_pad_114_NS	0x00720000
-#define zx_pad_115_NS	0x00730000
-#define zx_pad_116_NS	0x00740000
-#define zx_pad_117_NS	0x00750000
-#define zx_pad_118_NS	0x00760000
-#define zx_pad_119_NS	0x00770000
-#define zx_pad_120_NS	0x00780000
 #define zx_wsse_NS	0x00790000
 #define zx_wsu_NS	0x007a0000
 #define zx__NS_MAX	123
-#endif
-/* generated file, do not edit! zx_ _ATTR
- * $Id$ */
-#ifndef _zx__ATTR
-#define _zx__ATTR
-/* 0: zx_at_tab */
-#define zx_OK_ATTR	0x000000
-#define zx_id_ATTR	0x000001
-#define zx_isRequired_ATTR	0x000002
-#define zx_starts_ATTR	0x000003
-#define zx_deactivateAt_ATTR	0x000004
-#define zx_degreeType_ATTR	0x000005
-#define zx_timeOffType_ATTR	0x000006
-#define zx_descriptionIDRefs_ATTR	0x000007
-#define zx_code_ATTR	0x000008
-#define zx_redirect_ATTR	0x000009
-#define zx_consent_ATTR	0x00000a
-#define zx_scope_ATTR	0x00000b
-#define zx_context_ATTR	0x00000c
-#define zx_use_ATTR	0x00000d
-#define zx_percentage_ATTR	0x00000e
-#define zx_success_ATTR	0x00000f
-#define zx_sequence_ATTR	0x000010
-#define zx_sortWeight_ATTR	0x000011
-#define zx_script_ATTR	0x000012
-#define zx_timestamp_ATTR	0x000013
-#define zx_ctlpt_ATTR	0x000014
-#define zx_otherPayType_ATTR	0x000015
-#define zx_uri_ATTR	0x000016
-#define zx_used_ATTR	0x000017
-#define zx_issuer_ATTR	0x000018
-#define zx_currencyCode_ATTR	0x000019
-#define zx_case_ATTR	0x00001a
-#define zx_relocationConsidered_ATTR	0x00001b
-#define zx_requiredChars_ATTR	0x00001c
-#define zx_SessionNotOnOrAfter_ATTR	0x00001d
-#define zx_schoolType_ATTR	0x00001e
-#define zx_signed_ATTR	0x00001f
-#define zx_at_ATTR	0x000020
-#define zx_required_ATTR	0x000021
-#define zx_predefined_ATTR	0x000022
-#define zx_currentlyEnrolled_ATTR	0x000023
-#define zx_currentEmployer_ATTR	0x000024
-#define zx_intervalType_ATTR	0x000025
-#define zx_interact_ATTR	0x000026
-#define zx_academicHonors_ATTR	0x000027
-#define zx_nextOffset_ATTR	0x000028
-#define zx_description_ATTR	0x000029
-#define zx_issueTo_ATTR	0x00002a
-#define zx_DeviceType_ATTR	0x00002b
-#define zx_Digest_ATTR	0x00002c
-#define zx_positionType_ATTR	0x00002d
-#define zx_attributes_ATTR	0x00002e
-#define zx_created_ATTR	0x00002f
-#define zx_idSource_ATTR	0x000030
-#define zx_timeStamp_ATTR	0x000031
-#define zx_DeviceInHand_ATTR	0x000032
-#define zx_dateOfIncident_ATTR	0x000033
-#define zx_count_ATTR	0x000034
-#define zx_countryCode_ATTR	0x000035
-#define zx_link_ATTR	0x000036
-#define zx_Structured_ATTR	0x000037
-#define zx_encodingStyle_ATTR	0x000038
-#define zx_title_ATTR	0x000039
-#define zx_contactType_ATTR	0x00003a
-#define zx_classificationName_ATTR	0x00003b
-#define zx_sizelimit_ATTR	0x00003c
-#define zx_Nonce_ATTR	0x00003d
-#define zx_Id_ATTR	0x00003e
-#define zx_timelimit_ATTR	0x00003f
-#define zx_issuingRegion_ATTR	0x000040
-#define zx_NotBefore_ATTR	0x000041
-#define zx_leader_ATTR	0x000042
-#define zx_jurisdiction_ATTR	0x000043
-#define zx_name_ATTR	0x000044
-#define zx_actor_ATTR	0x000045
-#define zx_unitOfMeasure_ATTR	0x000046
-#define zx_namespace_ATTR	0x000047
-#define zx_credentialLevel_ATTR	0x000048
-#define zx_relationship_ATTR	0x000049
-#define zx_subscriptionID_ATTR	0x00004a
-#define zx_returnLocation_ATTR	0x00004b
-#define zx_attendanceStatus_ATTR	0x00004c
-#define zx_dunsNumberType_ATTR	0x00004d
-#define zx_hierarchicalRole_ATTR	0x00004e
-#define zx_Decision_ATTR	0x00004f
-#define zx_Name_ATTR	0x000050
-#define zx_libertyPrincipalIdentifier_ATTR	0x000051
-#define zx_entityID_ATTR	0x000052
-#define zx_Namespace_ATTR	0x000053
-#define zx_Destination_ATTR	0x000054
-#define zx_setReq_ATTR	0x000055
-#define zx_IssueInstant_ATTR	0x000056
-#define zx_otherInterval_ATTR	0x000057
-#define zx_companyOffered_ATTR	0x000058
-#define zx_Issuer_ATTR	0x000059
-#define zx_srsName_ATTR	0x00005a
-#define zx_gid_ATTR	0x00005b
-#define zx_updateType_ATTR	0x00005c
-#define zx_resultsType_ATTR	0x00005d
-#define zx_purpose_ATTR	0x00005e
-#define zx_ref_ATTR	0x00005f
-#define zx_isDefault_ATTR	0x000060
-#define zx_advisoryAuthnID_ATTR	0x000061
-#define zx_protocolSupportEnumeration_ATTR	0x000062
-#define zx_derefaliases_ATTR	0x000063
-#define zx_NameQualifier_ATTR	0x000064
-#define zx_IsPassive_ATTR	0x000065
-#define zx_Offset_ATTR	0x000066
-#define zx_Binding_ATTR	0x000067
-#define zx_storeRef_ATTR	0x000068
-#define zx_firstUsed_ATTR	0x000069
-#define zx_Usage_ATTR	0x00006a
-#define zx_studentInGoodStanding_ATTR	0x00006b
-#define zx_expires_ATTR	0x00006c
-#define zx_interval_ATTR	0x00006d
-#define zx_notSorted_ATTR	0x00006e
-#define zx_organizationType_ATTR	0x00006f
-#define zx_notOnOrAfter_ATTR	0x000070
-#define zx_cacheDuration_ATTR	0x000071
-#define zx_expirationDate_ATTR	0x000072
-#define zx_duration_ATTR	0x000073
-#define zx_Dialect_ATTR	0x000074
-#define zx_offset_ATTR	0x000075
-#define zx_comment_ATTR	0x000076
-#define zx_Sig_ATTR	0x000077
-#define zx_usage_ATTR	0x000078
-#define zx_InResponseTo_ATTR	0x000079
-#define zx_enrollmentStatus_ATTR	0x00007a
-#define zx_NotOnOrAfter_ATTR	0x00007b
-#define zx_Recipient_ATTR	0x00007c
-#define zx_measureType_ATTR	0x00007d
-#define zx_lastUsed_ATTR	0x00007e
-#define zx_SessionIndex_ATTR	0x00007f
-#define zx_multiple_ATTR	0x000080
-#define zx_type_ATTR	0x000081
-#define zx_regexp_ATTR	0x000082
-#define zx_service_ATTR	0x000083
-#define zx_min_ATTR	0x000084
-#define zx_sharing_ATTR	0x000085
-#define zx_ReturnContext_ATTR	0x000086
-#define zx_dateDescription_ATTR	0x000087
-#define zx_shiftPeriod_ATTR	0x000088
-#define zx_includeCommonAttributes_ATTR	0x000089
-#define zx_graduatingDegree_ATTR	0x00008a
-#define zx_ReauthenticateOnOrAfter_ATTR	0x00008b
-#define zx_RelationshipType_ATTR	0x00008c
-#define zx_Resource_ATTR	0x00008d
-#define zx_remaining_ATTR	0x00008e
-#define zx_natureOfRelationship_ATTR	0x00008f
-#define zx_wait_ATTR	0x000090
-#define zx_ResourceId_ATTR	0x000091
-#define zx_Reason_ATTR	0x000092
-#define zx_authzID_ATTR	0x000093
-#define zx_addressCoding_ATTR	0x000094
-#define zx_mustUnderstand_ATTR	0x000095
-#define zx_DigestAlgorithm_ATTR	0x000096
-#define zx_method_ATTR	0x000097
-#define zx_documentType_ATTR	0x000098
-#define zx_idOwner_ATTR	0x000099
-#define zx_contingency_ATTR	0x00009a
-#define zx_ID_ATTR	0x00009b
-#define zx_RequestContextPath_ATTR	0x00009c
-#define zx_ownership_ATTR	0x00009d
-#define zx_setID_ATTR	0x00009e
-#define zx_suppliedByOrganization_ATTR	0x00009f
-#define zx_IsDefault_ATTR	0x0000a0
-#define zx_changedSince_ATTR	0x0000a1
-#define zx_all_ATTR	0x0000a2
-#define zx_changeFormat_ATTR	0x0000a3
-#define zx_currency_ATTR	0x0000a4
-#define zx_endReason_ATTR	0x0000a5
-#define zx_reqID_ATTR	0x0000a6
-#define zx_typeOfGroup_ATTR	0x0000a7
-#define zx_version_ATTR	0x0000a8
-#define zx_URI_ATTR	0x0000a9
-#define zx_event_ATTR	0x0000aa
-#define zx_RequestID_ATTR	0x0000ab
-#define zx_includeData_ATTR	0x0000ac
-#define zx_activate_ATTR	0x0000ad
-#define zx_overrideAllowed_ATTR	0x0000ae
-#define zx_Consent_ATTR	0x0000af
-#define zx_activateAt_ATTR	0x0000b0
-#define zx_Context_ATTR	0x0000b1
-#define zx_honorsProgram_ATTR	0x0000b2
-#define zx_group_ATTR	0x0000b3
-#define zx_ResponseLocation_ATTR	0x0000b4
-#define zx_employerOrgType_ATTR	0x0000b5
-#define zx_primaryIndicator_ATTR	0x0000b6
-#define zx_confirmationURI_ATTR	0x0000b7
-#define zx_adminNotifyToRef_ATTR	0x0000b8
-#define zx_Ref_ATTR	0x0000b9
-#define zx_messageID_ATTR	0x0000ba
-#define zx_xpath_ATTR	0x0000bb
-#define zx_RuleId_ATTR	0x0000bc
-#define zx_DNSName_ATTR	0x0000bd
-#define zx_PolicyId_ATTR	0x0000be
-#define zx_ResponseID_ATTR	0x0000bf
-#define zx_PolicySetId_ATTR	0x0000c0
-#define zx_excludedChars_ATTR	0x0000c1
-#define zx_SubjectCategory_ATTR	0x0000c2
-#define zx_TimeStamp_ATTR	0x0000c3
-#define zx_PolicyCombiningAlgId_ATTR	0x0000c4
-#define zx_reqRef_ATTR	0x0000c5
-#define zx_value_ATTR	0x0000c6
-#define zx_typeId_ATTR	0x0000c7
-#define zx_validTo_ATTR	0x0000c8
-#define zx_MustBePresent_ATTR	0x0000c9
-#define zx_Address_ATTR	0x0000ca
-#define zx_replyDeadline_ATTR	0x0000cb
-#define zx_replyChargingSize_ATTR	0x0000cc
-#define zx_AttributeName_ATTR	0x0000cd
-#define zx_AssertionIssueInstant_ATTR	0x0000ce
-#define zx_AttributeNamespace_ATTR	0x0000cf
-#define zx_CreatedDateTime_ATTR	0x0000d0
-#define zx_AttributeId_ATTR	0x0000d1
-#define zx_NodeType_ATTR	0x0000d2
-#define zx_FunctionId_ATTR	0x0000d3
-#define zx_itemID_ATTR	0x0000d4
-#define zx_Loc_ATTR	0x0000d5
-#define zx_Count_ATTR	0x0000d6
-#define zx_redirectURL_ATTR	0x0000d7
-#define zx_providerID_ATTR	0x0000d8
-#define zx_Method_ATTR	0x0000d9
-#define zx_objectType_ATTR	0x0000da
-#define zx_modificationTime_ATTR	0x0000db
-#define zx_FriendlyName_ATTR	0x0000dc
-#define zx_refToMessageID_ATTR	0x0000dd
-#define zx_typeDescription_ATTR	0x0000de
-#define zx_medium_ATTR	0x0000df
-#define zx_entryID_ATTR	0x0000e0
-#define zx_modifier_ATTR	0x0000e1
-#define zx_governingAgreementRef_ATTR	0x0000e2
-#define zx_language_ATTR	0x0000e3
-#define zx_label_ATTR	0x0000e4
-#define zx_displayOnly_ATTR	0x0000e5
-#define zx_EncodingType_ATTR	0x0000e6
-#define zx_href_ATTR	0x0000e7
-#define zx_serverMechanism_ATTR	0x0000e8
-#define zx_prefix_ATTR	0x0000e9
-#define zx_MinorVersion_ATTR	0x0000ea
-#define zx_errorURL_ATTR	0x0000eb
-#define zx_asof_ATTR	0x0000ec
-#define zx_ForceAuthn_ATTR	0x0000ed
-#define zx_allowAdaptations_ATTR	0x0000ee
-#define zx_max_ATTR	0x0000ef
-#define zx_IPAddress_ATTR	0x0000f0
-#define zx_index_ATTR	0x0000f1
-#define zx_newEntryIDs_ATTR	0x0000f2
-#define zx_MatchId_ATTR	0x0000f3
-#define zx_mimeType_ATTR	0x0000f4
-#define zx_maxInteractTime_ATTR	0x0000f5
-#define zx_validUntil_ATTR	0x0000f6
-#define zx_notChangedSince_ATTR	0x0000f7
-#define zx_Version_ATTR	0x0000f8
-#define zx_WantAssertionsSigned_ATTR	0x0000f9
-#define zx_AssertionID_ATTR	0x0000fa
-#define zx_WantAuthnRequestsSigned_ATTR	0x0000fb
-#define zx_notifyToRef_ATTR	0x0000fc
-#define zx_affiliationID_ATTR	0x0000fd
-#define zx_responseConsumerURL_ATTR	0x0000fe
-#define zx_format_ATTR	0x0000ff
-#define zx_affiliationOwnerID_ATTR	0x000100
-#define zx_SeedLength_ATTR	0x000101
-#define zx_AuthenticationInstant_ATTR	0x000102
-#define zx_nym_ATTR	0x000103
-#define zx_itemIDRef_ATTR	0x000104
-#define zx_AuthenticationMethod_ATTR	0x000105
-#define zx_Effect_ATTR	0x000106
-#define zx_nextPoll_ATTR	0x000107
-#define zx_typesonly_ATTR	0x000108
-#define zx_InputContextOnly_ATTR	0x000109
-#define zx_mechanism_ATTR	0x00010a
-#define zx_numberOfStudents_ATTR	0x00010b
-#define zx_SPProvidedID_ATTR	0x00010c
-#define zx_objectID_ATTR	0x00010d
-#define zx_Type_ATTR	0x00010e
-#define zx_NameFormat_ATTR	0x00010f
-#define zx_number_ATTR	0x000110
-#define zx_MajorVersion_ATTR	0x000111
-#define zx_PrefixList_ATTR	0x000112
-#define zx_branch_ATTR	0x000113
-#define zx_DataType_ATTR	0x000114
-#define zx_LatestVersion_ATTR	0x000115
-#define zx_validFrom_ATTR	0x000116
-#define zx_Value_ATTR	0x000117
-#define zx_Target_ATTR	0x000118
-#define zx_AuthorityKind_ATTR	0x000119
-#define zx_ValueType_ATTR	0x00011a
-#define zx_Comparison_ATTR	0x00011b
-#define zx_RuleIdRef_ATTR	0x00011c
-#define zx_PolicyIdRef_ATTR	0x00011d
-#define zx_minChars_ATTR	0x00011e
-#define zx_PolicySetIdRef_ATTR	0x00011f
-#define zx_ModifiedDateTime_ATTR	0x000120
-#define zx_RuleCombiningAlgId_ATTR	0x000121
-#define zx_lang_ATTR	0x000122
-#define zx_ProtocolBinding_ATTR	0x000123
-#define zx_AuthnInstant_ATTR	0x000124
-#define zx_wantDSEPR_ATTR	0x000125
-#define zx_DNSAddress_ATTR	0x000126
-#define zx_Location_ATTR	0x000127
-#define zx_AuthnRequestsSigned_ATTR	0x000128
-#define zx_VariableId_ATTR	0x000129
-#define zx_primary_ATTR	0x00012a
-#define zx_smsEnabled_ATTR	0x00012b
-#define zx_ProviderName_ATTR	0x00012c
-#define zx_MimeType_ATTR	0x00012d
-#define zx_sortAlg_ATTR	0x00012e
-#define zx_AssertionConsumerServiceIndex_ATTR	0x00012f
-#define zx_ObligationId_ATTR	0x000130
-#define zx_EarliestVersion_ATTR	0x000131
-#define zx_maxProcessingTime_ATTR	0x000132
-#define zx_moreLink_ATTR	0x000133
-#define zx_AttributeConsumingServiceIndex_ATTR	0x000134
-#define zx_Locale_ATTR	0x000135
-#define zx_Encoding_ATTR	0x000136
-#define zx_ItemIDRef_ATTR	0x000137
-#define zx_maxChars_ATTR	0x000138
-#define zx_UAProf_ATTR	0x000139
-#define zx_Format_ATTR	0x00013a
-#define zx_SPNameQualifier_ATTR	0x00013b
-#define zx_FulfillOn_ATTR	0x00013c
-#define zx_VerifyDepth_ATTR	0x00013d
-#define zx_ParameterName_ATTR	0x00013e
-#define zx_minValue_ATTR	0x00013f
-#define zx_ProviderID_ATTR	0x000140
-#define zx_examPassed_ATTR	0x000141
-#define zx_baseInterval_ATTR	0x000142
-#define zx_Algorithm_ATTR	0x000143
-#define zx_CombinePolicies_ATTR	0x000144
-#define zx_AllowCreate_ATTR	0x000145
-#define zx_maxValue_ATTR	0x000146
-#define zx_svcMDID_ATTR	0x000147
-#define zx_ProxyCount_ATTR	0x000148
-#define zx_AssertionConsumerServiceURL_ATTR	0x000149
-#define zx_Allow_ATTR	0x00014a
-#define zx_ACCTime_ATTR	0x00014b
-#define zx_ACC_ATTR	0x00014c
-#define zx__ATTR_MAX	333
-#endif
-/* generated file, do not edit! zx_ _ELEM
- * $Id$ */
-#ifndef _zx__ELEM
-#define _zx__ELEM
-/* 0: zx_a_el_tab */
-#define zx_a_pad_0_ELEM	(zx_a_NS | 0x000000)
-#define zx_a_pad_1_ELEM	(zx_a_NS | 0x000001)
-#define zx_a_To_ELEM	(zx_a_NS | 0x000002)
-#define zx_a_pad_3_ELEM	(zx_a_NS | 0x000003)
-#define zx_a_pad_4_ELEM	(zx_a_NS | 0x000004)
-#define zx_a_pad_5_ELEM	(zx_a_NS | 0x000005)
-#define zx_a_pad_6_ELEM	(zx_a_NS | 0x000006)
-#define zx_a_ReplyTo_ELEM	(zx_a_NS | 0x000007)
-#define zx_a_Metadata_ELEM	(zx_a_NS | 0x000008)
-#define zx_a_RelatesTo_ELEM	(zx_a_NS | 0x000009)
-#define zx_a_RetryAfter_ELEM	(zx_a_NS | 0x00000a)
-#define zx_a_Action_ELEM	(zx_a_NS | 0x00000b)
-#define zx_a_Address_ELEM	(zx_a_NS | 0x00000c)
-#define zx_a_pad_13_ELEM	(zx_a_NS | 0x00000d)
-#define zx_a_From_ELEM	(zx_a_NS | 0x00000e)
-#define zx_a_ProblemURI_ELEM	(zx_a_NS | 0x00000f)
-#define zx_a_pad_16_ELEM	(zx_a_NS | 0x000010)
-#define zx_a_FaultTo_ELEM	(zx_a_NS | 0x000011)
-#define zx_a_ProblemAction_ELEM	(zx_a_NS | 0x000012)
-#define zx_a_ReferenceParameters_ELEM	(zx_a_NS | 0x000013)
-#define zx_a_SoapAction_ELEM	(zx_a_NS | 0x000014)
-#define zx_a_pad_21_ELEM	(zx_a_NS | 0x000015)
-#define zx_a_EndpointReference_ELEM	(zx_a_NS | 0x000016)
-#define zx_a_ProblemHeader_ELEM	(zx_a_NS | 0x000017)
-#define zx_a_MessageID_ELEM	(zx_a_NS | 0x000018)
-#define zx_a_pad_25_ELEM	(zx_a_NS | 0x000019)
-#define zx_a_pad_26_ELEM	(zx_a_NS | 0x00001a)
-#define zx_a_pad_27_ELEM	(zx_a_NS | 0x00001b)
-#define zx_a_ProblemHeaderQName_ELEM	(zx_a_NS | 0x00001c)
-#define zx_a__ELEM_MAX	29
-/* 1: zx_di12_el_tab */
-#define zx_di12_pad_0_ELEM	(zx_di12_NS | 0x000000)
-#define zx_di12_pad_1_ELEM	(zx_di12_NS | 0x000001)
-#define zx_di12_pad_2_ELEM	(zx_di12_NS | 0x000002)
-#define zx_di12_pad_3_ELEM	(zx_di12_NS | 0x000003)
-#define zx_di12_pad_4_ELEM	(zx_di12_NS | 0x000004)
-#define zx_di12_Query_ELEM	(zx_di12_NS | 0x000005)
-#define zx_di12_Option_ELEM	(zx_di12_NS | 0x000006)
-#define zx_di12_Options_ELEM	(zx_di12_NS | 0x000007)
-#define zx_di12_Abstract_ELEM	(zx_di12_NS | 0x000008)
-#define zx_di12_Modify_ELEM	(zx_di12_NS | 0x000009)
-#define zx_di12_ProviderID_ELEM	(zx_di12_NS | 0x00000a)
-#define zx_di12_Credentials_ELEM	(zx_di12_NS | 0x00000b)
-#define zx_di12_WsdlURI_ELEM	(zx_di12_NS | 0x00000c)
-#define zx_di12_CredentialRef_ELEM	(zx_di12_NS | 0x00000d)
-#define zx_di12_RemoveEntry_ELEM	(zx_di12_NS | 0x00000e)
-#define zx_di12_SoapAction_ELEM	(zx_di12_NS | 0x00000f)
-#define zx_di12_ServiceType_ELEM	(zx_di12_NS | 0x000010)
-#define zx_di12_ModifyResponse_ELEM	(zx_di12_NS | 0x000011)
-#define zx_di12_QueryResponse_ELEM	(zx_di12_NS | 0x000012)
-#define zx_di12_ServiceNameRef_ELEM	(zx_di12_NS | 0x000013)
-#define zx_di12_ServiceInstance_ELEM	(zx_di12_NS | 0x000014)
-#define zx_di12_AuthenticateRequester_ELEM	(zx_di12_NS | 0x000015)
-#define zx_di12_EncryptResourceID_ELEM	(zx_di12_NS | 0x000016)
-#define zx_di12_pad_23_ELEM	(zx_di12_NS | 0x000017)
-#define zx_di12_EncryptedResourceID_ELEM	(zx_di12_NS | 0x000018)
-#define zx_di12_pad_25_ELEM	(zx_di12_NS | 0x000019)
-#define zx_di12_AuthenticateSessionContext_ELEM	(zx_di12_NS | 0x00001a)
-#define zx_di12_pad_27_ELEM	(zx_di12_NS | 0x00001b)
-#define zx_di12_pad_28_ELEM	(zx_di12_NS | 0x00001c)
-#define zx_di12_Endpoint_ELEM	(zx_di12_NS | 0x00001d)
-#define zx_di12_ResourceID_ELEM	(zx_di12_NS | 0x00001e)
-#define zx_di12_Status_ELEM	(zx_di12_NS | 0x00001f)
-#define zx_di12_Description_ELEM	(zx_di12_NS | 0x000020)
-#define zx_di12_pad_33_ELEM	(zx_di12_NS | 0x000021)
-#define zx_di12_Extension_ELEM	(zx_di12_NS | 0x000022)
-#define zx_di12_SecurityMechID_ELEM	(zx_di12_NS | 0x000023)
-#define zx_di12_ResourceOffering_ELEM	(zx_di12_NS | 0x000024)
-#define zx_di12_pad_37_ELEM	(zx_di12_NS | 0x000025)
-#define zx_di12_AuthorizeRequester_ELEM	(zx_di12_NS | 0x000026)
-#define zx_di12_pad_39_ELEM	(zx_di12_NS | 0x000027)
-#define zx_di12_pad_40_ELEM	(zx_di12_NS | 0x000028)
-#define zx_di12_InsertEntry_ELEM	(zx_di12_NS | 0x000029)
-#define zx_di12_pad_42_ELEM	(zx_di12_NS | 0x00002a)
-#define zx_di12_pad_43_ELEM	(zx_di12_NS | 0x00002b)
-#define zx_di12_pad_44_ELEM	(zx_di12_NS | 0x00002c)
-#define zx_di12_RequestedServiceType_ELEM	(zx_di12_NS | 0x00002d)
-#define zx_di12__ELEM_MAX	46
-/* 2: zx_lu_el_tab */
-#define zx_lu_pad_0_ELEM	(zx_lu_NS | 0x000000)
-#define zx_lu_pad_1_ELEM	(zx_lu_NS | 0x000001)
-#define zx_lu_pad_2_ELEM	(zx_lu_NS | 0x000002)
-#define zx_lu_pad_3_ELEM	(zx_lu_NS | 0x000003)
-#define zx_lu_pad_4_ELEM	(zx_lu_NS | 0x000004)
-#define zx_lu_pad_5_ELEM	(zx_lu_NS | 0x000005)
-#define zx_lu_Status_ELEM	(zx_lu_NS | 0x000006)
-#define zx_lu_pad_7_ELEM	(zx_lu_NS | 0x000007)
-#define zx_lu_pad_8_ELEM	(zx_lu_NS | 0x000008)
-#define zx_lu_Extension_ELEM	(zx_lu_NS | 0x000009)
-#define zx_lu_TestResult_ELEM	(zx_lu_NS | 0x00000a)
-#define zx_lu__ELEM_MAX	11
-/* 3: zx_xenc_el_tab */
-#define zx_xenc_pad_0_ELEM	(zx_xenc_NS | 0x000000)
-#define zx_xenc_pad_1_ELEM	(zx_xenc_NS | 0x000001)
-#define zx_xenc_pad_2_ELEM	(zx_xenc_NS | 0x000002)
-#define zx_xenc_pad_3_ELEM	(zx_xenc_NS | 0x000003)
-#define zx_xenc_pad_4_ELEM	(zx_xenc_NS | 0x000004)
-#define zx_xenc_pad_5_ELEM	(zx_xenc_NS | 0x000005)
-#define zx_xenc_pad_6_ELEM	(zx_xenc_NS | 0x000006)
-#define zx_xenc_pad_7_ELEM	(zx_xenc_NS | 0x000007)
-#define zx_xenc_pad_8_ELEM	(zx_xenc_NS | 0x000008)
-#define zx_xenc_pad_9_ELEM	(zx_xenc_NS | 0x000009)
-#define zx_xenc_CipherData_ELEM	(zx_xenc_NS | 0x00000a)
-#define zx_xenc_CipherValue_ELEM	(zx_xenc_NS | 0x00000b)
-#define zx_xenc_EncryptedKey_ELEM	(zx_xenc_NS | 0x00000c)
-#define zx_xenc_EncryptedData_ELEM	(zx_xenc_NS | 0x00000d)
-#define zx_xenc_CarriedKeyName_ELEM	(zx_xenc_NS | 0x00000e)
-#define zx_xenc_CipherReference_ELEM	(zx_xenc_NS | 0x00000f)
-#define zx_xenc_EncryptionMethod_ELEM	(zx_xenc_NS | 0x000010)
-#define zx_xenc_pad_17_ELEM	(zx_xenc_NS | 0x000011)
-#define zx_xenc_EncryptionProperty_ELEM	(zx_xenc_NS | 0x000012)
-#define zx_xenc_pad_19_ELEM	(zx_xenc_NS | 0x000013)
-#define zx_xenc_EncryptionProperties_ELEM	(zx_xenc_NS | 0x000014)
-#define zx_xenc_pad_21_ELEM	(zx_xenc_NS | 0x000015)
-#define zx_xenc_KeySize_ELEM	(zx_xenc_NS | 0x000016)
-#define zx_xenc_KA_Nonce_ELEM	(zx_xenc_NS | 0x000017)
-#define zx_xenc_pad_24_ELEM	(zx_xenc_NS | 0x000018)
-#define zx_xenc_OAEPparams_ELEM	(zx_xenc_NS | 0x000019)
-#define zx_xenc_pad_26_ELEM	(zx_xenc_NS | 0x00001a)
-#define zx_xenc_KeyReference_ELEM	(zx_xenc_NS | 0x00001b)
-#define zx_xenc_ReferenceList_ELEM	(zx_xenc_NS | 0x00001c)
-#define zx_xenc_pad_29_ELEM	(zx_xenc_NS | 0x00001d)
-#define zx_xenc_Transforms_ELEM	(zx_xenc_NS | 0x00001e)
-#define zx_xenc_RecipientKeyInfo_ELEM	(zx_xenc_NS | 0x00001f)
-#define zx_xenc_OriginatorKeyInfo_ELEM	(zx_xenc_NS | 0x000020)
-#define zx_xenc_DataReference_ELEM	(zx_xenc_NS | 0x000021)
-#define zx_xenc_pad_34_ELEM	(zx_xenc_NS | 0x000022)
-#define zx_xenc_AgreementMethod_ELEM	(zx_xenc_NS | 0x000023)
-#define zx_xenc__ELEM_MAX	36
-/* 4: zx_ac_el_tab */
-#define zx_ac_pad_0_ELEM	(zx_ac_NS | 0x000000)
-#define zx_ac_pad_1_ELEM	(zx_ac_NS | 0x000001)
-#define zx_ac_pad_2_ELEM	(zx_ac_NS | 0x000002)
-#define zx_ac_SSL_ELEM	(zx_ac_NS | 0x000003)
-#define zx_ac_HTTP_ELEM	(zx_ac_NS | 0x000004)
-#define zx_ac_Token_ELEM	(zx_ac_NS | 0x000005)
-#define zx_ac_pad_6_ELEM	(zx_ac_NS | 0x000006)
-#define zx_ac_pad_7_ELEM	(zx_ac_NS | 0x000007)
-#define zx_ac_pad_8_ELEM	(zx_ac_NS | 0x000008)
-#define zx_ac_Extension_ELEM	(zx_ac_NS | 0x000009)
-#define zx_ac_pad_10_ELEM	(zx_ac_NS | 0x00000a)
-#define zx_ac_pad_11_ELEM	(zx_ac_NS | 0x00000b)
-#define zx_ac_pad_12_ELEM	(zx_ac_NS | 0x00000c)
-#define zx_ac_ActivationPin_ELEM	(zx_ac_NS | 0x00000d)
-#define zx_ac_pad_14_ELEM	(zx_ac_NS | 0x00000e)
-#define zx_ac_Generation_ELEM	(zx_ac_NS | 0x00000f)
-#define zx_ac_Length_ELEM	(zx_ac_NS | 0x000010)
-#define zx_ac_pad_17_ELEM	(zx_ac_NS | 0x000011)
-#define zx_ac_Alphabet_ELEM	(zx_ac_NS | 0x000012)
-#define zx_ac_TechnicalProtection_ELEM	(zx_ac_NS | 0x000013)
-#define zx_ac_PrivateKeyProtection_ELEM	(zx_ac_NS | 0x000014)
-#define zx_ac_OperationalProtection_ELEM	(zx_ac_NS | 0x000015)
-#define zx_ac_ActivationLimitSession_ELEM	(zx_ac_NS | 0x000016)
-#define zx_ac_ActivationLimitDuration_ELEM	(zx_ac_NS | 0x000017)
-#define zx_ac_Identification_ELEM	(zx_ac_NS | 0x000018)
-#define zx_ac_ActivationLimit_ELEM	(zx_ac_NS | 0x000019)
-#define zx_ac_ActivationLimitUsages_ELEM	(zx_ac_NS | 0x00001a)
-#define zx_ac_pad_27_ELEM	(zx_ac_NS | 0x00001b)
-#define zx_ac_SecurityAudit_ELEM	(zx_ac_NS | 0x00001c)
-#define zx_ac_GoverningAgreements_ELEM	(zx_ac_NS | 0x00001d)
-#define zx_ac_PreviousSession_ELEM	(zx_ac_NS | 0x00001e)
-#define zx_ac_GoverningAgreementRef_ELEM	(zx_ac_NS | 0x00001f)
-#define zx_ac_pad_32_ELEM	(zx_ac_NS | 0x000020)
-#define zx_ac_KeyActivation_ELEM	(zx_ac_NS | 0x000021)
-#define zx_ac_WrittenConsent_ELEM	(zx_ac_NS | 0x000022)
-#define zx_ac_PhysicalVerification_ELEM	(zx_ac_NS | 0x000023)
-#define zx_ac_pad_36_ELEM	(zx_ac_NS | 0x000024)
-#define zx_ac_DeactivationCallCenter_ELEM	(zx_ac_NS | 0x000025)
-#define zx_ac_Authenticator_ELEM	(zx_ac_NS | 0x000026)
-#define zx_ac_SecretKeyProtection_ELEM	(zx_ac_NS | 0x000027)
-#define zx_ac_KeyStorage_ELEM	(zx_ac_NS | 0x000028)
-#define zx_ac_SwitchAudit_ELEM	(zx_ac_NS | 0x000029)
-#define zx_ac_pad_42_ELEM	(zx_ac_NS | 0x00002a)
-#define zx_ac_ResumeSession_ELEM	(zx_ac_NS | 0x00002b)
-#define zx_ac_IPAddress_ELEM	(zx_ac_NS | 0x00002c)
-#define zx_ac_IPSec_ELEM	(zx_ac_NS | 0x00002d)
-#define zx_ac_pad_46_ELEM	(zx_ac_NS | 0x00002e)
-#define zx_ac_pad_47_ELEM	(zx_ac_NS | 0x00002f)
-#define zx_ac_AuthenticatingAuthority_ELEM	(zx_ac_NS | 0x000030)
-#define zx_ac_Smartcard_ELEM	(zx_ac_NS | 0x000031)
-#define zx_ac_AsymmetricDecryption_ELEM	(zx_ac_NS | 0x000032)
-#define zx_ac_pad_51_ELEM	(zx_ac_NS | 0x000033)
-#define zx_ac_pad_52_ELEM	(zx_ac_NS | 0x000034)
-#define zx_ac_Password_ELEM	(zx_ac_NS | 0x000035)
-#define zx_ac_WTLS_ELEM	(zx_ac_NS | 0x000036)
-#define zx_ac_KeySharing_ELEM	(zx_ac_NS | 0x000037)
-#define zx_ac_pad_56_ELEM	(zx_ac_NS | 0x000038)
-#define zx_ac_pad_57_ELEM	(zx_ac_NS | 0x000039)
-#define zx_ac_SharedSecretDynamicPlaintext_ELEM	(zx_ac_NS | 0x00003a)
-#define zx_ac_pad_59_ELEM	(zx_ac_NS | 0x00003b)
-#define zx_ac_AuthenticationContextStatement_ELEM	(zx_ac_NS | 0x00003c)
-#define zx_ac_pad_61_ELEM	(zx_ac_NS | 0x00003d)
-#define zx_ac_AsymmetricKeyAgreement_ELEM	(zx_ac_NS | 0x00003e)
-#define zx_ac_TimeSyncToken_ELEM	(zx_ac_NS | 0x00003f)
-#define zx_ac_pad_64_ELEM	(zx_ac_NS | 0x000040)
-#define zx_ac_MobileNetworkNoEncryption_ELEM	(zx_ac_NS | 0x000041)
-#define zx_ac_DigSig_ELEM	(zx_ac_NS | 0x000042)
-#define zx_ac_pad_67_ELEM	(zx_ac_NS | 0x000043)
-#define zx_ac_MobileNetworkRadioEncryption_ELEM	(zx_ac_NS | 0x000044)
-#define zx_ac_SharedSecretChallengeResponse_ELEM	(zx_ac_NS | 0x000045)
-#define zx_ac_AuthenticationMethod_ELEM	(zx_ac_NS | 0x000046)
-#define zx_ac_MobileNetworkEndToEndEncryption_ELEM	(zx_ac_NS | 0x000047)
-#define zx_ac_pad_72_ELEM	(zx_ac_NS | 0x000048)
-#define zx_ac_ZeroKnowledge_ELEM	(zx_ac_NS | 0x000049)
-#define zx_ac_pad_74_ELEM	(zx_ac_NS | 0x00004a)
-#define zx_ac_pad_75_ELEM	(zx_ac_NS | 0x00004b)
-#define zx_ac_pad_76_ELEM	(zx_ac_NS | 0x00004c)
-#define zx_ac_pad_77_ELEM	(zx_ac_NS | 0x00004d)
-#define zx_ac_pad_78_ELEM	(zx_ac_NS | 0x00004e)
-#define zx_ac_pad_79_ELEM	(zx_ac_NS | 0x00004f)
-#define zx_ac_pad_80_ELEM	(zx_ac_NS | 0x000050)
-#define zx_ac_pad_81_ELEM	(zx_ac_NS | 0x000051)
-#define zx_ac_PrincipalAuthenticationMechanism_ELEM	(zx_ac_NS | 0x000052)
-#define zx_ac_pad_83_ELEM	(zx_ac_NS | 0x000053)
-#define zx_ac_pad_84_ELEM	(zx_ac_NS | 0x000054)
-#define zx_ac_pad_85_ELEM	(zx_ac_NS | 0x000055)
-#define zx_ac_pad_86_ELEM	(zx_ac_NS | 0x000056)
-#define zx_ac_pad_87_ELEM	(zx_ac_NS | 0x000057)
-#define zx_ac_pad_88_ELEM	(zx_ac_NS | 0x000058)
-#define zx_ac_pad_89_ELEM	(zx_ac_NS | 0x000059)
-#define zx_ac_AuthenticatorTransportProtocol_ELEM	(zx_ac_NS | 0x00005a)
-#define zx_ac__ELEM_MAX	91
-/* 5: zx_m20_el_tab */
-#define zx_m20_pad_0_ELEM	(zx_m20_NS | 0x000000)
-#define zx_m20_pad_1_ELEM	(zx_m20_NS | 0x000001)
-#define zx_m20_pad_2_ELEM	(zx_m20_NS | 0x000002)
-#define zx_m20_pad_3_ELEM	(zx_m20_NS | 0x000003)
-#define zx_m20_pad_4_ELEM	(zx_m20_NS | 0x000004)
-#define zx_m20_pad_5_ELEM	(zx_m20_NS | 0x000005)
-#define zx_m20_pad_6_ELEM	(zx_m20_NS | 0x000006)
-#define zx_m20_SurName_ELEM	(zx_m20_NS | 0x000007)
-#define zx_m20_pad_8_ELEM	(zx_m20_NS | 0x000008)
-#define zx_m20_pad_9_ELEM	(zx_m20_NS | 0x000009)
-#define zx_m20_pad_10_ELEM	(zx_m20_NS | 0x00000a)
-#define zx_m20_pad_11_ELEM	(zx_m20_NS | 0x00000b)
-#define zx_m20_Organization_ELEM	(zx_m20_NS | 0x00000c)
-#define zx_m20_IDPDescriptor_ELEM	(zx_m20_NS | 0x00000d)
-#define zx_m20_pad_14_ELEM	(zx_m20_NS | 0x00000e)
-#define zx_m20_OrganizationURL_ELEM	(zx_m20_NS | 0x00000f)
-#define zx_m20_OrganizationName_ELEM	(zx_m20_NS | 0x000010)
-#define zx_m20_EmailAddress_ELEM	(zx_m20_NS | 0x000011)
-#define zx_m20_pad_18_ELEM	(zx_m20_NS | 0x000012)
-#define zx_m20_pad_19_ELEM	(zx_m20_NS | 0x000013)
-#define zx_m20_AuthnServiceURL_ELEM	(zx_m20_NS | 0x000014)
-#define zx_m20_EntityDescriptor_ELEM	(zx_m20_NS | 0x000015)
-#define zx_m20_Company_ELEM	(zx_m20_NS | 0x000016)
-#define zx_m20_OrganizationDisplayName_ELEM	(zx_m20_NS | 0x000017)
-#define zx_m20_GivenName_ELEM	(zx_m20_NS | 0x000018)
-#define zx_m20_AffiliateMember_ELEM	(zx_m20_NS | 0x000019)
-#define zx_m20_EncryptionMethod_ELEM	(zx_m20_NS | 0x00001a)
-#define zx_m20_KeySize_ELEM	(zx_m20_NS | 0x00001b)
-#define zx_m20_pad_28_ELEM	(zx_m20_NS | 0x00001c)
-#define zx_m20_AuthnRequestsSigned_ELEM	(zx_m20_NS | 0x00001d)
-#define zx_m20_pad_30_ELEM	(zx_m20_NS | 0x00001e)
-#define zx_m20_AffiliationDescriptor_ELEM	(zx_m20_NS | 0x00001f)
-#define zx_m20_RegisterNameIdentifierServiceURL_ELEM	(zx_m20_NS | 0x000020)
-#define zx_m20_KeyDescriptor_ELEM	(zx_m20_NS | 0x000021)
-#define zx_m20_Extension_ELEM	(zx_m20_NS | 0x000022)
-#define zx_m20_pad_35_ELEM	(zx_m20_NS | 0x000023)
-#define zx_m20_pad_36_ELEM	(zx_m20_NS | 0x000024)
-#define zx_m20_RegisterNameIdentifierProtocolProfile_ELEM	(zx_m20_NS | 0x000025)
-#define zx_m20_RegisterNameIdentifierServiceReturnURL_ELEM	(zx_m20_NS | 0x000026)
-#define zx_m20_pad_39_ELEM	(zx_m20_NS | 0x000027)
-#define zx_m20_pad_40_ELEM	(zx_m20_NS | 0x000028)
-#define zx_m20_pad_41_ELEM	(zx_m20_NS | 0x000029)
-#define zx_m20_SoapEndpoint_ELEM	(zx_m20_NS | 0x00002a)
-#define zx_m20_ContactPerson_ELEM	(zx_m20_NS | 0x00002b)
-#define zx_m20_pad_44_ELEM	(zx_m20_NS | 0x00002c)
-#define zx_m20_TelephoneNumber_ELEM	(zx_m20_NS | 0x00002d)
-#define zx_m20_FederationTerminationServiceURL_ELEM	(zx_m20_NS | 0x00002e)
-#define zx_m20_SPDescriptor_ELEM	(zx_m20_NS | 0x00002f)
-#define zx_m20_pad_48_ELEM	(zx_m20_NS | 0x000030)
-#define zx_m20_pad_49_ELEM	(zx_m20_NS | 0x000031)
-#define zx_m20_pad_50_ELEM	(zx_m20_NS | 0x000032)
-#define zx_m20_pad_51_ELEM	(zx_m20_NS | 0x000033)
-#define zx_m20_FederationTerminationServiceReturnURL_ELEM	(zx_m20_NS | 0x000034)
-#define zx_m20_pad_53_ELEM	(zx_m20_NS | 0x000035)
-#define zx_m20_pad_54_ELEM	(zx_m20_NS | 0x000036)
-#define zx_m20_pad_55_ELEM	(zx_m20_NS | 0x000037)
-#define zx_m20_pad_56_ELEM	(zx_m20_NS | 0x000038)
-#define zx_m20_AdditionalMetaLocation_ELEM	(zx_m20_NS | 0x000039)
-#define zx_m20_EntitiesDescriptor_ELEM	(zx_m20_NS | 0x00003a)
-#define zx_m20_pad_59_ELEM	(zx_m20_NS | 0x00003b)
-#define zx_m20_pad_60_ELEM	(zx_m20_NS | 0x00003c)
-#define zx_m20_pad_61_ELEM	(zx_m20_NS | 0x00003d)
-#define zx_m20_SingleSignOnServiceURL_ELEM	(zx_m20_NS | 0x00003e)
-#define zx_m20_FederationTerminationNotificationProtocolProfile_ELEM	(zx_m20_NS | 0x00003f)
-#define zx_m20_pad_64_ELEM	(zx_m20_NS | 0x000040)
-#define zx_m20_pad_65_ELEM	(zx_m20_NS | 0x000041)
-#define zx_m20_pad_66_ELEM	(zx_m20_NS | 0x000042)
-#define zx_m20_SingleSignOnProtocolProfile_ELEM	(zx_m20_NS | 0x000043)
-#define zx_m20_pad_68_ELEM	(zx_m20_NS | 0x000044)
-#define zx_m20_pad_69_ELEM	(zx_m20_NS | 0x000045)
-#define zx_m20_pad_70_ELEM	(zx_m20_NS | 0x000046)
-#define zx_m20_pad_71_ELEM	(zx_m20_NS | 0x000047)
-#define zx_m20_SingleLogoutServiceURL_ELEM	(zx_m20_NS | 0x000048)
-#define zx_m20_pad_73_ELEM	(zx_m20_NS | 0x000049)
-#define zx_m20_pad_74_ELEM	(zx_m20_NS | 0x00004a)
-#define zx_m20_pad_75_ELEM	(zx_m20_NS | 0x00004b)
-#define zx_m20_pad_76_ELEM	(zx_m20_NS | 0x00004c)
-#define zx_m20_SingleLogoutProtocolProfile_ELEM	(zx_m20_NS | 0x00004d)
-#define zx_m20_SingleLogoutServiceReturnURL_ELEM	(zx_m20_NS | 0x00004e)
-#define zx_m20_pad_79_ELEM	(zx_m20_NS | 0x00004f)
-#define zx_m20_pad_80_ELEM	(zx_m20_NS | 0x000050)
-#define zx_m20_NameIdentifierMappingProtocolProfile_ELEM	(zx_m20_NS | 0x000051)
-#define zx_m20_AssertionConsumerServiceURL_ELEM	(zx_m20_NS | 0x000052)
-#define zx_m20_NameIdentifierMappingEncryptionProfile_ELEM	(zx_m20_NS | 0x000053)
-#define zx_m20__ELEM_MAX	84
-/* 6: zx_sec_el_tab */
-#define zx_sec_pad_0_ELEM	(zx_sec_NS | 0x000000)
-#define zx_sec_pad_1_ELEM	(zx_sec_NS | 0x000001)
-#define zx_sec_pad_2_ELEM	(zx_sec_NS | 0x000002)
-#define zx_sec_pad_3_ELEM	(zx_sec_NS | 0x000003)
-#define zx_sec_pad_4_ELEM	(zx_sec_NS | 0x000004)
-#define zx_sec_Token_ELEM	(zx_sec_NS | 0x000005)
-#define zx_sec_pad_6_ELEM	(zx_sec_NS | 0x000006)
-#define zx_sec_pad_7_ELEM	(zx_sec_NS | 0x000007)
-#define zx_sec_pad_8_ELEM	(zx_sec_NS | 0x000008)
-#define zx_sec_pad_9_ELEM	(zx_sec_NS | 0x000009)
-#define zx_sec_pad_10_ELEM	(zx_sec_NS | 0x00000a)
-#define zx_sec_TokenPolicy_ELEM	(zx_sec_NS | 0x00000b)
-#define zx_sec_pad_12_ELEM	(zx_sec_NS | 0x00000c)
-#define zx_sec_pad_13_ELEM	(zx_sec_NS | 0x00000d)
-#define zx_sec_pad_14_ELEM	(zx_sec_NS | 0x00000e)
-#define zx_sec_pad_15_ELEM	(zx_sec_NS | 0x00000f)
-#define zx_sec_pad_16_ELEM	(zx_sec_NS | 0x000010)
-#define zx_sec_TransitedProvider_ELEM	(zx_sec_NS | 0x000011)
-#define zx_sec_pad_18_ELEM	(zx_sec_NS | 0x000012)
-#define zx_sec_pad_19_ELEM	(zx_sec_NS | 0x000013)
-#define zx_sec_pad_20_ELEM	(zx_sec_NS | 0x000014)
-#define zx_sec_TransitedProviderPath_ELEM	(zx_sec_NS | 0x000015)
-#define zx_sec__ELEM_MAX	22
-/* 7: zx_exca_el_tab */
-#define zx_exca_pad_0_ELEM	(zx_exca_NS | 0x000000)
-#define zx_exca_pad_1_ELEM	(zx_exca_NS | 0x000001)
-#define zx_exca_pad_2_ELEM	(zx_exca_NS | 0x000002)
-#define zx_exca_pad_3_ELEM	(zx_exca_NS | 0x000003)
-#define zx_exca_pad_4_ELEM	(zx_exca_NS | 0x000004)
-#define zx_exca_pad_5_ELEM	(zx_exca_NS | 0x000005)
-#define zx_exca_pad_6_ELEM	(zx_exca_NS | 0x000006)
-#define zx_exca_pad_7_ELEM	(zx_exca_NS | 0x000007)
-#define zx_exca_pad_8_ELEM	(zx_exca_NS | 0x000008)
-#define zx_exca_pad_9_ELEM	(zx_exca_NS | 0x000009)
-#define zx_exca_pad_10_ELEM	(zx_exca_NS | 0x00000a)
-#define zx_exca_pad_11_ELEM	(zx_exca_NS | 0x00000b)
-#define zx_exca_pad_12_ELEM	(zx_exca_NS | 0x00000c)
-#define zx_exca_pad_13_ELEM	(zx_exca_NS | 0x00000d)
-#define zx_exca_pad_14_ELEM	(zx_exca_NS | 0x00000e)
-#define zx_exca_pad_15_ELEM	(zx_exca_NS | 0x00000f)
-#define zx_exca_pad_16_ELEM	(zx_exca_NS | 0x000010)
-#define zx_exca_pad_17_ELEM	(zx_exca_NS | 0x000011)
-#define zx_exca_pad_18_ELEM	(zx_exca_NS | 0x000012)
-#define zx_exca_InclusiveNamespaces_ELEM	(zx_exca_NS | 0x000013)
-#define zx_exca__ELEM_MAX	20
-/* 8: zx_b_el_tab */
-#define zx_b_pad_0_ELEM	(zx_b_NS | 0x000000)
-#define zx_b_pad_1_ELEM	(zx_b_NS | 0x000001)
-#define zx_b_pad_2_ELEM	(zx_b_NS | 0x000002)
-#define zx_b_pad_3_ELEM	(zx_b_NS | 0x000003)
-#define zx_b_pad_4_ELEM	(zx_b_NS | 0x000004)
-#define zx_b_pad_5_ELEM	(zx_b_NS | 0x000005)
-#define zx_b_pad_6_ELEM	(zx_b_NS | 0x000006)
-#define zx_b_Consent_ELEM	(zx_b_NS | 0x000007)
-#define zx_b_pad_8_ELEM	(zx_b_NS | 0x000008)
-#define zx_b_Framework_ELEM	(zx_b_NS | 0x000009)
-#define zx_b_pad_10_ELEM	(zx_b_NS | 0x00000a)
-#define zx_b_pad_11_ELEM	(zx_b_NS | 0x00000b)
-#define zx_b_Timeout_ELEM	(zx_b_NS | 0x00000c)
-#define zx_b_pad_13_ELEM	(zx_b_NS | 0x00000d)
-#define zx_b_UsageDirective_ELEM	(zx_b_NS | 0x00000e)
-#define zx_b_UserInteraction_ELEM	(zx_b_NS | 0x00000f)
-#define zx_b_Sender_ELEM	(zx_b_NS | 0x000010)
-#define zx_b_ProcessingContext_ELEM	(zx_b_NS | 0x000011)
-#define zx_b_CredentialsContext_ELEM	(zx_b_NS | 0x000012)
-#define zx_b_TargetIdentity_ELEM	(zx_b_NS | 0x000013)
-#define zx_b_RedirectRequest_ELEM	(zx_b_NS | 0x000014)
-#define zx_b_pad_21_ELEM	(zx_b_NS | 0x000015)
-#define zx_b_pad_22_ELEM	(zx_b_NS | 0x000016)
-#define zx_b_InteractionService_ELEM	(zx_b_NS | 0x000017)
-#define zx_b_SecurityMechID_ELEM	(zx_b_NS | 0x000018)
-#define zx_b_pad_25_ELEM	(zx_b_NS | 0x000019)
-#define zx_b_pad_26_ELEM	(zx_b_NS | 0x00001a)
-#define zx_b_pad_27_ELEM	(zx_b_NS | 0x00001b)
-#define zx_b_ApplicationEPR_ELEM	(zx_b_NS | 0x00001c)
-#define zx_b_EndpointUpdate_ELEM	(zx_b_NS | 0x00001d)
-#define zx_b__ELEM_MAX	30
-/* 9: zx_ds_el_tab */
-#define zx_ds_pad_0_ELEM	(zx_ds_NS | 0x000000)
-#define zx_ds_P_ELEM	(zx_ds_NS | 0x000001)
-#define zx_ds_pad_2_ELEM	(zx_ds_NS | 0x000002)
-#define zx_ds_pad_3_ELEM	(zx_ds_NS | 0x000003)
-#define zx_ds_Seed_ELEM	(zx_ds_NS | 0x000004)
-#define zx_ds_pad_5_ELEM	(zx_ds_NS | 0x000005)
-#define zx_ds_Y_ELEM	(zx_ds_NS | 0x000006)
-#define zx_ds_PGPData_ELEM	(zx_ds_NS | 0x000007)
-#define zx_ds_SPKISexp_ELEM	(zx_ds_NS | 0x000008)
-#define zx_ds_Signature_ELEM	(zx_ds_NS | 0x000009)
-#define zx_ds_XPath_ELEM	(zx_ds_NS | 0x00000a)
-#define zx_ds_Q_ELEM	(zx_ds_NS | 0x00000b)
-#define zx_ds_X509SKI_ELEM	(zx_ds_NS | 0x00000c)
-#define zx_ds_SPKIData_ELEM	(zx_ds_NS | 0x00000d)
-#define zx_ds_SignatureValue_ELEM	(zx_ds_NS | 0x00000e)
-#define zx_ds_SignatureMethod_ELEM	(zx_ds_NS | 0x00000f)
-#define zx_ds_Object_ELEM	(zx_ds_NS | 0x000010)
-#define zx_ds_SignatureProperty_ELEM	(zx_ds_NS | 0x000011)
-#define zx_ds_X509Data_ELEM	(zx_ds_NS | 0x000012)
-#define zx_ds_SignatureProperties_ELEM	(zx_ds_NS | 0x000013)
-#define zx_ds_X509SubjectName_ELEM	(zx_ds_NS | 0x000014)
-#define zx_ds_X509SerialNumber_ELEM	(zx_ds_NS | 0x000015)
-#define zx_ds_Modulus_ELEM	(zx_ds_NS | 0x000016)
-#define zx_ds_PGPKeyID_ELEM	(zx_ds_NS | 0x000017)
-#define zx_ds_X509IssuerName_ELEM	(zx_ds_NS | 0x000018)
-#define zx_ds_SignedInfo_ELEM	(zx_ds_NS | 0x000019)
-#define zx_ds_X509IssuerSerial_ELEM	(zx_ds_NS | 0x00001a)
-#define zx_ds_PGPKeyPacket_ELEM	(zx_ds_NS | 0x00001b)
-#define zx_ds_MgmtData_ELEM	(zx_ds_NS | 0x00001c)
-#define zx_ds_Reference_ELEM	(zx_ds_NS | 0x00001d)
-#define zx_ds_pad_30_ELEM	(zx_ds_NS | 0x00001e)
-#define zx_ds_DSAKeyValue_ELEM	(zx_ds_NS | 0x00001f)
-#define zx_ds_KeyName_ELEM	(zx_ds_NS | 0x000020)
-#define zx_ds_KeyValue_ELEM	(zx_ds_NS | 0x000021)
-#define zx_ds_Transform_ELEM	(zx_ds_NS | 0x000022)
-#define zx_ds_Transforms_ELEM	(zx_ds_NS | 0x000023)
-#define zx_ds_PgenCounter_ELEM	(zx_ds_NS | 0x000024)
-#define zx_ds_X509CRL_ELEM	(zx_ds_NS | 0x000025)
-#define zx_ds_Manifest_ELEM	(zx_ds_NS | 0x000026)
-#define zx_ds_pad_39_ELEM	(zx_ds_NS | 0x000027)
-#define zx_ds_RetrievalMethod_ELEM	(zx_ds_NS | 0x000028)
-#define zx_ds_DigestValue_ELEM	(zx_ds_NS | 0x000029)
-#define zx_ds_DigestMethod_ELEM	(zx_ds_NS | 0x00002a)
-#define zx_ds_Exponent_ELEM	(zx_ds_NS | 0x00002b)
-#define zx_ds_pad_44_ELEM	(zx_ds_NS | 0x00002c)
-#define zx_ds_X509Certificate_ELEM	(zx_ds_NS | 0x00002d)
-#define zx_ds_RSAKeyValue_ELEM	(zx_ds_NS | 0x00002e)
-#define zx_ds_KeyInfo_ELEM	(zx_ds_NS | 0x00002f)
-#define zx_ds_pad_48_ELEM	(zx_ds_NS | 0x000030)
-#define zx_ds_pad_49_ELEM	(zx_ds_NS | 0x000031)
-#define zx_ds_pad_50_ELEM	(zx_ds_NS | 0x000032)
-#define zx_ds_J_ELEM	(zx_ds_NS | 0x000033)
-#define zx_ds_pad_52_ELEM	(zx_ds_NS | 0x000034)
-#define zx_ds_pad_53_ELEM	(zx_ds_NS | 0x000035)
-#define zx_ds_pad_54_ELEM	(zx_ds_NS | 0x000036)
-#define zx_ds_pad_55_ELEM	(zx_ds_NS | 0x000037)
-#define zx_ds_HMACOutputLength_ELEM	(zx_ds_NS | 0x000038)
-#define zx_ds_pad_57_ELEM	(zx_ds_NS | 0x000039)
-#define zx_ds_pad_58_ELEM	(zx_ds_NS | 0x00003a)
-#define zx_ds_pad_59_ELEM	(zx_ds_NS | 0x00003b)
-#define zx_ds_pad_60_ELEM	(zx_ds_NS | 0x00003c)
-#define zx_ds_G_ELEM	(zx_ds_NS | 0x00003d)
-#define zx_ds_CanonicalizationMethod_ELEM	(zx_ds_NS | 0x00003e)
-#define zx_ds__ELEM_MAX	63
-/* 10: zx_md_el_tab */
-#define zx_md_pad_0_ELEM	(zx_md_NS | 0x000000)
-#define zx_md_pad_1_ELEM	(zx_md_NS | 0x000001)
-#define zx_md_pad_2_ELEM	(zx_md_NS | 0x000002)
-#define zx_md_pad_3_ELEM	(zx_md_NS | 0x000003)
-#define zx_md_pad_4_ELEM	(zx_md_NS | 0x000004)
-#define zx_md_pad_5_ELEM	(zx_md_NS | 0x000005)
-#define zx_md_pad_6_ELEM	(zx_md_NS | 0x000006)
-#define zx_md_Company_ELEM	(zx_md_NS | 0x000007)
-#define zx_md_pad_8_ELEM	(zx_md_NS | 0x000008)
-#define zx_md_GivenName_ELEM	(zx_md_NS | 0x000009)
-#define zx_md_pad_10_ELEM	(zx_md_NS | 0x00000a)
-#define zx_md_pad_11_ELEM	(zx_md_NS | 0x00000b)
-#define zx_md_Organization_ELEM	(zx_md_NS | 0x00000c)
-#define zx_md_ContactPerson_ELEM	(zx_md_NS | 0x00000d)
-#define zx_md_RoleDescriptor_ELEM	(zx_md_NS | 0x00000e)
-#define zx_md_OrganizationURL_ELEM	(zx_md_NS | 0x00000f)
-#define zx_md_OrganizationName_ELEM	(zx_md_NS | 0x000010)
-#define zx_md_SurName_ELEM	(zx_md_NS | 0x000011)
-#define zx_md_KeyDescriptor_ELEM	(zx_md_NS | 0x000012)
-#define zx_md_SingleLogoutService_ELEM	(zx_md_NS | 0x000013)
-#define zx_md_SPSSODescriptor_ELEM	(zx_md_NS | 0x000014)
-#define zx_md_EntityDescriptor_ELEM	(zx_md_NS | 0x000015)
-#define zx_md_AuthzService_ELEM	(zx_md_NS | 0x000016)
-#define zx_md_OrganizationDisplayName_ELEM	(zx_md_NS | 0x000017)
-#define zx_md_SingleSignOnService_ELEM	(zx_md_NS | 0x000018)
-#define zx_md_Extensions_ELEM	(zx_md_NS | 0x000019)
-#define zx_md_EncryptionMethod_ELEM	(zx_md_NS | 0x00001a)
-#define zx_md_AuthnQueryService_ELEM	(zx_md_NS | 0x00001b)
-#define zx_md_EntitiesDescriptor_ELEM	(zx_md_NS | 0x00001c)
-#define zx_md_pad_29_ELEM	(zx_md_NS | 0x00001d)
-#define zx_md_ArtifactResolutionService_ELEM	(zx_md_NS | 0x00001e)
-#define zx_md_ServiceName_ELEM	(zx_md_NS | 0x00001f)
-#define zx_md_EmailAddress_ELEM	(zx_md_NS | 0x000020)
-#define zx_md_PDPDescriptor_ELEM	(zx_md_NS | 0x000021)
-#define zx_md_AuthnAuthorityDescriptor_ELEM	(zx_md_NS | 0x000022)
-#define zx_md_NameIDMappingService_ELEM	(zx_md_NS | 0x000023)
-#define zx_md_IDPSSODescriptor_ELEM	(zx_md_NS | 0x000024)
-#define zx_md_pad_37_ELEM	(zx_md_NS | 0x000025)
-#define zx_md_ServiceDescription_ELEM	(zx_md_NS | 0x000026)
-#define zx_md_ManageNameIDService_ELEM	(zx_md_NS | 0x000027)
-#define zx_md_TelephoneNumber_ELEM	(zx_md_NS | 0x000028)
-#define zx_md_AttributeProfile_ELEM	(zx_md_NS | 0x000029)
-#define zx_md_NameIDFormat_ELEM	(zx_md_NS | 0x00002a)
-#define zx_md_RequestedAttribute_ELEM	(zx_md_NS | 0x00002b)
-#define zx_md_AssertionConsumerService_ELEM	(zx_md_NS | 0x00002c)
-#define zx_md_AffiliateMember_ELEM	(zx_md_NS | 0x00002d)
-#define zx_md_AffiliationDescriptor_ELEM	(zx_md_NS | 0x00002e)
-#define zx_md_pad_47_ELEM	(zx_md_NS | 0x00002f)
-#define zx_md_pad_48_ELEM	(zx_md_NS | 0x000030)
-#define zx_md_pad_49_ELEM	(zx_md_NS | 0x000031)
-#define zx_md_AttributeConsumingService_ELEM	(zx_md_NS | 0x000032)
-#define zx_md_AdditionalMetadataLocation_ELEM	(zx_md_NS | 0x000033)
-#define zx_md_pad_52_ELEM	(zx_md_NS | 0x000034)
-#define zx_md_pad_53_ELEM	(zx_md_NS | 0x000035)
-#define zx_md_pad_54_ELEM	(zx_md_NS | 0x000036)
-#define zx_md_AssertionIDRequestService_ELEM	(zx_md_NS | 0x000037)
-#define zx_md_AttributeService_ELEM	(zx_md_NS | 0x000038)
-#define zx_md_pad_57_ELEM	(zx_md_NS | 0x000039)
-#define zx_md_pad_58_ELEM	(zx_md_NS | 0x00003a)
-#define zx_md_pad_59_ELEM	(zx_md_NS | 0x00003b)
-#define zx_md_pad_60_ELEM	(zx_md_NS | 0x00003c)
-#define zx_md_pad_61_ELEM	(zx_md_NS | 0x00003d)
-#define zx_md_pad_62_ELEM	(zx_md_NS | 0x00003e)
-#define zx_md_pad_63_ELEM	(zx_md_NS | 0x00003f)
-#define zx_md_pad_64_ELEM	(zx_md_NS | 0x000040)
-#define zx_md_pad_65_ELEM	(zx_md_NS | 0x000041)
-#define zx_md_pad_66_ELEM	(zx_md_NS | 0x000042)
-#define zx_md_pad_67_ELEM	(zx_md_NS | 0x000043)
-#define zx_md_AttributeAuthorityDescriptor_ELEM	(zx_md_NS | 0x000044)
-#define zx_md__ELEM_MAX	69
-/* 11: zx_sec12_el_tab */
-#define zx_sec12_pad_0_ELEM	(zx_sec12_NS | 0x000000)
-#define zx_sec12_pad_1_ELEM	(zx_sec12_NS | 0x000001)
-#define zx_sec12_pad_2_ELEM	(zx_sec12_NS | 0x000002)
-#define zx_sec12_pad_3_ELEM	(zx_sec12_NS | 0x000003)
-#define zx_sec12_pad_4_ELEM	(zx_sec12_NS | 0x000004)
-#define zx_sec12_pad_5_ELEM	(zx_sec12_NS | 0x000005)
-#define zx_sec12_Issuer_ELEM	(zx_sec12_NS | 0x000006)
-#define zx_sec12_pad_7_ELEM	(zx_sec12_NS | 0x000007)
-#define zx_sec12_pad_8_ELEM	(zx_sec12_NS | 0x000008)
-#define zx_sec12_pad_9_ELEM	(zx_sec12_NS | 0x000009)
-#define zx_sec12_ProviderID_ELEM	(zx_sec12_NS | 0x00000a)
-#define zx_sec12_pad_11_ELEM	(zx_sec12_NS | 0x00000b)
-#define zx_sec12_NumberOfUses_ELEM	(zx_sec12_NS | 0x00000c)
-#define zx_sec12_pad_13_ELEM	(zx_sec12_NS | 0x00000d)
-#define zx_sec12_SessionContext_ELEM	(zx_sec12_NS | 0x00000e)
-#define zx_sec12_pad_15_ELEM	(zx_sec12_NS | 0x00000f)
-#define zx_sec12_pad_16_ELEM	(zx_sec12_NS | 0x000010)
-#define zx_sec12_IssueInstant_ELEM	(zx_sec12_NS | 0x000011)
-#define zx_sec12_pad_18_ELEM	(zx_sec12_NS | 0x000012)
-#define zx_sec12_SessionSubject_ELEM	(zx_sec12_NS | 0x000013)
-#define zx_sec12_pad_20_ELEM	(zx_sec12_NS | 0x000014)
-#define zx_sec12_pad_21_ELEM	(zx_sec12_NS | 0x000015)
-#define zx_sec12_ProxySubject_ELEM	(zx_sec12_NS | 0x000016)
-#define zx_sec12_SessionContextStatement_ELEM	(zx_sec12_NS | 0x000017)
-#define zx_sec12_pad_24_ELEM	(zx_sec12_NS | 0x000018)
-#define zx_sec12_ProxyInfoConfirmationData_ELEM	(zx_sec12_NS | 0x000019)
-#define zx_sec12_pad_26_ELEM	(zx_sec12_NS | 0x00001a)
-#define zx_sec12_pad_27_ELEM	(zx_sec12_NS | 0x00001b)
-#define zx_sec12_ValidityRestrictionCondition_ELEM	(zx_sec12_NS | 0x00001c)
-#define zx_sec12_pad_29_ELEM	(zx_sec12_NS | 0x00001d)
-#define zx_sec12_pad_30_ELEM	(zx_sec12_NS | 0x00001e)
-#define zx_sec12_pad_31_ELEM	(zx_sec12_NS | 0x00001f)
-#define zx_sec12_pad_32_ELEM	(zx_sec12_NS | 0x000020)
-#define zx_sec12_ResourceAccessStatement_ELEM	(zx_sec12_NS | 0x000021)
-#define zx_sec12_pad_34_ELEM	(zx_sec12_NS | 0x000022)
-#define zx_sec12_pad_35_ELEM	(zx_sec12_NS | 0x000023)
-#define zx_sec12_pad_36_ELEM	(zx_sec12_NS | 0x000024)
-#define zx_sec12_pad_37_ELEM	(zx_sec12_NS | 0x000025)
-#define zx_sec12_ProxyTransitedStatement_ELEM	(zx_sec12_NS | 0x000026)
-#define zx_sec12__ELEM_MAX	39
-/* 12: zx_b12_el_tab */
-#define zx_b12_pad_0_ELEM	(zx_b12_NS | 0x000000)
-#define zx_b12_pad_1_ELEM	(zx_b12_NS | 0x000001)
-#define zx_b12_pad_2_ELEM	(zx_b12_NS | 0x000002)
-#define zx_b12_pad_3_ELEM	(zx_b12_NS | 0x000003)
-#define zx_b12_pad_4_ELEM	(zx_b12_NS | 0x000004)
-#define zx_b12_pad_5_ELEM	(zx_b12_NS | 0x000005)
-#define zx_b12_pad_6_ELEM	(zx_b12_NS | 0x000006)
-#define zx_b12_Consent_ELEM	(zx_b12_NS | 0x000007)
-#define zx_b12_Provider_ELEM	(zx_b12_NS | 0x000008)
-#define zx_b12_pad_9_ELEM	(zx_b12_NS | 0x000009)
-#define zx_b12_pad_10_ELEM	(zx_b12_NS | 0x00000a)
-#define zx_b12_Correlation_ELEM	(zx_b12_NS | 0x00000b)
-#define zx_b12_pad_12_ELEM	(zx_b12_NS | 0x00000c)
-#define zx_b12_pad_13_ELEM	(zx_b12_NS | 0x00000d)
-#define zx_b12_UsageDirective_ELEM	(zx_b12_NS | 0x00000e)
-#define zx_b12_pad_15_ELEM	(zx_b12_NS | 0x00000f)
-#define zx_b12_pad_16_ELEM	(zx_b12_NS | 0x000010)
-#define zx_b12_ProcessingContext_ELEM	(zx_b12_NS | 0x000011)
-#define zx_b12__ELEM_MAX	18
-/* 13: zx_e_el_tab */
-#define zx_e_pad_0_ELEM	(zx_e_NS | 0x000000)
-#define zx_e_pad_1_ELEM	(zx_e_NS | 0x000001)
-#define zx_e_pad_2_ELEM	(zx_e_NS | 0x000002)
-#define zx_e_pad_3_ELEM	(zx_e_NS | 0x000003)
-#define zx_e_Body_ELEM	(zx_e_NS | 0x000004)
-#define zx_e_Fault_ELEM	(zx_e_NS | 0x000005)
-#define zx_e_detail_ELEM	(zx_e_NS | 0x000006)
-#define zx_e_pad_7_ELEM	(zx_e_NS | 0x000007)
-#define zx_e_Envelope_ELEM	(zx_e_NS | 0x000008)
-#define zx_e_faultcode_ELEM	(zx_e_NS | 0x000009)
-#define zx_e_faultactor_ELEM	(zx_e_NS | 0x00000a)
-#define zx_e_faultstring_ELEM	(zx_e_NS | 0x00000b)
-#define zx_e_pad_12_ELEM	(zx_e_NS | 0x00000c)
-#define zx_e_pad_13_ELEM	(zx_e_NS | 0x00000d)
-#define zx_e_pad_14_ELEM	(zx_e_NS | 0x00000e)
-#define zx_e_pad_15_ELEM	(zx_e_NS | 0x00000f)
-#define zx_e_Header_ELEM	(zx_e_NS | 0x000010)
-#define zx_e__ELEM_MAX	17
-/* 14: zx_sp_el_tab */
-#define zx_sp_pad_0_ELEM	(zx_sp_NS | 0x000000)
-#define zx_sp_pad_1_ELEM	(zx_sp_NS | 0x000001)
-#define zx_sp_pad_2_ELEM	(zx_sp_NS | 0x000002)
-#define zx_sp_pad_3_ELEM	(zx_sp_NS | 0x000003)
-#define zx_sp_pad_4_ELEM	(zx_sp_NS | 0x000004)
-#define zx_sp_NewID_ELEM	(zx_sp_NS | 0x000005)
-#define zx_sp_Status_ELEM	(zx_sp_NS | 0x000006)
-#define zx_sp_Scoping_ELEM	(zx_sp_NS | 0x000007)
-#define zx_sp_Response_ELEM	(zx_sp_NS | 0x000008)
-#define zx_sp_Terminate_ELEM	(zx_sp_NS | 0x000009)
-#define zx_sp_StatusCode_ELEM	(zx_sp_NS | 0x00000a)
-#define zx_sp_RequesterID_ELEM	(zx_sp_NS | 0x00000b)
-#define zx_sp_StatusDetail_ELEM	(zx_sp_NS | 0x00000c)
-#define zx_sp_StatusMessage_ELEM	(zx_sp_NS | 0x00000d)
-#define zx_sp_AttributeQuery_ELEM	(zx_sp_NS | 0x00000e)
-#define zx_sp_Extensions_ELEM	(zx_sp_NS | 0x00000f)
-#define zx_sp_GetComplete_ELEM	(zx_sp_NS | 0x000010)
-#define zx_sp_NameIDPolicy_ELEM	(zx_sp_NS | 0x000011)
-#define zx_sp_LogoutRequest_ELEM	(zx_sp_NS | 0x000012)
-#define zx_sp_LogoutResponse_ELEM	(zx_sp_NS | 0x000013)
-#define zx_sp_pad_20_ELEM	(zx_sp_NS | 0x000014)
-#define zx_sp_RequestedAuthnContext_ELEM	(zx_sp_NS | 0x000015)
-#define zx_sp_SessionIndex_ELEM	(zx_sp_NS | 0x000016)
-#define zx_sp_AssertionIDRequest_ELEM	(zx_sp_NS | 0x000017)
-#define zx_sp_pad_24_ELEM	(zx_sp_NS | 0x000018)
-#define zx_sp_NameIDMappingRequest_ELEM	(zx_sp_NS | 0x000019)
-#define zx_sp_NameIDMappingResponse_ELEM	(zx_sp_NS | 0x00001a)
-#define zx_sp_SubjectQuery_ELEM	(zx_sp_NS | 0x00001b)
-#define zx_sp_Artifact_ELEM	(zx_sp_NS | 0x00001c)
-#define zx_sp_pad_29_ELEM	(zx_sp_NS | 0x00001d)
-#define zx_sp_AuthnQuery_ELEM	(zx_sp_NS | 0x00001e)
-#define zx_sp_pad_31_ELEM	(zx_sp_NS | 0x00001f)
-#define zx_sp_AuthnRequest_ELEM	(zx_sp_NS | 0x000020)
-#define zx_sp_pad_33_ELEM	(zx_sp_NS | 0x000021)
-#define zx_sp_pad_34_ELEM	(zx_sp_NS | 0x000022)
-#define zx_sp_ArtifactResolve_ELEM	(zx_sp_NS | 0x000023)
-#define zx_sp_ArtifactResponse_ELEM	(zx_sp_NS | 0x000024)
-#define zx_sp_IDPList_ELEM	(zx_sp_NS | 0x000025)
-#define zx_sp_AuthzDecisionQuery_ELEM	(zx_sp_NS | 0x000026)
-#define zx_sp_ManageNameIDRequest_ELEM	(zx_sp_NS | 0x000027)
-#define zx_sp_ManageNameIDResponse_ELEM	(zx_sp_NS | 0x000028)
-#define zx_sp_pad_41_ELEM	(zx_sp_NS | 0x000029)
-#define zx_sp_pad_42_ELEM	(zx_sp_NS | 0x00002a)
-#define zx_sp_IDPEntry_ELEM	(zx_sp_NS | 0x00002b)
-#define zx_sp_pad_44_ELEM	(zx_sp_NS | 0x00002c)
-#define zx_sp_pad_45_ELEM	(zx_sp_NS | 0x00002d)
-#define zx_sp_pad_46_ELEM	(zx_sp_NS | 0x00002e)
-#define zx_sp_pad_47_ELEM	(zx_sp_NS | 0x00002f)
-#define zx_sp_pad_48_ELEM	(zx_sp_NS | 0x000030)
-#define zx_sp_NewEncryptedID_ELEM	(zx_sp_NS | 0x000031)
-#define zx_sp__ELEM_MAX	50
-/* 15: zx_ff12_el_tab */
-#define zx_ff12_pad_0_ELEM	(zx_ff12_NS | 0x000000)
-#define zx_ff12_pad_1_ELEM	(zx_ff12_NS | 0x000001)
-#define zx_ff12_pad_2_ELEM	(zx_ff12_NS | 0x000002)
-#define zx_ff12_pad_3_ELEM	(zx_ff12_NS | 0x000003)
-#define zx_ff12_pad_4_ELEM	(zx_ff12_NS | 0x000004)
-#define zx_ff12_pad_5_ELEM	(zx_ff12_NS | 0x000005)
-#define zx_ff12_pad_6_ELEM	(zx_ff12_NS | 0x000006)
-#define zx_ff12_pad_7_ELEM	(zx_ff12_NS | 0x000007)
-#define zx_ff12_pad_8_ELEM	(zx_ff12_NS | 0x000008)
-#define zx_ff12_Extension_ELEM	(zx_ff12_NS | 0x000009)
-#define zx_ff12_RelayState_ELEM	(zx_ff12_NS | 0x00000a)
-#define zx_ff12_GetComplete_ELEM	(zx_ff12_NS | 0x00000b)
-#define zx_ff12_AuthnRequest_ELEM	(zx_ff12_NS | 0x00000c)
-#define zx_ff12_AuthnResponse_ELEM	(zx_ff12_NS | 0x00000d)
-#define zx_ff12_Assertion_ELEM	(zx_ff12_NS | 0x00000e)
-#define zx_ff12_ProxyCount_ELEM	(zx_ff12_NS | 0x00000f)
-#define zx_ff12_pad_16_ELEM	(zx_ff12_NS | 0x000010)
-#define zx_ff12_AuthnContext_ELEM	(zx_ff12_NS | 0x000011)
-#define zx_ff12_AffiliationID_ELEM	(zx_ff12_NS | 0x000012)
-#define zx_ff12_RequestAuthnContext_ELEM	(zx_ff12_NS | 0x000013)
-#define zx_ff12_AuthnRequestEnvelope_ELEM	(zx_ff12_NS | 0x000014)
-#define zx_ff12_AuthnResponseEnvelope_ELEM	(zx_ff12_NS | 0x000015)
-#define zx_ff12_IDPList_ELEM	(zx_ff12_NS | 0x000016)
-#define zx_ff12_Loc_ELEM	(zx_ff12_NS | 0x000017)
-#define zx_ff12_IsPassive_ELEM	(zx_ff12_NS | 0x000018)
-#define zx_ff12_AuthnContextClassRef_ELEM	(zx_ff12_NS | 0x000019)
-#define zx_ff12_pad_26_ELEM	(zx_ff12_NS | 0x00001a)
-#define zx_ff12_AuthnContextComparison_ELEM	(zx_ff12_NS | 0x00001b)
-#define zx_ff12_IDPEntry_ELEM	(zx_ff12_NS | 0x00001c)
-#define zx_ff12_AuthnContextStatementRef_ELEM	(zx_ff12_NS | 0x00001d)
-#define zx_ff12_IDPEntries_ELEM	(zx_ff12_NS | 0x00001e)
-#define zx_ff12_AssertionConsumerServiceID_ELEM	(zx_ff12_NS | 0x00001f)
-#define zx_ff12_AssertionConsumerServiceURL_ELEM	(zx_ff12_NS | 0x000020)
-#define zx_ff12_pad_33_ELEM	(zx_ff12_NS | 0x000021)
-#define zx_ff12_RegisterNameIdentifierRequest_ELEM	(zx_ff12_NS | 0x000022)
-#define zx_ff12_RegisterNameIdentifierResponse_ELEM	(zx_ff12_NS | 0x000023)
-#define zx_ff12_pad_36_ELEM	(zx_ff12_NS | 0x000024)
-#define zx_ff12_SessionIndex_ELEM	(zx_ff12_NS | 0x000025)
-#define zx_ff12_LogoutRequest_ELEM	(zx_ff12_NS | 0x000026)
-#define zx_ff12_LogoutResponse_ELEM	(zx_ff12_NS | 0x000027)
-#define zx_ff12_ForceAuthn_ELEM	(zx_ff12_NS | 0x000028)
-#define zx_ff12_pad_41_ELEM	(zx_ff12_NS | 0x000029)
-#define zx_ff12_Scoping_ELEM	(zx_ff12_NS | 0x00002a)
-#define zx_ff12_EncryptedNameIdentifier_ELEM	(zx_ff12_NS | 0x00002b)
-#define zx_ff12_SPProvidedNameIdentifier_ELEM	(zx_ff12_NS | 0x00002c)
-#define zx_ff12_EncryptableNameIdentifier_ELEM	(zx_ff12_NS | 0x00002d)
-#define zx_ff12_pad_46_ELEM	(zx_ff12_NS | 0x00002e)
-#define zx_ff12_Subject_ELEM	(zx_ff12_NS | 0x00002f)
-#define zx_ff12_pad_48_ELEM	(zx_ff12_NS | 0x000030)
-#define zx_ff12_pad_49_ELEM	(zx_ff12_NS | 0x000031)
-#define zx_ff12_ProviderID_ELEM	(zx_ff12_NS | 0x000032)
-#define zx_ff12_pad_51_ELEM	(zx_ff12_NS | 0x000033)
-#define zx_ff12_ProviderName_ELEM	(zx_ff12_NS | 0x000034)
-#define zx_ff12_pad_53_ELEM	(zx_ff12_NS | 0x000035)
-#define zx_ff12_pad_54_ELEM	(zx_ff12_NS | 0x000036)
-#define zx_ff12_ProtocolProfile_ELEM	(zx_ff12_NS | 0x000037)
-#define zx_ff12_pad_56_ELEM	(zx_ff12_NS | 0x000038)
-#define zx_ff12_NameIDPolicy_ELEM	(zx_ff12_NS | 0x000039)
-#define zx_ff12_AuthenticationStatement_ELEM	(zx_ff12_NS | 0x00003a)
-#define zx_ff12_pad_59_ELEM	(zx_ff12_NS | 0x00003b)
-#define zx_ff12_TargetNamespace_ELEM	(zx_ff12_NS | 0x00003c)
-#define zx_ff12_pad_61_ELEM	(zx_ff12_NS | 0x00003d)
-#define zx_ff12_pad_62_ELEM	(zx_ff12_NS | 0x00003e)
-#define zx_ff12_FederationTerminationNotification_ELEM	(zx_ff12_NS | 0x00003f)
-#define zx_ff12_pad_64_ELEM	(zx_ff12_NS | 0x000040)
-#define zx_ff12_IDPProvidedNameIdentifier_ELEM	(zx_ff12_NS | 0x000041)
-#define zx_ff12_pad_66_ELEM	(zx_ff12_NS | 0x000042)
-#define zx_ff12_pad_67_ELEM	(zx_ff12_NS | 0x000043)
-#define zx_ff12_NameIdentifierMappingRequest_ELEM	(zx_ff12_NS | 0x000044)
-#define zx_ff12_NameIdentifierMappingResponse_ELEM	(zx_ff12_NS | 0x000045)
-#define zx_ff12_OldProvidedNameIdentifier_ELEM	(zx_ff12_NS | 0x000046)
-#define zx_ff12__ELEM_MAX	71
-/* 16: zx_sa_el_tab */
-#define zx_sa_pad_0_ELEM	(zx_sa_NS | 0x000000)
-#define zx_sa_pad_1_ELEM	(zx_sa_NS | 0x000001)
-#define zx_sa_pad_2_ELEM	(zx_sa_NS | 0x000002)
-#define zx_sa_pad_3_ELEM	(zx_sa_NS | 0x000003)
-#define zx_sa_pad_4_ELEM	(zx_sa_NS | 0x000004)
-#define zx_sa_pad_5_ELEM	(zx_sa_NS | 0x000005)
-#define zx_sa_Action_ELEM	(zx_sa_NS | 0x000006)
-#define zx_sa_pad_7_ELEM	(zx_sa_NS | 0x000007)
-#define zx_sa_pad_8_ELEM	(zx_sa_NS | 0x000008)
-#define zx_sa_Condition_ELEM	(zx_sa_NS | 0x000009)
-#define zx_sa_pad_10_ELEM	(zx_sa_NS | 0x00000a)
-#define zx_sa_pad_11_ELEM	(zx_sa_NS | 0x00000b)
-#define zx_sa_AuthnContext_ELEM	(zx_sa_NS | 0x00000c)
-#define zx_sa_pad_13_ELEM	(zx_sa_NS | 0x00000d)
-#define zx_sa_AuthnStatement_ELEM	(zx_sa_NS | 0x00000e)
-#define zx_sa_pad_15_ELEM	(zx_sa_NS | 0x00000f)
-#define zx_sa_BaseID_ELEM	(zx_sa_NS | 0x000010)
-#define zx_sa_pad_17_ELEM	(zx_sa_NS | 0x000011)
-#define zx_sa_AttributeStatement_ELEM	(zx_sa_NS | 0x000012)
-#define zx_sa_Assertion_ELEM	(zx_sa_NS | 0x000013)
-#define zx_sa_Conditions_ELEM	(zx_sa_NS | 0x000014)
-#define zx_sa_EncryptedID_ELEM	(zx_sa_NS | 0x000015)
-#define zx_sa_AuthzDecisionStatement_ELEM	(zx_sa_NS | 0x000016)
-#define zx_sa_AuthenticatingAuthority_ELEM	(zx_sa_NS | 0x000017)
-#define zx_sa_AuthnContextDeclRef_ELEM	(zx_sa_NS | 0x000018)
-#define zx_sa_AuthnContextClassRef_ELEM	(zx_sa_NS | 0x000019)
-#define zx_sa_NameID_ELEM	(zx_sa_NS | 0x00001a)
-#define zx_sa_pad_27_ELEM	(zx_sa_NS | 0x00001b)
-#define zx_sa_EncryptedAssertion_ELEM	(zx_sa_NS | 0x00001c)
-#define zx_sa_AssertionIDRef_ELEM	(zx_sa_NS | 0x00001d)
-#define zx_sa_AssertionURIRef_ELEM	(zx_sa_NS | 0x00001e)
-#define zx_sa_Advice_ELEM	(zx_sa_NS | 0x00001f)
-#define zx_sa_Subject_ELEM	(zx_sa_NS | 0x000020)
-#define zx_sa_Evidence_ELEM	(zx_sa_NS | 0x000021)
-#define zx_sa_Attribute_ELEM	(zx_sa_NS | 0x000022)
-#define zx_sa_pad_35_ELEM	(zx_sa_NS | 0x000023)
-#define zx_sa_Issuer_ELEM	(zx_sa_NS | 0x000024)
-#define zx_sa_pad_37_ELEM	(zx_sa_NS | 0x000025)
-#define zx_sa_TestElem_ELEM	(zx_sa_NS | 0x000026)
-#define zx_sa_AttributeValue_ELEM	(zx_sa_NS | 0x000027)
-#define zx_sa_SubjectLocality_ELEM	(zx_sa_NS | 0x000028)
-#define zx_sa_ProxyRestriction_ELEM	(zx_sa_NS | 0x000029)
-#define zx_sa_pad_42_ELEM	(zx_sa_NS | 0x00002a)
-#define zx_sa_pad_43_ELEM	(zx_sa_NS | 0x00002b)
-#define zx_sa_SubjectConfirmation_ELEM	(zx_sa_NS | 0x00002c)
-#define zx_sa_pad_45_ELEM	(zx_sa_NS | 0x00002d)
-#define zx_sa_AuthnContextDecl_ELEM	(zx_sa_NS | 0x00002e)
-#define zx_sa_pad_47_ELEM	(zx_sa_NS | 0x00002f)
-#define zx_sa_pad_48_ELEM	(zx_sa_NS | 0x000030)
-#define zx_sa_AudienceRestriction_ELEM	(zx_sa_NS | 0x000031)
-#define zx_sa_pad_50_ELEM	(zx_sa_NS | 0x000032)
-#define zx_sa_pad_51_ELEM	(zx_sa_NS | 0x000033)
-#define zx_sa_pad_52_ELEM	(zx_sa_NS | 0x000034)
-#define zx_sa_EncryptedAttribute_ELEM	(zx_sa_NS | 0x000035)
-#define zx_sa_Statement_ELEM	(zx_sa_NS | 0x000036)
-#define zx_sa_pad_55_ELEM	(zx_sa_NS | 0x000037)
-#define zx_sa_pad_56_ELEM	(zx_sa_NS | 0x000038)
-#define zx_sa_pad_57_ELEM	(zx_sa_NS | 0x000039)
-#define zx_sa_pad_58_ELEM	(zx_sa_NS | 0x00003a)
-#define zx_sa_pad_59_ELEM	(zx_sa_NS | 0x00003b)
-#define zx_sa_OneTimeUse_ELEM	(zx_sa_NS | 0x00003c)
-#define zx_sa_pad_61_ELEM	(zx_sa_NS | 0x00003d)
-#define zx_sa_pad_62_ELEM	(zx_sa_NS | 0x00003e)
-#define zx_sa_Audience_ELEM	(zx_sa_NS | 0x00003f)
-#define zx_sa_pad_64_ELEM	(zx_sa_NS | 0x000040)
-#define zx_sa_pad_65_ELEM	(zx_sa_NS | 0x000041)
-#define zx_sa_pad_66_ELEM	(zx_sa_NS | 0x000042)
-#define zx_sa_pad_67_ELEM	(zx_sa_NS | 0x000043)
-#define zx_sa_pad_68_ELEM	(zx_sa_NS | 0x000044)
-#define zx_sa_pad_69_ELEM	(zx_sa_NS | 0x000045)
-#define zx_sa_pad_70_ELEM	(zx_sa_NS | 0x000046)
-#define zx_sa_pad_71_ELEM	(zx_sa_NS | 0x000047)
-#define zx_sa_pad_72_ELEM	(zx_sa_NS | 0x000048)
-#define zx_sa_pad_73_ELEM	(zx_sa_NS | 0x000049)
-#define zx_sa_pad_74_ELEM	(zx_sa_NS | 0x00004a)
-#define zx_sa_pad_75_ELEM	(zx_sa_NS | 0x00004b)
-#define zx_sa_pad_76_ELEM	(zx_sa_NS | 0x00004c)
-#define zx_sa_pad_77_ELEM	(zx_sa_NS | 0x00004d)
-#define zx_sa_pad_78_ELEM	(zx_sa_NS | 0x00004e)
-#define zx_sa_pad_79_ELEM	(zx_sa_NS | 0x00004f)
-#define zx_sa_pad_80_ELEM	(zx_sa_NS | 0x000050)
-#define zx_sa_pad_81_ELEM	(zx_sa_NS | 0x000051)
-#define zx_sa_pad_82_ELEM	(zx_sa_NS | 0x000052)
-#define zx_sa_pad_83_ELEM	(zx_sa_NS | 0x000053)
-#define zx_sa_pad_84_ELEM	(zx_sa_NS | 0x000054)
-#define zx_sa_pad_85_ELEM	(zx_sa_NS | 0x000055)
-#define zx_sa_pad_86_ELEM	(zx_sa_NS | 0x000056)
-#define zx_sa_pad_87_ELEM	(zx_sa_NS | 0x000057)
-#define zx_sa_pad_88_ELEM	(zx_sa_NS | 0x000058)
-#define zx_sa_pad_89_ELEM	(zx_sa_NS | 0x000059)
-#define zx_sa_pad_90_ELEM	(zx_sa_NS | 0x00005a)
-#define zx_sa_pad_91_ELEM	(zx_sa_NS | 0x00005b)
-#define zx_sa_pad_92_ELEM	(zx_sa_NS | 0x00005c)
-#define zx_sa_SubjectConfirmationData_ELEM	(zx_sa_NS | 0x00005d)
-#define zx_sa__ELEM_MAX	94
-/* 17: zx_sp11_el_tab */
-#define zx_sp11_pad_0_ELEM	(zx_sp11_NS | 0x000000)
-#define zx_sp11_pad_1_ELEM	(zx_sp11_NS | 0x000001)
-#define zx_sp11_pad_2_ELEM	(zx_sp11_NS | 0x000002)
-#define zx_sp11_pad_3_ELEM	(zx_sp11_NS | 0x000003)
-#define zx_sp11_pad_4_ELEM	(zx_sp11_NS | 0x000004)
-#define zx_sp11_Query_ELEM	(zx_sp11_NS | 0x000005)
-#define zx_sp11_pad_6_ELEM	(zx_sp11_NS | 0x000006)
-#define zx_sp11_Request_ELEM	(zx_sp11_NS | 0x000007)
-#define zx_sp11_Response_ELEM	(zx_sp11_NS | 0x000008)
-#define zx_sp11_pad_9_ELEM	(zx_sp11_NS | 0x000009)
-#define zx_sp11_pad_10_ELEM	(zx_sp11_NS | 0x00000a)
-#define zx_sp11_RespondWith_ELEM	(zx_sp11_NS | 0x00000b)
-#define zx_sp11_SubjectQuery_ELEM	(zx_sp11_NS | 0x00000c)
-#define zx_sp11_pad_13_ELEM	(zx_sp11_NS | 0x00000d)
-#define zx_sp11_pad_14_ELEM	(zx_sp11_NS | 0x00000e)
-#define zx_sp11_pad_15_ELEM	(zx_sp11_NS | 0x00000f)
-#define zx_sp11_Status_ELEM	(zx_sp11_NS | 0x000010)
-#define zx_sp11_AssertionArtifact_ELEM	(zx_sp11_NS | 0x000011)
-#define zx_sp11_pad_18_ELEM	(zx_sp11_NS | 0x000012)
-#define zx_sp11_AuthenticationQuery_ELEM	(zx_sp11_NS | 0x000013)
-#define zx_sp11_StatusCode_ELEM	(zx_sp11_NS | 0x000014)
-#define zx_sp11_pad_21_ELEM	(zx_sp11_NS | 0x000015)
-#define zx_sp11_StatusDetail_ELEM	(zx_sp11_NS | 0x000016)
-#define zx_sp11_StatusMessage_ELEM	(zx_sp11_NS | 0x000017)
-#define zx_sp11_AttributeQuery_ELEM	(zx_sp11_NS | 0x000018)
-#define zx_sp11_pad_25_ELEM	(zx_sp11_NS | 0x000019)
-#define zx_sp11_AuthorizationDecisionQuery_ELEM	(zx_sp11_NS | 0x00001a)
-#define zx_sp11__ELEM_MAX	27
-/* 18: zx_is_el_tab */
-#define zx_is_pad_0_ELEM	(zx_is_NS | 0x000000)
-#define zx_is_pad_1_ELEM	(zx_is_NS | 0x000001)
-#define zx_is_pad_2_ELEM	(zx_is_NS | 0x000002)
-#define zx_is_pad_3_ELEM	(zx_is_NS | 0x000003)
-#define zx_is_Help_ELEM	(zx_is_NS | 0x000004)
-#define zx_is_Value_ELEM	(zx_is_NS | 0x000005)
-#define zx_is_Select_ELEM	(zx_is_NS | 0x000006)
-#define zx_is_Inquiry_ELEM	(zx_is_NS | 0x000007)
-#define zx_is_Item_ELEM	(zx_is_NS | 0x000008)
-#define zx_is_Hint_ELEM	(zx_is_NS | 0x000009)
-#define zx_is_Label_ELEM	(zx_is_NS | 0x00000a)
-#define zx_is_pad_11_ELEM	(zx_is_NS | 0x00000b)
-#define zx_is_Confirm_ELEM	(zx_is_NS | 0x00000c)
-#define zx_is_pad_13_ELEM	(zx_is_NS | 0x00000d)
-#define zx_is_Text_ELEM	(zx_is_NS | 0x00000e)
-#define zx_is_pad_15_ELEM	(zx_is_NS | 0x00000f)
-#define zx_is_pad_16_ELEM	(zx_is_NS | 0x000010)
-#define zx_is_pad_17_ELEM	(zx_is_NS | 0x000011)
-#define zx_is_InteractionRequest_ELEM	(zx_is_NS | 0x000012)
-#define zx_is_InteractionResponse_ELEM	(zx_is_NS | 0x000013)
-#define zx_is_InteractionStatement_ELEM	(zx_is_NS | 0x000014)
-#define zx_is_pad_21_ELEM	(zx_is_NS | 0x000015)
-#define zx_is_pad_22_ELEM	(zx_is_NS | 0x000016)
-#define zx_is_pad_23_ELEM	(zx_is_NS | 0x000017)
-#define zx_is_Parameter_ELEM	(zx_is_NS | 0x000018)
-#define zx_is__ELEM_MAX	25
-/* 19: zx_sa11_el_tab */
-#define zx_sa11_pad_0_ELEM	(zx_sa11_NS | 0x000000)
-#define zx_sa11_pad_1_ELEM	(zx_sa11_NS | 0x000001)
-#define zx_sa11_pad_2_ELEM	(zx_sa11_NS | 0x000002)
-#define zx_sa11_pad_3_ELEM	(zx_sa11_NS | 0x000003)
-#define zx_sa11_pad_4_ELEM	(zx_sa11_NS | 0x000004)
-#define zx_sa11_pad_5_ELEM	(zx_sa11_NS | 0x000005)
-#define zx_sa11_Action_ELEM	(zx_sa11_NS | 0x000006)
-#define zx_sa11_pad_7_ELEM	(zx_sa11_NS | 0x000007)
-#define zx_sa11_Evidence_ELEM	(zx_sa11_NS | 0x000008)
-#define zx_sa11_Attribute_ELEM	(zx_sa11_NS | 0x000009)
-#define zx_sa11_pad_10_ELEM	(zx_sa11_NS | 0x00000a)
-#define zx_sa11_Advice_ELEM	(zx_sa11_NS | 0x00000b)
-#define zx_sa11_Subject_ELEM	(zx_sa11_NS | 0x00000c)
-#define zx_sa11_Audience_ELEM	(zx_sa11_NS | 0x00000d)
-#define zx_sa11_AttributeValue_ELEM	(zx_sa11_NS | 0x00000e)
-#define zx_sa11_pad_15_ELEM	(zx_sa11_NS | 0x00000f)
-#define zx_sa11_AuthorityBinding_ELEM	(zx_sa11_NS | 0x000010)
-#define zx_sa11_Statement_ELEM	(zx_sa11_NS | 0x000011)
-#define zx_sa11_AttributeStatement_ELEM	(zx_sa11_NS | 0x000012)
-#define zx_sa11_AttributeDesignator_ELEM	(zx_sa11_NS | 0x000013)
-#define zx_sa11_SubjectLocality_ELEM	(zx_sa11_NS | 0x000014)
-#define zx_sa11_SubjectStatement_ELEM	(zx_sa11_NS | 0x000015)
-#define zx_sa11_pad_22_ELEM	(zx_sa11_NS | 0x000016)
-#define zx_sa11_AuthenticationStatement_ELEM	(zx_sa11_NS | 0x000017)
-#define zx_sa11_SubjectConfirmation_ELEM	(zx_sa11_NS | 0x000018)
-#define zx_sa11_pad_25_ELEM	(zx_sa11_NS | 0x000019)
-#define zx_sa11_pad_26_ELEM	(zx_sa11_NS | 0x00001a)
-#define zx_sa11_pad_27_ELEM	(zx_sa11_NS | 0x00001b)
-#define zx_sa11_SubjectConfirmationData_ELEM	(zx_sa11_NS | 0x00001c)
-#define zx_sa11_Assertion_ELEM	(zx_sa11_NS | 0x00001d)
-#define zx_sa11_AuthorizationDecisionStatement_ELEM	(zx_sa11_NS | 0x00001e)
-#define zx_sa11_pad_31_ELEM	(zx_sa11_NS | 0x00001f)
-#define zx_sa11_pad_32_ELEM	(zx_sa11_NS | 0x000020)
-#define zx_sa11_AudienceRestrictionCondition_ELEM	(zx_sa11_NS | 0x000021)
-#define zx_sa11_Condition_ELEM	(zx_sa11_NS | 0x000022)
-#define zx_sa11_Conditions_ELEM	(zx_sa11_NS | 0x000023)
-#define zx_sa11_pad_36_ELEM	(zx_sa11_NS | 0x000024)
-#define zx_sa11_pad_37_ELEM	(zx_sa11_NS | 0x000025)
-#define zx_sa11_pad_38_ELEM	(zx_sa11_NS | 0x000026)
-#define zx_sa11_NameIdentifier_ELEM	(zx_sa11_NS | 0x000027)
-#define zx_sa11_AssertionIDReference_ELEM	(zx_sa11_NS | 0x000028)
-#define zx_sa11_pad_41_ELEM	(zx_sa11_NS | 0x000029)
-#define zx_sa11_pad_42_ELEM	(zx_sa11_NS | 0x00002a)
-#define zx_sa11_ConfirmationMethod_ELEM	(zx_sa11_NS | 0x00002b)
-#define zx_sa11_DoNotCacheCondition_ELEM	(zx_sa11_NS | 0x00002c)
-#define zx_sa11__ELEM_MAX	45
-/* 20: zx_wsse_el_tab */
-#define zx_wsse_pad_0_ELEM	(zx_wsse_NS | 0x000000)
-#define zx_wsse_pad_1_ELEM	(zx_wsse_NS | 0x000001)
-#define zx_wsse_pad_2_ELEM	(zx_wsse_NS | 0x000002)
-#define zx_wsse_pad_3_ELEM	(zx_wsse_NS | 0x000003)
-#define zx_wsse_pad_4_ELEM	(zx_wsse_NS | 0x000004)
-#define zx_wsse_Nonce_ELEM	(zx_wsse_NS | 0x000005)
-#define zx_wsse_pad_6_ELEM	(zx_wsse_NS | 0x000006)
-#define zx_wsse_pad_7_ELEM	(zx_wsse_NS | 0x000007)
-#define zx_wsse_Security_ELEM	(zx_wsse_NS | 0x000008)
-#define zx_wsse_Reference_ELEM	(zx_wsse_NS | 0x000009)
-#define zx_wsse_pad_10_ELEM	(zx_wsse_NS | 0x00000a)
-#define zx_wsse_pad_11_ELEM	(zx_wsse_NS | 0x00000b)
-#define zx_wsse_Embedded_ELEM	(zx_wsse_NS | 0x00000c)
-#define zx_wsse_Username_ELEM	(zx_wsse_NS | 0x00000d)
-#define zx_wsse_pad_14_ELEM	(zx_wsse_NS | 0x00000e)
-#define zx_wsse_pad_15_ELEM	(zx_wsse_NS | 0x00000f)
-#define zx_wsse_pad_16_ELEM	(zx_wsse_NS | 0x000010)
-#define zx_wsse_pad_17_ELEM	(zx_wsse_NS | 0x000011)
-#define zx_wsse_UsernameToken_ELEM	(zx_wsse_NS | 0x000012)
-#define zx_wsse_BinarySecurityToken_ELEM	(zx_wsse_NS | 0x000013)
-#define zx_wsse_pad_20_ELEM	(zx_wsse_NS | 0x000014)
-#define zx_wsse_pad_21_ELEM	(zx_wsse_NS | 0x000015)
-#define zx_wsse_SecurityTokenReference_ELEM	(zx_wsse_NS | 0x000016)
-#define zx_wsse_Password_ELEM	(zx_wsse_NS | 0x000017)
-#define zx_wsse_TransformationParameters_ELEM	(zx_wsse_NS | 0x000018)
-#define zx_wsse_pad_25_ELEM	(zx_wsse_NS | 0x000019)
-#define zx_wsse_pad_26_ELEM	(zx_wsse_NS | 0x00001a)
-#define zx_wsse_pad_27_ELEM	(zx_wsse_NS | 0x00001b)
-#define zx_wsse_KeyIdentifier_ELEM	(zx_wsse_NS | 0x00001c)
-#define zx_wsse__ELEM_MAX	29
-/* 21: zx_di_el_tab */
-#define zx_di_pad_0_ELEM	(zx_di_NS | 0x000000)
-#define zx_di_pad_1_ELEM	(zx_di_NS | 0x000001)
-#define zx_di_pad_2_ELEM	(zx_di_NS | 0x000002)
-#define zx_di_pad_3_ELEM	(zx_di_NS | 0x000003)
-#define zx_di_Keys_ELEM	(zx_di_NS | 0x000004)
-#define zx_di_SvcMD_ELEM	(zx_di_NS | 0x000005)
-#define zx_di_pad_6_ELEM	(zx_di_NS | 0x000006)
-#define zx_di_SvcMDID_ELEM	(zx_di_NS | 0x000007)
-#define zx_di_Abstract_ELEM	(zx_di_NS | 0x000008)
-#define zx_di_pad_9_ELEM	(zx_di_NS | 0x000009)
-#define zx_di_Query_ELEM	(zx_di_NS | 0x00000a)
-#define zx_di_pad_11_ELEM	(zx_di_NS | 0x00000b)
-#define zx_di_pad_12_ELEM	(zx_di_NS | 0x00000c)
-#define zx_di_pad_13_ELEM	(zx_di_NS | 0x00000d)
-#define zx_di_SecurityMechID_ELEM	(zx_di_NS | 0x00000e)
-#define zx_di_SecurityContext_ELEM	(zx_di_NS | 0x00000f)
-#define zx_di_SvcMDDelete_ELEM	(zx_di_NS | 0x000010)
-#define zx_di_SvcMDReplace_ELEM	(zx_di_NS | 0x000011)
-#define zx_di_SvcMDRegister_ELEM	(zx_di_NS | 0x000012)
-#define zx_di_SvcMDAssociationAdd_ELEM	(zx_di_NS | 0x000013)
-#define zx_di_SvcMDQuery_ELEM	(zx_di_NS | 0x000014)
-#define zx_di_SvcMDAssociationQuery_ELEM	(zx_di_NS | 0x000015)
-#define zx_di_SvcMDAssociationDelete_ELEM	(zx_di_NS | 0x000016)
-#define zx_di_QueryResponse_ELEM	(zx_di_NS | 0x000017)
-#define zx_di_SvcMDDeleteResponse_ELEM	(zx_di_NS | 0x000018)
-#define zx_di_SvcMDReplaceResponse_ELEM	(zx_di_NS | 0x000019)
-#define zx_di_SvcMDRegisterResponse_ELEM	(zx_di_NS | 0x00001a)
-#define zx_di_SvcMDAssociationAddResponse_ELEM	(zx_di_NS | 0x00001b)
-#define zx_di_SvcMDQueryResponse_ELEM	(zx_di_NS | 0x00001c)
-#define zx_di_SvcMDAssociationQueryResponse_ELEM	(zx_di_NS | 0x00001d)
-#define zx_di_SvcMDAssociationDeleteResponse_ELEM	(zx_di_NS | 0x00001e)
-#define zx_di_ServiceType_ELEM	(zx_di_NS | 0x00001f)
-#define zx_di_Address_ELEM	(zx_di_NS | 0x000020)
-#define zx_di_pad_33_ELEM	(zx_di_NS | 0x000021)
-#define zx_di_ServiceContext_ELEM	(zx_di_NS | 0x000022)
-#define zx_di_EndpointContext_ELEM	(zx_di_NS | 0x000023)
-#define zx_di_Option_ELEM	(zx_di_NS | 0x000024)
-#define zx_di_Options_ELEM	(zx_di_NS | 0x000025)
-#define zx_di_pad_38_ELEM	(zx_di_NS | 0x000026)
-#define zx_di_Framework_ELEM	(zx_di_NS | 0x000027)
-#define zx_di_ProviderID_ELEM	(zx_di_NS | 0x000028)
-#define zx_di_RequestedService_ELEM	(zx_di_NS | 0x000029)
-#define zx_di_pad_42_ELEM	(zx_di_NS | 0x00002a)
-#define zx_di_pad_43_ELEM	(zx_di_NS | 0x00002b)
-#define zx_di_pad_44_ELEM	(zx_di_NS | 0x00002c)
-#define zx_di_pad_45_ELEM	(zx_di_NS | 0x00002d)
-#define zx_di_Action_ELEM	(zx_di_NS | 0x00002e)
-#define zx_di__ELEM_MAX	47
-/* 22: zx_is12_el_tab */
-#define zx_is12_pad_0_ELEM	(zx_is12_NS | 0x000000)
-#define zx_is12_pad_1_ELEM	(zx_is12_NS | 0x000001)
-#define zx_is12_pad_2_ELEM	(zx_is12_NS | 0x000002)
-#define zx_is12_pad_3_ELEM	(zx_is12_NS | 0x000003)
-#define zx_is12_Hint_ELEM	(zx_is12_NS | 0x000004)
-#define zx_is12_Label_ELEM	(zx_is12_NS | 0x000005)
-#define zx_is12_Status_ELEM	(zx_is12_NS | 0x000006)
-#define zx_is12_Confirm_ELEM	(zx_is12_NS | 0x000007)
-#define zx_is12_pad_8_ELEM	(zx_is12_NS | 0x000008)
-#define zx_is12_Help_ELEM	(zx_is12_NS | 0x000009)
-#define zx_is12_Value_ELEM	(zx_is12_NS | 0x00000a)
-#define zx_is12_Select_ELEM	(zx_is12_NS | 0x00000b)
-#define zx_is12_Inquiry_ELEM	(zx_is12_NS | 0x00000c)
-#define zx_is12_pad_13_ELEM	(zx_is12_NS | 0x00000d)
-#define zx_is12_Extension_ELEM	(zx_is12_NS | 0x00000e)
-#define zx_is12_ResourceID_ELEM	(zx_is12_NS | 0x00000f)
-#define zx_is12_pad_16_ELEM	(zx_is12_NS | 0x000010)
-#define zx_is12_pad_17_ELEM	(zx_is12_NS | 0x000011)
-#define zx_is12_pad_18_ELEM	(zx_is12_NS | 0x000012)
-#define zx_is12_Item_ELEM	(zx_is12_NS | 0x000013)
-#define zx_is12_RedirectRequest_ELEM	(zx_is12_NS | 0x000014)
-#define zx_is12_pad_21_ELEM	(zx_is12_NS | 0x000015)
-#define zx_is12_pad_22_ELEM	(zx_is12_NS | 0x000016)
-#define zx_is12_InteractionService_ELEM	(zx_is12_NS | 0x000017)
-#define zx_is12_Text_ELEM	(zx_is12_NS | 0x000018)
-#define zx_is12_InteractionStatement_ELEM	(zx_is12_NS | 0x000019)
-#define zx_is12_pad_26_ELEM	(zx_is12_NS | 0x00001a)
-#define zx_is12_pad_27_ELEM	(zx_is12_NS | 0x00001b)
-#define zx_is12_InteractionRequest_ELEM	(zx_is12_NS | 0x00001c)
-#define zx_is12_InteractionResponse_ELEM	(zx_is12_NS | 0x00001d)
-#define zx_is12_pad_30_ELEM	(zx_is12_NS | 0x00001e)
-#define zx_is12_pad_31_ELEM	(zx_is12_NS | 0x00001f)
-#define zx_is12_pad_32_ELEM	(zx_is12_NS | 0x000020)
-#define zx_is12_pad_33_ELEM	(zx_is12_NS | 0x000021)
-#define zx_is12_Parameter_ELEM	(zx_is12_NS | 0x000022)
-#define zx_is12_UserInteraction_ELEM	(zx_is12_NS | 0x000023)
-#define zx_is12_pad_36_ELEM	(zx_is12_NS | 0x000024)
-#define zx_is12_pad_37_ELEM	(zx_is12_NS | 0x000025)
-#define zx_is12_pad_38_ELEM	(zx_is12_NS | 0x000026)
-#define zx_is12_EncryptedResourceID_ELEM	(zx_is12_NS | 0x000027)
-#define zx_is12__ELEM_MAX	40
-/* 23: zx_sbf_el_tab */
-#define zx_sbf_pad_0_ELEM	(zx_sbf_NS | 0x000000)
-#define zx_sbf_pad_1_ELEM	(zx_sbf_NS | 0x000001)
-#define zx_sbf_pad_2_ELEM	(zx_sbf_NS | 0x000002)
-#define zx_sbf_pad_3_ELEM	(zx_sbf_NS | 0x000003)
-#define zx_sbf_pad_4_ELEM	(zx_sbf_NS | 0x000004)
-#define zx_sbf_pad_5_ELEM	(zx_sbf_NS | 0x000005)
-#define zx_sbf_pad_6_ELEM	(zx_sbf_NS | 0x000006)
-#define zx_sbf_pad_7_ELEM	(zx_sbf_NS | 0x000007)
-#define zx_sbf_pad_8_ELEM	(zx_sbf_NS | 0x000008)
-#define zx_sbf_Framework_ELEM	(zx_sbf_NS | 0x000009)
-#define zx_sbf__ELEM_MAX	10
-/* 24: zx_wsu_el_tab */
-#define zx_wsu_pad_0_ELEM	(zx_wsu_NS | 0x000000)
-#define zx_wsu_pad_1_ELEM	(zx_wsu_NS | 0x000001)
-#define zx_wsu_pad_2_ELEM	(zx_wsu_NS | 0x000002)
-#define zx_wsu_pad_3_ELEM	(zx_wsu_NS | 0x000003)
-#define zx_wsu_pad_4_ELEM	(zx_wsu_NS | 0x000004)
-#define zx_wsu_pad_5_ELEM	(zx_wsu_NS | 0x000005)
-#define zx_wsu_pad_6_ELEM	(zx_wsu_NS | 0x000006)
-#define zx_wsu_Expires_ELEM	(zx_wsu_NS | 0x000007)
-#define zx_wsu_Created_ELEM	(zx_wsu_NS | 0x000008)
-#define zx_wsu_Timestamp_ELEM	(zx_wsu_NS | 0x000009)
-#define zx_wsu__ELEM_MAX	10
-/* 25: zx_ecp_el_tab */
-#define zx_ecp_pad_0_ELEM	(zx_ecp_NS | 0x000000)
-#define zx_ecp_pad_1_ELEM	(zx_ecp_NS | 0x000001)
-#define zx_ecp_pad_2_ELEM	(zx_ecp_NS | 0x000002)
-#define zx_ecp_pad_3_ELEM	(zx_ecp_NS | 0x000003)
-#define zx_ecp_pad_4_ELEM	(zx_ecp_NS | 0x000004)
-#define zx_ecp_pad_5_ELEM	(zx_ecp_NS | 0x000005)
-#define zx_ecp_pad_6_ELEM	(zx_ecp_NS | 0x000006)
-#define zx_ecp_Request_ELEM	(zx_ecp_NS | 0x000007)
-#define zx_ecp_Response_ELEM	(zx_ecp_NS | 0x000008)
-#define zx_ecp_pad_9_ELEM	(zx_ecp_NS | 0x000009)
-#define zx_ecp_RelayState_ELEM	(zx_ecp_NS | 0x00000a)
-#define zx_ecp__ELEM_MAX	11
-/* 26: zx_paos_el_tab */
-#define zx_paos_pad_0_ELEM	(zx_paos_NS | 0x000000)
-#define zx_paos_pad_1_ELEM	(zx_paos_NS | 0x000001)
-#define zx_paos_pad_2_ELEM	(zx_paos_NS | 0x000002)
-#define zx_paos_pad_3_ELEM	(zx_paos_NS | 0x000003)
-#define zx_paos_pad_4_ELEM	(zx_paos_NS | 0x000004)
-#define zx_paos_pad_5_ELEM	(zx_paos_NS | 0x000005)
-#define zx_paos_pad_6_ELEM	(zx_paos_NS | 0x000006)
-#define zx_paos_Request_ELEM	(zx_paos_NS | 0x000007)
-#define zx_paos_Response_ELEM	(zx_paos_NS | 0x000008)
-#define zx_paos__ELEM_MAX	9
-/* 27: zx_dap_el_tab */
-#define zx_dap_pad_0_ELEM	(zx_dap_NS | 0x000000)
-#define zx_dap_pad_1_ELEM	(zx_dap_NS | 0x000001)
-#define zx_dap_dn_ELEM	(zx_dap_NS | 0x000002)
-#define zx_dap_pad_3_ELEM	(zx_dap_NS | 0x000003)
-#define zx_dap_LDIF_ELEM	(zx_dap_NS | 0x000004)
-#define zx_dap_pad_5_ELEM	(zx_dap_NS | 0x000005)
-#define zx_dap_Notify_ELEM	(zx_dap_NS | 0x000006)
-#define zx_dap_NewData_ELEM	(zx_dap_NS | 0x000007)
-#define zx_dap_ItemData_ELEM	(zx_dap_NS | 0x000008)
-#define zx_dap_Data_ELEM	(zx_dap_NS | 0x000009)
-#define zx_dap_pad_10_ELEM	(zx_dap_NS | 0x00000a)
-#define zx_dap_Delete_ELEM	(zx_dap_NS | 0x00000b)
-#define zx_dap_Notification_ELEM	(zx_dap_NS | 0x00000c)
-#define zx_dap_pad_13_ELEM	(zx_dap_NS | 0x00000d)
-#define zx_dap_NotifyResponse_ELEM	(zx_dap_NS | 0x00000e)
-#define zx_dap_DeleteItem_ELEM	(zx_dap_NS | 0x00000f)
-#define zx_dap_TestOp_ELEM	(zx_dap_NS | 0x000010)
-#define zx_dap_Trigger_ELEM	(zx_dap_NS | 0x000011)
-#define zx_dap_TestItem_ELEM	(zx_dap_NS | 0x000012)
-#define zx_dap_DeleteResponse_ELEM	(zx_dap_NS | 0x000013)
-#define zx_dap_pad_20_ELEM	(zx_dap_NS | 0x000014)
-#define zx_dap_filter_ELEM	(zx_dap_NS | 0x000015)
-#define zx_dap_pad_22_ELEM	(zx_dap_NS | 0x000016)
-#define zx_dap_pad_23_ELEM	(zx_dap_NS | 0x000017)
-#define zx_dap_Sort_ELEM	(zx_dap_NS | 0x000018)
-#define zx_dap_Query_ELEM	(zx_dap_NS | 0x000019)
-#define zx_dap_Select_ELEM	(zx_dap_NS | 0x00001a)
-#define zx_dap_pad_27_ELEM	(zx_dap_NS | 0x00001b)
-#define zx_dap_pad_28_ELEM	(zx_dap_NS | 0x00001c)
-#define zx_dap_QueryItem_ELEM	(zx_dap_NS | 0x00001d)
-#define zx_dap_pad_30_ELEM	(zx_dap_NS | 0x00001e)
-#define zx_dap_Modify_ELEM	(zx_dap_NS | 0x00001f)
-#define zx_dap_Subscription_ELEM	(zx_dap_NS | 0x000020)
-#define zx_dap_QueryResponse_ELEM	(zx_dap_NS | 0x000021)
-#define zx_dap_Aggregation_ELEM	(zx_dap_NS | 0x000022)
-#define zx_dap_ModifyItem_ELEM	(zx_dap_NS | 0x000023)
-#define zx_dap_Create_ELEM	(zx_dap_NS | 0x000024)
-#define zx_dap_pad_37_ELEM	(zx_dap_NS | 0x000025)
-#define zx_dap_pad_38_ELEM	(zx_dap_NS | 0x000026)
-#define zx_dap_ModifyResponse_ELEM	(zx_dap_NS | 0x000027)
-#define zx_dap_CreateItem_ELEM	(zx_dap_NS | 0x000028)
-#define zx_dap_ResultQuery_ELEM	(zx_dap_NS | 0x000029)
-#define zx_dap_pad_42_ELEM	(zx_dap_NS | 0x00002a)
-#define zx_dap_pad_43_ELEM	(zx_dap_NS | 0x00002b)
-#define zx_dap_CreateResponse_ELEM	(zx_dap_NS | 0x00002c)
-#define zx_dap__ELEM_MAX	45
-/* 28: zx_ps_el_tab */
-#define zx_ps_pad_0_ELEM	(zx_ps_NS | 0x000000)
-#define zx_ps_pad_1_ELEM	(zx_ps_NS | 0x000001)
-#define zx_ps_pad_2_ELEM	(zx_ps_NS | 0x000002)
-#define zx_ps_Tag_ELEM	(zx_ps_NS | 0x000003)
-#define zx_ps_pad_4_ELEM	(zx_ps_NS | 0x000004)
-#define zx_ps_pad_5_ELEM	(zx_ps_NS | 0x000005)
-#define zx_ps_Notify_ELEM	(zx_ps_NS | 0x000006)
-#define zx_ps_pad_7_ELEM	(zx_ps_NS | 0x000007)
-#define zx_ps_ItemData_ELEM	(zx_ps_NS | 0x000008)
-#define zx_ps_pad_9_ELEM	(zx_ps_NS | 0x000009)
-#define zx_ps_pad_10_ELEM	(zx_ps_NS | 0x00000a)
-#define zx_ps_Result_ELEM	(zx_ps_NS | 0x00000b)
-#define zx_ps_Notification_ELEM	(zx_ps_NS | 0x00000c)
-#define zx_ps_pad_13_ELEM	(zx_ps_NS | 0x00000d)
-#define zx_ps_NotifyResponse_ELEM	(zx_ps_NS | 0x00000e)
-#define zx_ps_pad_15_ELEM	(zx_ps_NS | 0x00000f)
-#define zx_ps_DisplayName_ELEM	(zx_ps_NS | 0x000010)
-#define zx_ps_ResolveInput_ELEM	(zx_ps_NS | 0x000011)
-#define zx_ps_ResolveOutput_ELEM	(zx_ps_NS | 0x000012)
-#define zx_ps_RemoveEntityRequest_ELEM	(zx_ps_NS | 0x000013)
-#define zx_ps_RemoveEntityResponse_ELEM	(zx_ps_NS | 0x000014)
-#define zx_ps_TestMembershipRequest_ELEM	(zx_ps_NS | 0x000015)
-#define zx_ps_TestMembershipResponse_ELEM	(zx_ps_NS | 0x000016)
-#define zx_ps_RemoveCollectionRequest_ELEM	(zx_ps_NS | 0x000017)
-#define zx_ps_RemoveCollectionResponse_ELEM	(zx_ps_NS | 0x000018)
-#define zx_ps_GetObjectInfoRequest_ELEM	(zx_ps_NS | 0x000019)
-#define zx_ps_GetObjectInfoResponse_ELEM	(zx_ps_NS | 0x00001a)
-#define zx_ps_RemoveFromCollectionRequest_ELEM	(zx_ps_NS | 0x00001b)
-#define zx_ps_RemoveFromCollectionResponse_ELEM	(zx_ps_NS | 0x00001c)
-#define zx_ps_ResolveIdentifierRequest_ELEM	(zx_ps_NS | 0x00001d)
-#define zx_ps_ResolveIdentifierResponse_ELEM	(zx_ps_NS | 0x00001e)
-#define zx_ps_QueryString_ELEM	(zx_ps_NS | 0x00001f)
-#define zx_ps_PStoSPRedirectURL_ELEM	(zx_ps_NS | 0x000020)
-#define zx_ps_ListMembersRequest_ELEM	(zx_ps_NS | 0x000021)
-#define zx_ps_ListMembersResponse_ELEM	(zx_ps_NS | 0x000022)
-#define zx_ps_AddCollectionRequest_ELEM	(zx_ps_NS | 0x000023)
-#define zx_ps_AddCollectionResponse_ELEM	(zx_ps_NS | 0x000024)
-#define zx_ps_AddToCollectionRequest_ELEM	(zx_ps_NS | 0x000025)
-#define zx_ps_AddToCollectionResponse_ELEM	(zx_ps_NS | 0x000026)
-#define zx_ps_QueryObjectsRequest_ELEM	(zx_ps_NS | 0x000027)
-#define zx_ps_QueryObjectsResponse_ELEM	(zx_ps_NS | 0x000028)
-#define zx_ps_AddEntityRequest_ELEM	(zx_ps_NS | 0x000029)
-#define zx_ps_AddEntityResponse_ELEM	(zx_ps_NS | 0x00002a)
-#define zx_ps_pad_43_ELEM	(zx_ps_NS | 0x00002b)
-#define zx_ps_TargetObjectID_ELEM	(zx_ps_NS | 0x00002c)
-#define zx_ps_pad_45_ELEM	(zx_ps_NS | 0x00002d)
-#define zx_ps_AddKnownEntityRequest_ELEM	(zx_ps_NS | 0x00002e)
-#define zx_ps_AddKnownEntityResponse_ELEM	(zx_ps_NS | 0x00002f)
-#define zx_ps_pad_48_ELEM	(zx_ps_NS | 0x000030)
-#define zx_ps_CreatePSObject_ELEM	(zx_ps_NS | 0x000031)
-#define zx_ps_pad_50_ELEM	(zx_ps_NS | 0x000032)
-#define zx_ps_Object_ELEM	(zx_ps_NS | 0x000033)
-#define zx_ps_Subscription_ELEM	(zx_ps_NS | 0x000034)
-#define zx_ps_ObjectID_ELEM	(zx_ps_NS | 0x000035)
-#define zx_ps_ObjectRef_ELEM	(zx_ps_NS | 0x000036)
-#define zx_ps_pad_55_ELEM	(zx_ps_NS | 0x000037)
-#define zx_ps_Filter_ELEM	(zx_ps_NS | 0x000038)
-#define zx_ps_pad_57_ELEM	(zx_ps_NS | 0x000039)
-#define zx_ps_pad_58_ELEM	(zx_ps_NS | 0x00003a)
-#define zx_ps_pad_59_ELEM	(zx_ps_NS | 0x00003b)
-#define zx_ps_SetObjectInfoRequest_ELEM	(zx_ps_NS | 0x00003c)
-#define zx_ps_SetObjectInfoResponse_ELEM	(zx_ps_NS | 0x00003d)
-#define zx_ps_pad_62_ELEM	(zx_ps_NS | 0x00003e)
-#define zx_ps_pad_63_ELEM	(zx_ps_NS | 0x00003f)
-#define zx_ps_pad_64_ELEM	(zx_ps_NS | 0x000040)
-#define zx_ps_pad_65_ELEM	(zx_ps_NS | 0x000041)
-#define zx_ps_pad_66_ELEM	(zx_ps_NS | 0x000042)
-#define zx_ps_SPtoPSRedirectURL_ELEM	(zx_ps_NS | 0x000043)
-#define zx_ps__ELEM_MAX	68
-/* 29: zx_im_el_tab */
-#define zx_im_pad_0_ELEM	(zx_im_NS | 0x000000)
-#define zx_im_pad_1_ELEM	(zx_im_NS | 0x000001)
-#define zx_im_pad_2_ELEM	(zx_im_NS | 0x000002)
-#define zx_im_pad_3_ELEM	(zx_im_NS | 0x000003)
-#define zx_im_pad_4_ELEM	(zx_im_NS | 0x000004)
-#define zx_im_pad_5_ELEM	(zx_im_NS | 0x000005)
-#define zx_im_pad_6_ELEM	(zx_im_NS | 0x000006)
-#define zx_im_pad_7_ELEM	(zx_im_NS | 0x000007)
-#define zx_im_pad_8_ELEM	(zx_im_NS | 0x000008)
-#define zx_im_pad_9_ELEM	(zx_im_NS | 0x000009)
-#define zx_im_pad_10_ELEM	(zx_im_NS | 0x00000a)
-#define zx_im_pad_11_ELEM	(zx_im_NS | 0x00000b)
-#define zx_im_MappingInput_ELEM	(zx_im_NS | 0x00000c)
-#define zx_im_MappingOutput_ELEM	(zx_im_NS | 0x00000d)
-#define zx_im_pad_14_ELEM	(zx_im_NS | 0x00000e)
-#define zx_im_pad_15_ELEM	(zx_im_NS | 0x00000f)
-#define zx_im_pad_16_ELEM	(zx_im_NS | 0x000010)
-#define zx_im_pad_17_ELEM	(zx_im_NS | 0x000011)
-#define zx_im_pad_18_ELEM	(zx_im_NS | 0x000012)
-#define zx_im_pad_19_ELEM	(zx_im_NS | 0x000013)
-#define zx_im_pad_20_ELEM	(zx_im_NS | 0x000014)
-#define zx_im_pad_21_ELEM	(zx_im_NS | 0x000015)
-#define zx_im_IdentityMappingRequest_ELEM	(zx_im_NS | 0x000016)
-#define zx_im_IdentityMappingResponse_ELEM	(zx_im_NS | 0x000017)
-#define zx_im__ELEM_MAX	24
-/* 30: zx_as_el_tab */
-#define zx_as_pad_0_ELEM	(zx_as_NS | 0x000000)
-#define zx_as_pad_1_ELEM	(zx_as_NS | 0x000001)
-#define zx_as_pad_2_ELEM	(zx_as_NS | 0x000002)
-#define zx_as_pad_3_ELEM	(zx_as_NS | 0x000003)
-#define zx_as_Data_ELEM	(zx_as_NS | 0x000004)
-#define zx_as_pad_5_ELEM	(zx_as_NS | 0x000005)
-#define zx_as_pad_6_ELEM	(zx_as_NS | 0x000006)
-#define zx_as_pad_7_ELEM	(zx_as_NS | 0x000007)
-#define zx_as_pad_8_ELEM	(zx_as_NS | 0x000008)
-#define zx_as_Parameter_ELEM	(zx_as_NS | 0x000009)
-#define zx_as_Extensions_ELEM	(zx_as_NS | 0x00000a)
-#define zx_as_SASLRequest_ELEM	(zx_as_NS | 0x00000b)
-#define zx_as_SASLResponse_ELEM	(zx_as_NS | 0x00000c)
-#define zx_as_pad_13_ELEM	(zx_as_NS | 0x00000d)
-#define zx_as_Transform_ELEM	(zx_as_NS | 0x00000e)
-#define zx_as_pad_15_ELEM	(zx_as_NS | 0x00000f)
-#define zx_as_pad_16_ELEM	(zx_as_NS | 0x000010)
-#define zx_as_pad_17_ELEM	(zx_as_NS | 0x000011)
-#define zx_as_PasswordTransforms_ELEM	(zx_as_NS | 0x000012)
-#define zx_as__ELEM_MAX	19
-/* 31: zx_subs_el_tab */
-#define zx_subs_pad_0_ELEM	(zx_subs_NS | 0x000000)
-#define zx_subs_pad_1_ELEM	(zx_subs_NS | 0x000001)
-#define zx_subs_pad_2_ELEM	(zx_subs_NS | 0x000002)
-#define zx_subs_pad_3_ELEM	(zx_subs_NS | 0x000003)
-#define zx_subs_pad_4_ELEM	(zx_subs_NS | 0x000004)
-#define zx_subs_pad_5_ELEM	(zx_subs_NS | 0x000005)
-#define zx_subs_pad_6_ELEM	(zx_subs_NS | 0x000006)
-#define zx_subs_RefItem_ELEM	(zx_subs_NS | 0x000007)
-#define zx_subs__ELEM_MAX	8
-/* 32: zx_dst_el_tab */
-#define zx_dst_pad_0_ELEM	(zx_dst_NS | 0x000000)
-#define zx_dst_pad_1_ELEM	(zx_dst_NS | 0x000001)
-#define zx_dst_pad_2_ELEM	(zx_dst_NS | 0x000002)
-#define zx_dst_pad_3_ELEM	(zx_dst_NS | 0x000003)
-#define zx_dst_pad_4_ELEM	(zx_dst_NS | 0x000004)
-#define zx_dst_pad_5_ELEM	(zx_dst_NS | 0x000005)
-#define zx_dst_pad_6_ELEM	(zx_dst_NS | 0x000006)
-#define zx_dst_pad_7_ELEM	(zx_dst_NS | 0x000007)
-#define zx_dst_pad_8_ELEM	(zx_dst_NS | 0x000008)
-#define zx_dst_pad_9_ELEM	(zx_dst_NS | 0x000009)
-#define zx_dst_TestResult_ELEM	(zx_dst_NS | 0x00000a)
-#define zx_dst_pad_11_ELEM	(zx_dst_NS | 0x00000b)
-#define zx_dst_ChangeFormat_ELEM	(zx_dst_NS | 0x00000c)
-#define zx_dst__ELEM_MAX	13
-/* 33: zx_cb_el_tab */
-#define zx_cb_pad_0_ELEM	(zx_cb_NS | 0x000000)
-#define zx_cb_pad_1_ELEM	(zx_cb_NS | 0x000001)
-#define zx_cb_By_ELEM	(zx_cb_NS | 0x000002)
-#define zx_cb_pad_3_ELEM	(zx_cb_NS | 0x000003)
-#define zx_cb_Data_ELEM	(zx_cb_NS | 0x000004)
-#define zx_cb_pad_5_ELEM	(zx_cb_NS | 0x000005)
-#define zx_cb_Delete_ELEM	(zx_cb_NS | 0x000006)
-#define zx_cb_Trigger_ELEM	(zx_cb_NS | 0x000007)
-#define zx_cb_pad_8_ELEM	(zx_cb_NS | 0x000008)
-#define zx_cb_UsageType_ELEM	(zx_cb_NS | 0x000009)
-#define zx_cb_DeleteItem_ELEM	(zx_cb_NS | 0x00000a)
-#define zx_cb_Notify_ELEM	(zx_cb_NS | 0x00000b)
-#define zx_cb_NewData_ELEM	(zx_cb_NS | 0x00000c)
-#define zx_cb_NotifyTo_ELEM	(zx_cb_NS | 0x00000d)
-#define zx_cb_DeleteResponse_ELEM	(zx_cb_NS | 0x00000e)
-#define zx_cb_ResourceID_ELEM	(zx_cb_NS | 0x00000f)
-#define zx_cb_ReportUsage_ELEM	(zx_cb_NS | 0x000010)
-#define zx_cb_Notification_ELEM	(zx_cb_NS | 0x000011)
-#define zx_cb_NotifyAdminTo_ELEM	(zx_cb_NS | 0x000012)
-#define zx_cb_NotifyResponse_ELEM	(zx_cb_NS | 0x000013)
-#define zx_cb_pad_20_ELEM	(zx_cb_NS | 0x000014)
-#define zx_cb_Select_ELEM	(zx_cb_NS | 0x000015)
-#define zx_cb_RefItem_ELEM	(zx_cb_NS | 0x000016)
-#define zx_cb_ItemData_ELEM	(zx_cb_NS | 0x000017)
-#define zx_cb_ReportUsageResponse_ELEM	(zx_cb_NS | 0x000018)
-#define zx_cb_Query_ELEM	(zx_cb_NS | 0x000019)
-#define zx_cb_Modify_ELEM	(zx_cb_NS | 0x00001a)
-#define zx_cb_Subscription_ELEM	(zx_cb_NS | 0x00001b)
-#define zx_cb_ItemSelection_ELEM	(zx_cb_NS | 0x00001c)
-#define zx_cb_QueryItem_ELEM	(zx_cb_NS | 0x00001d)
-#define zx_cb_pad_30_ELEM	(zx_cb_NS | 0x00001e)
-#define zx_cb_Create_ELEM	(zx_cb_NS | 0x00001f)
-#define zx_cb_Modification_ELEM	(zx_cb_NS | 0x000020)
-#define zx_cb_QueryResponse_ELEM	(zx_cb_NS | 0x000021)
-#define zx_cb_ModifyResponse_ELEM	(zx_cb_NS | 0x000022)
-#define zx_cb_CreateItem_ELEM	(zx_cb_NS | 0x000023)
-#define zx_cb_Status_ELEM	(zx_cb_NS | 0x000024)
-#define zx_cb_pad_37_ELEM	(zx_cb_NS | 0x000025)
-#define zx_cb_pad_38_ELEM	(zx_cb_NS | 0x000026)
-#define zx_cb_CreateResponse_ELEM	(zx_cb_NS | 0x000027)
-#define zx_cb_pad_40_ELEM	(zx_cb_NS | 0x000028)
-#define zx_cb_Aggregation_ELEM	(zx_cb_NS | 0x000029)
-#define zx_cb_pad_42_ELEM	(zx_cb_NS | 0x00002a)
-#define zx_cb_pad_43_ELEM	(zx_cb_NS | 0x00002b)
-#define zx_cb_Card_ELEM	(zx_cb_NS | 0x00002c)
-#define zx_cb_pad_45_ELEM	(zx_cb_NS | 0x00002d)
-#define zx_cb_pad_46_ELEM	(zx_cb_NS | 0x00002e)
-#define zx_cb_pad_47_ELEM	(zx_cb_NS | 0x00002f)
-#define zx_cb_Endpoint_ELEM	(zx_cb_NS | 0x000030)
-#define zx_cb_Extension_ELEM	(zx_cb_NS | 0x000031)
-#define zx_cb_Credential_ELEM	(zx_cb_NS | 0x000032)
-#define zx_cb_pad_51_ELEM	(zx_cb_NS | 0x000033)
-#define zx_cb_pad_52_ELEM	(zx_cb_NS | 0x000034)
-#define zx_cb_pad_53_ELEM	(zx_cb_NS | 0x000035)
-#define zx_cb_SecurityMechID_ELEM	(zx_cb_NS | 0x000036)
-#define zx_cb_pad_55_ELEM	(zx_cb_NS | 0x000037)
-#define zx_cb_pad_56_ELEM	(zx_cb_NS | 0x000038)
-#define zx_cb_pad_57_ELEM	(zx_cb_NS | 0x000039)
-#define zx_cb_pad_58_ELEM	(zx_cb_NS | 0x00003a)
-#define zx_cb_EncryptedResourceID_ELEM	(zx_cb_NS | 0x00003b)
-#define zx_cb__ELEM_MAX	60
-/* 34: zx_cdm_el_tab */
-#define zx_cdm_pad_0_ELEM	(zx_cdm_NS | 0x000000)
-#define zx_cdm_pad_1_ELEM	(zx_cdm_NS | 0x000001)
-#define zx_cdm_TZ_ELEM	(zx_cdm_NS | 0x000002)
-#define zx_cdm_PCS_ELEM	(zx_cdm_NS | 0x000003)
-#define zx_cdm_X400_ELEM	(zx_cdm_NS | 0x000004)
-#define zx_cdm_PHOTO_ELEM	(zx_cdm_NS | 0x000005)
-#define zx_cdm_POSTAL_ELEM	(zx_cdm_NS | 0x000006)
-#define zx_cdm_pad_7_ELEM	(zx_cdm_NS | 0x000007)
-#define zx_cdm_TEL_ELEM	(zx_cdm_NS | 0x000008)
-#define zx_cdm_pad_9_ELEM	(zx_cdm_NS | 0x000009)
-#define zx_cdm_LISTMEMBER_ELEM	(zx_cdm_NS | 0x00000a)
-#define zx_cdm_PUBLIC_ELEM	(zx_cdm_NS | 0x00000b)
-#define zx_cdm_pad_12_ELEM	(zx_cdm_NS | 0x00000c)
-#define zx_cdm_LAT_ELEM	(zx_cdm_NS | 0x00000d)
-#define zx_cdm_CELL_ELEM	(zx_cdm_NS | 0x00000e)
-#define zx_cdm_TITLE_ELEM	(zx_cdm_NS | 0x00000f)
-#define zx_cdm_pad_16_ELEM	(zx_cdm_NS | 0x000010)
-#define zx_cdm_FN_ELEM	(zx_cdm_NS | 0x000011)
-#define zx_cdm_URL_ELEM	(zx_cdm_NS | 0x000012)
-#define zx_cdm_INTL_ELEM	(zx_cdm_NS | 0x000013)
-#define zx_cdm_LABEL_ELEM	(zx_cdm_NS | 0x000014)
-#define zx_cdm_pad_21_ELEM	(zx_cdm_NS | 0x000015)
-#define zx_cdm_pad_22_ELEM	(zx_cdm_NS | 0x000016)
-#define zx_cdm_UID_ELEM	(zx_cdm_NS | 0x000017)
-#define zx_cdm_CALADRURI_ELEM	(zx_cdm_NS | 0x000018)
-#define zx_cdm_vCard_ELEM	(zx_cdm_NS | 0x000019)
-#define zx_cdm_CALURI_ELEM	(zx_cdm_NS | 0x00001a)
-#define zx_cdm_pad_27_ELEM	(zx_cdm_NS | 0x00001b)
-#define zx_cdm_pad_28_ELEM	(zx_cdm_NS | 0x00001c)
-#define zx_cdm_pad_29_ELEM	(zx_cdm_NS | 0x00001d)
-#define zx_cdm_MODEM_ELEM	(zx_cdm_NS | 0x00001e)
-#define zx_cdm_EXTADR_ELEM	(zx_cdm_NS | 0x00001f)
-#define zx_cdm_pad_32_ELEM	(zx_cdm_NS | 0x000020)
-#define zx_cdm_INTERNET_ELEM	(zx_cdm_NS | 0x000021)
-#define zx_cdm_PREF_ELEM	(zx_cdm_NS | 0x000022)
-#define zx_cdm_CATEGORIES_ELEM	(zx_cdm_NS | 0x000023)
-#define zx_cdm_PREFIX_ELEM	(zx_cdm_NS | 0x000024)
-#define zx_cdm_pad_37_ELEM	(zx_cdm_NS | 0x000025)
-#define zx_cdm_LON_ELEM	(zx_cdm_NS | 0x000026)
-#define zx_cdm_pad_39_ELEM	(zx_cdm_NS | 0x000027)
-#define zx_cdm_PCODE_ELEM	(zx_cdm_NS | 0x000028)
-#define zx_cdm_PRODID_ELEM	(zx_cdm_NS | 0x000029)
-#define zx_cdm_pad_42_ELEM	(zx_cdm_NS | 0x00002a)
-#define zx_cdm_MSG_ELEM	(zx_cdm_NS | 0x00002b)
-#define zx_cdm_DESC_ELEM	(zx_cdm_NS | 0x00002c)
-#define zx_cdm_POBOX_ELEM	(zx_cdm_NS | 0x00002d)
-#define zx_cdm_N_ELEM	(zx_cdm_NS | 0x00002e)
-#define zx_cdm_pad_47_ELEM	(zx_cdm_NS | 0x00002f)
-#define zx_cdm_LOCALITY_ELEM	(zx_cdm_NS | 0x000030)
-#define zx_cdm_LINE_ELEM	(zx_cdm_NS | 0x000031)
-#define zx_cdm_PAGER_ELEM	(zx_cdm_NS | 0x000032)
-#define zx_cdm_DISTRIBUTIONLIST_ELEM	(zx_cdm_NS | 0x000033)
-#define zx_cdm_pad_52_ELEM	(zx_cdm_NS | 0x000034)
-#define zx_cdm_PHONETIC_ELEM	(zx_cdm_NS | 0x000035)
-#define zx_cdm_pad_54_ELEM	(zx_cdm_NS | 0x000036)
-#define zx_cdm_pad_55_ELEM	(zx_cdm_NS | 0x000037)
-#define zx_cdm_MIDDLE_ELEM	(zx_cdm_NS | 0x000038)
-#define zx_cdm_pad_57_ELEM	(zx_cdm_NS | 0x000039)
-#define zx_cdm_BBS_ELEM	(zx_cdm_NS | 0x00003a)
-#define zx_cdm_CRED_ELEM	(zx_cdm_NS | 0x00003b)
-#define zx_cdm_VIDEO_ELEM	(zx_cdm_NS | 0x00003c)
-#define zx_cdm_EXTVAL_ELEM	(zx_cdm_NS | 0x00003d)
-#define zx_cdm_pad_62_ELEM	(zx_cdm_NS | 0x00003e)
-#define zx_cdm_ADR_ELEM	(zx_cdm_NS | 0x00003f)
-#define zx_cdm_ISDN_ELEM	(zx_cdm_NS | 0x000040)
-#define zx_cdm_pad_65_ELEM	(zx_cdm_NS | 0x000041)
-#define zx_cdm_PARCEL_ELEM	(zx_cdm_NS | 0x000042)
-#define zx_cdm_CONFIDENTIAL_ELEM	(zx_cdm_NS | 0x000043)
-#define zx_cdm_FAVORITE_ELEM	(zx_cdm_NS | 0x000044)
-#define zx_cdm_NOTE_ELEM	(zx_cdm_NS | 0x000045)
-#define zx_cdm_AGENT_ELEM	(zx_cdm_NS | 0x000046)
-#define zx_cdm_FAMILY_ELEM	(zx_cdm_NS | 0x000047)
-#define zx_cdm_pad_72_ELEM	(zx_cdm_NS | 0x000048)
-#define zx_cdm_ORG_ELEM	(zx_cdm_NS | 0x000049)
-#define zx_cdm_LOGO_ELEM	(zx_cdm_NS | 0x00004a)
-#define zx_cdm_EMAIL_ELEM	(zx_cdm_NS | 0x00004b)
-#define zx_cdm_MAILER_ELEM	(zx_cdm_NS | 0x00004c)
-#define zx_cdm_pad_77_ELEM	(zx_cdm_NS | 0x00004d)
-#define zx_cdm_URI_ELEM	(zx_cdm_NS | 0x00004e)
-#define zx_cdm_SELF_ELEM	(zx_cdm_NS | 0x00004f)
-#define zx_cdm_pad_80_ELEM	(zx_cdm_NS | 0x000050)
-#define zx_cdm_pad_81_ELEM	(zx_cdm_NS | 0x000051)
-#define zx_cdm_pad_82_ELEM	(zx_cdm_NS | 0x000052)
-#define zx_cdm_DOM_ELEM	(zx_cdm_NS | 0x000053)
-#define zx_cdm_WORK_ELEM	(zx_cdm_NS | 0x000054)
-#define zx_cdm_pad_85_ELEM	(zx_cdm_NS | 0x000055)
-#define zx_cdm_pad_86_ELEM	(zx_cdm_NS | 0x000056)
-#define zx_cdm_ORGUNIT_ELEM	(zx_cdm_NS | 0x000057)
-#define zx_cdm_KEY_ELEM	(zx_cdm_NS | 0x000058)
-#define zx_cdm_TYPE_ELEM	(zx_cdm_NS | 0x000059)
-#define zx_cdm_pad_90_ELEM	(zx_cdm_NS | 0x00005a)
-#define zx_cdm_pad_91_ELEM	(zx_cdm_NS | 0x00005b)
-#define zx_cdm_pad_92_ELEM	(zx_cdm_NS | 0x00005c)
-#define zx_cdm_GEO_ELEM	(zx_cdm_NS | 0x00005d)
-#define zx_cdm_HOME_ELEM	(zx_cdm_NS | 0x00005e)
-#define zx_cdm_pad_95_ELEM	(zx_cdm_NS | 0x00005f)
-#define zx_cdm_CAPURI_ELEM	(zx_cdm_NS | 0x000060)
-#define zx_cdm_pad_97_ELEM	(zx_cdm_NS | 0x000061)
-#define zx_cdm_FAX_ELEM	(zx_cdm_NS | 0x000062)
-#define zx_cdm_pad_99_ELEM	(zx_cdm_NS | 0x000063)
-#define zx_cdm_pad_100_ELEM	(zx_cdm_NS | 0x000064)
-#define zx_cdm_CARDID_ELEM	(zx_cdm_NS | 0x000065)
-#define zx_cdm_KEYWORD_ELEM	(zx_cdm_NS | 0x000066)
-#define zx_cdm_NICKNAME_ELEM	(zx_cdm_NS | 0x000067)
-#define zx_cdm_pad_104_ELEM	(zx_cdm_NS | 0x000068)
-#define zx_cdm_pad_105_ELEM	(zx_cdm_NS | 0x000069)
-#define zx_cdm_pad_106_ELEM	(zx_cdm_NS | 0x00006a)
-#define zx_cdm_PRIVATE_ELEM	(zx_cdm_NS | 0x00006b)
-#define zx_cdm_pad_108_ELEM	(zx_cdm_NS | 0x00006c)
-#define zx_cdm_pad_109_ELEM	(zx_cdm_NS | 0x00006d)
-#define zx_cdm_VOICE_ELEM	(zx_cdm_NS | 0x00006e)
-#define zx_cdm_pad_111_ELEM	(zx_cdm_NS | 0x00006f)
-#define zx_cdm_pad_112_ELEM	(zx_cdm_NS | 0x000070)
-#define zx_cdm_pad_113_ELEM	(zx_cdm_NS | 0x000071)
-#define zx_cdm_pad_114_ELEM	(zx_cdm_NS | 0x000072)
-#define zx_cdm_GIVEN_ELEM	(zx_cdm_NS | 0x000073)
-#define zx_cdm_pad_116_ELEM	(zx_cdm_NS | 0x000074)
-#define zx_cdm_pad_117_ELEM	(zx_cdm_NS | 0x000075)
-#define zx_cdm_pad_118_ELEM	(zx_cdm_NS | 0x000076)
-#define zx_cdm_pad_119_ELEM	(zx_cdm_NS | 0x000077)
-#define zx_cdm_CLASS_ELEM	(zx_cdm_NS | 0x000078)
-#define zx_cdm_SORT_STRING_ELEM	(zx_cdm_NS | 0x000079)
-#define zx_cdm_ORGNAME_ELEM	(zx_cdm_NS | 0x00007a)
-#define zx_cdm_REV_ELEM	(zx_cdm_NS | 0x00007b)
-#define zx_cdm_pad_124_ELEM	(zx_cdm_NS | 0x00007c)
-#define zx_cdm_pad_125_ELEM	(zx_cdm_NS | 0x00007d)
-#define zx_cdm_STREET_ELEM	(zx_cdm_NS | 0x00007e)
-#define zx_cdm_pad_127_ELEM	(zx_cdm_NS | 0x00007f)
-#define zx_cdm_pad_128_ELEM	(zx_cdm_NS | 0x000080)
-#define zx_cdm_ROLE_ELEM	(zx_cdm_NS | 0x000081)
-#define zx_cdm_pad_130_ELEM	(zx_cdm_NS | 0x000082)
-#define zx_cdm_BINVAL_ELEM	(zx_cdm_NS | 0x000083)
-#define zx_cdm_pad_132_ELEM	(zx_cdm_NS | 0x000084)
-#define zx_cdm_JABBERID_ELEM	(zx_cdm_NS | 0x000085)
-#define zx_cdm_pad_134_ELEM	(zx_cdm_NS | 0x000086)
-#define zx_cdm_pad_135_ELEM	(zx_cdm_NS | 0x000087)
-#define zx_cdm_pad_136_ELEM	(zx_cdm_NS | 0x000088)
-#define zx_cdm_pad_137_ELEM	(zx_cdm_NS | 0x000089)
-#define zx_cdm_pad_138_ELEM	(zx_cdm_NS | 0x00008a)
-#define zx_cdm_PHYSICALACCESS_ELEM	(zx_cdm_NS | 0x00008b)
-#define zx_cdm_SOUND_ELEM	(zx_cdm_NS | 0x00008c)
-#define zx_cdm_USERID_ELEM	(zx_cdm_NS | 0x00008d)
-#define zx_cdm_pad_142_ELEM	(zx_cdm_NS | 0x00008e)
-#define zx_cdm_pad_143_ELEM	(zx_cdm_NS | 0x00008f)
-#define zx_cdm_CTRY_ELEM	(zx_cdm_NS | 0x000090)
-#define zx_cdm_pad_145_ELEM	(zx_cdm_NS | 0x000091)
-#define zx_cdm_pad_146_ELEM	(zx_cdm_NS | 0x000092)
-#define zx_cdm_pad_147_ELEM	(zx_cdm_NS | 0x000093)
-#define zx_cdm_pad_148_ELEM	(zx_cdm_NS | 0x000094)
-#define zx_cdm_pad_149_ELEM	(zx_cdm_NS | 0x000095)
-#define zx_cdm_pad_150_ELEM	(zx_cdm_NS | 0x000096)
-#define zx_cdm_NUMBER_ELEM	(zx_cdm_NS | 0x000097)
-#define zx_cdm_VERSION_ELEM	(zx_cdm_NS | 0x000098)
-#define zx_cdm_pad_153_ELEM	(zx_cdm_NS | 0x000099)
-#define zx_cdm_pad_154_ELEM	(zx_cdm_NS | 0x00009a)
-#define zx_cdm_pad_155_ELEM	(zx_cdm_NS | 0x00009b)
-#define zx_cdm_REGION_ELEM	(zx_cdm_NS | 0x00009c)
-#define zx_cdm_pad_157_ELEM	(zx_cdm_NS | 0x00009d)
-#define zx_cdm_pad_158_ELEM	(zx_cdm_NS | 0x00009e)
-#define zx_cdm_pad_159_ELEM	(zx_cdm_NS | 0x00009f)
-#define zx_cdm_pad_160_ELEM	(zx_cdm_NS | 0x0000a0)
-#define zx_cdm_pad_161_ELEM	(zx_cdm_NS | 0x0000a1)
-#define zx_cdm_pad_162_ELEM	(zx_cdm_NS | 0x0000a2)
-#define zx_cdm_pad_163_ELEM	(zx_cdm_NS | 0x0000a3)
-#define zx_cdm_pad_164_ELEM	(zx_cdm_NS | 0x0000a4)
-#define zx_cdm_FBURL_ELEM	(zx_cdm_NS | 0x0000a5)
-#define zx_cdm_SUFFIX_ELEM	(zx_cdm_NS | 0x0000a6)
-#define zx_cdm_pad_167_ELEM	(zx_cdm_NS | 0x0000a7)
-#define zx_cdm_pad_168_ELEM	(zx_cdm_NS | 0x0000a8)
-#define zx_cdm_pad_169_ELEM	(zx_cdm_NS | 0x0000a9)
-#define zx_cdm_pad_170_ELEM	(zx_cdm_NS | 0x0000aa)
-#define zx_cdm_pad_171_ELEM	(zx_cdm_NS | 0x0000ab)
-#define zx_cdm_pad_172_ELEM	(zx_cdm_NS | 0x0000ac)
-#define zx_cdm_pad_173_ELEM	(zx_cdm_NS | 0x0000ad)
-#define zx_cdm_pad_174_ELEM	(zx_cdm_NS | 0x0000ae)
-#define zx_cdm_pad_175_ELEM	(zx_cdm_NS | 0x0000af)
-#define zx_cdm_pad_176_ELEM	(zx_cdm_NS | 0x0000b0)
-#define zx_cdm_pad_177_ELEM	(zx_cdm_NS | 0x0000b1)
-#define zx_cdm_pad_178_ELEM	(zx_cdm_NS | 0x0000b2)
-#define zx_cdm_pad_179_ELEM	(zx_cdm_NS | 0x0000b3)
-#define zx_cdm_pad_180_ELEM	(zx_cdm_NS | 0x0000b4)
-#define zx_cdm_pad_181_ELEM	(zx_cdm_NS | 0x0000b5)
-#define zx_cdm_pad_182_ELEM	(zx_cdm_NS | 0x0000b6)
-#define zx_cdm_pad_183_ELEM	(zx_cdm_NS | 0x0000b7)
-#define zx_cdm_pad_184_ELEM	(zx_cdm_NS | 0x0000b8)
-#define zx_cdm_pad_185_ELEM	(zx_cdm_NS | 0x0000b9)
-#define zx_cdm_pad_186_ELEM	(zx_cdm_NS | 0x0000ba)
-#define zx_cdm_pad_187_ELEM	(zx_cdm_NS | 0x0000bb)
-#define zx_cdm_pad_188_ELEM	(zx_cdm_NS | 0x0000bc)
-#define zx_cdm_pad_189_ELEM	(zx_cdm_NS | 0x0000bd)
-#define zx_cdm_pad_190_ELEM	(zx_cdm_NS | 0x0000be)
-#define zx_cdm_pad_191_ELEM	(zx_cdm_NS | 0x0000bf)
-#define zx_cdm_pad_192_ELEM	(zx_cdm_NS | 0x0000c0)
-#define zx_cdm_pad_193_ELEM	(zx_cdm_NS | 0x0000c1)
-#define zx_cdm_BDAY_ELEM	(zx_cdm_NS | 0x0000c2)
-#define zx_cdm__ELEM_MAX	195
-/* 35: zx_gl_el_tab */
-#define zx_gl_pad_0_ELEM	(zx_gl_NS | 0x000000)
-#define zx_gl_Z_ELEM	(zx_gl_NS | 0x000001)
-#define zx_gl_pad_2_ELEM	(zx_gl_NS | 0x000002)
-#define zx_gl_alt_ELEM	(zx_gl_NS | 0x000003)
-#define zx_gl_esrk_ELEM	(zx_gl_NS | 0x000004)
-#define zx_gl_angle_ELEM	(zx_gl_NS | 0x000005)
-#define zx_gl_C_ELEM	(zx_gl_NS | 0x000006)
-#define zx_gl_pad_7_ELEM	(zx_gl_NS | 0x000007)
-#define zx_gl_pad_8_ELEM	(zx_gl_NS | 0x000008)
-#define zx_gl_pad_9_ELEM	(zx_gl_NS | 0x000009)
-#define zx_gl_pad_10_ELEM	(zx_gl_NS | 0x00000a)
-#define zx_gl_Create_ELEM	(zx_gl_NS | 0x00000b)
-#define zx_gl_Trigger_ELEM	(zx_gl_NS | 0x00000c)
-#define zx_gl_MNC_ELEM	(zx_gl_NS | 0x00000d)
-#define zx_gl_time_ELEM	(zx_gl_NS | 0x00000e)
-#define zx_gl_CreateItem_ELEM	(zx_gl_NS | 0x00000f)
-#define zx_gl_Y_ELEM	(zx_gl_NS | 0x000010)
-#define zx_gl_geoinfo_ELEM	(zx_gl_NS | 0x000011)
-#define zx_gl_inRadius_ELEM	(zx_gl_NS | 0x000012)
-#define zx_gl_CreateResponse_ELEM	(zx_gl_NS | 0x000013)
-#define zx_gl_speed_ELEM	(zx_gl_NS | 0x000014)
-#define zx_gl_X_ELEM	(zx_gl_NS | 0x000015)
-#define zx_gl_pd_ELEM	(zx_gl_NS | 0x000016)
-#define zx_gl_pad_23_ELEM	(zx_gl_NS | 0x000017)
-#define zx_gl_eqop_ELEM	(zx_gl_NS | 0x000018)
-#define zx_gl_pad_25_ELEM	(zx_gl_NS | 0x000019)
-#define zx_gl_radius_ELEM	(zx_gl_NS | 0x00001a)
-#define zx_gl_Notification_ELEM	(zx_gl_NS | 0x00001b)
-#define zx_gl_resp_req_ELEM	(zx_gl_NS | 0x00001c)
-#define zx_gl_semiMajor_ELEM	(zx_gl_NS | 0x00001d)
-#define zx_gl_pad_30_ELEM	(zx_gl_NS | 0x00001e)
-#define zx_gl_pad_31_ELEM	(zx_gl_NS | 0x00001f)
-#define zx_gl_Modification_ELEM	(zx_gl_NS | 0x000020)
-#define zx_gl_pad_33_ELEM	(zx_gl_NS | 0x000021)
-#define zx_gl_semiMinor_ELEM	(zx_gl_NS | 0x000022)
-#define zx_gl_CoordinateReferenceSystem_ELEM	(zx_gl_NS | 0x000023)
-#define zx_gl_L_ELEM	(zx_gl_NS | 0x000024)
-#define zx_gl_LL_ELEM	(zx_gl_NS | 0x000025)
-#define zx_gl_LSt_ELEM	(zx_gl_NS | 0x000026)
-#define zx_gl_ms_action_ELEM	(zx_gl_NS | 0x000027)
-#define zx_gl_shape_ELEM	(zx_gl_NS | 0x000028)
-#define zx_gl_ComparisonResult_ELEM	(zx_gl_NS | 0x000029)
-#define zx_gl_St_ELEM	(zx_gl_NS | 0x00002a)
-#define zx_gl_pad_43_ELEM	(zx_gl_NS | 0x00002b)
-#define zx_gl_Data_ELEM	(zx_gl_NS | 0x00002c)
-#define zx_gl_LinearRing_ELEM	(zx_gl_NS | 0x00002d)
-#define zx_gl_Delete_ELEM	(zx_gl_NS | 0x00002e)
-#define zx_gl_pad_47_ELEM	(zx_gl_NS | 0x00002f)
-#define zx_gl_Box_ELEM	(zx_gl_NS | 0x000030)
-#define zx_gl_pad_49_ELEM	(zx_gl_NS | 0x000031)
-#define zx_gl_DeleteItem_ELEM	(zx_gl_NS | 0x000032)
-#define zx_gl_pad_51_ELEM	(zx_gl_NS | 0x000033)
-#define zx_gl_pad_52_ELEM	(zx_gl_NS | 0x000034)
-#define zx_gl_loc_type_ELEM	(zx_gl_NS | 0x000035)
-#define zx_gl_DeleteResponse_ELEM	(zx_gl_NS | 0x000036)
-#define zx_gl_LineString_ELEM	(zx_gl_NS | 0x000037)
-#define zx_gl_Select_ELEM	(zx_gl_NS | 0x000038)
-#define zx_gl_pad_57_ELEM	(zx_gl_NS | 0x000039)
-#define zx_gl_pad_58_ELEM	(zx_gl_NS | 0x00003a)
-#define zx_gl_CivilData_ELEM	(zx_gl_NS | 0x00003b)
-#define zx_gl_ChangeArea_ELEM	(zx_gl_NS | 0x00003c)
-#define zx_gl_Notify_ELEM	(zx_gl_NS | 0x00003d)
-#define zx_gl_NewData_ELEM	(zx_gl_NS | 0x00003e)
-#define zx_gl_NotifyTo_ELEM	(zx_gl_NS | 0x00003f)
-#define zx_gl_LPostalAddress_ELEM	(zx_gl_NS | 0x000040)
-#define zx_gl_innerBoundaryIs_ELEM	(zx_gl_NS | 0x000041)
-#define zx_gl_Modify_ELEM	(zx_gl_NS | 0x000042)
-#define zx_gl_Subscription_ELEM	(zx_gl_NS | 0x000043)
-#define zx_gl_NotifyAdminTo_ELEM	(zx_gl_NS | 0x000044)
-#define zx_gl_NotifyResponse_ELEM	(zx_gl_NS | 0x000045)
-#define zx_gl_MultiLineString_ELEM	(zx_gl_NS | 0x000046)
-#define zx_gl_Status_ELEM	(zx_gl_NS | 0x000047)
-#define zx_gl_pad_72_ELEM	(zx_gl_NS | 0x000048)
-#define zx_gl_Interval_ELEM	(zx_gl_NS | 0x000049)
-#define zx_gl_ModifyResponse_ELEM	(zx_gl_NS | 0x00004a)
-#define zx_gl_PostalCode_ELEM	(zx_gl_NS | 0x00004b)
-#define zx_gl_pad_76_ELEM	(zx_gl_NS | 0x00004c)
-#define zx_gl_RefItem_ELEM	(zx_gl_NS | 0x00004d)
-#define zx_gl_PostalAddress_ELEM	(zx_gl_NS | 0x00004e)
-#define zx_gl_code_ELEM	(zx_gl_NS | 0x00004f)
-#define zx_gl_coord_ELEM	(zx_gl_NS | 0x000050)
-#define zx_gl_ll_acc_ELEM	(zx_gl_NS | 0x000051)
-#define zx_gl_alt_acc_ELEM	(zx_gl_NS | 0x000052)
-#define zx_gl_ItemData_ELEM	(zx_gl_NS | 0x000053)
-#define zx_gl_esrd_ELEM	(zx_gl_NS | 0x000054)
-#define zx_gl_MultiPoint_ELEM	(zx_gl_NS | 0x000055)
-#define zx_gl_angularUnit_ELEM	(zx_gl_NS | 0x000056)
-#define zx_gl_MultiPolygon_ELEM	(zx_gl_NS | 0x000057)
-#define zx_gl_ItemSelection_ELEM	(zx_gl_NS | 0x000058)
-#define zx_gl_stopAngle_ELEM	(zx_gl_NS | 0x000059)
-#define zx_gl_Query_ELEM	(zx_gl_NS | 0x00005a)
-#define zx_gl_Aggregation_ELEM	(zx_gl_NS | 0x00005b)
-#define zx_gl_CircularArea_ELEM	(zx_gl_NS | 0x00005c)
-#define zx_gl_GeometryCollection_ELEM	(zx_gl_NS | 0x00005d)
-#define zx_gl_pad_94_ELEM	(zx_gl_NS | 0x00005e)
-#define zx_gl_CircularArcArea_ELEM	(zx_gl_NS | 0x00005f)
-#define zx_gl_pad_96_ELEM	(zx_gl_NS | 0x000060)
-#define zx_gl_hor_acc_ELEM	(zx_gl_NS | 0x000061)
-#define zx_gl_pad_98_ELEM	(zx_gl_NS | 0x000062)
-#define zx_gl_direction_ELEM	(zx_gl_NS | 0x000063)
-#define zx_gl_startAngle_ELEM	(zx_gl_NS | 0x000064)
-#define zx_gl_Granularity_ELEM	(zx_gl_NS | 0x000065)
-#define zx_gl_pad_102_ELEM	(zx_gl_NS | 0x000066)
-#define zx_gl_lev_conf_ELEM	(zx_gl_NS | 0x000067)
-#define zx_gl_codeSpace_ELEM	(zx_gl_NS | 0x000068)
-#define zx_gl_Point_ELEM	(zx_gl_NS | 0x000069)
-#define zx_gl_pad_106_ELEM	(zx_gl_NS | 0x00006a)
-#define zx_gl_pad_107_ELEM	(zx_gl_NS | 0x00006b)
-#define zx_gl_pad_108_ELEM	(zx_gl_NS | 0x00006c)
-#define zx_gl_Extension_ELEM	(zx_gl_NS | 0x00006d)
-#define zx_gl_pad_110_ELEM	(zx_gl_NS | 0x00006e)
-#define zx_gl_pad_111_ELEM	(zx_gl_NS | 0x00006f)
-#define zx_gl_edition_ELEM	(zx_gl_NS | 0x000070)
-#define zx_gl_QueryResponse_ELEM	(zx_gl_NS | 0x000071)
-#define zx_gl_EllipticalArea_ELEM	(zx_gl_NS | 0x000072)
-#define zx_gl_Identifier_ELEM	(zx_gl_NS | 0x000073)
-#define zx_gl_pad_116_ELEM	(zx_gl_NS | 0x000074)
-#define zx_gl_pad_117_ELEM	(zx_gl_NS | 0x000075)
-#define zx_gl_Endpoint_ELEM	(zx_gl_NS | 0x000076)
-#define zx_gl_prio_ELEM	(zx_gl_NS | 0x000077)
-#define zx_gl_ResourceID_ELEM	(zx_gl_NS | 0x000078)
-#define zx_gl_pad_121_ELEM	(zx_gl_NS | 0x000079)
-#define zx_gl_pad_122_ELEM	(zx_gl_NS | 0x00007a)
-#define zx_gl_pad_123_ELEM	(zx_gl_NS | 0x00007b)
-#define zx_gl_EncryptedResourceID_ELEM	(zx_gl_NS | 0x00007c)
-#define zx_gl_pad_125_ELEM	(zx_gl_NS | 0x00007d)
-#define zx_gl_max_loc_age_ELEM	(zx_gl_NS | 0x00007e)
-#define zx_gl_pad_127_ELEM	(zx_gl_NS | 0x00007f)
-#define zx_gl_pad_128_ELEM	(zx_gl_NS | 0x000080)
-#define zx_gl_pad_129_ELEM	(zx_gl_NS | 0x000081)
-#define zx_gl_pad_130_ELEM	(zx_gl_NS | 0x000082)
-#define zx_gl_pad_131_ELEM	(zx_gl_NS | 0x000083)
-#define zx_gl_Heading_ELEM	(zx_gl_NS | 0x000084)
-#define zx_gl_pad_133_ELEM	(zx_gl_NS | 0x000085)
-#define zx_gl_SecurityMechID_ELEM	(zx_gl_NS | 0x000086)
-#define zx_gl_pad_135_ELEM	(zx_gl_NS | 0x000087)
-#define zx_gl_pad_136_ELEM	(zx_gl_NS | 0x000088)
-#define zx_gl_pad_137_ELEM	(zx_gl_NS | 0x000089)
-#define zx_gl_pad_138_ELEM	(zx_gl_NS | 0x00008a)
-#define zx_gl_pad_139_ELEM	(zx_gl_NS | 0x00008b)
-#define zx_gl_Credential_ELEM	(zx_gl_NS | 0x00008c)
-#define zx_gl_pad_141_ELEM	(zx_gl_NS | 0x00008d)
-#define zx_gl_pad_142_ELEM	(zx_gl_NS | 0x00008e)
-#define zx_gl_pad_143_ELEM	(zx_gl_NS | 0x00008f)
-#define zx_gl_pad_144_ELEM	(zx_gl_NS | 0x000090)
-#define zx_gl_pad_145_ELEM	(zx_gl_NS | 0x000091)
-#define zx_gl_pad_146_ELEM	(zx_gl_NS | 0x000092)
-#define zx_gl_distanceUnit_ELEM	(zx_gl_NS | 0x000093)
-#define zx_gl_pad_148_ELEM	(zx_gl_NS | 0x000094)
-#define zx_gl_QueryItem_ELEM	(zx_gl_NS | 0x000095)
-#define zx_gl_pad_150_ELEM	(zx_gl_NS | 0x000096)
-#define zx_gl_pad_151_ELEM	(zx_gl_NS | 0x000097)
-#define zx_gl_pad_152_ELEM	(zx_gl_NS | 0x000098)
-#define zx_gl_pad_153_ELEM	(zx_gl_NS | 0x000099)
-#define zx_gl_pad_154_ELEM	(zx_gl_NS | 0x00009a)
-#define zx_gl_outerBoundaryIs_ELEM	(zx_gl_NS | 0x00009b)
-#define zx_gl_pad_156_ELEM	(zx_gl_NS | 0x00009c)
-#define zx_gl_pad_157_ELEM	(zx_gl_NS | 0x00009d)
-#define zx_gl_pad_158_ELEM	(zx_gl_NS | 0x00009e)
-#define zx_gl_pad_159_ELEM	(zx_gl_NS | 0x00009f)
-#define zx_gl_pad_160_ELEM	(zx_gl_NS | 0x0000a0)
-#define zx_gl_pad_161_ELEM	(zx_gl_NS | 0x0000a1)
-#define zx_gl_pad_162_ELEM	(zx_gl_NS | 0x0000a2)
-#define zx_gl_pad_163_ELEM	(zx_gl_NS | 0x0000a3)
-#define zx_gl_pad_164_ELEM	(zx_gl_NS | 0x0000a4)
-#define zx_gl_pad_165_ELEM	(zx_gl_NS | 0x0000a5)
-#define zx_gl_pad_166_ELEM	(zx_gl_NS | 0x0000a6)
-#define zx_gl_pad_167_ELEM	(zx_gl_NS | 0x0000a7)
-#define zx_gl_pad_168_ELEM	(zx_gl_NS | 0x0000a8)
-#define zx_gl_pad_169_ELEM	(zx_gl_NS | 0x0000a9)
-#define zx_gl_pad_170_ELEM	(zx_gl_NS | 0x0000aa)
-#define zx_gl_pad_171_ELEM	(zx_gl_NS | 0x0000ab)
-#define zx_gl_pad_172_ELEM	(zx_gl_NS | 0x0000ac)
-#define zx_gl_pad_173_ELEM	(zx_gl_NS | 0x0000ad)
-#define zx_gl_pad_174_ELEM	(zx_gl_NS | 0x0000ae)
-#define zx_gl_pad_175_ELEM	(zx_gl_NS | 0x0000af)
-#define zx_gl_pad_176_ELEM	(zx_gl_NS | 0x0000b0)
-#define zx_gl_pad_177_ELEM	(zx_gl_NS | 0x0000b1)
-#define zx_gl_pad_178_ELEM	(zx_gl_NS | 0x0000b2)
-#define zx_gl_pad_179_ELEM	(zx_gl_NS | 0x0000b3)
-#define zx_gl_pad_180_ELEM	(zx_gl_NS | 0x0000b4)
-#define zx_gl_pad_181_ELEM	(zx_gl_NS | 0x0000b5)
-#define zx_gl_pad_182_ELEM	(zx_gl_NS | 0x0000b6)
-#define zx_gl_pad_183_ELEM	(zx_gl_NS | 0x0000b7)
-#define zx_gl_AreaComparison_ELEM	(zx_gl_NS | 0x0000b8)
-#define zx_gl_pad_185_ELEM	(zx_gl_NS | 0x0000b9)
-#define zx_gl_pad_186_ELEM	(zx_gl_NS | 0x0000ba)
-#define zx_gl_pad_187_ELEM	(zx_gl_NS | 0x0000bb)
-#define zx_gl_pad_188_ELEM	(zx_gl_NS | 0x0000bc)
-#define zx_gl_pad_189_ELEM	(zx_gl_NS | 0x0000bd)
-#define zx_gl_pad_190_ELEM	(zx_gl_NS | 0x0000be)
-#define zx_gl_pad_191_ELEM	(zx_gl_NS | 0x0000bf)
-#define zx_gl_pad_192_ELEM	(zx_gl_NS | 0x0000c0)
-#define zx_gl_pad_193_ELEM	(zx_gl_NS | 0x0000c1)
-#define zx_gl_pad_194_ELEM	(zx_gl_NS | 0x0000c2)
-#define zx_gl_pad_195_ELEM	(zx_gl_NS | 0x0000c3)
-#define zx_gl_pad_196_ELEM	(zx_gl_NS | 0x0000c4)
-#define zx_gl_pad_197_ELEM	(zx_gl_NS | 0x0000c5)
-#define zx_gl_pad_198_ELEM	(zx_gl_NS | 0x0000c6)
-#define zx_gl_outRadius_ELEM	(zx_gl_NS | 0x0000c7)
-#define zx_gl_pad_200_ELEM	(zx_gl_NS | 0x0000c8)
-#define zx_gl_pad_201_ELEM	(zx_gl_NS | 0x0000c9)
-#define zx_gl_Polygon_ELEM	(zx_gl_NS | 0x0000ca)
-#define zx_gl__ELEM_MAX	203
-/* 36: zx_mm7_el_tab */
-#define zx_mm7_pad_0_ELEM	(zx_mm7_NS | 0x000000)
-#define zx_mm7_pad_1_ELEM	(zx_mm7_NS | 0x000001)
-#define zx_mm7_To_ELEM	(zx_mm7_NS | 0x000002)
-#define zx_mm7_pad_3_ELEM	(zx_mm7_NS | 0x000003)
-#define zx_mm7_pad_4_ELEM	(zx_mm7_NS | 0x000004)
-#define zx_mm7_pad_5_ELEM	(zx_mm7_NS | 0x000005)
-#define zx_mm7_pad_6_ELEM	(zx_mm7_NS | 0x000006)
-#define zx_mm7_Content_ELEM	(zx_mm7_NS | 0x000007)
-#define zx_mm7_pad_8_ELEM	(zx_mm7_NS | 0x000008)
-#define zx_mm7_pad_9_ELEM	(zx_mm7_NS | 0x000009)
-#define zx_mm7_StatusText_ELEM	(zx_mm7_NS | 0x00000a)
-#define zx_mm7_pad_11_ELEM	(zx_mm7_NS | 0x00000b)
-#define zx_mm7_Cc_ELEM	(zx_mm7_NS | 0x00000c)
-#define zx_mm7_Bcc_ELEM	(zx_mm7_NS | 0x00000d)
-#define zx_mm7_Date_ELEM	(zx_mm7_NS | 0x00000e)
-#define zx_mm7_StatusCode_ELEM	(zx_mm7_NS | 0x00000f)
-#define zx_mm7_ServiceCode_ELEM	(zx_mm7_NS | 0x000010)
-#define zx_mm7_DC_ELEM	(zx_mm7_NS | 0x000011)
-#define zx_mm7_DateTime_ELEM	(zx_mm7_NS | 0x000012)
-#define zx_mm7_UserAgent_ELEM	(zx_mm7_NS | 0x000013)
-#define zx_mm7_value_ELEM	(zx_mm7_NS | 0x000014)
-#define zx_mm7_Sender_ELEM	(zx_mm7_NS | 0x000015)
-#define zx_mm7_Subject_ELEM	(zx_mm7_NS | 0x000016)
-#define zx_mm7_CredentialRef_ELEM	(zx_mm7_NS | 0x000017)
-#define zx_mm7_ShortCode_ELEM	(zx_mm7_NS | 0x000018)
-#define zx_mm7_DRMContent_ELEM	(zx_mm7_NS | 0x000019)
-#define zx_mm7_Number_ELEM	(zx_mm7_NS | 0x00001a)
-#define zx_mm7_pad_27_ELEM	(zx_mm7_NS | 0x00001b)
-#define zx_mm7_AuxApplicInfo_ELEM	(zx_mm7_NS | 0x00001c)
-#define zx_mm7_pad_29_ELEM	(zx_mm7_NS | 0x00001d)
-#define zx_mm7_Previouslysentdateandtime_ELEM	(zx_mm7_NS | 0x00001e)
-#define zx_mm7_DistributionIndicator_ELEM	(zx_mm7_NS | 0x00001f)
-#define zx_mm7_VASPErrorRsp_ELEM	(zx_mm7_NS | 0x000020)
-#define zx_mm7_pad_33_ELEM	(zx_mm7_NS | 0x000021)
-#define zx_mm7_TimeStamp_ELEM	(zx_mm7_NS | 0x000022)
-#define zx_mm7_ThirdPartyPayer_ELEM	(zx_mm7_NS | 0x000023)
-#define zx_mm7_pad_36_ELEM	(zx_mm7_NS | 0x000024)
-#define zx_mm7_ReadReplyRsp_ELEM	(zx_mm7_NS | 0x000025)
-#define zx_mm7_pad_38_ELEM	(zx_mm7_NS | 0x000026)
-#define zx_mm7_CancelRsp_ELEM	(zx_mm7_NS | 0x000027)
-#define zx_mm7_RSErrorRsp_ELEM	(zx_mm7_NS | 0x000028)
-#define zx_mm7_VASPID_ELEM	(zx_mm7_NS | 0x000029)
-#define zx_mm7_extendedCancelRsp_ELEM	(zx_mm7_NS | 0x00002a)
-#define zx_mm7_extendedReplaceRsp_ELEM	(zx_mm7_NS | 0x00002b)
-#define zx_mm7_QueryStatusRsp_ELEM	(zx_mm7_NS | 0x00002c)
-#define zx_mm7_pad_45_ELEM	(zx_mm7_NS | 0x00002d)
-#define zx_mm7_Status_ELEM	(zx_mm7_NS | 0x00002e)
-#define zx_mm7_pad_47_ELEM	(zx_mm7_NS | 0x00002f)
-#define zx_mm7_MMStatus_ELEM	(zx_mm7_NS | 0x000030)
-#define zx_mm7_Recipient_ELEM	(zx_mm7_NS | 0x000031)
-#define zx_mm7_pad_50_ELEM	(zx_mm7_NS | 0x000032)
-#define zx_mm7_MMSRelayServerID_ELEM	(zx_mm7_NS | 0x000033)
-#define zx_mm7_ContentClass_ELEM	(zx_mm7_NS | 0x000034)
-#define zx_mm7_CancelID_ELEM	(zx_mm7_NS | 0x000035)
-#define zx_mm7_DeliveryReport_ELEM	(zx_mm7_NS | 0x000036)
-#define zx_mm7_ExpiryDate_ELEM	(zx_mm7_NS | 0x000037)
-#define zx_mm7_MessageType_ELEM	(zx_mm7_NS | 0x000038)
-#define zx_mm7_Details_ELEM	(zx_mm7_NS | 0x000039)
-#define zx_mm7_SenderAddress_ELEM	(zx_mm7_NS | 0x00003a)
-#define zx_mm7_ChargedPartyID_ELEM	(zx_mm7_NS | 0x00003b)
-#define zx_mm7_EarliestDeliveryTime_ELEM	(zx_mm7_NS | 0x00003c)
-#define zx_mm7_pad_61_ELEM	(zx_mm7_NS | 0x00003d)
-#define zx_mm7_PreferredChannels_ELEM	(zx_mm7_NS | 0x00003e)
-#define zx_mm7_LinkedID_ELEM	(zx_mm7_NS | 0x00003f)
-#define zx_mm7_UACapabilities_ELEM	(zx_mm7_NS | 0x000040)
-#define zx_mm7_ReplaceRsp_ELEM	(zx_mm7_NS | 0x000041)
-#define zx_mm7_MessageExtraData_ELEM	(zx_mm7_NS | 0x000042)
-#define zx_mm7_ReadReplyReq_ELEM	(zx_mm7_NS | 0x000043)
-#define zx_mm7_pad_68_ELEM	(zx_mm7_NS | 0x000044)
-#define zx_mm7_CancelReq_ELEM	(zx_mm7_NS | 0x000045)
-#define zx_mm7_DeliverRsp_ELEM	(zx_mm7_NS | 0x000046)
-#define zx_mm7_pad_71_ELEM	(zx_mm7_NS | 0x000047)
-#define zx_mm7_extendedCancelReq_ELEM	(zx_mm7_NS | 0x000048)
-#define zx_mm7_extendedReplaceReq_ELEM	(zx_mm7_NS | 0x000049)
-#define zx_mm7_QueryStatusReq_ELEM	(zx_mm7_NS | 0x00004a)
-#define zx_mm7_pad_75_ELEM	(zx_mm7_NS | 0x00004b)
-#define zx_mm7_pad_76_ELEM	(zx_mm7_NS | 0x00004c)
-#define zx_mm7_DeliveryReportRsp_ELEM	(zx_mm7_NS | 0x00004d)
-#define zx_mm7_ApplicID_ELEM	(zx_mm7_NS | 0x00004e)
-#define zx_mm7_ReplaceID_ELEM	(zx_mm7_NS | 0x00004f)
-#define zx_mm7_pad_80_ELEM	(zx_mm7_NS | 0x000050)
-#define zx_mm7_pad_81_ELEM	(zx_mm7_NS | 0x000051)
-#define zx_mm7_pad_82_ELEM	(zx_mm7_NS | 0x000052)
-#define zx_mm7_ReplyApplicID_ELEM	(zx_mm7_NS | 0x000053)
-#define zx_mm7_MessageID_ELEM	(zx_mm7_NS | 0x000054)
-#define zx_mm7_ReplyChargingID_ELEM	(zx_mm7_NS | 0x000055)
-#define zx_mm7_pad_86_ELEM	(zx_mm7_NS | 0x000056)
-#define zx_mm7_element_ELEM	(zx_mm7_NS | 0x000057)
-#define zx_mm7_pad_88_ELEM	(zx_mm7_NS | 0x000058)
-#define zx_mm7_SenderSPI_ELEM	(zx_mm7_NS | 0x000059)
-#define zx_mm7_Recipients_ELEM	(zx_mm7_NS | 0x00005a)
-#define zx_mm7_pad_91_ELEM	(zx_mm7_NS | 0x00005b)
-#define zx_mm7_MessageClass_ELEM	(zx_mm7_NS | 0x00005c)
-#define zx_mm7_key_ELEM	(zx_mm7_NS | 0x00005d)
-#define zx_mm7_Extension_ELEM	(zx_mm7_NS | 0x00005e)
-#define zx_mm7_ReplaceReq_ELEM	(zx_mm7_NS | 0x00005f)
-#define zx_mm7_pad_96_ELEM	(zx_mm7_NS | 0x000060)
-#define zx_mm7_MMStatusExtension_ELEM	(zx_mm7_NS | 0x000061)
-#define zx_mm7_Priority_ELEM	(zx_mm7_NS | 0x000062)
-#define zx_mm7_RFC2822Address_ELEM	(zx_mm7_NS | 0x000063)
-#define zx_mm7_DeliverReq_ELEM	(zx_mm7_NS | 0x000064)
-#define zx_mm7_pad_101_ELEM	(zx_mm7_NS | 0x000065)
-#define zx_mm7_pad_102_ELEM	(zx_mm7_NS | 0x000066)
-#define zx_mm7_pad_103_ELEM	(zx_mm7_NS | 0x000067)
-#define zx_mm7_ReadReply_ELEM	(zx_mm7_NS | 0x000068)
-#define zx_mm7_SenderIdentification_ELEM	(zx_mm7_NS | 0x000069)
-#define zx_mm7_Previouslysentby_ELEM	(zx_mm7_NS | 0x00006a)
-#define zx_mm7_DeliveryReportReq_ELEM	(zx_mm7_NS | 0x00006b)
-#define zx_mm7_pad_108_ELEM	(zx_mm7_NS | 0x00006c)
-#define zx_mm7_SubmitRsp_ELEM	(zx_mm7_NS | 0x00006d)
-#define zx_mm7_MM7Version_ELEM	(zx_mm7_NS | 0x00006e)
-#define zx_mm7_pad_111_ELEM	(zx_mm7_NS | 0x00006f)
-#define zx_mm7_ChargedParty_ELEM	(zx_mm7_NS | 0x000070)
-#define zx_mm7_ReplyCharging_ELEM	(zx_mm7_NS | 0x000071)
-#define zx_mm7_pad_114_ELEM	(zx_mm7_NS | 0x000072)
-#define zx_mm7_VASID_ELEM	(zx_mm7_NS | 0x000073)
-#define zx_mm7_pad_116_ELEM	(zx_mm7_NS | 0x000074)
-#define zx_mm7_DeliverUsing_ELEM	(zx_mm7_NS | 0x000075)
-#define zx_mm7_pad_118_ELEM	(zx_mm7_NS | 0x000076)
-#define zx_mm7_pad_119_ELEM	(zx_mm7_NS | 0x000077)
-#define zx_mm7_pad_120_ELEM	(zx_mm7_NS | 0x000078)
-#define zx_mm7_pad_121_ELEM	(zx_mm7_NS | 0x000079)
-#define zx_mm7_pad_122_ELEM	(zx_mm7_NS | 0x00007a)
-#define zx_mm7_pad_123_ELEM	(zx_mm7_NS | 0x00007b)
-#define zx_mm7_pad_124_ELEM	(zx_mm7_NS | 0x00007c)
-#define zx_mm7_pad_125_ELEM	(zx_mm7_NS | 0x00007d)
-#define zx_mm7_pad_126_ELEM	(zx_mm7_NS | 0x00007e)
-#define zx_mm7_RecipientSPI_ELEM	(zx_mm7_NS | 0x00007f)
-#define zx_mm7_TransactionID_ELEM	(zx_mm7_NS | 0x000080)
-#define zx_mm7_pad_129_ELEM	(zx_mm7_NS | 0x000081)
-#define zx_mm7_pad_130_ELEM	(zx_mm7_NS | 0x000082)
-#define zx_mm7_pad_131_ELEM	(zx_mm7_NS | 0x000083)
-#define zx_mm7_pad_132_ELEM	(zx_mm7_NS | 0x000084)
-#define zx_mm7_pad_133_ELEM	(zx_mm7_NS | 0x000085)
-#define zx_mm7_pad_134_ELEM	(zx_mm7_NS | 0x000086)
-#define zx_mm7_pad_135_ELEM	(zx_mm7_NS | 0x000087)
-#define zx_mm7_pad_136_ELEM	(zx_mm7_NS | 0x000088)
-#define zx_mm7_DeliveryCondition_ELEM	(zx_mm7_NS | 0x000089)
-#define zx_mm7_pad_138_ELEM	(zx_mm7_NS | 0x00008a)
-#define zx_mm7_SubmitReq_ELEM	(zx_mm7_NS | 0x00008b)
-#define zx_mm7_pad_140_ELEM	(zx_mm7_NS | 0x00008c)
-#define zx_mm7_AdditionalInformation_ELEM	(zx_mm7_NS | 0x00008d)
-#define zx_mm7_pad_142_ELEM	(zx_mm7_NS | 0x00008e)
-#define zx_mm7_pad_143_ELEM	(zx_mm7_NS | 0x00008f)
-#define zx_mm7_pad_144_ELEM	(zx_mm7_NS | 0x000090)
-#define zx_mm7_pad_145_ELEM	(zx_mm7_NS | 0x000091)
-#define zx_mm7_pad_146_ELEM	(zx_mm7_NS | 0x000092)
-#define zx_mm7_pad_147_ELEM	(zx_mm7_NS | 0x000093)
-#define zx_mm7_pad_148_ELEM	(zx_mm7_NS | 0x000094)
-#define zx_mm7_pad_149_ELEM	(zx_mm7_NS | 0x000095)
-#define zx_mm7_pad_150_ELEM	(zx_mm7_NS | 0x000096)
-#define zx_mm7_pad_151_ELEM	(zx_mm7_NS | 0x000097)
-#define zx_mm7_pad_152_ELEM	(zx_mm7_NS | 0x000098)
-#define zx_mm7_pad_153_ELEM	(zx_mm7_NS | 0x000099)
-#define zx_mm7_pad_154_ELEM	(zx_mm7_NS | 0x00009a)
-#define zx_mm7_pad_155_ELEM	(zx_mm7_NS | 0x00009b)
-#define zx_mm7_pad_156_ELEM	(zx_mm7_NS | 0x00009c)
-#define zx_mm7_pad_157_ELEM	(zx_mm7_NS | 0x00009d)
-#define zx_mm7_pad_158_ELEM	(zx_mm7_NS | 0x00009e)
-#define zx_mm7_pad_159_ELEM	(zx_mm7_NS | 0x00009f)
-#define zx_mm7_pad_160_ELEM	(zx_mm7_NS | 0x0000a0)
-#define zx_mm7_pad_161_ELEM	(zx_mm7_NS | 0x0000a1)
-#define zx_mm7_pad_162_ELEM	(zx_mm7_NS | 0x0000a2)
-#define zx_mm7_pad_163_ELEM	(zx_mm7_NS | 0x0000a3)
-#define zx_mm7_pad_164_ELEM	(zx_mm7_NS | 0x0000a4)
-#define zx_mm7_pad_165_ELEM	(zx_mm7_NS | 0x0000a5)
-#define zx_mm7_pad_166_ELEM	(zx_mm7_NS | 0x0000a6)
-#define zx_mm7_pad_167_ELEM	(zx_mm7_NS | 0x0000a7)
-#define zx_mm7_pad_168_ELEM	(zx_mm7_NS | 0x0000a8)
-#define zx_mm7_pad_169_ELEM	(zx_mm7_NS | 0x0000a9)
-#define zx_mm7_pad_170_ELEM	(zx_mm7_NS | 0x0000aa)
-#define zx_mm7_pad_171_ELEM	(zx_mm7_NS | 0x0000ab)
-#define zx_mm7_pad_172_ELEM	(zx_mm7_NS | 0x0000ac)
-#define zx_mm7_pad_173_ELEM	(zx_mm7_NS | 0x0000ad)
-#define zx_mm7_pad_174_ELEM	(zx_mm7_NS | 0x0000ae)
-#define zx_mm7_pad_175_ELEM	(zx_mm7_NS | 0x0000af)
-#define zx_mm7_pad_176_ELEM	(zx_mm7_NS | 0x0000b0)
-#define zx_mm7_pad_177_ELEM	(zx_mm7_NS | 0x0000b1)
-#define zx_mm7_pad_178_ELEM	(zx_mm7_NS | 0x0000b2)
-#define zx_mm7_pad_179_ELEM	(zx_mm7_NS | 0x0000b3)
-#define zx_mm7_pad_180_ELEM	(zx_mm7_NS | 0x0000b4)
-#define zx_mm7_pad_181_ELEM	(zx_mm7_NS | 0x0000b5)
-#define zx_mm7_pad_182_ELEM	(zx_mm7_NS | 0x0000b6)
-#define zx_mm7_IdentityAddressingToken_ELEM	(zx_mm7_NS | 0x0000b7)
-#define zx_mm7__ELEM_MAX	184
-/* 37: zx_wst_el_tab */
-#define zx_wst_pad_0_ELEM	(zx_wst_NS | 0x000000)
-#define zx_wst_pad_1_ELEM	(zx_wst_NS | 0x000001)
-#define zx_wst_pad_2_ELEM	(zx_wst_NS | 0x000002)
-#define zx_wst_pad_3_ELEM	(zx_wst_NS | 0x000003)
-#define zx_wst_Code_ELEM	(zx_wst_NS | 0x000004)
-#define zx_wst_pad_5_ELEM	(zx_wst_NS | 0x000005)
-#define zx_wst_Issuer_ELEM	(zx_wst_NS | 0x000006)
-#define zx_wst_Entropy_ELEM	(zx_wst_NS | 0x000007)
-#define zx_wst_Lifetime_ELEM	(zx_wst_NS | 0x000008)
-#define zx_wst_pad_9_ELEM	(zx_wst_NS | 0x000009)
-#define zx_wst_DelegateTo_ELEM	(zx_wst_NS | 0x00000a)
-#define zx_wst_RenewTarget_ELEM	(zx_wst_NS | 0x00000b)
-#define zx_wst_KeySize_ELEM	(zx_wst_NS | 0x00000c)
-#define zx_wst_Renewing_ELEM	(zx_wst_NS | 0x00000d)
-#define zx_wst_TokenType_ELEM	(zx_wst_NS | 0x00000e)
-#define zx_wst_OnBehalfOf_ELEM	(zx_wst_NS | 0x00000f)
-#define zx_wst_Claims_ELEM	(zx_wst_NS | 0x000010)
-#define zx_wst_IssuedTokens_ELEM	(zx_wst_NS | 0x000011)
-#define zx_wst_pad_18_ELEM	(zx_wst_NS | 0x000012)
-#define zx_wst_RequestedProofToken_ELEM	(zx_wst_NS | 0x000013)
-#define zx_wst_Encryption_ELEM	(zx_wst_NS | 0x000014)
-#define zx_wst_Status_ELEM	(zx_wst_NS | 0x000015)
-#define zx_wst_RequestedSecurityToken_ELEM	(zx_wst_NS | 0x000016)
-#define zx_wst_SignatureAlgorithm_ELEM	(zx_wst_NS | 0x000017)
-#define zx_wst_ValidateTarget_ELEM	(zx_wst_NS | 0x000018)
-#define zx_wst_RequestSecurityToken_ELEM	(zx_wst_NS | 0x000019)
-#define zx_wst_RequestedAttachedReference_ELEM	(zx_wst_NS | 0x00001a)
-#define zx_wst_Primary_ELEM	(zx_wst_NS | 0x00001b)
-#define zx_wst_RequestedUnattachedReference_ELEM	(zx_wst_NS | 0x00001c)
-#define zx_wst_EncryptionAlgorithm_ELEM	(zx_wst_NS | 0x00001d)
-#define zx_wst_ProofEncryption_ELEM	(zx_wst_NS | 0x00001e)
-#define zx_wst_Participant_ELEM	(zx_wst_NS | 0x00001f)
-#define zx_wst_Participants_ELEM	(zx_wst_NS | 0x000020)
-#define zx_wst_RequestSecurityTokenResponse_ELEM	(zx_wst_NS | 0x000021)
-#define zx_wst_pad_34_ELEM	(zx_wst_NS | 0x000022)
-#define zx_wst_RequestSecurityTokenCollection_ELEM	(zx_wst_NS | 0x000023)
-#define zx_wst_Delegatable_ELEM	(zx_wst_NS | 0x000024)
-#define zx_wst_BinarySecret_ELEM	(zx_wst_NS | 0x000025)
-#define zx_wst_SignWith_ELEM	(zx_wst_NS | 0x000026)
-#define zx_wst_BinaryExchange_ELEM	(zx_wst_NS | 0x000027)
-#define zx_wst_pad_40_ELEM	(zx_wst_NS | 0x000028)
-#define zx_wst_Forwardable_ELEM	(zx_wst_NS | 0x000029)
-#define zx_wst_CombinedHash_ELEM	(zx_wst_NS | 0x00002a)
-#define zx_wst_RequestSecurityTokenResponseCollection_ELEM	(zx_wst_NS | 0x00002b)
-#define zx_wst_pad_44_ELEM	(zx_wst_NS | 0x00002c)
-#define zx_wst_pad_45_ELEM	(zx_wst_NS | 0x00002d)
-#define zx_wst_Reason_ELEM	(zx_wst_NS | 0x00002e)
-#define zx_wst_CancelTarget_ELEM	(zx_wst_NS | 0x00002f)
-#define zx_wst_Authenticator_ELEM	(zx_wst_NS | 0x000030)
-#define zx_wst_pad_49_ELEM	(zx_wst_NS | 0x000031)
-#define zx_wst_pad_50_ELEM	(zx_wst_NS | 0x000032)
-#define zx_wst_EncryptWith_ELEM	(zx_wst_NS | 0x000033)
-#define zx_wst_KeyType_ELEM	(zx_wst_NS | 0x000034)
-#define zx_wst_AuthenticationType_ELEM	(zx_wst_NS | 0x000035)
-#define zx_wst_Challenge_ELEM	(zx_wst_NS | 0x000036)
-#define zx_wst_CanonicalizationAlgorithm_ELEM	(zx_wst_NS | 0x000037)
-#define zx_wst_RequestType_ELEM	(zx_wst_NS | 0x000038)
-#define zx_wst_pad_57_ELEM	(zx_wst_NS | 0x000039)
-#define zx_wst_SignChallenge_ELEM	(zx_wst_NS | 0x00003a)
-#define zx_wst_pad_59_ELEM	(zx_wst_NS | 0x00003b)
-#define zx_wst_AllowPostdating_ELEM	(zx_wst_NS | 0x00003c)
-#define zx_wst_UseKey_ELEM	(zx_wst_NS | 0x00003d)
-#define zx_wst_pad_62_ELEM	(zx_wst_NS | 0x00003e)
-#define zx_wst_pad_63_ELEM	(zx_wst_NS | 0x00003f)
-#define zx_wst_pad_64_ELEM	(zx_wst_NS | 0x000040)
-#define zx_wst_pad_65_ELEM	(zx_wst_NS | 0x000041)
-#define zx_wst_SignChallengeResponse_ELEM	(zx_wst_NS | 0x000042)
-#define zx_wst_pad_67_ELEM	(zx_wst_NS | 0x000043)
-#define zx_wst_pad_68_ELEM	(zx_wst_NS | 0x000044)
-#define zx_wst_pad_69_ELEM	(zx_wst_NS | 0x000045)
-#define zx_wst_pad_70_ELEM	(zx_wst_NS | 0x000046)
-#define zx_wst_KeyExchangeToken_ELEM	(zx_wst_NS | 0x000047)
-#define zx_wst__ELEM_MAX	72
-/* 38: zx_wsp_el_tab */
-#define zx_wsp_pad_0_ELEM	(zx_wsp_NS | 0x000000)
-#define zx_wsp_pad_1_ELEM	(zx_wsp_NS | 0x000001)
-#define zx_wsp_pad_2_ELEM	(zx_wsp_NS | 0x000002)
-#define zx_wsp_All_ELEM	(zx_wsp_NS | 0x000003)
-#define zx_wsp_pad_4_ELEM	(zx_wsp_NS | 0x000004)
-#define zx_wsp_pad_5_ELEM	(zx_wsp_NS | 0x000005)
-#define zx_wsp_Policy_ELEM	(zx_wsp_NS | 0x000006)
-#define zx_wsp_pad_7_ELEM	(zx_wsp_NS | 0x000007)
-#define zx_wsp_pad_8_ELEM	(zx_wsp_NS | 0x000008)
-#define zx_wsp_AppliesTo_ELEM	(zx_wsp_NS | 0x000009)
-#define zx_wsp_ExactlyOne_ELEM	(zx_wsp_NS | 0x00000a)
-#define zx_wsp_pad_11_ELEM	(zx_wsp_NS | 0x00000b)
-#define zx_wsp_pad_12_ELEM	(zx_wsp_NS | 0x00000c)
-#define zx_wsp_pad_13_ELEM	(zx_wsp_NS | 0x00000d)
-#define zx_wsp_pad_14_ELEM	(zx_wsp_NS | 0x00000e)
-#define zx_wsp_PolicyReference_ELEM	(zx_wsp_NS | 0x00000f)
-#define zx_wsp_PolicyAttachment_ELEM	(zx_wsp_NS | 0x000010)
-#define zx_wsp__ELEM_MAX	17
-/* 39: zx_wsc_el_tab */
-#define zx_wsc_pad_0_ELEM	(zx_wsc_NS | 0x000000)
-#define zx_wsc_pad_1_ELEM	(zx_wsc_NS | 0x000001)
-#define zx_wsc_pad_2_ELEM	(zx_wsc_NS | 0x000002)
-#define zx_wsc_pad_3_ELEM	(zx_wsc_NS | 0x000003)
-#define zx_wsc_pad_4_ELEM	(zx_wsc_NS | 0x000004)
-#define zx_wsc_Label_ELEM	(zx_wsc_NS | 0x000005)
-#define zx_wsc_Length_ELEM	(zx_wsc_NS | 0x000006)
-#define zx_wsc_pad_7_ELEM	(zx_wsc_NS | 0x000007)
-#define zx_wsc_pad_8_ELEM	(zx_wsc_NS | 0x000008)
-#define zx_wsc_pad_9_ELEM	(zx_wsc_NS | 0x000009)
-#define zx_wsc_Properties_ELEM	(zx_wsc_NS | 0x00000a)
-#define zx_wsc_Offset_ELEM	(zx_wsc_NS | 0x00000b)
-#define zx_wsc_pad_12_ELEM	(zx_wsc_NS | 0x00000c)
-#define zx_wsc_pad_13_ELEM	(zx_wsc_NS | 0x00000d)
-#define zx_wsc_pad_14_ELEM	(zx_wsc_NS | 0x00000e)
-#define zx_wsc_Nonce_ELEM	(zx_wsc_NS | 0x00000f)
-#define zx_wsc_pad_16_ELEM	(zx_wsc_NS | 0x000010)
-#define zx_wsc_pad_17_ELEM	(zx_wsc_NS | 0x000011)
-#define zx_wsc_pad_18_ELEM	(zx_wsc_NS | 0x000012)
-#define zx_wsc_pad_19_ELEM	(zx_wsc_NS | 0x000013)
-#define zx_wsc_SecurityContextToken_ELEM	(zx_wsc_NS | 0x000014)
-#define zx_wsc_pad_21_ELEM	(zx_wsc_NS | 0x000015)
-#define zx_wsc_pad_22_ELEM	(zx_wsc_NS | 0x000016)
-#define zx_wsc_pad_23_ELEM	(zx_wsc_NS | 0x000017)
-#define zx_wsc_pad_24_ELEM	(zx_wsc_NS | 0x000018)
-#define zx_wsc_Generation_ELEM	(zx_wsc_NS | 0x000019)
-#define zx_wsc_pad_26_ELEM	(zx_wsc_NS | 0x00001a)
-#define zx_wsc_pad_27_ELEM	(zx_wsc_NS | 0x00001b)
-#define zx_wsc_pad_28_ELEM	(zx_wsc_NS | 0x00001c)
-#define zx_wsc_pad_29_ELEM	(zx_wsc_NS | 0x00001d)
-#define zx_wsc_DerivedKeyToken_ELEM	(zx_wsc_NS | 0x00001e)
-#define zx_wsc__ELEM_MAX	31
-/* 40: zx_xa_el_tab */
-#define zx_xa_pad_0_ELEM	(zx_xa_NS | 0x000000)
-#define zx_xa_pad_1_ELEM	(zx_xa_NS | 0x000001)
-#define zx_xa_pad_2_ELEM	(zx_xa_NS | 0x000002)
-#define zx_xa_pad_3_ELEM	(zx_xa_NS | 0x000003)
-#define zx_xa_Rule_ELEM	(zx_xa_NS | 0x000004)
-#define zx_xa_pad_5_ELEM	(zx_xa_NS | 0x000005)
-#define zx_xa_Policy_ELEM	(zx_xa_NS | 0x000006)
-#define zx_xa_Subject_ELEM	(zx_xa_NS | 0x000007)
-#define zx_xa_Subjects_ELEM	(zx_xa_NS | 0x000008)
-#define zx_xa_PolicySet_ELEM	(zx_xa_NS | 0x000009)
-#define zx_xa_Apply_ELEM	(zx_xa_NS | 0x00000a)
-#define zx_xa_Action_ELEM	(zx_xa_NS | 0x00000b)
-#define zx_xa_SubjectMatch_ELEM	(zx_xa_NS | 0x00000c)
-#define zx_xa_Resource_ELEM	(zx_xa_NS | 0x00000d)
-#define zx_xa_Resources_ELEM	(zx_xa_NS | 0x00000e)
-#define zx_xa_Obligation_ELEM	(zx_xa_NS | 0x00000f)
-#define zx_xa_Obligations_ELEM	(zx_xa_NS | 0x000010)
-#define zx_xa_PolicySetDefaults_ELEM	(zx_xa_NS | 0x000011)
-#define zx_xa_ResourceMatch_ELEM	(zx_xa_NS | 0x000012)
-#define zx_xa_AttributeValue_ELEM	(zx_xa_NS | 0x000013)
-#define zx_xa_PolicySetIdReference_ELEM	(zx_xa_NS | 0x000014)
-#define zx_xa_Target_ELEM	(zx_xa_NS | 0x000015)
-#define zx_xa_AttributeSelector_ELEM	(zx_xa_NS | 0x000016)
-#define zx_xa_Function_ELEM	(zx_xa_NS | 0x000017)
-#define zx_xa_AttributeAssignment_ELEM	(zx_xa_NS | 0x000018)
-#define zx_xa_pad_25_ELEM	(zx_xa_NS | 0x000019)
-#define zx_xa_SubjectAttributeDesignator_ELEM	(zx_xa_NS | 0x00001a)
-#define zx_xa_PolicySetCombinerParameters_ELEM	(zx_xa_NS | 0x00001b)
-#define zx_xa_pad_28_ELEM	(zx_xa_NS | 0x00001c)
-#define zx_xa_PolicyCombinerParameters_ELEM	(zx_xa_NS | 0x00001d)
-#define zx_xa_pad_30_ELEM	(zx_xa_NS | 0x00001e)
-#define zx_xa_Description_ELEM	(zx_xa_NS | 0x00001f)
-#define zx_xa_ResourceAttributeDesignator_ELEM	(zx_xa_NS | 0x000020)
-#define zx_xa_pad_33_ELEM	(zx_xa_NS | 0x000021)
-#define zx_xa_PolicyDefaults_ELEM	(zx_xa_NS | 0x000022)
-#define zx_xa_ActionAttributeDesignator_ELEM	(zx_xa_NS | 0x000023)
-#define zx_xa_Environment_ELEM	(zx_xa_NS | 0x000024)
-#define zx_xa_Environments_ELEM	(zx_xa_NS | 0x000025)
-#define zx_xa_pad_38_ELEM	(zx_xa_NS | 0x000026)
-#define zx_xa_Condition_ELEM	(zx_xa_NS | 0x000027)
-#define zx_xa_pad_40_ELEM	(zx_xa_NS | 0x000028)
-#define zx_xa_EnvironmentMatch_ELEM	(zx_xa_NS | 0x000029)
-#define zx_xa_CombinerParameter_ELEM	(zx_xa_NS | 0x00002a)
-#define zx_xa_CombinerParameters_ELEM	(zx_xa_NS | 0x00002b)
-#define zx_xa_pad_44_ELEM	(zx_xa_NS | 0x00002c)
-#define zx_xa_pad_45_ELEM	(zx_xa_NS | 0x00002d)
-#define zx_xa_ActionMatch_ELEM	(zx_xa_NS | 0x00002e)
-#define zx_xa_Actions_ELEM	(zx_xa_NS | 0x00002f)
-#define zx_xa_pad_48_ELEM	(zx_xa_NS | 0x000030)
-#define zx_xa_pad_49_ELEM	(zx_xa_NS | 0x000031)
-#define zx_xa_pad_50_ELEM	(zx_xa_NS | 0x000032)
-#define zx_xa_pad_51_ELEM	(zx_xa_NS | 0x000033)
-#define zx_xa_VariableReference_ELEM	(zx_xa_NS | 0x000034)
-#define zx_xa_VariableDefinition_ELEM	(zx_xa_NS | 0x000035)
-#define zx_xa_pad_54_ELEM	(zx_xa_NS | 0x000036)
-#define zx_xa_EnvironmentAttributeDesignator_ELEM	(zx_xa_NS | 0x000037)
-#define zx_xa_pad_56_ELEM	(zx_xa_NS | 0x000038)
-#define zx_xa_RuleCombinerParameters_ELEM	(zx_xa_NS | 0x000039)
-#define zx_xa_pad_58_ELEM	(zx_xa_NS | 0x00003a)
-#define zx_xa_pad_59_ELEM	(zx_xa_NS | 0x00003b)
-#define zx_xa_Expression_ELEM	(zx_xa_NS | 0x00003c)
-#define zx_xa_pad_61_ELEM	(zx_xa_NS | 0x00003d)
-#define zx_xa_XPathVersion_ELEM	(zx_xa_NS | 0x00003e)
-#define zx_xa_pad_63_ELEM	(zx_xa_NS | 0x00003f)
-#define zx_xa_pad_64_ELEM	(zx_xa_NS | 0x000040)
-#define zx_xa_pad_65_ELEM	(zx_xa_NS | 0x000041)
-#define zx_xa_pad_66_ELEM	(zx_xa_NS | 0x000042)
-#define zx_xa_PolicyIdReference_ELEM	(zx_xa_NS | 0x000043)
-#define zx_xa__ELEM_MAX	68
-/* 41: zx_xac_el_tab */
-#define zx_xac_pad_0_ELEM	(zx_xac_NS | 0x000000)
-#define zx_xac_pad_1_ELEM	(zx_xac_NS | 0x000001)
-#define zx_xac_pad_2_ELEM	(zx_xac_NS | 0x000002)
-#define zx_xac_pad_3_ELEM	(zx_xac_NS | 0x000003)
-#define zx_xac_pad_4_ELEM	(zx_xac_NS | 0x000004)
-#define zx_xac_pad_5_ELEM	(zx_xac_NS | 0x000005)
-#define zx_xac_Status_ELEM	(zx_xac_NS | 0x000006)
-#define zx_xac_Subject_ELEM	(zx_xac_NS | 0x000007)
-#define zx_xac_Resource_ELEM	(zx_xac_NS | 0x000008)
-#define zx_xac_Attribute_ELEM	(zx_xac_NS | 0x000009)
-#define zx_xac_StatusCode_ELEM	(zx_xac_NS | 0x00000a)
-#define zx_xac_pad_11_ELEM	(zx_xac_NS | 0x00000b)
-#define zx_xac_StatusDetail_ELEM	(zx_xac_NS | 0x00000c)
-#define zx_xac_StatusMessage_ELEM	(zx_xac_NS | 0x00000d)
-#define zx_xac_AttributeValue_ELEM	(zx_xac_NS | 0x00000e)
-#define zx_xac_ResourceContent_ELEM	(zx_xac_NS | 0x00000f)
-#define zx_xac_Action_ELEM	(zx_xac_NS | 0x000010)
-#define zx_xac_pad_17_ELEM	(zx_xac_NS | 0x000011)
-#define zx_xac_Decision_ELEM	(zx_xac_NS | 0x000012)
-#define zx_xac_pad_19_ELEM	(zx_xac_NS | 0x000013)
-#define zx_xac_pad_20_ELEM	(zx_xac_NS | 0x000014)
-#define zx_xac_Environment_ELEM	(zx_xac_NS | 0x000015)
-#define zx_xac_MissingAttributeDetail_ELEM	(zx_xac_NS | 0x000016)
-#define zx_xac_Response_ELEM	(zx_xac_NS | 0x000017)
-#define zx_xac_pad_24_ELEM	(zx_xac_NS | 0x000018)
-#define zx_xac_pad_25_ELEM	(zx_xac_NS | 0x000019)
-#define zx_xac_Result_ELEM	(zx_xac_NS | 0x00001a)
-#define zx_xac_Request_ELEM	(zx_xac_NS | 0x00001b)
-#define zx_xac__ELEM_MAX	28
-/* 42: zx_xasa_el_tab */
-#define zx_xasa_pad_0_ELEM	(zx_xasa_NS | 0x000000)
-#define zx_xasa_pad_1_ELEM	(zx_xasa_NS | 0x000001)
-#define zx_xasa_pad_2_ELEM	(zx_xasa_NS | 0x000002)
-#define zx_xasa_pad_3_ELEM	(zx_xasa_NS | 0x000003)
-#define zx_xasa_pad_4_ELEM	(zx_xasa_NS | 0x000004)
-#define zx_xasa_pad_5_ELEM	(zx_xasa_NS | 0x000005)
-#define zx_xasa_pad_6_ELEM	(zx_xasa_NS | 0x000006)
-#define zx_xasa_pad_7_ELEM	(zx_xasa_NS | 0x000007)
-#define zx_xasa_pad_8_ELEM	(zx_xasa_NS | 0x000008)
-#define zx_xasa_pad_9_ELEM	(zx_xasa_NS | 0x000009)
-#define zx_xasa_pad_10_ELEM	(zx_xasa_NS | 0x00000a)
-#define zx_xasa_pad_11_ELEM	(zx_xasa_NS | 0x00000b)
-#define zx_xasa_pad_12_ELEM	(zx_xasa_NS | 0x00000c)
-#define zx_xasa_pad_13_ELEM	(zx_xasa_NS | 0x00000d)
-#define zx_xasa_pad_14_ELEM	(zx_xasa_NS | 0x00000e)
-#define zx_xasa_pad_15_ELEM	(zx_xasa_NS | 0x00000f)
-#define zx_xasa_pad_16_ELEM	(zx_xasa_NS | 0x000010)
-#define zx_xasa_pad_17_ELEM	(zx_xasa_NS | 0x000011)
-#define zx_xasa_pad_18_ELEM	(zx_xasa_NS | 0x000012)
-#define zx_xasa_pad_19_ELEM	(zx_xasa_NS | 0x000013)
-#define zx_xasa_XACMLPolicyStatement_ELEM	(zx_xasa_NS | 0x000014)
-#define zx_xasa_pad_21_ELEM	(zx_xasa_NS | 0x000015)
-#define zx_xasa_pad_22_ELEM	(zx_xasa_NS | 0x000016)
-#define zx_xasa_pad_23_ELEM	(zx_xasa_NS | 0x000017)
-#define zx_xasa_pad_24_ELEM	(zx_xasa_NS | 0x000018)
-#define zx_xasa_pad_25_ELEM	(zx_xasa_NS | 0x000019)
-#define zx_xasa_pad_26_ELEM	(zx_xasa_NS | 0x00001a)
-#define zx_xasa_XACMLAuthzDecisionStatement_ELEM	(zx_xasa_NS | 0x00001b)
-#define zx_xasa__ELEM_MAX	28
-/* 43: zx_xasp_el_tab */
-#define zx_xasp_pad_0_ELEM	(zx_xasp_NS | 0x000000)
-#define zx_xasp_pad_1_ELEM	(zx_xasp_NS | 0x000001)
-#define zx_xasp_pad_2_ELEM	(zx_xasp_NS | 0x000002)
-#define zx_xasp_pad_3_ELEM	(zx_xasp_NS | 0x000003)
-#define zx_xasp_pad_4_ELEM	(zx_xasp_NS | 0x000004)
-#define zx_xasp_pad_5_ELEM	(zx_xasp_NS | 0x000005)
-#define zx_xasp_pad_6_ELEM	(zx_xasp_NS | 0x000006)
-#define zx_xasp_pad_7_ELEM	(zx_xasp_NS | 0x000007)
-#define zx_xasp_pad_8_ELEM	(zx_xasp_NS | 0x000008)
-#define zx_xasp_pad_9_ELEM	(zx_xasp_NS | 0x000009)
-#define zx_xasp_pad_10_ELEM	(zx_xasp_NS | 0x00000a)
-#define zx_xasp_pad_11_ELEM	(zx_xasp_NS | 0x00000b)
-#define zx_xasp_pad_12_ELEM	(zx_xasp_NS | 0x00000c)
-#define zx_xasp_pad_13_ELEM	(zx_xasp_NS | 0x00000d)
-#define zx_xasp_pad_14_ELEM	(zx_xasp_NS | 0x00000e)
-#define zx_xasp_pad_15_ELEM	(zx_xasp_NS | 0x00000f)
-#define zx_xasp_XACMLPolicyQuery_ELEM	(zx_xasp_NS | 0x000010)
-#define zx_xasp_pad_17_ELEM	(zx_xasp_NS | 0x000011)
-#define zx_xasp_pad_18_ELEM	(zx_xasp_NS | 0x000012)
-#define zx_xasp_pad_19_ELEM	(zx_xasp_NS | 0x000013)
-#define zx_xasp_pad_20_ELEM	(zx_xasp_NS | 0x000014)
-#define zx_xasp_pad_21_ELEM	(zx_xasp_NS | 0x000015)
-#define zx_xasp_pad_22_ELEM	(zx_xasp_NS | 0x000016)
-#define zx_xasp_XACMLAuthzDecisionQuery_ELEM	(zx_xasp_NS | 0x000017)
-#define zx_xasp__ELEM_MAX	24
-/* 44: zx_xasacd1_el_tab */
-#define zx_xasacd1_pad_0_ELEM	(zx_xasacd1_NS | 0x000000)
-#define zx_xasacd1_pad_1_ELEM	(zx_xasacd1_NS | 0x000001)
-#define zx_xasacd1_pad_2_ELEM	(zx_xasacd1_NS | 0x000002)
-#define zx_xasacd1_pad_3_ELEM	(zx_xasacd1_NS | 0x000003)
-#define zx_xasacd1_pad_4_ELEM	(zx_xasacd1_NS | 0x000004)
-#define zx_xasacd1_pad_5_ELEM	(zx_xasacd1_NS | 0x000005)
-#define zx_xasacd1_pad_6_ELEM	(zx_xasacd1_NS | 0x000006)
-#define zx_xasacd1_pad_7_ELEM	(zx_xasacd1_NS | 0x000007)
-#define zx_xasacd1_pad_8_ELEM	(zx_xasacd1_NS | 0x000008)
-#define zx_xasacd1_pad_9_ELEM	(zx_xasacd1_NS | 0x000009)
-#define zx_xasacd1_pad_10_ELEM	(zx_xasacd1_NS | 0x00000a)
-#define zx_xasacd1_pad_11_ELEM	(zx_xasacd1_NS | 0x00000b)
-#define zx_xasacd1_pad_12_ELEM	(zx_xasacd1_NS | 0x00000c)
-#define zx_xasacd1_pad_13_ELEM	(zx_xasacd1_NS | 0x00000d)
-#define zx_xasacd1_pad_14_ELEM	(zx_xasacd1_NS | 0x00000e)
-#define zx_xasacd1_pad_15_ELEM	(zx_xasacd1_NS | 0x00000f)
-#define zx_xasacd1_pad_16_ELEM	(zx_xasacd1_NS | 0x000010)
-#define zx_xasacd1_pad_17_ELEM	(zx_xasacd1_NS | 0x000011)
-#define zx_xasacd1_ReferencedPolicies_ELEM	(zx_xasacd1_NS | 0x000012)
-#define zx_xasacd1_pad_19_ELEM	(zx_xasacd1_NS | 0x000013)
-#define zx_xasacd1_XACMLPolicyStatement_ELEM	(zx_xasacd1_NS | 0x000014)
-#define zx_xasacd1_pad_21_ELEM	(zx_xasacd1_NS | 0x000015)
-#define zx_xasacd1_pad_22_ELEM	(zx_xasacd1_NS | 0x000016)
-#define zx_xasacd1_pad_23_ELEM	(zx_xasacd1_NS | 0x000017)
-#define zx_xasacd1_pad_24_ELEM	(zx_xasacd1_NS | 0x000018)
-#define zx_xasacd1_pad_25_ELEM	(zx_xasacd1_NS | 0x000019)
-#define zx_xasacd1_pad_26_ELEM	(zx_xasacd1_NS | 0x00001a)
-#define zx_xasacd1_XACMLAuthzDecisionStatement_ELEM	(zx_xasacd1_NS | 0x00001b)
-#define zx_xasacd1__ELEM_MAX	28
-/* 45: zx_xaspcd1_el_tab */
-#define zx_xaspcd1_pad_0_ELEM	(zx_xaspcd1_NS | 0x000000)
-#define zx_xaspcd1_pad_1_ELEM	(zx_xaspcd1_NS | 0x000001)
-#define zx_xaspcd1_pad_2_ELEM	(zx_xaspcd1_NS | 0x000002)
-#define zx_xaspcd1_pad_3_ELEM	(zx_xaspcd1_NS | 0x000003)
-#define zx_xaspcd1_pad_4_ELEM	(zx_xaspcd1_NS | 0x000004)
-#define zx_xaspcd1_pad_5_ELEM	(zx_xaspcd1_NS | 0x000005)
-#define zx_xaspcd1_pad_6_ELEM	(zx_xaspcd1_NS | 0x000006)
-#define zx_xaspcd1_pad_7_ELEM	(zx_xaspcd1_NS | 0x000007)
-#define zx_xaspcd1_pad_8_ELEM	(zx_xaspcd1_NS | 0x000008)
-#define zx_xaspcd1_pad_9_ELEM	(zx_xaspcd1_NS | 0x000009)
-#define zx_xaspcd1_pad_10_ELEM	(zx_xaspcd1_NS | 0x00000a)
-#define zx_xaspcd1_pad_11_ELEM	(zx_xaspcd1_NS | 0x00000b)
-#define zx_xaspcd1_pad_12_ELEM	(zx_xaspcd1_NS | 0x00000c)
-#define zx_xaspcd1_pad_13_ELEM	(zx_xaspcd1_NS | 0x00000d)
-#define zx_xaspcd1_pad_14_ELEM	(zx_xaspcd1_NS | 0x00000e)
-#define zx_xaspcd1_pad_15_ELEM	(zx_xaspcd1_NS | 0x00000f)
-#define zx_xaspcd1_XACMLPolicyQuery_ELEM	(zx_xaspcd1_NS | 0x000010)
-#define zx_xaspcd1_pad_17_ELEM	(zx_xaspcd1_NS | 0x000011)
-#define zx_xaspcd1_pad_18_ELEM	(zx_xaspcd1_NS | 0x000012)
-#define zx_xaspcd1_pad_19_ELEM	(zx_xaspcd1_NS | 0x000013)
-#define zx_xaspcd1_pad_20_ELEM	(zx_xaspcd1_NS | 0x000014)
-#define zx_xaspcd1_pad_21_ELEM	(zx_xaspcd1_NS | 0x000015)
-#define zx_xaspcd1_pad_22_ELEM	(zx_xaspcd1_NS | 0x000016)
-#define zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM	(zx_xaspcd1_NS | 0x000017)
-#define zx_xaspcd1__ELEM_MAX	24
-/* 46: zx_dp_el_tab */
-#define zx_dp_pad_0_ELEM	(zx_dp_NS | 0x000000)
-#define zx_dp_pad_1_ELEM	(zx_dp_NS | 0x000001)
-#define zx_dp_pad_2_ELEM	(zx_dp_NS | 0x000002)
-#define zx_dp_pad_3_ELEM	(zx_dp_NS | 0x000003)
-#define zx_dp_pad_4_ELEM	(zx_dp_NS | 0x000004)
-#define zx_dp_pad_5_ELEM	(zx_dp_NS | 0x000005)
-#define zx_dp_pad_6_ELEM	(zx_dp_NS | 0x000006)
-#define zx_dp_Request_ELEM	(zx_dp_NS | 0x000007)
-#define zx_dp_Response_ELEM	(zx_dp_NS | 0x000008)
-#define zx_dp_NotifyTo_ELEM	(zx_dp_NS | 0x000009)
-#define zx_dp__ELEM_MAX	10
-/* 47: zx_pmm_el_tab */
-#define zx_pmm_pad_0_ELEM	(zx_pmm_NS | 0x000000)
-#define zx_pmm_pad_1_ELEM	(zx_pmm_NS | 0x000001)
-#define zx_pmm_pad_2_ELEM	(zx_pmm_NS | 0x000002)
-#define zx_pmm_pad_3_ELEM	(zx_pmm_NS | 0x000003)
-#define zx_pmm_pad_4_ELEM	(zx_pmm_NS | 0x000004)
-#define zx_pmm_pad_5_ELEM	(zx_pmm_NS | 0x000005)
-#define zx_pmm_pad_6_ELEM	(zx_pmm_NS | 0x000006)
-#define zx_pmm_pad_7_ELEM	(zx_pmm_NS | 0x000007)
-#define zx_pmm_PMUpdate_ELEM	(zx_pmm_NS | 0x000008)
-#define zx_pmm_pad_9_ELEM	(zx_pmm_NS | 0x000009)
-#define zx_pmm_PMActivate_ELEM	(zx_pmm_NS | 0x00000a)
-#define zx_pmm_pad_11_ELEM	(zx_pmm_NS | 0x00000b)
-#define zx_pmm_PMUpdateItem_ELEM	(zx_pmm_NS | 0x00000c)
-#define zx_pmm_PMDelete_ELEM	(zx_pmm_NS | 0x00000d)
-#define zx_pmm_PMActivateItem_ELEM	(zx_pmm_NS | 0x00000e)
-#define zx_pmm_pad_15_ELEM	(zx_pmm_NS | 0x00000f)
-#define zx_pmm_PMUpdateResponse_ELEM	(zx_pmm_NS | 0x000010)
-#define zx_pmm_PMDeleteItem_ELEM	(zx_pmm_NS | 0x000011)
-#define zx_pmm_PMActivateResponse_ELEM	(zx_pmm_NS | 0x000012)
-#define zx_pmm_Provision_ELEM	(zx_pmm_NS | 0x000013)
-#define zx_pmm_pad_20_ELEM	(zx_pmm_NS | 0x000014)
-#define zx_pmm_PMDeleteResponse_ELEM	(zx_pmm_NS | 0x000015)
-#define zx_pmm_PMDeactivate_ELEM	(zx_pmm_NS | 0x000016)
-#define zx_pmm_pad_23_ELEM	(zx_pmm_NS | 0x000017)
-#define zx_pmm_pad_24_ELEM	(zx_pmm_NS | 0x000018)
-#define zx_pmm_pad_25_ELEM	(zx_pmm_NS | 0x000019)
-#define zx_pmm_PMDeactivateItem_ELEM	(zx_pmm_NS | 0x00001a)
-#define zx_pmm_ProvisionResponse_ELEM	(zx_pmm_NS | 0x00001b)
-#define zx_pmm_pad_28_ELEM	(zx_pmm_NS | 0x00001c)
-#define zx_pmm_pad_29_ELEM	(zx_pmm_NS | 0x00001d)
-#define zx_pmm_PMDeactivateResponse_ELEM	(zx_pmm_NS | 0x00001e)
-#define zx_pmm_PMSetStatus_ELEM	(zx_pmm_NS | 0x00001f)
-#define zx_pmm_pad_32_ELEM	(zx_pmm_NS | 0x000020)
-#define zx_pmm_pad_33_ELEM	(zx_pmm_NS | 0x000021)
-#define zx_pmm_pad_34_ELEM	(zx_pmm_NS | 0x000022)
-#define zx_pmm_pad_35_ELEM	(zx_pmm_NS | 0x000023)
-#define zx_pmm_PMGetStatus_ELEM	(zx_pmm_NS | 0x000024)
-#define zx_pmm_pad_37_ELEM	(zx_pmm_NS | 0x000025)
-#define zx_pmm_pad_38_ELEM	(zx_pmm_NS | 0x000026)
-#define zx_pmm_PMSetStatusResponse_ELEM	(zx_pmm_NS | 0x000027)
-#define zx_pmm_pad_40_ELEM	(zx_pmm_NS | 0x000028)
-#define zx_pmm_pad_41_ELEM	(zx_pmm_NS | 0x000029)
-#define zx_pmm_pad_42_ELEM	(zx_pmm_NS | 0x00002a)
-#define zx_pmm_pad_43_ELEM	(zx_pmm_NS | 0x00002b)
-#define zx_pmm_PMGetStatusResponse_ELEM	(zx_pmm_NS | 0x00002c)
-#define zx_pmm__ELEM_MAX	45
-/* 48: zx_prov_el_tab */
-#define zx_prov_pad_0_ELEM	(zx_prov_NS | 0x000000)
-#define zx_prov_pad_1_ELEM	(zx_prov_NS | 0x000001)
-#define zx_prov_pad_2_ELEM	(zx_prov_NS | 0x000002)
-#define zx_prov_pad_3_ELEM	(zx_prov_NS | 0x000003)
-#define zx_prov_Poll_ELEM	(zx_prov_NS | 0x000004)
-#define zx_prov_pad_5_ELEM	(zx_prov_NS | 0x000005)
-#define zx_prov_pad_6_ELEM	(zx_prov_NS | 0x000006)
-#define zx_prov_PMEInfo_ELEM	(zx_prov_NS | 0x000007)
-#define zx_prov_pad_8_ELEM	(zx_prov_NS | 0x000008)
-#define zx_prov_PMEEnable_ELEM	(zx_prov_NS | 0x000009)
-#define zx_prov_PMEEnabled_ELEM	(zx_prov_NS | 0x00000a)
-#define zx_prov_pad_11_ELEM	(zx_prov_NS | 0x00000b)
-#define zx_prov_PMESize_ELEM	(zx_prov_NS | 0x00000c)
-#define zx_prov_PMECreatorID_ELEM	(zx_prov_NS | 0x00000d)
-#define zx_prov_PMEDelete_ELEM	(zx_prov_NS | 0x00000e)
-#define zx_prov_PMEGetInfo_ELEM	(zx_prov_NS | 0x00000f)
-#define zx_prov_pad_16_ELEM	(zx_prov_NS | 0x000010)
-#define zx_prov_PMEEnableResponse_ELEM	(zx_prov_NS | 0x000011)
-#define zx_prov_pad_18_ELEM	(zx_prov_NS | 0x000012)
-#define zx_prov_PMID_ELEM	(zx_prov_NS | 0x000013)
-#define zx_prov_pad_20_ELEM	(zx_prov_NS | 0x000014)
-#define zx_prov_PMEngineRef_ELEM	(zx_prov_NS | 0x000015)
-#define zx_prov_PMEDeleteResponse_ELEM	(zx_prov_NS | 0x000016)
-#define zx_prov_PMEGetInfoResponse_ELEM	(zx_prov_NS | 0x000017)
-#define zx_prov_PMEWhenEnabled_ELEM	(zx_prov_NS | 0x000018)
-#define zx_prov_PMRegisterDescriptor_ELEM	(zx_prov_NS | 0x000019)
-#define zx_prov_PMEDownload_ELEM	(zx_prov_NS | 0x00001a)
-#define zx_prov_PMEHash_ELEM	(zx_prov_NS | 0x00001b)
-#define zx_prov_PMDelete_ELEM	(zx_prov_NS | 0x00001c)
-#define zx_prov_PMRegisterDescriptorItem_ELEM	(zx_prov_NS | 0x00001d)
-#define zx_prov_State_ELEM	(zx_prov_NS | 0x00001e)
-#define zx_prov_PMERegister_ELEM	(zx_prov_NS | 0x00001f)
-#define zx_prov_PMDeleteItem_ELEM	(zx_prov_NS | 0x000020)
-#define zx_prov_PMRegisterDescriptorResponse_ELEM	(zx_prov_NS | 0x000021)
-#define zx_prov_PMEDownloadResponse_ELEM	(zx_prov_NS | 0x000022)
-#define zx_prov_EngineData_ELEM	(zx_prov_NS | 0x000023)
-#define zx_prov_PMDeleteResponse_ELEM	(zx_prov_NS | 0x000024)
-#define zx_prov_PMRegisterDescriptorResponseItem_ELEM	(zx_prov_NS | 0x000025)
-#define zx_prov_pad_38_ELEM	(zx_prov_NS | 0x000026)
-#define zx_prov_PMERegisterResponse_ELEM	(zx_prov_NS | 0x000027)
-#define zx_prov_PMGetDescriptor_ELEM	(zx_prov_NS | 0x000028)
-#define zx_prov_PMGetStatus_ELEM	(zx_prov_NS | 0x000029)
-#define zx_prov_PollResponse_ELEM	(zx_prov_NS | 0x00002a)
-#define zx_prov_PMRTData_ELEM	(zx_prov_NS | 0x00002b)
-#define zx_prov_PMEWhenCreated_ELEM	(zx_prov_NS | 0x00002c)
-#define zx_prov_pad_45_ELEM	(zx_prov_NS | 0x00002d)
-#define zx_prov_PMSetStatus_ELEM	(zx_prov_NS | 0x00002e)
-#define zx_prov_PMDescriptor_ELEM	(zx_prov_NS | 0x00002f)
-#define zx_prov_PMGetDescriptorResponse_ELEM	(zx_prov_NS | 0x000030)
-#define zx_prov_PMGetStatusResponse_ELEM	(zx_prov_NS | 0x000031)
-#define zx_prov_PMInitData_ELEM	(zx_prov_NS | 0x000032)
-#define zx_prov_CallbackEPR_ELEM	(zx_prov_NS | 0x000033)
-#define zx_prov_PMDeactivate_ELEM	(zx_prov_NS | 0x000034)
-#define zx_prov_ProvisioningHandle_ELEM	(zx_prov_NS | 0x000035)
-#define zx_prov_PMSetStatusResponse_ELEM	(zx_prov_NS | 0x000036)
-#define zx_prov_PMEDisable_ELEM	(zx_prov_NS | 0x000037)
-#define zx_prov_PMDeactivateItem_ELEM	(zx_prov_NS | 0x000038)
-#define zx_prov_ProvisioningServiceEPR_ELEM	(zx_prov_NS | 0x000039)
-#define zx_prov_PMStatus_ELEM	(zx_prov_NS | 0x00003a)
-#define zx_prov_PMEUpload_ELEM	(zx_prov_NS | 0x00003b)
-#define zx_prov_PMDeactivateResponse_ELEM	(zx_prov_NS | 0x00003c)
-#define zx_prov_pad_61_ELEM	(zx_prov_NS | 0x00003d)
-#define zx_prov_PMEUploadMax_ELEM	(zx_prov_NS | 0x00003e)
-#define zx_prov_PMEDisableResponse_ELEM	(zx_prov_NS | 0x00003f)
-#define zx_prov_pad_64_ELEM	(zx_prov_NS | 0x000040)
-#define zx_prov_pad_65_ELEM	(zx_prov_NS | 0x000041)
-#define zx_prov_pad_66_ELEM	(zx_prov_NS | 0x000042)
-#define zx_prov_PMEUploadResponse_ELEM	(zx_prov_NS | 0x000043)
-#define zx_prov_PMUpdate_ELEM	(zx_prov_NS | 0x000044)
-#define zx_prov_UpdateEPR_ELEM	(zx_prov_NS | 0x000045)
-#define zx_prov_PMActivate_ELEM	(zx_prov_NS | 0x000046)
-#define zx_prov_pad_71_ELEM	(zx_prov_NS | 0x000047)
-#define zx_prov_PMUpdateItem_ELEM	(zx_prov_NS | 0x000048)
-#define zx_prov_UpdateEPRItem_ELEM	(zx_prov_NS | 0x000049)
-#define zx_prov_PMActivateItem_ELEM	(zx_prov_NS | 0x00004a)
-#define zx_prov_pad_75_ELEM	(zx_prov_NS | 0x00004b)
-#define zx_prov_PMUpdateResponse_ELEM	(zx_prov_NS | 0x00004c)
-#define zx_prov_UpdateEPRResponse_ELEM	(zx_prov_NS | 0x00004d)
-#define zx_prov_PMActivateResponse_ELEM	(zx_prov_NS | 0x00004e)
-#define zx_prov_pad_79_ELEM	(zx_prov_NS | 0x00004f)
-#define zx_prov_pad_80_ELEM	(zx_prov_NS | 0x000050)
-#define zx_prov_pad_81_ELEM	(zx_prov_NS | 0x000051)
-#define zx_prov_PMDArtifact_ELEM	(zx_prov_NS | 0x000052)
-#define zx_prov__ELEM_MAX	83
-/* 49: zx_idp_el_tab */
-#define zx_idp_pad_0_ELEM	(zx_idp_NS | 0x000000)
-#define zx_idp_pad_1_ELEM	(zx_idp_NS | 0x000001)
-#define zx_idp_pad_2_ELEM	(zx_idp_NS | 0x000002)
-#define zx_idp_pad_3_ELEM	(zx_idp_NS | 0x000003)
-#define zx_idp_pad_4_ELEM	(zx_idp_NS | 0x000004)
-#define zx_idp_pad_5_ELEM	(zx_idp_NS | 0x000005)
-#define zx_idp_pad_6_ELEM	(zx_idp_NS | 0x000006)
-#define zx_idp_MEDInfo_ELEM	(zx_idp_NS | 0x000007)
-#define zx_idp_pad_8_ELEM	(zx_idp_NS | 0x000008)
-#define zx_idp_pad_9_ELEM	(zx_idp_NS | 0x000009)
-#define zx_idp_pad_10_ELEM	(zx_idp_NS | 0x00000a)
-#define zx_idp_pad_11_ELEM	(zx_idp_NS | 0x00000b)
-#define zx_idp_GetAssertion_ELEM	(zx_idp_NS | 0x00000c)
-#define zx_idp_CreatedStatus_ELEM	(zx_idp_NS | 0x00000d)
-#define zx_idp_pad_14_ELEM	(zx_idp_NS | 0x00000e)
-#define zx_idp_GetProviderInfo_ELEM	(zx_idp_NS | 0x00000f)
-#define zx_idp_pad_16_ELEM	(zx_idp_NS | 0x000010)
-#define zx_idp_CreatedStatusItem_ELEM	(zx_idp_NS | 0x000011)
-#define zx_idp_AssertionItem_ELEM	(zx_idp_NS | 0x000012)
-#define zx_idp_pad_19_ELEM	(zx_idp_NS | 0x000013)
-#define zx_idp_GetAssertionResponse_ELEM	(zx_idp_NS | 0x000014)
-#define zx_idp_CreatedStatusResponse_ELEM	(zx_idp_NS | 0x000015)
-#define zx_idp_pad_22_ELEM	(zx_idp_NS | 0x000016)
-#define zx_idp_GetProviderInfoResponse_ELEM	(zx_idp_NS | 0x000017)
-#define zx_idp_GetAssertionResponseItem_ELEM	(zx_idp_NS | 0x000018)
-#define zx_idp_ProviderID_ELEM	(zx_idp_NS | 0x000019)
-#define zx_idp_pad_26_ELEM	(zx_idp_NS | 0x00001a)
-#define zx_idp_ProviderInfo_ELEM	(zx_idp_NS | 0x00001b)
-#define zx_idp_AuthnContextRestriction_ELEM	(zx_idp_NS | 0x00001c)
-#define zx_idp_pad_29_ELEM	(zx_idp_NS | 0x00001d)
-#define zx_idp_pad_30_ELEM	(zx_idp_NS | 0x00001e)
-#define zx_idp_pad_31_ELEM	(zx_idp_NS | 0x00001f)
-#define zx_idp_pad_32_ELEM	(zx_idp_NS | 0x000020)
-#define zx_idp_SubjectRestriction_ELEM	(zx_idp_NS | 0x000021)
-#define zx_idp__ELEM_MAX	34
-/* 50: zx_shps_el_tab */
-#define zx_shps_pad_0_ELEM	(zx_shps_NS | 0x000000)
-#define zx_shps_pad_1_ELEM	(zx_shps_NS | 0x000001)
-#define zx_shps_pad_2_ELEM	(zx_shps_NS | 0x000002)
-#define zx_shps_pad_3_ELEM	(zx_shps_NS | 0x000003)
-#define zx_shps_Poll_ELEM	(zx_shps_NS | 0x000004)
-#define zx_shps_pad_5_ELEM	(zx_shps_NS | 0x000005)
-#define zx_shps_Invoke_ELEM	(zx_shps_NS | 0x000006)
-#define zx_shps_pad_7_ELEM	(zx_shps_NS | 0x000007)
-#define zx_shps_Register_ELEM	(zx_shps_NS | 0x000008)
-#define zx_shps_pad_9_ELEM	(zx_shps_NS | 0x000009)
-#define zx_shps_Query_ELEM	(zx_shps_NS | 0x00000a)
-#define zx_shps_ProxyInvoke_ELEM	(zx_shps_NS | 0x00000b)
-#define zx_shps_PollResponse_ELEM	(zx_shps_NS | 0x00000c)
-#define zx_shps_ServiceStatus_ELEM	(zx_shps_NS | 0x00000d)
-#define zx_shps_SetStatus_ELEM	(zx_shps_NS | 0x00000e)
-#define zx_shps_ProxyInvokeItem_ELEM	(zx_shps_NS | 0x00000f)
-#define zx_shps_RegisterResponse_ELEM	(zx_shps_NS | 0x000010)
-#define zx_shps_InvocationContext_ELEM	(zx_shps_NS | 0x000011)
-#define zx_shps_SetStatusItem_ELEM	(zx_shps_NS | 0x000012)
-#define zx_shps_ProxyInvokeResponse_ELEM	(zx_shps_NS | 0x000013)
-#define zx_shps_RegisterResponseItem_ELEM	(zx_shps_NS | 0x000014)
-#define zx_shps_Update_ELEM	(zx_shps_NS | 0x000015)
-#define zx_shps_SetStatusResponse_ELEM	(zx_shps_NS | 0x000016)
-#define zx_shps_ProxyInvokeResponseItem_ELEM	(zx_shps_NS | 0x000017)
-#define zx_shps_InvokeResponse_ELEM	(zx_shps_NS | 0x000018)
-#define zx_shps_ResponseHeaders_ELEM	(zx_shps_NS | 0x000019)
-#define zx_shps_InvokingProvider_ELEM	(zx_shps_NS | 0x00001a)
-#define zx_shps_InvokingPrincipal_ELEM	(zx_shps_NS | 0x00001b)
-#define zx_shps_InvokeResponseItem_ELEM	(zx_shps_NS | 0x00001c)
-#define zx_shps_GetStatus_ELEM	(zx_shps_NS | 0x00001d)
-#define zx_shps_QueryRegistered_ELEM	(zx_shps_NS | 0x00001e)
-#define zx_shps_Delete_ELEM	(zx_shps_NS | 0x00001f)
-#define zx_shps_pad_32_ELEM	(zx_shps_NS | 0x000020)
-#define zx_shps_ServiceHandle_ELEM	(zx_shps_NS | 0x000021)
-#define zx_shps_RequestHeaders_ELEM	(zx_shps_NS | 0x000022)
-#define zx_shps_InvokeItem_ELEM	(zx_shps_NS | 0x000023)
-#define zx_shps_CallbackEPR_ELEM	(zx_shps_NS | 0x000024)
-#define zx_shps_GetStatusResponse_ELEM	(zx_shps_NS | 0x000025)
-#define zx_shps_QueryRegisteredResponse_ELEM	(zx_shps_NS | 0x000026)
-#define zx_shps_UpdateResponse_ELEM	(zx_shps_NS | 0x000027)
-#define zx_shps_pad_40_ELEM	(zx_shps_NS | 0x000028)
-#define zx_shps_GetStatusResponseItem_ELEM	(zx_shps_NS | 0x000029)
-#define zx_shps_pad_42_ELEM	(zx_shps_NS | 0x00002a)
-#define zx_shps_QueryResponse_ELEM	(zx_shps_NS | 0x00002b)
-#define zx_shps_pad_44_ELEM	(zx_shps_NS | 0x00002c)
-#define zx_shps_pad_45_ELEM	(zx_shps_NS | 0x00002d)
-#define zx_shps_pad_46_ELEM	(zx_shps_NS | 0x00002e)
-#define zx_shps_pad_47_ELEM	(zx_shps_NS | 0x00002f)
-#define zx_shps_pad_48_ELEM	(zx_shps_NS | 0x000030)
-#define zx_shps_DeleteResponse_ELEM	(zx_shps_NS | 0x000031)
-#define zx_shps_UpdateItem_ELEM	(zx_shps_NS | 0x000032)
-#define zx_shps__ELEM_MAX	51
-/* 51: zx_demomed_el_tab */
-#define zx_demomed_pad_0_ELEM	(zx_demomed_NS | 0x000000)
-#define zx_demomed_pad_1_ELEM	(zx_demomed_NS | 0x000001)
-#define zx_demomed_pad_2_ELEM	(zx_demomed_NS | 0x000002)
-#define zx_demomed_pad_3_ELEM	(zx_demomed_NS | 0x000003)
-#define zx_demomed_Type_ELEM	(zx_demomed_NS | 0x000004)
-#define zx_demomed_Count_ELEM	(zx_demomed_NS | 0x000005)
-#define zx_demomed_Object_ELEM	(zx_demomed_NS | 0x000006)
-#define zx_demomed_Comment_ELEM	(zx_demomed_NS | 0x000007)
-#define zx_demomed_Dir_ELEM	(zx_demomed_NS | 0x000008)
-#define zx_demomed_Name_ELEM	(zx_demomed_NS | 0x000009)
-#define zx_demomed_pad_10_ELEM	(zx_demomed_NS | 0x00000a)
-#define zx_demomed_pad_11_ELEM	(zx_demomed_NS | 0x00000b)
-#define zx_demomed_Created_ELEM	(zx_demomed_NS | 0x00000c)
-#define zx_demomed_pad_13_ELEM	(zx_demomed_NS | 0x00000d)
-#define zx_demomed_pad_14_ELEM	(zx_demomed_NS | 0x00000e)
-#define zx_demomed_ObjectData_ELEM	(zx_demomed_NS | 0x00000f)
-#define zx_demomed_GetObjectRequest_ELEM	(zx_demomed_NS | 0x000010)
-#define zx_demomed_GetObjectResponse_ELEM	(zx_demomed_NS | 0x000011)
-#define zx_demomed_pad_18_ELEM	(zx_demomed_NS | 0x000012)
-#define zx_demomed_pad_19_ELEM	(zx_demomed_NS | 0x000013)
-#define zx_demomed_GetObjectListRequest_ELEM	(zx_demomed_NS | 0x000014)
-#define zx_demomed_GetObjectListResponse_ELEM	(zx_demomed_NS | 0x000015)
-#define zx_demomed_pad_22_ELEM	(zx_demomed_NS | 0x000016)
-#define zx_demomed_pad_23_ELEM	(zx_demomed_NS | 0x000017)
-#define zx_demomed_DeleteObjectRequest_ELEM	(zx_demomed_NS | 0x000018)
-#define zx_demomed_DeleteObjectResponse_ELEM	(zx_demomed_NS | 0x000019)
-#define zx_demomed_pad_26_ELEM	(zx_demomed_NS | 0x00001a)
-#define zx_demomed_pad_27_ELEM	(zx_demomed_NS | 0x00001b)
-#define zx_demomed_pad_28_ELEM	(zx_demomed_NS | 0x00001c)
-#define zx_demomed_pad_29_ELEM	(zx_demomed_NS | 0x00001d)
-#define zx_demomed_ObjectStoreInfo_ELEM	(zx_demomed_NS | 0x00001e)
-#define zx_demomed_ObjectSearchParm_ELEM	(zx_demomed_NS | 0x00001f)
-#define zx_demomed_pad_32_ELEM	(zx_demomed_NS | 0x000020)
-#define zx_demomed_StoreObjectRequest_ELEM	(zx_demomed_NS | 0x000021)
-#define zx_demomed_StoreObjectResponse_ELEM	(zx_demomed_NS | 0x000022)
-#define zx_demomed_pad_35_ELEM	(zx_demomed_NS | 0x000023)
-#define zx_demomed_pad_36_ELEM	(zx_demomed_NS | 0x000024)
-#define zx_demomed_pad_37_ELEM	(zx_demomed_NS | 0x000025)
-#define zx_demomed_ObjectID_ELEM	(zx_demomed_NS | 0x000026)
-#define zx_demomed_pad_39_ELEM	(zx_demomed_NS | 0x000027)
-#define zx_demomed_ObjectInfo_ELEM	(zx_demomed_NS | 0x000028)
-#define zx_demomed_pad_41_ELEM	(zx_demomed_NS | 0x000029)
-#define zx_demomed_pad_42_ELEM	(zx_demomed_NS | 0x00002a)
-#define zx_demomed_objectID_ELEM	(zx_demomed_NS | 0x00002b)
-#define zx_demomed__ELEM_MAX	44
-/* 52: zx_hrxml_el_tab */
-#define zx_hrxml_pad_0_ELEM	(zx_hrxml_NS | 0x000000)
-#define zx_hrxml_pad_1_ELEM	(zx_hrxml_NS | 0x000001)
-#define zx_hrxml_pad_2_ELEM	(zx_hrxml_NS | 0x000002)
-#define zx_hrxml_pad_3_ELEM	(zx_hrxml_NS | 0x000003)
-#define zx_hrxml_pad_4_ELEM	(zx_hrxml_NS | 0x000004)
-#define zx_hrxml_pad_5_ELEM	(zx_hrxml_NS | 0x000005)
-#define zx_hrxml_pad_6_ELEM	(zx_hrxml_NS | 0x000006)
-#define zx_hrxml_pad_7_ELEM	(zx_hrxml_NS | 0x000007)
-#define zx_hrxml_pad_8_ELEM	(zx_hrxml_NS | 0x000008)
-#define zx_hrxml_pad_9_ELEM	(zx_hrxml_NS | 0x000009)
-#define zx_hrxml_pad_10_ELEM	(zx_hrxml_NS | 0x00000a)
-#define zx_hrxml_pad_11_ELEM	(zx_hrxml_NS | 0x00000b)
-#define zx_hrxml_pad_12_ELEM	(zx_hrxml_NS | 0x00000c)
-#define zx_hrxml_Use_ELEM	(zx_hrxml_NS | 0x00000d)
-#define zx_hrxml_pad_14_ELEM	(zx_hrxml_NS | 0x00000e)
-#define zx_hrxml_pad_15_ELEM	(zx_hrxml_NS | 0x00000f)
-#define zx_hrxml_Patent_ELEM	(zx_hrxml_NS | 0x000010)
-#define zx_hrxml_pad_17_ELEM	(zx_hrxml_NS | 0x000011)
-#define zx_hrxml_pad_18_ELEM	(zx_hrxml_NS | 0x000012)
-#define zx_hrxml_pad_19_ELEM	(zx_hrxml_NS | 0x000013)
-#define zx_hrxml_pad_20_ELEM	(zx_hrxml_NS | 0x000014)
-#define zx_hrxml_UserId_ELEM	(zx_hrxml_NS | 0x000015)
-#define zx_hrxml_pad_22_ELEM	(zx_hrxml_NS | 0x000016)
-#define zx_hrxml_UserArea_ELEM	(zx_hrxml_NS | 0x000017)
-#define zx_hrxml_pad_24_ELEM	(zx_hrxml_NS | 0x000018)
-#define zx_hrxml_Score_ELEM	(zx_hrxml_NS | 0x000019)
-#define zx_hrxml_pad_26_ELEM	(zx_hrxml_NS | 0x00001a)
-#define zx_hrxml_pad_27_ELEM	(zx_hrxml_NS | 0x00001b)
-#define zx_hrxml_pad_28_ELEM	(zx_hrxml_NS | 0x00001c)
-#define zx_hrxml_Year_ELEM	(zx_hrxml_NS | 0x00001d)
-#define zx_hrxml_pad_30_ELEM	(zx_hrxml_NS | 0x00001e)
-#define zx_hrxml_Status_ELEM	(zx_hrxml_NS | 0x00001f)
-#define zx_hrxml_pad_32_ELEM	(zx_hrxml_NS | 0x000020)
-#define zx_hrxml_pad_33_ELEM	(zx_hrxml_NS | 0x000021)
-#define zx_hrxml_StartDate_ELEM	(zx_hrxml_NS | 0x000022)
-#define zx_hrxml_pad_35_ELEM	(zx_hrxml_NS | 0x000023)
-#define zx_hrxml_pad_36_ELEM	(zx_hrxml_NS | 0x000024)
-#define zx_hrxml_pad_37_ELEM	(zx_hrxml_NS | 0x000025)
-#define zx_hrxml_StandardValue_ELEM	(zx_hrxml_NS | 0x000026)
-#define zx_hrxml_pad_39_ELEM	(zx_hrxml_NS | 0x000027)
-#define zx_hrxml_pad_40_ELEM	(zx_hrxml_NS | 0x000028)
-#define zx_hrxml_pad_41_ELEM	(zx_hrxml_NS | 0x000029)
-#define zx_hrxml_pad_42_ELEM	(zx_hrxml_NS | 0x00002a)
-#define zx_hrxml_PositionTitle_ELEM	(zx_hrxml_NS | 0x00002b)
-#define zx_hrxml_Unit_ELEM	(zx_hrxml_NS | 0x00002c)
-#define zx_hrxml_Percentage_ELEM	(zx_hrxml_NS | 0x00002d)
-#define zx_hrxml_PositionSchedule_ELEM	(zx_hrxml_NS | 0x00002e)
-#define zx_hrxml_pad_47_ELEM	(zx_hrxml_NS | 0x00002f)
-#define zx_hrxml_pad_48_ELEM	(zx_hrxml_NS | 0x000030)
-#define zx_hrxml_pad_49_ELEM	(zx_hrxml_NS | 0x000031)
-#define zx_hrxml_pad_50_ELEM	(zx_hrxml_NS | 0x000032)
-#define zx_hrxml_PositionLocation_ELEM	(zx_hrxml_NS | 0x000033)
-#define zx_hrxml_pad_52_ELEM	(zx_hrxml_NS | 0x000034)
-#define zx_hrxml_Age_ELEM	(zx_hrxml_NS | 0x000035)
-#define zx_hrxml_Area_ELEM	(zx_hrxml_NS | 0x000036)
-#define zx_hrxml_pad_55_ELEM	(zx_hrxml_NS | 0x000037)
-#define zx_hrxml_pad_56_ELEM	(zx_hrxml_NS | 0x000038)
-#define zx_hrxml_PositionClassification_ELEM	(zx_hrxml_NS | 0x000039)
-#define zx_hrxml_pad_58_ELEM	(zx_hrxml_NS | 0x00003a)
-#define zx_hrxml_Candidate_ELEM	(zx_hrxml_NS | 0x00003b)
-#define zx_hrxml_PostalCode_ELEM	(zx_hrxml_NS | 0x00003c)
-#define zx_hrxml_pad_61_ELEM	(zx_hrxml_NS | 0x00003d)
-#define zx_hrxml_pad_62_ELEM	(zx_hrxml_NS | 0x00003e)
-#define zx_hrxml_pad_63_ELEM	(zx_hrxml_NS | 0x00003f)
-#define zx_hrxml_SEPPhysicalLocation_ELEM	(zx_hrxml_NS | 0x000040)
-#define zx_hrxml_Pager_ELEM	(zx_hrxml_NS | 0x000041)
-#define zx_hrxml_CandidateProfile_ELEM	(zx_hrxml_NS | 0x000042)
-#define zx_hrxml_pad_67_ELEM	(zx_hrxml_NS | 0x000043)
-#define zx_hrxml_pad_68_ELEM	(zx_hrxml_NS | 0x000044)
-#define zx_hrxml_CandidateRecordInfo_ELEM	(zx_hrxml_NS | 0x000045)
-#define zx_hrxml_pad_70_ELEM	(zx_hrxml_NS | 0x000046)
-#define zx_hrxml_pad_71_ELEM	(zx_hrxml_NS | 0x000047)
-#define zx_hrxml_CandidateSupplier_ELEM	(zx_hrxml_NS | 0x000048)
-#define zx_hrxml_pad_73_ELEM	(zx_hrxml_NS | 0x000049)
-#define zx_hrxml_Considerations_ELEM	(zx_hrxml_NS | 0x00004a)
-#define zx_hrxml_pad_75_ELEM	(zx_hrxml_NS | 0x00004b)
-#define zx_hrxml_Association_ELEM	(zx_hrxml_NS | 0x00004c)
-#define zx_hrxml_Associations_ELEM	(zx_hrxml_NS | 0x00004d)
-#define zx_hrxml_PostalAddress_ELEM	(zx_hrxml_NS | 0x00004e)
-#define zx_hrxml_SearchCriteria_ELEM	(zx_hrxml_NS | 0x00004f)
-#define zx_hrxml_AlternateScript_ELEM	(zx_hrxml_NS | 0x000050)
-#define zx_hrxml_SearchCriteriaId_ELEM	(zx_hrxml_NS | 0x000051)
-#define zx_hrxml_Article_ELEM	(zx_hrxml_NS | 0x000052)
-#define zx_hrxml_Altitude_ELEM	(zx_hrxml_NS | 0x000053)
-#define zx_hrxml_pad_84_ELEM	(zx_hrxml_NS | 0x000054)
-#define zx_hrxml_SearchCriterion_ELEM	(zx_hrxml_NS | 0x000055)
-#define zx_hrxml_pad_86_ELEM	(zx_hrxml_NS | 0x000056)
-#define zx_hrxml_pad_87_ELEM	(zx_hrxml_NS | 0x000057)
-#define zx_hrxml_SpecifiedCompetencyReference_ELEM	(zx_hrxml_NS | 0x000058)
-#define zx_hrxml_pad_89_ELEM	(zx_hrxml_NS | 0x000059)
-#define zx_hrxml_pad_90_ELEM	(zx_hrxml_NS | 0x00005a)
-#define zx_hrxml_pad_91_ELEM	(zx_hrxml_NS | 0x00005b)
-#define zx_hrxml_pad_92_ELEM	(zx_hrxml_NS | 0x00005c)
-#define zx_hrxml_SpeakingEvent_ELEM	(zx_hrxml_NS | 0x00005d)
-#define zx_hrxml_AdditionalText_ELEM	(zx_hrxml_NS | 0x00005e)
-#define zx_hrxml_AccommodationsNeeded_ELEM	(zx_hrxml_NS | 0x00005f)
-#define zx_hrxml_pad_96_ELEM	(zx_hrxml_NS | 0x000060)
-#define zx_hrxml_PersonalData_ELEM	(zx_hrxml_NS | 0x000061)
-#define zx_hrxml_CriterionName_ELEM	(zx_hrxml_NS | 0x000062)
-#define zx_hrxml_CriterionValue_ELEM	(zx_hrxml_NS | 0x000063)
-#define zx_hrxml_PositionPosting_ELEM	(zx_hrxml_NS | 0x000064)
-#define zx_hrxml_PositionMatching_ELEM	(zx_hrxml_NS | 0x000065)
-#define zx_hrxml_pad_102_ELEM	(zx_hrxml_NS | 0x000066)
-#define zx_hrxml_Abstract_ELEM	(zx_hrxml_NS | 0x000067)
-#define zx_hrxml_pad_104_ELEM	(zx_hrxml_NS | 0x000068)
-#define zx_hrxml_StartingCompensation_ELEM	(zx_hrxml_NS | 0x000069)
-#define zx_hrxml_pad_106_ELEM	(zx_hrxml_NS | 0x00006a)
-#define zx_hrxml_SearchString_ELEM	(zx_hrxml_NS | 0x00006b)
-#define zx_hrxml_pad_108_ELEM	(zx_hrxml_NS | 0x00006c)
-#define zx_hrxml_Read_ELEM	(zx_hrxml_NS | 0x00006d)
-#define zx_hrxml_pad_110_ELEM	(zx_hrxml_NS | 0x00006e)
-#define zx_hrxml_pad_111_ELEM	(zx_hrxml_NS | 0x00006f)
-#define zx_hrxml_pad_112_ELEM	(zx_hrxml_NS | 0x000070)
-#define zx_hrxml_AcademicCreditCode_ELEM	(zx_hrxml_NS | 0x000071)
-#define zx_hrxml_AccountingCode_ELEM	(zx_hrxml_NS | 0x000072)
-#define zx_hrxml_pad_115_ELEM	(zx_hrxml_NS | 0x000073)
-#define zx_hrxml_pad_116_ELEM	(zx_hrxml_NS | 0x000074)
-#define zx_hrxml_pad_117_ELEM	(zx_hrxml_NS | 0x000075)
-#define zx_hrxml_pad_118_ELEM	(zx_hrxml_NS | 0x000076)
-#define zx_hrxml_pad_119_ELEM	(zx_hrxml_NS | 0x000077)
-#define zx_hrxml_AcademicCreditHoursEarned_ELEM	(zx_hrxml_NS | 0x000078)
-#define zx_hrxml_pad_121_ELEM	(zx_hrxml_NS | 0x000079)
-#define zx_hrxml_AcademicCreditHoursIncluded_ELEM	(zx_hrxml_NS | 0x00007a)
-#define zx_hrxml_AcademicCreditHoursAttempted_ELEM	(zx_hrxml_NS | 0x00007b)
-#define zx_hrxml_pad_124_ELEM	(zx_hrxml_NS | 0x00007c)
-#define zx_hrxml_PersonRole_ELEM	(zx_hrxml_NS | 0x00007d)
-#define zx_hrxml_pad_126_ELEM	(zx_hrxml_NS | 0x00007e)
-#define zx_hrxml_pad_127_ELEM	(zx_hrxml_NS | 0x00007f)
-#define zx_hrxml_QuestionAnswerPair_ELEM	(zx_hrxml_NS | 0x000080)
-#define zx_hrxml_pad_129_ELEM	(zx_hrxml_NS | 0x000081)
-#define zx_hrxml_pad_130_ELEM	(zx_hrxml_NS | 0x000082)
-#define zx_hrxml_AttendanceRating_ELEM	(zx_hrxml_NS | 0x000083)
-#define zx_hrxml_pad_132_ELEM	(zx_hrxml_NS | 0x000084)
-#define zx_hrxml_pad_133_ELEM	(zx_hrxml_NS | 0x000085)
-#define zx_hrxml_Race_ELEM	(zx_hrxml_NS | 0x000086)
-#define zx_hrxml_pad_135_ELEM	(zx_hrxml_NS | 0x000087)
-#define zx_hrxml_pad_136_ELEM	(zx_hrxml_NS | 0x000088)
-#define zx_hrxml_pad_137_ELEM	(zx_hrxml_NS | 0x000089)
-#define zx_hrxml_pad_138_ELEM	(zx_hrxml_NS | 0x00008a)
-#define zx_hrxml_SearchResultId_ELEM	(zx_hrxml_NS | 0x00008b)
-#define zx_hrxml_pad_140_ELEM	(zx_hrxml_NS | 0x00008c)
-#define zx_hrxml_pad_141_ELEM	(zx_hrxml_NS | 0x00008d)
-#define zx_hrxml_SearchResult_ELEM	(zx_hrxml_NS | 0x00008e)
-#define zx_hrxml_pad_143_ELEM	(zx_hrxml_NS | 0x00008f)
-#define zx_hrxml_Date_ELEM	(zx_hrxml_NS | 0x000090)
-#define zx_hrxml_SearchRelevanceScore_ELEM	(zx_hrxml_NS | 0x000091)
-#define zx_hrxml_pad_146_ELEM	(zx_hrxml_NS | 0x000092)
-#define zx_hrxml_SearchResultCount_ELEM	(zx_hrxml_NS | 0x000093)
-#define zx_hrxml_pad_148_ELEM	(zx_hrxml_NS | 0x000094)
-#define zx_hrxml_DressCode_ELEM	(zx_hrxml_NS | 0x000095)
-#define zx_hrxml_pad_150_ELEM	(zx_hrxml_NS | 0x000096)
-#define zx_hrxml_pad_151_ELEM	(zx_hrxml_NS | 0x000097)
-#define zx_hrxml_ChildrenInfo_ELEM	(zx_hrxml_NS | 0x000098)
-#define zx_hrxml_pad_153_ELEM	(zx_hrxml_NS | 0x000099)
-#define zx_hrxml_List_ELEM	(zx_hrxml_NS | 0x00009a)
-#define zx_hrxml_pad_155_ELEM	(zx_hrxml_NS | 0x00009b)
-#define zx_hrxml_pad_156_ELEM	(zx_hrxml_NS | 0x00009c)
-#define zx_hrxml_Details_ELEM	(zx_hrxml_NS | 0x00009d)
-#define zx_hrxml_PersonLegalId_ELEM	(zx_hrxml_NS | 0x00009e)
-#define zx_hrxml_LowestPossibleValue_ELEM	(zx_hrxml_NS | 0x00009f)
-#define zx_hrxml_FirstIssuedDate_ELEM	(zx_hrxml_NS | 0x0000a0)
-#define zx_hrxml_pad_161_ELEM	(zx_hrxml_NS | 0x0000a1)
-#define zx_hrxml_pad_162_ELEM	(zx_hrxml_NS | 0x0000a2)
-#define zx_hrxml_pad_163_ELEM	(zx_hrxml_NS | 0x0000a3)
-#define zx_hrxml_pad_164_ELEM	(zx_hrxml_NS | 0x0000a4)
-#define zx_hrxml_pad_165_ELEM	(zx_hrxml_NS | 0x0000a5)
-#define zx_hrxml_pad_166_ELEM	(zx_hrxml_NS | 0x0000a6)
-#define zx_hrxml_PersonDescriptors_ELEM	(zx_hrxml_NS | 0x0000a7)
-#define zx_hrxml_Latitude_ELEM	(zx_hrxml_NS | 0x0000a8)
-#define zx_hrxml_Recipient_ELEM	(zx_hrxml_NS | 0x0000a9)
-#define zx_hrxml_AltitudeMeanSeaLevel_ELEM	(zx_hrxml_NS | 0x0000aa)
-#define zx_hrxml_pad_171_ELEM	(zx_hrxml_NS | 0x0000ab)
-#define zx_hrxml_pad_172_ELEM	(zx_hrxml_NS | 0x0000ac)
-#define zx_hrxml_pad_173_ELEM	(zx_hrxml_NS | 0x0000ad)
-#define zx_hrxml_RecognitionAchieved_ELEM	(zx_hrxml_NS | 0x0000ae)
-#define zx_hrxml_PositionHistory_ELEM	(zx_hrxml_NS | 0x0000af)
-#define zx_hrxml_pad_176_ELEM	(zx_hrxml_NS | 0x0000b0)
-#define zx_hrxml_pad_177_ELEM	(zx_hrxml_NS | 0x0000b1)
-#define zx_hrxml_Location_ELEM	(zx_hrxml_NS | 0x0000b2)
-#define zx_hrxml_pad_179_ELEM	(zx_hrxml_NS | 0x0000b3)
-#define zx_hrxml_pad_180_ELEM	(zx_hrxml_NS | 0x0000b4)
-#define zx_hrxml_pad_181_ELEM	(zx_hrxml_NS | 0x0000b5)
-#define zx_hrxml_pad_182_ELEM	(zx_hrxml_NS | 0x0000b6)
-#define zx_hrxml_pad_183_ELEM	(zx_hrxml_NS | 0x0000b7)
-#define zx_hrxml_Role_ELEM	(zx_hrxml_NS | 0x0000b8)
-#define zx_hrxml_StringDate_ELEM	(zx_hrxml_NS | 0x0000b9)
-#define zx_hrxml_RoleId_ELEM	(zx_hrxml_NS | 0x0000ba)
-#define zx_hrxml_pad_187_ELEM	(zx_hrxml_NS | 0x0000bb)
-#define zx_hrxml_pad_188_ELEM	(zx_hrxml_NS | 0x0000bc)
-#define zx_hrxml_StartTime_ELEM	(zx_hrxml_NS | 0x0000bd)
-#define zx_hrxml_GenderCode_ELEM	(zx_hrxml_NS | 0x0000be)
-#define zx_hrxml_Region_ELEM	(zx_hrxml_NS | 0x0000bf)
-#define zx_hrxml_CategoryCode_ELEM	(zx_hrxml_NS | 0x0000c0)
-#define zx_hrxml_pad_193_ELEM	(zx_hrxml_NS | 0x0000c1)
-#define zx_hrxml_PermissionToContact_ELEM	(zx_hrxml_NS | 0x0000c2)
-#define zx_hrxml_LicensesAndCertifications_ELEM	(zx_hrxml_NS | 0x0000c3)
-#define zx_hrxml_pad_196_ELEM	(zx_hrxml_NS | 0x0000c4)
-#define zx_hrxml_LegalId_ELEM	(zx_hrxml_NS | 0x0000c5)
-#define zx_hrxml_Fax_ELEM	(zx_hrxml_NS | 0x0000c6)
-#define zx_hrxml_pad_199_ELEM	(zx_hrxml_NS | 0x0000c7)
-#define zx_hrxml_pad_200_ELEM	(zx_hrxml_NS | 0x0000c8)
-#define zx_hrxml_Degree_ELEM	(zx_hrxml_NS | 0x0000c9)
-#define zx_hrxml_pad_202_ELEM	(zx_hrxml_NS | 0x0000ca)
-#define zx_hrxml_pad_203_ELEM	(zx_hrxml_NS | 0x0000cb)
-#define zx_hrxml_CategoryDescription_ELEM	(zx_hrxml_NS | 0x0000cc)
-#define zx_hrxml_LocalInstitutionClassification_ELEM	(zx_hrxml_NS | 0x0000cd)
-#define zx_hrxml_AddressLine_ELEM	(zx_hrxml_NS | 0x0000ce)
-#define zx_hrxml_Id_ELEM	(zx_hrxml_NS | 0x0000cf)
-#define zx_hrxml_RelatedPositionPostings_ELEM	(zx_hrxml_NS | 0x0000d0)
-#define zx_hrxml_UnitOrDivision_ELEM	(zx_hrxml_NS | 0x0000d1)
-#define zx_hrxml_pad_210_ELEM	(zx_hrxml_NS | 0x0000d2)
-#define zx_hrxml_LegalIdentifiers_ELEM	(zx_hrxml_NS | 0x0000d3)
-#define zx_hrxml_pad_212_ELEM	(zx_hrxml_NS | 0x0000d4)
-#define zx_hrxml_pad_213_ELEM	(zx_hrxml_NS | 0x0000d5)
-#define zx_hrxml_AttachmentReference_ELEM	(zx_hrxml_NS | 0x0000d6)
-#define zx_hrxml_pad_215_ELEM	(zx_hrxml_NS | 0x0000d7)
-#define zx_hrxml_DistanceMax_ELEM	(zx_hrxml_NS | 0x0000d8)
-#define zx_hrxml_pad_217_ELEM	(zx_hrxml_NS | 0x0000d9)
-#define zx_hrxml_Religion_ELEM	(zx_hrxml_NS | 0x0000da)
-#define zx_hrxml_Height_ELEM	(zx_hrxml_NS | 0x0000db)
-#define zx_hrxml_Relocation_ELEM	(zx_hrxml_NS | 0x0000dc)
-#define zx_hrxml_Resume_ELEM	(zx_hrxml_NS | 0x0000dd)
-#define zx_hrxml_pad_222_ELEM	(zx_hrxml_NS | 0x0000de)
-#define zx_hrxml_PersonId_ELEM	(zx_hrxml_NS | 0x0000df)
-#define zx_hrxml_YearMonth_ELEM	(zx_hrxml_NS | 0x0000e0)
-#define zx_hrxml_RelocationAssistance_ELEM	(zx_hrxml_NS | 0x0000e1)
-#define zx_hrxml_SpeakingEventsHistory_ELEM	(zx_hrxml_NS | 0x0000e2)
-#define zx_hrxml_PatentDetail_ELEM	(zx_hrxml_NS | 0x0000e3)
-#define zx_hrxml_pad_228_ELEM	(zx_hrxml_NS | 0x0000e4)
-#define zx_hrxml_Requested_ELEM	(zx_hrxml_NS | 0x0000e5)
-#define zx_hrxml_pad_230_ELEM	(zx_hrxml_NS | 0x0000e6)
-#define zx_hrxml_PhysicalLocation_ELEM	(zx_hrxml_NS | 0x0000e7)
-#define zx_hrxml_pad_232_ELEM	(zx_hrxml_NS | 0x0000e8)
-#define zx_hrxml_InternetDomainName_ELEM	(zx_hrxml_NS | 0x0000e9)
-#define zx_hrxml_Qualifications_ELEM	(zx_hrxml_NS | 0x0000ea)
-#define zx_hrxml_pad_235_ELEM	(zx_hrxml_NS | 0x0000eb)
-#define zx_hrxml_pad_236_ELEM	(zx_hrxml_NS | 0x0000ec)
-#define zx_hrxml_Chapter_ELEM	(zx_hrxml_NS | 0x0000ed)
-#define zx_hrxml_InternetWebAddress_ELEM	(zx_hrxml_NS | 0x0000ee)
-#define zx_hrxml_pad_239_ELEM	(zx_hrxml_NS | 0x0000ef)
-#define zx_hrxml_InternetEmailAddress_ELEM	(zx_hrxml_NS | 0x0000f0)
-#define zx_hrxml_pad_241_ELEM	(zx_hrxml_NS | 0x0000f1)
-#define zx_hrxml_pad_242_ELEM	(zx_hrxml_NS | 0x0000f2)
-#define zx_hrxml_pad_243_ELEM	(zx_hrxml_NS | 0x0000f3)
-#define zx_hrxml_pad_244_ELEM	(zx_hrxml_NS | 0x0000f4)
-#define zx_hrxml_DischargeStatus_ELEM	(zx_hrxml_NS | 0x0000f5)
-#define zx_hrxml_Option_ELEM	(zx_hrxml_NS | 0x0000f6)
-#define zx_hrxml_HairColor_ELEM	(zx_hrxml_NS | 0x0000f7)
-#define zx_hrxml_pad_248_ELEM	(zx_hrxml_NS | 0x0000f8)
-#define zx_hrxml_DisabilityInfo_ELEM	(zx_hrxml_NS | 0x0000f9)
-#define zx_hrxml_SpatialLocation_ELEM	(zx_hrxml_NS | 0x0000fa)
-#define zx_hrxml_pad_251_ELEM	(zx_hrxml_NS | 0x0000fb)
-#define zx_hrxml_pad_252_ELEM	(zx_hrxml_NS | 0x0000fc)
-#define zx_hrxml_Hours_ELEM	(zx_hrxml_NS | 0x0000fd)
-#define zx_hrxml_StructuredXMLResume_ELEM	(zx_hrxml_NS | 0x0000fe)
-#define zx_hrxml_pad_255_ELEM	(zx_hrxml_NS | 0x0000ff)
-#define zx_hrxml_pad_256_ELEM	(zx_hrxml_NS | 0x000100)
-#define zx_hrxml_Headcount_ELEM	(zx_hrxml_NS | 0x000101)
-#define zx_hrxml_Language_ELEM	(zx_hrxml_NS | 0x000102)
-#define zx_hrxml_DegreeConcentration_ELEM	(zx_hrxml_NS | 0x000103)
-#define zx_hrxml_pad_260_ELEM	(zx_hrxml_NS | 0x000104)
-#define zx_hrxml_pad_261_ELEM	(zx_hrxml_NS | 0x000105)
-#define zx_hrxml_LanguageCode_ELEM	(zx_hrxml_NS | 0x000106)
-#define zx_hrxml_pad_263_ELEM	(zx_hrxml_NS | 0x000107)
-#define zx_hrxml_Languages_ELEM	(zx_hrxml_NS | 0x000108)
-#define zx_hrxml_GoodStudentIndicator_ELEM	(zx_hrxml_NS | 0x000109)
-#define zx_hrxml_Citizenship_ELEM	(zx_hrxml_NS | 0x00010a)
-#define zx_hrxml_pad_267_ELEM	(zx_hrxml_NS | 0x00010b)
-#define zx_hrxml_pad_268_ELEM	(zx_hrxml_NS | 0x00010c)
-#define zx_hrxml_ContactId_ELEM	(zx_hrxml_NS | 0x00010d)
-#define zx_hrxml_pad_270_ELEM	(zx_hrxml_NS | 0x00010e)
-#define zx_hrxml_ContactInfo_ELEM	(zx_hrxml_NS | 0x00010f)
-#define zx_hrxml_pad_272_ELEM	(zx_hrxml_NS | 0x000110)
-#define zx_hrxml_pad_273_ELEM	(zx_hrxml_NS | 0x000111)
-#define zx_hrxml_pad_274_ELEM	(zx_hrxml_NS | 0x000112)
-#define zx_hrxml_pad_275_ELEM	(zx_hrxml_NS | 0x000113)
-#define zx_hrxml_pad_276_ELEM	(zx_hrxml_NS | 0x000114)
-#define zx_hrxml_pad_277_ELEM	(zx_hrxml_NS | 0x000115)
-#define zx_hrxml_pad_278_ELEM	(zx_hrxml_NS | 0x000116)
-#define zx_hrxml_pad_279_ELEM	(zx_hrxml_NS | 0x000117)
-#define zx_hrxml_pad_280_ELEM	(zx_hrxml_NS | 0x000118)
-#define zx_hrxml_School_ELEM	(zx_hrxml_NS | 0x000119)
-#define zx_hrxml_pad_282_ELEM	(zx_hrxml_NS | 0x00011a)
-#define zx_hrxml_DisciplinaryAction_ELEM	(zx_hrxml_NS | 0x00011b)
-#define zx_hrxml_pad_284_ELEM	(zx_hrxml_NS | 0x00011c)
-#define zx_hrxml_pad_285_ELEM	(zx_hrxml_NS | 0x00011d)
-#define zx_hrxml_pad_286_ELEM	(zx_hrxml_NS | 0x00011e)
-#define zx_hrxml_OrgSize_ELEM	(zx_hrxml_NS | 0x00011f)
-#define zx_hrxml_FormattedName_ELEM	(zx_hrxml_NS | 0x000120)
-#define zx_hrxml_LegalClassification_ELEM	(zx_hrxml_NS | 0x000121)
-#define zx_hrxml_DoingBusinessAs_ELEM	(zx_hrxml_NS | 0x000122)
-#define zx_hrxml_ResumeAdditionalItems_ELEM	(zx_hrxml_NS | 0x000123)
-#define zx_hrxml_pad_292_ELEM	(zx_hrxml_NS | 0x000124)
-#define zx_hrxml_Physical_ELEM	(zx_hrxml_NS | 0x000125)
-#define zx_hrxml_pad_294_ELEM	(zx_hrxml_NS | 0x000126)
-#define zx_hrxml_FormattedNumber_ELEM	(zx_hrxml_NS | 0x000127)
-#define zx_hrxml_pad_296_ELEM	(zx_hrxml_NS | 0x000128)
-#define zx_hrxml_General_ELEM	(zx_hrxml_NS | 0x000129)
-#define zx_hrxml_RetirementOrSavingsPlan_ELEM	(zx_hrxml_NS | 0x00012a)
-#define zx_hrxml_Residency_ELEM	(zx_hrxml_NS | 0x00012b)
-#define zx_hrxml_CourseLevelCode_ELEM	(zx_hrxml_NS | 0x00012c)
-#define zx_hrxml_PatentHistory_ELEM	(zx_hrxml_NS | 0x00012d)
-#define zx_hrxml_pad_302_ELEM	(zx_hrxml_NS | 0x00012e)
-#define zx_hrxml_pad_303_ELEM	(zx_hrxml_NS | 0x00012f)
-#define zx_hrxml_SecurityCredentials_ELEM	(zx_hrxml_NS | 0x000130)
-#define zx_hrxml_pad_305_ELEM	(zx_hrxml_NS | 0x000131)
-#define zx_hrxml_ReasonForLeaving_ELEM	(zx_hrxml_NS | 0x000132)
-#define zx_hrxml_pad_307_ELEM	(zx_hrxml_NS | 0x000133)
-#define zx_hrxml_CountryServed_ELEM	(zx_hrxml_NS | 0x000134)
-#define zx_hrxml_Longitude_ELEM	(zx_hrxml_NS | 0x000135)
-#define zx_hrxml_LocationSummary_ELEM	(zx_hrxml_NS | 0x000136)
-#define zx_hrxml_FormattedPublicationDescription_ELEM	(zx_hrxml_NS | 0x000137)
-#define zx_hrxml_pad_312_ELEM	(zx_hrxml_NS | 0x000138)
-#define zx_hrxml_pad_313_ELEM	(zx_hrxml_NS | 0x000139)
-#define zx_hrxml_PrehireRemuneration_ELEM	(zx_hrxml_NS | 0x00013a)
-#define zx_hrxml_pad_315_ELEM	(zx_hrxml_NS | 0x00013b)
-#define zx_hrxml_HorizontalAccuracy_ELEM	(zx_hrxml_NS | 0x00013c)
-#define zx_hrxml_pad_317_ELEM	(zx_hrxml_NS | 0x00013d)
-#define zx_hrxml_pad_318_ELEM	(zx_hrxml_NS | 0x00013e)
-#define zx_hrxml_pad_319_ELEM	(zx_hrxml_NS | 0x00013f)
-#define zx_hrxml_Issue_ELEM	(zx_hrxml_NS | 0x000140)
-#define zx_hrxml_pad_321_ELEM	(zx_hrxml_NS | 0x000141)
-#define zx_hrxml_AnyDate_ELEM	(zx_hrxml_NS | 0x000142)
-#define zx_hrxml_pad_323_ELEM	(zx_hrxml_NS | 0x000143)
-#define zx_hrxml_pad_324_ELEM	(zx_hrxml_NS | 0x000144)
-#define zx_hrxml_pad_325_ELEM	(zx_hrxml_NS | 0x000145)
-#define zx_hrxml_pad_326_ELEM	(zx_hrxml_NS | 0x000146)
-#define zx_hrxml_Commute_ELEM	(zx_hrxml_NS | 0x000147)
-#define zx_hrxml_RoleName_ELEM	(zx_hrxml_NS | 0x000148)
-#define zx_hrxml_pad_329_ELEM	(zx_hrxml_NS | 0x000149)
-#define zx_hrxml_pad_330_ELEM	(zx_hrxml_NS | 0x00014a)
-#define zx_hrxml_CountryCode_ELEM	(zx_hrxml_NS | 0x00014b)
-#define zx_hrxml_Speak_ELEM	(zx_hrxml_NS | 0x00014c)
-#define zx_hrxml_ServiceStatus_ELEM	(zx_hrxml_NS | 0x00014d)
-#define zx_hrxml_pad_334_ELEM	(zx_hrxml_NS | 0x00014e)
-#define zx_hrxml_DegreeClassification_ELEM	(zx_hrxml_NS | 0x00014f)
-#define zx_hrxml_pad_336_ELEM	(zx_hrxml_NS | 0x000150)
-#define zx_hrxml_Edition_ELEM	(zx_hrxml_NS | 0x000151)
-#define zx_hrxml_pad_338_ELEM	(zx_hrxml_NS | 0x000152)
-#define zx_hrxml_LegalName_ELEM	(zx_hrxml_NS | 0x000153)
-#define zx_hrxml_DegreeDate_ELEM	(zx_hrxml_NS | 0x000154)
-#define zx_hrxml_CumulativeSummaryIndicator_ELEM	(zx_hrxml_NS | 0x000155)
-#define zx_hrxml_pad_342_ELEM	(zx_hrxml_NS | 0x000156)
-#define zx_hrxml_Comments_ELEM	(zx_hrxml_NS | 0x000157)
-#define zx_hrxml_pad_344_ELEM	(zx_hrxml_NS | 0x000158)
-#define zx_hrxml_pad_345_ELEM	(zx_hrxml_NS | 0x000159)
-#define zx_hrxml_StartRank_ELEM	(zx_hrxml_NS | 0x00015a)
-#define zx_hrxml_pad_347_ELEM	(zx_hrxml_NS | 0x00015b)
-#define zx_hrxml_pad_348_ELEM	(zx_hrxml_NS | 0x00015c)
-#define zx_hrxml_pad_349_ELEM	(zx_hrxml_NS | 0x00015d)
-#define zx_hrxml_EvidenceId_ELEM	(zx_hrxml_NS | 0x00015e)
-#define zx_hrxml_pad_351_ELEM	(zx_hrxml_NS | 0x00015f)
-#define zx_hrxml_Measure_ELEM	(zx_hrxml_NS | 0x000160)
-#define zx_hrxml_EyeColor_ELEM	(zx_hrxml_NS | 0x000161)
-#define zx_hrxml_Insurance_ELEM	(zx_hrxml_NS | 0x000162)
-#define zx_hrxml_Minor_ELEM	(zx_hrxml_NS | 0x000163)
-#define zx_hrxml_pad_356_ELEM	(zx_hrxml_NS | 0x000164)
-#define zx_hrxml_Stock_ELEM	(zx_hrxml_NS | 0x000165)
-#define zx_hrxml_pad_358_ELEM	(zx_hrxml_NS | 0x000166)
-#define zx_hrxml_pad_359_ELEM	(zx_hrxml_NS | 0x000167)
-#define zx_hrxml_PersonName_ELEM	(zx_hrxml_NS | 0x000168)
-#define zx_hrxml_pad_361_ELEM	(zx_hrxml_NS | 0x000169)
-#define zx_hrxml_pad_362_ELEM	(zx_hrxml_NS | 0x00016a)
-#define zx_hrxml_pad_363_ELEM	(zx_hrxml_NS | 0x00016b)
-#define zx_hrxml_pad_364_ELEM	(zx_hrxml_NS | 0x00016c)
-#define zx_hrxml_QualificationSummary_ELEM	(zx_hrxml_NS | 0x00016d)
-#define zx_hrxml_Description_ELEM	(zx_hrxml_NS | 0x00016e)
-#define zx_hrxml_PersonMember_ELEM	(zx_hrxml_NS | 0x00016f)
-#define zx_hrxml_Interval_ELEM	(zx_hrxml_NS | 0x000170)
-#define zx_hrxml_OverallPerformanceRating_ELEM	(zx_hrxml_NS | 0x000171)
-#define zx_hrxml_StreetName_ELEM	(zx_hrxml_NS | 0x000172)
-#define zx_hrxml_ClassRank_ELEM	(zx_hrxml_NS | 0x000173)
-#define zx_hrxml_OriginalDate_ELEM	(zx_hrxml_NS | 0x000174)
-#define zx_hrxml_SecurityCredential_ELEM	(zx_hrxml_NS | 0x000175)
-#define zx_hrxml_RemunerationPackage_ELEM	(zx_hrxml_NS | 0x000176)
-#define zx_hrxml_pad_375_ELEM	(zx_hrxml_NS | 0x000177)
-#define zx_hrxml_pad_376_ELEM	(zx_hrxml_NS | 0x000178)
-#define zx_hrxml_CompetencyId_ELEM	(zx_hrxml_NS | 0x000179)
-#define zx_hrxml_EndingCompensation_ELEM	(zx_hrxml_NS | 0x00017a)
-#define zx_hrxml_pad_379_ELEM	(zx_hrxml_NS | 0x00017b)
-#define zx_hrxml_PatentMilestone_ELEM	(zx_hrxml_NS | 0x00017c)
-#define zx_hrxml_NonStandardValue_ELEM	(zx_hrxml_NS | 0x00017d)
-#define zx_hrxml_Compensation_ELEM	(zx_hrxml_NS | 0x00017e)
-#define zx_hrxml_CompetencyEvidence_ELEM	(zx_hrxml_NS | 0x00017f)
-#define zx_hrxml_pad_384_ELEM	(zx_hrxml_NS | 0x000180)
-#define zx_hrxml_DeliveryAddress_ELEM	(zx_hrxml_NS | 0x000181)
-#define zx_hrxml_CompetencyWeight_ELEM	(zx_hrxml_NS | 0x000182)
-#define zx_hrxml_PreferredLanguage_ELEM	(zx_hrxml_NS | 0x000183)
-#define zx_hrxml_PreferredGivenName_ELEM	(zx_hrxml_NS | 0x000184)
-#define zx_hrxml_MostRecentDate_ELEM	(zx_hrxml_NS | 0x000185)
-#define zx_hrxml_SupplierId_ELEM	(zx_hrxml_NS | 0x000186)
-#define zx_hrxml_MissionStatement_ELEM	(zx_hrxml_NS | 0x000187)
-#define zx_hrxml_PreferredPosition_ELEM	(zx_hrxml_NS | 0x000188)
-#define zx_hrxml_pad_393_ELEM	(zx_hrxml_NS | 0x000189)
-#define zx_hrxml_pad_394_ELEM	(zx_hrxml_NS | 0x00018a)
-#define zx_hrxml_AreaOfExpertise_ELEM	(zx_hrxml_NS | 0x00018b)
-#define zx_hrxml_pad_396_ELEM	(zx_hrxml_NS | 0x00018c)
-#define zx_hrxml_LicenseOrCertification_ELEM	(zx_hrxml_NS | 0x00018d)
-#define zx_hrxml_HighestPossibleValue_ELEM	(zx_hrxml_NS | 0x00018e)
-#define zx_hrxml_pad_399_ELEM	(zx_hrxml_NS | 0x00018f)
-#define zx_hrxml_pad_400_ELEM	(zx_hrxml_NS | 0x000190)
-#define zx_hrxml_pad_401_ELEM	(zx_hrxml_NS | 0x000191)
-#define zx_hrxml_pad_402_ELEM	(zx_hrxml_NS | 0x000192)
-#define zx_hrxml_pad_403_ELEM	(zx_hrxml_NS | 0x000193)
-#define zx_hrxml_pad_404_ELEM	(zx_hrxml_NS | 0x000194)
-#define zx_hrxml_pad_405_ELEM	(zx_hrxml_NS | 0x000195)
-#define zx_hrxml_ContactName_ELEM	(zx_hrxml_NS | 0x000196)
-#define zx_hrxml_pad_407_ELEM	(zx_hrxml_NS | 0x000197)
-#define zx_hrxml_ContactMethod_ELEM	(zx_hrxml_NS | 0x000198)
-#define zx_hrxml_ProgramId_ELEM	(zx_hrxml_NS | 0x000199)
-#define zx_hrxml_Shift_ELEM	(zx_hrxml_NS | 0x00019a)
-#define zx_hrxml_Achievement_ELEM	(zx_hrxml_NS | 0x00019b)
-#define zx_hrxml_Achievements_ELEM	(zx_hrxml_NS | 0x00019c)
-#define zx_hrxml_SchoolId_ELEM	(zx_hrxml_NS | 0x00019d)
-#define zx_hrxml_RelatedOrganization_ELEM	(zx_hrxml_NS | 0x00019e)
-#define zx_hrxml_pad_415_ELEM	(zx_hrxml_NS | 0x00019f)
-#define zx_hrxml_OtherHonors_ELEM	(zx_hrxml_NS | 0x0001a0)
-#define zx_hrxml_pad_417_ELEM	(zx_hrxml_NS | 0x0001a1)
-#define zx_hrxml_OtherBenefits_ELEM	(zx_hrxml_NS | 0x0001a2)
-#define zx_hrxml_ProfessionalAssociations_ELEM	(zx_hrxml_NS | 0x0001a3)
-#define zx_hrxml_RelatedOrganizationalUnit_ELEM	(zx_hrxml_NS | 0x0001a4)
-#define zx_hrxml_OtherDescriptors_ELEM	(zx_hrxml_NS | 0x0001a5)
-#define zx_hrxml_RevisionDate_ELEM	(zx_hrxml_NS | 0x0001a6)
-#define zx_hrxml_pad_423_ELEM	(zx_hrxml_NS | 0x0001a7)
-#define zx_hrxml_SupportingMaterials_ELEM	(zx_hrxml_NS | 0x0001a8)
-#define zx_hrxml_ResumeAdditionalItem_ELEM	(zx_hrxml_NS | 0x0001a9)
-#define zx_hrxml_SupportingInformation_ELEM	(zx_hrxml_NS | 0x0001aa)
-#define zx_hrxml_pad_427_ELEM	(zx_hrxml_NS | 0x0001ab)
-#define zx_hrxml_ResumeId_ELEM	(zx_hrxml_NS | 0x0001ac)
-#define zx_hrxml_ConferenceDate_ELEM	(zx_hrxml_NS | 0x0001ad)
-#define zx_hrxml_Major_ELEM	(zx_hrxml_NS | 0x0001ae)
-#define zx_hrxml_pad_431_ELEM	(zx_hrxml_NS | 0x0001af)
-#define zx_hrxml_pad_432_ELEM	(zx_hrxml_NS | 0x0001b0)
-#define zx_hrxml_Campaign_ELEM	(zx_hrxml_NS | 0x0001b1)
-#define zx_hrxml_pad_434_ELEM	(zx_hrxml_NS | 0x0001b2)
-#define zx_hrxml_ConferencePaper_ELEM	(zx_hrxml_NS | 0x0001b3)
-#define zx_hrxml_pad_436_ELEM	(zx_hrxml_NS | 0x0001b4)
-#define zx_hrxml_EndDate_ELEM	(zx_hrxml_NS | 0x0001b5)
-#define zx_hrxml_ConferenceLocation_ELEM	(zx_hrxml_NS | 0x0001b6)
-#define zx_hrxml_SchoolOrInstitution_ELEM	(zx_hrxml_NS | 0x0001b7)
-#define zx_hrxml_PrimaryLanguage_ELEM	(zx_hrxml_NS | 0x0001b8)
-#define zx_hrxml_pad_441_ELEM	(zx_hrxml_NS | 0x0001b9)
-#define zx_hrxml_pad_442_ELEM	(zx_hrxml_NS | 0x0001ba)
-#define zx_hrxml_PostOfficeBox_ELEM	(zx_hrxml_NS | 0x0001bb)
-#define zx_hrxml_pad_444_ELEM	(zx_hrxml_NS | 0x0001bc)
-#define zx_hrxml_pad_445_ELEM	(zx_hrxml_NS | 0x0001bd)
-#define zx_hrxml_pad_446_ELEM	(zx_hrxml_NS | 0x0001be)
-#define zx_hrxml_pad_447_ELEM	(zx_hrxml_NS | 0x0001bf)
-#define zx_hrxml_pad_448_ELEM	(zx_hrxml_NS | 0x0001c0)
-#define zx_hrxml_EventName_ELEM	(zx_hrxml_NS | 0x0001c1)
-#define zx_hrxml_VisaStatus_ELEM	(zx_hrxml_NS | 0x0001c2)
-#define zx_hrxml_pad_451_ELEM	(zx_hrxml_NS | 0x0001c3)
-#define zx_hrxml_pad_452_ELEM	(zx_hrxml_NS | 0x0001c4)
-#define zx_hrxml_pad_453_ELEM	(zx_hrxml_NS | 0x0001c5)
-#define zx_hrxml_pad_454_ELEM	(zx_hrxml_NS | 0x0001c6)
-#define zx_hrxml_pad_455_ELEM	(zx_hrxml_NS | 0x0001c7)
-#define zx_hrxml_SearchRelevanceRank_ELEM	(zx_hrxml_NS | 0x0001c8)
-#define zx_hrxml_IndustryCode_ELEM	(zx_hrxml_NS | 0x0001c9)
-#define zx_hrxml_pad_458_ELEM	(zx_hrxml_NS | 0x0001ca)
-#define zx_hrxml_pad_459_ELEM	(zx_hrxml_NS | 0x0001cb)
-#define zx_hrxml_ProficencyLevel_ELEM	(zx_hrxml_NS | 0x0001cc)
-#define zx_hrxml_RankedSearchResults_ELEM	(zx_hrxml_NS | 0x0001cd)
-#define zx_hrxml_EligibleForRehire_ELEM	(zx_hrxml_NS | 0x0001ce)
-#define zx_hrxml_EducationalMeasure_ELEM	(zx_hrxml_NS | 0x0001cf)
-#define zx_hrxml_pad_464_ELEM	(zx_hrxml_NS | 0x0001d0)
-#define zx_hrxml_pad_465_ELEM	(zx_hrxml_NS | 0x0001d1)
-#define zx_hrxml_pad_466_ELEM	(zx_hrxml_NS | 0x0001d2)
-#define zx_hrxml_AffiliatedOrganization_ELEM	(zx_hrxml_NS | 0x0001d3)
-#define zx_hrxml_pad_468_ELEM	(zx_hrxml_NS | 0x0001d4)
-#define zx_hrxml_IndustryDescription_ELEM	(zx_hrxml_NS | 0x0001d5)
-#define zx_hrxml_Write_ELEM	(zx_hrxml_NS | 0x0001d6)
-#define zx_hrxml_AffirmativeActionPlanJobGroupId_ELEM	(zx_hrxml_NS | 0x0001d7)
-#define zx_hrxml_NonXMLResume_ELEM	(zx_hrxml_NS | 0x0001d8)
-#define zx_hrxml_MaritalStatus_ELEM	(zx_hrxml_NS | 0x0001d9)
-#define zx_hrxml_pad_474_ELEM	(zx_hrxml_NS | 0x0001da)
-#define zx_hrxml_Affix_ELEM	(zx_hrxml_NS | 0x0001db)
-#define zx_hrxml_StringValue_ELEM	(zx_hrxml_NS | 0x0001dc)
-#define zx_hrxml_OrgInfo_ELEM	(zx_hrxml_NS | 0x0001dd)
-#define zx_hrxml_WhenAvailable_ELEM	(zx_hrxml_NS | 0x0001de)
-#define zx_hrxml_pad_479_ELEM	(zx_hrxml_NS | 0x0001df)
-#define zx_hrxml_pad_480_ELEM	(zx_hrxml_NS | 0x0001e0)
-#define zx_hrxml_pad_481_ELEM	(zx_hrxml_NS | 0x0001e1)
-#define zx_hrxml_DemographicDescriptors_ELEM	(zx_hrxml_NS | 0x0001e2)
-#define zx_hrxml_pad_483_ELEM	(zx_hrxml_NS | 0x0001e3)
-#define zx_hrxml_Name_ELEM	(zx_hrxml_NS | 0x0001e4)
-#define zx_hrxml_pad_485_ELEM	(zx_hrxml_NS | 0x0001e5)
-#define zx_hrxml_pad_486_ELEM	(zx_hrxml_NS | 0x0001e6)
-#define zx_hrxml_pad_487_ELEM	(zx_hrxml_NS | 0x0001e7)
-#define zx_hrxml_Benefits_ELEM	(zx_hrxml_NS | 0x0001e8)
-#define zx_hrxml_Item_ELEM	(zx_hrxml_NS | 0x0001e9)
-#define zx_hrxml_PublicationDate_ELEM	(zx_hrxml_NS | 0x0001ea)
-#define zx_hrxml_pad_491_ELEM	(zx_hrxml_NS | 0x0001eb)
-#define zx_hrxml_Verification_ELEM	(zx_hrxml_NS | 0x0001ec)
-#define zx_hrxml_pad_493_ELEM	(zx_hrxml_NS | 0x0001ed)
-#define zx_hrxml_PublicationLanguage_ELEM	(zx_hrxml_NS | 0x0001ee)
-#define zx_hrxml_pad_495_ELEM	(zx_hrxml_NS | 0x0001ef)
-#define zx_hrxml_pad_496_ELEM	(zx_hrxml_NS | 0x0001f0)
-#define zx_hrxml_pad_497_ELEM	(zx_hrxml_NS | 0x0001f1)
-#define zx_hrxml_pad_498_ELEM	(zx_hrxml_NS | 0x0001f2)
-#define zx_hrxml_pad_499_ELEM	(zx_hrxml_NS | 0x0001f3)
-#define zx_hrxml_IsPublicCompany_ELEM	(zx_hrxml_NS | 0x0001f4)
-#define zx_hrxml_AvailabilityInfo_ELEM	(zx_hrxml_NS | 0x0001f5)
-#define zx_hrxml_InventorName_ELEM	(zx_hrxml_NS | 0x0001f6)
-#define zx_hrxml_pad_503_ELEM	(zx_hrxml_NS | 0x0001f7)
-#define zx_hrxml_Inventors_ELEM	(zx_hrxml_NS | 0x0001f8)
-#define zx_hrxml_Competency_ELEM	(zx_hrxml_NS | 0x0001f9)
-#define zx_hrxml_pad_506_ELEM	(zx_hrxml_NS | 0x0001fa)
-#define zx_hrxml_AvailabilityDates_ELEM	(zx_hrxml_NS | 0x0001fb)
-#define zx_hrxml_pad_508_ELEM	(zx_hrxml_NS | 0x0001fc)
-#define zx_hrxml_Reference_ELEM	(zx_hrxml_NS | 0x0001fd)
-#define zx_hrxml_pad_510_ELEM	(zx_hrxml_NS | 0x0001fe)
-#define zx_hrxml_pad_511_ELEM	(zx_hrxml_NS | 0x0001ff)
-#define zx_hrxml_JobPlan_ELEM	(zx_hrxml_NS | 0x000200)
-#define zx_hrxml_MeasureSystem_ELEM	(zx_hrxml_NS | 0x000201)
-#define zx_hrxml_JournalOrSerialName_ELEM	(zx_hrxml_NS | 0x000202)
-#define zx_hrxml_References_ELEM	(zx_hrxml_NS | 0x000203)
-#define zx_hrxml_pad_516_ELEM	(zx_hrxml_NS | 0x000204)
-#define zx_hrxml_CompanyScale_ELEM	(zx_hrxml_NS | 0x000205)
-#define zx_hrxml_ExpatriateBenefits_ELEM	(zx_hrxml_NS | 0x000206)
-#define zx_hrxml_pad_519_ELEM	(zx_hrxml_NS | 0x000207)
-#define zx_hrxml_ExpatriateBenefitsOffered_ELEM	(zx_hrxml_NS | 0x000208)
-#define zx_hrxml_ExpatriateBenefitList_ELEM	(zx_hrxml_NS | 0x000209)
-#define zx_hrxml_pad_522_ELEM	(zx_hrxml_NS | 0x00020a)
-#define zx_hrxml_ServiceDetail_ELEM	(zx_hrxml_NS | 0x00020b)
-#define zx_hrxml_pad_524_ELEM	(zx_hrxml_NS | 0x00020c)
-#define zx_hrxml_pad_525_ELEM	(zx_hrxml_NS | 0x00020d)
-#define zx_hrxml_Weight_ELEM	(zx_hrxml_NS | 0x00020e)
-#define zx_hrxml_ValidTo_ELEM	(zx_hrxml_NS | 0x00020f)
-#define zx_hrxml_pad_528_ELEM	(zx_hrxml_NS | 0x000210)
-#define zx_hrxml_pad_529_ELEM	(zx_hrxml_NS | 0x000211)
-#define zx_hrxml_pad_530_ELEM	(zx_hrxml_NS | 0x000212)
-#define zx_hrxml_PatentTitle_ELEM	(zx_hrxml_NS | 0x000213)
-#define zx_hrxml_SearchTarget_ELEM	(zx_hrxml_NS | 0x000214)
-#define zx_hrxml_pad_533_ELEM	(zx_hrxml_NS | 0x000215)
-#define zx_hrxml_DatesOfService_ELEM	(zx_hrxml_NS | 0x000216)
-#define zx_hrxml_pad_535_ELEM	(zx_hrxml_NS | 0x000217)
-#define zx_hrxml_pad_536_ELEM	(zx_hrxml_NS | 0x000218)
-#define zx_hrxml_pad_537_ELEM	(zx_hrxml_NS | 0x000219)
-#define zx_hrxml_pad_538_ELEM	(zx_hrxml_NS | 0x00021a)
-#define zx_hrxml_pad_539_ELEM	(zx_hrxml_NS | 0x00021b)
-#define zx_hrxml_pad_540_ELEM	(zx_hrxml_NS | 0x00021c)
-#define zx_hrxml_pad_541_ELEM	(zx_hrxml_NS | 0x00021d)
-#define zx_hrxml_pad_542_ELEM	(zx_hrxml_NS | 0x00021e)
-#define zx_hrxml_pad_543_ELEM	(zx_hrxml_NS | 0x00021f)
-#define zx_hrxml_RankedResult_ELEM	(zx_hrxml_NS | 0x000220)
-#define zx_hrxml_DegreeName_ELEM	(zx_hrxml_NS | 0x000221)
-#define zx_hrxml_pad_546_ELEM	(zx_hrxml_NS | 0x000222)
-#define zx_hrxml_OtherPayAmountMin_ELEM	(zx_hrxml_NS | 0x000223)
-#define zx_hrxml_DegreeMeasure_ELEM	(zx_hrxml_NS | 0x000224)
-#define zx_hrxml_OtherPayCalculation_ELEM	(zx_hrxml_NS | 0x000225)
-#define zx_hrxml_SchoolName_ELEM	(zx_hrxml_NS | 0x000226)
-#define zx_hrxml_DegreeMajor_ELEM	(zx_hrxml_NS | 0x000227)
-#define zx_hrxml_pad_552_ELEM	(zx_hrxml_NS | 0x000228)
-#define zx_hrxml_pad_553_ELEM	(zx_hrxml_NS | 0x000229)
-#define zx_hrxml_pad_554_ELEM	(zx_hrxml_NS | 0x00022a)
-#define zx_hrxml_BirthPlace_ELEM	(zx_hrxml_NS | 0x00022b)
-#define zx_hrxml_pad_556_ELEM	(zx_hrxml_NS | 0x00022c)
-#define zx_hrxml_OtherCompensation_ELEM	(zx_hrxml_NS | 0x00022d)
-#define zx_hrxml_pad_558_ELEM	(zx_hrxml_NS | 0x00022e)
-#define zx_hrxml_pad_559_ELEM	(zx_hrxml_NS | 0x00022f)
-#define zx_hrxml_pad_560_ELEM	(zx_hrxml_NS | 0x000230)
-#define zx_hrxml_pad_561_ELEM	(zx_hrxml_NS | 0x000231)
-#define zx_hrxml_pad_562_ELEM	(zx_hrxml_NS | 0x000232)
-#define zx_hrxml_pad_563_ELEM	(zx_hrxml_NS | 0x000233)
-#define zx_hrxml_GivenName_ELEM	(zx_hrxml_NS | 0x000234)
-#define zx_hrxml_pad_565_ELEM	(zx_hrxml_NS | 0x000235)
-#define zx_hrxml_IssuingAuthority_ELEM	(zx_hrxml_NS | 0x000236)
-#define zx_hrxml_BKZClassification_ELEM	(zx_hrxml_NS | 0x000237)
-#define zx_hrxml_Exchange_ELEM	(zx_hrxml_NS | 0x000238)
-#define zx_hrxml_LinkToResume_ELEM	(zx_hrxml_NS | 0x000239)
-#define zx_hrxml_EmployerOrgName_ELEM	(zx_hrxml_NS | 0x00023a)
-#define zx_hrxml_DegreeMinor_ELEM	(zx_hrxml_NS | 0x00023b)
-#define zx_hrxml_DatesOfAttendance_ELEM	(zx_hrxml_NS | 0x00023c)
-#define zx_hrxml_pad_573_ELEM	(zx_hrxml_NS | 0x00023d)
-#define zx_hrxml_EmployerContactInfo_ELEM	(zx_hrxml_NS | 0x00023e)
-#define zx_hrxml_pad_575_ELEM	(zx_hrxml_NS | 0x00023f)
-#define zx_hrxml_pad_576_ELEM	(zx_hrxml_NS | 0x000240)
-#define zx_hrxml_OtherPayAmountMax_ELEM	(zx_hrxml_NS | 0x000241)
-#define zx_hrxml_pad_578_ELEM	(zx_hrxml_NS | 0x000242)
-#define zx_hrxml_ProfileId_ELEM	(zx_hrxml_NS | 0x000243)
-#define zx_hrxml_Title_ELEM	(zx_hrxml_NS | 0x000244)
-#define zx_hrxml_Nationality_ELEM	(zx_hrxml_NS | 0x000245)
-#define zx_hrxml_Offered_ELEM	(zx_hrxml_NS | 0x000246)
-#define zx_hrxml_pad_583_ELEM	(zx_hrxml_NS | 0x000247)
-#define zx_hrxml_Telephone_ELEM	(zx_hrxml_NS | 0x000248)
-#define zx_hrxml_ISCEDInstitutionClassification_ELEM	(zx_hrxml_NS | 0x000249)
-#define zx_hrxml_pad_586_ELEM	(zx_hrxml_NS | 0x00024a)
-#define zx_hrxml_pad_587_ELEM	(zx_hrxml_NS | 0x00024b)
-#define zx_hrxml_pad_588_ELEM	(zx_hrxml_NS | 0x00024c)
-#define zx_hrxml_MilitaryStatus_ELEM	(zx_hrxml_NS | 0x00024d)
-#define zx_hrxml_pad_590_ELEM	(zx_hrxml_NS | 0x00024e)
-#define zx_hrxml_EducationHistory_ELEM	(zx_hrxml_NS | 0x00024f)
-#define zx_hrxml_pad_592_ELEM	(zx_hrxml_NS | 0x000250)
-#define zx_hrxml_CurrentOrEndRank_ELEM	(zx_hrxml_NS | 0x000251)
-#define zx_hrxml_pad_594_ELEM	(zx_hrxml_NS | 0x000252)
-#define zx_hrxml_MatchedObjectId_ELEM	(zx_hrxml_NS | 0x000253)
-#define zx_hrxml_pad_596_ELEM	(zx_hrxml_NS | 0x000254)
-#define zx_hrxml_pad_597_ELEM	(zx_hrxml_NS | 0x000255)
-#define zx_hrxml_pad_598_ELEM	(zx_hrxml_NS | 0x000256)
-#define zx_hrxml_Objective_ELEM	(zx_hrxml_NS | 0x000257)
-#define zx_hrxml_pad_600_ELEM	(zx_hrxml_NS | 0x000258)
-#define zx_hrxml_ParkingInstructions_ELEM	(zx_hrxml_NS | 0x000259)
-#define zx_hrxml_pad_602_ELEM	(zx_hrxml_NS | 0x00025a)
-#define zx_hrxml_pad_603_ELEM	(zx_hrxml_NS | 0x00025b)
-#define zx_hrxml_Copyright_ELEM	(zx_hrxml_NS | 0x00025c)
-#define zx_hrxml_PageNumber_ELEM	(zx_hrxml_NS | 0x00025d)
-#define zx_hrxml_BiologicalDescriptors_ELEM	(zx_hrxml_NS | 0x00025e)
-#define zx_hrxml_pad_607_ELEM	(zx_hrxml_NS | 0x00025f)
-#define zx_hrxml_CopyrightText_ELEM	(zx_hrxml_NS | 0x000260)
-#define zx_hrxml_CopyrightDates_ELEM	(zx_hrxml_NS | 0x000261)
-#define zx_hrxml_Value_ELEM	(zx_hrxml_NS | 0x000262)
-#define zx_hrxml_Volume_ELEM	(zx_hrxml_NS | 0x000263)
-#define zx_hrxml_OrgName_ELEM	(zx_hrxml_NS | 0x000264)
-#define zx_hrxml_pad_613_ELEM	(zx_hrxml_NS | 0x000265)
-#define zx_hrxml_pad_614_ELEM	(zx_hrxml_NS | 0x000266)
-#define zx_hrxml_pad_615_ELEM	(zx_hrxml_NS | 0x000267)
-#define zx_hrxml_pad_616_ELEM	(zx_hrxml_NS | 0x000268)
-#define zx_hrxml_pad_617_ELEM	(zx_hrxml_NS | 0x000269)
-#define zx_hrxml_MonthDay_ELEM	(zx_hrxml_NS | 0x00026a)
-#define zx_hrxml_EventType_ELEM	(zx_hrxml_NS | 0x00026b)
-#define zx_hrxml_pad_620_ELEM	(zx_hrxml_NS | 0x00026c)
-#define zx_hrxml_EmployerOrg_ELEM	(zx_hrxml_NS | 0x00026d)
-#define zx_hrxml_pad_622_ELEM	(zx_hrxml_NS | 0x00026e)
-#define zx_hrxml_PublicationHistory_ELEM	(zx_hrxml_NS | 0x00026f)
-#define zx_hrxml_pad_624_ELEM	(zx_hrxml_NS | 0x000270)
-#define zx_hrxml_pad_625_ELEM	(zx_hrxml_NS | 0x000271)
-#define zx_hrxml_pad_626_ELEM	(zx_hrxml_NS | 0x000272)
-#define zx_hrxml_Company_ELEM	(zx_hrxml_NS | 0x000273)
-#define zx_hrxml_pad_628_ELEM	(zx_hrxml_NS | 0x000274)
-#define zx_hrxml_ValueStatement_ELEM	(zx_hrxml_NS | 0x000275)
-#define zx_hrxml_VisaSponsorship_ELEM	(zx_hrxml_NS | 0x000276)
-#define zx_hrxml_Symbol_ELEM	(zx_hrxml_NS | 0x000277)
-#define zx_hrxml_pad_632_ELEM	(zx_hrxml_NS | 0x000278)
-#define zx_hrxml_pad_633_ELEM	(zx_hrxml_NS | 0x000279)
-#define zx_hrxml_BuildingNumber_ELEM	(zx_hrxml_NS | 0x00027a)
-#define zx_hrxml_FamilyName_ELEM	(zx_hrxml_NS | 0x00027b)
-#define zx_hrxml_pad_636_ELEM	(zx_hrxml_NS | 0x00027c)
-#define zx_hrxml_IdValue_ELEM	(zx_hrxml_NS | 0x00027d)
-#define zx_hrxml_JobGrade_ELEM	(zx_hrxml_NS | 0x00027e)
-#define zx_hrxml_RankAchieved_ELEM	(zx_hrxml_NS | 0x00027f)
-#define zx_hrxml_pad_640_ELEM	(zx_hrxml_NS | 0x000280)
-#define zx_hrxml_pad_641_ELEM	(zx_hrxml_NS | 0x000281)
-#define zx_hrxml_pad_642_ELEM	(zx_hrxml_NS | 0x000282)
-#define zx_hrxml_pad_643_ELEM	(zx_hrxml_NS | 0x000283)
-#define zx_hrxml_OrganizationId_ELEM	(zx_hrxml_NS | 0x000284)
-#define zx_hrxml_pad_645_ELEM	(zx_hrxml_NS | 0x000285)
-#define zx_hrxml_OrganizationName_ELEM	(zx_hrxml_NS | 0x000286)
-#define zx_hrxml_Organization_ELEM	(zx_hrxml_NS | 0x000287)
-#define zx_hrxml_ExcessiveValueIndicator_ELEM	(zx_hrxml_NS | 0x000288)
-#define zx_hrxml_Ethnicity_ELEM	(zx_hrxml_NS | 0x000289)
-#define zx_hrxml_OrganizationalUnitId_ELEM	(zx_hrxml_NS | 0x00028a)
-#define zx_hrxml_OrganizationUnit_ELEM	(zx_hrxml_NS | 0x00028b)
-#define zx_hrxml_OrganizationalUnitName_ELEM	(zx_hrxml_NS | 0x00028c)
-#define zx_hrxml_OrganizationalUnit_ELEM	(zx_hrxml_NS | 0x00028d)
-#define zx_hrxml_pad_654_ELEM	(zx_hrxml_NS | 0x00028e)
-#define zx_hrxml_TextResume_ELEM	(zx_hrxml_NS | 0x00028f)
-#define zx_hrxml_VerticalAccuracy_ELEM	(zx_hrxml_NS | 0x000290)
-#define zx_hrxml_DistributeTo_ELEM	(zx_hrxml_NS | 0x000291)
-#define zx_hrxml_ServiceNumber_ELEM	(zx_hrxml_NS | 0x000292)
-#define zx_hrxml_pad_659_ELEM	(zx_hrxml_NS | 0x000293)
-#define zx_hrxml_pad_660_ELEM	(zx_hrxml_NS | 0x000294)
-#define zx_hrxml_pad_661_ELEM	(zx_hrxml_NS | 0x000295)
-#define zx_hrxml_pad_662_ELEM	(zx_hrxml_NS | 0x000296)
-#define zx_hrxml_OtherPay_ELEM	(zx_hrxml_NS | 0x000297)
-#define zx_hrxml_pad_664_ELEM	(zx_hrxml_NS | 0x000298)
-#define zx_hrxml_pad_665_ELEM	(zx_hrxml_NS | 0x000299)
-#define zx_hrxml_BasePayAmountMin_ELEM	(zx_hrxml_NS | 0x00029a)
-#define zx_hrxml_pad_667_ELEM	(zx_hrxml_NS | 0x00029b)
-#define zx_hrxml_PublisherName_ELEM	(zx_hrxml_NS | 0x00029c)
-#define zx_hrxml_pad_669_ELEM	(zx_hrxml_NS | 0x00029d)
-#define zx_hrxml_EntityName_ELEM	(zx_hrxml_NS | 0x00029e)
-#define zx_hrxml_pad_671_ELEM	(zx_hrxml_NS | 0x00029f)
-#define zx_hrxml_DistributionGuidelines_ELEM	(zx_hrxml_NS | 0x0002a0)
-#define zx_hrxml_pad_673_ELEM	(zx_hrxml_NS | 0x0002a1)
-#define zx_hrxml_ValidFrom_ELEM	(zx_hrxml_NS | 0x0002a2)
-#define zx_hrxml_pad_675_ELEM	(zx_hrxml_NS | 0x0002a3)
-#define zx_hrxml_pad_676_ELEM	(zx_hrxml_NS | 0x0002a4)
-#define zx_hrxml_PublisherLocation_ELEM	(zx_hrxml_NS | 0x0002a5)
-#define zx_hrxml_pad_678_ELEM	(zx_hrxml_NS | 0x0002a6)
-#define zx_hrxml_Type_ELEM	(zx_hrxml_NS | 0x0002a7)
-#define zx_hrxml_MonthDayOfBirth_ELEM	(zx_hrxml_NS | 0x0002a8)
-#define zx_hrxml_pad_681_ELEM	(zx_hrxml_NS | 0x0002a9)
-#define zx_hrxml_pad_682_ELEM	(zx_hrxml_NS | 0x0002aa)
-#define zx_hrxml_pad_683_ELEM	(zx_hrxml_NS | 0x0002ab)
-#define zx_hrxml_pad_684_ELEM	(zx_hrxml_NS | 0x0002ac)
-#define zx_hrxml_pad_685_ELEM	(zx_hrxml_NS | 0x0002ad)
-#define zx_hrxml_pad_686_ELEM	(zx_hrxml_NS | 0x0002ae)
-#define zx_hrxml_Municipality_ELEM	(zx_hrxml_NS | 0x0002af)
-#define zx_hrxml_pad_688_ELEM	(zx_hrxml_NS | 0x0002b0)
-#define zx_hrxml_pad_689_ELEM	(zx_hrxml_NS | 0x0002b1)
-#define zx_hrxml_MiddleName_ELEM	(zx_hrxml_NS | 0x0002b2)
-#define zx_hrxml_pad_691_ELEM	(zx_hrxml_NS | 0x0002b3)
-#define zx_hrxml_pad_692_ELEM	(zx_hrxml_NS | 0x0002b4)
-#define zx_hrxml_pad_693_ELEM	(zx_hrxml_NS | 0x0002b5)
-#define zx_hrxml_pad_694_ELEM	(zx_hrxml_NS | 0x0002b6)
-#define zx_hrxml_DunsNumber_ELEM	(zx_hrxml_NS | 0x0002b7)
-#define zx_hrxml_BasePayAmountMax_ELEM	(zx_hrxml_NS | 0x0002b8)
-#define zx_hrxml_pad_697_ELEM	(zx_hrxml_NS | 0x0002b9)
-#define zx_hrxml_pad_698_ELEM	(zx_hrxml_NS | 0x0002ba)
-#define zx_hrxml_pad_699_ELEM	(zx_hrxml_NS | 0x0002bb)
-#define zx_hrxml_SafetyEquipment_ELEM	(zx_hrxml_NS | 0x0002bc)
-#define zx_hrxml_pad_701_ELEM	(zx_hrxml_NS | 0x0002bd)
-#define zx_hrxml_pad_702_ELEM	(zx_hrxml_NS | 0x0002be)
-#define zx_hrxml_pad_703_ELEM	(zx_hrxml_NS | 0x0002bf)
-#define zx_hrxml_pad_704_ELEM	(zx_hrxml_NS | 0x0002c0)
-#define zx_hrxml_BKZId_ELEM	(zx_hrxml_NS | 0x0002c1)
-#define zx_hrxml_pad_706_ELEM	(zx_hrxml_NS | 0x0002c2)
-#define zx_hrxml_pad_707_ELEM	(zx_hrxml_NS | 0x0002c3)
-#define zx_hrxml_pad_708_ELEM	(zx_hrxml_NS | 0x0002c4)
-#define zx_hrxml_pad_709_ELEM	(zx_hrxml_NS | 0x0002c5)
-#define zx_hrxml_Applicable_ELEM	(zx_hrxml_NS | 0x0002c6)
-#define zx_hrxml_pad_711_ELEM	(zx_hrxml_NS | 0x0002c7)
-#define zx_hrxml_TimeMax_ELEM	(zx_hrxml_NS | 0x0002c8)
-#define zx_hrxml_pad_713_ELEM	(zx_hrxml_NS | 0x0002c9)
-#define zx_hrxml_pad_714_ELEM	(zx_hrxml_NS | 0x0002ca)
-#define zx_hrxml_MilitaryHistory_ELEM	(zx_hrxml_NS | 0x0002cb)
-#define zx_hrxml_ProfileName_ELEM	(zx_hrxml_NS | 0x0002cc)
-#define zx_hrxml_JobLevelInfo_ELEM	(zx_hrxml_NS | 0x0002cd)
-#define zx_hrxml_pad_718_ELEM	(zx_hrxml_NS | 0x0002ce)
-#define zx_hrxml_pad_719_ELEM	(zx_hrxml_NS | 0x0002cf)
-#define zx_hrxml_pad_720_ELEM	(zx_hrxml_NS | 0x0002d0)
-#define zx_hrxml_OrgIndustry_ELEM	(zx_hrxml_NS | 0x0002d1)
-#define zx_hrxml_pad_722_ELEM	(zx_hrxml_NS | 0x0002d2)
-#define zx_hrxml_pad_723_ELEM	(zx_hrxml_NS | 0x0002d3)
-#define zx_hrxml_pad_724_ELEM	(zx_hrxml_NS | 0x0002d4)
-#define zx_hrxml_pad_725_ELEM	(zx_hrxml_NS | 0x0002d5)
-#define zx_hrxml_IdentifyingMarks_ELEM	(zx_hrxml_NS | 0x0002d6)
-#define zx_hrxml_pad_727_ELEM	(zx_hrxml_NS | 0x0002d7)
-#define zx_hrxml_pad_728_ELEM	(zx_hrxml_NS | 0x0002d8)
-#define zx_hrxml_pad_729_ELEM	(zx_hrxml_NS | 0x0002d9)
-#define zx_hrxml_SearchTimeStamp_ELEM	(zx_hrxml_NS | 0x0002da)
-#define zx_hrxml_JobCategory_ELEM	(zx_hrxml_NS | 0x0002db)
-#define zx_hrxml_BasePay_ELEM	(zx_hrxml_NS | 0x0002dc)
-#define zx_hrxml_pad_733_ELEM	(zx_hrxml_NS | 0x0002dd)
-#define zx_hrxml_pad_734_ELEM	(zx_hrxml_NS | 0x0002de)
-#define zx_hrxml_pad_735_ELEM	(zx_hrxml_NS | 0x0002df)
-#define zx_hrxml_pad_736_ELEM	(zx_hrxml_NS | 0x0002e0)
-#define zx_hrxml_pad_737_ELEM	(zx_hrxml_NS | 0x0002e1)
-#define zx_hrxml_pad_738_ELEM	(zx_hrxml_NS | 0x0002e2)
-#define zx_hrxml_pad_739_ELEM	(zx_hrxml_NS | 0x0002e3)
-#define zx_hrxml_TaxId_ELEM	(zx_hrxml_NS | 0x0002e4)
-#define zx_hrxml_pad_741_ELEM	(zx_hrxml_NS | 0x0002e5)
-#define zx_hrxml_pad_742_ELEM	(zx_hrxml_NS | 0x0002e6)
-#define zx_hrxml_pad_743_ELEM	(zx_hrxml_NS | 0x0002e7)
-#define zx_hrxml_pad_744_ELEM	(zx_hrxml_NS | 0x0002e8)
-#define zx_hrxml_pad_745_ELEM	(zx_hrxml_NS | 0x0002e9)
-#define zx_hrxml_pad_746_ELEM	(zx_hrxml_NS | 0x0002ea)
-#define zx_hrxml_pad_747_ELEM	(zx_hrxml_NS | 0x0002eb)
-#define zx_hrxml_pad_748_ELEM	(zx_hrxml_NS | 0x0002ec)
-#define zx_hrxml_pad_749_ELEM	(zx_hrxml_NS | 0x0002ed)
-#define zx_hrxml_pad_750_ELEM	(zx_hrxml_NS | 0x0002ee)
-#define zx_hrxml_pad_751_ELEM	(zx_hrxml_NS | 0x0002ef)
-#define zx_hrxml_pad_752_ELEM	(zx_hrxml_NS | 0x0002f0)
-#define zx_hrxml_EnvironmentId_ELEM	(zx_hrxml_NS | 0x0002f1)
-#define zx_hrxml_pad_754_ELEM	(zx_hrxml_NS | 0x0002f2)
-#define zx_hrxml_EnvironmentName_ELEM	(zx_hrxml_NS | 0x0002f3)
-#define zx_hrxml_pad_756_ELEM	(zx_hrxml_NS | 0x0002f4)
-#define zx_hrxml_pad_757_ELEM	(zx_hrxml_NS | 0x0002f5)
-#define zx_hrxml_pad_758_ELEM	(zx_hrxml_NS | 0x0002f6)
-#define zx_hrxml_pad_759_ELEM	(zx_hrxml_NS | 0x0002f7)
-#define zx_hrxml_SourceType_ELEM	(zx_hrxml_NS | 0x0002f8)
-#define zx_hrxml_Mobile_ELEM	(zx_hrxml_NS | 0x0002f9)
-#define zx_hrxml_pad_762_ELEM	(zx_hrxml_NS | 0x0002fa)
-#define zx_hrxml_pad_763_ELEM	(zx_hrxml_NS | 0x0002fb)
-#define zx_hrxml_pad_764_ELEM	(zx_hrxml_NS | 0x0002fc)
-#define zx_hrxml_pad_765_ELEM	(zx_hrxml_NS | 0x0002fd)
-#define zx_hrxml_ExecutiveSummary_ELEM	(zx_hrxml_NS | 0x0002fe)
-#define zx_hrxml_pad_767_ELEM	(zx_hrxml_NS | 0x0002ff)
-#define zx_hrxml_Link_ELEM	(zx_hrxml_NS | 0x000300)
-#define zx_hrxml_pad_769_ELEM	(zx_hrxml_NS | 0x000301)
-#define zx_hrxml_WorkSite_ELEM	(zx_hrxml_NS | 0x000302)
-#define zx_hrxml_pad_771_ELEM	(zx_hrxml_NS | 0x000303)
-#define zx_hrxml_WorkSiteId_ELEM	(zx_hrxml_NS | 0x000304)
-#define zx_hrxml_pad_773_ELEM	(zx_hrxml_NS | 0x000305)
-#define zx_hrxml_WorkSiteName_ELEM	(zx_hrxml_NS | 0x000306)
-#define zx_hrxml_PayTypeHours_ELEM	(zx_hrxml_NS | 0x000307)
-#define zx_hrxml_pad_776_ELEM	(zx_hrxml_NS | 0x000308)
-#define zx_hrxml_pad_777_ELEM	(zx_hrxml_NS | 0x000309)
-#define zx_hrxml_pad_778_ELEM	(zx_hrxml_NS | 0x00030a)
-#define zx_hrxml_pad_779_ELEM	(zx_hrxml_NS | 0x00030b)
-#define zx_hrxml_pad_780_ELEM	(zx_hrxml_NS | 0x00030c)
-#define zx_hrxml_pad_781_ELEM	(zx_hrxml_NS | 0x00030d)
-#define zx_hrxml_MeasureValue_ELEM	(zx_hrxml_NS | 0x00030e)
-#define zx_hrxml_pad_783_ELEM	(zx_hrxml_NS | 0x00030f)
-#define zx_hrxml_pad_784_ELEM	(zx_hrxml_NS | 0x000310)
-#define zx_hrxml_pad_785_ELEM	(zx_hrxml_NS | 0x000311)
-#define zx_hrxml_WorkSiteEnvironment_ELEM	(zx_hrxml_NS | 0x000312)
-#define zx_hrxml_pad_787_ELEM	(zx_hrxml_NS | 0x000313)
-#define zx_hrxml_pad_788_ELEM	(zx_hrxml_NS | 0x000314)
-#define zx_hrxml_pad_789_ELEM	(zx_hrxml_NS | 0x000315)
-#define zx_hrxml_pad_790_ELEM	(zx_hrxml_NS | 0x000316)
-#define zx_hrxml_pad_791_ELEM	(zx_hrxml_NS | 0x000317)
-#define zx_hrxml_pad_792_ELEM	(zx_hrxml_NS | 0x000318)
-#define zx_hrxml_pad_793_ELEM	(zx_hrxml_NS | 0x000319)
-#define zx_hrxml_pad_794_ELEM	(zx_hrxml_NS | 0x00031a)
-#define zx_hrxml_pad_795_ELEM	(zx_hrxml_NS | 0x00031b)
-#define zx_hrxml_pad_796_ELEM	(zx_hrxml_NS | 0x00031c)
-#define zx_hrxml_EndTime_ELEM	(zx_hrxml_NS | 0x00031d)
-#define zx_hrxml_pad_798_ELEM	(zx_hrxml_NS | 0x00031e)
-#define zx_hrxml_pad_799_ELEM	(zx_hrxml_NS | 0x00031f)
-#define zx_hrxml_pad_800_ELEM	(zx_hrxml_NS | 0x000320)
-#define zx_hrxml_pad_801_ELEM	(zx_hrxml_NS | 0x000321)
-#define zx_hrxml_pad_802_ELEM	(zx_hrxml_NS | 0x000322)
-#define zx_hrxml_pad_803_ELEM	(zx_hrxml_NS | 0x000323)
-#define zx_hrxml_pad_804_ELEM	(zx_hrxml_NS | 0x000324)
-#define zx_hrxml_pad_805_ELEM	(zx_hrxml_NS | 0x000325)
-#define zx_hrxml_pad_806_ELEM	(zx_hrxml_NS | 0x000326)
-#define zx_hrxml_pad_807_ELEM	(zx_hrxml_NS | 0x000327)
-#define zx_hrxml_pad_808_ELEM	(zx_hrxml_NS | 0x000328)
-#define zx_hrxml_pad_809_ELEM	(zx_hrxml_NS | 0x000329)
-#define zx_hrxml_TaxonomyId_ELEM	(zx_hrxml_NS | 0x00032a)
-#define zx_hrxml_pad_811_ELEM	(zx_hrxml_NS | 0x00032b)
-#define zx_hrxml_TaxonomyName_ELEM	(zx_hrxml_NS | 0x00032c)
-#define zx_hrxml_pad_813_ELEM	(zx_hrxml_NS | 0x00032d)
-#define zx_hrxml_pad_814_ELEM	(zx_hrxml_NS | 0x00032e)
-#define zx_hrxml_pad_815_ELEM	(zx_hrxml_NS | 0x00032f)
-#define zx_hrxml_DateOfBirth_ELEM	(zx_hrxml_NS | 0x000330)
-#define zx_hrxml_pad_817_ELEM	(zx_hrxml_NS | 0x000331)
-#define zx_hrxml_pad_818_ELEM	(zx_hrxml_NS | 0x000332)
-#define zx_hrxml_pad_819_ELEM	(zx_hrxml_NS | 0x000333)
-#define zx_hrxml_pad_820_ELEM	(zx_hrxml_NS | 0x000334)
-#define zx_hrxml_pad_821_ELEM	(zx_hrxml_NS | 0x000335)
-#define zx_hrxml_pad_822_ELEM	(zx_hrxml_NS | 0x000336)
-#define zx_hrxml_pad_823_ELEM	(zx_hrxml_NS | 0x000337)
-#define zx_hrxml_pad_824_ELEM	(zx_hrxml_NS | 0x000338)
-#define zx_hrxml_pad_825_ELEM	(zx_hrxml_NS | 0x000339)
-#define zx_hrxml_pad_826_ELEM	(zx_hrxml_NS | 0x00033a)
-#define zx_hrxml_pad_827_ELEM	(zx_hrxml_NS | 0x00033b)
-#define zx_hrxml_pad_828_ELEM	(zx_hrxml_NS | 0x00033c)
-#define zx_hrxml_pad_829_ELEM	(zx_hrxml_NS | 0x00033d)
-#define zx_hrxml_pad_830_ELEM	(zx_hrxml_NS | 0x00033e)
-#define zx_hrxml_pad_831_ELEM	(zx_hrxml_NS | 0x00033f)
-#define zx_hrxml_pad_832_ELEM	(zx_hrxml_NS | 0x000340)
-#define zx_hrxml_pad_833_ELEM	(zx_hrxml_NS | 0x000341)
-#define zx_hrxml_pad_834_ELEM	(zx_hrxml_NS | 0x000342)
-#define zx_hrxml_pad_835_ELEM	(zx_hrxml_NS | 0x000343)
-#define zx_hrxml_pad_836_ELEM	(zx_hrxml_NS | 0x000344)
-#define zx_hrxml_EmploymentHistory_ELEM	(zx_hrxml_NS | 0x000345)
-#define zx_hrxml_pad_838_ELEM	(zx_hrxml_NS | 0x000346)
-#define zx_hrxml_pad_839_ELEM	(zx_hrxml_NS | 0x000347)
-#define zx_hrxml_TravelConsiderations_ELEM	(zx_hrxml_NS | 0x000348)
-#define zx_hrxml_pad_841_ELEM	(zx_hrxml_NS | 0x000349)
-#define zx_hrxml_BKZName_ELEM	(zx_hrxml_NS | 0x00034a)
-#define zx_hrxml_pad_843_ELEM	(zx_hrxml_NS | 0x00034b)
-#define zx_hrxml_pad_844_ELEM	(zx_hrxml_NS | 0x00034c)
-#define zx_hrxml_pad_845_ELEM	(zx_hrxml_NS | 0x00034d)
-#define zx_hrxml_pad_846_ELEM	(zx_hrxml_NS | 0x00034e)
-#define zx_hrxml_pad_847_ELEM	(zx_hrxml_NS | 0x00034f)
-#define zx_hrxml_pad_848_ELEM	(zx_hrxml_NS | 0x000350)
-#define zx_hrxml_pad_849_ELEM	(zx_hrxml_NS | 0x000351)
-#define zx_hrxml_pad_850_ELEM	(zx_hrxml_NS | 0x000352)
-#define zx_hrxml_pad_851_ELEM	(zx_hrxml_NS | 0x000353)
-#define zx_hrxml_pad_852_ELEM	(zx_hrxml_NS | 0x000354)
-#define zx_hrxml_pad_853_ELEM	(zx_hrxml_NS | 0x000355)
-#define zx_hrxml_pad_854_ELEM	(zx_hrxml_NS | 0x000356)
-#define zx_hrxml_pad_855_ELEM	(zx_hrxml_NS | 0x000357)
-#define zx_hrxml_Travel_ELEM	(zx_hrxml_NS | 0x000358)
-#define zx_hrxml_WebSite_ELEM	(zx_hrxml_NS | 0x000359)
-#define zx_hrxml_pad_858_ELEM	(zx_hrxml_NS | 0x00035a)
-#define zx_hrxml_pad_859_ELEM	(zx_hrxml_NS | 0x00035b)
-#define zx_hrxml_pad_860_ELEM	(zx_hrxml_NS | 0x00035c)
-#define zx_hrxml_pad_861_ELEM	(zx_hrxml_NS | 0x00035d)
-#define zx_hrxml_pad_862_ELEM	(zx_hrxml_NS | 0x00035e)
-#define zx_hrxml_pad_863_ELEM	(zx_hrxml_NS | 0x00035f)
-#define zx_hrxml_pad_864_ELEM	(zx_hrxml_NS | 0x000360)
-#define zx_hrxml_pad_865_ELEM	(zx_hrxml_NS | 0x000361)
-#define zx_hrxml_pad_866_ELEM	(zx_hrxml_NS | 0x000362)
-#define zx_hrxml_pad_867_ELEM	(zx_hrxml_NS | 0x000363)
-#define zx_hrxml_pad_868_ELEM	(zx_hrxml_NS | 0x000364)
-#define zx_hrxml_pad_869_ELEM	(zx_hrxml_NS | 0x000365)
-#define zx_hrxml_pad_870_ELEM	(zx_hrxml_NS | 0x000366)
-#define zx_hrxml_pad_871_ELEM	(zx_hrxml_NS | 0x000367)
-#define zx_hrxml_pad_872_ELEM	(zx_hrxml_NS | 0x000368)
-#define zx_hrxml_pad_873_ELEM	(zx_hrxml_NS | 0x000369)
-#define zx_hrxml_pad_874_ELEM	(zx_hrxml_NS | 0x00036a)
-#define zx_hrxml_pad_875_ELEM	(zx_hrxml_NS | 0x00036b)
-#define zx_hrxml_pad_876_ELEM	(zx_hrxml_NS | 0x00036c)
-#define zx_hrxml_JobStep_ELEM	(zx_hrxml_NS | 0x00036d)
-#define zx_hrxml_pad_878_ELEM	(zx_hrxml_NS | 0x00036e)
-#define zx_hrxml_pad_879_ELEM	(zx_hrxml_NS | 0x00036f)
-#define zx_hrxml_pad_880_ELEM	(zx_hrxml_NS | 0x000370)
-#define zx_hrxml_pad_881_ELEM	(zx_hrxml_NS | 0x000371)
-#define zx_hrxml_pad_882_ELEM	(zx_hrxml_NS | 0x000372)
-#define zx_hrxml_pad_883_ELEM	(zx_hrxml_NS | 0x000373)
-#define zx_hrxml_pad_884_ELEM	(zx_hrxml_NS | 0x000374)
-#define zx_hrxml_pad_885_ELEM	(zx_hrxml_NS | 0x000375)
-#define zx_hrxml_pad_886_ELEM	(zx_hrxml_NS | 0x000376)
-#define zx_hrxml_pad_887_ELEM	(zx_hrxml_NS | 0x000377)
-#define zx_hrxml_pad_888_ELEM	(zx_hrxml_NS | 0x000378)
-#define zx_hrxml_pad_889_ELEM	(zx_hrxml_NS | 0x000379)
-#define zx_hrxml_pad_890_ELEM	(zx_hrxml_NS | 0x00037a)
-#define zx_hrxml_pad_891_ELEM	(zx_hrxml_NS | 0x00037b)
-#define zx_hrxml_pad_892_ELEM	(zx_hrxml_NS | 0x00037c)
-#define zx_hrxml_pad_893_ELEM	(zx_hrxml_NS | 0x00037d)
-#define zx_hrxml_pad_894_ELEM	(zx_hrxml_NS | 0x00037e)
-#define zx_hrxml_pad_895_ELEM	(zx_hrxml_NS | 0x00037f)
-#define zx_hrxml_pad_896_ELEM	(zx_hrxml_NS | 0x000380)
-#define zx_hrxml_pad_897_ELEM	(zx_hrxml_NS | 0x000381)
-#define zx_hrxml_pad_898_ELEM	(zx_hrxml_NS | 0x000382)
-#define zx_hrxml_pad_899_ELEM	(zx_hrxml_NS | 0x000383)
-#define zx_hrxml_pad_900_ELEM	(zx_hrxml_NS | 0x000384)
-#define zx_hrxml_pad_901_ELEM	(zx_hrxml_NS | 0x000385)
-#define zx_hrxml_pad_902_ELEM	(zx_hrxml_NS | 0x000386)
-#define zx_hrxml_pad_903_ELEM	(zx_hrxml_NS | 0x000387)
-#define zx_hrxml_ISSN_ELEM	(zx_hrxml_NS | 0x000388)
-#define zx_hrxml_pad_905_ELEM	(zx_hrxml_NS | 0x000389)
-#define zx_hrxml_VerifyEmployment_ELEM	(zx_hrxml_NS | 0x00038a)
-#define zx_hrxml_pad_907_ELEM	(zx_hrxml_NS | 0x00038b)
-#define zx_hrxml_pad_908_ELEM	(zx_hrxml_NS | 0x00038c)
-#define zx_hrxml_pad_909_ELEM	(zx_hrxml_NS | 0x00038d)
-#define zx_hrxml_pad_910_ELEM	(zx_hrxml_NS | 0x00038e)
-#define zx_hrxml_pad_911_ELEM	(zx_hrxml_NS | 0x00038f)
-#define zx_hrxml_pad_912_ELEM	(zx_hrxml_NS | 0x000390)
-#define zx_hrxml_pad_913_ELEM	(zx_hrxml_NS | 0x000391)
-#define zx_hrxml_pad_914_ELEM	(zx_hrxml_NS | 0x000392)
-#define zx_hrxml_pad_915_ELEM	(zx_hrxml_NS | 0x000393)
-#define zx_hrxml_OtherPublication_ELEM	(zx_hrxml_NS | 0x000394)
-#define zx_hrxml_pad_917_ELEM	(zx_hrxml_NS | 0x000395)
-#define zx_hrxml_pad_918_ELEM	(zx_hrxml_NS | 0x000396)
-#define zx_hrxml_pad_919_ELEM	(zx_hrxml_NS | 0x000397)
-#define zx_hrxml_pad_920_ELEM	(zx_hrxml_NS | 0x000398)
-#define zx_hrxml_pad_921_ELEM	(zx_hrxml_NS | 0x000399)
-#define zx_hrxml_pad_922_ELEM	(zx_hrxml_NS | 0x00039a)
-#define zx_hrxml_pad_923_ELEM	(zx_hrxml_NS | 0x00039b)
-#define zx_hrxml_pad_924_ELEM	(zx_hrxml_NS | 0x00039c)
-#define zx_hrxml_pad_925_ELEM	(zx_hrxml_NS | 0x00039d)
-#define zx_hrxml_pad_926_ELEM	(zx_hrxml_NS | 0x00039e)
-#define zx_hrxml_pad_927_ELEM	(zx_hrxml_NS | 0x00039f)
-#define zx_hrxml_pad_928_ELEM	(zx_hrxml_NS | 0x0003a0)
-#define zx_hrxml_CompanyVehicle_ELEM	(zx_hrxml_NS | 0x0003a1)
-#define zx_hrxml_pad_930_ELEM	(zx_hrxml_NS | 0x0003a2)
-#define zx_hrxml_pad_931_ELEM	(zx_hrxml_NS | 0x0003a3)
-#define zx_hrxml_pad_932_ELEM	(zx_hrxml_NS | 0x0003a4)
-#define zx_hrxml_pad_933_ELEM	(zx_hrxml_NS | 0x0003a5)
-#define zx_hrxml_pad_934_ELEM	(zx_hrxml_NS | 0x0003a6)
-#define zx_hrxml_pad_935_ELEM	(zx_hrxml_NS | 0x0003a7)
-#define zx_hrxml_pad_936_ELEM	(zx_hrxml_NS | 0x0003a8)
-#define zx_hrxml_pad_937_ELEM	(zx_hrxml_NS | 0x0003a9)
-#define zx_hrxml_pad_938_ELEM	(zx_hrxml_NS | 0x0003aa)
-#define zx_hrxml_pad_939_ELEM	(zx_hrxml_NS | 0x0003ab)
-#define zx_hrxml_pad_940_ELEM	(zx_hrxml_NS | 0x0003ac)
-#define zx_hrxml_pad_941_ELEM	(zx_hrxml_NS | 0x0003ad)
-#define zx_hrxml_NumericValue_ELEM	(zx_hrxml_NS | 0x0003ae)
-#define zx_hrxml_pad_943_ELEM	(zx_hrxml_NS | 0x0003af)
-#define zx_hrxml_pad_944_ELEM	(zx_hrxml_NS | 0x0003b0)
-#define zx_hrxml_pad_945_ELEM	(zx_hrxml_NS | 0x0003b1)
-#define zx_hrxml_pad_946_ELEM	(zx_hrxml_NS | 0x0003b2)
-#define zx_hrxml_pad_947_ELEM	(zx_hrxml_NS | 0x0003b3)
-#define zx_hrxml_pad_948_ELEM	(zx_hrxml_NS | 0x0003b4)
-#define zx_hrxml_pad_949_ELEM	(zx_hrxml_NS | 0x0003b5)
-#define zx_hrxml_pad_950_ELEM	(zx_hrxml_NS | 0x0003b6)
-#define zx_hrxml_TravelDirections_ELEM	(zx_hrxml_NS | 0x0003b7)
-#define zx_hrxml_pad_952_ELEM	(zx_hrxml_NS | 0x0003b8)
-#define zx_hrxml_pad_953_ELEM	(zx_hrxml_NS | 0x0003b9)
-#define zx_hrxml_pad_954_ELEM	(zx_hrxml_NS | 0x0003ba)
-#define zx_hrxml_pad_955_ELEM	(zx_hrxml_NS | 0x0003bb)
-#define zx_hrxml_pad_956_ELEM	(zx_hrxml_NS | 0x0003bc)
-#define zx_hrxml_pad_957_ELEM	(zx_hrxml_NS | 0x0003bd)
-#define zx_hrxml_pad_958_ELEM	(zx_hrxml_NS | 0x0003be)
-#define zx_hrxml_pad_959_ELEM	(zx_hrxml_NS | 0x0003bf)
-#define zx_hrxml_pad_960_ELEM	(zx_hrxml_NS | 0x0003c0)
-#define zx_hrxml_pad_961_ELEM	(zx_hrxml_NS | 0x0003c1)
-#define zx_hrxml_pad_962_ELEM	(zx_hrxml_NS | 0x0003c2)
-#define zx_hrxml_pad_963_ELEM	(zx_hrxml_NS | 0x0003c3)
-#define zx_hrxml_pad_964_ELEM	(zx_hrxml_NS | 0x0003c4)
-#define zx_hrxml_pad_965_ELEM	(zx_hrxml_NS | 0x0003c5)
-#define zx_hrxml_pad_966_ELEM	(zx_hrxml_NS | 0x0003c6)
-#define zx_hrxml_pad_967_ELEM	(zx_hrxml_NS | 0x0003c7)
-#define zx_hrxml_pad_968_ELEM	(zx_hrxml_NS | 0x0003c8)
-#define zx_hrxml_pad_969_ELEM	(zx_hrxml_NS | 0x0003c9)
-#define zx_hrxml_pad_970_ELEM	(zx_hrxml_NS | 0x0003ca)
-#define zx_hrxml_WorkStyle_ELEM	(zx_hrxml_NS | 0x0003cb)
-#define zx_hrxml_pad_972_ELEM	(zx_hrxml_NS | 0x0003cc)
-#define zx_hrxml_EffectiveDate_ELEM	(zx_hrxml_NS | 0x0003cd)
-#define zx_hrxml_pad_974_ELEM	(zx_hrxml_NS | 0x0003ce)
-#define zx_hrxml_pad_975_ELEM	(zx_hrxml_NS | 0x0003cf)
-#define zx_hrxml_pad_976_ELEM	(zx_hrxml_NS | 0x0003d0)
-#define zx_hrxml_pad_977_ELEM	(zx_hrxml_NS | 0x0003d1)
-#define zx_hrxml_pad_978_ELEM	(zx_hrxml_NS | 0x0003d2)
-#define zx_hrxml_pad_979_ELEM	(zx_hrxml_NS | 0x0003d3)
-#define zx_hrxml_pad_980_ELEM	(zx_hrxml_NS | 0x0003d4)
-#define zx_hrxml_pad_981_ELEM	(zx_hrxml_NS | 0x0003d5)
-#define zx_hrxml_pad_982_ELEM	(zx_hrxml_NS | 0x0003d6)
-#define zx_hrxml_pad_983_ELEM	(zx_hrxml_NS | 0x0003d7)
-#define zx_hrxml_pad_984_ELEM	(zx_hrxml_NS | 0x0003d8)
-#define zx_hrxml_pad_985_ELEM	(zx_hrxml_NS | 0x0003d9)
-#define zx_hrxml_pad_986_ELEM	(zx_hrxml_NS | 0x0003da)
-#define zx_hrxml_pad_987_ELEM	(zx_hrxml_NS | 0x0003db)
-#define zx_hrxml_pad_988_ELEM	(zx_hrxml_NS | 0x0003dc)
-#define zx_hrxml_pad_989_ELEM	(zx_hrxml_NS | 0x0003dd)
-#define zx_hrxml_pad_990_ELEM	(zx_hrxml_NS | 0x0003de)
-#define zx_hrxml_pad_991_ELEM	(zx_hrxml_NS | 0x0003df)
-#define zx_hrxml_TermOfNotice_ELEM	(zx_hrxml_NS | 0x0003e0)
-#define zx_hrxml_pad_993_ELEM	(zx_hrxml_NS | 0x0003e1)
-#define zx_hrxml_pad_994_ELEM	(zx_hrxml_NS | 0x0003e2)
-#define zx_hrxml_pad_995_ELEM	(zx_hrxml_NS | 0x0003e3)
-#define zx_hrxml_pad_996_ELEM	(zx_hrxml_NS | 0x0003e4)
-#define zx_hrxml_pad_997_ELEM	(zx_hrxml_NS | 0x0003e5)
-#define zx_hrxml_pad_998_ELEM	(zx_hrxml_NS | 0x0003e6)
-#define zx_hrxml_pad_999_ELEM	(zx_hrxml_NS | 0x0003e7)
-#define zx_hrxml_pad_1000_ELEM	(zx_hrxml_NS | 0x0003e8)
-#define zx_hrxml_pad_1001_ELEM	(zx_hrxml_NS | 0x0003e9)
-#define zx_hrxml_pad_1002_ELEM	(zx_hrxml_NS | 0x0003ea)
-#define zx_hrxml_pad_1003_ELEM	(zx_hrxml_NS | 0x0003eb)
-#define zx_hrxml_pad_1004_ELEM	(zx_hrxml_NS | 0x0003ec)
-#define zx_hrxml_pad_1005_ELEM	(zx_hrxml_NS | 0x0003ed)
-#define zx_hrxml_pad_1006_ELEM	(zx_hrxml_NS | 0x0003ee)
-#define zx_hrxml_pad_1007_ELEM	(zx_hrxml_NS | 0x0003ef)
-#define zx_hrxml_pad_1008_ELEM	(zx_hrxml_NS | 0x0003f0)
-#define zx_hrxml_pad_1009_ELEM	(zx_hrxml_NS | 0x0003f1)
-#define zx_hrxml_pad_1010_ELEM	(zx_hrxml_NS | 0x0003f2)
-#define zx_hrxml_pad_1011_ELEM	(zx_hrxml_NS | 0x0003f3)
-#define zx_hrxml_pad_1012_ELEM	(zx_hrxml_NS | 0x0003f4)
-#define zx_hrxml_pad_1013_ELEM	(zx_hrxml_NS | 0x0003f5)
-#define zx_hrxml_pad_1014_ELEM	(zx_hrxml_NS | 0x0003f6)
-#define zx_hrxml_pad_1015_ELEM	(zx_hrxml_NS | 0x0003f7)
-#define zx_hrxml_pad_1016_ELEM	(zx_hrxml_NS | 0x0003f8)
-#define zx_hrxml_pad_1017_ELEM	(zx_hrxml_NS | 0x0003f9)
-#define zx_hrxml_pad_1018_ELEM	(zx_hrxml_NS | 0x0003fa)
-#define zx_hrxml_pad_1019_ELEM	(zx_hrxml_NS | 0x0003fb)
-#define zx_hrxml_pad_1020_ELEM	(zx_hrxml_NS | 0x0003fc)
-#define zx_hrxml_pad_1021_ELEM	(zx_hrxml_NS | 0x0003fd)
-#define zx_hrxml_pad_1022_ELEM	(zx_hrxml_NS | 0x0003fe)
-#define zx_hrxml_pad_1023_ELEM	(zx_hrxml_NS | 0x0003ff)
-#define zx_hrxml_pad_1024_ELEM	(zx_hrxml_NS | 0x000400)
-#define zx_hrxml_pad_1025_ELEM	(zx_hrxml_NS | 0x000401)
-#define zx_hrxml_pad_1026_ELEM	(zx_hrxml_NS | 0x000402)
-#define zx_hrxml_pad_1027_ELEM	(zx_hrxml_NS | 0x000403)
-#define zx_hrxml_pad_1028_ELEM	(zx_hrxml_NS | 0x000404)
-#define zx_hrxml_pad_1029_ELEM	(zx_hrxml_NS | 0x000405)
-#define zx_hrxml_pad_1030_ELEM	(zx_hrxml_NS | 0x000406)
-#define zx_hrxml_pad_1031_ELEM	(zx_hrxml_NS | 0x000407)
-#define zx_hrxml_pad_1032_ELEM	(zx_hrxml_NS | 0x000408)
-#define zx_hrxml_pad_1033_ELEM	(zx_hrxml_NS | 0x000409)
-#define zx_hrxml_pad_1034_ELEM	(zx_hrxml_NS | 0x00040a)
-#define zx_hrxml_pad_1035_ELEM	(zx_hrxml_NS | 0x00040b)
-#define zx_hrxml_pad_1036_ELEM	(zx_hrxml_NS | 0x00040c)
-#define zx_hrxml_pad_1037_ELEM	(zx_hrxml_NS | 0x00040d)
-#define zx_hrxml_pad_1038_ELEM	(zx_hrxml_NS | 0x00040e)
-#define zx_hrxml_pad_1039_ELEM	(zx_hrxml_NS | 0x00040f)
-#define zx_hrxml_pad_1040_ELEM	(zx_hrxml_NS | 0x000410)
-#define zx_hrxml_pad_1041_ELEM	(zx_hrxml_NS | 0x000411)
-#define zx_hrxml_pad_1042_ELEM	(zx_hrxml_NS | 0x000412)
-#define zx_hrxml_pad_1043_ELEM	(zx_hrxml_NS | 0x000413)
-#define zx_hrxml_pad_1044_ELEM	(zx_hrxml_NS | 0x000414)
-#define zx_hrxml_pad_1045_ELEM	(zx_hrxml_NS | 0x000415)
-#define zx_hrxml_pad_1046_ELEM	(zx_hrxml_NS | 0x000416)
-#define zx_hrxml_pad_1047_ELEM	(zx_hrxml_NS | 0x000417)
-#define zx_hrxml_pad_1048_ELEM	(zx_hrxml_NS | 0x000418)
-#define zx_hrxml_pad_1049_ELEM	(zx_hrxml_NS | 0x000419)
-#define zx_hrxml_TravelFrequency_ELEM	(zx_hrxml_NS | 0x00041a)
-#define zx_hrxml_pad_1051_ELEM	(zx_hrxml_NS | 0x00041b)
-#define zx_hrxml_pad_1052_ELEM	(zx_hrxml_NS | 0x00041c)
-#define zx_hrxml_pad_1053_ELEM	(zx_hrxml_NS | 0x00041d)
-#define zx_hrxml_pad_1054_ELEM	(zx_hrxml_NS | 0x00041e)
-#define zx_hrxml_pad_1055_ELEM	(zx_hrxml_NS | 0x00041f)
-#define zx_hrxml_pad_1056_ELEM	(zx_hrxml_NS | 0x000420)
-#define zx_hrxml_pad_1057_ELEM	(zx_hrxml_NS | 0x000421)
-#define zx_hrxml_pad_1058_ELEM	(zx_hrxml_NS | 0x000422)
-#define zx_hrxml_pad_1059_ELEM	(zx_hrxml_NS | 0x000423)
-#define zx_hrxml_pad_1060_ELEM	(zx_hrxml_NS | 0x000424)
-#define zx_hrxml_pad_1061_ELEM	(zx_hrxml_NS | 0x000425)
-#define zx_hrxml_LevelOfDisability_ELEM	(zx_hrxml_NS | 0x000426)
-#define zx_hrxml_pad_1063_ELEM	(zx_hrxml_NS | 0x000427)
-#define zx_hrxml_pad_1064_ELEM	(zx_hrxml_NS | 0x000428)
-#define zx_hrxml_pad_1065_ELEM	(zx_hrxml_NS | 0x000429)
-#define zx_hrxml_TimeOffAllowance_ELEM	(zx_hrxml_NS | 0x00042a)
-#define zx_hrxml_pad_1067_ELEM	(zx_hrxml_NS | 0x00042b)
-#define zx_hrxml_pad_1068_ELEM	(zx_hrxml_NS | 0x00042c)
-#define zx_hrxml_pad_1069_ELEM	(zx_hrxml_NS | 0x00042d)
-#define zx_hrxml_pad_1070_ELEM	(zx_hrxml_NS | 0x00042e)
-#define zx_hrxml_pad_1071_ELEM	(zx_hrxml_NS | 0x00042f)
-#define zx_hrxml_pad_1072_ELEM	(zx_hrxml_NS | 0x000430)
-#define zx_hrxml_pad_1073_ELEM	(zx_hrxml_NS | 0x000431)
-#define zx_hrxml_pad_1074_ELEM	(zx_hrxml_NS | 0x000432)
-#define zx_hrxml_pad_1075_ELEM	(zx_hrxml_NS | 0x000433)
-#define zx_hrxml_pad_1076_ELEM	(zx_hrxml_NS | 0x000434)
-#define zx_hrxml_pad_1077_ELEM	(zx_hrxml_NS | 0x000435)
-#define zx_hrxml_pad_1078_ELEM	(zx_hrxml_NS | 0x000436)
-#define zx_hrxml_pad_1079_ELEM	(zx_hrxml_NS | 0x000437)
-#define zx_hrxml_pad_1080_ELEM	(zx_hrxml_NS | 0x000438)
-#define zx_hrxml_pad_1081_ELEM	(zx_hrxml_NS | 0x000439)
-#define zx_hrxml_pad_1082_ELEM	(zx_hrxml_NS | 0x00043a)
-#define zx_hrxml_pad_1083_ELEM	(zx_hrxml_NS | 0x00043b)
-#define zx_hrxml_pad_1084_ELEM	(zx_hrxml_NS | 0x00043c)
-#define zx_hrxml_pad_1085_ELEM	(zx_hrxml_NS | 0x00043d)
-#define zx_hrxml_pad_1086_ELEM	(zx_hrxml_NS | 0x00043e)
-#define zx_hrxml_pad_1087_ELEM	(zx_hrxml_NS | 0x00043f)
-#define zx_hrxml_Book_ELEM	(zx_hrxml_NS | 0x000440)
-#define zx_hrxml_pad_1089_ELEM	(zx_hrxml_NS | 0x000441)
-#define zx_hrxml_pad_1090_ELEM	(zx_hrxml_NS | 0x000442)
-#define zx_hrxml_pad_1091_ELEM	(zx_hrxml_NS | 0x000443)
-#define zx_hrxml_pad_1092_ELEM	(zx_hrxml_NS | 0x000444)
-#define zx_hrxml_pad_1093_ELEM	(zx_hrxml_NS | 0x000445)
-#define zx_hrxml_pad_1094_ELEM	(zx_hrxml_NS | 0x000446)
-#define zx_hrxml_pad_1095_ELEM	(zx_hrxml_NS | 0x000447)
-#define zx_hrxml_pad_1096_ELEM	(zx_hrxml_NS | 0x000448)
-#define zx_hrxml_pad_1097_ELEM	(zx_hrxml_NS | 0x000449)
-#define zx_hrxml_pad_1098_ELEM	(zx_hrxml_NS | 0x00044a)
-#define zx_hrxml_pad_1099_ELEM	(zx_hrxml_NS | 0x00044b)
-#define zx_hrxml_pad_1100_ELEM	(zx_hrxml_NS | 0x00044c)
-#define zx_hrxml_pad_1101_ELEM	(zx_hrxml_NS | 0x00044d)
-#define zx_hrxml_pad_1102_ELEM	(zx_hrxml_NS | 0x00044e)
-#define zx_hrxml_pad_1103_ELEM	(zx_hrxml_NS | 0x00044f)
-#define zx_hrxml_pad_1104_ELEM	(zx_hrxml_NS | 0x000450)
-#define zx_hrxml_pad_1105_ELEM	(zx_hrxml_NS | 0x000451)
-#define zx_hrxml_pad_1106_ELEM	(zx_hrxml_NS | 0x000452)
-#define zx_hrxml_pad_1107_ELEM	(zx_hrxml_NS | 0x000453)
-#define zx_hrxml_pad_1108_ELEM	(zx_hrxml_NS | 0x000454)
-#define zx_hrxml_pad_1109_ELEM	(zx_hrxml_NS | 0x000455)
-#define zx_hrxml_pad_1110_ELEM	(zx_hrxml_NS | 0x000456)
-#define zx_hrxml_pad_1111_ELEM	(zx_hrxml_NS | 0x000457)
-#define zx_hrxml_pad_1112_ELEM	(zx_hrxml_NS | 0x000458)
-#define zx_hrxml_pad_1113_ELEM	(zx_hrxml_NS | 0x000459)
-#define zx_hrxml_pad_1114_ELEM	(zx_hrxml_NS | 0x00045a)
-#define zx_hrxml_pad_1115_ELEM	(zx_hrxml_NS | 0x00045b)
-#define zx_hrxml_pad_1116_ELEM	(zx_hrxml_NS | 0x00045c)
-#define zx_hrxml_pad_1117_ELEM	(zx_hrxml_NS | 0x00045d)
-#define zx_hrxml_pad_1118_ELEM	(zx_hrxml_NS | 0x00045e)
-#define zx_hrxml_pad_1119_ELEM	(zx_hrxml_NS | 0x00045f)
-#define zx_hrxml_pad_1120_ELEM	(zx_hrxml_NS | 0x000460)
-#define zx_hrxml_pad_1121_ELEM	(zx_hrxml_NS | 0x000461)
-#define zx_hrxml_pad_1122_ELEM	(zx_hrxml_NS | 0x000462)
-#define zx_hrxml_pad_1123_ELEM	(zx_hrxml_NS | 0x000463)
-#define zx_hrxml_pad_1124_ELEM	(zx_hrxml_NS | 0x000464)
-#define zx_hrxml_EEOCJobCategory_ELEM	(zx_hrxml_NS | 0x000465)
-#define zx_hrxml_pad_1126_ELEM	(zx_hrxml_NS | 0x000466)
-#define zx_hrxml_pad_1127_ELEM	(zx_hrxml_NS | 0x000467)
-#define zx_hrxml_pad_1128_ELEM	(zx_hrxml_NS | 0x000468)
-#define zx_hrxml_pad_1129_ELEM	(zx_hrxml_NS | 0x000469)
-#define zx_hrxml_pad_1130_ELEM	(zx_hrxml_NS | 0x00046a)
-#define zx_hrxml_pad_1131_ELEM	(zx_hrxml_NS | 0x00046b)
-#define zx_hrxml_pad_1132_ELEM	(zx_hrxml_NS | 0x00046c)
-#define zx_hrxml_pad_1133_ELEM	(zx_hrxml_NS | 0x00046d)
-#define zx_hrxml_pad_1134_ELEM	(zx_hrxml_NS | 0x00046e)
-#define zx_hrxml_pad_1135_ELEM	(zx_hrxml_NS | 0x00046f)
-#define zx_hrxml_pad_1136_ELEM	(zx_hrxml_NS | 0x000470)
-#define zx_hrxml_pad_1137_ELEM	(zx_hrxml_NS | 0x000471)
-#define zx_hrxml_pad_1138_ELEM	(zx_hrxml_NS | 0x000472)
-#define zx_hrxml_pad_1139_ELEM	(zx_hrxml_NS | 0x000473)
-#define zx_hrxml_pad_1140_ELEM	(zx_hrxml_NS | 0x000474)
-#define zx_hrxml_pad_1141_ELEM	(zx_hrxml_NS | 0x000475)
-#define zx_hrxml_pad_1142_ELEM	(zx_hrxml_NS | 0x000476)
-#define zx_hrxml_pad_1143_ELEM	(zx_hrxml_NS | 0x000477)
-#define zx_hrxml_pad_1144_ELEM	(zx_hrxml_NS | 0x000478)
-#define zx_hrxml_pad_1145_ELEM	(zx_hrxml_NS | 0x000479)
-#define zx_hrxml_TTYTDD_ELEM	(zx_hrxml_NS | 0x00047a)
-#define zx_hrxml_pad_1147_ELEM	(zx_hrxml_NS | 0x00047b)
-#define zx_hrxml_pad_1148_ELEM	(zx_hrxml_NS | 0x00047c)
-#define zx_hrxml_pad_1149_ELEM	(zx_hrxml_NS | 0x00047d)
-#define zx_hrxml_pad_1150_ELEM	(zx_hrxml_NS | 0x00047e)
-#define zx_hrxml_pad_1151_ELEM	(zx_hrxml_NS | 0x00047f)
-#define zx_hrxml_pad_1152_ELEM	(zx_hrxml_NS | 0x000480)
-#define zx_hrxml_pad_1153_ELEM	(zx_hrxml_NS | 0x000481)
-#define zx_hrxml_pad_1154_ELEM	(zx_hrxml_NS | 0x000482)
-#define zx_hrxml_pad_1155_ELEM	(zx_hrxml_NS | 0x000483)
-#define zx_hrxml_pad_1156_ELEM	(zx_hrxml_NS | 0x000484)
-#define zx_hrxml_pad_1157_ELEM	(zx_hrxml_NS | 0x000485)
-#define zx_hrxml_pad_1158_ELEM	(zx_hrxml_NS | 0x000486)
-#define zx_hrxml_pad_1159_ELEM	(zx_hrxml_NS | 0x000487)
-#define zx_hrxml_pad_1160_ELEM	(zx_hrxml_NS | 0x000488)
-#define zx_hrxml_pad_1161_ELEM	(zx_hrxml_NS | 0x000489)
-#define zx_hrxml_pad_1162_ELEM	(zx_hrxml_NS | 0x00048a)
-#define zx_hrxml_pad_1163_ELEM	(zx_hrxml_NS | 0x00048b)
-#define zx_hrxml_pad_1164_ELEM	(zx_hrxml_NS | 0x00048c)
-#define zx_hrxml_pad_1165_ELEM	(zx_hrxml_NS | 0x00048d)
-#define zx_hrxml_pad_1166_ELEM	(zx_hrxml_NS | 0x00048e)
-#define zx_hrxml_pad_1167_ELEM	(zx_hrxml_NS | 0x00048f)
-#define zx_hrxml_pad_1168_ELEM	(zx_hrxml_NS | 0x000490)
-#define zx_hrxml_pad_1169_ELEM	(zx_hrxml_NS | 0x000491)
-#define zx_hrxml_pad_1170_ELEM	(zx_hrxml_NS | 0x000492)
-#define zx_hrxml_pad_1171_ELEM	(zx_hrxml_NS | 0x000493)
-#define zx_hrxml_pad_1172_ELEM	(zx_hrxml_NS | 0x000494)
-#define zx_hrxml_pad_1173_ELEM	(zx_hrxml_NS | 0x000495)
-#define zx_hrxml_pad_1174_ELEM	(zx_hrxml_NS | 0x000496)
-#define zx_hrxml_pad_1175_ELEM	(zx_hrxml_NS | 0x000497)
-#define zx_hrxml_pad_1176_ELEM	(zx_hrxml_NS | 0x000498)
-#define zx_hrxml_pad_1177_ELEM	(zx_hrxml_NS | 0x000499)
-#define zx_hrxml_pad_1178_ELEM	(zx_hrxml_NS | 0x00049a)
-#define zx_hrxml_pad_1179_ELEM	(zx_hrxml_NS | 0x00049b)
-#define zx_hrxml_pad_1180_ELEM	(zx_hrxml_NS | 0x00049c)
-#define zx_hrxml_pad_1181_ELEM	(zx_hrxml_NS | 0x00049d)
-#define zx_hrxml_pad_1182_ELEM	(zx_hrxml_NS | 0x00049e)
-#define zx_hrxml_pad_1183_ELEM	(zx_hrxml_NS | 0x00049f)
-#define zx_hrxml_pad_1184_ELEM	(zx_hrxml_NS | 0x0004a0)
-#define zx_hrxml_pad_1185_ELEM	(zx_hrxml_NS | 0x0004a1)
-#define zx_hrxml_pad_1186_ELEM	(zx_hrxml_NS | 0x0004a2)
-#define zx_hrxml_pad_1187_ELEM	(zx_hrxml_NS | 0x0004a3)
-#define zx_hrxml_pad_1188_ELEM	(zx_hrxml_NS | 0x0004a4)
-#define zx_hrxml_pad_1189_ELEM	(zx_hrxml_NS | 0x0004a5)
-#define zx_hrxml_pad_1190_ELEM	(zx_hrxml_NS | 0x0004a6)
-#define zx_hrxml_pad_1191_ELEM	(zx_hrxml_NS | 0x0004a7)
-#define zx_hrxml_pad_1192_ELEM	(zx_hrxml_NS | 0x0004a8)
-#define zx_hrxml_pad_1193_ELEM	(zx_hrxml_NS | 0x0004a9)
-#define zx_hrxml_pad_1194_ELEM	(zx_hrxml_NS | 0x0004aa)
-#define zx_hrxml_pad_1195_ELEM	(zx_hrxml_NS | 0x0004ab)
-#define zx_hrxml_pad_1196_ELEM	(zx_hrxml_NS | 0x0004ac)
-#define zx_hrxml_pad_1197_ELEM	(zx_hrxml_NS | 0x0004ad)
-#define zx_hrxml_pad_1198_ELEM	(zx_hrxml_NS | 0x0004ae)
-#define zx_hrxml_pad_1199_ELEM	(zx_hrxml_NS | 0x0004af)
-#define zx_hrxml_pad_1200_ELEM	(zx_hrxml_NS | 0x0004b0)
-#define zx_hrxml_pad_1201_ELEM	(zx_hrxml_NS | 0x0004b1)
-#define zx_hrxml_pad_1202_ELEM	(zx_hrxml_NS | 0x0004b2)
-#define zx_hrxml_pad_1203_ELEM	(zx_hrxml_NS | 0x0004b3)
-#define zx_hrxml_pad_1204_ELEM	(zx_hrxml_NS | 0x0004b4)
-#define zx_hrxml_pad_1205_ELEM	(zx_hrxml_NS | 0x0004b5)
-#define zx_hrxml_pad_1206_ELEM	(zx_hrxml_NS | 0x0004b6)
-#define zx_hrxml_pad_1207_ELEM	(zx_hrxml_NS | 0x0004b7)
-#define zx_hrxml_pad_1208_ELEM	(zx_hrxml_NS | 0x0004b8)
-#define zx_hrxml_pad_1209_ELEM	(zx_hrxml_NS | 0x0004b9)
-#define zx_hrxml_pad_1210_ELEM	(zx_hrxml_NS | 0x0004ba)
-#define zx_hrxml_pad_1211_ELEM	(zx_hrxml_NS | 0x0004bb)
-#define zx_hrxml_pad_1212_ELEM	(zx_hrxml_NS | 0x0004bc)
-#define zx_hrxml_pad_1213_ELEM	(zx_hrxml_NS | 0x0004bd)
-#define zx_hrxml_pad_1214_ELEM	(zx_hrxml_NS | 0x0004be)
-#define zx_hrxml_pad_1215_ELEM	(zx_hrxml_NS | 0x0004bf)
-#define zx_hrxml_pad_1216_ELEM	(zx_hrxml_NS | 0x0004c0)
-#define zx_hrxml_pad_1217_ELEM	(zx_hrxml_NS | 0x0004c1)
-#define zx_hrxml_pad_1218_ELEM	(zx_hrxml_NS | 0x0004c2)
-#define zx_hrxml_pad_1219_ELEM	(zx_hrxml_NS | 0x0004c3)
-#define zx_hrxml_pad_1220_ELEM	(zx_hrxml_NS | 0x0004c4)
-#define zx_hrxml_pad_1221_ELEM	(zx_hrxml_NS | 0x0004c5)
-#define zx_hrxml_pad_1222_ELEM	(zx_hrxml_NS | 0x0004c6)
-#define zx_hrxml_pad_1223_ELEM	(zx_hrxml_NS | 0x0004c7)
-#define zx_hrxml_pad_1224_ELEM	(zx_hrxml_NS | 0x0004c8)
-#define zx_hrxml_pad_1225_ELEM	(zx_hrxml_NS | 0x0004c9)
-#define zx_hrxml_pad_1226_ELEM	(zx_hrxml_NS | 0x0004ca)
-#define zx_hrxml_pad_1227_ELEM	(zx_hrxml_NS | 0x0004cb)
-#define zx_hrxml_pad_1228_ELEM	(zx_hrxml_NS | 0x0004cc)
-#define zx_hrxml_pad_1229_ELEM	(zx_hrxml_NS | 0x0004cd)
-#define zx_hrxml_pad_1230_ELEM	(zx_hrxml_NS | 0x0004ce)
-#define zx_hrxml_pad_1231_ELEM	(zx_hrxml_NS | 0x0004cf)
-#define zx_hrxml_pad_1232_ELEM	(zx_hrxml_NS | 0x0004d0)
-#define zx_hrxml_pad_1233_ELEM	(zx_hrxml_NS | 0x0004d1)
-#define zx_hrxml_pad_1234_ELEM	(zx_hrxml_NS | 0x0004d2)
-#define zx_hrxml_pad_1235_ELEM	(zx_hrxml_NS | 0x0004d3)
-#define zx_hrxml_pad_1236_ELEM	(zx_hrxml_NS | 0x0004d4)
-#define zx_hrxml_pad_1237_ELEM	(zx_hrxml_NS | 0x0004d5)
-#define zx_hrxml_pad_1238_ELEM	(zx_hrxml_NS | 0x0004d6)
-#define zx_hrxml_pad_1239_ELEM	(zx_hrxml_NS | 0x0004d7)
-#define zx_hrxml_pad_1240_ELEM	(zx_hrxml_NS | 0x0004d8)
-#define zx_hrxml_pad_1241_ELEM	(zx_hrxml_NS | 0x0004d9)
-#define zx_hrxml_pad_1242_ELEM	(zx_hrxml_NS | 0x0004da)
-#define zx_hrxml_pad_1243_ELEM	(zx_hrxml_NS | 0x0004db)
-#define zx_hrxml_pad_1244_ELEM	(zx_hrxml_NS | 0x0004dc)
-#define zx_hrxml_pad_1245_ELEM	(zx_hrxml_NS | 0x0004dd)
-#define zx_hrxml_pad_1246_ELEM	(zx_hrxml_NS | 0x0004de)
-#define zx_hrxml_pad_1247_ELEM	(zx_hrxml_NS | 0x0004df)
-#define zx_hrxml_pad_1248_ELEM	(zx_hrxml_NS | 0x0004e0)
-#define zx_hrxml_pad_1249_ELEM	(zx_hrxml_NS | 0x0004e1)
-#define zx_hrxml_pad_1250_ELEM	(zx_hrxml_NS | 0x0004e2)
-#define zx_hrxml_pad_1251_ELEM	(zx_hrxml_NS | 0x0004e3)
-#define zx_hrxml_pad_1252_ELEM	(zx_hrxml_NS | 0x0004e4)
-#define zx_hrxml_pad_1253_ELEM	(zx_hrxml_NS | 0x0004e5)
-#define zx_hrxml_pad_1254_ELEM	(zx_hrxml_NS | 0x0004e6)
-#define zx_hrxml_pad_1255_ELEM	(zx_hrxml_NS | 0x0004e7)
-#define zx_hrxml_pad_1256_ELEM	(zx_hrxml_NS | 0x0004e8)
-#define zx_hrxml_pad_1257_ELEM	(zx_hrxml_NS | 0x0004e9)
-#define zx_hrxml_pad_1258_ELEM	(zx_hrxml_NS | 0x0004ea)
-#define zx_hrxml_pad_1259_ELEM	(zx_hrxml_NS | 0x0004eb)
-#define zx_hrxml_pad_1260_ELEM	(zx_hrxml_NS | 0x0004ec)
-#define zx_hrxml_pad_1261_ELEM	(zx_hrxml_NS | 0x0004ed)
-#define zx_hrxml_pad_1262_ELEM	(zx_hrxml_NS | 0x0004ee)
-#define zx_hrxml_pad_1263_ELEM	(zx_hrxml_NS | 0x0004ef)
-#define zx_hrxml_pad_1264_ELEM	(zx_hrxml_NS | 0x0004f0)
-#define zx_hrxml_pad_1265_ELEM	(zx_hrxml_NS | 0x0004f1)
-#define zx_hrxml_pad_1266_ELEM	(zx_hrxml_NS | 0x0004f2)
-#define zx_hrxml_pad_1267_ELEM	(zx_hrxml_NS | 0x0004f3)
-#define zx_hrxml_pad_1268_ELEM	(zx_hrxml_NS | 0x0004f4)
-#define zx_hrxml_pad_1269_ELEM	(zx_hrxml_NS | 0x0004f5)
-#define zx_hrxml_pad_1270_ELEM	(zx_hrxml_NS | 0x0004f6)
-#define zx_hrxml_pad_1271_ELEM	(zx_hrxml_NS | 0x0004f7)
-#define zx_hrxml_pad_1272_ELEM	(zx_hrxml_NS | 0x0004f8)
-#define zx_hrxml_pad_1273_ELEM	(zx_hrxml_NS | 0x0004f9)
-#define zx_hrxml_pad_1274_ELEM	(zx_hrxml_NS | 0x0004fa)
-#define zx_hrxml_pad_1275_ELEM	(zx_hrxml_NS | 0x0004fb)
-#define zx_hrxml_pad_1276_ELEM	(zx_hrxml_NS | 0x0004fc)
-#define zx_hrxml_pad_1277_ELEM	(zx_hrxml_NS | 0x0004fd)
-#define zx_hrxml_pad_1278_ELEM	(zx_hrxml_NS | 0x0004fe)
-#define zx_hrxml_pad_1279_ELEM	(zx_hrxml_NS | 0x0004ff)
-#define zx_hrxml_pad_1280_ELEM	(zx_hrxml_NS | 0x000500)
-#define zx_hrxml_pad_1281_ELEM	(zx_hrxml_NS | 0x000501)
-#define zx_hrxml_pad_1282_ELEM	(zx_hrxml_NS | 0x000502)
-#define zx_hrxml_pad_1283_ELEM	(zx_hrxml_NS | 0x000503)
-#define zx_hrxml_pad_1284_ELEM	(zx_hrxml_NS | 0x000504)
-#define zx_hrxml_pad_1285_ELEM	(zx_hrxml_NS | 0x000505)
-#define zx_hrxml_pad_1286_ELEM	(zx_hrxml_NS | 0x000506)
-#define zx_hrxml_pad_1287_ELEM	(zx_hrxml_NS | 0x000507)
-#define zx_hrxml_pad_1288_ELEM	(zx_hrxml_NS | 0x000508)
-#define zx_hrxml_pad_1289_ELEM	(zx_hrxml_NS | 0x000509)
-#define zx_hrxml_pad_1290_ELEM	(zx_hrxml_NS | 0x00050a)
-#define zx_hrxml_pad_1291_ELEM	(zx_hrxml_NS | 0x00050b)
-#define zx_hrxml_pad_1292_ELEM	(zx_hrxml_NS | 0x00050c)
-#define zx_hrxml_pad_1293_ELEM	(zx_hrxml_NS | 0x00050d)
-#define zx_hrxml_pad_1294_ELEM	(zx_hrxml_NS | 0x00050e)
-#define zx_hrxml_pad_1295_ELEM	(zx_hrxml_NS | 0x00050f)
-#define zx_hrxml_pad_1296_ELEM	(zx_hrxml_NS | 0x000510)
-#define zx_hrxml_pad_1297_ELEM	(zx_hrxml_NS | 0x000511)
-#define zx_hrxml_pad_1298_ELEM	(zx_hrxml_NS | 0x000512)
-#define zx_hrxml_pad_1299_ELEM	(zx_hrxml_NS | 0x000513)
-#define zx_hrxml_pad_1300_ELEM	(zx_hrxml_NS | 0x000514)
-#define zx_hrxml_pad_1301_ELEM	(zx_hrxml_NS | 0x000515)
-#define zx_hrxml_pad_1302_ELEM	(zx_hrxml_NS | 0x000516)
-#define zx_hrxml_pad_1303_ELEM	(zx_hrxml_NS | 0x000517)
-#define zx_hrxml_pad_1304_ELEM	(zx_hrxml_NS | 0x000518)
-#define zx_hrxml_pad_1305_ELEM	(zx_hrxml_NS | 0x000519)
-#define zx_hrxml_pad_1306_ELEM	(zx_hrxml_NS | 0x00051a)
-#define zx_hrxml_pad_1307_ELEM	(zx_hrxml_NS | 0x00051b)
-#define zx_hrxml_pad_1308_ELEM	(zx_hrxml_NS | 0x00051c)
-#define zx_hrxml_pad_1309_ELEM	(zx_hrxml_NS | 0x00051d)
-#define zx_hrxml_pad_1310_ELEM	(zx_hrxml_NS | 0x00051e)
-#define zx_hrxml_pad_1311_ELEM	(zx_hrxml_NS | 0x00051f)
-#define zx_hrxml_pad_1312_ELEM	(zx_hrxml_NS | 0x000520)
-#define zx_hrxml_pad_1313_ELEM	(zx_hrxml_NS | 0x000521)
-#define zx_hrxml_pad_1314_ELEM	(zx_hrxml_NS | 0x000522)
-#define zx_hrxml_pad_1315_ELEM	(zx_hrxml_NS | 0x000523)
-#define zx_hrxml_pad_1316_ELEM	(zx_hrxml_NS | 0x000524)
-#define zx_hrxml_pad_1317_ELEM	(zx_hrxml_NS | 0x000525)
-#define zx_hrxml_pad_1318_ELEM	(zx_hrxml_NS | 0x000526)
-#define zx_hrxml_pad_1319_ELEM	(zx_hrxml_NS | 0x000527)
-#define zx_hrxml_pad_1320_ELEM	(zx_hrxml_NS | 0x000528)
-#define zx_hrxml_pad_1321_ELEM	(zx_hrxml_NS | 0x000529)
-#define zx_hrxml_pad_1322_ELEM	(zx_hrxml_NS | 0x00052a)
-#define zx_hrxml_pad_1323_ELEM	(zx_hrxml_NS | 0x00052b)
-#define zx_hrxml_pad_1324_ELEM	(zx_hrxml_NS | 0x00052c)
-#define zx_hrxml_pad_1325_ELEM	(zx_hrxml_NS | 0x00052d)
-#define zx_hrxml_pad_1326_ELEM	(zx_hrxml_NS | 0x00052e)
-#define zx_hrxml_pad_1327_ELEM	(zx_hrxml_NS | 0x00052f)
-#define zx_hrxml_pad_1328_ELEM	(zx_hrxml_NS | 0x000530)
-#define zx_hrxml_pad_1329_ELEM	(zx_hrxml_NS | 0x000531)
-#define zx_hrxml_pad_1330_ELEM	(zx_hrxml_NS | 0x000532)
-#define zx_hrxml_pad_1331_ELEM	(zx_hrxml_NS | 0x000533)
-#define zx_hrxml_pad_1332_ELEM	(zx_hrxml_NS | 0x000534)
-#define zx_hrxml_pad_1333_ELEM	(zx_hrxml_NS | 0x000535)
-#define zx_hrxml_pad_1334_ELEM	(zx_hrxml_NS | 0x000536)
-#define zx_hrxml_pad_1335_ELEM	(zx_hrxml_NS | 0x000537)
-#define zx_hrxml_pad_1336_ELEM	(zx_hrxml_NS | 0x000538)
-#define zx_hrxml_pad_1337_ELEM	(zx_hrxml_NS | 0x000539)
-#define zx_hrxml_pad_1338_ELEM	(zx_hrxml_NS | 0x00053a)
-#define zx_hrxml_pad_1339_ELEM	(zx_hrxml_NS | 0x00053b)
-#define zx_hrxml_pad_1340_ELEM	(zx_hrxml_NS | 0x00053c)
-#define zx_hrxml_pad_1341_ELEM	(zx_hrxml_NS | 0x00053d)
-#define zx_hrxml_pad_1342_ELEM	(zx_hrxml_NS | 0x00053e)
-#define zx_hrxml_pad_1343_ELEM	(zx_hrxml_NS | 0x00053f)
-#define zx_hrxml_pad_1344_ELEM	(zx_hrxml_NS | 0x000540)
-#define zx_hrxml_pad_1345_ELEM	(zx_hrxml_NS | 0x000541)
-#define zx_hrxml_pad_1346_ELEM	(zx_hrxml_NS | 0x000542)
-#define zx_hrxml_pad_1347_ELEM	(zx_hrxml_NS | 0x000543)
-#define zx_hrxml_pad_1348_ELEM	(zx_hrxml_NS | 0x000544)
-#define zx_hrxml_ISBN_ELEM	(zx_hrxml_NS | 0x000545)
-#define zx_hrxml_pad_1350_ELEM	(zx_hrxml_NS | 0x000546)
-#define zx_hrxml_pad_1351_ELEM	(zx_hrxml_NS | 0x000547)
-#define zx_hrxml_pad_1352_ELEM	(zx_hrxml_NS | 0x000548)
-#define zx_hrxml_pad_1353_ELEM	(zx_hrxml_NS | 0x000549)
-#define zx_hrxml_pad_1354_ELEM	(zx_hrxml_NS | 0x00054a)
-#define zx_hrxml_pad_1355_ELEM	(zx_hrxml_NS | 0x00054b)
-#define zx_hrxml_pad_1356_ELEM	(zx_hrxml_NS | 0x00054c)
-#define zx_hrxml_pad_1357_ELEM	(zx_hrxml_NS | 0x00054d)
-#define zx_hrxml_pad_1358_ELEM	(zx_hrxml_NS | 0x00054e)
-#define zx_hrxml_pad_1359_ELEM	(zx_hrxml_NS | 0x00054f)
-#define zx_hrxml_pad_1360_ELEM	(zx_hrxml_NS | 0x000550)
-#define zx_hrxml_pad_1361_ELEM	(zx_hrxml_NS | 0x000551)
-#define zx_hrxml_pad_1362_ELEM	(zx_hrxml_NS | 0x000552)
-#define zx_hrxml_pad_1363_ELEM	(zx_hrxml_NS | 0x000553)
-#define zx_hrxml_pad_1364_ELEM	(zx_hrxml_NS | 0x000554)
-#define zx_hrxml_pad_1365_ELEM	(zx_hrxml_NS | 0x000555)
-#define zx_hrxml_pad_1366_ELEM	(zx_hrxml_NS | 0x000556)
-#define zx_hrxml_pad_1367_ELEM	(zx_hrxml_NS | 0x000557)
-#define zx_hrxml_pad_1368_ELEM	(zx_hrxml_NS | 0x000558)
-#define zx_hrxml_pad_1369_ELEM	(zx_hrxml_NS | 0x000559)
-#define zx_hrxml_pad_1370_ELEM	(zx_hrxml_NS | 0x00055a)
-#define zx_hrxml_pad_1371_ELEM	(zx_hrxml_NS | 0x00055b)
-#define zx_hrxml_pad_1372_ELEM	(zx_hrxml_NS | 0x00055c)
-#define zx_hrxml_pad_1373_ELEM	(zx_hrxml_NS | 0x00055d)
-#define zx_hrxml_pad_1374_ELEM	(zx_hrxml_NS | 0x00055e)
-#define zx_hrxml_pad_1375_ELEM	(zx_hrxml_NS | 0x00055f)
-#define zx_hrxml_pad_1376_ELEM	(zx_hrxml_NS | 0x000560)
-#define zx_hrxml_pad_1377_ELEM	(zx_hrxml_NS | 0x000561)
-#define zx_hrxml_pad_1378_ELEM	(zx_hrxml_NS | 0x000562)
-#define zx_hrxml_pad_1379_ELEM	(zx_hrxml_NS | 0x000563)
-#define zx_hrxml_pad_1380_ELEM	(zx_hrxml_NS | 0x000564)
-#define zx_hrxml_pad_1381_ELEM	(zx_hrxml_NS | 0x000565)
-#define zx_hrxml_pad_1382_ELEM	(zx_hrxml_NS | 0x000566)
-#define zx_hrxml_pad_1383_ELEM	(zx_hrxml_NS | 0x000567)
-#define zx_hrxml_pad_1384_ELEM	(zx_hrxml_NS | 0x000568)
-#define zx_hrxml_pad_1385_ELEM	(zx_hrxml_NS | 0x000569)
-#define zx_hrxml_pad_1386_ELEM	(zx_hrxml_NS | 0x00056a)
-#define zx_hrxml_pad_1387_ELEM	(zx_hrxml_NS | 0x00056b)
-#define zx_hrxml_pad_1388_ELEM	(zx_hrxml_NS | 0x00056c)
-#define zx_hrxml_pad_1389_ELEM	(zx_hrxml_NS | 0x00056d)
-#define zx_hrxml_pad_1390_ELEM	(zx_hrxml_NS | 0x00056e)
-#define zx_hrxml_pad_1391_ELEM	(zx_hrxml_NS | 0x00056f)
-#define zx_hrxml_pad_1392_ELEM	(zx_hrxml_NS | 0x000570)
-#define zx_hrxml_pad_1393_ELEM	(zx_hrxml_NS | 0x000571)
-#define zx_hrxml_pad_1394_ELEM	(zx_hrxml_NS | 0x000572)
-#define zx_hrxml_pad_1395_ELEM	(zx_hrxml_NS | 0x000573)
-#define zx_hrxml_pad_1396_ELEM	(zx_hrxml_NS | 0x000574)
-#define zx_hrxml_pad_1397_ELEM	(zx_hrxml_NS | 0x000575)
-#define zx_hrxml_pad_1398_ELEM	(zx_hrxml_NS | 0x000576)
-#define zx_hrxml_pad_1399_ELEM	(zx_hrxml_NS | 0x000577)
-#define zx_hrxml_pad_1400_ELEM	(zx_hrxml_NS | 0x000578)
-#define zx_hrxml_pad_1401_ELEM	(zx_hrxml_NS | 0x000579)
-#define zx_hrxml_pad_1402_ELEM	(zx_hrxml_NS | 0x00057a)
-#define zx_hrxml_pad_1403_ELEM	(zx_hrxml_NS | 0x00057b)
-#define zx_hrxml_pad_1404_ELEM	(zx_hrxml_NS | 0x00057c)
-#define zx_hrxml_pad_1405_ELEM	(zx_hrxml_NS | 0x00057d)
-#define zx_hrxml_pad_1406_ELEM	(zx_hrxml_NS | 0x00057e)
-#define zx_hrxml_pad_1407_ELEM	(zx_hrxml_NS | 0x00057f)
-#define zx_hrxml_pad_1408_ELEM	(zx_hrxml_NS | 0x000580)
-#define zx_hrxml_pad_1409_ELEM	(zx_hrxml_NS | 0x000581)
-#define zx_hrxml_pad_1410_ELEM	(zx_hrxml_NS | 0x000582)
-#define zx_hrxml_pad_1411_ELEM	(zx_hrxml_NS | 0x000583)
-#define zx_hrxml_pad_1412_ELEM	(zx_hrxml_NS | 0x000584)
-#define zx_hrxml_pad_1413_ELEM	(zx_hrxml_NS | 0x000585)
-#define zx_hrxml_pad_1414_ELEM	(zx_hrxml_NS | 0x000586)
-#define zx_hrxml_pad_1415_ELEM	(zx_hrxml_NS | 0x000587)
-#define zx_hrxml_pad_1416_ELEM	(zx_hrxml_NS | 0x000588)
-#define zx_hrxml_pad_1417_ELEM	(zx_hrxml_NS | 0x000589)
-#define zx_hrxml_pad_1418_ELEM	(zx_hrxml_NS | 0x00058a)
-#define zx_hrxml_pad_1419_ELEM	(zx_hrxml_NS | 0x00058b)
-#define zx_hrxml_pad_1420_ELEM	(zx_hrxml_NS | 0x00058c)
-#define zx_hrxml_pad_1421_ELEM	(zx_hrxml_NS | 0x00058d)
-#define zx_hrxml_pad_1422_ELEM	(zx_hrxml_NS | 0x00058e)
-#define zx_hrxml_pad_1423_ELEM	(zx_hrxml_NS | 0x00058f)
-#define zx_hrxml_pad_1424_ELEM	(zx_hrxml_NS | 0x000590)
-#define zx_hrxml_pad_1425_ELEM	(zx_hrxml_NS | 0x000591)
-#define zx_hrxml_pad_1426_ELEM	(zx_hrxml_NS | 0x000592)
-#define zx_hrxml_pad_1427_ELEM	(zx_hrxml_NS | 0x000593)
-#define zx_hrxml_pad_1428_ELEM	(zx_hrxml_NS | 0x000594)
-#define zx_hrxml_pad_1429_ELEM	(zx_hrxml_NS | 0x000595)
-#define zx_hrxml_pad_1430_ELEM	(zx_hrxml_NS | 0x000596)
-#define zx_hrxml_pad_1431_ELEM	(zx_hrxml_NS | 0x000597)
-#define zx_hrxml_pad_1432_ELEM	(zx_hrxml_NS | 0x000598)
-#define zx_hrxml_pad_1433_ELEM	(zx_hrxml_NS | 0x000599)
-#define zx_hrxml_pad_1434_ELEM	(zx_hrxml_NS | 0x00059a)
-#define zx_hrxml_pad_1435_ELEM	(zx_hrxml_NS | 0x00059b)
-#define zx_hrxml_pad_1436_ELEM	(zx_hrxml_NS | 0x00059c)
-#define zx_hrxml_pad_1437_ELEM	(zx_hrxml_NS | 0x00059d)
-#define zx_hrxml_pad_1438_ELEM	(zx_hrxml_NS | 0x00059e)
-#define zx_hrxml_pad_1439_ELEM	(zx_hrxml_NS | 0x00059f)
-#define zx_hrxml_pad_1440_ELEM	(zx_hrxml_NS | 0x0005a0)
-#define zx_hrxml_pad_1441_ELEM	(zx_hrxml_NS | 0x0005a1)
-#define zx_hrxml_pad_1442_ELEM	(zx_hrxml_NS | 0x0005a2)
-#define zx_hrxml_pad_1443_ELEM	(zx_hrxml_NS | 0x0005a3)
-#define zx_hrxml_pad_1444_ELEM	(zx_hrxml_NS | 0x0005a4)
-#define zx_hrxml_pad_1445_ELEM	(zx_hrxml_NS | 0x0005a5)
-#define zx_hrxml_pad_1446_ELEM	(zx_hrxml_NS | 0x0005a6)
-#define zx_hrxml_pad_1447_ELEM	(zx_hrxml_NS | 0x0005a7)
-#define zx_hrxml_pad_1448_ELEM	(zx_hrxml_NS | 0x0005a8)
-#define zx_hrxml_pad_1449_ELEM	(zx_hrxml_NS | 0x0005a9)
-#define zx_hrxml_pad_1450_ELEM	(zx_hrxml_NS | 0x0005aa)
-#define zx_hrxml_pad_1451_ELEM	(zx_hrxml_NS | 0x0005ab)
-#define zx_hrxml_pad_1452_ELEM	(zx_hrxml_NS | 0x0005ac)
-#define zx_hrxml_pad_1453_ELEM	(zx_hrxml_NS | 0x0005ad)
-#define zx_hrxml_pad_1454_ELEM	(zx_hrxml_NS | 0x0005ae)
-#define zx_hrxml_pad_1455_ELEM	(zx_hrxml_NS | 0x0005af)
-#define zx_hrxml_pad_1456_ELEM	(zx_hrxml_NS | 0x0005b0)
-#define zx_hrxml_pad_1457_ELEM	(zx_hrxml_NS | 0x0005b1)
-#define zx_hrxml_pad_1458_ELEM	(zx_hrxml_NS | 0x0005b2)
-#define zx_hrxml_pad_1459_ELEM	(zx_hrxml_NS | 0x0005b3)
-#define zx_hrxml_pad_1460_ELEM	(zx_hrxml_NS | 0x0005b4)
-#define zx_hrxml_pad_1461_ELEM	(zx_hrxml_NS | 0x0005b5)
-#define zx_hrxml_pad_1462_ELEM	(zx_hrxml_NS | 0x0005b6)
-#define zx_hrxml_pad_1463_ELEM	(zx_hrxml_NS | 0x0005b7)
-#define zx_hrxml_pad_1464_ELEM	(zx_hrxml_NS | 0x0005b8)
-#define zx_hrxml_pad_1465_ELEM	(zx_hrxml_NS | 0x0005b9)
-#define zx_hrxml_pad_1466_ELEM	(zx_hrxml_NS | 0x0005ba)
-#define zx_hrxml_pad_1467_ELEM	(zx_hrxml_NS | 0x0005bb)
-#define zx_hrxml_NumberOfPages_ELEM	(zx_hrxml_NS | 0x0005bc)
-#define zx_hrxml_pad_1469_ELEM	(zx_hrxml_NS | 0x0005bd)
-#define zx_hrxml_pad_1470_ELEM	(zx_hrxml_NS | 0x0005be)
-#define zx_hrxml_NumberOfChildren_ELEM	(zx_hrxml_NS | 0x0005bf)
-#define zx_hrxml__ELEM_MAX	1472
-/* 53: zx_idhrxml_el_tab */
-#define zx_idhrxml_pad_0_ELEM	(zx_idhrxml_NS | 0x000000)
-#define zx_idhrxml_pad_1_ELEM	(zx_idhrxml_NS | 0x000001)
-#define zx_idhrxml_pad_2_ELEM	(zx_idhrxml_NS | 0x000002)
-#define zx_idhrxml_pad_3_ELEM	(zx_idhrxml_NS | 0x000003)
-#define zx_idhrxml_pad_4_ELEM	(zx_idhrxml_NS | 0x000004)
-#define zx_idhrxml_pad_5_ELEM	(zx_idhrxml_NS | 0x000005)
-#define zx_idhrxml_Notify_ELEM	(zx_idhrxml_NS | 0x000006)
-#define zx_idhrxml_NewData_ELEM	(zx_idhrxml_NS | 0x000007)
-#define zx_idhrxml_ItemData_ELEM	(zx_idhrxml_NS | 0x000008)
-#define zx_idhrxml_Data_ELEM	(zx_idhrxml_NS | 0x000009)
-#define zx_idhrxml_pad_10_ELEM	(zx_idhrxml_NS | 0x00000a)
-#define zx_idhrxml_Delete_ELEM	(zx_idhrxml_NS | 0x00000b)
-#define zx_idhrxml_Notification_ELEM	(zx_idhrxml_NS | 0x00000c)
-#define zx_idhrxml_pad_13_ELEM	(zx_idhrxml_NS | 0x00000d)
-#define zx_idhrxml_NotifyResponse_ELEM	(zx_idhrxml_NS | 0x00000e)
-#define zx_idhrxml_DeleteItem_ELEM	(zx_idhrxml_NS | 0x00000f)
-#define zx_idhrxml_TestOp_ELEM	(zx_idhrxml_NS | 0x000010)
-#define zx_idhrxml_Trigger_ELEM	(zx_idhrxml_NS | 0x000011)
-#define zx_idhrxml_TestItem_ELEM	(zx_idhrxml_NS | 0x000012)
-#define zx_idhrxml_DeleteResponse_ELEM	(zx_idhrxml_NS | 0x000013)
-#define zx_idhrxml_pad_20_ELEM	(zx_idhrxml_NS | 0x000014)
-#define zx_idhrxml_ResultQuery_ELEM	(zx_idhrxml_NS | 0x000015)
-#define zx_idhrxml_pad_22_ELEM	(zx_idhrxml_NS | 0x000016)
-#define zx_idhrxml_pad_23_ELEM	(zx_idhrxml_NS | 0x000017)
-#define zx_idhrxml_Sort_ELEM	(zx_idhrxml_NS | 0x000018)
-#define zx_idhrxml_Query_ELEM	(zx_idhrxml_NS | 0x000019)
-#define zx_idhrxml_Select_ELEM	(zx_idhrxml_NS | 0x00001a)
-#define zx_idhrxml_pad_27_ELEM	(zx_idhrxml_NS | 0x00001b)
-#define zx_idhrxml_pad_28_ELEM	(zx_idhrxml_NS | 0x00001c)
-#define zx_idhrxml_QueryItem_ELEM	(zx_idhrxml_NS | 0x00001d)
-#define zx_idhrxml_pad_30_ELEM	(zx_idhrxml_NS | 0x00001e)
-#define zx_idhrxml_Modify_ELEM	(zx_idhrxml_NS | 0x00001f)
-#define zx_idhrxml_Subscription_ELEM	(zx_idhrxml_NS | 0x000020)
-#define zx_idhrxml_QueryResponse_ELEM	(zx_idhrxml_NS | 0x000021)
-#define zx_idhrxml_pad_34_ELEM	(zx_idhrxml_NS | 0x000022)
-#define zx_idhrxml_ModifyItem_ELEM	(zx_idhrxml_NS | 0x000023)
-#define zx_idhrxml_Create_ELEM	(zx_idhrxml_NS | 0x000024)
-#define zx_idhrxml_pad_37_ELEM	(zx_idhrxml_NS | 0x000025)
-#define zx_idhrxml_pad_38_ELEM	(zx_idhrxml_NS | 0x000026)
-#define zx_idhrxml_ModifyResponse_ELEM	(zx_idhrxml_NS | 0x000027)
-#define zx_idhrxml_CreateItem_ELEM	(zx_idhrxml_NS | 0x000028)
-#define zx_idhrxml_Aggregation_ELEM	(zx_idhrxml_NS | 0x000029)
-#define zx_idhrxml_pad_42_ELEM	(zx_idhrxml_NS | 0x00002a)
-#define zx_idhrxml_pad_43_ELEM	(zx_idhrxml_NS | 0x00002b)
-#define zx_idhrxml_CreateResponse_ELEM	(zx_idhrxml_NS | 0x00002c)
-#define zx_idhrxml__ELEM_MAX	45
-/* 54: zx_tas3_el_tab */
-#define zx_tas3_pad_0_ELEM	(zx_tas3_NS | 0x000000)
-#define zx_tas3_pad_1_ELEM	(zx_tas3_NS | 0x000001)
-#define zx_tas3_pad_2_ELEM	(zx_tas3_NS | 0x000002)
-#define zx_tas3_pad_3_ELEM	(zx_tas3_NS | 0x000003)
-#define zx_tas3_pad_4_ELEM	(zx_tas3_NS | 0x000004)
-#define zx_tas3_pad_5_ELEM	(zx_tas3_NS | 0x000005)
-#define zx_tas3_Status_ELEM	(zx_tas3_NS | 0x000006)
-#define zx_tas3_pad_7_ELEM	(zx_tas3_NS | 0x000007)
-#define zx_tas3_pad_8_ELEM	(zx_tas3_NS | 0x000008)
-#define zx_tas3_pad_9_ELEM	(zx_tas3_NS | 0x000009)
-#define zx_tas3_pad_10_ELEM	(zx_tas3_NS | 0x00000a)
-#define zx_tas3_ESLRef_ELEM	(zx_tas3_NS | 0x00000b)
-#define zx_tas3_pad_12_ELEM	(zx_tas3_NS | 0x00000c)
-#define zx_tas3_ESLApply_ELEM	(zx_tas3_NS | 0x00000d)
-#define zx_tas3_pad_14_ELEM	(zx_tas3_NS | 0x00000e)
-#define zx_tas3_pad_15_ELEM	(zx_tas3_NS | 0x00000f)
-#define zx_tas3_ESLPolicies_ELEM	(zx_tas3_NS | 0x000010)
-#define zx_tas3_pad_17_ELEM	(zx_tas3_NS | 0x000011)
-#define zx_tas3_Credentials_ELEM	(zx_tas3_NS | 0x000012)
-#define zx_tas3__ELEM_MAX	19
-/* 55: zx_tas3sol_el_tab */
-#define zx_tas3sol_pad_0_ELEM	(zx_tas3sol_NS | 0x000000)
-#define zx_tas3sol_pad_1_ELEM	(zx_tas3sol_NS | 0x000001)
-#define zx_tas3sol_pad_2_ELEM	(zx_tas3sol_NS | 0x000002)
-#define zx_tas3sol_pad_3_ELEM	(zx_tas3sol_NS | 0x000003)
-#define zx_tas3sol_Dict_ELEM	(zx_tas3sol_NS | 0x000004)
-#define zx_tas3sol_pad_5_ELEM	(zx_tas3sol_NS | 0x000005)
-#define zx_tas3sol_pad_6_ELEM	(zx_tas3sol_NS | 0x000006)
-#define zx_tas3sol_pad_7_ELEM	(zx_tas3sol_NS | 0x000007)
-#define zx_tas3sol_pad_8_ELEM	(zx_tas3sol_NS | 0x000008)
-#define zx_tas3sol_pad_9_ELEM	(zx_tas3sol_NS | 0x000009)
-#define zx_tas3sol_pad_10_ELEM	(zx_tas3sol_NS | 0x00000a)
-#define zx_tas3sol_Obligations_ELEM	(zx_tas3sol_NS | 0x00000b)
-#define zx_tas3sol__ELEM_MAX	12
-/* 56: zx_shibmd_el_tab */
-#define zx_shibmd_pad_0_ELEM	(zx_shibmd_NS | 0x000000)
-#define zx_shibmd_pad_1_ELEM	(zx_shibmd_NS | 0x000001)
-#define zx_shibmd_pad_2_ELEM	(zx_shibmd_NS | 0x000002)
-#define zx_shibmd_pad_3_ELEM	(zx_shibmd_NS | 0x000003)
-#define zx_shibmd_pad_4_ELEM	(zx_shibmd_NS | 0x000004)
-#define zx_shibmd_Scope_ELEM	(zx_shibmd_NS | 0x000005)
-#define zx_shibmd_pad_6_ELEM	(zx_shibmd_NS | 0x000006)
-#define zx_shibmd_pad_7_ELEM	(zx_shibmd_NS | 0x000007)
-#define zx_shibmd_pad_8_ELEM	(zx_shibmd_NS | 0x000008)
-#define zx_shibmd_pad_9_ELEM	(zx_shibmd_NS | 0x000009)
-#define zx_shibmd_pad_10_ELEM	(zx_shibmd_NS | 0x00000a)
-#define zx_shibmd_pad_11_ELEM	(zx_shibmd_NS | 0x00000b)
-#define zx_shibmd_KeyAuthority_ELEM	(zx_shibmd_NS | 0x00000c)
-#define zx_shibmd__ELEM_MAX	13
-/* 57: zx_idpdisc_el_tab */
-#define zx_idpdisc_pad_0_ELEM	(zx_idpdisc_NS | 0x000000)
-#define zx_idpdisc_pad_1_ELEM	(zx_idpdisc_NS | 0x000001)
-#define zx_idpdisc_pad_2_ELEM	(zx_idpdisc_NS | 0x000002)
-#define zx_idpdisc_pad_3_ELEM	(zx_idpdisc_NS | 0x000003)
-#define zx_idpdisc_pad_4_ELEM	(zx_idpdisc_NS | 0x000004)
-#define zx_idpdisc_pad_5_ELEM	(zx_idpdisc_NS | 0x000005)
-#define zx_idpdisc_pad_6_ELEM	(zx_idpdisc_NS | 0x000006)
-#define zx_idpdisc_pad_7_ELEM	(zx_idpdisc_NS | 0x000007)
-#define zx_idpdisc_pad_8_ELEM	(zx_idpdisc_NS | 0x000008)
-#define zx_idpdisc_pad_9_ELEM	(zx_idpdisc_NS | 0x000009)
-#define zx_idpdisc_pad_10_ELEM	(zx_idpdisc_NS | 0x00000a)
-#define zx_idpdisc_pad_11_ELEM	(zx_idpdisc_NS | 0x00000b)
-#define zx_idpdisc_pad_12_ELEM	(zx_idpdisc_NS | 0x00000c)
-#define zx_idpdisc_pad_13_ELEM	(zx_idpdisc_NS | 0x00000d)
-#define zx_idpdisc_pad_14_ELEM	(zx_idpdisc_NS | 0x00000e)
-#define zx_idpdisc_pad_15_ELEM	(zx_idpdisc_NS | 0x00000f)
-#define zx_idpdisc_pad_16_ELEM	(zx_idpdisc_NS | 0x000010)
-#define zx_idpdisc_DiscoveryResponse_ELEM	(zx_idpdisc_NS | 0x000011)
-#define zx_idpdisc__ELEM_MAX	18
-/* 58: zx_xml_el_tab */
-#define zx_xml_pad_0_ELEM	(zx_xml_NS | 0x000000)
-#define zx_xml_pad_1_ELEM	(zx_xml_NS | 0x000001)
-#define zx_xml_pad_2_ELEM	(zx_xml_NS | 0x000002)
-#define zx_xml_pad_3_ELEM	(zx_xml_NS | 0x000003)
-#define zx_xml_pad_4_ELEM	(zx_xml_NS | 0x000004)
-#define zx_xml_pad_5_ELEM	(zx_xml_NS | 0x000005)
-#define zx_xml_pad_6_ELEM	(zx_xml_NS | 0x000006)
-#define zx_xml_pad_7_ELEM	(zx_xml_NS | 0x000007)
-#define zx_xml_pad_8_ELEM	(zx_xml_NS | 0x000008)
-#define zx_xml_pad_9_ELEM	(zx_xml_NS | 0x000009)
-#define zx_xml_pad_10_ELEM	(zx_xml_NS | 0x00000a)
-#define zx_xml_pad_11_ELEM	(zx_xml_NS | 0x00000b)
-#define zx_xml_pad_12_ELEM	(zx_xml_NS | 0x00000c)
-#define zx_xml_pad_13_ELEM	(zx_xml_NS | 0x00000d)
-#define zx_xml_pad_14_ELEM	(zx_xml_NS | 0x00000e)
-#define zx_xml_DummyToPullLang_ELEM	(zx_xml_NS | 0x00000f)
-#define zx_xml__ELEM_MAX	16
+/* attributes */
+#define zx_id_ATTR	0x000007
+#define zx_redirect_ATTR	0x000012
+#define zx_event_ATTR	0x000014
+#define zx_intervalType_ATTR	0x000016
+#define zx_interact_ATTR	0x000017
+#define zx_code_ATTR	0x000018
+#define zx_at_ATTR	0x00001b
+#define zx_sortWeight_ATTR	0x00001e
+#define zx_currencyCode_ATTR	0x000020
+#define zx_case_ATTR	0x000022
+#define zx_currentEmployer_ATTR	0x000023
+#define zx_currentlyEnrolled_ATTR	0x000025
+#define zx_duration_ATTR	0x000026
+#define zx_wait_ATTR	0x000027
+#define zx_context_ATTR	0x00002a
+#define zx_description_ATTR	0x00002e
+#define zx_consent_ATTR	0x00002f
+#define zx_use_ATTR	0x000030
+#define zx_used_ATTR	0x000031
+#define zx_attributes_ATTR	0x000032
+#define zx_starts_ATTR	0x000033
+#define zx_created_ATTR	0x000034
+#define zx_attendanceStatus_ATTR	0x000038
+#define zx_descriptionIDRefs_ATTR	0x000039
+#define zx_uri_ATTR	0x00003a
+#define zx_dunsNumberType_ATTR	0x00003b
+#define zx_Nonce_ATTR	0x00003c
+#define zx_contactType_ATTR	0x00003d
+#define zx_deactivateAt_ATTR	0x00003e
+#define zx_academicHonors_ATTR	0x000040
+#define zx_issuer_ATTR	0x000042
+#define zx_success_ATTR	0x000043
+#define zx_returnLocation_ATTR	0x000045
+#define zx_title_ATTR	0x000046
+#define zx_Id_ATTR	0x000048
+#define zx_interval_ATTR	0x000049
+#define zx_type_ATTR	0x00004a
+#define zx_predefined_ATTR	0x00004b
+#define zx_srsName_ATTR	0x00004d
+#define zx_classificationName_ATTR	0x00004e
+#define zx_updateType_ATTR	0x000050
+#define zx_leader_ATTR	0x000051
+#define zx_issuingRegion_ATTR	0x000053
+#define zx_expirationDate_ATTR	0x000054
+#define zx_count_ATTR	0x000055
+#define zx_countryCode_ATTR	0x000056
+#define zx_expires_ATTR	0x000057
+#define zx_credentialLevel_ATTR	0x00005a
+#define zx_script_ATTR	0x00005b
+#define zx_gid_ATTR	0x00005d
+#define zx_sizelimit_ATTR	0x00005e
+#define zx_percentage_ATTR	0x00005f
+#define zx_positionType_ATTR	0x000061
+#define zx_name_ATTR	0x000063
+#define zx_degreeType_ATTR	0x000064
+#define zx_min_ATTR	0x000067
+#define zx_link_ATTR	0x000068
+#define zx_signed_ATTR	0x00006f
+#define zx_PolicyId_ATTR	0x000071
+#define zx_namespace_ATTR	0x000072
+#define zx_PolicySetId_ATTR	0x000074
+#define zx_jurisdiction_ATTR	0x000075
+#define zx_resultsType_ATTR	0x000079
+#define zx_addressCoding_ATTR	0x00007b
+#define zx_Name_ATTR	0x00007c
+#define zx_PolicyCombiningAlgId_ATTR	0x00007d
+#define zx_endReason_ATTR	0x000081
+#define zx_Issuer_ATTR	0x000083
+#define zx_sharing_ATTR	0x000084
+#define zx_all_ATTR	0x000085
+#define zx_IsPassive_ATTR	0x000086
+#define zx_overrideAllowed_ATTR	0x000087
+#define zx_NameQualifier_ATTR	0x00008a
+#define zx_Namespace_ATTR	0x00008b
+#define zx_natureOfRelationship_ATTR	0x00008c
+#define zx_IssueInstant_ATTR	0x00008e
+#define zx_excludedChars_ATTR	0x00008f
+#define zx_examPassed_ATTR	0x000091
+#define zx_typeId_ATTR	0x000092
+#define zx_changedSince_ATTR	0x000093
+#define zx_ParameterName_ATTR	0x000094
+#define zx_actor_ATTR	0x000096
+#define zx_changeFormat_ATTR	0x000098
+#define zx_encodingStyle_ATTR	0x000099
+#define zx_ctlpt_ATTR	0x00009b
+#define zx_includeData_ATTR	0x00009c
+#define zx_relationship_ATTR	0x00009d
+#define zx_includeCommonAttributes_ATTR	0x00009e
+#define zx_usage_ATTR	0x0000a0
+#define zx_multiple_ATTR	0x0000a3
+#define zx_timelimit_ATTR	0x0000a4
+#define zx_studentInGoodStanding_ATTR	0x0000a6
+#define zx_documentType_ATTR	0x0000a7
+#define zx_graduatingDegree_ATTR	0x0000ab
+#define zx_derefaliases_ATTR	0x0000ac
+#define zx_firstUsed_ATTR	0x0000ae
+#define zx_measureType_ATTR	0x0000b0
+#define zx_timestamp_ATTR	0x0000b3
+#define zx_shiftPeriod_ATTR	0x0000b5
+#define zx_Version_ATTR	0x0000b6
+#define zx_ReturnContext_ATTR	0x0000b7
+#define zx_issueTo_ATTR	0x0000bb
+#define zx_nym_ATTR	0x0000bc
+#define zx_VariableId_ATTR	0x0000be
+#define zx_hierarchicalRole_ATTR	0x0000bf
+#define zx_PrefixList_ATTR	0x0000c3
+#define zx_primaryIndicator_ATTR	0x0000c4
+#define zx_ownership_ATTR	0x0000c7
+#define zx_scope_ATTR	0x0000c8
+#define zx_enrollmentStatus_ATTR	0x0000c9
+#define zx_language_ATTR	0x0000cb
+#define zx_ReauthenticateOnOrAfter_ATTR	0x0000d0
+#define zx_companyOffered_ATTR	0x0000d1
+#define zx_RelationshipType_ATTR	0x0000d3
+#define zx_comment_ATTR	0x0000d4
+#define zx_cacheDuration_ATTR	0x0000d5
+#define zx_remaining_ATTR	0x0000d6
+#define zx_relocationConsidered_ATTR	0x0000d7
+#define zx_entityID_ATTR	0x0000da
+#define zx_Recipient_ATTR	0x0000db
+#define zx_dateDescription_ATTR	0x0000dc
+#define zx_suppliedByOrganization_ATTR	0x0000de
+#define zx_Context_ATTR	0x0000e3
+#define zx_Destination_ATTR	0x0000e7
+#define zx_Consent_ATTR	0x0000e8
+#define zx_required_ATTR	0x0000e9
+#define zx_objectType_ATTR	0x0000eb
+#define zx_medium_ATTR	0x0000ec
+#define zx_sequence_ATTR	0x0000ee
+#define zx_allowAdaptations_ATTR	0x0000f1
+#define zx_Decision_ATTR	0x0000f3
+#define zx_lang_ATTR	0x0000f4
+#define zx_CreatedDateTime_ATTR	0x0000f5
+#define zx_RuleId_ATTR	0x0000f6
+#define zx_requiredChars_ATTR	0x0000f8
+#define zx_organizationType_ATTR	0x0000fb
+#define zx_modifier_ATTR	0x0000fd
+#define zx_employerOrgType_ATTR	0x0000ff
+#define zx_purpose_ATTR	0x000101
+#define zx_nextPoll_ATTR	0x000102
+#define zx_Value_ATTR	0x000104
+#define zx_modificationTime_ATTR	0x000105
+#define zx_ValueType_ATTR	0x000108
+#define zx_confirmationURI_ATTR	0x000109
+#define zx_PolicyIdRef_ATTR	0x00010a
+#define zx_ID_ATTR	0x00010b
+#define zx_PolicySetIdRef_ATTR	0x00010d
+#define zx_Count_ATTR	0x00010e
+#define zx_format_ATTR	0x00010f
+#define zx_NodeType_ATTR	0x000111
+#define zx_Reason_ATTR	0x000114
+#define zx_minValue_ATTR	0x000116
+#define zx_Dialect_ATTR	0x00011a
+#define zx_currency_ATTR	0x00011b
+#define zx_typeDescription_ATTR	0x00011d
+#define zx_adminNotifyToRef_ATTR	0x00011e
+#define zx_otherPayType_ATTR	0x00011f
+#define zx_storeRef_ATTR	0x000120
+#define zx_offset_ATTR	0x000123
+#define zx_maxProcessingTime_ATTR	0x000124
+#define zx_redirectURL_ATTR	0x000128
+#define zx_Resource_ATTR	0x00012a
+#define zx_ResourceId_ATTR	0x00012c
+#define zx_contingency_ATTR	0x00012d
+#define zx_ref_ATTR	0x00012f
+#define zx_Type_ATTR	0x000130
+#define zx_isRequired_ATTR	0x000131
+#define zx_Digest_ATTR	0x000132
+#define zx_setReq_ATTR	0x000137
+#define zx_LatestVersion_ATTR	0x000139
+#define zx_SessionNotOnOrAfter_ATTR	0x00013a
+#define zx_NotBefore_ATTR	0x00013f
+#define zx_regexp_ATTR	0x000141
+#define zx_MinorVersion_ATTR	0x000142
+#define zx_Loc_ATTR	0x000143
+#define zx_itemIDRef_ATTR	0x000144
+#define zx_notifyToRef_ATTR	0x000146
+#define zx_InResponseTo_ATTR	0x000147
+#define zx_index_ATTR	0x00014a
+#define zx_ResponseLocation_ATTR	0x00014b
+#define zx_messageID_ATTR	0x00014e
+#define zx_Target_ATTR	0x000150
+#define zx_OK_ATTR	0x000151
+#define zx_Location_ATTR	0x000152
+#define zx_maxInteractTime_ATTR	0x000154
+#define zx_protocolSupportEnumeration_ATTR	0x000155
+#define zx_Address_ATTR	0x000156
+#define zx_otherInterval_ATTR	0x000157
+#define zx_typesonly_ATTR	0x000158
+#define zx_Structured_ATTR	0x000159
+#define zx_AttributeId_ATTR	0x00015a
+#define zx_service_ATTR	0x00015b
+#define zx_AttributeName_ATTR	0x00015c
+#define zx_wantDSEPR_ATTR	0x00015d
+#define zx_ModifiedDateTime_ATTR	0x00015f
+#define zx_version_ATTR	0x000160
+#define zx_AttributeNamespace_ATTR	0x000161
+#define zx_WantAssertionsSigned_ATTR	0x000163
+#define zx_WantAuthnRequestsSigned_ATTR	0x000166
+#define zx_dateOfIncident_ATTR	0x000167
+#define zx_AssertionIssueInstant_ATTR	0x000169
+#define zx_notOnOrAfter_ATTR	0x00016a
+#define zx_activate_ATTR	0x00016b
+#define zx_isDefault_ATTR	0x00016c
+#define zx_itemID_ATTR	0x00016e
+#define zx_MatchId_ATTR	0x00016f
+#define zx_activateAt_ATTR	0x000172
+#define zx_idOwner_ATTR	0x000174
+#define zx_ProtocolBinding_ATTR	0x000177
+#define zx_method_ATTR	0x000178
+#define zx_Locale_ATTR	0x00017d
+#define zx_Binding_ATTR	0x00017e
+#define zx_honorsProgram_ATTR	0x00017f
+#define zx_mechanism_ATTR	0x000180
+#define zx_notChangedSince_ATTR	0x000181
+#define zx_prefix_ATTR	0x000182
+#define zx_NotOnOrAfter_ATTR	0x000183
+#define zx_replyDeadline_ATTR	0x000184
+#define zx_ItemIDRef_ATTR	0x000185
+#define zx_group_ATTR	0x000186
+#define zx_replyChargingSize_ATTR	0x000188
+#define zx_RuleCombiningAlgId_ATTR	0x000189
+#define zx_Comparison_ATTR	0x00018b
+#define zx_displayOnly_ATTR	0x00018c
+#define zx_authzID_ATTR	0x00018d
+#define zx_moreLink_ATTR	0x00018e
+#define zx_RuleIdRef_ATTR	0x00018f
+#define zx_DigestAlgorithm_ATTR	0x000190
+#define zx_MajorVersion_ATTR	0x000192
+#define zx_unitOfMeasure_ATTR	0x000193
+#define zx_errorURL_ATTR	0x000198
+#define zx_notSorted_ATTR	0x000199
+#define zx_smsEnabled_ATTR	0x00019a
+#define zx_max_ATTR	0x00019d
+#define zx_IPAddress_ATTR	0x00019e
+#define zx_schoolType_ATTR	0x00019f
+#define zx_Ref_ATTR	0x0001a2
+#define zx_mimeType_ATTR	0x0001a7
+#define zx_SPNameQualifier_ATTR	0x0001a9
+#define zx_newEntryIDs_ATTR	0x0001aa
+#define zx_objectID_ATTR	0x0001ac
+#define zx_IsDefault_ATTR	0x0001ad
+#define zx_value_ATTR	0x0001ae
+#define zx_maxValue_ATTR	0x0001b1
+#define zx_sortAlg_ATTR	0x0001b5
+#define zx_affiliationID_ATTR	0x0001b6
+#define zx_timeStamp_ATTR	0x0001b7
+#define zx_serverMechanism_ATTR	0x0001b8
+#define zx_timeOffType_ATTR	0x0001b9
+#define zx_primary_ATTR	0x0001ba
+#define zx_affiliationOwnerID_ATTR	0x0001bb
+#define zx_asof_ATTR	0x0001bc
+#define zx_reqRef_ATTR	0x0001be
+#define zx_FriendlyName_ATTR	0x0001bf
+#define zx_idSource_ATTR	0x0001c0
+#define zx_validUntil_ATTR	0x0001c2
+#define zx_libertyPrincipalIdentifier_ATTR	0x0001c3
+#define zx_Sig_ATTR	0x0001c5
+#define zx_EarliestVersion_ATTR	0x0001c7
+#define zx_InputContextOnly_ATTR	0x0001c8
+#define zx_lastUsed_ATTR	0x0001ca
+#define zx_href_ATTR	0x0001cb
+#define zx_ForceAuthn_ATTR	0x0001cc
+#define zx_entryID_ATTR	0x0001ce
+#define zx_DataType_ATTR	0x0001cf
+#define zx_FunctionId_ATTR	0x0001d1
+#define zx_Method_ATTR	0x0001d2
+#define zx_SessionIndex_ATTR	0x0001d3
+#define zx_number_ATTR	0x0001d7
+#define zx_minChars_ATTR	0x0001d9
+#define zx_VerifyDepth_ATTR	0x0001dc
+#define zx_setID_ATTR	0x0001e0
+#define zx_typeOfGroup_ATTR	0x0001e1
+#define zx_validFrom_ATTR	0x0001e4
+#define zx_ProviderName_ATTR	0x0001e7
+#define zx_MustBePresent_ATTR	0x0001e8
+#define zx_numberOfStudents_ATTR	0x0001eb
+#define zx_responseConsumerURL_ATTR	0x0001ee
+#define zx_Usage_ATTR	0x0001ef
+#define zx_ObligationId_ATTR	0x0001f1
+#define zx_mustUnderstand_ATTR	0x0001f3
+#define zx_xpath_ATTR	0x0001f4
+#define zx_AuthenticationMethod_ATTR	0x0001f9
+#define zx_Offset_ATTR	0x0001fa
+#define zx_AuthnInstant_ATTR	0x0001fb
+#define zx_RequestContextPath_ATTR	0x0001fc
+#define zx_AuthnRequestsSigned_ATTR	0x0001fd
+#define zx_AuthenticationInstant_ATTR	0x0001ff
+#define zx_validTo_ATTR	0x000200
+#define zx_MimeType_ATTR	0x000201
+#define zx_ResponseID_ATTR	0x000203
+#define zx_baseInterval_ATTR	0x000205
+#define zx_nextOffset_ATTR	0x000208
+#define zx_DNSName_ATTR	0x00020a
+#define zx_URI_ATTR	0x00020b
+#define zx_AssertionConsumerServiceIndex_ATTR	0x00020c
+#define zx_AttributeConsumingServiceIndex_ATTR	0x00020d
+#define zx_EncodingType_ATTR	0x00020f
+#define zx_AllowCreate_ATTR	0x000213
+#define zx_RequestID_ATTR	0x00021b
+#define zx_label_ATTR	0x00021c
+#define zx_AssertionID_ATTR	0x00021d
+#define zx_Allow_ATTR	0x000221
+#define zx_Format_ATTR	0x000222
+#define zx_DeviceType_ATTR	0x00022b
+#define zx_Effect_ATTR	0x00022c
+#define zx_DeviceInHand_ATTR	0x00022d
+#define zx_NameFormat_ATTR	0x000230
+#define zx_advisoryAuthnID_ATTR	0x00023a
+#define zx_ProxyCount_ATTR	0x00023f
+#define zx_branch_ATTR	0x000240
+#define zx_governingAgreementRef_ATTR	0x00024a
+#define zx_svcMDID_ATTR	0x00025f
+#define zx_Encoding_ATTR	0x000265
+#define zx_AuthorityKind_ATTR	0x00026a
+#define zx_subscriptionID_ATTR	0x00026b
+#define zx_SPProvidedID_ATTR	0x00026e
+#define zx_maxChars_ATTR	0x000274
+#define zx_Algorithm_ATTR	0x00027a
+#define zx_reqID_ATTR	0x000280
+#define zx_AssertionConsumerServiceURL_ATTR	0x000282
+#define zx_FulfillOn_ATTR	0x000289
+#define zx_TimeStamp_ATTR	0x00029d
+#define zx_ProviderID_ATTR	0x0002a8
+#define zx_UAProf_ATTR	0x0002a9
+#define zx_CombinePolicies_ATTR	0x0002b7
+#define zx_refToMessageID_ATTR	0x0002ca
+#define zx_SeedLength_ATTR	0x0002cb
+#define zx_providerID_ATTR	0x0002d0
+#define zx_ACC_ATTR	0x0002e2
+#define zx_ACCTime_ATTR	0x000309
+#define zx_DNSAddress_ATTR	0x00032a
+#define zx_SubjectCategory_ATTR	0x0003e3
+#define zx__ATTR_MAX	996
+/* elems */
+#define zx_gl_Z_ELEM	0x680001
+#define zx_ds_Y_ELEM	0x3c000b
+#define zx_gl_Y_ELEM	0x68000b
+#define zx_gl_esrd_ELEM	0x68000e
+#define zx_dap_dn_ELEM	0x3a002a
+#define zx_gl_code_ELEM	0x68002c
+#define zx_ds_J_ELEM	0x3c0033
+#define zx_hrxml_Year_ELEM	0x5b0036
+#define zx_gl_alt_ELEM	0x68003a
+#define zx_e_detail_ELEM	0x51003d
+#define zx_gl_ll_acc_ELEM	0x680047
+#define zx_cdm_X400_ELEM	0x63004a
+#define zx_gl_coord_ELEM	0x68004b
+#define zx_root_ELEM	0x000054
+#define zx_wst_Code_ELEM	0x590059
+#define zx_gl_edition_ELEM	0x68005c
+#define zx_cb_Card_ELEM	0x2c0068
+#define zx_mm7_Cc_ELEM	0x5f006b
+#define zx_gl_direction_ELEM	0x68006d
+#define zx_gl_alt_acc_ELEM	0x680070
+#define zx_cb_Credential_ELEM	0x2c0073
+#define zx_gl_Credential_ELEM	0x680073
+#define zx_di12_Credentials_ELEM	0x370074
+#define zx_tas3_Credentials_ELEM	0x610074
+#define zx_gl_distanceUnit_ELEM	0x680075
+#define zx_cb_Create_ELEM	0x2c0079
+#define zx_dap_Create_ELEM	0x3a0079
+#define zx_gl_Create_ELEM	0x680079
+#define zx_idhrxml_Create_ELEM	0x360079
+#define zx_demomed_Created_ELEM	0x15007a
+#define zx_wsu_Created_ELEM	0x7a007a
+#define zx_gl_C_ELEM	0x680083
+#define zx_b_CredentialsContext_ELEM	0x34008a
+#define zx_gl_X_ELEM	0x68008d
+#define zx_b12_Consent_ELEM	0x39008e
+#define zx_b_Consent_ELEM	0x34008e
+#define zx_gl_radius_ELEM	0x680097
+#define zx_wsp_All_ELEM	0x540099
+#define zx_mm7_Content_ELEM	0x5f009d
+#define zx_hrxml_Considerations_ELEM	0x5b009f
+#define zx_sa11_Conditions_ELEM	0x5200a5
+#define zx_sa_Conditions_ELEM	0x4800a5
+#define zx_a_Address_ELEM	0x3800a7
+#define zx_di_Address_ELEM	0x3200a7
+#define zx_hrxml_Write_ELEM	0x5b00aa
+#define zx_hrxml_Candidate_ELEM	0x5b00ae
+#define zx_hrxml_CriterionName_ELEM	0x5b00b2
+#define zx_hrxml_CriterionValue_ELEM	0x5b00b3
+#define zx_sa11_Condition_ELEM	0x5200b8
+#define zx_sa_Condition_ELEM	0x4800b8
+#define zx_xa_Condition_ELEM	0x2d00b8
+#define zx_ds_X509Certificate_ELEM	0x3c00be
+#define zx_hrxml_CandidateProfile_ELEM	0x5b00bf
+#define zx_b12_Correlation_ELEM	0x3900c4
+#define zx_hrxml_Altitude_ELEM	0x5b00cb
+#define zx_hrxml_CandidateRecordInfo_ELEM	0x5b00cc
+#define zx_mm7_ContentClass_ELEM	0x5f00d4
+#define zx_hrxml_Area_ELEM	0x5b00d6
+#define zx_hrxml_Article_ELEM	0x5b00d9
+#define zx_ds_Seed_ELEM	0x3c00db
+#define zx_gl_innerBoundaryIs_ELEM	0x6800dc
+#define zx_ff12_Assertion_ELEM	0x3500e0
+#define zx_sa11_Assertion_ELEM	0x5200e0
+#define zx_sa_Assertion_ELEM	0x4800e0
+#define zx_xa_Actions_ELEM	0x2d00e3
+#define zx_demomed_Count_ELEM	0x1500eb
+#define zx_sp11_AssertionArtifact_ELEM	0x3300ed
+#define zx_md_AssertionConsumerService_ELEM	0x2400ef
+#define zx_hrxml_AltitudeMeanSeaLevel_ELEM	0x5b00f0
+#define zx_a_Action_ELEM	0x3800f6
+#define zx_di_Action_ELEM	0x3200f6
+#define zx_sa11_Action_ELEM	0x5200f6
+#define zx_sa_Action_ELEM	0x4800f6
+#define zx_xa_Action_ELEM	0x2d00f6
+#define zx_xac_Action_ELEM	0x2e00f6
+#define zx_gl_St_ELEM	0x6800f7
+#define zx_hrxml_AcademicCreditCode_ELEM	0x5b00f8
+#define zx_b_Sender_ELEM	0x3400fb
+#define zx_mm7_Sender_ELEM	0x5f00fb
+#define zx_hrxml_AcademicCreditHoursEarned_ELEM	0x5b00ff
+#define zx_cb_Select_ELEM	0x2c0100
+#define zx_dap_Select_ELEM	0x3a0100
+#define zx_gl_Select_ELEM	0x680100
+#define zx_idhrxml_Select_ELEM	0x360100
+#define zx_is12_Select_ELEM	0x2f0100
+#define zx_is_Select_ELEM	0x2a0100
+#define zx_hrxml_AcademicCreditHoursIncluded_ELEM	0x5b0101
+#define zx_hrxml_AcademicCreditHoursAttempted_ELEM	0x5b0102
+#define zx_hrxml_Associations_ELEM	0x5b0106
+#define zx_hrxml_AlternateScript_ELEM	0x5b0109
+#define zx_hrxml_Score_ELEM	0x5b010e
+#define zx_ps_AddCollectionResponse_ELEM	0x25010f
+#define zx_prov_State_ELEM	0x1d0113
+#define zx_gl_CircularArea_ELEM	0x680115
+#define zx_dap_Sort_ELEM	0x3a0117
+#define zx_idhrxml_Sort_ELEM	0x360117
+#define zx_hrxml_Association_ELEM	0x5b0119
+#define zx_ps_AddCollectionRequest_ELEM	0x25011d
+#define zx_hrxml_CandidateSupplier_ELEM	0x5b011f
+#define zx_sa11_Audience_ELEM	0x520120
+#define zx_sa_Audience_ELEM	0x480120
+#define zx_prov_Poll_ELEM	0x1d0121
+#define zx_shps_Poll_ELEM	0x270121
+#define zx_ac_WrittenConsent_ELEM	0x4d0126
+#define zx_gl_outerBoundaryIs_ELEM	0x680127
+#define zx_hrxml_StandardValue_ELEM	0x5b012a
+#define zx_gl_CircularArcArea_ELEM	0x68012c
+#define zx_gl_codeSpace_ELEM	0x680135
+#define zx_sa11_Statement_ELEM	0x52013a
+#define zx_sa_Statement_ELEM	0x48013a
+#define zx_sa_AudienceRestriction_ELEM	0x48013f
+#define zx_sa11_Attribute_ELEM	0x520144
+#define zx_sa_Attribute_ELEM	0x480144
+#define zx_xac_Attribute_ELEM	0x2e0144
+#define zx_sa11_AudienceRestrictionCondition_ELEM	0x520148
+#define zx_hrxml_StartDate_ELEM	0x5b0149
+#define zx_md_AttributeService_ELEM	0x24014b
+#define zx_md_AttributeProfile_ELEM	0x240155
+#define zx_xa_AttributeSelector_ELEM	0x2d0156
+#define zx_sa11_AttributeDesignator_ELEM	0x520158
+#define zx_hrxml_Percentage_ELEM	0x5b0159
+#define zx_hrxml_Patent_ELEM	0x5b015a
+#define zx_xa_AttributeAssignment_ELEM	0x2d015d
+#define zx_sa11_AttributeValue_ELEM	0x520162
+#define zx_sa_AttributeValue_ELEM	0x480162
+#define zx_xa_AttributeValue_ELEM	0x2d0162
+#define zx_xac_AttributeValue_ELEM	0x2e0162
+#define zx_gl_Point_ELEM	0x680163
+#define zx_idp_CreatedStatus_ELEM	0x300166
+#define zx_sec12_SessionContext_ELEM	0x170167
+#define zx_md_AttributeConsumingService_ELEM	0x240168
+#define zx_hrxml_SearchCriteriaId_ELEM	0x5b0169
+#define zx_sa11_AttributeStatement_ELEM	0x52016b
+#define zx_sa_AttributeStatement_ELEM	0x48016b
+#define zx_idp_CreatedStatusResponse_ELEM	0x30016e
+#define zx_sec12_SessionContextStatement_ELEM	0x170170
+#define zx_cb_Status_ELEM	0x2c0173
+#define zx_di12_Status_ELEM	0x370173
+#define zx_gl_Status_ELEM	0x680173
+#define zx_hrxml_Status_ELEM	0x5b0173
+#define zx_is12_Status_ELEM	0x2f0173
+#define zx_lu_Status_ELEM	0x5e0173
+#define zx_mm7_Status_ELEM	0x5f0173
+#define zx_sp11_Status_ELEM	0x330173
+#define zx_sp_Status_ELEM	0x290173
+#define zx_tas3_Status_ELEM	0x610173
+#define zx_wst_Status_ELEM	0x590173
+#define zx_xac_Status_ELEM	0x2e0173
+#define zx_hrxml_PersonalData_ELEM	0x5b0174
+#define zx_hrxml_Role_ELEM	0x5b0176
+#define zx_hrxml_Read_ELEM	0x5b017b
+#define zx_hrxml_SearchCriterion_ELEM	0x5b017c
+#define zx_hrxml_PositionTitle_ELEM	0x5b017f
+#define zx_hrxml_SearchCriteria_ELEM	0x5b0180
+#define zx_ff12_ProtocolProfile_ELEM	0x350181
+#define zx_hrxml_Minor_ELEM	0x5b0186
+#define zx_gl_angle_ELEM	0x68018b
+#define zx_mm7_SenderAddress_ELEM	0x5f018e
+#define zx_hrxml_Race_ELEM	0x5b018f
+#define zx_hrxml_PositionLocation_ELEM	0x5b019b
+#define zx_mm7_MessageClass_ELEM	0x5f019c
+#define zx_hrxml_AccountingCode_ELEM	0x5b019e
+#define zx_gl_PostalCode_ELEM	0x6801a4
+#define zx_hrxml_PostalCode_ELEM	0x5b01a4
+#define zx_wst_Reason_ELEM	0x5901a5
+#define zx_hrxml_PositionClassification_ELEM	0x5b01a6
+#define zx_a_Metadata_ELEM	0x3801a7
+#define zx_b12_ProcessingContext_ELEM	0x3901ab
+#define zx_b_ProcessingContext_ELEM	0x3401ab
+#define zx_ds_Modulus_ELEM	0x3c01b0
+#define zx_xa_ActionAttributeDesignator_ELEM	0x2d01b3
+#define zx_cb_Delete_ELEM	0x2c01b4
+#define zx_dap_Delete_ELEM	0x3a01b4
+#define zx_gl_Delete_ELEM	0x6801b4
+#define zx_idhrxml_Delete_ELEM	0x3601b4
+#define zx_shps_Delete_ELEM	0x2701b4
+#define zx_hrxml_Measure_ELEM	0x5b01b5
+#define zx_gl_startAngle_ELEM	0x6801b8
+#define zx_xa_PolicyCombinerParameters_ELEM	0x2d01bc
+#define zx_gl_geoinfo_ELEM	0x6801bf
+#define zx_md_AttributeAuthorityDescriptor_ELEM	0x2401c0
+#define zx_xa_Rule_ELEM	0x2d01c1
+#define zx_hrxml_Relocation_ELEM	0x5b01c2
+#define zx_demomed_Dir_ELEM	0x1501c5
+#define zx_hrxml_DressCode_ELEM	0x5b01c6
+#define zx_m20_ContactPerson_ELEM	0x3f01ca
+#define zx_md_ContactPerson_ELEM	0x2401ca
+#define zx_hrxml_Date_ELEM	0x5b01cb
+#define zx_mm7_Date_ELEM	0x5f01cb
+#define zx_mm7_StatusCode_ELEM	0x5f01cc
+#define zx_sp11_StatusCode_ELEM	0x3301cc
+#define zx_sp_StatusCode_ELEM	0x2901cc
+#define zx_xac_StatusCode_ELEM	0x2e01cc
+#define zx_ps_Result_ELEM	0x2501d2
+#define zx_xac_Result_ELEM	0x2e01d2
+#define zx_cdm_vCard_ELEM	0x6301d6
+#define zx_hrxml_Details_ELEM	0x5b01dd
+#define zx_mm7_Details_ELEM	0x5f01dd
+#define zx_tas3sol_Dict_ELEM	0x6901e4
+#define zx_gl_PostalAddress_ELEM	0x6801e8
+#define zx_hrxml_PostalAddress_ELEM	0x5b01e8
+#define zx_mm7_value_ELEM	0x5f01ea
+#define zx_xa_Resource_ELEM	0x2d01ed
+#define zx_xac_Resource_ELEM	0x2e01ed
+#define zx_xa_Resources_ELEM	0x2d01ee
+#define zx_gl_MultiPoint_ELEM	0x6801ef
+#define zx_idpdisc_DiscoveryResponse_ELEM	0x4a01f1
+#define zx_hrxml_Age_ELEM	0x5b01f2
+#define zx_cb_CreateResponse_ELEM	0x2c01f3
+#define zx_dap_CreateResponse_ELEM	0x3a01f3
+#define zx_gl_CreateResponse_ELEM	0x6801f3
+#define zx_idhrxml_CreateResponse_ELEM	0x3601f3
+#define zx_gl_MultiPolygon_ELEM	0x6801fb
+#define zx_as_Data_ELEM	0x4301fd
+#define zx_cb_Data_ELEM	0x2c01fd
+#define zx_dap_Data_ELEM	0x3a01fd
+#define zx_gl_Data_ELEM	0x6801fd
+#define zx_idhrxml_Data_ELEM	0x3601fd
+#define zx_gl_inRadius_ELEM	0x680201
+#define zx_xac_Decision_ELEM	0x2e0206
+#define zx_hrxml_DisciplinaryAction_ELEM	0x5b0210
+#define zx_ds_P_ELEM	0x3c0213
+#define zx_gl_CivilData_ELEM	0x680216
+#define zx_xac_ResourceContent_ELEM	0x2e0217
+#define zx_wsp_PolicyAttachment_ELEM	0x540218
+#define zx_xa_ResourceAttributeDesignator_ELEM	0x2d0219
+#define zx_xenc_AgreementMethod_ELEM	0x49021c
+#define zx_sec12_ResourceAccessStatement_ELEM	0x17021f
+#define zx_mm7_DC_ELEM	0x5f0223
+#define zx_hrxml_StructuredXMLResume_ELEM	0x5b0225
+#define zx_xa_PolicySetDefaults_ELEM	0x2d0228
+#define zx_xa_PolicySetIdReference_ELEM	0x2d022b
+#define zx_sa11_Advice_ELEM	0x52022c
+#define zx_sa_Advice_ELEM	0x48022c
+#define zx_ds_X509Data_ELEM	0x3c022e
+#define zx_xa_PolicySet_ELEM	0x2d022f
+#define zx_wsc_Nonce_ELEM	0x650230
+#define zx_wsse_Nonce_ELEM	0x790230
+#define zx_m20_AdditionalMetaLocation_ELEM	0x3f023c
+#define zx_md_AdditionalMetadataLocation_ELEM	0x240240
+#define zx_shps_SetStatus_ELEM	0x270243
+#define zx_xa_PolicySetCombinerParameters_ELEM	0x2d0246
+#define zx_shps_SetStatusResponse_ELEM	0x27024b
+#define zx_hrxml_RelocationAssistance_ELEM	0x5b024e
+#define zx_hrxml_MaritalStatus_ELEM	0x5b026a
+#define zx_hrxml_MissionStatement_ELEM	0x5b026d
+#define zx_gl_outRadius_ELEM	0x680270
+#define zx_hrxml_PersonMember_ELEM	0x5b0273
+#define zx_sa11_AssertionIDReference_ELEM	0x520276
+#define zx_hrxml_SearchResultId_ELEM	0x5b027a
+#define zx_md_AssertionIDRequestService_ELEM	0x24027b
+#define zx_sp_AssertionIDRequest_ELEM	0x290283
+#define zx_hrxml_SearchResult_ELEM	0x5b0287
+#define zx_hrxml_SearchResultCount_ELEM	0x5b028c
+#define zx_ff12_AssertionConsumerServiceID_ELEM	0x350290
+#define zx_hrxml_Pager_ELEM	0x5b0294
+#define zx_hrxml_PatentMilestone_ELEM	0x5b0299
+#define zx_hrxml_ContactName_ELEM	0x5b029a
+#define zx_hrxml_PersonRole_ELEM	0x5b02a3
+#define zx_mm7_ServiceCode_ELEM	0x5f02a9
+#define zx_gl_time_ELEM	0x6802ac
+#define zx_mm7_element_ELEM	0x5f02af
+#define zx_hrxml_RelatedPositionPostings_ELEM	0x5b02b5
+#define zx_wsp_PolicyReference_ELEM	0x5402b7
+#define zx_hrxml_General_ELEM	0x5b02be
+#define zx_b12_Provider_ELEM	0x3902bf
+#define zx_sp11_StatusMessage_ELEM	0x3302c9
+#define zx_sp_StatusMessage_ELEM	0x2902c9
+#define zx_xac_StatusMessage_ELEM	0x2e02c9
+#define zx_di_ServiceContext_ELEM	0x3202ca
+#define zx_hrxml_PositionPosting_ELEM	0x5b02cb
+#define zx_wst_SignChallenge_ELEM	0x5902ce
+#define zx_hrxml_StringDate_ELEM	0x5b02d5
+#define zx_wst_SignChallengeResponse_ELEM	0x5902d6
+#define zx_pmm_ProvisionResponse_ELEM	0x2602d7
+#define zx_hrxml_PositionMatching_ELEM	0x5b02db
+#define zx_ds_Signature_ELEM	0x3c02de
+#define zx_shps_RegisterResponse_ELEM	0x2702e0
+#define zx_hrxml_PersonDescriptors_ELEM	0x5b02e1
+#define zx_shps_Register_ELEM	0x2702e2
+#define zx_pmm_Provision_ELEM	0x2602e3
+#define zx_ds_SignatureMethod_ELEM	0x3c02e4
+#define zx_prov_ProvisioningHandle_ELEM	0x1d02ec
+#define zx_ds_SignatureProperties_ELEM	0x3c02f2
+#define zx_ac_Generation_ELEM	0x4d02f3
+#define zx_wsc_Generation_ELEM	0x6502f3
+#define zx_hrxml_Region_ELEM	0x5b02f4
+#define zx_gl_ms_action_ELEM	0x6802f7
+#define zx_wst_Claims_ELEM	0x5902f9
+#define zx_cdm_PCS_ELEM	0x6302fb
+#define zx_ds_SignatureValue_ELEM	0x3c02fc
+#define zx_hrxml_PatentDetail_ELEM	0x5b02ff
+#define zx_hrxml_StreetName_ELEM	0x5b0302
+#define zx_mm7_Previouslysentdateandtime_ELEM	0x5f0307
+#define zx_hrxml_Degree_ELEM	0x5b0308
+#define zx_hrxml_Religion_ELEM	0x5b030a
+#define zx_hrxml_GenderCode_ELEM	0x5b030c
+#define zx_ac_PreviousSession_ELEM	0x4d0311
+#define zx_ac_SecretKeyProtection_ELEM	0x4d031a
+#define zx_ds_RetrievalMethod_ELEM	0x3c031b
+#define zx_hrxml_RevisionDate_ELEM	0x5b031d
+#define zx_hrxml_NonStandardValue_ELEM	0x5b0321
+#define zx_hrxml_QuestionAnswerPair_ELEM	0x5b0323
+#define zx_hrxml_RecognitionAchieved_ELEM	0x5b0324
+#define zx_wst_DelegateTo_ELEM	0x590325
+#define zx_sp11_StatusDetail_ELEM	0x330327
+#define zx_sp_StatusDetail_ELEM	0x290327
+#define zx_xac_StatusDetail_ELEM	0x2e0327
+#define zx_wst_Delegatable_ELEM	0x59032b
+#define zx_cb_DeleteResponse_ELEM	0x2c032e
+#define zx_dap_DeleteResponse_ELEM	0x3a032e
+#define zx_gl_DeleteResponse_ELEM	0x68032e
+#define zx_idhrxml_DeleteResponse_ELEM	0x36032e
+#define zx_shps_DeleteResponse_ELEM	0x27032e
+#define zx_hrxml_Qualifications_ELEM	0x5b0338
+#define zx_hrxml_PersonName_ELEM	0x5b0339
+#define zx_ds_X509SerialNumber_ELEM	0x3c033f
+#define zx_ds_PgenCounter_ELEM	0x3c0349
+#define zx_xa_PolicyDefaults_ELEM	0x2d034c
+#define zx_gl_MultiLineString_ELEM	0x68034d
+#define zx_m20_SurName_ELEM	0x3f034f
+#define zx_md_SurName_ELEM	0x24034f
+#define zx_hrxml_ServiceStatus_ELEM	0x5b0350
+#define zx_shps_ServiceStatus_ELEM	0x270350
+#define zx_hrxml_MiddleName_ELEM	0x5b0357
+#define zx_pmm_PMSetStatus_ELEM	0x260358
+#define zx_prov_PMSetStatus_ELEM	0x1d0358
+#define zx_gl_pd_ELEM	0x68035e
+#define zx_pmm_PMSetStatusResponse_ELEM	0x260360
+#define zx_prov_PMSetStatusResponse_ELEM	0x1d0360
+#define zx_gl_speed_ELEM	0x680361
+#define zx_hrxml_CountryCode_ELEM	0x5b0362
+#define zx_xac_MissingAttributeDetail_ELEM	0x2e0363
+#define zx_idp_AssertionItem_ELEM	0x300369
+#define zx_hrxml_DegreeClassification_ELEM	0x5b036b
+#define zx_hrxml_SearchString_ELEM	0x5b036d
+#define zx_idp_GetAssertionResponse_ELEM	0x300370
+#define zx_idp_GetAssertion_ELEM	0x30037c
+#define zx_ac_ActivationPin_ELEM	0x4d037d
+#define zx_hrxml_DegreeConcentration_ELEM	0x5b037e
+#define zx_wsp_Policy_ELEM	0x540385
+#define zx_xa_Policy_ELEM	0x2d0385
+#define zx_cb_ResourceID_ELEM	0x2c038e
+#define zx_di12_ResourceID_ELEM	0x37038e
+#define zx_gl_ResourceID_ELEM	0x68038e
+#define zx_is12_ResourceID_ELEM	0x2f038e
+#define zx_hrxml_AccommodationsNeeded_ELEM	0x5b0393
+#define zx_ac_DeactivationCallCenter_ELEM	0x4d0395
+#define zx_gl_loc_type_ELEM	0x68039b
+#define zx_hrxml_DoingBusinessAs_ELEM	0x5b039d
+#define zx_gl_prio_ELEM	0x6803a1
+#define zx_prov_PMStatus_ELEM	0x1d03a5
+#define zx_gl_MNC_ELEM	0x6803aa
+#define zx_cb_Aggregation_ELEM	0x2c03ad
+#define zx_dap_Aggregation_ELEM	0x3a03ad
+#define zx_gl_Aggregation_ELEM	0x6803ad
+#define zx_idhrxml_Aggregation_ELEM	0x3603ad
+#define zx_hrxml_PositionHistory_ELEM	0x5b03b1
+#define zx_hrxml_SecurityCredential_ELEM	0x5b03b4
+#define zx_hrxml_SecurityCredentials_ELEM	0x5b03b5
+#define zx_ds_CanonicalizationMethod_ELEM	0x3c03b8
+#define zx_hrxml_StartTime_ELEM	0x5b03ba
+#define zx_hrxml_AttendanceRating_ELEM	0x5b03bc
+#define zx_ac_SecurityAudit_ELEM	0x4d03be
+#define zx_ac_Smartcard_ELEM	0x4d03bf
+#define zx_mm7_EarliestDeliveryTime_ELEM	0x5f03c0
+#define zx_m20_SPDescriptor_ELEM	0x3f03c2
+#define zx_hrxml_Edition_ELEM	0x5b03c7
+#define zx_m20_EntitiesDescriptor_ELEM	0x3f03c8
+#define zx_md_EntitiesDescriptor_ELEM	0x2403c8
+#define zx_mm7_MMStatus_ELEM	0x5f03d2
+#define zx_hrxml_MilitaryStatus_ELEM	0x5b03d3
+#define zx_di_SecurityContext_ELEM	0x3203d4
+#define zx_hrxml_Residency_ELEM	0x5b03dd
+#define zx_wsc_SecurityContextToken_ELEM	0x6503de
+#define zx_cdm_N_ELEM	0x6303df
+#define zx_sp11_AttributeQuery_ELEM	0x3303e7
+#define zx_sp_AttributeQuery_ELEM	0x2903e7
+#define zx_ecp_RelayState_ELEM	0x3103e8
+#define zx_ff12_RelayState_ELEM	0x3503e8
+#define zx_hrxml_SearchRelevanceScore_ELEM	0x5b03ed
+#define zx_as_Parameter_ELEM	0x4303f1
+#define zx_is12_Parameter_ELEM	0x2f03f1
+#define zx_is_Parameter_ELEM	0x2a03f1
+#define zx_idp_CreatedStatusItem_ELEM	0x3003f4
+#define zx_pmm_PMDelete_ELEM	0x2603f5
+#define zx_prov_PMDelete_ELEM	0x1d03f5
+#define zx_pmm_PMDeleteResponse_ELEM	0x2603fd
+#define zx_prov_PMDeleteResponse_ELEM	0x1d03fd
+#define zx_mm7_MMStatusExtension_ELEM	0x5f03fe
+#define zx_shps_GetStatus_ELEM	0x270405
+#define zx_ps_Filter_ELEM	0x250407
+#define zx_gl_semiMinor_ELEM	0x68040a
+#define zx_shps_GetStatusResponse_ELEM	0x27040d
+#define zx_hrxml_FirstIssuedDate_ELEM	0x5b0410
+#define zx_hrxml_CategoryCode_ELEM	0x5b0417
+#define zx_hrxml_EndingCompensation_ELEM	0x5b041d
+#define zx_prov_PMDescriptor_ELEM	0x1d0421
+#define zx_hrxml_ServiceDetail_ELEM	0x5b0422
+#define zx_hrxml_GoodStudentIndicator_ELEM	0x5b0424
+#define zx_hrxml_EducationalMeasure_ELEM	0x5b042c
+#define zx_pmm_PMDeactivate_ELEM	0x260430
+#define zx_prov_PMDeactivate_ELEM	0x1d0430
+#define zx_hrxml_CategoryDescription_ELEM	0x5b0432
+#define zx_md_ServiceDescription_ELEM	0x240436
+#define zx_di_Keys_ELEM	0x320437
+#define zx_pmm_PMDeactivateResponse_ELEM	0x260438
+#define zx_prov_PMDeactivateResponse_ELEM	0x1d0438
+#define zx_e_Header_ELEM	0x510439
+#define zx_ps_AddEntityResponse_ELEM	0x250444
+#define zx_hrxml_Resume_ELEM	0x5b044d
+#define zx_prov_ProvisioningServiceEPR_ELEM	0x1d044e
+#define zx_ps_AddEntityRequest_ELEM	0x250452
+#define zx_is12_Hint_ELEM	0x2f0455
+#define zx_is_Hint_ELEM	0x2a0455
+#define zx_di12_ProviderID_ELEM	0x370456
+#define zx_di_ProviderID_ELEM	0x320456
+#define zx_ff12_ProviderID_ELEM	0x350456
+#define zx_idp_ProviderID_ELEM	0x300456
+#define zx_sec12_ProviderID_ELEM	0x170456
+#define zx_md_ServiceName_ELEM	0x240457
+#define zx_sa11_DoNotCacheCondition_ELEM	0x52045a
+#define zx_ds_DigestMethod_ELEM	0x3c045d
+#define zx_ac_Password_ELEM	0x4d045e
+#define zx_wsse_Password_ELEM	0x79045e
+#define zx_shibmd_Scope_ELEM	0x5c0460
+#define zx_hrxml_DegreeMinor_ELEM	0x5b0466
+#define zx_xenc_CarriedKeyName_ELEM	0x49046e
+#define zx_hrxml_DegreeMajor_ELEM	0x5b0470
+#define zx_e_Fault_ELEM	0x510474
+#define zx_hrxml_MostRecentDate_ELEM	0x5b0478
+#define zx_as_PasswordTransforms_ELEM	0x430481
+#define zx_pmm_PMActivate_ELEM	0x260488
+#define zx_prov_PMActivate_ELEM	0x1d0488
+#define zx_a_FaultTo_ELEM	0x38048f
+#define zx_hrxml_Hours_ELEM	0x5b0492
+#define zx_hrxml_SpecifiedCompetencyReference_ELEM	0x5b0495
+#define zx_demomed_Name_ELEM	0x150496
+#define zx_hrxml_Name_ELEM	0x5b0496
+#define zx_ff12_ForceAuthn_ELEM	0x350497
+#define zx_gl_CoordinateReferenceSystem_ELEM	0x6804a1
+#define zx_hrxml_CumulativeSummaryIndicator_ELEM	0x5b04a2
+#define zx_hrxml_DegreeMeasure_ELEM	0x5b04a4
+#define zx_hrxml_RemunerationPackage_ELEM	0x5b04a5
+#define zx_hrxml_AnyDate_ELEM	0x5b04a8
+#define zx_xenc_KA_Nonce_ELEM	0x4904a9
+#define zx_hrxml_HairColor_ELEM	0x5b04aa
+#define zx_wsc_Properties_ELEM	0x6504ab
+#define zx_mm7_DRMContent_ELEM	0x5f04b0
+#define zx_xa_Function_ELEM	0x2d04b3
+#define zx_hrxml_DegreeDate_ELEM	0x5b04c4
+#define zx_hrxml_Headcount_ELEM	0x5b04c8
+#define zx_wst_Participants_ELEM	0x5904d0
+#define zx_dp_Response_ELEM	0x2004d6
+#define zx_ecp_Response_ELEM	0x3104d6
+#define zx_paos_Response_ELEM	0x4004d6
+#define zx_sp11_Response_ELEM	0x3304d6
+#define zx_sp_Response_ELEM	0x2904d6
+#define zx_xac_Response_ELEM	0x2e04d6
+#define zx_hrxml_AttachmentReference_ELEM	0x5b04dc
+#define zx_wst_Participant_ELEM	0x5904de
+#define zx_shps_SetStatusItem_ELEM	0x2704e0
+#define zx_ds_Q_ELEM	0x3c04e3
+#define zx_gl_Polygon_ELEM	0x6804e4
+#define zx_wst_RenewTarget_ELEM	0x5904e8
+#define zx_mm7_MessageExtraData_ELEM	0x5f04ed
+#define zx_cdm_ADR_ELEM	0x6304f4
+#define zx_shps_ResponseHeaders_ELEM	0x2704f6
+#define zx_mm7_Recipients_ELEM	0x5f04fb
+#define zx_hrxml_EligibleForRehire_ELEM	0x5b04fd
+#define zx_cdm_FAX_ELEM	0x6304fe
+#define zx_hrxml_ResumeAdditionalItems_ELEM	0x5b0501
+#define zx_sa11_Evidence_ELEM	0x520503
+#define zx_sa_Evidence_ELEM	0x480503
+#define zx_hrxml_EvidenceId_ELEM	0x5b0505
+#define zx_hrxml_Recipient_ELEM	0x5b0509
+#define zx_mm7_Recipient_ELEM	0x5f0509
+#define zx_prov_PMGetDescriptorResponse_ELEM	0x1d050d
+#define zx_prov_PMGetDescriptor_ELEM	0x1d050f
+#define zx_hrxml_DegreeName_ELEM	0x5b0514
+#define zx_xenc_RecipientKeyInfo_ELEM	0x490515
+#define zx_pmm_PMGetStatus_ELEM	0x26051a
+#define zx_prov_PMGetStatus_ELEM	0x1d051a
+#define zx_m20_KeySize_ELEM	0x3f0520
+#define zx_wst_KeySize_ELEM	0x590520
+#define zx_xenc_KeySize_ELEM	0x490520
+#define zx_pmm_PMGetStatusResponse_ELEM	0x260522
+#define zx_prov_PMGetStatusResponse_ELEM	0x1d0522
+#define zx_ff12_SPProvidedNameIdentifier_ELEM	0x350527
+#define zx_hrxml_MeasureSystem_ELEM	0x5b052b
+#define zx_ds_SignatureProperty_ELEM	0x3c052f
+#define zx_a_SoapAction_ELEM	0x380532
+#define zx_di12_SoapAction_ELEM	0x370532
+#define zx_ds_G_ELEM	0x3c0533
+#define zx_hrxml_StartingCompensation_ELEM	0x5b0537
+#define zx_di_SvcMDDelete_ELEM	0x320538
+#define zx_cb_QueryResponse_ELEM	0x2c053a
+#define zx_dap_QueryResponse_ELEM	0x3a053a
+#define zx_di12_QueryResponse_ELEM	0x37053a
+#define zx_di_QueryResponse_ELEM	0x32053a
+#define zx_gl_QueryResponse_ELEM	0x68053a
+#define zx_idhrxml_QueryResponse_ELEM	0x36053a
+#define zx_shps_QueryResponse_ELEM	0x27053a
+#define zx_mm7_Previouslysentby_ELEM	0x5f053d
+#define zx_hrxml_EndDate_ELEM	0x5b053e
+#define zx_di_SvcMDDeleteResponse_ELEM	0x320540
+#define zx_ff12_ProviderName_ELEM	0x350543
+#define zx_mm7_CancelRsp_ELEM	0x5f0545
+#define zx_ac_KeyStorage_ELEM	0x4d0546
+#define zx_ac_DigSig_ELEM	0x4d054c
+#define zx_ac_ResumeSession_ELEM	0x4d054e
+#define zx_di_SvcMDAssociationAdd_ELEM	0x32054f
+#define zx_ac_SwitchAudit_ELEM	0x4d0551
+#define zx_di_SvcMDAssociationDelete_ELEM	0x320552
+#define zx_di_SvcMDAssociationAddResponse_ELEM	0x320557
+#define zx_idp_GetProviderInfoResponse_ELEM	0x300558
+#define zx_di_SvcMDAssociationQueryResponse_ELEM	0x320559
+#define zx_di_SvcMDAssociationDeleteResponse_ELEM	0x32055a
+#define zx_di12_Description_ELEM	0x37055b
+#define zx_hrxml_Description_ELEM	0x5b055b
+#define zx_xa_Description_ELEM	0x2d055b
+#define zx_ac_ZeroKnowledge_ELEM	0x4d055d
+#define zx_b_SecurityMechID_ELEM	0x340563
+#define zx_cb_SecurityMechID_ELEM	0x2c0563
+#define zx_di12_SecurityMechID_ELEM	0x370563
+#define zx_di_SecurityMechID_ELEM	0x320563
+#define zx_gl_SecurityMechID_ELEM	0x680563
+#define zx_idp_GetProviderInfo_ELEM	0x300564
+#define zx_hrxml_CountryServed_ELEM	0x5b0567
+#define zx_wst_AllowPostdating_ELEM	0x590569
+#define zx_cdm_KEY_ELEM	0x63056c
+#define zx_shps_RegisterResponseItem_ELEM	0x27056e
+#define zx_m20_EntityDescriptor_ELEM	0x3f056f
+#define zx_md_EntityDescriptor_ELEM	0x24056f
+#define zx_wst_SignatureAlgorithm_ELEM	0x590571
+#define zx_hrxml_DeliveryAddress_ELEM	0x5b0573
+#define zx_gl_stopAngle_ELEM	0x680577
+#define zx_ff12_RegisterNameIdentifierResponse_ELEM	0x350578
+#define zx_hrxml_QualificationSummary_ELEM	0x5b057d
+#define zx_m20_RegisterNameIdentifierProtocolProfile_ELEM	0x3f057f
+#define zx_hrxml_Comments_ELEM	0x5b0580
+#define zx_ff12_RegisterNameIdentifierRequest_ELEM	0x350586
+#define zx_hrxml_Major_ELEM	0x5b0587
+#define zx_demomed_Comment_ELEM	0x15058e
+#define zx_di12_Abstract_ELEM	0x37058f
+#define zx_di_Abstract_ELEM	0x32058f
+#define zx_hrxml_Abstract_ELEM	0x5b058f
+#define zx_md_PDPDescriptor_ELEM	0x240594
+#define zx_mm7_DeliveryCondition_ELEM	0x5f059d
+#define zx_ac_GoverningAgreements_ELEM	0x4d05b3
+#define zx_xenc_KeyReference_ELEM	0x4905bb
+#define zx_hrxml_EntityName_ELEM	0x5b05be
+#define zx_ac_PrivateKeyProtection_ELEM	0x4d05cd
+#define zx_hrxml_Commute_ELEM	0x5b05cf
+#define zx_mm7_Priority_ELEM	0x5f05d5
+#define zx_ps_RemoveCollectionResponse_ELEM	0x2505d6
+#define zx_prov_PollResponse_ELEM	0x1d05e3
+#define zx_shps_PollResponse_ELEM	0x2705e3
+#define zx_ps_RemoveCollectionRequest_ELEM	0x2505e4
+#define zx_wsse_Security_ELEM	0x7905e9
+#define zx_pmm_PMActivateResponse_ELEM	0x2605ee
+#define zx_prov_PMActivateResponse_ELEM	0x1d05ee
+#define zx_hrxml_RoleName_ELEM	0x5b05f3
+#define zx_sec12_SessionSubject_ELEM	0x1705f9
+#define zx_hrxml_MilitaryHistory_ELEM	0x5b05fa
+#define zx_b_RedirectRequest_ELEM	0x3405fc
+#define zx_is12_RedirectRequest_ELEM	0x2f05fc
+#define zx_idp_GetAssertionResponseItem_ELEM	0x3005fe
+#define zx_ps_AddKnownEntityResponse_ELEM	0x250601
+#define zx_hrxml_Mobile_ELEM	0x5b0605
+#define zx_hrxml_JobPlan_ELEM	0x5b060b
+#define zx_sa_EncryptedAttribute_ELEM	0x48060c
+#define zx_ps_AddKnownEntityRequest_ELEM	0x25060f
+#define zx_hrxml_WebSite_ELEM	0x5b0610
+#define zx_sa_EncryptedAssertion_ELEM	0x480611
+#define zx_m20_KeyDescriptor_ELEM	0x3f0616
+#define zx_md_KeyDescriptor_ELEM	0x240616
+#define zx_wst_Encryption_ELEM	0x590618
+#define zx_hrxml_Requested_ELEM	0x5b0619
+#define zx_di_RequestedService_ELEM	0x320620
+#define zx_di12_RequestedServiceType_ELEM	0x370624
+#define zx_ff12_EncryptedNameIdentifier_ELEM	0x350625
+#define zx_dp_Request_ELEM	0x200626
+#define zx_ecp_Request_ELEM	0x310626
+#define zx_paos_Request_ELEM	0x400626
+#define zx_sp11_Request_ELEM	0x330626
+#define zx_xac_Request_ELEM	0x2e0626
+#define zx_ff12_EncryptableNameIdentifier_ELEM	0x350627
+#define zx_m20_EmailAddress_ELEM	0x3f0629
+#define zx_md_EmailAddress_ELEM	0x240629
+#define zx_xenc_EncryptedData_ELEM	0x49062a
+#define zx_mm7_CancelReq_ELEM	0x5f062d
+#define zx_hrxml_EyeColor_ELEM	0x5b062f
+#define zx_mm7_RFC2822Address_ELEM	0x5f0630
+#define zx_md_RequestedAttribute_ELEM	0x240631
+#define zx_wst_RequestedAttachedReference_ELEM	0x590639
+#define zx_wst_RequestedSecurityToken_ELEM	0x59063a
+#define zx_wst_RequestedUnattachedReference_ELEM	0x590640
+#define zx_wst_RequestedProofToken_ELEM	0x590641
+#define zx_ds_KeyName_ELEM	0x3c0642
+#define zx_hrxml_Use_ELEM	0x5b0643
+#define zx_wst_CanonicalizationAlgorithm_ELEM	0x590645
+#define zx_mm7_Bcc_ELEM	0x5f064d
+#define zx_hrxml_List_ELEM	0x5b064e
+#define zx_ff12_Loc_ELEM	0x35065c
+#define zx_ff12_GetComplete_ELEM	0x350664
+#define zx_sp_GetComplete_ELEM	0x290664
+#define zx_cdm_DESC_ELEM	0x630667
+#define zx_hrxml_PublicationDate_ELEM	0x5b0668
+#define zx_hrxml_Latitude_ELEM	0x5b066b
+#define zx_hrxml_PublicationLanguage_ELEM	0x5b066c
+#define zx_hrxml_LicensesAndCertifications_ELEM	0x5b066d
+#define zx_hrxml_EducationHistory_ELEM	0x5b0678
+#define zx_shps_ServiceHandle_ELEM	0x27067a
+#define zx_ps_CreatePSObject_ELEM	0x25067b
+#define zx_pmm_PMDeleteItem_ELEM	0x260683
+#define zx_prov_PMDeleteItem_ELEM	0x1d0683
+#define zx_hrxml_Unit_ELEM	0x5b0685
+#define zx_hrxml_Compensation_ELEM	0x5b0688
+#define zx_ac_KeyActivation_ELEM	0x4d0689
+#define zx_shps_QueryRegistered_ELEM	0x270690
+#define zx_sp_RequestedAuthnContext_ELEM	0x290693
+#define zx_prov_PMESize_ELEM	0x1d0697
+#define zx_shps_QueryRegisteredResponse_ELEM	0x270698
+#define zx_md_RoleDescriptor_ELEM	0x240699
+#define zx_shps_GetStatusResponseItem_ELEM	0x27069b
+#define zx_ds_PGPData_ELEM	0x3c069c
+#define zx_di_SvcMDRegisterResponse_ELEM	0x3206aa
+#define zx_di_SvcMDRegister_ELEM	0x3206ac
+#define zx_hrxml_Location_ELEM	0x5b06b1
+#define zx_hrxml_LocalInstitutionClassification_ELEM	0x5b06b3
+#define zx_pmm_PMDeactivateItem_ELEM	0x2606be
+#define zx_prov_PMDeactivateItem_ELEM	0x1d06be
+#define zx_prov_PMRegisterDescriptorResponse_ELEM	0x1d06c0
+#define zx_prov_PMRegisterDescriptor_ELEM	0x1d06c2
+#define zx_hrxml_AddressLine_ELEM	0x5b06c8
+#define zx_hrxml_FormattedName_ELEM	0x5b06cf
+#define zx_di_SvcMD_ELEM	0x3206d1
+#define zx_hrxml_ValidTo_ELEM	0x5b06d3
+#define zx_hrxml_GivenName_ELEM	0x5b06d5
+#define zx_m20_GivenName_ELEM	0x3f06d5
+#define zx_md_GivenName_ELEM	0x2406d5
+#define zx_prov_EngineData_ELEM	0x1d06d6
+#define zx_wst_ValidateTarget_ELEM	0x5906da
+#define zx_hrxml_Nationality_ELEM	0x5b06dc
+#define zx_hrxml_ReasonForLeaving_ELEM	0x5b06e1
+#define zx_hrxml_CourseLevelCode_ELEM	0x5b06ea
+#define zx_hrxml_CompetencyWeight_ELEM	0x5b06eb
+#define zx_gl_Heading_ELEM	0x6806f1
+#define zx_hrxml_DistributionGuidelines_ELEM	0x5b06f6
+#define zx_hrxml_Value_ELEM	0x5b06f9
+#define zx_is12_Value_ELEM	0x2f06f9
+#define zx_is_Value_ELEM	0x2a06f9
+#define zx_di_SvcMDQueryResponse_ELEM	0x3206fc
+#define zx_mm7_DistributionIndicator_ELEM	0x5f06ff
+#define zx_hrxml_AvailabilityDates_ELEM	0x5b0700
+#define zx_cb_NewData_ELEM	0x2c070a
+#define zx_dap_NewData_ELEM	0x3a070a
+#define zx_gl_NewData_ELEM	0x68070a
+#define zx_idhrxml_NewData_ELEM	0x36070a
+#define zx_mm7_UserAgent_ELEM	0x5f070c
+#define zx_ff12_AssertionConsumerServiceURL_ELEM	0x35070f
+#define zx_m20_AssertionConsumerServiceURL_ELEM	0x3f070f
+#define zx_ds_MgmtData_ELEM	0x3c0710
+#define zx_gl_AreaComparison_ELEM	0x680711
+#define zx_hrxml_AvailabilityInfo_ELEM	0x5b0713
+#define zx_gl_LSt_ELEM	0x680715
+#define zx_xenc_EncryptionProperties_ELEM	0x490717
+#define zx_hrxml_UserArea_ELEM	0x5b071a
+#define zx_b_EndpointUpdate_ELEM	0x340720
+#define zx_hrxml_FormattedNumber_ELEM	0x5b0721
+#define zx_ff12_Scoping_ELEM	0x350723
+#define zx_sp_Scoping_ELEM	0x290723
+#define zx_cdm_TZ_ELEM	0x630724
+#define zx_a_ReplyTo_ELEM	0x380728
+#define zx_cb_Endpoint_ELEM	0x2c0729
+#define zx_di12_Endpoint_ELEM	0x370729
+#define zx_gl_Endpoint_ELEM	0x680729
+#define zx_hrxml_Id_ELEM	0x5b072d
+#define zx_prov_PMERegisterResponse_ELEM	0x1d0734
+#define zx_prov_PMERegister_ELEM	0x1d0736
+#define zx_hrxml_FormattedPublicationDescription_ELEM	0x5b073b
+#define zx_m20_EncryptionMethod_ELEM	0x3f0740
+#define zx_md_EncryptionMethod_ELEM	0x240740
+#define zx_xenc_EncryptionMethod_ELEM	0x490740
+#define zx_cdm_MSG_ELEM	0x630742
+#define zx_di_EndpointContext_ELEM	0x320744
+#define zx_hrxml_Title_ELEM	0x5b0745
+#define zx_wst_BinarySecret_ELEM	0x590746
+#define zx_a_To_ELEM	0x38074c
+#define zx_mm7_To_ELEM	0x5f074c
+#define zx_hrxml_PersonLegalId_ELEM	0x5b0751
+#define zx_wsse_BinarySecurityToken_ELEM	0x79075c
+#define zx_cb_Query_ELEM	0x2c075d
+#define zx_dap_Query_ELEM	0x3a075d
+#define zx_di12_Query_ELEM	0x37075d
+#define zx_di_Query_ELEM	0x32075d
+#define zx_gl_Query_ELEM	0x68075d
+#define zx_idhrxml_Query_ELEM	0x36075d
+#define zx_shps_Query_ELEM	0x27075d
+#define zx_sp11_Query_ELEM	0x33075d
+#define zx_wst_Forwardable_ELEM	0x59075e
+#define zx_prov_PMEDelete_ELEM	0x1d0761
+#define zx_wst_RequestSecurityTokenResponse_ELEM	0x590762
+#define zx_prov_PMEDeleteResponse_ELEM	0x1d0769
+#define zx_wst_Renewing_ELEM	0x59076a
+#define zx_wst_RequestSecurityToken_ELEM	0x59076e
+#define zx_wst_RequestSecurityTokenCollection_ELEM	0x590778
+#define zx_gl_Interval_ELEM	0x680779
+#define zx_hrxml_Interval_ELEM	0x5b0779
+#define zx_prov_PMEDownload_ELEM	0x1d077c
+#define zx_hrxml_JobGrade_ELEM	0x5b077e
+#define zx_wst_RequestSecurityTokenResponseCollection_ELEM	0x590780
+#define zx_ds_Transforms_ELEM	0x3c0781
+#define zx_xenc_Transforms_ELEM	0x490781
+#define zx_prov_PMEDownloadResponse_ELEM	0x1d0784
+#define zx_hrxml_NonXMLResume_ELEM	0x5b0787
+#define zx_hrxml_ResumeAdditionalItem_ELEM	0x5b078a
+#define zx_sec_TransitedProvider_ELEM	0x2b078d
+#define zx_hrxml_Issue_ELEM	0x5b078f
+#define zx_di_SvcMDAssociationQuery_ELEM	0x320790
+#define zx_hrxml_InternetEmailAddress_ELEM	0x5b0794
+#define zx_hrxml_LegalId_ELEM	0x5b0796
+#define zx_sa_Issuer_ELEM	0x48079a
+#define zx_sec12_Issuer_ELEM	0x17079a
+#define zx_wst_Issuer_ELEM	0x59079a
+#define zx_hrxml_Municipality_ELEM	0x5b079b
+#define zx_cb_EncryptedResourceID_ELEM	0x2c079d
+#define zx_di12_EncryptedResourceID_ELEM	0x37079d
+#define zx_gl_EncryptedResourceID_ELEM	0x68079d
+#define zx_is12_EncryptedResourceID_ELEM	0x2f079d
+#define zx_wsse_TransformationParameters_ELEM	0x79079e
+#define zx_b_InteractionService_ELEM	0x3407a1
+#define zx_is12_InteractionService_ELEM	0x2f07a1
+#define zx_is12_InteractionResponse_ELEM	0x2f07a2
+#define zx_is_InteractionResponse_ELEM	0x2a07a2
+#define zx_gl_GeometryCollection_ELEM	0x6807a6
+#define zx_hrxml_EventName_ELEM	0x5b07a7
+#define zx_hrxml_VisaStatus_ELEM	0x5b07ad
+#define zx_hrxml_LegalIdentifiers_ELEM	0x5b07ae
+#define zx_is12_InteractionRequest_ELEM	0x2f07b0
+#define zx_is_InteractionRequest_ELEM	0x2a07b0
+#define zx_is12_InteractionStatement_ELEM	0x2f07b2
+#define zx_is_InteractionStatement_ELEM	0x2a07b2
+#define zx_hrxml_StringValue_ELEM	0x5b07b3
+#define zx_gl_EllipticalArea_ELEM	0x6807b6
+#define zx_cdm_FN_ELEM	0x6307b9
+#define zx_xa_CombinerParameters_ELEM	0x2d07ba
+#define zx_cb_QueryItem_ELEM	0x2c07bb
+#define zx_dap_QueryItem_ELEM	0x3a07bb
+#define zx_gl_QueryItem_ELEM	0x6807bb
+#define zx_idhrxml_QueryItem_ELEM	0x3607bb
+#define zx_xa_Environments_ELEM	0x2d07be
+#define zx_hrxml_EnvironmentId_ELEM	0x5b07bf
+#define zx_hrxml_EnvironmentName_ELEM	0x5b07c1
+#define zx_xa_CombinerParameter_ELEM	0x2d07c3
+#define zx_hrxml_PatentHistory_ELEM	0x5b07c4
+#define zx_ac_PrincipalAuthenticationMechanism_ELEM	0x4d07c8
+#define zx_xa_Environment_ELEM	0x2d07cc
+#define zx_xac_Environment_ELEM	0x2e07cc
+#define zx_sec12_IssueInstant_ELEM	0x1707cd
+#define zx_hrxml_ContactId_ELEM	0x5b07d4
+#define zx_di_SvcMDQuery_ELEM	0x3207d5
+#define zx_wst_CancelTarget_ELEM	0x5907d8
+#define zx_hrxml_Insurance_ELEM	0x5b07d9
+#define zx_xa_EnvironmentAttributeDesignator_ELEM	0x2d07da
+#define zx_gl_Granularity_ELEM	0x6807db
+#define zx_ds_PGPKeyPacket_ELEM	0x3c07dc
+#define zx_hrxml_LegalClassification_ELEM	0x5b07de
+#define zx_gl_ComparisonResult_ELEM	0x6807e0
+#define zx_hrxml_Campaign_ELEM	0x5b07e2
+#define zx_b12_UsageDirective_ELEM	0x3907e8
+#define zx_b_UsageDirective_ELEM	0x3407e8
+#define zx_mm7_DeliverRsp_ELEM	0x5f07e9
+#define zx_ps_QueryString_ELEM	0x2507ef
+#define zx_hrxml_ClassRank_ELEM	0x5b07f2
+#define zx_gl_LPostalAddress_ELEM	0x6807f7
+#define zx_hrxml_ContactInfo_ELEM	0x5b07fe
+#define zx_gl_semiMajor_ELEM	0x680801
+#define zx_hrxml_SupplierId_ELEM	0x5b0802
+#define zx_ps_AddToCollectionResponse_ELEM	0x25080b
+#define zx_hrxml_Longitude_ELEM	0x5b0815
+#define zx_dap_filter_ELEM	0x3a0817
+#define zx_ps_AddToCollectionRequest_ELEM	0x250819
+#define zx_hrxml_AdditionalText_ELEM	0x5b081b
+#define zx_hrxml_BiologicalDescriptors_ELEM	0x5b081c
+#define zx_ac_MobileNetworkNoEncryption_ELEM	0x4d082f
+#define zx_mm7_AdditionalInformation_ELEM	0x5f0830
+#define zx_wst_Entropy_ELEM	0x590831
+#define zx_ac_MobileNetworkRadioEncryption_ELEM	0x4d0832
+#define zx_ac_MobileNetworkEndToEndEncryption_ELEM	0x4d0835
+#define zx_xenc_EncryptedKey_ELEM	0x490836
+#define zx_gl_hor_acc_ELEM	0x680849
+#define zx_wst_Primary_ELEM	0x59084a
+#define zx_cdm_CRED_ELEM	0x63084c
+#define zx_mm7_SenderIdentification_ELEM	0x5f084d
+#define zx_e_Envelope_ELEM	0x510850
+#define zx_cdm_BDAY_ELEM	0x630851
+#define zx_gl_angularUnit_ELEM	0x680858
+#define zx_hrxml_PersonId_ELEM	0x5b085a
+#define zx_hrxml_SearchTarget_ELEM	0x5b0864
+#define zx_hrxml_JournalOrSerialName_ELEM	0x5b086a
+#define zx_di_SvcMDID_ELEM	0x320872
+#define zx_hrxml_BKZClassification_ELEM	0x5b0877
+#define zx_mm7_ReadReply_ELEM	0x5f0879
+#define zx_mm7_MessageType_ELEM	0x5f087c
+#define zx_hrxml_PatentTitle_ELEM	0x5b0881
+#define zx_ac_ActivationLimitUsages_ELEM	0x4d0885
+#define zx_e_faultcode_ELEM	0x51088d
+#define zx_ac_ActivationLimit_ELEM	0x4d088e
+#define zx_gl_LineString_ELEM	0x680893
+#define zx_hrxml_MeasureValue_ELEM	0x5b0895
+#define zx_hrxml_Competency_ELEM	0x5b0898
+#define zx_ac_ActivationLimitSession_ELEM	0x4d089a
+#define zx_ac_ActivationLimitDuration_ELEM	0x4d089b
+#define zx_hrxml_FamilyName_ELEM	0x5b089d
+#define zx_hrxml_RoleId_ELEM	0x5b08a3
+#define zx_e_faultactor_ELEM	0x5108a7
+#define zx_mm7_StatusText_ELEM	0x5f08a8
+#define zx_di_SvcMDReplace_ELEM	0x3208a9
+#define zx_hrxml_PublicationHistory_ELEM	0x5b08aa
+#define zx_mm7_QueryStatusRsp_ELEM	0x5f08ab
+#define zx_hrxml_StartRank_ELEM	0x5b08b0
+#define zx_di_SvcMDReplaceResponse_ELEM	0x3208b1
+#define zx_mm7_MMSRelayServerID_ELEM	0x5f08b2
+#define zx_xa_Target_ELEM	0x2d08b3
+#define zx_ds_X509IssuerSerial_ELEM	0x3c08b7
+#define zx_hrxml_Travel_ELEM	0x5b08b8
+#define zx_a_RelatesTo_ELEM	0x3808c5
+#define zx_ps_ResolveIdentifierResponse_ELEM	0x2508ca
+#define zx_cdm_CTRY_ELEM	0x6308cf
+#define zx_mm7_DeliverReq_ELEM	0x5f08d1
+#define zx_ac_IPAddress_ELEM	0x4d08d3
+#define zx_ps_ResolveIdentifierRequest_ELEM	0x2508d8
+#define zx_sp_ArtifactResolve_ELEM	0x2908d9
+#define zx_sp_ArtifactResponse_ELEM	0x2908da
+#define zx_mm7_DeliveryReport_ELEM	0x5f08dd
+#define zx_sp_Artifact_ELEM	0x2908e1
+#define zx_md_ArtifactResolutionService_ELEM	0x2408e3
+#define zx_hrxml_Inventors_ELEM	0x5b08e7
+#define zx_hrxml_WorkSite_ELEM	0x5b08eb
+#define zx_hrxml_WorkSiteId_ELEM	0x5b08ed
+#define zx_wsse_Username_ELEM	0x7908f0
+#define zx_md_SingleLogoutService_ELEM	0x2408f6
+#define zx_hrxml_School_ELEM	0x5b08fc
+#define zx_m20_SingleLogoutProtocolProfile_ELEM	0x3f08fe
+#define zx_mm7_ShortCode_ELEM	0x5f0904
+#define zx_b_ApplicationEPR_ELEM	0x340905
+#define zx_dst_TestResult_ELEM	0x1c0907
+#define zx_lu_TestResult_ELEM	0x5e0907
+#define zx_hrxml_ServiceNumber_ELEM	0x5b0909
+#define zx_ps_RemoveEntityResponse_ELEM	0x25090b
+#define zx_di12_EncryptResourceID_ELEM	0x37090d
+#define zx_a_From_ELEM	0x38090f
+#define zx_mm7_MM7Version_ELEM	0x5f0915
+#define zx_dap_ResultQuery_ELEM	0x3a0916
+#define zx_idhrxml_ResultQuery_ELEM	0x360916
+#define zx_ps_ResolveInput_ELEM	0x250917
+#define zx_ps_RemoveEntityRequest_ELEM	0x250919
+#define zx_ff12_AuthnResponse_ELEM	0x35091c
+#define zx_a_ProblemAction_ELEM	0x38091d
+#define zx_hrxml_VerticalAccuracy_ELEM	0x5b0920
+#define zx_sec12_ValidityRestrictionCondition_ELEM	0x170922
+#define zx_ff12_AuthnResponseEnvelope_ELEM	0x350924
+#define zx_wst_AuthenticationType_ELEM	0x590926
+#define zx_hrxml_PreferredGivenName_ELEM	0x5b0927
+#define zx_ac_AuthenticationMethod_ELEM	0x4d0928
+#define zx_gl_LinearRing_ELEM	0x680929
+#define zx_hrxml_TravelConsiderations_ELEM	0x5b092a
+#define zx_ac_Authenticator_ELEM	0x4d092b
+#define zx_wst_Authenticator_ELEM	0x59092b
+#define zx_wst_EncryptionAlgorithm_ELEM	0x59092d
+#define zx_hrxml_PreferredLanguage_ELEM	0x5b0930
+#define zx_ac_AuthenticatorTransportProtocol_ELEM	0x4d0932
+#define zx_di12_AuthenticateRequester_ELEM	0x370933
+#define zx_sa_EncryptedID_ELEM	0x480934
+#define zx_hrxml_DemographicDescriptors_ELEM	0x5b0935
+#define zx_ac_IPSec_ELEM	0x4d0938
+#define zx_ff12_AuthenticationStatement_ELEM	0x35093a
+#define zx_sa11_AuthenticationStatement_ELEM	0x52093a
+#define zx_mm7_TransactionID_ELEM	0x5f093c
+#define zx_di12_AuthenticateSessionContext_ELEM	0x37093d
+#define zx_hrxml_PreferredPosition_ELEM	0x5b093f
+#define zx_ac_AuthenticationContextStatement_ELEM	0x4d0941
+#define zx_ps_DisplayName_ELEM	0x250943
+#define zx_xa_RuleCombinerParameters_ELEM	0x2d0944
+#define zx_prov_PMRegisterDescriptorItem_ELEM	0x1d0946
+#define zx_prov_PMRegisterDescriptorResponseItem_ELEM	0x1d094e
+#define zx_hrxml_ProfessionalAssociations_ELEM	0x5b0950
+#define zx_shps_InvocationContext_ELEM	0x270953
+#define zx_xenc_EncryptionProperty_ELEM	0x490954
+#define zx_hrxml_ValidFrom_ELEM	0x5b0955
+#define zx_hrxml_PositionSchedule_ELEM	0x5b0956
+#define zx_sp_RequesterID_ELEM	0x290959
+#define zx_exca_InclusiveNamespaces_ELEM	0x3b095a
+#define zx_hrxml_OriginalDate_ELEM	0x5b0962
+#define zx_hrxml_Language_ELEM	0x5b0963
+#define zx_hrxml_Languages_ELEM	0x5b0964
+#define zx_hrxml_LanguageCode_ELEM	0x5b0967
+#define zx_hrxml_SupportingMaterials_ELEM	0x5b0969
+#define zx_hrxml_YearMonth_ELEM	0x5b096d
+#define zx_hrxml_RelatedOrganization_ELEM	0x5b0973
+#define zx_hrxml_RelatedOrganizationalUnit_ELEM	0x5b0974
+#define zx_hrxml_CompanyScale_ELEM	0x5b0976
+#define zx_ff12_LogoutRequest_ELEM	0x350977
+#define zx_sp_LogoutRequest_ELEM	0x290977
+#define zx_ff12_LogoutResponse_ELEM	0x35097d
+#define zx_sp_LogoutResponse_ELEM	0x29097d
+#define zx_cdm_CLASS_ELEM	0x63097e
+#define zx_hrxml_Volume_ELEM	0x5b097f
+#define zx_ds_Manifest_ELEM	0x3c0981
+#define zx_ds_Reference_ELEM	0x3c0982
+#define zx_hrxml_Reference_ELEM	0x5b0982
+#define zx_wsse_Reference_ELEM	0x790982
+#define zx_hrxml_References_ELEM	0x5b0983
+#define zx_hrxml_ConferencePaper_ELEM	0x5b0988
+#define zx_di12_ServiceType_ELEM	0x37098a
+#define zx_di_ServiceType_ELEM	0x32098a
+#define zx_mm7_Number_ELEM	0x5f098e
+#define zx_cb_Subscription_ELEM	0x2c098f
+#define zx_dap_Subscription_ELEM	0x3a098f
+#define zx_gl_Subscription_ELEM	0x68098f
+#define zx_idhrxml_Subscription_ELEM	0x36098f
+#define zx_ps_Subscription_ELEM	0x25098f
+#define zx_mm7_QueryStatusReq_ELEM	0x5f0993
+#define zx_md_AuthnAuthorityDescriptor_ELEM	0x240995
+#define zx_mm7_ReplaceRsp_ELEM	0x5f0997
+#define zx_xa_XPathVersion_ELEM	0x2d0998
+#define zx_mm7_ReadReplyRsp_ELEM	0x5f0999
+#define zx_cb_Modification_ELEM	0x2c09a3
+#define zx_gl_Modification_ELEM	0x6809a3
+#define zx_xenc_ReferenceList_ELEM	0x4909a4
+#define zx_a_ReferenceParameters_ELEM	0x3809a5
+#define zx_di12_ServiceInstance_ELEM	0x3709a6
+#define zx_ds_DigestValue_ELEM	0x3c09a7
+#define zx_ps_RemoveFromCollectionResponse_ELEM	0x2509a9
+#define zx_hrxml_EmployerContactInfo_ELEM	0x5b09aa
+#define zx_ds_SignedInfo_ELEM	0x3c09b0
+#define zx_wst_Challenge_ELEM	0x5909b3
+#define zx_ps_RemoveFromCollectionRequest_ELEM	0x2509b7
+#define zx_di12_CredentialRef_ELEM	0x3709bd
+#define zx_mm7_CredentialRef_ELEM	0x5f09bd
+#define zx_hrxml_ValueStatement_ELEM	0x5b09c3
+#define zx_hrxml_ContactMethod_ELEM	0x5b09c6
+#define zx_mm7_IdentityAddressingToken_ELEM	0x5f09c7
+#define zx_ac_AsymmetricDecryption_ELEM	0x4d09c9
+#define zx_shps_Update_ELEM	0x2709ca
+#define zx_hrxml_CompetencyEvidence_ELEM	0x5b09cc
+#define zx_ds_X509IssuerName_ELEM	0x3c09cd
+#define zx_ac_SharedSecretChallengeResponse_ELEM	0x4d09d1
+#define zx_ff12_IsPassive_ELEM	0x3509d2
+#define zx_demomed_StoreObjectResponse_ELEM	0x1509d7
+#define zx_hrxml_Weight_ELEM	0x5b09dd
+#define zx_ac_SharedSecretDynamicPlaintext_ELEM	0x4d09df
+#define zx_xa_ResourceMatch_ELEM	0x2d09e4
+#define zx_demomed_StoreObjectRequest_ELEM	0x1509e5
+#define zx_hrxml_RankedSearchResults_ELEM	0x5b09eb
+#define zx_ds_X509SubjectName_ELEM	0x3c09ec
+#define zx_ps_Tag_ELEM	0x2509f0
+#define zx_hrxml_IndustryCode_ELEM	0x5b09f3
+#define zx_b_Timeout_ELEM	0x3409f4
+#define zx_sp_Terminate_ELEM	0x2909f6
+#define zx_hrxml_OrgSize_ELEM	0x5b09fd
+#define zx_xa_Subjects_ELEM	0x2d09fe
+#define zx_mm7_SenderSPI_ELEM	0x5f09ff
+#define zx_hrxml_InternetDomainName_ELEM	0x5b0a03
+#define zx_cb_Trigger_ELEM	0x2c0a08
+#define zx_dap_Trigger_ELEM	0x3a0a08
+#define zx_gl_Trigger_ELEM	0x680a08
+#define zx_idhrxml_Trigger_ELEM	0x360a08
+#define zx_as_Transform_ELEM	0x430a0a
+#define zx_ds_Transform_ELEM	0x3c0a0a
+#define zx_ff12_Subject_ELEM	0x350a0c
+#define zx_mm7_Subject_ELEM	0x5f0a0c
+#define zx_sa11_Subject_ELEM	0x520a0c
+#define zx_sa_Subject_ELEM	0x480a0c
+#define zx_xa_Subject_ELEM	0x2d0a0c
+#define zx_xac_Subject_ELEM	0x2e0a0c
+#define zx_hrxml_IndustryDescription_ELEM	0x5b0a0e
+#define zx_hrxml_BKZName_ELEM	0x5b0a11
+#define zx_hrxml_ConferenceDate_ELEM	0x5b0a13
+#define zx_sa_AssertionURIRef_ELEM	0x480a19
+#define zx_ac_AsymmetricKeyAgreement_ELEM	0x4d0a1b
+#define zx_a_MessageID_ELEM	0x380a22
+#define zx_mm7_MessageID_ELEM	0x5f0a22
+#define zx_hrxml_Citizenship_ELEM	0x5b0a24
+#define zx_hrxml_HorizontalAccuracy_ELEM	0x5b0a26
+#define zx_shps_RequestHeaders_ELEM	0x270a2e
+#define zx_hrxml_LegalName_ELEM	0x5b0a3b
+#define zx_cb_CreateItem_ELEM	0x2c0a41
+#define zx_dap_CreateItem_ELEM	0x3a0a41
+#define zx_gl_CreateItem_ELEM	0x680a41
+#define zx_idhrxml_CreateItem_ELEM	0x360a41
+#define zx_md_AuthnQueryService_ELEM	0x240a42
+#define zx_hrxml_DatesOfAttendance_ELEM	0x5b0a57
+#define zx_sa_AssertionIDRef_ELEM	0x480a59
+#define zx_ff12_OldProvidedNameIdentifier_ELEM	0x350a5f
+#define zx_hrxml_Symbol_ELEM	0x5b0a60
+#define zx_cdm_PAGER_ELEM	0x630a64
+#define zx_gl_max_loc_age_ELEM	0x680a65
+#define zx_hrxml_RankedResult_ELEM	0x5b0a66
+#define zx_cb_Notification_ELEM	0x2c0a6b
+#define zx_dap_Notification_ELEM	0x3a0a6b
+#define zx_gl_Notification_ELEM	0x680a6b
+#define zx_idhrxml_Notification_ELEM	0x360a6b
+#define zx_ps_Notification_ELEM	0x250a6b
+#define zx_gl_ChangeArea_ELEM	0x680a6d
+#define zx_ps_PStoSPRedirectURL_ELEM	0x250a70
+#define zx_hrxml_WorkSiteEnvironment_ELEM	0x5b0a72
+#define zx_wst_UseKey_ELEM	0x590a79
+#define zx_mm7_ReplaceReq_ELEM	0x5f0a7f
+#define zx_mm7_ReadReplyReq_ELEM	0x5f0a81
+#define zx_mm7_RSErrorRsp_ELEM	0x5f0a82
+#define zx_hrxml_TravelDirections_ELEM	0x5b0a84
+#define zx_hrxml_BasePayAmountMin_ELEM	0x5b0a88
+#define zx_hrxml_BuildingNumber_ELEM	0x5b0a8b
+#define zx_cb_By_ELEM	0x2c0a8e
+#define zx_sa11_AuthorityBinding_ELEM	0x520a91
+#define zx_xasacd1_ReferencedPolicies_ELEM	0x460a94
+#define zx_hrxml_LowestPossibleValue_ELEM	0x5b0a9a
+#define zx_hrxml_EventType_ELEM	0x5b0a9f
+#define zx_ps_SPtoPSRedirectURL_ELEM	0x250aa2
+#define zx_wsse_Embedded_ELEM	0x790aa3
+#define zx_e_Body_ELEM	0x510aa4
+#define zx_xasa_XACMLAuthzDecisionStatement_ELEM	0x4f0aa7
+#define zx_xasacd1_XACMLAuthzDecisionStatement_ELEM	0x460aa7
+#define zx_hrxml_Telephone_ELEM	0x5b0aaf
+#define zx_ff12_TargetNamespace_ELEM	0x350ab5
+#define zx_idp_ProviderInfo_ELEM	0x300ab6
+#define zx_hrxml_EndTime_ELEM	0x5b0ab7
+#define zx_xa_SubjectAttributeDesignator_ELEM	0x2d0aba
+#define zx_cb_ModifyResponse_ELEM	0x2c0ac2
+#define zx_dap_ModifyResponse_ELEM	0x3a0ac2
+#define zx_di12_ModifyResponse_ELEM	0x370ac2
+#define zx_gl_ModifyResponse_ELEM	0x680ac2
+#define zx_idhrxml_ModifyResponse_ELEM	0x360ac2
+#define zx_hrxml_SpatialLocation_ELEM	0x5b0ac3
+#define zx_cb_ItemSelection_ELEM	0x2c0acb
+#define zx_gl_ItemSelection_ELEM	0x680acb
+#define zx_is12_Help_ELEM	0x2f0acc
+#define zx_is_Help_ELEM	0x2a0acc
+#define zx_hrxml_SourceType_ELEM	0x5b0ad3
+#define zx_cb_NotifyAdminTo_ELEM	0x2c0ad5
+#define zx_gl_NotifyAdminTo_ELEM	0x680ad5
+#define zx_hrxml_EmployerOrgName_ELEM	0x5b0ad7
+#define zx_hrxml_Company_ELEM	0x5b0ad9
+#define zx_m20_Company_ELEM	0x3f0ad9
+#define zx_md_Company_ELEM	0x240ad9
+#define zx_mm7_DeliverUsing_ELEM	0x5f0ade
+#define zx_is12_Label_ELEM	0x2f0ae1
+#define zx_is_Label_ELEM	0x2a0ae1
+#define zx_wsc_Label_ELEM	0x650ae1
+#define zx_xasa_XACMLPolicyStatement_ELEM	0x4f0ae6
+#define zx_xasacd1_XACMLPolicyStatement_ELEM	0x460ae6
+#define zx_hrxml_PrehireRemuneration_ELEM	0x5b0ae9
+#define zx_mm7_CancelID_ELEM	0x5f0af3
+#define zx_md_SingleSignOnService_ELEM	0x240af9
+#define zx_sa11_SubjectStatement_ELEM	0x520afb
+#define zx_hrxml_PermissionToContact_ELEM	0x5b0aff
+#define zx_m20_SingleSignOnProtocolProfile_ELEM	0x3f0b01
+#define zx_hrxml_SchoolName_ELEM	0x5b0b08
+#define zx_hrxml_JobCategory_ELEM	0x5b0b0f
+#define zx_gl_eqop_ELEM	0x680b14
+#define zx_hrxml_VisaSponsorship_ELEM	0x5b0b18
+#define zx_hrxml_ProfileName_ELEM	0x5b0b19
+#define zx_wsse_SecurityTokenReference_ELEM	0x790b1a
+#define zx_hrxml_WorkStyle_ELEM	0x5b0b1c
+#define zx_m20_TelephoneNumber_ELEM	0x3f0b1e
+#define zx_md_TelephoneNumber_ELEM	0x240b1e
+#define zx_hrxml_OrgName_ELEM	0x5b0b1f
+#define zx_cb_ReportUsage_ELEM	0x2c0b23
+#define zx_hrxml_DischargeStatus_ELEM	0x5b0b26
+#define zx_sa11_ConfirmationMethod_ELEM	0x520b2a
+#define zx_cb_ReportUsageResponse_ELEM	0x2c0b2b
+#define zx_ds_KeyValue_ELEM	0x3c0b2f
+#define zx_di12_ResourceOffering_ELEM	0x370b37
+#define zx_sa_ProxyRestriction_ELEM	0x480b3c
+#define zx_hrxml_Achievements_ELEM	0x5b0b41
+#define zx_di12_Options_ELEM	0x370b42
+#define zx_di_Options_ELEM	0x320b42
+#define zx_shps_UpdateResponse_ELEM	0x270b44
+#define zx_hrxml_DunsNumber_ELEM	0x5b0b45
+#define zx_e_faultstring_ELEM	0x510b46
+#define zx_mm7_extendedCancelRsp_ELEM	0x5f0b47
+#define zx_xenc_DataReference_ELEM	0x490b48
+#define zx_hrxml_SearchRelevanceRank_ELEM	0x5b0b4e
+#define zx_hrxml_Achievement_ELEM	0x5b0b4f
+#define zx_m20_FederationTerminationNotificationProtocolProfile_ELEM	0x3f0b53
+#define zx_di12_Option_ELEM	0x370b55
+#define zx_di_Option_ELEM	0x320b55
+#define zx_hrxml_Option_ELEM	0x5b0b55
+#define zx_m20_SoapEndpoint_ELEM	0x3f0b56
+#define zx_ff12_FederationTerminationNotification_ELEM	0x350b58
+#define zx_hrxml_Physical_ELEM	0x5b0b5b
+#define zx_gl_shape_ELEM	0x680b5d
+#define zx_as_Extensions_ELEM	0x430b5e
+#define zx_md_Extensions_ELEM	0x240b5e
+#define zx_sp_Extensions_ELEM	0x290b5e
+#define zx_ds_RSAKeyValue_ELEM	0x3c0b5f
+#define zx_sec12_ProxyTransitedStatement_ELEM	0x170b61
+#define zx_md_SPSSODescriptor_ELEM	0x240b63
+#define zx_sp11_AuthenticationQuery_ELEM	0x330b66
+#define zx_prov_PMInitData_ELEM	0x1d0b68
+#define zx_ac_AuthenticatingAuthority_ELEM	0x4d0b6a
+#define zx_sa_AuthenticatingAuthority_ELEM	0x480b6a
+#define zx_hrxml_LocationSummary_ELEM	0x5b0b6d
+#define zx_xenc_OriginatorKeyInfo_ELEM	0x490b6f
+#define zx_ac_Extension_ELEM	0x4d0b71
+#define zx_cb_Extension_ELEM	0x2c0b71
+#define zx_di12_Extension_ELEM	0x370b71
+#define zx_ff12_Extension_ELEM	0x350b71
+#define zx_gl_Extension_ELEM	0x680b71
+#define zx_is12_Extension_ELEM	0x2f0b71
+#define zx_lu_Extension_ELEM	0x5e0b71
+#define zx_m20_Extension_ELEM	0x3f0b71
+#define zx_mm7_Extension_ELEM	0x5f0b71
+#define zx_hrxml_InventorName_ELEM	0x5b0b74
+#define zx_ac_OperationalProtection_ELEM	0x4d0b78
+#define zx_hrxml_WorkSiteName_ELEM	0x5b0b79
+#define zx_hrxml_ResumeId_ELEM	0x5b0b7a
+#define zx_mm7_DateTime_ELEM	0x5f0b7b
+#define zx_cb_DeleteItem_ELEM	0x2c0b7c
+#define zx_dap_DeleteItem_ELEM	0x3a0b7c
+#define zx_gl_DeleteItem_ELEM	0x680b7c
+#define zx_idhrxml_DeleteItem_ELEM	0x360b7c
+#define zx_ac_PhysicalVerification_ELEM	0x4d0b85
+#define zx_cb_Modify_ELEM	0x2c0b87
+#define zx_dap_Modify_ELEM	0x3a0b87
+#define zx_di12_Modify_ELEM	0x370b87
+#define zx_gl_Modify_ELEM	0x680b87
+#define zx_idhrxml_Modify_ELEM	0x360b87
+#define zx_idp_SubjectRestriction_ELEM	0x300b89
+#define zx_cb_NotifyResponse_ELEM	0x2c0b8a
+#define zx_dap_NotifyResponse_ELEM	0x3a0b8a
+#define zx_gl_NotifyResponse_ELEM	0x680b8a
+#define zx_idhrxml_NotifyResponse_ELEM	0x360b8a
+#define zx_ps_NotifyResponse_ELEM	0x250b8a
+#define zx_hrxml_PhysicalLocation_ELEM	0x5b0b8b
+#define zx_ff12_ProxyCount_ELEM	0x350b95
+#define zx_m20_RegisterNameIdentifierServiceURL_ELEM	0x3f0b97
+#define zx_m20_RegisterNameIdentifierServiceReturnURL_ELEM	0x3f0b9d
+#define zx_ds_DSAKeyValue_ELEM	0x3c0ba0
+#define zx_ds_KeyInfo_ELEM	0x3c0ba1
+#define zx_sp_AuthnQuery_ELEM	0x290ba3
+#define zx_wsse_KeyIdentifier_ELEM	0x790ba7
+#define zx_tas3_ESLPolicies_ELEM	0x610baa
+#define zx_cb_ItemData_ELEM	0x2c0bac
+#define zx_dap_ItemData_ELEM	0x3a0bac
+#define zx_gl_ItemData_ELEM	0x680bac
+#define zx_idhrxml_ItemData_ELEM	0x360bac
+#define zx_ps_ItemData_ELEM	0x250bac
+#define zx_hrxml_PageNumber_ELEM	0x5b0bae
+#define zx_hrxml_BasePay_ELEM	0x5b0bb5
+#define zx_m20_IDPDescriptor_ELEM	0x3f0bb6
+#define zx_cdm_DOM_ELEM	0x630bbb
+#define zx_a_RetryAfter_ELEM	0x380bc2
+#define zx_hrxml_Chapter_ELEM	0x5b0bc3
+#define zx_sa_AuthnStatement_ELEM	0x480bca
+#define zx_xa_Apply_ELEM	0x2d0bd1
+#define zx_xml_DummyToPullLang_ELEM	0x660bd6
+#define zx_hrxml_NumericValue_ELEM	0x5b0bdd
+#define zx_mm7_key_ELEM	0x5f0be3
+#define zx_hrxml_RetirementOrSavingsPlan_ELEM	0x5b0be8
+#define zx_md_AuthzService_ELEM	0x240bf0
+#define zx_pmm_PMUpdate_ELEM	0x260bf2
+#define zx_prov_PMUpdate_ELEM	0x1d0bf2
+#define zx_gl_resp_req_ELEM	0x680bf6
+#define zx_pmm_PMUpdateResponse_ELEM	0x260bfa
+#define zx_prov_PMUpdateResponse_ELEM	0x1d0bfa
+#define zx_hrxml_DatesOfService_ELEM	0x5b0c02
+#define zx_di12_AuthorizeRequester_ELEM	0x370c05
+#define zx_sa_AuthzDecisionStatement_ELEM	0x480c0e
+#define zx_ac_Alphabet_ELEM	0x4d0c14
+#define zx_md_ManageNameIDService_ELEM	0x240c1b
+#define zx_sp_ManageNameIDResponse_ELEM	0x290c1c
+#define zx_hrxml_InternetWebAddress_ELEM	0x5b0c1f
+#define zx_prov_PMEDisable_ELEM	0x1d0c21
+#define zx_sa11_AuthorizationDecisionStatement_ELEM	0x520c25
+#define zx_hrxml_Applicable_ELEM	0x5b0c26
+#define zx_sp_ManageNameIDRequest_ELEM	0x290c2a
+#define zx_hrxml_EmployerOrg_ELEM	0x5b0c2c
+#define zx_mm7_DeliveryReportRsp_ELEM	0x5f0c2d
+#define zx_mm7_extendedCancelReq_ELEM	0x5f0c2f
+#define zx_gl_L_ELEM	0x680c3b
+#define zx_di12_ServiceNameRef_ELEM	0x370c43
+#define zx_hrxml_ProgramId_ELEM	0x5b0c48
+#define zx_cb_Notify_ELEM	0x2c0c4f
+#define zx_dap_Notify_ELEM	0x3a0c4f
+#define zx_gl_Notify_ELEM	0x680c4f
+#define zx_idhrxml_Notify_ELEM	0x360c4f
+#define zx_ps_Notify_ELEM	0x250c4f
+#define zx_hrxml_Item_ELEM	0x5b0c52
+#define zx_is12_Item_ELEM	0x2f0c52
+#define zx_is_Item_ELEM	0x2a0c52
+#define zx_hrxml_OrganizationId_ELEM	0x5b0c57
+#define zx_hrxml_OrganizationName_ELEM	0x5b0c59
+#define zx_m20_OrganizationName_ELEM	0x3f0c59
+#define zx_md_OrganizationName_ELEM	0x240c59
+#define zx_hrxml_OrganizationalUnitId_ELEM	0x5b0c5d
+#define zx_wsc_DerivedKeyToken_ELEM	0x650c5e
+#define zx_hrxml_OrganizationalUnitName_ELEM	0x5b0c5f
+#define zx_m20_OrganizationDisplayName_ELEM	0x3f0c60
+#define zx_md_OrganizationDisplayName_ELEM	0x240c60
+#define zx_mm7_ChargedPartyID_ELEM	0x5f0c65
+#define zx_hrxml_OrganizationUnit_ELEM	0x5b0c68
+#define zx_hrxml_Organization_ELEM	0x5b0c69
+#define zx_m20_Organization_ELEM	0x3f0c69
+#define zx_md_Organization_ELEM	0x240c69
+#define zx_hrxml_OrganizationalUnit_ELEM	0x5b0c6a
+#define zx_hrxml_JobStep_ELEM	0x5b0c78
+#define zx_a_ProblemHeaderQName_ELEM	0x380c79
+#define zx_a_ProblemHeader_ELEM	0x380c7e
+#define zx_hrxml_SearchTimeStamp_ELEM	0x5b0c81
+#define zx_ff12_IDPProvidedNameIdentifier_ELEM	0x350c85
+#define zx_sp_NewEncryptedID_ELEM	0x290c8e
+#define zx_shps_ProxyInvoke_ELEM	0x270c95
+#define zx_ps_ResolveOutput_ELEM	0x250c97
+#define zx_shps_ProxyInvokeResponse_ELEM	0x270c9d
+#define zx_prov_PMDArtifact_ELEM	0x1d0c9f
+#define zx_cdm_CARDID_ELEM	0x630ca4
+#define zx_prov_PMRTData_ELEM	0x1d0ca7
+#define zx_prov_PMID_ELEM	0x1d0cac
+#define zx_hrxml_ISSN_ELEM	0x5b0cbb
+#define zx_demomed_Type_ELEM	0x150cc1
+#define zx_hrxml_Type_ELEM	0x5b0cc1
+#define zx_ds_X509CRL_ELEM	0x3c0cc8
+#define zx_wst_ProofEncryption_ELEM	0x590ccb
+#define zx_cdm_PARCEL_ELEM	0x630ccc
+#define zx_mm7_AuxApplicInfo_ELEM	0x5f0cce
+#define zx_xasp_XACMLAuthzDecisionQuery_ELEM	0x5d0cd3
+#define zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM	0x450cd3
+#define zx_hrxml_ExcessiveValueIndicator_ELEM	0x5b0cd8
+#define zx_ds_SPKIData_ELEM	0x3c0ce7
+#define zx_mm7_ChargedParty_ELEM	0x5f0d03
+#define zx_xenc_CipherReference_ELEM	0x490d06
+#define zx_im_IdentityMappingResponse_ELEM	0x210d0f
+#define zx_xasp_XACMLPolicyQuery_ELEM	0x5d0d12
+#define zx_xaspcd1_XACMLPolicyQuery_ELEM	0x450d12
+#define zx_mm7_DeliveryReportReq_ELEM	0x5f0d15
+#define zx_prov_PMEInfo_ELEM	0x1d0d18
+#define zx_im_IdentityMappingRequest_ELEM	0x210d1d
+#define zx_as_SASLResponse_ELEM	0x430d27
+#define zx_md_NameIDMappingService_ELEM	0x240d2f
+#define zx_sp_NameIDMappingResponse_ELEM	0x290d30
+#define zx_mm7_RecipientSPI_ELEM	0x5f0d31
+#define zx_hrxml_SpeakingEvent_ELEM	0x5b0d37
+#define zx_mm7_SubmitRsp_ELEM	0x5f0d38
+#define zx_wst_RequestType_ELEM	0x590d3d
+#define zx_sp_NameIDMappingRequest_ELEM	0x290d3e
+#define zx_md_IDPSSODescriptor_ELEM	0x240d44
+#define zx_m20_AuthnRequestsSigned_ELEM	0x3f0d52
+#define zx_ff12_AuthnRequestEnvelope_ELEM	0x350d53
+#define zx_cb_UsageType_ELEM	0x2c0d56
+#define zx_ff12_AuthnRequest_ELEM	0x350d5a
+#define zx_sp_AuthnRequest_ELEM	0x290d5a
+#define zx_sa_NameID_ELEM	0x480d62
+#define zx_xenc_CipherData_ELEM	0x490d6a
+#define zx_hrxml_Height_ELEM	0x5b0d70
+#define zx_di12_RemoveEntry_ELEM	0x370d71
+#define zx_cdm_WORK_ELEM	0x630d74
+#define zx_ff12_IDPEntries_ELEM	0x350d75
+#define zx_ps_SetObjectInfoResponse_ELEM	0x250d76
+#define zx_hrxml_UserId_ELEM	0x5b0d7b
+#define zx_is12_Confirm_ELEM	0x2f0d7c
+#define zx_is_Confirm_ELEM	0x2a0d7c
+#define zx_cdm_ISDN_ELEM	0x630d83
+#define zx_ps_SetObjectInfoRequest_ELEM	0x250d84
+#define zx_hrxml_CompetencyId_ELEM	0x5b0d86
+#define zx_prov_PMEDisableResponse_ELEM	0x1d0d87
+#define zx_cdm_PREF_ELEM	0x630d88
+#define zx_hrxml_PrimaryLanguage_ELEM	0x5b0d89
+#define zx_wst_KeyType_ELEM	0x590d9b
+#define zx_ac_GoverningAgreementRef_ELEM	0x4d0d9e
+#define zx_hrxml_ISCEDInstitutionClassification_ELEM	0x5b0da2
+#define zx_mm7_ReplaceID_ELEM	0x5f0da6
+#define zx_idp_MEDInfo_ELEM	0x300dae
+#define zx_b_UserInteraction_ELEM	0x340dbb
+#define zx_is12_UserInteraction_ELEM	0x2f0dbb
+#define zx_hrxml_IdValue_ELEM	0x5b0dc7
+#define zx_hrxml_DisabilityInfo_ELEM	0x5b0dc9
+#define zx_dst_ChangeFormat_ELEM	0x1c0dcb
+#define zx_cdm_BBS_ELEM	0x630dcd
+#define zx_prov_PMEEnable_ELEM	0x1d0dd8
+#define zx_prov_PMEEnabled_ELEM	0x1d0dd9
+#define zx_prov_PMEEnableResponse_ELEM	0x1d0de0
+#define zx_tas3sol_Obligations_ELEM	0x690de4
+#define zx_xa_Obligations_ELEM	0x2d0de4
+#define zx_hrxml_WhenAvailable_ELEM	0x5b0de5
+#define zx_hrxml_Ethnicity_ELEM	0x5b0de6
+#define zx_ac_SSL_ELEM	0x4d0deb
+#define zx_ps_QueryObjectsResponse_ELEM	0x250ded
+#define zx_hrxml_MonthDay_ELEM	0x5b0def
+#define zx_xa_Obligation_ELEM	0x2d0df7
+#define zx_ps_QueryObjectsRequest_ELEM	0x250dfb
+#define zx_hrxml_DistributeTo_ELEM	0x5b0e0e
+#define zx_b_Framework_ELEM	0x340e0f
+#define zx_di_Framework_ELEM	0x320e0f
+#define zx_sbf_Framework_ELEM	0x220e0f
+#define zx_mm7_SubmitReq_ELEM	0x5f0e20
+#define zx_hrxml_Benefits_ELEM	0x5b0e22
+#define zx_hrxml_PublisherName_ELEM	0x5b0e26
+#define zx_demomed_DeleteObjectResponse_ELEM	0x150e29
+#define zx_hrxml_LicenseOrCertification_ELEM	0x5b0e2b
+#define zx_demomed_DeleteObjectRequest_ELEM	0x150e37
+#define zx_hrxml_PublisherLocation_ELEM	0x5b0e39
+#define zx_sp_AuthzDecisionQuery_ELEM	0x290e3a
+#define zx_hrxml_BirthPlace_ELEM	0x5b0e3c
+#define zx_cdm_ORG_ELEM	0x630e40
+#define zx_pmm_PMActivateItem_ELEM	0x260e41
+#define zx_prov_PMActivateItem_ELEM	0x1d0e41
+#define zx_prov_UpdateEPRResponse_ELEM	0x1d0e49
+#define zx_sp11_AuthorizationDecisionQuery_ELEM	0x330e51
+#define zx_ac_KeySharing_ELEM	0x4d0e69
+#define zx_cdm_EXTADR_ELEM	0x630e6c
+#define zx_hrxml_SEPPhysicalLocation_ELEM	0x5b0e6d
+#define zx_pmm_PMUpdateItem_ELEM	0x260e80
+#define zx_prov_PMUpdateItem_ELEM	0x1d0e80
+#define zx_prov_PMEWhenCreated_ELEM	0x1d0e86
+#define zx_hrxml_HighestPossibleValue_ELEM	0x5b0e87
+#define zx_wsu_Expires_ELEM	0x7a0e8a
+#define zx_as_SASLRequest_ELEM	0x430e8b
+#define zx_mm7_extendedReplaceRsp_ELEM	0x5f0e90
+#define zx_wsp_AppliesTo_ELEM	0x540e9c
+#define zx_xa_Expression_ELEM	0x2d0ea1
+#define zx_hrxml_ConferenceLocation_ELEM	0x5b0ea9
+#define zx_ff12_RequestAuthnContext_ELEM	0x350eab
+#define zx_ps_ListMembersResponse_ELEM	0x250eb4
+#define zx_sp11_SubjectQuery_ELEM	0x330ebc
+#define zx_sp_SubjectQuery_ELEM	0x290ebc
+#define zx_xa_VariableReference_ELEM	0x2d0ec1
+#define zx_ps_ListMembersRequest_ELEM	0x250ec2
+#define zx_ac_Token_ELEM	0x4d0ec5
+#define zx_sec_Token_ELEM	0x2b0ec5
+#define zx_ds_Exponent_ELEM	0x3c0ecc
+#define zx_gl_esrk_ELEM	0x680ed2
+#define zx_xa_VariableDefinition_ELEM	0x2d0ed6
+#define zx_hrxml_Verification_ELEM	0x5b0edf
+#define zx_wst_IssuedTokens_ELEM	0x590ee0
+#define zx_is12_Text_ELEM	0x2f0ee7
+#define zx_is_Text_ELEM	0x2a0ee7
+#define zx_prov_PMECreatorID_ELEM	0x1d0ef3
+#define zx_sa_BaseID_ELEM	0x480ef7
+#define zx_cdm_TYPE_ELEM	0x630f0a
+#define zx_a_EndpointReference_ELEM	0x380f0c
+#define zx_m20_SingleLogoutServiceURL_ELEM	0x3f0f16
+#define zx_m20_SingleLogoutServiceReturnURL_ELEM	0x3f0f1c
+#define zx_demomed_GetObjectResponse_ELEM	0x150f20
+#define zx_shps_ProxyInvokeItem_ELEM	0x270f23
+#define zx_shps_ProxyInvokeResponseItem_ELEM	0x270f2b
+#define zx_hrxml_CompanyVehicle_ELEM	0x5b0f2c
+#define zx_demomed_GetObjectRequest_ELEM	0x150f2e
+#define zx_hrxml_BKZId_ELEM	0x5b0f32
+#define zx_demomed_GetObjectListResponse_ELEM	0x150f33
+#define zx_ps_GetObjectInfoResponse_ELEM	0x250f38
+#define zx_ff12_NameIDPolicy_ELEM	0x350f39
+#define zx_sp_NameIDPolicy_ELEM	0x290f39
+#define zx_prov_CallbackEPR_ELEM	0x1d0f3d
+#define zx_shps_CallbackEPR_ELEM	0x270f3d
+#define zx_demomed_GetObjectListRequest_ELEM	0x150f41
+#define zx_hrxml_TravelFrequency_ELEM	0x5b0f42
+#define zx_m20_AuthnServiceURL_ELEM	0x3f0f45
+#define zx_ps_GetObjectInfoRequest_ELEM	0x250f46
+#define zx_hrxml_Copyright_ELEM	0x5b0f4e
+#define zx_di12_InsertEntry_ELEM	0x370f51
+#define zx_hrxml_CopyrightText_ELEM	0x5b0f52
+#define zx_gl_Identifier_ELEM	0x680f5a
+#define zx_hrxml_CopyrightDates_ELEM	0x5b0f5d
+#define zx_mm7_UACapabilities_ELEM	0x5f0f5e
+#define zx_hrxml_ProficencyLevel_ELEM	0x5b0f5f
+#define zx_sec_TransitedProviderPath_ELEM	0x2b0f6a
+#define zx_ac_WTLS_ELEM	0x4d0f6e
+#define zx_hrxml_SpeakingEventsHistory_ELEM	0x5b0f6f
+#define zx_mm7_ReplyApplicID_ELEM	0x5f0f71
+#define zx_hrxml_SupportingInformation_ELEM	0x5b0f74
+#define zx_ac_Identification_ELEM	0x4d0f77
+#define zx_mm7_extendedReplaceReq_ELEM	0x5f0f78
+#define zx_shibmd_KeyAuthority_ELEM	0x5c0f79
+#define zx_ds_X509SKI_ELEM	0x3c0f7a
+#define zx_prov_PMEUpload_ELEM	0x1d0f7c
+#define zx_ac_Length_ELEM	0x4d0f82
+#define zx_wsc_Length_ELEM	0x650f82
+#define zx_wst_CombinedHash_ELEM	0x590f83
+#define zx_prov_PMEUploadResponse_ELEM	0x1d0f84
+#define zx_sp_NewID_ELEM	0x290f87
+#define zx_ac_TechnicalProtection_ELEM	0x4d0f8b
+#define zx_prov_UpdateEPR_ELEM	0x1d0f9f
+#define zx_prov_PMEGetInfo_ELEM	0x1d0fa0
+#define zx_xa_EnvironmentMatch_ELEM	0x2d0fa5
+#define zx_hrxml_ExecutiveSummary_ELEM	0x5b0fab
+#define zx_ps_TestMembershipResponse_ELEM	0x250fad
+#define zx_sa_TestElem_ELEM	0x480fb8
+#define zx_ps_TestMembershipRequest_ELEM	0x250fbb
+#define zx_wsu_Timestamp_ELEM	0x7a0fc3
+#define zx_hrxml_OtherDescriptors_ELEM	0x5b0fc8
+#define zx_ff12_SessionIndex_ELEM	0x350fd4
+#define zx_sp_SessionIndex_ELEM	0x290fd4
+#define zx_hrxml_Stock_ELEM	0x5b0fd7
+#define zx_hrxml_OtherBenefits_ELEM	0x5b0fd9
+#define zx_hrxml_OtherHonors_ELEM	0x5b0fdc
+#define zx_md_NameIDFormat_ELEM	0x240fde
+#define zx_mm7_VASPErrorRsp_ELEM	0x5f0fe3
+#define zx_hrxml_UnitOrDivision_ELEM	0x5b0fef
+#define zx_hrxml_CurrentOrEndRank_ELEM	0x5b0ff6
+#define zx_ff12_IDPList_ELEM	0x351024
+#define zx_sp_IDPList_ELEM	0x291024
+#define zx_shps_Invoke_ELEM	0x271028
+#define zx_hrxml_SchoolId_ELEM	0x5b1029
+#define zx_sec12_ProxySubject_ELEM	0x17103d
+#define zx_xenc_OAEPparams_ELEM	0x491040
+#define zx_mm7_ExpiryDate_ELEM	0x5f1045
+#define zx_hrxml_ChildrenInfo_ELEM	0x5b1050
+#define zx_hrxml_ProfileId_ELEM	0x5b1053
+#define zx_cdm_MODEM_ELEM	0x63105e
+#define zx_mm7_ThirdPartyPayer_ELEM	0x5f1063
+#define zx_xa_PolicyIdReference_ELEM	0x2d1065
+#define zx_mm7_ReplyCharging_ELEM	0x5f106a
+#define zx_wsse_UsernameToken_ELEM	0x79106b
+#define zx_is12_Inquiry_ELEM	0x2f1076
+#define zx_is_Inquiry_ELEM	0x2a1076
+#define zx_hrxml_OrgInfo_ELEM	0x5b107e
+#define zx_demomed_Object_ELEM	0x151087
+#define zx_ds_Object_ELEM	0x3c1087
+#define zx_ps_Object_ELEM	0x251087
+#define zx_mm7_TimeStamp_ELEM	0x5f109a
+#define zx_hrxml_TextResume_ELEM	0x5b109b
+#define zx_cdm_UID_ELEM	0x6310ac
+#define zx_cdm_CAPURI_ELEM	0x6310af
+#define zx_mm7_ReplyChargingID_ELEM	0x5f10b2
+#define zx_wst_Lifetime_ELEM	0x5910b6
+#define zx_m20_AffiliateMember_ELEM	0x3f10b8
+#define zx_md_AffiliateMember_ELEM	0x2410b8
+#define zx_hrxml_AffirmativeActionPlanJobGroupId_ELEM	0x5b10c8
+#define zx_m20_AffiliationDescriptor_ELEM	0x3f10d2
+#define zx_md_AffiliationDescriptor_ELEM	0x2410d2
+#define zx_cdm_KEYWORD_ELEM	0x6310d3
+#define zx_hrxml_SchoolOrInstitution_ELEM	0x5b10d4
+#define zx_hrxml_Shift_ELEM	0x5b10d5
+#define zx_sa_AuthnContextDecl_ELEM	0x4810d6
+#define zx_prov_UpdateEPRItem_ELEM	0x1d10de
+#define zx_ff12_AuthnContext_ELEM	0x3510e1
+#define zx_sa_AuthnContext_ELEM	0x4810e1
+#define zx_hrxml_PayTypeHours_ELEM	0x5b10e8
+#define zx_ff12_AuthnContextComparison_ELEM	0x3510f0
+#define zx_idp_AuthnContextRestriction_ELEM	0x3010f1
+#define zx_prov_PMEGetInfoResponse_ELEM	0x1d10f2
+#define zx_mm7_PreferredChannels_ELEM	0x5f10fa
+#define zx_ds_PGPKeyID_ELEM	0x3c1110
+#define zx_hrxml_MatchedObjectId_ELEM	0x5b1111
+#define zx_im_MappingInput_ELEM	0x211114
+#define zx_m20_SingleSignOnServiceURL_ELEM	0x3f1119
+#define zx_cdm_PREFIX_ELEM	0x631122
+#define zx_hrxml_DistanceMax_ELEM	0x5b113b
+#define zx_ds_XPath_ELEM	0x3c1142
+#define zx_hrxml_ParkingInstructions_ELEM	0x5b1143
+#define zx_cb_NotifyTo_ELEM	0x2c115c
+#define zx_dp_NotifyTo_ELEM	0x20115c
+#define zx_gl_NotifyTo_ELEM	0x68115c
+#define zx_m20_FederationTerminationServiceURL_ELEM	0x3f115f
+#define zx_m20_FederationTerminationServiceReturnURL_ELEM	0x3f1165
+#define zx_gl_lev_conf_ELEM	0x68116f
+#define zx_cdm_PCODE_ELEM	0x631171
+#define zx_demomed_ObjectStoreInfo_ELEM	0x15117b
+#define zx_hrxml_RankAchieved_ELEM	0x5b1181
+#define zx_wst_BinaryExchange_ELEM	0x591189
+#define zx_shps_InvokeResponse_ELEM	0x2711a2
+#define zx_cdm_LON_ELEM	0x6311ab
+#define zx_shps_InvokingPrincipal_ELEM	0x2711af
+#define zx_shps_InvokingProvider_ELEM	0x2711bd
+#define zx_mm7_VASPID_ELEM	0x5f11c2
+#define zx_cdm_REV_ELEM	0x6311c4
+#define zx_mm7_ApplicID_ELEM	0x5f11ce
+#define zx_ff12_IDPEntry_ELEM	0x3511e2
+#define zx_sp_IDPEntry_ELEM	0x2911e2
+#define zx_hrxml_ISBN_ELEM	0x5b11f2
+#define zx_hrxml_Objective_ELEM	0x5b11f7
+#define zx_xa_ActionMatch_ELEM	0x2d11fc
+#define zx_cdm_SELF_ELEM	0x631215
+#define zx_hrxml_BasePayAmountMax_ELEM	0x5b1217
+#define zx_b_TargetIdentity_ELEM	0x341225
+#define zx_hrxml_OtherPayCalculation_ELEM	0x5b1228
+#define zx_xenc_CipherValue_ELEM	0x49122f
+#define zx_hrxml_IsPublicCompany_ELEM	0x5b1234
+#define zx_hrxml_OtherPayAmountMin_ELEM	0x5b123a
+#define zx_ac_TimeSyncToken_ELEM	0x4d123d
+#define zx_dap_TestOp_ELEM	0x3a1240
+#define zx_idhrxml_TestOp_ELEM	0x361240
+#define zx_sa11_SubjectConfirmation_ELEM	0x521247
+#define zx_sa_SubjectConfirmation_ELEM	0x481247
+#define zx_demomed_ObjectData_ELEM	0x15124d
+#define zx_hrxml_EmploymentHistory_ELEM	0x5b124f
+#define zx_sa11_SubjectConfirmationData_ELEM	0x521250
+#define zx_sa_SubjectConfirmationData_ELEM	0x481250
+#define zx_mm7_VASID_ELEM	0x5f1257
+#define zx_gl_LL_ELEM	0x681259
+#define zx_ff12_AffiliationID_ELEM	0x35125f
+#define zx_m20_OrganizationURL_ELEM	0x3f1275
+#define zx_md_OrganizationURL_ELEM	0x241275
+#define zx_sa11_SubjectLocality_ELEM	0x52127a
+#define zx_sa_SubjectLocality_ELEM	0x48127a
+#define zx_hrxml_OtherCompensation_ELEM	0x5b1280
+#define zx_wst_SignWith_ELEM	0x5912ad
+#define zx_tas3_ESLApply_ELEM	0x6112d7
+#define zx_hrxml_IdentifyingMarks_ELEM	0x5b12df
+#define zx_cdm_FAMILY_ELEM	0x6312f8
+#define zx_hrxml_JobLevelInfo_ELEM	0x5b12f9
+#define zx_dap_ModifyItem_ELEM	0x3a1310
+#define zx_idhrxml_ModifyItem_ELEM	0x361310
+#define zx_hrxml_Speak_ELEM	0x5b1315
+#define zx_xa_SubjectMatch_ELEM	0x2d132f
+#define zx_hrxml_Fax_ELEM	0x5b133b
+#define zx_sec_TokenPolicy_ELEM	0x2b1349
+#define zx_demomed_objectID_ELEM	0x15134a
+#define zx_sec12_ProxyInfoConfirmationData_ELEM	0x17134c
+#define zx_dap_TestItem_ELEM	0x3a1378
+#define zx_idhrxml_TestItem_ELEM	0x361378
+#define zx_hrxml_LevelOfDisability_ELEM	0x5b137b
+#define zx_hrxml_TermOfNotice_ELEM	0x5b1386
+#define zx_hrxml_AreaOfExpertise_ELEM	0x5b138d
+#define zx_shps_UpdateItem_ELEM	0x271392
+#define zx_hrxml_OverallPerformanceRating_ELEM	0x5b13a0
+#define zx_tas3_ESLRef_ELEM	0x6113ac
+#define zx_hrxml_IssuingAuthority_ELEM	0x5b13ba
+#define zx_cdm_HOME_ELEM	0x6313cd
+#define zx_sa11_NameIdentifier_ELEM	0x5213d2
+#define zx_ff12_NameIdentifierMappingResponse_ELEM	0x3513d7
+#define zx_hrxml_TaxonomyId_ELEM	0x5b13d9
+#define zx_cdm_URL_ELEM	0x6313db
+#define zx_m20_NameIdentifierMappingProtocolProfile_ELEM	0x3f13de
+#define zx_m20_NameIdentifierMappingEncryptionProfile_ELEM	0x3f13e0
+#define zx_cdm_MAILER_ELEM	0x6313e3
+#define zx_ff12_NameIdentifierMappingRequest_ELEM	0x3513e5
+#define zx_cdm_SOUND_ELEM	0x6313f6
+#define zx_demomed_ObjectSearchParm_ELEM	0x1513f7
+#define zx_hrxml_SafetyEquipment_ELEM	0x5b1411
+#define zx_shps_InvokeResponseItem_ELEM	0x271430
+#define zx_cdm_NUMBER_ELEM	0x631442
+#define zx_hrxml_OtherPay_ELEM	0x5b1448
+#define zx_wst_TokenType_ELEM	0x591450
+#define zx_ac_HTTP_ELEM	0x4d146a
+#define zx_hrxml_Exchange_ELEM	0x5b147f
+#define zx_cdm_PRODID_ELEM	0x631483
+#define zx_im_MappingOutput_ELEM	0x211494
+#define zx_hrxml_VerifyEmployment_ELEM	0x5b14a6
+#define zx_cdm_USERID_ELEM	0x6314b0
+#define zx_hrxml_ExpatriateBenefits_ELEM	0x5b14da
+#define zx_hrxml_ExpatriateBenefitsOffered_ELEM	0x5b14e1
+#define zx_hrxml_OtherPublication_ELEM	0x5b14e6
+#define zx_hrxml_ExpatriateBenefitList_ELEM	0x5b14ec
+#define zx_hrxml_EffectiveDate_ELEM	0x5b14f3
+#define zx_cdm_PHYSICALACCESS_ELEM	0x6314f9
+#define zx_cdm_LAT_ELEM	0x6314fa
+#define zx_hrxml_Book_ELEM	0x5b14fe
+#define zx_cdm_ORGNAME_ELEM	0x631506
+#define zx_hrxml_Link_ELEM	0x5b1508
+#define zx_di12_WsdlURI_ELEM	0x37151a
+#define zx_sp11_RespondWith_ELEM	0x33151c
+#define zx_cdm_MIDDLE_ELEM	0x63152d
+#define zx_hrxml_OrgIndustry_ELEM	0x5b1537
+#define zx_sa_OneTimeUse_ELEM	0x48153c
+#define zx_wsp_ExactlyOne_ELEM	0x541540
+#define zx_cdm_NICKNAME_ELEM	0x631552
+#define zx_cdm_GEO_ELEM	0x631561
+#define zx_gl_Box_ELEM	0x68156b
+#define zx_cb_RefItem_ELEM	0x2c159c
+#define zx_gl_RefItem_ELEM	0x68159c
+#define zx_subs_RefItem_ELEM	0x18159c
+#define zx_cdm_CALURI_ELEM	0x6315c3
+#define zx_a_ProblemURI_ELEM	0x3815cc
+#define zx_cdm_URI_ELEM	0x6315f7
+#define zx_cdm_ROLE_ELEM	0x631602
+#define zx_cdm_CELL_ELEM	0x631607
+#define zx_hrxml_TaxId_ELEM	0x5b160e
+#define zx_cdm_LINE_ELEM	0x631611
+#define zx_hrxml_EEOCJobCategory_ELEM	0x5b1612
+#define zx_wst_EncryptWith_ELEM	0x591639
+#define zx_prov_PMEWhenEnabled_ELEM	0x1d163d
+#define zx_cdm_SUFFIX_ELEM	0x631640
+#define zx_hrxml_TaxonomyName_ELEM	0x5b1665
+#define zx_dap_LDIF_ELEM	0x3a169d
+#define zx_ps_TargetObjectID_ELEM	0x2516b2
+#define zx_cdm_TEL_ELEM	0x6316ca
+#define zx_cdm_AGENT_ELEM	0x6316d2
+#define zx_cdm_POBOX_ELEM	0x631702
+#define zx_prov_PMEngineRef_ELEM	0x1d1708
+#define zx_cdm_VERSION_ELEM	0x63172c
+#define zx_prov_PMEUploadMax_ELEM	0x1d173b
+#define zx_cdm_STREET_ELEM	0x631755
+#define zx_wst_KeyExchangeToken_ELEM	0x591761
+#define zx_cdm_CATEGORIES_ELEM	0x631767
+#define zx_cdm_POSTAL_ELEM	0x631768
+#define zx_cdm_PRIVATE_ELEM	0x631781
+#define zx_cdm_GIVEN_ELEM	0x63178e
+#define zx_hrxml_Offered_ELEM	0x5b1790
+#define zx_wsc_Offset_ELEM	0x651794
+#define zx_cdm_NOTE_ELEM	0x631798
+#define zx_demomed_ObjectInfo_ELEM	0x1517cf
+#define zx_cdm_CALADRURI_ELEM	0x6317fb
+#define zx_cdm_EXTVAL_ELEM	0x631808
+#define zx_mm7_LinkedID_ELEM	0x5f1813
+#define zx_cdm_REGION_ELEM	0x63182f
+#define zx_hrxml_AffiliatedOrganization_ELEM	0x5b1876
+#define zx_cdm_EMAIL_ELEM	0x6318a1
+#define zx_hrxml_TTYTDD_ELEM	0x5b18af
+#define zx_hrxml_LinkToResume_ELEM	0x5b18b8
+#define zx_sa_AuthnContextDeclRef_ELEM	0x4818c2
+#define zx_ff12_AuthnContextClassRef_ELEM	0x3518c3
+#define zx_sa_AuthnContextClassRef_ELEM	0x4818c3
+#define zx_ff12_AuthnContextStatementRef_ELEM	0x3518c7
+#define zx_sec12_NumberOfUses_ELEM	0x171920
+#define zx_hrxml_NumberOfChildren_ELEM	0x5b1947
+#define zx_prov_PMEHash_ELEM	0x1d19a0
+#define zx_hrxml_MonthDayOfBirth_ELEM	0x5b19a8
+#define zx_ps_ObjectRef_ELEM	0x2519c2
+#define zx_hrxml_OtherPayAmountMax_ELEM	0x5b19c9
+#define zx_cdm_PHONETIC_ELEM	0x6319d5
+#define zx_shps_InvokeItem_ELEM	0x2719f0
+#define zx_hrxml_TimeOffAllowance_ELEM	0x5b1a0b
+#define zx_ds_SPKISexp_ELEM	0x3c1a39
+#define zx_hrxml_TimeMax_ELEM	0x5b1a3e
+#define zx_hrxml_NumberOfPages_ELEM	0x5b1a7a
+#define zx_cdm_JABBERID_ELEM	0x631aa7
+#define zx_demomed_ObjectID_ELEM	0x151ae3
+#define zx_ps_ObjectID_ELEM	0x251ae3
+#define zx_cdm_PUBLIC_ELEM	0x631ae6
+#define zx_cdm_LOCALITY_ELEM	0x631bf2
+#define zx_cdm_BINVAL_ELEM	0x631c5d
+#define zx_cdm_LABEL_ELEM	0x631c6b
+#define zx_cdm_VOICE_ELEM	0x631c70
+#define zx_cdm_INTL_ELEM	0x631c7a
+#define zx_cdm_FBURL_ELEM	0x631dc4
+#define zx_hrxml_PostOfficeBox_ELEM	0x5b1e8f
+#define zx_cdm_SORT_STRING_ELEM	0x631ec1
+#define zx_cdm_LISTMEMBER_ELEM	0x631f23
+#define zx_ds_HMACOutputLength_ELEM	0x3c1f45
+#define zx_hrxml_DateOfBirth_ELEM	0x5b1f62
+#define zx_cdm_LOGO_ELEM	0x631fc1
+#define zx_hrxml_Affix_ELEM	0x5b1fc2
+#define zx_cdm_CONFIDENTIAL_ELEM	0x6320fa
+#define zx_cdm_FAVORITE_ELEM	0x6321f6
+#define zx_cdm_VIDEO_ELEM	0x632210
+#define zx_cdm_ORGUNIT_ELEM	0x63221e
+#define zx_cdm_TITLE_ELEM	0x632267
+#define zx_cdm_PHOTO_ELEM	0x632347
+#define zx_wst_OnBehalfOf_ELEM	0x59258e
+#define zx_cdm_INTERNET_ELEM	0x6326bc
+#define zx_cdm_DISTRIBUTIONLIST_ELEM	0x632d4e
+#define zx__ELEM_MAX	11599
 #endif

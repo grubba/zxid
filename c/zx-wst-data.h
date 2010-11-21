@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_wst_N_ELEMS 0
-#if !defined(zx_wst__ELEM_MAX) && zx_wst_N_ELEMS == 0
-#define zx_wst__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_wst_el_tab[zx_wst__ELEM_MAX];
-struct zx_el_tok* zx_wst_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- wst_Authenticator -------------------------- */
 /* refby( zx_wst_RequestSecurityTokenResponse_s ) */
 #ifndef zx_wst_Authenticator_EXT

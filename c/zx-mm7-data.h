@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_mm7_N_ELEMS 0
-#if !defined(zx_mm7__ELEM_MAX) && zx_mm7_N_ELEMS == 0
-#define zx_mm7__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_mm7_el_tab[zx_mm7__ELEM_MAX];
-struct zx_el_tok* zx_mm7_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- mm7_AdditionalInformation -------------------------- */
 /* refby( zx_mm7_ReplaceReq_s zx_mm7_extendedReplaceReq_s zx_mm7_SubmitReq_s zx_mm7_DeliverReq_s ) */
 #ifndef zx_mm7_AdditionalInformation_EXT

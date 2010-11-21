@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_wsp_N_ELEMS 0
-#if !defined(zx_wsp__ELEM_MAX) && zx_wsp_N_ELEMS == 0
-#define zx_wsp__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_wsp_el_tab[zx_wsp__ELEM_MAX];
-struct zx_el_tok* zx_wsp_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- wsp_All -------------------------- */
 /* refby( zx_wsp_Policy_s zx_wsp_All_s zx_wsp_ExactlyOne_s ) */
 #ifndef zx_wsp_All_EXT

@@ -583,7 +583,7 @@ manually, creating the necessary files and directories.
 4.5.1 Creating Discovery Bootstrap
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By far the most common type of bootstrap is a a discovery bootstrap:
+By far the most common type of bootstrap is a discovery bootstrap:
 
   zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'Discovery Svc' \
     http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 \
@@ -646,7 +646,7 @@ idp_sso -> mk_user_a7n_to_sp;
 
 >>
 
-4.5.3 Using zxidcot.pl Web GUI to Register Web Service Providers
+4.5.4 Using zxidcot.pl Web GUI to Register Web Service Providers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As described in the metadata registration section, zxidcot.pl

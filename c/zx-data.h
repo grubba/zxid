@@ -80,8 +80,11 @@
 #endif
 
 #define zx_N_ATTR 333
-extern const struct zx_at_tok zx_at_tab[zx__ATTR_MAX]; /* gperf generated, see zx-attrs.c */
-const struct zx_at_tok* zx_attr2tok(const char* s, unsigned int len);
+extern struct zx_at_tok zx_at_tab[zx__ATTR_MAX]; /* gperf generated, see zx-attrs.c */
+struct zx_at_tok* zx_attr2tok(const char* s, unsigned int len);
+
+extern struct zx_el_tok zx_el_tab[zx__ELEM_MAX]; /* gperf generated, see zx-elems.c */
+struct zx_el_tok* zx_elem2tok(const char* s, unsigned int len);
 
 int zx_attr_lookup(struct zx_ctx* c, struct zx_elem_s* x, const char* func);
 struct zx_elem_s* zx_elem_lookup(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp);

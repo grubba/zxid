@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_idpdisc_N_ELEMS 0
-#if !defined(zx_idpdisc__ELEM_MAX) && zx_idpdisc_N_ELEMS == 0
-#define zx_idpdisc__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_idpdisc_el_tab[zx_idpdisc__ELEM_MAX];
-struct zx_el_tok* zx_idpdisc_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- idpdisc_DiscoveryResponse -------------------------- */
 /* refby( zx_md_Extensions_s ) */
 #ifndef zx_idpdisc_DiscoveryResponse_EXT

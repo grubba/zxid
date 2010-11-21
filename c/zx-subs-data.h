@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_subs_N_ELEMS 0
-#if !defined(zx_subs__ELEM_MAX) && zx_subs_N_ELEMS == 0
-#define zx_subs__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_subs_el_tab[zx_subs__ELEM_MAX];
-struct zx_el_tok* zx_subs_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- subs_RefItem -------------------------- */
 /* refby( zx_ps_Subscription_s zx_dap_Subscription_s zx_idhrxml_Subscription_s ) */
 #ifndef zx_subs_RefItem_EXT

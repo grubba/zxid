@@ -18,13 +18,6 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_di12_N_ELEMS 0
-#if !defined(zx_di12__ELEM_MAX) && zx_di12_N_ELEMS == 0
-#define zx_di12__ELEM_MAX 0
-#endif
-extern struct zx_el_tok zx_di12_el_tab[zx_di12__ELEM_MAX];
-struct zx_el_tok* zx_di12_elem2tok(const char* name, unsigned int name_len);
-
 /* -------------------------- di12_AuthenticateRequester -------------------------- */
 /* refby( ) */
 #ifndef zx_di12_AuthenticateRequester_EXT
