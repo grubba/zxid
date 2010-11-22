@@ -59,6 +59,7 @@ zximport-htpasswd.pl - Script to create users in /var/zxid/idpuid from .htpasswd
 
 Makefile         - Used to build ZXID (needs GNU make)
 BSDmakefile      - Trigger gmake on BSD systems
+zxsizeof.c       - Print sizes of various data types
 errmac.h         - Error reporting and utility macros
 platform.h       - Platform support kludges
 saml2.h          - SAML related constants

@@ -30,7 +30,8 @@ struct zx_exca_InclusiveNamespaces_s {
   struct zx_attr_s* PrefixList;	/* {1,1} attribute xs:string */
 };
 
-struct zx_exca_InclusiveNamespaces_s* zx_DEC_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x);
+int zx_DEC_ATTR_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x);
+int zx_DEC_ELEM_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x);
 struct zx_exca_InclusiveNamespaces_s* zx_NEW_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x);
 char* zx_ENC_SO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x, char* p);

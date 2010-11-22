@@ -842,7 +842,7 @@ char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out
 
 #if 1
 /* N.B. Many other Liberty implementations expect nearly everything to be URL encoded. */
-#define URL_BAD(x) (!A_Z_a_z_0_9_(x))
+#define URL_BAD(x) (!AZaz_09_(x))
 #else
 #define URL_BAD(x) (((x)<=' ')||((x)>=0x7f)||ONE_OF_4((x),'+','%','=','&')||ONE_OF_2((x),'#','?'))
 #endif

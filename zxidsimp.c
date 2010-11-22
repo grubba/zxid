@@ -317,8 +317,8 @@ struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* t
     tp = templ;
     ss = zx_new_len_str(cf->ctx, strlen(tp) + size_hint);
     for (pp = ss->s; *tp && pp < ss->s + ss->len; ) {
-      if (tp[0] == '!' && tp[1] == '!' && A_Z_a_z_(tp[2])) {
-	for (tq = tp+=2; A_Z_a_z_(*tp); ++tp) ;
+      if (tp[0] == '!' && tp[1] == '!' && AZaz_(tp[2])) {
+	for (tq = tp+=2; AZaz_(*tp); ++tp) ;
 	tq = zxid_map_bangbang(cf, cgi, tq, tp, auto_flags);
 	if (!tq || !*tq)
 	  continue;

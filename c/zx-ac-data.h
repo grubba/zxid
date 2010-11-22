@@ -32,7 +32,8 @@ struct zx_ac_ActivationLimit_s {
   struct zx_elem_s* ActivationLimitSession;	/* {0,1} ac:ActivationLimitSessionType */
 };
 
-struct zx_ac_ActivationLimit_s* zx_DEC_ac_ActivationLimit(struct zx_ctx* c, struct zx_ac_ActivationLimit_s* x);
+int zx_DEC_ATTR_ac_ActivationLimit(struct zx_ctx* c, struct zx_ac_ActivationLimit_s* x);
+int zx_DEC_ELEM_ac_ActivationLimit(struct zx_ctx* c, struct zx_ac_ActivationLimit_s* x);
 struct zx_ac_ActivationLimit_s* zx_NEW_ac_ActivationLimit(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_ActivationLimit(struct zx_ctx* c, struct zx_ac_ActivationLimit_s* x);
 char* zx_ENC_SO_ac_ActivationLimit(struct zx_ctx* c, struct zx_ac_ActivationLimit_s* x, char* p);
@@ -93,7 +94,8 @@ struct zx_ac_ActivationLimitDuration_s {
   struct zx_attr_s* duration;	/* {1,1} attribute xs:duration */
 };
 
-struct zx_ac_ActivationLimitDuration_s* zx_DEC_ac_ActivationLimitDuration(struct zx_ctx* c, struct zx_ac_ActivationLimitDuration_s* x);
+int zx_DEC_ATTR_ac_ActivationLimitDuration(struct zx_ctx* c, struct zx_ac_ActivationLimitDuration_s* x);
+int zx_DEC_ELEM_ac_ActivationLimitDuration(struct zx_ctx* c, struct zx_ac_ActivationLimitDuration_s* x);
 struct zx_ac_ActivationLimitDuration_s* zx_NEW_ac_ActivationLimitDuration(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_ActivationLimitDuration(struct zx_ctx* c, struct zx_ac_ActivationLimitDuration_s* x);
 char* zx_ENC_SO_ac_ActivationLimitDuration(struct zx_ctx* c, struct zx_ac_ActivationLimitDuration_s* x, char* p);
@@ -132,7 +134,8 @@ struct zx_ac_ActivationLimitUsages_s {
   struct zx_attr_s* number;	/* {1,1} attribute xs:integer */
 };
 
-struct zx_ac_ActivationLimitUsages_s* zx_DEC_ac_ActivationLimitUsages(struct zx_ctx* c, struct zx_ac_ActivationLimitUsages_s* x);
+int zx_DEC_ATTR_ac_ActivationLimitUsages(struct zx_ctx* c, struct zx_ac_ActivationLimitUsages_s* x);
+int zx_DEC_ELEM_ac_ActivationLimitUsages(struct zx_ctx* c, struct zx_ac_ActivationLimitUsages_s* x);
 struct zx_ac_ActivationLimitUsages_s* zx_NEW_ac_ActivationLimitUsages(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_ActivationLimitUsages(struct zx_ctx* c, struct zx_ac_ActivationLimitUsages_s* x);
 char* zx_ENC_SO_ac_ActivationLimitUsages(struct zx_ctx* c, struct zx_ac_ActivationLimitUsages_s* x, char* p);
@@ -175,7 +178,8 @@ struct zx_ac_ActivationPin_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_ActivationPin_s* zx_DEC_ac_ActivationPin(struct zx_ctx* c, struct zx_ac_ActivationPin_s* x);
+int zx_DEC_ATTR_ac_ActivationPin(struct zx_ctx* c, struct zx_ac_ActivationPin_s* x);
+int zx_DEC_ELEM_ac_ActivationPin(struct zx_ctx* c, struct zx_ac_ActivationPin_s* x);
 struct zx_ac_ActivationPin_s* zx_NEW_ac_ActivationPin(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_ActivationPin(struct zx_ctx* c, struct zx_ac_ActivationPin_s* x);
 char* zx_ENC_SO_ac_ActivationPin(struct zx_ctx* c, struct zx_ac_ActivationPin_s* x, char* p);
@@ -254,7 +258,8 @@ struct zx_ac_Alphabet_s {
   struct zx_attr_s* requiredChars;	/* {1,1} attribute xs:string */
 };
 
-struct zx_ac_Alphabet_s* zx_DEC_ac_Alphabet(struct zx_ctx* c, struct zx_ac_Alphabet_s* x);
+int zx_DEC_ATTR_ac_Alphabet(struct zx_ctx* c, struct zx_ac_Alphabet_s* x);
+int zx_DEC_ELEM_ac_Alphabet(struct zx_ctx* c, struct zx_ac_Alphabet_s* x);
 struct zx_ac_Alphabet_s* zx_NEW_ac_Alphabet(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_Alphabet(struct zx_ctx* c, struct zx_ac_Alphabet_s* x);
 char* zx_ENC_SO_ac_Alphabet(struct zx_ctx* c, struct zx_ac_Alphabet_s* x, char* p);
@@ -297,7 +302,8 @@ struct zx_ac_AsymmetricDecryption_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_AsymmetricDecryption_s* zx_DEC_ac_AsymmetricDecryption(struct zx_ctx* c, struct zx_ac_AsymmetricDecryption_s* x);
+int zx_DEC_ATTR_ac_AsymmetricDecryption(struct zx_ctx* c, struct zx_ac_AsymmetricDecryption_s* x);
+int zx_DEC_ELEM_ac_AsymmetricDecryption(struct zx_ctx* c, struct zx_ac_AsymmetricDecryption_s* x);
 struct zx_ac_AsymmetricDecryption_s* zx_NEW_ac_AsymmetricDecryption(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_AsymmetricDecryption(struct zx_ctx* c, struct zx_ac_AsymmetricDecryption_s* x);
 char* zx_ENC_SO_ac_AsymmetricDecryption(struct zx_ctx* c, struct zx_ac_AsymmetricDecryption_s* x, char* p);
@@ -342,7 +348,8 @@ struct zx_ac_AsymmetricKeyAgreement_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_AsymmetricKeyAgreement_s* zx_DEC_ac_AsymmetricKeyAgreement(struct zx_ctx* c, struct zx_ac_AsymmetricKeyAgreement_s* x);
+int zx_DEC_ATTR_ac_AsymmetricKeyAgreement(struct zx_ctx* c, struct zx_ac_AsymmetricKeyAgreement_s* x);
+int zx_DEC_ELEM_ac_AsymmetricKeyAgreement(struct zx_ctx* c, struct zx_ac_AsymmetricKeyAgreement_s* x);
 struct zx_ac_AsymmetricKeyAgreement_s* zx_NEW_ac_AsymmetricKeyAgreement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_AsymmetricKeyAgreement(struct zx_ctx* c, struct zx_ac_AsymmetricKeyAgreement_s* x);
 char* zx_ENC_SO_ac_AsymmetricKeyAgreement(struct zx_ctx* c, struct zx_ac_AsymmetricKeyAgreement_s* x, char* p);
@@ -388,7 +395,8 @@ struct zx_ac_AuthenticatingAuthority_s {
   struct zx_attr_s* ID;	/* {1,1} attribute xs:ID */
 };
 
-struct zx_ac_AuthenticatingAuthority_s* zx_DEC_ac_AuthenticatingAuthority(struct zx_ctx* c, struct zx_ac_AuthenticatingAuthority_s* x);
+int zx_DEC_ATTR_ac_AuthenticatingAuthority(struct zx_ctx* c, struct zx_ac_AuthenticatingAuthority_s* x);
+int zx_DEC_ELEM_ac_AuthenticatingAuthority(struct zx_ctx* c, struct zx_ac_AuthenticatingAuthority_s* x);
 struct zx_ac_AuthenticatingAuthority_s* zx_NEW_ac_AuthenticatingAuthority(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_AuthenticatingAuthority(struct zx_ctx* c, struct zx_ac_AuthenticatingAuthority_s* x);
 char* zx_ENC_SO_ac_AuthenticatingAuthority(struct zx_ctx* c, struct zx_ac_AuthenticatingAuthority_s* x, char* p);
@@ -442,7 +450,8 @@ struct zx_ac_AuthenticationContextStatement_s {
   struct zx_attr_s* ID;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_ac_AuthenticationContextStatement_s* zx_DEC_ac_AuthenticationContextStatement(struct zx_ctx* c, struct zx_ac_AuthenticationContextStatement_s* x);
+int zx_DEC_ATTR_ac_AuthenticationContextStatement(struct zx_ctx* c, struct zx_ac_AuthenticationContextStatement_s* x);
+int zx_DEC_ELEM_ac_AuthenticationContextStatement(struct zx_ctx* c, struct zx_ac_AuthenticationContextStatement_s* x);
 struct zx_ac_AuthenticationContextStatement_s* zx_NEW_ac_AuthenticationContextStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_AuthenticationContextStatement(struct zx_ctx* c, struct zx_ac_AuthenticationContextStatement_s* x);
 char* zx_ENC_SO_ac_AuthenticationContextStatement(struct zx_ctx* c, struct zx_ac_AuthenticationContextStatement_s* x, char* p);
@@ -540,7 +549,8 @@ struct zx_ac_AuthenticationMethod_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_AuthenticationMethod_s* zx_DEC_ac_AuthenticationMethod(struct zx_ctx* c, struct zx_ac_AuthenticationMethod_s* x);
+int zx_DEC_ATTR_ac_AuthenticationMethod(struct zx_ctx* c, struct zx_ac_AuthenticationMethod_s* x);
+int zx_DEC_ELEM_ac_AuthenticationMethod(struct zx_ctx* c, struct zx_ac_AuthenticationMethod_s* x);
 struct zx_ac_AuthenticationMethod_s* zx_NEW_ac_AuthenticationMethod(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_AuthenticationMethod(struct zx_ctx* c, struct zx_ac_AuthenticationMethod_s* x);
 char* zx_ENC_SO_ac_AuthenticationMethod(struct zx_ctx* c, struct zx_ac_AuthenticationMethod_s* x, char* p);
@@ -619,7 +629,8 @@ struct zx_ac_Authenticator_s {
   struct zx_ac_Extension_s* Extension;	/* {1,-1}  */
 };
 
-struct zx_ac_Authenticator_s* zx_DEC_ac_Authenticator(struct zx_ctx* c, struct zx_ac_Authenticator_s* x);
+int zx_DEC_ATTR_ac_Authenticator(struct zx_ctx* c, struct zx_ac_Authenticator_s* x);
+int zx_DEC_ELEM_ac_Authenticator(struct zx_ctx* c, struct zx_ac_Authenticator_s* x);
 struct zx_ac_Authenticator_s* zx_NEW_ac_Authenticator(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_Authenticator(struct zx_ctx* c, struct zx_ac_Authenticator_s* x);
 char* zx_ENC_SO_ac_Authenticator(struct zx_ctx* c, struct zx_ac_Authenticator_s* x, char* p);
@@ -751,7 +762,8 @@ struct zx_ac_AuthenticatorTransportProtocol_s {
   struct zx_ac_Extension_s* Extension;	/* {1,-1}  */
 };
 
-struct zx_ac_AuthenticatorTransportProtocol_s* zx_DEC_ac_AuthenticatorTransportProtocol(struct zx_ctx* c, struct zx_ac_AuthenticatorTransportProtocol_s* x);
+int zx_DEC_ATTR_ac_AuthenticatorTransportProtocol(struct zx_ctx* c, struct zx_ac_AuthenticatorTransportProtocol_s* x);
+int zx_DEC_ELEM_ac_AuthenticatorTransportProtocol(struct zx_ctx* c, struct zx_ac_AuthenticatorTransportProtocol_s* x);
 struct zx_ac_AuthenticatorTransportProtocol_s* zx_NEW_ac_AuthenticatorTransportProtocol(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_AuthenticatorTransportProtocol(struct zx_ctx* c, struct zx_ac_AuthenticatorTransportProtocol_s* x);
 char* zx_ENC_SO_ac_AuthenticatorTransportProtocol(struct zx_ctx* c, struct zx_ac_AuthenticatorTransportProtocol_s* x, char* p);
@@ -852,7 +864,8 @@ struct zx_ac_DeactivationCallCenter_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_DeactivationCallCenter_s* zx_DEC_ac_DeactivationCallCenter(struct zx_ctx* c, struct zx_ac_DeactivationCallCenter_s* x);
+int zx_DEC_ATTR_ac_DeactivationCallCenter(struct zx_ctx* c, struct zx_ac_DeactivationCallCenter_s* x);
+int zx_DEC_ELEM_ac_DeactivationCallCenter(struct zx_ctx* c, struct zx_ac_DeactivationCallCenter_s* x);
 struct zx_ac_DeactivationCallCenter_s* zx_NEW_ac_DeactivationCallCenter(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_DeactivationCallCenter(struct zx_ctx* c, struct zx_ac_DeactivationCallCenter_s* x);
 char* zx_ENC_SO_ac_DeactivationCallCenter(struct zx_ctx* c, struct zx_ac_DeactivationCallCenter_s* x, char* p);
@@ -897,7 +910,8 @@ struct zx_ac_DigSig_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_DigSig_s* zx_DEC_ac_DigSig(struct zx_ctx* c, struct zx_ac_DigSig_s* x);
+int zx_DEC_ATTR_ac_DigSig(struct zx_ctx* c, struct zx_ac_DigSig_s* x);
+int zx_DEC_ELEM_ac_DigSig(struct zx_ctx* c, struct zx_ac_DigSig_s* x);
 struct zx_ac_DigSig_s* zx_NEW_ac_DigSig(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_DigSig(struct zx_ctx* c, struct zx_ac_DigSig_s* x);
 char* zx_ENC_SO_ac_DigSig(struct zx_ctx* c, struct zx_ac_DigSig_s* x, char* p);
@@ -941,7 +955,8 @@ struct zx_ac_Extension_s {
   zx_ac_Extension_EXT
 };
 
-struct zx_ac_Extension_s* zx_DEC_ac_Extension(struct zx_ctx* c, struct zx_ac_Extension_s* x);
+int zx_DEC_ATTR_ac_Extension(struct zx_ctx* c, struct zx_ac_Extension_s* x);
+int zx_DEC_ELEM_ac_Extension(struct zx_ctx* c, struct zx_ac_Extension_s* x);
 struct zx_ac_Extension_s* zx_NEW_ac_Extension(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_Extension(struct zx_ctx* c, struct zx_ac_Extension_s* x);
 char* zx_ENC_SO_ac_Extension(struct zx_ctx* c, struct zx_ac_Extension_s* x, char* p);
@@ -978,7 +993,8 @@ struct zx_ac_Generation_s {
   struct zx_attr_s* mechanism;	/* {1,1} attribute principalchosen */
 };
 
-struct zx_ac_Generation_s* zx_DEC_ac_Generation(struct zx_ctx* c, struct zx_ac_Generation_s* x);
+int zx_DEC_ATTR_ac_Generation(struct zx_ctx* c, struct zx_ac_Generation_s* x);
+int zx_DEC_ELEM_ac_Generation(struct zx_ctx* c, struct zx_ac_Generation_s* x);
 struct zx_ac_Generation_s* zx_NEW_ac_Generation(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_Generation(struct zx_ctx* c, struct zx_ac_Generation_s* x);
 char* zx_ENC_SO_ac_Generation(struct zx_ctx* c, struct zx_ac_Generation_s* x, char* p);
@@ -1017,7 +1033,8 @@ struct zx_ac_GoverningAgreementRef_s {
   struct zx_attr_s* governingAgreementRef;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_ac_GoverningAgreementRef_s* zx_DEC_ac_GoverningAgreementRef(struct zx_ctx* c, struct zx_ac_GoverningAgreementRef_s* x);
+int zx_DEC_ATTR_ac_GoverningAgreementRef(struct zx_ctx* c, struct zx_ac_GoverningAgreementRef_s* x);
+int zx_DEC_ELEM_ac_GoverningAgreementRef(struct zx_ctx* c, struct zx_ac_GoverningAgreementRef_s* x);
 struct zx_ac_GoverningAgreementRef_s* zx_NEW_ac_GoverningAgreementRef(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_GoverningAgreementRef(struct zx_ctx* c, struct zx_ac_GoverningAgreementRef_s* x);
 char* zx_ENC_SO_ac_GoverningAgreementRef(struct zx_ctx* c, struct zx_ac_GoverningAgreementRef_s* x, char* p);
@@ -1056,7 +1073,8 @@ struct zx_ac_GoverningAgreements_s {
   struct zx_ac_GoverningAgreementRef_s* GoverningAgreementRef;	/* {1,-1}  */
 };
 
-struct zx_ac_GoverningAgreements_s* zx_DEC_ac_GoverningAgreements(struct zx_ctx* c, struct zx_ac_GoverningAgreements_s* x);
+int zx_DEC_ATTR_ac_GoverningAgreements(struct zx_ctx* c, struct zx_ac_GoverningAgreements_s* x);
+int zx_DEC_ELEM_ac_GoverningAgreements(struct zx_ctx* c, struct zx_ac_GoverningAgreements_s* x);
 struct zx_ac_GoverningAgreements_s* zx_NEW_ac_GoverningAgreements(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_GoverningAgreements(struct zx_ctx* c, struct zx_ac_GoverningAgreements_s* x);
 char* zx_ENC_SO_ac_GoverningAgreements(struct zx_ctx* c, struct zx_ac_GoverningAgreements_s* x, char* p);
@@ -1101,7 +1119,8 @@ struct zx_ac_HTTP_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_HTTP_s* zx_DEC_ac_HTTP(struct zx_ctx* c, struct zx_ac_HTTP_s* x);
+int zx_DEC_ATTR_ac_HTTP(struct zx_ctx* c, struct zx_ac_HTTP_s* x);
+int zx_DEC_ELEM_ac_HTTP(struct zx_ctx* c, struct zx_ac_HTTP_s* x);
 struct zx_ac_HTTP_s* zx_NEW_ac_HTTP(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_HTTP(struct zx_ctx* c, struct zx_ac_HTTP_s* x);
 char* zx_ENC_SO_ac_HTTP(struct zx_ctx* c, struct zx_ac_HTTP_s* x, char* p);
@@ -1146,7 +1165,8 @@ struct zx_ac_IPAddress_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_IPAddress_s* zx_DEC_ac_IPAddress(struct zx_ctx* c, struct zx_ac_IPAddress_s* x);
+int zx_DEC_ATTR_ac_IPAddress(struct zx_ctx* c, struct zx_ac_IPAddress_s* x);
+int zx_DEC_ELEM_ac_IPAddress(struct zx_ctx* c, struct zx_ac_IPAddress_s* x);
 struct zx_ac_IPAddress_s* zx_NEW_ac_IPAddress(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_IPAddress(struct zx_ctx* c, struct zx_ac_IPAddress_s* x);
 char* zx_ENC_SO_ac_IPAddress(struct zx_ctx* c, struct zx_ac_IPAddress_s* x, char* p);
@@ -1191,7 +1211,8 @@ struct zx_ac_IPSec_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_IPSec_s* zx_DEC_ac_IPSec(struct zx_ctx* c, struct zx_ac_IPSec_s* x);
+int zx_DEC_ATTR_ac_IPSec(struct zx_ctx* c, struct zx_ac_IPSec_s* x);
+int zx_DEC_ELEM_ac_IPSec(struct zx_ctx* c, struct zx_ac_IPSec_s* x);
 struct zx_ac_IPSec_s* zx_NEW_ac_IPSec(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_IPSec(struct zx_ctx* c, struct zx_ac_IPSec_s* x);
 char* zx_ENC_SO_ac_IPSec(struct zx_ctx* c, struct zx_ac_IPSec_s* x, char* p);
@@ -1239,7 +1260,8 @@ struct zx_ac_Identification_s {
   struct zx_attr_s* nym;	/* {0,1} attribute anonymity */
 };
 
-struct zx_ac_Identification_s* zx_DEC_ac_Identification(struct zx_ctx* c, struct zx_ac_Identification_s* x);
+int zx_DEC_ATTR_ac_Identification(struct zx_ctx* c, struct zx_ac_Identification_s* x);
+int zx_DEC_ELEM_ac_Identification(struct zx_ctx* c, struct zx_ac_Identification_s* x);
 struct zx_ac_Identification_s* zx_NEW_ac_Identification(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_Identification(struct zx_ctx* c, struct zx_ac_Identification_s* x);
 char* zx_ENC_SO_ac_Identification(struct zx_ctx* c, struct zx_ac_Identification_s* x, char* p);
@@ -1303,7 +1325,8 @@ struct zx_ac_KeyActivation_s {
   struct zx_ac_Extension_s* Extension;	/* {1,-1}  */
 };
 
-struct zx_ac_KeyActivation_s* zx_DEC_ac_KeyActivation(struct zx_ctx* c, struct zx_ac_KeyActivation_s* x);
+int zx_DEC_ATTR_ac_KeyActivation(struct zx_ctx* c, struct zx_ac_KeyActivation_s* x);
+int zx_DEC_ELEM_ac_KeyActivation(struct zx_ctx* c, struct zx_ac_KeyActivation_s* x);
 struct zx_ac_KeyActivation_s* zx_NEW_ac_KeyActivation(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_KeyActivation(struct zx_ctx* c, struct zx_ac_KeyActivation_s* x);
 char* zx_ENC_SO_ac_KeyActivation(struct zx_ctx* c, struct zx_ac_KeyActivation_s* x, char* p);
@@ -1356,7 +1379,8 @@ struct zx_ac_KeySharing_s {
   struct zx_attr_s* sharing;	/* {1,1} attribute xs:boolean */
 };
 
-struct zx_ac_KeySharing_s* zx_DEC_ac_KeySharing(struct zx_ctx* c, struct zx_ac_KeySharing_s* x);
+int zx_DEC_ATTR_ac_KeySharing(struct zx_ctx* c, struct zx_ac_KeySharing_s* x);
+int zx_DEC_ELEM_ac_KeySharing(struct zx_ctx* c, struct zx_ac_KeySharing_s* x);
 struct zx_ac_KeySharing_s* zx_NEW_ac_KeySharing(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_KeySharing(struct zx_ctx* c, struct zx_ac_KeySharing_s* x);
 char* zx_ENC_SO_ac_KeySharing(struct zx_ctx* c, struct zx_ac_KeySharing_s* x, char* p);
@@ -1395,7 +1419,8 @@ struct zx_ac_KeyStorage_s {
   struct zx_attr_s* medium;	/* {1,1} attribute memory */
 };
 
-struct zx_ac_KeyStorage_s* zx_DEC_ac_KeyStorage(struct zx_ctx* c, struct zx_ac_KeyStorage_s* x);
+int zx_DEC_ATTR_ac_KeyStorage(struct zx_ctx* c, struct zx_ac_KeyStorage_s* x);
+int zx_DEC_ELEM_ac_KeyStorage(struct zx_ctx* c, struct zx_ac_KeyStorage_s* x);
 struct zx_ac_KeyStorage_s* zx_NEW_ac_KeyStorage(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_KeyStorage(struct zx_ctx* c, struct zx_ac_KeyStorage_s* x);
 char* zx_ENC_SO_ac_KeyStorage(struct zx_ctx* c, struct zx_ac_KeyStorage_s* x, char* p);
@@ -1435,7 +1460,8 @@ struct zx_ac_Length_s {
   struct zx_attr_s* min;	/* {1,1} attribute xs:integer */
 };
 
-struct zx_ac_Length_s* zx_DEC_ac_Length(struct zx_ctx* c, struct zx_ac_Length_s* x);
+int zx_DEC_ATTR_ac_Length(struct zx_ctx* c, struct zx_ac_Length_s* x);
+int zx_DEC_ELEM_ac_Length(struct zx_ctx* c, struct zx_ac_Length_s* x);
 struct zx_ac_Length_s* zx_NEW_ac_Length(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_Length(struct zx_ctx* c, struct zx_ac_Length_s* x);
 char* zx_ENC_SO_ac_Length(struct zx_ctx* c, struct zx_ac_Length_s* x, char* p);
@@ -1476,7 +1502,8 @@ struct zx_ac_MobileNetworkEndToEndEncryption_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_MobileNetworkEndToEndEncryption_s* zx_DEC_ac_MobileNetworkEndToEndEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkEndToEndEncryption_s* x);
+int zx_DEC_ATTR_ac_MobileNetworkEndToEndEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkEndToEndEncryption_s* x);
+int zx_DEC_ELEM_ac_MobileNetworkEndToEndEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkEndToEndEncryption_s* x);
 struct zx_ac_MobileNetworkEndToEndEncryption_s* zx_NEW_ac_MobileNetworkEndToEndEncryption(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_MobileNetworkEndToEndEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkEndToEndEncryption_s* x);
 char* zx_ENC_SO_ac_MobileNetworkEndToEndEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkEndToEndEncryption_s* x, char* p);
@@ -1521,7 +1548,8 @@ struct zx_ac_MobileNetworkNoEncryption_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_MobileNetworkNoEncryption_s* zx_DEC_ac_MobileNetworkNoEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkNoEncryption_s* x);
+int zx_DEC_ATTR_ac_MobileNetworkNoEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkNoEncryption_s* x);
+int zx_DEC_ELEM_ac_MobileNetworkNoEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkNoEncryption_s* x);
 struct zx_ac_MobileNetworkNoEncryption_s* zx_NEW_ac_MobileNetworkNoEncryption(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_MobileNetworkNoEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkNoEncryption_s* x);
 char* zx_ENC_SO_ac_MobileNetworkNoEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkNoEncryption_s* x, char* p);
@@ -1566,7 +1594,8 @@ struct zx_ac_MobileNetworkRadioEncryption_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_MobileNetworkRadioEncryption_s* zx_DEC_ac_MobileNetworkRadioEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkRadioEncryption_s* x);
+int zx_DEC_ATTR_ac_MobileNetworkRadioEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkRadioEncryption_s* x);
+int zx_DEC_ELEM_ac_MobileNetworkRadioEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkRadioEncryption_s* x);
 struct zx_ac_MobileNetworkRadioEncryption_s* zx_NEW_ac_MobileNetworkRadioEncryption(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_MobileNetworkRadioEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkRadioEncryption_s* x);
 char* zx_ENC_SO_ac_MobileNetworkRadioEncryption(struct zx_ctx* c, struct zx_ac_MobileNetworkRadioEncryption_s* x, char* p);
@@ -1613,7 +1642,8 @@ struct zx_ac_OperationalProtection_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_OperationalProtection_s* zx_DEC_ac_OperationalProtection(struct zx_ctx* c, struct zx_ac_OperationalProtection_s* x);
+int zx_DEC_ATTR_ac_OperationalProtection(struct zx_ctx* c, struct zx_ac_OperationalProtection_s* x);
+int zx_DEC_ELEM_ac_OperationalProtection(struct zx_ctx* c, struct zx_ac_OperationalProtection_s* x);
 struct zx_ac_OperationalProtection_s* zx_NEW_ac_OperationalProtection(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_OperationalProtection(struct zx_ctx* c, struct zx_ac_OperationalProtection_s* x);
 char* zx_ENC_SO_ac_OperationalProtection(struct zx_ctx* c, struct zx_ac_OperationalProtection_s* x, char* p);
@@ -1677,7 +1707,8 @@ struct zx_ac_Password_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_Password_s* zx_DEC_ac_Password(struct zx_ctx* c, struct zx_ac_Password_s* x);
+int zx_DEC_ATTR_ac_Password(struct zx_ctx* c, struct zx_ac_Password_s* x);
+int zx_DEC_ELEM_ac_Password(struct zx_ctx* c, struct zx_ac_Password_s* x);
 struct zx_ac_Password_s* zx_NEW_ac_Password(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_Password(struct zx_ctx* c, struct zx_ac_Password_s* x);
 char* zx_ENC_SO_ac_Password(struct zx_ctx* c, struct zx_ac_Password_s* x, char* p);
@@ -1746,7 +1777,8 @@ struct zx_ac_PhysicalVerification_s {
   struct zx_attr_s* credentialLevel;	/* {0,1} attribute primary */
 };
 
-struct zx_ac_PhysicalVerification_s* zx_DEC_ac_PhysicalVerification(struct zx_ctx* c, struct zx_ac_PhysicalVerification_s* x);
+int zx_DEC_ATTR_ac_PhysicalVerification(struct zx_ctx* c, struct zx_ac_PhysicalVerification_s* x);
+int zx_DEC_ELEM_ac_PhysicalVerification(struct zx_ctx* c, struct zx_ac_PhysicalVerification_s* x);
 struct zx_ac_PhysicalVerification_s* zx_NEW_ac_PhysicalVerification(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_PhysicalVerification(struct zx_ctx* c, struct zx_ac_PhysicalVerification_s* x);
 char* zx_ENC_SO_ac_PhysicalVerification(struct zx_ctx* c, struct zx_ac_PhysicalVerification_s* x, char* p);
@@ -1785,7 +1817,8 @@ struct zx_ac_PreviousSession_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_PreviousSession_s* zx_DEC_ac_PreviousSession(struct zx_ctx* c, struct zx_ac_PreviousSession_s* x);
+int zx_DEC_ATTR_ac_PreviousSession(struct zx_ctx* c, struct zx_ac_PreviousSession_s* x);
+int zx_DEC_ELEM_ac_PreviousSession(struct zx_ctx* c, struct zx_ac_PreviousSession_s* x);
 struct zx_ac_PreviousSession_s* zx_NEW_ac_PreviousSession(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_PreviousSession(struct zx_ctx* c, struct zx_ac_PreviousSession_s* x);
 char* zx_ENC_SO_ac_PreviousSession(struct zx_ctx* c, struct zx_ac_PreviousSession_s* x, char* p);
@@ -1834,7 +1867,8 @@ struct zx_ac_PrincipalAuthenticationMechanism_s {
   struct zx_ac_Extension_s* Extension;	/* {1,-1}  */
 };
 
-struct zx_ac_PrincipalAuthenticationMechanism_s* zx_DEC_ac_PrincipalAuthenticationMechanism(struct zx_ctx* c, struct zx_ac_PrincipalAuthenticationMechanism_s* x);
+int zx_DEC_ATTR_ac_PrincipalAuthenticationMechanism(struct zx_ctx* c, struct zx_ac_PrincipalAuthenticationMechanism_s* x);
+int zx_DEC_ELEM_ac_PrincipalAuthenticationMechanism(struct zx_ctx* c, struct zx_ac_PrincipalAuthenticationMechanism_s* x);
 struct zx_ac_PrincipalAuthenticationMechanism_s* zx_NEW_ac_PrincipalAuthenticationMechanism(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_PrincipalAuthenticationMechanism(struct zx_ctx* c, struct zx_ac_PrincipalAuthenticationMechanism_s* x);
 char* zx_ENC_SO_ac_PrincipalAuthenticationMechanism(struct zx_ctx* c, struct zx_ac_PrincipalAuthenticationMechanism_s* x, char* p);
@@ -1914,7 +1948,8 @@ struct zx_ac_PrivateKeyProtection_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_PrivateKeyProtection_s* zx_DEC_ac_PrivateKeyProtection(struct zx_ctx* c, struct zx_ac_PrivateKeyProtection_s* x);
+int zx_DEC_ATTR_ac_PrivateKeyProtection(struct zx_ctx* c, struct zx_ac_PrivateKeyProtection_s* x);
+int zx_DEC_ELEM_ac_PrivateKeyProtection(struct zx_ctx* c, struct zx_ac_PrivateKeyProtection_s* x);
 struct zx_ac_PrivateKeyProtection_s* zx_NEW_ac_PrivateKeyProtection(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_PrivateKeyProtection(struct zx_ctx* c, struct zx_ac_PrivateKeyProtection_s* x);
 char* zx_ENC_SO_ac_PrivateKeyProtection(struct zx_ctx* c, struct zx_ac_PrivateKeyProtection_s* x, char* p);
@@ -1983,7 +2018,8 @@ struct zx_ac_ResumeSession_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_ResumeSession_s* zx_DEC_ac_ResumeSession(struct zx_ctx* c, struct zx_ac_ResumeSession_s* x);
+int zx_DEC_ATTR_ac_ResumeSession(struct zx_ctx* c, struct zx_ac_ResumeSession_s* x);
+int zx_DEC_ELEM_ac_ResumeSession(struct zx_ctx* c, struct zx_ac_ResumeSession_s* x);
 struct zx_ac_ResumeSession_s* zx_NEW_ac_ResumeSession(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_ResumeSession(struct zx_ctx* c, struct zx_ac_ResumeSession_s* x);
 char* zx_ENC_SO_ac_ResumeSession(struct zx_ctx* c, struct zx_ac_ResumeSession_s* x, char* p);
@@ -2028,7 +2064,8 @@ struct zx_ac_SSL_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_SSL_s* zx_DEC_ac_SSL(struct zx_ctx* c, struct zx_ac_SSL_s* x);
+int zx_DEC_ATTR_ac_SSL(struct zx_ctx* c, struct zx_ac_SSL_s* x);
+int zx_DEC_ELEM_ac_SSL(struct zx_ctx* c, struct zx_ac_SSL_s* x);
 struct zx_ac_SSL_s* zx_NEW_ac_SSL(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_SSL(struct zx_ctx* c, struct zx_ac_SSL_s* x);
 char* zx_ENC_SO_ac_SSL(struct zx_ctx* c, struct zx_ac_SSL_s* x, char* p);
@@ -2075,7 +2112,8 @@ struct zx_ac_SecretKeyProtection_s {
   struct zx_ac_Extension_s* Extension;	/* {1,-1}  */
 };
 
-struct zx_ac_SecretKeyProtection_s* zx_DEC_ac_SecretKeyProtection(struct zx_ctx* c, struct zx_ac_SecretKeyProtection_s* x);
+int zx_DEC_ATTR_ac_SecretKeyProtection(struct zx_ctx* c, struct zx_ac_SecretKeyProtection_s* x);
+int zx_DEC_ELEM_ac_SecretKeyProtection(struct zx_ctx* c, struct zx_ac_SecretKeyProtection_s* x);
 struct zx_ac_SecretKeyProtection_s* zx_NEW_ac_SecretKeyProtection(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_SecretKeyProtection(struct zx_ctx* c, struct zx_ac_SecretKeyProtection_s* x);
 char* zx_ENC_SO_ac_SecretKeyProtection(struct zx_ctx* c, struct zx_ac_SecretKeyProtection_s* x, char* p);
@@ -2137,7 +2175,8 @@ struct zx_ac_SecurityAudit_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_SecurityAudit_s* zx_DEC_ac_SecurityAudit(struct zx_ctx* c, struct zx_ac_SecurityAudit_s* x);
+int zx_DEC_ATTR_ac_SecurityAudit(struct zx_ctx* c, struct zx_ac_SecurityAudit_s* x);
+int zx_DEC_ELEM_ac_SecurityAudit(struct zx_ctx* c, struct zx_ac_SecurityAudit_s* x);
 struct zx_ac_SecurityAudit_s* zx_NEW_ac_SecurityAudit(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_SecurityAudit(struct zx_ctx* c, struct zx_ac_SecurityAudit_s* x);
 char* zx_ENC_SO_ac_SecurityAudit(struct zx_ctx* c, struct zx_ac_SecurityAudit_s* x, char* p);
@@ -2190,7 +2229,8 @@ struct zx_ac_SharedSecretChallengeResponse_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_SharedSecretChallengeResponse_s* zx_DEC_ac_SharedSecretChallengeResponse(struct zx_ctx* c, struct zx_ac_SharedSecretChallengeResponse_s* x);
+int zx_DEC_ATTR_ac_SharedSecretChallengeResponse(struct zx_ctx* c, struct zx_ac_SharedSecretChallengeResponse_s* x);
+int zx_DEC_ELEM_ac_SharedSecretChallengeResponse(struct zx_ctx* c, struct zx_ac_SharedSecretChallengeResponse_s* x);
 struct zx_ac_SharedSecretChallengeResponse_s* zx_NEW_ac_SharedSecretChallengeResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_SharedSecretChallengeResponse(struct zx_ctx* c, struct zx_ac_SharedSecretChallengeResponse_s* x);
 char* zx_ENC_SO_ac_SharedSecretChallengeResponse(struct zx_ctx* c, struct zx_ac_SharedSecretChallengeResponse_s* x, char* p);
@@ -2235,7 +2275,8 @@ struct zx_ac_SharedSecretDynamicPlaintext_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_SharedSecretDynamicPlaintext_s* zx_DEC_ac_SharedSecretDynamicPlaintext(struct zx_ctx* c, struct zx_ac_SharedSecretDynamicPlaintext_s* x);
+int zx_DEC_ATTR_ac_SharedSecretDynamicPlaintext(struct zx_ctx* c, struct zx_ac_SharedSecretDynamicPlaintext_s* x);
+int zx_DEC_ELEM_ac_SharedSecretDynamicPlaintext(struct zx_ctx* c, struct zx_ac_SharedSecretDynamicPlaintext_s* x);
 struct zx_ac_SharedSecretDynamicPlaintext_s* zx_NEW_ac_SharedSecretDynamicPlaintext(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_SharedSecretDynamicPlaintext(struct zx_ctx* c, struct zx_ac_SharedSecretDynamicPlaintext_s* x);
 char* zx_ENC_SO_ac_SharedSecretDynamicPlaintext(struct zx_ctx* c, struct zx_ac_SharedSecretDynamicPlaintext_s* x, char* p);
@@ -2280,7 +2321,8 @@ struct zx_ac_Smartcard_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_Smartcard_s* zx_DEC_ac_Smartcard(struct zx_ctx* c, struct zx_ac_Smartcard_s* x);
+int zx_DEC_ATTR_ac_Smartcard(struct zx_ctx* c, struct zx_ac_Smartcard_s* x);
+int zx_DEC_ELEM_ac_Smartcard(struct zx_ctx* c, struct zx_ac_Smartcard_s* x);
 struct zx_ac_Smartcard_s* zx_NEW_ac_Smartcard(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_Smartcard(struct zx_ctx* c, struct zx_ac_Smartcard_s* x);
 char* zx_ENC_SO_ac_Smartcard(struct zx_ctx* c, struct zx_ac_Smartcard_s* x, char* p);
@@ -2325,7 +2367,8 @@ struct zx_ac_SwitchAudit_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_SwitchAudit_s* zx_DEC_ac_SwitchAudit(struct zx_ctx* c, struct zx_ac_SwitchAudit_s* x);
+int zx_DEC_ATTR_ac_SwitchAudit(struct zx_ctx* c, struct zx_ac_SwitchAudit_s* x);
+int zx_DEC_ELEM_ac_SwitchAudit(struct zx_ctx* c, struct zx_ac_SwitchAudit_s* x);
 struct zx_ac_SwitchAudit_s* zx_NEW_ac_SwitchAudit(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_SwitchAudit(struct zx_ctx* c, struct zx_ac_SwitchAudit_s* x);
 char* zx_ENC_SO_ac_SwitchAudit(struct zx_ctx* c, struct zx_ac_SwitchAudit_s* x, char* p);
@@ -2372,7 +2415,8 @@ struct zx_ac_TechnicalProtection_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_TechnicalProtection_s* zx_DEC_ac_TechnicalProtection(struct zx_ctx* c, struct zx_ac_TechnicalProtection_s* x);
+int zx_DEC_ATTR_ac_TechnicalProtection(struct zx_ctx* c, struct zx_ac_TechnicalProtection_s* x);
+int zx_DEC_ELEM_ac_TechnicalProtection(struct zx_ctx* c, struct zx_ac_TechnicalProtection_s* x);
 struct zx_ac_TechnicalProtection_s* zx_NEW_ac_TechnicalProtection(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_TechnicalProtection(struct zx_ctx* c, struct zx_ac_TechnicalProtection_s* x);
 char* zx_ENC_SO_ac_TechnicalProtection(struct zx_ctx* c, struct zx_ac_TechnicalProtection_s* x, char* p);
@@ -2435,7 +2479,8 @@ struct zx_ac_TimeSyncToken_s {
   struct zx_attr_s* SeedLength;	/* {1,1} attribute xs:integer */
 };
 
-struct zx_ac_TimeSyncToken_s* zx_DEC_ac_TimeSyncToken(struct zx_ctx* c, struct zx_ac_TimeSyncToken_s* x);
+int zx_DEC_ATTR_ac_TimeSyncToken(struct zx_ctx* c, struct zx_ac_TimeSyncToken_s* x);
+int zx_DEC_ELEM_ac_TimeSyncToken(struct zx_ctx* c, struct zx_ac_TimeSyncToken_s* x);
 struct zx_ac_TimeSyncToken_s* zx_NEW_ac_TimeSyncToken(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_TimeSyncToken(struct zx_ctx* c, struct zx_ac_TimeSyncToken_s* x);
 char* zx_ENC_SO_ac_TimeSyncToken(struct zx_ctx* c, struct zx_ac_TimeSyncToken_s* x, char* p);
@@ -2479,7 +2524,8 @@ struct zx_ac_Token_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_Token_s* zx_DEC_ac_Token(struct zx_ctx* c, struct zx_ac_Token_s* x);
+int zx_DEC_ATTR_ac_Token(struct zx_ctx* c, struct zx_ac_Token_s* x);
+int zx_DEC_ELEM_ac_Token(struct zx_ctx* c, struct zx_ac_Token_s* x);
 struct zx_ac_Token_s* zx_NEW_ac_Token(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_Token(struct zx_ctx* c, struct zx_ac_Token_s* x);
 char* zx_ENC_SO_ac_Token(struct zx_ctx* c, struct zx_ac_Token_s* x, char* p);
@@ -2532,7 +2578,8 @@ struct zx_ac_WTLS_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_WTLS_s* zx_DEC_ac_WTLS(struct zx_ctx* c, struct zx_ac_WTLS_s* x);
+int zx_DEC_ATTR_ac_WTLS(struct zx_ctx* c, struct zx_ac_WTLS_s* x);
+int zx_DEC_ELEM_ac_WTLS(struct zx_ctx* c, struct zx_ac_WTLS_s* x);
 struct zx_ac_WTLS_s* zx_NEW_ac_WTLS(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_WTLS(struct zx_ctx* c, struct zx_ac_WTLS_s* x);
 char* zx_ENC_SO_ac_WTLS(struct zx_ctx* c, struct zx_ac_WTLS_s* x, char* p);
@@ -2577,7 +2624,8 @@ struct zx_ac_WrittenConsent_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_WrittenConsent_s* zx_DEC_ac_WrittenConsent(struct zx_ctx* c, struct zx_ac_WrittenConsent_s* x);
+int zx_DEC_ATTR_ac_WrittenConsent(struct zx_ctx* c, struct zx_ac_WrittenConsent_s* x);
+int zx_DEC_ELEM_ac_WrittenConsent(struct zx_ctx* c, struct zx_ac_WrittenConsent_s* x);
 struct zx_ac_WrittenConsent_s* zx_NEW_ac_WrittenConsent(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_WrittenConsent(struct zx_ctx* c, struct zx_ac_WrittenConsent_s* x);
 char* zx_ENC_SO_ac_WrittenConsent(struct zx_ctx* c, struct zx_ac_WrittenConsent_s* x, char* p);
@@ -2622,7 +2670,8 @@ struct zx_ac_ZeroKnowledge_s {
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
 };
 
-struct zx_ac_ZeroKnowledge_s* zx_DEC_ac_ZeroKnowledge(struct zx_ctx* c, struct zx_ac_ZeroKnowledge_s* x);
+int zx_DEC_ATTR_ac_ZeroKnowledge(struct zx_ctx* c, struct zx_ac_ZeroKnowledge_s* x);
+int zx_DEC_ELEM_ac_ZeroKnowledge(struct zx_ctx* c, struct zx_ac_ZeroKnowledge_s* x);
 struct zx_ac_ZeroKnowledge_s* zx_NEW_ac_ZeroKnowledge(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ac_ZeroKnowledge(struct zx_ctx* c, struct zx_ac_ZeroKnowledge_s* x);
 char* zx_ENC_SO_ac_ZeroKnowledge(struct zx_ctx* c, struct zx_ac_ZeroKnowledge_s* x, char* p);

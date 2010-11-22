@@ -34,7 +34,8 @@ struct zx_idhrxml_Create_s {
   struct zx_attr_s* itemID;	/* {0,1} attribute lu:IDType */
 };
 
-struct zx_idhrxml_Create_s* zx_DEC_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x);
+int zx_DEC_ATTR_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x);
+int zx_DEC_ELEM_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x);
 struct zx_idhrxml_Create_s* zx_NEW_idhrxml_Create(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x);
 char* zx_ENC_SO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x, char* p);
@@ -108,7 +109,8 @@ struct zx_idhrxml_CreateItem_s {
   struct zx_attr_s* objectType;	/* {0,1} attribute xs:NCName */
 };
 
-struct zx_idhrxml_CreateItem_s* zx_DEC_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_s* x);
+int zx_DEC_ATTR_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_s* x);
+int zx_DEC_ELEM_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_s* x);
 struct zx_idhrxml_CreateItem_s* zx_NEW_idhrxml_CreateItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_s* x);
 char* zx_ENC_SO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_s* x, char* p);
@@ -163,7 +165,8 @@ struct zx_idhrxml_CreateResponse_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute lu:IDReferenceType */
 };
 
-struct zx_idhrxml_CreateResponse_s* zx_DEC_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateResponse_s* x);
+int zx_DEC_ATTR_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateResponse_s* x);
+int zx_DEC_ELEM_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateResponse_s* x);
 struct zx_idhrxml_CreateResponse_s* zx_NEW_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateResponse_s* x);
 char* zx_ENC_SO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateResponse_s* x, char* p);
@@ -235,7 +238,8 @@ struct zx_idhrxml_Data_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute lu:IDReferenceType */
 };
 
-struct zx_idhrxml_Data_s* zx_DEC_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x);
+int zx_DEC_ATTR_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x);
+int zx_DEC_ELEM_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x);
 struct zx_idhrxml_Data_s* zx_NEW_idhrxml_Data(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x);
 char* zx_ENC_SO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x, char* p);
@@ -302,7 +306,8 @@ struct zx_idhrxml_Delete_s {
   struct zx_attr_s* itemID;	/* {0,1} attribute lu:IDType */
 };
 
-struct zx_idhrxml_Delete_s* zx_DEC_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x);
+int zx_DEC_ATTR_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x);
+int zx_DEC_ELEM_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x);
 struct zx_idhrxml_Delete_s* zx_NEW_idhrxml_Delete(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x);
 char* zx_ENC_SO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x, char* p);
@@ -362,7 +367,8 @@ struct zx_idhrxml_DeleteItem_s {
   struct zx_attr_s* predefined;	/* {0,1} attribute xs:string */
 };
 
-struct zx_idhrxml_DeleteItem_s* zx_DEC_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_s* x);
+int zx_DEC_ATTR_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_s* x);
+int zx_DEC_ELEM_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_s* x);
 struct zx_idhrxml_DeleteItem_s* zx_NEW_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_s* x);
 char* zx_ENC_SO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_s* x, char* p);
@@ -419,7 +425,8 @@ struct zx_idhrxml_DeleteResponse_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute xs:string */
 };
 
-struct zx_idhrxml_DeleteResponse_s* zx_DEC_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteResponse_s* x);
+int zx_DEC_ATTR_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteResponse_s* x);
+int zx_DEC_ELEM_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteResponse_s* x);
 struct zx_idhrxml_DeleteResponse_s* zx_NEW_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteResponse_s* x);
 char* zx_ENC_SO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteResponse_s* x, char* p);
@@ -478,7 +485,8 @@ struct zx_idhrxml_ItemData_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute lu:IDReferenceType */
 };
 
-struct zx_idhrxml_ItemData_s* zx_DEC_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x);
+int zx_DEC_ATTR_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x);
+int zx_DEC_ELEM_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x);
 struct zx_idhrxml_ItemData_s* zx_NEW_idhrxml_ItemData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x);
 char* zx_ENC_SO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x, char* p);
@@ -541,7 +549,8 @@ struct zx_idhrxml_Modify_s {
   struct zx_attr_s* itemID;	/* {0,1} attribute lu:IDType */
 };
 
-struct zx_idhrxml_Modify_s* zx_DEC_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x);
+int zx_DEC_ATTR_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x);
+int zx_DEC_ELEM_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x);
 struct zx_idhrxml_Modify_s* zx_NEW_idhrxml_Modify(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x);
 char* zx_ENC_SO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x, char* p);
@@ -619,7 +628,8 @@ struct zx_idhrxml_ModifyItem_s {
   struct zx_attr_s* predefined;	/* {0,1} attribute xs:string */
 };
 
-struct zx_idhrxml_ModifyItem_s* zx_DEC_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_s* x);
+int zx_DEC_ATTR_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_s* x);
+int zx_DEC_ELEM_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_s* x);
 struct zx_idhrxml_ModifyItem_s* zx_NEW_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_s* x);
 char* zx_ENC_SO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_s* x, char* p);
@@ -688,7 +698,8 @@ struct zx_idhrxml_ModifyResponse_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute lu:IDReferenceType */
 };
 
-struct zx_idhrxml_ModifyResponse_s* zx_DEC_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyResponse_s* x);
+int zx_DEC_ATTR_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyResponse_s* x);
+int zx_DEC_ELEM_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyResponse_s* x);
 struct zx_idhrxml_ModifyResponse_s* zx_NEW_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyResponse_s* x);
 char* zx_ENC_SO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyResponse_s* x, char* p);
@@ -754,7 +765,8 @@ struct zx_idhrxml_NewData_s {
   struct zx_idhrxml_Subscription_s* Subscription;	/* {0,1} nada */
 };
 
-struct zx_idhrxml_NewData_s* zx_DEC_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x);
+int zx_DEC_ATTR_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x);
+int zx_DEC_ELEM_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x);
 struct zx_idhrxml_NewData_s* zx_NEW_idhrxml_NewData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x);
 char* zx_ENC_SO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x, char* p);
@@ -812,7 +824,8 @@ struct zx_idhrxml_Notification_s {
   struct zx_attr_s* subscriptionID;	/* {1,1} attribute xs:string */
 };
 
-struct zx_idhrxml_Notification_s* zx_DEC_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notification_s* x);
+int zx_DEC_ATTR_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notification_s* x);
+int zx_DEC_ELEM_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notification_s* x);
 struct zx_idhrxml_Notification_s* zx_NEW_idhrxml_Notification(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notification_s* x);
 char* zx_ENC_SO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notification_s* x, char* p);
@@ -876,7 +889,8 @@ struct zx_idhrxml_Notify_s {
   struct zx_attr_s* itemID;	/* {0,1} attribute lu:IDType */
 };
 
-struct zx_idhrxml_Notify_s* zx_DEC_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x);
+int zx_DEC_ATTR_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x);
+int zx_DEC_ELEM_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x);
 struct zx_idhrxml_Notify_s* zx_NEW_idhrxml_Notify(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x);
 char* zx_ENC_SO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x, char* p);
@@ -935,7 +949,8 @@ struct zx_idhrxml_NotifyResponse_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute xs:string */
 };
 
-struct zx_idhrxml_NotifyResponse_s* zx_DEC_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyResponse_s* x);
+int zx_DEC_ATTR_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyResponse_s* x);
+int zx_DEC_ELEM_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyResponse_s* x);
 struct zx_idhrxml_NotifyResponse_s* zx_NEW_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyResponse_s* x);
 char* zx_ENC_SO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyResponse_s* x, char* p);
@@ -994,7 +1009,8 @@ struct zx_idhrxml_Query_s {
   struct zx_attr_s* itemID;	/* {0,1} attribute lu:IDType */
 };
 
-struct zx_idhrxml_Query_s* zx_DEC_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x);
+int zx_DEC_ATTR_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x);
+int zx_DEC_ELEM_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x);
 struct zx_idhrxml_Query_s* zx_NEW_idhrxml_Query(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x);
 char* zx_ENC_SO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x, char* p);
@@ -1078,7 +1094,8 @@ struct zx_idhrxml_QueryItem_s {
   struct zx_attr_s* predefined;	/* {0,1} attribute xs:string */
 };
 
-struct zx_idhrxml_QueryItem_s* zx_DEC_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s* x);
+int zx_DEC_ATTR_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s* x);
+int zx_DEC_ELEM_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s* x);
 struct zx_idhrxml_QueryItem_s* zx_NEW_idhrxml_QueryItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s* x);
 char* zx_ENC_SO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s* x, char* p);
@@ -1166,7 +1183,8 @@ struct zx_idhrxml_QueryResponse_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute lu:IDReferenceType */
 };
 
-struct zx_idhrxml_QueryResponse_s* zx_DEC_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryResponse_s* x);
+int zx_DEC_ATTR_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryResponse_s* x);
+int zx_DEC_ELEM_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryResponse_s* x);
 struct zx_idhrxml_QueryResponse_s* zx_NEW_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryResponse_s* x);
 char* zx_ENC_SO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryResponse_s* x, char* p);
@@ -1248,7 +1266,8 @@ struct zx_idhrxml_ResultQuery_s {
   struct zx_attr_s* predefined;	/* {0,1} attribute xs:string */
 };
 
-struct zx_idhrxml_ResultQuery_s* zx_DEC_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuery_s* x);
+int zx_DEC_ATTR_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuery_s* x);
+int zx_DEC_ELEM_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuery_s* x);
 struct zx_idhrxml_ResultQuery_s* zx_NEW_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuery_s* x);
 char* zx_ENC_SO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuery_s* x, char* p);
@@ -1334,7 +1353,8 @@ struct zx_idhrxml_Subscription_s {
   struct zx_attr_s* subscriptionID;	/* {1,1} attribute xs:string */
 };
 
-struct zx_idhrxml_Subscription_s* zx_DEC_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscription_s* x);
+int zx_DEC_ATTR_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscription_s* x);
+int zx_DEC_ELEM_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscription_s* x);
 struct zx_idhrxml_Subscription_s* zx_NEW_idhrxml_Subscription(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscription_s* x);
 char* zx_ENC_SO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscription_s* x, char* p);
@@ -1429,7 +1449,8 @@ struct zx_idhrxml_TestItem_s {
   struct zx_attr_s* predefined;	/* {0,1} attribute xs:string */
 };
 
-struct zx_idhrxml_TestItem_s* zx_DEC_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x);
+int zx_DEC_ATTR_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x);
+int zx_DEC_ELEM_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x);
 struct zx_idhrxml_TestItem_s* zx_NEW_idhrxml_TestItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x);
 char* zx_ENC_SO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x, char* p);

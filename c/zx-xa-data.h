@@ -30,7 +30,8 @@ struct zx_xa_Action_s {
   struct zx_xa_ActionMatch_s* ActionMatch;	/* {1,-1} nada */
 };
 
-struct zx_xa_Action_s* zx_DEC_xa_Action(struct zx_ctx* c, struct zx_xa_Action_s* x);
+int zx_DEC_ATTR_xa_Action(struct zx_ctx* c, struct zx_xa_Action_s* x);
+int zx_DEC_ELEM_xa_Action(struct zx_ctx* c, struct zx_xa_Action_s* x);
 struct zx_xa_Action_s* zx_NEW_xa_Action(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Action(struct zx_ctx* c, struct zx_xa_Action_s* x);
 char* zx_ENC_SO_xa_Action(struct zx_ctx* c, struct zx_xa_Action_s* x, char* p);
@@ -78,7 +79,8 @@ struct zx_xa_ActionAttributeDesignator_s {
   struct zx_attr_s* MustBePresent;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_xa_ActionAttributeDesignator_s* zx_DEC_xa_ActionAttributeDesignator(struct zx_ctx* c, struct zx_xa_ActionAttributeDesignator_s* x);
+int zx_DEC_ATTR_xa_ActionAttributeDesignator(struct zx_ctx* c, struct zx_xa_ActionAttributeDesignator_s* x);
+int zx_DEC_ELEM_xa_ActionAttributeDesignator(struct zx_ctx* c, struct zx_xa_ActionAttributeDesignator_s* x);
 struct zx_xa_ActionAttributeDesignator_s* zx_NEW_xa_ActionAttributeDesignator(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_ActionAttributeDesignator(struct zx_ctx* c, struct zx_xa_ActionAttributeDesignator_s* x);
 char* zx_ENC_SO_xa_ActionAttributeDesignator(struct zx_ctx* c, struct zx_xa_ActionAttributeDesignator_s* x, char* p);
@@ -126,7 +128,8 @@ struct zx_xa_ActionMatch_s {
   struct zx_attr_s* MatchId;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xa_ActionMatch_s* zx_DEC_xa_ActionMatch(struct zx_ctx* c, struct zx_xa_ActionMatch_s* x);
+int zx_DEC_ATTR_xa_ActionMatch(struct zx_ctx* c, struct zx_xa_ActionMatch_s* x);
+int zx_DEC_ELEM_xa_ActionMatch(struct zx_ctx* c, struct zx_xa_ActionMatch_s* x);
 struct zx_xa_ActionMatch_s* zx_NEW_xa_ActionMatch(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_ActionMatch(struct zx_ctx* c, struct zx_xa_ActionMatch_s* x);
 char* zx_ENC_SO_xa_ActionMatch(struct zx_ctx* c, struct zx_xa_ActionMatch_s* x, char* p);
@@ -189,7 +192,8 @@ struct zx_xa_Actions_s {
   struct zx_xa_Action_s* Action;	/* {1,-1}  */
 };
 
-struct zx_xa_Actions_s* zx_DEC_xa_Actions(struct zx_ctx* c, struct zx_xa_Actions_s* x);
+int zx_DEC_ATTR_xa_Actions(struct zx_ctx* c, struct zx_xa_Actions_s* x);
+int zx_DEC_ELEM_xa_Actions(struct zx_ctx* c, struct zx_xa_Actions_s* x);
 struct zx_xa_Actions_s* zx_NEW_xa_Actions(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Actions(struct zx_ctx* c, struct zx_xa_Actions_s* x);
 char* zx_ENC_SO_xa_Actions(struct zx_ctx* c, struct zx_xa_Actions_s* x, char* p);
@@ -235,7 +239,8 @@ struct zx_xa_Apply_s {
   struct zx_attr_s* FunctionId;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xa_Apply_s* zx_DEC_xa_Apply(struct zx_ctx* c, struct zx_xa_Apply_s* x);
+int zx_DEC_ATTR_xa_Apply(struct zx_ctx* c, struct zx_xa_Apply_s* x);
+int zx_DEC_ELEM_xa_Apply(struct zx_ctx* c, struct zx_xa_Apply_s* x);
 struct zx_xa_Apply_s* zx_NEW_xa_Apply(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Apply(struct zx_ctx* c, struct zx_xa_Apply_s* x);
 char* zx_ENC_SO_xa_Apply(struct zx_ctx* c, struct zx_xa_Apply_s* x, char* p);
@@ -283,7 +288,8 @@ struct zx_xa_AttributeAssignment_s {
   struct zx_attr_s* DataType;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xa_AttributeAssignment_s* zx_DEC_xa_AttributeAssignment(struct zx_ctx* c, struct zx_xa_AttributeAssignment_s* x);
+int zx_DEC_ATTR_xa_AttributeAssignment(struct zx_ctx* c, struct zx_xa_AttributeAssignment_s* x);
+int zx_DEC_ELEM_xa_AttributeAssignment(struct zx_ctx* c, struct zx_xa_AttributeAssignment_s* x);
 struct zx_xa_AttributeAssignment_s* zx_NEW_xa_AttributeAssignment(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_AttributeAssignment(struct zx_ctx* c, struct zx_xa_AttributeAssignment_s* x);
 char* zx_ENC_SO_xa_AttributeAssignment(struct zx_ctx* c, struct zx_xa_AttributeAssignment_s* x, char* p);
@@ -326,7 +332,8 @@ struct zx_xa_AttributeSelector_s {
   struct zx_attr_s* RequestContextPath;	/* {1,1} attribute xs:string */
 };
 
-struct zx_xa_AttributeSelector_s* zx_DEC_xa_AttributeSelector(struct zx_ctx* c, struct zx_xa_AttributeSelector_s* x);
+int zx_DEC_ATTR_xa_AttributeSelector(struct zx_ctx* c, struct zx_xa_AttributeSelector_s* x);
+int zx_DEC_ELEM_xa_AttributeSelector(struct zx_ctx* c, struct zx_xa_AttributeSelector_s* x);
 struct zx_xa_AttributeSelector_s* zx_NEW_xa_AttributeSelector(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_AttributeSelector(struct zx_ctx* c, struct zx_xa_AttributeSelector_s* x);
 char* zx_ENC_SO_xa_AttributeSelector(struct zx_ctx* c, struct zx_xa_AttributeSelector_s* x, char* p);
@@ -369,7 +376,8 @@ struct zx_xa_AttributeValue_s {
   struct zx_attr_s* DataType;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xa_AttributeValue_s* zx_DEC_xa_AttributeValue(struct zx_ctx* c, struct zx_xa_AttributeValue_s* x);
+int zx_DEC_ATTR_xa_AttributeValue(struct zx_ctx* c, struct zx_xa_AttributeValue_s* x);
+int zx_DEC_ELEM_xa_AttributeValue(struct zx_ctx* c, struct zx_xa_AttributeValue_s* x);
 struct zx_xa_AttributeValue_s* zx_NEW_xa_AttributeValue(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_AttributeValue(struct zx_ctx* c, struct zx_xa_AttributeValue_s* x);
 char* zx_ENC_SO_xa_AttributeValue(struct zx_ctx* c, struct zx_xa_AttributeValue_s* x, char* p);
@@ -409,7 +417,8 @@ struct zx_xa_CombinerParameter_s {
   struct zx_attr_s* ParameterName;	/* {1,1} attribute xs:string */
 };
 
-struct zx_xa_CombinerParameter_s* zx_DEC_xa_CombinerParameter(struct zx_ctx* c, struct zx_xa_CombinerParameter_s* x);
+int zx_DEC_ATTR_xa_CombinerParameter(struct zx_ctx* c, struct zx_xa_CombinerParameter_s* x);
+int zx_DEC_ELEM_xa_CombinerParameter(struct zx_ctx* c, struct zx_xa_CombinerParameter_s* x);
 struct zx_xa_CombinerParameter_s* zx_NEW_xa_CombinerParameter(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_CombinerParameter(struct zx_ctx* c, struct zx_xa_CombinerParameter_s* x);
 char* zx_ENC_SO_xa_CombinerParameter(struct zx_ctx* c, struct zx_xa_CombinerParameter_s* x, char* p);
@@ -456,7 +465,8 @@ struct zx_xa_CombinerParameters_s {
   struct zx_xa_CombinerParameter_s* CombinerParameter;	/* {0,-1} nada */
 };
 
-struct zx_xa_CombinerParameters_s* zx_DEC_xa_CombinerParameters(struct zx_ctx* c, struct zx_xa_CombinerParameters_s* x);
+int zx_DEC_ATTR_xa_CombinerParameters(struct zx_ctx* c, struct zx_xa_CombinerParameters_s* x);
+int zx_DEC_ELEM_xa_CombinerParameters(struct zx_ctx* c, struct zx_xa_CombinerParameters_s* x);
 struct zx_xa_CombinerParameters_s* zx_NEW_xa_CombinerParameters(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_CombinerParameters(struct zx_ctx* c, struct zx_xa_CombinerParameters_s* x);
 char* zx_ENC_SO_xa_CombinerParameters(struct zx_ctx* c, struct zx_xa_CombinerParameters_s* x, char* p);
@@ -501,7 +511,8 @@ struct zx_xa_Condition_s {
   struct zx_elem_s* Expression;	/* {1,1} xa:ExpressionType */
 };
 
-struct zx_xa_Condition_s* zx_DEC_xa_Condition(struct zx_ctx* c, struct zx_xa_Condition_s* x);
+int zx_DEC_ATTR_xa_Condition(struct zx_ctx* c, struct zx_xa_Condition_s* x);
+int zx_DEC_ELEM_xa_Condition(struct zx_ctx* c, struct zx_xa_Condition_s* x);
 struct zx_xa_Condition_s* zx_NEW_xa_Condition(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Condition(struct zx_ctx* c, struct zx_xa_Condition_s* x);
 char* zx_ENC_SO_xa_Condition(struct zx_ctx* c, struct zx_xa_Condition_s* x, char* p);
@@ -546,7 +557,8 @@ struct zx_xa_Environment_s {
   struct zx_xa_EnvironmentMatch_s* EnvironmentMatch;	/* {1,-1} nada */
 };
 
-struct zx_xa_Environment_s* zx_DEC_xa_Environment(struct zx_ctx* c, struct zx_xa_Environment_s* x);
+int zx_DEC_ATTR_xa_Environment(struct zx_ctx* c, struct zx_xa_Environment_s* x);
+int zx_DEC_ELEM_xa_Environment(struct zx_ctx* c, struct zx_xa_Environment_s* x);
 struct zx_xa_Environment_s* zx_NEW_xa_Environment(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Environment(struct zx_ctx* c, struct zx_xa_Environment_s* x);
 char* zx_ENC_SO_xa_Environment(struct zx_ctx* c, struct zx_xa_Environment_s* x, char* p);
@@ -594,7 +606,8 @@ struct zx_xa_EnvironmentAttributeDesignator_s {
   struct zx_attr_s* MustBePresent;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_xa_EnvironmentAttributeDesignator_s* zx_DEC_xa_EnvironmentAttributeDesignator(struct zx_ctx* c, struct zx_xa_EnvironmentAttributeDesignator_s* x);
+int zx_DEC_ATTR_xa_EnvironmentAttributeDesignator(struct zx_ctx* c, struct zx_xa_EnvironmentAttributeDesignator_s* x);
+int zx_DEC_ELEM_xa_EnvironmentAttributeDesignator(struct zx_ctx* c, struct zx_xa_EnvironmentAttributeDesignator_s* x);
 struct zx_xa_EnvironmentAttributeDesignator_s* zx_NEW_xa_EnvironmentAttributeDesignator(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_EnvironmentAttributeDesignator(struct zx_ctx* c, struct zx_xa_EnvironmentAttributeDesignator_s* x);
 char* zx_ENC_SO_xa_EnvironmentAttributeDesignator(struct zx_ctx* c, struct zx_xa_EnvironmentAttributeDesignator_s* x, char* p);
@@ -642,7 +655,8 @@ struct zx_xa_EnvironmentMatch_s {
   struct zx_attr_s* MatchId;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xa_EnvironmentMatch_s* zx_DEC_xa_EnvironmentMatch(struct zx_ctx* c, struct zx_xa_EnvironmentMatch_s* x);
+int zx_DEC_ATTR_xa_EnvironmentMatch(struct zx_ctx* c, struct zx_xa_EnvironmentMatch_s* x);
+int zx_DEC_ELEM_xa_EnvironmentMatch(struct zx_ctx* c, struct zx_xa_EnvironmentMatch_s* x);
 struct zx_xa_EnvironmentMatch_s* zx_NEW_xa_EnvironmentMatch(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_EnvironmentMatch(struct zx_ctx* c, struct zx_xa_EnvironmentMatch_s* x);
 char* zx_ENC_SO_xa_EnvironmentMatch(struct zx_ctx* c, struct zx_xa_EnvironmentMatch_s* x, char* p);
@@ -705,7 +719,8 @@ struct zx_xa_Environments_s {
   struct zx_xa_Environment_s* Environment;	/* {1,-1}  */
 };
 
-struct zx_xa_Environments_s* zx_DEC_xa_Environments(struct zx_ctx* c, struct zx_xa_Environments_s* x);
+int zx_DEC_ATTR_xa_Environments(struct zx_ctx* c, struct zx_xa_Environments_s* x);
+int zx_DEC_ELEM_xa_Environments(struct zx_ctx* c, struct zx_xa_Environments_s* x);
 struct zx_xa_Environments_s* zx_NEW_xa_Environments(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Environments(struct zx_ctx* c, struct zx_xa_Environments_s* x);
 char* zx_ENC_SO_xa_Environments(struct zx_ctx* c, struct zx_xa_Environments_s* x, char* p);
@@ -750,7 +765,8 @@ struct zx_xa_Function_s {
   struct zx_attr_s* FunctionId;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xa_Function_s* zx_DEC_xa_Function(struct zx_ctx* c, struct zx_xa_Function_s* x);
+int zx_DEC_ATTR_xa_Function(struct zx_ctx* c, struct zx_xa_Function_s* x);
+int zx_DEC_ELEM_xa_Function(struct zx_ctx* c, struct zx_xa_Function_s* x);
 struct zx_xa_Function_s* zx_NEW_xa_Function(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Function(struct zx_ctx* c, struct zx_xa_Function_s* x);
 char* zx_ENC_SO_xa_Function(struct zx_ctx* c, struct zx_xa_Function_s* x, char* p);
@@ -791,7 +807,8 @@ struct zx_xa_Obligation_s {
   struct zx_attr_s* ObligationId;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xa_Obligation_s* zx_DEC_xa_Obligation(struct zx_ctx* c, struct zx_xa_Obligation_s* x);
+int zx_DEC_ATTR_xa_Obligation(struct zx_ctx* c, struct zx_xa_Obligation_s* x);
+int zx_DEC_ELEM_xa_Obligation(struct zx_ctx* c, struct zx_xa_Obligation_s* x);
 struct zx_xa_Obligation_s* zx_NEW_xa_Obligation(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Obligation(struct zx_ctx* c, struct zx_xa_Obligation_s* x);
 char* zx_ENC_SO_xa_Obligation(struct zx_ctx* c, struct zx_xa_Obligation_s* x, char* p);
@@ -840,7 +857,8 @@ struct zx_xa_Obligations_s {
   struct zx_xa_Obligation_s* Obligation;	/* {1,-1} nada */
 };
 
-struct zx_xa_Obligations_s* zx_DEC_xa_Obligations(struct zx_ctx* c, struct zx_xa_Obligations_s* x);
+int zx_DEC_ATTR_xa_Obligations(struct zx_ctx* c, struct zx_xa_Obligations_s* x);
+int zx_DEC_ELEM_xa_Obligations(struct zx_ctx* c, struct zx_xa_Obligations_s* x);
 struct zx_xa_Obligations_s* zx_NEW_xa_Obligations(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Obligations(struct zx_ctx* c, struct zx_xa_Obligations_s* x);
 char* zx_ENC_SO_xa_Obligations(struct zx_ctx* c, struct zx_xa_Obligations_s* x, char* p);
@@ -895,7 +913,8 @@ struct zx_xa_Policy_s {
   struct zx_attr_s* Version;	/* {0,1} attribute xa:VersionType */
 };
 
-struct zx_xa_Policy_s* zx_DEC_xa_Policy(struct zx_ctx* c, struct zx_xa_Policy_s* x);
+int zx_DEC_ATTR_xa_Policy(struct zx_ctx* c, struct zx_xa_Policy_s* x);
+int zx_DEC_ELEM_xa_Policy(struct zx_ctx* c, struct zx_xa_Policy_s* x);
 struct zx_xa_Policy_s* zx_NEW_xa_Policy(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Policy(struct zx_ctx* c, struct zx_xa_Policy_s* x);
 char* zx_ENC_SO_xa_Policy(struct zx_ctx* c, struct zx_xa_Policy_s* x, char* p);
@@ -1003,7 +1022,8 @@ struct zx_xa_PolicyCombinerParameters_s {
   struct zx_attr_s* PolicyIdRef;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xa_PolicyCombinerParameters_s* zx_DEC_xa_PolicyCombinerParameters(struct zx_ctx* c, struct zx_xa_PolicyCombinerParameters_s* x);
+int zx_DEC_ATTR_xa_PolicyCombinerParameters(struct zx_ctx* c, struct zx_xa_PolicyCombinerParameters_s* x);
+int zx_DEC_ELEM_xa_PolicyCombinerParameters(struct zx_ctx* c, struct zx_xa_PolicyCombinerParameters_s* x);
 struct zx_xa_PolicyCombinerParameters_s* zx_NEW_xa_PolicyCombinerParameters(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_PolicyCombinerParameters(struct zx_ctx* c, struct zx_xa_PolicyCombinerParameters_s* x);
 char* zx_ENC_SO_xa_PolicyCombinerParameters(struct zx_ctx* c, struct zx_xa_PolicyCombinerParameters_s* x, char* p);
@@ -1050,7 +1070,8 @@ struct zx_xa_PolicyDefaults_s {
   struct zx_elem_s* XPathVersion;	/* {1,1} xs:anyURI */
 };
 
-struct zx_xa_PolicyDefaults_s* zx_DEC_xa_PolicyDefaults(struct zx_ctx* c, struct zx_xa_PolicyDefaults_s* x);
+int zx_DEC_ATTR_xa_PolicyDefaults(struct zx_ctx* c, struct zx_xa_PolicyDefaults_s* x);
+int zx_DEC_ELEM_xa_PolicyDefaults(struct zx_ctx* c, struct zx_xa_PolicyDefaults_s* x);
 struct zx_xa_PolicyDefaults_s* zx_NEW_xa_PolicyDefaults(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_PolicyDefaults(struct zx_ctx* c, struct zx_xa_PolicyDefaults_s* x);
 char* zx_ENC_SO_xa_PolicyDefaults(struct zx_ctx* c, struct zx_xa_PolicyDefaults_s* x, char* p);
@@ -1097,7 +1118,8 @@ struct zx_xa_PolicyIdReference_s {
   struct zx_attr_s* Version;	/* {0,1} attribute xa:VersionType */
 };
 
-struct zx_xa_PolicyIdReference_s* zx_DEC_xa_PolicyIdReference(struct zx_ctx* c, struct zx_xa_PolicyIdReference_s* x);
+int zx_DEC_ATTR_xa_PolicyIdReference(struct zx_ctx* c, struct zx_xa_PolicyIdReference_s* x);
+int zx_DEC_ELEM_xa_PolicyIdReference(struct zx_ctx* c, struct zx_xa_PolicyIdReference_s* x);
 struct zx_xa_PolicyIdReference_s* zx_NEW_xa_PolicyIdReference(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_PolicyIdReference(struct zx_ctx* c, struct zx_xa_PolicyIdReference_s* x);
 char* zx_ENC_SO_xa_PolicyIdReference(struct zx_ctx* c, struct zx_xa_PolicyIdReference_s* x, char* p);
@@ -1153,7 +1175,8 @@ struct zx_xa_PolicySet_s {
   struct zx_attr_s* Version;	/* {0,1} attribute xa:VersionType */
 };
 
-struct zx_xa_PolicySet_s* zx_DEC_xa_PolicySet(struct zx_ctx* c, struct zx_xa_PolicySet_s* x);
+int zx_DEC_ATTR_xa_PolicySet(struct zx_ctx* c, struct zx_xa_PolicySet_s* x);
+int zx_DEC_ELEM_xa_PolicySet(struct zx_ctx* c, struct zx_xa_PolicySet_s* x);
 struct zx_xa_PolicySet_s* zx_NEW_xa_PolicySet(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_PolicySet(struct zx_ctx* c, struct zx_xa_PolicySet_s* x);
 char* zx_ENC_SO_xa_PolicySet(struct zx_ctx* c, struct zx_xa_PolicySet_s* x, char* p);
@@ -1285,7 +1308,8 @@ struct zx_xa_PolicySetCombinerParameters_s {
   struct zx_attr_s* PolicySetIdRef;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xa_PolicySetCombinerParameters_s* zx_DEC_xa_PolicySetCombinerParameters(struct zx_ctx* c, struct zx_xa_PolicySetCombinerParameters_s* x);
+int zx_DEC_ATTR_xa_PolicySetCombinerParameters(struct zx_ctx* c, struct zx_xa_PolicySetCombinerParameters_s* x);
+int zx_DEC_ELEM_xa_PolicySetCombinerParameters(struct zx_ctx* c, struct zx_xa_PolicySetCombinerParameters_s* x);
 struct zx_xa_PolicySetCombinerParameters_s* zx_NEW_xa_PolicySetCombinerParameters(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_PolicySetCombinerParameters(struct zx_ctx* c, struct zx_xa_PolicySetCombinerParameters_s* x);
 char* zx_ENC_SO_xa_PolicySetCombinerParameters(struct zx_ctx* c, struct zx_xa_PolicySetCombinerParameters_s* x, char* p);
@@ -1332,7 +1356,8 @@ struct zx_xa_PolicySetDefaults_s {
   struct zx_elem_s* XPathVersion;	/* {1,1} xs:anyURI */
 };
 
-struct zx_xa_PolicySetDefaults_s* zx_DEC_xa_PolicySetDefaults(struct zx_ctx* c, struct zx_xa_PolicySetDefaults_s* x);
+int zx_DEC_ATTR_xa_PolicySetDefaults(struct zx_ctx* c, struct zx_xa_PolicySetDefaults_s* x);
+int zx_DEC_ELEM_xa_PolicySetDefaults(struct zx_ctx* c, struct zx_xa_PolicySetDefaults_s* x);
 struct zx_xa_PolicySetDefaults_s* zx_NEW_xa_PolicySetDefaults(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_PolicySetDefaults(struct zx_ctx* c, struct zx_xa_PolicySetDefaults_s* x);
 char* zx_ENC_SO_xa_PolicySetDefaults(struct zx_ctx* c, struct zx_xa_PolicySetDefaults_s* x, char* p);
@@ -1379,7 +1404,8 @@ struct zx_xa_PolicySetIdReference_s {
   struct zx_attr_s* Version;	/* {0,1} attribute xa:VersionType */
 };
 
-struct zx_xa_PolicySetIdReference_s* zx_DEC_xa_PolicySetIdReference(struct zx_ctx* c, struct zx_xa_PolicySetIdReference_s* x);
+int zx_DEC_ATTR_xa_PolicySetIdReference(struct zx_ctx* c, struct zx_xa_PolicySetIdReference_s* x);
+int zx_DEC_ELEM_xa_PolicySetIdReference(struct zx_ctx* c, struct zx_xa_PolicySetIdReference_s* x);
 struct zx_xa_PolicySetIdReference_s* zx_NEW_xa_PolicySetIdReference(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_PolicySetIdReference(struct zx_ctx* c, struct zx_xa_PolicySetIdReference_s* x);
 char* zx_ENC_SO_xa_PolicySetIdReference(struct zx_ctx* c, struct zx_xa_PolicySetIdReference_s* x, char* p);
@@ -1422,7 +1448,8 @@ struct zx_xa_Resource_s {
   struct zx_xa_ResourceMatch_s* ResourceMatch;	/* {1,-1} nada */
 };
 
-struct zx_xa_Resource_s* zx_DEC_xa_Resource(struct zx_ctx* c, struct zx_xa_Resource_s* x);
+int zx_DEC_ATTR_xa_Resource(struct zx_ctx* c, struct zx_xa_Resource_s* x);
+int zx_DEC_ELEM_xa_Resource(struct zx_ctx* c, struct zx_xa_Resource_s* x);
 struct zx_xa_Resource_s* zx_NEW_xa_Resource(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Resource(struct zx_ctx* c, struct zx_xa_Resource_s* x);
 char* zx_ENC_SO_xa_Resource(struct zx_ctx* c, struct zx_xa_Resource_s* x, char* p);
@@ -1470,7 +1497,8 @@ struct zx_xa_ResourceAttributeDesignator_s {
   struct zx_attr_s* MustBePresent;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_xa_ResourceAttributeDesignator_s* zx_DEC_xa_ResourceAttributeDesignator(struct zx_ctx* c, struct zx_xa_ResourceAttributeDesignator_s* x);
+int zx_DEC_ATTR_xa_ResourceAttributeDesignator(struct zx_ctx* c, struct zx_xa_ResourceAttributeDesignator_s* x);
+int zx_DEC_ELEM_xa_ResourceAttributeDesignator(struct zx_ctx* c, struct zx_xa_ResourceAttributeDesignator_s* x);
 struct zx_xa_ResourceAttributeDesignator_s* zx_NEW_xa_ResourceAttributeDesignator(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_ResourceAttributeDesignator(struct zx_ctx* c, struct zx_xa_ResourceAttributeDesignator_s* x);
 char* zx_ENC_SO_xa_ResourceAttributeDesignator(struct zx_ctx* c, struct zx_xa_ResourceAttributeDesignator_s* x, char* p);
@@ -1518,7 +1546,8 @@ struct zx_xa_ResourceMatch_s {
   struct zx_attr_s* MatchId;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xa_ResourceMatch_s* zx_DEC_xa_ResourceMatch(struct zx_ctx* c, struct zx_xa_ResourceMatch_s* x);
+int zx_DEC_ATTR_xa_ResourceMatch(struct zx_ctx* c, struct zx_xa_ResourceMatch_s* x);
+int zx_DEC_ELEM_xa_ResourceMatch(struct zx_ctx* c, struct zx_xa_ResourceMatch_s* x);
 struct zx_xa_ResourceMatch_s* zx_NEW_xa_ResourceMatch(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_ResourceMatch(struct zx_ctx* c, struct zx_xa_ResourceMatch_s* x);
 char* zx_ENC_SO_xa_ResourceMatch(struct zx_ctx* c, struct zx_xa_ResourceMatch_s* x, char* p);
@@ -1581,7 +1610,8 @@ struct zx_xa_Resources_s {
   struct zx_xa_Resource_s* Resource;	/* {1,-1}  */
 };
 
-struct zx_xa_Resources_s* zx_DEC_xa_Resources(struct zx_ctx* c, struct zx_xa_Resources_s* x);
+int zx_DEC_ATTR_xa_Resources(struct zx_ctx* c, struct zx_xa_Resources_s* x);
+int zx_DEC_ELEM_xa_Resources(struct zx_ctx* c, struct zx_xa_Resources_s* x);
 struct zx_xa_Resources_s* zx_NEW_xa_Resources(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Resources(struct zx_ctx* c, struct zx_xa_Resources_s* x);
 char* zx_ENC_SO_xa_Resources(struct zx_ctx* c, struct zx_xa_Resources_s* x, char* p);
@@ -1630,7 +1660,8 @@ struct zx_xa_Rule_s {
   struct zx_attr_s* RuleId;	/* {1,1} attribute xs:string */
 };
 
-struct zx_xa_Rule_s* zx_DEC_xa_Rule(struct zx_ctx* c, struct zx_xa_Rule_s* x);
+int zx_DEC_ATTR_xa_Rule(struct zx_ctx* c, struct zx_xa_Rule_s* x);
+int zx_DEC_ELEM_xa_Rule(struct zx_ctx* c, struct zx_xa_Rule_s* x);
 struct zx_xa_Rule_s* zx_NEW_xa_Rule(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Rule(struct zx_ctx* c, struct zx_xa_Rule_s* x);
 char* zx_ENC_SO_xa_Rule(struct zx_ctx* c, struct zx_xa_Rule_s* x, char* p);
@@ -1696,7 +1727,8 @@ struct zx_xa_RuleCombinerParameters_s {
   struct zx_attr_s* RuleIdRef;	/* {1,1} attribute xs:string */
 };
 
-struct zx_xa_RuleCombinerParameters_s* zx_DEC_xa_RuleCombinerParameters(struct zx_ctx* c, struct zx_xa_RuleCombinerParameters_s* x);
+int zx_DEC_ATTR_xa_RuleCombinerParameters(struct zx_ctx* c, struct zx_xa_RuleCombinerParameters_s* x);
+int zx_DEC_ELEM_xa_RuleCombinerParameters(struct zx_ctx* c, struct zx_xa_RuleCombinerParameters_s* x);
 struct zx_xa_RuleCombinerParameters_s* zx_NEW_xa_RuleCombinerParameters(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_RuleCombinerParameters(struct zx_ctx* c, struct zx_xa_RuleCombinerParameters_s* x);
 char* zx_ENC_SO_xa_RuleCombinerParameters(struct zx_ctx* c, struct zx_xa_RuleCombinerParameters_s* x, char* p);
@@ -1743,7 +1775,8 @@ struct zx_xa_Subject_s {
   struct zx_xa_SubjectMatch_s* SubjectMatch;	/* {1,-1} nada */
 };
 
-struct zx_xa_Subject_s* zx_DEC_xa_Subject(struct zx_ctx* c, struct zx_xa_Subject_s* x);
+int zx_DEC_ATTR_xa_Subject(struct zx_ctx* c, struct zx_xa_Subject_s* x);
+int zx_DEC_ELEM_xa_Subject(struct zx_ctx* c, struct zx_xa_Subject_s* x);
 struct zx_xa_Subject_s* zx_NEW_xa_Subject(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Subject(struct zx_ctx* c, struct zx_xa_Subject_s* x);
 char* zx_ENC_SO_xa_Subject(struct zx_ctx* c, struct zx_xa_Subject_s* x, char* p);
@@ -1792,7 +1825,8 @@ struct zx_xa_SubjectAttributeDesignator_s {
   struct zx_attr_s* SubjectCategory;	/* {0,1} attribute xs:anyURI */
 };
 
-struct zx_xa_SubjectAttributeDesignator_s* zx_DEC_xa_SubjectAttributeDesignator(struct zx_ctx* c, struct zx_xa_SubjectAttributeDesignator_s* x);
+int zx_DEC_ATTR_xa_SubjectAttributeDesignator(struct zx_ctx* c, struct zx_xa_SubjectAttributeDesignator_s* x);
+int zx_DEC_ELEM_xa_SubjectAttributeDesignator(struct zx_ctx* c, struct zx_xa_SubjectAttributeDesignator_s* x);
 struct zx_xa_SubjectAttributeDesignator_s* zx_NEW_xa_SubjectAttributeDesignator(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_SubjectAttributeDesignator(struct zx_ctx* c, struct zx_xa_SubjectAttributeDesignator_s* x);
 char* zx_ENC_SO_xa_SubjectAttributeDesignator(struct zx_ctx* c, struct zx_xa_SubjectAttributeDesignator_s* x, char* p);
@@ -1842,7 +1876,8 @@ struct zx_xa_SubjectMatch_s {
   struct zx_attr_s* MatchId;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xa_SubjectMatch_s* zx_DEC_xa_SubjectMatch(struct zx_ctx* c, struct zx_xa_SubjectMatch_s* x);
+int zx_DEC_ATTR_xa_SubjectMatch(struct zx_ctx* c, struct zx_xa_SubjectMatch_s* x);
+int zx_DEC_ELEM_xa_SubjectMatch(struct zx_ctx* c, struct zx_xa_SubjectMatch_s* x);
 struct zx_xa_SubjectMatch_s* zx_NEW_xa_SubjectMatch(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_SubjectMatch(struct zx_ctx* c, struct zx_xa_SubjectMatch_s* x);
 char* zx_ENC_SO_xa_SubjectMatch(struct zx_ctx* c, struct zx_xa_SubjectMatch_s* x, char* p);
@@ -1905,7 +1940,8 @@ struct zx_xa_Subjects_s {
   struct zx_xa_Subject_s* Subject;	/* {1,-1}  */
 };
 
-struct zx_xa_Subjects_s* zx_DEC_xa_Subjects(struct zx_ctx* c, struct zx_xa_Subjects_s* x);
+int zx_DEC_ATTR_xa_Subjects(struct zx_ctx* c, struct zx_xa_Subjects_s* x);
+int zx_DEC_ELEM_xa_Subjects(struct zx_ctx* c, struct zx_xa_Subjects_s* x);
 struct zx_xa_Subjects_s* zx_NEW_xa_Subjects(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Subjects(struct zx_ctx* c, struct zx_xa_Subjects_s* x);
 char* zx_ENC_SO_xa_Subjects(struct zx_ctx* c, struct zx_xa_Subjects_s* x, char* p);
@@ -1953,7 +1989,8 @@ struct zx_xa_Target_s {
   struct zx_xa_Environments_s* Environments;	/* {0,1}  */
 };
 
-struct zx_xa_Target_s* zx_DEC_xa_Target(struct zx_ctx* c, struct zx_xa_Target_s* x);
+int zx_DEC_ATTR_xa_Target(struct zx_ctx* c, struct zx_xa_Target_s* x);
+int zx_DEC_ELEM_xa_Target(struct zx_ctx* c, struct zx_xa_Target_s* x);
 struct zx_xa_Target_s* zx_NEW_xa_Target(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_Target(struct zx_ctx* c, struct zx_xa_Target_s* x);
 char* zx_ENC_SO_xa_Target(struct zx_ctx* c, struct zx_xa_Target_s* x, char* p);
@@ -2023,7 +2060,8 @@ struct zx_xa_VariableDefinition_s {
   struct zx_attr_s* VariableId;	/* {1,1} attribute xs:string */
 };
 
-struct zx_xa_VariableDefinition_s* zx_DEC_xa_VariableDefinition(struct zx_ctx* c, struct zx_xa_VariableDefinition_s* x);
+int zx_DEC_ATTR_xa_VariableDefinition(struct zx_ctx* c, struct zx_xa_VariableDefinition_s* x);
+int zx_DEC_ELEM_xa_VariableDefinition(struct zx_ctx* c, struct zx_xa_VariableDefinition_s* x);
 struct zx_xa_VariableDefinition_s* zx_NEW_xa_VariableDefinition(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_VariableDefinition(struct zx_ctx* c, struct zx_xa_VariableDefinition_s* x);
 char* zx_ENC_SO_xa_VariableDefinition(struct zx_ctx* c, struct zx_xa_VariableDefinition_s* x, char* p);
@@ -2070,7 +2108,8 @@ struct zx_xa_VariableReference_s {
   struct zx_attr_s* VariableId;	/* {1,1} attribute xs:string */
 };
 
-struct zx_xa_VariableReference_s* zx_DEC_xa_VariableReference(struct zx_ctx* c, struct zx_xa_VariableReference_s* x);
+int zx_DEC_ATTR_xa_VariableReference(struct zx_ctx* c, struct zx_xa_VariableReference_s* x);
+int zx_DEC_ELEM_xa_VariableReference(struct zx_ctx* c, struct zx_xa_VariableReference_s* x);
 struct zx_xa_VariableReference_s* zx_NEW_xa_VariableReference(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xa_VariableReference(struct zx_ctx* c, struct zx_xa_VariableReference_s* x);
 char* zx_ENC_SO_xa_VariableReference(struct zx_ctx* c, struct zx_xa_VariableReference_s* x, char* p);

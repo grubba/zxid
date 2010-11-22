@@ -31,7 +31,8 @@ struct zx_subs_RefItem_s {
   struct zx_attr_s* itemIDRef;	/* {1,1} attribute lu:IDReferenceType */
 };
 
-struct zx_subs_RefItem_s* zx_DEC_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x);
+int zx_DEC_ATTR_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x);
+int zx_DEC_ELEM_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x);
 struct zx_subs_RefItem_s* zx_NEW_subs_RefItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x);
 char* zx_ENC_SO_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x, char* p);

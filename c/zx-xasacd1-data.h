@@ -31,7 +31,8 @@ struct zx_xasacd1_ReferencedPolicies_s {
   struct zx_xa_PolicySet_s* PolicySet;	/* {0,1} nada */
 };
 
-struct zx_xasacd1_ReferencedPolicies_s* zx_DEC_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_ReferencedPolicies_s* x);
+int zx_DEC_ATTR_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_ReferencedPolicies_s* x);
+int zx_DEC_ELEM_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_ReferencedPolicies_s* x);
 struct zx_xasacd1_ReferencedPolicies_s* zx_NEW_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_ReferencedPolicies_s* x);
 char* zx_ENC_SO_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_ReferencedPolicies_s* x, char* p);
@@ -85,7 +86,8 @@ struct zx_xasacd1_XACMLAuthzDecisionStatement_s {
   struct zx_xac_Request_s* Request;	/* {0,1} nada */
 };
 
-struct zx_xasacd1_XACMLAuthzDecisionStatement_s* zx_DEC_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x);
+int zx_DEC_ATTR_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x);
+int zx_DEC_ELEM_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x);
 struct zx_xasacd1_XACMLAuthzDecisionStatement_s* zx_NEW_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x);
 char* zx_ENC_SO_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x, char* p);
@@ -140,7 +142,8 @@ struct zx_xasacd1_XACMLPolicyStatement_s {
   struct zx_xasacd1_ReferencedPolicies_s* ReferencedPolicies;	/* {0,1} nada */
 };
 
-struct zx_xasacd1_XACMLPolicyStatement_s* zx_DEC_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLPolicyStatement_s* x);
+int zx_DEC_ATTR_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLPolicyStatement_s* x);
+int zx_DEC_ELEM_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLPolicyStatement_s* x);
 struct zx_xasacd1_XACMLPolicyStatement_s* zx_NEW_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLPolicyStatement_s* x);
 char* zx_ENC_SO_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLPolicyStatement_s* x, char* p);

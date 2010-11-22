@@ -22,6 +22,7 @@
  ** 23.9.2006, added collection of WO information --Sampo
  ** 21.6.2007, improved handling of undeclared namespace prefixes --Sampo
  ** 27.10.2010, CSE refactoring, re-engineered namespace handling --Sampo
+ ** 21.11.2010, re-engineered to extract most code to zx_DEC_elem, leaving just switches --Sampo
  **
  ** N.B: This template is meant to be processed by pd/xsd2sg.pl. Beware
  ** of special markers that xsd2sg.pl expects to find and understand.
@@ -37,724 +38,187 @@
 
 
 
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   wsp_All
-#define EL_STRUCT zx_wsp_All_s
-#define EL_NS     wsp
-#define EL_TAG    All
-
-/* FUNC(zx_DEC_wsp_All) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_wsp_All_s* zx_DEC_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x )
+int zx_DEC_ATTR_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_wsp_Policy_ELEM:
-            zx_DEC_wsp_Policy(c, (struct zx_wsp_Policy_s*)el);
-            if (!x->Policy)
-              x->Policy = (struct zx_wsp_Policy_s*)el;
-            break;
-          case zx_wsp_All_ELEM:
-            zx_DEC_wsp_All(c, (struct zx_wsp_All_s*)el);
-            if (!x->All)
-              x->All = (struct zx_wsp_All_s*)el;
-            break;
-          case zx_wsp_ExactlyOne_ELEM:
-            zx_DEC_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)el);
-            if (!x->ExactlyOne)
-              x->ExactlyOne = (struct zx_wsp_ExactlyOne_s*)el;
-            break;
-          case zx_wsp_PolicyReference_ELEM:
-            zx_DEC_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)el);
-            if (!x->PolicyReference)
-              x->PolicyReference = (struct zx_wsp_PolicyReference_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   wsp_AppliesTo
-#define EL_STRUCT zx_wsp_AppliesTo_s
-#define EL_NS     wsp
-#define EL_TAG    AppliesTo
-
-/* FUNC(zx_DEC_wsp_AppliesTo) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_wsp_AppliesTo_s* zx_DEC_wsp_AppliesTo(struct zx_ctx* c, struct zx_wsp_AppliesTo_s* x )
+int zx_DEC_ELEM_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_wsp_Policy_ELEM:
+    if (!x->Policy)
+      x->Policy = (struct zx_wsp_Policy_s*)el;
+    return 1;
+  case zx_wsp_All_ELEM:
+    if (!x->All)
+      x->All = (struct zx_wsp_All_s*)el;
+    return 1;
+  case zx_wsp_ExactlyOne_ELEM:
+    if (!x->ExactlyOne)
+      x->ExactlyOne = (struct zx_wsp_ExactlyOne_s*)el;
+    return 1;
+  case zx_wsp_PolicyReference_ELEM:
+    if (!x->PolicyReference)
+      x->PolicyReference = (struct zx_wsp_PolicyReference_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   wsp_ExactlyOne
-#define EL_STRUCT zx_wsp_ExactlyOne_s
-#define EL_NS     wsp
-#define EL_TAG    ExactlyOne
-
-/* FUNC(zx_DEC_wsp_ExactlyOne) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_wsp_ExactlyOne_s* zx_DEC_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x )
+int zx_DEC_ATTR_wsp_AppliesTo(struct zx_ctx* c, struct zx_wsp_AppliesTo_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_wsp_Policy_ELEM:
-            zx_DEC_wsp_Policy(c, (struct zx_wsp_Policy_s*)el);
-            if (!x->Policy)
-              x->Policy = (struct zx_wsp_Policy_s*)el;
-            break;
-          case zx_wsp_All_ELEM:
-            zx_DEC_wsp_All(c, (struct zx_wsp_All_s*)el);
-            if (!x->All)
-              x->All = (struct zx_wsp_All_s*)el;
-            break;
-          case zx_wsp_ExactlyOne_ELEM:
-            zx_DEC_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)el);
-            if (!x->ExactlyOne)
-              x->ExactlyOne = (struct zx_wsp_ExactlyOne_s*)el;
-            break;
-          case zx_wsp_PolicyReference_ELEM:
-            zx_DEC_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)el);
-            if (!x->PolicyReference)
-              x->PolicyReference = (struct zx_wsp_PolicyReference_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   wsp_Policy
-#define EL_STRUCT zx_wsp_Policy_s
-#define EL_NS     wsp
-#define EL_TAG    Policy
-
-/* FUNC(zx_DEC_wsp_Policy) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_wsp_Policy_s* zx_DEC_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x )
+int zx_DEC_ELEM_wsp_AppliesTo(struct zx_ctx* c, struct zx_wsp_AppliesTo_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_Name_ATTR:  x->Name = x->gg.attr; break;
-    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_wsp_Policy_ELEM:
-            zx_DEC_wsp_Policy(c, (struct zx_wsp_Policy_s*)el);
-            if (!x->Policy)
-              x->Policy = (struct zx_wsp_Policy_s*)el;
-            break;
-          case zx_wsp_All_ELEM:
-            zx_DEC_wsp_All(c, (struct zx_wsp_All_s*)el);
-            if (!x->All)
-              x->All = (struct zx_wsp_All_s*)el;
-            break;
-          case zx_wsp_ExactlyOne_ELEM:
-            zx_DEC_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)el);
-            if (!x->ExactlyOne)
-              x->ExactlyOne = (struct zx_wsp_ExactlyOne_s*)el;
-            break;
-          case zx_wsp_PolicyReference_ELEM:
-            zx_DEC_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)el);
-            if (!x->PolicyReference)
-              x->PolicyReference = (struct zx_wsp_PolicyReference_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   wsp_PolicyAttachment
-#define EL_STRUCT zx_wsp_PolicyAttachment_s
-#define EL_NS     wsp
-#define EL_TAG    PolicyAttachment
-
-/* FUNC(zx_DEC_wsp_PolicyAttachment) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_wsp_PolicyAttachment_s* zx_DEC_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAttachment_s* x )
+int zx_DEC_ATTR_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_wsp_AppliesTo_ELEM:
-            zx_DEC_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)el);
-            if (!x->AppliesTo)
-              x->AppliesTo = (struct zx_wsp_AppliesTo_s*)el;
-            break;
-          case zx_wsp_Policy_ELEM:
-            zx_DEC_wsp_Policy(c, (struct zx_wsp_Policy_s*)el);
-            if (!x->Policy)
-              x->Policy = (struct zx_wsp_Policy_s*)el;
-            break;
-          case zx_wsp_PolicyReference_ELEM:
-            zx_DEC_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)el);
-            if (!x->PolicyReference)
-              x->PolicyReference = (struct zx_wsp_PolicyReference_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   wsp_PolicyReference
-#define EL_STRUCT zx_wsp_PolicyReference_s
-#define EL_NS     wsp
-#define EL_TAG    PolicyReference
-
-/* FUNC(zx_DEC_wsp_PolicyReference) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_wsp_PolicyReference_s* zx_DEC_wsp_PolicyReference(struct zx_ctx* c, struct zx_wsp_PolicyReference_s* x )
+int zx_DEC_ELEM_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_wsp_Policy_ELEM:
+    if (!x->Policy)
+      x->Policy = (struct zx_wsp_Policy_s*)el;
+    return 1;
+  case zx_wsp_All_ELEM:
+    if (!x->All)
+      x->All = (struct zx_wsp_All_s*)el;
+    return 1;
+  case zx_wsp_ExactlyOne_ELEM:
+    if (!x->ExactlyOne)
+      x->ExactlyOne = (struct zx_wsp_ExactlyOne_s*)el;
+    return 1;
+  case zx_wsp_PolicyReference_ELEM:
+    if (!x->PolicyReference)
+      x->PolicyReference = (struct zx_wsp_PolicyReference_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_Digest_ATTR:  x->Digest = x->gg.attr; break;
-    case zx_DigestAlgorithm_ATTR:  x->DigestAlgorithm = x->gg.attr; break;
-    case zx_URI_ATTR:  x->URI = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
+
+int zx_DEC_ATTR_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_Name_ATTR:  x->Name = x->gg.attr; return 1;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_wsp_Policy_ELEM:
+    if (!x->Policy)
+      x->Policy = (struct zx_wsp_Policy_s*)el;
+    return 1;
+  case zx_wsp_All_ELEM:
+    if (!x->All)
+      x->All = (struct zx_wsp_All_s*)el;
+    return 1;
+  case zx_wsp_ExactlyOne_ELEM:
+    if (!x->ExactlyOne)
+      x->ExactlyOne = (struct zx_wsp_ExactlyOne_s*)el;
+    return 1;
+  case zx_wsp_PolicyReference_ELEM:
+    if (!x->PolicyReference)
+      x->PolicyReference = (struct zx_wsp_PolicyReference_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAttachment_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAttachment_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_wsp_AppliesTo_ELEM:
+    if (!x->AppliesTo)
+      x->AppliesTo = (struct zx_wsp_AppliesTo_s*)el;
+    return 1;
+  case zx_wsp_Policy_ELEM:
+    if (!x->Policy)
+      x->Policy = (struct zx_wsp_Policy_s*)el;
+    return 1;
+  case zx_wsp_PolicyReference_ELEM:
+    if (!x->PolicyReference)
+      x->PolicyReference = (struct zx_wsp_PolicyReference_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_wsp_PolicyReference(struct zx_ctx* c, struct zx_wsp_PolicyReference_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_Digest_ATTR:  x->Digest = x->gg.attr; return 1;
+    case zx_DigestAlgorithm_ATTR:  x->DigestAlgorithm = x->gg.attr; return 1;
+    case zx_URI_ATTR:  x->URI = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_wsp_PolicyReference(struct zx_ctx* c, struct zx_wsp_PolicyReference_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
 
 
 /* EOF -- c/zx-wsp-dec.c */

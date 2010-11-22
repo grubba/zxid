@@ -154,12 +154,12 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define strnzcpy(to,f,l)  MB strncpy((to),(f),(l));  (to)[(l)-1] = '\0'; ME
  
 
-#define A_Z_a_z_0_9_(x) ( IN_RANGE((x), '0', '9') || ((x) == '_') || \
+#define AZaz_09_(x) ( IN_RANGE((x), '0', '9') || ((x) == '_') || \
                     IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z') )
-#define A_Z_a_z_0_9_dot(x) ( IN_RANGE((x), '0', '9') || ((x) == '_') || \
+#define AZaz_09_dot(x) ( IN_RANGE((x), '0', '9') || ((x) == '_') || \
                     ((x)=='.') || ((x) == '-') || \
                     IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z') )
-#define A_Z_a_z_(x) ( ((x) == '_') || \
+#define AZaz_(x) ( ((x) == '_') || \
                     IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z') )
 #define IS_ALPHA(x) (IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z'))
 #define IS_ALNUM(x) (IS_ALPHA(x) || IS_DIGIT(x) || (x) == '_')

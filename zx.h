@@ -235,7 +235,6 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 #define ZX_TOK_NO_ATTR   (-7)
 #define ZX_TOK_ATTR_ERR  (-6)
 #define ZX_TOK_XMLNS     (-4)
-  /*#define zx_root_ELEM            0x00fffffc*/
 #define ZX_TOK_DATA             0x0000fffd
 #define ZX_TOK_ATTR_NOT_FOUND   0x0000fffe
 #define ZX_TOK_NOT_FOUND        0x0000ffff
@@ -246,12 +245,20 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 #define ZX_TOK_NS_SHIFT         16
 #define ZX_TOK_FLAGS_MASK       0xff000000
 
+struct zx_at_tok { const char* name; };
+
+struct zx_el_desc {
+  struct zx_el_desc* n;
+  int tok;
+  int siz;  /* max struct size to help allocation */
+  int (*at_dec)(struct zx_ctx* c,struct zx_elem_s* x); /* funcptr to attr decode switch */
+  int (*el_dec)(struct zx_ctx* c,struct zx_elem_s* x); /* funcptr to elem decode switch */
+};
+
 struct zx_el_tok {
   const char* name;
-  int max_siz;  /* max struct size to help allocation */
-  //struct zx_elem_s* (*dec)(struct zx_ctx* c, struct zx_elem_s* x); /* funcptr to decode switch */
+  struct zx_el_desc* n;
 };
-struct zx_at_tok { const char* name; };
 
   /*struct zx_el_tok* zx_elem2tok(register const char *str, register unsigned int len);*/
 
@@ -317,28 +324,17 @@ int   zx_walk_so_simple_elems(struct zx_ctx* c, struct zx_elem_s* se, void* ctx,
 void  zx_dup_strs_simple_elems(struct zx_ctx* c, struct zx_elem_s* se);
 #endif
 
-void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, int n_ns, const char* start, const char* lim);
-struct zx_root_s* zx_dec_zx_root(struct zx_ctx* c, int len, const char* start, const char* func);
-int   zx_scan_data(struct zx_ctx* c, struct zx_elem_s* el);
-int   zx_scan_pi_or_comment(struct zx_ctx* c);
-void zx_known_attr_wrong_context(struct zx_ctx* c, struct zx_elem_s* x);
-void zx_known_elem_wrong_context(struct zx_ctx* c, struct zx_elem_s* x);
-const char* zx_dec_attr_val(struct zx_ctx* c, const char* func);
-void zx_dec_reverse_lists(struct zx_elem_s* x);
 void  zx_xml_parse_err(struct zx_ctx* c, char quote, const char* func, const char* msg);
 void  zx_xml_parse_dbg(struct zx_ctx* c, char quote, const char* func, const char* msg);
-const char* zx_scan_elem_start(struct zx_ctx* c, const char* func);
-int zx_scan_elem_end(struct zx_ctx* c, const char* start, const char* func);
 struct zx_ns_s* zx_xmlns_detected(struct zx_ctx* c, struct zx_elem_s* x, const char* data);
 
 int   zx_len_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);
 void  zx_add_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);
 int   zx_in_inc_ns(struct zx_ctx* c, struct zx_ns_s* new_ns);
 
-/* These do not have their own elems, so the table andlookup were not generated. Supply dummies. */
-#define zx_xs__ELEM_MAX 1
-#define zx_xsi__ELEM_MAX 1
-  //#define zx_xml__ELEM_MAX 1
+void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, int n_ns, const char* start, const char* lim);
+struct zx_root_s* zx_dec_zx_root(struct zx_ctx* c, int len, const char* start, const char* func);
+void zx_DEC_elem(struct zx_ctx* c, struct zx_elem_s* x);
 
 #define SIG_ALGO_RSA_SHA1  "http://www.w3.org/2000/09/xmldsig#rsa-sha1"
 #define SIG_ALGO_DSA_SHA1  "http://www.w3.org/2000/09/xmldsig#dsa-sha1"

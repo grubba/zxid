@@ -22,6 +22,7 @@
  ** 23.9.2006, added collection of WO information --Sampo
  ** 21.6.2007, improved handling of undeclared namespace prefixes --Sampo
  ** 27.10.2010, CSE refactoring, re-engineered namespace handling --Sampo
+ ** 21.11.2010, re-engineered to extract most code to zx_DEC_elem, leaving just switches --Sampo
  **
  ** N.B: This template is meant to be processed by pd/xsd2sg.pl. Beware
  ** of special markers that xsd2sg.pl expects to find and understand.
@@ -37,3125 +38,802 @@
 
 
 
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_Action
-#define EL_STRUCT zx_sa_Action_s
-#define EL_NS     sa
-#define EL_TAG    Action
-
-/* FUNC(zx_DEC_sa_Action) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_Action_s* zx_DEC_sa_Action(struct zx_ctx* c, struct zx_sa_Action_s* x )
+int zx_DEC_ATTR_sa_Action(struct zx_ctx* c, struct zx_sa_Action_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
+    case zx_Namespace_ATTR:  x->Namespace = x->gg.attr; return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_Namespace_ATTR:  x->Namespace = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_Advice
-#define EL_STRUCT zx_sa_Advice_s
-#define EL_NS     sa
-#define EL_TAG    Advice
-
-/* FUNC(zx_DEC_sa_Advice) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_Advice_s* zx_DEC_sa_Advice(struct zx_ctx* c, struct zx_sa_Advice_s* x )
+int zx_DEC_ELEM_sa_Action(struct zx_ctx* c, struct zx_sa_Action_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_AssertionIDRef_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AssertionIDRef)
-              x->AssertionIDRef = el;
-            break;
-          case zx_sa_AssertionURIRef_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AssertionURIRef)
-              x->AssertionURIRef = el;
-            break;
-          case zx_sa_Assertion_ELEM:
-            zx_DEC_sa_Assertion(c, (struct zx_sa_Assertion_s*)el);
-            if (!x->Assertion)
-              x->Assertion = (struct zx_sa_Assertion_s*)el;
-            break;
-          case zx_sa_EncryptedAssertion_ELEM:
-            zx_DEC_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)el);
-            if (!x->EncryptedAssertion)
-              x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)el;
-            break;
-          case zx_sa11_Assertion_ELEM:
-            zx_DEC_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)el);
-            if (!x->sa11_Assertion)
-              x->sa11_Assertion = (struct zx_sa11_Assertion_s*)el;
-            break;
-          case zx_ff12_Assertion_ELEM:
-            zx_DEC_ff12_Assertion(c, (struct zx_ff12_Assertion_s*)el);
-            if (!x->ff12_Assertion)
-              x->ff12_Assertion = (struct zx_ff12_Assertion_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_Assertion
-#define EL_STRUCT zx_sa_Assertion_s
-#define EL_NS     sa
-#define EL_TAG    Assertion
-
-/* FUNC(zx_DEC_sa_Assertion) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_Assertion_s* zx_DEC_sa_Assertion(struct zx_ctx* c, struct zx_sa_Assertion_s* x )
+int zx_DEC_ATTR_sa_Advice(struct zx_ctx* c, struct zx_sa_Advice_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_ID_ATTR:  x->ID = x->gg.attr; break;
-    case zx_IssueInstant_ATTR:  x->IssueInstant = x->gg.attr; break;
-    case zx_Version_ATTR:  x->Version = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_Issuer_ELEM:
-            zx_DEC_sa_Issuer(c, (struct zx_sa_Issuer_s*)el);
-            if (!x->Issuer)
-              x->Issuer = (struct zx_sa_Issuer_s*)el;
-            break;
-          case zx_ds_Signature_ELEM:
-            zx_DEC_ds_Signature(c, (struct zx_ds_Signature_s*)el);
-            if (!x->Signature)
-              x->Signature = (struct zx_ds_Signature_s*)el;
-            break;
-          case zx_sa_Subject_ELEM:
-            zx_DEC_sa_Subject(c, (struct zx_sa_Subject_s*)el);
-            if (!x->Subject)
-              x->Subject = (struct zx_sa_Subject_s*)el;
-            break;
-          case zx_sa_Conditions_ELEM:
-            zx_DEC_sa_Conditions(c, (struct zx_sa_Conditions_s*)el);
-            if (!x->Conditions)
-              x->Conditions = (struct zx_sa_Conditions_s*)el;
-            break;
-          case zx_sa_Advice_ELEM:
-            zx_DEC_sa_Advice(c, (struct zx_sa_Advice_s*)el);
-            if (!x->Advice)
-              x->Advice = (struct zx_sa_Advice_s*)el;
-            break;
-          case zx_sa_Statement_ELEM:
-            zx_DEC_sa_Statement(c, (struct zx_sa_Statement_s*)el);
-            if (!x->Statement)
-              x->Statement = (struct zx_sa_Statement_s*)el;
-            break;
-          case zx_sa_AuthnStatement_ELEM:
-            zx_DEC_sa_AuthnStatement(c, (struct zx_sa_AuthnStatement_s*)el);
-            if (!x->AuthnStatement)
-              x->AuthnStatement = (struct zx_sa_AuthnStatement_s*)el;
-            break;
-          case zx_sa_AuthzDecisionStatement_ELEM:
-            zx_DEC_sa_AuthzDecisionStatement(c, (struct zx_sa_AuthzDecisionStatement_s*)el);
-            if (!x->AuthzDecisionStatement)
-              x->AuthzDecisionStatement = (struct zx_sa_AuthzDecisionStatement_s*)el;
-            break;
-          case zx_sa_AttributeStatement_ELEM:
-            zx_DEC_sa_AttributeStatement(c, (struct zx_sa_AttributeStatement_s*)el);
-            if (!x->AttributeStatement)
-              x->AttributeStatement = (struct zx_sa_AttributeStatement_s*)el;
-            break;
-          case zx_xasa_XACMLAuthzDecisionStatement_ELEM:
-            zx_DEC_xasa_XACMLAuthzDecisionStatement(c, (struct zx_xasa_XACMLAuthzDecisionStatement_s*)el);
-            if (!x->XACMLAuthzDecisionStatement)
-              x->XACMLAuthzDecisionStatement = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)el;
-            break;
-          case zx_xasa_XACMLPolicyStatement_ELEM:
-            zx_DEC_xasa_XACMLPolicyStatement(c, (struct zx_xasa_XACMLPolicyStatement_s*)el);
-            if (!x->XACMLPolicyStatement)
-              x->XACMLPolicyStatement = (struct zx_xasa_XACMLPolicyStatement_s*)el;
-            break;
-          case zx_xasacd1_XACMLAuthzDecisionStatement_ELEM:
-            zx_DEC_xasacd1_XACMLAuthzDecisionStatement(c, (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)el);
-            if (!x->xasacd1_XACMLAuthzDecisionStatement)
-              x->xasacd1_XACMLAuthzDecisionStatement = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)el;
-            break;
-          case zx_xasacd1_XACMLPolicyStatement_ELEM:
-            zx_DEC_xasacd1_XACMLPolicyStatement(c, (struct zx_xasacd1_XACMLPolicyStatement_s*)el);
-            if (!x->xasacd1_XACMLPolicyStatement)
-              x->xasacd1_XACMLPolicyStatement = (struct zx_xasacd1_XACMLPolicyStatement_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_Attribute
-#define EL_STRUCT zx_sa_Attribute_s
-#define EL_NS     sa
-#define EL_TAG    Attribute
-
-/* FUNC(zx_DEC_sa_Attribute) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_Attribute_s* zx_DEC_sa_Attribute(struct zx_ctx* c, struct zx_sa_Attribute_s* x )
+int zx_DEC_ELEM_sa_Advice(struct zx_ctx* c, struct zx_sa_Advice_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_AssertionIDRef_ELEM:
+    if (!x->AssertionIDRef)
+      x->AssertionIDRef = el;
+    return 1;
+  case zx_sa_AssertionURIRef_ELEM:
+    if (!x->AssertionURIRef)
+      x->AssertionURIRef = el;
+    return 1;
+  case zx_sa_Assertion_ELEM:
+    if (!x->Assertion)
+      x->Assertion = (struct zx_sa_Assertion_s*)el;
+    return 1;
+  case zx_sa_EncryptedAssertion_ELEM:
+    if (!x->EncryptedAssertion)
+      x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)el;
+    return 1;
+  case zx_sa11_Assertion_ELEM:
+    if (!x->sa11_Assertion)
+      x->sa11_Assertion = (struct zx_sa11_Assertion_s*)el;
+    return 1;
+  case zx_ff12_Assertion_ELEM:
+    if (!x->ff12_Assertion)
+      x->ff12_Assertion = (struct zx_ff12_Assertion_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_FriendlyName_ATTR:  x->FriendlyName = x->gg.attr; break;
-    case zx_Name_ATTR:  x->Name = x->gg.attr; break;
-    case zx_NameFormat_ATTR:  x->NameFormat = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_AttributeValue_ELEM:
-            zx_DEC_sa_AttributeValue(c, (struct zx_sa_AttributeValue_s*)el);
-            if (!x->AttributeValue)
-              x->AttributeValue = (struct zx_sa_AttributeValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_AttributeStatement
-#define EL_STRUCT zx_sa_AttributeStatement_s
-#define EL_NS     sa
-#define EL_TAG    AttributeStatement
-
-/* FUNC(zx_DEC_sa_AttributeStatement) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_AttributeStatement_s* zx_DEC_sa_AttributeStatement(struct zx_ctx* c, struct zx_sa_AttributeStatement_s* x )
+int zx_DEC_ATTR_sa_Assertion(struct zx_ctx* c, struct zx_sa_Assertion_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
+    case zx_ID_ATTR:  x->ID = x->gg.attr; return 1;
+    case zx_IssueInstant_ATTR:  x->IssueInstant = x->gg.attr; return 1;
+    case zx_Version_ATTR:  x->Version = x->gg.attr; return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_Attribute_ELEM:
-            zx_DEC_sa_Attribute(c, (struct zx_sa_Attribute_s*)el);
-            if (!x->Attribute)
-              x->Attribute = (struct zx_sa_Attribute_s*)el;
-            break;
-          case zx_sa_EncryptedAttribute_ELEM:
-            zx_DEC_sa_EncryptedAttribute(c, (struct zx_sa_EncryptedAttribute_s*)el);
-            if (!x->EncryptedAttribute)
-              x->EncryptedAttribute = (struct zx_sa_EncryptedAttribute_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_AttributeValue
-#define EL_STRUCT zx_sa_AttributeValue_s
-#define EL_NS     sa
-#define EL_TAG    AttributeValue
-
-/* FUNC(zx_DEC_sa_AttributeValue) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_AttributeValue_s* zx_DEC_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_s* x )
+int zx_DEC_ELEM_sa_Assertion(struct zx_ctx* c, struct zx_sa_Assertion_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_Issuer_ELEM:
+    if (!x->Issuer)
+      x->Issuer = (struct zx_sa_Issuer_s*)el;
+    return 1;
+  case zx_ds_Signature_ELEM:
+    if (!x->Signature)
+      x->Signature = (struct zx_ds_Signature_s*)el;
+    return 1;
+  case zx_sa_Subject_ELEM:
+    if (!x->Subject)
+      x->Subject = (struct zx_sa_Subject_s*)el;
+    return 1;
+  case zx_sa_Conditions_ELEM:
+    if (!x->Conditions)
+      x->Conditions = (struct zx_sa_Conditions_s*)el;
+    return 1;
+  case zx_sa_Advice_ELEM:
+    if (!x->Advice)
+      x->Advice = (struct zx_sa_Advice_s*)el;
+    return 1;
+  case zx_sa_Statement_ELEM:
+    if (!x->Statement)
+      x->Statement = (struct zx_sa_Statement_s*)el;
+    return 1;
+  case zx_sa_AuthnStatement_ELEM:
+    if (!x->AuthnStatement)
+      x->AuthnStatement = (struct zx_sa_AuthnStatement_s*)el;
+    return 1;
+  case zx_sa_AuthzDecisionStatement_ELEM:
+    if (!x->AuthzDecisionStatement)
+      x->AuthzDecisionStatement = (struct zx_sa_AuthzDecisionStatement_s*)el;
+    return 1;
+  case zx_sa_AttributeStatement_ELEM:
+    if (!x->AttributeStatement)
+      x->AttributeStatement = (struct zx_sa_AttributeStatement_s*)el;
+    return 1;
+  case zx_xasa_XACMLAuthzDecisionStatement_ELEM:
+    if (!x->XACMLAuthzDecisionStatement)
+      x->XACMLAuthzDecisionStatement = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)el;
+    return 1;
+  case zx_xasa_XACMLPolicyStatement_ELEM:
+    if (!x->XACMLPolicyStatement)
+      x->XACMLPolicyStatement = (struct zx_xasa_XACMLPolicyStatement_s*)el;
+    return 1;
+  case zx_xasacd1_XACMLAuthzDecisionStatement_ELEM:
+    if (!x->xasacd1_XACMLAuthzDecisionStatement)
+      x->xasacd1_XACMLAuthzDecisionStatement = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)el;
+    return 1;
+  case zx_xasacd1_XACMLPolicyStatement_ELEM:
+    if (!x->xasacd1_XACMLPolicyStatement)
+      x->xasacd1_XACMLPolicyStatement = (struct zx_xasacd1_XACMLPolicyStatement_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR|zx_xsi_NS:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_di12_ResourceOffering_ELEM:
-            zx_DEC_di12_ResourceOffering(c, (struct zx_di12_ResourceOffering_s*)el);
-            if (!x->ResourceOffering)
-              x->ResourceOffering = (struct zx_di12_ResourceOffering_s*)el;
-            break;
-          case zx_a_EndpointReference_ELEM:
-            zx_DEC_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)el);
-            if (!x->EndpointReference)
-              x->EndpointReference = (struct zx_a_EndpointReference_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_AudienceRestriction
-#define EL_STRUCT zx_sa_AudienceRestriction_s
-#define EL_NS     sa
-#define EL_TAG    AudienceRestriction
-
-/* FUNC(zx_DEC_sa_AudienceRestriction) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_AudienceRestriction_s* zx_DEC_sa_AudienceRestriction(struct zx_ctx* c, struct zx_sa_AudienceRestriction_s* x )
+int zx_DEC_ATTR_sa_Attribute(struct zx_ctx* c, struct zx_sa_Attribute_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
+    case zx_FriendlyName_ATTR:  x->FriendlyName = x->gg.attr; return 1;
+    case zx_Name_ATTR:  x->Name = x->gg.attr; return 1;
+    case zx_NameFormat_ATTR:  x->NameFormat = x->gg.attr; return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_Audience_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Audience)
-              x->Audience = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_AuthnContext
-#define EL_STRUCT zx_sa_AuthnContext_s
-#define EL_NS     sa
-#define EL_TAG    AuthnContext
-
-/* FUNC(zx_DEC_sa_AuthnContext) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_AuthnContext_s* zx_DEC_sa_AuthnContext(struct zx_ctx* c, struct zx_sa_AuthnContext_s* x )
+int zx_DEC_ELEM_sa_Attribute(struct zx_ctx* c, struct zx_sa_Attribute_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_AttributeValue_ELEM:
+    if (!x->AttributeValue)
+      x->AttributeValue = (struct zx_sa_AttributeValue_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_AuthnContextClassRef_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AuthnContextClassRef)
-              x->AuthnContextClassRef = el;
-            break;
-          case zx_sa_AuthnContextDecl_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AuthnContextDecl)
-              x->AuthnContextDecl = el;
-            break;
-          case zx_sa_AuthnContextDeclRef_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AuthnContextDeclRef)
-              x->AuthnContextDeclRef = el;
-            break;
-          case zx_sa_AuthenticatingAuthority_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AuthenticatingAuthority)
-              x->AuthenticatingAuthority = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_AuthnStatement
-#define EL_STRUCT zx_sa_AuthnStatement_s
-#define EL_NS     sa
-#define EL_TAG    AuthnStatement
-
-/* FUNC(zx_DEC_sa_AuthnStatement) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_AuthnStatement_s* zx_DEC_sa_AuthnStatement(struct zx_ctx* c, struct zx_sa_AuthnStatement_s* x )
+int zx_DEC_ATTR_sa_AttributeStatement(struct zx_ctx* c, struct zx_sa_AttributeStatement_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_AuthnInstant_ATTR:  x->AuthnInstant = x->gg.attr; break;
-    case zx_SessionIndex_ATTR:  x->SessionIndex = x->gg.attr; break;
-    case zx_SessionNotOnOrAfter_ATTR:  x->SessionNotOnOrAfter = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_SubjectLocality_ELEM:
-            zx_DEC_sa_SubjectLocality(c, (struct zx_sa_SubjectLocality_s*)el);
-            if (!x->SubjectLocality)
-              x->SubjectLocality = (struct zx_sa_SubjectLocality_s*)el;
-            break;
-          case zx_sa_AuthnContext_ELEM:
-            zx_DEC_sa_AuthnContext(c, (struct zx_sa_AuthnContext_s*)el);
-            if (!x->AuthnContext)
-              x->AuthnContext = (struct zx_sa_AuthnContext_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_AuthzDecisionStatement
-#define EL_STRUCT zx_sa_AuthzDecisionStatement_s
-#define EL_NS     sa
-#define EL_TAG    AuthzDecisionStatement
-
-/* FUNC(zx_DEC_sa_AuthzDecisionStatement) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_AuthzDecisionStatement_s* zx_DEC_sa_AuthzDecisionStatement(struct zx_ctx* c, struct zx_sa_AuthzDecisionStatement_s* x )
+int zx_DEC_ELEM_sa_AttributeStatement(struct zx_ctx* c, struct zx_sa_AttributeStatement_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_Attribute_ELEM:
+    if (!x->Attribute)
+      x->Attribute = (struct zx_sa_Attribute_s*)el;
+    return 1;
+  case zx_sa_EncryptedAttribute_ELEM:
+    if (!x->EncryptedAttribute)
+      x->EncryptedAttribute = (struct zx_sa_EncryptedAttribute_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_Decision_ATTR:  x->Decision = x->gg.attr; break;
-    case zx_Resource_ATTR:  x->Resource = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_Action_ELEM:
-            zx_DEC_sa_Action(c, (struct zx_sa_Action_s*)el);
-            if (!x->Action)
-              x->Action = (struct zx_sa_Action_s*)el;
-            break;
-          case zx_sa_Evidence_ELEM:
-            zx_DEC_sa_Evidence(c, (struct zx_sa_Evidence_s*)el);
-            if (!x->Evidence)
-              x->Evidence = (struct zx_sa_Evidence_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_BaseID
-#define EL_STRUCT zx_sa_BaseID_s
-#define EL_NS     sa
-#define EL_TAG    BaseID
-
-/* FUNC(zx_DEC_sa_BaseID) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_BaseID_s* zx_DEC_sa_BaseID(struct zx_ctx* c, struct zx_sa_BaseID_s* x )
+int zx_DEC_ATTR_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR|zx_xsi_NS:  x->type = x->gg.attr; return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_NameQualifier_ATTR:  x->NameQualifier = x->gg.attr; break;
-    case zx_SPNameQualifier_ATTR:  x->SPNameQualifier = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_Conditions
-#define EL_STRUCT zx_sa_Conditions_s
-#define EL_NS     sa
-#define EL_TAG    Conditions
-
-/* FUNC(zx_DEC_sa_Conditions) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_Conditions_s* zx_DEC_sa_Conditions(struct zx_ctx* c, struct zx_sa_Conditions_s* x )
+int zx_DEC_ELEM_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_di12_ResourceOffering_ELEM:
+    if (!x->ResourceOffering)
+      x->ResourceOffering = (struct zx_di12_ResourceOffering_s*)el;
+    return 1;
+  case zx_a_EndpointReference_ELEM:
+    if (!x->EndpointReference)
+      x->EndpointReference = (struct zx_a_EndpointReference_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_NotBefore_ATTR:  x->NotBefore = x->gg.attr; break;
-    case zx_NotOnOrAfter_ATTR:  x->NotOnOrAfter = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_Condition_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Condition)
-              x->Condition = el;
-            break;
-          case zx_sa_AudienceRestriction_ELEM:
-            zx_DEC_sa_AudienceRestriction(c, (struct zx_sa_AudienceRestriction_s*)el);
-            if (!x->AudienceRestriction)
-              x->AudienceRestriction = (struct zx_sa_AudienceRestriction_s*)el;
-            break;
-          case zx_sa_OneTimeUse_ELEM:
-            zx_DEC_sa_OneTimeUse(c, (struct zx_sa_OneTimeUse_s*)el);
-            if (!x->OneTimeUse)
-              x->OneTimeUse = (struct zx_sa_OneTimeUse_s*)el;
-            break;
-          case zx_sa_ProxyRestriction_ELEM:
-            zx_DEC_sa_ProxyRestriction(c, (struct zx_sa_ProxyRestriction_s*)el);
-            if (!x->ProxyRestriction)
-              x->ProxyRestriction = (struct zx_sa_ProxyRestriction_s*)el;
-            break;
-          case zx_idp_SubjectRestriction_ELEM:
-            zx_DEC_idp_SubjectRestriction(c, (struct zx_idp_SubjectRestriction_s*)el);
-            if (!x->SubjectRestriction)
-              x->SubjectRestriction = (struct zx_idp_SubjectRestriction_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_EncryptedAssertion
-#define EL_STRUCT zx_sa_EncryptedAssertion_s
-#define EL_NS     sa
-#define EL_TAG    EncryptedAssertion
-
-/* FUNC(zx_DEC_sa_EncryptedAssertion) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_EncryptedAssertion_s* zx_DEC_sa_EncryptedAssertion(struct zx_ctx* c, struct zx_sa_EncryptedAssertion_s* x )
+int zx_DEC_ATTR_sa_AudienceRestriction(struct zx_ctx* c, struct zx_sa_AudienceRestriction_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_xenc_EncryptedData_ELEM:
-            zx_DEC_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)el);
-            if (!x->EncryptedData)
-              x->EncryptedData = (struct zx_xenc_EncryptedData_s*)el;
-            break;
-          case zx_xenc_EncryptedKey_ELEM:
-            zx_DEC_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)el);
-            if (!x->EncryptedKey)
-              x->EncryptedKey = (struct zx_xenc_EncryptedKey_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_EncryptedAttribute
-#define EL_STRUCT zx_sa_EncryptedAttribute_s
-#define EL_NS     sa
-#define EL_TAG    EncryptedAttribute
-
-/* FUNC(zx_DEC_sa_EncryptedAttribute) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_EncryptedAttribute_s* zx_DEC_sa_EncryptedAttribute(struct zx_ctx* c, struct zx_sa_EncryptedAttribute_s* x )
+int zx_DEC_ELEM_sa_AudienceRestriction(struct zx_ctx* c, struct zx_sa_AudienceRestriction_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_Audience_ELEM:
+    if (!x->Audience)
+      x->Audience = el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_xenc_EncryptedData_ELEM:
-            zx_DEC_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)el);
-            if (!x->EncryptedData)
-              x->EncryptedData = (struct zx_xenc_EncryptedData_s*)el;
-            break;
-          case zx_xenc_EncryptedKey_ELEM:
-            zx_DEC_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)el);
-            if (!x->EncryptedKey)
-              x->EncryptedKey = (struct zx_xenc_EncryptedKey_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_EncryptedID
-#define EL_STRUCT zx_sa_EncryptedID_s
-#define EL_NS     sa
-#define EL_TAG    EncryptedID
-
-/* FUNC(zx_DEC_sa_EncryptedID) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_EncryptedID_s* zx_DEC_sa_EncryptedID(struct zx_ctx* c, struct zx_sa_EncryptedID_s* x )
+int zx_DEC_ATTR_sa_AuthnContext(struct zx_ctx* c, struct zx_sa_AuthnContext_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_xenc_EncryptedData_ELEM:
-            zx_DEC_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)el);
-            if (!x->EncryptedData)
-              x->EncryptedData = (struct zx_xenc_EncryptedData_s*)el;
-            break;
-          case zx_xenc_EncryptedKey_ELEM:
-            zx_DEC_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)el);
-            if (!x->EncryptedKey)
-              x->EncryptedKey = (struct zx_xenc_EncryptedKey_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_Evidence
-#define EL_STRUCT zx_sa_Evidence_s
-#define EL_NS     sa
-#define EL_TAG    Evidence
-
-/* FUNC(zx_DEC_sa_Evidence) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_Evidence_s* zx_DEC_sa_Evidence(struct zx_ctx* c, struct zx_sa_Evidence_s* x )
+int zx_DEC_ELEM_sa_AuthnContext(struct zx_ctx* c, struct zx_sa_AuthnContext_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_AuthnContextClassRef_ELEM:
+    if (!x->AuthnContextClassRef)
+      x->AuthnContextClassRef = el;
+    return 1;
+  case zx_sa_AuthnContextDecl_ELEM:
+    if (!x->AuthnContextDecl)
+      x->AuthnContextDecl = el;
+    return 1;
+  case zx_sa_AuthnContextDeclRef_ELEM:
+    if (!x->AuthnContextDeclRef)
+      x->AuthnContextDeclRef = el;
+    return 1;
+  case zx_sa_AuthenticatingAuthority_ELEM:
+    if (!x->AuthenticatingAuthority)
+      x->AuthenticatingAuthority = el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_AssertionIDRef_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AssertionIDRef)
-              x->AssertionIDRef = el;
-            break;
-          case zx_sa_AssertionURIRef_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AssertionURIRef)
-              x->AssertionURIRef = el;
-            break;
-          case zx_sa_Assertion_ELEM:
-            zx_DEC_sa_Assertion(c, (struct zx_sa_Assertion_s*)el);
-            if (!x->Assertion)
-              x->Assertion = (struct zx_sa_Assertion_s*)el;
-            break;
-          case zx_sa_EncryptedAssertion_ELEM:
-            zx_DEC_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)el);
-            if (!x->EncryptedAssertion)
-              x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_Issuer
-#define EL_STRUCT zx_sa_Issuer_s
-#define EL_NS     sa
-#define EL_TAG    Issuer
-
-/* FUNC(zx_DEC_sa_Issuer) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_Issuer_s* zx_DEC_sa_Issuer(struct zx_ctx* c, struct zx_sa_Issuer_s* x )
+int zx_DEC_ATTR_sa_AuthnStatement(struct zx_ctx* c, struct zx_sa_AuthnStatement_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
+    case zx_AuthnInstant_ATTR:  x->AuthnInstant = x->gg.attr; return 1;
+    case zx_SessionIndex_ATTR:  x->SessionIndex = x->gg.attr; return 1;
+    case zx_SessionNotOnOrAfter_ATTR:  x->SessionNotOnOrAfter = x->gg.attr; return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_Format_ATTR:  x->Format = x->gg.attr; break;
-    case zx_NameQualifier_ATTR:  x->NameQualifier = x->gg.attr; break;
-    case zx_SPNameQualifier_ATTR:  x->SPNameQualifier = x->gg.attr; break;
-    case zx_SPProvidedID_ATTR:  x->SPProvidedID = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_NameID
-#define EL_STRUCT zx_sa_NameID_s
-#define EL_NS     sa
-#define EL_TAG    NameID
-
-/* FUNC(zx_DEC_sa_NameID) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_NameID_s* zx_DEC_sa_NameID(struct zx_ctx* c, struct zx_sa_NameID_s* x )
+int zx_DEC_ELEM_sa_AuthnStatement(struct zx_ctx* c, struct zx_sa_AuthnStatement_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_SubjectLocality_ELEM:
+    if (!x->SubjectLocality)
+      x->SubjectLocality = (struct zx_sa_SubjectLocality_s*)el;
+    return 1;
+  case zx_sa_AuthnContext_ELEM:
+    if (!x->AuthnContext)
+      x->AuthnContext = (struct zx_sa_AuthnContext_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_Format_ATTR:  x->Format = x->gg.attr; break;
-    case zx_NameQualifier_ATTR:  x->NameQualifier = x->gg.attr; break;
-    case zx_SPNameQualifier_ATTR:  x->SPNameQualifier = x->gg.attr; break;
-    case zx_SPProvidedID_ATTR:  x->SPProvidedID = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_OneTimeUse
-#define EL_STRUCT zx_sa_OneTimeUse_s
-#define EL_NS     sa
-#define EL_TAG    OneTimeUse
-
-/* FUNC(zx_DEC_sa_OneTimeUse) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_OneTimeUse_s* zx_DEC_sa_OneTimeUse(struct zx_ctx* c, struct zx_sa_OneTimeUse_s* x )
+int zx_DEC_ATTR_sa_AuthzDecisionStatement(struct zx_ctx* c, struct zx_sa_AuthzDecisionStatement_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
+    case zx_Decision_ATTR:  x->Decision = x->gg.attr; return 1;
+    case zx_Resource_ATTR:  x->Resource = x->gg.attr; return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_ProxyRestriction
-#define EL_STRUCT zx_sa_ProxyRestriction_s
-#define EL_NS     sa
-#define EL_TAG    ProxyRestriction
-
-/* FUNC(zx_DEC_sa_ProxyRestriction) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_ProxyRestriction_s* zx_DEC_sa_ProxyRestriction(struct zx_ctx* c, struct zx_sa_ProxyRestriction_s* x )
+int zx_DEC_ELEM_sa_AuthzDecisionStatement(struct zx_ctx* c, struct zx_sa_AuthzDecisionStatement_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_Action_ELEM:
+    if (!x->Action)
+      x->Action = (struct zx_sa_Action_s*)el;
+    return 1;
+  case zx_sa_Evidence_ELEM:
+    if (!x->Evidence)
+      x->Evidence = (struct zx_sa_Evidence_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_Count_ATTR:  x->Count = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_Audience_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Audience)
-              x->Audience = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_Statement
-#define EL_STRUCT zx_sa_Statement_s
-#define EL_NS     sa
-#define EL_TAG    Statement
-
-/* FUNC(zx_DEC_sa_Statement) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_Statement_s* zx_DEC_sa_Statement(struct zx_ctx* c, struct zx_sa_Statement_s* x )
+int zx_DEC_ATTR_sa_BaseID(struct zx_ctx* c, struct zx_sa_BaseID_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
+    case zx_NameQualifier_ATTR:  x->NameQualifier = x->gg.attr; return 1;
+    case zx_SPNameQualifier_ATTR:  x->SPNameQualifier = x->gg.attr; return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR|zx_xsi_NS:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_xac_Response_ELEM:
-            zx_DEC_xac_Response(c, (struct zx_xac_Response_s*)el);
-            if (!x->Response)
-              x->Response = (struct zx_xac_Response_s*)el;
-            break;
-          case zx_xac_Request_ELEM:
-            zx_DEC_xac_Request(c, (struct zx_xac_Request_s*)el);
-            if (!x->Request)
-              x->Request = (struct zx_xac_Request_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_Subject
-#define EL_STRUCT zx_sa_Subject_s
-#define EL_NS     sa
-#define EL_TAG    Subject
-
-/* FUNC(zx_DEC_sa_Subject) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_Subject_s* zx_DEC_sa_Subject(struct zx_ctx* c, struct zx_sa_Subject_s* x )
+int zx_DEC_ELEM_sa_BaseID(struct zx_ctx* c, struct zx_sa_BaseID_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_BaseID_ELEM:
-            zx_DEC_sa_BaseID(c, (struct zx_sa_BaseID_s*)el);
-            if (!x->BaseID)
-              x->BaseID = (struct zx_sa_BaseID_s*)el;
-            break;
-          case zx_sa_NameID_ELEM:
-            zx_DEC_sa_NameID(c, (struct zx_sa_NameID_s*)el);
-            if (!x->NameID)
-              x->NameID = (struct zx_sa_NameID_s*)el;
-            break;
-          case zx_sa_EncryptedID_ELEM:
-            zx_DEC_sa_EncryptedID(c, (struct zx_sa_EncryptedID_s*)el);
-            if (!x->EncryptedID)
-              x->EncryptedID = (struct zx_sa_EncryptedID_s*)el;
-            break;
-          case zx_sa_SubjectConfirmation_ELEM:
-            zx_DEC_sa_SubjectConfirmation(c, (struct zx_sa_SubjectConfirmation_s*)el);
-            if (!x->SubjectConfirmation)
-              x->SubjectConfirmation = (struct zx_sa_SubjectConfirmation_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_SubjectConfirmation
-#define EL_STRUCT zx_sa_SubjectConfirmation_s
-#define EL_NS     sa
-#define EL_TAG    SubjectConfirmation
-
-/* FUNC(zx_DEC_sa_SubjectConfirmation) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_SubjectConfirmation_s* zx_DEC_sa_SubjectConfirmation(struct zx_ctx* c, struct zx_sa_SubjectConfirmation_s* x )
+int zx_DEC_ATTR_sa_Conditions(struct zx_ctx* c, struct zx_sa_Conditions_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
+    case zx_NotBefore_ATTR:  x->NotBefore = x->gg.attr; return 1;
+    case zx_NotOnOrAfter_ATTR:  x->NotOnOrAfter = x->gg.attr; return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_Method_ATTR:  x->Method = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_BaseID_ELEM:
-            zx_DEC_sa_BaseID(c, (struct zx_sa_BaseID_s*)el);
-            if (!x->BaseID)
-              x->BaseID = (struct zx_sa_BaseID_s*)el;
-            break;
-          case zx_sa_NameID_ELEM:
-            zx_DEC_sa_NameID(c, (struct zx_sa_NameID_s*)el);
-            if (!x->NameID)
-              x->NameID = (struct zx_sa_NameID_s*)el;
-            break;
-          case zx_sa_EncryptedID_ELEM:
-            zx_DEC_sa_EncryptedID(c, (struct zx_sa_EncryptedID_s*)el);
-            if (!x->EncryptedID)
-              x->EncryptedID = (struct zx_sa_EncryptedID_s*)el;
-            break;
-          case zx_sa_SubjectConfirmationData_ELEM:
-            zx_DEC_sa_SubjectConfirmationData(c, (struct zx_sa_SubjectConfirmationData_s*)el);
-            if (!x->SubjectConfirmationData)
-              x->SubjectConfirmationData = (struct zx_sa_SubjectConfirmationData_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_SubjectConfirmationData
-#define EL_STRUCT zx_sa_SubjectConfirmationData_s
-#define EL_NS     sa
-#define EL_TAG    SubjectConfirmationData
-
-/* FUNC(zx_DEC_sa_SubjectConfirmationData) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_SubjectConfirmationData_s* zx_DEC_sa_SubjectConfirmationData(struct zx_ctx* c, struct zx_sa_SubjectConfirmationData_s* x )
+int zx_DEC_ELEM_sa_Conditions(struct zx_ctx* c, struct zx_sa_Conditions_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_Condition_ELEM:
+    if (!x->Condition)
+      x->Condition = el;
+    return 1;
+  case zx_sa_AudienceRestriction_ELEM:
+    if (!x->AudienceRestriction)
+      x->AudienceRestriction = (struct zx_sa_AudienceRestriction_s*)el;
+    return 1;
+  case zx_sa_OneTimeUse_ELEM:
+    if (!x->OneTimeUse)
+      x->OneTimeUse = (struct zx_sa_OneTimeUse_s*)el;
+    return 1;
+  case zx_sa_ProxyRestriction_ELEM:
+    if (!x->ProxyRestriction)
+      x->ProxyRestriction = (struct zx_sa_ProxyRestriction_s*)el;
+    return 1;
+  case zx_idp_SubjectRestriction_ELEM:
+    if (!x->SubjectRestriction)
+      x->SubjectRestriction = (struct zx_idp_SubjectRestriction_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_Address_ATTR:  x->Address = x->gg.attr; break;
-    case zx_InResponseTo_ATTR:  x->InResponseTo = x->gg.attr; break;
-    case zx_NotBefore_ATTR:  x->NotBefore = x->gg.attr; break;
-    case zx_NotOnOrAfter_ATTR:  x->NotOnOrAfter = x->gg.attr; break;
-    case zx_Recipient_ATTR:  x->Recipient = x->gg.attr; break;
-    case zx_type_ATTR|zx_xsi_NS:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_ds_KeyInfo_ELEM:
-            zx_DEC_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)el);
-            if (!x->KeyInfo)
-              x->KeyInfo = (struct zx_ds_KeyInfo_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_SubjectLocality
-#define EL_STRUCT zx_sa_SubjectLocality_s
-#define EL_NS     sa
-#define EL_TAG    SubjectLocality
-
-/* FUNC(zx_DEC_sa_SubjectLocality) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_SubjectLocality_s* zx_DEC_sa_SubjectLocality(struct zx_ctx* c, struct zx_sa_SubjectLocality_s* x )
+int zx_DEC_ATTR_sa_EncryptedAssertion(struct zx_ctx* c, struct zx_sa_EncryptedAssertion_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_Address_ATTR:  x->Address = x->gg.attr; break;
-    case zx_DNSName_ATTR:  x->DNSName = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   sa_TestElem
-#define EL_STRUCT zx_sa_TestElem_s
-#define EL_NS     sa
-#define EL_TAG    TestElem
-
-/* FUNC(zx_DEC_sa_TestElem) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_sa_TestElem_s* zx_DEC_sa_TestElem(struct zx_ctx* c, struct zx_sa_TestElem_s* x )
+int zx_DEC_ELEM_sa_EncryptedAssertion(struct zx_ctx* c, struct zx_sa_EncryptedAssertion_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_xenc_EncryptedData_ELEM:
+    if (!x->EncryptedData)
+      x->EncryptedData = (struct zx_xenc_EncryptedData_s*)el;
+    return 1;
+  case zx_xenc_EncryptedKey_ELEM:
+    if (!x->EncryptedKey)
+      x->EncryptedKey = (struct zx_xenc_EncryptedKey_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_AttributeValue_ELEM:
-            zx_DEC_sa_AttributeValue(c, (struct zx_sa_AttributeValue_s*)el);
-            if (!x->AttributeValue)
-              x->AttributeValue = (struct zx_sa_AttributeValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
+
+int zx_DEC_ATTR_sa_EncryptedAttribute(struct zx_ctx* c, struct zx_sa_EncryptedAttribute_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_EncryptedAttribute(struct zx_ctx* c, struct zx_sa_EncryptedAttribute_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_xenc_EncryptedData_ELEM:
+    if (!x->EncryptedData)
+      x->EncryptedData = (struct zx_xenc_EncryptedData_s*)el;
+    return 1;
+  case zx_xenc_EncryptedKey_ELEM:
+    if (!x->EncryptedKey)
+      x->EncryptedKey = (struct zx_xenc_EncryptedKey_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_sa_EncryptedID(struct zx_ctx* c, struct zx_sa_EncryptedID_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_EncryptedID(struct zx_ctx* c, struct zx_sa_EncryptedID_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_xenc_EncryptedData_ELEM:
+    if (!x->EncryptedData)
+      x->EncryptedData = (struct zx_xenc_EncryptedData_s*)el;
+    return 1;
+  case zx_xenc_EncryptedKey_ELEM:
+    if (!x->EncryptedKey)
+      x->EncryptedKey = (struct zx_xenc_EncryptedKey_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_sa_Evidence(struct zx_ctx* c, struct zx_sa_Evidence_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_Evidence(struct zx_ctx* c, struct zx_sa_Evidence_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_AssertionIDRef_ELEM:
+    if (!x->AssertionIDRef)
+      x->AssertionIDRef = el;
+    return 1;
+  case zx_sa_AssertionURIRef_ELEM:
+    if (!x->AssertionURIRef)
+      x->AssertionURIRef = el;
+    return 1;
+  case zx_sa_Assertion_ELEM:
+    if (!x->Assertion)
+      x->Assertion = (struct zx_sa_Assertion_s*)el;
+    return 1;
+  case zx_sa_EncryptedAssertion_ELEM:
+    if (!x->EncryptedAssertion)
+      x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_sa_Issuer(struct zx_ctx* c, struct zx_sa_Issuer_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_Format_ATTR:  x->Format = x->gg.attr; return 1;
+    case zx_NameQualifier_ATTR:  x->NameQualifier = x->gg.attr; return 1;
+    case zx_SPNameQualifier_ATTR:  x->SPNameQualifier = x->gg.attr; return 1;
+    case zx_SPProvidedID_ATTR:  x->SPProvidedID = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_Issuer(struct zx_ctx* c, struct zx_sa_Issuer_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_sa_NameID(struct zx_ctx* c, struct zx_sa_NameID_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_Format_ATTR:  x->Format = x->gg.attr; return 1;
+    case zx_NameQualifier_ATTR:  x->NameQualifier = x->gg.attr; return 1;
+    case zx_SPNameQualifier_ATTR:  x->SPNameQualifier = x->gg.attr; return 1;
+    case zx_SPProvidedID_ATTR:  x->SPProvidedID = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_NameID(struct zx_ctx* c, struct zx_sa_NameID_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_sa_OneTimeUse(struct zx_ctx* c, struct zx_sa_OneTimeUse_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_OneTimeUse(struct zx_ctx* c, struct zx_sa_OneTimeUse_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_sa_ProxyRestriction(struct zx_ctx* c, struct zx_sa_ProxyRestriction_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_Count_ATTR:  x->Count = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_ProxyRestriction(struct zx_ctx* c, struct zx_sa_ProxyRestriction_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_Audience_ELEM:
+    if (!x->Audience)
+      x->Audience = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_sa_Statement(struct zx_ctx* c, struct zx_sa_Statement_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR|zx_xsi_NS:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_Statement(struct zx_ctx* c, struct zx_sa_Statement_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_xac_Response_ELEM:
+    if (!x->Response)
+      x->Response = (struct zx_xac_Response_s*)el;
+    return 1;
+  case zx_xac_Request_ELEM:
+    if (!x->Request)
+      x->Request = (struct zx_xac_Request_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_sa_Subject(struct zx_ctx* c, struct zx_sa_Subject_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_Subject(struct zx_ctx* c, struct zx_sa_Subject_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_BaseID_ELEM:
+    if (!x->BaseID)
+      x->BaseID = (struct zx_sa_BaseID_s*)el;
+    return 1;
+  case zx_sa_NameID_ELEM:
+    if (!x->NameID)
+      x->NameID = (struct zx_sa_NameID_s*)el;
+    return 1;
+  case zx_sa_EncryptedID_ELEM:
+    if (!x->EncryptedID)
+      x->EncryptedID = (struct zx_sa_EncryptedID_s*)el;
+    return 1;
+  case zx_sa_SubjectConfirmation_ELEM:
+    if (!x->SubjectConfirmation)
+      x->SubjectConfirmation = (struct zx_sa_SubjectConfirmation_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_sa_SubjectConfirmation(struct zx_ctx* c, struct zx_sa_SubjectConfirmation_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_Method_ATTR:  x->Method = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_SubjectConfirmation(struct zx_ctx* c, struct zx_sa_SubjectConfirmation_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_BaseID_ELEM:
+    if (!x->BaseID)
+      x->BaseID = (struct zx_sa_BaseID_s*)el;
+    return 1;
+  case zx_sa_NameID_ELEM:
+    if (!x->NameID)
+      x->NameID = (struct zx_sa_NameID_s*)el;
+    return 1;
+  case zx_sa_EncryptedID_ELEM:
+    if (!x->EncryptedID)
+      x->EncryptedID = (struct zx_sa_EncryptedID_s*)el;
+    return 1;
+  case zx_sa_SubjectConfirmationData_ELEM:
+    if (!x->SubjectConfirmationData)
+      x->SubjectConfirmationData = (struct zx_sa_SubjectConfirmationData_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_sa_SubjectConfirmationData(struct zx_ctx* c, struct zx_sa_SubjectConfirmationData_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_Address_ATTR:  x->Address = x->gg.attr; return 1;
+    case zx_InResponseTo_ATTR:  x->InResponseTo = x->gg.attr; return 1;
+    case zx_NotBefore_ATTR:  x->NotBefore = x->gg.attr; return 1;
+    case zx_NotOnOrAfter_ATTR:  x->NotOnOrAfter = x->gg.attr; return 1;
+    case zx_Recipient_ATTR:  x->Recipient = x->gg.attr; return 1;
+    case zx_type_ATTR|zx_xsi_NS:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_SubjectConfirmationData(struct zx_ctx* c, struct zx_sa_SubjectConfirmationData_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_ds_KeyInfo_ELEM:
+    if (!x->KeyInfo)
+      x->KeyInfo = (struct zx_ds_KeyInfo_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_sa_SubjectLocality(struct zx_ctx* c, struct zx_sa_SubjectLocality_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_Address_ATTR:  x->Address = x->gg.attr; return 1;
+    case zx_DNSName_ATTR:  x->DNSName = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_SubjectLocality(struct zx_ctx* c, struct zx_sa_SubjectLocality_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_sa_TestElem(struct zx_ctx* c, struct zx_sa_TestElem_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_sa_TestElem(struct zx_ctx* c, struct zx_sa_TestElem_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_AttributeValue_ELEM:
+    if (!x->AttributeValue)
+      x->AttributeValue = (struct zx_sa_AttributeValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
 
 
 /* EOF -- c/zx-sa-dec.c */

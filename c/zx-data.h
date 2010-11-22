@@ -79,16 +79,16 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
+struct zx_ns_s* zx_url2ns(const char* str, unsigned int len);
+
 #define zx_N_ATTR 333
 extern struct zx_at_tok zx_at_tab[zx__ATTR_MAX]; /* gperf generated, see zx-attrs.c */
 struct zx_at_tok* zx_attr2tok(const char* s, unsigned int len);
 
+#define zx_N_ELEM 1336
+#define zx_N_EL_DESC (1147 + 499)
 extern struct zx_el_tok zx_el_tab[zx__ELEM_MAX]; /* gperf generated, see zx-elems.c */
 struct zx_el_tok* zx_elem2tok(const char* s, unsigned int len);
-
-int zx_attr_lookup(struct zx_ctx* c, struct zx_elem_s* x, const char* func);
-struct zx_elem_s* zx_elem_lookup(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp);
-struct zx_ns_s* zx_url2ns(const char* str, unsigned int len);
 
 /* -------------------------- root -------------------------- */
 /* refby( ) */
@@ -141,7 +141,8 @@ struct zx_root_s {
   struct zx_m20_EntitiesDescriptor_s* m20_EntitiesDescriptor;	/* {0,-1}  */
 };
 
-struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_root_s* x, int n_decode);
+int zx_DEC_ATTR_root(struct zx_ctx* c, struct zx_root_s* x);
+int zx_DEC_ELEM_root(struct zx_ctx* c, struct zx_root_s* x);
 struct zx_root_s* zx_NEW_root(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_root(struct zx_ctx* c, struct zx_root_s* x);
 char* zx_ENC_SO_root(struct zx_ctx* c, struct zx_root_s* x, char* p);
@@ -489,8 +490,10 @@ void zx_root_REV_m20_EntitiesDescriptor(struct zx_root_s* x);
 int zx_LEN_SO_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, int simplelen, struct zx_ns_s* ns);
 char* zx_ENC_SO_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p, char* simpletag, int simplelen, struct zx_ns_s* ns);
 struct zx_str* zx_EASY_ENC_SO_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, char* simpletag, int simplelen, struct zx_ns_s* ns);
-struct zx_elem_s* zx_DEC_simple_elem(struct zx_ctx* c, struct zx_elem_s* el);
-struct zx_elem_s* zx_DEC_wrong_elem(struct zx_ctx* c, struct zx_elem_s* el);
+int zx_DEC_ATTR_simple_elem(struct zx_ctx* c, struct zx_elem_s* el);
+int zx_DEC_ELEM_simple_elem(struct zx_ctx* c, struct zx_elem_s* el);
+int zx_DEC_ATTR_wrong_elem(struct zx_ctx* c, struct zx_elem_s* el);
+int zx_DEC_ELEM_wrong_elem(struct zx_ctx* c, struct zx_elem_s* el);
 void zx_DUP_STRS_simple_elem(struct zx_ctx* c, struct zx_elem_s* x);
 struct zx_elem_s* zx_DEEP_CLONE_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, int dup_strs);
 int zx_WALK_SO_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, void* ctx, int (*callback)(struct zx_str* node, void* ctx));

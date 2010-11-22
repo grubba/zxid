@@ -1,10 +1,26 @@
 #!/usr/bin/perl
 # 2.2.2010, Sampo Kellomaki (sampo@iki.fi)
+# 20.11.2010, added Algorithm::Diff based ediff support --Sampo
 # $Id$
 #
-# Usage: ./diffy.pl file1 file2
+# See also: man diff, diff -u, man sdiff, sdiff -b -w 270, perldoc Algorithm::Diff
+#           man cmp, cmp -b
+#
+# Usage: ./diffy.pl [-ediff] file1 file2
+#   -ediff tries to use Algorithm::Diff to produce colorized char-by-char diffs a'la emacs ediff
 
-sub diff {
+$ediff = 1,shift if $ARGV[0] eq '-ediff';
+
+$ascii = 2;
+# See https://wiki.archlinux.org/index.php/Color_Bash_Prompt
+#sub red   { $ascii > 1 ? "\e[1;31m$_[0]\e[0m" : $_[0]; }  # red text
+#sub green { $ascii > 1 ? "\e[1;32m$_[0]\e[0m" : $_[0]; }
+#sub red   { $ascii > 1 ? "\e[1;41m$_[0]\e[0m" : $_[0]; }   # red background, black bold text
+#sub green { $ascii > 1 ? "\e[1;42m$_[0]\e[0m" : $_[0]; }
+sub redy   { $ascii > 1 ? "\e[41m$_[0]\e[0m" : $_[0]; }   # red background, black text (no bold)
+sub greeny { $ascii > 1 ? "\e[42m$_[0]\e[0m" : $_[0]; }
+
+sub simple_line_diff {
     my ($a, $b) = @_;
     my @a = split /\n/, $a;
     my @b = split /\n/, $b;
@@ -78,25 +94,53 @@ sub char_diff {
     print "$diff_line\n";
 }
 
+sub ediffy {
+    my ($data1,$data2) = @_;
+    require Algorithm::Diff;
+    my @seq1 = split //, $data1;
+    my @seq2 = split //, $data2;
+    my $diff = Algorithm::Diff->new( \@seq1, \@seq2 );
+    
+    $diff->Base(1);   # Return line numbers, not indices
+    while(  $diff->Next()  ) {
+        if (@sames = $diff->Same()) {
+	    print @sames;
+	    next;
+	}
+        if (@dels = $diff->Items(1)) {
+	    print redy(join '', @dels);
+	}
+        if (@adds = $diff->Items(2)) {
+	    print greeny(join '', @adds);
+	}
+    }
+}
+
 sub readall {
     my ($f) = @_;
     my ($pkg, $srcfile, $line) = caller;
     undef $/;         # Read all in, without breaking on lines
     open F, "<$f" or die "$srcfile:$line: Cant read($f): $!";
     binmode F;
-    flock F, 1;
+    #flock F, 1;
     my $x = <F>;
-    flock F, 8;
+    #flock F, 8;
     close F;
     return $x;
 }
 
 ($file1, $file2) = @ARGV;
 
+#warn "file1($file1) file2($file2)";
+
 $data1 = readall $file1;
 $data2 = readall $file2;
 
-char_diff($data1, $data2);
-#diff($data1, $data2);
+if ($ediff) {
+    ediffy($data1,$data2);
+} else {
+    char_diff($data1, $data2);
+    #simple_line_diff($data1, $data2);
+}
 
 __END__

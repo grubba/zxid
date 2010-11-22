@@ -22,6 +22,7 @@
  ** 23.9.2006, added collection of WO information --Sampo
  ** 21.6.2007, improved handling of undeclared namespace prefixes --Sampo
  ** 27.10.2010, CSE refactoring, re-engineered namespace handling --Sampo
+ ** 21.11.2010, re-engineered to extract most code to zx_DEC_elem, leaving just switches --Sampo
  **
  ** N.B: This template is meant to be processed by pd/xsd2sg.pl. Beware
  ** of special markers that xsd2sg.pl expects to find and understand.
@@ -37,1885 +38,1181 @@
 
 
 
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   e_Body
-#define EL_STRUCT zx_e_Body_s
-#define EL_NS     e
-#define EL_TAG    Body
-
-/* FUNC(zx_DEC_e_Body) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_e_Body_s* zx_DEC_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x )
+int zx_DEC_ATTR_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
+    case zx_id_ATTR:  x->id = x->gg.attr; return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_id_ATTR:  x->id = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sp_ArtifactResolve_ELEM:
-            zx_DEC_sp_ArtifactResolve(c, (struct zx_sp_ArtifactResolve_s*)el);
-            if (!x->ArtifactResolve)
-              x->ArtifactResolve = (struct zx_sp_ArtifactResolve_s*)el;
-            break;
-          case zx_sp_ArtifactResponse_ELEM:
-            zx_DEC_sp_ArtifactResponse(c, (struct zx_sp_ArtifactResponse_s*)el);
-            if (!x->ArtifactResponse)
-              x->ArtifactResponse = (struct zx_sp_ArtifactResponse_s*)el;
-            break;
-          case zx_sp_ManageNameIDRequest_ELEM:
-            zx_DEC_sp_ManageNameIDRequest(c, (struct zx_sp_ManageNameIDRequest_s*)el);
-            if (!x->ManageNameIDRequest)
-              x->ManageNameIDRequest = (struct zx_sp_ManageNameIDRequest_s*)el;
-            break;
-          case zx_sp_ManageNameIDResponse_ELEM:
-            zx_DEC_sp_ManageNameIDResponse(c, (struct zx_sp_ManageNameIDResponse_s*)el);
-            if (!x->ManageNameIDResponse)
-              x->ManageNameIDResponse = (struct zx_sp_ManageNameIDResponse_s*)el;
-            break;
-          case zx_sp_LogoutRequest_ELEM:
-            zx_DEC_sp_LogoutRequest(c, (struct zx_sp_LogoutRequest_s*)el);
-            if (!x->LogoutRequest)
-              x->LogoutRequest = (struct zx_sp_LogoutRequest_s*)el;
-            break;
-          case zx_sp_LogoutResponse_ELEM:
-            zx_DEC_sp_LogoutResponse(c, (struct zx_sp_LogoutResponse_s*)el);
-            if (!x->LogoutResponse)
-              x->LogoutResponse = (struct zx_sp_LogoutResponse_s*)el;
-            break;
-          case zx_sp_NameIDMappingRequest_ELEM:
-            zx_DEC_sp_NameIDMappingRequest(c, (struct zx_sp_NameIDMappingRequest_s*)el);
-            if (!x->NameIDMappingRequest)
-              x->NameIDMappingRequest = (struct zx_sp_NameIDMappingRequest_s*)el;
-            break;
-          case zx_sp_NameIDMappingResponse_ELEM:
-            zx_DEC_sp_NameIDMappingResponse(c, (struct zx_sp_NameIDMappingResponse_s*)el);
-            if (!x->NameIDMappingResponse)
-              x->NameIDMappingResponse = (struct zx_sp_NameIDMappingResponse_s*)el;
-            break;
-          case zx_sp_AttributeQuery_ELEM:
-            zx_DEC_sp_AttributeQuery(c, (struct zx_sp_AttributeQuery_s*)el);
-            if (!x->AttributeQuery)
-              x->AttributeQuery = (struct zx_sp_AttributeQuery_s*)el;
-            break;
-          case zx_sp_AuthnQuery_ELEM:
-            zx_DEC_sp_AuthnQuery(c, (struct zx_sp_AuthnQuery_s*)el);
-            if (!x->AuthnQuery)
-              x->AuthnQuery = (struct zx_sp_AuthnQuery_s*)el;
-            break;
-          case zx_sp_AuthzDecisionQuery_ELEM:
-            zx_DEC_sp_AuthzDecisionQuery(c, (struct zx_sp_AuthzDecisionQuery_s*)el);
-            if (!x->AuthzDecisionQuery)
-              x->AuthzDecisionQuery = (struct zx_sp_AuthzDecisionQuery_s*)el;
-            break;
-          case zx_sp_AssertionIDRequest_ELEM:
-            zx_DEC_sp_AssertionIDRequest(c, (struct zx_sp_AssertionIDRequest_s*)el);
-            if (!x->AssertionIDRequest)
-              x->AssertionIDRequest = (struct zx_sp_AssertionIDRequest_s*)el;
-            break;
-          case zx_sp_Response_ELEM:
-            zx_DEC_sp_Response(c, (struct zx_sp_Response_s*)el);
-            if (!x->Response)
-              x->Response = (struct zx_sp_Response_s*)el;
-            break;
-          case zx_sp_AuthnRequest_ELEM:
-            zx_DEC_sp_AuthnRequest(c, (struct zx_sp_AuthnRequest_s*)el);
-            if (!x->AuthnRequest)
-              x->AuthnRequest = (struct zx_sp_AuthnRequest_s*)el;
-            break;
-          case zx_sp11_Request_ELEM:
-            zx_DEC_sp11_Request(c, (struct zx_sp11_Request_s*)el);
-            if (!x->Request)
-              x->Request = (struct zx_sp11_Request_s*)el;
-            break;
-          case zx_sp11_Response_ELEM:
-            zx_DEC_sp11_Response(c, (struct zx_sp11_Response_s*)el);
-            if (!x->sp11_Response)
-              x->sp11_Response = (struct zx_sp11_Response_s*)el;
-            break;
-          case zx_ff12_RegisterNameIdentifierRequest_ELEM:
-            zx_DEC_ff12_RegisterNameIdentifierRequest(c, (struct zx_ff12_RegisterNameIdentifierRequest_s*)el);
-            if (!x->RegisterNameIdentifierRequest)
-              x->RegisterNameIdentifierRequest = (struct zx_ff12_RegisterNameIdentifierRequest_s*)el;
-            break;
-          case zx_ff12_RegisterNameIdentifierResponse_ELEM:
-            zx_DEC_ff12_RegisterNameIdentifierResponse(c, (struct zx_ff12_RegisterNameIdentifierResponse_s*)el);
-            if (!x->RegisterNameIdentifierResponse)
-              x->RegisterNameIdentifierResponse = (struct zx_ff12_RegisterNameIdentifierResponse_s*)el;
-            break;
-          case zx_ff12_FederationTerminationNotification_ELEM:
-            zx_DEC_ff12_FederationTerminationNotification(c, (struct zx_ff12_FederationTerminationNotification_s*)el);
-            if (!x->FederationTerminationNotification)
-              x->FederationTerminationNotification = (struct zx_ff12_FederationTerminationNotification_s*)el;
-            break;
-          case zx_ff12_LogoutRequest_ELEM:
-            zx_DEC_ff12_LogoutRequest(c, (struct zx_ff12_LogoutRequest_s*)el);
-            if (!x->ff12_LogoutRequest)
-              x->ff12_LogoutRequest = (struct zx_ff12_LogoutRequest_s*)el;
-            break;
-          case zx_ff12_LogoutResponse_ELEM:
-            zx_DEC_ff12_LogoutResponse(c, (struct zx_ff12_LogoutResponse_s*)el);
-            if (!x->ff12_LogoutResponse)
-              x->ff12_LogoutResponse = (struct zx_ff12_LogoutResponse_s*)el;
-            break;
-          case zx_ff12_NameIdentifierMappingRequest_ELEM:
-            zx_DEC_ff12_NameIdentifierMappingRequest(c, (struct zx_ff12_NameIdentifierMappingRequest_s*)el);
-            if (!x->NameIdentifierMappingRequest)
-              x->NameIdentifierMappingRequest = (struct zx_ff12_NameIdentifierMappingRequest_s*)el;
-            break;
-          case zx_ff12_NameIdentifierMappingResponse_ELEM:
-            zx_DEC_ff12_NameIdentifierMappingResponse(c, (struct zx_ff12_NameIdentifierMappingResponse_s*)el);
-            if (!x->NameIdentifierMappingResponse)
-              x->NameIdentifierMappingResponse = (struct zx_ff12_NameIdentifierMappingResponse_s*)el;
-            break;
-          case zx_xasp_XACMLAuthzDecisionQuery_ELEM:
-            zx_DEC_xasp_XACMLAuthzDecisionQuery(c, (struct zx_xasp_XACMLAuthzDecisionQuery_s*)el);
-            if (!x->XACMLAuthzDecisionQuery)
-              x->XACMLAuthzDecisionQuery = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)el;
-            break;
-          case zx_xasp_XACMLPolicyQuery_ELEM:
-            zx_DEC_xasp_XACMLPolicyQuery(c, (struct zx_xasp_XACMLPolicyQuery_s*)el);
-            if (!x->XACMLPolicyQuery)
-              x->XACMLPolicyQuery = (struct zx_xasp_XACMLPolicyQuery_s*)el;
-            break;
-          case zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM:
-            zx_DEC_xaspcd1_XACMLAuthzDecisionQuery(c, (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)el);
-            if (!x->xaspcd1_XACMLAuthzDecisionQuery)
-              x->xaspcd1_XACMLAuthzDecisionQuery = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)el;
-            break;
-          case zx_xaspcd1_XACMLPolicyQuery_ELEM:
-            zx_DEC_xaspcd1_XACMLPolicyQuery(c, (struct zx_xaspcd1_XACMLPolicyQuery_s*)el);
-            if (!x->xaspcd1_XACMLPolicyQuery)
-              x->xaspcd1_XACMLPolicyQuery = (struct zx_xaspcd1_XACMLPolicyQuery_s*)el;
-            break;
-          case zx_xac_Request_ELEM:
-            zx_DEC_xac_Request(c, (struct zx_xac_Request_s*)el);
-            if (!x->xac_Request)
-              x->xac_Request = (struct zx_xac_Request_s*)el;
-            break;
-          case zx_xac_Response_ELEM:
-            zx_DEC_xac_Response(c, (struct zx_xac_Response_s*)el);
-            if (!x->xac_Response)
-              x->xac_Response = (struct zx_xac_Response_s*)el;
-            break;
-          case zx_di_Query_ELEM:
-            zx_DEC_di_Query(c, (struct zx_di_Query_s*)el);
-            if (!x->Query)
-              x->Query = (struct zx_di_Query_s*)el;
-            break;
-          case zx_di_QueryResponse_ELEM:
-            zx_DEC_di_QueryResponse(c, (struct zx_di_QueryResponse_s*)el);
-            if (!x->QueryResponse)
-              x->QueryResponse = (struct zx_di_QueryResponse_s*)el;
-            break;
-          case zx_di12_Query_ELEM:
-            zx_DEC_di12_Query(c, (struct zx_di12_Query_s*)el);
-            if (!x->di12_Query)
-              x->di12_Query = (struct zx_di12_Query_s*)el;
-            break;
-          case zx_di12_QueryResponse_ELEM:
-            zx_DEC_di12_QueryResponse(c, (struct zx_di12_QueryResponse_s*)el);
-            if (!x->di12_QueryResponse)
-              x->di12_QueryResponse = (struct zx_di12_QueryResponse_s*)el;
-            break;
-          case zx_di12_Modify_ELEM:
-            zx_DEC_di12_Modify(c, (struct zx_di12_Modify_s*)el);
-            if (!x->Modify)
-              x->Modify = (struct zx_di12_Modify_s*)el;
-            break;
-          case zx_di12_ModifyResponse_ELEM:
-            zx_DEC_di12_ModifyResponse(c, (struct zx_di12_ModifyResponse_s*)el);
-            if (!x->ModifyResponse)
-              x->ModifyResponse = (struct zx_di12_ModifyResponse_s*)el;
-            break;
-          case zx_e_Fault_ELEM:
-            zx_DEC_e_Fault(c, (struct zx_e_Fault_s*)el);
-            if (!x->Fault)
-              x->Fault = (struct zx_e_Fault_s*)el;
-            break;
-          case zx_di_SvcMDAssociationAdd_ELEM:
-            zx_DEC_di_SvcMDAssociationAdd(c, (struct zx_di_SvcMDAssociationAdd_s*)el);
-            if (!x->SvcMDAssociationAdd)
-              x->SvcMDAssociationAdd = (struct zx_di_SvcMDAssociationAdd_s*)el;
-            break;
-          case zx_di_SvcMDAssociationAddResponse_ELEM:
-            zx_DEC_di_SvcMDAssociationAddResponse(c, (struct zx_di_SvcMDAssociationAddResponse_s*)el);
-            if (!x->SvcMDAssociationAddResponse)
-              x->SvcMDAssociationAddResponse = (struct zx_di_SvcMDAssociationAddResponse_s*)el;
-            break;
-          case zx_di_SvcMDAssociationDelete_ELEM:
-            zx_DEC_di_SvcMDAssociationDelete(c, (struct zx_di_SvcMDAssociationDelete_s*)el);
-            if (!x->SvcMDAssociationDelete)
-              x->SvcMDAssociationDelete = (struct zx_di_SvcMDAssociationDelete_s*)el;
-            break;
-          case zx_di_SvcMDAssociationDeleteResponse_ELEM:
-            zx_DEC_di_SvcMDAssociationDeleteResponse(c, (struct zx_di_SvcMDAssociationDeleteResponse_s*)el);
-            if (!x->SvcMDAssociationDeleteResponse)
-              x->SvcMDAssociationDeleteResponse = (struct zx_di_SvcMDAssociationDeleteResponse_s*)el;
-            break;
-          case zx_di_SvcMDAssociationQuery_ELEM:
-            zx_DEC_di_SvcMDAssociationQuery(c, (struct zx_di_SvcMDAssociationQuery_s*)el);
-            if (!x->SvcMDAssociationQuery)
-              x->SvcMDAssociationQuery = (struct zx_di_SvcMDAssociationQuery_s*)el;
-            break;
-          case zx_di_SvcMDAssociationQueryResponse_ELEM:
-            zx_DEC_di_SvcMDAssociationQueryResponse(c, (struct zx_di_SvcMDAssociationQueryResponse_s*)el);
-            if (!x->SvcMDAssociationQueryResponse)
-              x->SvcMDAssociationQueryResponse = (struct zx_di_SvcMDAssociationQueryResponse_s*)el;
-            break;
-          case zx_di_SvcMDRegister_ELEM:
-            zx_DEC_di_SvcMDRegister(c, (struct zx_di_SvcMDRegister_s*)el);
-            if (!x->SvcMDRegister)
-              x->SvcMDRegister = (struct zx_di_SvcMDRegister_s*)el;
-            break;
-          case zx_di_SvcMDRegisterResponse_ELEM:
-            zx_DEC_di_SvcMDRegisterResponse(c, (struct zx_di_SvcMDRegisterResponse_s*)el);
-            if (!x->SvcMDRegisterResponse)
-              x->SvcMDRegisterResponse = (struct zx_di_SvcMDRegisterResponse_s*)el;
-            break;
-          case zx_di_SvcMDDelete_ELEM:
-            zx_DEC_di_SvcMDDelete(c, (struct zx_di_SvcMDDelete_s*)el);
-            if (!x->SvcMDDelete)
-              x->SvcMDDelete = (struct zx_di_SvcMDDelete_s*)el;
-            break;
-          case zx_di_SvcMDDeleteResponse_ELEM:
-            zx_DEC_di_SvcMDDeleteResponse(c, (struct zx_di_SvcMDDeleteResponse_s*)el);
-            if (!x->SvcMDDeleteResponse)
-              x->SvcMDDeleteResponse = (struct zx_di_SvcMDDeleteResponse_s*)el;
-            break;
-          case zx_di_SvcMDQuery_ELEM:
-            zx_DEC_di_SvcMDQuery(c, (struct zx_di_SvcMDQuery_s*)el);
-            if (!x->SvcMDQuery)
-              x->SvcMDQuery = (struct zx_di_SvcMDQuery_s*)el;
-            break;
-          case zx_di_SvcMDQueryResponse_ELEM:
-            zx_DEC_di_SvcMDQueryResponse(c, (struct zx_di_SvcMDQueryResponse_s*)el);
-            if (!x->SvcMDQueryResponse)
-              x->SvcMDQueryResponse = (struct zx_di_SvcMDQueryResponse_s*)el;
-            break;
-          case zx_di_SvcMDReplace_ELEM:
-            zx_DEC_di_SvcMDReplace(c, (struct zx_di_SvcMDReplace_s*)el);
-            if (!x->SvcMDReplace)
-              x->SvcMDReplace = (struct zx_di_SvcMDReplace_s*)el;
-            break;
-          case zx_di_SvcMDReplaceResponse_ELEM:
-            zx_DEC_di_SvcMDReplaceResponse(c, (struct zx_di_SvcMDReplaceResponse_s*)el);
-            if (!x->SvcMDReplaceResponse)
-              x->SvcMDReplaceResponse = (struct zx_di_SvcMDReplaceResponse_s*)el;
-            break;
-          case zx_dap_Create_ELEM:
-            zx_DEC_dap_Create(c, (struct zx_dap_Create_s*)el);
-            if (!x->Create)
-              x->Create = (struct zx_dap_Create_s*)el;
-            break;
-          case zx_dap_CreateResponse_ELEM:
-            zx_DEC_dap_CreateResponse(c, (struct zx_dap_CreateResponse_s*)el);
-            if (!x->CreateResponse)
-              x->CreateResponse = (struct zx_dap_CreateResponse_s*)el;
-            break;
-          case zx_dap_Query_ELEM:
-            zx_DEC_dap_Query(c, (struct zx_dap_Query_s*)el);
-            if (!x->dap_Query)
-              x->dap_Query = (struct zx_dap_Query_s*)el;
-            break;
-          case zx_dap_QueryResponse_ELEM:
-            zx_DEC_dap_QueryResponse(c, (struct zx_dap_QueryResponse_s*)el);
-            if (!x->dap_QueryResponse)
-              x->dap_QueryResponse = (struct zx_dap_QueryResponse_s*)el;
-            break;
-          case zx_dap_Modify_ELEM:
-            zx_DEC_dap_Modify(c, (struct zx_dap_Modify_s*)el);
-            if (!x->dap_Modify)
-              x->dap_Modify = (struct zx_dap_Modify_s*)el;
-            break;
-          case zx_dap_ModifyResponse_ELEM:
-            zx_DEC_dap_ModifyResponse(c, (struct zx_dap_ModifyResponse_s*)el);
-            if (!x->dap_ModifyResponse)
-              x->dap_ModifyResponse = (struct zx_dap_ModifyResponse_s*)el;
-            break;
-          case zx_dap_Delete_ELEM:
-            zx_DEC_dap_Delete(c, (struct zx_dap_Delete_s*)el);
-            if (!x->Delete)
-              x->Delete = (struct zx_dap_Delete_s*)el;
-            break;
-          case zx_dap_DeleteResponse_ELEM:
-            zx_DEC_dap_DeleteResponse(c, (struct zx_dap_DeleteResponse_s*)el);
-            if (!x->DeleteResponse)
-              x->DeleteResponse = (struct zx_dap_DeleteResponse_s*)el;
-            break;
-          case zx_dap_Notify_ELEM:
-            zx_DEC_dap_Notify(c, (struct zx_dap_Notify_s*)el);
-            if (!x->Notify)
-              x->Notify = (struct zx_dap_Notify_s*)el;
-            break;
-          case zx_dap_NotifyResponse_ELEM:
-            zx_DEC_dap_NotifyResponse(c, (struct zx_dap_NotifyResponse_s*)el);
-            if (!x->NotifyResponse)
-              x->NotifyResponse = (struct zx_dap_NotifyResponse_s*)el;
-            break;
-          case zx_ps_AddEntityRequest_ELEM:
-            zx_DEC_ps_AddEntityRequest(c, (struct zx_ps_AddEntityRequest_s*)el);
-            if (!x->AddEntityRequest)
-              x->AddEntityRequest = (struct zx_ps_AddEntityRequest_s*)el;
-            break;
-          case zx_ps_AddEntityResponse_ELEM:
-            zx_DEC_ps_AddEntityResponse(c, (struct zx_ps_AddEntityResponse_s*)el);
-            if (!x->AddEntityResponse)
-              x->AddEntityResponse = (struct zx_ps_AddEntityResponse_s*)el;
-            break;
-          case zx_ps_AddKnownEntityRequest_ELEM:
-            zx_DEC_ps_AddKnownEntityRequest(c, (struct zx_ps_AddKnownEntityRequest_s*)el);
-            if (!x->AddKnownEntityRequest)
-              x->AddKnownEntityRequest = (struct zx_ps_AddKnownEntityRequest_s*)el;
-            break;
-          case zx_ps_AddKnownEntityResponse_ELEM:
-            zx_DEC_ps_AddKnownEntityResponse(c, (struct zx_ps_AddKnownEntityResponse_s*)el);
-            if (!x->AddKnownEntityResponse)
-              x->AddKnownEntityResponse = (struct zx_ps_AddKnownEntityResponse_s*)el;
-            break;
-          case zx_ps_AddCollectionRequest_ELEM:
-            zx_DEC_ps_AddCollectionRequest(c, (struct zx_ps_AddCollectionRequest_s*)el);
-            if (!x->AddCollectionRequest)
-              x->AddCollectionRequest = (struct zx_ps_AddCollectionRequest_s*)el;
-            break;
-          case zx_ps_AddCollectionResponse_ELEM:
-            zx_DEC_ps_AddCollectionResponse(c, (struct zx_ps_AddCollectionResponse_s*)el);
-            if (!x->AddCollectionResponse)
-              x->AddCollectionResponse = (struct zx_ps_AddCollectionResponse_s*)el;
-            break;
-          case zx_ps_AddToCollectionRequest_ELEM:
-            zx_DEC_ps_AddToCollectionRequest(c, (struct zx_ps_AddToCollectionRequest_s*)el);
-            if (!x->AddToCollectionRequest)
-              x->AddToCollectionRequest = (struct zx_ps_AddToCollectionRequest_s*)el;
-            break;
-          case zx_ps_AddToCollectionResponse_ELEM:
-            zx_DEC_ps_AddToCollectionResponse(c, (struct zx_ps_AddToCollectionResponse_s*)el);
-            if (!x->AddToCollectionResponse)
-              x->AddToCollectionResponse = (struct zx_ps_AddToCollectionResponse_s*)el;
-            break;
-          case zx_ps_RemoveEntityRequest_ELEM:
-            zx_DEC_ps_RemoveEntityRequest(c, (struct zx_ps_RemoveEntityRequest_s*)el);
-            if (!x->RemoveEntityRequest)
-              x->RemoveEntityRequest = (struct zx_ps_RemoveEntityRequest_s*)el;
-            break;
-          case zx_ps_RemoveEntityResponse_ELEM:
-            zx_DEC_ps_RemoveEntityResponse(c, (struct zx_ps_RemoveEntityResponse_s*)el);
-            if (!x->RemoveEntityResponse)
-              x->RemoveEntityResponse = (struct zx_ps_RemoveEntityResponse_s*)el;
-            break;
-          case zx_ps_RemoveCollectionRequest_ELEM:
-            zx_DEC_ps_RemoveCollectionRequest(c, (struct zx_ps_RemoveCollectionRequest_s*)el);
-            if (!x->RemoveCollectionRequest)
-              x->RemoveCollectionRequest = (struct zx_ps_RemoveCollectionRequest_s*)el;
-            break;
-          case zx_ps_RemoveCollectionResponse_ELEM:
-            zx_DEC_ps_RemoveCollectionResponse(c, (struct zx_ps_RemoveCollectionResponse_s*)el);
-            if (!x->RemoveCollectionResponse)
-              x->RemoveCollectionResponse = (struct zx_ps_RemoveCollectionResponse_s*)el;
-            break;
-          case zx_ps_RemoveFromCollectionRequest_ELEM:
-            zx_DEC_ps_RemoveFromCollectionRequest(c, (struct zx_ps_RemoveFromCollectionRequest_s*)el);
-            if (!x->RemoveFromCollectionRequest)
-              x->RemoveFromCollectionRequest = (struct zx_ps_RemoveFromCollectionRequest_s*)el;
-            break;
-          case zx_ps_RemoveFromCollectionResponse_ELEM:
-            zx_DEC_ps_RemoveFromCollectionResponse(c, (struct zx_ps_RemoveFromCollectionResponse_s*)el);
-            if (!x->RemoveFromCollectionResponse)
-              x->RemoveFromCollectionResponse = (struct zx_ps_RemoveFromCollectionResponse_s*)el;
-            break;
-          case zx_ps_ListMembersRequest_ELEM:
-            zx_DEC_ps_ListMembersRequest(c, (struct zx_ps_ListMembersRequest_s*)el);
-            if (!x->ListMembersRequest)
-              x->ListMembersRequest = (struct zx_ps_ListMembersRequest_s*)el;
-            break;
-          case zx_ps_ListMembersResponse_ELEM:
-            zx_DEC_ps_ListMembersResponse(c, (struct zx_ps_ListMembersResponse_s*)el);
-            if (!x->ListMembersResponse)
-              x->ListMembersResponse = (struct zx_ps_ListMembersResponse_s*)el;
-            break;
-          case zx_ps_QueryObjectsRequest_ELEM:
-            zx_DEC_ps_QueryObjectsRequest(c, (struct zx_ps_QueryObjectsRequest_s*)el);
-            if (!x->QueryObjectsRequest)
-              x->QueryObjectsRequest = (struct zx_ps_QueryObjectsRequest_s*)el;
-            break;
-          case zx_ps_QueryObjectsResponse_ELEM:
-            zx_DEC_ps_QueryObjectsResponse(c, (struct zx_ps_QueryObjectsResponse_s*)el);
-            if (!x->QueryObjectsResponse)
-              x->QueryObjectsResponse = (struct zx_ps_QueryObjectsResponse_s*)el;
-            break;
-          case zx_ps_GetObjectInfoRequest_ELEM:
-            zx_DEC_ps_GetObjectInfoRequest(c, (struct zx_ps_GetObjectInfoRequest_s*)el);
-            if (!x->GetObjectInfoRequest)
-              x->GetObjectInfoRequest = (struct zx_ps_GetObjectInfoRequest_s*)el;
-            break;
-          case zx_ps_GetObjectInfoResponse_ELEM:
-            zx_DEC_ps_GetObjectInfoResponse(c, (struct zx_ps_GetObjectInfoResponse_s*)el);
-            if (!x->GetObjectInfoResponse)
-              x->GetObjectInfoResponse = (struct zx_ps_GetObjectInfoResponse_s*)el;
-            break;
-          case zx_ps_SetObjectInfoRequest_ELEM:
-            zx_DEC_ps_SetObjectInfoRequest(c, (struct zx_ps_SetObjectInfoRequest_s*)el);
-            if (!x->SetObjectInfoRequest)
-              x->SetObjectInfoRequest = (struct zx_ps_SetObjectInfoRequest_s*)el;
-            break;
-          case zx_ps_SetObjectInfoResponse_ELEM:
-            zx_DEC_ps_SetObjectInfoResponse(c, (struct zx_ps_SetObjectInfoResponse_s*)el);
-            if (!x->SetObjectInfoResponse)
-              x->SetObjectInfoResponse = (struct zx_ps_SetObjectInfoResponse_s*)el;
-            break;
-          case zx_ps_TestMembershipRequest_ELEM:
-            zx_DEC_ps_TestMembershipRequest(c, (struct zx_ps_TestMembershipRequest_s*)el);
-            if (!x->TestMembershipRequest)
-              x->TestMembershipRequest = (struct zx_ps_TestMembershipRequest_s*)el;
-            break;
-          case zx_ps_TestMembershipResponse_ELEM:
-            zx_DEC_ps_TestMembershipResponse(c, (struct zx_ps_TestMembershipResponse_s*)el);
-            if (!x->TestMembershipResponse)
-              x->TestMembershipResponse = (struct zx_ps_TestMembershipResponse_s*)el;
-            break;
-          case zx_ps_ResolveIdentifierRequest_ELEM:
-            zx_DEC_ps_ResolveIdentifierRequest(c, (struct zx_ps_ResolveIdentifierRequest_s*)el);
-            if (!x->ResolveIdentifierRequest)
-              x->ResolveIdentifierRequest = (struct zx_ps_ResolveIdentifierRequest_s*)el;
-            break;
-          case zx_ps_ResolveIdentifierResponse_ELEM:
-            zx_DEC_ps_ResolveIdentifierResponse(c, (struct zx_ps_ResolveIdentifierResponse_s*)el);
-            if (!x->ResolveIdentifierResponse)
-              x->ResolveIdentifierResponse = (struct zx_ps_ResolveIdentifierResponse_s*)el;
-            break;
-          case zx_ps_Notify_ELEM:
-            zx_DEC_ps_Notify(c, (struct zx_ps_Notify_s*)el);
-            if (!x->ps_Notify)
-              x->ps_Notify = (struct zx_ps_Notify_s*)el;
-            break;
-          case zx_ps_NotifyResponse_ELEM:
-            zx_DEC_ps_NotifyResponse(c, (struct zx_ps_NotifyResponse_s*)el);
-            if (!x->ps_NotifyResponse)
-              x->ps_NotifyResponse = (struct zx_ps_NotifyResponse_s*)el;
-            break;
-          case zx_im_IdentityMappingRequest_ELEM:
-            zx_DEC_im_IdentityMappingRequest(c, (struct zx_im_IdentityMappingRequest_s*)el);
-            if (!x->IdentityMappingRequest)
-              x->IdentityMappingRequest = (struct zx_im_IdentityMappingRequest_s*)el;
-            break;
-          case zx_im_IdentityMappingResponse_ELEM:
-            zx_DEC_im_IdentityMappingResponse(c, (struct zx_im_IdentityMappingResponse_s*)el);
-            if (!x->IdentityMappingResponse)
-              x->IdentityMappingResponse = (struct zx_im_IdentityMappingResponse_s*)el;
-            break;
-          case zx_as_SASLRequest_ELEM:
-            zx_DEC_as_SASLRequest(c, (struct zx_as_SASLRequest_s*)el);
-            if (!x->SASLRequest)
-              x->SASLRequest = (struct zx_as_SASLRequest_s*)el;
-            break;
-          case zx_as_SASLResponse_ELEM:
-            zx_DEC_as_SASLResponse(c, (struct zx_as_SASLResponse_s*)el);
-            if (!x->SASLResponse)
-              x->SASLResponse = (struct zx_as_SASLResponse_s*)el;
-            break;
-          case zx_mm7_SubmitReq_ELEM:
-            zx_DEC_mm7_SubmitReq(c, (struct zx_mm7_SubmitReq_s*)el);
-            if (!x->SubmitReq)
-              x->SubmitReq = (struct zx_mm7_SubmitReq_s*)el;
-            break;
-          case zx_mm7_SubmitRsp_ELEM:
-            zx_DEC_mm7_SubmitRsp(c, (struct zx_mm7_SubmitRsp_s*)el);
-            if (!x->SubmitRsp)
-              x->SubmitRsp = (struct zx_mm7_SubmitRsp_s*)el;
-            break;
-          case zx_mm7_DeliverReq_ELEM:
-            zx_DEC_mm7_DeliverReq(c, (struct zx_mm7_DeliverReq_s*)el);
-            if (!x->DeliverReq)
-              x->DeliverReq = (struct zx_mm7_DeliverReq_s*)el;
-            break;
-          case zx_mm7_DeliverRsp_ELEM:
-            zx_DEC_mm7_DeliverRsp(c, (struct zx_mm7_DeliverRsp_s*)el);
-            if (!x->DeliverRsp)
-              x->DeliverRsp = (struct zx_mm7_DeliverRsp_s*)el;
-            break;
-          case zx_mm7_CancelReq_ELEM:
-            zx_DEC_mm7_CancelReq(c, (struct zx_mm7_CancelReq_s*)el);
-            if (!x->CancelReq)
-              x->CancelReq = (struct zx_mm7_CancelReq_s*)el;
-            break;
-          case zx_mm7_CancelRsp_ELEM:
-            zx_DEC_mm7_CancelRsp(c, (struct zx_mm7_CancelRsp_s*)el);
-            if (!x->CancelRsp)
-              x->CancelRsp = (struct zx_mm7_CancelRsp_s*)el;
-            break;
-          case zx_mm7_ReplaceReq_ELEM:
-            zx_DEC_mm7_ReplaceReq(c, (struct zx_mm7_ReplaceReq_s*)el);
-            if (!x->ReplaceReq)
-              x->ReplaceReq = (struct zx_mm7_ReplaceReq_s*)el;
-            break;
-          case zx_mm7_ReplaceRsp_ELEM:
-            zx_DEC_mm7_ReplaceRsp(c, (struct zx_mm7_ReplaceRsp_s*)el);
-            if (!x->ReplaceRsp)
-              x->ReplaceRsp = (struct zx_mm7_ReplaceRsp_s*)el;
-            break;
-          case zx_mm7_extendedCancelReq_ELEM:
-            zx_DEC_mm7_extendedCancelReq(c, (struct zx_mm7_extendedCancelReq_s*)el);
-            if (!x->extendedCancelReq)
-              x->extendedCancelReq = (struct zx_mm7_extendedCancelReq_s*)el;
-            break;
-          case zx_mm7_extendedCancelRsp_ELEM:
-            zx_DEC_mm7_extendedCancelRsp(c, (struct zx_mm7_extendedCancelRsp_s*)el);
-            if (!x->extendedCancelRsp)
-              x->extendedCancelRsp = (struct zx_mm7_extendedCancelRsp_s*)el;
-            break;
-          case zx_mm7_extendedReplaceReq_ELEM:
-            zx_DEC_mm7_extendedReplaceReq(c, (struct zx_mm7_extendedReplaceReq_s*)el);
-            if (!x->extendedReplaceReq)
-              x->extendedReplaceReq = (struct zx_mm7_extendedReplaceReq_s*)el;
-            break;
-          case zx_mm7_extendedReplaceRsp_ELEM:
-            zx_DEC_mm7_extendedReplaceRsp(c, (struct zx_mm7_extendedReplaceRsp_s*)el);
-            if (!x->extendedReplaceRsp)
-              x->extendedReplaceRsp = (struct zx_mm7_extendedReplaceRsp_s*)el;
-            break;
-          case zx_mm7_DeliveryReportReq_ELEM:
-            zx_DEC_mm7_DeliveryReportReq(c, (struct zx_mm7_DeliveryReportReq_s*)el);
-            if (!x->DeliveryReportReq)
-              x->DeliveryReportReq = (struct zx_mm7_DeliveryReportReq_s*)el;
-            break;
-          case zx_mm7_DeliveryReportRsp_ELEM:
-            zx_DEC_mm7_DeliveryReportRsp(c, (struct zx_mm7_DeliveryReportRsp_s*)el);
-            if (!x->DeliveryReportRsp)
-              x->DeliveryReportRsp = (struct zx_mm7_DeliveryReportRsp_s*)el;
-            break;
-          case zx_mm7_ReadReplyReq_ELEM:
-            zx_DEC_mm7_ReadReplyReq(c, (struct zx_mm7_ReadReplyReq_s*)el);
-            if (!x->ReadReplyReq)
-              x->ReadReplyReq = (struct zx_mm7_ReadReplyReq_s*)el;
-            break;
-          case zx_mm7_ReadReplyRsp_ELEM:
-            zx_DEC_mm7_ReadReplyRsp(c, (struct zx_mm7_ReadReplyRsp_s*)el);
-            if (!x->ReadReplyRsp)
-              x->ReadReplyRsp = (struct zx_mm7_ReadReplyRsp_s*)el;
-            break;
-          case zx_mm7_RSErrorRsp_ELEM:
-            zx_DEC_mm7_RSErrorRsp(c, (struct zx_mm7_RSErrorRsp_s*)el);
-            if (!x->RSErrorRsp)
-              x->RSErrorRsp = (struct zx_mm7_RSErrorRsp_s*)el;
-            break;
-          case zx_mm7_VASPErrorRsp_ELEM:
-            zx_DEC_mm7_VASPErrorRsp(c, (struct zx_mm7_VASPErrorRsp_s*)el);
-            if (!x->VASPErrorRsp)
-              x->VASPErrorRsp = (struct zx_mm7_VASPErrorRsp_s*)el;
-            break;
-          case zx_mm7_QueryStatusReq_ELEM:
-            zx_DEC_mm7_QueryStatusReq(c, (struct zx_mm7_QueryStatusReq_s*)el);
-            if (!x->QueryStatusReq)
-              x->QueryStatusReq = (struct zx_mm7_QueryStatusReq_s*)el;
-            break;
-          case zx_mm7_QueryStatusRsp_ELEM:
-            zx_DEC_mm7_QueryStatusRsp(c, (struct zx_mm7_QueryStatusRsp_s*)el);
-            if (!x->QueryStatusRsp)
-              x->QueryStatusRsp = (struct zx_mm7_QueryStatusRsp_s*)el;
-            break;
-          case zx_cb_Query_ELEM:
-            zx_DEC_cb_Query(c, (struct zx_cb_Query_s*)el);
-            if (!x->cb_Query)
-              x->cb_Query = (struct zx_cb_Query_s*)el;
-            break;
-          case zx_cb_QueryResponse_ELEM:
-            zx_DEC_cb_QueryResponse(c, (struct zx_cb_QueryResponse_s*)el);
-            if (!x->cb_QueryResponse)
-              x->cb_QueryResponse = (struct zx_cb_QueryResponse_s*)el;
-            break;
-          case zx_cb_Create_ELEM:
-            zx_DEC_cb_Create(c, (struct zx_cb_Create_s*)el);
-            if (!x->cb_Create)
-              x->cb_Create = (struct zx_cb_Create_s*)el;
-            break;
-          case zx_cb_CreateResponse_ELEM:
-            zx_DEC_cb_CreateResponse(c, (struct zx_cb_CreateResponse_s*)el);
-            if (!x->cb_CreateResponse)
-              x->cb_CreateResponse = (struct zx_cb_CreateResponse_s*)el;
-            break;
-          case zx_cb_Delete_ELEM:
-            zx_DEC_cb_Delete(c, (struct zx_cb_Delete_s*)el);
-            if (!x->cb_Delete)
-              x->cb_Delete = (struct zx_cb_Delete_s*)el;
-            break;
-          case zx_cb_DeleteResponse_ELEM:
-            zx_DEC_cb_DeleteResponse(c, (struct zx_cb_DeleteResponse_s*)el);
-            if (!x->cb_DeleteResponse)
-              x->cb_DeleteResponse = (struct zx_cb_DeleteResponse_s*)el;
-            break;
-          case zx_cb_Modify_ELEM:
-            zx_DEC_cb_Modify(c, (struct zx_cb_Modify_s*)el);
-            if (!x->cb_Modify)
-              x->cb_Modify = (struct zx_cb_Modify_s*)el;
-            break;
-          case zx_cb_ModifyResponse_ELEM:
-            zx_DEC_cb_ModifyResponse(c, (struct zx_cb_ModifyResponse_s*)el);
-            if (!x->cb_ModifyResponse)
-              x->cb_ModifyResponse = (struct zx_cb_ModifyResponse_s*)el;
-            break;
-          case zx_cb_Notify_ELEM:
-            zx_DEC_cb_Notify(c, (struct zx_cb_Notify_s*)el);
-            if (!x->cb_Notify)
-              x->cb_Notify = (struct zx_cb_Notify_s*)el;
-            break;
-          case zx_cb_NotifyResponse_ELEM:
-            zx_DEC_cb_NotifyResponse(c, (struct zx_cb_NotifyResponse_s*)el);
-            if (!x->cb_NotifyResponse)
-              x->cb_NotifyResponse = (struct zx_cb_NotifyResponse_s*)el;
-            break;
-          case zx_cb_ReportUsage_ELEM:
-            zx_DEC_cb_ReportUsage(c, (struct zx_cb_ReportUsage_s*)el);
-            if (!x->ReportUsage)
-              x->ReportUsage = (struct zx_cb_ReportUsage_s*)el;
-            break;
-          case zx_cb_ReportUsageResponse_ELEM:
-            zx_DEC_cb_ReportUsageResponse(c, (struct zx_cb_ReportUsageResponse_s*)el);
-            if (!x->ReportUsageResponse)
-              x->ReportUsageResponse = (struct zx_cb_ReportUsageResponse_s*)el;
-            break;
-          case zx_gl_Query_ELEM:
-            zx_DEC_gl_Query(c, (struct zx_gl_Query_s*)el);
-            if (!x->gl_Query)
-              x->gl_Query = (struct zx_gl_Query_s*)el;
-            break;
-          case zx_gl_QueryResponse_ELEM:
-            zx_DEC_gl_QueryResponse(c, (struct zx_gl_QueryResponse_s*)el);
-            if (!x->gl_QueryResponse)
-              x->gl_QueryResponse = (struct zx_gl_QueryResponse_s*)el;
-            break;
-          case zx_gl_Create_ELEM:
-            zx_DEC_gl_Create(c, (struct zx_gl_Create_s*)el);
-            if (!x->gl_Create)
-              x->gl_Create = (struct zx_gl_Create_s*)el;
-            break;
-          case zx_gl_CreateResponse_ELEM:
-            zx_DEC_gl_CreateResponse(c, (struct zx_gl_CreateResponse_s*)el);
-            if (!x->gl_CreateResponse)
-              x->gl_CreateResponse = (struct zx_gl_CreateResponse_s*)el;
-            break;
-          case zx_gl_Delete_ELEM:
-            zx_DEC_gl_Delete(c, (struct zx_gl_Delete_s*)el);
-            if (!x->gl_Delete)
-              x->gl_Delete = (struct zx_gl_Delete_s*)el;
-            break;
-          case zx_gl_DeleteResponse_ELEM:
-            zx_DEC_gl_DeleteResponse(c, (struct zx_gl_DeleteResponse_s*)el);
-            if (!x->gl_DeleteResponse)
-              x->gl_DeleteResponse = (struct zx_gl_DeleteResponse_s*)el;
-            break;
-          case zx_gl_Modify_ELEM:
-            zx_DEC_gl_Modify(c, (struct zx_gl_Modify_s*)el);
-            if (!x->gl_Modify)
-              x->gl_Modify = (struct zx_gl_Modify_s*)el;
-            break;
-          case zx_gl_ModifyResponse_ELEM:
-            zx_DEC_gl_ModifyResponse(c, (struct zx_gl_ModifyResponse_s*)el);
-            if (!x->gl_ModifyResponse)
-              x->gl_ModifyResponse = (struct zx_gl_ModifyResponse_s*)el;
-            break;
-          case zx_gl_Notify_ELEM:
-            zx_DEC_gl_Notify(c, (struct zx_gl_Notify_s*)el);
-            if (!x->gl_Notify)
-              x->gl_Notify = (struct zx_gl_Notify_s*)el;
-            break;
-          case zx_gl_NotifyResponse_ELEM:
-            zx_DEC_gl_NotifyResponse(c, (struct zx_gl_NotifyResponse_s*)el);
-            if (!x->gl_NotifyResponse)
-              x->gl_NotifyResponse = (struct zx_gl_NotifyResponse_s*)el;
-            break;
-          case zx_demomed_StoreObjectRequest_ELEM:
-            zx_DEC_demomed_StoreObjectRequest(c, (struct zx_demomed_StoreObjectRequest_s*)el);
-            if (!x->StoreObjectRequest)
-              x->StoreObjectRequest = (struct zx_demomed_StoreObjectRequest_s*)el;
-            break;
-          case zx_demomed_StoreObjectResponse_ELEM:
-            zx_DEC_demomed_StoreObjectResponse(c, (struct zx_demomed_StoreObjectResponse_s*)el);
-            if (!x->StoreObjectResponse)
-              x->StoreObjectResponse = (struct zx_demomed_StoreObjectResponse_s*)el;
-            break;
-          case zx_demomed_GetObjectListRequest_ELEM:
-            zx_DEC_demomed_GetObjectListRequest(c, (struct zx_demomed_GetObjectListRequest_s*)el);
-            if (!x->GetObjectListRequest)
-              x->GetObjectListRequest = (struct zx_demomed_GetObjectListRequest_s*)el;
-            break;
-          case zx_demomed_GetObjectListResponse_ELEM:
-            zx_DEC_demomed_GetObjectListResponse(c, (struct zx_demomed_GetObjectListResponse_s*)el);
-            if (!x->GetObjectListResponse)
-              x->GetObjectListResponse = (struct zx_demomed_GetObjectListResponse_s*)el;
-            break;
-          case zx_demomed_GetObjectRequest_ELEM:
-            zx_DEC_demomed_GetObjectRequest(c, (struct zx_demomed_GetObjectRequest_s*)el);
-            if (!x->GetObjectRequest)
-              x->GetObjectRequest = (struct zx_demomed_GetObjectRequest_s*)el;
-            break;
-          case zx_demomed_GetObjectResponse_ELEM:
-            zx_DEC_demomed_GetObjectResponse(c, (struct zx_demomed_GetObjectResponse_s*)el);
-            if (!x->GetObjectResponse)
-              x->GetObjectResponse = (struct zx_demomed_GetObjectResponse_s*)el;
-            break;
-          case zx_demomed_DeleteObjectRequest_ELEM:
-            zx_DEC_demomed_DeleteObjectRequest(c, (struct zx_demomed_DeleteObjectRequest_s*)el);
-            if (!x->DeleteObjectRequest)
-              x->DeleteObjectRequest = (struct zx_demomed_DeleteObjectRequest_s*)el;
-            break;
-          case zx_demomed_DeleteObjectResponse_ELEM:
-            zx_DEC_demomed_DeleteObjectResponse(c, (struct zx_demomed_DeleteObjectResponse_s*)el);
-            if (!x->DeleteObjectResponse)
-              x->DeleteObjectResponse = (struct zx_demomed_DeleteObjectResponse_s*)el;
-            break;
-          case zx_pmm_Provision_ELEM:
-            zx_DEC_pmm_Provision(c, (struct zx_pmm_Provision_s*)el);
-            if (!x->Provision)
-              x->Provision = (struct zx_pmm_Provision_s*)el;
-            break;
-          case zx_pmm_ProvisionResponse_ELEM:
-            zx_DEC_pmm_ProvisionResponse(c, (struct zx_pmm_ProvisionResponse_s*)el);
-            if (!x->ProvisionResponse)
-              x->ProvisionResponse = (struct zx_pmm_ProvisionResponse_s*)el;
-            break;
-          case zx_pmm_PMActivate_ELEM:
-            zx_DEC_pmm_PMActivate(c, (struct zx_pmm_PMActivate_s*)el);
-            if (!x->PMActivate)
-              x->PMActivate = (struct zx_pmm_PMActivate_s*)el;
-            break;
-          case zx_pmm_PMActivateResponse_ELEM:
-            zx_DEC_pmm_PMActivateResponse(c, (struct zx_pmm_PMActivateResponse_s*)el);
-            if (!x->PMActivateResponse)
-              x->PMActivateResponse = (struct zx_pmm_PMActivateResponse_s*)el;
-            break;
-          case zx_pmm_PMDeactivate_ELEM:
-            zx_DEC_pmm_PMDeactivate(c, (struct zx_pmm_PMDeactivate_s*)el);
-            if (!x->PMDeactivate)
-              x->PMDeactivate = (struct zx_pmm_PMDeactivate_s*)el;
-            break;
-          case zx_pmm_PMDeactivateResponse_ELEM:
-            zx_DEC_pmm_PMDeactivateResponse(c, (struct zx_pmm_PMDeactivateResponse_s*)el);
-            if (!x->PMDeactivateResponse)
-              x->PMDeactivateResponse = (struct zx_pmm_PMDeactivateResponse_s*)el;
-            break;
-          case zx_pmm_PMDelete_ELEM:
-            zx_DEC_pmm_PMDelete(c, (struct zx_pmm_PMDelete_s*)el);
-            if (!x->PMDelete)
-              x->PMDelete = (struct zx_pmm_PMDelete_s*)el;
-            break;
-          case zx_pmm_PMDeleteResponse_ELEM:
-            zx_DEC_pmm_PMDeleteResponse(c, (struct zx_pmm_PMDeleteResponse_s*)el);
-            if (!x->PMDeleteResponse)
-              x->PMDeleteResponse = (struct zx_pmm_PMDeleteResponse_s*)el;
-            break;
-          case zx_pmm_PMUpdate_ELEM:
-            zx_DEC_pmm_PMUpdate(c, (struct zx_pmm_PMUpdate_s*)el);
-            if (!x->PMUpdate)
-              x->PMUpdate = (struct zx_pmm_PMUpdate_s*)el;
-            break;
-          case zx_pmm_PMUpdateResponse_ELEM:
-            zx_DEC_pmm_PMUpdateResponse(c, (struct zx_pmm_PMUpdateResponse_s*)el);
-            if (!x->PMUpdateResponse)
-              x->PMUpdateResponse = (struct zx_pmm_PMUpdateResponse_s*)el;
-            break;
-          case zx_pmm_PMGetStatus_ELEM:
-            zx_DEC_pmm_PMGetStatus(c, (struct zx_pmm_PMGetStatus_s*)el);
-            if (!x->PMGetStatus)
-              x->PMGetStatus = (struct zx_pmm_PMGetStatus_s*)el;
-            break;
-          case zx_pmm_PMGetStatusResponse_ELEM:
-            zx_DEC_pmm_PMGetStatusResponse(c, (struct zx_pmm_PMGetStatusResponse_s*)el);
-            if (!x->PMGetStatusResponse)
-              x->PMGetStatusResponse = (struct zx_pmm_PMGetStatusResponse_s*)el;
-            break;
-          case zx_pmm_PMSetStatus_ELEM:
-            zx_DEC_pmm_PMSetStatus(c, (struct zx_pmm_PMSetStatus_s*)el);
-            if (!x->PMSetStatus)
-              x->PMSetStatus = (struct zx_pmm_PMSetStatus_s*)el;
-            break;
-          case zx_pmm_PMSetStatusResponse_ELEM:
-            zx_DEC_pmm_PMSetStatusResponse(c, (struct zx_pmm_PMSetStatusResponse_s*)el);
-            if (!x->PMSetStatusResponse)
-              x->PMSetStatusResponse = (struct zx_pmm_PMSetStatusResponse_s*)el;
-            break;
-          case zx_prov_PMERegister_ELEM:
-            zx_DEC_prov_PMERegister(c, (struct zx_prov_PMERegister_s*)el);
-            if (!x->PMERegister)
-              x->PMERegister = (struct zx_prov_PMERegister_s*)el;
-            break;
-          case zx_prov_PMERegisterResponse_ELEM:
-            zx_DEC_prov_PMERegisterResponse(c, (struct zx_prov_PMERegisterResponse_s*)el);
-            if (!x->PMERegisterResponse)
-              x->PMERegisterResponse = (struct zx_prov_PMERegisterResponse_s*)el;
-            break;
-          case zx_prov_PMEUpload_ELEM:
-            zx_DEC_prov_PMEUpload(c, (struct zx_prov_PMEUpload_s*)el);
-            if (!x->PMEUpload)
-              x->PMEUpload = (struct zx_prov_PMEUpload_s*)el;
-            break;
-          case zx_prov_PMEUploadResponse_ELEM:
-            zx_DEC_prov_PMEUploadResponse(c, (struct zx_prov_PMEUploadResponse_s*)el);
-            if (!x->PMEUploadResponse)
-              x->PMEUploadResponse = (struct zx_prov_PMEUploadResponse_s*)el;
-            break;
-          case zx_prov_PMEDownload_ELEM:
-            zx_DEC_prov_PMEDownload(c, (struct zx_prov_PMEDownload_s*)el);
-            if (!x->PMEDownload)
-              x->PMEDownload = (struct zx_prov_PMEDownload_s*)el;
-            break;
-          case zx_prov_PMEDownloadResponse_ELEM:
-            zx_DEC_prov_PMEDownloadResponse(c, (struct zx_prov_PMEDownloadResponse_s*)el);
-            if (!x->PMEDownloadResponse)
-              x->PMEDownloadResponse = (struct zx_prov_PMEDownloadResponse_s*)el;
-            break;
-          case zx_prov_PMEEnable_ELEM:
-            zx_DEC_prov_PMEEnable(c, (struct zx_prov_PMEEnable_s*)el);
-            if (!x->PMEEnable)
-              x->PMEEnable = (struct zx_prov_PMEEnable_s*)el;
-            break;
-          case zx_prov_PMEEnableResponse_ELEM:
-            zx_DEC_prov_PMEEnableResponse(c, (struct zx_prov_PMEEnableResponse_s*)el);
-            if (!x->PMEEnableResponse)
-              x->PMEEnableResponse = (struct zx_prov_PMEEnableResponse_s*)el;
-            break;
-          case zx_prov_PMEDisable_ELEM:
-            zx_DEC_prov_PMEDisable(c, (struct zx_prov_PMEDisable_s*)el);
-            if (!x->PMEDisable)
-              x->PMEDisable = (struct zx_prov_PMEDisable_s*)el;
-            break;
-          case zx_prov_PMEDisableResponse_ELEM:
-            zx_DEC_prov_PMEDisableResponse(c, (struct zx_prov_PMEDisableResponse_s*)el);
-            if (!x->PMEDisableResponse)
-              x->PMEDisableResponse = (struct zx_prov_PMEDisableResponse_s*)el;
-            break;
-          case zx_prov_PMEDelete_ELEM:
-            zx_DEC_prov_PMEDelete(c, (struct zx_prov_PMEDelete_s*)el);
-            if (!x->PMEDelete)
-              x->PMEDelete = (struct zx_prov_PMEDelete_s*)el;
-            break;
-          case zx_prov_PMEDeleteResponse_ELEM:
-            zx_DEC_prov_PMEDeleteResponse(c, (struct zx_prov_PMEDeleteResponse_s*)el);
-            if (!x->PMEDeleteResponse)
-              x->PMEDeleteResponse = (struct zx_prov_PMEDeleteResponse_s*)el;
-            break;
-          case zx_prov_PMEGetInfo_ELEM:
-            zx_DEC_prov_PMEGetInfo(c, (struct zx_prov_PMEGetInfo_s*)el);
-            if (!x->PMEGetInfo)
-              x->PMEGetInfo = (struct zx_prov_PMEGetInfo_s*)el;
-            break;
-          case zx_prov_PMEGetInfoResponse_ELEM:
-            zx_DEC_prov_PMEGetInfoResponse(c, (struct zx_prov_PMEGetInfoResponse_s*)el);
-            if (!x->PMEGetInfoResponse)
-              x->PMEGetInfoResponse = (struct zx_prov_PMEGetInfoResponse_s*)el;
-            break;
-          case zx_prov_PMGetStatus_ELEM:
-            zx_DEC_prov_PMGetStatus(c, (struct zx_prov_PMGetStatus_s*)el);
-            if (!x->prov_PMGetStatus)
-              x->prov_PMGetStatus = (struct zx_prov_PMGetStatus_s*)el;
-            break;
-          case zx_prov_PMGetStatusResponse_ELEM:
-            zx_DEC_prov_PMGetStatusResponse(c, (struct zx_prov_PMGetStatusResponse_s*)el);
-            if (!x->prov_PMGetStatusResponse)
-              x->prov_PMGetStatusResponse = (struct zx_prov_PMGetStatusResponse_s*)el;
-            break;
-          case zx_prov_PMSetStatus_ELEM:
-            zx_DEC_prov_PMSetStatus(c, (struct zx_prov_PMSetStatus_s*)el);
-            if (!x->prov_PMSetStatus)
-              x->prov_PMSetStatus = (struct zx_prov_PMSetStatus_s*)el;
-            break;
-          case zx_prov_PMSetStatusResponse_ELEM:
-            zx_DEC_prov_PMSetStatusResponse(c, (struct zx_prov_PMSetStatusResponse_s*)el);
-            if (!x->prov_PMSetStatusResponse)
-              x->prov_PMSetStatusResponse = (struct zx_prov_PMSetStatusResponse_s*)el;
-            break;
-          case zx_prov_PMGetDescriptor_ELEM:
-            zx_DEC_prov_PMGetDescriptor(c, (struct zx_prov_PMGetDescriptor_s*)el);
-            if (!x->PMGetDescriptor)
-              x->PMGetDescriptor = (struct zx_prov_PMGetDescriptor_s*)el;
-            break;
-          case zx_prov_PMGetDescriptorResponse_ELEM:
-            zx_DEC_prov_PMGetDescriptorResponse(c, (struct zx_prov_PMGetDescriptorResponse_s*)el);
-            if (!x->PMGetDescriptorResponse)
-              x->PMGetDescriptorResponse = (struct zx_prov_PMGetDescriptorResponse_s*)el;
-            break;
-          case zx_prov_PMActivate_ELEM:
-            zx_DEC_prov_PMActivate(c, (struct zx_prov_PMActivate_s*)el);
-            if (!x->prov_PMActivate)
-              x->prov_PMActivate = (struct zx_prov_PMActivate_s*)el;
-            break;
-          case zx_prov_PMActivateResponse_ELEM:
-            zx_DEC_prov_PMActivateResponse(c, (struct zx_prov_PMActivateResponse_s*)el);
-            if (!x->prov_PMActivateResponse)
-              x->prov_PMActivateResponse = (struct zx_prov_PMActivateResponse_s*)el;
-            break;
-          case zx_prov_PMDeactivate_ELEM:
-            zx_DEC_prov_PMDeactivate(c, (struct zx_prov_PMDeactivate_s*)el);
-            if (!x->prov_PMDeactivate)
-              x->prov_PMDeactivate = (struct zx_prov_PMDeactivate_s*)el;
-            break;
-          case zx_prov_PMDeactivateResponse_ELEM:
-            zx_DEC_prov_PMDeactivateResponse(c, (struct zx_prov_PMDeactivateResponse_s*)el);
-            if (!x->prov_PMDeactivateResponse)
-              x->prov_PMDeactivateResponse = (struct zx_prov_PMDeactivateResponse_s*)el;
-            break;
-          case zx_prov_PMRegisterDescriptor_ELEM:
-            zx_DEC_prov_PMRegisterDescriptor(c, (struct zx_prov_PMRegisterDescriptor_s*)el);
-            if (!x->PMRegisterDescriptor)
-              x->PMRegisterDescriptor = (struct zx_prov_PMRegisterDescriptor_s*)el;
-            break;
-          case zx_prov_PMRegisterDescriptorResponse_ELEM:
-            zx_DEC_prov_PMRegisterDescriptorResponse(c, (struct zx_prov_PMRegisterDescriptorResponse_s*)el);
-            if (!x->PMRegisterDescriptorResponse)
-              x->PMRegisterDescriptorResponse = (struct zx_prov_PMRegisterDescriptorResponse_s*)el;
-            break;
-          case zx_prov_PMUpdate_ELEM:
-            zx_DEC_prov_PMUpdate(c, (struct zx_prov_PMUpdate_s*)el);
-            if (!x->prov_PMUpdate)
-              x->prov_PMUpdate = (struct zx_prov_PMUpdate_s*)el;
-            break;
-          case zx_prov_PMUpdateResponse_ELEM:
-            zx_DEC_prov_PMUpdateResponse(c, (struct zx_prov_PMUpdateResponse_s*)el);
-            if (!x->prov_PMUpdateResponse)
-              x->prov_PMUpdateResponse = (struct zx_prov_PMUpdateResponse_s*)el;
-            break;
-          case zx_prov_PMDelete_ELEM:
-            zx_DEC_prov_PMDelete(c, (struct zx_prov_PMDelete_s*)el);
-            if (!x->prov_PMDelete)
-              x->prov_PMDelete = (struct zx_prov_PMDelete_s*)el;
-            break;
-          case zx_prov_PMDeleteResponse_ELEM:
-            zx_DEC_prov_PMDeleteResponse(c, (struct zx_prov_PMDeleteResponse_s*)el);
-            if (!x->prov_PMDeleteResponse)
-              x->prov_PMDeleteResponse = (struct zx_prov_PMDeleteResponse_s*)el;
-            break;
-          case zx_prov_Poll_ELEM:
-            zx_DEC_prov_Poll(c, (struct zx_prov_Poll_s*)el);
-            if (!x->Poll)
-              x->Poll = (struct zx_prov_Poll_s*)el;
-            break;
-          case zx_prov_PollResponse_ELEM:
-            zx_DEC_prov_PollResponse(c, (struct zx_prov_PollResponse_s*)el);
-            if (!x->PollResponse)
-              x->PollResponse = (struct zx_prov_PollResponse_s*)el;
-            break;
-          case zx_prov_UpdateEPR_ELEM:
-            zx_DEC_prov_UpdateEPR(c, (struct zx_prov_UpdateEPR_s*)el);
-            if (!x->UpdateEPR)
-              x->UpdateEPR = (struct zx_prov_UpdateEPR_s*)el;
-            break;
-          case zx_prov_UpdateEPRResponse_ELEM:
-            zx_DEC_prov_UpdateEPRResponse(c, (struct zx_prov_UpdateEPRResponse_s*)el);
-            if (!x->UpdateEPRResponse)
-              x->UpdateEPRResponse = (struct zx_prov_UpdateEPRResponse_s*)el;
-            break;
-          case zx_idp_GetAssertion_ELEM:
-            zx_DEC_idp_GetAssertion(c, (struct zx_idp_GetAssertion_s*)el);
-            if (!x->GetAssertion)
-              x->GetAssertion = (struct zx_idp_GetAssertion_s*)el;
-            break;
-          case zx_idp_GetAssertionResponse_ELEM:
-            zx_DEC_idp_GetAssertionResponse(c, (struct zx_idp_GetAssertionResponse_s*)el);
-            if (!x->GetAssertionResponse)
-              x->GetAssertionResponse = (struct zx_idp_GetAssertionResponse_s*)el;
-            break;
-          case zx_idp_GetProviderInfo_ELEM:
-            zx_DEC_idp_GetProviderInfo(c, (struct zx_idp_GetProviderInfo_s*)el);
-            if (!x->GetProviderInfo)
-              x->GetProviderInfo = (struct zx_idp_GetProviderInfo_s*)el;
-            break;
-          case zx_idp_GetProviderInfoResponse_ELEM:
-            zx_DEC_idp_GetProviderInfoResponse(c, (struct zx_idp_GetProviderInfoResponse_s*)el);
-            if (!x->GetProviderInfoResponse)
-              x->GetProviderInfoResponse = (struct zx_idp_GetProviderInfoResponse_s*)el;
-            break;
-          case zx_idp_CreatedStatus_ELEM:
-            zx_DEC_idp_CreatedStatus(c, (struct zx_idp_CreatedStatus_s*)el);
-            if (!x->CreatedStatus)
-              x->CreatedStatus = (struct zx_idp_CreatedStatus_s*)el;
-            break;
-          case zx_idp_CreatedStatusResponse_ELEM:
-            zx_DEC_idp_CreatedStatusResponse(c, (struct zx_idp_CreatedStatusResponse_s*)el);
-            if (!x->CreatedStatusResponse)
-              x->CreatedStatusResponse = (struct zx_idp_CreatedStatusResponse_s*)el;
-            break;
-          case zx_shps_Delete_ELEM:
-            zx_DEC_shps_Delete(c, (struct zx_shps_Delete_s*)el);
-            if (!x->shps_Delete)
-              x->shps_Delete = (struct zx_shps_Delete_s*)el;
-            break;
-          case zx_shps_DeleteResponse_ELEM:
-            zx_DEC_shps_DeleteResponse(c, (struct zx_shps_DeleteResponse_s*)el);
-            if (!x->shps_DeleteResponse)
-              x->shps_DeleteResponse = (struct zx_shps_DeleteResponse_s*)el;
-            break;
-          case zx_shps_GetStatus_ELEM:
-            zx_DEC_shps_GetStatus(c, (struct zx_shps_GetStatus_s*)el);
-            if (!x->GetStatus)
-              x->GetStatus = (struct zx_shps_GetStatus_s*)el;
-            break;
-          case zx_shps_GetStatusResponse_ELEM:
-            zx_DEC_shps_GetStatusResponse(c, (struct zx_shps_GetStatusResponse_s*)el);
-            if (!x->GetStatusResponse)
-              x->GetStatusResponse = (struct zx_shps_GetStatusResponse_s*)el;
-            break;
-          case zx_shps_Query_ELEM:
-            zx_DEC_shps_Query(c, (struct zx_shps_Query_s*)el);
-            if (!x->shps_Query)
-              x->shps_Query = (struct zx_shps_Query_s*)el;
-            break;
-          case zx_shps_QueryResponse_ELEM:
-            zx_DEC_shps_QueryResponse(c, (struct zx_shps_QueryResponse_s*)el);
-            if (!x->shps_QueryResponse)
-              x->shps_QueryResponse = (struct zx_shps_QueryResponse_s*)el;
-            break;
-          case zx_shps_Invoke_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Invoke)
-              x->Invoke = el;
-            break;
-          case zx_shps_InvokeResponse_ELEM:
-            zx_DEC_shps_InvokeResponse(c, (struct zx_shps_InvokeResponse_s*)el);
-            if (!x->InvokeResponse)
-              x->InvokeResponse = (struct zx_shps_InvokeResponse_s*)el;
-            break;
-          case zx_shps_QueryRegistered_ELEM:
-            zx_DEC_shps_QueryRegistered(c, (struct zx_shps_QueryRegistered_s*)el);
-            if (!x->QueryRegistered)
-              x->QueryRegistered = (struct zx_shps_QueryRegistered_s*)el;
-            break;
-          case zx_shps_QueryRegisteredResponse_ELEM:
-            zx_DEC_shps_QueryRegisteredResponse(c, (struct zx_shps_QueryRegisteredResponse_s*)el);
-            if (!x->QueryRegisteredResponse)
-              x->QueryRegisteredResponse = (struct zx_shps_QueryRegisteredResponse_s*)el;
-            break;
-          case zx_shps_Register_ELEM:
-            zx_DEC_shps_Register(c, (struct zx_shps_Register_s*)el);
-            if (!x->Register)
-              x->Register = (struct zx_shps_Register_s*)el;
-            break;
-          case zx_shps_RegisterResponse_ELEM:
-            zx_DEC_shps_RegisterResponse(c, (struct zx_shps_RegisterResponse_s*)el);
-            if (!x->RegisterResponse)
-              x->RegisterResponse = (struct zx_shps_RegisterResponse_s*)el;
-            break;
-          case zx_shps_SetStatus_ELEM:
-            zx_DEC_shps_SetStatus(c, (struct zx_shps_SetStatus_s*)el);
-            if (!x->SetStatus)
-              x->SetStatus = (struct zx_shps_SetStatus_s*)el;
-            break;
-          case zx_shps_SetStatusResponse_ELEM:
-            zx_DEC_shps_SetStatusResponse(c, (struct zx_shps_SetStatusResponse_s*)el);
-            if (!x->SetStatusResponse)
-              x->SetStatusResponse = (struct zx_shps_SetStatusResponse_s*)el;
-            break;
-          case zx_shps_Update_ELEM:
-            zx_DEC_shps_Update(c, (struct zx_shps_Update_s*)el);
-            if (!x->Update)
-              x->Update = (struct zx_shps_Update_s*)el;
-            break;
-          case zx_shps_UpdateResponse_ELEM:
-            zx_DEC_shps_UpdateResponse(c, (struct zx_shps_UpdateResponse_s*)el);
-            if (!x->UpdateResponse)
-              x->UpdateResponse = (struct zx_shps_UpdateResponse_s*)el;
-            break;
-          case zx_shps_Poll_ELEM:
-            zx_DEC_shps_Poll(c, (struct zx_shps_Poll_s*)el);
-            if (!x->shps_Poll)
-              x->shps_Poll = (struct zx_shps_Poll_s*)el;
-            break;
-          case zx_shps_PollResponse_ELEM:
-            zx_DEC_shps_PollResponse(c, (struct zx_shps_PollResponse_s*)el);
-            if (!x->shps_PollResponse)
-              x->shps_PollResponse = (struct zx_shps_PollResponse_s*)el;
-            break;
-          case zx_shps_ProxyInvoke_ELEM:
-            zx_DEC_shps_ProxyInvoke(c, (struct zx_shps_ProxyInvoke_s*)el);
-            if (!x->ProxyInvoke)
-              x->ProxyInvoke = (struct zx_shps_ProxyInvoke_s*)el;
-            break;
-          case zx_shps_ProxyInvokeResponse_ELEM:
-            zx_DEC_shps_ProxyInvokeResponse(c, (struct zx_shps_ProxyInvokeResponse_s*)el);
-            if (!x->ProxyInvokeResponse)
-              x->ProxyInvokeResponse = (struct zx_shps_ProxyInvokeResponse_s*)el;
-            break;
-          case zx_idhrxml_Create_ELEM:
-            zx_DEC_idhrxml_Create(c, (struct zx_idhrxml_Create_s*)el);
-            if (!x->idhrxml_Create)
-              x->idhrxml_Create = (struct zx_idhrxml_Create_s*)el;
-            break;
-          case zx_idhrxml_CreateResponse_ELEM:
-            zx_DEC_idhrxml_CreateResponse(c, (struct zx_idhrxml_CreateResponse_s*)el);
-            if (!x->idhrxml_CreateResponse)
-              x->idhrxml_CreateResponse = (struct zx_idhrxml_CreateResponse_s*)el;
-            break;
-          case zx_idhrxml_Query_ELEM:
-            zx_DEC_idhrxml_Query(c, (struct zx_idhrxml_Query_s*)el);
-            if (!x->idhrxml_Query)
-              x->idhrxml_Query = (struct zx_idhrxml_Query_s*)el;
-            break;
-          case zx_idhrxml_QueryResponse_ELEM:
-            zx_DEC_idhrxml_QueryResponse(c, (struct zx_idhrxml_QueryResponse_s*)el);
-            if (!x->idhrxml_QueryResponse)
-              x->idhrxml_QueryResponse = (struct zx_idhrxml_QueryResponse_s*)el;
-            break;
-          case zx_idhrxml_Modify_ELEM:
-            zx_DEC_idhrxml_Modify(c, (struct zx_idhrxml_Modify_s*)el);
-            if (!x->idhrxml_Modify)
-              x->idhrxml_Modify = (struct zx_idhrxml_Modify_s*)el;
-            break;
-          case zx_idhrxml_ModifyResponse_ELEM:
-            zx_DEC_idhrxml_ModifyResponse(c, (struct zx_idhrxml_ModifyResponse_s*)el);
-            if (!x->idhrxml_ModifyResponse)
-              x->idhrxml_ModifyResponse = (struct zx_idhrxml_ModifyResponse_s*)el;
-            break;
-          case zx_idhrxml_Delete_ELEM:
-            zx_DEC_idhrxml_Delete(c, (struct zx_idhrxml_Delete_s*)el);
-            if (!x->idhrxml_Delete)
-              x->idhrxml_Delete = (struct zx_idhrxml_Delete_s*)el;
-            break;
-          case zx_idhrxml_DeleteResponse_ELEM:
-            zx_DEC_idhrxml_DeleteResponse(c, (struct zx_idhrxml_DeleteResponse_s*)el);
-            if (!x->idhrxml_DeleteResponse)
-              x->idhrxml_DeleteResponse = (struct zx_idhrxml_DeleteResponse_s*)el;
-            break;
-          case zx_idhrxml_Notify_ELEM:
-            zx_DEC_idhrxml_Notify(c, (struct zx_idhrxml_Notify_s*)el);
-            if (!x->idhrxml_Notify)
-              x->idhrxml_Notify = (struct zx_idhrxml_Notify_s*)el;
-            break;
-          case zx_idhrxml_NotifyResponse_ELEM:
-            zx_DEC_idhrxml_NotifyResponse(c, (struct zx_idhrxml_NotifyResponse_s*)el);
-            if (!x->idhrxml_NotifyResponse)
-              x->idhrxml_NotifyResponse = (struct zx_idhrxml_NotifyResponse_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   e_Envelope
-#define EL_STRUCT zx_e_Envelope_s
-#define EL_NS     e
-#define EL_TAG    Envelope
-
-/* FUNC(zx_DEC_e_Envelope) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_e_Envelope_s* zx_DEC_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x )
+int zx_DEC_ELEM_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sp_ArtifactResolve_ELEM:
+    if (!x->ArtifactResolve)
+      x->ArtifactResolve = (struct zx_sp_ArtifactResolve_s*)el;
+    return 1;
+  case zx_sp_ArtifactResponse_ELEM:
+    if (!x->ArtifactResponse)
+      x->ArtifactResponse = (struct zx_sp_ArtifactResponse_s*)el;
+    return 1;
+  case zx_sp_ManageNameIDRequest_ELEM:
+    if (!x->ManageNameIDRequest)
+      x->ManageNameIDRequest = (struct zx_sp_ManageNameIDRequest_s*)el;
+    return 1;
+  case zx_sp_ManageNameIDResponse_ELEM:
+    if (!x->ManageNameIDResponse)
+      x->ManageNameIDResponse = (struct zx_sp_ManageNameIDResponse_s*)el;
+    return 1;
+  case zx_sp_LogoutRequest_ELEM:
+    if (!x->LogoutRequest)
+      x->LogoutRequest = (struct zx_sp_LogoutRequest_s*)el;
+    return 1;
+  case zx_sp_LogoutResponse_ELEM:
+    if (!x->LogoutResponse)
+      x->LogoutResponse = (struct zx_sp_LogoutResponse_s*)el;
+    return 1;
+  case zx_sp_NameIDMappingRequest_ELEM:
+    if (!x->NameIDMappingRequest)
+      x->NameIDMappingRequest = (struct zx_sp_NameIDMappingRequest_s*)el;
+    return 1;
+  case zx_sp_NameIDMappingResponse_ELEM:
+    if (!x->NameIDMappingResponse)
+      x->NameIDMappingResponse = (struct zx_sp_NameIDMappingResponse_s*)el;
+    return 1;
+  case zx_sp_AttributeQuery_ELEM:
+    if (!x->AttributeQuery)
+      x->AttributeQuery = (struct zx_sp_AttributeQuery_s*)el;
+    return 1;
+  case zx_sp_AuthnQuery_ELEM:
+    if (!x->AuthnQuery)
+      x->AuthnQuery = (struct zx_sp_AuthnQuery_s*)el;
+    return 1;
+  case zx_sp_AuthzDecisionQuery_ELEM:
+    if (!x->AuthzDecisionQuery)
+      x->AuthzDecisionQuery = (struct zx_sp_AuthzDecisionQuery_s*)el;
+    return 1;
+  case zx_sp_AssertionIDRequest_ELEM:
+    if (!x->AssertionIDRequest)
+      x->AssertionIDRequest = (struct zx_sp_AssertionIDRequest_s*)el;
+    return 1;
+  case zx_sp_Response_ELEM:
+    if (!x->Response)
+      x->Response = (struct zx_sp_Response_s*)el;
+    return 1;
+  case zx_sp_AuthnRequest_ELEM:
+    if (!x->AuthnRequest)
+      x->AuthnRequest = (struct zx_sp_AuthnRequest_s*)el;
+    return 1;
+  case zx_sp11_Request_ELEM:
+    if (!x->Request)
+      x->Request = (struct zx_sp11_Request_s*)el;
+    return 1;
+  case zx_sp11_Response_ELEM:
+    if (!x->sp11_Response)
+      x->sp11_Response = (struct zx_sp11_Response_s*)el;
+    return 1;
+  case zx_ff12_RegisterNameIdentifierRequest_ELEM:
+    if (!x->RegisterNameIdentifierRequest)
+      x->RegisterNameIdentifierRequest = (struct zx_ff12_RegisterNameIdentifierRequest_s*)el;
+    return 1;
+  case zx_ff12_RegisterNameIdentifierResponse_ELEM:
+    if (!x->RegisterNameIdentifierResponse)
+      x->RegisterNameIdentifierResponse = (struct zx_ff12_RegisterNameIdentifierResponse_s*)el;
+    return 1;
+  case zx_ff12_FederationTerminationNotification_ELEM:
+    if (!x->FederationTerminationNotification)
+      x->FederationTerminationNotification = (struct zx_ff12_FederationTerminationNotification_s*)el;
+    return 1;
+  case zx_ff12_LogoutRequest_ELEM:
+    if (!x->ff12_LogoutRequest)
+      x->ff12_LogoutRequest = (struct zx_ff12_LogoutRequest_s*)el;
+    return 1;
+  case zx_ff12_LogoutResponse_ELEM:
+    if (!x->ff12_LogoutResponse)
+      x->ff12_LogoutResponse = (struct zx_ff12_LogoutResponse_s*)el;
+    return 1;
+  case zx_ff12_NameIdentifierMappingRequest_ELEM:
+    if (!x->NameIdentifierMappingRequest)
+      x->NameIdentifierMappingRequest = (struct zx_ff12_NameIdentifierMappingRequest_s*)el;
+    return 1;
+  case zx_ff12_NameIdentifierMappingResponse_ELEM:
+    if (!x->NameIdentifierMappingResponse)
+      x->NameIdentifierMappingResponse = (struct zx_ff12_NameIdentifierMappingResponse_s*)el;
+    return 1;
+  case zx_xasp_XACMLAuthzDecisionQuery_ELEM:
+    if (!x->XACMLAuthzDecisionQuery)
+      x->XACMLAuthzDecisionQuery = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)el;
+    return 1;
+  case zx_xasp_XACMLPolicyQuery_ELEM:
+    if (!x->XACMLPolicyQuery)
+      x->XACMLPolicyQuery = (struct zx_xasp_XACMLPolicyQuery_s*)el;
+    return 1;
+  case zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM:
+    if (!x->xaspcd1_XACMLAuthzDecisionQuery)
+      x->xaspcd1_XACMLAuthzDecisionQuery = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)el;
+    return 1;
+  case zx_xaspcd1_XACMLPolicyQuery_ELEM:
+    if (!x->xaspcd1_XACMLPolicyQuery)
+      x->xaspcd1_XACMLPolicyQuery = (struct zx_xaspcd1_XACMLPolicyQuery_s*)el;
+    return 1;
+  case zx_xac_Request_ELEM:
+    if (!x->xac_Request)
+      x->xac_Request = (struct zx_xac_Request_s*)el;
+    return 1;
+  case zx_xac_Response_ELEM:
+    if (!x->xac_Response)
+      x->xac_Response = (struct zx_xac_Response_s*)el;
+    return 1;
+  case zx_di_Query_ELEM:
+    if (!x->Query)
+      x->Query = (struct zx_di_Query_s*)el;
+    return 1;
+  case zx_di_QueryResponse_ELEM:
+    if (!x->QueryResponse)
+      x->QueryResponse = (struct zx_di_QueryResponse_s*)el;
+    return 1;
+  case zx_di12_Query_ELEM:
+    if (!x->di12_Query)
+      x->di12_Query = (struct zx_di12_Query_s*)el;
+    return 1;
+  case zx_di12_QueryResponse_ELEM:
+    if (!x->di12_QueryResponse)
+      x->di12_QueryResponse = (struct zx_di12_QueryResponse_s*)el;
+    return 1;
+  case zx_di12_Modify_ELEM:
+    if (!x->Modify)
+      x->Modify = (struct zx_di12_Modify_s*)el;
+    return 1;
+  case zx_di12_ModifyResponse_ELEM:
+    if (!x->ModifyResponse)
+      x->ModifyResponse = (struct zx_di12_ModifyResponse_s*)el;
+    return 1;
+  case zx_e_Fault_ELEM:
+    if (!x->Fault)
+      x->Fault = (struct zx_e_Fault_s*)el;
+    return 1;
+  case zx_di_SvcMDAssociationAdd_ELEM:
+    if (!x->SvcMDAssociationAdd)
+      x->SvcMDAssociationAdd = (struct zx_di_SvcMDAssociationAdd_s*)el;
+    return 1;
+  case zx_di_SvcMDAssociationAddResponse_ELEM:
+    if (!x->SvcMDAssociationAddResponse)
+      x->SvcMDAssociationAddResponse = (struct zx_di_SvcMDAssociationAddResponse_s*)el;
+    return 1;
+  case zx_di_SvcMDAssociationDelete_ELEM:
+    if (!x->SvcMDAssociationDelete)
+      x->SvcMDAssociationDelete = (struct zx_di_SvcMDAssociationDelete_s*)el;
+    return 1;
+  case zx_di_SvcMDAssociationDeleteResponse_ELEM:
+    if (!x->SvcMDAssociationDeleteResponse)
+      x->SvcMDAssociationDeleteResponse = (struct zx_di_SvcMDAssociationDeleteResponse_s*)el;
+    return 1;
+  case zx_di_SvcMDAssociationQuery_ELEM:
+    if (!x->SvcMDAssociationQuery)
+      x->SvcMDAssociationQuery = (struct zx_di_SvcMDAssociationQuery_s*)el;
+    return 1;
+  case zx_di_SvcMDAssociationQueryResponse_ELEM:
+    if (!x->SvcMDAssociationQueryResponse)
+      x->SvcMDAssociationQueryResponse = (struct zx_di_SvcMDAssociationQueryResponse_s*)el;
+    return 1;
+  case zx_di_SvcMDRegister_ELEM:
+    if (!x->SvcMDRegister)
+      x->SvcMDRegister = (struct zx_di_SvcMDRegister_s*)el;
+    return 1;
+  case zx_di_SvcMDRegisterResponse_ELEM:
+    if (!x->SvcMDRegisterResponse)
+      x->SvcMDRegisterResponse = (struct zx_di_SvcMDRegisterResponse_s*)el;
+    return 1;
+  case zx_di_SvcMDDelete_ELEM:
+    if (!x->SvcMDDelete)
+      x->SvcMDDelete = (struct zx_di_SvcMDDelete_s*)el;
+    return 1;
+  case zx_di_SvcMDDeleteResponse_ELEM:
+    if (!x->SvcMDDeleteResponse)
+      x->SvcMDDeleteResponse = (struct zx_di_SvcMDDeleteResponse_s*)el;
+    return 1;
+  case zx_di_SvcMDQuery_ELEM:
+    if (!x->SvcMDQuery)
+      x->SvcMDQuery = (struct zx_di_SvcMDQuery_s*)el;
+    return 1;
+  case zx_di_SvcMDQueryResponse_ELEM:
+    if (!x->SvcMDQueryResponse)
+      x->SvcMDQueryResponse = (struct zx_di_SvcMDQueryResponse_s*)el;
+    return 1;
+  case zx_di_SvcMDReplace_ELEM:
+    if (!x->SvcMDReplace)
+      x->SvcMDReplace = (struct zx_di_SvcMDReplace_s*)el;
+    return 1;
+  case zx_di_SvcMDReplaceResponse_ELEM:
+    if (!x->SvcMDReplaceResponse)
+      x->SvcMDReplaceResponse = (struct zx_di_SvcMDReplaceResponse_s*)el;
+    return 1;
+  case zx_dap_Create_ELEM:
+    if (!x->Create)
+      x->Create = (struct zx_dap_Create_s*)el;
+    return 1;
+  case zx_dap_CreateResponse_ELEM:
+    if (!x->CreateResponse)
+      x->CreateResponse = (struct zx_dap_CreateResponse_s*)el;
+    return 1;
+  case zx_dap_Query_ELEM:
+    if (!x->dap_Query)
+      x->dap_Query = (struct zx_dap_Query_s*)el;
+    return 1;
+  case zx_dap_QueryResponse_ELEM:
+    if (!x->dap_QueryResponse)
+      x->dap_QueryResponse = (struct zx_dap_QueryResponse_s*)el;
+    return 1;
+  case zx_dap_Modify_ELEM:
+    if (!x->dap_Modify)
+      x->dap_Modify = (struct zx_dap_Modify_s*)el;
+    return 1;
+  case zx_dap_ModifyResponse_ELEM:
+    if (!x->dap_ModifyResponse)
+      x->dap_ModifyResponse = (struct zx_dap_ModifyResponse_s*)el;
+    return 1;
+  case zx_dap_Delete_ELEM:
+    if (!x->Delete)
+      x->Delete = (struct zx_dap_Delete_s*)el;
+    return 1;
+  case zx_dap_DeleteResponse_ELEM:
+    if (!x->DeleteResponse)
+      x->DeleteResponse = (struct zx_dap_DeleteResponse_s*)el;
+    return 1;
+  case zx_dap_Notify_ELEM:
+    if (!x->Notify)
+      x->Notify = (struct zx_dap_Notify_s*)el;
+    return 1;
+  case zx_dap_NotifyResponse_ELEM:
+    if (!x->NotifyResponse)
+      x->NotifyResponse = (struct zx_dap_NotifyResponse_s*)el;
+    return 1;
+  case zx_ps_AddEntityRequest_ELEM:
+    if (!x->AddEntityRequest)
+      x->AddEntityRequest = (struct zx_ps_AddEntityRequest_s*)el;
+    return 1;
+  case zx_ps_AddEntityResponse_ELEM:
+    if (!x->AddEntityResponse)
+      x->AddEntityResponse = (struct zx_ps_AddEntityResponse_s*)el;
+    return 1;
+  case zx_ps_AddKnownEntityRequest_ELEM:
+    if (!x->AddKnownEntityRequest)
+      x->AddKnownEntityRequest = (struct zx_ps_AddKnownEntityRequest_s*)el;
+    return 1;
+  case zx_ps_AddKnownEntityResponse_ELEM:
+    if (!x->AddKnownEntityResponse)
+      x->AddKnownEntityResponse = (struct zx_ps_AddKnownEntityResponse_s*)el;
+    return 1;
+  case zx_ps_AddCollectionRequest_ELEM:
+    if (!x->AddCollectionRequest)
+      x->AddCollectionRequest = (struct zx_ps_AddCollectionRequest_s*)el;
+    return 1;
+  case zx_ps_AddCollectionResponse_ELEM:
+    if (!x->AddCollectionResponse)
+      x->AddCollectionResponse = (struct zx_ps_AddCollectionResponse_s*)el;
+    return 1;
+  case zx_ps_AddToCollectionRequest_ELEM:
+    if (!x->AddToCollectionRequest)
+      x->AddToCollectionRequest = (struct zx_ps_AddToCollectionRequest_s*)el;
+    return 1;
+  case zx_ps_AddToCollectionResponse_ELEM:
+    if (!x->AddToCollectionResponse)
+      x->AddToCollectionResponse = (struct zx_ps_AddToCollectionResponse_s*)el;
+    return 1;
+  case zx_ps_RemoveEntityRequest_ELEM:
+    if (!x->RemoveEntityRequest)
+      x->RemoveEntityRequest = (struct zx_ps_RemoveEntityRequest_s*)el;
+    return 1;
+  case zx_ps_RemoveEntityResponse_ELEM:
+    if (!x->RemoveEntityResponse)
+      x->RemoveEntityResponse = (struct zx_ps_RemoveEntityResponse_s*)el;
+    return 1;
+  case zx_ps_RemoveCollectionRequest_ELEM:
+    if (!x->RemoveCollectionRequest)
+      x->RemoveCollectionRequest = (struct zx_ps_RemoveCollectionRequest_s*)el;
+    return 1;
+  case zx_ps_RemoveCollectionResponse_ELEM:
+    if (!x->RemoveCollectionResponse)
+      x->RemoveCollectionResponse = (struct zx_ps_RemoveCollectionResponse_s*)el;
+    return 1;
+  case zx_ps_RemoveFromCollectionRequest_ELEM:
+    if (!x->RemoveFromCollectionRequest)
+      x->RemoveFromCollectionRequest = (struct zx_ps_RemoveFromCollectionRequest_s*)el;
+    return 1;
+  case zx_ps_RemoveFromCollectionResponse_ELEM:
+    if (!x->RemoveFromCollectionResponse)
+      x->RemoveFromCollectionResponse = (struct zx_ps_RemoveFromCollectionResponse_s*)el;
+    return 1;
+  case zx_ps_ListMembersRequest_ELEM:
+    if (!x->ListMembersRequest)
+      x->ListMembersRequest = (struct zx_ps_ListMembersRequest_s*)el;
+    return 1;
+  case zx_ps_ListMembersResponse_ELEM:
+    if (!x->ListMembersResponse)
+      x->ListMembersResponse = (struct zx_ps_ListMembersResponse_s*)el;
+    return 1;
+  case zx_ps_QueryObjectsRequest_ELEM:
+    if (!x->QueryObjectsRequest)
+      x->QueryObjectsRequest = (struct zx_ps_QueryObjectsRequest_s*)el;
+    return 1;
+  case zx_ps_QueryObjectsResponse_ELEM:
+    if (!x->QueryObjectsResponse)
+      x->QueryObjectsResponse = (struct zx_ps_QueryObjectsResponse_s*)el;
+    return 1;
+  case zx_ps_GetObjectInfoRequest_ELEM:
+    if (!x->GetObjectInfoRequest)
+      x->GetObjectInfoRequest = (struct zx_ps_GetObjectInfoRequest_s*)el;
+    return 1;
+  case zx_ps_GetObjectInfoResponse_ELEM:
+    if (!x->GetObjectInfoResponse)
+      x->GetObjectInfoResponse = (struct zx_ps_GetObjectInfoResponse_s*)el;
+    return 1;
+  case zx_ps_SetObjectInfoRequest_ELEM:
+    if (!x->SetObjectInfoRequest)
+      x->SetObjectInfoRequest = (struct zx_ps_SetObjectInfoRequest_s*)el;
+    return 1;
+  case zx_ps_SetObjectInfoResponse_ELEM:
+    if (!x->SetObjectInfoResponse)
+      x->SetObjectInfoResponse = (struct zx_ps_SetObjectInfoResponse_s*)el;
+    return 1;
+  case zx_ps_TestMembershipRequest_ELEM:
+    if (!x->TestMembershipRequest)
+      x->TestMembershipRequest = (struct zx_ps_TestMembershipRequest_s*)el;
+    return 1;
+  case zx_ps_TestMembershipResponse_ELEM:
+    if (!x->TestMembershipResponse)
+      x->TestMembershipResponse = (struct zx_ps_TestMembershipResponse_s*)el;
+    return 1;
+  case zx_ps_ResolveIdentifierRequest_ELEM:
+    if (!x->ResolveIdentifierRequest)
+      x->ResolveIdentifierRequest = (struct zx_ps_ResolveIdentifierRequest_s*)el;
+    return 1;
+  case zx_ps_ResolveIdentifierResponse_ELEM:
+    if (!x->ResolveIdentifierResponse)
+      x->ResolveIdentifierResponse = (struct zx_ps_ResolveIdentifierResponse_s*)el;
+    return 1;
+  case zx_ps_Notify_ELEM:
+    if (!x->ps_Notify)
+      x->ps_Notify = (struct zx_ps_Notify_s*)el;
+    return 1;
+  case zx_ps_NotifyResponse_ELEM:
+    if (!x->ps_NotifyResponse)
+      x->ps_NotifyResponse = (struct zx_ps_NotifyResponse_s*)el;
+    return 1;
+  case zx_im_IdentityMappingRequest_ELEM:
+    if (!x->IdentityMappingRequest)
+      x->IdentityMappingRequest = (struct zx_im_IdentityMappingRequest_s*)el;
+    return 1;
+  case zx_im_IdentityMappingResponse_ELEM:
+    if (!x->IdentityMappingResponse)
+      x->IdentityMappingResponse = (struct zx_im_IdentityMappingResponse_s*)el;
+    return 1;
+  case zx_as_SASLRequest_ELEM:
+    if (!x->SASLRequest)
+      x->SASLRequest = (struct zx_as_SASLRequest_s*)el;
+    return 1;
+  case zx_as_SASLResponse_ELEM:
+    if (!x->SASLResponse)
+      x->SASLResponse = (struct zx_as_SASLResponse_s*)el;
+    return 1;
+  case zx_mm7_SubmitReq_ELEM:
+    if (!x->SubmitReq)
+      x->SubmitReq = (struct zx_mm7_SubmitReq_s*)el;
+    return 1;
+  case zx_mm7_SubmitRsp_ELEM:
+    if (!x->SubmitRsp)
+      x->SubmitRsp = (struct zx_mm7_SubmitRsp_s*)el;
+    return 1;
+  case zx_mm7_DeliverReq_ELEM:
+    if (!x->DeliverReq)
+      x->DeliverReq = (struct zx_mm7_DeliverReq_s*)el;
+    return 1;
+  case zx_mm7_DeliverRsp_ELEM:
+    if (!x->DeliverRsp)
+      x->DeliverRsp = (struct zx_mm7_DeliverRsp_s*)el;
+    return 1;
+  case zx_mm7_CancelReq_ELEM:
+    if (!x->CancelReq)
+      x->CancelReq = (struct zx_mm7_CancelReq_s*)el;
+    return 1;
+  case zx_mm7_CancelRsp_ELEM:
+    if (!x->CancelRsp)
+      x->CancelRsp = (struct zx_mm7_CancelRsp_s*)el;
+    return 1;
+  case zx_mm7_ReplaceReq_ELEM:
+    if (!x->ReplaceReq)
+      x->ReplaceReq = (struct zx_mm7_ReplaceReq_s*)el;
+    return 1;
+  case zx_mm7_ReplaceRsp_ELEM:
+    if (!x->ReplaceRsp)
+      x->ReplaceRsp = (struct zx_mm7_ReplaceRsp_s*)el;
+    return 1;
+  case zx_mm7_extendedCancelReq_ELEM:
+    if (!x->extendedCancelReq)
+      x->extendedCancelReq = (struct zx_mm7_extendedCancelReq_s*)el;
+    return 1;
+  case zx_mm7_extendedCancelRsp_ELEM:
+    if (!x->extendedCancelRsp)
+      x->extendedCancelRsp = (struct zx_mm7_extendedCancelRsp_s*)el;
+    return 1;
+  case zx_mm7_extendedReplaceReq_ELEM:
+    if (!x->extendedReplaceReq)
+      x->extendedReplaceReq = (struct zx_mm7_extendedReplaceReq_s*)el;
+    return 1;
+  case zx_mm7_extendedReplaceRsp_ELEM:
+    if (!x->extendedReplaceRsp)
+      x->extendedReplaceRsp = (struct zx_mm7_extendedReplaceRsp_s*)el;
+    return 1;
+  case zx_mm7_DeliveryReportReq_ELEM:
+    if (!x->DeliveryReportReq)
+      x->DeliveryReportReq = (struct zx_mm7_DeliveryReportReq_s*)el;
+    return 1;
+  case zx_mm7_DeliveryReportRsp_ELEM:
+    if (!x->DeliveryReportRsp)
+      x->DeliveryReportRsp = (struct zx_mm7_DeliveryReportRsp_s*)el;
+    return 1;
+  case zx_mm7_ReadReplyReq_ELEM:
+    if (!x->ReadReplyReq)
+      x->ReadReplyReq = (struct zx_mm7_ReadReplyReq_s*)el;
+    return 1;
+  case zx_mm7_ReadReplyRsp_ELEM:
+    if (!x->ReadReplyRsp)
+      x->ReadReplyRsp = (struct zx_mm7_ReadReplyRsp_s*)el;
+    return 1;
+  case zx_mm7_RSErrorRsp_ELEM:
+    if (!x->RSErrorRsp)
+      x->RSErrorRsp = (struct zx_mm7_RSErrorRsp_s*)el;
+    return 1;
+  case zx_mm7_VASPErrorRsp_ELEM:
+    if (!x->VASPErrorRsp)
+      x->VASPErrorRsp = (struct zx_mm7_VASPErrorRsp_s*)el;
+    return 1;
+  case zx_mm7_QueryStatusReq_ELEM:
+    if (!x->QueryStatusReq)
+      x->QueryStatusReq = (struct zx_mm7_QueryStatusReq_s*)el;
+    return 1;
+  case zx_mm7_QueryStatusRsp_ELEM:
+    if (!x->QueryStatusRsp)
+      x->QueryStatusRsp = (struct zx_mm7_QueryStatusRsp_s*)el;
+    return 1;
+  case zx_cb_Query_ELEM:
+    if (!x->cb_Query)
+      x->cb_Query = (struct zx_cb_Query_s*)el;
+    return 1;
+  case zx_cb_QueryResponse_ELEM:
+    if (!x->cb_QueryResponse)
+      x->cb_QueryResponse = (struct zx_cb_QueryResponse_s*)el;
+    return 1;
+  case zx_cb_Create_ELEM:
+    if (!x->cb_Create)
+      x->cb_Create = (struct zx_cb_Create_s*)el;
+    return 1;
+  case zx_cb_CreateResponse_ELEM:
+    if (!x->cb_CreateResponse)
+      x->cb_CreateResponse = (struct zx_cb_CreateResponse_s*)el;
+    return 1;
+  case zx_cb_Delete_ELEM:
+    if (!x->cb_Delete)
+      x->cb_Delete = (struct zx_cb_Delete_s*)el;
+    return 1;
+  case zx_cb_DeleteResponse_ELEM:
+    if (!x->cb_DeleteResponse)
+      x->cb_DeleteResponse = (struct zx_cb_DeleteResponse_s*)el;
+    return 1;
+  case zx_cb_Modify_ELEM:
+    if (!x->cb_Modify)
+      x->cb_Modify = (struct zx_cb_Modify_s*)el;
+    return 1;
+  case zx_cb_ModifyResponse_ELEM:
+    if (!x->cb_ModifyResponse)
+      x->cb_ModifyResponse = (struct zx_cb_ModifyResponse_s*)el;
+    return 1;
+  case zx_cb_Notify_ELEM:
+    if (!x->cb_Notify)
+      x->cb_Notify = (struct zx_cb_Notify_s*)el;
+    return 1;
+  case zx_cb_NotifyResponse_ELEM:
+    if (!x->cb_NotifyResponse)
+      x->cb_NotifyResponse = (struct zx_cb_NotifyResponse_s*)el;
+    return 1;
+  case zx_cb_ReportUsage_ELEM:
+    if (!x->ReportUsage)
+      x->ReportUsage = (struct zx_cb_ReportUsage_s*)el;
+    return 1;
+  case zx_cb_ReportUsageResponse_ELEM:
+    if (!x->ReportUsageResponse)
+      x->ReportUsageResponse = (struct zx_cb_ReportUsageResponse_s*)el;
+    return 1;
+  case zx_gl_Query_ELEM:
+    if (!x->gl_Query)
+      x->gl_Query = (struct zx_gl_Query_s*)el;
+    return 1;
+  case zx_gl_QueryResponse_ELEM:
+    if (!x->gl_QueryResponse)
+      x->gl_QueryResponse = (struct zx_gl_QueryResponse_s*)el;
+    return 1;
+  case zx_gl_Create_ELEM:
+    if (!x->gl_Create)
+      x->gl_Create = (struct zx_gl_Create_s*)el;
+    return 1;
+  case zx_gl_CreateResponse_ELEM:
+    if (!x->gl_CreateResponse)
+      x->gl_CreateResponse = (struct zx_gl_CreateResponse_s*)el;
+    return 1;
+  case zx_gl_Delete_ELEM:
+    if (!x->gl_Delete)
+      x->gl_Delete = (struct zx_gl_Delete_s*)el;
+    return 1;
+  case zx_gl_DeleteResponse_ELEM:
+    if (!x->gl_DeleteResponse)
+      x->gl_DeleteResponse = (struct zx_gl_DeleteResponse_s*)el;
+    return 1;
+  case zx_gl_Modify_ELEM:
+    if (!x->gl_Modify)
+      x->gl_Modify = (struct zx_gl_Modify_s*)el;
+    return 1;
+  case zx_gl_ModifyResponse_ELEM:
+    if (!x->gl_ModifyResponse)
+      x->gl_ModifyResponse = (struct zx_gl_ModifyResponse_s*)el;
+    return 1;
+  case zx_gl_Notify_ELEM:
+    if (!x->gl_Notify)
+      x->gl_Notify = (struct zx_gl_Notify_s*)el;
+    return 1;
+  case zx_gl_NotifyResponse_ELEM:
+    if (!x->gl_NotifyResponse)
+      x->gl_NotifyResponse = (struct zx_gl_NotifyResponse_s*)el;
+    return 1;
+  case zx_demomed_StoreObjectRequest_ELEM:
+    if (!x->StoreObjectRequest)
+      x->StoreObjectRequest = (struct zx_demomed_StoreObjectRequest_s*)el;
+    return 1;
+  case zx_demomed_StoreObjectResponse_ELEM:
+    if (!x->StoreObjectResponse)
+      x->StoreObjectResponse = (struct zx_demomed_StoreObjectResponse_s*)el;
+    return 1;
+  case zx_demomed_GetObjectListRequest_ELEM:
+    if (!x->GetObjectListRequest)
+      x->GetObjectListRequest = (struct zx_demomed_GetObjectListRequest_s*)el;
+    return 1;
+  case zx_demomed_GetObjectListResponse_ELEM:
+    if (!x->GetObjectListResponse)
+      x->GetObjectListResponse = (struct zx_demomed_GetObjectListResponse_s*)el;
+    return 1;
+  case zx_demomed_GetObjectRequest_ELEM:
+    if (!x->GetObjectRequest)
+      x->GetObjectRequest = (struct zx_demomed_GetObjectRequest_s*)el;
+    return 1;
+  case zx_demomed_GetObjectResponse_ELEM:
+    if (!x->GetObjectResponse)
+      x->GetObjectResponse = (struct zx_demomed_GetObjectResponse_s*)el;
+    return 1;
+  case zx_demomed_DeleteObjectRequest_ELEM:
+    if (!x->DeleteObjectRequest)
+      x->DeleteObjectRequest = (struct zx_demomed_DeleteObjectRequest_s*)el;
+    return 1;
+  case zx_demomed_DeleteObjectResponse_ELEM:
+    if (!x->DeleteObjectResponse)
+      x->DeleteObjectResponse = (struct zx_demomed_DeleteObjectResponse_s*)el;
+    return 1;
+  case zx_pmm_Provision_ELEM:
+    if (!x->Provision)
+      x->Provision = (struct zx_pmm_Provision_s*)el;
+    return 1;
+  case zx_pmm_ProvisionResponse_ELEM:
+    if (!x->ProvisionResponse)
+      x->ProvisionResponse = (struct zx_pmm_ProvisionResponse_s*)el;
+    return 1;
+  case zx_pmm_PMActivate_ELEM:
+    if (!x->PMActivate)
+      x->PMActivate = (struct zx_pmm_PMActivate_s*)el;
+    return 1;
+  case zx_pmm_PMActivateResponse_ELEM:
+    if (!x->PMActivateResponse)
+      x->PMActivateResponse = (struct zx_pmm_PMActivateResponse_s*)el;
+    return 1;
+  case zx_pmm_PMDeactivate_ELEM:
+    if (!x->PMDeactivate)
+      x->PMDeactivate = (struct zx_pmm_PMDeactivate_s*)el;
+    return 1;
+  case zx_pmm_PMDeactivateResponse_ELEM:
+    if (!x->PMDeactivateResponse)
+      x->PMDeactivateResponse = (struct zx_pmm_PMDeactivateResponse_s*)el;
+    return 1;
+  case zx_pmm_PMDelete_ELEM:
+    if (!x->PMDelete)
+      x->PMDelete = (struct zx_pmm_PMDelete_s*)el;
+    return 1;
+  case zx_pmm_PMDeleteResponse_ELEM:
+    if (!x->PMDeleteResponse)
+      x->PMDeleteResponse = (struct zx_pmm_PMDeleteResponse_s*)el;
+    return 1;
+  case zx_pmm_PMUpdate_ELEM:
+    if (!x->PMUpdate)
+      x->PMUpdate = (struct zx_pmm_PMUpdate_s*)el;
+    return 1;
+  case zx_pmm_PMUpdateResponse_ELEM:
+    if (!x->PMUpdateResponse)
+      x->PMUpdateResponse = (struct zx_pmm_PMUpdateResponse_s*)el;
+    return 1;
+  case zx_pmm_PMGetStatus_ELEM:
+    if (!x->PMGetStatus)
+      x->PMGetStatus = (struct zx_pmm_PMGetStatus_s*)el;
+    return 1;
+  case zx_pmm_PMGetStatusResponse_ELEM:
+    if (!x->PMGetStatusResponse)
+      x->PMGetStatusResponse = (struct zx_pmm_PMGetStatusResponse_s*)el;
+    return 1;
+  case zx_pmm_PMSetStatus_ELEM:
+    if (!x->PMSetStatus)
+      x->PMSetStatus = (struct zx_pmm_PMSetStatus_s*)el;
+    return 1;
+  case zx_pmm_PMSetStatusResponse_ELEM:
+    if (!x->PMSetStatusResponse)
+      x->PMSetStatusResponse = (struct zx_pmm_PMSetStatusResponse_s*)el;
+    return 1;
+  case zx_prov_PMERegister_ELEM:
+    if (!x->PMERegister)
+      x->PMERegister = (struct zx_prov_PMERegister_s*)el;
+    return 1;
+  case zx_prov_PMERegisterResponse_ELEM:
+    if (!x->PMERegisterResponse)
+      x->PMERegisterResponse = (struct zx_prov_PMERegisterResponse_s*)el;
+    return 1;
+  case zx_prov_PMEUpload_ELEM:
+    if (!x->PMEUpload)
+      x->PMEUpload = (struct zx_prov_PMEUpload_s*)el;
+    return 1;
+  case zx_prov_PMEUploadResponse_ELEM:
+    if (!x->PMEUploadResponse)
+      x->PMEUploadResponse = (struct zx_prov_PMEUploadResponse_s*)el;
+    return 1;
+  case zx_prov_PMEDownload_ELEM:
+    if (!x->PMEDownload)
+      x->PMEDownload = (struct zx_prov_PMEDownload_s*)el;
+    return 1;
+  case zx_prov_PMEDownloadResponse_ELEM:
+    if (!x->PMEDownloadResponse)
+      x->PMEDownloadResponse = (struct zx_prov_PMEDownloadResponse_s*)el;
+    return 1;
+  case zx_prov_PMEEnable_ELEM:
+    if (!x->PMEEnable)
+      x->PMEEnable = (struct zx_prov_PMEEnable_s*)el;
+    return 1;
+  case zx_prov_PMEEnableResponse_ELEM:
+    if (!x->PMEEnableResponse)
+      x->PMEEnableResponse = (struct zx_prov_PMEEnableResponse_s*)el;
+    return 1;
+  case zx_prov_PMEDisable_ELEM:
+    if (!x->PMEDisable)
+      x->PMEDisable = (struct zx_prov_PMEDisable_s*)el;
+    return 1;
+  case zx_prov_PMEDisableResponse_ELEM:
+    if (!x->PMEDisableResponse)
+      x->PMEDisableResponse = (struct zx_prov_PMEDisableResponse_s*)el;
+    return 1;
+  case zx_prov_PMEDelete_ELEM:
+    if (!x->PMEDelete)
+      x->PMEDelete = (struct zx_prov_PMEDelete_s*)el;
+    return 1;
+  case zx_prov_PMEDeleteResponse_ELEM:
+    if (!x->PMEDeleteResponse)
+      x->PMEDeleteResponse = (struct zx_prov_PMEDeleteResponse_s*)el;
+    return 1;
+  case zx_prov_PMEGetInfo_ELEM:
+    if (!x->PMEGetInfo)
+      x->PMEGetInfo = (struct zx_prov_PMEGetInfo_s*)el;
+    return 1;
+  case zx_prov_PMEGetInfoResponse_ELEM:
+    if (!x->PMEGetInfoResponse)
+      x->PMEGetInfoResponse = (struct zx_prov_PMEGetInfoResponse_s*)el;
+    return 1;
+  case zx_prov_PMGetStatus_ELEM:
+    if (!x->prov_PMGetStatus)
+      x->prov_PMGetStatus = (struct zx_prov_PMGetStatus_s*)el;
+    return 1;
+  case zx_prov_PMGetStatusResponse_ELEM:
+    if (!x->prov_PMGetStatusResponse)
+      x->prov_PMGetStatusResponse = (struct zx_prov_PMGetStatusResponse_s*)el;
+    return 1;
+  case zx_prov_PMSetStatus_ELEM:
+    if (!x->prov_PMSetStatus)
+      x->prov_PMSetStatus = (struct zx_prov_PMSetStatus_s*)el;
+    return 1;
+  case zx_prov_PMSetStatusResponse_ELEM:
+    if (!x->prov_PMSetStatusResponse)
+      x->prov_PMSetStatusResponse = (struct zx_prov_PMSetStatusResponse_s*)el;
+    return 1;
+  case zx_prov_PMGetDescriptor_ELEM:
+    if (!x->PMGetDescriptor)
+      x->PMGetDescriptor = (struct zx_prov_PMGetDescriptor_s*)el;
+    return 1;
+  case zx_prov_PMGetDescriptorResponse_ELEM:
+    if (!x->PMGetDescriptorResponse)
+      x->PMGetDescriptorResponse = (struct zx_prov_PMGetDescriptorResponse_s*)el;
+    return 1;
+  case zx_prov_PMActivate_ELEM:
+    if (!x->prov_PMActivate)
+      x->prov_PMActivate = (struct zx_prov_PMActivate_s*)el;
+    return 1;
+  case zx_prov_PMActivateResponse_ELEM:
+    if (!x->prov_PMActivateResponse)
+      x->prov_PMActivateResponse = (struct zx_prov_PMActivateResponse_s*)el;
+    return 1;
+  case zx_prov_PMDeactivate_ELEM:
+    if (!x->prov_PMDeactivate)
+      x->prov_PMDeactivate = (struct zx_prov_PMDeactivate_s*)el;
+    return 1;
+  case zx_prov_PMDeactivateResponse_ELEM:
+    if (!x->prov_PMDeactivateResponse)
+      x->prov_PMDeactivateResponse = (struct zx_prov_PMDeactivateResponse_s*)el;
+    return 1;
+  case zx_prov_PMRegisterDescriptor_ELEM:
+    if (!x->PMRegisterDescriptor)
+      x->PMRegisterDescriptor = (struct zx_prov_PMRegisterDescriptor_s*)el;
+    return 1;
+  case zx_prov_PMRegisterDescriptorResponse_ELEM:
+    if (!x->PMRegisterDescriptorResponse)
+      x->PMRegisterDescriptorResponse = (struct zx_prov_PMRegisterDescriptorResponse_s*)el;
+    return 1;
+  case zx_prov_PMUpdate_ELEM:
+    if (!x->prov_PMUpdate)
+      x->prov_PMUpdate = (struct zx_prov_PMUpdate_s*)el;
+    return 1;
+  case zx_prov_PMUpdateResponse_ELEM:
+    if (!x->prov_PMUpdateResponse)
+      x->prov_PMUpdateResponse = (struct zx_prov_PMUpdateResponse_s*)el;
+    return 1;
+  case zx_prov_PMDelete_ELEM:
+    if (!x->prov_PMDelete)
+      x->prov_PMDelete = (struct zx_prov_PMDelete_s*)el;
+    return 1;
+  case zx_prov_PMDeleteResponse_ELEM:
+    if (!x->prov_PMDeleteResponse)
+      x->prov_PMDeleteResponse = (struct zx_prov_PMDeleteResponse_s*)el;
+    return 1;
+  case zx_prov_Poll_ELEM:
+    if (!x->Poll)
+      x->Poll = (struct zx_prov_Poll_s*)el;
+    return 1;
+  case zx_prov_PollResponse_ELEM:
+    if (!x->PollResponse)
+      x->PollResponse = (struct zx_prov_PollResponse_s*)el;
+    return 1;
+  case zx_prov_UpdateEPR_ELEM:
+    if (!x->UpdateEPR)
+      x->UpdateEPR = (struct zx_prov_UpdateEPR_s*)el;
+    return 1;
+  case zx_prov_UpdateEPRResponse_ELEM:
+    if (!x->UpdateEPRResponse)
+      x->UpdateEPRResponse = (struct zx_prov_UpdateEPRResponse_s*)el;
+    return 1;
+  case zx_idp_GetAssertion_ELEM:
+    if (!x->GetAssertion)
+      x->GetAssertion = (struct zx_idp_GetAssertion_s*)el;
+    return 1;
+  case zx_idp_GetAssertionResponse_ELEM:
+    if (!x->GetAssertionResponse)
+      x->GetAssertionResponse = (struct zx_idp_GetAssertionResponse_s*)el;
+    return 1;
+  case zx_idp_GetProviderInfo_ELEM:
+    if (!x->GetProviderInfo)
+      x->GetProviderInfo = (struct zx_idp_GetProviderInfo_s*)el;
+    return 1;
+  case zx_idp_GetProviderInfoResponse_ELEM:
+    if (!x->GetProviderInfoResponse)
+      x->GetProviderInfoResponse = (struct zx_idp_GetProviderInfoResponse_s*)el;
+    return 1;
+  case zx_idp_CreatedStatus_ELEM:
+    if (!x->CreatedStatus)
+      x->CreatedStatus = (struct zx_idp_CreatedStatus_s*)el;
+    return 1;
+  case zx_idp_CreatedStatusResponse_ELEM:
+    if (!x->CreatedStatusResponse)
+      x->CreatedStatusResponse = (struct zx_idp_CreatedStatusResponse_s*)el;
+    return 1;
+  case zx_shps_Delete_ELEM:
+    if (!x->shps_Delete)
+      x->shps_Delete = (struct zx_shps_Delete_s*)el;
+    return 1;
+  case zx_shps_DeleteResponse_ELEM:
+    if (!x->shps_DeleteResponse)
+      x->shps_DeleteResponse = (struct zx_shps_DeleteResponse_s*)el;
+    return 1;
+  case zx_shps_GetStatus_ELEM:
+    if (!x->GetStatus)
+      x->GetStatus = (struct zx_shps_GetStatus_s*)el;
+    return 1;
+  case zx_shps_GetStatusResponse_ELEM:
+    if (!x->GetStatusResponse)
+      x->GetStatusResponse = (struct zx_shps_GetStatusResponse_s*)el;
+    return 1;
+  case zx_shps_Query_ELEM:
+    if (!x->shps_Query)
+      x->shps_Query = (struct zx_shps_Query_s*)el;
+    return 1;
+  case zx_shps_QueryResponse_ELEM:
+    if (!x->shps_QueryResponse)
+      x->shps_QueryResponse = (struct zx_shps_QueryResponse_s*)el;
+    return 1;
+  case zx_shps_Invoke_ELEM:
+    if (!x->Invoke)
+      x->Invoke = el;
+    return 1;
+  case zx_shps_InvokeResponse_ELEM:
+    if (!x->InvokeResponse)
+      x->InvokeResponse = (struct zx_shps_InvokeResponse_s*)el;
+    return 1;
+  case zx_shps_QueryRegistered_ELEM:
+    if (!x->QueryRegistered)
+      x->QueryRegistered = (struct zx_shps_QueryRegistered_s*)el;
+    return 1;
+  case zx_shps_QueryRegisteredResponse_ELEM:
+    if (!x->QueryRegisteredResponse)
+      x->QueryRegisteredResponse = (struct zx_shps_QueryRegisteredResponse_s*)el;
+    return 1;
+  case zx_shps_Register_ELEM:
+    if (!x->Register)
+      x->Register = (struct zx_shps_Register_s*)el;
+    return 1;
+  case zx_shps_RegisterResponse_ELEM:
+    if (!x->RegisterResponse)
+      x->RegisterResponse = (struct zx_shps_RegisterResponse_s*)el;
+    return 1;
+  case zx_shps_SetStatus_ELEM:
+    if (!x->SetStatus)
+      x->SetStatus = (struct zx_shps_SetStatus_s*)el;
+    return 1;
+  case zx_shps_SetStatusResponse_ELEM:
+    if (!x->SetStatusResponse)
+      x->SetStatusResponse = (struct zx_shps_SetStatusResponse_s*)el;
+    return 1;
+  case zx_shps_Update_ELEM:
+    if (!x->Update)
+      x->Update = (struct zx_shps_Update_s*)el;
+    return 1;
+  case zx_shps_UpdateResponse_ELEM:
+    if (!x->UpdateResponse)
+      x->UpdateResponse = (struct zx_shps_UpdateResponse_s*)el;
+    return 1;
+  case zx_shps_Poll_ELEM:
+    if (!x->shps_Poll)
+      x->shps_Poll = (struct zx_shps_Poll_s*)el;
+    return 1;
+  case zx_shps_PollResponse_ELEM:
+    if (!x->shps_PollResponse)
+      x->shps_PollResponse = (struct zx_shps_PollResponse_s*)el;
+    return 1;
+  case zx_shps_ProxyInvoke_ELEM:
+    if (!x->ProxyInvoke)
+      x->ProxyInvoke = (struct zx_shps_ProxyInvoke_s*)el;
+    return 1;
+  case zx_shps_ProxyInvokeResponse_ELEM:
+    if (!x->ProxyInvokeResponse)
+      x->ProxyInvokeResponse = (struct zx_shps_ProxyInvokeResponse_s*)el;
+    return 1;
+  case zx_idhrxml_Create_ELEM:
+    if (!x->idhrxml_Create)
+      x->idhrxml_Create = (struct zx_idhrxml_Create_s*)el;
+    return 1;
+  case zx_idhrxml_CreateResponse_ELEM:
+    if (!x->idhrxml_CreateResponse)
+      x->idhrxml_CreateResponse = (struct zx_idhrxml_CreateResponse_s*)el;
+    return 1;
+  case zx_idhrxml_Query_ELEM:
+    if (!x->idhrxml_Query)
+      x->idhrxml_Query = (struct zx_idhrxml_Query_s*)el;
+    return 1;
+  case zx_idhrxml_QueryResponse_ELEM:
+    if (!x->idhrxml_QueryResponse)
+      x->idhrxml_QueryResponse = (struct zx_idhrxml_QueryResponse_s*)el;
+    return 1;
+  case zx_idhrxml_Modify_ELEM:
+    if (!x->idhrxml_Modify)
+      x->idhrxml_Modify = (struct zx_idhrxml_Modify_s*)el;
+    return 1;
+  case zx_idhrxml_ModifyResponse_ELEM:
+    if (!x->idhrxml_ModifyResponse)
+      x->idhrxml_ModifyResponse = (struct zx_idhrxml_ModifyResponse_s*)el;
+    return 1;
+  case zx_idhrxml_Delete_ELEM:
+    if (!x->idhrxml_Delete)
+      x->idhrxml_Delete = (struct zx_idhrxml_Delete_s*)el;
+    return 1;
+  case zx_idhrxml_DeleteResponse_ELEM:
+    if (!x->idhrxml_DeleteResponse)
+      x->idhrxml_DeleteResponse = (struct zx_idhrxml_DeleteResponse_s*)el;
+    return 1;
+  case zx_idhrxml_Notify_ELEM:
+    if (!x->idhrxml_Notify)
+      x->idhrxml_Notify = (struct zx_idhrxml_Notify_s*)el;
+    return 1;
+  case zx_idhrxml_NotifyResponse_ELEM:
+    if (!x->idhrxml_NotifyResponse)
+      x->idhrxml_NotifyResponse = (struct zx_idhrxml_NotifyResponse_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_id_ATTR:  x->id = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_e_Header_ELEM:
-            zx_DEC_e_Header(c, (struct zx_e_Header_s*)el);
-            if (!x->Header)
-              x->Header = (struct zx_e_Header_s*)el;
-            break;
-          case zx_e_Body_ELEM:
-            zx_DEC_e_Body(c, (struct zx_e_Body_s*)el);
-            if (!x->Body)
-              x->Body = (struct zx_e_Body_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   e_Fault
-#define EL_STRUCT zx_e_Fault_s
-#define EL_NS     e
-#define EL_TAG    Fault
-
-/* FUNC(zx_DEC_e_Fault) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_e_Fault_s* zx_DEC_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x )
+int zx_DEC_ATTR_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
+    case zx_id_ATTR:  x->id = x->gg.attr; return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_e_faultcode_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->faultcode)
-              x->faultcode = el;
-            break;
-          case zx_e_faultstring_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->faultstring)
-              x->faultstring = el;
-            break;
-          case zx_e_faultactor_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->faultactor)
-              x->faultactor = el;
-            break;
-          case zx_e_detail_ELEM:
-            zx_DEC_e_detail(c, (struct zx_e_detail_s*)el);
-            if (!x->detail)
-              x->detail = (struct zx_e_detail_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   e_Header
-#define EL_STRUCT zx_e_Header_s
-#define EL_NS     e
-#define EL_TAG    Header
-
-/* FUNC(zx_DEC_e_Header) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_e_Header_s* zx_DEC_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x )
+int zx_DEC_ELEM_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_e_Header_ELEM:
+    if (!x->Header)
+      x->Header = (struct zx_e_Header_s*)el;
+    return 1;
+  case zx_e_Body_ELEM:
+    if (!x->Body)
+      x->Body = (struct zx_e_Body_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_id_ATTR:  x->id = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_paos_Request_ELEM:
-            zx_DEC_paos_Request(c, (struct zx_paos_Request_s*)el);
-            if (!x->Request)
-              x->Request = (struct zx_paos_Request_s*)el;
-            break;
-          case zx_paos_Response_ELEM:
-            zx_DEC_paos_Response(c, (struct zx_paos_Response_s*)el);
-            if (!x->Response)
-              x->Response = (struct zx_paos_Response_s*)el;
-            break;
-          case zx_ecp_Request_ELEM:
-            zx_DEC_ecp_Request(c, (struct zx_ecp_Request_s*)el);
-            if (!x->ecp_Request)
-              x->ecp_Request = (struct zx_ecp_Request_s*)el;
-            break;
-          case zx_ecp_Response_ELEM:
-            zx_DEC_ecp_Response(c, (struct zx_ecp_Response_s*)el);
-            if (!x->ecp_Response)
-              x->ecp_Response = (struct zx_ecp_Response_s*)el;
-            break;
-          case zx_ecp_RelayState_ELEM:
-            zx_DEC_ecp_RelayState(c, (struct zx_ecp_RelayState_s*)el);
-            if (!x->RelayState)
-              x->RelayState = (struct zx_ecp_RelayState_s*)el;
-            break;
-          case zx_a_MessageID_ELEM:
-            zx_DEC_a_MessageID(c, (struct zx_a_MessageID_s*)el);
-            if (!x->MessageID)
-              x->MessageID = (struct zx_a_MessageID_s*)el;
-            break;
-          case zx_a_RelatesTo_ELEM:
-            zx_DEC_a_RelatesTo(c, (struct zx_a_RelatesTo_s*)el);
-            if (!x->RelatesTo)
-              x->RelatesTo = (struct zx_a_RelatesTo_s*)el;
-            break;
-          case zx_a_ReplyTo_ELEM:
-            zx_DEC_a_ReplyTo(c, (struct zx_a_ReplyTo_s*)el);
-            if (!x->ReplyTo)
-              x->ReplyTo = (struct zx_a_ReplyTo_s*)el;
-            break;
-          case zx_a_From_ELEM:
-            zx_DEC_a_From(c, (struct zx_a_From_s*)el);
-            if (!x->From)
-              x->From = (struct zx_a_From_s*)el;
-            break;
-          case zx_a_FaultTo_ELEM:
-            zx_DEC_a_FaultTo(c, (struct zx_a_FaultTo_s*)el);
-            if (!x->FaultTo)
-              x->FaultTo = (struct zx_a_FaultTo_s*)el;
-            break;
-          case zx_a_To_ELEM:
-            zx_DEC_a_To(c, (struct zx_a_To_s*)el);
-            if (!x->To)
-              x->To = (struct zx_a_To_s*)el;
-            break;
-          case zx_a_Action_ELEM:
-            zx_DEC_a_Action(c, (struct zx_a_Action_s*)el);
-            if (!x->Action)
-              x->Action = (struct zx_a_Action_s*)el;
-            break;
-          case zx_a_ReferenceParameters_ELEM:
-            zx_DEC_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)el);
-            if (!x->ReferenceParameters)
-              x->ReferenceParameters = (struct zx_a_ReferenceParameters_s*)el;
-            break;
-          case zx_sbf_Framework_ELEM:
-            zx_DEC_sbf_Framework(c, (struct zx_sbf_Framework_s*)el);
-            if (!x->Framework)
-              x->Framework = (struct zx_sbf_Framework_s*)el;
-            break;
-          case zx_b_Framework_ELEM:
-            zx_DEC_b_Framework(c, (struct zx_b_Framework_s*)el);
-            if (!x->b_Framework)
-              x->b_Framework = (struct zx_b_Framework_s*)el;
-            break;
-          case zx_b_Sender_ELEM:
-            zx_DEC_b_Sender(c, (struct zx_b_Sender_s*)el);
-            if (!x->Sender)
-              x->Sender = (struct zx_b_Sender_s*)el;
-            break;
-          case zx_b_TargetIdentity_ELEM:
-            zx_DEC_b_TargetIdentity(c, (struct zx_b_TargetIdentity_s*)el);
-            if (!x->TargetIdentity)
-              x->TargetIdentity = (struct zx_b_TargetIdentity_s*)el;
-            break;
-          case zx_b_CredentialsContext_ELEM:
-            zx_DEC_b_CredentialsContext(c, (struct zx_b_CredentialsContext_s*)el);
-            if (!x->CredentialsContext)
-              x->CredentialsContext = (struct zx_b_CredentialsContext_s*)el;
-            break;
-          case zx_b_EndpointUpdate_ELEM:
-            zx_DEC_b_EndpointUpdate(c, (struct zx_b_EndpointUpdate_s*)el);
-            if (!x->EndpointUpdate)
-              x->EndpointUpdate = (struct zx_b_EndpointUpdate_s*)el;
-            break;
-          case zx_b_Timeout_ELEM:
-            zx_DEC_b_Timeout(c, (struct zx_b_Timeout_s*)el);
-            if (!x->Timeout)
-              x->Timeout = (struct zx_b_Timeout_s*)el;
-            break;
-          case zx_b_ProcessingContext_ELEM:
-            zx_DEC_b_ProcessingContext(c, (struct zx_b_ProcessingContext_s*)el);
-            if (!x->ProcessingContext)
-              x->ProcessingContext = (struct zx_b_ProcessingContext_s*)el;
-            break;
-          case zx_b_Consent_ELEM:
-            zx_DEC_b_Consent(c, (struct zx_b_Consent_s*)el);
-            if (!x->Consent)
-              x->Consent = (struct zx_b_Consent_s*)el;
-            break;
-          case zx_b_UsageDirective_ELEM:
-            zx_DEC_b_UsageDirective(c, (struct zx_b_UsageDirective_s*)el);
-            if (!x->UsageDirective)
-              x->UsageDirective = (struct zx_b_UsageDirective_s*)el;
-            break;
-          case zx_b_ApplicationEPR_ELEM:
-            zx_DEC_b_ApplicationEPR(c, (struct zx_b_ApplicationEPR_s*)el);
-            if (!x->ApplicationEPR)
-              x->ApplicationEPR = (struct zx_b_ApplicationEPR_s*)el;
-            break;
-          case zx_b_UserInteraction_ELEM:
-            zx_DEC_b_UserInteraction(c, (struct zx_b_UserInteraction_s*)el);
-            if (!x->UserInteraction)
-              x->UserInteraction = (struct zx_b_UserInteraction_s*)el;
-            break;
-          case zx_b_RedirectRequest_ELEM:
-            zx_DEC_b_RedirectRequest(c, (struct zx_b_RedirectRequest_s*)el);
-            if (!x->RedirectRequest)
-              x->RedirectRequest = (struct zx_b_RedirectRequest_s*)el;
-            break;
-          case zx_b12_Correlation_ELEM:
-            zx_DEC_b12_Correlation(c, (struct zx_b12_Correlation_s*)el);
-            if (!x->Correlation)
-              x->Correlation = (struct zx_b12_Correlation_s*)el;
-            break;
-          case zx_b12_Provider_ELEM:
-            zx_DEC_b12_Provider(c, (struct zx_b12_Provider_s*)el);
-            if (!x->Provider)
-              x->Provider = (struct zx_b12_Provider_s*)el;
-            break;
-          case zx_b12_ProcessingContext_ELEM:
-            zx_DEC_b12_ProcessingContext(c, (struct zx_b12_ProcessingContext_s*)el);
-            if (!x->b12_ProcessingContext)
-              x->b12_ProcessingContext = (struct zx_b12_ProcessingContext_s*)el;
-            break;
-          case zx_b12_Consent_ELEM:
-            zx_DEC_b12_Consent(c, (struct zx_b12_Consent_s*)el);
-            if (!x->b12_Consent)
-              x->b12_Consent = (struct zx_b12_Consent_s*)el;
-            break;
-          case zx_b12_UsageDirective_ELEM:
-            zx_DEC_b12_UsageDirective(c, (struct zx_b12_UsageDirective_s*)el);
-            if (!x->b12_UsageDirective)
-              x->b12_UsageDirective = (struct zx_b12_UsageDirective_s*)el;
-            break;
-          case zx_mm7_TransactionID_ELEM:
-            zx_DEC_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)el);
-            if (!x->TransactionID)
-              x->TransactionID = (struct zx_mm7_TransactionID_s*)el;
-            break;
-          case zx_wsse_Security_ELEM:
-            zx_DEC_wsse_Security(c, (struct zx_wsse_Security_s*)el);
-            if (!x->Security)
-              x->Security = (struct zx_wsse_Security_s*)el;
-            break;
-          case zx_tas3_Status_ELEM:
-            zx_DEC_tas3_Status(c, (struct zx_tas3_Status_s*)el);
-            if (!x->Status)
-              x->Status = (struct zx_tas3_Status_s*)el;
-            break;
-          case zx_tas3_Credentials_ELEM:
-            zx_DEC_tas3_Credentials(c, (struct zx_tas3_Credentials_s*)el);
-            if (!x->Credentials)
-              x->Credentials = (struct zx_tas3_Credentials_s*)el;
-            break;
-          case zx_tas3_ESLPolicies_ELEM:
-            zx_DEC_tas3_ESLPolicies(c, (struct zx_tas3_ESLPolicies_s*)el);
-            if (!x->ESLPolicies)
-              x->ESLPolicies = (struct zx_tas3_ESLPolicies_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   e_detail
-#define EL_STRUCT zx_e_detail_s
-#define EL_NS     e
-#define EL_TAG    detail
-
-/* FUNC(zx_DEC_e_detail) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_e_detail_s* zx_DEC_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x )
+int zx_DEC_ATTR_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_lu_Status_ELEM:
-            zx_DEC_lu_Status(c, (struct zx_lu_Status_s*)el);
-            if (!x->Status)
-              x->Status = (struct zx_lu_Status_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
+int zx_DEC_ELEM_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_e_faultcode_ELEM:
+    if (!x->faultcode)
+      x->faultcode = el;
+    return 1;
+  case zx_e_faultstring_ELEM:
+    if (!x->faultstring)
+      x->faultstring = el;
+    return 1;
+  case zx_e_faultactor_ELEM:
+    if (!x->faultactor)
+      x->faultactor = el;
+    return 1;
+  case zx_e_detail_ELEM:
+    if (!x->detail)
+      x->detail = (struct zx_e_detail_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
 
 
+
+
+int zx_DEC_ATTR_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_id_ATTR:  x->id = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_paos_Request_ELEM:
+    if (!x->Request)
+      x->Request = (struct zx_paos_Request_s*)el;
+    return 1;
+  case zx_paos_Response_ELEM:
+    if (!x->Response)
+      x->Response = (struct zx_paos_Response_s*)el;
+    return 1;
+  case zx_ecp_Request_ELEM:
+    if (!x->ecp_Request)
+      x->ecp_Request = (struct zx_ecp_Request_s*)el;
+    return 1;
+  case zx_ecp_Response_ELEM:
+    if (!x->ecp_Response)
+      x->ecp_Response = (struct zx_ecp_Response_s*)el;
+    return 1;
+  case zx_ecp_RelayState_ELEM:
+    if (!x->RelayState)
+      x->RelayState = (struct zx_ecp_RelayState_s*)el;
+    return 1;
+  case zx_a_MessageID_ELEM:
+    if (!x->MessageID)
+      x->MessageID = (struct zx_a_MessageID_s*)el;
+    return 1;
+  case zx_a_RelatesTo_ELEM:
+    if (!x->RelatesTo)
+      x->RelatesTo = (struct zx_a_RelatesTo_s*)el;
+    return 1;
+  case zx_a_ReplyTo_ELEM:
+    if (!x->ReplyTo)
+      x->ReplyTo = (struct zx_a_ReplyTo_s*)el;
+    return 1;
+  case zx_a_From_ELEM:
+    if (!x->From)
+      x->From = (struct zx_a_From_s*)el;
+    return 1;
+  case zx_a_FaultTo_ELEM:
+    if (!x->FaultTo)
+      x->FaultTo = (struct zx_a_FaultTo_s*)el;
+    return 1;
+  case zx_a_To_ELEM:
+    if (!x->To)
+      x->To = (struct zx_a_To_s*)el;
+    return 1;
+  case zx_a_Action_ELEM:
+    if (!x->Action)
+      x->Action = (struct zx_a_Action_s*)el;
+    return 1;
+  case zx_a_ReferenceParameters_ELEM:
+    if (!x->ReferenceParameters)
+      x->ReferenceParameters = (struct zx_a_ReferenceParameters_s*)el;
+    return 1;
+  case zx_sbf_Framework_ELEM:
+    if (!x->Framework)
+      x->Framework = (struct zx_sbf_Framework_s*)el;
+    return 1;
+  case zx_b_Framework_ELEM:
+    if (!x->b_Framework)
+      x->b_Framework = (struct zx_b_Framework_s*)el;
+    return 1;
+  case zx_b_Sender_ELEM:
+    if (!x->Sender)
+      x->Sender = (struct zx_b_Sender_s*)el;
+    return 1;
+  case zx_b_TargetIdentity_ELEM:
+    if (!x->TargetIdentity)
+      x->TargetIdentity = (struct zx_b_TargetIdentity_s*)el;
+    return 1;
+  case zx_b_CredentialsContext_ELEM:
+    if (!x->CredentialsContext)
+      x->CredentialsContext = (struct zx_b_CredentialsContext_s*)el;
+    return 1;
+  case zx_b_EndpointUpdate_ELEM:
+    if (!x->EndpointUpdate)
+      x->EndpointUpdate = (struct zx_b_EndpointUpdate_s*)el;
+    return 1;
+  case zx_b_Timeout_ELEM:
+    if (!x->Timeout)
+      x->Timeout = (struct zx_b_Timeout_s*)el;
+    return 1;
+  case zx_b_ProcessingContext_ELEM:
+    if (!x->ProcessingContext)
+      x->ProcessingContext = (struct zx_b_ProcessingContext_s*)el;
+    return 1;
+  case zx_b_Consent_ELEM:
+    if (!x->Consent)
+      x->Consent = (struct zx_b_Consent_s*)el;
+    return 1;
+  case zx_b_UsageDirective_ELEM:
+    if (!x->UsageDirective)
+      x->UsageDirective = (struct zx_b_UsageDirective_s*)el;
+    return 1;
+  case zx_b_ApplicationEPR_ELEM:
+    if (!x->ApplicationEPR)
+      x->ApplicationEPR = (struct zx_b_ApplicationEPR_s*)el;
+    return 1;
+  case zx_b_UserInteraction_ELEM:
+    if (!x->UserInteraction)
+      x->UserInteraction = (struct zx_b_UserInteraction_s*)el;
+    return 1;
+  case zx_b_RedirectRequest_ELEM:
+    if (!x->RedirectRequest)
+      x->RedirectRequest = (struct zx_b_RedirectRequest_s*)el;
+    return 1;
+  case zx_b12_Correlation_ELEM:
+    if (!x->Correlation)
+      x->Correlation = (struct zx_b12_Correlation_s*)el;
+    return 1;
+  case zx_b12_Provider_ELEM:
+    if (!x->Provider)
+      x->Provider = (struct zx_b12_Provider_s*)el;
+    return 1;
+  case zx_b12_ProcessingContext_ELEM:
+    if (!x->b12_ProcessingContext)
+      x->b12_ProcessingContext = (struct zx_b12_ProcessingContext_s*)el;
+    return 1;
+  case zx_b12_Consent_ELEM:
+    if (!x->b12_Consent)
+      x->b12_Consent = (struct zx_b12_Consent_s*)el;
+    return 1;
+  case zx_b12_UsageDirective_ELEM:
+    if (!x->b12_UsageDirective)
+      x->b12_UsageDirective = (struct zx_b12_UsageDirective_s*)el;
+    return 1;
+  case zx_mm7_TransactionID_ELEM:
+    if (!x->TransactionID)
+      x->TransactionID = (struct zx_mm7_TransactionID_s*)el;
+    return 1;
+  case zx_wsse_Security_ELEM:
+    if (!x->Security)
+      x->Security = (struct zx_wsse_Security_s*)el;
+    return 1;
+  case zx_tas3_Status_ELEM:
+    if (!x->Status)
+      x->Status = (struct zx_tas3_Status_s*)el;
+    return 1;
+  case zx_tas3_Credentials_ELEM:
+    if (!x->Credentials)
+      x->Credentials = (struct zx_tas3_Credentials_s*)el;
+    return 1;
+  case zx_tas3_ESLPolicies_ELEM:
+    if (!x->ESLPolicies)
+      x->ESLPolicies = (struct zx_tas3_ESLPolicies_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_lu_Status_ELEM:
+    if (!x->Status)
+      x->Status = (struct zx_lu_Status_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
 
 
 /* EOF -- c/zx-e-dec.c */

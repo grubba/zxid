@@ -30,7 +30,8 @@ struct zx_ds_CanonicalizationMethod_s {
   struct zx_attr_s* Algorithm;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_ds_CanonicalizationMethod_s* zx_DEC_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_CanonicalizationMethod_s* x);
+int zx_DEC_ATTR_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_CanonicalizationMethod_s* x);
+int zx_DEC_ELEM_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_CanonicalizationMethod_s* x);
 struct zx_ds_CanonicalizationMethod_s* zx_NEW_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_CanonicalizationMethod_s* x);
 char* zx_ENC_SO_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_CanonicalizationMethod_s* x, char* p);
@@ -75,7 +76,8 @@ struct zx_ds_DSAKeyValue_s {
   struct zx_elem_s* PgenCounter;	/* {0,1} xs:base64Binary */
 };
 
-struct zx_ds_DSAKeyValue_s* zx_DEC_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x);
+int zx_DEC_ATTR_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x);
+int zx_DEC_ELEM_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x);
 struct zx_ds_DSAKeyValue_s* zx_NEW_ds_DSAKeyValue(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x);
 char* zx_ENC_SO_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x, char* p);
@@ -168,7 +170,8 @@ struct zx_ds_DigestMethod_s {
   struct zx_attr_s* Algorithm;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_ds_DigestMethod_s* zx_DEC_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x);
+int zx_DEC_ATTR_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x);
+int zx_DEC_ELEM_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x);
 struct zx_ds_DigestMethod_s* zx_NEW_ds_DigestMethod(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x);
 char* zx_ENC_SO_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x, char* p);
@@ -215,7 +218,8 @@ struct zx_ds_KeyInfo_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_ds_KeyInfo_s* zx_DEC_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x);
+int zx_DEC_ATTR_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x);
+int zx_DEC_ELEM_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x);
 struct zx_ds_KeyInfo_s* zx_NEW_ds_KeyInfo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x);
 char* zx_ENC_SO_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x, char* p);
@@ -319,7 +323,8 @@ struct zx_ds_KeyValue_s {
   struct zx_ds_RSAKeyValue_s* RSAKeyValue;	/* {0,1} nada */
 };
 
-struct zx_ds_KeyValue_s* zx_DEC_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x);
+int zx_DEC_ATTR_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x);
+int zx_DEC_ELEM_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x);
 struct zx_ds_KeyValue_s* zx_NEW_ds_KeyValue(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x);
 char* zx_ENC_SO_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x, char* p);
@@ -373,7 +378,8 @@ struct zx_ds_Manifest_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_ds_Manifest_s* zx_DEC_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x);
+int zx_DEC_ATTR_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x);
+int zx_DEC_ELEM_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x);
 struct zx_ds_Manifest_s* zx_NEW_ds_Manifest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x);
 char* zx_ENC_SO_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x, char* p);
@@ -422,7 +428,8 @@ struct zx_ds_Object_s {
   struct zx_attr_s* MimeType;	/* {0,1} attribute xs:string */
 };
 
-struct zx_ds_Object_s* zx_DEC_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x);
+int zx_DEC_ATTR_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x);
+int zx_DEC_ELEM_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x);
 struct zx_ds_Object_s* zx_NEW_ds_Object(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x);
 char* zx_ENC_SO_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x, char* p);
@@ -466,7 +473,8 @@ struct zx_ds_PGPData_s {
   struct zx_elem_s* PGPKeyPacket;	/* {0,1} xs:base64Binary */
 };
 
-struct zx_ds_PGPData_s* zx_DEC_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x);
+int zx_DEC_ATTR_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x);
+int zx_DEC_ELEM_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x);
 struct zx_ds_PGPData_s* zx_NEW_ds_PGPData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x);
 char* zx_ENC_SO_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x, char* p);
@@ -520,7 +528,8 @@ struct zx_ds_RSAKeyValue_s {
   struct zx_elem_s* Exponent;	/* {1,1} xs:base64Binary */
 };
 
-struct zx_ds_RSAKeyValue_s* zx_DEC_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x);
+int zx_DEC_ATTR_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x);
+int zx_DEC_ELEM_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x);
 struct zx_ds_RSAKeyValue_s* zx_NEW_ds_RSAKeyValue(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x);
 char* zx_ENC_SO_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x, char* p);
@@ -578,7 +587,8 @@ struct zx_ds_Reference_s {
   struct zx_attr_s* URI;	/* {0,1} attribute xs:anyURI */
 };
 
-struct zx_ds_Reference_s* zx_DEC_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x);
+int zx_DEC_ATTR_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x);
+int zx_DEC_ELEM_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x);
 struct zx_ds_Reference_s* zx_NEW_ds_Reference(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x);
 char* zx_ENC_SO_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x, char* p);
@@ -647,7 +657,8 @@ struct zx_ds_RetrievalMethod_s {
   struct zx_attr_s* URI;	/* {0,1} attribute xs:anyURI */
 };
 
-struct zx_ds_RetrievalMethod_s* zx_DEC_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod_s* x);
+int zx_DEC_ATTR_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod_s* x);
+int zx_DEC_ELEM_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod_s* x);
 struct zx_ds_RetrievalMethod_s* zx_NEW_ds_RetrievalMethod(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod_s* x);
 char* zx_ENC_SO_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod_s* x, char* p);
@@ -696,7 +707,8 @@ struct zx_ds_SPKIData_s {
   struct zx_elem_s* SPKISexp;	/* {1,1} xs:base64Binary */
 };
 
-struct zx_ds_SPKIData_s* zx_DEC_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x);
+int zx_DEC_ATTR_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x);
+int zx_DEC_ELEM_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x);
 struct zx_ds_SPKIData_s* zx_NEW_ds_SPKIData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x);
 char* zx_ENC_SO_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x, char* p);
@@ -745,7 +757,8 @@ struct zx_ds_Signature_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_ds_Signature_s* zx_DEC_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x);
+int zx_DEC_ATTR_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x);
+int zx_DEC_ELEM_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x);
 struct zx_ds_Signature_s* zx_NEW_ds_Signature(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x);
 char* zx_ENC_SO_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x, char* p);
@@ -817,7 +830,8 @@ struct zx_ds_SignatureMethod_s {
   struct zx_attr_s* Algorithm;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_ds_SignatureMethod_s* zx_DEC_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod_s* x);
+int zx_DEC_ATTR_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod_s* x);
+int zx_DEC_ELEM_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod_s* x);
 struct zx_ds_SignatureMethod_s* zx_NEW_ds_SignatureMethod(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod_s* x);
 char* zx_ENC_SO_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod_s* x, char* p);
@@ -865,7 +879,8 @@ struct zx_ds_SignatureProperties_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_ds_SignatureProperties_s* zx_DEC_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignatureProperties_s* x);
+int zx_DEC_ATTR_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignatureProperties_s* x);
+int zx_DEC_ELEM_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignatureProperties_s* x);
 struct zx_ds_SignatureProperties_s* zx_NEW_ds_SignatureProperties(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignatureProperties_s* x);
 char* zx_ENC_SO_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignatureProperties_s* x, char* p);
@@ -913,7 +928,8 @@ struct zx_ds_SignatureProperty_s {
   struct zx_attr_s* Target;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_ds_SignatureProperty_s* zx_DEC_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProperty_s* x);
+int zx_DEC_ATTR_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProperty_s* x);
+int zx_DEC_ELEM_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProperty_s* x);
 struct zx_ds_SignatureProperty_s* zx_NEW_ds_SignatureProperty(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProperty_s* x);
 char* zx_ENC_SO_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProperty_s* x, char* p);
@@ -954,7 +970,8 @@ struct zx_ds_SignatureValue_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_ds_SignatureValue_s* zx_DEC_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s* x);
+int zx_DEC_ATTR_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s* x);
+int zx_DEC_ELEM_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s* x);
 struct zx_ds_SignatureValue_s* zx_NEW_ds_SignatureValue(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s* x);
 char* zx_ENC_SO_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s* x, char* p);
@@ -996,7 +1013,8 @@ struct zx_ds_SignedInfo_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_ds_SignedInfo_s* zx_DEC_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x);
+int zx_DEC_ATTR_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x);
+int zx_DEC_ELEM_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x);
 struct zx_ds_SignedInfo_s* zx_NEW_ds_SignedInfo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x);
 char* zx_ENC_SO_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x, char* p);
@@ -1061,7 +1079,8 @@ struct zx_ds_Transform_s {
   struct zx_attr_s* Algorithm;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_ds_Transform_s* zx_DEC_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x);
+int zx_DEC_ATTR_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x);
+int zx_DEC_ELEM_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x);
 struct zx_ds_Transform_s* zx_NEW_ds_Transform(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x);
 char* zx_ENC_SO_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x, char* p);
@@ -1116,7 +1135,8 @@ struct zx_ds_Transforms_s {
   struct zx_ds_Transform_s* Transform;	/* {1,-1} nada */
 };
 
-struct zx_ds_Transforms_s* zx_DEC_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x);
+int zx_DEC_ATTR_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x);
+int zx_DEC_ELEM_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x);
 struct zx_ds_Transforms_s* zx_NEW_ds_Transforms(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x);
 char* zx_ENC_SO_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x, char* p);
@@ -1165,7 +1185,8 @@ struct zx_ds_X509Data_s {
   struct zx_elem_s* X509CRL;	/* {0,-1} xs:base64Binary */
 };
 
-struct zx_ds_X509Data_s* zx_DEC_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x);
+int zx_DEC_ATTR_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x);
+int zx_DEC_ELEM_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x);
 struct zx_ds_X509Data_s* zx_NEW_ds_X509Data(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x);
 char* zx_ENC_SO_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x, char* p);
@@ -1243,7 +1264,8 @@ struct zx_ds_X509IssuerSerial_s {
   struct zx_elem_s* X509SerialNumber;	/* {1,1} xs:integer */
 };
 
-struct zx_ds_X509IssuerSerial_s* zx_DEC_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_ds_X509IssuerSerial_s* x);
+int zx_DEC_ATTR_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_ds_X509IssuerSerial_s* x);
+int zx_DEC_ELEM_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_ds_X509IssuerSerial_s* x);
 struct zx_ds_X509IssuerSerial_s* zx_NEW_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_ds_X509IssuerSerial_s* x);
 char* zx_ENC_SO_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_ds_X509IssuerSerial_s* x, char* p);

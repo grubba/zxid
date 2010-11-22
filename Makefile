@@ -757,8 +757,10 @@ ifeq ($(ENA_GEN),1)
 #  -W arg  Word array name
 #  -N arg  Lookup function name
 
-c/zx-ns.gperf c/zx-attrs.gperf c/zx-elems.gperf $(ZX_GEN_C) $(ZX_GEN_H): $(ZX_SG) dec-templ.c enc-templ.c aux-templ.c getput-templ.c
+$(XSD2SG_PL):
 	@ls $(XSD2SG_PL) || ( echo "You need to install xsd2sg.pl from Plaindoc distribution at http://zxid.org/plaindoc/pd.html. Not found $(XSD2SG)" && exit 2 )
+
+c/zx-ns.gperf c/zx-attrs.gperf c/zx-elems.gperf $(ZX_GEN_C) $(ZX_GEN_H): $(ZX_SG) dec-templ.c enc-templ.c aux-templ.c getput-templ.c $(XSD2SG_PL)
 	$(XSD2SG) -z zx -gen c/zx -p zx_ $(ZX_ROOTS) -S $(ZX_SG) >junk
 
 c/zx-ns.c: c/zx-ns.gperf
@@ -1424,6 +1426,9 @@ precheck/chk-apache.$(OBJ_EXT): precheck/chk-apache.c
 
 precheck/chk-apache.exe: precheck/chk-apache.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
+
+zxsizeof: zxsizeof.$(OBJ_EXT)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBZXID) $(LIBS)
 
 zx/zx.h:
 	echo "zx symlink for includes (ln -s . zx) missing. Emulating by creating zx directory..."

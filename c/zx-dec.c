@@ -22,6 +22,7 @@
  ** 23.9.2006, added collection of WO information --Sampo
  ** 21.6.2007, improved handling of undeclared namespace prefixes --Sampo
  ** 27.10.2010, CSE refactoring, re-engineered namespace handling --Sampo
+ ** 21.11.2010, re-engineered to extract most code to zx_DEC_elem, leaving just switches --Sampo
  **
  ** N.B: This template is meant to be processed by pd/xsd2sg.pl. Beware
  ** of special markers that xsd2sg.pl expects to find and understand.
@@ -36,507 +37,222 @@
 
 
 
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   root
-#define EL_STRUCT zx_root_s
-#define EL_NS     
-#define EL_TAG    root
-
-/* FUNC(zx_DEC_root) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_root_s* x , int n_decode)
+int zx_DEC_ATTR_root(struct zx_ctx* c, struct zx_root_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->gg.attr->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-  x = ZX_ZALLOC(c, struct zx_root_s);
-  x->gg.g.s = "";
-  x->gg.g.tok = zx_root_ELEM;
-
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_sa_Assertion_ELEM:
-            zx_DEC_sa_Assertion(c, (struct zx_sa_Assertion_s*)el);
-            if (!x->Assertion)
-              x->Assertion = (struct zx_sa_Assertion_s*)el;
-            break;
-          case zx_sa_EncryptedAssertion_ELEM:
-            zx_DEC_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)el);
-            if (!x->EncryptedAssertion)
-              x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)el;
-            break;
-          case zx_sa_NameID_ELEM:
-            zx_DEC_sa_NameID(c, (struct zx_sa_NameID_s*)el);
-            if (!x->NameID)
-              x->NameID = (struct zx_sa_NameID_s*)el;
-            break;
-          case zx_sa_EncryptedID_ELEM:
-            zx_DEC_sa_EncryptedID(c, (struct zx_sa_EncryptedID_s*)el);
-            if (!x->EncryptedID)
-              x->EncryptedID = (struct zx_sa_EncryptedID_s*)el;
-            break;
-          case zx_sp_NewID_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->NewID)
-              x->NewID = el;
-            break;
-          case zx_sp_AuthnRequest_ELEM:
-            zx_DEC_sp_AuthnRequest(c, (struct zx_sp_AuthnRequest_s*)el);
-            if (!x->AuthnRequest)
-              x->AuthnRequest = (struct zx_sp_AuthnRequest_s*)el;
-            break;
-          case zx_sp_Response_ELEM:
-            zx_DEC_sp_Response(c, (struct zx_sp_Response_s*)el);
-            if (!x->Response)
-              x->Response = (struct zx_sp_Response_s*)el;
-            break;
-          case zx_sp_LogoutRequest_ELEM:
-            zx_DEC_sp_LogoutRequest(c, (struct zx_sp_LogoutRequest_s*)el);
-            if (!x->LogoutRequest)
-              x->LogoutRequest = (struct zx_sp_LogoutRequest_s*)el;
-            break;
-          case zx_sp_LogoutResponse_ELEM:
-            zx_DEC_sp_LogoutResponse(c, (struct zx_sp_LogoutResponse_s*)el);
-            if (!x->LogoutResponse)
-              x->LogoutResponse = (struct zx_sp_LogoutResponse_s*)el;
-            break;
-          case zx_sp_ManageNameIDRequest_ELEM:
-            zx_DEC_sp_ManageNameIDRequest(c, (struct zx_sp_ManageNameIDRequest_s*)el);
-            if (!x->ManageNameIDRequest)
-              x->ManageNameIDRequest = (struct zx_sp_ManageNameIDRequest_s*)el;
-            break;
-          case zx_sp_ManageNameIDResponse_ELEM:
-            zx_DEC_sp_ManageNameIDResponse(c, (struct zx_sp_ManageNameIDResponse_s*)el);
-            if (!x->ManageNameIDResponse)
-              x->ManageNameIDResponse = (struct zx_sp_ManageNameIDResponse_s*)el;
-            break;
-          case zx_e_Envelope_ELEM:
-            zx_DEC_e_Envelope(c, (struct zx_e_Envelope_s*)el);
-            if (!x->Envelope)
-              x->Envelope = (struct zx_e_Envelope_s*)el;
-            break;
-          case zx_e_Header_ELEM:
-            zx_DEC_e_Header(c, (struct zx_e_Header_s*)el);
-            if (!x->Header)
-              x->Header = (struct zx_e_Header_s*)el;
-            break;
-          case zx_e_Body_ELEM:
-            zx_DEC_e_Body(c, (struct zx_e_Body_s*)el);
-            if (!x->Body)
-              x->Body = (struct zx_e_Body_s*)el;
-            break;
-          case zx_md_EntityDescriptor_ELEM:
-            zx_DEC_md_EntityDescriptor(c, (struct zx_md_EntityDescriptor_s*)el);
-            if (!x->EntityDescriptor)
-              x->EntityDescriptor = (struct zx_md_EntityDescriptor_s*)el;
-            break;
-          case zx_md_EntitiesDescriptor_ELEM:
-            zx_DEC_md_EntitiesDescriptor(c, (struct zx_md_EntitiesDescriptor_s*)el);
-            if (!x->EntitiesDescriptor)
-              x->EntitiesDescriptor = (struct zx_md_EntitiesDescriptor_s*)el;
-            break;
-          case zx_xasp_XACMLAuthzDecisionQuery_ELEM:
-            zx_DEC_xasp_XACMLAuthzDecisionQuery(c, (struct zx_xasp_XACMLAuthzDecisionQuery_s*)el);
-            if (!x->XACMLAuthzDecisionQuery)
-              x->XACMLAuthzDecisionQuery = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)el;
-            break;
-          case zx_xasp_XACMLPolicyQuery_ELEM:
-            zx_DEC_xasp_XACMLPolicyQuery(c, (struct zx_xasp_XACMLPolicyQuery_s*)el);
-            if (!x->XACMLPolicyQuery)
-              x->XACMLPolicyQuery = (struct zx_xasp_XACMLPolicyQuery_s*)el;
-            break;
-          case zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM:
-            zx_DEC_xaspcd1_XACMLAuthzDecisionQuery(c, (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)el);
-            if (!x->xaspcd1_XACMLAuthzDecisionQuery)
-              x->xaspcd1_XACMLAuthzDecisionQuery = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)el;
-            break;
-          case zx_xaspcd1_XACMLPolicyQuery_ELEM:
-            zx_DEC_xaspcd1_XACMLPolicyQuery(c, (struct zx_xaspcd1_XACMLPolicyQuery_s*)el);
-            if (!x->xaspcd1_XACMLPolicyQuery)
-              x->xaspcd1_XACMLPolicyQuery = (struct zx_xaspcd1_XACMLPolicyQuery_s*)el;
-            break;
-          case zx_a_EndpointReference_ELEM:
-            zx_DEC_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)el);
-            if (!x->EndpointReference)
-              x->EndpointReference = (struct zx_a_EndpointReference_s*)el;
-            break;
-          case zx_sec_Token_ELEM:
-            zx_DEC_sec_Token(c, (struct zx_sec_Token_s*)el);
-            if (!x->Token)
-              x->Token = (struct zx_sec_Token_s*)el;
-            break;
-          case zx_hrxml_Candidate_ELEM:
-            zx_DEC_hrxml_Candidate(c, (struct zx_hrxml_Candidate_s*)el);
-            if (!x->Candidate)
-              x->Candidate = (struct zx_hrxml_Candidate_s*)el;
-            break;
-          case zx_sa11_Assertion_ELEM:
-            zx_DEC_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)el);
-            if (!x->sa11_Assertion)
-              x->sa11_Assertion = (struct zx_sa11_Assertion_s*)el;
-            break;
-          case zx_sp11_Request_ELEM:
-            zx_DEC_sp11_Request(c, (struct zx_sp11_Request_s*)el);
-            if (!x->Request)
-              x->Request = (struct zx_sp11_Request_s*)el;
-            break;
-          case zx_sp11_Response_ELEM:
-            zx_DEC_sp11_Response(c, (struct zx_sp11_Response_s*)el);
-            if (!x->sp11_Response)
-              x->sp11_Response = (struct zx_sp11_Response_s*)el;
-            break;
-          case zx_ff12_Assertion_ELEM:
-            zx_DEC_ff12_Assertion(c, (struct zx_ff12_Assertion_s*)el);
-            if (!x->ff12_Assertion)
-              x->ff12_Assertion = (struct zx_ff12_Assertion_s*)el;
-            break;
-          case zx_ff12_AuthnRequest_ELEM:
-            zx_DEC_ff12_AuthnRequest(c, (struct zx_ff12_AuthnRequest_s*)el);
-            if (!x->ff12_AuthnRequest)
-              x->ff12_AuthnRequest = (struct zx_ff12_AuthnRequest_s*)el;
-            break;
-          case zx_ff12_AuthnResponse_ELEM:
-            zx_DEC_ff12_AuthnResponse(c, (struct zx_ff12_AuthnResponse_s*)el);
-            if (!x->AuthnResponse)
-              x->AuthnResponse = (struct zx_ff12_AuthnResponse_s*)el;
-            break;
-          case zx_ff12_AuthnRequestEnvelope_ELEM:
-            zx_DEC_ff12_AuthnRequestEnvelope(c, (struct zx_ff12_AuthnRequestEnvelope_s*)el);
-            if (!x->AuthnRequestEnvelope)
-              x->AuthnRequestEnvelope = (struct zx_ff12_AuthnRequestEnvelope_s*)el;
-            break;
-          case zx_ff12_AuthnResponseEnvelope_ELEM:
-            zx_DEC_ff12_AuthnResponseEnvelope(c, (struct zx_ff12_AuthnResponseEnvelope_s*)el);
-            if (!x->AuthnResponseEnvelope)
-              x->AuthnResponseEnvelope = (struct zx_ff12_AuthnResponseEnvelope_s*)el;
-            break;
-          case zx_ff12_RegisterNameIdentifierRequest_ELEM:
-            zx_DEC_ff12_RegisterNameIdentifierRequest(c, (struct zx_ff12_RegisterNameIdentifierRequest_s*)el);
-            if (!x->RegisterNameIdentifierRequest)
-              x->RegisterNameIdentifierRequest = (struct zx_ff12_RegisterNameIdentifierRequest_s*)el;
-            break;
-          case zx_ff12_RegisterNameIdentifierResponse_ELEM:
-            zx_DEC_ff12_RegisterNameIdentifierResponse(c, (struct zx_ff12_RegisterNameIdentifierResponse_s*)el);
-            if (!x->RegisterNameIdentifierResponse)
-              x->RegisterNameIdentifierResponse = (struct zx_ff12_RegisterNameIdentifierResponse_s*)el;
-            break;
-          case zx_ff12_FederationTerminationNotification_ELEM:
-            zx_DEC_ff12_FederationTerminationNotification(c, (struct zx_ff12_FederationTerminationNotification_s*)el);
-            if (!x->FederationTerminationNotification)
-              x->FederationTerminationNotification = (struct zx_ff12_FederationTerminationNotification_s*)el;
-            break;
-          case zx_ff12_LogoutRequest_ELEM:
-            zx_DEC_ff12_LogoutRequest(c, (struct zx_ff12_LogoutRequest_s*)el);
-            if (!x->ff12_LogoutRequest)
-              x->ff12_LogoutRequest = (struct zx_ff12_LogoutRequest_s*)el;
-            break;
-          case zx_ff12_LogoutResponse_ELEM:
-            zx_DEC_ff12_LogoutResponse(c, (struct zx_ff12_LogoutResponse_s*)el);
-            if (!x->ff12_LogoutResponse)
-              x->ff12_LogoutResponse = (struct zx_ff12_LogoutResponse_s*)el;
-            break;
-          case zx_ff12_NameIdentifierMappingRequest_ELEM:
-            zx_DEC_ff12_NameIdentifierMappingRequest(c, (struct zx_ff12_NameIdentifierMappingRequest_s*)el);
-            if (!x->NameIdentifierMappingRequest)
-              x->NameIdentifierMappingRequest = (struct zx_ff12_NameIdentifierMappingRequest_s*)el;
-            break;
-          case zx_ff12_NameIdentifierMappingResponse_ELEM:
-            zx_DEC_ff12_NameIdentifierMappingResponse(c, (struct zx_ff12_NameIdentifierMappingResponse_s*)el);
-            if (!x->NameIdentifierMappingResponse)
-              x->NameIdentifierMappingResponse = (struct zx_ff12_NameIdentifierMappingResponse_s*)el;
-            break;
-          case zx_m20_EntityDescriptor_ELEM:
-            zx_DEC_m20_EntityDescriptor(c, (struct zx_m20_EntityDescriptor_s*)el);
-            if (!x->m20_EntityDescriptor)
-              x->m20_EntityDescriptor = (struct zx_m20_EntityDescriptor_s*)el;
-            break;
-          case zx_m20_EntitiesDescriptor_ELEM:
-            zx_DEC_m20_EntitiesDescriptor(c, (struct zx_m20_EntitiesDescriptor_s*)el);
-            if (!x->m20_EntitiesDescriptor)
-              x->m20_EntitiesDescriptor = (struct zx_m20_EntitiesDescriptor_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
+  default: return 0;
   }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   simple_elem
-#define EL_STRUCT zx_elem_s
-#define EL_NS     
-#define EL_TAG    simple_elem
-
-/* FUNC(zx_DEC_simple_elem) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_elem_s* zx_DEC_simple_elem(struct zx_ctx* c, struct zx_elem_s* x )
+int zx_DEC_ELEM_root(struct zx_ctx* c, struct zx_root_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_sa_Assertion_ELEM:
+    if (!x->Assertion)
+      x->Assertion = (struct zx_sa_Assertion_s*)el;
+    return 1;
+  case zx_sa_EncryptedAssertion_ELEM:
+    if (!x->EncryptedAssertion)
+      x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)el;
+    return 1;
+  case zx_sa_NameID_ELEM:
+    if (!x->NameID)
+      x->NameID = (struct zx_sa_NameID_s*)el;
+    return 1;
+  case zx_sa_EncryptedID_ELEM:
+    if (!x->EncryptedID)
+      x->EncryptedID = (struct zx_sa_EncryptedID_s*)el;
+    return 1;
+  case zx_sp_NewID_ELEM:
+    if (!x->NewID)
+      x->NewID = el;
+    return 1;
+  case zx_sp_AuthnRequest_ELEM:
+    if (!x->AuthnRequest)
+      x->AuthnRequest = (struct zx_sp_AuthnRequest_s*)el;
+    return 1;
+  case zx_sp_Response_ELEM:
+    if (!x->Response)
+      x->Response = (struct zx_sp_Response_s*)el;
+    return 1;
+  case zx_sp_LogoutRequest_ELEM:
+    if (!x->LogoutRequest)
+      x->LogoutRequest = (struct zx_sp_LogoutRequest_s*)el;
+    return 1;
+  case zx_sp_LogoutResponse_ELEM:
+    if (!x->LogoutResponse)
+      x->LogoutResponse = (struct zx_sp_LogoutResponse_s*)el;
+    return 1;
+  case zx_sp_ManageNameIDRequest_ELEM:
+    if (!x->ManageNameIDRequest)
+      x->ManageNameIDRequest = (struct zx_sp_ManageNameIDRequest_s*)el;
+    return 1;
+  case zx_sp_ManageNameIDResponse_ELEM:
+    if (!x->ManageNameIDResponse)
+      x->ManageNameIDResponse = (struct zx_sp_ManageNameIDResponse_s*)el;
+    return 1;
+  case zx_e_Envelope_ELEM:
+    if (!x->Envelope)
+      x->Envelope = (struct zx_e_Envelope_s*)el;
+    return 1;
+  case zx_e_Header_ELEM:
+    if (!x->Header)
+      x->Header = (struct zx_e_Header_s*)el;
+    return 1;
+  case zx_e_Body_ELEM:
+    if (!x->Body)
+      x->Body = (struct zx_e_Body_s*)el;
+    return 1;
+  case zx_md_EntityDescriptor_ELEM:
+    if (!x->EntityDescriptor)
+      x->EntityDescriptor = (struct zx_md_EntityDescriptor_s*)el;
+    return 1;
+  case zx_md_EntitiesDescriptor_ELEM:
+    if (!x->EntitiesDescriptor)
+      x->EntitiesDescriptor = (struct zx_md_EntitiesDescriptor_s*)el;
+    return 1;
+  case zx_xasp_XACMLAuthzDecisionQuery_ELEM:
+    if (!x->XACMLAuthzDecisionQuery)
+      x->XACMLAuthzDecisionQuery = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)el;
+    return 1;
+  case zx_xasp_XACMLPolicyQuery_ELEM:
+    if (!x->XACMLPolicyQuery)
+      x->XACMLPolicyQuery = (struct zx_xasp_XACMLPolicyQuery_s*)el;
+    return 1;
+  case zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM:
+    if (!x->xaspcd1_XACMLAuthzDecisionQuery)
+      x->xaspcd1_XACMLAuthzDecisionQuery = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)el;
+    return 1;
+  case zx_xaspcd1_XACMLPolicyQuery_ELEM:
+    if (!x->xaspcd1_XACMLPolicyQuery)
+      x->xaspcd1_XACMLPolicyQuery = (struct zx_xaspcd1_XACMLPolicyQuery_s*)el;
+    return 1;
+  case zx_a_EndpointReference_ELEM:
+    if (!x->EndpointReference)
+      x->EndpointReference = (struct zx_a_EndpointReference_s*)el;
+    return 1;
+  case zx_sec_Token_ELEM:
+    if (!x->Token)
+      x->Token = (struct zx_sec_Token_s*)el;
+    return 1;
+  case zx_hrxml_Candidate_ELEM:
+    if (!x->Candidate)
+      x->Candidate = (struct zx_hrxml_Candidate_s*)el;
+    return 1;
+  case zx_sa11_Assertion_ELEM:
+    if (!x->sa11_Assertion)
+      x->sa11_Assertion = (struct zx_sa11_Assertion_s*)el;
+    return 1;
+  case zx_sp11_Request_ELEM:
+    if (!x->Request)
+      x->Request = (struct zx_sp11_Request_s*)el;
+    return 1;
+  case zx_sp11_Response_ELEM:
+    if (!x->sp11_Response)
+      x->sp11_Response = (struct zx_sp11_Response_s*)el;
+    return 1;
+  case zx_ff12_Assertion_ELEM:
+    if (!x->ff12_Assertion)
+      x->ff12_Assertion = (struct zx_ff12_Assertion_s*)el;
+    return 1;
+  case zx_ff12_AuthnRequest_ELEM:
+    if (!x->ff12_AuthnRequest)
+      x->ff12_AuthnRequest = (struct zx_ff12_AuthnRequest_s*)el;
+    return 1;
+  case zx_ff12_AuthnResponse_ELEM:
+    if (!x->AuthnResponse)
+      x->AuthnResponse = (struct zx_ff12_AuthnResponse_s*)el;
+    return 1;
+  case zx_ff12_AuthnRequestEnvelope_ELEM:
+    if (!x->AuthnRequestEnvelope)
+      x->AuthnRequestEnvelope = (struct zx_ff12_AuthnRequestEnvelope_s*)el;
+    return 1;
+  case zx_ff12_AuthnResponseEnvelope_ELEM:
+    if (!x->AuthnResponseEnvelope)
+      x->AuthnResponseEnvelope = (struct zx_ff12_AuthnResponseEnvelope_s*)el;
+    return 1;
+  case zx_ff12_RegisterNameIdentifierRequest_ELEM:
+    if (!x->RegisterNameIdentifierRequest)
+      x->RegisterNameIdentifierRequest = (struct zx_ff12_RegisterNameIdentifierRequest_s*)el;
+    return 1;
+  case zx_ff12_RegisterNameIdentifierResponse_ELEM:
+    if (!x->RegisterNameIdentifierResponse)
+      x->RegisterNameIdentifierResponse = (struct zx_ff12_RegisterNameIdentifierResponse_s*)el;
+    return 1;
+  case zx_ff12_FederationTerminationNotification_ELEM:
+    if (!x->FederationTerminationNotification)
+      x->FederationTerminationNotification = (struct zx_ff12_FederationTerminationNotification_s*)el;
+    return 1;
+  case zx_ff12_LogoutRequest_ELEM:
+    if (!x->ff12_LogoutRequest)
+      x->ff12_LogoutRequest = (struct zx_ff12_LogoutRequest_s*)el;
+    return 1;
+  case zx_ff12_LogoutResponse_ELEM:
+    if (!x->ff12_LogoutResponse)
+      x->ff12_LogoutResponse = (struct zx_ff12_LogoutResponse_s*)el;
+    return 1;
+  case zx_ff12_NameIdentifierMappingRequest_ELEM:
+    if (!x->NameIdentifierMappingRequest)
+      x->NameIdentifierMappingRequest = (struct zx_ff12_NameIdentifierMappingRequest_s*)el;
+    return 1;
+  case zx_ff12_NameIdentifierMappingResponse_ELEM:
+    if (!x->NameIdentifierMappingResponse)
+      x->NameIdentifierMappingResponse = (struct zx_ff12_NameIdentifierMappingResponse_s*)el;
+    return 1;
+  case zx_m20_EntityDescriptor_ELEM:
+    if (!x->m20_EntityDescriptor)
+      x->m20_EntityDescriptor = (struct zx_m20_EntityDescriptor_s*)el;
+    return 1;
+  case zx_m20_EntitiesDescriptor_ELEM:
+    if (!x->m20_EntitiesDescriptor)
+      x->m20_EntitiesDescriptor = (struct zx_m20_EntitiesDescriptor_s*)el;
+    return 1;
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
 
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   wrong_elem
-#define EL_STRUCT zx_elem_s
-#define EL_NS     
-#define EL_TAG    wrong_elem
-
-/* FUNC(zx_DEC_wrong_elem) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_elem_s* zx_DEC_wrong_elem(struct zx_ctx* c, struct zx_elem_s* x )
+int zx_DEC_ATTR_simple_elem(struct zx_ctx* c, struct zx_elem_s* x)
 {
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
+  switch (x->attr->g.tok) {
 
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
+  default: return 0;
   }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
 }
 
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
+int zx_DEC_ELEM_simple_elem(struct zx_ctx* c, struct zx_elem_s* x)
+{
+  struct zx_elem_s* el = x->kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
 
 
 
 
+int zx_DEC_ATTR_wrong_elem(struct zx_ctx* c, struct zx_elem_s* x)
+{
+  switch (x->attr->g.tok) {
 
-/* This subtemplate is only expanded once (i.e. not per namespace per element) */
-/* Empty template, see zxlibdec.c for generic parts. */
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_wrong_elem(struct zx_ctx* c, struct zx_elem_s* x)
+{
+  struct zx_elem_s* el = x->kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
 /* EOF -- c/zx-dec.c */

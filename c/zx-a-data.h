@@ -34,7 +34,8 @@ struct zx_a_Action_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_Action_s* zx_DEC_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x);
+int zx_DEC_ATTR_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x);
+int zx_DEC_ELEM_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x);
 struct zx_a_Action_s* zx_NEW_a_Action(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x);
 char* zx_ENC_SO_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x, char* p);
@@ -85,7 +86,8 @@ struct zx_a_Address_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_Address_s* zx_DEC_a_Address(struct zx_ctx* c, struct zx_a_Address_s* x);
+int zx_DEC_ATTR_a_Address(struct zx_ctx* c, struct zx_a_Address_s* x);
+int zx_DEC_ELEM_a_Address(struct zx_ctx* c, struct zx_a_Address_s* x);
 struct zx_a_Address_s* zx_NEW_a_Address(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_Address(struct zx_ctx* c, struct zx_a_Address_s* x);
 char* zx_ENC_SO_a_Address(struct zx_ctx* c, struct zx_a_Address_s* x, char* p);
@@ -140,7 +142,8 @@ struct zx_a_EndpointReference_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_EndpointReference_s* zx_DEC_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReference_s* x);
+int zx_DEC_ATTR_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReference_s* x);
+int zx_DEC_ELEM_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReference_s* x);
 struct zx_a_EndpointReference_s* zx_NEW_a_EndpointReference(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReference_s* x);
 char* zx_ENC_SO_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReference_s* x, char* p);
@@ -221,7 +224,8 @@ struct zx_a_FaultTo_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_FaultTo_s* zx_DEC_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x);
+int zx_DEC_ATTR_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x);
+int zx_DEC_ELEM_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x);
 struct zx_a_FaultTo_s* zx_NEW_a_FaultTo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x);
 char* zx_ENC_SO_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x, char* p);
@@ -302,7 +306,8 @@ struct zx_a_From_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_From_s* zx_DEC_a_From(struct zx_ctx* c, struct zx_a_From_s* x);
+int zx_DEC_ATTR_a_From(struct zx_ctx* c, struct zx_a_From_s* x);
+int zx_DEC_ELEM_a_From(struct zx_ctx* c, struct zx_a_From_s* x);
 struct zx_a_From_s* zx_NEW_a_From(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_From(struct zx_ctx* c, struct zx_a_From_s* x);
 char* zx_ENC_SO_a_From(struct zx_ctx* c, struct zx_a_From_s* x, char* p);
@@ -379,7 +384,8 @@ struct zx_a_MessageID_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_MessageID_s* zx_DEC_a_MessageID(struct zx_ctx* c, struct zx_a_MessageID_s* x);
+int zx_DEC_ATTR_a_MessageID(struct zx_ctx* c, struct zx_a_MessageID_s* x);
+int zx_DEC_ELEM_a_MessageID(struct zx_ctx* c, struct zx_a_MessageID_s* x);
 struct zx_a_MessageID_s* zx_NEW_a_MessageID(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_MessageID(struct zx_ctx* c, struct zx_a_MessageID_s* x);
 char* zx_ENC_SO_a_MessageID(struct zx_ctx* c, struct zx_a_MessageID_s* x, char* p);
@@ -430,7 +436,8 @@ struct zx_a_Metadata_s {
   struct zx_di_SecurityContext_s* SecurityContext;	/* {0,1} nada */
 };
 
-struct zx_a_Metadata_s* zx_DEC_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x);
+int zx_DEC_ATTR_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x);
+int zx_DEC_ELEM_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x);
 struct zx_a_Metadata_s* zx_NEW_a_Metadata(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x);
 char* zx_ENC_SO_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x, char* p);
@@ -513,7 +520,8 @@ struct zx_a_ProblemAction_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_ProblemAction_s* zx_DEC_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x);
+int zx_DEC_ATTR_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x);
+int zx_DEC_ELEM_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x);
 struct zx_a_ProblemAction_s* zx_NEW_a_ProblemAction(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x);
 char* zx_ENC_SO_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x, char* p);
@@ -580,7 +588,8 @@ struct zx_a_ProblemHeader_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_ProblemHeader_s* zx_DEC_a_ProblemHeader(struct zx_ctx* c, struct zx_a_ProblemHeader_s* x);
+int zx_DEC_ATTR_a_ProblemHeader(struct zx_ctx* c, struct zx_a_ProblemHeader_s* x);
+int zx_DEC_ELEM_a_ProblemHeader(struct zx_ctx* c, struct zx_a_ProblemHeader_s* x);
 struct zx_a_ProblemHeader_s* zx_NEW_a_ProblemHeader(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_ProblemHeader(struct zx_ctx* c, struct zx_a_ProblemHeader_s* x);
 char* zx_ENC_SO_a_ProblemHeader(struct zx_ctx* c, struct zx_a_ProblemHeader_s* x, char* p);
@@ -631,7 +640,8 @@ struct zx_a_ProblemHeaderQName_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_ProblemHeaderQName_s* zx_DEC_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_a_ProblemHeaderQName_s* x);
+int zx_DEC_ATTR_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_a_ProblemHeaderQName_s* x);
+int zx_DEC_ELEM_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_a_ProblemHeaderQName_s* x);
 struct zx_a_ProblemHeaderQName_s* zx_NEW_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_a_ProblemHeaderQName_s* x);
 char* zx_ENC_SO_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_a_ProblemHeaderQName_s* x, char* p);
@@ -682,7 +692,8 @@ struct zx_a_ProblemURI_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_ProblemURI_s* zx_DEC_a_ProblemURI(struct zx_ctx* c, struct zx_a_ProblemURI_s* x);
+int zx_DEC_ATTR_a_ProblemURI(struct zx_ctx* c, struct zx_a_ProblemURI_s* x);
+int zx_DEC_ELEM_a_ProblemURI(struct zx_ctx* c, struct zx_a_ProblemURI_s* x);
 struct zx_a_ProblemURI_s* zx_NEW_a_ProblemURI(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_ProblemURI(struct zx_ctx* c, struct zx_a_ProblemURI_s* x);
 char* zx_ENC_SO_a_ProblemURI(struct zx_ctx* c, struct zx_a_ProblemURI_s* x, char* p);
@@ -734,7 +745,8 @@ struct zx_a_ReferenceParameters_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_ReferenceParameters_s* zx_DEC_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferenceParameters_s* x);
+int zx_DEC_ATTR_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferenceParameters_s* x);
+int zx_DEC_ELEM_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferenceParameters_s* x);
 struct zx_a_ReferenceParameters_s* zx_NEW_a_ReferenceParameters(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferenceParameters_s* x);
 char* zx_ENC_SO_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferenceParameters_s* x, char* p);
@@ -794,7 +806,8 @@ struct zx_a_RelatesTo_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_RelatesTo_s* zx_DEC_a_RelatesTo(struct zx_ctx* c, struct zx_a_RelatesTo_s* x);
+int zx_DEC_ATTR_a_RelatesTo(struct zx_ctx* c, struct zx_a_RelatesTo_s* x);
+int zx_DEC_ELEM_a_RelatesTo(struct zx_ctx* c, struct zx_a_RelatesTo_s* x);
 struct zx_a_RelatesTo_s* zx_NEW_a_RelatesTo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_RelatesTo(struct zx_ctx* c, struct zx_a_RelatesTo_s* x);
 char* zx_ENC_SO_a_RelatesTo(struct zx_ctx* c, struct zx_a_RelatesTo_s* x, char* p);
@@ -851,7 +864,8 @@ struct zx_a_ReplyTo_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_ReplyTo_s* zx_DEC_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x);
+int zx_DEC_ATTR_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x);
+int zx_DEC_ELEM_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x);
 struct zx_a_ReplyTo_s* zx_NEW_a_ReplyTo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x);
 char* zx_ENC_SO_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x, char* p);
@@ -928,7 +942,8 @@ struct zx_a_RetryAfter_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_RetryAfter_s* zx_DEC_a_RetryAfter(struct zx_ctx* c, struct zx_a_RetryAfter_s* x);
+int zx_DEC_ATTR_a_RetryAfter(struct zx_ctx* c, struct zx_a_RetryAfter_s* x);
+int zx_DEC_ELEM_a_RetryAfter(struct zx_ctx* c, struct zx_a_RetryAfter_s* x);
 struct zx_a_RetryAfter_s* zx_NEW_a_RetryAfter(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_RetryAfter(struct zx_ctx* c, struct zx_a_RetryAfter_s* x);
 char* zx_ENC_SO_a_RetryAfter(struct zx_ctx* c, struct zx_a_RetryAfter_s* x, char* p);
@@ -979,7 +994,8 @@ struct zx_a_To_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_a_To_s* zx_DEC_a_To(struct zx_ctx* c, struct zx_a_To_s* x);
+int zx_DEC_ATTR_a_To(struct zx_ctx* c, struct zx_a_To_s* x);
+int zx_DEC_ELEM_a_To(struct zx_ctx* c, struct zx_a_To_s* x);
 struct zx_a_To_s* zx_NEW_a_To(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_a_To(struct zx_ctx* c, struct zx_a_To_s* x);
 char* zx_ENC_SO_a_To(struct zx_ctx* c, struct zx_a_To_s* x, char* p);

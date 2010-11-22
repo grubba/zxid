@@ -78,18 +78,31 @@ sub process_el_tab {
     print "/* elems */\n";
     # Extract from comments in union declarations the lists of namespace
     # qualified elements that the hash key corresponds
-    while ($x =~ /union zx_(\w+)_u \{(.*?)\};/gs) {
+    #while ($x =~ /union zx_(\w+)_u \{(.*?)\};/gs) {
+	#$name = $1;
+	#$lines = $2;
+	##warn "name($name) lines($lines)";
+	#for $line (split /\n/, $lines) {
+	#    ($els) = $line =~ m%; /\* (.*?) \*/%;
+	#    for $el (split / /, $els) {
+	#	++$els{$name}{$el};
+	#	#warn "$name: $el";
+	#    }
+	#}
+    #}
+
+    # Extract from comments the lists of namespace
+    # qualified elements that the hash key corresponds
+    while ($x =~ m%/\*TAG\((\w+)\): (.*?) \*/%gs) {
 	$name = $1;
-	$lines = $2;
-	#warn "name($name) lines($lines)";
-	for $line (split /\n/, $lines) {
-	    ($els) = $line =~ m%; /\* (.*?) \*/%;
-	    for $el (split / /, $els) {
-		++$els{$name}{$el};
-		#warn "$name: $el";
-	    }
+	$els = $2;
+	#warn "name($name) els($els)";
+	for $el (split / /, $els) {
+	    ++$els{$name}{$el};
+	    #warn "$name: $el";
 	}
     }
+    
     my ($y) = $x =~ /struct zx_el_tok zx_el_tab\[\] =\s+\{\s+(.*?)\s+\};/s;
     #warn "$i: $ARGV[$i] tab($y)";  # Output can be rather sizeable
     $y =~ s/\#line \d+ ".*?"\n//gs;

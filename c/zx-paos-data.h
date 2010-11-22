@@ -34,7 +34,8 @@ struct zx_paos_Request_s {
   struct zx_attr_s* mustUnderstand;	/* {1,1} attribute xs:boolean */
 };
 
-struct zx_paos_Request_s* zx_DEC_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x);
+int zx_DEC_ATTR_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x);
+int zx_DEC_ELEM_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x);
 struct zx_paos_Request_s* zx_NEW_paos_Request(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x);
 char* zx_ENC_SO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x, char* p);
@@ -83,7 +84,8 @@ struct zx_paos_Response_s {
   struct zx_attr_s* mustUnderstand;	/* {1,1} attribute xs:boolean */
 };
 
-struct zx_paos_Response_s* zx_DEC_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x);
+int zx_DEC_ATTR_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x);
+int zx_DEC_ELEM_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x);
 struct zx_paos_Response_s* zx_NEW_paos_Response(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x);
 char* zx_ENC_SO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x, char* p);

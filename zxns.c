@@ -521,14 +521,4 @@ struct zx_ns_s* zx_xmlns_detected(struct zx_ctx* c, struct zx_elem_s* x, const c
   return ns;
 }
 
-/* These do not have their own elems, so the table andlookup were not generated. Supply dummies. */
-
-struct zx_el_tok zx_xs_el_tab[zx_xs__ELEM_MAX] = { {""} };
-struct zx_el_tok zx_xsi_el_tab[zx_xsi__ELEM_MAX] = { {""} };
-struct zx_el_tok* zx_xs_elem2tok(const char* str, unsigned int len) { return 0; }
-struct zx_el_tok* zx_xsi_elem2tok(const char* str, unsigned int len) { return 0; }
-
-//struct zx_el_tok zx_xml_el_tab[zx_xml__ELEM_MAX] = { {""} };
-//struct zx_el_tok* zx_xml_elem2tok(const char* str, unsigned int len) { return 0; }
-
 /* EOF -- zxns.c */

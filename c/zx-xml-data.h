@@ -30,7 +30,8 @@ struct zx_xml_DummyToPullLang_s {
   struct zx_attr_s* lang;	/* {0,1} attribute xs:string */
 };
 
-struct zx_xml_DummyToPullLang_s* zx_DEC_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
+int zx_DEC_ATTR_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
+int zx_DEC_ELEM_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
 struct zx_xml_DummyToPullLang_s* zx_NEW_xml_DummyToPullLang(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
 char* zx_ENC_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, char* p);

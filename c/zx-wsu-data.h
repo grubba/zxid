@@ -32,7 +32,8 @@ struct zx_wsu_Created_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_wsu_Created_s* zx_DEC_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x);
+int zx_DEC_ATTR_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x);
+int zx_DEC_ELEM_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x);
 struct zx_wsu_Created_s* zx_NEW_wsu_Created(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x);
 char* zx_ENC_SO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x, char* p);
@@ -77,7 +78,8 @@ struct zx_wsu_Expires_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_wsu_Expires_s* zx_DEC_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x);
+int zx_DEC_ATTR_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x);
+int zx_DEC_ELEM_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x);
 struct zx_wsu_Expires_s* zx_NEW_wsu_Expires(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x);
 char* zx_ENC_SO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x, char* p);
@@ -124,7 +126,8 @@ struct zx_wsu_Timestamp_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_wsu_Timestamp_s* zx_DEC_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x);
+int zx_DEC_ATTR_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x);
+int zx_DEC_ELEM_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x);
 struct zx_wsu_Timestamp_s* zx_NEW_wsu_Timestamp(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x);
 char* zx_ENC_SO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x, char* p);

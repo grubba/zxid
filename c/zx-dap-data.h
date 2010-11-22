@@ -34,7 +34,8 @@ struct zx_dap_Create_s {
   struct zx_attr_s* itemID;	/* {0,1} attribute lu:IDType */
 };
 
-struct zx_dap_Create_s* zx_DEC_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x);
+int zx_DEC_ATTR_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x);
+int zx_DEC_ELEM_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x);
 struct zx_dap_Create_s* zx_NEW_dap_Create(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x);
 char* zx_ENC_SO_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x, char* p);
@@ -108,7 +109,8 @@ struct zx_dap_CreateItem_s {
   struct zx_attr_s* objectType;	/* {0,1} attribute xs:NCName */
 };
 
-struct zx_dap_CreateItem_s* zx_DEC_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x);
+int zx_DEC_ATTR_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x);
+int zx_DEC_ELEM_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x);
 struct zx_dap_CreateItem_s* zx_NEW_dap_CreateItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x);
 char* zx_ENC_SO_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x, char* p);
@@ -163,7 +165,8 @@ struct zx_dap_CreateResponse_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute lu:IDReferenceType */
 };
 
-struct zx_dap_CreateResponse_s* zx_DEC_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse_s* x);
+int zx_DEC_ATTR_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse_s* x);
+int zx_DEC_ELEM_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse_s* x);
 struct zx_dap_CreateResponse_s* zx_NEW_dap_CreateResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse_s* x);
 char* zx_ENC_SO_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse_s* x, char* p);
@@ -235,7 +238,8 @@ struct zx_dap_Data_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute lu:IDReferenceType */
 };
 
-struct zx_dap_Data_s* zx_DEC_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x);
+int zx_DEC_ATTR_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x);
+int zx_DEC_ELEM_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x);
 struct zx_dap_Data_s* zx_NEW_dap_Data(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x);
 char* zx_ENC_SO_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x, char* p);
@@ -302,7 +306,8 @@ struct zx_dap_Delete_s {
   struct zx_attr_s* itemID;	/* {0,1} attribute lu:IDType */
 };
 
-struct zx_dap_Delete_s* zx_DEC_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x);
+int zx_DEC_ATTR_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x);
+int zx_DEC_ELEM_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x);
 struct zx_dap_Delete_s* zx_NEW_dap_Delete(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x);
 char* zx_ENC_SO_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x, char* p);
@@ -362,7 +367,8 @@ struct zx_dap_DeleteItem_s {
   struct zx_attr_s* predefined;	/* {0,1} attribute xs:string */
 };
 
-struct zx_dap_DeleteItem_s* zx_DEC_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x);
+int zx_DEC_ATTR_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x);
+int zx_DEC_ELEM_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x);
 struct zx_dap_DeleteItem_s* zx_NEW_dap_DeleteItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x);
 char* zx_ENC_SO_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x, char* p);
@@ -419,7 +425,8 @@ struct zx_dap_DeleteResponse_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute xs:string */
 };
 
-struct zx_dap_DeleteResponse_s* zx_DEC_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse_s* x);
+int zx_DEC_ATTR_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse_s* x);
+int zx_DEC_ELEM_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse_s* x);
 struct zx_dap_DeleteResponse_s* zx_NEW_dap_DeleteResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse_s* x);
 char* zx_ENC_SO_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse_s* x, char* p);
@@ -478,7 +485,8 @@ struct zx_dap_ItemData_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute lu:IDReferenceType */
 };
 
-struct zx_dap_ItemData_s* zx_DEC_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x);
+int zx_DEC_ATTR_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x);
+int zx_DEC_ELEM_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x);
 struct zx_dap_ItemData_s* zx_NEW_dap_ItemData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x);
 char* zx_ENC_SO_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x, char* p);
@@ -543,7 +551,8 @@ struct zx_dap_LDIF_s {
   struct zx_attr_s* script;	/* {0,1} attribute xs:anyURI */
 };
 
-struct zx_dap_LDIF_s* zx_DEC_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x);
+int zx_DEC_ATTR_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x);
+int zx_DEC_ELEM_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x);
 struct zx_dap_LDIF_s* zx_NEW_dap_LDIF(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x);
 char* zx_ENC_SO_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x, char* p);
@@ -598,7 +607,8 @@ struct zx_dap_Modify_s {
   struct zx_attr_s* itemID;	/* {0,1} attribute lu:IDType */
 };
 
-struct zx_dap_Modify_s* zx_DEC_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x);
+int zx_DEC_ATTR_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x);
+int zx_DEC_ELEM_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x);
 struct zx_dap_Modify_s* zx_NEW_dap_Modify(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x);
 char* zx_ENC_SO_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x, char* p);
@@ -676,7 +686,8 @@ struct zx_dap_ModifyItem_s {
   struct zx_attr_s* predefined;	/* {0,1} attribute xs:string */
 };
 
-struct zx_dap_ModifyItem_s* zx_DEC_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x);
+int zx_DEC_ATTR_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x);
+int zx_DEC_ELEM_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x);
 struct zx_dap_ModifyItem_s* zx_NEW_dap_ModifyItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x);
 char* zx_ENC_SO_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x, char* p);
@@ -745,7 +756,8 @@ struct zx_dap_ModifyResponse_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute lu:IDReferenceType */
 };
 
-struct zx_dap_ModifyResponse_s* zx_DEC_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse_s* x);
+int zx_DEC_ATTR_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse_s* x);
+int zx_DEC_ELEM_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse_s* x);
 struct zx_dap_ModifyResponse_s* zx_NEW_dap_ModifyResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse_s* x);
 char* zx_ENC_SO_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse_s* x, char* p);
@@ -811,7 +823,8 @@ struct zx_dap_NewData_s {
   struct zx_dap_Subscription_s* Subscription;	/* {0,1} nada */
 };
 
-struct zx_dap_NewData_s* zx_DEC_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x);
+int zx_DEC_ATTR_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x);
+int zx_DEC_ELEM_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x);
 struct zx_dap_NewData_s* zx_NEW_dap_NewData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x);
 char* zx_ENC_SO_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x, char* p);
@@ -869,7 +882,8 @@ struct zx_dap_Notification_s {
   struct zx_attr_s* subscriptionID;	/* {1,1} attribute xs:string */
 };
 
-struct zx_dap_Notification_s* zx_DEC_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* x);
+int zx_DEC_ATTR_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* x);
+int zx_DEC_ELEM_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* x);
 struct zx_dap_Notification_s* zx_NEW_dap_Notification(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* x);
 char* zx_ENC_SO_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* x, char* p);
@@ -933,7 +947,8 @@ struct zx_dap_Notify_s {
   struct zx_attr_s* itemID;	/* {0,1} attribute lu:IDType */
 };
 
-struct zx_dap_Notify_s* zx_DEC_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x);
+int zx_DEC_ATTR_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x);
+int zx_DEC_ELEM_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x);
 struct zx_dap_Notify_s* zx_NEW_dap_Notify(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x);
 char* zx_ENC_SO_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x, char* p);
@@ -992,7 +1007,8 @@ struct zx_dap_NotifyResponse_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute xs:string */
 };
 
-struct zx_dap_NotifyResponse_s* zx_DEC_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse_s* x);
+int zx_DEC_ATTR_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse_s* x);
+int zx_DEC_ELEM_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse_s* x);
 struct zx_dap_NotifyResponse_s* zx_NEW_dap_NotifyResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse_s* x);
 char* zx_ENC_SO_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse_s* x, char* p);
@@ -1051,7 +1067,8 @@ struct zx_dap_Query_s {
   struct zx_attr_s* itemID;	/* {0,1} attribute lu:IDType */
 };
 
-struct zx_dap_Query_s* zx_DEC_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x);
+int zx_DEC_ATTR_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x);
+int zx_DEC_ELEM_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x);
 struct zx_dap_Query_s* zx_NEW_dap_Query(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x);
 char* zx_ENC_SO_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x, char* p);
@@ -1135,7 +1152,8 @@ struct zx_dap_QueryItem_s {
   struct zx_attr_s* predefined;	/* {0,1} attribute xs:string */
 };
 
-struct zx_dap_QueryItem_s* zx_DEC_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x);
+int zx_DEC_ATTR_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x);
+int zx_DEC_ELEM_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x);
 struct zx_dap_QueryItem_s* zx_NEW_dap_QueryItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x);
 char* zx_ENC_SO_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x, char* p);
@@ -1223,7 +1241,8 @@ struct zx_dap_QueryResponse_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute lu:IDReferenceType */
 };
 
-struct zx_dap_QueryResponse_s* zx_DEC_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s* x);
+int zx_DEC_ATTR_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s* x);
+int zx_DEC_ELEM_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s* x);
 struct zx_dap_QueryResponse_s* zx_NEW_dap_QueryResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s* x);
 char* zx_ENC_SO_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s* x, char* p);
@@ -1305,7 +1324,8 @@ struct zx_dap_ResultQuery_s {
   struct zx_attr_s* predefined;	/* {0,1} attribute xs:string */
 };
 
-struct zx_dap_ResultQuery_s* zx_DEC_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x);
+int zx_DEC_ATTR_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x);
+int zx_DEC_ELEM_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x);
 struct zx_dap_ResultQuery_s* zx_NEW_dap_ResultQuery(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x);
 char* zx_ENC_SO_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x, char* p);
@@ -1387,7 +1407,8 @@ struct zx_dap_Select_s {
   struct zx_attr_s* typesonly;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_dap_Select_s* zx_DEC_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x);
+int zx_DEC_ATTR_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x);
+int zx_DEC_ELEM_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x);
 struct zx_dap_Select_s* zx_NEW_dap_Select(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x);
 char* zx_ENC_SO_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x, char* p);
@@ -1463,7 +1484,8 @@ struct zx_dap_Subscription_s {
   struct zx_attr_s* subscriptionID;	/* {1,1} attribute xs:string */
 };
 
-struct zx_dap_Subscription_s* zx_DEC_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* x);
+int zx_DEC_ATTR_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* x);
+int zx_DEC_ELEM_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* x);
 struct zx_dap_Subscription_s* zx_NEW_dap_Subscription(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* x);
 char* zx_ENC_SO_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* x, char* p);
@@ -1558,7 +1580,8 @@ struct zx_dap_TestItem_s {
   struct zx_attr_s* predefined;	/* {0,1} attribute xs:string */
 };
 
-struct zx_dap_TestItem_s* zx_DEC_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x);
+int zx_DEC_ATTR_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x);
+int zx_DEC_ELEM_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x);
 struct zx_dap_TestItem_s* zx_NEW_dap_TestItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x);
 char* zx_ENC_SO_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x, char* p);
@@ -1618,7 +1641,8 @@ struct zx_dap_TestOp_s {
   struct zx_attr_s* typesonly;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_dap_TestOp_s* zx_DEC_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x);
+int zx_DEC_ATTR_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x);
+int zx_DEC_ELEM_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x);
 struct zx_dap_TestOp_s* zx_NEW_dap_TestOp(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x);
 char* zx_ENC_SO_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x, char* p);

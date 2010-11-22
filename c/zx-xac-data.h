@@ -30,7 +30,8 @@ struct zx_xac_Action_s {
   struct zx_xac_Attribute_s* Attribute;	/* {0,-1} nada */
 };
 
-struct zx_xac_Action_s* zx_DEC_xac_Action(struct zx_ctx* c, struct zx_xac_Action_s* x);
+int zx_DEC_ATTR_xac_Action(struct zx_ctx* c, struct zx_xac_Action_s* x);
+int zx_DEC_ELEM_xac_Action(struct zx_ctx* c, struct zx_xac_Action_s* x);
 struct zx_xac_Action_s* zx_NEW_xac_Action(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_Action(struct zx_ctx* c, struct zx_xac_Action_s* x);
 char* zx_ENC_SO_xac_Action(struct zx_ctx* c, struct zx_xac_Action_s* x, char* p);
@@ -78,7 +79,8 @@ struct zx_xac_Attribute_s {
   struct zx_attr_s* Issuer;	/* {0,1} attribute xs:string */
 };
 
-struct zx_xac_Attribute_s* zx_DEC_xac_Attribute(struct zx_ctx* c, struct zx_xac_Attribute_s* x);
+int zx_DEC_ATTR_xac_Attribute(struct zx_ctx* c, struct zx_xac_Attribute_s* x);
+int zx_DEC_ELEM_xac_Attribute(struct zx_ctx* c, struct zx_xac_Attribute_s* x);
 struct zx_xac_Attribute_s* zx_NEW_xac_Attribute(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_Attribute(struct zx_ctx* c, struct zx_xac_Attribute_s* x);
 char* zx_ENC_SO_xac_Attribute(struct zx_ctx* c, struct zx_xac_Attribute_s* x, char* p);
@@ -129,7 +131,8 @@ struct zx_xac_Environment_s {
   struct zx_xac_Attribute_s* Attribute;	/* {0,-1} nada */
 };
 
-struct zx_xac_Environment_s* zx_DEC_xac_Environment(struct zx_ctx* c, struct zx_xac_Environment_s* x);
+int zx_DEC_ATTR_xac_Environment(struct zx_ctx* c, struct zx_xac_Environment_s* x);
+int zx_DEC_ELEM_xac_Environment(struct zx_ctx* c, struct zx_xac_Environment_s* x);
 struct zx_xac_Environment_s* zx_NEW_xac_Environment(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_Environment(struct zx_ctx* c, struct zx_xac_Environment_s* x);
 char* zx_ENC_SO_xac_Environment(struct zx_ctx* c, struct zx_xac_Environment_s* x, char* p);
@@ -177,7 +180,8 @@ struct zx_xac_MissingAttributeDetail_s {
   struct zx_attr_s* Issuer;	/* {0,1} attribute xs:string */
 };
 
-struct zx_xac_MissingAttributeDetail_s* zx_DEC_xac_MissingAttributeDetail(struct zx_ctx* c, struct zx_xac_MissingAttributeDetail_s* x);
+int zx_DEC_ATTR_xac_MissingAttributeDetail(struct zx_ctx* c, struct zx_xac_MissingAttributeDetail_s* x);
+int zx_DEC_ELEM_xac_MissingAttributeDetail(struct zx_ctx* c, struct zx_xac_MissingAttributeDetail_s* x);
 struct zx_xac_MissingAttributeDetail_s* zx_NEW_xac_MissingAttributeDetail(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_MissingAttributeDetail(struct zx_ctx* c, struct zx_xac_MissingAttributeDetail_s* x);
 char* zx_ENC_SO_xac_MissingAttributeDetail(struct zx_ctx* c, struct zx_xac_MissingAttributeDetail_s* x, char* p);
@@ -231,7 +235,8 @@ struct zx_xac_Request_s {
   struct zx_xac_Environment_s* Environment;	/* {1,1}  */
 };
 
-struct zx_xac_Request_s* zx_DEC_xac_Request(struct zx_ctx* c, struct zx_xac_Request_s* x);
+int zx_DEC_ATTR_xac_Request(struct zx_ctx* c, struct zx_xac_Request_s* x);
+int zx_DEC_ELEM_xac_Request(struct zx_ctx* c, struct zx_xac_Request_s* x);
 struct zx_xac_Request_s* zx_NEW_xac_Request(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_Request(struct zx_ctx* c, struct zx_xac_Request_s* x);
 char* zx_ENC_SO_xac_Request(struct zx_ctx* c, struct zx_xac_Request_s* x, char* p);
@@ -301,7 +306,8 @@ struct zx_xac_Resource_s {
   struct zx_xac_Attribute_s* Attribute;	/* {0,-1} nada */
 };
 
-struct zx_xac_Resource_s* zx_DEC_xac_Resource(struct zx_ctx* c, struct zx_xac_Resource_s* x);
+int zx_DEC_ATTR_xac_Resource(struct zx_ctx* c, struct zx_xac_Resource_s* x);
+int zx_DEC_ELEM_xac_Resource(struct zx_ctx* c, struct zx_xac_Resource_s* x);
 struct zx_xac_Resource_s* zx_NEW_xac_Resource(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_Resource(struct zx_ctx* c, struct zx_xac_Resource_s* x);
 char* zx_ENC_SO_xac_Resource(struct zx_ctx* c, struct zx_xac_Resource_s* x, char* p);
@@ -353,7 +359,8 @@ struct zx_xac_ResourceContent_s {
   zx_xac_ResourceContent_EXT
 };
 
-struct zx_xac_ResourceContent_s* zx_DEC_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceContent_s* x);
+int zx_DEC_ATTR_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceContent_s* x);
+int zx_DEC_ELEM_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceContent_s* x);
 struct zx_xac_ResourceContent_s* zx_NEW_xac_ResourceContent(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceContent_s* x);
 char* zx_ENC_SO_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceContent_s* x, char* p);
@@ -390,7 +397,8 @@ struct zx_xac_Response_s {
   struct zx_xac_Result_s* Result;	/* {1,-1} nada */
 };
 
-struct zx_xac_Response_s* zx_DEC_xac_Response(struct zx_ctx* c, struct zx_xac_Response_s* x);
+int zx_DEC_ATTR_xac_Response(struct zx_ctx* c, struct zx_xac_Response_s* x);
+int zx_DEC_ELEM_xac_Response(struct zx_ctx* c, struct zx_xac_Response_s* x);
 struct zx_xac_Response_s* zx_NEW_xac_Response(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_Response(struct zx_ctx* c, struct zx_xac_Response_s* x);
 char* zx_ENC_SO_xac_Response(struct zx_ctx* c, struct zx_xac_Response_s* x, char* p);
@@ -438,7 +446,8 @@ struct zx_xac_Result_s {
   struct zx_attr_s* ResourceId;	/* {0,1} attribute xs:string */
 };
 
-struct zx_xac_Result_s* zx_DEC_xac_Result(struct zx_ctx* c, struct zx_xac_Result_s* x);
+int zx_DEC_ATTR_xac_Result(struct zx_ctx* c, struct zx_xac_Result_s* x);
+int zx_DEC_ELEM_xac_Result(struct zx_ctx* c, struct zx_xac_Result_s* x);
 struct zx_xac_Result_s* zx_NEW_xac_Result(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_Result(struct zx_ctx* c, struct zx_xac_Result_s* x);
 char* zx_ENC_SO_xac_Result(struct zx_ctx* c, struct zx_xac_Result_s* x, char* p);
@@ -503,7 +512,8 @@ struct zx_xac_Status_s {
   struct zx_xac_StatusDetail_s* StatusDetail;	/* {0,1}  */
 };
 
-struct zx_xac_Status_s* zx_DEC_xac_Status(struct zx_ctx* c, struct zx_xac_Status_s* x);
+int zx_DEC_ATTR_xac_Status(struct zx_ctx* c, struct zx_xac_Status_s* x);
+int zx_DEC_ELEM_xac_Status(struct zx_ctx* c, struct zx_xac_Status_s* x);
 struct zx_xac_Status_s* zx_NEW_xac_Status(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_Status(struct zx_ctx* c, struct zx_xac_Status_s* x);
 char* zx_ENC_SO_xac_Status(struct zx_ctx* c, struct zx_xac_Status_s* x, char* p);
@@ -565,7 +575,8 @@ struct zx_xac_StatusCode_s {
   struct zx_attr_s* Value;	/* {1,1} attribute xs:QName */
 };
 
-struct zx_xac_StatusCode_s* zx_DEC_xac_StatusCode(struct zx_ctx* c, struct zx_xac_StatusCode_s* x);
+int zx_DEC_ATTR_xac_StatusCode(struct zx_ctx* c, struct zx_xac_StatusCode_s* x);
+int zx_DEC_ELEM_xac_StatusCode(struct zx_ctx* c, struct zx_xac_StatusCode_s* x);
 struct zx_xac_StatusCode_s* zx_NEW_xac_StatusCode(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_StatusCode(struct zx_ctx* c, struct zx_xac_StatusCode_s* x);
 char* zx_ENC_SO_xac_StatusCode(struct zx_ctx* c, struct zx_xac_StatusCode_s* x, char* p);
@@ -611,7 +622,8 @@ struct zx_xac_StatusDetail_s {
   zx_xac_StatusDetail_EXT
 };
 
-struct zx_xac_StatusDetail_s* zx_DEC_xac_StatusDetail(struct zx_ctx* c, struct zx_xac_StatusDetail_s* x);
+int zx_DEC_ATTR_xac_StatusDetail(struct zx_ctx* c, struct zx_xac_StatusDetail_s* x);
+int zx_DEC_ELEM_xac_StatusDetail(struct zx_ctx* c, struct zx_xac_StatusDetail_s* x);
 struct zx_xac_StatusDetail_s* zx_NEW_xac_StatusDetail(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_StatusDetail(struct zx_ctx* c, struct zx_xac_StatusDetail_s* x);
 char* zx_ENC_SO_xac_StatusDetail(struct zx_ctx* c, struct zx_xac_StatusDetail_s* x, char* p);
@@ -649,7 +661,8 @@ struct zx_xac_Subject_s {
   struct zx_attr_s* SubjectCategory;	/* {0,1} attribute xs:anyURI */
 };
 
-struct zx_xac_Subject_s* zx_DEC_xac_Subject(struct zx_ctx* c, struct zx_xac_Subject_s* x);
+int zx_DEC_ATTR_xac_Subject(struct zx_ctx* c, struct zx_xac_Subject_s* x);
+int zx_DEC_ELEM_xac_Subject(struct zx_ctx* c, struct zx_xac_Subject_s* x);
 struct zx_xac_Subject_s* zx_NEW_xac_Subject(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xac_Subject(struct zx_ctx* c, struct zx_xac_Subject_s* x);
 char* zx_ENC_SO_xac_Subject(struct zx_ctx* c, struct zx_xac_Subject_s* x, char* p);

@@ -33,7 +33,8 @@ struct zx_idp_AssertionItem_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_idp_AssertionItem_s* zx_DEC_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s* x);
+int zx_DEC_ATTR_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s* x);
+int zx_DEC_ELEM_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s* x);
 struct zx_idp_AssertionItem_s* zx_NEW_idp_AssertionItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s* x);
 char* zx_ENC_SO_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s* x, char* p);
@@ -90,7 +91,8 @@ struct zx_idp_AuthnContextRestriction_s {
   struct zx_sa_AuthnContext_s* AuthnContext;	/* {1,-1} nada */
 };
 
-struct zx_idp_AuthnContextRestriction_s* zx_DEC_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnContextRestriction_s* x);
+int zx_DEC_ATTR_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnContextRestriction_s* x);
+int zx_DEC_ELEM_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnContextRestriction_s* x);
 struct zx_idp_AuthnContextRestriction_s* zx_NEW_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnContextRestriction_s* x);
 char* zx_ENC_SO_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnContextRestriction_s* x, char* p);
@@ -135,7 +137,8 @@ struct zx_idp_CreatedStatus_s {
   struct zx_idp_CreatedStatusItem_s* CreatedStatusItem;	/* {0,-1} nada */
 };
 
-struct zx_idp_CreatedStatus_s* zx_DEC_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s* x);
+int zx_DEC_ATTR_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s* x);
+int zx_DEC_ELEM_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s* x);
 struct zx_idp_CreatedStatus_s* zx_NEW_idp_CreatedStatus(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s* x);
 char* zx_ENC_SO_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s* x, char* p);
@@ -182,7 +185,8 @@ struct zx_idp_CreatedStatusItem_s {
   struct zx_attr_s* used;	/* {1,1} attribute xs:boolean */
 };
 
-struct zx_idp_CreatedStatusItem_s* zx_DEC_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatusItem_s* x);
+int zx_DEC_ATTR_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatusItem_s* x);
+int zx_DEC_ELEM_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatusItem_s* x);
 struct zx_idp_CreatedStatusItem_s* zx_NEW_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatusItem_s* x);
 char* zx_ENC_SO_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatusItem_s* x, char* p);
@@ -225,7 +229,8 @@ struct zx_idp_CreatedStatusResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
-struct zx_idp_CreatedStatusResponse_s* zx_DEC_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedStatusResponse_s* x);
+int zx_DEC_ATTR_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedStatusResponse_s* x);
+int zx_DEC_ELEM_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedStatusResponse_s* x);
 struct zx_idp_CreatedStatusResponse_s* zx_NEW_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedStatusResponse_s* x);
 char* zx_ENC_SO_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedStatusResponse_s* x, char* p);
@@ -271,7 +276,8 @@ struct zx_idp_GetAssertion_s {
   struct zx_attr_s* purpose;	/* {1,1} attribute hrxml:OrganizationContactPurposeType */
 };
 
-struct zx_idp_GetAssertion_s* zx_DEC_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x);
+int zx_DEC_ATTR_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x);
+int zx_DEC_ELEM_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x);
 struct zx_idp_GetAssertion_s* zx_NEW_idp_GetAssertion(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x);
 char* zx_ENC_SO_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x, char* p);
@@ -319,7 +325,8 @@ struct zx_idp_GetAssertionResponse_s {
   struct zx_idp_GetAssertionResponseItem_s* GetAssertionResponseItem;	/* {0,-1} nada */
 };
 
-struct zx_idp_GetAssertionResponse_s* zx_DEC_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssertionResponse_s* x);
+int zx_DEC_ATTR_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssertionResponse_s* x);
+int zx_DEC_ELEM_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssertionResponse_s* x);
 struct zx_idp_GetAssertionResponse_s* zx_NEW_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssertionResponse_s* x);
 char* zx_ENC_SO_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssertionResponse_s* x, char* p);
@@ -374,7 +381,8 @@ struct zx_idp_GetAssertionResponseItem_s {
   struct zx_attr_s* ref;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_idp_GetAssertionResponseItem_s* zx_DEC_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAssertionResponseItem_s* x);
+int zx_DEC_ATTR_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAssertionResponseItem_s* x);
+int zx_DEC_ELEM_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAssertionResponseItem_s* x);
 struct zx_idp_GetAssertionResponseItem_s* zx_NEW_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAssertionResponseItem_s* x);
 char* zx_ENC_SO_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAssertionResponseItem_s* x, char* p);
@@ -424,7 +432,8 @@ struct zx_idp_GetProviderInfo_s {
   struct zx_attr_s* all;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_idp_GetProviderInfo_s* zx_DEC_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInfo_s* x);
+int zx_DEC_ATTR_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInfo_s* x);
+int zx_DEC_ELEM_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInfo_s* x);
 struct zx_idp_GetProviderInfo_s* zx_NEW_idp_GetProviderInfo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInfo_s* x);
 char* zx_ENC_SO_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInfo_s* x, char* p);
@@ -472,7 +481,8 @@ struct zx_idp_GetProviderInfoResponse_s {
   struct zx_idp_ProviderInfo_s* ProviderInfo;	/* {0,-1} nada */
 };
 
-struct zx_idp_GetProviderInfoResponse_s* zx_DEC_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetProviderInfoResponse_s* x);
+int zx_DEC_ATTR_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetProviderInfoResponse_s* x);
+int zx_DEC_ELEM_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetProviderInfoResponse_s* x);
 struct zx_idp_GetProviderInfoResponse_s* zx_NEW_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetProviderInfoResponse_s* x);
 char* zx_ENC_SO_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetProviderInfoResponse_s* x, char* p);
@@ -526,7 +536,8 @@ struct zx_idp_MEDInfo_s {
   struct zx_sa_AttributeStatement_s* AttributeStatement;	/* {0,-1} nada */
 };
 
-struct zx_idp_MEDInfo_s* zx_DEC_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x);
+int zx_DEC_ATTR_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x);
+int zx_DEC_ELEM_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x);
 struct zx_idp_MEDInfo_s* zx_NEW_idp_MEDInfo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x);
 char* zx_ENC_SO_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x, char* p);
@@ -580,7 +591,8 @@ struct zx_idp_ProviderInfo_s {
   struct zx_attr_s* providerID;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_idp_ProviderInfo_s* zx_DEC_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x);
+int zx_DEC_ATTR_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x);
+int zx_DEC_ELEM_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x);
 struct zx_idp_ProviderInfo_s* zx_NEW_idp_ProviderInfo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x);
 char* zx_ENC_SO_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x, char* p);
@@ -621,7 +633,8 @@ struct zx_idp_SubjectRestriction_s {
   struct zx_sa_Subject_s* Subject;	/* {1,-1} nada */
 };
 
-struct zx_idp_SubjectRestriction_s* zx_DEC_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRestriction_s* x);
+int zx_DEC_ATTR_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRestriction_s* x);
+int zx_DEC_ELEM_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRestriction_s* x);
 struct zx_idp_SubjectRestriction_s* zx_NEW_idp_SubjectRestriction(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRestriction_s* x);
 char* zx_ENC_SO_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRestriction_s* x, char* p);

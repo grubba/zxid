@@ -31,7 +31,8 @@ struct zx_ecp_RelayState_s {
   struct zx_attr_s* mustUnderstand;	/* {1,1} attribute xs:boolean */
 };
 
-struct zx_ecp_RelayState_s* zx_DEC_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x);
+int zx_DEC_ATTR_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x);
+int zx_DEC_ELEM_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x);
 struct zx_ecp_RelayState_s* zx_NEW_ecp_RelayState(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x);
 char* zx_ENC_SO_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x, char* p);
@@ -77,7 +78,8 @@ struct zx_ecp_Request_s {
   struct zx_attr_s* mustUnderstand;	/* {1,1} attribute xs:boolean */
 };
 
-struct zx_ecp_Request_s* zx_DEC_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x);
+int zx_DEC_ATTR_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x);
+int zx_DEC_ELEM_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x);
 struct zx_ecp_Request_s* zx_NEW_ecp_Request(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x);
 char* zx_ENC_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x, char* p);
@@ -140,7 +142,8 @@ struct zx_ecp_Response_s {
   struct zx_attr_s* mustUnderstand;	/* {1,1} attribute xs:boolean */
 };
 
-struct zx_ecp_Response_s* zx_DEC_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x);
+int zx_DEC_ATTR_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x);
+int zx_DEC_ELEM_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x);
 struct zx_ecp_Response_s* zx_NEW_ecp_Response(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x);
 char* zx_ENC_SO_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x, char* p);

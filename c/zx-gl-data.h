@@ -34,7 +34,8 @@ struct zx_gl_AreaComparison_s {
   struct zx_attr_s* returnLocation;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_gl_AreaComparison_s* zx_DEC_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_s* x);
+int zx_DEC_ATTR_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_s* x);
+int zx_DEC_ELEM_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_s* x);
 struct zx_gl_AreaComparison_s* zx_NEW_gl_AreaComparison(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_s* x);
 char* zx_ENC_SO_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_s* x, char* p);
@@ -101,7 +102,8 @@ struct zx_gl_Box_s {
   struct zx_attr_s* srsName;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_Box_s* zx_DEC_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x);
+int zx_DEC_ATTR_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x);
+int zx_DEC_ELEM_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x);
 struct zx_gl_Box_s* zx_NEW_gl_Box(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x);
 char* zx_ENC_SO_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x, char* p);
@@ -153,7 +155,8 @@ struct zx_gl_ChangeArea_s {
   struct zx_attr_s* event;	/* {1,1} attribute xs:string */
 };
 
-struct zx_gl_ChangeArea_s* zx_DEC_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x);
+int zx_DEC_ATTR_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x);
+int zx_DEC_ELEM_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x);
 struct zx_gl_ChangeArea_s* zx_NEW_gl_ChangeArea(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x);
 char* zx_ENC_SO_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x, char* p);
@@ -224,7 +227,8 @@ struct zx_gl_CircularArcArea_s {
   struct zx_attr_s* srsName;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_CircularArcArea_s* zx_DEC_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcArea_s* x);
+int zx_DEC_ATTR_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcArea_s* x);
+int zx_DEC_ELEM_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcArea_s* x);
 struct zx_gl_CircularArcArea_s* zx_NEW_gl_CircularArcArea(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcArea_s* x);
 char* zx_ENC_SO_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcArea_s* x, char* p);
@@ -325,7 +329,8 @@ struct zx_gl_CircularArea_s {
   struct zx_attr_s* srsName;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_CircularArea_s* zx_DEC_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x);
+int zx_DEC_ATTR_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x);
+int zx_DEC_ELEM_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x);
 struct zx_gl_CircularArea_s* zx_NEW_gl_CircularArea(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x);
 char* zx_ENC_SO_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x, char* p);
@@ -399,7 +404,8 @@ struct zx_gl_CivilData_s {
   struct zx_gl_Extension_s* Extension;	/* {0,1} nada */
 };
 
-struct zx_gl_CivilData_s* zx_DEC_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x);
+int zx_DEC_ATTR_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x);
+int zx_DEC_ELEM_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x);
 struct zx_gl_CivilData_s* zx_NEW_gl_CivilData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x);
 char* zx_ENC_SO_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x, char* p);
@@ -516,7 +522,8 @@ struct zx_gl_ComparisonResult_s {
   struct zx_attr_s* ItemIDRef;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_ComparisonResult_s* zx_DEC_gl_ComparisonResult(struct zx_ctx* c, struct zx_gl_ComparisonResult_s* x);
+int zx_DEC_ATTR_gl_ComparisonResult(struct zx_ctx* c, struct zx_gl_ComparisonResult_s* x);
+int zx_DEC_ELEM_gl_ComparisonResult(struct zx_ctx* c, struct zx_gl_ComparisonResult_s* x);
 struct zx_gl_ComparisonResult_s* zx_NEW_gl_ComparisonResult(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_ComparisonResult(struct zx_ctx* c, struct zx_gl_ComparisonResult_s* x);
 char* zx_ENC_SO_gl_ComparisonResult(struct zx_ctx* c, struct zx_gl_ComparisonResult_s* x, char* p);
@@ -555,7 +562,8 @@ struct zx_gl_CoordinateReferenceSystem_s {
   struct zx_gl_Identifier_s* Identifier;	/* {1,1}  */
 };
 
-struct zx_gl_CoordinateReferenceSystem_s* zx_DEC_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_CoordinateReferenceSystem_s* x);
+int zx_DEC_ATTR_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_CoordinateReferenceSystem_s* x);
+int zx_DEC_ELEM_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_CoordinateReferenceSystem_s* x);
 struct zx_gl_CoordinateReferenceSystem_s* zx_NEW_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_CoordinateReferenceSystem_s* x);
 char* zx_ENC_SO_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_CoordinateReferenceSystem_s* x, char* p);
@@ -606,7 +614,8 @@ struct zx_gl_Create_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_gl_Create_s* zx_DEC_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x);
+int zx_DEC_ATTR_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x);
+int zx_DEC_ELEM_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x);
 struct zx_gl_Create_s* zx_NEW_gl_Create(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x);
 char* zx_ENC_SO_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x, char* p);
@@ -696,7 +705,8 @@ struct zx_gl_CreateItem_s {
   struct zx_attr_s* objectType;	/* {0,1} attribute xs:NCName */
 };
 
-struct zx_gl_CreateItem_s* zx_DEC_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x);
+int zx_DEC_ATTR_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x);
+int zx_DEC_ELEM_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x);
 struct zx_gl_CreateItem_s* zx_NEW_gl_CreateItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x);
 char* zx_ENC_SO_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x, char* p);
@@ -751,7 +761,8 @@ struct zx_gl_CreateResponse_s {
   struct zx_attr_s* timeStamp;	/* {0,1} attribute xs:dateTime */
 };
 
-struct zx_gl_CreateResponse_s* zx_DEC_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_s* x);
+int zx_DEC_ATTR_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_s* x);
+int zx_DEC_ELEM_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_s* x);
 struct zx_gl_CreateResponse_s* zx_NEW_gl_CreateResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_s* x);
 char* zx_ENC_SO_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_s* x, char* p);
@@ -817,7 +828,8 @@ struct zx_gl_Credential_s {
   struct zx_attr_s* notOnOrAfter;	/* {0,1} attribute xs:dateTime */
 };
 
-struct zx_gl_Credential_s* zx_DEC_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x);
+int zx_DEC_ATTR_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x);
+int zx_DEC_ELEM_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x);
 struct zx_gl_Credential_s* zx_NEW_gl_Credential(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x);
 char* zx_ENC_SO_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x, char* p);
@@ -870,7 +882,8 @@ struct zx_gl_Data_s {
   struct zx_attr_s* changeFormat;	/* {0,1} attribute ChangedElements */
 };
 
-struct zx_gl_Data_s* zx_DEC_gl_Data(struct zx_ctx* c, struct zx_gl_Data_s* x);
+int zx_DEC_ATTR_gl_Data(struct zx_ctx* c, struct zx_gl_Data_s* x);
+int zx_DEC_ELEM_gl_Data(struct zx_ctx* c, struct zx_gl_Data_s* x);
 struct zx_gl_Data_s* zx_NEW_gl_Data(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Data(struct zx_ctx* c, struct zx_gl_Data_s* x);
 char* zx_ENC_SO_gl_Data(struct zx_ctx* c, struct zx_gl_Data_s* x, char* p);
@@ -925,7 +938,8 @@ struct zx_gl_Delete_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_gl_Delete_s* zx_DEC_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x);
+int zx_DEC_ATTR_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x);
+int zx_DEC_ELEM_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x);
 struct zx_gl_Delete_s* zx_NEW_gl_Delete(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x);
 char* zx_ENC_SO_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x, char* p);
@@ -1001,7 +1015,8 @@ struct zx_gl_DeleteItem_s {
   struct zx_attr_s* predefined;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_DeleteItem_s* zx_DEC_gl_DeleteItem(struct zx_ctx* c, struct zx_gl_DeleteItem_s* x);
+int zx_DEC_ATTR_gl_DeleteItem(struct zx_ctx* c, struct zx_gl_DeleteItem_s* x);
+int zx_DEC_ELEM_gl_DeleteItem(struct zx_ctx* c, struct zx_gl_DeleteItem_s* x);
 struct zx_gl_DeleteItem_s* zx_NEW_gl_DeleteItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_DeleteItem(struct zx_ctx* c, struct zx_gl_DeleteItem_s* x);
 char* zx_ENC_SO_gl_DeleteItem(struct zx_ctx* c, struct zx_gl_DeleteItem_s* x, char* p);
@@ -1058,7 +1073,8 @@ struct zx_gl_DeleteResponse_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_gl_DeleteResponse_s* zx_DEC_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_s* x);
+int zx_DEC_ATTR_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_s* x);
+int zx_DEC_ELEM_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_s* x);
 struct zx_gl_DeleteResponse_s* zx_NEW_gl_DeleteResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_s* x);
 char* zx_ENC_SO_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_s* x, char* p);
@@ -1120,7 +1136,8 @@ struct zx_gl_EllipticalArea_s {
   struct zx_attr_s* srsName;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_EllipticalArea_s* zx_DEC_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_s* x);
+int zx_DEC_ATTR_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_s* x);
+int zx_DEC_ELEM_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_s* x);
 struct zx_gl_EllipticalArea_s* zx_NEW_gl_EllipticalArea(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_s* x);
 char* zx_ENC_SO_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_s* x, char* p);
@@ -1210,7 +1227,8 @@ struct zx_gl_EncryptedResourceID_s {
   struct zx_xenc_EncryptedKey_s* EncryptedKey;	/* {1,1} nada */
 };
 
-struct zx_gl_EncryptedResourceID_s* zx_DEC_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedResourceID_s* x);
+int zx_DEC_ATTR_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedResourceID_s* x);
+int zx_DEC_ELEM_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedResourceID_s* x);
 struct zx_gl_EncryptedResourceID_s* zx_NEW_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedResourceID_s* x);
 char* zx_ENC_SO_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedResourceID_s* x, char* p);
@@ -1262,7 +1280,8 @@ struct zx_gl_Extension_s {
   zx_gl_Extension_EXT
 };
 
-struct zx_gl_Extension_s* zx_DEC_gl_Extension(struct zx_ctx* c, struct zx_gl_Extension_s* x);
+int zx_DEC_ATTR_gl_Extension(struct zx_ctx* c, struct zx_gl_Extension_s* x);
+int zx_DEC_ELEM_gl_Extension(struct zx_ctx* c, struct zx_gl_Extension_s* x);
 struct zx_gl_Extension_s* zx_NEW_gl_Extension(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Extension(struct zx_ctx* c, struct zx_gl_Extension_s* x);
 char* zx_ENC_SO_gl_Extension(struct zx_ctx* c, struct zx_gl_Extension_s* x, char* p);
@@ -1301,7 +1320,8 @@ struct zx_gl_GeometryCollection_s {
   struct zx_attr_s* srsName;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_GeometryCollection_s* zx_DEC_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryCollection_s* x);
+int zx_DEC_ATTR_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryCollection_s* x);
+int zx_DEC_ELEM_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryCollection_s* x);
 struct zx_gl_GeometryCollection_s* zx_NEW_gl_GeometryCollection(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryCollection_s* x);
 char* zx_ENC_SO_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryCollection_s* x, char* p);
@@ -1352,7 +1372,8 @@ struct zx_gl_Identifier_s {
   struct zx_elem_s* edition;	/* {1,1} xs:string */
 };
 
-struct zx_gl_Identifier_s* zx_DEC_gl_Identifier(struct zx_ctx* c, struct zx_gl_Identifier_s* x);
+int zx_DEC_ATTR_gl_Identifier(struct zx_ctx* c, struct zx_gl_Identifier_s* x);
+int zx_DEC_ELEM_gl_Identifier(struct zx_ctx* c, struct zx_gl_Identifier_s* x);
 struct zx_gl_Identifier_s* zx_NEW_gl_Identifier(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Identifier(struct zx_ctx* c, struct zx_gl_Identifier_s* x);
 char* zx_ENC_SO_gl_Identifier(struct zx_ctx* c, struct zx_gl_Identifier_s* x, char* p);
@@ -1416,7 +1437,8 @@ struct zx_gl_ItemData_s {
   struct zx_attr_s* changeFormat;	/* {0,1} attribute ChangedElements */
 };
 
-struct zx_gl_ItemData_s* zx_DEC_gl_ItemData(struct zx_ctx* c, struct zx_gl_ItemData_s* x);
+int zx_DEC_ATTR_gl_ItemData(struct zx_ctx* c, struct zx_gl_ItemData_s* x);
+int zx_DEC_ELEM_gl_ItemData(struct zx_ctx* c, struct zx_gl_ItemData_s* x);
 struct zx_gl_ItemData_s* zx_NEW_gl_ItemData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_ItemData(struct zx_ctx* c, struct zx_gl_ItemData_s* x);
 char* zx_ENC_SO_gl_ItemData(struct zx_ctx* c, struct zx_gl_ItemData_s* x, char* p);
@@ -1466,7 +1488,8 @@ struct zx_gl_ItemSelection_s {
   struct zx_gl_Extension_s* Extension;	/* {0,1} nada */
 };
 
-struct zx_gl_ItemSelection_s* zx_DEC_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s* x);
+int zx_DEC_ATTR_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s* x);
+int zx_DEC_ELEM_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s* x);
 struct zx_gl_ItemSelection_s* zx_NEW_gl_ItemSelection(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s* x);
 char* zx_ENC_SO_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s* x, char* p);
@@ -1552,7 +1575,8 @@ struct zx_gl_LL_s {
   struct zx_attr_s* script;	/* {0,1} attribute xs:anyURI */
 };
 
-struct zx_gl_LL_s* zx_DEC_gl_LL(struct zx_ctx* c, struct zx_gl_LL_s* x);
+int zx_DEC_ATTR_gl_LL(struct zx_ctx* c, struct zx_gl_LL_s* x);
+int zx_DEC_ELEM_gl_LL(struct zx_ctx* c, struct zx_gl_LL_s* x);
 struct zx_gl_LL_s* zx_NEW_gl_LL(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_LL(struct zx_ctx* c, struct zx_gl_LL_s* x);
 char* zx_ENC_SO_gl_LL(struct zx_ctx* c, struct zx_gl_LL_s* x, char* p);
@@ -1594,7 +1618,8 @@ struct zx_gl_LPostalAddress_s {
   struct zx_attr_s* script;	/* {0,1} attribute xs:anyURI */
 };
 
-struct zx_gl_LPostalAddress_s* zx_DEC_gl_LPostalAddress(struct zx_ctx* c, struct zx_gl_LPostalAddress_s* x);
+int zx_DEC_ATTR_gl_LPostalAddress(struct zx_ctx* c, struct zx_gl_LPostalAddress_s* x);
+int zx_DEC_ELEM_gl_LPostalAddress(struct zx_ctx* c, struct zx_gl_LPostalAddress_s* x);
 struct zx_gl_LPostalAddress_s* zx_NEW_gl_LPostalAddress(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_LPostalAddress(struct zx_ctx* c, struct zx_gl_LPostalAddress_s* x);
 char* zx_ENC_SO_gl_LPostalAddress(struct zx_ctx* c, struct zx_gl_LPostalAddress_s* x, char* p);
@@ -1636,7 +1661,8 @@ struct zx_gl_LSt_s {
   struct zx_attr_s* script;	/* {0,1} attribute xs:anyURI */
 };
 
-struct zx_gl_LSt_s* zx_DEC_gl_LSt(struct zx_ctx* c, struct zx_gl_LSt_s* x);
+int zx_DEC_ATTR_gl_LSt(struct zx_ctx* c, struct zx_gl_LSt_s* x);
+int zx_DEC_ELEM_gl_LSt(struct zx_ctx* c, struct zx_gl_LSt_s* x);
 struct zx_gl_LSt_s* zx_NEW_gl_LSt(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_LSt(struct zx_ctx* c, struct zx_gl_LSt_s* x);
 char* zx_ENC_SO_gl_LSt(struct zx_ctx* c, struct zx_gl_LSt_s* x, char* p);
@@ -1679,7 +1705,8 @@ struct zx_gl_LineString_s {
   struct zx_attr_s* srsName;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_LineString_s* zx_DEC_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x);
+int zx_DEC_ATTR_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x);
+int zx_DEC_ELEM_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x);
 struct zx_gl_LineString_s* zx_NEW_gl_LineString(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x);
 char* zx_ENC_SO_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x, char* p);
@@ -1730,7 +1757,8 @@ struct zx_gl_LinearRing_s {
   struct zx_attr_s* srsName;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_LinearRing_s* zx_DEC_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x);
+int zx_DEC_ATTR_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x);
+int zx_DEC_ELEM_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x);
 struct zx_gl_LinearRing_s* zx_NEW_gl_LinearRing(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x);
 char* zx_ENC_SO_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x, char* p);
@@ -1785,7 +1813,8 @@ struct zx_gl_Modification_s {
   struct zx_attr_s* overrideAllowed;	/* {0,1} attribute xs:boolean */
 };
 
-struct zx_gl_Modification_s* zx_DEC_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x);
+int zx_DEC_ATTR_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x);
+int zx_DEC_ELEM_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x);
 struct zx_gl_Modification_s* zx_NEW_gl_Modification(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x);
 char* zx_ENC_SO_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x, char* p);
@@ -1854,7 +1883,8 @@ struct zx_gl_Modify_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_gl_Modify_s* zx_DEC_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x);
+int zx_DEC_ATTR_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x);
+int zx_DEC_ELEM_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x);
 struct zx_gl_Modify_s* zx_NEW_gl_Modify(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x);
 char* zx_ENC_SO_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x, char* p);
@@ -1945,7 +1975,8 @@ struct zx_gl_ModifyResponse_s {
   struct zx_attr_s* timeStamp;	/* {0,1} attribute xs:dateTime */
 };
 
-struct zx_gl_ModifyResponse_s* zx_DEC_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_s* x);
+int zx_DEC_ATTR_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_s* x);
+int zx_DEC_ELEM_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_s* x);
 struct zx_gl_ModifyResponse_s* zx_NEW_gl_ModifyResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_s* x);
 char* zx_ENC_SO_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_s* x, char* p);
@@ -2012,7 +2043,8 @@ struct zx_gl_MultiLineString_s {
   struct zx_attr_s* srsName;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_MultiLineString_s* zx_DEC_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineString_s* x);
+int zx_DEC_ATTR_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineString_s* x);
+int zx_DEC_ELEM_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineString_s* x);
 struct zx_gl_MultiLineString_s* zx_NEW_gl_MultiLineString(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineString_s* x);
 char* zx_ENC_SO_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineString_s* x, char* p);
@@ -2063,7 +2095,8 @@ struct zx_gl_MultiPoint_s {
   struct zx_attr_s* srsName;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_MultiPoint_s* zx_DEC_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x);
+int zx_DEC_ATTR_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x);
+int zx_DEC_ELEM_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x);
 struct zx_gl_MultiPoint_s* zx_NEW_gl_MultiPoint(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x);
 char* zx_ENC_SO_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x, char* p);
@@ -2118,7 +2151,8 @@ struct zx_gl_MultiPolygon_s {
   struct zx_attr_s* srsName;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_MultiPolygon_s* zx_DEC_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x);
+int zx_DEC_ATTR_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x);
+int zx_DEC_ELEM_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x);
 struct zx_gl_MultiPolygon_s* zx_NEW_gl_MultiPolygon(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x);
 char* zx_ENC_SO_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x, char* p);
@@ -2198,7 +2232,8 @@ struct zx_gl_NewData_s {
   zx_gl_NewData_EXT
 };
 
-struct zx_gl_NewData_s* zx_DEC_gl_NewData(struct zx_ctx* c, struct zx_gl_NewData_s* x);
+int zx_DEC_ATTR_gl_NewData(struct zx_ctx* c, struct zx_gl_NewData_s* x);
+int zx_DEC_ELEM_gl_NewData(struct zx_ctx* c, struct zx_gl_NewData_s* x);
 struct zx_gl_NewData_s* zx_NEW_gl_NewData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_NewData(struct zx_ctx* c, struct zx_gl_NewData_s* x);
 char* zx_ENC_SO_gl_NewData(struct zx_ctx* c, struct zx_gl_NewData_s* x, char* p);
@@ -2239,7 +2274,8 @@ struct zx_gl_Notification_s {
   struct zx_attr_s* subscriptionID;	/* {1,1} attribute xs:string */
 };
 
-struct zx_gl_Notification_s* zx_DEC_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x);
+int zx_DEC_ATTR_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x);
+int zx_DEC_ELEM_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x);
 struct zx_gl_Notification_s* zx_NEW_gl_Notification(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x);
 char* zx_ENC_SO_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x, char* p);
@@ -2295,7 +2331,8 @@ struct zx_gl_Notify_s {
   struct zx_attr_s* timeStamp;	/* {0,1} attribute xs:dateTime */
 };
 
-struct zx_gl_Notify_s* zx_DEC_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x);
+int zx_DEC_ATTR_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x);
+int zx_DEC_ELEM_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x);
 struct zx_gl_Notify_s* zx_NEW_gl_Notify(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x);
 char* zx_ENC_SO_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x, char* p);
@@ -2355,7 +2392,8 @@ struct zx_gl_NotifyAdminTo_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_gl_NotifyAdminTo_s* zx_DEC_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s* x);
+int zx_DEC_ATTR_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s* x);
+int zx_DEC_ELEM_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s* x);
 struct zx_gl_NotifyAdminTo_s* zx_NEW_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s* x);
 char* zx_ENC_SO_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s* x, char* p);
@@ -2420,7 +2458,8 @@ struct zx_gl_NotifyResponse_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_gl_NotifyResponse_s* zx_DEC_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_s* x);
+int zx_DEC_ATTR_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_s* x);
+int zx_DEC_ELEM_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_s* x);
 struct zx_gl_NotifyResponse_s* zx_NEW_gl_NotifyResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_s* x);
 char* zx_ENC_SO_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_s* x, char* p);
@@ -2478,7 +2517,8 @@ struct zx_gl_NotifyTo_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_gl_NotifyTo_s* zx_DEC_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x);
+int zx_DEC_ATTR_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x);
+int zx_DEC_ELEM_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x);
 struct zx_gl_NotifyTo_s* zx_NEW_gl_NotifyTo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x);
 char* zx_ENC_SO_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x, char* p);
@@ -2543,7 +2583,8 @@ struct zx_gl_Point_s {
   struct zx_attr_s* srsName;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_Point_s* zx_DEC_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x);
+int zx_DEC_ATTR_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x);
+int zx_DEC_ELEM_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x);
 struct zx_gl_Point_s* zx_NEW_gl_Point(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x);
 char* zx_ENC_SO_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x, char* p);
@@ -2595,7 +2636,8 @@ struct zx_gl_Polygon_s {
   struct zx_attr_s* srsName;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_Polygon_s* zx_DEC_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x);
+int zx_DEC_ATTR_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x);
+int zx_DEC_ELEM_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x);
 struct zx_gl_Polygon_s* zx_NEW_gl_Polygon(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x);
 char* zx_ENC_SO_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x, char* p);
@@ -2657,7 +2699,8 @@ struct zx_gl_Query_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_gl_Query_s* zx_DEC_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x);
+int zx_DEC_ATTR_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x);
+int zx_DEC_ELEM_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x);
 struct zx_gl_Query_s* zx_NEW_gl_Query(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x);
 char* zx_ENC_SO_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x, char* p);
@@ -2745,7 +2788,8 @@ struct zx_gl_QueryItem_s {
   struct zx_attr_s* setReq;	/* {0,1} attribute Static */
 };
 
-struct zx_gl_QueryItem_s* zx_DEC_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x);
+int zx_DEC_ATTR_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x);
+int zx_DEC_ELEM_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x);
 struct zx_gl_QueryItem_s* zx_NEW_gl_QueryItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x);
 char* zx_ENC_SO_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x, char* p);
@@ -2843,7 +2887,8 @@ struct zx_gl_QueryResponse_s {
   struct zx_attr_s* timeStamp;	/* {0,1} attribute xs:dateTime */
 };
 
-struct zx_gl_QueryResponse_s* zx_DEC_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s* x);
+int zx_DEC_ATTR_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s* x);
+int zx_DEC_ELEM_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s* x);
 struct zx_gl_QueryResponse_s* zx_NEW_gl_QueryResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s* x);
 char* zx_ENC_SO_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s* x, char* p);
@@ -2911,7 +2956,8 @@ struct zx_gl_RefItem_s {
   struct zx_attr_s* subscriptionID;	/* {0,1} attribute xs:string */
 };
 
-struct zx_gl_RefItem_s* zx_DEC_gl_RefItem(struct zx_ctx* c, struct zx_gl_RefItem_s* x);
+int zx_DEC_ATTR_gl_RefItem(struct zx_ctx* c, struct zx_gl_RefItem_s* x);
+int zx_DEC_ELEM_gl_RefItem(struct zx_ctx* c, struct zx_gl_RefItem_s* x);
 struct zx_gl_RefItem_s* zx_NEW_gl_RefItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_RefItem(struct zx_ctx* c, struct zx_gl_RefItem_s* x);
 char* zx_ENC_SO_gl_RefItem(struct zx_ctx* c, struct zx_gl_RefItem_s* x, char* p);
@@ -2952,7 +2998,8 @@ struct zx_gl_ResourceID_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_gl_ResourceID_s* zx_DEC_gl_ResourceID(struct zx_ctx* c, struct zx_gl_ResourceID_s* x);
+int zx_DEC_ATTR_gl_ResourceID(struct zx_ctx* c, struct zx_gl_ResourceID_s* x);
+int zx_DEC_ELEM_gl_ResourceID(struct zx_ctx* c, struct zx_gl_ResourceID_s* x);
 struct zx_gl_ResourceID_s* zx_NEW_gl_ResourceID(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_ResourceID(struct zx_ctx* c, struct zx_gl_ResourceID_s* x);
 char* zx_ENC_SO_gl_ResourceID(struct zx_ctx* c, struct zx_gl_ResourceID_s* x, char* p);
@@ -2994,7 +3041,8 @@ struct zx_gl_Status_s {
   struct zx_attr_s* ref;	/* {0,1} attribute xs:anyURI */
 };
 
-struct zx_gl_Status_s* zx_DEC_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x);
+int zx_DEC_ATTR_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x);
+int zx_DEC_ELEM_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x);
 struct zx_gl_Status_s* zx_NEW_gl_Status(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x);
 char* zx_ENC_SO_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x, char* p);
@@ -3056,7 +3104,8 @@ struct zx_gl_Subscription_s {
   struct zx_attr_s* subscriptionID;	/* {1,1} attribute xs:string */
 };
 
-struct zx_gl_Subscription_s* zx_DEC_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x);
+int zx_DEC_ATTR_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x);
+int zx_DEC_ELEM_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x);
 struct zx_gl_Subscription_s* zx_NEW_gl_Subscription(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x);
 char* zx_ENC_SO_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x, char* p);
@@ -3163,7 +3212,8 @@ struct zx_gl_Trigger_s {
   struct zx_gl_Extension_s* Extension;	/* {0,1} nada */
 };
 
-struct zx_gl_Trigger_s* zx_DEC_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x);
+int zx_DEC_ATTR_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x);
+int zx_DEC_ELEM_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x);
 struct zx_gl_Trigger_s* zx_NEW_gl_Trigger(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x);
 char* zx_ENC_SO_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x, char* p);
@@ -3242,7 +3292,8 @@ struct zx_gl_coord_s {
   struct zx_elem_s* Z;	/* {0,1} xs:string */
 };
 
-struct zx_gl_coord_s* zx_DEC_gl_coord(struct zx_ctx* c, struct zx_gl_coord_s* x);
+int zx_DEC_ATTR_gl_coord(struct zx_ctx* c, struct zx_gl_coord_s* x);
+int zx_DEC_ELEM_gl_coord(struct zx_ctx* c, struct zx_gl_coord_s* x);
 struct zx_gl_coord_s* zx_NEW_gl_coord(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_coord(struct zx_ctx* c, struct zx_gl_coord_s* x);
 char* zx_ENC_SO_gl_coord(struct zx_ctx* c, struct zx_gl_coord_s* x, char* p);
@@ -3308,7 +3359,8 @@ struct zx_gl_eqop_s {
   struct zx_gl_Extension_s* Extension;	/* {0,1} nada */
 };
 
-struct zx_gl_eqop_s* zx_DEC_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x);
+int zx_DEC_ATTR_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x);
+int zx_DEC_ELEM_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x);
 struct zx_gl_eqop_s* zx_NEW_gl_eqop(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x);
 char* zx_ENC_SO_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x, char* p);
@@ -3393,7 +3445,8 @@ struct zx_gl_esrd_s {
   struct zx_attr_s* type;	/* {0,1} attribute hrxml:ExtendedAssociationTypeType */
 };
 
-struct zx_gl_esrd_s* zx_DEC_gl_esrd(struct zx_ctx* c, struct zx_gl_esrd_s* x);
+int zx_DEC_ATTR_gl_esrd(struct zx_ctx* c, struct zx_gl_esrd_s* x);
+int zx_DEC_ELEM_gl_esrd(struct zx_ctx* c, struct zx_gl_esrd_s* x);
 struct zx_gl_esrd_s* zx_NEW_gl_esrd(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_esrd(struct zx_ctx* c, struct zx_gl_esrd_s* x);
 char* zx_ENC_SO_gl_esrd(struct zx_ctx* c, struct zx_gl_esrd_s* x, char* p);
@@ -3432,7 +3485,8 @@ struct zx_gl_esrk_s {
   struct zx_attr_s* type;	/* {0,1} attribute hrxml:ExtendedAssociationTypeType */
 };
 
-struct zx_gl_esrk_s* zx_DEC_gl_esrk(struct zx_ctx* c, struct zx_gl_esrk_s* x);
+int zx_DEC_ATTR_gl_esrk(struct zx_ctx* c, struct zx_gl_esrk_s* x);
+int zx_DEC_ELEM_gl_esrk(struct zx_ctx* c, struct zx_gl_esrk_s* x);
 struct zx_gl_esrk_s* zx_NEW_gl_esrk(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_esrk(struct zx_ctx* c, struct zx_gl_esrk_s* x);
 char* zx_ENC_SO_gl_esrk(struct zx_ctx* c, struct zx_gl_esrk_s* x, char* p);
@@ -3478,7 +3532,8 @@ struct zx_gl_geoinfo_s {
   struct zx_gl_Extension_s* Extension;	/* {0,1} nada */
 };
 
-struct zx_gl_geoinfo_s* zx_DEC_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x);
+int zx_DEC_ATTR_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x);
+int zx_DEC_ELEM_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x);
 struct zx_gl_geoinfo_s* zx_NEW_gl_geoinfo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x);
 char* zx_ENC_SO_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x, char* p);
@@ -3579,7 +3634,8 @@ struct zx_gl_innerBoundaryIs_s {
   struct zx_gl_LinearRing_s* LinearRing;	/* {1,1} nada */
 };
 
-struct zx_gl_innerBoundaryIs_s* zx_DEC_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryIs_s* x);
+int zx_DEC_ATTR_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryIs_s* x);
+int zx_DEC_ELEM_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryIs_s* x);
 struct zx_gl_innerBoundaryIs_s* zx_NEW_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryIs_s* x);
 char* zx_ENC_SO_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryIs_s* x, char* p);
@@ -3624,7 +3680,8 @@ struct zx_gl_loc_type_s {
   struct zx_attr_s* type;	/* {0,1} attribute hrxml:ExtendedAssociationTypeType */
 };
 
-struct zx_gl_loc_type_s* zx_DEC_gl_loc_type(struct zx_ctx* c, struct zx_gl_loc_type_s* x);
+int zx_DEC_ATTR_gl_loc_type(struct zx_ctx* c, struct zx_gl_loc_type_s* x);
+int zx_DEC_ELEM_gl_loc_type(struct zx_ctx* c, struct zx_gl_loc_type_s* x);
 struct zx_gl_loc_type_s* zx_NEW_gl_loc_type(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_loc_type(struct zx_ctx* c, struct zx_gl_loc_type_s* x);
 char* zx_ENC_SO_gl_loc_type(struct zx_ctx* c, struct zx_gl_loc_type_s* x, char* p);
@@ -3663,7 +3720,8 @@ struct zx_gl_ms_action_s {
   struct zx_attr_s* type;	/* {1,1} attribute hrxml:ExtendedAssociationTypeType */
 };
 
-struct zx_gl_ms_action_s* zx_DEC_gl_ms_action(struct zx_ctx* c, struct zx_gl_ms_action_s* x);
+int zx_DEC_ATTR_gl_ms_action(struct zx_ctx* c, struct zx_gl_ms_action_s* x);
+int zx_DEC_ELEM_gl_ms_action(struct zx_ctx* c, struct zx_gl_ms_action_s* x);
 struct zx_gl_ms_action_s* zx_NEW_gl_ms_action(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_ms_action(struct zx_ctx* c, struct zx_gl_ms_action_s* x);
 char* zx_ENC_SO_gl_ms_action(struct zx_ctx* c, struct zx_gl_ms_action_s* x, char* p);
@@ -3702,7 +3760,8 @@ struct zx_gl_outerBoundaryIs_s {
   struct zx_gl_LinearRing_s* LinearRing;	/* {1,1} nada */
 };
 
-struct zx_gl_outerBoundaryIs_s* zx_DEC_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryIs_s* x);
+int zx_DEC_ATTR_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryIs_s* x);
+int zx_DEC_ELEM_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryIs_s* x);
 struct zx_gl_outerBoundaryIs_s* zx_NEW_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryIs_s* x);
 char* zx_ENC_SO_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryIs_s* x, char* p);
@@ -3757,7 +3816,8 @@ struct zx_gl_pd_s {
   struct zx_attr_s* ACC;	/* {0,1} attribute xs:anyURI */
 };
 
-struct zx_gl_pd_s* zx_DEC_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x);
+int zx_DEC_ATTR_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x);
+int zx_DEC_ELEM_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x);
 struct zx_gl_pd_s* zx_NEW_gl_pd(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x);
 char* zx_ENC_SO_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, char* p);
@@ -3876,7 +3936,8 @@ struct zx_gl_prio_s {
   struct zx_attr_s* type;	/* {0,1} attribute hrxml:ExtendedAssociationTypeType */
 };
 
-struct zx_gl_prio_s* zx_DEC_gl_prio(struct zx_ctx* c, struct zx_gl_prio_s* x);
+int zx_DEC_ATTR_gl_prio(struct zx_ctx* c, struct zx_gl_prio_s* x);
+int zx_DEC_ELEM_gl_prio(struct zx_ctx* c, struct zx_gl_prio_s* x);
 struct zx_gl_prio_s* zx_NEW_gl_prio(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_prio(struct zx_ctx* c, struct zx_gl_prio_s* x);
 char* zx_ENC_SO_gl_prio(struct zx_ctx* c, struct zx_gl_prio_s* x, char* p);
@@ -3915,7 +3976,8 @@ struct zx_gl_resp_req_s {
   struct zx_attr_s* type;	/* {0,1} attribute hrxml:ExtendedAssociationTypeType */
 };
 
-struct zx_gl_resp_req_s* zx_DEC_gl_resp_req(struct zx_ctx* c, struct zx_gl_resp_req_s* x);
+int zx_DEC_ATTR_gl_resp_req(struct zx_ctx* c, struct zx_gl_resp_req_s* x);
+int zx_DEC_ELEM_gl_resp_req(struct zx_ctx* c, struct zx_gl_resp_req_s* x);
 struct zx_gl_resp_req_s* zx_NEW_gl_resp_req(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_resp_req(struct zx_ctx* c, struct zx_gl_resp_req_s* x);
 char* zx_ENC_SO_gl_resp_req(struct zx_ctx* c, struct zx_gl_resp_req_s* x, char* p);
@@ -3965,7 +4027,8 @@ struct zx_gl_shape_s {
   struct zx_gl_Extension_s* Extension;	/* {0,1} nada */
 };
 
-struct zx_gl_shape_s* zx_DEC_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x);
+int zx_DEC_ATTR_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x);
+int zx_DEC_ELEM_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x);
 struct zx_gl_shape_s* zx_NEW_gl_shape(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x);
 char* zx_ENC_SO_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x, char* p);

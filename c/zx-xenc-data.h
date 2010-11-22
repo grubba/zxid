@@ -33,7 +33,8 @@ struct zx_xenc_AgreementMethod_s {
   struct zx_attr_s* Algorithm;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xenc_AgreementMethod_s* zx_DEC_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_AgreementMethod_s* x);
+int zx_DEC_ATTR_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_AgreementMethod_s* x);
+int zx_DEC_ELEM_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_AgreementMethod_s* x);
 struct zx_xenc_AgreementMethod_s* zx_NEW_xenc_AgreementMethod(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_AgreementMethod_s* x);
 char* zx_ENC_SO_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_AgreementMethod_s* x, char* p);
@@ -97,7 +98,8 @@ struct zx_xenc_CipherData_s {
   struct zx_xenc_CipherReference_s* CipherReference;	/* {0,1} nada */
 };
 
-struct zx_xenc_CipherData_s* zx_DEC_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* x);
+int zx_DEC_ATTR_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* x);
+int zx_DEC_ELEM_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* x);
 struct zx_xenc_CipherData_s* zx_NEW_xenc_CipherData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* x);
 char* zx_ENC_SO_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* x, char* p);
@@ -151,7 +153,8 @@ struct zx_xenc_CipherReference_s {
   struct zx_attr_s* URI;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xenc_CipherReference_s* zx_DEC_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherReference_s* x);
+int zx_DEC_ATTR_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherReference_s* x);
+int zx_DEC_ELEM_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherReference_s* x);
 struct zx_xenc_CipherReference_s* zx_NEW_xenc_CipherReference(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherReference_s* x);
 char* zx_ENC_SO_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherReference_s* x, char* p);
@@ -198,7 +201,8 @@ struct zx_xenc_DataReference_s {
   struct zx_attr_s* URI;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xenc_DataReference_s* zx_DEC_xenc_DataReference(struct zx_ctx* c, struct zx_xenc_DataReference_s* x);
+int zx_DEC_ATTR_xenc_DataReference(struct zx_ctx* c, struct zx_xenc_DataReference_s* x);
+int zx_DEC_ELEM_xenc_DataReference(struct zx_ctx* c, struct zx_xenc_DataReference_s* x);
 struct zx_xenc_DataReference_s* zx_NEW_xenc_DataReference(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_DataReference(struct zx_ctx* c, struct zx_xenc_DataReference_s* x);
 char* zx_ENC_SO_xenc_DataReference(struct zx_ctx* c, struct zx_xenc_DataReference_s* x, char* p);
@@ -244,7 +248,8 @@ struct zx_xenc_EncryptedData_s {
   struct zx_attr_s* Type;	/* {0,1} attribute wst:BinarySecretTypeEnum */
 };
 
-struct zx_xenc_EncryptedData_s* zx_DEC_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedData_s* x);
+int zx_DEC_ATTR_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedData_s* x);
+int zx_DEC_ELEM_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedData_s* x);
 struct zx_xenc_EncryptedData_s* zx_NEW_xenc_EncryptedData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedData_s* x);
 char* zx_ENC_SO_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedData_s* x, char* p);
@@ -331,7 +336,8 @@ struct zx_xenc_EncryptedKey_s {
   struct zx_attr_s* Type;	/* {0,1} attribute wst:BinarySecretTypeEnum */
 };
 
-struct zx_xenc_EncryptedKey_s* zx_DEC_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey_s* x);
+int zx_DEC_ATTR_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey_s* x);
+int zx_DEC_ELEM_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey_s* x);
 struct zx_xenc_EncryptedKey_s* zx_NEW_xenc_EncryptedKey(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey_s* x);
 char* zx_ENC_SO_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey_s* x, char* p);
@@ -428,7 +434,8 @@ struct zx_xenc_EncryptionMethod_s {
   struct zx_attr_s* Algorithm;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xenc_EncryptionMethod_s* zx_DEC_xenc_EncryptionMethod(struct zx_ctx* c, struct zx_xenc_EncryptionMethod_s* x);
+int zx_DEC_ATTR_xenc_EncryptionMethod(struct zx_ctx* c, struct zx_xenc_EncryptionMethod_s* x);
+int zx_DEC_ELEM_xenc_EncryptionMethod(struct zx_ctx* c, struct zx_xenc_EncryptionMethod_s* x);
 struct zx_xenc_EncryptionMethod_s* zx_NEW_xenc_EncryptionMethod(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_EncryptionMethod(struct zx_ctx* c, struct zx_xenc_EncryptionMethod_s* x);
 char* zx_ENC_SO_xenc_EncryptionMethod(struct zx_ctx* c, struct zx_xenc_EncryptionMethod_s* x, char* p);
@@ -484,7 +491,8 @@ struct zx_xenc_EncryptionProperties_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_xenc_EncryptionProperties_s* zx_DEC_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_EncryptionProperties_s* x);
+int zx_DEC_ATTR_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_EncryptionProperties_s* x);
+int zx_DEC_ELEM_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_EncryptionProperties_s* x);
 struct zx_xenc_EncryptionProperties_s* zx_NEW_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_EncryptionProperties_s* x);
 char* zx_ENC_SO_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_EncryptionProperties_s* x, char* p);
@@ -532,7 +540,8 @@ struct zx_xenc_EncryptionProperty_s {
   struct zx_attr_s* Target;	/* {0,1} attribute xs:anyURI */
 };
 
-struct zx_xenc_EncryptionProperty_s* zx_DEC_xenc_EncryptionProperty(struct zx_ctx* c, struct zx_xenc_EncryptionProperty_s* x);
+int zx_DEC_ATTR_xenc_EncryptionProperty(struct zx_ctx* c, struct zx_xenc_EncryptionProperty_s* x);
+int zx_DEC_ELEM_xenc_EncryptionProperty(struct zx_ctx* c, struct zx_xenc_EncryptionProperty_s* x);
 struct zx_xenc_EncryptionProperty_s* zx_NEW_xenc_EncryptionProperty(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_EncryptionProperty(struct zx_ctx* c, struct zx_xenc_EncryptionProperty_s* x);
 char* zx_ENC_SO_xenc_EncryptionProperty(struct zx_ctx* c, struct zx_xenc_EncryptionProperty_s* x, char* p);
@@ -573,7 +582,8 @@ struct zx_xenc_KeyReference_s {
   struct zx_attr_s* URI;	/* {1,1} attribute xs:anyURI */
 };
 
-struct zx_xenc_KeyReference_s* zx_DEC_xenc_KeyReference(struct zx_ctx* c, struct zx_xenc_KeyReference_s* x);
+int zx_DEC_ATTR_xenc_KeyReference(struct zx_ctx* c, struct zx_xenc_KeyReference_s* x);
+int zx_DEC_ELEM_xenc_KeyReference(struct zx_ctx* c, struct zx_xenc_KeyReference_s* x);
 struct zx_xenc_KeyReference_s* zx_NEW_xenc_KeyReference(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_KeyReference(struct zx_ctx* c, struct zx_xenc_KeyReference_s* x);
 char* zx_ENC_SO_xenc_KeyReference(struct zx_ctx* c, struct zx_xenc_KeyReference_s* x, char* p);
@@ -620,7 +630,8 @@ struct zx_xenc_OriginatorKeyInfo_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_xenc_OriginatorKeyInfo_s* zx_DEC_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_OriginatorKeyInfo_s* x);
+int zx_DEC_ATTR_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_OriginatorKeyInfo_s* x);
+int zx_DEC_ELEM_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_OriginatorKeyInfo_s* x);
 struct zx_xenc_OriginatorKeyInfo_s* zx_NEW_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_OriginatorKeyInfo_s* x);
 char* zx_ENC_SO_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_OriginatorKeyInfo_s* x, char* p);
@@ -731,7 +742,8 @@ struct zx_xenc_RecipientKeyInfo_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
-struct zx_xenc_RecipientKeyInfo_s* zx_DEC_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_RecipientKeyInfo_s* x);
+int zx_DEC_ATTR_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_RecipientKeyInfo_s* x);
+int zx_DEC_ELEM_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_RecipientKeyInfo_s* x);
 struct zx_xenc_RecipientKeyInfo_s* zx_NEW_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_RecipientKeyInfo_s* x);
 char* zx_ENC_SO_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_RecipientKeyInfo_s* x, char* p);
@@ -835,7 +847,8 @@ struct zx_xenc_ReferenceList_s {
   struct zx_xenc_KeyReference_s* KeyReference;	/* {0,1}  */
 };
 
-struct zx_xenc_ReferenceList_s* zx_DEC_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceList_s* x);
+int zx_DEC_ATTR_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceList_s* x);
+int zx_DEC_ELEM_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceList_s* x);
 struct zx_xenc_ReferenceList_s* zx_NEW_xenc_ReferenceList(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceList_s* x);
 char* zx_ENC_SO_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceList_s* x, char* p);
@@ -888,7 +901,8 @@ struct zx_xenc_Transforms_s {
   struct zx_ds_Transform_s* Transform;	/* {1,-1} nada */
 };
 
-struct zx_xenc_Transforms_s* zx_DEC_xenc_Transforms(struct zx_ctx* c, struct zx_xenc_Transforms_s* x);
+int zx_DEC_ATTR_xenc_Transforms(struct zx_ctx* c, struct zx_xenc_Transforms_s* x);
+int zx_DEC_ELEM_xenc_Transforms(struct zx_ctx* c, struct zx_xenc_Transforms_s* x);
 struct zx_xenc_Transforms_s* zx_NEW_xenc_Transforms(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xenc_Transforms(struct zx_ctx* c, struct zx_xenc_Transforms_s* x);
 char* zx_ENC_SO_xenc_Transforms(struct zx_ctx* c, struct zx_xenc_Transforms_s* x, char* p);

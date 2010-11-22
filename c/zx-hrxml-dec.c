@@ -22,6 +22,7 @@
  ** 23.9.2006, added collection of WO information --Sampo
  ** 21.6.2007, improved handling of undeclared namespace prefixes --Sampo
  ** 27.10.2010, CSE refactoring, re-engineered namespace handling --Sampo
+ ** 21.11.2010, re-engineered to extract most code to zx_DEC_elem, leaving just switches --Sampo
  **
  ** N.B: This template is meant to be processed by pd/xsd2sg.pl. Beware
  ** of special markers that xsd2sg.pl expects to find and understand.
@@ -37,27864 +38,7641 @@
 
 
 
+int zx_DEC_ATTR_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingCode_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_description_ATTR:  x->description = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingCode_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Date_ELEM:
+    if (!x->Date)
+      x->Date = el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+  case zx_hrxml_IssuingAuthority_ELEM:
+    if (!x->IssuingAuthority)
+      x->IssuingAuthority = (struct zx_hrxml_IssuingAuthority_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Achievement_ELEM:
+    if (!x->Achievement)
+      x->Achievement = (struct zx_hrxml_Achievement_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateScript_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_script_ATTR:  x->script = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateScript_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_FormattedName_ELEM:
+    if (!x->FormattedName)
+      x->FormattedName = el;
+    return 1;
+  case zx_hrxml_LegalName_ELEM:
+    if (!x->LegalName)
+      x->LegalName = el;
+    return 1;
+  case zx_hrxml_GivenName_ELEM:
+    if (!x->GivenName)
+      x->GivenName = el;
+    return 1;
+  case zx_hrxml_PreferredGivenName_ELEM:
+    if (!x->PreferredGivenName)
+      x->PreferredGivenName = el;
+    return 1;
+  case zx_hrxml_MiddleName_ELEM:
+    if (!x->MiddleName)
+      x->MiddleName = el;
+    return 1;
+  case zx_hrxml_FamilyName_ELEM:
+    if (!x->FamilyName)
+      x->FamilyName = (struct zx_hrxml_FamilyName_s*)el;
+    return 1;
+  case zx_hrxml_Affix_ELEM:
+    if (!x->Affix)
+      x->Affix = (struct zx_hrxml_Affix_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Value_ELEM:
+    if (!x->Value)
+      x->Value = el;
+    return 1;
+  case zx_hrxml_Area_ELEM:
+    if (!x->Area)
+      x->Area = (struct zx_hrxml_Area_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Title_ELEM:
+    if (!x->Title)
+      x->Title = el;
+    return 1;
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+  case zx_hrxml_PublicationDate_ELEM:
+    if (!x->PublicationDate)
+      x->PublicationDate = (struct zx_hrxml_PublicationDate_s*)el;
+    return 1;
+  case zx_hrxml_Link_ELEM:
+    if (!x->Link)
+      x->Link = el;
+    return 1;
+  case zx_hrxml_Abstract_ELEM:
+    if (!x->Abstract)
+      x->Abstract = el;
+    return 1;
+  case zx_hrxml_Copyright_ELEM:
+    if (!x->Copyright)
+      x->Copyright = (struct zx_hrxml_Copyright_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+  case zx_hrxml_JournalOrSerialName_ELEM:
+    if (!x->JournalOrSerialName)
+      x->JournalOrSerialName = el;
+    return 1;
+  case zx_hrxml_ISSN_ELEM:
+    if (!x->ISSN)
+      x->ISSN = el;
+    return 1;
+  case zx_hrxml_Volume_ELEM:
+    if (!x->Volume)
+      x->Volume = el;
+    return 1;
+  case zx_hrxml_Issue_ELEM:
+    if (!x->Issue)
+      x->Issue = el;
+    return 1;
+  case zx_hrxml_PageNumber_ELEM:
+    if (!x->PageNumber)
+      x->PageNumber = el;
+    return 1;
+  case zx_hrxml_PublicationLanguage_ELEM:
+    if (!x->PublicationLanguage)
+      x->PublicationLanguage = (struct zx_hrxml_PublicationLanguage_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_Link_ELEM:
+    if (!x->Link)
+      x->Link = el;
+    return 1;
+  case zx_hrxml_StartDate_ELEM:
+    if (!x->StartDate)
+      x->StartDate = (struct zx_hrxml_StartDate_s*)el;
+    return 1;
+  case zx_hrxml_EndDate_ELEM:
+    if (!x->EndDate)
+      x->EndDate = (struct zx_hrxml_EndDate_s*)el;
+    return 1;
+  case zx_hrxml_Role_ELEM:
+    if (!x->Role)
+      x->Role = el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Association_ELEM:
+    if (!x->Association)
+      x->Association = (struct zx_hrxml_Association_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_AttachmentReference_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_context_ATTR:  x->context = x->gg.attr; return 1;
+    case zx_mimeType_ATTR:  x->mimeType = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_AttachmentReference_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_AvailabilityDates_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_AvailabilityDates_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_StartDate_ELEM:
+    if (!x->StartDate)
+      x->StartDate = (struct zx_hrxml_StartDate_s*)el;
+    return 1;
+  case zx_hrxml_EndDate_ELEM:
+    if (!x->EndDate)
+      x->EndDate = (struct zx_hrxml_EndDate_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_AvailabilityInfo_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_AvailabilityInfo_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_AvailabilityDates_ELEM:
+    if (!x->AvailabilityDates)
+      x->AvailabilityDates = (struct zx_hrxml_AvailabilityDates_s*)el;
+    return 1;
+  case zx_hrxml_TermOfNotice_ELEM:
+    if (!x->TermOfNotice)
+      x->TermOfNotice = (struct zx_hrxml_TermOfNotice_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClassification_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClassification_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_BKZId_ELEM:
+    if (!x->BKZId)
+      x->BKZId = (struct zx_hrxml_BKZId_s*)el;
+    return 1;
+  case zx_hrxml_BKZName_ELEM:
+    if (!x->BKZName)
+      x->BKZName = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_baseInterval_ATTR:  x->baseInterval = x->gg.attr; return 1;
+    case zx_currencyCode_ATTR:  x->currencyCode = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_BasePayAmountMin_ELEM:
+    if (!x->BasePayAmountMin)
+      x->BasePayAmountMin = el;
+    return 1;
+  case zx_hrxml_BasePayAmountMax_ELEM:
+    if (!x->BasePayAmountMax)
+      x->BasePayAmountMax = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Insurance_ELEM:
+    if (!x->Insurance)
+      x->Insurance = (struct zx_hrxml_Insurance_s*)el;
+    return 1;
+  case zx_hrxml_RetirementOrSavingsPlan_ELEM:
+    if (!x->RetirementOrSavingsPlan)
+      x->RetirementOrSavingsPlan = el;
+    return 1;
+  case zx_hrxml_CompanyVehicle_ELEM:
+    if (!x->CompanyVehicle)
+      x->CompanyVehicle = (struct zx_hrxml_CompanyVehicle_s*)el;
+    return 1;
+  case zx_hrxml_RelocationAssistance_ELEM:
+    if (!x->RelocationAssistance)
+      x->RelocationAssistance = (struct zx_hrxml_RelocationAssistance_s*)el;
+    return 1;
+  case zx_hrxml_VisaSponsorship_ELEM:
+    if (!x->VisaSponsorship)
+      x->VisaSponsorship = el;
+    return 1;
+  case zx_hrxml_TimeOffAllowance_ELEM:
+    if (!x->TimeOffAllowance)
+      x->TimeOffAllowance = (struct zx_hrxml_TimeOffAllowance_s*)el;
+    return 1;
+  case zx_hrxml_ExpatriateBenefits_ELEM:
+    if (!x->ExpatriateBenefits)
+      x->ExpatriateBenefits = (struct zx_hrxml_ExpatriateBenefits_s*)el;
+    return 1;
+  case zx_hrxml_OtherBenefits_ELEM:
+    if (!x->OtherBenefits)
+      x->OtherBenefits = (struct zx_hrxml_OtherBenefits_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_BiologicalDescriptors_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_BiologicalDescriptors_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_DateOfBirth_ELEM:
+    if (!x->DateOfBirth)
+      x->DateOfBirth = el;
+    return 1;
+  case zx_hrxml_MonthDayOfBirth_ELEM:
+    if (!x->MonthDayOfBirth)
+      x->MonthDayOfBirth = el;
+    return 1;
+  case zx_hrxml_Age_ELEM:
+    if (!x->Age)
+      x->Age = el;
+    return 1;
+  case zx_hrxml_GenderCode_ELEM:
+    if (!x->GenderCode)
+      x->GenderCode = el;
+    return 1;
+  case zx_hrxml_EyeColor_ELEM:
+    if (!x->EyeColor)
+      x->EyeColor = el;
+    return 1;
+  case zx_hrxml_HairColor_ELEM:
+    if (!x->HairColor)
+      x->HairColor = el;
+    return 1;
+  case zx_hrxml_Height_ELEM:
+    if (!x->Height)
+      x->Height = (struct zx_hrxml_Height_s*)el;
+    return 1;
+  case zx_hrxml_Weight_ELEM:
+    if (!x->Weight)
+      x->Weight = (struct zx_hrxml_Weight_s*)el;
+    return 1;
+  case zx_hrxml_IdentifyingMarks_ELEM:
+    if (!x->IdentifyingMarks)
+      x->IdentifyingMarks = el;
+    return 1;
+  case zx_hrxml_DisabilityInfo_ELEM:
+    if (!x->DisabilityInfo)
+      x->DisabilityInfo = (struct zx_hrxml_DisabilityInfo_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Title_ELEM:
+    if (!x->Title)
+      x->Title = el;
+    return 1;
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+  case zx_hrxml_PublicationDate_ELEM:
+    if (!x->PublicationDate)
+      x->PublicationDate = (struct zx_hrxml_PublicationDate_s*)el;
+    return 1;
+  case zx_hrxml_Link_ELEM:
+    if (!x->Link)
+      x->Link = el;
+    return 1;
+  case zx_hrxml_Abstract_ELEM:
+    if (!x->Abstract)
+      x->Abstract = el;
+    return 1;
+  case zx_hrxml_Copyright_ELEM:
+    if (!x->Copyright)
+      x->Copyright = (struct zx_hrxml_Copyright_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+  case zx_hrxml_Edition_ELEM:
+    if (!x->Edition)
+      x->Edition = el;
+    return 1;
+  case zx_hrxml_Chapter_ELEM:
+    if (!x->Chapter)
+      x->Chapter = el;
+    return 1;
+  case zx_hrxml_ISSN_ELEM:
+    if (!x->ISSN)
+      x->ISSN = el;
+    return 1;
+  case zx_hrxml_ISBN_ELEM:
+    if (!x->ISBN)
+      x->ISBN = el;
+    return 1;
+  case zx_hrxml_NumberOfPages_ELEM:
+    if (!x->NumberOfPages)
+      x->NumberOfPages = el;
+    return 1;
+  case zx_hrxml_PublisherName_ELEM:
+    if (!x->PublisherName)
+      x->PublisherName = el;
+    return 1;
+  case zx_hrxml_PublisherLocation_ELEM:
+    if (!x->PublisherLocation)
+      x->PublisherLocation = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_CandidateRecordInfo_ELEM:
+    if (!x->CandidateRecordInfo)
+      x->CandidateRecordInfo = (struct zx_hrxml_CandidateRecordInfo_s*)el;
+    return 1;
+  case zx_hrxml_RelatedPositionPostings_ELEM:
+    if (!x->RelatedPositionPostings)
+      x->RelatedPositionPostings = (struct zx_hrxml_RelatedPositionPostings_s*)el;
+    return 1;
+  case zx_hrxml_CandidateSupplier_ELEM:
+    if (!x->CandidateSupplier)
+      x->CandidateSupplier = (struct zx_hrxml_CandidateSupplier_s*)el;
+    return 1;
+  case zx_hrxml_DistributionGuidelines_ELEM:
+    if (!x->DistributionGuidelines)
+      x->DistributionGuidelines = el;
+    return 1;
+  case zx_hrxml_CandidateProfile_ELEM:
+    if (!x->CandidateProfile)
+      x->CandidateProfile = (struct zx_hrxml_CandidateProfile_s*)el;
+    return 1;
+  case zx_hrxml_Resume_ELEM:
+    if (!x->Resume)
+      x->Resume = (struct zx_hrxml_Resume_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_CandidateProfile_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_CandidateProfile_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_ProfileId_ELEM:
+    if (!x->ProfileId)
+      x->ProfileId = (struct zx_hrxml_ProfileId_s*)el;
+    return 1;
+  case zx_hrxml_ProfileName_ELEM:
+    if (!x->ProfileName)
+      x->ProfileName = el;
+    return 1;
+  case zx_hrxml_AvailabilityInfo_ELEM:
+    if (!x->AvailabilityInfo)
+      x->AvailabilityInfo = (struct zx_hrxml_AvailabilityInfo_s*)el;
+    return 1;
+  case zx_hrxml_DistributionGuidelines_ELEM:
+    if (!x->DistributionGuidelines)
+      x->DistributionGuidelines = el;
+    return 1;
+  case zx_hrxml_PersonalData_ELEM:
+    if (!x->PersonalData)
+      x->PersonalData = (struct zx_hrxml_PersonalData_s*)el;
+    return 1;
+  case zx_hrxml_PreferredPosition_ELEM:
+    if (!x->PreferredPosition)
+      x->PreferredPosition = (struct zx_hrxml_PreferredPosition_s*)el;
+    return 1;
+  case zx_hrxml_EmploymentHistory_ELEM:
+    if (!x->EmploymentHistory)
+      x->EmploymentHistory = (struct zx_hrxml_EmploymentHistory_s*)el;
+    return 1;
+  case zx_hrxml_EducationHistory_ELEM:
+    if (!x->EducationHistory)
+      x->EducationHistory = (struct zx_hrxml_EducationHistory_s*)el;
+    return 1;
+  case zx_hrxml_MilitaryHistory_ELEM:
+    if (!x->MilitaryHistory)
+      x->MilitaryHistory = (struct zx_hrxml_MilitaryHistory_s*)el;
+    return 1;
+  case zx_hrxml_Associations_ELEM:
+    if (!x->Associations)
+      x->Associations = (struct zx_hrxml_Associations_s*)el;
+    return 1;
+  case zx_hrxml_SupportingMaterials_ELEM:
+    if (!x->SupportingMaterials)
+      x->SupportingMaterials = (struct zx_hrxml_SupportingMaterials_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_CandidateRecordInfo_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_CandidateRecordInfo_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_Status_ELEM:
+    if (!x->Status)
+      x->Status = (struct zx_hrxml_Status_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_CandidateSupplier_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_relationship_ATTR:  x->relationship = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_CandidateSupplier_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_SupplierId_ELEM:
+    if (!x->SupplierId)
+      x->SupplierId = (struct zx_hrxml_SupplierId_s*)el;
+    return 1;
+  case zx_hrxml_EntityName_ELEM:
+    if (!x->EntityName)
+      x->EntityName = el;
+    return 1;
+  case zx_hrxml_ContactName_ELEM:
+    if (!x->ContactName)
+      x->ContactName = (struct zx_hrxml_ContactName_s*)el;
+    return 1;
+  case zx_hrxml_ContactMethod_ELEM:
+    if (!x->ContactMethod)
+      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
+    return 1;
+  case zx_hrxml_SourceType_ELEM:
+    if (!x->SourceType)
+      x->SourceType = (struct zx_hrxml_SourceType_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_NumberOfChildren_ELEM:
+    if (!x->NumberOfChildren)
+      x->NumberOfChildren = el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_numberOfStudents_ATTR:  x->numberOfStudents = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_TimeMax_ELEM:
+    if (!x->TimeMax)
+      x->TimeMax = (struct zx_hrxml_TimeMax_s*)el;
+    return 1;
+  case zx_hrxml_DistanceMax_ELEM:
+    if (!x->DistanceMax)
+      x->DistanceMax = (struct zx_hrxml_DistanceMax_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehicle_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_companyOffered_ATTR:  x->companyOffered = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehicle_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_StartingCompensation_ELEM:
+    if (!x->StartingCompensation)
+      x->StartingCompensation = (struct zx_hrxml_StartingCompensation_s*)el;
+    return 1;
+  case zx_hrxml_EndingCompensation_ELEM:
+    if (!x->EndingCompensation)
+      x->EndingCompensation = (struct zx_hrxml_EndingCompensation_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+  case zx_hrxml_OtherCompensation_ELEM:
+    if (!x->OtherCompensation)
+      x->OtherCompensation = (struct zx_hrxml_OtherCompensation_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_description_ATTR:  x->description = x->gg.attr; return 1;
+    case zx_name_ATTR:  x->name = x->gg.attr; return 1;
+    case zx_required_ATTR:  x->required = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_CompetencyId_ELEM:
+    if (!x->CompetencyId)
+      x->CompetencyId = (struct zx_hrxml_CompetencyId_s*)el;
+    return 1;
+  case zx_hrxml_TaxonomyId_ELEM:
+    if (!x->TaxonomyId)
+      x->TaxonomyId = (struct zx_hrxml_TaxonomyId_s*)el;
+    return 1;
+  case zx_hrxml_CompetencyEvidence_ELEM:
+    if (!x->CompetencyEvidence)
+      x->CompetencyEvidence = (struct zx_hrxml_CompetencyEvidence_s*)el;
+    return 1;
+  case zx_hrxml_CompetencyWeight_ELEM:
+    if (!x->CompetencyWeight)
+      x->CompetencyWeight = (struct zx_hrxml_CompetencyWeight_s*)el;
+    return 1;
+  case zx_hrxml_Competency_ELEM:
+    if (!x->Competency)
+      x->Competency = (struct zx_hrxml_Competency_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_CompetencyEvidence_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_dateOfIncident_ATTR:  x->dateOfIncident = x->gg.attr; return 1;
+    case zx_expirationDate_ATTR:  x->expirationDate = x->gg.attr; return 1;
+    case zx_lastUsed_ATTR:  x->lastUsed = x->gg.attr; return 1;
+    case zx_name_ATTR:  x->name = x->gg.attr; return 1;
+    case zx_required_ATTR:  x->required = x->gg.attr; return 1;
+    case zx_typeDescription_ATTR:  x->typeDescription = x->gg.attr; return 1;
+    case zx_typeId_ATTR:  x->typeId = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_CompetencyEvidence_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_EvidenceId_ELEM:
+    if (!x->EvidenceId)
+      x->EvidenceId = (struct zx_hrxml_EvidenceId_s*)el;
+    return 1;
+  case zx_hrxml_NumericValue_ELEM:
+    if (!x->NumericValue)
+      x->NumericValue = (struct zx_hrxml_NumericValue_s*)el;
+    return 1;
+  case zx_hrxml_StringValue_ELEM:
+    if (!x->StringValue)
+      x->StringValue = (struct zx_hrxml_StringValue_s*)el;
+    return 1;
+  case zx_hrxml_SupportingInformation_ELEM:
+    if (!x->SupportingInformation)
+      x->SupportingInformation = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_CompetencyWeight_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_CompetencyWeight_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_NumericValue_ELEM:
+    if (!x->NumericValue)
+      x->NumericValue = (struct zx_hrxml_NumericValue_s*)el;
+    return 1;
+  case zx_hrxml_StringValue_ELEM:
+    if (!x->StringValue)
+      x->StringValue = (struct zx_hrxml_StringValue_s*)el;
+    return 1;
+  case zx_hrxml_SupportingInformation_ELEM:
+    if (!x->SupportingInformation)
+      x->SupportingInformation = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceDate_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceDate_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_AnyDate_ELEM:
+    if (!x->AnyDate)
+      x->AnyDate = el;
+    return 1;
+  case zx_hrxml_YearMonth_ELEM:
+    if (!x->YearMonth)
+      x->YearMonth = el;
+    return 1;
+  case zx_hrxml_Year_ELEM:
+    if (!x->Year)
+      x->Year = el;
+    return 1;
+  case zx_hrxml_MonthDay_ELEM:
+    if (!x->MonthDay)
+      x->MonthDay = el;
+    return 1;
+  case zx_hrxml_StringDate_ELEM:
+    if (!x->StringDate)
+      x->StringDate = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_ConferencePaper_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_ConferencePaper_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Title_ELEM:
+    if (!x->Title)
+      x->Title = el;
+    return 1;
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+  case zx_hrxml_PublicationDate_ELEM:
+    if (!x->PublicationDate)
+      x->PublicationDate = (struct zx_hrxml_PublicationDate_s*)el;
+    return 1;
+  case zx_hrxml_Link_ELEM:
+    if (!x->Link)
+      x->Link = el;
+    return 1;
+  case zx_hrxml_Abstract_ELEM:
+    if (!x->Abstract)
+      x->Abstract = el;
+    return 1;
+  case zx_hrxml_Copyright_ELEM:
+    if (!x->Copyright)
+      x->Copyright = (struct zx_hrxml_Copyright_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+  case zx_hrxml_EventName_ELEM:
+    if (!x->EventName)
+      x->EventName = el;
+    return 1;
+  case zx_hrxml_ConferenceDate_ELEM:
+    if (!x->ConferenceDate)
+      x->ConferenceDate = (struct zx_hrxml_ConferenceDate_s*)el;
+    return 1;
+  case zx_hrxml_ConferenceLocation_ELEM:
+    if (!x->ConferenceLocation)
+      x->ConferenceLocation = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerations_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerations_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_General_ELEM:
+    if (!x->General)
+      x->General = el;
+    return 1;
+  case zx_hrxml_Physical_ELEM:
+    if (!x->Physical)
+      x->Physical = el;
+    return 1;
+  case zx_hrxml_SafetyEquipment_ELEM:
+    if (!x->SafetyEquipment)
+      x->SafetyEquipment = (struct zx_hrxml_SafetyEquipment_s*)el;
+    return 1;
+  case zx_hrxml_DressCode_ELEM:
+    if (!x->DressCode)
+      x->DressCode = (struct zx_hrxml_DressCode_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_PersonName_ELEM:
+    if (!x->PersonName)
+      x->PersonName = (struct zx_hrxml_PersonName_s*)el;
+    return 1;
+  case zx_hrxml_ContactMethod_ELEM:
+    if (!x->ContactMethod)
+      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMethod_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMethod_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Use_ELEM:
+    if (!x->Use)
+      x->Use = el;
+    return 1;
+  case zx_hrxml_Location_ELEM:
+    if (!x->Location)
+      x->Location = el;
+    return 1;
+  case zx_hrxml_WhenAvailable_ELEM:
+    if (!x->WhenAvailable)
+      x->WhenAvailable = el;
+    return 1;
+  case zx_hrxml_Telephone_ELEM:
+    if (!x->Telephone)
+      x->Telephone = (struct zx_hrxml_Telephone_s*)el;
+    return 1;
+  case zx_hrxml_Mobile_ELEM:
+    if (!x->Mobile)
+      x->Mobile = (struct zx_hrxml_Mobile_s*)el;
+    return 1;
+  case zx_hrxml_Fax_ELEM:
+    if (!x->Fax)
+      x->Fax = (struct zx_hrxml_Fax_s*)el;
+    return 1;
+  case zx_hrxml_Pager_ELEM:
+    if (!x->Pager)
+      x->Pager = (struct zx_hrxml_Pager_s*)el;
+    return 1;
+  case zx_hrxml_TTYTDD_ELEM:
+    if (!x->TTYTDD)
+      x->TTYTDD = (struct zx_hrxml_TTYTDD_s*)el;
+    return 1;
+  case zx_hrxml_InternetEmailAddress_ELEM:
+    if (!x->InternetEmailAddress)
+      x->InternetEmailAddress = el;
+    return 1;
+  case zx_hrxml_InternetWebAddress_ELEM:
+    if (!x->InternetWebAddress)
+      x->InternetWebAddress = el;
+    return 1;
+  case zx_hrxml_PostalAddress_ELEM:
+    if (!x->PostalAddress)
+      x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_script_ATTR:  x->script = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_FormattedName_ELEM:
+    if (!x->FormattedName)
+      x->FormattedName = el;
+    return 1;
+  case zx_hrxml_LegalName_ELEM:
+    if (!x->LegalName)
+      x->LegalName = el;
+    return 1;
+  case zx_hrxml_GivenName_ELEM:
+    if (!x->GivenName)
+      x->GivenName = el;
+    return 1;
+  case zx_hrxml_PreferredGivenName_ELEM:
+    if (!x->PreferredGivenName)
+      x->PreferredGivenName = el;
+    return 1;
+  case zx_hrxml_MiddleName_ELEM:
+    if (!x->MiddleName)
+      x->MiddleName = el;
+    return 1;
+  case zx_hrxml_FamilyName_ELEM:
+    if (!x->FamilyName)
+      x->FamilyName = (struct zx_hrxml_FamilyName_s*)el;
+    return 1;
+  case zx_hrxml_Affix_ELEM:
+    if (!x->Affix)
+      x->Affix = (struct zx_hrxml_Affix_s*)el;
+    return 1;
+  case zx_hrxml_AlternateScript_ELEM:
+    if (!x->AlternateScript)
+      x->AlternateScript = (struct zx_hrxml_AlternateScript_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_CopyrightDates_ELEM:
+    if (!x->CopyrightDates)
+      x->CopyrightDates = (struct zx_hrxml_CopyrightDates_s*)el;
+    return 1;
+  case zx_hrxml_CopyrightText_ELEM:
+    if (!x->CopyrightText)
+      x->CopyrightText = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDates_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDates_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_OriginalDate_ELEM:
+    if (!x->OriginalDate)
+      x->OriginalDate = (struct zx_hrxml_OriginalDate_s*)el;
+    return 1;
+  case zx_hrxml_MostRecentDate_ELEM:
+    if (!x->MostRecentDate)
+      x->MostRecentDate = (struct zx_hrxml_MostRecentDate_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfAttendance_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_currentlyEnrolled_ATTR:  x->currentlyEnrolled = x->gg.attr; return 1;
+    case zx_enrollmentStatus_ATTR:  x->enrollmentStatus = x->gg.attr; return 1;
+    case zx_studentInGoodStanding_ATTR:  x->studentInGoodStanding = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfAttendance_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_StartDate_ELEM:
+    if (!x->StartDate)
+      x->StartDate = (struct zx_hrxml_StartDate_s*)el;
+    return 1;
+  case zx_hrxml_EndDate_ELEM:
+    if (!x->EndDate)
+      x->EndDate = (struct zx_hrxml_EndDate_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfService_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfService_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_StartDate_ELEM:
+    if (!x->StartDate)
+      x->StartDate = (struct zx_hrxml_StartDate_s*)el;
+    return 1;
+  case zx_hrxml_EndDate_ELEM:
+    if (!x->EndDate)
+      x->EndDate = (struct zx_hrxml_EndDate_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_degreeType_ATTR:  x->degreeType = x->gg.attr; return 1;
+    case zx_examPassed_ATTR:  x->examPassed = x->gg.attr; return 1;
+    case zx_graduatingDegree_ATTR:  x->graduatingDegree = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_DegreeName_ELEM:
+    if (!x->DegreeName)
+      x->DegreeName = (struct zx_hrxml_DegreeName_s*)el;
+    return 1;
+  case zx_hrxml_DegreeDate_ELEM:
+    if (!x->DegreeDate)
+      x->DegreeDate = (struct zx_hrxml_DegreeDate_s*)el;
+    return 1;
+  case zx_hrxml_OtherHonors_ELEM:
+    if (!x->OtherHonors)
+      x->OtherHonors = (struct zx_hrxml_OtherHonors_s*)el;
+    return 1;
+  case zx_hrxml_DegreeMajor_ELEM:
+    if (!x->DegreeMajor)
+      x->DegreeMajor = (struct zx_hrxml_DegreeMajor_s*)el;
+    return 1;
+  case zx_hrxml_DegreeMinor_ELEM:
+    if (!x->DegreeMinor)
+      x->DegreeMinor = (struct zx_hrxml_DegreeMinor_s*)el;
+    return 1;
+  case zx_hrxml_DegreeMeasure_ELEM:
+    if (!x->DegreeMeasure)
+      x->DegreeMeasure = (struct zx_hrxml_DegreeMeasure_s*)el;
+    return 1;
+  case zx_hrxml_DatesOfAttendance_ELEM:
+    if (!x->DatesOfAttendance)
+      x->DatesOfAttendance = (struct zx_hrxml_DatesOfAttendance_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+  case zx_hrxml_DegreeClassification_ELEM:
+    if (!x->DegreeClassification)
+      x->DegreeClassification = (struct zx_hrxml_DegreeClassification_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_DegreeClassification_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_DegreeClassification_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_AnyDate_ELEM:
+    if (!x->AnyDate)
+      x->AnyDate = el;
+    return 1;
+  case zx_hrxml_YearMonth_ELEM:
+    if (!x->YearMonth)
+      x->YearMonth = el;
+    return 1;
+  case zx_hrxml_Year_ELEM:
+    if (!x->Year)
+      x->Year = el;
+    return 1;
+  case zx_hrxml_MonthDay_ELEM:
+    if (!x->MonthDay)
+      x->MonthDay = el;
+    return 1;
+  case zx_hrxml_StringDate_ELEM:
+    if (!x->StringDate)
+      x->StringDate = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_ProgramId_ELEM:
+    if (!x->ProgramId)
+      x->ProgramId = (struct zx_hrxml_ProgramId_s*)el;
+    return 1;
+  case zx_hrxml_DegreeConcentration_ELEM:
+    if (!x->DegreeConcentration)
+      x->DegreeConcentration = el;
+    return 1;
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+  case zx_hrxml_Option_ELEM:
+    if (!x->Option)
+      x->Option = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_measureType_ATTR:  x->measureType = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_EducationalMeasure_ELEM:
+    if (!x->EducationalMeasure)
+      x->EducationalMeasure = (struct zx_hrxml_EducationalMeasure_s*)el;
+    return 1;
+  case zx_hrxml_AcademicCreditCode_ELEM:
+    if (!x->AcademicCreditCode)
+      x->AcademicCreditCode = el;
+    return 1;
+  case zx_hrxml_CourseLevelCode_ELEM:
+    if (!x->CourseLevelCode)
+      x->CourseLevelCode = el;
+    return 1;
+  case zx_hrxml_CumulativeSummaryIndicator_ELEM:
+    if (!x->CumulativeSummaryIndicator)
+      x->CumulativeSummaryIndicator = el;
+    return 1;
+  case zx_hrxml_AcademicCreditHoursIncluded_ELEM:
+    if (!x->AcademicCreditHoursIncluded)
+      x->AcademicCreditHoursIncluded = el;
+    return 1;
+  case zx_hrxml_AcademicCreditHoursAttempted_ELEM:
+    if (!x->AcademicCreditHoursAttempted)
+      x->AcademicCreditHoursAttempted = el;
+    return 1;
+  case zx_hrxml_AcademicCreditHoursEarned_ELEM:
+    if (!x->AcademicCreditHoursEarned)
+      x->AcademicCreditHoursEarned = el;
+    return 1;
+  case zx_hrxml_ClassRank_ELEM:
+    if (!x->ClassRank)
+      x->ClassRank = (struct zx_hrxml_ClassRank_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_ProgramId_ELEM:
+    if (!x->ProgramId)
+      x->ProgramId = (struct zx_hrxml_ProgramId_s*)el;
+    return 1;
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_academicHonors_ATTR:  x->academicHonors = x->gg.attr; return 1;
+    case zx_honorsProgram_ATTR:  x->honorsProgram = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAddress_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAddress_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_AddressLine_ELEM:
+    if (!x->AddressLine)
+      x->AddressLine = el;
+    return 1;
+  case zx_hrxml_StreetName_ELEM:
+    if (!x->StreetName)
+      x->StreetName = el;
+    return 1;
+  case zx_hrxml_BuildingNumber_ELEM:
+    if (!x->BuildingNumber)
+      x->BuildingNumber = el;
+    return 1;
+  case zx_hrxml_Unit_ELEM:
+    if (!x->Unit)
+      x->Unit = el;
+    return 1;
+  case zx_hrxml_PostOfficeBox_ELEM:
+    if (!x->PostOfficeBox)
+      x->PostOfficeBox = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_DemographicDescriptors_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_DemographicDescriptors_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Race_ELEM:
+    if (!x->Race)
+      x->Race = el;
+    return 1;
+  case zx_hrxml_Ethnicity_ELEM:
+    if (!x->Ethnicity)
+      x->Ethnicity = el;
+    return 1;
+  case zx_hrxml_Nationality_ELEM:
+    if (!x->Nationality)
+      x->Nationality = el;
+    return 1;
+  case zx_hrxml_PrimaryLanguage_ELEM:
+    if (!x->PrimaryLanguage)
+      x->PrimaryLanguage = (struct zx_hrxml_PrimaryLanguage_s*)el;
+    return 1;
+  case zx_hrxml_BirthPlace_ELEM:
+    if (!x->BirthPlace)
+      x->BirthPlace = el;
+    return 1;
+  case zx_hrxml_Religion_ELEM:
+    if (!x->Religion)
+      x->Religion = el;
+    return 1;
+  case zx_hrxml_MaritalStatus_ELEM:
+    if (!x->MaritalStatus)
+      x->MaritalStatus = el;
+    return 1;
+  case zx_hrxml_ChildrenInfo_ELEM:
+    if (!x->ChildrenInfo)
+      x->ChildrenInfo = (struct zx_hrxml_ChildrenInfo_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityInfo_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityInfo_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_LevelOfDisability_ELEM:
+    if (!x->LevelOfDisability)
+      x->LevelOfDisability = el;
+    return 1;
+  case zx_hrxml_Percentage_ELEM:
+    if (!x->Percentage)
+      x->Percentage = el;
+    return 1;
+  case zx_hrxml_Type_ELEM:
+    if (!x->Type)
+      x->Type = el;
+    return 1;
+  case zx_hrxml_AccommodationsNeeded_ELEM:
+    if (!x->AccommodationsNeeded)
+      x->AccommodationsNeeded = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_unitOfMeasure_ATTR:  x->unitOfMeasure = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_ContactMethod_ELEM:
+    if (!x->ContactMethod)
+      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusinessAs_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusinessAs_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_suppliedByOrganization_ATTR:  x->suppliedByOrganization = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_dunsNumberType_ATTR:  x->dunsNumberType = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCategory_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCategory_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_StandardValue_ELEM:
+    if (!x->StandardValue)
+      x->StandardValue = el;
+    return 1;
+  case zx_hrxml_NonStandardValue_ELEM:
+    if (!x->NonStandardValue)
+      x->NonStandardValue = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_EducationHistory_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_EducationHistory_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_SchoolOrInstitution_ELEM:
+    if (!x->SchoolOrInstitution)
+      x->SchoolOrInstitution = (struct zx_hrxml_SchoolOrInstitution_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_EducationalMeasure_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_EducationalMeasure_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_MeasureSystem_ELEM:
+    if (!x->MeasureSystem)
+      x->MeasureSystem = el;
+    return 1;
+  case zx_hrxml_MeasureValue_ELEM:
+    if (!x->MeasureValue)
+      x->MeasureValue = el;
+    return 1;
+  case zx_hrxml_LowestPossibleValue_ELEM:
+    if (!x->LowestPossibleValue)
+      x->LowestPossibleValue = (struct zx_hrxml_LowestPossibleValue_s*)el;
+    return 1;
+  case zx_hrxml_HighestPossibleValue_ELEM:
+    if (!x->HighestPossibleValue)
+      x->HighestPossibleValue = (struct zx_hrxml_HighestPossibleValue_s*)el;
+    return 1;
+  case zx_hrxml_ExcessiveValueIndicator_ELEM:
+    if (!x->ExcessiveValueIndicator)
+      x->ExcessiveValueIndicator = el;
+    return 1;
+  case zx_hrxml_GoodStudentIndicator_ELEM:
+    if (!x->GoodStudentIndicator)
+      x->GoodStudentIndicator = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDate_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDate_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_StartDate_ELEM:
+    if (!x->StartDate)
+      x->StartDate = (struct zx_hrxml_StartDate_s*)el;
+    return 1;
+  case zx_hrxml_EndDate_ELEM:
+    if (!x->EndDate)
+      x->EndDate = (struct zx_hrxml_EndDate_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_EmployerContactInfo_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_contactType_ATTR:  x->contactType = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_EmployerContactInfo_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_PersonName_ELEM:
+    if (!x->PersonName)
+      x->PersonName = (struct zx_hrxml_PersonName_s*)el;
+    return 1;
+  case zx_hrxml_ContactMethod_ELEM:
+    if (!x->ContactMethod)
+      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
+    return 1;
+  case zx_hrxml_LocationSummary_ELEM:
+    if (!x->LocationSummary)
+      x->LocationSummary = (struct zx_hrxml_LocationSummary_s*)el;
+    return 1;
+  case zx_hrxml_InternetDomainName_ELEM:
+    if (!x->InternetDomainName)
+      x->InternetDomainName = (struct zx_hrxml_InternetDomainName_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_employerOrgType_ATTR:  x->employerOrgType = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_EmployerOrgName_ELEM:
+    if (!x->EmployerOrgName)
+      x->EmployerOrgName = el;
+    return 1;
+  case zx_hrxml_EmployerContactInfo_ELEM:
+    if (!x->EmployerContactInfo)
+      x->EmployerContactInfo = (struct zx_hrxml_EmployerContactInfo_s*)el;
+    return 1;
+  case zx_hrxml_PositionHistory_ELEM:
+    if (!x->PositionHistory)
+      x->PositionHistory = (struct zx_hrxml_PositionHistory_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_EmploymentHistory_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_EmploymentHistory_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_EmployerOrg_ELEM:
+    if (!x->EmployerOrg)
+      x->EmployerOrg = (struct zx_hrxml_EmployerOrg_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_AnyDate_ELEM:
+    if (!x->AnyDate)
+      x->AnyDate = el;
+    return 1;
+  case zx_hrxml_YearMonth_ELEM:
+    if (!x->YearMonth)
+      x->YearMonth = el;
+    return 1;
+  case zx_hrxml_Year_ELEM:
+    if (!x->Year)
+      x->Year = el;
+    return 1;
+  case zx_hrxml_MonthDay_ELEM:
+    if (!x->MonthDay)
+      x->MonthDay = el;
+    return 1;
+  case zx_hrxml_StringDate_ELEM:
+    if (!x->StringDate)
+      x->StringDate = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingCompensation_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_currency_ATTR:  x->currency = x->gg.attr; return 1;
+    case zx_intervalType_ATTR:  x->intervalType = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingCompensation_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_description_ATTR:  x->description = x->gg.attr; return 1;
+    case zx_id_ATTR:  x->id = x->gg.attr; return 1;
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_ExpatriateBenefits_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_ExpatriateBenefits_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_ExpatriateBenefitsOffered_ELEM:
+    if (!x->ExpatriateBenefitsOffered)
+      x->ExpatriateBenefitsOffered = el;
+    return 1;
+  case zx_hrxml_ExpatriateBenefitList_ELEM:
+    if (!x->ExpatriateBenefitList)
+      x->ExpatriateBenefitList = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_prefix_ATTR:  x->prefix = x->gg.attr; return 1;
+    case zx_primary_ATTR:  x->primary = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_FormattedNumber_ELEM:
+    if (!x->FormattedNumber)
+      x->FormattedNumber = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssuedDate_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssuedDate_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_AnyDate_ELEM:
+    if (!x->AnyDate)
+      x->AnyDate = el;
+    return 1;
+  case zx_hrxml_YearMonth_ELEM:
+    if (!x->YearMonth)
+      x->YearMonth = el;
+    return 1;
+  case zx_hrxml_Year_ELEM:
+    if (!x->Year)
+      x->Year = el;
+    return 1;
+  case zx_hrxml_MonthDay_ELEM:
+    if (!x->MonthDay)
+      x->MonthDay = el;
+    return 1;
+  case zx_hrxml_StringDate_ELEM:
+    if (!x->StringDate)
+      x->StringDate = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_hrxml_FormattedPublicationDescription_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_hrxml_FormattedPublicationDescription_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_unitOfMeasure_ATTR:  x->unitOfMeasure = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_HighestPossibleValue_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_HighestPossibleValue_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_NumericValue_ELEM:
+    if (!x->NumericValue)
+      x->NumericValue = (struct zx_hrxml_NumericValue_s*)el;
+    return 1;
+  case zx_hrxml_StringValue_ELEM:
+    if (!x->StringValue)
+      x->StringValue = (struct zx_hrxml_StringValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_HorizontalAccuracy_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_HorizontalAccuracy_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_name_ATTR:  x->name = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_classificationName_ATTR:  x->classificationName = x->gg.attr; return 1;
+    case zx_primaryIndicator_ATTR:  x->primaryIndicator = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_InternetDomainName_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_primaryIndicator_ATTR:  x->primaryIndicator = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_InternetDomainName_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_InventorName_ELEM:
+    if (!x->InventorName)
+      x->InventorName = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAuthority_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_countryCode_ATTR:  x->countryCode = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAuthority_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_TaxonomyName_ELEM:
+    if (!x->TaxonomyName)
+      x->TaxonomyName = (struct zx_hrxml_TaxonomyName_s*)el;
+    return 1;
+  case zx_hrxml_CategoryCode_ELEM:
+    if (!x->CategoryCode)
+      x->CategoryCode = el;
+    return 1;
+  case zx_hrxml_CategoryDescription_ELEM:
+    if (!x->CategoryDescription)
+      x->CategoryDescription = el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+  case zx_hrxml_JobCategory_ELEM:
+    if (!x->JobCategory)
+      x->JobCategory = (struct zx_hrxml_JobCategory_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_JobPlan_ELEM:
+    if (!x->JobPlan)
+      x->JobPlan = el;
+    return 1;
+  case zx_hrxml_JobGrade_ELEM:
+    if (!x->JobGrade)
+      x->JobGrade = el;
+    return 1;
+  case zx_hrxml_JobStep_ELEM:
+    if (!x->JobStep)
+      x->JobStep = el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_LanguageCode_ELEM:
+    if (!x->LanguageCode)
+      x->LanguageCode = (struct zx_hrxml_LanguageCode_s*)el;
+    return 1;
+  case zx_hrxml_Read_ELEM:
+    if (!x->Read)
+      x->Read = el;
+    return 1;
+  case zx_hrxml_Write_ELEM:
+    if (!x->Write)
+      x->Write = el;
+    return 1;
+  case zx_hrxml_Speak_ELEM:
+    if (!x->Speak)
+      x->Speak = el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Language_ELEM:
+    if (!x->Language)
+      x->Language = (struct zx_hrxml_Language_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalClassification_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_countryCode_ATTR:  x->countryCode = x->gg.attr; return 1;
+    case zx_ownership_ATTR:  x->ownership = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalClassification_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIdentifiers_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIdentifiers_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_PersonLegalId_ELEM:
+    if (!x->PersonLegalId)
+      x->PersonLegalId = (struct zx_hrxml_PersonLegalId_s*)el;
+    return 1;
+  case zx_hrxml_MilitaryStatus_ELEM:
+    if (!x->MilitaryStatus)
+      x->MilitaryStatus = (struct zx_hrxml_MilitaryStatus_s*)el;
+    return 1;
+  case zx_hrxml_VisaStatus_ELEM:
+    if (!x->VisaStatus)
+      x->VisaStatus = (struct zx_hrxml_VisaStatus_s*)el;
+    return 1;
+  case zx_hrxml_Citizenship_ELEM:
+    if (!x->Citizenship)
+      x->Citizenship = el;
+    return 1;
+  case zx_hrxml_Residency_ELEM:
+    if (!x->Residency)
+      x->Residency = el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_LicenseOrCertification_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_LicenseOrCertification_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_IssuingAuthority_ELEM:
+    if (!x->IssuingAuthority)
+      x->IssuingAuthority = (struct zx_hrxml_IssuingAuthority_s*)el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+  case zx_hrxml_EffectiveDate_ELEM:
+    if (!x->EffectiveDate)
+      x->EffectiveDate = (struct zx_hrxml_EffectiveDate_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_LicensesAndCertifications_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_LicensesAndCertifications_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_LicenseOrCertification_ELEM:
+    if (!x->LicenseOrCertification)
+      x->LicenseOrCertification = (struct zx_hrxml_LicenseOrCertification_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Item_ELEM:
+    if (!x->Item)
+      x->Item = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_hrxml_LocalInstitutionClassification_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_hrxml_LocalInstitutionClassification_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSummary_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSummary_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Municipality_ELEM:
+    if (!x->Municipality)
+      x->Municipality = el;
+    return 1;
+  case zx_hrxml_Region_ELEM:
+    if (!x->Region)
+      x->Region = el;
+    return 1;
+  case zx_hrxml_CountryCode_ELEM:
+    if (!x->CountryCode)
+      x->CountryCode = el;
+    return 1;
+  case zx_hrxml_PostalCode_ELEM:
+    if (!x->PostalCode)
+      x->PostalCode = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_LowestPossibleValue_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_LowestPossibleValue_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_NumericValue_ELEM:
+    if (!x->NumericValue)
+      x->NumericValue = (struct zx_hrxml_NumericValue_s*)el;
+    return 1;
+  case zx_hrxml_StringValue_ELEM:
+    if (!x->StringValue)
+      x->StringValue = (struct zx_hrxml_StringValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObjectId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObjectId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_measureType_ATTR:  x->measureType = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_MeasureSystem_ELEM:
+    if (!x->MeasureSystem)
+      x->MeasureSystem = el;
+    return 1;
+  case zx_hrxml_MeasureValue_ELEM:
+    if (!x->MeasureValue)
+      x->MeasureValue = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHistory_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHistory_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_CountryServed_ELEM:
+    if (!x->CountryServed)
+      x->CountryServed = el;
+    return 1;
+  case zx_hrxml_ServiceNumber_ELEM:
+    if (!x->ServiceNumber)
+      x->ServiceNumber = (struct zx_hrxml_ServiceNumber_s*)el;
+    return 1;
+  case zx_hrxml_ServiceDetail_ELEM:
+    if (!x->ServiceDetail)
+      x->ServiceDetail = (struct zx_hrxml_ServiceDetail_s*)el;
+    return 1;
+  case zx_hrxml_ServiceStatus_ELEM:
+    if (!x->ServiceStatus)
+      x->ServiceStatus = el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryStatus_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryStatus_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_smsEnabled_ATTR:  x->smsEnabled = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_FormattedNumber_ELEM:
+    if (!x->FormattedNumber)
+      x->FormattedNumber = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentDate_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentDate_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_AnyDate_ELEM:
+    if (!x->AnyDate)
+      x->AnyDate = el;
+    return 1;
+  case zx_hrxml_YearMonth_ELEM:
+    if (!x->YearMonth)
+      x->YearMonth = el;
+    return 1;
+  case zx_hrxml_Year_ELEM:
+    if (!x->Year)
+      x->Year = el;
+    return 1;
+  case zx_hrxml_MonthDay_ELEM:
+    if (!x->MonthDay)
+      x->MonthDay = el;
+    return 1;
+  case zx_hrxml_StringDate_ELEM:
+    if (!x->StringDate)
+      x->StringDate = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_TextResume_ELEM:
+    if (!x->TextResume)
+      x->TextResume = el;
+    return 1;
+  case zx_hrxml_LinkToResume_ELEM:
+    if (!x->LinkToResume)
+      x->LinkToResume = el;
+    return 1;
+  case zx_hrxml_SupportingMaterials_ELEM:
+    if (!x->SupportingMaterials)
+      x->SupportingMaterials = (struct zx_hrxml_SupportingMaterials_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+  case zx_hrxml_RevisionDate_ELEM:
+    if (!x->RevisionDate)
+      x->RevisionDate = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_description_ATTR:  x->description = x->gg.attr; return 1;
+    case zx_interval_ATTR:  x->interval = x->gg.attr; return 1;
+    case zx_maxValue_ATTR:  x->maxValue = x->gg.attr; return 1;
+    case zx_minValue_ATTR:  x->minValue = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_primaryIndicator_ATTR:  x->primaryIndicator = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IndustryDescription_ELEM:
+    if (!x->IndustryDescription)
+      x->IndustryDescription = el;
+    return 1;
+  case zx_hrxml_IndustryCode_ELEM:
+    if (!x->IndustryCode)
+      x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_PositionLocation_ELEM:
+    if (!x->PositionLocation)
+      x->PositionLocation = (struct zx_hrxml_PositionLocation_s*)el;
+    return 1;
+  case zx_hrxml_WebSite_ELEM:
+    if (!x->WebSite)
+      x->WebSite = el;
+    return 1;
+  case zx_hrxml_LocationSummary_ELEM:
+    if (!x->LocationSummary)
+      x->LocationSummary = (struct zx_hrxml_LocationSummary_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_organizationType_ATTR:  x->organizationType = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_OrganizationName_ELEM:
+    if (!x->OrganizationName)
+      x->OrganizationName = el;
+    return 1;
+  case zx_hrxml_OrgName_ELEM:
+    if (!x->OrgName)
+      x->OrgName = (struct zx_hrxml_OrgName_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_OrganizationId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_OrganizationId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationUnit_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_attendanceStatus_ATTR:  x->attendanceStatus = x->gg.attr; return 1;
+    case zx_organizationType_ATTR:  x->organizationType = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationUnit_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnit_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_hierarchicalRole_ATTR:  x->hierarchicalRole = x->gg.attr; return 1;
+    case zx_typeOfGroup_ATTR:  x->typeOfGroup = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnit_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_OrganizationalUnitName_ELEM:
+    if (!x->OrganizationalUnitName)
+      x->OrganizationalUnitName = el;
+    return 1;
+  case zx_hrxml_OrganizationalUnitId_ELEM:
+    if (!x->OrganizationalUnitId)
+      x->OrganizationalUnitId = (struct zx_hrxml_OrganizationalUnitId_s*)el;
+    return 1;
+  case zx_hrxml_OrganizationId_ELEM:
+    if (!x->OrganizationId)
+      x->OrganizationId = (struct zx_hrxml_OrganizationId_s*)el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+  case zx_hrxml_IndustryCode_ELEM:
+    if (!x->IndustryCode)
+      x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)el;
+    return 1;
+  case zx_hrxml_AccountingCode_ELEM:
+    if (!x->AccountingCode)
+      x->AccountingCode = (struct zx_hrxml_AccountingCode_s*)el;
+    return 1;
+  case zx_hrxml_WorkSite_ELEM:
+    if (!x->WorkSite)
+      x->WorkSite = (struct zx_hrxml_WorkSite_s*)el;
+    return 1;
+  case zx_hrxml_RelatedOrganizationalUnit_ELEM:
+    if (!x->RelatedOrganizationalUnit)
+      x->RelatedOrganizationalUnit = (struct zx_hrxml_RelatedOrganizationalUnit_s*)el;
+    return 1;
+  case zx_hrxml_PersonMember_ELEM:
+    if (!x->PersonMember)
+      x->PersonMember = (struct zx_hrxml_PersonMember_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnitId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnitId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_AnyDate_ELEM:
+    if (!x->AnyDate)
+      x->AnyDate = el;
+    return 1;
+  case zx_hrxml_YearMonth_ELEM:
+    if (!x->YearMonth)
+      x->YearMonth = el;
+    return 1;
+  case zx_hrxml_Year_ELEM:
+    if (!x->Year)
+      x->Year = el;
+    return 1;
+  case zx_hrxml_MonthDay_ELEM:
+    if (!x->MonthDay)
+      x->MonthDay = el;
+    return 1;
+  case zx_hrxml_StringDate_ELEM:
+    if (!x->StringDate)
+      x->StringDate = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefits_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefits_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCompensation_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCompensation_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDescriptors_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDescriptors_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+  case zx_hrxml_Applicable_ELEM:
+    if (!x->Applicable)
+      x->Applicable = el;
+    return 1;
+  case zx_hrxml_Value_ELEM:
+    if (!x->Value)
+      x->Value = el;
+    return 1;
+  case zx_hrxml_List_ELEM:
+    if (!x->List)
+      x->List = (struct zx_hrxml_List_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_currencyCode_ATTR:  x->currencyCode = x->gg.attr; return 1;
+    case zx_otherInterval_ATTR:  x->otherInterval = x->gg.attr; return 1;
+    case zx_otherPayType_ATTR:  x->otherPayType = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_OtherPayAmountMin_ELEM:
+    if (!x->OtherPayAmountMin)
+      x->OtherPayAmountMin = el;
+    return 1;
+  case zx_hrxml_OtherPayAmountMax_ELEM:
+    if (!x->OtherPayAmountMax)
+      x->OtherPayAmountMax = el;
+    return 1;
+  case zx_hrxml_OtherPayCalculation_ELEM:
+    if (!x->OtherPayCalculation)
+      x->OtherPayCalculation = el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPublication_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPublication_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Title_ELEM:
+    if (!x->Title)
+      x->Title = el;
+    return 1;
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+  case zx_hrxml_PublicationDate_ELEM:
+    if (!x->PublicationDate)
+      x->PublicationDate = (struct zx_hrxml_PublicationDate_s*)el;
+    return 1;
+  case zx_hrxml_Link_ELEM:
+    if (!x->Link)
+      x->Link = el;
+    return 1;
+  case zx_hrxml_Abstract_ELEM:
+    if (!x->Abstract)
+      x->Abstract = el;
+    return 1;
+  case zx_hrxml_Copyright_ELEM:
+    if (!x->Copyright)
+      x->Copyright = (struct zx_hrxml_Copyright_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+  case zx_hrxml_ISSN_ELEM:
+    if (!x->ISSN)
+      x->ISSN = el;
+    return 1;
+  case zx_hrxml_ISBN_ELEM:
+    if (!x->ISBN)
+      x->ISBN = el;
+    return 1;
+  case zx_hrxml_NumberOfPages_ELEM:
+    if (!x->NumberOfPages)
+      x->NumberOfPages = el;
+    return 1;
+  case zx_hrxml_PublisherName_ELEM:
+    if (!x->PublisherName)
+      x->PublisherName = el;
+    return 1;
+  case zx_hrxml_PublisherLocation_ELEM:
+    if (!x->PublisherLocation)
+      x->PublisherLocation = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_FormattedNumber_ELEM:
+    if (!x->FormattedNumber)
+      x->FormattedNumber = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_ParkingInstructions_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_ParkingInstructions_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_PatentTitle_ELEM:
+    if (!x->PatentTitle)
+      x->PatentTitle = el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+  case zx_hrxml_Inventors_ELEM:
+    if (!x->Inventors)
+      x->Inventors = (struct zx_hrxml_Inventors_s*)el;
+    return 1;
+  case zx_hrxml_PatentDetail_ELEM:
+    if (!x->PatentDetail)
+      x->PatentDetail = (struct zx_hrxml_PatentDetail_s*)el;
+    return 1;
+  case zx_hrxml_Link_ELEM:
+    if (!x->Link)
+      x->Link = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IssuingAuthority_ELEM:
+    if (!x->IssuingAuthority)
+      x->IssuingAuthority = (struct zx_hrxml_IssuingAuthority_s*)el;
+    return 1;
+  case zx_hrxml_PatentMilestone_ELEM:
+    if (!x->PatentMilestone)
+      x->PatentMilestone = (struct zx_hrxml_PatentMilestone_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistory_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistory_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Patent_ELEM:
+    if (!x->Patent)
+      x->Patent = (struct zx_hrxml_Patent_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMilestone_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMilestone_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_Status_ELEM:
+    if (!x->Status)
+      x->Status = (struct zx_hrxml_Status_s*)el;
+    return 1;
+  case zx_hrxml_Date_ELEM:
+    if (!x->Date)
+      x->Date = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDescriptors_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDescriptors_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_LegalIdentifiers_ELEM:
+    if (!x->LegalIdentifiers)
+      x->LegalIdentifiers = (struct zx_hrxml_LegalIdentifiers_s*)el;
+    return 1;
+  case zx_hrxml_DemographicDescriptors_ELEM:
+    if (!x->DemographicDescriptors)
+      x->DemographicDescriptors = (struct zx_hrxml_DemographicDescriptors_s*)el;
+    return 1;
+  case zx_hrxml_BiologicalDescriptors_ELEM:
+    if (!x->BiologicalDescriptors)
+      x->BiologicalDescriptors = (struct zx_hrxml_BiologicalDescriptors_s*)el;
+    return 1;
+  case zx_hrxml_SupportingMaterials_ELEM:
+    if (!x->SupportingMaterials)
+      x->SupportingMaterials = (struct zx_hrxml_SupportingMaterials_s*)el;
+    return 1;
+  case zx_hrxml_OtherDescriptors_ELEM:
+    if (!x->OtherDescriptors)
+      x->OtherDescriptors = (struct zx_hrxml_OtherDescriptors_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_countryCode_ATTR:  x->countryCode = x->gg.attr; return 1;
+    case zx_documentType_ATTR:  x->documentType = x->gg.attr; return 1;
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_idSource_ATTR:  x->idSource = x->gg.attr; return 1;
+    case zx_issuingRegion_ATTR:  x->issuingRegion = x->gg.attr; return 1;
+    case zx_jurisdiction_ATTR:  x->jurisdiction = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_PersonName_ELEM:
+    if (!x->PersonName)
+      x->PersonName = (struct zx_hrxml_PersonName_s*)el;
+    return 1;
+  case zx_hrxml_PersonId_ELEM:
+    if (!x->PersonId)
+      x->PersonId = (struct zx_hrxml_PersonId_s*)el;
+    return 1;
+  case zx_hrxml_PersonRole_ELEM:
+    if (!x->PersonRole)
+      x->PersonRole = (struct zx_hrxml_PersonRole_s*)el;
+    return 1;
+  case zx_hrxml_ContactMethod_ELEM:
+    if (!x->ContactMethod)
+      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_script_ATTR:  x->script = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_FormattedName_ELEM:
+    if (!x->FormattedName)
+      x->FormattedName = el;
+    return 1;
+  case zx_hrxml_LegalName_ELEM:
+    if (!x->LegalName)
+      x->LegalName = el;
+    return 1;
+  case zx_hrxml_GivenName_ELEM:
+    if (!x->GivenName)
+      x->GivenName = el;
+    return 1;
+  case zx_hrxml_PreferredGivenName_ELEM:
+    if (!x->PreferredGivenName)
+      x->PreferredGivenName = el;
+    return 1;
+  case zx_hrxml_MiddleName_ELEM:
+    if (!x->MiddleName)
+      x->MiddleName = el;
+    return 1;
+  case zx_hrxml_FamilyName_ELEM:
+    if (!x->FamilyName)
+      x->FamilyName = (struct zx_hrxml_FamilyName_s*)el;
+    return 1;
+  case zx_hrxml_Affix_ELEM:
+    if (!x->Affix)
+      x->Affix = (struct zx_hrxml_Affix_s*)el;
+    return 1;
+  case zx_hrxml_AlternateScript_ELEM:
+    if (!x->AlternateScript)
+      x->AlternateScript = (struct zx_hrxml_AlternateScript_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_leader_ATTR:  x->leader = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_RoleName_ELEM:
+    if (!x->RoleName)
+      x->RoleName = el;
+    return 1;
+  case zx_hrxml_RoleId_ELEM:
+    if (!x->RoleId)
+      x->RoleId = (struct zx_hrxml_RoleId_s*)el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_PersonId_ELEM:
+    if (!x->PersonId)
+      x->PersonId = (struct zx_hrxml_PersonId_s*)el;
+    return 1;
+  case zx_hrxml_PersonName_ELEM:
+    if (!x->PersonName)
+      x->PersonName = (struct zx_hrxml_PersonName_s*)el;
+    return 1;
+  case zx_hrxml_ContactMethod_ELEM:
+    if (!x->ContactMethod)
+      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
+    return 1;
+  case zx_hrxml_PersonDescriptors_ELEM:
+    if (!x->PersonDescriptors)
+      x->PersonDescriptors = (struct zx_hrxml_PersonDescriptors_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalLocation_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalLocation_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+  case zx_hrxml_EffectiveDate_ELEM:
+    if (!x->EffectiveDate)
+      x->EffectiveDate = (struct zx_hrxml_EffectiveDate_s*)el;
+    return 1;
+  case zx_hrxml_SpatialLocation_ELEM:
+    if (!x->SpatialLocation)
+      x->SpatialLocation = (struct zx_hrxml_SpatialLocation_s*)el;
+    return 1;
+  case zx_hrxml_TravelDirections_ELEM:
+    if (!x->TravelDirections)
+      x->TravelDirections = (struct zx_hrxml_TravelDirections_s*)el;
+    return 1;
+  case zx_hrxml_PostalAddress_ELEM:
+    if (!x->PostalAddress)
+      x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)el;
+    return 1;
+  case zx_hrxml_Area_ELEM:
+    if (!x->Area)
+      x->Area = (struct zx_hrxml_Area_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHistory_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_currentEmployer_ATTR:  x->currentEmployer = x->gg.attr; return 1;
+    case zx_positionType_ATTR:  x->positionType = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHistory_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Title_ELEM:
+    if (!x->Title)
+      x->Title = el;
+    return 1;
+  case zx_hrxml_OrgName_ELEM:
+    if (!x->OrgName)
+      x->OrgName = (struct zx_hrxml_OrgName_s*)el;
+    return 1;
+  case zx_hrxml_OrgInfo_ELEM:
+    if (!x->OrgInfo)
+      x->OrgInfo = (struct zx_hrxml_OrgInfo_s*)el;
+    return 1;
+  case zx_hrxml_OrgIndustry_ELEM:
+    if (!x->OrgIndustry)
+      x->OrgIndustry = (struct zx_hrxml_OrgIndustry_s*)el;
+    return 1;
+  case zx_hrxml_OrgSize_ELEM:
+    if (!x->OrgSize)
+      x->OrgSize = el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+  case zx_hrxml_StartDate_ELEM:
+    if (!x->StartDate)
+      x->StartDate = (struct zx_hrxml_StartDate_s*)el;
+    return 1;
+  case zx_hrxml_EndDate_ELEM:
+    if (!x->EndDate)
+      x->EndDate = (struct zx_hrxml_EndDate_s*)el;
+    return 1;
+  case zx_hrxml_Compensation_ELEM:
+    if (!x->Compensation)
+      x->Compensation = (struct zx_hrxml_Compensation_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+  case zx_hrxml_Verification_ELEM:
+    if (!x->Verification)
+      x->Verification = (struct zx_hrxml_Verification_s*)el;
+    return 1;
+  case zx_hrxml_JobLevelInfo_ELEM:
+    if (!x->JobLevelInfo)
+      x->JobLevelInfo = (struct zx_hrxml_JobLevelInfo_s*)el;
+    return 1;
+  case zx_hrxml_JobCategory_ELEM:
+    if (!x->JobCategory)
+      x->JobCategory = (struct zx_hrxml_JobCategory_s*)el;
+    return 1;
+  case zx_hrxml_Competency_ELEM:
+    if (!x->Competency)
+      x->Competency = (struct zx_hrxml_Competency_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionLocation_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionLocation_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_CountryCode_ELEM:
+    if (!x->CountryCode)
+      x->CountryCode = el;
+    return 1;
+  case zx_hrxml_PostalCode_ELEM:
+    if (!x->PostalCode)
+      x->PostalCode = el;
+    return 1;
+  case zx_hrxml_Region_ELEM:
+    if (!x->Region)
+      x->Region = el;
+    return 1;
+  case zx_hrxml_Municipality_ELEM:
+    if (!x->Municipality)
+      x->Municipality = el;
+    return 1;
+  case zx_hrxml_DeliveryAddress_ELEM:
+    if (!x->DeliveryAddress)
+      x->DeliveryAddress = (struct zx_hrxml_DeliveryAddress_s*)el;
+    return 1;
+  case zx_hrxml_Recipient_ELEM:
+    if (!x->Recipient)
+      x->Recipient = (struct zx_hrxml_Recipient_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionMatching_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionMatching_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Company_ELEM:
+    if (!x->Company)
+      x->Company = (struct zx_hrxml_Company_s*)el;
+    return 1;
+  case zx_hrxml_CompanyScale_ELEM:
+    if (!x->CompanyScale)
+      x->CompanyScale = el;
+    return 1;
+  case zx_hrxml_IndustryCode_ELEM:
+    if (!x->IndustryCode)
+      x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)el;
+    return 1;
+  case zx_hrxml_PhysicalLocation_ELEM:
+    if (!x->PhysicalLocation)
+      x->PhysicalLocation = (struct zx_hrxml_PhysicalLocation_s*)el;
+    return 1;
+  case zx_hrxml_JobCategory_ELEM:
+    if (!x->JobCategory)
+      x->JobCategory = (struct zx_hrxml_JobCategory_s*)el;
+    return 1;
+  case zx_hrxml_PositionTitle_ELEM:
+    if (!x->PositionTitle)
+      x->PositionTitle = el;
+    return 1;
+  case zx_hrxml_PositionClassification_ELEM:
+    if (!x->PositionClassification)
+      x->PositionClassification = el;
+    return 1;
+  case zx_hrxml_PositionSchedule_ELEM:
+    if (!x->PositionSchedule)
+      x->PositionSchedule = (struct zx_hrxml_PositionSchedule_s*)el;
+    return 1;
+  case zx_hrxml_Shift_ELEM:
+    if (!x->Shift)
+      x->Shift = (struct zx_hrxml_Shift_s*)el;
+    return 1;
+  case zx_hrxml_Competency_ELEM:
+    if (!x->Competency)
+      x->Competency = (struct zx_hrxml_Competency_s*)el;
+    return 1;
+  case zx_hrxml_RemunerationPackage_ELEM:
+    if (!x->RemunerationPackage)
+      x->RemunerationPackage = (struct zx_hrxml_RemunerationPackage_s*)el;
+    return 1;
+  case zx_hrxml_WorkStyle_ELEM:
+    if (!x->WorkStyle)
+      x->WorkStyle = el;
+    return 1;
+  case zx_hrxml_DressCode_ELEM:
+    if (!x->DressCode)
+      x->DressCode = (struct zx_hrxml_DressCode_s*)el;
+    return 1;
+  case zx_hrxml_Travel_ELEM:
+    if (!x->Travel)
+      x->Travel = (struct zx_hrxml_Travel_s*)el;
+    return 1;
+  case zx_hrxml_Relocation_ELEM:
+    if (!x->Relocation)
+      x->Relocation = (struct zx_hrxml_Relocation_s*)el;
+    return 1;
+  case zx_hrxml_PreferredLanguage_ELEM:
+    if (!x->PreferredLanguage)
+      x->PreferredLanguage = (struct zx_hrxml_PreferredLanguage_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPosting_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPosting_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_Title_ELEM:
+    if (!x->Title)
+      x->Title = el;
+    return 1;
+  case zx_hrxml_Link_ELEM:
+    if (!x->Link)
+      x->Link = el;
+    return 1;
+  case zx_hrxml_SearchCriteria_ELEM:
+    if (!x->SearchCriteria)
+      x->SearchCriteria = (struct zx_hrxml_SearchCriteria_s*)el;
+    return 1;
+  case zx_hrxml_SearchResult_ELEM:
+    if (!x->SearchResult)
+      x->SearchResult = (struct zx_hrxml_SearchResult_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionSchedule_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_percentage_ATTR:  x->percentage = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionSchedule_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddress_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddress_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_CountryCode_ELEM:
+    if (!x->CountryCode)
+      x->CountryCode = el;
+    return 1;
+  case zx_hrxml_PostalCode_ELEM:
+    if (!x->PostalCode)
+      x->PostalCode = el;
+    return 1;
+  case zx_hrxml_Region_ELEM:
+    if (!x->Region)
+      x->Region = el;
+    return 1;
+  case zx_hrxml_Municipality_ELEM:
+    if (!x->Municipality)
+      x->Municipality = el;
+    return 1;
+  case zx_hrxml_DeliveryAddress_ELEM:
+    if (!x->DeliveryAddress)
+      x->DeliveryAddress = (struct zx_hrxml_DeliveryAddress_s*)el;
+    return 1;
+  case zx_hrxml_Recipient_ELEM:
+    if (!x->Recipient)
+      x->Recipient = (struct zx_hrxml_Recipient_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_PreferredLanguage_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_PreferredLanguage_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_PreferredPosition_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_PreferredPosition_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Company_ELEM:
+    if (!x->Company)
+      x->Company = (struct zx_hrxml_Company_s*)el;
+    return 1;
+  case zx_hrxml_CompanyScale_ELEM:
+    if (!x->CompanyScale)
+      x->CompanyScale = el;
+    return 1;
+  case zx_hrxml_IndustryCode_ELEM:
+    if (!x->IndustryCode)
+      x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)el;
+    return 1;
+  case zx_hrxml_PhysicalLocation_ELEM:
+    if (!x->PhysicalLocation)
+      x->PhysicalLocation = (struct zx_hrxml_PhysicalLocation_s*)el;
+    return 1;
+  case zx_hrxml_JobCategory_ELEM:
+    if (!x->JobCategory)
+      x->JobCategory = (struct zx_hrxml_JobCategory_s*)el;
+    return 1;
+  case zx_hrxml_PositionTitle_ELEM:
+    if (!x->PositionTitle)
+      x->PositionTitle = el;
+    return 1;
+  case zx_hrxml_PositionClassification_ELEM:
+    if (!x->PositionClassification)
+      x->PositionClassification = el;
+    return 1;
+  case zx_hrxml_PositionSchedule_ELEM:
+    if (!x->PositionSchedule)
+      x->PositionSchedule = (struct zx_hrxml_PositionSchedule_s*)el;
+    return 1;
+  case zx_hrxml_Shift_ELEM:
+    if (!x->Shift)
+      x->Shift = (struct zx_hrxml_Shift_s*)el;
+    return 1;
+  case zx_hrxml_Competency_ELEM:
+    if (!x->Competency)
+      x->Competency = (struct zx_hrxml_Competency_s*)el;
+    return 1;
+  case zx_hrxml_RemunerationPackage_ELEM:
+    if (!x->RemunerationPackage)
+      x->RemunerationPackage = (struct zx_hrxml_RemunerationPackage_s*)el;
+    return 1;
+  case zx_hrxml_WorkStyle_ELEM:
+    if (!x->WorkStyle)
+      x->WorkStyle = el;
+    return 1;
+  case zx_hrxml_DressCode_ELEM:
+    if (!x->DressCode)
+      x->DressCode = (struct zx_hrxml_DressCode_s*)el;
+    return 1;
+  case zx_hrxml_Travel_ELEM:
+    if (!x->Travel)
+      x->Travel = (struct zx_hrxml_Travel_s*)el;
+    return 1;
+  case zx_hrxml_Relocation_ELEM:
+    if (!x->Relocation)
+      x->Relocation = (struct zx_hrxml_Relocation_s*)el;
+    return 1;
+  case zx_hrxml_PreferredLanguage_ELEM:
+    if (!x->PreferredLanguage)
+      x->PreferredLanguage = (struct zx_hrxml_PreferredLanguage_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+  case zx_hrxml_Commute_ELEM:
+    if (!x->Commute)
+      x->Commute = (struct zx_hrxml_Commute_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_PrehireRemuneration_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_PrehireRemuneration_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_BasePay_ELEM:
+    if (!x->BasePay)
+      x->BasePay = (struct zx_hrxml_BasePay_s*)el;
+    return 1;
+  case zx_hrxml_OtherPay_ELEM:
+    if (!x->OtherPay)
+      x->OtherPay = (struct zx_hrxml_OtherPay_s*)el;
+    return 1;
+  case zx_hrxml_Benefits_ELEM:
+    if (!x->Benefits)
+      x->Benefits = (struct zx_hrxml_Benefits_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLanguage_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLanguage_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_ProfessionalAssociations_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_ProfessionalAssociations_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Association_ELEM:
+    if (!x->Association)
+      x->Association = (struct zx_hrxml_Association_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_PublicationDate_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_PublicationDate_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_AnyDate_ELEM:
+    if (!x->AnyDate)
+      x->AnyDate = el;
+    return 1;
+  case zx_hrxml_YearMonth_ELEM:
+    if (!x->YearMonth)
+      x->YearMonth = el;
+    return 1;
+  case zx_hrxml_Year_ELEM:
+    if (!x->Year)
+      x->Year = el;
+    return 1;
+  case zx_hrxml_MonthDay_ELEM:
+    if (!x->MonthDay)
+      x->MonthDay = el;
+    return 1;
+  case zx_hrxml_StringDate_ELEM:
+    if (!x->StringDate)
+      x->StringDate = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_PublicationHistory_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_PublicationHistory_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_FormattedPublicationDescription_ELEM:
+    if (!x->FormattedPublicationDescription)
+      x->FormattedPublicationDescription = (struct zx_hrxml_FormattedPublicationDescription_s*)el;
+    return 1;
+  case zx_hrxml_Article_ELEM:
+    if (!x->Article)
+      x->Article = (struct zx_hrxml_Article_s*)el;
+    return 1;
+  case zx_hrxml_Book_ELEM:
+    if (!x->Book)
+      x->Book = (struct zx_hrxml_Book_s*)el;
+    return 1;
+  case zx_hrxml_ConferencePaper_ELEM:
+    if (!x->ConferencePaper)
+      x->ConferencePaper = (struct zx_hrxml_ConferencePaper_s*)el;
+    return 1;
+  case zx_hrxml_OtherPublication_ELEM:
+    if (!x->OtherPublication)
+      x->OtherPublication = (struct zx_hrxml_OtherPublication_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_PublicationLanguage_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_PublicationLanguage_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifications_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifications_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_QualificationSummary_ELEM:
+    if (!x->QualificationSummary)
+      x->QualificationSummary = el;
+    return 1;
+  case zx_hrxml_Competency_ELEM:
+    if (!x->Competency)
+      x->Competency = (struct zx_hrxml_Competency_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_StartRank_ELEM:
+    if (!x->StartRank)
+      x->StartRank = el;
+    return 1;
+  case zx_hrxml_CurrentOrEndRank_ELEM:
+    if (!x->CurrentOrEndRank)
+      x->CurrentOrEndRank = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_CriterionName_ELEM:
+    if (!x->CriterionName)
+      x->CriterionName = el;
+    return 1;
+  case zx_hrxml_Requested_ELEM:
+    if (!x->Requested)
+      x->Requested = el;
+    return 1;
+  case zx_hrxml_Offered_ELEM:
+    if (!x->Offered)
+      x->Offered = el;
+    return 1;
+  case zx_hrxml_Score_ELEM:
+    if (!x->Score)
+      x->Score = (struct zx_hrxml_Score_s*)el;
+    return 1;
+  case zx_hrxml_Weight_ELEM:
+    if (!x->Weight)
+      x->Weight = (struct zx_hrxml_Weight_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+  case zx_hrxml_RankedResult_ELEM:
+    if (!x->RankedResult)
+      x->RankedResult = (struct zx_hrxml_RankedResult_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_RankedSearchResults_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_RankedSearchResults_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_RankedResult_ELEM:
+    if (!x->RankedResult)
+      x->RankedResult = (struct zx_hrxml_RankedResult_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_PersonName_ELEM:
+    if (!x->PersonName)
+      x->PersonName = (struct zx_hrxml_PersonName_s*)el;
+    return 1;
+  case zx_hrxml_AdditionalText_ELEM:
+    if (!x->AdditionalText)
+      x->AdditionalText = el;
+    return 1;
+  case zx_hrxml_Organization_ELEM:
+    if (!x->Organization)
+      x->Organization = (struct zx_hrxml_Organization_s*)el;
+    return 1;
+  case zx_hrxml_OrganizationName_ELEM:
+    if (!x->OrganizationName)
+      x->OrganizationName = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_PersonName_ELEM:
+    if (!x->PersonName)
+      x->PersonName = (struct zx_hrxml_PersonName_s*)el;
+    return 1;
+  case zx_hrxml_PositionTitle_ELEM:
+    if (!x->PositionTitle)
+      x->PositionTitle = el;
+    return 1;
+  case zx_hrxml_ContactMethod_ELEM:
+    if (!x->ContactMethod)
+      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Reference_ELEM:
+    if (!x->Reference)
+      x->Reference = (struct zx_hrxml_Reference_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_RelatedOrganization_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_relationship_ATTR:  x->relationship = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_RelatedOrganization_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_OrganizationName_ELEM:
+    if (!x->OrganizationName)
+      x->OrganizationName = el;
+    return 1;
+  case zx_hrxml_OrganizationId_ELEM:
+    if (!x->OrganizationId)
+      x->OrganizationId = (struct zx_hrxml_OrganizationId_s*)el;
+    return 1;
+  case zx_hrxml_TaxId_ELEM:
+    if (!x->TaxId)
+      x->TaxId = (struct zx_hrxml_TaxId_s*)el;
+    return 1;
+  case zx_hrxml_LegalId_ELEM:
+    if (!x->LegalId)
+      x->LegalId = (struct zx_hrxml_LegalId_s*)el;
+    return 1;
+  case zx_hrxml_DunsNumber_ELEM:
+    if (!x->DunsNumber)
+      x->DunsNumber = (struct zx_hrxml_DunsNumber_s*)el;
+    return 1;
+  case zx_hrxml_IsPublicCompany_ELEM:
+    if (!x->IsPublicCompany)
+      x->IsPublicCompany = el;
+    return 1;
+  case zx_hrxml_Stock_ELEM:
+    if (!x->Stock)
+      x->Stock = (struct zx_hrxml_Stock_s*)el;
+    return 1;
+  case zx_hrxml_MissionStatement_ELEM:
+    if (!x->MissionStatement)
+      x->MissionStatement = el;
+    return 1;
+  case zx_hrxml_ValueStatement_ELEM:
+    if (!x->ValueStatement)
+      x->ValueStatement = el;
+    return 1;
+  case zx_hrxml_InternetDomainName_ELEM:
+    if (!x->InternetDomainName)
+      x->InternetDomainName = (struct zx_hrxml_InternetDomainName_s*)el;
+    return 1;
+  case zx_hrxml_DoingBusinessAs_ELEM:
+    if (!x->DoingBusinessAs)
+      x->DoingBusinessAs = (struct zx_hrxml_DoingBusinessAs_s*)el;
+    return 1;
+  case zx_hrxml_LegalClassification_ELEM:
+    if (!x->LegalClassification)
+      x->LegalClassification = (struct zx_hrxml_LegalClassification_s*)el;
+    return 1;
+  case zx_hrxml_IndustryCode_ELEM:
+    if (!x->IndustryCode)
+      x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)el;
+    return 1;
+  case zx_hrxml_Headcount_ELEM:
+    if (!x->Headcount)
+      x->Headcount = el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+  case zx_hrxml_WorkSite_ELEM:
+    if (!x->WorkSite)
+      x->WorkSite = (struct zx_hrxml_WorkSite_s*)el;
+    return 1;
+  case zx_hrxml_ContactInfo_ELEM:
+    if (!x->ContactInfo)
+      x->ContactInfo = (struct zx_hrxml_ContactInfo_s*)el;
+    return 1;
+  case zx_hrxml_RelatedOrganization_ELEM:
+    if (!x->RelatedOrganization)
+      x->RelatedOrganization = (struct zx_hrxml_RelatedOrganization_s*)el;
+    return 1;
+  case zx_hrxml_OrganizationalUnit_ELEM:
+    if (!x->OrganizationalUnit)
+      x->OrganizationalUnit = (struct zx_hrxml_OrganizationalUnit_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_RelatedOrganizationalUnit_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_hierarchicalRole_ATTR:  x->hierarchicalRole = x->gg.attr; return 1;
+    case zx_natureOfRelationship_ATTR:  x->natureOfRelationship = x->gg.attr; return 1;
+    case zx_relationship_ATTR:  x->relationship = x->gg.attr; return 1;
+    case zx_typeOfGroup_ATTR:  x->typeOfGroup = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_RelatedOrganizationalUnit_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_OrganizationalUnitName_ELEM:
+    if (!x->OrganizationalUnitName)
+      x->OrganizationalUnitName = el;
+    return 1;
+  case zx_hrxml_OrganizationalUnitId_ELEM:
+    if (!x->OrganizationalUnitId)
+      x->OrganizationalUnitId = (struct zx_hrxml_OrganizationalUnitId_s*)el;
+    return 1;
+  case zx_hrxml_OrganizationId_ELEM:
+    if (!x->OrganizationId)
+      x->OrganizationId = (struct zx_hrxml_OrganizationId_s*)el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+  case zx_hrxml_IndustryCode_ELEM:
+    if (!x->IndustryCode)
+      x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)el;
+    return 1;
+  case zx_hrxml_AccountingCode_ELEM:
+    if (!x->AccountingCode)
+      x->AccountingCode = (struct zx_hrxml_AccountingCode_s*)el;
+    return 1;
+  case zx_hrxml_WorkSite_ELEM:
+    if (!x->WorkSite)
+      x->WorkSite = (struct zx_hrxml_WorkSite_s*)el;
+    return 1;
+  case zx_hrxml_RelatedOrganizationalUnit_ELEM:
+    if (!x->RelatedOrganizationalUnit)
+      x->RelatedOrganizationalUnit = (struct zx_hrxml_RelatedOrganizationalUnit_s*)el;
+    return 1;
+  case zx_hrxml_PersonMember_ELEM:
+    if (!x->PersonMember)
+      x->PersonMember = (struct zx_hrxml_PersonMember_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_RelatedPositionPostings_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_RelatedPositionPostings_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_PositionPosting_ELEM:
+    if (!x->PositionPosting)
+      x->PositionPosting = (struct zx_hrxml_PositionPosting_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_relocationConsidered_ATTR:  x->relocationConsidered = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_RelocationAssistance_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_companyOffered_ATTR:  x->companyOffered = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_RelocationAssistance_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_RemunerationPackage_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_RemunerationPackage_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_BasePay_ELEM:
+    if (!x->BasePay)
+      x->BasePay = (struct zx_hrxml_BasePay_s*)el;
+    return 1;
+  case zx_hrxml_OtherPay_ELEM:
+    if (!x->OtherPay)
+      x->OtherPay = (struct zx_hrxml_OtherPay_s*)el;
+    return 1;
+  case zx_hrxml_Benefits_ELEM:
+    if (!x->Benefits)
+      x->Benefits = (struct zx_hrxml_Benefits_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_ResumeId_ELEM:
+    if (!x->ResumeId)
+      x->ResumeId = el;
+    return 1;
+  case zx_hrxml_DistributionGuidelines_ELEM:
+    if (!x->DistributionGuidelines)
+      x->DistributionGuidelines = el;
+    return 1;
+  case zx_hrxml_StructuredXMLResume_ELEM:
+    if (!x->StructuredXMLResume)
+      x->StructuredXMLResume = (struct zx_hrxml_StructuredXMLResume_s*)el;
+    return 1;
+  case zx_hrxml_NonXMLResume_ELEM:
+    if (!x->NonXMLResume)
+      x->NonXMLResume = (struct zx_hrxml_NonXMLResume_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItem_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItem_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_EffectiveDate_ELEM:
+    if (!x->EffectiveDate)
+      x->EffectiveDate = (struct zx_hrxml_EffectiveDate_s*)el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItems_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItems_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_ResumeAdditionalItem_ELEM:
+    if (!x->ResumeAdditionalItem)
+      x->ResumeAdditionalItem = (struct zx_hrxml_ResumeAdditionalItem_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhysicalLocation_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhysicalLocation_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+  case zx_hrxml_SpatialLocation_ELEM:
+    if (!x->SpatialLocation)
+      x->SpatialLocation = (struct zx_hrxml_SpatialLocation_s*)el;
+    return 1;
+  case zx_hrxml_TravelDirections_ELEM:
+    if (!x->TravelDirections)
+      x->TravelDirections = (struct zx_hrxml_TravelDirections_s*)el;
+    return 1;
+  case zx_hrxml_Area_ELEM:
+    if (!x->Area)
+      x->Area = (struct zx_hrxml_Area_s*)el;
+    return 1;
+  case zx_hrxml_PostalAddress_ELEM:
+    if (!x->PostalAddress)
+      x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEquipment_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_suppliedByOrganization_ATTR:  x->suppliedByOrganization = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEquipment_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_InternetDomainName_ELEM:
+    if (!x->InternetDomainName)
+      x->InternetDomainName = (struct zx_hrxml_InternetDomainName_s*)el;
+    return 1;
+  case zx_hrxml_SchoolId_ELEM:
+    if (!x->SchoolId)
+      x->SchoolId = (struct zx_hrxml_SchoolId_s*)el;
+    return 1;
+  case zx_hrxml_SchoolName_ELEM:
+    if (!x->SchoolName)
+      x->SchoolName = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_SchoolOrInstitution_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_schoolType_ATTR:  x->schoolType = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_SchoolOrInstitution_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_SchoolName_ELEM:
+    if (!x->SchoolName)
+      x->SchoolName = el;
+    return 1;
+  case zx_hrxml_School_ELEM:
+    if (!x->School)
+      x->School = (struct zx_hrxml_School_s*)el;
+    return 1;
+  case zx_hrxml_LocationSummary_ELEM:
+    if (!x->LocationSummary)
+      x->LocationSummary = (struct zx_hrxml_LocationSummary_s*)el;
+    return 1;
+  case zx_hrxml_PostalAddress_ELEM:
+    if (!x->PostalAddress)
+      x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)el;
+    return 1;
+  case zx_hrxml_OrganizationUnit_ELEM:
+    if (!x->OrganizationUnit)
+      x->OrganizationUnit = (struct zx_hrxml_OrganizationUnit_s*)el;
+    return 1;
+  case zx_hrxml_Degree_ELEM:
+    if (!x->Degree)
+      x->Degree = (struct zx_hrxml_Degree_s*)el;
+    return 1;
+  case zx_hrxml_Major_ELEM:
+    if (!x->Major)
+      x->Major = el;
+    return 1;
+  case zx_hrxml_Minor_ELEM:
+    if (!x->Minor)
+      x->Minor = el;
+    return 1;
+  case zx_hrxml_Measure_ELEM:
+    if (!x->Measure)
+      x->Measure = (struct zx_hrxml_Measure_s*)el;
+    return 1;
+  case zx_hrxml_DatesOfAttendance_ELEM:
+    if (!x->DatesOfAttendance)
+      x->DatesOfAttendance = (struct zx_hrxml_DatesOfAttendance_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+  case zx_hrxml_ISCEDInstitutionClassification_ELEM:
+    if (!x->ISCEDInstitutionClassification)
+      x->ISCEDInstitutionClassification = el;
+    return 1;
+  case zx_hrxml_LocalInstitutionClassification_ELEM:
+    if (!x->LocalInstitutionClassification)
+      x->LocalInstitutionClassification = (struct zx_hrxml_LocalInstitutionClassification_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_unitOfMeasure_ATTR:  x->unitOfMeasure = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCriteria_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCriteria_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_SearchCriteriaId_ELEM:
+    if (!x->SearchCriteriaId)
+      x->SearchCriteriaId = (struct zx_hrxml_SearchCriteriaId_s*)el;
+    return 1;
+  case zx_hrxml_SearchTarget_ELEM:
+    if (!x->SearchTarget)
+      x->SearchTarget = el;
+    return 1;
+  case zx_hrxml_UserId_ELEM:
+    if (!x->UserId)
+      x->UserId = (struct zx_hrxml_UserId_s*)el;
+    return 1;
+  case zx_hrxml_SearchTimeStamp_ELEM:
+    if (!x->SearchTimeStamp)
+      x->SearchTimeStamp = el;
+    return 1;
+  case zx_hrxml_SearchString_ELEM:
+    if (!x->SearchString)
+      x->SearchString = el;
+    return 1;
+  case zx_hrxml_SearchCriterion_ELEM:
+    if (!x->SearchCriterion)
+      x->SearchCriterion = (struct zx_hrxml_SearchCriterion_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCriteriaId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCriteriaId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCriterion_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCriterion_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_CriterionName_ELEM:
+    if (!x->CriterionName)
+      x->CriterionName = el;
+    return 1;
+  case zx_hrxml_CriterionValue_ELEM:
+    if (!x->CriterionValue)
+      x->CriterionValue = el;
+    return 1;
+  case zx_hrxml_Weight_ELEM:
+    if (!x->Weight)
+      x->Weight = (struct zx_hrxml_Weight_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_SearchRelevanceScore_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_unitOfMeasure_ATTR:  x->unitOfMeasure = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_SearchRelevanceScore_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_SearchResultId_ELEM:
+    if (!x->SearchResultId)
+      x->SearchResultId = (struct zx_hrxml_SearchResultId_s*)el;
+    return 1;
+  case zx_hrxml_SearchTarget_ELEM:
+    if (!x->SearchTarget)
+      x->SearchTarget = el;
+    return 1;
+  case zx_hrxml_UserId_ELEM:
+    if (!x->UserId)
+      x->UserId = (struct zx_hrxml_UserId_s*)el;
+    return 1;
+  case zx_hrxml_SearchTimeStamp_ELEM:
+    if (!x->SearchTimeStamp)
+      x->SearchTimeStamp = el;
+    return 1;
+  case zx_hrxml_MatchedObjectId_ELEM:
+    if (!x->MatchedObjectId)
+      x->MatchedObjectId = (struct zx_hrxml_MatchedObjectId_s*)el;
+    return 1;
+  case zx_hrxml_SearchRelevanceScore_ELEM:
+    if (!x->SearchRelevanceScore)
+      x->SearchRelevanceScore = (struct zx_hrxml_SearchRelevanceScore_s*)el;
+    return 1;
+  case zx_hrxml_SearchRelevanceRank_ELEM:
+    if (!x->SearchRelevanceRank)
+      x->SearchRelevanceRank = el;
+    return 1;
+  case zx_hrxml_SearchResultCount_ELEM:
+    if (!x->SearchResultCount)
+      x->SearchResultCount = el;
+    return 1;
+  case zx_hrxml_RankedSearchResults_ELEM:
+    if (!x->RankedSearchResults)
+      x->RankedSearchResults = (struct zx_hrxml_RankedSearchResults_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResultId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResultId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_SecurityCredential_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_SecurityCredential_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_IssuingAuthority_ELEM:
+    if (!x->IssuingAuthority)
+      x->IssuingAuthority = (struct zx_hrxml_IssuingAuthority_s*)el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+  case zx_hrxml_EffectiveDate_ELEM:
+    if (!x->EffectiveDate)
+      x->EffectiveDate = (struct zx_hrxml_EffectiveDate_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_SecurityCredentials_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_SecurityCredentials_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_SecurityCredential_ELEM:
+    if (!x->SecurityCredential)
+      x->SecurityCredential = (struct zx_hrxml_SecurityCredential_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_branch_ATTR:  x->branch = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_UnitOrDivision_ELEM:
+    if (!x->UnitOrDivision)
+      x->UnitOrDivision = el;
+    return 1;
+  case zx_hrxml_RankAchieved_ELEM:
+    if (!x->RankAchieved)
+      x->RankAchieved = (struct zx_hrxml_RankAchieved_s*)el;
+    return 1;
+  case zx_hrxml_DatesOfService_ELEM:
+    if (!x->DatesOfService)
+      x->DatesOfService = (struct zx_hrxml_DatesOfService_s*)el;
+    return 1;
+  case zx_hrxml_Campaign_ELEM:
+    if (!x->Campaign)
+      x->Campaign = el;
+    return 1;
+  case zx_hrxml_AreaOfExpertise_ELEM:
+    if (!x->AreaOfExpertise)
+      x->AreaOfExpertise = el;
+    return 1;
+  case zx_hrxml_RecognitionAchieved_ELEM:
+    if (!x->RecognitionAchieved)
+      x->RecognitionAchieved = el;
+    return 1;
+  case zx_hrxml_DisciplinaryAction_ELEM:
+    if (!x->DisciplinaryAction)
+      x->DisciplinaryAction = el;
+    return 1;
+  case zx_hrxml_DischargeStatus_ELEM:
+    if (!x->DischargeStatus)
+      x->DischargeStatus = el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumber_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumber_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_shiftPeriod_ATTR:  x->shiftPeriod = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_Name_ELEM:
+    if (!x->Name)
+      x->Name = el;
+    return 1;
+  case zx_hrxml_Hours_ELEM:
+    if (!x->Hours)
+      x->Hours = el;
+    return 1;
+  case zx_hrxml_StartTime_ELEM:
+    if (!x->StartTime)
+      x->StartTime = el;
+    return 1;
+  case zx_hrxml_EndTime_ELEM:
+    if (!x->EndTime)
+      x->EndTime = el;
+    return 1;
+  case zx_hrxml_PayTypeHours_ELEM:
+    if (!x->PayTypeHours)
+      x->PayTypeHours = el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_StandardValue_ELEM:
+    if (!x->StandardValue)
+      x->StandardValue = el;
+    return 1;
+  case zx_hrxml_NonStandardValue_ELEM:
+    if (!x->NonStandardValue)
+      x->NonStandardValue = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLocation_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLocation_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Latitude_ELEM:
+    if (!x->Latitude)
+      x->Latitude = (struct zx_hrxml_Latitude_s*)el;
+    return 1;
+  case zx_hrxml_Longitude_ELEM:
+    if (!x->Longitude)
+      x->Longitude = (struct zx_hrxml_Longitude_s*)el;
+    return 1;
+  case zx_hrxml_Altitude_ELEM:
+    if (!x->Altitude)
+      x->Altitude = el;
+    return 1;
+  case zx_hrxml_AltitudeMeanSeaLevel_ELEM:
+    if (!x->AltitudeMeanSeaLevel)
+      x->AltitudeMeanSeaLevel = el;
+    return 1;
+  case zx_hrxml_HorizontalAccuracy_ELEM:
+    if (!x->HorizontalAccuracy)
+      x->HorizontalAccuracy = (struct zx_hrxml_HorizontalAccuracy_s*)el;
+    return 1;
+  case zx_hrxml_VerticalAccuracy_ELEM:
+    if (!x->VerticalAccuracy)
+      x->VerticalAccuracy = (struct zx_hrxml_VerticalAccuracy_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEvent_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_type_ATTR:  x->type = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEvent_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Title_ELEM:
+    if (!x->Title)
+      x->Title = el;
+    return 1;
+  case zx_hrxml_Role_ELEM:
+    if (!x->Role)
+      x->Role = el;
+    return 1;
+  case zx_hrxml_StartDate_ELEM:
+    if (!x->StartDate)
+      x->StartDate = (struct zx_hrxml_StartDate_s*)el;
+    return 1;
+  case zx_hrxml_EndDate_ELEM:
+    if (!x->EndDate)
+      x->EndDate = (struct zx_hrxml_EndDate_s*)el;
+    return 1;
+  case zx_hrxml_EventName_ELEM:
+    if (!x->EventName)
+      x->EventName = el;
+    return 1;
+  case zx_hrxml_EventType_ELEM:
+    if (!x->EventType)
+      x->EventType = el;
+    return 1;
+  case zx_hrxml_Location_ELEM:
+    if (!x->Location)
+      x->Location = el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+  case zx_hrxml_AffiliatedOrganization_ELEM:
+    if (!x->AffiliatedOrganization)
+      x->AffiliatedOrganization = el;
+    return 1;
+  case zx_hrxml_Link_ELEM:
+    if (!x->Link)
+      x->Link = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_SpeakingEventsHistory_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_SpeakingEventsHistory_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_SpeakingEvent_ELEM:
+    if (!x->SpeakingEvent)
+      x->SpeakingEvent = (struct zx_hrxml_SpeakingEvent_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrxml_SpecifiedCompetencyReference_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrxml_SpecifiedCompetencyReference_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_CompetencyId_ELEM:
+    if (!x->CompetencyId)
+      x->CompetencyId = (struct zx_hrxml_CompetencyId_s*)el;
+    return 1;
+  case zx_hrxml_ProficencyLevel_ELEM:
+    if (!x->ProficencyLevel)
+      x->ProficencyLevel = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_AnyDate_ELEM:
+    if (!x->AnyDate)
+      x->AnyDate = el;
+    return 1;
+  case zx_hrxml_YearMonth_ELEM:
+    if (!x->YearMonth)
+      x->YearMonth = el;
+    return 1;
+  case zx_hrxml_Year_ELEM:
+    if (!x->Year)
+      x->Year = el;
+    return 1;
+  case zx_hrxml_MonthDay_ELEM:
+    if (!x->MonthDay)
+      x->MonthDay = el;
+    return 1;
+  case zx_hrxml_StringDate_ELEM:
+    if (!x->StringDate)
+      x->StringDate = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_StartingCompensation_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_currency_ATTR:  x->currency = x->gg.attr; return 1;
+    case zx_intervalType_ATTR:  x->intervalType = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_StartingCompensation_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Id_ELEM:
+    if (!x->Id)
+      x->Id = (struct zx_hrxml_Id_s*)el;
+    return 1;
+  case zx_hrxml_Symbol_ELEM:
+    if (!x->Symbol)
+      x->Symbol = el;
+    return 1;
+  case zx_hrxml_Exchange_ELEM:
+    if (!x->Exchange)
+      x->Exchange = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_description_ATTR:  x->description = x->gg.attr; return 1;
+    case zx_maxValue_ATTR:  x->maxValue = x->gg.attr; return 1;
+    case zx_minValue_ATTR:  x->minValue = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_StructuredXMLResume_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_StructuredXMLResume_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_ContactInfo_ELEM:
+    if (!x->ContactInfo)
+      x->ContactInfo = (struct zx_hrxml_ContactInfo_s*)el;
+    return 1;
+  case zx_hrxml_ExecutiveSummary_ELEM:
+    if (!x->ExecutiveSummary)
+      x->ExecutiveSummary = el;
+    return 1;
+  case zx_hrxml_Objective_ELEM:
+    if (!x->Objective)
+      x->Objective = el;
+    return 1;
+  case zx_hrxml_EmploymentHistory_ELEM:
+    if (!x->EmploymentHistory)
+      x->EmploymentHistory = (struct zx_hrxml_EmploymentHistory_s*)el;
+    return 1;
+  case zx_hrxml_EducationHistory_ELEM:
+    if (!x->EducationHistory)
+      x->EducationHistory = (struct zx_hrxml_EducationHistory_s*)el;
+    return 1;
+  case zx_hrxml_LicensesAndCertifications_ELEM:
+    if (!x->LicensesAndCertifications)
+      x->LicensesAndCertifications = (struct zx_hrxml_LicensesAndCertifications_s*)el;
+    return 1;
+  case zx_hrxml_MilitaryHistory_ELEM:
+    if (!x->MilitaryHistory)
+      x->MilitaryHistory = (struct zx_hrxml_MilitaryHistory_s*)el;
+    return 1;
+  case zx_hrxml_PatentHistory_ELEM:
+    if (!x->PatentHistory)
+      x->PatentHistory = (struct zx_hrxml_PatentHistory_s*)el;
+    return 1;
+  case zx_hrxml_PublicationHistory_ELEM:
+    if (!x->PublicationHistory)
+      x->PublicationHistory = (struct zx_hrxml_PublicationHistory_s*)el;
+    return 1;
+  case zx_hrxml_SpeakingEventsHistory_ELEM:
+    if (!x->SpeakingEventsHistory)
+      x->SpeakingEventsHistory = (struct zx_hrxml_SpeakingEventsHistory_s*)el;
+    return 1;
+  case zx_hrxml_Qualifications_ELEM:
+    if (!x->Qualifications)
+      x->Qualifications = (struct zx_hrxml_Qualifications_s*)el;
+    return 1;
+  case zx_hrxml_Languages_ELEM:
+    if (!x->Languages)
+      x->Languages = (struct zx_hrxml_Languages_s*)el;
+    return 1;
+  case zx_hrxml_Achievements_ELEM:
+    if (!x->Achievements)
+      x->Achievements = (struct zx_hrxml_Achievements_s*)el;
+    return 1;
+  case zx_hrxml_Associations_ELEM:
+    if (!x->Associations)
+      x->Associations = (struct zx_hrxml_Associations_s*)el;
+    return 1;
+  case zx_hrxml_References_ELEM:
+    if (!x->References)
+      x->References = (struct zx_hrxml_References_s*)el;
+    return 1;
+  case zx_hrxml_SecurityCredentials_ELEM:
+    if (!x->SecurityCredentials)
+      x->SecurityCredentials = (struct zx_hrxml_SecurityCredentials_s*)el;
+    return 1;
+  case zx_hrxml_ResumeAdditionalItems_ELEM:
+    if (!x->ResumeAdditionalItems)
+      x->ResumeAdditionalItems = (struct zx_hrxml_ResumeAdditionalItems_s*)el;
+    return 1;
+  case zx_hrxml_SupportingMaterials_ELEM:
+    if (!x->SupportingMaterials)
+      x->SupportingMaterials = (struct zx_hrxml_SupportingMaterials_s*)el;
+    return 1;
+  case zx_hrxml_ProfessionalAssociations_ELEM:
+    if (!x->ProfessionalAssociations)
+      x->ProfessionalAssociations = (struct zx_hrxml_ProfessionalAssociations_s*)el;
+    return 1;
+  case zx_hrxml_Comments_ELEM:
+    if (!x->Comments)
+      x->Comments = el;
+    return 1;
+  case zx_hrxml_RevisionDate_ELEM:
+    if (!x->RevisionDate)
+      x->RevisionDate = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_SupportingMaterials_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_SupportingMaterials_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Link_ELEM:
+    if (!x->Link)
+      x->Link = el;
+    return 1;
+  case zx_hrxml_AttachmentReference_ELEM:
+    if (!x->AttachmentReference)
+      x->AttachmentReference = (struct zx_hrxml_AttachmentReference_s*)el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_FormattedNumber_ELEM:
+    if (!x->FormattedNumber)
+      x->FormattedNumber = el;
+    return 1;
+
+  default: return 0;
+  }
+}
 
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_AccountingCode
-#define EL_STRUCT zx_hrxml_AccountingCode_s
-#define EL_NS     hrxml
-#define EL_TAG    AccountingCode
-
-/* FUNC(zx_DEC_hrxml_AccountingCode) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_AccountingCode_s* zx_DEC_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingCode_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_description_ATTR:  x->description = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Achievement
-#define EL_STRUCT zx_hrxml_Achievement_s
-#define EL_NS     hrxml
-#define EL_TAG    Achievement
-
-/* FUNC(zx_DEC_hrxml_Achievement) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Achievement_s* zx_DEC_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Date_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Date)
-              x->Date = el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-          case zx_hrxml_IssuingAuthority_ELEM:
-            zx_DEC_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)el);
-            if (!x->IssuingAuthority)
-              x->IssuingAuthority = (struct zx_hrxml_IssuingAuthority_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Achievements
-#define EL_STRUCT zx_hrxml_Achievements_s
-#define EL_NS     hrxml
-#define EL_TAG    Achievements
-
-/* FUNC(zx_DEC_hrxml_Achievements) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Achievements_s* zx_DEC_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Achievement_ELEM:
-            zx_DEC_hrxml_Achievement(c, (struct zx_hrxml_Achievement_s*)el);
-            if (!x->Achievement)
-              x->Achievement = (struct zx_hrxml_Achievement_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_AffirmativeActionPlanJobGroupId
-#define EL_STRUCT zx_hrxml_AffirmativeActionPlanJobGroupId_s
-#define EL_NS     hrxml
-#define EL_TAG    AffirmativeActionPlanJobGroupId
-
-/* FUNC(zx_DEC_hrxml_AffirmativeActionPlanJobGroupId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* zx_DEC_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Affix
-#define EL_STRUCT zx_hrxml_Affix_s
-#define EL_NS     hrxml
-#define EL_TAG    Affix
-
-/* FUNC(zx_DEC_hrxml_Affix) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Affix_s* zx_DEC_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_AlternateScript
-#define EL_STRUCT zx_hrxml_AlternateScript_s
-#define EL_NS     hrxml
-#define EL_TAG    AlternateScript
-
-/* FUNC(zx_DEC_hrxml_AlternateScript) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_AlternateScript_s* zx_DEC_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateScript_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_script_ATTR:  x->script = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_FormattedName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->FormattedName)
-              x->FormattedName = el;
-            break;
-          case zx_hrxml_LegalName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->LegalName)
-              x->LegalName = el;
-            break;
-          case zx_hrxml_GivenName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->GivenName)
-              x->GivenName = el;
-            break;
-          case zx_hrxml_PreferredGivenName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PreferredGivenName)
-              x->PreferredGivenName = el;
-            break;
-          case zx_hrxml_MiddleName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MiddleName)
-              x->MiddleName = el;
-            break;
-          case zx_hrxml_FamilyName_ELEM:
-            zx_DEC_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)el);
-            if (!x->FamilyName)
-              x->FamilyName = (struct zx_hrxml_FamilyName_s*)el;
-            break;
-          case zx_hrxml_Affix_ELEM:
-            zx_DEC_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)el);
-            if (!x->Affix)
-              x->Affix = (struct zx_hrxml_Affix_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Area
-#define EL_STRUCT zx_hrxml_Area_s
-#define EL_NS     hrxml
-#define EL_TAG    Area
-
-/* FUNC(zx_DEC_hrxml_Area) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Area_s* zx_DEC_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Value_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Value)
-              x->Value = el;
-            break;
-          case zx_hrxml_Area_ELEM:
-            zx_DEC_hrxml_Area(c, (struct zx_hrxml_Area_s*)el);
-            if (!x->Area)
-              x->Area = (struct zx_hrxml_Area_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Article
-#define EL_STRUCT zx_hrxml_Article_s
-#define EL_NS     hrxml
-#define EL_TAG    Article
-
-/* FUNC(zx_DEC_hrxml_Article) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Article_s* zx_DEC_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Title_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Title)
-              x->Title = el;
-            break;
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-          case zx_hrxml_PublicationDate_ELEM:
-            zx_DEC_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)el);
-            if (!x->PublicationDate)
-              x->PublicationDate = (struct zx_hrxml_PublicationDate_s*)el;
-            break;
-          case zx_hrxml_Link_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Link)
-              x->Link = el;
-            break;
-          case zx_hrxml_Abstract_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Abstract)
-              x->Abstract = el;
-            break;
-          case zx_hrxml_Copyright_ELEM:
-            zx_DEC_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)el);
-            if (!x->Copyright)
-              x->Copyright = (struct zx_hrxml_Copyright_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-          case zx_hrxml_JournalOrSerialName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->JournalOrSerialName)
-              x->JournalOrSerialName = el;
-            break;
-          case zx_hrxml_ISSN_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ISSN)
-              x->ISSN = el;
-            break;
-          case zx_hrxml_Volume_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Volume)
-              x->Volume = el;
-            break;
-          case zx_hrxml_Issue_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Issue)
-              x->Issue = el;
-            break;
-          case zx_hrxml_PageNumber_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PageNumber)
-              x->PageNumber = el;
-            break;
-          case zx_hrxml_PublicationLanguage_ELEM:
-            zx_DEC_hrxml_PublicationLanguage(c, (struct zx_hrxml_PublicationLanguage_s*)el);
-            if (!x->PublicationLanguage)
-              x->PublicationLanguage = (struct zx_hrxml_PublicationLanguage_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Association
-#define EL_STRUCT zx_hrxml_Association_s
-#define EL_NS     hrxml
-#define EL_TAG    Association
-
-/* FUNC(zx_DEC_hrxml_Association) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Association_s* zx_DEC_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_Link_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Link)
-              x->Link = el;
-            break;
-          case zx_hrxml_StartDate_ELEM:
-            zx_DEC_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)el);
-            if (!x->StartDate)
-              x->StartDate = (struct zx_hrxml_StartDate_s*)el;
-            break;
-          case zx_hrxml_EndDate_ELEM:
-            zx_DEC_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)el);
-            if (!x->EndDate)
-              x->EndDate = (struct zx_hrxml_EndDate_s*)el;
-            break;
-          case zx_hrxml_Role_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Role)
-              x->Role = el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Associations
-#define EL_STRUCT zx_hrxml_Associations_s
-#define EL_NS     hrxml
-#define EL_TAG    Associations
-
-/* FUNC(zx_DEC_hrxml_Associations) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Associations_s* zx_DEC_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Association_ELEM:
-            zx_DEC_hrxml_Association(c, (struct zx_hrxml_Association_s*)el);
-            if (!x->Association)
-              x->Association = (struct zx_hrxml_Association_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_AttachmentReference
-#define EL_STRUCT zx_hrxml_AttachmentReference_s
-#define EL_NS     hrxml
-#define EL_TAG    AttachmentReference
-
-/* FUNC(zx_DEC_hrxml_AttachmentReference) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_AttachmentReference_s* zx_DEC_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_AttachmentReference_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_context_ATTR:  x->context = x->gg.attr; break;
-    case zx_mimeType_ATTR:  x->mimeType = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_AvailabilityDates
-#define EL_STRUCT zx_hrxml_AvailabilityDates_s
-#define EL_NS     hrxml
-#define EL_TAG    AvailabilityDates
-
-/* FUNC(zx_DEC_hrxml_AvailabilityDates) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_AvailabilityDates_s* zx_DEC_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_AvailabilityDates_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_StartDate_ELEM:
-            zx_DEC_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)el);
-            if (!x->StartDate)
-              x->StartDate = (struct zx_hrxml_StartDate_s*)el;
-            break;
-          case zx_hrxml_EndDate_ELEM:
-            zx_DEC_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)el);
-            if (!x->EndDate)
-              x->EndDate = (struct zx_hrxml_EndDate_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_AvailabilityInfo
-#define EL_STRUCT zx_hrxml_AvailabilityInfo_s
-#define EL_NS     hrxml
-#define EL_TAG    AvailabilityInfo
-
-/* FUNC(zx_DEC_hrxml_AvailabilityInfo) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_AvailabilityInfo_s* zx_DEC_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_AvailabilityInfo_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_AvailabilityDates_ELEM:
-            zx_DEC_hrxml_AvailabilityDates(c, (struct zx_hrxml_AvailabilityDates_s*)el);
-            if (!x->AvailabilityDates)
-              x->AvailabilityDates = (struct zx_hrxml_AvailabilityDates_s*)el;
-            break;
-          case zx_hrxml_TermOfNotice_ELEM:
-            zx_DEC_hrxml_TermOfNotice(c, (struct zx_hrxml_TermOfNotice_s*)el);
-            if (!x->TermOfNotice)
-              x->TermOfNotice = (struct zx_hrxml_TermOfNotice_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_BKZClassification
-#define EL_STRUCT zx_hrxml_BKZClassification_s
-#define EL_NS     hrxml
-#define EL_TAG    BKZClassification
-
-/* FUNC(zx_DEC_hrxml_BKZClassification) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_BKZClassification_s* zx_DEC_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClassification_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_BKZId_ELEM:
-            zx_DEC_hrxml_BKZId(c, (struct zx_hrxml_BKZId_s*)el);
-            if (!x->BKZId)
-              x->BKZId = (struct zx_hrxml_BKZId_s*)el;
-            break;
-          case zx_hrxml_BKZName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->BKZName)
-              x->BKZName = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_BKZId
-#define EL_STRUCT zx_hrxml_BKZId_s
-#define EL_NS     hrxml
-#define EL_TAG    BKZId
-
-/* FUNC(zx_DEC_hrxml_BKZId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_BKZId_s* zx_DEC_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_BasePay
-#define EL_STRUCT zx_hrxml_BasePay_s
-#define EL_NS     hrxml
-#define EL_TAG    BasePay
-
-/* FUNC(zx_DEC_hrxml_BasePay) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_BasePay_s* zx_DEC_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_baseInterval_ATTR:  x->baseInterval = x->gg.attr; break;
-    case zx_currencyCode_ATTR:  x->currencyCode = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_BasePayAmountMin_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->BasePayAmountMin)
-              x->BasePayAmountMin = el;
-            break;
-          case zx_hrxml_BasePayAmountMax_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->BasePayAmountMax)
-              x->BasePayAmountMax = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Benefits
-#define EL_STRUCT zx_hrxml_Benefits_s
-#define EL_NS     hrxml
-#define EL_TAG    Benefits
-
-/* FUNC(zx_DEC_hrxml_Benefits) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Benefits_s* zx_DEC_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Insurance_ELEM:
-            zx_DEC_hrxml_Insurance(c, (struct zx_hrxml_Insurance_s*)el);
-            if (!x->Insurance)
-              x->Insurance = (struct zx_hrxml_Insurance_s*)el;
-            break;
-          case zx_hrxml_RetirementOrSavingsPlan_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->RetirementOrSavingsPlan)
-              x->RetirementOrSavingsPlan = el;
-            break;
-          case zx_hrxml_CompanyVehicle_ELEM:
-            zx_DEC_hrxml_CompanyVehicle(c, (struct zx_hrxml_CompanyVehicle_s*)el);
-            if (!x->CompanyVehicle)
-              x->CompanyVehicle = (struct zx_hrxml_CompanyVehicle_s*)el;
-            break;
-          case zx_hrxml_RelocationAssistance_ELEM:
-            zx_DEC_hrxml_RelocationAssistance(c, (struct zx_hrxml_RelocationAssistance_s*)el);
-            if (!x->RelocationAssistance)
-              x->RelocationAssistance = (struct zx_hrxml_RelocationAssistance_s*)el;
-            break;
-          case zx_hrxml_VisaSponsorship_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->VisaSponsorship)
-              x->VisaSponsorship = el;
-            break;
-          case zx_hrxml_TimeOffAllowance_ELEM:
-            zx_DEC_hrxml_TimeOffAllowance(c, (struct zx_hrxml_TimeOffAllowance_s*)el);
-            if (!x->TimeOffAllowance)
-              x->TimeOffAllowance = (struct zx_hrxml_TimeOffAllowance_s*)el;
-            break;
-          case zx_hrxml_ExpatriateBenefits_ELEM:
-            zx_DEC_hrxml_ExpatriateBenefits(c, (struct zx_hrxml_ExpatriateBenefits_s*)el);
-            if (!x->ExpatriateBenefits)
-              x->ExpatriateBenefits = (struct zx_hrxml_ExpatriateBenefits_s*)el;
-            break;
-          case zx_hrxml_OtherBenefits_ELEM:
-            zx_DEC_hrxml_OtherBenefits(c, (struct zx_hrxml_OtherBenefits_s*)el);
-            if (!x->OtherBenefits)
-              x->OtherBenefits = (struct zx_hrxml_OtherBenefits_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_BiologicalDescriptors
-#define EL_STRUCT zx_hrxml_BiologicalDescriptors_s
-#define EL_NS     hrxml
-#define EL_TAG    BiologicalDescriptors
-
-/* FUNC(zx_DEC_hrxml_BiologicalDescriptors) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_BiologicalDescriptors_s* zx_DEC_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_BiologicalDescriptors_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_DateOfBirth_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->DateOfBirth)
-              x->DateOfBirth = el;
-            break;
-          case zx_hrxml_MonthDayOfBirth_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MonthDayOfBirth)
-              x->MonthDayOfBirth = el;
-            break;
-          case zx_hrxml_Age_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Age)
-              x->Age = el;
-            break;
-          case zx_hrxml_GenderCode_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->GenderCode)
-              x->GenderCode = el;
-            break;
-          case zx_hrxml_EyeColor_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->EyeColor)
-              x->EyeColor = el;
-            break;
-          case zx_hrxml_HairColor_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->HairColor)
-              x->HairColor = el;
-            break;
-          case zx_hrxml_Height_ELEM:
-            zx_DEC_hrxml_Height(c, (struct zx_hrxml_Height_s*)el);
-            if (!x->Height)
-              x->Height = (struct zx_hrxml_Height_s*)el;
-            break;
-          case zx_hrxml_Weight_ELEM:
-            zx_DEC_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)el);
-            if (!x->Weight)
-              x->Weight = (struct zx_hrxml_Weight_s*)el;
-            break;
-          case zx_hrxml_IdentifyingMarks_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->IdentifyingMarks)
-              x->IdentifyingMarks = el;
-            break;
-          case zx_hrxml_DisabilityInfo_ELEM:
-            zx_DEC_hrxml_DisabilityInfo(c, (struct zx_hrxml_DisabilityInfo_s*)el);
-            if (!x->DisabilityInfo)
-              x->DisabilityInfo = (struct zx_hrxml_DisabilityInfo_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Book
-#define EL_STRUCT zx_hrxml_Book_s
-#define EL_NS     hrxml
-#define EL_TAG    Book
-
-/* FUNC(zx_DEC_hrxml_Book) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Book_s* zx_DEC_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Title_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Title)
-              x->Title = el;
-            break;
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-          case zx_hrxml_PublicationDate_ELEM:
-            zx_DEC_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)el);
-            if (!x->PublicationDate)
-              x->PublicationDate = (struct zx_hrxml_PublicationDate_s*)el;
-            break;
-          case zx_hrxml_Link_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Link)
-              x->Link = el;
-            break;
-          case zx_hrxml_Abstract_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Abstract)
-              x->Abstract = el;
-            break;
-          case zx_hrxml_Copyright_ELEM:
-            zx_DEC_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)el);
-            if (!x->Copyright)
-              x->Copyright = (struct zx_hrxml_Copyright_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-          case zx_hrxml_Edition_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Edition)
-              x->Edition = el;
-            break;
-          case zx_hrxml_Chapter_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Chapter)
-              x->Chapter = el;
-            break;
-          case zx_hrxml_ISSN_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ISSN)
-              x->ISSN = el;
-            break;
-          case zx_hrxml_ISBN_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ISBN)
-              x->ISBN = el;
-            break;
-          case zx_hrxml_NumberOfPages_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->NumberOfPages)
-              x->NumberOfPages = el;
-            break;
-          case zx_hrxml_PublisherName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PublisherName)
-              x->PublisherName = el;
-            break;
-          case zx_hrxml_PublisherLocation_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PublisherLocation)
-              x->PublisherLocation = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Candidate
-#define EL_STRUCT zx_hrxml_Candidate_s
-#define EL_NS     hrxml
-#define EL_TAG    Candidate
-
-/* FUNC(zx_DEC_hrxml_Candidate) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Candidate_s* zx_DEC_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_CandidateRecordInfo_ELEM:
-            zx_DEC_hrxml_CandidateRecordInfo(c, (struct zx_hrxml_CandidateRecordInfo_s*)el);
-            if (!x->CandidateRecordInfo)
-              x->CandidateRecordInfo = (struct zx_hrxml_CandidateRecordInfo_s*)el;
-            break;
-          case zx_hrxml_RelatedPositionPostings_ELEM:
-            zx_DEC_hrxml_RelatedPositionPostings(c, (struct zx_hrxml_RelatedPositionPostings_s*)el);
-            if (!x->RelatedPositionPostings)
-              x->RelatedPositionPostings = (struct zx_hrxml_RelatedPositionPostings_s*)el;
-            break;
-          case zx_hrxml_CandidateSupplier_ELEM:
-            zx_DEC_hrxml_CandidateSupplier(c, (struct zx_hrxml_CandidateSupplier_s*)el);
-            if (!x->CandidateSupplier)
-              x->CandidateSupplier = (struct zx_hrxml_CandidateSupplier_s*)el;
-            break;
-          case zx_hrxml_DistributionGuidelines_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->DistributionGuidelines)
-              x->DistributionGuidelines = el;
-            break;
-          case zx_hrxml_CandidateProfile_ELEM:
-            zx_DEC_hrxml_CandidateProfile(c, (struct zx_hrxml_CandidateProfile_s*)el);
-            if (!x->CandidateProfile)
-              x->CandidateProfile = (struct zx_hrxml_CandidateProfile_s*)el;
-            break;
-          case zx_hrxml_Resume_ELEM:
-            zx_DEC_hrxml_Resume(c, (struct zx_hrxml_Resume_s*)el);
-            if (!x->Resume)
-              x->Resume = (struct zx_hrxml_Resume_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_CandidateProfile
-#define EL_STRUCT zx_hrxml_CandidateProfile_s
-#define EL_NS     hrxml
-#define EL_TAG    CandidateProfile
-
-/* FUNC(zx_DEC_hrxml_CandidateProfile) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_CandidateProfile_s* zx_DEC_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_CandidateProfile_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_ProfileId_ELEM:
-            zx_DEC_hrxml_ProfileId(c, (struct zx_hrxml_ProfileId_s*)el);
-            if (!x->ProfileId)
-              x->ProfileId = (struct zx_hrxml_ProfileId_s*)el;
-            break;
-          case zx_hrxml_ProfileName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ProfileName)
-              x->ProfileName = el;
-            break;
-          case zx_hrxml_AvailabilityInfo_ELEM:
-            zx_DEC_hrxml_AvailabilityInfo(c, (struct zx_hrxml_AvailabilityInfo_s*)el);
-            if (!x->AvailabilityInfo)
-              x->AvailabilityInfo = (struct zx_hrxml_AvailabilityInfo_s*)el;
-            break;
-          case zx_hrxml_DistributionGuidelines_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->DistributionGuidelines)
-              x->DistributionGuidelines = el;
-            break;
-          case zx_hrxml_PersonalData_ELEM:
-            zx_DEC_hrxml_PersonalData(c, (struct zx_hrxml_PersonalData_s*)el);
-            if (!x->PersonalData)
-              x->PersonalData = (struct zx_hrxml_PersonalData_s*)el;
-            break;
-          case zx_hrxml_PreferredPosition_ELEM:
-            zx_DEC_hrxml_PreferredPosition(c, (struct zx_hrxml_PreferredPosition_s*)el);
-            if (!x->PreferredPosition)
-              x->PreferredPosition = (struct zx_hrxml_PreferredPosition_s*)el;
-            break;
-          case zx_hrxml_EmploymentHistory_ELEM:
-            zx_DEC_hrxml_EmploymentHistory(c, (struct zx_hrxml_EmploymentHistory_s*)el);
-            if (!x->EmploymentHistory)
-              x->EmploymentHistory = (struct zx_hrxml_EmploymentHistory_s*)el;
-            break;
-          case zx_hrxml_EducationHistory_ELEM:
-            zx_DEC_hrxml_EducationHistory(c, (struct zx_hrxml_EducationHistory_s*)el);
-            if (!x->EducationHistory)
-              x->EducationHistory = (struct zx_hrxml_EducationHistory_s*)el;
-            break;
-          case zx_hrxml_MilitaryHistory_ELEM:
-            zx_DEC_hrxml_MilitaryHistory(c, (struct zx_hrxml_MilitaryHistory_s*)el);
-            if (!x->MilitaryHistory)
-              x->MilitaryHistory = (struct zx_hrxml_MilitaryHistory_s*)el;
-            break;
-          case zx_hrxml_Associations_ELEM:
-            zx_DEC_hrxml_Associations(c, (struct zx_hrxml_Associations_s*)el);
-            if (!x->Associations)
-              x->Associations = (struct zx_hrxml_Associations_s*)el;
-            break;
-          case zx_hrxml_SupportingMaterials_ELEM:
-            zx_DEC_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)el);
-            if (!x->SupportingMaterials)
-              x->SupportingMaterials = (struct zx_hrxml_SupportingMaterials_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_CandidateRecordInfo
-#define EL_STRUCT zx_hrxml_CandidateRecordInfo_s
-#define EL_NS     hrxml
-#define EL_TAG    CandidateRecordInfo
-
-/* FUNC(zx_DEC_hrxml_CandidateRecordInfo) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_CandidateRecordInfo_s* zx_DEC_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_CandidateRecordInfo_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_Status_ELEM:
-            zx_DEC_hrxml_Status(c, (struct zx_hrxml_Status_s*)el);
-            if (!x->Status)
-              x->Status = (struct zx_hrxml_Status_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_CandidateSupplier
-#define EL_STRUCT zx_hrxml_CandidateSupplier_s
-#define EL_NS     hrxml
-#define EL_TAG    CandidateSupplier
-
-/* FUNC(zx_DEC_hrxml_CandidateSupplier) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_CandidateSupplier_s* zx_DEC_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_CandidateSupplier_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_relationship_ATTR:  x->relationship = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_SupplierId_ELEM:
-            zx_DEC_hrxml_SupplierId(c, (struct zx_hrxml_SupplierId_s*)el);
-            if (!x->SupplierId)
-              x->SupplierId = (struct zx_hrxml_SupplierId_s*)el;
-            break;
-          case zx_hrxml_EntityName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->EntityName)
-              x->EntityName = el;
-            break;
-          case zx_hrxml_ContactName_ELEM:
-            zx_DEC_hrxml_ContactName(c, (struct zx_hrxml_ContactName_s*)el);
-            if (!x->ContactName)
-              x->ContactName = (struct zx_hrxml_ContactName_s*)el;
-            break;
-          case zx_hrxml_ContactMethod_ELEM:
-            zx_DEC_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)el);
-            if (!x->ContactMethod)
-              x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
-            break;
-          case zx_hrxml_SourceType_ELEM:
-            zx_DEC_hrxml_SourceType(c, (struct zx_hrxml_SourceType_s*)el);
-            if (!x->SourceType)
-              x->SourceType = (struct zx_hrxml_SourceType_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ChildrenInfo
-#define EL_STRUCT zx_hrxml_ChildrenInfo_s
-#define EL_NS     hrxml
-#define EL_TAG    ChildrenInfo
-
-/* FUNC(zx_DEC_hrxml_ChildrenInfo) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ChildrenInfo_s* zx_DEC_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_NumberOfChildren_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->NumberOfChildren)
-              x->NumberOfChildren = el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ClassRank
-#define EL_STRUCT zx_hrxml_ClassRank_s
-#define EL_NS     hrxml
-#define EL_TAG    ClassRank
-
-/* FUNC(zx_DEC_hrxml_ClassRank) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ClassRank_s* zx_DEC_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_numberOfStudents_ATTR:  x->numberOfStudents = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Commute
-#define EL_STRUCT zx_hrxml_Commute_s
-#define EL_NS     hrxml
-#define EL_TAG    Commute
-
-/* FUNC(zx_DEC_hrxml_Commute) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Commute_s* zx_DEC_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_TimeMax_ELEM:
-            zx_DEC_hrxml_TimeMax(c, (struct zx_hrxml_TimeMax_s*)el);
-            if (!x->TimeMax)
-              x->TimeMax = (struct zx_hrxml_TimeMax_s*)el;
-            break;
-          case zx_hrxml_DistanceMax_ELEM:
-            zx_DEC_hrxml_DistanceMax(c, (struct zx_hrxml_DistanceMax_s*)el);
-            if (!x->DistanceMax)
-              x->DistanceMax = (struct zx_hrxml_DistanceMax_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Company
-#define EL_STRUCT zx_hrxml_Company_s
-#define EL_NS     hrxml
-#define EL_TAG    Company
-
-/* FUNC(zx_DEC_hrxml_Company) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Company_s* zx_DEC_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_CompanyVehicle
-#define EL_STRUCT zx_hrxml_CompanyVehicle_s
-#define EL_NS     hrxml
-#define EL_TAG    CompanyVehicle
-
-/* FUNC(zx_DEC_hrxml_CompanyVehicle) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_CompanyVehicle_s* zx_DEC_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehicle_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_companyOffered_ATTR:  x->companyOffered = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Compensation
-#define EL_STRUCT zx_hrxml_Compensation_s
-#define EL_NS     hrxml
-#define EL_TAG    Compensation
-
-/* FUNC(zx_DEC_hrxml_Compensation) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Compensation_s* zx_DEC_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_StartingCompensation_ELEM:
-            zx_DEC_hrxml_StartingCompensation(c, (struct zx_hrxml_StartingCompensation_s*)el);
-            if (!x->StartingCompensation)
-              x->StartingCompensation = (struct zx_hrxml_StartingCompensation_s*)el;
-            break;
-          case zx_hrxml_EndingCompensation_ELEM:
-            zx_DEC_hrxml_EndingCompensation(c, (struct zx_hrxml_EndingCompensation_s*)el);
-            if (!x->EndingCompensation)
-              x->EndingCompensation = (struct zx_hrxml_EndingCompensation_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-          case zx_hrxml_OtherCompensation_ELEM:
-            zx_DEC_hrxml_OtherCompensation(c, (struct zx_hrxml_OtherCompensation_s*)el);
-            if (!x->OtherCompensation)
-              x->OtherCompensation = (struct zx_hrxml_OtherCompensation_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Competency
-#define EL_STRUCT zx_hrxml_Competency_s
-#define EL_NS     hrxml
-#define EL_TAG    Competency
-
-/* FUNC(zx_DEC_hrxml_Competency) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Competency_s* zx_DEC_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_description_ATTR:  x->description = x->gg.attr; break;
-    case zx_name_ATTR:  x->name = x->gg.attr; break;
-    case zx_required_ATTR:  x->required = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_CompetencyId_ELEM:
-            zx_DEC_hrxml_CompetencyId(c, (struct zx_hrxml_CompetencyId_s*)el);
-            if (!x->CompetencyId)
-              x->CompetencyId = (struct zx_hrxml_CompetencyId_s*)el;
-            break;
-          case zx_hrxml_TaxonomyId_ELEM:
-            zx_DEC_hrxml_TaxonomyId(c, (struct zx_hrxml_TaxonomyId_s*)el);
-            if (!x->TaxonomyId)
-              x->TaxonomyId = (struct zx_hrxml_TaxonomyId_s*)el;
-            break;
-          case zx_hrxml_CompetencyEvidence_ELEM:
-            zx_DEC_hrxml_CompetencyEvidence(c, (struct zx_hrxml_CompetencyEvidence_s*)el);
-            if (!x->CompetencyEvidence)
-              x->CompetencyEvidence = (struct zx_hrxml_CompetencyEvidence_s*)el;
-            break;
-          case zx_hrxml_CompetencyWeight_ELEM:
-            zx_DEC_hrxml_CompetencyWeight(c, (struct zx_hrxml_CompetencyWeight_s*)el);
-            if (!x->CompetencyWeight)
-              x->CompetencyWeight = (struct zx_hrxml_CompetencyWeight_s*)el;
-            break;
-          case zx_hrxml_Competency_ELEM:
-            zx_DEC_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)el);
-            if (!x->Competency)
-              x->Competency = (struct zx_hrxml_Competency_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_CompetencyEvidence
-#define EL_STRUCT zx_hrxml_CompetencyEvidence_s
-#define EL_NS     hrxml
-#define EL_TAG    CompetencyEvidence
-
-/* FUNC(zx_DEC_hrxml_CompetencyEvidence) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_CompetencyEvidence_s* zx_DEC_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_CompetencyEvidence_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_dateOfIncident_ATTR:  x->dateOfIncident = x->gg.attr; break;
-    case zx_expirationDate_ATTR:  x->expirationDate = x->gg.attr; break;
-    case zx_lastUsed_ATTR:  x->lastUsed = x->gg.attr; break;
-    case zx_name_ATTR:  x->name = x->gg.attr; break;
-    case zx_required_ATTR:  x->required = x->gg.attr; break;
-    case zx_typeDescription_ATTR:  x->typeDescription = x->gg.attr; break;
-    case zx_typeId_ATTR:  x->typeId = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_EvidenceId_ELEM:
-            zx_DEC_hrxml_EvidenceId(c, (struct zx_hrxml_EvidenceId_s*)el);
-            if (!x->EvidenceId)
-              x->EvidenceId = (struct zx_hrxml_EvidenceId_s*)el;
-            break;
-          case zx_hrxml_NumericValue_ELEM:
-            zx_DEC_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)el);
-            if (!x->NumericValue)
-              x->NumericValue = (struct zx_hrxml_NumericValue_s*)el;
-            break;
-          case zx_hrxml_StringValue_ELEM:
-            zx_DEC_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)el);
-            if (!x->StringValue)
-              x->StringValue = (struct zx_hrxml_StringValue_s*)el;
-            break;
-          case zx_hrxml_SupportingInformation_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->SupportingInformation)
-              x->SupportingInformation = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_CompetencyId
-#define EL_STRUCT zx_hrxml_CompetencyId_s
-#define EL_NS     hrxml
-#define EL_TAG    CompetencyId
-
-/* FUNC(zx_DEC_hrxml_CompetencyId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_CompetencyId_s* zx_DEC_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_CompetencyWeight
-#define EL_STRUCT zx_hrxml_CompetencyWeight_s
-#define EL_NS     hrxml
-#define EL_TAG    CompetencyWeight
-
-/* FUNC(zx_DEC_hrxml_CompetencyWeight) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_CompetencyWeight_s* zx_DEC_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_CompetencyWeight_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_NumericValue_ELEM:
-            zx_DEC_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)el);
-            if (!x->NumericValue)
-              x->NumericValue = (struct zx_hrxml_NumericValue_s*)el;
-            break;
-          case zx_hrxml_StringValue_ELEM:
-            zx_DEC_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)el);
-            if (!x->StringValue)
-              x->StringValue = (struct zx_hrxml_StringValue_s*)el;
-            break;
-          case zx_hrxml_SupportingInformation_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->SupportingInformation)
-              x->SupportingInformation = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ConferenceDate
-#define EL_STRUCT zx_hrxml_ConferenceDate_s
-#define EL_NS     hrxml
-#define EL_TAG    ConferenceDate
-
-/* FUNC(zx_DEC_hrxml_ConferenceDate) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ConferenceDate_s* zx_DEC_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceDate_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_AnyDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AnyDate)
-              x->AnyDate = el;
-            break;
-          case zx_hrxml_YearMonth_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->YearMonth)
-              x->YearMonth = el;
-            break;
-          case zx_hrxml_Year_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Year)
-              x->Year = el;
-            break;
-          case zx_hrxml_MonthDay_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MonthDay)
-              x->MonthDay = el;
-            break;
-          case zx_hrxml_StringDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StringDate)
-              x->StringDate = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ConferencePaper
-#define EL_STRUCT zx_hrxml_ConferencePaper_s
-#define EL_NS     hrxml
-#define EL_TAG    ConferencePaper
-
-/* FUNC(zx_DEC_hrxml_ConferencePaper) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ConferencePaper_s* zx_DEC_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_ConferencePaper_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Title_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Title)
-              x->Title = el;
-            break;
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-          case zx_hrxml_PublicationDate_ELEM:
-            zx_DEC_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)el);
-            if (!x->PublicationDate)
-              x->PublicationDate = (struct zx_hrxml_PublicationDate_s*)el;
-            break;
-          case zx_hrxml_Link_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Link)
-              x->Link = el;
-            break;
-          case zx_hrxml_Abstract_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Abstract)
-              x->Abstract = el;
-            break;
-          case zx_hrxml_Copyright_ELEM:
-            zx_DEC_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)el);
-            if (!x->Copyright)
-              x->Copyright = (struct zx_hrxml_Copyright_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-          case zx_hrxml_EventName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->EventName)
-              x->EventName = el;
-            break;
-          case zx_hrxml_ConferenceDate_ELEM:
-            zx_DEC_hrxml_ConferenceDate(c, (struct zx_hrxml_ConferenceDate_s*)el);
-            if (!x->ConferenceDate)
-              x->ConferenceDate = (struct zx_hrxml_ConferenceDate_s*)el;
-            break;
-          case zx_hrxml_ConferenceLocation_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ConferenceLocation)
-              x->ConferenceLocation = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Considerations
-#define EL_STRUCT zx_hrxml_Considerations_s
-#define EL_NS     hrxml
-#define EL_TAG    Considerations
-
-/* FUNC(zx_DEC_hrxml_Considerations) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Considerations_s* zx_DEC_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerations_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_General_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->General)
-              x->General = el;
-            break;
-          case zx_hrxml_Physical_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Physical)
-              x->Physical = el;
-            break;
-          case zx_hrxml_SafetyEquipment_ELEM:
-            zx_DEC_hrxml_SafetyEquipment(c, (struct zx_hrxml_SafetyEquipment_s*)el);
-            if (!x->SafetyEquipment)
-              x->SafetyEquipment = (struct zx_hrxml_SafetyEquipment_s*)el;
-            break;
-          case zx_hrxml_DressCode_ELEM:
-            zx_DEC_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)el);
-            if (!x->DressCode)
-              x->DressCode = (struct zx_hrxml_DressCode_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ContactId
-#define EL_STRUCT zx_hrxml_ContactId_s
-#define EL_NS     hrxml
-#define EL_TAG    ContactId
-
-/* FUNC(zx_DEC_hrxml_ContactId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ContactId_s* zx_DEC_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ContactInfo
-#define EL_STRUCT zx_hrxml_ContactInfo_s
-#define EL_NS     hrxml
-#define EL_TAG    ContactInfo
-
-/* FUNC(zx_DEC_hrxml_ContactInfo) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ContactInfo_s* zx_DEC_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_PersonName_ELEM:
-            zx_DEC_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)el);
-            if (!x->PersonName)
-              x->PersonName = (struct zx_hrxml_PersonName_s*)el;
-            break;
-          case zx_hrxml_ContactMethod_ELEM:
-            zx_DEC_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)el);
-            if (!x->ContactMethod)
-              x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ContactMethod
-#define EL_STRUCT zx_hrxml_ContactMethod_s
-#define EL_NS     hrxml
-#define EL_TAG    ContactMethod
-
-/* FUNC(zx_DEC_hrxml_ContactMethod) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ContactMethod_s* zx_DEC_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMethod_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Use_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Use)
-              x->Use = el;
-            break;
-          case zx_hrxml_Location_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Location)
-              x->Location = el;
-            break;
-          case zx_hrxml_WhenAvailable_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->WhenAvailable)
-              x->WhenAvailable = el;
-            break;
-          case zx_hrxml_Telephone_ELEM:
-            zx_DEC_hrxml_Telephone(c, (struct zx_hrxml_Telephone_s*)el);
-            if (!x->Telephone)
-              x->Telephone = (struct zx_hrxml_Telephone_s*)el;
-            break;
-          case zx_hrxml_Mobile_ELEM:
-            zx_DEC_hrxml_Mobile(c, (struct zx_hrxml_Mobile_s*)el);
-            if (!x->Mobile)
-              x->Mobile = (struct zx_hrxml_Mobile_s*)el;
-            break;
-          case zx_hrxml_Fax_ELEM:
-            zx_DEC_hrxml_Fax(c, (struct zx_hrxml_Fax_s*)el);
-            if (!x->Fax)
-              x->Fax = (struct zx_hrxml_Fax_s*)el;
-            break;
-          case zx_hrxml_Pager_ELEM:
-            zx_DEC_hrxml_Pager(c, (struct zx_hrxml_Pager_s*)el);
-            if (!x->Pager)
-              x->Pager = (struct zx_hrxml_Pager_s*)el;
-            break;
-          case zx_hrxml_TTYTDD_ELEM:
-            zx_DEC_hrxml_TTYTDD(c, (struct zx_hrxml_TTYTDD_s*)el);
-            if (!x->TTYTDD)
-              x->TTYTDD = (struct zx_hrxml_TTYTDD_s*)el;
-            break;
-          case zx_hrxml_InternetEmailAddress_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->InternetEmailAddress)
-              x->InternetEmailAddress = el;
-            break;
-          case zx_hrxml_InternetWebAddress_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->InternetWebAddress)
-              x->InternetWebAddress = el;
-            break;
-          case zx_hrxml_PostalAddress_ELEM:
-            zx_DEC_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)el);
-            if (!x->PostalAddress)
-              x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ContactName
-#define EL_STRUCT zx_hrxml_ContactName_s
-#define EL_NS     hrxml
-#define EL_TAG    ContactName
-
-/* FUNC(zx_DEC_hrxml_ContactName) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ContactName_s* zx_DEC_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_script_ATTR:  x->script = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_FormattedName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->FormattedName)
-              x->FormattedName = el;
-            break;
-          case zx_hrxml_LegalName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->LegalName)
-              x->LegalName = el;
-            break;
-          case zx_hrxml_GivenName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->GivenName)
-              x->GivenName = el;
-            break;
-          case zx_hrxml_PreferredGivenName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PreferredGivenName)
-              x->PreferredGivenName = el;
-            break;
-          case zx_hrxml_MiddleName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MiddleName)
-              x->MiddleName = el;
-            break;
-          case zx_hrxml_FamilyName_ELEM:
-            zx_DEC_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)el);
-            if (!x->FamilyName)
-              x->FamilyName = (struct zx_hrxml_FamilyName_s*)el;
-            break;
-          case zx_hrxml_Affix_ELEM:
-            zx_DEC_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)el);
-            if (!x->Affix)
-              x->Affix = (struct zx_hrxml_Affix_s*)el;
-            break;
-          case zx_hrxml_AlternateScript_ELEM:
-            zx_DEC_hrxml_AlternateScript(c, (struct zx_hrxml_AlternateScript_s*)el);
-            if (!x->AlternateScript)
-              x->AlternateScript = (struct zx_hrxml_AlternateScript_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Copyright
-#define EL_STRUCT zx_hrxml_Copyright_s
-#define EL_NS     hrxml
-#define EL_TAG    Copyright
-
-/* FUNC(zx_DEC_hrxml_Copyright) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Copyright_s* zx_DEC_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_CopyrightDates_ELEM:
-            zx_DEC_hrxml_CopyrightDates(c, (struct zx_hrxml_CopyrightDates_s*)el);
-            if (!x->CopyrightDates)
-              x->CopyrightDates = (struct zx_hrxml_CopyrightDates_s*)el;
-            break;
-          case zx_hrxml_CopyrightText_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CopyrightText)
-              x->CopyrightText = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_CopyrightDates
-#define EL_STRUCT zx_hrxml_CopyrightDates_s
-#define EL_NS     hrxml
-#define EL_TAG    CopyrightDates
-
-/* FUNC(zx_DEC_hrxml_CopyrightDates) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_CopyrightDates_s* zx_DEC_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDates_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_OriginalDate_ELEM:
-            zx_DEC_hrxml_OriginalDate(c, (struct zx_hrxml_OriginalDate_s*)el);
-            if (!x->OriginalDate)
-              x->OriginalDate = (struct zx_hrxml_OriginalDate_s*)el;
-            break;
-          case zx_hrxml_MostRecentDate_ELEM:
-            zx_DEC_hrxml_MostRecentDate(c, (struct zx_hrxml_MostRecentDate_s*)el);
-            if (!x->MostRecentDate)
-              x->MostRecentDate = (struct zx_hrxml_MostRecentDate_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DatesOfAttendance
-#define EL_STRUCT zx_hrxml_DatesOfAttendance_s
-#define EL_NS     hrxml
-#define EL_TAG    DatesOfAttendance
-
-/* FUNC(zx_DEC_hrxml_DatesOfAttendance) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DatesOfAttendance_s* zx_DEC_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfAttendance_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_currentlyEnrolled_ATTR:  x->currentlyEnrolled = x->gg.attr; break;
-    case zx_enrollmentStatus_ATTR:  x->enrollmentStatus = x->gg.attr; break;
-    case zx_studentInGoodStanding_ATTR:  x->studentInGoodStanding = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_StartDate_ELEM:
-            zx_DEC_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)el);
-            if (!x->StartDate)
-              x->StartDate = (struct zx_hrxml_StartDate_s*)el;
-            break;
-          case zx_hrxml_EndDate_ELEM:
-            zx_DEC_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)el);
-            if (!x->EndDate)
-              x->EndDate = (struct zx_hrxml_EndDate_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DatesOfService
-#define EL_STRUCT zx_hrxml_DatesOfService_s
-#define EL_NS     hrxml
-#define EL_TAG    DatesOfService
-
-/* FUNC(zx_DEC_hrxml_DatesOfService) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DatesOfService_s* zx_DEC_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfService_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_StartDate_ELEM:
-            zx_DEC_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)el);
-            if (!x->StartDate)
-              x->StartDate = (struct zx_hrxml_StartDate_s*)el;
-            break;
-          case zx_hrxml_EndDate_ELEM:
-            zx_DEC_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)el);
-            if (!x->EndDate)
-              x->EndDate = (struct zx_hrxml_EndDate_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Degree
-#define EL_STRUCT zx_hrxml_Degree_s
-#define EL_NS     hrxml
-#define EL_TAG    Degree
-
-/* FUNC(zx_DEC_hrxml_Degree) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Degree_s* zx_DEC_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_degreeType_ATTR:  x->degreeType = x->gg.attr; break;
-    case zx_examPassed_ATTR:  x->examPassed = x->gg.attr; break;
-    case zx_graduatingDegree_ATTR:  x->graduatingDegree = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_DegreeName_ELEM:
-            zx_DEC_hrxml_DegreeName(c, (struct zx_hrxml_DegreeName_s*)el);
-            if (!x->DegreeName)
-              x->DegreeName = (struct zx_hrxml_DegreeName_s*)el;
-            break;
-          case zx_hrxml_DegreeDate_ELEM:
-            zx_DEC_hrxml_DegreeDate(c, (struct zx_hrxml_DegreeDate_s*)el);
-            if (!x->DegreeDate)
-              x->DegreeDate = (struct zx_hrxml_DegreeDate_s*)el;
-            break;
-          case zx_hrxml_OtherHonors_ELEM:
-            zx_DEC_hrxml_OtherHonors(c, (struct zx_hrxml_OtherHonors_s*)el);
-            if (!x->OtherHonors)
-              x->OtherHonors = (struct zx_hrxml_OtherHonors_s*)el;
-            break;
-          case zx_hrxml_DegreeMajor_ELEM:
-            zx_DEC_hrxml_DegreeMajor(c, (struct zx_hrxml_DegreeMajor_s*)el);
-            if (!x->DegreeMajor)
-              x->DegreeMajor = (struct zx_hrxml_DegreeMajor_s*)el;
-            break;
-          case zx_hrxml_DegreeMinor_ELEM:
-            zx_DEC_hrxml_DegreeMinor(c, (struct zx_hrxml_DegreeMinor_s*)el);
-            if (!x->DegreeMinor)
-              x->DegreeMinor = (struct zx_hrxml_DegreeMinor_s*)el;
-            break;
-          case zx_hrxml_DegreeMeasure_ELEM:
-            zx_DEC_hrxml_DegreeMeasure(c, (struct zx_hrxml_DegreeMeasure_s*)el);
-            if (!x->DegreeMeasure)
-              x->DegreeMeasure = (struct zx_hrxml_DegreeMeasure_s*)el;
-            break;
-          case zx_hrxml_DatesOfAttendance_ELEM:
-            zx_DEC_hrxml_DatesOfAttendance(c, (struct zx_hrxml_DatesOfAttendance_s*)el);
-            if (!x->DatesOfAttendance)
-              x->DatesOfAttendance = (struct zx_hrxml_DatesOfAttendance_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-          case zx_hrxml_DegreeClassification_ELEM:
-            zx_DEC_hrxml_DegreeClassification(c, (struct zx_hrxml_DegreeClassification_s*)el);
-            if (!x->DegreeClassification)
-              x->DegreeClassification = (struct zx_hrxml_DegreeClassification_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DegreeClassification
-#define EL_STRUCT zx_hrxml_DegreeClassification_s
-#define EL_NS     hrxml
-#define EL_TAG    DegreeClassification
-
-/* FUNC(zx_DEC_hrxml_DegreeClassification) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DegreeClassification_s* zx_DEC_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_DegreeClassification_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DegreeDate
-#define EL_STRUCT zx_hrxml_DegreeDate_s
-#define EL_NS     hrxml
-#define EL_TAG    DegreeDate
-
-/* FUNC(zx_DEC_hrxml_DegreeDate) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DegreeDate_s* zx_DEC_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_AnyDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AnyDate)
-              x->AnyDate = el;
-            break;
-          case zx_hrxml_YearMonth_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->YearMonth)
-              x->YearMonth = el;
-            break;
-          case zx_hrxml_Year_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Year)
-              x->Year = el;
-            break;
-          case zx_hrxml_MonthDay_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MonthDay)
-              x->MonthDay = el;
-            break;
-          case zx_hrxml_StringDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StringDate)
-              x->StringDate = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DegreeMajor
-#define EL_STRUCT zx_hrxml_DegreeMajor_s
-#define EL_NS     hrxml
-#define EL_TAG    DegreeMajor
-
-/* FUNC(zx_DEC_hrxml_DegreeMajor) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DegreeMajor_s* zx_DEC_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_ProgramId_ELEM:
-            zx_DEC_hrxml_ProgramId(c, (struct zx_hrxml_ProgramId_s*)el);
-            if (!x->ProgramId)
-              x->ProgramId = (struct zx_hrxml_ProgramId_s*)el;
-            break;
-          case zx_hrxml_DegreeConcentration_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->DegreeConcentration)
-              x->DegreeConcentration = el;
-            break;
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-          case zx_hrxml_Option_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Option)
-              x->Option = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DegreeMeasure
-#define EL_STRUCT zx_hrxml_DegreeMeasure_s
-#define EL_NS     hrxml
-#define EL_TAG    DegreeMeasure
-
-/* FUNC(zx_DEC_hrxml_DegreeMeasure) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DegreeMeasure_s* zx_DEC_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_measureType_ATTR:  x->measureType = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_EducationalMeasure_ELEM:
-            zx_DEC_hrxml_EducationalMeasure(c, (struct zx_hrxml_EducationalMeasure_s*)el);
-            if (!x->EducationalMeasure)
-              x->EducationalMeasure = (struct zx_hrxml_EducationalMeasure_s*)el;
-            break;
-          case zx_hrxml_AcademicCreditCode_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AcademicCreditCode)
-              x->AcademicCreditCode = el;
-            break;
-          case zx_hrxml_CourseLevelCode_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CourseLevelCode)
-              x->CourseLevelCode = el;
-            break;
-          case zx_hrxml_CumulativeSummaryIndicator_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CumulativeSummaryIndicator)
-              x->CumulativeSummaryIndicator = el;
-            break;
-          case zx_hrxml_AcademicCreditHoursIncluded_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AcademicCreditHoursIncluded)
-              x->AcademicCreditHoursIncluded = el;
-            break;
-          case zx_hrxml_AcademicCreditHoursAttempted_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AcademicCreditHoursAttempted)
-              x->AcademicCreditHoursAttempted = el;
-            break;
-          case zx_hrxml_AcademicCreditHoursEarned_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AcademicCreditHoursEarned)
-              x->AcademicCreditHoursEarned = el;
-            break;
-          case zx_hrxml_ClassRank_ELEM:
-            zx_DEC_hrxml_ClassRank(c, (struct zx_hrxml_ClassRank_s*)el);
-            if (!x->ClassRank)
-              x->ClassRank = (struct zx_hrxml_ClassRank_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DegreeMinor
-#define EL_STRUCT zx_hrxml_DegreeMinor_s
-#define EL_NS     hrxml
-#define EL_TAG    DegreeMinor
-
-/* FUNC(zx_DEC_hrxml_DegreeMinor) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DegreeMinor_s* zx_DEC_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_ProgramId_ELEM:
-            zx_DEC_hrxml_ProgramId(c, (struct zx_hrxml_ProgramId_s*)el);
-            if (!x->ProgramId)
-              x->ProgramId = (struct zx_hrxml_ProgramId_s*)el;
-            break;
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DegreeName
-#define EL_STRUCT zx_hrxml_DegreeName_s
-#define EL_NS     hrxml
-#define EL_TAG    DegreeName
-
-/* FUNC(zx_DEC_hrxml_DegreeName) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DegreeName_s* zx_DEC_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_academicHonors_ATTR:  x->academicHonors = x->gg.attr; break;
-    case zx_honorsProgram_ATTR:  x->honorsProgram = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DeliveryAddress
-#define EL_STRUCT zx_hrxml_DeliveryAddress_s
-#define EL_NS     hrxml
-#define EL_TAG    DeliveryAddress
-
-/* FUNC(zx_DEC_hrxml_DeliveryAddress) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DeliveryAddress_s* zx_DEC_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAddress_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_AddressLine_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AddressLine)
-              x->AddressLine = el;
-            break;
-          case zx_hrxml_StreetName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StreetName)
-              x->StreetName = el;
-            break;
-          case zx_hrxml_BuildingNumber_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->BuildingNumber)
-              x->BuildingNumber = el;
-            break;
-          case zx_hrxml_Unit_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Unit)
-              x->Unit = el;
-            break;
-          case zx_hrxml_PostOfficeBox_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PostOfficeBox)
-              x->PostOfficeBox = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DemographicDescriptors
-#define EL_STRUCT zx_hrxml_DemographicDescriptors_s
-#define EL_NS     hrxml
-#define EL_TAG    DemographicDescriptors
-
-/* FUNC(zx_DEC_hrxml_DemographicDescriptors) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DemographicDescriptors_s* zx_DEC_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_DemographicDescriptors_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Race_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Race)
-              x->Race = el;
-            break;
-          case zx_hrxml_Ethnicity_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Ethnicity)
-              x->Ethnicity = el;
-            break;
-          case zx_hrxml_Nationality_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Nationality)
-              x->Nationality = el;
-            break;
-          case zx_hrxml_PrimaryLanguage_ELEM:
-            zx_DEC_hrxml_PrimaryLanguage(c, (struct zx_hrxml_PrimaryLanguage_s*)el);
-            if (!x->PrimaryLanguage)
-              x->PrimaryLanguage = (struct zx_hrxml_PrimaryLanguage_s*)el;
-            break;
-          case zx_hrxml_BirthPlace_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->BirthPlace)
-              x->BirthPlace = el;
-            break;
-          case zx_hrxml_Religion_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Religion)
-              x->Religion = el;
-            break;
-          case zx_hrxml_MaritalStatus_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MaritalStatus)
-              x->MaritalStatus = el;
-            break;
-          case zx_hrxml_ChildrenInfo_ELEM:
-            zx_DEC_hrxml_ChildrenInfo(c, (struct zx_hrxml_ChildrenInfo_s*)el);
-            if (!x->ChildrenInfo)
-              x->ChildrenInfo = (struct zx_hrxml_ChildrenInfo_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Description
-#define EL_STRUCT zx_hrxml_Description_s
-#define EL_NS     hrxml
-#define EL_TAG    Description
-
-/* FUNC(zx_DEC_hrxml_Description) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Description_s* zx_DEC_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Details
-#define EL_STRUCT zx_hrxml_Details_s
-#define EL_NS     hrxml
-#define EL_TAG    Details
-
-/* FUNC(zx_DEC_hrxml_Details) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Details_s* zx_DEC_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DisabilityInfo
-#define EL_STRUCT zx_hrxml_DisabilityInfo_s
-#define EL_NS     hrxml
-#define EL_TAG    DisabilityInfo
-
-/* FUNC(zx_DEC_hrxml_DisabilityInfo) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DisabilityInfo_s* zx_DEC_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityInfo_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_LevelOfDisability_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->LevelOfDisability)
-              x->LevelOfDisability = el;
-            break;
-          case zx_hrxml_Percentage_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Percentage)
-              x->Percentage = el;
-            break;
-          case zx_hrxml_Type_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Type)
-              x->Type = el;
-            break;
-          case zx_hrxml_AccommodationsNeeded_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AccommodationsNeeded)
-              x->AccommodationsNeeded = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DistanceMax
-#define EL_STRUCT zx_hrxml_DistanceMax_s
-#define EL_NS     hrxml
-#define EL_TAG    DistanceMax
-
-/* FUNC(zx_DEC_hrxml_DistanceMax) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DistanceMax_s* zx_DEC_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_unitOfMeasure_ATTR:  x->unitOfMeasure = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DistributeTo
-#define EL_STRUCT zx_hrxml_DistributeTo_s
-#define EL_NS     hrxml
-#define EL_TAG    DistributeTo
-
-/* FUNC(zx_DEC_hrxml_DistributeTo) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DistributeTo_s* zx_DEC_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_ContactMethod_ELEM:
-            zx_DEC_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)el);
-            if (!x->ContactMethod)
-              x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DoingBusinessAs
-#define EL_STRUCT zx_hrxml_DoingBusinessAs_s
-#define EL_NS     hrxml
-#define EL_TAG    DoingBusinessAs
-
-/* FUNC(zx_DEC_hrxml_DoingBusinessAs) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DoingBusinessAs_s* zx_DEC_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusinessAs_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DressCode
-#define EL_STRUCT zx_hrxml_DressCode_s
-#define EL_NS     hrxml
-#define EL_TAG    DressCode
-
-/* FUNC(zx_DEC_hrxml_DressCode) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DressCode_s* zx_DEC_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_suppliedByOrganization_ATTR:  x->suppliedByOrganization = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_DunsNumber
-#define EL_STRUCT zx_hrxml_DunsNumber_s
-#define EL_NS     hrxml
-#define EL_TAG    DunsNumber
-
-/* FUNC(zx_DEC_hrxml_DunsNumber) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_DunsNumber_s* zx_DEC_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_dunsNumberType_ATTR:  x->dunsNumberType = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_EEOCJobCategory
-#define EL_STRUCT zx_hrxml_EEOCJobCategory_s
-#define EL_NS     hrxml
-#define EL_TAG    EEOCJobCategory
-
-/* FUNC(zx_DEC_hrxml_EEOCJobCategory) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_EEOCJobCategory_s* zx_DEC_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCategory_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_StandardValue_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StandardValue)
-              x->StandardValue = el;
-            break;
-          case zx_hrxml_NonStandardValue_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->NonStandardValue)
-              x->NonStandardValue = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_EducationHistory
-#define EL_STRUCT zx_hrxml_EducationHistory_s
-#define EL_NS     hrxml
-#define EL_TAG    EducationHistory
-
-/* FUNC(zx_DEC_hrxml_EducationHistory) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_EducationHistory_s* zx_DEC_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_EducationHistory_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_SchoolOrInstitution_ELEM:
-            zx_DEC_hrxml_SchoolOrInstitution(c, (struct zx_hrxml_SchoolOrInstitution_s*)el);
-            if (!x->SchoolOrInstitution)
-              x->SchoolOrInstitution = (struct zx_hrxml_SchoolOrInstitution_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_EducationalMeasure
-#define EL_STRUCT zx_hrxml_EducationalMeasure_s
-#define EL_NS     hrxml
-#define EL_TAG    EducationalMeasure
-
-/* FUNC(zx_DEC_hrxml_EducationalMeasure) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_EducationalMeasure_s* zx_DEC_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_EducationalMeasure_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_MeasureSystem_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MeasureSystem)
-              x->MeasureSystem = el;
-            break;
-          case zx_hrxml_MeasureValue_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MeasureValue)
-              x->MeasureValue = el;
-            break;
-          case zx_hrxml_LowestPossibleValue_ELEM:
-            zx_DEC_hrxml_LowestPossibleValue(c, (struct zx_hrxml_LowestPossibleValue_s*)el);
-            if (!x->LowestPossibleValue)
-              x->LowestPossibleValue = (struct zx_hrxml_LowestPossibleValue_s*)el;
-            break;
-          case zx_hrxml_HighestPossibleValue_ELEM:
-            zx_DEC_hrxml_HighestPossibleValue(c, (struct zx_hrxml_HighestPossibleValue_s*)el);
-            if (!x->HighestPossibleValue)
-              x->HighestPossibleValue = (struct zx_hrxml_HighestPossibleValue_s*)el;
-            break;
-          case zx_hrxml_ExcessiveValueIndicator_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ExcessiveValueIndicator)
-              x->ExcessiveValueIndicator = el;
-            break;
-          case zx_hrxml_GoodStudentIndicator_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->GoodStudentIndicator)
-              x->GoodStudentIndicator = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_EffectiveDate
-#define EL_STRUCT zx_hrxml_EffectiveDate_s
-#define EL_NS     hrxml
-#define EL_TAG    EffectiveDate
-
-/* FUNC(zx_DEC_hrxml_EffectiveDate) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_EffectiveDate_s* zx_DEC_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDate_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_StartDate_ELEM:
-            zx_DEC_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)el);
-            if (!x->StartDate)
-              x->StartDate = (struct zx_hrxml_StartDate_s*)el;
-            break;
-          case zx_hrxml_EndDate_ELEM:
-            zx_DEC_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)el);
-            if (!x->EndDate)
-              x->EndDate = (struct zx_hrxml_EndDate_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_EmployerContactInfo
-#define EL_STRUCT zx_hrxml_EmployerContactInfo_s
-#define EL_NS     hrxml
-#define EL_TAG    EmployerContactInfo
-
-/* FUNC(zx_DEC_hrxml_EmployerContactInfo) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_EmployerContactInfo_s* zx_DEC_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_EmployerContactInfo_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_contactType_ATTR:  x->contactType = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_PersonName_ELEM:
-            zx_DEC_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)el);
-            if (!x->PersonName)
-              x->PersonName = (struct zx_hrxml_PersonName_s*)el;
-            break;
-          case zx_hrxml_ContactMethod_ELEM:
-            zx_DEC_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)el);
-            if (!x->ContactMethod)
-              x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
-            break;
-          case zx_hrxml_LocationSummary_ELEM:
-            zx_DEC_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)el);
-            if (!x->LocationSummary)
-              x->LocationSummary = (struct zx_hrxml_LocationSummary_s*)el;
-            break;
-          case zx_hrxml_InternetDomainName_ELEM:
-            zx_DEC_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)el);
-            if (!x->InternetDomainName)
-              x->InternetDomainName = (struct zx_hrxml_InternetDomainName_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_EmployerOrg
-#define EL_STRUCT zx_hrxml_EmployerOrg_s
-#define EL_NS     hrxml
-#define EL_TAG    EmployerOrg
-
-/* FUNC(zx_DEC_hrxml_EmployerOrg) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_EmployerOrg_s* zx_DEC_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_employerOrgType_ATTR:  x->employerOrgType = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_EmployerOrgName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->EmployerOrgName)
-              x->EmployerOrgName = el;
-            break;
-          case zx_hrxml_EmployerContactInfo_ELEM:
-            zx_DEC_hrxml_EmployerContactInfo(c, (struct zx_hrxml_EmployerContactInfo_s*)el);
-            if (!x->EmployerContactInfo)
-              x->EmployerContactInfo = (struct zx_hrxml_EmployerContactInfo_s*)el;
-            break;
-          case zx_hrxml_PositionHistory_ELEM:
-            zx_DEC_hrxml_PositionHistory(c, (struct zx_hrxml_PositionHistory_s*)el);
-            if (!x->PositionHistory)
-              x->PositionHistory = (struct zx_hrxml_PositionHistory_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_EmploymentHistory
-#define EL_STRUCT zx_hrxml_EmploymentHistory_s
-#define EL_NS     hrxml
-#define EL_TAG    EmploymentHistory
-
-/* FUNC(zx_DEC_hrxml_EmploymentHistory) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_EmploymentHistory_s* zx_DEC_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_EmploymentHistory_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_EmployerOrg_ELEM:
-            zx_DEC_hrxml_EmployerOrg(c, (struct zx_hrxml_EmployerOrg_s*)el);
-            if (!x->EmployerOrg)
-              x->EmployerOrg = (struct zx_hrxml_EmployerOrg_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_EndDate
-#define EL_STRUCT zx_hrxml_EndDate_s
-#define EL_NS     hrxml
-#define EL_TAG    EndDate
-
-/* FUNC(zx_DEC_hrxml_EndDate) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_EndDate_s* zx_DEC_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_AnyDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AnyDate)
-              x->AnyDate = el;
-            break;
-          case zx_hrxml_YearMonth_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->YearMonth)
-              x->YearMonth = el;
-            break;
-          case zx_hrxml_Year_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Year)
-              x->Year = el;
-            break;
-          case zx_hrxml_MonthDay_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MonthDay)
-              x->MonthDay = el;
-            break;
-          case zx_hrxml_StringDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StringDate)
-              x->StringDate = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_EndingCompensation
-#define EL_STRUCT zx_hrxml_EndingCompensation_s
-#define EL_NS     hrxml
-#define EL_TAG    EndingCompensation
-
-/* FUNC(zx_DEC_hrxml_EndingCompensation) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_EndingCompensation_s* zx_DEC_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingCompensation_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_currency_ATTR:  x->currency = x->gg.attr; break;
-    case zx_intervalType_ATTR:  x->intervalType = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_EnvironmentId
-#define EL_STRUCT zx_hrxml_EnvironmentId_s
-#define EL_NS     hrxml
-#define EL_TAG    EnvironmentId
-
-/* FUNC(zx_DEC_hrxml_EnvironmentId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_EnvironmentId_s* zx_DEC_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_EvidenceId
-#define EL_STRUCT zx_hrxml_EvidenceId_s
-#define EL_NS     hrxml
-#define EL_TAG    EvidenceId
-
-/* FUNC(zx_DEC_hrxml_EvidenceId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_EvidenceId_s* zx_DEC_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_description_ATTR:  x->description = x->gg.attr; break;
-    case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ExpatriateBenefits
-#define EL_STRUCT zx_hrxml_ExpatriateBenefits_s
-#define EL_NS     hrxml
-#define EL_TAG    ExpatriateBenefits
-
-/* FUNC(zx_DEC_hrxml_ExpatriateBenefits) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ExpatriateBenefits_s* zx_DEC_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_ExpatriateBenefits_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_ExpatriateBenefitsOffered_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ExpatriateBenefitsOffered)
-              x->ExpatriateBenefitsOffered = el;
-            break;
-          case zx_hrxml_ExpatriateBenefitList_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ExpatriateBenefitList)
-              x->ExpatriateBenefitList = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_FamilyName
-#define EL_STRUCT zx_hrxml_FamilyName_s
-#define EL_NS     hrxml
-#define EL_TAG    FamilyName
-
-/* FUNC(zx_DEC_hrxml_FamilyName) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_FamilyName_s* zx_DEC_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_prefix_ATTR:  x->prefix = x->gg.attr; break;
-    case zx_primary_ATTR:  x->primary = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Fax
-#define EL_STRUCT zx_hrxml_Fax_s
-#define EL_NS     hrxml
-#define EL_TAG    Fax
-
-/* FUNC(zx_DEC_hrxml_Fax) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Fax_s* zx_DEC_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_FormattedNumber_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->FormattedNumber)
-              x->FormattedNumber = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_FirstIssuedDate
-#define EL_STRUCT zx_hrxml_FirstIssuedDate_s
-#define EL_NS     hrxml
-#define EL_TAG    FirstIssuedDate
-
-/* FUNC(zx_DEC_hrxml_FirstIssuedDate) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_FirstIssuedDate_s* zx_DEC_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssuedDate_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_AnyDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AnyDate)
-              x->AnyDate = el;
-            break;
-          case zx_hrxml_YearMonth_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->YearMonth)
-              x->YearMonth = el;
-            break;
-          case zx_hrxml_Year_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Year)
-              x->Year = el;
-            break;
-          case zx_hrxml_MonthDay_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MonthDay)
-              x->MonthDay = el;
-            break;
-          case zx_hrxml_StringDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StringDate)
-              x->StringDate = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_FormattedPublicationDescription
-#define EL_STRUCT zx_hrxml_FormattedPublicationDescription_s
-#define EL_NS     hrxml
-#define EL_TAG    FormattedPublicationDescription
-
-/* FUNC(zx_DEC_hrxml_FormattedPublicationDescription) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_FormattedPublicationDescription_s* zx_DEC_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_hrxml_FormattedPublicationDescription_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Height
-#define EL_STRUCT zx_hrxml_Height_s
-#define EL_NS     hrxml
-#define EL_TAG    Height
-
-/* FUNC(zx_DEC_hrxml_Height) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Height_s* zx_DEC_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_unitOfMeasure_ATTR:  x->unitOfMeasure = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_HighestPossibleValue
-#define EL_STRUCT zx_hrxml_HighestPossibleValue_s
-#define EL_NS     hrxml
-#define EL_TAG    HighestPossibleValue
-
-/* FUNC(zx_DEC_hrxml_HighestPossibleValue) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_HighestPossibleValue_s* zx_DEC_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_HighestPossibleValue_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_NumericValue_ELEM:
-            zx_DEC_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)el);
-            if (!x->NumericValue)
-              x->NumericValue = (struct zx_hrxml_NumericValue_s*)el;
-            break;
-          case zx_hrxml_StringValue_ELEM:
-            zx_DEC_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)el);
-            if (!x->StringValue)
-              x->StringValue = (struct zx_hrxml_StringValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_HorizontalAccuracy
-#define EL_STRUCT zx_hrxml_HorizontalAccuracy_s
-#define EL_NS     hrxml
-#define EL_TAG    HorizontalAccuracy
-
-/* FUNC(zx_DEC_hrxml_HorizontalAccuracy) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_HorizontalAccuracy_s* zx_DEC_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_HorizontalAccuracy_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Id
-#define EL_STRUCT zx_hrxml_Id_s
-#define EL_NS     hrxml
-#define EL_TAG    Id
-
-/* FUNC(zx_DEC_hrxml_Id) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Id_s* zx_DEC_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_IdValue
-#define EL_STRUCT zx_hrxml_IdValue_s
-#define EL_NS     hrxml
-#define EL_TAG    IdValue
-
-/* FUNC(zx_DEC_hrxml_IdValue) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_IdValue_s* zx_DEC_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_name_ATTR:  x->name = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_IndustryCode
-#define EL_STRUCT zx_hrxml_IndustryCode_s
-#define EL_NS     hrxml
-#define EL_TAG    IndustryCode
-
-/* FUNC(zx_DEC_hrxml_IndustryCode) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_IndustryCode_s* zx_DEC_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_classificationName_ATTR:  x->classificationName = x->gg.attr; break;
-    case zx_primaryIndicator_ATTR:  x->primaryIndicator = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Insurance
-#define EL_STRUCT zx_hrxml_Insurance_s
-#define EL_NS     hrxml
-#define EL_TAG    Insurance
-
-/* FUNC(zx_DEC_hrxml_Insurance) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Insurance_s* zx_DEC_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_InternetDomainName
-#define EL_STRUCT zx_hrxml_InternetDomainName_s
-#define EL_NS     hrxml
-#define EL_TAG    InternetDomainName
-
-/* FUNC(zx_DEC_hrxml_InternetDomainName) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_InternetDomainName_s* zx_DEC_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_InternetDomainName_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_primaryIndicator_ATTR:  x->primaryIndicator = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Inventors
-#define EL_STRUCT zx_hrxml_Inventors_s
-#define EL_NS     hrxml
-#define EL_TAG    Inventors
-
-/* FUNC(zx_DEC_hrxml_Inventors) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Inventors_s* zx_DEC_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_InventorName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->InventorName)
-              x->InventorName = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_IssuingAuthority
-#define EL_STRUCT zx_hrxml_IssuingAuthority_s
-#define EL_NS     hrxml
-#define EL_TAG    IssuingAuthority
-
-/* FUNC(zx_DEC_hrxml_IssuingAuthority) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_IssuingAuthority_s* zx_DEC_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAuthority_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_countryCode_ATTR:  x->countryCode = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_JobCategory
-#define EL_STRUCT zx_hrxml_JobCategory_s
-#define EL_NS     hrxml
-#define EL_TAG    JobCategory
-
-/* FUNC(zx_DEC_hrxml_JobCategory) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_JobCategory_s* zx_DEC_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_TaxonomyName_ELEM:
-            zx_DEC_hrxml_TaxonomyName(c, (struct zx_hrxml_TaxonomyName_s*)el);
-            if (!x->TaxonomyName)
-              x->TaxonomyName = (struct zx_hrxml_TaxonomyName_s*)el;
-            break;
-          case zx_hrxml_CategoryCode_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CategoryCode)
-              x->CategoryCode = el;
-            break;
-          case zx_hrxml_CategoryDescription_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CategoryDescription)
-              x->CategoryDescription = el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-          case zx_hrxml_JobCategory_ELEM:
-            zx_DEC_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)el);
-            if (!x->JobCategory)
-              x->JobCategory = (struct zx_hrxml_JobCategory_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_JobLevelInfo
-#define EL_STRUCT zx_hrxml_JobLevelInfo_s
-#define EL_NS     hrxml
-#define EL_TAG    JobLevelInfo
-
-/* FUNC(zx_DEC_hrxml_JobLevelInfo) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_JobLevelInfo_s* zx_DEC_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_JobPlan_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->JobPlan)
-              x->JobPlan = el;
-            break;
-          case zx_hrxml_JobGrade_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->JobGrade)
-              x->JobGrade = el;
-            break;
-          case zx_hrxml_JobStep_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->JobStep)
-              x->JobStep = el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Language
-#define EL_STRUCT zx_hrxml_Language_s
-#define EL_NS     hrxml
-#define EL_TAG    Language
-
-/* FUNC(zx_DEC_hrxml_Language) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Language_s* zx_DEC_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_LanguageCode_ELEM:
-            zx_DEC_hrxml_LanguageCode(c, (struct zx_hrxml_LanguageCode_s*)el);
-            if (!x->LanguageCode)
-              x->LanguageCode = (struct zx_hrxml_LanguageCode_s*)el;
-            break;
-          case zx_hrxml_Read_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Read)
-              x->Read = el;
-            break;
-          case zx_hrxml_Write_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Write)
-              x->Write = el;
-            break;
-          case zx_hrxml_Speak_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Speak)
-              x->Speak = el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_LanguageCode
-#define EL_STRUCT zx_hrxml_LanguageCode_s
-#define EL_NS     hrxml
-#define EL_TAG    LanguageCode
-
-/* FUNC(zx_DEC_hrxml_LanguageCode) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_LanguageCode_s* zx_DEC_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Languages
-#define EL_STRUCT zx_hrxml_Languages_s
-#define EL_NS     hrxml
-#define EL_TAG    Languages
-
-/* FUNC(zx_DEC_hrxml_Languages) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Languages_s* zx_DEC_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Language_ELEM:
-            zx_DEC_hrxml_Language(c, (struct zx_hrxml_Language_s*)el);
-            if (!x->Language)
-              x->Language = (struct zx_hrxml_Language_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Latitude
-#define EL_STRUCT zx_hrxml_Latitude_s
-#define EL_NS     hrxml
-#define EL_TAG    Latitude
-
-/* FUNC(zx_DEC_hrxml_Latitude) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Latitude_s* zx_DEC_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_LegalClassification
-#define EL_STRUCT zx_hrxml_LegalClassification_s
-#define EL_NS     hrxml
-#define EL_TAG    LegalClassification
-
-/* FUNC(zx_DEC_hrxml_LegalClassification) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_LegalClassification_s* zx_DEC_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalClassification_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_countryCode_ATTR:  x->countryCode = x->gg.attr; break;
-    case zx_ownership_ATTR:  x->ownership = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_LegalId
-#define EL_STRUCT zx_hrxml_LegalId_s
-#define EL_NS     hrxml
-#define EL_TAG    LegalId
-
-/* FUNC(zx_DEC_hrxml_LegalId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_LegalId_s* zx_DEC_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_LegalIdentifiers
-#define EL_STRUCT zx_hrxml_LegalIdentifiers_s
-#define EL_NS     hrxml
-#define EL_TAG    LegalIdentifiers
-
-/* FUNC(zx_DEC_hrxml_LegalIdentifiers) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_LegalIdentifiers_s* zx_DEC_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIdentifiers_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_PersonLegalId_ELEM:
-            zx_DEC_hrxml_PersonLegalId(c, (struct zx_hrxml_PersonLegalId_s*)el);
-            if (!x->PersonLegalId)
-              x->PersonLegalId = (struct zx_hrxml_PersonLegalId_s*)el;
-            break;
-          case zx_hrxml_MilitaryStatus_ELEM:
-            zx_DEC_hrxml_MilitaryStatus(c, (struct zx_hrxml_MilitaryStatus_s*)el);
-            if (!x->MilitaryStatus)
-              x->MilitaryStatus = (struct zx_hrxml_MilitaryStatus_s*)el;
-            break;
-          case zx_hrxml_VisaStatus_ELEM:
-            zx_DEC_hrxml_VisaStatus(c, (struct zx_hrxml_VisaStatus_s*)el);
-            if (!x->VisaStatus)
-              x->VisaStatus = (struct zx_hrxml_VisaStatus_s*)el;
-            break;
-          case zx_hrxml_Citizenship_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Citizenship)
-              x->Citizenship = el;
-            break;
-          case zx_hrxml_Residency_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Residency)
-              x->Residency = el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_LicenseOrCertification
-#define EL_STRUCT zx_hrxml_LicenseOrCertification_s
-#define EL_NS     hrxml
-#define EL_TAG    LicenseOrCertification
-
-/* FUNC(zx_DEC_hrxml_LicenseOrCertification) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_LicenseOrCertification_s* zx_DEC_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_LicenseOrCertification_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_IssuingAuthority_ELEM:
-            zx_DEC_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)el);
-            if (!x->IssuingAuthority)
-              x->IssuingAuthority = (struct zx_hrxml_IssuingAuthority_s*)el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-          case zx_hrxml_EffectiveDate_ELEM:
-            zx_DEC_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)el);
-            if (!x->EffectiveDate)
-              x->EffectiveDate = (struct zx_hrxml_EffectiveDate_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_LicensesAndCertifications
-#define EL_STRUCT zx_hrxml_LicensesAndCertifications_s
-#define EL_NS     hrxml
-#define EL_TAG    LicensesAndCertifications
-
-/* FUNC(zx_DEC_hrxml_LicensesAndCertifications) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_LicensesAndCertifications_s* zx_DEC_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_LicensesAndCertifications_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_LicenseOrCertification_ELEM:
-            zx_DEC_hrxml_LicenseOrCertification(c, (struct zx_hrxml_LicenseOrCertification_s*)el);
-            if (!x->LicenseOrCertification)
-              x->LicenseOrCertification = (struct zx_hrxml_LicenseOrCertification_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_List
-#define EL_STRUCT zx_hrxml_List_s
-#define EL_NS     hrxml
-#define EL_TAG    List
-
-/* FUNC(zx_DEC_hrxml_List) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_List_s* zx_DEC_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Item_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Item)
-              x->Item = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_LocalInstitutionClassification
-#define EL_STRUCT zx_hrxml_LocalInstitutionClassification_s
-#define EL_NS     hrxml
-#define EL_TAG    LocalInstitutionClassification
-
-/* FUNC(zx_DEC_hrxml_LocalInstitutionClassification) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_LocalInstitutionClassification_s* zx_DEC_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_hrxml_LocalInstitutionClassification_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_LocationSummary
-#define EL_STRUCT zx_hrxml_LocationSummary_s
-#define EL_NS     hrxml
-#define EL_TAG    LocationSummary
-
-/* FUNC(zx_DEC_hrxml_LocationSummary) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_LocationSummary_s* zx_DEC_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSummary_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Municipality_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Municipality)
-              x->Municipality = el;
-            break;
-          case zx_hrxml_Region_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Region)
-              x->Region = el;
-            break;
-          case zx_hrxml_CountryCode_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CountryCode)
-              x->CountryCode = el;
-            break;
-          case zx_hrxml_PostalCode_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PostalCode)
-              x->PostalCode = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Longitude
-#define EL_STRUCT zx_hrxml_Longitude_s
-#define EL_NS     hrxml
-#define EL_TAG    Longitude
-
-/* FUNC(zx_DEC_hrxml_Longitude) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Longitude_s* zx_DEC_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_LowestPossibleValue
-#define EL_STRUCT zx_hrxml_LowestPossibleValue_s
-#define EL_NS     hrxml
-#define EL_TAG    LowestPossibleValue
-
-/* FUNC(zx_DEC_hrxml_LowestPossibleValue) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_LowestPossibleValue_s* zx_DEC_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_LowestPossibleValue_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_NumericValue_ELEM:
-            zx_DEC_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)el);
-            if (!x->NumericValue)
-              x->NumericValue = (struct zx_hrxml_NumericValue_s*)el;
-            break;
-          case zx_hrxml_StringValue_ELEM:
-            zx_DEC_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)el);
-            if (!x->StringValue)
-              x->StringValue = (struct zx_hrxml_StringValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_MatchedObjectId
-#define EL_STRUCT zx_hrxml_MatchedObjectId_s
-#define EL_NS     hrxml
-#define EL_TAG    MatchedObjectId
-
-/* FUNC(zx_DEC_hrxml_MatchedObjectId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_MatchedObjectId_s* zx_DEC_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObjectId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Measure
-#define EL_STRUCT zx_hrxml_Measure_s
-#define EL_NS     hrxml
-#define EL_TAG    Measure
-
-/* FUNC(zx_DEC_hrxml_Measure) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Measure_s* zx_DEC_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_measureType_ATTR:  x->measureType = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_MeasureSystem_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MeasureSystem)
-              x->MeasureSystem = el;
-            break;
-          case zx_hrxml_MeasureValue_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MeasureValue)
-              x->MeasureValue = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_MilitaryHistory
-#define EL_STRUCT zx_hrxml_MilitaryHistory_s
-#define EL_NS     hrxml
-#define EL_TAG    MilitaryHistory
-
-/* FUNC(zx_DEC_hrxml_MilitaryHistory) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_MilitaryHistory_s* zx_DEC_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHistory_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_CountryServed_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CountryServed)
-              x->CountryServed = el;
-            break;
-          case zx_hrxml_ServiceNumber_ELEM:
-            zx_DEC_hrxml_ServiceNumber(c, (struct zx_hrxml_ServiceNumber_s*)el);
-            if (!x->ServiceNumber)
-              x->ServiceNumber = (struct zx_hrxml_ServiceNumber_s*)el;
-            break;
-          case zx_hrxml_ServiceDetail_ELEM:
-            zx_DEC_hrxml_ServiceDetail(c, (struct zx_hrxml_ServiceDetail_s*)el);
-            if (!x->ServiceDetail)
-              x->ServiceDetail = (struct zx_hrxml_ServiceDetail_s*)el;
-            break;
-          case zx_hrxml_ServiceStatus_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ServiceStatus)
-              x->ServiceStatus = el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_MilitaryStatus
-#define EL_STRUCT zx_hrxml_MilitaryStatus_s
-#define EL_NS     hrxml
-#define EL_TAG    MilitaryStatus
-
-/* FUNC(zx_DEC_hrxml_MilitaryStatus) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_MilitaryStatus_s* zx_DEC_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryStatus_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Mobile
-#define EL_STRUCT zx_hrxml_Mobile_s
-#define EL_NS     hrxml
-#define EL_TAG    Mobile
-
-/* FUNC(zx_DEC_hrxml_Mobile) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Mobile_s* zx_DEC_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_smsEnabled_ATTR:  x->smsEnabled = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_FormattedNumber_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->FormattedNumber)
-              x->FormattedNumber = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_MostRecentDate
-#define EL_STRUCT zx_hrxml_MostRecentDate_s
-#define EL_NS     hrxml
-#define EL_TAG    MostRecentDate
-
-/* FUNC(zx_DEC_hrxml_MostRecentDate) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_MostRecentDate_s* zx_DEC_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentDate_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_AnyDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AnyDate)
-              x->AnyDate = el;
-            break;
-          case zx_hrxml_YearMonth_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->YearMonth)
-              x->YearMonth = el;
-            break;
-          case zx_hrxml_Year_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Year)
-              x->Year = el;
-            break;
-          case zx_hrxml_MonthDay_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MonthDay)
-              x->MonthDay = el;
-            break;
-          case zx_hrxml_StringDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StringDate)
-              x->StringDate = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_NonXMLResume
-#define EL_STRUCT zx_hrxml_NonXMLResume_s
-#define EL_NS     hrxml
-#define EL_TAG    NonXMLResume
-
-/* FUNC(zx_DEC_hrxml_NonXMLResume) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_NonXMLResume_s* zx_DEC_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_TextResume_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->TextResume)
-              x->TextResume = el;
-            break;
-          case zx_hrxml_LinkToResume_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->LinkToResume)
-              x->LinkToResume = el;
-            break;
-          case zx_hrxml_SupportingMaterials_ELEM:
-            zx_DEC_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)el);
-            if (!x->SupportingMaterials)
-              x->SupportingMaterials = (struct zx_hrxml_SupportingMaterials_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-          case zx_hrxml_RevisionDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->RevisionDate)
-              x->RevisionDate = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_NumericValue
-#define EL_STRUCT zx_hrxml_NumericValue_s
-#define EL_NS     hrxml
-#define EL_TAG    NumericValue
-
-/* FUNC(zx_DEC_hrxml_NumericValue) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_NumericValue_s* zx_DEC_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_description_ATTR:  x->description = x->gg.attr; break;
-    case zx_interval_ATTR:  x->interval = x->gg.attr; break;
-    case zx_maxValue_ATTR:  x->maxValue = x->gg.attr; break;
-    case zx_minValue_ATTR:  x->minValue = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OrgIndustry
-#define EL_STRUCT zx_hrxml_OrgIndustry_s
-#define EL_NS     hrxml
-#define EL_TAG    OrgIndustry
-
-/* FUNC(zx_DEC_hrxml_OrgIndustry) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OrgIndustry_s* zx_DEC_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_primaryIndicator_ATTR:  x->primaryIndicator = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IndustryDescription_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->IndustryDescription)
-              x->IndustryDescription = el;
-            break;
-          case zx_hrxml_IndustryCode_ELEM:
-            zx_DEC_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)el);
-            if (!x->IndustryCode)
-              x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OrgInfo
-#define EL_STRUCT zx_hrxml_OrgInfo_s
-#define EL_NS     hrxml
-#define EL_TAG    OrgInfo
-
-/* FUNC(zx_DEC_hrxml_OrgInfo) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OrgInfo_s* zx_DEC_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_PositionLocation_ELEM:
-            zx_DEC_hrxml_PositionLocation(c, (struct zx_hrxml_PositionLocation_s*)el);
-            if (!x->PositionLocation)
-              x->PositionLocation = (struct zx_hrxml_PositionLocation_s*)el;
-            break;
-          case zx_hrxml_WebSite_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->WebSite)
-              x->WebSite = el;
-            break;
-          case zx_hrxml_LocationSummary_ELEM:
-            zx_DEC_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)el);
-            if (!x->LocationSummary)
-              x->LocationSummary = (struct zx_hrxml_LocationSummary_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OrgName
-#define EL_STRUCT zx_hrxml_OrgName_s
-#define EL_NS     hrxml
-#define EL_TAG    OrgName
-
-/* FUNC(zx_DEC_hrxml_OrgName) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OrgName_s* zx_DEC_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_organizationType_ATTR:  x->organizationType = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_OrganizationName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->OrganizationName)
-              x->OrganizationName = el;
-            break;
-          case zx_hrxml_OrgName_ELEM:
-            zx_DEC_hrxml_OrgName(c, (struct zx_hrxml_OrgName_s*)el);
-            if (!x->OrgName)
-              x->OrgName = (struct zx_hrxml_OrgName_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Organization
-#define EL_STRUCT zx_hrxml_Organization_s
-#define EL_NS     hrxml
-#define EL_TAG    Organization
-
-/* FUNC(zx_DEC_hrxml_Organization) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Organization_s* zx_DEC_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OrganizationId
-#define EL_STRUCT zx_hrxml_OrganizationId_s
-#define EL_NS     hrxml
-#define EL_TAG    OrganizationId
-
-/* FUNC(zx_DEC_hrxml_OrganizationId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OrganizationId_s* zx_DEC_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_OrganizationId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OrganizationUnit
-#define EL_STRUCT zx_hrxml_OrganizationUnit_s
-#define EL_NS     hrxml
-#define EL_TAG    OrganizationUnit
-
-/* FUNC(zx_DEC_hrxml_OrganizationUnit) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OrganizationUnit_s* zx_DEC_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationUnit_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_attendanceStatus_ATTR:  x->attendanceStatus = x->gg.attr; break;
-    case zx_organizationType_ATTR:  x->organizationType = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OrganizationalUnit
-#define EL_STRUCT zx_hrxml_OrganizationalUnit_s
-#define EL_NS     hrxml
-#define EL_TAG    OrganizationalUnit
-
-/* FUNC(zx_DEC_hrxml_OrganizationalUnit) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OrganizationalUnit_s* zx_DEC_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnit_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_hierarchicalRole_ATTR:  x->hierarchicalRole = x->gg.attr; break;
-    case zx_typeOfGroup_ATTR:  x->typeOfGroup = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_OrganizationalUnitName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->OrganizationalUnitName)
-              x->OrganizationalUnitName = el;
-            break;
-          case zx_hrxml_OrganizationalUnitId_ELEM:
-            zx_DEC_hrxml_OrganizationalUnitId(c, (struct zx_hrxml_OrganizationalUnitId_s*)el);
-            if (!x->OrganizationalUnitId)
-              x->OrganizationalUnitId = (struct zx_hrxml_OrganizationalUnitId_s*)el;
-            break;
-          case zx_hrxml_OrganizationId_ELEM:
-            zx_DEC_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)el);
-            if (!x->OrganizationId)
-              x->OrganizationId = (struct zx_hrxml_OrganizationId_s*)el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-          case zx_hrxml_IndustryCode_ELEM:
-            zx_DEC_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)el);
-            if (!x->IndustryCode)
-              x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)el;
-            break;
-          case zx_hrxml_AccountingCode_ELEM:
-            zx_DEC_hrxml_AccountingCode(c, (struct zx_hrxml_AccountingCode_s*)el);
-            if (!x->AccountingCode)
-              x->AccountingCode = (struct zx_hrxml_AccountingCode_s*)el;
-            break;
-          case zx_hrxml_WorkSite_ELEM:
-            zx_DEC_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)el);
-            if (!x->WorkSite)
-              x->WorkSite = (struct zx_hrxml_WorkSite_s*)el;
-            break;
-          case zx_hrxml_RelatedOrganizationalUnit_ELEM:
-            zx_DEC_hrxml_RelatedOrganizationalUnit(c, (struct zx_hrxml_RelatedOrganizationalUnit_s*)el);
-            if (!x->RelatedOrganizationalUnit)
-              x->RelatedOrganizationalUnit = (struct zx_hrxml_RelatedOrganizationalUnit_s*)el;
-            break;
-          case zx_hrxml_PersonMember_ELEM:
-            zx_DEC_hrxml_PersonMember(c, (struct zx_hrxml_PersonMember_s*)el);
-            if (!x->PersonMember)
-              x->PersonMember = (struct zx_hrxml_PersonMember_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OrganizationalUnitId
-#define EL_STRUCT zx_hrxml_OrganizationalUnitId_s
-#define EL_NS     hrxml
-#define EL_TAG    OrganizationalUnitId
-
-/* FUNC(zx_DEC_hrxml_OrganizationalUnitId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OrganizationalUnitId_s* zx_DEC_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnitId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OriginalDate
-#define EL_STRUCT zx_hrxml_OriginalDate_s
-#define EL_NS     hrxml
-#define EL_TAG    OriginalDate
-
-/* FUNC(zx_DEC_hrxml_OriginalDate) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OriginalDate_s* zx_DEC_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_AnyDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AnyDate)
-              x->AnyDate = el;
-            break;
-          case zx_hrxml_YearMonth_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->YearMonth)
-              x->YearMonth = el;
-            break;
-          case zx_hrxml_Year_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Year)
-              x->Year = el;
-            break;
-          case zx_hrxml_MonthDay_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MonthDay)
-              x->MonthDay = el;
-            break;
-          case zx_hrxml_StringDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StringDate)
-              x->StringDate = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OtherBenefits
-#define EL_STRUCT zx_hrxml_OtherBenefits_s
-#define EL_NS     hrxml
-#define EL_TAG    OtherBenefits
-
-/* FUNC(zx_DEC_hrxml_OtherBenefits) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OtherBenefits_s* zx_DEC_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefits_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OtherCompensation
-#define EL_STRUCT zx_hrxml_OtherCompensation_s
-#define EL_NS     hrxml
-#define EL_TAG    OtherCompensation
-
-/* FUNC(zx_DEC_hrxml_OtherCompensation) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OtherCompensation_s* zx_DEC_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCompensation_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OtherDescriptors
-#define EL_STRUCT zx_hrxml_OtherDescriptors_s
-#define EL_NS     hrxml
-#define EL_TAG    OtherDescriptors
-
-/* FUNC(zx_DEC_hrxml_OtherDescriptors) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OtherDescriptors_s* zx_DEC_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDescriptors_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-          case zx_hrxml_Applicable_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Applicable)
-              x->Applicable = el;
-            break;
-          case zx_hrxml_Value_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Value)
-              x->Value = el;
-            break;
-          case zx_hrxml_List_ELEM:
-            zx_DEC_hrxml_List(c, (struct zx_hrxml_List_s*)el);
-            if (!x->List)
-              x->List = (struct zx_hrxml_List_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OtherHonors
-#define EL_STRUCT zx_hrxml_OtherHonors_s
-#define EL_NS     hrxml
-#define EL_TAG    OtherHonors
-
-/* FUNC(zx_DEC_hrxml_OtherHonors) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OtherHonors_s* zx_DEC_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OtherPay
-#define EL_STRUCT zx_hrxml_OtherPay_s
-#define EL_NS     hrxml
-#define EL_TAG    OtherPay
-
-/* FUNC(zx_DEC_hrxml_OtherPay) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OtherPay_s* zx_DEC_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_currencyCode_ATTR:  x->currencyCode = x->gg.attr; break;
-    case zx_otherInterval_ATTR:  x->otherInterval = x->gg.attr; break;
-    case zx_otherPayType_ATTR:  x->otherPayType = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_OtherPayAmountMin_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->OtherPayAmountMin)
-              x->OtherPayAmountMin = el;
-            break;
-          case zx_hrxml_OtherPayAmountMax_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->OtherPayAmountMax)
-              x->OtherPayAmountMax = el;
-            break;
-          case zx_hrxml_OtherPayCalculation_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->OtherPayCalculation)
-              x->OtherPayCalculation = el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_OtherPublication
-#define EL_STRUCT zx_hrxml_OtherPublication_s
-#define EL_NS     hrxml
-#define EL_TAG    OtherPublication
-
-/* FUNC(zx_DEC_hrxml_OtherPublication) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_OtherPublication_s* zx_DEC_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPublication_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Title_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Title)
-              x->Title = el;
-            break;
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-          case zx_hrxml_PublicationDate_ELEM:
-            zx_DEC_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)el);
-            if (!x->PublicationDate)
-              x->PublicationDate = (struct zx_hrxml_PublicationDate_s*)el;
-            break;
-          case zx_hrxml_Link_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Link)
-              x->Link = el;
-            break;
-          case zx_hrxml_Abstract_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Abstract)
-              x->Abstract = el;
-            break;
-          case zx_hrxml_Copyright_ELEM:
-            zx_DEC_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)el);
-            if (!x->Copyright)
-              x->Copyright = (struct zx_hrxml_Copyright_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-          case zx_hrxml_ISSN_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ISSN)
-              x->ISSN = el;
-            break;
-          case zx_hrxml_ISBN_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ISBN)
-              x->ISBN = el;
-            break;
-          case zx_hrxml_NumberOfPages_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->NumberOfPages)
-              x->NumberOfPages = el;
-            break;
-          case zx_hrxml_PublisherName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PublisherName)
-              x->PublisherName = el;
-            break;
-          case zx_hrxml_PublisherLocation_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PublisherLocation)
-              x->PublisherLocation = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Pager
-#define EL_STRUCT zx_hrxml_Pager_s
-#define EL_NS     hrxml
-#define EL_TAG    Pager
-
-/* FUNC(zx_DEC_hrxml_Pager) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Pager_s* zx_DEC_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_FormattedNumber_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->FormattedNumber)
-              x->FormattedNumber = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ParkingInstructions
-#define EL_STRUCT zx_hrxml_ParkingInstructions_s
-#define EL_NS     hrxml
-#define EL_TAG    ParkingInstructions
-
-/* FUNC(zx_DEC_hrxml_ParkingInstructions) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ParkingInstructions_s* zx_DEC_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_ParkingInstructions_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Patent
-#define EL_STRUCT zx_hrxml_Patent_s
-#define EL_NS     hrxml
-#define EL_TAG    Patent
-
-/* FUNC(zx_DEC_hrxml_Patent) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Patent_s* zx_DEC_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_PatentTitle_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PatentTitle)
-              x->PatentTitle = el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-          case zx_hrxml_Inventors_ELEM:
-            zx_DEC_hrxml_Inventors(c, (struct zx_hrxml_Inventors_s*)el);
-            if (!x->Inventors)
-              x->Inventors = (struct zx_hrxml_Inventors_s*)el;
-            break;
-          case zx_hrxml_PatentDetail_ELEM:
-            zx_DEC_hrxml_PatentDetail(c, (struct zx_hrxml_PatentDetail_s*)el);
-            if (!x->PatentDetail)
-              x->PatentDetail = (struct zx_hrxml_PatentDetail_s*)el;
-            break;
-          case zx_hrxml_Link_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Link)
-              x->Link = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PatentDetail
-#define EL_STRUCT zx_hrxml_PatentDetail_s
-#define EL_NS     hrxml
-#define EL_TAG    PatentDetail
-
-/* FUNC(zx_DEC_hrxml_PatentDetail) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PatentDetail_s* zx_DEC_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IssuingAuthority_ELEM:
-            zx_DEC_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)el);
-            if (!x->IssuingAuthority)
-              x->IssuingAuthority = (struct zx_hrxml_IssuingAuthority_s*)el;
-            break;
-          case zx_hrxml_PatentMilestone_ELEM:
-            zx_DEC_hrxml_PatentMilestone(c, (struct zx_hrxml_PatentMilestone_s*)el);
-            if (!x->PatentMilestone)
-              x->PatentMilestone = (struct zx_hrxml_PatentMilestone_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PatentHistory
-#define EL_STRUCT zx_hrxml_PatentHistory_s
-#define EL_NS     hrxml
-#define EL_TAG    PatentHistory
-
-/* FUNC(zx_DEC_hrxml_PatentHistory) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PatentHistory_s* zx_DEC_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistory_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Patent_ELEM:
-            zx_DEC_hrxml_Patent(c, (struct zx_hrxml_Patent_s*)el);
-            if (!x->Patent)
-              x->Patent = (struct zx_hrxml_Patent_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PatentMilestone
-#define EL_STRUCT zx_hrxml_PatentMilestone_s
-#define EL_NS     hrxml
-#define EL_TAG    PatentMilestone
-
-/* FUNC(zx_DEC_hrxml_PatentMilestone) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PatentMilestone_s* zx_DEC_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMilestone_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_Status_ELEM:
-            zx_DEC_hrxml_Status(c, (struct zx_hrxml_Status_s*)el);
-            if (!x->Status)
-              x->Status = (struct zx_hrxml_Status_s*)el;
-            break;
-          case zx_hrxml_Date_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Date)
-              x->Date = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PersonDescriptors
-#define EL_STRUCT zx_hrxml_PersonDescriptors_s
-#define EL_NS     hrxml
-#define EL_TAG    PersonDescriptors
-
-/* FUNC(zx_DEC_hrxml_PersonDescriptors) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PersonDescriptors_s* zx_DEC_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDescriptors_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_LegalIdentifiers_ELEM:
-            zx_DEC_hrxml_LegalIdentifiers(c, (struct zx_hrxml_LegalIdentifiers_s*)el);
-            if (!x->LegalIdentifiers)
-              x->LegalIdentifiers = (struct zx_hrxml_LegalIdentifiers_s*)el;
-            break;
-          case zx_hrxml_DemographicDescriptors_ELEM:
-            zx_DEC_hrxml_DemographicDescriptors(c, (struct zx_hrxml_DemographicDescriptors_s*)el);
-            if (!x->DemographicDescriptors)
-              x->DemographicDescriptors = (struct zx_hrxml_DemographicDescriptors_s*)el;
-            break;
-          case zx_hrxml_BiologicalDescriptors_ELEM:
-            zx_DEC_hrxml_BiologicalDescriptors(c, (struct zx_hrxml_BiologicalDescriptors_s*)el);
-            if (!x->BiologicalDescriptors)
-              x->BiologicalDescriptors = (struct zx_hrxml_BiologicalDescriptors_s*)el;
-            break;
-          case zx_hrxml_SupportingMaterials_ELEM:
-            zx_DEC_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)el);
-            if (!x->SupportingMaterials)
-              x->SupportingMaterials = (struct zx_hrxml_SupportingMaterials_s*)el;
-            break;
-          case zx_hrxml_OtherDescriptors_ELEM:
-            zx_DEC_hrxml_OtherDescriptors(c, (struct zx_hrxml_OtherDescriptors_s*)el);
-            if (!x->OtherDescriptors)
-              x->OtherDescriptors = (struct zx_hrxml_OtherDescriptors_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PersonId
-#define EL_STRUCT zx_hrxml_PersonId_s
-#define EL_NS     hrxml
-#define EL_TAG    PersonId
-
-/* FUNC(zx_DEC_hrxml_PersonId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PersonId_s* zx_DEC_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PersonLegalId
-#define EL_STRUCT zx_hrxml_PersonLegalId_s
-#define EL_NS     hrxml
-#define EL_TAG    PersonLegalId
-
-/* FUNC(zx_DEC_hrxml_PersonLegalId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PersonLegalId_s* zx_DEC_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_countryCode_ATTR:  x->countryCode = x->gg.attr; break;
-    case zx_documentType_ATTR:  x->documentType = x->gg.attr; break;
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_idSource_ATTR:  x->idSource = x->gg.attr; break;
-    case zx_issuingRegion_ATTR:  x->issuingRegion = x->gg.attr; break;
-    case zx_jurisdiction_ATTR:  x->jurisdiction = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PersonMember
-#define EL_STRUCT zx_hrxml_PersonMember_s
-#define EL_NS     hrxml
-#define EL_TAG    PersonMember
-
-/* FUNC(zx_DEC_hrxml_PersonMember) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PersonMember_s* zx_DEC_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_PersonName_ELEM:
-            zx_DEC_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)el);
-            if (!x->PersonName)
-              x->PersonName = (struct zx_hrxml_PersonName_s*)el;
-            break;
-          case zx_hrxml_PersonId_ELEM:
-            zx_DEC_hrxml_PersonId(c, (struct zx_hrxml_PersonId_s*)el);
-            if (!x->PersonId)
-              x->PersonId = (struct zx_hrxml_PersonId_s*)el;
-            break;
-          case zx_hrxml_PersonRole_ELEM:
-            zx_DEC_hrxml_PersonRole(c, (struct zx_hrxml_PersonRole_s*)el);
-            if (!x->PersonRole)
-              x->PersonRole = (struct zx_hrxml_PersonRole_s*)el;
-            break;
-          case zx_hrxml_ContactMethod_ELEM:
-            zx_DEC_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)el);
-            if (!x->ContactMethod)
-              x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PersonName
-#define EL_STRUCT zx_hrxml_PersonName_s
-#define EL_NS     hrxml
-#define EL_TAG    PersonName
-
-/* FUNC(zx_DEC_hrxml_PersonName) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PersonName_s* zx_DEC_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_script_ATTR:  x->script = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_FormattedName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->FormattedName)
-              x->FormattedName = el;
-            break;
-          case zx_hrxml_LegalName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->LegalName)
-              x->LegalName = el;
-            break;
-          case zx_hrxml_GivenName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->GivenName)
-              x->GivenName = el;
-            break;
-          case zx_hrxml_PreferredGivenName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PreferredGivenName)
-              x->PreferredGivenName = el;
-            break;
-          case zx_hrxml_MiddleName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MiddleName)
-              x->MiddleName = el;
-            break;
-          case zx_hrxml_FamilyName_ELEM:
-            zx_DEC_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)el);
-            if (!x->FamilyName)
-              x->FamilyName = (struct zx_hrxml_FamilyName_s*)el;
-            break;
-          case zx_hrxml_Affix_ELEM:
-            zx_DEC_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)el);
-            if (!x->Affix)
-              x->Affix = (struct zx_hrxml_Affix_s*)el;
-            break;
-          case zx_hrxml_AlternateScript_ELEM:
-            zx_DEC_hrxml_AlternateScript(c, (struct zx_hrxml_AlternateScript_s*)el);
-            if (!x->AlternateScript)
-              x->AlternateScript = (struct zx_hrxml_AlternateScript_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PersonRole
-#define EL_STRUCT zx_hrxml_PersonRole_s
-#define EL_NS     hrxml
-#define EL_TAG    PersonRole
-
-/* FUNC(zx_DEC_hrxml_PersonRole) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PersonRole_s* zx_DEC_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_leader_ATTR:  x->leader = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_RoleName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->RoleName)
-              x->RoleName = el;
-            break;
-          case zx_hrxml_RoleId_ELEM:
-            zx_DEC_hrxml_RoleId(c, (struct zx_hrxml_RoleId_s*)el);
-            if (!x->RoleId)
-              x->RoleId = (struct zx_hrxml_RoleId_s*)el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PersonalData
-#define EL_STRUCT zx_hrxml_PersonalData_s
-#define EL_NS     hrxml
-#define EL_TAG    PersonalData
-
-/* FUNC(zx_DEC_hrxml_PersonalData) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PersonalData_s* zx_DEC_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_PersonId_ELEM:
-            zx_DEC_hrxml_PersonId(c, (struct zx_hrxml_PersonId_s*)el);
-            if (!x->PersonId)
-              x->PersonId = (struct zx_hrxml_PersonId_s*)el;
-            break;
-          case zx_hrxml_PersonName_ELEM:
-            zx_DEC_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)el);
-            if (!x->PersonName)
-              x->PersonName = (struct zx_hrxml_PersonName_s*)el;
-            break;
-          case zx_hrxml_ContactMethod_ELEM:
-            zx_DEC_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)el);
-            if (!x->ContactMethod)
-              x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
-            break;
-          case zx_hrxml_PersonDescriptors_ELEM:
-            zx_DEC_hrxml_PersonDescriptors(c, (struct zx_hrxml_PersonDescriptors_s*)el);
-            if (!x->PersonDescriptors)
-              x->PersonDescriptors = (struct zx_hrxml_PersonDescriptors_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PhysicalLocation
-#define EL_STRUCT zx_hrxml_PhysicalLocation_s
-#define EL_NS     hrxml
-#define EL_TAG    PhysicalLocation
-
-/* FUNC(zx_DEC_hrxml_PhysicalLocation) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PhysicalLocation_s* zx_DEC_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalLocation_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-          case zx_hrxml_EffectiveDate_ELEM:
-            zx_DEC_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)el);
-            if (!x->EffectiveDate)
-              x->EffectiveDate = (struct zx_hrxml_EffectiveDate_s*)el;
-            break;
-          case zx_hrxml_SpatialLocation_ELEM:
-            zx_DEC_hrxml_SpatialLocation(c, (struct zx_hrxml_SpatialLocation_s*)el);
-            if (!x->SpatialLocation)
-              x->SpatialLocation = (struct zx_hrxml_SpatialLocation_s*)el;
-            break;
-          case zx_hrxml_TravelDirections_ELEM:
-            zx_DEC_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)el);
-            if (!x->TravelDirections)
-              x->TravelDirections = (struct zx_hrxml_TravelDirections_s*)el;
-            break;
-          case zx_hrxml_PostalAddress_ELEM:
-            zx_DEC_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)el);
-            if (!x->PostalAddress)
-              x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)el;
-            break;
-          case zx_hrxml_Area_ELEM:
-            zx_DEC_hrxml_Area(c, (struct zx_hrxml_Area_s*)el);
-            if (!x->Area)
-              x->Area = (struct zx_hrxml_Area_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PositionHistory
-#define EL_STRUCT zx_hrxml_PositionHistory_s
-#define EL_NS     hrxml
-#define EL_TAG    PositionHistory
-
-/* FUNC(zx_DEC_hrxml_PositionHistory) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PositionHistory_s* zx_DEC_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHistory_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_currentEmployer_ATTR:  x->currentEmployer = x->gg.attr; break;
-    case zx_positionType_ATTR:  x->positionType = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Title_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Title)
-              x->Title = el;
-            break;
-          case zx_hrxml_OrgName_ELEM:
-            zx_DEC_hrxml_OrgName(c, (struct zx_hrxml_OrgName_s*)el);
-            if (!x->OrgName)
-              x->OrgName = (struct zx_hrxml_OrgName_s*)el;
-            break;
-          case zx_hrxml_OrgInfo_ELEM:
-            zx_DEC_hrxml_OrgInfo(c, (struct zx_hrxml_OrgInfo_s*)el);
-            if (!x->OrgInfo)
-              x->OrgInfo = (struct zx_hrxml_OrgInfo_s*)el;
-            break;
-          case zx_hrxml_OrgIndustry_ELEM:
-            zx_DEC_hrxml_OrgIndustry(c, (struct zx_hrxml_OrgIndustry_s*)el);
-            if (!x->OrgIndustry)
-              x->OrgIndustry = (struct zx_hrxml_OrgIndustry_s*)el;
-            break;
-          case zx_hrxml_OrgSize_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->OrgSize)
-              x->OrgSize = el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-          case zx_hrxml_StartDate_ELEM:
-            zx_DEC_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)el);
-            if (!x->StartDate)
-              x->StartDate = (struct zx_hrxml_StartDate_s*)el;
-            break;
-          case zx_hrxml_EndDate_ELEM:
-            zx_DEC_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)el);
-            if (!x->EndDate)
-              x->EndDate = (struct zx_hrxml_EndDate_s*)el;
-            break;
-          case zx_hrxml_Compensation_ELEM:
-            zx_DEC_hrxml_Compensation(c, (struct zx_hrxml_Compensation_s*)el);
-            if (!x->Compensation)
-              x->Compensation = (struct zx_hrxml_Compensation_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-          case zx_hrxml_Verification_ELEM:
-            zx_DEC_hrxml_Verification(c, (struct zx_hrxml_Verification_s*)el);
-            if (!x->Verification)
-              x->Verification = (struct zx_hrxml_Verification_s*)el;
-            break;
-          case zx_hrxml_JobLevelInfo_ELEM:
-            zx_DEC_hrxml_JobLevelInfo(c, (struct zx_hrxml_JobLevelInfo_s*)el);
-            if (!x->JobLevelInfo)
-              x->JobLevelInfo = (struct zx_hrxml_JobLevelInfo_s*)el;
-            break;
-          case zx_hrxml_JobCategory_ELEM:
-            zx_DEC_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)el);
-            if (!x->JobCategory)
-              x->JobCategory = (struct zx_hrxml_JobCategory_s*)el;
-            break;
-          case zx_hrxml_Competency_ELEM:
-            zx_DEC_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)el);
-            if (!x->Competency)
-              x->Competency = (struct zx_hrxml_Competency_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PositionLocation
-#define EL_STRUCT zx_hrxml_PositionLocation_s
-#define EL_NS     hrxml
-#define EL_TAG    PositionLocation
-
-/* FUNC(zx_DEC_hrxml_PositionLocation) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PositionLocation_s* zx_DEC_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionLocation_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_CountryCode_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CountryCode)
-              x->CountryCode = el;
-            break;
-          case zx_hrxml_PostalCode_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PostalCode)
-              x->PostalCode = el;
-            break;
-          case zx_hrxml_Region_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Region)
-              x->Region = el;
-            break;
-          case zx_hrxml_Municipality_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Municipality)
-              x->Municipality = el;
-            break;
-          case zx_hrxml_DeliveryAddress_ELEM:
-            zx_DEC_hrxml_DeliveryAddress(c, (struct zx_hrxml_DeliveryAddress_s*)el);
-            if (!x->DeliveryAddress)
-              x->DeliveryAddress = (struct zx_hrxml_DeliveryAddress_s*)el;
-            break;
-          case zx_hrxml_Recipient_ELEM:
-            zx_DEC_hrxml_Recipient(c, (struct zx_hrxml_Recipient_s*)el);
-            if (!x->Recipient)
-              x->Recipient = (struct zx_hrxml_Recipient_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PositionMatching
-#define EL_STRUCT zx_hrxml_PositionMatching_s
-#define EL_NS     hrxml
-#define EL_TAG    PositionMatching
-
-/* FUNC(zx_DEC_hrxml_PositionMatching) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PositionMatching_s* zx_DEC_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionMatching_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Company_ELEM:
-            zx_DEC_hrxml_Company(c, (struct zx_hrxml_Company_s*)el);
-            if (!x->Company)
-              x->Company = (struct zx_hrxml_Company_s*)el;
-            break;
-          case zx_hrxml_CompanyScale_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CompanyScale)
-              x->CompanyScale = el;
-            break;
-          case zx_hrxml_IndustryCode_ELEM:
-            zx_DEC_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)el);
-            if (!x->IndustryCode)
-              x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)el;
-            break;
-          case zx_hrxml_PhysicalLocation_ELEM:
-            zx_DEC_hrxml_PhysicalLocation(c, (struct zx_hrxml_PhysicalLocation_s*)el);
-            if (!x->PhysicalLocation)
-              x->PhysicalLocation = (struct zx_hrxml_PhysicalLocation_s*)el;
-            break;
-          case zx_hrxml_JobCategory_ELEM:
-            zx_DEC_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)el);
-            if (!x->JobCategory)
-              x->JobCategory = (struct zx_hrxml_JobCategory_s*)el;
-            break;
-          case zx_hrxml_PositionTitle_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PositionTitle)
-              x->PositionTitle = el;
-            break;
-          case zx_hrxml_PositionClassification_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PositionClassification)
-              x->PositionClassification = el;
-            break;
-          case zx_hrxml_PositionSchedule_ELEM:
-            zx_DEC_hrxml_PositionSchedule(c, (struct zx_hrxml_PositionSchedule_s*)el);
-            if (!x->PositionSchedule)
-              x->PositionSchedule = (struct zx_hrxml_PositionSchedule_s*)el;
-            break;
-          case zx_hrxml_Shift_ELEM:
-            zx_DEC_hrxml_Shift(c, (struct zx_hrxml_Shift_s*)el);
-            if (!x->Shift)
-              x->Shift = (struct zx_hrxml_Shift_s*)el;
-            break;
-          case zx_hrxml_Competency_ELEM:
-            zx_DEC_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)el);
-            if (!x->Competency)
-              x->Competency = (struct zx_hrxml_Competency_s*)el;
-            break;
-          case zx_hrxml_RemunerationPackage_ELEM:
-            zx_DEC_hrxml_RemunerationPackage(c, (struct zx_hrxml_RemunerationPackage_s*)el);
-            if (!x->RemunerationPackage)
-              x->RemunerationPackage = (struct zx_hrxml_RemunerationPackage_s*)el;
-            break;
-          case zx_hrxml_WorkStyle_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->WorkStyle)
-              x->WorkStyle = el;
-            break;
-          case zx_hrxml_DressCode_ELEM:
-            zx_DEC_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)el);
-            if (!x->DressCode)
-              x->DressCode = (struct zx_hrxml_DressCode_s*)el;
-            break;
-          case zx_hrxml_Travel_ELEM:
-            zx_DEC_hrxml_Travel(c, (struct zx_hrxml_Travel_s*)el);
-            if (!x->Travel)
-              x->Travel = (struct zx_hrxml_Travel_s*)el;
-            break;
-          case zx_hrxml_Relocation_ELEM:
-            zx_DEC_hrxml_Relocation(c, (struct zx_hrxml_Relocation_s*)el);
-            if (!x->Relocation)
-              x->Relocation = (struct zx_hrxml_Relocation_s*)el;
-            break;
-          case zx_hrxml_PreferredLanguage_ELEM:
-            zx_DEC_hrxml_PreferredLanguage(c, (struct zx_hrxml_PreferredLanguage_s*)el);
-            if (!x->PreferredLanguage)
-              x->PreferredLanguage = (struct zx_hrxml_PreferredLanguage_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PositionPosting
-#define EL_STRUCT zx_hrxml_PositionPosting_s
-#define EL_NS     hrxml
-#define EL_TAG    PositionPosting
-
-/* FUNC(zx_DEC_hrxml_PositionPosting) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PositionPosting_s* zx_DEC_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPosting_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_Title_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Title)
-              x->Title = el;
-            break;
-          case zx_hrxml_Link_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Link)
-              x->Link = el;
-            break;
-          case zx_hrxml_SearchCriteria_ELEM:
-            zx_DEC_hrxml_SearchCriteria(c, (struct zx_hrxml_SearchCriteria_s*)el);
-            if (!x->SearchCriteria)
-              x->SearchCriteria = (struct zx_hrxml_SearchCriteria_s*)el;
-            break;
-          case zx_hrxml_SearchResult_ELEM:
-            zx_DEC_hrxml_SearchResult(c, (struct zx_hrxml_SearchResult_s*)el);
-            if (!x->SearchResult)
-              x->SearchResult = (struct zx_hrxml_SearchResult_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PositionSchedule
-#define EL_STRUCT zx_hrxml_PositionSchedule_s
-#define EL_NS     hrxml
-#define EL_TAG    PositionSchedule
-
-/* FUNC(zx_DEC_hrxml_PositionSchedule) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PositionSchedule_s* zx_DEC_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionSchedule_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_percentage_ATTR:  x->percentage = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PostalAddress
-#define EL_STRUCT zx_hrxml_PostalAddress_s
-#define EL_NS     hrxml
-#define EL_TAG    PostalAddress
-
-/* FUNC(zx_DEC_hrxml_PostalAddress) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PostalAddress_s* zx_DEC_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddress_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_CountryCode_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CountryCode)
-              x->CountryCode = el;
-            break;
-          case zx_hrxml_PostalCode_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PostalCode)
-              x->PostalCode = el;
-            break;
-          case zx_hrxml_Region_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Region)
-              x->Region = el;
-            break;
-          case zx_hrxml_Municipality_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Municipality)
-              x->Municipality = el;
-            break;
-          case zx_hrxml_DeliveryAddress_ELEM:
-            zx_DEC_hrxml_DeliveryAddress(c, (struct zx_hrxml_DeliveryAddress_s*)el);
-            if (!x->DeliveryAddress)
-              x->DeliveryAddress = (struct zx_hrxml_DeliveryAddress_s*)el;
-            break;
-          case zx_hrxml_Recipient_ELEM:
-            zx_DEC_hrxml_Recipient(c, (struct zx_hrxml_Recipient_s*)el);
-            if (!x->Recipient)
-              x->Recipient = (struct zx_hrxml_Recipient_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PreferredLanguage
-#define EL_STRUCT zx_hrxml_PreferredLanguage_s
-#define EL_NS     hrxml
-#define EL_TAG    PreferredLanguage
-
-/* FUNC(zx_DEC_hrxml_PreferredLanguage) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PreferredLanguage_s* zx_DEC_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_PreferredLanguage_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PreferredPosition
-#define EL_STRUCT zx_hrxml_PreferredPosition_s
-#define EL_NS     hrxml
-#define EL_TAG    PreferredPosition
-
-/* FUNC(zx_DEC_hrxml_PreferredPosition) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PreferredPosition_s* zx_DEC_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_PreferredPosition_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Company_ELEM:
-            zx_DEC_hrxml_Company(c, (struct zx_hrxml_Company_s*)el);
-            if (!x->Company)
-              x->Company = (struct zx_hrxml_Company_s*)el;
-            break;
-          case zx_hrxml_CompanyScale_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CompanyScale)
-              x->CompanyScale = el;
-            break;
-          case zx_hrxml_IndustryCode_ELEM:
-            zx_DEC_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)el);
-            if (!x->IndustryCode)
-              x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)el;
-            break;
-          case zx_hrxml_PhysicalLocation_ELEM:
-            zx_DEC_hrxml_PhysicalLocation(c, (struct zx_hrxml_PhysicalLocation_s*)el);
-            if (!x->PhysicalLocation)
-              x->PhysicalLocation = (struct zx_hrxml_PhysicalLocation_s*)el;
-            break;
-          case zx_hrxml_JobCategory_ELEM:
-            zx_DEC_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)el);
-            if (!x->JobCategory)
-              x->JobCategory = (struct zx_hrxml_JobCategory_s*)el;
-            break;
-          case zx_hrxml_PositionTitle_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PositionTitle)
-              x->PositionTitle = el;
-            break;
-          case zx_hrxml_PositionClassification_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PositionClassification)
-              x->PositionClassification = el;
-            break;
-          case zx_hrxml_PositionSchedule_ELEM:
-            zx_DEC_hrxml_PositionSchedule(c, (struct zx_hrxml_PositionSchedule_s*)el);
-            if (!x->PositionSchedule)
-              x->PositionSchedule = (struct zx_hrxml_PositionSchedule_s*)el;
-            break;
-          case zx_hrxml_Shift_ELEM:
-            zx_DEC_hrxml_Shift(c, (struct zx_hrxml_Shift_s*)el);
-            if (!x->Shift)
-              x->Shift = (struct zx_hrxml_Shift_s*)el;
-            break;
-          case zx_hrxml_Competency_ELEM:
-            zx_DEC_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)el);
-            if (!x->Competency)
-              x->Competency = (struct zx_hrxml_Competency_s*)el;
-            break;
-          case zx_hrxml_RemunerationPackage_ELEM:
-            zx_DEC_hrxml_RemunerationPackage(c, (struct zx_hrxml_RemunerationPackage_s*)el);
-            if (!x->RemunerationPackage)
-              x->RemunerationPackage = (struct zx_hrxml_RemunerationPackage_s*)el;
-            break;
-          case zx_hrxml_WorkStyle_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->WorkStyle)
-              x->WorkStyle = el;
-            break;
-          case zx_hrxml_DressCode_ELEM:
-            zx_DEC_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)el);
-            if (!x->DressCode)
-              x->DressCode = (struct zx_hrxml_DressCode_s*)el;
-            break;
-          case zx_hrxml_Travel_ELEM:
-            zx_DEC_hrxml_Travel(c, (struct zx_hrxml_Travel_s*)el);
-            if (!x->Travel)
-              x->Travel = (struct zx_hrxml_Travel_s*)el;
-            break;
-          case zx_hrxml_Relocation_ELEM:
-            zx_DEC_hrxml_Relocation(c, (struct zx_hrxml_Relocation_s*)el);
-            if (!x->Relocation)
-              x->Relocation = (struct zx_hrxml_Relocation_s*)el;
-            break;
-          case zx_hrxml_PreferredLanguage_ELEM:
-            zx_DEC_hrxml_PreferredLanguage(c, (struct zx_hrxml_PreferredLanguage_s*)el);
-            if (!x->PreferredLanguage)
-              x->PreferredLanguage = (struct zx_hrxml_PreferredLanguage_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-          case zx_hrxml_Commute_ELEM:
-            zx_DEC_hrxml_Commute(c, (struct zx_hrxml_Commute_s*)el);
-            if (!x->Commute)
-              x->Commute = (struct zx_hrxml_Commute_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PrehireRemuneration
-#define EL_STRUCT zx_hrxml_PrehireRemuneration_s
-#define EL_NS     hrxml
-#define EL_TAG    PrehireRemuneration
-
-/* FUNC(zx_DEC_hrxml_PrehireRemuneration) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PrehireRemuneration_s* zx_DEC_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_PrehireRemuneration_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_BasePay_ELEM:
-            zx_DEC_hrxml_BasePay(c, (struct zx_hrxml_BasePay_s*)el);
-            if (!x->BasePay)
-              x->BasePay = (struct zx_hrxml_BasePay_s*)el;
-            break;
-          case zx_hrxml_OtherPay_ELEM:
-            zx_DEC_hrxml_OtherPay(c, (struct zx_hrxml_OtherPay_s*)el);
-            if (!x->OtherPay)
-              x->OtherPay = (struct zx_hrxml_OtherPay_s*)el;
-            break;
-          case zx_hrxml_Benefits_ELEM:
-            zx_DEC_hrxml_Benefits(c, (struct zx_hrxml_Benefits_s*)el);
-            if (!x->Benefits)
-              x->Benefits = (struct zx_hrxml_Benefits_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PrimaryLanguage
-#define EL_STRUCT zx_hrxml_PrimaryLanguage_s
-#define EL_NS     hrxml
-#define EL_TAG    PrimaryLanguage
-
-/* FUNC(zx_DEC_hrxml_PrimaryLanguage) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PrimaryLanguage_s* zx_DEC_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLanguage_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ProfessionalAssociations
-#define EL_STRUCT zx_hrxml_ProfessionalAssociations_s
-#define EL_NS     hrxml
-#define EL_TAG    ProfessionalAssociations
-
-/* FUNC(zx_DEC_hrxml_ProfessionalAssociations) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ProfessionalAssociations_s* zx_DEC_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_ProfessionalAssociations_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Association_ELEM:
-            zx_DEC_hrxml_Association(c, (struct zx_hrxml_Association_s*)el);
-            if (!x->Association)
-              x->Association = (struct zx_hrxml_Association_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ProfileId
-#define EL_STRUCT zx_hrxml_ProfileId_s
-#define EL_NS     hrxml
-#define EL_TAG    ProfileId
-
-/* FUNC(zx_DEC_hrxml_ProfileId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ProfileId_s* zx_DEC_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ProgramId
-#define EL_STRUCT zx_hrxml_ProgramId_s
-#define EL_NS     hrxml
-#define EL_TAG    ProgramId
-
-/* FUNC(zx_DEC_hrxml_ProgramId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ProgramId_s* zx_DEC_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PublicationDate
-#define EL_STRUCT zx_hrxml_PublicationDate_s
-#define EL_NS     hrxml
-#define EL_TAG    PublicationDate
-
-/* FUNC(zx_DEC_hrxml_PublicationDate) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PublicationDate_s* zx_DEC_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_PublicationDate_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_AnyDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AnyDate)
-              x->AnyDate = el;
-            break;
-          case zx_hrxml_YearMonth_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->YearMonth)
-              x->YearMonth = el;
-            break;
-          case zx_hrxml_Year_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Year)
-              x->Year = el;
-            break;
-          case zx_hrxml_MonthDay_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MonthDay)
-              x->MonthDay = el;
-            break;
-          case zx_hrxml_StringDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StringDate)
-              x->StringDate = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PublicationHistory
-#define EL_STRUCT zx_hrxml_PublicationHistory_s
-#define EL_NS     hrxml
-#define EL_TAG    PublicationHistory
-
-/* FUNC(zx_DEC_hrxml_PublicationHistory) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PublicationHistory_s* zx_DEC_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_PublicationHistory_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_FormattedPublicationDescription_ELEM:
-            zx_DEC_hrxml_FormattedPublicationDescription(c, (struct zx_hrxml_FormattedPublicationDescription_s*)el);
-            if (!x->FormattedPublicationDescription)
-              x->FormattedPublicationDescription = (struct zx_hrxml_FormattedPublicationDescription_s*)el;
-            break;
-          case zx_hrxml_Article_ELEM:
-            zx_DEC_hrxml_Article(c, (struct zx_hrxml_Article_s*)el);
-            if (!x->Article)
-              x->Article = (struct zx_hrxml_Article_s*)el;
-            break;
-          case zx_hrxml_Book_ELEM:
-            zx_DEC_hrxml_Book(c, (struct zx_hrxml_Book_s*)el);
-            if (!x->Book)
-              x->Book = (struct zx_hrxml_Book_s*)el;
-            break;
-          case zx_hrxml_ConferencePaper_ELEM:
-            zx_DEC_hrxml_ConferencePaper(c, (struct zx_hrxml_ConferencePaper_s*)el);
-            if (!x->ConferencePaper)
-              x->ConferencePaper = (struct zx_hrxml_ConferencePaper_s*)el;
-            break;
-          case zx_hrxml_OtherPublication_ELEM:
-            zx_DEC_hrxml_OtherPublication(c, (struct zx_hrxml_OtherPublication_s*)el);
-            if (!x->OtherPublication)
-              x->OtherPublication = (struct zx_hrxml_OtherPublication_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_PublicationLanguage
-#define EL_STRUCT zx_hrxml_PublicationLanguage_s
-#define EL_NS     hrxml
-#define EL_TAG    PublicationLanguage
-
-/* FUNC(zx_DEC_hrxml_PublicationLanguage) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_PublicationLanguage_s* zx_DEC_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_PublicationLanguage_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Qualifications
-#define EL_STRUCT zx_hrxml_Qualifications_s
-#define EL_NS     hrxml
-#define EL_TAG    Qualifications
-
-/* FUNC(zx_DEC_hrxml_Qualifications) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Qualifications_s* zx_DEC_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifications_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_QualificationSummary_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->QualificationSummary)
-              x->QualificationSummary = el;
-            break;
-          case zx_hrxml_Competency_ELEM:
-            zx_DEC_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)el);
-            if (!x->Competency)
-              x->Competency = (struct zx_hrxml_Competency_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_RankAchieved
-#define EL_STRUCT zx_hrxml_RankAchieved_s
-#define EL_NS     hrxml
-#define EL_TAG    RankAchieved
-
-/* FUNC(zx_DEC_hrxml_RankAchieved) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_RankAchieved_s* zx_DEC_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_StartRank_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StartRank)
-              x->StartRank = el;
-            break;
-          case zx_hrxml_CurrentOrEndRank_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CurrentOrEndRank)
-              x->CurrentOrEndRank = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_RankedResult
-#define EL_STRUCT zx_hrxml_RankedResult_s
-#define EL_NS     hrxml
-#define EL_TAG    RankedResult
-
-/* FUNC(zx_DEC_hrxml_RankedResult) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_RankedResult_s* zx_DEC_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_CriterionName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CriterionName)
-              x->CriterionName = el;
-            break;
-          case zx_hrxml_Requested_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Requested)
-              x->Requested = el;
-            break;
-          case zx_hrxml_Offered_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Offered)
-              x->Offered = el;
-            break;
-          case zx_hrxml_Score_ELEM:
-            zx_DEC_hrxml_Score(c, (struct zx_hrxml_Score_s*)el);
-            if (!x->Score)
-              x->Score = (struct zx_hrxml_Score_s*)el;
-            break;
-          case zx_hrxml_Weight_ELEM:
-            zx_DEC_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)el);
-            if (!x->Weight)
-              x->Weight = (struct zx_hrxml_Weight_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-          case zx_hrxml_RankedResult_ELEM:
-            zx_DEC_hrxml_RankedResult(c, (struct zx_hrxml_RankedResult_s*)el);
-            if (!x->RankedResult)
-              x->RankedResult = (struct zx_hrxml_RankedResult_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_RankedSearchResults
-#define EL_STRUCT zx_hrxml_RankedSearchResults_s
-#define EL_NS     hrxml
-#define EL_TAG    RankedSearchResults
-
-/* FUNC(zx_DEC_hrxml_RankedSearchResults) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_RankedSearchResults_s* zx_DEC_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_RankedSearchResults_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_RankedResult_ELEM:
-            zx_DEC_hrxml_RankedResult(c, (struct zx_hrxml_RankedResult_s*)el);
-            if (!x->RankedResult)
-              x->RankedResult = (struct zx_hrxml_RankedResult_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Recipient
-#define EL_STRUCT zx_hrxml_Recipient_s
-#define EL_NS     hrxml
-#define EL_TAG    Recipient
-
-/* FUNC(zx_DEC_hrxml_Recipient) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Recipient_s* zx_DEC_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_PersonName_ELEM:
-            zx_DEC_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)el);
-            if (!x->PersonName)
-              x->PersonName = (struct zx_hrxml_PersonName_s*)el;
-            break;
-          case zx_hrxml_AdditionalText_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AdditionalText)
-              x->AdditionalText = el;
-            break;
-          case zx_hrxml_Organization_ELEM:
-            zx_DEC_hrxml_Organization(c, (struct zx_hrxml_Organization_s*)el);
-            if (!x->Organization)
-              x->Organization = (struct zx_hrxml_Organization_s*)el;
-            break;
-          case zx_hrxml_OrganizationName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->OrganizationName)
-              x->OrganizationName = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Reference
-#define EL_STRUCT zx_hrxml_Reference_s
-#define EL_NS     hrxml
-#define EL_TAG    Reference
-
-/* FUNC(zx_DEC_hrxml_Reference) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Reference_s* zx_DEC_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_PersonName_ELEM:
-            zx_DEC_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)el);
-            if (!x->PersonName)
-              x->PersonName = (struct zx_hrxml_PersonName_s*)el;
-            break;
-          case zx_hrxml_PositionTitle_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PositionTitle)
-              x->PositionTitle = el;
-            break;
-          case zx_hrxml_ContactMethod_ELEM:
-            zx_DEC_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)el);
-            if (!x->ContactMethod)
-              x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_References
-#define EL_STRUCT zx_hrxml_References_s
-#define EL_NS     hrxml
-#define EL_TAG    References
-
-/* FUNC(zx_DEC_hrxml_References) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_References_s* zx_DEC_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Reference_ELEM:
-            zx_DEC_hrxml_Reference(c, (struct zx_hrxml_Reference_s*)el);
-            if (!x->Reference)
-              x->Reference = (struct zx_hrxml_Reference_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_RelatedOrganization
-#define EL_STRUCT zx_hrxml_RelatedOrganization_s
-#define EL_NS     hrxml
-#define EL_TAG    RelatedOrganization
-
-/* FUNC(zx_DEC_hrxml_RelatedOrganization) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_RelatedOrganization_s* zx_DEC_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_RelatedOrganization_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_relationship_ATTR:  x->relationship = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_OrganizationName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->OrganizationName)
-              x->OrganizationName = el;
-            break;
-          case zx_hrxml_OrganizationId_ELEM:
-            zx_DEC_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)el);
-            if (!x->OrganizationId)
-              x->OrganizationId = (struct zx_hrxml_OrganizationId_s*)el;
-            break;
-          case zx_hrxml_TaxId_ELEM:
-            zx_DEC_hrxml_TaxId(c, (struct zx_hrxml_TaxId_s*)el);
-            if (!x->TaxId)
-              x->TaxId = (struct zx_hrxml_TaxId_s*)el;
-            break;
-          case zx_hrxml_LegalId_ELEM:
-            zx_DEC_hrxml_LegalId(c, (struct zx_hrxml_LegalId_s*)el);
-            if (!x->LegalId)
-              x->LegalId = (struct zx_hrxml_LegalId_s*)el;
-            break;
-          case zx_hrxml_DunsNumber_ELEM:
-            zx_DEC_hrxml_DunsNumber(c, (struct zx_hrxml_DunsNumber_s*)el);
-            if (!x->DunsNumber)
-              x->DunsNumber = (struct zx_hrxml_DunsNumber_s*)el;
-            break;
-          case zx_hrxml_IsPublicCompany_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->IsPublicCompany)
-              x->IsPublicCompany = el;
-            break;
-          case zx_hrxml_Stock_ELEM:
-            zx_DEC_hrxml_Stock(c, (struct zx_hrxml_Stock_s*)el);
-            if (!x->Stock)
-              x->Stock = (struct zx_hrxml_Stock_s*)el;
-            break;
-          case zx_hrxml_MissionStatement_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MissionStatement)
-              x->MissionStatement = el;
-            break;
-          case zx_hrxml_ValueStatement_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ValueStatement)
-              x->ValueStatement = el;
-            break;
-          case zx_hrxml_InternetDomainName_ELEM:
-            zx_DEC_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)el);
-            if (!x->InternetDomainName)
-              x->InternetDomainName = (struct zx_hrxml_InternetDomainName_s*)el;
-            break;
-          case zx_hrxml_DoingBusinessAs_ELEM:
-            zx_DEC_hrxml_DoingBusinessAs(c, (struct zx_hrxml_DoingBusinessAs_s*)el);
-            if (!x->DoingBusinessAs)
-              x->DoingBusinessAs = (struct zx_hrxml_DoingBusinessAs_s*)el;
-            break;
-          case zx_hrxml_LegalClassification_ELEM:
-            zx_DEC_hrxml_LegalClassification(c, (struct zx_hrxml_LegalClassification_s*)el);
-            if (!x->LegalClassification)
-              x->LegalClassification = (struct zx_hrxml_LegalClassification_s*)el;
-            break;
-          case zx_hrxml_IndustryCode_ELEM:
-            zx_DEC_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)el);
-            if (!x->IndustryCode)
-              x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)el;
-            break;
-          case zx_hrxml_Headcount_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Headcount)
-              x->Headcount = el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-          case zx_hrxml_WorkSite_ELEM:
-            zx_DEC_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)el);
-            if (!x->WorkSite)
-              x->WorkSite = (struct zx_hrxml_WorkSite_s*)el;
-            break;
-          case zx_hrxml_ContactInfo_ELEM:
-            zx_DEC_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)el);
-            if (!x->ContactInfo)
-              x->ContactInfo = (struct zx_hrxml_ContactInfo_s*)el;
-            break;
-          case zx_hrxml_RelatedOrganization_ELEM:
-            zx_DEC_hrxml_RelatedOrganization(c, (struct zx_hrxml_RelatedOrganization_s*)el);
-            if (!x->RelatedOrganization)
-              x->RelatedOrganization = (struct zx_hrxml_RelatedOrganization_s*)el;
-            break;
-          case zx_hrxml_OrganizationalUnit_ELEM:
-            zx_DEC_hrxml_OrganizationalUnit(c, (struct zx_hrxml_OrganizationalUnit_s*)el);
-            if (!x->OrganizationalUnit)
-              x->OrganizationalUnit = (struct zx_hrxml_OrganizationalUnit_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_RelatedOrganizationalUnit
-#define EL_STRUCT zx_hrxml_RelatedOrganizationalUnit_s
-#define EL_NS     hrxml
-#define EL_TAG    RelatedOrganizationalUnit
-
-/* FUNC(zx_DEC_hrxml_RelatedOrganizationalUnit) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_RelatedOrganizationalUnit_s* zx_DEC_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_RelatedOrganizationalUnit_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_hierarchicalRole_ATTR:  x->hierarchicalRole = x->gg.attr; break;
-    case zx_natureOfRelationship_ATTR:  x->natureOfRelationship = x->gg.attr; break;
-    case zx_relationship_ATTR:  x->relationship = x->gg.attr; break;
-    case zx_typeOfGroup_ATTR:  x->typeOfGroup = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_OrganizationalUnitName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->OrganizationalUnitName)
-              x->OrganizationalUnitName = el;
-            break;
-          case zx_hrxml_OrganizationalUnitId_ELEM:
-            zx_DEC_hrxml_OrganizationalUnitId(c, (struct zx_hrxml_OrganizationalUnitId_s*)el);
-            if (!x->OrganizationalUnitId)
-              x->OrganizationalUnitId = (struct zx_hrxml_OrganizationalUnitId_s*)el;
-            break;
-          case zx_hrxml_OrganizationId_ELEM:
-            zx_DEC_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)el);
-            if (!x->OrganizationId)
-              x->OrganizationId = (struct zx_hrxml_OrganizationId_s*)el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-          case zx_hrxml_IndustryCode_ELEM:
-            zx_DEC_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)el);
-            if (!x->IndustryCode)
-              x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)el;
-            break;
-          case zx_hrxml_AccountingCode_ELEM:
-            zx_DEC_hrxml_AccountingCode(c, (struct zx_hrxml_AccountingCode_s*)el);
-            if (!x->AccountingCode)
-              x->AccountingCode = (struct zx_hrxml_AccountingCode_s*)el;
-            break;
-          case zx_hrxml_WorkSite_ELEM:
-            zx_DEC_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)el);
-            if (!x->WorkSite)
-              x->WorkSite = (struct zx_hrxml_WorkSite_s*)el;
-            break;
-          case zx_hrxml_RelatedOrganizationalUnit_ELEM:
-            zx_DEC_hrxml_RelatedOrganizationalUnit(c, (struct zx_hrxml_RelatedOrganizationalUnit_s*)el);
-            if (!x->RelatedOrganizationalUnit)
-              x->RelatedOrganizationalUnit = (struct zx_hrxml_RelatedOrganizationalUnit_s*)el;
-            break;
-          case zx_hrxml_PersonMember_ELEM:
-            zx_DEC_hrxml_PersonMember(c, (struct zx_hrxml_PersonMember_s*)el);
-            if (!x->PersonMember)
-              x->PersonMember = (struct zx_hrxml_PersonMember_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_RelatedPositionPostings
-#define EL_STRUCT zx_hrxml_RelatedPositionPostings_s
-#define EL_NS     hrxml
-#define EL_TAG    RelatedPositionPostings
-
-/* FUNC(zx_DEC_hrxml_RelatedPositionPostings) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_RelatedPositionPostings_s* zx_DEC_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_RelatedPositionPostings_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_PositionPosting_ELEM:
-            zx_DEC_hrxml_PositionPosting(c, (struct zx_hrxml_PositionPosting_s*)el);
-            if (!x->PositionPosting)
-              x->PositionPosting = (struct zx_hrxml_PositionPosting_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Relocation
-#define EL_STRUCT zx_hrxml_Relocation_s
-#define EL_NS     hrxml
-#define EL_TAG    Relocation
-
-/* FUNC(zx_DEC_hrxml_Relocation) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Relocation_s* zx_DEC_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_relocationConsidered_ATTR:  x->relocationConsidered = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_RelocationAssistance
-#define EL_STRUCT zx_hrxml_RelocationAssistance_s
-#define EL_NS     hrxml
-#define EL_TAG    RelocationAssistance
-
-/* FUNC(zx_DEC_hrxml_RelocationAssistance) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_RelocationAssistance_s* zx_DEC_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_RelocationAssistance_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_companyOffered_ATTR:  x->companyOffered = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_RemunerationPackage
-#define EL_STRUCT zx_hrxml_RemunerationPackage_s
-#define EL_NS     hrxml
-#define EL_TAG    RemunerationPackage
-
-/* FUNC(zx_DEC_hrxml_RemunerationPackage) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_RemunerationPackage_s* zx_DEC_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_RemunerationPackage_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_BasePay_ELEM:
-            zx_DEC_hrxml_BasePay(c, (struct zx_hrxml_BasePay_s*)el);
-            if (!x->BasePay)
-              x->BasePay = (struct zx_hrxml_BasePay_s*)el;
-            break;
-          case zx_hrxml_OtherPay_ELEM:
-            zx_DEC_hrxml_OtherPay(c, (struct zx_hrxml_OtherPay_s*)el);
-            if (!x->OtherPay)
-              x->OtherPay = (struct zx_hrxml_OtherPay_s*)el;
-            break;
-          case zx_hrxml_Benefits_ELEM:
-            zx_DEC_hrxml_Benefits(c, (struct zx_hrxml_Benefits_s*)el);
-            if (!x->Benefits)
-              x->Benefits = (struct zx_hrxml_Benefits_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Resume
-#define EL_STRUCT zx_hrxml_Resume_s
-#define EL_NS     hrxml
-#define EL_TAG    Resume
-
-/* FUNC(zx_DEC_hrxml_Resume) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Resume_s* zx_DEC_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_ResumeId_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ResumeId)
-              x->ResumeId = el;
-            break;
-          case zx_hrxml_DistributionGuidelines_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->DistributionGuidelines)
-              x->DistributionGuidelines = el;
-            break;
-          case zx_hrxml_StructuredXMLResume_ELEM:
-            zx_DEC_hrxml_StructuredXMLResume(c, (struct zx_hrxml_StructuredXMLResume_s*)el);
-            if (!x->StructuredXMLResume)
-              x->StructuredXMLResume = (struct zx_hrxml_StructuredXMLResume_s*)el;
-            break;
-          case zx_hrxml_NonXMLResume_ELEM:
-            zx_DEC_hrxml_NonXMLResume(c, (struct zx_hrxml_NonXMLResume_s*)el);
-            if (!x->NonXMLResume)
-              x->NonXMLResume = (struct zx_hrxml_NonXMLResume_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ResumeAdditionalItem
-#define EL_STRUCT zx_hrxml_ResumeAdditionalItem_s
-#define EL_NS     hrxml
-#define EL_TAG    ResumeAdditionalItem
-
-/* FUNC(zx_DEC_hrxml_ResumeAdditionalItem) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ResumeAdditionalItem_s* zx_DEC_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItem_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_EffectiveDate_ELEM:
-            zx_DEC_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)el);
-            if (!x->EffectiveDate)
-              x->EffectiveDate = (struct zx_hrxml_EffectiveDate_s*)el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ResumeAdditionalItems
-#define EL_STRUCT zx_hrxml_ResumeAdditionalItems_s
-#define EL_NS     hrxml
-#define EL_TAG    ResumeAdditionalItems
-
-/* FUNC(zx_DEC_hrxml_ResumeAdditionalItems) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ResumeAdditionalItems_s* zx_DEC_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItems_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_ResumeAdditionalItem_ELEM:
-            zx_DEC_hrxml_ResumeAdditionalItem(c, (struct zx_hrxml_ResumeAdditionalItem_s*)el);
-            if (!x->ResumeAdditionalItem)
-              x->ResumeAdditionalItem = (struct zx_hrxml_ResumeAdditionalItem_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_RoleId
-#define EL_STRUCT zx_hrxml_RoleId_s
-#define EL_NS     hrxml
-#define EL_TAG    RoleId
-
-/* FUNC(zx_DEC_hrxml_RoleId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_RoleId_s* zx_DEC_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SEPPhysicalLocation
-#define EL_STRUCT zx_hrxml_SEPPhysicalLocation_s
-#define EL_NS     hrxml
-#define EL_TAG    SEPPhysicalLocation
-
-/* FUNC(zx_DEC_hrxml_SEPPhysicalLocation) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SEPPhysicalLocation_s* zx_DEC_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhysicalLocation_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-          case zx_hrxml_SpatialLocation_ELEM:
-            zx_DEC_hrxml_SpatialLocation(c, (struct zx_hrxml_SpatialLocation_s*)el);
-            if (!x->SpatialLocation)
-              x->SpatialLocation = (struct zx_hrxml_SpatialLocation_s*)el;
-            break;
-          case zx_hrxml_TravelDirections_ELEM:
-            zx_DEC_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)el);
-            if (!x->TravelDirections)
-              x->TravelDirections = (struct zx_hrxml_TravelDirections_s*)el;
-            break;
-          case zx_hrxml_Area_ELEM:
-            zx_DEC_hrxml_Area(c, (struct zx_hrxml_Area_s*)el);
-            if (!x->Area)
-              x->Area = (struct zx_hrxml_Area_s*)el;
-            break;
-          case zx_hrxml_PostalAddress_ELEM:
-            zx_DEC_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)el);
-            if (!x->PostalAddress)
-              x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SafetyEquipment
-#define EL_STRUCT zx_hrxml_SafetyEquipment_s
-#define EL_NS     hrxml
-#define EL_TAG    SafetyEquipment
-
-/* FUNC(zx_DEC_hrxml_SafetyEquipment) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SafetyEquipment_s* zx_DEC_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEquipment_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_suppliedByOrganization_ATTR:  x->suppliedByOrganization = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_School
-#define EL_STRUCT zx_hrxml_School_s
-#define EL_NS     hrxml
-#define EL_TAG    School
-
-/* FUNC(zx_DEC_hrxml_School) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_School_s* zx_DEC_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_InternetDomainName_ELEM:
-            zx_DEC_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)el);
-            if (!x->InternetDomainName)
-              x->InternetDomainName = (struct zx_hrxml_InternetDomainName_s*)el;
-            break;
-          case zx_hrxml_SchoolId_ELEM:
-            zx_DEC_hrxml_SchoolId(c, (struct zx_hrxml_SchoolId_s*)el);
-            if (!x->SchoolId)
-              x->SchoolId = (struct zx_hrxml_SchoolId_s*)el;
-            break;
-          case zx_hrxml_SchoolName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->SchoolName)
-              x->SchoolName = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SchoolId
-#define EL_STRUCT zx_hrxml_SchoolId_s
-#define EL_NS     hrxml
-#define EL_TAG    SchoolId
-
-/* FUNC(zx_DEC_hrxml_SchoolId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SchoolId_s* zx_DEC_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SchoolOrInstitution
-#define EL_STRUCT zx_hrxml_SchoolOrInstitution_s
-#define EL_NS     hrxml
-#define EL_TAG    SchoolOrInstitution
-
-/* FUNC(zx_DEC_hrxml_SchoolOrInstitution) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SchoolOrInstitution_s* zx_DEC_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_SchoolOrInstitution_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_schoolType_ATTR:  x->schoolType = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_SchoolName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->SchoolName)
-              x->SchoolName = el;
-            break;
-          case zx_hrxml_School_ELEM:
-            zx_DEC_hrxml_School(c, (struct zx_hrxml_School_s*)el);
-            if (!x->School)
-              x->School = (struct zx_hrxml_School_s*)el;
-            break;
-          case zx_hrxml_LocationSummary_ELEM:
-            zx_DEC_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)el);
-            if (!x->LocationSummary)
-              x->LocationSummary = (struct zx_hrxml_LocationSummary_s*)el;
-            break;
-          case zx_hrxml_PostalAddress_ELEM:
-            zx_DEC_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)el);
-            if (!x->PostalAddress)
-              x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)el;
-            break;
-          case zx_hrxml_OrganizationUnit_ELEM:
-            zx_DEC_hrxml_OrganizationUnit(c, (struct zx_hrxml_OrganizationUnit_s*)el);
-            if (!x->OrganizationUnit)
-              x->OrganizationUnit = (struct zx_hrxml_OrganizationUnit_s*)el;
-            break;
-          case zx_hrxml_Degree_ELEM:
-            zx_DEC_hrxml_Degree(c, (struct zx_hrxml_Degree_s*)el);
-            if (!x->Degree)
-              x->Degree = (struct zx_hrxml_Degree_s*)el;
-            break;
-          case zx_hrxml_Major_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Major)
-              x->Major = el;
-            break;
-          case zx_hrxml_Minor_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Minor)
-              x->Minor = el;
-            break;
-          case zx_hrxml_Measure_ELEM:
-            zx_DEC_hrxml_Measure(c, (struct zx_hrxml_Measure_s*)el);
-            if (!x->Measure)
-              x->Measure = (struct zx_hrxml_Measure_s*)el;
-            break;
-          case zx_hrxml_DatesOfAttendance_ELEM:
-            zx_DEC_hrxml_DatesOfAttendance(c, (struct zx_hrxml_DatesOfAttendance_s*)el);
-            if (!x->DatesOfAttendance)
-              x->DatesOfAttendance = (struct zx_hrxml_DatesOfAttendance_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-          case zx_hrxml_ISCEDInstitutionClassification_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ISCEDInstitutionClassification)
-              x->ISCEDInstitutionClassification = el;
-            break;
-          case zx_hrxml_LocalInstitutionClassification_ELEM:
-            zx_DEC_hrxml_LocalInstitutionClassification(c, (struct zx_hrxml_LocalInstitutionClassification_s*)el);
-            if (!x->LocalInstitutionClassification)
-              x->LocalInstitutionClassification = (struct zx_hrxml_LocalInstitutionClassification_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Score
-#define EL_STRUCT zx_hrxml_Score_s
-#define EL_NS     hrxml
-#define EL_TAG    Score
-
-/* FUNC(zx_DEC_hrxml_Score) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Score_s* zx_DEC_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_unitOfMeasure_ATTR:  x->unitOfMeasure = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SearchCriteria
-#define EL_STRUCT zx_hrxml_SearchCriteria_s
-#define EL_NS     hrxml
-#define EL_TAG    SearchCriteria
-
-/* FUNC(zx_DEC_hrxml_SearchCriteria) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SearchCriteria_s* zx_DEC_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCriteria_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_SearchCriteriaId_ELEM:
-            zx_DEC_hrxml_SearchCriteriaId(c, (struct zx_hrxml_SearchCriteriaId_s*)el);
-            if (!x->SearchCriteriaId)
-              x->SearchCriteriaId = (struct zx_hrxml_SearchCriteriaId_s*)el;
-            break;
-          case zx_hrxml_SearchTarget_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->SearchTarget)
-              x->SearchTarget = el;
-            break;
-          case zx_hrxml_UserId_ELEM:
-            zx_DEC_hrxml_UserId(c, (struct zx_hrxml_UserId_s*)el);
-            if (!x->UserId)
-              x->UserId = (struct zx_hrxml_UserId_s*)el;
-            break;
-          case zx_hrxml_SearchTimeStamp_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->SearchTimeStamp)
-              x->SearchTimeStamp = el;
-            break;
-          case zx_hrxml_SearchString_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->SearchString)
-              x->SearchString = el;
-            break;
-          case zx_hrxml_SearchCriterion_ELEM:
-            zx_DEC_hrxml_SearchCriterion(c, (struct zx_hrxml_SearchCriterion_s*)el);
-            if (!x->SearchCriterion)
-              x->SearchCriterion = (struct zx_hrxml_SearchCriterion_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SearchCriteriaId
-#define EL_STRUCT zx_hrxml_SearchCriteriaId_s
-#define EL_NS     hrxml
-#define EL_TAG    SearchCriteriaId
-
-/* FUNC(zx_DEC_hrxml_SearchCriteriaId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SearchCriteriaId_s* zx_DEC_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCriteriaId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SearchCriterion
-#define EL_STRUCT zx_hrxml_SearchCriterion_s
-#define EL_NS     hrxml
-#define EL_TAG    SearchCriterion
-
-/* FUNC(zx_DEC_hrxml_SearchCriterion) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SearchCriterion_s* zx_DEC_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCriterion_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_CriterionName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CriterionName)
-              x->CriterionName = el;
-            break;
-          case zx_hrxml_CriterionValue_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->CriterionValue)
-              x->CriterionValue = el;
-            break;
-          case zx_hrxml_Weight_ELEM:
-            zx_DEC_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)el);
-            if (!x->Weight)
-              x->Weight = (struct zx_hrxml_Weight_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SearchRelevanceScore
-#define EL_STRUCT zx_hrxml_SearchRelevanceScore_s
-#define EL_NS     hrxml
-#define EL_TAG    SearchRelevanceScore
-
-/* FUNC(zx_DEC_hrxml_SearchRelevanceScore) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SearchRelevanceScore_s* zx_DEC_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_SearchRelevanceScore_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_unitOfMeasure_ATTR:  x->unitOfMeasure = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SearchResult
-#define EL_STRUCT zx_hrxml_SearchResult_s
-#define EL_NS     hrxml
-#define EL_TAG    SearchResult
-
-/* FUNC(zx_DEC_hrxml_SearchResult) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SearchResult_s* zx_DEC_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_SearchResultId_ELEM:
-            zx_DEC_hrxml_SearchResultId(c, (struct zx_hrxml_SearchResultId_s*)el);
-            if (!x->SearchResultId)
-              x->SearchResultId = (struct zx_hrxml_SearchResultId_s*)el;
-            break;
-          case zx_hrxml_SearchTarget_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->SearchTarget)
-              x->SearchTarget = el;
-            break;
-          case zx_hrxml_UserId_ELEM:
-            zx_DEC_hrxml_UserId(c, (struct zx_hrxml_UserId_s*)el);
-            if (!x->UserId)
-              x->UserId = (struct zx_hrxml_UserId_s*)el;
-            break;
-          case zx_hrxml_SearchTimeStamp_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->SearchTimeStamp)
-              x->SearchTimeStamp = el;
-            break;
-          case zx_hrxml_MatchedObjectId_ELEM:
-            zx_DEC_hrxml_MatchedObjectId(c, (struct zx_hrxml_MatchedObjectId_s*)el);
-            if (!x->MatchedObjectId)
-              x->MatchedObjectId = (struct zx_hrxml_MatchedObjectId_s*)el;
-            break;
-          case zx_hrxml_SearchRelevanceScore_ELEM:
-            zx_DEC_hrxml_SearchRelevanceScore(c, (struct zx_hrxml_SearchRelevanceScore_s*)el);
-            if (!x->SearchRelevanceScore)
-              x->SearchRelevanceScore = (struct zx_hrxml_SearchRelevanceScore_s*)el;
-            break;
-          case zx_hrxml_SearchRelevanceRank_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->SearchRelevanceRank)
-              x->SearchRelevanceRank = el;
-            break;
-          case zx_hrxml_SearchResultCount_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->SearchResultCount)
-              x->SearchResultCount = el;
-            break;
-          case zx_hrxml_RankedSearchResults_ELEM:
-            zx_DEC_hrxml_RankedSearchResults(c, (struct zx_hrxml_RankedSearchResults_s*)el);
-            if (!x->RankedSearchResults)
-              x->RankedSearchResults = (struct zx_hrxml_RankedSearchResults_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SearchResultId
-#define EL_STRUCT zx_hrxml_SearchResultId_s
-#define EL_NS     hrxml
-#define EL_TAG    SearchResultId
-
-/* FUNC(zx_DEC_hrxml_SearchResultId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SearchResultId_s* zx_DEC_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResultId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SecurityCredential
-#define EL_STRUCT zx_hrxml_SecurityCredential_s
-#define EL_NS     hrxml
-#define EL_TAG    SecurityCredential
-
-/* FUNC(zx_DEC_hrxml_SecurityCredential) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SecurityCredential_s* zx_DEC_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_SecurityCredential_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_IssuingAuthority_ELEM:
-            zx_DEC_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)el);
-            if (!x->IssuingAuthority)
-              x->IssuingAuthority = (struct zx_hrxml_IssuingAuthority_s*)el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-          case zx_hrxml_EffectiveDate_ELEM:
-            zx_DEC_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)el);
-            if (!x->EffectiveDate)
-              x->EffectiveDate = (struct zx_hrxml_EffectiveDate_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SecurityCredentials
-#define EL_STRUCT zx_hrxml_SecurityCredentials_s
-#define EL_NS     hrxml
-#define EL_TAG    SecurityCredentials
-
-/* FUNC(zx_DEC_hrxml_SecurityCredentials) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SecurityCredentials_s* zx_DEC_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_SecurityCredentials_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_SecurityCredential_ELEM:
-            zx_DEC_hrxml_SecurityCredential(c, (struct zx_hrxml_SecurityCredential_s*)el);
-            if (!x->SecurityCredential)
-              x->SecurityCredential = (struct zx_hrxml_SecurityCredential_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ServiceDetail
-#define EL_STRUCT zx_hrxml_ServiceDetail_s
-#define EL_NS     hrxml
-#define EL_TAG    ServiceDetail
-
-/* FUNC(zx_DEC_hrxml_ServiceDetail) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ServiceDetail_s* zx_DEC_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_branch_ATTR:  x->branch = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_UnitOrDivision_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->UnitOrDivision)
-              x->UnitOrDivision = el;
-            break;
-          case zx_hrxml_RankAchieved_ELEM:
-            zx_DEC_hrxml_RankAchieved(c, (struct zx_hrxml_RankAchieved_s*)el);
-            if (!x->RankAchieved)
-              x->RankAchieved = (struct zx_hrxml_RankAchieved_s*)el;
-            break;
-          case zx_hrxml_DatesOfService_ELEM:
-            zx_DEC_hrxml_DatesOfService(c, (struct zx_hrxml_DatesOfService_s*)el);
-            if (!x->DatesOfService)
-              x->DatesOfService = (struct zx_hrxml_DatesOfService_s*)el;
-            break;
-          case zx_hrxml_Campaign_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Campaign)
-              x->Campaign = el;
-            break;
-          case zx_hrxml_AreaOfExpertise_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AreaOfExpertise)
-              x->AreaOfExpertise = el;
-            break;
-          case zx_hrxml_RecognitionAchieved_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->RecognitionAchieved)
-              x->RecognitionAchieved = el;
-            break;
-          case zx_hrxml_DisciplinaryAction_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->DisciplinaryAction)
-              x->DisciplinaryAction = el;
-            break;
-          case zx_hrxml_DischargeStatus_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->DischargeStatus)
-              x->DischargeStatus = el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ServiceNumber
-#define EL_STRUCT zx_hrxml_ServiceNumber_s
-#define EL_NS     hrxml
-#define EL_TAG    ServiceNumber
-
-/* FUNC(zx_DEC_hrxml_ServiceNumber) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ServiceNumber_s* zx_DEC_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumber_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Shift
-#define EL_STRUCT zx_hrxml_Shift_s
-#define EL_NS     hrxml
-#define EL_TAG    Shift
-
-/* FUNC(zx_DEC_hrxml_Shift) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Shift_s* zx_DEC_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_shiftPeriod_ATTR:  x->shiftPeriod = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_Name_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Name)
-              x->Name = el;
-            break;
-          case zx_hrxml_Hours_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Hours)
-              x->Hours = el;
-            break;
-          case zx_hrxml_StartTime_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StartTime)
-              x->StartTime = el;
-            break;
-          case zx_hrxml_EndTime_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->EndTime)
-              x->EndTime = el;
-            break;
-          case zx_hrxml_PayTypeHours_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PayTypeHours)
-              x->PayTypeHours = el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SourceType
-#define EL_STRUCT zx_hrxml_SourceType_s
-#define EL_NS     hrxml
-#define EL_TAG    SourceType
-
-/* FUNC(zx_DEC_hrxml_SourceType) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SourceType_s* zx_DEC_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_StandardValue_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StandardValue)
-              x->StandardValue = el;
-            break;
-          case zx_hrxml_NonStandardValue_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->NonStandardValue)
-              x->NonStandardValue = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SpatialLocation
-#define EL_STRUCT zx_hrxml_SpatialLocation_s
-#define EL_NS     hrxml
-#define EL_TAG    SpatialLocation
-
-/* FUNC(zx_DEC_hrxml_SpatialLocation) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SpatialLocation_s* zx_DEC_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLocation_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Latitude_ELEM:
-            zx_DEC_hrxml_Latitude(c, (struct zx_hrxml_Latitude_s*)el);
-            if (!x->Latitude)
-              x->Latitude = (struct zx_hrxml_Latitude_s*)el;
-            break;
-          case zx_hrxml_Longitude_ELEM:
-            zx_DEC_hrxml_Longitude(c, (struct zx_hrxml_Longitude_s*)el);
-            if (!x->Longitude)
-              x->Longitude = (struct zx_hrxml_Longitude_s*)el;
-            break;
-          case zx_hrxml_Altitude_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Altitude)
-              x->Altitude = el;
-            break;
-          case zx_hrxml_AltitudeMeanSeaLevel_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AltitudeMeanSeaLevel)
-              x->AltitudeMeanSeaLevel = el;
-            break;
-          case zx_hrxml_HorizontalAccuracy_ELEM:
-            zx_DEC_hrxml_HorizontalAccuracy(c, (struct zx_hrxml_HorizontalAccuracy_s*)el);
-            if (!x->HorizontalAccuracy)
-              x->HorizontalAccuracy = (struct zx_hrxml_HorizontalAccuracy_s*)el;
-            break;
-          case zx_hrxml_VerticalAccuracy_ELEM:
-            zx_DEC_hrxml_VerticalAccuracy(c, (struct zx_hrxml_VerticalAccuracy_s*)el);
-            if (!x->VerticalAccuracy)
-              x->VerticalAccuracy = (struct zx_hrxml_VerticalAccuracy_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SpeakingEvent
-#define EL_STRUCT zx_hrxml_SpeakingEvent_s
-#define EL_NS     hrxml
-#define EL_TAG    SpeakingEvent
-
-/* FUNC(zx_DEC_hrxml_SpeakingEvent) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SpeakingEvent_s* zx_DEC_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEvent_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_type_ATTR:  x->type = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Title_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Title)
-              x->Title = el;
-            break;
-          case zx_hrxml_Role_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Role)
-              x->Role = el;
-            break;
-          case zx_hrxml_StartDate_ELEM:
-            zx_DEC_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)el);
-            if (!x->StartDate)
-              x->StartDate = (struct zx_hrxml_StartDate_s*)el;
-            break;
-          case zx_hrxml_EndDate_ELEM:
-            zx_DEC_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)el);
-            if (!x->EndDate)
-              x->EndDate = (struct zx_hrxml_EndDate_s*)el;
-            break;
-          case zx_hrxml_EventName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->EventName)
-              x->EventName = el;
-            break;
-          case zx_hrxml_EventType_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->EventType)
-              x->EventType = el;
-            break;
-          case zx_hrxml_Location_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Location)
-              x->Location = el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-          case zx_hrxml_AffiliatedOrganization_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AffiliatedOrganization)
-              x->AffiliatedOrganization = el;
-            break;
-          case zx_hrxml_Link_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Link)
-              x->Link = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SpeakingEventsHistory
-#define EL_STRUCT zx_hrxml_SpeakingEventsHistory_s
-#define EL_NS     hrxml
-#define EL_TAG    SpeakingEventsHistory
-
-/* FUNC(zx_DEC_hrxml_SpeakingEventsHistory) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SpeakingEventsHistory_s* zx_DEC_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_SpeakingEventsHistory_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_SpeakingEvent_ELEM:
-            zx_DEC_hrxml_SpeakingEvent(c, (struct zx_hrxml_SpeakingEvent_s*)el);
-            if (!x->SpeakingEvent)
-              x->SpeakingEvent = (struct zx_hrxml_SpeakingEvent_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SpecifiedCompetencyReference
-#define EL_STRUCT zx_hrxml_SpecifiedCompetencyReference_s
-#define EL_NS     hrxml
-#define EL_TAG    SpecifiedCompetencyReference
-
-/* FUNC(zx_DEC_hrxml_SpecifiedCompetencyReference) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SpecifiedCompetencyReference_s* zx_DEC_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrxml_SpecifiedCompetencyReference_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_CompetencyId_ELEM:
-            zx_DEC_hrxml_CompetencyId(c, (struct zx_hrxml_CompetencyId_s*)el);
-            if (!x->CompetencyId)
-              x->CompetencyId = (struct zx_hrxml_CompetencyId_s*)el;
-            break;
-          case zx_hrxml_ProficencyLevel_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ProficencyLevel)
-              x->ProficencyLevel = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_StartDate
-#define EL_STRUCT zx_hrxml_StartDate_s
-#define EL_NS     hrxml
-#define EL_TAG    StartDate
-
-/* FUNC(zx_DEC_hrxml_StartDate) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_StartDate_s* zx_DEC_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_AnyDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AnyDate)
-              x->AnyDate = el;
-            break;
-          case zx_hrxml_YearMonth_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->YearMonth)
-              x->YearMonth = el;
-            break;
-          case zx_hrxml_Year_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Year)
-              x->Year = el;
-            break;
-          case zx_hrxml_MonthDay_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MonthDay)
-              x->MonthDay = el;
-            break;
-          case zx_hrxml_StringDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StringDate)
-              x->StringDate = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_StartingCompensation
-#define EL_STRUCT zx_hrxml_StartingCompensation_s
-#define EL_NS     hrxml
-#define EL_TAG    StartingCompensation
-
-/* FUNC(zx_DEC_hrxml_StartingCompensation) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_StartingCompensation_s* zx_DEC_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_StartingCompensation_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_currency_ATTR:  x->currency = x->gg.attr; break;
-    case zx_intervalType_ATTR:  x->intervalType = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Status
-#define EL_STRUCT zx_hrxml_Status_s
-#define EL_NS     hrxml
-#define EL_TAG    Status
-
-/* FUNC(zx_DEC_hrxml_Status) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Status_s* zx_DEC_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Stock
-#define EL_STRUCT zx_hrxml_Stock_s
-#define EL_NS     hrxml
-#define EL_TAG    Stock
-
-/* FUNC(zx_DEC_hrxml_Stock) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Stock_s* zx_DEC_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Id_ELEM:
-            zx_DEC_hrxml_Id(c, (struct zx_hrxml_Id_s*)el);
-            if (!x->Id)
-              x->Id = (struct zx_hrxml_Id_s*)el;
-            break;
-          case zx_hrxml_Symbol_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Symbol)
-              x->Symbol = el;
-            break;
-          case zx_hrxml_Exchange_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Exchange)
-              x->Exchange = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_StringValue
-#define EL_STRUCT zx_hrxml_StringValue_s
-#define EL_NS     hrxml
-#define EL_TAG    StringValue
-
-/* FUNC(zx_DEC_hrxml_StringValue) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_StringValue_s* zx_DEC_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_description_ATTR:  x->description = x->gg.attr; break;
-    case zx_maxValue_ATTR:  x->maxValue = x->gg.attr; break;
-    case zx_minValue_ATTR:  x->minValue = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_StructuredXMLResume
-#define EL_STRUCT zx_hrxml_StructuredXMLResume_s
-#define EL_NS     hrxml
-#define EL_TAG    StructuredXMLResume
-
-/* FUNC(zx_DEC_hrxml_StructuredXMLResume) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_StructuredXMLResume_s* zx_DEC_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_StructuredXMLResume_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_ContactInfo_ELEM:
-            zx_DEC_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)el);
-            if (!x->ContactInfo)
-              x->ContactInfo = (struct zx_hrxml_ContactInfo_s*)el;
-            break;
-          case zx_hrxml_ExecutiveSummary_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ExecutiveSummary)
-              x->ExecutiveSummary = el;
-            break;
-          case zx_hrxml_Objective_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Objective)
-              x->Objective = el;
-            break;
-          case zx_hrxml_EmploymentHistory_ELEM:
-            zx_DEC_hrxml_EmploymentHistory(c, (struct zx_hrxml_EmploymentHistory_s*)el);
-            if (!x->EmploymentHistory)
-              x->EmploymentHistory = (struct zx_hrxml_EmploymentHistory_s*)el;
-            break;
-          case zx_hrxml_EducationHistory_ELEM:
-            zx_DEC_hrxml_EducationHistory(c, (struct zx_hrxml_EducationHistory_s*)el);
-            if (!x->EducationHistory)
-              x->EducationHistory = (struct zx_hrxml_EducationHistory_s*)el;
-            break;
-          case zx_hrxml_LicensesAndCertifications_ELEM:
-            zx_DEC_hrxml_LicensesAndCertifications(c, (struct zx_hrxml_LicensesAndCertifications_s*)el);
-            if (!x->LicensesAndCertifications)
-              x->LicensesAndCertifications = (struct zx_hrxml_LicensesAndCertifications_s*)el;
-            break;
-          case zx_hrxml_MilitaryHistory_ELEM:
-            zx_DEC_hrxml_MilitaryHistory(c, (struct zx_hrxml_MilitaryHistory_s*)el);
-            if (!x->MilitaryHistory)
-              x->MilitaryHistory = (struct zx_hrxml_MilitaryHistory_s*)el;
-            break;
-          case zx_hrxml_PatentHistory_ELEM:
-            zx_DEC_hrxml_PatentHistory(c, (struct zx_hrxml_PatentHistory_s*)el);
-            if (!x->PatentHistory)
-              x->PatentHistory = (struct zx_hrxml_PatentHistory_s*)el;
-            break;
-          case zx_hrxml_PublicationHistory_ELEM:
-            zx_DEC_hrxml_PublicationHistory(c, (struct zx_hrxml_PublicationHistory_s*)el);
-            if (!x->PublicationHistory)
-              x->PublicationHistory = (struct zx_hrxml_PublicationHistory_s*)el;
-            break;
-          case zx_hrxml_SpeakingEventsHistory_ELEM:
-            zx_DEC_hrxml_SpeakingEventsHistory(c, (struct zx_hrxml_SpeakingEventsHistory_s*)el);
-            if (!x->SpeakingEventsHistory)
-              x->SpeakingEventsHistory = (struct zx_hrxml_SpeakingEventsHistory_s*)el;
-            break;
-          case zx_hrxml_Qualifications_ELEM:
-            zx_DEC_hrxml_Qualifications(c, (struct zx_hrxml_Qualifications_s*)el);
-            if (!x->Qualifications)
-              x->Qualifications = (struct zx_hrxml_Qualifications_s*)el;
-            break;
-          case zx_hrxml_Languages_ELEM:
-            zx_DEC_hrxml_Languages(c, (struct zx_hrxml_Languages_s*)el);
-            if (!x->Languages)
-              x->Languages = (struct zx_hrxml_Languages_s*)el;
-            break;
-          case zx_hrxml_Achievements_ELEM:
-            zx_DEC_hrxml_Achievements(c, (struct zx_hrxml_Achievements_s*)el);
-            if (!x->Achievements)
-              x->Achievements = (struct zx_hrxml_Achievements_s*)el;
-            break;
-          case zx_hrxml_Associations_ELEM:
-            zx_DEC_hrxml_Associations(c, (struct zx_hrxml_Associations_s*)el);
-            if (!x->Associations)
-              x->Associations = (struct zx_hrxml_Associations_s*)el;
-            break;
-          case zx_hrxml_References_ELEM:
-            zx_DEC_hrxml_References(c, (struct zx_hrxml_References_s*)el);
-            if (!x->References)
-              x->References = (struct zx_hrxml_References_s*)el;
-            break;
-          case zx_hrxml_SecurityCredentials_ELEM:
-            zx_DEC_hrxml_SecurityCredentials(c, (struct zx_hrxml_SecurityCredentials_s*)el);
-            if (!x->SecurityCredentials)
-              x->SecurityCredentials = (struct zx_hrxml_SecurityCredentials_s*)el;
-            break;
-          case zx_hrxml_ResumeAdditionalItems_ELEM:
-            zx_DEC_hrxml_ResumeAdditionalItems(c, (struct zx_hrxml_ResumeAdditionalItems_s*)el);
-            if (!x->ResumeAdditionalItems)
-              x->ResumeAdditionalItems = (struct zx_hrxml_ResumeAdditionalItems_s*)el;
-            break;
-          case zx_hrxml_SupportingMaterials_ELEM:
-            zx_DEC_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)el);
-            if (!x->SupportingMaterials)
-              x->SupportingMaterials = (struct zx_hrxml_SupportingMaterials_s*)el;
-            break;
-          case zx_hrxml_ProfessionalAssociations_ELEM:
-            zx_DEC_hrxml_ProfessionalAssociations(c, (struct zx_hrxml_ProfessionalAssociations_s*)el);
-            if (!x->ProfessionalAssociations)
-              x->ProfessionalAssociations = (struct zx_hrxml_ProfessionalAssociations_s*)el;
-            break;
-          case zx_hrxml_Comments_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Comments)
-              x->Comments = el;
-            break;
-          case zx_hrxml_RevisionDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->RevisionDate)
-              x->RevisionDate = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SupplierId
-#define EL_STRUCT zx_hrxml_SupplierId_s
-#define EL_NS     hrxml
-#define EL_TAG    SupplierId
-
-/* FUNC(zx_DEC_hrxml_SupplierId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SupplierId_s* zx_DEC_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_SupportingMaterials
-#define EL_STRUCT zx_hrxml_SupportingMaterials_s
-#define EL_NS     hrxml
-#define EL_TAG    SupportingMaterials
-
-/* FUNC(zx_DEC_hrxml_SupportingMaterials) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_SupportingMaterials_s* zx_DEC_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_SupportingMaterials_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Link_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Link)
-              x->Link = el;
-            break;
-          case zx_hrxml_AttachmentReference_ELEM:
-            zx_DEC_hrxml_AttachmentReference(c, (struct zx_hrxml_AttachmentReference_s*)el);
-            if (!x->AttachmentReference)
-              x->AttachmentReference = (struct zx_hrxml_AttachmentReference_s*)el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_TTYTDD
-#define EL_STRUCT zx_hrxml_TTYTDD_s
-#define EL_NS     hrxml
-#define EL_TAG    TTYTDD
-
-/* FUNC(zx_DEC_hrxml_TTYTDD) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_TTYTDD_s* zx_DEC_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_FormattedNumber_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->FormattedNumber)
-              x->FormattedNumber = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_TaxId
-#define EL_STRUCT zx_hrxml_TaxId_s
-#define EL_NS     hrxml
-#define EL_TAG    TaxId
-
-/* FUNC(zx_DEC_hrxml_TaxId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_TaxId_s* zx_DEC_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_TaxonomyId
-#define EL_STRUCT zx_hrxml_TaxonomyId_s
-#define EL_NS     hrxml
-#define EL_TAG    TaxonomyId
-
-/* FUNC(zx_DEC_hrxml_TaxonomyId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_TaxonomyId_s* zx_DEC_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_description_ATTR:  x->description = x->gg.attr; break;
-    case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_TaxonomyName
-#define EL_STRUCT zx_hrxml_TaxonomyName_s
-#define EL_NS     hrxml
-#define EL_TAG    TaxonomyName
-
-/* FUNC(zx_DEC_hrxml_TaxonomyName) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_TaxonomyName_s* zx_DEC_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_version_ATTR:  x->version = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Telephone
-#define EL_STRUCT zx_hrxml_Telephone_s
-#define EL_NS     hrxml
-#define EL_TAG    Telephone
-
-/* FUNC(zx_DEC_hrxml_Telephone) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Telephone_s* zx_DEC_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_FormattedNumber_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->FormattedNumber)
-              x->FormattedNumber = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_TermOfNotice
-#define EL_STRUCT zx_hrxml_TermOfNotice_s
-#define EL_NS     hrxml
-#define EL_TAG    TermOfNotice
-
-/* FUNC(zx_DEC_hrxml_TermOfNotice) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_TermOfNotice_s* zx_DEC_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Value_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Value)
-              x->Value = el;
-            break;
-          case zx_hrxml_Interval_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Interval)
-              x->Interval = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_TimeMax
-#define EL_STRUCT zx_hrxml_TimeMax_s
-#define EL_NS     hrxml
-#define EL_TAG    TimeMax
-
-/* FUNC(zx_DEC_hrxml_TimeMax) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_TimeMax_s* zx_DEC_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_unitOfMeasure_ATTR:  x->unitOfMeasure = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_TimeOffAllowance
-#define EL_STRUCT zx_hrxml_TimeOffAllowance_s
-#define EL_NS     hrxml
-#define EL_TAG    TimeOffAllowance
-
-/* FUNC(zx_DEC_hrxml_TimeOffAllowance) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_TimeOffAllowance_s* zx_DEC_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAllowance_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_timeOffType_ATTR:  x->timeOffType = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Travel
-#define EL_STRUCT zx_hrxml_Travel_s
-#define EL_NS     hrxml
-#define EL_TAG    Travel
-
-/* FUNC(zx_DEC_hrxml_Travel) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Travel_s* zx_DEC_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_Applicable_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Applicable)
-              x->Applicable = el;
-            break;
-          case zx_hrxml_TravelFrequency_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->TravelFrequency)
-              x->TravelFrequency = el;
-            break;
-          case zx_hrxml_TravelConsiderations_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->TravelConsiderations)
-              x->TravelConsiderations = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_TravelDirections
-#define EL_STRUCT zx_hrxml_TravelDirections_s
-#define EL_NS     hrxml
-#define EL_TAG    TravelDirections
-
-/* FUNC(zx_DEC_hrxml_TravelDirections) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_TravelDirections_s* zx_DEC_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDirections_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_UserArea
-#define EL_STRUCT zx_hrxml_UserArea_s
-#define EL_NS     hrxml
-#define EL_TAG    UserArea
-
-/* FUNC(zx_DEC_hrxml_UserArea) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_UserArea_s* zx_DEC_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_UserId
-#define EL_STRUCT zx_hrxml_UserId_s
-#define EL_NS     hrxml
-#define EL_TAG    UserId
-
-/* FUNC(zx_DEC_hrxml_UserId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_UserId_s* zx_DEC_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ValidFrom
-#define EL_STRUCT zx_hrxml_ValidFrom_s
-#define EL_NS     hrxml
-#define EL_TAG    ValidFrom
-
-/* FUNC(zx_DEC_hrxml_ValidFrom) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ValidFrom_s* zx_DEC_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_AnyDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AnyDate)
-              x->AnyDate = el;
-            break;
-          case zx_hrxml_YearMonth_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->YearMonth)
-              x->YearMonth = el;
-            break;
-          case zx_hrxml_Year_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Year)
-              x->Year = el;
-            break;
-          case zx_hrxml_MonthDay_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MonthDay)
-              x->MonthDay = el;
-            break;
-          case zx_hrxml_StringDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StringDate)
-              x->StringDate = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_ValidTo
-#define EL_STRUCT zx_hrxml_ValidTo_s
-#define EL_NS     hrxml
-#define EL_TAG    ValidTo
-
-/* FUNC(zx_DEC_hrxml_ValidTo) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_ValidTo_s* zx_DEC_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_AnyDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AnyDate)
-              x->AnyDate = el;
-            break;
-          case zx_hrxml_YearMonth_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->YearMonth)
-              x->YearMonth = el;
-            break;
-          case zx_hrxml_Year_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->Year)
-              x->Year = el;
-            break;
-          case zx_hrxml_MonthDay_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->MonthDay)
-              x->MonthDay = el;
-            break;
-          case zx_hrxml_StringDate_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->StringDate)
-              x->StringDate = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Verification
-#define EL_STRUCT zx_hrxml_Verification_s
-#define EL_NS     hrxml
-#define EL_TAG    Verification
-
-/* FUNC(zx_DEC_hrxml_Verification) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Verification_s* zx_DEC_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_ContactInfo_ELEM:
-            zx_DEC_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)el);
-            if (!x->ContactInfo)
-              x->ContactInfo = (struct zx_hrxml_ContactInfo_s*)el;
-            break;
-          case zx_hrxml_ReasonForLeaving_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->ReasonForLeaving)
-              x->ReasonForLeaving = el;
-            break;
-          case zx_hrxml_PermissionToContact_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->PermissionToContact)
-              x->PermissionToContact = el;
-            break;
-          case zx_hrxml_VerifyEmployment_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->VerifyEmployment)
-              x->VerifyEmployment = el;
-            break;
-          case zx_hrxml_EligibleForRehire_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->EligibleForRehire)
-              x->EligibleForRehire = el;
-            break;
-          case zx_hrxml_AttendanceRating_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->AttendanceRating)
-              x->AttendanceRating = el;
-            break;
-          case zx_hrxml_OverallPerformanceRating_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->OverallPerformanceRating)
-              x->OverallPerformanceRating = el;
-            break;
-          case zx_hrxml_QuestionAnswerPair_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->QuestionAnswerPair)
-              x->QuestionAnswerPair = el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_VerticalAccuracy
-#define EL_STRUCT zx_hrxml_VerticalAccuracy_s
-#define EL_NS     hrxml
-#define EL_TAG    VerticalAccuracy
-
-/* FUNC(zx_DEC_hrxml_VerticalAccuracy) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_VerticalAccuracy_s* zx_DEC_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalAccuracy_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_VisaStatus
-#define EL_STRUCT zx_hrxml_VisaStatus_s
-#define EL_NS     hrxml
-#define EL_TAG    VisaStatus
-
-/* FUNC(zx_DEC_hrxml_VisaStatus) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_VisaStatus_s* zx_DEC_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_countryCode_ATTR:  x->countryCode = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_Weight
-#define EL_STRUCT zx_hrxml_Weight_s
-#define EL_NS     hrxml
-#define EL_TAG    Weight
-
-/* FUNC(zx_DEC_hrxml_Weight) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_Weight_s* zx_DEC_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_description_ATTR:  x->description = x->gg.attr; break;
-    case zx_interval_ATTR:  x->interval = x->gg.attr; break;
-    case zx_maxValue_ATTR:  x->maxValue = x->gg.attr; break;
-    case zx_minValue_ATTR:  x->minValue = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_WorkSite
-#define EL_STRUCT zx_hrxml_WorkSite_s
-#define EL_NS     hrxml
-#define EL_TAG    WorkSite
-
-/* FUNC(zx_DEC_hrxml_WorkSite) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_WorkSite_s* zx_DEC_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_WorkSiteName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->WorkSiteName)
-              x->WorkSiteName = el;
-            break;
-          case zx_hrxml_WorkSiteId_ELEM:
-            zx_DEC_hrxml_WorkSiteId(c, (struct zx_hrxml_WorkSiteId_s*)el);
-            if (!x->WorkSiteId)
-              x->WorkSiteId = (struct zx_hrxml_WorkSiteId_s*)el;
-            break;
-          case zx_hrxml_Details_ELEM:
-            zx_DEC_hrxml_Details(c, (struct zx_hrxml_Details_s*)el);
-            if (!x->Details)
-              x->Details = (struct zx_hrxml_Details_s*)el;
-            break;
-          case zx_hrxml_PostalAddress_ELEM:
-            zx_DEC_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)el);
-            if (!x->PostalAddress)
-              x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)el;
-            break;
-          case zx_hrxml_TravelDirections_ELEM:
-            zx_DEC_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)el);
-            if (!x->TravelDirections)
-              x->TravelDirections = (struct zx_hrxml_TravelDirections_s*)el;
-            break;
-          case zx_hrxml_ParkingInstructions_ELEM:
-            zx_DEC_hrxml_ParkingInstructions(c, (struct zx_hrxml_ParkingInstructions_s*)el);
-            if (!x->ParkingInstructions)
-              x->ParkingInstructions = (struct zx_hrxml_ParkingInstructions_s*)el;
-            break;
-          case zx_hrxml_WorkSiteEnvironment_ELEM:
-            zx_DEC_hrxml_WorkSiteEnvironment(c, (struct zx_hrxml_WorkSiteEnvironment_s*)el);
-            if (!x->WorkSiteEnvironment)
-              x->WorkSiteEnvironment = (struct zx_hrxml_WorkSiteEnvironment_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_WorkSiteEnvironment
-#define EL_STRUCT zx_hrxml_WorkSiteEnvironment_s
-#define EL_NS     hrxml
-#define EL_TAG    WorkSiteEnvironment
-
-/* FUNC(zx_DEC_hrxml_WorkSiteEnvironment) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_WorkSiteEnvironment_s* zx_DEC_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSiteEnvironment_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_EnvironmentName_ELEM:
-            zx_DEC_simple_elem(c, el);
-            if (!x->EnvironmentName)
-              x->EnvironmentName = el;
-            break;
-          case zx_hrxml_EnvironmentId_ELEM:
-            zx_DEC_hrxml_EnvironmentId(c, (struct zx_hrxml_EnvironmentId_s*)el);
-            if (!x->EnvironmentId)
-              x->EnvironmentId = (struct zx_hrxml_EnvironmentId_s*)el;
-            break;
-          case zx_hrxml_WorkSiteId_ELEM:
-            zx_DEC_hrxml_WorkSiteId(c, (struct zx_hrxml_WorkSiteId_s*)el);
-            if (!x->WorkSiteId)
-              x->WorkSiteId = (struct zx_hrxml_WorkSiteId_s*)el;
-            break;
-          case zx_hrxml_Description_ELEM:
-            zx_DEC_hrxml_Description(c, (struct zx_hrxml_Description_s*)el);
-            if (!x->Description)
-              x->Description = (struct zx_hrxml_Description_s*)el;
-            break;
-          case zx_hrxml_Considerations_ELEM:
-            zx_DEC_hrxml_Considerations(c, (struct zx_hrxml_Considerations_s*)el);
-            if (!x->Considerations)
-              x->Considerations = (struct zx_hrxml_Considerations_s*)el;
-            break;
-          case zx_hrxml_UserArea_ELEM:
-            zx_DEC_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)el);
-            if (!x->UserArea)
-              x->UserArea = (struct zx_hrxml_UserArea_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
-
-
-
-
-
-
-
-/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
-
-#define EL_NAME   hrxml_WorkSiteId
-#define EL_STRUCT zx_hrxml_WorkSiteId_s
-#define EL_NS     hrxml
-#define EL_TAG    WorkSiteId
-
-/* FUNC(zx_DEC_hrxml_WorkSiteId) */
-
-/*() Element Decoder. When per element decoder is called, the c->p
- * will point to just past the element name. The element has already
- * been allocated to the correct size and the namespace prescan has
- * already been done. */
-
-/* Called by: */
-struct zx_hrxml_WorkSiteId_s* zx_DEC_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x )
-{
-  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
-  struct zx_elem_s* el;
-  struct zx_ns_s* pop_seen;
-
-  ZX_START_DEC_EXT(x);
-
-#if 1 /* NORMALMODE */
-  /* The tag name has already been detected. Process attributes until '>' */
-  
-  for (; c->p; ++c->p) {
-    tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
-    switch (tok) {
-    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; break;
-    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; break;
-    case zx_validTo_ATTR:  x->validTo = x->gg.attr; break;
-
-    case ZX_TOK_XMLNS: break;
-    case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_ATTR_ERR: return x; 
-    case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
-    }
-  }
-no_attr:
-  if (c->p) {
-    ++c->p;
-    if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
-      ++c->p;
-      goto out;
-    }
-  }
-#endif
-
-  /* Process contents until '</' */
-  
-  ZX_START_BODY_DEC_EXT(x);
-  
-  while (c->p) {
-  next_elem:
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
-    if (*c->p == '<') {
-    potential_tag:
-      ++c->p;
-      switch (*c->p) {
-      case '?':  /* processing instruction <?xml ... ?> */
-      case '!':  /* comment <!-- ... --> */
-	if (zx_scan_pi_or_comment(c))
-	  break;
-	goto next_elem;
-      case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
-	  return x;
-	/* Legitimate close tag. Normal exit from this function. */
-	++c->p;
-	goto out;
-      default:
-	if (A_Z_a_z_(*c->p)) {
-	  el = zx_elem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
-	  if (!el)
-	    return x;
-	  switch (el->g.tok) {
-          case zx_hrxml_IdValue_ELEM:
-            zx_DEC_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)el);
-            if (!x->IdValue)
-              x->IdValue = (struct zx_hrxml_IdValue_s*)el;
-            break;
-
-	  default:
-	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
-	    break;
-	  }
-	  zx_pop_seen(pop_seen);
-	  goto next_elem;
-	}
-      }
-      /* false alarm <, fall thru */
-    }
-    if (!zx_scan_data(c, (struct zx_elem_s*)x))
-      return x;
-    goto potential_tag;
-  }
- out:
-  zx_dec_reverse_lists((struct zx_elem_s*)x);
-  ZX_END_DEC_EXT(x);
-  return x;
-}
-
-#undef EL_NAME
-#undef EL_STRUCT
-#undef EL_NS
-#undef EL_TAG
 
 
+
+int zx_DEC_ATTR_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_description_ATTR:  x->description = x->gg.attr; return 1;
+    case zx_id_ATTR:  x->id = x->gg.attr; return 1;
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_version_ATTR:  x->version = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_FormattedNumber_ELEM:
+    if (!x->FormattedNumber)
+      x->FormattedNumber = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Value_ELEM:
+    if (!x->Value)
+      x->Value = el;
+    return 1;
+  case zx_hrxml_Interval_ELEM:
+    if (!x->Interval)
+      x->Interval = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_unitOfMeasure_ATTR:  x->unitOfMeasure = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAllowance_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_timeOffType_ATTR:  x->timeOffType = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAllowance_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_Applicable_ELEM:
+    if (!x->Applicable)
+      x->Applicable = el;
+    return 1;
+  case zx_hrxml_TravelFrequency_ELEM:
+    if (!x->TravelFrequency)
+      x->TravelFrequency = el;
+    return 1;
+  case zx_hrxml_TravelConsiderations_ELEM:
+    if (!x->TravelConsiderations)
+      x->TravelConsiderations = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDirections_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDirections_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_AnyDate_ELEM:
+    if (!x->AnyDate)
+      x->AnyDate = el;
+    return 1;
+  case zx_hrxml_YearMonth_ELEM:
+    if (!x->YearMonth)
+      x->YearMonth = el;
+    return 1;
+  case zx_hrxml_Year_ELEM:
+    if (!x->Year)
+      x->Year = el;
+    return 1;
+  case zx_hrxml_MonthDay_ELEM:
+    if (!x->MonthDay)
+      x->MonthDay = el;
+    return 1;
+  case zx_hrxml_StringDate_ELEM:
+    if (!x->StringDate)
+      x->StringDate = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_dateDescription_ATTR:  x->dateDescription = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_AnyDate_ELEM:
+    if (!x->AnyDate)
+      x->AnyDate = el;
+    return 1;
+  case zx_hrxml_YearMonth_ELEM:
+    if (!x->YearMonth)
+      x->YearMonth = el;
+    return 1;
+  case zx_hrxml_Year_ELEM:
+    if (!x->Year)
+      x->Year = el;
+    return 1;
+  case zx_hrxml_MonthDay_ELEM:
+    if (!x->MonthDay)
+      x->MonthDay = el;
+    return 1;
+  case zx_hrxml_StringDate_ELEM:
+    if (!x->StringDate)
+      x->StringDate = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_ContactInfo_ELEM:
+    if (!x->ContactInfo)
+      x->ContactInfo = (struct zx_hrxml_ContactInfo_s*)el;
+    return 1;
+  case zx_hrxml_ReasonForLeaving_ELEM:
+    if (!x->ReasonForLeaving)
+      x->ReasonForLeaving = el;
+    return 1;
+  case zx_hrxml_PermissionToContact_ELEM:
+    if (!x->PermissionToContact)
+      x->PermissionToContact = el;
+    return 1;
+  case zx_hrxml_VerifyEmployment_ELEM:
+    if (!x->VerifyEmployment)
+      x->VerifyEmployment = el;
+    return 1;
+  case zx_hrxml_EligibleForRehire_ELEM:
+    if (!x->EligibleForRehire)
+      x->EligibleForRehire = el;
+    return 1;
+  case zx_hrxml_AttendanceRating_ELEM:
+    if (!x->AttendanceRating)
+      x->AttendanceRating = el;
+    return 1;
+  case zx_hrxml_OverallPerformanceRating_ELEM:
+    if (!x->OverallPerformanceRating)
+      x->OverallPerformanceRating = el;
+    return 1;
+  case zx_hrxml_QuestionAnswerPair_ELEM:
+    if (!x->QuestionAnswerPair)
+      x->QuestionAnswerPair = el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalAccuracy_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalAccuracy_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_countryCode_ATTR:  x->countryCode = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_description_ATTR:  x->description = x->gg.attr; return 1;
+    case zx_interval_ATTR:  x->interval = x->gg.attr; return 1;
+    case zx_maxValue_ATTR:  x->maxValue = x->gg.attr; return 1;
+    case zx_minValue_ATTR:  x->minValue = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_WorkSiteName_ELEM:
+    if (!x->WorkSiteName)
+      x->WorkSiteName = el;
+    return 1;
+  case zx_hrxml_WorkSiteId_ELEM:
+    if (!x->WorkSiteId)
+      x->WorkSiteId = (struct zx_hrxml_WorkSiteId_s*)el;
+    return 1;
+  case zx_hrxml_Details_ELEM:
+    if (!x->Details)
+      x->Details = (struct zx_hrxml_Details_s*)el;
+    return 1;
+  case zx_hrxml_PostalAddress_ELEM:
+    if (!x->PostalAddress)
+      x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)el;
+    return 1;
+  case zx_hrxml_TravelDirections_ELEM:
+    if (!x->TravelDirections)
+      x->TravelDirections = (struct zx_hrxml_TravelDirections_s*)el;
+    return 1;
+  case zx_hrxml_ParkingInstructions_ELEM:
+    if (!x->ParkingInstructions)
+      x->ParkingInstructions = (struct zx_hrxml_ParkingInstructions_s*)el;
+    return 1;
+  case zx_hrxml_WorkSiteEnvironment_ELEM:
+    if (!x->WorkSiteEnvironment)
+      x->WorkSiteEnvironment = (struct zx_hrxml_WorkSiteEnvironment_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSiteEnvironment_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSiteEnvironment_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_EnvironmentName_ELEM:
+    if (!x->EnvironmentName)
+      x->EnvironmentName = el;
+    return 1;
+  case zx_hrxml_EnvironmentId_ELEM:
+    if (!x->EnvironmentId)
+      x->EnvironmentId = (struct zx_hrxml_EnvironmentId_s*)el;
+    return 1;
+  case zx_hrxml_WorkSiteId_ELEM:
+    if (!x->WorkSiteId)
+      x->WorkSiteId = (struct zx_hrxml_WorkSiteId_s*)el;
+    return 1;
+  case zx_hrxml_Description_ELEM:
+    if (!x->Description)
+      x->Description = (struct zx_hrxml_Description_s*)el;
+    return 1;
+  case zx_hrxml_Considerations_ELEM:
+    if (!x->Considerations)
+      x->Considerations = (struct zx_hrxml_Considerations_s*)el;
+    return 1;
+  case zx_hrxml_UserArea_ELEM:
+    if (!x->UserArea)
+      x->UserArea = (struct zx_hrxml_UserArea_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_idOwner_ATTR:  x->idOwner = x->gg.attr; return 1;
+    case zx_validFrom_ATTR:  x->validFrom = x->gg.attr; return 1;
+    case zx_validTo_ATTR:  x->validTo = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_hrxml_IdValue_ELEM:
+    if (!x->IdValue)
+      x->IdValue = (struct zx_hrxml_IdValue_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
 
 
 /* EOF -- c/zx-hrxml-dec.c */
