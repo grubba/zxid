@@ -1684,6 +1684,8 @@ winbindist:
 # zxid.user@lists.unh.edu, wsf-dev@lists.openliberty.org
 
 #WEBROOT=sampo@zxid.org:zxid.org
+WEBROOTHOST=sampo@zxidp.org
+WEBROOTDIR=/var/zxid/webroot
 WEBROOT=sampo@zxidp.org:/var/zxid/webroot
 
 copydist:
@@ -1777,6 +1779,10 @@ lcov:
 	rm -rf lcovhtml; mkdir lcovhtml
 	$(LCOV) --gcov-tool $(GCOV) --ignore-errors graph -b . -d . -c -no-checksum -o lcovhtml/zxid.info
 	$(GENHTML) -t 'ZXID Code Coverage' -o lcovhtml lcovhtml/zxid.info
+
+copylcov:
+	ssh $(WEBROOTHOST) mkdir $(WEBROOTDIR)/lcovhtml-$(ZXIDREL) || true
+	rsync -a lcovhtml/* $(WEBROOT)/lcovhtml-$(ZXIDREL)
 
 gprof:
 	gprof zxencdectest

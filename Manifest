@@ -580,7 +580,7 @@ csharp/zxidPINVOKE.cs
 zxidjava/README.zxid-java
 zxidjava/zxid_wrap.c
 
-zxidjava/SWIGTYPE_p_f_p_char_int__p_zx_el_tok.java
+zxidjava/SWIGTYPE_p_f_p_struct_zx_ctx_p_struct_zx_elem_s__int.java
 zxidjava/SWIGTYPE_p_f_p_void__void.java
 zxidjava/SWIGTYPE_p_f_p_void_size_t__p_void.java
 zxidjava/SWIGTYPE_p_f_size_t__p_void.java
@@ -613,6 +613,7 @@ zxidjava/SWIGTYPE_p_zx_ds_Signature_s.java
 zxidjava/SWIGTYPE_p_zx_e_Body_s.java
 zxidjava/SWIGTYPE_p_zx_e_Envelope_s.java
 zxidjava/SWIGTYPE_p_zx_e_Header_s.java
+zxidjava/SWIGTYPE_p_zx_el_desc.java
 zxidjava/SWIGTYPE_p_zx_el_tok.java
 zxidjava/SWIGTYPE_p_zx_elem_s.java
 zxidjava/SWIGTYPE_p_zx_ff12_Assertion_s.java
