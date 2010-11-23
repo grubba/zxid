@@ -243,6 +243,14 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   char* p;
   char buf[64];
   D_INDENT("deref: ");
+
+  if (!cgi || !cgi->saml_art || !*cgi->saml_art) {
+    ERR("SAMLart missing or empty string. %p %p", cgi, cgi?cgi->saml_art:0);
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "ERR", cgi?cgi->saml_art:0, "Artifact missing");
+    D_DEDENT("deref: ");
+    return 0;
+  }
+  
   len = strlen(cgi->saml_art);
   if (cf->log_level > 0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "W", "ART", cgi->saml_art, 0);

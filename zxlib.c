@@ -564,8 +564,16 @@ struct zx_str* zx_EASY_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
 {
   int len = zx_LEN_WO_any_elem(c, x);
   char* buf = ZX_ALLOC(c, len+1);
-  return zx_easy_enc_common(c, zx_ENC_WO_any_elem(c, x, buf), buf, len);
+  //return zx_easy_enc_common(c, zx_ENC_WO_any_elem(c, x, buf), buf, len);
+  if (p != buf+len) {
+    ERR("Encoded length(%d) does not match computed length(%d). ED(%.*s)", p-buf, len, p-buf, buf);
+    len = p-buf;
+  }
+  buf[len] = 0;
+  return zx_ref_len_str(c, len, buf);
 }
+
+#if 0
 
 /* Called by:  TXEASY_ENC_SO_ELNAME, TXEASY_ENC_WO_ELNAME, TXEASY_ENC_WO_any_elem */
 struct zx_str* zx_easy_enc_common(struct zx_ctx* c, char* p, char* buf, int len)

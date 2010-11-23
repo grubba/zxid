@@ -254,6 +254,7 @@ struct zx_el_desc {
   int siz;  /* max struct size to help allocation */
   int (*at_dec)(struct zx_ctx* c,struct zx_elem_s* x); /* funcptr to attr decode switch */
   int (*el_dec)(struct zx_ctx* c,struct zx_elem_s* x); /* funcptr to elem decode switch */
+  int el_order[];  /* Ordered list of tags that should appear as kids. */
 };
 
 struct zx_el_tok {

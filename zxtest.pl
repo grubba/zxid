@@ -872,11 +872,11 @@ sub ZXC {  # zxcall
 }
 
 sub CMD {  # zxpasswd command with diff
-    my ($tsti, $expl, $cmd, $exitval, $timeout) = @_;
+    my ($tsti, $expl, $cmd, $exitval, $timeout, $slow) = @_;
     return unless $tst eq 'all' || $tst eq substr($tsti,0,length $tst);
     return if $ntst && $ntst eq substr($tsti,0,length $ntst);
     my $test = tst_link($tsti, $expl, '');
-    my $slow = 0.1;
+    $slow ||= 0.1;
     $timeout ||= 60;
 
     unlink "tmp/$tsti.out";
@@ -980,68 +980,72 @@ if ($ascii) {
 
 ### Service testing
 
-CMD('HELP1', 'zxcall -h',   "./zxcall -v -h");
-CMD('HELP2', 'zxpasswd -h', "./zxpasswd -v -h");
-CMD('HELP3', 'zxcot -h',    "./zxcot -v -h");
-CMD('HELP4', 'zxdecode -h', "./zxdecode -v -h");
-CMD('HELP5', 'zxlogview -h',"./zxlogview -v -h");
+CMD('HELP1', 'zxcall -h',    "./zxcall -v -h");
+CMD('HELP2', 'zxpasswd -h',  "./zxpasswd -v -h");
+CMD('HELP3', 'zxcot -h',     "./zxcot -v -h");
+CMD('HELP4', 'zxdecode -h',  "./zxdecode -v -h");
+CMD('HELP5', 'zxlogview -h', "./zxlogview -v -h");
 
-CMD('CONF1', 'zxcall -dc dump config', "./zxcall -v -v -c PATH=/var/zxid/ -dc");
-CMD('CONF2', 'zxidhlo o=d dump config',   "QUERY_STRING=o=d ./zxidhlo");
-CMD('CONF3', 'zxidhlo o=c dump carml',    "QUERY_STRING=o=c ./zxidhlo");
-CMD('CONF4', 'zxidhlo o=B dump metadata', "QUERY_STRING=o=B ./zxidhlo");
-CMD('CONF5', 'zxididp o=B dump metadata', "QUERY_STRING=o=B ./zxididp");
+CMD('CONF1', 'zxcall -dc dump config',       "./zxcall -v -v -c PATH=/var/zxid/ -dc");
+CMD('CONF2', 'zxidhlo o=d dump config',      "QUERY_STRING=o=d ./zxidhlo");
+CMD('CONF3', 'zxidhlo o=c dump carml',       "QUERY_STRING=o=c ./zxidhlo");
+CMD('CONF4', 'zxidhlo o=B dump metadata',    "QUERY_STRING=o=B ./zxidhlo");
+CMD('CONF5', 'zxididp o=B dump metadata',    "QUERY_STRING=o=B ./zxididp");
 
-CMD('HLO1', 'zxidhlo o=M LECP check', "QUERY_STRING=o=M ./zxidhlo");
-CMD('HLO2', 'zxidhlo o=C CDC', "QUERY_STRING=o=C ./zxidhlo");
-CMD('HLO3', 'zxidhlo o=E idp select page', "QUERY_STRING=o=E ./zxidhlo");
+CMD('HLO1', 'zxidhlo o=M LECP check',        "QUERY_STRING=o=M ./zxidhlo");
+CMD('HLO2', 'zxidhlo o=C CDC',               "QUERY_STRING=o=C ./zxidhlo");
+CMD('HLO3', 'zxidhlo o=E idp select page',   "QUERY_STRING=o=E ./zxidhlo");
 CMD('HLO4', 'zxidhlo o=L start sso failure', "QUERY_STRING=o=L ./zxidhlo");
-CMD('HLO5', 'zxidhlo o=A artifact failure', "QUERY_STRING=o=A ./zxidhlo");
-CMD('HLO6', 'zxidhlo o=P POST failure', "QUERY_STRING=o=P ./zxidhlo");
-CMD('HLO7', 'zxidhlo o=D deleg invite failure', "QUERY_STRING=o=D ./zxidhlo");
-CMD('HLO8', 'zxidhlo o=F not an idp fail', "QUERY_STRING=o=F ./zxidhlo");
+CMD('HLO5', 'zxidhlo o=A artifact failure',  "QUERY_STRING=o=A ./zxidhlo");
+CMD('HLO6', 'zxidhlo o=P POST failure',      "QUERY_STRING=o=P ./zxidhlo");
+CMD('HLO7', 'zxidhlo o=D deleg invite fail', "QUERY_STRING=o=D ./zxidhlo");
+CMD('HLO8', 'zxidhlo o=F not an idp fail',   "QUERY_STRING=o=F ./zxidhlo");
 
 CMD('IDP1', 'zxididp o=R fail', "QUERY_STRING=o=R ./zxididp");
 CMD('IDP2', 'zxididp o=F fail', "QUERY_STRING=o=F ./zxididp");
 CMD('IDP3', 'zxididp o=N new user fail', "QUERY_STRING=o=N ./zxididp");
-CMD('IDP4', 'zxididp o=W pwreset fail', "QUERY_STRING=o=W ./zxididp");
+CMD('IDP4', 'zxididp o=W pwreset fail',  "QUERY_STRING=o=W ./zxididp");
 
-CMD('PW1', 'zxpasswd list user', "./zxpasswd -l tastest");
-CMD('PW2', 'zxpasswd pw an ok', "echo tas123 | ./zxpasswd -v -a tastest");
-CMD('PW3', 'zxpasswd pw an fail', "echo tas124 | ./zxpasswd -v -a tastest",1792);
-CMD('PW4', 'zxpasswd create user', "echo tas125 | ./zxpasswd -at y -a 'cn: pw test user' -c pwtest");
+CMD('PW1', 'zxpasswd list user',   "./zxpasswd -l tastest");
+CMD('PW2', 'zxpasswd pw an ok',    "echo tas123 | ./zxpasswd -v -a tastest");
+CMD('PW3', 'zxpasswd pw an fail',  "echo tas124 | ./zxpasswd -v -a tastest",1792);
 
-CMD('COT1', 'zxcot list', "./zxcot");
-CMD('COT2', 'zxcot list swap', "./zxcot -s");
-CMD('COT3', 'zxcot list s2', "./zxcot -s -s");
+system 'rm -rf /var/zxid/idpuid/pwtest';  # Delete user so we can test again
+CMD('PW4', 'zxpasswd create user', "echo tas125 | ./zxpasswd -t y -at 'cn: pw test user\$o: test corp' -c pwtest");
+CMD('PW5', 'zxpasswd change pw',   "echo tas126 | ./zxpasswd -t y pwtest");
+CMD('PW6', 'zxpasswd list user',   "./zxpasswd -l pwtest");
+
+CMD('COT1', 'zxcot list',          "./zxcot");
+CMD('COT2', 'zxcot list swap',     "./zxcot -s");
+CMD('COT3', 'zxcot list s2',       "./zxcot -s -s");
 CMD('COT4', 'zxcot get idp meta dry', "./zxcot -g http://idp.tas3.pt:8081/zxididp?o=B -n -v");
-CMD('COT5', 'zxcot get sp meta dry', "./zxcot -g http://sp.tas3.pt:8080/zxidservlet/sso?o=B -n -v");
-CMD('COT6', 'zxcot my meta', "./zxcot -m");
-CMD('COT7', 'zxcot my meta add', "./zxcot -m | ./zxcot -a");
-CMD('COT8', 'zxcot gen epr', "./zxcot -e http://localhost:1234/ testabstract http://localhost:1234/?o=B x-impossible");
-CMD('COT9', 'zxcot gen epr add', "./zxcot -e http://localhost:1234/ testabstract http://localhost:1234/?o=B x-impossible | ./zxcot -b -bs");
-CMD('COT10', 'zxcot my meta', "./zxcot -p http://localhost:1234/?o=B");
-CMD('COT11', 'zxcot list s2', "./zxcot -s /var/zxid/idpcot");
+CMD('COT5', 'zxcot get sp meta dry',"./zxcot -g http://sp.tas3.pt:8080/zxidservlet/sso?o=B -n -v");
+CMD('COT6', 'zxcot my meta',       "./zxcot -m");
+CMD('COT7', 'zxcot my meta add',   "./zxcot -m | ./zxcot -a");
+CMD('COT8', 'zxcot gen epr',       "./zxcot -e http://localhost:1234/ testabstract http://localhost:1234/?o=B x-impossible");
+CMD('COT9', 'zxcot gen epr add',   "./zxcot -e http://localhost:1234/ testabstract http://localhost:1234/?o=B x-impossible | ./zxcot -b -bs");
+CMD('COT10', 'zxcot my meta',      "./zxcot -p http://localhost:1234/?o=B");
+CMD('COT11', 'zxcot list s2',      "./zxcot -s /var/zxid/idpcot");
 
-CMD('LOG1', 'zxlogview list', "./zxlogview /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem <t/act");
-CMD('LOG2', 'zxlogview list', "./zxlogview -t /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem");
+CMD('LOG1', 'zxlogview list',      "./zxlogview /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem <t/act");
+CMD('LOG2', 'zxlogview list',      "./zxlogview -t /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem");
 
-CMD('SIG1',  'sig vry shib resp', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal-private/shib-resp.xml");
-CMD('SIG2',  'sig vry shib post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal-private/shib-resp.qs");
+CMD('SIG1',  'sig vry shib resp',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal-private/shib-resp.xml");
+CMD('SIG2',  'sig vry shib post',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal-private/shib-resp.qs");
 
-CMD('SIG3',  'sig vry zxid resp', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/anrs1.xml");
-CMD('SIG4',  'sig vry zxid post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/anrs1.post");
+CMD('SIG3',  'sig vry zxid resp',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/anrs1.xml");
+CMD('SIG4',  'sig vry zxid post',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/anrs1.post");
 
-CMD('SIG5',  'sig vry sm resp', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/siteminder-resp.xml");
-CMD('SIG6',  'sig vry sm post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/siteminder-resp.b64");
+CMD('SIG5',  'sig vry sm resp',    "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/siteminder-resp.xml");
+CMD('SIG6',  'sig vry sm post',    "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/siteminder-resp.b64");
 
 CMD('SIG7',  '* sig vry shib resp undecl prefix deep', "./zxdecode -v -s -s <t/shib-a7n2.xml");  # fail due to inclusive ns prefix that is declared only deep in the document
 CMD('SIG8',  '* sig vry ping resp', "./zxdecode -v -s -s <t/ping-resp.xml");  # Ping miscanonicalizes. Fail due to lack of InclusiveNamespace/@PrefixList="xs" (and declares namespace deep in the document)
-CMD('SIG9',  'sig vry ping post', "./zxdecode -v -s -s <t/ping-resp.qs");
-CMD('SIG10', 'sig vry hp a7n',    "./zxdecode -v -s -s <t/hp-a7n.xml");
-CMD('SIG11', 'sig vry hp post',   "./zxdecode -v -s -s <t/hp-idp-post-resp.cgi");
-CMD('SIG12', 'sig vry hp resp',   "./zxdecode -v -s -s <t/hp-idp-post-resp.xml");
-CMD('SIG13', 'sig vry hp resp2',  "./zxdecode -v -s -s <t/hp-idp-post-resp2.xml");
+CMD('SIG9',  'sig vry ping post',  "./zxdecode -v -s -s <t/ping-resp.qs");
+CMD('SIG10', 'sig vry hp a7n',     "./zxdecode -v -s -s <t/hp-a7n.xml");
+CMD('SIG11', 'sig vry hp post',    "./zxdecode -v -s -s <t/hp-idp-post-resp.cgi");
+CMD('SIG12', 'sig vry hp resp',    "./zxdecode -v -s -s <t/hp-idp-post-resp.xml");
+CMD('SIG13', 'sig vry hp resp2',   "./zxdecode -v -s -s <t/hp-idp-post-resp2.xml");
 #CMD('SIG14', 'sig vry saml artifact request',  "./zxdecode -v -s -s <t/se-req2.xml"); # no a7n
 CMD('SIG15', 'sig vry saml artifact response', "./zxdecode -v -s -s <t/se-resp.xml");
 CMD('SIG16', 'sig vry saml artifact response', "./zxdecode -v -s -s <t/se-req.xml");
@@ -1142,7 +1146,7 @@ CMD('ZXC-WS5', 'AS + WSF call bad pw', "./zxcall -d -a http://idp.tas3.pt:8081/z
 # *** TODO: via Net::SAML
 # *** TODO: via SSO servlet
 
-CMD('COVIMP1', 'Silly tests just to improve test coverage', "./zxcovimp.sh");
+CMD('COVIMP1', 'Silly tests just to improve test coverage', "./zxcovimp.sh", 0, 60, 10);
 
 if (0) {
 #C('DBG1', 'Test exit value', 0.5, 0.1, "echo foo");

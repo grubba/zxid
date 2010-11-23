@@ -68,7 +68,9 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Sort unknown attributes wrt known attributes in SO and WO enc
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
-    - Eliminate SO encoders entirely, enhancing WO encoder to do their job
+
+zxid-0.72:: 24.11.2010
+    - Eliminated SO encoders entirely, enhancing WO encoder to do their job
 
 zxid-0.71:: 22.11.2010
     - Moved back to global elems hash, but with separate namespace hash
