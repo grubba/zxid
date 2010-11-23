@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_is_Confirm_s
 #define EL_NS     is
 #define EL_TAG    Confirm
-
-/* FUNC(zx_NEW_is_Confirm) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_is_Confirm_s* zx_NEW_is_Confirm(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_is_Confirm_s* x = ZX_ZALLOC(c, struct zx_is_Confirm_s);
-  x->gg.g.tok = zx_is_Confirm_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -199,22 +184,6 @@ int zx_WALK_WO_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x, void* ctx
 #define EL_NS     is
 #define EL_TAG    Help
 
-/* FUNC(zx_NEW_is_Help) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_is_Help_s* zx_NEW_is_Help(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_is_Help_s* x = ZX_ZALLOC(c, struct zx_is_Help_s);
-  x->gg.g.tok = zx_is_Help_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_is_Help) */
@@ -317,22 +286,6 @@ int zx_WALK_WO_is_Help(struct zx_ctx* c, struct zx_is_Help_s* x, void* ctx, int 
 #define EL_STRUCT zx_is_Inquiry_s
 #define EL_NS     is
 #define EL_TAG    Inquiry
-
-/* FUNC(zx_NEW_is_Inquiry) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_is_Inquiry_s* zx_NEW_is_Inquiry(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_is_Inquiry_s* x = ZX_ZALLOC(c, struct zx_is_Inquiry_s);
-  x->gg.g.tok = zx_is_Inquiry_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -519,22 +472,6 @@ int zx_WALK_WO_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x, void* ctx
 #define EL_NS     is
 #define EL_TAG    InteractionRequest
 
-/* FUNC(zx_NEW_is_InteractionRequest) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_is_InteractionRequest_s* zx_NEW_is_InteractionRequest(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_is_InteractionRequest_s* x = ZX_ZALLOC(c, struct zx_is_InteractionRequest_s);
-  x->gg.g.tok = zx_is_InteractionRequest_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_is_InteractionRequest) */
@@ -681,22 +618,6 @@ int zx_WALK_WO_is_InteractionRequest(struct zx_ctx* c, struct zx_is_InteractionR
 #define EL_STRUCT zx_is_InteractionResponse_s
 #define EL_NS     is
 #define EL_TAG    InteractionResponse
-
-/* FUNC(zx_NEW_is_InteractionResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_is_InteractionResponse_s* zx_NEW_is_InteractionResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_is_InteractionResponse_s* x = ZX_ZALLOC(c, struct zx_is_InteractionResponse_s);
-  x->gg.g.tok = zx_is_InteractionResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -858,22 +779,6 @@ int zx_WALK_WO_is_InteractionResponse(struct zx_ctx* c, struct zx_is_Interaction
 #define EL_NS     is
 #define EL_TAG    InteractionStatement
 
-/* FUNC(zx_NEW_is_InteractionStatement) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_is_InteractionStatement_s* zx_NEW_is_InteractionStatement(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_is_InteractionStatement_s* x = ZX_ZALLOC(c, struct zx_is_InteractionStatement_s);
-  x->gg.g.tok = zx_is_InteractionStatement_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_is_InteractionStatement) */
@@ -1013,22 +918,6 @@ int zx_WALK_WO_is_InteractionStatement(struct zx_ctx* c, struct zx_is_Interactio
 #define EL_NS     is
 #define EL_TAG    Item
 
-/* FUNC(zx_NEW_is_Item) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_is_Item_s* zx_NEW_is_Item(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_is_Item_s* x = ZX_ZALLOC(c, struct zx_is_Item_s);
-  x->gg.g.tok = zx_is_Item_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_is_Item) */
@@ -1135,22 +1024,6 @@ int zx_WALK_WO_is_Item(struct zx_ctx* c, struct zx_is_Item_s* x, void* ctx, int 
 #define EL_NS     is
 #define EL_TAG    Parameter
 
-/* FUNC(zx_NEW_is_Parameter) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_is_Parameter_s* zx_NEW_is_Parameter(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_is_Parameter_s* x = ZX_ZALLOC(c, struct zx_is_Parameter_s);
-  x->gg.g.tok = zx_is_Parameter_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_is_Parameter) */
@@ -1251,22 +1124,6 @@ int zx_WALK_WO_is_Parameter(struct zx_ctx* c, struct zx_is_Parameter_s* x, void*
 #define EL_STRUCT zx_is_Select_s
 #define EL_NS     is
 #define EL_TAG    Select
-
-/* FUNC(zx_NEW_is_Select) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_is_Select_s* zx_NEW_is_Select(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_is_Select_s* x = ZX_ZALLOC(c, struct zx_is_Select_s);
-  x->gg.g.tok = zx_is_Select_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1425,22 +1282,6 @@ int zx_WALK_WO_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x, void* ctx, 
 #define EL_STRUCT zx_is_Text_s
 #define EL_NS     is
 #define EL_TAG    Text
-
-/* FUNC(zx_NEW_is_Text) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_is_Text_s* zx_NEW_is_Text(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_is_Text_s* x = ZX_ZALLOC(c, struct zx_is_Text_s);
-  x->gg.g.tok = zx_is_Text_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

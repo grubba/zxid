@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_tas3_Credentials_s
 #define EL_NS     tas3
 #define EL_TAG    Credentials
-
-/* FUNC(zx_NEW_tas3_Credentials) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_tas3_Credentials_s* zx_NEW_tas3_Credentials(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_tas3_Credentials_s* x = ZX_ZALLOC(c, struct zx_tas3_Credentials_s);
-  x->gg.g.tok = zx_tas3_Credentials_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -318,22 +303,6 @@ int zx_WALK_WO_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* 
 #define EL_NS     tas3
 #define EL_TAG    ESLApply
 
-/* FUNC(zx_NEW_tas3_ESLApply) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_tas3_ESLApply_s* zx_NEW_tas3_ESLApply(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_tas3_ESLApply_s* x = ZX_ZALLOC(c, struct zx_tas3_ESLApply_s);
-  x->gg.g.tok = zx_tas3_ESLApply_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_tas3_ESLApply) */
@@ -473,22 +442,6 @@ int zx_WALK_WO_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x, voi
 #define EL_NS     tas3
 #define EL_TAG    ESLPolicies
 
-/* FUNC(zx_NEW_tas3_ESLPolicies) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_tas3_ESLPolicies_s* zx_NEW_tas3_ESLPolicies(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_tas3_ESLPolicies_s* x = ZX_ZALLOC(c, struct zx_tas3_ESLPolicies_s);
-  x->gg.g.tok = zx_tas3_ESLPolicies_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_tas3_ESLPolicies) */
@@ -617,22 +570,6 @@ int zx_WALK_WO_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* 
 #define EL_NS     tas3
 #define EL_TAG    ESLRef
 
-/* FUNC(zx_NEW_tas3_ESLRef) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_tas3_ESLRef_s* zx_NEW_tas3_ESLRef(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_tas3_ESLRef_s* x = ZX_ZALLOC(c, struct zx_tas3_ESLRef_s);
-  x->gg.g.tok = zx_tas3_ESLRef_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_tas3_ESLRef) */
@@ -733,22 +670,6 @@ int zx_WALK_WO_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x, void* c
 #define EL_STRUCT zx_tas3_Status_s
 #define EL_NS     tas3
 #define EL_TAG    Status
-
-/* FUNC(zx_NEW_tas3_Status) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_tas3_Status_s* zx_NEW_tas3_Status(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_tas3_Status_s* x = ZX_ZALLOC(c, struct zx_tas3_Status_s);
-  x->gg.g.tok = zx_tas3_Status_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

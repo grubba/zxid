@@ -1,12 +1,12 @@
-<recursed xmlns="urn:zxid:unknown-ns-prefix:zx_elem_lookup:"><lu:Status xmlns:lu="urn:zxid:unknown-ns-prefix:zx_elem_lookup:lu"></lu:Status><data>nid=FUPjDUcKNnzTXDb_jw9nGwGZw
+<recursed xmlns="urn:zxid:unknown-ns-prefix:zx_elem_lookup:"><lu:Status xmlns:lu="urn:zxid:unknown-ns-prefix:zx_elem_lookup:lu">ok</lu:Status><data>nid=FUPjDUcKNnzTXDb_jw9nGwGZw
 dn: idpnid=FUPjDUcKNnzTXDb_jw9nGwGZw,affid=http://idp.tas3.pt:8081/zxididp
 rs: 
-msgid: urn:MS1depMo8l6o_iRNNTs4vGaZ5
+msgid: urn:MAaWDu3T67NbZV6lFKAfbK918
 cookie: 
 setcookie: 
 sesix: 
-sespath: /var/zxid/ses/S4SvSIrkIbfLoj4XTveeRKE28
-sesid: S4SvSIrkIbfLoj4XTveeRKE28
+sespath: /var/zxid/ses/SCeZIYQNqXkyTsQTZAOWcKIXa
+sesid: SCeZIYQNqXkyTsQTZAOWcKIXa
 ssores: 0
 sigres: 0
 eid: http://sp.tas3.pt:8080/zxidservlet/wspleaf?o=B
@@ -18,15 +18,15 @@ tgtpath: /var/zxid/user/B4mK47IblS48LWkAaU50DCr-fCg
 tgtfmt: P
 tgtnid: FUPjDUcKNnzTXDb_jw9nGwGZw
 tgtaffid: http://idp.tas3.pt:8081/zxididp
-tgta7npath: /var/zxid/log/rely/HP5IP9fE_HtNMNuTisquh7oNqg4/a7n/phr5nYW-rFYuSB5yfP-I4uNp6o8
+tgta7npath: /var/zxid/log/rely/HP5IP9fE_HtNMNuTisquh7oNqg4/a7n/6FIoSNG6SusTxKfuwIi7pYcQYNo
 tgtissuer: http://idp.tas3.pt:8081/zxididp
 localpath: /var/zxid/user/B4mK47IblS48LWkAaU50DCr-fCg
 nidfmt: P
 idpnid: FUPjDUcKNnzTXDb_jw9nGwGZw
 affid: http://idp.tas3.pt:8081/zxididp
-ssoa7npath: /var/zxid/log/rely/HP5IP9fE_HtNMNuTisquh7oNqg4/a7n/phr5nYW-rFYuSB5yfP-I4uNp6o8
+ssoa7npath: /var/zxid/log/rely/HP5IP9fE_HtNMNuTisquh7oNqg4/a7n/6FIoSNG6SusTxKfuwIi7pYcQYNo
 issuer: http://idp.tas3.pt:8081/zxididp
-zxididp: 0.70 1289655398
+zxididp: 0.71 1290464907
 fedusername: FUPjDUcKNnzTXDb_jw9nGwGZw@idp.tas3.pt
 urn:oid:1.3.6.1.4.1.5923.1.1.1.6: FUPjDUcKNnzTXDb_jw9nGwGZw@idp.tas3.pt
 cn: Testy Foo

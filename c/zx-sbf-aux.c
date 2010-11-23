@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_sbf_Framework_s
 #define EL_NS     sbf
 #define EL_TAG    Framework
-
-/* FUNC(zx_NEW_sbf_Framework) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sbf_Framework_s* zx_NEW_sbf_Framework(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sbf_Framework_s* x = ZX_ZALLOC(c, struct zx_sbf_Framework_s);
-  x->gg.g.tok = zx_sbf_Framework_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

@@ -30,9 +30,10 @@ struct zx_di12_AuthenticateRequester_s {
   struct zx_attr_s* descriptionIDRefs;	/* {0,1} attribute xs:IDREFS */
 };
 
+#define zx_NEW_di12_AuthenticateRequester(c, father) (struct zx_di12_AuthenticateRequester_s*)zx_new_elem((c),(father),zx_di12_AuthenticateRequester_ELEM)
+
 int zx_DEC_ATTR_di12_AuthenticateRequester(struct zx_ctx* c, struct zx_di12_AuthenticateRequester_s* x);
 int zx_DEC_ELEM_di12_AuthenticateRequester(struct zx_ctx* c, struct zx_di12_AuthenticateRequester_s* x);
-struct zx_di12_AuthenticateRequester_s* zx_NEW_di12_AuthenticateRequester(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_AuthenticateRequester(struct zx_ctx* c, struct zx_di12_AuthenticateRequester_s* x);
 char* zx_ENC_SO_di12_AuthenticateRequester(struct zx_ctx* c, struct zx_di12_AuthenticateRequester_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_AuthenticateRequester(struct zx_ctx* c, struct zx_di12_AuthenticateRequester_s* x);
@@ -70,9 +71,10 @@ struct zx_di12_AuthenticateSessionContext_s {
   struct zx_attr_s* descriptionIDRefs;	/* {0,1} attribute xs:IDREFS */
 };
 
+#define zx_NEW_di12_AuthenticateSessionContext(c, father) (struct zx_di12_AuthenticateSessionContext_s*)zx_new_elem((c),(father),zx_di12_AuthenticateSessionContext_ELEM)
+
 int zx_DEC_ATTR_di12_AuthenticateSessionContext(struct zx_ctx* c, struct zx_di12_AuthenticateSessionContext_s* x);
 int zx_DEC_ELEM_di12_AuthenticateSessionContext(struct zx_ctx* c, struct zx_di12_AuthenticateSessionContext_s* x);
-struct zx_di12_AuthenticateSessionContext_s* zx_NEW_di12_AuthenticateSessionContext(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_AuthenticateSessionContext(struct zx_ctx* c, struct zx_di12_AuthenticateSessionContext_s* x);
 char* zx_ENC_SO_di12_AuthenticateSessionContext(struct zx_ctx* c, struct zx_di12_AuthenticateSessionContext_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_AuthenticateSessionContext(struct zx_ctx* c, struct zx_di12_AuthenticateSessionContext_s* x);
@@ -110,9 +112,10 @@ struct zx_di12_AuthorizeRequester_s {
   struct zx_attr_s* descriptionIDRefs;	/* {0,1} attribute xs:IDREFS */
 };
 
+#define zx_NEW_di12_AuthorizeRequester(c, father) (struct zx_di12_AuthorizeRequester_s*)zx_new_elem((c),(father),zx_di12_AuthorizeRequester_ELEM)
+
 int zx_DEC_ATTR_di12_AuthorizeRequester(struct zx_ctx* c, struct zx_di12_AuthorizeRequester_s* x);
 int zx_DEC_ELEM_di12_AuthorizeRequester(struct zx_ctx* c, struct zx_di12_AuthorizeRequester_s* x);
-struct zx_di12_AuthorizeRequester_s* zx_NEW_di12_AuthorizeRequester(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_AuthorizeRequester(struct zx_ctx* c, struct zx_di12_AuthorizeRequester_s* x);
 char* zx_ENC_SO_di12_AuthorizeRequester(struct zx_ctx* c, struct zx_di12_AuthorizeRequester_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_AuthorizeRequester(struct zx_ctx* c, struct zx_di12_AuthorizeRequester_s* x);
@@ -149,9 +152,10 @@ struct zx_di12_Credentials_s {
   zx_di12_Credentials_EXT
 };
 
+#define zx_NEW_di12_Credentials(c, father) (struct zx_di12_Credentials_s*)zx_new_elem((c),(father),zx_di12_Credentials_ELEM)
+
 int zx_DEC_ATTR_di12_Credentials(struct zx_ctx* c, struct zx_di12_Credentials_s* x);
 int zx_DEC_ELEM_di12_Credentials(struct zx_ctx* c, struct zx_di12_Credentials_s* x);
-struct zx_di12_Credentials_s* zx_NEW_di12_Credentials(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_Credentials(struct zx_ctx* c, struct zx_di12_Credentials_s* x);
 char* zx_ENC_SO_di12_Credentials(struct zx_ctx* c, struct zx_di12_Credentials_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_Credentials(struct zx_ctx* c, struct zx_di12_Credentials_s* x);
@@ -193,9 +197,10 @@ struct zx_di12_Description_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_di12_Description(c, father) (struct zx_di12_Description_s*)zx_new_elem((c),(father),zx_di12_Description_ELEM)
+
 int zx_DEC_ATTR_di12_Description(struct zx_ctx* c, struct zx_di12_Description_s* x);
 int zx_DEC_ELEM_di12_Description(struct zx_ctx* c, struct zx_di12_Description_s* x);
-struct zx_di12_Description_s* zx_NEW_di12_Description(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_Description(struct zx_ctx* c, struct zx_di12_Description_s* x);
 char* zx_ENC_SO_di12_Description(struct zx_ctx* c, struct zx_di12_Description_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_Description(struct zx_ctx* c, struct zx_di12_Description_s* x);
@@ -281,9 +286,10 @@ struct zx_di12_EncryptResourceID_s {
   struct zx_attr_s* descriptionIDRefs;	/* {0,1} attribute xs:IDREFS */
 };
 
+#define zx_NEW_di12_EncryptResourceID(c, father) (struct zx_di12_EncryptResourceID_s*)zx_new_elem((c),(father),zx_di12_EncryptResourceID_ELEM)
+
 int zx_DEC_ATTR_di12_EncryptResourceID(struct zx_ctx* c, struct zx_di12_EncryptResourceID_s* x);
 int zx_DEC_ELEM_di12_EncryptResourceID(struct zx_ctx* c, struct zx_di12_EncryptResourceID_s* x);
-struct zx_di12_EncryptResourceID_s* zx_NEW_di12_EncryptResourceID(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_EncryptResourceID(struct zx_ctx* c, struct zx_di12_EncryptResourceID_s* x);
 char* zx_ENC_SO_di12_EncryptResourceID(struct zx_ctx* c, struct zx_di12_EncryptResourceID_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_EncryptResourceID(struct zx_ctx* c, struct zx_di12_EncryptResourceID_s* x);
@@ -322,9 +328,10 @@ struct zx_di12_EncryptedResourceID_s {
   struct zx_xenc_EncryptedKey_s* EncryptedKey;	/* {1,1} nada */
 };
 
+#define zx_NEW_di12_EncryptedResourceID(c, father) (struct zx_di12_EncryptedResourceID_s*)zx_new_elem((c),(father),zx_di12_EncryptedResourceID_ELEM)
+
 int zx_DEC_ATTR_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_EncryptedResourceID_s* x);
 int zx_DEC_ELEM_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_EncryptedResourceID_s* x);
-struct zx_di12_EncryptedResourceID_s* zx_NEW_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_EncryptedResourceID_s* x);
 char* zx_ENC_SO_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_EncryptedResourceID_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_EncryptedResourceID_s* x);
@@ -375,9 +382,10 @@ struct zx_di12_Extension_s {
   zx_di12_Extension_EXT
 };
 
+#define zx_NEW_di12_Extension(c, father) (struct zx_di12_Extension_s*)zx_new_elem((c),(father),zx_di12_Extension_ELEM)
+
 int zx_DEC_ATTR_di12_Extension(struct zx_ctx* c, struct zx_di12_Extension_s* x);
 int zx_DEC_ELEM_di12_Extension(struct zx_ctx* c, struct zx_di12_Extension_s* x);
-struct zx_di12_Extension_s* zx_NEW_di12_Extension(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_Extension(struct zx_ctx* c, struct zx_di12_Extension_s* x);
 char* zx_ENC_SO_di12_Extension(struct zx_ctx* c, struct zx_di12_Extension_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_Extension(struct zx_ctx* c, struct zx_di12_Extension_s* x);
@@ -413,9 +421,10 @@ struct zx_di12_InsertEntry_s {
   struct zx_di12_ResourceOffering_s* ResourceOffering;	/* {1,1} nada */
 };
 
+#define zx_NEW_di12_InsertEntry(c, father) (struct zx_di12_InsertEntry_s*)zx_new_elem((c),(father),zx_di12_InsertEntry_ELEM)
+
 int zx_DEC_ATTR_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s* x);
 int zx_DEC_ELEM_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s* x);
-struct zx_di12_InsertEntry_s* zx_NEW_di12_InsertEntry(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s* x);
 char* zx_ENC_SO_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s* x);
@@ -463,9 +472,10 @@ struct zx_di12_Modify_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_di12_Modify(c, father) (struct zx_di12_Modify_s*)zx_new_elem((c),(father),zx_di12_Modify_ELEM)
+
 int zx_DEC_ATTR_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x);
 int zx_DEC_ELEM_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x);
-struct zx_di12_Modify_s* zx_NEW_di12_Modify(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x);
 char* zx_ENC_SO_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x);
@@ -538,9 +548,10 @@ struct zx_di12_ModifyResponse_s {
   struct zx_attr_s* newEntryIDs;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_di12_ModifyResponse(c, father) (struct zx_di12_ModifyResponse_s*)zx_new_elem((c),(father),zx_di12_ModifyResponse_ELEM)
+
 int zx_DEC_ATTR_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyResponse_s* x);
 int zx_DEC_ELEM_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyResponse_s* x);
-struct zx_di12_ModifyResponse_s* zx_NEW_di12_ModifyResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyResponse_s* x);
 char* zx_ENC_SO_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyResponse_s* x);
@@ -596,9 +607,10 @@ struct zx_di12_Options_s {
   struct zx_elem_s* Option;	/* {0,-1} xs:anyURI */
 };
 
+#define zx_NEW_di12_Options(c, father) (struct zx_di12_Options_s*)zx_new_elem((c),(father),zx_di12_Options_ELEM)
+
 int zx_DEC_ATTR_di12_Options(struct zx_ctx* c, struct zx_di12_Options_s* x);
 int zx_DEC_ELEM_di12_Options(struct zx_ctx* c, struct zx_di12_Options_s* x);
-struct zx_di12_Options_s* zx_NEW_di12_Options(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_Options(struct zx_ctx* c, struct zx_di12_Options_s* x);
 char* zx_ENC_SO_di12_Options(struct zx_ctx* c, struct zx_di12_Options_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_Options(struct zx_ctx* c, struct zx_di12_Options_s* x);
@@ -645,9 +657,10 @@ struct zx_di12_Query_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_di12_Query(c, father) (struct zx_di12_Query_s*)zx_new_elem((c),(father),zx_di12_Query_ELEM)
+
 int zx_DEC_ATTR_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x);
 int zx_DEC_ELEM_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x);
-struct zx_di12_Query_s* zx_NEW_di12_Query(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x);
 char* zx_ENC_SO_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x);
@@ -712,9 +725,10 @@ struct zx_di12_QueryResponse_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_di12_QueryResponse(c, father) (struct zx_di12_QueryResponse_s*)zx_new_elem((c),(father),zx_di12_QueryResponse_ELEM)
+
 int zx_DEC_ATTR_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryResponse_s* x);
 int zx_DEC_ELEM_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryResponse_s* x);
-struct zx_di12_QueryResponse_s* zx_NEW_di12_QueryResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryResponse_s* x);
 char* zx_ENC_SO_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryResponse_s* x);
@@ -776,9 +790,10 @@ struct zx_di12_RemoveEntry_s {
   struct zx_attr_s* entryID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_di12_RemoveEntry(c, father) (struct zx_di12_RemoveEntry_s*)zx_new_elem((c),(father),zx_di12_RemoveEntry_ELEM)
+
 int zx_DEC_ATTR_di12_RemoveEntry(struct zx_ctx* c, struct zx_di12_RemoveEntry_s* x);
 int zx_DEC_ELEM_di12_RemoveEntry(struct zx_ctx* c, struct zx_di12_RemoveEntry_s* x);
-struct zx_di12_RemoveEntry_s* zx_NEW_di12_RemoveEntry(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_RemoveEntry(struct zx_ctx* c, struct zx_di12_RemoveEntry_s* x);
 char* zx_ENC_SO_di12_RemoveEntry(struct zx_ctx* c, struct zx_di12_RemoveEntry_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_RemoveEntry(struct zx_ctx* c, struct zx_di12_RemoveEntry_s* x);
@@ -817,9 +832,10 @@ struct zx_di12_RequestedServiceType_s {
   struct zx_di12_Options_s* Options;	/* {0,1}  */
 };
 
+#define zx_NEW_di12_RequestedServiceType(c, father) (struct zx_di12_RequestedServiceType_s*)zx_new_elem((c),(father),zx_di12_RequestedServiceType_ELEM)
+
 int zx_DEC_ATTR_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_RequestedServiceType_s* x);
 int zx_DEC_ELEM_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_RequestedServiceType_s* x);
-struct zx_di12_RequestedServiceType_s* zx_NEW_di12_RequestedServiceType(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_RequestedServiceType_s* x);
 char* zx_ENC_SO_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_RequestedServiceType_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_RequestedServiceType_s* x);
@@ -871,9 +887,10 @@ struct zx_di12_ResourceID_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_di12_ResourceID(c, father) (struct zx_di12_ResourceID_s*)zx_new_elem((c),(father),zx_di12_ResourceID_ELEM)
+
 int zx_DEC_ATTR_di12_ResourceID(struct zx_ctx* c, struct zx_di12_ResourceID_s* x);
 int zx_DEC_ELEM_di12_ResourceID(struct zx_ctx* c, struct zx_di12_ResourceID_s* x);
-struct zx_di12_ResourceID_s* zx_NEW_di12_ResourceID(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_ResourceID(struct zx_ctx* c, struct zx_di12_ResourceID_s* x);
 char* zx_ENC_SO_di12_ResourceID(struct zx_ctx* c, struct zx_di12_ResourceID_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_ResourceID(struct zx_ctx* c, struct zx_di12_ResourceID_s* x);
@@ -916,9 +933,10 @@ struct zx_di12_ResourceOffering_s {
   struct zx_attr_s* entryID;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_di12_ResourceOffering(c, father) (struct zx_di12_ResourceOffering_s*)zx_new_elem((c),(father),zx_di12_ResourceOffering_ELEM)
+
 int zx_DEC_ATTR_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceOffering_s* x);
 int zx_DEC_ELEM_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceOffering_s* x);
-struct zx_di12_ResourceOffering_s* zx_NEW_di12_ResourceOffering(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceOffering_s* x);
 char* zx_ENC_SO_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceOffering_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceOffering_s* x);
@@ -998,9 +1016,10 @@ struct zx_di12_ServiceInstance_s {
   struct zx_di12_Description_s* Description;	/* {1,-1}  */
 };
 
+#define zx_NEW_di12_ServiceInstance(c, father) (struct zx_di12_ServiceInstance_s*)zx_new_elem((c),(father),zx_di12_ServiceInstance_ELEM)
+
 int zx_DEC_ATTR_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceInstance_s* x);
 int zx_DEC_ELEM_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceInstance_s* x);
-struct zx_di12_ServiceInstance_s* zx_NEW_di12_ServiceInstance(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceInstance_s* x);
 char* zx_ENC_SO_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceInstance_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceInstance_s* x);
@@ -1063,9 +1082,10 @@ struct zx_di12_Status_s {
   struct zx_attr_s* ref;	/* {0,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_di12_Status(c, father) (struct zx_di12_Status_s*)zx_new_elem((c),(father),zx_di12_Status_ELEM)
+
 int zx_DEC_ATTR_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x);
 int zx_DEC_ELEM_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x);
-struct zx_di12_Status_s* zx_NEW_di12_Status(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x);
 char* zx_ENC_SO_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x);

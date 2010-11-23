@@ -30,9 +30,10 @@ struct zx_md_AdditionalMetadataLocation_s {
   struct zx_attr_s* namespace_is_cxx_keyword;	/* {1,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_md_AdditionalMetadataLocation(c, father) (struct zx_md_AdditionalMetadataLocation_s*)zx_new_elem((c),(father),zx_md_AdditionalMetadataLocation_ELEM)
+
 int zx_DEC_ATTR_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x);
 int zx_DEC_ELEM_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x);
-struct zx_md_AdditionalMetadataLocation_s* zx_NEW_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x);
 char* zx_ENC_SO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x);
@@ -77,9 +78,10 @@ struct zx_md_AffiliationDescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_md_AffiliationDescriptor(c, father) (struct zx_md_AffiliationDescriptor_s*)zx_new_elem((c),(father),zx_md_AffiliationDescriptor_ELEM)
+
 int zx_DEC_ATTR_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x);
 int zx_DEC_ELEM_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x);
-struct zx_md_AffiliationDescriptor_s* zx_NEW_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x);
 char* zx_ENC_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x);
@@ -159,9 +161,10 @@ struct zx_md_ArtifactResolutionService_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_md_ArtifactResolutionService(c, father) (struct zx_md_ArtifactResolutionService_s*)zx_new_elem((c),(father),zx_md_ArtifactResolutionService_ELEM)
+
 int zx_DEC_ATTR_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x);
 int zx_DEC_ELEM_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x);
-struct zx_md_ArtifactResolutionService_s* zx_NEW_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x);
 char* zx_ENC_SO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x);
@@ -211,9 +214,10 @@ struct zx_md_AssertionConsumerService_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_md_AssertionConsumerService(c, father) (struct zx_md_AssertionConsumerService_s*)zx_new_elem((c),(father),zx_md_AssertionConsumerService_ELEM)
+
 int zx_DEC_ATTR_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x);
 int zx_DEC_ELEM_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x);
-struct zx_md_AssertionConsumerService_s* zx_NEW_md_AssertionConsumerService(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x);
 char* zx_ENC_SO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x);
@@ -263,9 +267,10 @@ struct zx_md_AssertionIDRequestService_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_md_AssertionIDRequestService(c, father) (struct zx_md_AssertionIDRequestService_s*)zx_new_elem((c),(father),zx_md_AssertionIDRequestService_ELEM)
+
 int zx_DEC_ATTR_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x);
 int zx_DEC_ELEM_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x);
-struct zx_md_AssertionIDRequestService_s* zx_NEW_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x);
 char* zx_ENC_SO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x);
@@ -325,9 +330,10 @@ struct zx_md_AttributeAuthorityDescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_md_AttributeAuthorityDescriptor(c, father) (struct zx_md_AttributeAuthorityDescriptor_s*)zx_new_elem((c),(father),zx_md_AttributeAuthorityDescriptor_ELEM)
+
 int zx_DEC_ATTR_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x);
 int zx_DEC_ELEM_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x);
-struct zx_md_AttributeAuthorityDescriptor_s* zx_NEW_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x);
 char* zx_ENC_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x);
@@ -457,9 +463,10 @@ struct zx_md_AttributeConsumingService_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_md_AttributeConsumingService(c, father) (struct zx_md_AttributeConsumingService_s*)zx_new_elem((c),(father),zx_md_AttributeConsumingService_ELEM)
+
 int zx_DEC_ATTR_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x);
 int zx_DEC_ELEM_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x);
-struct zx_md_AttributeConsumingService_s* zx_NEW_md_AttributeConsumingService(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x);
 char* zx_ENC_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x);
@@ -527,9 +534,10 @@ struct zx_md_AttributeService_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_md_AttributeService(c, father) (struct zx_md_AttributeService_s*)zx_new_elem((c),(father),zx_md_AttributeService_ELEM)
+
 int zx_DEC_ATTR_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x);
 int zx_DEC_ELEM_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x);
-struct zx_md_AttributeService_s* zx_NEW_md_AttributeService(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x);
 char* zx_ENC_SO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x);
@@ -587,9 +595,10 @@ struct zx_md_AuthnAuthorityDescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_md_AuthnAuthorityDescriptor(c, father) (struct zx_md_AuthnAuthorityDescriptor_s*)zx_new_elem((c),(father),zx_md_AuthnAuthorityDescriptor_ELEM)
+
 int zx_DEC_ATTR_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x);
 int zx_DEC_ELEM_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x);
-struct zx_md_AuthnAuthorityDescriptor_s* zx_NEW_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x);
 char* zx_ENC_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x);
@@ -703,9 +712,10 @@ struct zx_md_AuthnQueryService_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_md_AuthnQueryService(c, father) (struct zx_md_AuthnQueryService_s*)zx_new_elem((c),(father),zx_md_AuthnQueryService_ELEM)
+
 int zx_DEC_ATTR_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x);
 int zx_DEC_ELEM_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x);
-struct zx_md_AuthnQueryService_s* zx_NEW_md_AuthnQueryService(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x);
 char* zx_ENC_SO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x);
@@ -755,9 +765,10 @@ struct zx_md_AuthzService_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_md_AuthzService(c, father) (struct zx_md_AuthzService_s*)zx_new_elem((c),(father),zx_md_AuthzService_ELEM)
+
 int zx_DEC_ATTR_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x);
 int zx_DEC_ELEM_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x);
-struct zx_md_AuthzService_s* zx_NEW_md_AuthzService(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x);
 char* zx_ENC_SO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x);
@@ -809,9 +820,10 @@ struct zx_md_ContactPerson_s {
   struct zx_attr_s* contactType;	/* {1,1} attribute m20:attrContactType */
 };
 
+#define zx_NEW_md_ContactPerson(c, father) (struct zx_md_ContactPerson_s*)zx_new_elem((c),(father),zx_md_ContactPerson_ELEM)
+
 int zx_DEC_ATTR_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x);
 int zx_DEC_ELEM_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x);
-struct zx_md_ContactPerson_s* zx_NEW_md_ContactPerson(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x);
 char* zx_ENC_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x);
@@ -899,9 +911,10 @@ struct zx_md_EncryptionMethod_s {
   struct zx_attr_s* Algorithm;	/* {1,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_md_EncryptionMethod(c, father) (struct zx_md_EncryptionMethod_s*)zx_new_elem((c),(father),zx_md_EncryptionMethod_ELEM)
+
 int zx_DEC_ATTR_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x);
 int zx_DEC_ELEM_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x);
-struct zx_md_EncryptionMethod_s* zx_NEW_md_EncryptionMethod(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x);
 char* zx_ENC_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x);
@@ -962,9 +975,10 @@ struct zx_md_EntitiesDescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_md_EntitiesDescriptor(c, father) (struct zx_md_EntitiesDescriptor_s*)zx_new_elem((c),(father),zx_md_EntitiesDescriptor_ELEM)
+
 int zx_DEC_ATTR_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x);
 int zx_DEC_ELEM_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x);
-struct zx_md_EntitiesDescriptor_s* zx_NEW_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x);
 char* zx_ENC_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x);
@@ -1055,9 +1069,10 @@ struct zx_md_EntityDescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_md_EntityDescriptor(c, father) (struct zx_md_EntityDescriptor_s*)zx_new_elem((c),(father),zx_md_EntityDescriptor_ELEM)
+
 int zx_DEC_ATTR_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x);
 int zx_DEC_ELEM_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x);
-struct zx_md_EntityDescriptor_s* zx_NEW_md_EntityDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x);
 char* zx_ENC_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x);
@@ -1199,9 +1214,10 @@ struct zx_md_Extensions_s {
   struct zx_idpdisc_DiscoveryResponse_s* DiscoveryResponse;	/* {0,-1} nada */
 };
 
+#define zx_NEW_md_Extensions(c, father) (struct zx_md_Extensions_s*)zx_new_elem((c),(father),zx_md_Extensions_ELEM)
+
 int zx_DEC_ATTR_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x);
 int zx_DEC_ELEM_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x);
-struct zx_md_Extensions_s* zx_NEW_md_Extensions(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x);
 char* zx_ENC_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x);
@@ -1280,9 +1296,10 @@ struct zx_md_IDPSSODescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_md_IDPSSODescriptor(c, father) (struct zx_md_IDPSSODescriptor_s*)zx_new_elem((c),(father),zx_md_IDPSSODescriptor_ELEM)
+
 int zx_DEC_ATTR_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x);
 int zx_DEC_ELEM_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x);
-struct zx_md_IDPSSODescriptor_s* zx_NEW_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x);
 char* zx_ENC_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x);
@@ -1444,9 +1461,10 @@ struct zx_md_KeyDescriptor_s {
   struct zx_attr_s* use;	/* {0,1} attribute keyTypes */
 };
 
+#define zx_NEW_md_KeyDescriptor(c, father) (struct zx_md_KeyDescriptor_s*)zx_new_elem((c),(father),zx_md_KeyDescriptor_ELEM)
+
 int zx_DEC_ATTR_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x);
 int zx_DEC_ELEM_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x);
-struct zx_md_KeyDescriptor_s* zx_NEW_md_KeyDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x);
 char* zx_ENC_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x);
@@ -1504,9 +1522,10 @@ struct zx_md_ManageNameIDService_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_md_ManageNameIDService(c, father) (struct zx_md_ManageNameIDService_s*)zx_new_elem((c),(father),zx_md_ManageNameIDService_ELEM)
+
 int zx_DEC_ATTR_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x);
 int zx_DEC_ELEM_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x);
-struct zx_md_ManageNameIDService_s* zx_NEW_md_ManageNameIDService(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x);
 char* zx_ENC_SO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x);
@@ -1556,9 +1575,10 @@ struct zx_md_NameIDMappingService_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_md_NameIDMappingService(c, father) (struct zx_md_NameIDMappingService_s*)zx_new_elem((c),(father),zx_md_NameIDMappingService_ELEM)
+
 int zx_DEC_ATTR_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x);
 int zx_DEC_ELEM_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x);
-struct zx_md_NameIDMappingService_s* zx_NEW_md_NameIDMappingService(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x);
 char* zx_ENC_SO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x);
@@ -1607,9 +1627,10 @@ struct zx_md_Organization_s {
   struct zx_md_OrganizationURL_s* OrganizationURL;	/* {1,-1} nada */
 };
 
+#define zx_NEW_md_Organization(c, father) (struct zx_md_Organization_s*)zx_new_elem((c),(father),zx_md_Organization_ELEM)
+
 int zx_DEC_ATTR_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x);
 int zx_DEC_ELEM_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x);
-struct zx_md_Organization_s* zx_NEW_md_Organization(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x);
 char* zx_ENC_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x);
@@ -1677,9 +1698,10 @@ struct zx_md_OrganizationDisplayName_s {
   struct zx_attr_s* lang;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_md_OrganizationDisplayName(c, father) (struct zx_md_OrganizationDisplayName_s*)zx_new_elem((c),(father),zx_md_OrganizationDisplayName_ELEM)
+
 int zx_DEC_ATTR_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x);
 int zx_DEC_ELEM_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x);
-struct zx_md_OrganizationDisplayName_s* zx_NEW_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x);
 char* zx_ENC_SO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x);
@@ -1717,9 +1739,10 @@ struct zx_md_OrganizationName_s {
   struct zx_attr_s* lang;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_md_OrganizationName(c, father) (struct zx_md_OrganizationName_s*)zx_new_elem((c),(father),zx_md_OrganizationName_ELEM)
+
 int zx_DEC_ATTR_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x);
 int zx_DEC_ELEM_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x);
-struct zx_md_OrganizationName_s* zx_NEW_md_OrganizationName(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x);
 char* zx_ENC_SO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x);
@@ -1757,9 +1780,10 @@ struct zx_md_OrganizationURL_s {
   struct zx_attr_s* lang;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_md_OrganizationURL(c, father) (struct zx_md_OrganizationURL_s*)zx_new_elem((c),(father),zx_md_OrganizationURL_ELEM)
+
 int zx_DEC_ATTR_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x);
 int zx_DEC_ELEM_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x);
-struct zx_md_OrganizationURL_s* zx_NEW_md_OrganizationURL(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x);
 char* zx_ENC_SO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x);
@@ -1809,9 +1833,10 @@ struct zx_md_PDPDescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_md_PDPDescriptor(c, father) (struct zx_md_PDPDescriptor_s*)zx_new_elem((c),(father),zx_md_PDPDescriptor_ELEM)
+
 int zx_DEC_ATTR_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x);
 int zx_DEC_ELEM_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x);
-struct zx_md_PDPDescriptor_s* zx_NEW_md_PDPDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x);
 char* zx_ENC_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x);
@@ -1925,9 +1950,10 @@ struct zx_md_RequestedAttribute_s {
   struct zx_attr_s* isRequired;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_md_RequestedAttribute(c, father) (struct zx_md_RequestedAttribute_s*)zx_new_elem((c),(father),zx_md_RequestedAttribute_ELEM)
+
 int zx_DEC_ATTR_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x);
 int zx_DEC_ELEM_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x);
-struct zx_md_RequestedAttribute_s* zx_NEW_md_RequestedAttribute(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x);
 char* zx_ENC_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x);
@@ -1988,9 +2014,10 @@ struct zx_md_RoleDescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_md_RoleDescriptor(c, father) (struct zx_md_RoleDescriptor_s*)zx_new_elem((c),(father),zx_md_RoleDescriptor_ELEM)
+
 int zx_DEC_ATTR_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x);
 int zx_DEC_ELEM_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x);
-struct zx_md_RoleDescriptor_s* zx_NEW_md_RoleDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x);
 char* zx_ENC_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x);
@@ -2093,9 +2120,10 @@ struct zx_md_SPSSODescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_md_SPSSODescriptor(c, father) (struct zx_md_SPSSODescriptor_s*)zx_new_elem((c),(father),zx_md_SPSSODescriptor_ELEM)
+
 int zx_DEC_ATTR_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x);
 int zx_DEC_ELEM_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x);
-struct zx_md_SPSSODescriptor_s* zx_NEW_md_SPSSODescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x);
 char* zx_ENC_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x);
@@ -2233,9 +2261,10 @@ struct zx_md_ServiceDescription_s {
   struct zx_attr_s* lang;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_md_ServiceDescription(c, father) (struct zx_md_ServiceDescription_s*)zx_new_elem((c),(father),zx_md_ServiceDescription_ELEM)
+
 int zx_DEC_ATTR_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x);
 int zx_DEC_ELEM_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x);
-struct zx_md_ServiceDescription_s* zx_NEW_md_ServiceDescription(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x);
 char* zx_ENC_SO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x);
@@ -2273,9 +2302,10 @@ struct zx_md_ServiceName_s {
   struct zx_attr_s* lang;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_md_ServiceName(c, father) (struct zx_md_ServiceName_s*)zx_new_elem((c),(father),zx_md_ServiceName_ELEM)
+
 int zx_DEC_ATTR_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x);
 int zx_DEC_ELEM_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x);
-struct zx_md_ServiceName_s* zx_NEW_md_ServiceName(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x);
 char* zx_ENC_SO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x);
@@ -2317,9 +2347,10 @@ struct zx_md_SingleLogoutService_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_md_SingleLogoutService(c, father) (struct zx_md_SingleLogoutService_s*)zx_new_elem((c),(father),zx_md_SingleLogoutService_ELEM)
+
 int zx_DEC_ATTR_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x);
 int zx_DEC_ELEM_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x);
-struct zx_md_SingleLogoutService_s* zx_NEW_md_SingleLogoutService(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x);
 char* zx_ENC_SO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x);
@@ -2369,9 +2400,10 @@ struct zx_md_SingleSignOnService_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_md_SingleSignOnService(c, father) (struct zx_md_SingleSignOnService_s*)zx_new_elem((c),(father),zx_md_SingleSignOnService_ELEM)
+
 int zx_DEC_ATTR_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x);
 int zx_DEC_ELEM_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x);
-struct zx_md_SingleSignOnService_s* zx_NEW_md_SingleSignOnService(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x);
 char* zx_ENC_SO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x);

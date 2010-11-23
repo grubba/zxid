@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_wsu_Created_s
 #define EL_NS     wsu
 #define EL_TAG    Created
-
-/* FUNC(zx_NEW_wsu_Created) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsu_Created_s* zx_NEW_wsu_Created(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsu_Created_s* x = ZX_ZALLOC(c, struct zx_wsu_Created_s);
-  x->gg.g.tok = zx_wsu_Created_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -167,22 +152,6 @@ int zx_WALK_WO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x, void* c
 #define EL_NS     wsu
 #define EL_TAG    Expires
 
-/* FUNC(zx_NEW_wsu_Expires) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsu_Expires_s* zx_NEW_wsu_Expires(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsu_Expires_s* x = ZX_ZALLOC(c, struct zx_wsu_Expires_s);
-  x->gg.g.tok = zx_wsu_Expires_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_wsu_Expires) */
@@ -285,22 +254,6 @@ int zx_WALK_WO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x, void* c
 #define EL_STRUCT zx_wsu_Timestamp_s
 #define EL_NS     wsu
 #define EL_TAG    Timestamp
-
-/* FUNC(zx_NEW_wsu_Timestamp) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsu_Timestamp_s* zx_NEW_wsu_Timestamp(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsu_Timestamp_s* x = ZX_ZALLOC(c, struct zx_wsu_Timestamp_s);
-  x->gg.g.tok = zx_wsu_Timestamp_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

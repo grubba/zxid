@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_xenc_AgreementMethod_s
 #define EL_NS     xenc
 #define EL_TAG    AgreementMethod
-
-/* FUNC(zx_NEW_xenc_AgreementMethod) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_AgreementMethod_s* zx_NEW_xenc_AgreementMethod(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_AgreementMethod_s* x = ZX_ZALLOC(c, struct zx_xenc_AgreementMethod_s);
-  x->gg.g.tok = zx_xenc_AgreementMethod_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -210,22 +195,6 @@ int zx_WALK_WO_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_AgreementMe
 #define EL_NS     xenc
 #define EL_TAG    CipherData
 
-/* FUNC(zx_NEW_xenc_CipherData) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_CipherData_s* zx_NEW_xenc_CipherData(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_CipherData_s* x = ZX_ZALLOC(c, struct zx_xenc_CipherData_s);
-  x->gg.g.tok = zx_xenc_CipherData_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xenc_CipherData) */
@@ -349,22 +318,6 @@ int zx_WALK_WO_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* x,
 #define EL_NS     xenc
 #define EL_TAG    CipherReference
 
-/* FUNC(zx_NEW_xenc_CipherReference) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_CipherReference_s* zx_NEW_xenc_CipherReference(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_CipherReference_s* x = ZX_ZALLOC(c, struct zx_xenc_CipherReference_s);
-  x->gg.g.tok = zx_xenc_CipherReference_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xenc_CipherReference) */
@@ -485,22 +438,6 @@ int zx_WALK_WO_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherRefer
 #define EL_NS     xenc
 #define EL_TAG    DataReference
 
-/* FUNC(zx_NEW_xenc_DataReference) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_DataReference_s* zx_NEW_xenc_DataReference(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_DataReference_s* x = ZX_ZALLOC(c, struct zx_xenc_DataReference_s);
-  x->gg.g.tok = zx_xenc_DataReference_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xenc_DataReference) */
@@ -599,22 +536,6 @@ int zx_WALK_WO_xenc_DataReference(struct zx_ctx* c, struct zx_xenc_DataReference
 #define EL_STRUCT zx_xenc_EncryptedData_s
 #define EL_NS     xenc
 #define EL_TAG    EncryptedData
-
-/* FUNC(zx_NEW_xenc_EncryptedData) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_EncryptedData_s* zx_NEW_xenc_EncryptedData(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_EncryptedData_s* x = ZX_ZALLOC(c, struct zx_xenc_EncryptedData_s);
-  x->gg.g.tok = zx_xenc_EncryptedData_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -804,22 +725,6 @@ int zx_WALK_WO_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedData
 #define EL_STRUCT zx_xenc_EncryptedKey_s
 #define EL_NS     xenc
 #define EL_TAG    EncryptedKey
-
-/* FUNC(zx_NEW_xenc_EncryptedKey) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_EncryptedKey_s* zx_NEW_xenc_EncryptedKey(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_EncryptedKey_s* x = ZX_ZALLOC(c, struct zx_xenc_EncryptedKey_s);
-  x->gg.g.tok = zx_xenc_EncryptedKey_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1038,22 +943,6 @@ int zx_WALK_WO_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey_s
 #define EL_NS     xenc
 #define EL_TAG    EncryptionMethod
 
-/* FUNC(zx_NEW_xenc_EncryptionMethod) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_EncryptionMethod_s* zx_NEW_xenc_EncryptionMethod(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_EncryptionMethod_s* x = ZX_ZALLOC(c, struct zx_xenc_EncryptionMethod_s);
-  x->gg.g.tok = zx_xenc_EncryptionMethod_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xenc_EncryptionMethod) */
@@ -1162,22 +1051,6 @@ int zx_WALK_WO_xenc_EncryptionMethod(struct zx_ctx* c, struct zx_xenc_Encryption
 #define EL_STRUCT zx_xenc_EncryptionProperties_s
 #define EL_NS     xenc
 #define EL_TAG    EncryptionProperties
-
-/* FUNC(zx_NEW_xenc_EncryptionProperties) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_EncryptionProperties_s* zx_NEW_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_EncryptionProperties_s* x = ZX_ZALLOC(c, struct zx_xenc_EncryptionProperties_s);
-  x->gg.g.tok = zx_xenc_EncryptionProperties_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1299,22 +1172,6 @@ int zx_WALK_WO_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_Encryp
 #define EL_NS     xenc
 #define EL_TAG    EncryptionProperty
 
-/* FUNC(zx_NEW_xenc_EncryptionProperty) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_EncryptionProperty_s* zx_NEW_xenc_EncryptionProperty(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_EncryptionProperty_s* x = ZX_ZALLOC(c, struct zx_xenc_EncryptionProperty_s);
-  x->gg.g.tok = zx_xenc_EncryptionProperty_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xenc_EncryptionProperty) */
@@ -1416,22 +1273,6 @@ int zx_WALK_WO_xenc_EncryptionProperty(struct zx_ctx* c, struct zx_xenc_Encrypti
 #define EL_NS     xenc
 #define EL_TAG    KeyReference
 
-/* FUNC(zx_NEW_xenc_KeyReference) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_KeyReference_s* zx_NEW_xenc_KeyReference(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_KeyReference_s* x = ZX_ZALLOC(c, struct zx_xenc_KeyReference_s);
-  x->gg.g.tok = zx_xenc_KeyReference_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xenc_KeyReference) */
@@ -1530,22 +1371,6 @@ int zx_WALK_WO_xenc_KeyReference(struct zx_ctx* c, struct zx_xenc_KeyReference_s
 #define EL_STRUCT zx_xenc_OriginatorKeyInfo_s
 #define EL_NS     xenc
 #define EL_TAG    OriginatorKeyInfo
-
-/* FUNC(zx_NEW_xenc_OriginatorKeyInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_OriginatorKeyInfo_s* zx_NEW_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_OriginatorKeyInfo_s* x = ZX_ZALLOC(c, struct zx_xenc_OriginatorKeyInfo_s);
-  x->gg.g.tok = zx_xenc_OriginatorKeyInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1782,22 +1607,6 @@ int zx_WALK_WO_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_Originato
 #define EL_NS     xenc
 #define EL_TAG    RecipientKeyInfo
 
-/* FUNC(zx_NEW_xenc_RecipientKeyInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_RecipientKeyInfo_s* zx_NEW_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_RecipientKeyInfo_s* x = ZX_ZALLOC(c, struct zx_xenc_RecipientKeyInfo_s);
-  x->gg.g.tok = zx_xenc_RecipientKeyInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xenc_RecipientKeyInfo) */
@@ -2033,22 +1842,6 @@ int zx_WALK_WO_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_RecipientK
 #define EL_NS     xenc
 #define EL_TAG    ReferenceList
 
-/* FUNC(zx_NEW_xenc_ReferenceList) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_ReferenceList_s* zx_NEW_xenc_ReferenceList(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_ReferenceList_s* x = ZX_ZALLOC(c, struct zx_xenc_ReferenceList_s);
-  x->gg.g.tok = zx_xenc_ReferenceList_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xenc_ReferenceList) */
@@ -2187,22 +1980,6 @@ int zx_WALK_WO_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceList
 #define EL_STRUCT zx_xenc_Transforms_s
 #define EL_NS     xenc
 #define EL_TAG    Transforms
-
-/* FUNC(zx_NEW_xenc_Transforms) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xenc_Transforms_s* zx_NEW_xenc_Transforms(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xenc_Transforms_s* x = ZX_ZALLOC(c, struct zx_xenc_Transforms_s);
-  x->gg.g.tok = zx_xenc_Transforms_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_idhrxml_Create_s
 #define EL_NS     idhrxml
 #define EL_TAG    Create
-
-/* FUNC(zx_NEW_idhrxml_Create) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_Create_s* zx_NEW_idhrxml_Create(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_Create_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Create_s);
-  x->gg.g.tok = zx_idhrxml_Create_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -247,22 +232,6 @@ int zx_WALK_WO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x, v
 #define EL_NS     idhrxml
 #define EL_TAG    CreateItem
 
-/* FUNC(zx_NEW_idhrxml_CreateItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_CreateItem_s* zx_NEW_idhrxml_CreateItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_CreateItem_s* x = ZX_ZALLOC(c, struct zx_idhrxml_CreateItem_s);
-  x->gg.g.tok = zx_idhrxml_CreateItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idhrxml_CreateItem) */
@@ -386,22 +355,6 @@ int zx_WALK_WO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem
 #define EL_STRUCT zx_idhrxml_CreateResponse_s
 #define EL_NS     idhrxml
 #define EL_TAG    CreateResponse
-
-/* FUNC(zx_NEW_idhrxml_CreateResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_CreateResponse_s* zx_NEW_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_CreateResponse_s* x = ZX_ZALLOC(c, struct zx_idhrxml_CreateResponse_s);
-  x->gg.g.tok = zx_idhrxml_CreateResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -567,22 +520,6 @@ int zx_WALK_WO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_Create
 #define EL_NS     idhrxml
 #define EL_TAG    Data
 
-/* FUNC(zx_NEW_idhrxml_Data) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_Data_s* zx_NEW_idhrxml_Data(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_Data_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Data_s);
-  x->gg.g.tok = zx_idhrxml_Data_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idhrxml_Data) */
@@ -734,22 +671,6 @@ int zx_WALK_WO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x, void*
 #define EL_NS     idhrxml
 #define EL_TAG    Delete
 
-/* FUNC(zx_NEW_idhrxml_Delete) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_Delete_s* zx_NEW_idhrxml_Delete(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_Delete_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Delete_s);
-  x->gg.g.tok = zx_idhrxml_Delete_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idhrxml_Delete) */
@@ -891,22 +812,6 @@ int zx_WALK_WO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x, v
 #define EL_NS     idhrxml
 #define EL_TAG    DeleteItem
 
-/* FUNC(zx_NEW_idhrxml_DeleteItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_DeleteItem_s* zx_NEW_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_DeleteItem_s* x = ZX_ZALLOC(c, struct zx_idhrxml_DeleteItem_s);
-  x->gg.g.tok = zx_idhrxml_DeleteItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idhrxml_DeleteItem) */
@@ -1018,22 +923,6 @@ int zx_WALK_WO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem
 #define EL_STRUCT zx_idhrxml_DeleteResponse_s
 #define EL_NS     idhrxml
 #define EL_TAG    DeleteResponse
-
-/* FUNC(zx_NEW_idhrxml_DeleteResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_DeleteResponse_s* zx_NEW_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_DeleteResponse_s* x = ZX_ZALLOC(c, struct zx_idhrxml_DeleteResponse_s);
-  x->gg.g.tok = zx_idhrxml_DeleteResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1175,22 +1064,6 @@ int zx_WALK_WO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_Delete
 #define EL_STRUCT zx_idhrxml_ItemData_s
 #define EL_NS     idhrxml
 #define EL_TAG    ItemData
-
-/* FUNC(zx_NEW_idhrxml_ItemData) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_ItemData_s* zx_NEW_idhrxml_ItemData(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_ItemData_s* x = ZX_ZALLOC(c, struct zx_idhrxml_ItemData_s);
-  x->gg.g.tok = zx_idhrxml_ItemData_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1336,22 +1209,6 @@ int zx_WALK_WO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* 
 #define EL_STRUCT zx_idhrxml_Modify_s
 #define EL_NS     idhrxml
 #define EL_TAG    Modify
-
-/* FUNC(zx_NEW_idhrxml_Modify) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_Modify_s* zx_NEW_idhrxml_Modify(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_Modify_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Modify_s);
-  x->gg.g.tok = zx_idhrxml_Modify_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1536,22 +1393,6 @@ int zx_WALK_WO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x, v
 #define EL_NS     idhrxml
 #define EL_TAG    ModifyItem
 
-/* FUNC(zx_NEW_idhrxml_ModifyItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_ModifyItem_s* zx_NEW_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_ModifyItem_s* x = ZX_ZALLOC(c, struct zx_idhrxml_ModifyItem_s);
-  x->gg.g.tok = zx_idhrxml_ModifyItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idhrxml_ModifyItem) */
@@ -1686,22 +1527,6 @@ int zx_WALK_WO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem
 #define EL_STRUCT zx_idhrxml_ModifyResponse_s
 #define EL_NS     idhrxml
 #define EL_TAG    ModifyResponse
-
-/* FUNC(zx_NEW_idhrxml_ModifyResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_ModifyResponse_s* zx_NEW_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_ModifyResponse_s* x = ZX_ZALLOC(c, struct zx_idhrxml_ModifyResponse_s);
-  x->gg.g.tok = zx_idhrxml_ModifyResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1867,22 +1692,6 @@ int zx_WALK_WO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_Modify
 #define EL_NS     idhrxml
 #define EL_TAG    NewData
 
-/* FUNC(zx_NEW_idhrxml_NewData) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_NewData_s* zx_NEW_idhrxml_NewData(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_NewData_s* x = ZX_ZALLOC(c, struct zx_idhrxml_NewData_s);
-  x->gg.g.tok = zx_idhrxml_NewData_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idhrxml_NewData) */
@@ -2021,22 +1830,6 @@ int zx_WALK_WO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x,
 #define EL_STRUCT zx_idhrxml_Notification_s
 #define EL_NS     idhrxml
 #define EL_TAG    Notification
-
-/* FUNC(zx_NEW_idhrxml_Notification) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_Notification_s* zx_NEW_idhrxml_Notification(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_Notification_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Notification_s);
-  x->gg.g.tok = zx_idhrxml_Notification_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2185,22 +1978,6 @@ int zx_WALK_WO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notifica
 #define EL_NS     idhrxml
 #define EL_TAG    Notify
 
-/* FUNC(zx_NEW_idhrxml_Notify) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_Notify_s* zx_NEW_idhrxml_Notify(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_Notify_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Notify_s);
-  x->gg.g.tok = zx_idhrxml_Notify_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idhrxml_Notify) */
@@ -2344,22 +2121,6 @@ int zx_WALK_WO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x, v
 #define EL_NS     idhrxml
 #define EL_TAG    NotifyResponse
 
-/* FUNC(zx_NEW_idhrxml_NotifyResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_NotifyResponse_s* zx_NEW_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_NotifyResponse_s* x = ZX_ZALLOC(c, struct zx_idhrxml_NotifyResponse_s);
-  x->gg.g.tok = zx_idhrxml_NotifyResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idhrxml_NotifyResponse) */
@@ -2500,22 +2261,6 @@ int zx_WALK_WO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_Notify
 #define EL_STRUCT zx_idhrxml_Query_s
 #define EL_NS     idhrxml
 #define EL_TAG    Query
-
-/* FUNC(zx_NEW_idhrxml_Query) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_Query_s* zx_NEW_idhrxml_Query(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_Query_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Query_s);
-  x->gg.g.tok = zx_idhrxml_Query_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2700,22 +2445,6 @@ int zx_WALK_WO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x, voi
 #define EL_NS     idhrxml
 #define EL_TAG    QueryItem
 
-/* FUNC(zx_NEW_idhrxml_QueryItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_QueryItem_s* zx_NEW_idhrxml_QueryItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_QueryItem_s* x = ZX_ZALLOC(c, struct zx_idhrxml_QueryItem_s);
-  x->gg.g.tok = zx_idhrxml_QueryItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idhrxml_QueryItem) */
@@ -2849,22 +2578,6 @@ int zx_WALK_WO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s
 #define EL_STRUCT zx_idhrxml_QueryResponse_s
 #define EL_NS     idhrxml
 #define EL_TAG    QueryResponse
-
-/* FUNC(zx_NEW_idhrxml_QueryResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_QueryResponse_s* zx_NEW_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_QueryResponse_s* x = ZX_ZALLOC(c, struct zx_idhrxml_QueryResponse_s);
-  x->gg.g.tok = zx_idhrxml_QueryResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3051,22 +2764,6 @@ int zx_WALK_WO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryRe
 #define EL_NS     idhrxml
 #define EL_TAG    ResultQuery
 
-/* FUNC(zx_NEW_idhrxml_ResultQuery) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_ResultQuery_s* zx_NEW_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_ResultQuery_s* x = ZX_ZALLOC(c, struct zx_idhrxml_ResultQuery_s);
-  x->gg.g.tok = zx_idhrxml_ResultQuery_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idhrxml_ResultQuery) */
@@ -3192,22 +2889,6 @@ int zx_WALK_WO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQue
 #define EL_STRUCT zx_idhrxml_Subscription_s
 #define EL_NS     idhrxml
 #define EL_TAG    Subscription
-
-/* FUNC(zx_NEW_idhrxml_Subscription) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_Subscription_s* zx_NEW_idhrxml_Subscription(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_Subscription_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Subscription_s);
-  x->gg.g.tok = zx_idhrxml_Subscription_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3392,22 +3073,6 @@ int zx_WALK_WO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscrip
 #define EL_STRUCT zx_idhrxml_TestItem_s
 #define EL_NS     idhrxml
 #define EL_TAG    TestItem
-
-/* FUNC(zx_NEW_idhrxml_TestItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idhrxml_TestItem_s* zx_NEW_idhrxml_TestItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idhrxml_TestItem_s* x = ZX_ZALLOC(c, struct zx_idhrxml_TestItem_s);
-  x->gg.g.tok = zx_idhrxml_TestItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

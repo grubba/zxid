@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_wsc_DerivedKeyToken_s
 #define EL_NS     wsc
 #define EL_TAG    DerivedKeyToken
-
-/* FUNC(zx_NEW_wsc_DerivedKeyToken) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsc_DerivedKeyToken_s* zx_NEW_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsc_DerivedKeyToken_s* x = ZX_ZALLOC(c, struct zx_wsc_DerivedKeyToken_s);
-  x->gg.g.tok = zx_wsc_DerivedKeyToken_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -232,22 +217,6 @@ int zx_WALK_WO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyTok
 #define EL_NS     wsc
 #define EL_TAG    Properties
 
-/* FUNC(zx_NEW_wsc_Properties) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsc_Properties_s* zx_NEW_wsc_Properties(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsc_Properties_s* x = ZX_ZALLOC(c, struct zx_wsc_Properties_s);
-  x->gg.g.tok = zx_wsc_Properties_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_wsc_Properties) */
@@ -344,22 +313,6 @@ int zx_WALK_WO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, v
 #define EL_STRUCT zx_wsc_SecurityContextToken_s
 #define EL_NS     wsc
 #define EL_TAG    SecurityContextToken
-
-/* FUNC(zx_NEW_wsc_SecurityContextToken) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsc_SecurityContextToken_s* zx_NEW_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsc_SecurityContextToken_s* x = ZX_ZALLOC(c, struct zx_wsc_SecurityContextToken_s);
-  x->gg.g.tok = zx_wsc_SecurityContextToken_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

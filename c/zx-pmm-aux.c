@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_pmm_PMActivate_s
 #define EL_NS     pmm
 #define EL_TAG    PMActivate
-
-/* FUNC(zx_NEW_pmm_PMActivate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMActivate_s* zx_NEW_pmm_PMActivate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMActivate_s* x = ZX_ZALLOC(c, struct zx_pmm_PMActivate_s);
-  x->gg.g.tok = zx_pmm_PMActivate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -187,22 +172,6 @@ int zx_WALK_WO_pmm_PMActivate(struct zx_ctx* c, struct zx_pmm_PMActivate_s* x, v
 #define EL_NS     pmm
 #define EL_TAG    PMActivateItem
 
-/* FUNC(zx_NEW_pmm_PMActivateItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMActivateItem_s* zx_NEW_pmm_PMActivateItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMActivateItem_s* x = ZX_ZALLOC(c, struct zx_pmm_PMActivateItem_s);
-  x->gg.g.tok = zx_pmm_PMActivateItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_pmm_PMActivateItem) */
@@ -325,22 +294,6 @@ int zx_WALK_WO_pmm_PMActivateItem(struct zx_ctx* c, struct zx_pmm_PMActivateItem
 #define EL_NS     pmm
 #define EL_TAG    PMActivateResponse
 
-/* FUNC(zx_NEW_pmm_PMActivateResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMActivateResponse_s* zx_NEW_pmm_PMActivateResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMActivateResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_PMActivateResponse_s);
-  x->gg.g.tok = zx_pmm_PMActivateResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_pmm_PMActivateResponse) */
@@ -458,22 +411,6 @@ int zx_WALK_WO_pmm_PMActivateResponse(struct zx_ctx* c, struct zx_pmm_PMActivate
 #define EL_STRUCT zx_pmm_PMDeactivate_s
 #define EL_NS     pmm
 #define EL_TAG    PMDeactivate
-
-/* FUNC(zx_NEW_pmm_PMDeactivate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMDeactivate_s* zx_NEW_pmm_PMDeactivate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMDeactivate_s* x = ZX_ZALLOC(c, struct zx_pmm_PMDeactivate_s);
-  x->gg.g.tok = zx_pmm_PMDeactivate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -598,22 +535,6 @@ int zx_WALK_WO_pmm_PMDeactivate(struct zx_ctx* c, struct zx_pmm_PMDeactivate_s* 
 #define EL_NS     pmm
 #define EL_TAG    PMDeactivateItem
 
-/* FUNC(zx_NEW_pmm_PMDeactivateItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMDeactivateItem_s* zx_NEW_pmm_PMDeactivateItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMDeactivateItem_s* x = ZX_ZALLOC(c, struct zx_pmm_PMDeactivateItem_s);
-  x->gg.g.tok = zx_pmm_PMDeactivateItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_pmm_PMDeactivateItem) */
@@ -736,22 +657,6 @@ int zx_WALK_WO_pmm_PMDeactivateItem(struct zx_ctx* c, struct zx_pmm_PMDeactivate
 #define EL_NS     pmm
 #define EL_TAG    PMDeactivateResponse
 
-/* FUNC(zx_NEW_pmm_PMDeactivateResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMDeactivateResponse_s* zx_NEW_pmm_PMDeactivateResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMDeactivateResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_PMDeactivateResponse_s);
-  x->gg.g.tok = zx_pmm_PMDeactivateResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_pmm_PMDeactivateResponse) */
@@ -870,22 +775,6 @@ int zx_WALK_WO_pmm_PMDeactivateResponse(struct zx_ctx* c, struct zx_pmm_PMDeacti
 #define EL_NS     pmm
 #define EL_TAG    PMDelete
 
-/* FUNC(zx_NEW_pmm_PMDelete) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMDelete_s* zx_NEW_pmm_PMDelete(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMDelete_s* x = ZX_ZALLOC(c, struct zx_pmm_PMDelete_s);
-  x->gg.g.tok = zx_pmm_PMDelete_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_pmm_PMDelete) */
@@ -1003,22 +892,6 @@ int zx_WALK_WO_pmm_PMDelete(struct zx_ctx* c, struct zx_pmm_PMDelete_s* x, void*
 #define EL_STRUCT zx_pmm_PMDeleteItem_s
 #define EL_NS     pmm
 #define EL_TAG    PMDeleteItem
-
-/* FUNC(zx_NEW_pmm_PMDeleteItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMDeleteItem_s* zx_NEW_pmm_PMDeleteItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMDeleteItem_s* x = ZX_ZALLOC(c, struct zx_pmm_PMDeleteItem_s);
-  x->gg.g.tok = zx_pmm_PMDeleteItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1140,22 +1013,6 @@ int zx_WALK_WO_pmm_PMDeleteItem(struct zx_ctx* c, struct zx_pmm_PMDeleteItem_s* 
 #define EL_NS     pmm
 #define EL_TAG    PMDeleteResponse
 
-/* FUNC(zx_NEW_pmm_PMDeleteResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMDeleteResponse_s* zx_NEW_pmm_PMDeleteResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMDeleteResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_PMDeleteResponse_s);
-  x->gg.g.tok = zx_pmm_PMDeleteResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_pmm_PMDeleteResponse) */
@@ -1274,22 +1131,6 @@ int zx_WALK_WO_pmm_PMDeleteResponse(struct zx_ctx* c, struct zx_pmm_PMDeleteResp
 #define EL_NS     pmm
 #define EL_TAG    PMGetStatus
 
-/* FUNC(zx_NEW_pmm_PMGetStatus) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMGetStatus_s* zx_NEW_pmm_PMGetStatus(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMGetStatus_s* x = ZX_ZALLOC(c, struct zx_pmm_PMGetStatus_s);
-  x->gg.g.tok = zx_pmm_PMGetStatus_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_pmm_PMGetStatus) */
@@ -1407,22 +1248,6 @@ int zx_WALK_WO_pmm_PMGetStatus(struct zx_ctx* c, struct zx_pmm_PMGetStatus_s* x,
 #define EL_STRUCT zx_pmm_PMGetStatusResponse_s
 #define EL_NS     pmm
 #define EL_TAG    PMGetStatusResponse
-
-/* FUNC(zx_NEW_pmm_PMGetStatusResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMGetStatusResponse_s* zx_NEW_pmm_PMGetStatusResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMGetStatusResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_PMGetStatusResponse_s);
-  x->gg.g.tok = zx_pmm_PMGetStatusResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1563,22 +1388,6 @@ int zx_WALK_WO_pmm_PMGetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMGetStat
 #define EL_NS     pmm
 #define EL_TAG    PMSetStatus
 
-/* FUNC(zx_NEW_pmm_PMSetStatus) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMSetStatus_s* zx_NEW_pmm_PMSetStatus(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMSetStatus_s* x = ZX_ZALLOC(c, struct zx_pmm_PMSetStatus_s);
-  x->gg.g.tok = zx_pmm_PMSetStatus_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_pmm_PMSetStatus) */
@@ -1697,22 +1506,6 @@ int zx_WALK_WO_pmm_PMSetStatus(struct zx_ctx* c, struct zx_pmm_PMSetStatus_s* x,
 #define EL_NS     pmm
 #define EL_TAG    PMSetStatusResponse
 
-/* FUNC(zx_NEW_pmm_PMSetStatusResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMSetStatusResponse_s* zx_NEW_pmm_PMSetStatusResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMSetStatusResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_PMSetStatusResponse_s);
-  x->gg.g.tok = zx_pmm_PMSetStatusResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_pmm_PMSetStatusResponse) */
@@ -1830,22 +1623,6 @@ int zx_WALK_WO_pmm_PMSetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMSetStat
 #define EL_STRUCT zx_pmm_PMUpdate_s
 #define EL_NS     pmm
 #define EL_TAG    PMUpdate
-
-/* FUNC(zx_NEW_pmm_PMUpdate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMUpdate_s* zx_NEW_pmm_PMUpdate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMUpdate_s* x = ZX_ZALLOC(c, struct zx_pmm_PMUpdate_s);
-  x->gg.g.tok = zx_pmm_PMUpdate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1969,22 +1746,6 @@ int zx_WALK_WO_pmm_PMUpdate(struct zx_ctx* c, struct zx_pmm_PMUpdate_s* x, void*
 #define EL_STRUCT zx_pmm_PMUpdateItem_s
 #define EL_NS     pmm
 #define EL_TAG    PMUpdateItem
-
-/* FUNC(zx_NEW_pmm_PMUpdateItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMUpdateItem_s* zx_NEW_pmm_PMUpdateItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMUpdateItem_s* x = ZX_ZALLOC(c, struct zx_pmm_PMUpdateItem_s);
-  x->gg.g.tok = zx_pmm_PMUpdateItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2110,22 +1871,6 @@ int zx_WALK_WO_pmm_PMUpdateItem(struct zx_ctx* c, struct zx_pmm_PMUpdateItem_s* 
 #define EL_NS     pmm
 #define EL_TAG    PMUpdateResponse
 
-/* FUNC(zx_NEW_pmm_PMUpdateResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_PMUpdateResponse_s* zx_NEW_pmm_PMUpdateResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_PMUpdateResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_PMUpdateResponse_s);
-  x->gg.g.tok = zx_pmm_PMUpdateResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_pmm_PMUpdateResponse) */
@@ -2243,22 +1988,6 @@ int zx_WALK_WO_pmm_PMUpdateResponse(struct zx_ctx* c, struct zx_pmm_PMUpdateResp
 #define EL_STRUCT zx_pmm_Provision_s
 #define EL_NS     pmm
 #define EL_TAG    Provision
-
-/* FUNC(zx_NEW_pmm_Provision) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_Provision_s* zx_NEW_pmm_Provision(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_Provision_s* x = ZX_ZALLOC(c, struct zx_pmm_Provision_s);
-  x->gg.g.tok = zx_pmm_Provision_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2405,22 +2134,6 @@ int zx_WALK_WO_pmm_Provision(struct zx_ctx* c, struct zx_pmm_Provision_s* x, voi
 #define EL_STRUCT zx_pmm_ProvisionResponse_s
 #define EL_NS     pmm
 #define EL_TAG    ProvisionResponse
-
-/* FUNC(zx_NEW_pmm_ProvisionResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_pmm_ProvisionResponse_s* zx_NEW_pmm_ProvisionResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_pmm_ProvisionResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_ProvisionResponse_s);
-  x->gg.g.tok = zx_pmm_ProvisionResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

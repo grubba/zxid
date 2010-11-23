@@ -29,9 +29,10 @@ struct zx_lu_Extension_s {
   zx_lu_Extension_EXT
 };
 
+#define zx_NEW_lu_Extension(c, father) (struct zx_lu_Extension_s*)zx_new_elem((c),(father),zx_lu_Extension_ELEM)
+
 int zx_DEC_ATTR_lu_Extension(struct zx_ctx* c, struct zx_lu_Extension_s* x);
 int zx_DEC_ELEM_lu_Extension(struct zx_ctx* c, struct zx_lu_Extension_s* x);
-struct zx_lu_Extension_s* zx_NEW_lu_Extension(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_lu_Extension(struct zx_ctx* c, struct zx_lu_Extension_s* x);
 char* zx_ENC_SO_lu_Extension(struct zx_ctx* c, struct zx_lu_Extension_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_lu_Extension(struct zx_ctx* c, struct zx_lu_Extension_s* x);
@@ -70,9 +71,10 @@ struct zx_lu_Status_s {
   struct zx_attr_s* ref;	/* {0,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_lu_Status(c, father) (struct zx_lu_Status_s*)zx_new_elem((c),(father),zx_lu_Status_ELEM)
+
 int zx_DEC_ATTR_lu_Status(struct zx_ctx* c, struct zx_lu_Status_s* x);
 int zx_DEC_ELEM_lu_Status(struct zx_ctx* c, struct zx_lu_Status_s* x);
-struct zx_lu_Status_s* zx_NEW_lu_Status(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_lu_Status(struct zx_ctx* c, struct zx_lu_Status_s* x);
 char* zx_ENC_SO_lu_Status(struct zx_ctx* c, struct zx_lu_Status_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_lu_Status(struct zx_ctx* c, struct zx_lu_Status_s* x);
@@ -122,9 +124,10 @@ struct zx_lu_TestResult_s {
   struct zx_attr_s* itemIDRef;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_lu_TestResult(c, father) (struct zx_lu_TestResult_s*)zx_new_elem((c),(father),zx_lu_TestResult_ELEM)
+
 int zx_DEC_ATTR_lu_TestResult(struct zx_ctx* c, struct zx_lu_TestResult_s* x);
 int zx_DEC_ELEM_lu_TestResult(struct zx_ctx* c, struct zx_lu_TestResult_s* x);
-struct zx_lu_TestResult_s* zx_NEW_lu_TestResult(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_lu_TestResult(struct zx_ctx* c, struct zx_lu_TestResult_s* x);
 char* zx_ENC_SO_lu_TestResult(struct zx_ctx* c, struct zx_lu_TestResult_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_lu_TestResult(struct zx_ctx* c, struct zx_lu_TestResult_s* x);

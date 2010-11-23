@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_prov_CallbackEPR_s
 #define EL_NS     prov
 #define EL_TAG    CallbackEPR
-
-/* FUNC(zx_NEW_prov_CallbackEPR) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_CallbackEPR_s* zx_NEW_prov_CallbackEPR(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_CallbackEPR_s* x = ZX_ZALLOC(c, struct zx_prov_CallbackEPR_s);
-  x->gg.g.tok = zx_prov_CallbackEPR_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -236,22 +221,6 @@ int zx_WALK_WO_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s* 
 #define EL_NS     prov
 #define EL_TAG    PMActivate
 
-/* FUNC(zx_NEW_prov_PMActivate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMActivate_s* zx_NEW_prov_PMActivate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMActivate_s* x = ZX_ZALLOC(c, struct zx_prov_PMActivate_s);
-  x->gg.g.tok = zx_prov_PMActivate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMActivate) */
@@ -375,22 +344,6 @@ int zx_WALK_WO_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* x,
 #define EL_NS     prov
 #define EL_TAG    PMActivateItem
 
-/* FUNC(zx_NEW_prov_PMActivateItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMActivateItem_s* zx_NEW_prov_PMActivateItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMActivateItem_s* x = ZX_ZALLOC(c, struct zx_prov_PMActivateItem_s);
-  x->gg.g.tok = zx_prov_PMActivateItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMActivateItem) */
@@ -513,22 +466,6 @@ int zx_WALK_WO_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivateIt
 #define EL_NS     prov
 #define EL_TAG    PMActivateResponse
 
-/* FUNC(zx_NEW_prov_PMActivateResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMActivateResponse_s* zx_NEW_prov_PMActivateResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMActivateResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMActivateResponse_s);
-  x->gg.g.tok = zx_prov_PMActivateResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMActivateResponse) */
@@ -646,22 +583,6 @@ int zx_WALK_WO_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActiva
 #define EL_STRUCT zx_prov_PMDeactivate_s
 #define EL_NS     prov
 #define EL_TAG    PMDeactivate
-
-/* FUNC(zx_NEW_prov_PMDeactivate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMDeactivate_s* zx_NEW_prov_PMDeactivate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMDeactivate_s* x = ZX_ZALLOC(c, struct zx_prov_PMDeactivate_s);
-  x->gg.g.tok = zx_prov_PMDeactivate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -786,22 +707,6 @@ int zx_WALK_WO_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate_s
 #define EL_NS     prov
 #define EL_TAG    PMDeactivateItem
 
-/* FUNC(zx_NEW_prov_PMDeactivateItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMDeactivateItem_s* zx_NEW_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMDeactivateItem_s* x = ZX_ZALLOC(c, struct zx_prov_PMDeactivateItem_s);
-  x->gg.g.tok = zx_prov_PMDeactivateItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMDeactivateItem) */
@@ -924,22 +829,6 @@ int zx_WALK_WO_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeactiva
 #define EL_NS     prov
 #define EL_TAG    PMDeactivateResponse
 
-/* FUNC(zx_NEW_prov_PMDeactivateResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMDeactivateResponse_s* zx_NEW_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMDeactivateResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMDeactivateResponse_s);
-  x->gg.g.tok = zx_prov_PMDeactivateResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMDeactivateResponse) */
@@ -1057,22 +946,6 @@ int zx_WALK_WO_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDeac
 #define EL_STRUCT zx_prov_PMDelete_s
 #define EL_NS     prov
 #define EL_TAG    PMDelete
-
-/* FUNC(zx_NEW_prov_PMDelete) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMDelete_s* zx_NEW_prov_PMDelete(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMDelete_s* x = ZX_ZALLOC(c, struct zx_prov_PMDelete_s);
-  x->gg.g.tok = zx_prov_PMDelete_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1197,22 +1070,6 @@ int zx_WALK_WO_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x, voi
 #define EL_NS     prov
 #define EL_TAG    PMDeleteItem
 
-/* FUNC(zx_NEW_prov_PMDeleteItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMDeleteItem_s* zx_NEW_prov_PMDeleteItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMDeleteItem_s* x = ZX_ZALLOC(c, struct zx_prov_PMDeleteItem_s);
-  x->gg.g.tok = zx_prov_PMDeleteItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMDeleteItem) */
@@ -1333,22 +1190,6 @@ int zx_WALK_WO_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem_s
 #define EL_NS     prov
 #define EL_TAG    PMDeleteResponse
 
-/* FUNC(zx_NEW_prov_PMDeleteResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMDeleteResponse_s* zx_NEW_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMDeleteResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMDeleteResponse_s);
-  x->gg.g.tok = zx_prov_PMDeleteResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMDeleteResponse) */
@@ -1466,22 +1307,6 @@ int zx_WALK_WO_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDeleteRe
 #define EL_STRUCT zx_prov_PMDescriptor_s
 #define EL_NS     prov
 #define EL_TAG    PMDescriptor
-
-/* FUNC(zx_NEW_prov_PMDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMDescriptor_s* zx_NEW_prov_PMDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMDescriptor_s* x = ZX_ZALLOC(c, struct zx_prov_PMDescriptor_s);
-  x->gg.g.tok = zx_prov_PMDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1643,22 +1468,6 @@ int zx_WALK_WO_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_s
 #define EL_NS     prov
 #define EL_TAG    PMEDelete
 
-/* FUNC(zx_NEW_prov_PMEDelete) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEDelete_s* zx_NEW_prov_PMEDelete(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEDelete_s* x = ZX_ZALLOC(c, struct zx_prov_PMEDelete_s);
-  x->gg.g.tok = zx_prov_PMEDelete_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMEDelete) */
@@ -1760,22 +1569,6 @@ int zx_WALK_WO_prov_PMEDelete(struct zx_ctx* c, struct zx_prov_PMEDelete_s* x, v
 #define EL_STRUCT zx_prov_PMEDeleteResponse_s
 #define EL_NS     prov
 #define EL_TAG    PMEDeleteResponse
-
-/* FUNC(zx_NEW_prov_PMEDeleteResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEDeleteResponse_s* zx_NEW_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEDeleteResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMEDeleteResponse_s);
-  x->gg.g.tok = zx_prov_PMEDeleteResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1895,22 +1688,6 @@ int zx_WALK_WO_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDelete
 #define EL_NS     prov
 #define EL_TAG    PMEDisable
 
-/* FUNC(zx_NEW_prov_PMEDisable) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEDisable_s* zx_NEW_prov_PMEDisable(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEDisable_s* x = ZX_ZALLOC(c, struct zx_prov_PMEDisable_s);
-  x->gg.g.tok = zx_prov_PMEDisable_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMEDisable) */
@@ -2012,22 +1789,6 @@ int zx_WALK_WO_prov_PMEDisable(struct zx_ctx* c, struct zx_prov_PMEDisable_s* x,
 #define EL_STRUCT zx_prov_PMEDisableResponse_s
 #define EL_NS     prov
 #define EL_TAG    PMEDisableResponse
-
-/* FUNC(zx_NEW_prov_PMEDisableResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEDisableResponse_s* zx_NEW_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEDisableResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMEDisableResponse_s);
-  x->gg.g.tok = zx_prov_PMEDisableResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2147,22 +1908,6 @@ int zx_WALK_WO_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDisab
 #define EL_NS     prov
 #define EL_TAG    PMEDownload
 
-/* FUNC(zx_NEW_prov_PMEDownload) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEDownload_s* zx_NEW_prov_PMEDownload(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEDownload_s* x = ZX_ZALLOC(c, struct zx_prov_PMEDownload_s);
-  x->gg.g.tok = zx_prov_PMEDownload_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMEDownload) */
@@ -2264,22 +2009,6 @@ int zx_WALK_WO_prov_PMEDownload(struct zx_ctx* c, struct zx_prov_PMEDownload_s* 
 #define EL_STRUCT zx_prov_PMEDownloadResponse_s
 #define EL_NS     prov
 #define EL_TAG    PMEDownloadResponse
-
-/* FUNC(zx_NEW_prov_PMEDownloadResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEDownloadResponse_s* zx_NEW_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEDownloadResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMEDownloadResponse_s);
-  x->gg.g.tok = zx_prov_PMEDownloadResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2404,22 +2133,6 @@ int zx_WALK_WO_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDown
 #define EL_NS     prov
 #define EL_TAG    PMEEnable
 
-/* FUNC(zx_NEW_prov_PMEEnable) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEEnable_s* zx_NEW_prov_PMEEnable(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEEnable_s* x = ZX_ZALLOC(c, struct zx_prov_PMEEnable_s);
-  x->gg.g.tok = zx_prov_PMEEnable_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMEEnable) */
@@ -2521,22 +2234,6 @@ int zx_WALK_WO_prov_PMEEnable(struct zx_ctx* c, struct zx_prov_PMEEnable_s* x, v
 #define EL_STRUCT zx_prov_PMEEnableResponse_s
 #define EL_NS     prov
 #define EL_TAG    PMEEnableResponse
-
-/* FUNC(zx_NEW_prov_PMEEnableResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEEnableResponse_s* zx_NEW_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEEnableResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMEEnableResponse_s);
-  x->gg.g.tok = zx_prov_PMEEnableResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2656,22 +2353,6 @@ int zx_WALK_WO_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnable
 #define EL_NS     prov
 #define EL_TAG    PMEGetInfo
 
-/* FUNC(zx_NEW_prov_PMEGetInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEGetInfo_s* zx_NEW_prov_PMEGetInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEGetInfo_s* x = ZX_ZALLOC(c, struct zx_prov_PMEGetInfo_s);
-  x->gg.g.tok = zx_prov_PMEGetInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMEGetInfo) */
@@ -2773,22 +2454,6 @@ int zx_WALK_WO_prov_PMEGetInfo(struct zx_ctx* c, struct zx_prov_PMEGetInfo_s* x,
 #define EL_STRUCT zx_prov_PMEGetInfoResponse_s
 #define EL_NS     prov
 #define EL_TAG    PMEGetInfoResponse
-
-/* FUNC(zx_NEW_prov_PMEGetInfoResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEGetInfoResponse_s* zx_NEW_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEGetInfoResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMEGetInfoResponse_s);
-  x->gg.g.tok = zx_prov_PMEGetInfoResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2929,22 +2594,6 @@ int zx_WALK_WO_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGetIn
 #define EL_NS     prov
 #define EL_TAG    PMEHash
 
-/* FUNC(zx_NEW_prov_PMEHash) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEHash_s* zx_NEW_prov_PMEHash(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEHash_s* x = ZX_ZALLOC(c, struct zx_prov_PMEHash_s);
-  x->gg.g.tok = zx_prov_PMEHash_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMEHash) */
@@ -3043,22 +2692,6 @@ int zx_WALK_WO_prov_PMEHash(struct zx_ctx* c, struct zx_prov_PMEHash_s* x, void*
 #define EL_STRUCT zx_prov_PMEInfo_s
 #define EL_NS     prov
 #define EL_TAG    PMEInfo
-
-/* FUNC(zx_NEW_prov_PMEInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEInfo_s* zx_NEW_prov_PMEInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEInfo_s* x = ZX_ZALLOC(c, struct zx_prov_PMEInfo_s);
-  x->gg.g.tok = zx_prov_PMEInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3208,22 +2841,6 @@ int zx_WALK_WO_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x, void*
 #define EL_NS     prov
 #define EL_TAG    PMERegister
 
-/* FUNC(zx_NEW_prov_PMERegister) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMERegister_s* zx_NEW_prov_PMERegister(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMERegister_s* x = ZX_ZALLOC(c, struct zx_prov_PMERegister_s);
-  x->gg.g.tok = zx_prov_PMERegister_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMERegister) */
@@ -3352,22 +2969,6 @@ int zx_WALK_WO_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s* 
 #define EL_NS     prov
 #define EL_TAG    PMERegisterResponse
 
-/* FUNC(zx_NEW_prov_PMERegisterResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMERegisterResponse_s* zx_NEW_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMERegisterResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMERegisterResponse_s);
-  x->gg.g.tok = zx_prov_PMERegisterResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMERegisterResponse) */
@@ -3491,22 +3092,6 @@ int zx_WALK_WO_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMERegi
 #define EL_NS     prov
 #define EL_TAG    PMEUpload
 
-/* FUNC(zx_NEW_prov_PMEUpload) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEUpload_s* zx_NEW_prov_PMEUpload(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEUpload_s* x = ZX_ZALLOC(c, struct zx_prov_PMEUpload_s);
-  x->gg.g.tok = zx_prov_PMEUpload_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMEUpload) */
@@ -3617,22 +3202,6 @@ int zx_WALK_WO_prov_PMEUpload(struct zx_ctx* c, struct zx_prov_PMEUpload_s* x, v
 #define EL_STRUCT zx_prov_PMEUploadResponse_s
 #define EL_NS     prov
 #define EL_TAG    PMEUploadResponse
-
-/* FUNC(zx_NEW_prov_PMEUploadResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMEUploadResponse_s* zx_NEW_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMEUploadResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMEUploadResponse_s);
-  x->gg.g.tok = zx_prov_PMEUploadResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3751,22 +3320,6 @@ int zx_WALK_WO_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUpload
 #define EL_STRUCT zx_prov_PMGetDescriptor_s
 #define EL_NS     prov
 #define EL_TAG    PMGetDescriptor
-
-/* FUNC(zx_NEW_prov_PMGetDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMGetDescriptor_s* zx_NEW_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMGetDescriptor_s* x = ZX_ZALLOC(c, struct zx_prov_PMGetDescriptor_s);
-  x->gg.g.tok = zx_prov_PMGetDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3890,22 +3443,6 @@ int zx_WALK_WO_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDescri
 #define EL_STRUCT zx_prov_PMGetDescriptorResponse_s
 #define EL_NS     prov
 #define EL_TAG    PMGetDescriptorResponse
-
-/* FUNC(zx_NEW_prov_PMGetDescriptorResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMGetDescriptorResponse_s* zx_NEW_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMGetDescriptorResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMGetDescriptorResponse_s);
-  x->gg.g.tok = zx_prov_PMGetDescriptorResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4046,22 +3583,6 @@ int zx_WALK_WO_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMG
 #define EL_NS     prov
 #define EL_TAG    PMGetStatus
 
-/* FUNC(zx_NEW_prov_PMGetStatus) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMGetStatus_s* zx_NEW_prov_PMGetStatus(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMGetStatus_s* x = ZX_ZALLOC(c, struct zx_prov_PMGetStatus_s);
-  x->gg.g.tok = zx_prov_PMGetStatus_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMGetStatus) */
@@ -4179,22 +3700,6 @@ int zx_WALK_WO_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s* 
 #define EL_STRUCT zx_prov_PMGetStatusResponse_s
 #define EL_NS     prov
 #define EL_TAG    PMGetStatusResponse
-
-/* FUNC(zx_NEW_prov_PMGetStatusResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMGetStatusResponse_s* zx_NEW_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMGetStatusResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMGetStatusResponse_s);
-  x->gg.g.tok = zx_prov_PMGetStatusResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4335,22 +3840,6 @@ int zx_WALK_WO_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGetSt
 #define EL_NS     prov
 #define EL_TAG    PMID
 
-/* FUNC(zx_NEW_prov_PMID) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMID_s* zx_NEW_prov_PMID(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMID_s* x = ZX_ZALLOC(c, struct zx_prov_PMID_s);
-  x->gg.g.tok = zx_prov_PMID_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMID) */
@@ -4449,22 +3938,6 @@ int zx_WALK_WO_prov_PMID(struct zx_ctx* c, struct zx_prov_PMID_s* x, void* ctx, 
 #define EL_STRUCT zx_prov_PMRegisterDescriptor_s
 #define EL_NS     prov
 #define EL_TAG    PMRegisterDescriptor
-
-/* FUNC(zx_NEW_prov_PMRegisterDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMRegisterDescriptor_s* zx_NEW_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMRegisterDescriptor_s* x = ZX_ZALLOC(c, struct zx_prov_PMRegisterDescriptor_s);
-  x->gg.g.tok = zx_prov_PMRegisterDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4583,22 +4056,6 @@ int zx_WALK_WO_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMRegi
 #define EL_STRUCT zx_prov_PMRegisterDescriptorItem_s
 #define EL_NS     prov
 #define EL_TAG    PMRegisterDescriptorItem
-
-/* FUNC(zx_NEW_prov_PMRegisterDescriptorItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMRegisterDescriptorItem_s* zx_NEW_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMRegisterDescriptorItem_s* x = ZX_ZALLOC(c, struct zx_prov_PMRegisterDescriptorItem_s);
-  x->gg.g.tok = zx_prov_PMRegisterDescriptorItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4719,22 +4176,6 @@ int zx_WALK_WO_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_PM
 #define EL_STRUCT zx_prov_PMRegisterDescriptorResponse_s
 #define EL_NS     prov
 #define EL_TAG    PMRegisterDescriptorResponse
-
-/* FUNC(zx_NEW_prov_PMRegisterDescriptorResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMRegisterDescriptorResponse_s* zx_NEW_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMRegisterDescriptorResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMRegisterDescriptorResponse_s);
-  x->gg.g.tok = zx_prov_PMRegisterDescriptorResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4875,22 +4316,6 @@ int zx_WALK_WO_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_pro
 #define EL_NS     prov
 #define EL_TAG    PMRegisterDescriptorResponseItem
 
-/* FUNC(zx_NEW_prov_PMRegisterDescriptorResponseItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMRegisterDescriptorResponseItem_s* zx_NEW_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMRegisterDescriptorResponseItem_s* x = ZX_ZALLOC(c, struct zx_prov_PMRegisterDescriptorResponseItem_s);
-  x->gg.g.tok = zx_prov_PMRegisterDescriptorResponseItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMRegisterDescriptorResponseItem) */
@@ -5011,22 +4436,6 @@ int zx_WALK_WO_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct zx
 #define EL_NS     prov
 #define EL_TAG    PMSetStatus
 
-/* FUNC(zx_NEW_prov_PMSetStatus) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMSetStatus_s* zx_NEW_prov_PMSetStatus(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMSetStatus_s* x = ZX_ZALLOC(c, struct zx_prov_PMSetStatus_s);
-  x->gg.g.tok = zx_prov_PMSetStatus_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMSetStatus) */
@@ -5145,22 +4554,6 @@ int zx_WALK_WO_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s* 
 #define EL_NS     prov
 #define EL_TAG    PMSetStatusResponse
 
-/* FUNC(zx_NEW_prov_PMSetStatusResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMSetStatusResponse_s* zx_NEW_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMSetStatusResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMSetStatusResponse_s);
-  x->gg.g.tok = zx_prov_PMSetStatusResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMSetStatusResponse) */
@@ -5278,22 +4671,6 @@ int zx_WALK_WO_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSetSt
 #define EL_STRUCT zx_prov_PMStatus_s
 #define EL_NS     prov
 #define EL_TAG    PMStatus
-
-/* FUNC(zx_NEW_prov_PMStatus) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMStatus_s* zx_NEW_prov_PMStatus(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMStatus_s* x = ZX_ZALLOC(c, struct zx_prov_PMStatus_s);
-  x->gg.g.tok = zx_prov_PMStatus_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5434,22 +4811,6 @@ int zx_WALK_WO_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x, voi
 #define EL_NS     prov
 #define EL_TAG    PMUpdate
 
-/* FUNC(zx_NEW_prov_PMUpdate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMUpdate_s* zx_NEW_prov_PMUpdate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMUpdate_s* x = ZX_ZALLOC(c, struct zx_prov_PMUpdate_s);
-  x->gg.g.tok = zx_prov_PMUpdate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMUpdate) */
@@ -5572,22 +4933,6 @@ int zx_WALK_WO_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x, voi
 #define EL_STRUCT zx_prov_PMUpdateItem_s
 #define EL_NS     prov
 #define EL_TAG    PMUpdateItem
-
-/* FUNC(zx_NEW_prov_PMUpdateItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMUpdateItem_s* zx_NEW_prov_PMUpdateItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMUpdateItem_s* x = ZX_ZALLOC(c, struct zx_prov_PMUpdateItem_s);
-  x->gg.g.tok = zx_prov_PMUpdateItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5713,22 +5058,6 @@ int zx_WALK_WO_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem_s
 #define EL_NS     prov
 #define EL_TAG    PMUpdateResponse
 
-/* FUNC(zx_NEW_prov_PMUpdateResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PMUpdateResponse_s* zx_NEW_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PMUpdateResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PMUpdateResponse_s);
-  x->gg.g.tok = zx_prov_PMUpdateResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PMUpdateResponse) */
@@ -5846,22 +5175,6 @@ int zx_WALK_WO_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdateRe
 #define EL_STRUCT zx_prov_Poll_s
 #define EL_NS     prov
 #define EL_TAG    Poll
-
-/* FUNC(zx_NEW_prov_Poll) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_Poll_s* zx_NEW_prov_Poll(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_Poll_s* x = ZX_ZALLOC(c, struct zx_prov_Poll_s);
-  x->gg.g.tok = zx_prov_Poll_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6004,22 +5317,6 @@ int zx_WALK_WO_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x, void* ctx, 
 #define EL_NS     prov
 #define EL_TAG    PollResponse
 
-/* FUNC(zx_NEW_prov_PollResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_PollResponse_s* zx_NEW_prov_PollResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_PollResponse_s* x = ZX_ZALLOC(c, struct zx_prov_PollResponse_s);
-  x->gg.g.tok = zx_prov_PollResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_PollResponse) */
@@ -6139,22 +5436,6 @@ int zx_WALK_WO_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse_s
 #define EL_STRUCT zx_prov_ProvisioningHandle_s
 #define EL_NS     prov
 #define EL_TAG    ProvisioningHandle
-
-/* FUNC(zx_NEW_prov_ProvisioningHandle) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_ProvisioningHandle_s* zx_NEW_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_ProvisioningHandle_s* x = ZX_ZALLOC(c, struct zx_prov_ProvisioningHandle_s);
-  x->gg.g.tok = zx_prov_ProvisioningHandle_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6301,22 +5582,6 @@ int zx_WALK_WO_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_Provisio
 #define EL_STRUCT zx_prov_ProvisioningServiceEPR_s
 #define EL_NS     prov
 #define EL_TAG    ProvisioningServiceEPR
-
-/* FUNC(zx_NEW_prov_ProvisioningServiceEPR) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_ProvisioningServiceEPR_s* zx_NEW_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_ProvisioningServiceEPR_s* x = ZX_ZALLOC(c, struct zx_prov_ProvisioningServiceEPR_s);
-  x->gg.g.tok = zx_prov_ProvisioningServiceEPR_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6490,22 +5755,6 @@ int zx_WALK_WO_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_Prov
 #define EL_NS     prov
 #define EL_TAG    State
 
-/* FUNC(zx_NEW_prov_State) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_State_s* zx_NEW_prov_State(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_State_s* x = ZX_ZALLOC(c, struct zx_prov_State_s);
-  x->gg.g.tok = zx_prov_State_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_prov_State) */
@@ -6604,22 +5853,6 @@ int zx_WALK_WO_prov_State(struct zx_ctx* c, struct zx_prov_State_s* x, void* ctx
 #define EL_STRUCT zx_prov_UpdateEPR_s
 #define EL_NS     prov
 #define EL_TAG    UpdateEPR
-
-/* FUNC(zx_NEW_prov_UpdateEPR) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_UpdateEPR_s* zx_NEW_prov_UpdateEPR(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_UpdateEPR_s* x = ZX_ZALLOC(c, struct zx_prov_UpdateEPR_s);
-  x->gg.g.tok = zx_prov_UpdateEPR_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6738,22 +5971,6 @@ int zx_WALK_WO_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x, v
 #define EL_STRUCT zx_prov_UpdateEPRItem_s
 #define EL_NS     prov
 #define EL_TAG    UpdateEPRItem
-
-/* FUNC(zx_NEW_prov_UpdateEPRItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_UpdateEPRItem_s* zx_NEW_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_UpdateEPRItem_s* x = ZX_ZALLOC(c, struct zx_prov_UpdateEPRItem_s);
-  x->gg.g.tok = zx_prov_UpdateEPRItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6895,22 +6112,6 @@ int zx_WALK_WO_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRItem
 #define EL_STRUCT zx_prov_UpdateEPRResponse_s
 #define EL_NS     prov
 #define EL_TAG    UpdateEPRResponse
-
-/* FUNC(zx_NEW_prov_UpdateEPRResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_prov_UpdateEPRResponse_s* zx_NEW_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_prov_UpdateEPRResponse_s* x = ZX_ZALLOC(c, struct zx_prov_UpdateEPRResponse_s);
-  x->gg.g.tok = zx_prov_UpdateEPRResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

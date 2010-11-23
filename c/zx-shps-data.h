@@ -38,9 +38,10 @@ struct zx_shps_CallbackEPR_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_shps_CallbackEPR(c, father) (struct zx_shps_CallbackEPR_s*)zx_new_elem((c),(father),zx_shps_CallbackEPR_ELEM)
+
 int zx_DEC_ATTR_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s* x);
 int zx_DEC_ELEM_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s* x);
-struct zx_shps_CallbackEPR_s* zx_NEW_shps_CallbackEPR(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s* x);
 char* zx_ENC_SO_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s* x);
@@ -112,9 +113,10 @@ struct zx_shps_Delete_s {
   struct zx_elem_s* ServiceHandle;	/* {1,-1} xs:anyURI */
 };
 
+#define zx_NEW_shps_Delete(c, father) (struct zx_shps_Delete_s*)zx_new_elem((c),(father),zx_shps_Delete_ELEM)
+
 int zx_DEC_ATTR_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x);
 int zx_DEC_ELEM_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x);
-struct zx_shps_Delete_s* zx_NEW_shps_Delete(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x);
 char* zx_ENC_SO_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x);
@@ -158,9 +160,10 @@ struct zx_shps_DeleteResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_shps_DeleteResponse(c, father) (struct zx_shps_DeleteResponse_s*)zx_new_elem((c),(father),zx_shps_DeleteResponse_ELEM)
+
 int zx_DEC_ATTR_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteResponse_s* x);
 int zx_DEC_ELEM_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteResponse_s* x);
-struct zx_shps_DeleteResponse_s* zx_NEW_shps_DeleteResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteResponse_s* x);
 char* zx_ENC_SO_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteResponse_s* x);
@@ -204,9 +207,10 @@ struct zx_shps_GetStatus_s {
   struct zx_elem_s* ServiceHandle;	/* {1,-1} xs:anyURI */
 };
 
+#define zx_NEW_shps_GetStatus(c, father) (struct zx_shps_GetStatus_s*)zx_new_elem((c),(father),zx_shps_GetStatus_ELEM)
+
 int zx_DEC_ATTR_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x);
 int zx_DEC_ELEM_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x);
-struct zx_shps_GetStatus_s* zx_NEW_shps_GetStatus(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x);
 char* zx_ENC_SO_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x);
@@ -251,9 +255,10 @@ struct zx_shps_GetStatusResponse_s {
   struct zx_shps_GetStatusResponseItem_s* GetStatusResponseItem;	/* {1,-1} nada */
 };
 
+#define zx_NEW_shps_GetStatusResponse(c, father) (struct zx_shps_GetStatusResponse_s*)zx_new_elem((c),(father),zx_shps_GetStatusResponse_ELEM)
+
 int zx_DEC_ATTR_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatusResponse_s* x);
 int zx_DEC_ELEM_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatusResponse_s* x);
-struct zx_shps_GetStatusResponse_s* zx_NEW_shps_GetStatusResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatusResponse_s* x);
 char* zx_ENC_SO_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatusResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatusResponse_s* x);
@@ -306,9 +311,10 @@ struct zx_shps_GetStatusResponseItem_s {
   struct zx_elem_s* ServiceStatus;	/* {1,1} xs:anyURI */
 };
 
+#define zx_NEW_shps_GetStatusResponseItem(c, father) (struct zx_shps_GetStatusResponseItem_s*)zx_new_elem((c),(father),zx_shps_GetStatusResponseItem_ELEM)
+
 int zx_DEC_ATTR_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetStatusResponseItem_s* x);
 int zx_DEC_ELEM_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetStatusResponseItem_s* x);
-struct zx_shps_GetStatusResponseItem_s* zx_NEW_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetStatusResponseItem_s* x);
 char* zx_ENC_SO_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetStatusResponseItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetStatusResponseItem_s* x);
@@ -362,9 +368,10 @@ struct zx_shps_InvocationContext_s {
   struct zx_elem_s* SecurityMechID;	/* {1,1} xs:anyURI */
 };
 
+#define zx_NEW_shps_InvocationContext(c, father) (struct zx_shps_InvocationContext_s*)zx_new_elem((c),(father),zx_shps_InvocationContext_ELEM)
+
 int zx_DEC_ATTR_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_InvocationContext_s* x);
 int zx_DEC_ELEM_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_InvocationContext_s* x);
-struct zx_shps_InvocationContext_s* zx_NEW_shps_InvocationContext(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_InvocationContext_s* x);
 char* zx_ENC_SO_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_InvocationContext_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_InvocationContext_s* x);
@@ -425,9 +432,10 @@ struct zx_shps_InvokeItem_s {
   struct zx_attr_s* itemID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_shps_InvokeItem(c, father) (struct zx_shps_InvokeItem_s*)zx_new_elem((c),(father),zx_shps_InvokeItem_ELEM)
+
 int zx_DEC_ATTR_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x);
 int zx_DEC_ELEM_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x);
-struct zx_shps_InvokeItem_s* zx_NEW_shps_InvokeItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x);
 char* zx_ENC_SO_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x);
@@ -474,9 +482,10 @@ struct zx_shps_InvokeResponse_s {
   struct zx_shps_InvokeResponseItem_s* InvokeResponseItem;	/* {1,-1} nada */
 };
 
+#define zx_NEW_shps_InvokeResponse(c, father) (struct zx_shps_InvokeResponse_s*)zx_new_elem((c),(father),zx_shps_InvokeResponse_ELEM)
+
 int zx_DEC_ATTR_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeResponse_s* x);
 int zx_DEC_ELEM_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeResponse_s* x);
-struct zx_shps_InvokeResponse_s* zx_NEW_shps_InvokeResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeResponse_s* x);
 char* zx_ENC_SO_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeResponse_s* x);
@@ -528,9 +537,10 @@ struct zx_shps_InvokeResponseItem_s {
   struct zx_attr_s* ref;	/* {1,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_shps_InvokeResponseItem(c, father) (struct zx_shps_InvokeResponseItem_s*)zx_new_elem((c),(father),zx_shps_InvokeResponseItem_ELEM)
+
 int zx_DEC_ATTR_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_shps_InvokeResponseItem_s* x);
 int zx_DEC_ELEM_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_shps_InvokeResponseItem_s* x);
-struct zx_shps_InvokeResponseItem_s* zx_NEW_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_shps_InvokeResponseItem_s* x);
 char* zx_ENC_SO_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_shps_InvokeResponseItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_shps_InvokeResponseItem_s* x);
@@ -570,9 +580,10 @@ struct zx_shps_Poll_s {
   struct zx_attr_s* wait;	/* {1,1} attribute xs:boolean */
 };
 
+#define zx_NEW_shps_Poll(c, father) (struct zx_shps_Poll_s*)zx_new_elem((c),(father),zx_shps_Poll_ELEM)
+
 int zx_DEC_ATTR_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x);
 int zx_DEC_ELEM_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x);
-struct zx_shps_Poll_s* zx_NEW_shps_Poll(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x);
 char* zx_ENC_SO_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x);
@@ -627,9 +638,10 @@ struct zx_shps_PollResponse_s {
   struct zx_attr_s* nextPoll;	/* {0,1} attribute xs:integer */
 };
 
+#define zx_NEW_shps_PollResponse(c, father) (struct zx_shps_PollResponse_s*)zx_new_elem((c),(father),zx_shps_PollResponse_ELEM)
+
 int zx_DEC_ATTR_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_s* x);
 int zx_DEC_ELEM_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_s* x);
-struct zx_shps_PollResponse_s* zx_NEW_shps_PollResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_s* x);
 char* zx_ENC_SO_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_s* x);
@@ -675,9 +687,10 @@ struct zx_shps_ProxyInvoke_s {
   struct zx_shps_ProxyInvokeItem_s* ProxyInvokeItem;	/* {1,-1} nada */
 };
 
+#define zx_NEW_shps_ProxyInvoke(c, father) (struct zx_shps_ProxyInvoke_s*)zx_new_elem((c),(father),zx_shps_ProxyInvoke_ELEM)
+
 int zx_DEC_ATTR_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s* x);
 int zx_DEC_ELEM_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s* x);
-struct zx_shps_ProxyInvoke_s* zx_NEW_shps_ProxyInvoke(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s* x);
 char* zx_ENC_SO_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s* x);
@@ -724,9 +737,10 @@ struct zx_shps_ProxyInvokeItem_s {
   struct zx_attr_s* itemID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_shps_ProxyInvokeItem(c, father) (struct zx_shps_ProxyInvokeItem_s*)zx_new_elem((c),(father),zx_shps_ProxyInvokeItem_ELEM)
+
 int zx_DEC_ATTR_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeItem_s* x);
 int zx_DEC_ELEM_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeItem_s* x);
-struct zx_shps_ProxyInvokeItem_s* zx_NEW_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeItem_s* x);
 char* zx_ENC_SO_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeItem_s* x);
@@ -789,9 +803,10 @@ struct zx_shps_ProxyInvokeResponse_s {
   struct zx_shps_ProxyInvokeResponseItem_s* ProxyInvokeResponseItem;	/* {0,-1} nada */
 };
 
+#define zx_NEW_shps_ProxyInvokeResponse(c, father) (struct zx_shps_ProxyInvokeResponse_s*)zx_new_elem((c),(father),zx_shps_ProxyInvokeResponse_ELEM)
+
 int zx_DEC_ATTR_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponse_s* x);
 int zx_DEC_ELEM_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponse_s* x);
-struct zx_shps_ProxyInvokeResponse_s* zx_NEW_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponse_s* x);
 char* zx_ENC_SO_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponse_s* x);
@@ -845,9 +860,10 @@ struct zx_shps_ProxyInvokeResponseItem_s {
   struct zx_attr_s* ref;	/* {1,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_shps_ProxyInvokeResponseItem(c, father) (struct zx_shps_ProxyInvokeResponseItem_s*)zx_new_elem((c),(father),zx_shps_ProxyInvokeResponseItem_ELEM)
+
 int zx_DEC_ATTR_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponseItem_s* x);
 int zx_DEC_ELEM_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponseItem_s* x);
-struct zx_shps_ProxyInvokeResponseItem_s* zx_NEW_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponseItem_s* x);
 char* zx_ENC_SO_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponseItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponseItem_s* x);
@@ -901,9 +917,10 @@ struct zx_shps_Query_s {
   struct zx_di_RequestedService_s* RequestedService;	/* {0,-1}  */
 };
 
+#define zx_NEW_shps_Query(c, father) (struct zx_shps_Query_s*)zx_new_elem((c),(father),zx_shps_Query_ELEM)
+
 int zx_DEC_ATTR_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x);
 int zx_DEC_ELEM_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x);
-struct zx_shps_Query_s* zx_NEW_shps_Query(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x);
 char* zx_ENC_SO_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x);
@@ -947,9 +964,10 @@ struct zx_shps_QueryRegistered_s {
   struct zx_elem_s* ServiceHandle;	/* {0,-1} xs:anyURI */
 };
 
+#define zx_NEW_shps_QueryRegistered(c, father) (struct zx_shps_QueryRegistered_s*)zx_new_elem((c),(father),zx_shps_QueryRegistered_ELEM)
+
 int zx_DEC_ATTR_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegistered_s* x);
 int zx_DEC_ELEM_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegistered_s* x);
-struct zx_shps_QueryRegistered_s* zx_NEW_shps_QueryRegistered(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegistered_s* x);
 char* zx_ENC_SO_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegistered_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegistered_s* x);
@@ -994,9 +1012,10 @@ struct zx_shps_QueryRegisteredResponse_s {
   struct zx_a_EndpointReference_s* EndpointReference;	/* {0,-1} nada */
 };
 
+#define zx_NEW_shps_QueryRegisteredResponse(c, father) (struct zx_shps_QueryRegisteredResponse_s*)zx_new_elem((c),(father),zx_shps_QueryRegisteredResponse_ELEM)
+
 int zx_DEC_ATTR_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_QueryRegisteredResponse_s* x);
 int zx_DEC_ELEM_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_QueryRegisteredResponse_s* x);
-struct zx_shps_QueryRegisteredResponse_s* zx_NEW_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_QueryRegisteredResponse_s* x);
 char* zx_ENC_SO_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_QueryRegisteredResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_QueryRegisteredResponse_s* x);
@@ -1049,9 +1068,10 @@ struct zx_shps_QueryResponse_s {
   struct zx_a_EndpointReference_s* EndpointReference;	/* {0,-1} nada */
 };
 
+#define zx_NEW_shps_QueryResponse(c, father) (struct zx_shps_QueryResponse_s*)zx_new_elem((c),(father),zx_shps_QueryResponse_ELEM)
+
 int zx_DEC_ATTR_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryResponse_s* x);
 int zx_DEC_ELEM_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryResponse_s* x);
-struct zx_shps_QueryResponse_s* zx_NEW_shps_QueryResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryResponse_s* x);
 char* zx_ENC_SO_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryResponse_s* x);
@@ -1103,9 +1123,10 @@ struct zx_shps_Register_s {
   struct zx_a_EndpointReference_s* EndpointReference;	/* {1,-1} nada */
 };
 
+#define zx_NEW_shps_Register(c, father) (struct zx_shps_Register_s*)zx_new_elem((c),(father),zx_shps_Register_ELEM)
+
 int zx_DEC_ATTR_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x);
 int zx_DEC_ELEM_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x);
-struct zx_shps_Register_s* zx_NEW_shps_Register(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x);
 char* zx_ENC_SO_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x);
@@ -1150,9 +1171,10 @@ struct zx_shps_RegisterResponse_s {
   struct zx_shps_RegisterResponseItem_s* RegisterResponseItem;	/* {1,-1} nada */
 };
 
+#define zx_NEW_shps_RegisterResponse(c, father) (struct zx_shps_RegisterResponse_s*)zx_new_elem((c),(father),zx_shps_RegisterResponse_ELEM)
+
 int zx_DEC_ATTR_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterResponse_s* x);
 int zx_DEC_ELEM_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterResponse_s* x);
-struct zx_shps_RegisterResponse_s* zx_NEW_shps_RegisterResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterResponse_s* x);
 char* zx_ENC_SO_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterResponse_s* x);
@@ -1205,9 +1227,10 @@ struct zx_shps_RegisterResponseItem_s {
   struct zx_attr_s* ref;	/* {1,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_shps_RegisterResponseItem(c, father) (struct zx_shps_RegisterResponseItem_s*)zx_new_elem((c),(father),zx_shps_RegisterResponseItem_ELEM)
+
 int zx_DEC_ATTR_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_RegisterResponseItem_s* x);
 int zx_DEC_ELEM_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_RegisterResponseItem_s* x);
-struct zx_shps_RegisterResponseItem_s* zx_NEW_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_RegisterResponseItem_s* x);
 char* zx_ENC_SO_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_RegisterResponseItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_RegisterResponseItem_s* x);
@@ -1253,9 +1276,10 @@ struct zx_shps_SetStatus_s {
   struct zx_shps_SetStatusItem_s* SetStatusItem;	/* {1,-1} nada */
 };
 
+#define zx_NEW_shps_SetStatus(c, father) (struct zx_shps_SetStatus_s*)zx_new_elem((c),(father),zx_shps_SetStatus_ELEM)
+
 int zx_DEC_ATTR_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x);
 int zx_DEC_ELEM_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x);
-struct zx_shps_SetStatus_s* zx_NEW_shps_SetStatus(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x);
 char* zx_ENC_SO_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x);
@@ -1301,9 +1325,10 @@ struct zx_shps_SetStatusItem_s {
   struct zx_attr_s* itemID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_shps_SetStatusItem(c, father) (struct zx_shps_SetStatusItem_s*)zx_new_elem((c),(father),zx_shps_SetStatusItem_ELEM)
+
 int zx_DEC_ATTR_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusItem_s* x);
 int zx_DEC_ELEM_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusItem_s* x);
-struct zx_shps_SetStatusItem_s* zx_NEW_shps_SetStatusItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusItem_s* x);
 char* zx_ENC_SO_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusItem_s* x);
@@ -1357,9 +1382,10 @@ struct zx_shps_SetStatusResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_shps_SetStatusResponse(c, father) (struct zx_shps_SetStatusResponse_s*)zx_new_elem((c),(father),zx_shps_SetStatusResponse_ELEM)
+
 int zx_DEC_ATTR_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatusResponse_s* x);
 int zx_DEC_ELEM_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatusResponse_s* x);
-struct zx_shps_SetStatusResponse_s* zx_NEW_shps_SetStatusResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatusResponse_s* x);
 char* zx_ENC_SO_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatusResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatusResponse_s* x);
@@ -1403,9 +1429,10 @@ struct zx_shps_Update_s {
   struct zx_shps_UpdateItem_s* UpdateItem;	/* {1,-1} nada */
 };
 
+#define zx_NEW_shps_Update(c, father) (struct zx_shps_Update_s*)zx_new_elem((c),(father),zx_shps_Update_ELEM)
+
 int zx_DEC_ATTR_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x);
 int zx_DEC_ELEM_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x);
-struct zx_shps_Update_s* zx_NEW_shps_Update(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x);
 char* zx_ENC_SO_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x);
@@ -1451,9 +1478,10 @@ struct zx_shps_UpdateItem_s {
   struct zx_attr_s* itemID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_shps_UpdateItem(c, father) (struct zx_shps_UpdateItem_s*)zx_new_elem((c),(father),zx_shps_UpdateItem_ELEM)
+
 int zx_DEC_ATTR_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x);
 int zx_DEC_ELEM_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x);
-struct zx_shps_UpdateItem_s* zx_NEW_shps_UpdateItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x);
 char* zx_ENC_SO_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x);
@@ -1507,9 +1535,10 @@ struct zx_shps_UpdateResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_shps_UpdateResponse(c, father) (struct zx_shps_UpdateResponse_s*)zx_new_elem((c),(father),zx_shps_UpdateResponse_ELEM)
+
 int zx_DEC_ATTR_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateResponse_s* x);
 int zx_DEC_ELEM_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateResponse_s* x);
-struct zx_shps_UpdateResponse_s* zx_NEW_shps_UpdateResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateResponse_s* x);
 char* zx_ENC_SO_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateResponse_s* x);

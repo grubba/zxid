@@ -1,0 +1,216 @@
+Content-Type: text/html
+Content-Length: 10594
+
+<title>ZXID Conf for http://sp1.zxidsp.org:8081/zxidhlo</title><body bgcolor=white><h1>ZXID Conf for http://sp1.zxidsp.org:8081/zxidhlo?o=B</h1><p>Please see config file in /var/zxid/zxid.conf, and documentation in zxid-conf.pd and zxidconf.h
+<p>[ <a href="?o=B">Metadata</a> | <a href="?o=c">CARML</a> | <a href="?o=d">This Conf Dump</a> ]
+<p>Version: R0.71 (1290467692)
+<pre>PATH=/var/zxid/
+URL=http://sp1.zxidsp.org:8081/zxidhlo
+AFFILIATION=
+NICE_NAME=TAS3 App Demo SP and WSC
+ORG_NAME=TAS3 Testing SP
+ORG_URL=http://zxid.org/
+LOCALITY=Lisboa
+STATE=Lisboa
+COUNTRY=PT
+CONTACT_ORG=
+CONTACT_NAME=
+CONTACT_EMAIL=
+CONTACT_TEL=
+FEDUSERNAME_SUFFIX=sp1.zxidsp.org
+#ZXID_CONF_FILE=1 (compile)
+#ZXID_CONF_FLAG=1 (compile)
+NON_STANDARD_ENTITYID=
+REDIRECT_HACK_IMPOSED_URL=
+REDIRECT_HACK_ZXID_URL=
+REDIRECT_HACK_ZXID_QS=
+DEFAULTQS=
+CDC_URL=
+CDC_CHOICE=4
+LOAD_COT_CACHE=
+MD_FETCH=1
+MD_POPULATE_CACHE=1
+MD_CACHE_FIRST=1
+MD_CACHE_LAST=1
+AUTO_CERT=1
+AUTHN_REQ_SIGN=1
+WANT_AUTHN_REQ_SIGNED=1
+WANT_SSO_A7N_SIGNED=1
+SSO_SOAP_SIGN=1
+SSO_SOAP_RESP_SIGN=1
+SSO_SIGN=1
+WSC_SIGN=3
+WSP_SIGN=3
+WSPCGICMD=./zxid-wspcgicmd.sh
+NAMEID_ENC=f
+POST_A7N_ENC=1
+CANON_INOPT=0
+ENCKEY_OPT=32
+IDPATOPT=1
+DI_ALLOW_CREATE=49
+DI_NID_FMT=112
+DI_A7N_ENC=1
+BOOTSTRAP_LEVEL=1
+SHOW_CONF=1
+#ZXID_ID_BITS=144 (compile)
+#ZXID_ID_MAX_BITS=168 (compile)
+#ZXID_TRUE_RAND=0 (compile)
+SES_ARCH_DIR=
+SES_COOKIE_NAME=ZXIDSES
+IPPORT=
+USER_LOCAL=1
+IDP_ENA=0
+IMPS_ENA=0
+AS_ENA=0
+PDP_ENA=1
+#ZXID_MAX_BUF=1024 (compile)
+LOG_ERR=1
+LOG_ACT=1
+LOG_ISSUE_A7N=1
+LOG_ISSUE_MSG=1
+LOG_RELY_A7N=1
+LOG_RELY_MSG=1
+LOG_ERR_IN_ACT=1
+LOG_ACT_IN_ERR=1
+LOG_SIGFAIL_IS_ERR=1
+LOG_LEVEL=2
+LOGUSER=1
+SIG_FATAL=1
+NOSIG_FATAL=0
+MSG_SIG_OK=1
+TIMEOUT_FATAL=1
+AUDIENCE_FATAL=1
+DUP_A7N_FATAL=0
+DUP_MSG_FATAL=0
+RELTO_FATAL=1
+WSP_NOSIG_FATAL=1
+NOTIMESTAMP_FATAL=1
+REDIR_TO_CONTENT=1
+REMOTE_USER_ENA=1
+MAX_SOAP_RETRY=5
+BEFORE_SLOP=39600
+AFTER_SLOP=7300
+TIMESKEW=0
+A7NTTL=3600
+ANON_OK=
+ISSUE_AUTHNCTX_PW=urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport
+IDP_PREF_ACS_BINDING=urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST
+MANDATORY_ATTR=zxidvers,zxidloa
+PDP_URL=http://idp.tas3.pt:8081/zxididp?o=S
+PDP_CALL_URL=
+XASP_VERS=2.0
+MOD_SAML_ATTR_PREFIX=SAML_
+BARE_URL_ENTITYID=0
+SHOW_TECH=0
+IDP_LIST_METH=1
+IDP_SEL_PAGE=
+IDP_SEL_TEMPL_FILE=idpsel.html
+</pre><textarea cols=100 rows=20>IDP_SEL_TEMPL=<title>ZXID SP SSO: Choose IdP</title><link type="text/css" rel=stylesheet href="idpsel.css"><body bgcolor=white><h1 class=zxtop>ZXID SP Federated SSO (user NOT logged in, no session)</h1><form method=get action="!!URL"><div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div><h3>Login Using New IdP</h3><i>A new IdP is one whose metadata we do not have yet. We need to knowthe IdP URL (aka Entity ID) in order to fetch the metadata using thewell known location method. You will need to ask the adminstrator ofthe IdP to tell you what the EntityID is.</i><p>IdP URL <input name=e size=60><input type=submit name=l0 value=" Login "><br>Entity ID of this SP (click on the link to fetch the SP metadata): <a href="!!EID">!!EID</a>!!IDP_LIST<h3>Technical options</h3><input type=checkbox name=fc value=1 checked> Create federation, NID Format:<select name=fn><option value=prstnt>Persistent<option value=trnsnt>Transient<option value="">(none)</select><br><!-- ZXID built-in defaults, see zxidconf.h and zxid-conf.pd for explanation --><input type=hidden name=fq value=""><input type=hidden name=fy value=""><input type=hidden name=fa value=""><input type=hidden name=fm value=""><input type=hidden name=fp value=0><input type=hidden name=ff value=0><div class=zxbot><a class=zx href="http://zxid.org/">zxid.org</a>, !!VERSION (builtin)</div>
+</textarea><pre>
+AN_PAGE=
+AN_TEMPL_FILE=an-main.html
+</pre><textarea cols=100 rows=20>AN_TEMPL=<title>ZXID IdP: Authentication</title><link type="text/css" rel=stylesheet href="an.css"><body bgcolor=white><form method=get action="!!URL"><h1 class=zxtop>ZXID IdP Authentication for Federated SSO</h1><p>Entity ID of this IdP (click for the IdP metadata): <a href="!!EID">!!EID</a><br><p>Login requested by !!SP_DPY_NAME (<a href="!!SP_EID">!!SP_EID</a>)<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>User NOT logged in, no session.<h3>Please authenticate using one of the following methods:</h3><!--input type=checkbox name=at> Adjust attribute sharing after authentication--><ol><li> Yubikey <a href="http://yubico.com"><img src="yubiright_16x16.gif" width=16 height=16 border=0></a>:<input name=au><input type=submit name=alp value=" Login "><li> User: <input name=au> Password: <input type=password name=ap><input type=submit name=alp value=" Login "><li><input type=submit name=an value=" Create New User "></ol><h3>Technical options</h3><input type=checkbox name=fc value=1 checked> Create federation, NID Format: <select name=fn><option value=prstnt>Persistent<option value=trnsnt>Transient<option value="">(none)</select><br><input type=hidden name=fq value=""><input type=hidden name=fy value=""><input type=hidden name=fa value=""><input type=hidden name=fm value=""><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h--><input type=hidden name=ar value="!!SSOREQ"><input type=hidden name=zxapp value="!!ZXAPP"></form><div class=zxbot><a href="http://zxid.org/">zxid.org</a>, !!VERSION (builtin)</div>
+</textarea><pre>
+POST_TEMPL_FILE=post.html
+</pre><textarea cols=100 rows=7>POST_TEMPL=<title>ZXID Post Profile</title><link type="text/css" rel=stylesheet href="an.css"><body bgcolor=white OnLoad="document.forms[0].submit()"><form method=post action="!!ACTION_URL"><h1 class=zxtop>ZXID POST Profile POST</h1><div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div><input type=hidden name=!!SAML_ART value="!!SAML_RESP">!!RS!!SIG<input type=submit name=ok value=" If JavaScript is not on, please click here to complete the transaction "></form><div class=zxbot><a href="http://zxid.org/">zxid.org</a>, !!VERSION (builtin)</div>
+</textarea><pre>
+ERR_PAGE=
+ERR_TEMPL_FILE=err.html
+</pre><textarea cols=100 rows=7>ERR_TEMPL=<title>ZXID: Error</title><link type="text/css" rel=stylesheet href="an.css"><body bgcolor=white><form method=get action="!!URL"><h1 class=zxtop>ZXID Error Message</h1><div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div><input type=hidden name=zxapp value="!!ZXAPP"></form><div class=zxbot><a href="http://zxid.org/">zxid.org</a>, !!VERSION (builtin)</div>
+</textarea><pre>
+NEW_USER_PAGE=
+RECOVER_PASSWD=
+ATSEL_PAGE=
+</pre><textarea cols=100 rows=15>MGMT_START=<title>ZXID SP Mgmt</title><link type="text/css" rel=stylesheet href="idpsel.css"><body bgcolor=white><h1 class=zxtop>ZXID SP Management (user logged in, session active)</h1>
+
+MGMT_LOGOUT=<input type=submit name=gl value=" Local Logout ">
+<input type=submit name=gr value=" Single Logout (R) ">
+<input type=submit name=gs value=" Single Logout (S) ">
+
+MGMT_DEFED=<input type=submit name=gt value=" Defederate (R) ">
+<input type=submit name=gu value=" Defederate (S) ">
+
+MGMT_FOOTER=<div class=zxbot><a class=zx href="http://zxid.org/">zxid.org</a>, 
+MGMT_END=</div>
+</textarea><pre>
+DBG=
+REQUIRED_AUTHN_CTX=
+
+NEED=
+  attrs(idpnid,affid,role)
+    usage(undisclosed,log)
+    retent(400000)
+    oblig()
+    ext()
+WANT=
+  attrs(*,authnctxlevel,sesid,setcookie,cookie,rs,cn)
+    usage(undisclosed,log)
+    retent(400000)
+    oblig()
+    ext()
+ATTRSRC=
+
+INMAP=
+
+OUTMAP=
+
+PEPMAP=
+  rule=0$ ns(env)$ src(*)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(idpnid)$ dst(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ ext();
+  rule=0$ ns(subj)$ src(role)$ dst()$ ext();
+  rule=0$ ns(rsrc)$ src(rs)$ dst(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ ext();
+  rule=0$ ns(act)$ src(Action)$ dst(urn:oasis:names:tc:xacml:1.0:action:action-id)$ ext();
+  rule=0$ ns(env)$ src(ZXID_PEPvers)$ dst()$ ext();
+  rule=1$ ns()$ src(cookie)$ dst()$ ext();
+  rule=1$ ns()$ src(setcookie)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(eduPersonEntitlement)$ dst(role)$ ext();
+  rule=0$ ns(subj)$ src(eduPersonEntitlement)$ dst(role)$ ext()
+PEPMAP_RQOUT=
+  rule=0$ ns(env)$ src(*)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(idpnid)$ dst(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ ext();
+  rule=0$ ns(subj)$ src(role)$ dst()$ ext();
+  rule=0$ ns(rsrc)$ src(rs)$ dst(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ ext();
+  rule=0$ ns(act)$ src(Action)$ dst(urn:oasis:names:tc:xacml:1.0:action:action-id)$ ext();
+  rule=0$ ns(env)$ src(ZXID_PEPvers)$ dst()$ ext();
+  rule=1$ ns()$ src(cookie)$ dst()$ ext();
+  rule=1$ ns()$ src(setcookie)$ dst()$ ext()
+PEPMAP_RQIN=
+  rule=0$ ns(env)$ src(*)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(idpnid)$ dst(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ ext();
+  rule=0$ ns(subj)$ src(role)$ dst()$ ext();
+  rule=0$ ns(rsrc)$ src(rs)$ dst(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ ext();
+  rule=0$ ns(act)$ src(Action)$ dst(urn:oasis:names:tc:xacml:1.0:action:action-id)$ ext();
+  rule=0$ ns(env)$ src(ZXID_PEPvers)$ dst()$ ext();
+  rule=1$ ns()$ src(cookie)$ dst()$ ext();
+  rule=1$ ns()$ src(setcookie)$ dst()$ ext()
+PEPMAP_RSOUT=
+  rule=0$ ns(env)$ src(*)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(idpnid)$ dst(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ ext();
+  rule=0$ ns(subj)$ src(role)$ dst()$ ext();
+  rule=0$ ns(rsrc)$ src(rs)$ dst(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ ext();
+  rule=0$ ns(act)$ src(Action)$ dst(urn:oasis:names:tc:xacml:1.0:action:action-id)$ ext();
+  rule=0$ ns(env)$ src(ZXID_PEPvers)$ dst()$ ext();
+  rule=1$ ns()$ src(cookie)$ dst()$ ext();
+  rule=1$ ns()$ src(setcookie)$ dst()$ ext()
+PEPMAP_RSIN=
+  rule=0$ ns(env)$ src(*)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(idpnid)$ dst(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ ext();
+  rule=0$ ns(subj)$ src(role)$ dst()$ ext();
+  rule=0$ ns(rsrc)$ src(rs)$ dst(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ ext();
+  rule=0$ ns(act)$ src(Action)$ dst(urn:oasis:names:tc:xacml:1.0:action:action-id)$ ext();
+  rule=0$ ns(env)$ src(ZXID_PEPvers)$ dst()$ ext();
+  rule=1$ ns()$ src(cookie)$ dst()$ ext();
+  rule=1$ ns()$ src(setcookie)$ dst()$ ext()
+LOCALPDP_ROLE_PERMIT=
+
+LOCALPDP_ROLE_DENY=
+  local_deny
+LOCALPDP_IDPNID_PERMIT=
+
+LOCALPDP_IDPNID_DENY=
+  denynid
+WSC_LOCALPDP_OBL_PLEDGE=urn:tas3:sol1:use=urn:tas3:sol1:use:forpurpose&urn:tas3:sol1:retention=3600
+WSP_LOCALPDP_OBL_REQ=
+WSP_LOCALPDP_OBL_EMIT=urn:tas3:sol1:use=urn:tas3:sol1:use:serveranon&urn:tas3:sol1:delon=1371919457
+WSC_LOCALPDP_OBL_ACCEPT=
+</pre>

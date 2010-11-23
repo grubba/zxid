@@ -31,9 +31,10 @@ struct zx_shibmd_KeyAuthority_s {
   struct zx_attr_s* VerifyDepth;	/* {0,1} attribute xs:unsignedByte */
 };
 
+#define zx_NEW_shibmd_KeyAuthority(c, father) (struct zx_shibmd_KeyAuthority_s*)zx_new_elem((c),(father),zx_shibmd_KeyAuthority_ELEM)
+
 int zx_DEC_ATTR_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x);
 int zx_DEC_ELEM_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x);
-struct zx_shibmd_KeyAuthority_s* zx_NEW_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x);
 char* zx_ENC_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x);
@@ -79,9 +80,10 @@ struct zx_shibmd_Scope_s {
   struct zx_attr_s* regexp;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_shibmd_Scope(c, father) (struct zx_shibmd_Scope_s*)zx_new_elem((c),(father),zx_shibmd_Scope_ELEM)
+
 int zx_DEC_ATTR_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x);
 int zx_DEC_ELEM_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x);
-struct zx_shibmd_Scope_s* zx_NEW_shibmd_Scope(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x);
 char* zx_ENC_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x);

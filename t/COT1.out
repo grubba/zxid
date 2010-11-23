@@ -3,7 +3,7 @@
 /var/zxid/cot/crE4cE1_K3Vd5oQkgDxi_vD6GNE https://idp.tas3.kent.ac.uk/idp/shibboleth         -
 /var/zxid/cot/RoxLhhcxK04xzJRrW6ZuroX7Ing http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B     -
 /var/zxid/cot/xsKJr3DL7sUPDdbdqgC2H_eP-UM http://idp.tas3.pt:8081/zxididp                    TAS3 Demo IdP
-/var/zxid/cot/9u_7LsQjkz0VaXKucmx1_sYjQnM http://sp.tas3.pt:8080/zxidservlet/sso?o=B         -
+/var/zxid/cot/9u_7LsQjkz0VaXKucmx1_sYjQnM http://sp.tas3.pt:8080/zxidservlet/sso?o=B         TAS3 App Demo SP and WSC
 /var/zxid/cot/xOjD65W1OVltx35kfHMs7ZLD9Sg https://idp.tas3.eu/zxididp?o=B                    -
 /var/zxid/cot/JiB-7CyH0JYURjZj3slF2sl7CO4 https://idp.kantarainitiative.org/simplesaml/saml2/idp/metadata.php -
 /var/zxid/cot/HP5IP9fE_HtNMNuTisquh7oNqg4 http://idp.tas3.pt:8081/zxididp                    TAS3 Demo IdP

@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_b12_Consent_s
 #define EL_NS     b12
 #define EL_TAG    Consent
-
-/* FUNC(zx_NEW_b12_Consent) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b12_Consent_s* zx_NEW_b12_Consent(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b12_Consent_s* x = ZX_ZALLOC(c, struct zx_b12_Consent_s);
-  x->gg.g.tok = zx_b12_Consent_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -170,22 +155,6 @@ int zx_WALK_WO_b12_Consent(struct zx_ctx* c, struct zx_b12_Consent_s* x, void* c
 #define EL_STRUCT zx_b12_Correlation_s
 #define EL_NS     b12
 #define EL_TAG    Correlation
-
-/* FUNC(zx_NEW_b12_Correlation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b12_Correlation_s* zx_NEW_b12_Correlation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b12_Correlation_s* x = ZX_ZALLOC(c, struct zx_b12_Correlation_s);
-  x->gg.g.tok = zx_b12_Correlation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -296,22 +265,6 @@ int zx_WALK_WO_b12_Correlation(struct zx_ctx* c, struct zx_b12_Correlation_s* x,
 #define EL_NS     b12
 #define EL_TAG    ProcessingContext
 
-/* FUNC(zx_NEW_b12_ProcessingContext) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b12_ProcessingContext_s* zx_NEW_b12_ProcessingContext(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b12_ProcessingContext_s* x = ZX_ZALLOC(c, struct zx_b12_ProcessingContext_s);
-  x->gg.g.tok = zx_b12_ProcessingContext_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_b12_ProcessingContext) */
@@ -414,22 +367,6 @@ int zx_WALK_WO_b12_ProcessingContext(struct zx_ctx* c, struct zx_b12_ProcessingC
 #define EL_STRUCT zx_b12_Provider_s
 #define EL_NS     b12
 #define EL_TAG    Provider
-
-/* FUNC(zx_NEW_b12_Provider) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b12_Provider_s* zx_NEW_b12_Provider(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b12_Provider_s* x = ZX_ZALLOC(c, struct zx_b12_Provider_s);
-  x->gg.g.tok = zx_b12_Provider_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -537,22 +474,6 @@ int zx_WALK_WO_b12_Provider(struct zx_ctx* c, struct zx_b12_Provider_s* x, void*
 #define EL_STRUCT zx_b12_UsageDirective_s
 #define EL_NS     b12
 #define EL_TAG    UsageDirective
-
-/* FUNC(zx_NEW_b12_UsageDirective) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b12_UsageDirective_s* zx_NEW_b12_UsageDirective(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b12_UsageDirective_s* x = ZX_ZALLOC(c, struct zx_b12_UsageDirective_s);
-  x->gg.g.tok = zx_b12_UsageDirective_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

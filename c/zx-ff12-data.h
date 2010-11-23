@@ -47,9 +47,10 @@ struct zx_ff12_Assertion_s {
   struct zx_attr_s* MinorVersion;	/* {1,1} attribute xs:integer */
 };
 
+#define zx_NEW_ff12_Assertion(c, father) (struct zx_ff12_Assertion_s*)zx_new_elem((c),(father),zx_ff12_Assertion_ELEM)
+
 int zx_DEC_ATTR_ff12_Assertion(struct zx_ctx* c, struct zx_ff12_Assertion_s* x);
 int zx_DEC_ELEM_ff12_Assertion(struct zx_ctx* c, struct zx_ff12_Assertion_s* x);
-struct zx_ff12_Assertion_s* zx_NEW_ff12_Assertion(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_Assertion(struct zx_ctx* c, struct zx_ff12_Assertion_s* x);
 char* zx_ENC_SO_ff12_Assertion(struct zx_ctx* c, struct zx_ff12_Assertion_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_Assertion(struct zx_ctx* c, struct zx_ff12_Assertion_s* x);
@@ -200,9 +201,10 @@ struct zx_ff12_AuthenticationStatement_s {
   struct zx_attr_s* SessionIndex;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_ff12_AuthenticationStatement(c, father) (struct zx_ff12_AuthenticationStatement_s*)zx_new_elem((c),(father),zx_ff12_AuthenticationStatement_ELEM)
+
 int zx_DEC_ATTR_ff12_AuthenticationStatement(struct zx_ctx* c, struct zx_ff12_AuthenticationStatement_s* x);
 int zx_DEC_ELEM_ff12_AuthenticationStatement(struct zx_ctx* c, struct zx_ff12_AuthenticationStatement_s* x);
-struct zx_ff12_AuthenticationStatement_s* zx_NEW_ff12_AuthenticationStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_AuthenticationStatement(struct zx_ctx* c, struct zx_ff12_AuthenticationStatement_s* x);
 char* zx_ENC_SO_ff12_AuthenticationStatement(struct zx_ctx* c, struct zx_ff12_AuthenticationStatement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_AuthenticationStatement(struct zx_ctx* c, struct zx_ff12_AuthenticationStatement_s* x);
@@ -280,9 +282,10 @@ struct zx_ff12_AuthnContext_s {
   struct zx_elem_s* AuthnContextStatementRef;	/* {0,1} xs:anyURI */
 };
 
+#define zx_NEW_ff12_AuthnContext(c, father) (struct zx_ff12_AuthnContext_s*)zx_new_elem((c),(father),zx_ff12_AuthnContext_ELEM)
+
 int zx_DEC_ATTR_ff12_AuthnContext(struct zx_ctx* c, struct zx_ff12_AuthnContext_s* x);
 int zx_DEC_ELEM_ff12_AuthnContext(struct zx_ctx* c, struct zx_ff12_AuthnContext_s* x);
-struct zx_ff12_AuthnContext_s* zx_NEW_ff12_AuthnContext(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_AuthnContext(struct zx_ctx* c, struct zx_ff12_AuthnContext_s* x);
 char* zx_ENC_SO_ff12_AuthnContext(struct zx_ctx* c, struct zx_ff12_AuthnContext_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_AuthnContext(struct zx_ctx* c, struct zx_ff12_AuthnContext_s* x);
@@ -359,9 +362,10 @@ struct zx_ff12_AuthnRequest_s {
   struct zx_attr_s* consent;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_ff12_AuthnRequest(c, father) (struct zx_ff12_AuthnRequest_s*)zx_new_elem((c),(father),zx_ff12_AuthnRequest_ELEM)
+
 int zx_DEC_ATTR_ff12_AuthnRequest(struct zx_ctx* c, struct zx_ff12_AuthnRequest_s* x);
 int zx_DEC_ELEM_ff12_AuthnRequest(struct zx_ctx* c, struct zx_ff12_AuthnRequest_s* x);
-struct zx_ff12_AuthnRequest_s* zx_NEW_ff12_AuthnRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_AuthnRequest(struct zx_ctx* c, struct zx_ff12_AuthnRequest_s* x);
 char* zx_ENC_SO_ff12_AuthnRequest(struct zx_ctx* c, struct zx_ff12_AuthnRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_AuthnRequest(struct zx_ctx* c, struct zx_ff12_AuthnRequest_s* x);
@@ -517,9 +521,10 @@ struct zx_ff12_AuthnRequestEnvelope_s {
   struct zx_elem_s* IsPassive;	/* {0,1} xs:boolean */
 };
 
+#define zx_NEW_ff12_AuthnRequestEnvelope(c, father) (struct zx_ff12_AuthnRequestEnvelope_s*)zx_new_elem((c),(father),zx_ff12_AuthnRequestEnvelope_ELEM)
+
 int zx_DEC_ATTR_ff12_AuthnRequestEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnRequestEnvelope_s* x);
 int zx_DEC_ELEM_ff12_AuthnRequestEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnRequestEnvelope_s* x);
-struct zx_ff12_AuthnRequestEnvelope_s* zx_NEW_ff12_AuthnRequestEnvelope(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_AuthnRequestEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnRequestEnvelope_s* x);
 char* zx_ENC_SO_ff12_AuthnRequestEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnRequestEnvelope_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_AuthnRequestEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnRequestEnvelope_s* x);
@@ -623,9 +628,10 @@ struct zx_ff12_AuthnResponse_s {
   struct zx_attr_s* consent;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_ff12_AuthnResponse(c, father) (struct zx_ff12_AuthnResponse_s*)zx_new_elem((c),(father),zx_ff12_AuthnResponse_ELEM)
+
 int zx_DEC_ATTR_ff12_AuthnResponse(struct zx_ctx* c, struct zx_ff12_AuthnResponse_s* x);
 int zx_DEC_ELEM_ff12_AuthnResponse(struct zx_ctx* c, struct zx_ff12_AuthnResponse_s* x);
-struct zx_ff12_AuthnResponse_s* zx_NEW_ff12_AuthnResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_AuthnResponse(struct zx_ctx* c, struct zx_ff12_AuthnResponse_s* x);
 char* zx_ENC_SO_ff12_AuthnResponse(struct zx_ctx* c, struct zx_ff12_AuthnResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_AuthnResponse(struct zx_ctx* c, struct zx_ff12_AuthnResponse_s* x);
@@ -725,9 +731,10 @@ struct zx_ff12_AuthnResponseEnvelope_s {
   struct zx_elem_s* AssertionConsumerServiceURL;	/* {1,1} xs:anyURI */
 };
 
+#define zx_NEW_ff12_AuthnResponseEnvelope(c, father) (struct zx_ff12_AuthnResponseEnvelope_s*)zx_new_elem((c),(father),zx_ff12_AuthnResponseEnvelope_ELEM)
+
 int zx_DEC_ATTR_ff12_AuthnResponseEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnResponseEnvelope_s* x);
 int zx_DEC_ELEM_ff12_AuthnResponseEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnResponseEnvelope_s* x);
-struct zx_ff12_AuthnResponseEnvelope_s* zx_NEW_ff12_AuthnResponseEnvelope(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_AuthnResponseEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnResponseEnvelope_s* x);
 char* zx_ENC_SO_ff12_AuthnResponseEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnResponseEnvelope_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_AuthnResponseEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnResponseEnvelope_s* x);
@@ -790,9 +797,10 @@ struct zx_ff12_EncryptableNameIdentifier_s {
   struct zx_attr_s* Nonce;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_ff12_EncryptableNameIdentifier(c, father) (struct zx_ff12_EncryptableNameIdentifier_s*)zx_new_elem((c),(father),zx_ff12_EncryptableNameIdentifier_ELEM)
+
 int zx_DEC_ATTR_ff12_EncryptableNameIdentifier(struct zx_ctx* c, struct zx_ff12_EncryptableNameIdentifier_s* x);
 int zx_DEC_ELEM_ff12_EncryptableNameIdentifier(struct zx_ctx* c, struct zx_ff12_EncryptableNameIdentifier_s* x);
-struct zx_ff12_EncryptableNameIdentifier_s* zx_NEW_ff12_EncryptableNameIdentifier(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_EncryptableNameIdentifier(struct zx_ctx* c, struct zx_ff12_EncryptableNameIdentifier_s* x);
 char* zx_ENC_SO_ff12_EncryptableNameIdentifier(struct zx_ctx* c, struct zx_ff12_EncryptableNameIdentifier_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_EncryptableNameIdentifier(struct zx_ctx* c, struct zx_ff12_EncryptableNameIdentifier_s* x);
@@ -837,9 +845,10 @@ struct zx_ff12_EncryptedNameIdentifier_s {
   struct zx_xenc_EncryptedKey_s* EncryptedKey;	/* {0,1} nada */
 };
 
+#define zx_NEW_ff12_EncryptedNameIdentifier(c, father) (struct zx_ff12_EncryptedNameIdentifier_s*)zx_new_elem((c),(father),zx_ff12_EncryptedNameIdentifier_ELEM)
+
 int zx_DEC_ATTR_ff12_EncryptedNameIdentifier(struct zx_ctx* c, struct zx_ff12_EncryptedNameIdentifier_s* x);
 int zx_DEC_ELEM_ff12_EncryptedNameIdentifier(struct zx_ctx* c, struct zx_ff12_EncryptedNameIdentifier_s* x);
-struct zx_ff12_EncryptedNameIdentifier_s* zx_NEW_ff12_EncryptedNameIdentifier(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_EncryptedNameIdentifier(struct zx_ctx* c, struct zx_ff12_EncryptedNameIdentifier_s* x);
 char* zx_ENC_SO_ff12_EncryptedNameIdentifier(struct zx_ctx* c, struct zx_ff12_EncryptedNameIdentifier_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_EncryptedNameIdentifier(struct zx_ctx* c, struct zx_ff12_EncryptedNameIdentifier_s* x);
@@ -890,9 +899,10 @@ struct zx_ff12_Extension_s {
   zx_ff12_Extension_EXT
 };
 
+#define zx_NEW_ff12_Extension(c, father) (struct zx_ff12_Extension_s*)zx_new_elem((c),(father),zx_ff12_Extension_ELEM)
+
 int zx_DEC_ATTR_ff12_Extension(struct zx_ctx* c, struct zx_ff12_Extension_s* x);
 int zx_DEC_ELEM_ff12_Extension(struct zx_ctx* c, struct zx_ff12_Extension_s* x);
-struct zx_ff12_Extension_s* zx_NEW_ff12_Extension(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_Extension(struct zx_ctx* c, struct zx_ff12_Extension_s* x);
 char* zx_ENC_SO_ff12_Extension(struct zx_ctx* c, struct zx_ff12_Extension_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_Extension(struct zx_ctx* c, struct zx_ff12_Extension_s* x);
@@ -937,9 +947,10 @@ struct zx_ff12_FederationTerminationNotification_s {
   struct zx_attr_s* consent;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_ff12_FederationTerminationNotification(c, father) (struct zx_ff12_FederationTerminationNotification_s*)zx_new_elem((c),(father),zx_ff12_FederationTerminationNotification_ELEM)
+
 int zx_DEC_ATTR_ff12_FederationTerminationNotification(struct zx_ctx* c, struct zx_ff12_FederationTerminationNotification_s* x);
 int zx_DEC_ELEM_ff12_FederationTerminationNotification(struct zx_ctx* c, struct zx_ff12_FederationTerminationNotification_s* x);
-struct zx_ff12_FederationTerminationNotification_s* zx_NEW_ff12_FederationTerminationNotification(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_FederationTerminationNotification(struct zx_ctx* c, struct zx_ff12_FederationTerminationNotification_s* x);
 char* zx_ENC_SO_ff12_FederationTerminationNotification(struct zx_ctx* c, struct zx_ff12_FederationTerminationNotification_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_FederationTerminationNotification(struct zx_ctx* c, struct zx_ff12_FederationTerminationNotification_s* x);
@@ -1025,9 +1036,10 @@ struct zx_ff12_IDPEntries_s {
   struct zx_ff12_IDPEntry_s* IDPEntry;	/* {1,-1} nada */
 };
 
+#define zx_NEW_ff12_IDPEntries(c, father) (struct zx_ff12_IDPEntries_s*)zx_new_elem((c),(father),zx_ff12_IDPEntries_ELEM)
+
 int zx_DEC_ATTR_ff12_IDPEntries(struct zx_ctx* c, struct zx_ff12_IDPEntries_s* x);
 int zx_DEC_ELEM_ff12_IDPEntries(struct zx_ctx* c, struct zx_ff12_IDPEntries_s* x);
-struct zx_ff12_IDPEntries_s* zx_NEW_ff12_IDPEntries(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_IDPEntries(struct zx_ctx* c, struct zx_ff12_IDPEntries_s* x);
 char* zx_ENC_SO_ff12_IDPEntries(struct zx_ctx* c, struct zx_ff12_IDPEntries_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_IDPEntries(struct zx_ctx* c, struct zx_ff12_IDPEntries_s* x);
@@ -1073,9 +1085,10 @@ struct zx_ff12_IDPEntry_s {
   struct zx_elem_s* Loc;	/* {1,1} xs:anyURI */
 };
 
+#define zx_NEW_ff12_IDPEntry(c, father) (struct zx_ff12_IDPEntry_s*)zx_new_elem((c),(father),zx_ff12_IDPEntry_ELEM)
+
 int zx_DEC_ATTR_ff12_IDPEntry(struct zx_ctx* c, struct zx_ff12_IDPEntry_s* x);
 int zx_DEC_ELEM_ff12_IDPEntry(struct zx_ctx* c, struct zx_ff12_IDPEntry_s* x);
-struct zx_ff12_IDPEntry_s* zx_NEW_ff12_IDPEntry(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_IDPEntry(struct zx_ctx* c, struct zx_ff12_IDPEntry_s* x);
 char* zx_ENC_SO_ff12_IDPEntry(struct zx_ctx* c, struct zx_ff12_IDPEntry_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_IDPEntry(struct zx_ctx* c, struct zx_ff12_IDPEntry_s* x);
@@ -1136,9 +1149,10 @@ struct zx_ff12_IDPList_s {
   struct zx_elem_s* GetComplete;	/* {0,1} xs:anyURI */
 };
 
+#define zx_NEW_ff12_IDPList(c, father) (struct zx_ff12_IDPList_s*)zx_new_elem((c),(father),zx_ff12_IDPList_ELEM)
+
 int zx_DEC_ATTR_ff12_IDPList(struct zx_ctx* c, struct zx_ff12_IDPList_s* x);
 int zx_DEC_ELEM_ff12_IDPList(struct zx_ctx* c, struct zx_ff12_IDPList_s* x);
-struct zx_ff12_IDPList_s* zx_NEW_ff12_IDPList(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_IDPList(struct zx_ctx* c, struct zx_ff12_IDPList_s* x);
 char* zx_ENC_SO_ff12_IDPList(struct zx_ctx* c, struct zx_ff12_IDPList_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_IDPList(struct zx_ctx* c, struct zx_ff12_IDPList_s* x);
@@ -1191,9 +1205,10 @@ struct zx_ff12_IDPProvidedNameIdentifier_s {
   struct zx_attr_s* NameQualifier;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_ff12_IDPProvidedNameIdentifier(c, father) (struct zx_ff12_IDPProvidedNameIdentifier_s*)zx_new_elem((c),(father),zx_ff12_IDPProvidedNameIdentifier_ELEM)
+
 int zx_DEC_ATTR_ff12_IDPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_IDPProvidedNameIdentifier_s* x);
 int zx_DEC_ELEM_ff12_IDPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_IDPProvidedNameIdentifier_s* x);
-struct zx_ff12_IDPProvidedNameIdentifier_s* zx_NEW_ff12_IDPProvidedNameIdentifier(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_IDPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_IDPProvidedNameIdentifier_s* x);
 char* zx_ENC_SO_ff12_IDPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_IDPProvidedNameIdentifier_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_IDPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_IDPProvidedNameIdentifier_s* x);
@@ -1245,9 +1260,10 @@ struct zx_ff12_LogoutRequest_s {
   struct zx_attr_s* consent;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_ff12_LogoutRequest(c, father) (struct zx_ff12_LogoutRequest_s*)zx_new_elem((c),(father),zx_ff12_LogoutRequest_ELEM)
+
 int zx_DEC_ATTR_ff12_LogoutRequest(struct zx_ctx* c, struct zx_ff12_LogoutRequest_s* x);
 int zx_DEC_ELEM_ff12_LogoutRequest(struct zx_ctx* c, struct zx_ff12_LogoutRequest_s* x);
-struct zx_ff12_LogoutRequest_s* zx_NEW_ff12_LogoutRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_LogoutRequest(struct zx_ctx* c, struct zx_ff12_LogoutRequest_s* x);
 char* zx_ENC_SO_ff12_LogoutRequest(struct zx_ctx* c, struct zx_ff12_LogoutRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_LogoutRequest(struct zx_ctx* c, struct zx_ff12_LogoutRequest_s* x);
@@ -1361,9 +1377,10 @@ struct zx_ff12_LogoutResponse_s {
   struct zx_attr_s* ResponseID;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ff12_LogoutResponse(c, father) (struct zx_ff12_LogoutResponse_s*)zx_new_elem((c),(father),zx_ff12_LogoutResponse_ELEM)
+
 int zx_DEC_ATTR_ff12_LogoutResponse(struct zx_ctx* c, struct zx_ff12_LogoutResponse_s* x);
 int zx_DEC_ELEM_ff12_LogoutResponse(struct zx_ctx* c, struct zx_ff12_LogoutResponse_s* x);
-struct zx_ff12_LogoutResponse_s* zx_NEW_ff12_LogoutResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_LogoutResponse(struct zx_ctx* c, struct zx_ff12_LogoutResponse_s* x);
 char* zx_ENC_SO_ff12_LogoutResponse(struct zx_ctx* c, struct zx_ff12_LogoutResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_LogoutResponse(struct zx_ctx* c, struct zx_ff12_LogoutResponse_s* x);
@@ -1461,9 +1478,10 @@ struct zx_ff12_NameIdentifierMappingRequest_s {
   struct zx_attr_s* consent;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_ff12_NameIdentifierMappingRequest(c, father) (struct zx_ff12_NameIdentifierMappingRequest_s*)zx_new_elem((c),(father),zx_ff12_NameIdentifierMappingRequest_ELEM)
+
 int zx_DEC_ATTR_ff12_NameIdentifierMappingRequest(struct zx_ctx* c, struct zx_ff12_NameIdentifierMappingRequest_s* x);
 int zx_DEC_ELEM_ff12_NameIdentifierMappingRequest(struct zx_ctx* c, struct zx_ff12_NameIdentifierMappingRequest_s* x);
-struct zx_ff12_NameIdentifierMappingRequest_s* zx_NEW_ff12_NameIdentifierMappingRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_NameIdentifierMappingRequest(struct zx_ctx* c, struct zx_ff12_NameIdentifierMappingRequest_s* x);
 char* zx_ENC_SO_ff12_NameIdentifierMappingRequest(struct zx_ctx* c, struct zx_ff12_NameIdentifierMappingRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_NameIdentifierMappingRequest(struct zx_ctx* c, struct zx_ff12_NameIdentifierMappingRequest_s* x);
@@ -1567,9 +1585,10 @@ struct zx_ff12_NameIdentifierMappingResponse_s {
   struct zx_attr_s* ResponseID;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ff12_NameIdentifierMappingResponse(c, father) (struct zx_ff12_NameIdentifierMappingResponse_s*)zx_new_elem((c),(father),zx_ff12_NameIdentifierMappingResponse_ELEM)
+
 int zx_DEC_ATTR_ff12_NameIdentifierMappingResponse(struct zx_ctx* c, struct zx_ff12_NameIdentifierMappingResponse_s* x);
 int zx_DEC_ELEM_ff12_NameIdentifierMappingResponse(struct zx_ctx* c, struct zx_ff12_NameIdentifierMappingResponse_s* x);
-struct zx_ff12_NameIdentifierMappingResponse_s* zx_NEW_ff12_NameIdentifierMappingResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_NameIdentifierMappingResponse(struct zx_ctx* c, struct zx_ff12_NameIdentifierMappingResponse_s* x);
 char* zx_ENC_SO_ff12_NameIdentifierMappingResponse(struct zx_ctx* c, struct zx_ff12_NameIdentifierMappingResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_NameIdentifierMappingResponse(struct zx_ctx* c, struct zx_ff12_NameIdentifierMappingResponse_s* x);
@@ -1658,9 +1677,10 @@ struct zx_ff12_OldProvidedNameIdentifier_s {
   struct zx_attr_s* NameQualifier;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_ff12_OldProvidedNameIdentifier(c, father) (struct zx_ff12_OldProvidedNameIdentifier_s*)zx_new_elem((c),(father),zx_ff12_OldProvidedNameIdentifier_ELEM)
+
 int zx_DEC_ATTR_ff12_OldProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_OldProvidedNameIdentifier_s* x);
 int zx_DEC_ELEM_ff12_OldProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_OldProvidedNameIdentifier_s* x);
-struct zx_ff12_OldProvidedNameIdentifier_s* zx_NEW_ff12_OldProvidedNameIdentifier(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_OldProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_OldProvidedNameIdentifier_s* x);
 char* zx_ENC_SO_ff12_OldProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_OldProvidedNameIdentifier_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_OldProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_OldProvidedNameIdentifier_s* x);
@@ -1711,9 +1731,10 @@ struct zx_ff12_RegisterNameIdentifierRequest_s {
   struct zx_attr_s* RequestID;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ff12_RegisterNameIdentifierRequest(c, father) (struct zx_ff12_RegisterNameIdentifierRequest_s*)zx_new_elem((c),(father),zx_ff12_RegisterNameIdentifierRequest_ELEM)
+
 int zx_DEC_ATTR_ff12_RegisterNameIdentifierRequest(struct zx_ctx* c, struct zx_ff12_RegisterNameIdentifierRequest_s* x);
 int zx_DEC_ELEM_ff12_RegisterNameIdentifierRequest(struct zx_ctx* c, struct zx_ff12_RegisterNameIdentifierRequest_s* x);
-struct zx_ff12_RegisterNameIdentifierRequest_s* zx_NEW_ff12_RegisterNameIdentifierRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_RegisterNameIdentifierRequest(struct zx_ctx* c, struct zx_ff12_RegisterNameIdentifierRequest_s* x);
 char* zx_ENC_SO_ff12_RegisterNameIdentifierRequest(struct zx_ctx* c, struct zx_ff12_RegisterNameIdentifierRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_RegisterNameIdentifierRequest(struct zx_ctx* c, struct zx_ff12_RegisterNameIdentifierRequest_s* x);
@@ -1831,9 +1852,10 @@ struct zx_ff12_RegisterNameIdentifierResponse_s {
   struct zx_attr_s* ResponseID;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ff12_RegisterNameIdentifierResponse(c, father) (struct zx_ff12_RegisterNameIdentifierResponse_s*)zx_new_elem((c),(father),zx_ff12_RegisterNameIdentifierResponse_ELEM)
+
 int zx_DEC_ATTR_ff12_RegisterNameIdentifierResponse(struct zx_ctx* c, struct zx_ff12_RegisterNameIdentifierResponse_s* x);
 int zx_DEC_ELEM_ff12_RegisterNameIdentifierResponse(struct zx_ctx* c, struct zx_ff12_RegisterNameIdentifierResponse_s* x);
-struct zx_ff12_RegisterNameIdentifierResponse_s* zx_NEW_ff12_RegisterNameIdentifierResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_RegisterNameIdentifierResponse(struct zx_ctx* c, struct zx_ff12_RegisterNameIdentifierResponse_s* x);
 char* zx_ENC_SO_ff12_RegisterNameIdentifierResponse(struct zx_ctx* c, struct zx_ff12_RegisterNameIdentifierResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_RegisterNameIdentifierResponse(struct zx_ctx* c, struct zx_ff12_RegisterNameIdentifierResponse_s* x);
@@ -1923,9 +1945,10 @@ struct zx_ff12_RequestAuthnContext_s {
   struct zx_elem_s* AuthnContextComparison;	/* {0,1} exact */
 };
 
+#define zx_NEW_ff12_RequestAuthnContext(c, father) (struct zx_ff12_RequestAuthnContext_s*)zx_new_elem((c),(father),zx_ff12_RequestAuthnContext_ELEM)
+
 int zx_DEC_ATTR_ff12_RequestAuthnContext(struct zx_ctx* c, struct zx_ff12_RequestAuthnContext_s* x);
 int zx_DEC_ELEM_ff12_RequestAuthnContext(struct zx_ctx* c, struct zx_ff12_RequestAuthnContext_s* x);
-struct zx_ff12_RequestAuthnContext_s* zx_NEW_ff12_RequestAuthnContext(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_RequestAuthnContext(struct zx_ctx* c, struct zx_ff12_RequestAuthnContext_s* x);
 char* zx_ENC_SO_ff12_RequestAuthnContext(struct zx_ctx* c, struct zx_ff12_RequestAuthnContext_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_RequestAuthnContext(struct zx_ctx* c, struct zx_ff12_RequestAuthnContext_s* x);
@@ -1986,9 +2009,10 @@ struct zx_ff12_SPProvidedNameIdentifier_s {
   struct zx_attr_s* NameQualifier;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_ff12_SPProvidedNameIdentifier(c, father) (struct zx_ff12_SPProvidedNameIdentifier_s*)zx_new_elem((c),(father),zx_ff12_SPProvidedNameIdentifier_ELEM)
+
 int zx_DEC_ATTR_ff12_SPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_SPProvidedNameIdentifier_s* x);
 int zx_DEC_ELEM_ff12_SPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_SPProvidedNameIdentifier_s* x);
-struct zx_ff12_SPProvidedNameIdentifier_s* zx_NEW_ff12_SPProvidedNameIdentifier(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_SPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_SPProvidedNameIdentifier_s* x);
 char* zx_ENC_SO_ff12_SPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_SPProvidedNameIdentifier_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_SPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_SPProvidedNameIdentifier_s* x);
@@ -2029,9 +2053,10 @@ struct zx_ff12_Scoping_s {
   struct zx_ff12_IDPList_s* IDPList;	/* {0,1} nada */
 };
 
+#define zx_NEW_ff12_Scoping(c, father) (struct zx_ff12_Scoping_s*)zx_new_elem((c),(father),zx_ff12_Scoping_ELEM)
+
 int zx_DEC_ATTR_ff12_Scoping(struct zx_ctx* c, struct zx_ff12_Scoping_s* x);
 int zx_DEC_ELEM_ff12_Scoping(struct zx_ctx* c, struct zx_ff12_Scoping_s* x);
-struct zx_ff12_Scoping_s* zx_NEW_ff12_Scoping(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_Scoping(struct zx_ctx* c, struct zx_ff12_Scoping_s* x);
 char* zx_ENC_SO_ff12_Scoping(struct zx_ctx* c, struct zx_ff12_Scoping_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_Scoping(struct zx_ctx* c, struct zx_ff12_Scoping_s* x);
@@ -2085,9 +2110,10 @@ struct zx_ff12_Subject_s {
   struct zx_ff12_IDPProvidedNameIdentifier_s* IDPProvidedNameIdentifier;	/* {0,1} nada */
 };
 
+#define zx_NEW_ff12_Subject(c, father) (struct zx_ff12_Subject_s*)zx_new_elem((c),(father),zx_ff12_Subject_ELEM)
+
 int zx_DEC_ATTR_ff12_Subject(struct zx_ctx* c, struct zx_ff12_Subject_s* x);
 int zx_DEC_ELEM_ff12_Subject(struct zx_ctx* c, struct zx_ff12_Subject_s* x);
-struct zx_ff12_Subject_s* zx_NEW_ff12_Subject(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ff12_Subject(struct zx_ctx* c, struct zx_ff12_Subject_s* x);
 char* zx_ENC_SO_ff12_Subject(struct zx_ctx* c, struct zx_ff12_Subject_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ff12_Subject(struct zx_ctx* c, struct zx_ff12_Subject_s* x);

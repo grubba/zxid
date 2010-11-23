@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_b_ApplicationEPR_s
 #define EL_NS     b
 #define EL_TAG    ApplicationEPR
-
-/* FUNC(zx_NEW_b_ApplicationEPR) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_ApplicationEPR_s* zx_NEW_b_ApplicationEPR(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_ApplicationEPR_s* x = ZX_ZALLOC(c, struct zx_b_ApplicationEPR_s);
-  x->gg.g.tok = zx_b_ApplicationEPR_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -236,22 +221,6 @@ int zx_WALK_WO_b_ApplicationEPR(struct zx_ctx* c, struct zx_b_ApplicationEPR_s* 
 #define EL_NS     b
 #define EL_TAG    Consent
 
-/* FUNC(zx_NEW_b_Consent) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_Consent_s* zx_NEW_b_Consent(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_Consent_s* x = ZX_ZALLOC(c, struct zx_b_Consent_s);
-  x->gg.g.tok = zx_b_Consent_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_b_Consent) */
@@ -360,22 +329,6 @@ int zx_WALK_WO_b_Consent(struct zx_ctx* c, struct zx_b_Consent_s* x, void* ctx, 
 #define EL_STRUCT zx_b_CredentialsContext_s
 #define EL_NS     b
 #define EL_TAG    CredentialsContext
-
-/* FUNC(zx_NEW_b_CredentialsContext) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_CredentialsContext_s* zx_NEW_b_CredentialsContext(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_CredentialsContext_s* x = ZX_ZALLOC(c, struct zx_b_CredentialsContext_s);
-  x->gg.g.tok = zx_b_CredentialsContext_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -507,22 +460,6 @@ int zx_WALK_WO_b_CredentialsContext(struct zx_ctx* c, struct zx_b_CredentialsCon
 #define EL_STRUCT zx_b_EndpointUpdate_s
 #define EL_NS     b
 #define EL_TAG    EndpointUpdate
-
-/* FUNC(zx_NEW_b_EndpointUpdate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_EndpointUpdate_s* zx_NEW_b_EndpointUpdate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_EndpointUpdate_s* x = ZX_ZALLOC(c, struct zx_b_EndpointUpdate_s);
-  x->gg.g.tok = zx_b_EndpointUpdate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -698,22 +635,6 @@ int zx_WALK_WO_b_EndpointUpdate(struct zx_ctx* c, struct zx_b_EndpointUpdate_s* 
 #define EL_NS     b
 #define EL_TAG    Framework
 
-/* FUNC(zx_NEW_b_Framework) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_Framework_s* zx_NEW_b_Framework(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_Framework_s* x = ZX_ZALLOC(c, struct zx_b_Framework_s);
-  x->gg.g.tok = zx_b_Framework_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_b_Framework) */
@@ -820,22 +741,6 @@ int zx_WALK_WO_b_Framework(struct zx_ctx* c, struct zx_b_Framework_s* x, void* c
 #define EL_STRUCT zx_b_InteractionService_s
 #define EL_NS     b
 #define EL_TAG    InteractionService
-
-/* FUNC(zx_NEW_b_InteractionService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_InteractionService_s* zx_NEW_b_InteractionService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_InteractionService_s* x = ZX_ZALLOC(c, struct zx_b_InteractionService_s);
-  x->gg.g.tok = zx_b_InteractionService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1009,22 +914,6 @@ int zx_WALK_WO_b_InteractionService(struct zx_ctx* c, struct zx_b_InteractionSer
 #define EL_NS     b
 #define EL_TAG    ProcessingContext
 
-/* FUNC(zx_NEW_b_ProcessingContext) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_ProcessingContext_s* zx_NEW_b_ProcessingContext(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_ProcessingContext_s* x = ZX_ZALLOC(c, struct zx_b_ProcessingContext_s);
-  x->gg.g.tok = zx_b_ProcessingContext_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_b_ProcessingContext) */
@@ -1129,22 +1018,6 @@ int zx_WALK_WO_b_ProcessingContext(struct zx_ctx* c, struct zx_b_ProcessingConte
 #define EL_STRUCT zx_b_RedirectRequest_s
 #define EL_NS     b
 #define EL_TAG    RedirectRequest
-
-/* FUNC(zx_NEW_b_RedirectRequest) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_RedirectRequest_s* zx_NEW_b_RedirectRequest(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_RedirectRequest_s* x = ZX_ZALLOC(c, struct zx_b_RedirectRequest_s);
-  x->gg.g.tok = zx_b_RedirectRequest_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1252,22 +1125,6 @@ int zx_WALK_WO_b_RedirectRequest(struct zx_ctx* c, struct zx_b_RedirectRequest_s
 #define EL_STRUCT zx_b_Sender_s
 #define EL_NS     b
 #define EL_TAG    Sender
-
-/* FUNC(zx_NEW_b_Sender) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_Sender_s* zx_NEW_b_Sender(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_Sender_s* x = ZX_ZALLOC(c, struct zx_b_Sender_s);
-  x->gg.g.tok = zx_b_Sender_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1377,22 +1234,6 @@ int zx_WALK_WO_b_Sender(struct zx_ctx* c, struct zx_b_Sender_s* x, void* ctx, in
 #define EL_STRUCT zx_b_TargetIdentity_s
 #define EL_NS     b
 #define EL_TAG    TargetIdentity
-
-/* FUNC(zx_NEW_b_TargetIdentity) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_TargetIdentity_s* zx_NEW_b_TargetIdentity(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_TargetIdentity_s* x = ZX_ZALLOC(c, struct zx_b_TargetIdentity_s);
-  x->gg.g.tok = zx_b_TargetIdentity_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1583,22 +1424,6 @@ int zx_WALK_WO_b_TargetIdentity(struct zx_ctx* c, struct zx_b_TargetIdentity_s* 
 #define EL_NS     b
 #define EL_TAG    Timeout
 
-/* FUNC(zx_NEW_b_Timeout) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_Timeout_s* zx_NEW_b_Timeout(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_Timeout_s* x = ZX_ZALLOC(c, struct zx_b_Timeout_s);
-  x->gg.g.tok = zx_b_Timeout_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_b_Timeout) */
@@ -1705,22 +1530,6 @@ int zx_WALK_WO_b_Timeout(struct zx_ctx* c, struct zx_b_Timeout_s* x, void* ctx, 
 #define EL_STRUCT zx_b_UsageDirective_s
 #define EL_NS     b
 #define EL_TAG    UsageDirective
-
-/* FUNC(zx_NEW_b_UsageDirective) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_UsageDirective_s* zx_NEW_b_UsageDirective(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_UsageDirective_s* x = ZX_ZALLOC(c, struct zx_b_UsageDirective_s);
-  x->gg.g.tok = zx_b_UsageDirective_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1870,22 +1679,6 @@ int zx_WALK_WO_b_UsageDirective(struct zx_ctx* c, struct zx_b_UsageDirective_s* 
 #define EL_STRUCT zx_b_UserInteraction_s
 #define EL_NS     b
 #define EL_TAG    UserInteraction
-
-/* FUNC(zx_NEW_b_UserInteraction) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_b_UserInteraction_s* zx_NEW_b_UserInteraction(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_b_UserInteraction_s* x = ZX_ZALLOC(c, struct zx_b_UserInteraction_s);
-  x->gg.g.tok = zx_b_UserInteraction_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

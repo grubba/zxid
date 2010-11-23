@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_idp_AssertionItem_s
 #define EL_NS     idp
 #define EL_TAG    AssertionItem
-
-/* FUNC(zx_NEW_idp_AssertionItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_AssertionItem_s* zx_NEW_idp_AssertionItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_AssertionItem_s* x = ZX_ZALLOC(c, struct zx_idp_AssertionItem_s);
-  x->gg.g.tok = zx_idp_AssertionItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -207,22 +192,6 @@ int zx_WALK_WO_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s
 #define EL_NS     idp
 #define EL_TAG    AuthnContextRestriction
 
-/* FUNC(zx_NEW_idp_AuthnContextRestriction) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_AuthnContextRestriction_s* zx_NEW_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_AuthnContextRestriction_s* x = ZX_ZALLOC(c, struct zx_idp_AuthnContextRestriction_s);
-  x->gg.g.tok = zx_idp_AuthnContextRestriction_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idp_AuthnContextRestriction) */
@@ -340,22 +309,6 @@ int zx_WALK_WO_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_Authn
 #define EL_STRUCT zx_idp_CreatedStatus_s
 #define EL_NS     idp
 #define EL_TAG    CreatedStatus
-
-/* FUNC(zx_NEW_idp_CreatedStatus) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_CreatedStatus_s* zx_NEW_idp_CreatedStatus(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_CreatedStatus_s* x = ZX_ZALLOC(c, struct zx_idp_CreatedStatus_s);
-  x->gg.g.tok = zx_idp_CreatedStatus_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -475,22 +428,6 @@ int zx_WALK_WO_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s
 #define EL_NS     idp
 #define EL_TAG    CreatedStatusItem
 
-/* FUNC(zx_NEW_idp_CreatedStatusItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_CreatedStatusItem_s* zx_NEW_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_CreatedStatusItem_s* x = ZX_ZALLOC(c, struct zx_idp_CreatedStatusItem_s);
-  x->gg.g.tok = zx_idp_CreatedStatusItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idp_CreatedStatusItem) */
@@ -593,22 +530,6 @@ int zx_WALK_WO_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStat
 #define EL_STRUCT zx_idp_CreatedStatusResponse_s
 #define EL_NS     idp
 #define EL_TAG    CreatedStatusResponse
-
-/* FUNC(zx_NEW_idp_CreatedStatusResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_CreatedStatusResponse_s* zx_NEW_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_CreatedStatusResponse_s* x = ZX_ZALLOC(c, struct zx_idp_CreatedStatusResponse_s);
-  x->gg.g.tok = zx_idp_CreatedStatusResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -727,22 +648,6 @@ int zx_WALK_WO_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_Created
 #define EL_STRUCT zx_idp_GetAssertion_s
 #define EL_NS     idp
 #define EL_TAG    GetAssertion
-
-/* FUNC(zx_NEW_idp_GetAssertion) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_GetAssertion_s* zx_NEW_idp_GetAssertion(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_GetAssertion_s* x = ZX_ZALLOC(c, struct zx_idp_GetAssertion_s);
-  x->gg.g.tok = zx_idp_GetAssertion_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -863,22 +768,6 @@ int zx_WALK_WO_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* 
 #define EL_STRUCT zx_idp_GetAssertionResponse_s
 #define EL_NS     idp
 #define EL_TAG    GetAssertionResponse
-
-/* FUNC(zx_NEW_idp_GetAssertionResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_GetAssertionResponse_s* zx_NEW_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_GetAssertionResponse_s* x = ZX_ZALLOC(c, struct zx_idp_GetAssertionResponse_s);
-  x->gg.g.tok = zx_idp_GetAssertionResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1019,22 +908,6 @@ int zx_WALK_WO_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAsser
 #define EL_NS     idp
 #define EL_TAG    GetAssertionResponseItem
 
-/* FUNC(zx_NEW_idp_GetAssertionResponseItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_GetAssertionResponseItem_s* zx_NEW_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_GetAssertionResponseItem_s* x = ZX_ZALLOC(c, struct zx_idp_GetAssertionResponseItem_s);
-  x->gg.g.tok = zx_idp_GetAssertionResponseItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idp_GetAssertionResponseItem) */
@@ -1157,22 +1030,6 @@ int zx_WALK_WO_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetA
 #define EL_NS     idp
 #define EL_TAG    GetProviderInfo
 
-/* FUNC(zx_NEW_idp_GetProviderInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_GetProviderInfo_s* zx_NEW_idp_GetProviderInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_GetProviderInfo_s* x = ZX_ZALLOC(c, struct zx_idp_GetProviderInfo_s);
-  x->gg.g.tok = zx_idp_GetProviderInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idp_GetProviderInfo) */
@@ -1276,22 +1133,6 @@ int zx_WALK_WO_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderIn
 #define EL_STRUCT zx_idp_GetProviderInfoResponse_s
 #define EL_NS     idp
 #define EL_TAG    GetProviderInfoResponse
-
-/* FUNC(zx_NEW_idp_GetProviderInfoResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_GetProviderInfoResponse_s* zx_NEW_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_GetProviderInfoResponse_s* x = ZX_ZALLOC(c, struct zx_idp_GetProviderInfoResponse_s);
-  x->gg.g.tok = zx_idp_GetProviderInfoResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1432,22 +1273,6 @@ int zx_WALK_WO_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetPr
 #define EL_NS     idp
 #define EL_TAG    MEDInfo
 
-/* FUNC(zx_NEW_idp_MEDInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_MEDInfo_s* zx_NEW_idp_MEDInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_MEDInfo_s* x = ZX_ZALLOC(c, struct zx_idp_MEDInfo_s);
-  x->gg.g.tok = zx_idp_MEDInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idp_MEDInfo) */
@@ -1587,22 +1412,6 @@ int zx_WALK_WO_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x, void* c
 #define EL_NS     idp
 #define EL_TAG    ProviderInfo
 
-/* FUNC(zx_NEW_idp_ProviderInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_ProviderInfo_s* zx_NEW_idp_ProviderInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_ProviderInfo_s* x = ZX_ZALLOC(c, struct zx_idp_ProviderInfo_s);
-  x->gg.g.tok = zx_idp_ProviderInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_idp_ProviderInfo) */
@@ -1703,22 +1512,6 @@ int zx_WALK_WO_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* 
 #define EL_STRUCT zx_idp_SubjectRestriction_s
 #define EL_NS     idp
 #define EL_TAG    SubjectRestriction
-
-/* FUNC(zx_NEW_idp_SubjectRestriction) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idp_SubjectRestriction_s* zx_NEW_idp_SubjectRestriction(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idp_SubjectRestriction_s* x = ZX_ZALLOC(c, struct zx_idp_SubjectRestriction_s);
-  x->gg.g.tok = zx_idp_SubjectRestriction_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

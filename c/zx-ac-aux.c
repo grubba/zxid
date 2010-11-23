@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_ac_ActivationLimit_s
 #define EL_NS     ac
 #define EL_TAG    ActivationLimit
-
-/* FUNC(zx_NEW_ac_ActivationLimit) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_ActivationLimit_s* zx_NEW_ac_ActivationLimit(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_ActivationLimit_s* x = ZX_ZALLOC(c, struct zx_ac_ActivationLimit_s);
-  x->gg.g.tok = zx_ac_ActivationLimit_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -208,22 +193,6 @@ int zx_WALK_WO_ac_ActivationLimit(struct zx_ctx* c, struct zx_ac_ActivationLimit
 #define EL_NS     ac
 #define EL_TAG    ActivationLimitDuration
 
-/* FUNC(zx_NEW_ac_ActivationLimitDuration) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_ActivationLimitDuration_s* zx_NEW_ac_ActivationLimitDuration(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_ActivationLimitDuration_s* x = ZX_ZALLOC(c, struct zx_ac_ActivationLimitDuration_s);
-  x->gg.g.tok = zx_ac_ActivationLimitDuration_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_ActivationLimitDuration) */
@@ -323,22 +292,6 @@ int zx_WALK_WO_ac_ActivationLimitDuration(struct zx_ctx* c, struct zx_ac_Activat
 #define EL_NS     ac
 #define EL_TAG    ActivationLimitUsages
 
-/* FUNC(zx_NEW_ac_ActivationLimitUsages) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_ActivationLimitUsages_s* zx_NEW_ac_ActivationLimitUsages(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_ActivationLimitUsages_s* x = ZX_ZALLOC(c, struct zx_ac_ActivationLimitUsages_s);
-  x->gg.g.tok = zx_ac_ActivationLimitUsages_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_ActivationLimitUsages) */
@@ -437,22 +390,6 @@ int zx_WALK_WO_ac_ActivationLimitUsages(struct zx_ctx* c, struct zx_ac_Activatio
 #define EL_STRUCT zx_ac_ActivationPin_s
 #define EL_NS     ac
 #define EL_TAG    ActivationPin
-
-/* FUNC(zx_NEW_ac_ActivationPin) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_ActivationPin_s* zx_NEW_ac_ActivationPin(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_ActivationPin_s* x = ZX_ZALLOC(c, struct zx_ac_ActivationPin_s);
-  x->gg.g.tok = zx_ac_ActivationPin_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -656,22 +593,6 @@ int zx_WALK_WO_ac_ActivationPin(struct zx_ctx* c, struct zx_ac_ActivationPin_s* 
 #define EL_NS     ac
 #define EL_TAG    Alphabet
 
-/* FUNC(zx_NEW_ac_Alphabet) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_Alphabet_s* zx_NEW_ac_Alphabet(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_Alphabet_s* x = ZX_ZALLOC(c, struct zx_ac_Alphabet_s);
-  x->gg.g.tok = zx_ac_Alphabet_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_Alphabet) */
@@ -774,22 +695,6 @@ int zx_WALK_WO_ac_Alphabet(struct zx_ctx* c, struct zx_ac_Alphabet_s* x, void* c
 #define EL_STRUCT zx_ac_AsymmetricDecryption_s
 #define EL_NS     ac
 #define EL_TAG    AsymmetricDecryption
-
-/* FUNC(zx_NEW_ac_AsymmetricDecryption) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_AsymmetricDecryption_s* zx_NEW_ac_AsymmetricDecryption(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_AsymmetricDecryption_s* x = ZX_ZALLOC(c, struct zx_ac_AsymmetricDecryption_s);
-  x->gg.g.tok = zx_ac_AsymmetricDecryption_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -909,22 +814,6 @@ int zx_WALK_WO_ac_AsymmetricDecryption(struct zx_ctx* c, struct zx_ac_Asymmetric
 #define EL_NS     ac
 #define EL_TAG    AsymmetricKeyAgreement
 
-/* FUNC(zx_NEW_ac_AsymmetricKeyAgreement) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_AsymmetricKeyAgreement_s* zx_NEW_ac_AsymmetricKeyAgreement(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_AsymmetricKeyAgreement_s* x = ZX_ZALLOC(c, struct zx_ac_AsymmetricKeyAgreement_s);
-  x->gg.g.tok = zx_ac_AsymmetricKeyAgreement_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_AsymmetricKeyAgreement) */
@@ -1042,22 +931,6 @@ int zx_WALK_WO_ac_AsymmetricKeyAgreement(struct zx_ctx* c, struct zx_ac_Asymmetr
 #define EL_STRUCT zx_ac_AuthenticatingAuthority_s
 #define EL_NS     ac
 #define EL_TAG    AuthenticatingAuthority
-
-/* FUNC(zx_NEW_ac_AuthenticatingAuthority) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_AuthenticatingAuthority_s* zx_NEW_ac_AuthenticatingAuthority(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_AuthenticatingAuthority_s* x = ZX_ZALLOC(c, struct zx_ac_AuthenticatingAuthority_s);
-  x->gg.g.tok = zx_ac_AuthenticatingAuthority_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1178,22 +1051,6 @@ int zx_WALK_WO_ac_AuthenticatingAuthority(struct zx_ctx* c, struct zx_ac_Authent
 #define EL_STRUCT zx_ac_AuthenticationContextStatement_s
 #define EL_NS     ac
 #define EL_TAG    AuthenticationContextStatement
-
-/* FUNC(zx_NEW_ac_AuthenticationContextStatement) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_AuthenticationContextStatement_s* zx_NEW_ac_AuthenticationContextStatement(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_AuthenticationContextStatement_s* x = ZX_ZALLOC(c, struct zx_ac_AuthenticationContextStatement_s);
-  x->gg.g.tok = zx_ac_AuthenticationContextStatement_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1441,22 +1298,6 @@ int zx_WALK_WO_ac_AuthenticationContextStatement(struct zx_ctx* c, struct zx_ac_
 #define EL_NS     ac
 #define EL_TAG    AuthenticationMethod
 
-/* FUNC(zx_NEW_ac_AuthenticationMethod) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_AuthenticationMethod_s* zx_NEW_ac_AuthenticationMethod(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_AuthenticationMethod_s* x = ZX_ZALLOC(c, struct zx_ac_AuthenticationMethod_s);
-  x->gg.g.tok = zx_ac_AuthenticationMethod_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_AuthenticationMethod) */
@@ -1637,22 +1478,6 @@ int zx_WALK_WO_ac_AuthenticationMethod(struct zx_ctx* c, struct zx_ac_Authentica
 #define EL_STRUCT zx_ac_Authenticator_s
 #define EL_NS     ac
 #define EL_TAG    Authenticator
-
-/* FUNC(zx_NEW_ac_Authenticator) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_Authenticator_s* zx_NEW_ac_Authenticator(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_Authenticator_s* x = ZX_ZALLOC(c, struct zx_ac_Authenticator_s);
-  x->gg.g.tok = zx_ac_Authenticator_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1982,22 +1807,6 @@ int zx_WALK_WO_ac_Authenticator(struct zx_ctx* c, struct zx_ac_Authenticator_s* 
 #define EL_NS     ac
 #define EL_TAG    AuthenticatorTransportProtocol
 
-/* FUNC(zx_NEW_ac_AuthenticatorTransportProtocol) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_AuthenticatorTransportProtocol_s* zx_NEW_ac_AuthenticatorTransportProtocol(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_AuthenticatorTransportProtocol_s* x = ZX_ZALLOC(c, struct zx_ac_AuthenticatorTransportProtocol_s);
-  x->gg.g.tok = zx_ac_AuthenticatorTransportProtocol_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_AuthenticatorTransportProtocol) */
@@ -2263,22 +2072,6 @@ int zx_WALK_WO_ac_AuthenticatorTransportProtocol(struct zx_ctx* c, struct zx_ac_
 #define EL_NS     ac
 #define EL_TAG    DeactivationCallCenter
 
-/* FUNC(zx_NEW_ac_DeactivationCallCenter) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_DeactivationCallCenter_s* zx_NEW_ac_DeactivationCallCenter(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_DeactivationCallCenter_s* x = ZX_ZALLOC(c, struct zx_ac_DeactivationCallCenter_s);
-  x->gg.g.tok = zx_ac_DeactivationCallCenter_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_DeactivationCallCenter) */
@@ -2396,22 +2189,6 @@ int zx_WALK_WO_ac_DeactivationCallCenter(struct zx_ctx* c, struct zx_ac_Deactiva
 #define EL_STRUCT zx_ac_DigSig_s
 #define EL_NS     ac
 #define EL_TAG    DigSig
-
-/* FUNC(zx_NEW_ac_DigSig) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_DigSig_s* zx_NEW_ac_DigSig(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_DigSig_s* x = ZX_ZALLOC(c, struct zx_ac_DigSig_s);
-  x->gg.g.tok = zx_ac_DigSig_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2531,22 +2308,6 @@ int zx_WALK_WO_ac_DigSig(struct zx_ctx* c, struct zx_ac_DigSig_s* x, void* ctx, 
 #define EL_NS     ac
 #define EL_TAG    Extension
 
-/* FUNC(zx_NEW_ac_Extension) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_Extension_s* zx_NEW_ac_Extension(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_Extension_s* x = ZX_ZALLOC(c, struct zx_ac_Extension_s);
-  x->gg.g.tok = zx_ac_Extension_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_Extension) */
@@ -2643,22 +2404,6 @@ int zx_WALK_WO_ac_Extension(struct zx_ctx* c, struct zx_ac_Extension_s* x, void*
 #define EL_STRUCT zx_ac_Generation_s
 #define EL_NS     ac
 #define EL_TAG    Generation
-
-/* FUNC(zx_NEW_ac_Generation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_Generation_s* zx_NEW_ac_Generation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_Generation_s* x = ZX_ZALLOC(c, struct zx_ac_Generation_s);
-  x->gg.g.tok = zx_ac_Generation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2759,22 +2504,6 @@ int zx_WALK_WO_ac_Generation(struct zx_ctx* c, struct zx_ac_Generation_s* x, voi
 #define EL_NS     ac
 #define EL_TAG    GoverningAgreementRef
 
-/* FUNC(zx_NEW_ac_GoverningAgreementRef) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_GoverningAgreementRef_s* zx_NEW_ac_GoverningAgreementRef(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_GoverningAgreementRef_s* x = ZX_ZALLOC(c, struct zx_ac_GoverningAgreementRef_s);
-  x->gg.g.tok = zx_ac_GoverningAgreementRef_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_GoverningAgreementRef) */
@@ -2873,22 +2602,6 @@ int zx_WALK_WO_ac_GoverningAgreementRef(struct zx_ctx* c, struct zx_ac_Governing
 #define EL_STRUCT zx_ac_GoverningAgreements_s
 #define EL_NS     ac
 #define EL_TAG    GoverningAgreements
-
-/* FUNC(zx_NEW_ac_GoverningAgreements) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_GoverningAgreements_s* zx_NEW_ac_GoverningAgreements(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_GoverningAgreements_s* x = ZX_ZALLOC(c, struct zx_ac_GoverningAgreements_s);
-  x->gg.g.tok = zx_ac_GoverningAgreements_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3008,22 +2721,6 @@ int zx_WALK_WO_ac_GoverningAgreements(struct zx_ctx* c, struct zx_ac_GoverningAg
 #define EL_NS     ac
 #define EL_TAG    HTTP
 
-/* FUNC(zx_NEW_ac_HTTP) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_HTTP_s* zx_NEW_ac_HTTP(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_HTTP_s* x = ZX_ZALLOC(c, struct zx_ac_HTTP_s);
-  x->gg.g.tok = zx_ac_HTTP_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_HTTP) */
@@ -3141,22 +2838,6 @@ int zx_WALK_WO_ac_HTTP(struct zx_ctx* c, struct zx_ac_HTTP_s* x, void* ctx, int 
 #define EL_STRUCT zx_ac_IPAddress_s
 #define EL_NS     ac
 #define EL_TAG    IPAddress
-
-/* FUNC(zx_NEW_ac_IPAddress) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_IPAddress_s* zx_NEW_ac_IPAddress(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_IPAddress_s* x = ZX_ZALLOC(c, struct zx_ac_IPAddress_s);
-  x->gg.g.tok = zx_ac_IPAddress_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3276,22 +2957,6 @@ int zx_WALK_WO_ac_IPAddress(struct zx_ctx* c, struct zx_ac_IPAddress_s* x, void*
 #define EL_NS     ac
 #define EL_TAG    IPSec
 
-/* FUNC(zx_NEW_ac_IPSec) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_IPSec_s* zx_NEW_ac_IPSec(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_IPSec_s* x = ZX_ZALLOC(c, struct zx_ac_IPSec_s);
-  x->gg.g.tok = zx_ac_IPSec_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_IPSec) */
@@ -3409,22 +3074,6 @@ int zx_WALK_WO_ac_IPSec(struct zx_ctx* c, struct zx_ac_IPSec_s* x, void* ctx, in
 #define EL_STRUCT zx_ac_Identification_s
 #define EL_NS     ac
 #define EL_TAG    Identification
-
-/* FUNC(zx_NEW_ac_Identification) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_Identification_s* zx_NEW_ac_Identification(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_Identification_s* x = ZX_ZALLOC(c, struct zx_ac_Identification_s);
-  x->gg.g.tok = zx_ac_Identification_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3588,22 +3237,6 @@ int zx_WALK_WO_ac_Identification(struct zx_ctx* c, struct zx_ac_Identification_s
 #define EL_NS     ac
 #define EL_TAG    KeyActivation
 
-/* FUNC(zx_NEW_ac_KeyActivation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_KeyActivation_s* zx_NEW_ac_KeyActivation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_KeyActivation_s* x = ZX_ZALLOC(c, struct zx_ac_KeyActivation_s);
-  x->gg.g.tok = zx_ac_KeyActivation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_KeyActivation) */
@@ -3743,22 +3376,6 @@ int zx_WALK_WO_ac_KeyActivation(struct zx_ctx* c, struct zx_ac_KeyActivation_s* 
 #define EL_NS     ac
 #define EL_TAG    KeySharing
 
-/* FUNC(zx_NEW_ac_KeySharing) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_KeySharing_s* zx_NEW_ac_KeySharing(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_KeySharing_s* x = ZX_ZALLOC(c, struct zx_ac_KeySharing_s);
-  x->gg.g.tok = zx_ac_KeySharing_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_KeySharing) */
@@ -3858,22 +3475,6 @@ int zx_WALK_WO_ac_KeySharing(struct zx_ctx* c, struct zx_ac_KeySharing_s* x, voi
 #define EL_NS     ac
 #define EL_TAG    KeyStorage
 
-/* FUNC(zx_NEW_ac_KeyStorage) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_KeyStorage_s* zx_NEW_ac_KeyStorage(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_KeyStorage_s* x = ZX_ZALLOC(c, struct zx_ac_KeyStorage_s);
-  x->gg.g.tok = zx_ac_KeyStorage_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_KeyStorage) */
@@ -3972,22 +3573,6 @@ int zx_WALK_WO_ac_KeyStorage(struct zx_ctx* c, struct zx_ac_KeyStorage_s* x, voi
 #define EL_STRUCT zx_ac_Length_s
 #define EL_NS     ac
 #define EL_TAG    Length
-
-/* FUNC(zx_NEW_ac_Length) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_Length_s* zx_NEW_ac_Length(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_Length_s* x = ZX_ZALLOC(c, struct zx_ac_Length_s);
-  x->gg.g.tok = zx_ac_Length_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4089,22 +3674,6 @@ int zx_WALK_WO_ac_Length(struct zx_ctx* c, struct zx_ac_Length_s* x, void* ctx, 
 #define EL_STRUCT zx_ac_MobileNetworkEndToEndEncryption_s
 #define EL_NS     ac
 #define EL_TAG    MobileNetworkEndToEndEncryption
-
-/* FUNC(zx_NEW_ac_MobileNetworkEndToEndEncryption) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_MobileNetworkEndToEndEncryption_s* zx_NEW_ac_MobileNetworkEndToEndEncryption(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_MobileNetworkEndToEndEncryption_s* x = ZX_ZALLOC(c, struct zx_ac_MobileNetworkEndToEndEncryption_s);
-  x->gg.g.tok = zx_ac_MobileNetworkEndToEndEncryption_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4224,22 +3793,6 @@ int zx_WALK_WO_ac_MobileNetworkEndToEndEncryption(struct zx_ctx* c, struct zx_ac
 #define EL_NS     ac
 #define EL_TAG    MobileNetworkNoEncryption
 
-/* FUNC(zx_NEW_ac_MobileNetworkNoEncryption) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_MobileNetworkNoEncryption_s* zx_NEW_ac_MobileNetworkNoEncryption(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_MobileNetworkNoEncryption_s* x = ZX_ZALLOC(c, struct zx_ac_MobileNetworkNoEncryption_s);
-  x->gg.g.tok = zx_ac_MobileNetworkNoEncryption_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_MobileNetworkNoEncryption) */
@@ -4358,22 +3911,6 @@ int zx_WALK_WO_ac_MobileNetworkNoEncryption(struct zx_ctx* c, struct zx_ac_Mobil
 #define EL_NS     ac
 #define EL_TAG    MobileNetworkRadioEncryption
 
-/* FUNC(zx_NEW_ac_MobileNetworkRadioEncryption) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_MobileNetworkRadioEncryption_s* zx_NEW_ac_MobileNetworkRadioEncryption(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_MobileNetworkRadioEncryption_s* x = ZX_ZALLOC(c, struct zx_ac_MobileNetworkRadioEncryption_s);
-  x->gg.g.tok = zx_ac_MobileNetworkRadioEncryption_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_MobileNetworkRadioEncryption) */
@@ -4491,22 +4028,6 @@ int zx_WALK_WO_ac_MobileNetworkRadioEncryption(struct zx_ctx* c, struct zx_ac_Mo
 #define EL_STRUCT zx_ac_OperationalProtection_s
 #define EL_NS     ac
 #define EL_TAG    OperationalProtection
-
-/* FUNC(zx_NEW_ac_OperationalProtection) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_OperationalProtection_s* zx_NEW_ac_OperationalProtection(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_OperationalProtection_s* x = ZX_ZALLOC(c, struct zx_ac_OperationalProtection_s);
-  x->gg.g.tok = zx_ac_OperationalProtection_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4667,22 +4188,6 @@ int zx_WALK_WO_ac_OperationalProtection(struct zx_ctx* c, struct zx_ac_Operation
 #define EL_STRUCT zx_ac_Password_s
 #define EL_NS     ac
 #define EL_TAG    Password
-
-/* FUNC(zx_NEW_ac_Password) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_Password_s* zx_NEW_ac_Password(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_Password_s* x = ZX_ZALLOC(c, struct zx_ac_Password_s);
-  x->gg.g.tok = zx_ac_Password_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4865,22 +4370,6 @@ int zx_WALK_WO_ac_Password(struct zx_ctx* c, struct zx_ac_Password_s* x, void* c
 #define EL_NS     ac
 #define EL_TAG    PhysicalVerification
 
-/* FUNC(zx_NEW_ac_PhysicalVerification) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_PhysicalVerification_s* zx_NEW_ac_PhysicalVerification(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_PhysicalVerification_s* x = ZX_ZALLOC(c, struct zx_ac_PhysicalVerification_s);
-  x->gg.g.tok = zx_ac_PhysicalVerification_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_PhysicalVerification) */
@@ -4979,22 +4468,6 @@ int zx_WALK_WO_ac_PhysicalVerification(struct zx_ctx* c, struct zx_ac_PhysicalVe
 #define EL_STRUCT zx_ac_PreviousSession_s
 #define EL_NS     ac
 #define EL_TAG    PreviousSession
-
-/* FUNC(zx_NEW_ac_PreviousSession) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_PreviousSession_s* zx_NEW_ac_PreviousSession(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_PreviousSession_s* x = ZX_ZALLOC(c, struct zx_ac_PreviousSession_s);
-  x->gg.g.tok = zx_ac_PreviousSession_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5113,22 +4586,6 @@ int zx_WALK_WO_ac_PreviousSession(struct zx_ctx* c, struct zx_ac_PreviousSession
 #define EL_STRUCT zx_ac_PrincipalAuthenticationMechanism_s
 #define EL_NS     ac
 #define EL_TAG    PrincipalAuthenticationMechanism
-
-/* FUNC(zx_NEW_ac_PrincipalAuthenticationMechanism) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_PrincipalAuthenticationMechanism_s* zx_NEW_ac_PrincipalAuthenticationMechanism(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_PrincipalAuthenticationMechanism_s* x = ZX_ZALLOC(c, struct zx_ac_PrincipalAuthenticationMechanism_s);
-  x->gg.g.tok = zx_ac_PrincipalAuthenticationMechanism_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5332,22 +4789,6 @@ int zx_WALK_WO_ac_PrincipalAuthenticationMechanism(struct zx_ctx* c, struct zx_a
 #define EL_NS     ac
 #define EL_TAG    PrivateKeyProtection
 
-/* FUNC(zx_NEW_ac_PrivateKeyProtection) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_PrivateKeyProtection_s* zx_NEW_ac_PrivateKeyProtection(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_PrivateKeyProtection_s* x = ZX_ZALLOC(c, struct zx_ac_PrivateKeyProtection_s);
-  x->gg.g.tok = zx_ac_PrivateKeyProtection_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_PrivateKeyProtection) */
@@ -5529,22 +4970,6 @@ int zx_WALK_WO_ac_PrivateKeyProtection(struct zx_ctx* c, struct zx_ac_PrivateKey
 #define EL_NS     ac
 #define EL_TAG    ResumeSession
 
-/* FUNC(zx_NEW_ac_ResumeSession) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_ResumeSession_s* zx_NEW_ac_ResumeSession(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_ResumeSession_s* x = ZX_ZALLOC(c, struct zx_ac_ResumeSession_s);
-  x->gg.g.tok = zx_ac_ResumeSession_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_ResumeSession) */
@@ -5663,22 +5088,6 @@ int zx_WALK_WO_ac_ResumeSession(struct zx_ctx* c, struct zx_ac_ResumeSession_s* 
 #define EL_NS     ac
 #define EL_TAG    SSL
 
-/* FUNC(zx_NEW_ac_SSL) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_SSL_s* zx_NEW_ac_SSL(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_SSL_s* x = ZX_ZALLOC(c, struct zx_ac_SSL_s);
-  x->gg.g.tok = zx_ac_SSL_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_SSL) */
@@ -5796,22 +5205,6 @@ int zx_WALK_WO_ac_SSL(struct zx_ctx* c, struct zx_ac_SSL_s* x, void* ctx, int (*
 #define EL_STRUCT zx_ac_SecretKeyProtection_s
 #define EL_NS     ac
 #define EL_TAG    SecretKeyProtection
-
-/* FUNC(zx_NEW_ac_SecretKeyProtection) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_SecretKeyProtection_s* zx_NEW_ac_SecretKeyProtection(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_SecretKeyProtection_s* x = ZX_ZALLOC(c, struct zx_ac_SecretKeyProtection_s);
-  x->gg.g.tok = zx_ac_SecretKeyProtection_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5973,22 +5366,6 @@ int zx_WALK_WO_ac_SecretKeyProtection(struct zx_ctx* c, struct zx_ac_SecretKeyPr
 #define EL_NS     ac
 #define EL_TAG    SecurityAudit
 
-/* FUNC(zx_NEW_ac_SecurityAudit) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_SecurityAudit_s* zx_NEW_ac_SecurityAudit(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_SecurityAudit_s* x = ZX_ZALLOC(c, struct zx_ac_SecurityAudit_s);
-  x->gg.g.tok = zx_ac_SecurityAudit_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_SecurityAudit) */
@@ -6128,22 +5505,6 @@ int zx_WALK_WO_ac_SecurityAudit(struct zx_ctx* c, struct zx_ac_SecurityAudit_s* 
 #define EL_NS     ac
 #define EL_TAG    SharedSecretChallengeResponse
 
-/* FUNC(zx_NEW_ac_SharedSecretChallengeResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_SharedSecretChallengeResponse_s* zx_NEW_ac_SharedSecretChallengeResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_SharedSecretChallengeResponse_s* x = ZX_ZALLOC(c, struct zx_ac_SharedSecretChallengeResponse_s);
-  x->gg.g.tok = zx_ac_SharedSecretChallengeResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_SharedSecretChallengeResponse) */
@@ -6261,22 +5622,6 @@ int zx_WALK_WO_ac_SharedSecretChallengeResponse(struct zx_ctx* c, struct zx_ac_S
 #define EL_STRUCT zx_ac_SharedSecretDynamicPlaintext_s
 #define EL_NS     ac
 #define EL_TAG    SharedSecretDynamicPlaintext
-
-/* FUNC(zx_NEW_ac_SharedSecretDynamicPlaintext) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_SharedSecretDynamicPlaintext_s* zx_NEW_ac_SharedSecretDynamicPlaintext(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_SharedSecretDynamicPlaintext_s* x = ZX_ZALLOC(c, struct zx_ac_SharedSecretDynamicPlaintext_s);
-  x->gg.g.tok = zx_ac_SharedSecretDynamicPlaintext_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6396,22 +5741,6 @@ int zx_WALK_WO_ac_SharedSecretDynamicPlaintext(struct zx_ctx* c, struct zx_ac_Sh
 #define EL_NS     ac
 #define EL_TAG    Smartcard
 
-/* FUNC(zx_NEW_ac_Smartcard) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_Smartcard_s* zx_NEW_ac_Smartcard(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_Smartcard_s* x = ZX_ZALLOC(c, struct zx_ac_Smartcard_s);
-  x->gg.g.tok = zx_ac_Smartcard_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_Smartcard) */
@@ -6530,22 +5859,6 @@ int zx_WALK_WO_ac_Smartcard(struct zx_ctx* c, struct zx_ac_Smartcard_s* x, void*
 #define EL_NS     ac
 #define EL_TAG    SwitchAudit
 
-/* FUNC(zx_NEW_ac_SwitchAudit) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_SwitchAudit_s* zx_NEW_ac_SwitchAudit(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_SwitchAudit_s* x = ZX_ZALLOC(c, struct zx_ac_SwitchAudit_s);
-  x->gg.g.tok = zx_ac_SwitchAudit_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_SwitchAudit) */
@@ -6663,22 +5976,6 @@ int zx_WALK_WO_ac_SwitchAudit(struct zx_ctx* c, struct zx_ac_SwitchAudit_s* x, v
 #define EL_STRUCT zx_ac_TechnicalProtection_s
 #define EL_NS     ac
 #define EL_TAG    TechnicalProtection
-
-/* FUNC(zx_NEW_ac_TechnicalProtection) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_TechnicalProtection_s* zx_NEW_ac_TechnicalProtection(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_TechnicalProtection_s* x = ZX_ZALLOC(c, struct zx_ac_TechnicalProtection_s);
-  x->gg.g.tok = zx_ac_TechnicalProtection_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6840,22 +6137,6 @@ int zx_WALK_WO_ac_TechnicalProtection(struct zx_ctx* c, struct zx_ac_TechnicalPr
 #define EL_NS     ac
 #define EL_TAG    TimeSyncToken
 
-/* FUNC(zx_NEW_ac_TimeSyncToken) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_TimeSyncToken_s* zx_NEW_ac_TimeSyncToken(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_TimeSyncToken_s* x = ZX_ZALLOC(c, struct zx_ac_TimeSyncToken_s);
-  x->gg.g.tok = zx_ac_TimeSyncToken_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_TimeSyncToken) */
@@ -6958,22 +6239,6 @@ int zx_WALK_WO_ac_TimeSyncToken(struct zx_ctx* c, struct zx_ac_TimeSyncToken_s* 
 #define EL_STRUCT zx_ac_Token_s
 #define EL_NS     ac
 #define EL_TAG    Token
-
-/* FUNC(zx_NEW_ac_Token) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_Token_s* zx_NEW_ac_Token(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_Token_s* x = ZX_ZALLOC(c, struct zx_ac_Token_s);
-  x->gg.g.tok = zx_ac_Token_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -7114,22 +6379,6 @@ int zx_WALK_WO_ac_Token(struct zx_ctx* c, struct zx_ac_Token_s* x, void* ctx, in
 #define EL_NS     ac
 #define EL_TAG    WTLS
 
-/* FUNC(zx_NEW_ac_WTLS) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_WTLS_s* zx_NEW_ac_WTLS(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_WTLS_s* x = ZX_ZALLOC(c, struct zx_ac_WTLS_s);
-  x->gg.g.tok = zx_ac_WTLS_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_WTLS) */
@@ -7248,22 +6497,6 @@ int zx_WALK_WO_ac_WTLS(struct zx_ctx* c, struct zx_ac_WTLS_s* x, void* ctx, int 
 #define EL_NS     ac
 #define EL_TAG    WrittenConsent
 
-/* FUNC(zx_NEW_ac_WrittenConsent) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_WrittenConsent_s* zx_NEW_ac_WrittenConsent(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_WrittenConsent_s* x = ZX_ZALLOC(c, struct zx_ac_WrittenConsent_s);
-  x->gg.g.tok = zx_ac_WrittenConsent_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_ac_WrittenConsent) */
@@ -7381,22 +6614,6 @@ int zx_WALK_WO_ac_WrittenConsent(struct zx_ctx* c, struct zx_ac_WrittenConsent_s
 #define EL_STRUCT zx_ac_ZeroKnowledge_s
 #define EL_NS     ac
 #define EL_TAG    ZeroKnowledge
-
-/* FUNC(zx_NEW_ac_ZeroKnowledge) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ac_ZeroKnowledge_s* zx_NEW_ac_ZeroKnowledge(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ac_ZeroKnowledge_s* x = ZX_ZALLOC(c, struct zx_ac_ZeroKnowledge_s);
-  x->gg.g.tok = zx_ac_ZeroKnowledge_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

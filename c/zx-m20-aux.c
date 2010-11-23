@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_m20_AdditionalMetaLocation_s
 #define EL_NS     m20
 #define EL_TAG    AdditionalMetaLocation
-
-/* FUNC(zx_NEW_m20_AdditionalMetaLocation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_AdditionalMetaLocation_s* zx_NEW_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_AdditionalMetaLocation_s* x = ZX_ZALLOC(c, struct zx_m20_AdditionalMetaLocation_s);
-  x->gg.g.tok = zx_m20_AdditionalMetaLocation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -162,22 +147,6 @@ int zx_WALK_WO_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_Additi
 #define EL_STRUCT zx_m20_AffiliationDescriptor_s
 #define EL_NS     m20
 #define EL_TAG    AffiliationDescriptor
-
-/* FUNC(zx_NEW_m20_AffiliationDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_AffiliationDescriptor_s* zx_NEW_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_AffiliationDescriptor_s* x = ZX_ZALLOC(c, struct zx_m20_AffiliationDescriptor_s);
-  x->gg.g.tok = zx_m20_AffiliationDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -352,22 +321,6 @@ int zx_WALK_WO_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_Affilia
 #define EL_NS     m20
 #define EL_TAG    AssertionConsumerServiceURL
 
-/* FUNC(zx_NEW_m20_AssertionConsumerServiceURL) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_AssertionConsumerServiceURL_s* zx_NEW_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_AssertionConsumerServiceURL_s* x = ZX_ZALLOC(c, struct zx_m20_AssertionConsumerServiceURL_s);
-  x->gg.g.tok = zx_m20_AssertionConsumerServiceURL_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_m20_AssertionConsumerServiceURL) */
@@ -468,22 +421,6 @@ int zx_WALK_WO_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_A
 #define EL_STRUCT zx_m20_ContactPerson_s
 #define EL_NS     m20
 #define EL_TAG    ContactPerson
-
-/* FUNC(zx_NEW_m20_ContactPerson) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_ContactPerson_s* zx_NEW_m20_ContactPerson(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_ContactPerson_s* x = ZX_ZALLOC(c, struct zx_m20_ContactPerson_s);
-  x->gg.g.tok = zx_m20_ContactPerson_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -632,22 +569,6 @@ int zx_WALK_WO_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s
 #define EL_NS     m20
 #define EL_TAG    EntitiesDescriptor
 
-/* FUNC(zx_NEW_m20_EntitiesDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_EntitiesDescriptor_s* zx_NEW_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_EntitiesDescriptor_s* x = ZX_ZALLOC(c, struct zx_m20_EntitiesDescriptor_s);
-  x->gg.g.tok = zx_m20_EntitiesDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_m20_EntitiesDescriptor) */
@@ -765,22 +686,6 @@ int zx_WALK_WO_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDe
 #define EL_STRUCT zx_m20_EntityDescriptor_s
 #define EL_NS     m20
 #define EL_TAG    EntityDescriptor
-
-/* FUNC(zx_NEW_m20_EntityDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_EntityDescriptor_s* zx_NEW_m20_EntityDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_EntityDescriptor_s* x = ZX_ZALLOC(c, struct zx_m20_EntityDescriptor_s);
-  x->gg.g.tok = zx_m20_EntityDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1034,22 +939,6 @@ int zx_WALK_WO_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescri
 #define EL_NS     m20
 #define EL_TAG    Extension
 
-/* FUNC(zx_NEW_m20_Extension) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_Extension_s* zx_NEW_m20_Extension(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_Extension_s* x = ZX_ZALLOC(c, struct zx_m20_Extension_s);
-  x->gg.g.tok = zx_m20_Extension_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_m20_Extension) */
@@ -1146,22 +1035,6 @@ int zx_WALK_WO_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x, voi
 #define EL_STRUCT zx_m20_IDPDescriptor_s
 #define EL_NS     m20
 #define EL_TAG    IDPDescriptor
-
-/* FUNC(zx_NEW_m20_IDPDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_IDPDescriptor_s* zx_NEW_m20_IDPDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_IDPDescriptor_s* x = ZX_ZALLOC(c, struct zx_m20_IDPDescriptor_s);
-  x->gg.g.tok = zx_m20_IDPDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1469,22 +1342,6 @@ int zx_WALK_WO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s
 #define EL_NS     m20
 #define EL_TAG    KeyDescriptor
 
-/* FUNC(zx_NEW_m20_KeyDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_KeyDescriptor_s* zx_NEW_m20_KeyDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_KeyDescriptor_s* x = ZX_ZALLOC(c, struct zx_m20_KeyDescriptor_s);
-  x->gg.g.tok = zx_m20_KeyDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_m20_KeyDescriptor) */
@@ -1635,22 +1492,6 @@ int zx_WALK_WO_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s
 #define EL_STRUCT zx_m20_Organization_s
 #define EL_NS     m20
 #define EL_TAG    Organization
-
-/* FUNC(zx_NEW_m20_Organization) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_Organization_s* zx_NEW_m20_Organization(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_Organization_s* x = ZX_ZALLOC(c, struct zx_m20_Organization_s);
-  x->gg.g.tok = zx_m20_Organization_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1833,22 +1674,6 @@ int zx_WALK_WO_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* 
 #define EL_NS     m20
 #define EL_TAG    OrganizationDisplayName
 
-/* FUNC(zx_NEW_m20_OrganizationDisplayName) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_OrganizationDisplayName_s* zx_NEW_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_OrganizationDisplayName_s* x = ZX_ZALLOC(c, struct zx_m20_OrganizationDisplayName_s);
-  x->gg.g.tok = zx_m20_OrganizationDisplayName_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_m20_OrganizationDisplayName) */
@@ -1947,22 +1772,6 @@ int zx_WALK_WO_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_Organ
 #define EL_STRUCT zx_m20_OrganizationName_s
 #define EL_NS     m20
 #define EL_TAG    OrganizationName
-
-/* FUNC(zx_NEW_m20_OrganizationName) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_OrganizationName_s* zx_NEW_m20_OrganizationName(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_OrganizationName_s* x = ZX_ZALLOC(c, struct zx_m20_OrganizationName_s);
-  x->gg.g.tok = zx_m20_OrganizationName_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2063,22 +1872,6 @@ int zx_WALK_WO_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_Organization
 #define EL_NS     m20
 #define EL_TAG    OrganizationURL
 
-/* FUNC(zx_NEW_m20_OrganizationURL) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_OrganizationURL_s* zx_NEW_m20_OrganizationURL(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_OrganizationURL_s* x = ZX_ZALLOC(c, struct zx_m20_OrganizationURL_s);
-  x->gg.g.tok = zx_m20_OrganizationURL_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_m20_OrganizationURL) */
@@ -2177,22 +1970,6 @@ int zx_WALK_WO_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationU
 #define EL_STRUCT zx_m20_SPDescriptor_s
 #define EL_NS     m20
 #define EL_TAG    SPDescriptor
-
-/* FUNC(zx_NEW_m20_SPDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_m20_SPDescriptor_s* zx_NEW_m20_SPDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_m20_SPDescriptor_s* x = ZX_ZALLOC(c, struct zx_m20_SPDescriptor_s);
-  x->gg.g.tok = zx_m20_SPDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

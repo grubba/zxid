@@ -31,9 +31,10 @@ struct zx_ecp_RelayState_s {
   struct zx_attr_s* mustUnderstand;	/* {1,1} attribute xs:boolean */
 };
 
+#define zx_NEW_ecp_RelayState(c, father) (struct zx_ecp_RelayState_s*)zx_new_elem((c),(father),zx_ecp_RelayState_ELEM)
+
 int zx_DEC_ATTR_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x);
 int zx_DEC_ELEM_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x);
-struct zx_ecp_RelayState_s* zx_NEW_ecp_RelayState(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x);
 char* zx_ENC_SO_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x);
@@ -78,9 +79,10 @@ struct zx_ecp_Request_s {
   struct zx_attr_s* mustUnderstand;	/* {1,1} attribute xs:boolean */
 };
 
+#define zx_NEW_ecp_Request(c, father) (struct zx_ecp_Request_s*)zx_new_elem((c),(father),zx_ecp_Request_ELEM)
+
 int zx_DEC_ATTR_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x);
 int zx_DEC_ELEM_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x);
-struct zx_ecp_Request_s* zx_NEW_ecp_Request(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x);
 char* zx_ENC_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x);
@@ -142,9 +144,10 @@ struct zx_ecp_Response_s {
   struct zx_attr_s* mustUnderstand;	/* {1,1} attribute xs:boolean */
 };
 
+#define zx_NEW_ecp_Response(c, father) (struct zx_ecp_Response_s*)zx_new_elem((c),(father),zx_ecp_Response_ELEM)
+
 int zx_DEC_ATTR_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x);
 int zx_DEC_ELEM_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x);
-struct zx_ecp_Response_s* zx_NEW_ecp_Response(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x);
 char* zx_ENC_SO_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x);

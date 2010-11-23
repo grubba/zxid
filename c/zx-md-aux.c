@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_md_AdditionalMetadataLocation_s
 #define EL_NS     md
 #define EL_TAG    AdditionalMetadataLocation
-
-/* FUNC(zx_NEW_md_AdditionalMetadataLocation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_AdditionalMetadataLocation_s* zx_NEW_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_AdditionalMetadataLocation_s* x = ZX_ZALLOC(c, struct zx_md_AdditionalMetadataLocation_s);
-  x->gg.g.tok = zx_md_AdditionalMetadataLocation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -162,22 +147,6 @@ int zx_WALK_WO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_Addi
 #define EL_STRUCT zx_md_AffiliationDescriptor_s
 #define EL_NS     md
 #define EL_TAG    AffiliationDescriptor
-
-/* FUNC(zx_NEW_md_AffiliationDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_AffiliationDescriptor_s* zx_NEW_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_AffiliationDescriptor_s* x = ZX_ZALLOC(c, struct zx_md_AffiliationDescriptor_s);
-  x->gg.g.tok = zx_md_AffiliationDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -352,22 +321,6 @@ int zx_WALK_WO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_Affiliati
 #define EL_NS     md
 #define EL_TAG    ArtifactResolutionService
 
-/* FUNC(zx_NEW_md_ArtifactResolutionService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_ArtifactResolutionService_s* zx_NEW_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_ArtifactResolutionService_s* x = ZX_ZALLOC(c, struct zx_md_ArtifactResolutionService_s);
-  x->gg.g.tok = zx_md_ArtifactResolutionService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_ArtifactResolutionService) */
@@ -474,22 +427,6 @@ int zx_WALK_WO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_Artif
 #define EL_STRUCT zx_md_AssertionConsumerService_s
 #define EL_NS     md
 #define EL_TAG    AssertionConsumerService
-
-/* FUNC(zx_NEW_md_AssertionConsumerService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_AssertionConsumerService_s* zx_NEW_md_AssertionConsumerService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_AssertionConsumerService_s* x = ZX_ZALLOC(c, struct zx_md_AssertionConsumerService_s);
-  x->gg.g.tok = zx_md_AssertionConsumerService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -598,22 +535,6 @@ int zx_WALK_WO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_Assert
 #define EL_NS     md
 #define EL_TAG    AssertionIDRequestService
 
-/* FUNC(zx_NEW_md_AssertionIDRequestService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_AssertionIDRequestService_s* zx_NEW_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_AssertionIDRequestService_s* x = ZX_ZALLOC(c, struct zx_md_AssertionIDRequestService_s);
-  x->gg.g.tok = zx_md_AssertionIDRequestService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_AssertionIDRequestService) */
@@ -720,22 +641,6 @@ int zx_WALK_WO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_Asser
 #define EL_STRUCT zx_md_AttributeAuthorityDescriptor_s
 #define EL_NS     md
 #define EL_TAG    AttributeAuthorityDescriptor
-
-/* FUNC(zx_NEW_md_AttributeAuthorityDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_AttributeAuthorityDescriptor_s* zx_NEW_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_AttributeAuthorityDescriptor_s* x = ZX_ZALLOC(c, struct zx_md_AttributeAuthorityDescriptor_s);
-  x->gg.g.tok = zx_md_AttributeAuthorityDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1022,22 +927,6 @@ int zx_WALK_WO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_At
 #define EL_NS     md
 #define EL_TAG    AttributeConsumingService
 
-/* FUNC(zx_NEW_md_AttributeConsumingService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_AttributeConsumingService_s* zx_NEW_md_AttributeConsumingService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_AttributeConsumingService_s* x = ZX_ZALLOC(c, struct zx_md_AttributeConsumingService_s);
-  x->gg.g.tok = zx_md_AttributeConsumingService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_AttributeConsumingService) */
@@ -1202,22 +1091,6 @@ int zx_WALK_WO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_Attri
 #define EL_NS     md
 #define EL_TAG    AttributeService
 
-/* FUNC(zx_NEW_md_AttributeService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_AttributeService_s* zx_NEW_md_AttributeService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_AttributeService_s* x = ZX_ZALLOC(c, struct zx_md_AttributeService_s);
-  x->gg.g.tok = zx_md_AttributeService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_AttributeService) */
@@ -1324,22 +1197,6 @@ int zx_WALK_WO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeServi
 #define EL_STRUCT zx_md_AuthnAuthorityDescriptor_s
 #define EL_NS     md
 #define EL_TAG    AuthnAuthorityDescriptor
-
-/* FUNC(zx_NEW_md_AuthnAuthorityDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_AuthnAuthorityDescriptor_s* zx_NEW_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_AuthnAuthorityDescriptor_s* x = ZX_ZALLOC(c, struct zx_md_AuthnAuthorityDescriptor_s);
-  x->gg.g.tok = zx_md_AuthnAuthorityDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1600,22 +1457,6 @@ int zx_WALK_WO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnA
 #define EL_NS     md
 #define EL_TAG    AuthnQueryService
 
-/* FUNC(zx_NEW_md_AuthnQueryService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_AuthnQueryService_s* zx_NEW_md_AuthnQueryService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_AuthnQueryService_s* x = ZX_ZALLOC(c, struct zx_md_AuthnQueryService_s);
-  x->gg.g.tok = zx_md_AuthnQueryService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_AuthnQueryService) */
@@ -1723,22 +1564,6 @@ int zx_WALK_WO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQuerySer
 #define EL_NS     md
 #define EL_TAG    AuthzService
 
-/* FUNC(zx_NEW_md_AuthzService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_AuthzService_s* zx_NEW_md_AuthzService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_AuthzService_s* x = ZX_ZALLOC(c, struct zx_md_AuthzService_s);
-  x->gg.g.tok = zx_md_AuthzService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_AuthzService) */
@@ -1845,22 +1670,6 @@ int zx_WALK_WO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x,
 #define EL_STRUCT zx_md_ContactPerson_s
 #define EL_NS     md
 #define EL_TAG    ContactPerson
-
-/* FUNC(zx_NEW_md_ContactPerson) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_ContactPerson_s* zx_NEW_md_ContactPerson(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_ContactPerson_s* x = ZX_ZALLOC(c, struct zx_md_ContactPerson_s);
-  x->gg.g.tok = zx_md_ContactPerson_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2007,22 +1816,6 @@ int zx_WALK_WO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* 
 #define EL_NS     md
 #define EL_TAG    EncryptionMethod
 
-/* FUNC(zx_NEW_md_EncryptionMethod) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_EncryptionMethod_s* zx_NEW_md_EncryptionMethod(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_EncryptionMethod_s* x = ZX_ZALLOC(c, struct zx_md_EncryptionMethod_s);
-  x->gg.g.tok = zx_md_EncryptionMethod_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_EncryptionMethod) */
@@ -2131,22 +1924,6 @@ int zx_WALK_WO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMeth
 #define EL_STRUCT zx_md_EntitiesDescriptor_s
 #define EL_NS     md
 #define EL_TAG    EntitiesDescriptor
-
-/* FUNC(zx_NEW_md_EntitiesDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_EntitiesDescriptor_s* zx_NEW_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_EntitiesDescriptor_s* x = ZX_ZALLOC(c, struct zx_md_EntitiesDescriptor_s);
-  x->gg.g.tok = zx_md_EntitiesDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2336,22 +2113,6 @@ int zx_WALK_WO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDesc
 #define EL_STRUCT zx_md_EntityDescriptor_s
 #define EL_NS     md
 #define EL_TAG    EntityDescriptor
-
-/* FUNC(zx_NEW_md_EntityDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_EntityDescriptor_s* zx_NEW_md_EntityDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_EntityDescriptor_s* x = ZX_ZALLOC(c, struct zx_md_EntityDescriptor_s);
-  x->gg.g.tok = zx_md_EntityDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2710,22 +2471,6 @@ int zx_WALK_WO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescript
 #define EL_NS     md
 #define EL_TAG    Extensions
 
-/* FUNC(zx_NEW_md_Extensions) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_Extensions_s* zx_NEW_md_Extensions(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_Extensions_s* x = ZX_ZALLOC(c, struct zx_md_Extensions_s);
-  x->gg.g.tok = zx_md_Extensions_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_Extensions) */
@@ -2885,22 +2630,6 @@ int zx_WALK_WO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x, voi
 #define EL_STRUCT zx_md_IDPSSODescriptor_s
 #define EL_NS     md
 #define EL_TAG    IDPSSODescriptor
-
-/* FUNC(zx_NEW_md_IDPSSODescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_IDPSSODescriptor_s* zx_NEW_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_IDPSSODescriptor_s* x = ZX_ZALLOC(c, struct zx_md_IDPSSODescriptor_s);
-  x->gg.g.tok = zx_md_IDPSSODescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3273,22 +3002,6 @@ int zx_WALK_WO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescript
 #define EL_NS     md
 #define EL_TAG    KeyDescriptor
 
-/* FUNC(zx_NEW_md_KeyDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_KeyDescriptor_s* zx_NEW_md_KeyDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_KeyDescriptor_s* x = ZX_ZALLOC(c, struct zx_md_KeyDescriptor_s);
-  x->gg.g.tok = zx_md_KeyDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_KeyDescriptor) */
@@ -3430,22 +3143,6 @@ int zx_WALK_WO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* 
 #define EL_NS     md
 #define EL_TAG    ManageNameIDService
 
-/* FUNC(zx_NEW_md_ManageNameIDService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_ManageNameIDService_s* zx_NEW_md_ManageNameIDService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_ManageNameIDService_s* x = ZX_ZALLOC(c, struct zx_md_ManageNameIDService_s);
-  x->gg.g.tok = zx_md_ManageNameIDService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_ManageNameIDService) */
@@ -3553,22 +3250,6 @@ int zx_WALK_WO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameI
 #define EL_NS     md
 #define EL_TAG    NameIDMappingService
 
-/* FUNC(zx_NEW_md_NameIDMappingService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_NameIDMappingService_s* zx_NEW_md_NameIDMappingService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_NameIDMappingService_s* x = ZX_ZALLOC(c, struct zx_md_NameIDMappingService_s);
-  x->gg.g.tok = zx_md_NameIDMappingService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_NameIDMappingService) */
@@ -3675,22 +3356,6 @@ int zx_WALK_WO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMapp
 #define EL_STRUCT zx_md_Organization_s
 #define EL_NS     md
 #define EL_TAG    Organization
-
-/* FUNC(zx_NEW_md_Organization) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_Organization_s* zx_NEW_md_Organization(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_Organization_s* x = ZX_ZALLOC(c, struct zx_md_Organization_s);
-  x->gg.g.tok = zx_md_Organization_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3873,22 +3538,6 @@ int zx_WALK_WO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x,
 #define EL_NS     md
 #define EL_TAG    OrganizationDisplayName
 
-/* FUNC(zx_NEW_md_OrganizationDisplayName) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_OrganizationDisplayName_s* zx_NEW_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_OrganizationDisplayName_s* x = ZX_ZALLOC(c, struct zx_md_OrganizationDisplayName_s);
-  x->gg.g.tok = zx_md_OrganizationDisplayName_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_OrganizationDisplayName) */
@@ -3987,22 +3636,6 @@ int zx_WALK_WO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_Organiz
 #define EL_STRUCT zx_md_OrganizationName_s
 #define EL_NS     md
 #define EL_TAG    OrganizationName
-
-/* FUNC(zx_NEW_md_OrganizationName) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_OrganizationName_s* zx_NEW_md_OrganizationName(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_OrganizationName_s* x = ZX_ZALLOC(c, struct zx_md_OrganizationName_s);
-  x->gg.g.tok = zx_md_OrganizationName_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4103,22 +3736,6 @@ int zx_WALK_WO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationNa
 #define EL_NS     md
 #define EL_TAG    OrganizationURL
 
-/* FUNC(zx_NEW_md_OrganizationURL) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_OrganizationURL_s* zx_NEW_md_OrganizationURL(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_OrganizationURL_s* x = ZX_ZALLOC(c, struct zx_md_OrganizationURL_s);
-  x->gg.g.tok = zx_md_OrganizationURL_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_OrganizationURL) */
@@ -4217,22 +3834,6 @@ int zx_WALK_WO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL
 #define EL_STRUCT zx_md_PDPDescriptor_s
 #define EL_NS     md
 #define EL_TAG    PDPDescriptor
-
-/* FUNC(zx_NEW_md_PDPDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_PDPDescriptor_s* zx_NEW_md_PDPDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_PDPDescriptor_s* x = ZX_ZALLOC(c, struct zx_md_PDPDescriptor_s);
-  x->gg.g.tok = zx_md_PDPDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4493,22 +4094,6 @@ int zx_WALK_WO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* 
 #define EL_NS     md
 #define EL_TAG    RequestedAttribute
 
-/* FUNC(zx_NEW_md_RequestedAttribute) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_RequestedAttribute_s* zx_NEW_md_RequestedAttribute(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_RequestedAttribute_s* x = ZX_ZALLOC(c, struct zx_md_RequestedAttribute_s);
-  x->gg.g.tok = zx_md_RequestedAttribute_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_RequestedAttribute) */
@@ -4634,22 +4219,6 @@ int zx_WALK_WO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAtt
 #define EL_STRUCT zx_md_RoleDescriptor_s
 #define EL_NS     md
 #define EL_TAG    RoleDescriptor
-
-/* FUNC(zx_NEW_md_RoleDescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_RoleDescriptor_s* zx_NEW_md_RoleDescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_RoleDescriptor_s* x = ZX_ZALLOC(c, struct zx_md_RoleDescriptor_s);
-  x->gg.g.tok = zx_md_RoleDescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4862,22 +4431,6 @@ int zx_WALK_WO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s
 #define EL_STRUCT zx_md_SPSSODescriptor_s
 #define EL_NS     md
 #define EL_TAG    SPSSODescriptor
-
-/* FUNC(zx_NEW_md_SPSSODescriptor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_SPSSODescriptor_s* zx_NEW_md_SPSSODescriptor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_SPSSODescriptor_s* x = ZX_ZALLOC(c, struct zx_md_SPSSODescriptor_s);
-  x->gg.g.tok = zx_md_SPSSODescriptor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5205,22 +4758,6 @@ int zx_WALK_WO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor
 #define EL_NS     md
 #define EL_TAG    ServiceDescription
 
-/* FUNC(zx_NEW_md_ServiceDescription) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_ServiceDescription_s* zx_NEW_md_ServiceDescription(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_ServiceDescription_s* x = ZX_ZALLOC(c, struct zx_md_ServiceDescription_s);
-  x->gg.g.tok = zx_md_ServiceDescription_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_ServiceDescription) */
@@ -5320,22 +4857,6 @@ int zx_WALK_WO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescr
 #define EL_NS     md
 #define EL_TAG    ServiceName
 
-/* FUNC(zx_NEW_md_ServiceName) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_ServiceName_s* zx_NEW_md_ServiceName(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_ServiceName_s* x = ZX_ZALLOC(c, struct zx_md_ServiceName_s);
-  x->gg.g.tok = zx_md_ServiceName_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_md_ServiceName) */
@@ -5434,22 +4955,6 @@ int zx_WALK_WO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x, v
 #define EL_STRUCT zx_md_SingleLogoutService_s
 #define EL_NS     md
 #define EL_TAG    SingleLogoutService
-
-/* FUNC(zx_NEW_md_SingleLogoutService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_SingleLogoutService_s* zx_NEW_md_SingleLogoutService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_SingleLogoutService_s* x = ZX_ZALLOC(c, struct zx_md_SingleLogoutService_s);
-  x->gg.g.tok = zx_md_SingleLogoutService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5557,22 +5062,6 @@ int zx_WALK_WO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogou
 #define EL_STRUCT zx_md_SingleSignOnService_s
 #define EL_NS     md
 #define EL_TAG    SingleSignOnService
-
-/* FUNC(zx_NEW_md_SingleSignOnService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_md_SingleSignOnService_s* zx_NEW_md_SingleSignOnService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_md_SingleSignOnService_s* x = ZX_ZALLOC(c, struct zx_md_SingleSignOnService_s);
-  x->gg.g.tok = zx_md_SingleSignOnService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

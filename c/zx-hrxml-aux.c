@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_hrxml_AccountingCode_s
 #define EL_NS     hrxml
 #define EL_TAG    AccountingCode
-
-/* FUNC(zx_NEW_hrxml_AccountingCode) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_AccountingCode_s* zx_NEW_hrxml_AccountingCode(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_AccountingCode_s* x = ZX_ZALLOC(c, struct zx_hrxml_AccountingCode_s);
-  x->gg.g.tok = zx_hrxml_AccountingCode_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -162,22 +147,6 @@ int zx_WALK_WO_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_Accounting
 #define EL_STRUCT zx_hrxml_Achievement_s
 #define EL_NS     hrxml
 #define EL_TAG    Achievement
-
-/* FUNC(zx_NEW_hrxml_Achievement) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Achievement_s* zx_NEW_hrxml_Achievement(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Achievement_s* x = ZX_ZALLOC(c, struct zx_hrxml_Achievement_s);
-  x->gg.g.tok = zx_hrxml_Achievement_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -323,22 +292,6 @@ int zx_WALK_WO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s
 #define EL_NS     hrxml
 #define EL_TAG    Achievements
 
-/* FUNC(zx_NEW_hrxml_Achievements) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Achievements_s* zx_NEW_hrxml_Achievements(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Achievements_s* x = ZX_ZALLOC(c, struct zx_hrxml_Achievements_s);
-  x->gg.g.tok = zx_hrxml_Achievements_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Achievements) */
@@ -456,22 +409,6 @@ int zx_WALK_WO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements
 #define EL_STRUCT zx_hrxml_AffirmativeActionPlanJobGroupId_s
 #define EL_NS     hrxml
 #define EL_TAG    AffirmativeActionPlanJobGroupId
-
-/* FUNC(zx_NEW_hrxml_AffirmativeActionPlanJobGroupId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* zx_NEW_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* x = ZX_ZALLOC(c, struct zx_hrxml_AffirmativeActionPlanJobGroupId_s);
-  x->gg.g.tok = zx_hrxml_AffirmativeActionPlanJobGroupId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -597,22 +534,6 @@ int zx_WALK_WO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx
 #define EL_NS     hrxml
 #define EL_TAG    Affix
 
-/* FUNC(zx_NEW_hrxml_Affix) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Affix_s* zx_NEW_hrxml_Affix(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Affix_s* x = ZX_ZALLOC(c, struct zx_hrxml_Affix_s);
-  x->gg.g.tok = zx_hrxml_Affix_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Affix) */
@@ -711,22 +632,6 @@ int zx_WALK_WO_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x, void* c
 #define EL_STRUCT zx_hrxml_AlternateScript_s
 #define EL_NS     hrxml
 #define EL_TAG    AlternateScript
-
-/* FUNC(zx_NEW_hrxml_AlternateScript) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_AlternateScript_s* zx_NEW_hrxml_AlternateScript(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_AlternateScript_s* x = ZX_ZALLOC(c, struct zx_hrxml_AlternateScript_s);
-  x->gg.g.tok = zx_hrxml_AlternateScript_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -894,22 +799,6 @@ int zx_WALK_WO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_Alternate
 #define EL_NS     hrxml
 #define EL_TAG    Area
 
-/* FUNC(zx_NEW_hrxml_Area) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Area_s* zx_NEW_hrxml_Area(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Area_s* x = ZX_ZALLOC(c, struct zx_hrxml_Area_s);
-  x->gg.g.tok = zx_hrxml_Area_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Area) */
@@ -1034,22 +923,6 @@ int zx_WALK_WO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x, void* ctx
 #define EL_STRUCT zx_hrxml_Article_s
 #define EL_NS     hrxml
 #define EL_TAG    Article
-
-/* FUNC(zx_NEW_hrxml_Article) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Article_s* zx_NEW_hrxml_Article(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Article_s* x = ZX_ZALLOC(c, struct zx_hrxml_Article_s);
-  x->gg.g.tok = zx_hrxml_Article_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1261,22 +1134,6 @@ int zx_WALK_WO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, voi
 #define EL_NS     hrxml
 #define EL_TAG    Association
 
-/* FUNC(zx_NEW_hrxml_Association) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Association_s* zx_NEW_hrxml_Association(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Association_s* x = ZX_ZALLOC(c, struct zx_hrxml_Association_s);
-  x->gg.g.tok = zx_hrxml_Association_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Association) */
@@ -1459,22 +1316,6 @@ int zx_WALK_WO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s
 #define EL_NS     hrxml
 #define EL_TAG    Associations
 
-/* FUNC(zx_NEW_hrxml_Associations) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Associations_s* zx_NEW_hrxml_Associations(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Associations_s* x = ZX_ZALLOC(c, struct zx_hrxml_Associations_s);
-  x->gg.g.tok = zx_hrxml_Associations_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Associations) */
@@ -1593,22 +1434,6 @@ int zx_WALK_WO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations
 #define EL_NS     hrxml
 #define EL_TAG    AttachmentReference
 
-/* FUNC(zx_NEW_hrxml_AttachmentReference) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_AttachmentReference_s* zx_NEW_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_AttachmentReference_s* x = ZX_ZALLOC(c, struct zx_hrxml_AttachmentReference_s);
-  x->gg.g.tok = zx_hrxml_AttachmentReference_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_AttachmentReference) */
@@ -1709,22 +1534,6 @@ int zx_WALK_WO_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_Attac
 #define EL_STRUCT zx_hrxml_AvailabilityDates_s
 #define EL_NS     hrxml
 #define EL_TAG    AvailabilityDates
-
-/* FUNC(zx_NEW_hrxml_AvailabilityDates) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_AvailabilityDates_s* zx_NEW_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_AvailabilityDates_s* x = ZX_ZALLOC(c, struct zx_hrxml_AvailabilityDates_s);
-  x->gg.g.tok = zx_hrxml_AvailabilityDates_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1865,22 +1674,6 @@ int zx_WALK_WO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_Availab
 #define EL_NS     hrxml
 #define EL_TAG    AvailabilityInfo
 
-/* FUNC(zx_NEW_hrxml_AvailabilityInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_AvailabilityInfo_s* zx_NEW_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_AvailabilityInfo_s* x = ZX_ZALLOC(c, struct zx_hrxml_AvailabilityInfo_s);
-  x->gg.g.tok = zx_hrxml_AvailabilityInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_AvailabilityInfo) */
@@ -2020,22 +1813,6 @@ int zx_WALK_WO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_Availabi
 #define EL_NS     hrxml
 #define EL_TAG    BKZClassification
 
-/* FUNC(zx_NEW_hrxml_BKZClassification) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_BKZClassification_s* zx_NEW_hrxml_BKZClassification(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_BKZClassification_s* x = ZX_ZALLOC(c, struct zx_hrxml_BKZClassification_s);
-  x->gg.g.tok = zx_hrxml_BKZClassification_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_BKZClassification) */
@@ -2158,22 +1935,6 @@ int zx_WALK_WO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClas
 #define EL_STRUCT zx_hrxml_BKZId_s
 #define EL_NS     hrxml
 #define EL_TAG    BKZId
-
-/* FUNC(zx_NEW_hrxml_BKZId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_BKZId_s* zx_NEW_hrxml_BKZId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_BKZId_s* x = ZX_ZALLOC(c, struct zx_hrxml_BKZId_s);
-  x->gg.g.tok = zx_hrxml_BKZId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2299,22 +2060,6 @@ int zx_WALK_WO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x, void* c
 #define EL_NS     hrxml
 #define EL_TAG    BasePay
 
-/* FUNC(zx_NEW_hrxml_BasePay) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_BasePay_s* zx_NEW_hrxml_BasePay(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_BasePay_s* x = ZX_ZALLOC(c, struct zx_hrxml_BasePay_s);
-  x->gg.g.tok = zx_hrxml_BasePay_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_BasePay) */
@@ -2425,22 +2170,6 @@ int zx_WALK_WO_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x, voi
 #define EL_STRUCT zx_hrxml_Benefits_s
 #define EL_NS     hrxml
 #define EL_TAG    Benefits
-
-/* FUNC(zx_NEW_hrxml_Benefits) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Benefits_s* zx_NEW_hrxml_Benefits(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Benefits_s* x = ZX_ZALLOC(c, struct zx_hrxml_Benefits_s);
-  x->gg.g.tok = zx_hrxml_Benefits_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2680,22 +2409,6 @@ int zx_WALK_WO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x, v
 #define EL_NS     hrxml
 #define EL_TAG    BiologicalDescriptors
 
-/* FUNC(zx_NEW_hrxml_BiologicalDescriptors) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_BiologicalDescriptors_s* zx_NEW_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_BiologicalDescriptors_s* x = ZX_ZALLOC(c, struct zx_hrxml_BiologicalDescriptors_s);
-  x->gg.g.tok = zx_hrxml_BiologicalDescriptors_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_BiologicalDescriptors) */
@@ -2912,22 +2625,6 @@ int zx_WALK_WO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_Bio
 #define EL_NS     hrxml
 #define EL_TAG    Book
 
-/* FUNC(zx_NEW_hrxml_Book) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Book_s* zx_NEW_hrxml_Book(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Book_s* x = ZX_ZALLOC(c, struct zx_hrxml_Book_s);
-  x->gg.g.tok = zx_hrxml_Book_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Book) */
@@ -3126,22 +2823,6 @@ int zx_WALK_WO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x, void* ctx
 #define EL_STRUCT zx_hrxml_Candidate_s
 #define EL_NS     hrxml
 #define EL_TAG    Candidate
-
-/* FUNC(zx_NEW_hrxml_Candidate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Candidate_s* zx_NEW_hrxml_Candidate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Candidate_s* x = ZX_ZALLOC(c, struct zx_hrxml_Candidate_s);
-  x->gg.g.tok = zx_hrxml_Candidate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3372,22 +3053,6 @@ int zx_WALK_WO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x,
 #define EL_STRUCT zx_hrxml_CandidateProfile_s
 #define EL_NS     hrxml
 #define EL_TAG    CandidateProfile
-
-/* FUNC(zx_NEW_hrxml_CandidateProfile) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_CandidateProfile_s* zx_NEW_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_CandidateProfile_s* x = ZX_ZALLOC(c, struct zx_hrxml_CandidateProfile_s);
-  x->gg.g.tok = zx_hrxml_CandidateProfile_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3708,22 +3373,6 @@ int zx_WALK_WO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_Candidat
 #define EL_NS     hrxml
 #define EL_TAG    CandidateRecordInfo
 
-/* FUNC(zx_NEW_hrxml_CandidateRecordInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_CandidateRecordInfo_s* zx_NEW_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_CandidateRecordInfo_s* x = ZX_ZALLOC(c, struct zx_hrxml_CandidateRecordInfo_s);
-  x->gg.g.tok = zx_hrxml_CandidateRecordInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_CandidateRecordInfo) */
@@ -3862,22 +3511,6 @@ int zx_WALK_WO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_Candi
 #define EL_STRUCT zx_hrxml_CandidateSupplier_s
 #define EL_NS     hrxml
 #define EL_TAG    CandidateSupplier
-
-/* FUNC(zx_NEW_hrxml_CandidateSupplier) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_CandidateSupplier_s* zx_NEW_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_CandidateSupplier_s* x = ZX_ZALLOC(c, struct zx_hrxml_CandidateSupplier_s);
-  x->gg.g.tok = zx_hrxml_CandidateSupplier_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4067,22 +3700,6 @@ int zx_WALK_WO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_Candida
 #define EL_NS     hrxml
 #define EL_TAG    ChildrenInfo
 
-/* FUNC(zx_NEW_hrxml_ChildrenInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ChildrenInfo_s* zx_NEW_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ChildrenInfo_s* x = ZX_ZALLOC(c, struct zx_hrxml_ChildrenInfo_s);
-  x->gg.g.tok = zx_hrxml_ChildrenInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_ChildrenInfo) */
@@ -4190,22 +3807,6 @@ int zx_WALK_WO_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo
 #define EL_NS     hrxml
 #define EL_TAG    ClassRank
 
-/* FUNC(zx_NEW_hrxml_ClassRank) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ClassRank_s* zx_NEW_hrxml_ClassRank(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ClassRank_s* x = ZX_ZALLOC(c, struct zx_hrxml_ClassRank_s);
-  x->gg.g.tok = zx_hrxml_ClassRank_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_ClassRank) */
@@ -4304,22 +3905,6 @@ int zx_WALK_WO_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x,
 #define EL_STRUCT zx_hrxml_Commute_s
 #define EL_NS     hrxml
 #define EL_TAG    Commute
-
-/* FUNC(zx_NEW_hrxml_Commute) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Commute_s* zx_NEW_hrxml_Commute(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Commute_s* x = ZX_ZALLOC(c, struct zx_hrxml_Commute_s);
-  x->gg.g.tok = zx_hrxml_Commute_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4465,22 +4050,6 @@ int zx_WALK_WO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x, voi
 #define EL_NS     hrxml
 #define EL_TAG    Company
 
-/* FUNC(zx_NEW_hrxml_Company) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Company_s* zx_NEW_hrxml_Company(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Company_s* x = ZX_ZALLOC(c, struct zx_hrxml_Company_s);
-  x->gg.g.tok = zx_hrxml_Company_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Company) */
@@ -4604,22 +4173,6 @@ int zx_WALK_WO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x, voi
 #define EL_NS     hrxml
 #define EL_TAG    CompanyVehicle
 
-/* FUNC(zx_NEW_hrxml_CompanyVehicle) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_CompanyVehicle_s* zx_NEW_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_CompanyVehicle_s* x = ZX_ZALLOC(c, struct zx_hrxml_CompanyVehicle_s);
-  x->gg.g.tok = zx_hrxml_CompanyVehicle_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_CompanyVehicle) */
@@ -4739,22 +4292,6 @@ int zx_WALK_WO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVeh
 #define EL_STRUCT zx_hrxml_Compensation_s
 #define EL_NS     hrxml
 #define EL_TAG    Compensation
-
-/* FUNC(zx_NEW_hrxml_Compensation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Compensation_s* zx_NEW_hrxml_Compensation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Compensation_s* x = ZX_ZALLOC(c, struct zx_hrxml_Compensation_s);
-  x->gg.g.tok = zx_hrxml_Compensation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4920,22 +4457,6 @@ int zx_WALK_WO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation
 #define EL_STRUCT zx_hrxml_Competency_s
 #define EL_NS     hrxml
 #define EL_TAG    Competency
-
-/* FUNC(zx_NEW_hrxml_Competency) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Competency_s* zx_NEW_hrxml_Competency(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Competency_s* x = ZX_ZALLOC(c, struct zx_hrxml_Competency_s);
-  x->gg.g.tok = zx_hrxml_Competency_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5166,22 +4687,6 @@ int zx_WALK_WO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* 
 #define EL_NS     hrxml
 #define EL_TAG    CompetencyEvidence
 
-/* FUNC(zx_NEW_hrxml_CompetencyEvidence) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_CompetencyEvidence_s* zx_NEW_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_CompetencyEvidence_s* x = ZX_ZALLOC(c, struct zx_hrxml_CompetencyEvidence_s);
-  x->gg.g.tok = zx_hrxml_CompetencyEvidence_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_CompetencyEvidence) */
@@ -5361,22 +4866,6 @@ int zx_WALK_WO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_Compet
 #define EL_NS     hrxml
 #define EL_TAG    CompetencyId
 
-/* FUNC(zx_NEW_hrxml_CompetencyId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_CompetencyId_s* zx_NEW_hrxml_CompetencyId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_CompetencyId_s* x = ZX_ZALLOC(c, struct zx_hrxml_CompetencyId_s);
-  x->gg.g.tok = zx_hrxml_CompetencyId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_CompetencyId) */
@@ -5500,22 +4989,6 @@ int zx_WALK_WO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId
 #define EL_STRUCT zx_hrxml_CompetencyWeight_s
 #define EL_NS     hrxml
 #define EL_TAG    CompetencyWeight
-
-/* FUNC(zx_NEW_hrxml_CompetencyWeight) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_CompetencyWeight_s* zx_NEW_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_CompetencyWeight_s* x = ZX_ZALLOC(c, struct zx_hrxml_CompetencyWeight_s);
-  x->gg.g.tok = zx_hrxml_CompetencyWeight_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5663,22 +5136,6 @@ int zx_WALK_WO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_Competen
 #define EL_NS     hrxml
 #define EL_TAG    ConferenceDate
 
-/* FUNC(zx_NEW_hrxml_ConferenceDate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ConferenceDate_s* zx_NEW_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ConferenceDate_s* x = ZX_ZALLOC(c, struct zx_hrxml_ConferenceDate_s);
-  x->gg.g.tok = zx_hrxml_ConferenceDate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_ConferenceDate) */
@@ -5802,22 +5259,6 @@ int zx_WALK_WO_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_Conference
 #define EL_STRUCT zx_hrxml_ConferencePaper_s
 #define EL_NS     hrxml
 #define EL_TAG    ConferencePaper
-
-/* FUNC(zx_NEW_hrxml_ConferencePaper) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ConferencePaper_s* zx_NEW_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ConferencePaper_s* x = ZX_ZALLOC(c, struct zx_hrxml_ConferencePaper_s);
-  x->gg.g.tok = zx_hrxml_ConferencePaper_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6014,22 +5455,6 @@ int zx_WALK_WO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_Conferenc
 #define EL_NS     hrxml
 #define EL_TAG    Considerations
 
-/* FUNC(zx_NEW_hrxml_Considerations) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Considerations_s* zx_NEW_hrxml_Considerations(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Considerations_s* x = ZX_ZALLOC(c, struct zx_hrxml_Considerations_s);
-  x->gg.g.tok = zx_hrxml_Considerations_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Considerations) */
@@ -6202,22 +5627,6 @@ int zx_WALK_WO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerat
 #define EL_NS     hrxml
 #define EL_TAG    ContactId
 
-/* FUNC(zx_NEW_hrxml_ContactId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ContactId_s* zx_NEW_hrxml_ContactId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ContactId_s* x = ZX_ZALLOC(c, struct zx_hrxml_ContactId_s);
-  x->gg.g.tok = zx_hrxml_ContactId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_ContactId) */
@@ -6341,22 +5750,6 @@ int zx_WALK_WO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x,
 #define EL_STRUCT zx_hrxml_ContactInfo_s
 #define EL_NS     hrxml
 #define EL_TAG    ContactInfo
-
-/* FUNC(zx_NEW_hrxml_ContactInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ContactInfo_s* zx_NEW_hrxml_ContactInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ContactInfo_s* x = ZX_ZALLOC(c, struct zx_hrxml_ContactInfo_s);
-  x->gg.g.tok = zx_hrxml_ContactInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6496,22 +5889,6 @@ int zx_WALK_WO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s
 #define EL_STRUCT zx_hrxml_ContactMethod_s
 #define EL_NS     hrxml
 #define EL_TAG    ContactMethod
-
-/* FUNC(zx_NEW_hrxml_ContactMethod) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ContactMethod_s* zx_NEW_hrxml_ContactMethod(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ContactMethod_s* x = ZX_ZALLOC(c, struct zx_hrxml_ContactMethod_s);
-  x->gg.g.tok = zx_hrxml_ContactMethod_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6761,22 +6138,6 @@ int zx_WALK_WO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMeth
 #define EL_NS     hrxml
 #define EL_TAG    ContactName
 
-/* FUNC(zx_NEW_hrxml_ContactName) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ContactName_s* zx_NEW_hrxml_ContactName(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ContactName_s* x = ZX_ZALLOC(c, struct zx_hrxml_ContactName_s);
-  x->gg.g.tok = zx_hrxml_ContactName_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_ContactName) */
@@ -6964,22 +6325,6 @@ int zx_WALK_WO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s
 #define EL_NS     hrxml
 #define EL_TAG    Copyright
 
-/* FUNC(zx_NEW_hrxml_Copyright) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Copyright_s* zx_NEW_hrxml_Copyright(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Copyright_s* x = ZX_ZALLOC(c, struct zx_hrxml_Copyright_s);
-  x->gg.g.tok = zx_hrxml_Copyright_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Copyright) */
@@ -7102,22 +6447,6 @@ int zx_WALK_WO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x,
 #define EL_STRUCT zx_hrxml_CopyrightDates_s
 #define EL_NS     hrxml
 #define EL_TAG    CopyrightDates
-
-/* FUNC(zx_NEW_hrxml_CopyrightDates) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_CopyrightDates_s* zx_NEW_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_CopyrightDates_s* x = ZX_ZALLOC(c, struct zx_hrxml_CopyrightDates_s);
-  x->gg.g.tok = zx_hrxml_CopyrightDates_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -7257,22 +6586,6 @@ int zx_WALK_WO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightD
 #define EL_STRUCT zx_hrxml_DatesOfAttendance_s
 #define EL_NS     hrxml
 #define EL_TAG    DatesOfAttendance
-
-/* FUNC(zx_NEW_hrxml_DatesOfAttendance) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DatesOfAttendance_s* zx_NEW_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DatesOfAttendance_s* x = ZX_ZALLOC(c, struct zx_hrxml_DatesOfAttendance_s);
-  x->gg.g.tok = zx_hrxml_DatesOfAttendance_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -7419,22 +6732,6 @@ int zx_WALK_WO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOf
 #define EL_NS     hrxml
 #define EL_TAG    DatesOfService
 
-/* FUNC(zx_NEW_hrxml_DatesOfService) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DatesOfService_s* zx_NEW_hrxml_DatesOfService(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DatesOfService_s* x = ZX_ZALLOC(c, struct zx_hrxml_DatesOfService_s);
-  x->gg.g.tok = zx_hrxml_DatesOfService_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_DatesOfService) */
@@ -7573,22 +6870,6 @@ int zx_WALK_WO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfSer
 #define EL_STRUCT zx_hrxml_Degree_s
 #define EL_NS     hrxml
 #define EL_TAG    Degree
-
-/* FUNC(zx_NEW_hrxml_Degree) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Degree_s* zx_NEW_hrxml_Degree(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Degree_s* x = ZX_ZALLOC(c, struct zx_hrxml_Degree_s);
-  x->gg.g.tok = zx_hrxml_Degree_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -7887,22 +7168,6 @@ int zx_WALK_WO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x, void*
 #define EL_NS     hrxml
 #define EL_TAG    DegreeClassification
 
-/* FUNC(zx_NEW_hrxml_DegreeClassification) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DegreeClassification_s* zx_NEW_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DegreeClassification_s* x = ZX_ZALLOC(c, struct zx_hrxml_DegreeClassification_s);
-  x->gg.g.tok = zx_hrxml_DegreeClassification_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_DegreeClassification) */
@@ -8042,22 +7307,6 @@ int zx_WALK_WO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_Degr
 #define EL_NS     hrxml
 #define EL_TAG    DegreeDate
 
-/* FUNC(zx_NEW_hrxml_DegreeDate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DegreeDate_s* zx_NEW_hrxml_DegreeDate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DegreeDate_s* x = ZX_ZALLOC(c, struct zx_hrxml_DegreeDate_s);
-  x->gg.g.tok = zx_hrxml_DegreeDate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_DegreeDate) */
@@ -8181,22 +7430,6 @@ int zx_WALK_WO_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* 
 #define EL_STRUCT zx_hrxml_DegreeMajor_s
 #define EL_NS     hrxml
 #define EL_TAG    DegreeMajor
-
-/* FUNC(zx_NEW_hrxml_DegreeMajor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DegreeMajor_s* zx_NEW_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DegreeMajor_s* x = ZX_ZALLOC(c, struct zx_hrxml_DegreeMajor_s);
-  x->gg.g.tok = zx_hrxml_DegreeMajor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -8330,22 +7563,6 @@ int zx_WALK_WO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s
 #define EL_STRUCT zx_hrxml_DegreeMeasure_s
 #define EL_NS     hrxml
 #define EL_TAG    DegreeMeasure
-
-/* FUNC(zx_NEW_hrxml_DegreeMeasure) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DegreeMeasure_s* zx_NEW_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DegreeMeasure_s* x = ZX_ZALLOC(c, struct zx_hrxml_DegreeMeasure_s);
-  x->gg.g.tok = zx_hrxml_DegreeMeasure_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -8518,22 +7735,6 @@ int zx_WALK_WO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasu
 #define EL_NS     hrxml
 #define EL_TAG    DegreeMinor
 
-/* FUNC(zx_NEW_hrxml_DegreeMinor) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DegreeMinor_s* zx_NEW_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DegreeMinor_s* x = ZX_ZALLOC(c, struct zx_hrxml_DegreeMinor_s);
-  x->gg.g.tok = zx_hrxml_DegreeMinor_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_DegreeMinor) */
@@ -8657,22 +7858,6 @@ int zx_WALK_WO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s
 #define EL_NS     hrxml
 #define EL_TAG    DegreeName
 
-/* FUNC(zx_NEW_hrxml_DegreeName) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DegreeName_s* zx_NEW_hrxml_DegreeName(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DegreeName_s* x = ZX_ZALLOC(c, struct zx_hrxml_DegreeName_s);
-  x->gg.g.tok = zx_hrxml_DegreeName_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_DegreeName) */
@@ -8773,22 +7958,6 @@ int zx_WALK_WO_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* 
 #define EL_STRUCT zx_hrxml_DeliveryAddress_s
 #define EL_NS     hrxml
 #define EL_TAG    DeliveryAddress
-
-/* FUNC(zx_NEW_hrxml_DeliveryAddress) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DeliveryAddress_s* zx_NEW_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DeliveryAddress_s* x = ZX_ZALLOC(c, struct zx_hrxml_DeliveryAddress_s);
-  x->gg.g.tok = zx_hrxml_DeliveryAddress_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -8911,22 +8080,6 @@ int zx_WALK_WO_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryA
 #define EL_STRUCT zx_hrxml_DemographicDescriptors_s
 #define EL_NS     hrxml
 #define EL_TAG    DemographicDescriptors
-
-/* FUNC(zx_NEW_hrxml_DemographicDescriptors) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DemographicDescriptors_s* zx_NEW_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DemographicDescriptors_s* x = ZX_ZALLOC(c, struct zx_hrxml_DemographicDescriptors_s);
-  x->gg.g.tok = zx_hrxml_DemographicDescriptors_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -9118,22 +8271,6 @@ int zx_WALK_WO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_De
 #define EL_NS     hrxml
 #define EL_TAG    Description
 
-/* FUNC(zx_NEW_hrxml_Description) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Description_s* zx_NEW_hrxml_Description(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Description_s* x = ZX_ZALLOC(c, struct zx_hrxml_Description_s);
-  x->gg.g.tok = zx_hrxml_Description_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Description) */
@@ -9232,22 +8369,6 @@ int zx_WALK_WO_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s
 #define EL_STRUCT zx_hrxml_Details_s
 #define EL_NS     hrxml
 #define EL_TAG    Details
-
-/* FUNC(zx_NEW_hrxml_Details) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Details_s* zx_NEW_hrxml_Details(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Details_s* x = ZX_ZALLOC(c, struct zx_hrxml_Details_s);
-  x->gg.g.tok = zx_hrxml_Details_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -9349,22 +8470,6 @@ int zx_WALK_WO_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x, voi
 #define EL_STRUCT zx_hrxml_DisabilityInfo_s
 #define EL_NS     hrxml
 #define EL_TAG    DisabilityInfo
-
-/* FUNC(zx_NEW_hrxml_DisabilityInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DisabilityInfo_s* zx_NEW_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DisabilityInfo_s* x = ZX_ZALLOC(c, struct zx_hrxml_DisabilityInfo_s);
-  x->gg.g.tok = zx_hrxml_DisabilityInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -9483,22 +8588,6 @@ int zx_WALK_WO_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_Disability
 #define EL_NS     hrxml
 #define EL_TAG    DistanceMax
 
-/* FUNC(zx_NEW_hrxml_DistanceMax) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DistanceMax_s* zx_NEW_hrxml_DistanceMax(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DistanceMax_s* x = ZX_ZALLOC(c, struct zx_hrxml_DistanceMax_s);
-  x->gg.g.tok = zx_hrxml_DistanceMax_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_DistanceMax) */
@@ -9597,22 +8686,6 @@ int zx_WALK_WO_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s
 #define EL_STRUCT zx_hrxml_DistributeTo_s
 #define EL_NS     hrxml
 #define EL_TAG    DistributeTo
-
-/* FUNC(zx_NEW_hrxml_DistributeTo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DistributeTo_s* zx_NEW_hrxml_DistributeTo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DistributeTo_s* x = ZX_ZALLOC(c, struct zx_hrxml_DistributeTo_s);
-  x->gg.g.tok = zx_hrxml_DistributeTo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -9732,22 +8805,6 @@ int zx_WALK_WO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo
 #define EL_NS     hrxml
 #define EL_TAG    DoingBusinessAs
 
-/* FUNC(zx_NEW_hrxml_DoingBusinessAs) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DoingBusinessAs_s* zx_NEW_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DoingBusinessAs_s* x = ZX_ZALLOC(c, struct zx_hrxml_DoingBusinessAs_s);
-  x->gg.g.tok = zx_hrxml_DoingBusinessAs_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_DoingBusinessAs) */
@@ -9846,22 +8903,6 @@ int zx_WALK_WO_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusi
 #define EL_STRUCT zx_hrxml_DressCode_s
 #define EL_NS     hrxml
 #define EL_TAG    DressCode
-
-/* FUNC(zx_NEW_hrxml_DressCode) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DressCode_s* zx_NEW_hrxml_DressCode(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DressCode_s* x = ZX_ZALLOC(c, struct zx_hrxml_DressCode_s);
-  x->gg.g.tok = zx_hrxml_DressCode_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -9962,22 +9003,6 @@ int zx_WALK_WO_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x,
 #define EL_NS     hrxml
 #define EL_TAG    DunsNumber
 
-/* FUNC(zx_NEW_hrxml_DunsNumber) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_DunsNumber_s* zx_NEW_hrxml_DunsNumber(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_DunsNumber_s* x = ZX_ZALLOC(c, struct zx_hrxml_DunsNumber_s);
-  x->gg.g.tok = zx_hrxml_DunsNumber_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_DunsNumber) */
@@ -10076,22 +9101,6 @@ int zx_WALK_WO_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* 
 #define EL_STRUCT zx_hrxml_EEOCJobCategory_s
 #define EL_NS     hrxml
 #define EL_TAG    EEOCJobCategory
-
-/* FUNC(zx_NEW_hrxml_EEOCJobCategory) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_EEOCJobCategory_s* zx_NEW_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_EEOCJobCategory_s* x = ZX_ZALLOC(c, struct zx_hrxml_EEOCJobCategory_s);
-  x->gg.g.tok = zx_hrxml_EEOCJobCategory_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -10199,22 +9208,6 @@ int zx_WALK_WO_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCa
 #define EL_STRUCT zx_hrxml_EducationHistory_s
 #define EL_NS     hrxml
 #define EL_TAG    EducationHistory
-
-/* FUNC(zx_NEW_hrxml_EducationHistory) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_EducationHistory_s* zx_NEW_hrxml_EducationHistory(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_EducationHistory_s* x = ZX_ZALLOC(c, struct zx_hrxml_EducationHistory_s);
-  x->gg.g.tok = zx_hrxml_EducationHistory_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -10333,22 +9326,6 @@ int zx_WALK_WO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_Educatio
 #define EL_STRUCT zx_hrxml_EducationalMeasure_s
 #define EL_NS     hrxml
 #define EL_TAG    EducationalMeasure
-
-/* FUNC(zx_NEW_hrxml_EducationalMeasure) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_EducationalMeasure_s* zx_NEW_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_EducationalMeasure_s* x = ZX_ZALLOC(c, struct zx_hrxml_EducationalMeasure_s);
-  x->gg.g.tok = zx_hrxml_EducationalMeasure_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -10509,22 +9486,6 @@ int zx_WALK_WO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_Educat
 #define EL_NS     hrxml
 #define EL_TAG    EffectiveDate
 
-/* FUNC(zx_NEW_hrxml_EffectiveDate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_EffectiveDate_s* zx_NEW_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_EffectiveDate_s* x = ZX_ZALLOC(c, struct zx_hrxml_EffectiveDate_s);
-  x->gg.g.tok = zx_hrxml_EffectiveDate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_EffectiveDate) */
@@ -10663,22 +9624,6 @@ int zx_WALK_WO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDa
 #define EL_STRUCT zx_hrxml_EmployerContactInfo_s
 #define EL_NS     hrxml
 #define EL_TAG    EmployerContactInfo
-
-/* FUNC(zx_NEW_hrxml_EmployerContactInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_EmployerContactInfo_s* zx_NEW_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_EmployerContactInfo_s* x = ZX_ZALLOC(c, struct zx_hrxml_EmployerContactInfo_s);
-  x->gg.g.tok = zx_hrxml_EmployerContactInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -10863,22 +9808,6 @@ int zx_WALK_WO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_Emplo
 #define EL_NS     hrxml
 #define EL_TAG    EmployerOrg
 
-/* FUNC(zx_NEW_hrxml_EmployerOrg) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_EmployerOrg_s* zx_NEW_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_EmployerOrg_s* x = ZX_ZALLOC(c, struct zx_hrxml_EmployerOrg_s);
-  x->gg.g.tok = zx_hrxml_EmployerOrg_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_EmployerOrg) */
@@ -11046,22 +9975,6 @@ int zx_WALK_WO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s
 #define EL_NS     hrxml
 #define EL_TAG    EmploymentHistory
 
-/* FUNC(zx_NEW_hrxml_EmploymentHistory) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_EmploymentHistory_s* zx_NEW_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_EmploymentHistory_s* x = ZX_ZALLOC(c, struct zx_hrxml_EmploymentHistory_s);
-  x->gg.g.tok = zx_hrxml_EmploymentHistory_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_EmploymentHistory) */
@@ -11179,22 +10092,6 @@ int zx_WALK_WO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_Employm
 #define EL_STRUCT zx_hrxml_EndDate_s
 #define EL_NS     hrxml
 #define EL_TAG    EndDate
-
-/* FUNC(zx_NEW_hrxml_EndDate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_EndDate_s* zx_NEW_hrxml_EndDate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_EndDate_s* x = ZX_ZALLOC(c, struct zx_hrxml_EndDate_s);
-  x->gg.g.tok = zx_hrxml_EndDate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -11320,22 +10217,6 @@ int zx_WALK_WO_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x, voi
 #define EL_NS     hrxml
 #define EL_TAG    EndingCompensation
 
-/* FUNC(zx_NEW_hrxml_EndingCompensation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_EndingCompensation_s* zx_NEW_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_EndingCompensation_s* x = ZX_ZALLOC(c, struct zx_hrxml_EndingCompensation_s);
-  x->gg.g.tok = zx_hrxml_EndingCompensation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_EndingCompensation) */
@@ -11440,22 +10321,6 @@ int zx_WALK_WO_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_Ending
 #define EL_STRUCT zx_hrxml_EnvironmentId_s
 #define EL_NS     hrxml
 #define EL_TAG    EnvironmentId
-
-/* FUNC(zx_NEW_hrxml_EnvironmentId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_EnvironmentId_s* zx_NEW_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_EnvironmentId_s* x = ZX_ZALLOC(c, struct zx_hrxml_EnvironmentId_s);
-  x->gg.g.tok = zx_hrxml_EnvironmentId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -11581,22 +10446,6 @@ int zx_WALK_WO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_Environment
 #define EL_NS     hrxml
 #define EL_TAG    EvidenceId
 
-/* FUNC(zx_NEW_hrxml_EvidenceId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_EvidenceId_s* zx_NEW_hrxml_EvidenceId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_EvidenceId_s* x = ZX_ZALLOC(c, struct zx_hrxml_EvidenceId_s);
-  x->gg.g.tok = zx_hrxml_EvidenceId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_EvidenceId) */
@@ -11699,22 +10548,6 @@ int zx_WALK_WO_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* 
 #define EL_STRUCT zx_hrxml_ExpatriateBenefits_s
 #define EL_NS     hrxml
 #define EL_TAG    ExpatriateBenefits
-
-/* FUNC(zx_NEW_hrxml_ExpatriateBenefits) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ExpatriateBenefits_s* zx_NEW_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ExpatriateBenefits_s* x = ZX_ZALLOC(c, struct zx_hrxml_ExpatriateBenefits_s);
-  x->gg.g.tok = zx_hrxml_ExpatriateBenefits_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -11823,22 +10656,6 @@ int zx_WALK_WO_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_Expatr
 #define EL_NS     hrxml
 #define EL_TAG    FamilyName
 
-/* FUNC(zx_NEW_hrxml_FamilyName) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_FamilyName_s* zx_NEW_hrxml_FamilyName(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_FamilyName_s* x = ZX_ZALLOC(c, struct zx_hrxml_FamilyName_s);
-  x->gg.g.tok = zx_hrxml_FamilyName_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_FamilyName) */
@@ -11939,22 +10756,6 @@ int zx_WALK_WO_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* 
 #define EL_STRUCT zx_hrxml_Fax_s
 #define EL_NS     hrxml
 #define EL_TAG    Fax
-
-/* FUNC(zx_NEW_hrxml_Fax) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Fax_s* zx_NEW_hrxml_Fax(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Fax_s* x = ZX_ZALLOC(c, struct zx_hrxml_Fax_s);
-  x->gg.g.tok = zx_hrxml_Fax_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -12057,22 +10858,6 @@ int zx_WALK_WO_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x, void* ctx, 
 #define EL_STRUCT zx_hrxml_FirstIssuedDate_s
 #define EL_NS     hrxml
 #define EL_TAG    FirstIssuedDate
-
-/* FUNC(zx_NEW_hrxml_FirstIssuedDate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_FirstIssuedDate_s* zx_NEW_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_FirstIssuedDate_s* x = ZX_ZALLOC(c, struct zx_hrxml_FirstIssuedDate_s);
-  x->gg.g.tok = zx_hrxml_FirstIssuedDate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -12198,22 +10983,6 @@ int zx_WALK_WO_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssu
 #define EL_NS     hrxml
 #define EL_TAG    FormattedPublicationDescription
 
-/* FUNC(zx_NEW_hrxml_FormattedPublicationDescription) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_FormattedPublicationDescription_s* zx_NEW_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_FormattedPublicationDescription_s* x = ZX_ZALLOC(c, struct zx_hrxml_FormattedPublicationDescription_s);
-  x->gg.g.tok = zx_hrxml_FormattedPublicationDescription_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_FormattedPublicationDescription) */
@@ -12313,22 +11082,6 @@ int zx_WALK_WO_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx
 #define EL_NS     hrxml
 #define EL_TAG    Height
 
-/* FUNC(zx_NEW_hrxml_Height) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Height_s* zx_NEW_hrxml_Height(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Height_s* x = ZX_ZALLOC(c, struct zx_hrxml_Height_s);
-  x->gg.g.tok = zx_hrxml_Height_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Height) */
@@ -12427,22 +11180,6 @@ int zx_WALK_WO_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x, void*
 #define EL_STRUCT zx_hrxml_HighestPossibleValue_s
 #define EL_NS     hrxml
 #define EL_TAG    HighestPossibleValue
-
-/* FUNC(zx_NEW_hrxml_HighestPossibleValue) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_HighestPossibleValue_s* zx_NEW_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_HighestPossibleValue_s* x = ZX_ZALLOC(c, struct zx_hrxml_HighestPossibleValue_s);
-  x->gg.g.tok = zx_hrxml_HighestPossibleValue_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -12583,22 +11320,6 @@ int zx_WALK_WO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_High
 #define EL_NS     hrxml
 #define EL_TAG    HorizontalAccuracy
 
-/* FUNC(zx_NEW_hrxml_HorizontalAccuracy) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_HorizontalAccuracy_s* zx_NEW_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_HorizontalAccuracy_s* x = ZX_ZALLOC(c, struct zx_hrxml_HorizontalAccuracy_s);
-  x->gg.g.tok = zx_hrxml_HorizontalAccuracy_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_HorizontalAccuracy) */
@@ -12695,22 +11416,6 @@ int zx_WALK_WO_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_Horizo
 #define EL_STRUCT zx_hrxml_Id_s
 #define EL_NS     hrxml
 #define EL_TAG    Id
-
-/* FUNC(zx_NEW_hrxml_Id) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Id_s* zx_NEW_hrxml_Id(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Id_s* x = ZX_ZALLOC(c, struct zx_hrxml_Id_s);
-  x->gg.g.tok = zx_hrxml_Id_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -12836,22 +11541,6 @@ int zx_WALK_WO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x, void* ctx, in
 #define EL_NS     hrxml
 #define EL_TAG    IdValue
 
-/* FUNC(zx_NEW_hrxml_IdValue) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_IdValue_s* zx_NEW_hrxml_IdValue(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_IdValue_s* x = ZX_ZALLOC(c, struct zx_hrxml_IdValue_s);
-  x->gg.g.tok = zx_hrxml_IdValue_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_IdValue) */
@@ -12950,22 +11639,6 @@ int zx_WALK_WO_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x, voi
 #define EL_STRUCT zx_hrxml_IndustryCode_s
 #define EL_NS     hrxml
 #define EL_TAG    IndustryCode
-
-/* FUNC(zx_NEW_hrxml_IndustryCode) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_IndustryCode_s* zx_NEW_hrxml_IndustryCode(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_IndustryCode_s* x = ZX_ZALLOC(c, struct zx_hrxml_IndustryCode_s);
-  x->gg.g.tok = zx_hrxml_IndustryCode_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -13068,22 +11741,6 @@ int zx_WALK_WO_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode
 #define EL_NS     hrxml
 #define EL_TAG    Insurance
 
-/* FUNC(zx_NEW_hrxml_Insurance) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Insurance_s* zx_NEW_hrxml_Insurance(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Insurance_s* x = ZX_ZALLOC(c, struct zx_hrxml_Insurance_s);
-  x->gg.g.tok = zx_hrxml_Insurance_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Insurance) */
@@ -13183,22 +11840,6 @@ int zx_WALK_WO_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x,
 #define EL_NS     hrxml
 #define EL_TAG    InternetDomainName
 
-/* FUNC(zx_NEW_hrxml_InternetDomainName) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_InternetDomainName_s* zx_NEW_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_InternetDomainName_s* x = ZX_ZALLOC(c, struct zx_hrxml_InternetDomainName_s);
-  x->gg.g.tok = zx_hrxml_InternetDomainName_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_InternetDomainName) */
@@ -13297,22 +11938,6 @@ int zx_WALK_WO_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_Intern
 #define EL_STRUCT zx_hrxml_Inventors_s
 #define EL_NS     hrxml
 #define EL_TAG    Inventors
-
-/* FUNC(zx_NEW_hrxml_Inventors) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Inventors_s* zx_NEW_hrxml_Inventors(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Inventors_s* x = ZX_ZALLOC(c, struct zx_hrxml_Inventors_s);
-  x->gg.g.tok = zx_hrxml_Inventors_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -13416,22 +12041,6 @@ int zx_WALK_WO_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x,
 #define EL_NS     hrxml
 #define EL_TAG    IssuingAuthority
 
-/* FUNC(zx_NEW_hrxml_IssuingAuthority) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_IssuingAuthority_s* zx_NEW_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_IssuingAuthority_s* x = ZX_ZALLOC(c, struct zx_hrxml_IssuingAuthority_s);
-  x->gg.g.tok = zx_hrxml_IssuingAuthority_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_IssuingAuthority) */
@@ -13530,22 +12139,6 @@ int zx_WALK_WO_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingA
 #define EL_STRUCT zx_hrxml_JobCategory_s
 #define EL_NS     hrxml
 #define EL_TAG    JobCategory
-
-/* FUNC(zx_NEW_hrxml_JobCategory) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_JobCategory_s* zx_NEW_hrxml_JobCategory(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_JobCategory_s* x = ZX_ZALLOC(c, struct zx_hrxml_JobCategory_s);
-  x->gg.g.tok = zx_hrxml_JobCategory_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -13701,22 +12294,6 @@ int zx_WALK_WO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s
 #define EL_NS     hrxml
 #define EL_TAG    JobLevelInfo
 
-/* FUNC(zx_NEW_hrxml_JobLevelInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_JobLevelInfo_s* zx_NEW_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_JobLevelInfo_s* x = ZX_ZALLOC(c, struct zx_hrxml_JobLevelInfo_s);
-  x->gg.g.tok = zx_hrxml_JobLevelInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_JobLevelInfo) */
@@ -13833,22 +12410,6 @@ int zx_WALK_WO_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo
 #define EL_STRUCT zx_hrxml_Language_s
 #define EL_NS     hrxml
 #define EL_TAG    Language
-
-/* FUNC(zx_NEW_hrxml_Language) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Language_s* zx_NEW_hrxml_Language(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Language_s* x = ZX_ZALLOC(c, struct zx_hrxml_Language_s);
-  x->gg.g.tok = zx_hrxml_Language_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -13988,22 +12549,6 @@ int zx_WALK_WO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x, v
 #define EL_NS     hrxml
 #define EL_TAG    LanguageCode
 
-/* FUNC(zx_NEW_hrxml_LanguageCode) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_LanguageCode_s* zx_NEW_hrxml_LanguageCode(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_LanguageCode_s* x = ZX_ZALLOC(c, struct zx_hrxml_LanguageCode_s);
-  x->gg.g.tok = zx_hrxml_LanguageCode_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_LanguageCode) */
@@ -14100,22 +12645,6 @@ int zx_WALK_WO_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode
 #define EL_STRUCT zx_hrxml_Languages_s
 #define EL_NS     hrxml
 #define EL_TAG    Languages
-
-/* FUNC(zx_NEW_hrxml_Languages) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Languages_s* zx_NEW_hrxml_Languages(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Languages_s* x = ZX_ZALLOC(c, struct zx_hrxml_Languages_s);
-  x->gg.g.tok = zx_hrxml_Languages_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -14235,22 +12764,6 @@ int zx_WALK_WO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x,
 #define EL_NS     hrxml
 #define EL_TAG    Latitude
 
-/* FUNC(zx_NEW_hrxml_Latitude) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Latitude_s* zx_NEW_hrxml_Latitude(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Latitude_s* x = ZX_ZALLOC(c, struct zx_hrxml_Latitude_s);
-  x->gg.g.tok = zx_hrxml_Latitude_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Latitude) */
@@ -14347,22 +12860,6 @@ int zx_WALK_WO_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x, v
 #define EL_STRUCT zx_hrxml_LegalClassification_s
 #define EL_NS     hrxml
 #define EL_TAG    LegalClassification
-
-/* FUNC(zx_NEW_hrxml_LegalClassification) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_LegalClassification_s* zx_NEW_hrxml_LegalClassification(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_LegalClassification_s* x = ZX_ZALLOC(c, struct zx_hrxml_LegalClassification_s);
-  x->gg.g.tok = zx_hrxml_LegalClassification_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -14464,22 +12961,6 @@ int zx_WALK_WO_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_Legal
 #define EL_STRUCT zx_hrxml_LegalId_s
 #define EL_NS     hrxml
 #define EL_TAG    LegalId
-
-/* FUNC(zx_NEW_hrxml_LegalId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_LegalId_s* zx_NEW_hrxml_LegalId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_LegalId_s* x = ZX_ZALLOC(c, struct zx_hrxml_LegalId_s);
-  x->gg.g.tok = zx_hrxml_LegalId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -14604,22 +13085,6 @@ int zx_WALK_WO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x, voi
 #define EL_STRUCT zx_hrxml_LegalIdentifiers_s
 #define EL_NS     hrxml
 #define EL_TAG    LegalIdentifiers
-
-/* FUNC(zx_NEW_hrxml_LegalIdentifiers) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_LegalIdentifiers_s* zx_NEW_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_LegalIdentifiers_s* x = ZX_ZALLOC(c, struct zx_hrxml_LegalIdentifiers_s);
-  x->gg.g.tok = zx_hrxml_LegalIdentifiers_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -14812,22 +13277,6 @@ int zx_WALK_WO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIde
 #define EL_NS     hrxml
 #define EL_TAG    LicenseOrCertification
 
-/* FUNC(zx_NEW_hrxml_LicenseOrCertification) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_LicenseOrCertification_s* zx_NEW_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_LicenseOrCertification_s* x = ZX_ZALLOC(c, struct zx_hrxml_LicenseOrCertification_s);
-  x->gg.g.tok = zx_hrxml_LicenseOrCertification_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_LicenseOrCertification) */
@@ -15014,22 +13463,6 @@ int zx_WALK_WO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_Li
 #define EL_NS     hrxml
 #define EL_TAG    LicensesAndCertifications
 
-/* FUNC(zx_NEW_hrxml_LicensesAndCertifications) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_LicensesAndCertifications_s* zx_NEW_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_LicensesAndCertifications_s* x = ZX_ZALLOC(c, struct zx_hrxml_LicensesAndCertifications_s);
-  x->gg.g.tok = zx_hrxml_LicensesAndCertifications_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_LicensesAndCertifications) */
@@ -15148,22 +13581,6 @@ int zx_WALK_WO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml
 #define EL_NS     hrxml
 #define EL_TAG    List
 
-/* FUNC(zx_NEW_hrxml_List) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_List_s* zx_NEW_hrxml_List(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_List_s* x = ZX_ZALLOC(c, struct zx_hrxml_List_s);
-  x->gg.g.tok = zx_hrxml_List_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_List) */
@@ -15265,22 +13682,6 @@ int zx_WALK_WO_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x, void* ctx
 #define EL_STRUCT zx_hrxml_LocalInstitutionClassification_s
 #define EL_NS     hrxml
 #define EL_TAG    LocalInstitutionClassification
-
-/* FUNC(zx_NEW_hrxml_LocalInstitutionClassification) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_LocalInstitutionClassification_s* zx_NEW_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_LocalInstitutionClassification_s* x = ZX_ZALLOC(c, struct zx_hrxml_LocalInstitutionClassification_s);
-  x->gg.g.tok = zx_hrxml_LocalInstitutionClassification_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -15421,22 +13822,6 @@ int zx_WALK_WO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_
 #define EL_NS     hrxml
 #define EL_TAG    LocationSummary
 
-/* FUNC(zx_NEW_hrxml_LocationSummary) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_LocationSummary_s* zx_NEW_hrxml_LocationSummary(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_LocationSummary_s* x = ZX_ZALLOC(c, struct zx_hrxml_LocationSummary_s);
-  x->gg.g.tok = zx_hrxml_LocationSummary_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_LocationSummary) */
@@ -15554,22 +13939,6 @@ int zx_WALK_WO_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationS
 #define EL_NS     hrxml
 #define EL_TAG    Longitude
 
-/* FUNC(zx_NEW_hrxml_Longitude) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Longitude_s* zx_NEW_hrxml_Longitude(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Longitude_s* x = ZX_ZALLOC(c, struct zx_hrxml_Longitude_s);
-  x->gg.g.tok = zx_hrxml_Longitude_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Longitude) */
@@ -15666,22 +14035,6 @@ int zx_WALK_WO_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x,
 #define EL_STRUCT zx_hrxml_LowestPossibleValue_s
 #define EL_NS     hrxml
 #define EL_TAG    LowestPossibleValue
-
-/* FUNC(zx_NEW_hrxml_LowestPossibleValue) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_LowestPossibleValue_s* zx_NEW_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_LowestPossibleValue_s* x = ZX_ZALLOC(c, struct zx_hrxml_LowestPossibleValue_s);
-  x->gg.g.tok = zx_hrxml_LowestPossibleValue_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -15822,22 +14175,6 @@ int zx_WALK_WO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Lowes
 #define EL_NS     hrxml
 #define EL_TAG    MatchedObjectId
 
-/* FUNC(zx_NEW_hrxml_MatchedObjectId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_MatchedObjectId_s* zx_NEW_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_MatchedObjectId_s* x = ZX_ZALLOC(c, struct zx_hrxml_MatchedObjectId_s);
-  x->gg.g.tok = zx_hrxml_MatchedObjectId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_MatchedObjectId) */
@@ -15962,22 +14299,6 @@ int zx_WALK_WO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedOb
 #define EL_NS     hrxml
 #define EL_TAG    Measure
 
-/* FUNC(zx_NEW_hrxml_Measure) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Measure_s* zx_NEW_hrxml_Measure(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Measure_s* x = ZX_ZALLOC(c, struct zx_hrxml_Measure_s);
-  x->gg.g.tok = zx_hrxml_Measure_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Measure) */
@@ -16086,22 +14407,6 @@ int zx_WALK_WO_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x, voi
 #define EL_STRUCT zx_hrxml_MilitaryHistory_s
 #define EL_NS     hrxml
 #define EL_TAG    MilitaryHistory
-
-/* FUNC(zx_NEW_hrxml_MilitaryHistory) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_MilitaryHistory_s* zx_NEW_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_MilitaryHistory_s* x = ZX_ZALLOC(c, struct zx_hrxml_MilitaryHistory_s);
-  x->gg.g.tok = zx_hrxml_MilitaryHistory_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -16278,22 +14583,6 @@ int zx_WALK_WO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryH
 #define EL_NS     hrxml
 #define EL_TAG    MilitaryStatus
 
-/* FUNC(zx_NEW_hrxml_MilitaryStatus) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_MilitaryStatus_s* zx_NEW_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_MilitaryStatus_s* x = ZX_ZALLOC(c, struct zx_hrxml_MilitaryStatus_s);
-  x->gg.g.tok = zx_hrxml_MilitaryStatus_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_MilitaryStatus) */
@@ -16392,22 +14681,6 @@ int zx_WALK_WO_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitarySt
 #define EL_STRUCT zx_hrxml_Mobile_s
 #define EL_NS     hrxml
 #define EL_TAG    Mobile
-
-/* FUNC(zx_NEW_hrxml_Mobile) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Mobile_s* zx_NEW_hrxml_Mobile(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Mobile_s* x = ZX_ZALLOC(c, struct zx_hrxml_Mobile_s);
-  x->gg.g.tok = zx_hrxml_Mobile_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -16512,22 +14785,6 @@ int zx_WALK_WO_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x, void*
 #define EL_STRUCT zx_hrxml_MostRecentDate_s
 #define EL_NS     hrxml
 #define EL_TAG    MostRecentDate
-
-/* FUNC(zx_NEW_hrxml_MostRecentDate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_MostRecentDate_s* zx_NEW_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_MostRecentDate_s* x = ZX_ZALLOC(c, struct zx_hrxml_MostRecentDate_s);
-  x->gg.g.tok = zx_hrxml_MostRecentDate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -16652,22 +14909,6 @@ int zx_WALK_WO_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecent
 #define EL_STRUCT zx_hrxml_NonXMLResume_s
 #define EL_NS     hrxml
 #define EL_TAG    NonXMLResume
-
-/* FUNC(zx_NEW_hrxml_NonXMLResume) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_NonXMLResume_s* zx_NEW_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_NonXMLResume_s* x = ZX_ZALLOC(c, struct zx_hrxml_NonXMLResume_s);
-  x->gg.g.tok = zx_hrxml_NonXMLResume_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -16807,22 +15048,6 @@ int zx_WALK_WO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume
 #define EL_NS     hrxml
 #define EL_TAG    NumericValue
 
-/* FUNC(zx_NEW_hrxml_NumericValue) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_NumericValue_s* zx_NEW_hrxml_NumericValue(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_NumericValue_s* x = ZX_ZALLOC(c, struct zx_hrxml_NumericValue_s);
-  x->gg.g.tok = zx_hrxml_NumericValue_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_NumericValue) */
@@ -16927,22 +15152,6 @@ int zx_WALK_WO_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue
 #define EL_STRUCT zx_hrxml_OrgIndustry_s
 #define EL_NS     hrxml
 #define EL_TAG    OrgIndustry
-
-/* FUNC(zx_NEW_hrxml_OrgIndustry) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OrgIndustry_s* zx_NEW_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OrgIndustry_s* x = ZX_ZALLOC(c, struct zx_hrxml_OrgIndustry_s);
-  x->gg.g.tok = zx_hrxml_OrgIndustry_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -17068,22 +15277,6 @@ int zx_WALK_WO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s
 #define EL_STRUCT zx_hrxml_OrgInfo_s
 #define EL_NS     hrxml
 #define EL_TAG    OrgInfo
-
-/* FUNC(zx_NEW_hrxml_OrgInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OrgInfo_s* zx_NEW_hrxml_OrgInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OrgInfo_s* x = ZX_ZALLOC(c, struct zx_hrxml_OrgInfo_s);
-  x->gg.g.tok = zx_hrxml_OrgInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -17229,22 +15422,6 @@ int zx_WALK_WO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x, voi
 #define EL_NS     hrxml
 #define EL_TAG    OrgName
 
-/* FUNC(zx_NEW_hrxml_OrgName) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OrgName_s* zx_NEW_hrxml_OrgName(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OrgName_s* x = ZX_ZALLOC(c, struct zx_hrxml_OrgName_s);
-  x->gg.g.tok = zx_hrxml_OrgName_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_OrgName) */
@@ -17370,22 +15547,6 @@ int zx_WALK_WO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x, voi
 #define EL_NS     hrxml
 #define EL_TAG    Organization
 
-/* FUNC(zx_NEW_hrxml_Organization) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Organization_s* zx_NEW_hrxml_Organization(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Organization_s* x = ZX_ZALLOC(c, struct zx_hrxml_Organization_s);
-  x->gg.g.tok = zx_hrxml_Organization_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Organization) */
@@ -17482,22 +15643,6 @@ int zx_WALK_WO_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization
 #define EL_STRUCT zx_hrxml_OrganizationId_s
 #define EL_NS     hrxml
 #define EL_TAG    OrganizationId
-
-/* FUNC(zx_NEW_hrxml_OrganizationId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OrganizationId_s* zx_NEW_hrxml_OrganizationId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OrganizationId_s* x = ZX_ZALLOC(c, struct zx_hrxml_OrganizationId_s);
-  x->gg.g.tok = zx_hrxml_OrganizationId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -17623,22 +15768,6 @@ int zx_WALK_WO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_Organizati
 #define EL_NS     hrxml
 #define EL_TAG    OrganizationUnit
 
-/* FUNC(zx_NEW_hrxml_OrganizationUnit) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OrganizationUnit_s* zx_NEW_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OrganizationUnit_s* x = ZX_ZALLOC(c, struct zx_hrxml_OrganizationUnit_s);
-  x->gg.g.tok = zx_hrxml_OrganizationUnit_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_OrganizationUnit) */
@@ -17739,22 +15868,6 @@ int zx_WALK_WO_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_Organiza
 #define EL_STRUCT zx_hrxml_OrganizationalUnit_s
 #define EL_NS     hrxml
 #define EL_TAG    OrganizationalUnit
-
-/* FUNC(zx_NEW_hrxml_OrganizationalUnit) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OrganizationalUnit_s* zx_NEW_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OrganizationalUnit_s* x = ZX_ZALLOC(c, struct zx_hrxml_OrganizationalUnit_s);
-  x->gg.g.tok = zx_hrxml_OrganizationalUnit_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -18051,22 +16164,6 @@ int zx_WALK_WO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_Organi
 #define EL_NS     hrxml
 #define EL_TAG    OrganizationalUnitId
 
-/* FUNC(zx_NEW_hrxml_OrganizationalUnitId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OrganizationalUnitId_s* zx_NEW_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OrganizationalUnitId_s* x = ZX_ZALLOC(c, struct zx_hrxml_OrganizationalUnitId_s);
-  x->gg.g.tok = zx_hrxml_OrganizationalUnitId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_OrganizationalUnitId) */
@@ -18190,22 +16287,6 @@ int zx_WALK_WO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_Orga
 #define EL_STRUCT zx_hrxml_OriginalDate_s
 #define EL_NS     hrxml
 #define EL_TAG    OriginalDate
-
-/* FUNC(zx_NEW_hrxml_OriginalDate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OriginalDate_s* zx_NEW_hrxml_OriginalDate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OriginalDate_s* x = ZX_ZALLOC(c, struct zx_hrxml_OriginalDate_s);
-  x->gg.g.tok = zx_hrxml_OriginalDate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -18331,22 +16412,6 @@ int zx_WALK_WO_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate
 #define EL_NS     hrxml
 #define EL_TAG    OtherBenefits
 
-/* FUNC(zx_NEW_hrxml_OtherBenefits) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OtherBenefits_s* zx_NEW_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OtherBenefits_s* x = ZX_ZALLOC(c, struct zx_hrxml_OtherBenefits_s);
-  x->gg.g.tok = zx_hrxml_OtherBenefits_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_OtherBenefits) */
@@ -18445,22 +16510,6 @@ int zx_WALK_WO_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefi
 #define EL_STRUCT zx_hrxml_OtherCompensation_s
 #define EL_NS     hrxml
 #define EL_TAG    OtherCompensation
-
-/* FUNC(zx_NEW_hrxml_OtherCompensation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OtherCompensation_s* zx_NEW_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OtherCompensation_s* x = ZX_ZALLOC(c, struct zx_hrxml_OtherCompensation_s);
-  x->gg.g.tok = zx_hrxml_OtherCompensation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -18564,22 +16613,6 @@ int zx_WALK_WO_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCo
 #define EL_STRUCT zx_hrxml_OtherDescriptors_s
 #define EL_NS     hrxml
 #define EL_TAG    OtherDescriptors
-
-/* FUNC(zx_NEW_hrxml_OtherDescriptors) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OtherDescriptors_s* zx_NEW_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OtherDescriptors_s* x = ZX_ZALLOC(c, struct zx_hrxml_OtherDescriptors_s);
-  x->gg.g.tok = zx_hrxml_OtherDescriptors_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -18714,22 +16747,6 @@ int zx_WALK_WO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDes
 #define EL_NS     hrxml
 #define EL_TAG    OtherHonors
 
-/* FUNC(zx_NEW_hrxml_OtherHonors) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OtherHonors_s* zx_NEW_hrxml_OtherHonors(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OtherHonors_s* x = ZX_ZALLOC(c, struct zx_hrxml_OtherHonors_s);
-  x->gg.g.tok = zx_hrxml_OtherHonors_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_OtherHonors) */
@@ -18828,22 +16845,6 @@ int zx_WALK_WO_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s
 #define EL_STRUCT zx_hrxml_OtherPay_s
 #define EL_NS     hrxml
 #define EL_TAG    OtherPay
-
-/* FUNC(zx_NEW_hrxml_OtherPay) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OtherPay_s* zx_NEW_hrxml_OtherPay(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OtherPay_s* x = ZX_ZALLOC(c, struct zx_hrxml_OtherPay_s);
-  x->gg.g.tok = zx_hrxml_OtherPay_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -18967,22 +16968,6 @@ int zx_WALK_WO_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x, v
 #define EL_STRUCT zx_hrxml_OtherPublication_s
 #define EL_NS     hrxml
 #define EL_TAG    OtherPublication
-
-/* FUNC(zx_NEW_hrxml_OtherPublication) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_OtherPublication_s* zx_NEW_hrxml_OtherPublication(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_OtherPublication_s* x = ZX_ZALLOC(c, struct zx_hrxml_OtherPublication_s);
-  x->gg.g.tok = zx_hrxml_OtherPublication_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -19175,22 +17160,6 @@ int zx_WALK_WO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPub
 #define EL_NS     hrxml
 #define EL_TAG    Pager
 
-/* FUNC(zx_NEW_hrxml_Pager) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Pager_s* zx_NEW_hrxml_Pager(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Pager_s* x = ZX_ZALLOC(c, struct zx_hrxml_Pager_s);
-  x->gg.g.tok = zx_hrxml_Pager_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Pager) */
@@ -19293,22 +17262,6 @@ int zx_WALK_WO_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x, void* c
 #define EL_NS     hrxml
 #define EL_TAG    ParkingInstructions
 
-/* FUNC(zx_NEW_hrxml_ParkingInstructions) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ParkingInstructions_s* zx_NEW_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ParkingInstructions_s* x = ZX_ZALLOC(c, struct zx_hrxml_ParkingInstructions_s);
-  x->gg.g.tok = zx_hrxml_ParkingInstructions_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_ParkingInstructions) */
@@ -19407,22 +17360,6 @@ int zx_WALK_WO_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_Parki
 #define EL_STRUCT zx_hrxml_Patent_s
 #define EL_NS     hrxml
 #define EL_TAG    Patent
-
-/* FUNC(zx_NEW_hrxml_Patent) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Patent_s* zx_NEW_hrxml_Patent(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Patent_s* x = ZX_ZALLOC(c, struct zx_hrxml_Patent_s);
-  x->gg.g.tok = zx_hrxml_Patent_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -19594,22 +17531,6 @@ int zx_WALK_WO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x, void*
 #define EL_NS     hrxml
 #define EL_TAG    PatentDetail
 
-/* FUNC(zx_NEW_hrxml_PatentDetail) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PatentDetail_s* zx_NEW_hrxml_PatentDetail(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PatentDetail_s* x = ZX_ZALLOC(c, struct zx_hrxml_PatentDetail_s);
-  x->gg.g.tok = zx_hrxml_PatentDetail_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_PatentDetail) */
@@ -19749,22 +17670,6 @@ int zx_WALK_WO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail
 #define EL_NS     hrxml
 #define EL_TAG    PatentHistory
 
-/* FUNC(zx_NEW_hrxml_PatentHistory) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PatentHistory_s* zx_NEW_hrxml_PatentHistory(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PatentHistory_s* x = ZX_ZALLOC(c, struct zx_hrxml_PatentHistory_s);
-  x->gg.g.tok = zx_hrxml_PatentHistory_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_PatentHistory) */
@@ -19882,22 +17787,6 @@ int zx_WALK_WO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHisto
 #define EL_STRUCT zx_hrxml_PatentMilestone_s
 #define EL_NS     hrxml
 #define EL_TAG    PatentMilestone
-
-/* FUNC(zx_NEW_hrxml_PatentMilestone) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PatentMilestone_s* zx_NEW_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PatentMilestone_s* x = ZX_ZALLOC(c, struct zx_hrxml_PatentMilestone_s);
-  x->gg.g.tok = zx_hrxml_PatentMilestone_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -20042,22 +17931,6 @@ int zx_WALK_WO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMil
 #define EL_STRUCT zx_hrxml_PersonDescriptors_s
 #define EL_NS     hrxml
 #define EL_TAG    PersonDescriptors
-
-/* FUNC(zx_NEW_hrxml_PersonDescriptors) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PersonDescriptors_s* zx_NEW_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PersonDescriptors_s* x = ZX_ZALLOC(c, struct zx_hrxml_PersonDescriptors_s);
-  x->gg.g.tok = zx_hrxml_PersonDescriptors_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -20282,22 +18155,6 @@ int zx_WALK_WO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonD
 #define EL_NS     hrxml
 #define EL_TAG    PersonId
 
-/* FUNC(zx_NEW_hrxml_PersonId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PersonId_s* zx_NEW_hrxml_PersonId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PersonId_s* x = ZX_ZALLOC(c, struct zx_hrxml_PersonId_s);
-  x->gg.g.tok = zx_hrxml_PersonId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_PersonId) */
@@ -20421,22 +18278,6 @@ int zx_WALK_WO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x, v
 #define EL_STRUCT zx_hrxml_PersonLegalId_s
 #define EL_NS     hrxml
 #define EL_TAG    PersonLegalId
-
-/* FUNC(zx_NEW_hrxml_PersonLegalId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PersonLegalId_s* zx_NEW_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PersonLegalId_s* x = ZX_ZALLOC(c, struct zx_hrxml_PersonLegalId_s);
-  x->gg.g.tok = zx_hrxml_PersonLegalId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -20571,22 +18412,6 @@ int zx_WALK_WO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegal
 #define EL_STRUCT zx_hrxml_PersonMember_s
 #define EL_NS     hrxml
 #define EL_TAG    PersonMember
-
-/* FUNC(zx_NEW_hrxml_PersonMember) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PersonMember_s* zx_NEW_hrxml_PersonMember(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PersonMember_s* x = ZX_ZALLOC(c, struct zx_hrxml_PersonMember_s);
-  x->gg.g.tok = zx_hrxml_PersonMember_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -20768,22 +18593,6 @@ int zx_WALK_WO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember
 #define EL_STRUCT zx_hrxml_PersonName_s
 #define EL_NS     hrxml
 #define EL_TAG    PersonName
-
-/* FUNC(zx_NEW_hrxml_PersonName) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PersonName_s* zx_NEW_hrxml_PersonName(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PersonName_s* x = ZX_ZALLOC(c, struct zx_hrxml_PersonName_s);
-  x->gg.g.tok = zx_hrxml_PersonName_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -20972,22 +18781,6 @@ int zx_WALK_WO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* 
 #define EL_NS     hrxml
 #define EL_TAG    PersonRole
 
-/* FUNC(zx_NEW_hrxml_PersonRole) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PersonRole_s* zx_NEW_hrxml_PersonRole(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PersonRole_s* x = ZX_ZALLOC(c, struct zx_hrxml_PersonRole_s);
-  x->gg.g.tok = zx_hrxml_PersonRole_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_PersonRole) */
@@ -21133,22 +18926,6 @@ int zx_WALK_WO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* 
 #define EL_STRUCT zx_hrxml_PersonalData_s
 #define EL_NS     hrxml
 #define EL_TAG    PersonalData
-
-/* FUNC(zx_NEW_hrxml_PersonalData) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PersonalData_s* zx_NEW_hrxml_PersonalData(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PersonalData_s* x = ZX_ZALLOC(c, struct zx_hrxml_PersonalData_s);
-  x->gg.g.tok = zx_hrxml_PersonalData_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -21351,22 +19128,6 @@ int zx_WALK_WO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData
 #define EL_STRUCT zx_hrxml_PhysicalLocation_s
 #define EL_NS     hrxml
 #define EL_TAG    PhysicalLocation
-
-/* FUNC(zx_NEW_hrxml_PhysicalLocation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PhysicalLocation_s* zx_NEW_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PhysicalLocation_s* x = ZX_ZALLOC(c, struct zx_hrxml_PhysicalLocation_s);
-  x->gg.g.tok = zx_hrxml_PhysicalLocation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -21600,22 +19361,6 @@ int zx_WALK_WO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_Physical
 #define EL_STRUCT zx_hrxml_PositionHistory_s
 #define EL_NS     hrxml
 #define EL_TAG    PositionHistory
-
-/* FUNC(zx_NEW_hrxml_PositionHistory) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PositionHistory_s* zx_NEW_hrxml_PositionHistory(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PositionHistory_s* x = ZX_ZALLOC(c, struct zx_hrxml_PositionHistory_s);
-  x->gg.g.tok = zx_hrxml_PositionHistory_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -21985,22 +19730,6 @@ int zx_WALK_WO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionH
 #define EL_NS     hrxml
 #define EL_TAG    PositionLocation
 
-/* FUNC(zx_NEW_hrxml_PositionLocation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PositionLocation_s* zx_NEW_hrxml_PositionLocation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PositionLocation_s* x = ZX_ZALLOC(c, struct zx_hrxml_PositionLocation_s);
-  x->gg.g.tok = zx_hrxml_PositionLocation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_PositionLocation) */
@@ -22161,22 +19890,6 @@ int zx_WALK_WO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_Position
 #define EL_STRUCT zx_hrxml_PositionMatching_s
 #define EL_NS     hrxml
 #define EL_TAG    PositionMatching
-
-/* FUNC(zx_NEW_hrxml_PositionMatching) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PositionMatching_s* zx_NEW_hrxml_PositionMatching(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PositionMatching_s* x = ZX_ZALLOC(c, struct zx_hrxml_PositionMatching_s);
-  x->gg.g.tok = zx_hrxml_PositionMatching_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -22568,22 +20281,6 @@ int zx_WALK_WO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_Position
 #define EL_NS     hrxml
 #define EL_TAG    PositionPosting
 
-/* FUNC(zx_NEW_hrxml_PositionPosting) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PositionPosting_s* zx_NEW_hrxml_PositionPosting(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PositionPosting_s* x = ZX_ZALLOC(c, struct zx_hrxml_PositionPosting_s);
-  x->gg.g.tok = zx_hrxml_PositionPosting_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_PositionPosting) */
@@ -22754,22 +20451,6 @@ int zx_WALK_WO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionP
 #define EL_NS     hrxml
 #define EL_TAG    PositionSchedule
 
-/* FUNC(zx_NEW_hrxml_PositionSchedule) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PositionSchedule_s* zx_NEW_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PositionSchedule_s* x = ZX_ZALLOC(c, struct zx_hrxml_PositionSchedule_s);
-  x->gg.g.tok = zx_hrxml_PositionSchedule_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_PositionSchedule) */
@@ -22868,22 +20549,6 @@ int zx_WALK_WO_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_Position
 #define EL_STRUCT zx_hrxml_PostalAddress_s
 #define EL_NS     hrxml
 #define EL_TAG    PostalAddress
-
-/* FUNC(zx_NEW_hrxml_PostalAddress) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PostalAddress_s* zx_NEW_hrxml_PostalAddress(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PostalAddress_s* x = ZX_ZALLOC(c, struct zx_hrxml_PostalAddress_s);
-  x->gg.g.tok = zx_hrxml_PostalAddress_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -23046,22 +20711,6 @@ int zx_WALK_WO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddre
 #define EL_NS     hrxml
 #define EL_TAG    PreferredLanguage
 
-/* FUNC(zx_NEW_hrxml_PreferredLanguage) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PreferredLanguage_s* zx_NEW_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PreferredLanguage_s* x = ZX_ZALLOC(c, struct zx_hrxml_PreferredLanguage_s);
-  x->gg.g.tok = zx_hrxml_PreferredLanguage_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_PreferredLanguage) */
@@ -23158,22 +20807,6 @@ int zx_WALK_WO_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_Preferr
 #define EL_STRUCT zx_hrxml_PreferredPosition_s
 #define EL_NS     hrxml
 #define EL_TAG    PreferredPosition
-
-/* FUNC(zx_NEW_hrxml_PreferredPosition) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PreferredPosition_s* zx_NEW_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PreferredPosition_s* x = ZX_ZALLOC(c, struct zx_hrxml_PreferredPosition_s);
-  x->gg.g.tok = zx_hrxml_PreferredPosition_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -23586,22 +21219,6 @@ int zx_WALK_WO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Preferr
 #define EL_NS     hrxml
 #define EL_TAG    PrehireRemuneration
 
-/* FUNC(zx_NEW_hrxml_PrehireRemuneration) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PrehireRemuneration_s* zx_NEW_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PrehireRemuneration_s* x = ZX_ZALLOC(c, struct zx_hrxml_PrehireRemuneration_s);
-  x->gg.g.tok = zx_hrxml_PrehireRemuneration_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_PrehireRemuneration) */
@@ -23783,22 +21400,6 @@ int zx_WALK_WO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_Prehi
 #define EL_NS     hrxml
 #define EL_TAG    PrimaryLanguage
 
-/* FUNC(zx_NEW_hrxml_PrimaryLanguage) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PrimaryLanguage_s* zx_NEW_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PrimaryLanguage_s* x = ZX_ZALLOC(c, struct zx_hrxml_PrimaryLanguage_s);
-  x->gg.g.tok = zx_hrxml_PrimaryLanguage_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_PrimaryLanguage) */
@@ -23895,22 +21496,6 @@ int zx_WALK_WO_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLa
 #define EL_STRUCT zx_hrxml_ProfessionalAssociations_s
 #define EL_NS     hrxml
 #define EL_TAG    ProfessionalAssociations
-
-/* FUNC(zx_NEW_hrxml_ProfessionalAssociations) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ProfessionalAssociations_s* zx_NEW_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ProfessionalAssociations_s* x = ZX_ZALLOC(c, struct zx_hrxml_ProfessionalAssociations_s);
-  x->gg.g.tok = zx_hrxml_ProfessionalAssociations_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -24029,22 +21614,6 @@ int zx_WALK_WO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_
 #define EL_STRUCT zx_hrxml_ProfileId_s
 #define EL_NS     hrxml
 #define EL_TAG    ProfileId
-
-/* FUNC(zx_NEW_hrxml_ProfileId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ProfileId_s* zx_NEW_hrxml_ProfileId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ProfileId_s* x = ZX_ZALLOC(c, struct zx_hrxml_ProfileId_s);
-  x->gg.g.tok = zx_hrxml_ProfileId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -24170,22 +21739,6 @@ int zx_WALK_WO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x,
 #define EL_NS     hrxml
 #define EL_TAG    ProgramId
 
-/* FUNC(zx_NEW_hrxml_ProgramId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ProgramId_s* zx_NEW_hrxml_ProgramId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ProgramId_s* x = ZX_ZALLOC(c, struct zx_hrxml_ProgramId_s);
-  x->gg.g.tok = zx_hrxml_ProgramId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_ProgramId) */
@@ -24310,22 +21863,6 @@ int zx_WALK_WO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x,
 #define EL_NS     hrxml
 #define EL_TAG    PublicationDate
 
-/* FUNC(zx_NEW_hrxml_PublicationDate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PublicationDate_s* zx_NEW_hrxml_PublicationDate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PublicationDate_s* x = ZX_ZALLOC(c, struct zx_hrxml_PublicationDate_s);
-  x->gg.g.tok = zx_hrxml_PublicationDate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_PublicationDate) */
@@ -24449,22 +21986,6 @@ int zx_WALK_WO_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_Publicati
 #define EL_STRUCT zx_hrxml_PublicationHistory_s
 #define EL_NS     hrxml
 #define EL_TAG    PublicationHistory
-
-/* FUNC(zx_NEW_hrxml_PublicationHistory) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PublicationHistory_s* zx_NEW_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PublicationHistory_s* x = ZX_ZALLOC(c, struct zx_hrxml_PublicationHistory_s);
-  x->gg.g.tok = zx_hrxml_PublicationHistory_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -24668,22 +22189,6 @@ int zx_WALK_WO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_Public
 #define EL_NS     hrxml
 #define EL_TAG    PublicationLanguage
 
-/* FUNC(zx_NEW_hrxml_PublicationLanguage) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_PublicationLanguage_s* zx_NEW_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_PublicationLanguage_s* x = ZX_ZALLOC(c, struct zx_hrxml_PublicationLanguage_s);
-  x->gg.g.tok = zx_hrxml_PublicationLanguage_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_PublicationLanguage) */
@@ -24780,22 +22285,6 @@ int zx_WALK_WO_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_Publi
 #define EL_STRUCT zx_hrxml_Qualifications_s
 #define EL_NS     hrxml
 #define EL_TAG    Qualifications
-
-/* FUNC(zx_NEW_hrxml_Qualifications) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Qualifications_s* zx_NEW_hrxml_Qualifications(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Qualifications_s* x = ZX_ZALLOC(c, struct zx_hrxml_Qualifications_s);
-  x->gg.g.tok = zx_hrxml_Qualifications_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -24920,22 +22409,6 @@ int zx_WALK_WO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualificat
 #define EL_NS     hrxml
 #define EL_TAG    RankAchieved
 
-/* FUNC(zx_NEW_hrxml_RankAchieved) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_RankAchieved_s* zx_NEW_hrxml_RankAchieved(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_RankAchieved_s* x = ZX_ZALLOC(c, struct zx_hrxml_RankAchieved_s);
-  x->gg.g.tok = zx_hrxml_RankAchieved_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_RankAchieved) */
@@ -25042,22 +22515,6 @@ int zx_WALK_WO_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved
 #define EL_STRUCT zx_hrxml_RankedResult_s
 #define EL_NS     hrxml
 #define EL_TAG    RankedResult
-
-/* FUNC(zx_NEW_hrxml_RankedResult) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_RankedResult_s* zx_NEW_hrxml_RankedResult(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_RankedResult_s* x = ZX_ZALLOC(c, struct zx_hrxml_RankedResult_s);
-  x->gg.g.tok = zx_hrxml_RankedResult_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -25255,22 +22712,6 @@ int zx_WALK_WO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult
 #define EL_NS     hrxml
 #define EL_TAG    RankedSearchResults
 
-/* FUNC(zx_NEW_hrxml_RankedSearchResults) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_RankedSearchResults_s* zx_NEW_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_RankedSearchResults_s* x = ZX_ZALLOC(c, struct zx_hrxml_RankedSearchResults_s);
-  x->gg.g.tok = zx_hrxml_RankedSearchResults_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_RankedSearchResults) */
@@ -25388,22 +22829,6 @@ int zx_WALK_WO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_Ranke
 #define EL_STRUCT zx_hrxml_Recipient_s
 #define EL_NS     hrxml
 #define EL_TAG    Recipient
-
-/* FUNC(zx_NEW_hrxml_Recipient) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Recipient_s* zx_NEW_hrxml_Recipient(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Recipient_s* x = ZX_ZALLOC(c, struct zx_hrxml_Recipient_s);
-  x->gg.g.tok = zx_hrxml_Recipient_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -25553,22 +22978,6 @@ int zx_WALK_WO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x,
 #define EL_STRUCT zx_hrxml_Reference_s
 #define EL_NS     hrxml
 #define EL_TAG    Reference
-
-/* FUNC(zx_NEW_hrxml_Reference) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Reference_s* zx_NEW_hrxml_Reference(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Reference_s* x = ZX_ZALLOC(c, struct zx_hrxml_Reference_s);
-  x->gg.g.tok = zx_hrxml_Reference_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -25721,22 +23130,6 @@ int zx_WALK_WO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x,
 #define EL_NS     hrxml
 #define EL_TAG    References
 
-/* FUNC(zx_NEW_hrxml_References) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_References_s* zx_NEW_hrxml_References(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_References_s* x = ZX_ZALLOC(c, struct zx_hrxml_References_s);
-  x->gg.g.tok = zx_hrxml_References_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_References) */
@@ -25854,22 +23247,6 @@ int zx_WALK_WO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* 
 #define EL_STRUCT zx_hrxml_RelatedOrganization_s
 #define EL_NS     hrxml
 #define EL_TAG    RelatedOrganization
-
-/* FUNC(zx_NEW_hrxml_RelatedOrganization) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_RelatedOrganization_s* zx_NEW_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_RelatedOrganization_s* x = ZX_ZALLOC(c, struct zx_hrxml_RelatedOrganization_s);
-  x->gg.g.tok = zx_hrxml_RelatedOrganization_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -26310,22 +23687,6 @@ int zx_WALK_WO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Relat
 #define EL_NS     hrxml
 #define EL_TAG    RelatedOrganizationalUnit
 
-/* FUNC(zx_NEW_hrxml_RelatedOrganizationalUnit) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_RelatedOrganizationalUnit_s* zx_NEW_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_RelatedOrganizationalUnit_s* x = ZX_ZALLOC(c, struct zx_hrxml_RelatedOrganizationalUnit_s);
-  x->gg.g.tok = zx_hrxml_RelatedOrganizationalUnit_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_RelatedOrganizationalUnit) */
@@ -26625,22 +23986,6 @@ int zx_WALK_WO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml
 #define EL_NS     hrxml
 #define EL_TAG    RelatedPositionPostings
 
-/* FUNC(zx_NEW_hrxml_RelatedPositionPostings) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_RelatedPositionPostings_s* zx_NEW_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_RelatedPositionPostings_s* x = ZX_ZALLOC(c, struct zx_hrxml_RelatedPositionPostings_s);
-  x->gg.g.tok = zx_hrxml_RelatedPositionPostings_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_RelatedPositionPostings) */
@@ -26759,22 +24104,6 @@ int zx_WALK_WO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_R
 #define EL_NS     hrxml
 #define EL_TAG    Relocation
 
-/* FUNC(zx_NEW_hrxml_Relocation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Relocation_s* zx_NEW_hrxml_Relocation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Relocation_s* x = ZX_ZALLOC(c, struct zx_hrxml_Relocation_s);
-  x->gg.g.tok = zx_hrxml_Relocation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Relocation) */
@@ -26878,22 +24207,6 @@ int zx_WALK_WO_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* 
 #define EL_STRUCT zx_hrxml_RelocationAssistance_s
 #define EL_NS     hrxml
 #define EL_TAG    RelocationAssistance
-
-/* FUNC(zx_NEW_hrxml_RelocationAssistance) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_RelocationAssistance_s* zx_NEW_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_RelocationAssistance_s* x = ZX_ZALLOC(c, struct zx_hrxml_RelocationAssistance_s);
-  x->gg.g.tok = zx_hrxml_RelocationAssistance_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -27014,22 +24327,6 @@ int zx_WALK_WO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_Relo
 #define EL_STRUCT zx_hrxml_RemunerationPackage_s
 #define EL_NS     hrxml
 #define EL_TAG    RemunerationPackage
-
-/* FUNC(zx_NEW_hrxml_RemunerationPackage) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_RemunerationPackage_s* zx_NEW_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_RemunerationPackage_s* x = ZX_ZALLOC(c, struct zx_hrxml_RemunerationPackage_s);
-  x->gg.g.tok = zx_hrxml_RemunerationPackage_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -27212,22 +24509,6 @@ int zx_WALK_WO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_Remun
 #define EL_NS     hrxml
 #define EL_TAG    Resume
 
-/* FUNC(zx_NEW_hrxml_Resume) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Resume_s* zx_NEW_hrxml_Resume(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Resume_s* x = ZX_ZALLOC(c, struct zx_hrxml_Resume_s);
-  x->gg.g.tok = zx_hrxml_Resume_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Resume) */
@@ -27400,22 +24681,6 @@ int zx_WALK_WO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x, void*
 #define EL_NS     hrxml
 #define EL_TAG    ResumeAdditionalItem
 
-/* FUNC(zx_NEW_hrxml_ResumeAdditionalItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ResumeAdditionalItem_s* zx_NEW_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ResumeAdditionalItem_s* x = ZX_ZALLOC(c, struct zx_hrxml_ResumeAdditionalItem_s);
-  x->gg.g.tok = zx_hrxml_ResumeAdditionalItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_ResumeAdditionalItem) */
@@ -27557,22 +24822,6 @@ int zx_WALK_WO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_Resu
 #define EL_NS     hrxml
 #define EL_TAG    ResumeAdditionalItems
 
-/* FUNC(zx_NEW_hrxml_ResumeAdditionalItems) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ResumeAdditionalItems_s* zx_NEW_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ResumeAdditionalItems_s* x = ZX_ZALLOC(c, struct zx_hrxml_ResumeAdditionalItems_s);
-  x->gg.g.tok = zx_hrxml_ResumeAdditionalItems_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_ResumeAdditionalItems) */
@@ -27690,22 +24939,6 @@ int zx_WALK_WO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_Res
 #define EL_STRUCT zx_hrxml_RoleId_s
 #define EL_NS     hrxml
 #define EL_TAG    RoleId
-
-/* FUNC(zx_NEW_hrxml_RoleId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_RoleId_s* zx_NEW_hrxml_RoleId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_RoleId_s* x = ZX_ZALLOC(c, struct zx_hrxml_RoleId_s);
-  x->gg.g.tok = zx_hrxml_RoleId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -27830,22 +25063,6 @@ int zx_WALK_WO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x, void*
 #define EL_STRUCT zx_hrxml_SEPPhysicalLocation_s
 #define EL_NS     hrxml
 #define EL_TAG    SEPPhysicalLocation
-
-/* FUNC(zx_NEW_hrxml_SEPPhysicalLocation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SEPPhysicalLocation_s* zx_NEW_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SEPPhysicalLocation_s* x = ZX_ZALLOC(c, struct zx_hrxml_SEPPhysicalLocation_s);
-  x->gg.g.tok = zx_hrxml_SEPPhysicalLocation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -28059,22 +25276,6 @@ int zx_WALK_WO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPh
 #define EL_NS     hrxml
 #define EL_TAG    SafetyEquipment
 
-/* FUNC(zx_NEW_hrxml_SafetyEquipment) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SafetyEquipment_s* zx_NEW_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SafetyEquipment_s* x = ZX_ZALLOC(c, struct zx_hrxml_SafetyEquipment_s);
-  x->gg.g.tok = zx_hrxml_SafetyEquipment_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_SafetyEquipment) */
@@ -28173,22 +25374,6 @@ int zx_WALK_WO_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEqu
 #define EL_STRUCT zx_hrxml_School_s
 #define EL_NS     hrxml
 #define EL_TAG    School
-
-/* FUNC(zx_NEW_hrxml_School) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_School_s* zx_NEW_hrxml_School(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_School_s* x = ZX_ZALLOC(c, struct zx_hrxml_School_s);
-  x->gg.g.tok = zx_hrxml_School_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -28336,22 +25521,6 @@ int zx_WALK_WO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x, void*
 #define EL_NS     hrxml
 #define EL_TAG    SchoolId
 
-/* FUNC(zx_NEW_hrxml_SchoolId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SchoolId_s* zx_NEW_hrxml_SchoolId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SchoolId_s* x = ZX_ZALLOC(c, struct zx_hrxml_SchoolId_s);
-  x->gg.g.tok = zx_hrxml_SchoolId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_SchoolId) */
@@ -28475,22 +25644,6 @@ int zx_WALK_WO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x, v
 #define EL_STRUCT zx_hrxml_SchoolOrInstitution_s
 #define EL_NS     hrxml
 #define EL_TAG    SchoolOrInstitution
-
-/* FUNC(zx_NEW_hrxml_SchoolOrInstitution) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SchoolOrInstitution_s* zx_NEW_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SchoolOrInstitution_s* x = ZX_ZALLOC(c, struct zx_hrxml_SchoolOrInstitution_s);
-  x->gg.g.tok = zx_hrxml_SchoolOrInstitution_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -28805,22 +25958,6 @@ int zx_WALK_WO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_Schoo
 #define EL_NS     hrxml
 #define EL_TAG    Score
 
-/* FUNC(zx_NEW_hrxml_Score) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Score_s* zx_NEW_hrxml_Score(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Score_s* x = ZX_ZALLOC(c, struct zx_hrxml_Score_s);
-  x->gg.g.tok = zx_hrxml_Score_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Score) */
@@ -28919,22 +26056,6 @@ int zx_WALK_WO_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x, void* c
 #define EL_STRUCT zx_hrxml_SearchCriteria_s
 #define EL_NS     hrxml
 #define EL_TAG    SearchCriteria
-
-/* FUNC(zx_NEW_hrxml_SearchCriteria) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SearchCriteria_s* zx_NEW_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SearchCriteria_s* x = ZX_ZALLOC(c, struct zx_hrxml_SearchCriteria_s);
-  x->gg.g.tok = zx_hrxml_SearchCriteria_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -29132,22 +26253,6 @@ int zx_WALK_WO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCrit
 #define EL_NS     hrxml
 #define EL_TAG    SearchCriteriaId
 
-/* FUNC(zx_NEW_hrxml_SearchCriteriaId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SearchCriteriaId_s* zx_NEW_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SearchCriteriaId_s* x = ZX_ZALLOC(c, struct zx_hrxml_SearchCriteriaId_s);
-  x->gg.g.tok = zx_hrxml_SearchCriteriaId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_SearchCriteriaId) */
@@ -29271,22 +26376,6 @@ int zx_WALK_WO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCr
 #define EL_STRUCT zx_hrxml_SearchCriterion_s
 #define EL_NS     hrxml
 #define EL_TAG    SearchCriterion
-
-/* FUNC(zx_NEW_hrxml_SearchCriterion) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SearchCriterion_s* zx_NEW_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SearchCriterion_s* x = ZX_ZALLOC(c, struct zx_hrxml_SearchCriterion_s);
-  x->gg.g.tok = zx_hrxml_SearchCriterion_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -29416,22 +26505,6 @@ int zx_WALK_WO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCri
 #define EL_NS     hrxml
 #define EL_TAG    SearchRelevanceScore
 
-/* FUNC(zx_NEW_hrxml_SearchRelevanceScore) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SearchRelevanceScore_s* zx_NEW_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SearchRelevanceScore_s* x = ZX_ZALLOC(c, struct zx_hrxml_SearchRelevanceScore_s);
-  x->gg.g.tok = zx_hrxml_SearchRelevanceScore_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_SearchRelevanceScore) */
@@ -29530,22 +26603,6 @@ int zx_WALK_WO_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_Sear
 #define EL_STRUCT zx_hrxml_SearchResult_s
 #define EL_NS     hrxml
 #define EL_TAG    SearchResult
-
-/* FUNC(zx_NEW_hrxml_SearchResult) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SearchResult_s* zx_NEW_hrxml_SearchResult(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SearchResult_s* x = ZX_ZALLOC(c, struct zx_hrxml_SearchResult_s);
-  x->gg.g.tok = zx_hrxml_SearchResult_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -29790,22 +26847,6 @@ int zx_WALK_WO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult
 #define EL_NS     hrxml
 #define EL_TAG    SearchResultId
 
-/* FUNC(zx_NEW_hrxml_SearchResultId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SearchResultId_s* zx_NEW_hrxml_SearchResultId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SearchResultId_s* x = ZX_ZALLOC(c, struct zx_hrxml_SearchResultId_s);
-  x->gg.g.tok = zx_hrxml_SearchResultId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_SearchResultId) */
@@ -29929,22 +26970,6 @@ int zx_WALK_WO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResu
 #define EL_STRUCT zx_hrxml_SecurityCredential_s
 #define EL_NS     hrxml
 #define EL_TAG    SecurityCredential
-
-/* FUNC(zx_NEW_hrxml_SecurityCredential) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SecurityCredential_s* zx_NEW_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SecurityCredential_s* x = ZX_ZALLOC(c, struct zx_hrxml_SecurityCredential_s);
-  x->gg.g.tok = zx_hrxml_SecurityCredential_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -30132,22 +27157,6 @@ int zx_WALK_WO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_Securi
 #define EL_NS     hrxml
 #define EL_TAG    SecurityCredentials
 
-/* FUNC(zx_NEW_hrxml_SecurityCredentials) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SecurityCredentials_s* zx_NEW_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SecurityCredentials_s* x = ZX_ZALLOC(c, struct zx_hrxml_SecurityCredentials_s);
-  x->gg.g.tok = zx_hrxml_SecurityCredentials_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_SecurityCredentials) */
@@ -30265,22 +27274,6 @@ int zx_WALK_WO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_Secur
 #define EL_STRUCT zx_hrxml_ServiceDetail_s
 #define EL_NS     hrxml
 #define EL_TAG    ServiceDetail
-
-/* FUNC(zx_NEW_hrxml_ServiceDetail) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ServiceDetail_s* zx_NEW_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ServiceDetail_s* x = ZX_ZALLOC(c, struct zx_hrxml_ServiceDetail_s);
-  x->gg.g.tok = zx_hrxml_ServiceDetail_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -30474,22 +27467,6 @@ int zx_WALK_WO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDeta
 #define EL_NS     hrxml
 #define EL_TAG    ServiceNumber
 
-/* FUNC(zx_NEW_hrxml_ServiceNumber) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ServiceNumber_s* zx_NEW_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ServiceNumber_s* x = ZX_ZALLOC(c, struct zx_hrxml_ServiceNumber_s);
-  x->gg.g.tok = zx_hrxml_ServiceNumber_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_ServiceNumber) */
@@ -30613,22 +27590,6 @@ int zx_WALK_WO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumb
 #define EL_STRUCT zx_hrxml_Shift_s
 #define EL_NS     hrxml
 #define EL_TAG    Shift
-
-/* FUNC(zx_NEW_hrxml_Shift) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Shift_s* zx_NEW_hrxml_Shift(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Shift_s* x = ZX_ZALLOC(c, struct zx_hrxml_Shift_s);
-  x->gg.g.tok = zx_hrxml_Shift_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -30780,22 +27741,6 @@ int zx_WALK_WO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x, void* c
 #define EL_NS     hrxml
 #define EL_TAG    SourceType
 
-/* FUNC(zx_NEW_hrxml_SourceType) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SourceType_s* zx_NEW_hrxml_SourceType(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SourceType_s* x = ZX_ZALLOC(c, struct zx_hrxml_SourceType_s);
-  x->gg.g.tok = zx_hrxml_SourceType_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_SourceType) */
@@ -30902,22 +27847,6 @@ int zx_WALK_WO_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* 
 #define EL_STRUCT zx_hrxml_SpatialLocation_s
 #define EL_NS     hrxml
 #define EL_TAG    SpatialLocation
-
-/* FUNC(zx_NEW_hrxml_SpatialLocation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SpatialLocation_s* zx_NEW_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SpatialLocation_s* x = ZX_ZALLOC(c, struct zx_hrxml_SpatialLocation_s);
-  x->gg.g.tok = zx_hrxml_SpatialLocation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -31109,22 +28038,6 @@ int zx_WALK_WO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLo
 #define EL_STRUCT zx_hrxml_SpeakingEvent_s
 #define EL_NS     hrxml
 #define EL_TAG    SpeakingEvent
-
-/* FUNC(zx_NEW_hrxml_SpeakingEvent) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SpeakingEvent_s* zx_NEW_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SpeakingEvent_s* x = ZX_ZALLOC(c, struct zx_hrxml_SpeakingEvent_s);
-  x->gg.g.tok = zx_hrxml_SpeakingEvent_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -31323,22 +28236,6 @@ int zx_WALK_WO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEve
 #define EL_NS     hrxml
 #define EL_TAG    SpeakingEventsHistory
 
-/* FUNC(zx_NEW_hrxml_SpeakingEventsHistory) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SpeakingEventsHistory_s* zx_NEW_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SpeakingEventsHistory_s* x = ZX_ZALLOC(c, struct zx_hrxml_SpeakingEventsHistory_s);
-  x->gg.g.tok = zx_hrxml_SpeakingEventsHistory_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_SpeakingEventsHistory) */
@@ -31456,22 +28353,6 @@ int zx_WALK_WO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_Spe
 #define EL_STRUCT zx_hrxml_SpecifiedCompetencyReference_s
 #define EL_NS     hrxml
 #define EL_TAG    SpecifiedCompetencyReference
-
-/* FUNC(zx_NEW_hrxml_SpecifiedCompetencyReference) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SpecifiedCompetencyReference_s* zx_NEW_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SpecifiedCompetencyReference_s* x = ZX_ZALLOC(c, struct zx_hrxml_SpecifiedCompetencyReference_s);
-  x->gg.g.tok = zx_hrxml_SpecifiedCompetencyReference_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -31595,22 +28476,6 @@ int zx_WALK_WO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hr
 #define EL_STRUCT zx_hrxml_StartDate_s
 #define EL_NS     hrxml
 #define EL_TAG    StartDate
-
-/* FUNC(zx_NEW_hrxml_StartDate) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_StartDate_s* zx_NEW_hrxml_StartDate(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_StartDate_s* x = ZX_ZALLOC(c, struct zx_hrxml_StartDate_s);
-  x->gg.g.tok = zx_hrxml_StartDate_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -31736,22 +28601,6 @@ int zx_WALK_WO_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x,
 #define EL_NS     hrxml
 #define EL_TAG    StartingCompensation
 
-/* FUNC(zx_NEW_hrxml_StartingCompensation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_StartingCompensation_s* zx_NEW_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_StartingCompensation_s* x = ZX_ZALLOC(c, struct zx_hrxml_StartingCompensation_s);
-  x->gg.g.tok = zx_hrxml_StartingCompensation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_StartingCompensation) */
@@ -31857,22 +28706,6 @@ int zx_WALK_WO_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_Star
 #define EL_NS     hrxml
 #define EL_TAG    Status
 
-/* FUNC(zx_NEW_hrxml_Status) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Status_s* zx_NEW_hrxml_Status(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Status_s* x = ZX_ZALLOC(c, struct zx_hrxml_Status_s);
-  x->gg.g.tok = zx_hrxml_Status_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Status) */
@@ -31973,22 +28806,6 @@ int zx_WALK_WO_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x, void*
 #define EL_STRUCT zx_hrxml_Stock_s
 #define EL_NS     hrxml
 #define EL_TAG    Stock
-
-/* FUNC(zx_NEW_hrxml_Stock) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Stock_s* zx_NEW_hrxml_Stock(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Stock_s* x = ZX_ZALLOC(c, struct zx_hrxml_Stock_s);
-  x->gg.g.tok = zx_hrxml_Stock_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -32118,22 +28935,6 @@ int zx_WALK_WO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x, void* c
 #define EL_NS     hrxml
 #define EL_TAG    StringValue
 
-/* FUNC(zx_NEW_hrxml_StringValue) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_StringValue_s* zx_NEW_hrxml_StringValue(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_StringValue_s* x = ZX_ZALLOC(c, struct zx_hrxml_StringValue_s);
-  x->gg.g.tok = zx_hrxml_StringValue_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_StringValue) */
@@ -32236,22 +29037,6 @@ int zx_WALK_WO_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s
 #define EL_STRUCT zx_hrxml_StructuredXMLResume_s
 #define EL_NS     hrxml
 #define EL_TAG    StructuredXMLResume
-
-/* FUNC(zx_NEW_hrxml_StructuredXMLResume) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_StructuredXMLResume_s* zx_NEW_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_StructuredXMLResume_s* x = ZX_ZALLOC(c, struct zx_hrxml_StructuredXMLResume_s);
-  x->gg.g.tok = zx_hrxml_StructuredXMLResume_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -32727,22 +29512,6 @@ int zx_WALK_WO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_Struc
 #define EL_NS     hrxml
 #define EL_TAG    SupplierId
 
-/* FUNC(zx_NEW_hrxml_SupplierId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SupplierId_s* zx_NEW_hrxml_SupplierId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SupplierId_s* x = ZX_ZALLOC(c, struct zx_hrxml_SupplierId_s);
-  x->gg.g.tok = zx_hrxml_SupplierId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_SupplierId) */
@@ -32866,22 +29635,6 @@ int zx_WALK_WO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* 
 #define EL_STRUCT zx_hrxml_SupportingMaterials_s
 #define EL_NS     hrxml
 #define EL_TAG    SupportingMaterials
-
-/* FUNC(zx_NEW_hrxml_SupportingMaterials) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_SupportingMaterials_s* zx_NEW_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_SupportingMaterials_s* x = ZX_ZALLOC(c, struct zx_hrxml_SupportingMaterials_s);
-  x->gg.g.tok = zx_hrxml_SupportingMaterials_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -33027,22 +29780,6 @@ int zx_WALK_WO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_Suppo
 #define EL_NS     hrxml
 #define EL_TAG    TTYTDD
 
-/* FUNC(zx_NEW_hrxml_TTYTDD) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_TTYTDD_s* zx_NEW_hrxml_TTYTDD(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_TTYTDD_s* x = ZX_ZALLOC(c, struct zx_hrxml_TTYTDD_s);
-  x->gg.g.tok = zx_hrxml_TTYTDD_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_TTYTDD) */
@@ -33144,22 +29881,6 @@ int zx_WALK_WO_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x, void*
 #define EL_STRUCT zx_hrxml_TaxId_s
 #define EL_NS     hrxml
 #define EL_TAG    TaxId
-
-/* FUNC(zx_NEW_hrxml_TaxId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_TaxId_s* zx_NEW_hrxml_TaxId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_TaxId_s* x = ZX_ZALLOC(c, struct zx_hrxml_TaxId_s);
-  x->gg.g.tok = zx_hrxml_TaxId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -33285,22 +30006,6 @@ int zx_WALK_WO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x, void* c
 #define EL_NS     hrxml
 #define EL_TAG    TaxonomyId
 
-/* FUNC(zx_NEW_hrxml_TaxonomyId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_TaxonomyId_s* zx_NEW_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_TaxonomyId_s* x = ZX_ZALLOC(c, struct zx_hrxml_TaxonomyId_s);
-  x->gg.g.tok = zx_hrxml_TaxonomyId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_TaxonomyId) */
@@ -33404,22 +30109,6 @@ int zx_WALK_WO_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* 
 #define EL_NS     hrxml
 #define EL_TAG    TaxonomyName
 
-/* FUNC(zx_NEW_hrxml_TaxonomyName) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_TaxonomyName_s* zx_NEW_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_TaxonomyName_s* x = ZX_ZALLOC(c, struct zx_hrxml_TaxonomyName_s);
-  x->gg.g.tok = zx_hrxml_TaxonomyName_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_TaxonomyName) */
@@ -33518,22 +30207,6 @@ int zx_WALK_WO_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName
 #define EL_STRUCT zx_hrxml_Telephone_s
 #define EL_NS     hrxml
 #define EL_TAG    Telephone
-
-/* FUNC(zx_NEW_hrxml_Telephone) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Telephone_s* zx_NEW_hrxml_Telephone(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Telephone_s* x = ZX_ZALLOC(c, struct zx_hrxml_Telephone_s);
-  x->gg.g.tok = zx_hrxml_Telephone_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -33636,22 +30309,6 @@ int zx_WALK_WO_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x,
 #define EL_STRUCT zx_hrxml_TermOfNotice_s
 #define EL_NS     hrxml
 #define EL_TAG    TermOfNotice
-
-/* FUNC(zx_NEW_hrxml_TermOfNotice) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_TermOfNotice_s* zx_NEW_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_TermOfNotice_s* x = ZX_ZALLOC(c, struct zx_hrxml_TermOfNotice_s);
-  x->gg.g.tok = zx_hrxml_TermOfNotice_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -33760,22 +30417,6 @@ int zx_WALK_WO_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice
 #define EL_NS     hrxml
 #define EL_TAG    TimeMax
 
-/* FUNC(zx_NEW_hrxml_TimeMax) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_TimeMax_s* zx_NEW_hrxml_TimeMax(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_TimeMax_s* x = ZX_ZALLOC(c, struct zx_hrxml_TimeMax_s);
-  x->gg.g.tok = zx_hrxml_TimeMax_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_TimeMax) */
@@ -33874,22 +30515,6 @@ int zx_WALK_WO_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x, voi
 #define EL_STRUCT zx_hrxml_TimeOffAllowance_s
 #define EL_NS     hrxml
 #define EL_TAG    TimeOffAllowance
-
-/* FUNC(zx_NEW_hrxml_TimeOffAllowance) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_TimeOffAllowance_s* zx_NEW_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_TimeOffAllowance_s* x = ZX_ZALLOC(c, struct zx_hrxml_TimeOffAllowance_s);
-  x->gg.g.tok = zx_hrxml_TimeOffAllowance_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -34011,22 +30636,6 @@ int zx_WALK_WO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffA
 #define EL_NS     hrxml
 #define EL_TAG    Travel
 
-/* FUNC(zx_NEW_hrxml_Travel) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Travel_s* zx_NEW_hrxml_Travel(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Travel_s* x = ZX_ZALLOC(c, struct zx_hrxml_Travel_s);
-  x->gg.g.tok = zx_hrxml_Travel_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_Travel) */
@@ -34139,22 +30748,6 @@ int zx_WALK_WO_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x, void*
 #define EL_NS     hrxml
 #define EL_TAG    TravelDirections
 
-/* FUNC(zx_NEW_hrxml_TravelDirections) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_TravelDirections_s* zx_NEW_hrxml_TravelDirections(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_TravelDirections_s* x = ZX_ZALLOC(c, struct zx_hrxml_TravelDirections_s);
-  x->gg.g.tok = zx_hrxml_TravelDirections_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_TravelDirections) */
@@ -34254,22 +30847,6 @@ int zx_WALK_WO_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDi
 #define EL_NS     hrxml
 #define EL_TAG    UserArea
 
-/* FUNC(zx_NEW_hrxml_UserArea) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_UserArea_s* zx_NEW_hrxml_UserArea(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_UserArea_s* x = ZX_ZALLOC(c, struct zx_hrxml_UserArea_s);
-  x->gg.g.tok = zx_hrxml_UserArea_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_UserArea) */
@@ -34366,22 +30943,6 @@ int zx_WALK_WO_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x, v
 #define EL_STRUCT zx_hrxml_UserId_s
 #define EL_NS     hrxml
 #define EL_TAG    UserId
-
-/* FUNC(zx_NEW_hrxml_UserId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_UserId_s* zx_NEW_hrxml_UserId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_UserId_s* x = ZX_ZALLOC(c, struct zx_hrxml_UserId_s);
-  x->gg.g.tok = zx_hrxml_UserId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -34507,22 +31068,6 @@ int zx_WALK_WO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x, void*
 #define EL_NS     hrxml
 #define EL_TAG    ValidFrom
 
-/* FUNC(zx_NEW_hrxml_ValidFrom) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ValidFrom_s* zx_NEW_hrxml_ValidFrom(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ValidFrom_s* x = ZX_ZALLOC(c, struct zx_hrxml_ValidFrom_s);
-  x->gg.g.tok = zx_hrxml_ValidFrom_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_ValidFrom) */
@@ -34647,22 +31192,6 @@ int zx_WALK_WO_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x,
 #define EL_NS     hrxml
 #define EL_TAG    ValidTo
 
-/* FUNC(zx_NEW_hrxml_ValidTo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_ValidTo_s* zx_NEW_hrxml_ValidTo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_ValidTo_s* x = ZX_ZALLOC(c, struct zx_hrxml_ValidTo_s);
-  x->gg.g.tok = zx_hrxml_ValidTo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_ValidTo) */
@@ -34786,22 +31315,6 @@ int zx_WALK_WO_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x, voi
 #define EL_STRUCT zx_hrxml_Verification_s
 #define EL_NS     hrxml
 #define EL_TAG    Verification
-
-/* FUNC(zx_NEW_hrxml_Verification) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Verification_s* zx_NEW_hrxml_Verification(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Verification_s* x = ZX_ZALLOC(c, struct zx_hrxml_Verification_s);
-  x->gg.g.tok = zx_hrxml_Verification_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -34956,22 +31469,6 @@ int zx_WALK_WO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification
 #define EL_NS     hrxml
 #define EL_TAG    VerticalAccuracy
 
-/* FUNC(zx_NEW_hrxml_VerticalAccuracy) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_VerticalAccuracy_s* zx_NEW_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_VerticalAccuracy_s* x = ZX_ZALLOC(c, struct zx_hrxml_VerticalAccuracy_s);
-  x->gg.g.tok = zx_hrxml_VerticalAccuracy_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_VerticalAccuracy) */
@@ -35068,22 +31565,6 @@ int zx_WALK_WO_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_Vertical
 #define EL_STRUCT zx_hrxml_VisaStatus_s
 #define EL_NS     hrxml
 #define EL_TAG    VisaStatus
-
-/* FUNC(zx_NEW_hrxml_VisaStatus) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_VisaStatus_s* zx_NEW_hrxml_VisaStatus(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_VisaStatus_s* x = ZX_ZALLOC(c, struct zx_hrxml_VisaStatus_s);
-  x->gg.g.tok = zx_hrxml_VisaStatus_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -35187,22 +31668,6 @@ int zx_WALK_WO_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* 
 #define EL_STRUCT zx_hrxml_Weight_s
 #define EL_NS     hrxml
 #define EL_TAG    Weight
-
-/* FUNC(zx_NEW_hrxml_Weight) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_Weight_s* zx_NEW_hrxml_Weight(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_Weight_s* x = ZX_ZALLOC(c, struct zx_hrxml_Weight_s);
-  x->gg.g.tok = zx_hrxml_Weight_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -35308,22 +31773,6 @@ int zx_WALK_WO_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x, void*
 #define EL_STRUCT zx_hrxml_WorkSite_s
 #define EL_NS     hrxml
 #define EL_TAG    WorkSite
-
-/* FUNC(zx_NEW_hrxml_WorkSite) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_WorkSite_s* zx_NEW_hrxml_WorkSite(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_WorkSite_s* x = ZX_ZALLOC(c, struct zx_hrxml_WorkSite_s);
-  x->gg.g.tok = zx_hrxml_WorkSite_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -35574,22 +32023,6 @@ int zx_WALK_WO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x, v
 #define EL_NS     hrxml
 #define EL_TAG    WorkSiteEnvironment
 
-/* FUNC(zx_NEW_hrxml_WorkSiteEnvironment) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_WorkSiteEnvironment_s* zx_NEW_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_WorkSiteEnvironment_s* x = ZX_ZALLOC(c, struct zx_hrxml_WorkSiteEnvironment_s);
-  x->gg.g.tok = zx_hrxml_WorkSiteEnvironment_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_hrxml_WorkSiteEnvironment) */
@@ -35796,22 +32229,6 @@ int zx_WALK_WO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkS
 #define EL_STRUCT zx_hrxml_WorkSiteId_s
 #define EL_NS     hrxml
 #define EL_TAG    WorkSiteId
-
-/* FUNC(zx_NEW_hrxml_WorkSiteId) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_hrxml_WorkSiteId_s* zx_NEW_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_hrxml_WorkSiteId_s* x = ZX_ZALLOC(c, struct zx_hrxml_WorkSiteId_s);
-  x->gg.g.tok = zx_hrxml_WorkSiteId_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

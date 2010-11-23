@@ -33,9 +33,10 @@ struct zx_sbf_Framework_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_sbf_Framework(c, father) (struct zx_sbf_Framework_s*)zx_new_elem((c),(father),zx_sbf_Framework_ELEM)
+
 int zx_DEC_ATTR_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x);
 int zx_DEC_ELEM_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x);
-struct zx_sbf_Framework_s* zx_NEW_sbf_Framework(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x);
 char* zx_ENC_SO_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x);

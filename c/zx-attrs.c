@@ -1,4 +1,4 @@
-/* C code produced by gperf version 3.0.3 */
+/* C code produced by gperf version 3.0.1 */
 /* Command-line: gperf c/zx-attrs.gperf  */
 /* Computed positions: -k'1,3-5,$' */
 
@@ -971,9 +971,6 @@ struct zx_at_tok zx_at_tab[] =
 
 #ifdef __GNUC__
 __inline
-#ifdef __GNUC_STDC_INLINE__
-__attribute__ ((__gnu_inline__))
-#endif
 #endif
 struct zx_at_tok *
 zx_attr2tok (str, len)

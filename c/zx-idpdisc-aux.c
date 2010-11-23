@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_idpdisc_DiscoveryResponse_s
 #define EL_NS     idpdisc
 #define EL_TAG    DiscoveryResponse
-
-/* FUNC(zx_NEW_idpdisc_DiscoveryResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_idpdisc_DiscoveryResponse_s* zx_NEW_idpdisc_DiscoveryResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_idpdisc_DiscoveryResponse_s* x = ZX_ZALLOC(c, struct zx_idpdisc_DiscoveryResponse_s);
-  x->gg.g.tok = zx_idpdisc_DiscoveryResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

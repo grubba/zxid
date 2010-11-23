@@ -30,9 +30,10 @@ struct zx_dp_Request_s {
   struct zx_attr_s* itemID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_dp_Request(c, father) (struct zx_dp_Request_s*)zx_new_elem((c),(father),zx_dp_Request_ELEM)
+
 int zx_DEC_ATTR_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x);
 int zx_DEC_ELEM_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x);
-struct zx_dp_Request_s* zx_NEW_dp_Request(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x);
 char* zx_ENC_SO_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x);
@@ -70,9 +71,10 @@ struct zx_dp_Response_s {
   struct zx_attr_s* ref;	/* {1,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_dp_Response(c, father) (struct zx_dp_Response_s*)zx_new_elem((c),(father),zx_dp_Response_ELEM)
+
 int zx_DEC_ATTR_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x);
 int zx_DEC_ELEM_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x);
-struct zx_dp_Response_s* zx_NEW_dp_Response(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x);
 char* zx_ENC_SO_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x);

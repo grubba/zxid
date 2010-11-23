@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_wsp_All_s
 #define EL_NS     wsp
 #define EL_TAG    All
-
-/* FUNC(zx_NEW_wsp_All) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsp_All_s* zx_NEW_wsp_All(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsp_All_s* x = ZX_ZALLOC(c, struct zx_wsp_All_s);
-  x->gg.g.tok = zx_wsp_All_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -245,22 +230,6 @@ int zx_WALK_WO_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x, void* ctx, int 
 #define EL_NS     wsp
 #define EL_TAG    AppliesTo
 
-/* FUNC(zx_NEW_wsp_AppliesTo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsp_AppliesTo_s* zx_NEW_wsp_AppliesTo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsp_AppliesTo_s* x = ZX_ZALLOC(c, struct zx_wsp_AppliesTo_s);
-  x->gg.g.tok = zx_wsp_AppliesTo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_wsp_AppliesTo) */
@@ -357,22 +326,6 @@ int zx_WALK_WO_wsp_AppliesTo(struct zx_ctx* c, struct zx_wsp_AppliesTo_s* x, voi
 #define EL_STRUCT zx_wsp_ExactlyOne_s
 #define EL_NS     wsp
 #define EL_TAG    ExactlyOne
-
-/* FUNC(zx_NEW_wsp_ExactlyOne) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsp_ExactlyOne_s* zx_NEW_wsp_ExactlyOne(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsp_ExactlyOne_s* x = ZX_ZALLOC(c, struct zx_wsp_ExactlyOne_s);
-  x->gg.g.tok = zx_wsp_ExactlyOne_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -554,22 +507,6 @@ int zx_WALK_WO_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x, v
 #define EL_STRUCT zx_wsp_Policy_s
 #define EL_NS     wsp
 #define EL_TAG    Policy
-
-/* FUNC(zx_NEW_wsp_Policy) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsp_Policy_s* zx_NEW_wsp_Policy(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsp_Policy_s* x = ZX_ZALLOC(c, struct zx_wsp_Policy_s);
-  x->gg.g.tok = zx_wsp_Policy_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -756,22 +693,6 @@ int zx_WALK_WO_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x, void* ctx
 #define EL_NS     wsp
 #define EL_TAG    PolicyAttachment
 
-/* FUNC(zx_NEW_wsp_PolicyAttachment) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsp_PolicyAttachment_s* zx_NEW_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsp_PolicyAttachment_s* x = ZX_ZALLOC(c, struct zx_wsp_PolicyAttachment_s);
-  x->gg.g.tok = zx_wsp_PolicyAttachment_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_wsp_PolicyAttachment) */
@@ -931,22 +852,6 @@ int zx_WALK_WO_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAttach
 #define EL_STRUCT zx_wsp_PolicyReference_s
 #define EL_NS     wsp
 #define EL_TAG    PolicyReference
-
-/* FUNC(zx_NEW_wsp_PolicyReference) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsp_PolicyReference_s* zx_NEW_wsp_PolicyReference(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsp_PolicyReference_s* x = ZX_ZALLOC(c, struct zx_wsp_PolicyReference_s);
-  x->gg.g.tok = zx_wsp_PolicyReference_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

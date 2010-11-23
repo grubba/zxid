@@ -32,9 +32,10 @@ struct zx_ps_AddCollectionRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_AddCollectionRequest(c, father) (struct zx_ps_AddCollectionRequest_s*)zx_new_elem((c),(father),zx_ps_AddCollectionRequest_ELEM)
+
 int zx_DEC_ATTR_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollectionRequest_s* x);
 int zx_DEC_ELEM_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollectionRequest_s* x);
-struct zx_ps_AddCollectionRequest_s* zx_NEW_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollectionRequest_s* x);
 char* zx_ENC_SO_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollectionRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollectionRequest_s* x);
@@ -91,9 +92,10 @@ struct zx_ps_AddCollectionResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_AddCollectionResponse(c, father) (struct zx_ps_AddCollectionResponse_s*)zx_new_elem((c),(father),zx_ps_AddCollectionResponse_ELEM)
+
 int zx_DEC_ATTR_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollectionResponse_s* x);
 int zx_DEC_ELEM_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollectionResponse_s* x);
-struct zx_ps_AddCollectionResponse_s* zx_NEW_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollectionResponse_s* x);
 char* zx_ENC_SO_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollectionResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollectionResponse_s* x);
@@ -154,9 +156,10 @@ struct zx_ps_AddEntityRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_AddEntityRequest(c, father) (struct zx_ps_AddEntityRequest_s*)zx_new_elem((c),(father),zx_ps_AddEntityRequest_ELEM)
+
 int zx_DEC_ATTR_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequest_s* x);
 int zx_DEC_ELEM_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequest_s* x);
-struct zx_ps_AddEntityRequest_s* zx_NEW_ps_AddEntityRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequest_s* x);
 char* zx_ENC_SO_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequest_s* x);
@@ -239,9 +242,10 @@ struct zx_ps_AddEntityResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_AddEntityResponse(c, father) (struct zx_ps_AddEntityResponse_s*)zx_new_elem((c),(father),zx_ps_AddEntityResponse_ELEM)
+
 int zx_DEC_ATTR_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityResponse_s* x);
 int zx_DEC_ELEM_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityResponse_s* x);
-struct zx_ps_AddEntityResponse_s* zx_NEW_ps_AddEntityResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityResponse_s* x);
 char* zx_ENC_SO_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityResponse_s* x);
@@ -318,9 +322,10 @@ struct zx_ps_AddKnownEntityRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_AddKnownEntityRequest(c, father) (struct zx_ps_AddKnownEntityRequest_s*)zx_new_elem((c),(father),zx_ps_AddKnownEntityRequest_ELEM)
+
 int zx_DEC_ATTR_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEntityRequest_s* x);
 int zx_DEC_ELEM_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEntityRequest_s* x);
-struct zx_ps_AddKnownEntityRequest_s* zx_NEW_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEntityRequest_s* x);
 char* zx_ENC_SO_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEntityRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEntityRequest_s* x);
@@ -403,9 +408,10 @@ struct zx_ps_AddKnownEntityResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_AddKnownEntityResponse(c, father) (struct zx_ps_AddKnownEntityResponse_s*)zx_new_elem((c),(father),zx_ps_AddKnownEntityResponse_ELEM)
+
 int zx_DEC_ATTR_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownEntityResponse_s* x);
 int zx_DEC_ELEM_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownEntityResponse_s* x);
-struct zx_ps_AddKnownEntityResponse_s* zx_NEW_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownEntityResponse_s* x);
 char* zx_ENC_SO_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownEntityResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownEntityResponse_s* x);
@@ -480,9 +486,10 @@ struct zx_ps_AddToCollectionRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_AddToCollectionRequest(c, father) (struct zx_ps_AddToCollectionRequest_s*)zx_new_elem((c),(father),zx_ps_AddToCollectionRequest_ELEM)
+
 int zx_DEC_ATTR_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCollectionRequest_s* x);
 int zx_DEC_ELEM_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCollectionRequest_s* x);
-struct zx_ps_AddToCollectionRequest_s* zx_NEW_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCollectionRequest_s* x);
 char* zx_ENC_SO_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCollectionRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCollectionRequest_s* x);
@@ -546,9 +553,10 @@ struct zx_ps_AddToCollectionResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_AddToCollectionResponse(c, father) (struct zx_ps_AddToCollectionResponse_s*)zx_new_elem((c),(father),zx_ps_AddToCollectionResponse_ELEM)
+
 int zx_DEC_ATTR_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCollectionResponse_s* x);
 int zx_DEC_ELEM_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCollectionResponse_s* x);
-struct zx_ps_AddToCollectionResponse_s* zx_NEW_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCollectionResponse_s* x);
 char* zx_ENC_SO_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCollectionResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCollectionResponse_s* x);
@@ -595,9 +603,10 @@ struct zx_ps_CreatePSObject_s {
   zx_ps_CreatePSObject_EXT
 };
 
+#define zx_NEW_ps_CreatePSObject(c, father) (struct zx_ps_CreatePSObject_s*)zx_new_elem((c),(father),zx_ps_CreatePSObject_ELEM)
+
 int zx_DEC_ATTR_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s* x);
 int zx_DEC_ELEM_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s* x);
-struct zx_ps_CreatePSObject_s* zx_NEW_ps_CreatePSObject(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s* x);
 char* zx_ENC_SO_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s* x);
@@ -634,9 +643,10 @@ struct zx_ps_DisplayName_s {
   struct zx_attr_s* Locale;	/* {1,1} attribute xs:language */
 };
 
+#define zx_NEW_ps_DisplayName(c, father) (struct zx_ps_DisplayName_s*)zx_new_elem((c),(father),zx_ps_DisplayName_ELEM)
+
 int zx_DEC_ATTR_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x);
 int zx_DEC_ELEM_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x);
-struct zx_ps_DisplayName_s* zx_NEW_ps_DisplayName(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x);
 char* zx_ENC_SO_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x);
@@ -678,9 +688,10 @@ struct zx_ps_GetObjectInfoRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_GetObjectInfoRequest(c, father) (struct zx_ps_GetObjectInfoRequest_s*)zx_new_elem((c),(father),zx_ps_GetObjectInfoRequest_ELEM)
+
 int zx_DEC_ATTR_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectInfoRequest_s* x);
 int zx_DEC_ELEM_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectInfoRequest_s* x);
-struct zx_ps_GetObjectInfoRequest_s* zx_NEW_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectInfoRequest_s* x);
 char* zx_ENC_SO_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectInfoRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectInfoRequest_s* x);
@@ -737,9 +748,10 @@ struct zx_ps_GetObjectInfoResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_GetObjectInfoResponse(c, father) (struct zx_ps_GetObjectInfoResponse_s*)zx_new_elem((c),(father),zx_ps_GetObjectInfoResponse_ELEM)
+
 int zx_DEC_ATTR_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectInfoResponse_s* x);
 int zx_DEC_ELEM_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectInfoResponse_s* x);
-struct zx_ps_GetObjectInfoResponse_s* zx_NEW_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectInfoResponse_s* x);
 char* zx_ENC_SO_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectInfoResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectInfoResponse_s* x);
@@ -795,9 +807,10 @@ struct zx_ps_ItemData_s {
   struct zx_ps_Object_s* Object;	/* {1,1} nada */
 };
 
+#define zx_NEW_ps_ItemData(c, father) (struct zx_ps_ItemData_s*)zx_new_elem((c),(father),zx_ps_ItemData_ELEM)
+
 int zx_DEC_ATTR_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x);
 int zx_DEC_ELEM_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x);
-struct zx_ps_ItemData_s* zx_NEW_ps_ItemData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x);
 char* zx_ENC_SO_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x);
@@ -846,9 +859,10 @@ struct zx_ps_ListMembersRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_ListMembersRequest(c, father) (struct zx_ps_ListMembersRequest_s*)zx_new_elem((c),(father),zx_ps_ListMembersRequest_ELEM)
+
 int zx_DEC_ATTR_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRequest_s* x);
 int zx_DEC_ELEM_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRequest_s* x);
-struct zx_ps_ListMembersRequest_s* zx_NEW_ps_ListMembersRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRequest_s* x);
 char* zx_ENC_SO_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRequest_s* x);
@@ -911,9 +925,10 @@ struct zx_ps_ListMembersResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_ListMembersResponse(c, father) (struct zx_ps_ListMembersResponse_s*)zx_new_elem((c),(father),zx_ps_ListMembersResponse_ELEM)
+
 int zx_DEC_ATTR_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersResponse_s* x);
 int zx_DEC_ELEM_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersResponse_s* x);
-struct zx_ps_ListMembersResponse_s* zx_NEW_ps_ListMembersResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersResponse_s* x);
 char* zx_ENC_SO_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersResponse_s* x);
@@ -974,9 +989,10 @@ struct zx_ps_Notification_s {
   struct zx_attr_s* subscriptionID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_ps_Notification(c, father) (struct zx_ps_Notification_s*)zx_new_elem((c),(father),zx_ps_Notification_ELEM)
+
 int zx_DEC_ATTR_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x);
 int zx_DEC_ELEM_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x);
-struct zx_ps_Notification_s* zx_NEW_ps_Notification(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x);
 char* zx_ENC_SO_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x);
@@ -1038,9 +1054,10 @@ struct zx_ps_Notify_s {
   struct zx_attr_s* timeStamp;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_ps_Notify(c, father) (struct zx_ps_Notify_s*)zx_new_elem((c),(father),zx_ps_Notify_ELEM)
+
 int zx_DEC_ATTR_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x);
 int zx_DEC_ELEM_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x);
-struct zx_ps_Notify_s* zx_NEW_ps_Notify(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x);
 char* zx_ENC_SO_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x);
@@ -1090,9 +1107,10 @@ struct zx_ps_NotifyResponse_s {
   struct zx_attr_s* itemIDRef;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_ps_NotifyResponse(c, father) (struct zx_ps_NotifyResponse_s*)zx_new_elem((c),(father),zx_ps_NotifyResponse_ELEM)
+
 int zx_DEC_ATTR_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s* x);
 int zx_DEC_ELEM_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s* x);
-struct zx_ps_NotifyResponse_s* zx_NEW_ps_NotifyResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s* x);
 char* zx_ENC_SO_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s* x);
@@ -1153,9 +1171,10 @@ struct zx_ps_Object_s {
   struct zx_attr_s* NodeType;	/* {1,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_ps_Object(c, father) (struct zx_ps_Object_s*)zx_new_elem((c),(father),zx_ps_Object_ELEM)
+
 int zx_DEC_ATTR_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x);
 int zx_DEC_ELEM_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x);
-struct zx_ps_Object_s* zx_NEW_ps_Object(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x);
 char* zx_ENC_SO_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x);
@@ -1241,9 +1260,10 @@ struct zx_ps_QueryObjectsRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_QueryObjectsRequest(c, father) (struct zx_ps_QueryObjectsRequest_s*)zx_new_elem((c),(father),zx_ps_QueryObjectsRequest_ELEM)
+
 int zx_DEC_ATTR_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjectsRequest_s* x);
 int zx_DEC_ELEM_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjectsRequest_s* x);
-struct zx_ps_QueryObjectsRequest_s* zx_NEW_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjectsRequest_s* x);
 char* zx_ENC_SO_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjectsRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjectsRequest_s* x);
@@ -1304,9 +1324,10 @@ struct zx_ps_QueryObjectsResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_QueryObjectsResponse(c, father) (struct zx_ps_QueryObjectsResponse_s*)zx_new_elem((c),(father),zx_ps_QueryObjectsResponse_ELEM)
+
 int zx_DEC_ATTR_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObjectsResponse_s* x);
 int zx_DEC_ELEM_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObjectsResponse_s* x);
-struct zx_ps_QueryObjectsResponse_s* zx_NEW_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObjectsResponse_s* x);
 char* zx_ENC_SO_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObjectsResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObjectsResponse_s* x);
@@ -1363,9 +1384,10 @@ struct zx_ps_RemoveCollectionRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_RemoveCollectionRequest(c, father) (struct zx_ps_RemoveCollectionRequest_s*)zx_new_elem((c),(father),zx_ps_RemoveCollectionRequest_ELEM)
+
 int zx_DEC_ATTR_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCollectionRequest_s* x);
 int zx_DEC_ELEM_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCollectionRequest_s* x);
-struct zx_ps_RemoveCollectionRequest_s* zx_NEW_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCollectionRequest_s* x);
 char* zx_ENC_SO_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCollectionRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCollectionRequest_s* x);
@@ -1413,9 +1435,10 @@ struct zx_ps_RemoveCollectionResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_RemoveCollectionResponse(c, father) (struct zx_ps_RemoveCollectionResponse_s*)zx_new_elem((c),(father),zx_ps_RemoveCollectionResponse_ELEM)
+
 int zx_DEC_ATTR_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveCollectionResponse_s* x);
 int zx_DEC_ELEM_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveCollectionResponse_s* x);
-struct zx_ps_RemoveCollectionResponse_s* zx_NEW_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveCollectionResponse_s* x);
 char* zx_ENC_SO_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveCollectionResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveCollectionResponse_s* x);
@@ -1464,9 +1487,10 @@ struct zx_ps_RemoveEntityRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_RemoveEntityRequest(c, father) (struct zx_ps_RemoveEntityRequest_s*)zx_new_elem((c),(father),zx_ps_RemoveEntityRequest_ELEM)
+
 int zx_DEC_ATTR_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntityRequest_s* x);
 int zx_DEC_ELEM_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntityRequest_s* x);
-struct zx_ps_RemoveEntityRequest_s* zx_NEW_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntityRequest_s* x);
 char* zx_ENC_SO_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntityRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntityRequest_s* x);
@@ -1514,9 +1538,10 @@ struct zx_ps_RemoveEntityResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_RemoveEntityResponse(c, father) (struct zx_ps_RemoveEntityResponse_s*)zx_new_elem((c),(father),zx_ps_RemoveEntityResponse_ELEM)
+
 int zx_DEC_ATTR_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntityResponse_s* x);
 int zx_DEC_ELEM_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntityResponse_s* x);
-struct zx_ps_RemoveEntityResponse_s* zx_NEW_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntityResponse_s* x);
 char* zx_ENC_SO_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntityResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntityResponse_s* x);
@@ -1567,9 +1592,10 @@ struct zx_ps_RemoveFromCollectionRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_RemoveFromCollectionRequest(c, father) (struct zx_ps_RemoveFromCollectionRequest_s*)zx_new_elem((c),(father),zx_ps_RemoveFromCollectionRequest_ELEM)
+
 int zx_DEC_ATTR_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionRequest_s* x);
 int zx_DEC_ELEM_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionRequest_s* x);
-struct zx_ps_RemoveFromCollectionRequest_s* zx_NEW_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionRequest_s* x);
 char* zx_ENC_SO_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionRequest_s* x);
@@ -1633,9 +1659,10 @@ struct zx_ps_RemoveFromCollectionResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_RemoveFromCollectionResponse(c, father) (struct zx_ps_RemoveFromCollectionResponse_s*)zx_new_elem((c),(father),zx_ps_RemoveFromCollectionResponse_ELEM)
+
 int zx_DEC_ATTR_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionResponse_s* x);
 int zx_DEC_ELEM_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionResponse_s* x);
-struct zx_ps_RemoveFromCollectionResponse_s* zx_NEW_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionResponse_s* x);
 char* zx_ENC_SO_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionResponse_s* x);
@@ -1684,9 +1711,10 @@ struct zx_ps_ResolveIdentifierRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_ResolveIdentifierRequest(c, father) (struct zx_ps_ResolveIdentifierRequest_s*)zx_new_elem((c),(father),zx_ps_ResolveIdentifierRequest_ELEM)
+
 int zx_DEC_ATTR_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_ResolveIdentifierRequest_s* x);
 int zx_DEC_ELEM_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_ResolveIdentifierRequest_s* x);
-struct zx_ps_ResolveIdentifierRequest_s* zx_NEW_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_ResolveIdentifierRequest_s* x);
 char* zx_ENC_SO_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_ResolveIdentifierRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_ResolveIdentifierRequest_s* x);
@@ -1735,9 +1763,10 @@ struct zx_ps_ResolveIdentifierResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_ResolveIdentifierResponse(c, father) (struct zx_ps_ResolveIdentifierResponse_s*)zx_new_elem((c),(father),zx_ps_ResolveIdentifierResponse_ELEM)
+
 int zx_DEC_ATTR_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_ResolveIdentifierResponse_s* x);
 int zx_DEC_ELEM_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_ResolveIdentifierResponse_s* x);
-struct zx_ps_ResolveIdentifierResponse_s* zx_NEW_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_ResolveIdentifierResponse_s* x);
 char* zx_ENC_SO_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_ResolveIdentifierResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_ResolveIdentifierResponse_s* x);
@@ -1796,9 +1825,10 @@ struct zx_ps_ResolveInput_s {
   struct zx_attr_s* reqID;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_ps_ResolveInput(c, father) (struct zx_ps_ResolveInput_s*)zx_new_elem((c),(father),zx_ps_ResolveInput_ELEM)
+
 int zx_DEC_ATTR_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x);
 int zx_DEC_ELEM_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x);
-struct zx_ps_ResolveInput_s* zx_NEW_ps_ResolveInput(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x);
 char* zx_ENC_SO_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x);
@@ -1861,9 +1891,10 @@ struct zx_ps_ResolveOutput_s {
   struct zx_attr_s* reqRef;	/* {0,1} attribute lu:IDReferenceType */
 };
 
+#define zx_NEW_ps_ResolveOutput(c, father) (struct zx_ps_ResolveOutput_s*)zx_new_elem((c),(father),zx_ps_ResolveOutput_ELEM)
+
 int zx_DEC_ATTR_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x);
 int zx_DEC_ELEM_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x);
-struct zx_ps_ResolveOutput_s* zx_NEW_ps_ResolveOutput(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x);
 char* zx_ENC_SO_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x);
@@ -1911,9 +1942,10 @@ struct zx_ps_SetObjectInfoRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_SetObjectInfoRequest(c, father) (struct zx_ps_SetObjectInfoRequest_s*)zx_new_elem((c),(father),zx_ps_SetObjectInfoRequest_ELEM)
+
 int zx_DEC_ATTR_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectInfoRequest_s* x);
 int zx_DEC_ELEM_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectInfoRequest_s* x);
-struct zx_ps_SetObjectInfoRequest_s* zx_NEW_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectInfoRequest_s* x);
 char* zx_ENC_SO_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectInfoRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectInfoRequest_s* x);
@@ -1969,9 +2001,10 @@ struct zx_ps_SetObjectInfoResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_SetObjectInfoResponse(c, father) (struct zx_ps_SetObjectInfoResponse_s*)zx_new_elem((c),(father),zx_ps_SetObjectInfoResponse_ELEM)
+
 int zx_DEC_ATTR_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectInfoResponse_s* x);
 int zx_DEC_ELEM_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectInfoResponse_s* x);
-struct zx_ps_SetObjectInfoResponse_s* zx_NEW_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectInfoResponse_s* x);
 char* zx_ENC_SO_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectInfoResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectInfoResponse_s* x);
@@ -2027,9 +2060,10 @@ struct zx_ps_Subscription_s {
   struct zx_attr_s* subscriptionID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_ps_Subscription(c, father) (struct zx_ps_Subscription_s*)zx_new_elem((c),(father),zx_ps_Subscription_ELEM)
+
 int zx_DEC_ATTR_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x);
 int zx_DEC_ELEM_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x);
-struct zx_ps_Subscription_s* zx_NEW_ps_Subscription(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x);
 char* zx_ENC_SO_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x);
@@ -2095,9 +2129,10 @@ struct zx_ps_Tag_s {
   struct zx_attr_s* Ref;	/* {1,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_ps_Tag(c, father) (struct zx_ps_Tag_s*)zx_new_elem((c),(father),zx_ps_Tag_ELEM)
+
 int zx_DEC_ATTR_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x);
 int zx_DEC_ELEM_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x);
-struct zx_ps_Tag_s* zx_NEW_ps_Tag(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x);
 char* zx_ENC_SO_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x);
@@ -2138,9 +2173,10 @@ struct zx_ps_TestMembershipRequest_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_TestMembershipRequest(c, father) (struct zx_ps_TestMembershipRequest_s*)zx_new_elem((c),(father),zx_ps_TestMembershipRequest_ELEM)
+
 int zx_DEC_ATTR_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMembershipRequest_s* x);
 int zx_DEC_ELEM_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMembershipRequest_s* x);
-struct zx_ps_TestMembershipRequest_s* zx_NEW_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMembershipRequest_s* x);
 char* zx_ENC_SO_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMembershipRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMembershipRequest_s* x);
@@ -2205,9 +2241,10 @@ struct zx_ps_TestMembershipResponse_s {
   struct zx_attr_s* id;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_ps_TestMembershipResponse(c, father) (struct zx_ps_TestMembershipResponse_s*)zx_new_elem((c),(father),zx_ps_TestMembershipResponse_ELEM)
+
 int zx_DEC_ATTR_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembershipResponse_s* x);
 int zx_DEC_ELEM_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembershipResponse_s* x);
-struct zx_ps_TestMembershipResponse_s* zx_NEW_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembershipResponse_s* x);
 char* zx_ENC_SO_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembershipResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembershipResponse_s* x);

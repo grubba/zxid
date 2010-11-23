@@ -256,9 +256,10 @@ struct zx_e_Body_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_e_Body(c, father) (struct zx_e_Body_s*)zx_new_elem((c),(father),zx_e_Body_ELEM)
+
 int zx_DEC_ATTR_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x);
 int zx_DEC_ELEM_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x);
-struct zx_e_Body_s* zx_NEW_e_Body(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x);
 char* zx_ENC_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x);
@@ -2106,9 +2107,10 @@ struct zx_e_Envelope_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_e_Envelope(c, father) (struct zx_e_Envelope_s*)zx_new_elem((c),(father),zx_e_Envelope_ELEM)
+
 int zx_DEC_ATTR_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x);
 int zx_DEC_ELEM_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x);
-struct zx_e_Envelope_s* zx_NEW_e_Envelope(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x);
 char* zx_ENC_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x);
@@ -2165,9 +2167,10 @@ struct zx_e_Fault_s {
   struct zx_e_detail_s* detail;	/* {0,1}  */
 };
 
+#define zx_NEW_e_Fault(c, father) (struct zx_e_Fault_s*)zx_new_elem((c),(father),zx_e_Fault_ELEM)
+
 int zx_DEC_ATTR_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x);
 int zx_DEC_ELEM_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x);
-struct zx_e_Fault_s* zx_NEW_e_Fault(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x);
 char* zx_ENC_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x);
@@ -2271,9 +2274,10 @@ struct zx_e_Header_s {
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_e_Header(c, father) (struct zx_e_Header_s*)zx_new_elem((c),(father),zx_e_Header_ELEM)
+
 int zx_DEC_ATTR_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x);
 int zx_DEC_ELEM_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x);
-struct zx_e_Header_s* zx_NEW_e_Header(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x);
 char* zx_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x);
@@ -2599,9 +2603,10 @@ struct zx_e_detail_s {
   struct zx_lu_Status_s* Status;	/* {0,-1} nada */
 };
 
+#define zx_NEW_e_detail(c, father) (struct zx_e_detail_s*)zx_new_elem((c),(father),zx_e_detail_ELEM)
+
 int zx_DEC_ATTR_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x);
 int zx_DEC_ELEM_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x);
-struct zx_e_detail_s* zx_NEW_e_detail(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x);
 char* zx_ENC_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x);

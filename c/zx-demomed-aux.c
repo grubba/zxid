@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_demomed_DeleteObjectRequest_s
 #define EL_NS     demomed
 #define EL_TAG    DeleteObjectRequest
-
-/* FUNC(zx_NEW_demomed_DeleteObjectRequest) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_DeleteObjectRequest_s* zx_NEW_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_DeleteObjectRequest_s* x = ZX_ZALLOC(c, struct zx_demomed_DeleteObjectRequest_s);
-  x->gg.g.tok = zx_demomed_DeleteObjectRequest_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -165,22 +150,6 @@ int zx_WALK_WO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_D
 #define EL_STRUCT zx_demomed_DeleteObjectResponse_s
 #define EL_NS     demomed
 #define EL_TAG    DeleteObjectResponse
-
-/* FUNC(zx_NEW_demomed_DeleteObjectResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_DeleteObjectResponse_s* zx_NEW_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_DeleteObjectResponse_s* x = ZX_ZALLOC(c, struct zx_demomed_DeleteObjectResponse_s);
-  x->gg.g.tok = zx_demomed_DeleteObjectResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -305,22 +274,6 @@ int zx_WALK_WO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_
 #define EL_NS     demomed
 #define EL_TAG    GetObjectListRequest
 
-/* FUNC(zx_NEW_demomed_GetObjectListRequest) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_GetObjectListRequest_s* zx_NEW_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_GetObjectListRequest_s* x = ZX_ZALLOC(c, struct zx_demomed_GetObjectListRequest_s);
-  x->gg.g.tok = zx_demomed_GetObjectListRequest_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_demomed_GetObjectListRequest) */
@@ -438,22 +391,6 @@ int zx_WALK_WO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_
 #define EL_STRUCT zx_demomed_GetObjectListResponse_s
 #define EL_NS     demomed
 #define EL_TAG    GetObjectListResponse
-
-/* FUNC(zx_NEW_demomed_GetObjectListResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_GetObjectListResponse_s* zx_NEW_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_GetObjectListResponse_s* x = ZX_ZALLOC(c, struct zx_demomed_GetObjectListResponse_s);
-  x->gg.g.tok = zx_demomed_GetObjectListResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -594,22 +531,6 @@ int zx_WALK_WO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed
 #define EL_NS     demomed
 #define EL_TAG    GetObjectRequest
 
-/* FUNC(zx_NEW_demomed_GetObjectRequest) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_GetObjectRequest_s* zx_NEW_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_GetObjectRequest_s* x = ZX_ZALLOC(c, struct zx_demomed_GetObjectRequest_s);
-  x->gg.g.tok = zx_demomed_GetObjectRequest_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_demomed_GetObjectRequest) */
@@ -711,22 +632,6 @@ int zx_WALK_WO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetO
 #define EL_STRUCT zx_demomed_GetObjectResponse_s
 #define EL_NS     demomed
 #define EL_TAG    GetObjectResponse
-
-/* FUNC(zx_NEW_demomed_GetObjectResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_GetObjectResponse_s* zx_NEW_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_GetObjectResponse_s* x = ZX_ZALLOC(c, struct zx_demomed_GetObjectResponse_s);
-  x->gg.g.tok = zx_demomed_GetObjectResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -866,22 +771,6 @@ int zx_WALK_WO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_Get
 #define EL_STRUCT zx_demomed_Object_s
 #define EL_NS     demomed
 #define EL_TAG    Object
-
-/* FUNC(zx_NEW_demomed_Object) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_Object_s* zx_NEW_demomed_Object(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_Object_s* x = ZX_ZALLOC(c, struct zx_demomed_Object_s);
-  x->gg.g.tok = zx_demomed_Object_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1024,22 +913,6 @@ int zx_WALK_WO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, v
 #define EL_NS     demomed
 #define EL_TAG    ObjectData
 
-/* FUNC(zx_NEW_demomed_ObjectData) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_ObjectData_s* zx_NEW_demomed_ObjectData(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_ObjectData_s* x = ZX_ZALLOC(c, struct zx_demomed_ObjectData_s);
-  x->gg.g.tok = zx_demomed_ObjectData_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_demomed_ObjectData) */
@@ -1138,22 +1011,6 @@ int zx_WALK_WO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData
 #define EL_STRUCT zx_demomed_ObjectInfo_s
 #define EL_NS     demomed
 #define EL_TAG    ObjectInfo
-
-/* FUNC(zx_NEW_demomed_ObjectInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_ObjectInfo_s* zx_NEW_demomed_ObjectInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_ObjectInfo_s* x = ZX_ZALLOC(c, struct zx_demomed_ObjectInfo_s);
-  x->gg.g.tok = zx_demomed_ObjectInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1279,22 +1136,6 @@ int zx_WALK_WO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo
 #define EL_NS     demomed
 #define EL_TAG    ObjectSearchParm
 
-/* FUNC(zx_NEW_demomed_ObjectSearchParm) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_ObjectSearchParm_s* zx_NEW_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_ObjectSearchParm_s* x = ZX_ZALLOC(c, struct zx_demomed_ObjectSearchParm_s);
-  x->gg.g.tok = zx_demomed_ObjectSearchParm_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_demomed_ObjectSearchParm) */
@@ -1412,22 +1253,6 @@ int zx_WALK_WO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_Obje
 #define EL_NS     demomed
 #define EL_TAG    ObjectStoreInfo
 
-/* FUNC(zx_NEW_demomed_ObjectStoreInfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_ObjectStoreInfo_s* zx_NEW_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_ObjectStoreInfo_s* x = ZX_ZALLOC(c, struct zx_demomed_ObjectStoreInfo_s);
-  x->gg.g.tok = zx_demomed_ObjectStoreInfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_demomed_ObjectStoreInfo) */
@@ -1528,22 +1353,6 @@ int zx_WALK_WO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_Objec
 #define EL_STRUCT zx_demomed_StoreObjectRequest_s
 #define EL_NS     demomed
 #define EL_TAG    StoreObjectRequest
-
-/* FUNC(zx_NEW_demomed_StoreObjectRequest) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_StoreObjectRequest_s* zx_NEW_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_StoreObjectRequest_s* x = ZX_ZALLOC(c, struct zx_demomed_StoreObjectRequest_s);
-  x->gg.g.tok = zx_demomed_StoreObjectRequest_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1662,22 +1471,6 @@ int zx_WALK_WO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_St
 #define EL_STRUCT zx_demomed_StoreObjectResponse_s
 #define EL_NS     demomed
 #define EL_TAG    StoreObjectResponse
-
-/* FUNC(zx_NEW_demomed_StoreObjectResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_demomed_StoreObjectResponse_s* zx_NEW_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_demomed_StoreObjectResponse_s* x = ZX_ZALLOC(c, struct zx_demomed_StoreObjectResponse_s);
-  x->gg.g.tok = zx_demomed_StoreObjectResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

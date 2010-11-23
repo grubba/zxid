@@ -1,0 +1,17 @@
+http://sp1.zxidsp.org:8080/zxidservlet/zxidHLO?o=B /var/zxid/idpcot/2-KjhkXzy0BznBjZrFQtDLYeYyE -
+https://sp1.zxidsp.org:5443/protected/saml?o=B     /var/zxid/idpcot/pjxvzhnRg5jmD-Z_Ku89x8dwSwg -
+http://sp1.zxidsp.org:8081/zxidhlo?o=B             /var/zxid/idpcot/7226zILkb6t9aGT89NyvhKvbZS0 TAS3 App Demo SP and WSC
+https://idp.tas3.pt:8443/zxididp?o=B               /var/zxid/idpcot/j78ObrTlKC6ptOs04NpEmkTiUWM -
+http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B            /var/zxid/idpcot/THuOFn5WPO49n6esrG22rUFW6Go -
+http://sp.tas3.pt:8080/zxidhlo?o=B                 /var/zxid/idpcot/0zktPh44FpRx_mzFJL-jwQh9jeo -
+https://idp.symdemo.com:8880/idp.xml               /var/zxid/idpcot/_CBGcFVVbIEmt5oh3jUx4GEfHLM -
+http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B     /var/zxid/idpcot/RoxLhhcxK04xzJRrW6ZuroX7Ing -
+http://idp.tas3.pt:8081/zxididp?o=B                /var/zxid/idpcot/xsKJr3DL7sUPDdbdqgC2H_eP-UM -
+http://sp.tas3.pt:8080/zxidservlet/sso?o=B         /var/zxid/idpcot/9u_7LsQjkz0VaXKucmx1_sYjQnM TAS3 App Demo SP and WSC
+http://idp.tas3.pt:8081/zxididp                    /var/zxid/idpcot/HP5IP9fE_HtNMNuTisquh7oNqg4 TAS3 Demo IdP
+http://auth-int.orange.fr                          /var/zxid/idpcot/OKCy5mMaXMJUnKQ1wVJCcT00AA8 -
+http://141.26.143.22:8080/wspdemosp3.xml           /var/zxid/idpcot/N2HeD_WOw25JModEZboj1C4lubw -
+http://sp.zxidp.org:8080/zxidservlet/sso?o=B       /var/zxid/idpcot/I7fbXL2KNXOTk6YpjR3pQ4awVzY ZXID Demo SP
+http://sp.tas3.pt:8080/zxidservlet/zxidHLO?o=B     /var/zxid/idpcot/Odut1A1MAid8SzMbJfaIfIyN6WU -
+http://sp.tas3.pt:8080/zxidservlet/wspleaf?o=B     /var/zxid/idpcot/LrmskITZZexv2pk5c7qKRvLMicw -
+http://auth.orange.fr                              /var/zxid/idpcot/ZLIYSwzbSQdzIWHISwoWtdrx6JI -

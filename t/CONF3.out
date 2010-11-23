@@ -1,0 +1,4 @@
+Content-Type: text/xml
+Content-Length: 481
+
+<carml:ClientAttrReq AppName="ZXID SP" Description="ZXID SP Attribute Needs and Wants" xmlns:carml="urn:igf:client:0.9:carml"><carml:DataDefs>  <carml:Attributes>  </carml:Attributes>  <carml:Predicates>  </carml:Predicates>  <carml:Roles>  </carml:Roles>  <carml:Policies>  </carml:Policies></carml:DataDefs><carml:ReadInteraction/><carml:FindInteraction/><carml:SearchInteraction/><carml:CompareInteraction/><carml:ModifyInteraction/><carml:AddInteraction/></carml:ClientAttrReq>

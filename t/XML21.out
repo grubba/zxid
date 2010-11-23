@@ -1,0 +1,35 @@
+Original and WO are different lengths 3523 != 2536
+Original and WO differ.
+SO and WO differ.
+Re-encoded result SO (len=1848):
+<e:Envelope xmlns:e="http://schemas.xmlsoap.org/soap/envelope/"><e:Header><a:MessageID xmlns:a="http://www.w3.org/2005/08/addressing">uuid:asdqwer-23195a-46286591-132713dd</a:MessageID><a:Action xmlns:a="http://www.w3.org/2005/08/addressing">urn:liberty:prov:2006-12:PMRegisterDescriptor</a:Action><sbf:Framework xmlns:sbf="urn:liberty:sb" version="2.0"></sbf:Framework><wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"><wsu:Timestamp xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"><wsu:Created>2007-06-06T11:57:35Z</wsu:Created><wsu:Expires>2007-06-10T16:03:58Z</wsu:Expires></wsu:Timestamp>     </wsse:Security>                    </e:Header><e:Body><prov:PMRegisterDescriptor xmlns:prov="urn:liberty:prov:2006-12"><prov:PMRegisterDescriptorItem itemID="1"><prov:PMDescriptor xmlns:xs="http://www.w3.org/2001/XMLSchema" activateAt="2007-12-11T14:52:00Z"><prov:PMID issuer="http://provs-r-us.com">uuid:239032-230328-92379-2397923</prov:PMID><prov:PMEngineRef>http://Intel.icp.org/VeryTrustedModule/3.6</prov:PMEngineRef><prov:PMInitData>
+                                                <xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">
+                                                        
+                                                        
+                                                        
+                                                </xenc:EncryptedData>
+                                        </prov:PMInitData>
+                                        
+                                        
+                                        
+                                </prov:PMDescriptor>
+                                
+                        </prov:PMRegisterDescriptorItem></prov:PMRegisterDes
+
+Re-encoded result WO (len=2536):
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">     <SOAP-ENV:Header><sbf:Framework xmlns:sbf="urn:liberty:sb" version="2.0"></sbf:Framework>     <wsa:Action xmlns:wsa="http://www.w3.org/2005/08/addressing">urn:liberty:prov:2006-12:PMRegisterDescriptor</wsa:Action>     <wsa:MessageID xmlns:wsa="http://www.w3.org/2005/08/addressing">uuid:asdqwer-23195a-46286591-132713dd</wsa:MessageID>     <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">     <wsu:Timestamp xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"><wsu:Created>2007-06-06T11:57:35Z</wsu:Created><wsu:Expires>2007-06-10T16:03:58Z</wsu:Expires></wsu:Timestamp></wsse:Security>     </SOAP-ENV:Header>     <SOAP-ENV:Body><prov:PMRegisterDescriptor xmlns:prov="urn:liberty:prov:2006-12"><prov:PMRegisterDescriptorItem itemID="1">
+                                <prov:PMDescriptor xmlns:xs="http://www.w3.org/2001/XMLSchema" xs:id="2323923900239" activateAt="2007-12-11T14:52:00Z">
+                                        <prov:PMID issuer="http://provs-r-us.com">uuid:239032-230328-92379-2397923</prov:PMID>
+                                        <prov:PMEngineRef>http://Intel.icp.org/VeryTrustedModule/3.6</prov:PMEngineRef>
+                                        <prov:PMInitData>
+                                                <xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">
+                                                        <xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"></xenc:EncryptionMethod>
+                                                        <dsig:KeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#"></dsig:KeyInfo>
+                                                        <xenc:CipherData>
+                                                                <xenc:CipherValue>wogxTfSEAOF+GdTZw+wIwQCMTha8wSoSsevch+w4g3dtABxqSiedDPgb3NkBRO76od2ZnSsNYB3jAcFY4EYJRgSb5GL8SIidihdNCOnGUSDsP8KNMdnn/kU/qYeregSzmDOr6kGjkgPAyS+ET8jPu/IALfzZwY7l3h413h7dVDFb/R85aed3SQ==</xenc:CipherValue>
+                                                        </xenc:CipherData>
+                                                </xenc:EncryptedData>
+                                        </prov:PMInitData>
+                                </prov:PMDescriptor>
+                        </prov:PMRegisterDescriptorItem></prov:PMRegisterDescriptor></SOAP-ENV:Body></SOAP-ENV:Envelope>    
+

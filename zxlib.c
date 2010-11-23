@@ -353,6 +353,29 @@ struct zx_elem_s* zx_new_simple_elem(struct zx_ctx* c, struct zx_elem_s* father,
   return el;
 }
 
+/*() Helper function for the zx_NEW_*() macros */
+
+struct zx_elem_s* zx_new_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok)
+{
+  const struct zx_el_desc* ed;
+  struct zx_elem_s* el;
+  ed = zx_el_desc_lookup(tok);
+  if (ed) {
+    el = ZX_ALLOC(c, ed->siz);
+    ZERO(el, ed->siz);
+  } else {
+    INFO("Unknown element tok=%06x in tok=%06x", tok, father?father->g.tok:0);
+    el = ZX_ZALLOC(c, struct zx_elem_s);
+    tok = ZX_TOK_AND_NS_NOT_FOUND;
+  }
+  el->g.tok = tok;
+  if (father) {
+    el->g.n = &father->kids->g;
+    father->kids = el;
+  }
+  return el;
+}
+
 /*() Construct new simple element by referencing, not copying, raw string data of given length. */
 
 /* Called by:  zx_ref_simple_elem, zxid_as_call_ses, zxid_key_desc, zxid_key_info */

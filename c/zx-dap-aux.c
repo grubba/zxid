@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_dap_Create_s
 #define EL_NS     dap
 #define EL_TAG    Create
-
-/* FUNC(zx_NEW_dap_Create) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_Create_s* zx_NEW_dap_Create(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_Create_s* x = ZX_ZALLOC(c, struct zx_dap_Create_s);
-  x->gg.g.tok = zx_dap_Create_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -247,22 +232,6 @@ int zx_WALK_WO_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x, void* ctx
 #define EL_NS     dap
 #define EL_TAG    CreateItem
 
-/* FUNC(zx_NEW_dap_CreateItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_CreateItem_s* zx_NEW_dap_CreateItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_CreateItem_s* x = ZX_ZALLOC(c, struct zx_dap_CreateItem_s);
-  x->gg.g.tok = zx_dap_CreateItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_CreateItem) */
@@ -386,22 +355,6 @@ int zx_WALK_WO_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x, v
 #define EL_STRUCT zx_dap_CreateResponse_s
 #define EL_NS     dap
 #define EL_TAG    CreateResponse
-
-/* FUNC(zx_NEW_dap_CreateResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_CreateResponse_s* zx_NEW_dap_CreateResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_CreateResponse_s* x = ZX_ZALLOC(c, struct zx_dap_CreateResponse_s);
-  x->gg.g.tok = zx_dap_CreateResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -567,22 +520,6 @@ int zx_WALK_WO_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse
 #define EL_NS     dap
 #define EL_TAG    Data
 
-/* FUNC(zx_NEW_dap_Data) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_Data_s* zx_NEW_dap_Data(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_Data_s* x = ZX_ZALLOC(c, struct zx_dap_Data_s);
-  x->gg.g.tok = zx_dap_Data_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_Data) */
@@ -734,22 +671,6 @@ int zx_WALK_WO_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x, void* ctx, in
 #define EL_NS     dap
 #define EL_TAG    Delete
 
-/* FUNC(zx_NEW_dap_Delete) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_Delete_s* zx_NEW_dap_Delete(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_Delete_s* x = ZX_ZALLOC(c, struct zx_dap_Delete_s);
-  x->gg.g.tok = zx_dap_Delete_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_Delete) */
@@ -891,22 +812,6 @@ int zx_WALK_WO_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x, void* ctx
 #define EL_NS     dap
 #define EL_TAG    DeleteItem
 
-/* FUNC(zx_NEW_dap_DeleteItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_DeleteItem_s* zx_NEW_dap_DeleteItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_DeleteItem_s* x = ZX_ZALLOC(c, struct zx_dap_DeleteItem_s);
-  x->gg.g.tok = zx_dap_DeleteItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_DeleteItem) */
@@ -1034,22 +939,6 @@ int zx_WALK_WO_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x, v
 #define EL_STRUCT zx_dap_DeleteResponse_s
 #define EL_NS     dap
 #define EL_TAG    DeleteResponse
-
-/* FUNC(zx_NEW_dap_DeleteResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_DeleteResponse_s* zx_NEW_dap_DeleteResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_DeleteResponse_s* x = ZX_ZALLOC(c, struct zx_dap_DeleteResponse_s);
-  x->gg.g.tok = zx_dap_DeleteResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1191,22 +1080,6 @@ int zx_WALK_WO_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse
 #define EL_STRUCT zx_dap_ItemData_s
 #define EL_NS     dap
 #define EL_TAG    ItemData
-
-/* FUNC(zx_NEW_dap_ItemData) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_ItemData_s* zx_NEW_dap_ItemData(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_ItemData_s* x = ZX_ZALLOC(c, struct zx_dap_ItemData_s);
-  x->gg.g.tok = zx_dap_ItemData_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1353,22 +1226,6 @@ int zx_WALK_WO_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x, void*
 #define EL_NS     dap
 #define EL_TAG    LDIF
 
-/* FUNC(zx_NEW_dap_LDIF) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_LDIF_s* zx_NEW_dap_LDIF(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_LDIF_s* x = ZX_ZALLOC(c, struct zx_dap_LDIF_s);
-  x->gg.g.tok = zx_dap_LDIF_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_LDIF) */
@@ -1479,22 +1336,6 @@ int zx_WALK_WO_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x, void* ctx, in
 #define EL_STRUCT zx_dap_Modify_s
 #define EL_NS     dap
 #define EL_TAG    Modify
-
-/* FUNC(zx_NEW_dap_Modify) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_Modify_s* zx_NEW_dap_Modify(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_Modify_s* x = ZX_ZALLOC(c, struct zx_dap_Modify_s);
-  x->gg.g.tok = zx_dap_Modify_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1679,22 +1520,6 @@ int zx_WALK_WO_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x, void* ctx
 #define EL_NS     dap
 #define EL_TAG    ModifyItem
 
-/* FUNC(zx_NEW_dap_ModifyItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_ModifyItem_s* zx_NEW_dap_ModifyItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_ModifyItem_s* x = ZX_ZALLOC(c, struct zx_dap_ModifyItem_s);
-  x->gg.g.tok = zx_dap_ModifyItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_ModifyItem) */
@@ -1845,22 +1670,6 @@ int zx_WALK_WO_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x, v
 #define EL_STRUCT zx_dap_ModifyResponse_s
 #define EL_NS     dap
 #define EL_TAG    ModifyResponse
-
-/* FUNC(zx_NEW_dap_ModifyResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_ModifyResponse_s* zx_NEW_dap_ModifyResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_ModifyResponse_s* x = ZX_ZALLOC(c, struct zx_dap_ModifyResponse_s);
-  x->gg.g.tok = zx_dap_ModifyResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2026,22 +1835,6 @@ int zx_WALK_WO_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse
 #define EL_NS     dap
 #define EL_TAG    NewData
 
-/* FUNC(zx_NEW_dap_NewData) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_NewData_s* zx_NEW_dap_NewData(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_NewData_s* x = ZX_ZALLOC(c, struct zx_dap_NewData_s);
-  x->gg.g.tok = zx_dap_NewData_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_NewData) */
@@ -2180,22 +1973,6 @@ int zx_WALK_WO_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x, void* c
 #define EL_STRUCT zx_dap_Notification_s
 #define EL_NS     dap
 #define EL_TAG    Notification
-
-/* FUNC(zx_NEW_dap_Notification) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_Notification_s* zx_NEW_dap_Notification(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_Notification_s* x = ZX_ZALLOC(c, struct zx_dap_Notification_s);
-  x->gg.g.tok = zx_dap_Notification_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2344,22 +2121,6 @@ int zx_WALK_WO_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* 
 #define EL_NS     dap
 #define EL_TAG    Notify
 
-/* FUNC(zx_NEW_dap_Notify) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_Notify_s* zx_NEW_dap_Notify(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_Notify_s* x = ZX_ZALLOC(c, struct zx_dap_Notify_s);
-  x->gg.g.tok = zx_dap_Notify_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_Notify) */
@@ -2503,22 +2264,6 @@ int zx_WALK_WO_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x, void* ctx
 #define EL_NS     dap
 #define EL_TAG    NotifyResponse
 
-/* FUNC(zx_NEW_dap_NotifyResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_NotifyResponse_s* zx_NEW_dap_NotifyResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_NotifyResponse_s* x = ZX_ZALLOC(c, struct zx_dap_NotifyResponse_s);
-  x->gg.g.tok = zx_dap_NotifyResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_NotifyResponse) */
@@ -2659,22 +2404,6 @@ int zx_WALK_WO_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse
 #define EL_STRUCT zx_dap_Query_s
 #define EL_NS     dap
 #define EL_TAG    Query
-
-/* FUNC(zx_NEW_dap_Query) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_Query_s* zx_NEW_dap_Query(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_Query_s* x = ZX_ZALLOC(c, struct zx_dap_Query_s);
-  x->gg.g.tok = zx_dap_Query_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2859,22 +2588,6 @@ int zx_WALK_WO_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x, void* ctx, 
 #define EL_NS     dap
 #define EL_TAG    QueryItem
 
-/* FUNC(zx_NEW_dap_QueryItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_QueryItem_s* zx_NEW_dap_QueryItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_QueryItem_s* x = ZX_ZALLOC(c, struct zx_dap_QueryItem_s);
-  x->gg.g.tok = zx_dap_QueryItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_QueryItem) */
@@ -3024,22 +2737,6 @@ int zx_WALK_WO_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x, voi
 #define EL_STRUCT zx_dap_QueryResponse_s
 #define EL_NS     dap
 #define EL_TAG    QueryResponse
-
-/* FUNC(zx_NEW_dap_QueryResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_QueryResponse_s* zx_NEW_dap_QueryResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_QueryResponse_s* x = ZX_ZALLOC(c, struct zx_dap_QueryResponse_s);
-  x->gg.g.tok = zx_dap_QueryResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3226,22 +2923,6 @@ int zx_WALK_WO_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s
 #define EL_NS     dap
 #define EL_TAG    ResultQuery
 
-/* FUNC(zx_NEW_dap_ResultQuery) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_ResultQuery_s* zx_NEW_dap_ResultQuery(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_ResultQuery_s* x = ZX_ZALLOC(c, struct zx_dap_ResultQuery_s);
-  x->gg.g.tok = zx_dap_ResultQuery_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_ResultQuery) */
@@ -3384,22 +3065,6 @@ int zx_WALK_WO_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x,
 #define EL_NS     dap
 #define EL_TAG    Select
 
-/* FUNC(zx_NEW_dap_Select) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_Select_s* zx_NEW_dap_Select(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_Select_s* x = ZX_ZALLOC(c, struct zx_dap_Select_s);
-  x->gg.g.tok = zx_dap_Select_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_Select) */
@@ -3518,22 +3183,6 @@ int zx_WALK_WO_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x, void* ctx
 #define EL_STRUCT zx_dap_Subscription_s
 #define EL_NS     dap
 #define EL_TAG    Subscription
-
-/* FUNC(zx_NEW_dap_Subscription) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_Subscription_s* zx_NEW_dap_Subscription(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_Subscription_s* x = ZX_ZALLOC(c, struct zx_dap_Subscription_s);
-  x->gg.g.tok = zx_dap_Subscription_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3719,22 +3368,6 @@ int zx_WALK_WO_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* 
 #define EL_NS     dap
 #define EL_TAG    TestItem
 
-/* FUNC(zx_NEW_dap_TestItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_TestItem_s* zx_NEW_dap_TestItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_TestItem_s* x = ZX_ZALLOC(c, struct zx_dap_TestItem_s);
-  x->gg.g.tok = zx_dap_TestItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_dap_TestItem) */
@@ -3860,22 +3493,6 @@ int zx_WALK_WO_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x, void*
 #define EL_STRUCT zx_dap_TestOp_s
 #define EL_NS     dap
 #define EL_TAG    TestOp
-
-/* FUNC(zx_NEW_dap_TestOp) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_dap_TestOp_s* zx_NEW_dap_TestOp(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_dap_TestOp_s* x = ZX_ZALLOC(c, struct zx_dap_TestOp_s);
-  x->gg.g.tok = zx_dap_TestOp_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

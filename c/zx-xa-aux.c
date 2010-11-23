@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_xa_Action_s
 #define EL_NS     xa
 #define EL_TAG    Action
-
-/* FUNC(zx_NEW_xa_Action) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Action_s* zx_NEW_xa_Action(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Action_s* x = ZX_ZALLOC(c, struct zx_xa_Action_s);
-  x->gg.g.tok = zx_xa_Action_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -182,22 +167,6 @@ int zx_WALK_WO_xa_Action(struct zx_ctx* c, struct zx_xa_Action_s* x, void* ctx, 
 #define EL_NS     xa
 #define EL_TAG    ActionAttributeDesignator
 
-/* FUNC(zx_NEW_xa_ActionAttributeDesignator) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_ActionAttributeDesignator_s* zx_NEW_xa_ActionAttributeDesignator(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_ActionAttributeDesignator_s* x = ZX_ZALLOC(c, struct zx_xa_ActionAttributeDesignator_s);
-  x->gg.g.tok = zx_xa_ActionAttributeDesignator_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_ActionAttributeDesignator) */
@@ -302,22 +271,6 @@ int zx_WALK_WO_xa_ActionAttributeDesignator(struct zx_ctx* c, struct zx_xa_Actio
 #define EL_STRUCT zx_xa_ActionMatch_s
 #define EL_NS     xa
 #define EL_TAG    ActionMatch
-
-/* FUNC(zx_NEW_xa_ActionMatch) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_ActionMatch_s* zx_NEW_xa_ActionMatch(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_ActionMatch_s* x = ZX_ZALLOC(c, struct zx_xa_ActionMatch_s);
-  x->gg.g.tok = zx_xa_ActionMatch_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -481,22 +434,6 @@ int zx_WALK_WO_xa_ActionMatch(struct zx_ctx* c, struct zx_xa_ActionMatch_s* x, v
 #define EL_NS     xa
 #define EL_TAG    Actions
 
-/* FUNC(zx_NEW_xa_Actions) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Actions_s* zx_NEW_xa_Actions(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Actions_s* x = ZX_ZALLOC(c, struct zx_xa_Actions_s);
-  x->gg.g.tok = zx_xa_Actions_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_Actions) */
@@ -615,22 +552,6 @@ int zx_WALK_WO_xa_Actions(struct zx_ctx* c, struct zx_xa_Actions_s* x, void* ctx
 #define EL_NS     xa
 #define EL_TAG    Apply
 
-/* FUNC(zx_NEW_xa_Apply) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Apply_s* zx_NEW_xa_Apply(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Apply_s* x = ZX_ZALLOC(c, struct zx_xa_Apply_s);
-  x->gg.g.tok = zx_xa_Apply_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_Apply) */
@@ -735,22 +656,6 @@ int zx_WALK_WO_xa_Apply(struct zx_ctx* c, struct zx_xa_Apply_s* x, void* ctx, in
 #define EL_NS     xa
 #define EL_TAG    AttributeAssignment
 
-/* FUNC(zx_NEW_xa_AttributeAssignment) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_AttributeAssignment_s* zx_NEW_xa_AttributeAssignment(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_AttributeAssignment_s* x = ZX_ZALLOC(c, struct zx_xa_AttributeAssignment_s);
-  x->gg.g.tok = zx_xa_AttributeAssignment_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_AttributeAssignment) */
@@ -851,22 +756,6 @@ int zx_WALK_WO_xa_AttributeAssignment(struct zx_ctx* c, struct zx_xa_AttributeAs
 #define EL_STRUCT zx_xa_AttributeSelector_s
 #define EL_NS     xa
 #define EL_TAG    AttributeSelector
-
-/* FUNC(zx_NEW_xa_AttributeSelector) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_AttributeSelector_s* zx_NEW_xa_AttributeSelector(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_AttributeSelector_s* x = ZX_ZALLOC(c, struct zx_xa_AttributeSelector_s);
-  x->gg.g.tok = zx_xa_AttributeSelector_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -971,22 +860,6 @@ int zx_WALK_WO_xa_AttributeSelector(struct zx_ctx* c, struct zx_xa_AttributeSele
 #define EL_NS     xa
 #define EL_TAG    AttributeValue
 
-/* FUNC(zx_NEW_xa_AttributeValue) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_AttributeValue_s* zx_NEW_xa_AttributeValue(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_AttributeValue_s* x = ZX_ZALLOC(c, struct zx_xa_AttributeValue_s);
-  x->gg.g.tok = zx_xa_AttributeValue_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_AttributeValue) */
@@ -1085,22 +958,6 @@ int zx_WALK_WO_xa_AttributeValue(struct zx_ctx* c, struct zx_xa_AttributeValue_s
 #define EL_STRUCT zx_xa_CombinerParameter_s
 #define EL_NS     xa
 #define EL_TAG    CombinerParameter
-
-/* FUNC(zx_NEW_xa_CombinerParameter) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_CombinerParameter_s* zx_NEW_xa_CombinerParameter(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_CombinerParameter_s* x = ZX_ZALLOC(c, struct zx_xa_CombinerParameter_s);
-  x->gg.g.tok = zx_xa_CombinerParameter_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1222,22 +1079,6 @@ int zx_WALK_WO_xa_CombinerParameter(struct zx_ctx* c, struct zx_xa_CombinerParam
 #define EL_NS     xa
 #define EL_TAG    CombinerParameters
 
-/* FUNC(zx_NEW_xa_CombinerParameters) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_CombinerParameters_s* zx_NEW_xa_CombinerParameters(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_CombinerParameters_s* x = ZX_ZALLOC(c, struct zx_xa_CombinerParameters_s);
-  x->gg.g.tok = zx_xa_CombinerParameters_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_CombinerParameters) */
@@ -1356,22 +1197,6 @@ int zx_WALK_WO_xa_CombinerParameters(struct zx_ctx* c, struct zx_xa_CombinerPara
 #define EL_NS     xa
 #define EL_TAG    Condition
 
-/* FUNC(zx_NEW_xa_Condition) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Condition_s* zx_NEW_xa_Condition(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Condition_s* x = ZX_ZALLOC(c, struct zx_xa_Condition_s);
-  x->gg.g.tok = zx_xa_Condition_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_Condition) */
@@ -1473,22 +1298,6 @@ int zx_WALK_WO_xa_Condition(struct zx_ctx* c, struct zx_xa_Condition_s* x, void*
 #define EL_STRUCT zx_xa_Environment_s
 #define EL_NS     xa
 #define EL_TAG    Environment
-
-/* FUNC(zx_NEW_xa_Environment) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Environment_s* zx_NEW_xa_Environment(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Environment_s* x = ZX_ZALLOC(c, struct zx_xa_Environment_s);
-  x->gg.g.tok = zx_xa_Environment_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1608,22 +1417,6 @@ int zx_WALK_WO_xa_Environment(struct zx_ctx* c, struct zx_xa_Environment_s* x, v
 #define EL_NS     xa
 #define EL_TAG    EnvironmentAttributeDesignator
 
-/* FUNC(zx_NEW_xa_EnvironmentAttributeDesignator) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_EnvironmentAttributeDesignator_s* zx_NEW_xa_EnvironmentAttributeDesignator(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_EnvironmentAttributeDesignator_s* x = ZX_ZALLOC(c, struct zx_xa_EnvironmentAttributeDesignator_s);
-  x->gg.g.tok = zx_xa_EnvironmentAttributeDesignator_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_EnvironmentAttributeDesignator) */
@@ -1728,22 +1521,6 @@ int zx_WALK_WO_xa_EnvironmentAttributeDesignator(struct zx_ctx* c, struct zx_xa_
 #define EL_STRUCT zx_xa_EnvironmentMatch_s
 #define EL_NS     xa
 #define EL_TAG    EnvironmentMatch
-
-/* FUNC(zx_NEW_xa_EnvironmentMatch) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_EnvironmentMatch_s* zx_NEW_xa_EnvironmentMatch(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_EnvironmentMatch_s* x = ZX_ZALLOC(c, struct zx_xa_EnvironmentMatch_s);
-  x->gg.g.tok = zx_xa_EnvironmentMatch_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1907,22 +1684,6 @@ int zx_WALK_WO_xa_EnvironmentMatch(struct zx_ctx* c, struct zx_xa_EnvironmentMat
 #define EL_NS     xa
 #define EL_TAG    Environments
 
-/* FUNC(zx_NEW_xa_Environments) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Environments_s* zx_NEW_xa_Environments(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Environments_s* x = ZX_ZALLOC(c, struct zx_xa_Environments_s);
-  x->gg.g.tok = zx_xa_Environments_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_Environments) */
@@ -2041,22 +1802,6 @@ int zx_WALK_WO_xa_Environments(struct zx_ctx* c, struct zx_xa_Environments_s* x,
 #define EL_NS     xa
 #define EL_TAG    Function
 
-/* FUNC(zx_NEW_xa_Function) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Function_s* zx_NEW_xa_Function(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Function_s* x = ZX_ZALLOC(c, struct zx_xa_Function_s);
-  x->gg.g.tok = zx_xa_Function_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_Function) */
@@ -2155,22 +1900,6 @@ int zx_WALK_WO_xa_Function(struct zx_ctx* c, struct zx_xa_Function_s* x, void* c
 #define EL_STRUCT zx_xa_Obligation_s
 #define EL_NS     xa
 #define EL_TAG    Obligation
-
-/* FUNC(zx_NEW_xa_Obligation) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Obligation_s* zx_NEW_xa_Obligation(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Obligation_s* x = ZX_ZALLOC(c, struct zx_xa_Obligation_s);
-  x->gg.g.tok = zx_xa_Obligation_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2294,22 +2023,6 @@ int zx_WALK_WO_xa_Obligation(struct zx_ctx* c, struct zx_xa_Obligation_s* x, voi
 #define EL_NS     xa
 #define EL_TAG    Obligations
 
-/* FUNC(zx_NEW_xa_Obligations) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Obligations_s* zx_NEW_xa_Obligations(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Obligations_s* x = ZX_ZALLOC(c, struct zx_xa_Obligations_s);
-  x->gg.g.tok = zx_xa_Obligations_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_Obligations) */
@@ -2427,22 +2140,6 @@ int zx_WALK_WO_xa_Obligations(struct zx_ctx* c, struct zx_xa_Obligations_s* x, v
 #define EL_STRUCT zx_xa_Policy_s
 #define EL_NS     xa
 #define EL_TAG    Policy
-
-/* FUNC(zx_NEW_xa_Policy) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Policy_s* zx_NEW_xa_Policy(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Policy_s* x = ZX_ZALLOC(c, struct zx_xa_Policy_s);
-  x->gg.g.tok = zx_xa_Policy_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2699,22 +2396,6 @@ int zx_WALK_WO_xa_Policy(struct zx_ctx* c, struct zx_xa_Policy_s* x, void* ctx, 
 #define EL_NS     xa
 #define EL_TAG    PolicyCombinerParameters
 
-/* FUNC(zx_NEW_xa_PolicyCombinerParameters) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_PolicyCombinerParameters_s* zx_NEW_xa_PolicyCombinerParameters(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_PolicyCombinerParameters_s* x = ZX_ZALLOC(c, struct zx_xa_PolicyCombinerParameters_s);
-  x->gg.g.tok = zx_xa_PolicyCombinerParameters_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_PolicyCombinerParameters) */
@@ -2835,22 +2516,6 @@ int zx_WALK_WO_xa_PolicyCombinerParameters(struct zx_ctx* c, struct zx_xa_Policy
 #define EL_NS     xa
 #define EL_TAG    PolicyDefaults
 
-/* FUNC(zx_NEW_xa_PolicyDefaults) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_PolicyDefaults_s* zx_NEW_xa_PolicyDefaults(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_PolicyDefaults_s* x = ZX_ZALLOC(c, struct zx_xa_PolicyDefaults_s);
-  x->gg.g.tok = zx_xa_PolicyDefaults_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_PolicyDefaults) */
@@ -2952,22 +2617,6 @@ int zx_WALK_WO_xa_PolicyDefaults(struct zx_ctx* c, struct zx_xa_PolicyDefaults_s
 #define EL_STRUCT zx_xa_PolicyIdReference_s
 #define EL_NS     xa
 #define EL_TAG    PolicyIdReference
-
-/* FUNC(zx_NEW_xa_PolicyIdReference) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_PolicyIdReference_s* zx_NEW_xa_PolicyIdReference(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_PolicyIdReference_s* x = ZX_ZALLOC(c, struct zx_xa_PolicyIdReference_s);
-  x->gg.g.tok = zx_xa_PolicyIdReference_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3071,22 +2720,6 @@ int zx_WALK_WO_xa_PolicyIdReference(struct zx_ctx* c, struct zx_xa_PolicyIdRefer
 #define EL_STRUCT zx_xa_PolicySet_s
 #define EL_NS     xa
 #define EL_TAG    PolicySet
-
-/* FUNC(zx_NEW_xa_PolicySet) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_PolicySet_s* zx_NEW_xa_PolicySet(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_PolicySet_s* x = ZX_ZALLOC(c, struct zx_xa_PolicySet_s);
-  x->gg.g.tok = zx_xa_PolicySet_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3406,22 +3039,6 @@ int zx_WALK_WO_xa_PolicySet(struct zx_ctx* c, struct zx_xa_PolicySet_s* x, void*
 #define EL_NS     xa
 #define EL_TAG    PolicySetCombinerParameters
 
-/* FUNC(zx_NEW_xa_PolicySetCombinerParameters) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_PolicySetCombinerParameters_s* zx_NEW_xa_PolicySetCombinerParameters(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_PolicySetCombinerParameters_s* x = ZX_ZALLOC(c, struct zx_xa_PolicySetCombinerParameters_s);
-  x->gg.g.tok = zx_xa_PolicySetCombinerParameters_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_PolicySetCombinerParameters) */
@@ -3542,22 +3159,6 @@ int zx_WALK_WO_xa_PolicySetCombinerParameters(struct zx_ctx* c, struct zx_xa_Pol
 #define EL_NS     xa
 #define EL_TAG    PolicySetDefaults
 
-/* FUNC(zx_NEW_xa_PolicySetDefaults) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_PolicySetDefaults_s* zx_NEW_xa_PolicySetDefaults(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_PolicySetDefaults_s* x = ZX_ZALLOC(c, struct zx_xa_PolicySetDefaults_s);
-  x->gg.g.tok = zx_xa_PolicySetDefaults_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_PolicySetDefaults) */
@@ -3659,22 +3260,6 @@ int zx_WALK_WO_xa_PolicySetDefaults(struct zx_ctx* c, struct zx_xa_PolicySetDefa
 #define EL_STRUCT zx_xa_PolicySetIdReference_s
 #define EL_NS     xa
 #define EL_TAG    PolicySetIdReference
-
-/* FUNC(zx_NEW_xa_PolicySetIdReference) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_PolicySetIdReference_s* zx_NEW_xa_PolicySetIdReference(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_PolicySetIdReference_s* x = ZX_ZALLOC(c, struct zx_xa_PolicySetIdReference_s);
-  x->gg.g.tok = zx_xa_PolicySetIdReference_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3778,22 +3363,6 @@ int zx_WALK_WO_xa_PolicySetIdReference(struct zx_ctx* c, struct zx_xa_PolicySetI
 #define EL_STRUCT zx_xa_Resource_s
 #define EL_NS     xa
 #define EL_TAG    Resource
-
-/* FUNC(zx_NEW_xa_Resource) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Resource_s* zx_NEW_xa_Resource(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Resource_s* x = ZX_ZALLOC(c, struct zx_xa_Resource_s);
-  x->gg.g.tok = zx_xa_Resource_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3913,22 +3482,6 @@ int zx_WALK_WO_xa_Resource(struct zx_ctx* c, struct zx_xa_Resource_s* x, void* c
 #define EL_NS     xa
 #define EL_TAG    ResourceAttributeDesignator
 
-/* FUNC(zx_NEW_xa_ResourceAttributeDesignator) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_ResourceAttributeDesignator_s* zx_NEW_xa_ResourceAttributeDesignator(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_ResourceAttributeDesignator_s* x = ZX_ZALLOC(c, struct zx_xa_ResourceAttributeDesignator_s);
-  x->gg.g.tok = zx_xa_ResourceAttributeDesignator_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_ResourceAttributeDesignator) */
@@ -4033,22 +3586,6 @@ int zx_WALK_WO_xa_ResourceAttributeDesignator(struct zx_ctx* c, struct zx_xa_Res
 #define EL_STRUCT zx_xa_ResourceMatch_s
 #define EL_NS     xa
 #define EL_TAG    ResourceMatch
-
-/* FUNC(zx_NEW_xa_ResourceMatch) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_ResourceMatch_s* zx_NEW_xa_ResourceMatch(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_ResourceMatch_s* x = ZX_ZALLOC(c, struct zx_xa_ResourceMatch_s);
-  x->gg.g.tok = zx_xa_ResourceMatch_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4212,22 +3749,6 @@ int zx_WALK_WO_xa_ResourceMatch(struct zx_ctx* c, struct zx_xa_ResourceMatch_s* 
 #define EL_NS     xa
 #define EL_TAG    Resources
 
-/* FUNC(zx_NEW_xa_Resources) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Resources_s* zx_NEW_xa_Resources(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Resources_s* x = ZX_ZALLOC(c, struct zx_xa_Resources_s);
-  x->gg.g.tok = zx_xa_Resources_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_Resources) */
@@ -4345,22 +3866,6 @@ int zx_WALK_WO_xa_Resources(struct zx_ctx* c, struct zx_xa_Resources_s* x, void*
 #define EL_STRUCT zx_xa_Rule_s
 #define EL_NS     xa
 #define EL_TAG    Rule
-
-/* FUNC(zx_NEW_xa_Rule) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Rule_s* zx_NEW_xa_Rule(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Rule_s* x = ZX_ZALLOC(c, struct zx_xa_Rule_s);
-  x->gg.g.tok = zx_xa_Rule_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4510,22 +4015,6 @@ int zx_WALK_WO_xa_Rule(struct zx_ctx* c, struct zx_xa_Rule_s* x, void* ctx, int 
 #define EL_NS     xa
 #define EL_TAG    RuleCombinerParameters
 
-/* FUNC(zx_NEW_xa_RuleCombinerParameters) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_RuleCombinerParameters_s* zx_NEW_xa_RuleCombinerParameters(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_RuleCombinerParameters_s* x = ZX_ZALLOC(c, struct zx_xa_RuleCombinerParameters_s);
-  x->gg.g.tok = zx_xa_RuleCombinerParameters_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_RuleCombinerParameters) */
@@ -4646,22 +4135,6 @@ int zx_WALK_WO_xa_RuleCombinerParameters(struct zx_ctx* c, struct zx_xa_RuleComb
 #define EL_NS     xa
 #define EL_TAG    Subject
 
-/* FUNC(zx_NEW_xa_Subject) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Subject_s* zx_NEW_xa_Subject(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Subject_s* x = ZX_ZALLOC(c, struct zx_xa_Subject_s);
-  x->gg.g.tok = zx_xa_Subject_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_Subject) */
@@ -4780,22 +4253,6 @@ int zx_WALK_WO_xa_Subject(struct zx_ctx* c, struct zx_xa_Subject_s* x, void* ctx
 #define EL_NS     xa
 #define EL_TAG    SubjectAttributeDesignator
 
-/* FUNC(zx_NEW_xa_SubjectAttributeDesignator) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_SubjectAttributeDesignator_s* zx_NEW_xa_SubjectAttributeDesignator(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_SubjectAttributeDesignator_s* x = ZX_ZALLOC(c, struct zx_xa_SubjectAttributeDesignator_s);
-  x->gg.g.tok = zx_xa_SubjectAttributeDesignator_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_SubjectAttributeDesignator) */
@@ -4902,22 +4359,6 @@ int zx_WALK_WO_xa_SubjectAttributeDesignator(struct zx_ctx* c, struct zx_xa_Subj
 #define EL_STRUCT zx_xa_SubjectMatch_s
 #define EL_NS     xa
 #define EL_TAG    SubjectMatch
-
-/* FUNC(zx_NEW_xa_SubjectMatch) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_SubjectMatch_s* zx_NEW_xa_SubjectMatch(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_SubjectMatch_s* x = ZX_ZALLOC(c, struct zx_xa_SubjectMatch_s);
-  x->gg.g.tok = zx_xa_SubjectMatch_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5081,22 +4522,6 @@ int zx_WALK_WO_xa_SubjectMatch(struct zx_ctx* c, struct zx_xa_SubjectMatch_s* x,
 #define EL_NS     xa
 #define EL_TAG    Subjects
 
-/* FUNC(zx_NEW_xa_Subjects) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Subjects_s* zx_NEW_xa_Subjects(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Subjects_s* x = ZX_ZALLOC(c, struct zx_xa_Subjects_s);
-  x->gg.g.tok = zx_xa_Subjects_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_Subjects) */
@@ -5214,22 +4639,6 @@ int zx_WALK_WO_xa_Subjects(struct zx_ctx* c, struct zx_xa_Subjects_s* x, void* c
 #define EL_STRUCT zx_xa_Target_s
 #define EL_NS     xa
 #define EL_TAG    Target
-
-/* FUNC(zx_NEW_xa_Target) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_Target_s* zx_NEW_xa_Target(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_Target_s* x = ZX_ZALLOC(c, struct zx_xa_Target_s);
-  x->gg.g.tok = zx_xa_Target_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5412,22 +4821,6 @@ int zx_WALK_WO_xa_Target(struct zx_ctx* c, struct zx_xa_Target_s* x, void* ctx, 
 #define EL_NS     xa
 #define EL_TAG    VariableDefinition
 
-/* FUNC(zx_NEW_xa_VariableDefinition) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_VariableDefinition_s* zx_NEW_xa_VariableDefinition(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_VariableDefinition_s* x = ZX_ZALLOC(c, struct zx_xa_VariableDefinition_s);
-  x->gg.g.tok = zx_xa_VariableDefinition_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xa_VariableDefinition) */
@@ -5531,22 +4924,6 @@ int zx_WALK_WO_xa_VariableDefinition(struct zx_ctx* c, struct zx_xa_VariableDefi
 #define EL_STRUCT zx_xa_VariableReference_s
 #define EL_NS     xa
 #define EL_TAG    VariableReference
-
-/* FUNC(zx_NEW_xa_VariableReference) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xa_VariableReference_s* zx_NEW_xa_VariableReference(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xa_VariableReference_s* x = ZX_ZALLOC(c, struct zx_xa_VariableReference_s);
-  x->gg.g.tok = zx_xa_VariableReference_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

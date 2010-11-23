@@ -38,9 +38,10 @@ struct zx_sp_ArtifactResolve_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_ArtifactResolve(c, father) (struct zx_sp_ArtifactResolve_s*)zx_new_elem((c),(father),zx_sp_ArtifactResolve_ELEM)
+
 int zx_DEC_ATTR_sp_ArtifactResolve(struct zx_ctx* c, struct zx_sp_ArtifactResolve_s* x);
 int zx_DEC_ELEM_sp_ArtifactResolve(struct zx_ctx* c, struct zx_sp_ArtifactResolve_s* x);
-struct zx_sp_ArtifactResolve_s* zx_NEW_sp_ArtifactResolve(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_ArtifactResolve(struct zx_ctx* c, struct zx_sp_ArtifactResolve_s* x);
 char* zx_ENC_SO_sp_ArtifactResolve(struct zx_ctx* c, struct zx_sp_ArtifactResolve_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_ArtifactResolve(struct zx_ctx* c, struct zx_sp_ArtifactResolve_s* x);
@@ -128,9 +129,10 @@ struct zx_sp_ArtifactResponse_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_ArtifactResponse(c, father) (struct zx_sp_ArtifactResponse_s*)zx_new_elem((c),(father),zx_sp_ArtifactResponse_ELEM)
+
 int zx_DEC_ATTR_sp_ArtifactResponse(struct zx_ctx* c, struct zx_sp_ArtifactResponse_s* x);
 int zx_DEC_ELEM_sp_ArtifactResponse(struct zx_ctx* c, struct zx_sp_ArtifactResponse_s* x);
-struct zx_sp_ArtifactResponse_s* zx_NEW_sp_ArtifactResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_ArtifactResponse(struct zx_ctx* c, struct zx_sp_ArtifactResponse_s* x);
 char* zx_ENC_SO_sp_ArtifactResponse(struct zx_ctx* c, struct zx_sp_ArtifactResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_ArtifactResponse(struct zx_ctx* c, struct zx_sp_ArtifactResponse_s* x);
@@ -226,9 +228,10 @@ struct zx_sp_AssertionIDRequest_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_AssertionIDRequest(c, father) (struct zx_sp_AssertionIDRequest_s*)zx_new_elem((c),(father),zx_sp_AssertionIDRequest_ELEM)
+
 int zx_DEC_ATTR_sp_AssertionIDRequest(struct zx_ctx* c, struct zx_sp_AssertionIDRequest_s* x);
 int zx_DEC_ELEM_sp_AssertionIDRequest(struct zx_ctx* c, struct zx_sp_AssertionIDRequest_s* x);
-struct zx_sp_AssertionIDRequest_s* zx_NEW_sp_AssertionIDRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_AssertionIDRequest(struct zx_ctx* c, struct zx_sp_AssertionIDRequest_s* x);
 char* zx_ENC_SO_sp_AssertionIDRequest(struct zx_ctx* c, struct zx_sp_AssertionIDRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_AssertionIDRequest(struct zx_ctx* c, struct zx_sp_AssertionIDRequest_s* x);
@@ -315,9 +318,10 @@ struct zx_sp_AttributeQuery_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_AttributeQuery(c, father) (struct zx_sp_AttributeQuery_s*)zx_new_elem((c),(father),zx_sp_AttributeQuery_ELEM)
+
 int zx_DEC_ATTR_sp_AttributeQuery(struct zx_ctx* c, struct zx_sp_AttributeQuery_s* x);
 int zx_DEC_ELEM_sp_AttributeQuery(struct zx_ctx* c, struct zx_sp_AttributeQuery_s* x);
-struct zx_sp_AttributeQuery_s* zx_NEW_sp_AttributeQuery(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_AttributeQuery(struct zx_ctx* c, struct zx_sp_AttributeQuery_s* x);
 char* zx_ENC_SO_sp_AttributeQuery(struct zx_ctx* c, struct zx_sp_AttributeQuery_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_AttributeQuery(struct zx_ctx* c, struct zx_sp_AttributeQuery_s* x);
@@ -413,9 +417,10 @@ struct zx_sp_AuthnQuery_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_AuthnQuery(c, father) (struct zx_sp_AuthnQuery_s*)zx_new_elem((c),(father),zx_sp_AuthnQuery_ELEM)
+
 int zx_DEC_ATTR_sp_AuthnQuery(struct zx_ctx* c, struct zx_sp_AuthnQuery_s* x);
 int zx_DEC_ELEM_sp_AuthnQuery(struct zx_ctx* c, struct zx_sp_AuthnQuery_s* x);
-struct zx_sp_AuthnQuery_s* zx_NEW_sp_AuthnQuery(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_AuthnQuery(struct zx_ctx* c, struct zx_sp_AuthnQuery_s* x);
 char* zx_ENC_SO_sp_AuthnQuery(struct zx_ctx* c, struct zx_sp_AuthnQuery_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_AuthnQuery(struct zx_ctx* c, struct zx_sp_AuthnQuery_s* x);
@@ -522,9 +527,10 @@ struct zx_sp_AuthnRequest_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_AuthnRequest(c, father) (struct zx_sp_AuthnRequest_s*)zx_new_elem((c),(father),zx_sp_AuthnRequest_ELEM)
+
 int zx_DEC_ATTR_sp_AuthnRequest(struct zx_ctx* c, struct zx_sp_AuthnRequest_s* x);
 int zx_DEC_ELEM_sp_AuthnRequest(struct zx_ctx* c, struct zx_sp_AuthnRequest_s* x);
-struct zx_sp_AuthnRequest_s* zx_NEW_sp_AuthnRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_AuthnRequest(struct zx_ctx* c, struct zx_sp_AuthnRequest_s* x);
 char* zx_ENC_SO_sp_AuthnRequest(struct zx_ctx* c, struct zx_sp_AuthnRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_AuthnRequest(struct zx_ctx* c, struct zx_sp_AuthnRequest_s* x);
@@ -659,9 +665,10 @@ struct zx_sp_AuthzDecisionQuery_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_AuthzDecisionQuery(c, father) (struct zx_sp_AuthzDecisionQuery_s*)zx_new_elem((c),(father),zx_sp_AuthzDecisionQuery_ELEM)
+
 int zx_DEC_ATTR_sp_AuthzDecisionQuery(struct zx_ctx* c, struct zx_sp_AuthzDecisionQuery_s* x);
 int zx_DEC_ELEM_sp_AuthzDecisionQuery(struct zx_ctx* c, struct zx_sp_AuthzDecisionQuery_s* x);
-struct zx_sp_AuthzDecisionQuery_s* zx_NEW_sp_AuthzDecisionQuery(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_AuthzDecisionQuery(struct zx_ctx* c, struct zx_sp_AuthzDecisionQuery_s* x);
 char* zx_ENC_SO_sp_AuthzDecisionQuery(struct zx_ctx* c, struct zx_sp_AuthzDecisionQuery_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_AuthzDecisionQuery(struct zx_ctx* c, struct zx_sp_AuthzDecisionQuery_s* x);
@@ -756,9 +763,10 @@ struct zx_sp_Extensions_s {
   zx_sp_Extensions_EXT
 };
 
+#define zx_NEW_sp_Extensions(c, father) (struct zx_sp_Extensions_s*)zx_new_elem((c),(father),zx_sp_Extensions_ELEM)
+
 int zx_DEC_ATTR_sp_Extensions(struct zx_ctx* c, struct zx_sp_Extensions_s* x);
 int zx_DEC_ELEM_sp_Extensions(struct zx_ctx* c, struct zx_sp_Extensions_s* x);
-struct zx_sp_Extensions_s* zx_NEW_sp_Extensions(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_Extensions(struct zx_ctx* c, struct zx_sp_Extensions_s* x);
 char* zx_ENC_SO_sp_Extensions(struct zx_ctx* c, struct zx_sp_Extensions_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_Extensions(struct zx_ctx* c, struct zx_sp_Extensions_s* x);
@@ -796,9 +804,10 @@ struct zx_sp_IDPEntry_s {
   struct zx_attr_s* ProviderID;	/* {1,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_sp_IDPEntry(c, father) (struct zx_sp_IDPEntry_s*)zx_new_elem((c),(father),zx_sp_IDPEntry_ELEM)
+
 int zx_DEC_ATTR_sp_IDPEntry(struct zx_ctx* c, struct zx_sp_IDPEntry_s* x);
 int zx_DEC_ELEM_sp_IDPEntry(struct zx_ctx* c, struct zx_sp_IDPEntry_s* x);
-struct zx_sp_IDPEntry_s* zx_NEW_sp_IDPEntry(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_IDPEntry(struct zx_ctx* c, struct zx_sp_IDPEntry_s* x);
 char* zx_ENC_SO_sp_IDPEntry(struct zx_ctx* c, struct zx_sp_IDPEntry_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_IDPEntry(struct zx_ctx* c, struct zx_sp_IDPEntry_s* x);
@@ -841,9 +850,10 @@ struct zx_sp_IDPList_s {
   struct zx_elem_s* GetComplete;	/* {0,1} xs:anyURI */
 };
 
+#define zx_NEW_sp_IDPList(c, father) (struct zx_sp_IDPList_s*)zx_new_elem((c),(father),zx_sp_IDPList_ELEM)
+
 int zx_DEC_ATTR_sp_IDPList(struct zx_ctx* c, struct zx_sp_IDPList_s* x);
 int zx_DEC_ELEM_sp_IDPList(struct zx_ctx* c, struct zx_sp_IDPList_s* x);
-struct zx_sp_IDPList_s* zx_NEW_sp_IDPList(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_IDPList(struct zx_ctx* c, struct zx_sp_IDPList_s* x);
 char* zx_ENC_SO_sp_IDPList(struct zx_ctx* c, struct zx_sp_IDPList_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_IDPList(struct zx_ctx* c, struct zx_sp_IDPList_s* x);
@@ -908,9 +918,10 @@ struct zx_sp_LogoutRequest_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_LogoutRequest(c, father) (struct zx_sp_LogoutRequest_s*)zx_new_elem((c),(father),zx_sp_LogoutRequest_ELEM)
+
 int zx_DEC_ATTR_sp_LogoutRequest(struct zx_ctx* c, struct zx_sp_LogoutRequest_s* x);
 int zx_DEC_ELEM_sp_LogoutRequest(struct zx_ctx* c, struct zx_sp_LogoutRequest_s* x);
-struct zx_sp_LogoutRequest_s* zx_NEW_sp_LogoutRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_LogoutRequest(struct zx_ctx* c, struct zx_sp_LogoutRequest_s* x);
 char* zx_ENC_SO_sp_LogoutRequest(struct zx_ctx* c, struct zx_sp_LogoutRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_LogoutRequest(struct zx_ctx* c, struct zx_sp_LogoutRequest_s* x);
@@ -1025,9 +1036,10 @@ struct zx_sp_LogoutResponse_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_LogoutResponse(c, father) (struct zx_sp_LogoutResponse_s*)zx_new_elem((c),(father),zx_sp_LogoutResponse_ELEM)
+
 int zx_DEC_ATTR_sp_LogoutResponse(struct zx_ctx* c, struct zx_sp_LogoutResponse_s* x);
 int zx_DEC_ELEM_sp_LogoutResponse(struct zx_ctx* c, struct zx_sp_LogoutResponse_s* x);
-struct zx_sp_LogoutResponse_s* zx_NEW_sp_LogoutResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_LogoutResponse(struct zx_ctx* c, struct zx_sp_LogoutResponse_s* x);
 char* zx_ENC_SO_sp_LogoutResponse(struct zx_ctx* c, struct zx_sp_LogoutResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_LogoutResponse(struct zx_ctx* c, struct zx_sp_LogoutResponse_s* x);
@@ -1119,9 +1131,10 @@ struct zx_sp_ManageNameIDRequest_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_ManageNameIDRequest(c, father) (struct zx_sp_ManageNameIDRequest_s*)zx_new_elem((c),(father),zx_sp_ManageNameIDRequest_ELEM)
+
 int zx_DEC_ATTR_sp_ManageNameIDRequest(struct zx_ctx* c, struct zx_sp_ManageNameIDRequest_s* x);
 int zx_DEC_ELEM_sp_ManageNameIDRequest(struct zx_ctx* c, struct zx_sp_ManageNameIDRequest_s* x);
-struct zx_sp_ManageNameIDRequest_s* zx_NEW_sp_ManageNameIDRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_ManageNameIDRequest(struct zx_ctx* c, struct zx_sp_ManageNameIDRequest_s* x);
 char* zx_ENC_SO_sp_ManageNameIDRequest(struct zx_ctx* c, struct zx_sp_ManageNameIDRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_ManageNameIDRequest(struct zx_ctx* c, struct zx_sp_ManageNameIDRequest_s* x);
@@ -1240,9 +1253,10 @@ struct zx_sp_ManageNameIDResponse_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_ManageNameIDResponse(c, father) (struct zx_sp_ManageNameIDResponse_s*)zx_new_elem((c),(father),zx_sp_ManageNameIDResponse_ELEM)
+
 int zx_DEC_ATTR_sp_ManageNameIDResponse(struct zx_ctx* c, struct zx_sp_ManageNameIDResponse_s* x);
 int zx_DEC_ELEM_sp_ManageNameIDResponse(struct zx_ctx* c, struct zx_sp_ManageNameIDResponse_s* x);
-struct zx_sp_ManageNameIDResponse_s* zx_NEW_sp_ManageNameIDResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_ManageNameIDResponse(struct zx_ctx* c, struct zx_sp_ManageNameIDResponse_s* x);
 char* zx_ENC_SO_sp_ManageNameIDResponse(struct zx_ctx* c, struct zx_sp_ManageNameIDResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_ManageNameIDResponse(struct zx_ctx* c, struct zx_sp_ManageNameIDResponse_s* x);
@@ -1333,9 +1347,10 @@ struct zx_sp_NameIDMappingRequest_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_NameIDMappingRequest(c, father) (struct zx_sp_NameIDMappingRequest_s*)zx_new_elem((c),(father),zx_sp_NameIDMappingRequest_ELEM)
+
 int zx_DEC_ATTR_sp_NameIDMappingRequest(struct zx_ctx* c, struct zx_sp_NameIDMappingRequest_s* x);
 int zx_DEC_ELEM_sp_NameIDMappingRequest(struct zx_ctx* c, struct zx_sp_NameIDMappingRequest_s* x);
-struct zx_sp_NameIDMappingRequest_s* zx_NEW_sp_NameIDMappingRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_NameIDMappingRequest(struct zx_ctx* c, struct zx_sp_NameIDMappingRequest_s* x);
 char* zx_ENC_SO_sp_NameIDMappingRequest(struct zx_ctx* c, struct zx_sp_NameIDMappingRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_NameIDMappingRequest(struct zx_ctx* c, struct zx_sp_NameIDMappingRequest_s* x);
@@ -1448,9 +1463,10 @@ struct zx_sp_NameIDMappingResponse_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_NameIDMappingResponse(c, father) (struct zx_sp_NameIDMappingResponse_s*)zx_new_elem((c),(father),zx_sp_NameIDMappingResponse_ELEM)
+
 int zx_DEC_ATTR_sp_NameIDMappingResponse(struct zx_ctx* c, struct zx_sp_NameIDMappingResponse_s* x);
 int zx_DEC_ELEM_sp_NameIDMappingResponse(struct zx_ctx* c, struct zx_sp_NameIDMappingResponse_s* x);
-struct zx_sp_NameIDMappingResponse_s* zx_NEW_sp_NameIDMappingResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_NameIDMappingResponse(struct zx_ctx* c, struct zx_sp_NameIDMappingResponse_s* x);
 char* zx_ENC_SO_sp_NameIDMappingResponse(struct zx_ctx* c, struct zx_sp_NameIDMappingResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_NameIDMappingResponse(struct zx_ctx* c, struct zx_sp_NameIDMappingResponse_s* x);
@@ -1548,9 +1564,10 @@ struct zx_sp_NameIDPolicy_s {
   struct zx_attr_s* SPNameQualifier;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_sp_NameIDPolicy(c, father) (struct zx_sp_NameIDPolicy_s*)zx_new_elem((c),(father),zx_sp_NameIDPolicy_ELEM)
+
 int zx_DEC_ATTR_sp_NameIDPolicy(struct zx_ctx* c, struct zx_sp_NameIDPolicy_s* x);
 int zx_DEC_ELEM_sp_NameIDPolicy(struct zx_ctx* c, struct zx_sp_NameIDPolicy_s* x);
-struct zx_sp_NameIDPolicy_s* zx_NEW_sp_NameIDPolicy(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_NameIDPolicy(struct zx_ctx* c, struct zx_sp_NameIDPolicy_s* x);
 char* zx_ENC_SO_sp_NameIDPolicy(struct zx_ctx* c, struct zx_sp_NameIDPolicy_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_NameIDPolicy(struct zx_ctx* c, struct zx_sp_NameIDPolicy_s* x);
@@ -1593,9 +1610,10 @@ struct zx_sp_NewEncryptedID_s {
   struct zx_xenc_EncryptedKey_s* EncryptedKey;	/* {0,-1} nada */
 };
 
+#define zx_NEW_sp_NewEncryptedID(c, father) (struct zx_sp_NewEncryptedID_s*)zx_new_elem((c),(father),zx_sp_NewEncryptedID_ELEM)
+
 int zx_DEC_ATTR_sp_NewEncryptedID(struct zx_ctx* c, struct zx_sp_NewEncryptedID_s* x);
 int zx_DEC_ELEM_sp_NewEncryptedID(struct zx_ctx* c, struct zx_sp_NewEncryptedID_s* x);
-struct zx_sp_NewEncryptedID_s* zx_NEW_sp_NewEncryptedID(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_NewEncryptedID(struct zx_ctx* c, struct zx_sp_NewEncryptedID_s* x);
 char* zx_ENC_SO_sp_NewEncryptedID(struct zx_ctx* c, struct zx_sp_NewEncryptedID_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_NewEncryptedID(struct zx_ctx* c, struct zx_sp_NewEncryptedID_s* x);
@@ -1649,9 +1667,10 @@ struct zx_sp_RequestedAuthnContext_s {
   struct zx_attr_s* Comparison;	/* {0,1} attribute sp:AuthnContextComparisonType */
 };
 
+#define zx_NEW_sp_RequestedAuthnContext(c, father) (struct zx_sp_RequestedAuthnContext_s*)zx_new_elem((c),(father),zx_sp_RequestedAuthnContext_ELEM)
+
 int zx_DEC_ATTR_sp_RequestedAuthnContext(struct zx_ctx* c, struct zx_sp_RequestedAuthnContext_s* x);
 int zx_DEC_ELEM_sp_RequestedAuthnContext(struct zx_ctx* c, struct zx_sp_RequestedAuthnContext_s* x);
-struct zx_sp_RequestedAuthnContext_s* zx_NEW_sp_RequestedAuthnContext(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_RequestedAuthnContext(struct zx_ctx* c, struct zx_sp_RequestedAuthnContext_s* x);
 char* zx_ENC_SO_sp_RequestedAuthnContext(struct zx_ctx* c, struct zx_sp_RequestedAuthnContext_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_RequestedAuthnContext(struct zx_ctx* c, struct zx_sp_RequestedAuthnContext_s* x);
@@ -1716,9 +1735,10 @@ struct zx_sp_Response_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_Response(c, father) (struct zx_sp_Response_s*)zx_new_elem((c),(father),zx_sp_Response_ELEM)
+
 int zx_DEC_ATTR_sp_Response(struct zx_ctx* c, struct zx_sp_Response_s* x);
 int zx_DEC_ELEM_sp_Response(struct zx_ctx* c, struct zx_sp_Response_s* x);
-struct zx_sp_Response_s* zx_NEW_sp_Response(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_Response(struct zx_ctx* c, struct zx_sp_Response_s* x);
 char* zx_ENC_SO_sp_Response(struct zx_ctx* c, struct zx_sp_Response_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_Response(struct zx_ctx* c, struct zx_sp_Response_s* x);
@@ -1816,9 +1836,10 @@ struct zx_sp_Scoping_s {
   struct zx_attr_s* ProxyCount;	/* {0,1} attribute xs:nonNegativeInteger */
 };
 
+#define zx_NEW_sp_Scoping(c, father) (struct zx_sp_Scoping_s*)zx_new_elem((c),(father),zx_sp_Scoping_ELEM)
+
 int zx_DEC_ATTR_sp_Scoping(struct zx_ctx* c, struct zx_sp_Scoping_s* x);
 int zx_DEC_ELEM_sp_Scoping(struct zx_ctx* c, struct zx_sp_Scoping_s* x);
-struct zx_sp_Scoping_s* zx_NEW_sp_Scoping(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_Scoping(struct zx_ctx* c, struct zx_sp_Scoping_s* x);
 char* zx_ENC_SO_sp_Scoping(struct zx_ctx* c, struct zx_sp_Scoping_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_Scoping(struct zx_ctx* c, struct zx_sp_Scoping_s* x);
@@ -1874,9 +1895,10 @@ struct zx_sp_Status_s {
   struct zx_sp_StatusDetail_s* StatusDetail;	/* {0,1}  */
 };
 
+#define zx_NEW_sp_Status(c, father) (struct zx_sp_Status_s*)zx_new_elem((c),(father),zx_sp_Status_ELEM)
+
 int zx_DEC_ATTR_sp_Status(struct zx_ctx* c, struct zx_sp_Status_s* x);
 int zx_DEC_ELEM_sp_Status(struct zx_ctx* c, struct zx_sp_Status_s* x);
-struct zx_sp_Status_s* zx_NEW_sp_Status(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_Status(struct zx_ctx* c, struct zx_sp_Status_s* x);
 char* zx_ENC_SO_sp_Status(struct zx_ctx* c, struct zx_sp_Status_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_Status(struct zx_ctx* c, struct zx_sp_Status_s* x);
@@ -1937,9 +1959,10 @@ struct zx_sp_StatusCode_s {
   struct zx_attr_s* Value;	/* {1,1} attribute xs:QName */
 };
 
+#define zx_NEW_sp_StatusCode(c, father) (struct zx_sp_StatusCode_s*)zx_new_elem((c),(father),zx_sp_StatusCode_ELEM)
+
 int zx_DEC_ATTR_sp_StatusCode(struct zx_ctx* c, struct zx_sp_StatusCode_s* x);
 int zx_DEC_ELEM_sp_StatusCode(struct zx_ctx* c, struct zx_sp_StatusCode_s* x);
-struct zx_sp_StatusCode_s* zx_NEW_sp_StatusCode(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_StatusCode(struct zx_ctx* c, struct zx_sp_StatusCode_s* x);
 char* zx_ENC_SO_sp_StatusCode(struct zx_ctx* c, struct zx_sp_StatusCode_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_StatusCode(struct zx_ctx* c, struct zx_sp_StatusCode_s* x);
@@ -1984,9 +2007,10 @@ struct zx_sp_StatusDetail_s {
   zx_sp_StatusDetail_EXT
 };
 
+#define zx_NEW_sp_StatusDetail(c, father) (struct zx_sp_StatusDetail_s*)zx_new_elem((c),(father),zx_sp_StatusDetail_ELEM)
+
 int zx_DEC_ATTR_sp_StatusDetail(struct zx_ctx* c, struct zx_sp_StatusDetail_s* x);
 int zx_DEC_ELEM_sp_StatusDetail(struct zx_ctx* c, struct zx_sp_StatusDetail_s* x);
-struct zx_sp_StatusDetail_s* zx_NEW_sp_StatusDetail(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_StatusDetail(struct zx_ctx* c, struct zx_sp_StatusDetail_s* x);
 char* zx_ENC_SO_sp_StatusDetail(struct zx_ctx* c, struct zx_sp_StatusDetail_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_StatusDetail(struct zx_ctx* c, struct zx_sp_StatusDetail_s* x);
@@ -2030,9 +2054,10 @@ struct zx_sp_SubjectQuery_s {
   struct zx_attr_s* Version;	/* {1,1} attribute xa:VersionType */
 };
 
+#define zx_NEW_sp_SubjectQuery(c, father) (struct zx_sp_SubjectQuery_s*)zx_new_elem((c),(father),zx_sp_SubjectQuery_ELEM)
+
 int zx_DEC_ATTR_sp_SubjectQuery(struct zx_ctx* c, struct zx_sp_SubjectQuery_s* x);
 int zx_DEC_ELEM_sp_SubjectQuery(struct zx_ctx* c, struct zx_sp_SubjectQuery_s* x);
-struct zx_sp_SubjectQuery_s* zx_NEW_sp_SubjectQuery(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp_SubjectQuery(struct zx_ctx* c, struct zx_sp_SubjectQuery_s* x);
 char* zx_ENC_SO_sp_SubjectQuery(struct zx_ctx* c, struct zx_sp_SubjectQuery_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp_SubjectQuery(struct zx_ctx* c, struct zx_sp_SubjectQuery_s* x);

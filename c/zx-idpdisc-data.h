@@ -34,9 +34,10 @@ struct zx_idpdisc_DiscoveryResponse_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_idpdisc_DiscoveryResponse(c, father) (struct zx_idpdisc_DiscoveryResponse_s*)zx_new_elem((c),(father),zx_idpdisc_DiscoveryResponse_ELEM)
+
 int zx_DEC_ATTR_idpdisc_DiscoveryResponse(struct zx_ctx* c, struct zx_idpdisc_DiscoveryResponse_s* x);
 int zx_DEC_ELEM_idpdisc_DiscoveryResponse(struct zx_ctx* c, struct zx_idpdisc_DiscoveryResponse_s* x);
-struct zx_idpdisc_DiscoveryResponse_s* zx_NEW_idpdisc_DiscoveryResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_idpdisc_DiscoveryResponse(struct zx_ctx* c, struct zx_idpdisc_DiscoveryResponse_s* x);
 char* zx_ENC_SO_idpdisc_DiscoveryResponse(struct zx_ctx* c, struct zx_idpdisc_DiscoveryResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_idpdisc_DiscoveryResponse(struct zx_ctx* c, struct zx_idpdisc_DiscoveryResponse_s* x);

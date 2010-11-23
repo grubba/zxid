@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -46,22 +47,6 @@
 #define EL_STRUCT zx_root_s
 #define EL_NS     
 #define EL_TAG    root
-
-/* FUNC(zx_NEW_root) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_root_s* zx_NEW_root(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_root_s* x = ZX_ZALLOC(c, struct zx_root_s);
-  x->gg.g.tok = zx_root_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -983,22 +968,6 @@ int zx_WALK_WO_root(struct zx_ctx* c, struct zx_root_s* x, void* ctx, int (*call
 #define EL_STRUCT zx_elem_s
 #define EL_NS     
 #define EL_TAG    simple_elem
-
-/* FUNC(zx_NEW_simple_elem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_elem_s* zx_NEW_simple_elem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_elem_s* x = ZX_ZALLOC(c, struct zx_elem_s);
-  x->g.tok = ZX_TOK_AND_NS_NOT_FOUND;
-  if (father) {
-    x->g.n = &father->kids->g;
-    father->kids = x;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

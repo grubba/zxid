@@ -34,9 +34,10 @@ struct zx_is_Confirm_s {
   struct zx_attr_s* name;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_is_Confirm(c, father) (struct zx_is_Confirm_s*)zx_new_elem((c),(father),zx_is_Confirm_ELEM)
+
 int zx_DEC_ATTR_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x);
 int zx_DEC_ELEM_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x);
-struct zx_is_Confirm_s* zx_NEW_is_Confirm(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x);
 char* zx_ENC_SO_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x);
@@ -108,9 +109,10 @@ struct zx_is_Help_s {
   struct zx_attr_s* moreLink;	/* {0,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_is_Help(c, father) (struct zx_is_Help_s*)zx_new_elem((c),(father),zx_is_Help_ELEM)
+
 int zx_DEC_ATTR_is_Help(struct zx_ctx* c, struct zx_is_Help_s* x);
 int zx_DEC_ELEM_is_Help(struct zx_ctx* c, struct zx_is_Help_s* x);
-struct zx_is_Help_s* zx_NEW_is_Help(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_is_Help(struct zx_ctx* c, struct zx_is_Help_s* x);
 char* zx_ENC_SO_is_Help(struct zx_ctx* c, struct zx_is_Help_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_is_Help(struct zx_ctx* c, struct zx_is_Help_s* x);
@@ -157,9 +159,10 @@ struct zx_is_Inquiry_s {
   struct zx_attr_s* title;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_is_Inquiry(c, father) (struct zx_is_Inquiry_s*)zx_new_elem((c),(father),zx_is_Inquiry_ELEM)
+
 int zx_DEC_ATTR_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x);
 int zx_DEC_ELEM_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x);
-struct zx_is_Inquiry_s* zx_NEW_is_Inquiry(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x);
 char* zx_ENC_SO_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x);
@@ -236,9 +239,10 @@ struct zx_is_InteractionRequest_s {
   struct zx_attr_s* signed_is_c_keyword;	/* {0,1} attribute xs:token */
 };
 
+#define zx_NEW_is_InteractionRequest(c, father) (struct zx_is_InteractionRequest_s*)zx_new_elem((c),(father),zx_is_InteractionRequest_ELEM)
+
 int zx_DEC_ATTR_is_InteractionRequest(struct zx_ctx* c, struct zx_is_InteractionRequest_s* x);
 int zx_DEC_ELEM_is_InteractionRequest(struct zx_ctx* c, struct zx_is_InteractionRequest_s* x);
-struct zx_is_InteractionRequest_s* zx_NEW_is_InteractionRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_is_InteractionRequest(struct zx_ctx* c, struct zx_is_InteractionRequest_s* x);
 char* zx_ENC_SO_is_InteractionRequest(struct zx_ctx* c, struct zx_is_InteractionRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_is_InteractionRequest(struct zx_ctx* c, struct zx_is_InteractionRequest_s* x);
@@ -300,9 +304,10 @@ struct zx_is_InteractionResponse_s {
   struct zx_is_Parameter_s* Parameter;	/* {0,-1}  */
 };
 
+#define zx_NEW_is_InteractionResponse(c, father) (struct zx_is_InteractionResponse_s*)zx_new_elem((c),(father),zx_is_InteractionResponse_ELEM)
+
 int zx_DEC_ATTR_is_InteractionResponse(struct zx_ctx* c, struct zx_is_InteractionResponse_s* x);
 int zx_DEC_ELEM_is_InteractionResponse(struct zx_ctx* c, struct zx_is_InteractionResponse_s* x);
-struct zx_is_InteractionResponse_s* zx_NEW_is_InteractionResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_is_InteractionResponse(struct zx_ctx* c, struct zx_is_InteractionResponse_s* x);
 char* zx_ENC_SO_is_InteractionResponse(struct zx_ctx* c, struct zx_is_InteractionResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_is_InteractionResponse(struct zx_ctx* c, struct zx_is_InteractionResponse_s* x);
@@ -363,9 +368,10 @@ struct zx_is_InteractionStatement_s {
   struct zx_ds_Signature_s* Signature;	/* {1,1} nada */
 };
 
+#define zx_NEW_is_InteractionStatement(c, father) (struct zx_is_InteractionStatement_s*)zx_new_elem((c),(father),zx_is_InteractionStatement_ELEM)
+
 int zx_DEC_ATTR_is_InteractionStatement(struct zx_ctx* c, struct zx_is_InteractionStatement_s* x);
 int zx_DEC_ELEM_is_InteractionStatement(struct zx_ctx* c, struct zx_is_InteractionStatement_s* x);
-struct zx_is_InteractionStatement_s* zx_NEW_is_InteractionStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_is_InteractionStatement(struct zx_ctx* c, struct zx_is_InteractionStatement_s* x);
 char* zx_ENC_SO_is_InteractionStatement(struct zx_ctx* c, struct zx_is_InteractionStatement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_is_InteractionStatement(struct zx_ctx* c, struct zx_is_InteractionStatement_s* x);
@@ -419,9 +425,10 @@ struct zx_is_Item_s {
   struct zx_attr_s* value;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_is_Item(c, father) (struct zx_is_Item_s*)zx_new_elem((c),(father),zx_is_Item_ELEM)
+
 int zx_DEC_ATTR_is_Item(struct zx_ctx* c, struct zx_is_Item_s* x);
 int zx_DEC_ELEM_is_Item(struct zx_ctx* c, struct zx_is_Item_s* x);
-struct zx_is_Item_s* zx_NEW_is_Item(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_is_Item(struct zx_ctx* c, struct zx_is_Item_s* x);
 char* zx_ENC_SO_is_Item(struct zx_ctx* c, struct zx_is_Item_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_is_Item(struct zx_ctx* c, struct zx_is_Item_s* x);
@@ -470,9 +477,10 @@ struct zx_is_Parameter_s {
   struct zx_attr_s* value;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_is_Parameter(c, father) (struct zx_is_Parameter_s*)zx_new_elem((c),(father),zx_is_Parameter_ELEM)
+
 int zx_DEC_ATTR_is_Parameter(struct zx_ctx* c, struct zx_is_Parameter_s* x);
 int zx_DEC_ELEM_is_Parameter(struct zx_ctx* c, struct zx_is_Parameter_s* x);
-struct zx_is_Parameter_s* zx_NEW_is_Parameter(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_is_Parameter(struct zx_ctx* c, struct zx_is_Parameter_s* x);
 char* zx_ENC_SO_is_Parameter(struct zx_ctx* c, struct zx_is_Parameter_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_is_Parameter(struct zx_ctx* c, struct zx_is_Parameter_s* x);
@@ -518,9 +526,10 @@ struct zx_is_Select_s {
   struct zx_attr_s* name;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_is_Select(c, father) (struct zx_is_Select_s*)zx_new_elem((c),(father),zx_is_Select_ELEM)
+
 int zx_DEC_ATTR_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x);
 int zx_DEC_ELEM_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x);
-struct zx_is_Select_s* zx_NEW_is_Select(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x);
 char* zx_ENC_SO_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x);
@@ -607,9 +616,10 @@ struct zx_is_Text_s {
   struct zx_attr_s* name;	/* {1,1} attribute xs:ID */
 };
 
+#define zx_NEW_is_Text(c, father) (struct zx_is_Text_s*)zx_new_elem((c),(father),zx_is_Text_ELEM)
+
 int zx_DEC_ATTR_is_Text(struct zx_ctx* c, struct zx_is_Text_s* x);
 int zx_DEC_ELEM_is_Text(struct zx_ctx* c, struct zx_is_Text_s* x);
-struct zx_is_Text_s* zx_NEW_is_Text(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_is_Text(struct zx_ctx* c, struct zx_is_Text_s* x);
 char* zx_ENC_SO_is_Text(struct zx_ctx* c, struct zx_is_Text_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_is_Text(struct zx_ctx* c, struct zx_is_Text_s* x);

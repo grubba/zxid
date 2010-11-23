@@ -691,6 +691,7 @@ zxidjava/zxidjniJNI.java
 # Test suite
 
 zxtest.pl              - Test suite driver program
+zxcovimp.sh            - Silly tests just to improve test coverage
 t/default-ns-bug.xml; t/XML1.out
 t/azrq1.xml; t/XML2.out
 t/azrs1.xml; t/XML3.out

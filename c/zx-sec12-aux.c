@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_sec12_ProxyInfoConfirmationData_s
 #define EL_NS     sec12
 #define EL_TAG    ProxyInfoConfirmationData
-
-/* FUNC(zx_NEW_sec12_ProxyInfoConfirmationData) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sec12_ProxyInfoConfirmationData_s* zx_NEW_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sec12_ProxyInfoConfirmationData_s* x = ZX_ZALLOC(c, struct zx_sec12_ProxyInfoConfirmationData_s);
-  x->gg.g.tok = zx_sec12_ProxyInfoConfirmationData_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -198,22 +183,6 @@ int zx_WALK_WO_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_sec12
 #define EL_STRUCT zx_sec12_ProxySubject_s
 #define EL_NS     sec12
 #define EL_TAG    ProxySubject
-
-/* FUNC(zx_NEW_sec12_ProxySubject) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sec12_ProxySubject_s* zx_NEW_sec12_ProxySubject(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sec12_ProxySubject_s* x = ZX_ZALLOC(c, struct zx_sec12_ProxySubject_s);
-  x->gg.g.tok = zx_sec12_ProxySubject_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -354,22 +323,6 @@ int zx_WALK_WO_sec12_ProxySubject(struct zx_ctx* c, struct zx_sec12_ProxySubject
 #define EL_NS     sec12
 #define EL_TAG    ProxyTransitedStatement
 
-/* FUNC(zx_NEW_sec12_ProxyTransitedStatement) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sec12_ProxyTransitedStatement_s* zx_NEW_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sec12_ProxyTransitedStatement_s* x = ZX_ZALLOC(c, struct zx_sec12_ProxyTransitedStatement_s);
-  x->gg.g.tok = zx_sec12_ProxyTransitedStatement_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_sec12_ProxyTransitedStatement) */
@@ -487,22 +440,6 @@ int zx_WALK_WO_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_sec12_P
 #define EL_STRUCT zx_sec12_ResourceAccessStatement_s
 #define EL_NS     sec12
 #define EL_TAG    ResourceAccessStatement
-
-/* FUNC(zx_NEW_sec12_ResourceAccessStatement) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sec12_ResourceAccessStatement_s* zx_NEW_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sec12_ResourceAccessStatement_s* x = ZX_ZALLOC(c, struct zx_sec12_ResourceAccessStatement_s);
-  x->gg.g.tok = zx_sec12_ResourceAccessStatement_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -706,22 +643,6 @@ int zx_WALK_WO_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_sec12_R
 #define EL_NS     sec12
 #define EL_TAG    SessionContext
 
-/* FUNC(zx_NEW_sec12_SessionContext) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sec12_SessionContext_s* zx_NEW_sec12_SessionContext(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sec12_SessionContext_s* x = ZX_ZALLOC(c, struct zx_sec12_SessionContext_s);
-  x->gg.g.tok = zx_sec12_SessionContext_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_sec12_SessionContext) */
@@ -871,22 +792,6 @@ int zx_WALK_WO_sec12_SessionContext(struct zx_ctx* c, struct zx_sec12_SessionCon
 #define EL_STRUCT zx_sec12_SessionContextStatement_s
 #define EL_NS     sec12
 #define EL_TAG    SessionContextStatement
-
-/* FUNC(zx_NEW_sec12_SessionContextStatement) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sec12_SessionContextStatement_s* zx_NEW_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sec12_SessionContextStatement_s* x = ZX_ZALLOC(c, struct zx_sec12_SessionContextStatement_s);
-  x->gg.g.tok = zx_sec12_SessionContextStatement_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1048,22 +953,6 @@ int zx_WALK_WO_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_sec12_S
 #define EL_NS     sec12
 #define EL_TAG    SessionSubject
 
-/* FUNC(zx_NEW_sec12_SessionSubject) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sec12_SessionSubject_s* zx_NEW_sec12_SessionSubject(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sec12_SessionSubject_s* x = ZX_ZALLOC(c, struct zx_sec12_SessionSubject_s);
-  x->gg.g.tok = zx_sec12_SessionSubject_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_sec12_SessionSubject) */
@@ -1223,22 +1112,6 @@ int zx_WALK_WO_sec12_SessionSubject(struct zx_ctx* c, struct zx_sec12_SessionSub
 #define EL_STRUCT zx_sec12_ValidityRestrictionCondition_s
 #define EL_NS     sec12
 #define EL_TAG    ValidityRestrictionCondition
-
-/* FUNC(zx_NEW_sec12_ValidityRestrictionCondition) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sec12_ValidityRestrictionCondition_s* zx_NEW_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sec12_ValidityRestrictionCondition_s* x = ZX_ZALLOC(c, struct zx_sec12_ValidityRestrictionCondition_s);
-  x->gg.g.tok = zx_sec12_ValidityRestrictionCondition_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

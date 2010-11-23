@@ -31,9 +31,10 @@ struct zx_xasa_XACMLAuthzDecisionStatement_s {
   struct zx_xac_Request_s* Request;	/* {0,1} nada */
 };
 
+#define zx_NEW_xasa_XACMLAuthzDecisionStatement(c, father) (struct zx_xasa_XACMLAuthzDecisionStatement_s*)zx_new_elem((c),(father),zx_xasa_XACMLAuthzDecisionStatement_ELEM)
+
 int zx_DEC_ATTR_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasa_XACMLAuthzDecisionStatement_s* x);
 int zx_DEC_ELEM_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasa_XACMLAuthzDecisionStatement_s* x);
-struct zx_xasa_XACMLAuthzDecisionStatement_s* zx_NEW_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasa_XACMLAuthzDecisionStatement_s* x);
 char* zx_ENC_SO_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasa_XACMLAuthzDecisionStatement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasa_XACMLAuthzDecisionStatement_s* x);
@@ -86,9 +87,10 @@ struct zx_xasa_XACMLPolicyStatement_s {
   struct zx_xa_PolicySet_s* PolicySet;	/* {0,1} nada */
 };
 
+#define zx_NEW_xasa_XACMLPolicyStatement(c, father) (struct zx_xasa_XACMLPolicyStatement_s*)zx_new_elem((c),(father),zx_xasa_XACMLPolicyStatement_ELEM)
+
 int zx_DEC_ATTR_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACMLPolicyStatement_s* x);
 int zx_DEC_ELEM_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACMLPolicyStatement_s* x);
-struct zx_xasa_XACMLPolicyStatement_s* zx_NEW_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACMLPolicyStatement_s* x);
 char* zx_ENC_SO_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACMLPolicyStatement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACMLPolicyStatement_s* x);

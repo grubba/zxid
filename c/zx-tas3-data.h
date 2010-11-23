@@ -41,9 +41,10 @@ struct zx_tas3_Credentials_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_tas3_Credentials(c, father) (struct zx_tas3_Credentials_s*)zx_new_elem((c),(father),zx_tas3_Credentials_ELEM)
+
 int zx_DEC_ATTR_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x);
 int zx_DEC_ELEM_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x);
-struct zx_tas3_Credentials_s* zx_NEW_tas3_Credentials(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x);
 char* zx_ENC_SO_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x);
@@ -146,9 +147,10 @@ struct zx_tas3_ESLApply_s {
   struct zx_xa_Obligation_s* Obligation;	/* {1,-1} nada */
 };
 
+#define zx_NEW_tas3_ESLApply(c, father) (struct zx_tas3_ESLApply_s*)zx_new_elem((c),(father),zx_tas3_ESLApply_ELEM)
+
 int zx_DEC_ATTR_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x);
 int zx_DEC_ELEM_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x);
-struct zx_tas3_ESLApply_s* zx_NEW_tas3_ESLApply(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x);
 char* zx_ENC_SO_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x);
@@ -205,9 +207,10 @@ struct zx_tas3_ESLPolicies_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_tas3_ESLPolicies(c, father) (struct zx_tas3_ESLPolicies_s*)zx_new_elem((c),(father),zx_tas3_ESLPolicies_ELEM)
+
 int zx_DEC_ATTR_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x);
 int zx_DEC_ELEM_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x);
-struct zx_tas3_ESLPolicies_s* zx_NEW_tas3_ESLPolicies(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x);
 char* zx_ENC_SO_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x);
@@ -262,9 +265,10 @@ struct zx_tas3_ESLRef_s {
   struct zx_attr_s* xpath;	/* {0,1} attribute xs:string */
 };
 
+#define zx_NEW_tas3_ESLRef(c, father) (struct zx_tas3_ESLRef_s*)zx_new_elem((c),(father),zx_tas3_ESLRef_ELEM)
+
 int zx_DEC_ATTR_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x);
 int zx_DEC_ELEM_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x);
-struct zx_tas3_ESLRef_s* zx_NEW_tas3_ESLRef(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x);
 char* zx_ENC_SO_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x);
@@ -312,9 +316,10 @@ struct zx_tas3_Status_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_tas3_Status(c, father) (struct zx_tas3_Status_s*)zx_new_elem((c),(father),zx_tas3_Status_ELEM)
+
 int zx_DEC_ATTR_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x);
 int zx_DEC_ELEM_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x);
-struct zx_tas3_Status_s* zx_NEW_tas3_Status(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x);
 char* zx_ENC_SO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x);

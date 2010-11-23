@@ -1,0 +1,135 @@
+Original and WO are different lengths 4798 != 4442
+Original and WO differ.
+SO and WO differ.
+Re-encoded result SO (len=4096):
+<e:Envelope xmlns:e="http://schemas.xmlsoap.org/soap/envelope/"><e:Header><wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"><sa:Assertion xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion" ID="CRED1Wqsz7VozwEo6TBpkIMV" IssueInstant="2005-10-03T16:58:33Z" Version="2.0"><sa:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">
+                    https://g-ds.liberty-iop.org:8681/idp.xml</sa:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></ds:CanonicalizationMethod><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"></ds:SignatureMethod><ds:Reference URI="#CRED1Wqsz7VozwEo6TBpkIMV"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></ds:Transform>
+                                
+                                
+                            </ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod><ds:DigestValue>BA5GsDSlCmzvCTkNoBORaSCP9kI=</ds:DigestValue>
+                            
+                            
+                            
+                        </ds:Reference>
+                        
+                        
+                        
+                    </ds:SignedInfo><ds:SignatureValue>
+                        Y+kMa0ToVrbG8smohquiGyeMrKM5Dw4aizPszOQ6hDWODvpH/q0eIow7PIFzvoN+7XUQbkZaA0J4KXEyzeRtOrt5XrhOzg6d2BCnKSHZXHwCE7d6qa5NJGtQlszOjMtwTcMByNKMWdcuksQdryGsklNkED6ZPEFpnxK4aKs57Rs=
+                    </ds:SignatureValue>
+                    
+                    
+                </ds:Signature><sa:Subject><sa:NameID Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" NameQualifier="https://g-ds.liberty-iop.org:8681/idp.xml">PEx7_Y-G_hMaysCNJmaQj
+                    </sa:NameID><sa:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"></sa:SubjectConfirmation>
+                    
+                    
+                </sa:Subject><sa:Conditions NotBefore="2005-10-03T16:53:33Z" NotOnOrAfter="2005-10-03T17:08:33Z"><sa:AudienceRestriction><sa:Audience>https://g-wsc.liberty-iop.org:8643/sp.xml</sa:Audience>
+                        
+                    </sa:AudienceRestriction>
+                    
+                </sa:Conditions><sa:AuthnStatement AuthnInstant="2005-10-03T16:58:33Z"><sa:AuthnContext><sa:AuthnContextClassRef>
+                            urn:oasis:names:tc:SAML:2.0:ac:classes:Password
+                        </sa:AuthnContextClassRef>
+                        
+                    </sa:AuthnContext>
+                    
+                </sa:AuthnStatement>
+                
+                
+                
+                
+                
+            </sa:Assertion>
+            
+        </wsse:Security>
+        <wsa:MessageID xmlns:wsa="http://www.w3.org/2005/03/addressing">uuid:6g5n02-nzY8vJYwK2uCW</wsa:MessageID>
+        <wsa:To xmlns:wsa="http://www.w3.org/2005/03/addressing">
+            https://g-sp.liberty-iop.org:8843/PDS-PSBEARER</wsa:To>
+        <wsa:Action xmlns:wsa="http://www.w3.org/2005/03/addressing"></wsa:Action>
+        <wsa:ReplyTo xmlns:wsa="http://www.w3.org/2005/03/addressing">
+            <wsa:Address>http://www.w3.org/2005/03/addressing/role/anonymous</wsa:Address>
+        </wsa:ReplyTo>
+        
+        <sb2:Timestamp xmlns:sb2="urn:liberty:sb:2004-12">
+            <wsu:Created xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+                2005-10-03T16:58:33Z
+            </wsu:Created>
+        </sb2:Timestamp>
+        <sb2:Sender xmlns:sb2="urn:liberty:sb:2004-12"></sb2:Sender>
+    </e:Header><e:Body id="bdy">
+        <pds:Query xmlns:pds="urn:ios:pds:2010-05:dst-2.1">
+            <pds:QueryItem>
+                <pds:Select qlang="pdsq1" rel="md" ret="md,authority,data">match_any_elem_of(_{"inPhoto"}, "Harry")</pds:Select>
+            </pds:QueryItem>
+        </pds:Query>
+    </e:Body>
+    
+    
+</e:Envelope>
+
+Re-encoded result WO (len=4442):
+<e:Envelope xmlns:e="http://schemas.xmlsoap.org/soap/envelope/">
+    <e:Header>
+        <wsa:MessageID xmlns:wsa="http://www.w3.org/2005/03/addressing" id="#MID">uuid:6g5n02-nzY8vJYwK2uCW</wsa:MessageID>
+        <wsa:To xmlns:wsa="http://www.w3.org/2005/03/addressing">
+            https://g-sp.liberty-iop.org:8843/PDS-PSBEARER</wsa:To>
+        <wsa:Action xmlns:wsa="http://www.w3.org/2005/03/addressing"></wsa:Action>
+        <wsa:ReplyTo xmlns:wsa="http://www.w3.org/2005/03/addressing">
+            <wsa:Address>http://www.w3.org/2005/03/addressing/role/anonymous</wsa:Address>
+        </wsa:ReplyTo>
+        <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+            <sa:Assertion xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion" ID="CRED1Wqsz7VozwEo6TBpkIMV" IssueInstant="2005-10-03T16:58:33Z" Version="2.0">
+                <sa:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">
+                    https://g-ds.liberty-iop.org:8681/idp.xml</sa:Issuer>
+                <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                    <ds:SignedInfo>
+                        <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></ds:CanonicalizationMethod>
+                        <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"></ds:SignatureMethod>
+                        <ds:Reference URI="#CRED1Wqsz7VozwEo6TBpkIMV">
+                            <ds:Transforms>
+                                <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></ds:Transform>
+                                <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></ds:Transform>
+                            </ds:Transforms>
+                            <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>
+                            <ds:DigestValue>BA5GsDSlCmzvCTkNoBORaSCP9kI=</ds:DigestValue>
+                        </ds:Reference>
+                    </ds:SignedInfo>
+                    <ds:SignatureValue>
+                        Y+kMa0ToVrbG8smohquiGyeMrKM5Dw4aizPszOQ6hDWODvpH/q0eIow7PIFzvoN+7XUQbkZaA0J4KXEyzeRtOrt5XrhOzg6d2BCnKSHZXHwCE7d6qa5NJGtQlszOjMtwTcMByNKMWdcuksQdryGsklNkED6ZPEFpnxK4aKs57Rs=
+                    </ds:SignatureValue>
+                </ds:Signature>
+                <sa:Subject>
+                    <sa:NameID Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" NameQualifier="https://g-ds.liberty-iop.org:8681/idp.xml">PEx7_Y-G_hMaysCNJmaQj
+                    </sa:NameID>
+                    <sa:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"></sa:SubjectConfirmation>
+                </sa:Subject>
+                <sa:Conditions NotBefore="2005-10-03T16:53:33Z" NotOnOrAfter="2005-10-03T17:08:33Z">
+                    <sa:AudienceRestriction>
+                        <sa:Audience>https://g-wsc.liberty-iop.org:8643/sp.xml</sa:Audience>
+                    </sa:AudienceRestriction>
+                </sa:Conditions>
+                <sa:AuthnStatement AuthnInstant="2005-10-03T16:58:33Z">
+                    <sa:AuthnContext>
+                        <sa:AuthnContextClassRef>
+                            urn:oasis:names:tc:SAML:2.0:ac:classes:Password
+                        </sa:AuthnContextClassRef>
+                    </sa:AuthnContext>
+                </sa:AuthnStatement>
+            </sa:Assertion>
+        </wsse:Security>
+        <sb2:Timestamp xmlns:sb2="urn:liberty:sb:2004-12">
+            <wsu:Created xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+                2005-10-03T16:58:33Z
+            </wsu:Created>
+        </sb2:Timestamp>
+        <sb2:Sender xmlns:sb2="urn:liberty:sb:2004-12" providerID="https://g-wsc.liberty-iop.org:8643/sp.xml" e:actor="http://schemas.xmlsoap.org/soap/actor/next"></sb2:Sender>
+    </e:Header>
+    <e:Body id="bdy">
+        <pds:Query xmlns:pds="urn:ios:pds:2010-05:dst-2.1" id="id:CoS9jNRrwxeCrm_TEFqU" itemID="itm:S9fdkoCcS8_PoRAhvRlt">
+            <pds:QueryItem id="id:0nlI3-cRcCl5Wo1nEfAF" itemID="itm:UsMupiJjpt1CN4PkRzyQ" objectType="aboutme">
+                <pds:Select qlang="pdsq1" rel="md" ret="md,authority,data">match_any_elem_of(_{"inPhoto"}, "Harry")</pds:Select>
+            </pds:QueryItem>
+        </pds:Query>
+    </e:Body>
+</e:Envelope>
+

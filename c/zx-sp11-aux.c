@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_sp11_AttributeQuery_s
 #define EL_NS     sp11
 #define EL_TAG    AttributeQuery
-
-/* FUNC(zx_NEW_sp11_AttributeQuery) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sp11_AttributeQuery_s* zx_NEW_sp11_AttributeQuery(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sp11_AttributeQuery_s* x = ZX_ZALLOC(c, struct zx_sp11_AttributeQuery_s);
-  x->gg.g.tok = zx_sp11_AttributeQuery_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -205,22 +190,6 @@ int zx_WALK_WO_sp11_AttributeQuery(struct zx_ctx* c, struct zx_sp11_AttributeQue
 #define EL_NS     sp11
 #define EL_TAG    AuthenticationQuery
 
-/* FUNC(zx_NEW_sp11_AuthenticationQuery) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sp11_AuthenticationQuery_s* zx_NEW_sp11_AuthenticationQuery(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sp11_AuthenticationQuery_s* x = ZX_ZALLOC(c, struct zx_sp11_AuthenticationQuery_s);
-  x->gg.g.tok = zx_sp11_AuthenticationQuery_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_sp11_AuthenticationQuery) */
@@ -340,22 +309,6 @@ int zx_WALK_WO_sp11_AuthenticationQuery(struct zx_ctx* c, struct zx_sp11_Authent
 #define EL_STRUCT zx_sp11_AuthorizationDecisionQuery_s
 #define EL_NS     sp11
 #define EL_TAG    AuthorizationDecisionQuery
-
-/* FUNC(zx_NEW_sp11_AuthorizationDecisionQuery) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sp11_AuthorizationDecisionQuery_s* zx_NEW_sp11_AuthorizationDecisionQuery(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sp11_AuthorizationDecisionQuery_s* x = ZX_ZALLOC(c, struct zx_sp11_AuthorizationDecisionQuery_s);
-  x->gg.g.tok = zx_sp11_AuthorizationDecisionQuery_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -518,22 +471,6 @@ int zx_WALK_WO_sp11_AuthorizationDecisionQuery(struct zx_ctx* c, struct zx_sp11_
 #define EL_STRUCT zx_sp11_Request_s
 #define EL_NS     sp11
 #define EL_TAG    Request
-
-/* FUNC(zx_NEW_sp11_Request) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sp11_Request_s* zx_NEW_sp11_Request(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sp11_Request_s* x = ZX_ZALLOC(c, struct zx_sp11_Request_s);
-  x->gg.g.tok = zx_sp11_Request_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -765,22 +702,6 @@ int zx_WALK_WO_sp11_Request(struct zx_ctx* c, struct zx_sp11_Request_s* x, void*
 #define EL_NS     sp11
 #define EL_TAG    Response
 
-/* FUNC(zx_NEW_sp11_Response) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sp11_Response_s* zx_NEW_sp11_Response(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sp11_Response_s* x = ZX_ZALLOC(c, struct zx_sp11_Response_s);
-  x->gg.g.tok = zx_sp11_Response_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_sp11_Response) */
@@ -953,22 +874,6 @@ int zx_WALK_WO_sp11_Response(struct zx_ctx* c, struct zx_sp11_Response_s* x, voi
 #define EL_NS     sp11
 #define EL_TAG    Status
 
-/* FUNC(zx_NEW_sp11_Status) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sp11_Status_s* zx_NEW_sp11_Status(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sp11_Status_s* x = ZX_ZALLOC(c, struct zx_sp11_Status_s);
-  x->gg.g.tok = zx_sp11_Status_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_sp11_Status) */
@@ -1113,22 +1018,6 @@ int zx_WALK_WO_sp11_Status(struct zx_ctx* c, struct zx_sp11_Status_s* x, void* c
 #define EL_NS     sp11
 #define EL_TAG    StatusCode
 
-/* FUNC(zx_NEW_sp11_StatusCode) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sp11_StatusCode_s* zx_NEW_sp11_StatusCode(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sp11_StatusCode_s* x = ZX_ZALLOC(c, struct zx_sp11_StatusCode_s);
-  x->gg.g.tok = zx_sp11_StatusCode_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_sp11_StatusCode) */
@@ -1249,22 +1138,6 @@ int zx_WALK_WO_sp11_StatusCode(struct zx_ctx* c, struct zx_sp11_StatusCode_s* x,
 #define EL_NS     sp11
 #define EL_TAG    StatusDetail
 
-/* FUNC(zx_NEW_sp11_StatusDetail) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sp11_StatusDetail_s* zx_NEW_sp11_StatusDetail(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sp11_StatusDetail_s* x = ZX_ZALLOC(c, struct zx_sp11_StatusDetail_s);
-  x->gg.g.tok = zx_sp11_StatusDetail_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_sp11_StatusDetail) */
@@ -1361,22 +1234,6 @@ int zx_WALK_WO_sp11_StatusDetail(struct zx_ctx* c, struct zx_sp11_StatusDetail_s
 #define EL_STRUCT zx_sp11_SubjectQuery_s
 #define EL_NS     sp11
 #define EL_TAG    SubjectQuery
-
-/* FUNC(zx_NEW_sp11_SubjectQuery) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sp11_SubjectQuery_s* zx_NEW_sp11_SubjectQuery(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sp11_SubjectQuery_s* x = ZX_ZALLOC(c, struct zx_sp11_SubjectQuery_s);
-  x->gg.g.tok = zx_sp11_SubjectQuery_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

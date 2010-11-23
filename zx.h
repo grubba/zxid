@@ -160,6 +160,7 @@ struct zx_elem_s {
 
 #define ZX_ELEM_EXT struct zx_elem_s gg;   /* Used in generated data types */
 
+struct zx_elem_s* zx_new_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok);
 struct zx_elem_s* zx_new_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, struct zx_str* ss);
 struct zx_elem_s* zx_ref_len_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, int len, const char* s);
 struct zx_elem_s* zx_ref_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, const char* s);
@@ -335,6 +336,7 @@ int   zx_in_inc_ns(struct zx_ctx* c, struct zx_ns_s* new_ns);
 void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, int n_ns, const char* start, const char* lim);
 struct zx_root_s* zx_dec_zx_root(struct zx_ctx* c, int len, const char* start, const char* func);
 void zx_DEC_elem(struct zx_ctx* c, struct zx_elem_s* x);
+struct zx_el_desc* zx_el_desc_lookup(int tok);
 
 #define SIG_ALGO_RSA_SHA1  "http://www.w3.org/2000/09/xmldsig#rsa-sha1"
 #define SIG_ALGO_DSA_SHA1  "http://www.w3.org/2000/09/xmldsig#dsa-sha1"

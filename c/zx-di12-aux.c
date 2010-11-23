@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_di12_AuthenticateRequester_s
 #define EL_NS     di12
 #define EL_TAG    AuthenticateRequester
-
-/* FUNC(zx_NEW_di12_AuthenticateRequester) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_AuthenticateRequester_s* zx_NEW_di12_AuthenticateRequester(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_AuthenticateRequester_s* x = ZX_ZALLOC(c, struct zx_di12_AuthenticateRequester_s);
-  x->gg.g.tok = zx_di12_AuthenticateRequester_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -163,22 +148,6 @@ int zx_WALK_WO_di12_AuthenticateRequester(struct zx_ctx* c, struct zx_di12_Authe
 #define EL_NS     di12
 #define EL_TAG    AuthenticateSessionContext
 
-/* FUNC(zx_NEW_di12_AuthenticateSessionContext) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_AuthenticateSessionContext_s* zx_NEW_di12_AuthenticateSessionContext(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_AuthenticateSessionContext_s* x = ZX_ZALLOC(c, struct zx_di12_AuthenticateSessionContext_s);
-  x->gg.g.tok = zx_di12_AuthenticateSessionContext_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_di12_AuthenticateSessionContext) */
@@ -277,22 +246,6 @@ int zx_WALK_WO_di12_AuthenticateSessionContext(struct zx_ctx* c, struct zx_di12_
 #define EL_STRUCT zx_di12_AuthorizeRequester_s
 #define EL_NS     di12
 #define EL_TAG    AuthorizeRequester
-
-/* FUNC(zx_NEW_di12_AuthorizeRequester) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_AuthorizeRequester_s* zx_NEW_di12_AuthorizeRequester(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_AuthorizeRequester_s* x = ZX_ZALLOC(c, struct zx_di12_AuthorizeRequester_s);
-  x->gg.g.tok = zx_di12_AuthorizeRequester_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -393,22 +346,6 @@ int zx_WALK_WO_di12_AuthorizeRequester(struct zx_ctx* c, struct zx_di12_Authoriz
 #define EL_NS     di12
 #define EL_TAG    Credentials
 
-/* FUNC(zx_NEW_di12_Credentials) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_Credentials_s* zx_NEW_di12_Credentials(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_Credentials_s* x = ZX_ZALLOC(c, struct zx_di12_Credentials_s);
-  x->gg.g.tok = zx_di12_Credentials_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_di12_Credentials) */
@@ -505,22 +442,6 @@ int zx_WALK_WO_di12_Credentials(struct zx_ctx* c, struct zx_di12_Credentials_s* 
 #define EL_STRUCT zx_di12_Description_s
 #define EL_NS     di12
 #define EL_TAG    Description
-
-/* FUNC(zx_NEW_di12_Description) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_Description_s* zx_NEW_di12_Description(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_Description_s* x = ZX_ZALLOC(c, struct zx_di12_Description_s);
-  x->gg.g.tok = zx_di12_Description_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -651,22 +572,6 @@ int zx_WALK_WO_di12_Description(struct zx_ctx* c, struct zx_di12_Description_s* 
 #define EL_NS     di12
 #define EL_TAG    EncryptResourceID
 
-/* FUNC(zx_NEW_di12_EncryptResourceID) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_EncryptResourceID_s* zx_NEW_di12_EncryptResourceID(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_EncryptResourceID_s* x = ZX_ZALLOC(c, struct zx_di12_EncryptResourceID_s);
-  x->gg.g.tok = zx_di12_EncryptResourceID_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_di12_EncryptResourceID) */
@@ -765,22 +670,6 @@ int zx_WALK_WO_di12_EncryptResourceID(struct zx_ctx* c, struct zx_di12_EncryptRe
 #define EL_STRUCT zx_di12_EncryptedResourceID_s
 #define EL_NS     di12
 #define EL_TAG    EncryptedResourceID
-
-/* FUNC(zx_NEW_di12_EncryptedResourceID) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_EncryptedResourceID_s* zx_NEW_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_EncryptedResourceID_s* x = ZX_ZALLOC(c, struct zx_di12_EncryptedResourceID_s);
-  x->gg.g.tok = zx_di12_EncryptedResourceID_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -921,22 +810,6 @@ int zx_WALK_WO_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_Encrypt
 #define EL_NS     di12
 #define EL_TAG    Extension
 
-/* FUNC(zx_NEW_di12_Extension) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_Extension_s* zx_NEW_di12_Extension(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_Extension_s* x = ZX_ZALLOC(c, struct zx_di12_Extension_s);
-  x->gg.g.tok = zx_di12_Extension_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_di12_Extension) */
@@ -1033,22 +906,6 @@ int zx_WALK_WO_di12_Extension(struct zx_ctx* c, struct zx_di12_Extension_s* x, v
 #define EL_STRUCT zx_di12_InsertEntry_s
 #define EL_NS     di12
 #define EL_TAG    InsertEntry
-
-/* FUNC(zx_NEW_di12_InsertEntry) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_InsertEntry_s* zx_NEW_di12_InsertEntry(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_InsertEntry_s* x = ZX_ZALLOC(c, struct zx_di12_InsertEntry_s);
-  x->gg.g.tok = zx_di12_InsertEntry_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1167,22 +1024,6 @@ int zx_WALK_WO_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s* 
 #define EL_STRUCT zx_di12_Modify_s
 #define EL_NS     di12
 #define EL_TAG    Modify
-
-/* FUNC(zx_NEW_di12_Modify) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_Modify_s* zx_NEW_di12_Modify(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_Modify_s* x = ZX_ZALLOC(c, struct zx_di12_Modify_s);
-  x->gg.g.tok = zx_di12_Modify_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1367,22 +1208,6 @@ int zx_WALK_WO_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x, void* c
 #define EL_NS     di12
 #define EL_TAG    ModifyResponse
 
-/* FUNC(zx_NEW_di12_ModifyResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_ModifyResponse_s* zx_NEW_di12_ModifyResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_ModifyResponse_s* x = ZX_ZALLOC(c, struct zx_di12_ModifyResponse_s);
-  x->gg.g.tok = zx_di12_ModifyResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_di12_ModifyResponse) */
@@ -1526,22 +1351,6 @@ int zx_WALK_WO_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyRespon
 #define EL_NS     di12
 #define EL_TAG    Options
 
-/* FUNC(zx_NEW_di12_Options) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_Options_s* zx_NEW_di12_Options(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_Options_s* x = ZX_ZALLOC(c, struct zx_di12_Options_s);
-  x->gg.g.tok = zx_di12_Options_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_di12_Options) */
@@ -1643,22 +1452,6 @@ int zx_WALK_WO_di12_Options(struct zx_ctx* c, struct zx_di12_Options_s* x, void*
 #define EL_STRUCT zx_di12_Query_s
 #define EL_NS     di12
 #define EL_TAG    Query
-
-/* FUNC(zx_NEW_di12_Query) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_Query_s* zx_NEW_di12_Query(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_Query_s* x = ZX_ZALLOC(c, struct zx_di12_Query_s);
-  x->gg.g.tok = zx_di12_Query_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1822,22 +1615,6 @@ int zx_WALK_WO_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x, void* ctx
 #define EL_NS     di12
 #define EL_TAG    QueryResponse
 
-/* FUNC(zx_NEW_di12_QueryResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_QueryResponse_s* zx_NEW_di12_QueryResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_QueryResponse_s* x = ZX_ZALLOC(c, struct zx_di12_QueryResponse_s);
-  x->gg.g.tok = zx_di12_QueryResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_di12_QueryResponse) */
@@ -2000,22 +1777,6 @@ int zx_WALK_WO_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryResponse
 #define EL_NS     di12
 #define EL_TAG    RemoveEntry
 
-/* FUNC(zx_NEW_di12_RemoveEntry) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_RemoveEntry_s* zx_NEW_di12_RemoveEntry(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_RemoveEntry_s* x = ZX_ZALLOC(c, struct zx_di12_RemoveEntry_s);
-  x->gg.g.tok = zx_di12_RemoveEntry_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_di12_RemoveEntry) */
@@ -2114,22 +1875,6 @@ int zx_WALK_WO_di12_RemoveEntry(struct zx_ctx* c, struct zx_di12_RemoveEntry_s* 
 #define EL_STRUCT zx_di12_RequestedServiceType_s
 #define EL_NS     di12
 #define EL_TAG    RequestedServiceType
-
-/* FUNC(zx_NEW_di12_RequestedServiceType) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_RequestedServiceType_s* zx_NEW_di12_RequestedServiceType(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_RequestedServiceType_s* x = ZX_ZALLOC(c, struct zx_di12_RequestedServiceType_s);
-  x->gg.g.tok = zx_di12_RequestedServiceType_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2254,22 +1999,6 @@ int zx_WALK_WO_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_Reques
 #define EL_NS     di12
 #define EL_TAG    ResourceID
 
-/* FUNC(zx_NEW_di12_ResourceID) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_ResourceID_s* zx_NEW_di12_ResourceID(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_ResourceID_s* x = ZX_ZALLOC(c, struct zx_di12_ResourceID_s);
-  x->gg.g.tok = zx_di12_ResourceID_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_di12_ResourceID) */
@@ -2368,22 +2097,6 @@ int zx_WALK_WO_di12_ResourceID(struct zx_ctx* c, struct zx_di12_ResourceID_s* x,
 #define EL_STRUCT zx_di12_ResourceOffering_s
 #define EL_NS     di12
 #define EL_TAG    ResourceOffering
-
-/* FUNC(zx_NEW_di12_ResourceOffering) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_ResourceOffering_s* zx_NEW_di12_ResourceOffering(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_ResourceOffering_s* x = ZX_ZALLOC(c, struct zx_di12_ResourceOffering_s);
-  x->gg.g.tok = zx_di12_ResourceOffering_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2573,22 +2286,6 @@ int zx_WALK_WO_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceOf
 #define EL_NS     di12
 #define EL_TAG    ServiceInstance
 
-/* FUNC(zx_NEW_di12_ServiceInstance) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_ServiceInstance_s* zx_NEW_di12_ServiceInstance(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_ServiceInstance_s* x = ZX_ZALLOC(c, struct zx_di12_ServiceInstance_s);
-  x->gg.g.tok = zx_di12_ServiceInstance_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_di12_ServiceInstance) */
@@ -2716,22 +2413,6 @@ int zx_WALK_WO_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceInst
 #define EL_STRUCT zx_di12_Status_s
 #define EL_NS     di12
 #define EL_TAG    Status
-
-/* FUNC(zx_NEW_di12_Status) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_di12_Status_s* zx_NEW_di12_Status(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_di12_Status_s* x = ZX_ZALLOC(c, struct zx_di12_Status_s);
-  x->gg.g.tok = zx_di12_Status_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

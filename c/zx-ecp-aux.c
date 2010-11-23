@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_ecp_RelayState_s
 #define EL_NS     ecp
 #define EL_TAG    RelayState
-
-/* FUNC(zx_NEW_ecp_RelayState) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ecp_RelayState_s* zx_NEW_ecp_RelayState(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ecp_RelayState_s* x = ZX_ZALLOC(c, struct zx_ecp_RelayState_s);
-  x->gg.g.tok = zx_ecp_RelayState_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -164,22 +149,6 @@ int zx_WALK_WO_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x, v
 #define EL_STRUCT zx_ecp_Request_s
 #define EL_NS     ecp
 #define EL_TAG    Request
-
-/* FUNC(zx_NEW_ecp_Request) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ecp_Request_s* zx_NEW_ecp_Request(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ecp_Request_s* x = ZX_ZALLOC(c, struct zx_ecp_Request_s);
-  x->gg.g.tok = zx_ecp_Request_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -327,22 +296,6 @@ int zx_WALK_WO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x, void* c
 #define EL_STRUCT zx_ecp_Response_s
 #define EL_NS     ecp
 #define EL_TAG    Response
-
-/* FUNC(zx_NEW_ecp_Response) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_ecp_Response_s* zx_NEW_ecp_Response(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_ecp_Response_s* x = ZX_ZALLOC(c, struct zx_ecp_Response_s);
-  x->gg.g.tok = zx_ecp_Response_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

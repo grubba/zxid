@@ -141,9 +141,10 @@ struct zx_root_s {
   struct zx_m20_EntitiesDescriptor_s* m20_EntitiesDescriptor;	/* {0,-1}  */
 };
 
+#define zx_NEW_root(c, father) (struct zx_root_s*)zx_new_elem((c),(father),zx_root_ELEM)
+
 int zx_DEC_ATTR_root(struct zx_ctx* c, struct zx_root_s* x);
 int zx_DEC_ELEM_root(struct zx_ctx* c, struct zx_root_s* x);
-struct zx_root_s* zx_NEW_root(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_root(struct zx_ctx* c, struct zx_root_s* x);
 char* zx_ENC_SO_root(struct zx_ctx* c, struct zx_root_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_root(struct zx_ctx* c, struct zx_root_s* x);

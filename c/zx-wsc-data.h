@@ -38,9 +38,10 @@ struct zx_wsc_DerivedKeyToken_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_wsc_DerivedKeyToken(c, father) (struct zx_wsc_DerivedKeyToken_s*)zx_new_elem((c),(father),zx_wsc_DerivedKeyToken_ELEM)
+
 int zx_DEC_ATTR_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x);
 int zx_DEC_ELEM_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x);
-struct zx_wsc_DerivedKeyToken_s* zx_NEW_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x);
 char* zx_ENC_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x);
@@ -135,9 +136,10 @@ struct zx_wsc_Properties_s {
   zx_wsc_Properties_EXT
 };
 
+#define zx_NEW_wsc_Properties(c, father) (struct zx_wsc_Properties_s*)zx_new_elem((c),(father),zx_wsc_Properties_ELEM)
+
 int zx_DEC_ATTR_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x);
 int zx_DEC_ELEM_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x);
-struct zx_wsc_Properties_s* zx_NEW_wsc_Properties(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x);
 char* zx_ENC_SO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x);
@@ -173,9 +175,10 @@ struct zx_wsc_SecurityContextToken_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_wsc_SecurityContextToken(c, father) (struct zx_wsc_SecurityContextToken_s*)zx_new_elem((c),(father),zx_wsc_SecurityContextToken_ELEM)
+
 int zx_DEC_ATTR_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x);
 int zx_DEC_ELEM_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x);
-struct zx_wsc_SecurityContextToken_s* zx_NEW_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x);
 char* zx_ENC_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x);

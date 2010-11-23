@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_sec_Token_s
 #define EL_NS     sec
 #define EL_TAG    Token
-
-/* FUNC(zx_NEW_sec_Token) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sec_Token_s* zx_NEW_sec_Token(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sec_Token_s* x = ZX_ZALLOC(c, struct zx_sec_Token_s);
-  x->gg.g.tok = zx_sec_Token_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -251,22 +236,6 @@ int zx_WALK_WO_sec_Token(struct zx_ctx* c, struct zx_sec_Token_s* x, void* ctx, 
 #define EL_NS     sec
 #define EL_TAG    TokenPolicy
 
-/* FUNC(zx_NEW_sec_TokenPolicy) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sec_TokenPolicy_s* zx_NEW_sec_TokenPolicy(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sec_TokenPolicy_s* x = ZX_ZALLOC(c, struct zx_sec_TokenPolicy_s);
-  x->gg.g.tok = zx_sec_TokenPolicy_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_sec_TokenPolicy) */
@@ -393,22 +362,6 @@ int zx_WALK_WO_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* x,
 #define EL_NS     sec
 #define EL_TAG    TransitedProvider
 
-/* FUNC(zx_NEW_sec_TransitedProvider) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sec_TransitedProvider_s* zx_NEW_sec_TransitedProvider(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sec_TransitedProvider_s* x = ZX_ZALLOC(c, struct zx_sec_TransitedProvider_s);
-  x->gg.g.tok = zx_sec_TransitedProvider_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_sec_TransitedProvider) */
@@ -509,22 +462,6 @@ int zx_WALK_WO_sec_TransitedProvider(struct zx_ctx* c, struct zx_sec_TransitedPr
 #define EL_STRUCT zx_sec_TransitedProviderPath_s
 #define EL_NS     sec
 #define EL_TAG    TransitedProviderPath
-
-/* FUNC(zx_NEW_sec_TransitedProviderPath) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_sec_TransitedProviderPath_s* zx_NEW_sec_TransitedProviderPath(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_sec_TransitedProviderPath_s* x = ZX_ZALLOC(c, struct zx_sec_TransitedProviderPath_s);
-  x->gg.g.tok = zx_sec_TransitedProviderPath_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

@@ -32,9 +32,10 @@ struct zx_wsse_BinarySecurityToken_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_wsse_BinarySecurityToken(c, father) (struct zx_wsse_BinarySecurityToken_s*)zx_new_elem((c),(father),zx_wsse_BinarySecurityToken_ELEM)
+
 int zx_DEC_ATTR_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_BinarySecurityToken_s* x);
 int zx_DEC_ELEM_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_BinarySecurityToken_s* x);
-struct zx_wsse_BinarySecurityToken_s* zx_NEW_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_BinarySecurityToken_s* x);
 char* zx_ENC_SO_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_BinarySecurityToken_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_BinarySecurityToken_s* x);
@@ -76,9 +77,10 @@ struct zx_wsse_Embedded_s {
   struct zx_attr_s* ValueType;	/* {0,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_wsse_Embedded(c, father) (struct zx_wsse_Embedded_s*)zx_new_elem((c),(father),zx_wsse_Embedded_ELEM)
+
 int zx_DEC_ATTR_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x);
 int zx_DEC_ELEM_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x);
-struct zx_wsse_Embedded_s* zx_NEW_wsse_Embedded(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x);
 char* zx_ENC_SO_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x);
@@ -118,9 +120,10 @@ struct zx_wsse_KeyIdentifier_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_wsse_KeyIdentifier(c, father) (struct zx_wsse_KeyIdentifier_s*)zx_new_elem((c),(father),zx_wsse_KeyIdentifier_ELEM)
+
 int zx_DEC_ATTR_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifier_s* x);
 int zx_DEC_ELEM_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifier_s* x);
-struct zx_wsse_KeyIdentifier_s* zx_NEW_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifier_s* x);
 char* zx_ENC_SO_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifier_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifier_s* x);
@@ -163,9 +166,10 @@ struct zx_wsse_Nonce_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_wsse_Nonce(c, father) (struct zx_wsse_Nonce_s*)zx_new_elem((c),(father),zx_wsse_Nonce_ELEM)
+
 int zx_DEC_ATTR_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x);
 int zx_DEC_ELEM_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x);
-struct zx_wsse_Nonce_s* zx_NEW_wsse_Nonce(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x);
 char* zx_ENC_SO_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x);
@@ -206,9 +210,10 @@ struct zx_wsse_Password_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_wsse_Password(c, father) (struct zx_wsse_Password_s*)zx_new_elem((c),(father),zx_wsse_Password_ELEM)
+
 int zx_DEC_ATTR_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x);
 int zx_DEC_ELEM_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x);
-struct zx_wsse_Password_s* zx_NEW_wsse_Password(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x);
 char* zx_ENC_SO_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x);
@@ -249,9 +254,10 @@ struct zx_wsse_Reference_s {
   struct zx_attr_s* ValueType;	/* {0,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_wsse_Reference(c, father) (struct zx_wsse_Reference_s*)zx_new_elem((c),(father),zx_wsse_Reference_ELEM)
+
 int zx_DEC_ATTR_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x);
 int zx_DEC_ELEM_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x);
-struct zx_wsse_Reference_s* zx_NEW_wsse_Reference(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x);
 char* zx_ENC_SO_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x);
@@ -301,9 +307,10 @@ struct zx_wsse_Security_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_wsse_Security(c, father) (struct zx_wsse_Security_s*)zx_new_elem((c),(father),zx_wsse_Security_ELEM)
+
 int zx_DEC_ATTR_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x);
 int zx_DEC_ELEM_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x);
-struct zx_wsse_Security_s* zx_NEW_wsse_Security(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x);
 char* zx_ENC_SO_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x);
@@ -411,9 +418,10 @@ struct zx_wsse_SecurityTokenReference_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_wsse_SecurityTokenReference(c, father) (struct zx_wsse_SecurityTokenReference_s*)zx_new_elem((c),(father),zx_wsse_SecurityTokenReference_ELEM)
+
 int zx_DEC_ATTR_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_SecurityTokenReference_s* x);
 int zx_DEC_ELEM_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_SecurityTokenReference_s* x);
-struct zx_wsse_SecurityTokenReference_s* zx_NEW_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_SecurityTokenReference_s* x);
 char* zx_ENC_SO_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_SecurityTokenReference_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_SecurityTokenReference_s* x);
@@ -460,9 +468,10 @@ struct zx_wsse_TransformationParameters_s {
   zx_wsse_TransformationParameters_EXT
 };
 
+#define zx_NEW_wsse_TransformationParameters(c, father) (struct zx_wsse_TransformationParameters_s*)zx_new_elem((c),(father),zx_wsse_TransformationParameters_ELEM)
+
 int zx_DEC_ATTR_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_TransformationParameters_s* x);
 int zx_DEC_ELEM_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_TransformationParameters_s* x);
-struct zx_wsse_TransformationParameters_s* zx_NEW_wsse_TransformationParameters(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_TransformationParameters_s* x);
 char* zx_ENC_SO_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_TransformationParameters_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_TransformationParameters_s* x);
@@ -498,9 +507,10 @@ struct zx_wsse_Username_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_wsse_Username(c, father) (struct zx_wsse_Username_s*)zx_new_elem((c),(father),zx_wsse_Username_ELEM)
+
 int zx_DEC_ATTR_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x);
 int zx_DEC_ELEM_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x);
-struct zx_wsse_Username_s* zx_NEW_wsse_Username(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x);
 char* zx_ENC_SO_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x);
@@ -539,9 +549,10 @@ struct zx_wsse_UsernameToken_s {
   struct zx_attr_s* Id;	/* {0,1} attribute xs:ID */
 };
 
+#define zx_NEW_wsse_UsernameToken(c, father) (struct zx_wsse_UsernameToken_s*)zx_new_elem((c),(father),zx_wsse_UsernameToken_ELEM)
+
 int zx_DEC_ATTR_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken_s* x);
 int zx_DEC_ELEM_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken_s* x);
-struct zx_wsse_UsernameToken_s* zx_NEW_wsse_UsernameToken(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken_s* x);
 char* zx_ENC_SO_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken_s* x);

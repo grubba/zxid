@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_xasacd1_ReferencedPolicies_s
 #define EL_NS     xasacd1
 #define EL_TAG    ReferencedPolicies
-
-/* FUNC(zx_NEW_xasacd1_ReferencedPolicies) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xasacd1_ReferencedPolicies_s* zx_NEW_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xasacd1_ReferencedPolicies_s* x = ZX_ZALLOC(c, struct zx_xasacd1_ReferencedPolicies_s);
-  x->gg.g.tok = zx_xasacd1_ReferencedPolicies_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -203,22 +188,6 @@ int zx_WALK_WO_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_Re
 #define EL_NS     xasacd1
 #define EL_TAG    XACMLAuthzDecisionStatement
 
-/* FUNC(zx_NEW_xasacd1_XACMLAuthzDecisionStatement) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xasacd1_XACMLAuthzDecisionStatement_s* zx_NEW_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x = ZX_ZALLOC(c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s);
-  x->gg.g.tok = zx_xasacd1_XACMLAuthzDecisionStatement_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_xasacd1_XACMLAuthzDecisionStatement) */
@@ -357,22 +326,6 @@ int zx_WALK_WO_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_x
 #define EL_STRUCT zx_xasacd1_XACMLPolicyStatement_s
 #define EL_NS     xasacd1
 #define EL_TAG    XACMLPolicyStatement
-
-/* FUNC(zx_NEW_xasacd1_XACMLPolicyStatement) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_xasacd1_XACMLPolicyStatement_s* zx_NEW_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_xasacd1_XACMLPolicyStatement_s* x = ZX_ZALLOC(c, struct zx_xasacd1_XACMLPolicyStatement_s);
-  x->gg.g.tok = zx_xasacd1_XACMLPolicyStatement_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

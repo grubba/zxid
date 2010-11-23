@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_e_Body_s
 #define EL_NS     e
 #define EL_TAG    Body
-
-/* FUNC(zx_NEW_e_Body) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_e_Body_s* zx_NEW_e_Body(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_e_Body_s* x = ZX_ZALLOC(c, struct zx_e_Body_s);
-  x->gg.g.tok = zx_e_Body_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4893,22 +4878,6 @@ int zx_WALK_WO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x, void* ctx, int (*
 #define EL_NS     e
 #define EL_TAG    Envelope
 
-/* FUNC(zx_NEW_e_Envelope) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_e_Envelope_s* zx_NEW_e_Envelope(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_e_Envelope_s* x = ZX_ZALLOC(c, struct zx_e_Envelope_s);
-  x->gg.g.tok = zx_e_Envelope_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_e_Envelope) */
@@ -5050,22 +5019,6 @@ int zx_WALK_WO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x, void* ctx
 #define EL_NS     e
 #define EL_TAG    Fault
 
-/* FUNC(zx_NEW_e_Fault) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_e_Fault_s* zx_NEW_e_Fault(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_e_Fault_s* x = ZX_ZALLOC(c, struct zx_e_Fault_s);
-  x->gg.g.tok = zx_e_Fault_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_e_Fault) */
@@ -5198,22 +5151,6 @@ int zx_WALK_WO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x, void* ctx, int 
 #define EL_STRUCT zx_e_Header_s
 #define EL_NS     e
 #define EL_TAG    Header
-
-/* FUNC(zx_NEW_e_Header) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_e_Header_s* zx_NEW_e_Header(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_e_Header_s* x = ZX_ZALLOC(c, struct zx_e_Header_s);
-  x->gg.g.tok = zx_e_Header_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6069,22 +6006,6 @@ int zx_WALK_WO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, void* ctx, in
 #define EL_STRUCT zx_e_detail_s
 #define EL_NS     e
 #define EL_TAG    detail
-
-/* FUNC(zx_NEW_e_detail) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_e_detail_s* zx_NEW_e_detail(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_e_detail_s* x = ZX_ZALLOC(c, struct zx_e_detail_s);
-  x->gg.g.tok = zx_e_detail_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

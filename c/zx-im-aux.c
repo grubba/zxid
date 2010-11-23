@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_im_IdentityMappingRequest_s
 #define EL_NS     im
 #define EL_TAG    IdentityMappingRequest
-
-/* FUNC(zx_NEW_im_IdentityMappingRequest) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_im_IdentityMappingRequest_s* zx_NEW_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_im_IdentityMappingRequest_s* x = ZX_ZALLOC(c, struct zx_im_IdentityMappingRequest_s);
-  x->gg.g.tok = zx_im_IdentityMappingRequest_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -181,22 +166,6 @@ int zx_WALK_WO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_Identity
 #define EL_STRUCT zx_im_IdentityMappingResponse_s
 #define EL_NS     im
 #define EL_TAG    IdentityMappingResponse
-
-/* FUNC(zx_NEW_im_IdentityMappingResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_im_IdentityMappingResponse_s* zx_NEW_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_im_IdentityMappingResponse_s* x = ZX_ZALLOC(c, struct zx_im_IdentityMappingResponse_s);
-  x->gg.g.tok = zx_im_IdentityMappingResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -336,22 +305,6 @@ int zx_WALK_WO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_Identit
 #define EL_STRUCT zx_im_MappingInput_s
 #define EL_NS     im
 #define EL_TAG    MappingInput
-
-/* FUNC(zx_NEW_im_MappingInput) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_im_MappingInput_s* zx_NEW_im_MappingInput(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_im_MappingInput_s* x = ZX_ZALLOC(c, struct zx_im_MappingInput_s);
-  x->gg.g.tok = zx_im_MappingInput_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -493,22 +446,6 @@ int zx_WALK_WO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x,
 #define EL_STRUCT zx_im_MappingOutput_s
 #define EL_NS     im
 #define EL_TAG    MappingOutput
-
-/* FUNC(zx_NEW_im_MappingOutput) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_im_MappingOutput_s* zx_NEW_im_MappingOutput(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_im_MappingOutput_s* x = ZX_ZALLOC(c, struct zx_im_MappingOutput_s);
-  x->gg.g.tok = zx_im_MappingOutput_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

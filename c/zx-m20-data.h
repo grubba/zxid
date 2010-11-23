@@ -30,9 +30,10 @@ struct zx_m20_AdditionalMetaLocation_s {
   struct zx_attr_s* namespace_is_cxx_keyword;	/* {0,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_m20_AdditionalMetaLocation(c, father) (struct zx_m20_AdditionalMetaLocation_s*)zx_new_elem((c),(father),zx_m20_AdditionalMetaLocation_ELEM)
+
 int zx_DEC_ATTR_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_AdditionalMetaLocation_s* x);
 int zx_DEC_ELEM_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_AdditionalMetaLocation_s* x);
-struct zx_m20_AdditionalMetaLocation_s* zx_NEW_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_AdditionalMetaLocation_s* x);
 char* zx_ENC_SO_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_AdditionalMetaLocation_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_AdditionalMetaLocation_s* x);
@@ -77,9 +78,10 @@ struct zx_m20_AffiliationDescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_m20_AffiliationDescriptor(c, father) (struct zx_m20_AffiliationDescriptor_s*)zx_new_elem((c),(father),zx_m20_AffiliationDescriptor_ELEM)
+
 int zx_DEC_ATTR_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_AffiliationDescriptor_s* x);
 int zx_DEC_ELEM_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_AffiliationDescriptor_s* x);
-struct zx_m20_AffiliationDescriptor_s* zx_NEW_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_AffiliationDescriptor_s* x);
 char* zx_ENC_SO_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_AffiliationDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_AffiliationDescriptor_s* x);
@@ -156,9 +158,10 @@ struct zx_m20_AssertionConsumerServiceURL_s {
   struct zx_attr_s* isDefault;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_m20_AssertionConsumerServiceURL(c, father) (struct zx_m20_AssertionConsumerServiceURL_s*)zx_new_elem((c),(father),zx_m20_AssertionConsumerServiceURL_ELEM)
+
 int zx_DEC_ATTR_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_AssertionConsumerServiceURL_s* x);
 int zx_DEC_ELEM_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_AssertionConsumerServiceURL_s* x);
-struct zx_m20_AssertionConsumerServiceURL_s* zx_NEW_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_AssertionConsumerServiceURL_s* x);
 char* zx_ENC_SO_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_AssertionConsumerServiceURL_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_AssertionConsumerServiceURL_s* x);
@@ -205,9 +208,10 @@ struct zx_m20_ContactPerson_s {
   struct zx_attr_s* libertyPrincipalIdentifier;	/* {0,1} attribute m20:entityIDType */
 };
 
+#define zx_NEW_m20_ContactPerson(c, father) (struct zx_m20_ContactPerson_s*)zx_new_elem((c),(father),zx_m20_ContactPerson_ELEM)
+
 int zx_DEC_ATTR_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s* x);
 int zx_DEC_ELEM_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s* x);
-struct zx_m20_ContactPerson_s* zx_NEW_m20_ContactPerson(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s* x);
 char* zx_ENC_SO_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s* x);
@@ -295,9 +299,10 @@ struct zx_m20_EntitiesDescriptor_s {
   struct zx_m20_EntityDescriptor_s* EntityDescriptor;	/* {2,unbounded} nada */
 };
 
+#define zx_NEW_m20_EntitiesDescriptor(c, father) (struct zx_m20_EntitiesDescriptor_s*)zx_new_elem((c),(father),zx_m20_EntitiesDescriptor_ELEM)
+
 int zx_DEC_ATTR_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDescriptor_s* x);
 int zx_DEC_ELEM_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDescriptor_s* x);
-struct zx_m20_EntitiesDescriptor_s* zx_NEW_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDescriptor_s* x);
 char* zx_ENC_SO_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDescriptor_s* x);
@@ -351,9 +356,10 @@ struct zx_m20_EntityDescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_m20_EntityDescriptor(c, father) (struct zx_m20_EntityDescriptor_s*)zx_new_elem((c),(father),zx_m20_EntityDescriptor_ELEM)
+
 int zx_DEC_ATTR_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescriptor_s* x);
 int zx_DEC_ELEM_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescriptor_s* x);
-struct zx_m20_EntityDescriptor_s* zx_NEW_m20_EntityDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescriptor_s* x);
 char* zx_ENC_SO_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescriptor_s* x);
@@ -452,9 +458,10 @@ struct zx_m20_Extension_s {
   zx_m20_Extension_EXT
 };
 
+#define zx_NEW_m20_Extension(c, father) (struct zx_m20_Extension_s*)zx_new_elem((c),(father),zx_m20_Extension_ELEM)
+
 int zx_DEC_ATTR_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x);
 int zx_DEC_ELEM_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x);
-struct zx_m20_Extension_s* zx_NEW_m20_Extension(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x);
 char* zx_ENC_SO_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x);
@@ -514,9 +521,10 @@ struct zx_m20_IDPDescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_m20_IDPDescriptor(c, father) (struct zx_m20_IDPDescriptor_s*)zx_new_elem((c),(father),zx_m20_IDPDescriptor_ELEM)
+
 int zx_DEC_ATTR_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* x);
 int zx_DEC_ELEM_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* x);
-struct zx_m20_IDPDescriptor_s* zx_NEW_m20_IDPDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* x);
 char* zx_ENC_SO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* x);
@@ -732,9 +740,10 @@ struct zx_m20_KeyDescriptor_s {
   struct zx_attr_s* use;	/* {0,1} attribute keyTypes */
 };
 
+#define zx_NEW_m20_KeyDescriptor(c, father) (struct zx_m20_KeyDescriptor_s*)zx_new_elem((c),(father),zx_m20_KeyDescriptor_ELEM)
+
 int zx_DEC_ATTR_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s* x);
 int zx_DEC_ELEM_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s* x);
-struct zx_m20_KeyDescriptor_s* zx_NEW_m20_KeyDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s* x);
 char* zx_ENC_SO_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s* x);
@@ -807,9 +816,10 @@ struct zx_m20_Organization_s {
   struct zx_m20_Extension_s* Extension;	/* {0,1}  */
 };
 
+#define zx_NEW_m20_Organization(c, father) (struct zx_m20_Organization_s*)zx_new_elem((c),(father),zx_m20_Organization_ELEM)
+
 int zx_DEC_ATTR_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x);
 int zx_DEC_ELEM_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x);
-struct zx_m20_Organization_s* zx_NEW_m20_Organization(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x);
 char* zx_ENC_SO_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x);
@@ -877,9 +887,10 @@ struct zx_m20_OrganizationDisplayName_s {
   struct zx_attr_s* lang;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_m20_OrganizationDisplayName(c, father) (struct zx_m20_OrganizationDisplayName_s*)zx_new_elem((c),(father),zx_m20_OrganizationDisplayName_ELEM)
+
 int zx_DEC_ATTR_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_OrganizationDisplayName_s* x);
 int zx_DEC_ELEM_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_OrganizationDisplayName_s* x);
-struct zx_m20_OrganizationDisplayName_s* zx_NEW_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_OrganizationDisplayName_s* x);
 char* zx_ENC_SO_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_OrganizationDisplayName_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_OrganizationDisplayName_s* x);
@@ -917,9 +928,10 @@ struct zx_m20_OrganizationName_s {
   struct zx_attr_s* lang;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_m20_OrganizationName(c, father) (struct zx_m20_OrganizationName_s*)zx_new_elem((c),(father),zx_m20_OrganizationName_ELEM)
+
 int zx_DEC_ATTR_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_OrganizationName_s* x);
 int zx_DEC_ELEM_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_OrganizationName_s* x);
-struct zx_m20_OrganizationName_s* zx_NEW_m20_OrganizationName(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_OrganizationName_s* x);
 char* zx_ENC_SO_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_OrganizationName_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_OrganizationName_s* x);
@@ -957,9 +969,10 @@ struct zx_m20_OrganizationURL_s {
   struct zx_attr_s* lang;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_m20_OrganizationURL(c, father) (struct zx_m20_OrganizationURL_s*)zx_new_elem((c),(father),zx_m20_OrganizationURL_ELEM)
+
 int zx_DEC_ATTR_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationURL_s* x);
 int zx_DEC_ELEM_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationURL_s* x);
-struct zx_m20_OrganizationURL_s* zx_NEW_m20_OrganizationURL(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationURL_s* x);
 char* zx_ENC_SO_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationURL_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationURL_s* x);
@@ -1020,9 +1033,10 @@ struct zx_m20_SPDescriptor_s {
   struct zx_attr_s* validUntil;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_m20_SPDescriptor(c, father) (struct zx_m20_SPDescriptor_s*)zx_new_elem((c),(father),zx_m20_SPDescriptor_ELEM)
+
 int zx_DEC_ATTR_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x);
 int zx_DEC_ELEM_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x);
-struct zx_m20_SPDescriptor_s* zx_NEW_m20_SPDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x);
 char* zx_ENC_SO_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x);

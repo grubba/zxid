@@ -38,9 +38,10 @@ struct zx_prov_CallbackEPR_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_prov_CallbackEPR(c, father) (struct zx_prov_CallbackEPR_s*)zx_new_elem((c),(father),zx_prov_CallbackEPR_ELEM)
+
 int zx_DEC_ATTR_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s* x);
 int zx_DEC_ELEM_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s* x);
-struct zx_prov_CallbackEPR_s* zx_NEW_prov_CallbackEPR(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s* x);
 char* zx_ENC_SO_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s* x);
@@ -113,9 +114,10 @@ struct zx_prov_PMActivate_s {
   struct zx_elem_s* NotifyTo;	/* {0,1} a:EndpointReference */
 };
 
+#define zx_NEW_prov_PMActivate(c, father) (struct zx_prov_PMActivate_s*)zx_new_elem((c),(father),zx_prov_PMActivate_ELEM)
+
 int zx_DEC_ATTR_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* x);
 int zx_DEC_ELEM_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* x);
-struct zx_prov_PMActivate_s* zx_NEW_prov_PMActivate(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* x);
 char* zx_ENC_SO_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* x);
@@ -169,9 +171,10 @@ struct zx_prov_PMActivateItem_s {
   struct zx_attr_s* itemID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_prov_PMActivateItem(c, father) (struct zx_prov_PMActivateItem_s*)zx_new_elem((c),(father),zx_prov_PMActivateItem_ELEM)
+
 int zx_DEC_ATTR_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivateItem_s* x);
 int zx_DEC_ELEM_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivateItem_s* x);
-struct zx_prov_PMActivateItem_s* zx_NEW_prov_PMActivateItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivateItem_s* x);
 char* zx_ENC_SO_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivateItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivateItem_s* x);
@@ -219,9 +222,10 @@ struct zx_prov_PMActivateResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMActivateResponse(c, father) (struct zx_prov_PMActivateResponse_s*)zx_new_elem((c),(father),zx_prov_PMActivateResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActivateResponse_s* x);
 int zx_DEC_ELEM_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActivateResponse_s* x);
-struct zx_prov_PMActivateResponse_s* zx_NEW_prov_PMActivateResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActivateResponse_s* x);
 char* zx_ENC_SO_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActivateResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActivateResponse_s* x);
@@ -266,9 +270,10 @@ struct zx_prov_PMDeactivate_s {
   struct zx_elem_s* NotifyTo;	/* {0,1} a:EndpointReference */
 };
 
+#define zx_NEW_prov_PMDeactivate(c, father) (struct zx_prov_PMDeactivate_s*)zx_new_elem((c),(father),zx_prov_PMDeactivate_ELEM)
+
 int zx_DEC_ATTR_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate_s* x);
 int zx_DEC_ELEM_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate_s* x);
-struct zx_prov_PMDeactivate_s* zx_NEW_prov_PMDeactivate(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate_s* x);
 char* zx_ENC_SO_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate_s* x);
@@ -322,9 +327,10 @@ struct zx_prov_PMDeactivateItem_s {
   struct zx_attr_s* itemID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_prov_PMDeactivateItem(c, father) (struct zx_prov_PMDeactivateItem_s*)zx_new_elem((c),(father),zx_prov_PMDeactivateItem_ELEM)
+
 int zx_DEC_ATTR_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeactivateItem_s* x);
 int zx_DEC_ELEM_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeactivateItem_s* x);
-struct zx_prov_PMDeactivateItem_s* zx_NEW_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeactivateItem_s* x);
 char* zx_ENC_SO_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeactivateItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeactivateItem_s* x);
@@ -372,9 +378,10 @@ struct zx_prov_PMDeactivateResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMDeactivateResponse(c, father) (struct zx_prov_PMDeactivateResponse_s*)zx_new_elem((c),(father),zx_prov_PMDeactivateResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDeactivateResponse_s* x);
 int zx_DEC_ELEM_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDeactivateResponse_s* x);
-struct zx_prov_PMDeactivateResponse_s* zx_NEW_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDeactivateResponse_s* x);
 char* zx_ENC_SO_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDeactivateResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDeactivateResponse_s* x);
@@ -419,9 +426,10 @@ struct zx_prov_PMDelete_s {
   struct zx_elem_s* NotifyTo;	/* {0,1} a:EndpointReference */
 };
 
+#define zx_NEW_prov_PMDelete(c, father) (struct zx_prov_PMDelete_s*)zx_new_elem((c),(father),zx_prov_PMDelete_ELEM)
+
 int zx_DEC_ATTR_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x);
 int zx_DEC_ELEM_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x);
-struct zx_prov_PMDelete_s* zx_NEW_prov_PMDelete(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x);
 char* zx_ENC_SO_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x);
@@ -474,9 +482,10 @@ struct zx_prov_PMDeleteItem_s {
   struct zx_attr_s* itemID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_prov_PMDeleteItem(c, father) (struct zx_prov_PMDeleteItem_s*)zx_new_elem((c),(father),zx_prov_PMDeleteItem_ELEM)
+
 int zx_DEC_ATTR_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem_s* x);
 int zx_DEC_ELEM_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem_s* x);
-struct zx_prov_PMDeleteItem_s* zx_NEW_prov_PMDeleteItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem_s* x);
 char* zx_ENC_SO_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem_s* x);
@@ -522,9 +531,10 @@ struct zx_prov_PMDeleteResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMDeleteResponse(c, father) (struct zx_prov_PMDeleteResponse_s*)zx_new_elem((c),(father),zx_prov_PMDeleteResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDeleteResponse_s* x);
 int zx_DEC_ELEM_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDeleteResponse_s* x);
-struct zx_prov_PMDeleteResponse_s* zx_NEW_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDeleteResponse_s* x);
 char* zx_ENC_SO_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDeleteResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDeleteResponse_s* x);
@@ -575,9 +585,10 @@ struct zx_prov_PMDescriptor_s {
   struct zx_attr_s* deactivateAt;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_prov_PMDescriptor(c, father) (struct zx_prov_PMDescriptor_s*)zx_new_elem((c),(father),zx_prov_PMDescriptor_ELEM)
+
 int zx_DEC_ATTR_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_s* x);
 int zx_DEC_ELEM_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_s* x);
-struct zx_prov_PMDescriptor_s* zx_NEW_prov_PMDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_s* x);
 char* zx_ENC_SO_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_s* x);
@@ -659,9 +670,10 @@ struct zx_prov_PMEDelete_s {
   struct zx_elem_s* PMEngineRef;	/* {1,-1} xs:anyURI */
 };
 
+#define zx_NEW_prov_PMEDelete(c, father) (struct zx_prov_PMEDelete_s*)zx_new_elem((c),(father),zx_prov_PMEDelete_ELEM)
+
 int zx_DEC_ATTR_prov_PMEDelete(struct zx_ctx* c, struct zx_prov_PMEDelete_s* x);
 int zx_DEC_ELEM_prov_PMEDelete(struct zx_ctx* c, struct zx_prov_PMEDelete_s* x);
-struct zx_prov_PMEDelete_s* zx_NEW_prov_PMEDelete(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEDelete(struct zx_ctx* c, struct zx_prov_PMEDelete_s* x);
 char* zx_ENC_SO_prov_PMEDelete(struct zx_ctx* c, struct zx_prov_PMEDelete_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEDelete(struct zx_ctx* c, struct zx_prov_PMEDelete_s* x);
@@ -705,9 +717,10 @@ struct zx_prov_PMEDeleteResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMEDeleteResponse(c, father) (struct zx_prov_PMEDeleteResponse_s*)zx_new_elem((c),(father),zx_prov_PMEDeleteResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDeleteResponse_s* x);
 int zx_DEC_ELEM_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDeleteResponse_s* x);
-struct zx_prov_PMEDeleteResponse_s* zx_NEW_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDeleteResponse_s* x);
 char* zx_ENC_SO_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDeleteResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDeleteResponse_s* x);
@@ -751,9 +764,10 @@ struct zx_prov_PMEDisable_s {
   struct zx_elem_s* PMEngineRef;	/* {1,-1} xs:anyURI */
 };
 
+#define zx_NEW_prov_PMEDisable(c, father) (struct zx_prov_PMEDisable_s*)zx_new_elem((c),(father),zx_prov_PMEDisable_ELEM)
+
 int zx_DEC_ATTR_prov_PMEDisable(struct zx_ctx* c, struct zx_prov_PMEDisable_s* x);
 int zx_DEC_ELEM_prov_PMEDisable(struct zx_ctx* c, struct zx_prov_PMEDisable_s* x);
-struct zx_prov_PMEDisable_s* zx_NEW_prov_PMEDisable(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEDisable(struct zx_ctx* c, struct zx_prov_PMEDisable_s* x);
 char* zx_ENC_SO_prov_PMEDisable(struct zx_ctx* c, struct zx_prov_PMEDisable_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEDisable(struct zx_ctx* c, struct zx_prov_PMEDisable_s* x);
@@ -797,9 +811,10 @@ struct zx_prov_PMEDisableResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMEDisableResponse(c, father) (struct zx_prov_PMEDisableResponse_s*)zx_new_elem((c),(father),zx_prov_PMEDisableResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDisableResponse_s* x);
 int zx_DEC_ELEM_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDisableResponse_s* x);
-struct zx_prov_PMEDisableResponse_s* zx_NEW_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDisableResponse_s* x);
 char* zx_ENC_SO_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDisableResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDisableResponse_s* x);
@@ -843,9 +858,10 @@ struct zx_prov_PMEDownload_s {
   struct zx_elem_s* PMEngineRef;	/* {1,1} xs:anyURI */
 };
 
+#define zx_NEW_prov_PMEDownload(c, father) (struct zx_prov_PMEDownload_s*)zx_new_elem((c),(father),zx_prov_PMEDownload_ELEM)
+
 int zx_DEC_ATTR_prov_PMEDownload(struct zx_ctx* c, struct zx_prov_PMEDownload_s* x);
 int zx_DEC_ELEM_prov_PMEDownload(struct zx_ctx* c, struct zx_prov_PMEDownload_s* x);
-struct zx_prov_PMEDownload_s* zx_NEW_prov_PMEDownload(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEDownload(struct zx_ctx* c, struct zx_prov_PMEDownload_s* x);
 char* zx_ENC_SO_prov_PMEDownload(struct zx_ctx* c, struct zx_prov_PMEDownload_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEDownload(struct zx_ctx* c, struct zx_prov_PMEDownload_s* x);
@@ -890,9 +906,10 @@ struct zx_prov_PMEDownloadResponse_s {
   struct zx_elem_s* EngineData;	/* {0,1} xs:base64Binary */
 };
 
+#define zx_NEW_prov_PMEDownloadResponse(c, father) (struct zx_prov_PMEDownloadResponse_s*)zx_new_elem((c),(father),zx_prov_PMEDownloadResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDownloadResponse_s* x);
 int zx_DEC_ELEM_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDownloadResponse_s* x);
-struct zx_prov_PMEDownloadResponse_s* zx_NEW_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDownloadResponse_s* x);
 char* zx_ENC_SO_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDownloadResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDownloadResponse_s* x);
@@ -944,9 +961,10 @@ struct zx_prov_PMEEnable_s {
   struct zx_elem_s* PMEngineRef;	/* {1,-1} xs:anyURI */
 };
 
+#define zx_NEW_prov_PMEEnable(c, father) (struct zx_prov_PMEEnable_s*)zx_new_elem((c),(father),zx_prov_PMEEnable_ELEM)
+
 int zx_DEC_ATTR_prov_PMEEnable(struct zx_ctx* c, struct zx_prov_PMEEnable_s* x);
 int zx_DEC_ELEM_prov_PMEEnable(struct zx_ctx* c, struct zx_prov_PMEEnable_s* x);
-struct zx_prov_PMEEnable_s* zx_NEW_prov_PMEEnable(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEEnable(struct zx_ctx* c, struct zx_prov_PMEEnable_s* x);
 char* zx_ENC_SO_prov_PMEEnable(struct zx_ctx* c, struct zx_prov_PMEEnable_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEEnable(struct zx_ctx* c, struct zx_prov_PMEEnable_s* x);
@@ -990,9 +1008,10 @@ struct zx_prov_PMEEnableResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMEEnableResponse(c, father) (struct zx_prov_PMEEnableResponse_s*)zx_new_elem((c),(father),zx_prov_PMEEnableResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnableResponse_s* x);
 int zx_DEC_ELEM_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnableResponse_s* x);
-struct zx_prov_PMEEnableResponse_s* zx_NEW_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnableResponse_s* x);
 char* zx_ENC_SO_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnableResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnableResponse_s* x);
@@ -1036,9 +1055,10 @@ struct zx_prov_PMEGetInfo_s {
   struct zx_elem_s* PMEngineRef;	/* {0,-1} xs:anyURI */
 };
 
+#define zx_NEW_prov_PMEGetInfo(c, father) (struct zx_prov_PMEGetInfo_s*)zx_new_elem((c),(father),zx_prov_PMEGetInfo_ELEM)
+
 int zx_DEC_ATTR_prov_PMEGetInfo(struct zx_ctx* c, struct zx_prov_PMEGetInfo_s* x);
 int zx_DEC_ELEM_prov_PMEGetInfo(struct zx_ctx* c, struct zx_prov_PMEGetInfo_s* x);
-struct zx_prov_PMEGetInfo_s* zx_NEW_prov_PMEGetInfo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEGetInfo(struct zx_ctx* c, struct zx_prov_PMEGetInfo_s* x);
 char* zx_ENC_SO_prov_PMEGetInfo(struct zx_ctx* c, struct zx_prov_PMEGetInfo_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEGetInfo(struct zx_ctx* c, struct zx_prov_PMEGetInfo_s* x);
@@ -1083,9 +1103,10 @@ struct zx_prov_PMEGetInfoResponse_s {
   struct zx_prov_PMEInfo_s* PMEInfo;	/* {0,-1} nada */
 };
 
+#define zx_NEW_prov_PMEGetInfoResponse(c, father) (struct zx_prov_PMEGetInfoResponse_s*)zx_new_elem((c),(father),zx_prov_PMEGetInfoResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGetInfoResponse_s* x);
 int zx_DEC_ELEM_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGetInfoResponse_s* x);
-struct zx_prov_PMEGetInfoResponse_s* zx_NEW_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGetInfoResponse_s* x);
 char* zx_ENC_SO_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGetInfoResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGetInfoResponse_s* x);
@@ -1137,9 +1158,10 @@ struct zx_prov_PMEHash_s {
   struct zx_attr_s* method;	/* {1,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_prov_PMEHash(c, father) (struct zx_prov_PMEHash_s*)zx_new_elem((c),(father),zx_prov_PMEHash_ELEM)
+
 int zx_DEC_ATTR_prov_PMEHash(struct zx_ctx* c, struct zx_prov_PMEHash_s* x);
 int zx_DEC_ELEM_prov_PMEHash(struct zx_ctx* c, struct zx_prov_PMEHash_s* x);
-struct zx_prov_PMEHash_s* zx_NEW_prov_PMEHash(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEHash(struct zx_ctx* c, struct zx_prov_PMEHash_s* x);
 char* zx_ENC_SO_prov_PMEHash(struct zx_ctx* c, struct zx_prov_PMEHash_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEHash(struct zx_ctx* c, struct zx_prov_PMEHash_s* x);
@@ -1183,9 +1205,10 @@ struct zx_prov_PMEInfo_s {
   struct zx_prov_PMEHash_s* PMEHash;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMEInfo(c, father) (struct zx_prov_PMEInfo_s*)zx_new_elem((c),(father),zx_prov_PMEInfo_ELEM)
+
 int zx_DEC_ATTR_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x);
 int zx_DEC_ELEM_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x);
-struct zx_prov_PMEInfo_s* zx_NEW_prov_PMEInfo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x);
 char* zx_ENC_SO_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x);
@@ -1279,9 +1302,10 @@ struct zx_prov_PMERegister_s {
   struct zx_prov_PMEHash_s* PMEHash;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMERegister(c, father) (struct zx_prov_PMERegister_s*)zx_new_elem((c),(father),zx_prov_PMERegister_ELEM)
+
 int zx_DEC_ATTR_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s* x);
 int zx_DEC_ELEM_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s* x);
-struct zx_prov_PMERegister_s* zx_NEW_prov_PMERegister(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s* x);
 char* zx_ENC_SO_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s* x);
@@ -1342,9 +1366,10 @@ struct zx_prov_PMERegisterResponse_s {
   struct zx_elem_s* PMEUploadMax;	/* {0,1} xs:integer */
 };
 
+#define zx_NEW_prov_PMERegisterResponse(c, father) (struct zx_prov_PMERegisterResponse_s*)zx_new_elem((c),(father),zx_prov_PMERegisterResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMERegisterResponse_s* x);
 int zx_DEC_ELEM_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMERegisterResponse_s* x);
-struct zx_prov_PMERegisterResponse_s* zx_NEW_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMERegisterResponse_s* x);
 char* zx_ENC_SO_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMERegisterResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMERegisterResponse_s* x);
@@ -1399,9 +1424,10 @@ struct zx_prov_PMEUpload_s {
   struct zx_attr_s* remaining;	/* {1,1} attribute xs:integer */
 };
 
+#define zx_NEW_prov_PMEUpload(c, father) (struct zx_prov_PMEUpload_s*)zx_new_elem((c),(father),zx_prov_PMEUpload_ELEM)
+
 int zx_DEC_ATTR_prov_PMEUpload(struct zx_ctx* c, struct zx_prov_PMEUpload_s* x);
 int zx_DEC_ELEM_prov_PMEUpload(struct zx_ctx* c, struct zx_prov_PMEUpload_s* x);
-struct zx_prov_PMEUpload_s* zx_NEW_prov_PMEUpload(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEUpload(struct zx_ctx* c, struct zx_prov_PMEUpload_s* x);
 char* zx_ENC_SO_prov_PMEUpload(struct zx_ctx* c, struct zx_prov_PMEUpload_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEUpload(struct zx_ctx* c, struct zx_prov_PMEUpload_s* x);
@@ -1457,9 +1483,10 @@ struct zx_prov_PMEUploadResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMEUploadResponse(c, father) (struct zx_prov_PMEUploadResponse_s*)zx_new_elem((c),(father),zx_prov_PMEUploadResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUploadResponse_s* x);
 int zx_DEC_ELEM_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUploadResponse_s* x);
-struct zx_prov_PMEUploadResponse_s* zx_NEW_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUploadResponse_s* x);
 char* zx_ENC_SO_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUploadResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUploadResponse_s* x);
@@ -1504,9 +1531,10 @@ struct zx_prov_PMGetDescriptor_s {
   struct zx_prov_CallbackEPR_s* CallbackEPR;	/* {1,-1} nada */
 };
 
+#define zx_NEW_prov_PMGetDescriptor(c, father) (struct zx_prov_PMGetDescriptor_s*)zx_new_elem((c),(father),zx_prov_PMGetDescriptor_ELEM)
+
 int zx_DEC_ATTR_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDescriptor_s* x);
 int zx_DEC_ELEM_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDescriptor_s* x);
-struct zx_prov_PMGetDescriptor_s* zx_NEW_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDescriptor_s* x);
 char* zx_ENC_SO_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDescriptor_s* x);
@@ -1559,9 +1587,10 @@ struct zx_prov_PMGetDescriptorResponse_s {
   struct zx_prov_PMDescriptor_s* PMDescriptor;	/* {0,1} nada */
 };
 
+#define zx_NEW_prov_PMGetDescriptorResponse(c, father) (struct zx_prov_PMGetDescriptorResponse_s*)zx_new_elem((c),(father),zx_prov_PMGetDescriptorResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMGetDescriptorResponse_s* x);
 int zx_DEC_ELEM_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMGetDescriptorResponse_s* x);
-struct zx_prov_PMGetDescriptorResponse_s* zx_NEW_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMGetDescriptorResponse_s* x);
 char* zx_ENC_SO_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMGetDescriptorResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMGetDescriptorResponse_s* x);
@@ -1613,9 +1642,10 @@ struct zx_prov_PMGetStatus_s {
   struct zx_prov_PMID_s* PMID;	/* {0,-1} nada */
 };
 
+#define zx_NEW_prov_PMGetStatus(c, father) (struct zx_prov_PMGetStatus_s*)zx_new_elem((c),(father),zx_prov_PMGetStatus_ELEM)
+
 int zx_DEC_ATTR_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s* x);
 int zx_DEC_ELEM_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s* x);
-struct zx_prov_PMGetStatus_s* zx_NEW_prov_PMGetStatus(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s* x);
 char* zx_ENC_SO_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s* x);
@@ -1660,9 +1690,10 @@ struct zx_prov_PMGetStatusResponse_s {
   struct zx_prov_PMStatus_s* PMStatus;	/* {0,-1} nada */
 };
 
+#define zx_NEW_prov_PMGetStatusResponse(c, father) (struct zx_prov_PMGetStatusResponse_s*)zx_new_elem((c),(father),zx_prov_PMGetStatusResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGetStatusResponse_s* x);
 int zx_DEC_ELEM_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGetStatusResponse_s* x);
-struct zx_prov_PMGetStatusResponse_s* zx_NEW_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGetStatusResponse_s* x);
 char* zx_ENC_SO_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGetStatusResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGetStatusResponse_s* x);
@@ -1714,9 +1745,10 @@ struct zx_prov_PMID_s {
   struct zx_attr_s* issuer;	/* {1,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_prov_PMID(c, father) (struct zx_prov_PMID_s*)zx_new_elem((c),(father),zx_prov_PMID_ELEM)
+
 int zx_DEC_ATTR_prov_PMID(struct zx_ctx* c, struct zx_prov_PMID_s* x);
 int zx_DEC_ELEM_prov_PMID(struct zx_ctx* c, struct zx_prov_PMID_s* x);
-struct zx_prov_PMID_s* zx_NEW_prov_PMID(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMID(struct zx_ctx* c, struct zx_prov_PMID_s* x);
 char* zx_ENC_SO_prov_PMID(struct zx_ctx* c, struct zx_prov_PMID_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMID(struct zx_ctx* c, struct zx_prov_PMID_s* x);
@@ -1754,9 +1786,10 @@ struct zx_prov_PMRegisterDescriptor_s {
   struct zx_prov_PMRegisterDescriptorItem_s* PMRegisterDescriptorItem;	/* {1,-1} nada */
 };
 
+#define zx_NEW_prov_PMRegisterDescriptor(c, father) (struct zx_prov_PMRegisterDescriptor_s*)zx_new_elem((c),(father),zx_prov_PMRegisterDescriptor_ELEM)
+
 int zx_DEC_ATTR_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptor_s* x);
 int zx_DEC_ELEM_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptor_s* x);
-struct zx_prov_PMRegisterDescriptor_s* zx_NEW_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptor_s* x);
 char* zx_ENC_SO_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptor_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptor_s* x);
@@ -1801,9 +1834,10 @@ struct zx_prov_PMRegisterDescriptorItem_s {
   struct zx_attr_s* itemID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_prov_PMRegisterDescriptorItem(c, father) (struct zx_prov_PMRegisterDescriptorItem_s*)zx_new_elem((c),(father),zx_prov_PMRegisterDescriptorItem_ELEM)
+
 int zx_DEC_ATTR_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorItem_s* x);
 int zx_DEC_ELEM_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorItem_s* x);
-struct zx_prov_PMRegisterDescriptorItem_s* zx_NEW_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorItem_s* x);
 char* zx_ENC_SO_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorItem_s* x);
@@ -1850,9 +1884,10 @@ struct zx_prov_PMRegisterDescriptorResponse_s {
   struct zx_prov_PMRegisterDescriptorResponseItem_s* PMRegisterDescriptorResponseItem;	/* {0,-1} nada */
 };
 
+#define zx_NEW_prov_PMRegisterDescriptorResponse(c, father) (struct zx_prov_PMRegisterDescriptorResponse_s*)zx_new_elem((c),(father),zx_prov_PMRegisterDescriptorResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorResponse_s* x);
 int zx_DEC_ELEM_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorResponse_s* x);
-struct zx_prov_PMRegisterDescriptorResponse_s* zx_NEW_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorResponse_s* x);
 char* zx_ENC_SO_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorResponse_s* x);
@@ -1905,9 +1940,10 @@ struct zx_prov_PMRegisterDescriptorResponseItem_s {
   struct zx_attr_s* ref;	/* {1,1} attribute xs:anyURI */
 };
 
+#define zx_NEW_prov_PMRegisterDescriptorResponseItem(c, father) (struct zx_prov_PMRegisterDescriptorResponseItem_s*)zx_new_elem((c),(father),zx_prov_PMRegisterDescriptorResponseItem_ELEM)
+
 int zx_DEC_ATTR_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorResponseItem_s* x);
 int zx_DEC_ELEM_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorResponseItem_s* x);
-struct zx_prov_PMRegisterDescriptorResponseItem_s* zx_NEW_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorResponseItem_s* x);
 char* zx_ENC_SO_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorResponseItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct zx_prov_PMRegisterDescriptorResponseItem_s* x);
@@ -1953,9 +1989,10 @@ struct zx_prov_PMSetStatus_s {
   struct zx_prov_PMStatus_s* PMStatus;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMSetStatus(c, father) (struct zx_prov_PMSetStatus_s*)zx_new_elem((c),(father),zx_prov_PMSetStatus_ELEM)
+
 int zx_DEC_ATTR_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s* x);
 int zx_DEC_ELEM_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s* x);
-struct zx_prov_PMSetStatus_s* zx_NEW_prov_PMSetStatus(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s* x);
 char* zx_ENC_SO_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s* x);
@@ -1999,9 +2036,10 @@ struct zx_prov_PMSetStatusResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMSetStatusResponse(c, father) (struct zx_prov_PMSetStatusResponse_s*)zx_new_elem((c),(father),zx_prov_PMSetStatusResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSetStatusResponse_s* x);
 int zx_DEC_ELEM_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSetStatusResponse_s* x);
-struct zx_prov_PMSetStatusResponse_s* zx_NEW_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSetStatusResponse_s* x);
 char* zx_ENC_SO_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSetStatusResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSetStatusResponse_s* x);
@@ -2046,9 +2084,10 @@ struct zx_prov_PMStatus_s {
   struct zx_prov_State_s* State;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMStatus(c, father) (struct zx_prov_PMStatus_s*)zx_new_elem((c),(father),zx_prov_PMStatus_ELEM)
+
 int zx_DEC_ATTR_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x);
 int zx_DEC_ELEM_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x);
-struct zx_prov_PMStatus_s* zx_NEW_prov_PMStatus(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x);
 char* zx_ENC_SO_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x);
@@ -2101,9 +2140,10 @@ struct zx_prov_PMUpdate_s {
   struct zx_elem_s* NotifyTo;	/* {0,1} a:EndpointReference */
 };
 
+#define zx_NEW_prov_PMUpdate(c, father) (struct zx_prov_PMUpdate_s*)zx_new_elem((c),(father),zx_prov_PMUpdate_ELEM)
+
 int zx_DEC_ATTR_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x);
 int zx_DEC_ELEM_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x);
-struct zx_prov_PMUpdate_s* zx_NEW_prov_PMUpdate(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x);
 char* zx_ENC_SO_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x);
@@ -2158,9 +2198,10 @@ struct zx_prov_PMUpdateItem_s {
   struct zx_attr_s* type;	/* {1,1} attribute hrxml:ExtendedAssociationTypeType */
 };
 
+#define zx_NEW_prov_PMUpdateItem(c, father) (struct zx_prov_PMUpdateItem_s*)zx_new_elem((c),(father),zx_prov_PMUpdateItem_ELEM)
+
 int zx_DEC_ATTR_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem_s* x);
 int zx_DEC_ELEM_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem_s* x);
-struct zx_prov_PMUpdateItem_s* zx_NEW_prov_PMUpdateItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem_s* x);
 char* zx_ENC_SO_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem_s* x);
@@ -2210,9 +2251,10 @@ struct zx_prov_PMUpdateResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_PMUpdateResponse(c, father) (struct zx_prov_PMUpdateResponse_s*)zx_new_elem((c),(father),zx_prov_PMUpdateResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdateResponse_s* x);
 int zx_DEC_ELEM_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdateResponse_s* x);
-struct zx_prov_PMUpdateResponse_s* zx_NEW_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdateResponse_s* x);
 char* zx_ENC_SO_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdateResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdateResponse_s* x);
@@ -2258,9 +2300,10 @@ struct zx_prov_Poll_s {
   struct zx_attr_s* wait;	/* {1,1} attribute xs:boolean */
 };
 
+#define zx_NEW_prov_Poll(c, father) (struct zx_prov_Poll_s*)zx_new_elem((c),(father),zx_prov_Poll_ELEM)
+
 int zx_DEC_ATTR_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x);
 int zx_DEC_ELEM_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x);
-struct zx_prov_Poll_s* zx_NEW_prov_Poll(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x);
 char* zx_ENC_SO_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x);
@@ -2315,9 +2358,10 @@ struct zx_prov_PollResponse_s {
   struct zx_attr_s* nextPoll;	/* {0,1} attribute xs:integer */
 };
 
+#define zx_NEW_prov_PollResponse(c, father) (struct zx_prov_PollResponse_s*)zx_new_elem((c),(father),zx_prov_PollResponse_ELEM)
+
 int zx_DEC_ATTR_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse_s* x);
 int zx_DEC_ELEM_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse_s* x);
-struct zx_prov_PollResponse_s* zx_NEW_prov_PollResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse_s* x);
 char* zx_ENC_SO_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse_s* x);
@@ -2366,9 +2410,10 @@ struct zx_prov_ProvisioningHandle_s {
   struct zx_attr_s* expires;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_prov_ProvisioningHandle(c, father) (struct zx_prov_ProvisioningHandle_s*)zx_new_elem((c),(father),zx_prov_ProvisioningHandle_ELEM)
+
 int zx_DEC_ATTR_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_ProvisioningHandle_s* x);
 int zx_DEC_ELEM_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_ProvisioningHandle_s* x);
-struct zx_prov_ProvisioningHandle_s* zx_NEW_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_ProvisioningHandle_s* x);
 char* zx_ENC_SO_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_ProvisioningHandle_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_ProvisioningHandle_s* x);
@@ -2438,9 +2483,10 @@ struct zx_prov_ProvisioningServiceEPR_s {
   struct zx_attr_s* mustUnderstand;	/* {0,1} attribute xs:boolean */
 };
 
+#define zx_NEW_prov_ProvisioningServiceEPR(c, father) (struct zx_prov_ProvisioningServiceEPR_s*)zx_new_elem((c),(father),zx_prov_ProvisioningServiceEPR_ELEM)
+
 int zx_DEC_ATTR_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_ProvisioningServiceEPR_s* x);
 int zx_DEC_ELEM_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_ProvisioningServiceEPR_s* x);
-struct zx_prov_ProvisioningServiceEPR_s* zx_NEW_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_ProvisioningServiceEPR_s* x);
 char* zx_ENC_SO_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_ProvisioningServiceEPR_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_ProvisioningServiceEPR_s* x);
@@ -2512,9 +2558,10 @@ struct zx_prov_State_s {
   struct zx_attr_s* asof;	/* {0,1} attribute xs:dateTime */
 };
 
+#define zx_NEW_prov_State(c, father) (struct zx_prov_State_s*)zx_new_elem((c),(father),zx_prov_State_ELEM)
+
 int zx_DEC_ATTR_prov_State(struct zx_ctx* c, struct zx_prov_State_s* x);
 int zx_DEC_ELEM_prov_State(struct zx_ctx* c, struct zx_prov_State_s* x);
-struct zx_prov_State_s* zx_NEW_prov_State(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_State(struct zx_ctx* c, struct zx_prov_State_s* x);
 char* zx_ENC_SO_prov_State(struct zx_ctx* c, struct zx_prov_State_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_State(struct zx_ctx* c, struct zx_prov_State_s* x);
@@ -2552,9 +2599,10 @@ struct zx_prov_UpdateEPR_s {
   struct zx_prov_UpdateEPRItem_s* UpdateEPRItem;	/* {1,-1} nada */
 };
 
+#define zx_NEW_prov_UpdateEPR(c, father) (struct zx_prov_UpdateEPR_s*)zx_new_elem((c),(father),zx_prov_UpdateEPR_ELEM)
+
 int zx_DEC_ATTR_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x);
 int zx_DEC_ELEM_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x);
-struct zx_prov_UpdateEPR_s* zx_NEW_prov_UpdateEPR(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x);
 char* zx_ENC_SO_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x);
@@ -2600,9 +2648,10 @@ struct zx_prov_UpdateEPRItem_s {
   struct zx_attr_s* itemID;	/* {1,1} attribute xs:string */
 };
 
+#define zx_NEW_prov_UpdateEPRItem(c, father) (struct zx_prov_UpdateEPRItem_s*)zx_new_elem((c),(father),zx_prov_UpdateEPRItem_ELEM)
+
 int zx_DEC_ATTR_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRItem_s* x);
 int zx_DEC_ELEM_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRItem_s* x);
-struct zx_prov_UpdateEPRItem_s* zx_NEW_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRItem_s* x);
 char* zx_ENC_SO_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRItem_s* x);
@@ -2656,9 +2705,10 @@ struct zx_prov_UpdateEPRResponse_s {
   struct zx_lu_Status_s* Status;	/* {1,1} nada */
 };
 
+#define zx_NEW_prov_UpdateEPRResponse(c, father) (struct zx_prov_UpdateEPRResponse_s*)zx_new_elem((c),(father),zx_prov_UpdateEPRResponse_ELEM)
+
 int zx_DEC_ATTR_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_prov_UpdateEPRResponse_s* x);
 int zx_DEC_ELEM_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_prov_UpdateEPRResponse_s* x);
-struct zx_prov_UpdateEPRResponse_s* zx_NEW_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_prov_UpdateEPRResponse_s* x);
 char* zx_ENC_SO_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_prov_UpdateEPRResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_prov_UpdateEPRResponse_s* x);

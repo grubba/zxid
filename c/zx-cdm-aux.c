@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_cdm_ADR_s
 #define EL_NS     cdm
 #define EL_TAG    ADR
-
-/* FUNC(zx_NEW_cdm_ADR) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_ADR_s* zx_NEW_cdm_ADR(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_ADR_s* x = ZX_ZALLOC(c, struct zx_cdm_ADR_s);
-  x->gg.g.tok = zx_cdm_ADR_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -347,22 +332,6 @@ int zx_WALK_WO_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x, void* ctx, int 
 #define EL_NS     cdm
 #define EL_TAG    AGENT
 
-/* FUNC(zx_NEW_cdm_AGENT) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_AGENT_s* zx_NEW_cdm_AGENT(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_AGENT_s* x = ZX_ZALLOC(c, struct zx_cdm_AGENT_s);
-  x->gg.g.tok = zx_cdm_AGENT_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_AGENT) */
@@ -506,22 +475,6 @@ int zx_WALK_WO_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s* x, void* ctx, 
 #define EL_NS     cdm
 #define EL_TAG    BDAY
 
-/* FUNC(zx_NEW_cdm_BDAY) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_BDAY_s* zx_NEW_cdm_BDAY(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_BDAY_s* x = ZX_ZALLOC(c, struct zx_cdm_BDAY_s);
-  x->gg.g.tok = zx_cdm_BDAY_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_BDAY) */
@@ -629,22 +582,6 @@ int zx_WALK_WO_cdm_BDAY(struct zx_ctx* c, struct zx_cdm_BDAY_s* x, void* ctx, in
 #define EL_NS     cdm
 #define EL_TAG    BINVAL
 
-/* FUNC(zx_NEW_cdm_BINVAL) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_BINVAL_s* zx_NEW_cdm_BINVAL(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_BINVAL_s* x = ZX_ZALLOC(c, struct zx_cdm_BINVAL_s);
-  x->gg.g.tok = zx_cdm_BINVAL_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_BINVAL) */
@@ -751,22 +688,6 @@ int zx_WALK_WO_cdm_BINVAL(struct zx_ctx* c, struct zx_cdm_BINVAL_s* x, void* ctx
 #define EL_STRUCT zx_cdm_CALADRURI_s
 #define EL_NS     cdm
 #define EL_TAG    CALADRURI
-
-/* FUNC(zx_NEW_cdm_CALADRURI) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_CALADRURI_s* zx_NEW_cdm_CALADRURI(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_CALADRURI_s* x = ZX_ZALLOC(c, struct zx_cdm_CALADRURI_s);
-  x->gg.g.tok = zx_cdm_CALADRURI_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -901,22 +822,6 @@ int zx_WALK_WO_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALADRURI_s* x, voi
 #define EL_NS     cdm
 #define EL_TAG    CALURI
 
-/* FUNC(zx_NEW_cdm_CALURI) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_CALURI_s* zx_NEW_cdm_CALURI(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_CALURI_s* x = ZX_ZALLOC(c, struct zx_cdm_CALURI_s);
-  x->gg.g.tok = zx_cdm_CALURI_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_CALURI) */
@@ -1049,22 +954,6 @@ int zx_WALK_WO_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_s* x, void* ctx
 #define EL_STRUCT zx_cdm_CAPURI_s
 #define EL_NS     cdm
 #define EL_TAG    CAPURI
-
-/* FUNC(zx_NEW_cdm_CAPURI) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_CAPURI_s* zx_NEW_cdm_CAPURI(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_CAPURI_s* x = ZX_ZALLOC(c, struct zx_cdm_CAPURI_s);
-  x->gg.g.tok = zx_cdm_CAPURI_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1199,22 +1088,6 @@ int zx_WALK_WO_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_s* x, void* ctx
 #define EL_NS     cdm
 #define EL_TAG    CATEGORIES
 
-/* FUNC(zx_NEW_cdm_CATEGORIES) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_CATEGORIES_s* zx_NEW_cdm_CATEGORIES(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_CATEGORIES_s* x = ZX_ZALLOC(c, struct zx_cdm_CATEGORIES_s);
-  x->gg.g.tok = zx_cdm_CATEGORIES_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_CATEGORIES) */
@@ -1336,22 +1209,6 @@ int zx_WALK_WO_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CATEGORIES_s* x, v
 #define EL_STRUCT zx_cdm_CLASS_s
 #define EL_NS     cdm
 #define EL_TAG    CLASS
-
-/* FUNC(zx_NEW_cdm_CLASS) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_CLASS_s* zx_NEW_cdm_CLASS(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_CLASS_s* x = ZX_ZALLOC(c, struct zx_cdm_CLASS_s);
-  x->gg.g.tok = zx_cdm_CLASS_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1475,22 +1332,6 @@ int zx_WALK_WO_cdm_CLASS(struct zx_ctx* c, struct zx_cdm_CLASS_s* x, void* ctx, 
 #define EL_NS     cdm
 #define EL_TAG    CRED
 
-/* FUNC(zx_NEW_cdm_CRED) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_CRED_s* zx_NEW_cdm_CRED(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_CRED_s* x = ZX_ZALLOC(c, struct zx_cdm_CRED_s);
-  x->gg.g.tok = zx_cdm_CRED_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_CRED) */
@@ -1598,22 +1439,6 @@ int zx_WALK_WO_cdm_CRED(struct zx_ctx* c, struct zx_cdm_CRED_s* x, void* ctx, in
 #define EL_NS     cdm
 #define EL_TAG    CTRY
 
-/* FUNC(zx_NEW_cdm_CTRY) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_CTRY_s* zx_NEW_cdm_CTRY(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_CTRY_s* x = ZX_ZALLOC(c, struct zx_cdm_CTRY_s);
-  x->gg.g.tok = zx_cdm_CTRY_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_CTRY) */
@@ -1713,22 +1538,6 @@ int zx_WALK_WO_cdm_CTRY(struct zx_ctx* c, struct zx_cdm_CTRY_s* x, void* ctx, in
 #define EL_NS     cdm
 #define EL_TAG    DESC
 
-/* FUNC(zx_NEW_cdm_DESC) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_DESC_s* zx_NEW_cdm_DESC(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_DESC_s* x = ZX_ZALLOC(c, struct zx_cdm_DESC_s);
-  x->gg.g.tok = zx_cdm_DESC_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_DESC) */
@@ -1827,22 +1636,6 @@ int zx_WALK_WO_cdm_DESC(struct zx_ctx* c, struct zx_cdm_DESC_s* x, void* ctx, in
 #define EL_STRUCT zx_cdm_EMAIL_s
 #define EL_NS     cdm
 #define EL_TAG    EMAIL
-
-/* FUNC(zx_NEW_cdm_EMAIL) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_EMAIL_s* zx_NEW_cdm_EMAIL(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_EMAIL_s* x = ZX_ZALLOC(c, struct zx_cdm_EMAIL_s);
-  x->gg.g.tok = zx_cdm_EMAIL_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1991,22 +1784,6 @@ int zx_WALK_WO_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s* x, void* ctx, 
 #define EL_NS     cdm
 #define EL_TAG    EXTADR
 
-/* FUNC(zx_NEW_cdm_EXTADR) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_EXTADR_s* zx_NEW_cdm_EXTADR(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_EXTADR_s* x = ZX_ZALLOC(c, struct zx_cdm_EXTADR_s);
-  x->gg.g.tok = zx_cdm_EXTADR_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_EXTADR) */
@@ -2105,22 +1882,6 @@ int zx_WALK_WO_cdm_EXTADR(struct zx_ctx* c, struct zx_cdm_EXTADR_s* x, void* ctx
 #define EL_STRUCT zx_cdm_EXTVAL_s
 #define EL_NS     cdm
 #define EL_TAG    EXTVAL
-
-/* FUNC(zx_NEW_cdm_EXTVAL) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_EXTVAL_s* zx_NEW_cdm_EXTVAL(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_EXTVAL_s* x = ZX_ZALLOC(c, struct zx_cdm_EXTVAL_s);
-  x->gg.g.tok = zx_cdm_EXTVAL_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2229,22 +1990,6 @@ int zx_WALK_WO_cdm_EXTVAL(struct zx_ctx* c, struct zx_cdm_EXTVAL_s* x, void* ctx
 #define EL_NS     cdm
 #define EL_TAG    FAMILY
 
-/* FUNC(zx_NEW_cdm_FAMILY) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_FAMILY_s* zx_NEW_cdm_FAMILY(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_FAMILY_s* x = ZX_ZALLOC(c, struct zx_cdm_FAMILY_s);
-  x->gg.g.tok = zx_cdm_FAMILY_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_FAMILY) */
@@ -2343,22 +2088,6 @@ int zx_WALK_WO_cdm_FAMILY(struct zx_ctx* c, struct zx_cdm_FAMILY_s* x, void* ctx
 #define EL_STRUCT zx_cdm_FBURL_s
 #define EL_NS     cdm
 #define EL_TAG    FBURL
-
-/* FUNC(zx_NEW_cdm_FBURL) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_FBURL_s* zx_NEW_cdm_FBURL(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_FBURL_s* x = ZX_ZALLOC(c, struct zx_cdm_FBURL_s);
-  x->gg.g.tok = zx_cdm_FBURL_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2493,22 +2222,6 @@ int zx_WALK_WO_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s* x, void* ctx, 
 #define EL_NS     cdm
 #define EL_TAG    FN
 
-/* FUNC(zx_NEW_cdm_FN) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_FN_s* zx_NEW_cdm_FN(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_FN_s* x = ZX_ZALLOC(c, struct zx_cdm_FN_s);
-  x->gg.g.tok = zx_cdm_FN_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_FN) */
@@ -2607,22 +2320,6 @@ int zx_WALK_WO_cdm_FN(struct zx_ctx* c, struct zx_cdm_FN_s* x, void* ctx, int (*
 #define EL_STRUCT zx_cdm_GEO_s
 #define EL_NS     cdm
 #define EL_TAG    GEO
-
-/* FUNC(zx_NEW_cdm_GEO) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_GEO_s* zx_NEW_cdm_GEO(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_GEO_s* x = ZX_ZALLOC(c, struct zx_cdm_GEO_s);
-  x->gg.g.tok = zx_cdm_GEO_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2767,22 +2464,6 @@ int zx_WALK_WO_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x, void* ctx, int 
 #define EL_NS     cdm
 #define EL_TAG    GIVEN
 
-/* FUNC(zx_NEW_cdm_GIVEN) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_GIVEN_s* zx_NEW_cdm_GIVEN(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_GIVEN_s* x = ZX_ZALLOC(c, struct zx_cdm_GIVEN_s);
-  x->gg.g.tok = zx_cdm_GIVEN_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_GIVEN) */
@@ -2881,22 +2562,6 @@ int zx_WALK_WO_cdm_GIVEN(struct zx_ctx* c, struct zx_cdm_GIVEN_s* x, void* ctx, 
 #define EL_STRUCT zx_cdm_JABBERID_s
 #define EL_NS     cdm
 #define EL_TAG    JABBERID
-
-/* FUNC(zx_NEW_cdm_JABBERID) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_JABBERID_s* zx_NEW_cdm_JABBERID(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_JABBERID_s* x = ZX_ZALLOC(c, struct zx_cdm_JABBERID_s);
-  x->gg.g.tok = zx_cdm_JABBERID_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3004,22 +2669,6 @@ int zx_WALK_WO_cdm_JABBERID(struct zx_ctx* c, struct zx_cdm_JABBERID_s* x, void*
 #define EL_STRUCT zx_cdm_KEY_s
 #define EL_NS     cdm
 #define EL_TAG    KEY
-
-/* FUNC(zx_NEW_cdm_KEY) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_KEY_s* zx_NEW_cdm_KEY(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_KEY_s* x = ZX_ZALLOC(c, struct zx_cdm_KEY_s);
-  x->gg.g.tok = zx_cdm_KEY_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3160,22 +2809,6 @@ int zx_WALK_WO_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x, void* ctx, int 
 #define EL_NS     cdm
 #define EL_TAG    KEYWORD
 
-/* FUNC(zx_NEW_cdm_KEYWORD) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_KEYWORD_s* zx_NEW_cdm_KEYWORD(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_KEYWORD_s* x = ZX_ZALLOC(c, struct zx_cdm_KEYWORD_s);
-  x->gg.g.tok = zx_cdm_KEYWORD_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_KEYWORD) */
@@ -3282,22 +2915,6 @@ int zx_WALK_WO_cdm_KEYWORD(struct zx_ctx* c, struct zx_cdm_KEYWORD_s* x, void* c
 #define EL_STRUCT zx_cdm_LABEL_s
 #define EL_NS     cdm
 #define EL_TAG    LABEL
-
-/* FUNC(zx_NEW_cdm_LABEL) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_LABEL_s* zx_NEW_cdm_LABEL(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_LABEL_s* x = ZX_ZALLOC(c, struct zx_cdm_LABEL_s);
-  x->gg.g.tok = zx_cdm_LABEL_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3456,22 +3073,6 @@ int zx_WALK_WO_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s* x, void* ctx, 
 #define EL_NS     cdm
 #define EL_TAG    LAT
 
-/* FUNC(zx_NEW_cdm_LAT) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_LAT_s* zx_NEW_cdm_LAT(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_LAT_s* x = ZX_ZALLOC(c, struct zx_cdm_LAT_s);
-  x->gg.g.tok = zx_cdm_LAT_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_LAT) */
@@ -3579,22 +3180,6 @@ int zx_WALK_WO_cdm_LAT(struct zx_ctx* c, struct zx_cdm_LAT_s* x, void* ctx, int 
 #define EL_NS     cdm
 #define EL_TAG    LINE
 
-/* FUNC(zx_NEW_cdm_LINE) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_LINE_s* zx_NEW_cdm_LINE(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_LINE_s* x = ZX_ZALLOC(c, struct zx_cdm_LINE_s);
-  x->gg.g.tok = zx_cdm_LINE_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_LINE) */
@@ -3693,22 +3278,6 @@ int zx_WALK_WO_cdm_LINE(struct zx_ctx* c, struct zx_cdm_LINE_s* x, void* ctx, in
 #define EL_STRUCT zx_cdm_LISTMEMBER_s
 #define EL_NS     cdm
 #define EL_TAG    LISTMEMBER
-
-/* FUNC(zx_NEW_cdm_LISTMEMBER) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_LISTMEMBER_s* zx_NEW_cdm_LISTMEMBER(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_LISTMEMBER_s* x = ZX_ZALLOC(c, struct zx_cdm_LISTMEMBER_s);
-  x->gg.g.tok = zx_cdm_LISTMEMBER_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3817,22 +3386,6 @@ int zx_WALK_WO_cdm_LISTMEMBER(struct zx_ctx* c, struct zx_cdm_LISTMEMBER_s* x, v
 #define EL_NS     cdm
 #define EL_TAG    LOCALITY
 
-/* FUNC(zx_NEW_cdm_LOCALITY) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_LOCALITY_s* zx_NEW_cdm_LOCALITY(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_LOCALITY_s* x = ZX_ZALLOC(c, struct zx_cdm_LOCALITY_s);
-  x->gg.g.tok = zx_cdm_LOCALITY_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_LOCALITY) */
@@ -3931,22 +3484,6 @@ int zx_WALK_WO_cdm_LOCALITY(struct zx_ctx* c, struct zx_cdm_LOCALITY_s* x, void*
 #define EL_STRUCT zx_cdm_LOGO_s
 #define EL_NS     cdm
 #define EL_TAG    LOGO
-
-/* FUNC(zx_NEW_cdm_LOGO) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_LOGO_s* zx_NEW_cdm_LOGO(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_LOGO_s* x = ZX_ZALLOC(c, struct zx_cdm_LOGO_s);
-  x->gg.g.tok = zx_cdm_LOGO_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4112,22 +3649,6 @@ int zx_WALK_WO_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x, void* ctx, in
 #define EL_NS     cdm
 #define EL_TAG    LON
 
-/* FUNC(zx_NEW_cdm_LON) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_LON_s* zx_NEW_cdm_LON(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_LON_s* x = ZX_ZALLOC(c, struct zx_cdm_LON_s);
-  x->gg.g.tok = zx_cdm_LON_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_LON) */
@@ -4234,22 +3755,6 @@ int zx_WALK_WO_cdm_LON(struct zx_ctx* c, struct zx_cdm_LON_s* x, void* ctx, int 
 #define EL_STRUCT zx_cdm_MAILER_s
 #define EL_NS     cdm
 #define EL_TAG    MAILER
-
-/* FUNC(zx_NEW_cdm_MAILER) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_MAILER_s* zx_NEW_cdm_MAILER(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_MAILER_s* x = ZX_ZALLOC(c, struct zx_cdm_MAILER_s);
-  x->gg.g.tok = zx_cdm_MAILER_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4358,22 +3863,6 @@ int zx_WALK_WO_cdm_MAILER(struct zx_ctx* c, struct zx_cdm_MAILER_s* x, void* ctx
 #define EL_NS     cdm
 #define EL_TAG    MIDDLE
 
-/* FUNC(zx_NEW_cdm_MIDDLE) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_MIDDLE_s* zx_NEW_cdm_MIDDLE(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_MIDDLE_s* x = ZX_ZALLOC(c, struct zx_cdm_MIDDLE_s);
-  x->gg.g.tok = zx_cdm_MIDDLE_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_MIDDLE) */
@@ -4472,22 +3961,6 @@ int zx_WALK_WO_cdm_MIDDLE(struct zx_ctx* c, struct zx_cdm_MIDDLE_s* x, void* ctx
 #define EL_STRUCT zx_cdm_N_s
 #define EL_NS     cdm
 #define EL_TAG    N
-
-/* FUNC(zx_NEW_cdm_N) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_N_s* zx_NEW_cdm_N(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_N_s* x = ZX_ZALLOC(c, struct zx_cdm_N_s);
-  x->gg.g.tok = zx_cdm_N_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4695,22 +4168,6 @@ int zx_WALK_WO_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x, void* ctx, int (*ca
 #define EL_NS     cdm
 #define EL_TAG    NICKNAME
 
-/* FUNC(zx_NEW_cdm_NICKNAME) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_NICKNAME_s* zx_NEW_cdm_NICKNAME(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_NICKNAME_s* x = ZX_ZALLOC(c, struct zx_cdm_NICKNAME_s);
-  x->gg.g.tok = zx_cdm_NICKNAME_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_NICKNAME) */
@@ -4810,22 +4267,6 @@ int zx_WALK_WO_cdm_NICKNAME(struct zx_ctx* c, struct zx_cdm_NICKNAME_s* x, void*
 #define EL_NS     cdm
 #define EL_TAG    NOTE
 
-/* FUNC(zx_NEW_cdm_NOTE) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_NOTE_s* zx_NEW_cdm_NOTE(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_NOTE_s* x = ZX_ZALLOC(c, struct zx_cdm_NOTE_s);
-  x->gg.g.tok = zx_cdm_NOTE_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_NOTE) */
@@ -4924,22 +4365,6 @@ int zx_WALK_WO_cdm_NOTE(struct zx_ctx* c, struct zx_cdm_NOTE_s* x, void* ctx, in
 #define EL_STRUCT zx_cdm_NUMBER_s
 #define EL_NS     cdm
 #define EL_TAG    NUMBER
-
-/* FUNC(zx_NEW_cdm_NUMBER) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_NUMBER_s* zx_NEW_cdm_NUMBER(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_NUMBER_s* x = ZX_ZALLOC(c, struct zx_cdm_NUMBER_s);
-  x->gg.g.tok = zx_cdm_NUMBER_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5047,22 +4472,6 @@ int zx_WALK_WO_cdm_NUMBER(struct zx_ctx* c, struct zx_cdm_NUMBER_s* x, void* ctx
 #define EL_STRUCT zx_cdm_ORG_s
 #define EL_NS     cdm
 #define EL_TAG    ORG
-
-/* FUNC(zx_NEW_cdm_ORG) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_ORG_s* zx_NEW_cdm_ORG(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_ORG_s* x = ZX_ZALLOC(c, struct zx_cdm_ORG_s);
-  x->gg.g.tok = zx_cdm_ORG_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5207,22 +4616,6 @@ int zx_WALK_WO_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x, void* ctx, int 
 #define EL_NS     cdm
 #define EL_TAG    ORGNAME
 
-/* FUNC(zx_NEW_cdm_ORGNAME) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_ORGNAME_s* zx_NEW_cdm_ORGNAME(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_ORGNAME_s* x = ZX_ZALLOC(c, struct zx_cdm_ORGNAME_s);
-  x->gg.g.tok = zx_cdm_ORGNAME_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_ORGNAME) */
@@ -5321,22 +4714,6 @@ int zx_WALK_WO_cdm_ORGNAME(struct zx_ctx* c, struct zx_cdm_ORGNAME_s* x, void* c
 #define EL_STRUCT zx_cdm_ORGUNIT_s
 #define EL_NS     cdm
 #define EL_TAG    ORGUNIT
-
-/* FUNC(zx_NEW_cdm_ORGUNIT) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_ORGUNIT_s* zx_NEW_cdm_ORGUNIT(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_ORGUNIT_s* x = ZX_ZALLOC(c, struct zx_cdm_ORGUNIT_s);
-  x->gg.g.tok = zx_cdm_ORGUNIT_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5437,22 +4814,6 @@ int zx_WALK_WO_cdm_ORGUNIT(struct zx_ctx* c, struct zx_cdm_ORGUNIT_s* x, void* c
 #define EL_NS     cdm
 #define EL_TAG    PCODE
 
-/* FUNC(zx_NEW_cdm_PCODE) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_PCODE_s* zx_NEW_cdm_PCODE(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_PCODE_s* x = ZX_ZALLOC(c, struct zx_cdm_PCODE_s);
-  x->gg.g.tok = zx_cdm_PCODE_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_PCODE) */
@@ -5552,22 +4913,6 @@ int zx_WALK_WO_cdm_PCODE(struct zx_ctx* c, struct zx_cdm_PCODE_s* x, void* ctx, 
 #define EL_NS     cdm
 #define EL_TAG    PHONETIC
 
-/* FUNC(zx_NEW_cdm_PHONETIC) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_PHONETIC_s* zx_NEW_cdm_PHONETIC(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_PHONETIC_s* x = ZX_ZALLOC(c, struct zx_cdm_PHONETIC_s);
-  x->gg.g.tok = zx_cdm_PHONETIC_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_PHONETIC) */
@@ -5666,22 +5011,6 @@ int zx_WALK_WO_cdm_PHONETIC(struct zx_ctx* c, struct zx_cdm_PHONETIC_s* x, void*
 #define EL_STRUCT zx_cdm_PHOTO_s
 #define EL_NS     cdm
 #define EL_TAG    PHOTO
-
-/* FUNC(zx_NEW_cdm_PHOTO) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_PHOTO_s* zx_NEW_cdm_PHOTO(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_PHOTO_s* x = ZX_ZALLOC(c, struct zx_cdm_PHOTO_s);
-  x->gg.g.tok = zx_cdm_PHOTO_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5847,22 +5176,6 @@ int zx_WALK_WO_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s* x, void* ctx, 
 #define EL_NS     cdm
 #define EL_TAG    PHYSICALACCESS
 
-/* FUNC(zx_NEW_cdm_PHYSICALACCESS) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_PHYSICALACCESS_s* zx_NEW_cdm_PHYSICALACCESS(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_PHYSICALACCESS_s* x = ZX_ZALLOC(c, struct zx_cdm_PHYSICALACCESS_s);
-  x->gg.g.tok = zx_cdm_PHYSICALACCESS_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_PHYSICALACCESS) */
@@ -5961,22 +5274,6 @@ int zx_WALK_WO_cdm_PHYSICALACCESS(struct zx_ctx* c, struct zx_cdm_PHYSICALACCESS
 #define EL_STRUCT zx_cdm_POBOX_s
 #define EL_NS     cdm
 #define EL_TAG    POBOX
-
-/* FUNC(zx_NEW_cdm_POBOX) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_POBOX_s* zx_NEW_cdm_POBOX(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_POBOX_s* x = ZX_ZALLOC(c, struct zx_cdm_POBOX_s);
-  x->gg.g.tok = zx_cdm_POBOX_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6077,22 +5374,6 @@ int zx_WALK_WO_cdm_POBOX(struct zx_ctx* c, struct zx_cdm_POBOX_s* x, void* ctx, 
 #define EL_NS     cdm
 #define EL_TAG    PREFIX
 
-/* FUNC(zx_NEW_cdm_PREFIX) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_PREFIX_s* zx_NEW_cdm_PREFIX(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_PREFIX_s* x = ZX_ZALLOC(c, struct zx_cdm_PREFIX_s);
-  x->gg.g.tok = zx_cdm_PREFIX_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_PREFIX) */
@@ -6191,22 +5472,6 @@ int zx_WALK_WO_cdm_PREFIX(struct zx_ctx* c, struct zx_cdm_PREFIX_s* x, void* ctx
 #define EL_STRUCT zx_cdm_PRODID_s
 #define EL_NS     cdm
 #define EL_TAG    PRODID
-
-/* FUNC(zx_NEW_cdm_PRODID) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_PRODID_s* zx_NEW_cdm_PRODID(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_PRODID_s* x = ZX_ZALLOC(c, struct zx_cdm_PRODID_s);
-  x->gg.g.tok = zx_cdm_PRODID_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6315,22 +5580,6 @@ int zx_WALK_WO_cdm_PRODID(struct zx_ctx* c, struct zx_cdm_PRODID_s* x, void* ctx
 #define EL_NS     cdm
 #define EL_TAG    REGION
 
-/* FUNC(zx_NEW_cdm_REGION) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_REGION_s* zx_NEW_cdm_REGION(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_REGION_s* x = ZX_ZALLOC(c, struct zx_cdm_REGION_s);
-  x->gg.g.tok = zx_cdm_REGION_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_REGION) */
@@ -6429,22 +5678,6 @@ int zx_WALK_WO_cdm_REGION(struct zx_ctx* c, struct zx_cdm_REGION_s* x, void* ctx
 #define EL_STRUCT zx_cdm_REV_s
 #define EL_NS     cdm
 #define EL_TAG    REV
-
-/* FUNC(zx_NEW_cdm_REV) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_REV_s* zx_NEW_cdm_REV(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_REV_s* x = ZX_ZALLOC(c, struct zx_cdm_REV_s);
-  x->gg.g.tok = zx_cdm_REV_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6553,22 +5786,6 @@ int zx_WALK_WO_cdm_REV(struct zx_ctx* c, struct zx_cdm_REV_s* x, void* ctx, int 
 #define EL_NS     cdm
 #define EL_TAG    ROLE
 
-/* FUNC(zx_NEW_cdm_ROLE) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_ROLE_s* zx_NEW_cdm_ROLE(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_ROLE_s* x = ZX_ZALLOC(c, struct zx_cdm_ROLE_s);
-  x->gg.g.tok = zx_cdm_ROLE_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_ROLE) */
@@ -6668,22 +5885,6 @@ int zx_WALK_WO_cdm_ROLE(struct zx_ctx* c, struct zx_cdm_ROLE_s* x, void* ctx, in
 #define EL_NS     cdm
 #define EL_TAG    SORT_STRING
 
-/* FUNC(zx_NEW_cdm_SORT_STRING) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_SORT_STRING_s* zx_NEW_cdm_SORT_STRING(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_SORT_STRING_s* x = ZX_ZALLOC(c, struct zx_cdm_SORT_STRING_s);
-  x->gg.g.tok = zx_cdm_SORT_STRING_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_SORT_STRING) */
@@ -6782,22 +5983,6 @@ int zx_WALK_WO_cdm_SORT_STRING(struct zx_ctx* c, struct zx_cdm_SORT_STRING_s* x,
 #define EL_STRUCT zx_cdm_SOUND_s
 #define EL_NS     cdm
 #define EL_TAG    SOUND
-
-/* FUNC(zx_NEW_cdm_SOUND) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_SOUND_s* zx_NEW_cdm_SOUND(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_SOUND_s* x = ZX_ZALLOC(c, struct zx_cdm_SOUND_s);
-  x->gg.g.tok = zx_cdm_SOUND_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6963,22 +6148,6 @@ int zx_WALK_WO_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s* x, void* ctx, 
 #define EL_NS     cdm
 #define EL_TAG    STREET
 
-/* FUNC(zx_NEW_cdm_STREET) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_STREET_s* zx_NEW_cdm_STREET(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_STREET_s* x = ZX_ZALLOC(c, struct zx_cdm_STREET_s);
-  x->gg.g.tok = zx_cdm_STREET_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_STREET) */
@@ -7078,22 +6247,6 @@ int zx_WALK_WO_cdm_STREET(struct zx_ctx* c, struct zx_cdm_STREET_s* x, void* ctx
 #define EL_NS     cdm
 #define EL_TAG    SUFFIX
 
-/* FUNC(zx_NEW_cdm_SUFFIX) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_SUFFIX_s* zx_NEW_cdm_SUFFIX(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_SUFFIX_s* x = ZX_ZALLOC(c, struct zx_cdm_SUFFIX_s);
-  x->gg.g.tok = zx_cdm_SUFFIX_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_SUFFIX) */
@@ -7192,22 +6345,6 @@ int zx_WALK_WO_cdm_SUFFIX(struct zx_ctx* c, struct zx_cdm_SUFFIX_s* x, void* ctx
 #define EL_STRUCT zx_cdm_TEL_s
 #define EL_NS     cdm
 #define EL_TAG    TEL
-
-/* FUNC(zx_NEW_cdm_TEL) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_TEL_s* zx_NEW_cdm_TEL(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_TEL_s* x = ZX_ZALLOC(c, struct zx_cdm_TEL_s);
-  x->gg.g.tok = zx_cdm_TEL_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -7396,22 +6533,6 @@ int zx_WALK_WO_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x, void* ctx, int 
 #define EL_NS     cdm
 #define EL_TAG    TITLE
 
-/* FUNC(zx_NEW_cdm_TITLE) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_TITLE_s* zx_NEW_cdm_TITLE(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_TITLE_s* x = ZX_ZALLOC(c, struct zx_cdm_TITLE_s);
-  x->gg.g.tok = zx_cdm_TITLE_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_TITLE) */
@@ -7510,22 +6631,6 @@ int zx_WALK_WO_cdm_TITLE(struct zx_ctx* c, struct zx_cdm_TITLE_s* x, void* ctx, 
 #define EL_STRUCT zx_cdm_TYPE_s
 #define EL_NS     cdm
 #define EL_TAG    TYPE
-
-/* FUNC(zx_NEW_cdm_TYPE) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_TYPE_s* zx_NEW_cdm_TYPE(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_TYPE_s* x = ZX_ZALLOC(c, struct zx_cdm_TYPE_s);
-  x->gg.g.tok = zx_cdm_TYPE_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -7634,22 +6739,6 @@ int zx_WALK_WO_cdm_TYPE(struct zx_ctx* c, struct zx_cdm_TYPE_s* x, void* ctx, in
 #define EL_NS     cdm
 #define EL_TAG    TZ
 
-/* FUNC(zx_NEW_cdm_TZ) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_TZ_s* zx_NEW_cdm_TZ(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_TZ_s* x = ZX_ZALLOC(c, struct zx_cdm_TZ_s);
-  x->gg.g.tok = zx_cdm_TZ_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_TZ) */
@@ -7756,22 +6845,6 @@ int zx_WALK_WO_cdm_TZ(struct zx_ctx* c, struct zx_cdm_TZ_s* x, void* ctx, int (*
 #define EL_STRUCT zx_cdm_UID_s
 #define EL_NS     cdm
 #define EL_TAG    UID
-
-/* FUNC(zx_NEW_cdm_UID) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_UID_s* zx_NEW_cdm_UID(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_UID_s* x = ZX_ZALLOC(c, struct zx_cdm_UID_s);
-  x->gg.g.tok = zx_cdm_UID_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -7880,22 +6953,6 @@ int zx_WALK_WO_cdm_UID(struct zx_ctx* c, struct zx_cdm_UID_s* x, void* ctx, int 
 #define EL_NS     cdm
 #define EL_TAG    URI
 
-/* FUNC(zx_NEW_cdm_URI) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_URI_s* zx_NEW_cdm_URI(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_URI_s* x = ZX_ZALLOC(c, struct zx_cdm_URI_s);
-  x->gg.g.tok = zx_cdm_URI_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_URI) */
@@ -8002,22 +7059,6 @@ int zx_WALK_WO_cdm_URI(struct zx_ctx* c, struct zx_cdm_URI_s* x, void* ctx, int 
 #define EL_STRUCT zx_cdm_URL_s
 #define EL_NS     cdm
 #define EL_TAG    URL
-
-/* FUNC(zx_NEW_cdm_URL) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_URL_s* zx_NEW_cdm_URL(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_URL_s* x = ZX_ZALLOC(c, struct zx_cdm_URL_s);
-  x->gg.g.tok = zx_cdm_URL_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -8126,22 +7167,6 @@ int zx_WALK_WO_cdm_URL(struct zx_ctx* c, struct zx_cdm_URL_s* x, void* ctx, int 
 #define EL_NS     cdm
 #define EL_TAG    USERID
 
-/* FUNC(zx_NEW_cdm_USERID) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_USERID_s* zx_NEW_cdm_USERID(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_USERID_s* x = ZX_ZALLOC(c, struct zx_cdm_USERID_s);
-  x->gg.g.tok = zx_cdm_USERID_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_USERID) */
@@ -8249,22 +7274,6 @@ int zx_WALK_WO_cdm_USERID(struct zx_ctx* c, struct zx_cdm_USERID_s* x, void* ctx
 #define EL_NS     cdm
 #define EL_TAG    VERSION
 
-/* FUNC(zx_NEW_cdm_VERSION) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_VERSION_s* zx_NEW_cdm_VERSION(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_VERSION_s* x = ZX_ZALLOC(c, struct zx_cdm_VERSION_s);
-  x->gg.g.tok = zx_cdm_VERSION_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_cdm_VERSION) */
@@ -8371,22 +7380,6 @@ int zx_WALK_WO_cdm_VERSION(struct zx_ctx* c, struct zx_cdm_VERSION_s* x, void* c
 #define EL_STRUCT zx_cdm_vCard_s
 #define EL_NS     cdm
 #define EL_TAG    vCard
-
-/* FUNC(zx_NEW_cdm_vCard) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_cdm_vCard_s* zx_NEW_cdm_vCard(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_cdm_vCard_s* x = ZX_ZALLOC(c, struct zx_cdm_vCard_s);
-  x->gg.g.tok = zx_cdm_vCard_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

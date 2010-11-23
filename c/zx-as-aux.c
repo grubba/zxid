@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_as_Extensions_s
 #define EL_NS     as
 #define EL_TAG    Extensions
-
-/* FUNC(zx_NEW_as_Extensions) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_as_Extensions_s* zx_NEW_as_Extensions(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_as_Extensions_s* x = ZX_ZALLOC(c, struct zx_as_Extensions_s);
-  x->gg.g.tok = zx_as_Extensions_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -160,22 +145,6 @@ int zx_WALK_WO_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x, voi
 #define EL_STRUCT zx_as_Parameter_s
 #define EL_NS     as
 #define EL_TAG    Parameter
-
-/* FUNC(zx_NEW_as_Parameter) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_as_Parameter_s* zx_NEW_as_Parameter(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_as_Parameter_s* x = ZX_ZALLOC(c, struct zx_as_Parameter_s);
-  x->gg.g.tok = zx_as_Parameter_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -275,22 +244,6 @@ int zx_WALK_WO_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x, void*
 #define EL_STRUCT zx_as_PasswordTransforms_s
 #define EL_NS     as
 #define EL_TAG    PasswordTransforms
-
-/* FUNC(zx_NEW_as_PasswordTransforms) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_as_PasswordTransforms_s* zx_NEW_as_PasswordTransforms(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_as_PasswordTransforms_s* x = ZX_ZALLOC(c, struct zx_as_PasswordTransforms_s);
-  x->gg.g.tok = zx_as_PasswordTransforms_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -409,22 +362,6 @@ int zx_WALK_WO_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTran
 #define EL_STRUCT zx_as_SASLRequest_s
 #define EL_NS     as
 #define EL_TAG    SASLRequest
-
-/* FUNC(zx_NEW_as_SASLRequest) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_as_SASLRequest_s* zx_NEW_as_SASLRequest(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_as_SASLRequest_s* x = ZX_ZALLOC(c, struct zx_as_SASLRequest_s);
-  x->gg.g.tok = zx_as_SASLRequest_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -575,22 +512,6 @@ int zx_WALK_WO_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x, v
 #define EL_STRUCT zx_as_SASLResponse_s
 #define EL_NS     as
 #define EL_TAG    SASLResponse
-
-/* FUNC(zx_NEW_as_SASLResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_as_SASLResponse_s* zx_NEW_as_SASLResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_as_SASLResponse_s* x = ZX_ZALLOC(c, struct zx_as_SASLResponse_s);
-  x->gg.g.tok = zx_as_SASLResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -758,22 +679,6 @@ int zx_WALK_WO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x,
 #define EL_STRUCT zx_as_Transform_s
 #define EL_NS     as
 #define EL_TAG    Transform
-
-/* FUNC(zx_NEW_as_Transform) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_as_Transform_s* zx_NEW_as_Transform(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_as_Transform_s* x = ZX_ZALLOC(c, struct zx_as_Transform_s);
-  x->gg.g.tok = zx_as_Transform_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

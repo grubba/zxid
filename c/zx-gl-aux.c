@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_gl_AreaComparison_s
 #define EL_NS     gl
 #define EL_TAG    AreaComparison
-
-/* FUNC(zx_NEW_gl_AreaComparison) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_AreaComparison_s* zx_NEW_gl_AreaComparison(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_AreaComparison_s* x = ZX_ZALLOC(c, struct zx_gl_AreaComparison_s);
-  x->gg.g.tok = zx_gl_AreaComparison_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -228,22 +213,6 @@ int zx_WALK_WO_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_s
 #define EL_NS     gl
 #define EL_TAG    Box
 
-/* FUNC(zx_NEW_gl_Box) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Box_s* zx_NEW_gl_Box(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Box_s* x = ZX_ZALLOC(c, struct zx_gl_Box_s);
-  x->gg.g.tok = zx_gl_Box_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_Box) */
@@ -365,22 +334,6 @@ int zx_WALK_WO_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x, void* ctx, int (*
 #define EL_STRUCT zx_gl_ChangeArea_s
 #define EL_NS     gl
 #define EL_TAG    ChangeArea
-
-/* FUNC(zx_NEW_gl_ChangeArea) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_ChangeArea_s* zx_NEW_gl_ChangeArea(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_ChangeArea_s* x = ZX_ZALLOC(c, struct zx_gl_ChangeArea_s);
-  x->gg.g.tok = zx_gl_ChangeArea_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -544,22 +497,6 @@ int zx_WALK_WO_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    CircularArcArea
 
-/* FUNC(zx_NEW_gl_CircularArcArea) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_CircularArcArea_s* zx_NEW_gl_CircularArcArea(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_CircularArcArea_s* x = ZX_ZALLOC(c, struct zx_gl_CircularArcArea_s);
-  x->gg.g.tok = zx_gl_CircularArcArea_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_CircularArcArea) */
@@ -712,22 +649,6 @@ int zx_WALK_WO_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcArea
 #define EL_NS     gl
 #define EL_TAG    CircularArea
 
-/* FUNC(zx_NEW_gl_CircularArea) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_CircularArea_s* zx_NEW_gl_CircularArea(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_CircularArea_s* x = ZX_ZALLOC(c, struct zx_gl_CircularArea_s);
-  x->gg.g.tok = zx_gl_CircularArea_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_CircularArea) */
@@ -859,22 +780,6 @@ int zx_WALK_WO_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x,
 #define EL_STRUCT zx_gl_CivilData_s
 #define EL_NS     gl
 #define EL_TAG    CivilData
-
-/* FUNC(zx_NEW_gl_CivilData) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_CivilData_s* zx_NEW_gl_CivilData(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_CivilData_s* x = ZX_ZALLOC(c, struct zx_gl_CivilData_s);
-  x->gg.g.tok = zx_gl_CivilData_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1087,22 +992,6 @@ int zx_WALK_WO_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x, void*
 #define EL_NS     gl
 #define EL_TAG    ComparisonResult
 
-/* FUNC(zx_NEW_gl_ComparisonResult) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_ComparisonResult_s* zx_NEW_gl_ComparisonResult(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_ComparisonResult_s* x = ZX_ZALLOC(c, struct zx_gl_ComparisonResult_s);
-  x->gg.g.tok = zx_gl_ComparisonResult_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_ComparisonResult) */
@@ -1201,22 +1090,6 @@ int zx_WALK_WO_gl_ComparisonResult(struct zx_ctx* c, struct zx_gl_ComparisonResu
 #define EL_STRUCT zx_gl_CoordinateReferenceSystem_s
 #define EL_NS     gl
 #define EL_TAG    CoordinateReferenceSystem
-
-/* FUNC(zx_NEW_gl_CoordinateReferenceSystem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_CoordinateReferenceSystem_s* zx_NEW_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_CoordinateReferenceSystem_s* x = ZX_ZALLOC(c, struct zx_gl_CoordinateReferenceSystem_s);
-  x->gg.g.tok = zx_gl_CoordinateReferenceSystem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1335,22 +1208,6 @@ int zx_WALK_WO_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_Coord
 #define EL_STRUCT zx_gl_Create_s
 #define EL_NS     gl
 #define EL_TAG    Create
-
-/* FUNC(zx_NEW_gl_Create) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Create_s* zx_NEW_gl_Create(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Create_s* x = ZX_ZALLOC(c, struct zx_gl_Create_s);
-  x->gg.g.tok = zx_gl_Create_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1577,22 +1434,6 @@ int zx_WALK_WO_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x, void* ctx, 
 #define EL_NS     gl
 #define EL_TAG    CreateItem
 
-/* FUNC(zx_NEW_gl_CreateItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_CreateItem_s* zx_NEW_gl_CreateItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_CreateItem_s* x = ZX_ZALLOC(c, struct zx_gl_CreateItem_s);
-  x->gg.g.tok = zx_gl_CreateItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_CreateItem) */
@@ -1716,22 +1557,6 @@ int zx_WALK_WO_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x, voi
 #define EL_STRUCT zx_gl_CreateResponse_s
 #define EL_NS     gl
 #define EL_TAG    CreateResponse
-
-/* FUNC(zx_NEW_gl_CreateResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_CreateResponse_s* zx_NEW_gl_CreateResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_CreateResponse_s* x = ZX_ZALLOC(c, struct zx_gl_CreateResponse_s);
-  x->gg.g.tok = zx_gl_CreateResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1897,22 +1722,6 @@ int zx_WALK_WO_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_s
 #define EL_NS     gl
 #define EL_TAG    Credential
 
-/* FUNC(zx_NEW_gl_Credential) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Credential_s* zx_NEW_gl_Credential(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Credential_s* x = ZX_ZALLOC(c, struct zx_gl_Credential_s);
-  x->gg.g.tok = zx_gl_Credential_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_Credential) */
@@ -2033,22 +1842,6 @@ int zx_WALK_WO_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    Data
 
-/* FUNC(zx_NEW_gl_Data) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Data_s* zx_NEW_gl_Data(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Data_s* x = ZX_ZALLOC(c, struct zx_gl_Data_s);
-  x->gg.g.tok = zx_gl_Data_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_Data) */
@@ -2159,22 +1952,6 @@ int zx_WALK_WO_gl_Data(struct zx_ctx* c, struct zx_gl_Data_s* x, void* ctx, int 
 #define EL_STRUCT zx_gl_Delete_s
 #define EL_NS     gl
 #define EL_TAG    Delete
-
-/* FUNC(zx_NEW_gl_Delete) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Delete_s* zx_NEW_gl_Delete(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Delete_s* x = ZX_ZALLOC(c, struct zx_gl_Delete_s);
-  x->gg.g.tok = zx_gl_Delete_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2359,22 +2136,6 @@ int zx_WALK_WO_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x, void* ctx, 
 #define EL_NS     gl
 #define EL_TAG    DeleteItem
 
-/* FUNC(zx_NEW_gl_DeleteItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_DeleteItem_s* zx_NEW_gl_DeleteItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_DeleteItem_s* x = ZX_ZALLOC(c, struct zx_gl_DeleteItem_s);
-  x->gg.g.tok = zx_gl_DeleteItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_DeleteItem) */
@@ -2486,22 +2247,6 @@ int zx_WALK_WO_gl_DeleteItem(struct zx_ctx* c, struct zx_gl_DeleteItem_s* x, voi
 #define EL_STRUCT zx_gl_DeleteResponse_s
 #define EL_NS     gl
 #define EL_TAG    DeleteResponse
-
-/* FUNC(zx_NEW_gl_DeleteResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_DeleteResponse_s* zx_NEW_gl_DeleteResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_DeleteResponse_s* x = ZX_ZALLOC(c, struct zx_gl_DeleteResponse_s);
-  x->gg.g.tok = zx_gl_DeleteResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2643,22 +2388,6 @@ int zx_WALK_WO_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_s
 #define EL_STRUCT zx_gl_EllipticalArea_s
 #define EL_NS     gl
 #define EL_TAG    EllipticalArea
-
-/* FUNC(zx_NEW_gl_EllipticalArea) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_EllipticalArea_s* zx_NEW_gl_EllipticalArea(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_EllipticalArea_s* x = ZX_ZALLOC(c, struct zx_gl_EllipticalArea_s);
-  x->gg.g.tok = zx_gl_EllipticalArea_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -2807,22 +2536,6 @@ int zx_WALK_WO_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_s
 #define EL_NS     gl
 #define EL_TAG    EncryptedResourceID
 
-/* FUNC(zx_NEW_gl_EncryptedResourceID) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_EncryptedResourceID_s* zx_NEW_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_EncryptedResourceID_s* x = ZX_ZALLOC(c, struct zx_gl_EncryptedResourceID_s);
-  x->gg.g.tok = zx_gl_EncryptedResourceID_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_EncryptedResourceID) */
@@ -2962,22 +2675,6 @@ int zx_WALK_WO_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedRe
 #define EL_NS     gl
 #define EL_TAG    Extension
 
-/* FUNC(zx_NEW_gl_Extension) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Extension_s* zx_NEW_gl_Extension(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Extension_s* x = ZX_ZALLOC(c, struct zx_gl_Extension_s);
-  x->gg.g.tok = zx_gl_Extension_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_Extension) */
@@ -3074,22 +2771,6 @@ int zx_WALK_WO_gl_Extension(struct zx_ctx* c, struct zx_gl_Extension_s* x, void*
 #define EL_STRUCT zx_gl_GeometryCollection_s
 #define EL_NS     gl
 #define EL_TAG    GeometryCollection
-
-/* FUNC(zx_NEW_gl_GeometryCollection) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_GeometryCollection_s* zx_NEW_gl_GeometryCollection(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_GeometryCollection_s* x = ZX_ZALLOC(c, struct zx_gl_GeometryCollection_s);
-  x->gg.g.tok = zx_gl_GeometryCollection_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3213,22 +2894,6 @@ int zx_WALK_WO_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryColl
 #define EL_NS     gl
 #define EL_TAG    Identifier
 
-/* FUNC(zx_NEW_gl_Identifier) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Identifier_s* zx_NEW_gl_Identifier(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Identifier_s* x = ZX_ZALLOC(c, struct zx_gl_Identifier_s);
-  x->gg.g.tok = zx_gl_Identifier_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_Identifier) */
@@ -3341,22 +3006,6 @@ int zx_WALK_WO_gl_Identifier(struct zx_ctx* c, struct zx_gl_Identifier_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    ItemData
 
-/* FUNC(zx_NEW_gl_ItemData) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_ItemData_s* zx_NEW_gl_ItemData(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_ItemData_s* x = ZX_ZALLOC(c, struct zx_gl_ItemData_s);
-  x->gg.g.tok = zx_gl_ItemData_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_ItemData) */
@@ -3461,22 +3110,6 @@ int zx_WALK_WO_gl_ItemData(struct zx_ctx* c, struct zx_gl_ItemData_s* x, void* c
 #define EL_STRUCT zx_gl_ItemSelection_s
 #define EL_NS     gl
 #define EL_TAG    ItemSelection
-
-/* FUNC(zx_NEW_gl_ItemSelection) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_ItemSelection_s* zx_NEW_gl_ItemSelection(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_ItemSelection_s* x = ZX_ZALLOC(c, struct zx_gl_ItemSelection_s);
-  x->gg.g.tok = zx_gl_ItemSelection_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3701,22 +3334,6 @@ int zx_WALK_WO_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s* 
 #define EL_NS     gl
 #define EL_TAG    LL
 
-/* FUNC(zx_NEW_gl_LL) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_LL_s* zx_NEW_gl_LL(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_LL_s* x = ZX_ZALLOC(c, struct zx_gl_LL_s);
-  x->gg.g.tok = zx_gl_LL_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_LL) */
@@ -3817,22 +3434,6 @@ int zx_WALK_WO_gl_LL(struct zx_ctx* c, struct zx_gl_LL_s* x, void* ctx, int (*ca
 #define EL_STRUCT zx_gl_LPostalAddress_s
 #define EL_NS     gl
 #define EL_TAG    LPostalAddress
-
-/* FUNC(zx_NEW_gl_LPostalAddress) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_LPostalAddress_s* zx_NEW_gl_LPostalAddress(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_LPostalAddress_s* x = ZX_ZALLOC(c, struct zx_gl_LPostalAddress_s);
-  x->gg.g.tok = zx_gl_LPostalAddress_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -3935,22 +3536,6 @@ int zx_WALK_WO_gl_LPostalAddress(struct zx_ctx* c, struct zx_gl_LPostalAddress_s
 #define EL_NS     gl
 #define EL_TAG    LSt
 
-/* FUNC(zx_NEW_gl_LSt) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_LSt_s* zx_NEW_gl_LSt(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_LSt_s* x = ZX_ZALLOC(c, struct zx_gl_LSt_s);
-  x->gg.g.tok = zx_gl_LSt_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_LSt) */
@@ -4051,22 +3636,6 @@ int zx_WALK_WO_gl_LSt(struct zx_ctx* c, struct zx_gl_LSt_s* x, void* ctx, int (*
 #define EL_STRUCT zx_gl_LineString_s
 #define EL_NS     gl
 #define EL_TAG    LineString
-
-/* FUNC(zx_NEW_gl_LineString) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_LineString_s* zx_NEW_gl_LineString(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_LineString_s* x = ZX_ZALLOC(c, struct zx_gl_LineString_s);
-  x->gg.g.tok = zx_gl_LineString_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4190,22 +3759,6 @@ int zx_WALK_WO_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    LinearRing
 
-/* FUNC(zx_NEW_gl_LinearRing) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_LinearRing_s* zx_NEW_gl_LinearRing(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_LinearRing_s* x = ZX_ZALLOC(c, struct zx_gl_LinearRing_s);
-  x->gg.g.tok = zx_gl_LinearRing_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_LinearRing) */
@@ -4327,22 +3880,6 @@ int zx_WALK_WO_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x, voi
 #define EL_STRUCT zx_gl_Modification_s
 #define EL_NS     gl
 #define EL_TAG    Modification
-
-/* FUNC(zx_NEW_gl_Modification) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Modification_s* zx_NEW_gl_Modification(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Modification_s* x = ZX_ZALLOC(c, struct zx_gl_Modification_s);
-  x->gg.g.tok = zx_gl_Modification_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4476,22 +4013,6 @@ int zx_WALK_WO_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x,
 #define EL_STRUCT zx_gl_Modify_s
 #define EL_NS     gl
 #define EL_TAG    Modify
-
-/* FUNC(zx_NEW_gl_Modify) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Modify_s* zx_NEW_gl_Modify(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Modify_s* x = ZX_ZALLOC(c, struct zx_gl_Modify_s);
-  x->gg.g.tok = zx_gl_Modify_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -4718,22 +4239,6 @@ int zx_WALK_WO_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x, void* ctx, 
 #define EL_NS     gl
 #define EL_TAG    ModifyResponse
 
-/* FUNC(zx_NEW_gl_ModifyResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_ModifyResponse_s* zx_NEW_gl_ModifyResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_ModifyResponse_s* x = ZX_ZALLOC(c, struct zx_gl_ModifyResponse_s);
-  x->gg.g.tok = zx_gl_ModifyResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_ModifyResponse) */
@@ -4898,22 +4403,6 @@ int zx_WALK_WO_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_s
 #define EL_NS     gl
 #define EL_TAG    MultiLineString
 
-/* FUNC(zx_NEW_gl_MultiLineString) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_MultiLineString_s* zx_NEW_gl_MultiLineString(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_MultiLineString_s* x = ZX_ZALLOC(c, struct zx_gl_MultiLineString_s);
-  x->gg.g.tok = zx_gl_MultiLineString_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_MultiLineString) */
@@ -5036,22 +4525,6 @@ int zx_WALK_WO_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineString
 #define EL_NS     gl
 #define EL_TAG    MultiPoint
 
-/* FUNC(zx_NEW_gl_MultiPoint) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_MultiPoint_s* zx_NEW_gl_MultiPoint(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_MultiPoint_s* x = ZX_ZALLOC(c, struct zx_gl_MultiPoint_s);
-  x->gg.g.tok = zx_gl_MultiPoint_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_MultiPoint) */
@@ -5173,22 +4646,6 @@ int zx_WALK_WO_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x, voi
 #define EL_STRUCT zx_gl_MultiPolygon_s
 #define EL_NS     gl
 #define EL_TAG    MultiPolygon
-
-/* FUNC(zx_NEW_gl_MultiPolygon) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_MultiPolygon_s* zx_NEW_gl_MultiPolygon(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_MultiPolygon_s* x = ZX_ZALLOC(c, struct zx_gl_MultiPolygon_s);
-  x->gg.g.tok = zx_gl_MultiPolygon_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5396,22 +4853,6 @@ int zx_WALK_WO_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x,
 #define EL_NS     gl
 #define EL_TAG    NewData
 
-/* FUNC(zx_NEW_gl_NewData) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_NewData_s* zx_NEW_gl_NewData(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_NewData_s* x = ZX_ZALLOC(c, struct zx_gl_NewData_s);
-  x->gg.g.tok = zx_gl_NewData_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_NewData) */
@@ -5508,22 +4949,6 @@ int zx_WALK_WO_gl_NewData(struct zx_ctx* c, struct zx_gl_NewData_s* x, void* ctx
 #define EL_STRUCT zx_gl_Notification_s
 #define EL_NS     gl
 #define EL_TAG    Notification
-
-/* FUNC(zx_NEW_gl_Notification) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Notification_s* zx_NEW_gl_Notification(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Notification_s* x = ZX_ZALLOC(c, struct zx_gl_Notification_s);
-  x->gg.g.tok = zx_gl_Notification_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5650,22 +5075,6 @@ int zx_WALK_WO_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x,
 #define EL_STRUCT zx_gl_Notify_s
 #define EL_NS     gl
 #define EL_TAG    Notify
-
-/* FUNC(zx_NEW_gl_Notify) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Notify_s* zx_NEW_gl_Notify(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Notify_s* x = ZX_ZALLOC(c, struct zx_gl_Notify_s);
-  x->gg.g.tok = zx_gl_Notify_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -5810,22 +5219,6 @@ int zx_WALK_WO_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x, void* ctx, 
 #define EL_NS     gl
 #define EL_TAG    NotifyAdminTo
 
-/* FUNC(zx_NEW_gl_NotifyAdminTo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_NotifyAdminTo_s* zx_NEW_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_NotifyAdminTo_s* x = ZX_ZALLOC(c, struct zx_gl_NotifyAdminTo_s);
-  x->gg.g.tok = zx_gl_NotifyAdminTo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_NotifyAdminTo) */
@@ -5955,22 +5348,6 @@ int zx_WALK_WO_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s* 
 #define EL_STRUCT zx_gl_NotifyResponse_s
 #define EL_NS     gl
 #define EL_TAG    NotifyResponse
-
-/* FUNC(zx_NEW_gl_NotifyResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_NotifyResponse_s* zx_NEW_gl_NotifyResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_NotifyResponse_s* x = ZX_ZALLOC(c, struct zx_gl_NotifyResponse_s);
-  x->gg.g.tok = zx_gl_NotifyResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6113,22 +5490,6 @@ int zx_WALK_WO_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_s
 #define EL_NS     gl
 #define EL_TAG    NotifyTo
 
-/* FUNC(zx_NEW_gl_NotifyTo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_NotifyTo_s* zx_NEW_gl_NotifyTo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_NotifyTo_s* x = ZX_ZALLOC(c, struct zx_gl_NotifyTo_s);
-  x->gg.g.tok = zx_gl_NotifyTo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_NotifyTo) */
@@ -6259,22 +5620,6 @@ int zx_WALK_WO_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x, void* c
 #define EL_NS     gl
 #define EL_TAG    Point
 
-/* FUNC(zx_NEW_gl_Point) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Point_s* zx_NEW_gl_Point(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Point_s* x = ZX_ZALLOC(c, struct zx_gl_Point_s);
-  x->gg.g.tok = zx_gl_Point_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_Point) */
@@ -6396,22 +5741,6 @@ int zx_WALK_WO_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x, void* ctx, in
 #define EL_STRUCT zx_gl_Polygon_s
 #define EL_NS     gl
 #define EL_TAG    Polygon
-
-/* FUNC(zx_NEW_gl_Polygon) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Polygon_s* zx_NEW_gl_Polygon(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Polygon_s* x = ZX_ZALLOC(c, struct zx_gl_Polygon_s);
-  x->gg.g.tok = zx_gl_Polygon_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6555,22 +5884,6 @@ int zx_WALK_WO_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x, void* ctx
 #define EL_STRUCT zx_gl_Query_s
 #define EL_NS     gl
 #define EL_TAG    Query
-
-/* FUNC(zx_NEW_gl_Query) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Query_s* zx_NEW_gl_Query(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Query_s* x = ZX_ZALLOC(c, struct zx_gl_Query_s);
-  x->gg.g.tok = zx_gl_Query_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -6775,22 +6088,6 @@ int zx_WALK_WO_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x, void* ctx, in
 #define EL_STRUCT zx_gl_QueryItem_s
 #define EL_NS     gl
 #define EL_TAG    QueryItem
-
-/* FUNC(zx_NEW_gl_QueryItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_QueryItem_s* zx_NEW_gl_QueryItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_QueryItem_s* x = ZX_ZALLOC(c, struct zx_gl_QueryItem_s);
-  x->gg.g.tok = zx_gl_QueryItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -7023,22 +6320,6 @@ int zx_WALK_WO_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x, void*
 #define EL_NS     gl
 #define EL_TAG    QueryResponse
 
-/* FUNC(zx_NEW_gl_QueryResponse) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_QueryResponse_s* zx_NEW_gl_QueryResponse(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_QueryResponse_s* x = ZX_ZALLOC(c, struct zx_gl_QueryResponse_s);
-  x->gg.g.tok = zx_gl_QueryResponse_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_QueryResponse) */
@@ -7205,22 +6486,6 @@ int zx_WALK_WO_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s* 
 #define EL_NS     gl
 #define EL_TAG    RefItem
 
-/* FUNC(zx_NEW_gl_RefItem) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_RefItem_s* zx_NEW_gl_RefItem(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_RefItem_s* x = ZX_ZALLOC(c, struct zx_gl_RefItem_s);
-  x->gg.g.tok = zx_gl_RefItem_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_RefItem) */
@@ -7322,22 +6587,6 @@ int zx_WALK_WO_gl_RefItem(struct zx_ctx* c, struct zx_gl_RefItem_s* x, void* ctx
 #define EL_NS     gl
 #define EL_TAG    ResourceID
 
-/* FUNC(zx_NEW_gl_ResourceID) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_ResourceID_s* zx_NEW_gl_ResourceID(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_ResourceID_s* x = ZX_ZALLOC(c, struct zx_gl_ResourceID_s);
-  x->gg.g.tok = zx_gl_ResourceID_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_ResourceID) */
@@ -7436,22 +6685,6 @@ int zx_WALK_WO_gl_ResourceID(struct zx_ctx* c, struct zx_gl_ResourceID_s* x, voi
 #define EL_STRUCT zx_gl_Status_s
 #define EL_NS     gl
 #define EL_TAG    Status
-
-/* FUNC(zx_NEW_gl_Status) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Status_s* zx_NEW_gl_Status(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Status_s* x = ZX_ZALLOC(c, struct zx_gl_Status_s);
-  x->gg.g.tok = zx_gl_Status_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -7576,22 +6809,6 @@ int zx_WALK_WO_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x, void* ctx, 
 #define EL_STRUCT zx_gl_Subscription_s
 #define EL_NS     gl
 #define EL_TAG    Subscription
-
-/* FUNC(zx_NEW_gl_Subscription) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Subscription_s* zx_NEW_gl_Subscription(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Subscription_s* x = ZX_ZALLOC(c, struct zx_gl_Subscription_s);
-  x->gg.g.tok = zx_gl_Subscription_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -7831,22 +7048,6 @@ int zx_WALK_WO_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x,
 #define EL_NS     gl
 #define EL_TAG    Trigger
 
-/* FUNC(zx_NEW_gl_Trigger) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_Trigger_s* zx_NEW_gl_Trigger(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_Trigger_s* x = ZX_ZALLOC(c, struct zx_gl_Trigger_s);
-  x->gg.g.tok = zx_gl_Trigger_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_Trigger) */
@@ -8017,22 +7218,6 @@ int zx_WALK_WO_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x, void* ctx
 #define EL_NS     gl
 #define EL_TAG    coord
 
-/* FUNC(zx_NEW_gl_coord) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_coord_s* zx_NEW_gl_coord(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_coord_s* x = ZX_ZALLOC(c, struct zx_gl_coord_s);
-  x->gg.g.tok = zx_gl_coord_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_coord) */
@@ -8144,22 +7329,6 @@ int zx_WALK_WO_gl_coord(struct zx_ctx* c, struct zx_gl_coord_s* x, void* ctx, in
 #define EL_STRUCT zx_gl_eqop_s
 #define EL_NS     gl
 #define EL_TAG    eqop
-
-/* FUNC(zx_NEW_gl_eqop) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_eqop_s* zx_NEW_gl_eqop(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_eqop_s* x = ZX_ZALLOC(c, struct zx_gl_eqop_s);
-  x->gg.g.tok = zx_gl_eqop_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -8320,22 +7489,6 @@ int zx_WALK_WO_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x, void* ctx, int 
 #define EL_NS     gl
 #define EL_TAG    esrd
 
-/* FUNC(zx_NEW_gl_esrd) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_esrd_s* zx_NEW_gl_esrd(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_esrd_s* x = ZX_ZALLOC(c, struct zx_gl_esrd_s);
-  x->gg.g.tok = zx_gl_esrd_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_esrd) */
@@ -8435,22 +7588,6 @@ int zx_WALK_WO_gl_esrd(struct zx_ctx* c, struct zx_gl_esrd_s* x, void* ctx, int 
 #define EL_NS     gl
 #define EL_TAG    esrk
 
-/* FUNC(zx_NEW_gl_esrk) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_esrk_s* zx_NEW_gl_esrk(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_esrk_s* x = ZX_ZALLOC(c, struct zx_gl_esrk_s);
-  x->gg.g.tok = zx_gl_esrk_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_esrk) */
@@ -8549,22 +7686,6 @@ int zx_WALK_WO_gl_esrk(struct zx_ctx* c, struct zx_gl_esrk_s* x, void* ctx, int 
 #define EL_STRUCT zx_gl_geoinfo_s
 #define EL_NS     gl
 #define EL_TAG    geoinfo
-
-/* FUNC(zx_NEW_gl_geoinfo) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_geoinfo_s* zx_NEW_gl_geoinfo(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_geoinfo_s* x = ZX_ZALLOC(c, struct zx_gl_geoinfo_s);
-  x->gg.g.tok = zx_gl_geoinfo_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -8767,22 +7888,6 @@ int zx_WALK_WO_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x, void* ctx
 #define EL_NS     gl
 #define EL_TAG    innerBoundaryIs
 
-/* FUNC(zx_NEW_gl_innerBoundaryIs) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_innerBoundaryIs_s* zx_NEW_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_innerBoundaryIs_s* x = ZX_ZALLOC(c, struct zx_gl_innerBoundaryIs_s);
-  x->gg.g.tok = zx_gl_innerBoundaryIs_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_innerBoundaryIs) */
@@ -8901,22 +8006,6 @@ int zx_WALK_WO_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryIs
 #define EL_NS     gl
 #define EL_TAG    loc_type
 
-/* FUNC(zx_NEW_gl_loc_type) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_loc_type_s* zx_NEW_gl_loc_type(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_loc_type_s* x = ZX_ZALLOC(c, struct zx_gl_loc_type_s);
-  x->gg.g.tok = zx_gl_loc_type_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_loc_type) */
@@ -9016,22 +8105,6 @@ int zx_WALK_WO_gl_loc_type(struct zx_ctx* c, struct zx_gl_loc_type_s* x, void* c
 #define EL_NS     gl
 #define EL_TAG    ms_action
 
-/* FUNC(zx_NEW_gl_ms_action) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_ms_action_s* zx_NEW_gl_ms_action(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_ms_action_s* x = ZX_ZALLOC(c, struct zx_gl_ms_action_s);
-  x->gg.g.tok = zx_gl_ms_action_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_ms_action) */
@@ -9130,22 +8203,6 @@ int zx_WALK_WO_gl_ms_action(struct zx_ctx* c, struct zx_gl_ms_action_s* x, void*
 #define EL_STRUCT zx_gl_outerBoundaryIs_s
 #define EL_NS     gl
 #define EL_TAG    outerBoundaryIs
-
-/* FUNC(zx_NEW_gl_outerBoundaryIs) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_outerBoundaryIs_s* zx_NEW_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_outerBoundaryIs_s* x = ZX_ZALLOC(c, struct zx_gl_outerBoundaryIs_s);
-  x->gg.g.tok = zx_gl_outerBoundaryIs_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -9264,22 +8321,6 @@ int zx_WALK_WO_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryIs
 #define EL_STRUCT zx_gl_pd_s
 #define EL_NS     gl
 #define EL_TAG    pd
-
-/* FUNC(zx_NEW_gl_pd) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_pd_s* zx_NEW_gl_pd(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_pd_s* x = ZX_ZALLOC(c, struct zx_gl_pd_s);
-  x->gg.g.tok = zx_gl_pd_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -9478,22 +8519,6 @@ int zx_WALK_WO_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, void* ctx, int (*ca
 #define EL_NS     gl
 #define EL_TAG    prio
 
-/* FUNC(zx_NEW_gl_prio) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_prio_s* zx_NEW_gl_prio(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_prio_s* x = ZX_ZALLOC(c, struct zx_gl_prio_s);
-  x->gg.g.tok = zx_gl_prio_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_prio) */
@@ -9593,22 +8618,6 @@ int zx_WALK_WO_gl_prio(struct zx_ctx* c, struct zx_gl_prio_s* x, void* ctx, int 
 #define EL_NS     gl
 #define EL_TAG    resp_req
 
-/* FUNC(zx_NEW_gl_resp_req) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_resp_req_s* zx_NEW_gl_resp_req(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_resp_req_s* x = ZX_ZALLOC(c, struct zx_gl_resp_req_s);
-  x->gg.g.tok = zx_gl_resp_req_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_gl_resp_req) */
@@ -9707,22 +8716,6 @@ int zx_WALK_WO_gl_resp_req(struct zx_ctx* c, struct zx_gl_resp_req_s* x, void* c
 #define EL_STRUCT zx_gl_shape_s
 #define EL_NS     gl
 #define EL_TAG    shape
-
-/* FUNC(zx_NEW_gl_shape) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_gl_shape_s* zx_NEW_gl_shape(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_gl_shape_s* x = ZX_ZALLOC(c, struct zx_gl_shape_s);
-  x->gg.g.tok = zx_gl_shape_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 

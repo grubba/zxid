@@ -7,6 +7,7 @@
  * Code generation uses a template, whose copyright statement follows. */
 
 /** aux-templ.c  -  Auxiliary functions template: cloning, freeing, walking data
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -47,22 +48,6 @@
 #define EL_STRUCT zx_wsse_BinarySecurityToken_s
 #define EL_NS     wsse
 #define EL_TAG    BinarySecurityToken
-
-/* FUNC(zx_NEW_wsse_BinarySecurityToken) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsse_BinarySecurityToken_s* zx_NEW_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsse_BinarySecurityToken_s* x = ZX_ZALLOC(c, struct zx_wsse_BinarySecurityToken_s);
-  x->gg.g.tok = zx_wsse_BinarySecurityToken_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -167,22 +152,6 @@ int zx_WALK_WO_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_BinaryS
 #define EL_NS     wsse
 #define EL_TAG    Embedded
 
-/* FUNC(zx_NEW_wsse_Embedded) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsse_Embedded_s* zx_NEW_wsse_Embedded(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsse_Embedded_s* x = ZX_ZALLOC(c, struct zx_wsse_Embedded_s);
-  x->gg.g.tok = zx_wsse_Embedded_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_wsse_Embedded) */
@@ -281,22 +250,6 @@ int zx_WALK_WO_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x, voi
 #define EL_STRUCT zx_wsse_KeyIdentifier_s
 #define EL_NS     wsse
 #define EL_TAG    KeyIdentifier
-
-/* FUNC(zx_NEW_wsse_KeyIdentifier) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsse_KeyIdentifier_s* zx_NEW_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsse_KeyIdentifier_s* x = ZX_ZALLOC(c, struct zx_wsse_KeyIdentifier_s);
-  x->gg.g.tok = zx_wsse_KeyIdentifier_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -401,22 +354,6 @@ int zx_WALK_WO_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifier
 #define EL_NS     wsse
 #define EL_TAG    Nonce
 
-/* FUNC(zx_NEW_wsse_Nonce) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsse_Nonce_s* zx_NEW_wsse_Nonce(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsse_Nonce_s* x = ZX_ZALLOC(c, struct zx_wsse_Nonce_s);
-  x->gg.g.tok = zx_wsse_Nonce_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_wsse_Nonce) */
@@ -517,22 +454,6 @@ int zx_WALK_WO_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x, void* ctx
 #define EL_STRUCT zx_wsse_Password_s
 #define EL_NS     wsse
 #define EL_TAG    Password
-
-/* FUNC(zx_NEW_wsse_Password) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsse_Password_s* zx_NEW_wsse_Password(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsse_Password_s* x = ZX_ZALLOC(c, struct zx_wsse_Password_s);
-  x->gg.g.tok = zx_wsse_Password_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -635,22 +556,6 @@ int zx_WALK_WO_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x, voi
 #define EL_NS     wsse
 #define EL_TAG    Reference
 
-/* FUNC(zx_NEW_wsse_Reference) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsse_Reference_s* zx_NEW_wsse_Reference(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsse_Reference_s* x = ZX_ZALLOC(c, struct zx_wsse_Reference_s);
-  x->gg.g.tok = zx_wsse_Reference_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_wsse_Reference) */
@@ -751,22 +656,6 @@ int zx_WALK_WO_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x, v
 #define EL_STRUCT zx_wsse_Security_s
 #define EL_NS     wsse
 #define EL_TAG    Security
-
-/* FUNC(zx_NEW_wsse_Security) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsse_Security_s* zx_NEW_wsse_Security(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsse_Security_s* x = ZX_ZALLOC(c, struct zx_wsse_Security_s);
-  x->gg.g.tok = zx_wsse_Security_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1039,22 +928,6 @@ int zx_WALK_WO_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x, voi
 #define EL_NS     wsse
 #define EL_TAG    SecurityTokenReference
 
-/* FUNC(zx_NEW_wsse_SecurityTokenReference) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsse_SecurityTokenReference_s* zx_NEW_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsse_SecurityTokenReference_s* x = ZX_ZALLOC(c, struct zx_wsse_SecurityTokenReference_s);
-  x->gg.g.tok = zx_wsse_SecurityTokenReference_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_wsse_SecurityTokenReference) */
@@ -1177,22 +1050,6 @@ int zx_WALK_WO_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_Secu
 #define EL_NS     wsse
 #define EL_TAG    TransformationParameters
 
-/* FUNC(zx_NEW_wsse_TransformationParameters) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsse_TransformationParameters_s* zx_NEW_wsse_TransformationParameters(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsse_TransformationParameters_s* x = ZX_ZALLOC(c, struct zx_wsse_TransformationParameters_s);
-  x->gg.g.tok = zx_wsse_TransformationParameters_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
-
 #ifdef ZX_ENA_AUX
 
 /* FUNC(zx_DUP_STRS_wsse_TransformationParameters) */
@@ -1289,22 +1146,6 @@ int zx_WALK_WO_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_Tr
 #define EL_STRUCT zx_wsse_Username_s
 #define EL_NS     wsse
 #define EL_TAG    Username
-
-/* FUNC(zx_NEW_wsse_Username) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsse_Username_s* zx_NEW_wsse_Username(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsse_Username_s* x = ZX_ZALLOC(c, struct zx_wsse_Username_s);
-  x->gg.g.tok = zx_wsse_Username_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
@@ -1404,22 +1245,6 @@ int zx_WALK_WO_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x, voi
 #define EL_STRUCT zx_wsse_UsernameToken_s
 #define EL_NS     wsse
 #define EL_TAG    UsernameToken
-
-/* FUNC(zx_NEW_wsse_UsernameToken) */
-
-/* Trivial allocator/constructor for the datatype. */
-
-/* Called by: */
-struct zx_wsse_UsernameToken_s* zx_NEW_wsse_UsernameToken(struct zx_ctx* c, struct zx_elem_s* father)
-{
-  struct zx_wsse_UsernameToken_s* x = ZX_ZALLOC(c, struct zx_wsse_UsernameToken_s);
-  x->gg.g.tok = zx_wsse_UsernameToken_ELEM;
-  if (father) {
-    x->gg.g.n = &father->kids->g;
-    father->kids = &x->gg;
-  }
-  return x;
-}
 
 #ifdef ZX_ENA_AUX
 
