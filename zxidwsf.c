@@ -367,89 +367,89 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
 
   if (hdr->Framework) {
     if (!hdr->Framework->Id)
-      hdr->Framework->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "FWK");
+      hdr->Framework->Id = zx_ref_attr(cf->ctx, &hdr->Framework->gg, zx_Id_ATTR, "FWK");
     refs[n_refs].id = &hdr->Framework->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_sbf_Framework(cf->ctx, hdr->Framework);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Framework->gg);
     ++n_refs;
   }
   
   if (hdr->Security && hdr->Security->Timestamp) {
     if (!hdr->Security->Timestamp->Id)
-      hdr->Security->Timestamp->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "TS");
+      hdr->Security->Timestamp->Id = zx_ref_attr(cf->ctx, &hdr->Security->Timestamp->gg, zx_Id_ATTR, "TS");
     refs[n_refs].id = &hdr->Security->Timestamp->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_wsu_Timestamp(cf->ctx, hdr->Security->Timestamp);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Security->Timestamp->gg);
     ++n_refs;
   }
 
   if (hdr->MessageID) {
     if (!hdr->MessageID->Id)
-      hdr->MessageID->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "MID");
+      hdr->MessageID->Id = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_Id_ATTR, "MID");
     refs[n_refs].id = &hdr->MessageID->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_MessageID(cf->ctx, hdr->MessageID);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->MessageID->gg);
     ++n_refs;
   }
   
   if (hdr->RelatesTo) {
     if (!hdr->RelatesTo->Id)
-      hdr->RelatesTo->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "REL");
+      hdr->RelatesTo->Id = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_Id_ATTR, "REL");
     refs[n_refs].id = &hdr->RelatesTo->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_RelatesTo(cf->ctx, hdr->RelatesTo);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->RelatesTo->gg);
     ++n_refs;
   }
   
   if (hdr->Action) {
     if (!hdr->Action->Id)
-      hdr->Action->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "ACT");
+      hdr->Action->Id = zx_ref_attr(cf->ctx, &hdr->Action->gg, zx_Id_ATTR, "ACT");
     refs[n_refs].id = &hdr->Action->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_Action(cf->ctx, hdr->Action);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Action->gg);
     ++n_refs;
   }
 
   if (hdr->To) {
     if (!hdr->To->Id)
-      hdr->To->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "TO");
+      hdr->To->Id = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_Id_ATTR, "TO");
     refs[n_refs].id = &hdr->To->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_To(cf->ctx, hdr->To);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->To->gg);
     ++n_refs;
   }
 
   if (hdr->ReplyTo) {
     if (!hdr->ReplyTo->Id)
-      hdr->ReplyTo->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "REP");
+      hdr->ReplyTo->Id = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_Id_ATTR, "REP");
     refs[n_refs].id = &hdr->ReplyTo->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_ReplyTo(cf->ctx, hdr->ReplyTo);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->ReplyTo->gg);
     ++n_refs;
   }
   
   if (hdr->From) {
     if (!hdr->From->Id)
-      hdr->From->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "FRM");
+      hdr->From->Id = zx_ref_attr(cf->ctx, &hdr->From->gg, zx_Id_ATTR, "FRM");
     refs[n_refs].id = &hdr->From->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_From(cf->ctx, hdr->From);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->From->gg);
     ++n_refs;
   }
   
   if (hdr->Sender) {
     if (!hdr->Sender->Id)
-      hdr->Sender->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "PRV");
+      hdr->Sender->Id = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_Id_ATTR, "PRV");
     refs[n_refs].id = &hdr->Sender->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_Sender(cf->ctx, hdr->Sender);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Sender->gg);
     ++n_refs;
   }
   
   if (hdr->FaultTo) {
     if (!hdr->FaultTo->Id)
-      hdr->FaultTo->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "FLT");
+      hdr->FaultTo->Id = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_Id_ATTR, "FLT");
     refs[n_refs].id = &hdr->FaultTo->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_FaultTo(cf->ctx, hdr->FaultTo);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->FaultTo->gg);
     ++n_refs;
   }
   
   if (hdr->ReferenceParameters) {
     if (!hdr->ReferenceParameters->Id)
-      hdr->ReferenceParameters->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "PAR");
+      hdr->ReferenceParameters->Id = zx_ref_attr(cf->ctx, &hdr->ReferenceParameters->gg, zx_Id_ATTR, "PAR");
     refs[n_refs].id = &hdr->ReferenceParameters->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_ReferenceParameters(cf->ctx, hdr->ReferenceParameters);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->ReferenceParameters->gg);
     ++n_refs;
   }
   
@@ -457,81 +457,81 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->TargetIdentity) {
     if (!hdr->TargetIdentity->Id)
-      hdr->TargetIdentity->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "TRG");
+      hdr->TargetIdentity->Id = zx_ref_attr(cf->ctx, &hdr->TargetIdentity->gg, zx_Id_ATTR, "TRG");
     refs[n_refs].id = &hdr->TargetIdentity->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_TargetIdentity(cf->ctx, hdr->TargetIdentity);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->TargetIdentity->gg);
     ++n_refs;
   }
   
   if (hdr->UsageDirective) {
     if (!hdr->UsageDirective->Id)
-      hdr->UsageDirective->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "UD");
+      hdr->UsageDirective->Id = zx_ref_attr(cf->ctx, &hdr->UsageDirective->gg, zx_Id_ATTR, "UD");
     refs[n_refs].id = &hdr->UsageDirective->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_UsageDirective(cf->ctx, hdr->UsageDirective);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->UsageDirective->gg);
     ++n_refs;
   }
   
   if (hdr->UserInteraction) {
     if (!hdr->UserInteraction->Id)
-      hdr->UserInteraction->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "UI");
+      hdr->UserInteraction->Id = zx_ref_attr(cf->ctx, &hdr->UserInteraction->gg, zx_Id_ATTR, "UI");
     refs[n_refs].id = &hdr->UserInteraction->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_UserInteraction(cf->ctx, hdr->UserInteraction);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->UserInteraction->gg);
     ++n_refs;
   }
   
   if (hdr->ProcessingContext) {
     if (!hdr->ProcessingContext->Id)
-      hdr->ProcessingContext->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "PC");
+      hdr->ProcessingContext->Id = zx_ref_attr(cf->ctx, &hdr->ProcessingContext->gg, zx_Id_ATTR, "PC");
     refs[n_refs].id = &hdr->ProcessingContext->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_ProcessingContext(cf->ctx, hdr->ProcessingContext);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->ProcessingContext->gg);
     ++n_refs;
   }
   
   if (hdr->EndpointUpdate) {
     if (!hdr->EndpointUpdate->Id)
-      hdr->EndpointUpdate->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "EP");
+      hdr->EndpointUpdate->Id = zx_ref_attr(cf->ctx, &hdr->EndpointUpdate->gg, zx_Id_ATTR, "EP");
     refs[n_refs].id = &hdr->EndpointUpdate->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_EndpointUpdate(cf->ctx, hdr->EndpointUpdate);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->EndpointUpdate->gg);
     ++n_refs;
   }
   
   if (hdr->Timeout) {
     if (!hdr->Timeout->Id)
-      hdr->Timeout->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "TI");
+      hdr->Timeout->Id = zx_ref_attr(cf->ctx, &hdr->Timeout->gg, zx_Id_ATTR, "TI");
     refs[n_refs].id = &hdr->Timeout->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_Timeout(cf->ctx, hdr->Timeout);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Timeout->gg);
     ++n_refs;
   }
   
   if (hdr->Consent) {
     if (!hdr->Consent->Id)
-      hdr->Consent->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "CON");
+      hdr->Consent->Id = zx_ref_attr(cf->ctx, &hdr->Consent->gg, zx_Id_ATTR, "CON");
     refs[n_refs].id = &hdr->Consent->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_Consent(cf->ctx, hdr->Consent);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Consent->gg);
     ++n_refs;
   }
   
   if (hdr->ApplicationEPR) {
     if (!hdr->ApplicationEPR->Id)
-      hdr->ApplicationEPR->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "AEP");
+      hdr->ApplicationEPR->Id = zx_ref_attr(cf->ctx, &hdr->ApplicationEPR->gg, zx_Id_ATTR, "AEP");
     refs[n_refs].id = &hdr->ApplicationEPR->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_ApplicationEPR(cf->ctx, hdr->ApplicationEPR);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->ApplicationEPR->gg);
     ++n_refs;
   }
   
   if (hdr->RedirectRequest) {
     if (!hdr->RedirectRequest->Id)
-      hdr->RedirectRequest->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "RR");
+      hdr->RedirectRequest->Id = zx_ref_attr(cf->ctx, &hdr->RedirectRequest->gg, zx_Id_ATTR, "RR");
     refs[n_refs].id = &hdr->RedirectRequest->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_RedirectRequest(cf->ctx, hdr->RedirectRequest);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->RedirectRequest->gg);
     ++n_refs;
   }
   
   if (hdr->CredentialsContext) {
     if (!hdr->CredentialsContext->Id)
-      hdr->CredentialsContext->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "CCX");
+      hdr->CredentialsContext->Id = zx_ref_attr(cf->ctx, &hdr->CredentialsContext->gg, zx_Id_ATTR, "CCX");
     refs[n_refs].id = &hdr->CredentialsContext->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_CredentialsContext(cf->ctx, hdr->CredentialsContext);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->CredentialsContext->gg);
     ++n_refs;
   }
   
@@ -539,17 +539,17 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->Credentials) {
     if (!hdr->Credentials->Id)
-      hdr->Credentials->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "CRED");
+      hdr->Credentials->Id = zx_ref_attr(cf->ctx, &hdr->Credentials->gg, zx_Id_ATTR, "CRED");
     refs[n_refs].id = &hdr->Credentials->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_tas3_Credentials(cf->ctx, hdr->Credentials);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Credentials->gg);
     ++n_refs;
   }
   
   if (hdr->ESLPolicies) {
     if (!hdr->ESLPolicies->Id)
-      hdr->ESLPolicies->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "ESL");
+      hdr->ESLPolicies->Id = zx_ref_attr(cf->ctx, &hdr->ESLPolicies->gg, zx_Id_ATTR, "ESL");
     refs[n_refs].id = &hdr->ESLPolicies->Id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_tas3_ESLPolicies(cf->ctx, hdr->ESLPolicies);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->ESLPolicies->gg);
     ++n_refs;
   }
   
@@ -557,50 +557,49 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->Correlation) {
     if (!hdr->Correlation->id)
-      hdr->Correlation->id = zx_ref_attr(cf->ctx, zx_id_ATTR, "COR");
+      hdr->Correlation->id = zx_ref_attr(cf->ctx, &hdr->Correlation->gg, zx_id_ATTR, "COR");
     refs[n_refs].id = &hdr->Correlation->id->g;
-    refs[n_refs].canon
-      = zx_EASY_ENC_SO_b12_Correlation(cf->ctx, hdr->Correlation);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Correlation->gg);
     ++n_refs;
   }
   
   if (hdr->Provider) {
     if (!hdr->Provider->id)
-      hdr->Provider->id = zx_ref_attr(cf->ctx, zx_id_ATTR, "PC12");
+      hdr->Provider->id = zx_ref_attr(cf->ctx, &hdr->Provider->gg, zx_id_ATTR, "PC12");
     refs[n_refs].id = &hdr->Provider->id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b12_Provider(cf->ctx, hdr->Provider);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Provider->gg);
     ++n_refs;
   }
   
   if (hdr->b12_ProcessingContext) {
     if (!hdr->b12_ProcessingContext->id)
-      hdr->b12_ProcessingContext->id = zx_ref_attr(cf->ctx, zx_id_ATTR, "PC12");
+      hdr->b12_ProcessingContext->id = zx_ref_attr(cf->ctx, &hdr->b12_ProcessingContext->gg, zx_id_ATTR, "PC12");
     refs[n_refs].id = &hdr->b12_ProcessingContext->id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b12_ProcessingContext(cf->ctx, hdr->b12_ProcessingContext);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->b12_ProcessingContext->gg);
     ++n_refs;
   }
   
   if (hdr->b12_Consent) {
     if (!hdr->b12_Consent->id)
-      hdr->b12_Consent->id = zx_ref_attr(cf->ctx, zx_id_ATTR, "CON12");
+      hdr->b12_Consent->id = zx_ref_attr(cf->ctx, &hdr->b12_Consent->gg, zx_id_ATTR, "CON12");
     refs[n_refs].id = &hdr->b12_Consent->id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b12_Consent(cf->ctx, hdr->b12_Consent);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->b12_Consent->gg);
     ++n_refs;
   }
   
   if (hdr->b12_UsageDirective) {
     if (!hdr->b12_UsageDirective->id)
-      hdr->b12_UsageDirective->id = zx_ref_attr(cf->ctx, zx_id_ATTR, "UD12");
+      hdr->b12_UsageDirective->id = zx_ref_attr(cf->ctx, &hdr->b12_UsageDirective->gg, zx_id_ATTR, "UD12");
     refs[n_refs].id = &hdr->b12_UsageDirective->id->g;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b12_UsageDirective(cf->ctx, hdr->b12_UsageDirective);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->b12_UsageDirective->gg);
     ++n_refs;
   }
 #if 0
   if (hdr->TransactionID) {
     if (!hdr->TransactionID->id)
-      hdr->TransactionID->id = zx_ref_attr(cf->ctx, zx_id_ATTR, "MM7TX");
+      hdr->TransactionID->id = zx_ref_attr(cf->ctx, &hdr->TransactionID->gg, zx_id_ATTR, "MM7TX");
     refs[n_refs].id = &hdr->TransactionID->id->g;  /* *** mm7:TransactionID does not have id or Id */
-    refs[n_refs].canon = zx_EASY_ENC_SO_mm7_TransactionID(cf->ctx, hdr->TransactionID);
+    refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->TransactionID->gg);
     ++n_refs;
   }
 #endif
@@ -625,17 +624,17 @@ void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec
     
     if (str) {
       if (!str->Id)
-	str->Id = zx_ref_attr(cf->ctx, zx_Id_ATTR, "STR");
+	str->Id = zx_ref_attr(cf->ctx, &str->gg, zx_Id_ATTR, "STR");
       refs[n_refs].id = &str->Id->g;
-      refs[n_refs].canon = zx_EASY_ENC_SO_wsse_SecurityTokenReference(cf->ctx, str);
+      refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &str->gg);
       ++n_refs;
     }
     
     if (bdy && (sign_flags & ZXID_SIGN_BDY)) {
       if (!bdy->id)
-	bdy->id = zx_ref_attr(cf->ctx, zx_id_ATTR, "BDY");
+	bdy->id = zx_ref_attr(cf->ctx, &bdy->gg, zx_id_ATTR, "BDY");
       refs[n_refs].id = &bdy->id->g;
-      refs[n_refs].canon = zx_EASY_ENC_SO_e_Body(cf->ctx, bdy);
+      refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &bdy->gg);
       ++n_refs;
     }
    
@@ -661,7 +660,7 @@ int zxid_wsf_timestamp_check(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timesta
     } else {
       if (cf->notimestamp_fatal) {
 	ERR("Timestamp rejected: src=%d our=%d before_slop=%d after_slop=%d secs", (int)srcts->tv_sec, (int)ourts->tv_sec, cf->before_slop, cf->after_slop);
-	zxid_set_fault(cf, ses, zxid_mk_fault(cf, ctlpt, faultactor, "Message signature did not validate.", "StaleMsg", 0, 0, 0));
+	zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, ctlpt, faultactor, "Message signature did not validate.", "StaleMsg", 0, 0, 0));
 	return 0;
       } else {
 	INFO("Timestamp rejected: src=%d our=%d before_slop=%d after_slop=%d secs, but configured to ignore this (NOTIMESTAMPFATAL=0)", (int)srcts->tv_sec, (int)ourts->tv_sec, cf->before_slop, cf->after_slop);
@@ -671,7 +670,7 @@ int zxid_wsf_timestamp_check(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timesta
   } else {
     if (cf->notimestamp_fatal) {
       ERR("No Security/Timestamp found. %p", ts);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, ctlpt, faultactor, "No unable to find wsse:Security/Timestamp.", "StaleMsg", 0, 0, 0));
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, ctlpt, faultactor, "No unable to find wsse:Security/Timestamp.", "StaleMsg", 0, 0, 0));
       return 0;
     } else {
       INFO("No Security/Timestamp found, but configured to ignore this (NOTIMESTAMP_FATAL=0). %p", ts);
@@ -706,14 +705,14 @@ void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_
     return;
 
   env->Header->UsageDirective = ud = zx_NEW_b_UsageDirective(cf->ctx,0);
-  ud->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-  ud->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  ud->actor = zx_ref_attr(cf->ctx, &ud->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  ud->mustUnderstand = zx_ref_attr(cf->ctx, &ud->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
   ud->Obligation = zx_NEW_xa_Obligation(cf->ctx, &ud->gg);
-  ud->Obligation->ObligationId = zx_dup_attr(cf->ctx, zx_ObligationId_ATTR, TAS3_SOL1_ENGINE);
-  ud->Obligation->FulfillOn = zx_dup_attr(cf->ctx, zx_FulfillOn_ATTR, "Permit");
+  ud->Obligation->ObligationId = zx_ref_attr(cf->ctx, &ud->Obligation->gg, zx_ObligationId_ATTR, TAS3_SOL1_ENGINE);
+  ud->Obligation->FulfillOn = zx_ref_attr(cf->ctx, &ud->Obligation->gg, zx_FulfillOn_ATTR, "Permit");
   ud->Obligation->AttributeAssignment = zx_NEW_xa_AttributeAssignment(cf->ctx, &ud->Obligation->gg);
-  ud->Obligation->AttributeAssignment->AttributeId = zx_dup_attr(cf->ctx, zx_AttributeId_ATTR, attrid);
-  ud->Obligation->AttributeAssignment->DataType = zx_dup_attr(cf->ctx, zx_DataType_ATTR, XS_STRING);
+  ud->Obligation->AttributeAssignment->AttributeId = zx_dup_attr(cf->ctx, &ud->Obligation->AttributeAssignment->gg, zx_AttributeId_ATTR, attrid);
+  ud->Obligation->AttributeAssignment->DataType = zx_ref_attr(cf->ctx, &ud->Obligation->AttributeAssignment->gg, zx_DataType_ATTR, XS_STRING);
   zx_add_content(cf->ctx, &ud->Obligation->AttributeAssignment->gg, zx_dup_str(cf->ctx, obl));
   D("Attached (%s) obligations(%s)", attrid, obl);
 }

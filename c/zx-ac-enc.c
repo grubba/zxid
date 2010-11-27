@@ -24,6 +24,7 @@
  ** 30.9.2007, improvements to WO encoding --Sampo
  ** 8.2.2010,  better handling of schema order encoding of unknown namespace prefixes --Sampo
  ** 27.10.2010, re-engineered namespace handling --Sampo
+ ** 24.11.2010, this code is sceduled for removal as el_order processing in WO encoder accomplishes the same result. --Sampo
  **
  ** N.B: wo=wire order (needed for exc-c14n), so=schema order
  ** N.B2: This template is meant to be processed by pd/xsd2sg.pl. Beware
@@ -39,6 +40,8 @@
 #include "c/zx-ns.h"
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -184,13 +187,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_ActivationLimit(struct zx_ctx* c, struct zx_ac_
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_ActivationLimit(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -314,13 +316,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_ActivationLimitDuration(struct zx_ctx* c, struc
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_ActivationLimitDuration(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -444,13 +445,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_ActivationLimitUsages(struct zx_ctx* c, struct 
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_ActivationLimitUsages(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -612,13 +612,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_ActivationPin(struct zx_ctx* c, struct zx_ac_Ac
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_ActivationPin(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -746,13 +745,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_Alphabet(struct zx_ctx* c, struct zx_ac_Alphabe
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_Alphabet(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -882,13 +880,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_AsymmetricDecryption(struct zx_ctx* c, struct z
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_AsymmetricDecryption(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1018,13 +1015,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_AsymmetricKeyAgreement(struct zx_ctx* c, struct
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_AsymmetricKeyAgreement(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1156,13 +1152,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_AuthenticatingAuthority(struct zx_ctx* c, struc
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_AuthenticatingAuthority(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1342,13 +1337,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_AuthenticationContextStatement(struct zx_ctx* c
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_AuthenticationContextStatement(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1502,13 +1496,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_AuthenticationMethod(struct zx_ctx* c, struct z
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_AuthenticationMethod(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1718,13 +1711,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_Authenticator(struct zx_ctx* c, struct zx_ac_Au
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_Authenticator(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1910,13 +1902,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_AuthenticatorTransportProtocol(struct zx_ctx* c
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_AuthenticatorTransportProtocol(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2046,13 +2037,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_DeactivationCallCenter(struct zx_ctx* c, struct
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_DeactivationCallCenter(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2182,13 +2172,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_DigSig(struct zx_ctx* c, struct zx_ac_DigSig_s*
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_DigSig(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2310,13 +2299,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_Extension(struct zx_ctx* c, struct zx_ac_Extens
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_Extension(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2440,13 +2428,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_Generation(struct zx_ctx* c, struct zx_ac_Gener
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_Generation(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2570,13 +2557,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_GoverningAgreementRef(struct zx_ctx* c, struct 
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_GoverningAgreementRef(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2706,13 +2692,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_GoverningAgreements(struct zx_ctx* c, struct zx
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_GoverningAgreements(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2842,13 +2827,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_HTTP(struct zx_ctx* c, struct zx_ac_HTTP_s* x )
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_HTTP(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2978,13 +2962,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_IPAddress(struct zx_ctx* c, struct zx_ac_IPAddr
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_IPAddress(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -3114,13 +3097,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_IPSec(struct zx_ctx* c, struct zx_ac_IPSec_s* x
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_IPSec(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -3268,13 +3250,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_Identification(struct zx_ctx* c, struct zx_ac_I
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_Identification(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -3412,13 +3393,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_KeyActivation(struct zx_ctx* c, struct zx_ac_Ke
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_KeyActivation(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -3542,13 +3522,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_KeySharing(struct zx_ctx* c, struct zx_ac_KeySh
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_KeySharing(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -3672,13 +3651,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_KeyStorage(struct zx_ctx* c, struct zx_ac_KeySt
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_KeyStorage(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -3804,13 +3782,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_Length(struct zx_ctx* c, struct zx_ac_Length_s*
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_Length(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -3940,13 +3917,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_MobileNetworkEndToEndEncryption(struct zx_ctx* 
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_MobileNetworkEndToEndEncryption(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -4076,13 +4052,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_MobileNetworkNoEncryption(struct zx_ctx* c, str
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_MobileNetworkNoEncryption(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -4212,13 +4187,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_MobileNetworkRadioEncryption(struct zx_ctx* c, 
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_MobileNetworkRadioEncryption(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -4364,13 +4338,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_OperationalProtection(struct zx_ctx* c, struct 
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_OperationalProtection(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -4524,13 +4497,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_Password(struct zx_ctx* c, struct zx_ac_Passwor
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_Password(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -4654,13 +4626,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_PhysicalVerification(struct zx_ctx* c, struct z
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_PhysicalVerification(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -4790,13 +4761,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_PreviousSession(struct zx_ctx* c, struct zx_ac_
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_PreviousSession(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -4958,13 +4928,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_PrincipalAuthenticationMechanism(struct zx_ctx*
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_PrincipalAuthenticationMechanism(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -5118,13 +5087,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_PrivateKeyProtection(struct zx_ctx* c, struct z
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_PrivateKeyProtection(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -5254,13 +5222,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_ResumeSession(struct zx_ctx* c, struct zx_ac_Re
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_ResumeSession(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -5390,13 +5357,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_SSL(struct zx_ctx* c, struct zx_ac_SSL_s* x )
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_SSL(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -5542,13 +5508,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_SecretKeyProtection(struct zx_ctx* c, struct zx
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_SecretKeyProtection(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -5686,13 +5651,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_SecurityAudit(struct zx_ctx* c, struct zx_ac_Se
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_SecurityAudit(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -5822,13 +5786,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_SharedSecretChallengeResponse(struct zx_ctx* c,
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_SharedSecretChallengeResponse(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -5958,13 +5921,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_SharedSecretDynamicPlaintext(struct zx_ctx* c, 
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_SharedSecretDynamicPlaintext(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -6094,13 +6056,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_Smartcard(struct zx_ctx* c, struct zx_ac_Smartc
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_Smartcard(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -6230,13 +6191,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_SwitchAudit(struct zx_ctx* c, struct zx_ac_Swit
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_SwitchAudit(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -6382,13 +6342,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_TechnicalProtection(struct zx_ctx* c, struct zx
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_TechnicalProtection(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -6516,13 +6475,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_TimeSyncToken(struct zx_ctx* c, struct zx_ac_Ti
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_TimeSyncToken(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -6660,13 +6618,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_Token(struct zx_ctx* c, struct zx_ac_Token_s* x
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_Token(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -6796,13 +6753,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_WTLS(struct zx_ctx* c, struct zx_ac_WTLS_s* x )
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_WTLS(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -6932,13 +6888,12 @@ struct zx_str* zx_EASY_ENC_SO_ac_WrittenConsent(struct zx_ctx* c, struct zx_ac_W
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_WrittenConsent(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -7068,9 +7023,6 @@ struct zx_str* zx_EASY_ENC_SO_ac_ZeroKnowledge(struct zx_ctx* c, struct zx_ac_Ze
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_ac_ZeroKnowledge(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 

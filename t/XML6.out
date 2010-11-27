@@ -1,6 +1,3 @@
-Re-encoded result SO (len=503):
-<sp:AuthnRequest xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol" AssertionConsumerServiceIndex="2" Destination="http://idp.tas3.pt:8081/zxididp?o=F" ID="N_52t-unsFoFC9StcrGGj7mnz" IssueInstant="2009-12-19T11:33:24Z" ProviderName="ZXID Demo SP" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">http://sp.tas3.pt:8080/zxidservlet/sso?o=B</sa:Issuer><sp:NameIDPolicy AllowCreate="1" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"></sp:NameIDPolicy></sp:AuthnRequest>
-
 Re-encoded result WO (len=503):
 <sp:AuthnRequest xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol" AssertionConsumerServiceIndex="2" Destination="http://idp.tas3.pt:8081/zxididp?o=F" ID="N_52t-unsFoFC9StcrGGj7mnz" IssueInstant="2009-12-19T11:33:24Z" ProviderName="ZXID Demo SP" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">http://sp.tas3.pt:8080/zxidservlet/sso?o=B</sa:Issuer><sp:NameIDPolicy AllowCreate="1" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"></sp:NameIDPolicy></sp:AuthnRequest>
 

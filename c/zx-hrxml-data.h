@@ -23,7 +23,6 @@
 #ifndef zx_hrxml_AccountingCode_EXT
 #define zx_hrxml_AccountingCode_EXT
 #endif
-
 struct zx_hrxml_AccountingCode_s {
   ZX_ELEM_EXT
   zx_hrxml_AccountingCode_EXT
@@ -31,12 +30,8 @@ struct zx_hrxml_AccountingCode_s {
 };
 
 #define zx_NEW_hrxml_AccountingCode(c, father) (struct zx_hrxml_AccountingCode_s*)zx_new_elem((c),(father),zx_hrxml_AccountingCode_ELEM)
-
 int zx_DEC_ATTR_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingCode_s* x);
 int zx_DEC_ELEM_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingCode_s* x);
-int zx_LEN_SO_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingCode_s* x);
-char* zx_ENC_SO_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingCode_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingCode_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_AccountingCode_s* zx_DEEP_CLONE_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingCode_s* x, int dup_strs);
@@ -64,7 +59,6 @@ void zx_hrxml_AccountingCode_PUT_description(struct zx_hrxml_AccountingCode_s* x
 #ifndef zx_hrxml_Achievement_EXT
 #define zx_hrxml_Achievement_EXT
 #endif
-
 struct zx_hrxml_Achievement_s {
   ZX_ELEM_EXT
   zx_hrxml_Achievement_EXT
@@ -74,12 +68,8 @@ struct zx_hrxml_Achievement_s {
 };
 
 #define zx_NEW_hrxml_Achievement(c, father) (struct zx_hrxml_Achievement_s*)zx_new_elem((c),(father),zx_hrxml_Achievement_ELEM)
-
 int zx_DEC_ATTR_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s* x);
 int zx_DEC_ELEM_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s* x);
-int zx_LEN_SO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s* x);
-char* zx_ENC_SO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Achievement_s* zx_DEEP_CLONE_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s* x, int dup_strs);
@@ -115,7 +105,7 @@ void zx_hrxml_Achievement_ADD_Date(struct zx_hrxml_Achievement_s* x, int n, stru
 void zx_hrxml_Achievement_ADD_Description(struct zx_hrxml_Achievement_s* x, int n, struct zx_hrxml_Description_s* z);
 void zx_hrxml_Achievement_ADD_IssuingAuthority(struct zx_hrxml_Achievement_s* x, int n, struct zx_hrxml_IssuingAuthority_s* z);
 
-void zx_hrxml_Achievement_DEL_Date(struct zx_hrxml_Achievement_s* x, int n);
+void zx_hrxml_Achievement_DEL_Date(struct zx_hrxml_Achievement_s* x,int n);
 void zx_hrxml_Achievement_DEL_Description(struct zx_hrxml_Achievement_s* x, int n);
 void zx_hrxml_Achievement_DEL_IssuingAuthority(struct zx_hrxml_Achievement_s* x, int n);
 
@@ -129,7 +119,6 @@ void zx_hrxml_Achievement_REV_IssuingAuthority(struct zx_hrxml_Achievement_s* x)
 #ifndef zx_hrxml_Achievements_EXT
 #define zx_hrxml_Achievements_EXT
 #endif
-
 struct zx_hrxml_Achievements_s {
   ZX_ELEM_EXT
   zx_hrxml_Achievements_EXT
@@ -137,12 +126,8 @@ struct zx_hrxml_Achievements_s {
 };
 
 #define zx_NEW_hrxml_Achievements(c, father) (struct zx_hrxml_Achievements_s*)zx_new_elem((c),(father),zx_hrxml_Achievements_ELEM)
-
 int zx_DEC_ATTR_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_s* x);
 int zx_DEC_ELEM_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_s* x);
-int zx_LEN_SO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_s* x);
-char* zx_ENC_SO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Achievements_s* zx_DEEP_CLONE_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_s* x, int dup_strs);
@@ -176,7 +161,6 @@ void zx_hrxml_Achievements_REV_Achievement(struct zx_hrxml_Achievements_s* x);
 #ifndef zx_hrxml_AffirmativeActionPlanJobGroupId_EXT
 #define zx_hrxml_AffirmativeActionPlanJobGroupId_EXT
 #endif
-
 struct zx_hrxml_AffirmativeActionPlanJobGroupId_s {
   ZX_ELEM_EXT
   zx_hrxml_AffirmativeActionPlanJobGroupId_EXT
@@ -187,12 +171,8 @@ struct zx_hrxml_AffirmativeActionPlanJobGroupId_s {
 };
 
 #define zx_NEW_hrxml_AffirmativeActionPlanJobGroupId(c, father) (struct zx_hrxml_AffirmativeActionPlanJobGroupId_s*)zx_new_elem((c),(father),zx_hrxml_AffirmativeActionPlanJobGroupId_ELEM)
-
 int zx_DEC_ATTR_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* x);
 int zx_DEC_ELEM_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* x);
-int zx_LEN_SO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* x);
-char* zx_ENC_SO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* zx_DEEP_CLONE_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* x, int dup_strs);
@@ -232,7 +212,6 @@ void zx_hrxml_AffirmativeActionPlanJobGroupId_REV_IdValue(struct zx_hrxml_Affirm
 #ifndef zx_hrxml_Affix_EXT
 #define zx_hrxml_Affix_EXT
 #endif
-
 struct zx_hrxml_Affix_s {
   ZX_ELEM_EXT
   zx_hrxml_Affix_EXT
@@ -240,12 +219,8 @@ struct zx_hrxml_Affix_s {
 };
 
 #define zx_NEW_hrxml_Affix(c, father) (struct zx_hrxml_Affix_s*)zx_new_elem((c),(father),zx_hrxml_Affix_ELEM)
-
 int zx_DEC_ATTR_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x);
 int zx_DEC_ELEM_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x);
-int zx_LEN_SO_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x);
-char* zx_ENC_SO_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Affix_s* zx_DEEP_CLONE_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x, int dup_strs);
@@ -273,7 +248,6 @@ void zx_hrxml_Affix_PUT_type(struct zx_hrxml_Affix_s* x, struct zx_attr_s* y);
 #ifndef zx_hrxml_AlternateScript_EXT
 #define zx_hrxml_AlternateScript_EXT
 #endif
-
 struct zx_hrxml_AlternateScript_s {
   ZX_ELEM_EXT
   zx_hrxml_AlternateScript_EXT
@@ -288,12 +262,8 @@ struct zx_hrxml_AlternateScript_s {
 };
 
 #define zx_NEW_hrxml_AlternateScript(c, father) (struct zx_hrxml_AlternateScript_s*)zx_new_elem((c),(father),zx_hrxml_AlternateScript_ELEM)
-
 int zx_DEC_ATTR_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateScript_s* x);
 int zx_DEC_ELEM_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateScript_s* x);
-int zx_LEN_SO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateScript_s* x);
-char* zx_ENC_SO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateScript_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateScript_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_AlternateScript_s* zx_DEEP_CLONE_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateScript_s* x, int dup_strs);
@@ -355,11 +325,11 @@ void zx_hrxml_AlternateScript_ADD_MiddleName(struct zx_hrxml_AlternateScript_s* 
 void zx_hrxml_AlternateScript_ADD_FamilyName(struct zx_hrxml_AlternateScript_s* x, int n, struct zx_hrxml_FamilyName_s* z);
 void zx_hrxml_AlternateScript_ADD_Affix(struct zx_hrxml_AlternateScript_s* x, int n, struct zx_hrxml_Affix_s* z);
 
-void zx_hrxml_AlternateScript_DEL_FormattedName(struct zx_hrxml_AlternateScript_s* x, int n);
-void zx_hrxml_AlternateScript_DEL_LegalName(struct zx_hrxml_AlternateScript_s* x, int n);
-void zx_hrxml_AlternateScript_DEL_GivenName(struct zx_hrxml_AlternateScript_s* x, int n);
-void zx_hrxml_AlternateScript_DEL_PreferredGivenName(struct zx_hrxml_AlternateScript_s* x, int n);
-void zx_hrxml_AlternateScript_DEL_MiddleName(struct zx_hrxml_AlternateScript_s* x, int n);
+void zx_hrxml_AlternateScript_DEL_FormattedName(struct zx_hrxml_AlternateScript_s* x,int n);
+void zx_hrxml_AlternateScript_DEL_LegalName(struct zx_hrxml_AlternateScript_s* x,int n);
+void zx_hrxml_AlternateScript_DEL_GivenName(struct zx_hrxml_AlternateScript_s* x,int n);
+void zx_hrxml_AlternateScript_DEL_PreferredGivenName(struct zx_hrxml_AlternateScript_s* x,int n);
+void zx_hrxml_AlternateScript_DEL_MiddleName(struct zx_hrxml_AlternateScript_s* x,int n);
 void zx_hrxml_AlternateScript_DEL_FamilyName(struct zx_hrxml_AlternateScript_s* x, int n);
 void zx_hrxml_AlternateScript_DEL_Affix(struct zx_hrxml_AlternateScript_s* x, int n);
 
@@ -377,7 +347,6 @@ void zx_hrxml_AlternateScript_REV_Affix(struct zx_hrxml_AlternateScript_s* x);
 #ifndef zx_hrxml_Area_EXT
 #define zx_hrxml_Area_EXT
 #endif
-
 struct zx_hrxml_Area_s {
   ZX_ELEM_EXT
   zx_hrxml_Area_EXT
@@ -387,12 +356,8 @@ struct zx_hrxml_Area_s {
 };
 
 #define zx_NEW_hrxml_Area(c, father) (struct zx_hrxml_Area_s*)zx_new_elem((c),(father),zx_hrxml_Area_ELEM)
-
 int zx_DEC_ATTR_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x);
 int zx_DEC_ELEM_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x);
-int zx_LEN_SO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x);
-char* zx_ENC_SO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Area_s* zx_DEEP_CLONE_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x, int dup_strs);
@@ -424,7 +389,7 @@ void zx_hrxml_Area_PUT_Area(struct zx_hrxml_Area_s* x, int n, struct zx_hrxml_Ar
 void zx_hrxml_Area_ADD_Value(struct zx_hrxml_Area_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_Area_ADD_Area(struct zx_hrxml_Area_s* x, int n, struct zx_hrxml_Area_s* z);
 
-void zx_hrxml_Area_DEL_Value(struct zx_hrxml_Area_s* x, int n);
+void zx_hrxml_Area_DEL_Value(struct zx_hrxml_Area_s* x,int n);
 void zx_hrxml_Area_DEL_Area(struct zx_hrxml_Area_s* x, int n);
 
 void zx_hrxml_Area_REV_Value(struct zx_hrxml_Area_s* x);
@@ -436,7 +401,6 @@ void zx_hrxml_Area_REV_Area(struct zx_hrxml_Area_s* x);
 #ifndef zx_hrxml_Article_EXT
 #define zx_hrxml_Article_EXT
 #endif
-
 struct zx_hrxml_Article_s {
   ZX_ELEM_EXT
   zx_hrxml_Article_EXT
@@ -456,12 +420,8 @@ struct zx_hrxml_Article_s {
 };
 
 #define zx_NEW_hrxml_Article(c, father) (struct zx_hrxml_Article_s*)zx_new_elem((c),(father),zx_hrxml_Article_ELEM)
-
 int zx_DEC_ATTR_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x);
 int zx_DEC_ELEM_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x);
-int zx_LEN_SO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x);
-char* zx_ENC_SO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Article_s* zx_DEEP_CLONE_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, int dup_strs);
@@ -557,18 +517,18 @@ void zx_hrxml_Article_ADD_Issue(struct zx_hrxml_Article_s* x, int n, struct zx_e
 void zx_hrxml_Article_ADD_PageNumber(struct zx_hrxml_Article_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_Article_ADD_PublicationLanguage(struct zx_hrxml_Article_s* x, int n, struct zx_hrxml_PublicationLanguage_s* z);
 
-void zx_hrxml_Article_DEL_Title(struct zx_hrxml_Article_s* x, int n);
-void zx_hrxml_Article_DEL_Name(struct zx_hrxml_Article_s* x, int n);
+void zx_hrxml_Article_DEL_Title(struct zx_hrxml_Article_s* x,int n);
+void zx_hrxml_Article_DEL_Name(struct zx_hrxml_Article_s* x,int n);
 void zx_hrxml_Article_DEL_PublicationDate(struct zx_hrxml_Article_s* x, int n);
-void zx_hrxml_Article_DEL_Link(struct zx_hrxml_Article_s* x, int n);
-void zx_hrxml_Article_DEL_Abstract(struct zx_hrxml_Article_s* x, int n);
+void zx_hrxml_Article_DEL_Link(struct zx_hrxml_Article_s* x,int n);
+void zx_hrxml_Article_DEL_Abstract(struct zx_hrxml_Article_s* x,int n);
 void zx_hrxml_Article_DEL_Copyright(struct zx_hrxml_Article_s* x, int n);
-void zx_hrxml_Article_DEL_Comments(struct zx_hrxml_Article_s* x, int n);
-void zx_hrxml_Article_DEL_JournalOrSerialName(struct zx_hrxml_Article_s* x, int n);
-void zx_hrxml_Article_DEL_ISSN(struct zx_hrxml_Article_s* x, int n);
-void zx_hrxml_Article_DEL_Volume(struct zx_hrxml_Article_s* x, int n);
-void zx_hrxml_Article_DEL_Issue(struct zx_hrxml_Article_s* x, int n);
-void zx_hrxml_Article_DEL_PageNumber(struct zx_hrxml_Article_s* x, int n);
+void zx_hrxml_Article_DEL_Comments(struct zx_hrxml_Article_s* x,int n);
+void zx_hrxml_Article_DEL_JournalOrSerialName(struct zx_hrxml_Article_s* x,int n);
+void zx_hrxml_Article_DEL_ISSN(struct zx_hrxml_Article_s* x,int n);
+void zx_hrxml_Article_DEL_Volume(struct zx_hrxml_Article_s* x,int n);
+void zx_hrxml_Article_DEL_Issue(struct zx_hrxml_Article_s* x,int n);
+void zx_hrxml_Article_DEL_PageNumber(struct zx_hrxml_Article_s* x,int n);
 void zx_hrxml_Article_DEL_PublicationLanguage(struct zx_hrxml_Article_s* x, int n);
 
 void zx_hrxml_Article_REV_Title(struct zx_hrxml_Article_s* x);
@@ -591,7 +551,6 @@ void zx_hrxml_Article_REV_PublicationLanguage(struct zx_hrxml_Article_s* x);
 #ifndef zx_hrxml_Association_EXT
 #define zx_hrxml_Association_EXT
 #endif
-
 struct zx_hrxml_Association_s {
   ZX_ELEM_EXT
   zx_hrxml_Association_EXT
@@ -606,12 +565,8 @@ struct zx_hrxml_Association_s {
 };
 
 #define zx_NEW_hrxml_Association(c, father) (struct zx_hrxml_Association_s*)zx_new_elem((c),(father),zx_hrxml_Association_ELEM)
-
 int zx_DEC_ATTR_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s* x);
 int zx_DEC_ELEM_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s* x);
-int zx_LEN_SO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s* x);
-char* zx_ENC_SO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Association_s* zx_DEEP_CLONE_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s* x, int dup_strs);
@@ -673,13 +628,13 @@ void zx_hrxml_Association_ADD_EndDate(struct zx_hrxml_Association_s* x, int n, s
 void zx_hrxml_Association_ADD_Role(struct zx_hrxml_Association_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_Association_ADD_Comments(struct zx_hrxml_Association_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_Association_DEL_Name(struct zx_hrxml_Association_s* x, int n);
+void zx_hrxml_Association_DEL_Name(struct zx_hrxml_Association_s* x,int n);
 void zx_hrxml_Association_DEL_Id(struct zx_hrxml_Association_s* x, int n);
-void zx_hrxml_Association_DEL_Link(struct zx_hrxml_Association_s* x, int n);
+void zx_hrxml_Association_DEL_Link(struct zx_hrxml_Association_s* x,int n);
 void zx_hrxml_Association_DEL_StartDate(struct zx_hrxml_Association_s* x, int n);
 void zx_hrxml_Association_DEL_EndDate(struct zx_hrxml_Association_s* x, int n);
-void zx_hrxml_Association_DEL_Role(struct zx_hrxml_Association_s* x, int n);
-void zx_hrxml_Association_DEL_Comments(struct zx_hrxml_Association_s* x, int n);
+void zx_hrxml_Association_DEL_Role(struct zx_hrxml_Association_s* x,int n);
+void zx_hrxml_Association_DEL_Comments(struct zx_hrxml_Association_s* x,int n);
 
 void zx_hrxml_Association_REV_Name(struct zx_hrxml_Association_s* x);
 void zx_hrxml_Association_REV_Id(struct zx_hrxml_Association_s* x);
@@ -695,7 +650,6 @@ void zx_hrxml_Association_REV_Comments(struct zx_hrxml_Association_s* x);
 #ifndef zx_hrxml_Associations_EXT
 #define zx_hrxml_Associations_EXT
 #endif
-
 struct zx_hrxml_Associations_s {
   ZX_ELEM_EXT
   zx_hrxml_Associations_EXT
@@ -703,12 +657,8 @@ struct zx_hrxml_Associations_s {
 };
 
 #define zx_NEW_hrxml_Associations(c, father) (struct zx_hrxml_Associations_s*)zx_new_elem((c),(father),zx_hrxml_Associations_ELEM)
-
 int zx_DEC_ATTR_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_s* x);
 int zx_DEC_ELEM_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_s* x);
-int zx_LEN_SO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_s* x);
-char* zx_ENC_SO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Associations_s* zx_DEEP_CLONE_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_s* x, int dup_strs);
@@ -742,7 +692,6 @@ void zx_hrxml_Associations_REV_Association(struct zx_hrxml_Associations_s* x);
 #ifndef zx_hrxml_AttachmentReference_EXT
 #define zx_hrxml_AttachmentReference_EXT
 #endif
-
 struct zx_hrxml_AttachmentReference_s {
   ZX_ELEM_EXT
   zx_hrxml_AttachmentReference_EXT
@@ -751,12 +700,8 @@ struct zx_hrxml_AttachmentReference_s {
 };
 
 #define zx_NEW_hrxml_AttachmentReference(c, father) (struct zx_hrxml_AttachmentReference_s*)zx_new_elem((c),(father),zx_hrxml_AttachmentReference_ELEM)
-
 int zx_DEC_ATTR_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_AttachmentReference_s* x);
 int zx_DEC_ELEM_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_AttachmentReference_s* x);
-int zx_LEN_SO_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_AttachmentReference_s* x);
-char* zx_ENC_SO_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_AttachmentReference_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_AttachmentReference_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_AttachmentReference_s* zx_DEEP_CLONE_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_AttachmentReference_s* x, int dup_strs);
@@ -786,7 +731,6 @@ void zx_hrxml_AttachmentReference_PUT_mimeType(struct zx_hrxml_AttachmentReferen
 #ifndef zx_hrxml_AvailabilityDates_EXT
 #define zx_hrxml_AvailabilityDates_EXT
 #endif
-
 struct zx_hrxml_AvailabilityDates_s {
   ZX_ELEM_EXT
   zx_hrxml_AvailabilityDates_EXT
@@ -795,12 +739,8 @@ struct zx_hrxml_AvailabilityDates_s {
 };
 
 #define zx_NEW_hrxml_AvailabilityDates(c, father) (struct zx_hrxml_AvailabilityDates_s*)zx_new_elem((c),(father),zx_hrxml_AvailabilityDates_ELEM)
-
 int zx_DEC_ATTR_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_AvailabilityDates_s* x);
 int zx_DEC_ELEM_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_AvailabilityDates_s* x);
-int zx_LEN_SO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_AvailabilityDates_s* x);
-char* zx_ENC_SO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_AvailabilityDates_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_AvailabilityDates_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_AvailabilityDates_s* zx_DEEP_CLONE_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_AvailabilityDates_s* x, int dup_strs);
@@ -842,7 +782,6 @@ void zx_hrxml_AvailabilityDates_REV_EndDate(struct zx_hrxml_AvailabilityDates_s*
 #ifndef zx_hrxml_AvailabilityInfo_EXT
 #define zx_hrxml_AvailabilityInfo_EXT
 #endif
-
 struct zx_hrxml_AvailabilityInfo_s {
   ZX_ELEM_EXT
   zx_hrxml_AvailabilityInfo_EXT
@@ -851,12 +790,8 @@ struct zx_hrxml_AvailabilityInfo_s {
 };
 
 #define zx_NEW_hrxml_AvailabilityInfo(c, father) (struct zx_hrxml_AvailabilityInfo_s*)zx_new_elem((c),(father),zx_hrxml_AvailabilityInfo_ELEM)
-
 int zx_DEC_ATTR_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_AvailabilityInfo_s* x);
 int zx_DEC_ELEM_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_AvailabilityInfo_s* x);
-int zx_LEN_SO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_AvailabilityInfo_s* x);
-char* zx_ENC_SO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_AvailabilityInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_AvailabilityInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_AvailabilityInfo_s* zx_DEEP_CLONE_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_AvailabilityInfo_s* x, int dup_strs);
@@ -898,7 +833,6 @@ void zx_hrxml_AvailabilityInfo_REV_TermOfNotice(struct zx_hrxml_AvailabilityInfo
 #ifndef zx_hrxml_BKZClassification_EXT
 #define zx_hrxml_BKZClassification_EXT
 #endif
-
 struct zx_hrxml_BKZClassification_s {
   ZX_ELEM_EXT
   zx_hrxml_BKZClassification_EXT
@@ -907,12 +841,8 @@ struct zx_hrxml_BKZClassification_s {
 };
 
 #define zx_NEW_hrxml_BKZClassification(c, father) (struct zx_hrxml_BKZClassification_s*)zx_new_elem((c),(father),zx_hrxml_BKZClassification_ELEM)
-
 int zx_DEC_ATTR_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClassification_s* x);
 int zx_DEC_ELEM_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClassification_s* x);
-int zx_LEN_SO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClassification_s* x);
-char* zx_ENC_SO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClassification_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClassification_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_BKZClassification_s* zx_DEEP_CLONE_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClassification_s* x, int dup_strs);
@@ -943,7 +873,7 @@ void zx_hrxml_BKZClassification_ADD_BKZId(struct zx_hrxml_BKZClassification_s* x
 void zx_hrxml_BKZClassification_ADD_BKZName(struct zx_hrxml_BKZClassification_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_BKZClassification_DEL_BKZId(struct zx_hrxml_BKZClassification_s* x, int n);
-void zx_hrxml_BKZClassification_DEL_BKZName(struct zx_hrxml_BKZClassification_s* x, int n);
+void zx_hrxml_BKZClassification_DEL_BKZName(struct zx_hrxml_BKZClassification_s* x,int n);
 
 void zx_hrxml_BKZClassification_REV_BKZId(struct zx_hrxml_BKZClassification_s* x);
 void zx_hrxml_BKZClassification_REV_BKZName(struct zx_hrxml_BKZClassification_s* x);
@@ -954,7 +884,6 @@ void zx_hrxml_BKZClassification_REV_BKZName(struct zx_hrxml_BKZClassification_s*
 #ifndef zx_hrxml_BKZId_EXT
 #define zx_hrxml_BKZId_EXT
 #endif
-
 struct zx_hrxml_BKZId_s {
   ZX_ELEM_EXT
   zx_hrxml_BKZId_EXT
@@ -965,12 +894,8 @@ struct zx_hrxml_BKZId_s {
 };
 
 #define zx_NEW_hrxml_BKZId(c, father) (struct zx_hrxml_BKZId_s*)zx_new_elem((c),(father),zx_hrxml_BKZId_ELEM)
-
 int zx_DEC_ATTR_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x);
 int zx_DEC_ELEM_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x);
-int zx_LEN_SO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x);
-char* zx_ENC_SO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_BKZId_s* zx_DEEP_CLONE_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x, int dup_strs);
@@ -1010,7 +935,6 @@ void zx_hrxml_BKZId_REV_IdValue(struct zx_hrxml_BKZId_s* x);
 #ifndef zx_hrxml_BasePay_EXT
 #define zx_hrxml_BasePay_EXT
 #endif
-
 struct zx_hrxml_BasePay_s {
   ZX_ELEM_EXT
   zx_hrxml_BasePay_EXT
@@ -1021,12 +945,8 @@ struct zx_hrxml_BasePay_s {
 };
 
 #define zx_NEW_hrxml_BasePay(c, father) (struct zx_hrxml_BasePay_s*)zx_new_elem((c),(father),zx_hrxml_BasePay_ELEM)
-
 int zx_DEC_ATTR_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x);
 int zx_DEC_ELEM_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x);
-int zx_LEN_SO_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x);
-char* zx_ENC_SO_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_BasePay_s* zx_DEEP_CLONE_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x, int dup_strs);
@@ -1060,8 +980,8 @@ void zx_hrxml_BasePay_PUT_BasePayAmountMax(struct zx_hrxml_BasePay_s* x, int n, 
 void zx_hrxml_BasePay_ADD_BasePayAmountMin(struct zx_hrxml_BasePay_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_BasePay_ADD_BasePayAmountMax(struct zx_hrxml_BasePay_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_BasePay_DEL_BasePayAmountMin(struct zx_hrxml_BasePay_s* x, int n);
-void zx_hrxml_BasePay_DEL_BasePayAmountMax(struct zx_hrxml_BasePay_s* x, int n);
+void zx_hrxml_BasePay_DEL_BasePayAmountMin(struct zx_hrxml_BasePay_s* x,int n);
+void zx_hrxml_BasePay_DEL_BasePayAmountMax(struct zx_hrxml_BasePay_s* x,int n);
 
 void zx_hrxml_BasePay_REV_BasePayAmountMin(struct zx_hrxml_BasePay_s* x);
 void zx_hrxml_BasePay_REV_BasePayAmountMax(struct zx_hrxml_BasePay_s* x);
@@ -1072,7 +992,6 @@ void zx_hrxml_BasePay_REV_BasePayAmountMax(struct zx_hrxml_BasePay_s* x);
 #ifndef zx_hrxml_Benefits_EXT
 #define zx_hrxml_Benefits_EXT
 #endif
-
 struct zx_hrxml_Benefits_s {
   ZX_ELEM_EXT
   zx_hrxml_Benefits_EXT
@@ -1088,12 +1007,8 @@ struct zx_hrxml_Benefits_s {
 };
 
 #define zx_NEW_hrxml_Benefits(c, father) (struct zx_hrxml_Benefits_s*)zx_new_elem((c),(father),zx_hrxml_Benefits_ELEM)
-
 int zx_DEC_ATTR_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x);
 int zx_DEC_ELEM_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x);
-int zx_LEN_SO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x);
-char* zx_ENC_SO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Benefits_s* zx_DEEP_CLONE_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x, int dup_strs);
@@ -1166,14 +1081,14 @@ void zx_hrxml_Benefits_ADD_OtherBenefits(struct zx_hrxml_Benefits_s* x, int n, s
 void zx_hrxml_Benefits_ADD_Comments(struct zx_hrxml_Benefits_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_Benefits_DEL_Insurance(struct zx_hrxml_Benefits_s* x, int n);
-void zx_hrxml_Benefits_DEL_RetirementOrSavingsPlan(struct zx_hrxml_Benefits_s* x, int n);
+void zx_hrxml_Benefits_DEL_RetirementOrSavingsPlan(struct zx_hrxml_Benefits_s* x,int n);
 void zx_hrxml_Benefits_DEL_CompanyVehicle(struct zx_hrxml_Benefits_s* x, int n);
 void zx_hrxml_Benefits_DEL_RelocationAssistance(struct zx_hrxml_Benefits_s* x, int n);
-void zx_hrxml_Benefits_DEL_VisaSponsorship(struct zx_hrxml_Benefits_s* x, int n);
+void zx_hrxml_Benefits_DEL_VisaSponsorship(struct zx_hrxml_Benefits_s* x,int n);
 void zx_hrxml_Benefits_DEL_TimeOffAllowance(struct zx_hrxml_Benefits_s* x, int n);
 void zx_hrxml_Benefits_DEL_ExpatriateBenefits(struct zx_hrxml_Benefits_s* x, int n);
 void zx_hrxml_Benefits_DEL_OtherBenefits(struct zx_hrxml_Benefits_s* x, int n);
-void zx_hrxml_Benefits_DEL_Comments(struct zx_hrxml_Benefits_s* x, int n);
+void zx_hrxml_Benefits_DEL_Comments(struct zx_hrxml_Benefits_s* x,int n);
 
 void zx_hrxml_Benefits_REV_Insurance(struct zx_hrxml_Benefits_s* x);
 void zx_hrxml_Benefits_REV_RetirementOrSavingsPlan(struct zx_hrxml_Benefits_s* x);
@@ -1191,7 +1106,6 @@ void zx_hrxml_Benefits_REV_Comments(struct zx_hrxml_Benefits_s* x);
 #ifndef zx_hrxml_BiologicalDescriptors_EXT
 #define zx_hrxml_BiologicalDescriptors_EXT
 #endif
-
 struct zx_hrxml_BiologicalDescriptors_s {
   ZX_ELEM_EXT
   zx_hrxml_BiologicalDescriptors_EXT
@@ -1209,12 +1123,8 @@ struct zx_hrxml_BiologicalDescriptors_s {
 };
 
 #define zx_NEW_hrxml_BiologicalDescriptors(c, father) (struct zx_hrxml_BiologicalDescriptors_s*)zx_new_elem((c),(father),zx_hrxml_BiologicalDescriptors_ELEM)
-
 int zx_DEC_ATTR_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_BiologicalDescriptors_s* x);
 int zx_DEC_ELEM_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_BiologicalDescriptors_s* x);
-int zx_LEN_SO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_BiologicalDescriptors_s* x);
-char* zx_ENC_SO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_BiologicalDescriptors_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_BiologicalDescriptors_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_BiologicalDescriptors_s* zx_DEEP_CLONE_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_BiologicalDescriptors_s* x, int dup_strs);
@@ -1298,15 +1208,15 @@ void zx_hrxml_BiologicalDescriptors_ADD_IdentifyingMarks(struct zx_hrxml_Biologi
 void zx_hrxml_BiologicalDescriptors_ADD_DisabilityInfo(struct zx_hrxml_BiologicalDescriptors_s* x, int n, struct zx_hrxml_DisabilityInfo_s* z);
 void zx_hrxml_BiologicalDescriptors_ADD_UserArea(struct zx_hrxml_BiologicalDescriptors_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_BiologicalDescriptors_DEL_DateOfBirth(struct zx_hrxml_BiologicalDescriptors_s* x, int n);
-void zx_hrxml_BiologicalDescriptors_DEL_MonthDayOfBirth(struct zx_hrxml_BiologicalDescriptors_s* x, int n);
-void zx_hrxml_BiologicalDescriptors_DEL_Age(struct zx_hrxml_BiologicalDescriptors_s* x, int n);
-void zx_hrxml_BiologicalDescriptors_DEL_GenderCode(struct zx_hrxml_BiologicalDescriptors_s* x, int n);
-void zx_hrxml_BiologicalDescriptors_DEL_EyeColor(struct zx_hrxml_BiologicalDescriptors_s* x, int n);
-void zx_hrxml_BiologicalDescriptors_DEL_HairColor(struct zx_hrxml_BiologicalDescriptors_s* x, int n);
+void zx_hrxml_BiologicalDescriptors_DEL_DateOfBirth(struct zx_hrxml_BiologicalDescriptors_s* x,int n);
+void zx_hrxml_BiologicalDescriptors_DEL_MonthDayOfBirth(struct zx_hrxml_BiologicalDescriptors_s* x,int n);
+void zx_hrxml_BiologicalDescriptors_DEL_Age(struct zx_hrxml_BiologicalDescriptors_s* x,int n);
+void zx_hrxml_BiologicalDescriptors_DEL_GenderCode(struct zx_hrxml_BiologicalDescriptors_s* x,int n);
+void zx_hrxml_BiologicalDescriptors_DEL_EyeColor(struct zx_hrxml_BiologicalDescriptors_s* x,int n);
+void zx_hrxml_BiologicalDescriptors_DEL_HairColor(struct zx_hrxml_BiologicalDescriptors_s* x,int n);
 void zx_hrxml_BiologicalDescriptors_DEL_Height(struct zx_hrxml_BiologicalDescriptors_s* x, int n);
 void zx_hrxml_BiologicalDescriptors_DEL_Weight(struct zx_hrxml_BiologicalDescriptors_s* x, int n);
-void zx_hrxml_BiologicalDescriptors_DEL_IdentifyingMarks(struct zx_hrxml_BiologicalDescriptors_s* x, int n);
+void zx_hrxml_BiologicalDescriptors_DEL_IdentifyingMarks(struct zx_hrxml_BiologicalDescriptors_s* x,int n);
 void zx_hrxml_BiologicalDescriptors_DEL_DisabilityInfo(struct zx_hrxml_BiologicalDescriptors_s* x, int n);
 void zx_hrxml_BiologicalDescriptors_DEL_UserArea(struct zx_hrxml_BiologicalDescriptors_s* x, int n);
 
@@ -1328,7 +1238,6 @@ void zx_hrxml_BiologicalDescriptors_REV_UserArea(struct zx_hrxml_BiologicalDescr
 #ifndef zx_hrxml_Book_EXT
 #define zx_hrxml_Book_EXT
 #endif
-
 struct zx_hrxml_Book_s {
   ZX_ELEM_EXT
   zx_hrxml_Book_EXT
@@ -1349,12 +1258,8 @@ struct zx_hrxml_Book_s {
 };
 
 #define zx_NEW_hrxml_Book(c, father) (struct zx_hrxml_Book_s*)zx_new_elem((c),(father),zx_hrxml_Book_ELEM)
-
 int zx_DEC_ATTR_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x);
 int zx_DEC_ELEM_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x);
-int zx_LEN_SO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x);
-char* zx_ENC_SO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Book_s* zx_DEEP_CLONE_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x, int dup_strs);
@@ -1456,20 +1361,20 @@ void zx_hrxml_Book_ADD_NumberOfPages(struct zx_hrxml_Book_s* x, int n, struct zx
 void zx_hrxml_Book_ADD_PublisherName(struct zx_hrxml_Book_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_Book_ADD_PublisherLocation(struct zx_hrxml_Book_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_Book_DEL_Title(struct zx_hrxml_Book_s* x, int n);
-void zx_hrxml_Book_DEL_Name(struct zx_hrxml_Book_s* x, int n);
+void zx_hrxml_Book_DEL_Title(struct zx_hrxml_Book_s* x,int n);
+void zx_hrxml_Book_DEL_Name(struct zx_hrxml_Book_s* x,int n);
 void zx_hrxml_Book_DEL_PublicationDate(struct zx_hrxml_Book_s* x, int n);
-void zx_hrxml_Book_DEL_Link(struct zx_hrxml_Book_s* x, int n);
-void zx_hrxml_Book_DEL_Abstract(struct zx_hrxml_Book_s* x, int n);
+void zx_hrxml_Book_DEL_Link(struct zx_hrxml_Book_s* x,int n);
+void zx_hrxml_Book_DEL_Abstract(struct zx_hrxml_Book_s* x,int n);
 void zx_hrxml_Book_DEL_Copyright(struct zx_hrxml_Book_s* x, int n);
-void zx_hrxml_Book_DEL_Comments(struct zx_hrxml_Book_s* x, int n);
-void zx_hrxml_Book_DEL_Edition(struct zx_hrxml_Book_s* x, int n);
-void zx_hrxml_Book_DEL_Chapter(struct zx_hrxml_Book_s* x, int n);
-void zx_hrxml_Book_DEL_ISSN(struct zx_hrxml_Book_s* x, int n);
-void zx_hrxml_Book_DEL_ISBN(struct zx_hrxml_Book_s* x, int n);
-void zx_hrxml_Book_DEL_NumberOfPages(struct zx_hrxml_Book_s* x, int n);
-void zx_hrxml_Book_DEL_PublisherName(struct zx_hrxml_Book_s* x, int n);
-void zx_hrxml_Book_DEL_PublisherLocation(struct zx_hrxml_Book_s* x, int n);
+void zx_hrxml_Book_DEL_Comments(struct zx_hrxml_Book_s* x,int n);
+void zx_hrxml_Book_DEL_Edition(struct zx_hrxml_Book_s* x,int n);
+void zx_hrxml_Book_DEL_Chapter(struct zx_hrxml_Book_s* x,int n);
+void zx_hrxml_Book_DEL_ISSN(struct zx_hrxml_Book_s* x,int n);
+void zx_hrxml_Book_DEL_ISBN(struct zx_hrxml_Book_s* x,int n);
+void zx_hrxml_Book_DEL_NumberOfPages(struct zx_hrxml_Book_s* x,int n);
+void zx_hrxml_Book_DEL_PublisherName(struct zx_hrxml_Book_s* x,int n);
+void zx_hrxml_Book_DEL_PublisherLocation(struct zx_hrxml_Book_s* x,int n);
 
 void zx_hrxml_Book_REV_Title(struct zx_hrxml_Book_s* x);
 void zx_hrxml_Book_REV_Name(struct zx_hrxml_Book_s* x);
@@ -1492,7 +1397,6 @@ void zx_hrxml_Book_REV_PublisherLocation(struct zx_hrxml_Book_s* x);
 #ifndef zx_hrxml_Candidate_EXT
 #define zx_hrxml_Candidate_EXT
 #endif
-
 struct zx_hrxml_Candidate_s {
   ZX_ELEM_EXT
   zx_hrxml_Candidate_EXT
@@ -1507,12 +1411,8 @@ struct zx_hrxml_Candidate_s {
 };
 
 #define zx_NEW_hrxml_Candidate(c, father) (struct zx_hrxml_Candidate_s*)zx_new_elem((c),(father),zx_hrxml_Candidate_ELEM)
-
 int zx_DEC_ATTR_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x);
 int zx_DEC_ELEM_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x);
-int zx_LEN_SO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x);
-char* zx_ENC_SO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Candidate_s* zx_DEEP_CLONE_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x, int dup_strs);
@@ -1577,7 +1477,7 @@ void zx_hrxml_Candidate_ADD_UserArea(struct zx_hrxml_Candidate_s* x, int n, stru
 void zx_hrxml_Candidate_DEL_CandidateRecordInfo(struct zx_hrxml_Candidate_s* x, int n);
 void zx_hrxml_Candidate_DEL_RelatedPositionPostings(struct zx_hrxml_Candidate_s* x, int n);
 void zx_hrxml_Candidate_DEL_CandidateSupplier(struct zx_hrxml_Candidate_s* x, int n);
-void zx_hrxml_Candidate_DEL_DistributionGuidelines(struct zx_hrxml_Candidate_s* x, int n);
+void zx_hrxml_Candidate_DEL_DistributionGuidelines(struct zx_hrxml_Candidate_s* x,int n);
 void zx_hrxml_Candidate_DEL_CandidateProfile(struct zx_hrxml_Candidate_s* x, int n);
 void zx_hrxml_Candidate_DEL_Resume(struct zx_hrxml_Candidate_s* x, int n);
 void zx_hrxml_Candidate_DEL_UserArea(struct zx_hrxml_Candidate_s* x, int n);
@@ -1596,7 +1496,6 @@ void zx_hrxml_Candidate_REV_UserArea(struct zx_hrxml_Candidate_s* x);
 #ifndef zx_hrxml_CandidateProfile_EXT
 #define zx_hrxml_CandidateProfile_EXT
 #endif
-
 struct zx_hrxml_CandidateProfile_s {
   ZX_ELEM_EXT
   zx_hrxml_CandidateProfile_EXT
@@ -1616,12 +1515,8 @@ struct zx_hrxml_CandidateProfile_s {
 };
 
 #define zx_NEW_hrxml_CandidateProfile(c, father) (struct zx_hrxml_CandidateProfile_s*)zx_new_elem((c),(father),zx_hrxml_CandidateProfile_ELEM)
-
 int zx_DEC_ATTR_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_CandidateProfile_s* x);
 int zx_DEC_ELEM_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_CandidateProfile_s* x);
-int zx_LEN_SO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_CandidateProfile_s* x);
-char* zx_ENC_SO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_CandidateProfile_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_CandidateProfile_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_CandidateProfile_s* zx_DEEP_CLONE_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_CandidateProfile_s* x, int dup_strs);
@@ -1714,9 +1609,9 @@ void zx_hrxml_CandidateProfile_ADD_SupportingMaterials(struct zx_hrxml_Candidate
 void zx_hrxml_CandidateProfile_ADD_UserArea(struct zx_hrxml_CandidateProfile_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
 void zx_hrxml_CandidateProfile_DEL_ProfileId(struct zx_hrxml_CandidateProfile_s* x, int n);
-void zx_hrxml_CandidateProfile_DEL_ProfileName(struct zx_hrxml_CandidateProfile_s* x, int n);
+void zx_hrxml_CandidateProfile_DEL_ProfileName(struct zx_hrxml_CandidateProfile_s* x,int n);
 void zx_hrxml_CandidateProfile_DEL_AvailabilityInfo(struct zx_hrxml_CandidateProfile_s* x, int n);
-void zx_hrxml_CandidateProfile_DEL_DistributionGuidelines(struct zx_hrxml_CandidateProfile_s* x, int n);
+void zx_hrxml_CandidateProfile_DEL_DistributionGuidelines(struct zx_hrxml_CandidateProfile_s* x,int n);
 void zx_hrxml_CandidateProfile_DEL_PersonalData(struct zx_hrxml_CandidateProfile_s* x, int n);
 void zx_hrxml_CandidateProfile_DEL_PreferredPosition(struct zx_hrxml_CandidateProfile_s* x, int n);
 void zx_hrxml_CandidateProfile_DEL_EmploymentHistory(struct zx_hrxml_CandidateProfile_s* x, int n);
@@ -1745,7 +1640,6 @@ void zx_hrxml_CandidateProfile_REV_UserArea(struct zx_hrxml_CandidateProfile_s* 
 #ifndef zx_hrxml_CandidateRecordInfo_EXT
 #define zx_hrxml_CandidateRecordInfo_EXT
 #endif
-
 struct zx_hrxml_CandidateRecordInfo_s {
   ZX_ELEM_EXT
   zx_hrxml_CandidateRecordInfo_EXT
@@ -1754,12 +1648,8 @@ struct zx_hrxml_CandidateRecordInfo_s {
 };
 
 #define zx_NEW_hrxml_CandidateRecordInfo(c, father) (struct zx_hrxml_CandidateRecordInfo_s*)zx_new_elem((c),(father),zx_hrxml_CandidateRecordInfo_ELEM)
-
 int zx_DEC_ATTR_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_CandidateRecordInfo_s* x);
 int zx_DEC_ELEM_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_CandidateRecordInfo_s* x);
-int zx_LEN_SO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_CandidateRecordInfo_s* x);
-char* zx_ENC_SO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_CandidateRecordInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_CandidateRecordInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_CandidateRecordInfo_s* zx_DEEP_CLONE_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_CandidateRecordInfo_s* x, int dup_strs);
@@ -1801,7 +1691,6 @@ void zx_hrxml_CandidateRecordInfo_REV_Status(struct zx_hrxml_CandidateRecordInfo
 #ifndef zx_hrxml_CandidateSupplier_EXT
 #define zx_hrxml_CandidateSupplier_EXT
 #endif
-
 struct zx_hrxml_CandidateSupplier_s {
   ZX_ELEM_EXT
   zx_hrxml_CandidateSupplier_EXT
@@ -1814,12 +1703,8 @@ struct zx_hrxml_CandidateSupplier_s {
 };
 
 #define zx_NEW_hrxml_CandidateSupplier(c, father) (struct zx_hrxml_CandidateSupplier_s*)zx_new_elem((c),(father),zx_hrxml_CandidateSupplier_ELEM)
-
 int zx_DEC_ATTR_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_CandidateSupplier_s* x);
 int zx_DEC_ELEM_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_CandidateSupplier_s* x);
-int zx_LEN_SO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_CandidateSupplier_s* x);
-char* zx_ENC_SO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_CandidateSupplier_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_CandidateSupplier_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_CandidateSupplier_s* zx_DEEP_CLONE_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_CandidateSupplier_s* x, int dup_strs);
@@ -1870,7 +1755,7 @@ void zx_hrxml_CandidateSupplier_ADD_ContactMethod(struct zx_hrxml_CandidateSuppl
 void zx_hrxml_CandidateSupplier_ADD_SourceType(struct zx_hrxml_CandidateSupplier_s* x, int n, struct zx_hrxml_SourceType_s* z);
 
 void zx_hrxml_CandidateSupplier_DEL_SupplierId(struct zx_hrxml_CandidateSupplier_s* x, int n);
-void zx_hrxml_CandidateSupplier_DEL_EntityName(struct zx_hrxml_CandidateSupplier_s* x, int n);
+void zx_hrxml_CandidateSupplier_DEL_EntityName(struct zx_hrxml_CandidateSupplier_s* x,int n);
 void zx_hrxml_CandidateSupplier_DEL_ContactName(struct zx_hrxml_CandidateSupplier_s* x, int n);
 void zx_hrxml_CandidateSupplier_DEL_ContactMethod(struct zx_hrxml_CandidateSupplier_s* x, int n);
 void zx_hrxml_CandidateSupplier_DEL_SourceType(struct zx_hrxml_CandidateSupplier_s* x, int n);
@@ -1887,7 +1772,6 @@ void zx_hrxml_CandidateSupplier_REV_SourceType(struct zx_hrxml_CandidateSupplier
 #ifndef zx_hrxml_ChildrenInfo_EXT
 #define zx_hrxml_ChildrenInfo_EXT
 #endif
-
 struct zx_hrxml_ChildrenInfo_s {
   ZX_ELEM_EXT
   zx_hrxml_ChildrenInfo_EXT
@@ -1896,12 +1780,8 @@ struct zx_hrxml_ChildrenInfo_s {
 };
 
 #define zx_NEW_hrxml_ChildrenInfo(c, father) (struct zx_hrxml_ChildrenInfo_s*)zx_new_elem((c),(father),zx_hrxml_ChildrenInfo_ELEM)
-
 int zx_DEC_ATTR_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_s* x);
 int zx_DEC_ELEM_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_s* x);
-int zx_LEN_SO_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_s* x);
-char* zx_ENC_SO_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ChildrenInfo_s* zx_DEEP_CLONE_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_s* x, int dup_strs);
@@ -1931,8 +1811,8 @@ void zx_hrxml_ChildrenInfo_PUT_Comments(struct zx_hrxml_ChildrenInfo_s* x, int n
 void zx_hrxml_ChildrenInfo_ADD_NumberOfChildren(struct zx_hrxml_ChildrenInfo_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_ChildrenInfo_ADD_Comments(struct zx_hrxml_ChildrenInfo_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_ChildrenInfo_DEL_NumberOfChildren(struct zx_hrxml_ChildrenInfo_s* x, int n);
-void zx_hrxml_ChildrenInfo_DEL_Comments(struct zx_hrxml_ChildrenInfo_s* x, int n);
+void zx_hrxml_ChildrenInfo_DEL_NumberOfChildren(struct zx_hrxml_ChildrenInfo_s* x,int n);
+void zx_hrxml_ChildrenInfo_DEL_Comments(struct zx_hrxml_ChildrenInfo_s* x,int n);
 
 void zx_hrxml_ChildrenInfo_REV_NumberOfChildren(struct zx_hrxml_ChildrenInfo_s* x);
 void zx_hrxml_ChildrenInfo_REV_Comments(struct zx_hrxml_ChildrenInfo_s* x);
@@ -1943,7 +1823,6 @@ void zx_hrxml_ChildrenInfo_REV_Comments(struct zx_hrxml_ChildrenInfo_s* x);
 #ifndef zx_hrxml_ClassRank_EXT
 #define zx_hrxml_ClassRank_EXT
 #endif
-
 struct zx_hrxml_ClassRank_s {
   ZX_ELEM_EXT
   zx_hrxml_ClassRank_EXT
@@ -1951,12 +1830,8 @@ struct zx_hrxml_ClassRank_s {
 };
 
 #define zx_NEW_hrxml_ClassRank(c, father) (struct zx_hrxml_ClassRank_s*)zx_new_elem((c),(father),zx_hrxml_ClassRank_ELEM)
-
 int zx_DEC_ATTR_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x);
 int zx_DEC_ELEM_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x);
-int zx_LEN_SO_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x);
-char* zx_ENC_SO_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ClassRank_s* zx_DEEP_CLONE_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x, int dup_strs);
@@ -1984,7 +1859,6 @@ void zx_hrxml_ClassRank_PUT_numberOfStudents(struct zx_hrxml_ClassRank_s* x, str
 #ifndef zx_hrxml_Commute_EXT
 #define zx_hrxml_Commute_EXT
 #endif
-
 struct zx_hrxml_Commute_s {
   ZX_ELEM_EXT
   zx_hrxml_Commute_EXT
@@ -1994,12 +1868,8 @@ struct zx_hrxml_Commute_s {
 };
 
 #define zx_NEW_hrxml_Commute(c, father) (struct zx_hrxml_Commute_s*)zx_new_elem((c),(father),zx_hrxml_Commute_ELEM)
-
 int zx_DEC_ATTR_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x);
 int zx_DEC_ELEM_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x);
-int zx_LEN_SO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x);
-char* zx_ENC_SO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Commute_s* zx_DEEP_CLONE_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x, int dup_strs);
@@ -2037,7 +1907,7 @@ void zx_hrxml_Commute_ADD_Comments(struct zx_hrxml_Commute_s* x, int n, struct z
 
 void zx_hrxml_Commute_DEL_TimeMax(struct zx_hrxml_Commute_s* x, int n);
 void zx_hrxml_Commute_DEL_DistanceMax(struct zx_hrxml_Commute_s* x, int n);
-void zx_hrxml_Commute_DEL_Comments(struct zx_hrxml_Commute_s* x, int n);
+void zx_hrxml_Commute_DEL_Comments(struct zx_hrxml_Commute_s* x,int n);
 
 void zx_hrxml_Commute_REV_TimeMax(struct zx_hrxml_Commute_s* x);
 void zx_hrxml_Commute_REV_DistanceMax(struct zx_hrxml_Commute_s* x);
@@ -2049,7 +1919,6 @@ void zx_hrxml_Commute_REV_Comments(struct zx_hrxml_Commute_s* x);
 #ifndef zx_hrxml_Company_EXT
 #define zx_hrxml_Company_EXT
 #endif
-
 struct zx_hrxml_Company_s {
   ZX_ELEM_EXT
   zx_hrxml_Company_EXT
@@ -2058,12 +1927,8 @@ struct zx_hrxml_Company_s {
 };
 
 #define zx_NEW_hrxml_Company(c, father) (struct zx_hrxml_Company_s*)zx_new_elem((c),(father),zx_hrxml_Company_ELEM)
-
 int zx_DEC_ATTR_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x);
 int zx_DEC_ELEM_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x);
-int zx_LEN_SO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x);
-char* zx_ENC_SO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Company_s* zx_DEEP_CLONE_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x, int dup_strs);
@@ -2094,7 +1959,7 @@ void zx_hrxml_Company_ADD_Id(struct zx_hrxml_Company_s* x, int n, struct zx_hrxm
 void zx_hrxml_Company_ADD_Name(struct zx_hrxml_Company_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_Company_DEL_Id(struct zx_hrxml_Company_s* x, int n);
-void zx_hrxml_Company_DEL_Name(struct zx_hrxml_Company_s* x, int n);
+void zx_hrxml_Company_DEL_Name(struct zx_hrxml_Company_s* x,int n);
 
 void zx_hrxml_Company_REV_Id(struct zx_hrxml_Company_s* x);
 void zx_hrxml_Company_REV_Name(struct zx_hrxml_Company_s* x);
@@ -2105,7 +1970,6 @@ void zx_hrxml_Company_REV_Name(struct zx_hrxml_Company_s* x);
 #ifndef zx_hrxml_CompanyVehicle_EXT
 #define zx_hrxml_CompanyVehicle_EXT
 #endif
-
 struct zx_hrxml_CompanyVehicle_s {
   ZX_ELEM_EXT
   zx_hrxml_CompanyVehicle_EXT
@@ -2114,12 +1978,8 @@ struct zx_hrxml_CompanyVehicle_s {
 };
 
 #define zx_NEW_hrxml_CompanyVehicle(c, father) (struct zx_hrxml_CompanyVehicle_s*)zx_new_elem((c),(father),zx_hrxml_CompanyVehicle_ELEM)
-
 int zx_DEC_ATTR_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehicle_s* x);
 int zx_DEC_ELEM_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehicle_s* x);
-int zx_LEN_SO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehicle_s* x);
-char* zx_ENC_SO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehicle_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehicle_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_CompanyVehicle_s* zx_DEEP_CLONE_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehicle_s* x, int dup_strs);
@@ -2155,7 +2015,6 @@ void zx_hrxml_CompanyVehicle_REV_Description(struct zx_hrxml_CompanyVehicle_s* x
 #ifndef zx_hrxml_Compensation_EXT
 #define zx_hrxml_Compensation_EXT
 #endif
-
 struct zx_hrxml_Compensation_s {
   ZX_ELEM_EXT
   zx_hrxml_Compensation_EXT
@@ -2166,12 +2025,8 @@ struct zx_hrxml_Compensation_s {
 };
 
 #define zx_NEW_hrxml_Compensation(c, father) (struct zx_hrxml_Compensation_s*)zx_new_elem((c),(father),zx_hrxml_Compensation_ELEM)
-
 int zx_DEC_ATTR_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_s* x);
 int zx_DEC_ELEM_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_s* x);
-int zx_LEN_SO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_s* x);
-char* zx_ENC_SO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Compensation_s* zx_DEEP_CLONE_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_s* x, int dup_strs);
@@ -2215,7 +2070,7 @@ void zx_hrxml_Compensation_ADD_OtherCompensation(struct zx_hrxml_Compensation_s*
 
 void zx_hrxml_Compensation_DEL_StartingCompensation(struct zx_hrxml_Compensation_s* x, int n);
 void zx_hrxml_Compensation_DEL_EndingCompensation(struct zx_hrxml_Compensation_s* x, int n);
-void zx_hrxml_Compensation_DEL_Comments(struct zx_hrxml_Compensation_s* x, int n);
+void zx_hrxml_Compensation_DEL_Comments(struct zx_hrxml_Compensation_s* x,int n);
 void zx_hrxml_Compensation_DEL_OtherCompensation(struct zx_hrxml_Compensation_s* x, int n);
 
 void zx_hrxml_Compensation_REV_StartingCompensation(struct zx_hrxml_Compensation_s* x);
@@ -2229,7 +2084,6 @@ void zx_hrxml_Compensation_REV_OtherCompensation(struct zx_hrxml_Compensation_s*
 #ifndef zx_hrxml_Competency_EXT
 #define zx_hrxml_Competency_EXT
 #endif
-
 struct zx_hrxml_Competency_s {
   ZX_ELEM_EXT
   zx_hrxml_Competency_EXT
@@ -2245,12 +2099,8 @@ struct zx_hrxml_Competency_s {
 };
 
 #define zx_NEW_hrxml_Competency(c, father) (struct zx_hrxml_Competency_s*)zx_new_elem((c),(father),zx_hrxml_Competency_ELEM)
-
 int zx_DEC_ATTR_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x);
 int zx_DEC_ELEM_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x);
-int zx_LEN_SO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x);
-char* zx_ENC_SO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Competency_s* zx_DEEP_CLONE_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x, int dup_strs);
@@ -2330,7 +2180,6 @@ void zx_hrxml_Competency_REV_UserArea(struct zx_hrxml_Competency_s* x);
 #ifndef zx_hrxml_CompetencyEvidence_EXT
 #define zx_hrxml_CompetencyEvidence_EXT
 #endif
-
 struct zx_hrxml_CompetencyEvidence_s {
   ZX_ELEM_EXT
   zx_hrxml_CompetencyEvidence_EXT
@@ -2348,12 +2197,8 @@ struct zx_hrxml_CompetencyEvidence_s {
 };
 
 #define zx_NEW_hrxml_CompetencyEvidence(c, father) (struct zx_hrxml_CompetencyEvidence_s*)zx_new_elem((c),(father),zx_hrxml_CompetencyEvidence_ELEM)
-
 int zx_DEC_ATTR_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_CompetencyEvidence_s* x);
 int zx_DEC_ELEM_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_CompetencyEvidence_s* x);
-int zx_LEN_SO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_CompetencyEvidence_s* x);
-char* zx_ENC_SO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_CompetencyEvidence_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_CompetencyEvidence_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_CompetencyEvidence_s* zx_DEEP_CLONE_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_CompetencyEvidence_s* x, int dup_strs);
@@ -2412,7 +2257,7 @@ void zx_hrxml_CompetencyEvidence_ADD_SupportingInformation(struct zx_hrxml_Compe
 void zx_hrxml_CompetencyEvidence_DEL_EvidenceId(struct zx_hrxml_CompetencyEvidence_s* x, int n);
 void zx_hrxml_CompetencyEvidence_DEL_NumericValue(struct zx_hrxml_CompetencyEvidence_s* x, int n);
 void zx_hrxml_CompetencyEvidence_DEL_StringValue(struct zx_hrxml_CompetencyEvidence_s* x, int n);
-void zx_hrxml_CompetencyEvidence_DEL_SupportingInformation(struct zx_hrxml_CompetencyEvidence_s* x, int n);
+void zx_hrxml_CompetencyEvidence_DEL_SupportingInformation(struct zx_hrxml_CompetencyEvidence_s* x,int n);
 
 void zx_hrxml_CompetencyEvidence_REV_EvidenceId(struct zx_hrxml_CompetencyEvidence_s* x);
 void zx_hrxml_CompetencyEvidence_REV_NumericValue(struct zx_hrxml_CompetencyEvidence_s* x);
@@ -2425,7 +2270,6 @@ void zx_hrxml_CompetencyEvidence_REV_SupportingInformation(struct zx_hrxml_Compe
 #ifndef zx_hrxml_CompetencyId_EXT
 #define zx_hrxml_CompetencyId_EXT
 #endif
-
 struct zx_hrxml_CompetencyId_s {
   ZX_ELEM_EXT
   zx_hrxml_CompetencyId_EXT
@@ -2436,12 +2280,8 @@ struct zx_hrxml_CompetencyId_s {
 };
 
 #define zx_NEW_hrxml_CompetencyId(c, father) (struct zx_hrxml_CompetencyId_s*)zx_new_elem((c),(father),zx_hrxml_CompetencyId_ELEM)
-
 int zx_DEC_ATTR_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_s* x);
 int zx_DEC_ELEM_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_s* x);
-int zx_LEN_SO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_s* x);
-char* zx_ENC_SO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_CompetencyId_s* zx_DEEP_CLONE_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_s* x, int dup_strs);
@@ -2481,7 +2321,6 @@ void zx_hrxml_CompetencyId_REV_IdValue(struct zx_hrxml_CompetencyId_s* x);
 #ifndef zx_hrxml_CompetencyWeight_EXT
 #define zx_hrxml_CompetencyWeight_EXT
 #endif
-
 struct zx_hrxml_CompetencyWeight_s {
   ZX_ELEM_EXT
   zx_hrxml_CompetencyWeight_EXT
@@ -2492,12 +2331,8 @@ struct zx_hrxml_CompetencyWeight_s {
 };
 
 #define zx_NEW_hrxml_CompetencyWeight(c, father) (struct zx_hrxml_CompetencyWeight_s*)zx_new_elem((c),(father),zx_hrxml_CompetencyWeight_ELEM)
-
 int zx_DEC_ATTR_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_CompetencyWeight_s* x);
 int zx_DEC_ELEM_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_CompetencyWeight_s* x);
-int zx_LEN_SO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_CompetencyWeight_s* x);
-char* zx_ENC_SO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_CompetencyWeight_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_CompetencyWeight_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_CompetencyWeight_s* zx_DEEP_CLONE_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_CompetencyWeight_s* x, int dup_strs);
@@ -2537,7 +2372,7 @@ void zx_hrxml_CompetencyWeight_ADD_SupportingInformation(struct zx_hrxml_Compete
 
 void zx_hrxml_CompetencyWeight_DEL_NumericValue(struct zx_hrxml_CompetencyWeight_s* x, int n);
 void zx_hrxml_CompetencyWeight_DEL_StringValue(struct zx_hrxml_CompetencyWeight_s* x, int n);
-void zx_hrxml_CompetencyWeight_DEL_SupportingInformation(struct zx_hrxml_CompetencyWeight_s* x, int n);
+void zx_hrxml_CompetencyWeight_DEL_SupportingInformation(struct zx_hrxml_CompetencyWeight_s* x,int n);
 
 void zx_hrxml_CompetencyWeight_REV_NumericValue(struct zx_hrxml_CompetencyWeight_s* x);
 void zx_hrxml_CompetencyWeight_REV_StringValue(struct zx_hrxml_CompetencyWeight_s* x);
@@ -2549,7 +2384,6 @@ void zx_hrxml_CompetencyWeight_REV_SupportingInformation(struct zx_hrxml_Compete
 #ifndef zx_hrxml_ConferenceDate_EXT
 #define zx_hrxml_ConferenceDate_EXT
 #endif
-
 struct zx_hrxml_ConferenceDate_s {
   ZX_ELEM_EXT
   zx_hrxml_ConferenceDate_EXT
@@ -2562,12 +2396,8 @@ struct zx_hrxml_ConferenceDate_s {
 };
 
 #define zx_NEW_hrxml_ConferenceDate(c, father) (struct zx_hrxml_ConferenceDate_s*)zx_new_elem((c),(father),zx_hrxml_ConferenceDate_ELEM)
-
 int zx_DEC_ATTR_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceDate_s* x);
 int zx_DEC_ELEM_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceDate_s* x);
-int zx_LEN_SO_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceDate_s* x);
-char* zx_ENC_SO_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceDate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceDate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ConferenceDate_s* zx_DEEP_CLONE_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceDate_s* x, int dup_strs);
@@ -2617,11 +2447,11 @@ void zx_hrxml_ConferenceDate_ADD_Year(struct zx_hrxml_ConferenceDate_s* x, int n
 void zx_hrxml_ConferenceDate_ADD_MonthDay(struct zx_hrxml_ConferenceDate_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_ConferenceDate_ADD_StringDate(struct zx_hrxml_ConferenceDate_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_ConferenceDate_DEL_AnyDate(struct zx_hrxml_ConferenceDate_s* x, int n);
-void zx_hrxml_ConferenceDate_DEL_YearMonth(struct zx_hrxml_ConferenceDate_s* x, int n);
-void zx_hrxml_ConferenceDate_DEL_Year(struct zx_hrxml_ConferenceDate_s* x, int n);
-void zx_hrxml_ConferenceDate_DEL_MonthDay(struct zx_hrxml_ConferenceDate_s* x, int n);
-void zx_hrxml_ConferenceDate_DEL_StringDate(struct zx_hrxml_ConferenceDate_s* x, int n);
+void zx_hrxml_ConferenceDate_DEL_AnyDate(struct zx_hrxml_ConferenceDate_s* x,int n);
+void zx_hrxml_ConferenceDate_DEL_YearMonth(struct zx_hrxml_ConferenceDate_s* x,int n);
+void zx_hrxml_ConferenceDate_DEL_Year(struct zx_hrxml_ConferenceDate_s* x,int n);
+void zx_hrxml_ConferenceDate_DEL_MonthDay(struct zx_hrxml_ConferenceDate_s* x,int n);
+void zx_hrxml_ConferenceDate_DEL_StringDate(struct zx_hrxml_ConferenceDate_s* x,int n);
 
 void zx_hrxml_ConferenceDate_REV_AnyDate(struct zx_hrxml_ConferenceDate_s* x);
 void zx_hrxml_ConferenceDate_REV_YearMonth(struct zx_hrxml_ConferenceDate_s* x);
@@ -2635,7 +2465,6 @@ void zx_hrxml_ConferenceDate_REV_StringDate(struct zx_hrxml_ConferenceDate_s* x)
 #ifndef zx_hrxml_ConferencePaper_EXT
 #define zx_hrxml_ConferencePaper_EXT
 #endif
-
 struct zx_hrxml_ConferencePaper_s {
   ZX_ELEM_EXT
   zx_hrxml_ConferencePaper_EXT
@@ -2652,12 +2481,8 @@ struct zx_hrxml_ConferencePaper_s {
 };
 
 #define zx_NEW_hrxml_ConferencePaper(c, father) (struct zx_hrxml_ConferencePaper_s*)zx_new_elem((c),(father),zx_hrxml_ConferencePaper_ELEM)
-
 int zx_DEC_ATTR_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_ConferencePaper_s* x);
 int zx_DEC_ELEM_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_ConferencePaper_s* x);
-int zx_LEN_SO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_ConferencePaper_s* x);
-char* zx_ENC_SO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_ConferencePaper_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_ConferencePaper_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ConferencePaper_s* zx_DEEP_CLONE_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_ConferencePaper_s* x, int dup_strs);
@@ -2735,16 +2560,16 @@ void zx_hrxml_ConferencePaper_ADD_EventName(struct zx_hrxml_ConferencePaper_s* x
 void zx_hrxml_ConferencePaper_ADD_ConferenceDate(struct zx_hrxml_ConferencePaper_s* x, int n, struct zx_hrxml_ConferenceDate_s* z);
 void zx_hrxml_ConferencePaper_ADD_ConferenceLocation(struct zx_hrxml_ConferencePaper_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_ConferencePaper_DEL_Title(struct zx_hrxml_ConferencePaper_s* x, int n);
-void zx_hrxml_ConferencePaper_DEL_Name(struct zx_hrxml_ConferencePaper_s* x, int n);
+void zx_hrxml_ConferencePaper_DEL_Title(struct zx_hrxml_ConferencePaper_s* x,int n);
+void zx_hrxml_ConferencePaper_DEL_Name(struct zx_hrxml_ConferencePaper_s* x,int n);
 void zx_hrxml_ConferencePaper_DEL_PublicationDate(struct zx_hrxml_ConferencePaper_s* x, int n);
-void zx_hrxml_ConferencePaper_DEL_Link(struct zx_hrxml_ConferencePaper_s* x, int n);
-void zx_hrxml_ConferencePaper_DEL_Abstract(struct zx_hrxml_ConferencePaper_s* x, int n);
+void zx_hrxml_ConferencePaper_DEL_Link(struct zx_hrxml_ConferencePaper_s* x,int n);
+void zx_hrxml_ConferencePaper_DEL_Abstract(struct zx_hrxml_ConferencePaper_s* x,int n);
 void zx_hrxml_ConferencePaper_DEL_Copyright(struct zx_hrxml_ConferencePaper_s* x, int n);
-void zx_hrxml_ConferencePaper_DEL_Comments(struct zx_hrxml_ConferencePaper_s* x, int n);
-void zx_hrxml_ConferencePaper_DEL_EventName(struct zx_hrxml_ConferencePaper_s* x, int n);
+void zx_hrxml_ConferencePaper_DEL_Comments(struct zx_hrxml_ConferencePaper_s* x,int n);
+void zx_hrxml_ConferencePaper_DEL_EventName(struct zx_hrxml_ConferencePaper_s* x,int n);
 void zx_hrxml_ConferencePaper_DEL_ConferenceDate(struct zx_hrxml_ConferencePaper_s* x, int n);
-void zx_hrxml_ConferencePaper_DEL_ConferenceLocation(struct zx_hrxml_ConferencePaper_s* x, int n);
+void zx_hrxml_ConferencePaper_DEL_ConferenceLocation(struct zx_hrxml_ConferencePaper_s* x,int n);
 
 void zx_hrxml_ConferencePaper_REV_Title(struct zx_hrxml_ConferencePaper_s* x);
 void zx_hrxml_ConferencePaper_REV_Name(struct zx_hrxml_ConferencePaper_s* x);
@@ -2763,7 +2588,6 @@ void zx_hrxml_ConferencePaper_REV_ConferenceLocation(struct zx_hrxml_ConferenceP
 #ifndef zx_hrxml_Considerations_EXT
 #define zx_hrxml_Considerations_EXT
 #endif
-
 struct zx_hrxml_Considerations_s {
   ZX_ELEM_EXT
   zx_hrxml_Considerations_EXT
@@ -2776,12 +2600,8 @@ struct zx_hrxml_Considerations_s {
 };
 
 #define zx_NEW_hrxml_Considerations(c, father) (struct zx_hrxml_Considerations_s*)zx_new_elem((c),(father),zx_hrxml_Considerations_ELEM)
-
 int zx_DEC_ATTR_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerations_s* x);
 int zx_DEC_ELEM_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerations_s* x);
-int zx_LEN_SO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerations_s* x);
-char* zx_ENC_SO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerations_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerations_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Considerations_s* zx_DEEP_CLONE_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerations_s* x, int dup_strs);
@@ -2831,8 +2651,8 @@ void zx_hrxml_Considerations_ADD_SafetyEquipment(struct zx_hrxml_Considerations_
 void zx_hrxml_Considerations_ADD_DressCode(struct zx_hrxml_Considerations_s* x, int n, struct zx_hrxml_DressCode_s* z);
 void zx_hrxml_Considerations_ADD_UserArea(struct zx_hrxml_Considerations_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_Considerations_DEL_General(struct zx_hrxml_Considerations_s* x, int n);
-void zx_hrxml_Considerations_DEL_Physical(struct zx_hrxml_Considerations_s* x, int n);
+void zx_hrxml_Considerations_DEL_General(struct zx_hrxml_Considerations_s* x,int n);
+void zx_hrxml_Considerations_DEL_Physical(struct zx_hrxml_Considerations_s* x,int n);
 void zx_hrxml_Considerations_DEL_SafetyEquipment(struct zx_hrxml_Considerations_s* x, int n);
 void zx_hrxml_Considerations_DEL_DressCode(struct zx_hrxml_Considerations_s* x, int n);
 void zx_hrxml_Considerations_DEL_UserArea(struct zx_hrxml_Considerations_s* x, int n);
@@ -2849,7 +2669,6 @@ void zx_hrxml_Considerations_REV_UserArea(struct zx_hrxml_Considerations_s* x);
 #ifndef zx_hrxml_ContactId_EXT
 #define zx_hrxml_ContactId_EXT
 #endif
-
 struct zx_hrxml_ContactId_s {
   ZX_ELEM_EXT
   zx_hrxml_ContactId_EXT
@@ -2860,12 +2679,8 @@ struct zx_hrxml_ContactId_s {
 };
 
 #define zx_NEW_hrxml_ContactId(c, father) (struct zx_hrxml_ContactId_s*)zx_new_elem((c),(father),zx_hrxml_ContactId_ELEM)
-
 int zx_DEC_ATTR_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x);
 int zx_DEC_ELEM_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x);
-int zx_LEN_SO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x);
-char* zx_ENC_SO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ContactId_s* zx_DEEP_CLONE_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x, int dup_strs);
@@ -2905,7 +2720,6 @@ void zx_hrxml_ContactId_REV_IdValue(struct zx_hrxml_ContactId_s* x);
 #ifndef zx_hrxml_ContactInfo_EXT
 #define zx_hrxml_ContactInfo_EXT
 #endif
-
 struct zx_hrxml_ContactInfo_s {
   ZX_ELEM_EXT
   zx_hrxml_ContactInfo_EXT
@@ -2914,12 +2728,8 @@ struct zx_hrxml_ContactInfo_s {
 };
 
 #define zx_NEW_hrxml_ContactInfo(c, father) (struct zx_hrxml_ContactInfo_s*)zx_new_elem((c),(father),zx_hrxml_ContactInfo_ELEM)
-
 int zx_DEC_ATTR_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s* x);
 int zx_DEC_ELEM_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s* x);
-int zx_LEN_SO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s* x);
-char* zx_ENC_SO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ContactInfo_s* zx_DEEP_CLONE_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s* x, int dup_strs);
@@ -2961,7 +2771,6 @@ void zx_hrxml_ContactInfo_REV_ContactMethod(struct zx_hrxml_ContactInfo_s* x);
 #ifndef zx_hrxml_ContactMethod_EXT
 #define zx_hrxml_ContactMethod_EXT
 #endif
-
 struct zx_hrxml_ContactMethod_s {
   ZX_ELEM_EXT
   zx_hrxml_ContactMethod_EXT
@@ -2979,12 +2788,8 @@ struct zx_hrxml_ContactMethod_s {
 };
 
 #define zx_NEW_hrxml_ContactMethod(c, father) (struct zx_hrxml_ContactMethod_s*)zx_new_elem((c),(father),zx_hrxml_ContactMethod_ELEM)
-
 int zx_DEC_ATTR_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMethod_s* x);
 int zx_DEC_ELEM_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMethod_s* x);
-int zx_LEN_SO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMethod_s* x);
-char* zx_ENC_SO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMethod_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMethod_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ContactMethod_s* zx_DEEP_CLONE_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMethod_s* x, int dup_strs);
@@ -3068,16 +2873,16 @@ void zx_hrxml_ContactMethod_ADD_InternetEmailAddress(struct zx_hrxml_ContactMeth
 void zx_hrxml_ContactMethod_ADD_InternetWebAddress(struct zx_hrxml_ContactMethod_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_ContactMethod_ADD_PostalAddress(struct zx_hrxml_ContactMethod_s* x, int n, struct zx_hrxml_PostalAddress_s* z);
 
-void zx_hrxml_ContactMethod_DEL_Use(struct zx_hrxml_ContactMethod_s* x, int n);
-void zx_hrxml_ContactMethod_DEL_Location(struct zx_hrxml_ContactMethod_s* x, int n);
-void zx_hrxml_ContactMethod_DEL_WhenAvailable(struct zx_hrxml_ContactMethod_s* x, int n);
+void zx_hrxml_ContactMethod_DEL_Use(struct zx_hrxml_ContactMethod_s* x,int n);
+void zx_hrxml_ContactMethod_DEL_Location(struct zx_hrxml_ContactMethod_s* x,int n);
+void zx_hrxml_ContactMethod_DEL_WhenAvailable(struct zx_hrxml_ContactMethod_s* x,int n);
 void zx_hrxml_ContactMethod_DEL_Telephone(struct zx_hrxml_ContactMethod_s* x, int n);
 void zx_hrxml_ContactMethod_DEL_Mobile(struct zx_hrxml_ContactMethod_s* x, int n);
 void zx_hrxml_ContactMethod_DEL_Fax(struct zx_hrxml_ContactMethod_s* x, int n);
 void zx_hrxml_ContactMethod_DEL_Pager(struct zx_hrxml_ContactMethod_s* x, int n);
 void zx_hrxml_ContactMethod_DEL_TTYTDD(struct zx_hrxml_ContactMethod_s* x, int n);
-void zx_hrxml_ContactMethod_DEL_InternetEmailAddress(struct zx_hrxml_ContactMethod_s* x, int n);
-void zx_hrxml_ContactMethod_DEL_InternetWebAddress(struct zx_hrxml_ContactMethod_s* x, int n);
+void zx_hrxml_ContactMethod_DEL_InternetEmailAddress(struct zx_hrxml_ContactMethod_s* x,int n);
+void zx_hrxml_ContactMethod_DEL_InternetWebAddress(struct zx_hrxml_ContactMethod_s* x,int n);
 void zx_hrxml_ContactMethod_DEL_PostalAddress(struct zx_hrxml_ContactMethod_s* x, int n);
 
 void zx_hrxml_ContactMethod_REV_Use(struct zx_hrxml_ContactMethod_s* x);
@@ -3098,7 +2903,6 @@ void zx_hrxml_ContactMethod_REV_PostalAddress(struct zx_hrxml_ContactMethod_s* x
 #ifndef zx_hrxml_ContactName_EXT
 #define zx_hrxml_ContactName_EXT
 #endif
-
 struct zx_hrxml_ContactName_s {
   ZX_ELEM_EXT
   zx_hrxml_ContactName_EXT
@@ -3114,12 +2918,8 @@ struct zx_hrxml_ContactName_s {
 };
 
 #define zx_NEW_hrxml_ContactName(c, father) (struct zx_hrxml_ContactName_s*)zx_new_elem((c),(father),zx_hrxml_ContactName_ELEM)
-
 int zx_DEC_ATTR_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s* x);
 int zx_DEC_ELEM_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s* x);
-int zx_LEN_SO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s* x);
-char* zx_ENC_SO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ContactName_s* zx_DEEP_CLONE_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s* x, int dup_strs);
@@ -3187,11 +2987,11 @@ void zx_hrxml_ContactName_ADD_FamilyName(struct zx_hrxml_ContactName_s* x, int n
 void zx_hrxml_ContactName_ADD_Affix(struct zx_hrxml_ContactName_s* x, int n, struct zx_hrxml_Affix_s* z);
 void zx_hrxml_ContactName_ADD_AlternateScript(struct zx_hrxml_ContactName_s* x, int n, struct zx_hrxml_AlternateScript_s* z);
 
-void zx_hrxml_ContactName_DEL_FormattedName(struct zx_hrxml_ContactName_s* x, int n);
-void zx_hrxml_ContactName_DEL_LegalName(struct zx_hrxml_ContactName_s* x, int n);
-void zx_hrxml_ContactName_DEL_GivenName(struct zx_hrxml_ContactName_s* x, int n);
-void zx_hrxml_ContactName_DEL_PreferredGivenName(struct zx_hrxml_ContactName_s* x, int n);
-void zx_hrxml_ContactName_DEL_MiddleName(struct zx_hrxml_ContactName_s* x, int n);
+void zx_hrxml_ContactName_DEL_FormattedName(struct zx_hrxml_ContactName_s* x,int n);
+void zx_hrxml_ContactName_DEL_LegalName(struct zx_hrxml_ContactName_s* x,int n);
+void zx_hrxml_ContactName_DEL_GivenName(struct zx_hrxml_ContactName_s* x,int n);
+void zx_hrxml_ContactName_DEL_PreferredGivenName(struct zx_hrxml_ContactName_s* x,int n);
+void zx_hrxml_ContactName_DEL_MiddleName(struct zx_hrxml_ContactName_s* x,int n);
 void zx_hrxml_ContactName_DEL_FamilyName(struct zx_hrxml_ContactName_s* x, int n);
 void zx_hrxml_ContactName_DEL_Affix(struct zx_hrxml_ContactName_s* x, int n);
 void zx_hrxml_ContactName_DEL_AlternateScript(struct zx_hrxml_ContactName_s* x, int n);
@@ -3211,7 +3011,6 @@ void zx_hrxml_ContactName_REV_AlternateScript(struct zx_hrxml_ContactName_s* x);
 #ifndef zx_hrxml_Copyright_EXT
 #define zx_hrxml_Copyright_EXT
 #endif
-
 struct zx_hrxml_Copyright_s {
   ZX_ELEM_EXT
   zx_hrxml_Copyright_EXT
@@ -3220,12 +3019,8 @@ struct zx_hrxml_Copyright_s {
 };
 
 #define zx_NEW_hrxml_Copyright(c, father) (struct zx_hrxml_Copyright_s*)zx_new_elem((c),(father),zx_hrxml_Copyright_ELEM)
-
 int zx_DEC_ATTR_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x);
 int zx_DEC_ELEM_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x);
-int zx_LEN_SO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x);
-char* zx_ENC_SO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Copyright_s* zx_DEEP_CLONE_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x, int dup_strs);
@@ -3256,7 +3051,7 @@ void zx_hrxml_Copyright_ADD_CopyrightDates(struct zx_hrxml_Copyright_s* x, int n
 void zx_hrxml_Copyright_ADD_CopyrightText(struct zx_hrxml_Copyright_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_Copyright_DEL_CopyrightDates(struct zx_hrxml_Copyright_s* x, int n);
-void zx_hrxml_Copyright_DEL_CopyrightText(struct zx_hrxml_Copyright_s* x, int n);
+void zx_hrxml_Copyright_DEL_CopyrightText(struct zx_hrxml_Copyright_s* x,int n);
 
 void zx_hrxml_Copyright_REV_CopyrightDates(struct zx_hrxml_Copyright_s* x);
 void zx_hrxml_Copyright_REV_CopyrightText(struct zx_hrxml_Copyright_s* x);
@@ -3267,7 +3062,6 @@ void zx_hrxml_Copyright_REV_CopyrightText(struct zx_hrxml_Copyright_s* x);
 #ifndef zx_hrxml_CopyrightDates_EXT
 #define zx_hrxml_CopyrightDates_EXT
 #endif
-
 struct zx_hrxml_CopyrightDates_s {
   ZX_ELEM_EXT
   zx_hrxml_CopyrightDates_EXT
@@ -3276,12 +3070,8 @@ struct zx_hrxml_CopyrightDates_s {
 };
 
 #define zx_NEW_hrxml_CopyrightDates(c, father) (struct zx_hrxml_CopyrightDates_s*)zx_new_elem((c),(father),zx_hrxml_CopyrightDates_ELEM)
-
 int zx_DEC_ATTR_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDates_s* x);
 int zx_DEC_ELEM_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDates_s* x);
-int zx_LEN_SO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDates_s* x);
-char* zx_ENC_SO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDates_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDates_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_CopyrightDates_s* zx_DEEP_CLONE_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDates_s* x, int dup_strs);
@@ -3323,7 +3113,6 @@ void zx_hrxml_CopyrightDates_REV_MostRecentDate(struct zx_hrxml_CopyrightDates_s
 #ifndef zx_hrxml_DatesOfAttendance_EXT
 #define zx_hrxml_DatesOfAttendance_EXT
 #endif
-
 struct zx_hrxml_DatesOfAttendance_s {
   ZX_ELEM_EXT
   zx_hrxml_DatesOfAttendance_EXT
@@ -3335,12 +3124,8 @@ struct zx_hrxml_DatesOfAttendance_s {
 };
 
 #define zx_NEW_hrxml_DatesOfAttendance(c, father) (struct zx_hrxml_DatesOfAttendance_s*)zx_new_elem((c),(father),zx_hrxml_DatesOfAttendance_ELEM)
-
 int zx_DEC_ATTR_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfAttendance_s* x);
 int zx_DEC_ELEM_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfAttendance_s* x);
-int zx_LEN_SO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfAttendance_s* x);
-char* zx_ENC_SO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfAttendance_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfAttendance_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DatesOfAttendance_s* zx_DEEP_CLONE_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfAttendance_s* x, int dup_strs);
@@ -3388,7 +3173,6 @@ void zx_hrxml_DatesOfAttendance_REV_EndDate(struct zx_hrxml_DatesOfAttendance_s*
 #ifndef zx_hrxml_DatesOfService_EXT
 #define zx_hrxml_DatesOfService_EXT
 #endif
-
 struct zx_hrxml_DatesOfService_s {
   ZX_ELEM_EXT
   zx_hrxml_DatesOfService_EXT
@@ -3397,12 +3181,8 @@ struct zx_hrxml_DatesOfService_s {
 };
 
 #define zx_NEW_hrxml_DatesOfService(c, father) (struct zx_hrxml_DatesOfService_s*)zx_new_elem((c),(father),zx_hrxml_DatesOfService_ELEM)
-
 int zx_DEC_ATTR_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfService_s* x);
 int zx_DEC_ELEM_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfService_s* x);
-int zx_LEN_SO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfService_s* x);
-char* zx_ENC_SO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DatesOfService_s* zx_DEEP_CLONE_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfService_s* x, int dup_strs);
@@ -3444,7 +3224,6 @@ void zx_hrxml_DatesOfService_REV_EndDate(struct zx_hrxml_DatesOfService_s* x);
 #ifndef zx_hrxml_Degree_EXT
 #define zx_hrxml_Degree_EXT
 #endif
-
 struct zx_hrxml_Degree_s {
   ZX_ELEM_EXT
   zx_hrxml_Degree_EXT
@@ -3464,12 +3243,8 @@ struct zx_hrxml_Degree_s {
 };
 
 #define zx_NEW_hrxml_Degree(c, father) (struct zx_hrxml_Degree_s*)zx_new_elem((c),(father),zx_hrxml_Degree_ELEM)
-
 int zx_DEC_ATTR_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x);
 int zx_DEC_ELEM_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x);
-int zx_LEN_SO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x);
-char* zx_ENC_SO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Degree_s* zx_DEEP_CLONE_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x, int dup_strs);
@@ -3560,7 +3335,7 @@ void zx_hrxml_Degree_DEL_DegreeMajor(struct zx_hrxml_Degree_s* x, int n);
 void zx_hrxml_Degree_DEL_DegreeMinor(struct zx_hrxml_Degree_s* x, int n);
 void zx_hrxml_Degree_DEL_DegreeMeasure(struct zx_hrxml_Degree_s* x, int n);
 void zx_hrxml_Degree_DEL_DatesOfAttendance(struct zx_hrxml_Degree_s* x, int n);
-void zx_hrxml_Degree_DEL_Comments(struct zx_hrxml_Degree_s* x, int n);
+void zx_hrxml_Degree_DEL_Comments(struct zx_hrxml_Degree_s* x,int n);
 void zx_hrxml_Degree_DEL_DegreeClassification(struct zx_hrxml_Degree_s* x, int n);
 void zx_hrxml_Degree_DEL_UserArea(struct zx_hrxml_Degree_s* x, int n);
 
@@ -3581,7 +3356,6 @@ void zx_hrxml_Degree_REV_UserArea(struct zx_hrxml_Degree_s* x);
 #ifndef zx_hrxml_DegreeClassification_EXT
 #define zx_hrxml_DegreeClassification_EXT
 #endif
-
 struct zx_hrxml_DegreeClassification_s {
   ZX_ELEM_EXT
   zx_hrxml_DegreeClassification_EXT
@@ -3590,12 +3364,8 @@ struct zx_hrxml_DegreeClassification_s {
 };
 
 #define zx_NEW_hrxml_DegreeClassification(c, father) (struct zx_hrxml_DegreeClassification_s*)zx_new_elem((c),(father),zx_hrxml_DegreeClassification_ELEM)
-
 int zx_DEC_ATTR_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_DegreeClassification_s* x);
 int zx_DEC_ELEM_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_DegreeClassification_s* x);
-int zx_LEN_SO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_DegreeClassification_s* x);
-char* zx_ENC_SO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_DegreeClassification_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_DegreeClassification_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DegreeClassification_s* zx_DEEP_CLONE_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_DegreeClassification_s* x, int dup_strs);
@@ -3637,7 +3407,6 @@ void zx_hrxml_DegreeClassification_REV_Description(struct zx_hrxml_DegreeClassif
 #ifndef zx_hrxml_DegreeDate_EXT
 #define zx_hrxml_DegreeDate_EXT
 #endif
-
 struct zx_hrxml_DegreeDate_s {
   ZX_ELEM_EXT
   zx_hrxml_DegreeDate_EXT
@@ -3650,12 +3419,8 @@ struct zx_hrxml_DegreeDate_s {
 };
 
 #define zx_NEW_hrxml_DegreeDate(c, father) (struct zx_hrxml_DegreeDate_s*)zx_new_elem((c),(father),zx_hrxml_DegreeDate_ELEM)
-
 int zx_DEC_ATTR_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x);
 int zx_DEC_ELEM_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x);
-int zx_LEN_SO_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x);
-char* zx_ENC_SO_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DegreeDate_s* zx_DEEP_CLONE_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x, int dup_strs);
@@ -3705,11 +3470,11 @@ void zx_hrxml_DegreeDate_ADD_Year(struct zx_hrxml_DegreeDate_s* x, int n, struct
 void zx_hrxml_DegreeDate_ADD_MonthDay(struct zx_hrxml_DegreeDate_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_DegreeDate_ADD_StringDate(struct zx_hrxml_DegreeDate_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_DegreeDate_DEL_AnyDate(struct zx_hrxml_DegreeDate_s* x, int n);
-void zx_hrxml_DegreeDate_DEL_YearMonth(struct zx_hrxml_DegreeDate_s* x, int n);
-void zx_hrxml_DegreeDate_DEL_Year(struct zx_hrxml_DegreeDate_s* x, int n);
-void zx_hrxml_DegreeDate_DEL_MonthDay(struct zx_hrxml_DegreeDate_s* x, int n);
-void zx_hrxml_DegreeDate_DEL_StringDate(struct zx_hrxml_DegreeDate_s* x, int n);
+void zx_hrxml_DegreeDate_DEL_AnyDate(struct zx_hrxml_DegreeDate_s* x,int n);
+void zx_hrxml_DegreeDate_DEL_YearMonth(struct zx_hrxml_DegreeDate_s* x,int n);
+void zx_hrxml_DegreeDate_DEL_Year(struct zx_hrxml_DegreeDate_s* x,int n);
+void zx_hrxml_DegreeDate_DEL_MonthDay(struct zx_hrxml_DegreeDate_s* x,int n);
+void zx_hrxml_DegreeDate_DEL_StringDate(struct zx_hrxml_DegreeDate_s* x,int n);
 
 void zx_hrxml_DegreeDate_REV_AnyDate(struct zx_hrxml_DegreeDate_s* x);
 void zx_hrxml_DegreeDate_REV_YearMonth(struct zx_hrxml_DegreeDate_s* x);
@@ -3723,7 +3488,6 @@ void zx_hrxml_DegreeDate_REV_StringDate(struct zx_hrxml_DegreeDate_s* x);
 #ifndef zx_hrxml_DegreeMajor_EXT
 #define zx_hrxml_DegreeMajor_EXT
 #endif
-
 struct zx_hrxml_DegreeMajor_s {
   ZX_ELEM_EXT
   zx_hrxml_DegreeMajor_EXT
@@ -3734,12 +3498,8 @@ struct zx_hrxml_DegreeMajor_s {
 };
 
 #define zx_NEW_hrxml_DegreeMajor(c, father) (struct zx_hrxml_DegreeMajor_s*)zx_new_elem((c),(father),zx_hrxml_DegreeMajor_ELEM)
-
 int zx_DEC_ATTR_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s* x);
 int zx_DEC_ELEM_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s* x);
-int zx_LEN_SO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s* x);
-char* zx_ENC_SO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DegreeMajor_s* zx_DEEP_CLONE_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s* x, int dup_strs);
@@ -3782,9 +3542,9 @@ void zx_hrxml_DegreeMajor_ADD_Name(struct zx_hrxml_DegreeMajor_s* x, int n, stru
 void zx_hrxml_DegreeMajor_ADD_Option(struct zx_hrxml_DegreeMajor_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_DegreeMajor_DEL_ProgramId(struct zx_hrxml_DegreeMajor_s* x, int n);
-void zx_hrxml_DegreeMajor_DEL_DegreeConcentration(struct zx_hrxml_DegreeMajor_s* x, int n);
-void zx_hrxml_DegreeMajor_DEL_Name(struct zx_hrxml_DegreeMajor_s* x, int n);
-void zx_hrxml_DegreeMajor_DEL_Option(struct zx_hrxml_DegreeMajor_s* x, int n);
+void zx_hrxml_DegreeMajor_DEL_DegreeConcentration(struct zx_hrxml_DegreeMajor_s* x,int n);
+void zx_hrxml_DegreeMajor_DEL_Name(struct zx_hrxml_DegreeMajor_s* x,int n);
+void zx_hrxml_DegreeMajor_DEL_Option(struct zx_hrxml_DegreeMajor_s* x,int n);
 
 void zx_hrxml_DegreeMajor_REV_ProgramId(struct zx_hrxml_DegreeMajor_s* x);
 void zx_hrxml_DegreeMajor_REV_DegreeConcentration(struct zx_hrxml_DegreeMajor_s* x);
@@ -3797,7 +3557,6 @@ void zx_hrxml_DegreeMajor_REV_Option(struct zx_hrxml_DegreeMajor_s* x);
 #ifndef zx_hrxml_DegreeMeasure_EXT
 #define zx_hrxml_DegreeMeasure_EXT
 #endif
-
 struct zx_hrxml_DegreeMeasure_s {
   ZX_ELEM_EXT
   zx_hrxml_DegreeMeasure_EXT
@@ -3813,12 +3572,8 @@ struct zx_hrxml_DegreeMeasure_s {
 };
 
 #define zx_NEW_hrxml_DegreeMeasure(c, father) (struct zx_hrxml_DegreeMeasure_s*)zx_new_elem((c),(father),zx_hrxml_DegreeMeasure_ELEM)
-
 int zx_DEC_ATTR_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure_s* x);
 int zx_DEC_ELEM_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure_s* x);
-int zx_LEN_SO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure_s* x);
-char* zx_ENC_SO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DegreeMeasure_s* zx_DEEP_CLONE_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure_s* x, int dup_strs);
@@ -3887,12 +3642,12 @@ void zx_hrxml_DegreeMeasure_ADD_AcademicCreditHoursEarned(struct zx_hrxml_Degree
 void zx_hrxml_DegreeMeasure_ADD_ClassRank(struct zx_hrxml_DegreeMeasure_s* x, int n, struct zx_hrxml_ClassRank_s* z);
 
 void zx_hrxml_DegreeMeasure_DEL_EducationalMeasure(struct zx_hrxml_DegreeMeasure_s* x, int n);
-void zx_hrxml_DegreeMeasure_DEL_AcademicCreditCode(struct zx_hrxml_DegreeMeasure_s* x, int n);
-void zx_hrxml_DegreeMeasure_DEL_CourseLevelCode(struct zx_hrxml_DegreeMeasure_s* x, int n);
-void zx_hrxml_DegreeMeasure_DEL_CumulativeSummaryIndicator(struct zx_hrxml_DegreeMeasure_s* x, int n);
-void zx_hrxml_DegreeMeasure_DEL_AcademicCreditHoursIncluded(struct zx_hrxml_DegreeMeasure_s* x, int n);
-void zx_hrxml_DegreeMeasure_DEL_AcademicCreditHoursAttempted(struct zx_hrxml_DegreeMeasure_s* x, int n);
-void zx_hrxml_DegreeMeasure_DEL_AcademicCreditHoursEarned(struct zx_hrxml_DegreeMeasure_s* x, int n);
+void zx_hrxml_DegreeMeasure_DEL_AcademicCreditCode(struct zx_hrxml_DegreeMeasure_s* x,int n);
+void zx_hrxml_DegreeMeasure_DEL_CourseLevelCode(struct zx_hrxml_DegreeMeasure_s* x,int n);
+void zx_hrxml_DegreeMeasure_DEL_CumulativeSummaryIndicator(struct zx_hrxml_DegreeMeasure_s* x,int n);
+void zx_hrxml_DegreeMeasure_DEL_AcademicCreditHoursIncluded(struct zx_hrxml_DegreeMeasure_s* x,int n);
+void zx_hrxml_DegreeMeasure_DEL_AcademicCreditHoursAttempted(struct zx_hrxml_DegreeMeasure_s* x,int n);
+void zx_hrxml_DegreeMeasure_DEL_AcademicCreditHoursEarned(struct zx_hrxml_DegreeMeasure_s* x,int n);
 void zx_hrxml_DegreeMeasure_DEL_ClassRank(struct zx_hrxml_DegreeMeasure_s* x, int n);
 
 void zx_hrxml_DegreeMeasure_REV_EducationalMeasure(struct zx_hrxml_DegreeMeasure_s* x);
@@ -3910,7 +3665,6 @@ void zx_hrxml_DegreeMeasure_REV_ClassRank(struct zx_hrxml_DegreeMeasure_s* x);
 #ifndef zx_hrxml_DegreeMinor_EXT
 #define zx_hrxml_DegreeMinor_EXT
 #endif
-
 struct zx_hrxml_DegreeMinor_s {
   ZX_ELEM_EXT
   zx_hrxml_DegreeMinor_EXT
@@ -3919,12 +3673,8 @@ struct zx_hrxml_DegreeMinor_s {
 };
 
 #define zx_NEW_hrxml_DegreeMinor(c, father) (struct zx_hrxml_DegreeMinor_s*)zx_new_elem((c),(father),zx_hrxml_DegreeMinor_ELEM)
-
 int zx_DEC_ATTR_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s* x);
 int zx_DEC_ELEM_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s* x);
-int zx_LEN_SO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s* x);
-char* zx_ENC_SO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DegreeMinor_s* zx_DEEP_CLONE_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s* x, int dup_strs);
@@ -3955,7 +3705,7 @@ void zx_hrxml_DegreeMinor_ADD_ProgramId(struct zx_hrxml_DegreeMinor_s* x, int n,
 void zx_hrxml_DegreeMinor_ADD_Name(struct zx_hrxml_DegreeMinor_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_DegreeMinor_DEL_ProgramId(struct zx_hrxml_DegreeMinor_s* x, int n);
-void zx_hrxml_DegreeMinor_DEL_Name(struct zx_hrxml_DegreeMinor_s* x, int n);
+void zx_hrxml_DegreeMinor_DEL_Name(struct zx_hrxml_DegreeMinor_s* x,int n);
 
 void zx_hrxml_DegreeMinor_REV_ProgramId(struct zx_hrxml_DegreeMinor_s* x);
 void zx_hrxml_DegreeMinor_REV_Name(struct zx_hrxml_DegreeMinor_s* x);
@@ -3966,7 +3716,6 @@ void zx_hrxml_DegreeMinor_REV_Name(struct zx_hrxml_DegreeMinor_s* x);
 #ifndef zx_hrxml_DegreeName_EXT
 #define zx_hrxml_DegreeName_EXT
 #endif
-
 struct zx_hrxml_DegreeName_s {
   ZX_ELEM_EXT
   zx_hrxml_DegreeName_EXT
@@ -3975,12 +3724,8 @@ struct zx_hrxml_DegreeName_s {
 };
 
 #define zx_NEW_hrxml_DegreeName(c, father) (struct zx_hrxml_DegreeName_s*)zx_new_elem((c),(father),zx_hrxml_DegreeName_ELEM)
-
 int zx_DEC_ATTR_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x);
 int zx_DEC_ELEM_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x);
-int zx_LEN_SO_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x);
-char* zx_ENC_SO_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DegreeName_s* zx_DEEP_CLONE_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x, int dup_strs);
@@ -4010,7 +3755,6 @@ void zx_hrxml_DegreeName_PUT_honorsProgram(struct zx_hrxml_DegreeName_s* x, stru
 #ifndef zx_hrxml_DeliveryAddress_EXT
 #define zx_hrxml_DeliveryAddress_EXT
 #endif
-
 struct zx_hrxml_DeliveryAddress_s {
   ZX_ELEM_EXT
   zx_hrxml_DeliveryAddress_EXT
@@ -4022,12 +3766,8 @@ struct zx_hrxml_DeliveryAddress_s {
 };
 
 #define zx_NEW_hrxml_DeliveryAddress(c, father) (struct zx_hrxml_DeliveryAddress_s*)zx_new_elem((c),(father),zx_hrxml_DeliveryAddress_ELEM)
-
 int zx_DEC_ATTR_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAddress_s* x);
 int zx_DEC_ELEM_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAddress_s* x);
-int zx_LEN_SO_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAddress_s* x);
-char* zx_ENC_SO_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAddress_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAddress_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DeliveryAddress_s* zx_DEEP_CLONE_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAddress_s* x, int dup_strs);
@@ -4075,11 +3815,11 @@ void zx_hrxml_DeliveryAddress_ADD_BuildingNumber(struct zx_hrxml_DeliveryAddress
 void zx_hrxml_DeliveryAddress_ADD_Unit(struct zx_hrxml_DeliveryAddress_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_DeliveryAddress_ADD_PostOfficeBox(struct zx_hrxml_DeliveryAddress_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_DeliveryAddress_DEL_AddressLine(struct zx_hrxml_DeliveryAddress_s* x, int n);
-void zx_hrxml_DeliveryAddress_DEL_StreetName(struct zx_hrxml_DeliveryAddress_s* x, int n);
-void zx_hrxml_DeliveryAddress_DEL_BuildingNumber(struct zx_hrxml_DeliveryAddress_s* x, int n);
-void zx_hrxml_DeliveryAddress_DEL_Unit(struct zx_hrxml_DeliveryAddress_s* x, int n);
-void zx_hrxml_DeliveryAddress_DEL_PostOfficeBox(struct zx_hrxml_DeliveryAddress_s* x, int n);
+void zx_hrxml_DeliveryAddress_DEL_AddressLine(struct zx_hrxml_DeliveryAddress_s* x,int n);
+void zx_hrxml_DeliveryAddress_DEL_StreetName(struct zx_hrxml_DeliveryAddress_s* x,int n);
+void zx_hrxml_DeliveryAddress_DEL_BuildingNumber(struct zx_hrxml_DeliveryAddress_s* x,int n);
+void zx_hrxml_DeliveryAddress_DEL_Unit(struct zx_hrxml_DeliveryAddress_s* x,int n);
+void zx_hrxml_DeliveryAddress_DEL_PostOfficeBox(struct zx_hrxml_DeliveryAddress_s* x,int n);
 
 void zx_hrxml_DeliveryAddress_REV_AddressLine(struct zx_hrxml_DeliveryAddress_s* x);
 void zx_hrxml_DeliveryAddress_REV_StreetName(struct zx_hrxml_DeliveryAddress_s* x);
@@ -4093,7 +3833,6 @@ void zx_hrxml_DeliveryAddress_REV_PostOfficeBox(struct zx_hrxml_DeliveryAddress_
 #ifndef zx_hrxml_DemographicDescriptors_EXT
 #define zx_hrxml_DemographicDescriptors_EXT
 #endif
-
 struct zx_hrxml_DemographicDescriptors_s {
   ZX_ELEM_EXT
   zx_hrxml_DemographicDescriptors_EXT
@@ -4109,12 +3848,8 @@ struct zx_hrxml_DemographicDescriptors_s {
 };
 
 #define zx_NEW_hrxml_DemographicDescriptors(c, father) (struct zx_hrxml_DemographicDescriptors_s*)zx_new_elem((c),(father),zx_hrxml_DemographicDescriptors_ELEM)
-
 int zx_DEC_ATTR_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_DemographicDescriptors_s* x);
 int zx_DEC_ELEM_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_DemographicDescriptors_s* x);
-int zx_LEN_SO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_DemographicDescriptors_s* x);
-char* zx_ENC_SO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_DemographicDescriptors_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_DemographicDescriptors_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DemographicDescriptors_s* zx_DEEP_CLONE_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_DemographicDescriptors_s* x, int dup_strs);
@@ -4186,13 +3921,13 @@ void zx_hrxml_DemographicDescriptors_ADD_MaritalStatus(struct zx_hrxml_Demograph
 void zx_hrxml_DemographicDescriptors_ADD_ChildrenInfo(struct zx_hrxml_DemographicDescriptors_s* x, int n, struct zx_hrxml_ChildrenInfo_s* z);
 void zx_hrxml_DemographicDescriptors_ADD_UserArea(struct zx_hrxml_DemographicDescriptors_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_DemographicDescriptors_DEL_Race(struct zx_hrxml_DemographicDescriptors_s* x, int n);
-void zx_hrxml_DemographicDescriptors_DEL_Ethnicity(struct zx_hrxml_DemographicDescriptors_s* x, int n);
-void zx_hrxml_DemographicDescriptors_DEL_Nationality(struct zx_hrxml_DemographicDescriptors_s* x, int n);
+void zx_hrxml_DemographicDescriptors_DEL_Race(struct zx_hrxml_DemographicDescriptors_s* x,int n);
+void zx_hrxml_DemographicDescriptors_DEL_Ethnicity(struct zx_hrxml_DemographicDescriptors_s* x,int n);
+void zx_hrxml_DemographicDescriptors_DEL_Nationality(struct zx_hrxml_DemographicDescriptors_s* x,int n);
 void zx_hrxml_DemographicDescriptors_DEL_PrimaryLanguage(struct zx_hrxml_DemographicDescriptors_s* x, int n);
-void zx_hrxml_DemographicDescriptors_DEL_BirthPlace(struct zx_hrxml_DemographicDescriptors_s* x, int n);
-void zx_hrxml_DemographicDescriptors_DEL_Religion(struct zx_hrxml_DemographicDescriptors_s* x, int n);
-void zx_hrxml_DemographicDescriptors_DEL_MaritalStatus(struct zx_hrxml_DemographicDescriptors_s* x, int n);
+void zx_hrxml_DemographicDescriptors_DEL_BirthPlace(struct zx_hrxml_DemographicDescriptors_s* x,int n);
+void zx_hrxml_DemographicDescriptors_DEL_Religion(struct zx_hrxml_DemographicDescriptors_s* x,int n);
+void zx_hrxml_DemographicDescriptors_DEL_MaritalStatus(struct zx_hrxml_DemographicDescriptors_s* x,int n);
 void zx_hrxml_DemographicDescriptors_DEL_ChildrenInfo(struct zx_hrxml_DemographicDescriptors_s* x, int n);
 void zx_hrxml_DemographicDescriptors_DEL_UserArea(struct zx_hrxml_DemographicDescriptors_s* x, int n);
 
@@ -4212,7 +3947,6 @@ void zx_hrxml_DemographicDescriptors_REV_UserArea(struct zx_hrxml_DemographicDes
 #ifndef zx_hrxml_Description_EXT
 #define zx_hrxml_Description_EXT
 #endif
-
 struct zx_hrxml_Description_s {
   ZX_ELEM_EXT
   zx_hrxml_Description_EXT
@@ -4220,12 +3954,8 @@ struct zx_hrxml_Description_s {
 };
 
 #define zx_NEW_hrxml_Description(c, father) (struct zx_hrxml_Description_s*)zx_new_elem((c),(father),zx_hrxml_Description_ELEM)
-
 int zx_DEC_ATTR_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s* x);
 int zx_DEC_ELEM_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s* x);
-int zx_LEN_SO_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s* x);
-char* zx_ENC_SO_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Description_s* zx_DEEP_CLONE_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s* x, int dup_strs);
@@ -4253,7 +3983,6 @@ void zx_hrxml_Description_PUT_lang(struct zx_hrxml_Description_s* x, struct zx_a
 #ifndef zx_hrxml_Details_EXT
 #define zx_hrxml_Details_EXT
 #endif
-
 struct zx_hrxml_Details_s {
   ZX_ELEM_EXT
   zx_hrxml_Details_EXT
@@ -4262,12 +3991,8 @@ struct zx_hrxml_Details_s {
 };
 
 #define zx_NEW_hrxml_Details(c, father) (struct zx_hrxml_Details_s*)zx_new_elem((c),(father),zx_hrxml_Details_ELEM)
-
 int zx_DEC_ATTR_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x);
 int zx_DEC_ELEM_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x);
-int zx_LEN_SO_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x);
-char* zx_ENC_SO_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Details_s* zx_DEEP_CLONE_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x, int dup_strs);
@@ -4297,7 +4022,6 @@ void zx_hrxml_Details_PUT_lang(struct zx_hrxml_Details_s* x, struct zx_attr_s* y
 #ifndef zx_hrxml_DisabilityInfo_EXT
 #define zx_hrxml_DisabilityInfo_EXT
 #endif
-
 struct zx_hrxml_DisabilityInfo_s {
   ZX_ELEM_EXT
   zx_hrxml_DisabilityInfo_EXT
@@ -4308,12 +4032,8 @@ struct zx_hrxml_DisabilityInfo_s {
 };
 
 #define zx_NEW_hrxml_DisabilityInfo(c, father) (struct zx_hrxml_DisabilityInfo_s*)zx_new_elem((c),(father),zx_hrxml_DisabilityInfo_ELEM)
-
 int zx_DEC_ATTR_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityInfo_s* x);
 int zx_DEC_ELEM_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityInfo_s* x);
-int zx_LEN_SO_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityInfo_s* x);
-char* zx_ENC_SO_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DisabilityInfo_s* zx_DEEP_CLONE_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityInfo_s* x, int dup_strs);
@@ -4355,10 +4075,10 @@ void zx_hrxml_DisabilityInfo_ADD_Percentage(struct zx_hrxml_DisabilityInfo_s* x,
 void zx_hrxml_DisabilityInfo_ADD_Type(struct zx_hrxml_DisabilityInfo_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_DisabilityInfo_ADD_AccommodationsNeeded(struct zx_hrxml_DisabilityInfo_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_DisabilityInfo_DEL_LevelOfDisability(struct zx_hrxml_DisabilityInfo_s* x, int n);
-void zx_hrxml_DisabilityInfo_DEL_Percentage(struct zx_hrxml_DisabilityInfo_s* x, int n);
-void zx_hrxml_DisabilityInfo_DEL_Type(struct zx_hrxml_DisabilityInfo_s* x, int n);
-void zx_hrxml_DisabilityInfo_DEL_AccommodationsNeeded(struct zx_hrxml_DisabilityInfo_s* x, int n);
+void zx_hrxml_DisabilityInfo_DEL_LevelOfDisability(struct zx_hrxml_DisabilityInfo_s* x,int n);
+void zx_hrxml_DisabilityInfo_DEL_Percentage(struct zx_hrxml_DisabilityInfo_s* x,int n);
+void zx_hrxml_DisabilityInfo_DEL_Type(struct zx_hrxml_DisabilityInfo_s* x,int n);
+void zx_hrxml_DisabilityInfo_DEL_AccommodationsNeeded(struct zx_hrxml_DisabilityInfo_s* x,int n);
 
 void zx_hrxml_DisabilityInfo_REV_LevelOfDisability(struct zx_hrxml_DisabilityInfo_s* x);
 void zx_hrxml_DisabilityInfo_REV_Percentage(struct zx_hrxml_DisabilityInfo_s* x);
@@ -4371,7 +4091,6 @@ void zx_hrxml_DisabilityInfo_REV_AccommodationsNeeded(struct zx_hrxml_Disability
 #ifndef zx_hrxml_DistanceMax_EXT
 #define zx_hrxml_DistanceMax_EXT
 #endif
-
 struct zx_hrxml_DistanceMax_s {
   ZX_ELEM_EXT
   zx_hrxml_DistanceMax_EXT
@@ -4379,12 +4098,8 @@ struct zx_hrxml_DistanceMax_s {
 };
 
 #define zx_NEW_hrxml_DistanceMax(c, father) (struct zx_hrxml_DistanceMax_s*)zx_new_elem((c),(father),zx_hrxml_DistanceMax_ELEM)
-
 int zx_DEC_ATTR_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s* x);
 int zx_DEC_ELEM_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s* x);
-int zx_LEN_SO_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s* x);
-char* zx_ENC_SO_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DistanceMax_s* zx_DEEP_CLONE_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s* x, int dup_strs);
@@ -4412,7 +4127,6 @@ void zx_hrxml_DistanceMax_PUT_unitOfMeasure(struct zx_hrxml_DistanceMax_s* x, st
 #ifndef zx_hrxml_DistributeTo_EXT
 #define zx_hrxml_DistributeTo_EXT
 #endif
-
 struct zx_hrxml_DistributeTo_s {
   ZX_ELEM_EXT
   zx_hrxml_DistributeTo_EXT
@@ -4420,12 +4134,8 @@ struct zx_hrxml_DistributeTo_s {
 };
 
 #define zx_NEW_hrxml_DistributeTo(c, father) (struct zx_hrxml_DistributeTo_s*)zx_new_elem((c),(father),zx_hrxml_DistributeTo_ELEM)
-
 int zx_DEC_ATTR_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_s* x);
 int zx_DEC_ELEM_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_s* x);
-int zx_LEN_SO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_s* x);
-char* zx_ENC_SO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DistributeTo_s* zx_DEEP_CLONE_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_s* x, int dup_strs);
@@ -4459,7 +4169,6 @@ void zx_hrxml_DistributeTo_REV_ContactMethod(struct zx_hrxml_DistributeTo_s* x);
 #ifndef zx_hrxml_DoingBusinessAs_EXT
 #define zx_hrxml_DoingBusinessAs_EXT
 #endif
-
 struct zx_hrxml_DoingBusinessAs_s {
   ZX_ELEM_EXT
   zx_hrxml_DoingBusinessAs_EXT
@@ -4467,12 +4176,8 @@ struct zx_hrxml_DoingBusinessAs_s {
 };
 
 #define zx_NEW_hrxml_DoingBusinessAs(c, father) (struct zx_hrxml_DoingBusinessAs_s*)zx_new_elem((c),(father),zx_hrxml_DoingBusinessAs_ELEM)
-
 int zx_DEC_ATTR_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusinessAs_s* x);
 int zx_DEC_ELEM_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusinessAs_s* x);
-int zx_LEN_SO_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusinessAs_s* x);
-char* zx_ENC_SO_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusinessAs_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusinessAs_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DoingBusinessAs_s* zx_DEEP_CLONE_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusinessAs_s* x, int dup_strs);
@@ -4500,7 +4205,6 @@ void zx_hrxml_DoingBusinessAs_PUT_lang(struct zx_hrxml_DoingBusinessAs_s* x, str
 #ifndef zx_hrxml_DressCode_EXT
 #define zx_hrxml_DressCode_EXT
 #endif
-
 struct zx_hrxml_DressCode_s {
   ZX_ELEM_EXT
   zx_hrxml_DressCode_EXT
@@ -4508,12 +4212,8 @@ struct zx_hrxml_DressCode_s {
 };
 
 #define zx_NEW_hrxml_DressCode(c, father) (struct zx_hrxml_DressCode_s*)zx_new_elem((c),(father),zx_hrxml_DressCode_ELEM)
-
 int zx_DEC_ATTR_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x);
 int zx_DEC_ELEM_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x);
-int zx_LEN_SO_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x);
-char* zx_ENC_SO_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DressCode_s* zx_DEEP_CLONE_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x, int dup_strs);
@@ -4541,7 +4241,6 @@ void zx_hrxml_DressCode_PUT_suppliedByOrganization(struct zx_hrxml_DressCode_s* 
 #ifndef zx_hrxml_DunsNumber_EXT
 #define zx_hrxml_DunsNumber_EXT
 #endif
-
 struct zx_hrxml_DunsNumber_s {
   ZX_ELEM_EXT
   zx_hrxml_DunsNumber_EXT
@@ -4549,12 +4248,8 @@ struct zx_hrxml_DunsNumber_s {
 };
 
 #define zx_NEW_hrxml_DunsNumber(c, father) (struct zx_hrxml_DunsNumber_s*)zx_new_elem((c),(father),zx_hrxml_DunsNumber_ELEM)
-
 int zx_DEC_ATTR_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x);
 int zx_DEC_ELEM_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x);
-int zx_LEN_SO_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x);
-char* zx_ENC_SO_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_DunsNumber_s* zx_DEEP_CLONE_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x, int dup_strs);
@@ -4582,7 +4277,6 @@ void zx_hrxml_DunsNumber_PUT_dunsNumberType(struct zx_hrxml_DunsNumber_s* x, str
 #ifndef zx_hrxml_EEOCJobCategory_EXT
 #define zx_hrxml_EEOCJobCategory_EXT
 #endif
-
 struct zx_hrxml_EEOCJobCategory_s {
   ZX_ELEM_EXT
   zx_hrxml_EEOCJobCategory_EXT
@@ -4591,12 +4285,8 @@ struct zx_hrxml_EEOCJobCategory_s {
 };
 
 #define zx_NEW_hrxml_EEOCJobCategory(c, father) (struct zx_hrxml_EEOCJobCategory_s*)zx_new_elem((c),(father),zx_hrxml_EEOCJobCategory_ELEM)
-
 int zx_DEC_ATTR_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCategory_s* x);
 int zx_DEC_ELEM_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCategory_s* x);
-int zx_LEN_SO_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCategory_s* x);
-char* zx_ENC_SO_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCategory_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCategory_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_EEOCJobCategory_s* zx_DEEP_CLONE_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCategory_s* x, int dup_strs);
@@ -4626,8 +4316,8 @@ void zx_hrxml_EEOCJobCategory_PUT_NonStandardValue(struct zx_hrxml_EEOCJobCatego
 void zx_hrxml_EEOCJobCategory_ADD_StandardValue(struct zx_hrxml_EEOCJobCategory_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_EEOCJobCategory_ADD_NonStandardValue(struct zx_hrxml_EEOCJobCategory_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_EEOCJobCategory_DEL_StandardValue(struct zx_hrxml_EEOCJobCategory_s* x, int n);
-void zx_hrxml_EEOCJobCategory_DEL_NonStandardValue(struct zx_hrxml_EEOCJobCategory_s* x, int n);
+void zx_hrxml_EEOCJobCategory_DEL_StandardValue(struct zx_hrxml_EEOCJobCategory_s* x,int n);
+void zx_hrxml_EEOCJobCategory_DEL_NonStandardValue(struct zx_hrxml_EEOCJobCategory_s* x,int n);
 
 void zx_hrxml_EEOCJobCategory_REV_StandardValue(struct zx_hrxml_EEOCJobCategory_s* x);
 void zx_hrxml_EEOCJobCategory_REV_NonStandardValue(struct zx_hrxml_EEOCJobCategory_s* x);
@@ -4638,7 +4328,6 @@ void zx_hrxml_EEOCJobCategory_REV_NonStandardValue(struct zx_hrxml_EEOCJobCatego
 #ifndef zx_hrxml_EducationHistory_EXT
 #define zx_hrxml_EducationHistory_EXT
 #endif
-
 struct zx_hrxml_EducationHistory_s {
   ZX_ELEM_EXT
   zx_hrxml_EducationHistory_EXT
@@ -4646,12 +4335,8 @@ struct zx_hrxml_EducationHistory_s {
 };
 
 #define zx_NEW_hrxml_EducationHistory(c, father) (struct zx_hrxml_EducationHistory_s*)zx_new_elem((c),(father),zx_hrxml_EducationHistory_ELEM)
-
 int zx_DEC_ATTR_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_EducationHistory_s* x);
 int zx_DEC_ELEM_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_EducationHistory_s* x);
-int zx_LEN_SO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_EducationHistory_s* x);
-char* zx_ENC_SO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_EducationHistory_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_EducationHistory_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_EducationHistory_s* zx_DEEP_CLONE_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_EducationHistory_s* x, int dup_strs);
@@ -4685,7 +4370,6 @@ void zx_hrxml_EducationHistory_REV_SchoolOrInstitution(struct zx_hrxml_Education
 #ifndef zx_hrxml_EducationalMeasure_EXT
 #define zx_hrxml_EducationalMeasure_EXT
 #endif
-
 struct zx_hrxml_EducationalMeasure_s {
   ZX_ELEM_EXT
   zx_hrxml_EducationalMeasure_EXT
@@ -4698,12 +4382,8 @@ struct zx_hrxml_EducationalMeasure_s {
 };
 
 #define zx_NEW_hrxml_EducationalMeasure(c, father) (struct zx_hrxml_EducationalMeasure_s*)zx_new_elem((c),(father),zx_hrxml_EducationalMeasure_ELEM)
-
 int zx_DEC_ATTR_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_EducationalMeasure_s* x);
 int zx_DEC_ELEM_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_EducationalMeasure_s* x);
-int zx_LEN_SO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_EducationalMeasure_s* x);
-char* zx_ENC_SO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_EducationalMeasure_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_EducationalMeasure_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_EducationalMeasure_s* zx_DEEP_CLONE_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_EducationalMeasure_s* x, int dup_strs);
@@ -4757,12 +4437,12 @@ void zx_hrxml_EducationalMeasure_ADD_HighestPossibleValue(struct zx_hrxml_Educat
 void zx_hrxml_EducationalMeasure_ADD_ExcessiveValueIndicator(struct zx_hrxml_EducationalMeasure_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_EducationalMeasure_ADD_GoodStudentIndicator(struct zx_hrxml_EducationalMeasure_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_EducationalMeasure_DEL_MeasureSystem(struct zx_hrxml_EducationalMeasure_s* x, int n);
-void zx_hrxml_EducationalMeasure_DEL_MeasureValue(struct zx_hrxml_EducationalMeasure_s* x, int n);
+void zx_hrxml_EducationalMeasure_DEL_MeasureSystem(struct zx_hrxml_EducationalMeasure_s* x,int n);
+void zx_hrxml_EducationalMeasure_DEL_MeasureValue(struct zx_hrxml_EducationalMeasure_s* x,int n);
 void zx_hrxml_EducationalMeasure_DEL_LowestPossibleValue(struct zx_hrxml_EducationalMeasure_s* x, int n);
 void zx_hrxml_EducationalMeasure_DEL_HighestPossibleValue(struct zx_hrxml_EducationalMeasure_s* x, int n);
-void zx_hrxml_EducationalMeasure_DEL_ExcessiveValueIndicator(struct zx_hrxml_EducationalMeasure_s* x, int n);
-void zx_hrxml_EducationalMeasure_DEL_GoodStudentIndicator(struct zx_hrxml_EducationalMeasure_s* x, int n);
+void zx_hrxml_EducationalMeasure_DEL_ExcessiveValueIndicator(struct zx_hrxml_EducationalMeasure_s* x,int n);
+void zx_hrxml_EducationalMeasure_DEL_GoodStudentIndicator(struct zx_hrxml_EducationalMeasure_s* x,int n);
 
 void zx_hrxml_EducationalMeasure_REV_MeasureSystem(struct zx_hrxml_EducationalMeasure_s* x);
 void zx_hrxml_EducationalMeasure_REV_MeasureValue(struct zx_hrxml_EducationalMeasure_s* x);
@@ -4777,7 +4457,6 @@ void zx_hrxml_EducationalMeasure_REV_GoodStudentIndicator(struct zx_hrxml_Educat
 #ifndef zx_hrxml_EffectiveDate_EXT
 #define zx_hrxml_EffectiveDate_EXT
 #endif
-
 struct zx_hrxml_EffectiveDate_s {
   ZX_ELEM_EXT
   zx_hrxml_EffectiveDate_EXT
@@ -4786,12 +4465,8 @@ struct zx_hrxml_EffectiveDate_s {
 };
 
 #define zx_NEW_hrxml_EffectiveDate(c, father) (struct zx_hrxml_EffectiveDate_s*)zx_new_elem((c),(father),zx_hrxml_EffectiveDate_ELEM)
-
 int zx_DEC_ATTR_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDate_s* x);
 int zx_DEC_ELEM_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDate_s* x);
-int zx_LEN_SO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDate_s* x);
-char* zx_ENC_SO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_EffectiveDate_s* zx_DEEP_CLONE_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDate_s* x, int dup_strs);
@@ -4833,7 +4508,6 @@ void zx_hrxml_EffectiveDate_REV_EndDate(struct zx_hrxml_EffectiveDate_s* x);
 #ifndef zx_hrxml_EmployerContactInfo_EXT
 #define zx_hrxml_EmployerContactInfo_EXT
 #endif
-
 struct zx_hrxml_EmployerContactInfo_s {
   ZX_ELEM_EXT
   zx_hrxml_EmployerContactInfo_EXT
@@ -4845,12 +4519,8 @@ struct zx_hrxml_EmployerContactInfo_s {
 };
 
 #define zx_NEW_hrxml_EmployerContactInfo(c, father) (struct zx_hrxml_EmployerContactInfo_s*)zx_new_elem((c),(father),zx_hrxml_EmployerContactInfo_ELEM)
-
 int zx_DEC_ATTR_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_EmployerContactInfo_s* x);
 int zx_DEC_ELEM_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_EmployerContactInfo_s* x);
-int zx_LEN_SO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_EmployerContactInfo_s* x);
-char* zx_ENC_SO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_EmployerContactInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_EmployerContactInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_EmployerContactInfo_s* zx_DEEP_CLONE_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_EmployerContactInfo_s* x, int dup_strs);
@@ -4910,7 +4580,6 @@ void zx_hrxml_EmployerContactInfo_REV_InternetDomainName(struct zx_hrxml_Employe
 #ifndef zx_hrxml_EmployerOrg_EXT
 #define zx_hrxml_EmployerOrg_EXT
 #endif
-
 struct zx_hrxml_EmployerOrg_s {
   ZX_ELEM_EXT
   zx_hrxml_EmployerOrg_EXT
@@ -4922,12 +4591,8 @@ struct zx_hrxml_EmployerOrg_s {
 };
 
 #define zx_NEW_hrxml_EmployerOrg(c, father) (struct zx_hrxml_EmployerOrg_s*)zx_new_elem((c),(father),zx_hrxml_EmployerOrg_ELEM)
-
 int zx_DEC_ATTR_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s* x);
 int zx_DEC_ELEM_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s* x);
-int zx_LEN_SO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s* x);
-char* zx_ENC_SO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_EmployerOrg_s* zx_DEEP_CLONE_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s* x, int dup_strs);
@@ -4971,7 +4636,7 @@ void zx_hrxml_EmployerOrg_ADD_EmployerContactInfo(struct zx_hrxml_EmployerOrg_s*
 void zx_hrxml_EmployerOrg_ADD_PositionHistory(struct zx_hrxml_EmployerOrg_s* x, int n, struct zx_hrxml_PositionHistory_s* z);
 void zx_hrxml_EmployerOrg_ADD_UserArea(struct zx_hrxml_EmployerOrg_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_EmployerOrg_DEL_EmployerOrgName(struct zx_hrxml_EmployerOrg_s* x, int n);
+void zx_hrxml_EmployerOrg_DEL_EmployerOrgName(struct zx_hrxml_EmployerOrg_s* x,int n);
 void zx_hrxml_EmployerOrg_DEL_EmployerContactInfo(struct zx_hrxml_EmployerOrg_s* x, int n);
 void zx_hrxml_EmployerOrg_DEL_PositionHistory(struct zx_hrxml_EmployerOrg_s* x, int n);
 void zx_hrxml_EmployerOrg_DEL_UserArea(struct zx_hrxml_EmployerOrg_s* x, int n);
@@ -4987,7 +4652,6 @@ void zx_hrxml_EmployerOrg_REV_UserArea(struct zx_hrxml_EmployerOrg_s* x);
 #ifndef zx_hrxml_EmploymentHistory_EXT
 #define zx_hrxml_EmploymentHistory_EXT
 #endif
-
 struct zx_hrxml_EmploymentHistory_s {
   ZX_ELEM_EXT
   zx_hrxml_EmploymentHistory_EXT
@@ -4995,12 +4659,8 @@ struct zx_hrxml_EmploymentHistory_s {
 };
 
 #define zx_NEW_hrxml_EmploymentHistory(c, father) (struct zx_hrxml_EmploymentHistory_s*)zx_new_elem((c),(father),zx_hrxml_EmploymentHistory_ELEM)
-
 int zx_DEC_ATTR_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_EmploymentHistory_s* x);
 int zx_DEC_ELEM_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_EmploymentHistory_s* x);
-int zx_LEN_SO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_EmploymentHistory_s* x);
-char* zx_ENC_SO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_EmploymentHistory_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_EmploymentHistory_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_EmploymentHistory_s* zx_DEEP_CLONE_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_EmploymentHistory_s* x, int dup_strs);
@@ -5034,7 +4694,6 @@ void zx_hrxml_EmploymentHistory_REV_EmployerOrg(struct zx_hrxml_EmploymentHistor
 #ifndef zx_hrxml_EndDate_EXT
 #define zx_hrxml_EndDate_EXT
 #endif
-
 struct zx_hrxml_EndDate_s {
   ZX_ELEM_EXT
   zx_hrxml_EndDate_EXT
@@ -5047,12 +4706,8 @@ struct zx_hrxml_EndDate_s {
 };
 
 #define zx_NEW_hrxml_EndDate(c, father) (struct zx_hrxml_EndDate_s*)zx_new_elem((c),(father),zx_hrxml_EndDate_ELEM)
-
 int zx_DEC_ATTR_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x);
 int zx_DEC_ELEM_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x);
-int zx_LEN_SO_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x);
-char* zx_ENC_SO_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_EndDate_s* zx_DEEP_CLONE_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x, int dup_strs);
@@ -5102,11 +4757,11 @@ void zx_hrxml_EndDate_ADD_Year(struct zx_hrxml_EndDate_s* x, int n, struct zx_el
 void zx_hrxml_EndDate_ADD_MonthDay(struct zx_hrxml_EndDate_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_EndDate_ADD_StringDate(struct zx_hrxml_EndDate_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_EndDate_DEL_AnyDate(struct zx_hrxml_EndDate_s* x, int n);
-void zx_hrxml_EndDate_DEL_YearMonth(struct zx_hrxml_EndDate_s* x, int n);
-void zx_hrxml_EndDate_DEL_Year(struct zx_hrxml_EndDate_s* x, int n);
-void zx_hrxml_EndDate_DEL_MonthDay(struct zx_hrxml_EndDate_s* x, int n);
-void zx_hrxml_EndDate_DEL_StringDate(struct zx_hrxml_EndDate_s* x, int n);
+void zx_hrxml_EndDate_DEL_AnyDate(struct zx_hrxml_EndDate_s* x,int n);
+void zx_hrxml_EndDate_DEL_YearMonth(struct zx_hrxml_EndDate_s* x,int n);
+void zx_hrxml_EndDate_DEL_Year(struct zx_hrxml_EndDate_s* x,int n);
+void zx_hrxml_EndDate_DEL_MonthDay(struct zx_hrxml_EndDate_s* x,int n);
+void zx_hrxml_EndDate_DEL_StringDate(struct zx_hrxml_EndDate_s* x,int n);
 
 void zx_hrxml_EndDate_REV_AnyDate(struct zx_hrxml_EndDate_s* x);
 void zx_hrxml_EndDate_REV_YearMonth(struct zx_hrxml_EndDate_s* x);
@@ -5120,7 +4775,6 @@ void zx_hrxml_EndDate_REV_StringDate(struct zx_hrxml_EndDate_s* x);
 #ifndef zx_hrxml_EndingCompensation_EXT
 #define zx_hrxml_EndingCompensation_EXT
 #endif
-
 struct zx_hrxml_EndingCompensation_s {
   ZX_ELEM_EXT
   zx_hrxml_EndingCompensation_EXT
@@ -5131,12 +4785,8 @@ struct zx_hrxml_EndingCompensation_s {
 };
 
 #define zx_NEW_hrxml_EndingCompensation(c, father) (struct zx_hrxml_EndingCompensation_s*)zx_new_elem((c),(father),zx_hrxml_EndingCompensation_ELEM)
-
 int zx_DEC_ATTR_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingCompensation_s* x);
 int zx_DEC_ELEM_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingCompensation_s* x);
-int zx_LEN_SO_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingCompensation_s* x);
-char* zx_ENC_SO_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingCompensation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingCompensation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_EndingCompensation_s* zx_DEEP_CLONE_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingCompensation_s* x, int dup_strs);
@@ -5170,7 +4820,6 @@ void zx_hrxml_EndingCompensation_PUT_validTo(struct zx_hrxml_EndingCompensation_
 #ifndef zx_hrxml_EnvironmentId_EXT
 #define zx_hrxml_EnvironmentId_EXT
 #endif
-
 struct zx_hrxml_EnvironmentId_s {
   ZX_ELEM_EXT
   zx_hrxml_EnvironmentId_EXT
@@ -5181,12 +4830,8 @@ struct zx_hrxml_EnvironmentId_s {
 };
 
 #define zx_NEW_hrxml_EnvironmentId(c, father) (struct zx_hrxml_EnvironmentId_s*)zx_new_elem((c),(father),zx_hrxml_EnvironmentId_ELEM)
-
 int zx_DEC_ATTR_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentId_s* x);
 int zx_DEC_ELEM_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentId_s* x);
-int zx_LEN_SO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentId_s* x);
-char* zx_ENC_SO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_EnvironmentId_s* zx_DEEP_CLONE_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentId_s* x, int dup_strs);
@@ -5226,7 +4871,6 @@ void zx_hrxml_EnvironmentId_REV_IdValue(struct zx_hrxml_EnvironmentId_s* x);
 #ifndef zx_hrxml_EvidenceId_EXT
 #define zx_hrxml_EvidenceId_EXT
 #endif
-
 struct zx_hrxml_EvidenceId_s {
   ZX_ELEM_EXT
   zx_hrxml_EvidenceId_EXT
@@ -5236,12 +4880,8 @@ struct zx_hrxml_EvidenceId_s {
 };
 
 #define zx_NEW_hrxml_EvidenceId(c, father) (struct zx_hrxml_EvidenceId_s*)zx_new_elem((c),(father),zx_hrxml_EvidenceId_ELEM)
-
 int zx_DEC_ATTR_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x);
 int zx_DEC_ELEM_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x);
-int zx_LEN_SO_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x);
-char* zx_ENC_SO_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_EvidenceId_s* zx_DEEP_CLONE_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x, int dup_strs);
@@ -5273,7 +4913,6 @@ void zx_hrxml_EvidenceId_PUT_idOwner(struct zx_hrxml_EvidenceId_s* x, struct zx_
 #ifndef zx_hrxml_ExpatriateBenefits_EXT
 #define zx_hrxml_ExpatriateBenefits_EXT
 #endif
-
 struct zx_hrxml_ExpatriateBenefits_s {
   ZX_ELEM_EXT
   zx_hrxml_ExpatriateBenefits_EXT
@@ -5282,12 +4921,8 @@ struct zx_hrxml_ExpatriateBenefits_s {
 };
 
 #define zx_NEW_hrxml_ExpatriateBenefits(c, father) (struct zx_hrxml_ExpatriateBenefits_s*)zx_new_elem((c),(father),zx_hrxml_ExpatriateBenefits_ELEM)
-
 int zx_DEC_ATTR_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_ExpatriateBenefits_s* x);
 int zx_DEC_ELEM_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_ExpatriateBenefits_s* x);
-int zx_LEN_SO_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_ExpatriateBenefits_s* x);
-char* zx_ENC_SO_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_ExpatriateBenefits_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_ExpatriateBenefits_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ExpatriateBenefits_s* zx_DEEP_CLONE_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_ExpatriateBenefits_s* x, int dup_strs);
@@ -5317,8 +4952,8 @@ void zx_hrxml_ExpatriateBenefits_PUT_ExpatriateBenefitList(struct zx_hrxml_Expat
 void zx_hrxml_ExpatriateBenefits_ADD_ExpatriateBenefitsOffered(struct zx_hrxml_ExpatriateBenefits_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_ExpatriateBenefits_ADD_ExpatriateBenefitList(struct zx_hrxml_ExpatriateBenefits_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_ExpatriateBenefits_DEL_ExpatriateBenefitsOffered(struct zx_hrxml_ExpatriateBenefits_s* x, int n);
-void zx_hrxml_ExpatriateBenefits_DEL_ExpatriateBenefitList(struct zx_hrxml_ExpatriateBenefits_s* x, int n);
+void zx_hrxml_ExpatriateBenefits_DEL_ExpatriateBenefitsOffered(struct zx_hrxml_ExpatriateBenefits_s* x,int n);
+void zx_hrxml_ExpatriateBenefits_DEL_ExpatriateBenefitList(struct zx_hrxml_ExpatriateBenefits_s* x,int n);
 
 void zx_hrxml_ExpatriateBenefits_REV_ExpatriateBenefitsOffered(struct zx_hrxml_ExpatriateBenefits_s* x);
 void zx_hrxml_ExpatriateBenefits_REV_ExpatriateBenefitList(struct zx_hrxml_ExpatriateBenefits_s* x);
@@ -5329,7 +4964,6 @@ void zx_hrxml_ExpatriateBenefits_REV_ExpatriateBenefitList(struct zx_hrxml_Expat
 #ifndef zx_hrxml_FamilyName_EXT
 #define zx_hrxml_FamilyName_EXT
 #endif
-
 struct zx_hrxml_FamilyName_s {
   ZX_ELEM_EXT
   zx_hrxml_FamilyName_EXT
@@ -5338,12 +4972,8 @@ struct zx_hrxml_FamilyName_s {
 };
 
 #define zx_NEW_hrxml_FamilyName(c, father) (struct zx_hrxml_FamilyName_s*)zx_new_elem((c),(father),zx_hrxml_FamilyName_ELEM)
-
 int zx_DEC_ATTR_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x);
 int zx_DEC_ELEM_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x);
-int zx_LEN_SO_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x);
-char* zx_ENC_SO_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_FamilyName_s* zx_DEEP_CLONE_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x, int dup_strs);
@@ -5373,7 +5003,6 @@ void zx_hrxml_FamilyName_PUT_primary(struct zx_hrxml_FamilyName_s* x, struct zx_
 #ifndef zx_hrxml_Fax_EXT
 #define zx_hrxml_Fax_EXT
 #endif
-
 struct zx_hrxml_Fax_s {
   ZX_ELEM_EXT
   zx_hrxml_Fax_EXT
@@ -5381,12 +5010,8 @@ struct zx_hrxml_Fax_s {
 };
 
 #define zx_NEW_hrxml_Fax(c, father) (struct zx_hrxml_Fax_s*)zx_new_elem((c),(father),zx_hrxml_Fax_ELEM)
-
 int zx_DEC_ATTR_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x);
 int zx_DEC_ELEM_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x);
-int zx_LEN_SO_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x);
-char* zx_ENC_SO_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Fax_s* zx_DEEP_CLONE_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x, int dup_strs);
@@ -5410,7 +5035,7 @@ void zx_hrxml_Fax_PUT_FormattedNumber(struct zx_hrxml_Fax_s* x, int n, struct zx
 
 void zx_hrxml_Fax_ADD_FormattedNumber(struct zx_hrxml_Fax_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_Fax_DEL_FormattedNumber(struct zx_hrxml_Fax_s* x, int n);
+void zx_hrxml_Fax_DEL_FormattedNumber(struct zx_hrxml_Fax_s* x,int n);
 
 void zx_hrxml_Fax_REV_FormattedNumber(struct zx_hrxml_Fax_s* x);
 
@@ -5420,7 +5045,6 @@ void zx_hrxml_Fax_REV_FormattedNumber(struct zx_hrxml_Fax_s* x);
 #ifndef zx_hrxml_FirstIssuedDate_EXT
 #define zx_hrxml_FirstIssuedDate_EXT
 #endif
-
 struct zx_hrxml_FirstIssuedDate_s {
   ZX_ELEM_EXT
   zx_hrxml_FirstIssuedDate_EXT
@@ -5433,12 +5057,8 @@ struct zx_hrxml_FirstIssuedDate_s {
 };
 
 #define zx_NEW_hrxml_FirstIssuedDate(c, father) (struct zx_hrxml_FirstIssuedDate_s*)zx_new_elem((c),(father),zx_hrxml_FirstIssuedDate_ELEM)
-
 int zx_DEC_ATTR_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssuedDate_s* x);
 int zx_DEC_ELEM_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssuedDate_s* x);
-int zx_LEN_SO_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssuedDate_s* x);
-char* zx_ENC_SO_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssuedDate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssuedDate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_FirstIssuedDate_s* zx_DEEP_CLONE_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssuedDate_s* x, int dup_strs);
@@ -5488,11 +5108,11 @@ void zx_hrxml_FirstIssuedDate_ADD_Year(struct zx_hrxml_FirstIssuedDate_s* x, int
 void zx_hrxml_FirstIssuedDate_ADD_MonthDay(struct zx_hrxml_FirstIssuedDate_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_FirstIssuedDate_ADD_StringDate(struct zx_hrxml_FirstIssuedDate_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_FirstIssuedDate_DEL_AnyDate(struct zx_hrxml_FirstIssuedDate_s* x, int n);
-void zx_hrxml_FirstIssuedDate_DEL_YearMonth(struct zx_hrxml_FirstIssuedDate_s* x, int n);
-void zx_hrxml_FirstIssuedDate_DEL_Year(struct zx_hrxml_FirstIssuedDate_s* x, int n);
-void zx_hrxml_FirstIssuedDate_DEL_MonthDay(struct zx_hrxml_FirstIssuedDate_s* x, int n);
-void zx_hrxml_FirstIssuedDate_DEL_StringDate(struct zx_hrxml_FirstIssuedDate_s* x, int n);
+void zx_hrxml_FirstIssuedDate_DEL_AnyDate(struct zx_hrxml_FirstIssuedDate_s* x,int n);
+void zx_hrxml_FirstIssuedDate_DEL_YearMonth(struct zx_hrxml_FirstIssuedDate_s* x,int n);
+void zx_hrxml_FirstIssuedDate_DEL_Year(struct zx_hrxml_FirstIssuedDate_s* x,int n);
+void zx_hrxml_FirstIssuedDate_DEL_MonthDay(struct zx_hrxml_FirstIssuedDate_s* x,int n);
+void zx_hrxml_FirstIssuedDate_DEL_StringDate(struct zx_hrxml_FirstIssuedDate_s* x,int n);
 
 void zx_hrxml_FirstIssuedDate_REV_AnyDate(struct zx_hrxml_FirstIssuedDate_s* x);
 void zx_hrxml_FirstIssuedDate_REV_YearMonth(struct zx_hrxml_FirstIssuedDate_s* x);
@@ -5506,7 +5126,6 @@ void zx_hrxml_FirstIssuedDate_REV_StringDate(struct zx_hrxml_FirstIssuedDate_s* 
 #ifndef zx_hrxml_FormattedPublicationDescription_EXT
 #define zx_hrxml_FormattedPublicationDescription_EXT
 #endif
-
 struct zx_hrxml_FormattedPublicationDescription_s {
   ZX_ELEM_EXT
   zx_hrxml_FormattedPublicationDescription_EXT
@@ -5514,12 +5133,8 @@ struct zx_hrxml_FormattedPublicationDescription_s {
 };
 
 #define zx_NEW_hrxml_FormattedPublicationDescription(c, father) (struct zx_hrxml_FormattedPublicationDescription_s*)zx_new_elem((c),(father),zx_hrxml_FormattedPublicationDescription_ELEM)
-
 int zx_DEC_ATTR_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_hrxml_FormattedPublicationDescription_s* x);
 int zx_DEC_ELEM_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_hrxml_FormattedPublicationDescription_s* x);
-int zx_LEN_SO_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_hrxml_FormattedPublicationDescription_s* x);
-char* zx_ENC_SO_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_hrxml_FormattedPublicationDescription_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_hrxml_FormattedPublicationDescription_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_FormattedPublicationDescription_s* zx_DEEP_CLONE_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_hrxml_FormattedPublicationDescription_s* x, int dup_strs);
@@ -5547,7 +5162,6 @@ void zx_hrxml_FormattedPublicationDescription_PUT_type(struct zx_hrxml_Formatted
 #ifndef zx_hrxml_Height_EXT
 #define zx_hrxml_Height_EXT
 #endif
-
 struct zx_hrxml_Height_s {
   ZX_ELEM_EXT
   zx_hrxml_Height_EXT
@@ -5555,12 +5169,8 @@ struct zx_hrxml_Height_s {
 };
 
 #define zx_NEW_hrxml_Height(c, father) (struct zx_hrxml_Height_s*)zx_new_elem((c),(father),zx_hrxml_Height_ELEM)
-
 int zx_DEC_ATTR_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x);
 int zx_DEC_ELEM_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x);
-int zx_LEN_SO_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x);
-char* zx_ENC_SO_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Height_s* zx_DEEP_CLONE_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x, int dup_strs);
@@ -5588,7 +5198,6 @@ void zx_hrxml_Height_PUT_unitOfMeasure(struct zx_hrxml_Height_s* x, struct zx_at
 #ifndef zx_hrxml_HighestPossibleValue_EXT
 #define zx_hrxml_HighestPossibleValue_EXT
 #endif
-
 struct zx_hrxml_HighestPossibleValue_s {
   ZX_ELEM_EXT
   zx_hrxml_HighestPossibleValue_EXT
@@ -5597,12 +5206,8 @@ struct zx_hrxml_HighestPossibleValue_s {
 };
 
 #define zx_NEW_hrxml_HighestPossibleValue(c, father) (struct zx_hrxml_HighestPossibleValue_s*)zx_new_elem((c),(father),zx_hrxml_HighestPossibleValue_ELEM)
-
 int zx_DEC_ATTR_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_HighestPossibleValue_s* x);
 int zx_DEC_ELEM_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_HighestPossibleValue_s* x);
-int zx_LEN_SO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_HighestPossibleValue_s* x);
-char* zx_ENC_SO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_HighestPossibleValue_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_HighestPossibleValue_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_HighestPossibleValue_s* zx_DEEP_CLONE_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_HighestPossibleValue_s* x, int dup_strs);
@@ -5644,19 +5249,14 @@ void zx_hrxml_HighestPossibleValue_REV_StringValue(struct zx_hrxml_HighestPossib
 #ifndef zx_hrxml_HorizontalAccuracy_EXT
 #define zx_hrxml_HorizontalAccuracy_EXT
 #endif
-
 struct zx_hrxml_HorizontalAccuracy_s {
   ZX_ELEM_EXT
   zx_hrxml_HorizontalAccuracy_EXT
 };
 
 #define zx_NEW_hrxml_HorizontalAccuracy(c, father) (struct zx_hrxml_HorizontalAccuracy_s*)zx_new_elem((c),(father),zx_hrxml_HorizontalAccuracy_ELEM)
-
 int zx_DEC_ATTR_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_HorizontalAccuracy_s* x);
 int zx_DEC_ELEM_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_HorizontalAccuracy_s* x);
-int zx_LEN_SO_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_HorizontalAccuracy_s* x);
-char* zx_ENC_SO_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_HorizontalAccuracy_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_HorizontalAccuracy_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_HorizontalAccuracy_s* zx_DEEP_CLONE_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_HorizontalAccuracy_s* x, int dup_strs);
@@ -5682,7 +5282,6 @@ int zx_WALK_WO_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_Horizo
 #ifndef zx_hrxml_Id_EXT
 #define zx_hrxml_Id_EXT
 #endif
-
 struct zx_hrxml_Id_s {
   ZX_ELEM_EXT
   zx_hrxml_Id_EXT
@@ -5693,12 +5292,8 @@ struct zx_hrxml_Id_s {
 };
 
 #define zx_NEW_hrxml_Id(c, father) (struct zx_hrxml_Id_s*)zx_new_elem((c),(father),zx_hrxml_Id_ELEM)
-
 int zx_DEC_ATTR_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x);
 int zx_DEC_ELEM_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x);
-int zx_LEN_SO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x);
-char* zx_ENC_SO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Id_s* zx_DEEP_CLONE_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x, int dup_strs);
@@ -5738,7 +5333,6 @@ void zx_hrxml_Id_REV_IdValue(struct zx_hrxml_Id_s* x);
 #ifndef zx_hrxml_IdValue_EXT
 #define zx_hrxml_IdValue_EXT
 #endif
-
 struct zx_hrxml_IdValue_s {
   ZX_ELEM_EXT
   zx_hrxml_IdValue_EXT
@@ -5746,12 +5340,8 @@ struct zx_hrxml_IdValue_s {
 };
 
 #define zx_NEW_hrxml_IdValue(c, father) (struct zx_hrxml_IdValue_s*)zx_new_elem((c),(father),zx_hrxml_IdValue_ELEM)
-
 int zx_DEC_ATTR_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x);
 int zx_DEC_ELEM_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x);
-int zx_LEN_SO_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x);
-char* zx_ENC_SO_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_IdValue_s* zx_DEEP_CLONE_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x, int dup_strs);
@@ -5779,7 +5369,6 @@ void zx_hrxml_IdValue_PUT_name(struct zx_hrxml_IdValue_s* x, struct zx_attr_s* y
 #ifndef zx_hrxml_IndustryCode_EXT
 #define zx_hrxml_IndustryCode_EXT
 #endif
-
 struct zx_hrxml_IndustryCode_s {
   ZX_ELEM_EXT
   zx_hrxml_IndustryCode_EXT
@@ -5788,12 +5377,8 @@ struct zx_hrxml_IndustryCode_s {
 };
 
 #define zx_NEW_hrxml_IndustryCode(c, father) (struct zx_hrxml_IndustryCode_s*)zx_new_elem((c),(father),zx_hrxml_IndustryCode_ELEM)
-
 int zx_DEC_ATTR_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_s* x);
 int zx_DEC_ELEM_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_s* x);
-int zx_LEN_SO_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_s* x);
-char* zx_ENC_SO_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_IndustryCode_s* zx_DEEP_CLONE_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_s* x, int dup_strs);
@@ -5823,7 +5408,6 @@ void zx_hrxml_IndustryCode_PUT_primaryIndicator(struct zx_hrxml_IndustryCode_s* 
 #ifndef zx_hrxml_Insurance_EXT
 #define zx_hrxml_Insurance_EXT
 #endif
-
 struct zx_hrxml_Insurance_s {
   ZX_ELEM_EXT
   zx_hrxml_Insurance_EXT
@@ -5831,12 +5415,8 @@ struct zx_hrxml_Insurance_s {
 };
 
 #define zx_NEW_hrxml_Insurance(c, father) (struct zx_hrxml_Insurance_s*)zx_new_elem((c),(father),zx_hrxml_Insurance_ELEM)
-
 int zx_DEC_ATTR_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x);
 int zx_DEC_ELEM_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x);
-int zx_LEN_SO_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x);
-char* zx_ENC_SO_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Insurance_s* zx_DEEP_CLONE_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x, int dup_strs);
@@ -5864,7 +5444,6 @@ void zx_hrxml_Insurance_PUT_type(struct zx_hrxml_Insurance_s* x, struct zx_attr_
 #ifndef zx_hrxml_InternetDomainName_EXT
 #define zx_hrxml_InternetDomainName_EXT
 #endif
-
 struct zx_hrxml_InternetDomainName_s {
   ZX_ELEM_EXT
   zx_hrxml_InternetDomainName_EXT
@@ -5872,12 +5451,8 @@ struct zx_hrxml_InternetDomainName_s {
 };
 
 #define zx_NEW_hrxml_InternetDomainName(c, father) (struct zx_hrxml_InternetDomainName_s*)zx_new_elem((c),(father),zx_hrxml_InternetDomainName_ELEM)
-
 int zx_DEC_ATTR_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_InternetDomainName_s* x);
 int zx_DEC_ELEM_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_InternetDomainName_s* x);
-int zx_LEN_SO_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_InternetDomainName_s* x);
-char* zx_ENC_SO_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_InternetDomainName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_InternetDomainName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_InternetDomainName_s* zx_DEEP_CLONE_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_InternetDomainName_s* x, int dup_strs);
@@ -5905,7 +5480,6 @@ void zx_hrxml_InternetDomainName_PUT_primaryIndicator(struct zx_hrxml_InternetDo
 #ifndef zx_hrxml_Inventors_EXT
 #define zx_hrxml_Inventors_EXT
 #endif
-
 struct zx_hrxml_Inventors_s {
   ZX_ELEM_EXT
   zx_hrxml_Inventors_EXT
@@ -5913,12 +5487,8 @@ struct zx_hrxml_Inventors_s {
 };
 
 #define zx_NEW_hrxml_Inventors(c, father) (struct zx_hrxml_Inventors_s*)zx_new_elem((c),(father),zx_hrxml_Inventors_ELEM)
-
 int zx_DEC_ATTR_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x);
 int zx_DEC_ELEM_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x);
-int zx_LEN_SO_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x);
-char* zx_ENC_SO_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Inventors_s* zx_DEEP_CLONE_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x, int dup_strs);
@@ -5942,7 +5512,7 @@ void zx_hrxml_Inventors_PUT_InventorName(struct zx_hrxml_Inventors_s* x, int n, 
 
 void zx_hrxml_Inventors_ADD_InventorName(struct zx_hrxml_Inventors_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_Inventors_DEL_InventorName(struct zx_hrxml_Inventors_s* x, int n);
+void zx_hrxml_Inventors_DEL_InventorName(struct zx_hrxml_Inventors_s* x,int n);
 
 void zx_hrxml_Inventors_REV_InventorName(struct zx_hrxml_Inventors_s* x);
 
@@ -5952,7 +5522,6 @@ void zx_hrxml_Inventors_REV_InventorName(struct zx_hrxml_Inventors_s* x);
 #ifndef zx_hrxml_IssuingAuthority_EXT
 #define zx_hrxml_IssuingAuthority_EXT
 #endif
-
 struct zx_hrxml_IssuingAuthority_s {
   ZX_ELEM_EXT
   zx_hrxml_IssuingAuthority_EXT
@@ -5960,12 +5529,8 @@ struct zx_hrxml_IssuingAuthority_s {
 };
 
 #define zx_NEW_hrxml_IssuingAuthority(c, father) (struct zx_hrxml_IssuingAuthority_s*)zx_new_elem((c),(father),zx_hrxml_IssuingAuthority_ELEM)
-
 int zx_DEC_ATTR_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAuthority_s* x);
 int zx_DEC_ELEM_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAuthority_s* x);
-int zx_LEN_SO_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAuthority_s* x);
-char* zx_ENC_SO_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAuthority_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAuthority_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_IssuingAuthority_s* zx_DEEP_CLONE_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAuthority_s* x, int dup_strs);
@@ -5993,7 +5558,6 @@ void zx_hrxml_IssuingAuthority_PUT_countryCode(struct zx_hrxml_IssuingAuthority_
 #ifndef zx_hrxml_JobCategory_EXT
 #define zx_hrxml_JobCategory_EXT
 #endif
-
 struct zx_hrxml_JobCategory_s {
   ZX_ELEM_EXT
   zx_hrxml_JobCategory_EXT
@@ -6005,12 +5569,8 @@ struct zx_hrxml_JobCategory_s {
 };
 
 #define zx_NEW_hrxml_JobCategory(c, father) (struct zx_hrxml_JobCategory_s*)zx_new_elem((c),(father),zx_hrxml_JobCategory_ELEM)
-
 int zx_DEC_ATTR_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s* x);
 int zx_DEC_ELEM_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s* x);
-int zx_LEN_SO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s* x);
-char* zx_ENC_SO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_JobCategory_s* zx_DEEP_CLONE_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s* x, int dup_strs);
@@ -6059,9 +5619,9 @@ void zx_hrxml_JobCategory_ADD_Comments(struct zx_hrxml_JobCategory_s* x, int n, 
 void zx_hrxml_JobCategory_ADD_JobCategory(struct zx_hrxml_JobCategory_s* x, int n, struct zx_hrxml_JobCategory_s* z);
 
 void zx_hrxml_JobCategory_DEL_TaxonomyName(struct zx_hrxml_JobCategory_s* x, int n);
-void zx_hrxml_JobCategory_DEL_CategoryCode(struct zx_hrxml_JobCategory_s* x, int n);
-void zx_hrxml_JobCategory_DEL_CategoryDescription(struct zx_hrxml_JobCategory_s* x, int n);
-void zx_hrxml_JobCategory_DEL_Comments(struct zx_hrxml_JobCategory_s* x, int n);
+void zx_hrxml_JobCategory_DEL_CategoryCode(struct zx_hrxml_JobCategory_s* x,int n);
+void zx_hrxml_JobCategory_DEL_CategoryDescription(struct zx_hrxml_JobCategory_s* x,int n);
+void zx_hrxml_JobCategory_DEL_Comments(struct zx_hrxml_JobCategory_s* x,int n);
 void zx_hrxml_JobCategory_DEL_JobCategory(struct zx_hrxml_JobCategory_s* x, int n);
 
 void zx_hrxml_JobCategory_REV_TaxonomyName(struct zx_hrxml_JobCategory_s* x);
@@ -6076,7 +5636,6 @@ void zx_hrxml_JobCategory_REV_JobCategory(struct zx_hrxml_JobCategory_s* x);
 #ifndef zx_hrxml_JobLevelInfo_EXT
 #define zx_hrxml_JobLevelInfo_EXT
 #endif
-
 struct zx_hrxml_JobLevelInfo_s {
   ZX_ELEM_EXT
   zx_hrxml_JobLevelInfo_EXT
@@ -6087,12 +5646,8 @@ struct zx_hrxml_JobLevelInfo_s {
 };
 
 #define zx_NEW_hrxml_JobLevelInfo(c, father) (struct zx_hrxml_JobLevelInfo_s*)zx_new_elem((c),(father),zx_hrxml_JobLevelInfo_ELEM)
-
 int zx_DEC_ATTR_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_s* x);
 int zx_DEC_ELEM_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_s* x);
-int zx_LEN_SO_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_s* x);
-char* zx_ENC_SO_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_JobLevelInfo_s* zx_DEEP_CLONE_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_s* x, int dup_strs);
@@ -6134,10 +5689,10 @@ void zx_hrxml_JobLevelInfo_ADD_JobGrade(struct zx_hrxml_JobLevelInfo_s* x, int n
 void zx_hrxml_JobLevelInfo_ADD_JobStep(struct zx_hrxml_JobLevelInfo_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_JobLevelInfo_ADD_Comments(struct zx_hrxml_JobLevelInfo_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_JobLevelInfo_DEL_JobPlan(struct zx_hrxml_JobLevelInfo_s* x, int n);
-void zx_hrxml_JobLevelInfo_DEL_JobGrade(struct zx_hrxml_JobLevelInfo_s* x, int n);
-void zx_hrxml_JobLevelInfo_DEL_JobStep(struct zx_hrxml_JobLevelInfo_s* x, int n);
-void zx_hrxml_JobLevelInfo_DEL_Comments(struct zx_hrxml_JobLevelInfo_s* x, int n);
+void zx_hrxml_JobLevelInfo_DEL_JobPlan(struct zx_hrxml_JobLevelInfo_s* x,int n);
+void zx_hrxml_JobLevelInfo_DEL_JobGrade(struct zx_hrxml_JobLevelInfo_s* x,int n);
+void zx_hrxml_JobLevelInfo_DEL_JobStep(struct zx_hrxml_JobLevelInfo_s* x,int n);
+void zx_hrxml_JobLevelInfo_DEL_Comments(struct zx_hrxml_JobLevelInfo_s* x,int n);
 
 void zx_hrxml_JobLevelInfo_REV_JobPlan(struct zx_hrxml_JobLevelInfo_s* x);
 void zx_hrxml_JobLevelInfo_REV_JobGrade(struct zx_hrxml_JobLevelInfo_s* x);
@@ -6150,7 +5705,6 @@ void zx_hrxml_JobLevelInfo_REV_Comments(struct zx_hrxml_JobLevelInfo_s* x);
 #ifndef zx_hrxml_Language_EXT
 #define zx_hrxml_Language_EXT
 #endif
-
 struct zx_hrxml_Language_s {
   ZX_ELEM_EXT
   zx_hrxml_Language_EXT
@@ -6162,12 +5716,8 @@ struct zx_hrxml_Language_s {
 };
 
 #define zx_NEW_hrxml_Language(c, father) (struct zx_hrxml_Language_s*)zx_new_elem((c),(father),zx_hrxml_Language_ELEM)
-
 int zx_DEC_ATTR_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x);
 int zx_DEC_ELEM_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x);
-int zx_LEN_SO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x);
-char* zx_ENC_SO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Language_s* zx_DEEP_CLONE_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x, int dup_strs);
@@ -6216,10 +5766,10 @@ void zx_hrxml_Language_ADD_Speak(struct zx_hrxml_Language_s* x, int n, struct zx
 void zx_hrxml_Language_ADD_Comments(struct zx_hrxml_Language_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_Language_DEL_LanguageCode(struct zx_hrxml_Language_s* x, int n);
-void zx_hrxml_Language_DEL_Read(struct zx_hrxml_Language_s* x, int n);
-void zx_hrxml_Language_DEL_Write(struct zx_hrxml_Language_s* x, int n);
-void zx_hrxml_Language_DEL_Speak(struct zx_hrxml_Language_s* x, int n);
-void zx_hrxml_Language_DEL_Comments(struct zx_hrxml_Language_s* x, int n);
+void zx_hrxml_Language_DEL_Read(struct zx_hrxml_Language_s* x,int n);
+void zx_hrxml_Language_DEL_Write(struct zx_hrxml_Language_s* x,int n);
+void zx_hrxml_Language_DEL_Speak(struct zx_hrxml_Language_s* x,int n);
+void zx_hrxml_Language_DEL_Comments(struct zx_hrxml_Language_s* x,int n);
 
 void zx_hrxml_Language_REV_LanguageCode(struct zx_hrxml_Language_s* x);
 void zx_hrxml_Language_REV_Read(struct zx_hrxml_Language_s* x);
@@ -6233,19 +5783,14 @@ void zx_hrxml_Language_REV_Comments(struct zx_hrxml_Language_s* x);
 #ifndef zx_hrxml_LanguageCode_EXT
 #define zx_hrxml_LanguageCode_EXT
 #endif
-
 struct zx_hrxml_LanguageCode_s {
   ZX_ELEM_EXT
   zx_hrxml_LanguageCode_EXT
 };
 
 #define zx_NEW_hrxml_LanguageCode(c, father) (struct zx_hrxml_LanguageCode_s*)zx_new_elem((c),(father),zx_hrxml_LanguageCode_ELEM)
-
 int zx_DEC_ATTR_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_s* x);
 int zx_DEC_ELEM_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_s* x);
-int zx_LEN_SO_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_s* x);
-char* zx_ENC_SO_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_LanguageCode_s* zx_DEEP_CLONE_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_s* x, int dup_strs);
@@ -6271,7 +5816,6 @@ int zx_WALK_WO_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode
 #ifndef zx_hrxml_Languages_EXT
 #define zx_hrxml_Languages_EXT
 #endif
-
 struct zx_hrxml_Languages_s {
   ZX_ELEM_EXT
   zx_hrxml_Languages_EXT
@@ -6279,12 +5823,8 @@ struct zx_hrxml_Languages_s {
 };
 
 #define zx_NEW_hrxml_Languages(c, father) (struct zx_hrxml_Languages_s*)zx_new_elem((c),(father),zx_hrxml_Languages_ELEM)
-
 int zx_DEC_ATTR_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x);
 int zx_DEC_ELEM_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x);
-int zx_LEN_SO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x);
-char* zx_ENC_SO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Languages_s* zx_DEEP_CLONE_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x, int dup_strs);
@@ -6318,19 +5858,14 @@ void zx_hrxml_Languages_REV_Language(struct zx_hrxml_Languages_s* x);
 #ifndef zx_hrxml_Latitude_EXT
 #define zx_hrxml_Latitude_EXT
 #endif
-
 struct zx_hrxml_Latitude_s {
   ZX_ELEM_EXT
   zx_hrxml_Latitude_EXT
 };
 
 #define zx_NEW_hrxml_Latitude(c, father) (struct zx_hrxml_Latitude_s*)zx_new_elem((c),(father),zx_hrxml_Latitude_ELEM)
-
 int zx_DEC_ATTR_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x);
 int zx_DEC_ELEM_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x);
-int zx_LEN_SO_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x);
-char* zx_ENC_SO_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Latitude_s* zx_DEEP_CLONE_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x, int dup_strs);
@@ -6356,7 +5891,6 @@ int zx_WALK_WO_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x, v
 #ifndef zx_hrxml_LegalClassification_EXT
 #define zx_hrxml_LegalClassification_EXT
 #endif
-
 struct zx_hrxml_LegalClassification_s {
   ZX_ELEM_EXT
   zx_hrxml_LegalClassification_EXT
@@ -6365,12 +5899,8 @@ struct zx_hrxml_LegalClassification_s {
 };
 
 #define zx_NEW_hrxml_LegalClassification(c, father) (struct zx_hrxml_LegalClassification_s*)zx_new_elem((c),(father),zx_hrxml_LegalClassification_ELEM)
-
 int zx_DEC_ATTR_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalClassification_s* x);
 int zx_DEC_ELEM_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalClassification_s* x);
-int zx_LEN_SO_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalClassification_s* x);
-char* zx_ENC_SO_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalClassification_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalClassification_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_LegalClassification_s* zx_DEEP_CLONE_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalClassification_s* x, int dup_strs);
@@ -6400,7 +5930,6 @@ void zx_hrxml_LegalClassification_PUT_ownership(struct zx_hrxml_LegalClassificat
 #ifndef zx_hrxml_LegalId_EXT
 #define zx_hrxml_LegalId_EXT
 #endif
-
 struct zx_hrxml_LegalId_s {
   ZX_ELEM_EXT
   zx_hrxml_LegalId_EXT
@@ -6411,12 +5940,8 @@ struct zx_hrxml_LegalId_s {
 };
 
 #define zx_NEW_hrxml_LegalId(c, father) (struct zx_hrxml_LegalId_s*)zx_new_elem((c),(father),zx_hrxml_LegalId_ELEM)
-
 int zx_DEC_ATTR_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x);
 int zx_DEC_ELEM_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x);
-int zx_LEN_SO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x);
-char* zx_ENC_SO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_LegalId_s* zx_DEEP_CLONE_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x, int dup_strs);
@@ -6456,7 +5981,6 @@ void zx_hrxml_LegalId_REV_IdValue(struct zx_hrxml_LegalId_s* x);
 #ifndef zx_hrxml_LegalIdentifiers_EXT
 #define zx_hrxml_LegalIdentifiers_EXT
 #endif
-
 struct zx_hrxml_LegalIdentifiers_s {
   ZX_ELEM_EXT
   zx_hrxml_LegalIdentifiers_EXT
@@ -6469,12 +5993,8 @@ struct zx_hrxml_LegalIdentifiers_s {
 };
 
 #define zx_NEW_hrxml_LegalIdentifiers(c, father) (struct zx_hrxml_LegalIdentifiers_s*)zx_new_elem((c),(father),zx_hrxml_LegalIdentifiers_ELEM)
-
 int zx_DEC_ATTR_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIdentifiers_s* x);
 int zx_DEC_ELEM_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIdentifiers_s* x);
-int zx_LEN_SO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIdentifiers_s* x);
-char* zx_ENC_SO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIdentifiers_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIdentifiers_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_LegalIdentifiers_s* zx_DEEP_CLONE_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIdentifiers_s* x, int dup_strs);
@@ -6531,8 +6051,8 @@ void zx_hrxml_LegalIdentifiers_ADD_UserArea(struct zx_hrxml_LegalIdentifiers_s* 
 void zx_hrxml_LegalIdentifiers_DEL_PersonLegalId(struct zx_hrxml_LegalIdentifiers_s* x, int n);
 void zx_hrxml_LegalIdentifiers_DEL_MilitaryStatus(struct zx_hrxml_LegalIdentifiers_s* x, int n);
 void zx_hrxml_LegalIdentifiers_DEL_VisaStatus(struct zx_hrxml_LegalIdentifiers_s* x, int n);
-void zx_hrxml_LegalIdentifiers_DEL_Citizenship(struct zx_hrxml_LegalIdentifiers_s* x, int n);
-void zx_hrxml_LegalIdentifiers_DEL_Residency(struct zx_hrxml_LegalIdentifiers_s* x, int n);
+void zx_hrxml_LegalIdentifiers_DEL_Citizenship(struct zx_hrxml_LegalIdentifiers_s* x,int n);
+void zx_hrxml_LegalIdentifiers_DEL_Residency(struct zx_hrxml_LegalIdentifiers_s* x,int n);
 void zx_hrxml_LegalIdentifiers_DEL_UserArea(struct zx_hrxml_LegalIdentifiers_s* x, int n);
 
 void zx_hrxml_LegalIdentifiers_REV_PersonLegalId(struct zx_hrxml_LegalIdentifiers_s* x);
@@ -6548,7 +6068,6 @@ void zx_hrxml_LegalIdentifiers_REV_UserArea(struct zx_hrxml_LegalIdentifiers_s* 
 #ifndef zx_hrxml_LicenseOrCertification_EXT
 #define zx_hrxml_LicenseOrCertification_EXT
 #endif
-
 struct zx_hrxml_LicenseOrCertification_s {
   ZX_ELEM_EXT
   zx_hrxml_LicenseOrCertification_EXT
@@ -6560,12 +6079,8 @@ struct zx_hrxml_LicenseOrCertification_s {
 };
 
 #define zx_NEW_hrxml_LicenseOrCertification(c, father) (struct zx_hrxml_LicenseOrCertification_s*)zx_new_elem((c),(father),zx_hrxml_LicenseOrCertification_ELEM)
-
 int zx_DEC_ATTR_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_LicenseOrCertification_s* x);
 int zx_DEC_ELEM_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_LicenseOrCertification_s* x);
-int zx_LEN_SO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_LicenseOrCertification_s* x);
-char* zx_ENC_SO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_LicenseOrCertification_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_LicenseOrCertification_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_LicenseOrCertification_s* zx_DEEP_CLONE_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_LicenseOrCertification_s* x, int dup_strs);
@@ -6613,7 +6128,7 @@ void zx_hrxml_LicenseOrCertification_ADD_IssuingAuthority(struct zx_hrxml_Licens
 void zx_hrxml_LicenseOrCertification_ADD_Description(struct zx_hrxml_LicenseOrCertification_s* x, int n, struct zx_hrxml_Description_s* z);
 void zx_hrxml_LicenseOrCertification_ADD_EffectiveDate(struct zx_hrxml_LicenseOrCertification_s* x, int n, struct zx_hrxml_EffectiveDate_s* z);
 
-void zx_hrxml_LicenseOrCertification_DEL_Name(struct zx_hrxml_LicenseOrCertification_s* x, int n);
+void zx_hrxml_LicenseOrCertification_DEL_Name(struct zx_hrxml_LicenseOrCertification_s* x,int n);
 void zx_hrxml_LicenseOrCertification_DEL_Id(struct zx_hrxml_LicenseOrCertification_s* x, int n);
 void zx_hrxml_LicenseOrCertification_DEL_IssuingAuthority(struct zx_hrxml_LicenseOrCertification_s* x, int n);
 void zx_hrxml_LicenseOrCertification_DEL_Description(struct zx_hrxml_LicenseOrCertification_s* x, int n);
@@ -6631,7 +6146,6 @@ void zx_hrxml_LicenseOrCertification_REV_EffectiveDate(struct zx_hrxml_LicenseOr
 #ifndef zx_hrxml_LicensesAndCertifications_EXT
 #define zx_hrxml_LicensesAndCertifications_EXT
 #endif
-
 struct zx_hrxml_LicensesAndCertifications_s {
   ZX_ELEM_EXT
   zx_hrxml_LicensesAndCertifications_EXT
@@ -6639,12 +6153,8 @@ struct zx_hrxml_LicensesAndCertifications_s {
 };
 
 #define zx_NEW_hrxml_LicensesAndCertifications(c, father) (struct zx_hrxml_LicensesAndCertifications_s*)zx_new_elem((c),(father),zx_hrxml_LicensesAndCertifications_ELEM)
-
 int zx_DEC_ATTR_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_LicensesAndCertifications_s* x);
 int zx_DEC_ELEM_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_LicensesAndCertifications_s* x);
-int zx_LEN_SO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_LicensesAndCertifications_s* x);
-char* zx_ENC_SO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_LicensesAndCertifications_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_LicensesAndCertifications_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_LicensesAndCertifications_s* zx_DEEP_CLONE_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_LicensesAndCertifications_s* x, int dup_strs);
@@ -6678,7 +6188,6 @@ void zx_hrxml_LicensesAndCertifications_REV_LicenseOrCertification(struct zx_hrx
 #ifndef zx_hrxml_List_EXT
 #define zx_hrxml_List_EXT
 #endif
-
 struct zx_hrxml_List_s {
   ZX_ELEM_EXT
   zx_hrxml_List_EXT
@@ -6686,12 +6195,8 @@ struct zx_hrxml_List_s {
 };
 
 #define zx_NEW_hrxml_List(c, father) (struct zx_hrxml_List_s*)zx_new_elem((c),(father),zx_hrxml_List_ELEM)
-
 int zx_DEC_ATTR_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x);
 int zx_DEC_ELEM_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x);
-int zx_LEN_SO_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x);
-char* zx_ENC_SO_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_List_s* zx_DEEP_CLONE_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x, int dup_strs);
@@ -6715,7 +6220,7 @@ void zx_hrxml_List_PUT_Item(struct zx_hrxml_List_s* x, int n, struct zx_elem_s* 
 
 void zx_hrxml_List_ADD_Item(struct zx_hrxml_List_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_List_DEL_Item(struct zx_hrxml_List_s* x, int n);
+void zx_hrxml_List_DEL_Item(struct zx_hrxml_List_s* x,int n);
 
 void zx_hrxml_List_REV_Item(struct zx_hrxml_List_s* x);
 
@@ -6725,7 +6230,6 @@ void zx_hrxml_List_REV_Item(struct zx_hrxml_List_s* x);
 #ifndef zx_hrxml_LocalInstitutionClassification_EXT
 #define zx_hrxml_LocalInstitutionClassification_EXT
 #endif
-
 struct zx_hrxml_LocalInstitutionClassification_s {
   ZX_ELEM_EXT
   zx_hrxml_LocalInstitutionClassification_EXT
@@ -6734,12 +6238,8 @@ struct zx_hrxml_LocalInstitutionClassification_s {
 };
 
 #define zx_NEW_hrxml_LocalInstitutionClassification(c, father) (struct zx_hrxml_LocalInstitutionClassification_s*)zx_new_elem((c),(father),zx_hrxml_LocalInstitutionClassification_ELEM)
-
 int zx_DEC_ATTR_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_hrxml_LocalInstitutionClassification_s* x);
 int zx_DEC_ELEM_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_hrxml_LocalInstitutionClassification_s* x);
-int zx_LEN_SO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_hrxml_LocalInstitutionClassification_s* x);
-char* zx_ENC_SO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_hrxml_LocalInstitutionClassification_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_hrxml_LocalInstitutionClassification_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_LocalInstitutionClassification_s* zx_DEEP_CLONE_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_hrxml_LocalInstitutionClassification_s* x, int dup_strs);
@@ -6781,7 +6281,6 @@ void zx_hrxml_LocalInstitutionClassification_REV_Description(struct zx_hrxml_Loc
 #ifndef zx_hrxml_LocationSummary_EXT
 #define zx_hrxml_LocationSummary_EXT
 #endif
-
 struct zx_hrxml_LocationSummary_s {
   ZX_ELEM_EXT
   zx_hrxml_LocationSummary_EXT
@@ -6792,12 +6291,8 @@ struct zx_hrxml_LocationSummary_s {
 };
 
 #define zx_NEW_hrxml_LocationSummary(c, father) (struct zx_hrxml_LocationSummary_s*)zx_new_elem((c),(father),zx_hrxml_LocationSummary_ELEM)
-
 int zx_DEC_ATTR_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSummary_s* x);
 int zx_DEC_ELEM_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSummary_s* x);
-int zx_LEN_SO_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSummary_s* x);
-char* zx_ENC_SO_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSummary_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSummary_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_LocationSummary_s* zx_DEEP_CLONE_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSummary_s* x, int dup_strs);
@@ -6839,10 +6334,10 @@ void zx_hrxml_LocationSummary_ADD_Region(struct zx_hrxml_LocationSummary_s* x, i
 void zx_hrxml_LocationSummary_ADD_CountryCode(struct zx_hrxml_LocationSummary_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_LocationSummary_ADD_PostalCode(struct zx_hrxml_LocationSummary_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_LocationSummary_DEL_Municipality(struct zx_hrxml_LocationSummary_s* x, int n);
-void zx_hrxml_LocationSummary_DEL_Region(struct zx_hrxml_LocationSummary_s* x, int n);
-void zx_hrxml_LocationSummary_DEL_CountryCode(struct zx_hrxml_LocationSummary_s* x, int n);
-void zx_hrxml_LocationSummary_DEL_PostalCode(struct zx_hrxml_LocationSummary_s* x, int n);
+void zx_hrxml_LocationSummary_DEL_Municipality(struct zx_hrxml_LocationSummary_s* x,int n);
+void zx_hrxml_LocationSummary_DEL_Region(struct zx_hrxml_LocationSummary_s* x,int n);
+void zx_hrxml_LocationSummary_DEL_CountryCode(struct zx_hrxml_LocationSummary_s* x,int n);
+void zx_hrxml_LocationSummary_DEL_PostalCode(struct zx_hrxml_LocationSummary_s* x,int n);
 
 void zx_hrxml_LocationSummary_REV_Municipality(struct zx_hrxml_LocationSummary_s* x);
 void zx_hrxml_LocationSummary_REV_Region(struct zx_hrxml_LocationSummary_s* x);
@@ -6855,19 +6350,14 @@ void zx_hrxml_LocationSummary_REV_PostalCode(struct zx_hrxml_LocationSummary_s* 
 #ifndef zx_hrxml_Longitude_EXT
 #define zx_hrxml_Longitude_EXT
 #endif
-
 struct zx_hrxml_Longitude_s {
   ZX_ELEM_EXT
   zx_hrxml_Longitude_EXT
 };
 
 #define zx_NEW_hrxml_Longitude(c, father) (struct zx_hrxml_Longitude_s*)zx_new_elem((c),(father),zx_hrxml_Longitude_ELEM)
-
 int zx_DEC_ATTR_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x);
 int zx_DEC_ELEM_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x);
-int zx_LEN_SO_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x);
-char* zx_ENC_SO_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Longitude_s* zx_DEEP_CLONE_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x, int dup_strs);
@@ -6893,7 +6383,6 @@ int zx_WALK_WO_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x,
 #ifndef zx_hrxml_LowestPossibleValue_EXT
 #define zx_hrxml_LowestPossibleValue_EXT
 #endif
-
 struct zx_hrxml_LowestPossibleValue_s {
   ZX_ELEM_EXT
   zx_hrxml_LowestPossibleValue_EXT
@@ -6902,12 +6391,8 @@ struct zx_hrxml_LowestPossibleValue_s {
 };
 
 #define zx_NEW_hrxml_LowestPossibleValue(c, father) (struct zx_hrxml_LowestPossibleValue_s*)zx_new_elem((c),(father),zx_hrxml_LowestPossibleValue_ELEM)
-
 int zx_DEC_ATTR_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_LowestPossibleValue_s* x);
 int zx_DEC_ELEM_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_LowestPossibleValue_s* x);
-int zx_LEN_SO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_LowestPossibleValue_s* x);
-char* zx_ENC_SO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_LowestPossibleValue_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_LowestPossibleValue_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_LowestPossibleValue_s* zx_DEEP_CLONE_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_LowestPossibleValue_s* x, int dup_strs);
@@ -6949,7 +6434,6 @@ void zx_hrxml_LowestPossibleValue_REV_StringValue(struct zx_hrxml_LowestPossible
 #ifndef zx_hrxml_MatchedObjectId_EXT
 #define zx_hrxml_MatchedObjectId_EXT
 #endif
-
 struct zx_hrxml_MatchedObjectId_s {
   ZX_ELEM_EXT
   zx_hrxml_MatchedObjectId_EXT
@@ -6960,12 +6444,8 @@ struct zx_hrxml_MatchedObjectId_s {
 };
 
 #define zx_NEW_hrxml_MatchedObjectId(c, father) (struct zx_hrxml_MatchedObjectId_s*)zx_new_elem((c),(father),zx_hrxml_MatchedObjectId_ELEM)
-
 int zx_DEC_ATTR_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObjectId_s* x);
 int zx_DEC_ELEM_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObjectId_s* x);
-int zx_LEN_SO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObjectId_s* x);
-char* zx_ENC_SO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObjectId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObjectId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_MatchedObjectId_s* zx_DEEP_CLONE_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObjectId_s* x, int dup_strs);
@@ -7005,7 +6485,6 @@ void zx_hrxml_MatchedObjectId_REV_IdValue(struct zx_hrxml_MatchedObjectId_s* x);
 #ifndef zx_hrxml_Measure_EXT
 #define zx_hrxml_Measure_EXT
 #endif
-
 struct zx_hrxml_Measure_s {
   ZX_ELEM_EXT
   zx_hrxml_Measure_EXT
@@ -7015,12 +6494,8 @@ struct zx_hrxml_Measure_s {
 };
 
 #define zx_NEW_hrxml_Measure(c, father) (struct zx_hrxml_Measure_s*)zx_new_elem((c),(father),zx_hrxml_Measure_ELEM)
-
 int zx_DEC_ATTR_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x);
 int zx_DEC_ELEM_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x);
-int zx_LEN_SO_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x);
-char* zx_ENC_SO_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Measure_s* zx_DEEP_CLONE_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x, int dup_strs);
@@ -7052,8 +6527,8 @@ void zx_hrxml_Measure_PUT_MeasureValue(struct zx_hrxml_Measure_s* x, int n, stru
 void zx_hrxml_Measure_ADD_MeasureSystem(struct zx_hrxml_Measure_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_Measure_ADD_MeasureValue(struct zx_hrxml_Measure_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_Measure_DEL_MeasureSystem(struct zx_hrxml_Measure_s* x, int n);
-void zx_hrxml_Measure_DEL_MeasureValue(struct zx_hrxml_Measure_s* x, int n);
+void zx_hrxml_Measure_DEL_MeasureSystem(struct zx_hrxml_Measure_s* x,int n);
+void zx_hrxml_Measure_DEL_MeasureValue(struct zx_hrxml_Measure_s* x,int n);
 
 void zx_hrxml_Measure_REV_MeasureSystem(struct zx_hrxml_Measure_s* x);
 void zx_hrxml_Measure_REV_MeasureValue(struct zx_hrxml_Measure_s* x);
@@ -7064,7 +6539,6 @@ void zx_hrxml_Measure_REV_MeasureValue(struct zx_hrxml_Measure_s* x);
 #ifndef zx_hrxml_MilitaryHistory_EXT
 #define zx_hrxml_MilitaryHistory_EXT
 #endif
-
 struct zx_hrxml_MilitaryHistory_s {
   ZX_ELEM_EXT
   zx_hrxml_MilitaryHistory_EXT
@@ -7077,12 +6551,8 @@ struct zx_hrxml_MilitaryHistory_s {
 };
 
 #define zx_NEW_hrxml_MilitaryHistory(c, father) (struct zx_hrxml_MilitaryHistory_s*)zx_new_elem((c),(father),zx_hrxml_MilitaryHistory_ELEM)
-
 int zx_DEC_ATTR_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHistory_s* x);
 int zx_DEC_ELEM_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHistory_s* x);
-int zx_LEN_SO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHistory_s* x);
-char* zx_ENC_SO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHistory_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHistory_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_MilitaryHistory_s* zx_DEEP_CLONE_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHistory_s* x, int dup_strs);
@@ -7136,11 +6606,11 @@ void zx_hrxml_MilitaryHistory_ADD_ServiceStatus(struct zx_hrxml_MilitaryHistory_
 void zx_hrxml_MilitaryHistory_ADD_Comments(struct zx_hrxml_MilitaryHistory_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_MilitaryHistory_ADD_UserArea(struct zx_hrxml_MilitaryHistory_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_MilitaryHistory_DEL_CountryServed(struct zx_hrxml_MilitaryHistory_s* x, int n);
+void zx_hrxml_MilitaryHistory_DEL_CountryServed(struct zx_hrxml_MilitaryHistory_s* x,int n);
 void zx_hrxml_MilitaryHistory_DEL_ServiceNumber(struct zx_hrxml_MilitaryHistory_s* x, int n);
 void zx_hrxml_MilitaryHistory_DEL_ServiceDetail(struct zx_hrxml_MilitaryHistory_s* x, int n);
-void zx_hrxml_MilitaryHistory_DEL_ServiceStatus(struct zx_hrxml_MilitaryHistory_s* x, int n);
-void zx_hrxml_MilitaryHistory_DEL_Comments(struct zx_hrxml_MilitaryHistory_s* x, int n);
+void zx_hrxml_MilitaryHistory_DEL_ServiceStatus(struct zx_hrxml_MilitaryHistory_s* x,int n);
+void zx_hrxml_MilitaryHistory_DEL_Comments(struct zx_hrxml_MilitaryHistory_s* x,int n);
 void zx_hrxml_MilitaryHistory_DEL_UserArea(struct zx_hrxml_MilitaryHistory_s* x, int n);
 
 void zx_hrxml_MilitaryHistory_REV_CountryServed(struct zx_hrxml_MilitaryHistory_s* x);
@@ -7156,7 +6626,6 @@ void zx_hrxml_MilitaryHistory_REV_UserArea(struct zx_hrxml_MilitaryHistory_s* x)
 #ifndef zx_hrxml_MilitaryStatus_EXT
 #define zx_hrxml_MilitaryStatus_EXT
 #endif
-
 struct zx_hrxml_MilitaryStatus_s {
   ZX_ELEM_EXT
   zx_hrxml_MilitaryStatus_EXT
@@ -7164,12 +6633,8 @@ struct zx_hrxml_MilitaryStatus_s {
 };
 
 #define zx_NEW_hrxml_MilitaryStatus(c, father) (struct zx_hrxml_MilitaryStatus_s*)zx_new_elem((c),(father),zx_hrxml_MilitaryStatus_ELEM)
-
 int zx_DEC_ATTR_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryStatus_s* x);
 int zx_DEC_ELEM_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryStatus_s* x);
-int zx_LEN_SO_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryStatus_s* x);
-char* zx_ENC_SO_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryStatus_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryStatus_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_MilitaryStatus_s* zx_DEEP_CLONE_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryStatus_s* x, int dup_strs);
@@ -7197,7 +6662,6 @@ void zx_hrxml_MilitaryStatus_PUT_type(struct zx_hrxml_MilitaryStatus_s* x, struc
 #ifndef zx_hrxml_Mobile_EXT
 #define zx_hrxml_Mobile_EXT
 #endif
-
 struct zx_hrxml_Mobile_s {
   ZX_ELEM_EXT
   zx_hrxml_Mobile_EXT
@@ -7206,12 +6670,8 @@ struct zx_hrxml_Mobile_s {
 };
 
 #define zx_NEW_hrxml_Mobile(c, father) (struct zx_hrxml_Mobile_s*)zx_new_elem((c),(father),zx_hrxml_Mobile_ELEM)
-
 int zx_DEC_ATTR_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x);
 int zx_DEC_ELEM_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x);
-int zx_LEN_SO_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x);
-char* zx_ENC_SO_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Mobile_s* zx_DEEP_CLONE_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x, int dup_strs);
@@ -7237,7 +6697,7 @@ void zx_hrxml_Mobile_PUT_FormattedNumber(struct zx_hrxml_Mobile_s* x, int n, str
 
 void zx_hrxml_Mobile_ADD_FormattedNumber(struct zx_hrxml_Mobile_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_Mobile_DEL_FormattedNumber(struct zx_hrxml_Mobile_s* x, int n);
+void zx_hrxml_Mobile_DEL_FormattedNumber(struct zx_hrxml_Mobile_s* x,int n);
 
 void zx_hrxml_Mobile_REV_FormattedNumber(struct zx_hrxml_Mobile_s* x);
 
@@ -7247,7 +6707,6 @@ void zx_hrxml_Mobile_REV_FormattedNumber(struct zx_hrxml_Mobile_s* x);
 #ifndef zx_hrxml_MostRecentDate_EXT
 #define zx_hrxml_MostRecentDate_EXT
 #endif
-
 struct zx_hrxml_MostRecentDate_s {
   ZX_ELEM_EXT
   zx_hrxml_MostRecentDate_EXT
@@ -7260,12 +6719,8 @@ struct zx_hrxml_MostRecentDate_s {
 };
 
 #define zx_NEW_hrxml_MostRecentDate(c, father) (struct zx_hrxml_MostRecentDate_s*)zx_new_elem((c),(father),zx_hrxml_MostRecentDate_ELEM)
-
 int zx_DEC_ATTR_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentDate_s* x);
 int zx_DEC_ELEM_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentDate_s* x);
-int zx_LEN_SO_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentDate_s* x);
-char* zx_ENC_SO_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentDate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentDate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_MostRecentDate_s* zx_DEEP_CLONE_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentDate_s* x, int dup_strs);
@@ -7315,11 +6770,11 @@ void zx_hrxml_MostRecentDate_ADD_Year(struct zx_hrxml_MostRecentDate_s* x, int n
 void zx_hrxml_MostRecentDate_ADD_MonthDay(struct zx_hrxml_MostRecentDate_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_MostRecentDate_ADD_StringDate(struct zx_hrxml_MostRecentDate_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_MostRecentDate_DEL_AnyDate(struct zx_hrxml_MostRecentDate_s* x, int n);
-void zx_hrxml_MostRecentDate_DEL_YearMonth(struct zx_hrxml_MostRecentDate_s* x, int n);
-void zx_hrxml_MostRecentDate_DEL_Year(struct zx_hrxml_MostRecentDate_s* x, int n);
-void zx_hrxml_MostRecentDate_DEL_MonthDay(struct zx_hrxml_MostRecentDate_s* x, int n);
-void zx_hrxml_MostRecentDate_DEL_StringDate(struct zx_hrxml_MostRecentDate_s* x, int n);
+void zx_hrxml_MostRecentDate_DEL_AnyDate(struct zx_hrxml_MostRecentDate_s* x,int n);
+void zx_hrxml_MostRecentDate_DEL_YearMonth(struct zx_hrxml_MostRecentDate_s* x,int n);
+void zx_hrxml_MostRecentDate_DEL_Year(struct zx_hrxml_MostRecentDate_s* x,int n);
+void zx_hrxml_MostRecentDate_DEL_MonthDay(struct zx_hrxml_MostRecentDate_s* x,int n);
+void zx_hrxml_MostRecentDate_DEL_StringDate(struct zx_hrxml_MostRecentDate_s* x,int n);
 
 void zx_hrxml_MostRecentDate_REV_AnyDate(struct zx_hrxml_MostRecentDate_s* x);
 void zx_hrxml_MostRecentDate_REV_YearMonth(struct zx_hrxml_MostRecentDate_s* x);
@@ -7333,7 +6788,6 @@ void zx_hrxml_MostRecentDate_REV_StringDate(struct zx_hrxml_MostRecentDate_s* x)
 #ifndef zx_hrxml_NonXMLResume_EXT
 #define zx_hrxml_NonXMLResume_EXT
 #endif
-
 struct zx_hrxml_NonXMLResume_s {
   ZX_ELEM_EXT
   zx_hrxml_NonXMLResume_EXT
@@ -7345,12 +6799,8 @@ struct zx_hrxml_NonXMLResume_s {
 };
 
 #define zx_NEW_hrxml_NonXMLResume(c, father) (struct zx_hrxml_NonXMLResume_s*)zx_new_elem((c),(father),zx_hrxml_NonXMLResume_ELEM)
-
 int zx_DEC_ATTR_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_s* x);
 int zx_DEC_ELEM_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_s* x);
-int zx_LEN_SO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_s* x);
-char* zx_ENC_SO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_NonXMLResume_s* zx_DEEP_CLONE_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_s* x, int dup_strs);
@@ -7398,11 +6848,11 @@ void zx_hrxml_NonXMLResume_ADD_SupportingMaterials(struct zx_hrxml_NonXMLResume_
 void zx_hrxml_NonXMLResume_ADD_Comments(struct zx_hrxml_NonXMLResume_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_NonXMLResume_ADD_RevisionDate(struct zx_hrxml_NonXMLResume_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_NonXMLResume_DEL_TextResume(struct zx_hrxml_NonXMLResume_s* x, int n);
-void zx_hrxml_NonXMLResume_DEL_LinkToResume(struct zx_hrxml_NonXMLResume_s* x, int n);
+void zx_hrxml_NonXMLResume_DEL_TextResume(struct zx_hrxml_NonXMLResume_s* x,int n);
+void zx_hrxml_NonXMLResume_DEL_LinkToResume(struct zx_hrxml_NonXMLResume_s* x,int n);
 void zx_hrxml_NonXMLResume_DEL_SupportingMaterials(struct zx_hrxml_NonXMLResume_s* x, int n);
-void zx_hrxml_NonXMLResume_DEL_Comments(struct zx_hrxml_NonXMLResume_s* x, int n);
-void zx_hrxml_NonXMLResume_DEL_RevisionDate(struct zx_hrxml_NonXMLResume_s* x, int n);
+void zx_hrxml_NonXMLResume_DEL_Comments(struct zx_hrxml_NonXMLResume_s* x,int n);
+void zx_hrxml_NonXMLResume_DEL_RevisionDate(struct zx_hrxml_NonXMLResume_s* x,int n);
 
 void zx_hrxml_NonXMLResume_REV_TextResume(struct zx_hrxml_NonXMLResume_s* x);
 void zx_hrxml_NonXMLResume_REV_LinkToResume(struct zx_hrxml_NonXMLResume_s* x);
@@ -7416,7 +6866,6 @@ void zx_hrxml_NonXMLResume_REV_RevisionDate(struct zx_hrxml_NonXMLResume_s* x);
 #ifndef zx_hrxml_NumericValue_EXT
 #define zx_hrxml_NumericValue_EXT
 #endif
-
 struct zx_hrxml_NumericValue_s {
   ZX_ELEM_EXT
   zx_hrxml_NumericValue_EXT
@@ -7427,12 +6876,8 @@ struct zx_hrxml_NumericValue_s {
 };
 
 #define zx_NEW_hrxml_NumericValue(c, father) (struct zx_hrxml_NumericValue_s*)zx_new_elem((c),(father),zx_hrxml_NumericValue_ELEM)
-
 int zx_DEC_ATTR_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_s* x);
 int zx_DEC_ELEM_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_s* x);
-int zx_LEN_SO_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_s* x);
-char* zx_ENC_SO_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_NumericValue_s* zx_DEEP_CLONE_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_s* x, int dup_strs);
@@ -7466,7 +6911,6 @@ void zx_hrxml_NumericValue_PUT_minValue(struct zx_hrxml_NumericValue_s* x, struc
 #ifndef zx_hrxml_OrgIndustry_EXT
 #define zx_hrxml_OrgIndustry_EXT
 #endif
-
 struct zx_hrxml_OrgIndustry_s {
   ZX_ELEM_EXT
   zx_hrxml_OrgIndustry_EXT
@@ -7476,12 +6920,8 @@ struct zx_hrxml_OrgIndustry_s {
 };
 
 #define zx_NEW_hrxml_OrgIndustry(c, father) (struct zx_hrxml_OrgIndustry_s*)zx_new_elem((c),(father),zx_hrxml_OrgIndustry_ELEM)
-
 int zx_DEC_ATTR_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s* x);
 int zx_DEC_ELEM_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s* x);
-int zx_LEN_SO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s* x);
-char* zx_ENC_SO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OrgIndustry_s* zx_DEEP_CLONE_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s* x, int dup_strs);
@@ -7513,7 +6953,7 @@ void zx_hrxml_OrgIndustry_PUT_IndustryCode(struct zx_hrxml_OrgIndustry_s* x, int
 void zx_hrxml_OrgIndustry_ADD_IndustryDescription(struct zx_hrxml_OrgIndustry_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_OrgIndustry_ADD_IndustryCode(struct zx_hrxml_OrgIndustry_s* x, int n, struct zx_hrxml_IndustryCode_s* z);
 
-void zx_hrxml_OrgIndustry_DEL_IndustryDescription(struct zx_hrxml_OrgIndustry_s* x, int n);
+void zx_hrxml_OrgIndustry_DEL_IndustryDescription(struct zx_hrxml_OrgIndustry_s* x,int n);
 void zx_hrxml_OrgIndustry_DEL_IndustryCode(struct zx_hrxml_OrgIndustry_s* x, int n);
 
 void zx_hrxml_OrgIndustry_REV_IndustryDescription(struct zx_hrxml_OrgIndustry_s* x);
@@ -7525,7 +6965,6 @@ void zx_hrxml_OrgIndustry_REV_IndustryCode(struct zx_hrxml_OrgIndustry_s* x);
 #ifndef zx_hrxml_OrgInfo_EXT
 #define zx_hrxml_OrgInfo_EXT
 #endif
-
 struct zx_hrxml_OrgInfo_s {
   ZX_ELEM_EXT
   zx_hrxml_OrgInfo_EXT
@@ -7535,12 +6974,8 @@ struct zx_hrxml_OrgInfo_s {
 };
 
 #define zx_NEW_hrxml_OrgInfo(c, father) (struct zx_hrxml_OrgInfo_s*)zx_new_elem((c),(father),zx_hrxml_OrgInfo_ELEM)
-
 int zx_DEC_ATTR_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x);
 int zx_DEC_ELEM_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x);
-int zx_LEN_SO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x);
-char* zx_ENC_SO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OrgInfo_s* zx_DEEP_CLONE_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x, int dup_strs);
@@ -7577,7 +7012,7 @@ void zx_hrxml_OrgInfo_ADD_WebSite(struct zx_hrxml_OrgInfo_s* x, int n, struct zx
 void zx_hrxml_OrgInfo_ADD_LocationSummary(struct zx_hrxml_OrgInfo_s* x, int n, struct zx_hrxml_LocationSummary_s* z);
 
 void zx_hrxml_OrgInfo_DEL_PositionLocation(struct zx_hrxml_OrgInfo_s* x, int n);
-void zx_hrxml_OrgInfo_DEL_WebSite(struct zx_hrxml_OrgInfo_s* x, int n);
+void zx_hrxml_OrgInfo_DEL_WebSite(struct zx_hrxml_OrgInfo_s* x,int n);
 void zx_hrxml_OrgInfo_DEL_LocationSummary(struct zx_hrxml_OrgInfo_s* x, int n);
 
 void zx_hrxml_OrgInfo_REV_PositionLocation(struct zx_hrxml_OrgInfo_s* x);
@@ -7590,7 +7025,6 @@ void zx_hrxml_OrgInfo_REV_LocationSummary(struct zx_hrxml_OrgInfo_s* x);
 #ifndef zx_hrxml_OrgName_EXT
 #define zx_hrxml_OrgName_EXT
 #endif
-
 struct zx_hrxml_OrgName_s {
   ZX_ELEM_EXT
   zx_hrxml_OrgName_EXT
@@ -7600,12 +7034,8 @@ struct zx_hrxml_OrgName_s {
 };
 
 #define zx_NEW_hrxml_OrgName(c, father) (struct zx_hrxml_OrgName_s*)zx_new_elem((c),(father),zx_hrxml_OrgName_ELEM)
-
 int zx_DEC_ATTR_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x);
 int zx_DEC_ELEM_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x);
-int zx_LEN_SO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x);
-char* zx_ENC_SO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OrgName_s* zx_DEEP_CLONE_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x, int dup_strs);
@@ -7637,7 +7067,7 @@ void zx_hrxml_OrgName_PUT_OrgName(struct zx_hrxml_OrgName_s* x, int n, struct zx
 void zx_hrxml_OrgName_ADD_OrganizationName(struct zx_hrxml_OrgName_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_OrgName_ADD_OrgName(struct zx_hrxml_OrgName_s* x, int n, struct zx_hrxml_OrgName_s* z);
 
-void zx_hrxml_OrgName_DEL_OrganizationName(struct zx_hrxml_OrgName_s* x, int n);
+void zx_hrxml_OrgName_DEL_OrganizationName(struct zx_hrxml_OrgName_s* x,int n);
 void zx_hrxml_OrgName_DEL_OrgName(struct zx_hrxml_OrgName_s* x, int n);
 
 void zx_hrxml_OrgName_REV_OrganizationName(struct zx_hrxml_OrgName_s* x);
@@ -7649,19 +7079,14 @@ void zx_hrxml_OrgName_REV_OrgName(struct zx_hrxml_OrgName_s* x);
 #ifndef zx_hrxml_Organization_EXT
 #define zx_hrxml_Organization_EXT
 #endif
-
 struct zx_hrxml_Organization_s {
   ZX_ELEM_EXT
   zx_hrxml_Organization_EXT
 };
 
 #define zx_NEW_hrxml_Organization(c, father) (struct zx_hrxml_Organization_s*)zx_new_elem((c),(father),zx_hrxml_Organization_ELEM)
-
 int zx_DEC_ATTR_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_s* x);
 int zx_DEC_ELEM_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_s* x);
-int zx_LEN_SO_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_s* x);
-char* zx_ENC_SO_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Organization_s* zx_DEEP_CLONE_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_s* x, int dup_strs);
@@ -7687,7 +7112,6 @@ int zx_WALK_WO_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization
 #ifndef zx_hrxml_OrganizationId_EXT
 #define zx_hrxml_OrganizationId_EXT
 #endif
-
 struct zx_hrxml_OrganizationId_s {
   ZX_ELEM_EXT
   zx_hrxml_OrganizationId_EXT
@@ -7698,12 +7122,8 @@ struct zx_hrxml_OrganizationId_s {
 };
 
 #define zx_NEW_hrxml_OrganizationId(c, father) (struct zx_hrxml_OrganizationId_s*)zx_new_elem((c),(father),zx_hrxml_OrganizationId_ELEM)
-
 int zx_DEC_ATTR_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_OrganizationId_s* x);
 int zx_DEC_ELEM_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_OrganizationId_s* x);
-int zx_LEN_SO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_OrganizationId_s* x);
-char* zx_ENC_SO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_OrganizationId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_OrganizationId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OrganizationId_s* zx_DEEP_CLONE_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_OrganizationId_s* x, int dup_strs);
@@ -7743,7 +7163,6 @@ void zx_hrxml_OrganizationId_REV_IdValue(struct zx_hrxml_OrganizationId_s* x);
 #ifndef zx_hrxml_OrganizationUnit_EXT
 #define zx_hrxml_OrganizationUnit_EXT
 #endif
-
 struct zx_hrxml_OrganizationUnit_s {
   ZX_ELEM_EXT
   zx_hrxml_OrganizationUnit_EXT
@@ -7752,12 +7171,8 @@ struct zx_hrxml_OrganizationUnit_s {
 };
 
 #define zx_NEW_hrxml_OrganizationUnit(c, father) (struct zx_hrxml_OrganizationUnit_s*)zx_new_elem((c),(father),zx_hrxml_OrganizationUnit_ELEM)
-
 int zx_DEC_ATTR_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationUnit_s* x);
 int zx_DEC_ELEM_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationUnit_s* x);
-int zx_LEN_SO_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationUnit_s* x);
-char* zx_ENC_SO_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationUnit_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationUnit_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OrganizationUnit_s* zx_DEEP_CLONE_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationUnit_s* x, int dup_strs);
@@ -7787,7 +7202,6 @@ void zx_hrxml_OrganizationUnit_PUT_organizationType(struct zx_hrxml_Organization
 #ifndef zx_hrxml_OrganizationalUnit_EXT
 #define zx_hrxml_OrganizationalUnit_EXT
 #endif
-
 struct zx_hrxml_OrganizationalUnit_s {
   ZX_ELEM_EXT
   zx_hrxml_OrganizationalUnit_EXT
@@ -7806,12 +7220,8 @@ struct zx_hrxml_OrganizationalUnit_s {
 };
 
 #define zx_NEW_hrxml_OrganizationalUnit(c, father) (struct zx_hrxml_OrganizationalUnit_s*)zx_new_elem((c),(father),zx_hrxml_OrganizationalUnit_ELEM)
-
 int zx_DEC_ATTR_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnit_s* x);
 int zx_DEC_ELEM_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnit_s* x);
-int zx_LEN_SO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnit_s* x);
-char* zx_ENC_SO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnit_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnit_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OrganizationalUnit_s* zx_DEEP_CLONE_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnit_s* x, int dup_strs);
@@ -7893,7 +7303,7 @@ void zx_hrxml_OrganizationalUnit_ADD_RelatedOrganizationalUnit(struct zx_hrxml_O
 void zx_hrxml_OrganizationalUnit_ADD_PersonMember(struct zx_hrxml_OrganizationalUnit_s* x, int n, struct zx_hrxml_PersonMember_s* z);
 void zx_hrxml_OrganizationalUnit_ADD_UserArea(struct zx_hrxml_OrganizationalUnit_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_OrganizationalUnit_DEL_OrganizationalUnitName(struct zx_hrxml_OrganizationalUnit_s* x, int n);
+void zx_hrxml_OrganizationalUnit_DEL_OrganizationalUnitName(struct zx_hrxml_OrganizationalUnit_s* x,int n);
 void zx_hrxml_OrganizationalUnit_DEL_OrganizationalUnitId(struct zx_hrxml_OrganizationalUnit_s* x, int n);
 void zx_hrxml_OrganizationalUnit_DEL_OrganizationId(struct zx_hrxml_OrganizationalUnit_s* x, int n);
 void zx_hrxml_OrganizationalUnit_DEL_Description(struct zx_hrxml_OrganizationalUnit_s* x, int n);
@@ -7921,7 +7331,6 @@ void zx_hrxml_OrganizationalUnit_REV_UserArea(struct zx_hrxml_OrganizationalUnit
 #ifndef zx_hrxml_OrganizationalUnitId_EXT
 #define zx_hrxml_OrganizationalUnitId_EXT
 #endif
-
 struct zx_hrxml_OrganizationalUnitId_s {
   ZX_ELEM_EXT
   zx_hrxml_OrganizationalUnitId_EXT
@@ -7932,12 +7341,8 @@ struct zx_hrxml_OrganizationalUnitId_s {
 };
 
 #define zx_NEW_hrxml_OrganizationalUnitId(c, father) (struct zx_hrxml_OrganizationalUnitId_s*)zx_new_elem((c),(father),zx_hrxml_OrganizationalUnitId_ELEM)
-
 int zx_DEC_ATTR_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnitId_s* x);
 int zx_DEC_ELEM_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnitId_s* x);
-int zx_LEN_SO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnitId_s* x);
-char* zx_ENC_SO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnitId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnitId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OrganizationalUnitId_s* zx_DEEP_CLONE_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnitId_s* x, int dup_strs);
@@ -7977,7 +7382,6 @@ void zx_hrxml_OrganizationalUnitId_REV_IdValue(struct zx_hrxml_OrganizationalUni
 #ifndef zx_hrxml_OriginalDate_EXT
 #define zx_hrxml_OriginalDate_EXT
 #endif
-
 struct zx_hrxml_OriginalDate_s {
   ZX_ELEM_EXT
   zx_hrxml_OriginalDate_EXT
@@ -7990,12 +7394,8 @@ struct zx_hrxml_OriginalDate_s {
 };
 
 #define zx_NEW_hrxml_OriginalDate(c, father) (struct zx_hrxml_OriginalDate_s*)zx_new_elem((c),(father),zx_hrxml_OriginalDate_ELEM)
-
 int zx_DEC_ATTR_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_s* x);
 int zx_DEC_ELEM_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_s* x);
-int zx_LEN_SO_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_s* x);
-char* zx_ENC_SO_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OriginalDate_s* zx_DEEP_CLONE_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_s* x, int dup_strs);
@@ -8045,11 +7445,11 @@ void zx_hrxml_OriginalDate_ADD_Year(struct zx_hrxml_OriginalDate_s* x, int n, st
 void zx_hrxml_OriginalDate_ADD_MonthDay(struct zx_hrxml_OriginalDate_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_OriginalDate_ADD_StringDate(struct zx_hrxml_OriginalDate_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_OriginalDate_DEL_AnyDate(struct zx_hrxml_OriginalDate_s* x, int n);
-void zx_hrxml_OriginalDate_DEL_YearMonth(struct zx_hrxml_OriginalDate_s* x, int n);
-void zx_hrxml_OriginalDate_DEL_Year(struct zx_hrxml_OriginalDate_s* x, int n);
-void zx_hrxml_OriginalDate_DEL_MonthDay(struct zx_hrxml_OriginalDate_s* x, int n);
-void zx_hrxml_OriginalDate_DEL_StringDate(struct zx_hrxml_OriginalDate_s* x, int n);
+void zx_hrxml_OriginalDate_DEL_AnyDate(struct zx_hrxml_OriginalDate_s* x,int n);
+void zx_hrxml_OriginalDate_DEL_YearMonth(struct zx_hrxml_OriginalDate_s* x,int n);
+void zx_hrxml_OriginalDate_DEL_Year(struct zx_hrxml_OriginalDate_s* x,int n);
+void zx_hrxml_OriginalDate_DEL_MonthDay(struct zx_hrxml_OriginalDate_s* x,int n);
+void zx_hrxml_OriginalDate_DEL_StringDate(struct zx_hrxml_OriginalDate_s* x,int n);
 
 void zx_hrxml_OriginalDate_REV_AnyDate(struct zx_hrxml_OriginalDate_s* x);
 void zx_hrxml_OriginalDate_REV_YearMonth(struct zx_hrxml_OriginalDate_s* x);
@@ -8063,7 +7463,6 @@ void zx_hrxml_OriginalDate_REV_StringDate(struct zx_hrxml_OriginalDate_s* x);
 #ifndef zx_hrxml_OtherBenefits_EXT
 #define zx_hrxml_OtherBenefits_EXT
 #endif
-
 struct zx_hrxml_OtherBenefits_s {
   ZX_ELEM_EXT
   zx_hrxml_OtherBenefits_EXT
@@ -8071,12 +7470,8 @@ struct zx_hrxml_OtherBenefits_s {
 };
 
 #define zx_NEW_hrxml_OtherBenefits(c, father) (struct zx_hrxml_OtherBenefits_s*)zx_new_elem((c),(father),zx_hrxml_OtherBenefits_ELEM)
-
 int zx_DEC_ATTR_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefits_s* x);
 int zx_DEC_ELEM_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefits_s* x);
-int zx_LEN_SO_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefits_s* x);
-char* zx_ENC_SO_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefits_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefits_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OtherBenefits_s* zx_DEEP_CLONE_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefits_s* x, int dup_strs);
@@ -8104,7 +7499,6 @@ void zx_hrxml_OtherBenefits_PUT_type(struct zx_hrxml_OtherBenefits_s* x, struct 
 #ifndef zx_hrxml_OtherCompensation_EXT
 #define zx_hrxml_OtherCompensation_EXT
 #endif
-
 struct zx_hrxml_OtherCompensation_s {
   ZX_ELEM_EXT
   zx_hrxml_OtherCompensation_EXT
@@ -8114,12 +7508,8 @@ struct zx_hrxml_OtherCompensation_s {
 };
 
 #define zx_NEW_hrxml_OtherCompensation(c, father) (struct zx_hrxml_OtherCompensation_s*)zx_new_elem((c),(father),zx_hrxml_OtherCompensation_ELEM)
-
 int zx_DEC_ATTR_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCompensation_s* x);
 int zx_DEC_ELEM_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCompensation_s* x);
-int zx_LEN_SO_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCompensation_s* x);
-char* zx_ENC_SO_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCompensation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCompensation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OtherCompensation_s* zx_DEEP_CLONE_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCompensation_s* x, int dup_strs);
@@ -8151,7 +7541,6 @@ void zx_hrxml_OtherCompensation_PUT_validTo(struct zx_hrxml_OtherCompensation_s*
 #ifndef zx_hrxml_OtherDescriptors_EXT
 #define zx_hrxml_OtherDescriptors_EXT
 #endif
-
 struct zx_hrxml_OtherDescriptors_s {
   ZX_ELEM_EXT
   zx_hrxml_OtherDescriptors_EXT
@@ -8162,12 +7551,8 @@ struct zx_hrxml_OtherDescriptors_s {
 };
 
 #define zx_NEW_hrxml_OtherDescriptors(c, father) (struct zx_hrxml_OtherDescriptors_s*)zx_new_elem((c),(father),zx_hrxml_OtherDescriptors_ELEM)
-
 int zx_DEC_ATTR_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDescriptors_s* x);
 int zx_DEC_ELEM_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDescriptors_s* x);
-int zx_LEN_SO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDescriptors_s* x);
-char* zx_ENC_SO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDescriptors_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDescriptors_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OtherDescriptors_s* zx_DEEP_CLONE_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDescriptors_s* x, int dup_strs);
@@ -8209,9 +7594,9 @@ void zx_hrxml_OtherDescriptors_ADD_Applicable(struct zx_hrxml_OtherDescriptors_s
 void zx_hrxml_OtherDescriptors_ADD_Value(struct zx_hrxml_OtherDescriptors_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_OtherDescriptors_ADD_List(struct zx_hrxml_OtherDescriptors_s* x, int n, struct zx_hrxml_List_s* z);
 
-void zx_hrxml_OtherDescriptors_DEL_Name(struct zx_hrxml_OtherDescriptors_s* x, int n);
-void zx_hrxml_OtherDescriptors_DEL_Applicable(struct zx_hrxml_OtherDescriptors_s* x, int n);
-void zx_hrxml_OtherDescriptors_DEL_Value(struct zx_hrxml_OtherDescriptors_s* x, int n);
+void zx_hrxml_OtherDescriptors_DEL_Name(struct zx_hrxml_OtherDescriptors_s* x,int n);
+void zx_hrxml_OtherDescriptors_DEL_Applicable(struct zx_hrxml_OtherDescriptors_s* x,int n);
+void zx_hrxml_OtherDescriptors_DEL_Value(struct zx_hrxml_OtherDescriptors_s* x,int n);
 void zx_hrxml_OtherDescriptors_DEL_List(struct zx_hrxml_OtherDescriptors_s* x, int n);
 
 void zx_hrxml_OtherDescriptors_REV_Name(struct zx_hrxml_OtherDescriptors_s* x);
@@ -8225,7 +7610,6 @@ void zx_hrxml_OtherDescriptors_REV_List(struct zx_hrxml_OtherDescriptors_s* x);
 #ifndef zx_hrxml_OtherHonors_EXT
 #define zx_hrxml_OtherHonors_EXT
 #endif
-
 struct zx_hrxml_OtherHonors_s {
   ZX_ELEM_EXT
   zx_hrxml_OtherHonors_EXT
@@ -8233,12 +7617,8 @@ struct zx_hrxml_OtherHonors_s {
 };
 
 #define zx_NEW_hrxml_OtherHonors(c, father) (struct zx_hrxml_OtherHonors_s*)zx_new_elem((c),(father),zx_hrxml_OtherHonors_ELEM)
-
 int zx_DEC_ATTR_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s* x);
 int zx_DEC_ELEM_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s* x);
-int zx_LEN_SO_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s* x);
-char* zx_ENC_SO_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OtherHonors_s* zx_DEEP_CLONE_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s* x, int dup_strs);
@@ -8266,7 +7646,6 @@ void zx_hrxml_OtherHonors_PUT_type(struct zx_hrxml_OtherHonors_s* x, struct zx_a
 #ifndef zx_hrxml_OtherPay_EXT
 #define zx_hrxml_OtherPay_EXT
 #endif
-
 struct zx_hrxml_OtherPay_s {
   ZX_ELEM_EXT
   zx_hrxml_OtherPay_EXT
@@ -8280,12 +7659,8 @@ struct zx_hrxml_OtherPay_s {
 };
 
 #define zx_NEW_hrxml_OtherPay(c, father) (struct zx_hrxml_OtherPay_s*)zx_new_elem((c),(father),zx_hrxml_OtherPay_ELEM)
-
 int zx_DEC_ATTR_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x);
 int zx_DEC_ELEM_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x);
-int zx_LEN_SO_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x);
-char* zx_ENC_SO_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OtherPay_s* zx_DEEP_CLONE_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x, int dup_strs);
@@ -8333,10 +7708,10 @@ void zx_hrxml_OtherPay_ADD_OtherPayAmountMax(struct zx_hrxml_OtherPay_s* x, int 
 void zx_hrxml_OtherPay_ADD_OtherPayCalculation(struct zx_hrxml_OtherPay_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_OtherPay_ADD_Comments(struct zx_hrxml_OtherPay_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_OtherPay_DEL_OtherPayAmountMin(struct zx_hrxml_OtherPay_s* x, int n);
-void zx_hrxml_OtherPay_DEL_OtherPayAmountMax(struct zx_hrxml_OtherPay_s* x, int n);
-void zx_hrxml_OtherPay_DEL_OtherPayCalculation(struct zx_hrxml_OtherPay_s* x, int n);
-void zx_hrxml_OtherPay_DEL_Comments(struct zx_hrxml_OtherPay_s* x, int n);
+void zx_hrxml_OtherPay_DEL_OtherPayAmountMin(struct zx_hrxml_OtherPay_s* x,int n);
+void zx_hrxml_OtherPay_DEL_OtherPayAmountMax(struct zx_hrxml_OtherPay_s* x,int n);
+void zx_hrxml_OtherPay_DEL_OtherPayCalculation(struct zx_hrxml_OtherPay_s* x,int n);
+void zx_hrxml_OtherPay_DEL_Comments(struct zx_hrxml_OtherPay_s* x,int n);
 
 void zx_hrxml_OtherPay_REV_OtherPayAmountMin(struct zx_hrxml_OtherPay_s* x);
 void zx_hrxml_OtherPay_REV_OtherPayAmountMax(struct zx_hrxml_OtherPay_s* x);
@@ -8349,7 +7724,6 @@ void zx_hrxml_OtherPay_REV_Comments(struct zx_hrxml_OtherPay_s* x);
 #ifndef zx_hrxml_OtherPublication_EXT
 #define zx_hrxml_OtherPublication_EXT
 #endif
-
 struct zx_hrxml_OtherPublication_s {
   ZX_ELEM_EXT
   zx_hrxml_OtherPublication_EXT
@@ -8369,12 +7743,8 @@ struct zx_hrxml_OtherPublication_s {
 };
 
 #define zx_NEW_hrxml_OtherPublication(c, father) (struct zx_hrxml_OtherPublication_s*)zx_new_elem((c),(father),zx_hrxml_OtherPublication_ELEM)
-
 int zx_DEC_ATTR_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPublication_s* x);
 int zx_DEC_ELEM_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPublication_s* x);
-int zx_LEN_SO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPublication_s* x);
-char* zx_ENC_SO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPublication_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPublication_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_OtherPublication_s* zx_DEEP_CLONE_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPublication_s* x, int dup_strs);
@@ -8466,18 +7836,18 @@ void zx_hrxml_OtherPublication_ADD_NumberOfPages(struct zx_hrxml_OtherPublicatio
 void zx_hrxml_OtherPublication_ADD_PublisherName(struct zx_hrxml_OtherPublication_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_OtherPublication_ADD_PublisherLocation(struct zx_hrxml_OtherPublication_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_OtherPublication_DEL_Title(struct zx_hrxml_OtherPublication_s* x, int n);
-void zx_hrxml_OtherPublication_DEL_Name(struct zx_hrxml_OtherPublication_s* x, int n);
+void zx_hrxml_OtherPublication_DEL_Title(struct zx_hrxml_OtherPublication_s* x,int n);
+void zx_hrxml_OtherPublication_DEL_Name(struct zx_hrxml_OtherPublication_s* x,int n);
 void zx_hrxml_OtherPublication_DEL_PublicationDate(struct zx_hrxml_OtherPublication_s* x, int n);
-void zx_hrxml_OtherPublication_DEL_Link(struct zx_hrxml_OtherPublication_s* x, int n);
-void zx_hrxml_OtherPublication_DEL_Abstract(struct zx_hrxml_OtherPublication_s* x, int n);
+void zx_hrxml_OtherPublication_DEL_Link(struct zx_hrxml_OtherPublication_s* x,int n);
+void zx_hrxml_OtherPublication_DEL_Abstract(struct zx_hrxml_OtherPublication_s* x,int n);
 void zx_hrxml_OtherPublication_DEL_Copyright(struct zx_hrxml_OtherPublication_s* x, int n);
-void zx_hrxml_OtherPublication_DEL_Comments(struct zx_hrxml_OtherPublication_s* x, int n);
-void zx_hrxml_OtherPublication_DEL_ISSN(struct zx_hrxml_OtherPublication_s* x, int n);
-void zx_hrxml_OtherPublication_DEL_ISBN(struct zx_hrxml_OtherPublication_s* x, int n);
-void zx_hrxml_OtherPublication_DEL_NumberOfPages(struct zx_hrxml_OtherPublication_s* x, int n);
-void zx_hrxml_OtherPublication_DEL_PublisherName(struct zx_hrxml_OtherPublication_s* x, int n);
-void zx_hrxml_OtherPublication_DEL_PublisherLocation(struct zx_hrxml_OtherPublication_s* x, int n);
+void zx_hrxml_OtherPublication_DEL_Comments(struct zx_hrxml_OtherPublication_s* x,int n);
+void zx_hrxml_OtherPublication_DEL_ISSN(struct zx_hrxml_OtherPublication_s* x,int n);
+void zx_hrxml_OtherPublication_DEL_ISBN(struct zx_hrxml_OtherPublication_s* x,int n);
+void zx_hrxml_OtherPublication_DEL_NumberOfPages(struct zx_hrxml_OtherPublication_s* x,int n);
+void zx_hrxml_OtherPublication_DEL_PublisherName(struct zx_hrxml_OtherPublication_s* x,int n);
+void zx_hrxml_OtherPublication_DEL_PublisherLocation(struct zx_hrxml_OtherPublication_s* x,int n);
 
 void zx_hrxml_OtherPublication_REV_Title(struct zx_hrxml_OtherPublication_s* x);
 void zx_hrxml_OtherPublication_REV_Name(struct zx_hrxml_OtherPublication_s* x);
@@ -8498,7 +7868,6 @@ void zx_hrxml_OtherPublication_REV_PublisherLocation(struct zx_hrxml_OtherPublic
 #ifndef zx_hrxml_Pager_EXT
 #define zx_hrxml_Pager_EXT
 #endif
-
 struct zx_hrxml_Pager_s {
   ZX_ELEM_EXT
   zx_hrxml_Pager_EXT
@@ -8506,12 +7875,8 @@ struct zx_hrxml_Pager_s {
 };
 
 #define zx_NEW_hrxml_Pager(c, father) (struct zx_hrxml_Pager_s*)zx_new_elem((c),(father),zx_hrxml_Pager_ELEM)
-
 int zx_DEC_ATTR_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x);
 int zx_DEC_ELEM_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x);
-int zx_LEN_SO_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x);
-char* zx_ENC_SO_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Pager_s* zx_DEEP_CLONE_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x, int dup_strs);
@@ -8535,7 +7900,7 @@ void zx_hrxml_Pager_PUT_FormattedNumber(struct zx_hrxml_Pager_s* x, int n, struc
 
 void zx_hrxml_Pager_ADD_FormattedNumber(struct zx_hrxml_Pager_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_Pager_DEL_FormattedNumber(struct zx_hrxml_Pager_s* x, int n);
+void zx_hrxml_Pager_DEL_FormattedNumber(struct zx_hrxml_Pager_s* x,int n);
 
 void zx_hrxml_Pager_REV_FormattedNumber(struct zx_hrxml_Pager_s* x);
 
@@ -8545,7 +7910,6 @@ void zx_hrxml_Pager_REV_FormattedNumber(struct zx_hrxml_Pager_s* x);
 #ifndef zx_hrxml_ParkingInstructions_EXT
 #define zx_hrxml_ParkingInstructions_EXT
 #endif
-
 struct zx_hrxml_ParkingInstructions_s {
   ZX_ELEM_EXT
   zx_hrxml_ParkingInstructions_EXT
@@ -8553,12 +7917,8 @@ struct zx_hrxml_ParkingInstructions_s {
 };
 
 #define zx_NEW_hrxml_ParkingInstructions(c, father) (struct zx_hrxml_ParkingInstructions_s*)zx_new_elem((c),(father),zx_hrxml_ParkingInstructions_ELEM)
-
 int zx_DEC_ATTR_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_ParkingInstructions_s* x);
 int zx_DEC_ELEM_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_ParkingInstructions_s* x);
-int zx_LEN_SO_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_ParkingInstructions_s* x);
-char* zx_ENC_SO_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_ParkingInstructions_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_ParkingInstructions_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ParkingInstructions_s* zx_DEEP_CLONE_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_ParkingInstructions_s* x, int dup_strs);
@@ -8586,7 +7946,6 @@ void zx_hrxml_ParkingInstructions_PUT_lang(struct zx_hrxml_ParkingInstructions_s
 #ifndef zx_hrxml_Patent_EXT
 #define zx_hrxml_Patent_EXT
 #endif
-
 struct zx_hrxml_Patent_s {
   ZX_ELEM_EXT
   zx_hrxml_Patent_EXT
@@ -8598,12 +7957,8 @@ struct zx_hrxml_Patent_s {
 };
 
 #define zx_NEW_hrxml_Patent(c, father) (struct zx_hrxml_Patent_s*)zx_new_elem((c),(father),zx_hrxml_Patent_ELEM)
-
 int zx_DEC_ATTR_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x);
 int zx_DEC_ELEM_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x);
-int zx_LEN_SO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x);
-char* zx_ENC_SO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Patent_s* zx_DEEP_CLONE_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x, int dup_strs);
@@ -8651,11 +8006,11 @@ void zx_hrxml_Patent_ADD_Inventors(struct zx_hrxml_Patent_s* x, int n, struct zx
 void zx_hrxml_Patent_ADD_PatentDetail(struct zx_hrxml_Patent_s* x, int n, struct zx_hrxml_PatentDetail_s* z);
 void zx_hrxml_Patent_ADD_Link(struct zx_hrxml_Patent_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_Patent_DEL_PatentTitle(struct zx_hrxml_Patent_s* x, int n);
+void zx_hrxml_Patent_DEL_PatentTitle(struct zx_hrxml_Patent_s* x,int n);
 void zx_hrxml_Patent_DEL_Description(struct zx_hrxml_Patent_s* x, int n);
 void zx_hrxml_Patent_DEL_Inventors(struct zx_hrxml_Patent_s* x, int n);
 void zx_hrxml_Patent_DEL_PatentDetail(struct zx_hrxml_Patent_s* x, int n);
-void zx_hrxml_Patent_DEL_Link(struct zx_hrxml_Patent_s* x, int n);
+void zx_hrxml_Patent_DEL_Link(struct zx_hrxml_Patent_s* x,int n);
 
 void zx_hrxml_Patent_REV_PatentTitle(struct zx_hrxml_Patent_s* x);
 void zx_hrxml_Patent_REV_Description(struct zx_hrxml_Patent_s* x);
@@ -8669,7 +8024,6 @@ void zx_hrxml_Patent_REV_Link(struct zx_hrxml_Patent_s* x);
 #ifndef zx_hrxml_PatentDetail_EXT
 #define zx_hrxml_PatentDetail_EXT
 #endif
-
 struct zx_hrxml_PatentDetail_s {
   ZX_ELEM_EXT
   zx_hrxml_PatentDetail_EXT
@@ -8678,12 +8032,8 @@ struct zx_hrxml_PatentDetail_s {
 };
 
 #define zx_NEW_hrxml_PatentDetail(c, father) (struct zx_hrxml_PatentDetail_s*)zx_new_elem((c),(father),zx_hrxml_PatentDetail_ELEM)
-
 int zx_DEC_ATTR_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_s* x);
 int zx_DEC_ELEM_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_s* x);
-int zx_LEN_SO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_s* x);
-char* zx_ENC_SO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PatentDetail_s* zx_DEEP_CLONE_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_s* x, int dup_strs);
@@ -8725,7 +8075,6 @@ void zx_hrxml_PatentDetail_REV_PatentMilestone(struct zx_hrxml_PatentDetail_s* x
 #ifndef zx_hrxml_PatentHistory_EXT
 #define zx_hrxml_PatentHistory_EXT
 #endif
-
 struct zx_hrxml_PatentHistory_s {
   ZX_ELEM_EXT
   zx_hrxml_PatentHistory_EXT
@@ -8733,12 +8082,8 @@ struct zx_hrxml_PatentHistory_s {
 };
 
 #define zx_NEW_hrxml_PatentHistory(c, father) (struct zx_hrxml_PatentHistory_s*)zx_new_elem((c),(father),zx_hrxml_PatentHistory_ELEM)
-
 int zx_DEC_ATTR_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistory_s* x);
 int zx_DEC_ELEM_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistory_s* x);
-int zx_LEN_SO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistory_s* x);
-char* zx_ENC_SO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistory_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistory_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PatentHistory_s* zx_DEEP_CLONE_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistory_s* x, int dup_strs);
@@ -8772,7 +8117,6 @@ void zx_hrxml_PatentHistory_REV_Patent(struct zx_hrxml_PatentHistory_s* x);
 #ifndef zx_hrxml_PatentMilestone_EXT
 #define zx_hrxml_PatentMilestone_EXT
 #endif
-
 struct zx_hrxml_PatentMilestone_s {
   ZX_ELEM_EXT
   zx_hrxml_PatentMilestone_EXT
@@ -8782,12 +8126,8 @@ struct zx_hrxml_PatentMilestone_s {
 };
 
 #define zx_NEW_hrxml_PatentMilestone(c, father) (struct zx_hrxml_PatentMilestone_s*)zx_new_elem((c),(father),zx_hrxml_PatentMilestone_ELEM)
-
 int zx_DEC_ATTR_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMilestone_s* x);
 int zx_DEC_ELEM_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMilestone_s* x);
-int zx_LEN_SO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMilestone_s* x);
-char* zx_ENC_SO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMilestone_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMilestone_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PatentMilestone_s* zx_DEEP_CLONE_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMilestone_s* x, int dup_strs);
@@ -8825,7 +8165,7 @@ void zx_hrxml_PatentMilestone_ADD_Date(struct zx_hrxml_PatentMilestone_s* x, int
 
 void zx_hrxml_PatentMilestone_DEL_Id(struct zx_hrxml_PatentMilestone_s* x, int n);
 void zx_hrxml_PatentMilestone_DEL_Status(struct zx_hrxml_PatentMilestone_s* x, int n);
-void zx_hrxml_PatentMilestone_DEL_Date(struct zx_hrxml_PatentMilestone_s* x, int n);
+void zx_hrxml_PatentMilestone_DEL_Date(struct zx_hrxml_PatentMilestone_s* x,int n);
 
 void zx_hrxml_PatentMilestone_REV_Id(struct zx_hrxml_PatentMilestone_s* x);
 void zx_hrxml_PatentMilestone_REV_Status(struct zx_hrxml_PatentMilestone_s* x);
@@ -8837,7 +8177,6 @@ void zx_hrxml_PatentMilestone_REV_Date(struct zx_hrxml_PatentMilestone_s* x);
 #ifndef zx_hrxml_PersonDescriptors_EXT
 #define zx_hrxml_PersonDescriptors_EXT
 #endif
-
 struct zx_hrxml_PersonDescriptors_s {
   ZX_ELEM_EXT
   zx_hrxml_PersonDescriptors_EXT
@@ -8850,12 +8189,8 @@ struct zx_hrxml_PersonDescriptors_s {
 };
 
 #define zx_NEW_hrxml_PersonDescriptors(c, father) (struct zx_hrxml_PersonDescriptors_s*)zx_new_elem((c),(father),zx_hrxml_PersonDescriptors_ELEM)
-
 int zx_DEC_ATTR_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDescriptors_s* x);
 int zx_DEC_ELEM_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDescriptors_s* x);
-int zx_LEN_SO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDescriptors_s* x);
-char* zx_ENC_SO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDescriptors_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDescriptors_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PersonDescriptors_s* zx_DEEP_CLONE_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDescriptors_s* x, int dup_strs);
@@ -8929,7 +8264,6 @@ void zx_hrxml_PersonDescriptors_REV_UserArea(struct zx_hrxml_PersonDescriptors_s
 #ifndef zx_hrxml_PersonId_EXT
 #define zx_hrxml_PersonId_EXT
 #endif
-
 struct zx_hrxml_PersonId_s {
   ZX_ELEM_EXT
   zx_hrxml_PersonId_EXT
@@ -8940,12 +8274,8 @@ struct zx_hrxml_PersonId_s {
 };
 
 #define zx_NEW_hrxml_PersonId(c, father) (struct zx_hrxml_PersonId_s*)zx_new_elem((c),(father),zx_hrxml_PersonId_ELEM)
-
 int zx_DEC_ATTR_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x);
 int zx_DEC_ELEM_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x);
-int zx_LEN_SO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x);
-char* zx_ENC_SO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PersonId_s* zx_DEEP_CLONE_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x, int dup_strs);
@@ -8985,7 +8315,6 @@ void zx_hrxml_PersonId_REV_IdValue(struct zx_hrxml_PersonId_s* x);
 #ifndef zx_hrxml_PersonLegalId_EXT
 #define zx_hrxml_PersonLegalId_EXT
 #endif
-
 struct zx_hrxml_PersonLegalId_s {
   ZX_ELEM_EXT
   zx_hrxml_PersonLegalId_EXT
@@ -9001,12 +8330,8 @@ struct zx_hrxml_PersonLegalId_s {
 };
 
 #define zx_NEW_hrxml_PersonLegalId(c, father) (struct zx_hrxml_PersonLegalId_s*)zx_new_elem((c),(father),zx_hrxml_PersonLegalId_ELEM)
-
 int zx_DEC_ATTR_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalId_s* x);
 int zx_DEC_ELEM_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalId_s* x);
-int zx_LEN_SO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalId_s* x);
-char* zx_ENC_SO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PersonLegalId_s* zx_DEEP_CLONE_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalId_s* x, int dup_strs);
@@ -9056,7 +8381,6 @@ void zx_hrxml_PersonLegalId_REV_IdValue(struct zx_hrxml_PersonLegalId_s* x);
 #ifndef zx_hrxml_PersonMember_EXT
 #define zx_hrxml_PersonMember_EXT
 #endif
-
 struct zx_hrxml_PersonMember_s {
   ZX_ELEM_EXT
   zx_hrxml_PersonMember_EXT
@@ -9067,12 +8391,8 @@ struct zx_hrxml_PersonMember_s {
 };
 
 #define zx_NEW_hrxml_PersonMember(c, father) (struct zx_hrxml_PersonMember_s*)zx_new_elem((c),(father),zx_hrxml_PersonMember_ELEM)
-
 int zx_DEC_ATTR_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_s* x);
 int zx_DEC_ELEM_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_s* x);
-int zx_LEN_SO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_s* x);
-char* zx_ENC_SO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PersonMember_s* zx_DEEP_CLONE_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_s* x, int dup_strs);
@@ -9130,7 +8450,6 @@ void zx_hrxml_PersonMember_REV_ContactMethod(struct zx_hrxml_PersonMember_s* x);
 #ifndef zx_hrxml_PersonName_EXT
 #define zx_hrxml_PersonName_EXT
 #endif
-
 struct zx_hrxml_PersonName_s {
   ZX_ELEM_EXT
   zx_hrxml_PersonName_EXT
@@ -9146,12 +8465,8 @@ struct zx_hrxml_PersonName_s {
 };
 
 #define zx_NEW_hrxml_PersonName(c, father) (struct zx_hrxml_PersonName_s*)zx_new_elem((c),(father),zx_hrxml_PersonName_ELEM)
-
 int zx_DEC_ATTR_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x);
 int zx_DEC_ELEM_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x);
-int zx_LEN_SO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x);
-char* zx_ENC_SO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PersonName_s* zx_DEEP_CLONE_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x, int dup_strs);
@@ -9219,11 +8534,11 @@ void zx_hrxml_PersonName_ADD_FamilyName(struct zx_hrxml_PersonName_s* x, int n, 
 void zx_hrxml_PersonName_ADD_Affix(struct zx_hrxml_PersonName_s* x, int n, struct zx_hrxml_Affix_s* z);
 void zx_hrxml_PersonName_ADD_AlternateScript(struct zx_hrxml_PersonName_s* x, int n, struct zx_hrxml_AlternateScript_s* z);
 
-void zx_hrxml_PersonName_DEL_FormattedName(struct zx_hrxml_PersonName_s* x, int n);
-void zx_hrxml_PersonName_DEL_LegalName(struct zx_hrxml_PersonName_s* x, int n);
-void zx_hrxml_PersonName_DEL_GivenName(struct zx_hrxml_PersonName_s* x, int n);
-void zx_hrxml_PersonName_DEL_PreferredGivenName(struct zx_hrxml_PersonName_s* x, int n);
-void zx_hrxml_PersonName_DEL_MiddleName(struct zx_hrxml_PersonName_s* x, int n);
+void zx_hrxml_PersonName_DEL_FormattedName(struct zx_hrxml_PersonName_s* x,int n);
+void zx_hrxml_PersonName_DEL_LegalName(struct zx_hrxml_PersonName_s* x,int n);
+void zx_hrxml_PersonName_DEL_GivenName(struct zx_hrxml_PersonName_s* x,int n);
+void zx_hrxml_PersonName_DEL_PreferredGivenName(struct zx_hrxml_PersonName_s* x,int n);
+void zx_hrxml_PersonName_DEL_MiddleName(struct zx_hrxml_PersonName_s* x,int n);
 void zx_hrxml_PersonName_DEL_FamilyName(struct zx_hrxml_PersonName_s* x, int n);
 void zx_hrxml_PersonName_DEL_Affix(struct zx_hrxml_PersonName_s* x, int n);
 void zx_hrxml_PersonName_DEL_AlternateScript(struct zx_hrxml_PersonName_s* x, int n);
@@ -9243,7 +8558,6 @@ void zx_hrxml_PersonName_REV_AlternateScript(struct zx_hrxml_PersonName_s* x);
 #ifndef zx_hrxml_PersonRole_EXT
 #define zx_hrxml_PersonRole_EXT
 #endif
-
 struct zx_hrxml_PersonRole_s {
   ZX_ELEM_EXT
   zx_hrxml_PersonRole_EXT
@@ -9254,12 +8568,8 @@ struct zx_hrxml_PersonRole_s {
 };
 
 #define zx_NEW_hrxml_PersonRole(c, father) (struct zx_hrxml_PersonRole_s*)zx_new_elem((c),(father),zx_hrxml_PersonRole_ELEM)
-
 int zx_DEC_ATTR_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x);
 int zx_DEC_ELEM_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x);
-int zx_LEN_SO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x);
-char* zx_ENC_SO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PersonRole_s* zx_DEEP_CLONE_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x, int dup_strs);
@@ -9297,7 +8607,7 @@ void zx_hrxml_PersonRole_ADD_RoleName(struct zx_hrxml_PersonRole_s* x, int n, st
 void zx_hrxml_PersonRole_ADD_RoleId(struct zx_hrxml_PersonRole_s* x, int n, struct zx_hrxml_RoleId_s* z);
 void zx_hrxml_PersonRole_ADD_Description(struct zx_hrxml_PersonRole_s* x, int n, struct zx_hrxml_Description_s* z);
 
-void zx_hrxml_PersonRole_DEL_RoleName(struct zx_hrxml_PersonRole_s* x, int n);
+void zx_hrxml_PersonRole_DEL_RoleName(struct zx_hrxml_PersonRole_s* x,int n);
 void zx_hrxml_PersonRole_DEL_RoleId(struct zx_hrxml_PersonRole_s* x, int n);
 void zx_hrxml_PersonRole_DEL_Description(struct zx_hrxml_PersonRole_s* x, int n);
 
@@ -9311,7 +8621,6 @@ void zx_hrxml_PersonRole_REV_Description(struct zx_hrxml_PersonRole_s* x);
 #ifndef zx_hrxml_PersonalData_EXT
 #define zx_hrxml_PersonalData_EXT
 #endif
-
 struct zx_hrxml_PersonalData_s {
   ZX_ELEM_EXT
   zx_hrxml_PersonalData_EXT
@@ -9323,12 +8632,8 @@ struct zx_hrxml_PersonalData_s {
 };
 
 #define zx_NEW_hrxml_PersonalData(c, father) (struct zx_hrxml_PersonalData_s*)zx_new_elem((c),(father),zx_hrxml_PersonalData_ELEM)
-
 int zx_DEC_ATTR_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_s* x);
 int zx_DEC_ELEM_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_s* x);
-int zx_LEN_SO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_s* x);
-char* zx_ENC_SO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PersonalData_s* zx_DEEP_CLONE_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_s* x, int dup_strs);
@@ -9394,7 +8699,6 @@ void zx_hrxml_PersonalData_REV_UserArea(struct zx_hrxml_PersonalData_s* x);
 #ifndef zx_hrxml_PhysicalLocation_EXT
 #define zx_hrxml_PhysicalLocation_EXT
 #endif
-
 struct zx_hrxml_PhysicalLocation_s {
   ZX_ELEM_EXT
   zx_hrxml_PhysicalLocation_EXT
@@ -9409,12 +8713,8 @@ struct zx_hrxml_PhysicalLocation_s {
 };
 
 #define zx_NEW_hrxml_PhysicalLocation(c, father) (struct zx_hrxml_PhysicalLocation_s*)zx_new_elem((c),(father),zx_hrxml_PhysicalLocation_ELEM)
-
 int zx_DEC_ATTR_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalLocation_s* x);
 int zx_DEC_ELEM_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalLocation_s* x);
-int zx_LEN_SO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalLocation_s* x);
-char* zx_ENC_SO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalLocation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalLocation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PhysicalLocation_s* zx_DEEP_CLONE_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalLocation_s* x, int dup_strs);
@@ -9481,13 +8781,13 @@ void zx_hrxml_PhysicalLocation_ADD_Area(struct zx_hrxml_PhysicalLocation_s* x, i
 void zx_hrxml_PhysicalLocation_ADD_Comments(struct zx_hrxml_PhysicalLocation_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_PhysicalLocation_DEL_Id(struct zx_hrxml_PhysicalLocation_s* x, int n);
-void zx_hrxml_PhysicalLocation_DEL_Name(struct zx_hrxml_PhysicalLocation_s* x, int n);
+void zx_hrxml_PhysicalLocation_DEL_Name(struct zx_hrxml_PhysicalLocation_s* x,int n);
 void zx_hrxml_PhysicalLocation_DEL_EffectiveDate(struct zx_hrxml_PhysicalLocation_s* x, int n);
 void zx_hrxml_PhysicalLocation_DEL_SpatialLocation(struct zx_hrxml_PhysicalLocation_s* x, int n);
 void zx_hrxml_PhysicalLocation_DEL_TravelDirections(struct zx_hrxml_PhysicalLocation_s* x, int n);
 void zx_hrxml_PhysicalLocation_DEL_PostalAddress(struct zx_hrxml_PhysicalLocation_s* x, int n);
 void zx_hrxml_PhysicalLocation_DEL_Area(struct zx_hrxml_PhysicalLocation_s* x, int n);
-void zx_hrxml_PhysicalLocation_DEL_Comments(struct zx_hrxml_PhysicalLocation_s* x, int n);
+void zx_hrxml_PhysicalLocation_DEL_Comments(struct zx_hrxml_PhysicalLocation_s* x,int n);
 
 void zx_hrxml_PhysicalLocation_REV_Id(struct zx_hrxml_PhysicalLocation_s* x);
 void zx_hrxml_PhysicalLocation_REV_Name(struct zx_hrxml_PhysicalLocation_s* x);
@@ -9504,7 +8804,6 @@ void zx_hrxml_PhysicalLocation_REV_Comments(struct zx_hrxml_PhysicalLocation_s* 
 #ifndef zx_hrxml_PositionHistory_EXT
 #define zx_hrxml_PositionHistory_EXT
 #endif
-
 struct zx_hrxml_PositionHistory_s {
   ZX_ELEM_EXT
   zx_hrxml_PositionHistory_EXT
@@ -9528,12 +8827,8 @@ struct zx_hrxml_PositionHistory_s {
 };
 
 #define zx_NEW_hrxml_PositionHistory(c, father) (struct zx_hrxml_PositionHistory_s*)zx_new_elem((c),(father),zx_hrxml_PositionHistory_ELEM)
-
 int zx_DEC_ATTR_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHistory_s* x);
 int zx_DEC_ELEM_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHistory_s* x);
-int zx_LEN_SO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHistory_s* x);
-char* zx_ENC_SO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHistory_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHistory_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHistory_s* x, int dup_strs);
@@ -9645,16 +8940,16 @@ void zx_hrxml_PositionHistory_ADD_JobCategory(struct zx_hrxml_PositionHistory_s*
 void zx_hrxml_PositionHistory_ADD_Competency(struct zx_hrxml_PositionHistory_s* x, int n, struct zx_hrxml_Competency_s* z);
 void zx_hrxml_PositionHistory_ADD_UserArea(struct zx_hrxml_PositionHistory_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_PositionHistory_DEL_Title(struct zx_hrxml_PositionHistory_s* x, int n);
+void zx_hrxml_PositionHistory_DEL_Title(struct zx_hrxml_PositionHistory_s* x,int n);
 void zx_hrxml_PositionHistory_DEL_OrgName(struct zx_hrxml_PositionHistory_s* x, int n);
 void zx_hrxml_PositionHistory_DEL_OrgInfo(struct zx_hrxml_PositionHistory_s* x, int n);
 void zx_hrxml_PositionHistory_DEL_OrgIndustry(struct zx_hrxml_PositionHistory_s* x, int n);
-void zx_hrxml_PositionHistory_DEL_OrgSize(struct zx_hrxml_PositionHistory_s* x, int n);
+void zx_hrxml_PositionHistory_DEL_OrgSize(struct zx_hrxml_PositionHistory_s* x,int n);
 void zx_hrxml_PositionHistory_DEL_Description(struct zx_hrxml_PositionHistory_s* x, int n);
 void zx_hrxml_PositionHistory_DEL_StartDate(struct zx_hrxml_PositionHistory_s* x, int n);
 void zx_hrxml_PositionHistory_DEL_EndDate(struct zx_hrxml_PositionHistory_s* x, int n);
 void zx_hrxml_PositionHistory_DEL_Compensation(struct zx_hrxml_PositionHistory_s* x, int n);
-void zx_hrxml_PositionHistory_DEL_Comments(struct zx_hrxml_PositionHistory_s* x, int n);
+void zx_hrxml_PositionHistory_DEL_Comments(struct zx_hrxml_PositionHistory_s* x,int n);
 void zx_hrxml_PositionHistory_DEL_Verification(struct zx_hrxml_PositionHistory_s* x, int n);
 void zx_hrxml_PositionHistory_DEL_JobLevelInfo(struct zx_hrxml_PositionHistory_s* x, int n);
 void zx_hrxml_PositionHistory_DEL_JobCategory(struct zx_hrxml_PositionHistory_s* x, int n);
@@ -9683,7 +8978,6 @@ void zx_hrxml_PositionHistory_REV_UserArea(struct zx_hrxml_PositionHistory_s* x)
 #ifndef zx_hrxml_PositionLocation_EXT
 #define zx_hrxml_PositionLocation_EXT
 #endif
-
 struct zx_hrxml_PositionLocation_s {
   ZX_ELEM_EXT
   zx_hrxml_PositionLocation_EXT
@@ -9697,12 +8991,8 @@ struct zx_hrxml_PositionLocation_s {
 };
 
 #define zx_NEW_hrxml_PositionLocation(c, father) (struct zx_hrxml_PositionLocation_s*)zx_new_elem((c),(father),zx_hrxml_PositionLocation_ELEM)
-
 int zx_DEC_ATTR_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionLocation_s* x);
 int zx_DEC_ELEM_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionLocation_s* x);
-int zx_LEN_SO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionLocation_s* x);
-char* zx_ENC_SO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionLocation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionLocation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PositionLocation_s* zx_DEEP_CLONE_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionLocation_s* x, int dup_strs);
@@ -9758,10 +9048,10 @@ void zx_hrxml_PositionLocation_ADD_Municipality(struct zx_hrxml_PositionLocation
 void zx_hrxml_PositionLocation_ADD_DeliveryAddress(struct zx_hrxml_PositionLocation_s* x, int n, struct zx_hrxml_DeliveryAddress_s* z);
 void zx_hrxml_PositionLocation_ADD_Recipient(struct zx_hrxml_PositionLocation_s* x, int n, struct zx_hrxml_Recipient_s* z);
 
-void zx_hrxml_PositionLocation_DEL_CountryCode(struct zx_hrxml_PositionLocation_s* x, int n);
-void zx_hrxml_PositionLocation_DEL_PostalCode(struct zx_hrxml_PositionLocation_s* x, int n);
-void zx_hrxml_PositionLocation_DEL_Region(struct zx_hrxml_PositionLocation_s* x, int n);
-void zx_hrxml_PositionLocation_DEL_Municipality(struct zx_hrxml_PositionLocation_s* x, int n);
+void zx_hrxml_PositionLocation_DEL_CountryCode(struct zx_hrxml_PositionLocation_s* x,int n);
+void zx_hrxml_PositionLocation_DEL_PostalCode(struct zx_hrxml_PositionLocation_s* x,int n);
+void zx_hrxml_PositionLocation_DEL_Region(struct zx_hrxml_PositionLocation_s* x,int n);
+void zx_hrxml_PositionLocation_DEL_Municipality(struct zx_hrxml_PositionLocation_s* x,int n);
 void zx_hrxml_PositionLocation_DEL_DeliveryAddress(struct zx_hrxml_PositionLocation_s* x, int n);
 void zx_hrxml_PositionLocation_DEL_Recipient(struct zx_hrxml_PositionLocation_s* x, int n);
 
@@ -9778,7 +9068,6 @@ void zx_hrxml_PositionLocation_REV_Recipient(struct zx_hrxml_PositionLocation_s*
 #ifndef zx_hrxml_PositionMatching_EXT
 #define zx_hrxml_PositionMatching_EXT
 #endif
-
 struct zx_hrxml_PositionMatching_s {
   ZX_ELEM_EXT
   zx_hrxml_PositionMatching_EXT
@@ -9802,12 +9091,8 @@ struct zx_hrxml_PositionMatching_s {
 };
 
 #define zx_NEW_hrxml_PositionMatching(c, father) (struct zx_hrxml_PositionMatching_s*)zx_new_elem((c),(father),zx_hrxml_PositionMatching_ELEM)
-
 int zx_DEC_ATTR_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionMatching_s* x);
 int zx_DEC_ELEM_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionMatching_s* x);
-int zx_LEN_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionMatching_s* x);
-char* zx_ENC_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionMatching_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionMatching_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionMatching_s* x, int dup_strs);
@@ -9928,17 +9213,17 @@ void zx_hrxml_PositionMatching_ADD_PreferredLanguage(struct zx_hrxml_PositionMat
 void zx_hrxml_PositionMatching_ADD_UserArea(struct zx_hrxml_PositionMatching_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
 void zx_hrxml_PositionMatching_DEL_Company(struct zx_hrxml_PositionMatching_s* x, int n);
-void zx_hrxml_PositionMatching_DEL_CompanyScale(struct zx_hrxml_PositionMatching_s* x, int n);
+void zx_hrxml_PositionMatching_DEL_CompanyScale(struct zx_hrxml_PositionMatching_s* x,int n);
 void zx_hrxml_PositionMatching_DEL_IndustryCode(struct zx_hrxml_PositionMatching_s* x, int n);
 void zx_hrxml_PositionMatching_DEL_PhysicalLocation(struct zx_hrxml_PositionMatching_s* x, int n);
 void zx_hrxml_PositionMatching_DEL_JobCategory(struct zx_hrxml_PositionMatching_s* x, int n);
-void zx_hrxml_PositionMatching_DEL_PositionTitle(struct zx_hrxml_PositionMatching_s* x, int n);
-void zx_hrxml_PositionMatching_DEL_PositionClassification(struct zx_hrxml_PositionMatching_s* x, int n);
+void zx_hrxml_PositionMatching_DEL_PositionTitle(struct zx_hrxml_PositionMatching_s* x,int n);
+void zx_hrxml_PositionMatching_DEL_PositionClassification(struct zx_hrxml_PositionMatching_s* x,int n);
 void zx_hrxml_PositionMatching_DEL_PositionSchedule(struct zx_hrxml_PositionMatching_s* x, int n);
 void zx_hrxml_PositionMatching_DEL_Shift(struct zx_hrxml_PositionMatching_s* x, int n);
 void zx_hrxml_PositionMatching_DEL_Competency(struct zx_hrxml_PositionMatching_s* x, int n);
 void zx_hrxml_PositionMatching_DEL_RemunerationPackage(struct zx_hrxml_PositionMatching_s* x, int n);
-void zx_hrxml_PositionMatching_DEL_WorkStyle(struct zx_hrxml_PositionMatching_s* x, int n);
+void zx_hrxml_PositionMatching_DEL_WorkStyle(struct zx_hrxml_PositionMatching_s* x,int n);
 void zx_hrxml_PositionMatching_DEL_DressCode(struct zx_hrxml_PositionMatching_s* x, int n);
 void zx_hrxml_PositionMatching_DEL_Travel(struct zx_hrxml_PositionMatching_s* x, int n);
 void zx_hrxml_PositionMatching_DEL_Relocation(struct zx_hrxml_PositionMatching_s* x, int n);
@@ -9969,7 +9254,6 @@ void zx_hrxml_PositionMatching_REV_UserArea(struct zx_hrxml_PositionMatching_s* 
 #ifndef zx_hrxml_PositionPosting_EXT
 #define zx_hrxml_PositionPosting_EXT
 #endif
-
 struct zx_hrxml_PositionPosting_s {
   ZX_ELEM_EXT
   zx_hrxml_PositionPosting_EXT
@@ -9981,12 +9265,8 @@ struct zx_hrxml_PositionPosting_s {
 };
 
 #define zx_NEW_hrxml_PositionPosting(c, father) (struct zx_hrxml_PositionPosting_s*)zx_new_elem((c),(father),zx_hrxml_PositionPosting_ELEM)
-
 int zx_DEC_ATTR_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPosting_s* x);
 int zx_DEC_ELEM_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPosting_s* x);
-int zx_LEN_SO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPosting_s* x);
-char* zx_ENC_SO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPosting_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPosting_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PositionPosting_s* zx_DEEP_CLONE_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPosting_s* x, int dup_strs);
@@ -10035,8 +9315,8 @@ void zx_hrxml_PositionPosting_ADD_SearchCriteria(struct zx_hrxml_PositionPosting
 void zx_hrxml_PositionPosting_ADD_SearchResult(struct zx_hrxml_PositionPosting_s* x, int n, struct zx_hrxml_SearchResult_s* z);
 
 void zx_hrxml_PositionPosting_DEL_Id(struct zx_hrxml_PositionPosting_s* x, int n);
-void zx_hrxml_PositionPosting_DEL_Title(struct zx_hrxml_PositionPosting_s* x, int n);
-void zx_hrxml_PositionPosting_DEL_Link(struct zx_hrxml_PositionPosting_s* x, int n);
+void zx_hrxml_PositionPosting_DEL_Title(struct zx_hrxml_PositionPosting_s* x,int n);
+void zx_hrxml_PositionPosting_DEL_Link(struct zx_hrxml_PositionPosting_s* x,int n);
 void zx_hrxml_PositionPosting_DEL_SearchCriteria(struct zx_hrxml_PositionPosting_s* x, int n);
 void zx_hrxml_PositionPosting_DEL_SearchResult(struct zx_hrxml_PositionPosting_s* x, int n);
 
@@ -10052,7 +9332,6 @@ void zx_hrxml_PositionPosting_REV_SearchResult(struct zx_hrxml_PositionPosting_s
 #ifndef zx_hrxml_PositionSchedule_EXT
 #define zx_hrxml_PositionSchedule_EXT
 #endif
-
 struct zx_hrxml_PositionSchedule_s {
   ZX_ELEM_EXT
   zx_hrxml_PositionSchedule_EXT
@@ -10060,12 +9339,8 @@ struct zx_hrxml_PositionSchedule_s {
 };
 
 #define zx_NEW_hrxml_PositionSchedule(c, father) (struct zx_hrxml_PositionSchedule_s*)zx_new_elem((c),(father),zx_hrxml_PositionSchedule_ELEM)
-
 int zx_DEC_ATTR_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionSchedule_s* x);
 int zx_DEC_ELEM_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionSchedule_s* x);
-int zx_LEN_SO_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionSchedule_s* x);
-char* zx_ENC_SO_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionSchedule_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionSchedule_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PositionSchedule_s* zx_DEEP_CLONE_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionSchedule_s* x, int dup_strs);
@@ -10093,7 +9368,6 @@ void zx_hrxml_PositionSchedule_PUT_percentage(struct zx_hrxml_PositionSchedule_s
 #ifndef zx_hrxml_PostalAddress_EXT
 #define zx_hrxml_PostalAddress_EXT
 #endif
-
 struct zx_hrxml_PostalAddress_s {
   ZX_ELEM_EXT
   zx_hrxml_PostalAddress_EXT
@@ -10107,12 +9381,8 @@ struct zx_hrxml_PostalAddress_s {
 };
 
 #define zx_NEW_hrxml_PostalAddress(c, father) (struct zx_hrxml_PostalAddress_s*)zx_new_elem((c),(father),zx_hrxml_PostalAddress_ELEM)
-
 int zx_DEC_ATTR_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddress_s* x);
 int zx_DEC_ELEM_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddress_s* x);
-int zx_LEN_SO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddress_s* x);
-char* zx_ENC_SO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddress_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddress_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PostalAddress_s* zx_DEEP_CLONE_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddress_s* x, int dup_strs);
@@ -10168,10 +9438,10 @@ void zx_hrxml_PostalAddress_ADD_Municipality(struct zx_hrxml_PostalAddress_s* x,
 void zx_hrxml_PostalAddress_ADD_DeliveryAddress(struct zx_hrxml_PostalAddress_s* x, int n, struct zx_hrxml_DeliveryAddress_s* z);
 void zx_hrxml_PostalAddress_ADD_Recipient(struct zx_hrxml_PostalAddress_s* x, int n, struct zx_hrxml_Recipient_s* z);
 
-void zx_hrxml_PostalAddress_DEL_CountryCode(struct zx_hrxml_PostalAddress_s* x, int n);
-void zx_hrxml_PostalAddress_DEL_PostalCode(struct zx_hrxml_PostalAddress_s* x, int n);
-void zx_hrxml_PostalAddress_DEL_Region(struct zx_hrxml_PostalAddress_s* x, int n);
-void zx_hrxml_PostalAddress_DEL_Municipality(struct zx_hrxml_PostalAddress_s* x, int n);
+void zx_hrxml_PostalAddress_DEL_CountryCode(struct zx_hrxml_PostalAddress_s* x,int n);
+void zx_hrxml_PostalAddress_DEL_PostalCode(struct zx_hrxml_PostalAddress_s* x,int n);
+void zx_hrxml_PostalAddress_DEL_Region(struct zx_hrxml_PostalAddress_s* x,int n);
+void zx_hrxml_PostalAddress_DEL_Municipality(struct zx_hrxml_PostalAddress_s* x,int n);
 void zx_hrxml_PostalAddress_DEL_DeliveryAddress(struct zx_hrxml_PostalAddress_s* x, int n);
 void zx_hrxml_PostalAddress_DEL_Recipient(struct zx_hrxml_PostalAddress_s* x, int n);
 
@@ -10188,19 +9458,14 @@ void zx_hrxml_PostalAddress_REV_Recipient(struct zx_hrxml_PostalAddress_s* x);
 #ifndef zx_hrxml_PreferredLanguage_EXT
 #define zx_hrxml_PreferredLanguage_EXT
 #endif
-
 struct zx_hrxml_PreferredLanguage_s {
   ZX_ELEM_EXT
   zx_hrxml_PreferredLanguage_EXT
 };
 
 #define zx_NEW_hrxml_PreferredLanguage(c, father) (struct zx_hrxml_PreferredLanguage_s*)zx_new_elem((c),(father),zx_hrxml_PreferredLanguage_ELEM)
-
 int zx_DEC_ATTR_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_PreferredLanguage_s* x);
 int zx_DEC_ELEM_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_PreferredLanguage_s* x);
-int zx_LEN_SO_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_PreferredLanguage_s* x);
-char* zx_ENC_SO_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_PreferredLanguage_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_PreferredLanguage_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PreferredLanguage_s* zx_DEEP_CLONE_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_PreferredLanguage_s* x, int dup_strs);
@@ -10226,7 +9491,6 @@ int zx_WALK_WO_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_Preferr
 #ifndef zx_hrxml_PreferredPosition_EXT
 #define zx_hrxml_PreferredPosition_EXT
 #endif
-
 struct zx_hrxml_PreferredPosition_s {
   ZX_ELEM_EXT
   zx_hrxml_PreferredPosition_EXT
@@ -10251,12 +9515,8 @@ struct zx_hrxml_PreferredPosition_s {
 };
 
 #define zx_NEW_hrxml_PreferredPosition(c, father) (struct zx_hrxml_PreferredPosition_s*)zx_new_elem((c),(father),zx_hrxml_PreferredPosition_ELEM)
-
 int zx_DEC_ATTR_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_PreferredPosition_s* x);
 int zx_DEC_ELEM_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_PreferredPosition_s* x);
-int zx_LEN_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_PreferredPosition_s* x);
-char* zx_ENC_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_PreferredPosition_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_PreferredPosition_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_PreferredPosition_s* x, int dup_strs);
@@ -10383,17 +9643,17 @@ void zx_hrxml_PreferredPosition_ADD_UserArea(struct zx_hrxml_PreferredPosition_s
 void zx_hrxml_PreferredPosition_ADD_Commute(struct zx_hrxml_PreferredPosition_s* x, int n, struct zx_hrxml_Commute_s* z);
 
 void zx_hrxml_PreferredPosition_DEL_Company(struct zx_hrxml_PreferredPosition_s* x, int n);
-void zx_hrxml_PreferredPosition_DEL_CompanyScale(struct zx_hrxml_PreferredPosition_s* x, int n);
+void zx_hrxml_PreferredPosition_DEL_CompanyScale(struct zx_hrxml_PreferredPosition_s* x,int n);
 void zx_hrxml_PreferredPosition_DEL_IndustryCode(struct zx_hrxml_PreferredPosition_s* x, int n);
 void zx_hrxml_PreferredPosition_DEL_PhysicalLocation(struct zx_hrxml_PreferredPosition_s* x, int n);
 void zx_hrxml_PreferredPosition_DEL_JobCategory(struct zx_hrxml_PreferredPosition_s* x, int n);
-void zx_hrxml_PreferredPosition_DEL_PositionTitle(struct zx_hrxml_PreferredPosition_s* x, int n);
-void zx_hrxml_PreferredPosition_DEL_PositionClassification(struct zx_hrxml_PreferredPosition_s* x, int n);
+void zx_hrxml_PreferredPosition_DEL_PositionTitle(struct zx_hrxml_PreferredPosition_s* x,int n);
+void zx_hrxml_PreferredPosition_DEL_PositionClassification(struct zx_hrxml_PreferredPosition_s* x,int n);
 void zx_hrxml_PreferredPosition_DEL_PositionSchedule(struct zx_hrxml_PreferredPosition_s* x, int n);
 void zx_hrxml_PreferredPosition_DEL_Shift(struct zx_hrxml_PreferredPosition_s* x, int n);
 void zx_hrxml_PreferredPosition_DEL_Competency(struct zx_hrxml_PreferredPosition_s* x, int n);
 void zx_hrxml_PreferredPosition_DEL_RemunerationPackage(struct zx_hrxml_PreferredPosition_s* x, int n);
-void zx_hrxml_PreferredPosition_DEL_WorkStyle(struct zx_hrxml_PreferredPosition_s* x, int n);
+void zx_hrxml_PreferredPosition_DEL_WorkStyle(struct zx_hrxml_PreferredPosition_s* x,int n);
 void zx_hrxml_PreferredPosition_DEL_DressCode(struct zx_hrxml_PreferredPosition_s* x, int n);
 void zx_hrxml_PreferredPosition_DEL_Travel(struct zx_hrxml_PreferredPosition_s* x, int n);
 void zx_hrxml_PreferredPosition_DEL_Relocation(struct zx_hrxml_PreferredPosition_s* x, int n);
@@ -10426,7 +9686,6 @@ void zx_hrxml_PreferredPosition_REV_Commute(struct zx_hrxml_PreferredPosition_s*
 #ifndef zx_hrxml_PrehireRemuneration_EXT
 #define zx_hrxml_PrehireRemuneration_EXT
 #endif
-
 struct zx_hrxml_PrehireRemuneration_s {
   ZX_ELEM_EXT
   zx_hrxml_PrehireRemuneration_EXT
@@ -10437,12 +9696,8 @@ struct zx_hrxml_PrehireRemuneration_s {
 };
 
 #define zx_NEW_hrxml_PrehireRemuneration(c, father) (struct zx_hrxml_PrehireRemuneration_s*)zx_new_elem((c),(father),zx_hrxml_PrehireRemuneration_ELEM)
-
 int zx_DEC_ATTR_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_PrehireRemuneration_s* x);
 int zx_DEC_ELEM_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_PrehireRemuneration_s* x);
-int zx_LEN_SO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_PrehireRemuneration_s* x);
-char* zx_ENC_SO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_PrehireRemuneration_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_PrehireRemuneration_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PrehireRemuneration_s* zx_DEEP_CLONE_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_PrehireRemuneration_s* x, int dup_strs);
@@ -10500,19 +9755,14 @@ void zx_hrxml_PrehireRemuneration_REV_UserArea(struct zx_hrxml_PrehireRemunerati
 #ifndef zx_hrxml_PrimaryLanguage_EXT
 #define zx_hrxml_PrimaryLanguage_EXT
 #endif
-
 struct zx_hrxml_PrimaryLanguage_s {
   ZX_ELEM_EXT
   zx_hrxml_PrimaryLanguage_EXT
 };
 
 #define zx_NEW_hrxml_PrimaryLanguage(c, father) (struct zx_hrxml_PrimaryLanguage_s*)zx_new_elem((c),(father),zx_hrxml_PrimaryLanguage_ELEM)
-
 int zx_DEC_ATTR_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLanguage_s* x);
 int zx_DEC_ELEM_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLanguage_s* x);
-int zx_LEN_SO_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLanguage_s* x);
-char* zx_ENC_SO_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLanguage_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLanguage_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PrimaryLanguage_s* zx_DEEP_CLONE_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLanguage_s* x, int dup_strs);
@@ -10538,7 +9788,6 @@ int zx_WALK_WO_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLa
 #ifndef zx_hrxml_ProfessionalAssociations_EXT
 #define zx_hrxml_ProfessionalAssociations_EXT
 #endif
-
 struct zx_hrxml_ProfessionalAssociations_s {
   ZX_ELEM_EXT
   zx_hrxml_ProfessionalAssociations_EXT
@@ -10546,12 +9795,8 @@ struct zx_hrxml_ProfessionalAssociations_s {
 };
 
 #define zx_NEW_hrxml_ProfessionalAssociations(c, father) (struct zx_hrxml_ProfessionalAssociations_s*)zx_new_elem((c),(father),zx_hrxml_ProfessionalAssociations_ELEM)
-
 int zx_DEC_ATTR_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_ProfessionalAssociations_s* x);
 int zx_DEC_ELEM_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_ProfessionalAssociations_s* x);
-int zx_LEN_SO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_ProfessionalAssociations_s* x);
-char* zx_ENC_SO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_ProfessionalAssociations_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_ProfessionalAssociations_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ProfessionalAssociations_s* zx_DEEP_CLONE_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_ProfessionalAssociations_s* x, int dup_strs);
@@ -10585,7 +9830,6 @@ void zx_hrxml_ProfessionalAssociations_REV_Association(struct zx_hrxml_Professio
 #ifndef zx_hrxml_ProfileId_EXT
 #define zx_hrxml_ProfileId_EXT
 #endif
-
 struct zx_hrxml_ProfileId_s {
   ZX_ELEM_EXT
   zx_hrxml_ProfileId_EXT
@@ -10596,12 +9840,8 @@ struct zx_hrxml_ProfileId_s {
 };
 
 #define zx_NEW_hrxml_ProfileId(c, father) (struct zx_hrxml_ProfileId_s*)zx_new_elem((c),(father),zx_hrxml_ProfileId_ELEM)
-
 int zx_DEC_ATTR_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x);
 int zx_DEC_ELEM_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x);
-int zx_LEN_SO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x);
-char* zx_ENC_SO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ProfileId_s* zx_DEEP_CLONE_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x, int dup_strs);
@@ -10641,7 +9881,6 @@ void zx_hrxml_ProfileId_REV_IdValue(struct zx_hrxml_ProfileId_s* x);
 #ifndef zx_hrxml_ProgramId_EXT
 #define zx_hrxml_ProgramId_EXT
 #endif
-
 struct zx_hrxml_ProgramId_s {
   ZX_ELEM_EXT
   zx_hrxml_ProgramId_EXT
@@ -10652,12 +9891,8 @@ struct zx_hrxml_ProgramId_s {
 };
 
 #define zx_NEW_hrxml_ProgramId(c, father) (struct zx_hrxml_ProgramId_s*)zx_new_elem((c),(father),zx_hrxml_ProgramId_ELEM)
-
 int zx_DEC_ATTR_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x);
 int zx_DEC_ELEM_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x);
-int zx_LEN_SO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x);
-char* zx_ENC_SO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ProgramId_s* zx_DEEP_CLONE_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x, int dup_strs);
@@ -10697,7 +9932,6 @@ void zx_hrxml_ProgramId_REV_IdValue(struct zx_hrxml_ProgramId_s* x);
 #ifndef zx_hrxml_PublicationDate_EXT
 #define zx_hrxml_PublicationDate_EXT
 #endif
-
 struct zx_hrxml_PublicationDate_s {
   ZX_ELEM_EXT
   zx_hrxml_PublicationDate_EXT
@@ -10710,12 +9944,8 @@ struct zx_hrxml_PublicationDate_s {
 };
 
 #define zx_NEW_hrxml_PublicationDate(c, father) (struct zx_hrxml_PublicationDate_s*)zx_new_elem((c),(father),zx_hrxml_PublicationDate_ELEM)
-
 int zx_DEC_ATTR_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_PublicationDate_s* x);
 int zx_DEC_ELEM_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_PublicationDate_s* x);
-int zx_LEN_SO_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_PublicationDate_s* x);
-char* zx_ENC_SO_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_PublicationDate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_PublicationDate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PublicationDate_s* zx_DEEP_CLONE_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_PublicationDate_s* x, int dup_strs);
@@ -10765,11 +9995,11 @@ void zx_hrxml_PublicationDate_ADD_Year(struct zx_hrxml_PublicationDate_s* x, int
 void zx_hrxml_PublicationDate_ADD_MonthDay(struct zx_hrxml_PublicationDate_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_PublicationDate_ADD_StringDate(struct zx_hrxml_PublicationDate_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_PublicationDate_DEL_AnyDate(struct zx_hrxml_PublicationDate_s* x, int n);
-void zx_hrxml_PublicationDate_DEL_YearMonth(struct zx_hrxml_PublicationDate_s* x, int n);
-void zx_hrxml_PublicationDate_DEL_Year(struct zx_hrxml_PublicationDate_s* x, int n);
-void zx_hrxml_PublicationDate_DEL_MonthDay(struct zx_hrxml_PublicationDate_s* x, int n);
-void zx_hrxml_PublicationDate_DEL_StringDate(struct zx_hrxml_PublicationDate_s* x, int n);
+void zx_hrxml_PublicationDate_DEL_AnyDate(struct zx_hrxml_PublicationDate_s* x,int n);
+void zx_hrxml_PublicationDate_DEL_YearMonth(struct zx_hrxml_PublicationDate_s* x,int n);
+void zx_hrxml_PublicationDate_DEL_Year(struct zx_hrxml_PublicationDate_s* x,int n);
+void zx_hrxml_PublicationDate_DEL_MonthDay(struct zx_hrxml_PublicationDate_s* x,int n);
+void zx_hrxml_PublicationDate_DEL_StringDate(struct zx_hrxml_PublicationDate_s* x,int n);
 
 void zx_hrxml_PublicationDate_REV_AnyDate(struct zx_hrxml_PublicationDate_s* x);
 void zx_hrxml_PublicationDate_REV_YearMonth(struct zx_hrxml_PublicationDate_s* x);
@@ -10783,7 +10013,6 @@ void zx_hrxml_PublicationDate_REV_StringDate(struct zx_hrxml_PublicationDate_s* 
 #ifndef zx_hrxml_PublicationHistory_EXT
 #define zx_hrxml_PublicationHistory_EXT
 #endif
-
 struct zx_hrxml_PublicationHistory_s {
   ZX_ELEM_EXT
   zx_hrxml_PublicationHistory_EXT
@@ -10795,12 +10024,8 @@ struct zx_hrxml_PublicationHistory_s {
 };
 
 #define zx_NEW_hrxml_PublicationHistory(c, father) (struct zx_hrxml_PublicationHistory_s*)zx_new_elem((c),(father),zx_hrxml_PublicationHistory_ELEM)
-
 int zx_DEC_ATTR_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_PublicationHistory_s* x);
 int zx_DEC_ELEM_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_PublicationHistory_s* x);
-int zx_LEN_SO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_PublicationHistory_s* x);
-char* zx_ENC_SO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_PublicationHistory_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_PublicationHistory_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PublicationHistory_s* zx_DEEP_CLONE_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_PublicationHistory_s* x, int dup_strs);
@@ -10866,19 +10091,14 @@ void zx_hrxml_PublicationHistory_REV_OtherPublication(struct zx_hrxml_Publicatio
 #ifndef zx_hrxml_PublicationLanguage_EXT
 #define zx_hrxml_PublicationLanguage_EXT
 #endif
-
 struct zx_hrxml_PublicationLanguage_s {
   ZX_ELEM_EXT
   zx_hrxml_PublicationLanguage_EXT
 };
 
 #define zx_NEW_hrxml_PublicationLanguage(c, father) (struct zx_hrxml_PublicationLanguage_s*)zx_new_elem((c),(father),zx_hrxml_PublicationLanguage_ELEM)
-
 int zx_DEC_ATTR_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_PublicationLanguage_s* x);
 int zx_DEC_ELEM_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_PublicationLanguage_s* x);
-int zx_LEN_SO_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_PublicationLanguage_s* x);
-char* zx_ENC_SO_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_PublicationLanguage_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_PublicationLanguage_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_PublicationLanguage_s* zx_DEEP_CLONE_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_PublicationLanguage_s* x, int dup_strs);
@@ -10904,7 +10124,6 @@ int zx_WALK_WO_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_Publi
 #ifndef zx_hrxml_Qualifications_EXT
 #define zx_hrxml_Qualifications_EXT
 #endif
-
 struct zx_hrxml_Qualifications_s {
   ZX_ELEM_EXT
   zx_hrxml_Qualifications_EXT
@@ -10913,12 +10132,8 @@ struct zx_hrxml_Qualifications_s {
 };
 
 #define zx_NEW_hrxml_Qualifications(c, father) (struct zx_hrxml_Qualifications_s*)zx_new_elem((c),(father),zx_hrxml_Qualifications_ELEM)
-
 int zx_DEC_ATTR_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifications_s* x);
 int zx_DEC_ELEM_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifications_s* x);
-int zx_LEN_SO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifications_s* x);
-char* zx_ENC_SO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifications_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifications_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Qualifications_s* zx_DEEP_CLONE_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifications_s* x, int dup_strs);
@@ -10948,7 +10163,7 @@ void zx_hrxml_Qualifications_PUT_Competency(struct zx_hrxml_Qualifications_s* x,
 void zx_hrxml_Qualifications_ADD_QualificationSummary(struct zx_hrxml_Qualifications_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_Qualifications_ADD_Competency(struct zx_hrxml_Qualifications_s* x, int n, struct zx_hrxml_Competency_s* z);
 
-void zx_hrxml_Qualifications_DEL_QualificationSummary(struct zx_hrxml_Qualifications_s* x, int n);
+void zx_hrxml_Qualifications_DEL_QualificationSummary(struct zx_hrxml_Qualifications_s* x,int n);
 void zx_hrxml_Qualifications_DEL_Competency(struct zx_hrxml_Qualifications_s* x, int n);
 
 void zx_hrxml_Qualifications_REV_QualificationSummary(struct zx_hrxml_Qualifications_s* x);
@@ -10960,7 +10175,6 @@ void zx_hrxml_Qualifications_REV_Competency(struct zx_hrxml_Qualifications_s* x)
 #ifndef zx_hrxml_RankAchieved_EXT
 #define zx_hrxml_RankAchieved_EXT
 #endif
-
 struct zx_hrxml_RankAchieved_s {
   ZX_ELEM_EXT
   zx_hrxml_RankAchieved_EXT
@@ -10969,12 +10183,8 @@ struct zx_hrxml_RankAchieved_s {
 };
 
 #define zx_NEW_hrxml_RankAchieved(c, father) (struct zx_hrxml_RankAchieved_s*)zx_new_elem((c),(father),zx_hrxml_RankAchieved_ELEM)
-
 int zx_DEC_ATTR_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_s* x);
 int zx_DEC_ELEM_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_s* x);
-int zx_LEN_SO_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_s* x);
-char* zx_ENC_SO_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_RankAchieved_s* zx_DEEP_CLONE_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_s* x, int dup_strs);
@@ -11004,8 +10214,8 @@ void zx_hrxml_RankAchieved_PUT_CurrentOrEndRank(struct zx_hrxml_RankAchieved_s* 
 void zx_hrxml_RankAchieved_ADD_StartRank(struct zx_hrxml_RankAchieved_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_RankAchieved_ADD_CurrentOrEndRank(struct zx_hrxml_RankAchieved_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_RankAchieved_DEL_StartRank(struct zx_hrxml_RankAchieved_s* x, int n);
-void zx_hrxml_RankAchieved_DEL_CurrentOrEndRank(struct zx_hrxml_RankAchieved_s* x, int n);
+void zx_hrxml_RankAchieved_DEL_StartRank(struct zx_hrxml_RankAchieved_s* x,int n);
+void zx_hrxml_RankAchieved_DEL_CurrentOrEndRank(struct zx_hrxml_RankAchieved_s* x,int n);
 
 void zx_hrxml_RankAchieved_REV_StartRank(struct zx_hrxml_RankAchieved_s* x);
 void zx_hrxml_RankAchieved_REV_CurrentOrEndRank(struct zx_hrxml_RankAchieved_s* x);
@@ -11016,7 +10226,6 @@ void zx_hrxml_RankAchieved_REV_CurrentOrEndRank(struct zx_hrxml_RankAchieved_s* 
 #ifndef zx_hrxml_RankedResult_EXT
 #define zx_hrxml_RankedResult_EXT
 #endif
-
 struct zx_hrxml_RankedResult_s {
   ZX_ELEM_EXT
   zx_hrxml_RankedResult_EXT
@@ -11030,12 +10239,8 @@ struct zx_hrxml_RankedResult_s {
 };
 
 #define zx_NEW_hrxml_RankedResult(c, father) (struct zx_hrxml_RankedResult_s*)zx_new_elem((c),(father),zx_hrxml_RankedResult_ELEM)
-
 int zx_DEC_ATTR_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_s* x);
 int zx_DEC_ELEM_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_s* x);
-int zx_LEN_SO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_s* x);
-char* zx_ENC_SO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_RankedResult_s* zx_DEEP_CLONE_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_s* x, int dup_strs);
@@ -11095,9 +10300,9 @@ void zx_hrxml_RankedResult_ADD_Weight(struct zx_hrxml_RankedResult_s* x, int n, 
 void zx_hrxml_RankedResult_ADD_UserArea(struct zx_hrxml_RankedResult_s* x, int n, struct zx_hrxml_UserArea_s* z);
 void zx_hrxml_RankedResult_ADD_RankedResult(struct zx_hrxml_RankedResult_s* x, int n, struct zx_hrxml_RankedResult_s* z);
 
-void zx_hrxml_RankedResult_DEL_CriterionName(struct zx_hrxml_RankedResult_s* x, int n);
-void zx_hrxml_RankedResult_DEL_Requested(struct zx_hrxml_RankedResult_s* x, int n);
-void zx_hrxml_RankedResult_DEL_Offered(struct zx_hrxml_RankedResult_s* x, int n);
+void zx_hrxml_RankedResult_DEL_CriterionName(struct zx_hrxml_RankedResult_s* x,int n);
+void zx_hrxml_RankedResult_DEL_Requested(struct zx_hrxml_RankedResult_s* x,int n);
+void zx_hrxml_RankedResult_DEL_Offered(struct zx_hrxml_RankedResult_s* x,int n);
 void zx_hrxml_RankedResult_DEL_Score(struct zx_hrxml_RankedResult_s* x, int n);
 void zx_hrxml_RankedResult_DEL_Weight(struct zx_hrxml_RankedResult_s* x, int n);
 void zx_hrxml_RankedResult_DEL_UserArea(struct zx_hrxml_RankedResult_s* x, int n);
@@ -11117,7 +10322,6 @@ void zx_hrxml_RankedResult_REV_RankedResult(struct zx_hrxml_RankedResult_s* x);
 #ifndef zx_hrxml_RankedSearchResults_EXT
 #define zx_hrxml_RankedSearchResults_EXT
 #endif
-
 struct zx_hrxml_RankedSearchResults_s {
   ZX_ELEM_EXT
   zx_hrxml_RankedSearchResults_EXT
@@ -11125,12 +10329,8 @@ struct zx_hrxml_RankedSearchResults_s {
 };
 
 #define zx_NEW_hrxml_RankedSearchResults(c, father) (struct zx_hrxml_RankedSearchResults_s*)zx_new_elem((c),(father),zx_hrxml_RankedSearchResults_ELEM)
-
 int zx_DEC_ATTR_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_RankedSearchResults_s* x);
 int zx_DEC_ELEM_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_RankedSearchResults_s* x);
-int zx_LEN_SO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_RankedSearchResults_s* x);
-char* zx_ENC_SO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_RankedSearchResults_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_RankedSearchResults_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_RankedSearchResults_s* zx_DEEP_CLONE_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_RankedSearchResults_s* x, int dup_strs);
@@ -11164,7 +10364,6 @@ void zx_hrxml_RankedSearchResults_REV_RankedResult(struct zx_hrxml_RankedSearchR
 #ifndef zx_hrxml_Recipient_EXT
 #define zx_hrxml_Recipient_EXT
 #endif
-
 struct zx_hrxml_Recipient_s {
   ZX_ELEM_EXT
   zx_hrxml_Recipient_EXT
@@ -11175,12 +10374,8 @@ struct zx_hrxml_Recipient_s {
 };
 
 #define zx_NEW_hrxml_Recipient(c, father) (struct zx_hrxml_Recipient_s*)zx_new_elem((c),(father),zx_hrxml_Recipient_ELEM)
-
 int zx_DEC_ATTR_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x);
 int zx_DEC_ELEM_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x);
-int zx_LEN_SO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x);
-char* zx_ENC_SO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Recipient_s* zx_DEEP_CLONE_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x, int dup_strs);
@@ -11223,9 +10418,9 @@ void zx_hrxml_Recipient_ADD_Organization(struct zx_hrxml_Recipient_s* x, int n, 
 void zx_hrxml_Recipient_ADD_OrganizationName(struct zx_hrxml_Recipient_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_Recipient_DEL_PersonName(struct zx_hrxml_Recipient_s* x, int n);
-void zx_hrxml_Recipient_DEL_AdditionalText(struct zx_hrxml_Recipient_s* x, int n);
+void zx_hrxml_Recipient_DEL_AdditionalText(struct zx_hrxml_Recipient_s* x,int n);
 void zx_hrxml_Recipient_DEL_Organization(struct zx_hrxml_Recipient_s* x, int n);
-void zx_hrxml_Recipient_DEL_OrganizationName(struct zx_hrxml_Recipient_s* x, int n);
+void zx_hrxml_Recipient_DEL_OrganizationName(struct zx_hrxml_Recipient_s* x,int n);
 
 void zx_hrxml_Recipient_REV_PersonName(struct zx_hrxml_Recipient_s* x);
 void zx_hrxml_Recipient_REV_AdditionalText(struct zx_hrxml_Recipient_s* x);
@@ -11238,7 +10433,6 @@ void zx_hrxml_Recipient_REV_OrganizationName(struct zx_hrxml_Recipient_s* x);
 #ifndef zx_hrxml_Reference_EXT
 #define zx_hrxml_Reference_EXT
 #endif
-
 struct zx_hrxml_Reference_s {
   ZX_ELEM_EXT
   zx_hrxml_Reference_EXT
@@ -11250,12 +10444,8 @@ struct zx_hrxml_Reference_s {
 };
 
 #define zx_NEW_hrxml_Reference(c, father) (struct zx_hrxml_Reference_s*)zx_new_elem((c),(father),zx_hrxml_Reference_ELEM)
-
 int zx_DEC_ATTR_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x);
 int zx_DEC_ELEM_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x);
-int zx_LEN_SO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x);
-char* zx_ENC_SO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Reference_s* zx_DEEP_CLONE_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x, int dup_strs);
@@ -11300,9 +10490,9 @@ void zx_hrxml_Reference_ADD_ContactMethod(struct zx_hrxml_Reference_s* x, int n,
 void zx_hrxml_Reference_ADD_Comments(struct zx_hrxml_Reference_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_Reference_DEL_PersonName(struct zx_hrxml_Reference_s* x, int n);
-void zx_hrxml_Reference_DEL_PositionTitle(struct zx_hrxml_Reference_s* x, int n);
+void zx_hrxml_Reference_DEL_PositionTitle(struct zx_hrxml_Reference_s* x,int n);
 void zx_hrxml_Reference_DEL_ContactMethod(struct zx_hrxml_Reference_s* x, int n);
-void zx_hrxml_Reference_DEL_Comments(struct zx_hrxml_Reference_s* x, int n);
+void zx_hrxml_Reference_DEL_Comments(struct zx_hrxml_Reference_s* x,int n);
 
 void zx_hrxml_Reference_REV_PersonName(struct zx_hrxml_Reference_s* x);
 void zx_hrxml_Reference_REV_PositionTitle(struct zx_hrxml_Reference_s* x);
@@ -11315,7 +10505,6 @@ void zx_hrxml_Reference_REV_Comments(struct zx_hrxml_Reference_s* x);
 #ifndef zx_hrxml_References_EXT
 #define zx_hrxml_References_EXT
 #endif
-
 struct zx_hrxml_References_s {
   ZX_ELEM_EXT
   zx_hrxml_References_EXT
@@ -11323,12 +10512,8 @@ struct zx_hrxml_References_s {
 };
 
 #define zx_NEW_hrxml_References(c, father) (struct zx_hrxml_References_s*)zx_new_elem((c),(father),zx_hrxml_References_ELEM)
-
 int zx_DEC_ATTR_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x);
 int zx_DEC_ELEM_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x);
-int zx_LEN_SO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x);
-char* zx_ENC_SO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_References_s* zx_DEEP_CLONE_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x, int dup_strs);
@@ -11362,7 +10547,6 @@ void zx_hrxml_References_REV_Reference(struct zx_hrxml_References_s* x);
 #ifndef zx_hrxml_RelatedOrganization_EXT
 #define zx_hrxml_RelatedOrganization_EXT
 #endif
-
 struct zx_hrxml_RelatedOrganization_s {
   ZX_ELEM_EXT
   zx_hrxml_RelatedOrganization_EXT
@@ -11390,12 +10574,8 @@ struct zx_hrxml_RelatedOrganization_s {
 };
 
 #define zx_NEW_hrxml_RelatedOrganization(c, father) (struct zx_hrxml_RelatedOrganization_s*)zx_new_elem((c),(father),zx_hrxml_RelatedOrganization_ELEM)
-
 int zx_DEC_ATTR_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_RelatedOrganization_s* x);
 int zx_DEC_ELEM_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_RelatedOrganization_s* x);
-int zx_LEN_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_RelatedOrganization_s* x);
-char* zx_ENC_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_RelatedOrganization_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_RelatedOrganization_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_RelatedOrganization_s* x, int dup_strs);
@@ -11535,20 +10715,20 @@ void zx_hrxml_RelatedOrganization_ADD_RelatedOrganization(struct zx_hrxml_Relate
 void zx_hrxml_RelatedOrganization_ADD_OrganizationalUnit(struct zx_hrxml_RelatedOrganization_s* x, int n, struct zx_hrxml_OrganizationalUnit_s* z);
 void zx_hrxml_RelatedOrganization_ADD_UserArea(struct zx_hrxml_RelatedOrganization_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_RelatedOrganization_DEL_OrganizationName(struct zx_hrxml_RelatedOrganization_s* x, int n);
+void zx_hrxml_RelatedOrganization_DEL_OrganizationName(struct zx_hrxml_RelatedOrganization_s* x,int n);
 void zx_hrxml_RelatedOrganization_DEL_OrganizationId(struct zx_hrxml_RelatedOrganization_s* x, int n);
 void zx_hrxml_RelatedOrganization_DEL_TaxId(struct zx_hrxml_RelatedOrganization_s* x, int n);
 void zx_hrxml_RelatedOrganization_DEL_LegalId(struct zx_hrxml_RelatedOrganization_s* x, int n);
 void zx_hrxml_RelatedOrganization_DEL_DunsNumber(struct zx_hrxml_RelatedOrganization_s* x, int n);
-void zx_hrxml_RelatedOrganization_DEL_IsPublicCompany(struct zx_hrxml_RelatedOrganization_s* x, int n);
+void zx_hrxml_RelatedOrganization_DEL_IsPublicCompany(struct zx_hrxml_RelatedOrganization_s* x,int n);
 void zx_hrxml_RelatedOrganization_DEL_Stock(struct zx_hrxml_RelatedOrganization_s* x, int n);
-void zx_hrxml_RelatedOrganization_DEL_MissionStatement(struct zx_hrxml_RelatedOrganization_s* x, int n);
-void zx_hrxml_RelatedOrganization_DEL_ValueStatement(struct zx_hrxml_RelatedOrganization_s* x, int n);
+void zx_hrxml_RelatedOrganization_DEL_MissionStatement(struct zx_hrxml_RelatedOrganization_s* x,int n);
+void zx_hrxml_RelatedOrganization_DEL_ValueStatement(struct zx_hrxml_RelatedOrganization_s* x,int n);
 void zx_hrxml_RelatedOrganization_DEL_InternetDomainName(struct zx_hrxml_RelatedOrganization_s* x, int n);
 void zx_hrxml_RelatedOrganization_DEL_DoingBusinessAs(struct zx_hrxml_RelatedOrganization_s* x, int n);
 void zx_hrxml_RelatedOrganization_DEL_LegalClassification(struct zx_hrxml_RelatedOrganization_s* x, int n);
 void zx_hrxml_RelatedOrganization_DEL_IndustryCode(struct zx_hrxml_RelatedOrganization_s* x, int n);
-void zx_hrxml_RelatedOrganization_DEL_Headcount(struct zx_hrxml_RelatedOrganization_s* x, int n);
+void zx_hrxml_RelatedOrganization_DEL_Headcount(struct zx_hrxml_RelatedOrganization_s* x,int n);
 void zx_hrxml_RelatedOrganization_DEL_Description(struct zx_hrxml_RelatedOrganization_s* x, int n);
 void zx_hrxml_RelatedOrganization_DEL_WorkSite(struct zx_hrxml_RelatedOrganization_s* x, int n);
 void zx_hrxml_RelatedOrganization_DEL_ContactInfo(struct zx_hrxml_RelatedOrganization_s* x, int n);
@@ -11583,7 +10763,6 @@ void zx_hrxml_RelatedOrganization_REV_UserArea(struct zx_hrxml_RelatedOrganizati
 #ifndef zx_hrxml_RelatedOrganizationalUnit_EXT
 #define zx_hrxml_RelatedOrganizationalUnit_EXT
 #endif
-
 struct zx_hrxml_RelatedOrganizationalUnit_s {
   ZX_ELEM_EXT
   zx_hrxml_RelatedOrganizationalUnit_EXT
@@ -11604,12 +10783,8 @@ struct zx_hrxml_RelatedOrganizationalUnit_s {
 };
 
 #define zx_NEW_hrxml_RelatedOrganizationalUnit(c, father) (struct zx_hrxml_RelatedOrganizationalUnit_s*)zx_new_elem((c),(father),zx_hrxml_RelatedOrganizationalUnit_ELEM)
-
 int zx_DEC_ATTR_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_RelatedOrganizationalUnit_s* x);
 int zx_DEC_ELEM_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_RelatedOrganizationalUnit_s* x);
-int zx_LEN_SO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_RelatedOrganizationalUnit_s* x);
-char* zx_ENC_SO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_RelatedOrganizationalUnit_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_RelatedOrganizationalUnit_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_RelatedOrganizationalUnit_s* zx_DEEP_CLONE_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_RelatedOrganizationalUnit_s* x, int dup_strs);
@@ -11695,7 +10870,7 @@ void zx_hrxml_RelatedOrganizationalUnit_ADD_RelatedOrganizationalUnit(struct zx_
 void zx_hrxml_RelatedOrganizationalUnit_ADD_PersonMember(struct zx_hrxml_RelatedOrganizationalUnit_s* x, int n, struct zx_hrxml_PersonMember_s* z);
 void zx_hrxml_RelatedOrganizationalUnit_ADD_UserArea(struct zx_hrxml_RelatedOrganizationalUnit_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_RelatedOrganizationalUnit_DEL_OrganizationalUnitName(struct zx_hrxml_RelatedOrganizationalUnit_s* x, int n);
+void zx_hrxml_RelatedOrganizationalUnit_DEL_OrganizationalUnitName(struct zx_hrxml_RelatedOrganizationalUnit_s* x,int n);
 void zx_hrxml_RelatedOrganizationalUnit_DEL_OrganizationalUnitId(struct zx_hrxml_RelatedOrganizationalUnit_s* x, int n);
 void zx_hrxml_RelatedOrganizationalUnit_DEL_OrganizationId(struct zx_hrxml_RelatedOrganizationalUnit_s* x, int n);
 void zx_hrxml_RelatedOrganizationalUnit_DEL_Description(struct zx_hrxml_RelatedOrganizationalUnit_s* x, int n);
@@ -11723,7 +10898,6 @@ void zx_hrxml_RelatedOrganizationalUnit_REV_UserArea(struct zx_hrxml_RelatedOrga
 #ifndef zx_hrxml_RelatedPositionPostings_EXT
 #define zx_hrxml_RelatedPositionPostings_EXT
 #endif
-
 struct zx_hrxml_RelatedPositionPostings_s {
   ZX_ELEM_EXT
   zx_hrxml_RelatedPositionPostings_EXT
@@ -11731,12 +10905,8 @@ struct zx_hrxml_RelatedPositionPostings_s {
 };
 
 #define zx_NEW_hrxml_RelatedPositionPostings(c, father) (struct zx_hrxml_RelatedPositionPostings_s*)zx_new_elem((c),(father),zx_hrxml_RelatedPositionPostings_ELEM)
-
 int zx_DEC_ATTR_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_RelatedPositionPostings_s* x);
 int zx_DEC_ELEM_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_RelatedPositionPostings_s* x);
-int zx_LEN_SO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_RelatedPositionPostings_s* x);
-char* zx_ENC_SO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_RelatedPositionPostings_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_RelatedPositionPostings_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_RelatedPositionPostings_s* zx_DEEP_CLONE_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_RelatedPositionPostings_s* x, int dup_strs);
@@ -11770,7 +10940,6 @@ void zx_hrxml_RelatedPositionPostings_REV_PositionPosting(struct zx_hrxml_Relate
 #ifndef zx_hrxml_Relocation_EXT
 #define zx_hrxml_Relocation_EXT
 #endif
-
 struct zx_hrxml_Relocation_s {
   ZX_ELEM_EXT
   zx_hrxml_Relocation_EXT
@@ -11779,12 +10948,8 @@ struct zx_hrxml_Relocation_s {
 };
 
 #define zx_NEW_hrxml_Relocation(c, father) (struct zx_hrxml_Relocation_s*)zx_new_elem((c),(father),zx_hrxml_Relocation_ELEM)
-
 int zx_DEC_ATTR_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x);
 int zx_DEC_ELEM_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x);
-int zx_LEN_SO_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x);
-char* zx_ENC_SO_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Relocation_s* zx_DEEP_CLONE_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x, int dup_strs);
@@ -11810,7 +10975,7 @@ void zx_hrxml_Relocation_PUT_Comments(struct zx_hrxml_Relocation_s* x, int n, st
 
 void zx_hrxml_Relocation_ADD_Comments(struct zx_hrxml_Relocation_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_Relocation_DEL_Comments(struct zx_hrxml_Relocation_s* x, int n);
+void zx_hrxml_Relocation_DEL_Comments(struct zx_hrxml_Relocation_s* x,int n);
 
 void zx_hrxml_Relocation_REV_Comments(struct zx_hrxml_Relocation_s* x);
 
@@ -11820,7 +10985,6 @@ void zx_hrxml_Relocation_REV_Comments(struct zx_hrxml_Relocation_s* x);
 #ifndef zx_hrxml_RelocationAssistance_EXT
 #define zx_hrxml_RelocationAssistance_EXT
 #endif
-
 struct zx_hrxml_RelocationAssistance_s {
   ZX_ELEM_EXT
   zx_hrxml_RelocationAssistance_EXT
@@ -11829,12 +10993,8 @@ struct zx_hrxml_RelocationAssistance_s {
 };
 
 #define zx_NEW_hrxml_RelocationAssistance(c, father) (struct zx_hrxml_RelocationAssistance_s*)zx_new_elem((c),(father),zx_hrxml_RelocationAssistance_ELEM)
-
 int zx_DEC_ATTR_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_RelocationAssistance_s* x);
 int zx_DEC_ELEM_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_RelocationAssistance_s* x);
-int zx_LEN_SO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_RelocationAssistance_s* x);
-char* zx_ENC_SO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_RelocationAssistance_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_RelocationAssistance_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_RelocationAssistance_s* zx_DEEP_CLONE_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_RelocationAssistance_s* x, int dup_strs);
@@ -11870,7 +11030,6 @@ void zx_hrxml_RelocationAssistance_REV_Description(struct zx_hrxml_RelocationAss
 #ifndef zx_hrxml_RemunerationPackage_EXT
 #define zx_hrxml_RemunerationPackage_EXT
 #endif
-
 struct zx_hrxml_RemunerationPackage_s {
   ZX_ELEM_EXT
   zx_hrxml_RemunerationPackage_EXT
@@ -11881,12 +11040,8 @@ struct zx_hrxml_RemunerationPackage_s {
 };
 
 #define zx_NEW_hrxml_RemunerationPackage(c, father) (struct zx_hrxml_RemunerationPackage_s*)zx_new_elem((c),(father),zx_hrxml_RemunerationPackage_ELEM)
-
 int zx_DEC_ATTR_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_RemunerationPackage_s* x);
 int zx_DEC_ELEM_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_RemunerationPackage_s* x);
-int zx_LEN_SO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_RemunerationPackage_s* x);
-char* zx_ENC_SO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_RemunerationPackage_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_RemunerationPackage_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_RemunerationPackage_s* zx_DEEP_CLONE_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_RemunerationPackage_s* x, int dup_strs);
@@ -11944,7 +11099,6 @@ void zx_hrxml_RemunerationPackage_REV_UserArea(struct zx_hrxml_RemunerationPacka
 #ifndef zx_hrxml_Resume_EXT
 #define zx_hrxml_Resume_EXT
 #endif
-
 struct zx_hrxml_Resume_s {
   ZX_ELEM_EXT
   zx_hrxml_Resume_EXT
@@ -11957,12 +11111,8 @@ struct zx_hrxml_Resume_s {
 };
 
 #define zx_NEW_hrxml_Resume(c, father) (struct zx_hrxml_Resume_s*)zx_new_elem((c),(father),zx_hrxml_Resume_ELEM)
-
 int zx_DEC_ATTR_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x);
 int zx_DEC_ELEM_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x);
-int zx_LEN_SO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x);
-char* zx_ENC_SO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Resume_s* zx_DEEP_CLONE_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x, int dup_strs);
@@ -12012,8 +11162,8 @@ void zx_hrxml_Resume_ADD_StructuredXMLResume(struct zx_hrxml_Resume_s* x, int n,
 void zx_hrxml_Resume_ADD_NonXMLResume(struct zx_hrxml_Resume_s* x, int n, struct zx_hrxml_NonXMLResume_s* z);
 void zx_hrxml_Resume_ADD_UserArea(struct zx_hrxml_Resume_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_Resume_DEL_ResumeId(struct zx_hrxml_Resume_s* x, int n);
-void zx_hrxml_Resume_DEL_DistributionGuidelines(struct zx_hrxml_Resume_s* x, int n);
+void zx_hrxml_Resume_DEL_ResumeId(struct zx_hrxml_Resume_s* x,int n);
+void zx_hrxml_Resume_DEL_DistributionGuidelines(struct zx_hrxml_Resume_s* x,int n);
 void zx_hrxml_Resume_DEL_StructuredXMLResume(struct zx_hrxml_Resume_s* x, int n);
 void zx_hrxml_Resume_DEL_NonXMLResume(struct zx_hrxml_Resume_s* x, int n);
 void zx_hrxml_Resume_DEL_UserArea(struct zx_hrxml_Resume_s* x, int n);
@@ -12030,7 +11180,6 @@ void zx_hrxml_Resume_REV_UserArea(struct zx_hrxml_Resume_s* x);
 #ifndef zx_hrxml_ResumeAdditionalItem_EXT
 #define zx_hrxml_ResumeAdditionalItem_EXT
 #endif
-
 struct zx_hrxml_ResumeAdditionalItem_s {
   ZX_ELEM_EXT
   zx_hrxml_ResumeAdditionalItem_EXT
@@ -12040,12 +11189,8 @@ struct zx_hrxml_ResumeAdditionalItem_s {
 };
 
 #define zx_NEW_hrxml_ResumeAdditionalItem(c, father) (struct zx_hrxml_ResumeAdditionalItem_s*)zx_new_elem((c),(father),zx_hrxml_ResumeAdditionalItem_ELEM)
-
 int zx_DEC_ATTR_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItem_s* x);
 int zx_DEC_ELEM_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItem_s* x);
-int zx_LEN_SO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItem_s* x);
-char* zx_ENC_SO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ResumeAdditionalItem_s* zx_DEEP_CLONE_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItem_s* x, int dup_strs);
@@ -12089,7 +11234,6 @@ void zx_hrxml_ResumeAdditionalItem_REV_Description(struct zx_hrxml_ResumeAdditio
 #ifndef zx_hrxml_ResumeAdditionalItems_EXT
 #define zx_hrxml_ResumeAdditionalItems_EXT
 #endif
-
 struct zx_hrxml_ResumeAdditionalItems_s {
   ZX_ELEM_EXT
   zx_hrxml_ResumeAdditionalItems_EXT
@@ -12097,12 +11241,8 @@ struct zx_hrxml_ResumeAdditionalItems_s {
 };
 
 #define zx_NEW_hrxml_ResumeAdditionalItems(c, father) (struct zx_hrxml_ResumeAdditionalItems_s*)zx_new_elem((c),(father),zx_hrxml_ResumeAdditionalItems_ELEM)
-
 int zx_DEC_ATTR_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItems_s* x);
 int zx_DEC_ELEM_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItems_s* x);
-int zx_LEN_SO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItems_s* x);
-char* zx_ENC_SO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItems_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItems_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ResumeAdditionalItems_s* zx_DEEP_CLONE_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItems_s* x, int dup_strs);
@@ -12136,7 +11276,6 @@ void zx_hrxml_ResumeAdditionalItems_REV_ResumeAdditionalItem(struct zx_hrxml_Res
 #ifndef zx_hrxml_RoleId_EXT
 #define zx_hrxml_RoleId_EXT
 #endif
-
 struct zx_hrxml_RoleId_s {
   ZX_ELEM_EXT
   zx_hrxml_RoleId_EXT
@@ -12147,12 +11286,8 @@ struct zx_hrxml_RoleId_s {
 };
 
 #define zx_NEW_hrxml_RoleId(c, father) (struct zx_hrxml_RoleId_s*)zx_new_elem((c),(father),zx_hrxml_RoleId_ELEM)
-
 int zx_DEC_ATTR_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x);
 int zx_DEC_ELEM_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x);
-int zx_LEN_SO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x);
-char* zx_ENC_SO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_RoleId_s* zx_DEEP_CLONE_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x, int dup_strs);
@@ -12192,7 +11327,6 @@ void zx_hrxml_RoleId_REV_IdValue(struct zx_hrxml_RoleId_s* x);
 #ifndef zx_hrxml_SEPPhysicalLocation_EXT
 #define zx_hrxml_SEPPhysicalLocation_EXT
 #endif
-
 struct zx_hrxml_SEPPhysicalLocation_s {
   ZX_ELEM_EXT
   zx_hrxml_SEPPhysicalLocation_EXT
@@ -12206,12 +11340,8 @@ struct zx_hrxml_SEPPhysicalLocation_s {
 };
 
 #define zx_NEW_hrxml_SEPPhysicalLocation(c, father) (struct zx_hrxml_SEPPhysicalLocation_s*)zx_new_elem((c),(father),zx_hrxml_SEPPhysicalLocation_ELEM)
-
 int zx_DEC_ATTR_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhysicalLocation_s* x);
 int zx_DEC_ELEM_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhysicalLocation_s* x);
-int zx_LEN_SO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhysicalLocation_s* x);
-char* zx_ENC_SO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhysicalLocation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhysicalLocation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SEPPhysicalLocation_s* zx_DEEP_CLONE_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhysicalLocation_s* x, int dup_strs);
@@ -12272,12 +11402,12 @@ void zx_hrxml_SEPPhysicalLocation_ADD_PostalAddress(struct zx_hrxml_SEPPhysicalL
 void zx_hrxml_SEPPhysicalLocation_ADD_Comments(struct zx_hrxml_SEPPhysicalLocation_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_SEPPhysicalLocation_DEL_Id(struct zx_hrxml_SEPPhysicalLocation_s* x, int n);
-void zx_hrxml_SEPPhysicalLocation_DEL_Name(struct zx_hrxml_SEPPhysicalLocation_s* x, int n);
+void zx_hrxml_SEPPhysicalLocation_DEL_Name(struct zx_hrxml_SEPPhysicalLocation_s* x,int n);
 void zx_hrxml_SEPPhysicalLocation_DEL_SpatialLocation(struct zx_hrxml_SEPPhysicalLocation_s* x, int n);
 void zx_hrxml_SEPPhysicalLocation_DEL_TravelDirections(struct zx_hrxml_SEPPhysicalLocation_s* x, int n);
 void zx_hrxml_SEPPhysicalLocation_DEL_Area(struct zx_hrxml_SEPPhysicalLocation_s* x, int n);
 void zx_hrxml_SEPPhysicalLocation_DEL_PostalAddress(struct zx_hrxml_SEPPhysicalLocation_s* x, int n);
-void zx_hrxml_SEPPhysicalLocation_DEL_Comments(struct zx_hrxml_SEPPhysicalLocation_s* x, int n);
+void zx_hrxml_SEPPhysicalLocation_DEL_Comments(struct zx_hrxml_SEPPhysicalLocation_s* x,int n);
 
 void zx_hrxml_SEPPhysicalLocation_REV_Id(struct zx_hrxml_SEPPhysicalLocation_s* x);
 void zx_hrxml_SEPPhysicalLocation_REV_Name(struct zx_hrxml_SEPPhysicalLocation_s* x);
@@ -12293,7 +11423,6 @@ void zx_hrxml_SEPPhysicalLocation_REV_Comments(struct zx_hrxml_SEPPhysicalLocati
 #ifndef zx_hrxml_SafetyEquipment_EXT
 #define zx_hrxml_SafetyEquipment_EXT
 #endif
-
 struct zx_hrxml_SafetyEquipment_s {
   ZX_ELEM_EXT
   zx_hrxml_SafetyEquipment_EXT
@@ -12301,12 +11430,8 @@ struct zx_hrxml_SafetyEquipment_s {
 };
 
 #define zx_NEW_hrxml_SafetyEquipment(c, father) (struct zx_hrxml_SafetyEquipment_s*)zx_new_elem((c),(father),zx_hrxml_SafetyEquipment_ELEM)
-
 int zx_DEC_ATTR_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEquipment_s* x);
 int zx_DEC_ELEM_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEquipment_s* x);
-int zx_LEN_SO_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEquipment_s* x);
-char* zx_ENC_SO_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEquipment_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEquipment_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SafetyEquipment_s* zx_DEEP_CLONE_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEquipment_s* x, int dup_strs);
@@ -12334,7 +11459,6 @@ void zx_hrxml_SafetyEquipment_PUT_suppliedByOrganization(struct zx_hrxml_SafetyE
 #ifndef zx_hrxml_School_EXT
 #define zx_hrxml_School_EXT
 #endif
-
 struct zx_hrxml_School_s {
   ZX_ELEM_EXT
   zx_hrxml_School_EXT
@@ -12345,12 +11469,8 @@ struct zx_hrxml_School_s {
 };
 
 #define zx_NEW_hrxml_School(c, father) (struct zx_hrxml_School_s*)zx_new_elem((c),(father),zx_hrxml_School_ELEM)
-
 int zx_DEC_ATTR_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x);
 int zx_DEC_ELEM_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x);
-int zx_LEN_SO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x);
-char* zx_ENC_SO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_School_s* zx_DEEP_CLONE_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x, int dup_strs);
@@ -12390,7 +11510,7 @@ void zx_hrxml_School_ADD_SchoolName(struct zx_hrxml_School_s* x, int n, struct z
 
 void zx_hrxml_School_DEL_InternetDomainName(struct zx_hrxml_School_s* x, int n);
 void zx_hrxml_School_DEL_SchoolId(struct zx_hrxml_School_s* x, int n);
-void zx_hrxml_School_DEL_SchoolName(struct zx_hrxml_School_s* x, int n);
+void zx_hrxml_School_DEL_SchoolName(struct zx_hrxml_School_s* x,int n);
 
 void zx_hrxml_School_REV_InternetDomainName(struct zx_hrxml_School_s* x);
 void zx_hrxml_School_REV_SchoolId(struct zx_hrxml_School_s* x);
@@ -12402,7 +11522,6 @@ void zx_hrxml_School_REV_SchoolName(struct zx_hrxml_School_s* x);
 #ifndef zx_hrxml_SchoolId_EXT
 #define zx_hrxml_SchoolId_EXT
 #endif
-
 struct zx_hrxml_SchoolId_s {
   ZX_ELEM_EXT
   zx_hrxml_SchoolId_EXT
@@ -12413,12 +11532,8 @@ struct zx_hrxml_SchoolId_s {
 };
 
 #define zx_NEW_hrxml_SchoolId(c, father) (struct zx_hrxml_SchoolId_s*)zx_new_elem((c),(father),zx_hrxml_SchoolId_ELEM)
-
 int zx_DEC_ATTR_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x);
 int zx_DEC_ELEM_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x);
-int zx_LEN_SO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x);
-char* zx_ENC_SO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SchoolId_s* zx_DEEP_CLONE_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x, int dup_strs);
@@ -12458,7 +11573,6 @@ void zx_hrxml_SchoolId_REV_IdValue(struct zx_hrxml_SchoolId_s* x);
 #ifndef zx_hrxml_SchoolOrInstitution_EXT
 #define zx_hrxml_SchoolOrInstitution_EXT
 #endif
-
 struct zx_hrxml_SchoolOrInstitution_s {
   ZX_ELEM_EXT
   zx_hrxml_SchoolOrInstitution_EXT
@@ -12480,12 +11594,8 @@ struct zx_hrxml_SchoolOrInstitution_s {
 };
 
 #define zx_NEW_hrxml_SchoolOrInstitution(c, father) (struct zx_hrxml_SchoolOrInstitution_s*)zx_new_elem((c),(father),zx_hrxml_SchoolOrInstitution_ELEM)
-
 int zx_DEC_ATTR_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_SchoolOrInstitution_s* x);
 int zx_DEC_ELEM_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_SchoolOrInstitution_s* x);
-int zx_LEN_SO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_SchoolOrInstitution_s* x);
-char* zx_ENC_SO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_SchoolOrInstitution_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_SchoolOrInstitution_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SchoolOrInstitution_s* zx_DEEP_CLONE_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_SchoolOrInstitution_s* x, int dup_strs);
@@ -12589,18 +11699,18 @@ void zx_hrxml_SchoolOrInstitution_ADD_ISCEDInstitutionClassification(struct zx_h
 void zx_hrxml_SchoolOrInstitution_ADD_LocalInstitutionClassification(struct zx_hrxml_SchoolOrInstitution_s* x, int n, struct zx_hrxml_LocalInstitutionClassification_s* z);
 void zx_hrxml_SchoolOrInstitution_ADD_UserArea(struct zx_hrxml_SchoolOrInstitution_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_SchoolOrInstitution_DEL_SchoolName(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
+void zx_hrxml_SchoolOrInstitution_DEL_SchoolName(struct zx_hrxml_SchoolOrInstitution_s* x,int n);
 void zx_hrxml_SchoolOrInstitution_DEL_School(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
 void zx_hrxml_SchoolOrInstitution_DEL_LocationSummary(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
 void zx_hrxml_SchoolOrInstitution_DEL_PostalAddress(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
 void zx_hrxml_SchoolOrInstitution_DEL_OrganizationUnit(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
 void zx_hrxml_SchoolOrInstitution_DEL_Degree(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
-void zx_hrxml_SchoolOrInstitution_DEL_Major(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
-void zx_hrxml_SchoolOrInstitution_DEL_Minor(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
+void zx_hrxml_SchoolOrInstitution_DEL_Major(struct zx_hrxml_SchoolOrInstitution_s* x,int n);
+void zx_hrxml_SchoolOrInstitution_DEL_Minor(struct zx_hrxml_SchoolOrInstitution_s* x,int n);
 void zx_hrxml_SchoolOrInstitution_DEL_Measure(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
 void zx_hrxml_SchoolOrInstitution_DEL_DatesOfAttendance(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
-void zx_hrxml_SchoolOrInstitution_DEL_Comments(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
-void zx_hrxml_SchoolOrInstitution_DEL_ISCEDInstitutionClassification(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
+void zx_hrxml_SchoolOrInstitution_DEL_Comments(struct zx_hrxml_SchoolOrInstitution_s* x,int n);
+void zx_hrxml_SchoolOrInstitution_DEL_ISCEDInstitutionClassification(struct zx_hrxml_SchoolOrInstitution_s* x,int n);
 void zx_hrxml_SchoolOrInstitution_DEL_LocalInstitutionClassification(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
 void zx_hrxml_SchoolOrInstitution_DEL_UserArea(struct zx_hrxml_SchoolOrInstitution_s* x, int n);
 
@@ -12625,7 +11735,6 @@ void zx_hrxml_SchoolOrInstitution_REV_UserArea(struct zx_hrxml_SchoolOrInstituti
 #ifndef zx_hrxml_Score_EXT
 #define zx_hrxml_Score_EXT
 #endif
-
 struct zx_hrxml_Score_s {
   ZX_ELEM_EXT
   zx_hrxml_Score_EXT
@@ -12633,12 +11742,8 @@ struct zx_hrxml_Score_s {
 };
 
 #define zx_NEW_hrxml_Score(c, father) (struct zx_hrxml_Score_s*)zx_new_elem((c),(father),zx_hrxml_Score_ELEM)
-
 int zx_DEC_ATTR_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x);
 int zx_DEC_ELEM_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x);
-int zx_LEN_SO_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x);
-char* zx_ENC_SO_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Score_s* zx_DEEP_CLONE_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x, int dup_strs);
@@ -12666,7 +11771,6 @@ void zx_hrxml_Score_PUT_unitOfMeasure(struct zx_hrxml_Score_s* x, struct zx_attr
 #ifndef zx_hrxml_SearchCriteria_EXT
 #define zx_hrxml_SearchCriteria_EXT
 #endif
-
 struct zx_hrxml_SearchCriteria_s {
   ZX_ELEM_EXT
   zx_hrxml_SearchCriteria_EXT
@@ -12680,12 +11784,8 @@ struct zx_hrxml_SearchCriteria_s {
 };
 
 #define zx_NEW_hrxml_SearchCriteria(c, father) (struct zx_hrxml_SearchCriteria_s*)zx_new_elem((c),(father),zx_hrxml_SearchCriteria_ELEM)
-
 int zx_DEC_ATTR_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCriteria_s* x);
 int zx_DEC_ELEM_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCriteria_s* x);
-int zx_LEN_SO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCriteria_s* x);
-char* zx_ENC_SO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCriteria_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCriteria_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SearchCriteria_s* zx_DEEP_CLONE_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCriteria_s* x, int dup_strs);
@@ -12746,10 +11846,10 @@ void zx_hrxml_SearchCriteria_ADD_SearchCriterion(struct zx_hrxml_SearchCriteria_
 void zx_hrxml_SearchCriteria_ADD_UserArea(struct zx_hrxml_SearchCriteria_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
 void zx_hrxml_SearchCriteria_DEL_SearchCriteriaId(struct zx_hrxml_SearchCriteria_s* x, int n);
-void zx_hrxml_SearchCriteria_DEL_SearchTarget(struct zx_hrxml_SearchCriteria_s* x, int n);
+void zx_hrxml_SearchCriteria_DEL_SearchTarget(struct zx_hrxml_SearchCriteria_s* x,int n);
 void zx_hrxml_SearchCriteria_DEL_UserId(struct zx_hrxml_SearchCriteria_s* x, int n);
-void zx_hrxml_SearchCriteria_DEL_SearchTimeStamp(struct zx_hrxml_SearchCriteria_s* x, int n);
-void zx_hrxml_SearchCriteria_DEL_SearchString(struct zx_hrxml_SearchCriteria_s* x, int n);
+void zx_hrxml_SearchCriteria_DEL_SearchTimeStamp(struct zx_hrxml_SearchCriteria_s* x,int n);
+void zx_hrxml_SearchCriteria_DEL_SearchString(struct zx_hrxml_SearchCriteria_s* x,int n);
 void zx_hrxml_SearchCriteria_DEL_SearchCriterion(struct zx_hrxml_SearchCriteria_s* x, int n);
 void zx_hrxml_SearchCriteria_DEL_UserArea(struct zx_hrxml_SearchCriteria_s* x, int n);
 
@@ -12767,7 +11867,6 @@ void zx_hrxml_SearchCriteria_REV_UserArea(struct zx_hrxml_SearchCriteria_s* x);
 #ifndef zx_hrxml_SearchCriteriaId_EXT
 #define zx_hrxml_SearchCriteriaId_EXT
 #endif
-
 struct zx_hrxml_SearchCriteriaId_s {
   ZX_ELEM_EXT
   zx_hrxml_SearchCriteriaId_EXT
@@ -12778,12 +11877,8 @@ struct zx_hrxml_SearchCriteriaId_s {
 };
 
 #define zx_NEW_hrxml_SearchCriteriaId(c, father) (struct zx_hrxml_SearchCriteriaId_s*)zx_new_elem((c),(father),zx_hrxml_SearchCriteriaId_ELEM)
-
 int zx_DEC_ATTR_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCriteriaId_s* x);
 int zx_DEC_ELEM_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCriteriaId_s* x);
-int zx_LEN_SO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCriteriaId_s* x);
-char* zx_ENC_SO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCriteriaId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCriteriaId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SearchCriteriaId_s* zx_DEEP_CLONE_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCriteriaId_s* x, int dup_strs);
@@ -12823,7 +11918,6 @@ void zx_hrxml_SearchCriteriaId_REV_IdValue(struct zx_hrxml_SearchCriteriaId_s* x
 #ifndef zx_hrxml_SearchCriterion_EXT
 #define zx_hrxml_SearchCriterion_EXT
 #endif
-
 struct zx_hrxml_SearchCriterion_s {
   ZX_ELEM_EXT
   zx_hrxml_SearchCriterion_EXT
@@ -12833,12 +11927,8 @@ struct zx_hrxml_SearchCriterion_s {
 };
 
 #define zx_NEW_hrxml_SearchCriterion(c, father) (struct zx_hrxml_SearchCriterion_s*)zx_new_elem((c),(father),zx_hrxml_SearchCriterion_ELEM)
-
 int zx_DEC_ATTR_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCriterion_s* x);
 int zx_DEC_ELEM_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCriterion_s* x);
-int zx_LEN_SO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCriterion_s* x);
-char* zx_ENC_SO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCriterion_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCriterion_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SearchCriterion_s* zx_DEEP_CLONE_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCriterion_s* x, int dup_strs);
@@ -12874,8 +11964,8 @@ void zx_hrxml_SearchCriterion_ADD_CriterionName(struct zx_hrxml_SearchCriterion_
 void zx_hrxml_SearchCriterion_ADD_CriterionValue(struct zx_hrxml_SearchCriterion_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_SearchCriterion_ADD_Weight(struct zx_hrxml_SearchCriterion_s* x, int n, struct zx_hrxml_Weight_s* z);
 
-void zx_hrxml_SearchCriterion_DEL_CriterionName(struct zx_hrxml_SearchCriterion_s* x, int n);
-void zx_hrxml_SearchCriterion_DEL_CriterionValue(struct zx_hrxml_SearchCriterion_s* x, int n);
+void zx_hrxml_SearchCriterion_DEL_CriterionName(struct zx_hrxml_SearchCriterion_s* x,int n);
+void zx_hrxml_SearchCriterion_DEL_CriterionValue(struct zx_hrxml_SearchCriterion_s* x,int n);
 void zx_hrxml_SearchCriterion_DEL_Weight(struct zx_hrxml_SearchCriterion_s* x, int n);
 
 void zx_hrxml_SearchCriterion_REV_CriterionName(struct zx_hrxml_SearchCriterion_s* x);
@@ -12888,7 +11978,6 @@ void zx_hrxml_SearchCriterion_REV_Weight(struct zx_hrxml_SearchCriterion_s* x);
 #ifndef zx_hrxml_SearchRelevanceScore_EXT
 #define zx_hrxml_SearchRelevanceScore_EXT
 #endif
-
 struct zx_hrxml_SearchRelevanceScore_s {
   ZX_ELEM_EXT
   zx_hrxml_SearchRelevanceScore_EXT
@@ -12896,12 +11985,8 @@ struct zx_hrxml_SearchRelevanceScore_s {
 };
 
 #define zx_NEW_hrxml_SearchRelevanceScore(c, father) (struct zx_hrxml_SearchRelevanceScore_s*)zx_new_elem((c),(father),zx_hrxml_SearchRelevanceScore_ELEM)
-
 int zx_DEC_ATTR_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_SearchRelevanceScore_s* x);
 int zx_DEC_ELEM_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_SearchRelevanceScore_s* x);
-int zx_LEN_SO_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_SearchRelevanceScore_s* x);
-char* zx_ENC_SO_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_SearchRelevanceScore_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_SearchRelevanceScore_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SearchRelevanceScore_s* zx_DEEP_CLONE_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_SearchRelevanceScore_s* x, int dup_strs);
@@ -12929,7 +12014,6 @@ void zx_hrxml_SearchRelevanceScore_PUT_unitOfMeasure(struct zx_hrxml_SearchRelev
 #ifndef zx_hrxml_SearchResult_EXT
 #define zx_hrxml_SearchResult_EXT
 #endif
-
 struct zx_hrxml_SearchResult_s {
   ZX_ELEM_EXT
   zx_hrxml_SearchResult_EXT
@@ -12946,12 +12030,8 @@ struct zx_hrxml_SearchResult_s {
 };
 
 #define zx_NEW_hrxml_SearchResult(c, father) (struct zx_hrxml_SearchResult_s*)zx_new_elem((c),(father),zx_hrxml_SearchResult_ELEM)
-
 int zx_DEC_ATTR_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_s* x);
 int zx_DEC_ELEM_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_s* x);
-int zx_LEN_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_s* x);
-char* zx_ENC_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SearchResult_s* zx_DEEP_CLONE_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_s* x, int dup_strs);
@@ -13030,13 +12110,13 @@ void zx_hrxml_SearchResult_ADD_RankedSearchResults(struct zx_hrxml_SearchResult_
 void zx_hrxml_SearchResult_ADD_UserArea(struct zx_hrxml_SearchResult_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
 void zx_hrxml_SearchResult_DEL_SearchResultId(struct zx_hrxml_SearchResult_s* x, int n);
-void zx_hrxml_SearchResult_DEL_SearchTarget(struct zx_hrxml_SearchResult_s* x, int n);
+void zx_hrxml_SearchResult_DEL_SearchTarget(struct zx_hrxml_SearchResult_s* x,int n);
 void zx_hrxml_SearchResult_DEL_UserId(struct zx_hrxml_SearchResult_s* x, int n);
-void zx_hrxml_SearchResult_DEL_SearchTimeStamp(struct zx_hrxml_SearchResult_s* x, int n);
+void zx_hrxml_SearchResult_DEL_SearchTimeStamp(struct zx_hrxml_SearchResult_s* x,int n);
 void zx_hrxml_SearchResult_DEL_MatchedObjectId(struct zx_hrxml_SearchResult_s* x, int n);
 void zx_hrxml_SearchResult_DEL_SearchRelevanceScore(struct zx_hrxml_SearchResult_s* x, int n);
-void zx_hrxml_SearchResult_DEL_SearchRelevanceRank(struct zx_hrxml_SearchResult_s* x, int n);
-void zx_hrxml_SearchResult_DEL_SearchResultCount(struct zx_hrxml_SearchResult_s* x, int n);
+void zx_hrxml_SearchResult_DEL_SearchRelevanceRank(struct zx_hrxml_SearchResult_s* x,int n);
+void zx_hrxml_SearchResult_DEL_SearchResultCount(struct zx_hrxml_SearchResult_s* x,int n);
 void zx_hrxml_SearchResult_DEL_RankedSearchResults(struct zx_hrxml_SearchResult_s* x, int n);
 void zx_hrxml_SearchResult_DEL_UserArea(struct zx_hrxml_SearchResult_s* x, int n);
 
@@ -13057,7 +12137,6 @@ void zx_hrxml_SearchResult_REV_UserArea(struct zx_hrxml_SearchResult_s* x);
 #ifndef zx_hrxml_SearchResultId_EXT
 #define zx_hrxml_SearchResultId_EXT
 #endif
-
 struct zx_hrxml_SearchResultId_s {
   ZX_ELEM_EXT
   zx_hrxml_SearchResultId_EXT
@@ -13068,12 +12147,8 @@ struct zx_hrxml_SearchResultId_s {
 };
 
 #define zx_NEW_hrxml_SearchResultId(c, father) (struct zx_hrxml_SearchResultId_s*)zx_new_elem((c),(father),zx_hrxml_SearchResultId_ELEM)
-
 int zx_DEC_ATTR_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResultId_s* x);
 int zx_DEC_ELEM_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResultId_s* x);
-int zx_LEN_SO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResultId_s* x);
-char* zx_ENC_SO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResultId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResultId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SearchResultId_s* zx_DEEP_CLONE_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResultId_s* x, int dup_strs);
@@ -13113,7 +12188,6 @@ void zx_hrxml_SearchResultId_REV_IdValue(struct zx_hrxml_SearchResultId_s* x);
 #ifndef zx_hrxml_SecurityCredential_EXT
 #define zx_hrxml_SecurityCredential_EXT
 #endif
-
 struct zx_hrxml_SecurityCredential_s {
   ZX_ELEM_EXT
   zx_hrxml_SecurityCredential_EXT
@@ -13125,12 +12199,8 @@ struct zx_hrxml_SecurityCredential_s {
 };
 
 #define zx_NEW_hrxml_SecurityCredential(c, father) (struct zx_hrxml_SecurityCredential_s*)zx_new_elem((c),(father),zx_hrxml_SecurityCredential_ELEM)
-
 int zx_DEC_ATTR_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_SecurityCredential_s* x);
 int zx_DEC_ELEM_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_SecurityCredential_s* x);
-int zx_LEN_SO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_SecurityCredential_s* x);
-char* zx_ENC_SO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_SecurityCredential_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_SecurityCredential_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SecurityCredential_s* zx_DEEP_CLONE_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_SecurityCredential_s* x, int dup_strs);
@@ -13178,7 +12248,7 @@ void zx_hrxml_SecurityCredential_ADD_IssuingAuthority(struct zx_hrxml_SecurityCr
 void zx_hrxml_SecurityCredential_ADD_Description(struct zx_hrxml_SecurityCredential_s* x, int n, struct zx_hrxml_Description_s* z);
 void zx_hrxml_SecurityCredential_ADD_EffectiveDate(struct zx_hrxml_SecurityCredential_s* x, int n, struct zx_hrxml_EffectiveDate_s* z);
 
-void zx_hrxml_SecurityCredential_DEL_Name(struct zx_hrxml_SecurityCredential_s* x, int n);
+void zx_hrxml_SecurityCredential_DEL_Name(struct zx_hrxml_SecurityCredential_s* x,int n);
 void zx_hrxml_SecurityCredential_DEL_Id(struct zx_hrxml_SecurityCredential_s* x, int n);
 void zx_hrxml_SecurityCredential_DEL_IssuingAuthority(struct zx_hrxml_SecurityCredential_s* x, int n);
 void zx_hrxml_SecurityCredential_DEL_Description(struct zx_hrxml_SecurityCredential_s* x, int n);
@@ -13196,7 +12266,6 @@ void zx_hrxml_SecurityCredential_REV_EffectiveDate(struct zx_hrxml_SecurityCrede
 #ifndef zx_hrxml_SecurityCredentials_EXT
 #define zx_hrxml_SecurityCredentials_EXT
 #endif
-
 struct zx_hrxml_SecurityCredentials_s {
   ZX_ELEM_EXT
   zx_hrxml_SecurityCredentials_EXT
@@ -13204,12 +12273,8 @@ struct zx_hrxml_SecurityCredentials_s {
 };
 
 #define zx_NEW_hrxml_SecurityCredentials(c, father) (struct zx_hrxml_SecurityCredentials_s*)zx_new_elem((c),(father),zx_hrxml_SecurityCredentials_ELEM)
-
 int zx_DEC_ATTR_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_SecurityCredentials_s* x);
 int zx_DEC_ELEM_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_SecurityCredentials_s* x);
-int zx_LEN_SO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_SecurityCredentials_s* x);
-char* zx_ENC_SO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_SecurityCredentials_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_SecurityCredentials_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SecurityCredentials_s* zx_DEEP_CLONE_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_SecurityCredentials_s* x, int dup_strs);
@@ -13243,7 +12308,6 @@ void zx_hrxml_SecurityCredentials_REV_SecurityCredential(struct zx_hrxml_Securit
 #ifndef zx_hrxml_ServiceDetail_EXT
 #define zx_hrxml_ServiceDetail_EXT
 #endif
-
 struct zx_hrxml_ServiceDetail_s {
   ZX_ELEM_EXT
   zx_hrxml_ServiceDetail_EXT
@@ -13260,12 +12324,8 @@ struct zx_hrxml_ServiceDetail_s {
 };
 
 #define zx_NEW_hrxml_ServiceDetail(c, father) (struct zx_hrxml_ServiceDetail_s*)zx_new_elem((c),(father),zx_hrxml_ServiceDetail_ELEM)
-
 int zx_DEC_ATTR_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail_s* x);
 int zx_DEC_ELEM_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail_s* x);
-int zx_LEN_SO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail_s* x);
-char* zx_ENC_SO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ServiceDetail_s* zx_DEEP_CLONE_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail_s* x, int dup_strs);
@@ -13339,14 +12399,14 @@ void zx_hrxml_ServiceDetail_ADD_DisciplinaryAction(struct zx_hrxml_ServiceDetail
 void zx_hrxml_ServiceDetail_ADD_DischargeStatus(struct zx_hrxml_ServiceDetail_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_ServiceDetail_ADD_UserArea(struct zx_hrxml_ServiceDetail_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_ServiceDetail_DEL_UnitOrDivision(struct zx_hrxml_ServiceDetail_s* x, int n);
+void zx_hrxml_ServiceDetail_DEL_UnitOrDivision(struct zx_hrxml_ServiceDetail_s* x,int n);
 void zx_hrxml_ServiceDetail_DEL_RankAchieved(struct zx_hrxml_ServiceDetail_s* x, int n);
 void zx_hrxml_ServiceDetail_DEL_DatesOfService(struct zx_hrxml_ServiceDetail_s* x, int n);
-void zx_hrxml_ServiceDetail_DEL_Campaign(struct zx_hrxml_ServiceDetail_s* x, int n);
-void zx_hrxml_ServiceDetail_DEL_AreaOfExpertise(struct zx_hrxml_ServiceDetail_s* x, int n);
-void zx_hrxml_ServiceDetail_DEL_RecognitionAchieved(struct zx_hrxml_ServiceDetail_s* x, int n);
-void zx_hrxml_ServiceDetail_DEL_DisciplinaryAction(struct zx_hrxml_ServiceDetail_s* x, int n);
-void zx_hrxml_ServiceDetail_DEL_DischargeStatus(struct zx_hrxml_ServiceDetail_s* x, int n);
+void zx_hrxml_ServiceDetail_DEL_Campaign(struct zx_hrxml_ServiceDetail_s* x,int n);
+void zx_hrxml_ServiceDetail_DEL_AreaOfExpertise(struct zx_hrxml_ServiceDetail_s* x,int n);
+void zx_hrxml_ServiceDetail_DEL_RecognitionAchieved(struct zx_hrxml_ServiceDetail_s* x,int n);
+void zx_hrxml_ServiceDetail_DEL_DisciplinaryAction(struct zx_hrxml_ServiceDetail_s* x,int n);
+void zx_hrxml_ServiceDetail_DEL_DischargeStatus(struct zx_hrxml_ServiceDetail_s* x,int n);
 void zx_hrxml_ServiceDetail_DEL_UserArea(struct zx_hrxml_ServiceDetail_s* x, int n);
 
 void zx_hrxml_ServiceDetail_REV_UnitOrDivision(struct zx_hrxml_ServiceDetail_s* x);
@@ -13365,7 +12425,6 @@ void zx_hrxml_ServiceDetail_REV_UserArea(struct zx_hrxml_ServiceDetail_s* x);
 #ifndef zx_hrxml_ServiceNumber_EXT
 #define zx_hrxml_ServiceNumber_EXT
 #endif
-
 struct zx_hrxml_ServiceNumber_s {
   ZX_ELEM_EXT
   zx_hrxml_ServiceNumber_EXT
@@ -13376,12 +12435,8 @@ struct zx_hrxml_ServiceNumber_s {
 };
 
 #define zx_NEW_hrxml_ServiceNumber(c, father) (struct zx_hrxml_ServiceNumber_s*)zx_new_elem((c),(father),zx_hrxml_ServiceNumber_ELEM)
-
 int zx_DEC_ATTR_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumber_s* x);
 int zx_DEC_ELEM_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumber_s* x);
-int zx_LEN_SO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumber_s* x);
-char* zx_ENC_SO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumber_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumber_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ServiceNumber_s* zx_DEEP_CLONE_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumber_s* x, int dup_strs);
@@ -13421,7 +12476,6 @@ void zx_hrxml_ServiceNumber_REV_IdValue(struct zx_hrxml_ServiceNumber_s* x);
 #ifndef zx_hrxml_Shift_EXT
 #define zx_hrxml_Shift_EXT
 #endif
-
 struct zx_hrxml_Shift_s {
   ZX_ELEM_EXT
   zx_hrxml_Shift_EXT
@@ -13436,12 +12490,8 @@ struct zx_hrxml_Shift_s {
 };
 
 #define zx_NEW_hrxml_Shift(c, father) (struct zx_hrxml_Shift_s*)zx_new_elem((c),(father),zx_hrxml_Shift_ELEM)
-
 int zx_DEC_ATTR_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x);
 int zx_DEC_ELEM_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x);
-int zx_LEN_SO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x);
-char* zx_ENC_SO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Shift_s* zx_DEEP_CLONE_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x, int dup_strs);
@@ -13504,12 +12554,12 @@ void zx_hrxml_Shift_ADD_PayTypeHours(struct zx_hrxml_Shift_s* x, int n, struct z
 void zx_hrxml_Shift_ADD_Comments(struct zx_hrxml_Shift_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_Shift_DEL_Id(struct zx_hrxml_Shift_s* x, int n);
-void zx_hrxml_Shift_DEL_Name(struct zx_hrxml_Shift_s* x, int n);
-void zx_hrxml_Shift_DEL_Hours(struct zx_hrxml_Shift_s* x, int n);
-void zx_hrxml_Shift_DEL_StartTime(struct zx_hrxml_Shift_s* x, int n);
-void zx_hrxml_Shift_DEL_EndTime(struct zx_hrxml_Shift_s* x, int n);
-void zx_hrxml_Shift_DEL_PayTypeHours(struct zx_hrxml_Shift_s* x, int n);
-void zx_hrxml_Shift_DEL_Comments(struct zx_hrxml_Shift_s* x, int n);
+void zx_hrxml_Shift_DEL_Name(struct zx_hrxml_Shift_s* x,int n);
+void zx_hrxml_Shift_DEL_Hours(struct zx_hrxml_Shift_s* x,int n);
+void zx_hrxml_Shift_DEL_StartTime(struct zx_hrxml_Shift_s* x,int n);
+void zx_hrxml_Shift_DEL_EndTime(struct zx_hrxml_Shift_s* x,int n);
+void zx_hrxml_Shift_DEL_PayTypeHours(struct zx_hrxml_Shift_s* x,int n);
+void zx_hrxml_Shift_DEL_Comments(struct zx_hrxml_Shift_s* x,int n);
 
 void zx_hrxml_Shift_REV_Id(struct zx_hrxml_Shift_s* x);
 void zx_hrxml_Shift_REV_Name(struct zx_hrxml_Shift_s* x);
@@ -13525,7 +12575,6 @@ void zx_hrxml_Shift_REV_Comments(struct zx_hrxml_Shift_s* x);
 #ifndef zx_hrxml_SourceType_EXT
 #define zx_hrxml_SourceType_EXT
 #endif
-
 struct zx_hrxml_SourceType_s {
   ZX_ELEM_EXT
   zx_hrxml_SourceType_EXT
@@ -13534,12 +12583,8 @@ struct zx_hrxml_SourceType_s {
 };
 
 #define zx_NEW_hrxml_SourceType(c, father) (struct zx_hrxml_SourceType_s*)zx_new_elem((c),(father),zx_hrxml_SourceType_ELEM)
-
 int zx_DEC_ATTR_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x);
 int zx_DEC_ELEM_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x);
-int zx_LEN_SO_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x);
-char* zx_ENC_SO_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SourceType_s* zx_DEEP_CLONE_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x, int dup_strs);
@@ -13569,8 +12614,8 @@ void zx_hrxml_SourceType_PUT_NonStandardValue(struct zx_hrxml_SourceType_s* x, i
 void zx_hrxml_SourceType_ADD_StandardValue(struct zx_hrxml_SourceType_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_SourceType_ADD_NonStandardValue(struct zx_hrxml_SourceType_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_SourceType_DEL_StandardValue(struct zx_hrxml_SourceType_s* x, int n);
-void zx_hrxml_SourceType_DEL_NonStandardValue(struct zx_hrxml_SourceType_s* x, int n);
+void zx_hrxml_SourceType_DEL_StandardValue(struct zx_hrxml_SourceType_s* x,int n);
+void zx_hrxml_SourceType_DEL_NonStandardValue(struct zx_hrxml_SourceType_s* x,int n);
 
 void zx_hrxml_SourceType_REV_StandardValue(struct zx_hrxml_SourceType_s* x);
 void zx_hrxml_SourceType_REV_NonStandardValue(struct zx_hrxml_SourceType_s* x);
@@ -13581,7 +12626,6 @@ void zx_hrxml_SourceType_REV_NonStandardValue(struct zx_hrxml_SourceType_s* x);
 #ifndef zx_hrxml_SpatialLocation_EXT
 #define zx_hrxml_SpatialLocation_EXT
 #endif
-
 struct zx_hrxml_SpatialLocation_s {
   ZX_ELEM_EXT
   zx_hrxml_SpatialLocation_EXT
@@ -13594,12 +12638,8 @@ struct zx_hrxml_SpatialLocation_s {
 };
 
 #define zx_NEW_hrxml_SpatialLocation(c, father) (struct zx_hrxml_SpatialLocation_s*)zx_new_elem((c),(father),zx_hrxml_SpatialLocation_ELEM)
-
 int zx_DEC_ATTR_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLocation_s* x);
 int zx_DEC_ELEM_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLocation_s* x);
-int zx_LEN_SO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLocation_s* x);
-char* zx_ENC_SO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLocation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLocation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SpatialLocation_s* zx_DEEP_CLONE_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLocation_s* x, int dup_strs);
@@ -13655,8 +12695,8 @@ void zx_hrxml_SpatialLocation_ADD_VerticalAccuracy(struct zx_hrxml_SpatialLocati
 
 void zx_hrxml_SpatialLocation_DEL_Latitude(struct zx_hrxml_SpatialLocation_s* x, int n);
 void zx_hrxml_SpatialLocation_DEL_Longitude(struct zx_hrxml_SpatialLocation_s* x, int n);
-void zx_hrxml_SpatialLocation_DEL_Altitude(struct zx_hrxml_SpatialLocation_s* x, int n);
-void zx_hrxml_SpatialLocation_DEL_AltitudeMeanSeaLevel(struct zx_hrxml_SpatialLocation_s* x, int n);
+void zx_hrxml_SpatialLocation_DEL_Altitude(struct zx_hrxml_SpatialLocation_s* x,int n);
+void zx_hrxml_SpatialLocation_DEL_AltitudeMeanSeaLevel(struct zx_hrxml_SpatialLocation_s* x,int n);
 void zx_hrxml_SpatialLocation_DEL_HorizontalAccuracy(struct zx_hrxml_SpatialLocation_s* x, int n);
 void zx_hrxml_SpatialLocation_DEL_VerticalAccuracy(struct zx_hrxml_SpatialLocation_s* x, int n);
 
@@ -13673,7 +12713,6 @@ void zx_hrxml_SpatialLocation_REV_VerticalAccuracy(struct zx_hrxml_SpatialLocati
 #ifndef zx_hrxml_SpeakingEvent_EXT
 #define zx_hrxml_SpeakingEvent_EXT
 #endif
-
 struct zx_hrxml_SpeakingEvent_s {
   ZX_ELEM_EXT
   zx_hrxml_SpeakingEvent_EXT
@@ -13691,12 +12730,8 @@ struct zx_hrxml_SpeakingEvent_s {
 };
 
 #define zx_NEW_hrxml_SpeakingEvent(c, father) (struct zx_hrxml_SpeakingEvent_s*)zx_new_elem((c),(father),zx_hrxml_SpeakingEvent_ELEM)
-
 int zx_DEC_ATTR_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEvent_s* x);
 int zx_DEC_ELEM_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEvent_s* x);
-int zx_LEN_SO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEvent_s* x);
-char* zx_ENC_SO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEvent_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEvent_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SpeakingEvent_s* zx_DEEP_CLONE_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEvent_s* x, int dup_strs);
@@ -13776,16 +12811,16 @@ void zx_hrxml_SpeakingEvent_ADD_Description(struct zx_hrxml_SpeakingEvent_s* x, 
 void zx_hrxml_SpeakingEvent_ADD_AffiliatedOrganization(struct zx_hrxml_SpeakingEvent_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_SpeakingEvent_ADD_Link(struct zx_hrxml_SpeakingEvent_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_SpeakingEvent_DEL_Title(struct zx_hrxml_SpeakingEvent_s* x, int n);
-void zx_hrxml_SpeakingEvent_DEL_Role(struct zx_hrxml_SpeakingEvent_s* x, int n);
+void zx_hrxml_SpeakingEvent_DEL_Title(struct zx_hrxml_SpeakingEvent_s* x,int n);
+void zx_hrxml_SpeakingEvent_DEL_Role(struct zx_hrxml_SpeakingEvent_s* x,int n);
 void zx_hrxml_SpeakingEvent_DEL_StartDate(struct zx_hrxml_SpeakingEvent_s* x, int n);
 void zx_hrxml_SpeakingEvent_DEL_EndDate(struct zx_hrxml_SpeakingEvent_s* x, int n);
-void zx_hrxml_SpeakingEvent_DEL_EventName(struct zx_hrxml_SpeakingEvent_s* x, int n);
-void zx_hrxml_SpeakingEvent_DEL_EventType(struct zx_hrxml_SpeakingEvent_s* x, int n);
-void zx_hrxml_SpeakingEvent_DEL_Location(struct zx_hrxml_SpeakingEvent_s* x, int n);
+void zx_hrxml_SpeakingEvent_DEL_EventName(struct zx_hrxml_SpeakingEvent_s* x,int n);
+void zx_hrxml_SpeakingEvent_DEL_EventType(struct zx_hrxml_SpeakingEvent_s* x,int n);
+void zx_hrxml_SpeakingEvent_DEL_Location(struct zx_hrxml_SpeakingEvent_s* x,int n);
 void zx_hrxml_SpeakingEvent_DEL_Description(struct zx_hrxml_SpeakingEvent_s* x, int n);
-void zx_hrxml_SpeakingEvent_DEL_AffiliatedOrganization(struct zx_hrxml_SpeakingEvent_s* x, int n);
-void zx_hrxml_SpeakingEvent_DEL_Link(struct zx_hrxml_SpeakingEvent_s* x, int n);
+void zx_hrxml_SpeakingEvent_DEL_AffiliatedOrganization(struct zx_hrxml_SpeakingEvent_s* x,int n);
+void zx_hrxml_SpeakingEvent_DEL_Link(struct zx_hrxml_SpeakingEvent_s* x,int n);
 
 void zx_hrxml_SpeakingEvent_REV_Title(struct zx_hrxml_SpeakingEvent_s* x);
 void zx_hrxml_SpeakingEvent_REV_Role(struct zx_hrxml_SpeakingEvent_s* x);
@@ -13804,7 +12839,6 @@ void zx_hrxml_SpeakingEvent_REV_Link(struct zx_hrxml_SpeakingEvent_s* x);
 #ifndef zx_hrxml_SpeakingEventsHistory_EXT
 #define zx_hrxml_SpeakingEventsHistory_EXT
 #endif
-
 struct zx_hrxml_SpeakingEventsHistory_s {
   ZX_ELEM_EXT
   zx_hrxml_SpeakingEventsHistory_EXT
@@ -13812,12 +12846,8 @@ struct zx_hrxml_SpeakingEventsHistory_s {
 };
 
 #define zx_NEW_hrxml_SpeakingEventsHistory(c, father) (struct zx_hrxml_SpeakingEventsHistory_s*)zx_new_elem((c),(father),zx_hrxml_SpeakingEventsHistory_ELEM)
-
 int zx_DEC_ATTR_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_SpeakingEventsHistory_s* x);
 int zx_DEC_ELEM_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_SpeakingEventsHistory_s* x);
-int zx_LEN_SO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_SpeakingEventsHistory_s* x);
-char* zx_ENC_SO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_SpeakingEventsHistory_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_SpeakingEventsHistory_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SpeakingEventsHistory_s* zx_DEEP_CLONE_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_SpeakingEventsHistory_s* x, int dup_strs);
@@ -13851,7 +12881,6 @@ void zx_hrxml_SpeakingEventsHistory_REV_SpeakingEvent(struct zx_hrxml_SpeakingEv
 #ifndef zx_hrxml_SpecifiedCompetencyReference_EXT
 #define zx_hrxml_SpecifiedCompetencyReference_EXT
 #endif
-
 struct zx_hrxml_SpecifiedCompetencyReference_s {
   ZX_ELEM_EXT
   zx_hrxml_SpecifiedCompetencyReference_EXT
@@ -13860,12 +12889,8 @@ struct zx_hrxml_SpecifiedCompetencyReference_s {
 };
 
 #define zx_NEW_hrxml_SpecifiedCompetencyReference(c, father) (struct zx_hrxml_SpecifiedCompetencyReference_s*)zx_new_elem((c),(father),zx_hrxml_SpecifiedCompetencyReference_ELEM)
-
 int zx_DEC_ATTR_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrxml_SpecifiedCompetencyReference_s* x);
 int zx_DEC_ELEM_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrxml_SpecifiedCompetencyReference_s* x);
-int zx_LEN_SO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrxml_SpecifiedCompetencyReference_s* x);
-char* zx_ENC_SO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrxml_SpecifiedCompetencyReference_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrxml_SpecifiedCompetencyReference_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SpecifiedCompetencyReference_s* zx_DEEP_CLONE_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrxml_SpecifiedCompetencyReference_s* x, int dup_strs);
@@ -13896,7 +12921,7 @@ void zx_hrxml_SpecifiedCompetencyReference_ADD_CompetencyId(struct zx_hrxml_Spec
 void zx_hrxml_SpecifiedCompetencyReference_ADD_ProficencyLevel(struct zx_hrxml_SpecifiedCompetencyReference_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_SpecifiedCompetencyReference_DEL_CompetencyId(struct zx_hrxml_SpecifiedCompetencyReference_s* x, int n);
-void zx_hrxml_SpecifiedCompetencyReference_DEL_ProficencyLevel(struct zx_hrxml_SpecifiedCompetencyReference_s* x, int n);
+void zx_hrxml_SpecifiedCompetencyReference_DEL_ProficencyLevel(struct zx_hrxml_SpecifiedCompetencyReference_s* x,int n);
 
 void zx_hrxml_SpecifiedCompetencyReference_REV_CompetencyId(struct zx_hrxml_SpecifiedCompetencyReference_s* x);
 void zx_hrxml_SpecifiedCompetencyReference_REV_ProficencyLevel(struct zx_hrxml_SpecifiedCompetencyReference_s* x);
@@ -13907,7 +12932,6 @@ void zx_hrxml_SpecifiedCompetencyReference_REV_ProficencyLevel(struct zx_hrxml_S
 #ifndef zx_hrxml_StartDate_EXT
 #define zx_hrxml_StartDate_EXT
 #endif
-
 struct zx_hrxml_StartDate_s {
   ZX_ELEM_EXT
   zx_hrxml_StartDate_EXT
@@ -13920,12 +12944,8 @@ struct zx_hrxml_StartDate_s {
 };
 
 #define zx_NEW_hrxml_StartDate(c, father) (struct zx_hrxml_StartDate_s*)zx_new_elem((c),(father),zx_hrxml_StartDate_ELEM)
-
 int zx_DEC_ATTR_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x);
 int zx_DEC_ELEM_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x);
-int zx_LEN_SO_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x);
-char* zx_ENC_SO_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_StartDate_s* zx_DEEP_CLONE_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x, int dup_strs);
@@ -13975,11 +12995,11 @@ void zx_hrxml_StartDate_ADD_Year(struct zx_hrxml_StartDate_s* x, int n, struct z
 void zx_hrxml_StartDate_ADD_MonthDay(struct zx_hrxml_StartDate_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_StartDate_ADD_StringDate(struct zx_hrxml_StartDate_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_StartDate_DEL_AnyDate(struct zx_hrxml_StartDate_s* x, int n);
-void zx_hrxml_StartDate_DEL_YearMonth(struct zx_hrxml_StartDate_s* x, int n);
-void zx_hrxml_StartDate_DEL_Year(struct zx_hrxml_StartDate_s* x, int n);
-void zx_hrxml_StartDate_DEL_MonthDay(struct zx_hrxml_StartDate_s* x, int n);
-void zx_hrxml_StartDate_DEL_StringDate(struct zx_hrxml_StartDate_s* x, int n);
+void zx_hrxml_StartDate_DEL_AnyDate(struct zx_hrxml_StartDate_s* x,int n);
+void zx_hrxml_StartDate_DEL_YearMonth(struct zx_hrxml_StartDate_s* x,int n);
+void zx_hrxml_StartDate_DEL_Year(struct zx_hrxml_StartDate_s* x,int n);
+void zx_hrxml_StartDate_DEL_MonthDay(struct zx_hrxml_StartDate_s* x,int n);
+void zx_hrxml_StartDate_DEL_StringDate(struct zx_hrxml_StartDate_s* x,int n);
 
 void zx_hrxml_StartDate_REV_AnyDate(struct zx_hrxml_StartDate_s* x);
 void zx_hrxml_StartDate_REV_YearMonth(struct zx_hrxml_StartDate_s* x);
@@ -13993,7 +13013,6 @@ void zx_hrxml_StartDate_REV_StringDate(struct zx_hrxml_StartDate_s* x);
 #ifndef zx_hrxml_StartingCompensation_EXT
 #define zx_hrxml_StartingCompensation_EXT
 #endif
-
 struct zx_hrxml_StartingCompensation_s {
   ZX_ELEM_EXT
   zx_hrxml_StartingCompensation_EXT
@@ -14004,12 +13023,8 @@ struct zx_hrxml_StartingCompensation_s {
 };
 
 #define zx_NEW_hrxml_StartingCompensation(c, father) (struct zx_hrxml_StartingCompensation_s*)zx_new_elem((c),(father),zx_hrxml_StartingCompensation_ELEM)
-
 int zx_DEC_ATTR_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_StartingCompensation_s* x);
 int zx_DEC_ELEM_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_StartingCompensation_s* x);
-int zx_LEN_SO_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_StartingCompensation_s* x);
-char* zx_ENC_SO_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_StartingCompensation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_StartingCompensation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_StartingCompensation_s* zx_DEEP_CLONE_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_StartingCompensation_s* x, int dup_strs);
@@ -14043,7 +13058,6 @@ void zx_hrxml_StartingCompensation_PUT_validTo(struct zx_hrxml_StartingCompensat
 #ifndef zx_hrxml_Status_EXT
 #define zx_hrxml_Status_EXT
 #endif
-
 struct zx_hrxml_Status_s {
   ZX_ELEM_EXT
   zx_hrxml_Status_EXT
@@ -14052,12 +13066,8 @@ struct zx_hrxml_Status_s {
 };
 
 #define zx_NEW_hrxml_Status(c, father) (struct zx_hrxml_Status_s*)zx_new_elem((c),(father),zx_hrxml_Status_ELEM)
-
 int zx_DEC_ATTR_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x);
 int zx_DEC_ELEM_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x);
-int zx_LEN_SO_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x);
-char* zx_ENC_SO_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Status_s* zx_DEEP_CLONE_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x, int dup_strs);
@@ -14087,7 +13097,6 @@ void zx_hrxml_Status_PUT_validTo(struct zx_hrxml_Status_s* x, struct zx_attr_s* 
 #ifndef zx_hrxml_Stock_EXT
 #define zx_hrxml_Stock_EXT
 #endif
-
 struct zx_hrxml_Stock_s {
   ZX_ELEM_EXT
   zx_hrxml_Stock_EXT
@@ -14097,12 +13106,8 @@ struct zx_hrxml_Stock_s {
 };
 
 #define zx_NEW_hrxml_Stock(c, father) (struct zx_hrxml_Stock_s*)zx_new_elem((c),(father),zx_hrxml_Stock_ELEM)
-
 int zx_DEC_ATTR_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x);
 int zx_DEC_ELEM_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x);
-int zx_LEN_SO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x);
-char* zx_ENC_SO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Stock_s* zx_DEEP_CLONE_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x, int dup_strs);
@@ -14139,8 +13144,8 @@ void zx_hrxml_Stock_ADD_Symbol(struct zx_hrxml_Stock_s* x, int n, struct zx_elem
 void zx_hrxml_Stock_ADD_Exchange(struct zx_hrxml_Stock_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_Stock_DEL_Id(struct zx_hrxml_Stock_s* x, int n);
-void zx_hrxml_Stock_DEL_Symbol(struct zx_hrxml_Stock_s* x, int n);
-void zx_hrxml_Stock_DEL_Exchange(struct zx_hrxml_Stock_s* x, int n);
+void zx_hrxml_Stock_DEL_Symbol(struct zx_hrxml_Stock_s* x,int n);
+void zx_hrxml_Stock_DEL_Exchange(struct zx_hrxml_Stock_s* x,int n);
 
 void zx_hrxml_Stock_REV_Id(struct zx_hrxml_Stock_s* x);
 void zx_hrxml_Stock_REV_Symbol(struct zx_hrxml_Stock_s* x);
@@ -14152,7 +13157,6 @@ void zx_hrxml_Stock_REV_Exchange(struct zx_hrxml_Stock_s* x);
 #ifndef zx_hrxml_StringValue_EXT
 #define zx_hrxml_StringValue_EXT
 #endif
-
 struct zx_hrxml_StringValue_s {
   ZX_ELEM_EXT
   zx_hrxml_StringValue_EXT
@@ -14162,12 +13166,8 @@ struct zx_hrxml_StringValue_s {
 };
 
 #define zx_NEW_hrxml_StringValue(c, father) (struct zx_hrxml_StringValue_s*)zx_new_elem((c),(father),zx_hrxml_StringValue_ELEM)
-
 int zx_DEC_ATTR_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s* x);
 int zx_DEC_ELEM_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s* x);
-int zx_LEN_SO_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s* x);
-char* zx_ENC_SO_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_StringValue_s* zx_DEEP_CLONE_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s* x, int dup_strs);
@@ -14199,7 +13199,6 @@ void zx_hrxml_StringValue_PUT_minValue(struct zx_hrxml_StringValue_s* x, struct 
 #ifndef zx_hrxml_StructuredXMLResume_EXT
 #define zx_hrxml_StructuredXMLResume_EXT
 #endif
-
 struct zx_hrxml_StructuredXMLResume_s {
   ZX_ELEM_EXT
   zx_hrxml_StructuredXMLResume_EXT
@@ -14227,12 +13226,8 @@ struct zx_hrxml_StructuredXMLResume_s {
 };
 
 #define zx_NEW_hrxml_StructuredXMLResume(c, father) (struct zx_hrxml_StructuredXMLResume_s*)zx_new_elem((c),(father),zx_hrxml_StructuredXMLResume_ELEM)
-
 int zx_DEC_ATTR_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_StructuredXMLResume_s* x);
 int zx_DEC_ELEM_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_StructuredXMLResume_s* x);
-int zx_LEN_SO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_StructuredXMLResume_s* x);
-char* zx_ENC_SO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_StructuredXMLResume_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_StructuredXMLResume_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_StructuredXMLResume_s* x, int dup_strs);
@@ -14377,8 +13372,8 @@ void zx_hrxml_StructuredXMLResume_ADD_Comments(struct zx_hrxml_StructuredXMLResu
 void zx_hrxml_StructuredXMLResume_ADD_RevisionDate(struct zx_hrxml_StructuredXMLResume_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_StructuredXMLResume_DEL_ContactInfo(struct zx_hrxml_StructuredXMLResume_s* x, int n);
-void zx_hrxml_StructuredXMLResume_DEL_ExecutiveSummary(struct zx_hrxml_StructuredXMLResume_s* x, int n);
-void zx_hrxml_StructuredXMLResume_DEL_Objective(struct zx_hrxml_StructuredXMLResume_s* x, int n);
+void zx_hrxml_StructuredXMLResume_DEL_ExecutiveSummary(struct zx_hrxml_StructuredXMLResume_s* x,int n);
+void zx_hrxml_StructuredXMLResume_DEL_Objective(struct zx_hrxml_StructuredXMLResume_s* x,int n);
 void zx_hrxml_StructuredXMLResume_DEL_EmploymentHistory(struct zx_hrxml_StructuredXMLResume_s* x, int n);
 void zx_hrxml_StructuredXMLResume_DEL_EducationHistory(struct zx_hrxml_StructuredXMLResume_s* x, int n);
 void zx_hrxml_StructuredXMLResume_DEL_LicensesAndCertifications(struct zx_hrxml_StructuredXMLResume_s* x, int n);
@@ -14395,8 +13390,8 @@ void zx_hrxml_StructuredXMLResume_DEL_SecurityCredentials(struct zx_hrxml_Struct
 void zx_hrxml_StructuredXMLResume_DEL_ResumeAdditionalItems(struct zx_hrxml_StructuredXMLResume_s* x, int n);
 void zx_hrxml_StructuredXMLResume_DEL_SupportingMaterials(struct zx_hrxml_StructuredXMLResume_s* x, int n);
 void zx_hrxml_StructuredXMLResume_DEL_ProfessionalAssociations(struct zx_hrxml_StructuredXMLResume_s* x, int n);
-void zx_hrxml_StructuredXMLResume_DEL_Comments(struct zx_hrxml_StructuredXMLResume_s* x, int n);
-void zx_hrxml_StructuredXMLResume_DEL_RevisionDate(struct zx_hrxml_StructuredXMLResume_s* x, int n);
+void zx_hrxml_StructuredXMLResume_DEL_Comments(struct zx_hrxml_StructuredXMLResume_s* x,int n);
+void zx_hrxml_StructuredXMLResume_DEL_RevisionDate(struct zx_hrxml_StructuredXMLResume_s* x,int n);
 
 void zx_hrxml_StructuredXMLResume_REV_ContactInfo(struct zx_hrxml_StructuredXMLResume_s* x);
 void zx_hrxml_StructuredXMLResume_REV_ExecutiveSummary(struct zx_hrxml_StructuredXMLResume_s* x);
@@ -14426,7 +13421,6 @@ void zx_hrxml_StructuredXMLResume_REV_RevisionDate(struct zx_hrxml_StructuredXML
 #ifndef zx_hrxml_SupplierId_EXT
 #define zx_hrxml_SupplierId_EXT
 #endif
-
 struct zx_hrxml_SupplierId_s {
   ZX_ELEM_EXT
   zx_hrxml_SupplierId_EXT
@@ -14437,12 +13431,8 @@ struct zx_hrxml_SupplierId_s {
 };
 
 #define zx_NEW_hrxml_SupplierId(c, father) (struct zx_hrxml_SupplierId_s*)zx_new_elem((c),(father),zx_hrxml_SupplierId_ELEM)
-
 int zx_DEC_ATTR_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x);
 int zx_DEC_ELEM_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x);
-int zx_LEN_SO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x);
-char* zx_ENC_SO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SupplierId_s* zx_DEEP_CLONE_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x, int dup_strs);
@@ -14482,7 +13472,6 @@ void zx_hrxml_SupplierId_REV_IdValue(struct zx_hrxml_SupplierId_s* x);
 #ifndef zx_hrxml_SupportingMaterials_EXT
 #define zx_hrxml_SupportingMaterials_EXT
 #endif
-
 struct zx_hrxml_SupportingMaterials_s {
   ZX_ELEM_EXT
   zx_hrxml_SupportingMaterials_EXT
@@ -14492,12 +13481,8 @@ struct zx_hrxml_SupportingMaterials_s {
 };
 
 #define zx_NEW_hrxml_SupportingMaterials(c, father) (struct zx_hrxml_SupportingMaterials_s*)zx_new_elem((c),(father),zx_hrxml_SupportingMaterials_ELEM)
-
 int zx_DEC_ATTR_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_SupportingMaterials_s* x);
 int zx_DEC_ELEM_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_SupportingMaterials_s* x);
-int zx_LEN_SO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_SupportingMaterials_s* x);
-char* zx_ENC_SO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_SupportingMaterials_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_SupportingMaterials_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_SupportingMaterials_s* zx_DEEP_CLONE_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_SupportingMaterials_s* x, int dup_strs);
@@ -14533,7 +13518,7 @@ void zx_hrxml_SupportingMaterials_ADD_Link(struct zx_hrxml_SupportingMaterials_s
 void zx_hrxml_SupportingMaterials_ADD_AttachmentReference(struct zx_hrxml_SupportingMaterials_s* x, int n, struct zx_hrxml_AttachmentReference_s* z);
 void zx_hrxml_SupportingMaterials_ADD_Description(struct zx_hrxml_SupportingMaterials_s* x, int n, struct zx_hrxml_Description_s* z);
 
-void zx_hrxml_SupportingMaterials_DEL_Link(struct zx_hrxml_SupportingMaterials_s* x, int n);
+void zx_hrxml_SupportingMaterials_DEL_Link(struct zx_hrxml_SupportingMaterials_s* x,int n);
 void zx_hrxml_SupportingMaterials_DEL_AttachmentReference(struct zx_hrxml_SupportingMaterials_s* x, int n);
 void zx_hrxml_SupportingMaterials_DEL_Description(struct zx_hrxml_SupportingMaterials_s* x, int n);
 
@@ -14547,7 +13532,6 @@ void zx_hrxml_SupportingMaterials_REV_Description(struct zx_hrxml_SupportingMate
 #ifndef zx_hrxml_TTYTDD_EXT
 #define zx_hrxml_TTYTDD_EXT
 #endif
-
 struct zx_hrxml_TTYTDD_s {
   ZX_ELEM_EXT
   zx_hrxml_TTYTDD_EXT
@@ -14555,12 +13539,8 @@ struct zx_hrxml_TTYTDD_s {
 };
 
 #define zx_NEW_hrxml_TTYTDD(c, father) (struct zx_hrxml_TTYTDD_s*)zx_new_elem((c),(father),zx_hrxml_TTYTDD_ELEM)
-
 int zx_DEC_ATTR_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x);
 int zx_DEC_ELEM_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x);
-int zx_LEN_SO_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x);
-char* zx_ENC_SO_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_TTYTDD_s* zx_DEEP_CLONE_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x, int dup_strs);
@@ -14584,7 +13564,7 @@ void zx_hrxml_TTYTDD_PUT_FormattedNumber(struct zx_hrxml_TTYTDD_s* x, int n, str
 
 void zx_hrxml_TTYTDD_ADD_FormattedNumber(struct zx_hrxml_TTYTDD_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_TTYTDD_DEL_FormattedNumber(struct zx_hrxml_TTYTDD_s* x, int n);
+void zx_hrxml_TTYTDD_DEL_FormattedNumber(struct zx_hrxml_TTYTDD_s* x,int n);
 
 void zx_hrxml_TTYTDD_REV_FormattedNumber(struct zx_hrxml_TTYTDD_s* x);
 
@@ -14594,7 +13574,6 @@ void zx_hrxml_TTYTDD_REV_FormattedNumber(struct zx_hrxml_TTYTDD_s* x);
 #ifndef zx_hrxml_TaxId_EXT
 #define zx_hrxml_TaxId_EXT
 #endif
-
 struct zx_hrxml_TaxId_s {
   ZX_ELEM_EXT
   zx_hrxml_TaxId_EXT
@@ -14605,12 +13584,8 @@ struct zx_hrxml_TaxId_s {
 };
 
 #define zx_NEW_hrxml_TaxId(c, father) (struct zx_hrxml_TaxId_s*)zx_new_elem((c),(father),zx_hrxml_TaxId_ELEM)
-
 int zx_DEC_ATTR_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x);
 int zx_DEC_ELEM_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x);
-int zx_LEN_SO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x);
-char* zx_ENC_SO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_TaxId_s* zx_DEEP_CLONE_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x, int dup_strs);
@@ -14650,7 +13625,6 @@ void zx_hrxml_TaxId_REV_IdValue(struct zx_hrxml_TaxId_s* x);
 #ifndef zx_hrxml_TaxonomyId_EXT
 #define zx_hrxml_TaxonomyId_EXT
 #endif
-
 struct zx_hrxml_TaxonomyId_s {
   ZX_ELEM_EXT
   zx_hrxml_TaxonomyId_EXT
@@ -14660,12 +13634,8 @@ struct zx_hrxml_TaxonomyId_s {
 };
 
 #define zx_NEW_hrxml_TaxonomyId(c, father) (struct zx_hrxml_TaxonomyId_s*)zx_new_elem((c),(father),zx_hrxml_TaxonomyId_ELEM)
-
 int zx_DEC_ATTR_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x);
 int zx_DEC_ELEM_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x);
-int zx_LEN_SO_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x);
-char* zx_ENC_SO_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_TaxonomyId_s* zx_DEEP_CLONE_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x, int dup_strs);
@@ -14697,7 +13667,6 @@ void zx_hrxml_TaxonomyId_PUT_idOwner(struct zx_hrxml_TaxonomyId_s* x, struct zx_
 #ifndef zx_hrxml_TaxonomyName_EXT
 #define zx_hrxml_TaxonomyName_EXT
 #endif
-
 struct zx_hrxml_TaxonomyName_s {
   ZX_ELEM_EXT
   zx_hrxml_TaxonomyName_EXT
@@ -14705,12 +13674,8 @@ struct zx_hrxml_TaxonomyName_s {
 };
 
 #define zx_NEW_hrxml_TaxonomyName(c, father) (struct zx_hrxml_TaxonomyName_s*)zx_new_elem((c),(father),zx_hrxml_TaxonomyName_ELEM)
-
 int zx_DEC_ATTR_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_s* x);
 int zx_DEC_ELEM_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_s* x);
-int zx_LEN_SO_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_s* x);
-char* zx_ENC_SO_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_TaxonomyName_s* zx_DEEP_CLONE_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_s* x, int dup_strs);
@@ -14738,7 +13703,6 @@ void zx_hrxml_TaxonomyName_PUT_version(struct zx_hrxml_TaxonomyName_s* x, struct
 #ifndef zx_hrxml_Telephone_EXT
 #define zx_hrxml_Telephone_EXT
 #endif
-
 struct zx_hrxml_Telephone_s {
   ZX_ELEM_EXT
   zx_hrxml_Telephone_EXT
@@ -14746,12 +13710,8 @@ struct zx_hrxml_Telephone_s {
 };
 
 #define zx_NEW_hrxml_Telephone(c, father) (struct zx_hrxml_Telephone_s*)zx_new_elem((c),(father),zx_hrxml_Telephone_ELEM)
-
 int zx_DEC_ATTR_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x);
 int zx_DEC_ELEM_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x);
-int zx_LEN_SO_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x);
-char* zx_ENC_SO_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Telephone_s* zx_DEEP_CLONE_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x, int dup_strs);
@@ -14775,7 +13735,7 @@ void zx_hrxml_Telephone_PUT_FormattedNumber(struct zx_hrxml_Telephone_s* x, int 
 
 void zx_hrxml_Telephone_ADD_FormattedNumber(struct zx_hrxml_Telephone_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_Telephone_DEL_FormattedNumber(struct zx_hrxml_Telephone_s* x, int n);
+void zx_hrxml_Telephone_DEL_FormattedNumber(struct zx_hrxml_Telephone_s* x,int n);
 
 void zx_hrxml_Telephone_REV_FormattedNumber(struct zx_hrxml_Telephone_s* x);
 
@@ -14785,7 +13745,6 @@ void zx_hrxml_Telephone_REV_FormattedNumber(struct zx_hrxml_Telephone_s* x);
 #ifndef zx_hrxml_TermOfNotice_EXT
 #define zx_hrxml_TermOfNotice_EXT
 #endif
-
 struct zx_hrxml_TermOfNotice_s {
   ZX_ELEM_EXT
   zx_hrxml_TermOfNotice_EXT
@@ -14794,12 +13753,8 @@ struct zx_hrxml_TermOfNotice_s {
 };
 
 #define zx_NEW_hrxml_TermOfNotice(c, father) (struct zx_hrxml_TermOfNotice_s*)zx_new_elem((c),(father),zx_hrxml_TermOfNotice_ELEM)
-
 int zx_DEC_ATTR_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_s* x);
 int zx_DEC_ELEM_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_s* x);
-int zx_LEN_SO_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_s* x);
-char* zx_ENC_SO_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_TermOfNotice_s* zx_DEEP_CLONE_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_s* x, int dup_strs);
@@ -14829,8 +13784,8 @@ void zx_hrxml_TermOfNotice_PUT_Interval(struct zx_hrxml_TermOfNotice_s* x, int n
 void zx_hrxml_TermOfNotice_ADD_Value(struct zx_hrxml_TermOfNotice_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_TermOfNotice_ADD_Interval(struct zx_hrxml_TermOfNotice_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_TermOfNotice_DEL_Value(struct zx_hrxml_TermOfNotice_s* x, int n);
-void zx_hrxml_TermOfNotice_DEL_Interval(struct zx_hrxml_TermOfNotice_s* x, int n);
+void zx_hrxml_TermOfNotice_DEL_Value(struct zx_hrxml_TermOfNotice_s* x,int n);
+void zx_hrxml_TermOfNotice_DEL_Interval(struct zx_hrxml_TermOfNotice_s* x,int n);
 
 void zx_hrxml_TermOfNotice_REV_Value(struct zx_hrxml_TermOfNotice_s* x);
 void zx_hrxml_TermOfNotice_REV_Interval(struct zx_hrxml_TermOfNotice_s* x);
@@ -14841,7 +13796,6 @@ void zx_hrxml_TermOfNotice_REV_Interval(struct zx_hrxml_TermOfNotice_s* x);
 #ifndef zx_hrxml_TimeMax_EXT
 #define zx_hrxml_TimeMax_EXT
 #endif
-
 struct zx_hrxml_TimeMax_s {
   ZX_ELEM_EXT
   zx_hrxml_TimeMax_EXT
@@ -14849,12 +13803,8 @@ struct zx_hrxml_TimeMax_s {
 };
 
 #define zx_NEW_hrxml_TimeMax(c, father) (struct zx_hrxml_TimeMax_s*)zx_new_elem((c),(father),zx_hrxml_TimeMax_ELEM)
-
 int zx_DEC_ATTR_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x);
 int zx_DEC_ELEM_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x);
-int zx_LEN_SO_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x);
-char* zx_ENC_SO_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_TimeMax_s* zx_DEEP_CLONE_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x, int dup_strs);
@@ -14882,7 +13832,6 @@ void zx_hrxml_TimeMax_PUT_unitOfMeasure(struct zx_hrxml_TimeMax_s* x, struct zx_
 #ifndef zx_hrxml_TimeOffAllowance_EXT
 #define zx_hrxml_TimeOffAllowance_EXT
 #endif
-
 struct zx_hrxml_TimeOffAllowance_s {
   ZX_ELEM_EXT
   zx_hrxml_TimeOffAllowance_EXT
@@ -14891,12 +13840,8 @@ struct zx_hrxml_TimeOffAllowance_s {
 };
 
 #define zx_NEW_hrxml_TimeOffAllowance(c, father) (struct zx_hrxml_TimeOffAllowance_s*)zx_new_elem((c),(father),zx_hrxml_TimeOffAllowance_ELEM)
-
 int zx_DEC_ATTR_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAllowance_s* x);
 int zx_DEC_ELEM_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAllowance_s* x);
-int zx_LEN_SO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAllowance_s* x);
-char* zx_ENC_SO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAllowance_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAllowance_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_TimeOffAllowance_s* zx_DEEP_CLONE_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAllowance_s* x, int dup_strs);
@@ -14932,7 +13877,6 @@ void zx_hrxml_TimeOffAllowance_REV_Description(struct zx_hrxml_TimeOffAllowance_
 #ifndef zx_hrxml_Travel_EXT
 #define zx_hrxml_Travel_EXT
 #endif
-
 struct zx_hrxml_Travel_s {
   ZX_ELEM_EXT
   zx_hrxml_Travel_EXT
@@ -14942,12 +13886,8 @@ struct zx_hrxml_Travel_s {
 };
 
 #define zx_NEW_hrxml_Travel(c, father) (struct zx_hrxml_Travel_s*)zx_new_elem((c),(father),zx_hrxml_Travel_ELEM)
-
 int zx_DEC_ATTR_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x);
 int zx_DEC_ELEM_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x);
-int zx_LEN_SO_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x);
-char* zx_ENC_SO_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Travel_s* zx_DEEP_CLONE_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x, int dup_strs);
@@ -14983,9 +13923,9 @@ void zx_hrxml_Travel_ADD_Applicable(struct zx_hrxml_Travel_s* x, int n, struct z
 void zx_hrxml_Travel_ADD_TravelFrequency(struct zx_hrxml_Travel_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_Travel_ADD_TravelConsiderations(struct zx_hrxml_Travel_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_Travel_DEL_Applicable(struct zx_hrxml_Travel_s* x, int n);
-void zx_hrxml_Travel_DEL_TravelFrequency(struct zx_hrxml_Travel_s* x, int n);
-void zx_hrxml_Travel_DEL_TravelConsiderations(struct zx_hrxml_Travel_s* x, int n);
+void zx_hrxml_Travel_DEL_Applicable(struct zx_hrxml_Travel_s* x,int n);
+void zx_hrxml_Travel_DEL_TravelFrequency(struct zx_hrxml_Travel_s* x,int n);
+void zx_hrxml_Travel_DEL_TravelConsiderations(struct zx_hrxml_Travel_s* x,int n);
 
 void zx_hrxml_Travel_REV_Applicable(struct zx_hrxml_Travel_s* x);
 void zx_hrxml_Travel_REV_TravelFrequency(struct zx_hrxml_Travel_s* x);
@@ -14997,7 +13937,6 @@ void zx_hrxml_Travel_REV_TravelConsiderations(struct zx_hrxml_Travel_s* x);
 #ifndef zx_hrxml_TravelDirections_EXT
 #define zx_hrxml_TravelDirections_EXT
 #endif
-
 struct zx_hrxml_TravelDirections_s {
   ZX_ELEM_EXT
   zx_hrxml_TravelDirections_EXT
@@ -15005,12 +13944,8 @@ struct zx_hrxml_TravelDirections_s {
 };
 
 #define zx_NEW_hrxml_TravelDirections(c, father) (struct zx_hrxml_TravelDirections_s*)zx_new_elem((c),(father),zx_hrxml_TravelDirections_ELEM)
-
 int zx_DEC_ATTR_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDirections_s* x);
 int zx_DEC_ELEM_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDirections_s* x);
-int zx_LEN_SO_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDirections_s* x);
-char* zx_ENC_SO_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDirections_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDirections_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_TravelDirections_s* zx_DEEP_CLONE_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDirections_s* x, int dup_strs);
@@ -15038,19 +13973,14 @@ void zx_hrxml_TravelDirections_PUT_lang(struct zx_hrxml_TravelDirections_s* x, s
 #ifndef zx_hrxml_UserArea_EXT
 #define zx_hrxml_UserArea_EXT
 #endif
-
 struct zx_hrxml_UserArea_s {
   ZX_ELEM_EXT
   zx_hrxml_UserArea_EXT
 };
 
 #define zx_NEW_hrxml_UserArea(c, father) (struct zx_hrxml_UserArea_s*)zx_new_elem((c),(father),zx_hrxml_UserArea_ELEM)
-
 int zx_DEC_ATTR_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x);
 int zx_DEC_ELEM_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x);
-int zx_LEN_SO_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x);
-char* zx_ENC_SO_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_UserArea_s* zx_DEEP_CLONE_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x, int dup_strs);
@@ -15076,7 +14006,6 @@ int zx_WALK_WO_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x, v
 #ifndef zx_hrxml_UserId_EXT
 #define zx_hrxml_UserId_EXT
 #endif
-
 struct zx_hrxml_UserId_s {
   ZX_ELEM_EXT
   zx_hrxml_UserId_EXT
@@ -15087,12 +14016,8 @@ struct zx_hrxml_UserId_s {
 };
 
 #define zx_NEW_hrxml_UserId(c, father) (struct zx_hrxml_UserId_s*)zx_new_elem((c),(father),zx_hrxml_UserId_ELEM)
-
 int zx_DEC_ATTR_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x);
 int zx_DEC_ELEM_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x);
-int zx_LEN_SO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x);
-char* zx_ENC_SO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_UserId_s* zx_DEEP_CLONE_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x, int dup_strs);
@@ -15132,7 +14057,6 @@ void zx_hrxml_UserId_REV_IdValue(struct zx_hrxml_UserId_s* x);
 #ifndef zx_hrxml_ValidFrom_EXT
 #define zx_hrxml_ValidFrom_EXT
 #endif
-
 struct zx_hrxml_ValidFrom_s {
   ZX_ELEM_EXT
   zx_hrxml_ValidFrom_EXT
@@ -15145,12 +14069,8 @@ struct zx_hrxml_ValidFrom_s {
 };
 
 #define zx_NEW_hrxml_ValidFrom(c, father) (struct zx_hrxml_ValidFrom_s*)zx_new_elem((c),(father),zx_hrxml_ValidFrom_ELEM)
-
 int zx_DEC_ATTR_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x);
 int zx_DEC_ELEM_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x);
-int zx_LEN_SO_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x);
-char* zx_ENC_SO_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ValidFrom_s* zx_DEEP_CLONE_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x, int dup_strs);
@@ -15200,11 +14120,11 @@ void zx_hrxml_ValidFrom_ADD_Year(struct zx_hrxml_ValidFrom_s* x, int n, struct z
 void zx_hrxml_ValidFrom_ADD_MonthDay(struct zx_hrxml_ValidFrom_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_ValidFrom_ADD_StringDate(struct zx_hrxml_ValidFrom_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_ValidFrom_DEL_AnyDate(struct zx_hrxml_ValidFrom_s* x, int n);
-void zx_hrxml_ValidFrom_DEL_YearMonth(struct zx_hrxml_ValidFrom_s* x, int n);
-void zx_hrxml_ValidFrom_DEL_Year(struct zx_hrxml_ValidFrom_s* x, int n);
-void zx_hrxml_ValidFrom_DEL_MonthDay(struct zx_hrxml_ValidFrom_s* x, int n);
-void zx_hrxml_ValidFrom_DEL_StringDate(struct zx_hrxml_ValidFrom_s* x, int n);
+void zx_hrxml_ValidFrom_DEL_AnyDate(struct zx_hrxml_ValidFrom_s* x,int n);
+void zx_hrxml_ValidFrom_DEL_YearMonth(struct zx_hrxml_ValidFrom_s* x,int n);
+void zx_hrxml_ValidFrom_DEL_Year(struct zx_hrxml_ValidFrom_s* x,int n);
+void zx_hrxml_ValidFrom_DEL_MonthDay(struct zx_hrxml_ValidFrom_s* x,int n);
+void zx_hrxml_ValidFrom_DEL_StringDate(struct zx_hrxml_ValidFrom_s* x,int n);
 
 void zx_hrxml_ValidFrom_REV_AnyDate(struct zx_hrxml_ValidFrom_s* x);
 void zx_hrxml_ValidFrom_REV_YearMonth(struct zx_hrxml_ValidFrom_s* x);
@@ -15218,7 +14138,6 @@ void zx_hrxml_ValidFrom_REV_StringDate(struct zx_hrxml_ValidFrom_s* x);
 #ifndef zx_hrxml_ValidTo_EXT
 #define zx_hrxml_ValidTo_EXT
 #endif
-
 struct zx_hrxml_ValidTo_s {
   ZX_ELEM_EXT
   zx_hrxml_ValidTo_EXT
@@ -15231,12 +14150,8 @@ struct zx_hrxml_ValidTo_s {
 };
 
 #define zx_NEW_hrxml_ValidTo(c, father) (struct zx_hrxml_ValidTo_s*)zx_new_elem((c),(father),zx_hrxml_ValidTo_ELEM)
-
 int zx_DEC_ATTR_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x);
 int zx_DEC_ELEM_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x);
-int zx_LEN_SO_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x);
-char* zx_ENC_SO_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_ValidTo_s* zx_DEEP_CLONE_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x, int dup_strs);
@@ -15286,11 +14201,11 @@ void zx_hrxml_ValidTo_ADD_Year(struct zx_hrxml_ValidTo_s* x, int n, struct zx_el
 void zx_hrxml_ValidTo_ADD_MonthDay(struct zx_hrxml_ValidTo_s* x, int n, struct zx_elem_s* z);
 void zx_hrxml_ValidTo_ADD_StringDate(struct zx_hrxml_ValidTo_s* x, int n, struct zx_elem_s* z);
 
-void zx_hrxml_ValidTo_DEL_AnyDate(struct zx_hrxml_ValidTo_s* x, int n);
-void zx_hrxml_ValidTo_DEL_YearMonth(struct zx_hrxml_ValidTo_s* x, int n);
-void zx_hrxml_ValidTo_DEL_Year(struct zx_hrxml_ValidTo_s* x, int n);
-void zx_hrxml_ValidTo_DEL_MonthDay(struct zx_hrxml_ValidTo_s* x, int n);
-void zx_hrxml_ValidTo_DEL_StringDate(struct zx_hrxml_ValidTo_s* x, int n);
+void zx_hrxml_ValidTo_DEL_AnyDate(struct zx_hrxml_ValidTo_s* x,int n);
+void zx_hrxml_ValidTo_DEL_YearMonth(struct zx_hrxml_ValidTo_s* x,int n);
+void zx_hrxml_ValidTo_DEL_Year(struct zx_hrxml_ValidTo_s* x,int n);
+void zx_hrxml_ValidTo_DEL_MonthDay(struct zx_hrxml_ValidTo_s* x,int n);
+void zx_hrxml_ValidTo_DEL_StringDate(struct zx_hrxml_ValidTo_s* x,int n);
 
 void zx_hrxml_ValidTo_REV_AnyDate(struct zx_hrxml_ValidTo_s* x);
 void zx_hrxml_ValidTo_REV_YearMonth(struct zx_hrxml_ValidTo_s* x);
@@ -15304,7 +14219,6 @@ void zx_hrxml_ValidTo_REV_StringDate(struct zx_hrxml_ValidTo_s* x);
 #ifndef zx_hrxml_Verification_EXT
 #define zx_hrxml_Verification_EXT
 #endif
-
 struct zx_hrxml_Verification_s {
   ZX_ELEM_EXT
   zx_hrxml_Verification_EXT
@@ -15319,12 +14233,8 @@ struct zx_hrxml_Verification_s {
 };
 
 #define zx_NEW_hrxml_Verification(c, father) (struct zx_hrxml_Verification_s*)zx_new_elem((c),(father),zx_hrxml_Verification_ELEM)
-
 int zx_DEC_ATTR_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_s* x);
 int zx_DEC_ELEM_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_s* x);
-int zx_LEN_SO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_s* x);
-char* zx_ENC_SO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Verification_s* zx_DEEP_CLONE_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_s* x, int dup_strs);
@@ -15391,13 +14301,13 @@ void zx_hrxml_Verification_ADD_OverallPerformanceRating(struct zx_hrxml_Verifica
 void zx_hrxml_Verification_ADD_QuestionAnswerPair(struct zx_hrxml_Verification_s* x, int n, struct zx_elem_s* z);
 
 void zx_hrxml_Verification_DEL_ContactInfo(struct zx_hrxml_Verification_s* x, int n);
-void zx_hrxml_Verification_DEL_ReasonForLeaving(struct zx_hrxml_Verification_s* x, int n);
-void zx_hrxml_Verification_DEL_PermissionToContact(struct zx_hrxml_Verification_s* x, int n);
-void zx_hrxml_Verification_DEL_VerifyEmployment(struct zx_hrxml_Verification_s* x, int n);
-void zx_hrxml_Verification_DEL_EligibleForRehire(struct zx_hrxml_Verification_s* x, int n);
-void zx_hrxml_Verification_DEL_AttendanceRating(struct zx_hrxml_Verification_s* x, int n);
-void zx_hrxml_Verification_DEL_OverallPerformanceRating(struct zx_hrxml_Verification_s* x, int n);
-void zx_hrxml_Verification_DEL_QuestionAnswerPair(struct zx_hrxml_Verification_s* x, int n);
+void zx_hrxml_Verification_DEL_ReasonForLeaving(struct zx_hrxml_Verification_s* x,int n);
+void zx_hrxml_Verification_DEL_PermissionToContact(struct zx_hrxml_Verification_s* x,int n);
+void zx_hrxml_Verification_DEL_VerifyEmployment(struct zx_hrxml_Verification_s* x,int n);
+void zx_hrxml_Verification_DEL_EligibleForRehire(struct zx_hrxml_Verification_s* x,int n);
+void zx_hrxml_Verification_DEL_AttendanceRating(struct zx_hrxml_Verification_s* x,int n);
+void zx_hrxml_Verification_DEL_OverallPerformanceRating(struct zx_hrxml_Verification_s* x,int n);
+void zx_hrxml_Verification_DEL_QuestionAnswerPair(struct zx_hrxml_Verification_s* x,int n);
 
 void zx_hrxml_Verification_REV_ContactInfo(struct zx_hrxml_Verification_s* x);
 void zx_hrxml_Verification_REV_ReasonForLeaving(struct zx_hrxml_Verification_s* x);
@@ -15414,19 +14324,14 @@ void zx_hrxml_Verification_REV_QuestionAnswerPair(struct zx_hrxml_Verification_s
 #ifndef zx_hrxml_VerticalAccuracy_EXT
 #define zx_hrxml_VerticalAccuracy_EXT
 #endif
-
 struct zx_hrxml_VerticalAccuracy_s {
   ZX_ELEM_EXT
   zx_hrxml_VerticalAccuracy_EXT
 };
 
 #define zx_NEW_hrxml_VerticalAccuracy(c, father) (struct zx_hrxml_VerticalAccuracy_s*)zx_new_elem((c),(father),zx_hrxml_VerticalAccuracy_ELEM)
-
 int zx_DEC_ATTR_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalAccuracy_s* x);
 int zx_DEC_ELEM_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalAccuracy_s* x);
-int zx_LEN_SO_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalAccuracy_s* x);
-char* zx_ENC_SO_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalAccuracy_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalAccuracy_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_VerticalAccuracy_s* zx_DEEP_CLONE_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalAccuracy_s* x, int dup_strs);
@@ -15452,7 +14357,6 @@ int zx_WALK_WO_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_Vertical
 #ifndef zx_hrxml_VisaStatus_EXT
 #define zx_hrxml_VisaStatus_EXT
 #endif
-
 struct zx_hrxml_VisaStatus_s {
   ZX_ELEM_EXT
   zx_hrxml_VisaStatus_EXT
@@ -15462,12 +14366,8 @@ struct zx_hrxml_VisaStatus_s {
 };
 
 #define zx_NEW_hrxml_VisaStatus(c, father) (struct zx_hrxml_VisaStatus_s*)zx_new_elem((c),(father),zx_hrxml_VisaStatus_ELEM)
-
 int zx_DEC_ATTR_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x);
 int zx_DEC_ELEM_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x);
-int zx_LEN_SO_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x);
-char* zx_ENC_SO_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_VisaStatus_s* zx_DEEP_CLONE_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x, int dup_strs);
@@ -15499,7 +14399,6 @@ void zx_hrxml_VisaStatus_PUT_validTo(struct zx_hrxml_VisaStatus_s* x, struct zx_
 #ifndef zx_hrxml_Weight_EXT
 #define zx_hrxml_Weight_EXT
 #endif
-
 struct zx_hrxml_Weight_s {
   ZX_ELEM_EXT
   zx_hrxml_Weight_EXT
@@ -15510,12 +14409,8 @@ struct zx_hrxml_Weight_s {
 };
 
 #define zx_NEW_hrxml_Weight(c, father) (struct zx_hrxml_Weight_s*)zx_new_elem((c),(father),zx_hrxml_Weight_ELEM)
-
 int zx_DEC_ATTR_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x);
 int zx_DEC_ELEM_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x);
-int zx_LEN_SO_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x);
-char* zx_ENC_SO_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_Weight_s* zx_DEEP_CLONE_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x, int dup_strs);
@@ -15549,7 +14444,6 @@ void zx_hrxml_Weight_PUT_minValue(struct zx_hrxml_Weight_s* x, struct zx_attr_s*
 #ifndef zx_hrxml_WorkSite_EXT
 #define zx_hrxml_WorkSite_EXT
 #endif
-
 struct zx_hrxml_WorkSite_s {
   ZX_ELEM_EXT
   zx_hrxml_WorkSite_EXT
@@ -15564,12 +14458,8 @@ struct zx_hrxml_WorkSite_s {
 };
 
 #define zx_NEW_hrxml_WorkSite(c, father) (struct zx_hrxml_WorkSite_s*)zx_new_elem((c),(father),zx_hrxml_WorkSite_ELEM)
-
 int zx_DEC_ATTR_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x);
 int zx_DEC_ELEM_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x);
-int zx_LEN_SO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x);
-char* zx_ENC_SO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_WorkSite_s* zx_DEEP_CLONE_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x, int dup_strs);
@@ -15635,7 +14525,7 @@ void zx_hrxml_WorkSite_ADD_ParkingInstructions(struct zx_hrxml_WorkSite_s* x, in
 void zx_hrxml_WorkSite_ADD_WorkSiteEnvironment(struct zx_hrxml_WorkSite_s* x, int n, struct zx_hrxml_WorkSiteEnvironment_s* z);
 void zx_hrxml_WorkSite_ADD_UserArea(struct zx_hrxml_WorkSite_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_WorkSite_DEL_WorkSiteName(struct zx_hrxml_WorkSite_s* x, int n);
+void zx_hrxml_WorkSite_DEL_WorkSiteName(struct zx_hrxml_WorkSite_s* x,int n);
 void zx_hrxml_WorkSite_DEL_WorkSiteId(struct zx_hrxml_WorkSite_s* x, int n);
 void zx_hrxml_WorkSite_DEL_Details(struct zx_hrxml_WorkSite_s* x, int n);
 void zx_hrxml_WorkSite_DEL_PostalAddress(struct zx_hrxml_WorkSite_s* x, int n);
@@ -15659,7 +14549,6 @@ void zx_hrxml_WorkSite_REV_UserArea(struct zx_hrxml_WorkSite_s* x);
 #ifndef zx_hrxml_WorkSiteEnvironment_EXT
 #define zx_hrxml_WorkSiteEnvironment_EXT
 #endif
-
 struct zx_hrxml_WorkSiteEnvironment_s {
   ZX_ELEM_EXT
   zx_hrxml_WorkSiteEnvironment_EXT
@@ -15672,12 +14561,8 @@ struct zx_hrxml_WorkSiteEnvironment_s {
 };
 
 #define zx_NEW_hrxml_WorkSiteEnvironment(c, father) (struct zx_hrxml_WorkSiteEnvironment_s*)zx_new_elem((c),(father),zx_hrxml_WorkSiteEnvironment_ELEM)
-
 int zx_DEC_ATTR_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSiteEnvironment_s* x);
 int zx_DEC_ELEM_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSiteEnvironment_s* x);
-int zx_LEN_SO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSiteEnvironment_s* x);
-char* zx_ENC_SO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSiteEnvironment_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSiteEnvironment_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_WorkSiteEnvironment_s* zx_DEEP_CLONE_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSiteEnvironment_s* x, int dup_strs);
@@ -15731,7 +14616,7 @@ void zx_hrxml_WorkSiteEnvironment_ADD_Description(struct zx_hrxml_WorkSiteEnviro
 void zx_hrxml_WorkSiteEnvironment_ADD_Considerations(struct zx_hrxml_WorkSiteEnvironment_s* x, int n, struct zx_hrxml_Considerations_s* z);
 void zx_hrxml_WorkSiteEnvironment_ADD_UserArea(struct zx_hrxml_WorkSiteEnvironment_s* x, int n, struct zx_hrxml_UserArea_s* z);
 
-void zx_hrxml_WorkSiteEnvironment_DEL_EnvironmentName(struct zx_hrxml_WorkSiteEnvironment_s* x, int n);
+void zx_hrxml_WorkSiteEnvironment_DEL_EnvironmentName(struct zx_hrxml_WorkSiteEnvironment_s* x,int n);
 void zx_hrxml_WorkSiteEnvironment_DEL_EnvironmentId(struct zx_hrxml_WorkSiteEnvironment_s* x, int n);
 void zx_hrxml_WorkSiteEnvironment_DEL_WorkSiteId(struct zx_hrxml_WorkSiteEnvironment_s* x, int n);
 void zx_hrxml_WorkSiteEnvironment_DEL_Description(struct zx_hrxml_WorkSiteEnvironment_s* x, int n);
@@ -15751,7 +14636,6 @@ void zx_hrxml_WorkSiteEnvironment_REV_UserArea(struct zx_hrxml_WorkSiteEnvironme
 #ifndef zx_hrxml_WorkSiteId_EXT
 #define zx_hrxml_WorkSiteId_EXT
 #endif
-
 struct zx_hrxml_WorkSiteId_s {
   ZX_ELEM_EXT
   zx_hrxml_WorkSiteId_EXT
@@ -15762,12 +14646,8 @@ struct zx_hrxml_WorkSiteId_s {
 };
 
 #define zx_NEW_hrxml_WorkSiteId(c, father) (struct zx_hrxml_WorkSiteId_s*)zx_new_elem((c),(father),zx_hrxml_WorkSiteId_ELEM)
-
 int zx_DEC_ATTR_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x);
 int zx_DEC_ELEM_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x);
-int zx_LEN_SO_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x);
-char* zx_ENC_SO_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_hrxml_WorkSiteId_s* zx_DEEP_CLONE_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x, int dup_strs);

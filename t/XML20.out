@@ -1,39 +1,5 @@
 Original and WO are different lengths 4017 != 4168
 Original and WO differ.
-SO and WO differ.
-Re-encoded result SO (len=2420):
-<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://ivs.authn.govt.nz/IVS-idp"><md:IDPSSODescriptor WantAuthnRequestsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><md:KeyDescriptor use="signing"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data><ds:X509Certificate>
-MIIB/DCCAWUCBEa3xCUwDQYJKoZIhvcNAQEEBQAwRTELMAkGA1UEBhMCTloxDDAKBgNVBAoTA0RJ
-QTEWMBQGA1UECxMNSVZTIFByb2dyYW1tZTEQMA4GA1UEAxMHYmkxLWl2czAeFw0wNzA4MDcwMTAw
-MjFaFw0wNzExMDUwMTAwMjFaMEUxCzAJBgNVBAYTAk5aMQwwCgYDVQQKEwNESUExFjAUBgNVBAsT
-DUlWUyBQcm9ncmFtbWUxEDAOBgNVBAMTB2JpMS1pdnMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJ
-AoGBAJbh3quNpIroem/nUj71o33rfuSkAued6+AmWviqhEd5sykan5tdVe7UzRwP0bYZi5EcmoGA
-/sb6UPHH3CDlurXfvHQzppAb1auS98NIhjVPuEHwRBDsc5JVY8cM6cMf5wrTmRDWybfB80hrH016
-885bB0xuglkqGBaZ+vcJ1fblAgMBAAEwDQYJKoZIhvcNAQEEBQADgYEAPZv7q92PBjBfTmkPta5s
-/CsOIB36M9v5ZL3YU9YWOdswbPw8rps0aAgMZdUyQS3httcwrl1Xee8II2SKdP5ocENtfRsq+U33
-1umMjk+VANOyK1iuTEJjPyD/ItNIovaC/pNZ0XjJN3a/UuCliW3vAytuEjHGp8HYgZ6kOIGo+GA=
-                    </ds:X509Certificate>
-                    
-                </ds:X509Data>
-                
-            </ds:KeyInfo>
-            
-        </md:KeyDescriptor><md:ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://ivs.authn.govt.nz:443/IVS/ArtifactResolver/metaAlias/IVS-idp" index="0" isDefault="true"></md:ArtifactResolutionService><md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://ivs.authn.govt.nz:443/IVS/IDPSloRedirect/metaAlias/IVS-idp" ResponseLocation="https://ivs.authn.govt.nz:443/IVS/IDPSloRedirect/metaAlias/IVS-idp"></md:SingleLogoutService><md:ManageNameIDService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://ivs.authn.govt.nz:443/IVS/IDPMniRedirect/metaAlias/IVS-idp" ResponseLocation="https://ivs.authn.govt.nz:443/IVS/IDPMniRedirect/metaAlias/IVS-idp"></md:ManageNameIDService><md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat><md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://ivs.authn.govt.nz:443/IVS/SSORedirect/metaAlias/IVS-idp"></md:SingleSignOnService>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    </md:IDPSSODescriptor>
-    
-</md:EntityDescriptor>
-
 Re-encoded result WO (len=4168):
 <EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://ivs.authn.govt.nz/IVS-idp">
     <IDPSSODescriptor WantAuthnRequestsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">

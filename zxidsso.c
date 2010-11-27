@@ -57,7 +57,7 @@ int zxid_pick_sso_profile(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* idp_meta)
 
 /*() Map name id format form field to SAML specified URN string. */
 /* Called by:  zxid_mk_authn_req */
-char* zxid_saml2_map_nid_fmt(char* f)
+const char* zxid_saml2_map_nid_fmt(const char* f)
 {
   switch (f[0]) {
   case 'n' /*'none'*/:   return "";
@@ -75,7 +75,7 @@ char* zxid_saml2_map_nid_fmt(char* f)
 
 /*() Map protocol binding form field to SAML specified URN string. */
 /* Called by: */
-char* zxid_saml2_map_protocol_binding(char* b)
+const char* zxid_saml2_map_protocol_binding(const char* b)
 {
   switch (b[0]) {
   case 'r' /*'redir'*/: return SAML2_REDIR;
@@ -179,7 +179,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
     }
     ar = zxid_mk_authn_req(cf, cgi);
     ar->Destination = sso_svc->Location;
-    ars = zx_EASY_ENC_SO_sp_AuthnRequest(cf->ctx, ar);
+    ars = zx_EASY_ENC_elem(cf->ctx, &ar->gg);
     D("AuthnReq(%.*s)", ars->len, ars->s);
     break;
   default:
@@ -645,7 +645,7 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
     logpath = zxlog_path(cf, issuer, &a7n->ID->g, ZXLOG_RELY_DIR, ZXLOG_A7N_KIND, 1);
     if (logpath) {
       ses->sso_a7n_path = ses->tgt_a7n_path = zx_str_to_c(cf->ctx, logpath);
-      ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &a7n->gg);
+      ss = zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
       if (zxlog_dup_check(cf, logpath, "SSO assertion")) {
 	if (cf->dup_a7n_fatal) {
 	  err = "C";
@@ -787,8 +787,8 @@ int zxid_as_call_ses(zxid_conf* cf, zxid_entity* idp_meta, zxid_cgi* cgi, zxid_s
   
   body = zx_NEW_e_Body(cf->ctx,0);
   body->SASLRequest = zx_NEW_as_SASLRequest(cf->ctx, &body->gg);
-  body->SASLRequest->mechanism = zx_dup_attr(cf->ctx, zx_mechanism_ATTR, "PLAIN");
-  body->SASLRequest->Data = zx_ref_len_simple_elem(cf->ctx, &body->SASLRequest->gg, zx_as_Data_ELEM, p-b64, b64);
+  body->SASLRequest->mechanism = zx_dup_attr(cf->ctx, &body->SASLRequest->gg, zx_mechanism_ATTR, "PLAIN");
+  body->SASLRequest->Data = zx_ref_len_elem(cf->ctx, &body->SASLRequest->gg, zx_as_Data_ELEM, p-b64, b64);
   r = zxid_soap_call_body(cf, &ar_svc->Location->g, body);
   /* *** free the body */
   

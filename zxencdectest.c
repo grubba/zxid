@@ -58,7 +58,6 @@ Usage: zxencdectest [options] <foo.xml >reencoded-foo.xml\n\
                http://www.aet.tu-cottbus.de/personen/jaenicke/postfix_tls/prngd.html\n\
   -rand PATH   Location of random number seed file. On Solaris EGD is used.\n\
                On Linux the default is /dev/urandom. See RFC1750.\n\
-  -so PATH     File to write schema order encoding in\n\
   -wo PATH     File to write wire order encoding in\n\
   -v           Verbose messages.\n\
   -q           Be extra quiet.\n\
@@ -73,12 +72,12 @@ char buf[256*1024];
 /* Called by:  opt */
 void test_ibm_cert_problem()
 {
-  int got_all, len_so;
+  int len, got_all;
   zxid_conf* cf;
   struct zx_root_s* r;
   struct zx_sp_LogoutRequest_s* req;
 
-  len_so = read_all_fd(0, buf, sizeof(buf)-1, &got_all);
+  len = read_all_fd(0, buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
   buf[got_all] = 0;
 
@@ -110,9 +109,9 @@ void test_ibm_cert_problem_enc_dec()
   cf = zxid_new_conf("/var/zxid/");
 
   nameid = zx_NEW_sa_NameID(cf->ctx,0);
-  nameid->Format = zx_ref_attr(cf->ctx, zx_Format_ATTR, "persistent");
-  nameid->NameQualifier = zx_ref_attr(cf->ctx, zx_NameQualifier_ATTR, "ibmidp");
-  /*nameid->SPNameQualifier = zx_ref_attr(cf->ctx, zx_SPNameQualifier_ATTR, spqual);*/
+  nameid->Format = zx_ref_attr(cf->ctx, &nameid->gg, zx_Format_ATTR, "persistent");
+  nameid->NameQualifier = zx_ref_attr(cf->ctx, &nameid->gg, zx_NameQualifier_ATTR, "ibmidp");
+  /*nameid->SPNameQualifier = zx_ref_attr(cf->ctx, &nameid->gg, zx_SPNameQualifier_ATTR, spqual);*/
   zx_add_content(cf->ctx, &nameid->gg, zx_ref_str(cf->ctx, "a-persistent-nid"));
 
 #if 0
@@ -125,6 +124,17 @@ void test_ibm_cert_problem_enc_dec()
   req = zxid_mk_logout(cf, nameid, 0, idp_meta);  
   req->NameID = zxid_decrypt_nameid(cf, req->NameID, req->EncryptedID);
   printf("r2 nid(%.*s) should be(a-persistent-nid)\n", ZX_GET_CONTENT_LEN(req->NameID), ZX_GET_CONTENT_S(req->NameID));
+}
+
+void so_enc_dec()
+{
+  zxid_conf* cf;
+  struct zx_sp_Status_s* st;
+  struct zx_str* ss;
+  cf = zxid_new_conf("/var/zxid/");
+  st = zxid_mk_Status(cf, 0, "SC1", "SC2", "MESSAGE");
+  ss = zx_EASY_ENC_elem(cf->ctx, &st->gg);
+  printf("%.*s", ss->len, ss->s);
 }
 
 int afr_buf_size = 0;
@@ -141,7 +151,6 @@ char* egd_path;
 char  symmetric_key[1024];
 int symmetric_key_len;
 int n_iter = 1;
-char* so_path = 0;
 char* wo_path = 0;
 
 /* Called by:  main x8, zxcall_main, zxcot_main */
@@ -219,6 +228,7 @@ void opt(int* argc, char*** argv, char*** env)
 	switch (atoi((*argv)[0])) {
 	case 1: test_ibm_cert_problem(); break;
 	case 2: test_ibm_cert_problem_enc_dec(); break;
+	case 3: so_enc_dec(); break;
 	}
 	exit(0);
 
@@ -269,16 +279,6 @@ void opt(int* argc, char*** argv, char*** env)
 	  continue;
 	}
 	break;
-      }
-      break;
-
-    case 's':
-      switch ((*argv)[0][2]) {
-      case 'o': if ((*argv)[0][3]) break;
-	++(*argv); --(*argc);
-	if (!(*argc)) break;
-	so_path = (*argv)[0];
-	continue;
       }
       break;
 
@@ -350,14 +350,12 @@ int main(int argc, char** argv, char** env)
 {
   struct zx_ctx ctx;
   struct zx_root_s* r;
-  int got_all, len_so, len_wo;
-  char so_out[256*1024];
-  char* so_p;
+  int got_all, len_wo;
   char wo_out[256*1024];
   char* wo_p;
   opt(&argc, &argv, &env);
   
-  len_so = read_all_fd(0, buf, sizeof(buf)-1, &got_all);
+  len_wo = read_all_fd(0, buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
   buf[got_all] = 0;
 
@@ -377,14 +375,6 @@ int main(int argc, char** argv, char** env)
     if (!wo_p)
       DIE("encoding error");
 
-    len_so = zx_LEN_SO_root(&ctx, r);
-    D("Enc so len %d chars", len_so);
-
-    ctx.bas = so_out;
-    so_p = zx_ENC_SO_root(&ctx, r, so_out);
-    if (!so_p)
-      DIE("encoding error");
-
     zx_free_elem(&ctx, &r->gg, 0);
   }
 
@@ -394,19 +384,10 @@ int main(int argc, char** argv, char** env)
   if (memcmp(buf, wo_out, MIN(got_all, len_wo)))
     printf("Original and WO differ.\n");
 
-  if (memcmp(so_out, wo_out, MIN(len_so, len_wo)))
-    printf("SO and WO differ.\n");
-
-  if (so_p - so_out != len_so)
-    ERR("SO encode length mismatch %d vs. %d (len)", so_p - so_out, len_so);
-  printf("Re-encoded result SO (len=%d):\n%.*s\n\n", len_so, len_so, so_out);
-
   if (wo_p - wo_out != len_wo)
     ERR("WO encode length mismatch %d vs %d (len)", wo_p - wo_out, len_wo);
   printf("Re-encoded result WO (len=%d):\n%.*s\n\n", len_wo, len_wo, wo_out);
 
-  if (so_path)
-    write_all_path_fmt("SO", sizeof(buf), buf, "%s", so_path, 0, "%.*s", len_so, so_out);
   if (wo_path)
     write_all_path_fmt("WO", sizeof(buf), buf, "%s", wo_path, 0, "%.*s", len_wo, wo_out);
   return 0;

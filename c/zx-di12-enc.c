@@ -24,6 +24,7 @@
  ** 30.9.2007, improvements to WO encoding --Sampo
  ** 8.2.2010,  better handling of schema order encoding of unknown namespace prefixes --Sampo
  ** 27.10.2010, re-engineered namespace handling --Sampo
+ ** 24.11.2010, this code is sceduled for removal as el_order processing in WO encoder accomplishes the same result. --Sampo
  **
  ** N.B: wo=wire order (needed for exc-c14n), so=schema order
  ** N.B2: This template is meant to be processed by pd/xsd2sg.pl. Beware
@@ -39,6 +40,8 @@
 #include "c/zx-ns.h"
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -162,13 +165,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_AuthenticateRequester(struct zx_ctx* c, struc
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_AuthenticateRequester(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -292,13 +294,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_AuthenticateSessionContext(struct zx_ctx* c, 
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_AuthenticateSessionContext(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -422,13 +423,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_AuthorizeRequester(struct zx_ctx* c, struct z
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_AuthorizeRequester(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -550,13 +550,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_Credentials(struct zx_ctx* c, struct zx_di12_
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_Credentials(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -728,13 +727,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_Description(struct zx_ctx* c, struct zx_di12_
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_Description(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -858,13 +856,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_EncryptResourceID(struct zx_ctx* c, struct zx
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_EncryptResourceID(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1002,13 +999,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_EncryptedResourceID(struct zx_ctx* c, struct 
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_EncryptedResourceID(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1130,13 +1126,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_Extension(struct zx_ctx* c, struct zx_di12_Ex
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_Extension(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1266,13 +1261,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_InsertEntry(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1428,13 +1422,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_Modify(struct zx_ctx* c, struct zx_di12_Modif
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_Modify(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1576,13 +1569,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_ModifyResponse(struct zx_ctx* c, struct zx_di
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_ModifyResponse(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1712,13 +1704,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_Options(struct zx_ctx* c, struct zx_di12_Opti
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_Options(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -1866,13 +1857,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_Query(struct zx_ctx* c, struct zx_di12_Query_
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_Query(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2020,13 +2010,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_QueryResponse(struct zx_ctx* c, struct zx_di1
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_QueryResponse(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2150,13 +2139,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_RemoveEntry(struct zx_ctx* c, struct zx_di12_
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_RemoveEntry(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2294,13 +2282,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_RequestedServiceType(struct zx_ctx* c, struct
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_RequestedServiceType(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2424,13 +2411,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_ResourceID(struct zx_ctx* c, struct zx_di12_R
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_ResourceID(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2594,13 +2580,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_ResourceOffering(struct zx_ctx* c, struct zx_
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_ResourceOffering(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2746,13 +2731,12 @@ struct zx_str* zx_EASY_ENC_SO_di12_ServiceInstance(struct zx_ctx* c, struct zx_d
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_ServiceInstance(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 
 
+
+#if 0
 
 #ifdef EL_NAME
 #undef EL_NAME
@@ -2888,9 +2872,6 @@ struct zx_str* zx_EASY_ENC_SO_di12_Status(struct zx_ctx* c, struct zx_di12_Statu
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, zx_ENC_SO_di12_Status(c, x, buf ), buf, len);
 }
-
-#if 1 /* ENC_WO_SUBTEMPL */
-/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 

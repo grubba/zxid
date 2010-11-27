@@ -23,7 +23,6 @@
 #ifndef zx_im_IdentityMappingRequest_EXT
 #define zx_im_IdentityMappingRequest_EXT
 #endif
-
 struct zx_im_IdentityMappingRequest_s {
   ZX_ELEM_EXT
   zx_im_IdentityMappingRequest_EXT
@@ -31,12 +30,8 @@ struct zx_im_IdentityMappingRequest_s {
 };
 
 #define zx_NEW_im_IdentityMappingRequest(c, father) (struct zx_im_IdentityMappingRequest_s*)zx_new_elem((c),(father),zx_im_IdentityMappingRequest_ELEM)
-
 int zx_DEC_ATTR_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMappingRequest_s* x);
 int zx_DEC_ELEM_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMappingRequest_s* x);
-int zx_LEN_SO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMappingRequest_s* x);
-char* zx_ENC_SO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMappingRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMappingRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_im_IdentityMappingRequest_s* zx_DEEP_CLONE_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMappingRequest_s* x, int dup_strs);
@@ -70,7 +65,6 @@ void zx_im_IdentityMappingRequest_REV_MappingInput(struct zx_im_IdentityMappingR
 #ifndef zx_im_IdentityMappingResponse_EXT
 #define zx_im_IdentityMappingResponse_EXT
 #endif
-
 struct zx_im_IdentityMappingResponse_s {
   ZX_ELEM_EXT
   zx_im_IdentityMappingResponse_EXT
@@ -79,12 +73,8 @@ struct zx_im_IdentityMappingResponse_s {
 };
 
 #define zx_NEW_im_IdentityMappingResponse(c, father) (struct zx_im_IdentityMappingResponse_s*)zx_new_elem((c),(father),zx_im_IdentityMappingResponse_ELEM)
-
 int zx_DEC_ATTR_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityMappingResponse_s* x);
 int zx_DEC_ELEM_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityMappingResponse_s* x);
-int zx_LEN_SO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityMappingResponse_s* x);
-char* zx_ENC_SO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityMappingResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityMappingResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_im_IdentityMappingResponse_s* zx_DEEP_CLONE_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityMappingResponse_s* x, int dup_strs);
@@ -126,7 +116,6 @@ void zx_im_IdentityMappingResponse_REV_MappingOutput(struct zx_im_IdentityMappin
 #ifndef zx_im_MappingInput_EXT
 #define zx_im_MappingInput_EXT
 #endif
-
 struct zx_im_MappingInput_s {
   ZX_ELEM_EXT
   zx_im_MappingInput_EXT
@@ -136,12 +125,8 @@ struct zx_im_MappingInput_s {
 };
 
 #define zx_NEW_im_MappingInput(c, father) (struct zx_im_MappingInput_s*)zx_new_elem((c),(father),zx_im_MappingInput_ELEM)
-
 int zx_DEC_ATTR_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x);
 int zx_DEC_ELEM_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x);
-int zx_LEN_SO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x);
-char* zx_ENC_SO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_im_MappingInput_s* zx_DEEP_CLONE_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x, int dup_strs);
@@ -185,7 +170,6 @@ void zx_im_MappingInput_REV_Token(struct zx_im_MappingInput_s* x);
 #ifndef zx_im_MappingOutput_EXT
 #define zx_im_MappingOutput_EXT
 #endif
-
 struct zx_im_MappingOutput_s {
   ZX_ELEM_EXT
   zx_im_MappingOutput_EXT
@@ -194,12 +178,8 @@ struct zx_im_MappingOutput_s {
 };
 
 #define zx_NEW_im_MappingOutput(c, father) (struct zx_im_MappingOutput_s*)zx_new_elem((c),(father),zx_im_MappingOutput_ELEM)
-
 int zx_DEC_ATTR_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x);
 int zx_DEC_ELEM_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x);
-int zx_LEN_SO_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x);
-char* zx_ENC_SO_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_im_MappingOutput_s* zx_DEEP_CLONE_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x, int dup_strs);

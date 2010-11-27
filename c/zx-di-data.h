@@ -23,7 +23,6 @@
 #ifndef zx_di_EndpointContext_EXT
 #define zx_di_EndpointContext_EXT
 #endif
-
 struct zx_di_EndpointContext_s {
   ZX_ELEM_EXT
   zx_di_EndpointContext_EXT
@@ -34,12 +33,8 @@ struct zx_di_EndpointContext_s {
 };
 
 #define zx_NEW_di_EndpointContext(c, father) (struct zx_di_EndpointContext_s*)zx_new_elem((c),(father),zx_di_EndpointContext_ELEM)
-
 int zx_DEC_ATTR_di_EndpointContext(struct zx_ctx* c, struct zx_di_EndpointContext_s* x);
 int zx_DEC_ELEM_di_EndpointContext(struct zx_ctx* c, struct zx_di_EndpointContext_s* x);
-int zx_LEN_SO_di_EndpointContext(struct zx_ctx* c, struct zx_di_EndpointContext_s* x);
-char* zx_ENC_SO_di_EndpointContext(struct zx_ctx* c, struct zx_di_EndpointContext_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_EndpointContext(struct zx_ctx* c, struct zx_di_EndpointContext_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_EndpointContext_s* zx_DEEP_CLONE_di_EndpointContext(struct zx_ctx* c, struct zx_di_EndpointContext_s* x, int dup_strs);
@@ -81,10 +76,10 @@ void zx_di_EndpointContext_ADD_Framework(struct zx_di_EndpointContext_s* x, int 
 void zx_di_EndpointContext_ADD_SecurityMechID(struct zx_di_EndpointContext_s* x, int n, struct zx_elem_s* z);
 void zx_di_EndpointContext_ADD_Action(struct zx_di_EndpointContext_s* x, int n, struct zx_elem_s* z);
 
-void zx_di_EndpointContext_DEL_Address(struct zx_di_EndpointContext_s* x, int n);
+void zx_di_EndpointContext_DEL_Address(struct zx_di_EndpointContext_s* x,int n);
 void zx_di_EndpointContext_DEL_Framework(struct zx_di_EndpointContext_s* x, int n);
-void zx_di_EndpointContext_DEL_SecurityMechID(struct zx_di_EndpointContext_s* x, int n);
-void zx_di_EndpointContext_DEL_Action(struct zx_di_EndpointContext_s* x, int n);
+void zx_di_EndpointContext_DEL_SecurityMechID(struct zx_di_EndpointContext_s* x,int n);
+void zx_di_EndpointContext_DEL_Action(struct zx_di_EndpointContext_s* x,int n);
 
 void zx_di_EndpointContext_REV_Address(struct zx_di_EndpointContext_s* x);
 void zx_di_EndpointContext_REV_Framework(struct zx_di_EndpointContext_s* x);
@@ -97,7 +92,6 @@ void zx_di_EndpointContext_REV_Action(struct zx_di_EndpointContext_s* x);
 #ifndef zx_di_Framework_EXT
 #define zx_di_Framework_EXT
 #endif
-
 struct zx_di_Framework_s {
   ZX_ELEM_EXT
   zx_di_Framework_EXT
@@ -108,12 +102,8 @@ struct zx_di_Framework_s {
 };
 
 #define zx_NEW_di_Framework(c, father) (struct zx_di_Framework_s*)zx_new_elem((c),(father),zx_di_Framework_ELEM)
-
 int zx_DEC_ATTR_di_Framework(struct zx_ctx* c, struct zx_di_Framework_s* x);
 int zx_DEC_ELEM_di_Framework(struct zx_ctx* c, struct zx_di_Framework_s* x);
-int zx_LEN_SO_di_Framework(struct zx_ctx* c, struct zx_di_Framework_s* x);
-char* zx_ENC_SO_di_Framework(struct zx_ctx* c, struct zx_di_Framework_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_Framework(struct zx_ctx* c, struct zx_di_Framework_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_Framework_s* zx_DEEP_CLONE_di_Framework(struct zx_ctx* c, struct zx_di_Framework_s* x, int dup_strs);
@@ -147,7 +137,6 @@ void zx_di_Framework_PUT_mustUnderstand(struct zx_di_Framework_s* x, struct zx_a
 #ifndef zx_di_Keys_EXT
 #define zx_di_Keys_EXT
 #endif
-
 struct zx_di_Keys_s {
   ZX_ELEM_EXT
   zx_di_Keys_EXT
@@ -155,12 +144,8 @@ struct zx_di_Keys_s {
 };
 
 #define zx_NEW_di_Keys(c, father) (struct zx_di_Keys_s*)zx_new_elem((c),(father),zx_di_Keys_ELEM)
-
 int zx_DEC_ATTR_di_Keys(struct zx_ctx* c, struct zx_di_Keys_s* x);
 int zx_DEC_ELEM_di_Keys(struct zx_ctx* c, struct zx_di_Keys_s* x);
-int zx_LEN_SO_di_Keys(struct zx_ctx* c, struct zx_di_Keys_s* x);
-char* zx_ENC_SO_di_Keys(struct zx_ctx* c, struct zx_di_Keys_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_Keys(struct zx_ctx* c, struct zx_di_Keys_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_Keys_s* zx_DEEP_CLONE_di_Keys(struct zx_ctx* c, struct zx_di_Keys_s* x, int dup_strs);
@@ -194,7 +179,6 @@ void zx_di_Keys_REV_KeyDescriptor(struct zx_di_Keys_s* x);
 #ifndef zx_di_Options_EXT
 #define zx_di_Options_EXT
 #endif
-
 struct zx_di_Options_s {
   ZX_ELEM_EXT
   zx_di_Options_EXT
@@ -202,12 +186,8 @@ struct zx_di_Options_s {
 };
 
 #define zx_NEW_di_Options(c, father) (struct zx_di_Options_s*)zx_new_elem((c),(father),zx_di_Options_ELEM)
-
 int zx_DEC_ATTR_di_Options(struct zx_ctx* c, struct zx_di_Options_s* x);
 int zx_DEC_ELEM_di_Options(struct zx_ctx* c, struct zx_di_Options_s* x);
-int zx_LEN_SO_di_Options(struct zx_ctx* c, struct zx_di_Options_s* x);
-char* zx_ENC_SO_di_Options(struct zx_ctx* c, struct zx_di_Options_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_Options(struct zx_ctx* c, struct zx_di_Options_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_Options_s* zx_DEEP_CLONE_di_Options(struct zx_ctx* c, struct zx_di_Options_s* x, int dup_strs);
@@ -231,7 +211,7 @@ void zx_di_Options_PUT_Option(struct zx_di_Options_s* x, int n, struct zx_elem_s
 
 void zx_di_Options_ADD_Option(struct zx_di_Options_s* x, int n, struct zx_elem_s* z);
 
-void zx_di_Options_DEL_Option(struct zx_di_Options_s* x, int n);
+void zx_di_Options_DEL_Option(struct zx_di_Options_s* x,int n);
 
 void zx_di_Options_REV_Option(struct zx_di_Options_s* x);
 
@@ -241,7 +221,6 @@ void zx_di_Options_REV_Option(struct zx_di_Options_s* x);
 #ifndef zx_di_Query_EXT
 #define zx_di_Query_EXT
 #endif
-
 struct zx_di_Query_s {
   ZX_ELEM_EXT
   zx_di_Query_EXT
@@ -249,12 +228,8 @@ struct zx_di_Query_s {
 };
 
 #define zx_NEW_di_Query(c, father) (struct zx_di_Query_s*)zx_new_elem((c),(father),zx_di_Query_ELEM)
-
 int zx_DEC_ATTR_di_Query(struct zx_ctx* c, struct zx_di_Query_s* x);
 int zx_DEC_ELEM_di_Query(struct zx_ctx* c, struct zx_di_Query_s* x);
-int zx_LEN_SO_di_Query(struct zx_ctx* c, struct zx_di_Query_s* x);
-char* zx_ENC_SO_di_Query(struct zx_ctx* c, struct zx_di_Query_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_Query(struct zx_ctx* c, struct zx_di_Query_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_Query_s* zx_DEEP_CLONE_di_Query(struct zx_ctx* c, struct zx_di_Query_s* x, int dup_strs);
@@ -288,7 +263,6 @@ void zx_di_Query_REV_RequestedService(struct zx_di_Query_s* x);
 #ifndef zx_di_QueryResponse_EXT
 #define zx_di_QueryResponse_EXT
 #endif
-
 struct zx_di_QueryResponse_s {
   ZX_ELEM_EXT
   zx_di_QueryResponse_EXT
@@ -297,12 +271,8 @@ struct zx_di_QueryResponse_s {
 };
 
 #define zx_NEW_di_QueryResponse(c, father) (struct zx_di_QueryResponse_s*)zx_new_elem((c),(father),zx_di_QueryResponse_ELEM)
-
 int zx_DEC_ATTR_di_QueryResponse(struct zx_ctx* c, struct zx_di_QueryResponse_s* x);
 int zx_DEC_ELEM_di_QueryResponse(struct zx_ctx* c, struct zx_di_QueryResponse_s* x);
-int zx_LEN_SO_di_QueryResponse(struct zx_ctx* c, struct zx_di_QueryResponse_s* x);
-char* zx_ENC_SO_di_QueryResponse(struct zx_ctx* c, struct zx_di_QueryResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_QueryResponse(struct zx_ctx* c, struct zx_di_QueryResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_QueryResponse_s* zx_DEEP_CLONE_di_QueryResponse(struct zx_ctx* c, struct zx_di_QueryResponse_s* x, int dup_strs);
@@ -344,7 +314,6 @@ void zx_di_QueryResponse_REV_EndpointReference(struct zx_di_QueryResponse_s* x);
 #ifndef zx_di_RequestedService_EXT
 #define zx_di_RequestedService_EXT
 #endif
-
 struct zx_di_RequestedService_s {
   ZX_ELEM_EXT
   zx_di_RequestedService_EXT
@@ -359,12 +328,8 @@ struct zx_di_RequestedService_s {
 };
 
 #define zx_NEW_di_RequestedService(c, father) (struct zx_di_RequestedService_s*)zx_new_elem((c),(father),zx_di_RequestedService_ELEM)
-
 int zx_DEC_ATTR_di_RequestedService(struct zx_ctx* c, struct zx_di_RequestedService_s* x);
 int zx_DEC_ELEM_di_RequestedService(struct zx_ctx* c, struct zx_di_RequestedService_s* x);
-int zx_LEN_SO_di_RequestedService(struct zx_ctx* c, struct zx_di_RequestedService_s* x);
-char* zx_ENC_SO_di_RequestedService(struct zx_ctx* c, struct zx_di_RequestedService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_RequestedService(struct zx_ctx* c, struct zx_di_RequestedService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_RequestedService_s* zx_DEEP_CLONE_di_RequestedService(struct zx_ctx* c, struct zx_di_RequestedService_s* x, int dup_strs);
@@ -422,12 +387,12 @@ void zx_di_RequestedService_ADD_SecurityMechID(struct zx_di_RequestedService_s* 
 void zx_di_RequestedService_ADD_Framework(struct zx_di_RequestedService_s* x, int n, struct zx_di_Framework_s* z);
 void zx_di_RequestedService_ADD_Action(struct zx_di_RequestedService_s* x, int n, struct zx_elem_s* z);
 
-void zx_di_RequestedService_DEL_ServiceType(struct zx_di_RequestedService_s* x, int n);
-void zx_di_RequestedService_DEL_ProviderID(struct zx_di_RequestedService_s* x, int n);
+void zx_di_RequestedService_DEL_ServiceType(struct zx_di_RequestedService_s* x,int n);
+void zx_di_RequestedService_DEL_ProviderID(struct zx_di_RequestedService_s* x,int n);
 void zx_di_RequestedService_DEL_Options(struct zx_di_RequestedService_s* x, int n);
-void zx_di_RequestedService_DEL_SecurityMechID(struct zx_di_RequestedService_s* x, int n);
+void zx_di_RequestedService_DEL_SecurityMechID(struct zx_di_RequestedService_s* x,int n);
 void zx_di_RequestedService_DEL_Framework(struct zx_di_RequestedService_s* x, int n);
-void zx_di_RequestedService_DEL_Action(struct zx_di_RequestedService_s* x, int n);
+void zx_di_RequestedService_DEL_Action(struct zx_di_RequestedService_s* x,int n);
 
 void zx_di_RequestedService_REV_ServiceType(struct zx_di_RequestedService_s* x);
 void zx_di_RequestedService_REV_ProviderID(struct zx_di_RequestedService_s* x);
@@ -442,7 +407,6 @@ void zx_di_RequestedService_REV_Action(struct zx_di_RequestedService_s* x);
 #ifndef zx_di_SecurityContext_EXT
 #define zx_di_SecurityContext_EXT
 #endif
-
 struct zx_di_SecurityContext_s {
   ZX_ELEM_EXT
   zx_di_SecurityContext_EXT
@@ -451,12 +415,8 @@ struct zx_di_SecurityContext_s {
 };
 
 #define zx_NEW_di_SecurityContext(c, father) (struct zx_di_SecurityContext_s*)zx_new_elem((c),(father),zx_di_SecurityContext_ELEM)
-
 int zx_DEC_ATTR_di_SecurityContext(struct zx_ctx* c, struct zx_di_SecurityContext_s* x);
 int zx_DEC_ELEM_di_SecurityContext(struct zx_ctx* c, struct zx_di_SecurityContext_s* x);
-int zx_LEN_SO_di_SecurityContext(struct zx_ctx* c, struct zx_di_SecurityContext_s* x);
-char* zx_ENC_SO_di_SecurityContext(struct zx_ctx* c, struct zx_di_SecurityContext_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SecurityContext(struct zx_ctx* c, struct zx_di_SecurityContext_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SecurityContext_s* zx_DEEP_CLONE_di_SecurityContext(struct zx_ctx* c, struct zx_di_SecurityContext_s* x, int dup_strs);
@@ -486,7 +446,7 @@ void zx_di_SecurityContext_PUT_Token(struct zx_di_SecurityContext_s* x, int n, s
 void zx_di_SecurityContext_ADD_SecurityMechID(struct zx_di_SecurityContext_s* x, int n, struct zx_elem_s* z);
 void zx_di_SecurityContext_ADD_Token(struct zx_di_SecurityContext_s* x, int n, struct zx_sec_Token_s* z);
 
-void zx_di_SecurityContext_DEL_SecurityMechID(struct zx_di_SecurityContext_s* x, int n);
+void zx_di_SecurityContext_DEL_SecurityMechID(struct zx_di_SecurityContext_s* x,int n);
 void zx_di_SecurityContext_DEL_Token(struct zx_di_SecurityContext_s* x, int n);
 
 void zx_di_SecurityContext_REV_SecurityMechID(struct zx_di_SecurityContext_s* x);
@@ -498,7 +458,6 @@ void zx_di_SecurityContext_REV_Token(struct zx_di_SecurityContext_s* x);
 #ifndef zx_di_ServiceContext_EXT
 #define zx_di_ServiceContext_EXT
 #endif
-
 struct zx_di_ServiceContext_s {
   ZX_ELEM_EXT
   zx_di_ServiceContext_EXT
@@ -508,12 +467,8 @@ struct zx_di_ServiceContext_s {
 };
 
 #define zx_NEW_di_ServiceContext(c, father) (struct zx_di_ServiceContext_s*)zx_new_elem((c),(father),zx_di_ServiceContext_ELEM)
-
 int zx_DEC_ATTR_di_ServiceContext(struct zx_ctx* c, struct zx_di_ServiceContext_s* x);
 int zx_DEC_ELEM_di_ServiceContext(struct zx_ctx* c, struct zx_di_ServiceContext_s* x);
-int zx_LEN_SO_di_ServiceContext(struct zx_ctx* c, struct zx_di_ServiceContext_s* x);
-char* zx_ENC_SO_di_ServiceContext(struct zx_ctx* c, struct zx_di_ServiceContext_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_ServiceContext(struct zx_ctx* c, struct zx_di_ServiceContext_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_ServiceContext_s* zx_DEEP_CLONE_di_ServiceContext(struct zx_ctx* c, struct zx_di_ServiceContext_s* x, int dup_strs);
@@ -549,7 +504,7 @@ void zx_di_ServiceContext_ADD_ServiceType(struct zx_di_ServiceContext_s* x, int 
 void zx_di_ServiceContext_ADD_Options(struct zx_di_ServiceContext_s* x, int n, struct zx_di_Options_s* z);
 void zx_di_ServiceContext_ADD_EndpointContext(struct zx_di_ServiceContext_s* x, int n, struct zx_di_EndpointContext_s* z);
 
-void zx_di_ServiceContext_DEL_ServiceType(struct zx_di_ServiceContext_s* x, int n);
+void zx_di_ServiceContext_DEL_ServiceType(struct zx_di_ServiceContext_s* x,int n);
 void zx_di_ServiceContext_DEL_Options(struct zx_di_ServiceContext_s* x, int n);
 void zx_di_ServiceContext_DEL_EndpointContext(struct zx_di_ServiceContext_s* x, int n);
 
@@ -563,7 +518,6 @@ void zx_di_ServiceContext_REV_EndpointContext(struct zx_di_ServiceContext_s* x);
 #ifndef zx_di_SvcMD_EXT
 #define zx_di_SvcMD_EXT
 #endif
-
 struct zx_di_SvcMD_s {
   ZX_ELEM_EXT
   zx_di_SvcMD_EXT
@@ -574,12 +528,8 @@ struct zx_di_SvcMD_s {
 };
 
 #define zx_NEW_di_SvcMD(c, father) (struct zx_di_SvcMD_s*)zx_new_elem((c),(father),zx_di_SvcMD_ELEM)
-
 int zx_DEC_ATTR_di_SvcMD(struct zx_ctx* c, struct zx_di_SvcMD_s* x);
 int zx_DEC_ELEM_di_SvcMD(struct zx_ctx* c, struct zx_di_SvcMD_s* x);
-int zx_LEN_SO_di_SvcMD(struct zx_ctx* c, struct zx_di_SvcMD_s* x);
-char* zx_ENC_SO_di_SvcMD(struct zx_ctx* c, struct zx_di_SvcMD_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMD(struct zx_ctx* c, struct zx_di_SvcMD_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMD_s* zx_DEEP_CLONE_di_SvcMD(struct zx_ctx* c, struct zx_di_SvcMD_s* x, int dup_strs);
@@ -617,8 +567,8 @@ void zx_di_SvcMD_ADD_Abstract(struct zx_di_SvcMD_s* x, int n, struct zx_elem_s* 
 void zx_di_SvcMD_ADD_ProviderID(struct zx_di_SvcMD_s* x, int n, struct zx_elem_s* z);
 void zx_di_SvcMD_ADD_ServiceContext(struct zx_di_SvcMD_s* x, int n, struct zx_di_ServiceContext_s* z);
 
-void zx_di_SvcMD_DEL_Abstract(struct zx_di_SvcMD_s* x, int n);
-void zx_di_SvcMD_DEL_ProviderID(struct zx_di_SvcMD_s* x, int n);
+void zx_di_SvcMD_DEL_Abstract(struct zx_di_SvcMD_s* x,int n);
+void zx_di_SvcMD_DEL_ProviderID(struct zx_di_SvcMD_s* x,int n);
 void zx_di_SvcMD_DEL_ServiceContext(struct zx_di_SvcMD_s* x, int n);
 
 void zx_di_SvcMD_REV_Abstract(struct zx_di_SvcMD_s* x);
@@ -631,7 +581,6 @@ void zx_di_SvcMD_REV_ServiceContext(struct zx_di_SvcMD_s* x);
 #ifndef zx_di_SvcMDAssociationAdd_EXT
 #define zx_di_SvcMDAssociationAdd_EXT
 #endif
-
 struct zx_di_SvcMDAssociationAdd_s {
   ZX_ELEM_EXT
   zx_di_SvcMDAssociationAdd_EXT
@@ -639,12 +588,8 @@ struct zx_di_SvcMDAssociationAdd_s {
 };
 
 #define zx_NEW_di_SvcMDAssociationAdd(c, father) (struct zx_di_SvcMDAssociationAdd_s*)zx_new_elem((c),(father),zx_di_SvcMDAssociationAdd_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDAssociationAdd(struct zx_ctx* c, struct zx_di_SvcMDAssociationAdd_s* x);
 int zx_DEC_ELEM_di_SvcMDAssociationAdd(struct zx_ctx* c, struct zx_di_SvcMDAssociationAdd_s* x);
-int zx_LEN_SO_di_SvcMDAssociationAdd(struct zx_ctx* c, struct zx_di_SvcMDAssociationAdd_s* x);
-char* zx_ENC_SO_di_SvcMDAssociationAdd(struct zx_ctx* c, struct zx_di_SvcMDAssociationAdd_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDAssociationAdd(struct zx_ctx* c, struct zx_di_SvcMDAssociationAdd_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDAssociationAdd_s* zx_DEEP_CLONE_di_SvcMDAssociationAdd(struct zx_ctx* c, struct zx_di_SvcMDAssociationAdd_s* x, int dup_strs);
@@ -668,7 +613,7 @@ void zx_di_SvcMDAssociationAdd_PUT_SvcMDID(struct zx_di_SvcMDAssociationAdd_s* x
 
 void zx_di_SvcMDAssociationAdd_ADD_SvcMDID(struct zx_di_SvcMDAssociationAdd_s* x, int n, struct zx_elem_s* z);
 
-void zx_di_SvcMDAssociationAdd_DEL_SvcMDID(struct zx_di_SvcMDAssociationAdd_s* x, int n);
+void zx_di_SvcMDAssociationAdd_DEL_SvcMDID(struct zx_di_SvcMDAssociationAdd_s* x,int n);
 
 void zx_di_SvcMDAssociationAdd_REV_SvcMDID(struct zx_di_SvcMDAssociationAdd_s* x);
 
@@ -678,7 +623,6 @@ void zx_di_SvcMDAssociationAdd_REV_SvcMDID(struct zx_di_SvcMDAssociationAdd_s* x
 #ifndef zx_di_SvcMDAssociationAddResponse_EXT
 #define zx_di_SvcMDAssociationAddResponse_EXT
 #endif
-
 struct zx_di_SvcMDAssociationAddResponse_s {
   ZX_ELEM_EXT
   zx_di_SvcMDAssociationAddResponse_EXT
@@ -686,12 +630,8 @@ struct zx_di_SvcMDAssociationAddResponse_s {
 };
 
 #define zx_NEW_di_SvcMDAssociationAddResponse(c, father) (struct zx_di_SvcMDAssociationAddResponse_s*)zx_new_elem((c),(father),zx_di_SvcMDAssociationAddResponse_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDAssociationAddResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationAddResponse_s* x);
 int zx_DEC_ELEM_di_SvcMDAssociationAddResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationAddResponse_s* x);
-int zx_LEN_SO_di_SvcMDAssociationAddResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationAddResponse_s* x);
-char* zx_ENC_SO_di_SvcMDAssociationAddResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationAddResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDAssociationAddResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationAddResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDAssociationAddResponse_s* zx_DEEP_CLONE_di_SvcMDAssociationAddResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationAddResponse_s* x, int dup_strs);
@@ -725,7 +665,6 @@ void zx_di_SvcMDAssociationAddResponse_REV_Status(struct zx_di_SvcMDAssociationA
 #ifndef zx_di_SvcMDAssociationDelete_EXT
 #define zx_di_SvcMDAssociationDelete_EXT
 #endif
-
 struct zx_di_SvcMDAssociationDelete_s {
   ZX_ELEM_EXT
   zx_di_SvcMDAssociationDelete_EXT
@@ -733,12 +672,8 @@ struct zx_di_SvcMDAssociationDelete_s {
 };
 
 #define zx_NEW_di_SvcMDAssociationDelete(c, father) (struct zx_di_SvcMDAssociationDelete_s*)zx_new_elem((c),(father),zx_di_SvcMDAssociationDelete_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDAssociationDelete(struct zx_ctx* c, struct zx_di_SvcMDAssociationDelete_s* x);
 int zx_DEC_ELEM_di_SvcMDAssociationDelete(struct zx_ctx* c, struct zx_di_SvcMDAssociationDelete_s* x);
-int zx_LEN_SO_di_SvcMDAssociationDelete(struct zx_ctx* c, struct zx_di_SvcMDAssociationDelete_s* x);
-char* zx_ENC_SO_di_SvcMDAssociationDelete(struct zx_ctx* c, struct zx_di_SvcMDAssociationDelete_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDAssociationDelete(struct zx_ctx* c, struct zx_di_SvcMDAssociationDelete_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDAssociationDelete_s* zx_DEEP_CLONE_di_SvcMDAssociationDelete(struct zx_ctx* c, struct zx_di_SvcMDAssociationDelete_s* x, int dup_strs);
@@ -762,7 +697,7 @@ void zx_di_SvcMDAssociationDelete_PUT_SvcMDID(struct zx_di_SvcMDAssociationDelet
 
 void zx_di_SvcMDAssociationDelete_ADD_SvcMDID(struct zx_di_SvcMDAssociationDelete_s* x, int n, struct zx_elem_s* z);
 
-void zx_di_SvcMDAssociationDelete_DEL_SvcMDID(struct zx_di_SvcMDAssociationDelete_s* x, int n);
+void zx_di_SvcMDAssociationDelete_DEL_SvcMDID(struct zx_di_SvcMDAssociationDelete_s* x,int n);
 
 void zx_di_SvcMDAssociationDelete_REV_SvcMDID(struct zx_di_SvcMDAssociationDelete_s* x);
 
@@ -772,7 +707,6 @@ void zx_di_SvcMDAssociationDelete_REV_SvcMDID(struct zx_di_SvcMDAssociationDelet
 #ifndef zx_di_SvcMDAssociationDeleteResponse_EXT
 #define zx_di_SvcMDAssociationDeleteResponse_EXT
 #endif
-
 struct zx_di_SvcMDAssociationDeleteResponse_s {
   ZX_ELEM_EXT
   zx_di_SvcMDAssociationDeleteResponse_EXT
@@ -780,12 +714,8 @@ struct zx_di_SvcMDAssociationDeleteResponse_s {
 };
 
 #define zx_NEW_di_SvcMDAssociationDeleteResponse(c, father) (struct zx_di_SvcMDAssociationDeleteResponse_s*)zx_new_elem((c),(father),zx_di_SvcMDAssociationDeleteResponse_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDAssociationDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationDeleteResponse_s* x);
 int zx_DEC_ELEM_di_SvcMDAssociationDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationDeleteResponse_s* x);
-int zx_LEN_SO_di_SvcMDAssociationDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationDeleteResponse_s* x);
-char* zx_ENC_SO_di_SvcMDAssociationDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationDeleteResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDAssociationDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationDeleteResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDAssociationDeleteResponse_s* zx_DEEP_CLONE_di_SvcMDAssociationDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationDeleteResponse_s* x, int dup_strs);
@@ -819,7 +749,6 @@ void zx_di_SvcMDAssociationDeleteResponse_REV_Status(struct zx_di_SvcMDAssociati
 #ifndef zx_di_SvcMDAssociationQuery_EXT
 #define zx_di_SvcMDAssociationQuery_EXT
 #endif
-
 struct zx_di_SvcMDAssociationQuery_s {
   ZX_ELEM_EXT
   zx_di_SvcMDAssociationQuery_EXT
@@ -827,12 +756,8 @@ struct zx_di_SvcMDAssociationQuery_s {
 };
 
 #define zx_NEW_di_SvcMDAssociationQuery(c, father) (struct zx_di_SvcMDAssociationQuery_s*)zx_new_elem((c),(father),zx_di_SvcMDAssociationQuery_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDAssociationQuery(struct zx_ctx* c, struct zx_di_SvcMDAssociationQuery_s* x);
 int zx_DEC_ELEM_di_SvcMDAssociationQuery(struct zx_ctx* c, struct zx_di_SvcMDAssociationQuery_s* x);
-int zx_LEN_SO_di_SvcMDAssociationQuery(struct zx_ctx* c, struct zx_di_SvcMDAssociationQuery_s* x);
-char* zx_ENC_SO_di_SvcMDAssociationQuery(struct zx_ctx* c, struct zx_di_SvcMDAssociationQuery_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDAssociationQuery(struct zx_ctx* c, struct zx_di_SvcMDAssociationQuery_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDAssociationQuery_s* zx_DEEP_CLONE_di_SvcMDAssociationQuery(struct zx_ctx* c, struct zx_di_SvcMDAssociationQuery_s* x, int dup_strs);
@@ -856,7 +781,7 @@ void zx_di_SvcMDAssociationQuery_PUT_SvcMDID(struct zx_di_SvcMDAssociationQuery_
 
 void zx_di_SvcMDAssociationQuery_ADD_SvcMDID(struct zx_di_SvcMDAssociationQuery_s* x, int n, struct zx_elem_s* z);
 
-void zx_di_SvcMDAssociationQuery_DEL_SvcMDID(struct zx_di_SvcMDAssociationQuery_s* x, int n);
+void zx_di_SvcMDAssociationQuery_DEL_SvcMDID(struct zx_di_SvcMDAssociationQuery_s* x,int n);
 
 void zx_di_SvcMDAssociationQuery_REV_SvcMDID(struct zx_di_SvcMDAssociationQuery_s* x);
 
@@ -866,7 +791,6 @@ void zx_di_SvcMDAssociationQuery_REV_SvcMDID(struct zx_di_SvcMDAssociationQuery_
 #ifndef zx_di_SvcMDAssociationQueryResponse_EXT
 #define zx_di_SvcMDAssociationQueryResponse_EXT
 #endif
-
 struct zx_di_SvcMDAssociationQueryResponse_s {
   ZX_ELEM_EXT
   zx_di_SvcMDAssociationQueryResponse_EXT
@@ -875,12 +799,8 @@ struct zx_di_SvcMDAssociationQueryResponse_s {
 };
 
 #define zx_NEW_di_SvcMDAssociationQueryResponse(c, father) (struct zx_di_SvcMDAssociationQueryResponse_s*)zx_new_elem((c),(father),zx_di_SvcMDAssociationQueryResponse_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDAssociationQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationQueryResponse_s* x);
 int zx_DEC_ELEM_di_SvcMDAssociationQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationQueryResponse_s* x);
-int zx_LEN_SO_di_SvcMDAssociationQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationQueryResponse_s* x);
-char* zx_ENC_SO_di_SvcMDAssociationQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationQueryResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDAssociationQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationQueryResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDAssociationQueryResponse_s* zx_DEEP_CLONE_di_SvcMDAssociationQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDAssociationQueryResponse_s* x, int dup_strs);
@@ -911,7 +831,7 @@ void zx_di_SvcMDAssociationQueryResponse_ADD_Status(struct zx_di_SvcMDAssociatio
 void zx_di_SvcMDAssociationQueryResponse_ADD_SvcMDID(struct zx_di_SvcMDAssociationQueryResponse_s* x, int n, struct zx_elem_s* z);
 
 void zx_di_SvcMDAssociationQueryResponse_DEL_Status(struct zx_di_SvcMDAssociationQueryResponse_s* x, int n);
-void zx_di_SvcMDAssociationQueryResponse_DEL_SvcMDID(struct zx_di_SvcMDAssociationQueryResponse_s* x, int n);
+void zx_di_SvcMDAssociationQueryResponse_DEL_SvcMDID(struct zx_di_SvcMDAssociationQueryResponse_s* x,int n);
 
 void zx_di_SvcMDAssociationQueryResponse_REV_Status(struct zx_di_SvcMDAssociationQueryResponse_s* x);
 void zx_di_SvcMDAssociationQueryResponse_REV_SvcMDID(struct zx_di_SvcMDAssociationQueryResponse_s* x);
@@ -922,7 +842,6 @@ void zx_di_SvcMDAssociationQueryResponse_REV_SvcMDID(struct zx_di_SvcMDAssociati
 #ifndef zx_di_SvcMDDelete_EXT
 #define zx_di_SvcMDDelete_EXT
 #endif
-
 struct zx_di_SvcMDDelete_s {
   ZX_ELEM_EXT
   zx_di_SvcMDDelete_EXT
@@ -930,12 +849,8 @@ struct zx_di_SvcMDDelete_s {
 };
 
 #define zx_NEW_di_SvcMDDelete(c, father) (struct zx_di_SvcMDDelete_s*)zx_new_elem((c),(father),zx_di_SvcMDDelete_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDDelete(struct zx_ctx* c, struct zx_di_SvcMDDelete_s* x);
 int zx_DEC_ELEM_di_SvcMDDelete(struct zx_ctx* c, struct zx_di_SvcMDDelete_s* x);
-int zx_LEN_SO_di_SvcMDDelete(struct zx_ctx* c, struct zx_di_SvcMDDelete_s* x);
-char* zx_ENC_SO_di_SvcMDDelete(struct zx_ctx* c, struct zx_di_SvcMDDelete_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDDelete(struct zx_ctx* c, struct zx_di_SvcMDDelete_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDDelete_s* zx_DEEP_CLONE_di_SvcMDDelete(struct zx_ctx* c, struct zx_di_SvcMDDelete_s* x, int dup_strs);
@@ -959,7 +874,7 @@ void zx_di_SvcMDDelete_PUT_SvcMDID(struct zx_di_SvcMDDelete_s* x, int n, struct 
 
 void zx_di_SvcMDDelete_ADD_SvcMDID(struct zx_di_SvcMDDelete_s* x, int n, struct zx_elem_s* z);
 
-void zx_di_SvcMDDelete_DEL_SvcMDID(struct zx_di_SvcMDDelete_s* x, int n);
+void zx_di_SvcMDDelete_DEL_SvcMDID(struct zx_di_SvcMDDelete_s* x,int n);
 
 void zx_di_SvcMDDelete_REV_SvcMDID(struct zx_di_SvcMDDelete_s* x);
 
@@ -969,7 +884,6 @@ void zx_di_SvcMDDelete_REV_SvcMDID(struct zx_di_SvcMDDelete_s* x);
 #ifndef zx_di_SvcMDDeleteResponse_EXT
 #define zx_di_SvcMDDeleteResponse_EXT
 #endif
-
 struct zx_di_SvcMDDeleteResponse_s {
   ZX_ELEM_EXT
   zx_di_SvcMDDeleteResponse_EXT
@@ -977,12 +891,8 @@ struct zx_di_SvcMDDeleteResponse_s {
 };
 
 #define zx_NEW_di_SvcMDDeleteResponse(c, father) (struct zx_di_SvcMDDeleteResponse_s*)zx_new_elem((c),(father),zx_di_SvcMDDeleteResponse_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDDeleteResponse_s* x);
 int zx_DEC_ELEM_di_SvcMDDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDDeleteResponse_s* x);
-int zx_LEN_SO_di_SvcMDDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDDeleteResponse_s* x);
-char* zx_ENC_SO_di_SvcMDDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDDeleteResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDDeleteResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDDeleteResponse_s* zx_DEEP_CLONE_di_SvcMDDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDDeleteResponse_s* x, int dup_strs);
@@ -1016,7 +926,6 @@ void zx_di_SvcMDDeleteResponse_REV_Status(struct zx_di_SvcMDDeleteResponse_s* x)
 #ifndef zx_di_SvcMDQuery_EXT
 #define zx_di_SvcMDQuery_EXT
 #endif
-
 struct zx_di_SvcMDQuery_s {
   ZX_ELEM_EXT
   zx_di_SvcMDQuery_EXT
@@ -1024,12 +933,8 @@ struct zx_di_SvcMDQuery_s {
 };
 
 #define zx_NEW_di_SvcMDQuery(c, father) (struct zx_di_SvcMDQuery_s*)zx_new_elem((c),(father),zx_di_SvcMDQuery_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDQuery(struct zx_ctx* c, struct zx_di_SvcMDQuery_s* x);
 int zx_DEC_ELEM_di_SvcMDQuery(struct zx_ctx* c, struct zx_di_SvcMDQuery_s* x);
-int zx_LEN_SO_di_SvcMDQuery(struct zx_ctx* c, struct zx_di_SvcMDQuery_s* x);
-char* zx_ENC_SO_di_SvcMDQuery(struct zx_ctx* c, struct zx_di_SvcMDQuery_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDQuery(struct zx_ctx* c, struct zx_di_SvcMDQuery_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDQuery_s* zx_DEEP_CLONE_di_SvcMDQuery(struct zx_ctx* c, struct zx_di_SvcMDQuery_s* x, int dup_strs);
@@ -1053,7 +958,7 @@ void zx_di_SvcMDQuery_PUT_SvcMDID(struct zx_di_SvcMDQuery_s* x, int n, struct zx
 
 void zx_di_SvcMDQuery_ADD_SvcMDID(struct zx_di_SvcMDQuery_s* x, int n, struct zx_elem_s* z);
 
-void zx_di_SvcMDQuery_DEL_SvcMDID(struct zx_di_SvcMDQuery_s* x, int n);
+void zx_di_SvcMDQuery_DEL_SvcMDID(struct zx_di_SvcMDQuery_s* x,int n);
 
 void zx_di_SvcMDQuery_REV_SvcMDID(struct zx_di_SvcMDQuery_s* x);
 
@@ -1063,7 +968,6 @@ void zx_di_SvcMDQuery_REV_SvcMDID(struct zx_di_SvcMDQuery_s* x);
 #ifndef zx_di_SvcMDQueryResponse_EXT
 #define zx_di_SvcMDQueryResponse_EXT
 #endif
-
 struct zx_di_SvcMDQueryResponse_s {
   ZX_ELEM_EXT
   zx_di_SvcMDQueryResponse_EXT
@@ -1072,12 +976,8 @@ struct zx_di_SvcMDQueryResponse_s {
 };
 
 #define zx_NEW_di_SvcMDQueryResponse(c, father) (struct zx_di_SvcMDQueryResponse_s*)zx_new_elem((c),(father),zx_di_SvcMDQueryResponse_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDQueryResponse_s* x);
 int zx_DEC_ELEM_di_SvcMDQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDQueryResponse_s* x);
-int zx_LEN_SO_di_SvcMDQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDQueryResponse_s* x);
-char* zx_ENC_SO_di_SvcMDQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDQueryResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDQueryResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDQueryResponse_s* zx_DEEP_CLONE_di_SvcMDQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDQueryResponse_s* x, int dup_strs);
@@ -1119,7 +1019,6 @@ void zx_di_SvcMDQueryResponse_REV_SvcMD(struct zx_di_SvcMDQueryResponse_s* x);
 #ifndef zx_di_SvcMDRegister_EXT
 #define zx_di_SvcMDRegister_EXT
 #endif
-
 struct zx_di_SvcMDRegister_s {
   ZX_ELEM_EXT
   zx_di_SvcMDRegister_EXT
@@ -1127,12 +1026,8 @@ struct zx_di_SvcMDRegister_s {
 };
 
 #define zx_NEW_di_SvcMDRegister(c, father) (struct zx_di_SvcMDRegister_s*)zx_new_elem((c),(father),zx_di_SvcMDRegister_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDRegister(struct zx_ctx* c, struct zx_di_SvcMDRegister_s* x);
 int zx_DEC_ELEM_di_SvcMDRegister(struct zx_ctx* c, struct zx_di_SvcMDRegister_s* x);
-int zx_LEN_SO_di_SvcMDRegister(struct zx_ctx* c, struct zx_di_SvcMDRegister_s* x);
-char* zx_ENC_SO_di_SvcMDRegister(struct zx_ctx* c, struct zx_di_SvcMDRegister_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDRegister(struct zx_ctx* c, struct zx_di_SvcMDRegister_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDRegister_s* zx_DEEP_CLONE_di_SvcMDRegister(struct zx_ctx* c, struct zx_di_SvcMDRegister_s* x, int dup_strs);
@@ -1166,7 +1061,6 @@ void zx_di_SvcMDRegister_REV_SvcMD(struct zx_di_SvcMDRegister_s* x);
 #ifndef zx_di_SvcMDRegisterResponse_EXT
 #define zx_di_SvcMDRegisterResponse_EXT
 #endif
-
 struct zx_di_SvcMDRegisterResponse_s {
   ZX_ELEM_EXT
   zx_di_SvcMDRegisterResponse_EXT
@@ -1176,12 +1070,8 @@ struct zx_di_SvcMDRegisterResponse_s {
 };
 
 #define zx_NEW_di_SvcMDRegisterResponse(c, father) (struct zx_di_SvcMDRegisterResponse_s*)zx_new_elem((c),(father),zx_di_SvcMDRegisterResponse_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDRegisterResponse(struct zx_ctx* c, struct zx_di_SvcMDRegisterResponse_s* x);
 int zx_DEC_ELEM_di_SvcMDRegisterResponse(struct zx_ctx* c, struct zx_di_SvcMDRegisterResponse_s* x);
-int zx_LEN_SO_di_SvcMDRegisterResponse(struct zx_ctx* c, struct zx_di_SvcMDRegisterResponse_s* x);
-char* zx_ENC_SO_di_SvcMDRegisterResponse(struct zx_ctx* c, struct zx_di_SvcMDRegisterResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDRegisterResponse(struct zx_ctx* c, struct zx_di_SvcMDRegisterResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDRegisterResponse_s* zx_DEEP_CLONE_di_SvcMDRegisterResponse(struct zx_ctx* c, struct zx_di_SvcMDRegisterResponse_s* x, int dup_strs);
@@ -1218,7 +1108,7 @@ void zx_di_SvcMDRegisterResponse_ADD_SvcMDID(struct zx_di_SvcMDRegisterResponse_
 void zx_di_SvcMDRegisterResponse_ADD_Keys(struct zx_di_SvcMDRegisterResponse_s* x, int n, struct zx_di_Keys_s* z);
 
 void zx_di_SvcMDRegisterResponse_DEL_Status(struct zx_di_SvcMDRegisterResponse_s* x, int n);
-void zx_di_SvcMDRegisterResponse_DEL_SvcMDID(struct zx_di_SvcMDRegisterResponse_s* x, int n);
+void zx_di_SvcMDRegisterResponse_DEL_SvcMDID(struct zx_di_SvcMDRegisterResponse_s* x,int n);
 void zx_di_SvcMDRegisterResponse_DEL_Keys(struct zx_di_SvcMDRegisterResponse_s* x, int n);
 
 void zx_di_SvcMDRegisterResponse_REV_Status(struct zx_di_SvcMDRegisterResponse_s* x);
@@ -1231,7 +1121,6 @@ void zx_di_SvcMDRegisterResponse_REV_Keys(struct zx_di_SvcMDRegisterResponse_s* 
 #ifndef zx_di_SvcMDReplace_EXT
 #define zx_di_SvcMDReplace_EXT
 #endif
-
 struct zx_di_SvcMDReplace_s {
   ZX_ELEM_EXT
   zx_di_SvcMDReplace_EXT
@@ -1239,12 +1128,8 @@ struct zx_di_SvcMDReplace_s {
 };
 
 #define zx_NEW_di_SvcMDReplace(c, father) (struct zx_di_SvcMDReplace_s*)zx_new_elem((c),(father),zx_di_SvcMDReplace_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDReplace(struct zx_ctx* c, struct zx_di_SvcMDReplace_s* x);
 int zx_DEC_ELEM_di_SvcMDReplace(struct zx_ctx* c, struct zx_di_SvcMDReplace_s* x);
-int zx_LEN_SO_di_SvcMDReplace(struct zx_ctx* c, struct zx_di_SvcMDReplace_s* x);
-char* zx_ENC_SO_di_SvcMDReplace(struct zx_ctx* c, struct zx_di_SvcMDReplace_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDReplace(struct zx_ctx* c, struct zx_di_SvcMDReplace_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDReplace_s* zx_DEEP_CLONE_di_SvcMDReplace(struct zx_ctx* c, struct zx_di_SvcMDReplace_s* x, int dup_strs);
@@ -1278,7 +1163,6 @@ void zx_di_SvcMDReplace_REV_SvcMD(struct zx_di_SvcMDReplace_s* x);
 #ifndef zx_di_SvcMDReplaceResponse_EXT
 #define zx_di_SvcMDReplaceResponse_EXT
 #endif
-
 struct zx_di_SvcMDReplaceResponse_s {
   ZX_ELEM_EXT
   zx_di_SvcMDReplaceResponse_EXT
@@ -1286,12 +1170,8 @@ struct zx_di_SvcMDReplaceResponse_s {
 };
 
 #define zx_NEW_di_SvcMDReplaceResponse(c, father) (struct zx_di_SvcMDReplaceResponse_s*)zx_new_elem((c),(father),zx_di_SvcMDReplaceResponse_ELEM)
-
 int zx_DEC_ATTR_di_SvcMDReplaceResponse(struct zx_ctx* c, struct zx_di_SvcMDReplaceResponse_s* x);
 int zx_DEC_ELEM_di_SvcMDReplaceResponse(struct zx_ctx* c, struct zx_di_SvcMDReplaceResponse_s* x);
-int zx_LEN_SO_di_SvcMDReplaceResponse(struct zx_ctx* c, struct zx_di_SvcMDReplaceResponse_s* x);
-char* zx_ENC_SO_di_SvcMDReplaceResponse(struct zx_ctx* c, struct zx_di_SvcMDReplaceResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_di_SvcMDReplaceResponse(struct zx_ctx* c, struct zx_di_SvcMDReplaceResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_di_SvcMDReplaceResponse_s* zx_DEEP_CLONE_di_SvcMDReplaceResponse(struct zx_ctx* c, struct zx_di_SvcMDReplaceResponse_s* x, int dup_strs);

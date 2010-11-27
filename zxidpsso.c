@@ -51,7 +51,7 @@ int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issue
   if (sign) {
     ZERO(&refs, sizeof(refs));
     refs.id = &a7n->ID->g;
-    refs.canon = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
+    refs.canon = zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert anoint a7n"))
       a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
     zx_str_free(cf->ctx, refs.canon);
@@ -75,7 +75,7 @@ int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issue
   if (cf->log_issue_a7n) {
     logpath = zxlog_path(cf, issued_to, &a7n->ID->g, ZXLOG_ISSUE_DIR, ZXLOG_A7N_KIND, 1);
     if (logpath) {
-      ss = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
+      ss = zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
       if (zxlog_dup_check(cf, logpath, "IdP POST Assertion")) {
 	ERR("Duplicate Assertion ID(%.*s)", a7n->ID->g.len, a7n->ID->g.s);
 	if (cf->dup_a7n_fatal) {
@@ -114,7 +114,7 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
   if (sign) {
     ZERO(&refs, sizeof(refs));
     refs.id = &resp->ID->g;
-    refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, resp);
+    refs.canon = zx_EASY_ENC_elem(cf->ctx, &resp->gg);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert anoint resp"))
       resp->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
     zx_str_free(cf->ctx, refs.canon);
@@ -135,7 +135,7 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
   if (cf->log_issue_msg) {
     logpath = zxlog_path(cf, ZX_GET_CONTENT(ar->Issuer), &resp->ID->g, ZXLOG_ISSUE_DIR, ZXLOG_MSG_KIND,1);
     if (logpath) {
-      ss = zx_EASY_ENC_SO_sp_Response(cf->ctx, resp);
+      ss = zx_EASY_ENC_elem(cf->ctx, &resp->gg);
       if (zxlog_dup_check(cf, logpath, "IdP POST Response")) {
 	ERR("Duplicate Response ID(%.*s)", resp->ID->g.len, resp->ID->g.s);
 	if (cf->dup_msg_fatal) {
@@ -157,9 +157,8 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
  * The input is temporarily modified and then restored. Do not pass const string. */
 
 /* Called by:  zxid_mk_user_a7n_to_sp x4 */
-struct zx_sa_Attribute_s* zxid_add_ldif_attrs(zxid_conf* cf, struct zx_sa_Attribute_s* prev, char* p, char* lk)
+void zxid_add_ldif_attrs(zxid_conf* cf, struct zx_elem_s* father, char* p, char* lk)
 {
-  struct zx_sa_Attribute_s* at = prev;
   char* name;
   char* val;
 
@@ -175,9 +174,7 @@ struct zx_sa_Attribute_s* zxid_add_ldif_attrs(zxid_conf* cf, struct zx_sa_Attrib
       *p = 0;
 
     D("%s: ATTR(%s)=VAL(%s)", lk, name, val);
-    at = zxid_mk_attribute(cf, name, val);
-    ZX_NEXT(at) = (void*)prev;
-    prev = at;
+    zxid_mk_attribute(cf, father, name, val);
 
     val[-2] = ':'; /* restore */
     if (p)
@@ -185,7 +182,6 @@ struct zx_sa_Attribute_s* zxid_add_ldif_attrs(zxid_conf* cf, struct zx_sa_Attrib
     else
       break;
   }
-  return at;
 }
 
 #define ZXID_ADD_BS_LVL_LIM 2  /* 2=only add full bootstraps on SSO. Only add di there after. */
@@ -193,7 +189,7 @@ struct zx_sa_Attribute_s* zxid_add_ldif_attrs(zxid_conf* cf, struct zx_sa_Attrib
 /*() Process .bs directory. See also zxid_di_query() */
 
 /* Called by:  zxid_idp_as_do x2, zxid_mk_user_a7n_to_sp x2 */
-struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* path, struct zx_sa_Attribute_s* bootstraps, int bs_lvl)
+void zxid_gen_boots(zxid_conf* cf, struct zx_elem_s* father, const char* uid, char* path, int bs_lvl)
 {
   struct timeval srcts = {0,501000};
   struct zx_sa_Attribute_s* at;
@@ -213,7 +209,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
   if (!bs_lvl) {
     D("bs_lvl=%d: nothing to add", bs_lvl);
     D_DEDENT("gen_bs: ");
-    return bootstraps;  /* Discovery EPRs do not need any bootstraps. */
+    return;  /* Discovery EPRs do not need any bootstraps. */
   }
   
   name_from_path(mdpath, sizeof(mdpath), "%s" ZXID_DIMD_DIR, cf->path);
@@ -224,7 +220,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
     perror("opendir to find bootstraps");
     ERR("Opening bootstrap directory failed path(%s)", path);
     D_DEDENT("gen_bs: ");
-    return bootstraps;
+    return;
   }
   
   while (de = readdir(dir)) {
@@ -275,10 +271,8 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
       goto next_file;
     
     D("ADD BOOTSTRAP url(%.*s) is_di=%d", ZX_GET_CONTENT_LEN(epr->Address), ZX_GET_CONTENT_S(epr->Address), is_di);
-    at = zxid_mk_attribute(cf, WSF20_DI_RO, 0);
+    at = zxid_mk_attribute(cf, father, WSF20_DI_RO, 0);
     at->AttributeValue->EndpointReference = epr;
-    ZX_NEXT(at) = (void*)bootstraps;
-    bootstraps = at;
     
     zxlog(cf, 0, &srcts, 0, 0, 0, 0 /*a7n->ID*/, 0 /*nameid->gg.content*/,"N","K", logop, uid, "gen_bs");
     
@@ -288,7 +282,6 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
   
   closedir(dir);
   D_DEDENT("gen_bs: ");
-  return bootstraps;
 }
 
 /*(i) Construct an assertion given user's attribute and bootstrap configuration.
@@ -302,8 +295,6 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
 zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, int bs_lvl)
 {
   zxid_a7n* a7n;
-  struct zx_sa_Subject_s* subj;
-  struct zx_sa_AuthnStatement_s* an_stmt;
   struct zx_sa_AttributeStatement_s* at_stmt;
   struct zx_sa_Attribute_s* at;
   char* buf;
@@ -312,47 +303,49 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
   D_INDENT("mka7n: ");
   D("sp_eid(%s)", sp_meta->eid);
 
-  subj = zxid_mk_subj(cf, sp_meta, nameid);
-  an_stmt = ses ? zxid_mk_an_stmt(cf, ses, sp_meta->eid) : 0;
-  at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx,0);
-  at_stmt->Attribute = zxid_mk_attribute(cf, "zxididp", ZXID_REL " " ZXID_COMPILE_DATE);
+  a7n = zxid_mk_a7n(cf, zx_dup_str(cf->ctx, sp_meta->eid), 0, 0, 0, 0);
+  a7n->Subject = zxid_mk_subj(cf, &a7n->gg, sp_meta, nameid);
+  a7n->AuthnStatement = ses ? zxid_mk_an_stmt(cf, ses, &a7n->gg, sp_meta->eid) : 0;
+  a7n->AttributeStatement = at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, &a7n->gg);
+  at_stmt->Attribute = zxid_mk_attribute(cf,&at_stmt->gg,"zxididp",ZXID_REL " " ZXID_COMPILE_DATE);
 
   if (cf->fedusername_suffix && cf->fedusername_suffix[0]) {
     snprintf(dir, sizeof(dir), "%.*s@%s", ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid), cf->fedusername_suffix);
     dir[sizeof(dir)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
-    at = zxid_mk_attribute(cf, "fedusername", zx_dup_cstr(cf->ctx, dir));
+    at = zxid_mk_attribute(cf, &at_stmt->gg, "fedusername", zx_dup_cstr(cf->ctx, dir));
     ZX_NEXT(at) = (void*)at_stmt->Attribute;
     at_stmt->Attribute = at;
     if (cf->idpatopt & 0x01) {
-      at = zxid_mk_attribute(cf, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, zx_dup_cstr(cf->ctx, dir));
-      at->NameFormat = zx_dup_attr(cf->ctx, zx_NameFormat_ATTR, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
-      ZX_NEXT(at) = (void*)at_stmt->Attribute;
-      at_stmt->Attribute = at;
+      at = zxid_mk_attribute(cf, &at_stmt->gg, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, zx_dup_cstr(cf->ctx, dir));
+      at->NameFormat = zx_ref_attr(cf->ctx, &at->gg, zx_NameFormat_ATTR, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
     }
   }
   buf = read_all_alloc(cf->ctx, "idpsso_uid_at", 0,0, "%s" ZXID_UID_DIR "%s/.bs/.at",cf->path,uid);
-  if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_uid_at");
+  if (buf)
+    zxid_add_ldif_attrs(cf, &at_stmt->gg, buf,"idpsso_uid_at");
   
-  buf = read_all_alloc(cf->ctx, "idpsso_uid_sp_at", 0, 0, "%s" ZXID_UID_DIR "%s/%s/.at" , cf->path, uid, sp_name_buf);
-  if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_uid_sp_at");
+  buf = read_all_alloc(cf->ctx, "idpsso_uid_sp_at", 0, 0, "%s" ZXID_UID_DIR "%s/%s/.at", cf->path, uid, sp_name_buf);
+  if (buf)
+    zxid_add_ldif_attrs(cf, &at_stmt->gg, buf,"idpsso_uid_sp_at");
 
   buf = read_all_alloc(cf->ctx, "idpsso_all_at", 0, 0, "%s" ZXID_UID_DIR ".all/.bs/.at", cf->path);
-  if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_all_at");
+  if (buf)
+    zxid_add_ldif_attrs(cf, &at_stmt->gg, buf,"idpsso_all_at");
 
-  buf = read_all_alloc(cf->ctx, "idpsso_all_sp_at", 0, 0, "%s" ZXID_UID_DIR ".all/%s/.at",cf->path,sp_name_buf);
-  if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_all_sp_at");
+  buf = read_all_alloc(cf->ctx, "idpsso_all_sp_at", 0, 0, "%s" ZXID_UID_DIR ".all/%s/.at", cf->path,sp_name_buf);
+  if (buf)
+    zxid_add_ldif_attrs(cf, &at_stmt->gg, buf,"idpsso_all_sp_at");
   D("sp_eid(%s) bs_lvl=%d", sp_meta->eid, bs_lvl);
   
   /* Process bootstraps */
 
   name_from_path(dir, sizeof(dir), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, uid);
-  at_stmt->Attribute = zxid_gen_boots(cf, uid, dir, at_stmt->Attribute, bs_lvl);
+  zxid_gen_boots(cf, &at_stmt->gg, uid, dir, bs_lvl);
   
   name_from_path(dir, sizeof(dir), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
-  at_stmt->Attribute = zxid_gen_boots(cf, uid, dir, at_stmt->Attribute, bs_lvl);
+  zxid_gen_boots(cf, &at_stmt->gg, uid, dir, bs_lvl);
   
-  D("sp_eid(%s)", sp_meta->eid);
-  a7n = zxid_mk_a7n(cf, zx_dup_str(cf->ctx, sp_meta->eid), subj, an_stmt, at_stmt, 0);
+  zx_reverse_elem_lists(&a7n->gg);
   D_DEDENT("mka7n: ");
   return a7n;
 }
@@ -387,9 +380,9 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
       
       nid = zxid_mk_id(cf, "F", ZXID_ID_BITS);
       nameid = zx_NEW_sa_NameID(cf->ctx,0);
-      nameid->Format = zx_ref_attr(cf->ctx, zx_Format_ATTR, SAML2_PERSISTENT_NID_FMT);
-      nameid->NameQualifier = idp_eid = zxid_my_entity_id_attr(cf, zx_NameQualifier_ATTR);
-      nameid->SPNameQualifier = zx_ref_len_attr(cf->ctx, zx_SPNameQualifier_ATTR, affil->len, affil->s);
+      nameid->Format = zx_ref_attr(cf->ctx, &nameid->gg, zx_Format_ATTR, SAML2_PERSISTENT_NID_FMT);
+      nameid->NameQualifier = idp_eid = zxid_my_entity_id_attr(cf, &nameid->gg, zx_NameQualifier_ATTR);
+      nameid->SPNameQualifier = zx_ref_len_attr(cf->ctx, &nameid->gg, zx_SPNameQualifier_ATTR, affil->len, affil->s);
       zx_add_content(cf->ctx, &nameid->gg, nid);
 
       if (!write_all_path_fmt("put_fed", ZXID_MAX_USER, buf,
@@ -452,7 +445,7 @@ void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_
   char dir[ZXID_MAX_DIR];
 
   D_INDENT("mk_trans: ");
-  nameid->Format = zx_dup_attr(cf->ctx, zx_Format_ATTR, SAML2_TRANSIENT_NID_FMT);
+  nameid->Format = zx_ref_attr(cf->ctx, &nameid->gg, zx_Format_ATTR, SAML2_TRANSIENT_NID_FMT);
   zx_add_content(cf->ctx, &nameid->gg, (nid = zxid_mk_id(cf, "T", ZXID_ID_BITS)));
   
   /* Create entry for reverse mapping from pseudonym nid to uid */
@@ -543,7 +536,7 @@ char* zxid_add_fed_tok_to_epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int
 
   if (!epr->Metadata->SecurityContext->SecurityMechID) {
     epr->Metadata->SecurityContext->SecurityMechID
-      = zx_dup_simple_elem(cf->ctx, &epr->Metadata->SecurityContext->gg, zx_di_SecurityMechID_ELEM, WSF20_SEC_MECH_TLS_BEARER);
+      = zx_dup_elem(cf->ctx, &epr->Metadata->SecurityContext->gg, zx_di_SecurityMechID_ELEM, WSF20_SEC_MECH_TLS_BEARER);
   }
 
   if (!epr->Metadata->SecurityContext->Token) {
@@ -551,8 +544,10 @@ char* zxid_add_fed_tok_to_epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int
   }
   
   if (cf->di_a7n_enc) {
-    epr->Metadata->SecurityContext->Token->EncryptedAssertion = zxid_mk_enc_a7n(cf, a7n, sp_meta);
+    epr->Metadata->SecurityContext->Token->EncryptedAssertion
+      = zxid_mk_enc_a7n(cf, &epr->Metadata->SecurityContext->Token->gg, a7n, sp_meta);
   } else {
+    zx_add_kid(&epr->Metadata->SecurityContext->Token->gg, &a7n->gg);
     epr->Metadata->SecurityContext->Token->Assertion = a7n;
   }
   return logop;
@@ -613,10 +608,10 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
    * profile seems to make it mandatory. See profiles ll.554-560. */
 
   a7n->Subject->SubjectConfirmation = zx_NEW_sa_SubjectConfirmation(cf->ctx, &a7n->Subject->gg);
-  a7n->Subject->SubjectConfirmation->Method = zx_dup_attr(cf->ctx, zx_Method_ATTR, SAML2_BEARER);
+  a7n->Subject->SubjectConfirmation->Method = zx_ref_attr(cf->ctx, &a7n->Subject->SubjectConfirmation->gg, zx_Method_ATTR, SAML2_BEARER);
   a7n->Subject->SubjectConfirmation->SubjectConfirmationData = zx_NEW_sa_SubjectConfirmationData(cf->ctx, &a7n->Subject->SubjectConfirmation->gg);
   if (acsurl)
-    a7n->Subject->SubjectConfirmation->SubjectConfirmationData->Recipient = zx_ref_len_attr(cf->ctx, zx_Recipient_ATTR, acsurl->len, acsurl->s);
+    a7n->Subject->SubjectConfirmation->SubjectConfirmationData->Recipient = zx_ref_len_attr(cf->ctx, &a7n->Subject->SubjectConfirmation->SubjectConfirmationData->gg, zx_Recipient_ATTR, acsurl->len, acsurl->s);
   a7n->Subject->SubjectConfirmation->SubjectConfirmationData->NotOnOrAfter = a7n->Conditions->NotOnOrAfter;
 
   return a7n;
@@ -707,14 +702,15 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
     if (cf->sso_sign & ZXID_SSO_SIGN_A7N) {
       ZERO(&refs, sizeof(refs));
       refs.id = &a7n->ID->g;
-      refs.canon = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
+      refs.canon = zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert paos"))
 	a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
     }
     resp = zxid_mk_saml_resp(cf);
     if (cf->post_a7n_enc) {
-      resp->EncryptedAssertion = zxid_mk_enc_a7n(cf, a7n, sp_meta);
+      resp->EncryptedAssertion = zxid_mk_enc_a7n(cf, &resp->gg, a7n, sp_meta);
     } else {
+      zx_add_kid(&resp->gg, &a7n->gg);
       resp->Assertion = a7n;
     }
     payload = zxid_anoint_sso_resp(cf, cf->sso_sign & ZXID_SSO_SIGN_RESP, resp, ar);
@@ -728,14 +724,14 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
 
     e->Header = zx_NEW_e_Header(cf->ctx, &e->gg);
     e->Header->ecp_Response = zx_NEW_ecp_Response(cf->ctx, &e->Header->gg);
-    e->Header->ecp_Response->mustUnderstand = zx_dup_attr(cf->ctx, zx_e_mustUnderstand_ATTR, "1");
-    e->Header->ecp_Response->actor = zx_dup_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-    e->Header->ecp_Response->AssertionConsumerServiceURL = zx_ref_len_attr(cf->ctx, zx_AssertionConsumerServiceURL_ATTR, acsurl->len, acsurl->s);
+    e->Header->ecp_Response->mustUnderstand = zx_dup_attr(cf->ctx, &e->Header->ecp_Response->gg, zx_e_mustUnderstand_ATTR, "1");
+    e->Header->ecp_Response->actor = zx_ref_attr(cf->ctx, &e->Header->ecp_Response->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+    e->Header->ecp_Response->AssertionConsumerServiceURL = zx_ref_len_attr(cf->ctx, &e->Header->ecp_Response->gg, zx_AssertionConsumerServiceURL_ATTR, acsurl->len, acsurl->s);
 
     e->Body = zx_NEW_e_Body(cf->ctx, &e->gg);
     e->Body->Response = resp;
     
-    ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, e);
+    ss = zx_EASY_ENC_elem(cf->ctx, &e->gg);
 
     zxlog(cf, 0, &srcts, 0, ZX_GET_CONTENT(ar->Issuer), 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, ses->uid, "PAOS2");
 
@@ -753,8 +749,9 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
       return zx_dup_str(cf->ctx, "* ERR");
     resp = zxid_mk_saml_resp(cf);
     if (cf->post_a7n_enc) {
-      resp->EncryptedAssertion = zxid_mk_enc_a7n(cf, a7n, sp_meta);
+      resp->EncryptedAssertion = zxid_mk_enc_a7n(cf, &resp->gg, a7n, sp_meta);
     } else {
+      zx_add_kid(&resp->gg, &a7n->gg);
       resp->Assertion = a7n;
     }
     payload = zxid_anoint_sso_resp(cf, 0, resp, ar);
@@ -783,8 +780,9 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
        * After publication it was understood that the SHOULD NOT could be eliminated
        * if EncryptedAssertion is used. */
 
-      resp->EncryptedAssertion = zxid_mk_enc_a7n(cf, a7n, sp_meta);
+      resp->EncryptedAssertion = zxid_mk_enc_a7n(cf, &resp->gg, a7n, sp_meta);
     } else {
+      zx_add_kid(&resp->gg, &a7n->gg);
       resp->Assertion = a7n;
     }
     payload = zxid_anoint_sso_resp(cf, cf->sso_sign & ZXID_SSO_SIGN_RESP, resp, ar);
@@ -814,8 +812,9 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
       return zx_dup_str(cf->ctx, "* ERR");
     resp = zxid_mk_saml_resp(cf);
     if (0) {
-      resp->EncryptedAssertion = zxid_mk_enc_a7n(cf, a7n, sp_meta);
+      resp->EncryptedAssertion = zxid_mk_enc_a7n(cf, &resp->gg, a7n, sp_meta);
     } else {
+      zx_add_kid(&resp->gg, &a7n->gg);
       resp->Assertion = a7n;
     }
     payload = zxid_anoint_sso_resp(cf, cf->sso_sign & ZXID_SSO_SIGN_RESP, resp, ar);
@@ -849,6 +848,7 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
   zxid_cgi cgi;
   zxid_ses ses;
   struct zx_as_SASLResponse_s* res = zx_NEW_as_SASLResponse(cf->ctx,0);
+  struct zx_sa_AttributeStatement_s* at_stmt;
   struct zx_sa_Attribute_s* at;
   char* q;
   char* u;
@@ -861,7 +861,7 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
 
   if (SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(ZX_GET_CONTENT_LEN(req->Data)) >= sizeof(buf)-1) {
     ERR("Too long username and password data %p", ZX_GET_CONTENT(req->Data));
-    res->Status = zxid_mk_lu_Status(cf, "ERR", 0, 0, 0);
+    res->Status = zxid_mk_lu_Status(cf, &res->gg, "ERR", 0, 0, 0);
   }
   q = unbase64_raw(ZX_GET_CONTENT_S(req->Data), ZX_GET_CONTENT_S(req->Data) + ZX_GET_CONTENT_LEN(req->Data), buf, zx_std_index_64);
   *q = 0;
@@ -873,31 +873,24 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
 
   if (zxid_pw_authn(cf, &cgi, &ses)) {
     D_INDENT("as_ok: ");
+    at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0);
     name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, cgi.uid);
-    at = zxid_gen_boots(cf, cgi.uid, path, 0, 1);
-    for (;
-	 at && at->gg.g.tok == zx_sa_Attribute_ELEM;
-	 at = (struct zx_sa_Attribute_s*)at->gg.g.n) {
-      at->AttributeValue->EndpointReference->gg.g.n = (void*)res->EndpointReference;
-      res->EndpointReference = at->AttributeValue->EndpointReference;
-    }
-    /* *** Free the attribute chain, but do not free EPRs */
-
+    zxid_gen_boots(cf, &at_stmt->gg, cgi.uid, path, 1);
     name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
-    at = zxid_gen_boots(cf, cgi.uid, path, 0, 1);
-    for (;
-	 at && at->gg.g.tok == zx_sa_Attribute_ELEM;
-	 at = (struct zx_sa_Attribute_s*)at->gg.g.n) {
-      at->AttributeValue->EndpointReference->gg.g.n = (void*)res->EndpointReference;
+    zxid_gen_boots(cf, &at_stmt->gg, cgi.uid, path, 1);
+
+    /* Kludgy extraction of the EPRs from the attributes. */
+
+    for (at = at_stmt->Attribute; at; at = (struct zx_sa_Attribute_s*)at->gg.g.n)
       res->EndpointReference = at->AttributeValue->EndpointReference;
-    }
     /* *** Free the attribute chain, but do not free EPRs */
-    
-    res->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
+    ZX_FREE(cf->ctx, at_stmt);
+
+    res->Status = zxid_mk_lu_Status(cf, &res->gg, "OK", 0, 0, 0);
     D_DEDENT("as_ok: ");
   } else {
     ERR("Authentication failed uid(%s) pw(%s)", cgi.uid, cgi.pw);
-    res->Status = zxid_mk_lu_Status(cf, "ERR", 0, 0, 0);
+    res->Status = zxid_mk_lu_Status(cf, &res->gg, "ERR", 0, 0, 0);
   }
   return res;
 }

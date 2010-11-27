@@ -23,7 +23,6 @@
 #ifndef zx_wsc_DerivedKeyToken_EXT
 #define zx_wsc_DerivedKeyToken_EXT
 #endif
-
 struct zx_wsc_DerivedKeyToken_s {
   ZX_ELEM_EXT
   zx_wsc_DerivedKeyToken_EXT
@@ -39,12 +38,8 @@ struct zx_wsc_DerivedKeyToken_s {
 };
 
 #define zx_NEW_wsc_DerivedKeyToken(c, father) (struct zx_wsc_DerivedKeyToken_s*)zx_new_elem((c),(father),zx_wsc_DerivedKeyToken_ELEM)
-
 int zx_DEC_ATTR_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x);
 int zx_DEC_ELEM_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x);
-int zx_LEN_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x);
-char* zx_ENC_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsc_DerivedKeyToken_s* zx_DEEP_CLONE_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x, int dup_strs);
@@ -110,11 +105,11 @@ void zx_wsc_DerivedKeyToken_ADD_Nonce(struct zx_wsc_DerivedKeyToken_s* x, int n,
 
 void zx_wsc_DerivedKeyToken_DEL_SecurityTokenReference(struct zx_wsc_DerivedKeyToken_s* x, int n);
 void zx_wsc_DerivedKeyToken_DEL_Properties(struct zx_wsc_DerivedKeyToken_s* x, int n);
-void zx_wsc_DerivedKeyToken_DEL_Generation(struct zx_wsc_DerivedKeyToken_s* x, int n);
-void zx_wsc_DerivedKeyToken_DEL_Offset(struct zx_wsc_DerivedKeyToken_s* x, int n);
-void zx_wsc_DerivedKeyToken_DEL_Length(struct zx_wsc_DerivedKeyToken_s* x, int n);
-void zx_wsc_DerivedKeyToken_DEL_Label(struct zx_wsc_DerivedKeyToken_s* x, int n);
-void zx_wsc_DerivedKeyToken_DEL_Nonce(struct zx_wsc_DerivedKeyToken_s* x, int n);
+void zx_wsc_DerivedKeyToken_DEL_Generation(struct zx_wsc_DerivedKeyToken_s* x,int n);
+void zx_wsc_DerivedKeyToken_DEL_Offset(struct zx_wsc_DerivedKeyToken_s* x,int n);
+void zx_wsc_DerivedKeyToken_DEL_Length(struct zx_wsc_DerivedKeyToken_s* x,int n);
+void zx_wsc_DerivedKeyToken_DEL_Label(struct zx_wsc_DerivedKeyToken_s* x,int n);
+void zx_wsc_DerivedKeyToken_DEL_Nonce(struct zx_wsc_DerivedKeyToken_s* x,int n);
 
 void zx_wsc_DerivedKeyToken_REV_SecurityTokenReference(struct zx_wsc_DerivedKeyToken_s* x);
 void zx_wsc_DerivedKeyToken_REV_Properties(struct zx_wsc_DerivedKeyToken_s* x);
@@ -130,19 +125,14 @@ void zx_wsc_DerivedKeyToken_REV_Nonce(struct zx_wsc_DerivedKeyToken_s* x);
 #ifndef zx_wsc_Properties_EXT
 #define zx_wsc_Properties_EXT
 #endif
-
 struct zx_wsc_Properties_s {
   ZX_ELEM_EXT
   zx_wsc_Properties_EXT
 };
 
 #define zx_NEW_wsc_Properties(c, father) (struct zx_wsc_Properties_s*)zx_new_elem((c),(father),zx_wsc_Properties_ELEM)
-
 int zx_DEC_ATTR_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x);
 int zx_DEC_ELEM_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x);
-int zx_LEN_SO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x);
-char* zx_ENC_SO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsc_Properties_s* zx_DEEP_CLONE_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, int dup_strs);
@@ -168,7 +158,6 @@ int zx_WALK_WO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, v
 #ifndef zx_wsc_SecurityContextToken_EXT
 #define zx_wsc_SecurityContextToken_EXT
 #endif
-
 struct zx_wsc_SecurityContextToken_s {
   ZX_ELEM_EXT
   zx_wsc_SecurityContextToken_EXT
@@ -176,12 +165,8 @@ struct zx_wsc_SecurityContextToken_s {
 };
 
 #define zx_NEW_wsc_SecurityContextToken(c, father) (struct zx_wsc_SecurityContextToken_s*)zx_new_elem((c),(father),zx_wsc_SecurityContextToken_ELEM)
-
 int zx_DEC_ATTR_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x);
 int zx_DEC_ELEM_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x);
-int zx_LEN_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x);
-char* zx_ENC_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsc_SecurityContextToken_s* zx_DEEP_CLONE_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x, int dup_strs);

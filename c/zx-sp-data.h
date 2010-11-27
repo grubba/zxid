@@ -23,7 +23,6 @@
 #ifndef zx_sp_ArtifactResolve_EXT
 #define zx_sp_ArtifactResolve_EXT
 #endif
-
 struct zx_sp_ArtifactResolve_s {
   ZX_ELEM_EXT
   zx_sp_ArtifactResolve_EXT
@@ -39,12 +38,8 @@ struct zx_sp_ArtifactResolve_s {
 };
 
 #define zx_NEW_sp_ArtifactResolve(c, father) (struct zx_sp_ArtifactResolve_s*)zx_new_elem((c),(father),zx_sp_ArtifactResolve_ELEM)
-
 int zx_DEC_ATTR_sp_ArtifactResolve(struct zx_ctx* c, struct zx_sp_ArtifactResolve_s* x);
 int zx_DEC_ELEM_sp_ArtifactResolve(struct zx_ctx* c, struct zx_sp_ArtifactResolve_s* x);
-int zx_LEN_SO_sp_ArtifactResolve(struct zx_ctx* c, struct zx_sp_ArtifactResolve_s* x);
-char* zx_ENC_SO_sp_ArtifactResolve(struct zx_ctx* c, struct zx_sp_ArtifactResolve_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_ArtifactResolve(struct zx_ctx* c, struct zx_sp_ArtifactResolve_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_ArtifactResolve_s* zx_DEEP_CLONE_sp_ArtifactResolve(struct zx_ctx* c, struct zx_sp_ArtifactResolve_s* x, int dup_strs);
@@ -99,7 +94,7 @@ void zx_sp_ArtifactResolve_ADD_Artifact(struct zx_sp_ArtifactResolve_s* x, int n
 void zx_sp_ArtifactResolve_DEL_Issuer(struct zx_sp_ArtifactResolve_s* x, int n);
 void zx_sp_ArtifactResolve_DEL_Signature(struct zx_sp_ArtifactResolve_s* x, int n);
 void zx_sp_ArtifactResolve_DEL_Extensions(struct zx_sp_ArtifactResolve_s* x, int n);
-void zx_sp_ArtifactResolve_DEL_Artifact(struct zx_sp_ArtifactResolve_s* x, int n);
+void zx_sp_ArtifactResolve_DEL_Artifact(struct zx_sp_ArtifactResolve_s* x,int n);
 
 void zx_sp_ArtifactResolve_REV_Issuer(struct zx_sp_ArtifactResolve_s* x);
 void zx_sp_ArtifactResolve_REV_Signature(struct zx_sp_ArtifactResolve_s* x);
@@ -112,7 +107,6 @@ void zx_sp_ArtifactResolve_REV_Artifact(struct zx_sp_ArtifactResolve_s* x);
 #ifndef zx_sp_ArtifactResponse_EXT
 #define zx_sp_ArtifactResponse_EXT
 #endif
-
 struct zx_sp_ArtifactResponse_s {
   ZX_ELEM_EXT
   zx_sp_ArtifactResponse_EXT
@@ -130,12 +124,8 @@ struct zx_sp_ArtifactResponse_s {
 };
 
 #define zx_NEW_sp_ArtifactResponse(c, father) (struct zx_sp_ArtifactResponse_s*)zx_new_elem((c),(father),zx_sp_ArtifactResponse_ELEM)
-
 int zx_DEC_ATTR_sp_ArtifactResponse(struct zx_ctx* c, struct zx_sp_ArtifactResponse_s* x);
 int zx_DEC_ELEM_sp_ArtifactResponse(struct zx_ctx* c, struct zx_sp_ArtifactResponse_s* x);
-int zx_LEN_SO_sp_ArtifactResponse(struct zx_ctx* c, struct zx_sp_ArtifactResponse_s* x);
-char* zx_ENC_SO_sp_ArtifactResponse(struct zx_ctx* c, struct zx_sp_ArtifactResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_ArtifactResponse(struct zx_ctx* c, struct zx_sp_ArtifactResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_ArtifactResponse_s* zx_DEEP_CLONE_sp_ArtifactResponse(struct zx_ctx* c, struct zx_sp_ArtifactResponse_s* x, int dup_strs);
@@ -213,7 +203,6 @@ void zx_sp_ArtifactResponse_REV_Response(struct zx_sp_ArtifactResponse_s* x);
 #ifndef zx_sp_AssertionIDRequest_EXT
 #define zx_sp_AssertionIDRequest_EXT
 #endif
-
 struct zx_sp_AssertionIDRequest_s {
   ZX_ELEM_EXT
   zx_sp_AssertionIDRequest_EXT
@@ -229,12 +218,8 @@ struct zx_sp_AssertionIDRequest_s {
 };
 
 #define zx_NEW_sp_AssertionIDRequest(c, father) (struct zx_sp_AssertionIDRequest_s*)zx_new_elem((c),(father),zx_sp_AssertionIDRequest_ELEM)
-
 int zx_DEC_ATTR_sp_AssertionIDRequest(struct zx_ctx* c, struct zx_sp_AssertionIDRequest_s* x);
 int zx_DEC_ELEM_sp_AssertionIDRequest(struct zx_ctx* c, struct zx_sp_AssertionIDRequest_s* x);
-int zx_LEN_SO_sp_AssertionIDRequest(struct zx_ctx* c, struct zx_sp_AssertionIDRequest_s* x);
-char* zx_ENC_SO_sp_AssertionIDRequest(struct zx_ctx* c, struct zx_sp_AssertionIDRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_AssertionIDRequest(struct zx_ctx* c, struct zx_sp_AssertionIDRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_AssertionIDRequest_s* zx_DEEP_CLONE_sp_AssertionIDRequest(struct zx_ctx* c, struct zx_sp_AssertionIDRequest_s* x, int dup_strs);
@@ -289,7 +274,7 @@ void zx_sp_AssertionIDRequest_ADD_AssertionIDRef(struct zx_sp_AssertionIDRequest
 void zx_sp_AssertionIDRequest_DEL_Issuer(struct zx_sp_AssertionIDRequest_s* x, int n);
 void zx_sp_AssertionIDRequest_DEL_Signature(struct zx_sp_AssertionIDRequest_s* x, int n);
 void zx_sp_AssertionIDRequest_DEL_Extensions(struct zx_sp_AssertionIDRequest_s* x, int n);
-void zx_sp_AssertionIDRequest_DEL_AssertionIDRef(struct zx_sp_AssertionIDRequest_s* x, int n);
+void zx_sp_AssertionIDRequest_DEL_AssertionIDRef(struct zx_sp_AssertionIDRequest_s* x,int n);
 
 void zx_sp_AssertionIDRequest_REV_Issuer(struct zx_sp_AssertionIDRequest_s* x);
 void zx_sp_AssertionIDRequest_REV_Signature(struct zx_sp_AssertionIDRequest_s* x);
@@ -302,7 +287,6 @@ void zx_sp_AssertionIDRequest_REV_AssertionIDRef(struct zx_sp_AssertionIDRequest
 #ifndef zx_sp_AttributeQuery_EXT
 #define zx_sp_AttributeQuery_EXT
 #endif
-
 struct zx_sp_AttributeQuery_s {
   ZX_ELEM_EXT
   zx_sp_AttributeQuery_EXT
@@ -319,12 +303,8 @@ struct zx_sp_AttributeQuery_s {
 };
 
 #define zx_NEW_sp_AttributeQuery(c, father) (struct zx_sp_AttributeQuery_s*)zx_new_elem((c),(father),zx_sp_AttributeQuery_ELEM)
-
 int zx_DEC_ATTR_sp_AttributeQuery(struct zx_ctx* c, struct zx_sp_AttributeQuery_s* x);
 int zx_DEC_ELEM_sp_AttributeQuery(struct zx_ctx* c, struct zx_sp_AttributeQuery_s* x);
-int zx_LEN_SO_sp_AttributeQuery(struct zx_ctx* c, struct zx_sp_AttributeQuery_s* x);
-char* zx_ENC_SO_sp_AttributeQuery(struct zx_ctx* c, struct zx_sp_AttributeQuery_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_AttributeQuery(struct zx_ctx* c, struct zx_sp_AttributeQuery_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_AttributeQuery_s* zx_DEEP_CLONE_sp_AttributeQuery(struct zx_ctx* c, struct zx_sp_AttributeQuery_s* x, int dup_strs);
@@ -400,7 +380,6 @@ void zx_sp_AttributeQuery_REV_Attribute(struct zx_sp_AttributeQuery_s* x);
 #ifndef zx_sp_AuthnQuery_EXT
 #define zx_sp_AuthnQuery_EXT
 #endif
-
 struct zx_sp_AuthnQuery_s {
   ZX_ELEM_EXT
   zx_sp_AuthnQuery_EXT
@@ -418,12 +397,8 @@ struct zx_sp_AuthnQuery_s {
 };
 
 #define zx_NEW_sp_AuthnQuery(c, father) (struct zx_sp_AuthnQuery_s*)zx_new_elem((c),(father),zx_sp_AuthnQuery_ELEM)
-
 int zx_DEC_ATTR_sp_AuthnQuery(struct zx_ctx* c, struct zx_sp_AuthnQuery_s* x);
 int zx_DEC_ELEM_sp_AuthnQuery(struct zx_ctx* c, struct zx_sp_AuthnQuery_s* x);
-int zx_LEN_SO_sp_AuthnQuery(struct zx_ctx* c, struct zx_sp_AuthnQuery_s* x);
-char* zx_ENC_SO_sp_AuthnQuery(struct zx_ctx* c, struct zx_sp_AuthnQuery_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_AuthnQuery(struct zx_ctx* c, struct zx_sp_AuthnQuery_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_AuthnQuery_s* zx_DEEP_CLONE_sp_AuthnQuery(struct zx_ctx* c, struct zx_sp_AuthnQuery_s* x, int dup_strs);
@@ -501,7 +476,6 @@ void zx_sp_AuthnQuery_REV_RequestedAuthnContext(struct zx_sp_AuthnQuery_s* x);
 #ifndef zx_sp_AuthnRequest_EXT
 #define zx_sp_AuthnRequest_EXT
 #endif
-
 struct zx_sp_AuthnRequest_s {
   ZX_ELEM_EXT
   zx_sp_AuthnRequest_EXT
@@ -528,12 +502,8 @@ struct zx_sp_AuthnRequest_s {
 };
 
 #define zx_NEW_sp_AuthnRequest(c, father) (struct zx_sp_AuthnRequest_s*)zx_new_elem((c),(father),zx_sp_AuthnRequest_ELEM)
-
 int zx_DEC_ATTR_sp_AuthnRequest(struct zx_ctx* c, struct zx_sp_AuthnRequest_s* x);
 int zx_DEC_ELEM_sp_AuthnRequest(struct zx_ctx* c, struct zx_sp_AuthnRequest_s* x);
-int zx_LEN_SO_sp_AuthnRequest(struct zx_ctx* c, struct zx_sp_AuthnRequest_s* x);
-char* zx_ENC_SO_sp_AuthnRequest(struct zx_ctx* c, struct zx_sp_AuthnRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_AuthnRequest(struct zx_ctx* c, struct zx_sp_AuthnRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_AuthnRequest_s* zx_DEEP_CLONE_sp_AuthnRequest(struct zx_ctx* c, struct zx_sp_AuthnRequest_s* x, int dup_strs);
@@ -647,7 +617,6 @@ void zx_sp_AuthnRequest_REV_Scoping(struct zx_sp_AuthnRequest_s* x);
 #ifndef zx_sp_AuthzDecisionQuery_EXT
 #define zx_sp_AuthzDecisionQuery_EXT
 #endif
-
 struct zx_sp_AuthzDecisionQuery_s {
   ZX_ELEM_EXT
   zx_sp_AuthzDecisionQuery_EXT
@@ -666,12 +635,8 @@ struct zx_sp_AuthzDecisionQuery_s {
 };
 
 #define zx_NEW_sp_AuthzDecisionQuery(c, father) (struct zx_sp_AuthzDecisionQuery_s*)zx_new_elem((c),(father),zx_sp_AuthzDecisionQuery_ELEM)
-
 int zx_DEC_ATTR_sp_AuthzDecisionQuery(struct zx_ctx* c, struct zx_sp_AuthzDecisionQuery_s* x);
 int zx_DEC_ELEM_sp_AuthzDecisionQuery(struct zx_ctx* c, struct zx_sp_AuthzDecisionQuery_s* x);
-int zx_LEN_SO_sp_AuthzDecisionQuery(struct zx_ctx* c, struct zx_sp_AuthzDecisionQuery_s* x);
-char* zx_ENC_SO_sp_AuthzDecisionQuery(struct zx_ctx* c, struct zx_sp_AuthzDecisionQuery_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_AuthzDecisionQuery(struct zx_ctx* c, struct zx_sp_AuthzDecisionQuery_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_AuthzDecisionQuery_s* zx_DEEP_CLONE_sp_AuthzDecisionQuery(struct zx_ctx* c, struct zx_sp_AuthzDecisionQuery_s* x, int dup_strs);
@@ -757,19 +722,14 @@ void zx_sp_AuthzDecisionQuery_REV_Evidence(struct zx_sp_AuthzDecisionQuery_s* x)
 #ifndef zx_sp_Extensions_EXT
 #define zx_sp_Extensions_EXT
 #endif
-
 struct zx_sp_Extensions_s {
   ZX_ELEM_EXT
   zx_sp_Extensions_EXT
 };
 
 #define zx_NEW_sp_Extensions(c, father) (struct zx_sp_Extensions_s*)zx_new_elem((c),(father),zx_sp_Extensions_ELEM)
-
 int zx_DEC_ATTR_sp_Extensions(struct zx_ctx* c, struct zx_sp_Extensions_s* x);
 int zx_DEC_ELEM_sp_Extensions(struct zx_ctx* c, struct zx_sp_Extensions_s* x);
-int zx_LEN_SO_sp_Extensions(struct zx_ctx* c, struct zx_sp_Extensions_s* x);
-char* zx_ENC_SO_sp_Extensions(struct zx_ctx* c, struct zx_sp_Extensions_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_Extensions(struct zx_ctx* c, struct zx_sp_Extensions_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_Extensions_s* zx_DEEP_CLONE_sp_Extensions(struct zx_ctx* c, struct zx_sp_Extensions_s* x, int dup_strs);
@@ -795,7 +755,6 @@ int zx_WALK_WO_sp_Extensions(struct zx_ctx* c, struct zx_sp_Extensions_s* x, voi
 #ifndef zx_sp_IDPEntry_EXT
 #define zx_sp_IDPEntry_EXT
 #endif
-
 struct zx_sp_IDPEntry_s {
   ZX_ELEM_EXT
   zx_sp_IDPEntry_EXT
@@ -805,12 +764,8 @@ struct zx_sp_IDPEntry_s {
 };
 
 #define zx_NEW_sp_IDPEntry(c, father) (struct zx_sp_IDPEntry_s*)zx_new_elem((c),(father),zx_sp_IDPEntry_ELEM)
-
 int zx_DEC_ATTR_sp_IDPEntry(struct zx_ctx* c, struct zx_sp_IDPEntry_s* x);
 int zx_DEC_ELEM_sp_IDPEntry(struct zx_ctx* c, struct zx_sp_IDPEntry_s* x);
-int zx_LEN_SO_sp_IDPEntry(struct zx_ctx* c, struct zx_sp_IDPEntry_s* x);
-char* zx_ENC_SO_sp_IDPEntry(struct zx_ctx* c, struct zx_sp_IDPEntry_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_IDPEntry(struct zx_ctx* c, struct zx_sp_IDPEntry_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_IDPEntry_s* zx_DEEP_CLONE_sp_IDPEntry(struct zx_ctx* c, struct zx_sp_IDPEntry_s* x, int dup_strs);
@@ -842,7 +797,6 @@ void zx_sp_IDPEntry_PUT_ProviderID(struct zx_sp_IDPEntry_s* x, struct zx_attr_s*
 #ifndef zx_sp_IDPList_EXT
 #define zx_sp_IDPList_EXT
 #endif
-
 struct zx_sp_IDPList_s {
   ZX_ELEM_EXT
   zx_sp_IDPList_EXT
@@ -851,12 +805,8 @@ struct zx_sp_IDPList_s {
 };
 
 #define zx_NEW_sp_IDPList(c, father) (struct zx_sp_IDPList_s*)zx_new_elem((c),(father),zx_sp_IDPList_ELEM)
-
 int zx_DEC_ATTR_sp_IDPList(struct zx_ctx* c, struct zx_sp_IDPList_s* x);
 int zx_DEC_ELEM_sp_IDPList(struct zx_ctx* c, struct zx_sp_IDPList_s* x);
-int zx_LEN_SO_sp_IDPList(struct zx_ctx* c, struct zx_sp_IDPList_s* x);
-char* zx_ENC_SO_sp_IDPList(struct zx_ctx* c, struct zx_sp_IDPList_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_IDPList(struct zx_ctx* c, struct zx_sp_IDPList_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_IDPList_s* zx_DEEP_CLONE_sp_IDPList(struct zx_ctx* c, struct zx_sp_IDPList_s* x, int dup_strs);
@@ -887,7 +837,7 @@ void zx_sp_IDPList_ADD_IDPEntry(struct zx_sp_IDPList_s* x, int n, struct zx_sp_I
 void zx_sp_IDPList_ADD_GetComplete(struct zx_sp_IDPList_s* x, int n, struct zx_elem_s* z);
 
 void zx_sp_IDPList_DEL_IDPEntry(struct zx_sp_IDPList_s* x, int n);
-void zx_sp_IDPList_DEL_GetComplete(struct zx_sp_IDPList_s* x, int n);
+void zx_sp_IDPList_DEL_GetComplete(struct zx_sp_IDPList_s* x,int n);
 
 void zx_sp_IDPList_REV_IDPEntry(struct zx_sp_IDPList_s* x);
 void zx_sp_IDPList_REV_GetComplete(struct zx_sp_IDPList_s* x);
@@ -898,7 +848,6 @@ void zx_sp_IDPList_REV_GetComplete(struct zx_sp_IDPList_s* x);
 #ifndef zx_sp_LogoutRequest_EXT
 #define zx_sp_LogoutRequest_EXT
 #endif
-
 struct zx_sp_LogoutRequest_s {
   ZX_ELEM_EXT
   zx_sp_LogoutRequest_EXT
@@ -919,12 +868,8 @@ struct zx_sp_LogoutRequest_s {
 };
 
 #define zx_NEW_sp_LogoutRequest(c, father) (struct zx_sp_LogoutRequest_s*)zx_new_elem((c),(father),zx_sp_LogoutRequest_ELEM)
-
 int zx_DEC_ATTR_sp_LogoutRequest(struct zx_ctx* c, struct zx_sp_LogoutRequest_s* x);
 int zx_DEC_ELEM_sp_LogoutRequest(struct zx_ctx* c, struct zx_sp_LogoutRequest_s* x);
-int zx_LEN_SO_sp_LogoutRequest(struct zx_ctx* c, struct zx_sp_LogoutRequest_s* x);
-char* zx_ENC_SO_sp_LogoutRequest(struct zx_ctx* c, struct zx_sp_LogoutRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_LogoutRequest(struct zx_ctx* c, struct zx_sp_LogoutRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_LogoutRequest_s* zx_DEEP_CLONE_sp_LogoutRequest(struct zx_ctx* c, struct zx_sp_LogoutRequest_s* x, int dup_strs);
@@ -1004,7 +949,7 @@ void zx_sp_LogoutRequest_DEL_Extensions(struct zx_sp_LogoutRequest_s* x, int n);
 void zx_sp_LogoutRequest_DEL_BaseID(struct zx_sp_LogoutRequest_s* x, int n);
 void zx_sp_LogoutRequest_DEL_NameID(struct zx_sp_LogoutRequest_s* x, int n);
 void zx_sp_LogoutRequest_DEL_EncryptedID(struct zx_sp_LogoutRequest_s* x, int n);
-void zx_sp_LogoutRequest_DEL_SessionIndex(struct zx_sp_LogoutRequest_s* x, int n);
+void zx_sp_LogoutRequest_DEL_SessionIndex(struct zx_sp_LogoutRequest_s* x,int n);
 
 void zx_sp_LogoutRequest_REV_Issuer(struct zx_sp_LogoutRequest_s* x);
 void zx_sp_LogoutRequest_REV_Signature(struct zx_sp_LogoutRequest_s* x);
@@ -1020,7 +965,6 @@ void zx_sp_LogoutRequest_REV_SessionIndex(struct zx_sp_LogoutRequest_s* x);
 #ifndef zx_sp_LogoutResponse_EXT
 #define zx_sp_LogoutResponse_EXT
 #endif
-
 struct zx_sp_LogoutResponse_s {
   ZX_ELEM_EXT
   zx_sp_LogoutResponse_EXT
@@ -1037,12 +981,8 @@ struct zx_sp_LogoutResponse_s {
 };
 
 #define zx_NEW_sp_LogoutResponse(c, father) (struct zx_sp_LogoutResponse_s*)zx_new_elem((c),(father),zx_sp_LogoutResponse_ELEM)
-
 int zx_DEC_ATTR_sp_LogoutResponse(struct zx_ctx* c, struct zx_sp_LogoutResponse_s* x);
 int zx_DEC_ELEM_sp_LogoutResponse(struct zx_ctx* c, struct zx_sp_LogoutResponse_s* x);
-int zx_LEN_SO_sp_LogoutResponse(struct zx_ctx* c, struct zx_sp_LogoutResponse_s* x);
-char* zx_ENC_SO_sp_LogoutResponse(struct zx_ctx* c, struct zx_sp_LogoutResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_LogoutResponse(struct zx_ctx* c, struct zx_sp_LogoutResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_LogoutResponse_s* zx_DEEP_CLONE_sp_LogoutResponse(struct zx_ctx* c, struct zx_sp_LogoutResponse_s* x, int dup_strs);
@@ -1112,7 +1052,6 @@ void zx_sp_LogoutResponse_REV_Status(struct zx_sp_LogoutResponse_s* x);
 #ifndef zx_sp_ManageNameIDRequest_EXT
 #define zx_sp_ManageNameIDRequest_EXT
 #endif
-
 struct zx_sp_ManageNameIDRequest_s {
   ZX_ELEM_EXT
   zx_sp_ManageNameIDRequest_EXT
@@ -1132,12 +1071,8 @@ struct zx_sp_ManageNameIDRequest_s {
 };
 
 #define zx_NEW_sp_ManageNameIDRequest(c, father) (struct zx_sp_ManageNameIDRequest_s*)zx_new_elem((c),(father),zx_sp_ManageNameIDRequest_ELEM)
-
 int zx_DEC_ATTR_sp_ManageNameIDRequest(struct zx_ctx* c, struct zx_sp_ManageNameIDRequest_s* x);
 int zx_DEC_ELEM_sp_ManageNameIDRequest(struct zx_ctx* c, struct zx_sp_ManageNameIDRequest_s* x);
-int zx_LEN_SO_sp_ManageNameIDRequest(struct zx_ctx* c, struct zx_sp_ManageNameIDRequest_s* x);
-char* zx_ENC_SO_sp_ManageNameIDRequest(struct zx_ctx* c, struct zx_sp_ManageNameIDRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_ManageNameIDRequest(struct zx_ctx* c, struct zx_sp_ManageNameIDRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_ManageNameIDRequest_s* zx_DEEP_CLONE_sp_ManageNameIDRequest(struct zx_ctx* c, struct zx_sp_ManageNameIDRequest_s* x, int dup_strs);
@@ -1218,9 +1153,9 @@ void zx_sp_ManageNameIDRequest_DEL_Signature(struct zx_sp_ManageNameIDRequest_s*
 void zx_sp_ManageNameIDRequest_DEL_Extensions(struct zx_sp_ManageNameIDRequest_s* x, int n);
 void zx_sp_ManageNameIDRequest_DEL_NameID(struct zx_sp_ManageNameIDRequest_s* x, int n);
 void zx_sp_ManageNameIDRequest_DEL_EncryptedID(struct zx_sp_ManageNameIDRequest_s* x, int n);
-void zx_sp_ManageNameIDRequest_DEL_NewID(struct zx_sp_ManageNameIDRequest_s* x, int n);
+void zx_sp_ManageNameIDRequest_DEL_NewID(struct zx_sp_ManageNameIDRequest_s* x,int n);
 void zx_sp_ManageNameIDRequest_DEL_NewEncryptedID(struct zx_sp_ManageNameIDRequest_s* x, int n);
-void zx_sp_ManageNameIDRequest_DEL_Terminate(struct zx_sp_ManageNameIDRequest_s* x, int n);
+void zx_sp_ManageNameIDRequest_DEL_Terminate(struct zx_sp_ManageNameIDRequest_s* x,int n);
 
 void zx_sp_ManageNameIDRequest_REV_Issuer(struct zx_sp_ManageNameIDRequest_s* x);
 void zx_sp_ManageNameIDRequest_REV_Signature(struct zx_sp_ManageNameIDRequest_s* x);
@@ -1237,7 +1172,6 @@ void zx_sp_ManageNameIDRequest_REV_Terminate(struct zx_sp_ManageNameIDRequest_s*
 #ifndef zx_sp_ManageNameIDResponse_EXT
 #define zx_sp_ManageNameIDResponse_EXT
 #endif
-
 struct zx_sp_ManageNameIDResponse_s {
   ZX_ELEM_EXT
   zx_sp_ManageNameIDResponse_EXT
@@ -1254,12 +1188,8 @@ struct zx_sp_ManageNameIDResponse_s {
 };
 
 #define zx_NEW_sp_ManageNameIDResponse(c, father) (struct zx_sp_ManageNameIDResponse_s*)zx_new_elem((c),(father),zx_sp_ManageNameIDResponse_ELEM)
-
 int zx_DEC_ATTR_sp_ManageNameIDResponse(struct zx_ctx* c, struct zx_sp_ManageNameIDResponse_s* x);
 int zx_DEC_ELEM_sp_ManageNameIDResponse(struct zx_ctx* c, struct zx_sp_ManageNameIDResponse_s* x);
-int zx_LEN_SO_sp_ManageNameIDResponse(struct zx_ctx* c, struct zx_sp_ManageNameIDResponse_s* x);
-char* zx_ENC_SO_sp_ManageNameIDResponse(struct zx_ctx* c, struct zx_sp_ManageNameIDResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_ManageNameIDResponse(struct zx_ctx* c, struct zx_sp_ManageNameIDResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_ManageNameIDResponse_s* zx_DEEP_CLONE_sp_ManageNameIDResponse(struct zx_ctx* c, struct zx_sp_ManageNameIDResponse_s* x, int dup_strs);
@@ -1329,7 +1259,6 @@ void zx_sp_ManageNameIDResponse_REV_Status(struct zx_sp_ManageNameIDResponse_s* 
 #ifndef zx_sp_NameIDMappingRequest_EXT
 #define zx_sp_NameIDMappingRequest_EXT
 #endif
-
 struct zx_sp_NameIDMappingRequest_s {
   ZX_ELEM_EXT
   zx_sp_NameIDMappingRequest_EXT
@@ -1348,12 +1277,8 @@ struct zx_sp_NameIDMappingRequest_s {
 };
 
 #define zx_NEW_sp_NameIDMappingRequest(c, father) (struct zx_sp_NameIDMappingRequest_s*)zx_new_elem((c),(father),zx_sp_NameIDMappingRequest_ELEM)
-
 int zx_DEC_ATTR_sp_NameIDMappingRequest(struct zx_ctx* c, struct zx_sp_NameIDMappingRequest_s* x);
 int zx_DEC_ELEM_sp_NameIDMappingRequest(struct zx_ctx* c, struct zx_sp_NameIDMappingRequest_s* x);
-int zx_LEN_SO_sp_NameIDMappingRequest(struct zx_ctx* c, struct zx_sp_NameIDMappingRequest_s* x);
-char* zx_ENC_SO_sp_NameIDMappingRequest(struct zx_ctx* c, struct zx_sp_NameIDMappingRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_NameIDMappingRequest(struct zx_ctx* c, struct zx_sp_NameIDMappingRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_NameIDMappingRequest_s* zx_DEEP_CLONE_sp_NameIDMappingRequest(struct zx_ctx* c, struct zx_sp_NameIDMappingRequest_s* x, int dup_strs);
@@ -1445,7 +1370,6 @@ void zx_sp_NameIDMappingRequest_REV_NameIDPolicy(struct zx_sp_NameIDMappingReque
 #ifndef zx_sp_NameIDMappingResponse_EXT
 #define zx_sp_NameIDMappingResponse_EXT
 #endif
-
 struct zx_sp_NameIDMappingResponse_s {
   ZX_ELEM_EXT
   zx_sp_NameIDMappingResponse_EXT
@@ -1464,12 +1388,8 @@ struct zx_sp_NameIDMappingResponse_s {
 };
 
 #define zx_NEW_sp_NameIDMappingResponse(c, father) (struct zx_sp_NameIDMappingResponse_s*)zx_new_elem((c),(father),zx_sp_NameIDMappingResponse_ELEM)
-
 int zx_DEC_ATTR_sp_NameIDMappingResponse(struct zx_ctx* c, struct zx_sp_NameIDMappingResponse_s* x);
 int zx_DEC_ELEM_sp_NameIDMappingResponse(struct zx_ctx* c, struct zx_sp_NameIDMappingResponse_s* x);
-int zx_LEN_SO_sp_NameIDMappingResponse(struct zx_ctx* c, struct zx_sp_NameIDMappingResponse_s* x);
-char* zx_ENC_SO_sp_NameIDMappingResponse(struct zx_ctx* c, struct zx_sp_NameIDMappingResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_NameIDMappingResponse(struct zx_ctx* c, struct zx_sp_NameIDMappingResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_NameIDMappingResponse_s* zx_DEEP_CLONE_sp_NameIDMappingResponse(struct zx_ctx* c, struct zx_sp_NameIDMappingResponse_s* x, int dup_strs);
@@ -1555,7 +1475,6 @@ void zx_sp_NameIDMappingResponse_REV_EncryptedID(struct zx_sp_NameIDMappingRespo
 #ifndef zx_sp_NameIDPolicy_EXT
 #define zx_sp_NameIDPolicy_EXT
 #endif
-
 struct zx_sp_NameIDPolicy_s {
   ZX_ELEM_EXT
   zx_sp_NameIDPolicy_EXT
@@ -1565,12 +1484,8 @@ struct zx_sp_NameIDPolicy_s {
 };
 
 #define zx_NEW_sp_NameIDPolicy(c, father) (struct zx_sp_NameIDPolicy_s*)zx_new_elem((c),(father),zx_sp_NameIDPolicy_ELEM)
-
 int zx_DEC_ATTR_sp_NameIDPolicy(struct zx_ctx* c, struct zx_sp_NameIDPolicy_s* x);
 int zx_DEC_ELEM_sp_NameIDPolicy(struct zx_ctx* c, struct zx_sp_NameIDPolicy_s* x);
-int zx_LEN_SO_sp_NameIDPolicy(struct zx_ctx* c, struct zx_sp_NameIDPolicy_s* x);
-char* zx_ENC_SO_sp_NameIDPolicy(struct zx_ctx* c, struct zx_sp_NameIDPolicy_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_NameIDPolicy(struct zx_ctx* c, struct zx_sp_NameIDPolicy_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_NameIDPolicy_s* zx_DEEP_CLONE_sp_NameIDPolicy(struct zx_ctx* c, struct zx_sp_NameIDPolicy_s* x, int dup_strs);
@@ -1602,7 +1517,6 @@ void zx_sp_NameIDPolicy_PUT_SPNameQualifier(struct zx_sp_NameIDPolicy_s* x, stru
 #ifndef zx_sp_NewEncryptedID_EXT
 #define zx_sp_NewEncryptedID_EXT
 #endif
-
 struct zx_sp_NewEncryptedID_s {
   ZX_ELEM_EXT
   zx_sp_NewEncryptedID_EXT
@@ -1611,12 +1525,8 @@ struct zx_sp_NewEncryptedID_s {
 };
 
 #define zx_NEW_sp_NewEncryptedID(c, father) (struct zx_sp_NewEncryptedID_s*)zx_new_elem((c),(father),zx_sp_NewEncryptedID_ELEM)
-
 int zx_DEC_ATTR_sp_NewEncryptedID(struct zx_ctx* c, struct zx_sp_NewEncryptedID_s* x);
 int zx_DEC_ELEM_sp_NewEncryptedID(struct zx_ctx* c, struct zx_sp_NewEncryptedID_s* x);
-int zx_LEN_SO_sp_NewEncryptedID(struct zx_ctx* c, struct zx_sp_NewEncryptedID_s* x);
-char* zx_ENC_SO_sp_NewEncryptedID(struct zx_ctx* c, struct zx_sp_NewEncryptedID_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_NewEncryptedID(struct zx_ctx* c, struct zx_sp_NewEncryptedID_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_NewEncryptedID_s* zx_DEEP_CLONE_sp_NewEncryptedID(struct zx_ctx* c, struct zx_sp_NewEncryptedID_s* x, int dup_strs);
@@ -1658,7 +1568,6 @@ void zx_sp_NewEncryptedID_REV_EncryptedKey(struct zx_sp_NewEncryptedID_s* x);
 #ifndef zx_sp_RequestedAuthnContext_EXT
 #define zx_sp_RequestedAuthnContext_EXT
 #endif
-
 struct zx_sp_RequestedAuthnContext_s {
   ZX_ELEM_EXT
   zx_sp_RequestedAuthnContext_EXT
@@ -1668,12 +1577,8 @@ struct zx_sp_RequestedAuthnContext_s {
 };
 
 #define zx_NEW_sp_RequestedAuthnContext(c, father) (struct zx_sp_RequestedAuthnContext_s*)zx_new_elem((c),(father),zx_sp_RequestedAuthnContext_ELEM)
-
 int zx_DEC_ATTR_sp_RequestedAuthnContext(struct zx_ctx* c, struct zx_sp_RequestedAuthnContext_s* x);
 int zx_DEC_ELEM_sp_RequestedAuthnContext(struct zx_ctx* c, struct zx_sp_RequestedAuthnContext_s* x);
-int zx_LEN_SO_sp_RequestedAuthnContext(struct zx_ctx* c, struct zx_sp_RequestedAuthnContext_s* x);
-char* zx_ENC_SO_sp_RequestedAuthnContext(struct zx_ctx* c, struct zx_sp_RequestedAuthnContext_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_RequestedAuthnContext(struct zx_ctx* c, struct zx_sp_RequestedAuthnContext_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_RequestedAuthnContext_s* zx_DEEP_CLONE_sp_RequestedAuthnContext(struct zx_ctx* c, struct zx_sp_RequestedAuthnContext_s* x, int dup_strs);
@@ -1705,8 +1610,8 @@ void zx_sp_RequestedAuthnContext_PUT_AuthnContextDeclRef(struct zx_sp_RequestedA
 void zx_sp_RequestedAuthnContext_ADD_AuthnContextClassRef(struct zx_sp_RequestedAuthnContext_s* x, int n, struct zx_elem_s* z);
 void zx_sp_RequestedAuthnContext_ADD_AuthnContextDeclRef(struct zx_sp_RequestedAuthnContext_s* x, int n, struct zx_elem_s* z);
 
-void zx_sp_RequestedAuthnContext_DEL_AuthnContextClassRef(struct zx_sp_RequestedAuthnContext_s* x, int n);
-void zx_sp_RequestedAuthnContext_DEL_AuthnContextDeclRef(struct zx_sp_RequestedAuthnContext_s* x, int n);
+void zx_sp_RequestedAuthnContext_DEL_AuthnContextClassRef(struct zx_sp_RequestedAuthnContext_s* x,int n);
+void zx_sp_RequestedAuthnContext_DEL_AuthnContextDeclRef(struct zx_sp_RequestedAuthnContext_s* x,int n);
 
 void zx_sp_RequestedAuthnContext_REV_AuthnContextClassRef(struct zx_sp_RequestedAuthnContext_s* x);
 void zx_sp_RequestedAuthnContext_REV_AuthnContextDeclRef(struct zx_sp_RequestedAuthnContext_s* x);
@@ -1717,7 +1622,6 @@ void zx_sp_RequestedAuthnContext_REV_AuthnContextDeclRef(struct zx_sp_RequestedA
 #ifndef zx_sp_Response_EXT
 #define zx_sp_Response_EXT
 #endif
-
 struct zx_sp_Response_s {
   ZX_ELEM_EXT
   zx_sp_Response_EXT
@@ -1736,12 +1640,8 @@ struct zx_sp_Response_s {
 };
 
 #define zx_NEW_sp_Response(c, father) (struct zx_sp_Response_s*)zx_new_elem((c),(father),zx_sp_Response_ELEM)
-
 int zx_DEC_ATTR_sp_Response(struct zx_ctx* c, struct zx_sp_Response_s* x);
 int zx_DEC_ELEM_sp_Response(struct zx_ctx* c, struct zx_sp_Response_s* x);
-int zx_LEN_SO_sp_Response(struct zx_ctx* c, struct zx_sp_Response_s* x);
-char* zx_ENC_SO_sp_Response(struct zx_ctx* c, struct zx_sp_Response_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_Response(struct zx_ctx* c, struct zx_sp_Response_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_Response_s* zx_DEEP_CLONE_sp_Response(struct zx_ctx* c, struct zx_sp_Response_s* x, int dup_strs);
@@ -1827,7 +1727,6 @@ void zx_sp_Response_REV_EncryptedAssertion(struct zx_sp_Response_s* x);
 #ifndef zx_sp_Scoping_EXT
 #define zx_sp_Scoping_EXT
 #endif
-
 struct zx_sp_Scoping_s {
   ZX_ELEM_EXT
   zx_sp_Scoping_EXT
@@ -1837,12 +1736,8 @@ struct zx_sp_Scoping_s {
 };
 
 #define zx_NEW_sp_Scoping(c, father) (struct zx_sp_Scoping_s*)zx_new_elem((c),(father),zx_sp_Scoping_ELEM)
-
 int zx_DEC_ATTR_sp_Scoping(struct zx_ctx* c, struct zx_sp_Scoping_s* x);
 int zx_DEC_ELEM_sp_Scoping(struct zx_ctx* c, struct zx_sp_Scoping_s* x);
-int zx_LEN_SO_sp_Scoping(struct zx_ctx* c, struct zx_sp_Scoping_s* x);
-char* zx_ENC_SO_sp_Scoping(struct zx_ctx* c, struct zx_sp_Scoping_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_Scoping(struct zx_ctx* c, struct zx_sp_Scoping_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_Scoping_s* zx_DEEP_CLONE_sp_Scoping(struct zx_ctx* c, struct zx_sp_Scoping_s* x, int dup_strs);
@@ -1875,7 +1770,7 @@ void zx_sp_Scoping_ADD_IDPList(struct zx_sp_Scoping_s* x, int n, struct zx_sp_ID
 void zx_sp_Scoping_ADD_RequesterID(struct zx_sp_Scoping_s* x, int n, struct zx_elem_s* z);
 
 void zx_sp_Scoping_DEL_IDPList(struct zx_sp_Scoping_s* x, int n);
-void zx_sp_Scoping_DEL_RequesterID(struct zx_sp_Scoping_s* x, int n);
+void zx_sp_Scoping_DEL_RequesterID(struct zx_sp_Scoping_s* x,int n);
 
 void zx_sp_Scoping_REV_IDPList(struct zx_sp_Scoping_s* x);
 void zx_sp_Scoping_REV_RequesterID(struct zx_sp_Scoping_s* x);
@@ -1886,7 +1781,6 @@ void zx_sp_Scoping_REV_RequesterID(struct zx_sp_Scoping_s* x);
 #ifndef zx_sp_Status_EXT
 #define zx_sp_Status_EXT
 #endif
-
 struct zx_sp_Status_s {
   ZX_ELEM_EXT
   zx_sp_Status_EXT
@@ -1896,12 +1790,8 @@ struct zx_sp_Status_s {
 };
 
 #define zx_NEW_sp_Status(c, father) (struct zx_sp_Status_s*)zx_new_elem((c),(father),zx_sp_Status_ELEM)
-
 int zx_DEC_ATTR_sp_Status(struct zx_ctx* c, struct zx_sp_Status_s* x);
 int zx_DEC_ELEM_sp_Status(struct zx_ctx* c, struct zx_sp_Status_s* x);
-int zx_LEN_SO_sp_Status(struct zx_ctx* c, struct zx_sp_Status_s* x);
-char* zx_ENC_SO_sp_Status(struct zx_ctx* c, struct zx_sp_Status_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_Status(struct zx_ctx* c, struct zx_sp_Status_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_Status_s* zx_DEEP_CLONE_sp_Status(struct zx_ctx* c, struct zx_sp_Status_s* x, int dup_strs);
@@ -1938,7 +1828,7 @@ void zx_sp_Status_ADD_StatusMessage(struct zx_sp_Status_s* x, int n, struct zx_e
 void zx_sp_Status_ADD_StatusDetail(struct zx_sp_Status_s* x, int n, struct zx_sp_StatusDetail_s* z);
 
 void zx_sp_Status_DEL_StatusCode(struct zx_sp_Status_s* x, int n);
-void zx_sp_Status_DEL_StatusMessage(struct zx_sp_Status_s* x, int n);
+void zx_sp_Status_DEL_StatusMessage(struct zx_sp_Status_s* x,int n);
 void zx_sp_Status_DEL_StatusDetail(struct zx_sp_Status_s* x, int n);
 
 void zx_sp_Status_REV_StatusCode(struct zx_sp_Status_s* x);
@@ -1951,7 +1841,6 @@ void zx_sp_Status_REV_StatusDetail(struct zx_sp_Status_s* x);
 #ifndef zx_sp_StatusCode_EXT
 #define zx_sp_StatusCode_EXT
 #endif
-
 struct zx_sp_StatusCode_s {
   ZX_ELEM_EXT
   zx_sp_StatusCode_EXT
@@ -1960,12 +1849,8 @@ struct zx_sp_StatusCode_s {
 };
 
 #define zx_NEW_sp_StatusCode(c, father) (struct zx_sp_StatusCode_s*)zx_new_elem((c),(father),zx_sp_StatusCode_ELEM)
-
 int zx_DEC_ATTR_sp_StatusCode(struct zx_ctx* c, struct zx_sp_StatusCode_s* x);
 int zx_DEC_ELEM_sp_StatusCode(struct zx_ctx* c, struct zx_sp_StatusCode_s* x);
-int zx_LEN_SO_sp_StatusCode(struct zx_ctx* c, struct zx_sp_StatusCode_s* x);
-char* zx_ENC_SO_sp_StatusCode(struct zx_ctx* c, struct zx_sp_StatusCode_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_StatusCode(struct zx_ctx* c, struct zx_sp_StatusCode_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_StatusCode_s* zx_DEEP_CLONE_sp_StatusCode(struct zx_ctx* c, struct zx_sp_StatusCode_s* x, int dup_strs);
@@ -2001,19 +1886,14 @@ void zx_sp_StatusCode_REV_StatusCode(struct zx_sp_StatusCode_s* x);
 #ifndef zx_sp_StatusDetail_EXT
 #define zx_sp_StatusDetail_EXT
 #endif
-
 struct zx_sp_StatusDetail_s {
   ZX_ELEM_EXT
   zx_sp_StatusDetail_EXT
 };
 
 #define zx_NEW_sp_StatusDetail(c, father) (struct zx_sp_StatusDetail_s*)zx_new_elem((c),(father),zx_sp_StatusDetail_ELEM)
-
 int zx_DEC_ATTR_sp_StatusDetail(struct zx_ctx* c, struct zx_sp_StatusDetail_s* x);
 int zx_DEC_ELEM_sp_StatusDetail(struct zx_ctx* c, struct zx_sp_StatusDetail_s* x);
-int zx_LEN_SO_sp_StatusDetail(struct zx_ctx* c, struct zx_sp_StatusDetail_s* x);
-char* zx_ENC_SO_sp_StatusDetail(struct zx_ctx* c, struct zx_sp_StatusDetail_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_StatusDetail(struct zx_ctx* c, struct zx_sp_StatusDetail_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_StatusDetail_s* zx_DEEP_CLONE_sp_StatusDetail(struct zx_ctx* c, struct zx_sp_StatusDetail_s* x, int dup_strs);
@@ -2039,7 +1919,6 @@ int zx_WALK_WO_sp_StatusDetail(struct zx_ctx* c, struct zx_sp_StatusDetail_s* x,
 #ifndef zx_sp_SubjectQuery_EXT
 #define zx_sp_SubjectQuery_EXT
 #endif
-
 struct zx_sp_SubjectQuery_s {
   ZX_ELEM_EXT
   zx_sp_SubjectQuery_EXT
@@ -2055,12 +1934,8 @@ struct zx_sp_SubjectQuery_s {
 };
 
 #define zx_NEW_sp_SubjectQuery(c, father) (struct zx_sp_SubjectQuery_s*)zx_new_elem((c),(father),zx_sp_SubjectQuery_ELEM)
-
 int zx_DEC_ATTR_sp_SubjectQuery(struct zx_ctx* c, struct zx_sp_SubjectQuery_s* x);
 int zx_DEC_ELEM_sp_SubjectQuery(struct zx_ctx* c, struct zx_sp_SubjectQuery_s* x);
-int zx_LEN_SO_sp_SubjectQuery(struct zx_ctx* c, struct zx_sp_SubjectQuery_s* x);
-char* zx_ENC_SO_sp_SubjectQuery(struct zx_ctx* c, struct zx_sp_SubjectQuery_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sp_SubjectQuery(struct zx_ctx* c, struct zx_sp_SubjectQuery_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sp_SubjectQuery_s* zx_DEEP_CLONE_sp_SubjectQuery(struct zx_ctx* c, struct zx_sp_SubjectQuery_s* x, int dup_strs);

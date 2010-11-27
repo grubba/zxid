@@ -23,7 +23,6 @@
 #ifndef zx_ds_CanonicalizationMethod_EXT
 #define zx_ds_CanonicalizationMethod_EXT
 #endif
-
 struct zx_ds_CanonicalizationMethod_s {
   ZX_ELEM_EXT
   zx_ds_CanonicalizationMethod_EXT
@@ -31,12 +30,8 @@ struct zx_ds_CanonicalizationMethod_s {
 };
 
 #define zx_NEW_ds_CanonicalizationMethod(c, father) (struct zx_ds_CanonicalizationMethod_s*)zx_new_elem((c),(father),zx_ds_CanonicalizationMethod_ELEM)
-
 int zx_DEC_ATTR_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_CanonicalizationMethod_s* x);
 int zx_DEC_ELEM_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_CanonicalizationMethod_s* x);
-int zx_LEN_SO_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_CanonicalizationMethod_s* x);
-char* zx_ENC_SO_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_CanonicalizationMethod_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_CanonicalizationMethod_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_CanonicalizationMethod_s* zx_DEEP_CLONE_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_CanonicalizationMethod_s* x, int dup_strs);
@@ -64,7 +59,6 @@ void zx_ds_CanonicalizationMethod_PUT_Algorithm(struct zx_ds_CanonicalizationMet
 #ifndef zx_ds_DSAKeyValue_EXT
 #define zx_ds_DSAKeyValue_EXT
 #endif
-
 struct zx_ds_DSAKeyValue_s {
   ZX_ELEM_EXT
   zx_ds_DSAKeyValue_EXT
@@ -78,12 +72,8 @@ struct zx_ds_DSAKeyValue_s {
 };
 
 #define zx_NEW_ds_DSAKeyValue(c, father) (struct zx_ds_DSAKeyValue_s*)zx_new_elem((c),(father),zx_ds_DSAKeyValue_ELEM)
-
 int zx_DEC_ATTR_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x);
 int zx_DEC_ELEM_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x);
-int zx_LEN_SO_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x);
-char* zx_ENC_SO_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_DSAKeyValue_s* zx_DEEP_CLONE_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x, int dup_strs);
@@ -143,13 +133,13 @@ void zx_ds_DSAKeyValue_ADD_J(struct zx_ds_DSAKeyValue_s* x, int n, struct zx_ele
 void zx_ds_DSAKeyValue_ADD_Seed(struct zx_ds_DSAKeyValue_s* x, int n, struct zx_elem_s* z);
 void zx_ds_DSAKeyValue_ADD_PgenCounter(struct zx_ds_DSAKeyValue_s* x, int n, struct zx_elem_s* z);
 
-void zx_ds_DSAKeyValue_DEL_P(struct zx_ds_DSAKeyValue_s* x, int n);
-void zx_ds_DSAKeyValue_DEL_Q(struct zx_ds_DSAKeyValue_s* x, int n);
-void zx_ds_DSAKeyValue_DEL_G(struct zx_ds_DSAKeyValue_s* x, int n);
-void zx_ds_DSAKeyValue_DEL_Y(struct zx_ds_DSAKeyValue_s* x, int n);
-void zx_ds_DSAKeyValue_DEL_J(struct zx_ds_DSAKeyValue_s* x, int n);
-void zx_ds_DSAKeyValue_DEL_Seed(struct zx_ds_DSAKeyValue_s* x, int n);
-void zx_ds_DSAKeyValue_DEL_PgenCounter(struct zx_ds_DSAKeyValue_s* x, int n);
+void zx_ds_DSAKeyValue_DEL_P(struct zx_ds_DSAKeyValue_s* x,int n);
+void zx_ds_DSAKeyValue_DEL_Q(struct zx_ds_DSAKeyValue_s* x,int n);
+void zx_ds_DSAKeyValue_DEL_G(struct zx_ds_DSAKeyValue_s* x,int n);
+void zx_ds_DSAKeyValue_DEL_Y(struct zx_ds_DSAKeyValue_s* x,int n);
+void zx_ds_DSAKeyValue_DEL_J(struct zx_ds_DSAKeyValue_s* x,int n);
+void zx_ds_DSAKeyValue_DEL_Seed(struct zx_ds_DSAKeyValue_s* x,int n);
+void zx_ds_DSAKeyValue_DEL_PgenCounter(struct zx_ds_DSAKeyValue_s* x,int n);
 
 void zx_ds_DSAKeyValue_REV_P(struct zx_ds_DSAKeyValue_s* x);
 void zx_ds_DSAKeyValue_REV_Q(struct zx_ds_DSAKeyValue_s* x);
@@ -165,7 +155,6 @@ void zx_ds_DSAKeyValue_REV_PgenCounter(struct zx_ds_DSAKeyValue_s* x);
 #ifndef zx_ds_DigestMethod_EXT
 #define zx_ds_DigestMethod_EXT
 #endif
-
 struct zx_ds_DigestMethod_s {
   ZX_ELEM_EXT
   zx_ds_DigestMethod_EXT
@@ -173,12 +162,8 @@ struct zx_ds_DigestMethod_s {
 };
 
 #define zx_NEW_ds_DigestMethod(c, father) (struct zx_ds_DigestMethod_s*)zx_new_elem((c),(father),zx_ds_DigestMethod_ELEM)
-
 int zx_DEC_ATTR_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x);
 int zx_DEC_ELEM_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x);
-int zx_LEN_SO_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x);
-char* zx_ENC_SO_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_DigestMethod_s* zx_DEEP_CLONE_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x, int dup_strs);
@@ -206,7 +191,6 @@ void zx_ds_DigestMethod_PUT_Algorithm(struct zx_ds_DigestMethod_s* x, struct zx_
 #ifndef zx_ds_KeyInfo_EXT
 #define zx_ds_KeyInfo_EXT
 #endif
-
 struct zx_ds_KeyInfo_s {
   ZX_ELEM_EXT
   zx_ds_KeyInfo_EXT
@@ -222,12 +206,8 @@ struct zx_ds_KeyInfo_s {
 };
 
 #define zx_NEW_ds_KeyInfo(c, father) (struct zx_ds_KeyInfo_s*)zx_new_elem((c),(father),zx_ds_KeyInfo_ELEM)
-
 int zx_DEC_ATTR_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x);
 int zx_DEC_ELEM_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x);
-int zx_LEN_SO_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x);
-char* zx_ENC_SO_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_KeyInfo_s* zx_DEEP_CLONE_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x, int dup_strs);
@@ -295,13 +275,13 @@ void zx_ds_KeyInfo_ADD_SPKIData(struct zx_ds_KeyInfo_s* x, int n, struct zx_ds_S
 void zx_ds_KeyInfo_ADD_MgmtData(struct zx_ds_KeyInfo_s* x, int n, struct zx_elem_s* z);
 void zx_ds_KeyInfo_ADD_EncryptedKey(struct zx_ds_KeyInfo_s* x, int n, struct zx_xenc_EncryptedKey_s* z);
 
-void zx_ds_KeyInfo_DEL_KeyName(struct zx_ds_KeyInfo_s* x, int n);
+void zx_ds_KeyInfo_DEL_KeyName(struct zx_ds_KeyInfo_s* x,int n);
 void zx_ds_KeyInfo_DEL_KeyValue(struct zx_ds_KeyInfo_s* x, int n);
 void zx_ds_KeyInfo_DEL_RetrievalMethod(struct zx_ds_KeyInfo_s* x, int n);
 void zx_ds_KeyInfo_DEL_X509Data(struct zx_ds_KeyInfo_s* x, int n);
 void zx_ds_KeyInfo_DEL_PGPData(struct zx_ds_KeyInfo_s* x, int n);
 void zx_ds_KeyInfo_DEL_SPKIData(struct zx_ds_KeyInfo_s* x, int n);
-void zx_ds_KeyInfo_DEL_MgmtData(struct zx_ds_KeyInfo_s* x, int n);
+void zx_ds_KeyInfo_DEL_MgmtData(struct zx_ds_KeyInfo_s* x,int n);
 void zx_ds_KeyInfo_DEL_EncryptedKey(struct zx_ds_KeyInfo_s* x, int n);
 
 void zx_ds_KeyInfo_REV_KeyName(struct zx_ds_KeyInfo_s* x);
@@ -319,7 +299,6 @@ void zx_ds_KeyInfo_REV_EncryptedKey(struct zx_ds_KeyInfo_s* x);
 #ifndef zx_ds_KeyValue_EXT
 #define zx_ds_KeyValue_EXT
 #endif
-
 struct zx_ds_KeyValue_s {
   ZX_ELEM_EXT
   zx_ds_KeyValue_EXT
@@ -328,12 +307,8 @@ struct zx_ds_KeyValue_s {
 };
 
 #define zx_NEW_ds_KeyValue(c, father) (struct zx_ds_KeyValue_s*)zx_new_elem((c),(father),zx_ds_KeyValue_ELEM)
-
 int zx_DEC_ATTR_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x);
 int zx_DEC_ELEM_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x);
-int zx_LEN_SO_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x);
-char* zx_ENC_SO_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_KeyValue_s* zx_DEEP_CLONE_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x, int dup_strs);
@@ -375,7 +350,6 @@ void zx_ds_KeyValue_REV_RSAKeyValue(struct zx_ds_KeyValue_s* x);
 #ifndef zx_ds_Manifest_EXT
 #define zx_ds_Manifest_EXT
 #endif
-
 struct zx_ds_Manifest_s {
   ZX_ELEM_EXT
   zx_ds_Manifest_EXT
@@ -384,12 +358,8 @@ struct zx_ds_Manifest_s {
 };
 
 #define zx_NEW_ds_Manifest(c, father) (struct zx_ds_Manifest_s*)zx_new_elem((c),(father),zx_ds_Manifest_ELEM)
-
 int zx_DEC_ATTR_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x);
 int zx_DEC_ELEM_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x);
-int zx_LEN_SO_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x);
-char* zx_ENC_SO_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_Manifest_s* zx_DEEP_CLONE_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x, int dup_strs);
@@ -425,7 +395,6 @@ void zx_ds_Manifest_REV_Reference(struct zx_ds_Manifest_s* x);
 #ifndef zx_ds_Object_EXT
 #define zx_ds_Object_EXT
 #endif
-
 struct zx_ds_Object_s {
   ZX_ELEM_EXT
   zx_ds_Object_EXT
@@ -435,12 +404,8 @@ struct zx_ds_Object_s {
 };
 
 #define zx_NEW_ds_Object(c, father) (struct zx_ds_Object_s*)zx_new_elem((c),(father),zx_ds_Object_ELEM)
-
 int zx_DEC_ATTR_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x);
 int zx_DEC_ELEM_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x);
-int zx_LEN_SO_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x);
-char* zx_ENC_SO_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_Object_s* zx_DEEP_CLONE_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x, int dup_strs);
@@ -472,7 +437,6 @@ void zx_ds_Object_PUT_MimeType(struct zx_ds_Object_s* x, struct zx_attr_s* y);
 #ifndef zx_ds_PGPData_EXT
 #define zx_ds_PGPData_EXT
 #endif
-
 struct zx_ds_PGPData_s {
   ZX_ELEM_EXT
   zx_ds_PGPData_EXT
@@ -481,12 +445,8 @@ struct zx_ds_PGPData_s {
 };
 
 #define zx_NEW_ds_PGPData(c, father) (struct zx_ds_PGPData_s*)zx_new_elem((c),(father),zx_ds_PGPData_ELEM)
-
 int zx_DEC_ATTR_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x);
 int zx_DEC_ELEM_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x);
-int zx_LEN_SO_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x);
-char* zx_ENC_SO_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_PGPData_s* zx_DEEP_CLONE_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x, int dup_strs);
@@ -516,8 +476,8 @@ void zx_ds_PGPData_PUT_PGPKeyPacket(struct zx_ds_PGPData_s* x, int n, struct zx_
 void zx_ds_PGPData_ADD_PGPKeyID(struct zx_ds_PGPData_s* x, int n, struct zx_elem_s* z);
 void zx_ds_PGPData_ADD_PGPKeyPacket(struct zx_ds_PGPData_s* x, int n, struct zx_elem_s* z);
 
-void zx_ds_PGPData_DEL_PGPKeyID(struct zx_ds_PGPData_s* x, int n);
-void zx_ds_PGPData_DEL_PGPKeyPacket(struct zx_ds_PGPData_s* x, int n);
+void zx_ds_PGPData_DEL_PGPKeyID(struct zx_ds_PGPData_s* x,int n);
+void zx_ds_PGPData_DEL_PGPKeyPacket(struct zx_ds_PGPData_s* x,int n);
 
 void zx_ds_PGPData_REV_PGPKeyID(struct zx_ds_PGPData_s* x);
 void zx_ds_PGPData_REV_PGPKeyPacket(struct zx_ds_PGPData_s* x);
@@ -528,7 +488,6 @@ void zx_ds_PGPData_REV_PGPKeyPacket(struct zx_ds_PGPData_s* x);
 #ifndef zx_ds_RSAKeyValue_EXT
 #define zx_ds_RSAKeyValue_EXT
 #endif
-
 struct zx_ds_RSAKeyValue_s {
   ZX_ELEM_EXT
   zx_ds_RSAKeyValue_EXT
@@ -537,12 +496,8 @@ struct zx_ds_RSAKeyValue_s {
 };
 
 #define zx_NEW_ds_RSAKeyValue(c, father) (struct zx_ds_RSAKeyValue_s*)zx_new_elem((c),(father),zx_ds_RSAKeyValue_ELEM)
-
 int zx_DEC_ATTR_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x);
 int zx_DEC_ELEM_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x);
-int zx_LEN_SO_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x);
-char* zx_ENC_SO_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_RSAKeyValue_s* zx_DEEP_CLONE_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x, int dup_strs);
@@ -572,8 +527,8 @@ void zx_ds_RSAKeyValue_PUT_Exponent(struct zx_ds_RSAKeyValue_s* x, int n, struct
 void zx_ds_RSAKeyValue_ADD_Modulus(struct zx_ds_RSAKeyValue_s* x, int n, struct zx_elem_s* z);
 void zx_ds_RSAKeyValue_ADD_Exponent(struct zx_ds_RSAKeyValue_s* x, int n, struct zx_elem_s* z);
 
-void zx_ds_RSAKeyValue_DEL_Modulus(struct zx_ds_RSAKeyValue_s* x, int n);
-void zx_ds_RSAKeyValue_DEL_Exponent(struct zx_ds_RSAKeyValue_s* x, int n);
+void zx_ds_RSAKeyValue_DEL_Modulus(struct zx_ds_RSAKeyValue_s* x,int n);
+void zx_ds_RSAKeyValue_DEL_Exponent(struct zx_ds_RSAKeyValue_s* x,int n);
 
 void zx_ds_RSAKeyValue_REV_Modulus(struct zx_ds_RSAKeyValue_s* x);
 void zx_ds_RSAKeyValue_REV_Exponent(struct zx_ds_RSAKeyValue_s* x);
@@ -584,7 +539,6 @@ void zx_ds_RSAKeyValue_REV_Exponent(struct zx_ds_RSAKeyValue_s* x);
 #ifndef zx_ds_Reference_EXT
 #define zx_ds_Reference_EXT
 #endif
-
 struct zx_ds_Reference_s {
   ZX_ELEM_EXT
   zx_ds_Reference_EXT
@@ -597,12 +551,8 @@ struct zx_ds_Reference_s {
 };
 
 #define zx_NEW_ds_Reference(c, father) (struct zx_ds_Reference_s*)zx_new_elem((c),(father),zx_ds_Reference_ELEM)
-
 int zx_DEC_ATTR_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x);
 int zx_DEC_ELEM_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x);
-int zx_LEN_SO_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x);
-char* zx_ENC_SO_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_Reference_s* zx_DEEP_CLONE_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x, int dup_strs);
@@ -646,7 +596,7 @@ void zx_ds_Reference_ADD_DigestValue(struct zx_ds_Reference_s* x, int n, struct 
 
 void zx_ds_Reference_DEL_Transforms(struct zx_ds_Reference_s* x, int n);
 void zx_ds_Reference_DEL_DigestMethod(struct zx_ds_Reference_s* x, int n);
-void zx_ds_Reference_DEL_DigestValue(struct zx_ds_Reference_s* x, int n);
+void zx_ds_Reference_DEL_DigestValue(struct zx_ds_Reference_s* x,int n);
 
 void zx_ds_Reference_REV_Transforms(struct zx_ds_Reference_s* x);
 void zx_ds_Reference_REV_DigestMethod(struct zx_ds_Reference_s* x);
@@ -658,7 +608,6 @@ void zx_ds_Reference_REV_DigestValue(struct zx_ds_Reference_s* x);
 #ifndef zx_ds_RetrievalMethod_EXT
 #define zx_ds_RetrievalMethod_EXT
 #endif
-
 struct zx_ds_RetrievalMethod_s {
   ZX_ELEM_EXT
   zx_ds_RetrievalMethod_EXT
@@ -668,12 +617,8 @@ struct zx_ds_RetrievalMethod_s {
 };
 
 #define zx_NEW_ds_RetrievalMethod(c, father) (struct zx_ds_RetrievalMethod_s*)zx_new_elem((c),(father),zx_ds_RetrievalMethod_ELEM)
-
 int zx_DEC_ATTR_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod_s* x);
 int zx_DEC_ELEM_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod_s* x);
-int zx_LEN_SO_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod_s* x);
-char* zx_ENC_SO_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_RetrievalMethod_s* zx_DEEP_CLONE_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod_s* x, int dup_strs);
@@ -711,7 +656,6 @@ void zx_ds_RetrievalMethod_REV_Transforms(struct zx_ds_RetrievalMethod_s* x);
 #ifndef zx_ds_SPKIData_EXT
 #define zx_ds_SPKIData_EXT
 #endif
-
 struct zx_ds_SPKIData_s {
   ZX_ELEM_EXT
   zx_ds_SPKIData_EXT
@@ -719,12 +663,8 @@ struct zx_ds_SPKIData_s {
 };
 
 #define zx_NEW_ds_SPKIData(c, father) (struct zx_ds_SPKIData_s*)zx_new_elem((c),(father),zx_ds_SPKIData_ELEM)
-
 int zx_DEC_ATTR_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x);
 int zx_DEC_ELEM_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x);
-int zx_LEN_SO_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x);
-char* zx_ENC_SO_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_SPKIData_s* zx_DEEP_CLONE_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x, int dup_strs);
@@ -748,7 +688,7 @@ void zx_ds_SPKIData_PUT_SPKISexp(struct zx_ds_SPKIData_s* x, int n, struct zx_el
 
 void zx_ds_SPKIData_ADD_SPKISexp(struct zx_ds_SPKIData_s* x, int n, struct zx_elem_s* z);
 
-void zx_ds_SPKIData_DEL_SPKISexp(struct zx_ds_SPKIData_s* x, int n);
+void zx_ds_SPKIData_DEL_SPKISexp(struct zx_ds_SPKIData_s* x,int n);
 
 void zx_ds_SPKIData_REV_SPKISexp(struct zx_ds_SPKIData_s* x);
 
@@ -758,7 +698,6 @@ void zx_ds_SPKIData_REV_SPKISexp(struct zx_ds_SPKIData_s* x);
 #ifndef zx_ds_Signature_EXT
 #define zx_ds_Signature_EXT
 #endif
-
 struct zx_ds_Signature_s {
   ZX_ELEM_EXT
   zx_ds_Signature_EXT
@@ -770,12 +709,8 @@ struct zx_ds_Signature_s {
 };
 
 #define zx_NEW_ds_Signature(c, father) (struct zx_ds_Signature_s*)zx_new_elem((c),(father),zx_ds_Signature_ELEM)
-
 int zx_DEC_ATTR_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x);
 int zx_DEC_ELEM_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x);
-int zx_LEN_SO_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x);
-char* zx_ENC_SO_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_Signature_s* zx_DEEP_CLONE_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x, int dup_strs);
@@ -835,7 +770,6 @@ void zx_ds_Signature_REV_Object(struct zx_ds_Signature_s* x);
 #ifndef zx_ds_SignatureMethod_EXT
 #define zx_ds_SignatureMethod_EXT
 #endif
-
 struct zx_ds_SignatureMethod_s {
   ZX_ELEM_EXT
   zx_ds_SignatureMethod_EXT
@@ -844,12 +778,8 @@ struct zx_ds_SignatureMethod_s {
 };
 
 #define zx_NEW_ds_SignatureMethod(c, father) (struct zx_ds_SignatureMethod_s*)zx_new_elem((c),(father),zx_ds_SignatureMethod_ELEM)
-
 int zx_DEC_ATTR_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod_s* x);
 int zx_DEC_ELEM_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod_s* x);
-int zx_LEN_SO_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod_s* x);
-char* zx_ENC_SO_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_SignatureMethod_s* zx_DEEP_CLONE_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod_s* x, int dup_strs);
@@ -875,7 +805,7 @@ void zx_ds_SignatureMethod_PUT_HMACOutputLength(struct zx_ds_SignatureMethod_s* 
 
 void zx_ds_SignatureMethod_ADD_HMACOutputLength(struct zx_ds_SignatureMethod_s* x, int n, struct zx_elem_s* z);
 
-void zx_ds_SignatureMethod_DEL_HMACOutputLength(struct zx_ds_SignatureMethod_s* x, int n);
+void zx_ds_SignatureMethod_DEL_HMACOutputLength(struct zx_ds_SignatureMethod_s* x,int n);
 
 void zx_ds_SignatureMethod_REV_HMACOutputLength(struct zx_ds_SignatureMethod_s* x);
 
@@ -885,7 +815,6 @@ void zx_ds_SignatureMethod_REV_HMACOutputLength(struct zx_ds_SignatureMethod_s* 
 #ifndef zx_ds_SignatureProperties_EXT
 #define zx_ds_SignatureProperties_EXT
 #endif
-
 struct zx_ds_SignatureProperties_s {
   ZX_ELEM_EXT
   zx_ds_SignatureProperties_EXT
@@ -894,12 +823,8 @@ struct zx_ds_SignatureProperties_s {
 };
 
 #define zx_NEW_ds_SignatureProperties(c, father) (struct zx_ds_SignatureProperties_s*)zx_new_elem((c),(father),zx_ds_SignatureProperties_ELEM)
-
 int zx_DEC_ATTR_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignatureProperties_s* x);
 int zx_DEC_ELEM_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignatureProperties_s* x);
-int zx_LEN_SO_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignatureProperties_s* x);
-char* zx_ENC_SO_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignatureProperties_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignatureProperties_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_SignatureProperties_s* zx_DEEP_CLONE_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignatureProperties_s* x, int dup_strs);
@@ -935,7 +860,6 @@ void zx_ds_SignatureProperties_REV_SignatureProperty(struct zx_ds_SignaturePrope
 #ifndef zx_ds_SignatureProperty_EXT
 #define zx_ds_SignatureProperty_EXT
 #endif
-
 struct zx_ds_SignatureProperty_s {
   ZX_ELEM_EXT
   zx_ds_SignatureProperty_EXT
@@ -944,12 +868,8 @@ struct zx_ds_SignatureProperty_s {
 };
 
 #define zx_NEW_ds_SignatureProperty(c, father) (struct zx_ds_SignatureProperty_s*)zx_new_elem((c),(father),zx_ds_SignatureProperty_ELEM)
-
 int zx_DEC_ATTR_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProperty_s* x);
 int zx_DEC_ELEM_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProperty_s* x);
-int zx_LEN_SO_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProperty_s* x);
-char* zx_ENC_SO_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProperty_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProperty_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_SignatureProperty_s* zx_DEEP_CLONE_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProperty_s* x, int dup_strs);
@@ -979,7 +899,6 @@ void zx_ds_SignatureProperty_PUT_Target(struct zx_ds_SignatureProperty_s* x, str
 #ifndef zx_ds_SignatureValue_EXT
 #define zx_ds_SignatureValue_EXT
 #endif
-
 struct zx_ds_SignatureValue_s {
   ZX_ELEM_EXT
   zx_ds_SignatureValue_EXT
@@ -987,12 +906,8 @@ struct zx_ds_SignatureValue_s {
 };
 
 #define zx_NEW_ds_SignatureValue(c, father) (struct zx_ds_SignatureValue_s*)zx_new_elem((c),(father),zx_ds_SignatureValue_ELEM)
-
 int zx_DEC_ATTR_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s* x);
 int zx_DEC_ELEM_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s* x);
-int zx_LEN_SO_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s* x);
-char* zx_ENC_SO_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_SignatureValue_s* zx_DEEP_CLONE_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s* x, int dup_strs);
@@ -1020,7 +935,6 @@ void zx_ds_SignatureValue_PUT_Id(struct zx_ds_SignatureValue_s* x, struct zx_att
 #ifndef zx_ds_SignedInfo_EXT
 #define zx_ds_SignedInfo_EXT
 #endif
-
 struct zx_ds_SignedInfo_s {
   ZX_ELEM_EXT
   zx_ds_SignedInfo_EXT
@@ -1031,12 +945,8 @@ struct zx_ds_SignedInfo_s {
 };
 
 #define zx_NEW_ds_SignedInfo(c, father) (struct zx_ds_SignedInfo_s*)zx_new_elem((c),(father),zx_ds_SignedInfo_ELEM)
-
 int zx_DEC_ATTR_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x);
 int zx_DEC_ELEM_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x);
-int zx_LEN_SO_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x);
-char* zx_ENC_SO_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_SignedInfo_s* zx_DEEP_CLONE_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x, int dup_strs);
@@ -1088,7 +998,6 @@ void zx_ds_SignedInfo_REV_Reference(struct zx_ds_SignedInfo_s* x);
 #ifndef zx_ds_Transform_EXT
 #define zx_ds_Transform_EXT
 #endif
-
 struct zx_ds_Transform_s {
   ZX_ELEM_EXT
   zx_ds_Transform_EXT
@@ -1098,12 +1007,8 @@ struct zx_ds_Transform_s {
 };
 
 #define zx_NEW_ds_Transform(c, father) (struct zx_ds_Transform_s*)zx_new_elem((c),(father),zx_ds_Transform_ELEM)
-
 int zx_DEC_ATTR_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x);
 int zx_DEC_ELEM_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x);
-int zx_LEN_SO_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x);
-char* zx_ENC_SO_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_Transform_s* zx_DEEP_CLONE_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x, int dup_strs);
@@ -1135,7 +1040,7 @@ void zx_ds_Transform_PUT_InclusiveNamespaces(struct zx_ds_Transform_s* x, int n,
 void zx_ds_Transform_ADD_XPath(struct zx_ds_Transform_s* x, int n, struct zx_elem_s* z);
 void zx_ds_Transform_ADD_InclusiveNamespaces(struct zx_ds_Transform_s* x, int n, struct zx_exca_InclusiveNamespaces_s* z);
 
-void zx_ds_Transform_DEL_XPath(struct zx_ds_Transform_s* x, int n);
+void zx_ds_Transform_DEL_XPath(struct zx_ds_Transform_s* x,int n);
 void zx_ds_Transform_DEL_InclusiveNamespaces(struct zx_ds_Transform_s* x, int n);
 
 void zx_ds_Transform_REV_XPath(struct zx_ds_Transform_s* x);
@@ -1147,7 +1052,6 @@ void zx_ds_Transform_REV_InclusiveNamespaces(struct zx_ds_Transform_s* x);
 #ifndef zx_ds_Transforms_EXT
 #define zx_ds_Transforms_EXT
 #endif
-
 struct zx_ds_Transforms_s {
   ZX_ELEM_EXT
   zx_ds_Transforms_EXT
@@ -1155,12 +1059,8 @@ struct zx_ds_Transforms_s {
 };
 
 #define zx_NEW_ds_Transforms(c, father) (struct zx_ds_Transforms_s*)zx_new_elem((c),(father),zx_ds_Transforms_ELEM)
-
 int zx_DEC_ATTR_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x);
 int zx_DEC_ELEM_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x);
-int zx_LEN_SO_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x);
-char* zx_ENC_SO_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_Transforms_s* zx_DEEP_CLONE_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x, int dup_strs);
@@ -1194,7 +1094,6 @@ void zx_ds_Transforms_REV_Transform(struct zx_ds_Transforms_s* x);
 #ifndef zx_ds_X509Data_EXT
 #define zx_ds_X509Data_EXT
 #endif
-
 struct zx_ds_X509Data_s {
   ZX_ELEM_EXT
   zx_ds_X509Data_EXT
@@ -1206,12 +1105,8 @@ struct zx_ds_X509Data_s {
 };
 
 #define zx_NEW_ds_X509Data(c, father) (struct zx_ds_X509Data_s*)zx_new_elem((c),(father),zx_ds_X509Data_ELEM)
-
 int zx_DEC_ATTR_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x);
 int zx_DEC_ELEM_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x);
-int zx_LEN_SO_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x);
-char* zx_ENC_SO_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_X509Data_s* zx_DEEP_CLONE_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x, int dup_strs);
@@ -1260,10 +1155,10 @@ void zx_ds_X509Data_ADD_X509Certificate(struct zx_ds_X509Data_s* x, int n, struc
 void zx_ds_X509Data_ADD_X509CRL(struct zx_ds_X509Data_s* x, int n, struct zx_elem_s* z);
 
 void zx_ds_X509Data_DEL_X509IssuerSerial(struct zx_ds_X509Data_s* x, int n);
-void zx_ds_X509Data_DEL_X509SKI(struct zx_ds_X509Data_s* x, int n);
-void zx_ds_X509Data_DEL_X509SubjectName(struct zx_ds_X509Data_s* x, int n);
-void zx_ds_X509Data_DEL_X509Certificate(struct zx_ds_X509Data_s* x, int n);
-void zx_ds_X509Data_DEL_X509CRL(struct zx_ds_X509Data_s* x, int n);
+void zx_ds_X509Data_DEL_X509SKI(struct zx_ds_X509Data_s* x,int n);
+void zx_ds_X509Data_DEL_X509SubjectName(struct zx_ds_X509Data_s* x,int n);
+void zx_ds_X509Data_DEL_X509Certificate(struct zx_ds_X509Data_s* x,int n);
+void zx_ds_X509Data_DEL_X509CRL(struct zx_ds_X509Data_s* x,int n);
 
 void zx_ds_X509Data_REV_X509IssuerSerial(struct zx_ds_X509Data_s* x);
 void zx_ds_X509Data_REV_X509SKI(struct zx_ds_X509Data_s* x);
@@ -1277,7 +1172,6 @@ void zx_ds_X509Data_REV_X509CRL(struct zx_ds_X509Data_s* x);
 #ifndef zx_ds_X509IssuerSerial_EXT
 #define zx_ds_X509IssuerSerial_EXT
 #endif
-
 struct zx_ds_X509IssuerSerial_s {
   ZX_ELEM_EXT
   zx_ds_X509IssuerSerial_EXT
@@ -1286,12 +1180,8 @@ struct zx_ds_X509IssuerSerial_s {
 };
 
 #define zx_NEW_ds_X509IssuerSerial(c, father) (struct zx_ds_X509IssuerSerial_s*)zx_new_elem((c),(father),zx_ds_X509IssuerSerial_ELEM)
-
 int zx_DEC_ATTR_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_ds_X509IssuerSerial_s* x);
 int zx_DEC_ELEM_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_ds_X509IssuerSerial_s* x);
-int zx_LEN_SO_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_ds_X509IssuerSerial_s* x);
-char* zx_ENC_SO_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_ds_X509IssuerSerial_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_ds_X509IssuerSerial_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ds_X509IssuerSerial_s* zx_DEEP_CLONE_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_ds_X509IssuerSerial_s* x, int dup_strs);
@@ -1321,8 +1211,8 @@ void zx_ds_X509IssuerSerial_PUT_X509SerialNumber(struct zx_ds_X509IssuerSerial_s
 void zx_ds_X509IssuerSerial_ADD_X509IssuerName(struct zx_ds_X509IssuerSerial_s* x, int n, struct zx_elem_s* z);
 void zx_ds_X509IssuerSerial_ADD_X509SerialNumber(struct zx_ds_X509IssuerSerial_s* x, int n, struct zx_elem_s* z);
 
-void zx_ds_X509IssuerSerial_DEL_X509IssuerName(struct zx_ds_X509IssuerSerial_s* x, int n);
-void zx_ds_X509IssuerSerial_DEL_X509SerialNumber(struct zx_ds_X509IssuerSerial_s* x, int n);
+void zx_ds_X509IssuerSerial_DEL_X509IssuerName(struct zx_ds_X509IssuerSerial_s* x,int n);
+void zx_ds_X509IssuerSerial_DEL_X509SerialNumber(struct zx_ds_X509IssuerSerial_s* x,int n);
 
 void zx_ds_X509IssuerSerial_REV_X509IssuerName(struct zx_ds_X509IssuerSerial_s* x);
 void zx_ds_X509IssuerSerial_REV_X509SerialNumber(struct zx_ds_X509IssuerSerial_s* x);

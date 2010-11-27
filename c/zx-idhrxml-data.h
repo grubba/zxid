@@ -23,7 +23,6 @@
 #ifndef zx_idhrxml_Create_EXT
 #define zx_idhrxml_Create_EXT
 #endif
-
 struct zx_idhrxml_Create_s {
   ZX_ELEM_EXT
   zx_idhrxml_Create_EXT
@@ -35,12 +34,8 @@ struct zx_idhrxml_Create_s {
 };
 
 #define zx_NEW_idhrxml_Create(c, father) (struct zx_idhrxml_Create_s*)zx_new_elem((c),(father),zx_idhrxml_Create_ELEM)
-
 int zx_DEC_ATTR_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x);
 int zx_DEC_ELEM_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x);
-int zx_LEN_SO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x);
-char* zx_ENC_SO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_Create_s* zx_DEEP_CLONE_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x, int dup_strs);
@@ -100,7 +95,6 @@ void zx_idhrxml_Create_REV_ResultQuery(struct zx_idhrxml_Create_s* x);
 #ifndef zx_idhrxml_CreateItem_EXT
 #define zx_idhrxml_CreateItem_EXT
 #endif
-
 struct zx_idhrxml_CreateItem_s {
   ZX_ELEM_EXT
   zx_idhrxml_CreateItem_EXT
@@ -111,12 +105,8 @@ struct zx_idhrxml_CreateItem_s {
 };
 
 #define zx_NEW_idhrxml_CreateItem(c, father) (struct zx_idhrxml_CreateItem_s*)zx_new_elem((c),(father),zx_idhrxml_CreateItem_ELEM)
-
 int zx_DEC_ATTR_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_s* x);
 int zx_DEC_ELEM_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_s* x);
-int zx_LEN_SO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_s* x);
-char* zx_ENC_SO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_CreateItem_s* zx_DEEP_CLONE_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_s* x, int dup_strs);
@@ -156,7 +146,6 @@ void zx_idhrxml_CreateItem_REV_NewData(struct zx_idhrxml_CreateItem_s* x);
 #ifndef zx_idhrxml_CreateResponse_EXT
 #define zx_idhrxml_CreateResponse_EXT
 #endif
-
 struct zx_idhrxml_CreateResponse_s {
   ZX_ELEM_EXT
   zx_idhrxml_CreateResponse_EXT
@@ -168,12 +157,8 @@ struct zx_idhrxml_CreateResponse_s {
 };
 
 #define zx_NEW_idhrxml_CreateResponse(c, father) (struct zx_idhrxml_CreateResponse_s*)zx_new_elem((c),(father),zx_idhrxml_CreateResponse_ELEM)
-
 int zx_DEC_ATTR_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateResponse_s* x);
 int zx_DEC_ELEM_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateResponse_s* x);
-int zx_LEN_SO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateResponse_s* x);
-char* zx_ENC_SO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_CreateResponse_s* zx_DEEP_CLONE_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateResponse_s* x, int dup_strs);
@@ -227,7 +212,6 @@ void zx_idhrxml_CreateResponse_REV_ItemData(struct zx_idhrxml_CreateResponse_s* 
 #ifndef zx_idhrxml_Data_EXT
 #define zx_idhrxml_Data_EXT
 #endif
-
 struct zx_idhrxml_Data_s {
   ZX_ELEM_EXT
   zx_idhrxml_Data_EXT
@@ -242,12 +226,8 @@ struct zx_idhrxml_Data_s {
 };
 
 #define zx_NEW_idhrxml_Data(c, father) (struct zx_idhrxml_Data_s*)zx_new_elem((c),(father),zx_idhrxml_Data_ELEM)
-
 int zx_DEC_ATTR_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x);
 int zx_DEC_ELEM_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x);
-int zx_LEN_SO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x);
-char* zx_ENC_SO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_Data_s* zx_DEEP_CLONE_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x, int dup_strs);
@@ -301,7 +281,6 @@ void zx_idhrxml_Data_REV_Subscription(struct zx_idhrxml_Data_s* x);
 #ifndef zx_idhrxml_Delete_EXT
 #define zx_idhrxml_Delete_EXT
 #endif
-
 struct zx_idhrxml_Delete_s {
   ZX_ELEM_EXT
   zx_idhrxml_Delete_EXT
@@ -311,12 +290,8 @@ struct zx_idhrxml_Delete_s {
 };
 
 #define zx_NEW_idhrxml_Delete(c, father) (struct zx_idhrxml_Delete_s*)zx_new_elem((c),(father),zx_idhrxml_Delete_ELEM)
-
 int zx_DEC_ATTR_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x);
 int zx_DEC_ELEM_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x);
-int zx_LEN_SO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x);
-char* zx_ENC_SO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_Delete_s* zx_DEEP_CLONE_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x, int dup_strs);
@@ -360,7 +335,6 @@ void zx_idhrxml_Delete_REV_DeleteItem(struct zx_idhrxml_Delete_s* x);
 #ifndef zx_idhrxml_DeleteItem_EXT
 #define zx_idhrxml_DeleteItem_EXT
 #endif
-
 struct zx_idhrxml_DeleteItem_s {
   ZX_ELEM_EXT
   zx_idhrxml_DeleteItem_EXT
@@ -373,12 +347,8 @@ struct zx_idhrxml_DeleteItem_s {
 };
 
 #define zx_NEW_idhrxml_DeleteItem(c, father) (struct zx_idhrxml_DeleteItem_s*)zx_new_elem((c),(father),zx_idhrxml_DeleteItem_ELEM)
-
 int zx_DEC_ATTR_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_s* x);
 int zx_DEC_ELEM_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_s* x);
-int zx_LEN_SO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_s* x);
-char* zx_ENC_SO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_DeleteItem_s* zx_DEEP_CLONE_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_s* x, int dup_strs);
@@ -412,7 +382,7 @@ void zx_idhrxml_DeleteItem_PUT_Select(struct zx_idhrxml_DeleteItem_s* x, int n, 
 
 void zx_idhrxml_DeleteItem_ADD_Select(struct zx_idhrxml_DeleteItem_s* x, int n, struct zx_elem_s* z);
 
-void zx_idhrxml_DeleteItem_DEL_Select(struct zx_idhrxml_DeleteItem_s* x, int n);
+void zx_idhrxml_DeleteItem_DEL_Select(struct zx_idhrxml_DeleteItem_s* x,int n);
 
 void zx_idhrxml_DeleteItem_REV_Select(struct zx_idhrxml_DeleteItem_s* x);
 
@@ -422,7 +392,6 @@ void zx_idhrxml_DeleteItem_REV_Select(struct zx_idhrxml_DeleteItem_s* x);
 #ifndef zx_idhrxml_DeleteResponse_EXT
 #define zx_idhrxml_DeleteResponse_EXT
 #endif
-
 struct zx_idhrxml_DeleteResponse_s {
   ZX_ELEM_EXT
   zx_idhrxml_DeleteResponse_EXT
@@ -432,12 +401,8 @@ struct zx_idhrxml_DeleteResponse_s {
 };
 
 #define zx_NEW_idhrxml_DeleteResponse(c, father) (struct zx_idhrxml_DeleteResponse_s*)zx_new_elem((c),(father),zx_idhrxml_DeleteResponse_ELEM)
-
 int zx_DEC_ATTR_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteResponse_s* x);
 int zx_DEC_ELEM_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteResponse_s* x);
-int zx_LEN_SO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteResponse_s* x);
-char* zx_ENC_SO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_DeleteResponse_s* zx_DEEP_CLONE_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteResponse_s* x, int dup_strs);
@@ -481,7 +446,6 @@ void zx_idhrxml_DeleteResponse_REV_Extension(struct zx_idhrxml_DeleteResponse_s*
 #ifndef zx_idhrxml_ItemData_EXT
 #define zx_idhrxml_ItemData_EXT
 #endif
-
 struct zx_idhrxml_ItemData_s {
   ZX_ELEM_EXT
   zx_idhrxml_ItemData_EXT
@@ -493,12 +457,8 @@ struct zx_idhrxml_ItemData_s {
 };
 
 #define zx_NEW_idhrxml_ItemData(c, father) (struct zx_idhrxml_ItemData_s*)zx_new_elem((c),(father),zx_idhrxml_ItemData_ELEM)
-
 int zx_DEC_ATTR_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x);
 int zx_DEC_ELEM_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x);
-int zx_LEN_SO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x);
-char* zx_ENC_SO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_ItemData_s* zx_DEEP_CLONE_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x, int dup_strs);
@@ -546,7 +506,6 @@ void zx_idhrxml_ItemData_REV_Subscription(struct zx_idhrxml_ItemData_s* x);
 #ifndef zx_idhrxml_Modify_EXT
 #define zx_idhrxml_Modify_EXT
 #endif
-
 struct zx_idhrxml_Modify_s {
   ZX_ELEM_EXT
   zx_idhrxml_Modify_EXT
@@ -558,12 +517,8 @@ struct zx_idhrxml_Modify_s {
 };
 
 #define zx_NEW_idhrxml_Modify(c, father) (struct zx_idhrxml_Modify_s*)zx_new_elem((c),(father),zx_idhrxml_Modify_ELEM)
-
 int zx_DEC_ATTR_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x);
 int zx_DEC_ELEM_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x);
-int zx_LEN_SO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x);
-char* zx_ENC_SO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_Modify_s* zx_DEEP_CLONE_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x, int dup_strs);
@@ -623,7 +578,6 @@ void zx_idhrxml_Modify_REV_ResultQuery(struct zx_idhrxml_Modify_s* x);
 #ifndef zx_idhrxml_ModifyItem_EXT
 #define zx_idhrxml_ModifyItem_EXT
 #endif
-
 struct zx_idhrxml_ModifyItem_s {
   ZX_ELEM_EXT
   zx_idhrxml_ModifyItem_EXT
@@ -638,12 +592,8 @@ struct zx_idhrxml_ModifyItem_s {
 };
 
 #define zx_NEW_idhrxml_ModifyItem(c, father) (struct zx_idhrxml_ModifyItem_s*)zx_new_elem((c),(father),zx_idhrxml_ModifyItem_ELEM)
-
 int zx_DEC_ATTR_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_s* x);
 int zx_DEC_ELEM_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_s* x);
-int zx_LEN_SO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_s* x);
-char* zx_ENC_SO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_ModifyItem_s* zx_DEEP_CLONE_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_s* x, int dup_strs);
@@ -685,7 +635,7 @@ void zx_idhrxml_ModifyItem_PUT_NewData(struct zx_idhrxml_ModifyItem_s* x, int n,
 void zx_idhrxml_ModifyItem_ADD_Select(struct zx_idhrxml_ModifyItem_s* x, int n, struct zx_elem_s* z);
 void zx_idhrxml_ModifyItem_ADD_NewData(struct zx_idhrxml_ModifyItem_s* x, int n, struct zx_idhrxml_NewData_s* z);
 
-void zx_idhrxml_ModifyItem_DEL_Select(struct zx_idhrxml_ModifyItem_s* x, int n);
+void zx_idhrxml_ModifyItem_DEL_Select(struct zx_idhrxml_ModifyItem_s* x,int n);
 void zx_idhrxml_ModifyItem_DEL_NewData(struct zx_idhrxml_ModifyItem_s* x, int n);
 
 void zx_idhrxml_ModifyItem_REV_Select(struct zx_idhrxml_ModifyItem_s* x);
@@ -697,7 +647,6 @@ void zx_idhrxml_ModifyItem_REV_NewData(struct zx_idhrxml_ModifyItem_s* x);
 #ifndef zx_idhrxml_ModifyResponse_EXT
 #define zx_idhrxml_ModifyResponse_EXT
 #endif
-
 struct zx_idhrxml_ModifyResponse_s {
   ZX_ELEM_EXT
   zx_idhrxml_ModifyResponse_EXT
@@ -709,12 +658,8 @@ struct zx_idhrxml_ModifyResponse_s {
 };
 
 #define zx_NEW_idhrxml_ModifyResponse(c, father) (struct zx_idhrxml_ModifyResponse_s*)zx_new_elem((c),(father),zx_idhrxml_ModifyResponse_ELEM)
-
 int zx_DEC_ATTR_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyResponse_s* x);
 int zx_DEC_ELEM_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyResponse_s* x);
-int zx_LEN_SO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyResponse_s* x);
-char* zx_ENC_SO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_ModifyResponse_s* zx_DEEP_CLONE_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyResponse_s* x, int dup_strs);
@@ -768,7 +713,6 @@ void zx_idhrxml_ModifyResponse_REV_ItemData(struct zx_idhrxml_ModifyResponse_s* 
 #ifndef zx_idhrxml_NewData_EXT
 #define zx_idhrxml_NewData_EXT
 #endif
-
 struct zx_idhrxml_NewData_s {
   ZX_ELEM_EXT
   zx_idhrxml_NewData_EXT
@@ -777,12 +721,8 @@ struct zx_idhrxml_NewData_s {
 };
 
 #define zx_NEW_idhrxml_NewData(c, father) (struct zx_idhrxml_NewData_s*)zx_new_elem((c),(father),zx_idhrxml_NewData_ELEM)
-
 int zx_DEC_ATTR_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x);
 int zx_DEC_ELEM_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x);
-int zx_LEN_SO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x);
-char* zx_ENC_SO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_NewData_s* zx_DEEP_CLONE_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x, int dup_strs);
@@ -824,7 +764,6 @@ void zx_idhrxml_NewData_REV_Subscription(struct zx_idhrxml_NewData_s* x);
 #ifndef zx_idhrxml_Notification_EXT
 #define zx_idhrxml_Notification_EXT
 #endif
-
 struct zx_idhrxml_Notification_s {
   ZX_ELEM_EXT
   zx_idhrxml_Notification_EXT
@@ -837,12 +776,8 @@ struct zx_idhrxml_Notification_s {
 };
 
 #define zx_NEW_idhrxml_Notification(c, father) (struct zx_idhrxml_Notification_s*)zx_new_elem((c),(father),zx_idhrxml_Notification_ELEM)
-
 int zx_DEC_ATTR_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notification_s* x);
 int zx_DEC_ELEM_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notification_s* x);
-int zx_LEN_SO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notification_s* x);
-char* zx_ENC_SO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notification_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notification_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_Notification_s* zx_DEEP_CLONE_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notification_s* x, int dup_strs);
@@ -892,7 +827,6 @@ void zx_idhrxml_Notification_REV_ItemData(struct zx_idhrxml_Notification_s* x);
 #ifndef zx_idhrxml_Notify_EXT
 #define zx_idhrxml_Notify_EXT
 #endif
-
 struct zx_idhrxml_Notify_s {
   ZX_ELEM_EXT
   zx_idhrxml_Notify_EXT
@@ -903,12 +837,8 @@ struct zx_idhrxml_Notify_s {
 };
 
 #define zx_NEW_idhrxml_Notify(c, father) (struct zx_idhrxml_Notify_s*)zx_new_elem((c),(father),zx_idhrxml_Notify_ELEM)
-
 int zx_DEC_ATTR_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x);
 int zx_DEC_ELEM_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x);
-int zx_LEN_SO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x);
-char* zx_ENC_SO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_Notify_s* zx_DEEP_CLONE_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x, int dup_strs);
@@ -954,7 +884,6 @@ void zx_idhrxml_Notify_REV_Notification(struct zx_idhrxml_Notify_s* x);
 #ifndef zx_idhrxml_NotifyResponse_EXT
 #define zx_idhrxml_NotifyResponse_EXT
 #endif
-
 struct zx_idhrxml_NotifyResponse_s {
   ZX_ELEM_EXT
   zx_idhrxml_NotifyResponse_EXT
@@ -964,12 +893,8 @@ struct zx_idhrxml_NotifyResponse_s {
 };
 
 #define zx_NEW_idhrxml_NotifyResponse(c, father) (struct zx_idhrxml_NotifyResponse_s*)zx_new_elem((c),(father),zx_idhrxml_NotifyResponse_ELEM)
-
 int zx_DEC_ATTR_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyResponse_s* x);
 int zx_DEC_ELEM_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyResponse_s* x);
-int zx_LEN_SO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyResponse_s* x);
-char* zx_ENC_SO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_NotifyResponse_s* zx_DEEP_CLONE_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyResponse_s* x, int dup_strs);
@@ -1013,7 +938,6 @@ void zx_idhrxml_NotifyResponse_REV_Extension(struct zx_idhrxml_NotifyResponse_s*
 #ifndef zx_idhrxml_Query_EXT
 #define zx_idhrxml_Query_EXT
 #endif
-
 struct zx_idhrxml_Query_s {
   ZX_ELEM_EXT
   zx_idhrxml_Query_EXT
@@ -1025,12 +949,8 @@ struct zx_idhrxml_Query_s {
 };
 
 #define zx_NEW_idhrxml_Query(c, father) (struct zx_idhrxml_Query_s*)zx_new_elem((c),(father),zx_idhrxml_Query_ELEM)
-
 int zx_DEC_ATTR_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x);
 int zx_DEC_ELEM_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x);
-int zx_LEN_SO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x);
-char* zx_ENC_SO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_Query_s* zx_DEEP_CLONE_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x, int dup_strs);
@@ -1090,7 +1010,6 @@ void zx_idhrxml_Query_REV_Subscription(struct zx_idhrxml_Query_s* x);
 #ifndef zx_idhrxml_QueryItem_EXT
 #define zx_idhrxml_QueryItem_EXT
 #endif
-
 struct zx_idhrxml_QueryItem_s {
   ZX_ELEM_EXT
   zx_idhrxml_QueryItem_EXT
@@ -1111,12 +1030,8 @@ struct zx_idhrxml_QueryItem_s {
 };
 
 #define zx_NEW_idhrxml_QueryItem(c, father) (struct zx_idhrxml_QueryItem_s*)zx_new_elem((c),(father),zx_idhrxml_QueryItem_ELEM)
-
 int zx_DEC_ATTR_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s* x);
 int zx_DEC_ELEM_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s* x);
-int zx_LEN_SO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s* x);
-char* zx_ENC_SO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_QueryItem_s* zx_DEEP_CLONE_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s* x, int dup_strs);
@@ -1174,9 +1089,9 @@ void zx_idhrxml_QueryItem_ADD_ChangeFormat(struct zx_idhrxml_QueryItem_s* x, int
 void zx_idhrxml_QueryItem_ADD_Select(struct zx_idhrxml_QueryItem_s* x, int n, struct zx_elem_s* z);
 void zx_idhrxml_QueryItem_ADD_Sort(struct zx_idhrxml_QueryItem_s* x, int n, struct zx_elem_s* z);
 
-void zx_idhrxml_QueryItem_DEL_ChangeFormat(struct zx_idhrxml_QueryItem_s* x, int n);
-void zx_idhrxml_QueryItem_DEL_Select(struct zx_idhrxml_QueryItem_s* x, int n);
-void zx_idhrxml_QueryItem_DEL_Sort(struct zx_idhrxml_QueryItem_s* x, int n);
+void zx_idhrxml_QueryItem_DEL_ChangeFormat(struct zx_idhrxml_QueryItem_s* x,int n);
+void zx_idhrxml_QueryItem_DEL_Select(struct zx_idhrxml_QueryItem_s* x,int n);
+void zx_idhrxml_QueryItem_DEL_Sort(struct zx_idhrxml_QueryItem_s* x,int n);
 
 void zx_idhrxml_QueryItem_REV_ChangeFormat(struct zx_idhrxml_QueryItem_s* x);
 void zx_idhrxml_QueryItem_REV_Select(struct zx_idhrxml_QueryItem_s* x);
@@ -1188,7 +1103,6 @@ void zx_idhrxml_QueryItem_REV_Sort(struct zx_idhrxml_QueryItem_s* x);
 #ifndef zx_idhrxml_QueryResponse_EXT
 #define zx_idhrxml_QueryResponse_EXT
 #endif
-
 struct zx_idhrxml_QueryResponse_s {
   ZX_ELEM_EXT
   zx_idhrxml_QueryResponse_EXT
@@ -1201,12 +1115,8 @@ struct zx_idhrxml_QueryResponse_s {
 };
 
 #define zx_NEW_idhrxml_QueryResponse(c, father) (struct zx_idhrxml_QueryResponse_s*)zx_new_elem((c),(father),zx_idhrxml_QueryResponse_ELEM)
-
 int zx_DEC_ATTR_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryResponse_s* x);
 int zx_DEC_ELEM_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryResponse_s* x);
-int zx_LEN_SO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryResponse_s* x);
-char* zx_ENC_SO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_QueryResponse_s* zx_DEEP_CLONE_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryResponse_s* x, int dup_strs);
@@ -1268,7 +1178,6 @@ void zx_idhrxml_QueryResponse_REV_Data(struct zx_idhrxml_QueryResponse_s* x);
 #ifndef zx_idhrxml_ResultQuery_EXT
 #define zx_idhrxml_ResultQuery_EXT
 #endif
-
 struct zx_idhrxml_ResultQuery_s {
   ZX_ELEM_EXT
   zx_idhrxml_ResultQuery_EXT
@@ -1285,12 +1194,8 @@ struct zx_idhrxml_ResultQuery_s {
 };
 
 #define zx_NEW_idhrxml_ResultQuery(c, father) (struct zx_idhrxml_ResultQuery_s*)zx_new_elem((c),(father),zx_idhrxml_ResultQuery_ELEM)
-
 int zx_DEC_ATTR_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuery_s* x);
 int zx_DEC_ELEM_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuery_s* x);
-int zx_LEN_SO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuery_s* x);
-char* zx_ENC_SO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuery_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuery_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_ResultQuery_s* zx_DEEP_CLONE_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuery_s* x, int dup_strs);
@@ -1340,9 +1245,9 @@ void zx_idhrxml_ResultQuery_ADD_ChangeFormat(struct zx_idhrxml_ResultQuery_s* x,
 void zx_idhrxml_ResultQuery_ADD_Select(struct zx_idhrxml_ResultQuery_s* x, int n, struct zx_elem_s* z);
 void zx_idhrxml_ResultQuery_ADD_Sort(struct zx_idhrxml_ResultQuery_s* x, int n, struct zx_elem_s* z);
 
-void zx_idhrxml_ResultQuery_DEL_ChangeFormat(struct zx_idhrxml_ResultQuery_s* x, int n);
-void zx_idhrxml_ResultQuery_DEL_Select(struct zx_idhrxml_ResultQuery_s* x, int n);
-void zx_idhrxml_ResultQuery_DEL_Sort(struct zx_idhrxml_ResultQuery_s* x, int n);
+void zx_idhrxml_ResultQuery_DEL_ChangeFormat(struct zx_idhrxml_ResultQuery_s* x,int n);
+void zx_idhrxml_ResultQuery_DEL_Select(struct zx_idhrxml_ResultQuery_s* x,int n);
+void zx_idhrxml_ResultQuery_DEL_Sort(struct zx_idhrxml_ResultQuery_s* x,int n);
 
 void zx_idhrxml_ResultQuery_REV_ChangeFormat(struct zx_idhrxml_ResultQuery_s* x);
 void zx_idhrxml_ResultQuery_REV_Select(struct zx_idhrxml_ResultQuery_s* x);
@@ -1354,7 +1259,6 @@ void zx_idhrxml_ResultQuery_REV_Sort(struct zx_idhrxml_ResultQuery_s* x);
 #ifndef zx_idhrxml_Subscription_EXT
 #define zx_idhrxml_Subscription_EXT
 #endif
-
 struct zx_idhrxml_Subscription_s {
   ZX_ELEM_EXT
   zx_idhrxml_Subscription_EXT
@@ -1373,12 +1277,8 @@ struct zx_idhrxml_Subscription_s {
 };
 
 #define zx_NEW_idhrxml_Subscription(c, father) (struct zx_idhrxml_Subscription_s*)zx_new_elem((c),(father),zx_idhrxml_Subscription_ELEM)
-
 int zx_DEC_ATTR_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscription_s* x);
 int zx_DEC_ELEM_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscription_s* x);
-int zx_LEN_SO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscription_s* x);
-char* zx_ENC_SO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscription_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscription_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_Subscription_s* zx_DEEP_CLONE_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscription_s* x, int dup_strs);
@@ -1443,8 +1343,8 @@ void zx_idhrxml_Subscription_ADD_Trigger(struct zx_idhrxml_Subscription_s* x, in
 void zx_idhrxml_Subscription_DEL_RefItem(struct zx_idhrxml_Subscription_s* x, int n);
 void zx_idhrxml_Subscription_DEL_Extension(struct zx_idhrxml_Subscription_s* x, int n);
 void zx_idhrxml_Subscription_DEL_ResultQuery(struct zx_idhrxml_Subscription_s* x, int n);
-void zx_idhrxml_Subscription_DEL_Aggregation(struct zx_idhrxml_Subscription_s* x, int n);
-void zx_idhrxml_Subscription_DEL_Trigger(struct zx_idhrxml_Subscription_s* x, int n);
+void zx_idhrxml_Subscription_DEL_Aggregation(struct zx_idhrxml_Subscription_s* x,int n);
+void zx_idhrxml_Subscription_DEL_Trigger(struct zx_idhrxml_Subscription_s* x,int n);
 
 void zx_idhrxml_Subscription_REV_RefItem(struct zx_idhrxml_Subscription_s* x);
 void zx_idhrxml_Subscription_REV_Extension(struct zx_idhrxml_Subscription_s* x);
@@ -1458,7 +1358,6 @@ void zx_idhrxml_Subscription_REV_Trigger(struct zx_idhrxml_Subscription_s* x);
 #ifndef zx_idhrxml_TestItem_EXT
 #define zx_idhrxml_TestItem_EXT
 #endif
-
 struct zx_idhrxml_TestItem_s {
   ZX_ELEM_EXT
   zx_idhrxml_TestItem_EXT
@@ -1470,12 +1369,8 @@ struct zx_idhrxml_TestItem_s {
 };
 
 #define zx_NEW_idhrxml_TestItem(c, father) (struct zx_idhrxml_TestItem_s*)zx_new_elem((c),(father),zx_idhrxml_TestItem_ELEM)
-
 int zx_DEC_ATTR_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x);
 int zx_DEC_ELEM_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x);
-int zx_LEN_SO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x);
-char* zx_ENC_SO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idhrxml_TestItem_s* zx_DEEP_CLONE_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x, int dup_strs);
@@ -1507,7 +1402,7 @@ void zx_idhrxml_TestItem_PUT_TestOp(struct zx_idhrxml_TestItem_s* x, int n, stru
 
 void zx_idhrxml_TestItem_ADD_TestOp(struct zx_idhrxml_TestItem_s* x, int n, struct zx_elem_s* z);
 
-void zx_idhrxml_TestItem_DEL_TestOp(struct zx_idhrxml_TestItem_s* x, int n);
+void zx_idhrxml_TestItem_DEL_TestOp(struct zx_idhrxml_TestItem_s* x,int n);
 
 void zx_idhrxml_TestItem_REV_TestOp(struct zx_idhrxml_TestItem_s* x);
 

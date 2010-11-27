@@ -51,7 +51,7 @@ int zxid_sp_mni_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_str*
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
       refs.id = &body->ManageNameIDRequest->ID->g;
-      refs.canon = zx_EASY_ENC_SO_sp_ManageNameIDRequest(cf->ctx, body->ManageNameIDRequest);
+      refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->ManageNameIDRequest->gg);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mni"))
 	body->ManageNameIDRequest->Signature
 	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
@@ -99,8 +99,8 @@ struct zx_str* zxid_sp_mni_redir(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, st
     if (!loc)
       return zx_dup_str(cf->ctx, "* ERR");
     r = zxid_mk_mni(cf, zxid_get_user_nameid(cf, ses->nameid), new_nym, 0);
-    r->Destination = zx_ref_len_attr(cf->ctx, zx_Destination_ATTR, loc->len, loc->s);
-    rs = zx_EASY_ENC_SO_sp_ManageNameIDRequest(cf->ctx, r);
+    r->Destination = zx_ref_len_attr(cf->ctx, &r->gg, zx_Destination_ATTR, loc->len, loc->s);
+    rs = zx_EASY_ENC_elem(cf->ctx, &r->gg);
     D("NIReq(%.*s)", rs->len, rs->s);
     return zxid_saml2_redir(cf, loc, rs, 0);
   }
@@ -150,8 +150,8 @@ struct zx_str* zxid_mni_do_ss(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struc
   struct zx_sp_ManageNameIDResponse_s* res;
   res = zxid_mk_mni_resp(cf, zxid_OK(cf), &mni->ID->g);
   res = zxid_mni_do(cf, cgi, ses, mni);
-  res->Destination = zx_ref_len_attr(cf->ctx, zx_Destination_ATTR, loc->len, loc->s);
-  return zx_EASY_ENC_SO_sp_ManageNameIDResponse(cf->ctx, res);
+  res->Destination = zx_ref_len_attr(cf->ctx, &res->gg, zx_Destination_ATTR, loc->len, loc->s);
+  return zx_EASY_ENC_elem(cf->ctx, &res->gg);
 }
 
 /* EOF  --  zxidmni.c */

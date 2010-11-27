@@ -40,8 +40,8 @@ all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxencdect
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000071
-ZXIDREL=0.71
+ZXIDVERSION=0x000072
+ZXIDREL=0.72
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -361,9 +361,13 @@ CFLAGS+= $(CDEF) $(CDIR)
 ###
 
 ZXIDHDRS=zx.h zxid.h zxidnoswig.h c/zxidvers.h
+
 ZXID_LIB_OBJ=zxidsimp.$(OBJ_EXT) zxidpool.$(OBJ_EXT) zxidpsso.$(OBJ_EXT) zxidsso.$(OBJ_EXT) zxidslo.$(OBJ_EXT) zxiddec.$(OBJ_EXT) zxidspx.$(OBJ_EXT) zxididpx.$(OBJ_EXT) zxidmni.$(OBJ_EXT) zxidpep.$(OBJ_EXT) zxidpdp.$(OBJ_EXT) zxidmk.$(OBJ_EXT) zxida7n.$(OBJ_EXT) zxidses.$(OBJ_EXT) zxiduser.$(OBJ_EXT) zxidcgi.$(OBJ_EXT) zxidconf.$(OBJ_EXT) zxidecp.$(OBJ_EXT) zxidcdc.$(OBJ_EXT) zxidloc.$(OBJ_EXT) zxidlib.$(OBJ_EXT) zxidmeta.$(OBJ_EXT) zxidcurl.$(OBJ_EXT) zxidepr.$(OBJ_EXT) zxida7n.$(OBJ_EXT) ykcrc.$(OBJ_EXT) ykaes.$(OBJ_EXT) $(PLATFORM_OBJ)
-ZX_OBJ=zxlibdec.$(OBJ_EXT) zxlib.$(OBJ_EXT) zxns.$(OBJ_EXT) zxutil.$(OBJ_EXT) zxlog.$(OBJ_EXT) zxsig.$(OBJ_EXT) zxcrypto.$(OBJ_EXT) c/license.$(OBJ_EXT)  c/zx-ns.$(OBJ_EXT)  c/zx-attrs.$(OBJ_EXT)  c/zx-elems.$(OBJ_EXT)
+
+ZX_OBJ=c/zx-ns.$(OBJ_EXT) c/zx-attrs.$(OBJ_EXT) c/zx-elems.$(OBJ_EXT) zxlibdec.$(OBJ_EXT) zxlib.$(OBJ_EXT) zxns.$(OBJ_EXT) zxutil.$(OBJ_EXT) zxlog.$(OBJ_EXT) zxsig.$(OBJ_EXT) zxcrypto.$(OBJ_EXT) c/license.$(OBJ_EXT)
+
 WSF_OBJ=zxidmkwsf.$(OBJ_EXT) zxidwsf.$(OBJ_EXT) zxidwsc.$(OBJ_EXT) zxidwsp.$(OBJ_EXT) zxiddi.$(OBJ_EXT) zxidim.$(OBJ_EXT) zxidps.$(OBJ_EXT)
+
 SMIME_LIB_OBJ=certauth.$(OBJ_EXT) keygen.$(OBJ_EXT) pkcs12.$(OBJ_EXT) smime-enc.$(OBJ_EXT) smime-qry.$(OBJ_EXT) smime-vfy.$(OBJ_EXT) smimemime.$(OBJ_EXT) smimeutil.$(OBJ_EXT)
 
 ifeq ($(PULVER),1)
@@ -679,67 +683,56 @@ ZX_GEN_GETPUT_C= \
  c/zx-shibmd-getput.c \
  c/zx-idpdisc-getput.c
 
-ZX_GEN_C= \
- c/zx-a-aux.c      c/zx-di12-dec.c    c/zx-is-enc.c      c/zx-sa11-dec.c     c/zx-sp11-dec.c \
- c/zx-a-dec.c      c/zx-di12-enc.c    c/zx-sa11-enc.c     c/zx-sp11-enc.c \
- c/zx-a-enc.c      c/zx-is12-aux.c \
- c/zx-is12-dec.c   c/zx-sbf-aux.c     c/zx-wsse-aux.c \
- c/zx-ac-aux.c     c/zx-is12-enc.c    c/zx-sbf-dec.c     c/zx-wsse-dec.c \
- c/zx-ac-dec.c     c/zx-sbf-enc.c     c/zx-wsse-enc.c \
- c/zx-ac-enc.c     c/zx-lu-aux.c \
- c/zx-ds-aux.c      c/zx-lu-dec.c      c/zx-wsu-aux.c \
- c/zx-ds-dec.c     c/zx-lu-enc.c      c/zx-wsu-dec.c \
- c/zx-aux.c        c/zx-ds-enc.c      c/zx-wsu-enc.c \
- c/zx-b-aux.c      c/zx-m20-aux.c \
- c/zx-b-dec.c      c/zx-e-aux.c       c/zx-m20-dec.c     c/zx-sec-aux.c      c/zx-xenc-aux.c \
- c/zx-b-enc.c      c/zx-e-dec.c       c/zx-m20-enc.c     c/zx-sec-dec.c      c/zx-xenc-dec.c \
- c/zx-e-enc.c      c/zx-sec-enc.c     c/zx-xenc-enc.c \
+ZX_GEN_AUX_C= \
+ c/zx-a-aux.c      c/zx-is12-aux.c \
+ c/zx-sbf-aux.c     c/zx-wsse-aux.c \
+ c/zx-ac-aux.c     c/zx-lu-aux.c \
+ c/zx-ds-aux.c     c/zx-wsu-aux.c \
+ c/zx-aux.c        c/zx-b-aux.c       c/zx-m20-aux.c \
+ c/zx-e-aux.c      c/zx-sec-aux.c     c/zx-xenc-aux.c \
  c/zx-b12-aux.c    c/zx-md-aux.c \
- c/zx-b12-dec.c    c/zx-md-dec.c      c/zx-sec12-aux.c \
- c/zx-b12-enc.c    c/zx-enc.c         c/zx-md-enc.c      c/zx-sec12-dec.c \
- c/zx-ff12-aux.c   c/zx-sec12-enc.c \
+ c/zx-sec12-aux.c \
+ c/zx-ff12-aux.c   c/zx-di-aux.c      c/zx-sa-aux.c      c/zx-sp-aux.c \
+ c/zx-is-aux.c \
+ c/zx-di12-aux.c   c/zx-sa11-aux.c    c/zx-sp11-aux.c \
+ c/zx-ecp-aux.c    c/zx-paos-aux.c \
+ c/zx-dap-aux.c    c/zx-ps-aux.c      c/zx-im-aux.c \
+ c/zx-as-aux.c     c/zx-subs-aux.c    c/zx-dst-aux.c \
+ c/zx-cb-aux.c     c/zx-cdm-aux.c     c/zx-gl-aux.c \
+ c/zx-mm7-aux.c    c/zx-wst-aux.c     c/zx-wsp-aux.c \
+ c/zx-wsc-aux.c    c/zx-xa-aux.c      c/zx-xac-aux.c \
+ c/zx-xasa-aux.c   c/zx-xasacd1-aux.c c/zx-xasp-aux.c \
+ c/zx-xaspcd1-aux.c c/zx-dp-aux.c     c/zx-pmm-aux.c \
+ c/zx-prov-aux.c   c/zx-idp-aux.c     c/zx-shps-aux.c \
+ c/zx-exca-aux.c   c/zx-hrxml-aux.c   c/zx-idhrxml-aux.c \
+ c/zx-demomed-aux.c c/zx-xsi-aux.c    c/zx-xs-aux.c \
+ c/zx-xml-aux.c     c/zx-tas3-aux.c   c/zx-tas3sol-aux.c \
+ c/zx-shibmd-aux.c  c/zx-idpdisc-aux.c
+
+ZX_GEN_C= \
+ c/zx-di12-dec.c   c/zx-sa11-dec.c     c/zx-sp11-dec.c \
+ c/zx-a-dec.c \
+ c/zx-is12-dec.c   c/zx-sbf-dec.c     c/zx-wsse-dec.c \
+ c/zx-ac-dec.c     c/zx-lu-dec.c \
+ c/zx-ds-dec.c     c/zx-wsu-dec.c \
+ c/zx-b-dec.c      c/zx-m20-dec.c \
+ c/zx-e-dec.c      c/zx-sec-dec.c     c/zx-xenc-dec.c \
+ c/zx-b12-dec.c    c/zx-md-dec.c      c/zx-sec12-dec.c \
  c/zx-dec.c        c/zx-ff12-dec.c \
- c/zx-di-aux.c     c/zx-ff12-enc.c    c/zx-sa-aux.c      c/zx-sp-aux.c \
  c/zx-di-dec.c     c/zx-sa-dec.c      c/zx-sp-dec.c \
- c/zx-di-enc.c     c/zx-sa-enc.c      c/zx-sp-enc.c      c/zx-is-aux.c \
- c/zx-di12-aux.c   c/zx-is-dec.c      c/zx-sa11-aux.c    c/zx-sp11-aux.c \
- c/zx-ecp-aux.c    c/zx-ecp-dec.c     c/zx-ecp-enc.c \
- c/zx-paos-aux.c   c/zx-paos-dec.c    c/zx-paos-enc.c \
- c/zx-dap-aux.c    c/zx-dap-dec.c     c/zx-dap-enc.c \
- c/zx-ps-aux.c     c/zx-ps-dec.c      c/zx-ps-enc.c \
- c/zx-im-aux.c     c/zx-im-dec.c      c/zx-im-enc.c \
- c/zx-as-aux.c     c/zx-as-dec.c      c/zx-as-enc.c \
- c/zx-subs-aux.c   c/zx-subs-dec.c    c/zx-subs-enc.c \
- c/zx-dst-aux.c    c/zx-dst-dec.c     c/zx-dst-enc.c \
- c/zx-cb-aux.c     c/zx-cb-dec.c      c/zx-cb-enc.c \
- c/zx-cdm-aux.c    c/zx-cdm-dec.c     c/zx-cdm-enc.c \
- c/zx-gl-aux.c     c/zx-gl-dec.c      c/zx-gl-enc.c \
- c/zx-mm7-aux.c    c/zx-mm7-dec.c     c/zx-mm7-enc.c \
- c/zx-wst-aux.c    c/zx-wst-dec.c     c/zx-wst-enc.c \
- c/zx-wsp-aux.c    c/zx-wsp-dec.c     c/zx-wsp-enc.c \
- c/zx-wsc-aux.c    c/zx-wsc-dec.c     c/zx-wsc-enc.c \
- c/zx-xa-aux.c     c/zx-xa-dec.c      c/zx-xa-enc.c \
- c/zx-xac-aux.c    c/zx-xac-dec.c     c/zx-xac-enc.c \
- c/zx-xasa-aux.c   c/zx-xasa-dec.c    c/zx-xasa-enc.c\
- c/zx-xasacd1-aux.c   c/zx-xasacd1-dec.c    c/zx-xasacd1-enc.c \
- c/zx-xasp-aux.c   c/zx-xasp-dec.c    c/zx-xasp-enc.c \
- c/zx-xaspcd1-aux.c   c/zx-xaspcd1-dec.c    c/zx-xaspcd1-enc.c \
- c/zx-dp-aux.c     c/zx-dp-dec.c      c/zx-dp-enc.c \
- c/zx-pmm-aux.c    c/zx-pmm-dec.c     c/zx-pmm-enc.c \
- c/zx-prov-aux.c   c/zx-prov-dec.c    c/zx-prov-enc.c \
- c/zx-idp-aux.c    c/zx-idp-dec.c     c/zx-idp-enc.c \
- c/zx-shps-aux.c   c/zx-shps-dec.c    c/zx-shps-enc.c \
- c/zx-exca-aux.c   c/zx-exca-dec.c    c/zx-exca-enc.c \
- c/zx-hrxml-aux.c  c/zx-hrxml-dec.c   c/zx-hrxml-enc.c \
- c/zx-idhrxml-aux.c c/zx-idhrxml-dec.c c/zx-idhrxml-enc.c \
- c/zx-demomed-aux.c c/zx-demomed-dec.c c/zx-demomed-enc.c \
- c/zx-xsi-aux.c     c/zx-xsi-dec.c     c/zx-xsi-enc.c \
- c/zx-xs-aux.c      c/zx-xs-dec.c      c/zx-xs-enc.c \
- c/zx-xml-aux.c     c/zx-xml-dec.c     c/zx-xml-enc.c \
- c/zx-tas3-aux.c    c/zx-tas3-dec.c    c/zx-tas3-enc.c \
- c/zx-tas3sol-aux.c c/zx-tas3sol-dec.c c/zx-tas3sol-enc.c \
- c/zx-shibmd-aux.c  c/zx-shibmd-dec.c  c/zx-shibmd-enc.c \
- c/zx-idpdisc-aux.c  c/zx-idpdisc-dec.c  c/zx-idpdisc-enc.c
+ c/zx-is-dec.c     c/zx-ecp-dec.c     c/zx-paos-dec.c \
+ c/zx-dap-dec.c    c/zx-ps-dec.c      c/zx-im-dec.c \
+ c/zx-as-dec.c     c/zx-subs-dec.c    c/zx-dst-dec.c \
+ c/zx-cb-dec.c     c/zx-cdm-dec.c     c/zx-gl-dec.c \
+ c/zx-mm7-dec.c    c/zx-wst-dec.c     c/zx-wsp-dec.c \
+ c/zx-wsc-dec.c    c/zx-xa-dec.c      c/zx-xac-dec.c \
+ c/zx-xasa-dec.c   c/zx-xasacd1-dec.c c/zx-xasp-dec.c \
+ c/zx-xaspcd1-dec.c c/zx-dp-dec.c     c/zx-pmm-dec.c \
+ c/zx-prov-dec.c   c/zx-idp-dec.c     c/zx-shps-dec.c \
+ c/zx-exca-dec.c   c/zx-hrxml-dec.c   c/zx-idhrxml-dec.c \
+ c/zx-demomed-dec.c c/zx-xsi-dec.c    c/zx-xs-dec.c \
+ c/zx-xml-dec.c    c/zx-tas3-dec.c    c/zx-tas3sol-dec.c \
+ c/zx-shibmd-dec.c c/zx-idpdisc-dec.c
 
 ifeq ($(ENA_GEN),1)
 
@@ -1251,7 +1244,7 @@ sizeof:
 
 ifeq ($(PULVER),1)
 
-$(LIBZXID_A): $(ZXID_LIB_OBJ) $(ZX_OBJ)
+$(LIBZXID_A): $(ZX_OBJ) $(ZXID_LIB_OBJ)
 	cat pulver/c_saml2_dec_c.deps      | xargs $(AR) $(LIBZXID_A)
 	cat pulver/c_saml2_enc_c.deps      | xargs $(AR) $(LIBZXID_A)
 	cat pulver/c_saml2_aux_c.deps      | xargs $(AR) $(LIBZXID_A)
@@ -1267,10 +1260,10 @@ $(LIBZXID_A): $(ZXID_LIB_OBJ) $(ZX_OBJ)
 else
 
 ifeq ($(TARGET),win32cl)
-$(LIBZXID_A): $(ZX_GEN_C:.c=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
+$(LIBZXID_A): $(ZX_OBJ) $(ZX_GEN_C:.c=.obj) $(ZXID_LIB_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
 	$(AR) $(OUTOPT)zxid.lib $^
 else
-$(LIBZXID_A): $(ZX_GEN_C:.c=.o) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
+$(LIBZXID_A): $(ZX_OBJ) $(ZX_GEN_C:.c=.o) $(ZXID_LIB_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
 	$(AR) $(LIBZXID_A) $^
 endif
 endif

@@ -23,7 +23,6 @@
 #ifndef zx_m20_AdditionalMetaLocation_EXT
 #define zx_m20_AdditionalMetaLocation_EXT
 #endif
-
 struct zx_m20_AdditionalMetaLocation_s {
   ZX_ELEM_EXT
   zx_m20_AdditionalMetaLocation_EXT
@@ -31,12 +30,8 @@ struct zx_m20_AdditionalMetaLocation_s {
 };
 
 #define zx_NEW_m20_AdditionalMetaLocation(c, father) (struct zx_m20_AdditionalMetaLocation_s*)zx_new_elem((c),(father),zx_m20_AdditionalMetaLocation_ELEM)
-
 int zx_DEC_ATTR_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_AdditionalMetaLocation_s* x);
 int zx_DEC_ELEM_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_AdditionalMetaLocation_s* x);
-int zx_LEN_SO_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_AdditionalMetaLocation_s* x);
-char* zx_ENC_SO_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_AdditionalMetaLocation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_AdditionalMetaLocation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_AdditionalMetaLocation_s* zx_DEEP_CLONE_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_AdditionalMetaLocation_s* x, int dup_strs);
@@ -64,7 +59,6 @@ void zx_m20_AdditionalMetaLocation_PUT_namespace_is_cxx_keyword(struct zx_m20_Ad
 #ifndef zx_m20_AffiliationDescriptor_EXT
 #define zx_m20_AffiliationDescriptor_EXT
 #endif
-
 struct zx_m20_AffiliationDescriptor_s {
   ZX_ELEM_EXT
   zx_m20_AffiliationDescriptor_EXT
@@ -79,12 +73,8 @@ struct zx_m20_AffiliationDescriptor_s {
 };
 
 #define zx_NEW_m20_AffiliationDescriptor(c, father) (struct zx_m20_AffiliationDescriptor_s*)zx_new_elem((c),(father),zx_m20_AffiliationDescriptor_ELEM)
-
 int zx_DEC_ATTR_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_AffiliationDescriptor_s* x);
 int zx_DEC_ELEM_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_AffiliationDescriptor_s* x);
-int zx_LEN_SO_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_AffiliationDescriptor_s* x);
-char* zx_ENC_SO_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_AffiliationDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_AffiliationDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_AffiliationDescriptor_s* zx_DEEP_CLONE_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_AffiliationDescriptor_s* x, int dup_strs);
@@ -134,7 +124,7 @@ void zx_m20_AffiliationDescriptor_ADD_Extension(struct zx_m20_AffiliationDescrip
 void zx_m20_AffiliationDescriptor_ADD_KeyDescriptor(struct zx_m20_AffiliationDescriptor_s* x, int n, struct zx_m20_KeyDescriptor_s* z);
 void zx_m20_AffiliationDescriptor_ADD_Signature(struct zx_m20_AffiliationDescriptor_s* x, int n, struct zx_ds_Signature_s* z);
 
-void zx_m20_AffiliationDescriptor_DEL_AffiliateMember(struct zx_m20_AffiliationDescriptor_s* x, int n);
+void zx_m20_AffiliationDescriptor_DEL_AffiliateMember(struct zx_m20_AffiliationDescriptor_s* x,int n);
 void zx_m20_AffiliationDescriptor_DEL_Extension(struct zx_m20_AffiliationDescriptor_s* x, int n);
 void zx_m20_AffiliationDescriptor_DEL_KeyDescriptor(struct zx_m20_AffiliationDescriptor_s* x, int n);
 void zx_m20_AffiliationDescriptor_DEL_Signature(struct zx_m20_AffiliationDescriptor_s* x, int n);
@@ -150,7 +140,6 @@ void zx_m20_AffiliationDescriptor_REV_Signature(struct zx_m20_AffiliationDescrip
 #ifndef zx_m20_AssertionConsumerServiceURL_EXT
 #define zx_m20_AssertionConsumerServiceURL_EXT
 #endif
-
 struct zx_m20_AssertionConsumerServiceURL_s {
   ZX_ELEM_EXT
   zx_m20_AssertionConsumerServiceURL_EXT
@@ -159,12 +148,8 @@ struct zx_m20_AssertionConsumerServiceURL_s {
 };
 
 #define zx_NEW_m20_AssertionConsumerServiceURL(c, father) (struct zx_m20_AssertionConsumerServiceURL_s*)zx_new_elem((c),(father),zx_m20_AssertionConsumerServiceURL_ELEM)
-
 int zx_DEC_ATTR_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_AssertionConsumerServiceURL_s* x);
 int zx_DEC_ELEM_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_AssertionConsumerServiceURL_s* x);
-int zx_LEN_SO_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_AssertionConsumerServiceURL_s* x);
-char* zx_ENC_SO_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_AssertionConsumerServiceURL_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_AssertionConsumerServiceURL_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_AssertionConsumerServiceURL_s* zx_DEEP_CLONE_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_AssertionConsumerServiceURL_s* x, int dup_strs);
@@ -194,7 +179,6 @@ void zx_m20_AssertionConsumerServiceURL_PUT_isDefault(struct zx_m20_AssertionCon
 #ifndef zx_m20_ContactPerson_EXT
 #define zx_m20_ContactPerson_EXT
 #endif
-
 struct zx_m20_ContactPerson_s {
   ZX_ELEM_EXT
   zx_m20_ContactPerson_EXT
@@ -209,12 +193,8 @@ struct zx_m20_ContactPerson_s {
 };
 
 #define zx_NEW_m20_ContactPerson(c, father) (struct zx_m20_ContactPerson_s*)zx_new_elem((c),(father),zx_m20_ContactPerson_ELEM)
-
 int zx_DEC_ATTR_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s* x);
 int zx_DEC_ELEM_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s* x);
-int zx_LEN_SO_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s* x);
-char* zx_ENC_SO_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_ContactPerson_s* zx_DEEP_CLONE_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s* x, int dup_strs);
@@ -272,11 +252,11 @@ void zx_m20_ContactPerson_ADD_EmailAddress(struct zx_m20_ContactPerson_s* x, int
 void zx_m20_ContactPerson_ADD_TelephoneNumber(struct zx_m20_ContactPerson_s* x, int n, struct zx_elem_s* z);
 void zx_m20_ContactPerson_ADD_Extension(struct zx_m20_ContactPerson_s* x, int n, struct zx_m20_Extension_s* z);
 
-void zx_m20_ContactPerson_DEL_Company(struct zx_m20_ContactPerson_s* x, int n);
-void zx_m20_ContactPerson_DEL_GivenName(struct zx_m20_ContactPerson_s* x, int n);
-void zx_m20_ContactPerson_DEL_SurName(struct zx_m20_ContactPerson_s* x, int n);
-void zx_m20_ContactPerson_DEL_EmailAddress(struct zx_m20_ContactPerson_s* x, int n);
-void zx_m20_ContactPerson_DEL_TelephoneNumber(struct zx_m20_ContactPerson_s* x, int n);
+void zx_m20_ContactPerson_DEL_Company(struct zx_m20_ContactPerson_s* x,int n);
+void zx_m20_ContactPerson_DEL_GivenName(struct zx_m20_ContactPerson_s* x,int n);
+void zx_m20_ContactPerson_DEL_SurName(struct zx_m20_ContactPerson_s* x,int n);
+void zx_m20_ContactPerson_DEL_EmailAddress(struct zx_m20_ContactPerson_s* x,int n);
+void zx_m20_ContactPerson_DEL_TelephoneNumber(struct zx_m20_ContactPerson_s* x,int n);
 void zx_m20_ContactPerson_DEL_Extension(struct zx_m20_ContactPerson_s* x, int n);
 
 void zx_m20_ContactPerson_REV_Company(struct zx_m20_ContactPerson_s* x);
@@ -292,7 +272,6 @@ void zx_m20_ContactPerson_REV_Extension(struct zx_m20_ContactPerson_s* x);
 #ifndef zx_m20_EntitiesDescriptor_EXT
 #define zx_m20_EntitiesDescriptor_EXT
 #endif
-
 struct zx_m20_EntitiesDescriptor_s {
   ZX_ELEM_EXT
   zx_m20_EntitiesDescriptor_EXT
@@ -300,12 +279,8 @@ struct zx_m20_EntitiesDescriptor_s {
 };
 
 #define zx_NEW_m20_EntitiesDescriptor(c, father) (struct zx_m20_EntitiesDescriptor_s*)zx_new_elem((c),(father),zx_m20_EntitiesDescriptor_ELEM)
-
 int zx_DEC_ATTR_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDescriptor_s* x);
 int zx_DEC_ELEM_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDescriptor_s* x);
-int zx_LEN_SO_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDescriptor_s* x);
-char* zx_ENC_SO_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_EntitiesDescriptor_s* zx_DEEP_CLONE_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDescriptor_s* x, int dup_strs);
@@ -339,7 +314,6 @@ void zx_m20_EntitiesDescriptor_REV_EntityDescriptor(struct zx_m20_EntitiesDescri
 #ifndef zx_m20_EntityDescriptor_EXT
 #define zx_m20_EntityDescriptor_EXT
 #endif
-
 struct zx_m20_EntityDescriptor_s {
   ZX_ELEM_EXT
   zx_m20_EntityDescriptor_EXT
@@ -357,12 +331,8 @@ struct zx_m20_EntityDescriptor_s {
 };
 
 #define zx_NEW_m20_EntityDescriptor(c, father) (struct zx_m20_EntityDescriptor_s*)zx_new_elem((c),(father),zx_m20_EntityDescriptor_ELEM)
-
 int zx_DEC_ATTR_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescriptor_s* x);
 int zx_DEC_ELEM_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescriptor_s* x);
-int zx_LEN_SO_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescriptor_s* x);
-char* zx_ENC_SO_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_EntityDescriptor_s* zx_DEEP_CLONE_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescriptor_s* x, int dup_strs);
@@ -452,19 +422,14 @@ void zx_m20_EntityDescriptor_REV_Signature(struct zx_m20_EntityDescriptor_s* x);
 #ifndef zx_m20_Extension_EXT
 #define zx_m20_Extension_EXT
 #endif
-
 struct zx_m20_Extension_s {
   ZX_ELEM_EXT
   zx_m20_Extension_EXT
 };
 
 #define zx_NEW_m20_Extension(c, father) (struct zx_m20_Extension_s*)zx_new_elem((c),(father),zx_m20_Extension_ELEM)
-
 int zx_DEC_ATTR_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x);
 int zx_DEC_ELEM_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x);
-int zx_LEN_SO_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x);
-char* zx_ENC_SO_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_Extension_s* zx_DEEP_CLONE_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x, int dup_strs);
@@ -490,7 +455,6 @@ int zx_WALK_WO_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x, voi
 #ifndef zx_m20_IDPDescriptor_EXT
 #define zx_m20_IDPDescriptor_EXT
 #endif
-
 struct zx_m20_IDPDescriptor_s {
   ZX_ELEM_EXT
   zx_m20_IDPDescriptor_EXT
@@ -522,12 +486,8 @@ struct zx_m20_IDPDescriptor_s {
 };
 
 #define zx_NEW_m20_IDPDescriptor(c, father) (struct zx_m20_IDPDescriptor_s*)zx_new_elem((c),(father),zx_m20_IDPDescriptor_ELEM)
-
 int zx_DEC_ATTR_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* x);
 int zx_DEC_ELEM_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* x);
-int zx_LEN_SO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* x);
-char* zx_ENC_SO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_IDPDescriptor_s* zx_DEEP_CLONE_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* x, int dup_strs);
@@ -680,26 +640,26 @@ void zx_m20_IDPDescriptor_ADD_SingleSignOnProtocolProfile(struct zx_m20_IDPDescr
 void zx_m20_IDPDescriptor_ADD_AuthnServiceURL(struct zx_m20_IDPDescriptor_s* x, int n, struct zx_elem_s* z);
 
 void zx_m20_IDPDescriptor_DEL_KeyDescriptor(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_SoapEndpoint(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_SingleLogoutServiceURL(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_SingleLogoutServiceReturnURL(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_FederationTerminationServiceURL(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_FederationTerminationServiceReturnURL(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_FederationTerminationNotificationProtocolProfile(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_SingleLogoutProtocolProfile(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_RegisterNameIdentifierProtocolProfile(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_RegisterNameIdentifierServiceURL(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_RegisterNameIdentifierServiceReturnURL(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_NameIdentifierMappingProtocolProfile(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_NameIdentifierMappingEncryptionProfile(struct zx_m20_IDPDescriptor_s* x, int n);
+void zx_m20_IDPDescriptor_DEL_SoapEndpoint(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_SingleLogoutServiceURL(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_SingleLogoutServiceReturnURL(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_FederationTerminationServiceURL(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_FederationTerminationServiceReturnURL(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_FederationTerminationNotificationProtocolProfile(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_SingleLogoutProtocolProfile(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_RegisterNameIdentifierProtocolProfile(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_RegisterNameIdentifierServiceURL(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_RegisterNameIdentifierServiceReturnURL(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_NameIdentifierMappingProtocolProfile(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_NameIdentifierMappingEncryptionProfile(struct zx_m20_IDPDescriptor_s* x,int n);
 void zx_m20_IDPDescriptor_DEL_Organization(struct zx_m20_IDPDescriptor_s* x, int n);
 void zx_m20_IDPDescriptor_DEL_ContactPerson(struct zx_m20_IDPDescriptor_s* x, int n);
 void zx_m20_IDPDescriptor_DEL_AdditionalMetaLocation(struct zx_m20_IDPDescriptor_s* x, int n);
 void zx_m20_IDPDescriptor_DEL_Extension(struct zx_m20_IDPDescriptor_s* x, int n);
 void zx_m20_IDPDescriptor_DEL_Signature(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_SingleSignOnServiceURL(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_SingleSignOnProtocolProfile(struct zx_m20_IDPDescriptor_s* x, int n);
-void zx_m20_IDPDescriptor_DEL_AuthnServiceURL(struct zx_m20_IDPDescriptor_s* x, int n);
+void zx_m20_IDPDescriptor_DEL_SingleSignOnServiceURL(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_SingleSignOnProtocolProfile(struct zx_m20_IDPDescriptor_s* x,int n);
+void zx_m20_IDPDescriptor_DEL_AuthnServiceURL(struct zx_m20_IDPDescriptor_s* x,int n);
 
 void zx_m20_IDPDescriptor_REV_KeyDescriptor(struct zx_m20_IDPDescriptor_s* x);
 void zx_m20_IDPDescriptor_REV_SoapEndpoint(struct zx_m20_IDPDescriptor_s* x);
@@ -729,7 +689,6 @@ void zx_m20_IDPDescriptor_REV_AuthnServiceURL(struct zx_m20_IDPDescriptor_s* x);
 #ifndef zx_m20_KeyDescriptor_EXT
 #define zx_m20_KeyDescriptor_EXT
 #endif
-
 struct zx_m20_KeyDescriptor_s {
   ZX_ELEM_EXT
   zx_m20_KeyDescriptor_EXT
@@ -741,12 +700,8 @@ struct zx_m20_KeyDescriptor_s {
 };
 
 #define zx_NEW_m20_KeyDescriptor(c, father) (struct zx_m20_KeyDescriptor_s*)zx_new_elem((c),(father),zx_m20_KeyDescriptor_ELEM)
-
 int zx_DEC_ATTR_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s* x);
 int zx_DEC_ELEM_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s* x);
-int zx_LEN_SO_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s* x);
-char* zx_ENC_SO_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_KeyDescriptor_s* zx_DEEP_CLONE_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s* x, int dup_strs);
@@ -790,8 +745,8 @@ void zx_m20_KeyDescriptor_ADD_KeySize(struct zx_m20_KeyDescriptor_s* x, int n, s
 void zx_m20_KeyDescriptor_ADD_KeyInfo(struct zx_m20_KeyDescriptor_s* x, int n, struct zx_ds_KeyInfo_s* z);
 void zx_m20_KeyDescriptor_ADD_Extension(struct zx_m20_KeyDescriptor_s* x, int n, struct zx_m20_Extension_s* z);
 
-void zx_m20_KeyDescriptor_DEL_EncryptionMethod(struct zx_m20_KeyDescriptor_s* x, int n);
-void zx_m20_KeyDescriptor_DEL_KeySize(struct zx_m20_KeyDescriptor_s* x, int n);
+void zx_m20_KeyDescriptor_DEL_EncryptionMethod(struct zx_m20_KeyDescriptor_s* x,int n);
+void zx_m20_KeyDescriptor_DEL_KeySize(struct zx_m20_KeyDescriptor_s* x,int n);
 void zx_m20_KeyDescriptor_DEL_KeyInfo(struct zx_m20_KeyDescriptor_s* x, int n);
 void zx_m20_KeyDescriptor_DEL_Extension(struct zx_m20_KeyDescriptor_s* x, int n);
 
@@ -806,7 +761,6 @@ void zx_m20_KeyDescriptor_REV_Extension(struct zx_m20_KeyDescriptor_s* x);
 #ifndef zx_m20_Organization_EXT
 #define zx_m20_Organization_EXT
 #endif
-
 struct zx_m20_Organization_s {
   ZX_ELEM_EXT
   zx_m20_Organization_EXT
@@ -817,12 +771,8 @@ struct zx_m20_Organization_s {
 };
 
 #define zx_NEW_m20_Organization(c, father) (struct zx_m20_Organization_s*)zx_new_elem((c),(father),zx_m20_Organization_ELEM)
-
 int zx_DEC_ATTR_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x);
 int zx_DEC_ELEM_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x);
-int zx_LEN_SO_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x);
-char* zx_ENC_SO_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_Organization_s* zx_DEEP_CLONE_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x, int dup_strs);
@@ -880,7 +830,6 @@ void zx_m20_Organization_REV_Extension(struct zx_m20_Organization_s* x);
 #ifndef zx_m20_OrganizationDisplayName_EXT
 #define zx_m20_OrganizationDisplayName_EXT
 #endif
-
 struct zx_m20_OrganizationDisplayName_s {
   ZX_ELEM_EXT
   zx_m20_OrganizationDisplayName_EXT
@@ -888,12 +837,8 @@ struct zx_m20_OrganizationDisplayName_s {
 };
 
 #define zx_NEW_m20_OrganizationDisplayName(c, father) (struct zx_m20_OrganizationDisplayName_s*)zx_new_elem((c),(father),zx_m20_OrganizationDisplayName_ELEM)
-
 int zx_DEC_ATTR_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_OrganizationDisplayName_s* x);
 int zx_DEC_ELEM_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_OrganizationDisplayName_s* x);
-int zx_LEN_SO_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_OrganizationDisplayName_s* x);
-char* zx_ENC_SO_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_OrganizationDisplayName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_OrganizationDisplayName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_OrganizationDisplayName_s* zx_DEEP_CLONE_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_OrganizationDisplayName_s* x, int dup_strs);
@@ -921,7 +866,6 @@ void zx_m20_OrganizationDisplayName_PUT_lang(struct zx_m20_OrganizationDisplayNa
 #ifndef zx_m20_OrganizationName_EXT
 #define zx_m20_OrganizationName_EXT
 #endif
-
 struct zx_m20_OrganizationName_s {
   ZX_ELEM_EXT
   zx_m20_OrganizationName_EXT
@@ -929,12 +873,8 @@ struct zx_m20_OrganizationName_s {
 };
 
 #define zx_NEW_m20_OrganizationName(c, father) (struct zx_m20_OrganizationName_s*)zx_new_elem((c),(father),zx_m20_OrganizationName_ELEM)
-
 int zx_DEC_ATTR_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_OrganizationName_s* x);
 int zx_DEC_ELEM_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_OrganizationName_s* x);
-int zx_LEN_SO_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_OrganizationName_s* x);
-char* zx_ENC_SO_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_OrganizationName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_OrganizationName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_OrganizationName_s* zx_DEEP_CLONE_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_OrganizationName_s* x, int dup_strs);
@@ -962,7 +902,6 @@ void zx_m20_OrganizationName_PUT_lang(struct zx_m20_OrganizationName_s* x, struc
 #ifndef zx_m20_OrganizationURL_EXT
 #define zx_m20_OrganizationURL_EXT
 #endif
-
 struct zx_m20_OrganizationURL_s {
   ZX_ELEM_EXT
   zx_m20_OrganizationURL_EXT
@@ -970,12 +909,8 @@ struct zx_m20_OrganizationURL_s {
 };
 
 #define zx_NEW_m20_OrganizationURL(c, father) (struct zx_m20_OrganizationURL_s*)zx_new_elem((c),(father),zx_m20_OrganizationURL_ELEM)
-
 int zx_DEC_ATTR_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationURL_s* x);
 int zx_DEC_ELEM_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationURL_s* x);
-int zx_LEN_SO_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationURL_s* x);
-char* zx_ENC_SO_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationURL_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationURL_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_OrganizationURL_s* zx_DEEP_CLONE_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationURL_s* x, int dup_strs);
@@ -1003,7 +938,6 @@ void zx_m20_OrganizationURL_PUT_lang(struct zx_m20_OrganizationURL_s* x, struct 
 #ifndef zx_m20_SPDescriptor_EXT
 #define zx_m20_SPDescriptor_EXT
 #endif
-
 struct zx_m20_SPDescriptor_s {
   ZX_ELEM_EXT
   zx_m20_SPDescriptor_EXT
@@ -1034,12 +968,8 @@ struct zx_m20_SPDescriptor_s {
 };
 
 #define zx_NEW_m20_SPDescriptor(c, father) (struct zx_m20_SPDescriptor_s*)zx_new_elem((c),(father),zx_m20_SPDescriptor_ELEM)
-
 int zx_DEC_ATTR_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x);
 int zx_DEC_ELEM_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x);
-int zx_LEN_SO_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x);
-char* zx_ENC_SO_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_m20_SPDescriptor_s* zx_DEEP_CLONE_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x, int dup_strs);
@@ -1186,25 +1116,25 @@ void zx_m20_SPDescriptor_ADD_AssertionConsumerServiceURL(struct zx_m20_SPDescrip
 void zx_m20_SPDescriptor_ADD_AuthnRequestsSigned(struct zx_m20_SPDescriptor_s* x, int n, struct zx_elem_s* z);
 
 void zx_m20_SPDescriptor_DEL_KeyDescriptor(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_SoapEndpoint(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_SingleLogoutServiceURL(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_SingleLogoutServiceReturnURL(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_FederationTerminationServiceURL(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_FederationTerminationServiceReturnURL(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_FederationTerminationNotificationProtocolProfile(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_SingleLogoutProtocolProfile(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_RegisterNameIdentifierProtocolProfile(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_RegisterNameIdentifierServiceURL(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_RegisterNameIdentifierServiceReturnURL(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_NameIdentifierMappingProtocolProfile(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_NameIdentifierMappingEncryptionProfile(struct zx_m20_SPDescriptor_s* x, int n);
+void zx_m20_SPDescriptor_DEL_SoapEndpoint(struct zx_m20_SPDescriptor_s* x,int n);
+void zx_m20_SPDescriptor_DEL_SingleLogoutServiceURL(struct zx_m20_SPDescriptor_s* x,int n);
+void zx_m20_SPDescriptor_DEL_SingleLogoutServiceReturnURL(struct zx_m20_SPDescriptor_s* x,int n);
+void zx_m20_SPDescriptor_DEL_FederationTerminationServiceURL(struct zx_m20_SPDescriptor_s* x,int n);
+void zx_m20_SPDescriptor_DEL_FederationTerminationServiceReturnURL(struct zx_m20_SPDescriptor_s* x,int n);
+void zx_m20_SPDescriptor_DEL_FederationTerminationNotificationProtocolProfile(struct zx_m20_SPDescriptor_s* x,int n);
+void zx_m20_SPDescriptor_DEL_SingleLogoutProtocolProfile(struct zx_m20_SPDescriptor_s* x,int n);
+void zx_m20_SPDescriptor_DEL_RegisterNameIdentifierProtocolProfile(struct zx_m20_SPDescriptor_s* x,int n);
+void zx_m20_SPDescriptor_DEL_RegisterNameIdentifierServiceURL(struct zx_m20_SPDescriptor_s* x,int n);
+void zx_m20_SPDescriptor_DEL_RegisterNameIdentifierServiceReturnURL(struct zx_m20_SPDescriptor_s* x,int n);
+void zx_m20_SPDescriptor_DEL_NameIdentifierMappingProtocolProfile(struct zx_m20_SPDescriptor_s* x,int n);
+void zx_m20_SPDescriptor_DEL_NameIdentifierMappingEncryptionProfile(struct zx_m20_SPDescriptor_s* x,int n);
 void zx_m20_SPDescriptor_DEL_Organization(struct zx_m20_SPDescriptor_s* x, int n);
 void zx_m20_SPDescriptor_DEL_ContactPerson(struct zx_m20_SPDescriptor_s* x, int n);
 void zx_m20_SPDescriptor_DEL_AdditionalMetaLocation(struct zx_m20_SPDescriptor_s* x, int n);
 void zx_m20_SPDescriptor_DEL_Extension(struct zx_m20_SPDescriptor_s* x, int n);
 void zx_m20_SPDescriptor_DEL_Signature(struct zx_m20_SPDescriptor_s* x, int n);
 void zx_m20_SPDescriptor_DEL_AssertionConsumerServiceURL(struct zx_m20_SPDescriptor_s* x, int n);
-void zx_m20_SPDescriptor_DEL_AuthnRequestsSigned(struct zx_m20_SPDescriptor_s* x, int n);
+void zx_m20_SPDescriptor_DEL_AuthnRequestsSigned(struct zx_m20_SPDescriptor_s* x,int n);
 
 void zx_m20_SPDescriptor_REV_KeyDescriptor(struct zx_m20_SPDescriptor_s* x);
 void zx_m20_SPDescriptor_REV_SoapEndpoint(struct zx_m20_SPDescriptor_s* x);

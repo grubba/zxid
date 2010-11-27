@@ -23,7 +23,6 @@
 #ifndef zx_ps_AddCollectionRequest_EXT
 #define zx_ps_AddCollectionRequest_EXT
 #endif
-
 struct zx_ps_AddCollectionRequest_s {
   ZX_ELEM_EXT
   zx_ps_AddCollectionRequest_EXT
@@ -33,12 +32,8 @@ struct zx_ps_AddCollectionRequest_s {
 };
 
 #define zx_NEW_ps_AddCollectionRequest(c, father) (struct zx_ps_AddCollectionRequest_s*)zx_new_elem((c),(father),zx_ps_AddCollectionRequest_ELEM)
-
 int zx_DEC_ATTR_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollectionRequest_s* x);
 int zx_DEC_ELEM_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollectionRequest_s* x);
-int zx_LEN_SO_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollectionRequest_s* x);
-char* zx_ENC_SO_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollectionRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollectionRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_AddCollectionRequest_s* zx_DEEP_CLONE_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollectionRequest_s* x, int dup_strs);
@@ -82,7 +77,6 @@ void zx_ps_AddCollectionRequest_REV_Subscription(struct zx_ps_AddCollectionReque
 #ifndef zx_ps_AddCollectionResponse_EXT
 #define zx_ps_AddCollectionResponse_EXT
 #endif
-
 struct zx_ps_AddCollectionResponse_s {
   ZX_ELEM_EXT
   zx_ps_AddCollectionResponse_EXT
@@ -93,12 +87,8 @@ struct zx_ps_AddCollectionResponse_s {
 };
 
 #define zx_NEW_ps_AddCollectionResponse(c, father) (struct zx_ps_AddCollectionResponse_s*)zx_new_elem((c),(father),zx_ps_AddCollectionResponse_ELEM)
-
 int zx_DEC_ATTR_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollectionResponse_s* x);
 int zx_DEC_ELEM_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollectionResponse_s* x);
-int zx_LEN_SO_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollectionResponse_s* x);
-char* zx_ENC_SO_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollectionResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollectionResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_AddCollectionResponse_s* zx_DEEP_CLONE_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollectionResponse_s* x, int dup_strs);
@@ -144,7 +134,6 @@ void zx_ps_AddCollectionResponse_REV_Object(struct zx_ps_AddCollectionResponse_s
 #ifndef zx_ps_AddEntityRequest_EXT
 #define zx_ps_AddEntityRequest_EXT
 #endif
-
 struct zx_ps_AddEntityRequest_s {
   ZX_ELEM_EXT
   zx_ps_AddEntityRequest_EXT
@@ -157,12 +146,8 @@ struct zx_ps_AddEntityRequest_s {
 };
 
 #define zx_NEW_ps_AddEntityRequest(c, father) (struct zx_ps_AddEntityRequest_s*)zx_new_elem((c),(father),zx_ps_AddEntityRequest_ELEM)
-
 int zx_DEC_ATTR_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequest_s* x);
 int zx_DEC_ELEM_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequest_s* x);
-int zx_LEN_SO_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequest_s* x);
-char* zx_ENC_SO_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_AddEntityRequest_s* zx_DEEP_CLONE_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequest_s* x, int dup_strs);
@@ -213,7 +198,7 @@ void zx_ps_AddEntityRequest_ADD_Subscription(struct zx_ps_AddEntityRequest_s* x,
 void zx_ps_AddEntityRequest_ADD_TokenPolicy(struct zx_ps_AddEntityRequest_s* x, int n, struct zx_sec_TokenPolicy_s* z);
 
 void zx_ps_AddEntityRequest_DEL_Object(struct zx_ps_AddEntityRequest_s* x, int n);
-void zx_ps_AddEntityRequest_DEL_PStoSPRedirectURL(struct zx_ps_AddEntityRequest_s* x, int n);
+void zx_ps_AddEntityRequest_DEL_PStoSPRedirectURL(struct zx_ps_AddEntityRequest_s* x,int n);
 void zx_ps_AddEntityRequest_DEL_CreatePSObject(struct zx_ps_AddEntityRequest_s* x, int n);
 void zx_ps_AddEntityRequest_DEL_Subscription(struct zx_ps_AddEntityRequest_s* x, int n);
 void zx_ps_AddEntityRequest_DEL_TokenPolicy(struct zx_ps_AddEntityRequest_s* x, int n);
@@ -230,7 +215,6 @@ void zx_ps_AddEntityRequest_REV_TokenPolicy(struct zx_ps_AddEntityRequest_s* x);
 #ifndef zx_ps_AddEntityResponse_EXT
 #define zx_ps_AddEntityResponse_EXT
 #endif
-
 struct zx_ps_AddEntityResponse_s {
   ZX_ELEM_EXT
   zx_ps_AddEntityResponse_EXT
@@ -243,12 +227,8 @@ struct zx_ps_AddEntityResponse_s {
 };
 
 #define zx_NEW_ps_AddEntityResponse(c, father) (struct zx_ps_AddEntityResponse_s*)zx_new_elem((c),(father),zx_ps_AddEntityResponse_ELEM)
-
 int zx_DEC_ATTR_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityResponse_s* x);
 int zx_DEC_ELEM_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityResponse_s* x);
-int zx_LEN_SO_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityResponse_s* x);
-char* zx_ENC_SO_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_AddEntityResponse_s* zx_DEEP_CLONE_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityResponse_s* x, int dup_strs);
@@ -296,8 +276,8 @@ void zx_ps_AddEntityResponse_ADD_QueryString(struct zx_ps_AddEntityResponse_s* x
 
 void zx_ps_AddEntityResponse_DEL_Status(struct zx_ps_AddEntityResponse_s* x, int n);
 void zx_ps_AddEntityResponse_DEL_Object(struct zx_ps_AddEntityResponse_s* x, int n);
-void zx_ps_AddEntityResponse_DEL_SPtoPSRedirectURL(struct zx_ps_AddEntityResponse_s* x, int n);
-void zx_ps_AddEntityResponse_DEL_QueryString(struct zx_ps_AddEntityResponse_s* x, int n);
+void zx_ps_AddEntityResponse_DEL_SPtoPSRedirectURL(struct zx_ps_AddEntityResponse_s* x,int n);
+void zx_ps_AddEntityResponse_DEL_QueryString(struct zx_ps_AddEntityResponse_s* x,int n);
 
 void zx_ps_AddEntityResponse_REV_Status(struct zx_ps_AddEntityResponse_s* x);
 void zx_ps_AddEntityResponse_REV_Object(struct zx_ps_AddEntityResponse_s* x);
@@ -310,7 +290,6 @@ void zx_ps_AddEntityResponse_REV_QueryString(struct zx_ps_AddEntityResponse_s* x
 #ifndef zx_ps_AddKnownEntityRequest_EXT
 #define zx_ps_AddKnownEntityRequest_EXT
 #endif
-
 struct zx_ps_AddKnownEntityRequest_s {
   ZX_ELEM_EXT
   zx_ps_AddKnownEntityRequest_EXT
@@ -323,12 +302,8 @@ struct zx_ps_AddKnownEntityRequest_s {
 };
 
 #define zx_NEW_ps_AddKnownEntityRequest(c, father) (struct zx_ps_AddKnownEntityRequest_s*)zx_new_elem((c),(father),zx_ps_AddKnownEntityRequest_ELEM)
-
 int zx_DEC_ATTR_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEntityRequest_s* x);
 int zx_DEC_ELEM_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEntityRequest_s* x);
-int zx_LEN_SO_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEntityRequest_s* x);
-char* zx_ENC_SO_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEntityRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEntityRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_AddKnownEntityRequest_s* zx_DEEP_CLONE_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEntityRequest_s* x, int dup_strs);
@@ -396,7 +371,6 @@ void zx_ps_AddKnownEntityRequest_REV_TokenPolicy(struct zx_ps_AddKnownEntityRequ
 #ifndef zx_ps_AddKnownEntityResponse_EXT
 #define zx_ps_AddKnownEntityResponse_EXT
 #endif
-
 struct zx_ps_AddKnownEntityResponse_s {
   ZX_ELEM_EXT
   zx_ps_AddKnownEntityResponse_EXT
@@ -409,12 +383,8 @@ struct zx_ps_AddKnownEntityResponse_s {
 };
 
 #define zx_NEW_ps_AddKnownEntityResponse(c, father) (struct zx_ps_AddKnownEntityResponse_s*)zx_new_elem((c),(father),zx_ps_AddKnownEntityResponse_ELEM)
-
 int zx_DEC_ATTR_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownEntityResponse_s* x);
 int zx_DEC_ELEM_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownEntityResponse_s* x);
-int zx_LEN_SO_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownEntityResponse_s* x);
-char* zx_ENC_SO_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownEntityResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownEntityResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_AddKnownEntityResponse_s* zx_DEEP_CLONE_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownEntityResponse_s* x, int dup_strs);
@@ -462,8 +432,8 @@ void zx_ps_AddKnownEntityResponse_ADD_QueryString(struct zx_ps_AddKnownEntityRes
 
 void zx_ps_AddKnownEntityResponse_DEL_Status(struct zx_ps_AddKnownEntityResponse_s* x, int n);
 void zx_ps_AddKnownEntityResponse_DEL_Object(struct zx_ps_AddKnownEntityResponse_s* x, int n);
-void zx_ps_AddKnownEntityResponse_DEL_SPtoPSRedirectURL(struct zx_ps_AddKnownEntityResponse_s* x, int n);
-void zx_ps_AddKnownEntityResponse_DEL_QueryString(struct zx_ps_AddKnownEntityResponse_s* x, int n);
+void zx_ps_AddKnownEntityResponse_DEL_SPtoPSRedirectURL(struct zx_ps_AddKnownEntityResponse_s* x,int n);
+void zx_ps_AddKnownEntityResponse_DEL_QueryString(struct zx_ps_AddKnownEntityResponse_s* x,int n);
 
 void zx_ps_AddKnownEntityResponse_REV_Status(struct zx_ps_AddKnownEntityResponse_s* x);
 void zx_ps_AddKnownEntityResponse_REV_Object(struct zx_ps_AddKnownEntityResponse_s* x);
@@ -476,7 +446,6 @@ void zx_ps_AddKnownEntityResponse_REV_QueryString(struct zx_ps_AddKnownEntityRes
 #ifndef zx_ps_AddToCollectionRequest_EXT
 #define zx_ps_AddToCollectionRequest_EXT
 #endif
-
 struct zx_ps_AddToCollectionRequest_s {
   ZX_ELEM_EXT
   zx_ps_AddToCollectionRequest_EXT
@@ -487,12 +456,8 @@ struct zx_ps_AddToCollectionRequest_s {
 };
 
 #define zx_NEW_ps_AddToCollectionRequest(c, father) (struct zx_ps_AddToCollectionRequest_s*)zx_new_elem((c),(father),zx_ps_AddToCollectionRequest_ELEM)
-
 int zx_DEC_ATTR_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCollectionRequest_s* x);
 int zx_DEC_ELEM_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCollectionRequest_s* x);
-int zx_LEN_SO_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCollectionRequest_s* x);
-char* zx_ENC_SO_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCollectionRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCollectionRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_AddToCollectionRequest_s* zx_DEEP_CLONE_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCollectionRequest_s* x, int dup_strs);
@@ -530,8 +495,8 @@ void zx_ps_AddToCollectionRequest_ADD_TargetObjectID(struct zx_ps_AddToCollectio
 void zx_ps_AddToCollectionRequest_ADD_ObjectID(struct zx_ps_AddToCollectionRequest_s* x, int n, struct zx_elem_s* z);
 void zx_ps_AddToCollectionRequest_ADD_Subscription(struct zx_ps_AddToCollectionRequest_s* x, int n, struct zx_ps_Subscription_s* z);
 
-void zx_ps_AddToCollectionRequest_DEL_TargetObjectID(struct zx_ps_AddToCollectionRequest_s* x, int n);
-void zx_ps_AddToCollectionRequest_DEL_ObjectID(struct zx_ps_AddToCollectionRequest_s* x, int n);
+void zx_ps_AddToCollectionRequest_DEL_TargetObjectID(struct zx_ps_AddToCollectionRequest_s* x,int n);
+void zx_ps_AddToCollectionRequest_DEL_ObjectID(struct zx_ps_AddToCollectionRequest_s* x,int n);
 void zx_ps_AddToCollectionRequest_DEL_Subscription(struct zx_ps_AddToCollectionRequest_s* x, int n);
 
 void zx_ps_AddToCollectionRequest_REV_TargetObjectID(struct zx_ps_AddToCollectionRequest_s* x);
@@ -544,7 +509,6 @@ void zx_ps_AddToCollectionRequest_REV_Subscription(struct zx_ps_AddToCollectionR
 #ifndef zx_ps_AddToCollectionResponse_EXT
 #define zx_ps_AddToCollectionResponse_EXT
 #endif
-
 struct zx_ps_AddToCollectionResponse_s {
   ZX_ELEM_EXT
   zx_ps_AddToCollectionResponse_EXT
@@ -554,12 +518,8 @@ struct zx_ps_AddToCollectionResponse_s {
 };
 
 #define zx_NEW_ps_AddToCollectionResponse(c, father) (struct zx_ps_AddToCollectionResponse_s*)zx_new_elem((c),(father),zx_ps_AddToCollectionResponse_ELEM)
-
 int zx_DEC_ATTR_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCollectionResponse_s* x);
 int zx_DEC_ELEM_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCollectionResponse_s* x);
-int zx_LEN_SO_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCollectionResponse_s* x);
-char* zx_ENC_SO_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCollectionResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCollectionResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_AddToCollectionResponse_s* zx_DEEP_CLONE_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCollectionResponse_s* x, int dup_strs);
@@ -597,19 +557,14 @@ void zx_ps_AddToCollectionResponse_REV_Status(struct zx_ps_AddToCollectionRespon
 #ifndef zx_ps_CreatePSObject_EXT
 #define zx_ps_CreatePSObject_EXT
 #endif
-
 struct zx_ps_CreatePSObject_s {
   ZX_ELEM_EXT
   zx_ps_CreatePSObject_EXT
 };
 
 #define zx_NEW_ps_CreatePSObject(c, father) (struct zx_ps_CreatePSObject_s*)zx_new_elem((c),(father),zx_ps_CreatePSObject_ELEM)
-
 int zx_DEC_ATTR_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s* x);
 int zx_DEC_ELEM_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s* x);
-int zx_LEN_SO_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s* x);
-char* zx_ENC_SO_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_CreatePSObject_s* zx_DEEP_CLONE_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s* x, int dup_strs);
@@ -635,7 +590,6 @@ int zx_WALK_WO_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s
 #ifndef zx_ps_DisplayName_EXT
 #define zx_ps_DisplayName_EXT
 #endif
-
 struct zx_ps_DisplayName_s {
   ZX_ELEM_EXT
   zx_ps_DisplayName_EXT
@@ -644,12 +598,8 @@ struct zx_ps_DisplayName_s {
 };
 
 #define zx_NEW_ps_DisplayName(c, father) (struct zx_ps_DisplayName_s*)zx_new_elem((c),(father),zx_ps_DisplayName_ELEM)
-
 int zx_DEC_ATTR_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x);
 int zx_DEC_ELEM_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x);
-int zx_LEN_SO_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x);
-char* zx_ENC_SO_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_DisplayName_s* zx_DEEP_CLONE_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x, int dup_strs);
@@ -679,7 +629,6 @@ void zx_ps_DisplayName_PUT_Locale(struct zx_ps_DisplayName_s* x, struct zx_attr_
 #ifndef zx_ps_GetObjectInfoRequest_EXT
 #define zx_ps_GetObjectInfoRequest_EXT
 #endif
-
 struct zx_ps_GetObjectInfoRequest_s {
   ZX_ELEM_EXT
   zx_ps_GetObjectInfoRequest_EXT
@@ -689,12 +638,8 @@ struct zx_ps_GetObjectInfoRequest_s {
 };
 
 #define zx_NEW_ps_GetObjectInfoRequest(c, father) (struct zx_ps_GetObjectInfoRequest_s*)zx_new_elem((c),(father),zx_ps_GetObjectInfoRequest_ELEM)
-
 int zx_DEC_ATTR_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectInfoRequest_s* x);
 int zx_DEC_ELEM_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectInfoRequest_s* x);
-int zx_LEN_SO_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectInfoRequest_s* x);
-char* zx_ENC_SO_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectInfoRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectInfoRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_GetObjectInfoRequest_s* zx_DEEP_CLONE_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectInfoRequest_s* x, int dup_strs);
@@ -726,7 +671,7 @@ void zx_ps_GetObjectInfoRequest_PUT_Subscription(struct zx_ps_GetObjectInfoReque
 void zx_ps_GetObjectInfoRequest_ADD_TargetObjectID(struct zx_ps_GetObjectInfoRequest_s* x, int n, struct zx_elem_s* z);
 void zx_ps_GetObjectInfoRequest_ADD_Subscription(struct zx_ps_GetObjectInfoRequest_s* x, int n, struct zx_ps_Subscription_s* z);
 
-void zx_ps_GetObjectInfoRequest_DEL_TargetObjectID(struct zx_ps_GetObjectInfoRequest_s* x, int n);
+void zx_ps_GetObjectInfoRequest_DEL_TargetObjectID(struct zx_ps_GetObjectInfoRequest_s* x,int n);
 void zx_ps_GetObjectInfoRequest_DEL_Subscription(struct zx_ps_GetObjectInfoRequest_s* x, int n);
 
 void zx_ps_GetObjectInfoRequest_REV_TargetObjectID(struct zx_ps_GetObjectInfoRequest_s* x);
@@ -738,7 +683,6 @@ void zx_ps_GetObjectInfoRequest_REV_Subscription(struct zx_ps_GetObjectInfoReque
 #ifndef zx_ps_GetObjectInfoResponse_EXT
 #define zx_ps_GetObjectInfoResponse_EXT
 #endif
-
 struct zx_ps_GetObjectInfoResponse_s {
   ZX_ELEM_EXT
   zx_ps_GetObjectInfoResponse_EXT
@@ -749,12 +693,8 @@ struct zx_ps_GetObjectInfoResponse_s {
 };
 
 #define zx_NEW_ps_GetObjectInfoResponse(c, father) (struct zx_ps_GetObjectInfoResponse_s*)zx_new_elem((c),(father),zx_ps_GetObjectInfoResponse_ELEM)
-
 int zx_DEC_ATTR_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectInfoResponse_s* x);
 int zx_DEC_ELEM_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectInfoResponse_s* x);
-int zx_LEN_SO_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectInfoResponse_s* x);
-char* zx_ENC_SO_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectInfoResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectInfoResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_GetObjectInfoResponse_s* zx_DEEP_CLONE_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectInfoResponse_s* x, int dup_strs);
@@ -800,7 +740,6 @@ void zx_ps_GetObjectInfoResponse_REV_Object(struct zx_ps_GetObjectInfoResponse_s
 #ifndef zx_ps_ItemData_EXT
 #define zx_ps_ItemData_EXT
 #endif
-
 struct zx_ps_ItemData_s {
   ZX_ELEM_EXT
   zx_ps_ItemData_EXT
@@ -808,12 +747,8 @@ struct zx_ps_ItemData_s {
 };
 
 #define zx_NEW_ps_ItemData(c, father) (struct zx_ps_ItemData_s*)zx_new_elem((c),(father),zx_ps_ItemData_ELEM)
-
 int zx_DEC_ATTR_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x);
 int zx_DEC_ELEM_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x);
-int zx_LEN_SO_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x);
-char* zx_ENC_SO_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_ItemData_s* zx_DEEP_CLONE_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x, int dup_strs);
@@ -847,7 +782,6 @@ void zx_ps_ItemData_REV_Object(struct zx_ps_ItemData_s* x);
 #ifndef zx_ps_ListMembersRequest_EXT
 #define zx_ps_ListMembersRequest_EXT
 #endif
-
 struct zx_ps_ListMembersRequest_s {
   ZX_ELEM_EXT
   zx_ps_ListMembersRequest_EXT
@@ -860,12 +794,8 @@ struct zx_ps_ListMembersRequest_s {
 };
 
 #define zx_NEW_ps_ListMembersRequest(c, father) (struct zx_ps_ListMembersRequest_s*)zx_new_elem((c),(father),zx_ps_ListMembersRequest_ELEM)
-
 int zx_DEC_ATTR_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRequest_s* x);
 int zx_DEC_ELEM_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRequest_s* x);
-int zx_LEN_SO_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRequest_s* x);
-char* zx_ENC_SO_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_ListMembersRequest_s* zx_DEEP_CLONE_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRequest_s* x, int dup_strs);
@@ -903,7 +833,7 @@ void zx_ps_ListMembersRequest_PUT_Subscription(struct zx_ps_ListMembersRequest_s
 void zx_ps_ListMembersRequest_ADD_TargetObjectID(struct zx_ps_ListMembersRequest_s* x, int n, struct zx_elem_s* z);
 void zx_ps_ListMembersRequest_ADD_Subscription(struct zx_ps_ListMembersRequest_s* x, int n, struct zx_ps_Subscription_s* z);
 
-void zx_ps_ListMembersRequest_DEL_TargetObjectID(struct zx_ps_ListMembersRequest_s* x, int n);
+void zx_ps_ListMembersRequest_DEL_TargetObjectID(struct zx_ps_ListMembersRequest_s* x,int n);
 void zx_ps_ListMembersRequest_DEL_Subscription(struct zx_ps_ListMembersRequest_s* x, int n);
 
 void zx_ps_ListMembersRequest_REV_TargetObjectID(struct zx_ps_ListMembersRequest_s* x);
@@ -915,7 +845,6 @@ void zx_ps_ListMembersRequest_REV_Subscription(struct zx_ps_ListMembersRequest_s
 #ifndef zx_ps_ListMembersResponse_EXT
 #define zx_ps_ListMembersResponse_EXT
 #endif
-
 struct zx_ps_ListMembersResponse_s {
   ZX_ELEM_EXT
   zx_ps_ListMembersResponse_EXT
@@ -926,12 +855,8 @@ struct zx_ps_ListMembersResponse_s {
 };
 
 #define zx_NEW_ps_ListMembersResponse(c, father) (struct zx_ps_ListMembersResponse_s*)zx_new_elem((c),(father),zx_ps_ListMembersResponse_ELEM)
-
 int zx_DEC_ATTR_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersResponse_s* x);
 int zx_DEC_ELEM_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersResponse_s* x);
-int zx_LEN_SO_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersResponse_s* x);
-char* zx_ENC_SO_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_ListMembersResponse_s* zx_DEEP_CLONE_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersResponse_s* x, int dup_strs);
@@ -977,7 +902,6 @@ void zx_ps_ListMembersResponse_REV_Object(struct zx_ps_ListMembersResponse_s* x)
 #ifndef zx_ps_Notification_EXT
 #define zx_ps_Notification_EXT
 #endif
-
 struct zx_ps_Notification_s {
   ZX_ELEM_EXT
   zx_ps_Notification_EXT
@@ -990,12 +914,8 @@ struct zx_ps_Notification_s {
 };
 
 #define zx_NEW_ps_Notification(c, father) (struct zx_ps_Notification_s*)zx_new_elem((c),(father),zx_ps_Notification_ELEM)
-
 int zx_DEC_ATTR_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x);
 int zx_DEC_ELEM_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x);
-int zx_LEN_SO_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x);
-char* zx_ENC_SO_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_Notification_s* zx_DEEP_CLONE_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x, int dup_strs);
@@ -1045,7 +965,6 @@ void zx_ps_Notification_REV_ItemData(struct zx_ps_Notification_s* x);
 #ifndef zx_ps_Notify_EXT
 #define zx_ps_Notify_EXT
 #endif
-
 struct zx_ps_Notify_s {
   ZX_ELEM_EXT
   zx_ps_Notify_EXT
@@ -1055,12 +974,8 @@ struct zx_ps_Notify_s {
 };
 
 #define zx_NEW_ps_Notify(c, father) (struct zx_ps_Notify_s*)zx_new_elem((c),(father),zx_ps_Notify_ELEM)
-
 int zx_DEC_ATTR_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x);
 int zx_DEC_ELEM_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x);
-int zx_LEN_SO_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x);
-char* zx_ENC_SO_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_Notify_s* zx_DEEP_CLONE_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x, int dup_strs);
@@ -1098,7 +1013,6 @@ void zx_ps_Notify_REV_Notification(struct zx_ps_Notify_s* x);
 #ifndef zx_ps_NotifyResponse_EXT
 #define zx_ps_NotifyResponse_EXT
 #endif
-
 struct zx_ps_NotifyResponse_s {
   ZX_ELEM_EXT
   zx_ps_NotifyResponse_EXT
@@ -1108,12 +1022,8 @@ struct zx_ps_NotifyResponse_s {
 };
 
 #define zx_NEW_ps_NotifyResponse(c, father) (struct zx_ps_NotifyResponse_s*)zx_new_elem((c),(father),zx_ps_NotifyResponse_ELEM)
-
 int zx_DEC_ATTR_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s* x);
 int zx_DEC_ELEM_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s* x);
-int zx_LEN_SO_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s* x);
-char* zx_ENC_SO_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_NotifyResponse_s* zx_DEEP_CLONE_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s* x, int dup_strs);
@@ -1157,7 +1067,6 @@ void zx_ps_NotifyResponse_REV_Extension(struct zx_ps_NotifyResponse_s* x);
 #ifndef zx_ps_Object_EXT
 #define zx_ps_Object_EXT
 #endif
-
 struct zx_ps_Object_s {
   ZX_ELEM_EXT
   zx_ps_Object_EXT
@@ -1172,12 +1081,8 @@ struct zx_ps_Object_s {
 };
 
 #define zx_NEW_ps_Object(c, father) (struct zx_ps_Object_s*)zx_new_elem((c),(father),zx_ps_Object_ELEM)
-
 int zx_DEC_ATTR_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x);
 int zx_DEC_ELEM_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x);
-int zx_LEN_SO_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x);
-char* zx_ENC_SO_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_Object_s* zx_DEEP_CLONE_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x, int dup_strs);
@@ -1231,11 +1136,11 @@ void zx_ps_Object_ADD_Tag(struct zx_ps_Object_s* x, int n, struct zx_ps_Tag_s* z
 void zx_ps_Object_ADD_Object(struct zx_ps_Object_s* x, int n, struct zx_ps_Object_s* z);
 void zx_ps_Object_ADD_ObjectRef(struct zx_ps_Object_s* x, int n, struct zx_elem_s* z);
 
-void zx_ps_Object_DEL_ObjectID(struct zx_ps_Object_s* x, int n);
+void zx_ps_Object_DEL_ObjectID(struct zx_ps_Object_s* x,int n);
 void zx_ps_Object_DEL_DisplayName(struct zx_ps_Object_s* x, int n);
 void zx_ps_Object_DEL_Tag(struct zx_ps_Object_s* x, int n);
 void zx_ps_Object_DEL_Object(struct zx_ps_Object_s* x, int n);
-void zx_ps_Object_DEL_ObjectRef(struct zx_ps_Object_s* x, int n);
+void zx_ps_Object_DEL_ObjectRef(struct zx_ps_Object_s* x,int n);
 
 void zx_ps_Object_REV_ObjectID(struct zx_ps_Object_s* x);
 void zx_ps_Object_REV_DisplayName(struct zx_ps_Object_s* x);
@@ -1249,7 +1154,6 @@ void zx_ps_Object_REV_ObjectRef(struct zx_ps_Object_s* x);
 #ifndef zx_ps_QueryObjectsRequest_EXT
 #define zx_ps_QueryObjectsRequest_EXT
 #endif
-
 struct zx_ps_QueryObjectsRequest_s {
   ZX_ELEM_EXT
   zx_ps_QueryObjectsRequest_EXT
@@ -1261,12 +1165,8 @@ struct zx_ps_QueryObjectsRequest_s {
 };
 
 #define zx_NEW_ps_QueryObjectsRequest(c, father) (struct zx_ps_QueryObjectsRequest_s*)zx_new_elem((c),(father),zx_ps_QueryObjectsRequest_ELEM)
-
 int zx_DEC_ATTR_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjectsRequest_s* x);
 int zx_DEC_ELEM_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjectsRequest_s* x);
-int zx_LEN_SO_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjectsRequest_s* x);
-char* zx_ENC_SO_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjectsRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjectsRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_QueryObjectsRequest_s* zx_DEEP_CLONE_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjectsRequest_s* x, int dup_strs);
@@ -1302,7 +1202,7 @@ void zx_ps_QueryObjectsRequest_PUT_Subscription(struct zx_ps_QueryObjectsRequest
 void zx_ps_QueryObjectsRequest_ADD_Filter(struct zx_ps_QueryObjectsRequest_s* x, int n, struct zx_elem_s* z);
 void zx_ps_QueryObjectsRequest_ADD_Subscription(struct zx_ps_QueryObjectsRequest_s* x, int n, struct zx_ps_Subscription_s* z);
 
-void zx_ps_QueryObjectsRequest_DEL_Filter(struct zx_ps_QueryObjectsRequest_s* x, int n);
+void zx_ps_QueryObjectsRequest_DEL_Filter(struct zx_ps_QueryObjectsRequest_s* x,int n);
 void zx_ps_QueryObjectsRequest_DEL_Subscription(struct zx_ps_QueryObjectsRequest_s* x, int n);
 
 void zx_ps_QueryObjectsRequest_REV_Filter(struct zx_ps_QueryObjectsRequest_s* x);
@@ -1314,7 +1214,6 @@ void zx_ps_QueryObjectsRequest_REV_Subscription(struct zx_ps_QueryObjectsRequest
 #ifndef zx_ps_QueryObjectsResponse_EXT
 #define zx_ps_QueryObjectsResponse_EXT
 #endif
-
 struct zx_ps_QueryObjectsResponse_s {
   ZX_ELEM_EXT
   zx_ps_QueryObjectsResponse_EXT
@@ -1325,12 +1224,8 @@ struct zx_ps_QueryObjectsResponse_s {
 };
 
 #define zx_NEW_ps_QueryObjectsResponse(c, father) (struct zx_ps_QueryObjectsResponse_s*)zx_new_elem((c),(father),zx_ps_QueryObjectsResponse_ELEM)
-
 int zx_DEC_ATTR_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObjectsResponse_s* x);
 int zx_DEC_ELEM_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObjectsResponse_s* x);
-int zx_LEN_SO_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObjectsResponse_s* x);
-char* zx_ENC_SO_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObjectsResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObjectsResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_QueryObjectsResponse_s* zx_DEEP_CLONE_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObjectsResponse_s* x, int dup_strs);
@@ -1376,7 +1271,6 @@ void zx_ps_QueryObjectsResponse_REV_Object(struct zx_ps_QueryObjectsResponse_s* 
 #ifndef zx_ps_RemoveCollectionRequest_EXT
 #define zx_ps_RemoveCollectionRequest_EXT
 #endif
-
 struct zx_ps_RemoveCollectionRequest_s {
   ZX_ELEM_EXT
   zx_ps_RemoveCollectionRequest_EXT
@@ -1385,12 +1279,8 @@ struct zx_ps_RemoveCollectionRequest_s {
 };
 
 #define zx_NEW_ps_RemoveCollectionRequest(c, father) (struct zx_ps_RemoveCollectionRequest_s*)zx_new_elem((c),(father),zx_ps_RemoveCollectionRequest_ELEM)
-
 int zx_DEC_ATTR_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCollectionRequest_s* x);
 int zx_DEC_ELEM_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCollectionRequest_s* x);
-int zx_LEN_SO_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCollectionRequest_s* x);
-char* zx_ENC_SO_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCollectionRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCollectionRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_RemoveCollectionRequest_s* zx_DEEP_CLONE_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCollectionRequest_s* x, int dup_strs);
@@ -1416,7 +1306,7 @@ void zx_ps_RemoveCollectionRequest_PUT_TargetObjectID(struct zx_ps_RemoveCollect
 
 void zx_ps_RemoveCollectionRequest_ADD_TargetObjectID(struct zx_ps_RemoveCollectionRequest_s* x, int n, struct zx_elem_s* z);
 
-void zx_ps_RemoveCollectionRequest_DEL_TargetObjectID(struct zx_ps_RemoveCollectionRequest_s* x, int n);
+void zx_ps_RemoveCollectionRequest_DEL_TargetObjectID(struct zx_ps_RemoveCollectionRequest_s* x,int n);
 
 void zx_ps_RemoveCollectionRequest_REV_TargetObjectID(struct zx_ps_RemoveCollectionRequest_s* x);
 
@@ -1426,7 +1316,6 @@ void zx_ps_RemoveCollectionRequest_REV_TargetObjectID(struct zx_ps_RemoveCollect
 #ifndef zx_ps_RemoveCollectionResponse_EXT
 #define zx_ps_RemoveCollectionResponse_EXT
 #endif
-
 struct zx_ps_RemoveCollectionResponse_s {
   ZX_ELEM_EXT
   zx_ps_RemoveCollectionResponse_EXT
@@ -1436,12 +1325,8 @@ struct zx_ps_RemoveCollectionResponse_s {
 };
 
 #define zx_NEW_ps_RemoveCollectionResponse(c, father) (struct zx_ps_RemoveCollectionResponse_s*)zx_new_elem((c),(father),zx_ps_RemoveCollectionResponse_ELEM)
-
 int zx_DEC_ATTR_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveCollectionResponse_s* x);
 int zx_DEC_ELEM_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveCollectionResponse_s* x);
-int zx_LEN_SO_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveCollectionResponse_s* x);
-char* zx_ENC_SO_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveCollectionResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveCollectionResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_RemoveCollectionResponse_s* zx_DEEP_CLONE_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveCollectionResponse_s* x, int dup_strs);
@@ -1479,7 +1364,6 @@ void zx_ps_RemoveCollectionResponse_REV_Status(struct zx_ps_RemoveCollectionResp
 #ifndef zx_ps_RemoveEntityRequest_EXT
 #define zx_ps_RemoveEntityRequest_EXT
 #endif
-
 struct zx_ps_RemoveEntityRequest_s {
   ZX_ELEM_EXT
   zx_ps_RemoveEntityRequest_EXT
@@ -1488,12 +1372,8 @@ struct zx_ps_RemoveEntityRequest_s {
 };
 
 #define zx_NEW_ps_RemoveEntityRequest(c, father) (struct zx_ps_RemoveEntityRequest_s*)zx_new_elem((c),(father),zx_ps_RemoveEntityRequest_ELEM)
-
 int zx_DEC_ATTR_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntityRequest_s* x);
 int zx_DEC_ELEM_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntityRequest_s* x);
-int zx_LEN_SO_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntityRequest_s* x);
-char* zx_ENC_SO_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntityRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntityRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_RemoveEntityRequest_s* zx_DEEP_CLONE_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntityRequest_s* x, int dup_strs);
@@ -1519,7 +1399,7 @@ void zx_ps_RemoveEntityRequest_PUT_TargetObjectID(struct zx_ps_RemoveEntityReque
 
 void zx_ps_RemoveEntityRequest_ADD_TargetObjectID(struct zx_ps_RemoveEntityRequest_s* x, int n, struct zx_elem_s* z);
 
-void zx_ps_RemoveEntityRequest_DEL_TargetObjectID(struct zx_ps_RemoveEntityRequest_s* x, int n);
+void zx_ps_RemoveEntityRequest_DEL_TargetObjectID(struct zx_ps_RemoveEntityRequest_s* x,int n);
 
 void zx_ps_RemoveEntityRequest_REV_TargetObjectID(struct zx_ps_RemoveEntityRequest_s* x);
 
@@ -1529,7 +1409,6 @@ void zx_ps_RemoveEntityRequest_REV_TargetObjectID(struct zx_ps_RemoveEntityReque
 #ifndef zx_ps_RemoveEntityResponse_EXT
 #define zx_ps_RemoveEntityResponse_EXT
 #endif
-
 struct zx_ps_RemoveEntityResponse_s {
   ZX_ELEM_EXT
   zx_ps_RemoveEntityResponse_EXT
@@ -1539,12 +1418,8 @@ struct zx_ps_RemoveEntityResponse_s {
 };
 
 #define zx_NEW_ps_RemoveEntityResponse(c, father) (struct zx_ps_RemoveEntityResponse_s*)zx_new_elem((c),(father),zx_ps_RemoveEntityResponse_ELEM)
-
 int zx_DEC_ATTR_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntityResponse_s* x);
 int zx_DEC_ELEM_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntityResponse_s* x);
-int zx_LEN_SO_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntityResponse_s* x);
-char* zx_ENC_SO_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntityResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntityResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_RemoveEntityResponse_s* zx_DEEP_CLONE_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntityResponse_s* x, int dup_strs);
@@ -1582,7 +1457,6 @@ void zx_ps_RemoveEntityResponse_REV_Status(struct zx_ps_RemoveEntityResponse_s* 
 #ifndef zx_ps_RemoveFromCollectionRequest_EXT
 #define zx_ps_RemoveFromCollectionRequest_EXT
 #endif
-
 struct zx_ps_RemoveFromCollectionRequest_s {
   ZX_ELEM_EXT
   zx_ps_RemoveFromCollectionRequest_EXT
@@ -1593,12 +1467,8 @@ struct zx_ps_RemoveFromCollectionRequest_s {
 };
 
 #define zx_NEW_ps_RemoveFromCollectionRequest(c, father) (struct zx_ps_RemoveFromCollectionRequest_s*)zx_new_elem((c),(father),zx_ps_RemoveFromCollectionRequest_ELEM)
-
 int zx_DEC_ATTR_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionRequest_s* x);
 int zx_DEC_ELEM_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionRequest_s* x);
-int zx_LEN_SO_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionRequest_s* x);
-char* zx_ENC_SO_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_RemoveFromCollectionRequest_s* zx_DEEP_CLONE_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionRequest_s* x, int dup_strs);
@@ -1636,8 +1506,8 @@ void zx_ps_RemoveFromCollectionRequest_ADD_TargetObjectID(struct zx_ps_RemoveFro
 void zx_ps_RemoveFromCollectionRequest_ADD_ObjectID(struct zx_ps_RemoveFromCollectionRequest_s* x, int n, struct zx_elem_s* z);
 void zx_ps_RemoveFromCollectionRequest_ADD_Subscription(struct zx_ps_RemoveFromCollectionRequest_s* x, int n, struct zx_ps_Subscription_s* z);
 
-void zx_ps_RemoveFromCollectionRequest_DEL_TargetObjectID(struct zx_ps_RemoveFromCollectionRequest_s* x, int n);
-void zx_ps_RemoveFromCollectionRequest_DEL_ObjectID(struct zx_ps_RemoveFromCollectionRequest_s* x, int n);
+void zx_ps_RemoveFromCollectionRequest_DEL_TargetObjectID(struct zx_ps_RemoveFromCollectionRequest_s* x,int n);
+void zx_ps_RemoveFromCollectionRequest_DEL_ObjectID(struct zx_ps_RemoveFromCollectionRequest_s* x,int n);
 void zx_ps_RemoveFromCollectionRequest_DEL_Subscription(struct zx_ps_RemoveFromCollectionRequest_s* x, int n);
 
 void zx_ps_RemoveFromCollectionRequest_REV_TargetObjectID(struct zx_ps_RemoveFromCollectionRequest_s* x);
@@ -1650,7 +1520,6 @@ void zx_ps_RemoveFromCollectionRequest_REV_Subscription(struct zx_ps_RemoveFromC
 #ifndef zx_ps_RemoveFromCollectionResponse_EXT
 #define zx_ps_RemoveFromCollectionResponse_EXT
 #endif
-
 struct zx_ps_RemoveFromCollectionResponse_s {
   ZX_ELEM_EXT
   zx_ps_RemoveFromCollectionResponse_EXT
@@ -1660,12 +1529,8 @@ struct zx_ps_RemoveFromCollectionResponse_s {
 };
 
 #define zx_NEW_ps_RemoveFromCollectionResponse(c, father) (struct zx_ps_RemoveFromCollectionResponse_s*)zx_new_elem((c),(father),zx_ps_RemoveFromCollectionResponse_ELEM)
-
 int zx_DEC_ATTR_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionResponse_s* x);
 int zx_DEC_ELEM_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionResponse_s* x);
-int zx_LEN_SO_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionResponse_s* x);
-char* zx_ENC_SO_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_RemoveFromCollectionResponse_s* zx_DEEP_CLONE_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveFromCollectionResponse_s* x, int dup_strs);
@@ -1703,7 +1568,6 @@ void zx_ps_RemoveFromCollectionResponse_REV_Status(struct zx_ps_RemoveFromCollec
 #ifndef zx_ps_ResolveIdentifierRequest_EXT
 #define zx_ps_ResolveIdentifierRequest_EXT
 #endif
-
 struct zx_ps_ResolveIdentifierRequest_s {
   ZX_ELEM_EXT
   zx_ps_ResolveIdentifierRequest_EXT
@@ -1712,12 +1576,8 @@ struct zx_ps_ResolveIdentifierRequest_s {
 };
 
 #define zx_NEW_ps_ResolveIdentifierRequest(c, father) (struct zx_ps_ResolveIdentifierRequest_s*)zx_new_elem((c),(father),zx_ps_ResolveIdentifierRequest_ELEM)
-
 int zx_DEC_ATTR_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_ResolveIdentifierRequest_s* x);
 int zx_DEC_ELEM_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_ResolveIdentifierRequest_s* x);
-int zx_LEN_SO_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_ResolveIdentifierRequest_s* x);
-char* zx_ENC_SO_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_ResolveIdentifierRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_ResolveIdentifierRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_ResolveIdentifierRequest_s* zx_DEEP_CLONE_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_ResolveIdentifierRequest_s* x, int dup_strs);
@@ -1753,7 +1613,6 @@ void zx_ps_ResolveIdentifierRequest_REV_ResolveInput(struct zx_ps_ResolveIdentif
 #ifndef zx_ps_ResolveIdentifierResponse_EXT
 #define zx_ps_ResolveIdentifierResponse_EXT
 #endif
-
 struct zx_ps_ResolveIdentifierResponse_s {
   ZX_ELEM_EXT
   zx_ps_ResolveIdentifierResponse_EXT
@@ -1764,12 +1623,8 @@ struct zx_ps_ResolveIdentifierResponse_s {
 };
 
 #define zx_NEW_ps_ResolveIdentifierResponse(c, father) (struct zx_ps_ResolveIdentifierResponse_s*)zx_new_elem((c),(father),zx_ps_ResolveIdentifierResponse_ELEM)
-
 int zx_DEC_ATTR_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_ResolveIdentifierResponse_s* x);
 int zx_DEC_ELEM_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_ResolveIdentifierResponse_s* x);
-int zx_LEN_SO_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_ResolveIdentifierResponse_s* x);
-char* zx_ENC_SO_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_ResolveIdentifierResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_ResolveIdentifierResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_ResolveIdentifierResponse_s* zx_DEEP_CLONE_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_ResolveIdentifierResponse_s* x, int dup_strs);
@@ -1815,7 +1670,6 @@ void zx_ps_ResolveIdentifierResponse_REV_ResolveOutput(struct zx_ps_ResolveIdent
 #ifndef zx_ps_ResolveInput_EXT
 #define zx_ps_ResolveInput_EXT
 #endif
-
 struct zx_ps_ResolveInput_s {
   ZX_ELEM_EXT
   zx_ps_ResolveInput_EXT
@@ -1826,12 +1680,8 @@ struct zx_ps_ResolveInput_s {
 };
 
 #define zx_NEW_ps_ResolveInput(c, father) (struct zx_ps_ResolveInput_s*)zx_new_elem((c),(father),zx_ps_ResolveInput_ELEM)
-
 int zx_DEC_ATTR_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x);
 int zx_DEC_ELEM_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x);
-int zx_LEN_SO_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x);
-char* zx_ENC_SO_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_ResolveInput_s* zx_DEEP_CLONE_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x, int dup_strs);
@@ -1871,7 +1721,7 @@ void zx_ps_ResolveInput_ADD_TargetObjectID(struct zx_ps_ResolveInput_s* x, int n
 
 void zx_ps_ResolveInput_DEL_TokenPolicy(struct zx_ps_ResolveInput_s* x, int n);
 void zx_ps_ResolveInput_DEL_Token(struct zx_ps_ResolveInput_s* x, int n);
-void zx_ps_ResolveInput_DEL_TargetObjectID(struct zx_ps_ResolveInput_s* x, int n);
+void zx_ps_ResolveInput_DEL_TargetObjectID(struct zx_ps_ResolveInput_s* x,int n);
 
 void zx_ps_ResolveInput_REV_TokenPolicy(struct zx_ps_ResolveInput_s* x);
 void zx_ps_ResolveInput_REV_Token(struct zx_ps_ResolveInput_s* x);
@@ -1883,7 +1733,6 @@ void zx_ps_ResolveInput_REV_TargetObjectID(struct zx_ps_ResolveInput_s* x);
 #ifndef zx_ps_ResolveOutput_EXT
 #define zx_ps_ResolveOutput_EXT
 #endif
-
 struct zx_ps_ResolveOutput_s {
   ZX_ELEM_EXT
   zx_ps_ResolveOutput_EXT
@@ -1892,12 +1741,8 @@ struct zx_ps_ResolveOutput_s {
 };
 
 #define zx_NEW_ps_ResolveOutput(c, father) (struct zx_ps_ResolveOutput_s*)zx_new_elem((c),(father),zx_ps_ResolveOutput_ELEM)
-
 int zx_DEC_ATTR_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x);
 int zx_DEC_ELEM_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x);
-int zx_LEN_SO_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x);
-char* zx_ENC_SO_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_ResolveOutput_s* zx_DEEP_CLONE_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x, int dup_strs);
@@ -1933,7 +1778,6 @@ void zx_ps_ResolveOutput_REV_Token(struct zx_ps_ResolveOutput_s* x);
 #ifndef zx_ps_SetObjectInfoRequest_EXT
 #define zx_ps_SetObjectInfoRequest_EXT
 #endif
-
 struct zx_ps_SetObjectInfoRequest_s {
   ZX_ELEM_EXT
   zx_ps_SetObjectInfoRequest_EXT
@@ -1943,12 +1787,8 @@ struct zx_ps_SetObjectInfoRequest_s {
 };
 
 #define zx_NEW_ps_SetObjectInfoRequest(c, father) (struct zx_ps_SetObjectInfoRequest_s*)zx_new_elem((c),(father),zx_ps_SetObjectInfoRequest_ELEM)
-
 int zx_DEC_ATTR_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectInfoRequest_s* x);
 int zx_DEC_ELEM_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectInfoRequest_s* x);
-int zx_LEN_SO_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectInfoRequest_s* x);
-char* zx_ENC_SO_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectInfoRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectInfoRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_SetObjectInfoRequest_s* zx_DEEP_CLONE_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectInfoRequest_s* x, int dup_strs);
@@ -1992,7 +1832,6 @@ void zx_ps_SetObjectInfoRequest_REV_Subscription(struct zx_ps_SetObjectInfoReque
 #ifndef zx_ps_SetObjectInfoResponse_EXT
 #define zx_ps_SetObjectInfoResponse_EXT
 #endif
-
 struct zx_ps_SetObjectInfoResponse_s {
   ZX_ELEM_EXT
   zx_ps_SetObjectInfoResponse_EXT
@@ -2002,12 +1841,8 @@ struct zx_ps_SetObjectInfoResponse_s {
 };
 
 #define zx_NEW_ps_SetObjectInfoResponse(c, father) (struct zx_ps_SetObjectInfoResponse_s*)zx_new_elem((c),(father),zx_ps_SetObjectInfoResponse_ELEM)
-
 int zx_DEC_ATTR_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectInfoResponse_s* x);
 int zx_DEC_ELEM_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectInfoResponse_s* x);
-int zx_LEN_SO_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectInfoResponse_s* x);
-char* zx_ENC_SO_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectInfoResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectInfoResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_SetObjectInfoResponse_s* zx_DEEP_CLONE_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectInfoResponse_s* x, int dup_strs);
@@ -2045,7 +1880,6 @@ void zx_ps_SetObjectInfoResponse_REV_Status(struct zx_ps_SetObjectInfoResponse_s
 #ifndef zx_ps_Subscription_EXT
 #define zx_ps_Subscription_EXT
 #endif
-
 struct zx_ps_Subscription_s {
   ZX_ELEM_EXT
   zx_ps_Subscription_EXT
@@ -2061,12 +1895,8 @@ struct zx_ps_Subscription_s {
 };
 
 #define zx_NEW_ps_Subscription(c, father) (struct zx_ps_Subscription_s*)zx_new_elem((c),(father),zx_ps_Subscription_ELEM)
-
 int zx_DEC_ATTR_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x);
 int zx_DEC_ELEM_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x);
-int zx_LEN_SO_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x);
-char* zx_ENC_SO_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_Subscription_s* zx_DEEP_CLONE_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x, int dup_strs);
@@ -2122,7 +1952,6 @@ void zx_ps_Subscription_REV_Extension(struct zx_ps_Subscription_s* x);
 #ifndef zx_ps_Tag_EXT
 #define zx_ps_Tag_EXT
 #endif
-
 struct zx_ps_Tag_s {
   ZX_ELEM_EXT
   zx_ps_Tag_EXT
@@ -2130,12 +1959,8 @@ struct zx_ps_Tag_s {
 };
 
 #define zx_NEW_ps_Tag(c, father) (struct zx_ps_Tag_s*)zx_new_elem((c),(father),zx_ps_Tag_ELEM)
-
 int zx_DEC_ATTR_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x);
 int zx_DEC_ELEM_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x);
-int zx_LEN_SO_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x);
-char* zx_ENC_SO_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_Tag_s* zx_DEEP_CLONE_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x, int dup_strs);
@@ -2163,7 +1988,6 @@ void zx_ps_Tag_PUT_Ref(struct zx_ps_Tag_s* x, struct zx_attr_s* y);
 #ifndef zx_ps_TestMembershipRequest_EXT
 #define zx_ps_TestMembershipRequest_EXT
 #endif
-
 struct zx_ps_TestMembershipRequest_s {
   ZX_ELEM_EXT
   zx_ps_TestMembershipRequest_EXT
@@ -2174,12 +1998,8 @@ struct zx_ps_TestMembershipRequest_s {
 };
 
 #define zx_NEW_ps_TestMembershipRequest(c, father) (struct zx_ps_TestMembershipRequest_s*)zx_new_elem((c),(father),zx_ps_TestMembershipRequest_ELEM)
-
 int zx_DEC_ATTR_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMembershipRequest_s* x);
 int zx_DEC_ELEM_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMembershipRequest_s* x);
-int zx_LEN_SO_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMembershipRequest_s* x);
-char* zx_ENC_SO_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMembershipRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMembershipRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_TestMembershipRequest_s* zx_DEEP_CLONE_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMembershipRequest_s* x, int dup_strs);
@@ -2217,7 +2037,7 @@ void zx_ps_TestMembershipRequest_ADD_TargetObjectID(struct zx_ps_TestMembershipR
 void zx_ps_TestMembershipRequest_ADD_Token(struct zx_ps_TestMembershipRequest_s* x, int n, struct zx_sec_Token_s* z);
 void zx_ps_TestMembershipRequest_ADD_Subscription(struct zx_ps_TestMembershipRequest_s* x, int n, struct zx_ps_Subscription_s* z);
 
-void zx_ps_TestMembershipRequest_DEL_TargetObjectID(struct zx_ps_TestMembershipRequest_s* x, int n);
+void zx_ps_TestMembershipRequest_DEL_TargetObjectID(struct zx_ps_TestMembershipRequest_s* x,int n);
 void zx_ps_TestMembershipRequest_DEL_Token(struct zx_ps_TestMembershipRequest_s* x, int n);
 void zx_ps_TestMembershipRequest_DEL_Subscription(struct zx_ps_TestMembershipRequest_s* x, int n);
 
@@ -2231,7 +2051,6 @@ void zx_ps_TestMembershipRequest_REV_Subscription(struct zx_ps_TestMembershipReq
 #ifndef zx_ps_TestMembershipResponse_EXT
 #define zx_ps_TestMembershipResponse_EXT
 #endif
-
 struct zx_ps_TestMembershipResponse_s {
   ZX_ELEM_EXT
   zx_ps_TestMembershipResponse_EXT
@@ -2242,12 +2061,8 @@ struct zx_ps_TestMembershipResponse_s {
 };
 
 #define zx_NEW_ps_TestMembershipResponse(c, father) (struct zx_ps_TestMembershipResponse_s*)zx_new_elem((c),(father),zx_ps_TestMembershipResponse_ELEM)
-
 int zx_DEC_ATTR_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembershipResponse_s* x);
 int zx_DEC_ELEM_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembershipResponse_s* x);
-int zx_LEN_SO_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembershipResponse_s* x);
-char* zx_ENC_SO_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembershipResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembershipResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ps_TestMembershipResponse_s* zx_DEEP_CLONE_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembershipResponse_s* x, int dup_strs);
@@ -2282,7 +2097,7 @@ void zx_ps_TestMembershipResponse_ADD_Status(struct zx_ps_TestMembershipResponse
 void zx_ps_TestMembershipResponse_ADD_Result(struct zx_ps_TestMembershipResponse_s* x, int n, struct zx_elem_s* z);
 
 void zx_ps_TestMembershipResponse_DEL_Status(struct zx_ps_TestMembershipResponse_s* x, int n);
-void zx_ps_TestMembershipResponse_DEL_Result(struct zx_ps_TestMembershipResponse_s* x, int n);
+void zx_ps_TestMembershipResponse_DEL_Result(struct zx_ps_TestMembershipResponse_s* x,int n);
 
 void zx_ps_TestMembershipResponse_REV_Status(struct zx_ps_TestMembershipResponse_s* x);
 void zx_ps_TestMembershipResponse_REV_Result(struct zx_ps_TestMembershipResponse_s* x);

@@ -23,7 +23,6 @@
 #ifndef zx_wsu_Created_EXT
 #define zx_wsu_Created_EXT
 #endif
-
 struct zx_wsu_Created_s {
   ZX_ELEM_EXT
   zx_wsu_Created_EXT
@@ -33,12 +32,8 @@ struct zx_wsu_Created_s {
 };
 
 #define zx_NEW_wsu_Created(c, father) (struct zx_wsu_Created_s*)zx_new_elem((c),(father),zx_wsu_Created_ELEM)
-
 int zx_DEC_ATTR_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x);
 int zx_DEC_ELEM_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x);
-int zx_LEN_SO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x);
-char* zx_ENC_SO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsu_Created_s* zx_DEEP_CLONE_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x, int dup_strs);
@@ -70,7 +65,6 @@ void zx_wsu_Created_PUT_Id(struct zx_wsu_Created_s* x, struct zx_attr_s* y);
 #ifndef zx_wsu_Expires_EXT
 #define zx_wsu_Expires_EXT
 #endif
-
 struct zx_wsu_Expires_s {
   ZX_ELEM_EXT
   zx_wsu_Expires_EXT
@@ -80,12 +74,8 @@ struct zx_wsu_Expires_s {
 };
 
 #define zx_NEW_wsu_Expires(c, father) (struct zx_wsu_Expires_s*)zx_new_elem((c),(father),zx_wsu_Expires_ELEM)
-
 int zx_DEC_ATTR_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x);
 int zx_DEC_ELEM_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x);
-int zx_LEN_SO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x);
-char* zx_ENC_SO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsu_Expires_s* zx_DEEP_CLONE_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x, int dup_strs);
@@ -117,7 +107,6 @@ void zx_wsu_Expires_PUT_Id(struct zx_wsu_Expires_s* x, struct zx_attr_s* y);
 #ifndef zx_wsu_Timestamp_EXT
 #define zx_wsu_Timestamp_EXT
 #endif
-
 struct zx_wsu_Timestamp_s {
   ZX_ELEM_EXT
   zx_wsu_Timestamp_EXT
@@ -129,12 +118,8 @@ struct zx_wsu_Timestamp_s {
 };
 
 #define zx_NEW_wsu_Timestamp(c, father) (struct zx_wsu_Timestamp_s*)zx_new_elem((c),(father),zx_wsu_Timestamp_ELEM)
-
 int zx_DEC_ATTR_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x);
 int zx_DEC_ELEM_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x);
-int zx_LEN_SO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x);
-char* zx_ENC_SO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsu_Timestamp_s* zx_DEEP_CLONE_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x, int dup_strs);

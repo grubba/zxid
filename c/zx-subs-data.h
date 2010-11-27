@@ -23,7 +23,6 @@
 #ifndef zx_subs_RefItem_EXT
 #define zx_subs_RefItem_EXT
 #endif
-
 struct zx_subs_RefItem_s {
   ZX_ELEM_EXT
   zx_subs_RefItem_EXT
@@ -32,12 +31,8 @@ struct zx_subs_RefItem_s {
 };
 
 #define zx_NEW_subs_RefItem(c, father) (struct zx_subs_RefItem_s*)zx_new_elem((c),(father),zx_subs_RefItem_ELEM)
-
 int zx_DEC_ATTR_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x);
 int zx_DEC_ELEM_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x);
-int zx_LEN_SO_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x);
-char* zx_ENC_SO_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_subs_RefItem_s* zx_DEEP_CLONE_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x, int dup_strs);

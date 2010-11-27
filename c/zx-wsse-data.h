@@ -23,7 +23,6 @@
 #ifndef zx_wsse_BinarySecurityToken_EXT
 #define zx_wsse_BinarySecurityToken_EXT
 #endif
-
 struct zx_wsse_BinarySecurityToken_s {
   ZX_ELEM_EXT
   zx_wsse_BinarySecurityToken_EXT
@@ -33,12 +32,8 @@ struct zx_wsse_BinarySecurityToken_s {
 };
 
 #define zx_NEW_wsse_BinarySecurityToken(c, father) (struct zx_wsse_BinarySecurityToken_s*)zx_new_elem((c),(father),zx_wsse_BinarySecurityToken_ELEM)
-
 int zx_DEC_ATTR_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_BinarySecurityToken_s* x);
 int zx_DEC_ELEM_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_BinarySecurityToken_s* x);
-int zx_LEN_SO_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_BinarySecurityToken_s* x);
-char* zx_ENC_SO_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_BinarySecurityToken_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_BinarySecurityToken_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsse_BinarySecurityToken_s* zx_DEEP_CLONE_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_BinarySecurityToken_s* x, int dup_strs);
@@ -70,7 +65,6 @@ void zx_wsse_BinarySecurityToken_PUT_Id(struct zx_wsse_BinarySecurityToken_s* x,
 #ifndef zx_wsse_Embedded_EXT
 #define zx_wsse_Embedded_EXT
 #endif
-
 struct zx_wsse_Embedded_s {
   ZX_ELEM_EXT
   zx_wsse_Embedded_EXT
@@ -78,12 +72,8 @@ struct zx_wsse_Embedded_s {
 };
 
 #define zx_NEW_wsse_Embedded(c, father) (struct zx_wsse_Embedded_s*)zx_new_elem((c),(father),zx_wsse_Embedded_ELEM)
-
 int zx_DEC_ATTR_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x);
 int zx_DEC_ELEM_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x);
-int zx_LEN_SO_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x);
-char* zx_ENC_SO_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsse_Embedded_s* zx_DEEP_CLONE_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x, int dup_strs);
@@ -111,7 +101,6 @@ void zx_wsse_Embedded_PUT_ValueType(struct zx_wsse_Embedded_s* x, struct zx_attr
 #ifndef zx_wsse_KeyIdentifier_EXT
 #define zx_wsse_KeyIdentifier_EXT
 #endif
-
 struct zx_wsse_KeyIdentifier_s {
   ZX_ELEM_EXT
   zx_wsse_KeyIdentifier_EXT
@@ -121,12 +110,8 @@ struct zx_wsse_KeyIdentifier_s {
 };
 
 #define zx_NEW_wsse_KeyIdentifier(c, father) (struct zx_wsse_KeyIdentifier_s*)zx_new_elem((c),(father),zx_wsse_KeyIdentifier_ELEM)
-
 int zx_DEC_ATTR_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifier_s* x);
 int zx_DEC_ELEM_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifier_s* x);
-int zx_LEN_SO_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifier_s* x);
-char* zx_ENC_SO_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifier_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifier_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsse_KeyIdentifier_s* zx_DEEP_CLONE_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifier_s* x, int dup_strs);
@@ -158,7 +143,6 @@ void zx_wsse_KeyIdentifier_PUT_Id(struct zx_wsse_KeyIdentifier_s* x, struct zx_a
 #ifndef zx_wsse_Nonce_EXT
 #define zx_wsse_Nonce_EXT
 #endif
-
 struct zx_wsse_Nonce_s {
   ZX_ELEM_EXT
   zx_wsse_Nonce_EXT
@@ -167,12 +151,8 @@ struct zx_wsse_Nonce_s {
 };
 
 #define zx_NEW_wsse_Nonce(c, father) (struct zx_wsse_Nonce_s*)zx_new_elem((c),(father),zx_wsse_Nonce_ELEM)
-
 int zx_DEC_ATTR_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x);
 int zx_DEC_ELEM_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x);
-int zx_LEN_SO_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x);
-char* zx_ENC_SO_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsse_Nonce_s* zx_DEEP_CLONE_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x, int dup_strs);
@@ -202,7 +182,6 @@ void zx_wsse_Nonce_PUT_Id(struct zx_wsse_Nonce_s* x, struct zx_attr_s* y);
 #ifndef zx_wsse_Password_EXT
 #define zx_wsse_Password_EXT
 #endif
-
 struct zx_wsse_Password_s {
   ZX_ELEM_EXT
   zx_wsse_Password_EXT
@@ -211,12 +190,8 @@ struct zx_wsse_Password_s {
 };
 
 #define zx_NEW_wsse_Password(c, father) (struct zx_wsse_Password_s*)zx_new_elem((c),(father),zx_wsse_Password_ELEM)
-
 int zx_DEC_ATTR_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x);
 int zx_DEC_ELEM_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x);
-int zx_LEN_SO_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x);
-char* zx_ENC_SO_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsse_Password_s* zx_DEEP_CLONE_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x, int dup_strs);
@@ -246,7 +221,6 @@ void zx_wsse_Password_PUT_Id(struct zx_wsse_Password_s* x, struct zx_attr_s* y);
 #ifndef zx_wsse_Reference_EXT
 #define zx_wsse_Reference_EXT
 #endif
-
 struct zx_wsse_Reference_s {
   ZX_ELEM_EXT
   zx_wsse_Reference_EXT
@@ -255,12 +229,8 @@ struct zx_wsse_Reference_s {
 };
 
 #define zx_NEW_wsse_Reference(c, father) (struct zx_wsse_Reference_s*)zx_new_elem((c),(father),zx_wsse_Reference_ELEM)
-
 int zx_DEC_ATTR_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x);
 int zx_DEC_ELEM_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x);
-int zx_LEN_SO_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x);
-char* zx_ENC_SO_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsse_Reference_s* zx_DEEP_CLONE_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x, int dup_strs);
@@ -290,7 +260,6 @@ void zx_wsse_Reference_PUT_ValueType(struct zx_wsse_Reference_s* x, struct zx_at
 #ifndef zx_wsse_Security_EXT
 #define zx_wsse_Security_EXT
 #endif
-
 struct zx_wsse_Security_s {
   ZX_ELEM_EXT
   zx_wsse_Security_EXT
@@ -308,12 +277,8 @@ struct zx_wsse_Security_s {
 };
 
 #define zx_NEW_wsse_Security(c, father) (struct zx_wsse_Security_s*)zx_new_elem((c),(father),zx_wsse_Security_ELEM)
-
 int zx_DEC_ATTR_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x);
 int zx_DEC_ELEM_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x);
-int zx_LEN_SO_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x);
-char* zx_ENC_SO_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsse_Security_s* zx_DEEP_CLONE_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x, int dup_strs);
@@ -409,7 +374,6 @@ void zx_wsse_Security_REV_Timestamp(struct zx_wsse_Security_s* x);
 #ifndef zx_wsse_SecurityTokenReference_EXT
 #define zx_wsse_SecurityTokenReference_EXT
 #endif
-
 struct zx_wsse_SecurityTokenReference_s {
   ZX_ELEM_EXT
   zx_wsse_SecurityTokenReference_EXT
@@ -419,12 +383,8 @@ struct zx_wsse_SecurityTokenReference_s {
 };
 
 #define zx_NEW_wsse_SecurityTokenReference(c, father) (struct zx_wsse_SecurityTokenReference_s*)zx_new_elem((c),(father),zx_wsse_SecurityTokenReference_ELEM)
-
 int zx_DEC_ATTR_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_SecurityTokenReference_s* x);
 int zx_DEC_ELEM_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_SecurityTokenReference_s* x);
-int zx_LEN_SO_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_SecurityTokenReference_s* x);
-char* zx_ENC_SO_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_SecurityTokenReference_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_SecurityTokenReference_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsse_SecurityTokenReference_s* zx_DEEP_CLONE_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_SecurityTokenReference_s* x, int dup_strs);
@@ -462,19 +422,14 @@ void zx_wsse_SecurityTokenReference_REV_KeyIdentifier(struct zx_wsse_SecurityTok
 #ifndef zx_wsse_TransformationParameters_EXT
 #define zx_wsse_TransformationParameters_EXT
 #endif
-
 struct zx_wsse_TransformationParameters_s {
   ZX_ELEM_EXT
   zx_wsse_TransformationParameters_EXT
 };
 
 #define zx_NEW_wsse_TransformationParameters(c, father) (struct zx_wsse_TransformationParameters_s*)zx_new_elem((c),(father),zx_wsse_TransformationParameters_ELEM)
-
 int zx_DEC_ATTR_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_TransformationParameters_s* x);
 int zx_DEC_ELEM_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_TransformationParameters_s* x);
-int zx_LEN_SO_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_TransformationParameters_s* x);
-char* zx_ENC_SO_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_TransformationParameters_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_TransformationParameters_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsse_TransformationParameters_s* zx_DEEP_CLONE_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_TransformationParameters_s* x, int dup_strs);
@@ -500,7 +455,6 @@ int zx_WALK_WO_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_Tr
 #ifndef zx_wsse_Username_EXT
 #define zx_wsse_Username_EXT
 #endif
-
 struct zx_wsse_Username_s {
   ZX_ELEM_EXT
   zx_wsse_Username_EXT
@@ -508,12 +462,8 @@ struct zx_wsse_Username_s {
 };
 
 #define zx_NEW_wsse_Username(c, father) (struct zx_wsse_Username_s*)zx_new_elem((c),(father),zx_wsse_Username_ELEM)
-
 int zx_DEC_ATTR_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x);
 int zx_DEC_ELEM_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x);
-int zx_LEN_SO_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x);
-char* zx_ENC_SO_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsse_Username_s* zx_DEEP_CLONE_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x, int dup_strs);
@@ -541,7 +491,6 @@ void zx_wsse_Username_PUT_Id(struct zx_wsse_Username_s* x, struct zx_attr_s* y);
 #ifndef zx_wsse_UsernameToken_EXT
 #define zx_wsse_UsernameToken_EXT
 #endif
-
 struct zx_wsse_UsernameToken_s {
   ZX_ELEM_EXT
   zx_wsse_UsernameToken_EXT
@@ -550,12 +499,8 @@ struct zx_wsse_UsernameToken_s {
 };
 
 #define zx_NEW_wsse_UsernameToken(c, father) (struct zx_wsse_UsernameToken_s*)zx_new_elem((c),(father),zx_wsse_UsernameToken_ELEM)
-
 int zx_DEC_ATTR_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken_s* x);
 int zx_DEC_ELEM_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken_s* x);
-int zx_LEN_SO_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken_s* x);
-char* zx_ENC_SO_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wsse_UsernameToken_s* zx_DEEP_CLONE_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken_s* x, int dup_strs);

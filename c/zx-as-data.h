@@ -23,19 +23,14 @@
 #ifndef zx_as_Extensions_EXT
 #define zx_as_Extensions_EXT
 #endif
-
 struct zx_as_Extensions_s {
   ZX_ELEM_EXT
   zx_as_Extensions_EXT
 };
 
 #define zx_NEW_as_Extensions(c, father) (struct zx_as_Extensions_s*)zx_new_elem((c),(father),zx_as_Extensions_ELEM)
-
 int zx_DEC_ATTR_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x);
 int zx_DEC_ELEM_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x);
-int zx_LEN_SO_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x);
-char* zx_ENC_SO_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_as_Extensions_s* zx_DEEP_CLONE_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x, int dup_strs);
@@ -61,7 +56,6 @@ int zx_WALK_WO_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x, voi
 #ifndef zx_as_Parameter_EXT
 #define zx_as_Parameter_EXT
 #endif
-
 struct zx_as_Parameter_s {
   ZX_ELEM_EXT
   zx_as_Parameter_EXT
@@ -69,12 +63,8 @@ struct zx_as_Parameter_s {
 };
 
 #define zx_NEW_as_Parameter(c, father) (struct zx_as_Parameter_s*)zx_new_elem((c),(father),zx_as_Parameter_ELEM)
-
 int zx_DEC_ATTR_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x);
 int zx_DEC_ELEM_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x);
-int zx_LEN_SO_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x);
-char* zx_ENC_SO_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_as_Parameter_s* zx_DEEP_CLONE_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x, int dup_strs);
@@ -102,7 +92,6 @@ void zx_as_Parameter_PUT_name(struct zx_as_Parameter_s* x, struct zx_attr_s* y);
 #ifndef zx_as_PasswordTransforms_EXT
 #define zx_as_PasswordTransforms_EXT
 #endif
-
 struct zx_as_PasswordTransforms_s {
   ZX_ELEM_EXT
   zx_as_PasswordTransforms_EXT
@@ -110,12 +99,8 @@ struct zx_as_PasswordTransforms_s {
 };
 
 #define zx_NEW_as_PasswordTransforms(c, father) (struct zx_as_PasswordTransforms_s*)zx_new_elem((c),(father),zx_as_PasswordTransforms_ELEM)
-
 int zx_DEC_ATTR_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTransforms_s* x);
 int zx_DEC_ELEM_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTransforms_s* x);
-int zx_LEN_SO_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTransforms_s* x);
-char* zx_ENC_SO_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTransforms_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTransforms_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_as_PasswordTransforms_s* zx_DEEP_CLONE_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTransforms_s* x, int dup_strs);
@@ -149,7 +134,6 @@ void zx_as_PasswordTransforms_REV_Transform(struct zx_as_PasswordTransforms_s* x
 #ifndef zx_as_SASLRequest_EXT
 #define zx_as_SASLRequest_EXT
 #endif
-
 struct zx_as_SASLRequest_s {
   ZX_ELEM_EXT
   zx_as_SASLRequest_EXT
@@ -162,12 +146,8 @@ struct zx_as_SASLRequest_s {
 };
 
 #define zx_NEW_as_SASLRequest(c, father) (struct zx_as_SASLRequest_s*)zx_new_elem((c),(father),zx_as_SASLRequest_ELEM)
-
 int zx_DEC_ATTR_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x);
 int zx_DEC_ELEM_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x);
-int zx_LEN_SO_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x);
-char* zx_ENC_SO_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_as_SASLRequest_s* zx_DEEP_CLONE_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x, int dup_strs);
@@ -209,7 +189,7 @@ void zx_as_SASLRequest_ADD_Data(struct zx_as_SASLRequest_s* x, int n, struct zx_
 void zx_as_SASLRequest_ADD_RequestedAuthnContext(struct zx_as_SASLRequest_s* x, int n, struct zx_sp_RequestedAuthnContext_s* z);
 void zx_as_SASLRequest_ADD_Extensions(struct zx_as_SASLRequest_s* x, int n, struct zx_as_Extensions_s* z);
 
-void zx_as_SASLRequest_DEL_Data(struct zx_as_SASLRequest_s* x, int n);
+void zx_as_SASLRequest_DEL_Data(struct zx_as_SASLRequest_s* x,int n);
 void zx_as_SASLRequest_DEL_RequestedAuthnContext(struct zx_as_SASLRequest_s* x, int n);
 void zx_as_SASLRequest_DEL_Extensions(struct zx_as_SASLRequest_s* x, int n);
 
@@ -223,7 +203,6 @@ void zx_as_SASLRequest_REV_Extensions(struct zx_as_SASLRequest_s* x);
 #ifndef zx_as_SASLResponse_EXT
 #define zx_as_SASLResponse_EXT
 #endif
-
 struct zx_as_SASLResponse_s {
   ZX_ELEM_EXT
   zx_as_SASLResponse_EXT
@@ -235,12 +214,8 @@ struct zx_as_SASLResponse_s {
 };
 
 #define zx_NEW_as_SASLResponse(c, father) (struct zx_as_SASLResponse_s*)zx_new_elem((c),(father),zx_as_SASLResponse_ELEM)
-
 int zx_DEC_ATTR_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x);
 int zx_DEC_ELEM_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x);
-int zx_LEN_SO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x);
-char* zx_ENC_SO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_as_SASLResponse_s* zx_DEEP_CLONE_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x, int dup_strs);
@@ -286,7 +261,7 @@ void zx_as_SASLResponse_ADD_EndpointReference(struct zx_as_SASLResponse_s* x, in
 
 void zx_as_SASLResponse_DEL_Status(struct zx_as_SASLResponse_s* x, int n);
 void zx_as_SASLResponse_DEL_PasswordTransforms(struct zx_as_SASLResponse_s* x, int n);
-void zx_as_SASLResponse_DEL_Data(struct zx_as_SASLResponse_s* x, int n);
+void zx_as_SASLResponse_DEL_Data(struct zx_as_SASLResponse_s* x,int n);
 void zx_as_SASLResponse_DEL_EndpointReference(struct zx_as_SASLResponse_s* x, int n);
 
 void zx_as_SASLResponse_REV_Status(struct zx_as_SASLResponse_s* x);
@@ -300,7 +275,6 @@ void zx_as_SASLResponse_REV_EndpointReference(struct zx_as_SASLResponse_s* x);
 #ifndef zx_as_Transform_EXT
 #define zx_as_Transform_EXT
 #endif
-
 struct zx_as_Transform_s {
   ZX_ELEM_EXT
   zx_as_Transform_EXT
@@ -309,12 +283,8 @@ struct zx_as_Transform_s {
 };
 
 #define zx_NEW_as_Transform(c, father) (struct zx_as_Transform_s*)zx_new_elem((c),(father),zx_as_Transform_ELEM)
-
 int zx_DEC_ATTR_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x);
 int zx_DEC_ELEM_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x);
-int zx_LEN_SO_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x);
-char* zx_ENC_SO_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_as_Transform_s* zx_DEEP_CLONE_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x, int dup_strs);

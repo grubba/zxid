@@ -187,8 +187,8 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
    * part of the same entity). This is TAS3 specific hack. */
 
   sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx, &hdr->gg);
-  sec->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-  sec->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  sec->actor = zx_ref_attr(cf->ctx, &sec->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  sec->mustUnderstand = zx_ref_attr(cf->ctx, &sec->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
   sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx, &sec->gg);
   sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx, &sec->Timestamp->gg);
   sec->Assertion = ses->tgta7n;
@@ -216,7 +216,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
       refs.id = &body->xaspcd1_XACMLAuthzDecisionQuery->ID->g;
-      refs.canon = zx_EASY_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(cf->ctx, body->xaspcd1_XACMLAuthzDecisionQuery);
+      refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->xaspcd1_XACMLAuthzDecisionQuery->gg);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az cd1"))
 	body->xaspcd1_XACMLAuthzDecisionQuery->Signature
 	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
@@ -227,7 +227,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
       refs.id = &body->XACMLAuthzDecisionQuery->ID->g;
-      refs.canon = zx_EASY_ENC_SO_xasp_XACMLAuthzDecisionQuery(cf->ctx, body->XACMLAuthzDecisionQuery);
+      refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->XACMLAuthzDecisionQuery->gg);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az"))
 	body->XACMLAuthzDecisionQuery->Signature
 	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
@@ -321,7 +321,7 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   if (az_stmt && az_stmt->Response && az_stmt->Response->Result) {
     decision = az_stmt->Response->Result->Decision;
     if (ZX_CONTENT_EQ_CONST(decision, "Permit")) {
-      ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &az_stmt->Response->gg);
+      ss = zx_EASY_ENC_elem(cf->ctx, &az_stmt->Response->gg);
       if (!ss || !ss->len)
 	return 0;
       res = ss->s;
@@ -334,7 +334,7 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   if (az_stmt_cd1 && az_stmt_cd1->Response && az_stmt_cd1->Response->Result) {
     decision = az_stmt_cd1->Response->Result->Decision;
     if (ZX_CONTENT_EQ_CONST(decision, "Permit")) {
-      ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &az_stmt_cd1->Response->gg);
+      ss = zx_EASY_ENC_elem(cf->ctx, &az_stmt_cd1->Response->gg);
       if (!ss || !ss->len)
 	return 0;
       res = ss->s;
@@ -347,7 +347,7 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   if (stmt && stmt->Response && stmt->Response->Result) {  /* Response here is xac:Response */
     decision = stmt->Response->Result->Decision;
     if (ZX_CONTENT_EQ_CONST(decision, "Permit")) {
-      ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &stmt->Response->gg);
+      ss = zx_EASY_ENC_elem(cf->ctx, &stmt->Response->gg);
       if (!ss || !ss->len)
 	return 0;
       res = ss->s;
@@ -416,7 +416,7 @@ char* zxid_pep_az_base_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, 
 
   az_stmt = resp->Assertion->XACMLAuthzDecisionStatement;
   if (az_stmt && az_stmt->Response) {
-    ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &az_stmt->Response->gg);
+    ss = zx_EASY_ENC_elem(cf->ctx, &az_stmt->Response->gg);
     if (!ss || !ss->len)
       return 0;
     res = ss->s;
@@ -426,7 +426,7 @@ char* zxid_pep_az_base_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, 
   }
   az_stmt_cd1 = resp->Assertion->xasacd1_XACMLAuthzDecisionStatement;
   if (az_stmt_cd1 && az_stmt_cd1->Response) {
-    ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &az_stmt_cd1->Response->gg);
+    ss = zx_EASY_ENC_elem(cf->ctx, &az_stmt_cd1->Response->gg);
     if (!ss || !ss->len)
       return 0;
     res = ss->s;
@@ -436,7 +436,7 @@ char* zxid_pep_az_base_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, 
   }
   stmt = resp->Assertion->Statement;
   if (stmt && stmt->Response) {  /* Response here is xac:Response */
-    ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &stmt->Response->gg);
+    ss = zx_EASY_ENC_elem(cf->ctx, &stmt->Response->gg);
     if (!ss || !ss->len)
       return 0;
     res = ss->s;

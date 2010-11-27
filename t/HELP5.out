@@ -1,0 +1,17 @@
+zxlogview  -  Decrypt logs and validate log signatures - R0.71
+SAML 2.0 is a standard for federated idenity and Single Sign-On.
+Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
+Author: Sampo Kellomaki (sampo@iki.fi)
+NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0
+See http://www.apache.org/licenses/LICENSE-2.0
+Send well researched bug reports to the author. Home: zxid.org
+
+Usage: zxlogview [options] logsign-nopw-cert.pem logenc-nopw-cert.pem <loglines
+  -t        Test mode. The certificates are interpretted from enc & sign perspective.
+  -v        Verbose messages.
+  -q        Be extra quiet.
+  -d        Turn on debugging.
+  -license  Show licensing and NO WARRANTY details.
+  -h        This help message
+  --        End of options

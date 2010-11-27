@@ -23,7 +23,6 @@
 #ifndef zx_md_AdditionalMetadataLocation_EXT
 #define zx_md_AdditionalMetadataLocation_EXT
 #endif
-
 struct zx_md_AdditionalMetadataLocation_s {
   ZX_ELEM_EXT
   zx_md_AdditionalMetadataLocation_EXT
@@ -31,12 +30,8 @@ struct zx_md_AdditionalMetadataLocation_s {
 };
 
 #define zx_NEW_md_AdditionalMetadataLocation(c, father) (struct zx_md_AdditionalMetadataLocation_s*)zx_new_elem((c),(father),zx_md_AdditionalMetadataLocation_ELEM)
-
 int zx_DEC_ATTR_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x);
 int zx_DEC_ELEM_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x);
-int zx_LEN_SO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x);
-char* zx_ENC_SO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_AdditionalMetadataLocation_s* zx_DEEP_CLONE_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x, int dup_strs);
@@ -64,7 +59,6 @@ void zx_md_AdditionalMetadataLocation_PUT_namespace_is_cxx_keyword(struct zx_md_
 #ifndef zx_md_AffiliationDescriptor_EXT
 #define zx_md_AffiliationDescriptor_EXT
 #endif
-
 struct zx_md_AffiliationDescriptor_s {
   ZX_ELEM_EXT
   zx_md_AffiliationDescriptor_EXT
@@ -79,12 +73,8 @@ struct zx_md_AffiliationDescriptor_s {
 };
 
 #define zx_NEW_md_AffiliationDescriptor(c, father) (struct zx_md_AffiliationDescriptor_s*)zx_new_elem((c),(father),zx_md_AffiliationDescriptor_ELEM)
-
 int zx_DEC_ATTR_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x);
 int zx_DEC_ELEM_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x);
-int zx_LEN_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x);
-char* zx_ENC_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_AffiliationDescriptor_s* zx_DEEP_CLONE_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x, int dup_strs);
@@ -136,7 +126,7 @@ void zx_md_AffiliationDescriptor_ADD_KeyDescriptor(struct zx_md_AffiliationDescr
 
 void zx_md_AffiliationDescriptor_DEL_Signature(struct zx_md_AffiliationDescriptor_s* x, int n);
 void zx_md_AffiliationDescriptor_DEL_Extensions(struct zx_md_AffiliationDescriptor_s* x, int n);
-void zx_md_AffiliationDescriptor_DEL_AffiliateMember(struct zx_md_AffiliationDescriptor_s* x, int n);
+void zx_md_AffiliationDescriptor_DEL_AffiliateMember(struct zx_md_AffiliationDescriptor_s* x,int n);
 void zx_md_AffiliationDescriptor_DEL_KeyDescriptor(struct zx_md_AffiliationDescriptor_s* x, int n);
 
 void zx_md_AffiliationDescriptor_REV_Signature(struct zx_md_AffiliationDescriptor_s* x);
@@ -150,7 +140,6 @@ void zx_md_AffiliationDescriptor_REV_KeyDescriptor(struct zx_md_AffiliationDescr
 #ifndef zx_md_ArtifactResolutionService_EXT
 #define zx_md_ArtifactResolutionService_EXT
 #endif
-
 struct zx_md_ArtifactResolutionService_s {
   ZX_ELEM_EXT
   zx_md_ArtifactResolutionService_EXT
@@ -162,12 +151,8 @@ struct zx_md_ArtifactResolutionService_s {
 };
 
 #define zx_NEW_md_ArtifactResolutionService(c, father) (struct zx_md_ArtifactResolutionService_s*)zx_new_elem((c),(father),zx_md_ArtifactResolutionService_ELEM)
-
 int zx_DEC_ATTR_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x);
 int zx_DEC_ELEM_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x);
-int zx_LEN_SO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x);
-char* zx_ENC_SO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_ArtifactResolutionService_s* zx_DEEP_CLONE_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x, int dup_strs);
@@ -203,7 +188,6 @@ void zx_md_ArtifactResolutionService_PUT_isDefault(struct zx_md_ArtifactResoluti
 #ifndef zx_md_AssertionConsumerService_EXT
 #define zx_md_AssertionConsumerService_EXT
 #endif
-
 struct zx_md_AssertionConsumerService_s {
   ZX_ELEM_EXT
   zx_md_AssertionConsumerService_EXT
@@ -215,12 +199,8 @@ struct zx_md_AssertionConsumerService_s {
 };
 
 #define zx_NEW_md_AssertionConsumerService(c, father) (struct zx_md_AssertionConsumerService_s*)zx_new_elem((c),(father),zx_md_AssertionConsumerService_ELEM)
-
 int zx_DEC_ATTR_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x);
 int zx_DEC_ELEM_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x);
-int zx_LEN_SO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x);
-char* zx_ENC_SO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_AssertionConsumerService_s* zx_DEEP_CLONE_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x, int dup_strs);
@@ -256,7 +236,6 @@ void zx_md_AssertionConsumerService_PUT_isDefault(struct zx_md_AssertionConsumer
 #ifndef zx_md_AssertionIDRequestService_EXT
 #define zx_md_AssertionIDRequestService_EXT
 #endif
-
 struct zx_md_AssertionIDRequestService_s {
   ZX_ELEM_EXT
   zx_md_AssertionIDRequestService_EXT
@@ -268,12 +247,8 @@ struct zx_md_AssertionIDRequestService_s {
 };
 
 #define zx_NEW_md_AssertionIDRequestService(c, father) (struct zx_md_AssertionIDRequestService_s*)zx_new_elem((c),(father),zx_md_AssertionIDRequestService_ELEM)
-
 int zx_DEC_ATTR_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x);
 int zx_DEC_ELEM_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x);
-int zx_LEN_SO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x);
-char* zx_ENC_SO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_AssertionIDRequestService_s* zx_DEEP_CLONE_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x, int dup_strs);
@@ -309,7 +284,6 @@ void zx_md_AssertionIDRequestService_PUT_isDefault(struct zx_md_AssertionIDReque
 #ifndef zx_md_AttributeAuthorityDescriptor_EXT
 #define zx_md_AttributeAuthorityDescriptor_EXT
 #endif
-
 struct zx_md_AttributeAuthorityDescriptor_s {
   ZX_ELEM_EXT
   zx_md_AttributeAuthorityDescriptor_EXT
@@ -331,12 +305,8 @@ struct zx_md_AttributeAuthorityDescriptor_s {
 };
 
 #define zx_NEW_md_AttributeAuthorityDescriptor(c, father) (struct zx_md_AttributeAuthorityDescriptor_s*)zx_new_elem((c),(father),zx_md_AttributeAuthorityDescriptor_ELEM)
-
 int zx_DEC_ATTR_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x);
 int zx_DEC_ELEM_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x);
-int zx_LEN_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x);
-char* zx_ENC_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_AttributeAuthorityDescriptor_s* zx_DEEP_CLONE_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x, int dup_strs);
@@ -431,8 +401,8 @@ void zx_md_AttributeAuthorityDescriptor_DEL_Organization(struct zx_md_AttributeA
 void zx_md_AttributeAuthorityDescriptor_DEL_ContactPerson(struct zx_md_AttributeAuthorityDescriptor_s* x, int n);
 void zx_md_AttributeAuthorityDescriptor_DEL_AttributeService(struct zx_md_AttributeAuthorityDescriptor_s* x, int n);
 void zx_md_AttributeAuthorityDescriptor_DEL_AssertionIDRequestService(struct zx_md_AttributeAuthorityDescriptor_s* x, int n);
-void zx_md_AttributeAuthorityDescriptor_DEL_NameIDFormat(struct zx_md_AttributeAuthorityDescriptor_s* x, int n);
-void zx_md_AttributeAuthorityDescriptor_DEL_AttributeProfile(struct zx_md_AttributeAuthorityDescriptor_s* x, int n);
+void zx_md_AttributeAuthorityDescriptor_DEL_NameIDFormat(struct zx_md_AttributeAuthorityDescriptor_s* x,int n);
+void zx_md_AttributeAuthorityDescriptor_DEL_AttributeProfile(struct zx_md_AttributeAuthorityDescriptor_s* x,int n);
 void zx_md_AttributeAuthorityDescriptor_DEL_Attribute(struct zx_md_AttributeAuthorityDescriptor_s* x, int n);
 
 void zx_md_AttributeAuthorityDescriptor_REV_Signature(struct zx_md_AttributeAuthorityDescriptor_s* x);
@@ -452,7 +422,6 @@ void zx_md_AttributeAuthorityDescriptor_REV_Attribute(struct zx_md_AttributeAuth
 #ifndef zx_md_AttributeConsumingService_EXT
 #define zx_md_AttributeConsumingService_EXT
 #endif
-
 struct zx_md_AttributeConsumingService_s {
   ZX_ELEM_EXT
   zx_md_AttributeConsumingService_EXT
@@ -464,12 +433,8 @@ struct zx_md_AttributeConsumingService_s {
 };
 
 #define zx_NEW_md_AttributeConsumingService(c, father) (struct zx_md_AttributeConsumingService_s*)zx_new_elem((c),(father),zx_md_AttributeConsumingService_ELEM)
-
 int zx_DEC_ATTR_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x);
 int zx_DEC_ELEM_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x);
-int zx_LEN_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x);
-char* zx_ENC_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_AttributeConsumingService_s* zx_DEEP_CLONE_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x, int dup_strs);
@@ -523,7 +488,6 @@ void zx_md_AttributeConsumingService_REV_RequestedAttribute(struct zx_md_Attribu
 #ifndef zx_md_AttributeService_EXT
 #define zx_md_AttributeService_EXT
 #endif
-
 struct zx_md_AttributeService_s {
   ZX_ELEM_EXT
   zx_md_AttributeService_EXT
@@ -535,12 +499,8 @@ struct zx_md_AttributeService_s {
 };
 
 #define zx_NEW_md_AttributeService(c, father) (struct zx_md_AttributeService_s*)zx_new_elem((c),(father),zx_md_AttributeService_ELEM)
-
 int zx_DEC_ATTR_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x);
 int zx_DEC_ELEM_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x);
-int zx_LEN_SO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x);
-char* zx_ENC_SO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_AttributeService_s* zx_DEEP_CLONE_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x, int dup_strs);
@@ -576,7 +536,6 @@ void zx_md_AttributeService_PUT_isDefault(struct zx_md_AttributeService_s* x, st
 #ifndef zx_md_AuthnAuthorityDescriptor_EXT
 #define zx_md_AuthnAuthorityDescriptor_EXT
 #endif
-
 struct zx_md_AuthnAuthorityDescriptor_s {
   ZX_ELEM_EXT
   zx_md_AuthnAuthorityDescriptor_EXT
@@ -596,12 +555,8 @@ struct zx_md_AuthnAuthorityDescriptor_s {
 };
 
 #define zx_NEW_md_AuthnAuthorityDescriptor(c, father) (struct zx_md_AuthnAuthorityDescriptor_s*)zx_new_elem((c),(father),zx_md_AuthnAuthorityDescriptor_ELEM)
-
 int zx_DEC_ATTR_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x);
 int zx_DEC_ELEM_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x);
-int zx_LEN_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x);
-char* zx_ENC_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_AuthnAuthorityDescriptor_s* zx_DEEP_CLONE_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x, int dup_strs);
@@ -684,7 +639,7 @@ void zx_md_AuthnAuthorityDescriptor_DEL_Organization(struct zx_md_AuthnAuthority
 void zx_md_AuthnAuthorityDescriptor_DEL_ContactPerson(struct zx_md_AuthnAuthorityDescriptor_s* x, int n);
 void zx_md_AuthnAuthorityDescriptor_DEL_AuthnQueryService(struct zx_md_AuthnAuthorityDescriptor_s* x, int n);
 void zx_md_AuthnAuthorityDescriptor_DEL_AssertionIDRequestService(struct zx_md_AuthnAuthorityDescriptor_s* x, int n);
-void zx_md_AuthnAuthorityDescriptor_DEL_NameIDFormat(struct zx_md_AuthnAuthorityDescriptor_s* x, int n);
+void zx_md_AuthnAuthorityDescriptor_DEL_NameIDFormat(struct zx_md_AuthnAuthorityDescriptor_s* x,int n);
 
 void zx_md_AuthnAuthorityDescriptor_REV_Signature(struct zx_md_AuthnAuthorityDescriptor_s* x);
 void zx_md_AuthnAuthorityDescriptor_REV_Extensions(struct zx_md_AuthnAuthorityDescriptor_s* x);
@@ -701,7 +656,6 @@ void zx_md_AuthnAuthorityDescriptor_REV_NameIDFormat(struct zx_md_AuthnAuthority
 #ifndef zx_md_AuthnQueryService_EXT
 #define zx_md_AuthnQueryService_EXT
 #endif
-
 struct zx_md_AuthnQueryService_s {
   ZX_ELEM_EXT
   zx_md_AuthnQueryService_EXT
@@ -713,12 +667,8 @@ struct zx_md_AuthnQueryService_s {
 };
 
 #define zx_NEW_md_AuthnQueryService(c, father) (struct zx_md_AuthnQueryService_s*)zx_new_elem((c),(father),zx_md_AuthnQueryService_ELEM)
-
 int zx_DEC_ATTR_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x);
 int zx_DEC_ELEM_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x);
-int zx_LEN_SO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x);
-char* zx_ENC_SO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_AuthnQueryService_s* zx_DEEP_CLONE_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x, int dup_strs);
@@ -754,7 +704,6 @@ void zx_md_AuthnQueryService_PUT_isDefault(struct zx_md_AuthnQueryService_s* x, 
 #ifndef zx_md_AuthzService_EXT
 #define zx_md_AuthzService_EXT
 #endif
-
 struct zx_md_AuthzService_s {
   ZX_ELEM_EXT
   zx_md_AuthzService_EXT
@@ -766,12 +715,8 @@ struct zx_md_AuthzService_s {
 };
 
 #define zx_NEW_md_AuthzService(c, father) (struct zx_md_AuthzService_s*)zx_new_elem((c),(father),zx_md_AuthzService_ELEM)
-
 int zx_DEC_ATTR_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x);
 int zx_DEC_ELEM_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x);
-int zx_LEN_SO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x);
-char* zx_ENC_SO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_AuthzService_s* zx_DEEP_CLONE_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x, int dup_strs);
@@ -807,7 +752,6 @@ void zx_md_AuthzService_PUT_isDefault(struct zx_md_AuthzService_s* x, struct zx_
 #ifndef zx_md_ContactPerson_EXT
 #define zx_md_ContactPerson_EXT
 #endif
-
 struct zx_md_ContactPerson_s {
   ZX_ELEM_EXT
   zx_md_ContactPerson_EXT
@@ -821,12 +765,8 @@ struct zx_md_ContactPerson_s {
 };
 
 #define zx_NEW_md_ContactPerson(c, father) (struct zx_md_ContactPerson_s*)zx_new_elem((c),(father),zx_md_ContactPerson_ELEM)
-
 int zx_DEC_ATTR_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x);
 int zx_DEC_ELEM_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x);
-int zx_LEN_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x);
-char* zx_ENC_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_ContactPerson_s* zx_DEEP_CLONE_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x, int dup_strs);
@@ -883,11 +823,11 @@ void zx_md_ContactPerson_ADD_EmailAddress(struct zx_md_ContactPerson_s* x, int n
 void zx_md_ContactPerson_ADD_TelephoneNumber(struct zx_md_ContactPerson_s* x, int n, struct zx_elem_s* z);
 
 void zx_md_ContactPerson_DEL_Extensions(struct zx_md_ContactPerson_s* x, int n);
-void zx_md_ContactPerson_DEL_Company(struct zx_md_ContactPerson_s* x, int n);
-void zx_md_ContactPerson_DEL_GivenName(struct zx_md_ContactPerson_s* x, int n);
-void zx_md_ContactPerson_DEL_SurName(struct zx_md_ContactPerson_s* x, int n);
-void zx_md_ContactPerson_DEL_EmailAddress(struct zx_md_ContactPerson_s* x, int n);
-void zx_md_ContactPerson_DEL_TelephoneNumber(struct zx_md_ContactPerson_s* x, int n);
+void zx_md_ContactPerson_DEL_Company(struct zx_md_ContactPerson_s* x,int n);
+void zx_md_ContactPerson_DEL_GivenName(struct zx_md_ContactPerson_s* x,int n);
+void zx_md_ContactPerson_DEL_SurName(struct zx_md_ContactPerson_s* x,int n);
+void zx_md_ContactPerson_DEL_EmailAddress(struct zx_md_ContactPerson_s* x,int n);
+void zx_md_ContactPerson_DEL_TelephoneNumber(struct zx_md_ContactPerson_s* x,int n);
 
 void zx_md_ContactPerson_REV_Extensions(struct zx_md_ContactPerson_s* x);
 void zx_md_ContactPerson_REV_Company(struct zx_md_ContactPerson_s* x);
@@ -902,7 +842,6 @@ void zx_md_ContactPerson_REV_TelephoneNumber(struct zx_md_ContactPerson_s* x);
 #ifndef zx_md_EncryptionMethod_EXT
 #define zx_md_EncryptionMethod_EXT
 #endif
-
 struct zx_md_EncryptionMethod_s {
   ZX_ELEM_EXT
   zx_md_EncryptionMethod_EXT
@@ -912,12 +851,8 @@ struct zx_md_EncryptionMethod_s {
 };
 
 #define zx_NEW_md_EncryptionMethod(c, father) (struct zx_md_EncryptionMethod_s*)zx_new_elem((c),(father),zx_md_EncryptionMethod_ELEM)
-
 int zx_DEC_ATTR_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x);
 int zx_DEC_ELEM_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x);
-int zx_LEN_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x);
-char* zx_ENC_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_EncryptionMethod_s* zx_DEEP_CLONE_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x, int dup_strs);
@@ -949,8 +884,8 @@ void zx_md_EncryptionMethod_PUT_OAEPparams(struct zx_md_EncryptionMethod_s* x, i
 void zx_md_EncryptionMethod_ADD_KeySize(struct zx_md_EncryptionMethod_s* x, int n, struct zx_elem_s* z);
 void zx_md_EncryptionMethod_ADD_OAEPparams(struct zx_md_EncryptionMethod_s* x, int n, struct zx_elem_s* z);
 
-void zx_md_EncryptionMethod_DEL_KeySize(struct zx_md_EncryptionMethod_s* x, int n);
-void zx_md_EncryptionMethod_DEL_OAEPparams(struct zx_md_EncryptionMethod_s* x, int n);
+void zx_md_EncryptionMethod_DEL_KeySize(struct zx_md_EncryptionMethod_s* x,int n);
+void zx_md_EncryptionMethod_DEL_OAEPparams(struct zx_md_EncryptionMethod_s* x,int n);
 
 void zx_md_EncryptionMethod_REV_KeySize(struct zx_md_EncryptionMethod_s* x);
 void zx_md_EncryptionMethod_REV_OAEPparams(struct zx_md_EncryptionMethod_s* x);
@@ -961,7 +896,6 @@ void zx_md_EncryptionMethod_REV_OAEPparams(struct zx_md_EncryptionMethod_s* x);
 #ifndef zx_md_EntitiesDescriptor_EXT
 #define zx_md_EntitiesDescriptor_EXT
 #endif
-
 struct zx_md_EntitiesDescriptor_s {
   ZX_ELEM_EXT
   zx_md_EntitiesDescriptor_EXT
@@ -976,12 +910,8 @@ struct zx_md_EntitiesDescriptor_s {
 };
 
 #define zx_NEW_md_EntitiesDescriptor(c, father) (struct zx_md_EntitiesDescriptor_s*)zx_new_elem((c),(father),zx_md_EntitiesDescriptor_ELEM)
-
 int zx_DEC_ATTR_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x);
 int zx_DEC_ELEM_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x);
-int zx_LEN_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x);
-char* zx_ENC_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_EntitiesDescriptor_s* zx_DEEP_CLONE_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x, int dup_strs);
@@ -1047,7 +977,6 @@ void zx_md_EntitiesDescriptor_REV_EntitiesDescriptor(struct zx_md_EntitiesDescri
 #ifndef zx_md_EntityDescriptor_EXT
 #define zx_md_EntityDescriptor_EXT
 #endif
-
 struct zx_md_EntityDescriptor_s {
   ZX_ELEM_EXT
   zx_md_EntityDescriptor_EXT
@@ -1070,12 +999,8 @@ struct zx_md_EntityDescriptor_s {
 };
 
 #define zx_NEW_md_EntityDescriptor(c, father) (struct zx_md_EntityDescriptor_s*)zx_new_elem((c),(father),zx_md_EntityDescriptor_ELEM)
-
 int zx_DEC_ATTR_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x);
 int zx_DEC_ELEM_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x);
-int zx_LEN_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x);
-char* zx_ENC_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_EntityDescriptor_s* zx_DEEP_CLONE_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x, int dup_strs);
@@ -1205,7 +1130,6 @@ void zx_md_EntityDescriptor_REV_AdditionalMetadataLocation(struct zx_md_EntityDe
 #ifndef zx_md_Extensions_EXT
 #define zx_md_Extensions_EXT
 #endif
-
 struct zx_md_Extensions_s {
   ZX_ELEM_EXT
   zx_md_Extensions_EXT
@@ -1215,12 +1139,8 @@ struct zx_md_Extensions_s {
 };
 
 #define zx_NEW_md_Extensions(c, father) (struct zx_md_Extensions_s*)zx_new_elem((c),(father),zx_md_Extensions_ELEM)
-
 int zx_DEC_ATTR_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x);
 int zx_DEC_ELEM_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x);
-int zx_LEN_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x);
-char* zx_ENC_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_Extensions_s* zx_DEEP_CLONE_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x, int dup_strs);
@@ -1270,7 +1190,6 @@ void zx_md_Extensions_REV_DiscoveryResponse(struct zx_md_Extensions_s* x);
 #ifndef zx_md_IDPSSODescriptor_EXT
 #define zx_md_IDPSSODescriptor_EXT
 #endif
-
 struct zx_md_IDPSSODescriptor_s {
   ZX_ELEM_EXT
   zx_md_IDPSSODescriptor_EXT
@@ -1297,12 +1216,8 @@ struct zx_md_IDPSSODescriptor_s {
 };
 
 #define zx_NEW_md_IDPSSODescriptor(c, father) (struct zx_md_IDPSSODescriptor_s*)zx_new_elem((c),(father),zx_md_IDPSSODescriptor_ELEM)
-
 int zx_DEC_ATTR_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x);
 int zx_DEC_ELEM_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x);
-int zx_LEN_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x);
-char* zx_ENC_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_IDPSSODescriptor_s* zx_DEEP_CLONE_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x, int dup_strs);
@@ -1424,11 +1339,11 @@ void zx_md_IDPSSODescriptor_DEL_ContactPerson(struct zx_md_IDPSSODescriptor_s* x
 void zx_md_IDPSSODescriptor_DEL_ArtifactResolutionService(struct zx_md_IDPSSODescriptor_s* x, int n);
 void zx_md_IDPSSODescriptor_DEL_SingleLogoutService(struct zx_md_IDPSSODescriptor_s* x, int n);
 void zx_md_IDPSSODescriptor_DEL_ManageNameIDService(struct zx_md_IDPSSODescriptor_s* x, int n);
-void zx_md_IDPSSODescriptor_DEL_NameIDFormat(struct zx_md_IDPSSODescriptor_s* x, int n);
+void zx_md_IDPSSODescriptor_DEL_NameIDFormat(struct zx_md_IDPSSODescriptor_s* x,int n);
 void zx_md_IDPSSODescriptor_DEL_SingleSignOnService(struct zx_md_IDPSSODescriptor_s* x, int n);
 void zx_md_IDPSSODescriptor_DEL_NameIDMappingService(struct zx_md_IDPSSODescriptor_s* x, int n);
 void zx_md_IDPSSODescriptor_DEL_AssertionIDRequestService(struct zx_md_IDPSSODescriptor_s* x, int n);
-void zx_md_IDPSSODescriptor_DEL_AttributeProfile(struct zx_md_IDPSSODescriptor_s* x, int n);
+void zx_md_IDPSSODescriptor_DEL_AttributeProfile(struct zx_md_IDPSSODescriptor_s* x,int n);
 void zx_md_IDPSSODescriptor_DEL_Attribute(struct zx_md_IDPSSODescriptor_s* x, int n);
 
 void zx_md_IDPSSODescriptor_REV_Signature(struct zx_md_IDPSSODescriptor_s* x);
@@ -1452,7 +1367,6 @@ void zx_md_IDPSSODescriptor_REV_Attribute(struct zx_md_IDPSSODescriptor_s* x);
 #ifndef zx_md_KeyDescriptor_EXT
 #define zx_md_KeyDescriptor_EXT
 #endif
-
 struct zx_md_KeyDescriptor_s {
   ZX_ELEM_EXT
   zx_md_KeyDescriptor_EXT
@@ -1462,12 +1376,8 @@ struct zx_md_KeyDescriptor_s {
 };
 
 #define zx_NEW_md_KeyDescriptor(c, father) (struct zx_md_KeyDescriptor_s*)zx_new_elem((c),(father),zx_md_KeyDescriptor_ELEM)
-
 int zx_DEC_ATTR_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x);
 int zx_DEC_ELEM_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x);
-int zx_LEN_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x);
-char* zx_ENC_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_KeyDescriptor_s* zx_DEEP_CLONE_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x, int dup_strs);
@@ -1511,7 +1421,6 @@ void zx_md_KeyDescriptor_REV_EncryptionMethod(struct zx_md_KeyDescriptor_s* x);
 #ifndef zx_md_ManageNameIDService_EXT
 #define zx_md_ManageNameIDService_EXT
 #endif
-
 struct zx_md_ManageNameIDService_s {
   ZX_ELEM_EXT
   zx_md_ManageNameIDService_EXT
@@ -1523,12 +1432,8 @@ struct zx_md_ManageNameIDService_s {
 };
 
 #define zx_NEW_md_ManageNameIDService(c, father) (struct zx_md_ManageNameIDService_s*)zx_new_elem((c),(father),zx_md_ManageNameIDService_ELEM)
-
 int zx_DEC_ATTR_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x);
 int zx_DEC_ELEM_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x);
-int zx_LEN_SO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x);
-char* zx_ENC_SO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_ManageNameIDService_s* zx_DEEP_CLONE_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x, int dup_strs);
@@ -1564,7 +1469,6 @@ void zx_md_ManageNameIDService_PUT_isDefault(struct zx_md_ManageNameIDService_s*
 #ifndef zx_md_NameIDMappingService_EXT
 #define zx_md_NameIDMappingService_EXT
 #endif
-
 struct zx_md_NameIDMappingService_s {
   ZX_ELEM_EXT
   zx_md_NameIDMappingService_EXT
@@ -1576,12 +1480,8 @@ struct zx_md_NameIDMappingService_s {
 };
 
 #define zx_NEW_md_NameIDMappingService(c, father) (struct zx_md_NameIDMappingService_s*)zx_new_elem((c),(father),zx_md_NameIDMappingService_ELEM)
-
 int zx_DEC_ATTR_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x);
 int zx_DEC_ELEM_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x);
-int zx_LEN_SO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x);
-char* zx_ENC_SO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_NameIDMappingService_s* zx_DEEP_CLONE_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x, int dup_strs);
@@ -1617,7 +1517,6 @@ void zx_md_NameIDMappingService_PUT_isDefault(struct zx_md_NameIDMappingService_
 #ifndef zx_md_Organization_EXT
 #define zx_md_Organization_EXT
 #endif
-
 struct zx_md_Organization_s {
   ZX_ELEM_EXT
   zx_md_Organization_EXT
@@ -1628,12 +1527,8 @@ struct zx_md_Organization_s {
 };
 
 #define zx_NEW_md_Organization(c, father) (struct zx_md_Organization_s*)zx_new_elem((c),(father),zx_md_Organization_ELEM)
-
 int zx_DEC_ATTR_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x);
 int zx_DEC_ELEM_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x);
-int zx_LEN_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x);
-char* zx_ENC_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_Organization_s* zx_DEEP_CLONE_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x, int dup_strs);
@@ -1691,7 +1586,6 @@ void zx_md_Organization_REV_OrganizationURL(struct zx_md_Organization_s* x);
 #ifndef zx_md_OrganizationDisplayName_EXT
 #define zx_md_OrganizationDisplayName_EXT
 #endif
-
 struct zx_md_OrganizationDisplayName_s {
   ZX_ELEM_EXT
   zx_md_OrganizationDisplayName_EXT
@@ -1699,12 +1593,8 @@ struct zx_md_OrganizationDisplayName_s {
 };
 
 #define zx_NEW_md_OrganizationDisplayName(c, father) (struct zx_md_OrganizationDisplayName_s*)zx_new_elem((c),(father),zx_md_OrganizationDisplayName_ELEM)
-
 int zx_DEC_ATTR_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x);
 int zx_DEC_ELEM_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x);
-int zx_LEN_SO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x);
-char* zx_ENC_SO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_OrganizationDisplayName_s* zx_DEEP_CLONE_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x, int dup_strs);
@@ -1732,7 +1622,6 @@ void zx_md_OrganizationDisplayName_PUT_lang(struct zx_md_OrganizationDisplayName
 #ifndef zx_md_OrganizationName_EXT
 #define zx_md_OrganizationName_EXT
 #endif
-
 struct zx_md_OrganizationName_s {
   ZX_ELEM_EXT
   zx_md_OrganizationName_EXT
@@ -1740,12 +1629,8 @@ struct zx_md_OrganizationName_s {
 };
 
 #define zx_NEW_md_OrganizationName(c, father) (struct zx_md_OrganizationName_s*)zx_new_elem((c),(father),zx_md_OrganizationName_ELEM)
-
 int zx_DEC_ATTR_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x);
 int zx_DEC_ELEM_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x);
-int zx_LEN_SO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x);
-char* zx_ENC_SO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_OrganizationName_s* zx_DEEP_CLONE_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x, int dup_strs);
@@ -1773,7 +1658,6 @@ void zx_md_OrganizationName_PUT_lang(struct zx_md_OrganizationName_s* x, struct 
 #ifndef zx_md_OrganizationURL_EXT
 #define zx_md_OrganizationURL_EXT
 #endif
-
 struct zx_md_OrganizationURL_s {
   ZX_ELEM_EXT
   zx_md_OrganizationURL_EXT
@@ -1781,12 +1665,8 @@ struct zx_md_OrganizationURL_s {
 };
 
 #define zx_NEW_md_OrganizationURL(c, father) (struct zx_md_OrganizationURL_s*)zx_new_elem((c),(father),zx_md_OrganizationURL_ELEM)
-
 int zx_DEC_ATTR_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x);
 int zx_DEC_ELEM_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x);
-int zx_LEN_SO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x);
-char* zx_ENC_SO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_OrganizationURL_s* zx_DEEP_CLONE_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x, int dup_strs);
@@ -1814,7 +1694,6 @@ void zx_md_OrganizationURL_PUT_lang(struct zx_md_OrganizationURL_s* x, struct zx
 #ifndef zx_md_PDPDescriptor_EXT
 #define zx_md_PDPDescriptor_EXT
 #endif
-
 struct zx_md_PDPDescriptor_s {
   ZX_ELEM_EXT
   zx_md_PDPDescriptor_EXT
@@ -1834,12 +1713,8 @@ struct zx_md_PDPDescriptor_s {
 };
 
 #define zx_NEW_md_PDPDescriptor(c, father) (struct zx_md_PDPDescriptor_s*)zx_new_elem((c),(father),zx_md_PDPDescriptor_ELEM)
-
 int zx_DEC_ATTR_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x);
 int zx_DEC_ELEM_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x);
-int zx_LEN_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x);
-char* zx_ENC_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_PDPDescriptor_s* zx_DEEP_CLONE_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x, int dup_strs);
@@ -1922,7 +1797,7 @@ void zx_md_PDPDescriptor_DEL_Organization(struct zx_md_PDPDescriptor_s* x, int n
 void zx_md_PDPDescriptor_DEL_ContactPerson(struct zx_md_PDPDescriptor_s* x, int n);
 void zx_md_PDPDescriptor_DEL_AuthzService(struct zx_md_PDPDescriptor_s* x, int n);
 void zx_md_PDPDescriptor_DEL_AssertionIDRequestService(struct zx_md_PDPDescriptor_s* x, int n);
-void zx_md_PDPDescriptor_DEL_NameIDFormat(struct zx_md_PDPDescriptor_s* x, int n);
+void zx_md_PDPDescriptor_DEL_NameIDFormat(struct zx_md_PDPDescriptor_s* x,int n);
 
 void zx_md_PDPDescriptor_REV_Signature(struct zx_md_PDPDescriptor_s* x);
 void zx_md_PDPDescriptor_REV_Extensions(struct zx_md_PDPDescriptor_s* x);
@@ -1939,7 +1814,6 @@ void zx_md_PDPDescriptor_REV_NameIDFormat(struct zx_md_PDPDescriptor_s* x);
 #ifndef zx_md_RequestedAttribute_EXT
 #define zx_md_RequestedAttribute_EXT
 #endif
-
 struct zx_md_RequestedAttribute_s {
   ZX_ELEM_EXT
   zx_md_RequestedAttribute_EXT
@@ -1951,12 +1825,8 @@ struct zx_md_RequestedAttribute_s {
 };
 
 #define zx_NEW_md_RequestedAttribute(c, father) (struct zx_md_RequestedAttribute_s*)zx_new_elem((c),(father),zx_md_RequestedAttribute_ELEM)
-
 int zx_DEC_ATTR_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x);
 int zx_DEC_ELEM_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x);
-int zx_LEN_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x);
-char* zx_ENC_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_RequestedAttribute_s* zx_DEEP_CLONE_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x, int dup_strs);
@@ -1998,7 +1868,6 @@ void zx_md_RequestedAttribute_REV_AttributeValue(struct zx_md_RequestedAttribute
 #ifndef zx_md_RoleDescriptor_EXT
 #define zx_md_RoleDescriptor_EXT
 #endif
-
 struct zx_md_RoleDescriptor_s {
   ZX_ELEM_EXT
   zx_md_RoleDescriptor_EXT
@@ -2015,12 +1884,8 @@ struct zx_md_RoleDescriptor_s {
 };
 
 #define zx_NEW_md_RoleDescriptor(c, father) (struct zx_md_RoleDescriptor_s*)zx_new_elem((c),(father),zx_md_RoleDescriptor_ELEM)
-
 int zx_DEC_ATTR_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x);
 int zx_DEC_ELEM_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x);
-int zx_LEN_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x);
-char* zx_ENC_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_RoleDescriptor_s* zx_DEEP_CLONE_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x, int dup_strs);
@@ -2096,7 +1961,6 @@ void zx_md_RoleDescriptor_REV_ContactPerson(struct zx_md_RoleDescriptor_s* x);
 #ifndef zx_md_SPSSODescriptor_EXT
 #define zx_md_SPSSODescriptor_EXT
 #endif
-
 struct zx_md_SPSSODescriptor_s {
   ZX_ELEM_EXT
   zx_md_SPSSODescriptor_EXT
@@ -2121,12 +1985,8 @@ struct zx_md_SPSSODescriptor_s {
 };
 
 #define zx_NEW_md_SPSSODescriptor(c, father) (struct zx_md_SPSSODescriptor_s*)zx_new_elem((c),(father),zx_md_SPSSODescriptor_ELEM)
-
 int zx_DEC_ATTR_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x);
 int zx_DEC_ELEM_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x);
-int zx_LEN_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x);
-char* zx_ENC_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_SPSSODescriptor_s* zx_DEEP_CLONE_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x, int dup_strs);
@@ -2232,7 +2092,7 @@ void zx_md_SPSSODescriptor_DEL_ContactPerson(struct zx_md_SPSSODescriptor_s* x, 
 void zx_md_SPSSODescriptor_DEL_ArtifactResolutionService(struct zx_md_SPSSODescriptor_s* x, int n);
 void zx_md_SPSSODescriptor_DEL_SingleLogoutService(struct zx_md_SPSSODescriptor_s* x, int n);
 void zx_md_SPSSODescriptor_DEL_ManageNameIDService(struct zx_md_SPSSODescriptor_s* x, int n);
-void zx_md_SPSSODescriptor_DEL_NameIDFormat(struct zx_md_SPSSODescriptor_s* x, int n);
+void zx_md_SPSSODescriptor_DEL_NameIDFormat(struct zx_md_SPSSODescriptor_s* x,int n);
 void zx_md_SPSSODescriptor_DEL_AssertionConsumerService(struct zx_md_SPSSODescriptor_s* x, int n);
 void zx_md_SPSSODescriptor_DEL_AttributeConsumingService(struct zx_md_SPSSODescriptor_s* x, int n);
 
@@ -2254,7 +2114,6 @@ void zx_md_SPSSODescriptor_REV_AttributeConsumingService(struct zx_md_SPSSODescr
 #ifndef zx_md_ServiceDescription_EXT
 #define zx_md_ServiceDescription_EXT
 #endif
-
 struct zx_md_ServiceDescription_s {
   ZX_ELEM_EXT
   zx_md_ServiceDescription_EXT
@@ -2262,12 +2121,8 @@ struct zx_md_ServiceDescription_s {
 };
 
 #define zx_NEW_md_ServiceDescription(c, father) (struct zx_md_ServiceDescription_s*)zx_new_elem((c),(father),zx_md_ServiceDescription_ELEM)
-
 int zx_DEC_ATTR_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x);
 int zx_DEC_ELEM_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x);
-int zx_LEN_SO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x);
-char* zx_ENC_SO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_ServiceDescription_s* zx_DEEP_CLONE_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x, int dup_strs);
@@ -2295,7 +2150,6 @@ void zx_md_ServiceDescription_PUT_lang(struct zx_md_ServiceDescription_s* x, str
 #ifndef zx_md_ServiceName_EXT
 #define zx_md_ServiceName_EXT
 #endif
-
 struct zx_md_ServiceName_s {
   ZX_ELEM_EXT
   zx_md_ServiceName_EXT
@@ -2303,12 +2157,8 @@ struct zx_md_ServiceName_s {
 };
 
 #define zx_NEW_md_ServiceName(c, father) (struct zx_md_ServiceName_s*)zx_new_elem((c),(father),zx_md_ServiceName_ELEM)
-
 int zx_DEC_ATTR_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x);
 int zx_DEC_ELEM_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x);
-int zx_LEN_SO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x);
-char* zx_ENC_SO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_ServiceName_s* zx_DEEP_CLONE_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x, int dup_strs);
@@ -2336,7 +2186,6 @@ void zx_md_ServiceName_PUT_lang(struct zx_md_ServiceName_s* x, struct zx_attr_s*
 #ifndef zx_md_SingleLogoutService_EXT
 #define zx_md_SingleLogoutService_EXT
 #endif
-
 struct zx_md_SingleLogoutService_s {
   ZX_ELEM_EXT
   zx_md_SingleLogoutService_EXT
@@ -2348,12 +2197,8 @@ struct zx_md_SingleLogoutService_s {
 };
 
 #define zx_NEW_md_SingleLogoutService(c, father) (struct zx_md_SingleLogoutService_s*)zx_new_elem((c),(father),zx_md_SingleLogoutService_ELEM)
-
 int zx_DEC_ATTR_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x);
 int zx_DEC_ELEM_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x);
-int zx_LEN_SO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x);
-char* zx_ENC_SO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_SingleLogoutService_s* zx_DEEP_CLONE_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x, int dup_strs);
@@ -2389,7 +2234,6 @@ void zx_md_SingleLogoutService_PUT_isDefault(struct zx_md_SingleLogoutService_s*
 #ifndef zx_md_SingleSignOnService_EXT
 #define zx_md_SingleSignOnService_EXT
 #endif
-
 struct zx_md_SingleSignOnService_s {
   ZX_ELEM_EXT
   zx_md_SingleSignOnService_EXT
@@ -2401,12 +2245,8 @@ struct zx_md_SingleSignOnService_s {
 };
 
 #define zx_NEW_md_SingleSignOnService(c, father) (struct zx_md_SingleSignOnService_s*)zx_new_elem((c),(father),zx_md_SingleSignOnService_ELEM)
-
 int zx_DEC_ATTR_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x);
 int zx_DEC_ELEM_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x);
-int zx_LEN_SO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x);
-char* zx_ENC_SO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_md_SingleSignOnService_s* zx_DEEP_CLONE_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x, int dup_strs);

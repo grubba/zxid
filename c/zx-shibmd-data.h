@@ -23,7 +23,6 @@
 #ifndef zx_shibmd_KeyAuthority_EXT
 #define zx_shibmd_KeyAuthority_EXT
 #endif
-
 struct zx_shibmd_KeyAuthority_s {
   ZX_ELEM_EXT
   zx_shibmd_KeyAuthority_EXT
@@ -32,12 +31,8 @@ struct zx_shibmd_KeyAuthority_s {
 };
 
 #define zx_NEW_shibmd_KeyAuthority(c, father) (struct zx_shibmd_KeyAuthority_s*)zx_new_elem((c),(father),zx_shibmd_KeyAuthority_ELEM)
-
 int zx_DEC_ATTR_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x);
 int zx_DEC_ELEM_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x);
-int zx_LEN_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x);
-char* zx_ENC_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_shibmd_KeyAuthority_s* zx_DEEP_CLONE_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x, int dup_strs);
@@ -73,7 +68,6 @@ void zx_shibmd_KeyAuthority_REV_KeyInfo(struct zx_shibmd_KeyAuthority_s* x);
 #ifndef zx_shibmd_Scope_EXT
 #define zx_shibmd_Scope_EXT
 #endif
-
 struct zx_shibmd_Scope_s {
   ZX_ELEM_EXT
   zx_shibmd_Scope_EXT
@@ -81,12 +75,8 @@ struct zx_shibmd_Scope_s {
 };
 
 #define zx_NEW_shibmd_Scope(c, father) (struct zx_shibmd_Scope_s*)zx_new_elem((c),(father),zx_shibmd_Scope_ELEM)
-
 int zx_DEC_ATTR_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x);
 int zx_DEC_ELEM_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x);
-int zx_LEN_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x);
-char* zx_ENC_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_shibmd_Scope_s* zx_DEEP_CLONE_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x, int dup_strs);

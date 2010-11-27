@@ -1,25 +1,12 @@
 Original and WO differ.
-Re-encoded result SO (len=281):
-<invokeInputElement xmlns="http://www.risaris.com/namespaces/calculate_fee">
-  <calculate_feeRoot>
-      <calculate_feeGroup>
-      <varx>
-<ICLASS>A</ICLASS>
-<AMOUNT>40443</AMOUNT>
-<RESULT></RESULT>
-</varx>
-    </calculate_feeGroup>
-    </calculate_feeRoot>
-</invokeInputElement>
-
 Re-encoded result WO (len=281):
 <invokeInputElement xmlns="http://www.risaris.com/namespaces/calculate_fee">
   <calculate_feeRoot>
       <calculate_feeGroup>
       <varx>
-<ICLASS>A</ICLASS>
+  <RESULT></RESULT>
 <AMOUNT>40443</AMOUNT>
-<RESULT></RESULT>
+<ICLASS>A</ICLASS>
 </varx>
     </calculate_feeGroup>
     </calculate_feeRoot>

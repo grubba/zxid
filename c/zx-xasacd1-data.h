@@ -23,7 +23,6 @@
 #ifndef zx_xasacd1_ReferencedPolicies_EXT
 #define zx_xasacd1_ReferencedPolicies_EXT
 #endif
-
 struct zx_xasacd1_ReferencedPolicies_s {
   ZX_ELEM_EXT
   zx_xasacd1_ReferencedPolicies_EXT
@@ -32,12 +31,8 @@ struct zx_xasacd1_ReferencedPolicies_s {
 };
 
 #define zx_NEW_xasacd1_ReferencedPolicies(c, father) (struct zx_xasacd1_ReferencedPolicies_s*)zx_new_elem((c),(father),zx_xasacd1_ReferencedPolicies_ELEM)
-
 int zx_DEC_ATTR_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_ReferencedPolicies_s* x);
 int zx_DEC_ELEM_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_ReferencedPolicies_s* x);
-int zx_LEN_SO_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_ReferencedPolicies_s* x);
-char* zx_ENC_SO_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_ReferencedPolicies_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_ReferencedPolicies_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xasacd1_ReferencedPolicies_s* zx_DEEP_CLONE_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_ReferencedPolicies_s* x, int dup_strs);
@@ -79,7 +74,6 @@ void zx_xasacd1_ReferencedPolicies_REV_PolicySet(struct zx_xasacd1_ReferencedPol
 #ifndef zx_xasacd1_XACMLAuthzDecisionStatement_EXT
 #define zx_xasacd1_XACMLAuthzDecisionStatement_EXT
 #endif
-
 struct zx_xasacd1_XACMLAuthzDecisionStatement_s {
   ZX_ELEM_EXT
   zx_xasacd1_XACMLAuthzDecisionStatement_EXT
@@ -88,12 +82,8 @@ struct zx_xasacd1_XACMLAuthzDecisionStatement_s {
 };
 
 #define zx_NEW_xasacd1_XACMLAuthzDecisionStatement(c, father) (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)zx_new_elem((c),(father),zx_xasacd1_XACMLAuthzDecisionStatement_ELEM)
-
 int zx_DEC_ATTR_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x);
 int zx_DEC_ELEM_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x);
-int zx_LEN_SO_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x);
-char* zx_ENC_SO_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xasacd1_XACMLAuthzDecisionStatement_s* zx_DEEP_CLONE_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x, int dup_strs);
@@ -135,7 +125,6 @@ void zx_xasacd1_XACMLAuthzDecisionStatement_REV_Request(struct zx_xasacd1_XACMLA
 #ifndef zx_xasacd1_XACMLPolicyStatement_EXT
 #define zx_xasacd1_XACMLPolicyStatement_EXT
 #endif
-
 struct zx_xasacd1_XACMLPolicyStatement_s {
   ZX_ELEM_EXT
   zx_xasacd1_XACMLPolicyStatement_EXT
@@ -145,12 +134,8 @@ struct zx_xasacd1_XACMLPolicyStatement_s {
 };
 
 #define zx_NEW_xasacd1_XACMLPolicyStatement(c, father) (struct zx_xasacd1_XACMLPolicyStatement_s*)zx_new_elem((c),(father),zx_xasacd1_XACMLPolicyStatement_ELEM)
-
 int zx_DEC_ATTR_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLPolicyStatement_s* x);
 int zx_DEC_ELEM_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLPolicyStatement_s* x);
-int zx_LEN_SO_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLPolicyStatement_s* x);
-char* zx_ENC_SO_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLPolicyStatement_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLPolicyStatement_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xasacd1_XACMLPolicyStatement_s* zx_DEEP_CLONE_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLPolicyStatement_s* x, int dup_strs);

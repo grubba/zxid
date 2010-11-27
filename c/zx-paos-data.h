@@ -23,7 +23,6 @@
 #ifndef zx_paos_Request_EXT
 #define zx_paos_Request_EXT
 #endif
-
 struct zx_paos_Request_s {
   ZX_ELEM_EXT
   zx_paos_Request_EXT
@@ -35,12 +34,8 @@ struct zx_paos_Request_s {
 };
 
 #define zx_NEW_paos_Request(c, father) (struct zx_paos_Request_s*)zx_new_elem((c),(father),zx_paos_Request_ELEM)
-
 int zx_DEC_ATTR_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x);
 int zx_DEC_ELEM_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x);
-int zx_LEN_SO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x);
-char* zx_ENC_SO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_paos_Request_s* zx_DEEP_CLONE_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x, int dup_strs);
@@ -76,7 +71,6 @@ void zx_paos_Request_PUT_mustUnderstand(struct zx_paos_Request_s* x, struct zx_a
 #ifndef zx_paos_Response_EXT
 #define zx_paos_Response_EXT
 #endif
-
 struct zx_paos_Response_s {
   ZX_ELEM_EXT
   zx_paos_Response_EXT
@@ -86,12 +80,8 @@ struct zx_paos_Response_s {
 };
 
 #define zx_NEW_paos_Response(c, father) (struct zx_paos_Response_s*)zx_new_elem((c),(father),zx_paos_Response_ELEM)
-
 int zx_DEC_ATTR_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x);
 int zx_DEC_ELEM_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x);
-int zx_LEN_SO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x);
-char* zx_ENC_SO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_paos_Response_s* zx_DEEP_CLONE_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x, int dup_strs);

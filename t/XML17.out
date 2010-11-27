@@ -1,6 +1,3 @@
-Re-encoded result SO (len=243):
-<e:Envelope xmlns:e="http://schemas.xmlsoap.org/soap/envelope/"><e:Header></e:Header><e:Body><as:SASLRequest xmlns:as="urn:liberty:sa:2006-08" mechanism="PLAIN"><as:Data>AHRhc3Rlc3QAdGFzMTIzAA==</as:Data></as:SASLRequest></e:Body></e:Envelope>
-
 Re-encoded result WO (len=243):
 <e:Envelope xmlns:e="http://schemas.xmlsoap.org/soap/envelope/"><e:Header></e:Header><e:Body><as:SASLRequest xmlns:as="urn:liberty:sa:2006-08" mechanism="PLAIN"><as:Data>AHRhc3Rlc3QAdGFzMTIzAA==</as:Data></as:SASLRequest></e:Body></e:Envelope>
 

@@ -23,19 +23,14 @@
 #ifndef zx_tas3sol_Dict_EXT
 #define zx_tas3sol_Dict_EXT
 #endif
-
 struct zx_tas3sol_Dict_s {
   ZX_ELEM_EXT
   zx_tas3sol_Dict_EXT
 };
 
 #define zx_NEW_tas3sol_Dict(c, father) (struct zx_tas3sol_Dict_s*)zx_new_elem((c),(father),zx_tas3sol_Dict_ELEM)
-
 int zx_DEC_ATTR_tas3sol_Dict(struct zx_ctx* c, struct zx_tas3sol_Dict_s* x);
 int zx_DEC_ELEM_tas3sol_Dict(struct zx_ctx* c, struct zx_tas3sol_Dict_s* x);
-int zx_LEN_SO_tas3sol_Dict(struct zx_ctx* c, struct zx_tas3sol_Dict_s* x);
-char* zx_ENC_SO_tas3sol_Dict(struct zx_ctx* c, struct zx_tas3sol_Dict_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_tas3sol_Dict(struct zx_ctx* c, struct zx_tas3sol_Dict_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_tas3sol_Dict_s* zx_DEEP_CLONE_tas3sol_Dict(struct zx_ctx* c, struct zx_tas3sol_Dict_s* x, int dup_strs);
@@ -61,19 +56,14 @@ int zx_WALK_WO_tas3sol_Dict(struct zx_ctx* c, struct zx_tas3sol_Dict_s* x, void*
 #ifndef zx_tas3sol_Obligations_EXT
 #define zx_tas3sol_Obligations_EXT
 #endif
-
 struct zx_tas3sol_Obligations_s {
   ZX_ELEM_EXT
   zx_tas3sol_Obligations_EXT
 };
 
 #define zx_NEW_tas3sol_Obligations(c, father) (struct zx_tas3sol_Obligations_s*)zx_new_elem((c),(father),zx_tas3sol_Obligations_ELEM)
-
 int zx_DEC_ATTR_tas3sol_Obligations(struct zx_ctx* c, struct zx_tas3sol_Obligations_s* x);
 int zx_DEC_ELEM_tas3sol_Obligations(struct zx_ctx* c, struct zx_tas3sol_Obligations_s* x);
-int zx_LEN_SO_tas3sol_Obligations(struct zx_ctx* c, struct zx_tas3sol_Obligations_s* x);
-char* zx_ENC_SO_tas3sol_Obligations(struct zx_ctx* c, struct zx_tas3sol_Obligations_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_tas3sol_Obligations(struct zx_ctx* c, struct zx_tas3sol_Obligations_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_tas3sol_Obligations_s* zx_DEEP_CLONE_tas3sol_Obligations(struct zx_ctx* c, struct zx_tas3sol_Obligations_s* x, int dup_strs);

@@ -23,7 +23,6 @@
 #ifndef zx_ecp_RelayState_EXT
 #define zx_ecp_RelayState_EXT
 #endif
-
 struct zx_ecp_RelayState_s {
   ZX_ELEM_EXT
   zx_ecp_RelayState_EXT
@@ -32,12 +31,8 @@ struct zx_ecp_RelayState_s {
 };
 
 #define zx_NEW_ecp_RelayState(c, father) (struct zx_ecp_RelayState_s*)zx_new_elem((c),(father),zx_ecp_RelayState_ELEM)
-
 int zx_DEC_ATTR_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x);
 int zx_DEC_ELEM_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x);
-int zx_LEN_SO_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x);
-char* zx_ENC_SO_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ecp_RelayState_s* zx_DEEP_CLONE_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x, int dup_strs);
@@ -67,7 +62,6 @@ void zx_ecp_RelayState_PUT_mustUnderstand(struct zx_ecp_RelayState_s* x, struct 
 #ifndef zx_ecp_Request_EXT
 #define zx_ecp_Request_EXT
 #endif
-
 struct zx_ecp_Request_s {
   ZX_ELEM_EXT
   zx_ecp_Request_EXT
@@ -80,12 +74,8 @@ struct zx_ecp_Request_s {
 };
 
 #define zx_NEW_ecp_Request(c, father) (struct zx_ecp_Request_s*)zx_new_elem((c),(father),zx_ecp_Request_ELEM)
-
 int zx_DEC_ATTR_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x);
 int zx_DEC_ELEM_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x);
-int zx_LEN_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x);
-char* zx_ENC_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ecp_Request_s* zx_DEEP_CLONE_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x, int dup_strs);
@@ -135,7 +125,6 @@ void zx_ecp_Request_REV_IDPList(struct zx_ecp_Request_s* x);
 #ifndef zx_ecp_Response_EXT
 #define zx_ecp_Response_EXT
 #endif
-
 struct zx_ecp_Response_s {
   ZX_ELEM_EXT
   zx_ecp_Response_EXT
@@ -145,12 +134,8 @@ struct zx_ecp_Response_s {
 };
 
 #define zx_NEW_ecp_Response(c, father) (struct zx_ecp_Response_s*)zx_new_elem((c),(father),zx_ecp_Response_ELEM)
-
 int zx_DEC_ATTR_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x);
 int zx_DEC_ELEM_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x);
-int zx_LEN_SO_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x);
-char* zx_ENC_SO_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_ecp_Response_s* zx_DEEP_CLONE_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x, int dup_strs);

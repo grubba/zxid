@@ -23,7 +23,6 @@
 #ifndef zx_dp_Request_EXT
 #define zx_dp_Request_EXT
 #endif
-
 struct zx_dp_Request_s {
   ZX_ELEM_EXT
   zx_dp_Request_EXT
@@ -31,12 +30,8 @@ struct zx_dp_Request_s {
 };
 
 #define zx_NEW_dp_Request(c, father) (struct zx_dp_Request_s*)zx_new_elem((c),(father),zx_dp_Request_ELEM)
-
 int zx_DEC_ATTR_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x);
 int zx_DEC_ELEM_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x);
-int zx_LEN_SO_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x);
-char* zx_ENC_SO_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dp_Request_s* zx_DEEP_CLONE_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x, int dup_strs);
@@ -64,7 +59,6 @@ void zx_dp_Request_PUT_itemID(struct zx_dp_Request_s* x, struct zx_attr_s* y);
 #ifndef zx_dp_Response_EXT
 #define zx_dp_Response_EXT
 #endif
-
 struct zx_dp_Response_s {
   ZX_ELEM_EXT
   zx_dp_Response_EXT
@@ -72,12 +66,8 @@ struct zx_dp_Response_s {
 };
 
 #define zx_NEW_dp_Response(c, father) (struct zx_dp_Response_s*)zx_new_elem((c),(father),zx_dp_Response_ELEM)
-
 int zx_DEC_ATTR_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x);
 int zx_DEC_ELEM_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x);
-int zx_LEN_SO_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x);
-char* zx_ENC_SO_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dp_Response_s* zx_DEEP_CLONE_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x, int dup_strs);

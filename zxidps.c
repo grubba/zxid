@@ -517,7 +517,7 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
 
   if (!req || !req->Object) {
     ERR("Malformed request (%p): Object missing.", req);
-    resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+    resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "Fail", 0, 0, 0);
     D_DEDENT("ps_inv: ");
     return resp;
   }
@@ -558,23 +558,23 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
 
   /* The invitation URL will be processed by zxid_ps_accept_invite(), see above. */
   resp->SPtoPSRedirectURL
-    = zx_new_simple_elem(cf->ctx, &resp->gg, zx_ps_SPtoPSRedirectURL_ELEM,
-			 zx_strf(cf->ctx, "%s?o=D&inv=%.*s", cf->url, inv->invid->len, inv->invid->s));
+    = zx_new_str_elem(cf->ctx, &resp->gg, zx_ps_SPtoPSRedirectURL_ELEM,
+		      zx_strf(cf->ctx, "%s?o=D&inv=%.*s", cf->url, inv->invid->len, inv->invid->s));
   resp->Object = zx_NEW_ps_Object(cf->ctx, &resp->gg);
-  resp->Object->ObjectID = zx_new_simple_elem(cf->ctx, &resp->Object->gg, zx_ps_ObjectID_ELEM, zxid_psobj_enc(cf, issuer,"ZO",obj->psobj));
+  resp->Object->ObjectID = zx_new_str_elem(cf->ctx, &resp->Object->gg, zx_ps_ObjectID_ELEM, zxid_psobj_enc(cf, issuer,"ZO",obj->psobj));
   resp->Object->DisplayName = zx_NEW_ps_DisplayName(cf->ctx, &resp->Object->gg);
   zx_add_content(cf->ctx, &resp->Object->DisplayName->gg, obj->dispname);
-  resp->Object->DisplayName->Locale = zx_dup_attr(cf->ctx, zx_Locale_ATTR, "xx");  /* unknown locale */
+  resp->Object->DisplayName->Locale = zx_ref_attr(cf->ctx, &resp->Object->DisplayName->gg, zx_Locale_ATTR, "xx");  /* unknown locale */
   for (tag = obj->tags; tag; tag = tag->n) {
     resp->Object->Tag = zx_NEW_ps_Tag(cf->ctx, &resp->Object->gg);
     zx_add_content(cf->ctx, &resp->Object->Tag->gg, tag);
   }
-  resp->Object->NodeType = zx_dup_attr(cf->ctx, zx_NodeType_ATTR, obj->nodetype?PS_COL:PS_ENT);
-  resp->Object->CreatedDateTime = zxid_date_time_attr(cf, zx_CreatedDateTime_ATTR, obj->create_secs);
-  resp->Object->ModifiedDateTime = zxid_date_time_attr(cf, zx_TimeStamp_ATTR, obj->mod_secs);
+  resp->Object->NodeType = zx_ref_attr(cf->ctx, &resp->Object->gg, zx_NodeType_ATTR, obj->nodetype?PS_COL:PS_ENT);
+  resp->Object->CreatedDateTime = zxid_date_time_attr(cf, &resp->Object->gg, zx_CreatedDateTime_ATTR, obj->create_secs);
+  resp->Object->ModifiedDateTime = zxid_date_time_attr(cf, &resp->Object->gg, zx_TimeStamp_ATTR, obj->mod_secs);
   resp->TimeStamp = resp->Object->CreatedDateTime;
-  resp->id = zx_ref_len_attr(cf->ctx, zx_id_ATTR, inv->invid->len, inv->invid->s);  /* *** why is ID requred by schema at all? */
-  resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
+  resp->id = zx_ref_len_attr(cf->ctx, &resp->gg, zx_id_ATTR, inv->invid->len, inv->invid->s);  /* *** why is ID requred by schema at all? */
+  resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "OK", 0, 0, 0);
   zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "PSINV", 0, "inv=%.*s", inv->invid->len, inv->invid->s);
   D_DEDENT("ps_inv: ");
   return resp;
@@ -608,7 +608,7 @@ struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_
   }
 
   zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "PSRESOLVOK", 0, "n=%d", n_resolv);
-  resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
+  resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "OK", 0, 0, 0);
   D_DEDENT("ps_resolv: ");
   return resp;
 }

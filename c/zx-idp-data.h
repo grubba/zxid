@@ -23,7 +23,6 @@
 #ifndef zx_idp_AssertionItem_EXT
 #define zx_idp_AssertionItem_EXT
 #endif
-
 struct zx_idp_AssertionItem_s {
   ZX_ELEM_EXT
   zx_idp_AssertionItem_EXT
@@ -34,12 +33,8 @@ struct zx_idp_AssertionItem_s {
 };
 
 #define zx_NEW_idp_AssertionItem(c, father) (struct zx_idp_AssertionItem_s*)zx_new_elem((c),(father),zx_idp_AssertionItem_ELEM)
-
 int zx_DEC_ATTR_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s* x);
 int zx_DEC_ELEM_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s* x);
-int zx_LEN_SO_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s* x);
-char* zx_ENC_SO_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_AssertionItem_s* zx_DEEP_CLONE_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s* x, int dup_strs);
@@ -85,7 +80,6 @@ void zx_idp_AssertionItem_REV_Assertion(struct zx_idp_AssertionItem_s* x);
 #ifndef zx_idp_AuthnContextRestriction_EXT
 #define zx_idp_AuthnContextRestriction_EXT
 #endif
-
 struct zx_idp_AuthnContextRestriction_s {
   ZX_ELEM_EXT
   zx_idp_AuthnContextRestriction_EXT
@@ -93,12 +87,8 @@ struct zx_idp_AuthnContextRestriction_s {
 };
 
 #define zx_NEW_idp_AuthnContextRestriction(c, father) (struct zx_idp_AuthnContextRestriction_s*)zx_new_elem((c),(father),zx_idp_AuthnContextRestriction_ELEM)
-
 int zx_DEC_ATTR_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnContextRestriction_s* x);
 int zx_DEC_ELEM_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnContextRestriction_s* x);
-int zx_LEN_SO_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnContextRestriction_s* x);
-char* zx_ENC_SO_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnContextRestriction_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnContextRestriction_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_AuthnContextRestriction_s* zx_DEEP_CLONE_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnContextRestriction_s* x, int dup_strs);
@@ -132,7 +122,6 @@ void zx_idp_AuthnContextRestriction_REV_AuthnContext(struct zx_idp_AuthnContextR
 #ifndef zx_idp_CreatedStatus_EXT
 #define zx_idp_CreatedStatus_EXT
 #endif
-
 struct zx_idp_CreatedStatus_s {
   ZX_ELEM_EXT
   zx_idp_CreatedStatus_EXT
@@ -140,12 +129,8 @@ struct zx_idp_CreatedStatus_s {
 };
 
 #define zx_NEW_idp_CreatedStatus(c, father) (struct zx_idp_CreatedStatus_s*)zx_new_elem((c),(father),zx_idp_CreatedStatus_ELEM)
-
 int zx_DEC_ATTR_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s* x);
 int zx_DEC_ELEM_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s* x);
-int zx_LEN_SO_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s* x);
-char* zx_ENC_SO_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_CreatedStatus_s* zx_DEEP_CLONE_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s* x, int dup_strs);
@@ -179,7 +164,6 @@ void zx_idp_CreatedStatus_REV_CreatedStatusItem(struct zx_idp_CreatedStatus_s* x
 #ifndef zx_idp_CreatedStatusItem_EXT
 #define zx_idp_CreatedStatusItem_EXT
 #endif
-
 struct zx_idp_CreatedStatusItem_s {
   ZX_ELEM_EXT
   zx_idp_CreatedStatusItem_EXT
@@ -189,12 +173,8 @@ struct zx_idp_CreatedStatusItem_s {
 };
 
 #define zx_NEW_idp_CreatedStatusItem(c, father) (struct zx_idp_CreatedStatusItem_s*)zx_new_elem((c),(father),zx_idp_CreatedStatusItem_ELEM)
-
 int zx_DEC_ATTR_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatusItem_s* x);
 int zx_DEC_ELEM_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatusItem_s* x);
-int zx_LEN_SO_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatusItem_s* x);
-char* zx_ENC_SO_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatusItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatusItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_CreatedStatusItem_s* zx_DEEP_CLONE_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatusItem_s* x, int dup_strs);
@@ -226,7 +206,6 @@ void zx_idp_CreatedStatusItem_PUT_used(struct zx_idp_CreatedStatusItem_s* x, str
 #ifndef zx_idp_CreatedStatusResponse_EXT
 #define zx_idp_CreatedStatusResponse_EXT
 #endif
-
 struct zx_idp_CreatedStatusResponse_s {
   ZX_ELEM_EXT
   zx_idp_CreatedStatusResponse_EXT
@@ -234,12 +213,8 @@ struct zx_idp_CreatedStatusResponse_s {
 };
 
 #define zx_NEW_idp_CreatedStatusResponse(c, father) (struct zx_idp_CreatedStatusResponse_s*)zx_new_elem((c),(father),zx_idp_CreatedStatusResponse_ELEM)
-
 int zx_DEC_ATTR_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedStatusResponse_s* x);
 int zx_DEC_ELEM_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedStatusResponse_s* x);
-int zx_LEN_SO_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedStatusResponse_s* x);
-char* zx_ENC_SO_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedStatusResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedStatusResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_CreatedStatusResponse_s* zx_DEEP_CLONE_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedStatusResponse_s* x, int dup_strs);
@@ -273,7 +248,6 @@ void zx_idp_CreatedStatusResponse_REV_Status(struct zx_idp_CreatedStatusResponse
 #ifndef zx_idp_GetAssertion_EXT
 #define zx_idp_GetAssertion_EXT
 #endif
-
 struct zx_idp_GetAssertion_s {
   ZX_ELEM_EXT
   zx_idp_GetAssertion_EXT
@@ -282,12 +256,8 @@ struct zx_idp_GetAssertion_s {
 };
 
 #define zx_NEW_idp_GetAssertion(c, father) (struct zx_idp_GetAssertion_s*)zx_new_elem((c),(father),zx_idp_GetAssertion_ELEM)
-
 int zx_DEC_ATTR_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x);
 int zx_DEC_ELEM_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x);
-int zx_LEN_SO_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x);
-char* zx_ENC_SO_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_GetAssertion_s* zx_DEEP_CLONE_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x, int dup_strs);
@@ -323,7 +293,6 @@ void zx_idp_GetAssertion_REV_AuthnRequest(struct zx_idp_GetAssertion_s* x);
 #ifndef zx_idp_GetAssertionResponse_EXT
 #define zx_idp_GetAssertionResponse_EXT
 #endif
-
 struct zx_idp_GetAssertionResponse_s {
   ZX_ELEM_EXT
   zx_idp_GetAssertionResponse_EXT
@@ -332,12 +301,8 @@ struct zx_idp_GetAssertionResponse_s {
 };
 
 #define zx_NEW_idp_GetAssertionResponse(c, father) (struct zx_idp_GetAssertionResponse_s*)zx_new_elem((c),(father),zx_idp_GetAssertionResponse_ELEM)
-
 int zx_DEC_ATTR_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssertionResponse_s* x);
 int zx_DEC_ELEM_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssertionResponse_s* x);
-int zx_LEN_SO_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssertionResponse_s* x);
-char* zx_ENC_SO_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssertionResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssertionResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_GetAssertionResponse_s* zx_DEEP_CLONE_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssertionResponse_s* x, int dup_strs);
@@ -379,7 +344,6 @@ void zx_idp_GetAssertionResponse_REV_GetAssertionResponseItem(struct zx_idp_GetA
 #ifndef zx_idp_GetAssertionResponseItem_EXT
 #define zx_idp_GetAssertionResponseItem_EXT
 #endif
-
 struct zx_idp_GetAssertionResponseItem_s {
   ZX_ELEM_EXT
   zx_idp_GetAssertionResponseItem_EXT
@@ -389,12 +353,8 @@ struct zx_idp_GetAssertionResponseItem_s {
 };
 
 #define zx_NEW_idp_GetAssertionResponseItem(c, father) (struct zx_idp_GetAssertionResponseItem_s*)zx_new_elem((c),(father),zx_idp_GetAssertionResponseItem_ELEM)
-
 int zx_DEC_ATTR_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAssertionResponseItem_s* x);
 int zx_DEC_ELEM_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAssertionResponseItem_s* x);
-int zx_LEN_SO_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAssertionResponseItem_s* x);
-char* zx_ENC_SO_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAssertionResponseItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAssertionResponseItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_GetAssertionResponseItem_s* zx_DEEP_CLONE_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAssertionResponseItem_s* x, int dup_strs);
@@ -432,7 +392,6 @@ void zx_idp_GetAssertionResponseItem_REV_AssertionItem(struct zx_idp_GetAssertio
 #ifndef zx_idp_GetProviderInfo_EXT
 #define zx_idp_GetProviderInfo_EXT
 #endif
-
 struct zx_idp_GetProviderInfo_s {
   ZX_ELEM_EXT
   zx_idp_GetProviderInfo_EXT
@@ -441,12 +400,8 @@ struct zx_idp_GetProviderInfo_s {
 };
 
 #define zx_NEW_idp_GetProviderInfo(c, father) (struct zx_idp_GetProviderInfo_s*)zx_new_elem((c),(father),zx_idp_GetProviderInfo_ELEM)
-
 int zx_DEC_ATTR_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInfo_s* x);
 int zx_DEC_ELEM_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInfo_s* x);
-int zx_LEN_SO_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInfo_s* x);
-char* zx_ENC_SO_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_GetProviderInfo_s* zx_DEEP_CLONE_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInfo_s* x, int dup_strs);
@@ -472,7 +427,7 @@ void zx_idp_GetProviderInfo_PUT_ProviderID(struct zx_idp_GetProviderInfo_s* x, i
 
 void zx_idp_GetProviderInfo_ADD_ProviderID(struct zx_idp_GetProviderInfo_s* x, int n, struct zx_elem_s* z);
 
-void zx_idp_GetProviderInfo_DEL_ProviderID(struct zx_idp_GetProviderInfo_s* x, int n);
+void zx_idp_GetProviderInfo_DEL_ProviderID(struct zx_idp_GetProviderInfo_s* x,int n);
 
 void zx_idp_GetProviderInfo_REV_ProviderID(struct zx_idp_GetProviderInfo_s* x);
 
@@ -482,7 +437,6 @@ void zx_idp_GetProviderInfo_REV_ProviderID(struct zx_idp_GetProviderInfo_s* x);
 #ifndef zx_idp_GetProviderInfoResponse_EXT
 #define zx_idp_GetProviderInfoResponse_EXT
 #endif
-
 struct zx_idp_GetProviderInfoResponse_s {
   ZX_ELEM_EXT
   zx_idp_GetProviderInfoResponse_EXT
@@ -491,12 +445,8 @@ struct zx_idp_GetProviderInfoResponse_s {
 };
 
 #define zx_NEW_idp_GetProviderInfoResponse(c, father) (struct zx_idp_GetProviderInfoResponse_s*)zx_new_elem((c),(father),zx_idp_GetProviderInfoResponse_ELEM)
-
 int zx_DEC_ATTR_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetProviderInfoResponse_s* x);
 int zx_DEC_ELEM_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetProviderInfoResponse_s* x);
-int zx_LEN_SO_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetProviderInfoResponse_s* x);
-char* zx_ENC_SO_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetProviderInfoResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetProviderInfoResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_GetProviderInfoResponse_s* zx_DEEP_CLONE_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetProviderInfoResponse_s* x, int dup_strs);
@@ -538,7 +488,6 @@ void zx_idp_GetProviderInfoResponse_REV_ProviderInfo(struct zx_idp_GetProviderIn
 #ifndef zx_idp_MEDInfo_EXT
 #define zx_idp_MEDInfo_EXT
 #endif
-
 struct zx_idp_MEDInfo_s {
   ZX_ELEM_EXT
   zx_idp_MEDInfo_EXT
@@ -547,12 +496,8 @@ struct zx_idp_MEDInfo_s {
 };
 
 #define zx_NEW_idp_MEDInfo(c, father) (struct zx_idp_MEDInfo_s*)zx_new_elem((c),(father),zx_idp_MEDInfo_ELEM)
-
 int zx_DEC_ATTR_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x);
 int zx_DEC_ELEM_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x);
-int zx_LEN_SO_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x);
-char* zx_ENC_SO_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_MEDInfo_s* zx_DEEP_CLONE_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x, int dup_strs);
@@ -594,7 +539,6 @@ void zx_idp_MEDInfo_REV_AttributeStatement(struct zx_idp_MEDInfo_s* x);
 #ifndef zx_idp_ProviderInfo_EXT
 #define zx_idp_ProviderInfo_EXT
 #endif
-
 struct zx_idp_ProviderInfo_s {
   ZX_ELEM_EXT
   zx_idp_ProviderInfo_EXT
@@ -603,12 +547,8 @@ struct zx_idp_ProviderInfo_s {
 };
 
 #define zx_NEW_idp_ProviderInfo(c, father) (struct zx_idp_ProviderInfo_s*)zx_new_elem((c),(father),zx_idp_ProviderInfo_ELEM)
-
 int zx_DEC_ATTR_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x);
 int zx_DEC_ELEM_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x);
-int zx_LEN_SO_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x);
-char* zx_ENC_SO_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_ProviderInfo_s* zx_DEEP_CLONE_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x, int dup_strs);
@@ -638,7 +578,6 @@ void zx_idp_ProviderInfo_PUT_providerID(struct zx_idp_ProviderInfo_s* x, struct 
 #ifndef zx_idp_SubjectRestriction_EXT
 #define zx_idp_SubjectRestriction_EXT
 #endif
-
 struct zx_idp_SubjectRestriction_s {
   ZX_ELEM_EXT
   zx_idp_SubjectRestriction_EXT
@@ -646,12 +585,8 @@ struct zx_idp_SubjectRestriction_s {
 };
 
 #define zx_NEW_idp_SubjectRestriction(c, father) (struct zx_idp_SubjectRestriction_s*)zx_new_elem((c),(father),zx_idp_SubjectRestriction_ELEM)
-
 int zx_DEC_ATTR_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRestriction_s* x);
 int zx_DEC_ELEM_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRestriction_s* x);
-int zx_LEN_SO_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRestriction_s* x);
-char* zx_ENC_SO_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRestriction_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRestriction_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_idp_SubjectRestriction_s* zx_DEEP_CLONE_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRestriction_s* x, int dup_strs);

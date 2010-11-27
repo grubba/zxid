@@ -23,7 +23,6 @@
 #ifndef zx_cdm_ADR_EXT
 #define zx_cdm_ADR_EXT
 #endif
-
 struct zx_cdm_ADR_s {
   ZX_ELEM_EXT
   zx_cdm_ADR_EXT
@@ -46,12 +45,8 @@ struct zx_cdm_ADR_s {
 };
 
 #define zx_NEW_cdm_ADR(c, father) (struct zx_cdm_ADR_s*)zx_new_elem((c),(father),zx_cdm_ADR_ELEM)
-
 int zx_DEC_ATTR_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x);
 int zx_DEC_ELEM_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x);
-int zx_LEN_SO_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x);
-char* zx_ENC_SO_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_ADR_s* zx_DEEP_CLONE_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x, int dup_strs);
@@ -157,13 +152,13 @@ void zx_cdm_ADR_ADD_REGION(struct zx_cdm_ADR_s* x, int n, struct zx_cdm_REGION_s
 void zx_cdm_ADR_ADD_PCODE(struct zx_cdm_ADR_s* x, int n, struct zx_cdm_PCODE_s* z);
 void zx_cdm_ADR_ADD_CTRY(struct zx_cdm_ADR_s* x, int n, struct zx_cdm_CTRY_s* z);
 
-void zx_cdm_ADR_DEL_HOME(struct zx_cdm_ADR_s* x, int n);
-void zx_cdm_ADR_DEL_WORK(struct zx_cdm_ADR_s* x, int n);
-void zx_cdm_ADR_DEL_POSTAL(struct zx_cdm_ADR_s* x, int n);
-void zx_cdm_ADR_DEL_PARCEL(struct zx_cdm_ADR_s* x, int n);
-void zx_cdm_ADR_DEL_DOM(struct zx_cdm_ADR_s* x, int n);
-void zx_cdm_ADR_DEL_INTL(struct zx_cdm_ADR_s* x, int n);
-void zx_cdm_ADR_DEL_PREF(struct zx_cdm_ADR_s* x, int n);
+void zx_cdm_ADR_DEL_HOME(struct zx_cdm_ADR_s* x,int n);
+void zx_cdm_ADR_DEL_WORK(struct zx_cdm_ADR_s* x,int n);
+void zx_cdm_ADR_DEL_POSTAL(struct zx_cdm_ADR_s* x,int n);
+void zx_cdm_ADR_DEL_PARCEL(struct zx_cdm_ADR_s* x,int n);
+void zx_cdm_ADR_DEL_DOM(struct zx_cdm_ADR_s* x,int n);
+void zx_cdm_ADR_DEL_INTL(struct zx_cdm_ADR_s* x,int n);
+void zx_cdm_ADR_DEL_PREF(struct zx_cdm_ADR_s* x,int n);
 void zx_cdm_ADR_DEL_POBOX(struct zx_cdm_ADR_s* x, int n);
 void zx_cdm_ADR_DEL_EXTADR(struct zx_cdm_ADR_s* x, int n);
 void zx_cdm_ADR_DEL_STREET(struct zx_cdm_ADR_s* x, int n);
@@ -193,7 +188,6 @@ void zx_cdm_ADR_REV_CTRY(struct zx_cdm_ADR_s* x);
 #ifndef zx_cdm_AGENT_EXT
 #define zx_cdm_AGENT_EXT
 #endif
-
 struct zx_cdm_AGENT_s {
   ZX_ELEM_EXT
   zx_cdm_AGENT_EXT
@@ -204,12 +198,8 @@ struct zx_cdm_AGENT_s {
 };
 
 #define zx_NEW_cdm_AGENT(c, father) (struct zx_cdm_AGENT_s*)zx_new_elem((c),(father),zx_cdm_AGENT_ELEM)
-
 int zx_DEC_ATTR_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s* x);
 int zx_DEC_ELEM_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s* x);
-int zx_LEN_SO_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s* x);
-char* zx_ENC_SO_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_AGENT_s* zx_DEEP_CLONE_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s* x, int dup_strs);
@@ -255,7 +245,6 @@ void zx_cdm_AGENT_REV_EXTVAL(struct zx_cdm_AGENT_s* x);
 #ifndef zx_cdm_BDAY_EXT
 #define zx_cdm_BDAY_EXT
 #endif
-
 struct zx_cdm_BDAY_s {
   ZX_ELEM_EXT
   zx_cdm_BDAY_EXT
@@ -267,12 +256,8 @@ struct zx_cdm_BDAY_s {
 };
 
 #define zx_NEW_cdm_BDAY(c, father) (struct zx_cdm_BDAY_s*)zx_new_elem((c),(father),zx_cdm_BDAY_ELEM)
-
 int zx_DEC_ATTR_cdm_BDAY(struct zx_ctx* c, struct zx_cdm_BDAY_s* x);
 int zx_DEC_ELEM_cdm_BDAY(struct zx_ctx* c, struct zx_cdm_BDAY_s* x);
-int zx_LEN_SO_cdm_BDAY(struct zx_ctx* c, struct zx_cdm_BDAY_s* x);
-char* zx_ENC_SO_cdm_BDAY(struct zx_ctx* c, struct zx_cdm_BDAY_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_BDAY(struct zx_ctx* c, struct zx_cdm_BDAY_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_BDAY_s* zx_DEEP_CLONE_cdm_BDAY(struct zx_ctx* c, struct zx_cdm_BDAY_s* x, int dup_strs);
@@ -308,7 +293,6 @@ void zx_cdm_BDAY_PUT_modifier(struct zx_cdm_BDAY_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_BINVAL_EXT
 #define zx_cdm_BINVAL_EXT
 #endif
-
 struct zx_cdm_BINVAL_s {
   ZX_ELEM_EXT
   zx_cdm_BINVAL_EXT
@@ -320,12 +304,8 @@ struct zx_cdm_BINVAL_s {
 };
 
 #define zx_NEW_cdm_BINVAL(c, father) (struct zx_cdm_BINVAL_s*)zx_new_elem((c),(father),zx_cdm_BINVAL_ELEM)
-
 int zx_DEC_ATTR_cdm_BINVAL(struct zx_ctx* c, struct zx_cdm_BINVAL_s* x);
 int zx_DEC_ELEM_cdm_BINVAL(struct zx_ctx* c, struct zx_cdm_BINVAL_s* x);
-int zx_LEN_SO_cdm_BINVAL(struct zx_ctx* c, struct zx_cdm_BINVAL_s* x);
-char* zx_ENC_SO_cdm_BINVAL(struct zx_ctx* c, struct zx_cdm_BINVAL_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_BINVAL(struct zx_ctx* c, struct zx_cdm_BINVAL_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_BINVAL_s* zx_DEEP_CLONE_cdm_BINVAL(struct zx_ctx* c, struct zx_cdm_BINVAL_s* x, int dup_strs);
@@ -361,7 +341,6 @@ void zx_cdm_BINVAL_PUT_modifier(struct zx_cdm_BINVAL_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_CALADRURI_EXT
 #define zx_cdm_CALADRURI_EXT
 #endif
-
 struct zx_cdm_CALADRURI_s {
   ZX_ELEM_EXT
   zx_cdm_CALADRURI_EXT
@@ -375,12 +354,8 @@ struct zx_cdm_CALADRURI_s {
 };
 
 #define zx_NEW_cdm_CALADRURI(c, father) (struct zx_cdm_CALADRURI_s*)zx_new_elem((c),(father),zx_cdm_CALADRURI_ELEM)
-
 int zx_DEC_ATTR_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALADRURI_s* x);
 int zx_DEC_ELEM_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALADRURI_s* x);
-int zx_LEN_SO_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALADRURI_s* x);
-char* zx_ENC_SO_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALADRURI_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALADRURI_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_CALADRURI_s* zx_DEEP_CLONE_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALADRURI_s* x, int dup_strs);
@@ -420,7 +395,7 @@ void zx_cdm_CALADRURI_PUT_URI(struct zx_cdm_CALADRURI_s* x, int n, struct zx_cdm
 void zx_cdm_CALADRURI_ADD_PREF(struct zx_cdm_CALADRURI_s* x, int n, struct zx_elem_s* z);
 void zx_cdm_CALADRURI_ADD_URI(struct zx_cdm_CALADRURI_s* x, int n, struct zx_cdm_URI_s* z);
 
-void zx_cdm_CALADRURI_DEL_PREF(struct zx_cdm_CALADRURI_s* x, int n);
+void zx_cdm_CALADRURI_DEL_PREF(struct zx_cdm_CALADRURI_s* x,int n);
 void zx_cdm_CALADRURI_DEL_URI(struct zx_cdm_CALADRURI_s* x, int n);
 
 void zx_cdm_CALADRURI_REV_PREF(struct zx_cdm_CALADRURI_s* x);
@@ -432,7 +407,6 @@ void zx_cdm_CALADRURI_REV_URI(struct zx_cdm_CALADRURI_s* x);
 #ifndef zx_cdm_CALURI_EXT
 #define zx_cdm_CALURI_EXT
 #endif
-
 struct zx_cdm_CALURI_s {
   ZX_ELEM_EXT
   zx_cdm_CALURI_EXT
@@ -446,12 +420,8 @@ struct zx_cdm_CALURI_s {
 };
 
 #define zx_NEW_cdm_CALURI(c, father) (struct zx_cdm_CALURI_s*)zx_new_elem((c),(father),zx_cdm_CALURI_ELEM)
-
 int zx_DEC_ATTR_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_s* x);
 int zx_DEC_ELEM_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_s* x);
-int zx_LEN_SO_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_s* x);
-char* zx_ENC_SO_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_CALURI_s* zx_DEEP_CLONE_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_s* x, int dup_strs);
@@ -491,7 +461,7 @@ void zx_cdm_CALURI_PUT_URI(struct zx_cdm_CALURI_s* x, int n, struct zx_cdm_URI_s
 void zx_cdm_CALURI_ADD_PREF(struct zx_cdm_CALURI_s* x, int n, struct zx_elem_s* z);
 void zx_cdm_CALURI_ADD_URI(struct zx_cdm_CALURI_s* x, int n, struct zx_cdm_URI_s* z);
 
-void zx_cdm_CALURI_DEL_PREF(struct zx_cdm_CALURI_s* x, int n);
+void zx_cdm_CALURI_DEL_PREF(struct zx_cdm_CALURI_s* x,int n);
 void zx_cdm_CALURI_DEL_URI(struct zx_cdm_CALURI_s* x, int n);
 
 void zx_cdm_CALURI_REV_PREF(struct zx_cdm_CALURI_s* x);
@@ -503,7 +473,6 @@ void zx_cdm_CALURI_REV_URI(struct zx_cdm_CALURI_s* x);
 #ifndef zx_cdm_CAPURI_EXT
 #define zx_cdm_CAPURI_EXT
 #endif
-
 struct zx_cdm_CAPURI_s {
   ZX_ELEM_EXT
   zx_cdm_CAPURI_EXT
@@ -517,12 +486,8 @@ struct zx_cdm_CAPURI_s {
 };
 
 #define zx_NEW_cdm_CAPURI(c, father) (struct zx_cdm_CAPURI_s*)zx_new_elem((c),(father),zx_cdm_CAPURI_ELEM)
-
 int zx_DEC_ATTR_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_s* x);
 int zx_DEC_ELEM_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_s* x);
-int zx_LEN_SO_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_s* x);
-char* zx_ENC_SO_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_CAPURI_s* zx_DEEP_CLONE_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_s* x, int dup_strs);
@@ -562,7 +527,7 @@ void zx_cdm_CAPURI_PUT_URI(struct zx_cdm_CAPURI_s* x, int n, struct zx_cdm_URI_s
 void zx_cdm_CAPURI_ADD_PREF(struct zx_cdm_CAPURI_s* x, int n, struct zx_elem_s* z);
 void zx_cdm_CAPURI_ADD_URI(struct zx_cdm_CAPURI_s* x, int n, struct zx_cdm_URI_s* z);
 
-void zx_cdm_CAPURI_DEL_PREF(struct zx_cdm_CAPURI_s* x, int n);
+void zx_cdm_CAPURI_DEL_PREF(struct zx_cdm_CAPURI_s* x,int n);
 void zx_cdm_CAPURI_DEL_URI(struct zx_cdm_CAPURI_s* x, int n);
 
 void zx_cdm_CAPURI_REV_PREF(struct zx_cdm_CAPURI_s* x);
@@ -574,7 +539,6 @@ void zx_cdm_CAPURI_REV_URI(struct zx_cdm_CAPURI_s* x);
 #ifndef zx_cdm_CATEGORIES_EXT
 #define zx_cdm_CATEGORIES_EXT
 #endif
-
 struct zx_cdm_CATEGORIES_s {
   ZX_ELEM_EXT
   zx_cdm_CATEGORIES_EXT
@@ -584,12 +548,8 @@ struct zx_cdm_CATEGORIES_s {
 };
 
 #define zx_NEW_cdm_CATEGORIES(c, father) (struct zx_cdm_CATEGORIES_s*)zx_new_elem((c),(father),zx_cdm_CATEGORIES_ELEM)
-
 int zx_DEC_ATTR_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CATEGORIES_s* x);
 int zx_DEC_ELEM_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CATEGORIES_s* x);
-int zx_LEN_SO_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CATEGORIES_s* x);
-char* zx_ENC_SO_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CATEGORIES_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CATEGORIES_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_CATEGORIES_s* zx_DEEP_CLONE_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CATEGORIES_s* x, int dup_strs);
@@ -627,7 +587,6 @@ void zx_cdm_CATEGORIES_REV_KEYWORD(struct zx_cdm_CATEGORIES_s* x);
 #ifndef zx_cdm_CLASS_EXT
 #define zx_cdm_CLASS_EXT
 #endif
-
 struct zx_cdm_CLASS_s {
   ZX_ELEM_EXT
   zx_cdm_CLASS_EXT
@@ -642,12 +601,8 @@ struct zx_cdm_CLASS_s {
 };
 
 #define zx_NEW_cdm_CLASS(c, father) (struct zx_cdm_CLASS_s*)zx_new_elem((c),(father),zx_cdm_CLASS_ELEM)
-
 int zx_DEC_ATTR_cdm_CLASS(struct zx_ctx* c, struct zx_cdm_CLASS_s* x);
 int zx_DEC_ELEM_cdm_CLASS(struct zx_ctx* c, struct zx_cdm_CLASS_s* x);
-int zx_LEN_SO_cdm_CLASS(struct zx_ctx* c, struct zx_cdm_CLASS_s* x);
-char* zx_ENC_SO_cdm_CLASS(struct zx_ctx* c, struct zx_cdm_CLASS_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_CLASS(struct zx_ctx* c, struct zx_cdm_CLASS_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_CLASS_s* zx_DEEP_CLONE_cdm_CLASS(struct zx_ctx* c, struct zx_cdm_CLASS_s* x, int dup_strs);
@@ -693,9 +648,9 @@ void zx_cdm_CLASS_ADD_PUBLIC(struct zx_cdm_CLASS_s* x, int n, struct zx_elem_s* 
 void zx_cdm_CLASS_ADD_PRIVATE(struct zx_cdm_CLASS_s* x, int n, struct zx_elem_s* z);
 void zx_cdm_CLASS_ADD_CONFIDENTIAL(struct zx_cdm_CLASS_s* x, int n, struct zx_elem_s* z);
 
-void zx_cdm_CLASS_DEL_PUBLIC(struct zx_cdm_CLASS_s* x, int n);
-void zx_cdm_CLASS_DEL_PRIVATE(struct zx_cdm_CLASS_s* x, int n);
-void zx_cdm_CLASS_DEL_CONFIDENTIAL(struct zx_cdm_CLASS_s* x, int n);
+void zx_cdm_CLASS_DEL_PUBLIC(struct zx_cdm_CLASS_s* x,int n);
+void zx_cdm_CLASS_DEL_PRIVATE(struct zx_cdm_CLASS_s* x,int n);
+void zx_cdm_CLASS_DEL_CONFIDENTIAL(struct zx_cdm_CLASS_s* x,int n);
 
 void zx_cdm_CLASS_REV_PUBLIC(struct zx_cdm_CLASS_s* x);
 void zx_cdm_CLASS_REV_PRIVATE(struct zx_cdm_CLASS_s* x);
@@ -707,7 +662,6 @@ void zx_cdm_CLASS_REV_CONFIDENTIAL(struct zx_cdm_CLASS_s* x);
 #ifndef zx_cdm_CRED_EXT
 #define zx_cdm_CRED_EXT
 #endif
-
 struct zx_cdm_CRED_s {
   ZX_ELEM_EXT
   zx_cdm_CRED_EXT
@@ -719,12 +673,8 @@ struct zx_cdm_CRED_s {
 };
 
 #define zx_NEW_cdm_CRED(c, father) (struct zx_cdm_CRED_s*)zx_new_elem((c),(father),zx_cdm_CRED_ELEM)
-
 int zx_DEC_ATTR_cdm_CRED(struct zx_ctx* c, struct zx_cdm_CRED_s* x);
 int zx_DEC_ELEM_cdm_CRED(struct zx_ctx* c, struct zx_cdm_CRED_s* x);
-int zx_LEN_SO_cdm_CRED(struct zx_ctx* c, struct zx_cdm_CRED_s* x);
-char* zx_ENC_SO_cdm_CRED(struct zx_ctx* c, struct zx_cdm_CRED_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_CRED(struct zx_ctx* c, struct zx_cdm_CRED_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_CRED_s* zx_DEEP_CLONE_cdm_CRED(struct zx_ctx* c, struct zx_cdm_CRED_s* x, int dup_strs);
@@ -760,7 +710,6 @@ void zx_cdm_CRED_PUT_modifier(struct zx_cdm_CRED_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_CTRY_EXT
 #define zx_cdm_CTRY_EXT
 #endif
-
 struct zx_cdm_CTRY_s {
   ZX_ELEM_EXT
   zx_cdm_CTRY_EXT
@@ -768,12 +717,8 @@ struct zx_cdm_CTRY_s {
 };
 
 #define zx_NEW_cdm_CTRY(c, father) (struct zx_cdm_CTRY_s*)zx_new_elem((c),(father),zx_cdm_CTRY_ELEM)
-
 int zx_DEC_ATTR_cdm_CTRY(struct zx_ctx* c, struct zx_cdm_CTRY_s* x);
 int zx_DEC_ELEM_cdm_CTRY(struct zx_ctx* c, struct zx_cdm_CTRY_s* x);
-int zx_LEN_SO_cdm_CTRY(struct zx_ctx* c, struct zx_cdm_CTRY_s* x);
-char* zx_ENC_SO_cdm_CTRY(struct zx_ctx* c, struct zx_cdm_CTRY_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_CTRY(struct zx_ctx* c, struct zx_cdm_CTRY_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_CTRY_s* zx_DEEP_CLONE_cdm_CTRY(struct zx_ctx* c, struct zx_cdm_CTRY_s* x, int dup_strs);
@@ -801,7 +746,6 @@ void zx_cdm_CTRY_PUT_group(struct zx_cdm_CTRY_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_DESC_EXT
 #define zx_cdm_DESC_EXT
 #endif
-
 struct zx_cdm_DESC_s {
   ZX_ELEM_EXT
   zx_cdm_DESC_EXT
@@ -809,12 +753,8 @@ struct zx_cdm_DESC_s {
 };
 
 #define zx_NEW_cdm_DESC(c, father) (struct zx_cdm_DESC_s*)zx_new_elem((c),(father),zx_cdm_DESC_ELEM)
-
 int zx_DEC_ATTR_cdm_DESC(struct zx_ctx* c, struct zx_cdm_DESC_s* x);
 int zx_DEC_ELEM_cdm_DESC(struct zx_ctx* c, struct zx_cdm_DESC_s* x);
-int zx_LEN_SO_cdm_DESC(struct zx_ctx* c, struct zx_cdm_DESC_s* x);
-char* zx_ENC_SO_cdm_DESC(struct zx_ctx* c, struct zx_cdm_DESC_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_DESC(struct zx_ctx* c, struct zx_cdm_DESC_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_DESC_s* zx_DEEP_CLONE_cdm_DESC(struct zx_ctx* c, struct zx_cdm_DESC_s* x, int dup_strs);
@@ -842,7 +782,6 @@ void zx_cdm_DESC_PUT_group(struct zx_cdm_DESC_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_EMAIL_EXT
 #define zx_cdm_EMAIL_EXT
 #endif
-
 struct zx_cdm_EMAIL_s {
   ZX_ELEM_EXT
   zx_cdm_EMAIL_EXT
@@ -857,12 +796,8 @@ struct zx_cdm_EMAIL_s {
 };
 
 #define zx_NEW_cdm_EMAIL(c, father) (struct zx_cdm_EMAIL_s*)zx_new_elem((c),(father),zx_cdm_EMAIL_ELEM)
-
 int zx_DEC_ATTR_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s* x);
 int zx_DEC_ELEM_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s* x);
-int zx_LEN_SO_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s* x);
-char* zx_ENC_SO_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_EMAIL_s* zx_DEEP_CLONE_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s* x, int dup_strs);
@@ -920,11 +855,11 @@ void zx_cdm_EMAIL_ADD_PREF(struct zx_cdm_EMAIL_s* x, int n, struct zx_elem_s* z)
 void zx_cdm_EMAIL_ADD_X400(struct zx_cdm_EMAIL_s* x, int n, struct zx_elem_s* z);
 void zx_cdm_EMAIL_ADD_USERID(struct zx_cdm_EMAIL_s* x, int n, struct zx_cdm_USERID_s* z);
 
-void zx_cdm_EMAIL_DEL_HOME(struct zx_cdm_EMAIL_s* x, int n);
-void zx_cdm_EMAIL_DEL_WORK(struct zx_cdm_EMAIL_s* x, int n);
-void zx_cdm_EMAIL_DEL_INTERNET(struct zx_cdm_EMAIL_s* x, int n);
-void zx_cdm_EMAIL_DEL_PREF(struct zx_cdm_EMAIL_s* x, int n);
-void zx_cdm_EMAIL_DEL_X400(struct zx_cdm_EMAIL_s* x, int n);
+void zx_cdm_EMAIL_DEL_HOME(struct zx_cdm_EMAIL_s* x,int n);
+void zx_cdm_EMAIL_DEL_WORK(struct zx_cdm_EMAIL_s* x,int n);
+void zx_cdm_EMAIL_DEL_INTERNET(struct zx_cdm_EMAIL_s* x,int n);
+void zx_cdm_EMAIL_DEL_PREF(struct zx_cdm_EMAIL_s* x,int n);
+void zx_cdm_EMAIL_DEL_X400(struct zx_cdm_EMAIL_s* x,int n);
 void zx_cdm_EMAIL_DEL_USERID(struct zx_cdm_EMAIL_s* x, int n);
 
 void zx_cdm_EMAIL_REV_HOME(struct zx_cdm_EMAIL_s* x);
@@ -940,7 +875,6 @@ void zx_cdm_EMAIL_REV_USERID(struct zx_cdm_EMAIL_s* x);
 #ifndef zx_cdm_EXTADR_EXT
 #define zx_cdm_EXTADR_EXT
 #endif
-
 struct zx_cdm_EXTADR_s {
   ZX_ELEM_EXT
   zx_cdm_EXTADR_EXT
@@ -948,12 +882,8 @@ struct zx_cdm_EXTADR_s {
 };
 
 #define zx_NEW_cdm_EXTADR(c, father) (struct zx_cdm_EXTADR_s*)zx_new_elem((c),(father),zx_cdm_EXTADR_ELEM)
-
 int zx_DEC_ATTR_cdm_EXTADR(struct zx_ctx* c, struct zx_cdm_EXTADR_s* x);
 int zx_DEC_ELEM_cdm_EXTADR(struct zx_ctx* c, struct zx_cdm_EXTADR_s* x);
-int zx_LEN_SO_cdm_EXTADR(struct zx_ctx* c, struct zx_cdm_EXTADR_s* x);
-char* zx_ENC_SO_cdm_EXTADR(struct zx_ctx* c, struct zx_cdm_EXTADR_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_EXTADR(struct zx_ctx* c, struct zx_cdm_EXTADR_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_EXTADR_s* zx_DEEP_CLONE_cdm_EXTADR(struct zx_ctx* c, struct zx_cdm_EXTADR_s* x, int dup_strs);
@@ -981,7 +911,6 @@ void zx_cdm_EXTADR_PUT_group(struct zx_cdm_EXTADR_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_EXTVAL_EXT
 #define zx_cdm_EXTVAL_EXT
 #endif
-
 struct zx_cdm_EXTVAL_s {
   ZX_ELEM_EXT
   zx_cdm_EXTVAL_EXT
@@ -993,12 +922,8 @@ struct zx_cdm_EXTVAL_s {
 };
 
 #define zx_NEW_cdm_EXTVAL(c, father) (struct zx_cdm_EXTVAL_s*)zx_new_elem((c),(father),zx_cdm_EXTVAL_ELEM)
-
 int zx_DEC_ATTR_cdm_EXTVAL(struct zx_ctx* c, struct zx_cdm_EXTVAL_s* x);
 int zx_DEC_ELEM_cdm_EXTVAL(struct zx_ctx* c, struct zx_cdm_EXTVAL_s* x);
-int zx_LEN_SO_cdm_EXTVAL(struct zx_ctx* c, struct zx_cdm_EXTVAL_s* x);
-char* zx_ENC_SO_cdm_EXTVAL(struct zx_ctx* c, struct zx_cdm_EXTVAL_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_EXTVAL(struct zx_ctx* c, struct zx_cdm_EXTVAL_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_EXTVAL_s* zx_DEEP_CLONE_cdm_EXTVAL(struct zx_ctx* c, struct zx_cdm_EXTVAL_s* x, int dup_strs);
@@ -1034,7 +959,6 @@ void zx_cdm_EXTVAL_PUT_modifier(struct zx_cdm_EXTVAL_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_FAMILY_EXT
 #define zx_cdm_FAMILY_EXT
 #endif
-
 struct zx_cdm_FAMILY_s {
   ZX_ELEM_EXT
   zx_cdm_FAMILY_EXT
@@ -1042,12 +966,8 @@ struct zx_cdm_FAMILY_s {
 };
 
 #define zx_NEW_cdm_FAMILY(c, father) (struct zx_cdm_FAMILY_s*)zx_new_elem((c),(father),zx_cdm_FAMILY_ELEM)
-
 int zx_DEC_ATTR_cdm_FAMILY(struct zx_ctx* c, struct zx_cdm_FAMILY_s* x);
 int zx_DEC_ELEM_cdm_FAMILY(struct zx_ctx* c, struct zx_cdm_FAMILY_s* x);
-int zx_LEN_SO_cdm_FAMILY(struct zx_ctx* c, struct zx_cdm_FAMILY_s* x);
-char* zx_ENC_SO_cdm_FAMILY(struct zx_ctx* c, struct zx_cdm_FAMILY_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_FAMILY(struct zx_ctx* c, struct zx_cdm_FAMILY_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_FAMILY_s* zx_DEEP_CLONE_cdm_FAMILY(struct zx_ctx* c, struct zx_cdm_FAMILY_s* x, int dup_strs);
@@ -1075,7 +995,6 @@ void zx_cdm_FAMILY_PUT_group(struct zx_cdm_FAMILY_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_FBURL_EXT
 #define zx_cdm_FBURL_EXT
 #endif
-
 struct zx_cdm_FBURL_s {
   ZX_ELEM_EXT
   zx_cdm_FBURL_EXT
@@ -1089,12 +1008,8 @@ struct zx_cdm_FBURL_s {
 };
 
 #define zx_NEW_cdm_FBURL(c, father) (struct zx_cdm_FBURL_s*)zx_new_elem((c),(father),zx_cdm_FBURL_ELEM)
-
 int zx_DEC_ATTR_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s* x);
 int zx_DEC_ELEM_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s* x);
-int zx_LEN_SO_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s* x);
-char* zx_ENC_SO_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_FBURL_s* zx_DEEP_CLONE_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s* x, int dup_strs);
@@ -1134,7 +1049,7 @@ void zx_cdm_FBURL_PUT_URI(struct zx_cdm_FBURL_s* x, int n, struct zx_cdm_URI_s* 
 void zx_cdm_FBURL_ADD_PREF(struct zx_cdm_FBURL_s* x, int n, struct zx_elem_s* z);
 void zx_cdm_FBURL_ADD_URI(struct zx_cdm_FBURL_s* x, int n, struct zx_cdm_URI_s* z);
 
-void zx_cdm_FBURL_DEL_PREF(struct zx_cdm_FBURL_s* x, int n);
+void zx_cdm_FBURL_DEL_PREF(struct zx_cdm_FBURL_s* x,int n);
 void zx_cdm_FBURL_DEL_URI(struct zx_cdm_FBURL_s* x, int n);
 
 void zx_cdm_FBURL_REV_PREF(struct zx_cdm_FBURL_s* x);
@@ -1146,7 +1061,6 @@ void zx_cdm_FBURL_REV_URI(struct zx_cdm_FBURL_s* x);
 #ifndef zx_cdm_FN_EXT
 #define zx_cdm_FN_EXT
 #endif
-
 struct zx_cdm_FN_s {
   ZX_ELEM_EXT
   zx_cdm_FN_EXT
@@ -1154,12 +1068,8 @@ struct zx_cdm_FN_s {
 };
 
 #define zx_NEW_cdm_FN(c, father) (struct zx_cdm_FN_s*)zx_new_elem((c),(father),zx_cdm_FN_ELEM)
-
 int zx_DEC_ATTR_cdm_FN(struct zx_ctx* c, struct zx_cdm_FN_s* x);
 int zx_DEC_ELEM_cdm_FN(struct zx_ctx* c, struct zx_cdm_FN_s* x);
-int zx_LEN_SO_cdm_FN(struct zx_ctx* c, struct zx_cdm_FN_s* x);
-char* zx_ENC_SO_cdm_FN(struct zx_ctx* c, struct zx_cdm_FN_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_FN(struct zx_ctx* c, struct zx_cdm_FN_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_FN_s* zx_DEEP_CLONE_cdm_FN(struct zx_ctx* c, struct zx_cdm_FN_s* x, int dup_strs);
@@ -1187,7 +1097,6 @@ void zx_cdm_FN_PUT_group(struct zx_cdm_FN_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_GEO_EXT
 #define zx_cdm_GEO_EXT
 #endif
-
 struct zx_cdm_GEO_s {
   ZX_ELEM_EXT
   zx_cdm_GEO_EXT
@@ -1198,12 +1107,8 @@ struct zx_cdm_GEO_s {
 };
 
 #define zx_NEW_cdm_GEO(c, father) (struct zx_cdm_GEO_s*)zx_new_elem((c),(father),zx_cdm_GEO_ELEM)
-
 int zx_DEC_ATTR_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x);
 int zx_DEC_ELEM_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x);
-int zx_LEN_SO_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x);
-char* zx_ENC_SO_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_GEO_s* zx_DEEP_CLONE_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x, int dup_strs);
@@ -1249,7 +1154,6 @@ void zx_cdm_GEO_REV_LON(struct zx_cdm_GEO_s* x);
 #ifndef zx_cdm_GIVEN_EXT
 #define zx_cdm_GIVEN_EXT
 #endif
-
 struct zx_cdm_GIVEN_s {
   ZX_ELEM_EXT
   zx_cdm_GIVEN_EXT
@@ -1257,12 +1161,8 @@ struct zx_cdm_GIVEN_s {
 };
 
 #define zx_NEW_cdm_GIVEN(c, father) (struct zx_cdm_GIVEN_s*)zx_new_elem((c),(father),zx_cdm_GIVEN_ELEM)
-
 int zx_DEC_ATTR_cdm_GIVEN(struct zx_ctx* c, struct zx_cdm_GIVEN_s* x);
 int zx_DEC_ELEM_cdm_GIVEN(struct zx_ctx* c, struct zx_cdm_GIVEN_s* x);
-int zx_LEN_SO_cdm_GIVEN(struct zx_ctx* c, struct zx_cdm_GIVEN_s* x);
-char* zx_ENC_SO_cdm_GIVEN(struct zx_ctx* c, struct zx_cdm_GIVEN_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_GIVEN(struct zx_ctx* c, struct zx_cdm_GIVEN_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_GIVEN_s* zx_DEEP_CLONE_cdm_GIVEN(struct zx_ctx* c, struct zx_cdm_GIVEN_s* x, int dup_strs);
@@ -1290,7 +1190,6 @@ void zx_cdm_GIVEN_PUT_group(struct zx_cdm_GIVEN_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_JABBERID_EXT
 #define zx_cdm_JABBERID_EXT
 #endif
-
 struct zx_cdm_JABBERID_s {
   ZX_ELEM_EXT
   zx_cdm_JABBERID_EXT
@@ -1302,12 +1201,8 @@ struct zx_cdm_JABBERID_s {
 };
 
 #define zx_NEW_cdm_JABBERID(c, father) (struct zx_cdm_JABBERID_s*)zx_new_elem((c),(father),zx_cdm_JABBERID_ELEM)
-
 int zx_DEC_ATTR_cdm_JABBERID(struct zx_ctx* c, struct zx_cdm_JABBERID_s* x);
 int zx_DEC_ELEM_cdm_JABBERID(struct zx_ctx* c, struct zx_cdm_JABBERID_s* x);
-int zx_LEN_SO_cdm_JABBERID(struct zx_ctx* c, struct zx_cdm_JABBERID_s* x);
-char* zx_ENC_SO_cdm_JABBERID(struct zx_ctx* c, struct zx_cdm_JABBERID_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_JABBERID(struct zx_ctx* c, struct zx_cdm_JABBERID_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_JABBERID_s* zx_DEEP_CLONE_cdm_JABBERID(struct zx_ctx* c, struct zx_cdm_JABBERID_s* x, int dup_strs);
@@ -1343,7 +1238,6 @@ void zx_cdm_JABBERID_PUT_modifier(struct zx_cdm_JABBERID_s* x, struct zx_attr_s*
 #ifndef zx_cdm_KEY_EXT
 #define zx_cdm_KEY_EXT
 #endif
-
 struct zx_cdm_KEY_s {
   ZX_ELEM_EXT
   zx_cdm_KEY_EXT
@@ -1352,12 +1246,8 @@ struct zx_cdm_KEY_s {
 };
 
 #define zx_NEW_cdm_KEY(c, father) (struct zx_cdm_KEY_s*)zx_new_elem((c),(father),zx_cdm_KEY_ELEM)
-
 int zx_DEC_ATTR_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x);
 int zx_DEC_ELEM_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x);
-int zx_LEN_SO_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x);
-char* zx_ENC_SO_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_KEY_s* zx_DEEP_CLONE_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x, int dup_strs);
@@ -1399,7 +1289,6 @@ void zx_cdm_KEY_REV_CRED(struct zx_cdm_KEY_s* x);
 #ifndef zx_cdm_KEYWORD_EXT
 #define zx_cdm_KEYWORD_EXT
 #endif
-
 struct zx_cdm_KEYWORD_s {
   ZX_ELEM_EXT
   zx_cdm_KEYWORD_EXT
@@ -1411,12 +1300,8 @@ struct zx_cdm_KEYWORD_s {
 };
 
 #define zx_NEW_cdm_KEYWORD(c, father) (struct zx_cdm_KEYWORD_s*)zx_new_elem((c),(father),zx_cdm_KEYWORD_ELEM)
-
 int zx_DEC_ATTR_cdm_KEYWORD(struct zx_ctx* c, struct zx_cdm_KEYWORD_s* x);
 int zx_DEC_ELEM_cdm_KEYWORD(struct zx_ctx* c, struct zx_cdm_KEYWORD_s* x);
-int zx_LEN_SO_cdm_KEYWORD(struct zx_ctx* c, struct zx_cdm_KEYWORD_s* x);
-char* zx_ENC_SO_cdm_KEYWORD(struct zx_ctx* c, struct zx_cdm_KEYWORD_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_KEYWORD(struct zx_ctx* c, struct zx_cdm_KEYWORD_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_KEYWORD_s* zx_DEEP_CLONE_cdm_KEYWORD(struct zx_ctx* c, struct zx_cdm_KEYWORD_s* x, int dup_strs);
@@ -1452,7 +1337,6 @@ void zx_cdm_KEYWORD_PUT_modifier(struct zx_cdm_KEYWORD_s* x, struct zx_attr_s* y
 #ifndef zx_cdm_LABEL_EXT
 #define zx_cdm_LABEL_EXT
 #endif
-
 struct zx_cdm_LABEL_s {
   ZX_ELEM_EXT
   zx_cdm_LABEL_EXT
@@ -1469,12 +1353,8 @@ struct zx_cdm_LABEL_s {
 };
 
 #define zx_NEW_cdm_LABEL(c, father) (struct zx_cdm_LABEL_s*)zx_new_elem((c),(father),zx_cdm_LABEL_ELEM)
-
 int zx_DEC_ATTR_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s* x);
 int zx_DEC_ELEM_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s* x);
-int zx_LEN_SO_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s* x);
-char* zx_ENC_SO_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_LABEL_s* zx_DEEP_CLONE_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s* x, int dup_strs);
@@ -1544,13 +1424,13 @@ void zx_cdm_LABEL_ADD_INTL(struct zx_cdm_LABEL_s* x, int n, struct zx_elem_s* z)
 void zx_cdm_LABEL_ADD_PREF(struct zx_cdm_LABEL_s* x, int n, struct zx_elem_s* z);
 void zx_cdm_LABEL_ADD_LINE(struct zx_cdm_LABEL_s* x, int n, struct zx_cdm_LINE_s* z);
 
-void zx_cdm_LABEL_DEL_HOME(struct zx_cdm_LABEL_s* x, int n);
-void zx_cdm_LABEL_DEL_WORK(struct zx_cdm_LABEL_s* x, int n);
-void zx_cdm_LABEL_DEL_POSTAL(struct zx_cdm_LABEL_s* x, int n);
-void zx_cdm_LABEL_DEL_PARCEL(struct zx_cdm_LABEL_s* x, int n);
-void zx_cdm_LABEL_DEL_DOM(struct zx_cdm_LABEL_s* x, int n);
-void zx_cdm_LABEL_DEL_INTL(struct zx_cdm_LABEL_s* x, int n);
-void zx_cdm_LABEL_DEL_PREF(struct zx_cdm_LABEL_s* x, int n);
+void zx_cdm_LABEL_DEL_HOME(struct zx_cdm_LABEL_s* x,int n);
+void zx_cdm_LABEL_DEL_WORK(struct zx_cdm_LABEL_s* x,int n);
+void zx_cdm_LABEL_DEL_POSTAL(struct zx_cdm_LABEL_s* x,int n);
+void zx_cdm_LABEL_DEL_PARCEL(struct zx_cdm_LABEL_s* x,int n);
+void zx_cdm_LABEL_DEL_DOM(struct zx_cdm_LABEL_s* x,int n);
+void zx_cdm_LABEL_DEL_INTL(struct zx_cdm_LABEL_s* x,int n);
+void zx_cdm_LABEL_DEL_PREF(struct zx_cdm_LABEL_s* x,int n);
 void zx_cdm_LABEL_DEL_LINE(struct zx_cdm_LABEL_s* x, int n);
 
 void zx_cdm_LABEL_REV_HOME(struct zx_cdm_LABEL_s* x);
@@ -1568,7 +1448,6 @@ void zx_cdm_LABEL_REV_LINE(struct zx_cdm_LABEL_s* x);
 #ifndef zx_cdm_LAT_EXT
 #define zx_cdm_LAT_EXT
 #endif
-
 struct zx_cdm_LAT_s {
   ZX_ELEM_EXT
   zx_cdm_LAT_EXT
@@ -1580,12 +1459,8 @@ struct zx_cdm_LAT_s {
 };
 
 #define zx_NEW_cdm_LAT(c, father) (struct zx_cdm_LAT_s*)zx_new_elem((c),(father),zx_cdm_LAT_ELEM)
-
 int zx_DEC_ATTR_cdm_LAT(struct zx_ctx* c, struct zx_cdm_LAT_s* x);
 int zx_DEC_ELEM_cdm_LAT(struct zx_ctx* c, struct zx_cdm_LAT_s* x);
-int zx_LEN_SO_cdm_LAT(struct zx_ctx* c, struct zx_cdm_LAT_s* x);
-char* zx_ENC_SO_cdm_LAT(struct zx_ctx* c, struct zx_cdm_LAT_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_LAT(struct zx_ctx* c, struct zx_cdm_LAT_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_LAT_s* zx_DEEP_CLONE_cdm_LAT(struct zx_ctx* c, struct zx_cdm_LAT_s* x, int dup_strs);
@@ -1621,7 +1496,6 @@ void zx_cdm_LAT_PUT_modifier(struct zx_cdm_LAT_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_LINE_EXT
 #define zx_cdm_LINE_EXT
 #endif
-
 struct zx_cdm_LINE_s {
   ZX_ELEM_EXT
   zx_cdm_LINE_EXT
@@ -1629,12 +1503,8 @@ struct zx_cdm_LINE_s {
 };
 
 #define zx_NEW_cdm_LINE(c, father) (struct zx_cdm_LINE_s*)zx_new_elem((c),(father),zx_cdm_LINE_ELEM)
-
 int zx_DEC_ATTR_cdm_LINE(struct zx_ctx* c, struct zx_cdm_LINE_s* x);
 int zx_DEC_ELEM_cdm_LINE(struct zx_ctx* c, struct zx_cdm_LINE_s* x);
-int zx_LEN_SO_cdm_LINE(struct zx_ctx* c, struct zx_cdm_LINE_s* x);
-char* zx_ENC_SO_cdm_LINE(struct zx_ctx* c, struct zx_cdm_LINE_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_LINE(struct zx_ctx* c, struct zx_cdm_LINE_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_LINE_s* zx_DEEP_CLONE_cdm_LINE(struct zx_ctx* c, struct zx_cdm_LINE_s* x, int dup_strs);
@@ -1662,7 +1532,6 @@ void zx_cdm_LINE_PUT_group(struct zx_cdm_LINE_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_LISTMEMBER_EXT
 #define zx_cdm_LISTMEMBER_EXT
 #endif
-
 struct zx_cdm_LISTMEMBER_s {
   ZX_ELEM_EXT
   zx_cdm_LISTMEMBER_EXT
@@ -1674,12 +1543,8 @@ struct zx_cdm_LISTMEMBER_s {
 };
 
 #define zx_NEW_cdm_LISTMEMBER(c, father) (struct zx_cdm_LISTMEMBER_s*)zx_new_elem((c),(father),zx_cdm_LISTMEMBER_ELEM)
-
 int zx_DEC_ATTR_cdm_LISTMEMBER(struct zx_ctx* c, struct zx_cdm_LISTMEMBER_s* x);
 int zx_DEC_ELEM_cdm_LISTMEMBER(struct zx_ctx* c, struct zx_cdm_LISTMEMBER_s* x);
-int zx_LEN_SO_cdm_LISTMEMBER(struct zx_ctx* c, struct zx_cdm_LISTMEMBER_s* x);
-char* zx_ENC_SO_cdm_LISTMEMBER(struct zx_ctx* c, struct zx_cdm_LISTMEMBER_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_LISTMEMBER(struct zx_ctx* c, struct zx_cdm_LISTMEMBER_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_LISTMEMBER_s* zx_DEEP_CLONE_cdm_LISTMEMBER(struct zx_ctx* c, struct zx_cdm_LISTMEMBER_s* x, int dup_strs);
@@ -1715,7 +1580,6 @@ void zx_cdm_LISTMEMBER_PUT_modifier(struct zx_cdm_LISTMEMBER_s* x, struct zx_att
 #ifndef zx_cdm_LOCALITY_EXT
 #define zx_cdm_LOCALITY_EXT
 #endif
-
 struct zx_cdm_LOCALITY_s {
   ZX_ELEM_EXT
   zx_cdm_LOCALITY_EXT
@@ -1723,12 +1587,8 @@ struct zx_cdm_LOCALITY_s {
 };
 
 #define zx_NEW_cdm_LOCALITY(c, father) (struct zx_cdm_LOCALITY_s*)zx_new_elem((c),(father),zx_cdm_LOCALITY_ELEM)
-
 int zx_DEC_ATTR_cdm_LOCALITY(struct zx_ctx* c, struct zx_cdm_LOCALITY_s* x);
 int zx_DEC_ELEM_cdm_LOCALITY(struct zx_ctx* c, struct zx_cdm_LOCALITY_s* x);
-int zx_LEN_SO_cdm_LOCALITY(struct zx_ctx* c, struct zx_cdm_LOCALITY_s* x);
-char* zx_ENC_SO_cdm_LOCALITY(struct zx_ctx* c, struct zx_cdm_LOCALITY_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_LOCALITY(struct zx_ctx* c, struct zx_cdm_LOCALITY_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_LOCALITY_s* zx_DEEP_CLONE_cdm_LOCALITY(struct zx_ctx* c, struct zx_cdm_LOCALITY_s* x, int dup_strs);
@@ -1756,7 +1616,6 @@ void zx_cdm_LOCALITY_PUT_group(struct zx_cdm_LOCALITY_s* x, struct zx_attr_s* y)
 #ifndef zx_cdm_LOGO_EXT
 #define zx_cdm_LOGO_EXT
 #endif
-
 struct zx_cdm_LOGO_s {
   ZX_ELEM_EXT
   zx_cdm_LOGO_EXT
@@ -1768,12 +1627,8 @@ struct zx_cdm_LOGO_s {
 };
 
 #define zx_NEW_cdm_LOGO(c, father) (struct zx_cdm_LOGO_s*)zx_new_elem((c),(father),zx_cdm_LOGO_ELEM)
-
 int zx_DEC_ATTR_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x);
 int zx_DEC_ELEM_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x);
-int zx_LEN_SO_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x);
-char* zx_ENC_SO_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_LOGO_s* zx_DEEP_CLONE_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x, int dup_strs);
@@ -1827,7 +1682,6 @@ void zx_cdm_LOGO_REV_EXTVAL(struct zx_cdm_LOGO_s* x);
 #ifndef zx_cdm_LON_EXT
 #define zx_cdm_LON_EXT
 #endif
-
 struct zx_cdm_LON_s {
   ZX_ELEM_EXT
   zx_cdm_LON_EXT
@@ -1839,12 +1693,8 @@ struct zx_cdm_LON_s {
 };
 
 #define zx_NEW_cdm_LON(c, father) (struct zx_cdm_LON_s*)zx_new_elem((c),(father),zx_cdm_LON_ELEM)
-
 int zx_DEC_ATTR_cdm_LON(struct zx_ctx* c, struct zx_cdm_LON_s* x);
 int zx_DEC_ELEM_cdm_LON(struct zx_ctx* c, struct zx_cdm_LON_s* x);
-int zx_LEN_SO_cdm_LON(struct zx_ctx* c, struct zx_cdm_LON_s* x);
-char* zx_ENC_SO_cdm_LON(struct zx_ctx* c, struct zx_cdm_LON_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_LON(struct zx_ctx* c, struct zx_cdm_LON_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_LON_s* zx_DEEP_CLONE_cdm_LON(struct zx_ctx* c, struct zx_cdm_LON_s* x, int dup_strs);
@@ -1880,7 +1730,6 @@ void zx_cdm_LON_PUT_modifier(struct zx_cdm_LON_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_MAILER_EXT
 #define zx_cdm_MAILER_EXT
 #endif
-
 struct zx_cdm_MAILER_s {
   ZX_ELEM_EXT
   zx_cdm_MAILER_EXT
@@ -1892,12 +1741,8 @@ struct zx_cdm_MAILER_s {
 };
 
 #define zx_NEW_cdm_MAILER(c, father) (struct zx_cdm_MAILER_s*)zx_new_elem((c),(father),zx_cdm_MAILER_ELEM)
-
 int zx_DEC_ATTR_cdm_MAILER(struct zx_ctx* c, struct zx_cdm_MAILER_s* x);
 int zx_DEC_ELEM_cdm_MAILER(struct zx_ctx* c, struct zx_cdm_MAILER_s* x);
-int zx_LEN_SO_cdm_MAILER(struct zx_ctx* c, struct zx_cdm_MAILER_s* x);
-char* zx_ENC_SO_cdm_MAILER(struct zx_ctx* c, struct zx_cdm_MAILER_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_MAILER(struct zx_ctx* c, struct zx_cdm_MAILER_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_MAILER_s* zx_DEEP_CLONE_cdm_MAILER(struct zx_ctx* c, struct zx_cdm_MAILER_s* x, int dup_strs);
@@ -1933,7 +1778,6 @@ void zx_cdm_MAILER_PUT_modifier(struct zx_cdm_MAILER_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_MIDDLE_EXT
 #define zx_cdm_MIDDLE_EXT
 #endif
-
 struct zx_cdm_MIDDLE_s {
   ZX_ELEM_EXT
   zx_cdm_MIDDLE_EXT
@@ -1941,12 +1785,8 @@ struct zx_cdm_MIDDLE_s {
 };
 
 #define zx_NEW_cdm_MIDDLE(c, father) (struct zx_cdm_MIDDLE_s*)zx_new_elem((c),(father),zx_cdm_MIDDLE_ELEM)
-
 int zx_DEC_ATTR_cdm_MIDDLE(struct zx_ctx* c, struct zx_cdm_MIDDLE_s* x);
 int zx_DEC_ELEM_cdm_MIDDLE(struct zx_ctx* c, struct zx_cdm_MIDDLE_s* x);
-int zx_LEN_SO_cdm_MIDDLE(struct zx_ctx* c, struct zx_cdm_MIDDLE_s* x);
-char* zx_ENC_SO_cdm_MIDDLE(struct zx_ctx* c, struct zx_cdm_MIDDLE_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_MIDDLE(struct zx_ctx* c, struct zx_cdm_MIDDLE_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_MIDDLE_s* zx_DEEP_CLONE_cdm_MIDDLE(struct zx_ctx* c, struct zx_cdm_MIDDLE_s* x, int dup_strs);
@@ -1974,7 +1814,6 @@ void zx_cdm_MIDDLE_PUT_group(struct zx_cdm_MIDDLE_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_N_EXT
 #define zx_cdm_N_EXT
 #endif
-
 struct zx_cdm_N_s {
   ZX_ELEM_EXT
   zx_cdm_N_EXT
@@ -1988,12 +1827,8 @@ struct zx_cdm_N_s {
 };
 
 #define zx_NEW_cdm_N(c, father) (struct zx_cdm_N_s*)zx_new_elem((c),(father),zx_cdm_N_ELEM)
-
 int zx_DEC_ATTR_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x);
 int zx_DEC_ELEM_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x);
-int zx_LEN_SO_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x);
-char* zx_ENC_SO_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_N_s* zx_DEEP_CLONE_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x, int dup_strs);
@@ -2063,7 +1898,6 @@ void zx_cdm_N_REV_SUFFIX(struct zx_cdm_N_s* x);
 #ifndef zx_cdm_NICKNAME_EXT
 #define zx_cdm_NICKNAME_EXT
 #endif
-
 struct zx_cdm_NICKNAME_s {
   ZX_ELEM_EXT
   zx_cdm_NICKNAME_EXT
@@ -2071,12 +1905,8 @@ struct zx_cdm_NICKNAME_s {
 };
 
 #define zx_NEW_cdm_NICKNAME(c, father) (struct zx_cdm_NICKNAME_s*)zx_new_elem((c),(father),zx_cdm_NICKNAME_ELEM)
-
 int zx_DEC_ATTR_cdm_NICKNAME(struct zx_ctx* c, struct zx_cdm_NICKNAME_s* x);
 int zx_DEC_ELEM_cdm_NICKNAME(struct zx_ctx* c, struct zx_cdm_NICKNAME_s* x);
-int zx_LEN_SO_cdm_NICKNAME(struct zx_ctx* c, struct zx_cdm_NICKNAME_s* x);
-char* zx_ENC_SO_cdm_NICKNAME(struct zx_ctx* c, struct zx_cdm_NICKNAME_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_NICKNAME(struct zx_ctx* c, struct zx_cdm_NICKNAME_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_NICKNAME_s* zx_DEEP_CLONE_cdm_NICKNAME(struct zx_ctx* c, struct zx_cdm_NICKNAME_s* x, int dup_strs);
@@ -2104,7 +1934,6 @@ void zx_cdm_NICKNAME_PUT_group(struct zx_cdm_NICKNAME_s* x, struct zx_attr_s* y)
 #ifndef zx_cdm_NOTE_EXT
 #define zx_cdm_NOTE_EXT
 #endif
-
 struct zx_cdm_NOTE_s {
   ZX_ELEM_EXT
   zx_cdm_NOTE_EXT
@@ -2112,12 +1941,8 @@ struct zx_cdm_NOTE_s {
 };
 
 #define zx_NEW_cdm_NOTE(c, father) (struct zx_cdm_NOTE_s*)zx_new_elem((c),(father),zx_cdm_NOTE_ELEM)
-
 int zx_DEC_ATTR_cdm_NOTE(struct zx_ctx* c, struct zx_cdm_NOTE_s* x);
 int zx_DEC_ELEM_cdm_NOTE(struct zx_ctx* c, struct zx_cdm_NOTE_s* x);
-int zx_LEN_SO_cdm_NOTE(struct zx_ctx* c, struct zx_cdm_NOTE_s* x);
-char* zx_ENC_SO_cdm_NOTE(struct zx_ctx* c, struct zx_cdm_NOTE_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_NOTE(struct zx_ctx* c, struct zx_cdm_NOTE_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_NOTE_s* zx_DEEP_CLONE_cdm_NOTE(struct zx_ctx* c, struct zx_cdm_NOTE_s* x, int dup_strs);
@@ -2145,7 +1970,6 @@ void zx_cdm_NOTE_PUT_group(struct zx_cdm_NOTE_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_NUMBER_EXT
 #define zx_cdm_NUMBER_EXT
 #endif
-
 struct zx_cdm_NUMBER_s {
   ZX_ELEM_EXT
   zx_cdm_NUMBER_EXT
@@ -2157,12 +1981,8 @@ struct zx_cdm_NUMBER_s {
 };
 
 #define zx_NEW_cdm_NUMBER(c, father) (struct zx_cdm_NUMBER_s*)zx_new_elem((c),(father),zx_cdm_NUMBER_ELEM)
-
 int zx_DEC_ATTR_cdm_NUMBER(struct zx_ctx* c, struct zx_cdm_NUMBER_s* x);
 int zx_DEC_ELEM_cdm_NUMBER(struct zx_ctx* c, struct zx_cdm_NUMBER_s* x);
-int zx_LEN_SO_cdm_NUMBER(struct zx_ctx* c, struct zx_cdm_NUMBER_s* x);
-char* zx_ENC_SO_cdm_NUMBER(struct zx_ctx* c, struct zx_cdm_NUMBER_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_NUMBER(struct zx_ctx* c, struct zx_cdm_NUMBER_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_NUMBER_s* zx_DEEP_CLONE_cdm_NUMBER(struct zx_ctx* c, struct zx_cdm_NUMBER_s* x, int dup_strs);
@@ -2198,7 +2018,6 @@ void zx_cdm_NUMBER_PUT_modifier(struct zx_cdm_NUMBER_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_ORG_EXT
 #define zx_cdm_ORG_EXT
 #endif
-
 struct zx_cdm_ORG_s {
   ZX_ELEM_EXT
   zx_cdm_ORG_EXT
@@ -2209,12 +2028,8 @@ struct zx_cdm_ORG_s {
 };
 
 #define zx_NEW_cdm_ORG(c, father) (struct zx_cdm_ORG_s*)zx_new_elem((c),(father),zx_cdm_ORG_ELEM)
-
 int zx_DEC_ATTR_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x);
 int zx_DEC_ELEM_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x);
-int zx_LEN_SO_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x);
-char* zx_ENC_SO_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_ORG_s* zx_DEEP_CLONE_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x, int dup_strs);
@@ -2260,7 +2075,6 @@ void zx_cdm_ORG_REV_ORGUNIT(struct zx_cdm_ORG_s* x);
 #ifndef zx_cdm_ORGNAME_EXT
 #define zx_cdm_ORGNAME_EXT
 #endif
-
 struct zx_cdm_ORGNAME_s {
   ZX_ELEM_EXT
   zx_cdm_ORGNAME_EXT
@@ -2268,12 +2082,8 @@ struct zx_cdm_ORGNAME_s {
 };
 
 #define zx_NEW_cdm_ORGNAME(c, father) (struct zx_cdm_ORGNAME_s*)zx_new_elem((c),(father),zx_cdm_ORGNAME_ELEM)
-
 int zx_DEC_ATTR_cdm_ORGNAME(struct zx_ctx* c, struct zx_cdm_ORGNAME_s* x);
 int zx_DEC_ELEM_cdm_ORGNAME(struct zx_ctx* c, struct zx_cdm_ORGNAME_s* x);
-int zx_LEN_SO_cdm_ORGNAME(struct zx_ctx* c, struct zx_cdm_ORGNAME_s* x);
-char* zx_ENC_SO_cdm_ORGNAME(struct zx_ctx* c, struct zx_cdm_ORGNAME_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_ORGNAME(struct zx_ctx* c, struct zx_cdm_ORGNAME_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_ORGNAME_s* zx_DEEP_CLONE_cdm_ORGNAME(struct zx_ctx* c, struct zx_cdm_ORGNAME_s* x, int dup_strs);
@@ -2301,7 +2111,6 @@ void zx_cdm_ORGNAME_PUT_group(struct zx_cdm_ORGNAME_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_ORGUNIT_EXT
 #define zx_cdm_ORGUNIT_EXT
 #endif
-
 struct zx_cdm_ORGUNIT_s {
   ZX_ELEM_EXT
   zx_cdm_ORGUNIT_EXT
@@ -2309,12 +2118,8 @@ struct zx_cdm_ORGUNIT_s {
 };
 
 #define zx_NEW_cdm_ORGUNIT(c, father) (struct zx_cdm_ORGUNIT_s*)zx_new_elem((c),(father),zx_cdm_ORGUNIT_ELEM)
-
 int zx_DEC_ATTR_cdm_ORGUNIT(struct zx_ctx* c, struct zx_cdm_ORGUNIT_s* x);
 int zx_DEC_ELEM_cdm_ORGUNIT(struct zx_ctx* c, struct zx_cdm_ORGUNIT_s* x);
-int zx_LEN_SO_cdm_ORGUNIT(struct zx_ctx* c, struct zx_cdm_ORGUNIT_s* x);
-char* zx_ENC_SO_cdm_ORGUNIT(struct zx_ctx* c, struct zx_cdm_ORGUNIT_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_ORGUNIT(struct zx_ctx* c, struct zx_cdm_ORGUNIT_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_ORGUNIT_s* zx_DEEP_CLONE_cdm_ORGUNIT(struct zx_ctx* c, struct zx_cdm_ORGUNIT_s* x, int dup_strs);
@@ -2342,7 +2147,6 @@ void zx_cdm_ORGUNIT_PUT_group(struct zx_cdm_ORGUNIT_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_PCODE_EXT
 #define zx_cdm_PCODE_EXT
 #endif
-
 struct zx_cdm_PCODE_s {
   ZX_ELEM_EXT
   zx_cdm_PCODE_EXT
@@ -2350,12 +2154,8 @@ struct zx_cdm_PCODE_s {
 };
 
 #define zx_NEW_cdm_PCODE(c, father) (struct zx_cdm_PCODE_s*)zx_new_elem((c),(father),zx_cdm_PCODE_ELEM)
-
 int zx_DEC_ATTR_cdm_PCODE(struct zx_ctx* c, struct zx_cdm_PCODE_s* x);
 int zx_DEC_ELEM_cdm_PCODE(struct zx_ctx* c, struct zx_cdm_PCODE_s* x);
-int zx_LEN_SO_cdm_PCODE(struct zx_ctx* c, struct zx_cdm_PCODE_s* x);
-char* zx_ENC_SO_cdm_PCODE(struct zx_ctx* c, struct zx_cdm_PCODE_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_PCODE(struct zx_ctx* c, struct zx_cdm_PCODE_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_PCODE_s* zx_DEEP_CLONE_cdm_PCODE(struct zx_ctx* c, struct zx_cdm_PCODE_s* x, int dup_strs);
@@ -2383,7 +2183,6 @@ void zx_cdm_PCODE_PUT_group(struct zx_cdm_PCODE_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_PHONETIC_EXT
 #define zx_cdm_PHONETIC_EXT
 #endif
-
 struct zx_cdm_PHONETIC_s {
   ZX_ELEM_EXT
   zx_cdm_PHONETIC_EXT
@@ -2391,12 +2190,8 @@ struct zx_cdm_PHONETIC_s {
 };
 
 #define zx_NEW_cdm_PHONETIC(c, father) (struct zx_cdm_PHONETIC_s*)zx_new_elem((c),(father),zx_cdm_PHONETIC_ELEM)
-
 int zx_DEC_ATTR_cdm_PHONETIC(struct zx_ctx* c, struct zx_cdm_PHONETIC_s* x);
 int zx_DEC_ELEM_cdm_PHONETIC(struct zx_ctx* c, struct zx_cdm_PHONETIC_s* x);
-int zx_LEN_SO_cdm_PHONETIC(struct zx_ctx* c, struct zx_cdm_PHONETIC_s* x);
-char* zx_ENC_SO_cdm_PHONETIC(struct zx_ctx* c, struct zx_cdm_PHONETIC_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_PHONETIC(struct zx_ctx* c, struct zx_cdm_PHONETIC_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_PHONETIC_s* zx_DEEP_CLONE_cdm_PHONETIC(struct zx_ctx* c, struct zx_cdm_PHONETIC_s* x, int dup_strs);
@@ -2424,7 +2219,6 @@ void zx_cdm_PHONETIC_PUT_group(struct zx_cdm_PHONETIC_s* x, struct zx_attr_s* y)
 #ifndef zx_cdm_PHOTO_EXT
 #define zx_cdm_PHOTO_EXT
 #endif
-
 struct zx_cdm_PHOTO_s {
   ZX_ELEM_EXT
   zx_cdm_PHOTO_EXT
@@ -2436,12 +2230,8 @@ struct zx_cdm_PHOTO_s {
 };
 
 #define zx_NEW_cdm_PHOTO(c, father) (struct zx_cdm_PHOTO_s*)zx_new_elem((c),(father),zx_cdm_PHOTO_ELEM)
-
 int zx_DEC_ATTR_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s* x);
 int zx_DEC_ELEM_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s* x);
-int zx_LEN_SO_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s* x);
-char* zx_ENC_SO_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_PHOTO_s* zx_DEEP_CLONE_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s* x, int dup_strs);
@@ -2495,7 +2285,6 @@ void zx_cdm_PHOTO_REV_EXTVAL(struct zx_cdm_PHOTO_s* x);
 #ifndef zx_cdm_PHYSICALACCESS_EXT
 #define zx_cdm_PHYSICALACCESS_EXT
 #endif
-
 struct zx_cdm_PHYSICALACCESS_s {
   ZX_ELEM_EXT
   zx_cdm_PHYSICALACCESS_EXT
@@ -2503,12 +2292,8 @@ struct zx_cdm_PHYSICALACCESS_s {
 };
 
 #define zx_NEW_cdm_PHYSICALACCESS(c, father) (struct zx_cdm_PHYSICALACCESS_s*)zx_new_elem((c),(father),zx_cdm_PHYSICALACCESS_ELEM)
-
 int zx_DEC_ATTR_cdm_PHYSICALACCESS(struct zx_ctx* c, struct zx_cdm_PHYSICALACCESS_s* x);
 int zx_DEC_ELEM_cdm_PHYSICALACCESS(struct zx_ctx* c, struct zx_cdm_PHYSICALACCESS_s* x);
-int zx_LEN_SO_cdm_PHYSICALACCESS(struct zx_ctx* c, struct zx_cdm_PHYSICALACCESS_s* x);
-char* zx_ENC_SO_cdm_PHYSICALACCESS(struct zx_ctx* c, struct zx_cdm_PHYSICALACCESS_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_PHYSICALACCESS(struct zx_ctx* c, struct zx_cdm_PHYSICALACCESS_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_PHYSICALACCESS_s* zx_DEEP_CLONE_cdm_PHYSICALACCESS(struct zx_ctx* c, struct zx_cdm_PHYSICALACCESS_s* x, int dup_strs);
@@ -2536,7 +2321,6 @@ void zx_cdm_PHYSICALACCESS_PUT_group(struct zx_cdm_PHYSICALACCESS_s* x, struct z
 #ifndef zx_cdm_POBOX_EXT
 #define zx_cdm_POBOX_EXT
 #endif
-
 struct zx_cdm_POBOX_s {
   ZX_ELEM_EXT
   zx_cdm_POBOX_EXT
@@ -2544,12 +2328,8 @@ struct zx_cdm_POBOX_s {
 };
 
 #define zx_NEW_cdm_POBOX(c, father) (struct zx_cdm_POBOX_s*)zx_new_elem((c),(father),zx_cdm_POBOX_ELEM)
-
 int zx_DEC_ATTR_cdm_POBOX(struct zx_ctx* c, struct zx_cdm_POBOX_s* x);
 int zx_DEC_ELEM_cdm_POBOX(struct zx_ctx* c, struct zx_cdm_POBOX_s* x);
-int zx_LEN_SO_cdm_POBOX(struct zx_ctx* c, struct zx_cdm_POBOX_s* x);
-char* zx_ENC_SO_cdm_POBOX(struct zx_ctx* c, struct zx_cdm_POBOX_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_POBOX(struct zx_ctx* c, struct zx_cdm_POBOX_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_POBOX_s* zx_DEEP_CLONE_cdm_POBOX(struct zx_ctx* c, struct zx_cdm_POBOX_s* x, int dup_strs);
@@ -2577,7 +2357,6 @@ void zx_cdm_POBOX_PUT_group(struct zx_cdm_POBOX_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_PREFIX_EXT
 #define zx_cdm_PREFIX_EXT
 #endif
-
 struct zx_cdm_PREFIX_s {
   ZX_ELEM_EXT
   zx_cdm_PREFIX_EXT
@@ -2585,12 +2364,8 @@ struct zx_cdm_PREFIX_s {
 };
 
 #define zx_NEW_cdm_PREFIX(c, father) (struct zx_cdm_PREFIX_s*)zx_new_elem((c),(father),zx_cdm_PREFIX_ELEM)
-
 int zx_DEC_ATTR_cdm_PREFIX(struct zx_ctx* c, struct zx_cdm_PREFIX_s* x);
 int zx_DEC_ELEM_cdm_PREFIX(struct zx_ctx* c, struct zx_cdm_PREFIX_s* x);
-int zx_LEN_SO_cdm_PREFIX(struct zx_ctx* c, struct zx_cdm_PREFIX_s* x);
-char* zx_ENC_SO_cdm_PREFIX(struct zx_ctx* c, struct zx_cdm_PREFIX_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_PREFIX(struct zx_ctx* c, struct zx_cdm_PREFIX_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_PREFIX_s* zx_DEEP_CLONE_cdm_PREFIX(struct zx_ctx* c, struct zx_cdm_PREFIX_s* x, int dup_strs);
@@ -2618,7 +2393,6 @@ void zx_cdm_PREFIX_PUT_group(struct zx_cdm_PREFIX_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_PRODID_EXT
 #define zx_cdm_PRODID_EXT
 #endif
-
 struct zx_cdm_PRODID_s {
   ZX_ELEM_EXT
   zx_cdm_PRODID_EXT
@@ -2630,12 +2404,8 @@ struct zx_cdm_PRODID_s {
 };
 
 #define zx_NEW_cdm_PRODID(c, father) (struct zx_cdm_PRODID_s*)zx_new_elem((c),(father),zx_cdm_PRODID_ELEM)
-
 int zx_DEC_ATTR_cdm_PRODID(struct zx_ctx* c, struct zx_cdm_PRODID_s* x);
 int zx_DEC_ELEM_cdm_PRODID(struct zx_ctx* c, struct zx_cdm_PRODID_s* x);
-int zx_LEN_SO_cdm_PRODID(struct zx_ctx* c, struct zx_cdm_PRODID_s* x);
-char* zx_ENC_SO_cdm_PRODID(struct zx_ctx* c, struct zx_cdm_PRODID_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_PRODID(struct zx_ctx* c, struct zx_cdm_PRODID_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_PRODID_s* zx_DEEP_CLONE_cdm_PRODID(struct zx_ctx* c, struct zx_cdm_PRODID_s* x, int dup_strs);
@@ -2671,7 +2441,6 @@ void zx_cdm_PRODID_PUT_modifier(struct zx_cdm_PRODID_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_REGION_EXT
 #define zx_cdm_REGION_EXT
 #endif
-
 struct zx_cdm_REGION_s {
   ZX_ELEM_EXT
   zx_cdm_REGION_EXT
@@ -2679,12 +2448,8 @@ struct zx_cdm_REGION_s {
 };
 
 #define zx_NEW_cdm_REGION(c, father) (struct zx_cdm_REGION_s*)zx_new_elem((c),(father),zx_cdm_REGION_ELEM)
-
 int zx_DEC_ATTR_cdm_REGION(struct zx_ctx* c, struct zx_cdm_REGION_s* x);
 int zx_DEC_ELEM_cdm_REGION(struct zx_ctx* c, struct zx_cdm_REGION_s* x);
-int zx_LEN_SO_cdm_REGION(struct zx_ctx* c, struct zx_cdm_REGION_s* x);
-char* zx_ENC_SO_cdm_REGION(struct zx_ctx* c, struct zx_cdm_REGION_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_REGION(struct zx_ctx* c, struct zx_cdm_REGION_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_REGION_s* zx_DEEP_CLONE_cdm_REGION(struct zx_ctx* c, struct zx_cdm_REGION_s* x, int dup_strs);
@@ -2712,7 +2477,6 @@ void zx_cdm_REGION_PUT_group(struct zx_cdm_REGION_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_REV_EXT
 #define zx_cdm_REV_EXT
 #endif
-
 struct zx_cdm_REV_s {
   ZX_ELEM_EXT
   zx_cdm_REV_EXT
@@ -2724,12 +2488,8 @@ struct zx_cdm_REV_s {
 };
 
 #define zx_NEW_cdm_REV(c, father) (struct zx_cdm_REV_s*)zx_new_elem((c),(father),zx_cdm_REV_ELEM)
-
 int zx_DEC_ATTR_cdm_REV(struct zx_ctx* c, struct zx_cdm_REV_s* x);
 int zx_DEC_ELEM_cdm_REV(struct zx_ctx* c, struct zx_cdm_REV_s* x);
-int zx_LEN_SO_cdm_REV(struct zx_ctx* c, struct zx_cdm_REV_s* x);
-char* zx_ENC_SO_cdm_REV(struct zx_ctx* c, struct zx_cdm_REV_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_REV(struct zx_ctx* c, struct zx_cdm_REV_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_REV_s* zx_DEEP_CLONE_cdm_REV(struct zx_ctx* c, struct zx_cdm_REV_s* x, int dup_strs);
@@ -2765,7 +2525,6 @@ void zx_cdm_REV_PUT_modifier(struct zx_cdm_REV_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_ROLE_EXT
 #define zx_cdm_ROLE_EXT
 #endif
-
 struct zx_cdm_ROLE_s {
   ZX_ELEM_EXT
   zx_cdm_ROLE_EXT
@@ -2773,12 +2532,8 @@ struct zx_cdm_ROLE_s {
 };
 
 #define zx_NEW_cdm_ROLE(c, father) (struct zx_cdm_ROLE_s*)zx_new_elem((c),(father),zx_cdm_ROLE_ELEM)
-
 int zx_DEC_ATTR_cdm_ROLE(struct zx_ctx* c, struct zx_cdm_ROLE_s* x);
 int zx_DEC_ELEM_cdm_ROLE(struct zx_ctx* c, struct zx_cdm_ROLE_s* x);
-int zx_LEN_SO_cdm_ROLE(struct zx_ctx* c, struct zx_cdm_ROLE_s* x);
-char* zx_ENC_SO_cdm_ROLE(struct zx_ctx* c, struct zx_cdm_ROLE_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_ROLE(struct zx_ctx* c, struct zx_cdm_ROLE_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_ROLE_s* zx_DEEP_CLONE_cdm_ROLE(struct zx_ctx* c, struct zx_cdm_ROLE_s* x, int dup_strs);
@@ -2806,7 +2561,6 @@ void zx_cdm_ROLE_PUT_group(struct zx_cdm_ROLE_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_SORT_STRING_EXT
 #define zx_cdm_SORT_STRING_EXT
 #endif
-
 struct zx_cdm_SORT_STRING_s {
   ZX_ELEM_EXT
   zx_cdm_SORT_STRING_EXT
@@ -2814,12 +2568,8 @@ struct zx_cdm_SORT_STRING_s {
 };
 
 #define zx_NEW_cdm_SORT_STRING(c, father) (struct zx_cdm_SORT_STRING_s*)zx_new_elem((c),(father),zx_cdm_SORT_STRING_ELEM)
-
 int zx_DEC_ATTR_cdm_SORT_STRING(struct zx_ctx* c, struct zx_cdm_SORT_STRING_s* x);
 int zx_DEC_ELEM_cdm_SORT_STRING(struct zx_ctx* c, struct zx_cdm_SORT_STRING_s* x);
-int zx_LEN_SO_cdm_SORT_STRING(struct zx_ctx* c, struct zx_cdm_SORT_STRING_s* x);
-char* zx_ENC_SO_cdm_SORT_STRING(struct zx_ctx* c, struct zx_cdm_SORT_STRING_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_SORT_STRING(struct zx_ctx* c, struct zx_cdm_SORT_STRING_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_SORT_STRING_s* zx_DEEP_CLONE_cdm_SORT_STRING(struct zx_ctx* c, struct zx_cdm_SORT_STRING_s* x, int dup_strs);
@@ -2847,7 +2597,6 @@ void zx_cdm_SORT_STRING_PUT_group(struct zx_cdm_SORT_STRING_s* x, struct zx_attr
 #ifndef zx_cdm_SOUND_EXT
 #define zx_cdm_SOUND_EXT
 #endif
-
 struct zx_cdm_SOUND_s {
   ZX_ELEM_EXT
   zx_cdm_SOUND_EXT
@@ -2859,12 +2608,8 @@ struct zx_cdm_SOUND_s {
 };
 
 #define zx_NEW_cdm_SOUND(c, father) (struct zx_cdm_SOUND_s*)zx_new_elem((c),(father),zx_cdm_SOUND_ELEM)
-
 int zx_DEC_ATTR_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s* x);
 int zx_DEC_ELEM_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s* x);
-int zx_LEN_SO_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s* x);
-char* zx_ENC_SO_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_SOUND_s* zx_DEEP_CLONE_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s* x, int dup_strs);
@@ -2918,7 +2663,6 @@ void zx_cdm_SOUND_REV_EXTVAL(struct zx_cdm_SOUND_s* x);
 #ifndef zx_cdm_STREET_EXT
 #define zx_cdm_STREET_EXT
 #endif
-
 struct zx_cdm_STREET_s {
   ZX_ELEM_EXT
   zx_cdm_STREET_EXT
@@ -2926,12 +2670,8 @@ struct zx_cdm_STREET_s {
 };
 
 #define zx_NEW_cdm_STREET(c, father) (struct zx_cdm_STREET_s*)zx_new_elem((c),(father),zx_cdm_STREET_ELEM)
-
 int zx_DEC_ATTR_cdm_STREET(struct zx_ctx* c, struct zx_cdm_STREET_s* x);
 int zx_DEC_ELEM_cdm_STREET(struct zx_ctx* c, struct zx_cdm_STREET_s* x);
-int zx_LEN_SO_cdm_STREET(struct zx_ctx* c, struct zx_cdm_STREET_s* x);
-char* zx_ENC_SO_cdm_STREET(struct zx_ctx* c, struct zx_cdm_STREET_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_STREET(struct zx_ctx* c, struct zx_cdm_STREET_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_STREET_s* zx_DEEP_CLONE_cdm_STREET(struct zx_ctx* c, struct zx_cdm_STREET_s* x, int dup_strs);
@@ -2959,7 +2699,6 @@ void zx_cdm_STREET_PUT_group(struct zx_cdm_STREET_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_SUFFIX_EXT
 #define zx_cdm_SUFFIX_EXT
 #endif
-
 struct zx_cdm_SUFFIX_s {
   ZX_ELEM_EXT
   zx_cdm_SUFFIX_EXT
@@ -2967,12 +2706,8 @@ struct zx_cdm_SUFFIX_s {
 };
 
 #define zx_NEW_cdm_SUFFIX(c, father) (struct zx_cdm_SUFFIX_s*)zx_new_elem((c),(father),zx_cdm_SUFFIX_ELEM)
-
 int zx_DEC_ATTR_cdm_SUFFIX(struct zx_ctx* c, struct zx_cdm_SUFFIX_s* x);
 int zx_DEC_ELEM_cdm_SUFFIX(struct zx_ctx* c, struct zx_cdm_SUFFIX_s* x);
-int zx_LEN_SO_cdm_SUFFIX(struct zx_ctx* c, struct zx_cdm_SUFFIX_s* x);
-char* zx_ENC_SO_cdm_SUFFIX(struct zx_ctx* c, struct zx_cdm_SUFFIX_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_SUFFIX(struct zx_ctx* c, struct zx_cdm_SUFFIX_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_SUFFIX_s* zx_DEEP_CLONE_cdm_SUFFIX(struct zx_ctx* c, struct zx_cdm_SUFFIX_s* x, int dup_strs);
@@ -3000,7 +2735,6 @@ void zx_cdm_SUFFIX_PUT_group(struct zx_cdm_SUFFIX_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_TEL_EXT
 #define zx_cdm_TEL_EXT
 #endif
-
 struct zx_cdm_TEL_s {
   ZX_ELEM_EXT
   zx_cdm_TEL_EXT
@@ -3023,12 +2757,8 @@ struct zx_cdm_TEL_s {
 };
 
 #define zx_NEW_cdm_TEL(c, father) (struct zx_cdm_TEL_s*)zx_new_elem((c),(father),zx_cdm_TEL_ELEM)
-
 int zx_DEC_ATTR_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x);
 int zx_DEC_ELEM_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x);
-int zx_LEN_SO_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x);
-char* zx_ENC_SO_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_TEL_s* zx_DEEP_CLONE_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x, int dup_strs);
@@ -3134,19 +2864,19 @@ void zx_cdm_TEL_ADD_PCS(struct zx_cdm_TEL_s* x, int n, struct zx_elem_s* z);
 void zx_cdm_TEL_ADD_PREF(struct zx_cdm_TEL_s* x, int n, struct zx_elem_s* z);
 void zx_cdm_TEL_ADD_NUMBER(struct zx_cdm_TEL_s* x, int n, struct zx_cdm_NUMBER_s* z);
 
-void zx_cdm_TEL_DEL_HOME(struct zx_cdm_TEL_s* x, int n);
-void zx_cdm_TEL_DEL_WORK(struct zx_cdm_TEL_s* x, int n);
-void zx_cdm_TEL_DEL_VOICE(struct zx_cdm_TEL_s* x, int n);
-void zx_cdm_TEL_DEL_FAX(struct zx_cdm_TEL_s* x, int n);
-void zx_cdm_TEL_DEL_PAGER(struct zx_cdm_TEL_s* x, int n);
-void zx_cdm_TEL_DEL_MSG(struct zx_cdm_TEL_s* x, int n);
-void zx_cdm_TEL_DEL_CELL(struct zx_cdm_TEL_s* x, int n);
-void zx_cdm_TEL_DEL_VIDEO(struct zx_cdm_TEL_s* x, int n);
-void zx_cdm_TEL_DEL_BBS(struct zx_cdm_TEL_s* x, int n);
-void zx_cdm_TEL_DEL_MODEM(struct zx_cdm_TEL_s* x, int n);
-void zx_cdm_TEL_DEL_ISDN(struct zx_cdm_TEL_s* x, int n);
-void zx_cdm_TEL_DEL_PCS(struct zx_cdm_TEL_s* x, int n);
-void zx_cdm_TEL_DEL_PREF(struct zx_cdm_TEL_s* x, int n);
+void zx_cdm_TEL_DEL_HOME(struct zx_cdm_TEL_s* x,int n);
+void zx_cdm_TEL_DEL_WORK(struct zx_cdm_TEL_s* x,int n);
+void zx_cdm_TEL_DEL_VOICE(struct zx_cdm_TEL_s* x,int n);
+void zx_cdm_TEL_DEL_FAX(struct zx_cdm_TEL_s* x,int n);
+void zx_cdm_TEL_DEL_PAGER(struct zx_cdm_TEL_s* x,int n);
+void zx_cdm_TEL_DEL_MSG(struct zx_cdm_TEL_s* x,int n);
+void zx_cdm_TEL_DEL_CELL(struct zx_cdm_TEL_s* x,int n);
+void zx_cdm_TEL_DEL_VIDEO(struct zx_cdm_TEL_s* x,int n);
+void zx_cdm_TEL_DEL_BBS(struct zx_cdm_TEL_s* x,int n);
+void zx_cdm_TEL_DEL_MODEM(struct zx_cdm_TEL_s* x,int n);
+void zx_cdm_TEL_DEL_ISDN(struct zx_cdm_TEL_s* x,int n);
+void zx_cdm_TEL_DEL_PCS(struct zx_cdm_TEL_s* x,int n);
+void zx_cdm_TEL_DEL_PREF(struct zx_cdm_TEL_s* x,int n);
 void zx_cdm_TEL_DEL_NUMBER(struct zx_cdm_TEL_s* x, int n);
 
 void zx_cdm_TEL_REV_HOME(struct zx_cdm_TEL_s* x);
@@ -3170,7 +2900,6 @@ void zx_cdm_TEL_REV_NUMBER(struct zx_cdm_TEL_s* x);
 #ifndef zx_cdm_TITLE_EXT
 #define zx_cdm_TITLE_EXT
 #endif
-
 struct zx_cdm_TITLE_s {
   ZX_ELEM_EXT
   zx_cdm_TITLE_EXT
@@ -3178,12 +2907,8 @@ struct zx_cdm_TITLE_s {
 };
 
 #define zx_NEW_cdm_TITLE(c, father) (struct zx_cdm_TITLE_s*)zx_new_elem((c),(father),zx_cdm_TITLE_ELEM)
-
 int zx_DEC_ATTR_cdm_TITLE(struct zx_ctx* c, struct zx_cdm_TITLE_s* x);
 int zx_DEC_ELEM_cdm_TITLE(struct zx_ctx* c, struct zx_cdm_TITLE_s* x);
-int zx_LEN_SO_cdm_TITLE(struct zx_ctx* c, struct zx_cdm_TITLE_s* x);
-char* zx_ENC_SO_cdm_TITLE(struct zx_ctx* c, struct zx_cdm_TITLE_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_TITLE(struct zx_ctx* c, struct zx_cdm_TITLE_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_TITLE_s* zx_DEEP_CLONE_cdm_TITLE(struct zx_ctx* c, struct zx_cdm_TITLE_s* x, int dup_strs);
@@ -3211,7 +2936,6 @@ void zx_cdm_TITLE_PUT_group(struct zx_cdm_TITLE_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_TYPE_EXT
 #define zx_cdm_TYPE_EXT
 #endif
-
 struct zx_cdm_TYPE_s {
   ZX_ELEM_EXT
   zx_cdm_TYPE_EXT
@@ -3223,12 +2947,8 @@ struct zx_cdm_TYPE_s {
 };
 
 #define zx_NEW_cdm_TYPE(c, father) (struct zx_cdm_TYPE_s*)zx_new_elem((c),(father),zx_cdm_TYPE_ELEM)
-
 int zx_DEC_ATTR_cdm_TYPE(struct zx_ctx* c, struct zx_cdm_TYPE_s* x);
 int zx_DEC_ELEM_cdm_TYPE(struct zx_ctx* c, struct zx_cdm_TYPE_s* x);
-int zx_LEN_SO_cdm_TYPE(struct zx_ctx* c, struct zx_cdm_TYPE_s* x);
-char* zx_ENC_SO_cdm_TYPE(struct zx_ctx* c, struct zx_cdm_TYPE_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_TYPE(struct zx_ctx* c, struct zx_cdm_TYPE_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_TYPE_s* zx_DEEP_CLONE_cdm_TYPE(struct zx_ctx* c, struct zx_cdm_TYPE_s* x, int dup_strs);
@@ -3264,7 +2984,6 @@ void zx_cdm_TYPE_PUT_modifier(struct zx_cdm_TYPE_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_TZ_EXT
 #define zx_cdm_TZ_EXT
 #endif
-
 struct zx_cdm_TZ_s {
   ZX_ELEM_EXT
   zx_cdm_TZ_EXT
@@ -3276,12 +2995,8 @@ struct zx_cdm_TZ_s {
 };
 
 #define zx_NEW_cdm_TZ(c, father) (struct zx_cdm_TZ_s*)zx_new_elem((c),(father),zx_cdm_TZ_ELEM)
-
 int zx_DEC_ATTR_cdm_TZ(struct zx_ctx* c, struct zx_cdm_TZ_s* x);
 int zx_DEC_ELEM_cdm_TZ(struct zx_ctx* c, struct zx_cdm_TZ_s* x);
-int zx_LEN_SO_cdm_TZ(struct zx_ctx* c, struct zx_cdm_TZ_s* x);
-char* zx_ENC_SO_cdm_TZ(struct zx_ctx* c, struct zx_cdm_TZ_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_TZ(struct zx_ctx* c, struct zx_cdm_TZ_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_TZ_s* zx_DEEP_CLONE_cdm_TZ(struct zx_ctx* c, struct zx_cdm_TZ_s* x, int dup_strs);
@@ -3317,7 +3032,6 @@ void zx_cdm_TZ_PUT_modifier(struct zx_cdm_TZ_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_UID_EXT
 #define zx_cdm_UID_EXT
 #endif
-
 struct zx_cdm_UID_s {
   ZX_ELEM_EXT
   zx_cdm_UID_EXT
@@ -3329,12 +3043,8 @@ struct zx_cdm_UID_s {
 };
 
 #define zx_NEW_cdm_UID(c, father) (struct zx_cdm_UID_s*)zx_new_elem((c),(father),zx_cdm_UID_ELEM)
-
 int zx_DEC_ATTR_cdm_UID(struct zx_ctx* c, struct zx_cdm_UID_s* x);
 int zx_DEC_ELEM_cdm_UID(struct zx_ctx* c, struct zx_cdm_UID_s* x);
-int zx_LEN_SO_cdm_UID(struct zx_ctx* c, struct zx_cdm_UID_s* x);
-char* zx_ENC_SO_cdm_UID(struct zx_ctx* c, struct zx_cdm_UID_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_UID(struct zx_ctx* c, struct zx_cdm_UID_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_UID_s* zx_DEEP_CLONE_cdm_UID(struct zx_ctx* c, struct zx_cdm_UID_s* x, int dup_strs);
@@ -3370,7 +3080,6 @@ void zx_cdm_UID_PUT_modifier(struct zx_cdm_UID_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_URI_EXT
 #define zx_cdm_URI_EXT
 #endif
-
 struct zx_cdm_URI_s {
   ZX_ELEM_EXT
   zx_cdm_URI_EXT
@@ -3382,12 +3091,8 @@ struct zx_cdm_URI_s {
 };
 
 #define zx_NEW_cdm_URI(c, father) (struct zx_cdm_URI_s*)zx_new_elem((c),(father),zx_cdm_URI_ELEM)
-
 int zx_DEC_ATTR_cdm_URI(struct zx_ctx* c, struct zx_cdm_URI_s* x);
 int zx_DEC_ELEM_cdm_URI(struct zx_ctx* c, struct zx_cdm_URI_s* x);
-int zx_LEN_SO_cdm_URI(struct zx_ctx* c, struct zx_cdm_URI_s* x);
-char* zx_ENC_SO_cdm_URI(struct zx_ctx* c, struct zx_cdm_URI_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_URI(struct zx_ctx* c, struct zx_cdm_URI_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_URI_s* zx_DEEP_CLONE_cdm_URI(struct zx_ctx* c, struct zx_cdm_URI_s* x, int dup_strs);
@@ -3423,7 +3128,6 @@ void zx_cdm_URI_PUT_modifier(struct zx_cdm_URI_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_URL_EXT
 #define zx_cdm_URL_EXT
 #endif
-
 struct zx_cdm_URL_s {
   ZX_ELEM_EXT
   zx_cdm_URL_EXT
@@ -3435,12 +3139,8 @@ struct zx_cdm_URL_s {
 };
 
 #define zx_NEW_cdm_URL(c, father) (struct zx_cdm_URL_s*)zx_new_elem((c),(father),zx_cdm_URL_ELEM)
-
 int zx_DEC_ATTR_cdm_URL(struct zx_ctx* c, struct zx_cdm_URL_s* x);
 int zx_DEC_ELEM_cdm_URL(struct zx_ctx* c, struct zx_cdm_URL_s* x);
-int zx_LEN_SO_cdm_URL(struct zx_ctx* c, struct zx_cdm_URL_s* x);
-char* zx_ENC_SO_cdm_URL(struct zx_ctx* c, struct zx_cdm_URL_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_URL(struct zx_ctx* c, struct zx_cdm_URL_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_URL_s* zx_DEEP_CLONE_cdm_URL(struct zx_ctx* c, struct zx_cdm_URL_s* x, int dup_strs);
@@ -3476,7 +3176,6 @@ void zx_cdm_URL_PUT_modifier(struct zx_cdm_URL_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_USERID_EXT
 #define zx_cdm_USERID_EXT
 #endif
-
 struct zx_cdm_USERID_s {
   ZX_ELEM_EXT
   zx_cdm_USERID_EXT
@@ -3488,12 +3187,8 @@ struct zx_cdm_USERID_s {
 };
 
 #define zx_NEW_cdm_USERID(c, father) (struct zx_cdm_USERID_s*)zx_new_elem((c),(father),zx_cdm_USERID_ELEM)
-
 int zx_DEC_ATTR_cdm_USERID(struct zx_ctx* c, struct zx_cdm_USERID_s* x);
 int zx_DEC_ELEM_cdm_USERID(struct zx_ctx* c, struct zx_cdm_USERID_s* x);
-int zx_LEN_SO_cdm_USERID(struct zx_ctx* c, struct zx_cdm_USERID_s* x);
-char* zx_ENC_SO_cdm_USERID(struct zx_ctx* c, struct zx_cdm_USERID_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_USERID(struct zx_ctx* c, struct zx_cdm_USERID_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_USERID_s* zx_DEEP_CLONE_cdm_USERID(struct zx_ctx* c, struct zx_cdm_USERID_s* x, int dup_strs);
@@ -3529,7 +3224,6 @@ void zx_cdm_USERID_PUT_modifier(struct zx_cdm_USERID_s* x, struct zx_attr_s* y);
 #ifndef zx_cdm_VERSION_EXT
 #define zx_cdm_VERSION_EXT
 #endif
-
 struct zx_cdm_VERSION_s {
   ZX_ELEM_EXT
   zx_cdm_VERSION_EXT
@@ -3541,12 +3235,8 @@ struct zx_cdm_VERSION_s {
 };
 
 #define zx_NEW_cdm_VERSION(c, father) (struct zx_cdm_VERSION_s*)zx_new_elem((c),(father),zx_cdm_VERSION_ELEM)
-
 int zx_DEC_ATTR_cdm_VERSION(struct zx_ctx* c, struct zx_cdm_VERSION_s* x);
 int zx_DEC_ELEM_cdm_VERSION(struct zx_ctx* c, struct zx_cdm_VERSION_s* x);
-int zx_LEN_SO_cdm_VERSION(struct zx_ctx* c, struct zx_cdm_VERSION_s* x);
-char* zx_ENC_SO_cdm_VERSION(struct zx_ctx* c, struct zx_cdm_VERSION_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_VERSION(struct zx_ctx* c, struct zx_cdm_VERSION_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_VERSION_s* zx_DEEP_CLONE_cdm_VERSION(struct zx_ctx* c, struct zx_cdm_VERSION_s* x, int dup_strs);
@@ -3582,7 +3272,6 @@ void zx_cdm_VERSION_PUT_modifier(struct zx_cdm_VERSION_s* x, struct zx_attr_s* y
 #ifndef zx_cdm_vCard_EXT
 #define zx_cdm_vCard_EXT
 #endif
-
 struct zx_cdm_vCard_s {
   ZX_ELEM_EXT
   zx_cdm_vCard_EXT
@@ -3632,12 +3321,8 @@ struct zx_cdm_vCard_s {
 };
 
 #define zx_NEW_cdm_vCard(c, father) (struct zx_cdm_vCard_s*)zx_new_elem((c),(father),zx_cdm_vCard_ELEM)
-
 int zx_DEC_ATTR_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x);
 int zx_DEC_ELEM_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x);
-int zx_LEN_SO_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x);
-char* zx_ENC_SO_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x, int dup_strs);
@@ -3906,10 +3591,10 @@ void zx_cdm_vCard_ADD_FBURL(struct zx_cdm_vCard_s* x, int n, struct zx_cdm_FBURL
 void zx_cdm_vCard_ADD_Extension(struct zx_cdm_vCard_s* x, int n, struct zx_cb_Extension_s* z);
 
 void zx_cdm_vCard_DEL_VERSION_is_Perl_MakeMaker_gobbled(struct zx_cdm_vCard_s* x, int n);
-void zx_cdm_vCard_DEL_CARDID(struct zx_cdm_vCard_s* x, int n);
-void zx_cdm_vCard_DEL_DISTRIBUTIONLIST(struct zx_cdm_vCard_s* x, int n);
-void zx_cdm_vCard_DEL_SELF(struct zx_cdm_vCard_s* x, int n);
-void zx_cdm_vCard_DEL_FAVORITE(struct zx_cdm_vCard_s* x, int n);
+void zx_cdm_vCard_DEL_CARDID(struct zx_cdm_vCard_s* x,int n);
+void zx_cdm_vCard_DEL_DISTRIBUTIONLIST(struct zx_cdm_vCard_s* x,int n);
+void zx_cdm_vCard_DEL_SELF(struct zx_cdm_vCard_s* x,int n);
+void zx_cdm_vCard_DEL_FAVORITE(struct zx_cdm_vCard_s* x,int n);
 void zx_cdm_vCard_DEL_FN(struct zx_cdm_vCard_s* x, int n);
 void zx_cdm_vCard_DEL_N(struct zx_cdm_vCard_s* x, int n);
 void zx_cdm_vCard_DEL_LISTMEMBER(struct zx_cdm_vCard_s* x, int n);

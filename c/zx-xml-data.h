@@ -23,7 +23,6 @@
 #ifndef zx_xml_DummyToPullLang_EXT
 #define zx_xml_DummyToPullLang_EXT
 #endif
-
 struct zx_xml_DummyToPullLang_s {
   ZX_ELEM_EXT
   zx_xml_DummyToPullLang_EXT
@@ -31,12 +30,8 @@ struct zx_xml_DummyToPullLang_s {
 };
 
 #define zx_NEW_xml_DummyToPullLang(c, father) (struct zx_xml_DummyToPullLang_s*)zx_new_elem((c),(father),zx_xml_DummyToPullLang_ELEM)
-
 int zx_DEC_ATTR_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
 int zx_DEC_ELEM_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
-int zx_LEN_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
-char* zx_ENC_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xml_DummyToPullLang_s* zx_DEEP_CLONE_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, int dup_strs);

@@ -95,7 +95,6 @@ struct zx_el_tok* zx_elem2tok(const char* s, unsigned int len);
 #ifndef zx_root_EXT
 #define zx_root_EXT
 #endif
-
 struct zx_root_s {
   ZX_ELEM_EXT
   zx_root_EXT
@@ -142,12 +141,8 @@ struct zx_root_s {
 };
 
 #define zx_NEW_root(c, father) (struct zx_root_s*)zx_new_elem((c),(father),zx_root_ELEM)
-
 int zx_DEC_ATTR_root(struct zx_ctx* c, struct zx_root_s* x);
 int zx_DEC_ELEM_root(struct zx_ctx* c, struct zx_root_s* x);
-int zx_LEN_SO_root(struct zx_ctx* c, struct zx_root_s* x);
-char* zx_ENC_SO_root(struct zx_ctx* c, struct zx_root_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_root(struct zx_ctx* c, struct zx_root_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_root_s* zx_DEEP_CLONE_root(struct zx_ctx* c, struct zx_root_s* x, int dup_strs);
@@ -409,7 +404,7 @@ void zx_root_DEL_Assertion(struct zx_root_s* x, int n);
 void zx_root_DEL_EncryptedAssertion(struct zx_root_s* x, int n);
 void zx_root_DEL_NameID(struct zx_root_s* x, int n);
 void zx_root_DEL_EncryptedID(struct zx_root_s* x, int n);
-void zx_root_DEL_NewID(struct zx_root_s* x, int n);
+void zx_root_DEL_NewID(struct zx_root_s* x,int n);
 void zx_root_DEL_AuthnRequest(struct zx_root_s* x, int n);
 void zx_root_DEL_Response(struct zx_root_s* x, int n);
 void zx_root_DEL_LogoutRequest(struct zx_root_s* x, int n);

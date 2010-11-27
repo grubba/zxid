@@ -23,7 +23,6 @@
 #ifndef zx_sec12_ProxyInfoConfirmationData_EXT
 #define zx_sec12_ProxyInfoConfirmationData_EXT
 #endif
-
 struct zx_sec12_ProxyInfoConfirmationData_s {
   ZX_ELEM_EXT
   zx_sec12_ProxyInfoConfirmationData_EXT
@@ -35,12 +34,8 @@ struct zx_sec12_ProxyInfoConfirmationData_s {
 };
 
 #define zx_NEW_sec12_ProxyInfoConfirmationData(c, father) (struct zx_sec12_ProxyInfoConfirmationData_s*)zx_new_elem((c),(father),zx_sec12_ProxyInfoConfirmationData_ELEM)
-
 int zx_DEC_ATTR_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_sec12_ProxyInfoConfirmationData_s* x);
 int zx_DEC_ELEM_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_sec12_ProxyInfoConfirmationData_s* x);
-int zx_LEN_SO_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_sec12_ProxyInfoConfirmationData_s* x);
-char* zx_ENC_SO_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_sec12_ProxyInfoConfirmationData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_sec12_ProxyInfoConfirmationData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sec12_ProxyInfoConfirmationData_s* zx_DEEP_CLONE_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_sec12_ProxyInfoConfirmationData_s* x, int dup_strs);
@@ -84,9 +79,9 @@ void zx_sec12_ProxyInfoConfirmationData_ADD_Issuer(struct zx_sec12_ProxyInfoConf
 void zx_sec12_ProxyInfoConfirmationData_ADD_IssueInstant(struct zx_sec12_ProxyInfoConfirmationData_s* x, int n, struct zx_elem_s* z);
 void zx_sec12_ProxyInfoConfirmationData_ADD_Signature(struct zx_sec12_ProxyInfoConfirmationData_s* x, int n, struct zx_ds_Signature_s* z);
 
-void zx_sec12_ProxyInfoConfirmationData_DEL_AssertionIDReference(struct zx_sec12_ProxyInfoConfirmationData_s* x, int n);
-void zx_sec12_ProxyInfoConfirmationData_DEL_Issuer(struct zx_sec12_ProxyInfoConfirmationData_s* x, int n);
-void zx_sec12_ProxyInfoConfirmationData_DEL_IssueInstant(struct zx_sec12_ProxyInfoConfirmationData_s* x, int n);
+void zx_sec12_ProxyInfoConfirmationData_DEL_AssertionIDReference(struct zx_sec12_ProxyInfoConfirmationData_s* x,int n);
+void zx_sec12_ProxyInfoConfirmationData_DEL_Issuer(struct zx_sec12_ProxyInfoConfirmationData_s* x,int n);
+void zx_sec12_ProxyInfoConfirmationData_DEL_IssueInstant(struct zx_sec12_ProxyInfoConfirmationData_s* x,int n);
 void zx_sec12_ProxyInfoConfirmationData_DEL_Signature(struct zx_sec12_ProxyInfoConfirmationData_s* x, int n);
 
 void zx_sec12_ProxyInfoConfirmationData_REV_AssertionIDReference(struct zx_sec12_ProxyInfoConfirmationData_s* x);
@@ -100,7 +95,6 @@ void zx_sec12_ProxyInfoConfirmationData_REV_Signature(struct zx_sec12_ProxyInfoC
 #ifndef zx_sec12_ProxySubject_EXT
 #define zx_sec12_ProxySubject_EXT
 #endif
-
 struct zx_sec12_ProxySubject_s {
   ZX_ELEM_EXT
   zx_sec12_ProxySubject_EXT
@@ -109,12 +103,8 @@ struct zx_sec12_ProxySubject_s {
 };
 
 #define zx_NEW_sec12_ProxySubject(c, father) (struct zx_sec12_ProxySubject_s*)zx_new_elem((c),(father),zx_sec12_ProxySubject_ELEM)
-
 int zx_DEC_ATTR_sec12_ProxySubject(struct zx_ctx* c, struct zx_sec12_ProxySubject_s* x);
 int zx_DEC_ELEM_sec12_ProxySubject(struct zx_ctx* c, struct zx_sec12_ProxySubject_s* x);
-int zx_LEN_SO_sec12_ProxySubject(struct zx_ctx* c, struct zx_sec12_ProxySubject_s* x);
-char* zx_ENC_SO_sec12_ProxySubject(struct zx_ctx* c, struct zx_sec12_ProxySubject_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sec12_ProxySubject(struct zx_ctx* c, struct zx_sec12_ProxySubject_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sec12_ProxySubject_s* zx_DEEP_CLONE_sec12_ProxySubject(struct zx_ctx* c, struct zx_sec12_ProxySubject_s* x, int dup_strs);
@@ -156,7 +146,6 @@ void zx_sec12_ProxySubject_REV_SubjectConfirmation(struct zx_sec12_ProxySubject_
 #ifndef zx_sec12_ProxyTransitedStatement_EXT
 #define zx_sec12_ProxyTransitedStatement_EXT
 #endif
-
 struct zx_sec12_ProxyTransitedStatement_s {
   ZX_ELEM_EXT
   zx_sec12_ProxyTransitedStatement_EXT
@@ -164,12 +153,8 @@ struct zx_sec12_ProxyTransitedStatement_s {
 };
 
 #define zx_NEW_sec12_ProxyTransitedStatement(c, father) (struct zx_sec12_ProxyTransitedStatement_s*)zx_new_elem((c),(father),zx_sec12_ProxyTransitedStatement_ELEM)
-
 int zx_DEC_ATTR_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_sec12_ProxyTransitedStatement_s* x);
 int zx_DEC_ELEM_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_sec12_ProxyTransitedStatement_s* x);
-int zx_LEN_SO_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_sec12_ProxyTransitedStatement_s* x);
-char* zx_ENC_SO_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_sec12_ProxyTransitedStatement_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_sec12_ProxyTransitedStatement_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sec12_ProxyTransitedStatement_s* zx_DEEP_CLONE_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_sec12_ProxyTransitedStatement_s* x, int dup_strs);
@@ -203,7 +188,6 @@ void zx_sec12_ProxyTransitedStatement_REV_Subject(struct zx_sec12_ProxyTransited
 #ifndef zx_sec12_ResourceAccessStatement_EXT
 #define zx_sec12_ResourceAccessStatement_EXT
 #endif
-
 struct zx_sec12_ResourceAccessStatement_s {
   ZX_ELEM_EXT
   zx_sec12_ResourceAccessStatement_EXT
@@ -215,12 +199,8 @@ struct zx_sec12_ResourceAccessStatement_s {
 };
 
 #define zx_NEW_sec12_ResourceAccessStatement(c, father) (struct zx_sec12_ResourceAccessStatement_s*)zx_new_elem((c),(father),zx_sec12_ResourceAccessStatement_ELEM)
-
 int zx_DEC_ATTR_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_sec12_ResourceAccessStatement_s* x);
 int zx_DEC_ELEM_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_sec12_ResourceAccessStatement_s* x);
-int zx_LEN_SO_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_sec12_ResourceAccessStatement_s* x);
-char* zx_ENC_SO_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_sec12_ResourceAccessStatement_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_sec12_ResourceAccessStatement_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sec12_ResourceAccessStatement_s* zx_DEEP_CLONE_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_sec12_ResourceAccessStatement_s* x, int dup_strs);
@@ -286,7 +266,6 @@ void zx_sec12_ResourceAccessStatement_REV_SessionContext(struct zx_sec12_Resourc
 #ifndef zx_sec12_SessionContext_EXT
 #define zx_sec12_SessionContext_EXT
 #endif
-
 struct zx_sec12_SessionContext_s {
   ZX_ELEM_EXT
   zx_sec12_SessionContext_EXT
@@ -299,12 +278,8 @@ struct zx_sec12_SessionContext_s {
 };
 
 #define zx_NEW_sec12_SessionContext(c, father) (struct zx_sec12_SessionContext_s*)zx_new_elem((c),(father),zx_sec12_SessionContext_ELEM)
-
 int zx_DEC_ATTR_sec12_SessionContext(struct zx_ctx* c, struct zx_sec12_SessionContext_s* x);
 int zx_DEC_ELEM_sec12_SessionContext(struct zx_ctx* c, struct zx_sec12_SessionContext_s* x);
-int zx_LEN_SO_sec12_SessionContext(struct zx_ctx* c, struct zx_sec12_SessionContext_s* x);
-char* zx_ENC_SO_sec12_SessionContext(struct zx_ctx* c, struct zx_sec12_SessionContext_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sec12_SessionContext(struct zx_ctx* c, struct zx_sec12_SessionContext_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sec12_SessionContext_s* zx_DEEP_CLONE_sec12_SessionContext(struct zx_ctx* c, struct zx_sec12_SessionContext_s* x, int dup_strs);
@@ -347,7 +322,7 @@ void zx_sec12_SessionContext_ADD_ProviderID(struct zx_sec12_SessionContext_s* x,
 void zx_sec12_SessionContext_ADD_RequestAuthnContext(struct zx_sec12_SessionContext_s* x, int n, struct zx_ff12_RequestAuthnContext_s* z);
 
 void zx_sec12_SessionContext_DEL_SessionSubject(struct zx_sec12_SessionContext_s* x, int n);
-void zx_sec12_SessionContext_DEL_ProviderID(struct zx_sec12_SessionContext_s* x, int n);
+void zx_sec12_SessionContext_DEL_ProviderID(struct zx_sec12_SessionContext_s* x,int n);
 void zx_sec12_SessionContext_DEL_RequestAuthnContext(struct zx_sec12_SessionContext_s* x, int n);
 
 void zx_sec12_SessionContext_REV_SessionSubject(struct zx_sec12_SessionContext_s* x);
@@ -360,7 +335,6 @@ void zx_sec12_SessionContext_REV_RequestAuthnContext(struct zx_sec12_SessionCont
 #ifndef zx_sec12_SessionContextStatement_EXT
 #define zx_sec12_SessionContextStatement_EXT
 #endif
-
 struct zx_sec12_SessionContextStatement_s {
   ZX_ELEM_EXT
   zx_sec12_SessionContextStatement_EXT
@@ -370,12 +344,8 @@ struct zx_sec12_SessionContextStatement_s {
 };
 
 #define zx_NEW_sec12_SessionContextStatement(c, father) (struct zx_sec12_SessionContextStatement_s*)zx_new_elem((c),(father),zx_sec12_SessionContextStatement_ELEM)
-
 int zx_DEC_ATTR_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_sec12_SessionContextStatement_s* x);
 int zx_DEC_ELEM_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_sec12_SessionContextStatement_s* x);
-int zx_LEN_SO_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_sec12_SessionContextStatement_s* x);
-char* zx_ENC_SO_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_sec12_SessionContextStatement_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_sec12_SessionContextStatement_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sec12_SessionContextStatement_s* zx_DEEP_CLONE_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_sec12_SessionContextStatement_s* x, int dup_strs);
@@ -425,7 +395,6 @@ void zx_sec12_SessionContextStatement_REV_SessionContext(struct zx_sec12_Session
 #ifndef zx_sec12_SessionSubject_EXT
 #define zx_sec12_SessionSubject_EXT
 #endif
-
 struct zx_sec12_SessionSubject_s {
   ZX_ELEM_EXT
   zx_sec12_SessionSubject_EXT
@@ -435,12 +404,8 @@ struct zx_sec12_SessionSubject_s {
 };
 
 #define zx_NEW_sec12_SessionSubject(c, father) (struct zx_sec12_SessionSubject_s*)zx_new_elem((c),(father),zx_sec12_SessionSubject_ELEM)
-
 int zx_DEC_ATTR_sec12_SessionSubject(struct zx_ctx* c, struct zx_sec12_SessionSubject_s* x);
 int zx_DEC_ELEM_sec12_SessionSubject(struct zx_ctx* c, struct zx_sec12_SessionSubject_s* x);
-int zx_LEN_SO_sec12_SessionSubject(struct zx_ctx* c, struct zx_sec12_SessionSubject_s* x);
-char* zx_ENC_SO_sec12_SessionSubject(struct zx_ctx* c, struct zx_sec12_SessionSubject_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sec12_SessionSubject(struct zx_ctx* c, struct zx_sec12_SessionSubject_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sec12_SessionSubject_s* zx_DEEP_CLONE_sec12_SessionSubject(struct zx_ctx* c, struct zx_sec12_SessionSubject_s* x, int dup_strs);
@@ -490,7 +455,6 @@ void zx_sec12_SessionSubject_REV_IDPProvidedNameIdentifier(struct zx_sec12_Sessi
 #ifndef zx_sec12_ValidityRestrictionCondition_EXT
 #define zx_sec12_ValidityRestrictionCondition_EXT
 #endif
-
 struct zx_sec12_ValidityRestrictionCondition_s {
   ZX_ELEM_EXT
   zx_sec12_ValidityRestrictionCondition_EXT
@@ -498,12 +462,8 @@ struct zx_sec12_ValidityRestrictionCondition_s {
 };
 
 #define zx_NEW_sec12_ValidityRestrictionCondition(c, father) (struct zx_sec12_ValidityRestrictionCondition_s*)zx_new_elem((c),(father),zx_sec12_ValidityRestrictionCondition_ELEM)
-
 int zx_DEC_ATTR_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_sec12_ValidityRestrictionCondition_s* x);
 int zx_DEC_ELEM_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_sec12_ValidityRestrictionCondition_s* x);
-int zx_LEN_SO_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_sec12_ValidityRestrictionCondition_s* x);
-char* zx_ENC_SO_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_sec12_ValidityRestrictionCondition_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_sec12_ValidityRestrictionCondition_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sec12_ValidityRestrictionCondition_s* zx_DEEP_CLONE_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_sec12_ValidityRestrictionCondition_s* x, int dup_strs);
@@ -527,7 +487,7 @@ void zx_sec12_ValidityRestrictionCondition_PUT_NumberOfUses(struct zx_sec12_Vali
 
 void zx_sec12_ValidityRestrictionCondition_ADD_NumberOfUses(struct zx_sec12_ValidityRestrictionCondition_s* x, int n, struct zx_elem_s* z);
 
-void zx_sec12_ValidityRestrictionCondition_DEL_NumberOfUses(struct zx_sec12_ValidityRestrictionCondition_s* x, int n);
+void zx_sec12_ValidityRestrictionCondition_DEL_NumberOfUses(struct zx_sec12_ValidityRestrictionCondition_s* x,int n);
 
 void zx_sec12_ValidityRestrictionCondition_REV_NumberOfUses(struct zx_sec12_ValidityRestrictionCondition_s* x);
 

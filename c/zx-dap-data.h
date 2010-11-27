@@ -23,7 +23,6 @@
 #ifndef zx_dap_Create_EXT
 #define zx_dap_Create_EXT
 #endif
-
 struct zx_dap_Create_s {
   ZX_ELEM_EXT
   zx_dap_Create_EXT
@@ -35,12 +34,8 @@ struct zx_dap_Create_s {
 };
 
 #define zx_NEW_dap_Create(c, father) (struct zx_dap_Create_s*)zx_new_elem((c),(father),zx_dap_Create_ELEM)
-
 int zx_DEC_ATTR_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x);
 int zx_DEC_ELEM_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x);
-int zx_LEN_SO_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x);
-char* zx_ENC_SO_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_Create_s* zx_DEEP_CLONE_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x, int dup_strs);
@@ -100,7 +95,6 @@ void zx_dap_Create_REV_ResultQuery(struct zx_dap_Create_s* x);
 #ifndef zx_dap_CreateItem_EXT
 #define zx_dap_CreateItem_EXT
 #endif
-
 struct zx_dap_CreateItem_s {
   ZX_ELEM_EXT
   zx_dap_CreateItem_EXT
@@ -111,12 +105,8 @@ struct zx_dap_CreateItem_s {
 };
 
 #define zx_NEW_dap_CreateItem(c, father) (struct zx_dap_CreateItem_s*)zx_new_elem((c),(father),zx_dap_CreateItem_ELEM)
-
 int zx_DEC_ATTR_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x);
 int zx_DEC_ELEM_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x);
-int zx_LEN_SO_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x);
-char* zx_ENC_SO_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_CreateItem_s* zx_DEEP_CLONE_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x, int dup_strs);
@@ -156,7 +146,6 @@ void zx_dap_CreateItem_REV_NewData(struct zx_dap_CreateItem_s* x);
 #ifndef zx_dap_CreateResponse_EXT
 #define zx_dap_CreateResponse_EXT
 #endif
-
 struct zx_dap_CreateResponse_s {
   ZX_ELEM_EXT
   zx_dap_CreateResponse_EXT
@@ -168,12 +157,8 @@ struct zx_dap_CreateResponse_s {
 };
 
 #define zx_NEW_dap_CreateResponse(c, father) (struct zx_dap_CreateResponse_s*)zx_new_elem((c),(father),zx_dap_CreateResponse_ELEM)
-
 int zx_DEC_ATTR_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse_s* x);
 int zx_DEC_ELEM_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse_s* x);
-int zx_LEN_SO_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse_s* x);
-char* zx_ENC_SO_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_CreateResponse_s* zx_DEEP_CLONE_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse_s* x, int dup_strs);
@@ -227,7 +212,6 @@ void zx_dap_CreateResponse_REV_ItemData(struct zx_dap_CreateResponse_s* x);
 #ifndef zx_dap_Data_EXT
 #define zx_dap_Data_EXT
 #endif
-
 struct zx_dap_Data_s {
   ZX_ELEM_EXT
   zx_dap_Data_EXT
@@ -242,12 +226,8 @@ struct zx_dap_Data_s {
 };
 
 #define zx_NEW_dap_Data(c, father) (struct zx_dap_Data_s*)zx_new_elem((c),(father),zx_dap_Data_ELEM)
-
 int zx_DEC_ATTR_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x);
 int zx_DEC_ELEM_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x);
-int zx_LEN_SO_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x);
-char* zx_ENC_SO_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_Data_s* zx_DEEP_CLONE_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x, int dup_strs);
@@ -301,7 +281,6 @@ void zx_dap_Data_REV_Subscription(struct zx_dap_Data_s* x);
 #ifndef zx_dap_Delete_EXT
 #define zx_dap_Delete_EXT
 #endif
-
 struct zx_dap_Delete_s {
   ZX_ELEM_EXT
   zx_dap_Delete_EXT
@@ -311,12 +290,8 @@ struct zx_dap_Delete_s {
 };
 
 #define zx_NEW_dap_Delete(c, father) (struct zx_dap_Delete_s*)zx_new_elem((c),(father),zx_dap_Delete_ELEM)
-
 int zx_DEC_ATTR_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x);
 int zx_DEC_ELEM_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x);
-int zx_LEN_SO_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x);
-char* zx_ENC_SO_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_Delete_s* zx_DEEP_CLONE_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x, int dup_strs);
@@ -360,7 +335,6 @@ void zx_dap_Delete_REV_DeleteItem(struct zx_dap_Delete_s* x);
 #ifndef zx_dap_DeleteItem_EXT
 #define zx_dap_DeleteItem_EXT
 #endif
-
 struct zx_dap_DeleteItem_s {
   ZX_ELEM_EXT
   zx_dap_DeleteItem_EXT
@@ -373,12 +347,8 @@ struct zx_dap_DeleteItem_s {
 };
 
 #define zx_NEW_dap_DeleteItem(c, father) (struct zx_dap_DeleteItem_s*)zx_new_elem((c),(father),zx_dap_DeleteItem_ELEM)
-
 int zx_DEC_ATTR_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x);
 int zx_DEC_ELEM_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x);
-int zx_LEN_SO_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x);
-char* zx_ENC_SO_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_DeleteItem_s* zx_DEEP_CLONE_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x, int dup_strs);
@@ -422,7 +392,6 @@ void zx_dap_DeleteItem_REV_Select(struct zx_dap_DeleteItem_s* x);
 #ifndef zx_dap_DeleteResponse_EXT
 #define zx_dap_DeleteResponse_EXT
 #endif
-
 struct zx_dap_DeleteResponse_s {
   ZX_ELEM_EXT
   zx_dap_DeleteResponse_EXT
@@ -432,12 +401,8 @@ struct zx_dap_DeleteResponse_s {
 };
 
 #define zx_NEW_dap_DeleteResponse(c, father) (struct zx_dap_DeleteResponse_s*)zx_new_elem((c),(father),zx_dap_DeleteResponse_ELEM)
-
 int zx_DEC_ATTR_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse_s* x);
 int zx_DEC_ELEM_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse_s* x);
-int zx_LEN_SO_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse_s* x);
-char* zx_ENC_SO_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_DeleteResponse_s* zx_DEEP_CLONE_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse_s* x, int dup_strs);
@@ -481,7 +446,6 @@ void zx_dap_DeleteResponse_REV_Extension(struct zx_dap_DeleteResponse_s* x);
 #ifndef zx_dap_ItemData_EXT
 #define zx_dap_ItemData_EXT
 #endif
-
 struct zx_dap_ItemData_s {
   ZX_ELEM_EXT
   zx_dap_ItemData_EXT
@@ -493,12 +457,8 @@ struct zx_dap_ItemData_s {
 };
 
 #define zx_NEW_dap_ItemData(c, father) (struct zx_dap_ItemData_s*)zx_new_elem((c),(father),zx_dap_ItemData_ELEM)
-
 int zx_DEC_ATTR_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x);
 int zx_DEC_ELEM_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x);
-int zx_LEN_SO_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x);
-char* zx_ENC_SO_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_ItemData_s* zx_DEEP_CLONE_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x, int dup_strs);
@@ -546,7 +506,6 @@ void zx_dap_ItemData_REV_Subscription(struct zx_dap_ItemData_s* x);
 #ifndef zx_dap_LDIF_EXT
 #define zx_dap_LDIF_EXT
 #endif
-
 struct zx_dap_LDIF_s {
   ZX_ELEM_EXT
   zx_dap_LDIF_EXT
@@ -560,12 +519,8 @@ struct zx_dap_LDIF_s {
 };
 
 #define zx_NEW_dap_LDIF(c, father) (struct zx_dap_LDIF_s*)zx_new_elem((c),(father),zx_dap_LDIF_ELEM)
-
 int zx_DEC_ATTR_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x);
 int zx_DEC_ELEM_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x);
-int zx_LEN_SO_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x);
-char* zx_ENC_SO_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_LDIF_s* zx_DEEP_CLONE_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x, int dup_strs);
@@ -605,7 +560,6 @@ void zx_dap_LDIF_PUT_script(struct zx_dap_LDIF_s* x, struct zx_attr_s* y);
 #ifndef zx_dap_Modify_EXT
 #define zx_dap_Modify_EXT
 #endif
-
 struct zx_dap_Modify_s {
   ZX_ELEM_EXT
   zx_dap_Modify_EXT
@@ -617,12 +571,8 @@ struct zx_dap_Modify_s {
 };
 
 #define zx_NEW_dap_Modify(c, father) (struct zx_dap_Modify_s*)zx_new_elem((c),(father),zx_dap_Modify_ELEM)
-
 int zx_DEC_ATTR_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x);
 int zx_DEC_ELEM_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x);
-int zx_LEN_SO_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x);
-char* zx_ENC_SO_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_Modify_s* zx_DEEP_CLONE_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x, int dup_strs);
@@ -682,7 +632,6 @@ void zx_dap_Modify_REV_ResultQuery(struct zx_dap_Modify_s* x);
 #ifndef zx_dap_ModifyItem_EXT
 #define zx_dap_ModifyItem_EXT
 #endif
-
 struct zx_dap_ModifyItem_s {
   ZX_ELEM_EXT
   zx_dap_ModifyItem_EXT
@@ -697,12 +646,8 @@ struct zx_dap_ModifyItem_s {
 };
 
 #define zx_NEW_dap_ModifyItem(c, father) (struct zx_dap_ModifyItem_s*)zx_new_elem((c),(father),zx_dap_ModifyItem_ELEM)
-
 int zx_DEC_ATTR_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x);
 int zx_DEC_ELEM_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x);
-int zx_LEN_SO_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x);
-char* zx_ENC_SO_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_ModifyItem_s* zx_DEEP_CLONE_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x, int dup_strs);
@@ -756,7 +701,6 @@ void zx_dap_ModifyItem_REV_NewData(struct zx_dap_ModifyItem_s* x);
 #ifndef zx_dap_ModifyResponse_EXT
 #define zx_dap_ModifyResponse_EXT
 #endif
-
 struct zx_dap_ModifyResponse_s {
   ZX_ELEM_EXT
   zx_dap_ModifyResponse_EXT
@@ -768,12 +712,8 @@ struct zx_dap_ModifyResponse_s {
 };
 
 #define zx_NEW_dap_ModifyResponse(c, father) (struct zx_dap_ModifyResponse_s*)zx_new_elem((c),(father),zx_dap_ModifyResponse_ELEM)
-
 int zx_DEC_ATTR_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse_s* x);
 int zx_DEC_ELEM_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse_s* x);
-int zx_LEN_SO_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse_s* x);
-char* zx_ENC_SO_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_ModifyResponse_s* zx_DEEP_CLONE_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse_s* x, int dup_strs);
@@ -827,7 +767,6 @@ void zx_dap_ModifyResponse_REV_ItemData(struct zx_dap_ModifyResponse_s* x);
 #ifndef zx_dap_NewData_EXT
 #define zx_dap_NewData_EXT
 #endif
-
 struct zx_dap_NewData_s {
   ZX_ELEM_EXT
   zx_dap_NewData_EXT
@@ -836,12 +775,8 @@ struct zx_dap_NewData_s {
 };
 
 #define zx_NEW_dap_NewData(c, father) (struct zx_dap_NewData_s*)zx_new_elem((c),(father),zx_dap_NewData_ELEM)
-
 int zx_DEC_ATTR_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x);
 int zx_DEC_ELEM_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x);
-int zx_LEN_SO_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x);
-char* zx_ENC_SO_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_NewData_s* zx_DEEP_CLONE_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x, int dup_strs);
@@ -883,7 +818,6 @@ void zx_dap_NewData_REV_Subscription(struct zx_dap_NewData_s* x);
 #ifndef zx_dap_Notification_EXT
 #define zx_dap_Notification_EXT
 #endif
-
 struct zx_dap_Notification_s {
   ZX_ELEM_EXT
   zx_dap_Notification_EXT
@@ -896,12 +830,8 @@ struct zx_dap_Notification_s {
 };
 
 #define zx_NEW_dap_Notification(c, father) (struct zx_dap_Notification_s*)zx_new_elem((c),(father),zx_dap_Notification_ELEM)
-
 int zx_DEC_ATTR_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* x);
 int zx_DEC_ELEM_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* x);
-int zx_LEN_SO_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* x);
-char* zx_ENC_SO_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_Notification_s* zx_DEEP_CLONE_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* x, int dup_strs);
@@ -951,7 +881,6 @@ void zx_dap_Notification_REV_ItemData(struct zx_dap_Notification_s* x);
 #ifndef zx_dap_Notify_EXT
 #define zx_dap_Notify_EXT
 #endif
-
 struct zx_dap_Notify_s {
   ZX_ELEM_EXT
   zx_dap_Notify_EXT
@@ -962,12 +891,8 @@ struct zx_dap_Notify_s {
 };
 
 #define zx_NEW_dap_Notify(c, father) (struct zx_dap_Notify_s*)zx_new_elem((c),(father),zx_dap_Notify_ELEM)
-
 int zx_DEC_ATTR_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x);
 int zx_DEC_ELEM_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x);
-int zx_LEN_SO_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x);
-char* zx_ENC_SO_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_Notify_s* zx_DEEP_CLONE_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x, int dup_strs);
@@ -1013,7 +938,6 @@ void zx_dap_Notify_REV_Notification(struct zx_dap_Notify_s* x);
 #ifndef zx_dap_NotifyResponse_EXT
 #define zx_dap_NotifyResponse_EXT
 #endif
-
 struct zx_dap_NotifyResponse_s {
   ZX_ELEM_EXT
   zx_dap_NotifyResponse_EXT
@@ -1023,12 +947,8 @@ struct zx_dap_NotifyResponse_s {
 };
 
 #define zx_NEW_dap_NotifyResponse(c, father) (struct zx_dap_NotifyResponse_s*)zx_new_elem((c),(father),zx_dap_NotifyResponse_ELEM)
-
 int zx_DEC_ATTR_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse_s* x);
 int zx_DEC_ELEM_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse_s* x);
-int zx_LEN_SO_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse_s* x);
-char* zx_ENC_SO_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_NotifyResponse_s* zx_DEEP_CLONE_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse_s* x, int dup_strs);
@@ -1072,7 +992,6 @@ void zx_dap_NotifyResponse_REV_Extension(struct zx_dap_NotifyResponse_s* x);
 #ifndef zx_dap_Query_EXT
 #define zx_dap_Query_EXT
 #endif
-
 struct zx_dap_Query_s {
   ZX_ELEM_EXT
   zx_dap_Query_EXT
@@ -1084,12 +1003,8 @@ struct zx_dap_Query_s {
 };
 
 #define zx_NEW_dap_Query(c, father) (struct zx_dap_Query_s*)zx_new_elem((c),(father),zx_dap_Query_ELEM)
-
 int zx_DEC_ATTR_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x);
 int zx_DEC_ELEM_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x);
-int zx_LEN_SO_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x);
-char* zx_ENC_SO_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_Query_s* zx_DEEP_CLONE_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x, int dup_strs);
@@ -1149,7 +1064,6 @@ void zx_dap_Query_REV_Subscription(struct zx_dap_Query_s* x);
 #ifndef zx_dap_QueryItem_EXT
 #define zx_dap_QueryItem_EXT
 #endif
-
 struct zx_dap_QueryItem_s {
   ZX_ELEM_EXT
   zx_dap_QueryItem_EXT
@@ -1170,12 +1084,8 @@ struct zx_dap_QueryItem_s {
 };
 
 #define zx_NEW_dap_QueryItem(c, father) (struct zx_dap_QueryItem_s*)zx_new_elem((c),(father),zx_dap_QueryItem_ELEM)
-
 int zx_DEC_ATTR_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x);
 int zx_DEC_ELEM_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x);
-int zx_LEN_SO_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x);
-char* zx_ENC_SO_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_QueryItem_s* zx_DEEP_CLONE_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x, int dup_strs);
@@ -1233,9 +1143,9 @@ void zx_dap_QueryItem_ADD_ChangeFormat(struct zx_dap_QueryItem_s* x, int n, stru
 void zx_dap_QueryItem_ADD_Select(struct zx_dap_QueryItem_s* x, int n, struct zx_dap_Select_s* z);
 void zx_dap_QueryItem_ADD_Sort(struct zx_dap_QueryItem_s* x, int n, struct zx_elem_s* z);
 
-void zx_dap_QueryItem_DEL_ChangeFormat(struct zx_dap_QueryItem_s* x, int n);
+void zx_dap_QueryItem_DEL_ChangeFormat(struct zx_dap_QueryItem_s* x,int n);
 void zx_dap_QueryItem_DEL_Select(struct zx_dap_QueryItem_s* x, int n);
-void zx_dap_QueryItem_DEL_Sort(struct zx_dap_QueryItem_s* x, int n);
+void zx_dap_QueryItem_DEL_Sort(struct zx_dap_QueryItem_s* x,int n);
 
 void zx_dap_QueryItem_REV_ChangeFormat(struct zx_dap_QueryItem_s* x);
 void zx_dap_QueryItem_REV_Select(struct zx_dap_QueryItem_s* x);
@@ -1247,7 +1157,6 @@ void zx_dap_QueryItem_REV_Sort(struct zx_dap_QueryItem_s* x);
 #ifndef zx_dap_QueryResponse_EXT
 #define zx_dap_QueryResponse_EXT
 #endif
-
 struct zx_dap_QueryResponse_s {
   ZX_ELEM_EXT
   zx_dap_QueryResponse_EXT
@@ -1260,12 +1169,8 @@ struct zx_dap_QueryResponse_s {
 };
 
 #define zx_NEW_dap_QueryResponse(c, father) (struct zx_dap_QueryResponse_s*)zx_new_elem((c),(father),zx_dap_QueryResponse_ELEM)
-
 int zx_DEC_ATTR_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s* x);
 int zx_DEC_ELEM_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s* x);
-int zx_LEN_SO_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s* x);
-char* zx_ENC_SO_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_QueryResponse_s* zx_DEEP_CLONE_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s* x, int dup_strs);
@@ -1327,7 +1232,6 @@ void zx_dap_QueryResponse_REV_Data(struct zx_dap_QueryResponse_s* x);
 #ifndef zx_dap_ResultQuery_EXT
 #define zx_dap_ResultQuery_EXT
 #endif
-
 struct zx_dap_ResultQuery_s {
   ZX_ELEM_EXT
   zx_dap_ResultQuery_EXT
@@ -1344,12 +1248,8 @@ struct zx_dap_ResultQuery_s {
 };
 
 #define zx_NEW_dap_ResultQuery(c, father) (struct zx_dap_ResultQuery_s*)zx_new_elem((c),(father),zx_dap_ResultQuery_ELEM)
-
 int zx_DEC_ATTR_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x);
 int zx_DEC_ELEM_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x);
-int zx_LEN_SO_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x);
-char* zx_ENC_SO_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_ResultQuery_s* zx_DEEP_CLONE_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x, int dup_strs);
@@ -1399,9 +1299,9 @@ void zx_dap_ResultQuery_ADD_ChangeFormat(struct zx_dap_ResultQuery_s* x, int n, 
 void zx_dap_ResultQuery_ADD_Select(struct zx_dap_ResultQuery_s* x, int n, struct zx_dap_Select_s* z);
 void zx_dap_ResultQuery_ADD_Sort(struct zx_dap_ResultQuery_s* x, int n, struct zx_elem_s* z);
 
-void zx_dap_ResultQuery_DEL_ChangeFormat(struct zx_dap_ResultQuery_s* x, int n);
+void zx_dap_ResultQuery_DEL_ChangeFormat(struct zx_dap_ResultQuery_s* x,int n);
 void zx_dap_ResultQuery_DEL_Select(struct zx_dap_ResultQuery_s* x, int n);
-void zx_dap_ResultQuery_DEL_Sort(struct zx_dap_ResultQuery_s* x, int n);
+void zx_dap_ResultQuery_DEL_Sort(struct zx_dap_ResultQuery_s* x,int n);
 
 void zx_dap_ResultQuery_REV_ChangeFormat(struct zx_dap_ResultQuery_s* x);
 void zx_dap_ResultQuery_REV_Select(struct zx_dap_ResultQuery_s* x);
@@ -1413,7 +1313,6 @@ void zx_dap_ResultQuery_REV_Sort(struct zx_dap_ResultQuery_s* x);
 #ifndef zx_dap_Select_EXT
 #define zx_dap_Select_EXT
 #endif
-
 struct zx_dap_Select_s {
   ZX_ELEM_EXT
   zx_dap_Select_EXT
@@ -1428,12 +1327,8 @@ struct zx_dap_Select_s {
 };
 
 #define zx_NEW_dap_Select(c, father) (struct zx_dap_Select_s*)zx_new_elem((c),(father),zx_dap_Select_ELEM)
-
 int zx_DEC_ATTR_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x);
 int zx_DEC_ELEM_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x);
-int zx_LEN_SO_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x);
-char* zx_ENC_SO_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_Select_s* zx_DEEP_CLONE_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x, int dup_strs);
@@ -1475,8 +1370,8 @@ void zx_dap_Select_PUT_filter(struct zx_dap_Select_s* x, int n, struct zx_elem_s
 void zx_dap_Select_ADD_dn(struct zx_dap_Select_s* x, int n, struct zx_elem_s* z);
 void zx_dap_Select_ADD_filter(struct zx_dap_Select_s* x, int n, struct zx_elem_s* z);
 
-void zx_dap_Select_DEL_dn(struct zx_dap_Select_s* x, int n);
-void zx_dap_Select_DEL_filter(struct zx_dap_Select_s* x, int n);
+void zx_dap_Select_DEL_dn(struct zx_dap_Select_s* x,int n);
+void zx_dap_Select_DEL_filter(struct zx_dap_Select_s* x,int n);
 
 void zx_dap_Select_REV_dn(struct zx_dap_Select_s* x);
 void zx_dap_Select_REV_filter(struct zx_dap_Select_s* x);
@@ -1487,7 +1382,6 @@ void zx_dap_Select_REV_filter(struct zx_dap_Select_s* x);
 #ifndef zx_dap_Subscription_EXT
 #define zx_dap_Subscription_EXT
 #endif
-
 struct zx_dap_Subscription_s {
   ZX_ELEM_EXT
   zx_dap_Subscription_EXT
@@ -1506,12 +1400,8 @@ struct zx_dap_Subscription_s {
 };
 
 #define zx_NEW_dap_Subscription(c, father) (struct zx_dap_Subscription_s*)zx_new_elem((c),(father),zx_dap_Subscription_ELEM)
-
 int zx_DEC_ATTR_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* x);
 int zx_DEC_ELEM_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* x);
-int zx_LEN_SO_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* x);
-char* zx_ENC_SO_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_Subscription_s* zx_DEEP_CLONE_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* x, int dup_strs);
@@ -1576,8 +1466,8 @@ void zx_dap_Subscription_ADD_Trigger(struct zx_dap_Subscription_s* x, int n, str
 void zx_dap_Subscription_DEL_RefItem(struct zx_dap_Subscription_s* x, int n);
 void zx_dap_Subscription_DEL_Extension(struct zx_dap_Subscription_s* x, int n);
 void zx_dap_Subscription_DEL_ResultQuery(struct zx_dap_Subscription_s* x, int n);
-void zx_dap_Subscription_DEL_Aggregation(struct zx_dap_Subscription_s* x, int n);
-void zx_dap_Subscription_DEL_Trigger(struct zx_dap_Subscription_s* x, int n);
+void zx_dap_Subscription_DEL_Aggregation(struct zx_dap_Subscription_s* x,int n);
+void zx_dap_Subscription_DEL_Trigger(struct zx_dap_Subscription_s* x,int n);
 
 void zx_dap_Subscription_REV_RefItem(struct zx_dap_Subscription_s* x);
 void zx_dap_Subscription_REV_Extension(struct zx_dap_Subscription_s* x);
@@ -1591,7 +1481,6 @@ void zx_dap_Subscription_REV_Trigger(struct zx_dap_Subscription_s* x);
 #ifndef zx_dap_TestItem_EXT
 #define zx_dap_TestItem_EXT
 #endif
-
 struct zx_dap_TestItem_s {
   ZX_ELEM_EXT
   zx_dap_TestItem_EXT
@@ -1603,12 +1492,8 @@ struct zx_dap_TestItem_s {
 };
 
 #define zx_NEW_dap_TestItem(c, father) (struct zx_dap_TestItem_s*)zx_new_elem((c),(father),zx_dap_TestItem_ELEM)
-
 int zx_DEC_ATTR_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x);
 int zx_DEC_ELEM_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x);
-int zx_LEN_SO_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x);
-char* zx_ENC_SO_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_TestItem_s* zx_DEEP_CLONE_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x, int dup_strs);
@@ -1650,7 +1535,6 @@ void zx_dap_TestItem_REV_TestOp(struct zx_dap_TestItem_s* x);
 #ifndef zx_dap_TestOp_EXT
 #define zx_dap_TestOp_EXT
 #endif
-
 struct zx_dap_TestOp_s {
   ZX_ELEM_EXT
   zx_dap_TestOp_EXT
@@ -1665,12 +1549,8 @@ struct zx_dap_TestOp_s {
 };
 
 #define zx_NEW_dap_TestOp(c, father) (struct zx_dap_TestOp_s*)zx_new_elem((c),(father),zx_dap_TestOp_ELEM)
-
 int zx_DEC_ATTR_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x);
 int zx_DEC_ELEM_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x);
-int zx_LEN_SO_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x);
-char* zx_ENC_SO_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_dap_TestOp_s* zx_DEEP_CLONE_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x, int dup_strs);
@@ -1712,8 +1592,8 @@ void zx_dap_TestOp_PUT_filter(struct zx_dap_TestOp_s* x, int n, struct zx_elem_s
 void zx_dap_TestOp_ADD_dn(struct zx_dap_TestOp_s* x, int n, struct zx_elem_s* z);
 void zx_dap_TestOp_ADD_filter(struct zx_dap_TestOp_s* x, int n, struct zx_elem_s* z);
 
-void zx_dap_TestOp_DEL_dn(struct zx_dap_TestOp_s* x, int n);
-void zx_dap_TestOp_DEL_filter(struct zx_dap_TestOp_s* x, int n);
+void zx_dap_TestOp_DEL_dn(struct zx_dap_TestOp_s* x,int n);
+void zx_dap_TestOp_DEL_filter(struct zx_dap_TestOp_s* x,int n);
 
 void zx_dap_TestOp_REV_dn(struct zx_dap_TestOp_s* x);
 void zx_dap_TestOp_REV_filter(struct zx_dap_TestOp_s* x);

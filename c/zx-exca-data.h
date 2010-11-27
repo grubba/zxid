@@ -23,7 +23,6 @@
 #ifndef zx_exca_InclusiveNamespaces_EXT
 #define zx_exca_InclusiveNamespaces_EXT
 #endif
-
 struct zx_exca_InclusiveNamespaces_s {
   ZX_ELEM_EXT
   zx_exca_InclusiveNamespaces_EXT
@@ -31,12 +30,8 @@ struct zx_exca_InclusiveNamespaces_s {
 };
 
 #define zx_NEW_exca_InclusiveNamespaces(c, father) (struct zx_exca_InclusiveNamespaces_s*)zx_new_elem((c),(father),zx_exca_InclusiveNamespaces_ELEM)
-
 int zx_DEC_ATTR_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x);
 int zx_DEC_ELEM_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x);
-int zx_LEN_SO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x);
-char* zx_ENC_SO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_exca_InclusiveNamespaces_s* zx_DEEP_CLONE_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x, int dup_strs);

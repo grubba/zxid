@@ -40,7 +40,7 @@ int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struc
   if (!a7n || !a7n->Subject) {
     ERR("Malformed Assertion(%p): Subject missing.", a7n);
     if (stp)
-      *stp = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+      *stp = zxid_mk_lu_Status(cf, 0, "Fail", 0, 0, 0);
     return 0;
   }
 
@@ -53,7 +53,7 @@ int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struc
   if (!len) {
     ERR("Can not find reverse mapping for SP,SHA1(%s) nid(%.*s)", sp_name_buf, ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
     if (stp)
-      *stp = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+      *stp = zxid_mk_lu_Status(cf, 0, "Fail", 0, 0, 0);
     return 0;
   }
   return 1;
@@ -112,7 +112,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
     if (!dir) {
       perror("opendir to find service metadata");
       ERR("Opening service metadata directory failed path(%s)", mdpath);
-      resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+      resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "Fail", 0, 0, 0);
       D_DEDENT("di_query: ");
       return resp;
     }
@@ -288,7 +288,7 @@ next_file:
   ss = ZX_GET_CONTENT(req->RequestedService->ServiceType);
   D("TOTAL discovered %d svctype(%.*s)", n_discovered, ss?ss->len:0, ss?ss->s:"");
   zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "DIOK", 0, "%.*s n=%d", ss?ss->len:1, ss?ss->s:"-", n_discovered);
-  resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
+  resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "OK", 0, 0, 0);
   D_DEDENT("di_query: ");
   return resp;
 }

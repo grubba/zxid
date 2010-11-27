@@ -53,13 +53,13 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
 
   if (!ar || !ZX_GET_CONTENT(ar->Issuer)) {
     ERR("No Issuer found in AuthnRequest %p", ar);
-    resp->Status = zxid_mk_Status(cf, "Fail", 0, 0);
+    resp->Status = zxid_mk_Status(cf, &resp->gg, "Fail", 0, 0);
     D_DEDENT("ssos: ");
     return resp;
   }
 
   if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, a7n, 0, &nameid)) {
-    resp->Status = zxid_mk_Status(cf, "Fail", 0, 0);
+    resp->Status = zxid_mk_Status(cf, &resp->gg, "Fail", 0, 0);
     D_DEDENT("ssos: ");
     return resp;
   }
@@ -80,7 +80,7 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
   sp_meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(ar->Issuer));
   if (!sp_meta) {
     ERR("The metadata for Issuer of the AuthnRequest could not be found or fetched %d", 0);
-    resp->Status = zxid_mk_Status(cf, "Fail", 0, 0);
+    resp->Status = zxid_mk_Status(cf, &resp->gg, "Fail", 0, 0);
     D_DEDENT("ssos: ");
     return resp;
   }
@@ -91,19 +91,20 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
   if (cf->sso_sign & ZXID_SSO_SIGN_A7N) {
     ZERO(&refs, sizeof(refs));
     refs.id = &a7n->ID->g;
-    refs.canon = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
+    refs.canon = zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert paos"))
       a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
   }
   resp = zxid_mk_saml_resp(cf);
   if (cf->post_a7n_enc) {
-    resp->EncryptedAssertion = zxid_mk_enc_a7n(cf, a7n, sp_meta);
+    resp->EncryptedAssertion = zxid_mk_enc_a7n(cf, &resp->gg, a7n, sp_meta);
   } else {
+    zx_add_kid(&resp->gg, &a7n->gg);
     resp->Assertion = a7n;
   }
   payload = zxid_anoint_sso_resp(cf, cf->sso_sign & ZXID_SSO_SIGN_RESP, resp, ar);
   if (!payload) {
-    resp->Status = zxid_mk_Status(cf, "Fail", 0, 0);
+    resp->Status = zxid_mk_Status(cf, &resp->gg, "Fail", 0, 0);
     D_DEDENT("ssos: ");
     return resp;
   }
@@ -166,14 +167,14 @@ zxid_tok* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_e
   //inp->Token = zx_NEW_sec_Token(cf->ctx, &inp->gg);
   //inp->Token->ref = zx_dup_str(cf->ctx, "#A7N");
   inp->TokenPolicy = zx_NEW_sec_TokenPolicy(cf->ctx, &inp->gg);
-  inp->TokenPolicy->type = zx_dup_attr(cf->ctx, zx_type_ATTR, TOKNUSG_SEC);
+  inp->TokenPolicy->type = zx_dup_attr(cf->ctx, &inp->TokenPolicy->gg, zx_type_ATTR, TOKNUSG_SEC);
 #if 0  /* Default is true anyway */
-  inp->TokenPolicy->wantDSEPR = zx_dup_attr(cf->ctx, zx_wantDSEPR_ATTR, "1");
+  inp->TokenPolicy->wantDSEPR = zx_dup_attr(cf->ctx, &inp->TokenPolicy->gg, zx_wantDSEPR_ATTR, "1");
 #endif
   inp->TokenPolicy->NameIDPolicy = zx_NEW_sp_NameIDPolicy(cf->ctx, &inp->TokenPolicy->gg);
-  inp->TokenPolicy->NameIDPolicy->Format = zx_dup_attr(cf->ctx, zx_Format_ATTR, zxid_saml2_map_nid_fmt("prstnt"));
-  inp->TokenPolicy->NameIDPolicy->SPNameQualifier = zx_dup_attr(cf->ctx, zx_SPNameQualifier_ATTR, at_eid);
-  inp->TokenPolicy->NameIDPolicy->AllowCreate = zx_dup_attr(cf->ctx, zx_AllowCreate_ATTR, ZXID_TRUE); /* default false */
+  inp->TokenPolicy->NameIDPolicy->Format = zx_ref_attr(cf->ctx, &inp->TokenPolicy->NameIDPolicy->gg, zx_Format_ATTR, zxid_saml2_map_nid_fmt("prstnt"));
+  inp->TokenPolicy->NameIDPolicy->SPNameQualifier = zx_dup_attr(cf->ctx, &inp->TokenPolicy->NameIDPolicy->gg, zx_SPNameQualifier_ATTR, at_eid);
+  inp->TokenPolicy->NameIDPolicy->AllowCreate = zx_ref_attr(cf->ctx, &inp->TokenPolicy->NameIDPolicy->gg, zx_AllowCreate_ATTR, ZXID_TRUE); /* default false */
 
   env = zxid_wsc_call(cf, ses, epr, env, 0);
   if (!env || !env->Body) {
@@ -227,7 +228,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
 
   if (!req || !req->MappingInput) {
     ERR("No IdentityMappingRequest/MappingInput found (WSC error) %p", req);
-    resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+    resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "Fail", 0, 0, 0);
     D_DEDENT("imreq: ");
     return resp;
   }
@@ -255,7 +256,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
     
     if (!mapinp->TokenPolicy) {
       ERR("Missing TokenPolicy. %d", 0);
-      resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+      resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "Fail", 0, 0, 0);
       D_DEDENT("imreq: ");
       return resp;
     }
@@ -279,7 +280,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
     
     if (!issue_to) {
       ERR("No NameIDPolicy->SPNameQualifier or issueTo %p", mapinp->TokenPolicy);
-      resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+      resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "Fail", 0, 0, 0);
       D_DEDENT("imreq: ");
       return resp;
     }
@@ -307,7 +308,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
     sp_meta = zxid_get_ent_ss(cf, issue_to);
     if (!sp_meta) {
       ERR("The metadata for provider could not be found or fetched. Reject. %d", 0);
-      resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+      resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "Fail", 0, 0, 0);
       D_DEDENT("imreq: ");
       return resp;
     }
@@ -315,7 +316,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
     outa7n = zxid_mk_user_a7n_to_sp(cf, 0, uid, nameid, sp_meta, sp_name_buf, 1);
 
     if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, outa7n, issue_to, "IMA7N", uid)) {
-      resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+      resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "Fail", 0, 0, 0);
       D_DEDENT("imreq: ");
       return resp;
     }
@@ -324,11 +325,12 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
 
     resp->MappingOutput = mapout = zx_NEW_im_MappingOutput(cf->ctx, &resp->MappingOutput->gg);
     if (mapinp->reqID && mapinp->reqID->g.len && mapinp->reqID->g.s)
-      mapout->reqRef = zx_dup_len_attr(cf->ctx, zx_reqRef_ATTR, mapinp->reqID->g.len, mapinp->reqID->g.s);
+      mapout->reqRef = zx_dup_len_attr(cf->ctx, &mapout->gg, zx_reqRef_ATTR, mapinp->reqID->g.len, mapinp->reqID->g.s);
     mapout->Token = zx_NEW_sec_Token(cf->ctx, &mapout->gg);
     if (cf->di_a7n_enc) {
-      mapout->Token->EncryptedAssertion = zxid_mk_enc_a7n(cf, outa7n, sp_meta);
+      mapout->Token->EncryptedAssertion = zxid_mk_enc_a7n(cf, &mapout->Token->gg, outa7n, sp_meta);
     } else {
+      zx_add_kid(&mapout->Token->gg, &outa7n->gg);
       mapout->Token->Assertion = outa7n;
     }
 
@@ -337,7 +339,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
   
   D("TOTAL Identity Mappings issued %d", n_mapped);
   zxlog(cf, 0, 0, 0, 0, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "IMOK", 0, "n=%d", n_mapped);
-  resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
+  resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "OK", 0, 0, 0);
   D_DEDENT("imreq: ");
   return resp;
 }
@@ -369,7 +371,7 @@ struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp
   len = read_all(sizeof(uid)-1, uid, "idp_map_nid2uid", 1, "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
   if (!len) {
     ERR("Can not find reverse mapping for SP,SHA1(%s) nid(%.*s)", sp_name_buf, ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
-    resp->Status = zxid_mk_Status(cf, "Fail", 0, 0);
+    resp->Status = zxid_mk_Status(cf, &resp->gg, "Fail", 0, 0);
     D_DEDENT("nidmap: ");
     return resp;
   }
@@ -386,7 +388,7 @@ struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp
   
   if (!issue_to) {
     ERR("No NameIDPolicy->SPNameQualifier %p", req->NameIDPolicy);
-    resp->Status = zxid_mk_Status(cf, "Fail", 0, 0);
+    resp->Status = zxid_mk_Status(cf, &resp->gg, "Fail", 0, 0);
     D_DEDENT("nidmap: ");
     return resp;
   }
@@ -410,7 +412,7 @@ struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp
   }
   
   zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(nameid), "N", "K", logop, 0, "n=%d", n_mapped);
-  resp->Status = zxid_OK(cf);
+  resp->Status = zxid_OK(cf, &resp->gg);
   D_DEDENT("nidmap: ");
   return resp;
 }

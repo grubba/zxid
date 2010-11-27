@@ -23,7 +23,6 @@
 #ifndef zx_demomed_DeleteObjectRequest_EXT
 #define zx_demomed_DeleteObjectRequest_EXT
 #endif
-
 struct zx_demomed_DeleteObjectRequest_s {
   ZX_ELEM_EXT
   zx_demomed_DeleteObjectRequest_EXT
@@ -31,12 +30,8 @@ struct zx_demomed_DeleteObjectRequest_s {
 };
 
 #define zx_NEW_demomed_DeleteObjectRequest(c, father) (struct zx_demomed_DeleteObjectRequest_s*)zx_new_elem((c),(father),zx_demomed_DeleteObjectRequest_ELEM)
-
 int zx_DEC_ATTR_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_DeleteObjectRequest_s* x);
 int zx_DEC_ELEM_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_DeleteObjectRequest_s* x);
-int zx_LEN_SO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_DeleteObjectRequest_s* x);
-char* zx_ENC_SO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_DeleteObjectRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_DeleteObjectRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_DeleteObjectRequest_s* zx_DEEP_CLONE_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_DeleteObjectRequest_s* x, int dup_strs);
@@ -60,7 +55,7 @@ void zx_demomed_DeleteObjectRequest_PUT_ObjectID(struct zx_demomed_DeleteObjectR
 
 void zx_demomed_DeleteObjectRequest_ADD_ObjectID(struct zx_demomed_DeleteObjectRequest_s* x, int n, struct zx_elem_s* z);
 
-void zx_demomed_DeleteObjectRequest_DEL_ObjectID(struct zx_demomed_DeleteObjectRequest_s* x, int n);
+void zx_demomed_DeleteObjectRequest_DEL_ObjectID(struct zx_demomed_DeleteObjectRequest_s* x,int n);
 
 void zx_demomed_DeleteObjectRequest_REV_ObjectID(struct zx_demomed_DeleteObjectRequest_s* x);
 
@@ -70,7 +65,6 @@ void zx_demomed_DeleteObjectRequest_REV_ObjectID(struct zx_demomed_DeleteObjectR
 #ifndef zx_demomed_DeleteObjectResponse_EXT
 #define zx_demomed_DeleteObjectResponse_EXT
 #endif
-
 struct zx_demomed_DeleteObjectResponse_s {
   ZX_ELEM_EXT
   zx_demomed_DeleteObjectResponse_EXT
@@ -79,12 +73,8 @@ struct zx_demomed_DeleteObjectResponse_s {
 };
 
 #define zx_NEW_demomed_DeleteObjectResponse(c, father) (struct zx_demomed_DeleteObjectResponse_s*)zx_new_elem((c),(father),zx_demomed_DeleteObjectResponse_ELEM)
-
 int zx_DEC_ATTR_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_DeleteObjectResponse_s* x);
 int zx_DEC_ELEM_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_DeleteObjectResponse_s* x);
-int zx_LEN_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_DeleteObjectResponse_s* x);
-char* zx_ENC_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_DeleteObjectResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_DeleteObjectResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_DeleteObjectResponse_s* zx_DEEP_CLONE_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_DeleteObjectResponse_s* x, int dup_strs);
@@ -115,7 +105,7 @@ void zx_demomed_DeleteObjectResponse_ADD_Status(struct zx_demomed_DeleteObjectRe
 void zx_demomed_DeleteObjectResponse_ADD_Count(struct zx_demomed_DeleteObjectResponse_s* x, int n, struct zx_elem_s* z);
 
 void zx_demomed_DeleteObjectResponse_DEL_Status(struct zx_demomed_DeleteObjectResponse_s* x, int n);
-void zx_demomed_DeleteObjectResponse_DEL_Count(struct zx_demomed_DeleteObjectResponse_s* x, int n);
+void zx_demomed_DeleteObjectResponse_DEL_Count(struct zx_demomed_DeleteObjectResponse_s* x,int n);
 
 void zx_demomed_DeleteObjectResponse_REV_Status(struct zx_demomed_DeleteObjectResponse_s* x);
 void zx_demomed_DeleteObjectResponse_REV_Count(struct zx_demomed_DeleteObjectResponse_s* x);
@@ -126,7 +116,6 @@ void zx_demomed_DeleteObjectResponse_REV_Count(struct zx_demomed_DeleteObjectRes
 #ifndef zx_demomed_GetObjectListRequest_EXT
 #define zx_demomed_GetObjectListRequest_EXT
 #endif
-
 struct zx_demomed_GetObjectListRequest_s {
   ZX_ELEM_EXT
   zx_demomed_GetObjectListRequest_EXT
@@ -134,12 +123,8 @@ struct zx_demomed_GetObjectListRequest_s {
 };
 
 #define zx_NEW_demomed_GetObjectListRequest(c, father) (struct zx_demomed_GetObjectListRequest_s*)zx_new_elem((c),(father),zx_demomed_GetObjectListRequest_ELEM)
-
 int zx_DEC_ATTR_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_GetObjectListRequest_s* x);
 int zx_DEC_ELEM_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_GetObjectListRequest_s* x);
-int zx_LEN_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_GetObjectListRequest_s* x);
-char* zx_ENC_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_GetObjectListRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_GetObjectListRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_GetObjectListRequest_s* zx_DEEP_CLONE_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_GetObjectListRequest_s* x, int dup_strs);
@@ -173,7 +158,6 @@ void zx_demomed_GetObjectListRequest_REV_ObjectSearchParm(struct zx_demomed_GetO
 #ifndef zx_demomed_GetObjectListResponse_EXT
 #define zx_demomed_GetObjectListResponse_EXT
 #endif
-
 struct zx_demomed_GetObjectListResponse_s {
   ZX_ELEM_EXT
   zx_demomed_GetObjectListResponse_EXT
@@ -182,12 +166,8 @@ struct zx_demomed_GetObjectListResponse_s {
 };
 
 #define zx_NEW_demomed_GetObjectListResponse(c, father) (struct zx_demomed_GetObjectListResponse_s*)zx_new_elem((c),(father),zx_demomed_GetObjectListResponse_ELEM)
-
 int zx_DEC_ATTR_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_GetObjectListResponse_s* x);
 int zx_DEC_ELEM_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_GetObjectListResponse_s* x);
-int zx_LEN_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_GetObjectListResponse_s* x);
-char* zx_ENC_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_GetObjectListResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_GetObjectListResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_GetObjectListResponse_s* zx_DEEP_CLONE_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_GetObjectListResponse_s* x, int dup_strs);
@@ -229,7 +209,6 @@ void zx_demomed_GetObjectListResponse_REV_ObjectInfo(struct zx_demomed_GetObject
 #ifndef zx_demomed_GetObjectRequest_EXT
 #define zx_demomed_GetObjectRequest_EXT
 #endif
-
 struct zx_demomed_GetObjectRequest_s {
   ZX_ELEM_EXT
   zx_demomed_GetObjectRequest_EXT
@@ -237,12 +216,8 @@ struct zx_demomed_GetObjectRequest_s {
 };
 
 #define zx_NEW_demomed_GetObjectRequest(c, father) (struct zx_demomed_GetObjectRequest_s*)zx_new_elem((c),(father),zx_demomed_GetObjectRequest_ELEM)
-
 int zx_DEC_ATTR_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetObjectRequest_s* x);
 int zx_DEC_ELEM_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetObjectRequest_s* x);
-int zx_LEN_SO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetObjectRequest_s* x);
-char* zx_ENC_SO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetObjectRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetObjectRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_GetObjectRequest_s* zx_DEEP_CLONE_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetObjectRequest_s* x, int dup_strs);
@@ -266,7 +241,7 @@ void zx_demomed_GetObjectRequest_PUT_ObjectID(struct zx_demomed_GetObjectRequest
 
 void zx_demomed_GetObjectRequest_ADD_ObjectID(struct zx_demomed_GetObjectRequest_s* x, int n, struct zx_elem_s* z);
 
-void zx_demomed_GetObjectRequest_DEL_ObjectID(struct zx_demomed_GetObjectRequest_s* x, int n);
+void zx_demomed_GetObjectRequest_DEL_ObjectID(struct zx_demomed_GetObjectRequest_s* x,int n);
 
 void zx_demomed_GetObjectRequest_REV_ObjectID(struct zx_demomed_GetObjectRequest_s* x);
 
@@ -276,7 +251,6 @@ void zx_demomed_GetObjectRequest_REV_ObjectID(struct zx_demomed_GetObjectRequest
 #ifndef zx_demomed_GetObjectResponse_EXT
 #define zx_demomed_GetObjectResponse_EXT
 #endif
-
 struct zx_demomed_GetObjectResponse_s {
   ZX_ELEM_EXT
   zx_demomed_GetObjectResponse_EXT
@@ -285,12 +259,8 @@ struct zx_demomed_GetObjectResponse_s {
 };
 
 #define zx_NEW_demomed_GetObjectResponse(c, father) (struct zx_demomed_GetObjectResponse_s*)zx_new_elem((c),(father),zx_demomed_GetObjectResponse_ELEM)
-
 int zx_DEC_ATTR_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetObjectResponse_s* x);
 int zx_DEC_ELEM_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetObjectResponse_s* x);
-int zx_LEN_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetObjectResponse_s* x);
-char* zx_ENC_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetObjectResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetObjectResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_GetObjectResponse_s* zx_DEEP_CLONE_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetObjectResponse_s* x, int dup_strs);
@@ -332,7 +302,6 @@ void zx_demomed_GetObjectResponse_REV_ObjectData(struct zx_demomed_GetObjectResp
 #ifndef zx_demomed_Object_EXT
 #define zx_demomed_Object_EXT
 #endif
-
 struct zx_demomed_Object_s {
   ZX_ELEM_EXT
   zx_demomed_Object_EXT
@@ -342,12 +311,8 @@ struct zx_demomed_Object_s {
 };
 
 #define zx_NEW_demomed_Object(c, father) (struct zx_demomed_Object_s*)zx_new_elem((c),(father),zx_demomed_Object_ELEM)
-
 int zx_DEC_ATTR_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x);
 int zx_DEC_ELEM_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x);
-int zx_LEN_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x);
-char* zx_ENC_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_Object_s* zx_DEEP_CLONE_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, int dup_strs);
@@ -391,7 +356,6 @@ void zx_demomed_Object_REV_ObjectData(struct zx_demomed_Object_s* x);
 #ifndef zx_demomed_ObjectData_EXT
 #define zx_demomed_ObjectData_EXT
 #endif
-
 struct zx_demomed_ObjectData_s {
   ZX_ELEM_EXT
   zx_demomed_ObjectData_EXT
@@ -399,12 +363,8 @@ struct zx_demomed_ObjectData_s {
 };
 
 #define zx_NEW_demomed_ObjectData(c, father) (struct zx_demomed_ObjectData_s*)zx_new_elem((c),(father),zx_demomed_ObjectData_ELEM)
-
 int zx_DEC_ATTR_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_s* x);
 int zx_DEC_ELEM_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_s* x);
-int zx_LEN_SO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_s* x);
-char* zx_ENC_SO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_ObjectData_s* zx_DEEP_CLONE_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_s* x, int dup_strs);
@@ -432,7 +392,6 @@ void zx_demomed_ObjectData_PUT_objectID(struct zx_demomed_ObjectData_s* x, struc
 #ifndef zx_demomed_ObjectInfo_EXT
 #define zx_demomed_ObjectInfo_EXT
 #endif
-
 struct zx_demomed_ObjectInfo_s {
   ZX_ELEM_EXT
   zx_demomed_ObjectInfo_EXT
@@ -445,12 +404,8 @@ struct zx_demomed_ObjectInfo_s {
 };
 
 #define zx_NEW_demomed_ObjectInfo(c, father) (struct zx_demomed_ObjectInfo_s*)zx_new_elem((c),(father),zx_demomed_ObjectInfo_ELEM)
-
 int zx_DEC_ATTR_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_s* x);
 int zx_DEC_ELEM_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_s* x);
-int zx_LEN_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_s* x);
-char* zx_ENC_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_ObjectInfo_s* zx_DEEP_CLONE_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_s* x, int dup_strs);
@@ -500,11 +455,11 @@ void zx_demomed_ObjectInfo_ADD_Type(struct zx_demomed_ObjectInfo_s* x, int n, st
 void zx_demomed_ObjectInfo_ADD_Created(struct zx_demomed_ObjectInfo_s* x, int n, struct zx_elem_s* z);
 void zx_demomed_ObjectInfo_ADD_Comment(struct zx_demomed_ObjectInfo_s* x, int n, struct zx_elem_s* z);
 
-void zx_demomed_ObjectInfo_DEL_Dir(struct zx_demomed_ObjectInfo_s* x, int n);
-void zx_demomed_ObjectInfo_DEL_Name(struct zx_demomed_ObjectInfo_s* x, int n);
-void zx_demomed_ObjectInfo_DEL_Type(struct zx_demomed_ObjectInfo_s* x, int n);
-void zx_demomed_ObjectInfo_DEL_Created(struct zx_demomed_ObjectInfo_s* x, int n);
-void zx_demomed_ObjectInfo_DEL_Comment(struct zx_demomed_ObjectInfo_s* x, int n);
+void zx_demomed_ObjectInfo_DEL_Dir(struct zx_demomed_ObjectInfo_s* x,int n);
+void zx_demomed_ObjectInfo_DEL_Name(struct zx_demomed_ObjectInfo_s* x,int n);
+void zx_demomed_ObjectInfo_DEL_Type(struct zx_demomed_ObjectInfo_s* x,int n);
+void zx_demomed_ObjectInfo_DEL_Created(struct zx_demomed_ObjectInfo_s* x,int n);
+void zx_demomed_ObjectInfo_DEL_Comment(struct zx_demomed_ObjectInfo_s* x,int n);
 
 void zx_demomed_ObjectInfo_REV_Dir(struct zx_demomed_ObjectInfo_s* x);
 void zx_demomed_ObjectInfo_REV_Name(struct zx_demomed_ObjectInfo_s* x);
@@ -518,7 +473,6 @@ void zx_demomed_ObjectInfo_REV_Comment(struct zx_demomed_ObjectInfo_s* x);
 #ifndef zx_demomed_ObjectSearchParm_EXT
 #define zx_demomed_ObjectSearchParm_EXT
 #endif
-
 struct zx_demomed_ObjectSearchParm_s {
   ZX_ELEM_EXT
   zx_demomed_ObjectSearchParm_EXT
@@ -529,12 +483,8 @@ struct zx_demomed_ObjectSearchParm_s {
 };
 
 #define zx_NEW_demomed_ObjectSearchParm(c, father) (struct zx_demomed_ObjectSearchParm_s*)zx_new_elem((c),(father),zx_demomed_ObjectSearchParm_ELEM)
-
 int zx_DEC_ATTR_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_ObjectSearchParm_s* x);
 int zx_DEC_ELEM_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_ObjectSearchParm_s* x);
-int zx_LEN_SO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_ObjectSearchParm_s* x);
-char* zx_ENC_SO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_ObjectSearchParm_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_ObjectSearchParm_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_ObjectSearchParm_s* zx_DEEP_CLONE_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_ObjectSearchParm_s* x, int dup_strs);
@@ -576,10 +526,10 @@ void zx_demomed_ObjectSearchParm_ADD_Name(struct zx_demomed_ObjectSearchParm_s* 
 void zx_demomed_ObjectSearchParm_ADD_Type(struct zx_demomed_ObjectSearchParm_s* x, int n, struct zx_elem_s* z);
 void zx_demomed_ObjectSearchParm_ADD_objectID(struct zx_demomed_ObjectSearchParm_s* x, int n, struct zx_elem_s* z);
 
-void zx_demomed_ObjectSearchParm_DEL_Dir(struct zx_demomed_ObjectSearchParm_s* x, int n);
-void zx_demomed_ObjectSearchParm_DEL_Name(struct zx_demomed_ObjectSearchParm_s* x, int n);
-void zx_demomed_ObjectSearchParm_DEL_Type(struct zx_demomed_ObjectSearchParm_s* x, int n);
-void zx_demomed_ObjectSearchParm_DEL_objectID(struct zx_demomed_ObjectSearchParm_s* x, int n);
+void zx_demomed_ObjectSearchParm_DEL_Dir(struct zx_demomed_ObjectSearchParm_s* x,int n);
+void zx_demomed_ObjectSearchParm_DEL_Name(struct zx_demomed_ObjectSearchParm_s* x,int n);
+void zx_demomed_ObjectSearchParm_DEL_Type(struct zx_demomed_ObjectSearchParm_s* x,int n);
+void zx_demomed_ObjectSearchParm_DEL_objectID(struct zx_demomed_ObjectSearchParm_s* x,int n);
 
 void zx_demomed_ObjectSearchParm_REV_Dir(struct zx_demomed_ObjectSearchParm_s* x);
 void zx_demomed_ObjectSearchParm_REV_Name(struct zx_demomed_ObjectSearchParm_s* x);
@@ -592,7 +542,6 @@ void zx_demomed_ObjectSearchParm_REV_objectID(struct zx_demomed_ObjectSearchParm
 #ifndef zx_demomed_ObjectStoreInfo_EXT
 #define zx_demomed_ObjectStoreInfo_EXT
 #endif
-
 struct zx_demomed_ObjectStoreInfo_s {
   ZX_ELEM_EXT
   zx_demomed_ObjectStoreInfo_EXT
@@ -601,12 +550,8 @@ struct zx_demomed_ObjectStoreInfo_s {
 };
 
 #define zx_NEW_demomed_ObjectStoreInfo(c, father) (struct zx_demomed_ObjectStoreInfo_s*)zx_new_elem((c),(father),zx_demomed_ObjectStoreInfo_ELEM)
-
 int zx_DEC_ATTR_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_ObjectStoreInfo_s* x);
 int zx_DEC_ELEM_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_ObjectStoreInfo_s* x);
-int zx_LEN_SO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_ObjectStoreInfo_s* x);
-char* zx_ENC_SO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_ObjectStoreInfo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_ObjectStoreInfo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_ObjectStoreInfo_s* zx_DEEP_CLONE_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_ObjectStoreInfo_s* x, int dup_strs);
@@ -636,7 +581,6 @@ void zx_demomed_ObjectStoreInfo_PUT_storeRef(struct zx_demomed_ObjectStoreInfo_s
 #ifndef zx_demomed_StoreObjectRequest_EXT
 #define zx_demomed_StoreObjectRequest_EXT
 #endif
-
 struct zx_demomed_StoreObjectRequest_s {
   ZX_ELEM_EXT
   zx_demomed_StoreObjectRequest_EXT
@@ -644,12 +588,8 @@ struct zx_demomed_StoreObjectRequest_s {
 };
 
 #define zx_NEW_demomed_StoreObjectRequest(c, father) (struct zx_demomed_StoreObjectRequest_s*)zx_new_elem((c),(father),zx_demomed_StoreObjectRequest_ELEM)
-
 int zx_DEC_ATTR_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_StoreObjectRequest_s* x);
 int zx_DEC_ELEM_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_StoreObjectRequest_s* x);
-int zx_LEN_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_StoreObjectRequest_s* x);
-char* zx_ENC_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_StoreObjectRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_StoreObjectRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_StoreObjectRequest_s* zx_DEEP_CLONE_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_StoreObjectRequest_s* x, int dup_strs);
@@ -683,7 +623,6 @@ void zx_demomed_StoreObjectRequest_REV_Object(struct zx_demomed_StoreObjectReque
 #ifndef zx_demomed_StoreObjectResponse_EXT
 #define zx_demomed_StoreObjectResponse_EXT
 #endif
-
 struct zx_demomed_StoreObjectResponse_s {
   ZX_ELEM_EXT
   zx_demomed_StoreObjectResponse_EXT
@@ -692,12 +631,8 @@ struct zx_demomed_StoreObjectResponse_s {
 };
 
 #define zx_NEW_demomed_StoreObjectResponse(c, father) (struct zx_demomed_StoreObjectResponse_s*)zx_new_elem((c),(father),zx_demomed_StoreObjectResponse_ELEM)
-
 int zx_DEC_ATTR_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_StoreObjectResponse_s* x);
 int zx_DEC_ELEM_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_StoreObjectResponse_s* x);
-int zx_LEN_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_StoreObjectResponse_s* x);
-char* zx_ENC_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_StoreObjectResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_StoreObjectResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_demomed_StoreObjectResponse_s* zx_DEEP_CLONE_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_StoreObjectResponse_s* x, int dup_strs);

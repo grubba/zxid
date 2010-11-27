@@ -356,7 +356,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
     if (cf->sso_soap_resp_sign) {
       ZERO(&refs, sizeof(refs));
       refs.id = &body->LogoutResponse->ID->g;
-      refs.canon = zx_EASY_ENC_SO_sp_LogoutResponse(cf->ctx, body->LogoutResponse);
+      refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->LogoutResponse->gg);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert slor"))
 	body->LogoutResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
@@ -369,9 +369,9 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
     if (cf->sso_soap_resp_sign) {
       ZERO(&refs, sizeof(refs));
       refs.id = &body->ManageNameIDResponse->ID->g;
-      refs.canon = zx_EASY_ENC_SO_sp_ManageNameIDResponse(cf->ctx, body->ManageNameIDResponse);
+      refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->ManageNameIDResponse->gg);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
-	body->ManageNameIDResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	body->ManageNameIDResponse->Signature = zxsig_sign(cf->ctx, 1, &refs,sign_cert,sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
     return zxid_soap_cgi_resp_body(cf, body, ZX_GET_CONTENT(bdy->ManageNameIDRequest->Issuer));
@@ -408,7 +408,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       if (cf->sso_soap_resp_sign) {
 	ZERO(&refs, sizeof(refs));
 	refs.id = &body->Response->ID->g;
-	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, body->Response);
+	refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->Response->gg);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
 	body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
 	zx_str_free(cf->ctx, refs.canon);
@@ -421,7 +421,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       if (cf->sso_soap_resp_sign) {
 	ZERO(&refs, sizeof(refs));
 	refs.id = &body->Response->ID->g;
-	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, body->Response);
+	refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->Response->gg);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
 	body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
 	zx_str_free(cf->ctx, refs.canon);
@@ -443,7 +443,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       if (cf->sso_soap_resp_sign) {
 	ZERO(&refs, sizeof(refs));
 	refs.id = &body->NameIDMappingResponse->ID->g;
-	refs.canon = zx_EASY_ENC_SO_sp_NameIDMappingResponse(cf->ctx, body->NameIDMappingResponse);
+	refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->NameIDMappingResponse->gg);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
 	  body->NameIDMappingResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
 	zx_str_free(cf->ctx, refs.canon);

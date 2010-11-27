@@ -53,7 +53,7 @@ $ascii = 2,shift if $ARGV[0] eq '-a';
 $show_exec = shift if $ARGV[0] eq '-x';
 $diffx = shift if $ARGV[0] eq '-dx';
 
-$ENV{'LD_LIBRARY_PATH'} = '/apps/lib', shift;  # *** Specific to Sampo's environment
+$ENV{'LD_LIBRARY_PATH'} = '/apps/lib';  # *** Specific to Sampo's environment
 warn "START pid=$$ $cvsid qs($ENV{'QUERY_STRING'}) LD($ENV{'LD_LIBRARY_PATH'})";
 syswrite STDOUT, "Content-Type: text/html\r\n\r\n" if !$ascii;
 
@@ -674,8 +674,8 @@ sub kill_server {
 
 sub G {
     my ($cmd, $tsti, $expl, $timeout, $slow, $url) = @_;
-    return unless $tst eq 'all' || $tst eq substr($tsti,0,length $tst);
-    return if $ntst && $ntst eq substr($tsti,0,length $ntst);
+    return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
+    return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
     warn "\n======= $tsti =======";
 
     my ($page, $result, %headers);
@@ -757,8 +757,8 @@ sub call_system {
 
 sub C {
     my ($tsti, $expl, $timeout, $slow, $command_line) = @_;
-    return unless $tst eq 'all' || $tst eq substr($tsti,0,length $tst);
-    return if $ntst && $ntst eq substr($tsti,0,length $ntst);
+    return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
+    return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
     warn "\n======= $tsti =======\n";
 
     my $test = tst_link($tsti, $expl, $url);
@@ -826,8 +826,8 @@ sub ediffy_read {
 
 sub ED {  # enc-dec command with diff
     my ($tsti, $expl, $n_iter, $file, $exitval, $timeout) = @_;
-    return unless $tst eq 'all' || $tst eq substr($tsti,0,length $tst);
-    return if $ntst && $ntst eq substr($tsti,0,length $ntst);
+    return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
+    return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
     my $test = tst_link($tsti, $expl, '');
     my $slow = 0.01 * $n_iter;
     $timeout ||= 60;
@@ -853,8 +853,8 @@ sub ED {  # enc-dec command with diff
 
 sub ZXC {  # zxcall
     my ($tsti, $expl, $n_iter, $arg, $file) = @_;
-    return unless $tst eq 'all' || $tst eq substr($tsti,0,length $tst);
-    return if $ntst && $ntst eq substr($tsti,0,length $ntst);
+    return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
+    return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
     my $test = tst_link($tsti, $expl, '');
     my $slow = 0.3 * $n_iter;
     
@@ -873,8 +873,8 @@ sub ZXC {  # zxcall
 
 sub CMD {  # zxpasswd command with diff
     my ($tsti, $expl, $cmd, $exitval, $timeout, $slow) = @_;
-    return unless $tst eq 'all' || $tst eq substr($tsti,0,length $tst);
-    return if $ntst && $ntst eq substr($tsti,0,length $ntst);
+    return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
+    return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
     my $test = tst_link($tsti, $expl, '');
     $slow ||= 0.1;
     $timeout ||= 60;
@@ -1156,7 +1156,7 @@ tA('ST', 'ST1', 'static content bypass svn.zxid.org', 5, 0.5, "http://svn.zxid.o
 tP('ST', 'ST2', 'static content bypass zxid.org', 5, 0.5, "http://zxid.org/favicon.ico");
 }
 
-$success_ratio = sprintf "=== Test success %d/%d (%.1f%%) ===\n", $n_tst_ok, $n_tst, $n_tst_ok*100.0/$n_tst;
+$success_ratio = $n_tst ? sprintf("=== Test success %d/%d (%.1f%%) ===\n", $n_tst_ok, $n_tst, $n_tst_ok*100.0/$n_tst) : "No tests run.\n";
 
 print $success_ratio if $ascii;
 

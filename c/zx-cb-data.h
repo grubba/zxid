@@ -23,7 +23,6 @@
 #ifndef zx_cb_By_EXT
 #define zx_cb_By_EXT
 #endif
-
 struct zx_cb_By_s {
   ZX_ELEM_EXT
   zx_cb_By_EXT
@@ -32,12 +31,8 @@ struct zx_cb_By_s {
 };
 
 #define zx_NEW_cb_By(c, father) (struct zx_cb_By_s*)zx_new_elem((c),(father),zx_cb_By_ELEM)
-
 int zx_DEC_ATTR_cb_By(struct zx_ctx* c, struct zx_cb_By_s* x);
 int zx_DEC_ELEM_cb_By(struct zx_ctx* c, struct zx_cb_By_s* x);
-int zx_LEN_SO_cb_By(struct zx_ctx* c, struct zx_cb_By_s* x);
-char* zx_ENC_SO_cb_By(struct zx_ctx* c, struct zx_cb_By_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_By(struct zx_ctx* c, struct zx_cb_By_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_By_s* zx_DEEP_CLONE_cb_By(struct zx_ctx* c, struct zx_cb_By_s* x, int dup_strs);
@@ -67,7 +62,6 @@ void zx_cb_By_PUT_sortWeight(struct zx_cb_By_s* x, struct zx_attr_s* y);
 #ifndef zx_cb_Create_EXT
 #define zx_cb_Create_EXT
 #endif
-
 struct zx_cb_Create_s {
   ZX_ELEM_EXT
   zx_cb_Create_EXT
@@ -81,12 +75,8 @@ struct zx_cb_Create_s {
 };
 
 #define zx_NEW_cb_Create(c, father) (struct zx_cb_Create_s*)zx_new_elem((c),(father),zx_cb_Create_ELEM)
-
 int zx_DEC_ATTR_cb_Create(struct zx_ctx* c, struct zx_cb_Create_s* x);
 int zx_DEC_ELEM_cb_Create(struct zx_ctx* c, struct zx_cb_Create_s* x);
-int zx_LEN_SO_cb_Create(struct zx_ctx* c, struct zx_cb_Create_s* x);
-char* zx_ENC_SO_cb_Create(struct zx_ctx* c, struct zx_cb_Create_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_Create(struct zx_ctx* c, struct zx_cb_Create_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_Create_s* zx_DEEP_CLONE_cb_Create(struct zx_ctx* c, struct zx_cb_Create_s* x, int dup_strs);
@@ -162,7 +152,6 @@ void zx_cb_Create_REV_Extension(struct zx_cb_Create_s* x);
 #ifndef zx_cb_CreateItem_EXT
 #define zx_cb_CreateItem_EXT
 #endif
-
 struct zx_cb_CreateItem_s {
   ZX_ELEM_EXT
   zx_cb_CreateItem_EXT
@@ -173,12 +162,8 @@ struct zx_cb_CreateItem_s {
 };
 
 #define zx_NEW_cb_CreateItem(c, father) (struct zx_cb_CreateItem_s*)zx_new_elem((c),(father),zx_cb_CreateItem_ELEM)
-
 int zx_DEC_ATTR_cb_CreateItem(struct zx_ctx* c, struct zx_cb_CreateItem_s* x);
 int zx_DEC_ELEM_cb_CreateItem(struct zx_ctx* c, struct zx_cb_CreateItem_s* x);
-int zx_LEN_SO_cb_CreateItem(struct zx_ctx* c, struct zx_cb_CreateItem_s* x);
-char* zx_ENC_SO_cb_CreateItem(struct zx_ctx* c, struct zx_cb_CreateItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_CreateItem(struct zx_ctx* c, struct zx_cb_CreateItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_CreateItem_s* zx_DEEP_CLONE_cb_CreateItem(struct zx_ctx* c, struct zx_cb_CreateItem_s* x, int dup_strs);
@@ -218,7 +203,6 @@ void zx_cb_CreateItem_REV_NewData(struct zx_cb_CreateItem_s* x);
 #ifndef zx_cb_CreateResponse_EXT
 #define zx_cb_CreateResponse_EXT
 #endif
-
 struct zx_cb_CreateResponse_s {
   ZX_ELEM_EXT
   zx_cb_CreateResponse_EXT
@@ -230,12 +214,8 @@ struct zx_cb_CreateResponse_s {
 };
 
 #define zx_NEW_cb_CreateResponse(c, father) (struct zx_cb_CreateResponse_s*)zx_new_elem((c),(father),zx_cb_CreateResponse_ELEM)
-
 int zx_DEC_ATTR_cb_CreateResponse(struct zx_ctx* c, struct zx_cb_CreateResponse_s* x);
 int zx_DEC_ELEM_cb_CreateResponse(struct zx_ctx* c, struct zx_cb_CreateResponse_s* x);
-int zx_LEN_SO_cb_CreateResponse(struct zx_ctx* c, struct zx_cb_CreateResponse_s* x);
-char* zx_ENC_SO_cb_CreateResponse(struct zx_ctx* c, struct zx_cb_CreateResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_CreateResponse(struct zx_ctx* c, struct zx_cb_CreateResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_CreateResponse_s* zx_DEEP_CLONE_cb_CreateResponse(struct zx_ctx* c, struct zx_cb_CreateResponse_s* x, int dup_strs);
@@ -289,7 +269,6 @@ void zx_cb_CreateResponse_REV_Extension(struct zx_cb_CreateResponse_s* x);
 #ifndef zx_cb_Credential_EXT
 #define zx_cb_Credential_EXT
 #endif
-
 struct zx_cb_Credential_s {
   ZX_ELEM_EXT
   zx_cb_Credential_EXT
@@ -298,12 +277,8 @@ struct zx_cb_Credential_s {
 };
 
 #define zx_NEW_cb_Credential(c, father) (struct zx_cb_Credential_s*)zx_new_elem((c),(father),zx_cb_Credential_ELEM)
-
 int zx_DEC_ATTR_cb_Credential(struct zx_ctx* c, struct zx_cb_Credential_s* x);
 int zx_DEC_ELEM_cb_Credential(struct zx_ctx* c, struct zx_cb_Credential_s* x);
-int zx_LEN_SO_cb_Credential(struct zx_ctx* c, struct zx_cb_Credential_s* x);
-char* zx_ENC_SO_cb_Credential(struct zx_ctx* c, struct zx_cb_Credential_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_Credential(struct zx_ctx* c, struct zx_cb_Credential_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_Credential_s* zx_DEEP_CLONE_cb_Credential(struct zx_ctx* c, struct zx_cb_Credential_s* x, int dup_strs);
@@ -339,7 +314,6 @@ void zx_cb_Credential_REV_Assertion(struct zx_cb_Credential_s* x);
 #ifndef zx_cb_Data_EXT
 #define zx_cb_Data_EXT
 #endif
-
 struct zx_cb_Data_s {
   ZX_ELEM_EXT
   zx_cb_Data_EXT
@@ -354,12 +328,8 @@ struct zx_cb_Data_s {
 };
 
 #define zx_NEW_cb_Data(c, father) (struct zx_cb_Data_s*)zx_new_elem((c),(father),zx_cb_Data_ELEM)
-
 int zx_DEC_ATTR_cb_Data(struct zx_ctx* c, struct zx_cb_Data_s* x);
 int zx_DEC_ELEM_cb_Data(struct zx_ctx* c, struct zx_cb_Data_s* x);
-int zx_LEN_SO_cb_Data(struct zx_ctx* c, struct zx_cb_Data_s* x);
-char* zx_ENC_SO_cb_Data(struct zx_ctx* c, struct zx_cb_Data_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_Data(struct zx_ctx* c, struct zx_cb_Data_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_Data_s* zx_DEEP_CLONE_cb_Data(struct zx_ctx* c, struct zx_cb_Data_s* x, int dup_strs);
@@ -397,7 +367,7 @@ void zx_cb_Data_PUT_Card(struct zx_cb_Data_s* x, int n, struct zx_elem_s* y);
 
 void zx_cb_Data_ADD_Card(struct zx_cb_Data_s* x, int n, struct zx_elem_s* z);
 
-void zx_cb_Data_DEL_Card(struct zx_cb_Data_s* x, int n);
+void zx_cb_Data_DEL_Card(struct zx_cb_Data_s* x,int n);
 
 void zx_cb_Data_REV_Card(struct zx_cb_Data_s* x);
 
@@ -407,7 +377,6 @@ void zx_cb_Data_REV_Card(struct zx_cb_Data_s* x);
 #ifndef zx_cb_Delete_EXT
 #define zx_cb_Delete_EXT
 #endif
-
 struct zx_cb_Delete_s {
   ZX_ELEM_EXT
   zx_cb_Delete_EXT
@@ -419,12 +388,8 @@ struct zx_cb_Delete_s {
 };
 
 #define zx_NEW_cb_Delete(c, father) (struct zx_cb_Delete_s*)zx_new_elem((c),(father),zx_cb_Delete_ELEM)
-
 int zx_DEC_ATTR_cb_Delete(struct zx_ctx* c, struct zx_cb_Delete_s* x);
 int zx_DEC_ELEM_cb_Delete(struct zx_ctx* c, struct zx_cb_Delete_s* x);
-int zx_LEN_SO_cb_Delete(struct zx_ctx* c, struct zx_cb_Delete_s* x);
-char* zx_ENC_SO_cb_Delete(struct zx_ctx* c, struct zx_cb_Delete_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_Delete(struct zx_ctx* c, struct zx_cb_Delete_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_Delete_s* zx_DEEP_CLONE_cb_Delete(struct zx_ctx* c, struct zx_cb_Delete_s* x, int dup_strs);
@@ -484,7 +449,6 @@ void zx_cb_Delete_REV_Extension(struct zx_cb_Delete_s* x);
 #ifndef zx_cb_DeleteItem_EXT
 #define zx_cb_DeleteItem_EXT
 #endif
-
 struct zx_cb_DeleteItem_s {
   ZX_ELEM_EXT
   zx_cb_DeleteItem_EXT
@@ -497,12 +461,8 @@ struct zx_cb_DeleteItem_s {
 };
 
 #define zx_NEW_cb_DeleteItem(c, father) (struct zx_cb_DeleteItem_s*)zx_new_elem((c),(father),zx_cb_DeleteItem_ELEM)
-
 int zx_DEC_ATTR_cb_DeleteItem(struct zx_ctx* c, struct zx_cb_DeleteItem_s* x);
 int zx_DEC_ELEM_cb_DeleteItem(struct zx_ctx* c, struct zx_cb_DeleteItem_s* x);
-int zx_LEN_SO_cb_DeleteItem(struct zx_ctx* c, struct zx_cb_DeleteItem_s* x);
-char* zx_ENC_SO_cb_DeleteItem(struct zx_ctx* c, struct zx_cb_DeleteItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_DeleteItem(struct zx_ctx* c, struct zx_cb_DeleteItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_DeleteItem_s* zx_DEEP_CLONE_cb_DeleteItem(struct zx_ctx* c, struct zx_cb_DeleteItem_s* x, int dup_strs);
@@ -536,7 +496,7 @@ void zx_cb_DeleteItem_PUT_Select(struct zx_cb_DeleteItem_s* x, int n, struct zx_
 
 void zx_cb_DeleteItem_ADD_Select(struct zx_cb_DeleteItem_s* x, int n, struct zx_elem_s* z);
 
-void zx_cb_DeleteItem_DEL_Select(struct zx_cb_DeleteItem_s* x, int n);
+void zx_cb_DeleteItem_DEL_Select(struct zx_cb_DeleteItem_s* x,int n);
 
 void zx_cb_DeleteItem_REV_Select(struct zx_cb_DeleteItem_s* x);
 
@@ -546,7 +506,6 @@ void zx_cb_DeleteItem_REV_Select(struct zx_cb_DeleteItem_s* x);
 #ifndef zx_cb_DeleteResponse_EXT
 #define zx_cb_DeleteResponse_EXT
 #endif
-
 struct zx_cb_DeleteResponse_s {
   ZX_ELEM_EXT
   zx_cb_DeleteResponse_EXT
@@ -556,12 +515,8 @@ struct zx_cb_DeleteResponse_s {
 };
 
 #define zx_NEW_cb_DeleteResponse(c, father) (struct zx_cb_DeleteResponse_s*)zx_new_elem((c),(father),zx_cb_DeleteResponse_ELEM)
-
 int zx_DEC_ATTR_cb_DeleteResponse(struct zx_ctx* c, struct zx_cb_DeleteResponse_s* x);
 int zx_DEC_ELEM_cb_DeleteResponse(struct zx_ctx* c, struct zx_cb_DeleteResponse_s* x);
-int zx_LEN_SO_cb_DeleteResponse(struct zx_ctx* c, struct zx_cb_DeleteResponse_s* x);
-char* zx_ENC_SO_cb_DeleteResponse(struct zx_ctx* c, struct zx_cb_DeleteResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_DeleteResponse(struct zx_ctx* c, struct zx_cb_DeleteResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_DeleteResponse_s* zx_DEEP_CLONE_cb_DeleteResponse(struct zx_ctx* c, struct zx_cb_DeleteResponse_s* x, int dup_strs);
@@ -605,7 +560,6 @@ void zx_cb_DeleteResponse_REV_Extension(struct zx_cb_DeleteResponse_s* x);
 #ifndef zx_cb_EncryptedResourceID_EXT
 #define zx_cb_EncryptedResourceID_EXT
 #endif
-
 struct zx_cb_EncryptedResourceID_s {
   ZX_ELEM_EXT
   zx_cb_EncryptedResourceID_EXT
@@ -614,12 +568,8 @@ struct zx_cb_EncryptedResourceID_s {
 };
 
 #define zx_NEW_cb_EncryptedResourceID(c, father) (struct zx_cb_EncryptedResourceID_s*)zx_new_elem((c),(father),zx_cb_EncryptedResourceID_ELEM)
-
 int zx_DEC_ATTR_cb_EncryptedResourceID(struct zx_ctx* c, struct zx_cb_EncryptedResourceID_s* x);
 int zx_DEC_ELEM_cb_EncryptedResourceID(struct zx_ctx* c, struct zx_cb_EncryptedResourceID_s* x);
-int zx_LEN_SO_cb_EncryptedResourceID(struct zx_ctx* c, struct zx_cb_EncryptedResourceID_s* x);
-char* zx_ENC_SO_cb_EncryptedResourceID(struct zx_ctx* c, struct zx_cb_EncryptedResourceID_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_EncryptedResourceID(struct zx_ctx* c, struct zx_cb_EncryptedResourceID_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_EncryptedResourceID_s* zx_DEEP_CLONE_cb_EncryptedResourceID(struct zx_ctx* c, struct zx_cb_EncryptedResourceID_s* x, int dup_strs);
@@ -661,19 +611,14 @@ void zx_cb_EncryptedResourceID_REV_EncryptedKey(struct zx_cb_EncryptedResourceID
 #ifndef zx_cb_Extension_EXT
 #define zx_cb_Extension_EXT
 #endif
-
 struct zx_cb_Extension_s {
   ZX_ELEM_EXT
   zx_cb_Extension_EXT
 };
 
 #define zx_NEW_cb_Extension(c, father) (struct zx_cb_Extension_s*)zx_new_elem((c),(father),zx_cb_Extension_ELEM)
-
 int zx_DEC_ATTR_cb_Extension(struct zx_ctx* c, struct zx_cb_Extension_s* x);
 int zx_DEC_ELEM_cb_Extension(struct zx_ctx* c, struct zx_cb_Extension_s* x);
-int zx_LEN_SO_cb_Extension(struct zx_ctx* c, struct zx_cb_Extension_s* x);
-char* zx_ENC_SO_cb_Extension(struct zx_ctx* c, struct zx_cb_Extension_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_Extension(struct zx_ctx* c, struct zx_cb_Extension_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_Extension_s* zx_DEEP_CLONE_cb_Extension(struct zx_ctx* c, struct zx_cb_Extension_s* x, int dup_strs);
@@ -699,7 +644,6 @@ int zx_WALK_WO_cb_Extension(struct zx_ctx* c, struct zx_cb_Extension_s* x, void*
 #ifndef zx_cb_ItemData_EXT
 #define zx_cb_ItemData_EXT
 #endif
-
 struct zx_cb_ItemData_s {
   ZX_ELEM_EXT
   zx_cb_ItemData_EXT
@@ -711,12 +655,8 @@ struct zx_cb_ItemData_s {
 };
 
 #define zx_NEW_cb_ItemData(c, father) (struct zx_cb_ItemData_s*)zx_new_elem((c),(father),zx_cb_ItemData_ELEM)
-
 int zx_DEC_ATTR_cb_ItemData(struct zx_ctx* c, struct zx_cb_ItemData_s* x);
 int zx_DEC_ELEM_cb_ItemData(struct zx_ctx* c, struct zx_cb_ItemData_s* x);
-int zx_LEN_SO_cb_ItemData(struct zx_ctx* c, struct zx_cb_ItemData_s* x);
-char* zx_ENC_SO_cb_ItemData(struct zx_ctx* c, struct zx_cb_ItemData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_ItemData(struct zx_ctx* c, struct zx_cb_ItemData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_ItemData_s* zx_DEEP_CLONE_cb_ItemData(struct zx_ctx* c, struct zx_cb_ItemData_s* x, int dup_strs);
@@ -748,7 +688,7 @@ void zx_cb_ItemData_PUT_Card(struct zx_cb_ItemData_s* x, int n, struct zx_elem_s
 
 void zx_cb_ItemData_ADD_Card(struct zx_cb_ItemData_s* x, int n, struct zx_elem_s* z);
 
-void zx_cb_ItemData_DEL_Card(struct zx_cb_ItemData_s* x, int n);
+void zx_cb_ItemData_DEL_Card(struct zx_cb_ItemData_s* x,int n);
 
 void zx_cb_ItemData_REV_Card(struct zx_cb_ItemData_s* x);
 
@@ -758,7 +698,6 @@ void zx_cb_ItemData_REV_Card(struct zx_cb_ItemData_s* x);
 #ifndef zx_cb_ItemSelection_EXT
 #define zx_cb_ItemSelection_EXT
 #endif
-
 struct zx_cb_ItemSelection_s {
   ZX_ELEM_EXT
   zx_cb_ItemSelection_EXT
@@ -766,12 +705,8 @@ struct zx_cb_ItemSelection_s {
 };
 
 #define zx_NEW_cb_ItemSelection(c, father) (struct zx_cb_ItemSelection_s*)zx_new_elem((c),(father),zx_cb_ItemSelection_ELEM)
-
 int zx_DEC_ATTR_cb_ItemSelection(struct zx_ctx* c, struct zx_cb_ItemSelection_s* x);
 int zx_DEC_ELEM_cb_ItemSelection(struct zx_ctx* c, struct zx_cb_ItemSelection_s* x);
-int zx_LEN_SO_cb_ItemSelection(struct zx_ctx* c, struct zx_cb_ItemSelection_s* x);
-char* zx_ENC_SO_cb_ItemSelection(struct zx_ctx* c, struct zx_cb_ItemSelection_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_ItemSelection(struct zx_ctx* c, struct zx_cb_ItemSelection_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_ItemSelection_s* zx_DEEP_CLONE_cb_ItemSelection(struct zx_ctx* c, struct zx_cb_ItemSelection_s* x, int dup_strs);
@@ -799,7 +734,6 @@ void zx_cb_ItemSelection_PUT_format(struct zx_cb_ItemSelection_s* x, struct zx_a
 #ifndef zx_cb_Modification_EXT
 #define zx_cb_Modification_EXT
 #endif
-
 struct zx_cb_Modification_s {
   ZX_ELEM_EXT
   zx_cb_Modification_EXT
@@ -813,12 +747,8 @@ struct zx_cb_Modification_s {
 };
 
 #define zx_NEW_cb_Modification(c, father) (struct zx_cb_Modification_s*)zx_new_elem((c),(father),zx_cb_Modification_ELEM)
-
 int zx_DEC_ATTR_cb_Modification(struct zx_ctx* c, struct zx_cb_Modification_s* x);
 int zx_DEC_ELEM_cb_Modification(struct zx_ctx* c, struct zx_cb_Modification_s* x);
-int zx_LEN_SO_cb_Modification(struct zx_ctx* c, struct zx_cb_Modification_s* x);
-char* zx_ENC_SO_cb_Modification(struct zx_ctx* c, struct zx_cb_Modification_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_Modification(struct zx_ctx* c, struct zx_cb_Modification_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_Modification_s* zx_DEEP_CLONE_cb_Modification(struct zx_ctx* c, struct zx_cb_Modification_s* x, int dup_strs);
@@ -858,7 +788,7 @@ void zx_cb_Modification_PUT_NewData(struct zx_cb_Modification_s* x, int n, struc
 void zx_cb_Modification_ADD_Select(struct zx_cb_Modification_s* x, int n, struct zx_elem_s* z);
 void zx_cb_Modification_ADD_NewData(struct zx_cb_Modification_s* x, int n, struct zx_cb_NewData_s* z);
 
-void zx_cb_Modification_DEL_Select(struct zx_cb_Modification_s* x, int n);
+void zx_cb_Modification_DEL_Select(struct zx_cb_Modification_s* x,int n);
 void zx_cb_Modification_DEL_NewData(struct zx_cb_Modification_s* x, int n);
 
 void zx_cb_Modification_REV_Select(struct zx_cb_Modification_s* x);
@@ -870,7 +800,6 @@ void zx_cb_Modification_REV_NewData(struct zx_cb_Modification_s* x);
 #ifndef zx_cb_Modify_EXT
 #define zx_cb_Modify_EXT
 #endif
-
 struct zx_cb_Modify_s {
   ZX_ELEM_EXT
   zx_cb_Modify_EXT
@@ -884,12 +813,8 @@ struct zx_cb_Modify_s {
 };
 
 #define zx_NEW_cb_Modify(c, father) (struct zx_cb_Modify_s*)zx_new_elem((c),(father),zx_cb_Modify_ELEM)
-
 int zx_DEC_ATTR_cb_Modify(struct zx_ctx* c, struct zx_cb_Modify_s* x);
 int zx_DEC_ELEM_cb_Modify(struct zx_ctx* c, struct zx_cb_Modify_s* x);
-int zx_LEN_SO_cb_Modify(struct zx_ctx* c, struct zx_cb_Modify_s* x);
-char* zx_ENC_SO_cb_Modify(struct zx_ctx* c, struct zx_cb_Modify_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_Modify(struct zx_ctx* c, struct zx_cb_Modify_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_Modify_s* zx_DEEP_CLONE_cb_Modify(struct zx_ctx* c, struct zx_cb_Modify_s* x, int dup_strs);
@@ -965,7 +890,6 @@ void zx_cb_Modify_REV_Extension(struct zx_cb_Modify_s* x);
 #ifndef zx_cb_ModifyResponse_EXT
 #define zx_cb_ModifyResponse_EXT
 #endif
-
 struct zx_cb_ModifyResponse_s {
   ZX_ELEM_EXT
   zx_cb_ModifyResponse_EXT
@@ -977,12 +901,8 @@ struct zx_cb_ModifyResponse_s {
 };
 
 #define zx_NEW_cb_ModifyResponse(c, father) (struct zx_cb_ModifyResponse_s*)zx_new_elem((c),(father),zx_cb_ModifyResponse_ELEM)
-
 int zx_DEC_ATTR_cb_ModifyResponse(struct zx_ctx* c, struct zx_cb_ModifyResponse_s* x);
 int zx_DEC_ELEM_cb_ModifyResponse(struct zx_ctx* c, struct zx_cb_ModifyResponse_s* x);
-int zx_LEN_SO_cb_ModifyResponse(struct zx_ctx* c, struct zx_cb_ModifyResponse_s* x);
-char* zx_ENC_SO_cb_ModifyResponse(struct zx_ctx* c, struct zx_cb_ModifyResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_ModifyResponse(struct zx_ctx* c, struct zx_cb_ModifyResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_ModifyResponse_s* zx_DEEP_CLONE_cb_ModifyResponse(struct zx_ctx* c, struct zx_cb_ModifyResponse_s* x, int dup_strs);
@@ -1036,7 +956,6 @@ void zx_cb_ModifyResponse_REV_Extension(struct zx_cb_ModifyResponse_s* x);
 #ifndef zx_cb_NewData_EXT
 #define zx_cb_NewData_EXT
 #endif
-
 struct zx_cb_NewData_s {
   ZX_ELEM_EXT
   zx_cb_NewData_EXT
@@ -1044,12 +963,8 @@ struct zx_cb_NewData_s {
 };
 
 #define zx_NEW_cb_NewData(c, father) (struct zx_cb_NewData_s*)zx_new_elem((c),(father),zx_cb_NewData_ELEM)
-
 int zx_DEC_ATTR_cb_NewData(struct zx_ctx* c, struct zx_cb_NewData_s* x);
 int zx_DEC_ELEM_cb_NewData(struct zx_ctx* c, struct zx_cb_NewData_s* x);
-int zx_LEN_SO_cb_NewData(struct zx_ctx* c, struct zx_cb_NewData_s* x);
-char* zx_ENC_SO_cb_NewData(struct zx_ctx* c, struct zx_cb_NewData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_NewData(struct zx_ctx* c, struct zx_cb_NewData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_NewData_s* zx_DEEP_CLONE_cb_NewData(struct zx_ctx* c, struct zx_cb_NewData_s* x, int dup_strs);
@@ -1073,7 +988,7 @@ void zx_cb_NewData_PUT_Card(struct zx_cb_NewData_s* x, int n, struct zx_elem_s* 
 
 void zx_cb_NewData_ADD_Card(struct zx_cb_NewData_s* x, int n, struct zx_elem_s* z);
 
-void zx_cb_NewData_DEL_Card(struct zx_cb_NewData_s* x, int n);
+void zx_cb_NewData_DEL_Card(struct zx_cb_NewData_s* x,int n);
 
 void zx_cb_NewData_REV_Card(struct zx_cb_NewData_s* x);
 
@@ -1083,7 +998,6 @@ void zx_cb_NewData_REV_Card(struct zx_cb_NewData_s* x);
 #ifndef zx_cb_Notification_EXT
 #define zx_cb_Notification_EXT
 #endif
-
 struct zx_cb_Notification_s {
   ZX_ELEM_EXT
   zx_cb_Notification_EXT
@@ -1095,12 +1009,8 @@ struct zx_cb_Notification_s {
 };
 
 #define zx_NEW_cb_Notification(c, father) (struct zx_cb_Notification_s*)zx_new_elem((c),(father),zx_cb_Notification_ELEM)
-
 int zx_DEC_ATTR_cb_Notification(struct zx_ctx* c, struct zx_cb_Notification_s* x);
 int zx_DEC_ELEM_cb_Notification(struct zx_ctx* c, struct zx_cb_Notification_s* x);
-int zx_LEN_SO_cb_Notification(struct zx_ctx* c, struct zx_cb_Notification_s* x);
-char* zx_ENC_SO_cb_Notification(struct zx_ctx* c, struct zx_cb_Notification_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_Notification(struct zx_ctx* c, struct zx_cb_Notification_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_Notification_s* zx_DEEP_CLONE_cb_Notification(struct zx_ctx* c, struct zx_cb_Notification_s* x, int dup_strs);
@@ -1142,7 +1052,6 @@ void zx_cb_Notification_REV_ItemData(struct zx_cb_Notification_s* x);
 #ifndef zx_cb_Notify_EXT
 #define zx_cb_Notify_EXT
 #endif
-
 struct zx_cb_Notify_s {
   ZX_ELEM_EXT
   zx_cb_Notify_EXT
@@ -1153,12 +1062,8 @@ struct zx_cb_Notify_s {
 };
 
 #define zx_NEW_cb_Notify(c, father) (struct zx_cb_Notify_s*)zx_new_elem((c),(father),zx_cb_Notify_ELEM)
-
 int zx_DEC_ATTR_cb_Notify(struct zx_ctx* c, struct zx_cb_Notify_s* x);
 int zx_DEC_ELEM_cb_Notify(struct zx_ctx* c, struct zx_cb_Notify_s* x);
-int zx_LEN_SO_cb_Notify(struct zx_ctx* c, struct zx_cb_Notify_s* x);
-char* zx_ENC_SO_cb_Notify(struct zx_ctx* c, struct zx_cb_Notify_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_Notify(struct zx_ctx* c, struct zx_cb_Notify_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_Notify_s* zx_DEEP_CLONE_cb_Notify(struct zx_ctx* c, struct zx_cb_Notify_s* x, int dup_strs);
@@ -1204,7 +1109,6 @@ void zx_cb_Notify_REV_Extension(struct zx_cb_Notify_s* x);
 #ifndef zx_cb_NotifyAdminTo_EXT
 #define zx_cb_NotifyAdminTo_EXT
 #endif
-
 struct zx_cb_NotifyAdminTo_s {
   ZX_ELEM_EXT
   zx_cb_NotifyAdminTo_EXT
@@ -1215,12 +1119,8 @@ struct zx_cb_NotifyAdminTo_s {
 };
 
 #define zx_NEW_cb_NotifyAdminTo(c, father) (struct zx_cb_NotifyAdminTo_s*)zx_new_elem((c),(father),zx_cb_NotifyAdminTo_ELEM)
-
 int zx_DEC_ATTR_cb_NotifyAdminTo(struct zx_ctx* c, struct zx_cb_NotifyAdminTo_s* x);
 int zx_DEC_ELEM_cb_NotifyAdminTo(struct zx_ctx* c, struct zx_cb_NotifyAdminTo_s* x);
-int zx_LEN_SO_cb_NotifyAdminTo(struct zx_ctx* c, struct zx_cb_NotifyAdminTo_s* x);
-char* zx_ENC_SO_cb_NotifyAdminTo(struct zx_ctx* c, struct zx_cb_NotifyAdminTo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_NotifyAdminTo(struct zx_ctx* c, struct zx_cb_NotifyAdminTo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_NotifyAdminTo_s* zx_DEEP_CLONE_cb_NotifyAdminTo(struct zx_ctx* c, struct zx_cb_NotifyAdminTo_s* x, int dup_strs);
@@ -1258,9 +1158,9 @@ void zx_cb_NotifyAdminTo_ADD_SecurityMechID(struct zx_cb_NotifyAdminTo_s* x, int
 void zx_cb_NotifyAdminTo_ADD_Credential(struct zx_cb_NotifyAdminTo_s* x, int n, struct zx_cb_Credential_s* z);
 void zx_cb_NotifyAdminTo_ADD_Endpoint(struct zx_cb_NotifyAdminTo_s* x, int n, struct zx_elem_s* z);
 
-void zx_cb_NotifyAdminTo_DEL_SecurityMechID(struct zx_cb_NotifyAdminTo_s* x, int n);
+void zx_cb_NotifyAdminTo_DEL_SecurityMechID(struct zx_cb_NotifyAdminTo_s* x,int n);
 void zx_cb_NotifyAdminTo_DEL_Credential(struct zx_cb_NotifyAdminTo_s* x, int n);
-void zx_cb_NotifyAdminTo_DEL_Endpoint(struct zx_cb_NotifyAdminTo_s* x, int n);
+void zx_cb_NotifyAdminTo_DEL_Endpoint(struct zx_cb_NotifyAdminTo_s* x,int n);
 
 void zx_cb_NotifyAdminTo_REV_SecurityMechID(struct zx_cb_NotifyAdminTo_s* x);
 void zx_cb_NotifyAdminTo_REV_Credential(struct zx_cb_NotifyAdminTo_s* x);
@@ -1272,7 +1172,6 @@ void zx_cb_NotifyAdminTo_REV_Endpoint(struct zx_cb_NotifyAdminTo_s* x);
 #ifndef zx_cb_NotifyResponse_EXT
 #define zx_cb_NotifyResponse_EXT
 #endif
-
 struct zx_cb_NotifyResponse_s {
   ZX_ELEM_EXT
   zx_cb_NotifyResponse_EXT
@@ -1282,12 +1181,8 @@ struct zx_cb_NotifyResponse_s {
 };
 
 #define zx_NEW_cb_NotifyResponse(c, father) (struct zx_cb_NotifyResponse_s*)zx_new_elem((c),(father),zx_cb_NotifyResponse_ELEM)
-
 int zx_DEC_ATTR_cb_NotifyResponse(struct zx_ctx* c, struct zx_cb_NotifyResponse_s* x);
 int zx_DEC_ELEM_cb_NotifyResponse(struct zx_ctx* c, struct zx_cb_NotifyResponse_s* x);
-int zx_LEN_SO_cb_NotifyResponse(struct zx_ctx* c, struct zx_cb_NotifyResponse_s* x);
-char* zx_ENC_SO_cb_NotifyResponse(struct zx_ctx* c, struct zx_cb_NotifyResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_NotifyResponse(struct zx_ctx* c, struct zx_cb_NotifyResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_NotifyResponse_s* zx_DEEP_CLONE_cb_NotifyResponse(struct zx_ctx* c, struct zx_cb_NotifyResponse_s* x, int dup_strs);
@@ -1331,7 +1226,6 @@ void zx_cb_NotifyResponse_REV_Extension(struct zx_cb_NotifyResponse_s* x);
 #ifndef zx_cb_NotifyTo_EXT
 #define zx_cb_NotifyTo_EXT
 #endif
-
 struct zx_cb_NotifyTo_s {
   ZX_ELEM_EXT
   zx_cb_NotifyTo_EXT
@@ -1342,12 +1236,8 @@ struct zx_cb_NotifyTo_s {
 };
 
 #define zx_NEW_cb_NotifyTo(c, father) (struct zx_cb_NotifyTo_s*)zx_new_elem((c),(father),zx_cb_NotifyTo_ELEM)
-
 int zx_DEC_ATTR_cb_NotifyTo(struct zx_ctx* c, struct zx_cb_NotifyTo_s* x);
 int zx_DEC_ELEM_cb_NotifyTo(struct zx_ctx* c, struct zx_cb_NotifyTo_s* x);
-int zx_LEN_SO_cb_NotifyTo(struct zx_ctx* c, struct zx_cb_NotifyTo_s* x);
-char* zx_ENC_SO_cb_NotifyTo(struct zx_ctx* c, struct zx_cb_NotifyTo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_NotifyTo(struct zx_ctx* c, struct zx_cb_NotifyTo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_NotifyTo_s* zx_DEEP_CLONE_cb_NotifyTo(struct zx_ctx* c, struct zx_cb_NotifyTo_s* x, int dup_strs);
@@ -1385,9 +1275,9 @@ void zx_cb_NotifyTo_ADD_SecurityMechID(struct zx_cb_NotifyTo_s* x, int n, struct
 void zx_cb_NotifyTo_ADD_Credential(struct zx_cb_NotifyTo_s* x, int n, struct zx_cb_Credential_s* z);
 void zx_cb_NotifyTo_ADD_Endpoint(struct zx_cb_NotifyTo_s* x, int n, struct zx_elem_s* z);
 
-void zx_cb_NotifyTo_DEL_SecurityMechID(struct zx_cb_NotifyTo_s* x, int n);
+void zx_cb_NotifyTo_DEL_SecurityMechID(struct zx_cb_NotifyTo_s* x,int n);
 void zx_cb_NotifyTo_DEL_Credential(struct zx_cb_NotifyTo_s* x, int n);
-void zx_cb_NotifyTo_DEL_Endpoint(struct zx_cb_NotifyTo_s* x, int n);
+void zx_cb_NotifyTo_DEL_Endpoint(struct zx_cb_NotifyTo_s* x,int n);
 
 void zx_cb_NotifyTo_REV_SecurityMechID(struct zx_cb_NotifyTo_s* x);
 void zx_cb_NotifyTo_REV_Credential(struct zx_cb_NotifyTo_s* x);
@@ -1399,7 +1289,6 @@ void zx_cb_NotifyTo_REV_Endpoint(struct zx_cb_NotifyTo_s* x);
 #ifndef zx_cb_Query_EXT
 #define zx_cb_Query_EXT
 #endif
-
 struct zx_cb_Query_s {
   ZX_ELEM_EXT
   zx_cb_Query_EXT
@@ -1412,12 +1301,8 @@ struct zx_cb_Query_s {
 };
 
 #define zx_NEW_cb_Query(c, father) (struct zx_cb_Query_s*)zx_new_elem((c),(father),zx_cb_Query_ELEM)
-
 int zx_DEC_ATTR_cb_Query(struct zx_ctx* c, struct zx_cb_Query_s* x);
 int zx_DEC_ELEM_cb_Query(struct zx_ctx* c, struct zx_cb_Query_s* x);
-int zx_LEN_SO_cb_Query(struct zx_ctx* c, struct zx_cb_Query_s* x);
-char* zx_ENC_SO_cb_Query(struct zx_ctx* c, struct zx_cb_Query_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_Query(struct zx_ctx* c, struct zx_cb_Query_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_Query_s* zx_DEEP_CLONE_cb_Query(struct zx_ctx* c, struct zx_cb_Query_s* x, int dup_strs);
@@ -1485,7 +1370,6 @@ void zx_cb_Query_REV_Extension(struct zx_cb_Query_s* x);
 #ifndef zx_cb_QueryItem_EXT
 #define zx_cb_QueryItem_EXT
 #endif
-
 struct zx_cb_QueryItem_s {
   ZX_ELEM_EXT
   zx_cb_QueryItem_EXT
@@ -1497,12 +1381,8 @@ struct zx_cb_QueryItem_s {
 };
 
 #define zx_NEW_cb_QueryItem(c, father) (struct zx_cb_QueryItem_s*)zx_new_elem((c),(father),zx_cb_QueryItem_ELEM)
-
 int zx_DEC_ATTR_cb_QueryItem(struct zx_ctx* c, struct zx_cb_QueryItem_s* x);
 int zx_DEC_ELEM_cb_QueryItem(struct zx_ctx* c, struct zx_cb_QueryItem_s* x);
-int zx_LEN_SO_cb_QueryItem(struct zx_ctx* c, struct zx_cb_QueryItem_s* x);
-char* zx_ENC_SO_cb_QueryItem(struct zx_ctx* c, struct zx_cb_QueryItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_QueryItem(struct zx_ctx* c, struct zx_cb_QueryItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_QueryItem_s* zx_DEEP_CLONE_cb_QueryItem(struct zx_ctx* c, struct zx_cb_QueryItem_s* x, int dup_strs);
@@ -1538,7 +1418,6 @@ void zx_cb_QueryItem_PUT_format(struct zx_cb_QueryItem_s* x, struct zx_attr_s* y
 #ifndef zx_cb_QueryResponse_EXT
 #define zx_cb_QueryResponse_EXT
 #endif
-
 struct zx_cb_QueryResponse_s {
   ZX_ELEM_EXT
   zx_cb_QueryResponse_EXT
@@ -1551,12 +1430,8 @@ struct zx_cb_QueryResponse_s {
 };
 
 #define zx_NEW_cb_QueryResponse(c, father) (struct zx_cb_QueryResponse_s*)zx_new_elem((c),(father),zx_cb_QueryResponse_ELEM)
-
 int zx_DEC_ATTR_cb_QueryResponse(struct zx_ctx* c, struct zx_cb_QueryResponse_s* x);
 int zx_DEC_ELEM_cb_QueryResponse(struct zx_ctx* c, struct zx_cb_QueryResponse_s* x);
-int zx_LEN_SO_cb_QueryResponse(struct zx_ctx* c, struct zx_cb_QueryResponse_s* x);
-char* zx_ENC_SO_cb_QueryResponse(struct zx_ctx* c, struct zx_cb_QueryResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_QueryResponse(struct zx_ctx* c, struct zx_cb_QueryResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_QueryResponse_s* zx_DEEP_CLONE_cb_QueryResponse(struct zx_ctx* c, struct zx_cb_QueryResponse_s* x, int dup_strs);
@@ -1612,7 +1487,6 @@ void zx_cb_QueryResponse_REV_Extension(struct zx_cb_QueryResponse_s* x);
 #ifndef zx_cb_RefItem_EXT
 #define zx_cb_RefItem_EXT
 #endif
-
 struct zx_cb_RefItem_s {
   ZX_ELEM_EXT
   zx_cb_RefItem_EXT
@@ -1621,12 +1495,8 @@ struct zx_cb_RefItem_s {
 };
 
 #define zx_NEW_cb_RefItem(c, father) (struct zx_cb_RefItem_s*)zx_new_elem((c),(father),zx_cb_RefItem_ELEM)
-
 int zx_DEC_ATTR_cb_RefItem(struct zx_ctx* c, struct zx_cb_RefItem_s* x);
 int zx_DEC_ELEM_cb_RefItem(struct zx_ctx* c, struct zx_cb_RefItem_s* x);
-int zx_LEN_SO_cb_RefItem(struct zx_ctx* c, struct zx_cb_RefItem_s* x);
-char* zx_ENC_SO_cb_RefItem(struct zx_ctx* c, struct zx_cb_RefItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_RefItem(struct zx_ctx* c, struct zx_cb_RefItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_RefItem_s* zx_DEEP_CLONE_cb_RefItem(struct zx_ctx* c, struct zx_cb_RefItem_s* x, int dup_strs);
@@ -1656,7 +1526,6 @@ void zx_cb_RefItem_PUT_subscriptionID(struct zx_cb_RefItem_s* x, struct zx_attr_
 #ifndef zx_cb_ReportUsage_EXT
 #define zx_cb_ReportUsage_EXT
 #endif
-
 struct zx_cb_ReportUsage_s {
   ZX_ELEM_EXT
   zx_cb_ReportUsage_EXT
@@ -1668,12 +1537,8 @@ struct zx_cb_ReportUsage_s {
 };
 
 #define zx_NEW_cb_ReportUsage(c, father) (struct zx_cb_ReportUsage_s*)zx_new_elem((c),(father),zx_cb_ReportUsage_ELEM)
-
 int zx_DEC_ATTR_cb_ReportUsage(struct zx_ctx* c, struct zx_cb_ReportUsage_s* x);
 int zx_DEC_ELEM_cb_ReportUsage(struct zx_ctx* c, struct zx_cb_ReportUsage_s* x);
-int zx_LEN_SO_cb_ReportUsage(struct zx_ctx* c, struct zx_cb_ReportUsage_s* x);
-char* zx_ENC_SO_cb_ReportUsage(struct zx_ctx* c, struct zx_cb_ReportUsage_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_ReportUsage(struct zx_ctx* c, struct zx_cb_ReportUsage_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_ReportUsage_s* zx_DEEP_CLONE_cb_ReportUsage(struct zx_ctx* c, struct zx_cb_ReportUsage_s* x, int dup_strs);
@@ -1719,7 +1584,7 @@ void zx_cb_ReportUsage_ADD_UsageType(struct zx_cb_ReportUsage_s* x, int n, struc
 
 void zx_cb_ReportUsage_DEL_ResourceID(struct zx_cb_ReportUsage_s* x, int n);
 void zx_cb_ReportUsage_DEL_EncryptedResourceID(struct zx_cb_ReportUsage_s* x, int n);
-void zx_cb_ReportUsage_DEL_CARDID(struct zx_cb_ReportUsage_s* x, int n);
+void zx_cb_ReportUsage_DEL_CARDID(struct zx_cb_ReportUsage_s* x,int n);
 void zx_cb_ReportUsage_DEL_UsageType(struct zx_cb_ReportUsage_s* x, int n);
 
 void zx_cb_ReportUsage_REV_ResourceID(struct zx_cb_ReportUsage_s* x);
@@ -1733,7 +1598,6 @@ void zx_cb_ReportUsage_REV_UsageType(struct zx_cb_ReportUsage_s* x);
 #ifndef zx_cb_ReportUsageResponse_EXT
 #define zx_cb_ReportUsageResponse_EXT
 #endif
-
 struct zx_cb_ReportUsageResponse_s {
   ZX_ELEM_EXT
   zx_cb_ReportUsageResponse_EXT
@@ -1742,12 +1606,8 @@ struct zx_cb_ReportUsageResponse_s {
 };
 
 #define zx_NEW_cb_ReportUsageResponse(c, father) (struct zx_cb_ReportUsageResponse_s*)zx_new_elem((c),(father),zx_cb_ReportUsageResponse_ELEM)
-
 int zx_DEC_ATTR_cb_ReportUsageResponse(struct zx_ctx* c, struct zx_cb_ReportUsageResponse_s* x);
 int zx_DEC_ELEM_cb_ReportUsageResponse(struct zx_ctx* c, struct zx_cb_ReportUsageResponse_s* x);
-int zx_LEN_SO_cb_ReportUsageResponse(struct zx_ctx* c, struct zx_cb_ReportUsageResponse_s* x);
-char* zx_ENC_SO_cb_ReportUsageResponse(struct zx_ctx* c, struct zx_cb_ReportUsageResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_ReportUsageResponse(struct zx_ctx* c, struct zx_cb_ReportUsageResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_ReportUsageResponse_s* zx_DEEP_CLONE_cb_ReportUsageResponse(struct zx_ctx* c, struct zx_cb_ReportUsageResponse_s* x, int dup_strs);
@@ -1783,7 +1643,6 @@ void zx_cb_ReportUsageResponse_REV_Status(struct zx_cb_ReportUsageResponse_s* x)
 #ifndef zx_cb_ResourceID_EXT
 #define zx_cb_ResourceID_EXT
 #endif
-
 struct zx_cb_ResourceID_s {
   ZX_ELEM_EXT
   zx_cb_ResourceID_EXT
@@ -1791,12 +1650,8 @@ struct zx_cb_ResourceID_s {
 };
 
 #define zx_NEW_cb_ResourceID(c, father) (struct zx_cb_ResourceID_s*)zx_new_elem((c),(father),zx_cb_ResourceID_ELEM)
-
 int zx_DEC_ATTR_cb_ResourceID(struct zx_ctx* c, struct zx_cb_ResourceID_s* x);
 int zx_DEC_ELEM_cb_ResourceID(struct zx_ctx* c, struct zx_cb_ResourceID_s* x);
-int zx_LEN_SO_cb_ResourceID(struct zx_ctx* c, struct zx_cb_ResourceID_s* x);
-char* zx_ENC_SO_cb_ResourceID(struct zx_ctx* c, struct zx_cb_ResourceID_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_ResourceID(struct zx_ctx* c, struct zx_cb_ResourceID_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_ResourceID_s* zx_DEEP_CLONE_cb_ResourceID(struct zx_ctx* c, struct zx_cb_ResourceID_s* x, int dup_strs);
@@ -1824,7 +1679,6 @@ void zx_cb_ResourceID_PUT_id(struct zx_cb_ResourceID_s* x, struct zx_attr_s* y);
 #ifndef zx_cb_Status_EXT
 #define zx_cb_Status_EXT
 #endif
-
 struct zx_cb_Status_s {
   ZX_ELEM_EXT
   zx_cb_Status_EXT
@@ -1835,12 +1689,8 @@ struct zx_cb_Status_s {
 };
 
 #define zx_NEW_cb_Status(c, father) (struct zx_cb_Status_s*)zx_new_elem((c),(father),zx_cb_Status_ELEM)
-
 int zx_DEC_ATTR_cb_Status(struct zx_ctx* c, struct zx_cb_Status_s* x);
 int zx_DEC_ELEM_cb_Status(struct zx_ctx* c, struct zx_cb_Status_s* x);
-int zx_LEN_SO_cb_Status(struct zx_ctx* c, struct zx_cb_Status_s* x);
-char* zx_ENC_SO_cb_Status(struct zx_ctx* c, struct zx_cb_Status_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_Status(struct zx_ctx* c, struct zx_cb_Status_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_Status_s* zx_DEEP_CLONE_cb_Status(struct zx_ctx* c, struct zx_cb_Status_s* x, int dup_strs);
@@ -1880,7 +1730,6 @@ void zx_cb_Status_REV_Status(struct zx_cb_Status_s* x);
 #ifndef zx_cb_Subscription_EXT
 #define zx_cb_Subscription_EXT
 #endif
-
 struct zx_cb_Subscription_s {
   ZX_ELEM_EXT
   zx_cb_Subscription_EXT
@@ -1899,12 +1748,8 @@ struct zx_cb_Subscription_s {
 };
 
 #define zx_NEW_cb_Subscription(c, father) (struct zx_cb_Subscription_s*)zx_new_elem((c),(father),zx_cb_Subscription_ELEM)
-
 int zx_DEC_ATTR_cb_Subscription(struct zx_ctx* c, struct zx_cb_Subscription_s* x);
 int zx_DEC_ELEM_cb_Subscription(struct zx_ctx* c, struct zx_cb_Subscription_s* x);
-int zx_LEN_SO_cb_Subscription(struct zx_ctx* c, struct zx_cb_Subscription_s* x);
-char* zx_ENC_SO_cb_Subscription(struct zx_ctx* c, struct zx_cb_Subscription_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_Subscription(struct zx_ctx* c, struct zx_cb_Subscription_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_Subscription_s* zx_DEEP_CLONE_cb_Subscription(struct zx_ctx* c, struct zx_cb_Subscription_s* x, int dup_strs);
@@ -1978,8 +1823,8 @@ void zx_cb_Subscription_DEL_ItemSelection(struct zx_cb_Subscription_s* x, int n)
 void zx_cb_Subscription_DEL_RefItem(struct zx_cb_Subscription_s* x, int n);
 void zx_cb_Subscription_DEL_NotifyTo(struct zx_cb_Subscription_s* x, int n);
 void zx_cb_Subscription_DEL_NotifyAdminTo(struct zx_cb_Subscription_s* x, int n);
-void zx_cb_Subscription_DEL_Aggregation(struct zx_cb_Subscription_s* x, int n);
-void zx_cb_Subscription_DEL_Trigger(struct zx_cb_Subscription_s* x, int n);
+void zx_cb_Subscription_DEL_Aggregation(struct zx_cb_Subscription_s* x,int n);
+void zx_cb_Subscription_DEL_Trigger(struct zx_cb_Subscription_s* x,int n);
 void zx_cb_Subscription_DEL_Extension(struct zx_cb_Subscription_s* x, int n);
 
 void zx_cb_Subscription_REV_ItemSelection(struct zx_cb_Subscription_s* x);
@@ -1996,7 +1841,6 @@ void zx_cb_Subscription_REV_Extension(struct zx_cb_Subscription_s* x);
 #ifndef zx_cb_UsageType_EXT
 #define zx_cb_UsageType_EXT
 #endif
-
 struct zx_cb_UsageType_s {
   ZX_ELEM_EXT
   zx_cb_UsageType_EXT
@@ -2009,12 +1853,8 @@ struct zx_cb_UsageType_s {
 };
 
 #define zx_NEW_cb_UsageType(c, father) (struct zx_cb_UsageType_s*)zx_new_elem((c),(father),zx_cb_UsageType_ELEM)
-
 int zx_DEC_ATTR_cb_UsageType(struct zx_ctx* c, struct zx_cb_UsageType_s* x);
 int zx_DEC_ELEM_cb_UsageType(struct zx_ctx* c, struct zx_cb_UsageType_s* x);
-int zx_LEN_SO_cb_UsageType(struct zx_ctx* c, struct zx_cb_UsageType_s* x);
-char* zx_ENC_SO_cb_UsageType(struct zx_ctx* c, struct zx_cb_UsageType_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_cb_UsageType(struct zx_ctx* c, struct zx_cb_UsageType_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_cb_UsageType_s* zx_DEEP_CLONE_cb_UsageType(struct zx_ctx* c, struct zx_cb_UsageType_s* x, int dup_strs);

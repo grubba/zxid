@@ -23,7 +23,6 @@
 #ifndef zx_b12_Consent_EXT
 #define zx_b12_Consent_EXT
 #endif
-
 struct zx_b12_Consent_s {
   ZX_ELEM_EXT
   zx_b12_Consent_EXT
@@ -35,12 +34,8 @@ struct zx_b12_Consent_s {
 };
 
 #define zx_NEW_b12_Consent(c, father) (struct zx_b12_Consent_s*)zx_new_elem((c),(father),zx_b12_Consent_ELEM)
-
 int zx_DEC_ATTR_b12_Consent(struct zx_ctx* c, struct zx_b12_Consent_s* x);
 int zx_DEC_ELEM_b12_Consent(struct zx_ctx* c, struct zx_b12_Consent_s* x);
-int zx_LEN_SO_b12_Consent(struct zx_ctx* c, struct zx_b12_Consent_s* x);
-char* zx_ENC_SO_b12_Consent(struct zx_ctx* c, struct zx_b12_Consent_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_b12_Consent(struct zx_ctx* c, struct zx_b12_Consent_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_b12_Consent_s* zx_DEEP_CLONE_b12_Consent(struct zx_ctx* c, struct zx_b12_Consent_s* x, int dup_strs);
@@ -76,7 +71,6 @@ void zx_b12_Consent_PUT_mustUnderstand(struct zx_b12_Consent_s* x, struct zx_att
 #ifndef zx_b12_Correlation_EXT
 #define zx_b12_Correlation_EXT
 #endif
-
 struct zx_b12_Correlation_s {
   ZX_ELEM_EXT
   zx_b12_Correlation_EXT
@@ -89,12 +83,8 @@ struct zx_b12_Correlation_s {
 };
 
 #define zx_NEW_b12_Correlation(c, father) (struct zx_b12_Correlation_s*)zx_new_elem((c),(father),zx_b12_Correlation_ELEM)
-
 int zx_DEC_ATTR_b12_Correlation(struct zx_ctx* c, struct zx_b12_Correlation_s* x);
 int zx_DEC_ELEM_b12_Correlation(struct zx_ctx* c, struct zx_b12_Correlation_s* x);
-int zx_LEN_SO_b12_Correlation(struct zx_ctx* c, struct zx_b12_Correlation_s* x);
-char* zx_ENC_SO_b12_Correlation(struct zx_ctx* c, struct zx_b12_Correlation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_b12_Correlation(struct zx_ctx* c, struct zx_b12_Correlation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_b12_Correlation_s* zx_DEEP_CLONE_b12_Correlation(struct zx_ctx* c, struct zx_b12_Correlation_s* x, int dup_strs);
@@ -132,7 +122,6 @@ void zx_b12_Correlation_PUT_mustUnderstand(struct zx_b12_Correlation_s* x, struc
 #ifndef zx_b12_ProcessingContext_EXT
 #define zx_b12_ProcessingContext_EXT
 #endif
-
 struct zx_b12_ProcessingContext_s {
   ZX_ELEM_EXT
   zx_b12_ProcessingContext_EXT
@@ -142,12 +131,8 @@ struct zx_b12_ProcessingContext_s {
 };
 
 #define zx_NEW_b12_ProcessingContext(c, father) (struct zx_b12_ProcessingContext_s*)zx_new_elem((c),(father),zx_b12_ProcessingContext_ELEM)
-
 int zx_DEC_ATTR_b12_ProcessingContext(struct zx_ctx* c, struct zx_b12_ProcessingContext_s* x);
 int zx_DEC_ELEM_b12_ProcessingContext(struct zx_ctx* c, struct zx_b12_ProcessingContext_s* x);
-int zx_LEN_SO_b12_ProcessingContext(struct zx_ctx* c, struct zx_b12_ProcessingContext_s* x);
-char* zx_ENC_SO_b12_ProcessingContext(struct zx_ctx* c, struct zx_b12_ProcessingContext_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_b12_ProcessingContext(struct zx_ctx* c, struct zx_b12_ProcessingContext_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_b12_ProcessingContext_s* zx_DEEP_CLONE_b12_ProcessingContext(struct zx_ctx* c, struct zx_b12_ProcessingContext_s* x, int dup_strs);
@@ -179,7 +164,6 @@ void zx_b12_ProcessingContext_PUT_mustUnderstand(struct zx_b12_ProcessingContext
 #ifndef zx_b12_Provider_EXT
 #define zx_b12_Provider_EXT
 #endif
-
 struct zx_b12_Provider_s {
   ZX_ELEM_EXT
   zx_b12_Provider_EXT
@@ -191,12 +175,8 @@ struct zx_b12_Provider_s {
 };
 
 #define zx_NEW_b12_Provider(c, father) (struct zx_b12_Provider_s*)zx_new_elem((c),(father),zx_b12_Provider_ELEM)
-
 int zx_DEC_ATTR_b12_Provider(struct zx_ctx* c, struct zx_b12_Provider_s* x);
 int zx_DEC_ELEM_b12_Provider(struct zx_ctx* c, struct zx_b12_Provider_s* x);
-int zx_LEN_SO_b12_Provider(struct zx_ctx* c, struct zx_b12_Provider_s* x);
-char* zx_ENC_SO_b12_Provider(struct zx_ctx* c, struct zx_b12_Provider_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_b12_Provider(struct zx_ctx* c, struct zx_b12_Provider_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_b12_Provider_s* zx_DEEP_CLONE_b12_Provider(struct zx_ctx* c, struct zx_b12_Provider_s* x, int dup_strs);
@@ -232,7 +212,6 @@ void zx_b12_Provider_PUT_mustUnderstand(struct zx_b12_Provider_s* x, struct zx_a
 #ifndef zx_b12_UsageDirective_EXT
 #define zx_b12_UsageDirective_EXT
 #endif
-
 struct zx_b12_UsageDirective_s {
   ZX_ELEM_EXT
   zx_b12_UsageDirective_EXT
@@ -243,12 +222,8 @@ struct zx_b12_UsageDirective_s {
 };
 
 #define zx_NEW_b12_UsageDirective(c, father) (struct zx_b12_UsageDirective_s*)zx_new_elem((c),(father),zx_b12_UsageDirective_ELEM)
-
 int zx_DEC_ATTR_b12_UsageDirective(struct zx_ctx* c, struct zx_b12_UsageDirective_s* x);
 int zx_DEC_ELEM_b12_UsageDirective(struct zx_ctx* c, struct zx_b12_UsageDirective_s* x);
-int zx_LEN_SO_b12_UsageDirective(struct zx_ctx* c, struct zx_b12_UsageDirective_s* x);
-char* zx_ENC_SO_b12_UsageDirective(struct zx_ctx* c, struct zx_b12_UsageDirective_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_b12_UsageDirective(struct zx_ctx* c, struct zx_b12_UsageDirective_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_b12_UsageDirective_s* zx_DEEP_CLONE_b12_UsageDirective(struct zx_ctx* c, struct zx_b12_UsageDirective_s* x, int dup_strs);

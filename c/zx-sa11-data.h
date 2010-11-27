@@ -23,7 +23,6 @@
 #ifndef zx_sa11_Action_EXT
 #define zx_sa11_Action_EXT
 #endif
-
 struct zx_sa11_Action_s {
   ZX_ELEM_EXT
   zx_sa11_Action_EXT
@@ -31,12 +30,8 @@ struct zx_sa11_Action_s {
 };
 
 #define zx_NEW_sa11_Action(c, father) (struct zx_sa11_Action_s*)zx_new_elem((c),(father),zx_sa11_Action_ELEM)
-
 int zx_DEC_ATTR_sa11_Action(struct zx_ctx* c, struct zx_sa11_Action_s* x);
 int zx_DEC_ELEM_sa11_Action(struct zx_ctx* c, struct zx_sa11_Action_s* x);
-int zx_LEN_SO_sa11_Action(struct zx_ctx* c, struct zx_sa11_Action_s* x);
-char* zx_ENC_SO_sa11_Action(struct zx_ctx* c, struct zx_sa11_Action_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_Action(struct zx_ctx* c, struct zx_sa11_Action_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_Action_s* zx_DEEP_CLONE_sa11_Action(struct zx_ctx* c, struct zx_sa11_Action_s* x, int dup_strs);
@@ -64,7 +59,6 @@ void zx_sa11_Action_PUT_Namespace(struct zx_sa11_Action_s* x, struct zx_attr_s* 
 #ifndef zx_sa11_Advice_EXT
 #define zx_sa11_Advice_EXT
 #endif
-
 struct zx_sa11_Advice_s {
   ZX_ELEM_EXT
   zx_sa11_Advice_EXT
@@ -75,12 +69,8 @@ struct zx_sa11_Advice_s {
 };
 
 #define zx_NEW_sa11_Advice(c, father) (struct zx_sa11_Advice_s*)zx_new_elem((c),(father),zx_sa11_Advice_ELEM)
-
 int zx_DEC_ATTR_sa11_Advice(struct zx_ctx* c, struct zx_sa11_Advice_s* x);
 int zx_DEC_ELEM_sa11_Advice(struct zx_ctx* c, struct zx_sa11_Advice_s* x);
-int zx_LEN_SO_sa11_Advice(struct zx_ctx* c, struct zx_sa11_Advice_s* x);
-char* zx_ENC_SO_sa11_Advice(struct zx_ctx* c, struct zx_sa11_Advice_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_Advice(struct zx_ctx* c, struct zx_sa11_Advice_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_Advice_s* zx_DEEP_CLONE_sa11_Advice(struct zx_ctx* c, struct zx_sa11_Advice_s* x, int dup_strs);
@@ -122,7 +112,7 @@ void zx_sa11_Advice_ADD_Assertion(struct zx_sa11_Advice_s* x, int n, struct zx_s
 void zx_sa11_Advice_ADD_ff12_Assertion(struct zx_sa11_Advice_s* x, int n, struct zx_ff12_Assertion_s* z);
 void zx_sa11_Advice_ADD_sa_Assertion(struct zx_sa11_Advice_s* x, int n, struct zx_sa_Assertion_s* z);
 
-void zx_sa11_Advice_DEL_AssertionIDReference(struct zx_sa11_Advice_s* x, int n);
+void zx_sa11_Advice_DEL_AssertionIDReference(struct zx_sa11_Advice_s* x,int n);
 void zx_sa11_Advice_DEL_Assertion(struct zx_sa11_Advice_s* x, int n);
 void zx_sa11_Advice_DEL_ff12_Assertion(struct zx_sa11_Advice_s* x, int n);
 void zx_sa11_Advice_DEL_sa_Assertion(struct zx_sa11_Advice_s* x, int n);
@@ -138,7 +128,6 @@ void zx_sa11_Advice_REV_sa_Assertion(struct zx_sa11_Advice_s* x);
 #ifndef zx_sa11_Assertion_EXT
 #define zx_sa11_Assertion_EXT
 #endif
-
 struct zx_sa11_Assertion_s {
   ZX_ELEM_EXT
   zx_sa11_Assertion_EXT
@@ -162,12 +151,8 @@ struct zx_sa11_Assertion_s {
 };
 
 #define zx_NEW_sa11_Assertion(c, father) (struct zx_sa11_Assertion_s*)zx_new_elem((c),(father),zx_sa11_Assertion_ELEM)
-
 int zx_DEC_ATTR_sa11_Assertion(struct zx_ctx* c, struct zx_sa11_Assertion_s* x);
 int zx_DEC_ELEM_sa11_Assertion(struct zx_ctx* c, struct zx_sa11_Assertion_s* x);
-int zx_LEN_SO_sa11_Assertion(struct zx_ctx* c, struct zx_sa11_Assertion_s* x);
-char* zx_ENC_SO_sa11_Assertion(struct zx_ctx* c, struct zx_sa11_Assertion_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_Assertion(struct zx_ctx* c, struct zx_sa11_Assertion_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_Assertion_s* zx_DEEP_CLONE_sa11_Assertion(struct zx_ctx* c, struct zx_sa11_Assertion_s* x, int dup_strs);
@@ -269,7 +254,7 @@ void zx_sa11_Assertion_ADD_Signature(struct zx_sa11_Assertion_s* x, int n, struc
 
 void zx_sa11_Assertion_DEL_Conditions(struct zx_sa11_Assertion_s* x, int n);
 void zx_sa11_Assertion_DEL_Advice(struct zx_sa11_Assertion_s* x, int n);
-void zx_sa11_Assertion_DEL_Statement(struct zx_sa11_Assertion_s* x, int n);
+void zx_sa11_Assertion_DEL_Statement(struct zx_sa11_Assertion_s* x,int n);
 void zx_sa11_Assertion_DEL_SubjectStatement(struct zx_sa11_Assertion_s* x, int n);
 void zx_sa11_Assertion_DEL_AuthenticationStatement(struct zx_sa11_Assertion_s* x, int n);
 void zx_sa11_Assertion_DEL_AuthorizationDecisionStatement(struct zx_sa11_Assertion_s* x, int n);
@@ -299,7 +284,6 @@ void zx_sa11_Assertion_REV_Signature(struct zx_sa11_Assertion_s* x);
 #ifndef zx_sa11_Attribute_EXT
 #define zx_sa11_Attribute_EXT
 #endif
-
 struct zx_sa11_Attribute_s {
   ZX_ELEM_EXT
   zx_sa11_Attribute_EXT
@@ -309,12 +293,8 @@ struct zx_sa11_Attribute_s {
 };
 
 #define zx_NEW_sa11_Attribute(c, father) (struct zx_sa11_Attribute_s*)zx_new_elem((c),(father),zx_sa11_Attribute_ELEM)
-
 int zx_DEC_ATTR_sa11_Attribute(struct zx_ctx* c, struct zx_sa11_Attribute_s* x);
 int zx_DEC_ELEM_sa11_Attribute(struct zx_ctx* c, struct zx_sa11_Attribute_s* x);
-int zx_LEN_SO_sa11_Attribute(struct zx_ctx* c, struct zx_sa11_Attribute_s* x);
-char* zx_ENC_SO_sa11_Attribute(struct zx_ctx* c, struct zx_sa11_Attribute_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_Attribute(struct zx_ctx* c, struct zx_sa11_Attribute_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_Attribute_s* zx_DEEP_CLONE_sa11_Attribute(struct zx_ctx* c, struct zx_sa11_Attribute_s* x, int dup_strs);
@@ -352,7 +332,6 @@ void zx_sa11_Attribute_REV_AttributeValue(struct zx_sa11_Attribute_s* x);
 #ifndef zx_sa11_AttributeDesignator_EXT
 #define zx_sa11_AttributeDesignator_EXT
 #endif
-
 struct zx_sa11_AttributeDesignator_s {
   ZX_ELEM_EXT
   zx_sa11_AttributeDesignator_EXT
@@ -361,12 +340,8 @@ struct zx_sa11_AttributeDesignator_s {
 };
 
 #define zx_NEW_sa11_AttributeDesignator(c, father) (struct zx_sa11_AttributeDesignator_s*)zx_new_elem((c),(father),zx_sa11_AttributeDesignator_ELEM)
-
 int zx_DEC_ATTR_sa11_AttributeDesignator(struct zx_ctx* c, struct zx_sa11_AttributeDesignator_s* x);
 int zx_DEC_ELEM_sa11_AttributeDesignator(struct zx_ctx* c, struct zx_sa11_AttributeDesignator_s* x);
-int zx_LEN_SO_sa11_AttributeDesignator(struct zx_ctx* c, struct zx_sa11_AttributeDesignator_s* x);
-char* zx_ENC_SO_sa11_AttributeDesignator(struct zx_ctx* c, struct zx_sa11_AttributeDesignator_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_AttributeDesignator(struct zx_ctx* c, struct zx_sa11_AttributeDesignator_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_AttributeDesignator_s* zx_DEEP_CLONE_sa11_AttributeDesignator(struct zx_ctx* c, struct zx_sa11_AttributeDesignator_s* x, int dup_strs);
@@ -396,7 +371,6 @@ void zx_sa11_AttributeDesignator_PUT_AttributeNamespace(struct zx_sa11_Attribute
 #ifndef zx_sa11_AttributeStatement_EXT
 #define zx_sa11_AttributeStatement_EXT
 #endif
-
 struct zx_sa11_AttributeStatement_s {
   ZX_ELEM_EXT
   zx_sa11_AttributeStatement_EXT
@@ -405,12 +379,8 @@ struct zx_sa11_AttributeStatement_s {
 };
 
 #define zx_NEW_sa11_AttributeStatement(c, father) (struct zx_sa11_AttributeStatement_s*)zx_new_elem((c),(father),zx_sa11_AttributeStatement_ELEM)
-
 int zx_DEC_ATTR_sa11_AttributeStatement(struct zx_ctx* c, struct zx_sa11_AttributeStatement_s* x);
 int zx_DEC_ELEM_sa11_AttributeStatement(struct zx_ctx* c, struct zx_sa11_AttributeStatement_s* x);
-int zx_LEN_SO_sa11_AttributeStatement(struct zx_ctx* c, struct zx_sa11_AttributeStatement_s* x);
-char* zx_ENC_SO_sa11_AttributeStatement(struct zx_ctx* c, struct zx_sa11_AttributeStatement_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_AttributeStatement(struct zx_ctx* c, struct zx_sa11_AttributeStatement_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_AttributeStatement_s* zx_DEEP_CLONE_sa11_AttributeStatement(struct zx_ctx* c, struct zx_sa11_AttributeStatement_s* x, int dup_strs);
@@ -452,7 +422,6 @@ void zx_sa11_AttributeStatement_REV_Attribute(struct zx_sa11_AttributeStatement_
 #ifndef zx_sa11_AttributeValue_EXT
 #define zx_sa11_AttributeValue_EXT
 #endif
-
 struct zx_sa11_AttributeValue_s {
   ZX_ELEM_EXT
   zx_sa11_AttributeValue_EXT
@@ -461,12 +430,8 @@ struct zx_sa11_AttributeValue_s {
 };
 
 #define zx_NEW_sa11_AttributeValue(c, father) (struct zx_sa11_AttributeValue_s*)zx_new_elem((c),(father),zx_sa11_AttributeValue_ELEM)
-
 int zx_DEC_ATTR_sa11_AttributeValue(struct zx_ctx* c, struct zx_sa11_AttributeValue_s* x);
 int zx_DEC_ELEM_sa11_AttributeValue(struct zx_ctx* c, struct zx_sa11_AttributeValue_s* x);
-int zx_LEN_SO_sa11_AttributeValue(struct zx_ctx* c, struct zx_sa11_AttributeValue_s* x);
-char* zx_ENC_SO_sa11_AttributeValue(struct zx_ctx* c, struct zx_sa11_AttributeValue_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_AttributeValue(struct zx_ctx* c, struct zx_sa11_AttributeValue_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_AttributeValue_s* zx_DEEP_CLONE_sa11_AttributeValue(struct zx_ctx* c, struct zx_sa11_AttributeValue_s* x, int dup_strs);
@@ -508,7 +473,6 @@ void zx_sa11_AttributeValue_REV_EndpointReference(struct zx_sa11_AttributeValue_
 #ifndef zx_sa11_AudienceRestrictionCondition_EXT
 #define zx_sa11_AudienceRestrictionCondition_EXT
 #endif
-
 struct zx_sa11_AudienceRestrictionCondition_s {
   ZX_ELEM_EXT
   zx_sa11_AudienceRestrictionCondition_EXT
@@ -516,12 +480,8 @@ struct zx_sa11_AudienceRestrictionCondition_s {
 };
 
 #define zx_NEW_sa11_AudienceRestrictionCondition(c, father) (struct zx_sa11_AudienceRestrictionCondition_s*)zx_new_elem((c),(father),zx_sa11_AudienceRestrictionCondition_ELEM)
-
 int zx_DEC_ATTR_sa11_AudienceRestrictionCondition(struct zx_ctx* c, struct zx_sa11_AudienceRestrictionCondition_s* x);
 int zx_DEC_ELEM_sa11_AudienceRestrictionCondition(struct zx_ctx* c, struct zx_sa11_AudienceRestrictionCondition_s* x);
-int zx_LEN_SO_sa11_AudienceRestrictionCondition(struct zx_ctx* c, struct zx_sa11_AudienceRestrictionCondition_s* x);
-char* zx_ENC_SO_sa11_AudienceRestrictionCondition(struct zx_ctx* c, struct zx_sa11_AudienceRestrictionCondition_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_AudienceRestrictionCondition(struct zx_ctx* c, struct zx_sa11_AudienceRestrictionCondition_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_AudienceRestrictionCondition_s* zx_DEEP_CLONE_sa11_AudienceRestrictionCondition(struct zx_ctx* c, struct zx_sa11_AudienceRestrictionCondition_s* x, int dup_strs);
@@ -545,7 +505,7 @@ void zx_sa11_AudienceRestrictionCondition_PUT_Audience(struct zx_sa11_AudienceRe
 
 void zx_sa11_AudienceRestrictionCondition_ADD_Audience(struct zx_sa11_AudienceRestrictionCondition_s* x, int n, struct zx_elem_s* z);
 
-void zx_sa11_AudienceRestrictionCondition_DEL_Audience(struct zx_sa11_AudienceRestrictionCondition_s* x, int n);
+void zx_sa11_AudienceRestrictionCondition_DEL_Audience(struct zx_sa11_AudienceRestrictionCondition_s* x,int n);
 
 void zx_sa11_AudienceRestrictionCondition_REV_Audience(struct zx_sa11_AudienceRestrictionCondition_s* x);
 
@@ -555,7 +515,6 @@ void zx_sa11_AudienceRestrictionCondition_REV_Audience(struct zx_sa11_AudienceRe
 #ifndef zx_sa11_AuthenticationStatement_EXT
 #define zx_sa11_AuthenticationStatement_EXT
 #endif
-
 struct zx_sa11_AuthenticationStatement_s {
   ZX_ELEM_EXT
   zx_sa11_AuthenticationStatement_EXT
@@ -567,12 +526,8 @@ struct zx_sa11_AuthenticationStatement_s {
 };
 
 #define zx_NEW_sa11_AuthenticationStatement(c, father) (struct zx_sa11_AuthenticationStatement_s*)zx_new_elem((c),(father),zx_sa11_AuthenticationStatement_ELEM)
-
 int zx_DEC_ATTR_sa11_AuthenticationStatement(struct zx_ctx* c, struct zx_sa11_AuthenticationStatement_s* x);
 int zx_DEC_ELEM_sa11_AuthenticationStatement(struct zx_ctx* c, struct zx_sa11_AuthenticationStatement_s* x);
-int zx_LEN_SO_sa11_AuthenticationStatement(struct zx_ctx* c, struct zx_sa11_AuthenticationStatement_s* x);
-char* zx_ENC_SO_sa11_AuthenticationStatement(struct zx_ctx* c, struct zx_sa11_AuthenticationStatement_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_AuthenticationStatement(struct zx_ctx* c, struct zx_sa11_AuthenticationStatement_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_AuthenticationStatement_s* zx_DEEP_CLONE_sa11_AuthenticationStatement(struct zx_ctx* c, struct zx_sa11_AuthenticationStatement_s* x, int dup_strs);
@@ -626,7 +581,6 @@ void zx_sa11_AuthenticationStatement_REV_AuthorityBinding(struct zx_sa11_Authent
 #ifndef zx_sa11_AuthorityBinding_EXT
 #define zx_sa11_AuthorityBinding_EXT
 #endif
-
 struct zx_sa11_AuthorityBinding_s {
   ZX_ELEM_EXT
   zx_sa11_AuthorityBinding_EXT
@@ -636,12 +590,8 @@ struct zx_sa11_AuthorityBinding_s {
 };
 
 #define zx_NEW_sa11_AuthorityBinding(c, father) (struct zx_sa11_AuthorityBinding_s*)zx_new_elem((c),(father),zx_sa11_AuthorityBinding_ELEM)
-
 int zx_DEC_ATTR_sa11_AuthorityBinding(struct zx_ctx* c, struct zx_sa11_AuthorityBinding_s* x);
 int zx_DEC_ELEM_sa11_AuthorityBinding(struct zx_ctx* c, struct zx_sa11_AuthorityBinding_s* x);
-int zx_LEN_SO_sa11_AuthorityBinding(struct zx_ctx* c, struct zx_sa11_AuthorityBinding_s* x);
-char* zx_ENC_SO_sa11_AuthorityBinding(struct zx_ctx* c, struct zx_sa11_AuthorityBinding_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_AuthorityBinding(struct zx_ctx* c, struct zx_sa11_AuthorityBinding_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_AuthorityBinding_s* zx_DEEP_CLONE_sa11_AuthorityBinding(struct zx_ctx* c, struct zx_sa11_AuthorityBinding_s* x, int dup_strs);
@@ -673,7 +623,6 @@ void zx_sa11_AuthorityBinding_PUT_Location(struct zx_sa11_AuthorityBinding_s* x,
 #ifndef zx_sa11_AuthorizationDecisionStatement_EXT
 #define zx_sa11_AuthorizationDecisionStatement_EXT
 #endif
-
 struct zx_sa11_AuthorizationDecisionStatement_s {
   ZX_ELEM_EXT
   zx_sa11_AuthorizationDecisionStatement_EXT
@@ -685,12 +634,8 @@ struct zx_sa11_AuthorizationDecisionStatement_s {
 };
 
 #define zx_NEW_sa11_AuthorizationDecisionStatement(c, father) (struct zx_sa11_AuthorizationDecisionStatement_s*)zx_new_elem((c),(father),zx_sa11_AuthorizationDecisionStatement_ELEM)
-
 int zx_DEC_ATTR_sa11_AuthorizationDecisionStatement(struct zx_ctx* c, struct zx_sa11_AuthorizationDecisionStatement_s* x);
 int zx_DEC_ELEM_sa11_AuthorizationDecisionStatement(struct zx_ctx* c, struct zx_sa11_AuthorizationDecisionStatement_s* x);
-int zx_LEN_SO_sa11_AuthorizationDecisionStatement(struct zx_ctx* c, struct zx_sa11_AuthorizationDecisionStatement_s* x);
-char* zx_ENC_SO_sa11_AuthorizationDecisionStatement(struct zx_ctx* c, struct zx_sa11_AuthorizationDecisionStatement_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_AuthorizationDecisionStatement(struct zx_ctx* c, struct zx_sa11_AuthorizationDecisionStatement_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_AuthorizationDecisionStatement_s* zx_DEEP_CLONE_sa11_AuthorizationDecisionStatement(struct zx_ctx* c, struct zx_sa11_AuthorizationDecisionStatement_s* x, int dup_strs);
@@ -744,7 +689,6 @@ void zx_sa11_AuthorizationDecisionStatement_REV_Evidence(struct zx_sa11_Authoriz
 #ifndef zx_sa11_Conditions_EXT
 #define zx_sa11_Conditions_EXT
 #endif
-
 struct zx_sa11_Conditions_s {
   ZX_ELEM_EXT
   zx_sa11_Conditions_EXT
@@ -756,12 +700,8 @@ struct zx_sa11_Conditions_s {
 };
 
 #define zx_NEW_sa11_Conditions(c, father) (struct zx_sa11_Conditions_s*)zx_new_elem((c),(father),zx_sa11_Conditions_ELEM)
-
 int zx_DEC_ATTR_sa11_Conditions(struct zx_ctx* c, struct zx_sa11_Conditions_s* x);
 int zx_DEC_ELEM_sa11_Conditions(struct zx_ctx* c, struct zx_sa11_Conditions_s* x);
-int zx_LEN_SO_sa11_Conditions(struct zx_ctx* c, struct zx_sa11_Conditions_s* x);
-char* zx_ENC_SO_sa11_Conditions(struct zx_ctx* c, struct zx_sa11_Conditions_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_Conditions(struct zx_ctx* c, struct zx_sa11_Conditions_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_Conditions_s* zx_DEEP_CLONE_sa11_Conditions(struct zx_ctx* c, struct zx_sa11_Conditions_s* x, int dup_strs);
@@ -803,7 +743,7 @@ void zx_sa11_Conditions_ADD_Condition(struct zx_sa11_Conditions_s* x, int n, str
 
 void zx_sa11_Conditions_DEL_AudienceRestrictionCondition(struct zx_sa11_Conditions_s* x, int n);
 void zx_sa11_Conditions_DEL_DoNotCacheCondition(struct zx_sa11_Conditions_s* x, int n);
-void zx_sa11_Conditions_DEL_Condition(struct zx_sa11_Conditions_s* x, int n);
+void zx_sa11_Conditions_DEL_Condition(struct zx_sa11_Conditions_s* x,int n);
 
 void zx_sa11_Conditions_REV_AudienceRestrictionCondition(struct zx_sa11_Conditions_s* x);
 void zx_sa11_Conditions_REV_DoNotCacheCondition(struct zx_sa11_Conditions_s* x);
@@ -815,19 +755,14 @@ void zx_sa11_Conditions_REV_Condition(struct zx_sa11_Conditions_s* x);
 #ifndef zx_sa11_DoNotCacheCondition_EXT
 #define zx_sa11_DoNotCacheCondition_EXT
 #endif
-
 struct zx_sa11_DoNotCacheCondition_s {
   ZX_ELEM_EXT
   zx_sa11_DoNotCacheCondition_EXT
 };
 
 #define zx_NEW_sa11_DoNotCacheCondition(c, father) (struct zx_sa11_DoNotCacheCondition_s*)zx_new_elem((c),(father),zx_sa11_DoNotCacheCondition_ELEM)
-
 int zx_DEC_ATTR_sa11_DoNotCacheCondition(struct zx_ctx* c, struct zx_sa11_DoNotCacheCondition_s* x);
 int zx_DEC_ELEM_sa11_DoNotCacheCondition(struct zx_ctx* c, struct zx_sa11_DoNotCacheCondition_s* x);
-int zx_LEN_SO_sa11_DoNotCacheCondition(struct zx_ctx* c, struct zx_sa11_DoNotCacheCondition_s* x);
-char* zx_ENC_SO_sa11_DoNotCacheCondition(struct zx_ctx* c, struct zx_sa11_DoNotCacheCondition_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_DoNotCacheCondition(struct zx_ctx* c, struct zx_sa11_DoNotCacheCondition_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_DoNotCacheCondition_s* zx_DEEP_CLONE_sa11_DoNotCacheCondition(struct zx_ctx* c, struct zx_sa11_DoNotCacheCondition_s* x, int dup_strs);
@@ -853,7 +788,6 @@ int zx_WALK_WO_sa11_DoNotCacheCondition(struct zx_ctx* c, struct zx_sa11_DoNotCa
 #ifndef zx_sa11_Evidence_EXT
 #define zx_sa11_Evidence_EXT
 #endif
-
 struct zx_sa11_Evidence_s {
   ZX_ELEM_EXT
   zx_sa11_Evidence_EXT
@@ -862,12 +796,8 @@ struct zx_sa11_Evidence_s {
 };
 
 #define zx_NEW_sa11_Evidence(c, father) (struct zx_sa11_Evidence_s*)zx_new_elem((c),(father),zx_sa11_Evidence_ELEM)
-
 int zx_DEC_ATTR_sa11_Evidence(struct zx_ctx* c, struct zx_sa11_Evidence_s* x);
 int zx_DEC_ELEM_sa11_Evidence(struct zx_ctx* c, struct zx_sa11_Evidence_s* x);
-int zx_LEN_SO_sa11_Evidence(struct zx_ctx* c, struct zx_sa11_Evidence_s* x);
-char* zx_ENC_SO_sa11_Evidence(struct zx_ctx* c, struct zx_sa11_Evidence_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_Evidence(struct zx_ctx* c, struct zx_sa11_Evidence_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_Evidence_s* zx_DEEP_CLONE_sa11_Evidence(struct zx_ctx* c, struct zx_sa11_Evidence_s* x, int dup_strs);
@@ -897,7 +827,7 @@ void zx_sa11_Evidence_PUT_Assertion(struct zx_sa11_Evidence_s* x, int n, struct 
 void zx_sa11_Evidence_ADD_AssertionIDReference(struct zx_sa11_Evidence_s* x, int n, struct zx_elem_s* z);
 void zx_sa11_Evidence_ADD_Assertion(struct zx_sa11_Evidence_s* x, int n, struct zx_sa11_Assertion_s* z);
 
-void zx_sa11_Evidence_DEL_AssertionIDReference(struct zx_sa11_Evidence_s* x, int n);
+void zx_sa11_Evidence_DEL_AssertionIDReference(struct zx_sa11_Evidence_s* x,int n);
 void zx_sa11_Evidence_DEL_Assertion(struct zx_sa11_Evidence_s* x, int n);
 
 void zx_sa11_Evidence_REV_AssertionIDReference(struct zx_sa11_Evidence_s* x);
@@ -909,7 +839,6 @@ void zx_sa11_Evidence_REV_Assertion(struct zx_sa11_Evidence_s* x);
 #ifndef zx_sa11_NameIdentifier_EXT
 #define zx_sa11_NameIdentifier_EXT
 #endif
-
 struct zx_sa11_NameIdentifier_s {
   ZX_ELEM_EXT
   zx_sa11_NameIdentifier_EXT
@@ -918,12 +847,8 @@ struct zx_sa11_NameIdentifier_s {
 };
 
 #define zx_NEW_sa11_NameIdentifier(c, father) (struct zx_sa11_NameIdentifier_s*)zx_new_elem((c),(father),zx_sa11_NameIdentifier_ELEM)
-
 int zx_DEC_ATTR_sa11_NameIdentifier(struct zx_ctx* c, struct zx_sa11_NameIdentifier_s* x);
 int zx_DEC_ELEM_sa11_NameIdentifier(struct zx_ctx* c, struct zx_sa11_NameIdentifier_s* x);
-int zx_LEN_SO_sa11_NameIdentifier(struct zx_ctx* c, struct zx_sa11_NameIdentifier_s* x);
-char* zx_ENC_SO_sa11_NameIdentifier(struct zx_ctx* c, struct zx_sa11_NameIdentifier_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_NameIdentifier(struct zx_ctx* c, struct zx_sa11_NameIdentifier_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_NameIdentifier_s* zx_DEEP_CLONE_sa11_NameIdentifier(struct zx_ctx* c, struct zx_sa11_NameIdentifier_s* x, int dup_strs);
@@ -953,7 +878,6 @@ void zx_sa11_NameIdentifier_PUT_NameQualifier(struct zx_sa11_NameIdentifier_s* x
 #ifndef zx_sa11_Subject_EXT
 #define zx_sa11_Subject_EXT
 #endif
-
 struct zx_sa11_Subject_s {
   ZX_ELEM_EXT
   zx_sa11_Subject_EXT
@@ -962,12 +886,8 @@ struct zx_sa11_Subject_s {
 };
 
 #define zx_NEW_sa11_Subject(c, father) (struct zx_sa11_Subject_s*)zx_new_elem((c),(father),zx_sa11_Subject_ELEM)
-
 int zx_DEC_ATTR_sa11_Subject(struct zx_ctx* c, struct zx_sa11_Subject_s* x);
 int zx_DEC_ELEM_sa11_Subject(struct zx_ctx* c, struct zx_sa11_Subject_s* x);
-int zx_LEN_SO_sa11_Subject(struct zx_ctx* c, struct zx_sa11_Subject_s* x);
-char* zx_ENC_SO_sa11_Subject(struct zx_ctx* c, struct zx_sa11_Subject_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_Subject(struct zx_ctx* c, struct zx_sa11_Subject_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_Subject_s* zx_DEEP_CLONE_sa11_Subject(struct zx_ctx* c, struct zx_sa11_Subject_s* x, int dup_strs);
@@ -1009,7 +929,6 @@ void zx_sa11_Subject_REV_SubjectConfirmation(struct zx_sa11_Subject_s* x);
 #ifndef zx_sa11_SubjectConfirmation_EXT
 #define zx_sa11_SubjectConfirmation_EXT
 #endif
-
 struct zx_sa11_SubjectConfirmation_s {
   ZX_ELEM_EXT
   zx_sa11_SubjectConfirmation_EXT
@@ -1019,12 +938,8 @@ struct zx_sa11_SubjectConfirmation_s {
 };
 
 #define zx_NEW_sa11_SubjectConfirmation(c, father) (struct zx_sa11_SubjectConfirmation_s*)zx_new_elem((c),(father),zx_sa11_SubjectConfirmation_ELEM)
-
 int zx_DEC_ATTR_sa11_SubjectConfirmation(struct zx_ctx* c, struct zx_sa11_SubjectConfirmation_s* x);
 int zx_DEC_ELEM_sa11_SubjectConfirmation(struct zx_ctx* c, struct zx_sa11_SubjectConfirmation_s* x);
-int zx_LEN_SO_sa11_SubjectConfirmation(struct zx_ctx* c, struct zx_sa11_SubjectConfirmation_s* x);
-char* zx_ENC_SO_sa11_SubjectConfirmation(struct zx_ctx* c, struct zx_sa11_SubjectConfirmation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_SubjectConfirmation(struct zx_ctx* c, struct zx_sa11_SubjectConfirmation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_SubjectConfirmation_s* zx_DEEP_CLONE_sa11_SubjectConfirmation(struct zx_ctx* c, struct zx_sa11_SubjectConfirmation_s* x, int dup_strs);
@@ -1060,8 +975,8 @@ void zx_sa11_SubjectConfirmation_ADD_ConfirmationMethod(struct zx_sa11_SubjectCo
 void zx_sa11_SubjectConfirmation_ADD_SubjectConfirmationData(struct zx_sa11_SubjectConfirmation_s* x, int n, struct zx_elem_s* z);
 void zx_sa11_SubjectConfirmation_ADD_KeyInfo(struct zx_sa11_SubjectConfirmation_s* x, int n, struct zx_ds_KeyInfo_s* z);
 
-void zx_sa11_SubjectConfirmation_DEL_ConfirmationMethod(struct zx_sa11_SubjectConfirmation_s* x, int n);
-void zx_sa11_SubjectConfirmation_DEL_SubjectConfirmationData(struct zx_sa11_SubjectConfirmation_s* x, int n);
+void zx_sa11_SubjectConfirmation_DEL_ConfirmationMethod(struct zx_sa11_SubjectConfirmation_s* x,int n);
+void zx_sa11_SubjectConfirmation_DEL_SubjectConfirmationData(struct zx_sa11_SubjectConfirmation_s* x,int n);
 void zx_sa11_SubjectConfirmation_DEL_KeyInfo(struct zx_sa11_SubjectConfirmation_s* x, int n);
 
 void zx_sa11_SubjectConfirmation_REV_ConfirmationMethod(struct zx_sa11_SubjectConfirmation_s* x);
@@ -1074,7 +989,6 @@ void zx_sa11_SubjectConfirmation_REV_KeyInfo(struct zx_sa11_SubjectConfirmation_
 #ifndef zx_sa11_SubjectLocality_EXT
 #define zx_sa11_SubjectLocality_EXT
 #endif
-
 struct zx_sa11_SubjectLocality_s {
   ZX_ELEM_EXT
   zx_sa11_SubjectLocality_EXT
@@ -1083,12 +997,8 @@ struct zx_sa11_SubjectLocality_s {
 };
 
 #define zx_NEW_sa11_SubjectLocality(c, father) (struct zx_sa11_SubjectLocality_s*)zx_new_elem((c),(father),zx_sa11_SubjectLocality_ELEM)
-
 int zx_DEC_ATTR_sa11_SubjectLocality(struct zx_ctx* c, struct zx_sa11_SubjectLocality_s* x);
 int zx_DEC_ELEM_sa11_SubjectLocality(struct zx_ctx* c, struct zx_sa11_SubjectLocality_s* x);
-int zx_LEN_SO_sa11_SubjectLocality(struct zx_ctx* c, struct zx_sa11_SubjectLocality_s* x);
-char* zx_ENC_SO_sa11_SubjectLocality(struct zx_ctx* c, struct zx_sa11_SubjectLocality_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_SubjectLocality(struct zx_ctx* c, struct zx_sa11_SubjectLocality_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_SubjectLocality_s* zx_DEEP_CLONE_sa11_SubjectLocality(struct zx_ctx* c, struct zx_sa11_SubjectLocality_s* x, int dup_strs);
@@ -1118,7 +1028,6 @@ void zx_sa11_SubjectLocality_PUT_IPAddress(struct zx_sa11_SubjectLocality_s* x, 
 #ifndef zx_sa11_SubjectStatement_EXT
 #define zx_sa11_SubjectStatement_EXT
 #endif
-
 struct zx_sa11_SubjectStatement_s {
   ZX_ELEM_EXT
   zx_sa11_SubjectStatement_EXT
@@ -1126,12 +1035,8 @@ struct zx_sa11_SubjectStatement_s {
 };
 
 #define zx_NEW_sa11_SubjectStatement(c, father) (struct zx_sa11_SubjectStatement_s*)zx_new_elem((c),(father),zx_sa11_SubjectStatement_ELEM)
-
 int zx_DEC_ATTR_sa11_SubjectStatement(struct zx_ctx* c, struct zx_sa11_SubjectStatement_s* x);
 int zx_DEC_ELEM_sa11_SubjectStatement(struct zx_ctx* c, struct zx_sa11_SubjectStatement_s* x);
-int zx_LEN_SO_sa11_SubjectStatement(struct zx_ctx* c, struct zx_sa11_SubjectStatement_s* x);
-char* zx_ENC_SO_sa11_SubjectStatement(struct zx_ctx* c, struct zx_sa11_SubjectStatement_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_sa11_SubjectStatement(struct zx_ctx* c, struct zx_sa11_SubjectStatement_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_sa11_SubjectStatement_s* zx_DEEP_CLONE_sa11_SubjectStatement(struct zx_ctx* c, struct zx_sa11_SubjectStatement_s* x, int dup_strs);

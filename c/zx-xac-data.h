@@ -23,7 +23,6 @@
 #ifndef zx_xac_Action_EXT
 #define zx_xac_Action_EXT
 #endif
-
 struct zx_xac_Action_s {
   ZX_ELEM_EXT
   zx_xac_Action_EXT
@@ -31,12 +30,8 @@ struct zx_xac_Action_s {
 };
 
 #define zx_NEW_xac_Action(c, father) (struct zx_xac_Action_s*)zx_new_elem((c),(father),zx_xac_Action_ELEM)
-
 int zx_DEC_ATTR_xac_Action(struct zx_ctx* c, struct zx_xac_Action_s* x);
 int zx_DEC_ELEM_xac_Action(struct zx_ctx* c, struct zx_xac_Action_s* x);
-int zx_LEN_SO_xac_Action(struct zx_ctx* c, struct zx_xac_Action_s* x);
-char* zx_ENC_SO_xac_Action(struct zx_ctx* c, struct zx_xac_Action_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_Action(struct zx_ctx* c, struct zx_xac_Action_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_Action_s* zx_DEEP_CLONE_xac_Action(struct zx_ctx* c, struct zx_xac_Action_s* x, int dup_strs);
@@ -70,7 +65,6 @@ void zx_xac_Action_REV_Attribute(struct zx_xac_Action_s* x);
 #ifndef zx_xac_Attribute_EXT
 #define zx_xac_Attribute_EXT
 #endif
-
 struct zx_xac_Attribute_s {
   ZX_ELEM_EXT
   zx_xac_Attribute_EXT
@@ -81,12 +75,8 @@ struct zx_xac_Attribute_s {
 };
 
 #define zx_NEW_xac_Attribute(c, father) (struct zx_xac_Attribute_s*)zx_new_elem((c),(father),zx_xac_Attribute_ELEM)
-
 int zx_DEC_ATTR_xac_Attribute(struct zx_ctx* c, struct zx_xac_Attribute_s* x);
 int zx_DEC_ELEM_xac_Attribute(struct zx_ctx* c, struct zx_xac_Attribute_s* x);
-int zx_LEN_SO_xac_Attribute(struct zx_ctx* c, struct zx_xac_Attribute_s* x);
-char* zx_ENC_SO_xac_Attribute(struct zx_ctx* c, struct zx_xac_Attribute_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_Attribute(struct zx_ctx* c, struct zx_xac_Attribute_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_Attribute_s* zx_DEEP_CLONE_xac_Attribute(struct zx_ctx* c, struct zx_xac_Attribute_s* x, int dup_strs);
@@ -116,7 +106,7 @@ void zx_xac_Attribute_PUT_AttributeValue(struct zx_xac_Attribute_s* x, int n, st
 
 void zx_xac_Attribute_ADD_AttributeValue(struct zx_xac_Attribute_s* x, int n, struct zx_elem_s* z);
 
-void zx_xac_Attribute_DEL_AttributeValue(struct zx_xac_Attribute_s* x, int n);
+void zx_xac_Attribute_DEL_AttributeValue(struct zx_xac_Attribute_s* x,int n);
 
 void zx_xac_Attribute_REV_AttributeValue(struct zx_xac_Attribute_s* x);
 
@@ -126,7 +116,6 @@ void zx_xac_Attribute_REV_AttributeValue(struct zx_xac_Attribute_s* x);
 #ifndef zx_xac_Environment_EXT
 #define zx_xac_Environment_EXT
 #endif
-
 struct zx_xac_Environment_s {
   ZX_ELEM_EXT
   zx_xac_Environment_EXT
@@ -134,12 +123,8 @@ struct zx_xac_Environment_s {
 };
 
 #define zx_NEW_xac_Environment(c, father) (struct zx_xac_Environment_s*)zx_new_elem((c),(father),zx_xac_Environment_ELEM)
-
 int zx_DEC_ATTR_xac_Environment(struct zx_ctx* c, struct zx_xac_Environment_s* x);
 int zx_DEC_ELEM_xac_Environment(struct zx_ctx* c, struct zx_xac_Environment_s* x);
-int zx_LEN_SO_xac_Environment(struct zx_ctx* c, struct zx_xac_Environment_s* x);
-char* zx_ENC_SO_xac_Environment(struct zx_ctx* c, struct zx_xac_Environment_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_Environment(struct zx_ctx* c, struct zx_xac_Environment_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_Environment_s* zx_DEEP_CLONE_xac_Environment(struct zx_ctx* c, struct zx_xac_Environment_s* x, int dup_strs);
@@ -173,7 +158,6 @@ void zx_xac_Environment_REV_Attribute(struct zx_xac_Environment_s* x);
 #ifndef zx_xac_MissingAttributeDetail_EXT
 #define zx_xac_MissingAttributeDetail_EXT
 #endif
-
 struct zx_xac_MissingAttributeDetail_s {
   ZX_ELEM_EXT
   zx_xac_MissingAttributeDetail_EXT
@@ -184,12 +168,8 @@ struct zx_xac_MissingAttributeDetail_s {
 };
 
 #define zx_NEW_xac_MissingAttributeDetail(c, father) (struct zx_xac_MissingAttributeDetail_s*)zx_new_elem((c),(father),zx_xac_MissingAttributeDetail_ELEM)
-
 int zx_DEC_ATTR_xac_MissingAttributeDetail(struct zx_ctx* c, struct zx_xac_MissingAttributeDetail_s* x);
 int zx_DEC_ELEM_xac_MissingAttributeDetail(struct zx_ctx* c, struct zx_xac_MissingAttributeDetail_s* x);
-int zx_LEN_SO_xac_MissingAttributeDetail(struct zx_ctx* c, struct zx_xac_MissingAttributeDetail_s* x);
-char* zx_ENC_SO_xac_MissingAttributeDetail(struct zx_ctx* c, struct zx_xac_MissingAttributeDetail_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_MissingAttributeDetail(struct zx_ctx* c, struct zx_xac_MissingAttributeDetail_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_MissingAttributeDetail_s* zx_DEEP_CLONE_xac_MissingAttributeDetail(struct zx_ctx* c, struct zx_xac_MissingAttributeDetail_s* x, int dup_strs);
@@ -219,7 +199,7 @@ void zx_xac_MissingAttributeDetail_PUT_AttributeValue(struct zx_xac_MissingAttri
 
 void zx_xac_MissingAttributeDetail_ADD_AttributeValue(struct zx_xac_MissingAttributeDetail_s* x, int n, struct zx_elem_s* z);
 
-void zx_xac_MissingAttributeDetail_DEL_AttributeValue(struct zx_xac_MissingAttributeDetail_s* x, int n);
+void zx_xac_MissingAttributeDetail_DEL_AttributeValue(struct zx_xac_MissingAttributeDetail_s* x,int n);
 
 void zx_xac_MissingAttributeDetail_REV_AttributeValue(struct zx_xac_MissingAttributeDetail_s* x);
 
@@ -229,7 +209,6 @@ void zx_xac_MissingAttributeDetail_REV_AttributeValue(struct zx_xac_MissingAttri
 #ifndef zx_xac_Request_EXT
 #define zx_xac_Request_EXT
 #endif
-
 struct zx_xac_Request_s {
   ZX_ELEM_EXT
   zx_xac_Request_EXT
@@ -240,12 +219,8 @@ struct zx_xac_Request_s {
 };
 
 #define zx_NEW_xac_Request(c, father) (struct zx_xac_Request_s*)zx_new_elem((c),(father),zx_xac_Request_ELEM)
-
 int zx_DEC_ATTR_xac_Request(struct zx_ctx* c, struct zx_xac_Request_s* x);
 int zx_DEC_ELEM_xac_Request(struct zx_ctx* c, struct zx_xac_Request_s* x);
-int zx_LEN_SO_xac_Request(struct zx_ctx* c, struct zx_xac_Request_s* x);
-char* zx_ENC_SO_xac_Request(struct zx_ctx* c, struct zx_xac_Request_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_Request(struct zx_ctx* c, struct zx_xac_Request_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_Request_s* zx_DEEP_CLONE_xac_Request(struct zx_ctx* c, struct zx_xac_Request_s* x, int dup_strs);
@@ -303,7 +278,6 @@ void zx_xac_Request_REV_Environment(struct zx_xac_Request_s* x);
 #ifndef zx_xac_Resource_EXT
 #define zx_xac_Resource_EXT
 #endif
-
 struct zx_xac_Resource_s {
   ZX_ELEM_EXT
   zx_xac_Resource_EXT
@@ -312,12 +286,8 @@ struct zx_xac_Resource_s {
 };
 
 #define zx_NEW_xac_Resource(c, father) (struct zx_xac_Resource_s*)zx_new_elem((c),(father),zx_xac_Resource_ELEM)
-
 int zx_DEC_ATTR_xac_Resource(struct zx_ctx* c, struct zx_xac_Resource_s* x);
 int zx_DEC_ELEM_xac_Resource(struct zx_ctx* c, struct zx_xac_Resource_s* x);
-int zx_LEN_SO_xac_Resource(struct zx_ctx* c, struct zx_xac_Resource_s* x);
-char* zx_ENC_SO_xac_Resource(struct zx_ctx* c, struct zx_xac_Resource_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_Resource(struct zx_ctx* c, struct zx_xac_Resource_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_Resource_s* zx_DEEP_CLONE_xac_Resource(struct zx_ctx* c, struct zx_xac_Resource_s* x, int dup_strs);
@@ -359,19 +329,14 @@ void zx_xac_Resource_REV_Attribute(struct zx_xac_Resource_s* x);
 #ifndef zx_xac_ResourceContent_EXT
 #define zx_xac_ResourceContent_EXT
 #endif
-
 struct zx_xac_ResourceContent_s {
   ZX_ELEM_EXT
   zx_xac_ResourceContent_EXT
 };
 
 #define zx_NEW_xac_ResourceContent(c, father) (struct zx_xac_ResourceContent_s*)zx_new_elem((c),(father),zx_xac_ResourceContent_ELEM)
-
 int zx_DEC_ATTR_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceContent_s* x);
 int zx_DEC_ELEM_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceContent_s* x);
-int zx_LEN_SO_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceContent_s* x);
-char* zx_ENC_SO_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceContent_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceContent_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_ResourceContent_s* zx_DEEP_CLONE_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceContent_s* x, int dup_strs);
@@ -397,7 +362,6 @@ int zx_WALK_WO_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceConte
 #ifndef zx_xac_Response_EXT
 #define zx_xac_Response_EXT
 #endif
-
 struct zx_xac_Response_s {
   ZX_ELEM_EXT
   zx_xac_Response_EXT
@@ -405,12 +369,8 @@ struct zx_xac_Response_s {
 };
 
 #define zx_NEW_xac_Response(c, father) (struct zx_xac_Response_s*)zx_new_elem((c),(father),zx_xac_Response_ELEM)
-
 int zx_DEC_ATTR_xac_Response(struct zx_ctx* c, struct zx_xac_Response_s* x);
 int zx_DEC_ELEM_xac_Response(struct zx_ctx* c, struct zx_xac_Response_s* x);
-int zx_LEN_SO_xac_Response(struct zx_ctx* c, struct zx_xac_Response_s* x);
-char* zx_ENC_SO_xac_Response(struct zx_ctx* c, struct zx_xac_Response_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_Response(struct zx_ctx* c, struct zx_xac_Response_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_Response_s* zx_DEEP_CLONE_xac_Response(struct zx_ctx* c, struct zx_xac_Response_s* x, int dup_strs);
@@ -444,7 +404,6 @@ void zx_xac_Response_REV_Result(struct zx_xac_Response_s* x);
 #ifndef zx_xac_Result_EXT
 #define zx_xac_Result_EXT
 #endif
-
 struct zx_xac_Result_s {
   ZX_ELEM_EXT
   zx_xac_Result_EXT
@@ -455,12 +414,8 @@ struct zx_xac_Result_s {
 };
 
 #define zx_NEW_xac_Result(c, father) (struct zx_xac_Result_s*)zx_new_elem((c),(father),zx_xac_Result_ELEM)
-
 int zx_DEC_ATTR_xac_Result(struct zx_ctx* c, struct zx_xac_Result_s* x);
 int zx_DEC_ELEM_xac_Result(struct zx_ctx* c, struct zx_xac_Result_s* x);
-int zx_LEN_SO_xac_Result(struct zx_ctx* c, struct zx_xac_Result_s* x);
-char* zx_ENC_SO_xac_Result(struct zx_ctx* c, struct zx_xac_Result_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_Result(struct zx_ctx* c, struct zx_xac_Result_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_Result_s* zx_DEEP_CLONE_xac_Result(struct zx_ctx* c, struct zx_xac_Result_s* x, int dup_strs);
@@ -498,7 +453,7 @@ void zx_xac_Result_ADD_Decision(struct zx_xac_Result_s* x, int n, struct zx_elem
 void zx_xac_Result_ADD_Status(struct zx_xac_Result_s* x, int n, struct zx_xac_Status_s* z);
 void zx_xac_Result_ADD_Obligations(struct zx_xac_Result_s* x, int n, struct zx_xa_Obligations_s* z);
 
-void zx_xac_Result_DEL_Decision(struct zx_xac_Result_s* x, int n);
+void zx_xac_Result_DEL_Decision(struct zx_xac_Result_s* x,int n);
 void zx_xac_Result_DEL_Status(struct zx_xac_Result_s* x, int n);
 void zx_xac_Result_DEL_Obligations(struct zx_xac_Result_s* x, int n);
 
@@ -512,7 +467,6 @@ void zx_xac_Result_REV_Obligations(struct zx_xac_Result_s* x);
 #ifndef zx_xac_Status_EXT
 #define zx_xac_Status_EXT
 #endif
-
 struct zx_xac_Status_s {
   ZX_ELEM_EXT
   zx_xac_Status_EXT
@@ -522,12 +476,8 @@ struct zx_xac_Status_s {
 };
 
 #define zx_NEW_xac_Status(c, father) (struct zx_xac_Status_s*)zx_new_elem((c),(father),zx_xac_Status_ELEM)
-
 int zx_DEC_ATTR_xac_Status(struct zx_ctx* c, struct zx_xac_Status_s* x);
 int zx_DEC_ELEM_xac_Status(struct zx_ctx* c, struct zx_xac_Status_s* x);
-int zx_LEN_SO_xac_Status(struct zx_ctx* c, struct zx_xac_Status_s* x);
-char* zx_ENC_SO_xac_Status(struct zx_ctx* c, struct zx_xac_Status_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_Status(struct zx_ctx* c, struct zx_xac_Status_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_Status_s* zx_DEEP_CLONE_xac_Status(struct zx_ctx* c, struct zx_xac_Status_s* x, int dup_strs);
@@ -564,7 +514,7 @@ void zx_xac_Status_ADD_StatusMessage(struct zx_xac_Status_s* x, int n, struct zx
 void zx_xac_Status_ADD_StatusDetail(struct zx_xac_Status_s* x, int n, struct zx_xac_StatusDetail_s* z);
 
 void zx_xac_Status_DEL_StatusCode(struct zx_xac_Status_s* x, int n);
-void zx_xac_Status_DEL_StatusMessage(struct zx_xac_Status_s* x, int n);
+void zx_xac_Status_DEL_StatusMessage(struct zx_xac_Status_s* x,int n);
 void zx_xac_Status_DEL_StatusDetail(struct zx_xac_Status_s* x, int n);
 
 void zx_xac_Status_REV_StatusCode(struct zx_xac_Status_s* x);
@@ -577,7 +527,6 @@ void zx_xac_Status_REV_StatusDetail(struct zx_xac_Status_s* x);
 #ifndef zx_xac_StatusCode_EXT
 #define zx_xac_StatusCode_EXT
 #endif
-
 struct zx_xac_StatusCode_s {
   ZX_ELEM_EXT
   zx_xac_StatusCode_EXT
@@ -586,12 +535,8 @@ struct zx_xac_StatusCode_s {
 };
 
 #define zx_NEW_xac_StatusCode(c, father) (struct zx_xac_StatusCode_s*)zx_new_elem((c),(father),zx_xac_StatusCode_ELEM)
-
 int zx_DEC_ATTR_xac_StatusCode(struct zx_ctx* c, struct zx_xac_StatusCode_s* x);
 int zx_DEC_ELEM_xac_StatusCode(struct zx_ctx* c, struct zx_xac_StatusCode_s* x);
-int zx_LEN_SO_xac_StatusCode(struct zx_ctx* c, struct zx_xac_StatusCode_s* x);
-char* zx_ENC_SO_xac_StatusCode(struct zx_ctx* c, struct zx_xac_StatusCode_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_StatusCode(struct zx_ctx* c, struct zx_xac_StatusCode_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_StatusCode_s* zx_DEEP_CLONE_xac_StatusCode(struct zx_ctx* c, struct zx_xac_StatusCode_s* x, int dup_strs);
@@ -627,19 +572,14 @@ void zx_xac_StatusCode_REV_StatusCode(struct zx_xac_StatusCode_s* x);
 #ifndef zx_xac_StatusDetail_EXT
 #define zx_xac_StatusDetail_EXT
 #endif
-
 struct zx_xac_StatusDetail_s {
   ZX_ELEM_EXT
   zx_xac_StatusDetail_EXT
 };
 
 #define zx_NEW_xac_StatusDetail(c, father) (struct zx_xac_StatusDetail_s*)zx_new_elem((c),(father),zx_xac_StatusDetail_ELEM)
-
 int zx_DEC_ATTR_xac_StatusDetail(struct zx_ctx* c, struct zx_xac_StatusDetail_s* x);
 int zx_DEC_ELEM_xac_StatusDetail(struct zx_ctx* c, struct zx_xac_StatusDetail_s* x);
-int zx_LEN_SO_xac_StatusDetail(struct zx_ctx* c, struct zx_xac_StatusDetail_s* x);
-char* zx_ENC_SO_xac_StatusDetail(struct zx_ctx* c, struct zx_xac_StatusDetail_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_StatusDetail(struct zx_ctx* c, struct zx_xac_StatusDetail_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_StatusDetail_s* zx_DEEP_CLONE_xac_StatusDetail(struct zx_ctx* c, struct zx_xac_StatusDetail_s* x, int dup_strs);
@@ -665,7 +605,6 @@ int zx_WALK_WO_xac_StatusDetail(struct zx_ctx* c, struct zx_xac_StatusDetail_s* 
 #ifndef zx_xac_Subject_EXT
 #define zx_xac_Subject_EXT
 #endif
-
 struct zx_xac_Subject_s {
   ZX_ELEM_EXT
   zx_xac_Subject_EXT
@@ -674,12 +613,8 @@ struct zx_xac_Subject_s {
 };
 
 #define zx_NEW_xac_Subject(c, father) (struct zx_xac_Subject_s*)zx_new_elem((c),(father),zx_xac_Subject_ELEM)
-
 int zx_DEC_ATTR_xac_Subject(struct zx_ctx* c, struct zx_xac_Subject_s* x);
 int zx_DEC_ELEM_xac_Subject(struct zx_ctx* c, struct zx_xac_Subject_s* x);
-int zx_LEN_SO_xac_Subject(struct zx_ctx* c, struct zx_xac_Subject_s* x);
-char* zx_ENC_SO_xac_Subject(struct zx_ctx* c, struct zx_xac_Subject_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xac_Subject(struct zx_ctx* c, struct zx_xac_Subject_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xac_Subject_s* zx_DEEP_CLONE_xac_Subject(struct zx_ctx* c, struct zx_xac_Subject_s* x, int dup_strs);

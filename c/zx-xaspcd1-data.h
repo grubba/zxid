@@ -23,7 +23,6 @@
 #ifndef zx_xaspcd1_XACMLAuthzDecisionQuery_EXT
 #define zx_xaspcd1_XACMLAuthzDecisionQuery_EXT
 #endif
-
 struct zx_xaspcd1_XACMLAuthzDecisionQuery_s {
   ZX_ELEM_EXT
   zx_xaspcd1_XACMLAuthzDecisionQuery_EXT
@@ -45,12 +44,8 @@ struct zx_xaspcd1_XACMLAuthzDecisionQuery_s {
 };
 
 #define zx_NEW_xaspcd1_XACMLAuthzDecisionQuery(c, father) (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)zx_new_elem((c),(father),zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM)
-
 int zx_DEC_ATTR_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* x);
 int zx_DEC_ELEM_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* x);
-int zx_LEN_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* x);
-char* zx_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zx_DEEP_CLONE_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* x, int dup_strs);
@@ -148,7 +143,6 @@ void zx_xaspcd1_XACMLAuthzDecisionQuery_REV_ReferencedPolicies(struct zx_xaspcd1
 #ifndef zx_xaspcd1_XACMLPolicyQuery_EXT
 #define zx_xaspcd1_XACMLPolicyQuery_EXT
 #endif
-
 struct zx_xaspcd1_XACMLPolicyQuery_s {
   ZX_ELEM_EXT
   zx_xaspcd1_XACMLPolicyQuery_EXT
@@ -167,12 +161,8 @@ struct zx_xaspcd1_XACMLPolicyQuery_s {
 };
 
 #define zx_NEW_xaspcd1_XACMLPolicyQuery(c, father) (struct zx_xaspcd1_XACMLPolicyQuery_s*)zx_new_elem((c),(father),zx_xaspcd1_XACMLPolicyQuery_ELEM)
-
 int zx_DEC_ATTR_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLPolicyQuery_s* x);
 int zx_DEC_ELEM_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLPolicyQuery_s* x);
-int zx_LEN_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLPolicyQuery_s* x);
-char* zx_ENC_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLPolicyQuery_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLPolicyQuery_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_xaspcd1_XACMLPolicyQuery_s* zx_DEEP_CLONE_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLPolicyQuery_s* x, int dup_strs);

@@ -23,7 +23,6 @@
 #ifndef zx_wst_Authenticator_EXT
 #define zx_wst_Authenticator_EXT
 #endif
-
 struct zx_wst_Authenticator_s {
   ZX_ELEM_EXT
   zx_wst_Authenticator_EXT
@@ -31,12 +30,8 @@ struct zx_wst_Authenticator_s {
 };
 
 #define zx_NEW_wst_Authenticator(c, father) (struct zx_wst_Authenticator_s*)zx_new_elem((c),(father),zx_wst_Authenticator_ELEM)
-
 int zx_DEC_ATTR_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s* x);
 int zx_DEC_ELEM_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s* x);
-int zx_LEN_SO_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s* x);
-char* zx_ENC_SO_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_Authenticator_s* zx_DEEP_CLONE_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s* x, int dup_strs);
@@ -60,7 +55,7 @@ void zx_wst_Authenticator_PUT_CombinedHash(struct zx_wst_Authenticator_s* x, int
 
 void zx_wst_Authenticator_ADD_CombinedHash(struct zx_wst_Authenticator_s* x, int n, struct zx_elem_s* z);
 
-void zx_wst_Authenticator_DEL_CombinedHash(struct zx_wst_Authenticator_s* x, int n);
+void zx_wst_Authenticator_DEL_CombinedHash(struct zx_wst_Authenticator_s* x,int n);
 
 void zx_wst_Authenticator_REV_CombinedHash(struct zx_wst_Authenticator_s* x);
 
@@ -70,7 +65,6 @@ void zx_wst_Authenticator_REV_CombinedHash(struct zx_wst_Authenticator_s* x);
 #ifndef zx_wst_BinaryExchange_EXT
 #define zx_wst_BinaryExchange_EXT
 #endif
-
 struct zx_wst_BinaryExchange_s {
   ZX_ELEM_EXT
   zx_wst_BinaryExchange_EXT
@@ -79,12 +73,8 @@ struct zx_wst_BinaryExchange_s {
 };
 
 #define zx_NEW_wst_BinaryExchange(c, father) (struct zx_wst_BinaryExchange_s*)zx_new_elem((c),(father),zx_wst_BinaryExchange_ELEM)
-
 int zx_DEC_ATTR_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchange_s* x);
 int zx_DEC_ELEM_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchange_s* x);
-int zx_LEN_SO_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchange_s* x);
-char* zx_ENC_SO_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchange_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchange_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_BinaryExchange_s* zx_DEEP_CLONE_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchange_s* x, int dup_strs);
@@ -114,7 +104,6 @@ void zx_wst_BinaryExchange_PUT_ValueType(struct zx_wst_BinaryExchange_s* x, stru
 #ifndef zx_wst_BinarySecret_EXT
 #define zx_wst_BinarySecret_EXT
 #endif
-
 struct zx_wst_BinarySecret_s {
   ZX_ELEM_EXT
   zx_wst_BinarySecret_EXT
@@ -122,12 +111,8 @@ struct zx_wst_BinarySecret_s {
 };
 
 #define zx_NEW_wst_BinarySecret(c, father) (struct zx_wst_BinarySecret_s*)zx_new_elem((c),(father),zx_wst_BinarySecret_ELEM)
-
 int zx_DEC_ATTR_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s* x);
 int zx_DEC_ELEM_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s* x);
-int zx_LEN_SO_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s* x);
-char* zx_ENC_SO_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_BinarySecret_s* zx_DEEP_CLONE_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s* x, int dup_strs);
@@ -155,19 +140,14 @@ void zx_wst_BinarySecret_PUT_Type(struct zx_wst_BinarySecret_s* x, struct zx_att
 #ifndef zx_wst_CancelTarget_EXT
 #define zx_wst_CancelTarget_EXT
 #endif
-
 struct zx_wst_CancelTarget_s {
   ZX_ELEM_EXT
   zx_wst_CancelTarget_EXT
 };
 
 #define zx_NEW_wst_CancelTarget(c, father) (struct zx_wst_CancelTarget_s*)zx_new_elem((c),(father),zx_wst_CancelTarget_ELEM)
-
 int zx_DEC_ATTR_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* x);
 int zx_DEC_ELEM_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* x);
-int zx_LEN_SO_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* x);
-char* zx_ENC_SO_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_CancelTarget_s* zx_DEEP_CLONE_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* x, int dup_strs);
@@ -193,7 +173,6 @@ int zx_WALK_WO_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* 
 #ifndef zx_wst_Claims_EXT
 #define zx_wst_Claims_EXT
 #endif
-
 struct zx_wst_Claims_s {
   ZX_ELEM_EXT
   zx_wst_Claims_EXT
@@ -201,12 +180,8 @@ struct zx_wst_Claims_s {
 };
 
 #define zx_NEW_wst_Claims(c, father) (struct zx_wst_Claims_s*)zx_new_elem((c),(father),zx_wst_Claims_ELEM)
-
 int zx_DEC_ATTR_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x);
 int zx_DEC_ELEM_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x);
-int zx_LEN_SO_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x);
-char* zx_ENC_SO_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_Claims_s* zx_DEEP_CLONE_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x, int dup_strs);
@@ -234,19 +209,14 @@ void zx_wst_Claims_PUT_Dialect(struct zx_wst_Claims_s* x, struct zx_attr_s* y);
 #ifndef zx_wst_DelegateTo_EXT
 #define zx_wst_DelegateTo_EXT
 #endif
-
 struct zx_wst_DelegateTo_s {
   ZX_ELEM_EXT
   zx_wst_DelegateTo_EXT
 };
 
 #define zx_NEW_wst_DelegateTo(c, father) (struct zx_wst_DelegateTo_s*)zx_new_elem((c),(father),zx_wst_DelegateTo_ELEM)
-
 int zx_DEC_ATTR_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x);
 int zx_DEC_ELEM_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x);
-int zx_LEN_SO_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x);
-char* zx_ENC_SO_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_DelegateTo_s* zx_DEEP_CLONE_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x, int dup_strs);
@@ -272,19 +242,14 @@ int zx_WALK_WO_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x, v
 #ifndef zx_wst_Encryption_EXT
 #define zx_wst_Encryption_EXT
 #endif
-
 struct zx_wst_Encryption_s {
   ZX_ELEM_EXT
   zx_wst_Encryption_EXT
 };
 
 #define zx_NEW_wst_Encryption(c, father) (struct zx_wst_Encryption_s*)zx_new_elem((c),(father),zx_wst_Encryption_ELEM)
-
 int zx_DEC_ATTR_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x);
 int zx_DEC_ELEM_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x);
-int zx_LEN_SO_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x);
-char* zx_ENC_SO_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_Encryption_s* zx_DEEP_CLONE_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x, int dup_strs);
@@ -310,19 +275,14 @@ int zx_WALK_WO_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x, v
 #ifndef zx_wst_Entropy_EXT
 #define zx_wst_Entropy_EXT
 #endif
-
 struct zx_wst_Entropy_s {
   ZX_ELEM_EXT
   zx_wst_Entropy_EXT
 };
 
 #define zx_NEW_wst_Entropy(c, father) (struct zx_wst_Entropy_s*)zx_new_elem((c),(father),zx_wst_Entropy_ELEM)
-
 int zx_DEC_ATTR_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x);
 int zx_DEC_ELEM_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x);
-int zx_LEN_SO_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x);
-char* zx_ENC_SO_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_Entropy_s* zx_DEEP_CLONE_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x, int dup_strs);
@@ -348,7 +308,6 @@ int zx_WALK_WO_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x, void* c
 #ifndef zx_wst_IssuedTokens_EXT
 #define zx_wst_IssuedTokens_EXT
 #endif
-
 struct zx_wst_IssuedTokens_s {
   ZX_ELEM_EXT
   zx_wst_IssuedTokens_EXT
@@ -356,12 +315,8 @@ struct zx_wst_IssuedTokens_s {
 };
 
 #define zx_NEW_wst_IssuedTokens(c, father) (struct zx_wst_IssuedTokens_s*)zx_new_elem((c),(father),zx_wst_IssuedTokens_ELEM)
-
 int zx_DEC_ATTR_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x);
 int zx_DEC_ELEM_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x);
-int zx_LEN_SO_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x);
-char* zx_ENC_SO_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_IssuedTokens_s* zx_DEEP_CLONE_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x, int dup_strs);
@@ -395,7 +350,6 @@ void zx_wst_IssuedTokens_REV_RequestSecurityTokenResponse(struct zx_wst_IssuedTo
 #ifndef zx_wst_Issuer_EXT
 #define zx_wst_Issuer_EXT
 #endif
-
 struct zx_wst_Issuer_s {
   ZX_ELEM_EXT
   zx_wst_Issuer_EXT
@@ -411,12 +365,8 @@ struct zx_wst_Issuer_s {
 };
 
 #define zx_NEW_wst_Issuer(c, father) (struct zx_wst_Issuer_s*)zx_new_elem((c),(father),zx_wst_Issuer_ELEM)
-
 int zx_DEC_ATTR_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x);
 int zx_DEC_ELEM_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x);
-int zx_LEN_SO_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x);
-char* zx_ENC_SO_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_Issuer_s* zx_DEEP_CLONE_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x, int dup_strs);
@@ -478,19 +428,14 @@ void zx_wst_Issuer_REV_Metadata(struct zx_wst_Issuer_s* x);
 #ifndef zx_wst_KeyExchangeToken_EXT
 #define zx_wst_KeyExchangeToken_EXT
 #endif
-
 struct zx_wst_KeyExchangeToken_s {
   ZX_ELEM_EXT
   zx_wst_KeyExchangeToken_EXT
 };
 
 #define zx_NEW_wst_KeyExchangeToken(c, father) (struct zx_wst_KeyExchangeToken_s*)zx_new_elem((c),(father),zx_wst_KeyExchangeToken_ELEM)
-
 int zx_DEC_ATTR_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeToken_s* x);
 int zx_DEC_ELEM_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeToken_s* x);
-int zx_LEN_SO_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeToken_s* x);
-char* zx_ENC_SO_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeToken_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeToken_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_KeyExchangeToken_s* zx_DEEP_CLONE_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeToken_s* x, int dup_strs);
@@ -516,7 +461,6 @@ int zx_WALK_WO_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeT
 #ifndef zx_wst_Lifetime_EXT
 #define zx_wst_Lifetime_EXT
 #endif
-
 struct zx_wst_Lifetime_s {
   ZX_ELEM_EXT
   zx_wst_Lifetime_EXT
@@ -525,12 +469,8 @@ struct zx_wst_Lifetime_s {
 };
 
 #define zx_NEW_wst_Lifetime(c, father) (struct zx_wst_Lifetime_s*)zx_new_elem((c),(father),zx_wst_Lifetime_ELEM)
-
 int zx_DEC_ATTR_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x);
 int zx_DEC_ELEM_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x);
-int zx_LEN_SO_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x);
-char* zx_ENC_SO_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_Lifetime_s* zx_DEEP_CLONE_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x, int dup_strs);
@@ -572,19 +512,14 @@ void zx_wst_Lifetime_REV_Expires(struct zx_wst_Lifetime_s* x);
 #ifndef zx_wst_OnBehalfOf_EXT
 #define zx_wst_OnBehalfOf_EXT
 #endif
-
 struct zx_wst_OnBehalfOf_s {
   ZX_ELEM_EXT
   zx_wst_OnBehalfOf_EXT
 };
 
 #define zx_NEW_wst_OnBehalfOf(c, father) (struct zx_wst_OnBehalfOf_s*)zx_new_elem((c),(father),zx_wst_OnBehalfOf_ELEM)
-
 int zx_DEC_ATTR_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x);
 int zx_DEC_ELEM_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x);
-int zx_LEN_SO_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x);
-char* zx_ENC_SO_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_OnBehalfOf_s* zx_DEEP_CLONE_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x, int dup_strs);
@@ -610,19 +545,14 @@ int zx_WALK_WO_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x, v
 #ifndef zx_wst_Participant_EXT
 #define zx_wst_Participant_EXT
 #endif
-
 struct zx_wst_Participant_s {
   ZX_ELEM_EXT
   zx_wst_Participant_EXT
 };
 
 #define zx_NEW_wst_Participant(c, father) (struct zx_wst_Participant_s*)zx_new_elem((c),(father),zx_wst_Participant_ELEM)
-
 int zx_DEC_ATTR_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x);
 int zx_DEC_ELEM_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x);
-int zx_LEN_SO_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x);
-char* zx_ENC_SO_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_Participant_s* zx_DEEP_CLONE_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x, int dup_strs);
@@ -648,7 +578,6 @@ int zx_WALK_WO_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x,
 #ifndef zx_wst_Participants_EXT
 #define zx_wst_Participants_EXT
 #endif
-
 struct zx_wst_Participants_s {
   ZX_ELEM_EXT
   zx_wst_Participants_EXT
@@ -657,12 +586,8 @@ struct zx_wst_Participants_s {
 };
 
 #define zx_NEW_wst_Participants(c, father) (struct zx_wst_Participants_s*)zx_new_elem((c),(father),zx_wst_Participants_ELEM)
-
 int zx_DEC_ATTR_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x);
 int zx_DEC_ELEM_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x);
-int zx_LEN_SO_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x);
-char* zx_ENC_SO_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_Participants_s* zx_DEEP_CLONE_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x, int dup_strs);
@@ -704,19 +629,14 @@ void zx_wst_Participants_REV_Participant(struct zx_wst_Participants_s* x);
 #ifndef zx_wst_Primary_EXT
 #define zx_wst_Primary_EXT
 #endif
-
 struct zx_wst_Primary_s {
   ZX_ELEM_EXT
   zx_wst_Primary_EXT
 };
 
 #define zx_NEW_wst_Primary(c, father) (struct zx_wst_Primary_s*)zx_new_elem((c),(father),zx_wst_Primary_ELEM)
-
 int zx_DEC_ATTR_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x);
 int zx_DEC_ELEM_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x);
-int zx_LEN_SO_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x);
-char* zx_ENC_SO_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_Primary_s* zx_DEEP_CLONE_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x, int dup_strs);
@@ -742,19 +662,14 @@ int zx_WALK_WO_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x, void* c
 #ifndef zx_wst_ProofEncryption_EXT
 #define zx_wst_ProofEncryption_EXT
 #endif
-
 struct zx_wst_ProofEncryption_s {
   ZX_ELEM_EXT
   zx_wst_ProofEncryption_EXT
 };
 
 #define zx_NEW_wst_ProofEncryption(c, father) (struct zx_wst_ProofEncryption_s*)zx_new_elem((c),(father),zx_wst_ProofEncryption_ELEM)
-
 int zx_DEC_ATTR_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncryption_s* x);
 int zx_DEC_ELEM_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncryption_s* x);
-int zx_LEN_SO_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncryption_s* x);
-char* zx_ENC_SO_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncryption_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncryption_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_ProofEncryption_s* zx_DEEP_CLONE_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncryption_s* x, int dup_strs);
@@ -780,19 +695,14 @@ int zx_WALK_WO_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncrypti
 #ifndef zx_wst_RenewTarget_EXT
 #define zx_wst_RenewTarget_EXT
 #endif
-
 struct zx_wst_RenewTarget_s {
   ZX_ELEM_EXT
   zx_wst_RenewTarget_EXT
 };
 
 #define zx_NEW_wst_RenewTarget(c, father) (struct zx_wst_RenewTarget_s*)zx_new_elem((c),(father),zx_wst_RenewTarget_ELEM)
-
 int zx_DEC_ATTR_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x);
 int zx_DEC_ELEM_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x);
-int zx_LEN_SO_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x);
-char* zx_ENC_SO_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_RenewTarget_s* zx_DEEP_CLONE_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x, int dup_strs);
@@ -818,7 +728,6 @@ int zx_WALK_WO_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x,
 #ifndef zx_wst_Renewing_EXT
 #define zx_wst_Renewing_EXT
 #endif
-
 struct zx_wst_Renewing_s {
   ZX_ELEM_EXT
   zx_wst_Renewing_EXT
@@ -827,12 +736,8 @@ struct zx_wst_Renewing_s {
 };
 
 #define zx_NEW_wst_Renewing(c, father) (struct zx_wst_Renewing_s*)zx_new_elem((c),(father),zx_wst_Renewing_ELEM)
-
 int zx_DEC_ATTR_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x);
 int zx_DEC_ELEM_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x);
-int zx_LEN_SO_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x);
-char* zx_ENC_SO_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_Renewing_s* zx_DEEP_CLONE_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x, int dup_strs);
@@ -862,7 +767,6 @@ void zx_wst_Renewing_PUT_OK(struct zx_wst_Renewing_s* x, struct zx_attr_s* y);
 #ifndef zx_wst_RequestSecurityToken_EXT
 #define zx_wst_RequestSecurityToken_EXT
 #endif
-
 struct zx_wst_RequestSecurityToken_s {
   ZX_ELEM_EXT
   zx_wst_RequestSecurityToken_EXT
@@ -896,12 +800,8 @@ struct zx_wst_RequestSecurityToken_s {
 };
 
 #define zx_NEW_wst_RequestSecurityToken(c, father) (struct zx_wst_RequestSecurityToken_s*)zx_new_elem((c),(father),zx_wst_RequestSecurityToken_ELEM)
-
 int zx_DEC_ATTR_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSecurityToken_s* x);
 int zx_DEC_ELEM_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSecurityToken_s* x);
-int zx_LEN_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSecurityToken_s* x);
-char* zx_ENC_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSecurityToken_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSecurityToken_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSecurityToken_s* x, int dup_strs);
@@ -1077,30 +977,30 @@ void zx_wst_RequestSecurityToken_ADD_Delegatable(struct zx_wst_RequestSecurityTo
 void zx_wst_RequestSecurityToken_ADD_Policy(struct zx_wst_RequestSecurityToken_s* x, int n, struct zx_wsp_Policy_s* z);
 void zx_wst_RequestSecurityToken_ADD_PolicyReference(struct zx_wst_RequestSecurityToken_s* x, int n, struct zx_wsp_PolicyReference_s* z);
 
-void zx_wst_RequestSecurityToken_DEL_TokenType(struct zx_wst_RequestSecurityToken_s* x, int n);
-void zx_wst_RequestSecurityToken_DEL_RequestType(struct zx_wst_RequestSecurityToken_s* x, int n);
+void zx_wst_RequestSecurityToken_DEL_TokenType(struct zx_wst_RequestSecurityToken_s* x,int n);
+void zx_wst_RequestSecurityToken_DEL_RequestType(struct zx_wst_RequestSecurityToken_s* x,int n);
 void zx_wst_RequestSecurityToken_DEL_AppliesTo(struct zx_wst_RequestSecurityToken_s* x, int n);
 void zx_wst_RequestSecurityToken_DEL_Claims(struct zx_wst_RequestSecurityToken_s* x, int n);
 void zx_wst_RequestSecurityToken_DEL_Entropy(struct zx_wst_RequestSecurityToken_s* x, int n);
 void zx_wst_RequestSecurityToken_DEL_Lifetime(struct zx_wst_RequestSecurityToken_s* x, int n);
-void zx_wst_RequestSecurityToken_DEL_AllowPostdating(struct zx_wst_RequestSecurityToken_s* x, int n);
+void zx_wst_RequestSecurityToken_DEL_AllowPostdating(struct zx_wst_RequestSecurityToken_s* x,int n);
 void zx_wst_RequestSecurityToken_DEL_Renewing(struct zx_wst_RequestSecurityToken_s* x, int n);
 void zx_wst_RequestSecurityToken_DEL_OnBehalfOf(struct zx_wst_RequestSecurityToken_s* x, int n);
 void zx_wst_RequestSecurityToken_DEL_Issuer(struct zx_wst_RequestSecurityToken_s* x, int n);
-void zx_wst_RequestSecurityToken_DEL_AuthenticationType(struct zx_wst_RequestSecurityToken_s* x, int n);
-void zx_wst_RequestSecurityToken_DEL_KeyType(struct zx_wst_RequestSecurityToken_s* x, int n);
-void zx_wst_RequestSecurityToken_DEL_KeySize(struct zx_wst_RequestSecurityToken_s* x, int n);
-void zx_wst_RequestSecurityToken_DEL_SignatureAlgorithm(struct zx_wst_RequestSecurityToken_s* x, int n);
+void zx_wst_RequestSecurityToken_DEL_AuthenticationType(struct zx_wst_RequestSecurityToken_s* x,int n);
+void zx_wst_RequestSecurityToken_DEL_KeyType(struct zx_wst_RequestSecurityToken_s* x,int n);
+void zx_wst_RequestSecurityToken_DEL_KeySize(struct zx_wst_RequestSecurityToken_s* x,int n);
+void zx_wst_RequestSecurityToken_DEL_SignatureAlgorithm(struct zx_wst_RequestSecurityToken_s* x,int n);
 void zx_wst_RequestSecurityToken_DEL_Encryption(struct zx_wst_RequestSecurityToken_s* x, int n);
-void zx_wst_RequestSecurityToken_DEL_EncryptionAlgorithm(struct zx_wst_RequestSecurityToken_s* x, int n);
-void zx_wst_RequestSecurityToken_DEL_CanonicalizationAlgorithm(struct zx_wst_RequestSecurityToken_s* x, int n);
+void zx_wst_RequestSecurityToken_DEL_EncryptionAlgorithm(struct zx_wst_RequestSecurityToken_s* x,int n);
+void zx_wst_RequestSecurityToken_DEL_CanonicalizationAlgorithm(struct zx_wst_RequestSecurityToken_s* x,int n);
 void zx_wst_RequestSecurityToken_DEL_ProofEncryption(struct zx_wst_RequestSecurityToken_s* x, int n);
 void zx_wst_RequestSecurityToken_DEL_UseKey(struct zx_wst_RequestSecurityToken_s* x, int n);
-void zx_wst_RequestSecurityToken_DEL_SignWith(struct zx_wst_RequestSecurityToken_s* x, int n);
-void zx_wst_RequestSecurityToken_DEL_EncryptWith(struct zx_wst_RequestSecurityToken_s* x, int n);
+void zx_wst_RequestSecurityToken_DEL_SignWith(struct zx_wst_RequestSecurityToken_s* x,int n);
+void zx_wst_RequestSecurityToken_DEL_EncryptWith(struct zx_wst_RequestSecurityToken_s* x,int n);
 void zx_wst_RequestSecurityToken_DEL_DelegateTo(struct zx_wst_RequestSecurityToken_s* x, int n);
-void zx_wst_RequestSecurityToken_DEL_Forwardable(struct zx_wst_RequestSecurityToken_s* x, int n);
-void zx_wst_RequestSecurityToken_DEL_Delegatable(struct zx_wst_RequestSecurityToken_s* x, int n);
+void zx_wst_RequestSecurityToken_DEL_Forwardable(struct zx_wst_RequestSecurityToken_s* x,int n);
+void zx_wst_RequestSecurityToken_DEL_Delegatable(struct zx_wst_RequestSecurityToken_s* x,int n);
 void zx_wst_RequestSecurityToken_DEL_Policy(struct zx_wst_RequestSecurityToken_s* x, int n);
 void zx_wst_RequestSecurityToken_DEL_PolicyReference(struct zx_wst_RequestSecurityToken_s* x, int n);
 
@@ -1137,7 +1037,6 @@ void zx_wst_RequestSecurityToken_REV_PolicyReference(struct zx_wst_RequestSecuri
 #ifndef zx_wst_RequestSecurityTokenCollection_EXT
 #define zx_wst_RequestSecurityTokenCollection_EXT
 #endif
-
 struct zx_wst_RequestSecurityTokenCollection_s {
   ZX_ELEM_EXT
   zx_wst_RequestSecurityTokenCollection_EXT
@@ -1145,12 +1044,8 @@ struct zx_wst_RequestSecurityTokenCollection_s {
 };
 
 #define zx_NEW_wst_RequestSecurityTokenCollection(c, father) (struct zx_wst_RequestSecurityTokenCollection_s*)zx_new_elem((c),(father),zx_wst_RequestSecurityTokenCollection_ELEM)
-
 int zx_DEC_ATTR_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenCollection_s* x);
 int zx_DEC_ELEM_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenCollection_s* x);
-int zx_LEN_SO_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenCollection_s* x);
-char* zx_ENC_SO_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenCollection_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenCollection_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_RequestSecurityTokenCollection_s* zx_DEEP_CLONE_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenCollection_s* x, int dup_strs);
@@ -1184,7 +1079,6 @@ void zx_wst_RequestSecurityTokenCollection_REV_RequestSecurityToken(struct zx_ws
 #ifndef zx_wst_RequestSecurityTokenResponse_EXT
 #define zx_wst_RequestSecurityTokenResponse_EXT
 #endif
-
 struct zx_wst_RequestSecurityTokenResponse_s {
   ZX_ELEM_EXT
   zx_wst_RequestSecurityTokenResponse_EXT
@@ -1223,12 +1117,8 @@ struct zx_wst_RequestSecurityTokenResponse_s {
 };
 
 #define zx_NEW_wst_RequestSecurityTokenResponse(c, father) (struct zx_wst_RequestSecurityTokenResponse_s*)zx_new_elem((c),(father),zx_wst_RequestSecurityTokenResponse_ELEM)
-
 int zx_DEC_ATTR_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponse_s* x);
 int zx_DEC_ELEM_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponse_s* x);
-int zx_LEN_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponse_s* x);
-char* zx_ENC_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponse_s* x, int dup_strs);
@@ -1434,8 +1324,8 @@ void zx_wst_RequestSecurityTokenResponse_ADD_Delegatable(struct zx_wst_RequestSe
 void zx_wst_RequestSecurityTokenResponse_ADD_Policy(struct zx_wst_RequestSecurityTokenResponse_s* x, int n, struct zx_wsp_Policy_s* z);
 void zx_wst_RequestSecurityTokenResponse_ADD_PolicyReference(struct zx_wst_RequestSecurityTokenResponse_s* x, int n, struct zx_wsp_PolicyReference_s* z);
 
-void zx_wst_RequestSecurityTokenResponse_DEL_TokenType(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
-void zx_wst_RequestSecurityTokenResponse_DEL_RequestType(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_TokenType(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_RequestType(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_RequestedSecurityToken(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_AppliesTo(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_RequestedAttachedReference(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
@@ -1444,25 +1334,25 @@ void zx_wst_RequestSecurityTokenResponse_DEL_RequestedProofToken(struct zx_wst_R
 void zx_wst_RequestSecurityTokenResponse_DEL_Entropy(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_Lifetime(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_Status(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
-void zx_wst_RequestSecurityTokenResponse_DEL_AllowPostdating(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_AllowPostdating(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_Renewing(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_OnBehalfOf(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_Issuer(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
-void zx_wst_RequestSecurityTokenResponse_DEL_AuthenticationType(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_AuthenticationType(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_Authenticator(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
-void zx_wst_RequestSecurityTokenResponse_DEL_KeyType(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
-void zx_wst_RequestSecurityTokenResponse_DEL_KeySize(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
-void zx_wst_RequestSecurityTokenResponse_DEL_SignatureAlgorithm(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_KeyType(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_KeySize(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_SignatureAlgorithm(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_Encryption(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
-void zx_wst_RequestSecurityTokenResponse_DEL_EncryptionAlgorithm(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
-void zx_wst_RequestSecurityTokenResponse_DEL_CanonicalizationAlgorithm(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_EncryptionAlgorithm(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_CanonicalizationAlgorithm(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_ProofEncryption(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_UseKey(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
-void zx_wst_RequestSecurityTokenResponse_DEL_SignWith(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
-void zx_wst_RequestSecurityTokenResponse_DEL_EncryptWith(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_SignWith(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_EncryptWith(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_DelegateTo(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
-void zx_wst_RequestSecurityTokenResponse_DEL_Forwardable(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
-void zx_wst_RequestSecurityTokenResponse_DEL_Delegatable(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_Forwardable(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
+void zx_wst_RequestSecurityTokenResponse_DEL_Delegatable(struct zx_wst_RequestSecurityTokenResponse_s* x,int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_Policy(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
 void zx_wst_RequestSecurityTokenResponse_DEL_PolicyReference(struct zx_wst_RequestSecurityTokenResponse_s* x, int n);
 
@@ -1504,7 +1394,6 @@ void zx_wst_RequestSecurityTokenResponse_REV_PolicyReference(struct zx_wst_Reque
 #ifndef zx_wst_RequestSecurityTokenResponseCollection_EXT
 #define zx_wst_RequestSecurityTokenResponseCollection_EXT
 #endif
-
 struct zx_wst_RequestSecurityTokenResponseCollection_s {
   ZX_ELEM_EXT
   zx_wst_RequestSecurityTokenResponseCollection_EXT
@@ -1512,12 +1401,8 @@ struct zx_wst_RequestSecurityTokenResponseCollection_s {
 };
 
 #define zx_NEW_wst_RequestSecurityTokenResponseCollection(c, father) (struct zx_wst_RequestSecurityTokenResponseCollection_s*)zx_new_elem((c),(father),zx_wst_RequestSecurityTokenResponseCollection_ELEM)
-
 int zx_DEC_ATTR_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponseCollection_s* x);
 int zx_DEC_ELEM_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponseCollection_s* x);
-int zx_LEN_SO_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponseCollection_s* x);
-char* zx_ENC_SO_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponseCollection_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponseCollection_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_RequestSecurityTokenResponseCollection_s* zx_DEEP_CLONE_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponseCollection_s* x, int dup_strs);
@@ -1551,7 +1436,6 @@ void zx_wst_RequestSecurityTokenResponseCollection_REV_RequestSecurityTokenRespo
 #ifndef zx_wst_RequestedAttachedReference_EXT
 #define zx_wst_RequestedAttachedReference_EXT
 #endif
-
 struct zx_wst_RequestedAttachedReference_s {
   ZX_ELEM_EXT
   zx_wst_RequestedAttachedReference_EXT
@@ -1559,12 +1443,8 @@ struct zx_wst_RequestedAttachedReference_s {
 };
 
 #define zx_NEW_wst_RequestedAttachedReference(c, father) (struct zx_wst_RequestedAttachedReference_s*)zx_new_elem((c),(father),zx_wst_RequestedAttachedReference_ELEM)
-
 int zx_DEC_ATTR_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_RequestedAttachedReference_s* x);
 int zx_DEC_ELEM_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_RequestedAttachedReference_s* x);
-int zx_LEN_SO_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_RequestedAttachedReference_s* x);
-char* zx_ENC_SO_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_RequestedAttachedReference_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_RequestedAttachedReference_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_RequestedAttachedReference_s* zx_DEEP_CLONE_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_RequestedAttachedReference_s* x, int dup_strs);
@@ -1598,19 +1478,14 @@ void zx_wst_RequestedAttachedReference_REV_SecurityTokenReference(struct zx_wst_
 #ifndef zx_wst_RequestedProofToken_EXT
 #define zx_wst_RequestedProofToken_EXT
 #endif
-
 struct zx_wst_RequestedProofToken_s {
   ZX_ELEM_EXT
   zx_wst_RequestedProofToken_EXT
 };
 
 #define zx_NEW_wst_RequestedProofToken(c, father) (struct zx_wst_RequestedProofToken_s*)zx_new_elem((c),(father),zx_wst_RequestedProofToken_ELEM)
-
 int zx_DEC_ATTR_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_RequestedProofToken_s* x);
 int zx_DEC_ELEM_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_RequestedProofToken_s* x);
-int zx_LEN_SO_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_RequestedProofToken_s* x);
-char* zx_ENC_SO_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_RequestedProofToken_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_RequestedProofToken_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_RequestedProofToken_s* zx_DEEP_CLONE_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_RequestedProofToken_s* x, int dup_strs);
@@ -1636,19 +1511,14 @@ int zx_WALK_WO_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_Requested
 #ifndef zx_wst_RequestedSecurityToken_EXT
 #define zx_wst_RequestedSecurityToken_EXT
 #endif
-
 struct zx_wst_RequestedSecurityToken_s {
   ZX_ELEM_EXT
   zx_wst_RequestedSecurityToken_EXT
 };
 
 #define zx_NEW_wst_RequestedSecurityToken(c, father) (struct zx_wst_RequestedSecurityToken_s*)zx_new_elem((c),(father),zx_wst_RequestedSecurityToken_ELEM)
-
 int zx_DEC_ATTR_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_RequestedSecurityToken_s* x);
 int zx_DEC_ELEM_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_RequestedSecurityToken_s* x);
-int zx_LEN_SO_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_RequestedSecurityToken_s* x);
-char* zx_ENC_SO_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_RequestedSecurityToken_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_RequestedSecurityToken_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_RequestedSecurityToken_s* zx_DEEP_CLONE_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_RequestedSecurityToken_s* x, int dup_strs);
@@ -1674,7 +1544,6 @@ int zx_WALK_WO_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_Reques
 #ifndef zx_wst_RequestedUnattachedReference_EXT
 #define zx_wst_RequestedUnattachedReference_EXT
 #endif
-
 struct zx_wst_RequestedUnattachedReference_s {
   ZX_ELEM_EXT
   zx_wst_RequestedUnattachedReference_EXT
@@ -1682,12 +1551,8 @@ struct zx_wst_RequestedUnattachedReference_s {
 };
 
 #define zx_NEW_wst_RequestedUnattachedReference(c, father) (struct zx_wst_RequestedUnattachedReference_s*)zx_new_elem((c),(father),zx_wst_RequestedUnattachedReference_ELEM)
-
 int zx_DEC_ATTR_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_RequestedUnattachedReference_s* x);
 int zx_DEC_ELEM_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_RequestedUnattachedReference_s* x);
-int zx_LEN_SO_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_RequestedUnattachedReference_s* x);
-char* zx_ENC_SO_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_RequestedUnattachedReference_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_RequestedUnattachedReference_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_RequestedUnattachedReference_s* zx_DEEP_CLONE_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_RequestedUnattachedReference_s* x, int dup_strs);
@@ -1721,7 +1586,6 @@ void zx_wst_RequestedUnattachedReference_REV_SecurityTokenReference(struct zx_ws
 #ifndef zx_wst_SignChallenge_EXT
 #define zx_wst_SignChallenge_EXT
 #endif
-
 struct zx_wst_SignChallenge_s {
   ZX_ELEM_EXT
   zx_wst_SignChallenge_EXT
@@ -1729,12 +1593,8 @@ struct zx_wst_SignChallenge_s {
 };
 
 #define zx_NEW_wst_SignChallenge(c, father) (struct zx_wst_SignChallenge_s*)zx_new_elem((c),(father),zx_wst_SignChallenge_ELEM)
-
 int zx_DEC_ATTR_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s* x);
 int zx_DEC_ELEM_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s* x);
-int zx_LEN_SO_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s* x);
-char* zx_ENC_SO_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_SignChallenge_s* zx_DEEP_CLONE_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s* x, int dup_strs);
@@ -1758,7 +1618,7 @@ void zx_wst_SignChallenge_PUT_Challenge(struct zx_wst_SignChallenge_s* x, int n,
 
 void zx_wst_SignChallenge_ADD_Challenge(struct zx_wst_SignChallenge_s* x, int n, struct zx_elem_s* z);
 
-void zx_wst_SignChallenge_DEL_Challenge(struct zx_wst_SignChallenge_s* x, int n);
+void zx_wst_SignChallenge_DEL_Challenge(struct zx_wst_SignChallenge_s* x,int n);
 
 void zx_wst_SignChallenge_REV_Challenge(struct zx_wst_SignChallenge_s* x);
 
@@ -1768,7 +1628,6 @@ void zx_wst_SignChallenge_REV_Challenge(struct zx_wst_SignChallenge_s* x);
 #ifndef zx_wst_SignChallengeResponse_EXT
 #define zx_wst_SignChallengeResponse_EXT
 #endif
-
 struct zx_wst_SignChallengeResponse_s {
   ZX_ELEM_EXT
   zx_wst_SignChallengeResponse_EXT
@@ -1776,12 +1635,8 @@ struct zx_wst_SignChallengeResponse_s {
 };
 
 #define zx_NEW_wst_SignChallengeResponse(c, father) (struct zx_wst_SignChallengeResponse_s*)zx_new_elem((c),(father),zx_wst_SignChallengeResponse_ELEM)
-
 int zx_DEC_ATTR_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChallengeResponse_s* x);
 int zx_DEC_ELEM_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChallengeResponse_s* x);
-int zx_LEN_SO_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChallengeResponse_s* x);
-char* zx_ENC_SO_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChallengeResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChallengeResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_SignChallengeResponse_s* zx_DEEP_CLONE_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChallengeResponse_s* x, int dup_strs);
@@ -1805,7 +1660,7 @@ void zx_wst_SignChallengeResponse_PUT_Challenge(struct zx_wst_SignChallengeRespo
 
 void zx_wst_SignChallengeResponse_ADD_Challenge(struct zx_wst_SignChallengeResponse_s* x, int n, struct zx_elem_s* z);
 
-void zx_wst_SignChallengeResponse_DEL_Challenge(struct zx_wst_SignChallengeResponse_s* x, int n);
+void zx_wst_SignChallengeResponse_DEL_Challenge(struct zx_wst_SignChallengeResponse_s* x,int n);
 
 void zx_wst_SignChallengeResponse_REV_Challenge(struct zx_wst_SignChallengeResponse_s* x);
 
@@ -1815,7 +1670,6 @@ void zx_wst_SignChallengeResponse_REV_Challenge(struct zx_wst_SignChallengeRespo
 #ifndef zx_wst_Status_EXT
 #define zx_wst_Status_EXT
 #endif
-
 struct zx_wst_Status_s {
   ZX_ELEM_EXT
   zx_wst_Status_EXT
@@ -1824,12 +1678,8 @@ struct zx_wst_Status_s {
 };
 
 #define zx_NEW_wst_Status(c, father) (struct zx_wst_Status_s*)zx_new_elem((c),(father),zx_wst_Status_ELEM)
-
 int zx_DEC_ATTR_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x);
 int zx_DEC_ELEM_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x);
-int zx_LEN_SO_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x);
-char* zx_ENC_SO_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_Status_s* zx_DEEP_CLONE_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x, int dup_strs);
@@ -1859,8 +1709,8 @@ void zx_wst_Status_PUT_Reason(struct zx_wst_Status_s* x, int n, struct zx_elem_s
 void zx_wst_Status_ADD_Code(struct zx_wst_Status_s* x, int n, struct zx_elem_s* z);
 void zx_wst_Status_ADD_Reason(struct zx_wst_Status_s* x, int n, struct zx_elem_s* z);
 
-void zx_wst_Status_DEL_Code(struct zx_wst_Status_s* x, int n);
-void zx_wst_Status_DEL_Reason(struct zx_wst_Status_s* x, int n);
+void zx_wst_Status_DEL_Code(struct zx_wst_Status_s* x,int n);
+void zx_wst_Status_DEL_Reason(struct zx_wst_Status_s* x,int n);
 
 void zx_wst_Status_REV_Code(struct zx_wst_Status_s* x);
 void zx_wst_Status_REV_Reason(struct zx_wst_Status_s* x);
@@ -1871,7 +1721,6 @@ void zx_wst_Status_REV_Reason(struct zx_wst_Status_s* x);
 #ifndef zx_wst_UseKey_EXT
 #define zx_wst_UseKey_EXT
 #endif
-
 struct zx_wst_UseKey_s {
   ZX_ELEM_EXT
   zx_wst_UseKey_EXT
@@ -1879,12 +1728,8 @@ struct zx_wst_UseKey_s {
 };
 
 #define zx_NEW_wst_UseKey(c, father) (struct zx_wst_UseKey_s*)zx_new_elem((c),(father),zx_wst_UseKey_ELEM)
-
 int zx_DEC_ATTR_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x);
 int zx_DEC_ELEM_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x);
-int zx_LEN_SO_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x);
-char* zx_ENC_SO_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_UseKey_s* zx_DEEP_CLONE_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x, int dup_strs);
@@ -1912,19 +1757,14 @@ void zx_wst_UseKey_PUT_Sig(struct zx_wst_UseKey_s* x, struct zx_attr_s* y);
 #ifndef zx_wst_ValidateTarget_EXT
 #define zx_wst_ValidateTarget_EXT
 #endif
-
 struct zx_wst_ValidateTarget_s {
   ZX_ELEM_EXT
   zx_wst_ValidateTarget_EXT
 };
 
 #define zx_NEW_wst_ValidateTarget(c, father) (struct zx_wst_ValidateTarget_s*)zx_new_elem((c),(father),zx_wst_ValidateTarget_ELEM)
-
 int zx_DEC_ATTR_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarget_s* x);
 int zx_DEC_ELEM_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarget_s* x);
-int zx_LEN_SO_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarget_s* x);
-char* zx_ENC_SO_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarget_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarget_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_wst_ValidateTarget_s* zx_DEEP_CLONE_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarget_s* x, int dup_strs);

@@ -23,7 +23,6 @@
 #ifndef zx_pmm_PMActivate_EXT
 #define zx_pmm_PMActivate_EXT
 #endif
-
 struct zx_pmm_PMActivate_s {
   ZX_ELEM_EXT
   zx_pmm_PMActivate_EXT
@@ -32,12 +31,8 @@ struct zx_pmm_PMActivate_s {
 };
 
 #define zx_NEW_pmm_PMActivate(c, father) (struct zx_pmm_PMActivate_s*)zx_new_elem((c),(father),zx_pmm_PMActivate_ELEM)
-
 int zx_DEC_ATTR_pmm_PMActivate(struct zx_ctx* c, struct zx_pmm_PMActivate_s* x);
 int zx_DEC_ELEM_pmm_PMActivate(struct zx_ctx* c, struct zx_pmm_PMActivate_s* x);
-int zx_LEN_SO_pmm_PMActivate(struct zx_ctx* c, struct zx_pmm_PMActivate_s* x);
-char* zx_ENC_SO_pmm_PMActivate(struct zx_ctx* c, struct zx_pmm_PMActivate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMActivate(struct zx_ctx* c, struct zx_pmm_PMActivate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMActivate_s* zx_DEEP_CLONE_pmm_PMActivate(struct zx_ctx* c, struct zx_pmm_PMActivate_s* x, int dup_strs);
@@ -68,7 +63,7 @@ void zx_pmm_PMActivate_ADD_PMActivateItem(struct zx_pmm_PMActivate_s* x, int n, 
 void zx_pmm_PMActivate_ADD_NotifyTo(struct zx_pmm_PMActivate_s* x, int n, struct zx_elem_s* z);
 
 void zx_pmm_PMActivate_DEL_PMActivateItem(struct zx_pmm_PMActivate_s* x, int n);
-void zx_pmm_PMActivate_DEL_NotifyTo(struct zx_pmm_PMActivate_s* x, int n);
+void zx_pmm_PMActivate_DEL_NotifyTo(struct zx_pmm_PMActivate_s* x,int n);
 
 void zx_pmm_PMActivate_REV_PMActivateItem(struct zx_pmm_PMActivate_s* x);
 void zx_pmm_PMActivate_REV_NotifyTo(struct zx_pmm_PMActivate_s* x);
@@ -79,7 +74,6 @@ void zx_pmm_PMActivate_REV_NotifyTo(struct zx_pmm_PMActivate_s* x);
 #ifndef zx_pmm_PMActivateItem_EXT
 #define zx_pmm_PMActivateItem_EXT
 #endif
-
 struct zx_pmm_PMActivateItem_s {
   ZX_ELEM_EXT
   zx_pmm_PMActivateItem_EXT
@@ -89,12 +83,8 @@ struct zx_pmm_PMActivateItem_s {
 };
 
 #define zx_NEW_pmm_PMActivateItem(c, father) (struct zx_pmm_PMActivateItem_s*)zx_new_elem((c),(father),zx_pmm_PMActivateItem_ELEM)
-
 int zx_DEC_ATTR_pmm_PMActivateItem(struct zx_ctx* c, struct zx_pmm_PMActivateItem_s* x);
 int zx_DEC_ELEM_pmm_PMActivateItem(struct zx_ctx* c, struct zx_pmm_PMActivateItem_s* x);
-int zx_LEN_SO_pmm_PMActivateItem(struct zx_ctx* c, struct zx_pmm_PMActivateItem_s* x);
-char* zx_ENC_SO_pmm_PMActivateItem(struct zx_ctx* c, struct zx_pmm_PMActivateItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMActivateItem(struct zx_ctx* c, struct zx_pmm_PMActivateItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMActivateItem_s* zx_DEEP_CLONE_pmm_PMActivateItem(struct zx_ctx* c, struct zx_pmm_PMActivateItem_s* x, int dup_strs);
@@ -132,7 +122,6 @@ void zx_pmm_PMActivateItem_REV_PMID(struct zx_pmm_PMActivateItem_s* x);
 #ifndef zx_pmm_PMActivateResponse_EXT
 #define zx_pmm_PMActivateResponse_EXT
 #endif
-
 struct zx_pmm_PMActivateResponse_s {
   ZX_ELEM_EXT
   zx_pmm_PMActivateResponse_EXT
@@ -140,12 +129,8 @@ struct zx_pmm_PMActivateResponse_s {
 };
 
 #define zx_NEW_pmm_PMActivateResponse(c, father) (struct zx_pmm_PMActivateResponse_s*)zx_new_elem((c),(father),zx_pmm_PMActivateResponse_ELEM)
-
 int zx_DEC_ATTR_pmm_PMActivateResponse(struct zx_ctx* c, struct zx_pmm_PMActivateResponse_s* x);
 int zx_DEC_ELEM_pmm_PMActivateResponse(struct zx_ctx* c, struct zx_pmm_PMActivateResponse_s* x);
-int zx_LEN_SO_pmm_PMActivateResponse(struct zx_ctx* c, struct zx_pmm_PMActivateResponse_s* x);
-char* zx_ENC_SO_pmm_PMActivateResponse(struct zx_ctx* c, struct zx_pmm_PMActivateResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMActivateResponse(struct zx_ctx* c, struct zx_pmm_PMActivateResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMActivateResponse_s* zx_DEEP_CLONE_pmm_PMActivateResponse(struct zx_ctx* c, struct zx_pmm_PMActivateResponse_s* x, int dup_strs);
@@ -179,7 +164,6 @@ void zx_pmm_PMActivateResponse_REV_Status(struct zx_pmm_PMActivateResponse_s* x)
 #ifndef zx_pmm_PMDeactivate_EXT
 #define zx_pmm_PMDeactivate_EXT
 #endif
-
 struct zx_pmm_PMDeactivate_s {
   ZX_ELEM_EXT
   zx_pmm_PMDeactivate_EXT
@@ -188,12 +172,8 @@ struct zx_pmm_PMDeactivate_s {
 };
 
 #define zx_NEW_pmm_PMDeactivate(c, father) (struct zx_pmm_PMDeactivate_s*)zx_new_elem((c),(father),zx_pmm_PMDeactivate_ELEM)
-
 int zx_DEC_ATTR_pmm_PMDeactivate(struct zx_ctx* c, struct zx_pmm_PMDeactivate_s* x);
 int zx_DEC_ELEM_pmm_PMDeactivate(struct zx_ctx* c, struct zx_pmm_PMDeactivate_s* x);
-int zx_LEN_SO_pmm_PMDeactivate(struct zx_ctx* c, struct zx_pmm_PMDeactivate_s* x);
-char* zx_ENC_SO_pmm_PMDeactivate(struct zx_ctx* c, struct zx_pmm_PMDeactivate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMDeactivate(struct zx_ctx* c, struct zx_pmm_PMDeactivate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMDeactivate_s* zx_DEEP_CLONE_pmm_PMDeactivate(struct zx_ctx* c, struct zx_pmm_PMDeactivate_s* x, int dup_strs);
@@ -224,7 +204,7 @@ void zx_pmm_PMDeactivate_ADD_PMDeactivateItem(struct zx_pmm_PMDeactivate_s* x, i
 void zx_pmm_PMDeactivate_ADD_NotifyTo(struct zx_pmm_PMDeactivate_s* x, int n, struct zx_elem_s* z);
 
 void zx_pmm_PMDeactivate_DEL_PMDeactivateItem(struct zx_pmm_PMDeactivate_s* x, int n);
-void zx_pmm_PMDeactivate_DEL_NotifyTo(struct zx_pmm_PMDeactivate_s* x, int n);
+void zx_pmm_PMDeactivate_DEL_NotifyTo(struct zx_pmm_PMDeactivate_s* x,int n);
 
 void zx_pmm_PMDeactivate_REV_PMDeactivateItem(struct zx_pmm_PMDeactivate_s* x);
 void zx_pmm_PMDeactivate_REV_NotifyTo(struct zx_pmm_PMDeactivate_s* x);
@@ -235,7 +215,6 @@ void zx_pmm_PMDeactivate_REV_NotifyTo(struct zx_pmm_PMDeactivate_s* x);
 #ifndef zx_pmm_PMDeactivateItem_EXT
 #define zx_pmm_PMDeactivateItem_EXT
 #endif
-
 struct zx_pmm_PMDeactivateItem_s {
   ZX_ELEM_EXT
   zx_pmm_PMDeactivateItem_EXT
@@ -245,12 +224,8 @@ struct zx_pmm_PMDeactivateItem_s {
 };
 
 #define zx_NEW_pmm_PMDeactivateItem(c, father) (struct zx_pmm_PMDeactivateItem_s*)zx_new_elem((c),(father),zx_pmm_PMDeactivateItem_ELEM)
-
 int zx_DEC_ATTR_pmm_PMDeactivateItem(struct zx_ctx* c, struct zx_pmm_PMDeactivateItem_s* x);
 int zx_DEC_ELEM_pmm_PMDeactivateItem(struct zx_ctx* c, struct zx_pmm_PMDeactivateItem_s* x);
-int zx_LEN_SO_pmm_PMDeactivateItem(struct zx_ctx* c, struct zx_pmm_PMDeactivateItem_s* x);
-char* zx_ENC_SO_pmm_PMDeactivateItem(struct zx_ctx* c, struct zx_pmm_PMDeactivateItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMDeactivateItem(struct zx_ctx* c, struct zx_pmm_PMDeactivateItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMDeactivateItem_s* zx_DEEP_CLONE_pmm_PMDeactivateItem(struct zx_ctx* c, struct zx_pmm_PMDeactivateItem_s* x, int dup_strs);
@@ -288,7 +263,6 @@ void zx_pmm_PMDeactivateItem_REV_PMID(struct zx_pmm_PMDeactivateItem_s* x);
 #ifndef zx_pmm_PMDeactivateResponse_EXT
 #define zx_pmm_PMDeactivateResponse_EXT
 #endif
-
 struct zx_pmm_PMDeactivateResponse_s {
   ZX_ELEM_EXT
   zx_pmm_PMDeactivateResponse_EXT
@@ -296,12 +270,8 @@ struct zx_pmm_PMDeactivateResponse_s {
 };
 
 #define zx_NEW_pmm_PMDeactivateResponse(c, father) (struct zx_pmm_PMDeactivateResponse_s*)zx_new_elem((c),(father),zx_pmm_PMDeactivateResponse_ELEM)
-
 int zx_DEC_ATTR_pmm_PMDeactivateResponse(struct zx_ctx* c, struct zx_pmm_PMDeactivateResponse_s* x);
 int zx_DEC_ELEM_pmm_PMDeactivateResponse(struct zx_ctx* c, struct zx_pmm_PMDeactivateResponse_s* x);
-int zx_LEN_SO_pmm_PMDeactivateResponse(struct zx_ctx* c, struct zx_pmm_PMDeactivateResponse_s* x);
-char* zx_ENC_SO_pmm_PMDeactivateResponse(struct zx_ctx* c, struct zx_pmm_PMDeactivateResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMDeactivateResponse(struct zx_ctx* c, struct zx_pmm_PMDeactivateResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMDeactivateResponse_s* zx_DEEP_CLONE_pmm_PMDeactivateResponse(struct zx_ctx* c, struct zx_pmm_PMDeactivateResponse_s* x, int dup_strs);
@@ -335,7 +305,6 @@ void zx_pmm_PMDeactivateResponse_REV_Status(struct zx_pmm_PMDeactivateResponse_s
 #ifndef zx_pmm_PMDelete_EXT
 #define zx_pmm_PMDelete_EXT
 #endif
-
 struct zx_pmm_PMDelete_s {
   ZX_ELEM_EXT
   zx_pmm_PMDelete_EXT
@@ -343,12 +312,8 @@ struct zx_pmm_PMDelete_s {
 };
 
 #define zx_NEW_pmm_PMDelete(c, father) (struct zx_pmm_PMDelete_s*)zx_new_elem((c),(father),zx_pmm_PMDelete_ELEM)
-
 int zx_DEC_ATTR_pmm_PMDelete(struct zx_ctx* c, struct zx_pmm_PMDelete_s* x);
 int zx_DEC_ELEM_pmm_PMDelete(struct zx_ctx* c, struct zx_pmm_PMDelete_s* x);
-int zx_LEN_SO_pmm_PMDelete(struct zx_ctx* c, struct zx_pmm_PMDelete_s* x);
-char* zx_ENC_SO_pmm_PMDelete(struct zx_ctx* c, struct zx_pmm_PMDelete_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMDelete(struct zx_ctx* c, struct zx_pmm_PMDelete_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMDelete_s* zx_DEEP_CLONE_pmm_PMDelete(struct zx_ctx* c, struct zx_pmm_PMDelete_s* x, int dup_strs);
@@ -382,7 +347,6 @@ void zx_pmm_PMDelete_REV_PMDeleteItem(struct zx_pmm_PMDelete_s* x);
 #ifndef zx_pmm_PMDeleteItem_EXT
 #define zx_pmm_PMDeleteItem_EXT
 #endif
-
 struct zx_pmm_PMDeleteItem_s {
   ZX_ELEM_EXT
   zx_pmm_PMDeleteItem_EXT
@@ -391,12 +355,8 @@ struct zx_pmm_PMDeleteItem_s {
 };
 
 #define zx_NEW_pmm_PMDeleteItem(c, father) (struct zx_pmm_PMDeleteItem_s*)zx_new_elem((c),(father),zx_pmm_PMDeleteItem_ELEM)
-
 int zx_DEC_ATTR_pmm_PMDeleteItem(struct zx_ctx* c, struct zx_pmm_PMDeleteItem_s* x);
 int zx_DEC_ELEM_pmm_PMDeleteItem(struct zx_ctx* c, struct zx_pmm_PMDeleteItem_s* x);
-int zx_LEN_SO_pmm_PMDeleteItem(struct zx_ctx* c, struct zx_pmm_PMDeleteItem_s* x);
-char* zx_ENC_SO_pmm_PMDeleteItem(struct zx_ctx* c, struct zx_pmm_PMDeleteItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMDeleteItem(struct zx_ctx* c, struct zx_pmm_PMDeleteItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMDeleteItem_s* zx_DEEP_CLONE_pmm_PMDeleteItem(struct zx_ctx* c, struct zx_pmm_PMDeleteItem_s* x, int dup_strs);
@@ -432,7 +392,6 @@ void zx_pmm_PMDeleteItem_REV_PMID(struct zx_pmm_PMDeleteItem_s* x);
 #ifndef zx_pmm_PMDeleteResponse_EXT
 #define zx_pmm_PMDeleteResponse_EXT
 #endif
-
 struct zx_pmm_PMDeleteResponse_s {
   ZX_ELEM_EXT
   zx_pmm_PMDeleteResponse_EXT
@@ -440,12 +399,8 @@ struct zx_pmm_PMDeleteResponse_s {
 };
 
 #define zx_NEW_pmm_PMDeleteResponse(c, father) (struct zx_pmm_PMDeleteResponse_s*)zx_new_elem((c),(father),zx_pmm_PMDeleteResponse_ELEM)
-
 int zx_DEC_ATTR_pmm_PMDeleteResponse(struct zx_ctx* c, struct zx_pmm_PMDeleteResponse_s* x);
 int zx_DEC_ELEM_pmm_PMDeleteResponse(struct zx_ctx* c, struct zx_pmm_PMDeleteResponse_s* x);
-int zx_LEN_SO_pmm_PMDeleteResponse(struct zx_ctx* c, struct zx_pmm_PMDeleteResponse_s* x);
-char* zx_ENC_SO_pmm_PMDeleteResponse(struct zx_ctx* c, struct zx_pmm_PMDeleteResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMDeleteResponse(struct zx_ctx* c, struct zx_pmm_PMDeleteResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMDeleteResponse_s* zx_DEEP_CLONE_pmm_PMDeleteResponse(struct zx_ctx* c, struct zx_pmm_PMDeleteResponse_s* x, int dup_strs);
@@ -479,7 +434,6 @@ void zx_pmm_PMDeleteResponse_REV_Status(struct zx_pmm_PMDeleteResponse_s* x);
 #ifndef zx_pmm_PMGetStatus_EXT
 #define zx_pmm_PMGetStatus_EXT
 #endif
-
 struct zx_pmm_PMGetStatus_s {
   ZX_ELEM_EXT
   zx_pmm_PMGetStatus_EXT
@@ -487,12 +441,8 @@ struct zx_pmm_PMGetStatus_s {
 };
 
 #define zx_NEW_pmm_PMGetStatus(c, father) (struct zx_pmm_PMGetStatus_s*)zx_new_elem((c),(father),zx_pmm_PMGetStatus_ELEM)
-
 int zx_DEC_ATTR_pmm_PMGetStatus(struct zx_ctx* c, struct zx_pmm_PMGetStatus_s* x);
 int zx_DEC_ELEM_pmm_PMGetStatus(struct zx_ctx* c, struct zx_pmm_PMGetStatus_s* x);
-int zx_LEN_SO_pmm_PMGetStatus(struct zx_ctx* c, struct zx_pmm_PMGetStatus_s* x);
-char* zx_ENC_SO_pmm_PMGetStatus(struct zx_ctx* c, struct zx_pmm_PMGetStatus_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMGetStatus(struct zx_ctx* c, struct zx_pmm_PMGetStatus_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMGetStatus_s* zx_DEEP_CLONE_pmm_PMGetStatus(struct zx_ctx* c, struct zx_pmm_PMGetStatus_s* x, int dup_strs);
@@ -526,7 +476,6 @@ void zx_pmm_PMGetStatus_REV_PMID(struct zx_pmm_PMGetStatus_s* x);
 #ifndef zx_pmm_PMGetStatusResponse_EXT
 #define zx_pmm_PMGetStatusResponse_EXT
 #endif
-
 struct zx_pmm_PMGetStatusResponse_s {
   ZX_ELEM_EXT
   zx_pmm_PMGetStatusResponse_EXT
@@ -535,12 +484,8 @@ struct zx_pmm_PMGetStatusResponse_s {
 };
 
 #define zx_NEW_pmm_PMGetStatusResponse(c, father) (struct zx_pmm_PMGetStatusResponse_s*)zx_new_elem((c),(father),zx_pmm_PMGetStatusResponse_ELEM)
-
 int zx_DEC_ATTR_pmm_PMGetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMGetStatusResponse_s* x);
 int zx_DEC_ELEM_pmm_PMGetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMGetStatusResponse_s* x);
-int zx_LEN_SO_pmm_PMGetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMGetStatusResponse_s* x);
-char* zx_ENC_SO_pmm_PMGetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMGetStatusResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMGetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMGetStatusResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMGetStatusResponse_s* zx_DEEP_CLONE_pmm_PMGetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMGetStatusResponse_s* x, int dup_strs);
@@ -582,7 +527,6 @@ void zx_pmm_PMGetStatusResponse_REV_PMStatus(struct zx_pmm_PMGetStatusResponse_s
 #ifndef zx_pmm_PMSetStatus_EXT
 #define zx_pmm_PMSetStatus_EXT
 #endif
-
 struct zx_pmm_PMSetStatus_s {
   ZX_ELEM_EXT
   zx_pmm_PMSetStatus_EXT
@@ -590,12 +534,8 @@ struct zx_pmm_PMSetStatus_s {
 };
 
 #define zx_NEW_pmm_PMSetStatus(c, father) (struct zx_pmm_PMSetStatus_s*)zx_new_elem((c),(father),zx_pmm_PMSetStatus_ELEM)
-
 int zx_DEC_ATTR_pmm_PMSetStatus(struct zx_ctx* c, struct zx_pmm_PMSetStatus_s* x);
 int zx_DEC_ELEM_pmm_PMSetStatus(struct zx_ctx* c, struct zx_pmm_PMSetStatus_s* x);
-int zx_LEN_SO_pmm_PMSetStatus(struct zx_ctx* c, struct zx_pmm_PMSetStatus_s* x);
-char* zx_ENC_SO_pmm_PMSetStatus(struct zx_ctx* c, struct zx_pmm_PMSetStatus_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMSetStatus(struct zx_ctx* c, struct zx_pmm_PMSetStatus_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMSetStatus_s* zx_DEEP_CLONE_pmm_PMSetStatus(struct zx_ctx* c, struct zx_pmm_PMSetStatus_s* x, int dup_strs);
@@ -629,7 +569,6 @@ void zx_pmm_PMSetStatus_REV_PMStatus(struct zx_pmm_PMSetStatus_s* x);
 #ifndef zx_pmm_PMSetStatusResponse_EXT
 #define zx_pmm_PMSetStatusResponse_EXT
 #endif
-
 struct zx_pmm_PMSetStatusResponse_s {
   ZX_ELEM_EXT
   zx_pmm_PMSetStatusResponse_EXT
@@ -637,12 +576,8 @@ struct zx_pmm_PMSetStatusResponse_s {
 };
 
 #define zx_NEW_pmm_PMSetStatusResponse(c, father) (struct zx_pmm_PMSetStatusResponse_s*)zx_new_elem((c),(father),zx_pmm_PMSetStatusResponse_ELEM)
-
 int zx_DEC_ATTR_pmm_PMSetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMSetStatusResponse_s* x);
 int zx_DEC_ELEM_pmm_PMSetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMSetStatusResponse_s* x);
-int zx_LEN_SO_pmm_PMSetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMSetStatusResponse_s* x);
-char* zx_ENC_SO_pmm_PMSetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMSetStatusResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMSetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMSetStatusResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMSetStatusResponse_s* zx_DEEP_CLONE_pmm_PMSetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMSetStatusResponse_s* x, int dup_strs);
@@ -676,7 +611,6 @@ void zx_pmm_PMSetStatusResponse_REV_Status(struct zx_pmm_PMSetStatusResponse_s* 
 #ifndef zx_pmm_PMUpdate_EXT
 #define zx_pmm_PMUpdate_EXT
 #endif
-
 struct zx_pmm_PMUpdate_s {
   ZX_ELEM_EXT
   zx_pmm_PMUpdate_EXT
@@ -685,12 +619,8 @@ struct zx_pmm_PMUpdate_s {
 };
 
 #define zx_NEW_pmm_PMUpdate(c, father) (struct zx_pmm_PMUpdate_s*)zx_new_elem((c),(father),zx_pmm_PMUpdate_ELEM)
-
 int zx_DEC_ATTR_pmm_PMUpdate(struct zx_ctx* c, struct zx_pmm_PMUpdate_s* x);
 int zx_DEC_ELEM_pmm_PMUpdate(struct zx_ctx* c, struct zx_pmm_PMUpdate_s* x);
-int zx_LEN_SO_pmm_PMUpdate(struct zx_ctx* c, struct zx_pmm_PMUpdate_s* x);
-char* zx_ENC_SO_pmm_PMUpdate(struct zx_ctx* c, struct zx_pmm_PMUpdate_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMUpdate(struct zx_ctx* c, struct zx_pmm_PMUpdate_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMUpdate_s* zx_DEEP_CLONE_pmm_PMUpdate(struct zx_ctx* c, struct zx_pmm_PMUpdate_s* x, int dup_strs);
@@ -721,7 +651,7 @@ void zx_pmm_PMUpdate_ADD_PMUpdateItem(struct zx_pmm_PMUpdate_s* x, int n, struct
 void zx_pmm_PMUpdate_ADD_NotifyTo(struct zx_pmm_PMUpdate_s* x, int n, struct zx_elem_s* z);
 
 void zx_pmm_PMUpdate_DEL_PMUpdateItem(struct zx_pmm_PMUpdate_s* x, int n);
-void zx_pmm_PMUpdate_DEL_NotifyTo(struct zx_pmm_PMUpdate_s* x, int n);
+void zx_pmm_PMUpdate_DEL_NotifyTo(struct zx_pmm_PMUpdate_s* x,int n);
 
 void zx_pmm_PMUpdate_REV_PMUpdateItem(struct zx_pmm_PMUpdate_s* x);
 void zx_pmm_PMUpdate_REV_NotifyTo(struct zx_pmm_PMUpdate_s* x);
@@ -732,7 +662,6 @@ void zx_pmm_PMUpdate_REV_NotifyTo(struct zx_pmm_PMUpdate_s* x);
 #ifndef zx_pmm_PMUpdateItem_EXT
 #define zx_pmm_PMUpdateItem_EXT
 #endif
-
 struct zx_pmm_PMUpdateItem_s {
   ZX_ELEM_EXT
   zx_pmm_PMUpdateItem_EXT
@@ -743,12 +672,8 @@ struct zx_pmm_PMUpdateItem_s {
 };
 
 #define zx_NEW_pmm_PMUpdateItem(c, father) (struct zx_pmm_PMUpdateItem_s*)zx_new_elem((c),(father),zx_pmm_PMUpdateItem_ELEM)
-
 int zx_DEC_ATTR_pmm_PMUpdateItem(struct zx_ctx* c, struct zx_pmm_PMUpdateItem_s* x);
 int zx_DEC_ELEM_pmm_PMUpdateItem(struct zx_ctx* c, struct zx_pmm_PMUpdateItem_s* x);
-int zx_LEN_SO_pmm_PMUpdateItem(struct zx_ctx* c, struct zx_pmm_PMUpdateItem_s* x);
-char* zx_ENC_SO_pmm_PMUpdateItem(struct zx_ctx* c, struct zx_pmm_PMUpdateItem_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMUpdateItem(struct zx_ctx* c, struct zx_pmm_PMUpdateItem_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMUpdateItem_s* zx_DEEP_CLONE_pmm_PMUpdateItem(struct zx_ctx* c, struct zx_pmm_PMUpdateItem_s* x, int dup_strs);
@@ -788,7 +713,6 @@ void zx_pmm_PMUpdateItem_REV_PMDescriptor(struct zx_pmm_PMUpdateItem_s* x);
 #ifndef zx_pmm_PMUpdateResponse_EXT
 #define zx_pmm_PMUpdateResponse_EXT
 #endif
-
 struct zx_pmm_PMUpdateResponse_s {
   ZX_ELEM_EXT
   zx_pmm_PMUpdateResponse_EXT
@@ -796,12 +720,8 @@ struct zx_pmm_PMUpdateResponse_s {
 };
 
 #define zx_NEW_pmm_PMUpdateResponse(c, father) (struct zx_pmm_PMUpdateResponse_s*)zx_new_elem((c),(father),zx_pmm_PMUpdateResponse_ELEM)
-
 int zx_DEC_ATTR_pmm_PMUpdateResponse(struct zx_ctx* c, struct zx_pmm_PMUpdateResponse_s* x);
 int zx_DEC_ELEM_pmm_PMUpdateResponse(struct zx_ctx* c, struct zx_pmm_PMUpdateResponse_s* x);
-int zx_LEN_SO_pmm_PMUpdateResponse(struct zx_ctx* c, struct zx_pmm_PMUpdateResponse_s* x);
-char* zx_ENC_SO_pmm_PMUpdateResponse(struct zx_ctx* c, struct zx_pmm_PMUpdateResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_PMUpdateResponse(struct zx_ctx* c, struct zx_pmm_PMUpdateResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_PMUpdateResponse_s* zx_DEEP_CLONE_pmm_PMUpdateResponse(struct zx_ctx* c, struct zx_pmm_PMUpdateResponse_s* x, int dup_strs);
@@ -835,7 +755,6 @@ void zx_pmm_PMUpdateResponse_REV_Status(struct zx_pmm_PMUpdateResponse_s* x);
 #ifndef zx_pmm_Provision_EXT
 #define zx_pmm_Provision_EXT
 #endif
-
 struct zx_pmm_Provision_s {
   ZX_ELEM_EXT
   zx_pmm_Provision_EXT
@@ -846,12 +765,8 @@ struct zx_pmm_Provision_s {
 };
 
 #define zx_NEW_pmm_Provision(c, father) (struct zx_pmm_Provision_s*)zx_new_elem((c),(father),zx_pmm_Provision_ELEM)
-
 int zx_DEC_ATTR_pmm_Provision(struct zx_ctx* c, struct zx_pmm_Provision_s* x);
 int zx_DEC_ELEM_pmm_Provision(struct zx_ctx* c, struct zx_pmm_Provision_s* x);
-int zx_LEN_SO_pmm_Provision(struct zx_ctx* c, struct zx_pmm_Provision_s* x);
-char* zx_ENC_SO_pmm_Provision(struct zx_ctx* c, struct zx_pmm_Provision_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_Provision(struct zx_ctx* c, struct zx_pmm_Provision_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_Provision_s* zx_DEEP_CLONE_pmm_Provision(struct zx_ctx* c, struct zx_pmm_Provision_s* x, int dup_strs);
@@ -891,7 +806,7 @@ void zx_pmm_Provision_ADD_NotifyTo(struct zx_pmm_Provision_s* x, int n, struct z
 
 void zx_pmm_Provision_DEL_ProvisioningHandle(struct zx_pmm_Provision_s* x, int n);
 void zx_pmm_Provision_DEL_PMDescriptor(struct zx_pmm_Provision_s* x, int n);
-void zx_pmm_Provision_DEL_NotifyTo(struct zx_pmm_Provision_s* x, int n);
+void zx_pmm_Provision_DEL_NotifyTo(struct zx_pmm_Provision_s* x,int n);
 
 void zx_pmm_Provision_REV_ProvisioningHandle(struct zx_pmm_Provision_s* x);
 void zx_pmm_Provision_REV_PMDescriptor(struct zx_pmm_Provision_s* x);
@@ -903,7 +818,6 @@ void zx_pmm_Provision_REV_NotifyTo(struct zx_pmm_Provision_s* x);
 #ifndef zx_pmm_ProvisionResponse_EXT
 #define zx_pmm_ProvisionResponse_EXT
 #endif
-
 struct zx_pmm_ProvisionResponse_s {
   ZX_ELEM_EXT
   zx_pmm_ProvisionResponse_EXT
@@ -911,12 +825,8 @@ struct zx_pmm_ProvisionResponse_s {
 };
 
 #define zx_NEW_pmm_ProvisionResponse(c, father) (struct zx_pmm_ProvisionResponse_s*)zx_new_elem((c),(father),zx_pmm_ProvisionResponse_ELEM)
-
 int zx_DEC_ATTR_pmm_ProvisionResponse(struct zx_ctx* c, struct zx_pmm_ProvisionResponse_s* x);
 int zx_DEC_ELEM_pmm_ProvisionResponse(struct zx_ctx* c, struct zx_pmm_ProvisionResponse_s* x);
-int zx_LEN_SO_pmm_ProvisionResponse(struct zx_ctx* c, struct zx_pmm_ProvisionResponse_s* x);
-char* zx_ENC_SO_pmm_ProvisionResponse(struct zx_ctx* c, struct zx_pmm_ProvisionResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_pmm_ProvisionResponse(struct zx_ctx* c, struct zx_pmm_ProvisionResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_pmm_ProvisionResponse_s* zx_DEEP_CLONE_pmm_ProvisionResponse(struct zx_ctx* c, struct zx_pmm_ProvisionResponse_s* x, int dup_strs);

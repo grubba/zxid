@@ -23,7 +23,6 @@
 #ifndef zx_e_Body_EXT
 #define zx_e_Body_EXT
 #endif
-
 struct zx_e_Body_s {
   ZX_ELEM_EXT
   zx_e_Body_EXT
@@ -257,12 +256,8 @@ struct zx_e_Body_s {
 };
 
 #define zx_NEW_e_Body(c, father) (struct zx_e_Body_s*)zx_new_elem((c),(father),zx_e_Body_ELEM)
-
 int zx_DEC_ATTR_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x);
 int zx_DEC_ELEM_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x);
-int zx_LEN_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x);
-char* zx_ENC_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_e_Body_s* zx_DEEP_CLONE_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x, int dup_strs);
@@ -1840,7 +1835,7 @@ void zx_e_Body_DEL_GetStatus(struct zx_e_Body_s* x, int n);
 void zx_e_Body_DEL_GetStatusResponse(struct zx_e_Body_s* x, int n);
 void zx_e_Body_DEL_shps_Query(struct zx_e_Body_s* x, int n);
 void zx_e_Body_DEL_shps_QueryResponse(struct zx_e_Body_s* x, int n);
-void zx_e_Body_DEL_Invoke(struct zx_e_Body_s* x, int n);
+void zx_e_Body_DEL_Invoke(struct zx_e_Body_s* x,int n);
 void zx_e_Body_DEL_InvokeResponse(struct zx_e_Body_s* x, int n);
 void zx_e_Body_DEL_QueryRegistered(struct zx_e_Body_s* x, int n);
 void zx_e_Body_DEL_QueryRegisteredResponse(struct zx_e_Body_s* x, int n);
@@ -2098,7 +2093,6 @@ void zx_e_Body_REV_idhrxml_NotifyResponse(struct zx_e_Body_s* x);
 #ifndef zx_e_Envelope_EXT
 #define zx_e_Envelope_EXT
 #endif
-
 struct zx_e_Envelope_s {
   ZX_ELEM_EXT
   zx_e_Envelope_EXT
@@ -2108,12 +2102,8 @@ struct zx_e_Envelope_s {
 };
 
 #define zx_NEW_e_Envelope(c, father) (struct zx_e_Envelope_s*)zx_new_elem((c),(father),zx_e_Envelope_ELEM)
-
 int zx_DEC_ATTR_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x);
 int zx_DEC_ELEM_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x);
-int zx_LEN_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x);
-char* zx_ENC_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_e_Envelope_s* zx_DEEP_CLONE_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x, int dup_strs);
@@ -2157,7 +2147,6 @@ void zx_e_Envelope_REV_Body(struct zx_e_Envelope_s* x);
 #ifndef zx_e_Fault_EXT
 #define zx_e_Fault_EXT
 #endif
-
 struct zx_e_Fault_s {
   ZX_ELEM_EXT
   zx_e_Fault_EXT
@@ -2168,12 +2157,8 @@ struct zx_e_Fault_s {
 };
 
 #define zx_NEW_e_Fault(c, father) (struct zx_e_Fault_s*)zx_new_elem((c),(father),zx_e_Fault_ELEM)
-
 int zx_DEC_ATTR_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x);
 int zx_DEC_ELEM_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x);
-int zx_LEN_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x);
-char* zx_ENC_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_e_Fault_s* zx_DEEP_CLONE_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x, int dup_strs);
@@ -2215,9 +2200,9 @@ void zx_e_Fault_ADD_faultstring(struct zx_e_Fault_s* x, int n, struct zx_elem_s*
 void zx_e_Fault_ADD_faultactor(struct zx_e_Fault_s* x, int n, struct zx_elem_s* z);
 void zx_e_Fault_ADD_detail(struct zx_e_Fault_s* x, int n, struct zx_e_detail_s* z);
 
-void zx_e_Fault_DEL_faultcode(struct zx_e_Fault_s* x, int n);
-void zx_e_Fault_DEL_faultstring(struct zx_e_Fault_s* x, int n);
-void zx_e_Fault_DEL_faultactor(struct zx_e_Fault_s* x, int n);
+void zx_e_Fault_DEL_faultcode(struct zx_e_Fault_s* x,int n);
+void zx_e_Fault_DEL_faultstring(struct zx_e_Fault_s* x,int n);
+void zx_e_Fault_DEL_faultactor(struct zx_e_Fault_s* x,int n);
 void zx_e_Fault_DEL_detail(struct zx_e_Fault_s* x, int n);
 
 void zx_e_Fault_REV_faultcode(struct zx_e_Fault_s* x);
@@ -2231,7 +2216,6 @@ void zx_e_Fault_REV_detail(struct zx_e_Fault_s* x);
 #ifndef zx_e_Header_EXT
 #define zx_e_Header_EXT
 #endif
-
 struct zx_e_Header_s {
   ZX_ELEM_EXT
   zx_e_Header_EXT
@@ -2275,12 +2259,8 @@ struct zx_e_Header_s {
 };
 
 #define zx_NEW_e_Header(c, father) (struct zx_e_Header_s*)zx_new_elem((c),(father),zx_e_Header_ELEM)
-
 int zx_DEC_ATTR_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x);
 int zx_DEC_ELEM_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x);
-int zx_LEN_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x);
-char* zx_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_e_Header_s* zx_DEEP_CLONE_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, int dup_strs);
@@ -2596,7 +2576,6 @@ void zx_e_Header_REV_ESLPolicies(struct zx_e_Header_s* x);
 #ifndef zx_e_detail_EXT
 #define zx_e_detail_EXT
 #endif
-
 struct zx_e_detail_s {
   ZX_ELEM_EXT
   zx_e_detail_EXT
@@ -2604,12 +2583,8 @@ struct zx_e_detail_s {
 };
 
 #define zx_NEW_e_detail(c, father) (struct zx_e_detail_s*)zx_new_elem((c),(father),zx_e_detail_ELEM)
-
 int zx_DEC_ATTR_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x);
 int zx_DEC_ELEM_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x);
-int zx_LEN_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x);
-char* zx_ENC_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_e_detail_s* zx_DEEP_CLONE_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x, int dup_strs);

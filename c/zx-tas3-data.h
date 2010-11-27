@@ -23,7 +23,6 @@
 #ifndef zx_tas3_Credentials_EXT
 #define zx_tas3_Credentials_EXT
 #endif
-
 struct zx_tas3_Credentials_s {
   ZX_ELEM_EXT
   zx_tas3_Credentials_EXT
@@ -42,12 +41,8 @@ struct zx_tas3_Credentials_s {
 };
 
 #define zx_NEW_tas3_Credentials(c, father) (struct zx_tas3_Credentials_s*)zx_new_elem((c),(father),zx_tas3_Credentials_ELEM)
-
 int zx_DEC_ATTR_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x);
 int zx_DEC_ELEM_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x);
-int zx_LEN_SO_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x);
-char* zx_ENC_SO_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_tas3_Credentials_s* zx_DEEP_CLONE_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x, int dup_strs);
@@ -139,7 +134,6 @@ void zx_tas3_Credentials_REV_xac_Attribute(struct zx_tas3_Credentials_s* x);
 #ifndef zx_tas3_ESLApply_EXT
 #define zx_tas3_ESLApply_EXT
 #endif
-
 struct zx_tas3_ESLApply_s {
   ZX_ELEM_EXT
   zx_tas3_ESLApply_EXT
@@ -148,12 +142,8 @@ struct zx_tas3_ESLApply_s {
 };
 
 #define zx_NEW_tas3_ESLApply(c, father) (struct zx_tas3_ESLApply_s*)zx_new_elem((c),(father),zx_tas3_ESLApply_ELEM)
-
 int zx_DEC_ATTR_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x);
 int zx_DEC_ELEM_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x);
-int zx_LEN_SO_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x);
-char* zx_ENC_SO_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_tas3_ESLApply_s* zx_DEEP_CLONE_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x, int dup_strs);
@@ -195,7 +185,6 @@ void zx_tas3_ESLApply_REV_Obligation(struct zx_tas3_ESLApply_s* x);
 #ifndef zx_tas3_ESLPolicies_EXT
 #define zx_tas3_ESLPolicies_EXT
 #endif
-
 struct zx_tas3_ESLPolicies_s {
   ZX_ELEM_EXT
   zx_tas3_ESLPolicies_EXT
@@ -208,12 +197,8 @@ struct zx_tas3_ESLPolicies_s {
 };
 
 #define zx_NEW_tas3_ESLPolicies(c, father) (struct zx_tas3_ESLPolicies_s*)zx_new_elem((c),(father),zx_tas3_ESLPolicies_ELEM)
-
 int zx_DEC_ATTR_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x);
 int zx_DEC_ELEM_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x);
-int zx_LEN_SO_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x);
-char* zx_ENC_SO_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_tas3_ESLPolicies_s* zx_DEEP_CLONE_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x, int dup_strs);
@@ -257,7 +242,6 @@ void zx_tas3_ESLPolicies_REV_ESLApply(struct zx_tas3_ESLPolicies_s* x);
 #ifndef zx_tas3_ESLRef_EXT
 #define zx_tas3_ESLRef_EXT
 #endif
-
 struct zx_tas3_ESLRef_s {
   ZX_ELEM_EXT
   zx_tas3_ESLRef_EXT
@@ -266,12 +250,8 @@ struct zx_tas3_ESLRef_s {
 };
 
 #define zx_NEW_tas3_ESLRef(c, father) (struct zx_tas3_ESLRef_s*)zx_new_elem((c),(father),zx_tas3_ESLRef_ELEM)
-
 int zx_DEC_ATTR_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x);
 int zx_DEC_ELEM_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x);
-int zx_LEN_SO_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x);
-char* zx_ENC_SO_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_tas3_ESLRef_s* zx_DEEP_CLONE_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x, int dup_strs);
@@ -301,7 +281,6 @@ void zx_tas3_ESLRef_PUT_xpath(struct zx_tas3_ESLRef_s* x, struct zx_attr_s* y);
 #ifndef zx_tas3_Status_EXT
 #define zx_tas3_Status_EXT
 #endif
-
 struct zx_tas3_Status_s {
   ZX_ELEM_EXT
   zx_tas3_Status_EXT
@@ -317,12 +296,8 @@ struct zx_tas3_Status_s {
 };
 
 #define zx_NEW_tas3_Status(c, father) (struct zx_tas3_Status_s*)zx_new_elem((c),(father),zx_tas3_Status_ELEM)
-
 int zx_DEC_ATTR_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x);
 int zx_DEC_ELEM_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x);
-int zx_LEN_SO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x);
-char* zx_ENC_SO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_tas3_Status_s* zx_DEEP_CLONE_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x, int dup_strs);

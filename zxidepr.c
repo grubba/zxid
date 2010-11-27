@@ -151,7 +151,7 @@ int zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
     ERR("EPR is not a ID-WSF 2.0 Bootstrap: no Metadata %p", epr);
     return 0;
   }
-  ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &epr->gg);
+  ss = zx_EASY_ENC_elem(cf->ctx, &epr->gg);
   if (!ss) {
     ERR("Encoding EndpointReference failed %p", epr);
     return 0;
@@ -234,7 +234,7 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
 	    ++wsf11;
 	    D("Detected wsf11 resource offering. %d", wsf11);
 #if 0	    
-	    ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &av->ResourceOffering->gg);
+	    ss = zx_EASY_ENC_elem(cf->ctx, &av->ResourceOffering->gg);
 	    
 	    zxid_epr_path(cf, ZXID_SES_DIR, ses->sid, path, sizeof(path),
 			  ZX_GET_CONTENT(av->EndpointReference->Metadata->ServiceType), ss);
@@ -426,7 +426,7 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
   env = zx_NEW_e_Envelope(cf->ctx,0);
   env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
-  env->Body->Query = zxid_mk_di_query(cf, svc, url, di_opt, 0);
+  env->Body->Query = zxid_mk_di_query(cf, &env->Body->gg, svc, url, di_opt, 0);
   if (ses->deleg_di_epr) {
     epr = ses->deleg_di_epr;
     D("%d: Using delegated discovery EPR", n);
@@ -525,11 +525,11 @@ void zxid_set_epr_secmech(zxid_conf* cf, zxid_epr* epr, const char* secmec) {
     epr->Metadata->SecurityContext = zx_NEW_di_SecurityContext(cf->ctx, &epr->Metadata->gg);
   if (secmec) {
     epr->Metadata->SecurityContext->SecurityMechID
-      = zx_dup_simple_elem(cf->ctx, &epr->Metadata->SecurityContext->gg, zx_di_SecurityMechID_ELEM, secmec);
+      = zx_dup_elem(cf->ctx, &epr->Metadata->SecurityContext->gg, zx_di_SecurityMechID_ELEM, secmec);
     INFO("SecurityMechID set to(%s)", secmec);
   } else {
     epr->Metadata->SecurityContext->SecurityMechID
-      = zx_dup_simple_elem(cf->ctx, &epr->Metadata->SecurityContext->gg, zx_di_SecurityMechID_ELEM, 0);
+      = zx_dup_elem(cf->ctx, &epr->Metadata->SecurityContext->gg, zx_di_SecurityMechID_ELEM, 0);
     INFO("SecurityMechID set null %d", 0);
   }
 }
@@ -586,13 +586,13 @@ zxid_epr* zxid_new_epr(zxid_conf* cf, char* address, char* desc, char* entid, ch
     epr->Metadata = zx_NEW_a_Metadata(cf->ctx, &epr->gg);
     if (desc)
       epr->Metadata->Abstract
-	= zx_dup_simple_elem(cf->ctx, &epr->Metadata->gg, zx_di_Abstract_ELEM, desc);
+	= zx_dup_elem(cf->ctx, &epr->Metadata->gg, zx_di_Abstract_ELEM, desc);
     if (entid)
       epr->Metadata->ProviderID
-	= zx_dup_simple_elem(cf->ctx, &epr->Metadata->gg, zx_di_ProviderID_ELEM, entid);
+	= zx_dup_elem(cf->ctx, &epr->Metadata->gg, zx_di_ProviderID_ELEM, entid);
     if (svctype)
       epr->Metadata->ServiceType
-	= zx_dup_simple_elem(cf->ctx, &epr->Metadata->gg, zx_di_ServiceType_ELEM, svctype);
+	= zx_dup_elem(cf->ctx, &epr->Metadata->gg, zx_di_ServiceType_ELEM, svctype);
   }
   return epr;
 }
@@ -656,7 +656,7 @@ void zxid_set_call_tgttok(zxid_conf* cf, zxid_ses* ses, zxid_tok* tok) {
 struct zx_str* zxid_token2str(zxid_conf* cf, zxid_tok* tok) {
   if (!tok)
     return 0;
-  return zx_EASY_ENC_WO_any_elem(cf->ctx, &tok->gg);
+  return zx_EASY_ENC_elem(cf->ctx, &tok->gg);
 }
 
 /*() Parse string into token. */
@@ -689,7 +689,7 @@ zxid_tok* zxid_str2token(zxid_conf* cf, struct zx_str* ss) {
 struct zx_str* zxid_a7n2str(zxid_conf* cf, zxid_a7n* a7n) {
   if (!a7n)
     return 0;
-  return zx_EASY_ENC_WO_any_elem(cf->ctx, &a7n->gg);
+  return zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
 }
 
 /*() Parse string into assertion. */
@@ -714,7 +714,7 @@ zxid_a7n* zxid_str2a7n(zxid_conf* cf, struct zx_str* ss) {
 struct zx_str* zxid_nid2str(zxid_conf* cf, zxid_nid* nid) {
   if (!nid)
     return 0;
-  return zx_EASY_ENC_WO_any_elem(cf->ctx, &nid->gg);
+  return zx_EASY_ENC_elem(cf->ctx, &nid->gg);
 }
 
 /*() Parse string into NameID. */

@@ -79,7 +79,7 @@ struct zx_str* zxid_mk_id(zxid_conf* cf, char* prefix, int bits)
   return zx_strf(cf->ctx, "%s%.*s", prefix?prefix:"", p-base64_buf, base64_buf);
 }
 
-struct zx_attr_s* zxid_mk_id_attr(zxid_conf* cf, int tok, char* prefix, int bits)
+struct zx_attr_s* zxid_mk_id_attr(zxid_conf* cf, struct zx_elem_s* father, int tok, char* prefix, int bits)
 {
   char bit_buf[ZXID_ID_MAX_BITS/8];
   char base64_buf[ZXID_ID_MAX_BITS/6 + 1];
@@ -90,7 +90,7 @@ struct zx_attr_s* zxid_mk_id_attr(zxid_conf* cf, int tok, char* prefix, int bits
   }
   zx_rand(bit_buf, bits >> 3);
   p = base64_fancy_raw(bit_buf, bits >> 3, base64_buf, safe_basis_64, 1<<31, 0, 0, '.');
-  return zx_attrf(cf->ctx, tok, "%s%.*s", prefix?prefix:"", p-base64_buf, base64_buf);
+  return zx_attrf(cf->ctx, father, tok, "%s%.*s", prefix?prefix:"", p-base64_buf, base64_buf);
 }
 
 /*() Format a date-time string as usually used in XML, SAML, and Liberty. Apparently
@@ -117,18 +117,18 @@ struct zx_str* zxid_date_time(zxid_conf* cf, time_t secs)
 #endif
 }
 
-struct zx_attr_s* zxid_date_time_attr(zxid_conf* cf, int tok, time_t secs)
+struct zx_attr_s* zxid_date_time_attr(zxid_conf* cf, struct zx_elem_s* father, int tok, time_t secs)
 {
   struct tm t;
   secs += cf->timeskew;
   GMTIME_R(secs, t);
 #if 0
-  /*                            "2002-10-31T21:42:14.002Z" */
-  return zx_attrf(cf->ctx, tok, "%04d-%02d-%02dT%02d:%02d:%02d.002Z",
+  /*                                    "2002-10-31T21:42:14.002Z" */
+  return zx_attrf(cf->ctx, father, tok, "%04d-%02d-%02dT%02d:%02d:%02d.002Z",
 		  t.tm_year+1900, t.tm_mon+1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec);
 #else
-  /*                            "2002-10-31T21:42:14Z" */
-  return zx_attrf(cf->ctx, tok, "%04d-%02d-%02dT%02d:%02d:%02dZ",
+  /*                                    "2002-10-31T21:42:14Z" */
+  return zx_attrf(cf->ctx, father, tok, "%04d-%02d-%02dT%02d:%02d:%02dZ",
 		  t.tm_year+1900, t.tm_mon+1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec);
 #endif
 }
@@ -152,7 +152,7 @@ struct zx_root_s* zxid_soap_call_envelope(zxid_conf* cf, struct zx_str* url, str
 {
   struct zx_root_s* r;
   struct zx_str* ss;
-  ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
+  ss = zx_EASY_ENC_elem(cf->ctx, &env->gg);
   DD("ss(%.*s) len=%d", ss->len, ss->s, ss->len);
   r = zxid_soap_call_raw(cf, url, ss, ret_enve);
   zx_str_free(cf->ctx, ss);
@@ -179,7 +179,7 @@ struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, str
   struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx,0);
   env->Header = hdr;
   env->Body = body;
-  ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
+  ss = zx_EASY_ENC_elem(cf->ctx, &env->gg);
   r = zxid_soap_call_raw(cf, url, ss, 0);
   zx_str_free(cf->ctx, ss);
   return r;
@@ -220,7 +220,7 @@ int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_s
   
   env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   env->Body = body;
-  ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
+  ss = zx_EASY_ENC_elem(cf->ctx, &env->gg);
 
   if (cf->log_issue_msg) {
     logpath = zxlog_path(cf, entid, ss, ZXLOG_ISSUE_DIR, ZXLOG_WIR_KIND, 1);

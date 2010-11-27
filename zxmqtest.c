@@ -72,62 +72,6 @@ Usage: zxencdectest [options] <foo.xml >reencoded-foo.xml\n\
 #define DIE(reason) MB fprintf(stderr, "%s\n", reason); exit(2); ME
 char buf[256*1024];
 
-/* Called by:  opt */
-void test_ibm_cert_problem()
-{
-  int got_all, len_so;
-  zxid_conf* cf;
-  struct zx_root_s* r;
-  struct zx_sp_LogoutRequest_s* req;
-
-  len_so = read_all_fd(0, buf, sizeof(buf)-1, &got_all);
-  if (got_all <= 0) DIE("Missing data");
-  buf[got_all] = 0;
-
-  /* IBM padding debug */
-  cf = zxid_new_conf("/var/zxid/");
-\\  r = zx_dec_zx_root(cf->ctx, got_all, buf, "test ibm cert");
-  if (!r)
-    DIE("Decode failure");
-
-#if 1
-  cf->enc_pkey = zxid_read_private_key(cf, "sym-idp-enc.pem");
-#else
-  cf->enc_pkey = zxid_read_private_key(cf, "ibm-idp-enc.pem");
-#endif
-  
-  req = r->Envelope->Body->LogoutRequest;
-  req->NameID = zxid_decrypt_nameid(cf, req->NameID, req->EncryptedID);
-  printf("r1 nid(%.*s)\n", ZX_GET_CONTENT_LEN(req->NameID), ZX_GET_CONTENT_S(req->NameID));
-}
-
-/* Called by:  opt */
-void test_ibm_cert_problem_enc_dec()
-{
-  zxid_conf* cf;
-  struct zx_sp_LogoutRequest_s* req;
-  zxid_nid* nameid;
-  zxid_entity* idp_meta;
-
-  cf = zxid_new_conf("/var/zxid/");
-
-  nameid = zx_NEW_sa_NameID(cf->ctx,0);
-  nameid->Format = zx_ref_attr(cf->ctx, zx_Format_ATTR, "persistent");
-  nameid->NameQualifier = zx_ref_attr(cf->ctx, zx_NameQualifier_ATTR, "ibmidp");
-  /*nameid->SPNameQualifier = zx_ref_attr(cf->ctx, zx_SPNameQualifier_ATTR, spqual);*/
-  zx_add_content(cf->ctx, &nameid->gg, zx_ref_str(cf->ctx, "a-persistent-nid"));
-
-#if 0
-  cf->enc_pkey = zxid_read_private_key(cf, "sym-idp-enc.pem");
-#else
-  cf->enc_pkey = zxid_read_private_key(cf, "ibm-idp-enc.pem");
-  idp_meta = zxid_get_ent_from_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU"); /* IBMIdP */
-#endif
-  
-  req = zxid_mk_logout(cf, nameid, 0, idp_meta);  
-  req->NameID = zxid_decrypt_nameid(cf, req->NameID, req->EncryptedID);
-  printf("r2 nid(%.*s) should be(a-persistent-nid)\n", ZX_GET_CONTENT_LEN(req->NameID), ZX_GET_CONTENT_S(req->NameID));
-}
 
 int afr_buf_size = 0;
 int verbose = 1;

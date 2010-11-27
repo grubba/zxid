@@ -23,7 +23,6 @@
 #ifndef zx_is12_Confirm_EXT
 #define zx_is12_Confirm_EXT
 #endif
-
 struct zx_is12_Confirm_s {
   ZX_ELEM_EXT
   zx_is12_Confirm_EXT
@@ -35,12 +34,8 @@ struct zx_is12_Confirm_s {
 };
 
 #define zx_NEW_is12_Confirm(c, father) (struct zx_is12_Confirm_s*)zx_new_elem((c),(father),zx_is12_Confirm_ELEM)
-
 int zx_DEC_ATTR_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x);
 int zx_DEC_ELEM_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x);
-int zx_LEN_SO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x);
-char* zx_ENC_SO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_Confirm_s* zx_DEEP_CLONE_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x, int dup_strs);
@@ -85,9 +80,9 @@ void zx_is12_Confirm_ADD_Label(struct zx_is12_Confirm_s* x, int n, struct zx_ele
 void zx_is12_Confirm_ADD_Value(struct zx_is12_Confirm_s* x, int n, struct zx_elem_s* z);
 
 void zx_is12_Confirm_DEL_Help(struct zx_is12_Confirm_s* x, int n);
-void zx_is12_Confirm_DEL_Hint(struct zx_is12_Confirm_s* x, int n);
-void zx_is12_Confirm_DEL_Label(struct zx_is12_Confirm_s* x, int n);
-void zx_is12_Confirm_DEL_Value(struct zx_is12_Confirm_s* x, int n);
+void zx_is12_Confirm_DEL_Hint(struct zx_is12_Confirm_s* x,int n);
+void zx_is12_Confirm_DEL_Label(struct zx_is12_Confirm_s* x,int n);
+void zx_is12_Confirm_DEL_Value(struct zx_is12_Confirm_s* x,int n);
 
 void zx_is12_Confirm_REV_Help(struct zx_is12_Confirm_s* x);
 void zx_is12_Confirm_REV_Hint(struct zx_is12_Confirm_s* x);
@@ -100,7 +95,6 @@ void zx_is12_Confirm_REV_Value(struct zx_is12_Confirm_s* x);
 #ifndef zx_is12_EncryptedResourceID_EXT
 #define zx_is12_EncryptedResourceID_EXT
 #endif
-
 struct zx_is12_EncryptedResourceID_s {
   ZX_ELEM_EXT
   zx_is12_EncryptedResourceID_EXT
@@ -109,12 +103,8 @@ struct zx_is12_EncryptedResourceID_s {
 };
 
 #define zx_NEW_is12_EncryptedResourceID(c, father) (struct zx_is12_EncryptedResourceID_s*)zx_new_elem((c),(father),zx_is12_EncryptedResourceID_ELEM)
-
 int zx_DEC_ATTR_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_EncryptedResourceID_s* x);
 int zx_DEC_ELEM_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_EncryptedResourceID_s* x);
-int zx_LEN_SO_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_EncryptedResourceID_s* x);
-char* zx_ENC_SO_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_EncryptedResourceID_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_EncryptedResourceID_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_EncryptedResourceID_s* zx_DEEP_CLONE_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_EncryptedResourceID_s* x, int dup_strs);
@@ -156,19 +146,14 @@ void zx_is12_EncryptedResourceID_REV_EncryptedKey(struct zx_is12_EncryptedResour
 #ifndef zx_is12_Extension_EXT
 #define zx_is12_Extension_EXT
 #endif
-
 struct zx_is12_Extension_s {
   ZX_ELEM_EXT
   zx_is12_Extension_EXT
 };
 
 #define zx_NEW_is12_Extension(c, father) (struct zx_is12_Extension_s*)zx_new_elem((c),(father),zx_is12_Extension_ELEM)
-
 int zx_DEC_ATTR_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x);
 int zx_DEC_ELEM_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x);
-int zx_LEN_SO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x);
-char* zx_ENC_SO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_Extension_s* zx_DEEP_CLONE_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x, int dup_strs);
@@ -194,7 +179,6 @@ int zx_WALK_WO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x, v
 #ifndef zx_is12_Help_EXT
 #define zx_is12_Help_EXT
 #endif
-
 struct zx_is12_Help_s {
   ZX_ELEM_EXT
   zx_is12_Help_EXT
@@ -204,12 +188,8 @@ struct zx_is12_Help_s {
 };
 
 #define zx_NEW_is12_Help(c, father) (struct zx_is12_Help_s*)zx_new_elem((c),(father),zx_is12_Help_ELEM)
-
 int zx_DEC_ATTR_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x);
 int zx_DEC_ELEM_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x);
-int zx_LEN_SO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x);
-char* zx_ENC_SO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_Help_s* zx_DEEP_CLONE_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x, int dup_strs);
@@ -241,7 +221,6 @@ void zx_is12_Help_PUT_moreLink(struct zx_is12_Help_s* x, struct zx_attr_s* y);
 #ifndef zx_is12_Inquiry_EXT
 #define zx_is12_Inquiry_EXT
 #endif
-
 struct zx_is12_Inquiry_s {
   ZX_ELEM_EXT
   zx_is12_Inquiry_EXT
@@ -254,12 +233,8 @@ struct zx_is12_Inquiry_s {
 };
 
 #define zx_NEW_is12_Inquiry(c, father) (struct zx_is12_Inquiry_s*)zx_new_elem((c),(father),zx_is12_Inquiry_ELEM)
-
 int zx_DEC_ATTR_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x);
 int zx_DEC_ELEM_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x);
-int zx_LEN_SO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x);
-char* zx_ENC_SO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_Inquiry_s* zx_DEEP_CLONE_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x, int dup_strs);
@@ -321,7 +296,6 @@ void zx_is12_Inquiry_REV_Text(struct zx_is12_Inquiry_s* x);
 #ifndef zx_is12_InteractionRequest_EXT
 #define zx_is12_InteractionRequest_EXT
 #endif
-
 struct zx_is12_InteractionRequest_s {
   ZX_ELEM_EXT
   zx_is12_InteractionRequest_EXT
@@ -334,12 +308,8 @@ struct zx_is12_InteractionRequest_s {
 };
 
 #define zx_NEW_is12_InteractionRequest(c, father) (struct zx_is12_InteractionRequest_s*)zx_new_elem((c),(father),zx_is12_InteractionRequest_ELEM)
-
 int zx_DEC_ATTR_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_InteractionRequest_s* x);
 int zx_DEC_ELEM_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_InteractionRequest_s* x);
-int zx_LEN_SO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_InteractionRequest_s* x);
-char* zx_ENC_SO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_InteractionRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_InteractionRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_InteractionRequest_s* zx_DEEP_CLONE_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_InteractionRequest_s* x, int dup_strs);
@@ -389,7 +359,6 @@ void zx_is12_InteractionRequest_REV_KeyInfo(struct zx_is12_InteractionRequest_s*
 #ifndef zx_is12_InteractionResponse_EXT
 #define zx_is12_InteractionResponse_EXT
 #endif
-
 struct zx_is12_InteractionResponse_s {
   ZX_ELEM_EXT
   zx_is12_InteractionResponse_EXT
@@ -399,12 +368,8 @@ struct zx_is12_InteractionResponse_s {
 };
 
 #define zx_NEW_is12_InteractionResponse(c, father) (struct zx_is12_InteractionResponse_s*)zx_new_elem((c),(father),zx_is12_InteractionResponse_ELEM)
-
 int zx_DEC_ATTR_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_InteractionResponse_s* x);
 int zx_DEC_ELEM_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_InteractionResponse_s* x);
-int zx_LEN_SO_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_InteractionResponse_s* x);
-char* zx_ENC_SO_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_InteractionResponse_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_InteractionResponse_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_InteractionResponse_s* zx_DEEP_CLONE_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_InteractionResponse_s* x, int dup_strs);
@@ -454,7 +419,6 @@ void zx_is12_InteractionResponse_REV_Parameter(struct zx_is12_InteractionRespons
 #ifndef zx_is12_InteractionService_EXT
 #define zx_is12_InteractionService_EXT
 #endif
-
 struct zx_is12_InteractionService_s {
   ZX_ELEM_EXT
   zx_is12_InteractionService_EXT
@@ -467,12 +431,8 @@ struct zx_is12_InteractionService_s {
 };
 
 #define zx_NEW_is12_InteractionService(c, father) (struct zx_is12_InteractionService_s*)zx_new_elem((c),(father),zx_is12_InteractionService_ELEM)
-
 int zx_DEC_ATTR_is12_InteractionService(struct zx_ctx* c, struct zx_is12_InteractionService_s* x);
 int zx_DEC_ELEM_is12_InteractionService(struct zx_ctx* c, struct zx_is12_InteractionService_s* x);
-int zx_LEN_SO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_InteractionService_s* x);
-char* zx_ENC_SO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_InteractionService_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_InteractionService_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_InteractionService_s* zx_DEEP_CLONE_is12_InteractionService(struct zx_ctx* c, struct zx_is12_InteractionService_s* x, int dup_strs);
@@ -526,7 +486,7 @@ void zx_is12_InteractionService_DEL_ResourceID(struct zx_is12_InteractionService
 void zx_is12_InteractionService_DEL_EncryptedResourceID(struct zx_is12_InteractionService_s* x, int n);
 void zx_is12_InteractionService_DEL_ServiceInstance(struct zx_is12_InteractionService_s* x, int n);
 void zx_is12_InteractionService_DEL_Options(struct zx_is12_InteractionService_s* x, int n);
-void zx_is12_InteractionService_DEL_Abstract(struct zx_is12_InteractionService_s* x, int n);
+void zx_is12_InteractionService_DEL_Abstract(struct zx_is12_InteractionService_s* x,int n);
 
 void zx_is12_InteractionService_REV_ResourceID(struct zx_is12_InteractionService_s* x);
 void zx_is12_InteractionService_REV_EncryptedResourceID(struct zx_is12_InteractionService_s* x);
@@ -540,7 +500,6 @@ void zx_is12_InteractionService_REV_Abstract(struct zx_is12_InteractionService_s
 #ifndef zx_is12_InteractionStatement_EXT
 #define zx_is12_InteractionStatement_EXT
 #endif
-
 struct zx_is12_InteractionStatement_s {
   ZX_ELEM_EXT
   zx_is12_InteractionStatement_EXT
@@ -549,12 +508,8 @@ struct zx_is12_InteractionStatement_s {
 };
 
 #define zx_NEW_is12_InteractionStatement(c, father) (struct zx_is12_InteractionStatement_s*)zx_new_elem((c),(father),zx_is12_InteractionStatement_ELEM)
-
 int zx_DEC_ATTR_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_InteractionStatement_s* x);
 int zx_DEC_ELEM_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_InteractionStatement_s* x);
-int zx_LEN_SO_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_InteractionStatement_s* x);
-char* zx_ENC_SO_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_InteractionStatement_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_InteractionStatement_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_InteractionStatement_s* zx_DEEP_CLONE_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_InteractionStatement_s* x, int dup_strs);
@@ -596,7 +551,6 @@ void zx_is12_InteractionStatement_REV_Signature(struct zx_is12_InteractionStatem
 #ifndef zx_is12_Item_EXT
 #define zx_is12_Item_EXT
 #endif
-
 struct zx_is12_Item_s {
   ZX_ELEM_EXT
   zx_is12_Item_EXT
@@ -606,12 +560,8 @@ struct zx_is12_Item_s {
 };
 
 #define zx_NEW_is12_Item(c, father) (struct zx_is12_Item_s*)zx_new_elem((c),(father),zx_is12_Item_ELEM)
-
 int zx_DEC_ATTR_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x);
 int zx_DEC_ELEM_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x);
-int zx_LEN_SO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x);
-char* zx_ENC_SO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_Item_s* zx_DEEP_CLONE_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x, int dup_strs);
@@ -639,7 +589,7 @@ void zx_is12_Item_PUT_Hint(struct zx_is12_Item_s* x, int n, struct zx_elem_s* y)
 
 void zx_is12_Item_ADD_Hint(struct zx_is12_Item_s* x, int n, struct zx_elem_s* z);
 
-void zx_is12_Item_DEL_Hint(struct zx_is12_Item_s* x, int n);
+void zx_is12_Item_DEL_Hint(struct zx_is12_Item_s* x,int n);
 
 void zx_is12_Item_REV_Hint(struct zx_is12_Item_s* x);
 
@@ -649,7 +599,6 @@ void zx_is12_Item_REV_Hint(struct zx_is12_Item_s* x);
 #ifndef zx_is12_Parameter_EXT
 #define zx_is12_Parameter_EXT
 #endif
-
 struct zx_is12_Parameter_s {
   ZX_ELEM_EXT
   zx_is12_Parameter_EXT
@@ -658,12 +607,8 @@ struct zx_is12_Parameter_s {
 };
 
 #define zx_NEW_is12_Parameter(c, father) (struct zx_is12_Parameter_s*)zx_new_elem((c),(father),zx_is12_Parameter_ELEM)
-
 int zx_DEC_ATTR_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x);
 int zx_DEC_ELEM_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x);
-int zx_LEN_SO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x);
-char* zx_ENC_SO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_Parameter_s* zx_DEEP_CLONE_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x, int dup_strs);
@@ -693,7 +638,6 @@ void zx_is12_Parameter_PUT_value(struct zx_is12_Parameter_s* x, struct zx_attr_s
 #ifndef zx_is12_RedirectRequest_EXT
 #define zx_is12_RedirectRequest_EXT
 #endif
-
 struct zx_is12_RedirectRequest_s {
   ZX_ELEM_EXT
   zx_is12_RedirectRequest_EXT
@@ -701,12 +645,8 @@ struct zx_is12_RedirectRequest_s {
 };
 
 #define zx_NEW_is12_RedirectRequest(c, father) (struct zx_is12_RedirectRequest_s*)zx_new_elem((c),(father),zx_is12_RedirectRequest_ELEM)
-
 int zx_DEC_ATTR_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequest_s* x);
 int zx_DEC_ELEM_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequest_s* x);
-int zx_LEN_SO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequest_s* x);
-char* zx_ENC_SO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequest_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequest_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_RedirectRequest_s* zx_DEEP_CLONE_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequest_s* x, int dup_strs);
@@ -734,7 +674,6 @@ void zx_is12_RedirectRequest_PUT_redirectURL(struct zx_is12_RedirectRequest_s* x
 #ifndef zx_is12_ResourceID_EXT
 #define zx_is12_ResourceID_EXT
 #endif
-
 struct zx_is12_ResourceID_s {
   ZX_ELEM_EXT
   zx_is12_ResourceID_EXT
@@ -742,12 +681,8 @@ struct zx_is12_ResourceID_s {
 };
 
 #define zx_NEW_is12_ResourceID(c, father) (struct zx_is12_ResourceID_s*)zx_new_elem((c),(father),zx_is12_ResourceID_ELEM)
-
 int zx_DEC_ATTR_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x);
 int zx_DEC_ELEM_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x);
-int zx_LEN_SO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x);
-char* zx_ENC_SO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_ResourceID_s* zx_DEEP_CLONE_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x, int dup_strs);
@@ -775,7 +710,6 @@ void zx_is12_ResourceID_PUT_id(struct zx_is12_ResourceID_s* x, struct zx_attr_s*
 #ifndef zx_is12_Select_EXT
 #define zx_is12_Select_EXT
 #endif
-
 struct zx_is12_Select_s {
   ZX_ELEM_EXT
   zx_is12_Select_EXT
@@ -789,12 +723,8 @@ struct zx_is12_Select_s {
 };
 
 #define zx_NEW_is12_Select(c, father) (struct zx_is12_Select_s*)zx_new_elem((c),(father),zx_is12_Select_ELEM)
-
 int zx_DEC_ATTR_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x);
 int zx_DEC_ELEM_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x);
-int zx_LEN_SO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x);
-char* zx_ENC_SO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_Select_s* zx_DEEP_CLONE_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x, int dup_strs);
@@ -847,9 +777,9 @@ void zx_is12_Select_ADD_Value(struct zx_is12_Select_s* x, int n, struct zx_elem_
 void zx_is12_Select_ADD_Item(struct zx_is12_Select_s* x, int n, struct zx_is12_Item_s* z);
 
 void zx_is12_Select_DEL_Help(struct zx_is12_Select_s* x, int n);
-void zx_is12_Select_DEL_Hint(struct zx_is12_Select_s* x, int n);
-void zx_is12_Select_DEL_Label(struct zx_is12_Select_s* x, int n);
-void zx_is12_Select_DEL_Value(struct zx_is12_Select_s* x, int n);
+void zx_is12_Select_DEL_Hint(struct zx_is12_Select_s* x,int n);
+void zx_is12_Select_DEL_Label(struct zx_is12_Select_s* x,int n);
+void zx_is12_Select_DEL_Value(struct zx_is12_Select_s* x,int n);
 void zx_is12_Select_DEL_Item(struct zx_is12_Select_s* x, int n);
 
 void zx_is12_Select_REV_Help(struct zx_is12_Select_s* x);
@@ -864,7 +794,6 @@ void zx_is12_Select_REV_Item(struct zx_is12_Select_s* x);
 #ifndef zx_is12_Status_EXT
 #define zx_is12_Status_EXT
 #endif
-
 struct zx_is12_Status_s {
   ZX_ELEM_EXT
   zx_is12_Status_EXT
@@ -875,12 +804,8 @@ struct zx_is12_Status_s {
 };
 
 #define zx_NEW_is12_Status(c, father) (struct zx_is12_Status_s*)zx_new_elem((c),(father),zx_is12_Status_ELEM)
-
 int zx_DEC_ATTR_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x);
 int zx_DEC_ELEM_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x);
-int zx_LEN_SO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x);
-char* zx_ENC_SO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_Status_s* zx_DEEP_CLONE_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x, int dup_strs);
@@ -920,7 +845,6 @@ void zx_is12_Status_REV_Status(struct zx_is12_Status_s* x);
 #ifndef zx_is12_Text_EXT
 #define zx_is12_Text_EXT
 #endif
-
 struct zx_is12_Text_s {
   ZX_ELEM_EXT
   zx_is12_Text_EXT
@@ -935,12 +859,8 @@ struct zx_is12_Text_s {
 };
 
 #define zx_NEW_is12_Text(c, father) (struct zx_is12_Text_s*)zx_new_elem((c),(father),zx_is12_Text_ELEM)
-
 int zx_DEC_ATTR_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x);
 int zx_DEC_ELEM_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x);
-int zx_LEN_SO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x);
-char* zx_ENC_SO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_Text_s* zx_DEEP_CLONE_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x, int dup_strs);
@@ -991,9 +911,9 @@ void zx_is12_Text_ADD_Label(struct zx_is12_Text_s* x, int n, struct zx_elem_s* z
 void zx_is12_Text_ADD_Value(struct zx_is12_Text_s* x, int n, struct zx_elem_s* z);
 
 void zx_is12_Text_DEL_Help(struct zx_is12_Text_s* x, int n);
-void zx_is12_Text_DEL_Hint(struct zx_is12_Text_s* x, int n);
-void zx_is12_Text_DEL_Label(struct zx_is12_Text_s* x, int n);
-void zx_is12_Text_DEL_Value(struct zx_is12_Text_s* x, int n);
+void zx_is12_Text_DEL_Hint(struct zx_is12_Text_s* x,int n);
+void zx_is12_Text_DEL_Label(struct zx_is12_Text_s* x,int n);
+void zx_is12_Text_DEL_Value(struct zx_is12_Text_s* x,int n);
 
 void zx_is12_Text_REV_Help(struct zx_is12_Text_s* x);
 void zx_is12_Text_REV_Hint(struct zx_is12_Text_s* x);
@@ -1006,7 +926,6 @@ void zx_is12_Text_REV_Value(struct zx_is12_Text_s* x);
 #ifndef zx_is12_UserInteraction_EXT
 #define zx_is12_UserInteraction_EXT
 #endif
-
 struct zx_is12_UserInteraction_s {
   ZX_ELEM_EXT
   zx_is12_UserInteraction_EXT
@@ -1021,12 +940,8 @@ struct zx_is12_UserInteraction_s {
 };
 
 #define zx_NEW_is12_UserInteraction(c, father) (struct zx_is12_UserInteraction_s*)zx_new_elem((c),(father),zx_is12_UserInteraction_ELEM)
-
 int zx_DEC_ATTR_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteraction_s* x);
 int zx_DEC_ELEM_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteraction_s* x);
-int zx_LEN_SO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteraction_s* x);
-char* zx_ENC_SO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteraction_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteraction_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_is12_UserInteraction_s* zx_DEEP_CLONE_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteraction_s* x, int dup_strs);

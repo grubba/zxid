@@ -21,7 +21,7 @@
 
 #include "errmac.h"
 #include "zx.h"
-#include "c/zx-data.h"  /* Also generic zx_simple_elem, etc. */
+#include "c/zx-data.h"
 #include "c/zx-ns.h"
 
 /* ------------- All the manner namespace management ------------- */

@@ -66,6 +66,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Consider removing zx_scan_pi_or_comment() from most tags, only leaving for top level.
     - Show whether SP wants a persistent or transient, or some other type of Id for the user.
     - Sort unknown attributes wrt known attributes in SO and WO enc
+    - Add MessageID and InReplyTo headers to discovery queries.
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
 

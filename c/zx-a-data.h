@@ -23,7 +23,6 @@
 #ifndef zx_a_Action_EXT
 #define zx_a_Action_EXT
 #endif
-
 struct zx_a_Action_s {
   ZX_ELEM_EXT
   zx_a_Action_EXT
@@ -35,12 +34,8 @@ struct zx_a_Action_s {
 };
 
 #define zx_NEW_a_Action(c, father) (struct zx_a_Action_s*)zx_new_elem((c),(father),zx_a_Action_ELEM)
-
 int zx_DEC_ATTR_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x);
 int zx_DEC_ELEM_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x);
-int zx_LEN_SO_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x);
-char* zx_ENC_SO_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_Action_s* zx_DEEP_CLONE_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x, int dup_strs);
@@ -76,7 +71,6 @@ void zx_a_Action_PUT_mustUnderstand(struct zx_a_Action_s* x, struct zx_attr_s* y
 #ifndef zx_a_Address_EXT
 #define zx_a_Address_EXT
 #endif
-
 struct zx_a_Address_s {
   ZX_ELEM_EXT
   zx_a_Address_EXT
@@ -88,12 +82,8 @@ struct zx_a_Address_s {
 };
 
 #define zx_NEW_a_Address(c, father) (struct zx_a_Address_s*)zx_new_elem((c),(father),zx_a_Address_ELEM)
-
 int zx_DEC_ATTR_a_Address(struct zx_ctx* c, struct zx_a_Address_s* x);
 int zx_DEC_ELEM_a_Address(struct zx_ctx* c, struct zx_a_Address_s* x);
-int zx_LEN_SO_a_Address(struct zx_ctx* c, struct zx_a_Address_s* x);
-char* zx_ENC_SO_a_Address(struct zx_ctx* c, struct zx_a_Address_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_Address(struct zx_ctx* c, struct zx_a_Address_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_Address_s* zx_DEEP_CLONE_a_Address(struct zx_ctx* c, struct zx_a_Address_s* x, int dup_strs);
@@ -129,7 +119,6 @@ void zx_a_Address_PUT_mustUnderstand(struct zx_a_Address_s* x, struct zx_attr_s*
 #ifndef zx_a_EndpointReference_EXT
 #define zx_a_EndpointReference_EXT
 #endif
-
 struct zx_a_EndpointReference_s {
   ZX_ELEM_EXT
   zx_a_EndpointReference_EXT
@@ -145,12 +134,8 @@ struct zx_a_EndpointReference_s {
 };
 
 #define zx_NEW_a_EndpointReference(c, father) (struct zx_a_EndpointReference_s*)zx_new_elem((c),(father),zx_a_EndpointReference_ELEM)
-
 int zx_DEC_ATTR_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReference_s* x);
 int zx_DEC_ELEM_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReference_s* x);
-int zx_LEN_SO_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReference_s* x);
-char* zx_ENC_SO_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReference_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReference_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_EndpointReference_s* zx_DEEP_CLONE_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReference_s* x, int dup_strs);
@@ -212,7 +197,6 @@ void zx_a_EndpointReference_REV_Metadata(struct zx_a_EndpointReference_s* x);
 #ifndef zx_a_FaultTo_EXT
 #define zx_a_FaultTo_EXT
 #endif
-
 struct zx_a_FaultTo_s {
   ZX_ELEM_EXT
   zx_a_FaultTo_EXT
@@ -228,12 +212,8 @@ struct zx_a_FaultTo_s {
 };
 
 #define zx_NEW_a_FaultTo(c, father) (struct zx_a_FaultTo_s*)zx_new_elem((c),(father),zx_a_FaultTo_ELEM)
-
 int zx_DEC_ATTR_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x);
 int zx_DEC_ELEM_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x);
-int zx_LEN_SO_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x);
-char* zx_ENC_SO_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_FaultTo_s* zx_DEEP_CLONE_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x, int dup_strs);
@@ -295,7 +275,6 @@ void zx_a_FaultTo_REV_Metadata(struct zx_a_FaultTo_s* x);
 #ifndef zx_a_From_EXT
 #define zx_a_From_EXT
 #endif
-
 struct zx_a_From_s {
   ZX_ELEM_EXT
   zx_a_From_EXT
@@ -311,12 +290,8 @@ struct zx_a_From_s {
 };
 
 #define zx_NEW_a_From(c, father) (struct zx_a_From_s*)zx_new_elem((c),(father),zx_a_From_ELEM)
-
 int zx_DEC_ATTR_a_From(struct zx_ctx* c, struct zx_a_From_s* x);
 int zx_DEC_ELEM_a_From(struct zx_ctx* c, struct zx_a_From_s* x);
-int zx_LEN_SO_a_From(struct zx_ctx* c, struct zx_a_From_s* x);
-char* zx_ENC_SO_a_From(struct zx_ctx* c, struct zx_a_From_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_From(struct zx_ctx* c, struct zx_a_From_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_From_s* zx_DEEP_CLONE_a_From(struct zx_ctx* c, struct zx_a_From_s* x, int dup_strs);
@@ -378,7 +353,6 @@ void zx_a_From_REV_Metadata(struct zx_a_From_s* x);
 #ifndef zx_a_MessageID_EXT
 #define zx_a_MessageID_EXT
 #endif
-
 struct zx_a_MessageID_s {
   ZX_ELEM_EXT
   zx_a_MessageID_EXT
@@ -390,12 +364,8 @@ struct zx_a_MessageID_s {
 };
 
 #define zx_NEW_a_MessageID(c, father) (struct zx_a_MessageID_s*)zx_new_elem((c),(father),zx_a_MessageID_ELEM)
-
 int zx_DEC_ATTR_a_MessageID(struct zx_ctx* c, struct zx_a_MessageID_s* x);
 int zx_DEC_ELEM_a_MessageID(struct zx_ctx* c, struct zx_a_MessageID_s* x);
-int zx_LEN_SO_a_MessageID(struct zx_ctx* c, struct zx_a_MessageID_s* x);
-char* zx_ENC_SO_a_MessageID(struct zx_ctx* c, struct zx_a_MessageID_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_MessageID(struct zx_ctx* c, struct zx_a_MessageID_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_MessageID_s* zx_DEEP_CLONE_a_MessageID(struct zx_ctx* c, struct zx_a_MessageID_s* x, int dup_strs);
@@ -431,7 +401,6 @@ void zx_a_MessageID_PUT_mustUnderstand(struct zx_a_MessageID_s* x, struct zx_att
 #ifndef zx_a_Metadata_EXT
 #define zx_a_Metadata_EXT
 #endif
-
 struct zx_a_Metadata_s {
   ZX_ELEM_EXT
   zx_a_Metadata_EXT
@@ -443,12 +412,8 @@ struct zx_a_Metadata_s {
 };
 
 #define zx_NEW_a_Metadata(c, father) (struct zx_a_Metadata_s*)zx_new_elem((c),(father),zx_a_Metadata_ELEM)
-
 int zx_DEC_ATTR_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x);
 int zx_DEC_ELEM_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x);
-int zx_LEN_SO_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x);
-char* zx_ENC_SO_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_Metadata_s* zx_DEEP_CLONE_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x, int dup_strs);
@@ -497,9 +462,9 @@ void zx_a_Metadata_ADD_ServiceType(struct zx_a_Metadata_s* x, int n, struct zx_e
 void zx_a_Metadata_ADD_SecurityContext(struct zx_a_Metadata_s* x, int n, struct zx_di_SecurityContext_s* z);
 
 void zx_a_Metadata_DEL_Framework(struct zx_a_Metadata_s* x, int n);
-void zx_a_Metadata_DEL_Abstract(struct zx_a_Metadata_s* x, int n);
-void zx_a_Metadata_DEL_ProviderID(struct zx_a_Metadata_s* x, int n);
-void zx_a_Metadata_DEL_ServiceType(struct zx_a_Metadata_s* x, int n);
+void zx_a_Metadata_DEL_Abstract(struct zx_a_Metadata_s* x,int n);
+void zx_a_Metadata_DEL_ProviderID(struct zx_a_Metadata_s* x,int n);
+void zx_a_Metadata_DEL_ServiceType(struct zx_a_Metadata_s* x,int n);
 void zx_a_Metadata_DEL_SecurityContext(struct zx_a_Metadata_s* x, int n);
 
 void zx_a_Metadata_REV_Framework(struct zx_a_Metadata_s* x);
@@ -514,7 +479,6 @@ void zx_a_Metadata_REV_SecurityContext(struct zx_a_Metadata_s* x);
 #ifndef zx_a_ProblemAction_EXT
 #define zx_a_ProblemAction_EXT
 #endif
-
 struct zx_a_ProblemAction_s {
   ZX_ELEM_EXT
   zx_a_ProblemAction_EXT
@@ -528,12 +492,8 @@ struct zx_a_ProblemAction_s {
 };
 
 #define zx_NEW_a_ProblemAction(c, father) (struct zx_a_ProblemAction_s*)zx_new_elem((c),(father),zx_a_ProblemAction_ELEM)
-
 int zx_DEC_ATTR_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x);
 int zx_DEC_ELEM_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x);
-int zx_LEN_SO_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x);
-char* zx_ENC_SO_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_ProblemAction_s* zx_DEEP_CLONE_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x, int dup_strs);
@@ -574,7 +534,7 @@ void zx_a_ProblemAction_ADD_Action(struct zx_a_ProblemAction_s* x, int n, struct
 void zx_a_ProblemAction_ADD_SoapAction(struct zx_a_ProblemAction_s* x, int n, struct zx_elem_s* z);
 
 void zx_a_ProblemAction_DEL_Action(struct zx_a_ProblemAction_s* x, int n);
-void zx_a_ProblemAction_DEL_SoapAction(struct zx_a_ProblemAction_s* x, int n);
+void zx_a_ProblemAction_DEL_SoapAction(struct zx_a_ProblemAction_s* x,int n);
 
 void zx_a_ProblemAction_REV_Action(struct zx_a_ProblemAction_s* x);
 void zx_a_ProblemAction_REV_SoapAction(struct zx_a_ProblemAction_s* x);
@@ -585,7 +545,6 @@ void zx_a_ProblemAction_REV_SoapAction(struct zx_a_ProblemAction_s* x);
 #ifndef zx_a_ProblemHeader_EXT
 #define zx_a_ProblemHeader_EXT
 #endif
-
 struct zx_a_ProblemHeader_s {
   ZX_ELEM_EXT
   zx_a_ProblemHeader_EXT
@@ -597,12 +556,8 @@ struct zx_a_ProblemHeader_s {
 };
 
 #define zx_NEW_a_ProblemHeader(c, father) (struct zx_a_ProblemHeader_s*)zx_new_elem((c),(father),zx_a_ProblemHeader_ELEM)
-
 int zx_DEC_ATTR_a_ProblemHeader(struct zx_ctx* c, struct zx_a_ProblemHeader_s* x);
 int zx_DEC_ELEM_a_ProblemHeader(struct zx_ctx* c, struct zx_a_ProblemHeader_s* x);
-int zx_LEN_SO_a_ProblemHeader(struct zx_ctx* c, struct zx_a_ProblemHeader_s* x);
-char* zx_ENC_SO_a_ProblemHeader(struct zx_ctx* c, struct zx_a_ProblemHeader_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_ProblemHeader(struct zx_ctx* c, struct zx_a_ProblemHeader_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_ProblemHeader_s* zx_DEEP_CLONE_a_ProblemHeader(struct zx_ctx* c, struct zx_a_ProblemHeader_s* x, int dup_strs);
@@ -638,7 +593,6 @@ void zx_a_ProblemHeader_PUT_mustUnderstand(struct zx_a_ProblemHeader_s* x, struc
 #ifndef zx_a_ProblemHeaderQName_EXT
 #define zx_a_ProblemHeaderQName_EXT
 #endif
-
 struct zx_a_ProblemHeaderQName_s {
   ZX_ELEM_EXT
   zx_a_ProblemHeaderQName_EXT
@@ -650,12 +604,8 @@ struct zx_a_ProblemHeaderQName_s {
 };
 
 #define zx_NEW_a_ProblemHeaderQName(c, father) (struct zx_a_ProblemHeaderQName_s*)zx_new_elem((c),(father),zx_a_ProblemHeaderQName_ELEM)
-
 int zx_DEC_ATTR_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_a_ProblemHeaderQName_s* x);
 int zx_DEC_ELEM_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_a_ProblemHeaderQName_s* x);
-int zx_LEN_SO_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_a_ProblemHeaderQName_s* x);
-char* zx_ENC_SO_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_a_ProblemHeaderQName_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_a_ProblemHeaderQName_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_ProblemHeaderQName_s* zx_DEEP_CLONE_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_a_ProblemHeaderQName_s* x, int dup_strs);
@@ -691,7 +641,6 @@ void zx_a_ProblemHeaderQName_PUT_mustUnderstand(struct zx_a_ProblemHeaderQName_s
 #ifndef zx_a_ProblemURI_EXT
 #define zx_a_ProblemURI_EXT
 #endif
-
 struct zx_a_ProblemURI_s {
   ZX_ELEM_EXT
   zx_a_ProblemURI_EXT
@@ -703,12 +652,8 @@ struct zx_a_ProblemURI_s {
 };
 
 #define zx_NEW_a_ProblemURI(c, father) (struct zx_a_ProblemURI_s*)zx_new_elem((c),(father),zx_a_ProblemURI_ELEM)
-
 int zx_DEC_ATTR_a_ProblemURI(struct zx_ctx* c, struct zx_a_ProblemURI_s* x);
 int zx_DEC_ELEM_a_ProblemURI(struct zx_ctx* c, struct zx_a_ProblemURI_s* x);
-int zx_LEN_SO_a_ProblemURI(struct zx_ctx* c, struct zx_a_ProblemURI_s* x);
-char* zx_ENC_SO_a_ProblemURI(struct zx_ctx* c, struct zx_a_ProblemURI_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_ProblemURI(struct zx_ctx* c, struct zx_a_ProblemURI_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_ProblemURI_s* zx_DEEP_CLONE_a_ProblemURI(struct zx_ctx* c, struct zx_a_ProblemURI_s* x, int dup_strs);
@@ -744,7 +689,6 @@ void zx_a_ProblemURI_PUT_mustUnderstand(struct zx_a_ProblemURI_s* x, struct zx_a
 #ifndef zx_a_ReferenceParameters_EXT
 #define zx_a_ReferenceParameters_EXT
 #endif
-
 struct zx_a_ReferenceParameters_s {
   ZX_ELEM_EXT
   zx_a_ReferenceParameters_EXT
@@ -757,12 +701,8 @@ struct zx_a_ReferenceParameters_s {
 };
 
 #define zx_NEW_a_ReferenceParameters(c, father) (struct zx_a_ReferenceParameters_s*)zx_new_elem((c),(father),zx_a_ReferenceParameters_ELEM)
-
 int zx_DEC_ATTR_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferenceParameters_s* x);
 int zx_DEC_ELEM_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferenceParameters_s* x);
-int zx_LEN_SO_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferenceParameters_s* x);
-char* zx_ENC_SO_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferenceParameters_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferenceParameters_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_ReferenceParameters_s* zx_DEEP_CLONE_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferenceParameters_s* x, int dup_strs);
@@ -806,7 +746,6 @@ void zx_a_ReferenceParameters_REV_TargetIdentity(struct zx_a_ReferenceParameters
 #ifndef zx_a_RelatesTo_EXT
 #define zx_a_RelatesTo_EXT
 #endif
-
 struct zx_a_RelatesTo_s {
   ZX_ELEM_EXT
   zx_a_RelatesTo_EXT
@@ -819,12 +758,8 @@ struct zx_a_RelatesTo_s {
 };
 
 #define zx_NEW_a_RelatesTo(c, father) (struct zx_a_RelatesTo_s*)zx_new_elem((c),(father),zx_a_RelatesTo_ELEM)
-
 int zx_DEC_ATTR_a_RelatesTo(struct zx_ctx* c, struct zx_a_RelatesTo_s* x);
 int zx_DEC_ELEM_a_RelatesTo(struct zx_ctx* c, struct zx_a_RelatesTo_s* x);
-int zx_LEN_SO_a_RelatesTo(struct zx_ctx* c, struct zx_a_RelatesTo_s* x);
-char* zx_ENC_SO_a_RelatesTo(struct zx_ctx* c, struct zx_a_RelatesTo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_RelatesTo(struct zx_ctx* c, struct zx_a_RelatesTo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_RelatesTo_s* zx_DEEP_CLONE_a_RelatesTo(struct zx_ctx* c, struct zx_a_RelatesTo_s* x, int dup_strs);
@@ -862,7 +797,6 @@ void zx_a_RelatesTo_PUT_mustUnderstand(struct zx_a_RelatesTo_s* x, struct zx_att
 #ifndef zx_a_ReplyTo_EXT
 #define zx_a_ReplyTo_EXT
 #endif
-
 struct zx_a_ReplyTo_s {
   ZX_ELEM_EXT
   zx_a_ReplyTo_EXT
@@ -878,12 +812,8 @@ struct zx_a_ReplyTo_s {
 };
 
 #define zx_NEW_a_ReplyTo(c, father) (struct zx_a_ReplyTo_s*)zx_new_elem((c),(father),zx_a_ReplyTo_ELEM)
-
 int zx_DEC_ATTR_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x);
 int zx_DEC_ELEM_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x);
-int zx_LEN_SO_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x);
-char* zx_ENC_SO_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_ReplyTo_s* zx_DEEP_CLONE_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x, int dup_strs);
@@ -945,7 +875,6 @@ void zx_a_ReplyTo_REV_Metadata(struct zx_a_ReplyTo_s* x);
 #ifndef zx_a_RetryAfter_EXT
 #define zx_a_RetryAfter_EXT
 #endif
-
 struct zx_a_RetryAfter_s {
   ZX_ELEM_EXT
   zx_a_RetryAfter_EXT
@@ -957,12 +886,8 @@ struct zx_a_RetryAfter_s {
 };
 
 #define zx_NEW_a_RetryAfter(c, father) (struct zx_a_RetryAfter_s*)zx_new_elem((c),(father),zx_a_RetryAfter_ELEM)
-
 int zx_DEC_ATTR_a_RetryAfter(struct zx_ctx* c, struct zx_a_RetryAfter_s* x);
 int zx_DEC_ELEM_a_RetryAfter(struct zx_ctx* c, struct zx_a_RetryAfter_s* x);
-int zx_LEN_SO_a_RetryAfter(struct zx_ctx* c, struct zx_a_RetryAfter_s* x);
-char* zx_ENC_SO_a_RetryAfter(struct zx_ctx* c, struct zx_a_RetryAfter_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_RetryAfter(struct zx_ctx* c, struct zx_a_RetryAfter_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_RetryAfter_s* zx_DEEP_CLONE_a_RetryAfter(struct zx_ctx* c, struct zx_a_RetryAfter_s* x, int dup_strs);
@@ -998,7 +923,6 @@ void zx_a_RetryAfter_PUT_mustUnderstand(struct zx_a_RetryAfter_s* x, struct zx_a
 #ifndef zx_a_To_EXT
 #define zx_a_To_EXT
 #endif
-
 struct zx_a_To_s {
   ZX_ELEM_EXT
   zx_a_To_EXT
@@ -1010,12 +934,8 @@ struct zx_a_To_s {
 };
 
 #define zx_NEW_a_To(c, father) (struct zx_a_To_s*)zx_new_elem((c),(father),zx_a_To_ELEM)
-
 int zx_DEC_ATTR_a_To(struct zx_ctx* c, struct zx_a_To_s* x);
 int zx_DEC_ELEM_a_To(struct zx_ctx* c, struct zx_a_To_s* x);
-int zx_LEN_SO_a_To(struct zx_ctx* c, struct zx_a_To_s* x);
-char* zx_ENC_SO_a_To(struct zx_ctx* c, struct zx_a_To_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_a_To(struct zx_ctx* c, struct zx_a_To_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_a_To_s* zx_DEEP_CLONE_a_To(struct zx_ctx* c, struct zx_a_To_s* x, int dup_strs);

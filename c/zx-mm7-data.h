@@ -23,7 +23,6 @@
 #ifndef zx_mm7_AdditionalInformation_EXT
 #define zx_mm7_AdditionalInformation_EXT
 #endif
-
 struct zx_mm7_AdditionalInformation_s {
   ZX_ELEM_EXT
   zx_mm7_AdditionalInformation_EXT
@@ -31,12 +30,8 @@ struct zx_mm7_AdditionalInformation_s {
 };
 
 #define zx_NEW_mm7_AdditionalInformation(c, father) (struct zx_mm7_AdditionalInformation_s*)zx_new_elem((c),(father),zx_mm7_AdditionalInformation_ELEM)
-
 int zx_DEC_ATTR_mm7_AdditionalInformation(struct zx_ctx* c, struct zx_mm7_AdditionalInformation_s* x);
 int zx_DEC_ELEM_mm7_AdditionalInformation(struct zx_ctx* c, struct zx_mm7_AdditionalInformation_s* x);
-int zx_LEN_SO_mm7_AdditionalInformation(struct zx_ctx* c, struct zx_mm7_AdditionalInformation_s* x);
-char* zx_ENC_SO_mm7_AdditionalInformation(struct zx_ctx* c, struct zx_mm7_AdditionalInformation_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_AdditionalInformation(struct zx_ctx* c, struct zx_mm7_AdditionalInformation_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_AdditionalInformation_s* zx_DEEP_CLONE_mm7_AdditionalInformation(struct zx_ctx* c, struct zx_mm7_AdditionalInformation_s* x, int dup_strs);
@@ -64,7 +59,6 @@ void zx_mm7_AdditionalInformation_PUT_href(struct zx_mm7_AdditionalInformation_s
 #ifndef zx_mm7_Bcc_EXT
 #define zx_mm7_Bcc_EXT
 #endif
-
 struct zx_mm7_Bcc_s {
   ZX_ELEM_EXT
   zx_mm7_Bcc_EXT
@@ -75,12 +69,8 @@ struct zx_mm7_Bcc_s {
 };
 
 #define zx_NEW_mm7_Bcc(c, father) (struct zx_mm7_Bcc_s*)zx_new_elem((c),(father),zx_mm7_Bcc_ELEM)
-
 int zx_DEC_ATTR_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s* x);
 int zx_DEC_ELEM_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s* x);
-int zx_LEN_SO_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s* x);
-char* zx_ENC_SO_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_Bcc_s* zx_DEEP_CLONE_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s* x, int dup_strs);
@@ -138,7 +128,6 @@ void zx_mm7_Bcc_REV_Extension(struct zx_mm7_Bcc_s* x);
 #ifndef zx_mm7_CancelReq_EXT
 #define zx_mm7_CancelReq_EXT
 #endif
-
 struct zx_mm7_CancelReq_s {
   ZX_ELEM_EXT
   zx_mm7_CancelReq_EXT
@@ -153,12 +142,8 @@ struct zx_mm7_CancelReq_s {
 };
 
 #define zx_NEW_mm7_CancelReq(c, father) (struct zx_mm7_CancelReq_s*)zx_new_elem((c),(father),zx_mm7_CancelReq_ELEM)
-
 int zx_DEC_ATTR_mm7_CancelReq(struct zx_ctx* c, struct zx_mm7_CancelReq_s* x);
 int zx_DEC_ELEM_mm7_CancelReq(struct zx_ctx* c, struct zx_mm7_CancelReq_s* x);
-int zx_LEN_SO_mm7_CancelReq(struct zx_ctx* c, struct zx_mm7_CancelReq_s* x);
-char* zx_ENC_SO_mm7_CancelReq(struct zx_ctx* c, struct zx_mm7_CancelReq_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_CancelReq(struct zx_ctx* c, struct zx_mm7_CancelReq_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_CancelReq_s* zx_DEEP_CLONE_mm7_CancelReq(struct zx_ctx* c, struct zx_mm7_CancelReq_s* x, int dup_strs);
@@ -224,14 +209,14 @@ void zx_mm7_CancelReq_ADD_ApplicID(struct zx_mm7_CancelReq_s* x, int n, struct z
 void zx_mm7_CancelReq_ADD_ReplyApplicID(struct zx_mm7_CancelReq_s* x, int n, struct zx_elem_s* z);
 void zx_mm7_CancelReq_ADD_AuxApplicInfo(struct zx_mm7_CancelReq_s* x, int n, struct zx_elem_s* z);
 
-void zx_mm7_CancelReq_DEL_MM7Version(struct zx_mm7_CancelReq_s* x, int n);
+void zx_mm7_CancelReq_DEL_MM7Version(struct zx_mm7_CancelReq_s* x,int n);
 void zx_mm7_CancelReq_DEL_SenderIdentification(struct zx_mm7_CancelReq_s* x, int n);
 void zx_mm7_CancelReq_DEL_Extension(struct zx_mm7_CancelReq_s* x, int n);
-void zx_mm7_CancelReq_DEL_MessageID(struct zx_mm7_CancelReq_s* x, int n);
+void zx_mm7_CancelReq_DEL_MessageID(struct zx_mm7_CancelReq_s* x,int n);
 void zx_mm7_CancelReq_DEL_Recipients(struct zx_mm7_CancelReq_s* x, int n);
-void zx_mm7_CancelReq_DEL_ApplicID(struct zx_mm7_CancelReq_s* x, int n);
-void zx_mm7_CancelReq_DEL_ReplyApplicID(struct zx_mm7_CancelReq_s* x, int n);
-void zx_mm7_CancelReq_DEL_AuxApplicInfo(struct zx_mm7_CancelReq_s* x, int n);
+void zx_mm7_CancelReq_DEL_ApplicID(struct zx_mm7_CancelReq_s* x,int n);
+void zx_mm7_CancelReq_DEL_ReplyApplicID(struct zx_mm7_CancelReq_s* x,int n);
+void zx_mm7_CancelReq_DEL_AuxApplicInfo(struct zx_mm7_CancelReq_s* x,int n);
 
 void zx_mm7_CancelReq_REV_MM7Version(struct zx_mm7_CancelReq_s* x);
 void zx_mm7_CancelReq_REV_SenderIdentification(struct zx_mm7_CancelReq_s* x);
@@ -248,7 +233,6 @@ void zx_mm7_CancelReq_REV_AuxApplicInfo(struct zx_mm7_CancelReq_s* x);
 #ifndef zx_mm7_CancelRsp_EXT
 #define zx_mm7_CancelRsp_EXT
 #endif
-
 struct zx_mm7_CancelRsp_s {
   ZX_ELEM_EXT
   zx_mm7_CancelRsp_EXT
@@ -258,12 +242,8 @@ struct zx_mm7_CancelRsp_s {
 };
 
 #define zx_NEW_mm7_CancelRsp(c, father) (struct zx_mm7_CancelRsp_s*)zx_new_elem((c),(father),zx_mm7_CancelRsp_ELEM)
-
 int zx_DEC_ATTR_mm7_CancelRsp(struct zx_ctx* c, struct zx_mm7_CancelRsp_s* x);
 int zx_DEC_ELEM_mm7_CancelRsp(struct zx_ctx* c, struct zx_mm7_CancelRsp_s* x);
-int zx_LEN_SO_mm7_CancelRsp(struct zx_ctx* c, struct zx_mm7_CancelRsp_s* x);
-char* zx_ENC_SO_mm7_CancelRsp(struct zx_ctx* c, struct zx_mm7_CancelRsp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_CancelRsp(struct zx_ctx* c, struct zx_mm7_CancelRsp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_CancelRsp_s* zx_DEEP_CLONE_mm7_CancelRsp(struct zx_ctx* c, struct zx_mm7_CancelRsp_s* x, int dup_strs);
@@ -299,7 +279,7 @@ void zx_mm7_CancelRsp_ADD_MM7Version(struct zx_mm7_CancelRsp_s* x, int n, struct
 void zx_mm7_CancelRsp_ADD_Status(struct zx_mm7_CancelRsp_s* x, int n, struct zx_mm7_Status_s* z);
 void zx_mm7_CancelRsp_ADD_Extension(struct zx_mm7_CancelRsp_s* x, int n, struct zx_mm7_Extension_s* z);
 
-void zx_mm7_CancelRsp_DEL_MM7Version(struct zx_mm7_CancelRsp_s* x, int n);
+void zx_mm7_CancelRsp_DEL_MM7Version(struct zx_mm7_CancelRsp_s* x,int n);
 void zx_mm7_CancelRsp_DEL_Status(struct zx_mm7_CancelRsp_s* x, int n);
 void zx_mm7_CancelRsp_DEL_Extension(struct zx_mm7_CancelRsp_s* x, int n);
 
@@ -313,7 +293,6 @@ void zx_mm7_CancelRsp_REV_Extension(struct zx_mm7_CancelRsp_s* x);
 #ifndef zx_mm7_Cc_EXT
 #define zx_mm7_Cc_EXT
 #endif
-
 struct zx_mm7_Cc_s {
   ZX_ELEM_EXT
   zx_mm7_Cc_EXT
@@ -324,12 +303,8 @@ struct zx_mm7_Cc_s {
 };
 
 #define zx_NEW_mm7_Cc(c, father) (struct zx_mm7_Cc_s*)zx_new_elem((c),(father),zx_mm7_Cc_ELEM)
-
 int zx_DEC_ATTR_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x);
 int zx_DEC_ELEM_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x);
-int zx_LEN_SO_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x);
-char* zx_ENC_SO_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_Cc_s* zx_DEEP_CLONE_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x, int dup_strs);
@@ -387,7 +362,6 @@ void zx_mm7_Cc_REV_Extension(struct zx_mm7_Cc_s* x);
 #ifndef zx_mm7_Content_EXT
 #define zx_mm7_Content_EXT
 #endif
-
 struct zx_mm7_Content_s {
   ZX_ELEM_EXT
   zx_mm7_Content_EXT
@@ -397,12 +371,8 @@ struct zx_mm7_Content_s {
 };
 
 #define zx_NEW_mm7_Content(c, father) (struct zx_mm7_Content_s*)zx_new_elem((c),(father),zx_mm7_Content_ELEM)
-
 int zx_DEC_ATTR_mm7_Content(struct zx_ctx* c, struct zx_mm7_Content_s* x);
 int zx_DEC_ELEM_mm7_Content(struct zx_ctx* c, struct zx_mm7_Content_s* x);
-int zx_LEN_SO_mm7_Content(struct zx_ctx* c, struct zx_mm7_Content_s* x);
-char* zx_ENC_SO_mm7_Content(struct zx_ctx* c, struct zx_mm7_Content_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_Content(struct zx_ctx* c, struct zx_mm7_Content_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_Content_s* zx_DEEP_CLONE_mm7_Content(struct zx_ctx* c, struct zx_mm7_Content_s* x, int dup_strs);
@@ -434,7 +404,6 @@ void zx_mm7_Content_PUT_type(struct zx_mm7_Content_s* x, struct zx_attr_s* y);
 #ifndef zx_mm7_DateTime_EXT
 #define zx_mm7_DateTime_EXT
 #endif
-
 struct zx_mm7_DateTime_s {
   ZX_ELEM_EXT
   zx_mm7_DateTime_EXT
@@ -442,12 +411,8 @@ struct zx_mm7_DateTime_s {
 };
 
 #define zx_NEW_mm7_DateTime(c, father) (struct zx_mm7_DateTime_s*)zx_new_elem((c),(father),zx_mm7_DateTime_ELEM)
-
 int zx_DEC_ATTR_mm7_DateTime(struct zx_ctx* c, struct zx_mm7_DateTime_s* x);
 int zx_DEC_ELEM_mm7_DateTime(struct zx_ctx* c, struct zx_mm7_DateTime_s* x);
-int zx_LEN_SO_mm7_DateTime(struct zx_ctx* c, struct zx_mm7_DateTime_s* x);
-char* zx_ENC_SO_mm7_DateTime(struct zx_ctx* c, struct zx_mm7_DateTime_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_DateTime(struct zx_ctx* c, struct zx_mm7_DateTime_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_DateTime_s* zx_DEEP_CLONE_mm7_DateTime(struct zx_ctx* c, struct zx_mm7_DateTime_s* x, int dup_strs);
@@ -475,7 +440,6 @@ void zx_mm7_DateTime_PUT_sequence(struct zx_mm7_DateTime_s* x, struct zx_attr_s*
 #ifndef zx_mm7_DeliverReq_EXT
 #define zx_mm7_DeliverReq_EXT
 #endif
-
 struct zx_mm7_DeliverReq_s {
   ZX_ELEM_EXT
   zx_mm7_DeliverReq_EXT
@@ -505,12 +469,8 @@ struct zx_mm7_DeliverReq_s {
 };
 
 #define zx_NEW_mm7_DeliverReq(c, father) (struct zx_mm7_DeliverReq_s*)zx_new_elem((c),(father),zx_mm7_DeliverReq_ELEM)
-
 int zx_DEC_ATTR_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x);
 int zx_DEC_ELEM_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x);
-int zx_LEN_SO_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x);
-char* zx_ENC_SO_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_DeliverReq_s* zx_DEEP_CLONE_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x, int dup_strs);
@@ -666,25 +626,25 @@ void zx_mm7_DeliverReq_ADD_Content(struct zx_mm7_DeliverReq_s* x, int n, struct 
 void zx_mm7_DeliverReq_ADD_AdditionalInformation(struct zx_mm7_DeliverReq_s* x, int n, struct zx_mm7_AdditionalInformation_s* z);
 void zx_mm7_DeliverReq_ADD_MessageExtraData(struct zx_mm7_DeliverReq_s* x, int n, struct zx_mm7_MessageExtraData_s* z);
 
-void zx_mm7_DeliverReq_DEL_MM7Version(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_MMSRelayServerID(struct zx_mm7_DeliverReq_s* x, int n);
+void zx_mm7_DeliverReq_DEL_MM7Version(struct zx_mm7_DeliverReq_s* x,int n);
+void zx_mm7_DeliverReq_DEL_MMSRelayServerID(struct zx_mm7_DeliverReq_s* x,int n);
 void zx_mm7_DeliverReq_DEL_Extension(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_VASPID(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_VASID(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_LinkedID(struct zx_mm7_DeliverReq_s* x, int n);
+void zx_mm7_DeliverReq_DEL_VASPID(struct zx_mm7_DeliverReq_s* x,int n);
+void zx_mm7_DeliverReq_DEL_VASID(struct zx_mm7_DeliverReq_s* x,int n);
+void zx_mm7_DeliverReq_DEL_LinkedID(struct zx_mm7_DeliverReq_s* x,int n);
 void zx_mm7_DeliverReq_DEL_Sender(struct zx_mm7_DeliverReq_s* x, int n);
 void zx_mm7_DeliverReq_DEL_Recipients(struct zx_mm7_DeliverReq_s* x, int n);
 void zx_mm7_DeliverReq_DEL_Previouslysentby(struct zx_mm7_DeliverReq_s* x, int n);
 void zx_mm7_DeliverReq_DEL_Previouslysentdateandtime(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_SenderSPI(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_RecipientSPI(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_TimeStamp(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_ReplyChargingID(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_Priority(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_Subject(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_ApplicID(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_ReplyApplicID(struct zx_mm7_DeliverReq_s* x, int n);
-void zx_mm7_DeliverReq_DEL_AuxApplicInfo(struct zx_mm7_DeliverReq_s* x, int n);
+void zx_mm7_DeliverReq_DEL_SenderSPI(struct zx_mm7_DeliverReq_s* x,int n);
+void zx_mm7_DeliverReq_DEL_RecipientSPI(struct zx_mm7_DeliverReq_s* x,int n);
+void zx_mm7_DeliverReq_DEL_TimeStamp(struct zx_mm7_DeliverReq_s* x,int n);
+void zx_mm7_DeliverReq_DEL_ReplyChargingID(struct zx_mm7_DeliverReq_s* x,int n);
+void zx_mm7_DeliverReq_DEL_Priority(struct zx_mm7_DeliverReq_s* x,int n);
+void zx_mm7_DeliverReq_DEL_Subject(struct zx_mm7_DeliverReq_s* x,int n);
+void zx_mm7_DeliverReq_DEL_ApplicID(struct zx_mm7_DeliverReq_s* x,int n);
+void zx_mm7_DeliverReq_DEL_ReplyApplicID(struct zx_mm7_DeliverReq_s* x,int n);
+void zx_mm7_DeliverReq_DEL_AuxApplicInfo(struct zx_mm7_DeliverReq_s* x,int n);
 void zx_mm7_DeliverReq_DEL_UACapabilities(struct zx_mm7_DeliverReq_s* x, int n);
 void zx_mm7_DeliverReq_DEL_Content(struct zx_mm7_DeliverReq_s* x, int n);
 void zx_mm7_DeliverReq_DEL_AdditionalInformation(struct zx_mm7_DeliverReq_s* x, int n);
@@ -720,7 +680,6 @@ void zx_mm7_DeliverReq_REV_MessageExtraData(struct zx_mm7_DeliverReq_s* x);
 #ifndef zx_mm7_DeliverRsp_EXT
 #define zx_mm7_DeliverRsp_EXT
 #endif
-
 struct zx_mm7_DeliverRsp_s {
   ZX_ELEM_EXT
   zx_mm7_DeliverRsp_EXT
@@ -731,12 +690,8 @@ struct zx_mm7_DeliverRsp_s {
 };
 
 #define zx_NEW_mm7_DeliverRsp(c, father) (struct zx_mm7_DeliverRsp_s*)zx_new_elem((c),(father),zx_mm7_DeliverRsp_ELEM)
-
 int zx_DEC_ATTR_mm7_DeliverRsp(struct zx_ctx* c, struct zx_mm7_DeliverRsp_s* x);
 int zx_DEC_ELEM_mm7_DeliverRsp(struct zx_ctx* c, struct zx_mm7_DeliverRsp_s* x);
-int zx_LEN_SO_mm7_DeliverRsp(struct zx_ctx* c, struct zx_mm7_DeliverRsp_s* x);
-char* zx_ENC_SO_mm7_DeliverRsp(struct zx_ctx* c, struct zx_mm7_DeliverRsp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_DeliverRsp(struct zx_ctx* c, struct zx_mm7_DeliverRsp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_DeliverRsp_s* zx_DEEP_CLONE_mm7_DeliverRsp(struct zx_ctx* c, struct zx_mm7_DeliverRsp_s* x, int dup_strs);
@@ -778,7 +733,7 @@ void zx_mm7_DeliverRsp_ADD_Status(struct zx_mm7_DeliverRsp_s* x, int n, struct z
 void zx_mm7_DeliverRsp_ADD_Extension(struct zx_mm7_DeliverRsp_s* x, int n, struct zx_mm7_Extension_s* z);
 void zx_mm7_DeliverRsp_ADD_ServiceCode(struct zx_mm7_DeliverRsp_s* x, int n, struct zx_mm7_ServiceCode_s* z);
 
-void zx_mm7_DeliverRsp_DEL_MM7Version(struct zx_mm7_DeliverRsp_s* x, int n);
+void zx_mm7_DeliverRsp_DEL_MM7Version(struct zx_mm7_DeliverRsp_s* x,int n);
 void zx_mm7_DeliverRsp_DEL_Status(struct zx_mm7_DeliverRsp_s* x, int n);
 void zx_mm7_DeliverRsp_DEL_Extension(struct zx_mm7_DeliverRsp_s* x, int n);
 void zx_mm7_DeliverRsp_DEL_ServiceCode(struct zx_mm7_DeliverRsp_s* x, int n);
@@ -794,7 +749,6 @@ void zx_mm7_DeliverRsp_REV_ServiceCode(struct zx_mm7_DeliverRsp_s* x);
 #ifndef zx_mm7_DeliveryCondition_EXT
 #define zx_mm7_DeliveryCondition_EXT
 #endif
-
 struct zx_mm7_DeliveryCondition_s {
   ZX_ELEM_EXT
   zx_mm7_DeliveryCondition_EXT
@@ -802,12 +756,8 @@ struct zx_mm7_DeliveryCondition_s {
 };
 
 #define zx_NEW_mm7_DeliveryCondition(c, father) (struct zx_mm7_DeliveryCondition_s*)zx_new_elem((c),(father),zx_mm7_DeliveryCondition_ELEM)
-
 int zx_DEC_ATTR_mm7_DeliveryCondition(struct zx_ctx* c, struct zx_mm7_DeliveryCondition_s* x);
 int zx_DEC_ELEM_mm7_DeliveryCondition(struct zx_ctx* c, struct zx_mm7_DeliveryCondition_s* x);
-int zx_LEN_SO_mm7_DeliveryCondition(struct zx_ctx* c, struct zx_mm7_DeliveryCondition_s* x);
-char* zx_ENC_SO_mm7_DeliveryCondition(struct zx_ctx* c, struct zx_mm7_DeliveryCondition_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_DeliveryCondition(struct zx_ctx* c, struct zx_mm7_DeliveryCondition_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_DeliveryCondition_s* zx_DEEP_CLONE_mm7_DeliveryCondition(struct zx_ctx* c, struct zx_mm7_DeliveryCondition_s* x, int dup_strs);
@@ -831,7 +781,7 @@ void zx_mm7_DeliveryCondition_PUT_DC(struct zx_mm7_DeliveryCondition_s* x, int n
 
 void zx_mm7_DeliveryCondition_ADD_DC(struct zx_mm7_DeliveryCondition_s* x, int n, struct zx_elem_s* z);
 
-void zx_mm7_DeliveryCondition_DEL_DC(struct zx_mm7_DeliveryCondition_s* x, int n);
+void zx_mm7_DeliveryCondition_DEL_DC(struct zx_mm7_DeliveryCondition_s* x,int n);
 
 void zx_mm7_DeliveryCondition_REV_DC(struct zx_mm7_DeliveryCondition_s* x);
 
@@ -841,7 +791,6 @@ void zx_mm7_DeliveryCondition_REV_DC(struct zx_mm7_DeliveryCondition_s* x);
 #ifndef zx_mm7_DeliveryReportReq_EXT
 #define zx_mm7_DeliveryReportReq_EXT
 #endif
-
 struct zx_mm7_DeliveryReportReq_s {
   ZX_ELEM_EXT
   zx_mm7_DeliveryReportReq_EXT
@@ -862,12 +811,8 @@ struct zx_mm7_DeliveryReportReq_s {
 };
 
 #define zx_NEW_mm7_DeliveryReportReq(c, father) (struct zx_mm7_DeliveryReportReq_s*)zx_new_elem((c),(father),zx_mm7_DeliveryReportReq_ELEM)
-
 int zx_DEC_ATTR_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryReportReq_s* x);
 int zx_DEC_ELEM_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryReportReq_s* x);
-int zx_LEN_SO_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryReportReq_s* x);
-char* zx_ENC_SO_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryReportReq_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryReportReq_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_DeliveryReportReq_s* zx_DEEP_CLONE_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryReportReq_s* x, int dup_strs);
@@ -969,19 +914,19 @@ void zx_mm7_DeliveryReportReq_ADD_ReplyApplicID(struct zx_mm7_DeliveryReportReq_
 void zx_mm7_DeliveryReportReq_ADD_AuxApplicInfo(struct zx_mm7_DeliveryReportReq_s* x, int n, struct zx_elem_s* z);
 void zx_mm7_DeliveryReportReq_ADD_UACapabilities(struct zx_mm7_DeliveryReportReq_s* x, int n, struct zx_mm7_UACapabilities_s* z);
 
-void zx_mm7_DeliveryReportReq_DEL_MM7Version(struct zx_mm7_DeliveryReportReq_s* x, int n);
-void zx_mm7_DeliveryReportReq_DEL_MMSRelayServerID(struct zx_mm7_DeliveryReportReq_s* x, int n);
+void zx_mm7_DeliveryReportReq_DEL_MM7Version(struct zx_mm7_DeliveryReportReq_s* x,int n);
+void zx_mm7_DeliveryReportReq_DEL_MMSRelayServerID(struct zx_mm7_DeliveryReportReq_s* x,int n);
 void zx_mm7_DeliveryReportReq_DEL_Extension(struct zx_mm7_DeliveryReportReq_s* x, int n);
-void zx_mm7_DeliveryReportReq_DEL_MessageID(struct zx_mm7_DeliveryReportReq_s* x, int n);
+void zx_mm7_DeliveryReportReq_DEL_MessageID(struct zx_mm7_DeliveryReportReq_s* x,int n);
 void zx_mm7_DeliveryReportReq_DEL_Recipient(struct zx_mm7_DeliveryReportReq_s* x, int n);
 void zx_mm7_DeliveryReportReq_DEL_Sender(struct zx_mm7_DeliveryReportReq_s* x, int n);
-void zx_mm7_DeliveryReportReq_DEL_Date(struct zx_mm7_DeliveryReportReq_s* x, int n);
-void zx_mm7_DeliveryReportReq_DEL_MMStatus(struct zx_mm7_DeliveryReportReq_s* x, int n);
-void zx_mm7_DeliveryReportReq_DEL_MMStatusExtension(struct zx_mm7_DeliveryReportReq_s* x, int n);
-void zx_mm7_DeliveryReportReq_DEL_StatusText(struct zx_mm7_DeliveryReportReq_s* x, int n);
-void zx_mm7_DeliveryReportReq_DEL_ApplicID(struct zx_mm7_DeliveryReportReq_s* x, int n);
-void zx_mm7_DeliveryReportReq_DEL_ReplyApplicID(struct zx_mm7_DeliveryReportReq_s* x, int n);
-void zx_mm7_DeliveryReportReq_DEL_AuxApplicInfo(struct zx_mm7_DeliveryReportReq_s* x, int n);
+void zx_mm7_DeliveryReportReq_DEL_Date(struct zx_mm7_DeliveryReportReq_s* x,int n);
+void zx_mm7_DeliveryReportReq_DEL_MMStatus(struct zx_mm7_DeliveryReportReq_s* x,int n);
+void zx_mm7_DeliveryReportReq_DEL_MMStatusExtension(struct zx_mm7_DeliveryReportReq_s* x,int n);
+void zx_mm7_DeliveryReportReq_DEL_StatusText(struct zx_mm7_DeliveryReportReq_s* x,int n);
+void zx_mm7_DeliveryReportReq_DEL_ApplicID(struct zx_mm7_DeliveryReportReq_s* x,int n);
+void zx_mm7_DeliveryReportReq_DEL_ReplyApplicID(struct zx_mm7_DeliveryReportReq_s* x,int n);
+void zx_mm7_DeliveryReportReq_DEL_AuxApplicInfo(struct zx_mm7_DeliveryReportReq_s* x,int n);
 void zx_mm7_DeliveryReportReq_DEL_UACapabilities(struct zx_mm7_DeliveryReportReq_s* x, int n);
 
 void zx_mm7_DeliveryReportReq_REV_MM7Version(struct zx_mm7_DeliveryReportReq_s* x);
@@ -1005,7 +950,6 @@ void zx_mm7_DeliveryReportReq_REV_UACapabilities(struct zx_mm7_DeliveryReportReq
 #ifndef zx_mm7_DeliveryReportRsp_EXT
 #define zx_mm7_DeliveryReportRsp_EXT
 #endif
-
 struct zx_mm7_DeliveryReportRsp_s {
   ZX_ELEM_EXT
   zx_mm7_DeliveryReportRsp_EXT
@@ -1015,12 +959,8 @@ struct zx_mm7_DeliveryReportRsp_s {
 };
 
 #define zx_NEW_mm7_DeliveryReportRsp(c, father) (struct zx_mm7_DeliveryReportRsp_s*)zx_new_elem((c),(father),zx_mm7_DeliveryReportRsp_ELEM)
-
 int zx_DEC_ATTR_mm7_DeliveryReportRsp(struct zx_ctx* c, struct zx_mm7_DeliveryReportRsp_s* x);
 int zx_DEC_ELEM_mm7_DeliveryReportRsp(struct zx_ctx* c, struct zx_mm7_DeliveryReportRsp_s* x);
-int zx_LEN_SO_mm7_DeliveryReportRsp(struct zx_ctx* c, struct zx_mm7_DeliveryReportRsp_s* x);
-char* zx_ENC_SO_mm7_DeliveryReportRsp(struct zx_ctx* c, struct zx_mm7_DeliveryReportRsp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_DeliveryReportRsp(struct zx_ctx* c, struct zx_mm7_DeliveryReportRsp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_DeliveryReportRsp_s* zx_DEEP_CLONE_mm7_DeliveryReportRsp(struct zx_ctx* c, struct zx_mm7_DeliveryReportRsp_s* x, int dup_strs);
@@ -1056,7 +996,7 @@ void zx_mm7_DeliveryReportRsp_ADD_MM7Version(struct zx_mm7_DeliveryReportRsp_s* 
 void zx_mm7_DeliveryReportRsp_ADD_Status(struct zx_mm7_DeliveryReportRsp_s* x, int n, struct zx_mm7_Status_s* z);
 void zx_mm7_DeliveryReportRsp_ADD_Extension(struct zx_mm7_DeliveryReportRsp_s* x, int n, struct zx_mm7_Extension_s* z);
 
-void zx_mm7_DeliveryReportRsp_DEL_MM7Version(struct zx_mm7_DeliveryReportRsp_s* x, int n);
+void zx_mm7_DeliveryReportRsp_DEL_MM7Version(struct zx_mm7_DeliveryReportRsp_s* x,int n);
 void zx_mm7_DeliveryReportRsp_DEL_Status(struct zx_mm7_DeliveryReportRsp_s* x, int n);
 void zx_mm7_DeliveryReportRsp_DEL_Extension(struct zx_mm7_DeliveryReportRsp_s* x, int n);
 
@@ -1070,19 +1010,14 @@ void zx_mm7_DeliveryReportRsp_REV_Extension(struct zx_mm7_DeliveryReportRsp_s* x
 #ifndef zx_mm7_Details_EXT
 #define zx_mm7_Details_EXT
 #endif
-
 struct zx_mm7_Details_s {
   ZX_ELEM_EXT
   zx_mm7_Details_EXT
 };
 
 #define zx_NEW_mm7_Details(c, father) (struct zx_mm7_Details_s*)zx_new_elem((c),(father),zx_mm7_Details_ELEM)
-
 int zx_DEC_ATTR_mm7_Details(struct zx_ctx* c, struct zx_mm7_Details_s* x);
 int zx_DEC_ELEM_mm7_Details(struct zx_ctx* c, struct zx_mm7_Details_s* x);
-int zx_LEN_SO_mm7_Details(struct zx_ctx* c, struct zx_mm7_Details_s* x);
-char* zx_ENC_SO_mm7_Details(struct zx_ctx* c, struct zx_mm7_Details_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_Details(struct zx_ctx* c, struct zx_mm7_Details_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_Details_s* zx_DEEP_CLONE_mm7_Details(struct zx_ctx* c, struct zx_mm7_Details_s* x, int dup_strs);
@@ -1108,7 +1043,6 @@ int zx_WALK_WO_mm7_Details(struct zx_ctx* c, struct zx_mm7_Details_s* x, void* c
 #ifndef zx_mm7_Extension_EXT
 #define zx_mm7_Extension_EXT
 #endif
-
 struct zx_mm7_Extension_s {
   ZX_ELEM_EXT
   zx_mm7_Extension_EXT
@@ -1117,12 +1051,8 @@ struct zx_mm7_Extension_s {
 };
 
 #define zx_NEW_mm7_Extension(c, father) (struct zx_mm7_Extension_s*)zx_new_elem((c),(father),zx_mm7_Extension_ELEM)
-
 int zx_DEC_ATTR_mm7_Extension(struct zx_ctx* c, struct zx_mm7_Extension_s* x);
 int zx_DEC_ELEM_mm7_Extension(struct zx_ctx* c, struct zx_mm7_Extension_s* x);
-int zx_LEN_SO_mm7_Extension(struct zx_ctx* c, struct zx_mm7_Extension_s* x);
-char* zx_ENC_SO_mm7_Extension(struct zx_ctx* c, struct zx_mm7_Extension_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_Extension(struct zx_ctx* c, struct zx_mm7_Extension_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_Extension_s* zx_DEEP_CLONE_mm7_Extension(struct zx_ctx* c, struct zx_mm7_Extension_s* x, int dup_strs);
@@ -1164,7 +1094,6 @@ void zx_mm7_Extension_REV_MessageExtraData(struct zx_mm7_Extension_s* x);
 #ifndef zx_mm7_IdentityAddressingToken_EXT
 #define zx_mm7_IdentityAddressingToken_EXT
 #endif
-
 struct zx_mm7_IdentityAddressingToken_s {
   ZX_ELEM_EXT
   zx_mm7_IdentityAddressingToken_EXT
@@ -1172,12 +1101,8 @@ struct zx_mm7_IdentityAddressingToken_s {
 };
 
 #define zx_NEW_mm7_IdentityAddressingToken(c, father) (struct zx_mm7_IdentityAddressingToken_s*)zx_new_elem((c),(father),zx_mm7_IdentityAddressingToken_ELEM)
-
 int zx_DEC_ATTR_mm7_IdentityAddressingToken(struct zx_ctx* c, struct zx_mm7_IdentityAddressingToken_s* x);
 int zx_DEC_ELEM_mm7_IdentityAddressingToken(struct zx_ctx* c, struct zx_mm7_IdentityAddressingToken_s* x);
-int zx_LEN_SO_mm7_IdentityAddressingToken(struct zx_ctx* c, struct zx_mm7_IdentityAddressingToken_s* x);
-char* zx_ENC_SO_mm7_IdentityAddressingToken(struct zx_ctx* c, struct zx_mm7_IdentityAddressingToken_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_IdentityAddressingToken(struct zx_ctx* c, struct zx_mm7_IdentityAddressingToken_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_IdentityAddressingToken_s* zx_DEEP_CLONE_mm7_IdentityAddressingToken(struct zx_ctx* c, struct zx_mm7_IdentityAddressingToken_s* x, int dup_strs);
@@ -1201,7 +1126,7 @@ void zx_mm7_IdentityAddressingToken_PUT_CredentialRef(struct zx_mm7_IdentityAddr
 
 void zx_mm7_IdentityAddressingToken_ADD_CredentialRef(struct zx_mm7_IdentityAddressingToken_s* x, int n, struct zx_elem_s* z);
 
-void zx_mm7_IdentityAddressingToken_DEL_CredentialRef(struct zx_mm7_IdentityAddressingToken_s* x, int n);
+void zx_mm7_IdentityAddressingToken_DEL_CredentialRef(struct zx_mm7_IdentityAddressingToken_s* x,int n);
 
 void zx_mm7_IdentityAddressingToken_REV_CredentialRef(struct zx_mm7_IdentityAddressingToken_s* x);
 
@@ -1211,7 +1136,6 @@ void zx_mm7_IdentityAddressingToken_REV_CredentialRef(struct zx_mm7_IdentityAddr
 #ifndef zx_mm7_MessageExtraData_EXT
 #define zx_mm7_MessageExtraData_EXT
 #endif
-
 struct zx_mm7_MessageExtraData_s {
   ZX_ELEM_EXT
   zx_mm7_MessageExtraData_EXT
@@ -1219,12 +1143,8 @@ struct zx_mm7_MessageExtraData_s {
 };
 
 #define zx_NEW_mm7_MessageExtraData(c, father) (struct zx_mm7_MessageExtraData_s*)zx_new_elem((c),(father),zx_mm7_MessageExtraData_ELEM)
-
 int zx_DEC_ATTR_mm7_MessageExtraData(struct zx_ctx* c, struct zx_mm7_MessageExtraData_s* x);
 int zx_DEC_ELEM_mm7_MessageExtraData(struct zx_ctx* c, struct zx_mm7_MessageExtraData_s* x);
-int zx_LEN_SO_mm7_MessageExtraData(struct zx_ctx* c, struct zx_mm7_MessageExtraData_s* x);
-char* zx_ENC_SO_mm7_MessageExtraData(struct zx_ctx* c, struct zx_mm7_MessageExtraData_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_MessageExtraData(struct zx_ctx* c, struct zx_mm7_MessageExtraData_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_MessageExtraData_s* zx_DEEP_CLONE_mm7_MessageExtraData(struct zx_ctx* c, struct zx_mm7_MessageExtraData_s* x, int dup_strs);
@@ -1258,7 +1178,6 @@ void zx_mm7_MessageExtraData_REV_element(struct zx_mm7_MessageExtraData_s* x);
 #ifndef zx_mm7_Number_EXT
 #define zx_mm7_Number_EXT
 #endif
-
 struct zx_mm7_Number_s {
   ZX_ELEM_EXT
   zx_mm7_Number_EXT
@@ -1268,12 +1187,8 @@ struct zx_mm7_Number_s {
 };
 
 #define zx_NEW_mm7_Number(c, father) (struct zx_mm7_Number_s*)zx_new_elem((c),(father),zx_mm7_Number_ELEM)
-
 int zx_DEC_ATTR_mm7_Number(struct zx_ctx* c, struct zx_mm7_Number_s* x);
 int zx_DEC_ELEM_mm7_Number(struct zx_ctx* c, struct zx_mm7_Number_s* x);
-int zx_LEN_SO_mm7_Number(struct zx_ctx* c, struct zx_mm7_Number_s* x);
-char* zx_ENC_SO_mm7_Number(struct zx_ctx* c, struct zx_mm7_Number_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_Number(struct zx_ctx* c, struct zx_mm7_Number_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_Number_s* zx_DEEP_CLONE_mm7_Number(struct zx_ctx* c, struct zx_mm7_Number_s* x, int dup_strs);
@@ -1305,7 +1220,6 @@ void zx_mm7_Number_PUT_id(struct zx_mm7_Number_s* x, struct zx_attr_s* y);
 #ifndef zx_mm7_PreferredChannels_EXT
 #define zx_mm7_PreferredChannels_EXT
 #endif
-
 struct zx_mm7_PreferredChannels_s {
   ZX_ELEM_EXT
   zx_mm7_PreferredChannels_EXT
@@ -1313,12 +1227,8 @@ struct zx_mm7_PreferredChannels_s {
 };
 
 #define zx_NEW_mm7_PreferredChannels(c, father) (struct zx_mm7_PreferredChannels_s*)zx_new_elem((c),(father),zx_mm7_PreferredChannels_ELEM)
-
 int zx_DEC_ATTR_mm7_PreferredChannels(struct zx_ctx* c, struct zx_mm7_PreferredChannels_s* x);
 int zx_DEC_ELEM_mm7_PreferredChannels(struct zx_ctx* c, struct zx_mm7_PreferredChannels_s* x);
-int zx_LEN_SO_mm7_PreferredChannels(struct zx_ctx* c, struct zx_mm7_PreferredChannels_s* x);
-char* zx_ENC_SO_mm7_PreferredChannels(struct zx_ctx* c, struct zx_mm7_PreferredChannels_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_PreferredChannels(struct zx_ctx* c, struct zx_mm7_PreferredChannels_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_PreferredChannels_s* zx_DEEP_CLONE_mm7_PreferredChannels(struct zx_ctx* c, struct zx_mm7_PreferredChannels_s* x, int dup_strs);
@@ -1342,7 +1252,7 @@ void zx_mm7_PreferredChannels_PUT_DeliverUsing(struct zx_mm7_PreferredChannels_s
 
 void zx_mm7_PreferredChannels_ADD_DeliverUsing(struct zx_mm7_PreferredChannels_s* x, int n, struct zx_elem_s* z);
 
-void zx_mm7_PreferredChannels_DEL_DeliverUsing(struct zx_mm7_PreferredChannels_s* x, int n);
+void zx_mm7_PreferredChannels_DEL_DeliverUsing(struct zx_mm7_PreferredChannels_s* x,int n);
 
 void zx_mm7_PreferredChannels_REV_DeliverUsing(struct zx_mm7_PreferredChannels_s* x);
 
@@ -1352,7 +1262,6 @@ void zx_mm7_PreferredChannels_REV_DeliverUsing(struct zx_mm7_PreferredChannels_s
 #ifndef zx_mm7_Previouslysentby_EXT
 #define zx_mm7_Previouslysentby_EXT
 #endif
-
 struct zx_mm7_Previouslysentby_s {
   ZX_ELEM_EXT
   zx_mm7_Previouslysentby_EXT
@@ -1360,12 +1269,8 @@ struct zx_mm7_Previouslysentby_s {
 };
 
 #define zx_NEW_mm7_Previouslysentby(c, father) (struct zx_mm7_Previouslysentby_s*)zx_new_elem((c),(father),zx_mm7_Previouslysentby_ELEM)
-
 int zx_DEC_ATTR_mm7_Previouslysentby(struct zx_ctx* c, struct zx_mm7_Previouslysentby_s* x);
 int zx_DEC_ELEM_mm7_Previouslysentby(struct zx_ctx* c, struct zx_mm7_Previouslysentby_s* x);
-int zx_LEN_SO_mm7_Previouslysentby(struct zx_ctx* c, struct zx_mm7_Previouslysentby_s* x);
-char* zx_ENC_SO_mm7_Previouslysentby(struct zx_ctx* c, struct zx_mm7_Previouslysentby_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_Previouslysentby(struct zx_ctx* c, struct zx_mm7_Previouslysentby_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_Previouslysentby_s* zx_DEEP_CLONE_mm7_Previouslysentby(struct zx_ctx* c, struct zx_mm7_Previouslysentby_s* x, int dup_strs);
@@ -1399,7 +1304,6 @@ void zx_mm7_Previouslysentby_REV_UserAgent(struct zx_mm7_Previouslysentby_s* x);
 #ifndef zx_mm7_Previouslysentdateandtime_EXT
 #define zx_mm7_Previouslysentdateandtime_EXT
 #endif
-
 struct zx_mm7_Previouslysentdateandtime_s {
   ZX_ELEM_EXT
   zx_mm7_Previouslysentdateandtime_EXT
@@ -1407,12 +1311,8 @@ struct zx_mm7_Previouslysentdateandtime_s {
 };
 
 #define zx_NEW_mm7_Previouslysentdateandtime(c, father) (struct zx_mm7_Previouslysentdateandtime_s*)zx_new_elem((c),(father),zx_mm7_Previouslysentdateandtime_ELEM)
-
 int zx_DEC_ATTR_mm7_Previouslysentdateandtime(struct zx_ctx* c, struct zx_mm7_Previouslysentdateandtime_s* x);
 int zx_DEC_ELEM_mm7_Previouslysentdateandtime(struct zx_ctx* c, struct zx_mm7_Previouslysentdateandtime_s* x);
-int zx_LEN_SO_mm7_Previouslysentdateandtime(struct zx_ctx* c, struct zx_mm7_Previouslysentdateandtime_s* x);
-char* zx_ENC_SO_mm7_Previouslysentdateandtime(struct zx_ctx* c, struct zx_mm7_Previouslysentdateandtime_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_Previouslysentdateandtime(struct zx_ctx* c, struct zx_mm7_Previouslysentdateandtime_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_Previouslysentdateandtime_s* zx_DEEP_CLONE_mm7_Previouslysentdateandtime(struct zx_ctx* c, struct zx_mm7_Previouslysentdateandtime_s* x, int dup_strs);
@@ -1446,7 +1346,6 @@ void zx_mm7_Previouslysentdateandtime_REV_DateTime(struct zx_mm7_Previouslysentd
 #ifndef zx_mm7_QueryStatusReq_EXT
 #define zx_mm7_QueryStatusReq_EXT
 #endif
-
 struct zx_mm7_QueryStatusReq_s {
   ZX_ELEM_EXT
   zx_mm7_QueryStatusReq_EXT
@@ -1459,12 +1358,8 @@ struct zx_mm7_QueryStatusReq_s {
 };
 
 #define zx_NEW_mm7_QueryStatusReq(c, father) (struct zx_mm7_QueryStatusReq_s*)zx_new_elem((c),(father),zx_mm7_QueryStatusReq_ELEM)
-
 int zx_DEC_ATTR_mm7_QueryStatusReq(struct zx_ctx* c, struct zx_mm7_QueryStatusReq_s* x);
 int zx_DEC_ELEM_mm7_QueryStatusReq(struct zx_ctx* c, struct zx_mm7_QueryStatusReq_s* x);
-int zx_LEN_SO_mm7_QueryStatusReq(struct zx_ctx* c, struct zx_mm7_QueryStatusReq_s* x);
-char* zx_ENC_SO_mm7_QueryStatusReq(struct zx_ctx* c, struct zx_mm7_QueryStatusReq_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_QueryStatusReq(struct zx_ctx* c, struct zx_mm7_QueryStatusReq_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_QueryStatusReq_s* zx_DEEP_CLONE_mm7_QueryStatusReq(struct zx_ctx* c, struct zx_mm7_QueryStatusReq_s* x, int dup_strs);
@@ -1519,11 +1414,11 @@ void zx_mm7_QueryStatusReq_ADD_VASID(struct zx_mm7_QueryStatusReq_s* x, int n, s
 void zx_mm7_QueryStatusReq_ADD_MessageID(struct zx_mm7_QueryStatusReq_s* x, int n, struct zx_elem_s* z);
 
 void zx_mm7_QueryStatusReq_DEL_TransactionID(struct zx_mm7_QueryStatusReq_s* x, int n);
-void zx_mm7_QueryStatusReq_DEL_MessageType(struct zx_mm7_QueryStatusReq_s* x, int n);
-void zx_mm7_QueryStatusReq_DEL_MM7Version(struct zx_mm7_QueryStatusReq_s* x, int n);
-void zx_mm7_QueryStatusReq_DEL_VASPID(struct zx_mm7_QueryStatusReq_s* x, int n);
-void zx_mm7_QueryStatusReq_DEL_VASID(struct zx_mm7_QueryStatusReq_s* x, int n);
-void zx_mm7_QueryStatusReq_DEL_MessageID(struct zx_mm7_QueryStatusReq_s* x, int n);
+void zx_mm7_QueryStatusReq_DEL_MessageType(struct zx_mm7_QueryStatusReq_s* x,int n);
+void zx_mm7_QueryStatusReq_DEL_MM7Version(struct zx_mm7_QueryStatusReq_s* x,int n);
+void zx_mm7_QueryStatusReq_DEL_VASPID(struct zx_mm7_QueryStatusReq_s* x,int n);
+void zx_mm7_QueryStatusReq_DEL_VASID(struct zx_mm7_QueryStatusReq_s* x,int n);
+void zx_mm7_QueryStatusReq_DEL_MessageID(struct zx_mm7_QueryStatusReq_s* x,int n);
 
 void zx_mm7_QueryStatusReq_REV_TransactionID(struct zx_mm7_QueryStatusReq_s* x);
 void zx_mm7_QueryStatusReq_REV_MessageType(struct zx_mm7_QueryStatusReq_s* x);
@@ -1538,7 +1433,6 @@ void zx_mm7_QueryStatusReq_REV_MessageID(struct zx_mm7_QueryStatusReq_s* x);
 #ifndef zx_mm7_QueryStatusRsp_EXT
 #define zx_mm7_QueryStatusRsp_EXT
 #endif
-
 struct zx_mm7_QueryStatusRsp_s {
   ZX_ELEM_EXT
   zx_mm7_QueryStatusRsp_EXT
@@ -1551,12 +1445,8 @@ struct zx_mm7_QueryStatusRsp_s {
 };
 
 #define zx_NEW_mm7_QueryStatusRsp(c, father) (struct zx_mm7_QueryStatusRsp_s*)zx_new_elem((c),(father),zx_mm7_QueryStatusRsp_ELEM)
-
 int zx_DEC_ATTR_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusRsp_s* x);
 int zx_DEC_ELEM_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusRsp_s* x);
-int zx_LEN_SO_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusRsp_s* x);
-char* zx_ENC_SO_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusRsp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusRsp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_QueryStatusRsp_s* zx_DEEP_CLONE_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusRsp_s* x, int dup_strs);
@@ -1611,10 +1501,10 @@ void zx_mm7_QueryStatusRsp_ADD_StatusText(struct zx_mm7_QueryStatusRsp_s* x, int
 void zx_mm7_QueryStatusRsp_ADD_Details(struct zx_mm7_QueryStatusRsp_s* x, int n, struct zx_mm7_Details_s* z);
 
 void zx_mm7_QueryStatusRsp_DEL_TransactionID(struct zx_mm7_QueryStatusRsp_s* x, int n);
-void zx_mm7_QueryStatusRsp_DEL_MessageType(struct zx_mm7_QueryStatusRsp_s* x, int n);
-void zx_mm7_QueryStatusRsp_DEL_MM7Version(struct zx_mm7_QueryStatusRsp_s* x, int n);
-void zx_mm7_QueryStatusRsp_DEL_StatusCode(struct zx_mm7_QueryStatusRsp_s* x, int n);
-void zx_mm7_QueryStatusRsp_DEL_StatusText(struct zx_mm7_QueryStatusRsp_s* x, int n);
+void zx_mm7_QueryStatusRsp_DEL_MessageType(struct zx_mm7_QueryStatusRsp_s* x,int n);
+void zx_mm7_QueryStatusRsp_DEL_MM7Version(struct zx_mm7_QueryStatusRsp_s* x,int n);
+void zx_mm7_QueryStatusRsp_DEL_StatusCode(struct zx_mm7_QueryStatusRsp_s* x,int n);
+void zx_mm7_QueryStatusRsp_DEL_StatusText(struct zx_mm7_QueryStatusRsp_s* x,int n);
 void zx_mm7_QueryStatusRsp_DEL_Details(struct zx_mm7_QueryStatusRsp_s* x, int n);
 
 void zx_mm7_QueryStatusRsp_REV_TransactionID(struct zx_mm7_QueryStatusRsp_s* x);
@@ -1630,7 +1520,6 @@ void zx_mm7_QueryStatusRsp_REV_Details(struct zx_mm7_QueryStatusRsp_s* x);
 #ifndef zx_mm7_RFC2822Address_EXT
 #define zx_mm7_RFC2822Address_EXT
 #endif
-
 struct zx_mm7_RFC2822Address_s {
   ZX_ELEM_EXT
   zx_mm7_RFC2822Address_EXT
@@ -1640,12 +1529,8 @@ struct zx_mm7_RFC2822Address_s {
 };
 
 #define zx_NEW_mm7_RFC2822Address(c, father) (struct zx_mm7_RFC2822Address_s*)zx_new_elem((c),(father),zx_mm7_RFC2822Address_ELEM)
-
 int zx_DEC_ATTR_mm7_RFC2822Address(struct zx_ctx* c, struct zx_mm7_RFC2822Address_s* x);
 int zx_DEC_ELEM_mm7_RFC2822Address(struct zx_ctx* c, struct zx_mm7_RFC2822Address_s* x);
-int zx_LEN_SO_mm7_RFC2822Address(struct zx_ctx* c, struct zx_mm7_RFC2822Address_s* x);
-char* zx_ENC_SO_mm7_RFC2822Address(struct zx_ctx* c, struct zx_mm7_RFC2822Address_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_RFC2822Address(struct zx_ctx* c, struct zx_mm7_RFC2822Address_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_RFC2822Address_s* zx_DEEP_CLONE_mm7_RFC2822Address(struct zx_ctx* c, struct zx_mm7_RFC2822Address_s* x, int dup_strs);
@@ -1677,7 +1562,6 @@ void zx_mm7_RFC2822Address_PUT_id(struct zx_mm7_RFC2822Address_s* x, struct zx_a
 #ifndef zx_mm7_RSErrorRsp_EXT
 #define zx_mm7_RSErrorRsp_EXT
 #endif
-
 struct zx_mm7_RSErrorRsp_s {
   ZX_ELEM_EXT
   zx_mm7_RSErrorRsp_EXT
@@ -1687,12 +1571,8 @@ struct zx_mm7_RSErrorRsp_s {
 };
 
 #define zx_NEW_mm7_RSErrorRsp(c, father) (struct zx_mm7_RSErrorRsp_s*)zx_new_elem((c),(father),zx_mm7_RSErrorRsp_ELEM)
-
 int zx_DEC_ATTR_mm7_RSErrorRsp(struct zx_ctx* c, struct zx_mm7_RSErrorRsp_s* x);
 int zx_DEC_ELEM_mm7_RSErrorRsp(struct zx_ctx* c, struct zx_mm7_RSErrorRsp_s* x);
-int zx_LEN_SO_mm7_RSErrorRsp(struct zx_ctx* c, struct zx_mm7_RSErrorRsp_s* x);
-char* zx_ENC_SO_mm7_RSErrorRsp(struct zx_ctx* c, struct zx_mm7_RSErrorRsp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_RSErrorRsp(struct zx_ctx* c, struct zx_mm7_RSErrorRsp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_RSErrorRsp_s* zx_DEEP_CLONE_mm7_RSErrorRsp(struct zx_ctx* c, struct zx_mm7_RSErrorRsp_s* x, int dup_strs);
@@ -1728,7 +1608,7 @@ void zx_mm7_RSErrorRsp_ADD_MM7Version(struct zx_mm7_RSErrorRsp_s* x, int n, stru
 void zx_mm7_RSErrorRsp_ADD_Status(struct zx_mm7_RSErrorRsp_s* x, int n, struct zx_mm7_Status_s* z);
 void zx_mm7_RSErrorRsp_ADD_Extension(struct zx_mm7_RSErrorRsp_s* x, int n, struct zx_mm7_Extension_s* z);
 
-void zx_mm7_RSErrorRsp_DEL_MM7Version(struct zx_mm7_RSErrorRsp_s* x, int n);
+void zx_mm7_RSErrorRsp_DEL_MM7Version(struct zx_mm7_RSErrorRsp_s* x,int n);
 void zx_mm7_RSErrorRsp_DEL_Status(struct zx_mm7_RSErrorRsp_s* x, int n);
 void zx_mm7_RSErrorRsp_DEL_Extension(struct zx_mm7_RSErrorRsp_s* x, int n);
 
@@ -1742,7 +1622,6 @@ void zx_mm7_RSErrorRsp_REV_Extension(struct zx_mm7_RSErrorRsp_s* x);
 #ifndef zx_mm7_ReadReplyReq_EXT
 #define zx_mm7_ReadReplyReq_EXT
 #endif
-
 struct zx_mm7_ReadReplyReq_s {
   ZX_ELEM_EXT
   zx_mm7_ReadReplyReq_EXT
@@ -1761,12 +1640,8 @@ struct zx_mm7_ReadReplyReq_s {
 };
 
 #define zx_NEW_mm7_ReadReplyReq(c, father) (struct zx_mm7_ReadReplyReq_s*)zx_new_elem((c),(father),zx_mm7_ReadReplyReq_ELEM)
-
 int zx_DEC_ATTR_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_mm7_ReadReplyReq_s* x);
 int zx_DEC_ELEM_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_mm7_ReadReplyReq_s* x);
-int zx_LEN_SO_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_mm7_ReadReplyReq_s* x);
-char* zx_ENC_SO_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_mm7_ReadReplyReq_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_mm7_ReadReplyReq_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_ReadReplyReq_s* zx_DEEP_CLONE_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_mm7_ReadReplyReq_s* x, int dup_strs);
@@ -1856,18 +1731,18 @@ void zx_mm7_ReadReplyReq_ADD_ApplicID(struct zx_mm7_ReadReplyReq_s* x, int n, st
 void zx_mm7_ReadReplyReq_ADD_ReplyApplicID(struct zx_mm7_ReadReplyReq_s* x, int n, struct zx_elem_s* z);
 void zx_mm7_ReadReplyReq_ADD_AuxApplicInfo(struct zx_mm7_ReadReplyReq_s* x, int n, struct zx_elem_s* z);
 
-void zx_mm7_ReadReplyReq_DEL_MM7Version(struct zx_mm7_ReadReplyReq_s* x, int n);
-void zx_mm7_ReadReplyReq_DEL_MMSRelayServerID(struct zx_mm7_ReadReplyReq_s* x, int n);
+void zx_mm7_ReadReplyReq_DEL_MM7Version(struct zx_mm7_ReadReplyReq_s* x,int n);
+void zx_mm7_ReadReplyReq_DEL_MMSRelayServerID(struct zx_mm7_ReadReplyReq_s* x,int n);
 void zx_mm7_ReadReplyReq_DEL_Extension(struct zx_mm7_ReadReplyReq_s* x, int n);
-void zx_mm7_ReadReplyReq_DEL_MessageID(struct zx_mm7_ReadReplyReq_s* x, int n);
+void zx_mm7_ReadReplyReq_DEL_MessageID(struct zx_mm7_ReadReplyReq_s* x,int n);
 void zx_mm7_ReadReplyReq_DEL_Recipient(struct zx_mm7_ReadReplyReq_s* x, int n);
 void zx_mm7_ReadReplyReq_DEL_Sender(struct zx_mm7_ReadReplyReq_s* x, int n);
-void zx_mm7_ReadReplyReq_DEL_TimeStamp(struct zx_mm7_ReadReplyReq_s* x, int n);
-void zx_mm7_ReadReplyReq_DEL_MMStatus(struct zx_mm7_ReadReplyReq_s* x, int n);
-void zx_mm7_ReadReplyReq_DEL_StatusText(struct zx_mm7_ReadReplyReq_s* x, int n);
-void zx_mm7_ReadReplyReq_DEL_ApplicID(struct zx_mm7_ReadReplyReq_s* x, int n);
-void zx_mm7_ReadReplyReq_DEL_ReplyApplicID(struct zx_mm7_ReadReplyReq_s* x, int n);
-void zx_mm7_ReadReplyReq_DEL_AuxApplicInfo(struct zx_mm7_ReadReplyReq_s* x, int n);
+void zx_mm7_ReadReplyReq_DEL_TimeStamp(struct zx_mm7_ReadReplyReq_s* x,int n);
+void zx_mm7_ReadReplyReq_DEL_MMStatus(struct zx_mm7_ReadReplyReq_s* x,int n);
+void zx_mm7_ReadReplyReq_DEL_StatusText(struct zx_mm7_ReadReplyReq_s* x,int n);
+void zx_mm7_ReadReplyReq_DEL_ApplicID(struct zx_mm7_ReadReplyReq_s* x,int n);
+void zx_mm7_ReadReplyReq_DEL_ReplyApplicID(struct zx_mm7_ReadReplyReq_s* x,int n);
+void zx_mm7_ReadReplyReq_DEL_AuxApplicInfo(struct zx_mm7_ReadReplyReq_s* x,int n);
 
 void zx_mm7_ReadReplyReq_REV_MM7Version(struct zx_mm7_ReadReplyReq_s* x);
 void zx_mm7_ReadReplyReq_REV_MMSRelayServerID(struct zx_mm7_ReadReplyReq_s* x);
@@ -1888,7 +1763,6 @@ void zx_mm7_ReadReplyReq_REV_AuxApplicInfo(struct zx_mm7_ReadReplyReq_s* x);
 #ifndef zx_mm7_ReadReplyRsp_EXT
 #define zx_mm7_ReadReplyRsp_EXT
 #endif
-
 struct zx_mm7_ReadReplyRsp_s {
   ZX_ELEM_EXT
   zx_mm7_ReadReplyRsp_EXT
@@ -1898,12 +1772,8 @@ struct zx_mm7_ReadReplyRsp_s {
 };
 
 #define zx_NEW_mm7_ReadReplyRsp(c, father) (struct zx_mm7_ReadReplyRsp_s*)zx_new_elem((c),(father),zx_mm7_ReadReplyRsp_ELEM)
-
 int zx_DEC_ATTR_mm7_ReadReplyRsp(struct zx_ctx* c, struct zx_mm7_ReadReplyRsp_s* x);
 int zx_DEC_ELEM_mm7_ReadReplyRsp(struct zx_ctx* c, struct zx_mm7_ReadReplyRsp_s* x);
-int zx_LEN_SO_mm7_ReadReplyRsp(struct zx_ctx* c, struct zx_mm7_ReadReplyRsp_s* x);
-char* zx_ENC_SO_mm7_ReadReplyRsp(struct zx_ctx* c, struct zx_mm7_ReadReplyRsp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_ReadReplyRsp(struct zx_ctx* c, struct zx_mm7_ReadReplyRsp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_ReadReplyRsp_s* zx_DEEP_CLONE_mm7_ReadReplyRsp(struct zx_ctx* c, struct zx_mm7_ReadReplyRsp_s* x, int dup_strs);
@@ -1939,7 +1809,7 @@ void zx_mm7_ReadReplyRsp_ADD_MM7Version(struct zx_mm7_ReadReplyRsp_s* x, int n, 
 void zx_mm7_ReadReplyRsp_ADD_Status(struct zx_mm7_ReadReplyRsp_s* x, int n, struct zx_mm7_Status_s* z);
 void zx_mm7_ReadReplyRsp_ADD_Extension(struct zx_mm7_ReadReplyRsp_s* x, int n, struct zx_mm7_Extension_s* z);
 
-void zx_mm7_ReadReplyRsp_DEL_MM7Version(struct zx_mm7_ReadReplyRsp_s* x, int n);
+void zx_mm7_ReadReplyRsp_DEL_MM7Version(struct zx_mm7_ReadReplyRsp_s* x,int n);
 void zx_mm7_ReadReplyRsp_DEL_Status(struct zx_mm7_ReadReplyRsp_s* x, int n);
 void zx_mm7_ReadReplyRsp_DEL_Extension(struct zx_mm7_ReadReplyRsp_s* x, int n);
 
@@ -1953,7 +1823,6 @@ void zx_mm7_ReadReplyRsp_REV_Extension(struct zx_mm7_ReadReplyRsp_s* x);
 #ifndef zx_mm7_Recipient_EXT
 #define zx_mm7_Recipient_EXT
 #endif
-
 struct zx_mm7_Recipient_s {
   ZX_ELEM_EXT
   zx_mm7_Recipient_EXT
@@ -1964,12 +1833,8 @@ struct zx_mm7_Recipient_s {
 };
 
 #define zx_NEW_mm7_Recipient(c, father) (struct zx_mm7_Recipient_s*)zx_new_elem((c),(father),zx_mm7_Recipient_ELEM)
-
 int zx_DEC_ATTR_mm7_Recipient(struct zx_ctx* c, struct zx_mm7_Recipient_s* x);
 int zx_DEC_ELEM_mm7_Recipient(struct zx_ctx* c, struct zx_mm7_Recipient_s* x);
-int zx_LEN_SO_mm7_Recipient(struct zx_ctx* c, struct zx_mm7_Recipient_s* x);
-char* zx_ENC_SO_mm7_Recipient(struct zx_ctx* c, struct zx_mm7_Recipient_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_Recipient(struct zx_ctx* c, struct zx_mm7_Recipient_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_Recipient_s* zx_DEEP_CLONE_mm7_Recipient(struct zx_ctx* c, struct zx_mm7_Recipient_s* x, int dup_strs);
@@ -2027,7 +1892,6 @@ void zx_mm7_Recipient_REV_Extension(struct zx_mm7_Recipient_s* x);
 #ifndef zx_mm7_Recipients_EXT
 #define zx_mm7_Recipients_EXT
 #endif
-
 struct zx_mm7_Recipients_s {
   ZX_ELEM_EXT
   zx_mm7_Recipients_EXT
@@ -2037,12 +1901,8 @@ struct zx_mm7_Recipients_s {
 };
 
 #define zx_NEW_mm7_Recipients(c, father) (struct zx_mm7_Recipients_s*)zx_new_elem((c),(father),zx_mm7_Recipients_ELEM)
-
 int zx_DEC_ATTR_mm7_Recipients(struct zx_ctx* c, struct zx_mm7_Recipients_s* x);
 int zx_DEC_ELEM_mm7_Recipients(struct zx_ctx* c, struct zx_mm7_Recipients_s* x);
-int zx_LEN_SO_mm7_Recipients(struct zx_ctx* c, struct zx_mm7_Recipients_s* x);
-char* zx_ENC_SO_mm7_Recipients(struct zx_ctx* c, struct zx_mm7_Recipients_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_Recipients(struct zx_ctx* c, struct zx_mm7_Recipients_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_Recipients_s* zx_DEEP_CLONE_mm7_Recipients(struct zx_ctx* c, struct zx_mm7_Recipients_s* x, int dup_strs);
@@ -2092,7 +1952,6 @@ void zx_mm7_Recipients_REV_Bcc(struct zx_mm7_Recipients_s* x);
 #ifndef zx_mm7_ReplaceReq_EXT
 #define zx_mm7_ReplaceReq_EXT
 #endif
-
 struct zx_mm7_ReplaceReq_s {
   ZX_ELEM_EXT
   zx_mm7_ReplaceReq_EXT
@@ -2116,12 +1975,8 @@ struct zx_mm7_ReplaceReq_s {
 };
 
 #define zx_NEW_mm7_ReplaceReq(c, father) (struct zx_mm7_ReplaceReq_s*)zx_new_elem((c),(father),zx_mm7_ReplaceReq_ELEM)
-
 int zx_DEC_ATTR_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x);
 int zx_DEC_ELEM_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x);
-int zx_LEN_SO_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x);
-char* zx_ENC_SO_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_ReplaceReq_s* zx_DEEP_CLONE_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x, int dup_strs);
@@ -2241,20 +2096,20 @@ void zx_mm7_ReplaceReq_ADD_Content(struct zx_mm7_ReplaceReq_s* x, int n, struct 
 void zx_mm7_ReplaceReq_ADD_AdditionalInformation(struct zx_mm7_ReplaceReq_s* x, int n, struct zx_mm7_AdditionalInformation_s* z);
 void zx_mm7_ReplaceReq_ADD_MessageExtraData(struct zx_mm7_ReplaceReq_s* x, int n, struct zx_mm7_MessageExtraData_s* z);
 
-void zx_mm7_ReplaceReq_DEL_MM7Version(struct zx_mm7_ReplaceReq_s* x, int n);
+void zx_mm7_ReplaceReq_DEL_MM7Version(struct zx_mm7_ReplaceReq_s* x,int n);
 void zx_mm7_ReplaceReq_DEL_SenderIdentification(struct zx_mm7_ReplaceReq_s* x, int n);
 void zx_mm7_ReplaceReq_DEL_Extension(struct zx_mm7_ReplaceReq_s* x, int n);
-void zx_mm7_ReplaceReq_DEL_MessageID(struct zx_mm7_ReplaceReq_s* x, int n);
+void zx_mm7_ReplaceReq_DEL_MessageID(struct zx_mm7_ReplaceReq_s* x,int n);
 void zx_mm7_ReplaceReq_DEL_ServiceCode(struct zx_mm7_ReplaceReq_s* x, int n);
-void zx_mm7_ReplaceReq_DEL_TimeStamp(struct zx_mm7_ReplaceReq_s* x, int n);
-void zx_mm7_ReplaceReq_DEL_ReadReply(struct zx_mm7_ReplaceReq_s* x, int n);
-void zx_mm7_ReplaceReq_DEL_EarliestDeliveryTime(struct zx_mm7_ReplaceReq_s* x, int n);
-void zx_mm7_ReplaceReq_DEL_DistributionIndicator(struct zx_mm7_ReplaceReq_s* x, int n);
-void zx_mm7_ReplaceReq_DEL_ContentClass(struct zx_mm7_ReplaceReq_s* x, int n);
-void zx_mm7_ReplaceReq_DEL_DRMContent(struct zx_mm7_ReplaceReq_s* x, int n);
-void zx_mm7_ReplaceReq_DEL_ApplicID(struct zx_mm7_ReplaceReq_s* x, int n);
-void zx_mm7_ReplaceReq_DEL_ReplyApplicID(struct zx_mm7_ReplaceReq_s* x, int n);
-void zx_mm7_ReplaceReq_DEL_AuxApplicInfo(struct zx_mm7_ReplaceReq_s* x, int n);
+void zx_mm7_ReplaceReq_DEL_TimeStamp(struct zx_mm7_ReplaceReq_s* x,int n);
+void zx_mm7_ReplaceReq_DEL_ReadReply(struct zx_mm7_ReplaceReq_s* x,int n);
+void zx_mm7_ReplaceReq_DEL_EarliestDeliveryTime(struct zx_mm7_ReplaceReq_s* x,int n);
+void zx_mm7_ReplaceReq_DEL_DistributionIndicator(struct zx_mm7_ReplaceReq_s* x,int n);
+void zx_mm7_ReplaceReq_DEL_ContentClass(struct zx_mm7_ReplaceReq_s* x,int n);
+void zx_mm7_ReplaceReq_DEL_DRMContent(struct zx_mm7_ReplaceReq_s* x,int n);
+void zx_mm7_ReplaceReq_DEL_ApplicID(struct zx_mm7_ReplaceReq_s* x,int n);
+void zx_mm7_ReplaceReq_DEL_ReplyApplicID(struct zx_mm7_ReplaceReq_s* x,int n);
+void zx_mm7_ReplaceReq_DEL_AuxApplicInfo(struct zx_mm7_ReplaceReq_s* x,int n);
 void zx_mm7_ReplaceReq_DEL_Content(struct zx_mm7_ReplaceReq_s* x, int n);
 void zx_mm7_ReplaceReq_DEL_AdditionalInformation(struct zx_mm7_ReplaceReq_s* x, int n);
 void zx_mm7_ReplaceReq_DEL_MessageExtraData(struct zx_mm7_ReplaceReq_s* x, int n);
@@ -2283,7 +2138,6 @@ void zx_mm7_ReplaceReq_REV_MessageExtraData(struct zx_mm7_ReplaceReq_s* x);
 #ifndef zx_mm7_ReplaceRsp_EXT
 #define zx_mm7_ReplaceRsp_EXT
 #endif
-
 struct zx_mm7_ReplaceRsp_s {
   ZX_ELEM_EXT
   zx_mm7_ReplaceRsp_EXT
@@ -2293,12 +2147,8 @@ struct zx_mm7_ReplaceRsp_s {
 };
 
 #define zx_NEW_mm7_ReplaceRsp(c, father) (struct zx_mm7_ReplaceRsp_s*)zx_new_elem((c),(father),zx_mm7_ReplaceRsp_ELEM)
-
 int zx_DEC_ATTR_mm7_ReplaceRsp(struct zx_ctx* c, struct zx_mm7_ReplaceRsp_s* x);
 int zx_DEC_ELEM_mm7_ReplaceRsp(struct zx_ctx* c, struct zx_mm7_ReplaceRsp_s* x);
-int zx_LEN_SO_mm7_ReplaceRsp(struct zx_ctx* c, struct zx_mm7_ReplaceRsp_s* x);
-char* zx_ENC_SO_mm7_ReplaceRsp(struct zx_ctx* c, struct zx_mm7_ReplaceRsp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_ReplaceRsp(struct zx_ctx* c, struct zx_mm7_ReplaceRsp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_ReplaceRsp_s* zx_DEEP_CLONE_mm7_ReplaceRsp(struct zx_ctx* c, struct zx_mm7_ReplaceRsp_s* x, int dup_strs);
@@ -2334,7 +2184,7 @@ void zx_mm7_ReplaceRsp_ADD_MM7Version(struct zx_mm7_ReplaceRsp_s* x, int n, stru
 void zx_mm7_ReplaceRsp_ADD_Status(struct zx_mm7_ReplaceRsp_s* x, int n, struct zx_mm7_Status_s* z);
 void zx_mm7_ReplaceRsp_ADD_Extension(struct zx_mm7_ReplaceRsp_s* x, int n, struct zx_mm7_Extension_s* z);
 
-void zx_mm7_ReplaceRsp_DEL_MM7Version(struct zx_mm7_ReplaceRsp_s* x, int n);
+void zx_mm7_ReplaceRsp_DEL_MM7Version(struct zx_mm7_ReplaceRsp_s* x,int n);
 void zx_mm7_ReplaceRsp_DEL_Status(struct zx_mm7_ReplaceRsp_s* x, int n);
 void zx_mm7_ReplaceRsp_DEL_Extension(struct zx_mm7_ReplaceRsp_s* x, int n);
 
@@ -2348,7 +2198,6 @@ void zx_mm7_ReplaceRsp_REV_Extension(struct zx_mm7_ReplaceRsp_s* x);
 #ifndef zx_mm7_ReplyCharging_EXT
 #define zx_mm7_ReplyCharging_EXT
 #endif
-
 struct zx_mm7_ReplyCharging_s {
   ZX_ELEM_EXT
   zx_mm7_ReplyCharging_EXT
@@ -2357,12 +2206,8 @@ struct zx_mm7_ReplyCharging_s {
 };
 
 #define zx_NEW_mm7_ReplyCharging(c, father) (struct zx_mm7_ReplyCharging_s*)zx_new_elem((c),(father),zx_mm7_ReplyCharging_ELEM)
-
 int zx_DEC_ATTR_mm7_ReplyCharging(struct zx_ctx* c, struct zx_mm7_ReplyCharging_s* x);
 int zx_DEC_ELEM_mm7_ReplyCharging(struct zx_ctx* c, struct zx_mm7_ReplyCharging_s* x);
-int zx_LEN_SO_mm7_ReplyCharging(struct zx_ctx* c, struct zx_mm7_ReplyCharging_s* x);
-char* zx_ENC_SO_mm7_ReplyCharging(struct zx_ctx* c, struct zx_mm7_ReplyCharging_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_ReplyCharging(struct zx_ctx* c, struct zx_mm7_ReplyCharging_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_ReplyCharging_s* zx_DEEP_CLONE_mm7_ReplyCharging(struct zx_ctx* c, struct zx_mm7_ReplyCharging_s* x, int dup_strs);
@@ -2392,7 +2237,6 @@ void zx_mm7_ReplyCharging_PUT_replyDeadline(struct zx_mm7_ReplyCharging_s* x, st
 #ifndef zx_mm7_Sender_EXT
 #define zx_mm7_Sender_EXT
 #endif
-
 struct zx_mm7_Sender_s {
   ZX_ELEM_EXT
   zx_mm7_Sender_EXT
@@ -2403,12 +2247,8 @@ struct zx_mm7_Sender_s {
 };
 
 #define zx_NEW_mm7_Sender(c, father) (struct zx_mm7_Sender_s*)zx_new_elem((c),(father),zx_mm7_Sender_ELEM)
-
 int zx_DEC_ATTR_mm7_Sender(struct zx_ctx* c, struct zx_mm7_Sender_s* x);
 int zx_DEC_ELEM_mm7_Sender(struct zx_ctx* c, struct zx_mm7_Sender_s* x);
-int zx_LEN_SO_mm7_Sender(struct zx_ctx* c, struct zx_mm7_Sender_s* x);
-char* zx_ENC_SO_mm7_Sender(struct zx_ctx* c, struct zx_mm7_Sender_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_Sender(struct zx_ctx* c, struct zx_mm7_Sender_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_Sender_s* zx_DEEP_CLONE_mm7_Sender(struct zx_ctx* c, struct zx_mm7_Sender_s* x, int dup_strs);
@@ -2466,7 +2306,6 @@ void zx_mm7_Sender_REV_Extension(struct zx_mm7_Sender_s* x);
 #ifndef zx_mm7_SenderAddress_EXT
 #define zx_mm7_SenderAddress_EXT
 #endif
-
 struct zx_mm7_SenderAddress_s {
   ZX_ELEM_EXT
   zx_mm7_SenderAddress_EXT
@@ -2477,12 +2316,8 @@ struct zx_mm7_SenderAddress_s {
 };
 
 #define zx_NEW_mm7_SenderAddress(c, father) (struct zx_mm7_SenderAddress_s*)zx_new_elem((c),(father),zx_mm7_SenderAddress_ELEM)
-
 int zx_DEC_ATTR_mm7_SenderAddress(struct zx_ctx* c, struct zx_mm7_SenderAddress_s* x);
 int zx_DEC_ELEM_mm7_SenderAddress(struct zx_ctx* c, struct zx_mm7_SenderAddress_s* x);
-int zx_LEN_SO_mm7_SenderAddress(struct zx_ctx* c, struct zx_mm7_SenderAddress_s* x);
-char* zx_ENC_SO_mm7_SenderAddress(struct zx_ctx* c, struct zx_mm7_SenderAddress_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_SenderAddress(struct zx_ctx* c, struct zx_mm7_SenderAddress_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_SenderAddress_s* zx_DEEP_CLONE_mm7_SenderAddress(struct zx_ctx* c, struct zx_mm7_SenderAddress_s* x, int dup_strs);
@@ -2540,7 +2375,6 @@ void zx_mm7_SenderAddress_REV_Extension(struct zx_mm7_SenderAddress_s* x);
 #ifndef zx_mm7_SenderIdentification_EXT
 #define zx_mm7_SenderIdentification_EXT
 #endif
-
 struct zx_mm7_SenderIdentification_s {
   ZX_ELEM_EXT
   zx_mm7_SenderIdentification_EXT
@@ -2550,12 +2384,8 @@ struct zx_mm7_SenderIdentification_s {
 };
 
 #define zx_NEW_mm7_SenderIdentification(c, father) (struct zx_mm7_SenderIdentification_s*)zx_new_elem((c),(father),zx_mm7_SenderIdentification_ELEM)
-
 int zx_DEC_ATTR_mm7_SenderIdentification(struct zx_ctx* c, struct zx_mm7_SenderIdentification_s* x);
 int zx_DEC_ELEM_mm7_SenderIdentification(struct zx_ctx* c, struct zx_mm7_SenderIdentification_s* x);
-int zx_LEN_SO_mm7_SenderIdentification(struct zx_ctx* c, struct zx_mm7_SenderIdentification_s* x);
-char* zx_ENC_SO_mm7_SenderIdentification(struct zx_ctx* c, struct zx_mm7_SenderIdentification_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_SenderIdentification(struct zx_ctx* c, struct zx_mm7_SenderIdentification_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_SenderIdentification_s* zx_DEEP_CLONE_mm7_SenderIdentification(struct zx_ctx* c, struct zx_mm7_SenderIdentification_s* x, int dup_strs);
@@ -2591,8 +2421,8 @@ void zx_mm7_SenderIdentification_ADD_VASPID(struct zx_mm7_SenderIdentification_s
 void zx_mm7_SenderIdentification_ADD_VASID(struct zx_mm7_SenderIdentification_s* x, int n, struct zx_elem_s* z);
 void zx_mm7_SenderIdentification_ADD_SenderAddress(struct zx_mm7_SenderIdentification_s* x, int n, struct zx_mm7_SenderAddress_s* z);
 
-void zx_mm7_SenderIdentification_DEL_VASPID(struct zx_mm7_SenderIdentification_s* x, int n);
-void zx_mm7_SenderIdentification_DEL_VASID(struct zx_mm7_SenderIdentification_s* x, int n);
+void zx_mm7_SenderIdentification_DEL_VASPID(struct zx_mm7_SenderIdentification_s* x,int n);
+void zx_mm7_SenderIdentification_DEL_VASID(struct zx_mm7_SenderIdentification_s* x,int n);
 void zx_mm7_SenderIdentification_DEL_SenderAddress(struct zx_mm7_SenderIdentification_s* x, int n);
 
 void zx_mm7_SenderIdentification_REV_VASPID(struct zx_mm7_SenderIdentification_s* x);
@@ -2605,19 +2435,14 @@ void zx_mm7_SenderIdentification_REV_SenderAddress(struct zx_mm7_SenderIdentific
 #ifndef zx_mm7_ServiceCode_EXT
 #define zx_mm7_ServiceCode_EXT
 #endif
-
 struct zx_mm7_ServiceCode_s {
   ZX_ELEM_EXT
   zx_mm7_ServiceCode_EXT
 };
 
 #define zx_NEW_mm7_ServiceCode(c, father) (struct zx_mm7_ServiceCode_s*)zx_new_elem((c),(father),zx_mm7_ServiceCode_ELEM)
-
 int zx_DEC_ATTR_mm7_ServiceCode(struct zx_ctx* c, struct zx_mm7_ServiceCode_s* x);
 int zx_DEC_ELEM_mm7_ServiceCode(struct zx_ctx* c, struct zx_mm7_ServiceCode_s* x);
-int zx_LEN_SO_mm7_ServiceCode(struct zx_ctx* c, struct zx_mm7_ServiceCode_s* x);
-char* zx_ENC_SO_mm7_ServiceCode(struct zx_ctx* c, struct zx_mm7_ServiceCode_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_ServiceCode(struct zx_ctx* c, struct zx_mm7_ServiceCode_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_ServiceCode_s* zx_DEEP_CLONE_mm7_ServiceCode(struct zx_ctx* c, struct zx_mm7_ServiceCode_s* x, int dup_strs);
@@ -2643,7 +2468,6 @@ int zx_WALK_WO_mm7_ServiceCode(struct zx_ctx* c, struct zx_mm7_ServiceCode_s* x,
 #ifndef zx_mm7_ShortCode_EXT
 #define zx_mm7_ShortCode_EXT
 #endif
-
 struct zx_mm7_ShortCode_s {
   ZX_ELEM_EXT
   zx_mm7_ShortCode_EXT
@@ -2653,12 +2477,8 @@ struct zx_mm7_ShortCode_s {
 };
 
 #define zx_NEW_mm7_ShortCode(c, father) (struct zx_mm7_ShortCode_s*)zx_new_elem((c),(father),zx_mm7_ShortCode_ELEM)
-
 int zx_DEC_ATTR_mm7_ShortCode(struct zx_ctx* c, struct zx_mm7_ShortCode_s* x);
 int zx_DEC_ELEM_mm7_ShortCode(struct zx_ctx* c, struct zx_mm7_ShortCode_s* x);
-int zx_LEN_SO_mm7_ShortCode(struct zx_ctx* c, struct zx_mm7_ShortCode_s* x);
-char* zx_ENC_SO_mm7_ShortCode(struct zx_ctx* c, struct zx_mm7_ShortCode_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_ShortCode(struct zx_ctx* c, struct zx_mm7_ShortCode_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_ShortCode_s* zx_DEEP_CLONE_mm7_ShortCode(struct zx_ctx* c, struct zx_mm7_ShortCode_s* x, int dup_strs);
@@ -2690,7 +2510,6 @@ void zx_mm7_ShortCode_PUT_id(struct zx_mm7_ShortCode_s* x, struct zx_attr_s* y);
 #ifndef zx_mm7_Status_EXT
 #define zx_mm7_Status_EXT
 #endif
-
 struct zx_mm7_Status_s {
   ZX_ELEM_EXT
   zx_mm7_Status_EXT
@@ -2700,12 +2519,8 @@ struct zx_mm7_Status_s {
 };
 
 #define zx_NEW_mm7_Status(c, father) (struct zx_mm7_Status_s*)zx_new_elem((c),(father),zx_mm7_Status_ELEM)
-
 int zx_DEC_ATTR_mm7_Status(struct zx_ctx* c, struct zx_mm7_Status_s* x);
 int zx_DEC_ELEM_mm7_Status(struct zx_ctx* c, struct zx_mm7_Status_s* x);
-int zx_LEN_SO_mm7_Status(struct zx_ctx* c, struct zx_mm7_Status_s* x);
-char* zx_ENC_SO_mm7_Status(struct zx_ctx* c, struct zx_mm7_Status_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_Status(struct zx_ctx* c, struct zx_mm7_Status_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_Status_s* zx_DEEP_CLONE_mm7_Status(struct zx_ctx* c, struct zx_mm7_Status_s* x, int dup_strs);
@@ -2741,8 +2556,8 @@ void zx_mm7_Status_ADD_StatusCode(struct zx_mm7_Status_s* x, int n, struct zx_el
 void zx_mm7_Status_ADD_StatusText(struct zx_mm7_Status_s* x, int n, struct zx_elem_s* z);
 void zx_mm7_Status_ADD_Details(struct zx_mm7_Status_s* x, int n, struct zx_mm7_Details_s* z);
 
-void zx_mm7_Status_DEL_StatusCode(struct zx_mm7_Status_s* x, int n);
-void zx_mm7_Status_DEL_StatusText(struct zx_mm7_Status_s* x, int n);
+void zx_mm7_Status_DEL_StatusCode(struct zx_mm7_Status_s* x,int n);
+void zx_mm7_Status_DEL_StatusText(struct zx_mm7_Status_s* x,int n);
 void zx_mm7_Status_DEL_Details(struct zx_mm7_Status_s* x, int n);
 
 void zx_mm7_Status_REV_StatusCode(struct zx_mm7_Status_s* x);
@@ -2755,7 +2570,6 @@ void zx_mm7_Status_REV_Details(struct zx_mm7_Status_s* x);
 #ifndef zx_mm7_SubmitReq_EXT
 #define zx_mm7_SubmitReq_EXT
 #endif
-
 struct zx_mm7_SubmitReq_s {
   ZX_ELEM_EXT
   zx_mm7_SubmitReq_EXT
@@ -2791,12 +2605,8 @@ struct zx_mm7_SubmitReq_s {
 };
 
 #define zx_NEW_mm7_SubmitReq(c, father) (struct zx_mm7_SubmitReq_s*)zx_new_elem((c),(father),zx_mm7_SubmitReq_ELEM)
-
 int zx_DEC_ATTR_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x);
 int zx_DEC_ELEM_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x);
-int zx_LEN_SO_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x);
-char* zx_ENC_SO_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_SubmitReq_s* zx_DEEP_CLONE_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x, int dup_strs);
@@ -2988,32 +2798,32 @@ void zx_mm7_SubmitReq_ADD_Content(struct zx_mm7_SubmitReq_s* x, int n, struct zx
 void zx_mm7_SubmitReq_ADD_AdditionalInformation(struct zx_mm7_SubmitReq_s* x, int n, struct zx_mm7_AdditionalInformation_s* z);
 void zx_mm7_SubmitReq_ADD_MessageExtraData(struct zx_mm7_SubmitReq_s* x, int n, struct zx_mm7_MessageExtraData_s* z);
 
-void zx_mm7_SubmitReq_DEL_MM7Version(struct zx_mm7_SubmitReq_s* x, int n);
+void zx_mm7_SubmitReq_DEL_MM7Version(struct zx_mm7_SubmitReq_s* x,int n);
 void zx_mm7_SubmitReq_DEL_SenderIdentification(struct zx_mm7_SubmitReq_s* x, int n);
 void zx_mm7_SubmitReq_DEL_Extension(struct zx_mm7_SubmitReq_s* x, int n);
 void zx_mm7_SubmitReq_DEL_Recipients(struct zx_mm7_SubmitReq_s* x, int n);
 void zx_mm7_SubmitReq_DEL_PreferredChannels(struct zx_mm7_SubmitReq_s* x, int n);
 void zx_mm7_SubmitReq_DEL_ServiceCode(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_LinkedID(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_MessageClass(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_TimeStamp(struct zx_mm7_SubmitReq_s* x, int n);
+void zx_mm7_SubmitReq_DEL_LinkedID(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_MessageClass(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_TimeStamp(struct zx_mm7_SubmitReq_s* x,int n);
 void zx_mm7_SubmitReq_DEL_ReplyCharging(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_EarliestDeliveryTime(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_ExpiryDate(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_DeliveryReport(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_ReadReply(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_Priority(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_Subject(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_ChargedParty(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_ChargedPartyID(struct zx_mm7_SubmitReq_s* x, int n);
+void zx_mm7_SubmitReq_DEL_EarliestDeliveryTime(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_ExpiryDate(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_DeliveryReport(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_ReadReply(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_Priority(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_Subject(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_ChargedParty(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_ChargedPartyID(struct zx_mm7_SubmitReq_s* x,int n);
 void zx_mm7_SubmitReq_DEL_ThirdPartyPayer(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_DistributionIndicator(struct zx_mm7_SubmitReq_s* x, int n);
+void zx_mm7_SubmitReq_DEL_DistributionIndicator(struct zx_mm7_SubmitReq_s* x,int n);
 void zx_mm7_SubmitReq_DEL_DeliveryCondition(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_ApplicID(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_ReplyApplicID(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_AuxApplicInfo(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_ContentClass(struct zx_mm7_SubmitReq_s* x, int n);
-void zx_mm7_SubmitReq_DEL_DRMContent(struct zx_mm7_SubmitReq_s* x, int n);
+void zx_mm7_SubmitReq_DEL_ApplicID(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_ReplyApplicID(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_AuxApplicInfo(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_ContentClass(struct zx_mm7_SubmitReq_s* x,int n);
+void zx_mm7_SubmitReq_DEL_DRMContent(struct zx_mm7_SubmitReq_s* x,int n);
 void zx_mm7_SubmitReq_DEL_Content(struct zx_mm7_SubmitReq_s* x, int n);
 void zx_mm7_SubmitReq_DEL_AdditionalInformation(struct zx_mm7_SubmitReq_s* x, int n);
 void zx_mm7_SubmitReq_DEL_MessageExtraData(struct zx_mm7_SubmitReq_s* x, int n);
@@ -3054,7 +2864,6 @@ void zx_mm7_SubmitReq_REV_MessageExtraData(struct zx_mm7_SubmitReq_s* x);
 #ifndef zx_mm7_SubmitRsp_EXT
 #define zx_mm7_SubmitRsp_EXT
 #endif
-
 struct zx_mm7_SubmitRsp_s {
   ZX_ELEM_EXT
   zx_mm7_SubmitRsp_EXT
@@ -3065,12 +2874,8 @@ struct zx_mm7_SubmitRsp_s {
 };
 
 #define zx_NEW_mm7_SubmitRsp(c, father) (struct zx_mm7_SubmitRsp_s*)zx_new_elem((c),(father),zx_mm7_SubmitRsp_ELEM)
-
 int zx_DEC_ATTR_mm7_SubmitRsp(struct zx_ctx* c, struct zx_mm7_SubmitRsp_s* x);
 int zx_DEC_ELEM_mm7_SubmitRsp(struct zx_ctx* c, struct zx_mm7_SubmitRsp_s* x);
-int zx_LEN_SO_mm7_SubmitRsp(struct zx_ctx* c, struct zx_mm7_SubmitRsp_s* x);
-char* zx_ENC_SO_mm7_SubmitRsp(struct zx_ctx* c, struct zx_mm7_SubmitRsp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_SubmitRsp(struct zx_ctx* c, struct zx_mm7_SubmitRsp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_SubmitRsp_s* zx_DEEP_CLONE_mm7_SubmitRsp(struct zx_ctx* c, struct zx_mm7_SubmitRsp_s* x, int dup_strs);
@@ -3112,10 +2917,10 @@ void zx_mm7_SubmitRsp_ADD_Status(struct zx_mm7_SubmitRsp_s* x, int n, struct zx_
 void zx_mm7_SubmitRsp_ADD_Extension(struct zx_mm7_SubmitRsp_s* x, int n, struct zx_mm7_Extension_s* z);
 void zx_mm7_SubmitRsp_ADD_MessageID(struct zx_mm7_SubmitRsp_s* x, int n, struct zx_elem_s* z);
 
-void zx_mm7_SubmitRsp_DEL_MM7Version(struct zx_mm7_SubmitRsp_s* x, int n);
+void zx_mm7_SubmitRsp_DEL_MM7Version(struct zx_mm7_SubmitRsp_s* x,int n);
 void zx_mm7_SubmitRsp_DEL_Status(struct zx_mm7_SubmitRsp_s* x, int n);
 void zx_mm7_SubmitRsp_DEL_Extension(struct zx_mm7_SubmitRsp_s* x, int n);
-void zx_mm7_SubmitRsp_DEL_MessageID(struct zx_mm7_SubmitRsp_s* x, int n);
+void zx_mm7_SubmitRsp_DEL_MessageID(struct zx_mm7_SubmitRsp_s* x,int n);
 
 void zx_mm7_SubmitRsp_REV_MM7Version(struct zx_mm7_SubmitRsp_s* x);
 void zx_mm7_SubmitRsp_REV_Status(struct zx_mm7_SubmitRsp_s* x);
@@ -3128,7 +2933,6 @@ void zx_mm7_SubmitRsp_REV_MessageID(struct zx_mm7_SubmitRsp_s* x);
 #ifndef zx_mm7_ThirdPartyPayer_EXT
 #define zx_mm7_ThirdPartyPayer_EXT
 #endif
-
 struct zx_mm7_ThirdPartyPayer_s {
   ZX_ELEM_EXT
   zx_mm7_ThirdPartyPayer_EXT
@@ -3139,12 +2943,8 @@ struct zx_mm7_ThirdPartyPayer_s {
 };
 
 #define zx_NEW_mm7_ThirdPartyPayer(c, father) (struct zx_mm7_ThirdPartyPayer_s*)zx_new_elem((c),(father),zx_mm7_ThirdPartyPayer_ELEM)
-
 int zx_DEC_ATTR_mm7_ThirdPartyPayer(struct zx_ctx* c, struct zx_mm7_ThirdPartyPayer_s* x);
 int zx_DEC_ELEM_mm7_ThirdPartyPayer(struct zx_ctx* c, struct zx_mm7_ThirdPartyPayer_s* x);
-int zx_LEN_SO_mm7_ThirdPartyPayer(struct zx_ctx* c, struct zx_mm7_ThirdPartyPayer_s* x);
-char* zx_ENC_SO_mm7_ThirdPartyPayer(struct zx_ctx* c, struct zx_mm7_ThirdPartyPayer_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_ThirdPartyPayer(struct zx_ctx* c, struct zx_mm7_ThirdPartyPayer_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_ThirdPartyPayer_s* zx_DEEP_CLONE_mm7_ThirdPartyPayer(struct zx_ctx* c, struct zx_mm7_ThirdPartyPayer_s* x, int dup_strs);
@@ -3202,7 +3002,6 @@ void zx_mm7_ThirdPartyPayer_REV_Extension(struct zx_mm7_ThirdPartyPayer_s* x);
 #ifndef zx_mm7_To_EXT
 #define zx_mm7_To_EXT
 #endif
-
 struct zx_mm7_To_s {
   ZX_ELEM_EXT
   zx_mm7_To_EXT
@@ -3213,12 +3012,8 @@ struct zx_mm7_To_s {
 };
 
 #define zx_NEW_mm7_To(c, father) (struct zx_mm7_To_s*)zx_new_elem((c),(father),zx_mm7_To_ELEM)
-
 int zx_DEC_ATTR_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x);
 int zx_DEC_ELEM_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x);
-int zx_LEN_SO_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x);
-char* zx_ENC_SO_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_To_s* zx_DEEP_CLONE_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x, int dup_strs);
@@ -3276,7 +3071,6 @@ void zx_mm7_To_REV_Extension(struct zx_mm7_To_s* x);
 #ifndef zx_mm7_TransactionID_EXT
 #define zx_mm7_TransactionID_EXT
 #endif
-
 struct zx_mm7_TransactionID_s {
   ZX_ELEM_EXT
   zx_mm7_TransactionID_EXT
@@ -3286,12 +3080,8 @@ struct zx_mm7_TransactionID_s {
 };
 
 #define zx_NEW_mm7_TransactionID(c, father) (struct zx_mm7_TransactionID_s*)zx_new_elem((c),(father),zx_mm7_TransactionID_ELEM)
-
 int zx_DEC_ATTR_mm7_TransactionID(struct zx_ctx* c, struct zx_mm7_TransactionID_s* x);
 int zx_DEC_ELEM_mm7_TransactionID(struct zx_ctx* c, struct zx_mm7_TransactionID_s* x);
-int zx_LEN_SO_mm7_TransactionID(struct zx_ctx* c, struct zx_mm7_TransactionID_s* x);
-char* zx_ENC_SO_mm7_TransactionID(struct zx_ctx* c, struct zx_mm7_TransactionID_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_TransactionID(struct zx_ctx* c, struct zx_mm7_TransactionID_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_TransactionID_s* zx_DEEP_CLONE_mm7_TransactionID(struct zx_ctx* c, struct zx_mm7_TransactionID_s* x, int dup_strs);
@@ -3323,7 +3113,6 @@ void zx_mm7_TransactionID_PUT_mustUnderstand(struct zx_mm7_TransactionID_s* x, s
 #ifndef zx_mm7_UACapabilities_EXT
 #define zx_mm7_UACapabilities_EXT
 #endif
-
 struct zx_mm7_UACapabilities_s {
   ZX_ELEM_EXT
   zx_mm7_UACapabilities_EXT
@@ -3332,12 +3121,8 @@ struct zx_mm7_UACapabilities_s {
 };
 
 #define zx_NEW_mm7_UACapabilities(c, father) (struct zx_mm7_UACapabilities_s*)zx_new_elem((c),(father),zx_mm7_UACapabilities_ELEM)
-
 int zx_DEC_ATTR_mm7_UACapabilities(struct zx_ctx* c, struct zx_mm7_UACapabilities_s* x);
 int zx_DEC_ELEM_mm7_UACapabilities(struct zx_ctx* c, struct zx_mm7_UACapabilities_s* x);
-int zx_LEN_SO_mm7_UACapabilities(struct zx_ctx* c, struct zx_mm7_UACapabilities_s* x);
-char* zx_ENC_SO_mm7_UACapabilities(struct zx_ctx* c, struct zx_mm7_UACapabilities_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_UACapabilities(struct zx_ctx* c, struct zx_mm7_UACapabilities_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_UACapabilities_s* zx_DEEP_CLONE_mm7_UACapabilities(struct zx_ctx* c, struct zx_mm7_UACapabilities_s* x, int dup_strs);
@@ -3367,7 +3152,6 @@ void zx_mm7_UACapabilities_PUT_UAProf(struct zx_mm7_UACapabilities_s* x, struct 
 #ifndef zx_mm7_UserAgent_EXT
 #define zx_mm7_UserAgent_EXT
 #endif
-
 struct zx_mm7_UserAgent_s {
   ZX_ELEM_EXT
   zx_mm7_UserAgent_EXT
@@ -3379,12 +3163,8 @@ struct zx_mm7_UserAgent_s {
 };
 
 #define zx_NEW_mm7_UserAgent(c, father) (struct zx_mm7_UserAgent_s*)zx_new_elem((c),(father),zx_mm7_UserAgent_ELEM)
-
 int zx_DEC_ATTR_mm7_UserAgent(struct zx_ctx* c, struct zx_mm7_UserAgent_s* x);
 int zx_DEC_ELEM_mm7_UserAgent(struct zx_ctx* c, struct zx_mm7_UserAgent_s* x);
-int zx_LEN_SO_mm7_UserAgent(struct zx_ctx* c, struct zx_mm7_UserAgent_s* x);
-char* zx_ENC_SO_mm7_UserAgent(struct zx_ctx* c, struct zx_mm7_UserAgent_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_UserAgent(struct zx_ctx* c, struct zx_mm7_UserAgent_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_UserAgent_s* zx_DEEP_CLONE_mm7_UserAgent(struct zx_ctx* c, struct zx_mm7_UserAgent_s* x, int dup_strs);
@@ -3444,7 +3224,6 @@ void zx_mm7_UserAgent_REV_Extension(struct zx_mm7_UserAgent_s* x);
 #ifndef zx_mm7_VASPErrorRsp_EXT
 #define zx_mm7_VASPErrorRsp_EXT
 #endif
-
 struct zx_mm7_VASPErrorRsp_s {
   ZX_ELEM_EXT
   zx_mm7_VASPErrorRsp_EXT
@@ -3454,12 +3233,8 @@ struct zx_mm7_VASPErrorRsp_s {
 };
 
 #define zx_NEW_mm7_VASPErrorRsp(c, father) (struct zx_mm7_VASPErrorRsp_s*)zx_new_elem((c),(father),zx_mm7_VASPErrorRsp_ELEM)
-
 int zx_DEC_ATTR_mm7_VASPErrorRsp(struct zx_ctx* c, struct zx_mm7_VASPErrorRsp_s* x);
 int zx_DEC_ELEM_mm7_VASPErrorRsp(struct zx_ctx* c, struct zx_mm7_VASPErrorRsp_s* x);
-int zx_LEN_SO_mm7_VASPErrorRsp(struct zx_ctx* c, struct zx_mm7_VASPErrorRsp_s* x);
-char* zx_ENC_SO_mm7_VASPErrorRsp(struct zx_ctx* c, struct zx_mm7_VASPErrorRsp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_VASPErrorRsp(struct zx_ctx* c, struct zx_mm7_VASPErrorRsp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_VASPErrorRsp_s* zx_DEEP_CLONE_mm7_VASPErrorRsp(struct zx_ctx* c, struct zx_mm7_VASPErrorRsp_s* x, int dup_strs);
@@ -3495,7 +3270,7 @@ void zx_mm7_VASPErrorRsp_ADD_MM7Version(struct zx_mm7_VASPErrorRsp_s* x, int n, 
 void zx_mm7_VASPErrorRsp_ADD_Status(struct zx_mm7_VASPErrorRsp_s* x, int n, struct zx_mm7_Status_s* z);
 void zx_mm7_VASPErrorRsp_ADD_Extension(struct zx_mm7_VASPErrorRsp_s* x, int n, struct zx_mm7_Extension_s* z);
 
-void zx_mm7_VASPErrorRsp_DEL_MM7Version(struct zx_mm7_VASPErrorRsp_s* x, int n);
+void zx_mm7_VASPErrorRsp_DEL_MM7Version(struct zx_mm7_VASPErrorRsp_s* x,int n);
 void zx_mm7_VASPErrorRsp_DEL_Status(struct zx_mm7_VASPErrorRsp_s* x, int n);
 void zx_mm7_VASPErrorRsp_DEL_Extension(struct zx_mm7_VASPErrorRsp_s* x, int n);
 
@@ -3509,7 +3284,6 @@ void zx_mm7_VASPErrorRsp_REV_Extension(struct zx_mm7_VASPErrorRsp_s* x);
 #ifndef zx_mm7_element_EXT
 #define zx_mm7_element_EXT
 #endif
-
 struct zx_mm7_element_s {
   ZX_ELEM_EXT
   zx_mm7_element_EXT
@@ -3518,12 +3292,8 @@ struct zx_mm7_element_s {
 };
 
 #define zx_NEW_mm7_element(c, father) (struct zx_mm7_element_s*)zx_new_elem((c),(father),zx_mm7_element_ELEM)
-
 int zx_DEC_ATTR_mm7_element(struct zx_ctx* c, struct zx_mm7_element_s* x);
 int zx_DEC_ELEM_mm7_element(struct zx_ctx* c, struct zx_mm7_element_s* x);
-int zx_LEN_SO_mm7_element(struct zx_ctx* c, struct zx_mm7_element_s* x);
-char* zx_ENC_SO_mm7_element(struct zx_ctx* c, struct zx_mm7_element_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_element(struct zx_ctx* c, struct zx_mm7_element_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_element_s* zx_DEEP_CLONE_mm7_element(struct zx_ctx* c, struct zx_mm7_element_s* x, int dup_strs);
@@ -3553,8 +3323,8 @@ void zx_mm7_element_PUT_value(struct zx_mm7_element_s* x, int n, struct zx_elem_
 void zx_mm7_element_ADD_key(struct zx_mm7_element_s* x, int n, struct zx_elem_s* z);
 void zx_mm7_element_ADD_value(struct zx_mm7_element_s* x, int n, struct zx_elem_s* z);
 
-void zx_mm7_element_DEL_key(struct zx_mm7_element_s* x, int n);
-void zx_mm7_element_DEL_value(struct zx_mm7_element_s* x, int n);
+void zx_mm7_element_DEL_key(struct zx_mm7_element_s* x,int n);
+void zx_mm7_element_DEL_value(struct zx_mm7_element_s* x,int n);
 
 void zx_mm7_element_REV_key(struct zx_mm7_element_s* x);
 void zx_mm7_element_REV_value(struct zx_mm7_element_s* x);
@@ -3565,7 +3335,6 @@ void zx_mm7_element_REV_value(struct zx_mm7_element_s* x);
 #ifndef zx_mm7_extendedCancelReq_EXT
 #define zx_mm7_extendedCancelReq_EXT
 #endif
-
 struct zx_mm7_extendedCancelReq_s {
   ZX_ELEM_EXT
   zx_mm7_extendedCancelReq_EXT
@@ -3576,12 +3345,8 @@ struct zx_mm7_extendedCancelReq_s {
 };
 
 #define zx_NEW_mm7_extendedCancelReq(c, father) (struct zx_mm7_extendedCancelReq_s*)zx_new_elem((c),(father),zx_mm7_extendedCancelReq_ELEM)
-
 int zx_DEC_ATTR_mm7_extendedCancelReq(struct zx_ctx* c, struct zx_mm7_extendedCancelReq_s* x);
 int zx_DEC_ELEM_mm7_extendedCancelReq(struct zx_ctx* c, struct zx_mm7_extendedCancelReq_s* x);
-int zx_LEN_SO_mm7_extendedCancelReq(struct zx_ctx* c, struct zx_mm7_extendedCancelReq_s* x);
-char* zx_ENC_SO_mm7_extendedCancelReq(struct zx_ctx* c, struct zx_mm7_extendedCancelReq_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_extendedCancelReq(struct zx_ctx* c, struct zx_mm7_extendedCancelReq_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_extendedCancelReq_s* zx_DEEP_CLONE_mm7_extendedCancelReq(struct zx_ctx* c, struct zx_mm7_extendedCancelReq_s* x, int dup_strs);
@@ -3623,10 +3388,10 @@ void zx_mm7_extendedCancelReq_ADD_SenderIdentification(struct zx_mm7_extendedCan
 void zx_mm7_extendedCancelReq_ADD_Extension(struct zx_mm7_extendedCancelReq_s* x, int n, struct zx_mm7_Extension_s* z);
 void zx_mm7_extendedCancelReq_ADD_CancelID(struct zx_mm7_extendedCancelReq_s* x, int n, struct zx_elem_s* z);
 
-void zx_mm7_extendedCancelReq_DEL_MM7Version(struct zx_mm7_extendedCancelReq_s* x, int n);
+void zx_mm7_extendedCancelReq_DEL_MM7Version(struct zx_mm7_extendedCancelReq_s* x,int n);
 void zx_mm7_extendedCancelReq_DEL_SenderIdentification(struct zx_mm7_extendedCancelReq_s* x, int n);
 void zx_mm7_extendedCancelReq_DEL_Extension(struct zx_mm7_extendedCancelReq_s* x, int n);
-void zx_mm7_extendedCancelReq_DEL_CancelID(struct zx_mm7_extendedCancelReq_s* x, int n);
+void zx_mm7_extendedCancelReq_DEL_CancelID(struct zx_mm7_extendedCancelReq_s* x,int n);
 
 void zx_mm7_extendedCancelReq_REV_MM7Version(struct zx_mm7_extendedCancelReq_s* x);
 void zx_mm7_extendedCancelReq_REV_SenderIdentification(struct zx_mm7_extendedCancelReq_s* x);
@@ -3639,7 +3404,6 @@ void zx_mm7_extendedCancelReq_REV_CancelID(struct zx_mm7_extendedCancelReq_s* x)
 #ifndef zx_mm7_extendedCancelRsp_EXT
 #define zx_mm7_extendedCancelRsp_EXT
 #endif
-
 struct zx_mm7_extendedCancelRsp_s {
   ZX_ELEM_EXT
   zx_mm7_extendedCancelRsp_EXT
@@ -3648,12 +3412,8 @@ struct zx_mm7_extendedCancelRsp_s {
 };
 
 #define zx_NEW_mm7_extendedCancelRsp(c, father) (struct zx_mm7_extendedCancelRsp_s*)zx_new_elem((c),(father),zx_mm7_extendedCancelRsp_ELEM)
-
 int zx_DEC_ATTR_mm7_extendedCancelRsp(struct zx_ctx* c, struct zx_mm7_extendedCancelRsp_s* x);
 int zx_DEC_ELEM_mm7_extendedCancelRsp(struct zx_ctx* c, struct zx_mm7_extendedCancelRsp_s* x);
-int zx_LEN_SO_mm7_extendedCancelRsp(struct zx_ctx* c, struct zx_mm7_extendedCancelRsp_s* x);
-char* zx_ENC_SO_mm7_extendedCancelRsp(struct zx_ctx* c, struct zx_mm7_extendedCancelRsp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_extendedCancelRsp(struct zx_ctx* c, struct zx_mm7_extendedCancelRsp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_extendedCancelRsp_s* zx_DEEP_CLONE_mm7_extendedCancelRsp(struct zx_ctx* c, struct zx_mm7_extendedCancelRsp_s* x, int dup_strs);
@@ -3683,7 +3443,7 @@ void zx_mm7_extendedCancelRsp_PUT_Status(struct zx_mm7_extendedCancelRsp_s* x, i
 void zx_mm7_extendedCancelRsp_ADD_MM7Version(struct zx_mm7_extendedCancelRsp_s* x, int n, struct zx_elem_s* z);
 void zx_mm7_extendedCancelRsp_ADD_Status(struct zx_mm7_extendedCancelRsp_s* x, int n, struct zx_mm7_Status_s* z);
 
-void zx_mm7_extendedCancelRsp_DEL_MM7Version(struct zx_mm7_extendedCancelRsp_s* x, int n);
+void zx_mm7_extendedCancelRsp_DEL_MM7Version(struct zx_mm7_extendedCancelRsp_s* x,int n);
 void zx_mm7_extendedCancelRsp_DEL_Status(struct zx_mm7_extendedCancelRsp_s* x, int n);
 
 void zx_mm7_extendedCancelRsp_REV_MM7Version(struct zx_mm7_extendedCancelRsp_s* x);
@@ -3695,7 +3455,6 @@ void zx_mm7_extendedCancelRsp_REV_Status(struct zx_mm7_extendedCancelRsp_s* x);
 #ifndef zx_mm7_extendedReplaceReq_EXT
 #define zx_mm7_extendedReplaceReq_EXT
 #endif
-
 struct zx_mm7_extendedReplaceReq_s {
   ZX_ELEM_EXT
   zx_mm7_extendedReplaceReq_EXT
@@ -3715,12 +3474,8 @@ struct zx_mm7_extendedReplaceReq_s {
 };
 
 #define zx_NEW_mm7_extendedReplaceReq(c, father) (struct zx_mm7_extendedReplaceReq_s*)zx_new_elem((c),(father),zx_mm7_extendedReplaceReq_ELEM)
-
 int zx_DEC_ATTR_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extendedReplaceReq_s* x);
 int zx_DEC_ELEM_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extendedReplaceReq_s* x);
-int zx_LEN_SO_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extendedReplaceReq_s* x);
-char* zx_ENC_SO_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extendedReplaceReq_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extendedReplaceReq_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_extendedReplaceReq_s* zx_DEEP_CLONE_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extendedReplaceReq_s* x, int dup_strs);
@@ -3816,16 +3571,16 @@ void zx_mm7_extendedReplaceReq_ADD_Content(struct zx_mm7_extendedReplaceReq_s* x
 void zx_mm7_extendedReplaceReq_ADD_AdditionalInformation(struct zx_mm7_extendedReplaceReq_s* x, int n, struct zx_mm7_AdditionalInformation_s* z);
 void zx_mm7_extendedReplaceReq_ADD_MessageExtraData(struct zx_mm7_extendedReplaceReq_s* x, int n, struct zx_mm7_MessageExtraData_s* z);
 
-void zx_mm7_extendedReplaceReq_DEL_MM7Version(struct zx_mm7_extendedReplaceReq_s* x, int n);
-void zx_mm7_extendedReplaceReq_DEL_VASPID(struct zx_mm7_extendedReplaceReq_s* x, int n);
-void zx_mm7_extendedReplaceReq_DEL_VASID(struct zx_mm7_extendedReplaceReq_s* x, int n);
+void zx_mm7_extendedReplaceReq_DEL_MM7Version(struct zx_mm7_extendedReplaceReq_s* x,int n);
+void zx_mm7_extendedReplaceReq_DEL_VASPID(struct zx_mm7_extendedReplaceReq_s* x,int n);
+void zx_mm7_extendedReplaceReq_DEL_VASID(struct zx_mm7_extendedReplaceReq_s* x,int n);
 void zx_mm7_extendedReplaceReq_DEL_ServiceCode(struct zx_mm7_extendedReplaceReq_s* x, int n);
-void zx_mm7_extendedReplaceReq_DEL_ReplaceID(struct zx_mm7_extendedReplaceReq_s* x, int n);
-void zx_mm7_extendedReplaceReq_DEL_TimeStamp(struct zx_mm7_extendedReplaceReq_s* x, int n);
-void zx_mm7_extendedReplaceReq_DEL_EarliestDeliveryTime(struct zx_mm7_extendedReplaceReq_s* x, int n);
-void zx_mm7_extendedReplaceReq_DEL_ExpiryDate(struct zx_mm7_extendedReplaceReq_s* x, int n);
-void zx_mm7_extendedReplaceReq_DEL_ReadReply(struct zx_mm7_extendedReplaceReq_s* x, int n);
-void zx_mm7_extendedReplaceReq_DEL_DeliveryReport(struct zx_mm7_extendedReplaceReq_s* x, int n);
+void zx_mm7_extendedReplaceReq_DEL_ReplaceID(struct zx_mm7_extendedReplaceReq_s* x,int n);
+void zx_mm7_extendedReplaceReq_DEL_TimeStamp(struct zx_mm7_extendedReplaceReq_s* x,int n);
+void zx_mm7_extendedReplaceReq_DEL_EarliestDeliveryTime(struct zx_mm7_extendedReplaceReq_s* x,int n);
+void zx_mm7_extendedReplaceReq_DEL_ExpiryDate(struct zx_mm7_extendedReplaceReq_s* x,int n);
+void zx_mm7_extendedReplaceReq_DEL_ReadReply(struct zx_mm7_extendedReplaceReq_s* x,int n);
+void zx_mm7_extendedReplaceReq_DEL_DeliveryReport(struct zx_mm7_extendedReplaceReq_s* x,int n);
 void zx_mm7_extendedReplaceReq_DEL_Content(struct zx_mm7_extendedReplaceReq_s* x, int n);
 void zx_mm7_extendedReplaceReq_DEL_AdditionalInformation(struct zx_mm7_extendedReplaceReq_s* x, int n);
 void zx_mm7_extendedReplaceReq_DEL_MessageExtraData(struct zx_mm7_extendedReplaceReq_s* x, int n);
@@ -3850,7 +3605,6 @@ void zx_mm7_extendedReplaceReq_REV_MessageExtraData(struct zx_mm7_extendedReplac
 #ifndef zx_mm7_extendedReplaceRsp_EXT
 #define zx_mm7_extendedReplaceRsp_EXT
 #endif
-
 struct zx_mm7_extendedReplaceRsp_s {
   ZX_ELEM_EXT
   zx_mm7_extendedReplaceRsp_EXT
@@ -3860,12 +3614,8 @@ struct zx_mm7_extendedReplaceRsp_s {
 };
 
 #define zx_NEW_mm7_extendedReplaceRsp(c, father) (struct zx_mm7_extendedReplaceRsp_s*)zx_new_elem((c),(father),zx_mm7_extendedReplaceRsp_ELEM)
-
 int zx_DEC_ATTR_mm7_extendedReplaceRsp(struct zx_ctx* c, struct zx_mm7_extendedReplaceRsp_s* x);
 int zx_DEC_ELEM_mm7_extendedReplaceRsp(struct zx_ctx* c, struct zx_mm7_extendedReplaceRsp_s* x);
-int zx_LEN_SO_mm7_extendedReplaceRsp(struct zx_ctx* c, struct zx_mm7_extendedReplaceRsp_s* x);
-char* zx_ENC_SO_mm7_extendedReplaceRsp(struct zx_ctx* c, struct zx_mm7_extendedReplaceRsp_s* x, char* p);
-struct zx_str* zx_EASY_ENC_SO_mm7_extendedReplaceRsp(struct zx_ctx* c, struct zx_mm7_extendedReplaceRsp_s* x);
 
 #ifdef ZX_ENA_AUX
 struct zx_mm7_extendedReplaceRsp_s* zx_DEEP_CLONE_mm7_extendedReplaceRsp(struct zx_ctx* c, struct zx_mm7_extendedReplaceRsp_s* x, int dup_strs);
@@ -3901,8 +3651,8 @@ void zx_mm7_extendedReplaceRsp_ADD_MM7Version(struct zx_mm7_extendedReplaceRsp_s
 void zx_mm7_extendedReplaceRsp_ADD_MessageID(struct zx_mm7_extendedReplaceRsp_s* x, int n, struct zx_elem_s* z);
 void zx_mm7_extendedReplaceRsp_ADD_Status(struct zx_mm7_extendedReplaceRsp_s* x, int n, struct zx_mm7_Status_s* z);
 
-void zx_mm7_extendedReplaceRsp_DEL_MM7Version(struct zx_mm7_extendedReplaceRsp_s* x, int n);
-void zx_mm7_extendedReplaceRsp_DEL_MessageID(struct zx_mm7_extendedReplaceRsp_s* x, int n);
+void zx_mm7_extendedReplaceRsp_DEL_MM7Version(struct zx_mm7_extendedReplaceRsp_s* x,int n);
+void zx_mm7_extendedReplaceRsp_DEL_MessageID(struct zx_mm7_extendedReplaceRsp_s* x,int n);
 void zx_mm7_extendedReplaceRsp_DEL_Status(struct zx_mm7_extendedReplaceRsp_s* x, int n);
 
 void zx_mm7_extendedReplaceRsp_REV_MM7Version(struct zx_mm7_extendedReplaceRsp_s* x);
