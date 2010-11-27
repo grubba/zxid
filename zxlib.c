@@ -425,6 +425,13 @@ struct zx_elem_s* zx_dup_elem(struct zx_ctx* c, struct zx_elem_s* father, int to
 
 /* ------------- Common Subexpression Elimination for generated code ------------- */
 
+#define D_LEN_ENA 0
+#if D_LEN_ENA
+#define D_LEN(f,t,l) D(f,t,l)
+#else
+#define D_LEN(f,t,l)
+#endif
+
 /*() Compute length of an element (and its subelements). The XML attributes
  * and elements are processed in wire order and no assumptions
  * are made about namespace prefixes. */
@@ -438,8 +445,8 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
   struct zx_ns_s* pop_seen = 0;
   struct zx_attr_s* attr;
   struct zx_elem_s* kid;
-  int ix, el_len;
-  int len = 0;
+  int ix;
+  int len;
   //struct zx_elem_s* kid;
   switch (x->g.tok) {
   case zx_root_ELEM:
@@ -473,19 +480,23 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
 	return 0;
       }
       el_tok = zx_el_tab + ix;
-      el_len = strlen(el_tok->name);
-      /*    <   ns                  :   elem     >   </  ns                  :   elem     >  */
-      len = 1 + x->ns->prefix_len + 1 + el_len + 1 + 2 + x->ns->prefix_len + 1 + el_len + 1;
+      len = strlen(el_tok->name);
+      DD("ns prefix_len=%d el_len=%d", x->ns->prefix_len, len);
+      /*    <   ns                  :   elem  >   </  ns                  :   elem  >  */
+      len = 1 + x->ns->prefix_len + 1 + len + 1 + 2 + x->ns->prefix_len + 1 + len + 1;
     }
+    D_LEN("%06x ** tag start: %d", x->g.tok, len);
     len += zx_len_xmlns_if_not_seen(c, x->ns, &pop_seen);
+    D_LEN("%06x after xmlns: %d", x->g.tok, len);
 
     if (c->inc_ns_len)
       len += zx_len_inc_ns(c, &pop_seen);
+    D_LEN("%06x after inc_ns: %d", x->g.tok, len);
 
     for (attr = x->attr; attr; attr = (struct zx_attr_s*)attr->g.n) {
       if (attr->name) {
-	/*    sp   name             =   "                 "   */
-	len += 1 + attr->name_len + 1 + 1 + attr->g.len + 1;
+	/*    sp   name             ="                "   */
+	len += 1 + attr->name_len + 2 + attr->g.len + 1;
       } else { /* Construct elem string from tok */
 	if (attr->ns)
 	  len += attr->ns->prefix_len + 1;
@@ -496,11 +507,12 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
 	}
 	at_tok = zx_at_tab + ix;
 	len += strlen(at_tok->name);
-	/*      =   "                 "   */
-	len +=  1 + 1 + attr->g.len + 1;
+	/*     sp ="                "   */
+	len += 1+ 2 + attr->g.len + 1;
       }
       len += zx_len_xmlns_if_not_seen(c, attr->ns, &pop_seen);
     }
+    D_LEN("%06x after attrs: %d", x->g.tok, len);
 
     for (kid = x->kids; kid; kid = ((struct zx_elem_s*)(kid->g.n)))
       len += zx_LEN_WO_any_elem(c, kid);
@@ -508,6 +520,7 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
     break;
   }
   zx_pop_seen(pop_seen);
+  D_LEN("%06x final: %d", x->g.tok, len);
   return len;
 }
 
@@ -592,6 +605,9 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
   struct zx_attr_s* attr;
   struct zx_elem_s* kid;
   int ix;
+#if D_LEN_ENA
+  char* b = p;
+#endif
   switch (x->g.tok) {
   case zx_root_ELEM:
     if (c->inc_ns)
@@ -631,18 +647,23 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
       ZX_OUT_CH(p, ':');
       ZX_OUT_MEM(p, el_tok->name, strlen(el_tok->name));
     }
+    D_LEN("%06x   ** tag start: %d", x->g.tok, p-b);
     zx_add_xmlns_if_not_seen(c, x->ns, &pop_seen);
     if (c->inc_ns)
       zx_add_inc_ns(c, &pop_seen);
+    D_LEN("%06x   after inc_ns: %d", x->g.tok, p-b);
     zx_see_attr_ns(c, x->attr, &pop_seen);
     p = zx_enc_seen(p, pop_seen);
+    D_LEN("%06x   after seen ns: %d", x->g.tok, p-b);
 
     for (attr = x->attr; attr; attr = (struct zx_attr_s*)attr->g.n)
       p = zx_attr_wo_enc(p, attr);
     ZX_OUT_CH(p, '>');
+    D_LEN("%06x   after attrs: %d", x->g.tok, p-b);
     
     for (kid = x->kids; kid; kid = (struct zx_elem_s*)kid->g.n)
       p = zx_ENC_WO_any_elem(c, kid, p);
+    D_LEN("%06x   after kids: %d", x->g.tok, p-b);
     
     ZX_OUT_CH(p, '<');
     ZX_OUT_CH(p, '/');
@@ -656,6 +677,7 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
     ZX_OUT_CH(p, '>');
   }
   zx_pop_seen(pop_seen);
+  D_LEN("%06x   final: %d", x->g.tok, p-b);
   return p;
 }
 
@@ -674,102 +696,6 @@ struct zx_str* zx_EASY_ENC_elem(struct zx_ctx* c, struct zx_elem_s* x)
   buf[len] = 0;
   return zx_ref_len_str(c, len, buf);
 }
-
-#if 0
-
-/* Called by:  TXEASY_ENC_SO_ELNAME, TXEASY_ENC_WO_ELNAME, TXEASY_ENC_WO_any_elem */
-struct zx_str* zx_easy_enc_common(struct zx_ctx* c, char* p, char* buf, int len)
-{
-  if (p != buf+len) {
-    ERR("Encoded length(%d) does not match computed length(%d). ED(%.*s)", p-buf, len, p-buf, buf);
-    len = p-buf;
-  }
-  buf[len] = 0;
-  return zx_ref_len_str(c, len, buf);
-}
-
-/* Called by: */
-int zx_attr_so_len(struct zx_ctx* c, struct zx_attr_s* attr, int name_len, struct zx_ns_s** pop_seenp)
-{
-  int len;
-  if (!attr)
-    return 0;
-  len = zx_len_xmlns_if_not_seen(c, attr->ns, pop_seenp);
-  /*     SP  attr       =   "   val           " */
-  len += 1 + name_len + 1 + 1 + attr->g.len + 1;
-  return len;
-}
-
-/* Both attribute name and the namespace prefix are known at compile time
- * and are passed in in name and name_len. */
-/* Called by: */
-char* zx_attr_so_enc(char* p, struct zx_attr_s* attr, char* name, int name_len)
-{
-  if (!attr)
-    return p;
-  ZX_OUT_MEM(p, name, name_len);           /*    name=" id=\"" */
-  ZX_OUT_MEM(p, attr->g.s, attr->g.len);
-  ZX_OUT_CH(p, '"');
-  return p;
-}
-
-/*() Render the unknown attributes list. CSE for almost all tags. */
-
-/* Called by:  TXLEN_SO_ELNAME */
-int zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp)
-{
-  int len = 0;
-  struct zx_attr_s* aa;
-  struct zx_elem_s* ae;
-  
-  for (aa = x->attr; aa; aa = (struct zx_attr_s*)aa->g.n) {  /* attributes */
-    if (aa->g.tok != ZX_TOK_ATTR_NOT_FOUND)      continue; /*** all attributes are trated same */
-    if (aa->ns && aa->ns->prefix_len)
-      len += aa->ns->prefix_len + 1;
-    len += 1 + aa->name_len + 1 + 1 + aa->g.len + 1;  /* attr="val" */
-    len += zx_len_xmlns_if_not_seen(c, aa->ns, pop_seenp);
-  }
-
-  for (ae = x->kids; ae; ae = (struct zx_elem_s*)ae->g.n)    /* elements */
-    switch (ae->g.tok) {
-    case ZX_TOK_DATA:
-      len += ae->g.len;
-      break;
-    case ZX_TOK_AND_NS_NOT_FOUND:
-      len += zx_LEN_SO_elem(c, ae, ae->g.len, ae->ns);
-      break;
-      /* default:  All known elements are already handled by SO encoder. */
-    }
-  return len;
-}
-
-/* Called by:  TXENC_SO_ELNAME */
-char* zx_enc_so_unknown_elems_and_content(struct zx_ctx* c, char* p, struct zx_elem_s* x)
-{
-  struct zx_elem_s* ae;
-
-#if 0
-  /* see enc-templ.c for loop where all attributes are treated the same */
-  for (aa = x->attr; aa; aa = (struct zx_attr_s*)aa->g.n) {  /* attributes */
-    if (aa->g.tok != ZX_TOK_ATTR_NOT_FOUND)
-      continue;
-    p = zx_attr_so_enc(p, aa, aa->name, aa->name_len);
-  }
-#endif
-
-  for (ae = x->kids; ae; ae = (struct zx_elem_s*)ae->g.n)
-    switch (ae->g.tok) {
-    case ZX_TOK_DATA:
-      ZX_OUT_MEM(p, ae->g.s, ae->g.len);
-      break;
-    case ZX_TOK_AND_NS_NOT_FOUND:
-      p = zx_ENC_SO_elem(c, ae, p, ae->g.s, ae->g.len, ae->ns);
-      break;
-      /* default:  All known elements are already handled by SO encoder. */
-    }
-  return p;
-}
-#endif
 
 /* ----------- F r e e ----------- */
 
