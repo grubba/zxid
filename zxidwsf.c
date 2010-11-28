@@ -637,8 +637,10 @@ void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec
    
     ASSERTOP(n_refs, <=, ZXID_N_WSF_SIGNED_HEADERS);
 
-    if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert wsc"))
+    if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert wsc")) {
       sec->Signature = zxsig_sign(cf->ctx, n_refs, refs, sign_cert, sign_pkey);
+      zx_add_kid(&sec->gg, &sec->Signature->gg);
+    }
   }
 }
 

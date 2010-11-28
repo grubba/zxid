@@ -4,6 +4,9 @@
 # Sampo Kellomäki (sampo@iki.fi)
 # $Id: Quick,v 1.9 2010-01-08 02:10:09 sampo Exp $
 
+time (LD_LIBRARY_PATH=/apps/lib make all ENA_GEN=1 ENA_PG=1)
+set env LD_LIBRARY_PATH=/apps/lib
+
 if false; then
   tar xvzf zxid-0.7.tgz
   cd zxid-0.8

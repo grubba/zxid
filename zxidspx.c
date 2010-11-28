@@ -184,10 +184,12 @@ static void zxid_ins_xacml_az_stmt(zxid_conf* cf, zxid_a7n* a7n, char* deci)
   a7n->XACMLAuthzDecisionStatement = zx_NEW_xasa_XACMLAuthzDecisionStatement(cf->ctx,0);
   a7n->XACMLAuthzDecisionStatement->Response = zxid_mk_xacml_resp(cf, deci);
   /* *** Add xaspcd1 and xasacd1 variants */
+  zx_add_kid_before(&a7n->gg, zx_xasa_XACMLPolicyStatement_ELEM, &a7n->XACMLAuthzDecisionStatement->gg);
 #else
   a7n->Statement = zx_NEW_sa_Statement(cf->ctx,0);
   a7n->Statement->type = zx_ref_str(cf->ctx, "xasa:XACMLAuthzDecisionStatementType");
   a7n->Statement->Response = zxid_mk_xacml_resp(cf, deci);
+  zx_add_kid_before(&a7n->gg, zx_sa_AuthnStatement_ELEM, a7n->Statement);
 #endif
 }
 
@@ -204,10 +206,12 @@ static void zxid_ins_xacml_az_cd1_stmt(zxid_conf* cf, zxid_a7n* a7n, char* deci)
   a7n->xasacd1_XACMLAuthzDecisionStatement = zx_NEW_xasacd1_XACMLAuthzDecisionStatement(cf->ctx,0);
   a7n->xasacd1_XACMLAuthzDecisionStatement->Response = zxid_mk_xacml_resp(cf, deci);
   /* *** Add xaspcd1 and xasacd1 variants */
+  zx_add_kid_before(&a7n->gg, zx_xasacd1_XACMLPolicyStatement_ELEM, &a7n->xasacd1_XACMLAuthzDecisionStatement->gg);
 #else
   a7n->Statement = zx_NEW_sa_Statement(cf->ctx,0);
   a7n->Statement->type = zx_ref_str(cf->ctx, "xasacd1:XACMLAuthzDecisionStatementType");
   a7n->Statement->Response = zxid_mk_xacml_resp(cf, deci);
+  zx_add_kid_before(&a7n->gg, zx_sa_AuthnStatement_ELEM, a7n->Statement);
 #endif
 }
 
@@ -217,7 +221,6 @@ static void zxid_ins_xacml_az_cd1_stmt(zxid_conf* cf, zxid_a7n* a7n, char* deci)
 /* Called by:  zxid_sp_soap_dispatch */
 static struct zx_sp_Response_s* zxid_xacml_az_do(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_xasp_XACMLAuthzDecisionQuery_s* azq)
 {
-  struct zx_sp_Response_s* resp;
   zxid_a7n* a7n;
   struct zx_str* affil;
   struct zx_str* subj;
@@ -234,8 +237,8 @@ static struct zx_sp_Response_s* zxid_xacml_az_do(zxid_conf* cf, zxid_cgi* cgi, z
     : ZX_GET_CONTENT(ar->Issuer);
   subj = zxid_mk_subj(cf, ses, affil, sp_meta);
 #endif
-  //a7n = zxid_mk_a7n(cf, affil, subj, 0, 0, 0);
-  a7n = zxid_mk_a7n(cf, affil, 0, 0, 0, 0);
+  //a7n = zxid_mk_a7n(cf, affil, subj, 0, 0);
+  a7n = zxid_mk_a7n(cf, affil, 0, 0, 0);
 
   if (azq->Request && azq->Request->Subject) {
     for (xac_at = azq->Request->Subject->Attribute;
@@ -247,24 +250,19 @@ static struct zx_sp_Response_s* zxid_xacml_az_do(zxid_conf* cf, zxid_cgi* cgi, z
 	if (ss?ss->len:0 == sizeof("deny")-1 && !memcmp(ss->s, "deny", sizeof("deny")-1)) {
 	  D("PDP: Deny due to role=deny %d",0);
 	  zxid_ins_xacml_az_stmt(cf, a7n, "Deny");
-	  resp = zxid_mk_saml_resp(cf);
-	  resp->Assertion = a7n;
-	  return resp;
+	  return zxid_mk_saml_resp(cf, a7n, 0);
 	}
       }
     }
   }
   D("PDP: Permit by default %d",0);
   zxid_ins_xacml_az_stmt(cf, a7n, "Permit");
-  resp = zxid_mk_saml_resp(cf);
-  resp->Assertion = a7n;
-  return resp;
+  return zxid_mk_saml_resp(cf, a7n, 0);
 }
 
 /* Called by:  zxid_sp_soap_dispatch */
 static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* azq)
 {
-  struct zx_sp_Response_s* resp;
   zxid_a7n* a7n;
   struct zx_str* affil;
   struct zx_str* subj;
@@ -281,8 +279,8 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cg
     : ZX_GET_CONTENT(ar->Issuer);
   subj = zxid_mk_subj(cf, ses, affil, sp_meta);
 #endif
-  //a7n = zxid_mk_a7n(cf, affil, subj, 0, 0, 0);
-  a7n = zxid_mk_a7n(cf, affil, 0, 0, 0, 0);
+  //a7n = zxid_mk_a7n(cf, affil, subj, 0, 0);
+  a7n = zxid_mk_a7n(cf, affil, 0, 0, 0);
 
   if (azq->Request && azq->Request->Subject) {
     for (xac_at = azq->Request->Subject->Attribute;
@@ -294,18 +292,14 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cg
 	if (ss?ss->len:0 == sizeof("deny")-1 && !memcmp(ss->s, "deny", sizeof("deny")-1)) {
 	  D("PDP: Deny due to role=deny %d",0);
 	  zxid_ins_xacml_az_cd1_stmt(cf, a7n, "Deny");
-	  resp = zxid_mk_saml_resp(cf);
-	  resp->Assertion = a7n;
-	  return resp;
+	  return zxid_mk_saml_resp(cf, a7n, 0);
 	}
       }
     }
   }
   D("PDP: Permit by default %d",0);
   zxid_ins_xacml_az_cd1_stmt(cf, a7n, "Permit");
-  resp = zxid_mk_saml_resp(cf);
-  resp->Assertion = a7n;
-  return resp;
+  return zxid_mk_saml_resp(cf, a7n, 0);
 }
 
 /*() SOAP dispatch can also handle requests and responses received via artifact
@@ -357,8 +351,10 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       ZERO(&refs, sizeof(refs));
       refs.id = &body->LogoutResponse->ID->g;
       refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->LogoutResponse->gg);
-      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert slor"))
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert slor")) {
 	body->LogoutResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	zx_add_kid_after_sa_Issuer(&body->LogoutResponse->gg, &body->LogoutResponse->Signature->gg);
+      }
       zx_str_free(cf->ctx, refs.canon);
     }
     return zxid_soap_cgi_resp_body(cf, body, ZX_GET_CONTENT(bdy->LogoutRequest->Issuer));
@@ -370,8 +366,10 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       ZERO(&refs, sizeof(refs));
       refs.id = &body->ManageNameIDResponse->ID->g;
       refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->ManageNameIDResponse->gg);
-      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir")) {
 	body->ManageNameIDResponse->Signature = zxsig_sign(cf->ctx, 1, &refs,sign_cert,sign_pkey);
+	zx_add_kid_after_sa_Issuer(&body->ManageNameIDResponse->gg, &body->ManageNameIDResponse->Signature->gg);
+      }
       zx_str_free(cf->ctx, refs.canon);
     }
     return zxid_soap_cgi_resp_body(cf, body, ZX_GET_CONTENT(bdy->ManageNameIDRequest->Issuer));
@@ -392,8 +390,10 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 	ZERO(&refs, sizeof(refs));
 	refs.id = res->ID;
 	refs.canon = zx_EASY_ENC_SO_as_SASLResponse(cf->ctx, res);
-	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert asr"))
+	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert asr")) {
 	  res->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	  zx_add_kid(&res->gg, &res->gg);
+	}
 	zx_str_free(cf->ctx, refs.canon);
       }
 #endif
@@ -409,8 +409,10 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 	ZERO(&refs, sizeof(refs));
 	refs.id = &body->Response->ID->g;
 	refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->Response->gg);
-	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
-	body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr")) {
+	  body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	  zx_add_kid_after_sa_Issuer(&body->Response->gg, &body->Response->Signature->gg);
+	}
 	zx_str_free(cf->ctx, refs.canon);
       }
       return zxid_soap_cgi_resp_body(cf, body, ZX_GET_CONTENT(bdy->XACMLAuthzDecisionQuery->Issuer));
@@ -422,8 +424,10 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 	ZERO(&refs, sizeof(refs));
 	refs.id = &body->Response->ID->g;
 	refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->Response->gg);
-	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
-	body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr")) {
+	  body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	  zx_add_kid_after_sa_Issuer(&body->Response->gg, &body->Response->Signature->gg);
+	}
 	zx_str_free(cf->ctx, refs.canon);
       }
       return zxid_soap_cgi_resp_body(cf, body, ZX_GET_CONTENT(bdy->XACMLAuthzDecisionQuery->Issuer));
@@ -444,8 +448,10 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 	ZERO(&refs, sizeof(refs));
 	refs.id = &body->NameIDMappingResponse->ID->g;
 	refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->NameIDMappingResponse->gg);
-	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
+	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir")) {
 	  body->NameIDMappingResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	  zx_add_kid_after_sa_Issuer(&body->NameIDMappingResponse->gg, &body->NameIDMappingResponse->Signature->gg);
+	}
 	zx_str_free(cf->ctx, refs.canon);
       }
       return zxid_soap_cgi_resp_body(cf, body, ZX_GET_CONTENT(bdy->NameIDMappingRequest->Issuer));
@@ -468,8 +474,10 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 	ZERO(&refs, sizeof(refs));
 	refs.id = di_resp->ID;
 	refs.canon = zx_EASY_ENC_SO_e_Body(cf->ctx, body);
-	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert dir"))
+	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert dir")) {
 	  res->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	  zx_add_kid_after_sa_Issuer(&res->gg, &res->Signature->gg);
+	}
 	zx_str_free(cf->ctx, refs.canon);
       }
 #endif

@@ -207,11 +207,11 @@ int zxid_write_ent_to_cache(zxid_conf* cf, zxid_entity* ent)
  * If the file contains multiple EntityDescriptor elements, they
  * are all added to the cot. Also EntitiesDesciptor is handled.
  *
- * See also zxid_get_ent_from_cache() which will compute the sha1_name
+ * See also zxid_get_ent_cache() which will compute the sha1_name
  * and then read the metadata. */
 
 /* Called by:  main x3, test_ibm_cert_problem_enc_dec, zxid_get_ent_by_sha1_name, zxid_get_ent_from_cache, zxid_load_cot_cache_from_file */
-zxid_entity* zxid_get_ent_from_file(zxid_conf* cf, char* sha1_name)
+zxid_entity* zxid_get_ent_file(zxid_conf* cf, char* sha1_name)
 {
   int n, got, siz;
   fdtype fd;
@@ -222,7 +222,7 @@ zxid_entity* zxid_get_ent_from_file(zxid_conf* cf, char* sha1_name)
   zxid_entity* ee;
   
   DD("sha1_name(%s)", sha1_name);
-  fd = open_fd_from_path(O_RDONLY, 0, "get_ent_from_file", 1,
+  fd = open_fd_from_path(O_RDONLY, 0, "get_ent_file", 1,
 			 "%s" ZXID_COT_DIR "%s", cf->path, sha1_name);
   if (fd == BADFD) {
     perror("open metadata to read");
@@ -284,7 +284,7 @@ static void zxid_load_cot_cache_from_file(zxid_conf* cf)
   UNLOCK(cf->mx, "check cot");
   if (!ee) {
     D("Loading cot cache from(%s)", cf->load_cot_cache);
-    zxid_get_ent_from_file(cf, cf->load_cot_cache);
+    zxid_get_ent_file(cf, cf->load_cot_cache);
     D("CoT cache loaded from(%s)", cf->load_cot_cache);
   }
   UNLOCK(zxid_ent_cache_mx, "get ent from cache");
@@ -295,7 +295,7 @@ static void zxid_load_cot_cache_from_file(zxid_conf* cf)
  * the CoT metadata cache directory, e.g. /var/zxid/cot */
 
 /* Called by:  main x5, zxid_get_ent_ss x3 */
-zxid_entity* zxid_get_ent_from_cache(zxid_conf* cf, struct zx_str* eid)
+zxid_entity* zxid_get_ent_cache(zxid_conf* cf, struct zx_str* eid)
 {
   zxid_entity* ent;
   char sha1_name[28];
@@ -307,7 +307,7 @@ zxid_entity* zxid_get_ent_from_cache(zxid_conf* cf, struct zx_str* eid)
     }
   sha1_safe_base64(sha1_name, eid->len, eid->s);
   sha1_name[27] = 0;
-  return zxid_get_ent_from_file(cf, sha1_name);
+  return zxid_get_ent_file(cf, sha1_name);
 }
 
 /*(i) Get metadata for entity, either from cache or network (using WKL), depending
@@ -327,7 +327,7 @@ zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
   
   D("eid(%.*s) path(%.*s) cf->magic=%x, md_cache_first(%d), cot(%p)", eid->len, eid->s, cf->path_len, cf->path, cf->magic, cf->md_cache_first, cf->cot);
   if (cf->md_cache_first) {
-    ent = zxid_get_ent_from_cache(cf, eid);
+    ent = zxid_get_ent_cache(cf, eid);
     if (ent)
       return ent;
   }
@@ -343,7 +343,7 @@ zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
 	  match = ent;
 	}
 	/* Check whether entity is already in the cache. */
-	if (zxid_get_ent_from_cache(cf, &ent->ed->entityID->g)) {
+	if (zxid_get_ent_cache(cf, &ent->ed->entityID->g)) {
 	  INFO("While fetching metadata for eid(%.*s) got metadata for eid(%s), but the metadata was already in the cache. New metadata ignored.", eid->len, eid->s, ent->eid);
 	  ent = ent->n;
 	} else {
@@ -370,7 +370,7 @@ zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
   }
   
   if (cf->md_cache_last) {
-    ent = zxid_get_ent_from_cache(cf, eid);
+    ent = zxid_get_ent_cache(cf, eid);
     if (ent)
       return ent;
   }
@@ -406,7 +406,7 @@ zxid_entity* zxid_get_ent_by_sha1_name(zxid_conf* cf, char* sha1_name)
       return ent;
     }
   UNLOCK(cf->mx, "scan cache by sha1_name");
-  ent = zxid_get_ent_from_file(cf, sha1_name);
+  ent = zxid_get_ent_file(cf, sha1_name);
   if (!ent)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "NOMD", 0, "sha1_name(%s)", sha1_name);
   return ent;
@@ -812,9 +812,9 @@ struct zx_str* zxid_my_cdc_url(zxid_conf* cf)
  * you would want to use zxid_my_issuer(). */
 
 /* Called by:  zxid_my_issuer */
-struct zx_sa_Issuer_s* zxid_issuer(zxid_conf* cf, struct zx_str* nameid, char* affiliation)
+struct zx_sa_Issuer_s* zxid_issuer(zxid_conf* cf, struct zx_elem_s* father, struct zx_str* nameid, char* affiliation)
 {
-  struct zx_sa_Issuer_s* is = zx_NEW_sa_Issuer(cf->ctx,0);
+  struct zx_sa_Issuer_s* is = zx_NEW_sa_Issuer(cf->ctx, father);
   zx_add_content(cf->ctx, &is->gg, nameid);
   if (affiliation && affiliation[0])
     is->NameQualifier = zx_ref_attr(cf->ctx, &is->gg, zx_NameQualifier_ATTR, affiliation);
@@ -826,8 +826,8 @@ struct zx_sa_Issuer_s* zxid_issuer(zxid_conf* cf, struct zx_str* nameid, char* a
  * it will be affiliation ID. */
 
 /* Called by:  zxid_mk_a7n, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_ecp_Request_hdr, zxid_mk_logout, zxid_mk_logout_resp, zxid_mk_mni, zxid_mk_mni_resp, zxid_mk_saml_resp */
-struct zx_sa_Issuer_s* zxid_my_issuer(zxid_conf* cf) {
-  return zxid_issuer(cf, zxid_my_entity_id(cf), cf->affiliation);
+struct zx_sa_Issuer_s* zxid_my_issuer(zxid_conf* cf, struct zx_elem_s* father) {
+  return zxid_issuer(cf, father, zxid_my_entity_id(cf), cf->affiliation);
 }
 
 /*() Generate our SP metadata and return it as a string. */

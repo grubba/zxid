@@ -179,6 +179,8 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 
 #define LEAP(a) (!((a)%4) && (((a)%100) || !((a)%400)))
 
+#define ROUND_UP(x,n) if ((n) && (x) % (n)) x += (n) - (x) % (n);
+
 /* Original Base64  Len  (x+2) / 3
  * ""       ""        0  2     0(2)     Suitable original(packed) sizes = bits
  * 1        WX==      4  3     1(0)     to avoid padding are

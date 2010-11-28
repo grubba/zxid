@@ -307,16 +307,16 @@ int main(int argc, char** argv, char** env)
     r = zx_dec_zx_root(cf->ctx, got_all, buf, "zxbench");  /* n_decode=1000 ?!? */
     if (!r) DIE("Decode failure");
     
-    //ent = zxid_get_ent_from_file(cf, "YV7HPtu3bfqW3I4W_DZr-_DKMP4" /* cxp06 */);
-    //ent = zxid_get_ent_from_file(cf, "zIDxx57qGA-qwnsymUf4JD0Er2A" /* s-idp */);
-    //ent = zxid_get_ent_from_file(cf, "7S4XRMew6HHKey9j8fESiJUV-Cs" /* hp-idp */);
+    //ent = zxid_get_ent_file(cf, "YV7HPtu3bfqW3I4W_DZr-_DKMP4" /* cxp06 */);
+    //ent = zxid_get_ent_file(cf, "zIDxx57qGA-qwnsymUf4JD0Er2A" /* s-idp */);
+    //ent = zxid_get_ent_file(cf, "7S4XRMew6HHKey9j8fESiJUV-Cs" /* hp-idp */);
     //r->Envelope->Body->ArtifactResolve
     if (r->Envelope && r->Envelope->Body) {
       if (r->Envelope->Body->ArtifactResponse) {
 	if (r->Envelope->Body->ArtifactResponse->Signature) {
 	  eid = ZX_GET_CONTENT(r->Envelope->Body->ArtifactResponse->Issuer);
 	  D("Found sig in Envelope/Body/ArtifactResponse eid(%.*s)", eid->len, eid->s);
-	  ent = zxid_get_ent_from_cache(cf, eid);
+	  ent = zxid_get_ent_cache(cf, eid);
 	  ZERO(&refs, sizeof(refs));
 	  refs.sref = r->Envelope->Body->ArtifactResponse->Signature->SignedInfo->Reference;
 	  refs.blob = (struct zx_elem_s*)r->Envelope->Body->ArtifactResponse;
@@ -334,7 +334,7 @@ int main(int argc, char** argv, char** env)
 	    if (r->Envelope->Body->ArtifactResponse->Response->Assertion->Signature) {
 	      eid = ZX_GET_CONTENT(r->Envelope->Body->ArtifactResponse->Response->Assertion->Issuer);
 	      D("Found sig in Envelope/Body/ArtifactResponse/Response/Assertion eid(%.*s)", eid->len, eid->s);
-	      ent = zxid_get_ent_from_cache(cf, eid);
+	      ent = zxid_get_ent_cache(cf, eid);
 	      refs.sref = r->Envelope->Body->ArtifactResponse->Response->Assertion->Signature->SignedInfo->Reference;
 	      refs.blob = (struct zx_elem_s*)r->Envelope->Body->ArtifactResponse->Response->Assertion;
 	      res = zxsig_validate(cf->ctx, ent->sign_cert,
@@ -353,7 +353,7 @@ int main(int argc, char** argv, char** env)
       if (r->Assertion->Signature) {
 	eid = ZX_GET_CONTENT(r->Assertion->Issuer);
 	D("Found sig in (bare) Assertion eid(%.*s)", eid->len, eid->s);
-	ent = zxid_get_ent_from_cache(cf, eid);
+	ent = zxid_get_ent_cache(cf, eid);
 	refs.sref = r->Assertion->Signature->SignedInfo->Reference;
 	refs.blob = (struct zx_elem_s*)r->Assertion;
 	res = zxsig_validate(cf->ctx, ent->sign_cert,
@@ -370,7 +370,7 @@ int main(int argc, char** argv, char** env)
       if (r->Response->Signature) {
 	eid = ZX_GET_CONTENT(r->Response->Issuer);
 	D("Found sig in Response eid(%.*s)", eid->len, eid->s);
-	ent = zxid_get_ent_from_cache(cf, eid);
+	ent = zxid_get_ent_cache(cf, eid);
 	refs.sref = r->Response->Signature->SignedInfo->Reference;
 	refs.blob = (struct zx_elem_s*)r->Response;
 	res = zxsig_validate(cf->ctx, ent->sign_cert,
@@ -387,7 +387,7 @@ int main(int argc, char** argv, char** env)
 	if (r->Response->Assertion->Signature) {
 	  eid = ZX_GET_CONTENT(r->Response->Assertion->Issuer);
 	  D("Found sig in Response/Assertion eid(%.*s)", eid->len, eid->s);
-	  ent = zxid_get_ent_from_cache(cf, eid);
+	  ent = zxid_get_ent_cache(cf, eid);
 	  refs.sref = r->Response->Assertion->Signature->SignedInfo->Reference;
 	  refs.blob = (struct zx_elem_s*)r->Response->Assertion;
 	  res = zxsig_validate(cf->ctx, ent->sign_cert,

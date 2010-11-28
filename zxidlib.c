@@ -179,6 +179,9 @@ struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, str
   struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx,0);
   env->Header = hdr;
   env->Body = body;
+  zx_add_kid(&env->gg, &body->gg);
+  if (hdr)
+    zx_add_kid(&env->gg, &hdr->gg);
   ss = zx_EASY_ENC_elem(cf->ctx, &env->gg);
   r = zxid_soap_call_raw(cf, url, ss, 0);
   zx_str_free(cf->ctx, ss);
@@ -217,7 +220,6 @@ int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_s
   struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx,0);
   struct zx_str* ss;
   struct zx_str* logpath;
-  
   env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   env->Body = body;
   ss = zx_EASY_ENC_elem(cf->ctx, &env->gg);

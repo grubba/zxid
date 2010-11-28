@@ -118,7 +118,7 @@ void test_ibm_cert_problem_enc_dec()
   cf->enc_pkey = zxid_read_private_key(cf, "sym-idp-enc.pem");
 #else
   cf->enc_pkey = zxid_read_private_key(cf, "ibm-idp-enc.pem");
-  idp_meta = zxid_get_ent_from_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU"); /* IBMIdP */
+  idp_meta = zxid_get_ent_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU"); /* IBMIdP */
 #endif
   
   req = zxid_mk_logout(cf, nameid, 0, idp_meta);  

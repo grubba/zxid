@@ -101,7 +101,7 @@ struct zx_ecp_Request_s* zxid_mk_ecp_Request_hdr(zxid_conf* cf)
   hdr->actor = zx_ref_attr(cf->ctx, &hdr->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   /*hdr->IsPassive = zx_ref_attr(cf->ctx, &hdr->gg, zx_IsPassive_ATTR, ZXID_TRUE);  OPTIONAL, default=? */
   hdr->ProviderName = zxid_my_entity_id_attr(cf, &hdr->gg, zx_ProviderName_ATTR);  /* *** Friendly name? */
-  hdr->Issuer = zxid_my_issuer(cf);
+  hdr->Issuer = zxid_my_issuer(cf, &hdr->gg);
   hdr->IDPList = zxid_mk_idp_list(cf, SAML2_SOAP);
   return hdr;
 }

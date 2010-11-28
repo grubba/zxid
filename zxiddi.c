@@ -261,7 +261,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 #endif
       ++n_discovered;
       D("%d: DISCOVERED EPR url(%.*s)", n_discovered, addr->len, addr->s);
-      logop = zxid_add_fed_tok_to_epr(cf, epr, uid, 1);
+      logop = zxid_add_fed_tok2epr(cf, epr, uid, 1);
       if (!logop) {
 	ZX_FREE(cf->ctx, epr_buf);
 	goto next_file;

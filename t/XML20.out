@@ -40,7 +40,7 @@ AoGBAJbh3quNpIroem/nUj71o33rfuSkAued6+AmWviqhEd5sykan5tdVe7UzRwP0bYZi5EcmoGA
                 <xenc:KeySize xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">128</xenc:KeySize>
             </EncryptionMethod>
         </KeyDescriptor>
-        <ArtifactResolutionService index="0" isDefault="true" Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://ivs.authn.govt.nz:443/IVS/ArtifactResolver/metaAlias/IVS-idp"></ArtifactResolutionService>
+        <ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://ivs.authn.govt.nz:443/IVS/ArtifactResolver/metaAlias/IVS-idp" index="0" isDefault="true"></ArtifactResolutionService>
         <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://ivs.authn.govt.nz:443/IVS/IDPSloRedirect/metaAlias/IVS-idp" ResponseLocation="https://ivs.authn.govt.nz:443/IVS/IDPSloRedirect/metaAlias/IVS-idp"></SingleLogoutService>
         <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://ivs.authn.govt.nz:443/IVS/IDPSloSoap/metaAlias/IVS-idp"></SingleLogoutService>
         <ManageNameIDService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://ivs.authn.govt.nz:443/IVS/IDPMniRedirect/metaAlias/IVS-idp" ResponseLocation="https://ivs.authn.govt.nz:443/IVS/IDPMniRedirect/metaAlias/IVS-idp"></ManageNameIDService>

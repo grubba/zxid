@@ -189,6 +189,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
   sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx, &sec->gg);
   sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx, &sec->Timestamp->gg);
   sec->Assertion = ses->tgta7n;
+  zx_reverse_elem_lists(&sec->gg);
   D("tgta7n=%p", ses->tgta7n);
 
   /* Prepare request according to the version */
@@ -202,9 +203,10 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
       ZERO(&refs, sizeof(refs));
       refs.id = body->xac_Request->ID;
       refs.canon = zx_EASY_ENC_SO_xac_Request(cf->ctx, body->xac_Request);
-      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az xac-soap"))
-	body->xac_Request->Signature
-	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az xac-soap")) {
+	body->xac_Request->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	zx_add_kid(&body->xac_Request->gg, &body->xac_Request->Signature->gg);
+      }
       zx_str_free(cf->ctx, refs.canon);
     }
 #endif
@@ -214,9 +216,11 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
       ZERO(&refs, sizeof(refs));
       refs.id = &body->xaspcd1_XACMLAuthzDecisionQuery->ID->g;
       refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->xaspcd1_XACMLAuthzDecisionQuery->gg);
-      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az cd1"))
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az cd1")) {
 	body->xaspcd1_XACMLAuthzDecisionQuery->Signature
 	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	zx_add_kid_after_sa_Issuer(&body->xaspcd1_XACMLAuthzDecisionQuery->gg, &body->xaspcd1_XACMLAuthzDecisionQuery->Signature->gg);
+      }
       zx_str_free(cf->ctx, refs.canon);
     }
   } else {
@@ -225,9 +229,11 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
       ZERO(&refs, sizeof(refs));
       refs.id = &body->XACMLAuthzDecisionQuery->ID->g;
       refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->XACMLAuthzDecisionQuery->gg);
-      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az"))
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az")) {
 	body->XACMLAuthzDecisionQuery->Signature
 	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	zx_add_kid_after_sa_Issuer(&body->XACMLAuthzDecisionQuery->gg, &body->XACMLAuthzDecisionQuery->Signature->gg);
+      }
       zx_str_free(cf->ctx, refs.canon);
     }
   }

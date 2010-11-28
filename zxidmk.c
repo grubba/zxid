@@ -28,7 +28,7 @@ struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
 {
   char index[2] = "1";
   struct zx_sp_AuthnRequest_s* ar = zx_NEW_sp_AuthnRequest(cf->ctx,0);
-  ar->Issuer = zxid_my_issuer(cf);
+  ar->Issuer = zxid_my_issuer(cf, &ar->gg);
   ar->ID = zxid_mk_id_attr(cf, &ar->gg, zx_ID_ATTR, "N", ZXID_ID_BITS);
   ar->Version = zx_ref_attr(cf->ctx, &ar->gg, zx_Version_ATTR, SAML2_VERSION);
   ar->IssueInstant = zxid_date_time_attr(cf, &ar->gg, zx_IssueInstant_ATTR, time(0));
@@ -83,7 +83,7 @@ struct zx_sp_ArtifactResolve_s* zxid_mk_art_deref(zxid_conf* cf, zxid_entity* id
   RSA*  sign_pkey;
   struct zxsig_ref refs;
   struct zx_sp_ArtifactResolve_s* ar = zx_NEW_sp_ArtifactResolve(cf->ctx,0);
-  ar->Issuer = zxid_my_issuer(cf);
+  ar->Issuer = zxid_my_issuer(cf, &ar->gg);
   ar->ID = zxid_mk_id_attr(cf, &ar->gg, zx_ID_ATTR, "R", ZXID_ID_BITS);
   ar->Version = zx_ref_attr(cf->ctx, &ar->gg, zx_Version_ATTR, SAML2_VERSION);
   ar->IssueInstant = zxid_date_time_attr(cf, &ar->gg, zx_IssueInstant_ATTR, time(0));
@@ -92,8 +92,10 @@ struct zx_sp_ArtifactResolve_s* zxid_mk_art_deref(zxid_conf* cf, zxid_entity* id
     ZERO(&refs, sizeof(refs));
     refs.id = &ar->ID->g;
     refs.canon = zx_EASY_ENC_elem(cf->ctx, &ar->gg);
-    if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert art deref"))
+    if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert art deref")) {
       ar->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+      zx_add_kid_after_sa_Issuer(&ar->gg, &ar->Signature->gg);
+    }
     zx_str_free(cf->ctx, refs.canon);
   }
   return ar;
@@ -168,7 +170,7 @@ struct zx_sa_EncryptedAssertion_s* zxid_mk_enc_a7n(zxid_conf* cf, struct zx_elem
 struct zx_sp_LogoutRequest_s* zxid_mk_logout(zxid_conf* cf, zxid_nid* nid, struct zx_str* ses_ix, zxid_entity* idp_meta)
 {
   struct zx_sp_LogoutRequest_s* r = zx_NEW_sp_LogoutRequest(cf->ctx,0);
-  r->Issuer = zxid_my_issuer(cf);
+  r->Issuer = zxid_my_issuer(cf, &r->gg);
   r->ID = zxid_mk_id_attr(cf, &r->gg, zx_ID_ATTR, "L", ZXID_ID_BITS);
   r->Version = zx_ref_attr(cf->ctx, &r->gg, zx_Version_ATTR, SAML2_VERSION);
   r->IssueInstant = zxid_date_time_attr(cf, &r->gg, zx_IssueInstant_ATTR, time(0));
@@ -189,7 +191,7 @@ struct zx_sp_LogoutRequest_s* zxid_mk_logout(zxid_conf* cf, zxid_nid* nid, struc
 struct zx_sp_LogoutResponse_s* zxid_mk_logout_resp(zxid_conf* cf, struct zx_sp_Status_s* st, struct zx_str* req_id)
 {
   struct zx_sp_LogoutResponse_s* r = zx_NEW_sp_LogoutResponse(cf->ctx,0);
-  r->Issuer = zxid_my_issuer(cf);
+  r->Issuer = zxid_my_issuer(cf, &r->gg);
   r->ID = zxid_mk_id_attr(cf, &r->gg, zx_ID_ATTR, "r", ZXID_ID_BITS);
   r->Version = zx_ref_attr(cf->ctx, &r->gg, zx_Version_ATTR, SAML2_VERSION);
   r->IssueInstant = zxid_date_time_attr(cf, &r->gg, zx_IssueInstant_ATTR, time(0));
@@ -210,7 +212,7 @@ struct zx_sp_ManageNameIDRequest_s* zxid_mk_mni(zxid_conf* cf, zxid_nid* nid, st
   struct zx_xenc_EncryptedKey_s* ek;
   struct zx_elem_s* newid;
   struct zx_sp_ManageNameIDRequest_s* r = zx_NEW_sp_ManageNameIDRequest(cf->ctx,0);
-  r->Issuer = zxid_my_issuer(cf);
+  r->Issuer = zxid_my_issuer(cf, &r->gg);
   r->ID = zxid_mk_id_attr(cf, &r->gg, zx_ID_ATTR, "R", ZXID_ID_BITS);
   r->Version = zx_ref_attr(cf->ctx, &r->gg, zx_Version_ATTR, SAML2_VERSION);
   r->IssueInstant = zxid_date_time_attr(cf, &r->gg, zx_IssueInstant_ATTR, time(0));
@@ -248,12 +250,12 @@ struct zx_sp_ManageNameIDRequest_s* zxid_mk_mni(zxid_conf* cf, zxid_nid* nid, st
 struct zx_sp_ManageNameIDResponse_s* zxid_mk_mni_resp(zxid_conf* cf, struct zx_sp_Status_s* st, struct zx_str* req_id)
 {
   struct zx_sp_ManageNameIDResponse_s* r = zx_NEW_sp_ManageNameIDResponse(cf->ctx,0);
-  r->Issuer = zxid_my_issuer(cf);
+  r->Issuer = zxid_my_issuer(cf, &r->gg);
   r->ID = zxid_mk_id_attr(cf, &r->gg, zx_ID_ATTR, "r", ZXID_ID_BITS);
   r->Version = zx_ref_attr(cf->ctx, &r->gg, zx_Version_ATTR, SAML2_VERSION);
   r->IssueInstant = zxid_date_time_attr(cf, &r->gg, zx_IssueInstant_ATTR, time(0));
   if (req_id)
-    r->InResponseTo = zx_ref_len_attr(cf->ctx, &r->gg, zx_InResponseTo_ATTR, req_id->len, req_id->s);
+    r->InResponseTo = zx_ref_len_attr(cf->ctx, &r->gg,zx_InResponseTo_ATTR, req_id->len,req_id->s);
   zx_add_kid(&r->gg, &st->gg);
   r->Status = st;
   return r;
@@ -264,14 +266,15 @@ struct zx_sp_ManageNameIDResponse_s* zxid_mk_mni_resp(zxid_conf* cf, struct zx_s
 /*() Constructor for Assertion */
 
 /* Called by:  zxid_mk_user_a7n_to_sp, zxid_xacml_az_cd1_do x2, zxid_xacml_az_do x2 */
-zxid_a7n* zxid_mk_a7n(zxid_conf* cf, struct zx_str* audience, struct zx_sa_Subject_s* subj, struct zx_sa_AuthnStatement_s* an_stmt, struct zx_sa_AttributeStatement_s* at_stmt, struct zx_xasa_XACMLAuthzDecisionStatement_s* az_stmt)
+zxid_a7n* zxid_mk_a7n(zxid_conf* cf, struct zx_str* audience, struct zx_sa_Subject_s* subj, struct zx_sa_AuthnStatement_s* an_stmt, struct zx_sa_AttributeStatement_s* at_stmt)
 {
   zxid_a7n* a7n =  zx_NEW_sa_Assertion(cf->ctx,0);
   a7n->Version = zx_dup_attr(cf->ctx, &a7n->gg, zx_Version_ATTR, SAML2_VERSION);
   a7n->ID = zxid_mk_id_attr(cf, &a7n->gg, zx_ID_ATTR, "A", ZXID_ID_BITS);
-  a7n->Issuer = zxid_my_issuer(cf);
   a7n->IssueInstant = zxid_date_time_attr(cf, &a7n->gg, zx_IssueInstant_ATTR, time(0));
+  a7n->Issuer = zxid_my_issuer(cf, &a7n->gg);
   a7n->Subject = subj;
+  zx_add_kid(&a7n->gg, &subj->gg);
   a7n->Conditions = zx_NEW_sa_Conditions(cf->ctx, &a7n->gg);
   a7n->Conditions->NotBefore = zxid_date_time_attr(cf, &a7n->Conditions->gg, zx_NotBefore_ATTR, time(0));
   a7n->Conditions->NotOnOrAfter = zxid_date_time_attr(cf, &a7n->Conditions->gg, zx_NotOnOrAfter_ATTR, time(0) + cf->a7nttl);
@@ -280,8 +283,12 @@ zxid_a7n* zxid_mk_a7n(zxid_conf* cf, struct zx_str* audience, struct zx_sa_Subje
     a7n->Conditions->AudienceRestriction->Audience = zx_new_str_elem(cf->ctx, &a7n->Conditions->AudienceRestriction->gg, zx_sa_Audience_ELEM, audience);
   }
   a7n->AuthnStatement = an_stmt;
+  if (an_stmt)
+    zx_add_kid(&a7n->gg, &an_stmt->gg);
   a7n->AttributeStatement = at_stmt;
-  a7n->XACMLAuthzDecisionStatement = az_stmt;
+  if (at_stmt)
+    zx_add_kid(&a7n->gg, &at_stmt->gg);
+  zx_reverse_elem_lists(&a7n->gg);
   return a7n;
 }
 
@@ -367,14 +374,27 @@ struct zx_sa_Attribute_s* zxid_mk_attribute(zxid_conf* cf, struct zx_elem_s* fat
 /*() Construct SAML protocol Response (such as may be used to carry assertion in SSO) */
 
 /* Called by:  zxid_idp_sso x4, zxid_xacml_az_cd1_do x2, zxid_xacml_az_do x2 */
-struct zx_sp_Response_s* zxid_mk_saml_resp(zxid_conf* cf)
+struct zx_sp_Response_s* zxid_mk_saml_resp(zxid_conf* cf, zxid_a7n* a7n, zxid_entity* enc_meta)
 {
   struct zx_sp_Response_s* r = zx_NEW_sp_Response(cf->ctx,0);
   r->Version = zx_dup_attr(cf->ctx, &r->gg, zx_Version_ATTR, SAML2_VERSION);
   r->ID = zxid_mk_id_attr(cf, &r->gg, zx_ID_ATTR, "R", ZXID_ID_BITS);
-  r->Issuer = zxid_my_issuer(cf);
+  r->Issuer = zxid_my_issuer(cf, &r->gg);
   r->IssueInstant = zxid_date_time_attr(cf, &r->gg, zx_IssueInstant_ATTR, time(0));
   r->Status = zxid_OK(cf, &r->gg);
+  if (a7n) {
+    if (enc_meta) {
+      /* See saml-bindings-2.0-os.pdf, sec 3.5.5.2 Security Considerations, p.24, ll.847-851
+       * After publication it was understood that the SHOULD NOT could be eliminated
+       * if EncryptedAssertion is used. */
+
+      r->EncryptedAssertion = zxid_mk_enc_a7n(cf, &r->gg, a7n, enc_meta);
+    } else {
+      r->Assertion = a7n;
+      zx_add_kid(&r->gg, &a7n->gg);
+    }
+  }
+  zx_reverse_elem_lists(&r->gg);
   return r;
 }
 
@@ -442,7 +462,7 @@ struct zx_xac_Request_s* zxid_mk_xac_az(zxid_conf* cf, struct zx_elem_s* father,
 struct zx_xasp_XACMLAuthzDecisionQuery_s* zxid_mk_az(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
 {
   struct zx_xasp_XACMLAuthzDecisionQuery_s* r = zx_NEW_xasp_XACMLAuthzDecisionQuery(cf->ctx,0);
-  r->Issuer = zxid_my_issuer(cf);
+  r->Issuer = zxid_my_issuer(cf, &r->gg);
   r->ID = zxid_mk_id_attr(cf, &r->gg, zx_ID_ATTR, "R", ZXID_ID_BITS);
   r->Version = zx_ref_attr(cf->ctx, &r->gg, zx_Version_ATTR, SAML2_VERSION);
   r->IssueInstant = zxid_date_time_attr(cf, &r->gg, zx_IssueInstant_ATTR, time(0));
@@ -456,7 +476,7 @@ struct zx_xasp_XACMLAuthzDecisionQuery_s* zxid_mk_az(zxid_conf* cf, struct zx_xa
 struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zxid_mk_az_cd1(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
 {
   struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* r = zx_NEW_xaspcd1_XACMLAuthzDecisionQuery(cf->ctx,0);
-  r->Issuer = zxid_my_issuer(cf);
+  r->Issuer = zxid_my_issuer(cf, &r->gg);
   r->ID = zxid_mk_id_attr(cf, &r->gg, zx_ID_ATTR, "R", ZXID_ID_BITS);
   r->Version = zx_ref_attr(cf->ctx, &r->gg, zx_Version_ATTR, SAML2_VERSION);
   r->IssueInstant = zxid_date_time_attr(cf, &r->gg, zx_IssueInstant_ATTR, time(0));

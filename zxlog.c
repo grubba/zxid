@@ -48,7 +48,9 @@
 /*() Allocate memory for logging purpose.
  * Generally memory allocation goes via zx_alloc() family of functions. However
  * dues to special requirements of cryptographically implemeted logging,
- * we maintain this special allocation function  (which backends to zx_alloc()).
+ * we maintain this special allocation function (which backends to zx_alloc()).
+ * Among the special features: This functin makes sure the buffer size is
+ * rounded up to multiple of nonce to accommodate block ciphers.
  *
  * This function is considered internal. Do not use unless you know what you are doing. */
 
@@ -56,7 +58,9 @@
 static char* zxlog_alloc_zbuf(zxid_conf* cf, int *zlen, char* zbuf, int len, char* sig, int nonce)
 {
   char* p;
-  p = ZX_ALLOC(cf->ctx, nonce + 2 + len + *zlen);
+  int siz = nonce + 2 + len + *zlen;
+  ROUND_UP(siz, nonce);        /* Round up to block size */
+  p = ZX_ALLOC(cf->ctx, siz);
   if (nonce)
     zx_rand(p, nonce);
   p[nonce] = (len >> 8) & 0xff;
@@ -138,6 +142,7 @@ void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
       AES_set_encrypt_key((unsigned char*)keybuf, 128, &aes_key);
       memcpy(ivec, zbuf, sizeof(ivec));
       AES_cbc_encrypt((unsigned char*)zbuf+16, (unsigned char*)zbuf+16, zlen-16, &aes_key, (unsigned char*)ivec, 1);
+      ROUND_UP(zlen, 16);        /* Round up to block size */
 
       LOCK(cf->mx, "logenc wrln");
       if (!cf->log_enc_cert)
@@ -176,6 +181,7 @@ void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
       AES_set_encrypt_key((unsigned char*)cf->log_symkey, 128, &aes_key);
       memcpy(ivec, zbuf, sizeof(ivec));
       AES_cbc_encrypt((unsigned char*)zbuf+16, (unsigned char*)zbuf+16, zlen-16, &aes_key, (unsigned char*)ivec, 1);
+      ROUND_UP(zlen, 16);        /* Round up to block size */
       break;
     case 0x50:  /* xU 3DES */
       encletter = 'U';

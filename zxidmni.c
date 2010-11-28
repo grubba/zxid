@@ -52,9 +52,11 @@ int zxid_sp_mni_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_str*
       ZERO(&refs, sizeof(refs));
       refs.id = &body->ManageNameIDRequest->ID->g;
       refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->ManageNameIDRequest->gg);
-      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mni"))
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mni")) {
 	body->ManageNameIDRequest->Signature
 	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	zx_add_kid_after_sa_Issuer(&body->ManageNameIDRequest->gg, &body->ManageNameIDRequest->Signature->gg);
+      }
       zx_str_free(cf->ctx, refs.canon);
     }
     r = zxid_idp_soap(cf, cgi, ses, idp_meta, ZXID_MNI_SVC, body);

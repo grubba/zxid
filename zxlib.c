@@ -347,6 +347,9 @@ void zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont)
   x->kids = (struct zx_elem_s*)cont;
 }
 
+/*() Add kid to head of kids list. Usually you should add in schema order
+ * and in the end call zx_reverse_elem_lists() to make the list right order. */
+
 struct zx_elem_s* zx_add_kid(struct zx_elem_s* father, struct zx_elem_s* kid)
 {
   if (father) {
@@ -354,6 +357,40 @@ struct zx_elem_s* zx_add_kid(struct zx_elem_s* father, struct zx_elem_s* kid)
     father->kids = kid;
   }
   return kid;
+}
+
+/*() Add kid before another elem. This assumes father is already in
+ * forward order (i.e. zx_reverse_elem_lists() was already called. */
+
+struct zx_elem_s* zx_add_kid_before(struct zx_elem_s* father, int before, struct zx_elem_s* kid)
+{
+  if (!father->kids) {
+    father->kids = kid;
+    return kid;
+  }
+  for (father = father->kids;
+       father->g.n && father->g.n->tok != before;
+       father = (struct zx_elem_s*)father->g.n) ;
+
+  kid->g.n = father->g.n;
+  father->g.n = &kid->g;
+  return kid;
+}
+
+/*() Add Signature right after sa:Issuer. This assumes father is
+ * already in forward order (i.e. zx_reverse_elem_lists() was already
+ * called. */
+
+struct zx_elem_s* zx_add_kid_after_sa_Issuer(struct zx_elem_s* father, struct zx_elem_s* kid)
+{
+  if (father->kids->g.tok == zx_sa_Issuer_ELEM) {
+    father = father->kids;
+    kid->g.n = father->g.n;
+    father->g.n = &kid->g;
+    return kid;
+  }
+  ERR("No <sa:Issuer> found. Adding signature at list head. %d", father->kids->g.tok);
+  return zx_add_kid(father, kid);
 }
 
 /*() Construct new simple element from zx_str by referencing, not copying, it. */

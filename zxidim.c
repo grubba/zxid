@@ -92,16 +92,12 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
     ZERO(&refs, sizeof(refs));
     refs.id = &a7n->ID->g;
     refs.canon = zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
-    if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert paos"))
+    if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert paos")) {
       a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+      zx_add_kid_after_sa_Issuer(&a7n->gg, &a7n->Signature->gg);
+    }
   }
-  resp = zxid_mk_saml_resp(cf);
-  if (cf->post_a7n_enc) {
-    resp->EncryptedAssertion = zxid_mk_enc_a7n(cf, &resp->gg, a7n, sp_meta);
-  } else {
-    zx_add_kid(&resp->gg, &a7n->gg);
-    resp->Assertion = a7n;
-  }
+  resp = zxid_mk_saml_resp(cf, a7n, cf->post_a7n_enc?sp_meta:0);
   payload = zxid_anoint_sso_resp(cf, cf->sso_sign & ZXID_SSO_SIGN_RESP, resp, ar);
   if (!payload) {
     resp->Status = zxid_mk_Status(cf, &resp->gg, "Fail", 0, 0);
@@ -113,7 +109,6 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
   zxlog(cf, 0, &srcts, 0, ZX_GET_CONTENT(ar->Issuer), 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, ses.uid, "SSOS");
 
   /* *** Generate SOAP envelope with ECP header as required by ECP PAOS */
-
   
   D_DEDENT("ssos: ");
   return resp;

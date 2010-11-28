@@ -104,13 +104,7 @@ struct zx_ctx {
   pthread_mutex_t mx;
 #endif
   char canon_inopt;
-  char pad1;
-  char pad2;
-  char pad3;
-  char pad4;
-  char pad5;
-  char pad6;
-  char pad7;
+  char pad1; char pad2; char pad3; char pad4; char pad5; char pad6; char pad7;
 };
 
 /* We arrange all structs to start with a common header (16 bytes on 32bit platforms).
@@ -138,7 +132,7 @@ struct zx_attr_s {
   char* name;
 };
 
-  //#define ZX_ANY_AT(x) ((struct zx_any_attr_s*)(x))
+//#define ZX_ANY_AT(x) ((struct zx_any_attr_s*)(x))
 
 /* Simple elements, base type for complex elements. */
 
@@ -294,6 +288,8 @@ char* zx_md5_crypt(const char* pw, const char* salt, char* buf);
 
 void  zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont);
 struct zx_elem_s* zx_add_kid(struct zx_elem_s* father, struct zx_elem_s* kid);
+struct zx_elem_s* zx_add_kid_before(struct zx_elem_s* father, int before, struct zx_elem_s* kid);
+struct zx_elem_s* zx_add_kid_after_sa_Issuer(struct zx_elem_s* father, struct zx_elem_s* kid);
 void  zx_reverse_elem_lists(struct zx_elem_s* x);
 int   zx_check_elem_order(struct zx_elem_s* x);
 int   zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);

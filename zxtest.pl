@@ -773,6 +773,8 @@ sub ediffy {
 
     # Ignore some common innocent differences
 
+    $data1 =~ s/0\.\d+ 12\d+ libzxid \(zxid\.org\)/0./g;
+    $data2 =~ s/0\.\d+ 12\d+ libzxid \(zxid\.org\)/0./g;
     $data1 =~ s/R0\.\d+ \(\d+\)/R0./g;
     $data2 =~ s/R0\.\d+ \(\d+\)/R0./g;
     $data1 =~ s/R0\.\d+/R0./g;
@@ -814,6 +816,7 @@ sub ediffy {
 	    ++$ret;
 	}
     }
+    print "\n" if $ret;
     return $ret;
 }
 
