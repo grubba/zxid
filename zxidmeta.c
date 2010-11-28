@@ -503,6 +503,7 @@ struct zx_ds_KeyInfo_s* zxid_key_info(zxid_conf* cf, struct zx_elem_s* father, X
 #else
   ERR("This copy of zxid was compiled to NOT use OpenSSL. Generating KeyInfo is not supported. Add -DUSE_OPENSSL and recompile. %d", 0);
 #endif
+  zx_reverse_elem_lists(&ki->gg);
   return ki;
 }
 
@@ -514,6 +515,7 @@ struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, struct zx_elem_s* fat
   struct zx_md_KeyDescriptor_s* kd = zx_NEW_md_KeyDescriptor(cf->ctx, father);
   kd->use = zx_ref_attr(cf->ctx, &kd->gg, zx_use_ATTR, use);
   kd->KeyInfo = zxid_key_info(cf, &kd->gg, x);
+  zx_reverse_elem_lists(&kd->gg);
   return kd;
 }
 
@@ -527,6 +529,7 @@ struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, struct zx_
   d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
     d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
+  zx_reverse_elem_lists(&d->gg);
   return d;
 }
 
@@ -540,6 +543,7 @@ struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, struct zx_elem_
   d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
     d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
+  zx_reverse_elem_lists(&d->gg);
   return d;
 }
 
@@ -553,6 +557,7 @@ struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, struct zx_elem_
   d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
     d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
+  zx_reverse_elem_lists(&d->gg);
   return d;
 }
 
@@ -566,6 +571,7 @@ struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, struct zx_elem_
   d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
     d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
+  zx_reverse_elem_lists(&d->gg);
   return d;
 }
 
@@ -579,6 +585,7 @@ struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, struct zx_el
   d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
     d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
+  zx_reverse_elem_lists(&d->gg);
   return d;
 }
 
@@ -591,6 +598,7 @@ struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, struct zx_e
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->url, loc);
   d->index = zx_ref_attr(cf->ctx, &d->gg, zx_index_ATTR, ix);
+  zx_reverse_elem_lists(&d->gg);
   return d;
 }
 
@@ -633,11 +641,12 @@ struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf, struct zx_elem_s
   /* N.B. The index values should not be changed. They are used in
    * AuthnReq to choose profile using AssertionConsumerServiceIndex */
 
-  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_POST_SIMPLE_SIGN, "?o=P", "5");
-  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_PAOS, "?o=P", "4");
-  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_SOAP, "?o=S", "3");
-  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_POST, "?o=P", "2");
   sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_ART, "", "1");
+  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_POST, "?o=P", "2");
+  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_SOAP, "?o=S", "3");
+  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_PAOS, "?o=P", "4");
+  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_POST_SIMPLE_SIGN, "?o=P", "5");
+  zx_reverse_elem_lists(&sp_ssod->gg);
   return sp_ssod;
 }
 
@@ -689,6 +698,7 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf, struct zx_elem
   if (cf->imps_ena)
     idp_ssod->NameIDMappingService = zxid_nimap_desc(cf, &idp_ssod->gg, SAML2_SOAP, "?o=S", 0);
   
+  zx_reverse_elem_lists(&idp_ssod->gg);
   return idp_ssod;
 }
 
@@ -698,24 +708,25 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf, struct zx_elem
 struct zx_md_Organization_s* zxid_org_desc(zxid_conf* cf, struct zx_elem_s* father)
 {
   struct zx_md_Organization_s* org = zx_NEW_md_Organization(cf->ctx,father);
-  org->OrganizationDisplayName = zx_NEW_md_OrganizationDisplayName(cf->ctx, &org->gg);
-  org->OrganizationDisplayName->lang = zx_ref_attr(cf->ctx, &org->gg, zx_lang_ATTR, "en");  /* *** config */
-  zx_add_content(cf->ctx, &org->OrganizationDisplayName->gg, zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name)));
-
   org->OrganizationName = zx_NEW_md_OrganizationName(cf->ctx, &org->gg);
-  org->OrganizationName->lang = zx_ref_attr(cf->ctx, &org->OrganizationName->gg, zx_lang_ATTR, "en");  /* *** config */
+  org->OrganizationName->lang = zx_ref_attr(cf->ctx, &org->OrganizationName->gg, zx_xml_lang_ATTR, "en");  /* *** config */
   if (cf->org_name && cf->org_name[0])
     zx_add_content(cf->ctx, &org->OrganizationName->gg, zx_ref_str(cf->ctx, cf->org_name));
   else
     zx_add_content(cf->ctx, &org->OrganizationName->gg, zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name)));
 
+  org->OrganizationDisplayName = zx_NEW_md_OrganizationDisplayName(cf->ctx, &org->gg);
+  org->OrganizationDisplayName->lang = zx_ref_attr(cf->ctx, &org->OrganizationDisplayName->gg, zx_xml_lang_ATTR, "en");  /* *** config */
+  zx_add_content(cf->ctx, &org->OrganizationDisplayName->gg, zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name)));
+
   org->OrganizationURL = zx_NEW_md_OrganizationURL(cf->ctx, &org->gg);
-  org->OrganizationURL->lang = zx_ref_attr(cf->ctx, &org->OrganizationURL->gg, zx_lang_ATTR, "en");  /* *** config */
+  org->OrganizationURL->lang = zx_ref_attr(cf->ctx, &org->OrganizationURL->gg, zx_xml_lang_ATTR, "en");  /* *** config */
   if (cf->org_url && cf->org_url[0])
     zx_add_content(cf->ctx, &org->OrganizationURL->gg, zx_ref_str(cf->ctx, cf->org_url));
   else
     zx_add_content(cf->ctx, &org->OrganizationURL->gg, zx_ref_str(cf->ctx, cf->url));
 
+  zx_reverse_elem_lists(&org->gg);
   return org;
 }
 
@@ -746,6 +757,7 @@ struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf, struct zx_elem_s*
   if (cf->contact_tel && cf->contact_tel[0])
     contact->TelephoneNumber = zx_ref_elem(cf->ctx, &contact->gg, zx_md_TelephoneNumber_ELEM, cf->contact_tel);
 
+  zx_reverse_elem_lists(&contact->gg);
   return contact;
 }
 
@@ -832,6 +844,7 @@ struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
     ed->IDPSSODescriptor = zxid_idp_sso_desc(cf, &ed->gg);
   ed->Organization = zxid_org_desc(cf, &ed->gg);
   ed->ContactPerson = zxid_contact_desc(cf, &ed->gg);
+  zx_reverse_elem_lists(&ed->gg);
   
   if (cf->log_level>0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "MYMD", 0, 0);

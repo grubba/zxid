@@ -238,6 +238,10 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 #define ZX_TOK_NS_SHIFT         16
 #define ZX_TOK_FLAGS_MASK       0xff000000
 
+#define zx_xml_lang_ATTR (zx_xml_NS|zx_lang_ATTR)
+#define zx_e_actor_ATTR  (zx_e_NS|zx_actor_ATTR)
+#define zx_e_mustUnderstand_ATTR (zx_e_NS|zx_mustUnderstand_ATTR)
+
 struct zx_at_tok { const char* name; };
 
 struct zx_el_desc {
@@ -288,7 +292,10 @@ char* zx_md5_crypt(const char* pw, const char* salt, char* buf);
 
 /* Common Subexpression Elimination (CSE) for generated code. */
 
-void zx_reverse_elem_lists(struct zx_elem_s* x);
+void  zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont);
+struct zx_elem_s* zx_add_kid(struct zx_elem_s* father, struct zx_elem_s* kid);
+void  zx_reverse_elem_lists(struct zx_elem_s* x);
+int   zx_check_elem_order(struct zx_elem_s* x);
 int   zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 void  zx_add_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 char* zx_enc_seen(char* p, struct zx_ns_s* ns);
@@ -299,8 +306,6 @@ struct zx_str* zx_EASY_ENC_elem(struct zx_ctx* c, struct zx_elem_s* x);
 char* zx_attr_wo_enc(char* p, struct zx_attr_s* attr);
 void  zx_free_attr(struct zx_ctx* c, struct zx_attr_s* attr, int free_strs);
 void  zx_free_elem(struct zx_ctx* c, struct zx_elem_s* x, int free_strs);
-void  zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont);
-struct zx_elem_s* zx_add_kid(struct zx_elem_s* father, struct zx_elem_s* kid);
 
 #ifdef ZX_ENA_AUX
 void  zx_dup_attr(struct zx_ctx* c, struct zx_str* attr);

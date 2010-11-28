@@ -28,9 +28,6 @@
 #include "c/zx-const.h"
 #include "c/zx-paos-data.h"
 
-#define zx_e_actor_ATTR (zx_e_NS|zx_actor_ATTR)
-#define zx_e_mustUnderstand_ATTR (zx_e_NS|zx_mustUnderstand_ATTR)
-
 extern char **environ;
 
 /*() Generate SOAP headers for use with PAOS carried SAML2 ECP profile AuthnRequest.

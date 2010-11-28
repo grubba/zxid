@@ -352,7 +352,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
   if (bdy->LogoutRequest) {
     if (!zxid_sp_slo_do(cf, cgi, ses, bdy->LogoutRequest))
       return 0;
-    body->LogoutResponse = zxid_mk_logout_resp(cf, zxid_OK(cf), &bdy->LogoutRequest->ID->g);
+    body->LogoutResponse = zxid_mk_logout_resp(cf, zxid_OK(cf, 0), &bdy->LogoutRequest->ID->g);
     if (cf->sso_soap_resp_sign) {
       ZERO(&refs, sizeof(refs));
       refs.id = &body->LogoutResponse->ID->g;

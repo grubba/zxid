@@ -118,7 +118,7 @@ int main(int argc, char** argv)
   env = zx_NEW_e_Envelope(cf->ctx,0);
   env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
-  env->Body->Query = zxid_mk_di_query(cf, XMLNS_DAP, 0,0,0);
+  env->Body->Query = zxid_mk_di_query(cf, &env->Body->gg, XMLNS_DAP, 0,0,0);
   epr = zxid_find_epr(cf, ses, XMLNS_DISCO_2_0, 0,0,0, 1);
   env = zxid_wsc_call(cf, ses, epr, env, 0);
 

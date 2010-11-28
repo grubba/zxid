@@ -100,7 +100,7 @@ public class zxidwspleaf extends HttpServlet {
 
 	// Simulate deny
 
-	zxidjni.set_tas3_status(cf, ses, zxidjni.mk_tas3_status(cf, "urn:tas3:ctlpt:app", "urn:tas3:status:deny", null, null, null));
+	zxidjni.set_tas3_status(cf, ses, zxidjni.mk_tas3_status(cf, null, "urn:tas3:ctlpt:app", "urn:tas3:status:deny", null, null, null));
 
 	// Check the input for correct ID-WSF compliance
 

@@ -30,9 +30,6 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
-#define zx_e_actor_ATTR (zx_e_NS|zx_actor_ATTR)
-#define zx_e_mustUnderstand_ATTR (zx_e_NS|zx_mustUnderstand_ATTR)
-
 /*() Helper function to sign, if needed, and log the issued assertion.
  * Checks for Assertion ID duplicate and returns 0 on
  * failure (i.e. duplicate), 1 on success. */

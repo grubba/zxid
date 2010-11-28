@@ -76,9 +76,9 @@ zxid_nid* zxid_parse_mni(zxid_conf* cf, char* buf, char** pmniptr)
   }
   
   nameid = zx_NEW_sa_NameID(cf->ctx,0);
-  if (*buf)              nameid->Format = zx_dup_attr(cf->ctx, zx_Format_ATTR, buf);
-  if (idpent && *idpent) nameid->NameQualifier = zx_dup_attr(cf->ctx, zx_NameQualifier_ATTR, idpent);
-  if (spqual && *spqual) nameid->SPNameQualifier = zx_dup_attr(cf->ctx, zx_SPNameQualifier_ATTR, spqual);
+  if (*buf)              nameid->Format = zx_dup_attr(cf->ctx, &nameid->gg, zx_Format_ATTR, buf);
+  if (idpent && *idpent) nameid->NameQualifier = zx_dup_attr(cf->ctx, &nameid->gg, zx_NameQualifier_ATTR, idpent);
+  if (spqual && *spqual) nameid->SPNameQualifier = zx_dup_attr(cf->ctx, &nameid->gg, zx_SPNameQualifier_ATTR, spqual);
   if (nid && *nid)       zx_add_content(cf->ctx, &nameid->gg, zx_dup_str(cf->ctx, nid));
   return nameid;
 }

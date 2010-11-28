@@ -498,6 +498,8 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
 	/*    sp   name             ="                "   */
 	len += 1 + attr->name_len + 2 + attr->g.len + 1;
       } else { /* Construct elem string from tok */
+	if (!attr->ns && IN_RANGE((attr->g.tok & ZX_TOK_NS_MASK) >> ZX_TOK_NS_SHIFT, 1, zx__NS_MAX))
+	  attr->ns = zx_ns_tab + ((attr->g.tok & ZX_TOK_NS_MASK) >> ZX_TOK_NS_SHIFT);
 	if (attr->ns)
 	  len += attr->ns->prefix_len + 1;
 	ix = attr->g.tok & ZX_TOK_TOK_MASK;
@@ -533,6 +535,8 @@ char* zx_attr_wo_enc(char* p, struct zx_attr_s* attr)
   if (attr->name) {
     ZX_OUT_MEM(p, attr->name, attr->name_len);
   } else { /* Construct elem string from tok */
+    if (!attr->ns && IN_RANGE((attr->g.tok & ZX_TOK_NS_MASK) >> ZX_TOK_NS_SHIFT, 1, zx__NS_MAX))
+      attr->ns = zx_ns_tab + ((attr->g.tok & ZX_TOK_NS_MASK) >> ZX_TOK_NS_SHIFT);
     if (attr->ns) {
       ZX_OUT_MEM(p, attr->ns->prefix, attr->ns->prefix_len);
       ZX_OUT_CH(p, ':');

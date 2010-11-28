@@ -149,7 +149,7 @@ struct zx_str* zxid_slo_resp_redir(zxid_conf* cf, zxid_cgi* cgi, struct zx_sp_Lo
 
   zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "SLORESREDIR", 0, "");
 
-  res = zxid_mk_logout_resp(cf, zxid_OK(cf), &req->ID->g);
+  res = zxid_mk_logout_resp(cf, zxid_OK(cf, 0), &req->ID->g);
   res->Destination = zx_ref_len_attr(cf->ctx, &res->gg, zx_Destination_ATTR, loc->len, loc->s);
   ss = zx_EASY_ENC_elem(cf->ctx, &res->gg);
   ss2 = zxid_saml2_resp_redir(cf, loc, ss, cgi->rs);

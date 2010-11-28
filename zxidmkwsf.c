@@ -67,7 +67,7 @@ zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, struct zx_elem_s* father, c
     st->ref          = zx_dup_attr(cf->ctx, &st->gg, zx_ref_ATTR, ref);
   if (sc2)
     st->Status       = zxid_mk_lu_Status(cf, &st->gg, sc2, 0, 0, 0);
-  st->mustUnderstand = zx_ref_attr(cf->ctx, &st->gg, zx_e_NS|zx_mustUnderstand_ATTR, "0");
+  st->mustUnderstand = zx_ref_attr(cf->ctx, &st->gg, zx_e_mustUnderstand_ATTR, "0");
   return st;
 }
 

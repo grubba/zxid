@@ -107,7 +107,7 @@ int main(int argc, char** argv)
     env = zx_NEW_e_Envelope(cf->ctx,0);
     env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
     env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
-    env->Body->Query = zxid_mk_di_query(cf, svc, 0,0,0);
+    env->Body->Query = zxid_mk_di_query(cf, &env->Body->gg, svc, 0,0,0);
     epr = zxid_find_epr(cf, ses, XMLNS_DISCO_2_0, 0,0,0, 1);
     env = zxid_wsc_call(cf, ses, epr, env, 0);
     if (env->Body->QueryResponse)
@@ -125,10 +125,10 @@ int main(int argc, char** argv)
       env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
 #if 1
       env->Body->dap_Query
-	= zxid_mk_dap_query(cf,
+	= zxid_mk_dap_query(cf, &env->Body->gg,
 			    0,   /* No tests */
-			    zxid_mk_dap_query_item(cf,
-						   zxid_mk_dap_select(cf,
+			    zxid_mk_dap_query_item(cf, 0,
+						   zxid_mk_dap_select(cf, 0,
 								      0,  /* DN from ID-WSF */
 								      "objecttype=svcprofile",
 								      0,  /* all attributes */
@@ -149,9 +149,9 @@ int main(int argc, char** argv)
 						   0), /* No contingent item ID reference */
 			    0);  /* No subscriptions */
       env->Body->dap_Query
-	= zxid_mk_dap_query(cf, 0,
-			    zxid_mk_dap_query_item(cf,
-						   zxid_mk_dap_select(cf, 0,
+	= zxid_mk_dap_query(cf, &env->Body->gg, 0,
+			    zxid_mk_dap_query_item(cf, 0,
+						   zxid_mk_dap_select(cf, 0, 0,
 								      "objecttype=svcprofile",
 								      0, 1,
 								      ZXID_DAP_SCOPE_SUBTREE,
@@ -160,9 +160,9 @@ int main(int argc, char** argv)
 			    0);  /* No subscriptions */
 #else
       env->Body->dap_Query
-	= zxid_mk_dap_query(cf,
-			    zxid_mk_dap_test_item(cf,
-						  zxid_mk_dap_testop(cf,
+	= zxid_mk_dap_query(cf, &env->Body->gg,
+			    zxid_mk_dap_test_item(cf, 0,
+						  zxid_mk_dap_testop(cf, 0,
 								     0,  /* DN from ID-WSF */
 								     "objecttype=svcprofile",
 								     0,  /* all attributes */
@@ -173,8 +173,8 @@ int main(int argc, char** argv)
 								     0), /* return data */
 						  0,   /* regular data entries */
 						  0),  /* No predefined operation */
-			    zxid_mk_dap_query_item(cf,
-						   zxid_mk_dap_select(cf,
+			    zxid_mk_dap_query_item(cf, 0,
+						   zxid_mk_dap_select(cf, 0,
 								      0,  /* DN from ID-WSF */
 								      "objecttype=svcprofile",
 								      0,  /* all attributes */
@@ -193,11 +193,11 @@ int main(int argc, char** argv)
 						   0,  /* Do not request snapshot */
 						   0,  /* Do not refer to snapshot */
 						   0), /* No contingent item ID reference */
-			    zxid_mk_dap_subscription(cf,
+			    zxid_mk_dap_subscription(cf, 0,
 						     "subsid",
 						     0,  /* No item ID reference */
-						     zxid_mk_dap_resquery(cf,
-									  zxid_mk_dap_select(cf,
+						     zxid_mk_dap_resquery(cf, 0,
+									  zxid_mk_dap_select(cf, 0,
 											     0,  /* DN from ID-WSF */
 											     "objecttype=svcprofile",
 											     0,  /* all attributes */
@@ -283,7 +283,7 @@ int main(int argc, char** argv)
       env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
       env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
       env->Body->GetObjectRequest = zx_NEW_demomed_GetObjectRequest(cf->ctx, &env->Body->gg);
-      env->Body->GetObjectRequest->ObjectID = zx_new_elem(cf->ctx, &env->Body->GetObjectRequest->gg, zx_demomed_ObjectID_ELEM, &first_objinfo->objectID->g);
+      env->Body->GetObjectRequest->ObjectID = zx_new_str_elem(cf->ctx, &env->Body->GetObjectRequest->gg, zx_demomed_ObjectID_ELEM, &first_objinfo->objectID->g);
 
       env = zxid_wsc_call(cf, ses, epr, env, 0);
 

@@ -131,7 +131,8 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define MAX3(a,b,c)   MAX((a), MAX((b),(c)))
 #define MAX4(a,b,c,d) MAX(MAX((a),(b)), MAX((c),(d)))
 
-#define CLAMP(x,min,max) ((x) = (MIN(MAX((x),(min)),(max))))
+#define MINMAX(x,min,max) (MIN(MAX((x),(min)),(max)))
+#define CLAMP(x,min,max) ((x) = MINMAX((x),(min),(max)))
  
 #define ONE_OF_2(x,a,b)     (((x) == (a)) || ((x) == (b)))
 #define ONE_OF_3(x,a,b,c)   (ONE_OF_2((x),(a),(b)) || ((x) == (c)))

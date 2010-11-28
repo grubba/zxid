@@ -31,6 +31,7 @@
 #define fdtype HANDLE
 #else
 #define fdtype int
+int lockf(int fd, int cmd, int len);  /* Avoid including unistd.h */
 #include <sys/stat.h>
 #endif
 

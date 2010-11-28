@@ -139,7 +139,7 @@ struct zx_sp_ManageNameIDResponse_s* zxid_mni_do(zxid_conf* cf, zxid_cgi* cgi, z
     D("MNI Change newnym(%.*s)", newnym->len, newnym->s);
     zxid_user_change_nameid(cf, nid, newnym);
   }
-  return zxid_mk_mni_resp(cf, zxid_OK(cf), &mni->ID->g);
+  return zxid_mk_mni_resp(cf, zxid_OK(cf,0), &mni->ID->g);
 }
 
 /*() Wrapper for zxid_mni_do(), which see. */
@@ -148,7 +148,7 @@ struct zx_sp_ManageNameIDResponse_s* zxid_mni_do(zxid_conf* cf, zxid_cgi* cgi, z
 struct zx_str* zxid_mni_do_ss(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_ManageNameIDRequest_s* mni, struct zx_str* loc)
 {
   struct zx_sp_ManageNameIDResponse_s* res;
-  res = zxid_mk_mni_resp(cf, zxid_OK(cf), &mni->ID->g);
+  res = zxid_mk_mni_resp(cf, zxid_OK(cf,0), &mni->ID->g);
   res = zxid_mni_do(cf, cgi, ses, mni);
   res->Destination = zx_ref_len_attr(cf->ctx, &res->gg, zx_Destination_ATTR, loc->len, loc->s);
   return zx_EASY_ENC_elem(cf->ctx, &res->gg);

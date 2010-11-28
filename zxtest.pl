@@ -604,7 +604,7 @@ sub process_sent_response {
     my ($xx, $user, $sesid, $qs) = @_;
     $lasterror = 'OK'; # Need better check to verify if message really was sent
 }
-}
+} # Close if (0) several pages above
 
 
 sub check_for_listener {
@@ -986,6 +986,8 @@ CMD('HELP3', 'zxcot -h',     "./zxcot -v -h");
 CMD('HELP4', 'zxdecode -h',  "./zxdecode -v -h");
 CMD('HELP5', 'zxlogview -h', "./zxlogview -v -h");
 
+CMD('SOENC1', 'EncDec Status', "./zxencdectest -r 3");
+
 CMD('CONF1', 'zxcall -dc dump config',       "./zxcall -v -v -c PATH=/var/zxid/ -dc");
 CMD('CONF2', 'zxidhlo o=d dump config',      "QUERY_STRING=o=d ./zxidhlo");
 CMD('CONF3', 'zxidhlo o=c dump carml',       "QUERY_STRING=o=c ./zxidhlo");
@@ -1070,7 +1072,7 @@ CMD('SIG22b', 'sig vry rsa-idp-post',  "./zxdecode -v -s -s <t/rsa-idp-post-resp
 #CMD('SIG27', 'sig vry orange simple sign2', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/orange2-sig-data.b64");  # No metadata
 
 #CMD('SIG28', 'sig vry ibm-enc-a7n', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/ibm-enc-a7n.xml");
-#CMD('SIG29', 'sig vry ibm-resp-extra-ns', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/ibm-resp-extra-ns.xml");  # No a7n, no metadata
+#CMD('SIG29', 'sig vry ibm-resp-extra-ns', "./zxdecode -v encdec-s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/ibm-resp-extra-ns.xml");  # No a7n, no metadata
 
 #CMD('SIG30', 'sig vry simplesamlphp enc a7n', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/encrypted-simplesamlphp.xml"); # Messed up by whitespace
 #CMD('SIG31', 'sig vry simplesamlphp enc post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/encrypted-simplesamlphp.txt"); # Messed up by whitespace

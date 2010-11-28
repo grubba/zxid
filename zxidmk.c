@@ -195,6 +195,7 @@ struct zx_sp_LogoutResponse_s* zxid_mk_logout_resp(zxid_conf* cf, struct zx_sp_S
   r->IssueInstant = zxid_date_time_attr(cf, &r->gg, zx_IssueInstant_ATTR, time(0));
   if (req_id)
     r->InResponseTo = zx_ref_len_attr(cf->ctx, &r->gg, zx_InResponseTo_ATTR, req_id->len, req_id->s);
+  zx_add_kid(&r->gg, &st->gg);
   r->Status = st;
   return r;
 }
@@ -253,6 +254,7 @@ struct zx_sp_ManageNameIDResponse_s* zxid_mk_mni_resp(zxid_conf* cf, struct zx_s
   r->IssueInstant = zxid_date_time_attr(cf, &r->gg, zx_IssueInstant_ATTR, time(0));
   if (req_id)
     r->InResponseTo = zx_ref_len_attr(cf->ctx, &r->gg, zx_InResponseTo_ATTR, req_id->len, req_id->s);
+  zx_add_kid(&r->gg, &st->gg);
   r->Status = st;
   return r;
 }
@@ -392,10 +394,9 @@ struct zx_xac_Response_s* zxid_mk_xacml_resp(zxid_conf* cf, char* decision)
 }
 
 /* Called by:  zxid_pep_az_soap x3 */
-struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, struct zx_elem_s* father, struct zx_xac_Attribute_s* aa, struct zx_str* atid, struct zx_str* attype, struct zx_str* atissuer, struct zx_str* atvalue)
+struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, struct zx_elem_s* father, struct zx_str* atid, struct zx_str* attype, struct zx_str* atissuer, struct zx_str* atvalue)
 {
   struct zx_xac_Attribute_s* at = zx_NEW_xac_Attribute(cf->ctx, father);
-  ZX_NEXT(at) = (void*)aa;
   at->AttributeId = zx_ref_len_attr(cf->ctx, &at->gg, zx_AttributeId_ATTR, atid->len, atid->s);
   at->DataType = zx_ref_len_attr(cf->ctx, &at->gg, zx_DataType_ATTR, attype->len, attype->s);
   if (atissuer)
@@ -410,14 +411,28 @@ struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, struct zx_elem
 struct zx_xac_Request_s* zxid_mk_xac_az(zxid_conf* cf, struct zx_elem_s* father, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
 {
   struct zx_xac_Request_s* r = zx_NEW_xac_Request(cf->ctx, father);
+
   r->Subject  = zx_NEW_xac_Subject(cf->ctx, &r->gg);
   r->Subject->Attribute = subj;
+  for (; subj; subj = (struct zx_xac_Attribute_s*)subj->gg.g.n)
+    zx_add_kid(&r->gg, &subj->gg);
+
   r->Resource = zx_NEW_xac_Resource(cf->ctx, &r->gg);
   r->Resource->Attribute = rsrc;
+  for (; rsrc; rsrc = (struct zx_xac_Attribute_s*)rsrc->gg.g.n)
+    zx_add_kid(&r->gg, &rsrc->gg);
+
   r->Action   = zx_NEW_xac_Action(cf->ctx, &r->gg);
   r->Action->Attribute = act;
+  for (; act; act = (struct zx_xac_Attribute_s*)act->gg.g.n)
+    zx_add_kid(&r->gg, &act->gg);
+
   r->Environment = zx_NEW_xac_Environment(cf->ctx, &r->gg);
   r->Environment->Attribute = env;
+  for (; env; env = (struct zx_xac_Attribute_s*)env->gg.g.n)
+    zx_add_kid(&r->gg, &env->gg);
+
+  zx_reverse_elem_lists(&r->gg);
   return r;
 }
 

@@ -24,9 +24,6 @@
 #include "c/zx-data.h"
 #include "c/zx-e-data.h"
 
-#define zx_e_actor_ATTR (zx_e_NS|zx_actor_ATTR)
-#define zx_e_mustUnderstand_ATTR (zx_e_NS|zx_mustUnderstand_ATTR)
-
 #if 0
 #define XS_STRING "xs:string"
 #else
@@ -198,7 +195,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
 
   body = zx_NEW_e_Body(cf->ctx,0);
   if (!strcmp(cf->xasp_vers, "xac-soap")) {
-    body->xac_Request = zxid_mk_xac_az(cf, subj, rsrc, act, env);
+    body->xac_Request = zxid_mk_xac_az(cf, &body->gg, subj, rsrc, act, env);
 #if 0
     /* *** xac:Response does not have signature field */
     if (cf->sso_soap_sign) {

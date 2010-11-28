@@ -26,9 +26,6 @@
 
 #define BOOL_STR_TEST(x) ((x) && (x) != '0')
 
-#define zx_e_actor_ATTR (zx_e_NS|zx_actor_ATTR)
-#define zx_e_mustUnderstand_ATTR (zx_e_NS|zx_mustUnderstand_ATTR)
-
 /*(i) zxid_wsf_decor() implements the main low level ID-WSF web service call logic, including
  * preparation of SOAP headers, use of sec mech (e.g. preparation of wsse:Security
  * header and signing of appropriate compoments of the message), and sequencing
