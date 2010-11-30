@@ -86,7 +86,7 @@ char* im_to = 0;
 char* bdy = 0;
 zxid_conf* cf;
 
-/* Called by:  main x8, zxcall_main, zxcot_main */
+/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   struct zx_str* ss;
@@ -142,6 +142,8 @@ static void opt(int* argc, char*** argv, char*** env)
       switch ((*argv)[0][2]) {
       case '\0':
 	++zx_debug;
+	if (zx_debug == 2)
+	  strncpy(zx_instance, "\t\e[43mzxcall\e[0m", sizeof(zx_instance));
 	continue;
       case 'i':
         switch ((*argv)[0][3]) {
@@ -289,7 +291,7 @@ help:
  *
  * See also: zxid_find_epr() */
 
-/* Called by:  main */
+/* Called by:  zxcall_main */
 int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
 {
   struct zx_root_s* r;

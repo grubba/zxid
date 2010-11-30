@@ -140,7 +140,7 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
  * you would not use the return value for anything else than checking for an error.
  */
 
-/* Called by:  main */
+/* Called by:  zxcall_main */
 zxid_tok* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how)
 {
   struct zx_e_Envelope_s* env;

@@ -43,7 +43,7 @@
 
 /*() Convert configuration string ~conf~ to configuration object ~cf~. See zxid_conf_to_cf() */
 
-/* Called by:  dirconf, main x2, zxid_az, zxid_fed_mgmt_len, zxid_idp_list_len, zxid_idp_select_len, zxid_new_conf_to_cf, zxid_simple_len */
+/* Called by:  dirconf, main x2, zxid_az, zxid_az_base, zxid_fed_mgmt_len, zxid_idp_list_len, zxid_idp_select_len, zxid_new_conf_to_cf, zxid_simple_len */
 int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
 {
 #if 1
@@ -104,7 +104,7 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
  * conf::   Configuration string
  * return:: Configuration object */
 
-/* Called by:  main x6, zxcall_main, zxidwspcgi_main x2 */
+/* Called by:  main x6, opt x2, zxcall_main, zxcot_main, zxidwspcgi_main x2 */
 zxid_conf* zxid_new_conf_to_cf(const char* conf)
 {
   zxid_conf* cf = malloc(sizeof(zxid_conf));  /* *** direct use of malloc */
@@ -295,7 +295,7 @@ static char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, co
 
 /*() Expand a template. Only selected !!VAR expansions supported. No IFs or loops. */
 
-/* Called by:  zxid_simple_idp_show_an */
+/* Called by:  zxid_idp_select_zxstr_cf_cgi, zxid_saml2_post_enc, zxid_simple_idp_show_an, zxid_simple_show_err */
 struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* templ_path, const char* default_templ, int size_hint, int auto_flags)
 {
   char buf[8192];
@@ -352,7 +352,7 @@ struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* t
  *
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
-/* Called by:  zxid_idp_list_cf, zxid_idp_select_zxstr_cf_cgi */
+/* Called by:  zxid_idp_list_cf, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang */
 char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   int i;
@@ -607,7 +607,7 @@ char* zxid_idp_select(char* conf, int auto_flags) {
  * as string with or without headers, as indicated by the auto_flag. The
  * page is in ss. */
 
-/* Called by:  zxid_simple_idp_show_an, zxid_simple_show_carml, zxid_simple_show_conf, zxid_simple_show_idp_sel, zxid_simple_show_meta */
+/* Called by:  zxid_simple_idp_show_an, zxid_simple_show_carml, zxid_simple_show_conf, zxid_simple_show_err, zxid_simple_show_idp_sel, zxid_simple_show_meta */
 static char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_mask, char* rets, char* cont_type, int* res_len, int auto_flags)
 {
   char* res;
@@ -652,7 +652,7 @@ static char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask,
 
 /*() Helper function to redirect according to auto flags. */
 
-/* Called by:  zxid_simple_idp_an_ok_do_rest, zxid_simple_idp_new_user, zxid_simple_idp_recover_password, zxid_simple_idp_show_an, zxid_simple_show_idp_sel */
+/* Called by:  zxid_simple_idp_an_ok_do_rest, zxid_simple_idp_new_user, zxid_simple_idp_recover_password, zxid_simple_idp_show_an, zxid_simple_show_err, zxid_simple_show_idp_sel */
 static char* zxid_simple_redir_page(zxid_conf* cf, char* redir, char* rs, int* res_len, int auto_flags)
 {
   char* res;
@@ -678,7 +678,7 @@ static char* zxid_simple_redir_page(zxid_conf* cf, char* redir, char* rs, int* r
  *
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
-/* Called by:  zxid_simple_no_ses_cf, zxid_simple_ses_active_cf x5 */
+/* Called by:  zxid_ps_accept_invite, zxid_ps_finalize_invite, zxid_simple_no_ses_cf, zxid_simple_ses_active_cf x5 */
 char* zxid_simple_show_idp_sel(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   struct zx_str* ss;
@@ -730,6 +730,7 @@ static char* zxid_simple_show_conf(zxid_conf* cf, zxid_cgi* cgi, int* res_len, i
 
 /*() Show Error screen. */
 
+/* Called by:  zxid_ps_accept_invite x4, zxid_ps_finalize_invite x4 */
 char* zxid_simple_show_err(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   char* p;

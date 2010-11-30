@@ -56,7 +56,7 @@ int zxid_pick_sso_profile(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* idp_meta)
 }
 
 /*() Map name id format form field to SAML specified URN string. */
-/* Called by:  zxid_mk_authn_req */
+/* Called by:  zxid_map_identity_token, zxid_mk_authn_req */
 const char* zxid_saml2_map_nid_fmt(const char* f)
 {
   switch (f[0]) {
@@ -328,7 +328,7 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 
 /*() Map ZXSIG constant to letter for log and string message. */
 
-/* Called by:  zxid_chk_sig, zxid_decode_redir_or_post, zxid_sp_sso_finalize, zxid_wsf_validate_a7n, zxid_wsp_validate */
+/* Called by:  zxid_chk_sig, zxid_decode_redir_or_post, zxid_sp_sso_finalize, zxid_wsc_validate_resp_env, zxid_wsf_validate_a7n, zxid_wsp_validate */
 void zxid_sigres_map(int sigres, char** sigval, char** sigmsg)
 {
   switch (sigres) {
@@ -528,7 +528,7 @@ struct zx_str unknown_str = {0,0,1,"??"};  /* Static string used as dummy value.
  * a7n:: Single Sign-On assertion
  * return:: 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 
-/* Called by:  main, zxid_sp_dig_sso_a7n */
+/* Called by:  main, sig_validate, zxid_sp_dig_sso_a7n */
 int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7n, struct zx_ns_s* pop_seen)
 {
   char* err = "S"; /* See: RES in zxid-log.pd, section "ZXID Log Format" */

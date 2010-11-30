@@ -74,8 +74,12 @@ int main(int argc, char** argv)
     fprintf(stderr, "This is a CGI script (written in C). No arguments are accepted.\n%s", help);
     exit(1);
   }
-  
+
+#if 1
+  strncpy(zx_instance, "\t\e[47mzxidp\e[0m", sizeof(zx_instance));
+#else
   strncpy(zx_instance, "\tzxidp", sizeof(zx_instance));
+#endif
   //zx_debug = 1;
   res = zxid_simple(CONF, 0, 0x1fff);  /* 0xfff == full CGI automation */
   switch (res[0]) {

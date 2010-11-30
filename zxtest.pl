@@ -773,6 +773,11 @@ sub ediffy {
 
     # Ignore some common innocent differences
 
+    $data1 =~ s/(ID)=".*?"/$1=""/g;
+    $data2 =~ s/(ID)=".*?"/$1=""/g;
+    $data1 =~ s/(IssueInstant)=".*?"/$1=""/g;
+    $data2 =~ s/(IssueInstant)=".*?"/$1=""/g;
+
     $data1 =~ s/0\.\d+ 12\d+ libzxid \(zxid\.org\)/0./g;
     $data2 =~ s/0\.\d+ 12\d+ libzxid \(zxid\.org\)/0./g;
     $data1 =~ s/R0\.\d+ \(\d+\)/R0./g;
@@ -989,7 +994,8 @@ CMD('HELP3', 'zxcot -h',     "./zxcot -v -h");
 CMD('HELP4', 'zxdecode -h',  "./zxdecode -v -h");
 CMD('HELP5', 'zxlogview -h', "./zxlogview -v -h");
 
-CMD('SOENC1', 'EncDec Status', "./zxencdectest -r 3");
+CMD('SOENC1', 'EncDec Status',     "./zxencdectest -r 3");
+CMD('ATORD1', 'Attribute sorting', "./zxencdectest -r 4");
 
 CMD('CONF1', 'zxcall -dc dump config',       "./zxcall -v -v -c PATH=/var/zxid/ -dc");
 CMD('CONF2', 'zxidhlo o=d dump config',      "QUERY_STRING=o=d ./zxidhlo");

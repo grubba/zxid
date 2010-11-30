@@ -72,7 +72,7 @@ char  symmetric_key[1024];
 int symmetric_key_len;
 char buf[256*1024];
 
-/* Called by:  main x8, zxcall_main, zxcot_main */
+/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
 void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
 {
   char* conf_path = 0;

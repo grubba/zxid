@@ -244,7 +244,7 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   SOAPaction.next = &content_type;    //curl_slist_append(3)
   curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &SOAPaction);
   
-  D("------------------------ url(%s) ------------------------", urli);
+  D("----------- url(%s) -----------", urli);
   D("SOAP_CALL post(%.*s) len=%d\n", len, data, len);
   res = curl_easy_perform(cf->curl);  /* <========= Actual call, blocks. */
   switch (res) {

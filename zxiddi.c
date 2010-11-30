@@ -31,6 +31,7 @@
  * that was created when token for accessing discovery was issued.
  * Returns 1 on success, 0 on failure. */
 
+/* Called by:  zxid_di_query, zxid_imreq, zxid_ps_addent_invite, zxid_ps_resolv_id, zxid_ssos_anreq */
 int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struct zx_lu_Status_s** stp, zxid_nid** nameidp)
 {
   zxid_nid* nameid;

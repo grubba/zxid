@@ -34,7 +34,7 @@
  * Checks for Assertion ID duplicate and returns 0 on
  * failure (i.e. duplicate), 1 on success. */
 
-/* Called by:  zxid_add_fed_tok_to_epr, zxid_idp_sso x3 */
+/* Called by:  zxid_add_fed_tok2epr, zxid_idp_sso x3, zxid_imreq */
 int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issued_to, const char* lk, const char* uid)
 {
   X509* sign_cert;
@@ -98,7 +98,7 @@ int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issue
  * or the canonicalized response message string on success. This string
  * may be useful for caller to send further and should be freed by the caller. */
 
-/* Called by:  zxid_idp_sso x4 */
+/* Called by:  zxid_idp_sso x4, zxid_ssos_anreq */
 struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Response_s* resp, struct zx_sp_AuthnRequest_s* ar)
 {
   X509* sign_cert;
@@ -292,7 +292,7 @@ void zxid_gen_boots(zxid_conf* cf, struct zx_elem_s* father, const char* uid, ch
  * bs_lvl:: 0: DI (do not add any bs), 1: add all bootstraps at sso level,
  *     <= cf->bootstrap_level: add all boostraps, > cf->bootstrap_level: only add di BS. */
 
-/* Called by:  zxid_add_fed_tok_to_epr, zxid_idp_sso */
+/* Called by:  zxid_add_fed_tok2epr, zxid_imreq, zxid_sso_issue_a7n */
 zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, int bs_lvl)
 {
   zxid_a7n* a7n;
@@ -351,7 +351,7 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
 
 /*(i) Check federation, create federation if appropriate. */
 
-/* Called by:  zxid_add_fed_tok_to_epr, zxid_idp_sso */
+/* Called by:  zxid_add_fed_tok2epr, zxid_imreq, zxid_nidmap_do, zxid_sso_issue_a7n */
 zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, char allow_create, struct timeval* srcts, struct zx_str* issuer, struct zx_str* req_id, const char* sp_name_buf)
 {
   int got;
@@ -436,7 +436,7 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
 
 /*() Change NameID to be transient and record corresponding mapping. */
 
-/* Called by:  zxid_add_fed_tok_to_epr x2, zxid_idp_sso x2 */
+/* Called by:  zxid_add_fed_tok2epr x2, zxid_imreq x2, zxid_nidmap_do x2, zxid_sso_issue_a7n x2 */
 void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_buf, const char* uid)
 {
   struct zx_str* nid;
@@ -470,8 +470,9 @@ void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_
 }
 
 /*() Consider an EPR and user and generate the necessary access credential (SAML a7n).
- * The EPR is modified in place. Returns logging keyword indicating which kind of token
- * was issued. Returns static string describing the nature of token, for logging purposes. */
+ * The EPR, which the caller obtained by parsing XML, is modified in place by adding
+ * the SecurityContext to the end of the kids list.
+ * Returns static string describing the nature of token, for logging purposes. */
 
 /* Called by:  zxid_di_query, zxid_gen_boots x2 */
 char* zxid_add_fed_tok2epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int bs_lvl)
@@ -480,6 +481,7 @@ char* zxid_add_fed_tok2epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int bs
   zxid_nid* nameid;
   zxid_a7n* a7n;
   zxid_entity* sp_meta;
+  struct zx_di_SecurityContext_s* sc;
   struct zx_str* prvid;
   struct zx_str* affil;
   char sp_name_buf[1024];
@@ -529,31 +531,31 @@ char* zxid_add_fed_tok2epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int bs
     return 0;
   }
   
-  if (!epr->Metadata->SecurityContext) {
-    epr->Metadata->SecurityContext = zx_NEW_di_SecurityContext(cf->ctx, &epr->Metadata->gg);
+  if (!(sc = epr->Metadata->SecurityContext)) {
+    epr->Metadata->SecurityContext = sc = zx_NEW_di_SecurityContext(cf->ctx, 0);
+    zx_add_kid_before(&epr->Metadata->gg, ZX_TOK_NOT_FOUND, &sc->gg);
   }
 
-  if (!epr->Metadata->SecurityContext->SecurityMechID) {
-    epr->Metadata->SecurityContext->SecurityMechID
-      = zx_dup_elem(cf->ctx, &epr->Metadata->SecurityContext->gg, zx_di_SecurityMechID_ELEM, WSF20_SEC_MECH_TLS_BEARER);
+  if (!sc->SecurityMechID) {
+    sc->SecurityMechID = zx_dup_elem(cf->ctx, &sc->gg, zx_di_SecurityMechID_ELEM, WSF20_SEC_MECH_TLS_BEARER);
   }
 
-  if (!epr->Metadata->SecurityContext->Token) {
-    epr->Metadata->SecurityContext->Token = zx_NEW_sec_Token(cf->ctx, &epr->Metadata->SecurityContext->gg);
-  }
+  if (!sc->Token)
+    sc->Token = zx_NEW_sec_Token(cf->ctx, &sc->gg);
   
   if (cf->di_a7n_enc) {
-    epr->Metadata->SecurityContext->Token->EncryptedAssertion
-      = zxid_mk_enc_a7n(cf, &epr->Metadata->SecurityContext->Token->gg, a7n, sp_meta);
+    sc->Token->EncryptedAssertion = zxid_mk_enc_a7n(cf, &sc->Token->gg, a7n, sp_meta);
   } else {
-    zx_add_kid(&epr->Metadata->SecurityContext->Token->gg, &a7n->gg);
-    epr->Metadata->SecurityContext->Token->Assertion = a7n;
+    sc->Token->Assertion = a7n;
+    zx_add_kid(&sc->Token->gg, &a7n->gg);
   }
+  zx_reverse_elem_lists(&sc->gg);
   return logop;
 }
 
 /*() Internal function, just to factor out some commonality between SSO and SSOS. */
 
+/* Called by:  zxid_idp_sso, zxid_ssos_anreq */
 zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct timeval* srcts, zxid_entity* sp_meta, struct zx_str* acsurl, zxid_nid** nameid, char** logop, struct zx_sp_AuthnRequest_s* ar)
 {
   zxid_a7n* a7n;
@@ -823,6 +825,7 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
   struct zx_as_SASLResponse_s* res = zx_NEW_as_SASLResponse(cf->ctx,0);
   struct zx_sa_AttributeStatement_s* at_stmt;
   struct zx_sa_Attribute_s* at;
+  struct zx_sa_Attribute_s* at_next;
   char* q;
   char* u;
   char* p;
@@ -846,6 +849,7 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
 
   if (zxid_pw_authn(cf, &cgi, &ses)) {
     D_INDENT("as: ");
+    res->Status = zxid_mk_lu_Status(cf, &res->gg, "OK", 0, 0, 0);
     at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0);
     name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, cgi.uid);
     zxid_gen_boots(cf, &at_stmt->gg, cgi.uid, path, 1);
@@ -854,12 +858,17 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
 
     /* Kludgy extraction of the EPRs from the attributes. */
 
-    for (at = at_stmt->Attribute; at; at = (struct zx_sa_Attribute_s*)at->gg.g.n)
+    at = at_stmt->Attribute;
+    if (at) {
       res->EndpointReference = at->AttributeValue->EndpointReference;
-    /* *** Free the attribute chain, but do not free EPRs */
+      for (; at; at = at_next) {
+	zx_add_kid(&res->gg, &at->AttributeValue->EndpointReference->gg);
+	at_next = (struct zx_sa_Attribute_s*)at->gg.g.n;
+	ZX_FREE(cf->ctx, at);
+      }
+    }
     ZX_FREE(cf->ctx, at_stmt);
-
-    res->Status = zxid_mk_lu_Status(cf, &res->gg, "OK", 0, 0, 0);
+    zx_reverse_elem_lists(&res->gg);
     D_DEDENT("as: ");
   } else {
     ERR("Authentication failed uid(%s) pw(%s)", cgi.uid, cgi.pw);

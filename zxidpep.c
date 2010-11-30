@@ -47,6 +47,7 @@
  * env::  Value-result parameter. Linked list of environment attributes.
  */
 
+/* Called by:  zxid_pep_az_base_soap_pepmap, zxid_pep_az_soap_pepmap */
 static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_map* pepmap, struct zx_xac_Attribute_s** subj, struct zx_xac_Attribute_s** rsrc, struct zx_xac_Attribute_s** act, struct zx_xac_Attribute_s** env)
 {
   struct zxid_map* map;
@@ -156,6 +157,7 @@ static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, str
  * returns:: SAML Response as data structure or null upon error.
  */
 
+/* Called by:  zxid_pep_az_base_soap_pepmap, zxid_pep_az_soap_pepmap */
 static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
 {
   X509* sign_cert;
@@ -196,7 +198,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
 
   body = zx_NEW_e_Body(cf->ctx,0);
   if (!strcmp(cf->xasp_vers, "xac-soap")) {
-    body->xac_Request = zxid_mk_xac_az(cf, &body->gg, subj, rsrc, act, env);
+    ZX_ADD_KID(body, xac_Request, zxid_mk_xac_az(cf, &body->gg, subj, rsrc, act, env));
 #if 0
     /* *** xac:Response does not have signature field */
     if (cf->sso_soap_sign) {
@@ -211,7 +213,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
     }
 #endif
   } else if (!strcmp(cf->xasp_vers, "2.0-cd1")) {
-    body->xaspcd1_XACMLAuthzDecisionQuery = zxid_mk_az_cd1(cf, subj, rsrc, act, env);
+    ZX_ADD_KID(body, xaspcd1_XACMLAuthzDecisionQuery, zxid_mk_az_cd1(cf, subj, rsrc, act, env));
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
       refs.id = &body->xaspcd1_XACMLAuthzDecisionQuery->ID->g;
@@ -224,7 +226,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
       zx_str_free(cf->ctx, refs.canon);
     }
   } else {
-    body->XACMLAuthzDecisionQuery = zxid_mk_az(cf, subj, rsrc, act, env);
+    ZX_ADD_KID(body, XACMLAuthzDecisionQuery, zxid_mk_az(cf, subj, rsrc, act, env));
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
       refs.id = &body->XACMLAuthzDecisionQuery->ID->g;
@@ -293,6 +295,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
  * For simpler API, see zxid_az() family of functions.
  */
 
+/* Called by:  zxid_call_epr, zxid_pep_az_soap, zxid_simple_ab_pep, zxid_simple_ses_active_cf, zxid_wsc_prepare_call, zxid_wsc_validate_resp_env, zxid_wsp_decorate, zxid_wsp_validate */
 char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zxid_map* pepmap)
 {
   struct zx_xac_Attribute_s* subj = 0;
@@ -391,6 +394,7 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
  * For simpler API, see zxid_az_base() family of functions.
  */
 
+/* Called by:  zxid_pep_az_base_soap */
 char* zxid_pep_az_base_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zxid_map* pepmap)
 {
   struct zx_xac_Attribute_s* subj = 0;
@@ -455,11 +459,12 @@ char* zxid_pep_az_base_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, 
 /*() Call Policy Decision Point (PDP) to obtain an authorization decision.
  * Uses default PEPMAP to call zxid_pep_az_soap_pepmap(). */
 
-/* Called by:  zxid_az_cf_ses, zxid_call x2, zxid_simple_ab_pep, zxid_simple_ses_active_cf, zxid_wsc_prepare_call, zxid_wsc_valid_resp */
+/* Called by:  zxid_az_cf_ses */
 char* zxid_pep_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url) {
   return zxid_pep_az_soap_pepmap(cf, cgi, ses, pdp_url, cf->pepmap);
 }
 
+/* Called by:  zxid_az_base_cf_ses */
 char* zxid_pep_az_base_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url) {
   return zxid_pep_az_base_soap_pepmap(cf, cgi, ses, pdp_url, cf->pepmap);
 }
@@ -499,6 +504,7 @@ char* zxid_az_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses)
   return ret;
 }
 
+/* Called by:  zxid_az_base_cf */
 char* zxid_az_base_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses)
 {
   zxid_cgi cgi;
@@ -541,6 +547,7 @@ char* zxid_az_cf(zxid_conf* cf, const char* qs, const char* sid)
   return zxid_az_cf_ses(cf, qs, &ses);
 }
 
+/* Called by:  zxid_az_base */
 char* zxid_az_base_cf(zxid_conf* cf, const char* qs, const char* sid)
 {
   zxid_ses ses;
@@ -565,6 +572,7 @@ char* zxid_az(const char* conf, const char* qs, const char* sid)
   return zxid_az_cf(&cf, qs, sid);
 }
 
+/* Called by: */
 char* zxid_az_base(const char* conf, const char* qs, const char* sid)
 {
   struct zx_ctx ctx;

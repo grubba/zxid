@@ -210,9 +210,9 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 #define ZX_OUT_TAG(p, tag) ZX_OUT_MEM(p, tag, sizeof(tag)-1)
 #define ZX_OUT_CLOSE_TAG(p, tag) ZX_OUT_MEM(p, tag, sizeof(tag)-1)
 #if 1
-#define ZX_LEN_SIMPLE_TAG(tok, len, ns) (1 + ((tok == ZX_TOK_NOT_FOUND && ns && ns->prefix_len)?ns->prefix_len+1:0) + len)
-#define ZX_OUT_SIMPLE_TAG(p, tok, tag, len, ns) MB ZX_OUT_CH(p, '<'); if (tok == ZX_TOK_NOT_FOUND && ns && ns->prefix_len) { ZX_OUT_MEM(p, ns->prefix, ns->prefix_len); ZX_OUT_CH(p, ':'); } ZX_OUT_MEM(p, tag, len); ME
-#define ZX_OUT_SIMPLE_CLOSE_TAG(p, tok, tag, len, ns) MB ZX_OUT_CH(p, '<'); ZX_OUT_CH(p, '/');  if (tok == ZX_TOK_NOT_FOUND && ns && ns->prefix_len) { ZX_OUT_MEM(p, ns->prefix, ns->prefix_len); ZX_OUT_CH(p, ':'); } ZX_OUT_MEM(p, tag, len); ZX_OUT_CH(p, '>'); ME
+#define ZX_LEN_SIMPLE_TAG(tok, len, ns) (1 + ((tok == ZX_TOK_TOK_NOT_FOUND && ns && ns->prefix_len)?ns->prefix_len+1:0) + len)
+#define ZX_OUT_SIMPLE_TAG(p, tok, tag, len, ns) MB ZX_OUT_CH(p, '<'); if (tok == ZX_TOK_TOK_NOT_FOUND && ns && ns->prefix_len) { ZX_OUT_MEM(p, ns->prefix, ns->prefix_len); ZX_OUT_CH(p, ':'); } ZX_OUT_MEM(p, tag, len); ME
+#define ZX_OUT_SIMPLE_CLOSE_TAG(p, tok, tag, len, ns) MB ZX_OUT_CH(p, '<'); ZX_OUT_CH(p, '/');  if (tok == ZX_TOK_TOK_NOT_FOUND && ns && ns->prefix_len) { ZX_OUT_MEM(p, ns->prefix, ns->prefix_len); ZX_OUT_CH(p, ':'); } ZX_OUT_MEM(p, tag, len); ZX_OUT_CH(p, '>'); ME
 #else
 #define ZX_OUT_SIMPLE_TAG(p, tag, len, ns) MB ZX_OUT_CH(p, '<'); if (0&&ns) { ZX_OUT_MEM(p, ns->prefix, ns->prefix_len); ZX_OUT_CH(p, ':'); } ZX_OUT_MEM(p, tag, len); ME
 #define ZX_OUT_SIMPLE_CLOSE_TAG(p, tag, len, ns) MB ZX_OUT_CH(p, '<'); ZX_OUT_CH(p, '/');  if (0&&ns) { ZX_OUT_MEM(p, ns->prefix, ns->prefix_len); ZX_OUT_CH(p, ':'); } ZX_OUT_MEM(p, tag, len); ZX_OUT_CH(p, '>'); ME
@@ -224,9 +224,9 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 #define ZX_TOK_XMLNS     (-4)
 #define ZX_TOK_DATA             0x0000fffd
 #define ZX_TOK_ATTR_NOT_FOUND   0x0000fffe
-#define ZX_TOK_NOT_FOUND        0x0000ffff
+#define ZX_TOK_TOK_NOT_FOUND    0x0000ffff
 #define ZX_TOK_NS_NOT_FOUND     0x00ff0000
-#define ZX_TOK_AND_NS_NOT_FOUND 0x00ffffff  /* Decimal 16777215 */
+#define ZX_TOK_NOT_FOUND        0x00ffffff  /* Decimal 16777215 */
 #define ZX_TOK_TOK_MASK         0x0000ffff
 #define ZX_TOK_NS_MASK          0x00ff0000
 #define ZX_TOK_NS_SHIFT         16
@@ -286,10 +286,12 @@ char* zx_md5_crypt(const char* pw, const char* salt, char* buf);
 
 /* Common Subexpression Elimination (CSE) for generated code. */
 
-void  zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont);
+#define ZX_ADD_KID(b,f,k) (zx_add_kid(&(b)->gg,(struct zx_elem_s*)((b)->f=(k))))
+
 struct zx_elem_s* zx_add_kid(struct zx_elem_s* father, struct zx_elem_s* kid);
 struct zx_elem_s* zx_add_kid_before(struct zx_elem_s* father, int before, struct zx_elem_s* kid);
 struct zx_elem_s* zx_add_kid_after_sa_Issuer(struct zx_elem_s* father, struct zx_elem_s* kid);
+void  zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont);
 void  zx_reverse_elem_lists(struct zx_elem_s* x);
 int   zx_check_elem_order(struct zx_elem_s* x);
 int   zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);

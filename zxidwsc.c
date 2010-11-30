@@ -47,6 +47,7 @@
  *
  * See also: zxid_wsp_validate() */
 
+/* Called by:  zxid_call_epr, zxid_wsc_valid_resp */
 static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env, const char* enve)
 {
   int n_refs = 0;
@@ -278,6 +279,7 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
   return 1;
 }
 
+/* Called by:  zxid_wsc_prep_secmech x2 */
 static void zxid_choose_security_token(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_wsse_Security_s* sec)
 {
   zxid_tok* tok;
@@ -386,7 +388,7 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
  * additional SOAP headers at will before calling this function. This function
  * will add Liberty ID-WSF specific SOAP headers. */
 
-/* Called by:  main x9, zxid_call, zxid_get_epr */
+/* Called by:  main x9, zxid_call_epr, zxid_get_epr, zxid_map_identity_token */
 struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env, char** ret_enve)
 {
   int i, res;
@@ -473,7 +475,7 @@ static char zx_env_close[] = "</e:Envelope>";
  * payload content of the <e:Body> and the rest of the SOAP envelope is added.
  */
 
-/* Called by:  zxid_call, zxid_wsc_prepare_call, zxid_wsc_valid_resp, zxid_wsp_decorate */
+/* Called by:  zxid_call_epr, zxid_wsc_prepare_call, zxid_wsc_valid_resp, zxid_wsp_decorate */
 struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
 {
   struct zx_e_Envelope_s* env;
@@ -529,7 +531,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
  * normally you should be using zxid_call() and let the discovery
  * take its course. */
 
-/* Called by:  zxcall_main, zxid_callf */
+/* Called by:  zxid_call, zxid_callf_epr */
 struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* enve)
 {
   char* ret_enve;
@@ -585,7 +587,7 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
 /*() Call web service, printf style. See zxid_call() for more documentation.
  * Normally you should be calling zxid_callf() instead. */
 
-/* Called by:  main */
+/* Called by: */
 struct zx_str* zxid_callf_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* env_f, ...)
 {
   char* s;
@@ -633,6 +635,7 @@ struct zx_str* zxid_callf_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const
  *     content. NULL on failure. ses->curflt and/or ses->curstatus contain
  *     more detailed error information. */
 
+/* Called by:  zxcall_main, zxid_callf */
 struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* enve)
 {
   zxid_epr* epr;

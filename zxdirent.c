@@ -75,6 +75,7 @@ DIR *zx_win23_opendir(const char *name)
     return dir;
 }
 
+/* Called by: */
 int zx_win23_closedir(DIR *dir)
 {
     int result = -1;
@@ -118,6 +119,7 @@ struct dirent *zx_win23_readdir(DIR *dir)
     return result;
 }
 
+/* Called by: */
 void zx_win23_rewinddir(DIR *dir)
 {
     if(dir && dir->handle != -1)

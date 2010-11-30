@@ -103,7 +103,7 @@ struct zx_sp_ArtifactResolve_s* zxid_mk_art_deref(zxid_conf* cf, zxid_entity* id
 
 /*() Create SAML protocol <Status> element, given various levels of error input. */
 
-/* Called by:  zxid_OK */
+/* Called by:  so_enc_dec, zxid_OK, zxid_nidmap_do x2, zxid_ssos_anreq x4 */
 struct zx_sp_Status_s* zxid_mk_Status(zxid_conf* cf, struct zx_elem_s* father, char* sc1, char* sc2, char* msg)
 {
   struct zx_sp_Status_s* st = zx_NEW_sp_Status(cf->ctx, father);
@@ -120,7 +120,7 @@ struct zx_sp_Status_s* zxid_mk_Status(zxid_conf* cf, struct zx_elem_s* father, c
 
 /*() Create SAML <Status> element indicating success. */
 
-/* Called by:  zxid_idp_soap_dispatch, zxid_mk_saml_resp, zxid_mni_do, zxid_mni_do_ss, zxid_slo_resp_redir, zxid_sp_soap_dispatch */
+/* Called by:  zxid_idp_soap_dispatch, zxid_mk_saml_resp, zxid_mni_do, zxid_mni_do_ss, zxid_nidmap_do, zxid_slo_resp_redir, zxid_sp_soap_dispatch */
 struct zx_sp_Status_s* zxid_OK(zxid_conf* cf, struct zx_elem_s* father)
 {
   return zxid_mk_Status(cf, father, SAML2_SC_SUCCESS, 0, 0);
@@ -148,7 +148,7 @@ struct zx_sa_EncryptedID_s* zxid_mk_enc_id(zxid_conf* cf, struct zx_elem_s* fath
 /*() Create EncryptedAssertion given normal A7N and metadata of destination. Encryption
  * will be done using encryption certificate of the receiver identified by the metadata. */
 
-/* Called by:  zxid_add_fed_tok_to_epr, zxid_idp_sso x4 */
+/* Called by:  zxid_add_fed_tok2epr, zxid_imreq, zxid_mk_saml_resp */
 struct zx_sa_EncryptedAssertion_s* zxid_mk_enc_a7n(zxid_conf* cf, struct zx_elem_s* father, zxid_a7n* a7n, zxid_entity* meta)
 {
   struct zx_sa_EncryptedAssertion_s* enc_a7n = zx_NEW_sa_EncryptedAssertion(cf->ctx, father);
@@ -360,7 +360,7 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses, str
 
 /*() Construct SAML SAML Attribute */
 
-/* Called by:  zxid_add_ldif_attrs, zxid_gen_boots, zxid_mk_user_a7n_to_sp */
+/* Called by:  zxid_add_ldif_attrs, zxid_gen_boots, zxid_mk_user_a7n_to_sp x3 */
 struct zx_sa_Attribute_s* zxid_mk_attribute(zxid_conf* cf, struct zx_elem_s* father, char* name, char* val)
 {
   struct zx_sa_Attribute_s* r = zx_NEW_sa_Attribute(cf->ctx, father);
@@ -373,7 +373,7 @@ struct zx_sa_Attribute_s* zxid_mk_attribute(zxid_conf* cf, struct zx_elem_s* fat
 
 /*() Construct SAML protocol Response (such as may be used to carry assertion in SSO) */
 
-/* Called by:  zxid_idp_sso x4, zxid_xacml_az_cd1_do x2, zxid_xacml_az_do x2 */
+/* Called by:  zxid_idp_sso x4, zxid_ssos_anreq, zxid_xacml_az_cd1_do x2, zxid_xacml_az_do x2 */
 struct zx_sp_Response_s* zxid_mk_saml_resp(zxid_conf* cf, zxid_a7n* a7n, zxid_entity* enc_meta)
 {
   struct zx_sp_Response_s* r = zx_NEW_sp_Response(cf->ctx,0);
@@ -413,7 +413,7 @@ struct zx_xac_Response_s* zxid_mk_xacml_resp(zxid_conf* cf, char* decision)
   return resp;
 }
 
-/* Called by:  zxid_pep_az_soap x3 */
+/* Called by:  zxid_pepmap_extract x3 */
 struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, struct zx_elem_s* father, struct zx_str* atid, struct zx_str* attype, struct zx_str* atissuer, struct zx_str* atvalue)
 {
   struct zx_xac_Attribute_s* at = zx_NEW_xac_Attribute(cf->ctx, father);
@@ -428,29 +428,22 @@ struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, struct zx_elem
 
 /*() Construct xac_Request */
 
+/* Called by:  zxid_az_soap, zxid_mk_az, zxid_mk_az_cd1 */
 struct zx_xac_Request_s* zxid_mk_xac_az(zxid_conf* cf, struct zx_elem_s* father, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
 {
   struct zx_xac_Request_s* r = zx_NEW_xac_Request(cf->ctx, father);
-
+  /* N.B. The lists are already linked and only need to be attached to kids lists. */
   r->Subject  = zx_NEW_xac_Subject(cf->ctx, &r->gg);
-  r->Subject->Attribute = subj;
-  for (; subj; subj = (struct zx_xac_Attribute_s*)subj->gg.g.n)
-    zx_add_kid(&r->gg, &subj->gg);
+  r->Subject->gg.kids = (struct zx_elem_s*)(r->Subject->Attribute = subj);
 
   r->Resource = zx_NEW_xac_Resource(cf->ctx, &r->gg);
-  r->Resource->Attribute = rsrc;
-  for (; rsrc; rsrc = (struct zx_xac_Attribute_s*)rsrc->gg.g.n)
-    zx_add_kid(&r->gg, &rsrc->gg);
+  r->Resource->gg.kids = (struct zx_elem_s*)(r->Resource->Attribute = rsrc);
 
   r->Action   = zx_NEW_xac_Action(cf->ctx, &r->gg);
-  r->Action->Attribute = act;
-  for (; act; act = (struct zx_xac_Attribute_s*)act->gg.g.n)
-    zx_add_kid(&r->gg, &act->gg);
+  r->Action->gg.kids = (struct zx_elem_s*)(r->Action->Attribute = act);
 
   r->Environment = zx_NEW_xac_Environment(cf->ctx, &r->gg);
-  r->Environment->Attribute = env;
-  for (; env; env = (struct zx_xac_Attribute_s*)env->gg.g.n)
-    zx_add_kid(&r->gg, &env->gg);
+  r->Environment->gg.kids = (struct zx_elem_s*)(r->Environment->Attribute = env);
 
   zx_reverse_elem_lists(&r->gg);
   return r;
@@ -458,7 +451,7 @@ struct zx_xac_Request_s* zxid_mk_xac_az(zxid_conf* cf, struct zx_elem_s* father,
 
 /*() Construct XACMLAuthzDecisionQuery */
 
-/* Called by:  zxid_pep_az_soap */
+/* Called by:  zxid_az_soap */
 struct zx_xasp_XACMLAuthzDecisionQuery_s* zxid_mk_az(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
 {
   struct zx_xasp_XACMLAuthzDecisionQuery_s* r = zx_NEW_xasp_XACMLAuthzDecisionQuery(cf->ctx,0);
@@ -467,12 +460,13 @@ struct zx_xasp_XACMLAuthzDecisionQuery_s* zxid_mk_az(zxid_conf* cf, struct zx_xa
   r->Version = zx_ref_attr(cf->ctx, &r->gg, zx_Version_ATTR, SAML2_VERSION);
   r->IssueInstant = zxid_date_time_attr(cf, &r->gg, zx_IssueInstant_ATTR, time(0));
   r->Request = zxid_mk_xac_az(cf, &r->gg, subj, rsrc, act, env);
+  zx_reverse_elem_lists(&r->gg);
   return r;
 }
 
 /*() Construct XACMLAuthzDecisionQuery according to Commitee Draft 1 */
 
-/* Called by:  zxid_pep_az_soap x2 */
+/* Called by:  zxid_az_soap */
 struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zxid_mk_az_cd1(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
 {
   struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* r = zx_NEW_xaspcd1_XACMLAuthzDecisionQuery(cf->ctx,0);
@@ -481,6 +475,7 @@ struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zxid_mk_az_cd1(zxid_conf* cf, struc
   r->Version = zx_ref_attr(cf->ctx, &r->gg, zx_Version_ATTR, SAML2_VERSION);
   r->IssueInstant = zxid_date_time_attr(cf, &r->gg, zx_IssueInstant_ATTR, time(0));
   r->Request = zxid_mk_xac_az(cf, &r->gg, subj, rsrc, act, env);
+  zx_reverse_elem_lists(&r->gg);
   return r;
 }
 

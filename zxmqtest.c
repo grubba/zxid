@@ -90,7 +90,7 @@ int n_iter = 1;
 char* so_path = 0;
 char* wo_path = 0;
 
-/* Called by:  main x8, zxcall_main, zxcot_main */
+/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
 void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc < 1) goto argerr;

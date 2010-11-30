@@ -133,7 +133,7 @@ struct zx_str* zxid_idp_loc(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses,
  * body:: XML data structure for the SOAP call <Body> element payload
  * return:: XML data structure for Body element of the SOAP call response. */
 
-/* Called by:  zxid_pep_az_soap, zxid_sp_mni_soap, zxid_sp_slo_soap */
+/* Called by:  zxid_az_soap, zxid_sp_mni_soap, zxid_sp_slo_soap */
 struct zx_root_s* zxid_idp_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses,
 				zxid_entity* idp_meta, int svc_type, struct zx_e_Body_s* body)
 {

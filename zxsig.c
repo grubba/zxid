@@ -75,7 +75,7 @@
  *       FK6X9qO8qZntp3CeFbA7gpG9n9rWyJWlzSXy0vKNspwMGdl8HPfOGcXEs2Ts=</></>
  */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_pep_az_soap x3, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x6, zxid_wsf_sign */
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_az_soap x3, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x7, zxid_ssos_anreq, zxid_wsf_sign */
 struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* sref, X509* cert, RSA* priv_key)
 {
   char sha1[20];
@@ -86,13 +86,13 @@ struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* 
   struct zx_ds_Reference_s* ref;
   struct zx_ds_Signature_s* sig = zx_NEW_ds_Signature(c,0);
   struct zx_ds_SignedInfo_s* si = sig->SignedInfo = zx_NEW_ds_SignedInfo(c, &sig->gg);
-  si->CanonicalizationMethod = zx_NEW_ds_CanonicalizationMethod(c, &sig->gg);
+  si->CanonicalizationMethod = zx_NEW_ds_CanonicalizationMethod(c, &si->gg);
   si->CanonicalizationMethod->Algorithm = zx_ref_attr(c, &si->CanonicalizationMethod->gg, zx_Algorithm_ATTR, CANON_ALGO);
-  si->SignatureMethod = zx_NEW_ds_SignatureMethod(c, &sig->gg);
+  si->SignatureMethod = zx_NEW_ds_SignatureMethod(c, &si->gg);
   si->SignatureMethod->Algorithm = zx_ref_attr(c, &si->SignatureMethod->gg, zx_Algorithm_ATTR, SIG_ALGO);
 
   for (; n; --n, ++sref) {
-    ref = zx_NEW_ds_Reference(c, &sig->gg);
+    ref = zx_NEW_ds_Reference(c, &si->gg);
     ref->Transforms = zx_NEW_ds_Transforms(c, &ref->gg);
     ref->Transforms->Transform = zx_NEW_ds_Transform(c, &ref->Transforms->gg);
     ref->Transforms->Transform->Algorithm = zx_ref_attr(c, &ref->Transforms->Transform->gg, zx_Algorithm_ATTR, CANON_ALGO);
@@ -113,7 +113,9 @@ struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* 
      * problems from signer's end. The verifier's end is aroind line zxsig.c:270
      * in zxsig_validate() */
     D("SIG REF(#%.*s) SHA1(%.*s) CANON(%.*s)", sref->id->len, sref->id->s, b64->len, b64->s, sref->canon->len, sref->canon->s);
+    zx_reverse_elem_lists(&si->Reference->gg);
   }
+  zx_reverse_elem_lists(&si->gg);
   
   ss = zx_EASY_ENC_elem(c, &si->gg);
   SHA1((unsigned char*)ss->s, ss->len, (unsigned char*)sha1);
@@ -138,11 +140,13 @@ struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* 
   ZX_FREE(c, sigu);
   sig->SignatureValue = zx_NEW_ds_SignatureValue(c, &sig->gg);
   zx_add_content(c, &sig->SignatureValue->gg, b64);
+  zx_reverse_elem_lists(&sig->gg);
   return sig;
 }
 
 /*() CRNL->NL canonicalization is specified in xml-c14n */
 
+/* Called by:  zxsig_validate x2 */
 static void zxsig_canon_crnl_inplace(struct zx_str* ss)
 {
   char* p;
@@ -180,7 +184,7 @@ static void zxsig_canon_crnl_inplace(struct zx_str* ss)
  *     referenced by the signature
  * return:: ZXSIG value. 0 (ZXSIG_OK) means success. Any other value is some sort of failure */
 
-/* Called by:  main x5, zxid_chk_sig, zxid_sp_sso_finalize, zxid_wsf_validate_a7n, zxid_wsp_validate */
+/* Called by:  main x5, sig_validate x2, wsse_sec_validate, zxid_chk_sig, zxid_sp_sso_finalize, zxid_wsc_validate_resp_env, zxid_wsf_validate_a7n, zxid_wsp_validate */
 int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, int n, struct zxsig_ref* sref)
 {
   EVP_PKEY* evp_pkey;
@@ -344,7 +348,7 @@ vfyerr:
  * logkey:: Way for caller to indicate what the OpenSSL errors are all about
  * return:: Number of open SSL errors processed, or 0 if none. Often ignored. */
 
-/* Called by:  main, zx_EVP_CIPHER_key_length, zx_get_rsa_pub_from_cert x2, zx_rsa_priv_dec, zx_rsa_priv_enc, zx_rsa_pub_dec, zx_rsa_pub_enc, zxid_mk_self_sig_cert x4, zxlog_write_line, zxsig_data_rsa_sha1, zxsig_sign, zxsig_validate x2, zxsig_verify_data_rsa_sha1 x3 */
+/* Called by:  main, zx_EVP_CIPHER_key_length, zx_get_rsa_pub_from_cert x2, zx_raw_cipher, zx_rsa_priv_dec, zx_rsa_priv_enc, zx_rsa_pub_dec, zx_rsa_pub_enc, zxid_mk_self_sig_cert x4, zxlog_write_line, zxsig_data_rsa_sha1, zxsig_sign, zxsig_validate x2, zxsig_verify_data_rsa_sha1 x3 */
 int zx_report_openssl_error(const char* logkey)
 {
   char buf[256];
@@ -670,7 +674,7 @@ struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(zxid_conf* cf, struct zx_str* d
  * idsuffix:: Use to generate XML ~Id~ attributes for <EncryptedKey> and <EncryptedData>
  * return:: Encrypted data as XML data structure. Caller should free this memory. */
 
-/* Called by:  zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni */
+/* Called by:  zxid_mk_enc_a7n x2, zxid_mk_enc_id x2, zxid_mk_mni x2 */
 struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* data, struct zx_xenc_EncryptedKey_s** ekp, X509* cert, char* idsuffix, zxid_entity* meta)
 {
   struct rsa_st* rsa_pkey;

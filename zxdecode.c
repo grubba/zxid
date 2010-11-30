@@ -62,7 +62,7 @@ int sha1_flag;
 zxid_conf* cf = 0;
 char buf[256*1024];
 
-/* Called by:  main x8, zxcall_main, zxcot_main */
+/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc <= 1) return;
@@ -195,6 +195,7 @@ static void opt(int* argc, char*** argv, char*** env)
   }
 }
 
+/* Called by:  sig_validate */
 static int wsse_sec_validate(struct zx_e_Envelope_s* env)
 {
   int ret;
@@ -229,6 +230,7 @@ static int wsse_sec_validate(struct zx_e_Envelope_s* env)
   return ret?0:6;
 }
 
+/* Called by:  decode */
 static int sig_validate(int len, char* p)
 {
   int ret;
@@ -342,7 +344,7 @@ got_a7n:
   return ret?0:6;
 }
 
-/* Called by:  main x4 */
+/* Called by:  zxdecode_main x4 */
 static int decode(char* msg, char* q)
 {
   int len;

@@ -94,7 +94,7 @@ char buf[32*1024];
 /* N.B. This options processing is a skeleton. In reality CGI scripts do not have
  * an opportunity to process any options. */
 
-/* Called by:  main x8, zxcall_main, zxcot_main */
+/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
 void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
 {
   char* conf_path = 0;

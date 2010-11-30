@@ -92,7 +92,7 @@ public class ZxidSSOFilter implements Filter {
     } else {
     // No session was established yet, redirect to SSO servlet   
     ((HttpServletResponse) response).sendRedirect(ssoServletLocation + "?o=E&fr=" 
-        + req.getRequestURI());   
+        + getReturnURL(req));   
     }       
   }
 
@@ -104,6 +104,60 @@ public class ZxidSSOFilter implements Filter {
     if (config.getInitParameter("sso-servlet-location") != null) {
       ssoServletLocation = config.getInitParameter("sso-servlet-location");
     }   
+  }
+
+  /** 
+   * Recreates the full URL that originally got the web client to the given 
+   * request.  This takes into account changes to the request due to request 
+   * dispatching.
+   *
+   * <p>Note that if the protocol is HTTP and the port number is 80 or if the
+   * protocol is HTTPS and the port number is 443, then the port number is not 
+   * added to the return string as a convenience.</p>
+   */  
+  // taken from: https://issues.apache.org/bugzilla/show_bug.cgi?id=28222
+  private final static String getReturnURL(HttpServletRequest request) {
+      if (request == null){
+          throw new IllegalArgumentException("Cannot take null parameters.");
+      }
+      
+      String scheme = request.getScheme();
+      String serverName = request.getServerName();
+      int serverPort = request.getServerPort();
+      
+      /* 
+       * Try to get the forwarder value first, only if it's empty fall back to the
+       * current value
+       */
+      String requestUri = (String) request.getAttribute("javax.servlet.forward.request_uri");
+      requestUri = (requestUri == null) ? request.getRequestURI() : requestUri;
+   
+      /*
+       * Try to get the forwarder value first, only if it's empty fall back to the
+       * current value. 
+       */
+      String queryString = (String) request.getAttribute("javax.servlet.forward.query_string");
+      queryString = (queryString == null) ? request.getQueryString() : queryString;
+
+      StringBuilder buffer = new StringBuilder();
+      buffer.append(scheme);
+      buffer.append("://");
+      buffer.append(serverName);
+      
+      //if not http:80 or https:443, then add the port number
+      if (!(scheme.equalsIgnoreCase("http") && serverPort == 80) &&
+          !(scheme.equalsIgnoreCase("https") && serverPort == 443)) {
+          buffer.append(":").append(String.valueOf(serverPort));
+      }
+      
+      buffer.append(requestUri);
+      
+      if (queryString != null) {
+          buffer.append("?");
+          buffer.append(queryString);
+      }
+      
+      return buffer.toString();
   }
 
 }

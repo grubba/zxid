@@ -153,7 +153,7 @@ zxid_ses* zxid_fetch_ses(zxid_conf* cf, const char* sid)
  * load the assertion, if needed. Or zxid_ses_to_pool() if you need attributes
  * as well. Returns 1 if session gotten, 0 if fail. */
 
-/* Called by:  chkuid x2, main x5, zxid_az_cf, zxid_fetch_ses, zxid_find_ses, zxid_simple_cf_ses */
+/* Called by:  chkuid x2, main x5, zxid_az_base_cf, zxid_az_cf, zxid_fetch_ses, zxid_find_ses, zxid_simple_cf_ses */
 int zxid_get_ses(zxid_conf* cf, zxid_ses* ses, const char* sid)
 {
   char* p;
@@ -227,7 +227,7 @@ int zxid_get_ses(zxid_conf* cf, zxid_ses* ses, const char* sid)
  * ses:: Pointer to previously allocated and populated session object
  * return:: 1 upon success, 0 on failure. */
 
-/* Called by:  zxid_as_call_ses, zxid_pw_authn, zxid_sp_anon_finalize, zxid_sp_sso_finalize, zxid_wsf_validate_a7n */
+/* Called by:  zxid_as_call_ses, zxid_pw_authn, zxid_sp_anon_finalize, zxid_sp_sso_finalize, zxid_wsp_validate */
 int zxid_put_ses(zxid_conf* cf, zxid_ses* ses)
 {
   char dir[ZXID_MAX_BUF];

@@ -69,7 +69,7 @@ Usage: zxencdectest [options] <foo.xml >reencoded-foo.xml\n\
 #define DIE(reason) MB fprintf(stderr, "%s\n", reason); exit(2); ME
 char buf[256*1024];
 
-/* Called by:  opt */
+/* Called by:  opt x2 */
 void test_ibm_cert_problem()
 {
   int len, got_all;
@@ -98,7 +98,7 @@ void test_ibm_cert_problem()
   printf("r1 nid(%.*s)\n", ZX_GET_CONTENT_LEN(req->NameID), ZX_GET_CONTENT_S(req->NameID));
 }
 
-/* Called by:  opt */
+/* Called by:  opt x2 */
 void test_ibm_cert_problem_enc_dec()
 {
   zxid_conf* cf;
@@ -126,6 +126,7 @@ void test_ibm_cert_problem_enc_dec()
   printf("r2 nid(%.*s) should be(a-persistent-nid)\n", ZX_GET_CONTENT_LEN(req->NameID), ZX_GET_CONTENT_S(req->NameID));
 }
 
+/* Called by:  opt */
 void so_enc_dec()
 {
   zxid_conf* cf;
@@ -134,6 +135,17 @@ void so_enc_dec()
   cf = zxid_new_conf("/var/zxid/");
   st = zxid_mk_Status(cf, 0, "SC1", "SC2", "MESSAGE");
   ss = zx_EASY_ENC_elem(cf->ctx, &st->gg);
+  printf("%.*s", ss->len, ss->s);
+}
+
+void attribute_sort_test()
+{
+  zxid_conf* cf;
+  struct zx_xasp_XACMLAuthzDecisionQuery_s* q;
+  struct zx_str* ss;
+  cf = zxid_new_conf("/var/zxid/");
+  q = zxid_mk_az(cf, 0, 0, 0, 0);
+  ss = zx_EASY_ENC_elem(cf->ctx, &q->gg);
   printf("%.*s", ss->len, ss->s);
 }
 
@@ -153,7 +165,7 @@ int symmetric_key_len;
 int n_iter = 1;
 char* wo_path = 0;
 
-/* Called by:  main x8, zxcall_main, zxcot_main */
+/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
 void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc < 1) goto argerr;
@@ -229,6 +241,7 @@ void opt(int* argc, char*** argv, char*** env)
 	case 1: test_ibm_cert_problem(); break;
 	case 2: test_ibm_cert_problem_enc_dec(); break;
 	case 3: so_enc_dec(); break;
+	case 4: attribute_sort_test(); break;
 	}
 	exit(0);
 

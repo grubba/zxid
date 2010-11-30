@@ -624,7 +624,7 @@ static void zxid_copy_user_eprs_to_ses(zxid_conf* cf, zxid_ses* ses, struct zx_s
  * rendering to LDIF (or JSON). This function also implements
  * local attribute authority. */
 
-/* Called by:  zxid_as_call_ses, zxid_fetch_ses, zxid_simple_ab_pep, zxid_wsf_validate_a7n */
+/* Called by:  zxid_as_call_ses, zxid_fetch_ses, zxid_simple_ab_pep, zxid_wsc_validate_resp_env, zxid_wsp_validate */
 void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
 {
   char* src;
@@ -749,7 +749,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
  * nul termination. Make sure to duplicate any string constant before calling.
  * Returns 1 on success, 0 on failure (return value often not checked). */
 
-/* Called by:  zxid_az_cf_ses */
+/* Called by:  zxid_az_base_cf_ses, zxid_az_cf_ses */
 int zxid_add_qs_to_ses(zxid_conf* cf, zxid_ses* ses, char* qs, int apply_map)
 {
   char *p, *n, *v, *val, *name;

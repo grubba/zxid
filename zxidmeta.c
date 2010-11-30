@@ -138,7 +138,7 @@ static zxid_entity* zxid_mk_ent(zxid_conf* cf, struct zx_md_EntityDescriptor_s* 
  * return:: Entity data structure composed from the metadata. If more than
  *     one EntityDescriptor is found, then a linked list is returned. */
 
-/* Called by:  zxid_addmd, zxid_get_ent_from_file, zxid_get_meta, zxid_lscot_line */
+/* Called by:  zxid_addmd, zxid_get_ent_file, zxid_get_meta, zxid_lscot_line */
 zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
 {
   zxid_entity* ee;
@@ -210,7 +210,7 @@ int zxid_write_ent_to_cache(zxid_conf* cf, zxid_entity* ent)
  * See also zxid_get_ent_cache() which will compute the sha1_name
  * and then read the metadata. */
 
-/* Called by:  main x3, test_ibm_cert_problem_enc_dec, zxid_get_ent_by_sha1_name, zxid_get_ent_from_cache, zxid_load_cot_cache_from_file */
+/* Called by:  main x3, test_ibm_cert_problem_enc_dec, zxid_get_ent_by_sha1_name, zxid_get_ent_cache, zxid_load_cot_cache_from_file */
 zxid_entity* zxid_get_ent_file(zxid_conf* cf, char* sha1_name)
 {
   int n, got, siz;
@@ -272,7 +272,7 @@ readerr:
 /*LOCK_STATIC(zxid_ent_cache_mx);*/
 extern pthread_mutex_t zxid_ent_cache_mx;
 
-/* Called by:  zxid_get_ent_from_cache, zxid_load_cot_cache */
+/* Called by:  zxid_get_ent_cache, zxid_load_cot_cache */
 static void zxid_load_cot_cache_from_file(zxid_conf* cf)
 {
   zxid_entity* ee;  
@@ -317,7 +317,7 @@ zxid_entity* zxid_get_ent_cache(zxid_conf* cf, struct zx_str* eid)
  * eid:: Entity ID whose metadata is desired
  * return:: Entity data structure, including the metadata */
 
-/* Called by:  zxid_add_fed_tok_to_epr, zxid_chk_sig, zxid_decode_redir_or_post, zxid_get_ent, zxid_get_ses_idp, zxid_idp_dispatch, zxid_idp_sso, zxid_simple_idp_show_an, zxid_slo_resp_redir, zxid_sp_dispatch, zxid_sp_sso_finalize, zxid_wsf_validate_a7n, zxid_wsp_validate */
+/* Called by:  zxid_add_fed_tok2epr, zxid_chk_sig, zxid_decode_redir_or_post, zxid_get_ent, zxid_get_ses_idp, zxid_idp_dispatch, zxid_idp_sso, zxid_imreq, zxid_simple_idp_show_an, zxid_slo_resp_redir, zxid_sp_dispatch, zxid_sp_sso_finalize, zxid_ssos_anreq, zxid_wsc_validate_resp_env, zxid_wsf_validate_a7n, zxid_wsp_validate */
 zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
 {
   zxid_entity* old_cot;
@@ -577,7 +577,7 @@ struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, struct zx_elem_
 
 /*() Generate Name ID Mapping Service metadata fragment [SAML2meta]. */
 
-/* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
+/* Called by:  zxid_idp_sso_desc */
 struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_NameIDMappingService_s* d = zx_NEW_md_NameIDMappingService(cf->ctx,father);
@@ -770,7 +770,7 @@ struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf, struct zx_elem_s*
  * cf:: ZXID configuration object, used to compute EntityID and also for memory allocation
  * return:: Entity ID as zx_str */
 
-/* Called by:  main x2, zxid_check_fed, zxid_di_query, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_mk_ecp_Request_hdr, zxid_mk_subj, zxid_my_issuer, zxid_ses_to_pool, zxid_show_conf, zxid_sp_meta, zxid_sp_sso_finalize, zxid_validate_cond, zxid_wsf_decor, zxid_wsf_validate_a7n */
+/* Called by:  main x2, zxid_idp_map_nid2uid, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_mk_subj, zxid_my_issuer, zxid_nidmap_do, zxid_ses_to_pool, zxid_show_conf, zxid_sp_sso_finalize, zxid_wsf_validate_a7n */
 struct zx_str* zxid_my_entity_id(zxid_conf* cf)
 {
   if (cf->non_standard_entityid) {
@@ -785,6 +785,7 @@ struct zx_str* zxid_my_entity_id(zxid_conf* cf)
   }
 }
 
+/* Called by:  zxid_check_fed, zxid_mk_ecp_Request_hdr, zxid_sp_meta, zxid_wsf_decor */
 struct zx_attr_s* zxid_my_entity_id_attr(zxid_conf* cf, struct zx_elem_s* father, int tok)
 {
   if (cf->non_standard_entityid) {
@@ -832,7 +833,7 @@ struct zx_sa_Issuer_s* zxid_my_issuer(zxid_conf* cf, struct zx_elem_s* father) {
 
 /*() Generate our SP metadata and return it as a string. */
 
-/* Called by:  zxid_send_sp_meta, zxid_simple_show_meta */
+/* Called by:  zxid_genmd, zxid_send_sp_meta, zxid_simple_show_meta */
 struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_md_EntityDescriptor_s* ed;

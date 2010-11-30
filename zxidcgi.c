@@ -38,7 +38,7 @@
  *     CGI arguments are simply ignored with assumption that some other processing
  *     layer will pick them up - hence no need to flag error. */
 
-/* Called by:  chkuid x3, main x4, zxid_az_cf_ses, zxid_decode_ssoreq, zxid_new_cgi, zxid_simple_cf_ses x3 */
+/* Called by:  chkuid x3, main x4, zxid_decode_ssoreq, zxid_new_cgi, zxid_simple_cf_ses x3 */
 int zxid_parse_cgi(zxid_cgi* cgi, char* qs)
 {
   char *p, *n, *v, *val, *name;

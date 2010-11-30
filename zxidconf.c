@@ -158,7 +158,7 @@ RSA* zxid_read_private_key(zxid_conf* cf, char* name)
  * generated on disk and the read. Once read from disk, they will be cached in
  * memory. */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_pep_az_soap x3, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x6, zxid_wsf_sign */
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_az_soap x3, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x7, zxid_ssos_anreq, zxid_wsf_sign */
 int zxid_lazy_load_sign_cert_and_pkey(zxid_conf* cf, X509** cert, RSA** pkey, const char* logkey)
 {
   LOCK(cf->mx, logkey);
@@ -440,7 +440,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
  * such initialization, any meomory allocation activity as well as
  * any XML parsing activity is doomed to segmentation fault. */
 
-/* Called by:  dirconf, main x2, zx_init_ctx, zxid_az, zxid_simple_len */
+/* Called by:  dirconf, main x3, zx_init_ctx, zxid_az, zxid_az_base, zxid_simple_len */
 void zx_reset_ctx(struct zx_ctx* ctx)
 {
   ZERO(ctx, sizeof(struct zx_ctx));
@@ -479,7 +479,7 @@ struct zx_ctx* zx_init_ctx()
  * Just initializes the config object to factory defaults (see zxidconf.h).
  * Previous content of the config object is lost. */
 
-/* Called by:  zxcot_main, zxid_conf_to_cf_len, zxid_new_conf */
+/* Called by:  zxid_conf_to_cf_len, zxid_new_conf */
 zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path)
 {
 #if 0
@@ -507,7 +507,7 @@ zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path)
  * Just initializes the config object to factory defaults (see zxidconf.h).
  * Previous content of the config object is lost. */
 
-/* Called by:  main x6, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode */
+/* Called by:  main x5, so_enc_dec, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode */
 zxid_conf* zxid_new_conf(const char* zxid_path)
 {
   /* *** unholy malloc()s: should use our own allocator! */
@@ -542,7 +542,7 @@ struct zxid_attr* zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len,
  * srcns$A$rule$b$ext;src$A$rule$b$ext;...
  */
 
-/* Called by:  zxid_init_conf x3, zxid_parse_conf_raw x3 */
+/* Called by:  zxid_init_conf x7, zxid_parse_conf_raw x7 */
 struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
 {
   char* ns;
@@ -863,7 +863,7 @@ struct zxid_need* zxid_is_needed(struct zxid_need* need, char* name)
 /*() Check whether attribute is in a (needed or wanted) list. Just a linear
  * scan as it is simple and good enough for handful of attributes. */
 
-/* Called by:  pool2apache, zxid_add_at_values, zxid_add_attr_to_ses, zxid_pep_az_soap, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
+/* Called by:  pool2apache, zxid_add_at_values, zxid_add_attr_to_ses, zxid_pepmap_extract, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
 struct zxid_map* zxid_find_map(struct zxid_map* map, char* name)
 {
   if (!name || !*name)
@@ -906,6 +906,7 @@ struct zxid_attr* zxid_find_at(struct zxid_attr* pool, char* name)
  * to the domain name part of the URL. Used to grab fedusername_suffix
  * from the url config option. */
 
+/* Called by:  zxid_parse_conf_raw */
 static char* zxid_grab_domain_name(zxid_conf* cf, char* url)
 {
   char* dom;
@@ -1211,7 +1212,7 @@ scan_end:
 
 /*() Wrapper with initial error checking for zxid_parse_conf_raw(), which see. */
 
-/* Called by:  opt x7, set_zxid_conf */
+/* Called by:  opt x9, set_zxid_conf */
 int zxid_parse_conf(zxid_conf* cf, char* qs)
 {
   if (!cf || !qs)
@@ -1250,7 +1251,7 @@ static struct zx_str* zxid_show_need(zxid_conf* cf, struct zxid_need* np)
 
 /*() Pretty print map chain. */
 
-/* Called by:  zxid_show_conf x3 */
+/* Called by:  zxid_show_conf x7 */
 static struct zx_str* zxid_show_map(zxid_conf* cf, struct zxid_map* mp)
 {
   struct zx_str* inmap = zx_dup_str(cf->ctx, "");
@@ -1283,7 +1284,7 @@ static struct zx_str* zxid_show_cstr_list(zxid_conf* cf, struct zxid_cstr_list* 
 
 /*() Generate our SP CARML and return it as a string. */
 
-/* Called by:  opt, zxid_simple_show_conf */
+/* Called by:  opt x2, zxid_simple_show_conf */
 struct zx_str* zxid_show_conf(zxid_conf* cf)
 {
   char* p;

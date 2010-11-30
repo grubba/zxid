@@ -105,6 +105,7 @@ char* zx_raw_digest2(struct zx_ctx* c, char* md, char* const algo, int len, cons
  * It performs XML Enc compatible padding check.  See OpenSSL bug 1067
  * http://rt.openssl.org/Ticket/Display.html?user=guest&;pass=guest&id=1067 */
 
+/* Called by:  zx_raw_cipher */
 int zx_EVP_DecryptFinal_ex(EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl) {
   int i,n;
   unsigned int b;
@@ -150,6 +151,7 @@ int zx_EVP_DecryptFinal_ex(EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl) {
 /*() zx_raw_cipher() can encrypt and decrypt, based on encflag, using symmetic cipher algo.
  * If encflag (==1) indicates encryption, the initialization vector will be prepended. */
 
+/* Called by:  zxenc_symkey_dec x4, zxenc_symkey_enc, zxid_psobj_dec, zxid_psobj_enc */
 struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, struct zx_str* key, int len, const char* s, int iv_len, const char* iv)
 {
   const char* ivv;
@@ -397,7 +399,7 @@ RSA* zx_get_rsa_pub_from_cert(X509* cert, char* logkey)
  * available. If you want to use /dev/random, which may block, you need
  * to recompile with ZXID_TRUE_RAND set to true. */
 
-/* Called by:  main, zxenc_pubkey_enc, zxid_mk_id, zxid_mk_self_sig_cert, zxlog_alloc_zbuf, zxlog_write_line x2 */
+/* Called by:  main x2, zx_get_symkey, zxenc_pubkey_enc, zxid_mk_id, zxid_mk_id_attr, zxid_mk_self_sig_cert, zxlog_alloc_zbuf, zxlog_write_line */
 void zx_rand(char* buf, int n_bytes)
 {
 #ifdef USE_OPENSSL
