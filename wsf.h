@@ -38,6 +38,7 @@
 
 #define WSF11_DI_RO "DiscoveryResourceOffering"               /* Name of bootstrap attribute */
 #define WSF20_DI_RO "urn:liberty:disco:2006-08:DiscoveryEPR"
+#define TAS3_EPR    "urn:tas3:epr"
 
 #define IMPLIED_RSC        "urn:liberty:isf:implied-resource"
 #define XMLNS_DISCO_1_1    "urn:liberty:disco:2003-08"

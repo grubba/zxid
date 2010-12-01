@@ -1061,9 +1061,25 @@ int zx_DEC_ELEM_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x)
     if (!x->RelayState)
       x->RelayState = (struct zx_ecp_RelayState_s*)el;
     return 1;
+  case zx_sbf_Framework_ELEM:
+    if (!x->Framework)
+      x->Framework = (struct zx_sbf_Framework_s*)el;
+    return 1;
+  case zx_b_Sender_ELEM:
+    if (!x->Sender)
+      x->Sender = (struct zx_b_Sender_s*)el;
+    return 1;
   case zx_a_MessageID_ELEM:
     if (!x->MessageID)
       x->MessageID = (struct zx_a_MessageID_s*)el;
+    return 1;
+  case zx_wsse_Security_ELEM:
+    if (!x->Security)
+      x->Security = (struct zx_wsse_Security_s*)el;
+    return 1;
+  case zx_tas3_Status_ELEM:
+    if (!x->Status)
+      x->Status = (struct zx_tas3_Status_s*)el;
     return 1;
   case zx_a_RelatesTo_ELEM:
     if (!x->RelatesTo)
@@ -1093,17 +1109,9 @@ int zx_DEC_ELEM_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x)
     if (!x->ReferenceParameters)
       x->ReferenceParameters = (struct zx_a_ReferenceParameters_s*)el;
     return 1;
-  case zx_sbf_Framework_ELEM:
-    if (!x->Framework)
-      x->Framework = (struct zx_sbf_Framework_s*)el;
-    return 1;
   case zx_b_Framework_ELEM:
     if (!x->b_Framework)
       x->b_Framework = (struct zx_b_Framework_s*)el;
-    return 1;
-  case zx_b_Sender_ELEM:
-    if (!x->Sender)
-      x->Sender = (struct zx_b_Sender_s*)el;
     return 1;
   case zx_b_TargetIdentity_ELEM:
     if (!x->TargetIdentity)
@@ -1168,14 +1176,6 @@ int zx_DEC_ELEM_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x)
   case zx_mm7_TransactionID_ELEM:
     if (!x->TransactionID)
       x->TransactionID = (struct zx_mm7_TransactionID_s*)el;
-    return 1;
-  case zx_wsse_Security_ELEM:
-    if (!x->Security)
-      x->Security = (struct zx_wsse_Security_s*)el;
-    return 1;
-  case zx_tas3_Status_ELEM:
-    if (!x->Status)
-      x->Status = (struct zx_tas3_Status_s*)el;
     return 1;
   case zx_tas3_Credentials_ELEM:
     if (!x->Credentials)

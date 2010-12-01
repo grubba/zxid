@@ -424,7 +424,6 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
   
   INFO("%d Discovering svc(%s)...", n, STRNULLCHK(svc));
   env = zx_NEW_e_Envelope(cf->ctx,0);
-  env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
   env->Body->Query = zxid_mk_di_query(cf, &env->Body->gg, svc, url, di_opt, 0);
   if (ses->deleg_di_epr) {
@@ -437,6 +436,7 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
       return 0;
     }
   }
+  env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   env = zxid_wsc_call(cf, ses, epr, env, 0);
   if (env && env->Body) {
     if (env->Body->QueryResponse) {

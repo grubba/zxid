@@ -274,7 +274,8 @@ zxid_a7n* zxid_mk_a7n(zxid_conf* cf, struct zx_str* audience, struct zx_sa_Subje
   a7n->IssueInstant = zxid_date_time_attr(cf, &a7n->gg, zx_IssueInstant_ATTR, time(0));
   a7n->Issuer = zxid_my_issuer(cf, &a7n->gg);
   a7n->Subject = subj;
-  zx_add_kid(&a7n->gg, &subj->gg);
+  if (subj)
+    zx_add_kid(&a7n->gg, &subj->gg);
   a7n->Conditions = zx_NEW_sa_Conditions(cf->ctx, &a7n->gg);
   a7n->Conditions->NotBefore = zxid_date_time_attr(cf, &a7n->Conditions->gg, zx_NotBefore_ATTR, time(0));
   a7n->Conditions->NotOnOrAfter = zxid_date_time_attr(cf, &a7n->Conditions->gg, zx_NotOnOrAfter_ATTR, time(0) + cf->a7nttl);
@@ -410,6 +411,7 @@ struct zx_xac_Response_s* zxid_mk_xacml_resp(zxid_conf* cf, char* decision)
   resp->Result->Status->StatusCode = zx_NEW_xac_StatusCode(cf->ctx, &resp->Result->Status->gg);
   resp->Result->Status->StatusCode->Value
     = zx_ref_attr(cf->ctx, &resp->Result->Status->StatusCode->gg, zx_Value_ATTR, "urn:oasis:names:tc:xacml:1.0:status:ok");
+  zx_reverse_elem_lists(&resp->Result->gg);
   return resp;
 }
 
@@ -423,6 +425,8 @@ struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, struct zx_elem
     at->Issuer = zx_ref_len_attr(cf->ctx, &at->gg, zx_Issuer_ATTR, atissuer->len, atissuer->s);
   //at->AttributeValue = zx_NEW_xac_AttributeValue(cf->ctx, &at->gg);
   at->AttributeValue = zx_new_str_elem(cf->ctx, &at->gg, zx_xac_AttributeValue_ELEM, atvalue);
+  
+  zx_reverse_elem_lists(&at->gg);
   return at;
 }
 

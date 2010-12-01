@@ -2224,7 +2224,11 @@ struct zx_e_Header_s {
   struct zx_ecp_Request_s* ecp_Request;	/* {0,1} nada */
   struct zx_ecp_Response_s* ecp_Response;	/* {0,1} nada */
   struct zx_ecp_RelayState_s* RelayState;	/* {0,1} nada */
+  struct zx_sbf_Framework_s* Framework;	/* {0,1} nada */
+  struct zx_b_Sender_s* Sender;	/* {0,1} nada */
   struct zx_a_MessageID_s* MessageID;	/* {0,1} nada */
+  struct zx_wsse_Security_s* Security;	/* {0,1} nada */
+  struct zx_tas3_Status_s* Status;	/* {0,1} nada */
   struct zx_a_RelatesTo_s* RelatesTo;	/* {0,1} nada */
   struct zx_a_ReplyTo_s* ReplyTo;	/* {0,1} nada */
   struct zx_a_From_s* From;	/* {0,1} nada */
@@ -2232,9 +2236,7 @@ struct zx_e_Header_s {
   struct zx_a_To_s* To;	/* {0,1} nada */
   struct zx_a_Action_s* Action;	/* {0,1} nada */
   struct zx_a_ReferenceParameters_s* ReferenceParameters;	/* {0,1} nada */
-  struct zx_sbf_Framework_s* Framework;	/* {0,1} nada */
   struct zx_b_Framework_s* b_Framework;	/* {0,1} nada */
-  struct zx_b_Sender_s* Sender;	/* {0,1} nada */
   struct zx_b_TargetIdentity_s* TargetIdentity;	/* {0,1} nada */
   struct zx_b_CredentialsContext_s* CredentialsContext;	/* {0,1} nada */
   struct zx_b_EndpointUpdate_s* EndpointUpdate;	/* {0,1} nada */
@@ -2251,8 +2253,6 @@ struct zx_e_Header_s {
   struct zx_b12_Consent_s* b12_Consent;	/* {0,1} nada */
   struct zx_b12_UsageDirective_s* b12_UsageDirective;	/* {0,1} nada */
   struct zx_mm7_TransactionID_s* TransactionID;	/* {0,1} nada */
-  struct zx_wsse_Security_s* Security;	/* {0,1} nada */
-  struct zx_tas3_Status_s* Status;	/* {0,1} nada */
   struct zx_tas3_Credentials_s* Credentials;	/* {0,1} nada */
   struct zx_tas3_ESLPolicies_s* ESLPolicies;	/* {0,1} nada */
   struct zx_attr_s* id;	/* {0,1} attribute xs:ID */
@@ -2277,7 +2277,11 @@ struct zx_paos_Response_s* zx_e_Header_GET_Response(struct zx_e_Header_s* x, int
 struct zx_ecp_Request_s* zx_e_Header_GET_ecp_Request(struct zx_e_Header_s* x, int n);
 struct zx_ecp_Response_s* zx_e_Header_GET_ecp_Response(struct zx_e_Header_s* x, int n);
 struct zx_ecp_RelayState_s* zx_e_Header_GET_RelayState(struct zx_e_Header_s* x, int n);
+struct zx_sbf_Framework_s* zx_e_Header_GET_Framework(struct zx_e_Header_s* x, int n);
+struct zx_b_Sender_s* zx_e_Header_GET_Sender(struct zx_e_Header_s* x, int n);
 struct zx_a_MessageID_s* zx_e_Header_GET_MessageID(struct zx_e_Header_s* x, int n);
+struct zx_wsse_Security_s* zx_e_Header_GET_Security(struct zx_e_Header_s* x, int n);
+struct zx_tas3_Status_s* zx_e_Header_GET_Status(struct zx_e_Header_s* x, int n);
 struct zx_a_RelatesTo_s* zx_e_Header_GET_RelatesTo(struct zx_e_Header_s* x, int n);
 struct zx_a_ReplyTo_s* zx_e_Header_GET_ReplyTo(struct zx_e_Header_s* x, int n);
 struct zx_a_From_s* zx_e_Header_GET_From(struct zx_e_Header_s* x, int n);
@@ -2285,9 +2289,7 @@ struct zx_a_FaultTo_s* zx_e_Header_GET_FaultTo(struct zx_e_Header_s* x, int n);
 struct zx_a_To_s* zx_e_Header_GET_To(struct zx_e_Header_s* x, int n);
 struct zx_a_Action_s* zx_e_Header_GET_Action(struct zx_e_Header_s* x, int n);
 struct zx_a_ReferenceParameters_s* zx_e_Header_GET_ReferenceParameters(struct zx_e_Header_s* x, int n);
-struct zx_sbf_Framework_s* zx_e_Header_GET_Framework(struct zx_e_Header_s* x, int n);
 struct zx_b_Framework_s* zx_e_Header_GET_b_Framework(struct zx_e_Header_s* x, int n);
-struct zx_b_Sender_s* zx_e_Header_GET_Sender(struct zx_e_Header_s* x, int n);
 struct zx_b_TargetIdentity_s* zx_e_Header_GET_TargetIdentity(struct zx_e_Header_s* x, int n);
 struct zx_b_CredentialsContext_s* zx_e_Header_GET_CredentialsContext(struct zx_e_Header_s* x, int n);
 struct zx_b_EndpointUpdate_s* zx_e_Header_GET_EndpointUpdate(struct zx_e_Header_s* x, int n);
@@ -2304,8 +2306,6 @@ struct zx_b12_ProcessingContext_s* zx_e_Header_GET_b12_ProcessingContext(struct 
 struct zx_b12_Consent_s* zx_e_Header_GET_b12_Consent(struct zx_e_Header_s* x, int n);
 struct zx_b12_UsageDirective_s* zx_e_Header_GET_b12_UsageDirective(struct zx_e_Header_s* x, int n);
 struct zx_mm7_TransactionID_s* zx_e_Header_GET_TransactionID(struct zx_e_Header_s* x, int n);
-struct zx_wsse_Security_s* zx_e_Header_GET_Security(struct zx_e_Header_s* x, int n);
-struct zx_tas3_Status_s* zx_e_Header_GET_Status(struct zx_e_Header_s* x, int n);
 struct zx_tas3_Credentials_s* zx_e_Header_GET_Credentials(struct zx_e_Header_s* x, int n);
 struct zx_tas3_ESLPolicies_s* zx_e_Header_GET_ESLPolicies(struct zx_e_Header_s* x, int n);
 
@@ -2314,7 +2314,11 @@ int zx_e_Header_NUM_Response(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_ecp_Request(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_ecp_Response(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_RelayState(struct zx_e_Header_s* x);
+int zx_e_Header_NUM_Framework(struct zx_e_Header_s* x);
+int zx_e_Header_NUM_Sender(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_MessageID(struct zx_e_Header_s* x);
+int zx_e_Header_NUM_Security(struct zx_e_Header_s* x);
+int zx_e_Header_NUM_Status(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_RelatesTo(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_ReplyTo(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_From(struct zx_e_Header_s* x);
@@ -2322,9 +2326,7 @@ int zx_e_Header_NUM_FaultTo(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_To(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_Action(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_ReferenceParameters(struct zx_e_Header_s* x);
-int zx_e_Header_NUM_Framework(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_b_Framework(struct zx_e_Header_s* x);
-int zx_e_Header_NUM_Sender(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_TargetIdentity(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_CredentialsContext(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_EndpointUpdate(struct zx_e_Header_s* x);
@@ -2341,8 +2343,6 @@ int zx_e_Header_NUM_b12_ProcessingContext(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_b12_Consent(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_b12_UsageDirective(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_TransactionID(struct zx_e_Header_s* x);
-int zx_e_Header_NUM_Security(struct zx_e_Header_s* x);
-int zx_e_Header_NUM_Status(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_Credentials(struct zx_e_Header_s* x);
 int zx_e_Header_NUM_ESLPolicies(struct zx_e_Header_s* x);
 
@@ -2351,7 +2351,11 @@ struct zx_paos_Response_s* zx_e_Header_POP_Response(struct zx_e_Header_s* x);
 struct zx_ecp_Request_s* zx_e_Header_POP_ecp_Request(struct zx_e_Header_s* x);
 struct zx_ecp_Response_s* zx_e_Header_POP_ecp_Response(struct zx_e_Header_s* x);
 struct zx_ecp_RelayState_s* zx_e_Header_POP_RelayState(struct zx_e_Header_s* x);
+struct zx_sbf_Framework_s* zx_e_Header_POP_Framework(struct zx_e_Header_s* x);
+struct zx_b_Sender_s* zx_e_Header_POP_Sender(struct zx_e_Header_s* x);
 struct zx_a_MessageID_s* zx_e_Header_POP_MessageID(struct zx_e_Header_s* x);
+struct zx_wsse_Security_s* zx_e_Header_POP_Security(struct zx_e_Header_s* x);
+struct zx_tas3_Status_s* zx_e_Header_POP_Status(struct zx_e_Header_s* x);
 struct zx_a_RelatesTo_s* zx_e_Header_POP_RelatesTo(struct zx_e_Header_s* x);
 struct zx_a_ReplyTo_s* zx_e_Header_POP_ReplyTo(struct zx_e_Header_s* x);
 struct zx_a_From_s* zx_e_Header_POP_From(struct zx_e_Header_s* x);
@@ -2359,9 +2363,7 @@ struct zx_a_FaultTo_s* zx_e_Header_POP_FaultTo(struct zx_e_Header_s* x);
 struct zx_a_To_s* zx_e_Header_POP_To(struct zx_e_Header_s* x);
 struct zx_a_Action_s* zx_e_Header_POP_Action(struct zx_e_Header_s* x);
 struct zx_a_ReferenceParameters_s* zx_e_Header_POP_ReferenceParameters(struct zx_e_Header_s* x);
-struct zx_sbf_Framework_s* zx_e_Header_POP_Framework(struct zx_e_Header_s* x);
 struct zx_b_Framework_s* zx_e_Header_POP_b_Framework(struct zx_e_Header_s* x);
-struct zx_b_Sender_s* zx_e_Header_POP_Sender(struct zx_e_Header_s* x);
 struct zx_b_TargetIdentity_s* zx_e_Header_POP_TargetIdentity(struct zx_e_Header_s* x);
 struct zx_b_CredentialsContext_s* zx_e_Header_POP_CredentialsContext(struct zx_e_Header_s* x);
 struct zx_b_EndpointUpdate_s* zx_e_Header_POP_EndpointUpdate(struct zx_e_Header_s* x);
@@ -2378,8 +2380,6 @@ struct zx_b12_ProcessingContext_s* zx_e_Header_POP_b12_ProcessingContext(struct 
 struct zx_b12_Consent_s* zx_e_Header_POP_b12_Consent(struct zx_e_Header_s* x);
 struct zx_b12_UsageDirective_s* zx_e_Header_POP_b12_UsageDirective(struct zx_e_Header_s* x);
 struct zx_mm7_TransactionID_s* zx_e_Header_POP_TransactionID(struct zx_e_Header_s* x);
-struct zx_wsse_Security_s* zx_e_Header_POP_Security(struct zx_e_Header_s* x);
-struct zx_tas3_Status_s* zx_e_Header_POP_Status(struct zx_e_Header_s* x);
 struct zx_tas3_Credentials_s* zx_e_Header_POP_Credentials(struct zx_e_Header_s* x);
 struct zx_tas3_ESLPolicies_s* zx_e_Header_POP_ESLPolicies(struct zx_e_Header_s* x);
 
@@ -2388,7 +2388,11 @@ void zx_e_Header_PUSH_Response(struct zx_e_Header_s* x, struct zx_paos_Response_
 void zx_e_Header_PUSH_ecp_Request(struct zx_e_Header_s* x, struct zx_ecp_Request_s* y);
 void zx_e_Header_PUSH_ecp_Response(struct zx_e_Header_s* x, struct zx_ecp_Response_s* y);
 void zx_e_Header_PUSH_RelayState(struct zx_e_Header_s* x, struct zx_ecp_RelayState_s* y);
+void zx_e_Header_PUSH_Framework(struct zx_e_Header_s* x, struct zx_sbf_Framework_s* y);
+void zx_e_Header_PUSH_Sender(struct zx_e_Header_s* x, struct zx_b_Sender_s* y);
 void zx_e_Header_PUSH_MessageID(struct zx_e_Header_s* x, struct zx_a_MessageID_s* y);
+void zx_e_Header_PUSH_Security(struct zx_e_Header_s* x, struct zx_wsse_Security_s* y);
+void zx_e_Header_PUSH_Status(struct zx_e_Header_s* x, struct zx_tas3_Status_s* y);
 void zx_e_Header_PUSH_RelatesTo(struct zx_e_Header_s* x, struct zx_a_RelatesTo_s* y);
 void zx_e_Header_PUSH_ReplyTo(struct zx_e_Header_s* x, struct zx_a_ReplyTo_s* y);
 void zx_e_Header_PUSH_From(struct zx_e_Header_s* x, struct zx_a_From_s* y);
@@ -2396,9 +2400,7 @@ void zx_e_Header_PUSH_FaultTo(struct zx_e_Header_s* x, struct zx_a_FaultTo_s* y)
 void zx_e_Header_PUSH_To(struct zx_e_Header_s* x, struct zx_a_To_s* y);
 void zx_e_Header_PUSH_Action(struct zx_e_Header_s* x, struct zx_a_Action_s* y);
 void zx_e_Header_PUSH_ReferenceParameters(struct zx_e_Header_s* x, struct zx_a_ReferenceParameters_s* y);
-void zx_e_Header_PUSH_Framework(struct zx_e_Header_s* x, struct zx_sbf_Framework_s* y);
 void zx_e_Header_PUSH_b_Framework(struct zx_e_Header_s* x, struct zx_b_Framework_s* y);
-void zx_e_Header_PUSH_Sender(struct zx_e_Header_s* x, struct zx_b_Sender_s* y);
 void zx_e_Header_PUSH_TargetIdentity(struct zx_e_Header_s* x, struct zx_b_TargetIdentity_s* y);
 void zx_e_Header_PUSH_CredentialsContext(struct zx_e_Header_s* x, struct zx_b_CredentialsContext_s* y);
 void zx_e_Header_PUSH_EndpointUpdate(struct zx_e_Header_s* x, struct zx_b_EndpointUpdate_s* y);
@@ -2415,8 +2417,6 @@ void zx_e_Header_PUSH_b12_ProcessingContext(struct zx_e_Header_s* x, struct zx_b
 void zx_e_Header_PUSH_b12_Consent(struct zx_e_Header_s* x, struct zx_b12_Consent_s* y);
 void zx_e_Header_PUSH_b12_UsageDirective(struct zx_e_Header_s* x, struct zx_b12_UsageDirective_s* y);
 void zx_e_Header_PUSH_TransactionID(struct zx_e_Header_s* x, struct zx_mm7_TransactionID_s* y);
-void zx_e_Header_PUSH_Security(struct zx_e_Header_s* x, struct zx_wsse_Security_s* y);
-void zx_e_Header_PUSH_Status(struct zx_e_Header_s* x, struct zx_tas3_Status_s* y);
 void zx_e_Header_PUSH_Credentials(struct zx_e_Header_s* x, struct zx_tas3_Credentials_s* y);
 void zx_e_Header_PUSH_ESLPolicies(struct zx_e_Header_s* x, struct zx_tas3_ESLPolicies_s* y);
 
@@ -2427,7 +2427,11 @@ void zx_e_Header_PUT_Response(struct zx_e_Header_s* x, int n, struct zx_paos_Res
 void zx_e_Header_PUT_ecp_Request(struct zx_e_Header_s* x, int n, struct zx_ecp_Request_s* y);
 void zx_e_Header_PUT_ecp_Response(struct zx_e_Header_s* x, int n, struct zx_ecp_Response_s* y);
 void zx_e_Header_PUT_RelayState(struct zx_e_Header_s* x, int n, struct zx_ecp_RelayState_s* y);
+void zx_e_Header_PUT_Framework(struct zx_e_Header_s* x, int n, struct zx_sbf_Framework_s* y);
+void zx_e_Header_PUT_Sender(struct zx_e_Header_s* x, int n, struct zx_b_Sender_s* y);
 void zx_e_Header_PUT_MessageID(struct zx_e_Header_s* x, int n, struct zx_a_MessageID_s* y);
+void zx_e_Header_PUT_Security(struct zx_e_Header_s* x, int n, struct zx_wsse_Security_s* y);
+void zx_e_Header_PUT_Status(struct zx_e_Header_s* x, int n, struct zx_tas3_Status_s* y);
 void zx_e_Header_PUT_RelatesTo(struct zx_e_Header_s* x, int n, struct zx_a_RelatesTo_s* y);
 void zx_e_Header_PUT_ReplyTo(struct zx_e_Header_s* x, int n, struct zx_a_ReplyTo_s* y);
 void zx_e_Header_PUT_From(struct zx_e_Header_s* x, int n, struct zx_a_From_s* y);
@@ -2435,9 +2439,7 @@ void zx_e_Header_PUT_FaultTo(struct zx_e_Header_s* x, int n, struct zx_a_FaultTo
 void zx_e_Header_PUT_To(struct zx_e_Header_s* x, int n, struct zx_a_To_s* y);
 void zx_e_Header_PUT_Action(struct zx_e_Header_s* x, int n, struct zx_a_Action_s* y);
 void zx_e_Header_PUT_ReferenceParameters(struct zx_e_Header_s* x, int n, struct zx_a_ReferenceParameters_s* y);
-void zx_e_Header_PUT_Framework(struct zx_e_Header_s* x, int n, struct zx_sbf_Framework_s* y);
 void zx_e_Header_PUT_b_Framework(struct zx_e_Header_s* x, int n, struct zx_b_Framework_s* y);
-void zx_e_Header_PUT_Sender(struct zx_e_Header_s* x, int n, struct zx_b_Sender_s* y);
 void zx_e_Header_PUT_TargetIdentity(struct zx_e_Header_s* x, int n, struct zx_b_TargetIdentity_s* y);
 void zx_e_Header_PUT_CredentialsContext(struct zx_e_Header_s* x, int n, struct zx_b_CredentialsContext_s* y);
 void zx_e_Header_PUT_EndpointUpdate(struct zx_e_Header_s* x, int n, struct zx_b_EndpointUpdate_s* y);
@@ -2454,8 +2456,6 @@ void zx_e_Header_PUT_b12_ProcessingContext(struct zx_e_Header_s* x, int n, struc
 void zx_e_Header_PUT_b12_Consent(struct zx_e_Header_s* x, int n, struct zx_b12_Consent_s* y);
 void zx_e_Header_PUT_b12_UsageDirective(struct zx_e_Header_s* x, int n, struct zx_b12_UsageDirective_s* y);
 void zx_e_Header_PUT_TransactionID(struct zx_e_Header_s* x, int n, struct zx_mm7_TransactionID_s* y);
-void zx_e_Header_PUT_Security(struct zx_e_Header_s* x, int n, struct zx_wsse_Security_s* y);
-void zx_e_Header_PUT_Status(struct zx_e_Header_s* x, int n, struct zx_tas3_Status_s* y);
 void zx_e_Header_PUT_Credentials(struct zx_e_Header_s* x, int n, struct zx_tas3_Credentials_s* y);
 void zx_e_Header_PUT_ESLPolicies(struct zx_e_Header_s* x, int n, struct zx_tas3_ESLPolicies_s* y);
 
@@ -2464,7 +2464,11 @@ void zx_e_Header_ADD_Response(struct zx_e_Header_s* x, int n, struct zx_paos_Res
 void zx_e_Header_ADD_ecp_Request(struct zx_e_Header_s* x, int n, struct zx_ecp_Request_s* z);
 void zx_e_Header_ADD_ecp_Response(struct zx_e_Header_s* x, int n, struct zx_ecp_Response_s* z);
 void zx_e_Header_ADD_RelayState(struct zx_e_Header_s* x, int n, struct zx_ecp_RelayState_s* z);
+void zx_e_Header_ADD_Framework(struct zx_e_Header_s* x, int n, struct zx_sbf_Framework_s* z);
+void zx_e_Header_ADD_Sender(struct zx_e_Header_s* x, int n, struct zx_b_Sender_s* z);
 void zx_e_Header_ADD_MessageID(struct zx_e_Header_s* x, int n, struct zx_a_MessageID_s* z);
+void zx_e_Header_ADD_Security(struct zx_e_Header_s* x, int n, struct zx_wsse_Security_s* z);
+void zx_e_Header_ADD_Status(struct zx_e_Header_s* x, int n, struct zx_tas3_Status_s* z);
 void zx_e_Header_ADD_RelatesTo(struct zx_e_Header_s* x, int n, struct zx_a_RelatesTo_s* z);
 void zx_e_Header_ADD_ReplyTo(struct zx_e_Header_s* x, int n, struct zx_a_ReplyTo_s* z);
 void zx_e_Header_ADD_From(struct zx_e_Header_s* x, int n, struct zx_a_From_s* z);
@@ -2472,9 +2476,7 @@ void zx_e_Header_ADD_FaultTo(struct zx_e_Header_s* x, int n, struct zx_a_FaultTo
 void zx_e_Header_ADD_To(struct zx_e_Header_s* x, int n, struct zx_a_To_s* z);
 void zx_e_Header_ADD_Action(struct zx_e_Header_s* x, int n, struct zx_a_Action_s* z);
 void zx_e_Header_ADD_ReferenceParameters(struct zx_e_Header_s* x, int n, struct zx_a_ReferenceParameters_s* z);
-void zx_e_Header_ADD_Framework(struct zx_e_Header_s* x, int n, struct zx_sbf_Framework_s* z);
 void zx_e_Header_ADD_b_Framework(struct zx_e_Header_s* x, int n, struct zx_b_Framework_s* z);
-void zx_e_Header_ADD_Sender(struct zx_e_Header_s* x, int n, struct zx_b_Sender_s* z);
 void zx_e_Header_ADD_TargetIdentity(struct zx_e_Header_s* x, int n, struct zx_b_TargetIdentity_s* z);
 void zx_e_Header_ADD_CredentialsContext(struct zx_e_Header_s* x, int n, struct zx_b_CredentialsContext_s* z);
 void zx_e_Header_ADD_EndpointUpdate(struct zx_e_Header_s* x, int n, struct zx_b_EndpointUpdate_s* z);
@@ -2491,8 +2493,6 @@ void zx_e_Header_ADD_b12_ProcessingContext(struct zx_e_Header_s* x, int n, struc
 void zx_e_Header_ADD_b12_Consent(struct zx_e_Header_s* x, int n, struct zx_b12_Consent_s* z);
 void zx_e_Header_ADD_b12_UsageDirective(struct zx_e_Header_s* x, int n, struct zx_b12_UsageDirective_s* z);
 void zx_e_Header_ADD_TransactionID(struct zx_e_Header_s* x, int n, struct zx_mm7_TransactionID_s* z);
-void zx_e_Header_ADD_Security(struct zx_e_Header_s* x, int n, struct zx_wsse_Security_s* z);
-void zx_e_Header_ADD_Status(struct zx_e_Header_s* x, int n, struct zx_tas3_Status_s* z);
 void zx_e_Header_ADD_Credentials(struct zx_e_Header_s* x, int n, struct zx_tas3_Credentials_s* z);
 void zx_e_Header_ADD_ESLPolicies(struct zx_e_Header_s* x, int n, struct zx_tas3_ESLPolicies_s* z);
 
@@ -2501,7 +2501,11 @@ void zx_e_Header_DEL_Response(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_ecp_Request(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_ecp_Response(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_RelayState(struct zx_e_Header_s* x, int n);
+void zx_e_Header_DEL_Framework(struct zx_e_Header_s* x, int n);
+void zx_e_Header_DEL_Sender(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_MessageID(struct zx_e_Header_s* x, int n);
+void zx_e_Header_DEL_Security(struct zx_e_Header_s* x, int n);
+void zx_e_Header_DEL_Status(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_RelatesTo(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_ReplyTo(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_From(struct zx_e_Header_s* x, int n);
@@ -2509,9 +2513,7 @@ void zx_e_Header_DEL_FaultTo(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_To(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_Action(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_ReferenceParameters(struct zx_e_Header_s* x, int n);
-void zx_e_Header_DEL_Framework(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_b_Framework(struct zx_e_Header_s* x, int n);
-void zx_e_Header_DEL_Sender(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_TargetIdentity(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_CredentialsContext(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_EndpointUpdate(struct zx_e_Header_s* x, int n);
@@ -2528,8 +2530,6 @@ void zx_e_Header_DEL_b12_ProcessingContext(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_b12_Consent(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_b12_UsageDirective(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_TransactionID(struct zx_e_Header_s* x, int n);
-void zx_e_Header_DEL_Security(struct zx_e_Header_s* x, int n);
-void zx_e_Header_DEL_Status(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_Credentials(struct zx_e_Header_s* x, int n);
 void zx_e_Header_DEL_ESLPolicies(struct zx_e_Header_s* x, int n);
 
@@ -2538,7 +2538,11 @@ void zx_e_Header_REV_Response(struct zx_e_Header_s* x);
 void zx_e_Header_REV_ecp_Request(struct zx_e_Header_s* x);
 void zx_e_Header_REV_ecp_Response(struct zx_e_Header_s* x);
 void zx_e_Header_REV_RelayState(struct zx_e_Header_s* x);
+void zx_e_Header_REV_Framework(struct zx_e_Header_s* x);
+void zx_e_Header_REV_Sender(struct zx_e_Header_s* x);
 void zx_e_Header_REV_MessageID(struct zx_e_Header_s* x);
+void zx_e_Header_REV_Security(struct zx_e_Header_s* x);
+void zx_e_Header_REV_Status(struct zx_e_Header_s* x);
 void zx_e_Header_REV_RelatesTo(struct zx_e_Header_s* x);
 void zx_e_Header_REV_ReplyTo(struct zx_e_Header_s* x);
 void zx_e_Header_REV_From(struct zx_e_Header_s* x);
@@ -2546,9 +2550,7 @@ void zx_e_Header_REV_FaultTo(struct zx_e_Header_s* x);
 void zx_e_Header_REV_To(struct zx_e_Header_s* x);
 void zx_e_Header_REV_Action(struct zx_e_Header_s* x);
 void zx_e_Header_REV_ReferenceParameters(struct zx_e_Header_s* x);
-void zx_e_Header_REV_Framework(struct zx_e_Header_s* x);
 void zx_e_Header_REV_b_Framework(struct zx_e_Header_s* x);
-void zx_e_Header_REV_Sender(struct zx_e_Header_s* x);
 void zx_e_Header_REV_TargetIdentity(struct zx_e_Header_s* x);
 void zx_e_Header_REV_CredentialsContext(struct zx_e_Header_s* x);
 void zx_e_Header_REV_EndpointUpdate(struct zx_e_Header_s* x);
@@ -2565,8 +2567,6 @@ void zx_e_Header_REV_b12_ProcessingContext(struct zx_e_Header_s* x);
 void zx_e_Header_REV_b12_Consent(struct zx_e_Header_s* x);
 void zx_e_Header_REV_b12_UsageDirective(struct zx_e_Header_s* x);
 void zx_e_Header_REV_TransactionID(struct zx_e_Header_s* x);
-void zx_e_Header_REV_Security(struct zx_e_Header_s* x);
-void zx_e_Header_REV_Status(struct zx_e_Header_s* x);
 void zx_e_Header_REV_Credentials(struct zx_e_Header_s* x);
 void zx_e_Header_REV_ESLPolicies(struct zx_e_Header_s* x);
 

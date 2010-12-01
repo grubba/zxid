@@ -243,7 +243,7 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
       D("TargetIdentity: Using token from EPR due to specification of ses->call_invoktok %d",0);
       tok = epr->Metadata->SecurityContext->Token;
     }
-    hdr->TargetIdentity = zx_NEW_b_TargetIdentity(cf->ctx,0);
+    hdr->TargetIdentity = zx_NEW_b_TargetIdentity(cf->ctx, &hdr->gg);
     hdr->TargetIdentity->actor = zx_ref_attr(cf->ctx, &hdr->TargetIdentity->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
     hdr->TargetIdentity->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->TargetIdentity->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
     if (tok->EncryptedAssertion)
@@ -260,12 +260,14 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
   hdr->To->actor = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->To->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 
+#if 1
   /* Mandatory for a request. */
   hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx, &hdr->gg);
   /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));*/
   hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON));
   hdr->ReplyTo->actor = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->ReplyTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+#endif
 
 #if 0
   /* Omission means to use same address as ReplyTo */
@@ -276,6 +278,7 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
 #endif
 
   zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_PLEDGE, cf->wsc_localpdp_obl_pledge);
+  zx_reverse_elem_lists(&hdr->gg);
   return 1;
 }
 
@@ -295,11 +298,13 @@ static void zxid_choose_security_token(zxid_conf* cf, zxid_ses* ses, zxid_epr* e
       return;
     }
   }
-  if (tok->EncryptedAssertion)
+  if (tok->EncryptedAssertion) {
     sec->EncryptedAssertion = tok->EncryptedAssertion;
-  else if (tok->Assertion)
+    zx_add_kid_before(&sec->gg, zx_wsu_Timestamp_ELEM, &sec->EncryptedAssertion->gg);
+  } else if (tok->Assertion) {
     sec->Assertion = tok->Assertion;
-  else
+    zx_add_kid_before(&sec->gg, zx_wsu_Timestamp_ELEM, &sec->Assertion->gg);
+  } else
     ERR("No <sa:EncryptedAssertion> or <sa:Assertion> found in <sec:Token> %p", tok);
 }
 
@@ -327,7 +332,7 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
   }
   zx_add_content(cf->ctx, &sec->Timestamp->Created->gg, zxid_date_time(cf, time(0)));
     
-  /* Clear away any credentials from previous iteration, if any. */
+  /* Clear away any credentials from previous iteration, if any. *** clear kids list, too */
   sec->Signature = 0;
   sec->BinarySecurityToken = 0;
   sec->SecurityTokenReference = 0;
@@ -344,7 +349,8 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
     break;
   case ZXID_SEC_MECH_BEARER:
     zxid_choose_security_token(cf, ses, epr, sec);
-    str = sec->SecurityTokenReference = zx_NEW_wsse_SecurityTokenReference(cf->ctx,0);
+    str = sec->SecurityTokenReference = zx_NEW_wsse_SecurityTokenReference(cf->ctx, 0);
+    zx_add_kid_before(&sec->gg, zx_wsu_Timestamp_ELEM, &str->gg);
     str->KeyIdentifier = zx_NEW_wsse_KeyIdentifier(cf->ctx, &str->gg);
     str->KeyIdentifier->ValueType = zx_ref_attr(cf->ctx, &str->KeyIdentifier->gg, zx_ValueType_ATTR, SAMLID_TOK_PROFILE);
     if (sec->Assertion)

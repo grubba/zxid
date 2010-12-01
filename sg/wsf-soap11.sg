@@ -59,7 +59,11 @@ Header -> %e:Header
   ecp:Request?
   ecp:Response?
   ecp:RelayState?
+  sbf:Framework?
+  b:Sender?
   a:MessageID?
+  wsse:Security?
+  tas3:Status?
   a:RelatesTo?
   a:ReplyTo?
   a:From?
@@ -67,9 +71,7 @@ Header -> %e:Header
   a:To?
   a:Action?
   a:ReferenceParameters?
-  sbf:Framework?
   b:Framework?
-  b:Sender?
   b:TargetIdentity?
   b:CredentialsContext?
   b:EndpointUpdate?
@@ -86,8 +88,6 @@ Header -> %e:Header
   b12:Consent?
   b12:UsageDirective?
   mm7:TransactionID?
-  wsse:Security?
-  tas3:Status?
   tas3:Credentials?
   tas3:ESLPolicies?
   @id? -> %xs:ID

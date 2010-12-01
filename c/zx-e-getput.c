@@ -31814,6 +31814,274 @@ void zx_e_Header_DEL_RelayState(struct zx_e_Header_s* x, int n)
 
 #ifdef ZX_ENA_GETPUT
 
+/* FUNC(zx_e_Header_NUM_Framework) */
+
+int zx_e_Header_NUM_Framework(struct zx_e_Header_s* x)
+{
+  struct zx_sbf_Framework_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->Framework; y && y->gg.g.tok == zx_sbf_Framework_ELEM; ++n, y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_e_Header_GET_Framework) */
+
+struct zx_sbf_Framework_s* zx_e_Header_GET_Framework(struct zx_e_Header_s* x, int n)
+{
+  struct zx_sbf_Framework_s* y;
+  if (!x) return 0;
+  for (y = x->Framework; n>=0 && y && y->gg.g.tok == zx_sbf_Framework_ELEM; --n, y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_e_Header_POP_Framework) */
+
+struct zx_sbf_Framework_s* zx_e_Header_POP_Framework(struct zx_e_Header_s* x)
+{
+  struct zx_sbf_Framework_s* y;
+  if (!x) return 0;
+  y = x->Framework;
+  if (y)
+    x->Framework = (struct zx_sbf_Framework_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_e_Header_PUSH_Framework) */
+
+void zx_e_Header_PUSH_Framework(struct zx_e_Header_s* x, struct zx_sbf_Framework_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->Framework->gg.g;
+  x->Framework = z;
+}
+
+/* FUNC(zx_e_Header_REV_Framework) */
+
+void zx_e_Header_REV_Framework(struct zx_e_Header_s* x)
+{
+  struct zx_sbf_Framework_s* nxt;
+  struct zx_sbf_Framework_s* y;
+  if (!x) return;
+  y = x->Framework;
+  if (!y) return;
+  x->Framework = 0;
+  while (y) {
+    nxt = (struct zx_sbf_Framework_s*)y->gg.g.n;
+    y->gg.g.n = &x->Framework->gg.g;
+    x->Framework = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_e_Header_PUT_Framework) */
+
+void zx_e_Header_PUT_Framework(struct zx_e_Header_s* x, int n, struct zx_sbf_Framework_s* z)
+{
+  struct zx_sbf_Framework_s* y;
+  if (!x || !z) return;
+  y = x->Framework;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->Framework = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sbf_Framework_ELEM; --n, y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_e_Header_ADD_Framework) */
+
+void zx_e_Header_ADD_Framework(struct zx_e_Header_s* x, int n, struct zx_sbf_Framework_s* z)
+{
+  struct zx_sbf_Framework_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->Framework->gg.g;
+    x->Framework = z;
+    return;
+  case -1:
+    y = x->Framework;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sbf_Framework_ELEM; y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Framework; n > 1 && y && y->gg.g.tok == zx_sbf_Framework_ELEM; --n, y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_e_Header_DEL_Framework) */
+
+void zx_e_Header_DEL_Framework(struct zx_e_Header_s* x, int n)
+{
+  struct zx_sbf_Framework_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->Framework = (struct zx_sbf_Framework_s*)x->Framework->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_sbf_Framework_s*)x->Framework;
+    if (!y) return;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sbf_Framework_ELEM; y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Framework; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sbf_Framework_ELEM; --n, y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_e_Header_NUM_Sender) */
+
+int zx_e_Header_NUM_Sender(struct zx_e_Header_s* x)
+{
+  struct zx_b_Sender_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->Sender; y && y->gg.g.tok == zx_b_Sender_ELEM; ++n, y = (struct zx_b_Sender_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_e_Header_GET_Sender) */
+
+struct zx_b_Sender_s* zx_e_Header_GET_Sender(struct zx_e_Header_s* x, int n)
+{
+  struct zx_b_Sender_s* y;
+  if (!x) return 0;
+  for (y = x->Sender; n>=0 && y && y->gg.g.tok == zx_b_Sender_ELEM; --n, y = (struct zx_b_Sender_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_e_Header_POP_Sender) */
+
+struct zx_b_Sender_s* zx_e_Header_POP_Sender(struct zx_e_Header_s* x)
+{
+  struct zx_b_Sender_s* y;
+  if (!x) return 0;
+  y = x->Sender;
+  if (y)
+    x->Sender = (struct zx_b_Sender_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_e_Header_PUSH_Sender) */
+
+void zx_e_Header_PUSH_Sender(struct zx_e_Header_s* x, struct zx_b_Sender_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->Sender->gg.g;
+  x->Sender = z;
+}
+
+/* FUNC(zx_e_Header_REV_Sender) */
+
+void zx_e_Header_REV_Sender(struct zx_e_Header_s* x)
+{
+  struct zx_b_Sender_s* nxt;
+  struct zx_b_Sender_s* y;
+  if (!x) return;
+  y = x->Sender;
+  if (!y) return;
+  x->Sender = 0;
+  while (y) {
+    nxt = (struct zx_b_Sender_s*)y->gg.g.n;
+    y->gg.g.n = &x->Sender->gg.g;
+    x->Sender = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_e_Header_PUT_Sender) */
+
+void zx_e_Header_PUT_Sender(struct zx_e_Header_s* x, int n, struct zx_b_Sender_s* z)
+{
+  struct zx_b_Sender_s* y;
+  if (!x || !z) return;
+  y = x->Sender;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->Sender = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_b_Sender_ELEM; --n, y = (struct zx_b_Sender_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_e_Header_ADD_Sender) */
+
+void zx_e_Header_ADD_Sender(struct zx_e_Header_s* x, int n, struct zx_b_Sender_s* z)
+{
+  struct zx_b_Sender_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->Sender->gg.g;
+    x->Sender = z;
+    return;
+  case -1:
+    y = x->Sender;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_b_Sender_ELEM; y = (struct zx_b_Sender_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Sender; n > 1 && y && y->gg.g.tok == zx_b_Sender_ELEM; --n, y = (struct zx_b_Sender_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_e_Header_DEL_Sender) */
+
+void zx_e_Header_DEL_Sender(struct zx_e_Header_s* x, int n)
+{
+  struct zx_b_Sender_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->Sender = (struct zx_b_Sender_s*)x->Sender->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_b_Sender_s*)x->Sender;
+    if (!y) return;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_b_Sender_ELEM; y = (struct zx_b_Sender_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Sender; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_b_Sender_ELEM; --n, y = (struct zx_b_Sender_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
 /* FUNC(zx_e_Header_NUM_MessageID) */
 
 int zx_e_Header_NUM_MessageID(struct zx_e_Header_s* x)
@@ -31937,6 +32205,274 @@ void zx_e_Header_DEL_MessageID(struct zx_e_Header_s* x, int n)
     break;
   default:
     for (y = x->MessageID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_MessageID_ELEM; --n, y = (struct zx_a_MessageID_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_e_Header_NUM_Security) */
+
+int zx_e_Header_NUM_Security(struct zx_e_Header_s* x)
+{
+  struct zx_wsse_Security_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->Security; y && y->gg.g.tok == zx_wsse_Security_ELEM; ++n, y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_e_Header_GET_Security) */
+
+struct zx_wsse_Security_s* zx_e_Header_GET_Security(struct zx_e_Header_s* x, int n)
+{
+  struct zx_wsse_Security_s* y;
+  if (!x) return 0;
+  for (y = x->Security; n>=0 && y && y->gg.g.tok == zx_wsse_Security_ELEM; --n, y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_e_Header_POP_Security) */
+
+struct zx_wsse_Security_s* zx_e_Header_POP_Security(struct zx_e_Header_s* x)
+{
+  struct zx_wsse_Security_s* y;
+  if (!x) return 0;
+  y = x->Security;
+  if (y)
+    x->Security = (struct zx_wsse_Security_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_e_Header_PUSH_Security) */
+
+void zx_e_Header_PUSH_Security(struct zx_e_Header_s* x, struct zx_wsse_Security_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->Security->gg.g;
+  x->Security = z;
+}
+
+/* FUNC(zx_e_Header_REV_Security) */
+
+void zx_e_Header_REV_Security(struct zx_e_Header_s* x)
+{
+  struct zx_wsse_Security_s* nxt;
+  struct zx_wsse_Security_s* y;
+  if (!x) return;
+  y = x->Security;
+  if (!y) return;
+  x->Security = 0;
+  while (y) {
+    nxt = (struct zx_wsse_Security_s*)y->gg.g.n;
+    y->gg.g.n = &x->Security->gg.g;
+    x->Security = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_e_Header_PUT_Security) */
+
+void zx_e_Header_PUT_Security(struct zx_e_Header_s* x, int n, struct zx_wsse_Security_s* z)
+{
+  struct zx_wsse_Security_s* y;
+  if (!x || !z) return;
+  y = x->Security;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->Security = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_Security_ELEM; --n, y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_e_Header_ADD_Security) */
+
+void zx_e_Header_ADD_Security(struct zx_e_Header_s* x, int n, struct zx_wsse_Security_s* z)
+{
+  struct zx_wsse_Security_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->Security->gg.g;
+    x->Security = z;
+    return;
+  case -1:
+    y = x->Security;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_Security_ELEM; y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Security; n > 1 && y && y->gg.g.tok == zx_wsse_Security_ELEM; --n, y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_e_Header_DEL_Security) */
+
+void zx_e_Header_DEL_Security(struct zx_e_Header_s* x, int n)
+{
+  struct zx_wsse_Security_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->Security = (struct zx_wsse_Security_s*)x->Security->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_wsse_Security_s*)x->Security;
+    if (!y) return;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_Security_ELEM; y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Security; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_Security_ELEM; --n, y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_e_Header_NUM_Status) */
+
+int zx_e_Header_NUM_Status(struct zx_e_Header_s* x)
+{
+  struct zx_tas3_Status_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->Status; y && y->gg.g.tok == zx_tas3_Status_ELEM; ++n, y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_e_Header_GET_Status) */
+
+struct zx_tas3_Status_s* zx_e_Header_GET_Status(struct zx_e_Header_s* x, int n)
+{
+  struct zx_tas3_Status_s* y;
+  if (!x) return 0;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_tas3_Status_ELEM; --n, y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_e_Header_POP_Status) */
+
+struct zx_tas3_Status_s* zx_e_Header_POP_Status(struct zx_e_Header_s* x)
+{
+  struct zx_tas3_Status_s* y;
+  if (!x) return 0;
+  y = x->Status;
+  if (y)
+    x->Status = (struct zx_tas3_Status_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_e_Header_PUSH_Status) */
+
+void zx_e_Header_PUSH_Status(struct zx_e_Header_s* x, struct zx_tas3_Status_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->Status->gg.g;
+  x->Status = z;
+}
+
+/* FUNC(zx_e_Header_REV_Status) */
+
+void zx_e_Header_REV_Status(struct zx_e_Header_s* x)
+{
+  struct zx_tas3_Status_s* nxt;
+  struct zx_tas3_Status_s* y;
+  if (!x) return;
+  y = x->Status;
+  if (!y) return;
+  x->Status = 0;
+  while (y) {
+    nxt = (struct zx_tas3_Status_s*)y->gg.g.n;
+    y->gg.g.n = &x->Status->gg.g;
+    x->Status = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_e_Header_PUT_Status) */
+
+void zx_e_Header_PUT_Status(struct zx_e_Header_s* x, int n, struct zx_tas3_Status_s* z)
+{
+  struct zx_tas3_Status_s* y;
+  if (!x || !z) return;
+  y = x->Status;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->Status = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_Status_ELEM; --n, y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_e_Header_ADD_Status) */
+
+void zx_e_Header_ADD_Status(struct zx_e_Header_s* x, int n, struct zx_tas3_Status_s* z)
+{
+  struct zx_tas3_Status_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->Status->gg.g;
+    x->Status = z;
+    return;
+  case -1:
+    y = x->Status;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_Status_ELEM; y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_tas3_Status_ELEM; --n, y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_e_Header_DEL_Status) */
+
+void zx_e_Header_DEL_Status(struct zx_e_Header_s* x, int n)
+{
+  struct zx_tas3_Status_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->Status = (struct zx_tas3_Status_s*)x->Status->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_tas3_Status_s*)x->Status;
+    if (!y) return;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_Status_ELEM; y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_Status_ELEM; --n, y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -32886,140 +33422,6 @@ void zx_e_Header_DEL_ReferenceParameters(struct zx_e_Header_s* x, int n)
 
 #ifdef ZX_ENA_GETPUT
 
-/* FUNC(zx_e_Header_NUM_Framework) */
-
-int zx_e_Header_NUM_Framework(struct zx_e_Header_s* x)
-{
-  struct zx_sbf_Framework_s* y;
-  int n = 0;
-  if (!x) return 0;
-  for (y = x->Framework; y && y->gg.g.tok == zx_sbf_Framework_ELEM; ++n, y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
-  return n;
-}
-
-/* FUNC(zx_e_Header_GET_Framework) */
-
-struct zx_sbf_Framework_s* zx_e_Header_GET_Framework(struct zx_e_Header_s* x, int n)
-{
-  struct zx_sbf_Framework_s* y;
-  if (!x) return 0;
-  for (y = x->Framework; n>=0 && y && y->gg.g.tok == zx_sbf_Framework_ELEM; --n, y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
-  return y;
-}
-
-/* FUNC(zx_e_Header_POP_Framework) */
-
-struct zx_sbf_Framework_s* zx_e_Header_POP_Framework(struct zx_e_Header_s* x)
-{
-  struct zx_sbf_Framework_s* y;
-  if (!x) return 0;
-  y = x->Framework;
-  if (y)
-    x->Framework = (struct zx_sbf_Framework_s*)y->gg.g.n;
-  return y;
-}
-
-/* FUNC(zx_e_Header_PUSH_Framework) */
-
-void zx_e_Header_PUSH_Framework(struct zx_e_Header_s* x, struct zx_sbf_Framework_s* z)
-{
-  if (!x || !z) return;
-  z->gg.g.n = &x->Framework->gg.g;
-  x->Framework = z;
-}
-
-/* FUNC(zx_e_Header_REV_Framework) */
-
-void zx_e_Header_REV_Framework(struct zx_e_Header_s* x)
-{
-  struct zx_sbf_Framework_s* nxt;
-  struct zx_sbf_Framework_s* y;
-  if (!x) return;
-  y = x->Framework;
-  if (!y) return;
-  x->Framework = 0;
-  while (y) {
-    nxt = (struct zx_sbf_Framework_s*)y->gg.g.n;
-    y->gg.g.n = &x->Framework->gg.g;
-    x->Framework = y;
-    y = nxt;
-  }
-}
-
-/* FUNC(zx_e_Header_PUT_Framework) */
-
-void zx_e_Header_PUT_Framework(struct zx_e_Header_s* x, int n, struct zx_sbf_Framework_s* z)
-{
-  struct zx_sbf_Framework_s* y;
-  if (!x || !z) return;
-  y = x->Framework;
-  if (!y) return;
-  switch (n) {
-  case 0:
-    z->gg.g.n = y->gg.g.n;
-    x->Framework = z;
-    return;
-  default:
-    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sbf_Framework_ELEM; --n, y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-    z->gg.g.n = y->gg.g.n->n;
-    y->gg.g.n = &z->gg.g;
-  }
-}
-
-/* FUNC(zx_e_Header_ADD_Framework) */
-
-void zx_e_Header_ADD_Framework(struct zx_e_Header_s* x, int n, struct zx_sbf_Framework_s* z)
-{
-  struct zx_sbf_Framework_s* y;
-  if (!x || !z) return;
-  switch (n) {
-  case 0:
-  add_to_start:
-    z->gg.g.n = &x->Framework->gg.g;
-    x->Framework = z;
-    return;
-  case -1:
-    y = x->Framework;
-    if (!y) goto add_to_start;
-    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sbf_Framework_ELEM; y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->Framework; n > 1 && y && y->gg.g.tok == zx_sbf_Framework_ELEM; --n, y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
-    if (!y) return;
-  }
-  z->gg.g.n = y->gg.g.n;
-  y->gg.g.n = &z->gg.g;
-}
-
-/* FUNC(zx_e_Header_DEL_Framework) */
-
-void zx_e_Header_DEL_Framework(struct zx_e_Header_s* x, int n)
-{
-  struct zx_sbf_Framework_s* y;
-  if (!x) return;
-  switch (n) {
-  case 0:
-    x->Framework = (struct zx_sbf_Framework_s*)x->Framework->gg.g.n;
-    return;
-  case -1:
-    y = (struct zx_sbf_Framework_s*)x->Framework;
-    if (!y) return;
-    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sbf_Framework_ELEM; y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->Framework; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sbf_Framework_ELEM; --n, y = (struct zx_sbf_Framework_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-  }
-  y->gg.g.n = y->gg.g.n->n;
-}
-
-#endif
-
-
-
-#ifdef ZX_ENA_GETPUT
-
 /* FUNC(zx_e_Header_NUM_b_Framework) */
 
 int zx_e_Header_NUM_b_Framework(struct zx_e_Header_s* x)
@@ -33143,140 +33545,6 @@ void zx_e_Header_DEL_b_Framework(struct zx_e_Header_s* x, int n)
     break;
   default:
     for (y = x->b_Framework; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_b_Framework_ELEM; --n, y = (struct zx_b_Framework_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-  }
-  y->gg.g.n = y->gg.g.n->n;
-}
-
-#endif
-
-
-
-#ifdef ZX_ENA_GETPUT
-
-/* FUNC(zx_e_Header_NUM_Sender) */
-
-int zx_e_Header_NUM_Sender(struct zx_e_Header_s* x)
-{
-  struct zx_b_Sender_s* y;
-  int n = 0;
-  if (!x) return 0;
-  for (y = x->Sender; y && y->gg.g.tok == zx_b_Sender_ELEM; ++n, y = (struct zx_b_Sender_s*)y->gg.g.n) ;
-  return n;
-}
-
-/* FUNC(zx_e_Header_GET_Sender) */
-
-struct zx_b_Sender_s* zx_e_Header_GET_Sender(struct zx_e_Header_s* x, int n)
-{
-  struct zx_b_Sender_s* y;
-  if (!x) return 0;
-  for (y = x->Sender; n>=0 && y && y->gg.g.tok == zx_b_Sender_ELEM; --n, y = (struct zx_b_Sender_s*)y->gg.g.n) ;
-  return y;
-}
-
-/* FUNC(zx_e_Header_POP_Sender) */
-
-struct zx_b_Sender_s* zx_e_Header_POP_Sender(struct zx_e_Header_s* x)
-{
-  struct zx_b_Sender_s* y;
-  if (!x) return 0;
-  y = x->Sender;
-  if (y)
-    x->Sender = (struct zx_b_Sender_s*)y->gg.g.n;
-  return y;
-}
-
-/* FUNC(zx_e_Header_PUSH_Sender) */
-
-void zx_e_Header_PUSH_Sender(struct zx_e_Header_s* x, struct zx_b_Sender_s* z)
-{
-  if (!x || !z) return;
-  z->gg.g.n = &x->Sender->gg.g;
-  x->Sender = z;
-}
-
-/* FUNC(zx_e_Header_REV_Sender) */
-
-void zx_e_Header_REV_Sender(struct zx_e_Header_s* x)
-{
-  struct zx_b_Sender_s* nxt;
-  struct zx_b_Sender_s* y;
-  if (!x) return;
-  y = x->Sender;
-  if (!y) return;
-  x->Sender = 0;
-  while (y) {
-    nxt = (struct zx_b_Sender_s*)y->gg.g.n;
-    y->gg.g.n = &x->Sender->gg.g;
-    x->Sender = y;
-    y = nxt;
-  }
-}
-
-/* FUNC(zx_e_Header_PUT_Sender) */
-
-void zx_e_Header_PUT_Sender(struct zx_e_Header_s* x, int n, struct zx_b_Sender_s* z)
-{
-  struct zx_b_Sender_s* y;
-  if (!x || !z) return;
-  y = x->Sender;
-  if (!y) return;
-  switch (n) {
-  case 0:
-    z->gg.g.n = y->gg.g.n;
-    x->Sender = z;
-    return;
-  default:
-    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_b_Sender_ELEM; --n, y = (struct zx_b_Sender_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-    z->gg.g.n = y->gg.g.n->n;
-    y->gg.g.n = &z->gg.g;
-  }
-}
-
-/* FUNC(zx_e_Header_ADD_Sender) */
-
-void zx_e_Header_ADD_Sender(struct zx_e_Header_s* x, int n, struct zx_b_Sender_s* z)
-{
-  struct zx_b_Sender_s* y;
-  if (!x || !z) return;
-  switch (n) {
-  case 0:
-  add_to_start:
-    z->gg.g.n = &x->Sender->gg.g;
-    x->Sender = z;
-    return;
-  case -1:
-    y = x->Sender;
-    if (!y) goto add_to_start;
-    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_b_Sender_ELEM; y = (struct zx_b_Sender_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->Sender; n > 1 && y && y->gg.g.tok == zx_b_Sender_ELEM; --n, y = (struct zx_b_Sender_s*)y->gg.g.n) ;
-    if (!y) return;
-  }
-  z->gg.g.n = y->gg.g.n;
-  y->gg.g.n = &z->gg.g;
-}
-
-/* FUNC(zx_e_Header_DEL_Sender) */
-
-void zx_e_Header_DEL_Sender(struct zx_e_Header_s* x, int n)
-{
-  struct zx_b_Sender_s* y;
-  if (!x) return;
-  switch (n) {
-  case 0:
-    x->Sender = (struct zx_b_Sender_s*)x->Sender->gg.g.n;
-    return;
-  case -1:
-    y = (struct zx_b_Sender_s*)x->Sender;
-    if (!y) return;
-    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_b_Sender_ELEM; y = (struct zx_b_Sender_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->Sender; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_b_Sender_ELEM; --n, y = (struct zx_b_Sender_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -35421,274 +35689,6 @@ void zx_e_Header_DEL_TransactionID(struct zx_e_Header_s* x, int n)
     break;
   default:
     for (y = x->TransactionID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_mm7_TransactionID_ELEM; --n, y = (struct zx_mm7_TransactionID_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-  }
-  y->gg.g.n = y->gg.g.n->n;
-}
-
-#endif
-
-
-
-#ifdef ZX_ENA_GETPUT
-
-/* FUNC(zx_e_Header_NUM_Security) */
-
-int zx_e_Header_NUM_Security(struct zx_e_Header_s* x)
-{
-  struct zx_wsse_Security_s* y;
-  int n = 0;
-  if (!x) return 0;
-  for (y = x->Security; y && y->gg.g.tok == zx_wsse_Security_ELEM; ++n, y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
-  return n;
-}
-
-/* FUNC(zx_e_Header_GET_Security) */
-
-struct zx_wsse_Security_s* zx_e_Header_GET_Security(struct zx_e_Header_s* x, int n)
-{
-  struct zx_wsse_Security_s* y;
-  if (!x) return 0;
-  for (y = x->Security; n>=0 && y && y->gg.g.tok == zx_wsse_Security_ELEM; --n, y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
-  return y;
-}
-
-/* FUNC(zx_e_Header_POP_Security) */
-
-struct zx_wsse_Security_s* zx_e_Header_POP_Security(struct zx_e_Header_s* x)
-{
-  struct zx_wsse_Security_s* y;
-  if (!x) return 0;
-  y = x->Security;
-  if (y)
-    x->Security = (struct zx_wsse_Security_s*)y->gg.g.n;
-  return y;
-}
-
-/* FUNC(zx_e_Header_PUSH_Security) */
-
-void zx_e_Header_PUSH_Security(struct zx_e_Header_s* x, struct zx_wsse_Security_s* z)
-{
-  if (!x || !z) return;
-  z->gg.g.n = &x->Security->gg.g;
-  x->Security = z;
-}
-
-/* FUNC(zx_e_Header_REV_Security) */
-
-void zx_e_Header_REV_Security(struct zx_e_Header_s* x)
-{
-  struct zx_wsse_Security_s* nxt;
-  struct zx_wsse_Security_s* y;
-  if (!x) return;
-  y = x->Security;
-  if (!y) return;
-  x->Security = 0;
-  while (y) {
-    nxt = (struct zx_wsse_Security_s*)y->gg.g.n;
-    y->gg.g.n = &x->Security->gg.g;
-    x->Security = y;
-    y = nxt;
-  }
-}
-
-/* FUNC(zx_e_Header_PUT_Security) */
-
-void zx_e_Header_PUT_Security(struct zx_e_Header_s* x, int n, struct zx_wsse_Security_s* z)
-{
-  struct zx_wsse_Security_s* y;
-  if (!x || !z) return;
-  y = x->Security;
-  if (!y) return;
-  switch (n) {
-  case 0:
-    z->gg.g.n = y->gg.g.n;
-    x->Security = z;
-    return;
-  default:
-    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_Security_ELEM; --n, y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-    z->gg.g.n = y->gg.g.n->n;
-    y->gg.g.n = &z->gg.g;
-  }
-}
-
-/* FUNC(zx_e_Header_ADD_Security) */
-
-void zx_e_Header_ADD_Security(struct zx_e_Header_s* x, int n, struct zx_wsse_Security_s* z)
-{
-  struct zx_wsse_Security_s* y;
-  if (!x || !z) return;
-  switch (n) {
-  case 0:
-  add_to_start:
-    z->gg.g.n = &x->Security->gg.g;
-    x->Security = z;
-    return;
-  case -1:
-    y = x->Security;
-    if (!y) goto add_to_start;
-    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_Security_ELEM; y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->Security; n > 1 && y && y->gg.g.tok == zx_wsse_Security_ELEM; --n, y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
-    if (!y) return;
-  }
-  z->gg.g.n = y->gg.g.n;
-  y->gg.g.n = &z->gg.g;
-}
-
-/* FUNC(zx_e_Header_DEL_Security) */
-
-void zx_e_Header_DEL_Security(struct zx_e_Header_s* x, int n)
-{
-  struct zx_wsse_Security_s* y;
-  if (!x) return;
-  switch (n) {
-  case 0:
-    x->Security = (struct zx_wsse_Security_s*)x->Security->gg.g.n;
-    return;
-  case -1:
-    y = (struct zx_wsse_Security_s*)x->Security;
-    if (!y) return;
-    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_Security_ELEM; y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->Security; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_Security_ELEM; --n, y = (struct zx_wsse_Security_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-  }
-  y->gg.g.n = y->gg.g.n->n;
-}
-
-#endif
-
-
-
-#ifdef ZX_ENA_GETPUT
-
-/* FUNC(zx_e_Header_NUM_Status) */
-
-int zx_e_Header_NUM_Status(struct zx_e_Header_s* x)
-{
-  struct zx_tas3_Status_s* y;
-  int n = 0;
-  if (!x) return 0;
-  for (y = x->Status; y && y->gg.g.tok == zx_tas3_Status_ELEM; ++n, y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
-  return n;
-}
-
-/* FUNC(zx_e_Header_GET_Status) */
-
-struct zx_tas3_Status_s* zx_e_Header_GET_Status(struct zx_e_Header_s* x, int n)
-{
-  struct zx_tas3_Status_s* y;
-  if (!x) return 0;
-  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_tas3_Status_ELEM; --n, y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
-  return y;
-}
-
-/* FUNC(zx_e_Header_POP_Status) */
-
-struct zx_tas3_Status_s* zx_e_Header_POP_Status(struct zx_e_Header_s* x)
-{
-  struct zx_tas3_Status_s* y;
-  if (!x) return 0;
-  y = x->Status;
-  if (y)
-    x->Status = (struct zx_tas3_Status_s*)y->gg.g.n;
-  return y;
-}
-
-/* FUNC(zx_e_Header_PUSH_Status) */
-
-void zx_e_Header_PUSH_Status(struct zx_e_Header_s* x, struct zx_tas3_Status_s* z)
-{
-  if (!x || !z) return;
-  z->gg.g.n = &x->Status->gg.g;
-  x->Status = z;
-}
-
-/* FUNC(zx_e_Header_REV_Status) */
-
-void zx_e_Header_REV_Status(struct zx_e_Header_s* x)
-{
-  struct zx_tas3_Status_s* nxt;
-  struct zx_tas3_Status_s* y;
-  if (!x) return;
-  y = x->Status;
-  if (!y) return;
-  x->Status = 0;
-  while (y) {
-    nxt = (struct zx_tas3_Status_s*)y->gg.g.n;
-    y->gg.g.n = &x->Status->gg.g;
-    x->Status = y;
-    y = nxt;
-  }
-}
-
-/* FUNC(zx_e_Header_PUT_Status) */
-
-void zx_e_Header_PUT_Status(struct zx_e_Header_s* x, int n, struct zx_tas3_Status_s* z)
-{
-  struct zx_tas3_Status_s* y;
-  if (!x || !z) return;
-  y = x->Status;
-  if (!y) return;
-  switch (n) {
-  case 0:
-    z->gg.g.n = y->gg.g.n;
-    x->Status = z;
-    return;
-  default:
-    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_Status_ELEM; --n, y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-    z->gg.g.n = y->gg.g.n->n;
-    y->gg.g.n = &z->gg.g;
-  }
-}
-
-/* FUNC(zx_e_Header_ADD_Status) */
-
-void zx_e_Header_ADD_Status(struct zx_e_Header_s* x, int n, struct zx_tas3_Status_s* z)
-{
-  struct zx_tas3_Status_s* y;
-  if (!x || !z) return;
-  switch (n) {
-  case 0:
-  add_to_start:
-    z->gg.g.n = &x->Status->gg.g;
-    x->Status = z;
-    return;
-  case -1:
-    y = x->Status;
-    if (!y) goto add_to_start;
-    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_Status_ELEM; y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_tas3_Status_ELEM; --n, y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
-    if (!y) return;
-  }
-  z->gg.g.n = y->gg.g.n;
-  y->gg.g.n = &z->gg.g;
-}
-
-/* FUNC(zx_e_Header_DEL_Status) */
-
-void zx_e_Header_DEL_Status(struct zx_e_Header_s* x, int n)
-{
-  struct zx_tas3_Status_s* y;
-  if (!x) return;
-  switch (n) {
-  case 0:
-    x->Status = (struct zx_tas3_Status_s*)x->Status->gg.g.n;
-    return;
-  case -1:
-    y = (struct zx_tas3_Status_s*)x->Status;
-    if (!y) return;
-    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_Status_ELEM; y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_Status_ELEM; --n, y = (struct zx_tas3_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

@@ -190,7 +190,7 @@ void zxid_add_ldif_attrs(zxid_conf* cf, struct zx_elem_s* father, char* p, char*
 /*() Process .bs directory. See also zxid_di_query() */
 
 /* Called by:  zxid_idp_as_do x2, zxid_mk_user_a7n_to_sp x2 */
-void zxid_gen_boots(zxid_conf* cf, struct zx_elem_s* father, const char* uid, char* path, int bs_lvl)
+void zxid_gen_boots(zxid_conf* cf, struct zx_sa_AttributeStatement_s* father, const char* uid, char* path, int bs_lvl)
 {
   struct timeval srcts = {0,501000};
   struct zx_sa_Attribute_s* at;
@@ -272,8 +272,8 @@ void zxid_gen_boots(zxid_conf* cf, struct zx_elem_s* father, const char* uid, ch
       goto next_file;
     
     D("ADD BOOTSTRAP url(%.*s) is_di=%d", ZX_GET_CONTENT_LEN(epr->Address), ZX_GET_CONTENT_S(epr->Address), is_di);
-    at = zxid_mk_attribute(cf, father, WSF20_DI_RO, 0);
-    at->AttributeValue->EndpointReference = epr;
+    father->Attribute = at = zxid_mk_attribute(cf, &father->gg, WSF20_DI_RO, 0);
+    ZX_ADD_KID(at->AttributeValue, EndpointReference, epr);
     
     zxlog(cf, 0, &srcts, 0, 0, 0, 0 /*a7n->ID*/, 0 /*nameid->gg.content*/,"N","K", logop, uid, "gen_bs");
     
@@ -340,10 +340,10 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
   /* Process bootstraps */
 
   name_from_path(dir, sizeof(dir), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, uid);
-  zxid_gen_boots(cf, &at_stmt->gg, uid, dir, bs_lvl);
+  zxid_gen_boots(cf, at_stmt, uid, dir, bs_lvl);
   
   name_from_path(dir, sizeof(dir), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
-  zxid_gen_boots(cf, &at_stmt->gg, uid, dir, bs_lvl);
+  zxid_gen_boots(cf, at_stmt, uid, dir, bs_lvl);
   
   D_DEDENT("mka7n: ");
   return a7n;
@@ -836,8 +836,9 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
   ZERO(&ses, sizeof(ses));
 
   if (SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(ZX_GET_CONTENT_LEN(req->Data)) >= sizeof(buf)-1) {
-    ERR("Too long username and password data %p", ZX_GET_CONTENT(req->Data));
+    ERR("Too long username and password %p. limit=%d",ZX_GET_CONTENT(req->Data),sizeof(buf)-1);
     res->Status = zxid_mk_lu_Status(cf, &res->gg, "ERR", 0, 0, 0);
+    return res;
   }
   q = unbase64_raw(ZX_GET_CONTENT_S(req->Data), ZX_GET_CONTENT_S(req->Data) + ZX_GET_CONTENT_LEN(req->Data), buf, zx_std_index_64);
   *q = 0;
@@ -849,26 +850,32 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
 
   if (zxid_pw_authn(cf, &cgi, &ses)) {
     D_INDENT("as: ");
-    res->Status = zxid_mk_lu_Status(cf, &res->gg, "OK", 0, 0, 0);
-    at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0);
+    at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0 /* Do not attach */);
     name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, cgi.uid);
-    zxid_gen_boots(cf, &at_stmt->gg, cgi.uid, path, 1);
+    zxid_gen_boots(cf, at_stmt, cgi.uid, path, 1);
     name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
-    zxid_gen_boots(cf, &at_stmt->gg, cgi.uid, path, 1);
+    zxid_gen_boots(cf, at_stmt, cgi.uid, path, 1);
 
     /* Kludgy extraction of the EPRs from the attributes. */
 
     at = at_stmt->Attribute;
     if (at) {
       res->EndpointReference = at->AttributeValue->EndpointReference;
+      D("TRANSMIT EPR to res %p %p", res->EndpointReference, res->EndpointReference->gg.g.n);
       for (; at; at = at_next) {
-	zx_add_kid(&res->gg, &at->AttributeValue->EndpointReference->gg);
+	if (at->AttributeValue->EndpointReference) {
+	  D("TRANSMIT ANOTHER EPR to res %p %p", at->AttributeValue->EndpointReference, at->AttributeValue->EndpointReference->gg.g.n);
+	  zx_add_kid(&res->gg, &at->AttributeValue->EndpointReference->gg);
+	} else {
+	  D("NO EPR %p", at->AttributeValue->EndpointReference);
+	}
 	at_next = (struct zx_sa_Attribute_s*)at->gg.g.n;
 	ZX_FREE(cf->ctx, at);
       }
     }
     ZX_FREE(cf->ctx, at_stmt);
-    zx_reverse_elem_lists(&res->gg);
+    res->Status = zxid_mk_lu_Status(cf, &res->gg, "OK", 0, 0, 0);
+    /*zx_reverse_elem_lists(&res->gg); already built right */
     D_DEDENT("as: ");
   } else {
     ERR("Authentication failed uid(%s) pw(%s)", cgi.uid, cgi.pw);

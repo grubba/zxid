@@ -233,6 +233,7 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 #define ZX_TOK_FLAGS_MASK       0xff000000
 
 #define zx_xml_lang_ATTR (zx_xml_NS|zx_lang_ATTR)
+#define zx_wsu_Id_ATTR   (zx_wsu_NS|zx_Id_ATTR)
 #define zx_e_actor_ATTR  (zx_e_NS|zx_actor_ATTR)
 #define zx_e_mustUnderstand_ATTR (zx_e_NS|zx_mustUnderstand_ATTR)
 

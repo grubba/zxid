@@ -5192,10 +5192,26 @@ void zx_DUP_STRS_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x)
        se && se->g.tok == zx_ecp_RelayState_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ecp_RelayState(c, (struct zx_ecp_RelayState_s*)se);
+  for (se = &x->Framework->gg;
+       se && se->g.tok == zx_sbf_Framework_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    zx_DUP_STRS_sbf_Framework(c, (struct zx_sbf_Framework_s*)se);
+  for (se = &x->Sender->gg;
+       se && se->g.tok == zx_b_Sender_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    zx_DUP_STRS_b_Sender(c, (struct zx_b_Sender_s*)se);
   for (se = &x->MessageID->gg;
        se && se->g.tok == zx_a_MessageID_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_MessageID(c, (struct zx_a_MessageID_s*)se);
+  for (se = &x->Security->gg;
+       se && se->g.tok == zx_wsse_Security_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    zx_DUP_STRS_wsse_Security(c, (struct zx_wsse_Security_s*)se);
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_tas3_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    zx_DUP_STRS_tas3_Status(c, (struct zx_tas3_Status_s*)se);
   for (se = &x->RelatesTo->gg;
        se && se->g.tok == zx_a_RelatesTo_ELEM;
        se = (struct zx_elem_s*)se->g.n)
@@ -5224,18 +5240,10 @@ void zx_DUP_STRS_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x)
        se && se->g.tok == zx_a_ReferenceParameters_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Framework->gg;
-       se && se->g.tok == zx_sbf_Framework_ELEM;
-       se = (struct zx_elem_s*)se->g.n)
-    zx_DUP_STRS_sbf_Framework(c, (struct zx_sbf_Framework_s*)se);
   for (se = &x->b_Framework->gg;
        se && se->g.tok == zx_b_Framework_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_b_Framework(c, (struct zx_b_Framework_s*)se);
-  for (se = &x->Sender->gg;
-       se && se->g.tok == zx_b_Sender_ELEM;
-       se = (struct zx_elem_s*)se->g.n)
-    zx_DUP_STRS_b_Sender(c, (struct zx_b_Sender_s*)se);
   for (se = &x->TargetIdentity->gg;
        se && se->g.tok == zx_b_TargetIdentity_ELEM;
        se = (struct zx_elem_s*)se->g.n)
@@ -5300,14 +5308,6 @@ void zx_DUP_STRS_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x)
        se && se->g.tok == zx_mm7_TransactionID_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)se);
-  for (se = &x->Security->gg;
-       se && se->g.tok == zx_wsse_Security_ELEM;
-       se = (struct zx_elem_s*)se->g.n)
-    zx_DUP_STRS_wsse_Security(c, (struct zx_wsse_Security_s*)se);
-  for (se = &x->Status->gg;
-       se && se->g.tok == zx_tas3_Status_ELEM;
-       se = (struct zx_elem_s*)se->g.n)
-    zx_DUP_STRS_tas3_Status(c, (struct zx_tas3_Status_s*)se);
   for (se = &x->Credentials->gg;
        se && se->g.tok == zx_tas3_Credentials_ELEM;
        se = (struct zx_elem_s*)se->g.n)
@@ -5386,12 +5386,52 @@ struct zx_e_Header_s* zx_DEEP_CLONE_e_Header(struct zx_ctx* c, struct zx_e_Heade
   	      enn->g.n = &en->g;
   	  enn = en;
   }
+  for (enn = 0, e = &x->Framework->gg;
+       e && e->g.tok == zx_sbf_Framework_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+  	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sbf_Framework(c,(struct zx_sbf_Framework_s*)e,dup_strs);
+  	  if (!enn)
+  	      x->Framework = (struct zx_sbf_Framework_s*)en;
+  	  else
+  	      enn->g.n = &en->g;
+  	  enn = en;
+  }
+  for (enn = 0, e = &x->Sender->gg;
+       e && e->g.tok == zx_b_Sender_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+  	  en=(struct zx_elem_s*)zx_DEEP_CLONE_b_Sender(c,(struct zx_b_Sender_s*)e,dup_strs);
+  	  if (!enn)
+  	      x->Sender = (struct zx_b_Sender_s*)en;
+  	  else
+  	      enn->g.n = &en->g;
+  	  enn = en;
+  }
   for (enn = 0, e = &x->MessageID->gg;
        e && e->g.tok == zx_a_MessageID_ELEM;
        e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_MessageID(c,(struct zx_a_MessageID_s*)e,dup_strs);
   	  if (!enn)
   	      x->MessageID = (struct zx_a_MessageID_s*)en;
+  	  else
+  	      enn->g.n = &en->g;
+  	  enn = en;
+  }
+  for (enn = 0, e = &x->Security->gg;
+       e && e->g.tok == zx_wsse_Security_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+  	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsse_Security(c,(struct zx_wsse_Security_s*)e,dup_strs);
+  	  if (!enn)
+  	      x->Security = (struct zx_wsse_Security_s*)en;
+  	  else
+  	      enn->g.n = &en->g;
+  	  enn = en;
+  }
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_tas3_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+  	  en=(struct zx_elem_s*)zx_DEEP_CLONE_tas3_Status(c,(struct zx_tas3_Status_s*)e,dup_strs);
+  	  if (!enn)
+  	      x->Status = (struct zx_tas3_Status_s*)en;
   	  else
   	      enn->g.n = &en->g;
   	  enn = en;
@@ -5466,32 +5506,12 @@ struct zx_e_Header_s* zx_DEEP_CLONE_e_Header(struct zx_ctx* c, struct zx_e_Heade
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Framework->gg;
-       e && e->g.tok == zx_sbf_Framework_ELEM;
-       e = (struct zx_elem_s*)e->g.n) {
-  	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sbf_Framework(c,(struct zx_sbf_Framework_s*)e,dup_strs);
-  	  if (!enn)
-  	      x->Framework = (struct zx_sbf_Framework_s*)en;
-  	  else
-  	      enn->g.n = &en->g;
-  	  enn = en;
-  }
   for (enn = 0, e = &x->b_Framework->gg;
        e && e->g.tok == zx_b_Framework_ELEM;
        e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_b_Framework(c,(struct zx_b_Framework_s*)e,dup_strs);
   	  if (!enn)
   	      x->b_Framework = (struct zx_b_Framework_s*)en;
-  	  else
-  	      enn->g.n = &en->g;
-  	  enn = en;
-  }
-  for (enn = 0, e = &x->Sender->gg;
-       e && e->g.tok == zx_b_Sender_ELEM;
-       e = (struct zx_elem_s*)e->g.n) {
-  	  en=(struct zx_elem_s*)zx_DEEP_CLONE_b_Sender(c,(struct zx_b_Sender_s*)e,dup_strs);
-  	  if (!enn)
-  	      x->Sender = (struct zx_b_Sender_s*)en;
   	  else
   	      enn->g.n = &en->g;
   	  enn = en;
@@ -5656,26 +5676,6 @@ struct zx_e_Header_s* zx_DEEP_CLONE_e_Header(struct zx_ctx* c, struct zx_e_Heade
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Security->gg;
-       e && e->g.tok == zx_wsse_Security_ELEM;
-       e = (struct zx_elem_s*)e->g.n) {
-  	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsse_Security(c,(struct zx_wsse_Security_s*)e,dup_strs);
-  	  if (!enn)
-  	      x->Security = (struct zx_wsse_Security_s*)en;
-  	  else
-  	      enn->g.n = &en->g;
-  	  enn = en;
-  }
-  for (enn = 0, e = &x->Status->gg;
-       e && e->g.tok == zx_tas3_Status_ELEM;
-       e = (struct zx_elem_s*)e->g.n) {
-  	  en=(struct zx_elem_s*)zx_DEEP_CLONE_tas3_Status(c,(struct zx_tas3_Status_s*)e,dup_strs);
-  	  if (!enn)
-  	      x->Status = (struct zx_tas3_Status_s*)en;
-  	  else
-  	      enn->g.n = &en->g;
-  	  enn = en;
-  }
   for (enn = 0, e = &x->Credentials->gg;
        e && e->g.tok == zx_tas3_Credentials_ELEM;
        e = (struct zx_elem_s*)e->g.n) {
@@ -5754,10 +5754,38 @@ int zx_WALK_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, void* ctx, in
     if (ret)
       return ret;
   }
+  for (e = &x->Framework->gg;
+       e && e->g.tok == zx_sbf_Framework_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+    ret = zx_WALK_SO_sbf_Framework(c, (struct zx_sbf_Framework_s*)e, ctx, callback);
+    if (ret)
+      return ret;
+  }
+  for (e = &x->Sender->gg;
+       e && e->g.tok == zx_b_Sender_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+    ret = zx_WALK_SO_b_Sender(c, (struct zx_b_Sender_s*)e, ctx, callback);
+    if (ret)
+      return ret;
+  }
   for (e = &x->MessageID->gg;
        e && e->g.tok == zx_a_MessageID_ELEM;
        e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_MessageID(c, (struct zx_a_MessageID_s*)e, ctx, callback);
+    if (ret)
+      return ret;
+  }
+  for (e = &x->Security->gg;
+       e && e->g.tok == zx_wsse_Security_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+    ret = zx_WALK_SO_wsse_Security(c, (struct zx_wsse_Security_s*)e, ctx, callback);
+    if (ret)
+      return ret;
+  }
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_tas3_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+    ret = zx_WALK_SO_tas3_Status(c, (struct zx_tas3_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
@@ -5810,24 +5838,10 @@ int zx_WALK_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, void* ctx, in
     if (ret)
       return ret;
   }
-  for (e = &x->Framework->gg;
-       e && e->g.tok == zx_sbf_Framework_ELEM;
-       e = (struct zx_elem_s*)e->g.n) {
-    ret = zx_WALK_SO_sbf_Framework(c, (struct zx_sbf_Framework_s*)e, ctx, callback);
-    if (ret)
-      return ret;
-  }
   for (e = &x->b_Framework->gg;
        e && e->g.tok == zx_b_Framework_ELEM;
        e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_b_Framework(c, (struct zx_b_Framework_s*)e, ctx, callback);
-    if (ret)
-      return ret;
-  }
-  for (e = &x->Sender->gg;
-       e && e->g.tok == zx_b_Sender_ELEM;
-       e = (struct zx_elem_s*)e->g.n) {
-    ret = zx_WALK_SO_b_Sender(c, (struct zx_b_Sender_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
@@ -5940,20 +5954,6 @@ int zx_WALK_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, void* ctx, in
        e && e->g.tok == zx_mm7_TransactionID_ELEM;
        e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)e, ctx, callback);
-    if (ret)
-      return ret;
-  }
-  for (e = &x->Security->gg;
-       e && e->g.tok == zx_wsse_Security_ELEM;
-       e = (struct zx_elem_s*)e->g.n) {
-    ret = zx_WALK_SO_wsse_Security(c, (struct zx_wsse_Security_s*)e, ctx, callback);
-    if (ret)
-      return ret;
-  }
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_tas3_Status_ELEM;
-       e = (struct zx_elem_s*)e->g.n) {
-    ret = zx_WALK_SO_tas3_Status(c, (struct zx_tas3_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }

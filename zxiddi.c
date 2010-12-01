@@ -60,7 +60,7 @@ int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struc
   return 1;
 }
 
-/*() Server side  Discovery Service Query processing. See also zxid_gen_bootstraps() */
+/*() Server side Discovery Service Query processing. See also zxid_gen_bootstraps() */
 
 /* Called by:  zxid_sp_soap_dispatch */
 struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct zx_di_Query_s* req, struct zx_str* issuer)

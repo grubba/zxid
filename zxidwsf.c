@@ -364,7 +364,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
 
   if (hdr->Framework) {
     if (!hdr->Framework->Id)
-      hdr->Framework->Id = zx_ref_attr(cf->ctx, &hdr->Framework->gg, zx_Id_ATTR, "FWK");
+      hdr->Framework->Id = zx_ref_attr(cf->ctx, &hdr->Framework->gg, zx_wsu_Id_ATTR, "FWK");
     refs[n_refs].id = &hdr->Framework->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Framework->gg);
     ++n_refs;
@@ -372,7 +372,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->Security && hdr->Security->Timestamp) {
     if (!hdr->Security->Timestamp->Id)
-      hdr->Security->Timestamp->Id = zx_ref_attr(cf->ctx, &hdr->Security->Timestamp->gg, zx_Id_ATTR, "TS");
+      hdr->Security->Timestamp->Id = zx_ref_attr(cf->ctx, &hdr->Security->Timestamp->gg, zx_wsu_Id_ATTR, "TS");
     refs[n_refs].id = &hdr->Security->Timestamp->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Security->Timestamp->gg);
     ++n_refs;
@@ -380,7 +380,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
 
   if (hdr->MessageID) {
     if (!hdr->MessageID->Id)
-      hdr->MessageID->Id = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_Id_ATTR, "MID");
+      hdr->MessageID->Id = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_wsu_Id_ATTR, "MID");
     refs[n_refs].id = &hdr->MessageID->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->MessageID->gg);
     ++n_refs;
@@ -388,7 +388,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->RelatesTo) {
     if (!hdr->RelatesTo->Id)
-      hdr->RelatesTo->Id = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_Id_ATTR, "REL");
+      hdr->RelatesTo->Id = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_wsu_Id_ATTR, "REL");
     refs[n_refs].id = &hdr->RelatesTo->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->RelatesTo->gg);
     ++n_refs;
@@ -396,7 +396,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->Action) {
     if (!hdr->Action->Id)
-      hdr->Action->Id = zx_ref_attr(cf->ctx, &hdr->Action->gg, zx_Id_ATTR, "ACT");
+      hdr->Action->Id = zx_ref_attr(cf->ctx, &hdr->Action->gg, zx_wsu_Id_ATTR, "ACT");
     refs[n_refs].id = &hdr->Action->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Action->gg);
     ++n_refs;
@@ -404,7 +404,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
 
   if (hdr->To) {
     if (!hdr->To->Id)
-      hdr->To->Id = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_Id_ATTR, "TO");
+      hdr->To->Id = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_wsu_Id_ATTR, "TO");
     refs[n_refs].id = &hdr->To->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->To->gg);
     ++n_refs;
@@ -412,7 +412,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
 
   if (hdr->ReplyTo) {
     if (!hdr->ReplyTo->Id)
-      hdr->ReplyTo->Id = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_Id_ATTR, "REP");
+      hdr->ReplyTo->Id = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_wsu_Id_ATTR, "REP");
     refs[n_refs].id = &hdr->ReplyTo->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->ReplyTo->gg);
     ++n_refs;
@@ -420,7 +420,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->From) {
     if (!hdr->From->Id)
-      hdr->From->Id = zx_ref_attr(cf->ctx, &hdr->From->gg, zx_Id_ATTR, "FRM");
+      hdr->From->Id = zx_ref_attr(cf->ctx, &hdr->From->gg, zx_wsu_Id_ATTR, "FRM");
     refs[n_refs].id = &hdr->From->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->From->gg);
     ++n_refs;
@@ -428,7 +428,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->Sender) {
     if (!hdr->Sender->Id)
-      hdr->Sender->Id = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_Id_ATTR, "PRV");
+      hdr->Sender->Id = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_wsu_Id_ATTR, "PRV");
     refs[n_refs].id = &hdr->Sender->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Sender->gg);
     ++n_refs;
@@ -436,7 +436,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->FaultTo) {
     if (!hdr->FaultTo->Id)
-      hdr->FaultTo->Id = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_Id_ATTR, "FLT");
+      hdr->FaultTo->Id = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_wsu_Id_ATTR, "FLT");
     refs[n_refs].id = &hdr->FaultTo->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->FaultTo->gg);
     ++n_refs;
@@ -444,7 +444,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->ReferenceParameters) {
     if (!hdr->ReferenceParameters->Id)
-      hdr->ReferenceParameters->Id = zx_ref_attr(cf->ctx, &hdr->ReferenceParameters->gg, zx_Id_ATTR, "PAR");
+      hdr->ReferenceParameters->Id = zx_ref_attr(cf->ctx, &hdr->ReferenceParameters->gg, zx_wsu_Id_ATTR, "PAR");
     refs[n_refs].id = &hdr->ReferenceParameters->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->ReferenceParameters->gg);
     ++n_refs;
@@ -454,7 +454,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->TargetIdentity) {
     if (!hdr->TargetIdentity->Id)
-      hdr->TargetIdentity->Id = zx_ref_attr(cf->ctx, &hdr->TargetIdentity->gg, zx_Id_ATTR, "TRG");
+      hdr->TargetIdentity->Id = zx_ref_attr(cf->ctx, &hdr->TargetIdentity->gg, zx_wsu_Id_ATTR, "TRG");
     refs[n_refs].id = &hdr->TargetIdentity->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->TargetIdentity->gg);
     ++n_refs;
@@ -462,7 +462,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->UsageDirective) {
     if (!hdr->UsageDirective->Id)
-      hdr->UsageDirective->Id = zx_ref_attr(cf->ctx, &hdr->UsageDirective->gg, zx_Id_ATTR, "UD");
+      hdr->UsageDirective->Id = zx_ref_attr(cf->ctx, &hdr->UsageDirective->gg, zx_wsu_Id_ATTR, "UD");
     refs[n_refs].id = &hdr->UsageDirective->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->UsageDirective->gg);
     ++n_refs;
@@ -470,7 +470,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->UserInteraction) {
     if (!hdr->UserInteraction->Id)
-      hdr->UserInteraction->Id = zx_ref_attr(cf->ctx, &hdr->UserInteraction->gg, zx_Id_ATTR, "UI");
+      hdr->UserInteraction->Id = zx_ref_attr(cf->ctx, &hdr->UserInteraction->gg, zx_wsu_Id_ATTR, "UI");
     refs[n_refs].id = &hdr->UserInteraction->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->UserInteraction->gg);
     ++n_refs;
@@ -478,7 +478,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->ProcessingContext) {
     if (!hdr->ProcessingContext->Id)
-      hdr->ProcessingContext->Id = zx_ref_attr(cf->ctx, &hdr->ProcessingContext->gg, zx_Id_ATTR, "PC");
+      hdr->ProcessingContext->Id = zx_ref_attr(cf->ctx, &hdr->ProcessingContext->gg, zx_wsu_Id_ATTR, "PC");
     refs[n_refs].id = &hdr->ProcessingContext->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->ProcessingContext->gg);
     ++n_refs;
@@ -486,7 +486,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->EndpointUpdate) {
     if (!hdr->EndpointUpdate->Id)
-      hdr->EndpointUpdate->Id = zx_ref_attr(cf->ctx, &hdr->EndpointUpdate->gg, zx_Id_ATTR, "EP");
+      hdr->EndpointUpdate->Id = zx_ref_attr(cf->ctx, &hdr->EndpointUpdate->gg, zx_wsu_Id_ATTR, "EP");
     refs[n_refs].id = &hdr->EndpointUpdate->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->EndpointUpdate->gg);
     ++n_refs;
@@ -494,7 +494,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->Timeout) {
     if (!hdr->Timeout->Id)
-      hdr->Timeout->Id = zx_ref_attr(cf->ctx, &hdr->Timeout->gg, zx_Id_ATTR, "TI");
+      hdr->Timeout->Id = zx_ref_attr(cf->ctx, &hdr->Timeout->gg, zx_wsu_Id_ATTR, "TI");
     refs[n_refs].id = &hdr->Timeout->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Timeout->gg);
     ++n_refs;
@@ -502,7 +502,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->Consent) {
     if (!hdr->Consent->Id)
-      hdr->Consent->Id = zx_ref_attr(cf->ctx, &hdr->Consent->gg, zx_Id_ATTR, "CON");
+      hdr->Consent->Id = zx_ref_attr(cf->ctx, &hdr->Consent->gg, zx_wsu_Id_ATTR, "CON");
     refs[n_refs].id = &hdr->Consent->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Consent->gg);
     ++n_refs;
@@ -510,7 +510,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->ApplicationEPR) {
     if (!hdr->ApplicationEPR->Id)
-      hdr->ApplicationEPR->Id = zx_ref_attr(cf->ctx, &hdr->ApplicationEPR->gg, zx_Id_ATTR, "AEP");
+      hdr->ApplicationEPR->Id = zx_ref_attr(cf->ctx, &hdr->ApplicationEPR->gg, zx_wsu_Id_ATTR, "AEP");
     refs[n_refs].id = &hdr->ApplicationEPR->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->ApplicationEPR->gg);
     ++n_refs;
@@ -518,7 +518,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->RedirectRequest) {
     if (!hdr->RedirectRequest->Id)
-      hdr->RedirectRequest->Id = zx_ref_attr(cf->ctx, &hdr->RedirectRequest->gg, zx_Id_ATTR, "RR");
+      hdr->RedirectRequest->Id = zx_ref_attr(cf->ctx, &hdr->RedirectRequest->gg, zx_wsu_Id_ATTR, "RR");
     refs[n_refs].id = &hdr->RedirectRequest->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->RedirectRequest->gg);
     ++n_refs;
@@ -526,7 +526,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->CredentialsContext) {
     if (!hdr->CredentialsContext->Id)
-      hdr->CredentialsContext->Id = zx_ref_attr(cf->ctx, &hdr->CredentialsContext->gg, zx_Id_ATTR, "CCX");
+      hdr->CredentialsContext->Id = zx_ref_attr(cf->ctx, &hdr->CredentialsContext->gg, zx_wsu_Id_ATTR, "CCX");
     refs[n_refs].id = &hdr->CredentialsContext->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->CredentialsContext->gg);
     ++n_refs;
@@ -536,7 +536,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->Credentials) {
     if (!hdr->Credentials->Id)
-      hdr->Credentials->Id = zx_ref_attr(cf->ctx, &hdr->Credentials->gg, zx_Id_ATTR, "CRED");
+      hdr->Credentials->Id = zx_ref_attr(cf->ctx, &hdr->Credentials->gg, zx_wsu_Id_ATTR, "CRED");
     refs[n_refs].id = &hdr->Credentials->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->Credentials->gg);
     ++n_refs;
@@ -544,7 +544,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
   
   if (hdr->ESLPolicies) {
     if (!hdr->ESLPolicies->Id)
-      hdr->ESLPolicies->Id = zx_ref_attr(cf->ctx, &hdr->ESLPolicies->gg, zx_Id_ATTR, "ESL");
+      hdr->ESLPolicies->Id = zx_ref_attr(cf->ctx, &hdr->ESLPolicies->gg, zx_wsu_Id_ATTR, "ESL");
     refs[n_refs].id = &hdr->ESLPolicies->Id->g;
     refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &hdr->ESLPolicies->gg);
     ++n_refs;
@@ -621,7 +621,7 @@ void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec
     
     if (str) {
       if (!str->Id)
-	str->Id = zx_ref_attr(cf->ctx, &str->gg, zx_Id_ATTR, "STR");
+	str->Id = zx_ref_attr(cf->ctx, &str->gg, zx_wsu_Id_ATTR, "STR");
       refs[n_refs].id = &str->Id->g;
       refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &str->gg);
       ++n_refs;

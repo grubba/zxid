@@ -52,10 +52,6 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   hdr = env->Header;
 
-  if (ses->curstatus) {
-    hdr->Status = ses->curstatus;
-  }
-
   /* Populate SOAP headers. */
   
   hdr->Framework = zx_NEW_sbf_Framework(cf->ctx, &hdr->gg);
@@ -72,6 +68,10 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     hdr->Sender->affiliationID = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_affiliationID_ATTR, cf->affiliation);
   hdr->Sender->providerID = zxid_my_entity_id_attr(cf, &hdr->Sender->gg, zx_providerID_ATTR);
 #endif
+
+  hdr->MessageID = zx_NEW_a_MessageID(cf->ctx, &hdr->gg);
+  hdr->MessageID->actor = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->MessageID->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 
 #if 0
   hdr->Action = zx_NEW_a_Action(cf->ctx, &hdr->gg);
@@ -114,21 +114,22 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   hdr->UserInteraction->actor = zx_ref_attr(cf->ctx, &hdr->UserInteraction->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->UserInteraction->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->UserInteraction->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 #endif
+
+  if (ses->curstatus) {
+    ZX_ADD_KID(hdr, Status, ses->curstatus);
+  }
   
   sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx, &hdr->gg);
   sec->actor = zx_ref_attr(cf->ctx, &sec->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   sec->mustUnderstand = zx_ref_attr(cf->ctx, &sec->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
   sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx, &sec->gg);
   sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx, &sec->Timestamp->gg);
-  
-  hdr->MessageID = zx_NEW_a_MessageID(cf->ctx, &hdr->gg);
-  hdr->MessageID->actor = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-  hdr->MessageID->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  zx_reverse_elem_lists(&sec->gg);
 
   if (is_resp) {
     zx_add_content(cf->ctx, &sec->Timestamp->Created->gg, zxid_date_time(cf, time(0)));
     zx_add_content(cf->ctx, &hdr->MessageID->gg, zxid_mk_id(cf, "urn:M", ZXID_ID_BITS));
-    /* Clear away any credentials from previous iteration. */
+    /* Clear away any credentials from previous iteration. *** clear kids list, too */
     sec->Signature = 0;
     sec->BinarySecurityToken = 0;
     sec->SecurityTokenReference = 0;
@@ -145,6 +146,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     }
 #endif
 
+    zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_REQUIRE, cf->wsp_localpdp_obl_emit);
     zxid_wsf_sign(cf, cf->wsp_sign, sec, 0, hdr, env->Body);
   }
   return 1;
@@ -217,8 +219,6 @@ struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cr
     env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
     env->Body->Fault = ses->curflt;
   }
-  
-  zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_REQUIRE, cf->wsp_localpdp_obl_emit);
   
   if (!zxid_wsf_decor(cf, ses, env, 1)) {
     ERR("Response decoration failed %p", env);

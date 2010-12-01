@@ -182,7 +182,7 @@ static void zxid_ins_xacml_az_stmt(zxid_conf* cf, zxid_a7n* a7n, char* deci)
 
 #if 1
   a7n->XACMLAuthzDecisionStatement = zx_NEW_xasa_XACMLAuthzDecisionStatement(cf->ctx,0);
-  a7n->XACMLAuthzDecisionStatement->Response = zxid_mk_xacml_resp(cf, deci);
+  ZX_ADD_KID(a7n->XACMLAuthzDecisionStatement, Response, zxid_mk_xacml_resp(cf, deci));
   /* *** Add xaspcd1 and xasacd1 variants */
   zx_add_kid_before(&a7n->gg, zx_xasa_XACMLPolicyStatement_ELEM, &a7n->XACMLAuthzDecisionStatement->gg);
 #else
@@ -204,7 +204,7 @@ static void zxid_ins_xacml_az_cd1_stmt(zxid_conf* cf, zxid_a7n* a7n, char* deci)
 
 #if 1
   a7n->xasacd1_XACMLAuthzDecisionStatement = zx_NEW_xasacd1_XACMLAuthzDecisionStatement(cf->ctx,0);
-  a7n->xasacd1_XACMLAuthzDecisionStatement->Response = zxid_mk_xacml_resp(cf, deci);
+  ZX_ADD_KID(a7n->xasacd1_XACMLAuthzDecisionStatement, Response, zxid_mk_xacml_resp(cf, deci));
   /* *** Add xaspcd1 and xasacd1 variants */
   zx_add_kid_before(&a7n->gg, zx_xasacd1_XACMLPolicyStatement_ELEM, &a7n->xasacd1_XACMLAuthzDecisionStatement->gg);
 #else

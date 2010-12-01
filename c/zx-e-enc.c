@@ -2359,10 +2359,26 @@ int zx_LEN_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x )
        se && se->g.tok == zx_ecp_RelayState_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ecp_RelayState(c, (struct zx_ecp_RelayState_s*)se);
+  for (se = &x->Framework->gg;
+       se && se->g.tok == zx_sbf_Framework_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_sbf_Framework(c, (struct zx_sbf_Framework_s*)se);
+  for (se = &x->Sender->gg;
+       se && se->g.tok == zx_b_Sender_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_b_Sender(c, (struct zx_b_Sender_s*)se);
   for (se = &x->MessageID->gg;
        se && se->g.tok == zx_a_MessageID_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_MessageID(c, (struct zx_a_MessageID_s*)se);
+  for (se = &x->Security->gg;
+       se && se->g.tok == zx_wsse_Security_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_wsse_Security(c, (struct zx_wsse_Security_s*)se);
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_tas3_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_tas3_Status(c, (struct zx_tas3_Status_s*)se);
   for (se = &x->RelatesTo->gg;
        se && se->g.tok == zx_a_RelatesTo_ELEM;
        se = (struct zx_elem_s*)se->g.n)
@@ -2391,18 +2407,10 @@ int zx_LEN_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x )
        se && se->g.tok == zx_a_ReferenceParameters_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Framework->gg;
-       se && se->g.tok == zx_sbf_Framework_ELEM;
-       se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_sbf_Framework(c, (struct zx_sbf_Framework_s*)se);
   for (se = &x->b_Framework->gg;
        se && se->g.tok == zx_b_Framework_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_Framework(c, (struct zx_b_Framework_s*)se);
-  for (se = &x->Sender->gg;
-       se && se->g.tok == zx_b_Sender_ELEM;
-       se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_b_Sender(c, (struct zx_b_Sender_s*)se);
   for (se = &x->TargetIdentity->gg;
        se && se->g.tok == zx_b_TargetIdentity_ELEM;
        se = (struct zx_elem_s*)se->g.n)
@@ -2467,14 +2475,6 @@ int zx_LEN_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x )
        se && se->g.tok == zx_mm7_TransactionID_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)se);
-  for (se = &x->Security->gg;
-       se && se->g.tok == zx_wsse_Security_ELEM;
-       se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_wsse_Security(c, (struct zx_wsse_Security_s*)se);
-  for (se = &x->Status->gg;
-       se && se->g.tok == zx_tas3_Status_ELEM;
-       se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_tas3_Status(c, (struct zx_tas3_Status_s*)se);
   for (se = &x->Credentials->gg;
        se && se->g.tok == zx_tas3_Credentials_ELEM;
        se = (struct zx_elem_s*)se->g.n)
@@ -2544,10 +2544,26 @@ char* zx_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, char* p )
        se && se->g.tok == zx_ecp_RelayState_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ecp_RelayState(c, (struct zx_ecp_RelayState_s*)se, p);
+  for (se = &x->Framework->gg;
+       se && se->g.tok == zx_sbf_Framework_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_sbf_Framework(c, (struct zx_sbf_Framework_s*)se, p);
+  for (se = &x->Sender->gg;
+       se && se->g.tok == zx_b_Sender_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_b_Sender(c, (struct zx_b_Sender_s*)se, p);
   for (se = &x->MessageID->gg;
        se && se->g.tok == zx_a_MessageID_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_MessageID(c, (struct zx_a_MessageID_s*)se, p);
+  for (se = &x->Security->gg;
+       se && se->g.tok == zx_wsse_Security_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_wsse_Security(c, (struct zx_wsse_Security_s*)se, p);
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_tas3_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_tas3_Status(c, (struct zx_tas3_Status_s*)se, p);
   for (se = &x->RelatesTo->gg;
        se && se->g.tok == zx_a_RelatesTo_ELEM;
        se = (struct zx_elem_s*)se->g.n)
@@ -2576,18 +2592,10 @@ char* zx_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, char* p )
        se && se->g.tok == zx_a_ReferenceParameters_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se, p);
-  for (se = &x->Framework->gg;
-       se && se->g.tok == zx_sbf_Framework_ELEM;
-       se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_sbf_Framework(c, (struct zx_sbf_Framework_s*)se, p);
   for (se = &x->b_Framework->gg;
        se && se->g.tok == zx_b_Framework_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_Framework(c, (struct zx_b_Framework_s*)se, p);
-  for (se = &x->Sender->gg;
-       se && se->g.tok == zx_b_Sender_ELEM;
-       se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_b_Sender(c, (struct zx_b_Sender_s*)se, p);
   for (se = &x->TargetIdentity->gg;
        se && se->g.tok == zx_b_TargetIdentity_ELEM;
        se = (struct zx_elem_s*)se->g.n)
@@ -2652,14 +2660,6 @@ char* zx_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, char* p )
        se && se->g.tok == zx_mm7_TransactionID_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)se, p);
-  for (se = &x->Security->gg;
-       se && se->g.tok == zx_wsse_Security_ELEM;
-       se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_wsse_Security(c, (struct zx_wsse_Security_s*)se, p);
-  for (se = &x->Status->gg;
-       se && se->g.tok == zx_tas3_Status_ELEM;
-       se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_tas3_Status(c, (struct zx_tas3_Status_s*)se, p);
   for (se = &x->Credentials->gg;
        se && se->g.tok == zx_tas3_Credentials_ELEM;
        se = (struct zx_elem_s*)se->g.n)
