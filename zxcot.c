@@ -280,7 +280,7 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
   char sha1_name[28];
   char path[ZXID_MAX_BUF];
   char* p;
-  char* uiddir;
+  //char* uiddir;
   int got, fd;
   struct zx_root_s* r;
   zxid_epr* epr;

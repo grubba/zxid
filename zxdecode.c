@@ -491,7 +491,7 @@ int zxdecode_main(int argc, char** argv, char** env)
 	}
       }
     }
-    if (--ix)	continue;
+    if (--ix) { p = pp; continue; }
     return decode(pp, lim);
   }
   ERR("Found no SAMLRequest or SAMLResponse to decode %d",2);

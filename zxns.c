@@ -378,7 +378,7 @@ struct zx_ns_s* zx_scan_xmlns(struct zx_ctx* c)
   return pop_seen;
 }
 
-#if 0  /* schedule to remove */
+#if 0  /* *** schedule to remove */
 /*() Disambiguate token by considering its namespace.
  * See zx_attr_lookup(), zx_elem_lookup()
  * For attributes the namespaceless case is considered. */

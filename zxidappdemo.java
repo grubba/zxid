@@ -249,7 +249,7 @@ public class zxidappdemo extends HttpServlet {
 	    }
 	}
 	
-	// Demo another web service call, this time the service by zxidwspdemo.java
+	// Demo another web service call, this time the service by zxidwspleaf.java
 
 	if (qs.equals("leaf") || qs.equals("all")) {
 	    ret = zxidjni.call(cf, zxses, "x-recurs", null, null, null,

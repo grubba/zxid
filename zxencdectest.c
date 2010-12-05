@@ -84,7 +84,7 @@ void test_ibm_cert_problem()
   /* IBM padding debug */
   cf = zxid_new_conf("/var/zxid/");
   r = zx_dec_zx_root(cf->ctx, got_all, buf, "zxencdectest");
-  if (!r)
+  if (!r || !r->Envelope || r->Envelope->Body || r->Envelope->Body->LogoutRequest)
     DIE("Decode failure");
 
 #if 1
