@@ -30,6 +30,7 @@ public class zxidwspleaf extends HttpServlet {
 	// CONFIG: You must create edit the URL to match your domain name and port
 	System.loadLibrary("zxidjni");
 	cf = zxidjni.new_conf_to_cf(conf);
+	zxidjni.set_opt(cf, 1, 1);
     }
     
     // Only reason why a pure WSP would handle GET is supporting WKL metadata
@@ -100,12 +101,15 @@ public class zxidwspleaf extends HttpServlet {
 
 	// Simulate deny
 
+	System.err.print("HERE1\n");	
 	zxidjni.set_tas3_status(cf, ses, zxidjni.mk_tas3_status(cf, null, "urn:tas3:ctlpt:app", "urn:tas3:status:deny", null, null, null));
+	System.err.print("HERE2\n");
 
 	// Check the input for correct ID-WSF compliance
 
-	System.err.print("Validating buf("+buf+")\n");	
+	//System.err.print("Validating buf("+buf+")\n");	
 	String nid  = zxidjni.wsp_validate(cf, ses, null, buf);
+	System.err.print("VALID3 nid("+nid+")\n");	
 	if (nid == null) {
 	    System.err.print("Validate fail buf("+buf+")\n");	
 	    ret = zxidjni.wsp_decorate(cf, ses, null,

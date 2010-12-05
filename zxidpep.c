@@ -178,8 +178,8 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
 
   //zx_add_content(cf->ctx, &hdr->Action->gg, zx_dup_str(cf->ctx, "SAML2XACMLAuthzRequest"));
   //zx_add_content(cf->ctx, &hdr->Action->gg, zx_dup_str(cf->ctx, "http://ws.apache.org/axis2/TestPolicyPortType/authRequestRequest"));
-  hdr->Action->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
   hdr->Action->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->Action->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
 #endif
 
   /* Add our own token so PDP can do whatever PEP can (they are considered to be
@@ -302,7 +302,6 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   struct zx_xac_Attribute_s* rsrc = 0;
   struct zx_xac_Attribute_s* act = 0;
   struct zx_xac_Attribute_s* env = 0;
-  char* res;
   struct zx_str* ss;
   struct zx_sp_Response_s* resp;
   struct zx_sa_Statement_s* stmt;
@@ -320,9 +319,11 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
 
   zxid_pepmap_extract(cf, cgi, ses, pepmap, &subj, &rsrc, &act, &env);
   resp = zxid_az_soap(cf, cgi, ses, pdp_url, subj, rsrc, act, env);
-  if (!resp)
+  if (!resp || !resp->Assertion) {
+    ERR("DENY due to malformed authorization response from PDP. Either no response or response lacjing assertion. %p", resp);
     return 0;
-
+  }
+  
   az_stmt = resp->Assertion->XACMLAuthzDecisionStatement;
   if (az_stmt && az_stmt->Response && az_stmt->Response->Result) {
     decision = az_stmt->Response->Result->Decision;
@@ -330,10 +331,10 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
       ss = zx_EASY_ENC_elem(cf->ctx, &az_stmt->Response->gg);
       if (!ss || !ss->len)
 	return 0;
-      res = ss->s;
       ZX_FREE(cf->ctx, ss);
-      D("Permit azstmt(%s)", res);
-      return res;
+      DD("Permit azstmt(%s)", ss->s);
+      INFO("PERMIT found in azstmt len=%d", ss->len);
+      return ss->s;
     }
   }
   az_stmt_cd1 = resp->Assertion->xasacd1_XACMLAuthzDecisionStatement;
@@ -343,10 +344,10 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
       ss = zx_EASY_ENC_elem(cf->ctx, &az_stmt_cd1->Response->gg);
       if (!ss || !ss->len)
 	return 0;
-      res = ss->s;
       ZX_FREE(cf->ctx, ss);
-      D("Permit cd1(%s)", res);
-      return res;
+      DD("Permit cd1(%s)", ss->s);
+      INFO("PERMIT found in azstmt_cd1 len=%d", ss->len);
+      return ss->s;
     }
   }
   stmt = resp->Assertion->Statement;
@@ -356,14 +357,15 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
       ss = zx_EASY_ENC_elem(cf->ctx, &stmt->Response->gg);
       if (!ss || !ss->len)
 	return 0;
-      res = ss->s;
       ZX_FREE(cf->ctx, ss);
-      D("Permit stmt(%s)", res);
-      return res;
+      D("Permit stmt(%s)", ss->s);
+      INFO("PERMIT found in stmt len=%d", ss->len);
+      return ss->s;
     }
   }
   /*if (resp->Assertion->AuthzDecisionStatement) {  }*/
   D("Deny or error or no xac:Response in reply %d",0);
+  INFO("DENY or error or no xac:Response from PDP %p %p %p", az_stmt, az_stmt_cd1, stmt);
   return 0;
 }
 

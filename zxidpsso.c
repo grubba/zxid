@@ -157,7 +157,7 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
 /*() Parse LDIF format and insert attributes to linked list. Return new head of the list.
  * The input is temporarily modified and then restored. Do not pass const string. */
 
-/* Called by:  zxid_mk_user_a7n_to_sp x4 */
+/* Called by:  zxid_mk_usr_a7n_to_sp x4 */
 void zxid_add_ldif_attrs(zxid_conf* cf, struct zx_elem_s* father, char* p, char* lk)
 {
   char* name;
@@ -175,7 +175,7 @@ void zxid_add_ldif_attrs(zxid_conf* cf, struct zx_elem_s* father, char* p, char*
       *p = 0;
 
     D("%s: ATTR(%s)=VAL(%s)", lk, name, val);
-    zxid_mk_attribute(cf, father, name, val);
+    zxid_mk_sa_attribute(cf, father, name, 0, val);
 
     val[-2] = ':'; /* restore */
     if (p)
@@ -189,7 +189,7 @@ void zxid_add_ldif_attrs(zxid_conf* cf, struct zx_elem_s* father, char* p, char*
 
 /*() Process .bs directory. See also zxid_di_query() */
 
-/* Called by:  zxid_idp_as_do x2, zxid_mk_user_a7n_to_sp x2 */
+/* Called by:  zxid_idp_as_do x2, zxid_mk_usr_a7n_to_sp x2 */
 void zxid_gen_boots(zxid_conf* cf, struct zx_sa_AttributeStatement_s* father, const char* uid, char* path, int bs_lvl)
 {
   struct timeval srcts = {0,501000};
@@ -272,7 +272,7 @@ void zxid_gen_boots(zxid_conf* cf, struct zx_sa_AttributeStatement_s* father, co
       goto next_file;
     
     D("ADD BOOTSTRAP url(%.*s) is_di=%d", ZX_GET_CONTENT_LEN(epr->Address), ZX_GET_CONTENT_S(epr->Address), is_di);
-    father->Attribute = at = zxid_mk_attribute(cf, &father->gg, WSF20_DI_RO, 0);
+    father->Attribute = at = zxid_mk_sa_attribute(cf, &father->gg, WSF20_DI_RO, 0, 0);
     ZX_ADD_KID(at->AttributeValue, EndpointReference, epr);
     
     zxlog(cf, 0, &srcts, 0, 0, 0, 0 /*a7n->ID*/, 0 /*nameid->gg.content*/,"N","K", logop, uid, "gen_bs");
@@ -293,7 +293,7 @@ void zxid_gen_boots(zxid_conf* cf, struct zx_sa_AttributeStatement_s* father, co
  *     <= cf->bootstrap_level: add all boostraps, > cf->bootstrap_level: only add di BS. */
 
 /* Called by:  zxid_add_fed_tok2epr, zxid_imreq, zxid_sso_issue_a7n */
-zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, int bs_lvl)
+zxid_a7n* zxid_mk_usr_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, int bs_lvl)
 {
   zxid_a7n* a7n;
   struct zx_sa_AttributeStatement_s* at_stmt;
@@ -304,21 +304,21 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
   D_INDENT("mka7n: ");
   D("sp_eid(%s)", sp_meta->eid);
 
+  at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0);
+  at_stmt->Attribute = zxid_mk_sa_attribute(cf, &at_stmt->gg, "zxididp", 0, ZXID_REL " " ZXID_COMPILE_DATE);
+
   a7n = zxid_mk_a7n(cf,
 		    zx_dup_str(cf->ctx, sp_meta->eid),
 		    zxid_mk_subj(cf, 0, sp_meta, nameid),
-		    ses ? zxid_mk_an_stmt(cf, ses, &a7n->gg, sp_meta->eid) : 0,
-		    at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, &a7n->gg));
-  at_stmt->Attribute = zxid_mk_attribute(cf,&at_stmt->gg,"zxididp",ZXID_REL " " ZXID_COMPILE_DATE);
+		    ses ? zxid_mk_an_stmt(cf, ses, 0, sp_meta->eid) : 0,
+		    at_stmt);
 
   if (cf->fedusername_suffix && cf->fedusername_suffix[0]) {
     snprintf(dir, sizeof(dir), "%.*s@%s", ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid), cf->fedusername_suffix);
     dir[sizeof(dir)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
-    zxid_mk_attribute(cf, &at_stmt->gg, "fedusername", zx_dup_cstr(cf->ctx, dir));
-    if (cf->idpatopt & 0x01) {
-      at = zxid_mk_attribute(cf, &at_stmt->gg, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, zx_dup_cstr(cf->ctx, dir));
-      at->NameFormat = zx_ref_attr(cf->ctx, &at->gg, zx_NameFormat_ATTR, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
-    }
+    zxid_mk_sa_attribute(cf, &at_stmt->gg, "fedusername", 0, zx_dup_cstr(cf->ctx, dir));
+    if (cf->idpatopt & 0x01)
+      at = zxid_mk_sa_attribute(cf, &at_stmt->gg, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri", zx_dup_cstr(cf->ctx, dir));
   }
   buf = read_all_alloc(cf->ctx, "idpsso_uid_at", 0,0, "%s" ZXID_UID_DIR "%s/.bs/.at",cf->path,uid);
   if (buf)
@@ -380,7 +380,7 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
       nid = zxid_mk_id(cf, "F", ZXID_ID_BITS);
       nameid = zx_NEW_sa_NameID(cf->ctx,0);
       nameid->Format = zx_ref_attr(cf->ctx, &nameid->gg, zx_Format_ATTR, SAML2_PERSISTENT_NID_FMT);
-      nameid->NameQualifier = idp_eid = zxid_my_entity_id_attr(cf, &nameid->gg, zx_NameQualifier_ATTR);
+      nameid->NameQualifier = idp_eid = zxid_my_ent_id_attr(cf,&nameid->gg,zx_NameQualifier_ATTR);
       nameid->SPNameQualifier = zx_ref_len_attr(cf->ctx, &nameid->gg, zx_SPNameQualifier_ATTR, affil->len, affil->s);
       zx_add_content(cf->ctx, &nameid->gg, nid);
 
@@ -524,7 +524,7 @@ char* zxid_add_fed_tok2epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int bs
   
   /* Generate access credential */
   
-  a7n = zxid_mk_user_a7n_to_sp(cf, 0, uid, nameid, sp_meta, sp_name_buf, bs_lvl);
+  a7n = zxid_mk_usr_a7n_to_sp(cf, 0, uid, nameid, sp_meta, sp_name_buf, bs_lvl);
   
   if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, prvid, "DIA7N", uid)) {
     ERR("Failed to sign the assertion %d", 0);
@@ -560,6 +560,7 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
 {
   zxid_a7n* a7n;
   struct zx_sp_NameIDPolicy_s* nidpol;
+  struct zx_sa_SubjectConfirmation_s* sc;
   struct zx_str* affil;
   char sp_name_buf[1024];
   D("sp_eid(%s)", sp_meta->eid);
@@ -602,18 +603,20 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
     if (logop) *logop = "ITSSO";
   }
 
-  a7n = zxid_mk_user_a7n_to_sp(cf, ses, ses->uid, *nameid, sp_meta, sp_name_buf, 1);  /* SSO a7n */
+  a7n = zxid_mk_usr_a7n_to_sp(cf, ses, ses->uid, *nameid, sp_meta, sp_name_buf, 1);  /* SSO a7n */
 
   /* saml-profiles-2.0-os.pdf ll.549-551 requires SubjectConfirmation even though
    * saml-core-2.0-os.pdf ll.653-657 says <SubjectConfirmation> [Zero or More]. The
    * profile seems to make it mandatory. See profiles ll.554-560. */
 
-  a7n->Subject->SubjectConfirmation = zx_NEW_sa_SubjectConfirmation(cf->ctx, &a7n->Subject->gg);
-  a7n->Subject->SubjectConfirmation->Method = zx_ref_attr(cf->ctx, &a7n->Subject->SubjectConfirmation->gg, zx_Method_ATTR, SAML2_BEARER);
-  a7n->Subject->SubjectConfirmation->SubjectConfirmationData = zx_NEW_sa_SubjectConfirmationData(cf->ctx, &a7n->Subject->SubjectConfirmation->gg);
+  a7n->Subject->SubjectConfirmation = sc = zx_NEW_sa_SubjectConfirmation(cf->ctx, 0);
+  zx_add_kid_before(&a7n->Subject->gg, ZX_TOK_NOT_FOUND, &sc->gg);
+  sc->Method = zx_ref_attr(cf->ctx, &sc->gg, zx_Method_ATTR, SAML2_BEARER);
+  sc->SubjectConfirmationData = zx_NEW_sa_SubjectConfirmationData(cf->ctx, &sc->gg);
   if (acsurl)
-    a7n->Subject->SubjectConfirmation->SubjectConfirmationData->Recipient = zx_ref_len_attr(cf->ctx, &a7n->Subject->SubjectConfirmation->SubjectConfirmationData->gg, zx_Recipient_ATTR, acsurl->len, acsurl->s);
-  a7n->Subject->SubjectConfirmation->SubjectConfirmationData->NotOnOrAfter = a7n->Conditions->NotOnOrAfter;
+    sc->SubjectConfirmationData->Recipient = zx_ref_len_attr(cf->ctx, &sc->SubjectConfirmationData->gg, zx_Recipient_ATTR, acsurl->len, acsurl->s);
+  sc->SubjectConfirmationData->NotOnOrAfter
+    = zx_ref_len_attr(cf->ctx, &sc->SubjectConfirmationData->gg, zx_NotOnOrAfter_ATTR, a7n->Conditions->NotOnOrAfter->g.len, a7n->Conditions->NotOnOrAfter->g.s);
 
   return a7n;
 }

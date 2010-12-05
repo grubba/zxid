@@ -120,6 +120,8 @@ int read(int fd, void* buf, int count);
 int write(int fd, void* buf, int count);
 int lseek(int fd, int offset, int whence);
 int close(int);
+int lockf(int fd, int cmd, int len);     /* Depends on current seek pos: problem in append */
+int fcntl(int fd, int cmd, ...);         /* Preferred */
 #define F_LOCK 1
 #define F_ULOCK 0
 #endif

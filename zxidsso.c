@@ -400,7 +400,7 @@ void zxid_sigres_map(int sigres, char** sigval, char** sigmsg)
  * cgi::     Optional CGI object. If non-NULL, sigval and sigmsg will be set.
  * ses::     Optional session object. If non-NULL, then sigres code will be set.
  * a7n::     Assertion whose conditions are checked.
- * myentid:: Entity ID used for checking audience restriction. Typically from zxid_my_entity_id(cf)
+ * myentid:: Entity ID used for checking audience restriction. Typically from zxid_my_ent_id(cf)
  * ourts::   Timestamp for validating NotOnOrAfter and NotBefore.
  * err::     Result argument: Error letter (as may appear in audit log entry). The returned
  *     string will be a constant and MUST NOT be freed by the caller.
@@ -637,7 +637,7 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
     goto erro;
   }
   
-  if (zxid_validate_cond(cf, cgi, ses, a7n, zxid_my_entity_id(cf), &ourts, &err))
+  if (zxid_validate_cond(cf, cgi, ses, a7n, zxid_my_ent_id(cf), &ourts, &err))
     goto erro;
   
   if (cf->log_rely_a7n) {

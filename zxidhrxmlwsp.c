@@ -75,10 +75,15 @@ int main(int argc, char** argv)
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */
   close(2);
-  if (open("tmp/zxid2.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2)
+  if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2)
     exit(2);
   fprintf(stderr, "=================== Running idhrxml wsp ===================\n");
-  zx_debug = 1;
+  zx_debug = 2;
+#endif
+#if 1
+  strncpy(zx_instance, "\t\e[45mhrxml_wsp\e[0m", sizeof(zx_instance));
+#else
+  strncpy(zx_instance, "\thrxml_wsp", sizeof(zx_instance));
 #endif
 
   qs = getenv("CONTENT_LENGTH");
@@ -96,7 +101,7 @@ int main(int argc, char** argv)
     cl = strlen(qs2);
   }
   qs = strdup(qs2);
-  D("qs(%s)", qs);
+  D_XML_BLOB(0, "HRXML IN", -2, qs);
 
   if (argc > 1) {
     fprintf(stderr, "This is a CGI script (written in C). No arguments are accepted.\n%s", help);
@@ -154,9 +159,10 @@ int main(int argc, char** argv)
 
   nid = zxid_wsp_validate(cf, ses, 0, buf);
   if (!nid) {
-    ERR("Request validation failed buf(%.*s)", got, buf);
+    DD("Request validation failed buf(%.*s)", got, buf);
+    ERR("Request validation failed len=%d", got);
     ss = zxid_wsp_decorate(cf, ses, 0, "<Response><lu:Status code=\"INV\" comment=\"Request validation failed. Replay?\"></lu:Status></Response>");
-    D("ss(%.*s)", ss->len, ss->s);
+    DD("ss(%.*s)", ss->len, ss->s);
     printf("CONTENT-TYPE: text/xml\r\nCONTENT-LENGTH: %d\r\n\r\n%.*s", ss->len, ss->len, ss->s);
     exit(1);
   }

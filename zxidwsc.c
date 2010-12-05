@@ -48,7 +48,7 @@
  * See also: zxid_wsp_validate() */
 
 /* Called by:  zxid_call_epr, zxid_wsc_valid_resp */
-static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env, const char* enve)
+static int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env, const char* enve)
 {
   int n_refs = 0;
   struct zxsig_ref refs[ZXID_N_WSF_SIGNED_HEADERS];
@@ -163,7 +163,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     return 0;
   }
 
-  if (!zxid_wsf_timestamp_check(cf, ses, sec->Timestamp, &ourts,&srcts,TAS3_PEP_RS_IN,"e:Server"))
+  if (!zxid_timestamp_chk(cf, ses, sec->Timestamp, &ourts, &srcts, TAS3_PEP_RS_IN, "e:Server"))
     return 0;
 
   if (hdr->UsageDirective) {
@@ -244,37 +244,37 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
       tok = epr->Metadata->SecurityContext->Token;
     }
     hdr->TargetIdentity = zx_NEW_b_TargetIdentity(cf->ctx, &hdr->gg);
-    hdr->TargetIdentity->actor = zx_ref_attr(cf->ctx, &hdr->TargetIdentity->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
     hdr->TargetIdentity->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->TargetIdentity->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
-    if (tok->EncryptedAssertion)
-      hdr->TargetIdentity->EncryptedAssertion = tok->EncryptedAssertion;
-    else if (tok->Assertion)
-      hdr->TargetIdentity->Assertion = tok->Assertion;
-    else {
+    hdr->TargetIdentity->actor = zx_ref_attr(cf->ctx, &hdr->TargetIdentity->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+    if (tok->EncryptedAssertion) {
+      ZX_ADD_KID(hdr->TargetIdentity, EncryptedAssertion, tok->EncryptedAssertion);
+    } else if (tok->Assertion) {
+      ZX_ADD_KID(hdr->TargetIdentity, Assertion, tok->Assertion);
+    } else {
       ERR("No <sa:EncryptedAssertion> or <sa:Assertion> found in <sec:Token> %p", tok);
     }
   } /* else this is just implied by the sec mech */
-
-  hdr->To = zx_NEW_a_To(cf->ctx, &hdr->gg);
-  zx_add_content(cf->ctx, &hdr->To->gg, ZX_GET_CONTENT(epr->Address));
-  hdr->To->actor = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-  hdr->To->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 
 #if 1
   /* Mandatory for a request. */
   hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx, &hdr->gg);
   /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));*/
   hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON));
-  hdr->ReplyTo->actor = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->ReplyTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->ReplyTo->actor = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 #endif
+
+  hdr->To = zx_NEW_a_To(cf->ctx, &hdr->gg);
+  zx_add_content(cf->ctx, &hdr->To->gg, ZX_GET_CONTENT(epr->Address));
+  hdr->To->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_e_mustUnderstand_ATTR,ZXID_TRUE);
+  hdr->To->actor = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 
 #if 0
   /* Omission means to use same address as ReplyTo */
   hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx, &hdr->gg);
   hdr->FaultTo->Address = zx_mk_addr(cf->ctx, &hdr->FaultTo->gg, zx_strf(cf->ctx, "%s?o=P", cf->url));
-  hdr->FaultTo->actor = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->FaultTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->FaultTo->actor = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 #endif
 
   zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_PLEDGE, cf->wsc_localpdp_obl_pledge);
@@ -283,7 +283,7 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
 }
 
 /* Called by:  zxid_wsc_prep_secmech x2 */
-static void zxid_choose_security_token(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_wsse_Security_s* sec)
+static void zxid_choose_sectok(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_wsse_Security_s* sec)
 {
   zxid_tok* tok;
   if (ses->call_invoktok) {
@@ -348,7 +348,7 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
     D("secmech null %d", secmech);
     break;
   case ZXID_SEC_MECH_BEARER:
-    zxid_choose_security_token(cf, ses, epr, sec);
+    zxid_choose_sectok(cf, ses, epr, sec);
     str = sec->SecurityTokenReference = zx_NEW_wsse_SecurityTokenReference(cf->ctx, 0);
     zx_add_kid_before(&sec->gg, zx_wsu_Timestamp_ELEM, &str->gg);
     str->KeyIdentifier = zx_NEW_wsse_KeyIdentifier(cf->ctx, &str->gg);
@@ -361,7 +361,7 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
     D("secmech bearer %d", secmech);
     break;
   case ZXID_SEC_MECH_SAML:
-    zxid_choose_security_token(cf, ses, epr, sec);
+    zxid_choose_sectok(cf, ses, epr, sec);
     /* *** Sign SEC, MID, TO, ACT (if any) */
     zxid_wsf_sign(cf, cf->wsc_sign, sec, 0, hdr, env->Body);
     D("secmech saml hok %d", secmech);
@@ -501,11 +501,11 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
       env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   } else if (r->Body) {
     env = zx_NEW_e_Envelope(cf->ctx,0);
+    ZX_ADD_KID(env, Body, r->Body);
     if (r->Header)
-      env->Header = r->Header;
+      ZX_ADD_KID(env, Header, r->Header);
     else
       env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
-    env->Body = r->Body;
   } else { /* Resort to stringwise attempt to add envelope. */
     ZX_FREE(cf->ctx, r);
     if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
@@ -580,7 +580,7 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
     ERR("Web services call failed %d", 0);
     /* Let validate report the error so that tas3 status gets set correctly */
   }
-  if (zxid_wsc_validate_resp_env(cf, ses, az_cred, env, ret_enve) != 1) {
+  if (zxid_wsc_valid_re_env(cf, ses, az_cred, env, ret_enve) != 1) {
     D_DEDENT("call: ");
     return 0;
   }
@@ -784,7 +784,7 @@ int zxid_wsc_valid_resp(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
 
   D_INDENT("valid: ");
   env = zxid_add_env_if_needed(cf, enve);
-  ret = zxid_wsc_validate_resp_env(cf, ses, az_cred, env, enve);
+  ret = zxid_wsc_valid_re_env(cf, ses, az_cred, env, enve);
   D_DEDENT("valid: ");
   return ret;
 }

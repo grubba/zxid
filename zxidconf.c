@@ -1359,7 +1359,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
   localpdp_idpnid_permit = zxid_show_cstr_list(cf, cf->localpdp_idpnid_permit);
   localpdp_idpnid_deny   = zxid_show_cstr_list(cf, cf->localpdp_idpnid_deny);
 
-  ss = zxid_my_entity_id(cf);
+  ss = zxid_my_ent_id(cf);
 
   return zx_strf(cf->ctx,
 "<title>ZXID Conf for %s</title><body bgcolor=white><h1>ZXID Conf for %s</h1>"

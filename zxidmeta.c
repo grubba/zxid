@@ -374,7 +374,7 @@ zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
     if (ent)
       return ent;
   }
-  D("eid(%.*s) NOT FOUND\n", eid->len, eid->s);
+  D("eid(%.*s) NOT FOUND", eid->len, eid->s);
   zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "NOMD", 0, "eid(%.*s)", eid->len, eid->s);
   return 0;
 }
@@ -483,7 +483,7 @@ struct zx_ds_KeyInfo_s* zxid_key_info(zxid_conf* cf, struct zx_elem_s* father, X
   char* d;
   char* pp;
   char* p;
-  struct zx_ds_KeyInfo_s* ki = zx_NEW_ds_KeyInfo(cf->ctx,father);
+  struct zx_ds_KeyInfo_s* ki = zx_NEW_ds_KeyInfo(cf->ctx, father);
   ki->X509Data = zx_NEW_ds_X509Data(cf->ctx, &ki->gg);
 
 #ifdef USE_OPENSSL
@@ -771,7 +771,7 @@ struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf, struct zx_elem_s*
  * return:: Entity ID as zx_str */
 
 /* Called by:  main x2, zxid_idp_map_nid2uid, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_mk_subj, zxid_my_issuer, zxid_nidmap_do, zxid_ses_to_pool, zxid_show_conf, zxid_sp_sso_finalize, zxid_wsf_validate_a7n */
-struct zx_str* zxid_my_entity_id(zxid_conf* cf)
+struct zx_str* zxid_my_ent_id(zxid_conf* cf)
 {
   if (cf->non_standard_entityid) {
     D("my_entity_id non_standard_entytid(%s)", cf->non_standard_entityid);
@@ -786,7 +786,7 @@ struct zx_str* zxid_my_entity_id(zxid_conf* cf)
 }
 
 /* Called by:  zxid_check_fed, zxid_mk_ecp_Request_hdr, zxid_sp_meta, zxid_wsf_decor */
-struct zx_attr_s* zxid_my_entity_id_attr(zxid_conf* cf, struct zx_elem_s* father, int tok)
+struct zx_attr_s* zxid_my_ent_id_attr(zxid_conf* cf, struct zx_elem_s* father, int tok)
 {
   if (cf->non_standard_entityid) {
     D("my_entity_id non_standard_entytid(%s)", cf->non_standard_entityid);
@@ -828,7 +828,7 @@ struct zx_sa_Issuer_s* zxid_issuer(zxid_conf* cf, struct zx_elem_s* father, stru
 
 /* Called by:  zxid_mk_a7n, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_ecp_Request_hdr, zxid_mk_logout, zxid_mk_logout_resp, zxid_mk_mni, zxid_mk_mni_resp, zxid_mk_saml_resp */
 struct zx_sa_Issuer_s* zxid_my_issuer(zxid_conf* cf, struct zx_elem_s* father) {
-  return zxid_issuer(cf, father, zxid_my_entity_id(cf), cf->affiliation);
+  return zxid_issuer(cf, father, zxid_my_ent_id(cf), cf->affiliation);
 }
 
 /*() Generate our SP metadata and return it as a string. */
@@ -839,7 +839,7 @@ struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
   struct zx_md_EntityDescriptor_s* ed;
   
   ed = zx_NEW_md_EntityDescriptor(cf->ctx,0);
-  ed->entityID = zxid_my_entity_id_attr(cf, &ed->gg, zx_entityID_ATTR);
+  ed->entityID = zxid_my_ent_id_attr(cf, &ed->gg, zx_entityID_ATTR);
   ed->SPSSODescriptor = zxid_sp_sso_desc(cf, &ed->gg);
   if (cf->idp_ena)
     ed->IDPSSODescriptor = zxid_idp_sso_desc(cf, &ed->gg);

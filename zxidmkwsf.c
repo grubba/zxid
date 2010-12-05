@@ -58,16 +58,16 @@ struct zx_lu_Status_s* zxid_mk_lu_Status(zxid_conf* cf, struct zx_elem_s* father
 zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, struct zx_elem_s* father, const char* ctlpt, const char* sc1, const char* sc2, const char* msg, const char* ref)
 {
   zxid_tas3_status* st = zx_NEW_tas3_Status(cf->ctx, father);
-  if (ctlpt)
-    st->ctlpt        = zx_dup_attr(cf->ctx, &st->gg, zx_ctlpt_ATTR, ctlpt);
-  st->code           = zx_dup_attr(cf->ctx, &st->gg, zx_code_ATTR, STRNULLCHKQ(sc1));
-  if (msg)
-    st->comment      = zx_dup_attr(cf->ctx, &st->gg, zx_comment_ATTR, msg);
+  st->mustUnderstand = zx_ref_attr(cf->ctx, &st->gg, zx_e_mustUnderstand_ATTR, "0");
   if (ref)
     st->ref          = zx_dup_attr(cf->ctx, &st->gg, zx_ref_ATTR, ref);
+  if (ctlpt)
+    st->ctlpt        = zx_dup_attr(cf->ctx, &st->gg, zx_ctlpt_ATTR, ctlpt);
+  if (msg)
+    st->comment      = zx_dup_attr(cf->ctx, &st->gg, zx_comment_ATTR, msg);
+  st->code           = zx_dup_attr(cf->ctx, &st->gg, zx_code_ATTR, STRNULLCHKQ(sc1));
   if (sc2)
     st->Status       = zxid_mk_lu_Status(cf, &st->gg, sc2, 0, 0, 0);
-  st->mustUnderstand = zx_ref_attr(cf->ctx, &st->gg, zx_e_mustUnderstand_ATTR, "0");
   return st;
 }
 
@@ -89,15 +89,14 @@ zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, struct zx_elem_s* father, c
 zxid_fault* zxid_mk_fault(zxid_conf* cf, struct zx_elem_s* father, const char* fa, const char* fc, const char* fs, const char* sc1, const char* sc2, const char* msg, const char* ref)
 {
   zxid_fault* flt = zx_NEW_e_Fault(cf->ctx, father);
-  if (fa)
-    flt->faultactor  = zx_dup_elem(cf->ctx, &flt->gg, zx_e_faultactor_ELEM, fa);
-  flt->faultcode     = zx_dup_elem(cf->ctx, &flt->gg, zx_e_faultcode_ELEM,fc?fc:"e:Client");
-  if (fs)
-    flt->faultstring = zx_dup_elem(cf->ctx, &flt->gg, zx_e_faultstring_ELEM, fs);
   if (sc1) {
     flt->detail = zx_NEW_e_detail(cf->ctx, &flt->gg);
     flt->detail->Status = zxid_mk_lu_Status(cf, &flt->detail->gg, sc1, sc2, msg, ref);
   }
+  if (fa)
+    flt->faultactor  = zx_dup_elem(cf->ctx, &flt->gg, zx_e_faultactor_ELEM, fa);
+  flt->faultstring   = zx_dup_elem(cf->ctx, &flt->gg, zx_e_faultstring_ELEM, fs?fs:"Unknown");
+  flt->faultcode     = zx_dup_elem(cf->ctx, &flt->gg, zx_e_faultcode_ELEM,fc?fc:"e:Client");
   return flt;
 }
 
@@ -172,8 +171,9 @@ zxid_tas3_status* zxid_get_fault_status(zxid_conf* cf, zxid_fault* flt) {
 
 /* Called by:  zxid_wsc_validate_resp_env, zxid_wsp_validate */
 void zxid_set_tas3_status(zxid_conf* cf, zxid_ses* ses, zxid_tas3_status* status) {
+  D("curstatus=%p status=%p", ses->curstatus, status);
   if (ses->curstatus) /* Free the previous fault */
-    zx_free_elem(cf->ctx, &ses->curstatus->gg, 1);
+    zx_free_elem(cf->ctx, &ses->curstatus->gg, 0);
   ses->curstatus = status;
 }
 
@@ -221,14 +221,6 @@ char* zxid_get_tas3_status_ctlpt(zxid_conf* cf, zxid_tas3_status* st) {
 static struct zx_di_RequestedService_s* zxid_mk_di_req_svc(zxid_conf* cf, struct zx_elem_s* father, int req_id, const char* svc_type, const char* url, const char* di_opt, const char* action)
 {
   struct zx_di_RequestedService_s* rs = zx_NEW_di_RequestedService(cf->ctx, father);
-#if 0
-  rs->reqID = zx_strf(cf->ctx, "RS%x", req_id);
-  rs->resultType = zx_ref_str(cf->ctx, "all");  /* OPTIONAL: "best", "only-one" */
-  rs->SecurityMechID = zx_ref_elem(cf->ctx, &rs->gg, zx_di_SecurityMechID_ELEM, WSF20_SEC_MECH_TLS_BEARER);
-  rs->SecurityMechID = zx_ref_elem(cf->ctx, &rs->gg, zx_di_SecurityMechID_ELEM, WSF20_SEC_MECH_TLS_SAML2);
-#endif
-  rs->Framework = zx_NEW_di_Framework(cf->ctx, &rs->gg);
-  rs->Framework->version = zx_ref_attr(cf->ctx, &rs->Framework->gg, zx_version_ATTR, "2.0");  /* Request specific framework, omit=any */
   if (svc_type)
     rs->ServiceType = zx_ref_elem(cf->ctx, &rs->gg, zx_di_ServiceType_ELEM, svc_type);
   if (url)
@@ -240,8 +232,17 @@ static struct zx_di_RequestedService_s* zxid_mk_di_req_svc(zxid_conf* cf, struct
      * support additional options, dollar ($) could be used as a separator. */
     rs->Options->Option = zx_ref_elem(cf->ctx, &rs->Options->gg, zx_di_Option_ELEM, di_opt);
   }
+#if 0
+  rs->reqID = zx_strf(cf->ctx, "RS%x", req_id);
+  rs->resultType = zx_ref_str(cf->ctx, "all");  /* OPTIONAL: "best", "only-one" */
+  rs->SecurityMechID = zx_ref_elem(cf->ctx, &rs->gg, zx_di_SecurityMechID_ELEM, WSF20_SEC_MECH_TLS_BEARER);
+  rs->SecurityMechID = zx_ref_elem(cf->ctx, &rs->gg, zx_di_SecurityMechID_ELEM, WSF20_SEC_MECH_TLS_SAML2);
+#endif
+  rs->Framework = zx_NEW_di_Framework(cf->ctx, &rs->gg);
+  rs->Framework->version = zx_ref_attr(cf->ctx, &rs->Framework->gg, zx_version_ATTR, "2.0");  /* Request specific framework, omit=any */
   if (action)
     rs->Action = zx_ref_elem(cf->ctx, &rs->gg, zx_di_Action_ELEM, action);
+  zx_reverse_elem_lists(&rs->gg);
   return rs;
 }
 

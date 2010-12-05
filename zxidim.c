@@ -308,7 +308,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
       return resp;
     }
 
-    outa7n = zxid_mk_user_a7n_to_sp(cf, 0, uid, nameid, sp_meta, sp_name_buf, 1);
+    outa7n = zxid_mk_usr_a7n_to_sp(cf, 0, uid, nameid, sp_meta, sp_name_buf, 1);
 
     if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, outa7n, issue_to, "IMA7N", uid)) {
       resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "Fail", 0, 0, 0);
@@ -360,7 +360,7 @@ struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp
    * privacy can be lost by consulting nameids directly via this service. */
   
   nameid = zxid_decrypt_nameid(cf, req->NameID, req->EncryptedID);
-  affil = nameid->SPNameQualifier ? &nameid->SPNameQualifier->g : zxid_my_entity_id(cf);
+  affil = nameid->SPNameQualifier ? &nameid->SPNameQualifier->g : zxid_my_ent_id(cf);
   
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
   len = read_all(sizeof(uid)-1, uid, "idp_map_nid2uid", 1, "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));

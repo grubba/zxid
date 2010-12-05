@@ -29,8 +29,9 @@ mini_httpd -p 8444 -c 'zxid*' -S -E /var/zxid/pem/ssl-nopw-cert.pem -l /tmp/mini
 
 ulimit -c unlimited
 mini_httpd -p 8081 -c 'zxid*' &
-
 tail -f /var/tmp/zxid.stderr &
+tailf /var/zxid/log/xml.dbg | ~/zxid/xml-pretty.pl &
+
 tail -f tmp/err-httpd &
 
 echo Edit your /etc/hosts to contain

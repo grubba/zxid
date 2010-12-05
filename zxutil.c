@@ -31,7 +31,6 @@
 #define fdtype HANDLE
 #else
 #define fdtype int
-int lockf(int fd, int cmd, int len);  /* Avoid including unistd.h */
 #include <sys/stat.h>
 #endif
 
@@ -44,9 +43,9 @@ int lockf(int fd, int cmd, int len);  /* Avoid including unistd.h */
  * On Linux-2.4 and 2.6 as well as Solaris-8 the ordering is as follows, but this needs
  * to be checked on other platforms.
  *                       l_type,  l_whence, l_start, l_len */
-struct flock ds_rdlk = { F_RDLCK, SEEK_SET, 0, 0 };
-struct flock ds_wrlk = { F_WRLCK, SEEK_SET, 0, 0 };
-struct flock ds_unlk = { F_UNLCK, SEEK_SET, 0, 0 };
+struct flock zx_rdlk = { F_RDLCK, SEEK_SET, 0, 1 };
+struct flock zx_wrlk = { F_WRLCK, SEEK_SET, 0, 1 };
+struct flock zx_unlk = { F_UNLCK, SEEK_SET, 0, 1 };
 #endif
 
 int close_file(fdtype fd, const char* logkey);
@@ -274,7 +273,7 @@ int write_all_path_fmt(const char* logkey, int maxlen, char* buf, const char* pa
   int len;
   va_list ap;
   fdtype fd;
-  fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, logkey, 1, path_fmt, prepath, postpath);
+  fd = open_fd_from_path(O_CREAT | O_RDWR | O_TRUNC, 0666, logkey, 1, path_fmt, prepath, postpath);
   DD("write_all_path_fmt(%s, %x)", logkey, fd);
   if (fd == BADFD) return 0;
   
@@ -343,7 +342,7 @@ int write2_or_append_lock_c_path(const char* c_path,
     }
   }
 #else
-  fd = open(c_path, O_WRONLY | O_CREAT | flag, 0666);
+  fd = open(c_path, O_RDWR | O_CREAT | flag, 0666);
   if (fd == BADFD) goto badopen;
   if (FLOCKEX(fd)  == -1) {
     ERR("%s: Locking exclusively file `%s' failed: %d %s. Check permissions and that the file system supports locking. euid=%d egid=%d", which, c_path, errno, STRERROR(errno), geteuid(), getegid());
@@ -439,7 +438,7 @@ linkrest:
 #ifdef MINGW
   fd_to = CreateFile(buf, MINGW_RW_PERM, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 #else
-  fd_to = open(buf, O_WRONLY | O_CREAT, 0666);
+  fd_to = open(buf, O_RDWR | O_CREAT, 0666);
 #endif
   if (fd_to == BADFD) {
       perror("openfile_ro");

@@ -864,7 +864,7 @@ sub ZXC {  # zxcall
     return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
     return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
     my $test = tst_link($tsti, $expl, '');
-    my $slow = 0.3 * $n_iter;
+    my $slow = 0.03 * $n_iter;
     
     unlink "tmp/$tsti.out";
     
@@ -1002,6 +1002,8 @@ CMD('CONF2', 'zxidhlo o=d dump config',      "QUERY_STRING=o=d ./zxidhlo");
 CMD('CONF3', 'zxidhlo o=c dump carml',       "QUERY_STRING=o=c ./zxidhlo");
 CMD('CONF4', 'zxidhlo o=B dump metadata',    "QUERY_STRING=o=B ./zxidhlo");
 CMD('CONF5', 'zxididp o=B dump metadata',    "QUERY_STRING=o=B ./zxididp");
+
+CMD('META1', 'Java LEAF Meta', "curl 'http://sp.tas3.pt:8080/zxidservlet/wspleaf?o=B'");
 
 CMD('HLO1', 'zxidhlo o=M LECP check',        "QUERY_STRING=o=M ./zxidhlo");
 CMD('HLO2', 'zxidhlo o=C CDC',               "QUERY_STRING=o=C ./zxidhlo");

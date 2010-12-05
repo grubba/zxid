@@ -136,10 +136,10 @@ struct zx_sa_EncryptedID_s* zxid_mk_enc_id(zxid_conf* cf, struct zx_elem_s* fath
   struct zx_str* ss = zx_EASY_ENC_elem(cf->ctx, &nid->gg);
   if (cf->enckey_opt & 0x20) {
     /* Nested EncryptedKey approach (Shibboleth early 2010) */
-    encid->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "41", 0);
+    ZX_ADD_KID(encid, EncryptedData, zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "41", 0));
   } else {
     /* RetrievalMethod approach */
-    encid->EncryptedData = zxenc_pubkey_enc(cf, ss, &encid->EncryptedKey, meta->enc_cert, "38", meta);
+    ZX_ADD_KID(encid, EncryptedData, zxenc_pubkey_enc(cf, ss, &encid->EncryptedKey, meta->enc_cert, "38", meta));
   }
   zx_str_free(cf->ctx, ss);
   return encid;
@@ -155,10 +155,10 @@ struct zx_sa_EncryptedAssertion_s* zxid_mk_enc_a7n(zxid_conf* cf, struct zx_elem
   struct zx_str* ss = zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
   if (cf->enckey_opt & 0x20) {
     /* Nested EncryptedKey approach (Shibboleth early 2010) */
-    enc_a7n->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "40", 0);
+    ZX_ADD_KID(enc_a7n, EncryptedData, zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "40", 0));
   } else {
     /* RetrievalMethod approach */
-    enc_a7n->EncryptedData = zxenc_pubkey_enc(cf, ss, &enc_a7n->EncryptedKey, meta->enc_cert, "39", meta);
+    ZX_ADD_KID(enc_a7n, EncryptedData, zxenc_pubkey_enc(cf, ss, &enc_a7n->EncryptedKey, meta->enc_cert, "39", meta));
   }
   zx_str_free(cf->ctx, ss);
   return enc_a7n;
@@ -224,11 +224,12 @@ struct zx_sp_ManageNameIDRequest_s* zxid_mk_mni(zxid_conf* cf, zxid_nid* nid, st
       r->NewEncryptedID = zx_NEW_sp_NewEncryptedID(cf->ctx, &r->gg);
       if (cf->enckey_opt & 0x20) {
 	/* Nested EncryptedKey approach (Shibboleth early 2010) */
-	r->NewEncryptedID->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, idp_meta->enc_cert, "43",0);
+	ZX_ADD_KID(r->NewEncryptedID, EncryptedData, zxenc_pubkey_enc(cf, ss, 0, idp_meta->enc_cert, "43",0));
       } else {
 	/* RetrievalMethod approach */
-	r->NewEncryptedID->EncryptedData = zxenc_pubkey_enc(cf, ss, &ek, idp_meta->enc_cert, "39", idp_meta);
-	r->NewEncryptedID->EncryptedKey = ek;
+	ZX_ADD_KID(r->NewEncryptedID, EncryptedData, zxenc_pubkey_enc(cf, ss, &ek, idp_meta->enc_cert, "39", idp_meta));
+	ZX_ADD_KID(r->NewEncryptedID, EncryptedKey, ek);
+	zx_reverse_elem_lists(&r->NewEncryptedID->gg);
       }
       zx_str_free(cf->ctx, ss);
       zx_free_elem(cf->ctx, newid, 0);
@@ -277,8 +278,8 @@ zxid_a7n* zxid_mk_a7n(zxid_conf* cf, struct zx_str* audience, struct zx_sa_Subje
   if (subj)
     zx_add_kid(&a7n->gg, &subj->gg);
   a7n->Conditions = zx_NEW_sa_Conditions(cf->ctx, &a7n->gg);
-  a7n->Conditions->NotBefore = zxid_date_time_attr(cf, &a7n->Conditions->gg, zx_NotBefore_ATTR, time(0));
   a7n->Conditions->NotOnOrAfter = zxid_date_time_attr(cf, &a7n->Conditions->gg, zx_NotOnOrAfter_ATTR, time(0) + cf->a7nttl);
+  a7n->Conditions->NotBefore = zxid_date_time_attr(cf, &a7n->Conditions->gg, zx_NotBefore_ATTR, time(0));
   if (audience) {
     a7n->Conditions->AudienceRestriction = zx_NEW_sa_AudienceRestriction(cf->ctx, &a7n->Conditions->gg);
     a7n->Conditions->AudienceRestriction->Audience = zx_new_str_elem(cf->ctx, &a7n->Conditions->AudienceRestriction->gg, zx_sa_Audience_ELEM, audience);
@@ -304,7 +305,7 @@ struct zx_sa_Subject_s* zxid_mk_subj(zxid_conf* cf, struct zx_elem_s* father, zx
   // , struct zx_str* affil, char* fmt
   nid = zx_NEW_sa_NameID(cf->ctx,0);
   nid->Format = zx_dup_str(cf->ctx, fmt);  /* *** implement persistent */
-  nid->NameQualifier = zxid_my_entity_id(cf);
+  nid->NameQualifier = zxid_my_ent_id(cf);
   nid->SPNameQualifier = affil;
   if (!strcmp(fmt, SAML2_TRANSIENT_NID_FMT)) {
     zx_add_content(cf->ctx, nid, zxid_mk_id(cf, "T", ZXID_ID_BITS));
@@ -362,9 +363,11 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses, str
 /*() Construct SAML SAML Attribute */
 
 /* Called by:  zxid_add_ldif_attrs, zxid_gen_boots, zxid_mk_user_a7n_to_sp x3 */
-struct zx_sa_Attribute_s* zxid_mk_attribute(zxid_conf* cf, struct zx_elem_s* father, char* name, char* val)
+struct zx_sa_Attribute_s* zxid_mk_sa_attribute(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, const char* val)
 {
   struct zx_sa_Attribute_s* r = zx_NEW_sa_Attribute(cf->ctx, father);
+  if (namfmt)
+    r->NameFormat = zx_ref_attr(cf->ctx, &r->gg, zx_NameFormat_ATTR, namfmt);
   r->Name = zx_dup_attr(cf->ctx, &r->gg, zx_Name_ATTR, name);
   r->AttributeValue = zx_NEW_sa_AttributeValue(cf->ctx, &r->gg);
   if (val)

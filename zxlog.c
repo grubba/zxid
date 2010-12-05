@@ -642,4 +642,93 @@ int zxlog_blob(zxid_conf* cf, int logflag, struct zx_str* path, struct zx_str* b
   return 1;
 }
 
+#define XML_LOG_FILE ZXID_PATH "log/xml.dbg"
+FILE* zx_xml_debug_log = 0;
+int zx_xml_debug_log_err = 0;
+int zxlog_seq = 0;
+
+#if !defined(USE_STDIO) && !defined(MINGW)
+/* *** Static initialization of struct flock is suspect since man fcntl() documentation
+ * does not guarantee ordering of the fields, or that they would be the first fields.
+ * On Linux-2.4 and 2.6 as well as Solaris-8 the ordering is as follows, but this needs
+ * to be checked on other platforms.
+ *                       l_type,  l_whence, l_start, l_len */
+extern struct flock zx_rdlk; /* = { F_RDLCK, SEEK_SET, 0, 1 };*/
+extern struct flock zx_wrlk; /* = { F_WRLCK, SEEK_SET, 0, 1 };*/
+extern struct flock zx_unlk; /* = { F_UNLCK, SEEK_SET, 0, 1 };*/
+#endif
+
+/*() Log a blob of XML data to auxiliary log file. This avoids
+ * mega clutter in the main debug logs. You are supposed
+ * to view this file with:
+ * tailf /var/zxid/log/xml.dbg | ./xml-pretty.pl */
+
+void zxlog_debug_xml_blob(zxid_conf* cf, const char* file, int line, const char* func, const char* lk, int len, const char* xml)
+{
+  int bdy_len;
+  const char* bdy;
+  const char* p;
+  const char* q;
+  if (!zx_debug || len == -1 || !xml)
+    return;
+  if (len == -2)
+    len = strlen(xml);
+
+  /* Detect body */
+
+  for (p = xml; p; p+=4) {
+    p = strstr(p, "Body");
+    if (!p) {
+nobody:
+      bdy = xml;
+      bdy_len = 40;
+      goto print_it;
+    }
+    if (p > xml && ONE_OF_2(p[-1], '<', ':') && ONE_OF_5(p[4], '>', ' ', '\t', '\r', '\n'))
+      break; /* Opening <Body> detected. */
+  }
+  if (!p)
+    goto nobody;
+  
+  p = strchr(p+4, '>');  /* Scan for close of opening <Body */
+  if (!p)
+    goto nobody;
+  
+  for (q = ++p; q; q+=5) {
+    q = strstr(q, "Body>");
+    if (!q)
+      goto nobody;  /* Missing closing </Body> tag */
+    if (ONE_OF_2(q[-1], '<', ':'))
+      break;
+  }
+  for (--q; *q != '<'; --q) ;  /* Scan for the start of </Body>, skipping any namespace prefix */
+  bdy = p;
+  bdy_len = MIN(q-p, 100);
+
+print_it:
+  fprintf(stderr, "t %10s:%-3d %-16s %s d %s%s(%.*s) len=%d\n", file, line, func, ERRMAC_INSTANCE, zx_indent, lk, bdy_len, bdy, len);
+
+  if (!zx_xml_debug_log) {
+    if (zx_xml_debug_log_err)
+      return;
+    zx_xml_debug_log = fopen(XML_LOG_FILE, "a+");
+    if (!zx_xml_debug_log) {  /* If it did not work out, do not insist. */
+      perror(XML_LOG_FILE);
+      ERR("Can't open for appending %s: %d", XML_LOG_FILE, errno);
+      zx_xml_debug_log_err = 1;
+      return;
+    }
+    D("OPEN BLOB LOG: tailf %s | ./xml-pretty.pl", XML_LOG_FILE);
+  }
+  
+  if (FLOCKEX(fileno(zx_xml_debug_log)) == -1) {
+    ERR("Locking exclusively file `%s' failed: %d %s. Check permissions and that the file system supports locking. euid=%d egid=%d", XML_LOG_FILE, errno, STRERROR(errno), geteuid(), getegid());
+    /* Fall thru to print without locking */
+  }
+  ++zxlog_seq;
+  fprintf(zx_xml_debug_log, "<!-- XMLBEG %d:%d %10s:%-3d %-16s %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d:%d -->\n", getpid(), zxlog_seq, file, line, func, ERRMAC_INSTANCE, zx_indent, lk, len, len, xml, getpid(), zxlog_seq);
+  fflush(zx_xml_debug_log);
+  FUNLOCK(fileno(zx_xml_debug_log));
+}
+
 /* EOF  --  zxlog.c */

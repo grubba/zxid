@@ -16,6 +16,7 @@
  * 15.4.2006, new adaptation over Easter holiday --Sampo
  * 3.10.2007, added FLOCK() and FUNLOCK() --Sampo
  * 22.3.2008, renamed debug to zx_debug to avoid conflicts in any .so module usage --Sampo
+ * 4.12.2010, fixed bug in locking where range was zero length --Sampo
  */
 
 #ifndef _macro_h
@@ -389,8 +390,13 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 /* =============== file system flocking =============== */
 
 #ifndef USE_LOCK
-#define FLOCKEX(fd) lockf((fd), F_LOCK, 0)
-#define FUNLOCK(fd) lockf((fd), F_ULOCK, 0)
+#if 0
+#define FLOCKEX(fd) lockf((fd), F_LOCK, 1)
+#define FUNLOCK(fd) lockf((fd), F_ULOCK, 1)
+#else
+#define FLOCKEX(fd) fcntl((fd), F_SETLKW, &zx_rdlk)
+#define FUNLOCK(fd) fcntl((fd), F_SETLKW, &zx_unlk)
+#endif
 #else
 /* If you have neither flock() nor lockf(), then -DUSE-LOCK=dummy_no_flock
  * but beware that this means NO file locking will be done, possibly
@@ -431,7 +437,11 @@ extern char zx_indent[256];  /* Defined in zxidlib.c. *** Locking issues? */
 
 #define ERR(format,...) (fprintf(stderr, "t %10s:%-3d %-16s %s E %s" format "\n", __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(stderr))
 /*#define ERR(format,...) (fprintf(stderr, "t%x %10s:%-3d %-16s %s E " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(stderr))*/
-#define INFO(format,...) (fprintf(stderr, "t%x %10s:%-3d %-16s %s I %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(stderr))
+#define INFO(format,...) (fprintf(stderr, "t %10s:%-3d %-16s %s I %s" format "\n", __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(stderr))
+/*#define INFO(format,...) (fprintf(stderr, "t%x %10s:%-3d %-16s %s I %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(stderr))*/
+
+#define D_XML_BLOB(cf, lk, len, xml) zxlog_debug_xml_blob((cf), __FILE__, __LINE__, __FUNCTION__, (lk), (len), (xml))
+#define DD_XML_BLOB(cf, lk, len, xml) /* Documentative */
 
 int hexdmp(char* msg, char* p, int len, int max);
 int hexdump(char* msg, char* p, char* lim, int max);

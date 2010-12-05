@@ -34,9 +34,9 @@
 vpath %.c ../zxid
 vpath %.h ../zxid
 
-default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall
+default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall zxencdectest
 
-all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxencdectest zxidwspcgi
+all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcgi
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
@@ -1113,7 +1113,9 @@ zxiddemo.war: zxidjava.jar
 	cd ./zxidservlet ; $(JAR) cf ../zxiddemo.war *; cd ../
 	rm -rf zxidservlet
 
-javazxid: $(ZXIDJNI_SO) zxidjava/zxidjni.class zxidhlo.class zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class ZxidSSOFilter.class ZxidServlet.class zxidjava.jar zxiddemo.war
+javazxid: $(ZXIDJNI_SO) zxidjava/zxidjni.class zxidhlo.class zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidjava.jar zxiddemo.war
+
+# ZxidSSOFilter.class ZxidServlet.class
 
 javazxid_install: $(ZXIDJNI_SO)
 	@$(ECHO) "javazxid_install: Work in Progress. See zxid-java.pd"

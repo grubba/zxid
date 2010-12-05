@@ -515,7 +515,7 @@ static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
 
 /*() Add simple attribute to pool, applying NEED, WANT, and INMAP */
 
-/* Called by:  zxid_add_ldif_attrs_to_ses, zxid_add_qs_to_ses, zxid_ses_to_pool x23 */
+/* Called by:  zxid_add_ldif_at2ses, zxid_add_qs_to_ses, zxid_ses_to_pool x23 */
 void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx_str* val)
 {
   struct zxid_map* map;
@@ -542,7 +542,7 @@ void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx
  * *** illegal input causes corrupt pointer. For example query string input causes corruption. */
 
 /* Called by:  zxid_ses_to_pool x3 */
-static void zxid_add_ldif_attrs_to_ses(zxid_conf* cf, zxid_ses* ses, const char* prefix, char* p, char* lk)
+static void zxid_add_ldif_at2ses(zxid_conf* cf, zxid_ses* ses, const char* prefix, char* p, char* lk)
 {
   char* name;
   char* val;
@@ -589,7 +589,7 @@ static void zxid_add_ldif_attrs_to_ses(zxid_conf* cf, zxid_ses* ses, const char*
  */
 
 /* Called by:  zxid_ses_to_pool x3 */
-static void zxid_copy_user_eprs_to_ses(zxid_conf* cf, zxid_ses* ses, struct zx_str* path)
+static void zxid_cp_usr_eprs2ses(zxid_conf* cf, zxid_ses* ses, struct zx_str* path)
 {
   char bs_dir[ZXID_MAX_BUF];
   char ses_path[ZXID_MAX_BUF];
@@ -668,10 +668,10 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
     zxid_add_attr_to_ses(cf, ses, "localpath",   path);
     buf = read_all_alloc(cf->ctx, "splocal_user_at", 0, 0, "%.*s/.bs/.at", path->len, path->s);
     if (buf) {
-      zxid_add_ldif_attrs_to_ses(cf, ses, "local_", buf, "splocal_user_at");
+      zxid_add_ldif_at2ses(cf, ses, "local_", buf, "splocal_user_at");
       ZX_FREE(cf->ctx, buf);
     }
-    zxid_copy_user_eprs_to_ses(cf, ses, path);
+    zxid_cp_usr_eprs2ses(cf, ses, path);
   }
 
   /* Format pseudo attrs that describe the target, defaulting to the SSO identity. */
@@ -700,10 +700,10 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
     zxid_add_attr_to_ses(cf, ses, "tgtpath",   path);
     buf = read_all_alloc(cf->ctx, "sptgt_user_at", 0, 0, "%.*s/.bs/.at", path->len, path->s);
     if (buf) {
-      zxid_add_ldif_attrs_to_ses(cf, ses, "tgt_", buf, "sptgt_user_at");
+      zxid_add_ldif_at2ses(cf, ses, "tgt_", buf, "sptgt_user_at");
       ZX_FREE(cf->ctx, buf);
     }
-    zxid_copy_user_eprs_to_ses(cf, ses, path);
+    zxid_cp_usr_eprs2ses(cf, ses, path);
   }
   
   accr = a7n&&(as = a7n->AuthnStatement)&&as->AuthnContext?ZX_GET_CONTENT(as->AuthnContext->AuthnContextClassRef):0;
@@ -712,13 +712,13 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   
   buf = read_all_alloc(cf->ctx, "splocal.all", 0, 0, "%s" ZXID_USER_DIR ".all/.bs/.at" , cf->path);
   if (buf) {
-    zxid_add_ldif_attrs_to_ses(cf, ses, 0, buf, "splocal.all");
+    zxid_add_ldif_at2ses(cf, ses, 0, buf, "splocal.all");
     ZX_FREE(cf->ctx, buf);
   }
   path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR ".all", cf->path);
-  zxid_copy_user_eprs_to_ses(cf, ses, path);
+  zxid_cp_usr_eprs2ses(cf, ses, path);
   
-  zxid_add_attr_to_ses(cf, ses, "eid",        zxid_my_entity_id(cf));
+  zxid_add_attr_to_ses(cf, ses, "eid",        zxid_my_ent_id(cf));
   zxid_add_attr_to_ses(cf, ses, "sigres",     zx_strf(cf->ctx, "%x", ses->sigres));
   zxid_add_attr_to_ses(cf, ses, "ssores",     zx_strf(cf->ctx, "%x", ses->ssores));
   if (ses->sid && *ses->sid) {

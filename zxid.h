@@ -682,6 +682,7 @@ ZXID_DECL int zxlog_dup_check(zxid_conf* cf, struct zx_str* path, const char* lo
 ZXID_DECL int zxlog_blob(zxid_conf* cf, int logflag, struct zx_str* path, struct zx_str* blob, const char* lk);
 ZXID_DECL int zxlog(zxid_conf* cf, struct timeval* ourts, struct timeval* srcts, const char* ipport, struct zx_str* entid, struct zx_str* msgid, struct zx_str* a7nid, struct zx_str* nid, const char* sigval, const char* res, const char* op, const char* arg, const char* fmt, ...);
 ZXID_DECL int zxlogusr(zxid_conf* cf, const char* uid, struct timeval* ourts, struct timeval* srcts, const char* ipport, struct zx_str* entid, struct zx_str* msgid, struct zx_str* a7nid, struct zx_str* nid, const char* sigval, const char* res, const char* op, const char* arg, const char* fmt, ...);
+ZXID_DECL void zxlog_debug_xml_blob(zxid_conf* cf, const char* file, int line, const char* func, const char* lk, int len, const char* xml);
 
 /* zxidmeta */
 
@@ -711,8 +712,8 @@ ZXID_DECL struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf, struct
 ZXID_DECL struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi);
 ZXID_DECL int zxid_send_sp_meta(zxid_conf* cf, zxid_cgi* cgi);
 ZXID_DECL struct zx_str* zxid_sp_carml(zxid_conf* cf);
-ZXID_DECL struct zx_str* zxid_my_entity_id(zxid_conf* cf);
-ZXID_DECL struct zx_attr_s* zxid_my_entity_id_attr(zxid_conf* cf, struct zx_elem_s* father, int tok);
+ZXID_DECL struct zx_str* zxid_my_ent_id(zxid_conf* cf);
+ZXID_DECL struct zx_attr_s* zxid_my_ent_id_attr(zxid_conf* cf, struct zx_elem_s* father, int tok);
 ZXID_DECL struct zx_str* zxid_my_cdc_url(zxid_conf* cf);
 ZXID_DECL struct zx_sa_Issuer_s* zxid_my_issuer(zxid_conf* cf, struct zx_elem_s* father);
 ZXID_DECL struct zx_sa_Issuer_s* zxid_issuer(zxid_conf* cf, struct zx_elem_s* father, struct zx_str* nameid, char* affiliation);
@@ -765,7 +766,6 @@ ZXID_DECL int zxid_find_ses(zxid_conf* cf, zxid_ses* ses, struct zx_str* ses_ix,
 
 /* zxidpool */
 
-//ZXID_DECL struct zx_str* zxid_ses_to_ldif(zxid_conf* cf, zxid_ses* ses);
 ZXID_DECL struct zx_str* zxid_ses_to_ldif(zxid_conf* cf, zxid_ses* ses);
 ZXID_DECL struct zx_str* zxid_ses_to_json(zxid_conf* cf, zxid_ses* ses);
 ZXID_DECL struct zx_str* zxid_ses_to_qs(zxid_conf* cf, zxid_ses* ses);
@@ -855,7 +855,7 @@ ZXID_DECL struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx
 ZXID_DECL zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct timeval* srcts, zxid_entity* sp_meta, struct zx_str* acsurl, zxid_nid** nameid, char** logop, struct zx_sp_AuthnRequest_s* ar);
 ZXID_DECL void zxid_add_ldif_attrs(zxid_conf* cf, struct zx_elem_s* father, char* p, char* lk);
 ZXID_DECL void zxid_gen_boots(zxid_conf* cf, struct zx_sa_AttributeStatement_s* father, const char* uid, char* path, int add_bs_lvl);
-ZXID_DECL zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, int add_bs_lvl);
+ZXID_DECL zxid_a7n* zxid_mk_usr_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, int add_bs_lvl);
 ZXID_DECL zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, char allow_create, struct timeval* srcts, struct zx_str* issuer, struct zx_str* req_id, const char* sp_name_buf);
 ZXID_DECL char* zxid_add_fed_tok2epr(zxid_conf* cf, zxid_epr* epr, const char* uid,int add_bs_lvl);
 ZXID_DECL struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_AuthnRequest_s* ar);
@@ -945,7 +945,7 @@ ZXID_DECL struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, stru
 ZXID_DECL struct zx_xac_Request_s* zxid_mk_xac_az(zxid_conf* cf, struct zx_elem_s* father, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env);
 ZXID_DECL struct zx_xasp_XACMLAuthzDecisionQuery_s* zxid_mk_az(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env);
 ZXID_DECL struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zxid_mk_az_cd1(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env);
-struct zx_sa_Attribute_s* zxid_mk_attribute(zxid_conf* cf, struct zx_elem_s* father, char* name, char* val);
+struct zx_sa_Attribute_s* zxid_mk_sa_attribute(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, const char* val);
 
 /* zxidmkwsf */
 
@@ -992,7 +992,7 @@ ZXID_DECL int zxid_map_sec_mech(zxid_epr* epr);
 ZXID_DECL int zxid_hunt_sig_parts(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struct zx_ds_Reference_s* sref, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy);
 ZXID_DECL int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struct zx_e_Header_s* hdr);
 ZXID_DECL void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec, struct zx_wsse_SecurityTokenReference_s* str, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy);
-ZXID_DECL int zxid_wsf_timestamp_check(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* ts, struct timeval* ourts, struct timeval* srcts, const char* ctlpt, const char* faultactor);
+ZXID_DECL int zxid_timestamp_chk(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* ts, struct timeval* ourts, struct timeval* srcts, const char* ctlpt, const char* faultactor);
 ZXID_DECL void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, const char* attrid, const char* obl);
 
 /* zxidwsp */

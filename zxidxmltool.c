@@ -469,7 +469,7 @@ int main(int argc, char** argv, char** env)
 #endif
 
   printf("<h3>CoT configuration parameters your IdP may need to know</h3>\n");
-  ss = zxid_my_entity_id(cf);
+  ss = zxid_my_ent_id(cf);
   printf("Entity ID of this SP: <a href=\"%.*s\">%.*s</a> (Click on the link to fetch SP metadata.)\n",
 	 ss->len, ss->s, ss->len, ss->s);
 

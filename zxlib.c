@@ -368,12 +368,17 @@ struct zx_elem_s* zx_add_kid(struct zx_elem_s* father, struct zx_elem_s* kid)
 }
 
 /*() Add kid before another elem. This assumes father is already in
- * forward order (i.e. zx_reverse_elem_lists() was already called. */
+ * forward order, i.e. zx_reverse_elem_lists() was already called. */
 
 /* Called by:  zxid_ins_xacml_az_cd1_stmt x2, zxid_ins_xacml_az_stmt x2 */
 struct zx_elem_s* zx_add_kid_before(struct zx_elem_s* father, int before, struct zx_elem_s* kid)
 {
   if (!father->kids) {
+    father->kids = kid;
+    return kid;
+  }
+  if (father->kids->g.tok == before) {
+    kid->g.n = &father->kids->g;
     father->kids = kid;
     return kid;
   }
@@ -401,6 +406,28 @@ struct zx_elem_s* zx_add_kid_after_sa_Issuer(struct zx_elem_s* father, struct zx
   }
   ERR("No <sa:Issuer> found. Adding signature at list head. %d", father->kids->g.tok);
   return zx_add_kid(father, kid);
+}
+
+/*() Replace kid element. */
+
+struct zx_elem_s* zx_replace_kid(struct zx_elem_s* father, struct zx_elem_s* kid)
+{
+  if (!father->kids) {
+    father->kids = kid;
+    return kid;
+  }
+  if (father->kids->g.tok == kid->g.tok) {
+    kid->g.n = &father->kids->g.n;
+    father->kids = kid;
+    return kid;
+  }
+  for (father = father->kids;
+       father->g.n && father->g.n->tok != kid->g.tok;
+       father = (struct zx_elem_s*)father->g.n) ;
+
+  kid->g.n = father->g.n->n;
+  father->g.n = &kid->g;
+  return kid;
 }
 
 /*() Construct new simple element from zx_str by referencing, not copying, it. */

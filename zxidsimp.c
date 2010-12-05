@@ -256,7 +256,7 @@ static char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, co
     break;
   case 'E':
     if (BBMATCH("EID", key, lim)) {
-      ss = zxid_my_entity_id(cf);
+      ss = zxid_my_ent_id(cf);
       s = ss->s; ZX_FREE(cf->ctx, ss);
       return s;
     }
@@ -495,7 +495,7 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
   ss = zxid_template_page_cf(cf, cgi, cf->idp_sel_templ_file, cf->idp_sel_templ, 4096, auto_flags);
 #else
   if (cf->idp_sel_our_eid && cf->idp_sel_our_eid[0])
-    eid = zxid_my_entity_id(cf);
+    eid = zxid_my_ent_id(cf);
   char* idp_list = zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
   if ((auto_flags & ZXID_AUTO_FORMT) && (auto_flags & ZXID_AUTO_FORMF)) {
     DD("HERE %p", cgi->idp_list);
@@ -1387,7 +1387,8 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
 	    perror("Trouble reading post content.");
 	  } else {
 	    buf[got] = 0;
-	    D("POST(%s) got=%d cont_len(%s)", buf, got, cont_len);
+	    DD("POST(%s) got=%d cont_len(%s)", buf, got, cont_len);
+	    D_XML_BLOB(cf, "POST", got, buf);
 	    if (buf[0] == '<') goto sp_soap;  /* No BOM and looks like XML */
 	    if (buf[2] == '<') {              /* UTF-16 BOM and looks like XML */
 	      got-=2; buf+=2;

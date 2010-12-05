@@ -1,6 +1,6 @@
-Original and WO are different lengths 29784 != 29475
+Original and WO are different lengths 29784 != 29467
 Original and WO differ.
-Re-encoded result WO (len=29475):
+Re-encoded result WO (len=29467):
 <e:Envelope xmlns:e="http://schemas.xmlsoap.org/soap/envelope/">
     <e:Header>
         <wsa:MessageID xmlns:wsa="http://www.w3.org/2005/03/addressing" id="#MID">uuid:6g5n02-nzY8vJYwK2uCW</wsa:MessageID>
@@ -71,9 +71,9 @@ Re-encoded result WO (len=29475):
       <a:EndpointReference xmlns:a="http://www.w3.org/2005/08/addressing" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" notOnOrAfter="2037-01-05T23:03:59.001Z" wsu:Id="EPRID92lFPo3ZNEt_3rHtJFoU">
         <a:Address>http://degrees.kent.ac.uk:8080/certserv/</a:Address>
         <a:Metadata>
-          <di:Abstract xmlns:di="urn:zxid:unknown-ns-prefix:zx_elem_lookup:di">Kent Degree Certificate Server</di:Abstract>
-          <di:ProviderID xmlns:di="urn:zxid:unknown-ns-prefix:zx_elem_lookup:di">http://degrees.kent.ac.uk:8080/certserv/?o=B</di:ProviderID>
-          <di:SecurityContext xmlns:di="urn:zxid:unknown-ns-prefix:zx_elem_lookup:di">
+          <di:Abstract xmlns:di="urn:zxid:unknown-ns-prefix:zx_el_lookup:di">Kent Degree Certificate Server</di:Abstract>
+          <di:ProviderID xmlns:di="urn:zxid:unknown-ns-prefix:zx_el_lookup:di">http://degrees.kent.ac.uk:8080/certserv/?o=B</di:ProviderID>
+          <di:SecurityContext xmlns:di="urn:zxid:unknown-ns-prefix:zx_el_lookup:di">
             <di:SecurityMechID>urn:liberty:security:2005-02:TLS:Bearer</di:SecurityMechID>
             <sec:Token xmlns:sec="urn:liberty:security:2006-08">
               <sa:EncryptedAssertion xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">
@@ -137,7 +137,7 @@ aHftQ+r2gFYiVX4HEa6NU5AgpiQjme0Vh3Hzs228lVllgsFqv6YbdIyTYIUe
               </sa:EncryptedAssertion>
             </sec:Token>
           </di:SecurityContext>
-          <di:ServiceType xmlns:di="urn:zxid:unknown-ns-prefix:zx_elem_lookup:di">urn:x-foobar</di:ServiceType>
+          <di:ServiceType xmlns:di="urn:zxid:unknown-ns-prefix:zx_el_lookup:di">urn:x-foobar</di:ServiceType>
           <sbf:Framework xmlns:sbf="urn:liberty:sb" version="2.0"></sbf:Framework>
         </a:Metadata>
       </a:EndpointReference>		     

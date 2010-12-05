@@ -18,7 +18,6 @@
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
-
 #include <string.h>
 
 #ifdef USE_CURL
@@ -64,7 +63,10 @@ size_t zxid_curl_write_data(void *buffer, size_t size, size_t nmemb, void *userp
   }
   memcpy(rc->p, buffer, len);
   rc->p += len;
-  if (zx_debug & CURL_INOUT) INFO("RECV(%.*s) %d chars", len, (char*)buffer, len);
+  if (zx_debug & CURL_INOUT) {
+    INFO("RECV(%.*s) %d chars", len, (char*)buffer, len);
+    D_XML_BLOB(0, "RECV", len, (char*)buffer);
+  }
 #else
   int fd = (int)userp;
   write_all_fd(fd, buffer, len);
@@ -84,7 +86,10 @@ size_t zxid_curl_read_data(void *buffer, size_t size, size_t nmemb, void *userp)
     len = wc->lim - wc->p;
   memcpy(buffer, wc->p, len);
   wc->p += len;
-  if (zx_debug & CURL_INOUT) INFO("SEND(%.*s) %d chars", len, (char*)buffer, len);
+  if (zx_debug & CURL_INOUT) {
+    INFO("SEND(%.*s) %d chars", len, (char*)buffer, len);
+    D_XML_BLOB(0, "SEND", len, (char*)buffer);
+  }
   return len;
 }
 
@@ -245,7 +250,8 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &SOAPaction);
   
   D("----------- url(%s) -----------", urli);
-  D("SOAP_CALL post(%.*s) len=%d\n", len, data, len);
+  DD("SOAP_CALL post(%.*s) len=%d\n", len, data, len);
+  D_XML_BLOB(cf, "SOAPCALL POST", len, data);
   res = curl_easy_perform(cf->curl);  /* <========= Actual call, blocks. */
   switch (res) {
   case 0: break;
@@ -274,7 +280,8 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   rc.lim = rc.p;
   rc.p[0] = 0;
 
-  D("SOAP_CALL got(%s)", rc.buf);
+  DD("SOAP_CALL got(%s)", rc.buf);
+  D_XML_BLOB(cf, "SOAPCALL GOT", -2, rc.buf);
   
   ret = zx_ref_len_str(cf->ctx, rc.lim - rc.buf, rc.buf);
   return ret;
@@ -317,8 +324,8 @@ struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct z
   
   r = zx_dec_zx_root(cf->ctx, ret->len, ret->s, "soap_call");
   if (!r || !r->Envelope || !r->Envelope->Body) {
-    ERR("Failed to parse SOAP response url(%.*s) buf(%.*s)",
-	url->len, url->s, ret->len, ret->s);
+    ERR("Failed to parse SOAP response url(%.*s)", url->len, url->s);
+    D_XML_BLOB(cf, "BAD SOAP RESPONSE", ret->len, ret->s);
     ZX_FREE(cf->ctx, ret);
     return 0;
   }

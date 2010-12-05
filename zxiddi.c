@@ -48,7 +48,7 @@ int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struc
   nameid = zxid_decrypt_nameid(cf, a7n->Subject->NameID, a7n->Subject->EncryptedID);
   if (nameidp)
     *nameidp = nameid;
-  affil = nameid->SPNameQualifier ? &nameid->SPNameQualifier->g : zxid_my_entity_id(cf);
+  affil = nameid->SPNameQualifier ? &nameid->SPNameQualifier->g : zxid_my_ent_id(cf);
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
   len = read_all(len-1, uid, "idp_map_nid2uid", 1, "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
   if (!len) {
@@ -268,8 +268,9 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 	goto next_file;
       }
 
-      epr->gg.g.n = (void*)resp->EndpointReference;
-      resp->EndpointReference = epr;
+      zx_add_kid(&resp->gg, &epr->gg);
+      if (!resp->EndpointReference)
+	resp->EndpointReference = epr;
 
       zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, uid, "");
 
@@ -289,7 +290,7 @@ next_file:
   ss = ZX_GET_CONTENT(req->RequestedService->ServiceType);
   D("TOTAL discovered %d svctype(%.*s)", n_discovered, ss?ss->len:0, ss?ss->s:"");
   zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "DIOK", 0, "%.*s n=%d", ss?ss->len:1, ss?ss->s:"-", n_discovered);
-  resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "OK", 0, 0, 0);
+  resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "OK", 0, 0, 0);  /* last is first */
   D_DEDENT("di_query: ");
   return resp;
 }

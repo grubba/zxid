@@ -39,17 +39,17 @@ int zxid_localpdp(zxid_conf* cf, zxid_ses* ses)
     at = zxid_find_at(ses->at, "role");
     if (cf->localpdp_role_permit) {  /* whitelist of roles: not on list means deny */
       if (!at) {
-	D("Deny due to no role attribute %d (whitelist)",0);
+	INFO("DENY due to no role attribute %d (whitelist)",0);
 	return 0;
       }
       if (!zxid_find_cstr_list(cf->localpdp_role_permit, at->val)) {
-	D("Deny: role(%s) not on whitelist", at->val);
+	INFO("DENY: role(%s) not on whitelist", at->val);
 	return 0;
       }
     }
     if (cf->localpdp_role_deny) {    /* blacklist of roles: on list means deny */
       if (at && zxid_find_cstr_list(cf->localpdp_role_deny, at->val)) {
-	D("Deny: role(%s) on blacklist", at->val);
+	INFO("DENY: role(%s) on blacklist", at->val);
 	return 0;
       }
     }
@@ -59,23 +59,23 @@ int zxid_localpdp(zxid_conf* cf, zxid_ses* ses)
     at = zxid_find_at(ses->at, "idpnid");
     if (cf->localpdp_idpnid_permit) {  /* whitelist of idpnids: not on list means deny */
       if (!at) {
-	D("Deny due to no idpnid attribute %d (whitelist)",0);
+	INFO("DENY due to no idpnid attribute %d (whitelist)",0);
 	return 0;
       }
       if (!zxid_find_cstr_list(cf->localpdp_idpnid_permit, at->val)) {
-	D("Deny: idpnid(%s) not on whitelist", at->val);
+	INFO("DENY: idpnid(%s) not on whitelist", at->val);
 	return 0;
       }
     }
     if (cf->localpdp_idpnid_deny) {    /* blacklist of idpnids: on list means deny */
       if (at && zxid_find_cstr_list(cf->localpdp_idpnid_deny, at->val)) {
-	D("Deny: idpnid(%s) on blacklist", at->val);
+	INFO("DENY: idpnid(%s) on blacklist", at->val);
 	return 0;
       }
     }
   }
 
-  D("Permit by local PDP %d", 1);
+  INFO("PERMIT by local PDP %d", 1);
   return 1;
 }
 
@@ -92,7 +92,7 @@ char* zxid_simple_ab_pep(zxid_conf* cf, zxid_ses* ses, int* res_len, int auto_fl
   zxid_ses_to_pool(cf, ses);  /* Process SSO a7n, applying NEED, WANT, and INMAP */
 
   if (!zxid_localpdp(cf, ses)) {
-    D("Deny by local PDP %d",0);
+    DD("Deny by local PDP %d",0);
     D_DEDENT("ab_pep: ");
     return "z";
   }
@@ -101,7 +101,7 @@ char* zxid_simple_ab_pep(zxid_conf* cf, zxid_ses* ses, int* res_len, int auto_fl
     //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
     //zxid_add_attr_to_pool(cf, ses, "URL", zx_dup_str(cf->ctx, ses->rs));
     if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap)) {
-      D("Deny %d", 0);
+      INFO("DENY by remote PDP %d", 0);
       D_DEDENT("ab_pep: ");
       return "z";
     }
@@ -114,7 +114,8 @@ char* zxid_simple_ab_pep(zxid_conf* cf, zxid_ses* ses, int* res_len, int auto_fl
   default: ERR("Unsupported output format bits %x", auto_flags & (ZXID_AUTO_FMTQ|ZXID_AUTO_FMTJ));
   case 0:               ss = zxid_ses_to_ldif(cf, ses); break;
   }
-  if (zx_debug & ZXID_INOUT) INFO("LDIF(%.*s)", ss?ss->len:1, ss?ss->s:"-");
+  if (zx_debug & ZXID_INOUT)
+    INFO("LDIF(%.*s)", ss?ss->len:1, ss?ss->s:"-");
   if (cf->log_level > 0)
     zxlog(cf, 0,0,0,0,0,0, ZX_GET_CONTENT(ses->nameid), "N", "K", "SHOWPC", ses->sid, 0);
   res = ss->s;
