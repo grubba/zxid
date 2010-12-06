@@ -149,7 +149,35 @@ void attribute_sort_test()
   printf("%.*s", ss->len, ss->s);
 }
 
+void a7n_test()
+{
+  zxid_conf* cf;
+  zxid_cgi cgi;
+  zxid_ses sess;
+  zxid_nid* nameid;
+  struct zx_sp_AuthnRequest_s* ar;
+  zxid_entity* sp_meta;
+  zxid_a7n* a7n;
+  memset(&cgi, 0, sizeof(cgi));
+  memset(&sess, 0, sizeof(sess));
+
+  sess.uid = "test";
+  cf = zxid_new_conf("/var/zxid/");
+#if 1
+  ar = zxid_mk_authn_req(cf, &cgi);
+  sp_meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(ar->Issuer));
+  a7n = zxid_sso_issue_a7n(cf, &cgi, &sess, 0, sp_meta, 0, &nameid, 0, ar);
+#else
+  a7n = zxid_mk_usr_a7n_to_sp(cf, &sess, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, 0);
+#endif
+  zxid_find_attribute(a7n, 0, 0, 0, 0, 0, 0, 1);
+  //zxid_ssos_anreq(cf, a7n, ar, ZX_GET_CONTENT(ar->Issuer));
+  zxid_mni_do_ss(cf, &cgi, &sess, zxid_mk_mni(cf, nameid, zx_ref_str(cf->ctx, "newnym"), sp_meta), zx_ref_str(cf->ctx, "loc-dummy"));
+  zxid_sp_mni_soap(cf, &cgi, &sess, zx_ref_str(cf->ctx, "newnym"));
+}
+
 const char foobar[] = "foobar";
+const char goobar[] = "goo\r\n~[]";
 
 void covimp_test()
 {
@@ -158,14 +186,22 @@ void covimp_test()
   char* out;
   struct zx_str* ss;
   zxid_conf* cf;
+  zxid_cgi cgi;
+  memset(&cgi, 0, sizeof(cgi));
+
   printf("version(%x)\n", zxid_version());
   cf = zxid_new_conf("/var/zxid/");
   printf("urlenc(%s)\n", zx_url_encode(cf->ctx, sizeof("test1://foo?a=b&c=d e")-1, "test1://foo?a=b&c=d e", &outlen));
   printf("hexdec(%.6s)\n", zx_hexdec(buf, "313233", 3, hex_trans));
-  hexdmp("test2: ", foobar, sizeof(foobar), 1000);
-  copy_file("t/XML1.out","tmp/foo","test3",0);
-  copy_file("t/XML1.out","tmp/foo","test4",1);
-  copy_file("t/XML1.out","tmp/foo","test5",2);
+  hexdmp("test2: ", (char*)foobar, sizeof(foobar), 1000);
+  hexdmp("test2b: ", (char*)goobar, sizeof(goobar), 1000);
+  copy_file("t/XML1.out","tmp/foo3","test3",0);
+  copy_file("t/XML1.out","tmp/foo4","test4",1);
+  copy_file("t/XML1.out","tmp/foo5","test5",2);
+  copy_file("/impossible","tmp/foo5a","test5a",0);
+  copy_file("t/XML1.out","tmp/impossiblefoo5b","test5b",0);
+  read_all(sizeof(buf), buf, "test5c", 1, "/impossible");
+  read_all_alloc(cf->ctx, "test5d", 1, &outlen, "/impossible");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, zx__NS_MAX, foobar, foobar+sizeof(foobar));
   zx_format_parse_error(cf->ctx, buf, sizeof(buf), "test6");
   printf("parse err(%s)\n", buf);
@@ -173,6 +209,11 @@ void covimp_test()
   printf("memmem(%s)\n", zx_memmem("foobar", 6, "oba", 3));
   ss = zx_ref_str(cf->ctx, "abc");
   zx_str_conv(ss, &outlen, &out);
+  setenv("HTTP_COOKIE", "_liberty_idp=\"test8\"", 1);
+  zxid_cdc_read(cf, &cgi);
+  cgi.cdc = "test9";
+  zxid_cdc_check(cf, &cgi);
+  zxid_new_cgi(cf, "=test10&ok=1&okx=2&s=S123&c=test11&e=abc&d=def&&l=x&l1=y&l1foo=z&inv=qwe&fg=1&fh=7&fr=RS&gu=1&gn=asa&ge=1&an=&aw=&at=&SAMLart=artti&SAMLResponse=respis");
 }
 
 int afr_buf_size = 0;
@@ -269,6 +310,7 @@ void opt(int* argc, char*** argv, char*** env)
 	case 3: so_enc_dec(); break;
 	case 4: attribute_sort_test(); break;
 	case 5: covimp_test(); break;
+	case 6: a7n_test(); break;
 	}
 	exit(0);
 

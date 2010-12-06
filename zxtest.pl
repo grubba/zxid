@@ -415,15 +415,7 @@ sub wait_response {
 		    || $cmd{$id} eq 'PUT'
 		    || $cmd{$id} eq 'DEL'
 		    || $cmd{$id} eq 'SIGNIN'
-		    || $cmd{$id} eq 'LOGOUT'
-		    || $cmd{$id} eq 'SRCHLOC'
-		    || $cmd{$id} eq 'SRCHADR'
-		    || $cmd{$id} eq 'WRSEND'
-		    || $cmd{$id} eq 'SENDTWIT'
-		    || $cmd{$id} eq 'SENDFB'
-		    || $cmd{$id} eq 'SENDHQSMS'
-		    || $cmd{$id} eq 'SEARCHADDR'
-		    || $cmd{$id} eq 'SEARCHLOC') {
+		    || $cmd{$id} eq 'LOGOUT') {
 		    warn "Non XML cmd($cmd{$id}) url($easy_url{$id}) response($rsp)";
 		} elsif ($cmd{$id} eq 'ST') {
 		    warn "static response len=".length($rsp);
@@ -493,10 +485,6 @@ sub wait_response {
 	    } elsif ($cmd{$id} eq 'ST') {
 		$laststatus = 'OK';
 		$lasterror = "len=".length($rsp);
-	    } elsif ($cmd{$id} eq 'ANSWER') {
-		warn "ANSWER resp";
-	    } elsif ($cmd{$id} eq 'RECORD') {
-		warn "RECORD resp";		
 	    } elsif ($cmd{$id} eq 'GET') {
 		if (!$xx) {
 		    process_error_response('BAD', $user, $sesid{$id}, $qs);
@@ -507,33 +495,9 @@ sub wait_response {
 		} else {
 		    process_error_response('NA', $user, $sesid{$id}, $qs);
 		}
-	    #} elsif ($cmd{$id} eq 'DEL') {
-            #	warn "DEL resp";
-	    #	process_simple_response($xx, $user, $sesid{$id}, $qs);
-	    #} elsif ($cmd{$id} eq 'PUT') {
-	    #   warn "PUT resp";
-	    #   process_simple_response($xx, $user, $sesid{$id}, $qs);
-	    #} elsif ($cmd{$id} eq 'UPD') {
-	    #	warn "UPD resp";
-	    #	process_simple_response($xx, $user, $sesid{$id}, $qs);
-	    } elsif ($cmd{$id} eq 'SENDHQSMS') {
-		warn "SENDHQSMS resp";
-		process_sent_hqsms_response($rsp, $user, $sesid{$id}, $qs);
-	    } elsif ($cmd{$id} eq 'SENDTWIT') {
-		warn "SENDTWIT resp";
-		process_sent_twit_response($rsp, $user, $sesid{$id}, $qs);
-	    } elsif ($cmd{$id} eq 'SENDFB') {
-		warn "SENDFB resp";
-		process_sent_fb_response($rsp, $user, $sesid{$id}, $qs);
 	    } elsif ($cmd{$id} eq 'SEND') {
 		warn "SEND resp";
 		process_sent_response($xx, $user, $sesid{$id}, $qs);
-	    } elsif ($cmd{$id} eq 'SEARCHLOC') {
-		warn "SEARCHLOC resp";
-		process_searchloc_response($rsp, $user, $sesid{$id}, $qs);
-	    } elsif ($cmd{$id} eq 'SEARCHADDR') {
-		warn "SEARCHADDR resp";
-		process_searchaddr_response($rsp, $user, $sesid{$id}, $qs);
 	    } elsif ($cmd{$id} eq 'HOSTIP') {
 		warn "HOSTIP resp";
 		process_hostip_response($rsp, $user, $sesid{$id}, $qs);
@@ -801,26 +765,32 @@ sub ediffy {
     return 0 if $data1 eq $data2;
 
     my $ret = 0;
-    require Algorithm::Diff;
-    my @seq1 = split //, $data1;
-    my @seq2 = split //, $data2;
-    my $diff = Algorithm::Diff->new( \@seq1, \@seq2 );
-    
-    $diff->Base(1);   # Return line numbers, not indices
-    while(  $diff->Next()  ) {
-        if (@sames = $diff->Same()) {
-	    print @sames;
-	    next;
+
+    eval {
+	local $SIG{ALRM} = sub { die "TIMEOUT\n"; };
+	alarm 60;   # The ediff algorithm seems exponential time, so lets not wait forever.
+	require Algorithm::Diff;
+	my @seq1 = split //, $data1;
+	my @seq2 = split //, $data2;
+	my $diff = Algorithm::Diff->new( \@seq1, \@seq2 );
+	
+	$diff->Base(1);   # Return line numbers, not indices
+	while(  $diff->Next()  ) {
+	    if (@sames = $diff->Same()) {
+		print @sames;
+		next;
+	    }
+	    if (@dels = $diff->Items(1)) {
+		print redy(join '', @dels);
+		++$ret;;
+	    }
+	    if (@adds = $diff->Items(2)) {
+		print greeny(join '', @adds);
+		++$ret;
+	    }
 	}
-        if (@dels = $diff->Items(1)) {
-	    print redy(join '', @dels);
-	    ++$ret;;
-	}
-        if (@adds = $diff->Items(2)) {
-	    print greeny(join '', @adds);
-	    ++$ret;
-	}
-    }
+    };
+    alarm 0;
     print "\n" if $ret;
     return $ret;
 }
@@ -974,12 +944,6 @@ sub tst_print {
     }
 }
 
-sub tA { test_http($curlA, @_); }
-sub tB { test_http($curlB, @_); }
-sub tC { test_http($curlC, @_); }
-sub tD { test_http($curlD, @_); }
-sub tP { test_http($curlP, @_); }
-
 if ($ascii) {
     tst_print('col1', 'STATUS', 'SECS', 'GOAL', 'TEST NAME', 'MESSAGES');
 } else {
@@ -1044,14 +1008,15 @@ CMD('LOG1', 'zxlogview list',      "./zxlogview /var/zxid/pem/logsign-nopw-cert.
 CMD('LOG2', 'zxlogview list',      "./zxlogview -t /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem");
 
 # See also README.smime for tutorial of these commands
-CMD('SMIME1', 'smime key gen ca',  "echo 'commonName=TestCA|emailAddress=test\@test.com' | ./smime -kg 'description=CA' passwd tmp/careq.pem >tmp/capriv_ss.pem");
-CMD('SMIME2', 'smime key gen joe', "echo 'commonName=Joe Smith|emailAddress=joe\@test.com' | ./smime -kg 'description=foo' passwd tmp/req.pem >tmp/priv_ss.pem");
-CMD('SMIME3', 'smime ca',          "./smime -ca tmp/capriv_ss.pem passwd 1 <tmp/req.pem >tmp/cert.pem");
-CMD('SMIME4', 'smime code sig',    "./smime -ds tmp/priv_ss.pem passwd <t/XML1.out >tmp/XML1.sig");
+CMD('SMIME1', 'smime key gen ca',  "echo 'commonName=TestCA|emailAddress=test\@test.com' | ./smime -kg 'description=CA' passwd tmp/careq.pem >tmp/capriv_ss.pem; wc -l tmp/capriv_ss.pem");
+CMD('SMIME2', 'smime key gen joe', "echo 'commonName=Joe Smith|emailAddress=joe\@test.com' | ./smime -kg 'description=foo' passwd tmp/req.pem >tmp/priv_ss.pem; wc -l tmp/priv_ss.pem");
+CMD('SMIME3', 'smime ca',          "./smime -ca tmp/capriv_ss.pem passwd 1 <tmp/req.pem >tmp/cert.pem; wc -l tmp/cert.pem");
+CMD('SMIME4', 'smime code sig',    "./smime -ds tmp/priv_ss.pem passwd <t/XML1.out >tmp/XML1.sig; wc -l tmp/XML1.sig");
 CMD('SMIME5', 'smime code vfy',    "cat tmp/priv_ss.pem tmp/XML1.sig |./smime -dv t/XML1.out");
-CMD('SMIME6', 'smime sig',         "echo foo|./smime -mime text/plain|./smime -s tmp/priv_ss.pem passwd >tmp/foo.p7m");
-CMD('SMIME7', 'smime clear sig',   "echo foo|./smime -mime text/plain|./smime -cs tmp/priv_ss.pem passwd >tmp/foo.clear.smime");
+CMD('SMIME6', 'smime sig',         "echo foo|./smime -mime text/plain|./smime -s tmp/priv_ss.pem passwd >tmp/foo.p7m; wc -l tmp/foo.p7m");
+CMD('SMIME7', 'smime clear sig',   "echo foo|./smime -mime text/plain|./smime -cs tmp/priv_ss.pem passwd >tmp/foo.clear.smime; wc -l tmp/foo.clear.smime");
 CMD('SMIME8', 'smime pubenc',      "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem");
+CMD('SMIME8b', 'smime pubencdec',   "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem|./smime -d tmp/priv_ss.pem passwd");
 CMD('SMIME9', 'smime sigenc',      "echo foo|./smime -mime text/plain|./smime -cs tmp/priv_ss.pem passwd|./smime -e tmp/priv_ss.pem");
 CMD('SMIME10', 'smime encsig',     "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem|./smime -cs tmp/priv_ss.pem passwd");
 CMD('SMIME11', 'smime multi sigenc', "echo bar|./smime -m image/gif t/XML1.out|./smime -cs tmp/priv_ss.pem passwd|./smime -e tmp/priv_ss.pem");
@@ -1061,8 +1026,8 @@ CMD('SMIME14', 'smime query cert',  "./smime -qc <tmp/cert.pem");
 CMD('SMIME15', 'smime verify cert', "./smime -vc tmp/capriv_ss.pem <tmp/req.pem");
 CMD('SMIME16', 'smime mime ent',    "./smime -mime text/plain <tmp/XML1.out");
 CMD('SMIME17', 'smime mime ent b64',"./smime -mime_base64 image/gif <tmp/XML1.out");
-CMD('SMIME18', 'smime pkcs12 exp',  "./smime -pem-p12 you\@test.com passwd pw-for-p12 <tmp/priv_ss.pem >tmp/me.p12");
-CMD('SMIME19', 'smime pkcs12 imp',  "./smime -p12-pem pw-for-p12 passwd <tmp/me.p12 >tmp/me.pem");
+CMD('SMIME18', 'smime pkcs12 exp',  "./smime -pem-p12 you\@test.com passwd pw-for-p12 <tmp/priv_ss.pem >tmp/me.p12; wc -l tmp/me.p12");
+CMD('SMIME19', 'smime pkcs12 imp',  "./smime -p12-pem pw-for-p12 passwd <tmp/me.p12 >tmp/me.pem; wc -l tmp/me.pem");
 CMD('SMIME20', 'smime query req',   "./smime -qr <tmp/req.pem");
 CMD('SMIME21', 'smime covimp',      "echo foo|./smime -base64|./smime -cat|./smime -unbase64");
 
@@ -1130,9 +1095,9 @@ ED('XML8',  'Decode-Encode SO and WO: dirq1',  1000, 't/dirq1.xml');
 ED('XML9',  'Decode-Encode SO and WO: dirs1',  1000, 't/dirs1.xml');
 ED('XML10', 'Decode-Encode SO and WO: dirq2',  1000, 't/dirq2.xml');
 ED('XML11', 'Decode-Encode SO and WO: dia7n1', 1000, 't/dia7n1.xml');
-ED('XML12', '* Decode-Encode SO and WO: epr1', 1000, 't/epr1.xml');  # WO and SO differ
+ED('XML12', 'Decode-Encode SO and WO: epr1',   1000, 't/epr1.xml');
 ED('XML13', 'Decode-Encode SO and WO: wsrq1',  1000, 't/wsrq1.xml');
-ED('XML14', '* Decode-Encode SO and WO: wsrs1',  1000, 't/wsrs1.xml'); # WO and SO differ
+ED('XML14', 'Decode-Encode SO and WO: wsrs1',  1000, 't/wsrs1.xml');
 ED('XML15', 'Decode-Encode SO and WO: wsrq2',  1000, 't/wsrq2.xml');
 ED('XML16', 'Decode-Encode SO and WO: wsrs2',  1000, 't/wsrs2.xml');
 ED('XML17', 'Decode-Encode SO and WO: as-req',  1000, 't/as-req.xml');
@@ -1165,6 +1130,8 @@ ZXC('ZXC-AS1', 'Authentication Service call: SSO + AZ', 1000, "-az ''", '/dev/nu
 CMD('ZXC-AS2', 'Authentication Service call: An Fail', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:tas -t urn:x-foobar -e '<foobar>Hello</foobar>' -b", 256);
 
 ZXC('ZXC-IM1', 'Identity Mapping Service call', 1000, "-im http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B", '/dev/null');
+ZXC('ZXC-IM2', 'SAML NID Map call', 1000, "-nidmap http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B", '/dev/null');
+ZXC('ZXC-IM3', 'SSOS call', 1000, "-t urn:liberty:ims:2006-08", 't/ssos-req.xml');
 
 ZXC('ZXC-DI1', 'Discovery Service call', 1000, "-di '' -t urn:x-foobar -nd", '/dev/null');
 ZXC('ZXC-DI2', 'List EPR cache', 1, "-l", '/dev/null');

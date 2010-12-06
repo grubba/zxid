@@ -840,9 +840,9 @@ struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
   
   ed = zx_NEW_md_EntityDescriptor(cf->ctx,0);
   ed->entityID = zxid_my_ent_id_attr(cf, &ed->gg, zx_entityID_ATTR);
-  ed->SPSSODescriptor = zxid_sp_sso_desc(cf, &ed->gg);
   if (cf->idp_ena)
     ed->IDPSSODescriptor = zxid_idp_sso_desc(cf, &ed->gg);
+  ed->SPSSODescriptor = zxid_sp_sso_desc(cf, &ed->gg);
   ed->Organization = zxid_org_desc(cf, &ed->gg);
   ed->ContactPerson = zxid_contact_desc(cf, &ed->gg);
   zx_reverse_elem_lists(&ed->gg);

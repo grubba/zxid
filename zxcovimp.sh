@@ -23,6 +23,7 @@ echo foo | ./zxdecode -d -b -z -i 2 --  # Dumps core
 ./zxencdectest -r 3
 ./zxencdectest -r 4
 ./zxencdectest -r 5
+./zxencdectest -r 6
 ./zxididp -h --
 ./zxpasswd -d -s foo # too few args
 ./zxpasswd -q -v --
@@ -38,6 +39,6 @@ echo -n 60e1cbb066c6c5179defd4974303dd33 | ./zxpasswd -t x -c testy2 tmp/test/
 ./zxcot /impossible
 rm -rf tmp/test
 ./zxmkdirs.sh tmp/test/
-./zxcot -c PATH=tmp/test/ -m
+./zxcot -c PATH=tmp/test/ -m >tmp/meta.xml
 
 #EOF

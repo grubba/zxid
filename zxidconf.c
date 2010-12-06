@@ -534,7 +534,7 @@ struct zxid_attr* zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len,
   COPYVAL(at->name, name, name+name_len);
   if (val)
     COPYVAL(at->val, val, val+val_len);
-  D("%s:\tATTR name(%.*s) val(%.*s)", lk, name_len, name, val_len, STRNULLCHK(val));
+  D("%s:\tATTR name(%.*s) val(%.*s)", lk, name_len, name, MAX(val_len, 100), STRNULLCHK(val));
   return aa;
 }
 

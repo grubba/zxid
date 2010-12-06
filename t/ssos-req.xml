@@ -1,0 +1,1 @@
+<sp:AuthnRequest xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B</sa:Issuer></sp:AuthnRequest>

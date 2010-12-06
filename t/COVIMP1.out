@@ -1,2 +1,66 @@
 8dLS-STphqyG_fezbJS83zK-7BU.
+oo
 r2 nid(a-persistent-nid) should be(a-persistent-nid)
+<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"></sp:StatusCode></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status><xasp:XACMLAuthzDecisionQuery xmlns:xasp="urn:oasis:xacml:2.0:saml:protocol:schema:os" ID="R-DSFQiKRKoAKITRXj7sA6EdR" IssueInstant="2010-12-06T18:44:47Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xasp:XACMLAuthzDecisionQuery>version(73)
+urlenc(test1%3A%2F%2Ffoo%3Fa%3Db%26c%3Dd%20eå)
+hexdec()
+parse err(test6: Parse error at char 0/7 (prev char, char, next char: 0x00 0x66 0x6f)
+foobar
+^
+)
+memmem(obar)
+SP specific NameID:   (bob)
+SP specific NameID:   (foo)
+SP specific NameID:   (fool)
+SP specific NameID:   (test)
+SP specific NameID:   (Fool11)
+SP specific NameID:   (alice)
+SP specific NameID:   (fool2)
+SP specific NameID:   (fool3)
+SP specific NameID:   (fool4)
+SP specific NameID:   (fool5)
+SP specific NameID:   (fool6)
+SP specific NameID:   (fool7)
+SP specific NameID:   (fool8)
+SP specific NameID:   (fool9)
+SP specific NameID:   (sampo)
+SP specific NameID:   (beefiiij)
+SP specific NameID:   (mallory)
+SP specific NameID:   (tastest)
+SP specific NameID:   (pwtest)
+SP specific NameID:   (refucenikj)
+/var/zxid/cot/THuOFn5WPO49n6esrG22rUFW6Go http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B            TAS3 App Demo SP and WSC
+/var/zxid/cot/s36Te-rgbzReSjVc8vDDGy89tT8 http://idp.ssocircle.com                           -
+/var/zxid/cot/_CBGcFVVbIEmt5oh3jUx4GEfHLM https://idp.symdemo.com:8880/idp.xml               -
+/var/zxid/cot/crE4cE1_K3Vd5oQkgDxi_vD6GNE https://idp.tas3.kent.ac.uk/idp/shibboleth         -
+/var/zxid/cot/RoxLhhcxK04xzJRrW6ZuroX7Ing http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B     -
+/var/zxid/cot/xsKJr3DL7sUPDdbdqgC2H_eP-UM http://idp.tas3.pt:8081/zxididp                    TAS3 Demo IdP
+/var/zxid/cot/9u_7LsQjkz0VaXKucmx1_sYjQnM http://sp.tas3.pt:8080/zxidservlet/sso?o=B         TAS3 App Demo SP and WSC
+/var/zxid/cot/xOjD65W1OVltx35kfHMs7ZLD9Sg https://idp.tas3.eu/zxididp?o=B                    -
+/var/zxid/cot/JiB-7CyH0JYURjZj3slF2sl7CO4 https://idp.kantarainitiative.org/simplesaml/saml2/idp/metadata.php -
+/var/zxid/cot/HP5IP9fE_HtNMNuTisquh7oNqg4 http://idp.tas3.pt:8081/zxididp                    TAS3 Demo IdP
+/var/zxid/cot/v1tVvR0_Z_ZjW2p0GQzQYSUDY0M https://cardspace-idp.symlabs.net:8002/idp.xml     -
+/var/zxid/cot/yBeCTPt0NQ2vMuI-srKw5h4N2i8 https://zxidp.org/idp                              ZXIDP - Free IdP
+/var/zxid/cot/sVKeK_EW5Kdgt_3_dty3Pvpkvn4 ehp-stage.uhg.UMICH                                TAS3 Demo IdP
+/var/zxid/cot/JwZcQkNISe3yGNqYkRkhC6MsPI4 http://rolacast.labse.isti.cnr.it/meta.xml         -
+/var/zxid/cot/U1P0XrwXMFHdAqVbFUpnrDvDV3g http://saml.flexmls.com/idp/shibboleth             -
+/var/zxid/cot/kBxtAcQLGjHtsHvYvHDhOoehdTY https://idpdemo.tas3.eu:8443/zxididp?o=B           -
+/var/zxid/cot/dgsDrHIE3WTSvxSsu8zCClSeFYg https://sp1.zxidsp.org:8443/zxidhlo?o=B            -
+/var/zxid/cot/LrmskITZZexv2pk5c7qKRvLMicw http://sp.tas3.pt:8080/zxidservlet/wspleaf?o=B     TAS3 App Demo SP and WSC
+/var/zxid/cot/ZLIYSwzbSQdzIWHISwoWtdrx6JI http://auth.orange.fr                              -
+<a:EndpointReference xmlns:a="http://www.w3.org/2005/08/addressing" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" notOnOrAfter="2037-01-05T23:03:59.001Z" wsu:Id="EPRID92lFPo3ZNEt_3rHtJFoU"><a:Address>http://localhost</a:Address><a:Metadata><di:Abstract xmlns:di="urn:liberty:disco:2006-08">Abstract</di:Abstract><sbf:Framework xmlns:sbf="urn:liberty:sb" version="2.0"></sbf:Framework><di:ProviderID xmlns:di="urn:liberty:disco:2006-08">http://localhost</di:ProviderID><di:ServiceType xmlns:di="urn:liberty:disco:2006-08">urn:x-testi</di:ServiceType></a:Metadata></a:EndpointReference>tmp/test/ses
+tmp/test/user
+tmp/test/uid
+tmp/test/nid
+tmp/test/log
+tmp/test/log/rely
+tmp/test/log/issue
+tmp/test/cot
+tmp/test/inv
+You may need to run
+
+    chown -R nobody tmp/test/
+
+to make sure the zxid CGI script can write to the tmp/test/
+directory (substitute nobody with the user your web server runs as).
+

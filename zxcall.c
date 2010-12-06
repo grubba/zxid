@@ -52,7 +52,8 @@ Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
   -din N           Discovery index (default: 1=pick first).\n\
   -az AZCREDS      Optional authorization credentials. Query string format.\n\
                    N.B. For authorization to work PDP_URL configuration option is needed.\n\
-  -im DSTEID       Map session's login identity to identity at some other SP\n\
+  -im DSTEID       Map session's login identity to identity at some other SP using ID-WSF\n\
+  -nidmap DSTEID   Map session's login identity to identity at some other SP using SAML\n\
   -e SOAPBODY      Pass SOAP body as argument (default is to read from STDIN)\n\
   -b               In response, only return content of SOAP body, omitting Envelope and Body.\n\
   -nd              Discovery only (you need to specify -t SVCTYPE as well)\n\
@@ -73,6 +74,7 @@ int verbose = 1;
 int out_fmt = 0;
 int din = 1;
 int di_only = 0;
+/* int ssos = 0;    -nssos           SSOS only (you need to specify -a IDP USER:PW as well)\n\ */
 int listses = 0;
 char* entid = 0;
 char* idp   = 0;
@@ -83,6 +85,7 @@ char* url = 0;
 char* di  = 0;
 char* az  = 0;
 char* im_to = 0;
+char* nidmap_to = 0;
 char* bdy = 0;
 zxid_conf* cf;
 
@@ -211,6 +214,22 @@ static void opt(int* argc, char*** argv, char*** env)
       case 'd':
 	++di_only;
 	continue;
+#if 0
+      case 's':
+	if (!strcmp((*argv)[0],"-nssos")) {
+	  ++ssos;
+	  continue;
+	}
+	break;
+#endif
+      case 'i':
+	if (!strcmp((*argv)[0],"-nidmap")) {
+	  ++(*argv); --(*argc);
+	  if ((*argc) < 1) break;
+	  nidmap_to = (*argv)[0];
+	  continue;
+	}
+	break;
       case '\0':
 	++dryrun;
 	continue;
@@ -409,8 +428,15 @@ int zxcall_main(int argc, char** argv, char** env)
     return zxid_print_session(cf, ses);   
 
   if (im_to) {
-    D("Map to identity at eid(%s)", im_to);
+    D("ID-WSF Map to identity at eid(%s)", im_to);
     zxid_map_identity_token(cf, ses, im_to, 0);
+    //printf("%.*s\n", ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
+    return 0;
+  }
+
+  if (nidmap_to) {
+    D("SAML Map to identity at eid(%s)", im_to);
+    zxid_nidmap_identity_token(cf, ses, im_to, 0);
     //printf("%.*s\n", ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
     return 0;
   }

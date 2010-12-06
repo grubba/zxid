@@ -30,7 +30,7 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
-/*() Single Sign-On Service (SSOS): Issue SSO assertion in response to receiving a token.
+/*() ID-WSF Single Sign-On Service (SSOS): Issue SSO assertion in response to receiving a token.
  * See also zxid_idp_sso() for similar code. */
 
 /* Called by:  zxid_sp_soap_dispatch */
@@ -155,8 +155,8 @@ zxid_tok* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_e
   
   INFO("Identity Mapping Svc svc(%s) how=%d...", STRNULLCHK(at_eid), how);
   env = zx_NEW_e_Envelope(cf->ctx,0);
-  env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
+  env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   env->Body->IdentityMappingRequest = zx_NEW_im_IdentityMappingRequest(cf->ctx, &env->Body->gg);
   env->Body->IdentityMappingRequest->MappingInput = inp = zx_NEW_im_MappingInput(cf->ctx, &env->Body->IdentityMappingRequest->gg);
   //inp->Token = zx_NEW_sec_Token(cf->ctx, &inp->gg);
@@ -199,7 +199,7 @@ zxid_tok* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_e
   return 0; /* never reached */
 }
 
-/*() Identity Mapping Service: Issue token in response to receiving a token */
+/*() ID-WSF Identity Mapping Service: Issue token in response to receiving a token */
 
 /* Called by:  zxid_sp_soap_dispatch */
 struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_im_IdentityMappingRequest_s* req, struct zx_str* issuer)
@@ -318,7 +318,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
     
     /* Formulate mapping output */
 
-    resp->MappingOutput = mapout = zx_NEW_im_MappingOutput(cf->ctx, &resp->MappingOutput->gg);
+    resp->MappingOutput = mapout = zx_NEW_im_MappingOutput(cf->ctx, &resp->gg);
     if (mapinp->reqID && mapinp->reqID->g.len && mapinp->reqID->g.s)
       mapout->reqRef = zx_dup_len_attr(cf->ctx, &mapout->gg, zx_reqRef_ATTR, mapinp->reqID->g.len, mapinp->reqID->g.s);
     mapout->Token = zx_NEW_sec_Token(cf->ctx, &mapout->gg);
@@ -329,7 +329,8 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
       mapout->Token->Assertion = outa7n;
     }
 
-    zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, 0,"n=%d",n_mapped);
+    ++n_mapped;
+    zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, 0,"n=%d", n_mapped);
   }
   
   D("TOTAL Identity Mappings issued %d", n_mapped);
@@ -337,6 +338,91 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
   resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "OK", 0, 0, 0);
   D_DEDENT("imreq: ");
   return resp;
+}
+
+/*(i) Use SAML 2.0 NameID Mapping Service to convert
+ * the identity of the session to identity token in the namespace
+ * of the entity at_eid.
+ *
+ * cf:: ZXID configuration object, also used for memory allocation
+ * ses:: Session object in whose EPR cache the file will be searched
+ * at_eid:: EntityID of the destination namespace
+ * how:: How to make mapping (0 = invocaction identity, 1 = target identity)
+ * return:: 0 on failure, token on success
+ *
+ * This will generate <im:IdentityMappingRequest> in SOAP envelope to the
+ * IM service of the user, as discovered dynamically. For the discovery to work,
+ * the service must have been provisioned to the discovery, with command
+ * similar to
+ *
+ *  zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'IDMap Svc' \
+ *     http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:ims:2006-08 \
+ *   | zxcot -b /var/zxid/idpdimd
+ *
+ * The received identity token is stored in session. From there it is usually
+ * automatically used in appropriate context (see the how argument). Typically
+ * you would not use the return value for anything else than checking for an error.
+ */
+
+/* Called by:  zxcall_main */
+zxid_tok* zxid_nidmap_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how)
+{
+  struct zx_e_Envelope_s* env;
+  struct zx_sec_Token_s* tok;
+  struct zx_sp_NameIDMappingRequest_s* req;
+  zxid_epr* epr;
+  epr = zxid_get_epr(cf, ses, XMLNS_IMS, 0, 0, 0, 1);
+  if (!epr) {
+    ERR("No Identity Mapping Service discovered svc(%s) how=%d", STRNULLCHK(at_eid), how);
+    return 0;
+  }
+  
+  INFO("NID Mapping svc(%s) how=%d...", STRNULLCHK(at_eid), how);
+  env = zx_NEW_e_Envelope(cf->ctx,0);
+  env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
+  env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+  env->Body->NameIDMappingRequest = req = zx_NEW_sp_NameIDMappingRequest(cf->ctx, &env->Body->gg);
+
+  req->NameIDPolicy = zx_NEW_sp_NameIDPolicy(cf->ctx, &req->gg);
+  req->NameIDPolicy->Format = zx_ref_attr(cf->ctx, &req->NameIDPolicy->gg, zx_Format_ATTR, zxid_saml2_map_nid_fmt("prstnt"));
+  req->NameIDPolicy->SPNameQualifier = zx_dup_attr(cf->ctx, &req->NameIDPolicy->gg, zx_SPNameQualifier_ATTR, at_eid);
+  req->NameIDPolicy->AllowCreate = zx_ref_attr(cf->ctx, &req->NameIDPolicy->gg, zx_AllowCreate_ATTR, ZXID_TRUE); /* default false */
+  
+  req->NameID = ses->nameid;  /* or tgtnameid? */
+
+  env = zxid_wsc_call(cf, ses, epr, env, 0);
+  if (!env || !env->Body) {
+    ERR("Identity Mapping call failed envelope=%p", env);
+    return 0;
+  }
+  if (!env->Body->NameIDMappingResponse) {
+      ERR("No Identity Mapping Response at_eid(%s)", STRNULLCHK(at_eid));
+      return 0;
+  }
+  
+  tok = zx_NEW_sec_Token(cf->ctx, 0);
+  if (env->Body->NameIDMappingResponse->NameID) {
+    ERR("*** NOT IMPLEMENTED NameIDMappingResponse has NameID %p", tok);
+
+  } else if (env->Body->NameIDMappingResponse->EncryptedID) {
+    ERR("*** NOT IMPLEMENTED NameIDMappingResponse has EncryptedID %p", tok);
+
+  } else {
+    ERR("NameIDMappingResponse did not contain any ID %p", tok);
+    return 0;
+  }
+      
+  switch (how) {
+  case 0:
+    D("Invocation token set %p", tok);
+    ses->call_invoktok = tok;
+    break;
+  case 1:
+    D("Target Identity token set %p", tok);
+    ses->call_tgttok = tok;
+    break;
+  }
+  return tok;
 }
 
 /*() SAML NameID Mapping Service: Issue token in response to receiving a token */

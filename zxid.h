@@ -1091,6 +1091,7 @@ ZXID_DECL struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n,
 ZXID_DECL zxid_tok* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how);
 ZXID_DECL struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_im_IdentityMappingRequest_s* req, struct zx_str* issuer);
 
+ZXID_DECL zxid_tok* zxid_nidmap_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how);
 ZXID_DECL struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp_NameIDMappingRequest_s* req);
 
 /* zxidps -  People Service (and delegation) */
