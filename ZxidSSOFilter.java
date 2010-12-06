@@ -139,7 +139,7 @@ public class ZxidSSOFilter implements Filter {
       String queryString = (String) request.getAttribute("javax.servlet.forward.query_string");
       queryString = (queryString == null) ? request.getQueryString() : queryString;
 
-      StringBuilder buffer = new StringBuilder();
+      StringBuffer buffer = new StringBuffer();
       buffer.append(scheme);
       buffer.append("://");
       buffer.append(serverName);

@@ -149,6 +149,32 @@ void attribute_sort_test()
   printf("%.*s", ss->len, ss->s);
 }
 
+const char foobar[] = "foobar";
+
+void covimp_test()
+{
+  char buf[256];
+  int outlen;
+  char* out;
+  struct zx_str* ss;
+  zxid_conf* cf;
+  printf("version(%x)\n", zxid_version());
+  cf = zxid_new_conf("/var/zxid/");
+  printf("urlenc(%s)\n", zx_url_encode(cf->ctx, sizeof("test1://foo?a=b&c=d e")-1, "test1://foo?a=b&c=d e", &outlen));
+  printf("hexdec(%.6s)\n", zx_hexdec(buf, "313233", 3, hex_trans));
+  hexdmp("test2: ", foobar, sizeof(foobar), 1000);
+  copy_file("t/XML1.out","tmp/foo","test3",0);
+  copy_file("t/XML1.out","tmp/foo","test4",1);
+  copy_file("t/XML1.out","tmp/foo","test5",2);
+  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, zx__NS_MAX, foobar, foobar+sizeof(foobar));
+  zx_format_parse_error(cf->ctx, buf, sizeof(buf), "test6");
+  printf("parse err(%s)\n", buf);
+  zx_xml_parse_err(cf->ctx, '?', __FUNCTION__, "test7");
+  printf("memmem(%s)\n", zx_memmem("foobar", 6, "oba", 3));
+  ss = zx_ref_str(cf->ctx, "abc");
+  zx_str_conv(ss, &outlen, &out);
+}
+
 int afr_buf_size = 0;
 int verbose = 1;
 extern int debug;
@@ -242,6 +268,7 @@ void opt(int* argc, char*** argv, char*** env)
 	case 2: test_ibm_cert_problem_enc_dec(); break;
 	case 3: so_enc_dec(); break;
 	case 4: attribute_sort_test(); break;
+	case 5: covimp_test(); break;
 	}
 	exit(0);
 

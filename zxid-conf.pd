@@ -628,6 +628,15 @@ is used for indicating whether the attribute is
 * "act":  Action Attributes   (default: Action=access)
 * "env":  Environment Attributes (default: ZXID_PEPvers)
 
+Multiple ~PEPMAP~ stanzas can appear as separate ~PEPMAP~
+declarations, which are cumulative, or they can be put on single
+~PEPMAP~ separated by semicolon. Within stanzas the fields
+are separated by semicolons:
+
+  ns$srcattr$rule$dstattr$ext
+
+The fields, such as +rule+ are discussed in detail in description of ~INMAP~, above.
+
 5.3 Configuring XACML PEPs for Web Service Calls
 ------------------------------------------------
 

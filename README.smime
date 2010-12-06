@@ -331,7 +331,7 @@ Bootstrapping a simple public key infrastructure
 	request (ok, you can't know what serial number will be assigned)
 	should be enough. I solve this problem by signing the first contract
 	with a self signed certificate. Although this is quite suboptimal,
-	it allwos me to get going without hacking OpenSSL innards too much.
+	it allows me to get going without hacking OpenSSL innards too much.
 	Only complication arises from needing to establish that also the
 	certified public key is able to decrypt the hash of the signed
 	material.
@@ -385,12 +385,12 @@ Being a certificate authority
 
 	  ./smime -ca ca-id.pem very-secret 1 <req.pem >cert.pem
 
-	The numebr one is the serial number. As I said, you should do
+	The number one is the serial number. As I said, you should do
 	bookkeeping to ensure you never reuse a serial number. Many
 	systems depend on being uniquely able to identify certificate
 	by its issuing authority and serial number. A certificate
 	authority that can not guarantee uniqueness of serial numbers is
-	trustworthy.
+	not trustworthy.
 
 	Please note that the -ca hard wires all X509v3 options and extensions.
 	Be sure to read the source to check they are the way you want them.
@@ -509,7 +509,7 @@ SEE ALSO
 	RFC2111 (S/MIME v2)
 	*** RFCXXXX (S/MIME v3)
 	http://www.openssl.org
-	http://www.bacus.pt/Net_SSLeay/smime.html  (this stuff)
+	http://zxid.org/Net_SSLeay/smime.html  (this stuff)
 
 USAGE
 	(reproduced from ./smime -help)

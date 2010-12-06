@@ -20,6 +20,9 @@ echo foo | ./zxdecode -d -b -z -i 2 --  # Dumps core
 ./zxencdectest -license
 ./zxencdectest -r 1 <t/ibm-enc-a7n.xml  # Dumps core
 ./zxencdectest -r 2
+./zxencdectest -r 3
+./zxencdectest -r 4
+./zxencdectest -r 5
 ./zxididp -h --
 ./zxpasswd -d -s foo # too few args
 ./zxpasswd -q -v --

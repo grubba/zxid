@@ -652,8 +652,10 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   
   /* Format some pseudo attributes that describe the SSO */
 
-  if (a7n)
+  if (a7n) {
+    zxid_add_attr_to_ses(cf, ses, "ssoa7n", zx_EASY_ENC_elem(cf->ctx, &a7n->gg));
     issuer = ZX_GET_CONTENT(a7n->Issuer);
+  }
   zxid_add_attr_to_ses(cf, ses, "issuer", issuer);
   zxid_add_attr_to_ses(cf, ses, "ssoa7npath",zx_dup_str(cf->ctx, STRNULLCHK(ses->sso_a7n_path)));
   
@@ -680,8 +682,10 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
     tgta7n = ses->tgta7n;
   else
     tgta7n = a7n;
-  if (tgta7n)
+  if (tgta7n) {
+    zxid_add_attr_to_ses(cf, ses, "tgta7n", zx_EASY_ENC_elem(cf->ctx, &a7n->gg));
     tgtissuer = ZX_GET_CONTENT(tgta7n->Issuer);
+  }
   if (tgtissuer)
     zxid_add_attr_to_ses(cf, ses, "tgtissuer", tgtissuer);
   zxid_add_attr_to_ses(cf, ses, "tgta7npath",zx_dup_str(cf->ctx, STRNULLCHK(ses->tgt_a7n_path)));

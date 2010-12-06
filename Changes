@@ -70,6 +70,9 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
 
+zxid-0.72:: 6.12.2010
+    - NOTPUB
+
 zxid-0.72:: 5.12.2010
     - Eliminated SO encoders entirely, enhancing WO encoder to do their job
 

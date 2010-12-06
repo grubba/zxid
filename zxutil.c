@@ -872,9 +872,9 @@ int zx_url_encode_len(int in_len, char* in)
  * Returns pointer one past last byte written. */
 
 /* Called by:  zx_url_encode, zxid_pool_to_qs x4, zxid_saml2_redir_enc x2 */
-char* zx_url_encode_raw(int in_len, char* in, char* out)
+char* zx_url_encode_raw(int in_len, const char* in, char* out)
 {
-  char* lim;
+  const char* lim;
   for (lim = in+in_len; in < lim; ++in)
     if (URL_BAD(*in)) {
       *out++ = '%';
@@ -891,13 +891,18 @@ char* zx_url_encode_raw(int in_len, char* in, char* out)
  * N.B. For zx_url_decode() operation see URL_DECODE() macro in errmac.h */
 
 /* Called by: */
-char* zx_url_encode(struct zx_ctx* c, int in_len, char* in, int* out_len)
+char* zx_url_encode(struct zx_ctx* c, int in_len, const char* in, int* out_len)
 {
+  int olen;
   char* out;
-  *out_len = zx_url_encode_len(in_len, in) + 1;
-  out = ZX_ALLOC(c, *out_len);
+  if (in_len == -2)
+    in_len = strlen(in);
+  olen = zx_url_encode_len(in_len, in) + 1;
+  out = ZX_ALLOC(c, olen);
   zx_url_encode_raw(in_len, in, out);
-  out[*out_len-1] = '\0';
+  out[olen-1] = '\0';
+  if (out_len)
+    *out_len = olen;
   return out;
 }
 
@@ -908,19 +913,19 @@ const unsigned char const * ykmodhex_trans = (unsigned char*)"cbdefghijklnrtuv";
  * Supports inplace conversion. Does not nul terminate. */
 
 /* Called by:  main x2, zxid_pw_authn x2 */
-char* zx_hexdec(char* dst, char* src, int len, const unsigned char* trans)
+char* zx_hexdec(char* dst, char* src, int src_len, const unsigned char* trans)
 {
   const unsigned char* hi;
   const unsigned char* lo;
-  for (; len>1; len-=2, ++dst, src+=2) {
+  for (; src_len>1; src_len-=2, ++dst, src+=2) {
     hi = (const unsigned char*)strchr((char*)trans, src[0]);
     if (!hi) {
-      ERR("Bad hi character(%x) in hex string using trans(%s) len left=%d src(%.*s)", src[0], trans, len, len, src);
+      ERR("Bad hi character(%x) in hex string using trans(%s) len left=%d src(%.*s)", src[0], trans, src_len, src_len, src);
       hi = trans;
     }
     lo = (const unsigned char*)strchr((char*)trans, src[1]);
     if (!lo) {
-      ERR("Bad lo character(%x) in hex string using trans(%s) len left=%d src(%.*s)", src[1], trans, len, len, src);
+      ERR("Bad lo character(%x) in hex string using trans(%s) len left=%d src(%.*s)", src[1], trans, src_len, src_len, src);
       lo = trans;
     }
     *dst = ((hi-trans) << 4) | (lo-trans);

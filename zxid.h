@@ -1175,12 +1175,12 @@ ZXID_DECL char* unbase64_raw(const char* p, const char* lim, char* r, const unsi
 ZXID_DECL char* sha1_safe_base64(char* out_buf, int len, const char* data);
 ZXID_DECL char* zx_zlib_raw_deflate(struct zx_ctx* c, int in_len, const char* in, int* out_len);  /* gzip */
 ZXID_DECL char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out_len);  /* gunzip */
-ZXID_DECL int   zx_url_encode_len(int in_len, char* in);
-ZXID_DECL char* zx_url_encode_raw(int in_len, char* in, char* out);
+ZXID_DECL int   zx_url_encode_len(int in_len, const char* in);
+ZXID_DECL char* zx_url_encode_raw(int in_len, const char* in, char* out);
 ZXID_DECL char* zx_url_encode(struct zx_ctx* c, int in_len, char* in, int* out_len);
 ZXID_DECL extern const unsigned char const * hex_trans;
 ZXID_DECL extern const unsigned char const * ykmodhex_trans;
-ZXID_DECL char* zx_hexdec(char* dst, char* src, int len, const unsigned char* trans);
+ZXID_DECL char* zx_hexdec(char* dst, char* src, int src_len, const unsigned char* trans);
 
 ZXID_DECL int get_file_size(fdtype fd);
 ZXID_DECL char* read_all_alloc(struct zx_ctx* c, const char* logkey, int reperr, int* lenp, const char* name_fmt, ...);

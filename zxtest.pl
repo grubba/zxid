@@ -1043,6 +1043,29 @@ CMD('COT11', 'zxcot list s2',      "./zxcot -s /var/zxid/idpcot");
 CMD('LOG1', 'zxlogview list',      "./zxlogview /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem <t/act");
 CMD('LOG2', 'zxlogview list',      "./zxlogview -t /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem");
 
+# See also README.smime for tutorial of these commands
+CMD('SMIME1', 'smime key gen ca',  "echo 'commonName=TestCA|emailAddress=test\@test.com' | ./smime -kg 'description=CA' passwd tmp/careq.pem >tmp/capriv_ss.pem");
+CMD('SMIME2', 'smime key gen joe', "echo 'commonName=Joe Smith|emailAddress=joe\@test.com' | ./smime -kg 'description=foo' passwd tmp/req.pem >tmp/priv_ss.pem");
+CMD('SMIME3', 'smime ca',          "./smime -ca tmp/capriv_ss.pem passwd 1 <tmp/req.pem >tmp/cert.pem");
+CMD('SMIME4', 'smime code sig',    "./smime -ds tmp/priv_ss.pem passwd <t/XML1.out >tmp/XML1.sig");
+CMD('SMIME5', 'smime code vfy',    "cat tmp/priv_ss.pem tmp/XML1.sig |./smime -dv t/XML1.out");
+CMD('SMIME6', 'smime sig',         "echo foo|./smime -mime text/plain|./smime -s tmp/priv_ss.pem passwd >tmp/foo.p7m");
+CMD('SMIME7', 'smime clear sig',   "echo foo|./smime -mime text/plain|./smime -cs tmp/priv_ss.pem passwd >tmp/foo.clear.smime");
+CMD('SMIME8', 'smime pubenc',      "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem");
+CMD('SMIME9', 'smime sigenc',      "echo foo|./smime -mime text/plain|./smime -cs tmp/priv_ss.pem passwd|./smime -e tmp/priv_ss.pem");
+CMD('SMIME10', 'smime encsig',     "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem|./smime -cs tmp/priv_ss.pem passwd");
+CMD('SMIME11', 'smime multi sigenc', "echo bar|./smime -m image/gif t/XML1.out|./smime -cs tmp/priv_ss.pem passwd|./smime -e tmp/priv_ss.pem");
+CMD('SMIME12', 'smime query sig',   "./smime -qs <tmp/foo.p7m");
+CMD('SMIME13', 'smime verify',      "./smime -v tmp/priv_ss.pem <tmp/foo.p7m");
+CMD('SMIME14', 'smime query cert',  "./smime -qc <tmp/cert.pem");
+CMD('SMIME15', 'smime verify cert', "./smime -vc tmp/capriv_ss.pem <tmp/req.pem");
+CMD('SMIME16', 'smime mime ent',    "./smime -mime text/plain <tmp/XML1.out");
+CMD('SMIME17', 'smime mime ent b64',"./smime -mime_base64 image/gif <tmp/XML1.out");
+CMD('SMIME18', 'smime pkcs12 exp',  "./smime -pem-p12 you\@test.com passwd pw-for-p12 <tmp/priv_ss.pem >tmp/me.p12");
+CMD('SMIME19', 'smime pkcs12 imp',  "./smime -p12-pem pw-for-p12 passwd <tmp/me.p12 >tmp/me.pem");
+CMD('SMIME20', 'smime query req',   "./smime -qr <tmp/req.pem");
+CMD('SMIME21', 'smime covimp',      "echo foo|./smime -base64|./smime -cat|./smime -unbase64");
+
 CMD('SIG1',  'sig vry shib resp',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal-private/shib-resp.xml");
 CMD('SIG2',  'sig vry shib post',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal-private/shib-resp.qs");
 
@@ -1126,6 +1149,7 @@ ED('XML27', 'Decode-Encode SO and WO: AdvClient ming-prstnt',  10, 't/ac-ming-pr
 ED('XML28', 'Decode-Encode SO and WO: AdvClient ming-ntt',     10, 't/ac-ming-ntt.xml');
 ED('XML29', 'Decode-Encode SO and WO: AdvClient ntt-fixed',    10, 't/ac-ming-ntt-fixed.xml');
 ED('XML30', 'Decode-Encode SO and WO: zx a7n',    10, 't/a7n-len-err.xml');
+ED('XML31', 'Decode-Encode SO and WO: covimp',    10, 't/covimp.xml');
 
 # *** TODO: add EncDec for all other types of protocol messages
 # *** TODO: add specific SSO signature validation tests
