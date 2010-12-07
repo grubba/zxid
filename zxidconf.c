@@ -186,6 +186,7 @@ int zxid_set_opt(zxid_conf* cf, int which, int val)
 {
   switch (which) {
   case 1: zx_debug = val; return val;
+  case 5: exit(val);  /* This is typically used to force __gcov_flush() */
   }
   return -1;
 }
@@ -534,7 +535,7 @@ struct zxid_attr* zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len,
   COPYVAL(at->name, name, name+name_len);
   if (val)
     COPYVAL(at->val, val, val+val_len);
-  D("%s:\tATTR name(%.*s) val(%.*s)", lk, name_len, name, MAX(val_len, 100), STRNULLCHK(val));
+  D("%s:\tATTR name(%.*s)=val(%.*s)", lk, name_len, name, MIN(val_len, 100), STRNULLCHK(val));
   return aa;
 }
 

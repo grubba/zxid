@@ -15,6 +15,8 @@
  * 9.  Making a web service call by directly calling zxid_call()
  *
  * See also: zxid-java.pd, zxidwspdemo.java for server side
+ * http://sp.tas3.pt:8080/zxidservlet/sso/wscprepdemo
+ * ./servlet/WEB-INF/web.xml
  */
 
 import zxidjava.*;   // Pull in the zxidjni.az() API
@@ -190,6 +192,7 @@ public class zxidwscprepdemo extends HttpServlet {
 	out.print("[ <a href=\"?leaf\">zxid_call(leaf)</a>");
 	out.print(" | [ <a href=\"?leafprep\">zxid_wsc_prepare_call(leaf)</a>");
 	out.print(" | <a href=\"?all\">All</a>");
+	out.print(" | <a href=\"?exit\">Exit Java</a>");
 	out.print("]<p>");
 
 	// Demo web service call to zxidhrxmlwsp
@@ -252,6 +255,12 @@ public class zxidwscprepdemo extends HttpServlet {
 		out.print("<p>No EPR found<br>\n");
 	    }
 	}
+
+	if (qs.equals("exit")) {
+	    System.err.print("Controlled exit forced (can be used to cause __gcov_flush())\n");
+	    zxidjni.set_opt(cf, 5, 0);
+	}
+
 	out.print("<p>Done.\n");
     }
 }

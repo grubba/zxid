@@ -31,8 +31,8 @@ use Encode;
 use Digest::MD5;
 use Digest::SHA1;
 use Net::SSLeay qw(get_httpx post_httpx make_headers make_form);  # Need Net::SSLeay-1.24
-#use WWW::Curl::Easy;    # HTTP client library, see curl.haxx.se
-#use WWW::Curl::Multi;
+use WWW::Curl::Easy;    # HTTP client library, see curl.haxx.se
+use WWW::Curl::Multi;
 use XML::Simple;
 #use Net::SMTP;
 #use MIME::Base64;  # plain=decode_base64(b64)   # RFC3548
@@ -133,7 +133,7 @@ sub urienc {
     return $val;
 }
 
-if (0) {
+if (1) {
 sub resp_cb {
     my ($chunk,$curl_id) = @_;
     #warn "resp_cb curl_id($curl_id)";
@@ -148,11 +148,13 @@ sub curl_reset_all {
 }
 
 sub test_http {
-    my ($curl, $cmd, $tsti, $expl, $timeout, $slow, $url) = @_;
+    my ($curl, $cmd, $tsti, $expl, $url, $timeout, $slow) = @_;
     return unless $tst eq 'all' || $tst eq substr($tsti,0,length $tst);
     return if $ntst && $ntst eq substr($tsti,0,length $ntst);
     warn "\n======= $tsti =======";
     
+    $slow ||= 0.5;
+    $timeout ||= 15;
     my $test = tst_link($tsti, $expl, $url);
     my $send_ts = Time::HiRes::time();
     $cmd{$curl_id} = $cmd;
@@ -193,11 +195,13 @@ sub test_http {
 }
 
 sub test_http_post {
-    my ($curl, $cmd, $tsti, $expl, $timeout, $slow, $url, $body) = @_;
+    my ($curl, $cmd, $tsti, $expl, $url, $body, $timeout, $slow) = @_;
     return unless $tst eq 'all' || $tst eq substr($tsti,0,length $tst);
     return if $ntst && $ntst eq substr($tsti,0,length $ntst);
     warn "\n======= $tsti =======";
 
+    $slow ||= 0.5;
+    $timeout ||= 15;
     my $test = tst_link($tsti, $expl, $url);
     my $send_ts = Time::HiRes::time();
     $cmd{$curl_id} = $cmd;
@@ -231,17 +235,10 @@ sub test_http_post {
 $curl_id = 1;
 $curlm = WWW::Curl::Multi->new;  # Multihandle, technically needed
 
-#$curl = new WWW::Curl::Easy;  # Share curl handle so that cookies are shared
 $curlA = new WWW::Curl::Easy;  # Share curl handle so that cookies are shared
-$curlB = new WWW::Curl::Easy;  # Share curl handle so that cookies are shared
-$curlC = new WWW::Curl::Easy;  # Share curl handle so that cookies are shared
-$curlP = new WWW::Curl::Easy;  # Share curl handle so that cookies are shared
 
 sub tA { test_http($curlA, @_); }
-sub tB { test_http($curlB, @_); }
-sub tC { test_http($curlC, @_); }
-sub tD { test_http($curlD, @_); }
-sub tP { test_http($curlP, @_); }
+sub pA { test_http_post($curlA, @_); }
 
 sub send_req {
     my ($what, $send_trace) = @_;
@@ -406,22 +403,12 @@ sub wait_response {
 	    $v_resp += length $rsp;
 	    if (length $rsp) {
 		if ($cmd{$id} eq 'PING'
-		    || $cmd{$id} eq 'GENTOK'
-		    || $cmd{$id} eq 'UPDTOK'
-		    || $cmd{$id} eq 'GETTOK'
-		    || $cmd{$id} eq 'GETLOC'
-		    || $cmd{$id} eq 'GET'
-		    || $cmd{$id} eq 'NOT'
-		    || $cmd{$id} eq 'PUT'
-		    || $cmd{$id} eq 'DEL'
-		    || $cmd{$id} eq 'SIGNIN'
 		    || $cmd{$id} eq 'LOGOUT') {
 		    warn "Non XML cmd($cmd{$id}) url($easy_url{$id}) response($rsp)";
 		} elsif ($cmd{$id} eq 'ST') {
 		    warn "static response len=".length($rsp);
 		} else {
-		    # Wrapped in eval {} to avoid death of wrevd.pl when
-		    # web service sends non XML error messages.
+		    # Wrapped in eval {} to avoid death when web service sends non XML errors
 		    eval {
 			$xx = XMLin $rsp, ForceArray => 1, KeyAttr => [];   # <== Decode XML
 		    };
@@ -445,17 +432,6 @@ sub wait_response {
 	    #printf WS_LOG "%.3f %2.3f %5d %4d %s %s %s\n", $send_ts{$id}, $latency, length($rsp), $id, $user, $key{$id}, $qs{$id}; #substr($qs{$id},0,30);
 	    
 	    if ($cmd{$id} eq 'PING'
-		|| $cmd{$id} eq 'GENTOK'
-		|| $cmd{$id} eq 'UPDTOK'
-		|| $cmd{$id} eq 'GETTOK'
-		|| $cmd{$id} eq 'GETLOC'
-		|| $cmd{$id} eq 'GET'
-		|| $cmd{$id} eq 'PUT'
-		|| $cmd{$id} eq 'DEL'
-		|| $cmd{$id} eq 'SIGNIN'
-		|| $cmd{$id} eq 'LOGOUT'
-		|| $cmd{$id} eq 'SRCHLOC'
-		|| $cmd{$id} eq 'SRCHADR'
 		|| $cmd{$id} eq 'WRSEND') {
 		$lasterror = $rsp;
 		eval { $rr = $jsonobj->decode($rsp); };
@@ -482,25 +458,19 @@ sub wait_response {
 		} else {
 		    $laststatus = 'OK';
 		}
+	    } elsif ($cmd{$id} eq 'AR') {
+		# Extract from the POST binding  page from fields to pass on
+		($AR) = $rsp =~ /<input name="ar" value="(.*?)"/;
+		$laststatus = 'OK';
+		$lasterror = "len=".length($rsp);
+	    } elsif ($cmd{$id} eq 'SP') {
+		# Extract from the POST binding  page from fields to pass on
+		($SAMLResponse) = $rsp =~ /<input name="SAMLResponse" value="(.*?)"/;
+		$laststatus = 'OK';
+		$lasterror = "len=".length($rsp);
 	    } elsif ($cmd{$id} eq 'ST') {
 		$laststatus = 'OK';
 		$lasterror = "len=".length($rsp);
-	    } elsif ($cmd{$id} eq 'GET') {
-		if (!$xx) {
-		    process_error_response('BAD', $user, $sesid{$id}, $qs);
-		} elsif(length @{$$xx{'ArrayOfTagRest'}}) {
-		    process_ary_of_tag_rest_response($xx, $user, $sesid{$id}, $qs);
-		} elsif(length @{$$xx{'Name'}}) {
-		    process_timetag_response($xx, $user, $sesid{$id}, $qs);
-		} else {
-		    process_error_response('NA', $user, $sesid{$id}, $qs);
-		}
-	    } elsif ($cmd{$id} eq 'SEND') {
-		warn "SEND resp";
-		process_sent_response($xx, $user, $sesid{$id}, $qs);
-	    } elsif ($cmd{$id} eq 'HOSTIP') {
-		warn "HOSTIP resp";
-		process_hostip_response($rsp, $user, $sesid{$id}, $qs);
 	    }
 	    delete $easy_url{$id};
 	    delete $cmd{$id};
@@ -508,35 +478,6 @@ sub wait_response {
 	    delete $sesid{$id};
 	    delete $send_ts{$id};
 	}
-    }
-}
-
-### Run in context of inquiring user, typically only in the beginning.
-### process_ary_of_tag_rest_response($xx, $user, $sesid{$id}, $qs);
-
-sub process_tag_rests {
-    my ($tr_ary, $user, $qs) = @_;
-    my ($tagrest, $hr, $ohr, $x, $i, @json);
-    for $tagrest (@{$$tr_ary{'TagRest'}}) {
-	#warn "TAGREST qsid($$qs{'id'}): " . Dumper $tagrest if $$tagrest{'name'} eq 'paulo';
-	# Send event, unless internal update (update triggered by timer on daemon)
-	push @json, 1;
-    }
-    return @json;
-}
-
-sub process_ary_of_tag_rest_response {
-    my ($xx, $user, $sesid, $qs) = @_;
-    my ($tr_ary, $tagrest, $hr, $ohr, $x, $rq);
-    my @json = ();
-    for $tr_ary (@{$$xx{'ArrayOfTagRest'}}) {
-	push @json, process_tag_rests($tr_ary, $user, $qs);
-    }
-    if ($#json >= 0) {
-	$laststatus = 'OK';
-	$lasterror = "Number of tag rests=".$#json+1;
-    } else {
-	$laststatus = 'ERRTR';
     }
 }
 
@@ -642,7 +583,7 @@ sub G {
     return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
     warn "\n======= $tsti =======";
 
-    my ($page, $result, %headers);
+    #my ($page, $result, %headers);  Let these be global!
     my ($proto, $host, $port, $localurl)
 	= $url =~ m%^(https?)://([^:/]+)(?:(\d+))?(/.*?)$%i;
     my $usessl = ($proto =~ /^https$/i ? 1 : 0);
@@ -1130,7 +1071,7 @@ ZXC('ZXC-AS1', 'Authentication Service call: SSO + AZ', 1000, "-az ''", '/dev/nu
 CMD('ZXC-AS2', 'Authentication Service call: An Fail', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:tas -t urn:x-foobar -e '<foobar>Hello</foobar>' -b", 256);
 
 ZXC('ZXC-IM1', 'Identity Mapping Service call', 1000, "-im http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B", '/dev/null');
-ZXC('ZXC-IM2', 'SAML NID Map call', 1000, "-nidmap http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B", '/dev/null');
+ZXC('ZXC-IM2', '* SAML NID Map call', 1000, "-nidmap http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B", '/dev/null');  # SEGV
 ZXC('ZXC-IM3', 'SSOS call', 1000, "-t urn:liberty:ims:2006-08", 't/ssos-req.xml');
 
 ZXC('ZXC-DI1', 'Discovery Service call', 1000, "-di '' -t urn:x-foobar -nd", '/dev/null');
@@ -1143,12 +1084,27 @@ CMD('ZXC-WS3', 'AS + WSF call leaf (x-recurs)', "./zxcall -d -a http://idp.tas3.
 CMD('ZXC-WS4', 'AS + WSF call EPR not found', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t x-none -e '<foobar>Hello</foobar>' -b",512);
 CMD('ZXC-WS5', 'AS + WSF call bad pw', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:bad -t x-none -e '<foobar>Hello</foobar>' -b",256);
 
+### Simulated browsing tests (bit fragile)
+
+tA('ST','LOGIN-IDP1', 'IdP Login screen', 'http://idp.tas3.pt:8081/zxididp?o=F');
+tA('ST','LOGIN-IDP2', 'http://idp.tas3.pt:8081/zxididp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=&zxapp=');
+tA('ST','LOGIN-IDP3', 'http://idp.tas3.pt:8081/zxididp?gl=+Local+Logout+');
+
+tA('ST','SSOHLO1', 'http://sp1.zxidsp.org:8081/zxidhlo?o=E');
+tA('AR','SSOHLO2', 'http://sp1.zxidsp.org:8081/zxidhlo?e=&l0http%3A%2F%2Fidp.tas3.pt%3A8081%2Fzxididp=+Login+with+TAS3+Demo+IdP+%28http%3A%2F%2Fidp.tas3.pt%3A8081%2Fzxididp%29+&fc=1&fn=prstnt&fr=&fq=&fy=&fa=&fm=&fp=0&ff=0');
+
+tA('SP','SSOHLO3', 'http://idp.tas3.pt:8081/zxididp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=$AR&zxapp=');
+
+pA('ST','SSOHLO4', 'http://sp1.zxidsp.org:8081/zxidhlo?o=P', "SAMLResponse=$SAMLResponse");
+tA('ST','SSOHLO5', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Local+Logout+');
+
 # *** TODO: add through GUI testing for SSO
 # *** TODO: via zxidhlo
 # *** TODO: via mod_auth_saml
 # *** TODO: via zxidhlo.php
 # *** TODO: via Net::SAML
 # *** TODO: via SSO servlet
+# http://sp.tas3.pt:8080/zxidservlet/sso/wscprepdemo
 
 CMD('COVIMP1', 'Silly tests just to improve test coverage', "./zxcovimp.sh", 0, 60, 10);
 

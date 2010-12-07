@@ -225,6 +225,7 @@ int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_s
   env->Body = body;
   zx_add_kid(&env->gg, &body->gg);
   env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+  zxid_wsf_decor(cf, 0, env, 1);
   ss = zx_EASY_ENC_elem(cf->ctx, &env->gg);
 
   if (cf->log_issue_msg) {

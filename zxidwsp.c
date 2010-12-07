@@ -115,7 +115,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   hdr->UserInteraction->actor = zx_ref_attr(cf->ctx, &hdr->UserInteraction->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 #endif
 
-  if (ses->curstatus) {
+  if (ses && ses->curstatus) {
     ZX_ADD_KID(hdr, Status, ses->curstatus);
   }
   
@@ -138,7 +138,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     sec->ff12_Assertion = 0;
     
 #if 1
-    if (ses->wsp_msgid && *ses->wsp_msgid) {
+    if (ses && ses->wsp_msgid && *ses->wsp_msgid) {
       hdr->RelatesTo = zx_NEW_a_RelatesTo(cf->ctx, &hdr->gg);
       zx_add_content(cf->ctx, &hdr->RelatesTo->gg, zx_ref_str(cf->ctx, ses->wsp_msgid));
       hdr->RelatesTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
@@ -264,7 +264,13 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
   struct zx_str* issuer;
   zxid_entity* idp_meta;
   zxid_cgi cgi;
-
+  
+  if (!a7n || !a7n->Subject) {
+    ERR("%s: Assertion lacking or does not have Subject. %p", lk, a7n);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "Assertion does not have Subject.", "IDStarMsgNotUnderstood", 0, lk, 0));
+    return 0;
+  }
+  
   issuer = ZX_GET_CONTENT(a7n->Issuer);
   nameid = zxid_decrypt_nameid(cf, a7n->Subject->NameID, a7n->Subject->EncryptedID);
   if (!ZX_GET_CONTENT(nameid)) {

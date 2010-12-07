@@ -1,4 +1,4 @@
-zxcall  -  Web Service Client tool R0.70
+zxcall  -  Web Service Client tool R0.73
 SAML 2.0 and ID-WSF 2.0 are standards for federated identity and web services.
 Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0
@@ -24,7 +24,8 @@ Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml
   -din N           Discovery index (default: 1=pick first).
   -az AZCREDS      Optional authorization credentials. Query string format.
                    N.B. For authorization to work PDP_URL configuration option is needed.
-  -im DSTEID       Map session's login identity to identity at some other SP
+  -im DSTEID       Map session's login identity to identity at some other SP using ID-WSF
+  -nidmap DSTEID   Map session's login identity to identity at some other SP using SAML
   -e SOAPBODY      Pass SOAP body as argument (default is to read from STDIN)
   -b               In response, only return content of SOAP body, omitting Envelope and Body.
   -nd              Discovery only (you need to specify -t SVCTYPE as well)

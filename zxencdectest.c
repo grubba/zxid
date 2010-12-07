@@ -151,6 +151,7 @@ void attribute_sort_test()
 
 void a7n_test()
 {
+  struct timeval srctss;
   zxid_conf* cf;
   zxid_cgi cgi;
   zxid_ses sess;
@@ -160,13 +161,14 @@ void a7n_test()
   zxid_a7n* a7n;
   memset(&cgi, 0, sizeof(cgi));
   memset(&sess, 0, sizeof(sess));
+  memset(&srctss, 0, sizeof(srctss));
 
   sess.uid = "test";
   cf = zxid_new_conf("/var/zxid/");
 #if 1
   ar = zxid_mk_authn_req(cf, &cgi);
   sp_meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(ar->Issuer));
-  a7n = zxid_sso_issue_a7n(cf, &cgi, &sess, 0, sp_meta, 0, &nameid, 0, ar);
+  a7n = zxid_sso_issue_a7n(cf, &cgi, &sess, &srctss, sp_meta, 0, &nameid, 0, ar);
 #else
   a7n = zxid_mk_usr_a7n_to_sp(cf, &sess, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, 0);
 #endif
@@ -187,7 +189,9 @@ void covimp_test()
   struct zx_str* ss;
   zxid_conf* cf;
   zxid_cgi cgi;
+  zxid_ses sess;
   memset(&cgi, 0, sizeof(cgi));
+  memset(&sess, 0, sizeof(sess));
 
   printf("version(%x)\n", zxid_version());
   cf = zxid_new_conf("/var/zxid/");
@@ -209,6 +213,7 @@ void covimp_test()
   printf("memmem(%s)\n", zx_memmem("foobar", 6, "oba", 3));
   ss = zx_ref_str(cf->ctx, "abc");
   zx_str_conv(ss, &outlen, &out);
+  zxid_wsp_decorate(cf, &sess, 0, "<foo/>");
   setenv("HTTP_COOKIE", "_liberty_idp=\"test8\"", 1);
   zxid_cdc_read(cf, &cgi);
   cgi.cdc = "test9";

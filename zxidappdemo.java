@@ -198,6 +198,7 @@ public class zxidappdemo extends HttpServlet {
 	out.print(" | <a href=\"?multidi\">Multi discovery</a>");
 	out.print(" | <a href=\"?multi\">Multi discovery and call</a>");
 	out.print(" | <a href=\"?all\">All</a>");
+	out.print(" | <a href=\"?exit\">Exit Java</a>");
 	out.print("]<p>");
 
 	// Demo web service call to zxidhrxmlwsp
@@ -346,6 +347,12 @@ public class zxidappdemo extends HttpServlet {
 		out.print("</textarea>\n");
 	    }
 	}
+
+	if (qs.equals("exit")) {
+	    System.err.print("Controlled exit forced (can be used to cause __gcov_flush())\n");
+	    zxidjni.set_opt(cf, 5, 0);
+	}
+
 	out.print("<p>Done.\n");
     }
 }

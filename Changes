@@ -72,6 +72,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
 
 zxid-0.73:: 6.12.2010
     - Added ssoa7n and tgta7n attributes (TAS3 feature req #484)
+    - Added IDWSF SOAP headers to discovery and as responses
+    - Fixed a problem with copy_file(). This could cause lost audit trail when copy instead of deletion was chosen on platform that does not use links.
     - NOTPUB
 
 zxid-0.72:: 5.12.2010

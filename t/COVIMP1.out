@@ -1,14 +1,16 @@
 8dLS-STphqyG_fezbJS83zK-7BU.
 oo
 r2 nid(a-persistent-nid) should be(a-persistent-nid)
-<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"></sp:StatusCode></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status><xasp:XACMLAuthzDecisionQuery xmlns:xasp="urn:oasis:xacml:2.0:saml:protocol:schema:os" ID="R-DSFQiKRKoAKITRXj7sA6EdR" IssueInstant="2010-12-06T18:44:47Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xasp:XACMLAuthzDecisionQuery>version(73)
-urlenc(test1%3A%2F%2Ffoo%3Fa%3Db%26c%3Dd%20eå)
+<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"></sp:StatusCode></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status><xasp:XACMLAuthzDecisionQuery xmlns:xasp="urn:oasis:xacml:2.0:saml:protocol:schema:os" ID="RrBeneQo7hYUvJSp-icosMHo8" IssueInstant="2010-12-06T23:11:41Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xasp:XACMLAuthzDecisionQuery>version(73)
+urlenc(test1%3A%2F%2Ffoo%3Fa%3Db%26c%3Dd%20eõ)
 hexdec()
 parse err(test6: Parse error at char 0/7 (prev char, char, next char: 0x00 0x66 0x6f)
 foobar
 ^
 )
 memmem(obar)
+Location: https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=E&c=test8
+
 SP specific NameID:   (bob)
 SP specific NameID:   (foo)
 SP specific NameID:   (fool)

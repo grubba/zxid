@@ -436,13 +436,13 @@ linkrest:
 
   }
 #ifdef MINGW
-  fd_to = CreateFile(buf, MINGW_RW_PERM, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+  fd_to = CreateFile(to, MINGW_RW_PERM, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 #else
-  fd_to = open(buf, O_RDWR | O_CREAT, 0666);
+  fd_to = open(to, O_RDWR | O_CREAT, 0666);
 #endif
   if (fd_to == BADFD) {
       perror("openfile_ro");
-      ERR("%s: Error opening from(%s) euid=%d egid=%d", logkey, from, geteuid(), getegid());
+      ERR("%s: Error opening to(%s) euid=%d egid=%d", logkey, to, geteuid(), getegid());
       return BADFD;
   }
 
@@ -706,7 +706,7 @@ char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char*
  * caller can overwrite with nul, if you like).
  *
  * out_buf:: Buffer where result will be written. It must be 28 characters long and already allocated. The buffer will not be null terminated.
- * len:: Length of data. -1=use strlen(data)
+ * len:: Length of data. -2=use strlen(data)
  * data:: Data to be digested
  * return:: Pointer one past last character written (not nul terminated) */
 
@@ -714,7 +714,7 @@ char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char*
 char* sha1_safe_base64(char* out_buf, int len, const char* data)
 {
   char sha1[20];
-  if (len == -1)
+  if (len == -2)
     len = strlen(data);
   SHA1((unsigned char*)data, len, (unsigned char*)sha1);
   return base64_fancy_raw(sha1, 20, out_buf, safe_basis_64, 1<<31, 0, 0, '.');

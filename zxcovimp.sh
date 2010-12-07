@@ -4,6 +4,7 @@
 # http://sp1.zxidsp.org:8081/zxidhlo?o=E
 # http://sp.tas3.pt:8080/zxidservlet/appdemo
 # http://idp.tas3.pt:8081/zxididp?o=F
+# killall -X java
 # gprof zxcall
 
 ./zxcall -dc -din 2 -q -v --
