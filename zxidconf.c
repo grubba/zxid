@@ -541,6 +541,10 @@ struct zxid_attr* zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len,
 
 /*() Parse map specification and add it to linked list
  * srcns$A$rule$b$ext;src$A$rule$b$ext;...
+ * The list ends up being built in reverse order, which at runtime
+ * causes last stanzas to be evaluated first and first match is used.
+ * Thus you should place most specific rules last and most generic rules first.
+ * See also: zxid_find_map() and zxid_map_val()
  */
 
 /* Called by:  zxid_init_conf x7, zxid_parse_conf_raw x7 */
@@ -862,7 +866,11 @@ struct zxid_need* zxid_is_needed(struct zxid_need* need, char* name)
 }
 
 /*() Check whether attribute is in a (needed or wanted) list. Just a linear
- * scan as it is simple and good enough for handful of attributes. */
+ * scan as it is simple and good enough for handful of attributes.
+ * The list ends up being built in reverse order, which at runtime
+ * causes last stanzas to be evaluated first and first match is used.
+ * Thus you should place most specific rules last and most generic rules first.
+ * See also: zxid_load_map() and zxid_map_val() */
 
 /* Called by:  pool2apache, zxid_add_at_values, zxid_add_attr_to_ses, zxid_pepmap_extract, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
 struct zxid_map* zxid_find_map(struct zxid_map* map, char* name)

@@ -801,18 +801,92 @@ erro:
   return 0;
 }
 
-/*() Transform content according to map. The returned zx_str will be nul terminated. */
+/*() Figure out sp_name_buf corresponding to affiliation */
+
+struct zx_str* zxid_get_affil_and_sp_name_buf(zxid_conf* cf, zxid_entity* meta, char* sp_name_buf)
+{
+  struct zx_str* affil;
+  if (meta && meta->ed && meta->ed->AffiliationDescriptor
+      && (affil = &meta->ed->AffiliationDescriptor->affiliationOwnerID->g)
+      && affil->s && affil->len)
+    ; /* affil is good */
+  else
+    affil = meta && meta->ed ? &meta->ed->entityID->g : 0;
+  if (!affil) {
+    ERR("Unable to determine affiliation ID or provider ID. Metadata missing? %p %p", meta, meta?meta->ed:0);
+    *sp_name_buf = 0;
+    return 0;
+  }
+  zxid_nice_sha1(cf, sp_name_buf, ZXID_MAX_SP_NAME_BUF, affil, affil, 7);
+  return affil;
+}
+
+zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str* affil, const char* uid, const char* sp_name_buf, int allow_create, int want_transient, struct timeval* srcts, struct zx_str* id, char** logop)
+{
+  zxid_nid* nameid = zxid_check_fed(cf, affil, uid, allow_create, srcts, prvid, id, sp_name_buf);
+  if (nameid) {
+    if (want_transient) {
+      D("Despite old fed, using transient due to want_transient=%d", want_transient);
+      zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
+      if (logop) *logop = "TMPDI\0";
+    } else
+      if (logop) *logop = "FEDDI\0";
+  } else {
+    D("No nameid (because of no federation), using transient %d", 0);
+    nameid = zx_NEW_sa_NameID(cf->ctx,0);
+    zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
+    if (logop) *logop = "TMPDI\0";
+  }
+  return nameid;
+}
+
+/*() Transform content according to map. The returned zx_str will be nul terminated.
+ * The list ends up being built in reverse order, which at runtime
+ * causes last stanzas to be evaluated first and first match is used.
+ * Thus you should place most specific rules last and most generic rules first.
+ * See also: zxid_load_map() and zxid_find_map() */
 
 /* Called by:  pool2apache x2, zxid_add_at_values, zxid_pepmap_extract x2, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
-struct zx_str* zxid_map_val(zxid_conf* cf, struct zxid_map* map, struct zx_str* val)
+struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, struct zx_str* val)
 {
+  zxid_a7n* a7n;
+  struct zx_sa_AttributeStatement_s* at_stmt;
+  struct zx_sa_Attribute_s* at;
   struct zx_str* ss = val;
+  char sp_name_buf[ZXID_MAX_SP_NAME_BUF];
   char* bin;
   char* p;
   int len;
   if (!map)
     return val;
-  switch (map->rule) {
+  switch (map->rule & ZXID_MAP_RULE_WRAP_MASK) {
+  case 0: break /* No wrap */
+  case ZXID_MAP_RULE_WRAP_A7N:   /* 0x10 Wrap the attribute in SAML2 assertion */
+    affil = zxid_get_affil_and_sp_name_buf(cf, sp_meta, sp_name_buf);
+    nameid = zxid_get_fed_nameid(cf, meta && meta->ed ? &meta->ed->entityID->g : 0, affil,
+				 ses->uid, sp_name_buf, cf->di_allow_create,
+				 (cf->di_nid_fmt == 't'), 0, 0, 0);
+
+    at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0);
+    at_stmt->Attribute = zxid_mk_sa_attribute_ss(cf, &at_stmt->gg, rule->dst?rule->dst:"val", 0, val);
+
+    a7n = zxid_mk_a7n(cf,
+		      zx_dup_str(cf->ctx, meta->eid),
+		      zxid_mk_subj(cf, 0, meta, nameid),
+		      0,
+		      at_stmt);
+    break;
+  case ZXID_MAP_RULE_WRAP_X509:  /* 0x20 Wrap the attribute in X509 attribute certificate */
+    break;
+  case ZXID_MAP_RULE_WRAP_FILE:  /* 0x30 Get attribute value from file specified in ext */
+    zxid_get_affil_and_sp_name_buf(cf, meta, sp_name_buf);
+    bin = read_all_alloc(cf->ctx, "map_val from file", 0, 0,
+			 "%s" ZXID_UID_DIR "%s/%s/%s", cf->path, uid, sp_name_buf, map->ext);
+    break;
+  default:
+    NEVER("unknow map_val rule=%x", map->rule);
+  }
+  switch (map->rule & ZXID_MAP_RULE_ENC_MASK) {
   case ZXID_MAP_RULE_RENAME:     break;
   case ZXID_MAP_RULE_FEIDEDEC:   /* Norway */
     /*   "feide": FEIDE currently (2008) stores several values in a single
@@ -862,7 +936,7 @@ struct zx_str* zxid_map_val(zxid_conf* cf, struct zxid_map* map, struct zx_str* 
     base64_fancy_raw(val->s, val->len, ss->s, safe_basis_64, 1<<31, 0, 0, '=');
     break;
   default:
-    NEVER("unknow map_val rule=%d", map->rule);
+    NEVER("unknow map_val rule=%x", map->rule);
   }
   return ss;
 }

@@ -360,10 +360,9 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses, str
   return an_stmt;
 }
 
-/*() Construct SAML SAML Attribute */
+/*() Construct SAML SAML Attribute from string */
 
-/* Called by:  zxid_add_ldif_attrs, zxid_gen_boots, zxid_mk_user_a7n_to_sp x3 */
-struct zx_sa_Attribute_s* zxid_mk_sa_attribute(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, const char* val)
+struct zx_sa_Attribute_s* zxid_mk_sa_attribute_ss(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, struct zx_str** val)
 {
   struct zx_sa_Attribute_s* r = zx_NEW_sa_Attribute(cf->ctx, father);
   if (namfmt)
@@ -371,8 +370,16 @@ struct zx_sa_Attribute_s* zxid_mk_sa_attribute(zxid_conf* cf, struct zx_elem_s* 
   r->Name = zx_dup_attr(cf->ctx, &r->gg, zx_Name_ATTR, name);
   r->AttributeValue = zx_NEW_sa_AttributeValue(cf->ctx, &r->gg);
   if (val)
-    zx_add_content(cf->ctx, &r->AttributeValue->gg, zx_dup_str(cf->ctx, val));
+    zx_add_content(cf->ctx, &r->AttributeValue->gg, val);
   return r;
+}
+
+/*() Construct SAML SAML Attribute */
+
+/* Called by:  zxid_add_ldif_attrs, zxid_gen_boots, zxid_mk_user_a7n_to_sp x3 */
+struct zx_sa_Attribute_s* zxid_mk_sa_attribute(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, const char* val)
+{
+  return zxid_mk_sa_attribute_ss(cf, father, name, namfmt, zx_dup_str(cf->ctx, val));
 }
 
 /*() Construct SAML protocol Response (such as may be used to carry assertion in SSO) */

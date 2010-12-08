@@ -154,37 +154,6 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
   return ss;
 }
 
-/*() Parse LDIF format and insert attributes to linked list. Return new head of the list.
- * The input is temporarily modified and then restored. Do not pass const string. */
-
-/* Called by:  zxid_mk_usr_a7n_to_sp x4 */
-void zxid_add_ldif_attrs(zxid_conf* cf, struct zx_elem_s* father, char* p, char* lk)
-{
-  char* name;
-  char* val;
-
-  for (; p; ++p) {
-    name = p;
-    p = strstr(p, ": ");
-    if (!p)
-      break;
-    *p = 0;
-    val = p+2;
-    p = strchr(val, '\n');  /* *** parsing LDIF is fragile if values are multiline */
-    if (p)
-      *p = 0;
-
-    D("%s: ATTR(%s)=VAL(%s)", lk, name, val);
-    zxid_mk_sa_attribute(cf, father, name, 0, val);
-
-    val[-2] = ':'; /* restore */
-    if (p)
-      *p = '\n';
-    else
-      break;
-  }
-}
-
 #define ZXID_ADD_BS_LVL_LIM 2  /* 2=only add full bootstraps on SSO. Only add di there after. */
 
 /*() Process .bs directory. See also zxid_di_query() */
@@ -285,9 +254,84 @@ void zxid_gen_boots(zxid_conf* cf, struct zx_sa_AttributeStatement_s* father, co
   D_DEDENT("gen_bs: ");
 }
 
+static void zxid_add_mapped_attr(zxid_conf* cf, struct zx_elem_s* father, char* lk, struct zxid_map* aamap, struct zxid_map* sp_aamap, const char* name, const char* val)
+{
+  struct zxid_map* map;
+  D("%s: ATTR(%s)=VAL(%s)", lk, name, val);
+  map = zxid_find_map(sp_aamap, name);
+  if (!map)
+    map = zxid_find_map(aamap, name);
+  if (map && map->rule != ZXID_MAP_RULE_DEL) {
+    if (map->dst)
+      name = map->dst;
+    zxid_mk_sa_attribute_ss(cf, father, name, 0,
+			    zxid_map_val(cf, map, zx_ref_str(cf->ctx, val)));
+  } else {
+    D("Attribute(%s) filtered out either by del rule in aamap, or does not match aamap %p", name, map);
+  }
+}
+
+/*() Parse LDIF format and insert attributes to linked list. Return new head of the list.
+ * The input is temporarily modified and then restored. Do not pass const string. */
+
+/* Called by:  zxid_mk_usr_a7n_to_sp x4 */
+static void zxid_add_ldif_attrs(zxid_conf* cf, struct zx_elem_s* father, char* p, char* lk, struct zxid_map* aamap, struct zxid_map* sp_aamap)
+{
+  struct zxid_map* map;
+  char* name;
+  char* val;
+
+  for (; p; ++p) {
+    name = p;
+    p = strstr(p, ": ");
+    if (!p)
+      break;
+    *p = 0;
+    val = p+2;
+    p = strchr(val, '\n');  /* *** parsing LDIF is fragile if values are multiline */
+    if (p)
+      *p = 0;
+    
+    zxid_add_mapped_attr(cf, father, lk, aamap, sp_aamap, name, val);
+    
+    val[-2] = ':'; /* restore */
+    if (p)
+      *p = '\n';
+    else
+      break;
+  }
+}
+
+/*() Read Attribute Authority Map */
+
+static struct zxid_map* zxid_read_map(zxid_conf* cf, const char* sp_name_buf, const char* mapname)
+{
+  char* p;
+  char* buf = read_all_alloc(cf->ctx, "read_aamap", 0, 0, "%s" ZXID_UID_DIR ".all/%s/.cf", cf->path,sp_name_buf);
+  if (!buf)
+    return 0;
+  p = strstr(buf, mapname);
+  if (!p) {
+    ERR(".cf file does not contain AAMAP directive buf(%s)", buf);
+    return 0;
+  }
+  p += strlen(mapname);
+  return zxid_load_map(cf, 0, p);
+}
+
+static void zxid_read_ldif_attrs(zxid_conf* cf, const char* sp_name_buf, const char* uid, struct zxid_map* aamap, struct zxid_map* sp_aamap, struct zx_sa_AttributeStatement_s* at_stmt)
+{
+  char* buf = read_all_alloc(cf->ctx, "read_ldif_attrs", 0, 0,
+			     "%s" ZXID_UID_DIR "%s/%s/.at", cf->path, uid, sp_name_buf);
+  if (buf)
+    zxid_add_ldif_attrs(cf, &at_stmt->gg, buf, "read_ldif_attrs", aamap, sp_aamap);
+}
+
 /*(i) Construct an assertion given user's attribute and bootstrap configuration.
- * This involves addedn attributes in user's .bs/.at, SP specific .at, as well as
- * .all/.bs/.at and .all's SP specific attributes. Then the bootstrap EPRs are added.
+ * This involves adding attributes in user's .bs/.at, SP specific .at, as well as
+ * .all/.bs/.at and .all's SP specific attributes. The attributes are filtered
+ * and converted according to global and SP specific AAMAP.
+ * Finally the bootstrap EPRs are added.
  *
  * bs_lvl:: 0: DI (do not add any bs), 1: add all bootstraps at sso level,
  *     <= cf->bootstrap_level: add all boostraps, > cf->bootstrap_level: only add di BS. */
@@ -295,14 +339,20 @@ void zxid_gen_boots(zxid_conf* cf, struct zx_sa_AttributeStatement_s* father, co
 /* Called by:  zxid_add_fed_tok2epr, zxid_imreq, zxid_sso_issue_a7n */
 zxid_a7n* zxid_mk_usr_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, int bs_lvl)
 {
+  struct zxid_map* aamap;
+  struct zxid_map* sp_aamap;
   zxid_a7n* a7n;
   struct zx_sa_AttributeStatement_s* at_stmt;
-  struct zx_sa_Attribute_s* at;
   char* buf;
   char dir[ZXID_MAX_DIR];
 
   D_INDENT("mka7n: ");
   D("sp_eid(%s)", sp_meta->eid);
+
+  aamap = zxid_read_aamap(cf, ".bs", "AAMAP=");
+  if (!aamap)
+    zxid_load_map(cf, 0, ZXID_DEFAULT_IDP_AAMAP);
+  sp_aamap = zxid_read_aamap(cf, sp_name_buf, "AAMAP=");
 
   at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0);
   at_stmt->Attribute = zxid_mk_sa_attribute(cf, &at_stmt->gg, "zxididp", 0, ZXID_REL " " ZXID_COMPILE_DATE);
@@ -316,25 +366,25 @@ zxid_a7n* zxid_mk_usr_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, z
   if (cf->fedusername_suffix && cf->fedusername_suffix[0]) {
     snprintf(dir, sizeof(dir), "%.*s@%s", ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid), cf->fedusername_suffix);
     dir[sizeof(dir)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
-    zxid_mk_sa_attribute(cf, &at_stmt->gg, "fedusername", 0, zx_dup_cstr(cf->ctx, dir));
+    zxid_add_mapped_attr(cf, &at_stmt->gg, "mk_usr_a7n_to_sp", aamap,sp_aamap, "fedusername", dir);
     if (cf->idpatopt & 0x01)
-      at = zxid_mk_sa_attribute(cf, &at_stmt->gg, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri", zx_dup_cstr(cf->ctx, dir));
+      zxid_add_mapped_attr(cf, &at_stmt->gg, "mk_usr_a7n_to_sp", aamap,sp_aamap, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, dir);
+    //zxid_mk_sa_attribute(cf, &at_stmt->gg, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri", zx_dup_cstr(cf->ctx, dir));
   }
-  buf = read_all_alloc(cf->ctx, "idpsso_uid_at", 0,0, "%s" ZXID_UID_DIR "%s/.bs/.at",cf->path,uid);
-  if (buf)
-    zxid_add_ldif_attrs(cf, &at_stmt->gg, buf,"idpsso_uid_at");
-  
-  buf = read_all_alloc(cf->ctx, "idpsso_uid_sp_at", 0, 0, "%s" ZXID_UID_DIR "%s/%s/.at", cf->path, uid, sp_name_buf);
-  if (buf)
-    zxid_add_ldif_attrs(cf, &at_stmt->gg, buf,"idpsso_uid_sp_at");
 
-  buf = read_all_alloc(cf->ctx, "idpsso_all_at", 0, 0, "%s" ZXID_UID_DIR ".all/.bs/.at", cf->path);
-  if (buf)
-    zxid_add_ldif_attrs(cf, &at_stmt->gg, buf,"idpsso_all_at");
+  /* Following idpsesid attribute risks exposing federation-wide temporary unique ID.
+   * This is dangerous as it provides a correlation handle to participants of the
+   * session that would otherwise just have had pairwise pseudonyms. Even the regular
+   * session index is pariwise safe.
+   * As this is dangerous to privacy, it is disabled in the default AAMAP. You need to
+   * enable it explicitly in deployment specific AAMAP (in .all/.bs/.cf file) if you
+   * want it. There you can also specify whether it will be wrapped in assertion. */
+  zxid_add_mapped_attr(cf, &at_stmt->gg, "mk_usr_a7n_to_sp", aamap,sp_aamap, "idpsesid", ses->sid);
 
-  buf = read_all_alloc(cf->ctx, "idpsso_all_sp_at", 0, 0, "%s" ZXID_UID_DIR ".all/%s/.at", cf->path,sp_name_buf);
-  if (buf)
-    zxid_add_ldif_attrs(cf, &at_stmt->gg, buf,"idpsso_all_sp_at");
+  zxid_read_ldif_attrs(cf, ".bs",       uid,    aamap, sp_aamap, at_stmt);
+  zxid_read_ldif_attrs(cf, sp_name_buf, uid,    aamap, sp_aamap, at_stmt);
+  zxid_read_ldif_attrs(cf, ".bs",       ".all", aamap, sp_aamap, at_stmt);
+  zxid_read_ldif_attrs(cf, sp_name_buf, ".all", aamap, sp_aamap, at_stmt);
   D("sp_eid(%s) bs_lvl=%d", sp_meta->eid, bs_lvl);
   
   /* Process bootstraps */
@@ -484,7 +534,7 @@ char* zxid_add_fed_tok2epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int bs
   struct zx_di_SecurityContext_s* sc;
   struct zx_str* prvid;
   struct zx_str* affil;
-  char sp_name_buf[1024];
+  char sp_name_buf[ZXID_MAX_SP_NAME_BUF];
   char* logop;
 
   if (prvid = ZX_GET_CONTENT(epr->Metadata->ProviderID)) {
@@ -498,29 +548,11 @@ char* zxid_add_fed_tok2epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int bs
     return 0;
   }
   
-  if (sp_meta->ed && sp_meta->ed->AffiliationDescriptor
-      && (affil = &sp_meta->ed->AffiliationDescriptor->affiliationOwnerID->g)
-      && affil->s && affil->len)
-    ; /* affil is good */
-  else
-    affil = prvid;
-  
-  zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
+  affil = zxid_get_affil_and_sp_name_buf(cf, sp_meta, sp_name_buf);
   D("sp_name_buf(%s) ProviderID(%.*s) di_allow_create=%d", sp_name_buf, prvid->len, prvid->s, cf->di_allow_create);
   
-  nameid = zxid_check_fed(cf, affil, uid, cf->di_allow_create, &srcts, prvid, 0/*ID*/,sp_name_buf);
-  if (nameid) {
-    if (cf->di_nid_fmt == 't') {
-      zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
-      logop = "TMPDI";
-    } else
-      logop = "FEDDI";
-  } else {
-    D("No nameid (because of no federation), using transient %d", 0);
-    nameid = zx_NEW_sa_NameID(cf->ctx,0);
-    zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
-    logop = "TMPDI";
-  }
+  nameid = zxid_get_fed_nameid(cf, prvid, affil, uid, sp_name_buf, cf->di_allow_create,
+			       (cf->di_nid_fmt == 't'), &srcts, 0, &logop);
   
   /* Generate access credential */
   
@@ -561,8 +593,9 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
   zxid_a7n* a7n;
   struct zx_sp_NameIDPolicy_s* nidpol;
   struct zx_sa_SubjectConfirmation_s* sc;
+  struct zx_str* issuer;
   struct zx_str* affil;
-  char sp_name_buf[1024];
+  char sp_name_buf[ZXID_MAX_SP_NAME_BUF];
   D("sp_eid(%s)", sp_meta->eid);
 
   if (ar->IssueInstant && ar->IssueInstant->g.len && ar->IssueInstant->g.s)
@@ -583,25 +616,15 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
 
   /* Check for federation. */
   
-  affil = nidpol && nidpol->SPNameQualifier ? &nidpol->SPNameQualifier->g : ZX_GET_CONTENT(ar->Issuer);
+  issuer = ZX_GET_CONTENT(ar->Issuer);
+  affil = nidpol && nidpol->SPNameQualifier ? &nidpol->SPNameQualifier->g : issuer;
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
   D("sp_name_buf(%s)  allow_create=%d", sp_name_buf, cgi->allow_create);
-  *nameid = zxid_check_fed(cf, affil, ses->uid, cgi->allow_create,
-			  srcts, ZX_GET_CONTENT(ar->Issuer), &ar->ID->g, sp_name_buf);
 
-  if (*nameid) {
-    if (cgi->nid_fmt && !strcmp(cgi->nid_fmt, "trnsnt")) {
-      D("Despite old fed, using transient due to cgi->nid_fmt(%s)", STRNULLCHKD(cgi->nid_fmt));
-      zxid_mk_transient_nid(cf, *nameid, sp_name_buf, ses->uid);
-      if (logop) *logop = "ITSSO";
-    } else
-      if (logop) *logop = "IFSSO";
-  } else {
-    D("No nameid (because of no federation), using transient %d", 0);
-    *nameid = zx_NEW_sa_NameID(cf->ctx,0);
-    zxid_mk_transient_nid(cf, *nameid, sp_name_buf, ses->uid);
-    if (logop) *logop = "ITSSO";
-  }
+  *nameid = zxid_get_fed_nameid(cf, issuer, affil, ses->uid, sp_name_buf, cgi->allow_create,
+				(cgi->nid_fmt && !strcmp(cgi->nid_fmt, "trnsnt")),
+				srcts, &ar->ID->g, logop);
+  logop[3] = 'S';  logop[4] = 'S';  logop[5] = 'O';  /* Patch in SSO */
 
   a7n = zxid_mk_usr_a7n_to_sp(cf, ses, ses->uid, *nameid, sp_meta, sp_name_buf, 1);  /* SSO a7n */
 

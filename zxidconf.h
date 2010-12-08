@@ -630,6 +630,10 @@
 //#define ZXID_XACML2_ACT   "Action=$Action"
 //#define ZXID_XACML2_ENV   "ZXID_PEPVers"
 
+/*(c) Default AAMAP to pass all attributes (except dangerous ones) through.
+ * idpsesid is blocked on grounds of being a sessionwide correlation handle. */
+#define ZXID_DEFAULT_IDP_AAMAP "$*$$$;$idpsesid$del$$"  /* (compile) */
+
 /*(c) Whitelists and blacklists for the primitive SSO local PDP. Comma separated lists. */
 
 #define ZXID_LOCALPDP_ROLE_PERMIT 0   /* Whitelist of roles (empty: anything goes) */
@@ -656,24 +660,6 @@
 /*(c) Body tag for some old ZXID generated pages. Edit this to change the colors. But usually
  * you should be editing stylesheet or template. */
 #define ZXID_BODY_TAG "<body bgcolor=white>"  /* (compile) */
-
-#if 0
-
-#define ZXID_IDP_SEL_START "<title>ZXID SP SSO: Choose IdP</title><link type=\"text/css\" rel=stylesheet href=\"idpsel.css\">" ZXID_BODY_TAG "<h1 class=zxtop>ZXID SP Federated SSO (user NOT logged in, no session)</h1>\n"
-
-#define ZXID_IDP_SEL_NEW_IDP "<h3>Login Using New IdP</h3>\n<i>A new IdP is one whose metadata we do not have yet. We need to know the IdP URL (aka Entity ID) in order to fetch the metadata using the well known location method. You will need to ask the adminstrator of the IdP to tell you what the EntityID is.</i>\n<p>IdP URL <input name=e size=80><input type=submit name=l0 value=\" Login \"><br>\n"
-
-/*#define ZXID_IDP_SEL_NEW_IDP "<h3>Login Using New IdP</h3>\n<i>A new IdP is one whose metadata we do not have yet. We need to know the IdP URL (aka Entity ID) in order to fetch the metadata using the well known location method. You will need to ask the adminstrator of the IdP to tell you what the EntityID is.</i>\n<p>IdP URL <input name=e size=80><input type=submit name=l1 value=\" Login (A2) \">\n<input type=submit name=l2 value=\" Login (P2) \"><br>\n"*/
-
-#define ZXID_IDP_SEL_OUR_EID "Entity ID of this SP (click on the link to fetch the SP metadata): "
-
-#define ZXID_IDP_SEL_TECH_USER "<h3>Technical options</h3><input type=checkbox name=fc value=1 checked> Create federation, NID Format: <select name=fn><option value=prstnt>Persistent<option value=trnsnt>Transient<option value=\"\">(none)</select><br>\n"
-
-#define ZXID_IDP_SEL_TECH_SITE "<input type=hidden name=fq value=\"\"><input type=hidden name=fy value=\"\"><input type=hidden name=fa value=\"\"><input type=hidden name=fm value=\"\"><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h -->"
-
-#define ZXID_IDP_SEL_FOOTER  "<div class=zxbot><a class=zx href=\"http://zxid.org/\">zxid.org</a>, "
-#define ZXID_IDP_SEL_END     "</div>"
-#endif
 
 /*(c) IdP Selector Page URL
  * If the above simple customization options are not sufficient, you can

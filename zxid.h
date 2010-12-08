@@ -499,15 +499,20 @@ struct zxid_cstr_list {
   char* s;
 };
 
-#define ZXID_MAP_RULE_RENAME     0
-#define ZXID_MAP_RULE_DEL        1  /* Filter attribute out */
-#define ZXID_MAP_RULE_RESET      2  /* Reset the map, dropping previous config. */
-#define ZXID_MAP_RULE_FEIDEDEC   3  /* Norway */
-#define ZXID_MAP_RULE_FEIDEENC   4  /* Norway */
-#define ZXID_MAP_RULE_UNSB64_INF 5  /* Decode safebase64-inflate ([RFC3548], [RFC1951]) */
-#define ZXID_MAP_RULE_DEF_SB64   6  /* Encode deflate-safebase64 ([RFC1951], [RFC3548]) */
-#define ZXID_MAP_RULE_UNSB64     7  /* NZ: Decode safebase64 ([RFC3548]) */
-#define ZXID_MAP_RULE_SB64       8  /* NZ: Encode safebase64 ([RFC3548]) */
+#define ZXID_MAP_RULE_RENAME     0x00
+#define ZXID_MAP_RULE_DEL        0x01  /* Filter attribute out */
+#define ZXID_MAP_RULE_RESET      0x02  /* Reset the map, dropping previous config. */
+#define ZXID_MAP_RULE_FEIDEDEC   0x03  /* Norway */
+#define ZXID_MAP_RULE_FEIDEENC   0x04  /* Norway */
+#define ZXID_MAP_RULE_UNSB64_INF 0x05  /* Decode safebase64-inflate ([RFC3548], [RFC1951]) */
+#define ZXID_MAP_RULE_DEF_SB64   0x06  /* Encode deflate-safebase64 ([RFC1951], [RFC3548]) */
+#define ZXID_MAP_RULE_UNSB64     0x07  /* NZ: Decode safebase64 ([RFC3548]) */
+#define ZXID_MAP_RULE_SB64       0x08  /* NZ: Encode safebase64 ([RFC3548]) */
+#define ZXID_MAP_RULE_ENC_MASK   0x0f
+#define ZXID_MAP_RULE_WRAP_A7N   0x10  /* Wrap the attribute in SAML2 assertion */
+#define ZXID_MAP_RULE_WRAP_X509  0x20  /* Wrap the attribute in X509 attribute certificate */
+#define ZXID_MAP_RULE_WRAP_FILE  0x30  /* Get attribute value from file specified in ext */
+#define ZXID_MAP_RULE_WRAP_MASK  0x30
 
 /*(s) Attribute source definition */
 
@@ -579,6 +584,7 @@ struct zxid_invite {
 #define ZXID_MAX_CURL_BUF  (10*1024*1024-1)  /* Buffer reallocation will not grow beyond this. */
 #define ZXID_MAX_EID  (1024)
 #define ZXID_MAX_DIR  (4*1024)
+#define ZXID_MAX_SP_NAME_BUF (1024)
 
 /* --------------- zxid_simple() API (see zxidsimp.c) --------------- */
 
@@ -820,6 +826,9 @@ ZXID_DECL char* zxid_extract_body(zxid_conf* cf, char* enve);
 
 ZXID_DECL char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey);
 
+ZXID_DECL struct zx_str* zxid_get_affil_and_sp_name_buf(zxid_conf* cf, zxid_entity* meta, char* sp_name_buf);
+ZXID_DECL zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str* affil, const char* uid, const char* sp_name_buf, int allow_create, int want_transient, struct timeval* srcts, struct zx_str* id, char** logop);
+
 /* zxidloc */
 
 ZXID_DECL struct zx_str* zxid_idp_loc_raw(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* idp_meta, int svc_type, char* binding, int req);
@@ -853,7 +862,6 @@ ZXID_DECL void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char
 ZXID_DECL int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issued_to, const char* lk, const char* uid);
 ZXID_DECL struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Response_s* resp, struct zx_sp_AuthnRequest_s* ar);
 ZXID_DECL zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct timeval* srcts, zxid_entity* sp_meta, struct zx_str* acsurl, zxid_nid** nameid, char** logop, struct zx_sp_AuthnRequest_s* ar);
-ZXID_DECL void zxid_add_ldif_attrs(zxid_conf* cf, struct zx_elem_s* father, char* p, char* lk);
 ZXID_DECL void zxid_gen_boots(zxid_conf* cf, struct zx_sa_AttributeStatement_s* father, const char* uid, char* path, int add_bs_lvl);
 ZXID_DECL zxid_a7n* zxid_mk_usr_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, int add_bs_lvl);
 ZXID_DECL zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, char allow_create, struct timeval* srcts, struct zx_str* issuer, struct zx_str* req_id, const char* sp_name_buf);
@@ -945,7 +953,8 @@ ZXID_DECL struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, stru
 ZXID_DECL struct zx_xac_Request_s* zxid_mk_xac_az(zxid_conf* cf, struct zx_elem_s* father, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env);
 ZXID_DECL struct zx_xasp_XACMLAuthzDecisionQuery_s* zxid_mk_az(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env);
 ZXID_DECL struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zxid_mk_az_cd1(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env);
-struct zx_sa_Attribute_s* zxid_mk_sa_attribute(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, const char* val);
+ZXID_DECL struct zx_sa_Attribute_s* zxid_mk_sa_attribute_ss(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, struct zx_str** val);
+ZXID_DECL struct zx_sa_Attribute_s* zxid_mk_sa_attribute(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, const char* val);
 
 /* zxidmkwsf */
 
