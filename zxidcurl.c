@@ -297,7 +297,7 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
  *
  * cf:: ZXID configuration object, also used for memory allocation
  * url:: Where the request will be sent
- * data:: Serialized XML data to be sent
+ * env:: SOAP enevlope to be serialized and sent
  * ret_enve:: result parameter allows upper layers to see the message as string
  * return:: XML data structure representing the response, or 0 upon failure
  *
@@ -312,11 +312,17 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
  */
 
 /* Called by:  zxid_soap_call_envelope, zxid_soap_call_hdr_body */
-struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_str* data, char** ret_enve)
+struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env, char** ret_enve)
 {
 #ifdef USE_CURL
   struct zx_root_s* r;
-  struct zx_str* ret = zxid_http_post_raw(cf, url->len, url->s, data->len, data->s);
+  struct zx_str* ret;
+  struct zx_str* ss;
+
+  ss = zx_easy_enc_elem_opt(cf, &env->gg);
+  DD("ss(%.*s) len=%d", ss->len, ss->s, ss->len);
+  ret = zxid_http_post_raw(cf, url->len, url->s, ss->len, ss->s);
+  zx_str_free(cf->ctx, ss);
   if (ret_enve)
     *ret_enve = ret?ret->s:0;
   if (!ret)
@@ -334,6 +340,95 @@ struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct z
   ERR("This copy of zxid was compiled to NOT use libcurl. SOAP calls (such as Artifact profile and WSC) are not supported. Add -DUSE_CURL (make ENA_CURL=1) and recompile. %d", 0);
   return 0;
 #endif
+}
+
+/*() Encode XML data structure representing SOAP envelope (request)
+ * and send the message to the server using Curl. Return the parsed
+ * XML response data structure.  This call will block while the HTTP
+ * request-response is happening. To be called from SSO world.
+ * Wrapper for zxid_soap_call_raw().
+ *
+ * cf::     ZXID configuration object, also used for memory allocation
+ * url::    The endpoint where the request will be sent
+ * hdr::    XML data structure representing the SOAP headers. Possibly 0 if no headers are desired
+ * body::   XML data structure representing the SOAP body
+ * return:: XML data structure representing the response  */
+
+/* Called by:  zxid_az_soap, zxid_soap_call_body */
+struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body)
+{
+  struct zx_root_s* r;
+  struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx,0);
+  env->Header = hdr;
+  env->Body = body;
+  zx_add_kid(&env->gg, &body->gg);
+  if (hdr)
+    zx_add_kid(&env->gg, &hdr->gg);
+  r = zxid_soap_call_raw(cf, url, env, 0);
+  return r;
+}
+
+/*() Encode XML data structure representing SOAP envelope (request)
+ * and send the message to the server using Curl. Return the parsed
+ * XML response data structure.  This call will block while the HTTP
+ * request-response is happening. To be called from SSO world.
+ * Wrapper for zxid_soap_call_raw().
+ *
+ * cf::     ZXID configuration object, also used for memory allocation
+ * url::    The endpoint where the request will be sent
+ * body::   XML data structure representing the SOAP body
+ * return:: XML data structure representing the response  */
+
+/* Called by:  zxid_as_call_ses, zxid_idp_soap, zxid_sp_deref_art, zxid_sp_soap */
+struct zx_root_s* zxid_soap_call_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Body_s* body)
+{
+  /*return zxid_soap_call_hdr_body(cf, url, zx_NEW_e_Header(cf->ctx,0), body);*/
+  return zxid_soap_call_hdr_body(cf, url, 0, body);
+}
+
+/*() Emit to stdout XML data structure representing SOAP envelope (request).
+ * Typically used in CGI environment, e.g. by the IdP and Discovery.
+ * Optionally logs the issued message to local audit trail.
+ *
+ * cf::     ZXID configuration object, also used for memory allocation
+ * body::   XML data structure representing the request
+ * return:: 0 if fail, ZXID_REDIR_OK if success. */
+
+/* Called by:  zxid_idp_soap_dispatch x2, zxid_sp_soap_dispatch x7 */
+int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_str* entid)
+{
+  struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx,0);
+  struct zx_str* ss;
+  struct zx_str* logpath;
+  env->Body = body;
+  zx_add_kid(&env->gg, &body->gg);
+  env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+  zxid_wsf_decor(cf, 0, env, 1);
+  ss = zx_easy_enc_elem_opt(cf, &env->gg);
+
+  if (cf->log_issue_msg) {
+    logpath = zxlog_path(cf, entid, ss, ZXLOG_ISSUE_DIR, ZXLOG_WIR_KIND, 1);
+    if (logpath) {
+      if (zxlog_dup_check(cf, logpath, "cgi_resp")) {
+	ERR("Duplicate wire msg(%.*s) (Simple Sign)", ss->len, ss->s);
+#if 0
+	if (cf->dup_msg_fatal) {
+	  ERR("FATAL (by configuration): Duplicate wire msg(%.*s) (cgi_resp)", ss->len, ss->s);
+	  zxlog_blob(cf, 1, logpath, ss, "cgi_resp dup");
+	  zx_str_free(cf->ctx, logpath);
+	  return 0;
+	}
+#endif
+      }
+      zxlog_blob(cf, 1, logpath, ss, "cgi_resp");
+      zxlog(cf, 0, 0, 0, entid, 0, 0, 0, "N", "K", "CGIRESP", 0, "logpath(%.*s)", logpath->len, logpath->s);
+      zx_str_free(cf->ctx, logpath);
+    }
+  }
+  
+  if (zx_debug & ZXID_INOUT) INFO("SOAP_RESP(%.*s)", ss->len, ss->s);
+  printf("CONTENT-TYPE: text/xml" CRLF "CONTENT-LENGTH: %d" CRLF2 "%.*s", ss->len, ss->len, ss->s);
+  return ZXID_REDIR_OK;
 }
 
 /* EOF  --  zxidcurl.c */

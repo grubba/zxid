@@ -133,7 +133,7 @@ struct zx_sp_Status_s* zxid_OK(zxid_conf* cf, struct zx_elem_s* father)
 struct zx_sa_EncryptedID_s* zxid_mk_enc_id(zxid_conf* cf, struct zx_elem_s* father, zxid_nid* nid, zxid_entity* meta)
 {
   struct zx_sa_EncryptedID_s* encid = zx_NEW_sa_EncryptedID(cf->ctx, father);
-  struct zx_str* ss = zx_EASY_ENC_elem(cf->ctx, &nid->gg);
+  struct zx_str* ss = zx_easy_enc_elem_opt(cf, &nid->gg);
   if (cf->enckey_opt & 0x20) {
     /* Nested EncryptedKey approach (Shibboleth early 2010) */
     ZX_ADD_KID(encid, EncryptedData, zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "41", 0));
@@ -152,7 +152,7 @@ struct zx_sa_EncryptedID_s* zxid_mk_enc_id(zxid_conf* cf, struct zx_elem_s* fath
 struct zx_sa_EncryptedAssertion_s* zxid_mk_enc_a7n(zxid_conf* cf, struct zx_elem_s* father, zxid_a7n* a7n, zxid_entity* meta)
 {
   struct zx_sa_EncryptedAssertion_s* enc_a7n = zx_NEW_sa_EncryptedAssertion(cf->ctx, father);
-  struct zx_str* ss = zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
+  struct zx_str* ss = zx_easy_enc_elem_opt(cf, &a7n->gg);
   if (cf->enckey_opt & 0x20) {
     /* Nested EncryptedKey approach (Shibboleth early 2010) */
     ZX_ADD_KID(enc_a7n, EncryptedData, zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "40", 0));
@@ -220,7 +220,7 @@ struct zx_sp_ManageNameIDRequest_s* zxid_mk_mni(zxid_conf* cf, zxid_nid* nid, st
     r->EncryptedID = zxid_mk_enc_id(cf, &r->gg, nid, idp_meta);
     if (new_nym && new_nym->len) {
       newid = zx_new_str_elem(cf->ctx, 0, zx_sp_NewID_ELEM, new_nym);
-      ss = zx_EASY_ENC_elem(cf->ctx, newid);
+      ss = zx_easy_enc_elem_opt(cf, newid);
       r->NewEncryptedID = zx_NEW_sp_NewEncryptedID(cf->ctx, &r->gg);
       if (cf->enckey_opt & 0x20) {
 	/* Nested EncryptedKey approach (Shibboleth early 2010) */

@@ -116,7 +116,7 @@ struct zx_str* zxid_sp_slo_redir(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
       return zx_dup_str(cf->ctx, "* ERR");
     r = zxid_mk_logout(cf, zxid_get_user_nameid(cf, ses->nameid), ses_ix, idp_meta);
     r->Destination = zx_ref_len_attr(cf->ctx, &r->gg, zx_Destination_ATTR, loc->len, loc->s);
-    rs = zx_EASY_ENC_elem(cf->ctx, &r->gg);
+    rs = zx_easy_enc_elem_opt(cf, &r->gg);
     D("SLO(%.*s)", rs->len, rs->s);
     return zxid_saml2_redir(cf, loc, rs, 0);
   }
@@ -153,7 +153,7 @@ struct zx_str* zxid_slo_resp_redir(zxid_conf* cf, zxid_cgi* cgi, struct zx_sp_Lo
 
   res = zxid_mk_logout_resp(cf, zxid_OK(cf, 0), &req->ID->g);
   res->Destination = zx_ref_len_attr(cf->ctx, &res->gg, zx_Destination_ATTR, loc->len, loc->s);
-  ss = zx_EASY_ENC_elem(cf->ctx, &res->gg);
+  ss = zx_easy_enc_elem_opt(cf, &res->gg);
   ss2 = zxid_saml2_resp_redir(cf, loc, ss, cgi->rs);
   /*zx_str_free(cf->ctx, loc); Do NOT free loc as it is still referenced by the metadata. */
   zx_str_free(cf->ctx, ss);

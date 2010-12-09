@@ -476,8 +476,7 @@
 #define ZXID_WSP_NOSIG_FATAL 1 /* Missing Security/Signature is fatal. */
 #define ZXID_NOTIMESTAMP_FATAL 1 /* Missing Security/Timestamp is fatal. */
 
-/*(c) XML canonicalization compatibility kludges
- */
+/*(c) XML canonicalization compatibility kludges */
 
 #define ZXID_CANON_INOPT 0
 /* Shibboleth 2.1.5 IdP miscanonicalizes by
@@ -485,6 +484,10 @@
  * it still supplies such list. The miscanonicalization
  * leads namespaces missing. This has been reported to Scott Cantor as of 20101005 */
 #define ZXID_CANON_INOPT_SHIB215IDP_INCLUSIVENAMESPACES 0x01
+
+/*(c) XML encoding optimizations.
+ * 1 = optimize close tag of empty elements as <ns:foo/> */
+#define ZXID_ENC_TAIL_OPT 1
 
 /*(c) Time Slop
  * Because clock sychronization amoung the servers in the CoT is unlikely

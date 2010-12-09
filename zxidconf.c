@@ -283,6 +283,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->post_a7n_enc = ZXID_POST_A7N_ENC;
   cf->canon_inopt  = ZXID_CANON_INOPT;
   if (cf->ctx) cf->ctx->canon_inopt = cf->canon_inopt;
+  cf->enc_tail_opt = ZXID_ENC_TAIL_OPT;
   cf->enckey_opt   = ZXID_ENCKEY_OPT;
   cf->idpatopt     = ZXID_IDPATOPT;
   cf->idp_list_meth   = ZXID_IDP_LIST_METH;
@@ -610,13 +611,29 @@ struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
     map = mm;
     
     if (IS_RULE(rule, "") || IS_RULE(rule, "rename")) { mm->rule = ZXID_MAP_RULE_RENAME; }
-    else if (IS_RULE(rule, "del"))        { mm->rule = ZXID_MAP_RULE_DEL; }
-    else if (IS_RULE(rule, "feidedec"))   { mm->rule = ZXID_MAP_RULE_FEIDEDEC; }
-    else if (IS_RULE(rule, "feideenc"))   { mm->rule = ZXID_MAP_RULE_FEIDEENC; }
-    else if (IS_RULE(rule, "unsb64-inf")) { mm->rule = ZXID_MAP_RULE_UNSB64_INF; }
-    else if (IS_RULE(rule, "def-sb64"))   { mm->rule = ZXID_MAP_RULE_DEF_SB64; }
-    else if (IS_RULE(rule, "unsb64"))     { mm->rule = ZXID_MAP_RULE_UNSB64; }
-    else if (IS_RULE(rule, "sb64"))       { mm->rule = ZXID_MAP_RULE_SB64; }
+    else if (IS_RULE(rule, "del"))           { mm->rule = ZXID_MAP_RULE_DEL; }
+    else if (IS_RULE(rule, "feidedec"))      { mm->rule = ZXID_MAP_RULE_FEIDEDEC; }
+    else if (IS_RULE(rule, "feideenc"))      { mm->rule = ZXID_MAP_RULE_FEIDEENC; }
+    else if (IS_RULE(rule, "unsb64-inf"))    { mm->rule = ZXID_MAP_RULE_UNSB64_INF; }
+    else if (IS_RULE(rule, "def-sb64"))      { mm->rule = ZXID_MAP_RULE_DEF_SB64; }
+    else if (IS_RULE(rule, "unsb64"))        { mm->rule = ZXID_MAP_RULE_UNSB64; }
+    else if (IS_RULE(rule, "sb64"))          { mm->rule = ZXID_MAP_RULE_SB64; }
+
+    else if (IS_RULE(rule, "a7n"))           { mm->rule = ZXID_MAP_RULE_WRAP_A7N | ZXID_MAP_RULE_FEIDEDEC; }
+    else if (IS_RULE(rule, "a7n-feideenc"))  { mm->rule = ZXID_MAP_RULE_WRAP_A7N | ZXID_MAP_RULE_FEIDEENC; }
+    else if (IS_RULE(rule, "a7n-def-sb64"))  { mm->rule = ZXID_MAP_RULE_WRAP_A7N | ZXID_MAP_RULE_DEF_SB64; }
+    else if (IS_RULE(rule, "a7n-sb64"))      { mm->rule = ZXID_MAP_RULE_WRAP_A7N | ZXID_MAP_RULE_SB64; }
+
+    else if (IS_RULE(rule, "x509"))          { mm->rule = ZXID_MAP_RULE_WRAP_X509 | ZXID_MAP_RULE_FEIDEDEC; }
+    else if (IS_RULE(rule, "x509-feideenc")) { mm->rule = ZXID_MAP_RULE_WRAP_X509 | ZXID_MAP_RULE_FEIDEENC; }
+    else if (IS_RULE(rule, "x509-def-sb64")) { mm->rule = ZXID_MAP_RULE_WRAP_X509 | ZXID_MAP_RULE_DEF_SB64; }
+    else if (IS_RULE(rule, "x509-sb64"))     { mm->rule = ZXID_MAP_RULE_WRAP_X509 | ZXID_MAP_RULE_SB64; }
+
+    else if (IS_RULE(rule, "file"))          { mm->rule = ZXID_MAP_RULE_WRAP_FILE | ZXID_MAP_RULE_FEIDEDEC; }
+    else if (IS_RULE(rule, "file-feideenc")) { mm->rule = ZXID_MAP_RULE_WRAP_FILE | ZXID_MAP_RULE_FEIDEENC; }
+    else if (IS_RULE(rule, "file-def-sb64")) { mm->rule = ZXID_MAP_RULE_WRAP_FILE | ZXID_MAP_RULE_DEF_SB64; }
+    else if (IS_RULE(rule, "file-sb64"))     { mm->rule = ZXID_MAP_RULE_WRAP_FILE | ZXID_MAP_RULE_SB64; }
+
     else {
       ERR("Unknown map rule(%.*s)", b-rule, rule);
       //ERR("sizeof(rename)=%d cmp=%d c(%c)", sizeof("rename"), memcmp(rule, "rename", sizeof("rename")-1), rule[sizeof("rename")]);
@@ -873,7 +890,7 @@ struct zxid_need* zxid_is_needed(struct zxid_need* need, char* name)
  * See also: zxid_load_map() and zxid_map_val() */
 
 /* Called by:  pool2apache, zxid_add_at_values, zxid_add_attr_to_ses, zxid_pepmap_extract, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
-struct zxid_map* zxid_find_map(struct zxid_map* map, char* name)
+struct zxid_map* zxid_find_map(struct zxid_map* map, const char* name)
 {
   if (!name || !*name)
     return 0;
@@ -887,7 +904,7 @@ struct zxid_map* zxid_find_map(struct zxid_map* map, char* name)
 /*() Check whether name is in the list. Used for Local PDP wite and black lists. */
 
 /* Called by:  zxid_localpdp x4 */
-struct zxid_cstr_list* zxid_find_cstr_list(struct zxid_cstr_list* cs, char* name)
+struct zxid_cstr_list* zxid_find_cstr_list(struct zxid_cstr_list* cs, const char* name)
 {
   if (!name || !*name)
     return 0;
@@ -901,7 +918,7 @@ struct zxid_cstr_list* zxid_find_cstr_list(struct zxid_cstr_list* cs, char* name
 /*() Check whether attribute is in pool. */
 
 /* Called by:  zxid_localpdp x2 */
-struct zxid_attr* zxid_find_at(struct zxid_attr* pool, char* name)
+struct zxid_attr* zxid_find_at(struct zxid_attr* pool, const char* name)
 {
   if (!name || !*name)
     return 0;
@@ -916,7 +933,7 @@ struct zxid_attr* zxid_find_at(struct zxid_attr* pool, char* name)
  * from the url config option. */
 
 /* Called by:  zxid_parse_conf_raw */
-static char* zxid_grab_domain_name(zxid_conf* cf, char* url)
+static char* zxid_grab_domain_name(zxid_conf* cf, const char* url)
 {
   char* dom;
   char* p;
@@ -1041,6 +1058,7 @@ scan_end:
     case 'E':  /* ERR, ERR_IN_ACT */
       if (!strcmp(n, "ERR"))             { SCAN_INT(v, cf->log_err); break; }
       if (!strcmp(n, "ERR_IN_ACT"))      { SCAN_INT(v, cf->log_err_in_act); break; }
+      if (!strcmp(n, "ENC_TAIL_OPT"))    { SCAN_INT(v, cf->enc_tail_opt); break; }
       if (!strcmp(n, "ENCKEY_OPT"))      { SCAN_INT(v, cf->enckey_opt); break; }
       if (!strcmp(n, "ERR_PAGE"))        { cf->err_page = v; break; }
       if (!strcmp(n, "ERR_TEMPL_FILE"))  { cf->err_templ_file = v; break; }
@@ -1420,6 +1438,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "NAMEID_ENC=%x\n"
 "POST_A7N_ENC=%d\n"
 "CANON_INOPT=%x\n"
+"ENC_TAIL_OPT=%x\n"
 "ENCKEY_OPT=%d\n"
 "IDPATOPT=%d\n"
 "DI_ALLOW_CREATE=%d\n"
@@ -1597,6 +1616,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->nameid_enc,
 		 cf->post_a7n_enc,
 		 cf->canon_inopt,
+		 cf->enc_tail_opt,
 		 cf->enckey_opt,
 		 cf->idpatopt,
 		 cf->di_allow_create,

@@ -179,7 +179,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
     }
     ar = zxid_mk_authn_req(cf, cgi);
     ar->Destination = sso_svc->Location;
-    ars = zx_EASY_ENC_elem(cf->ctx, &ar->gg);
+    ars = zx_easy_enc_elem_opt(cf, &ar->gg);
     D("AuthnReq(%.*s)", ars->len, ars->s);
     break;
   default:
@@ -312,7 +312,7 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     
     body = zx_NEW_e_Body(cf->ctx,0);
     body->ArtifactResolve = zxid_mk_art_deref(cf, idp_meta, cgi->saml_art);
-    r = zxid_soap_call_body(cf, &ar_svc->Location->g, body);
+    r = zxid_soap_call_hdr_body(cf, &ar_svc->Location->g, 0, body);
     len =  zxid_sp_soap_dispatch(cf, cgi, ses, r);
     D_DEDENT("deref: ");
     return len;
@@ -654,6 +654,7 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
 	}
       }
       zxlog_blob(cf, cf->log_rely_a7n, logpath, ss, "sp_sso_finalize");
+      zx_str_free(cf->ctx, ss);
     }
   }
   DD("Creating session... %d", 0);
@@ -789,7 +790,7 @@ int zxid_as_call_ses(zxid_conf* cf, zxid_entity* idp_meta, zxid_cgi* cgi, zxid_s
   body->SASLRequest = zx_NEW_as_SASLRequest(cf->ctx, &body->gg);
   body->SASLRequest->mechanism = zx_dup_attr(cf->ctx, &body->SASLRequest->gg, zx_mechanism_ATTR, "PLAIN");
   body->SASLRequest->Data = zx_ref_len_elem(cf->ctx, &body->SASLRequest->gg, zx_as_Data_ELEM, p-b64, b64);
-  r = zxid_soap_call_body(cf, &ar_svc->Location->g, body);
+  r = zxid_soap_call_hdr_body(cf, &ar_svc->Location->g, 0, body);
   /* *** free the body */
   
   if (!r || !r->Envelope || !r->Envelope->Body || !(res = r->Envelope->Body->SASLResponse)) {

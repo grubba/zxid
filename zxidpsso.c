@@ -87,9 +87,9 @@ int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issue
       }
       zxlog_blob(cf, 1, logpath, ss, "anoint_a7n");
       zx_str_free(cf->ctx, logpath);
+      zx_str_free(cf->ctx, ss);
     }
   }
-  zx_str_free(cf->ctx, ss);
   return 1;
 }
 
@@ -133,10 +133,11 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
 	 :zx_dup_str(cf->ctx,"-")),
 	sign?"U":"N", "K", "SSORESP", "-", 0);
 
+  ss = zx_easy_enc_elem_opt(cf, &resp->gg);
+
   if (cf->log_issue_msg) {
     logpath = zxlog_path(cf, ZX_GET_CONTENT(ar->Issuer), &resp->ID->g, ZXLOG_ISSUE_DIR, ZXLOG_MSG_KIND,1);
     if (logpath) {
-      ss = zx_EASY_ENC_elem(cf->ctx, &resp->gg);
       if (zxlog_dup_check(cf, logpath, "IdP POST Response")) {
 	ERR("Duplicate Response ID(%.*s)", resp->ID->g.len, resp->ID->g.s);
 	if (cf->dup_msg_fatal) {
@@ -254,7 +255,7 @@ void zxid_gen_boots(zxid_conf* cf, struct zx_sa_AttributeStatement_s* father, co
   D_DEDENT("gen_bs: ");
 }
 
-static void zxid_add_mapped_attr(zxid_conf* cf, struct zx_elem_s* father, char* lk, struct zxid_map* aamap, struct zxid_map* sp_aamap, const char* name, const char* val)
+static void zxid_add_mapped_attr(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zx_elem_s* father, char* lk, struct zxid_map* aamap, struct zxid_map* sp_aamap, const char* name, const char* val)
 {
   struct zxid_map* map;
   D("%s: ATTR(%s)=VAL(%s)", lk, name, val);
@@ -265,7 +266,7 @@ static void zxid_add_mapped_attr(zxid_conf* cf, struct zx_elem_s* father, char* 
     if (map->dst)
       name = map->dst;
     zxid_mk_sa_attribute_ss(cf, father, name, 0,
-			    zxid_map_val(cf, map, zx_ref_str(cf->ctx, val)));
+			    zxid_map_val(cf, ses, meta, map, zx_ref_str(cf->ctx, val)));
   } else {
     D("Attribute(%s) filtered out either by del rule in aamap, or does not match aamap %p", name, map);
   }
@@ -275,7 +276,7 @@ static void zxid_add_mapped_attr(zxid_conf* cf, struct zx_elem_s* father, char* 
  * The input is temporarily modified and then restored. Do not pass const string. */
 
 /* Called by:  zxid_mk_usr_a7n_to_sp x4 */
-static void zxid_add_ldif_attrs(zxid_conf* cf, struct zx_elem_s* father, char* p, char* lk, struct zxid_map* aamap, struct zxid_map* sp_aamap)
+static void zxid_add_ldif_attrs(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zx_elem_s* father, char* p, char* lk, struct zxid_map* aamap, struct zxid_map* sp_aamap)
 {
   struct zxid_map* map;
   char* name;
@@ -292,7 +293,7 @@ static void zxid_add_ldif_attrs(zxid_conf* cf, struct zx_elem_s* father, char* p
     if (p)
       *p = 0;
     
-    zxid_add_mapped_attr(cf, father, lk, aamap, sp_aamap, name, val);
+    zxid_add_mapped_attr(cf, ses, meta, father, lk, aamap, sp_aamap, name, val);
     
     val[-2] = ':'; /* restore */
     if (p)
@@ -366,9 +367,9 @@ zxid_a7n* zxid_mk_usr_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, z
   if (cf->fedusername_suffix && cf->fedusername_suffix[0]) {
     snprintf(dir, sizeof(dir), "%.*s@%s", ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid), cf->fedusername_suffix);
     dir[sizeof(dir)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
-    zxid_add_mapped_attr(cf, &at_stmt->gg, "mk_usr_a7n_to_sp", aamap,sp_aamap, "fedusername", dir);
+    zxid_add_mapped_attr(cf, ses, sp_meta, &at_stmt->gg, "mk_usr_a7n_to_sp", aamap,sp_aamap, "fedusername", dir);
     if (cf->idpatopt & 0x01)
-      zxid_add_mapped_attr(cf, &at_stmt->gg, "mk_usr_a7n_to_sp", aamap,sp_aamap, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, dir);
+      zxid_add_mapped_attr(cf, ses, sp_meta, &at_stmt->gg, "mk_usr_a7n_to_sp", aamap,sp_aamap, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, dir);
     //zxid_mk_sa_attribute(cf, &at_stmt->gg, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri", zx_dup_cstr(cf->ctx, dir));
   }
 
@@ -379,12 +380,12 @@ zxid_a7n* zxid_mk_usr_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, z
    * As this is dangerous to privacy, it is disabled in the default AAMAP. You need to
    * enable it explicitly in deployment specific AAMAP (in .all/.bs/.cf file) if you
    * want it. There you can also specify whether it will be wrapped in assertion. */
-  zxid_add_mapped_attr(cf, &at_stmt->gg, "mk_usr_a7n_to_sp", aamap,sp_aamap, "idpsesid", ses->sid);
+  zxid_add_mapped_attr(cf, ses, sp_meta, &at_stmt->gg, "mk_usr_a7n_to_sp", aamap,sp_aamap, "idpsesid", ses->sid);
 
-  zxid_read_ldif_attrs(cf, ".bs",       uid,    aamap, sp_aamap, at_stmt);
-  zxid_read_ldif_attrs(cf, sp_name_buf, uid,    aamap, sp_aamap, at_stmt);
-  zxid_read_ldif_attrs(cf, ".bs",       ".all", aamap, sp_aamap, at_stmt);
-  zxid_read_ldif_attrs(cf, sp_name_buf, ".all", aamap, sp_aamap, at_stmt);
+  zxid_read_ldif_attrs(cf, ses, sp_meta, ".bs",       uid,    aamap, sp_aamap, at_stmt);
+  zxid_read_ldif_attrs(cf, ses, sp_meta, sp_name_buf, uid,    aamap, sp_aamap, at_stmt);
+  zxid_read_ldif_attrs(cf, ses, sp_meta, ".bs",       ".all", aamap, sp_aamap, at_stmt);
+  zxid_read_ldif_attrs(cf, ses, sp_meta, sp_name_buf, ".all", aamap, sp_aamap, at_stmt);
   D("sp_eid(%s) bs_lvl=%d", sp_meta->eid, bs_lvl);
   
   /* Process bootstraps */
@@ -754,7 +755,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
     e->Body = zx_NEW_e_Body(cf->ctx, &e->gg);
     e->Body->Response = resp;
     
-    ss = zx_EASY_ENC_elem(cf->ctx, &e->gg);
+    ss = zx_easy_enc_elem_opt(cf, &e->gg);
 
     zxlog(cf, 0, &srcts, 0, ZX_GET_CONTENT(ar->Issuer), 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, ses->uid, "PAOS2");
 

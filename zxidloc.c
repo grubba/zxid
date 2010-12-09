@@ -141,7 +141,7 @@ struct zx_root_s* zxid_idp_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses,
   struct zx_str* loc = zxid_idp_loc(cf, cgi, ses, idp_meta, svc_type, SAML2_SOAP);
   if (!loc)
     return 0;
-  r = zxid_soap_call_body(cf, loc, body);
+  r = zxid_soap_call_hdr_body(cf, loc, 0, body);
   zx_str_free(cf->ctx, loc);
   return r;
 }
@@ -193,8 +193,7 @@ struct zx_str* zxid_sp_loc_by_index_raw(zxid_conf* cf, zxid_cgi* cgi,
  * return:: URL for the protocol end point, or 0 on failure */
 
 /* Called by:  zxid_idp_dispatch, zxid_idp_sso x2, zxid_slo_resp_redir, zxid_sp_loc x3 */
-struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
-				zxid_entity* sp_meta, int svc_type, char* binding, int req)
+struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* sp_meta, int svc_type, char* binding, int req)
 {
   struct zx_str* loc;
   struct zx_md_SingleLogoutService_s* slo_svc;
@@ -277,8 +276,7 @@ struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
  * this function. */
 
 /* Called by:  zxid_sp_soap */
-struct zx_str* zxid_sp_loc(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses,
-			    zxid_entity* sp_meta, int svc_type, char* binding)
+struct zx_str* zxid_sp_loc(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_entity* sp_meta, int svc_type, char* binding)
 {
   zxid_get_ses_sso_a7n(cf, ses);
   
@@ -310,14 +308,13 @@ struct zx_str* zxid_sp_loc(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses,
  * return:: XML data structure for Body element of the SOAP call response. */
 
 /* Called by: */
-struct zx_root_s* zxid_sp_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses,
-			       zxid_entity* sp_meta, int svc_type, struct zx_e_Body_s* body)
+struct zx_root_s* zxid_sp_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_entity* sp_meta, int svc_type, struct zx_e_Body_s* body)
 {
   struct zx_root_s* r;
   struct zx_str* loc = zxid_sp_loc(cf, cgi, ses, sp_meta, svc_type, SAML2_SOAP);
   if (!loc)
     return 0;
-  r = zxid_soap_call_body(cf, loc, body);
+  r = zxid_soap_call_hdr_body(cf, loc, 0, body);
   zx_str_free(cf->ctx, loc);
   return r;
 }

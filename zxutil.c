@@ -264,8 +264,16 @@ int write_all_fd(fdtype fd, const char* p, int pending)
 
 /*() Write all data to a file at the formatted path. The buf is used
  * for formatting data. The path_fmt can have up to two %s specifiers,
- * which will be satisfied by prepath and postpath. Return 1 on
- * success, 0 on fail. */
+ * which will be satisfied by prepath and postpath.
+ *
+ * logkey:: Used for debug prints and error messages
+ * maxlen:: Size of the buffer
+ * buf:: Fied size buffer for dendering the formatted data
+ * path_fmt:: Format string for filesystem path to the file
+ * prepath:: Argument to satisfy first %s in path_fmt
+ * postpath:: Argument to satisfy second %s in path_fmt
+ * data_fmt:: Format string for the data to be written. Following arguments satisfy the format string. Overall the data length is constrained to maxlen. Caller needs to allocate/provide buffer sufficient to satisfy the data_fmt.
+ * Returns:: 1 on success, 0 on fail. */
 
 /* Called by:  main x6, zx_get_symkey, zxid_check_fed x2, zxid_mk_self_sig_cert x2, zxid_mk_transient_nid, zxid_put_invite, zxid_put_psobj, zxid_put_ses, zxid_put_user, zxid_pw_authn */
 int write_all_path_fmt(const char* logkey, int maxlen, char* buf, const char* path_fmt, const char* prepath, const char* postpath, const char* data_fmt, ...)
@@ -278,12 +286,12 @@ int write_all_path_fmt(const char* logkey, int maxlen, char* buf, const char* pa
   if (fd == BADFD) return 0;
   
   va_start(ap, data_fmt);
-  len = vsnprintf(buf, maxlen-1, data_fmt, ap);
+  len = vsnprintf(buf, maxlen-1, data_fmt, ap); /* Format data into buf */
   buf[maxlen-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   va_end(ap);
   if (len < 0) {
     perror("vsnprintf");
-    D("%s, Broken snprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", logkey, len);
+    ERR("%s, Broken snprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", logkey, len);
     len = 0;
   }
   if (write_all_fd(fd, buf, len) == -1) {
@@ -545,9 +553,9 @@ int hexdmp(char* msg, char* p, int len, int max) {
  * is used by md5_crypt() and other password hashing schemes. */
 
 #define MAX_LINE  76 /* size of encoded lines */
-char std_basis_64[64]  = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"; /*=*/
-char safe_basis_64[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"; /*=*/
-char pw_basis_64[64]   = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const char std_basis_64[64]  = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"; /*=*/
+const char safe_basis_64[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"; /*=*/
+const char pw_basis_64[64]   = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 /*() Raw version. Can use any encoding table and arbitrary line length.
  * Known bug: line_len is not fully respected on last line - it can
@@ -853,7 +861,7 @@ char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out
  * return: Required buffer size, including nul term. Subtract 1 for string length. */
 
 /* Called by:  zx_url_encode, zxid_pool_to_qs x5, zxid_saml2_redir_enc x2 */
-int zx_url_encode_len(int in_len, char* in)
+int zx_url_encode_len(int in_len, const char* in)
 {
   int n;
   char* lim;

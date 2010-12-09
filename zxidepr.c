@@ -151,7 +151,7 @@ int zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
     ERR("EPR is not a ID-WSF 2.0 Bootstrap: no Metadata %p", epr);
     return 0;
   }
-  ss = zx_EASY_ENC_elem(cf->ctx, &epr->gg);
+  ss = zx_easy_enc_elem_opt(cf, &epr->gg);
   if (!ss) {
     ERR("Encoding EndpointReference failed %p", epr);
     return 0;
@@ -234,8 +234,7 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
 	    ++wsf11;
 	    D("Detected wsf11 resource offering. %d", wsf11);
 #if 0	    
-	    ss = zx_EASY_ENC_elem(cf->ctx, &av->ResourceOffering->gg);
-	    
+	    ss = zx_easy_enc_elem_opt(cf, &av->ResourceOffering->gg);
 	    zxid_epr_path(cf, ZXID_SES_DIR, ses->sid, path, sizeof(path),
 			  ZX_GET_CONTENT(av->EndpointReference->Metadata->ServiceType), ss);
 	    fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);

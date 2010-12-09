@@ -205,8 +205,7 @@ int main(int argc, char** argv)
       return 0;
     }
     
-    ss = zx_EASY_ENC_elem(cf->ctx,
-	       &r->Envelope->Body->idhrxml_Create->CreateItem->NewData->Candidate->gg);
+    ss = zx_easy_enc_elem_opt(cf, &r->Envelope->Body->idhrxml_Create->CreateItem->NewData->Candidate->gg);
 
     fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "create", 1, "%shrxml/cv.xml", cf->path);
     write_all_fd(fd, ss->s, ss->len);
@@ -312,8 +311,7 @@ int main(int argc, char** argv)
       return 0;
     }
     
-    ss = zx_EASY_ENC_elem(cf->ctx,
-	       &r->Envelope->Body->idhrxml_Modify->ModifyItem->NewData->Candidate->gg);
+    ss = zx_easy_enc_elem_opt(cf, &r->Envelope->Body->idhrxml_Modify->ModifyItem->NewData->Candidate->gg);
 
     fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "modify", 1, "%shrxml/cv.xml", cf->path);
     write_all_fd(fd, ss->s, ss->len);

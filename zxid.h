@@ -227,10 +227,10 @@ struct zxid_conf {
   char  wsp_nosig_fatal;
   char  notimestamp_fatal;
   char  canon_inopt;
+  char  enc_tail_opt;
   char  enckey_opt;
   char  idpatopt;
   char  idp_list_meth;
-  char  pad7;
   char  pad8;
   
   char* affiliation;
@@ -741,7 +741,7 @@ ZXID_DECL zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path);
 ZXID_DECL zxid_conf* zxid_new_conf(const char* zxid_path);
 ZXID_DECL int   zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs);
 ZXID_DECL int   zxid_parse_conf(zxid_conf* cf, char* qs);
-ZXID_DECL int   zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, char* lk, char* name);
+ZXID_DECL int   zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, const char* name);
 ZXID_DECL struct zxid_map*   zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v);
 ZXID_DECL struct zxid_need*  zxid_load_need(zxid_conf* cf, struct zxid_need* need, char* v);
 ZXID_DECL struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsrc, char* v);
@@ -788,10 +788,19 @@ ZXID_DECL zxid_nid* zxid_get_user_nameid(zxid_conf* cf, zxid_nid* oldnid);
 ZXID_DECL void zxid_user_change_nameid(zxid_conf* cf, zxid_nid* oldnid, struct zx_str* newnym);
 ZXID_DECL int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses);
 
+/* zxidcurl */
+
+ZXID_DECL struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data);
+ZXID_DECL struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_str* data, char** ret_enve);
+ZXID_DECL struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body);
+ZXID_DECL int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_str* entid);
+
 /* zxidlib */
 
 ZXID_DECL int   zxid_version();
 ZXID_DECL char* zxid_version_str();
+
+ZXID_DECL struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x);
 
 ZXID_DECL struct zx_str* zxid_date_time(zxid_conf* cf, time_t secs);
 ZXID_DECL struct zx_str* zxid_mk_id(zxid_conf* cf, char* prefix, int bits); /* pseudo random ident. */
@@ -799,15 +808,9 @@ ZXID_DECL struct zx_str* zxid_mk_id(zxid_conf* cf, char* prefix, int bits); /* p
 ZXID_DECL struct zx_attr_s* zxid_date_time_attr(zxid_conf* cf, struct zx_elem_s* father, int tok, time_t secs);
 ZXID_DECL struct zx_attr_s* zxid_mk_id_attr(zxid_conf* cf, struct zx_elem_s* father, int tok, char* prefix, int bits);
 
-ZXID_DECL struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data);
-ZXID_DECL struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_str* data, char** ret_enve);
 ZXID_DECL struct zx_str* zxid_lecp_check(zxid_conf* cf, zxid_cgi* cgi);
 ZXID_DECL int zxid_cdc_read(zxid_conf* cf, zxid_cgi* cgi);
 ZXID_DECL int zxid_cdc_check(zxid_conf* cf, zxid_cgi* cgi);
-ZXID_DECL struct zx_root_s* zxid_soap_call_envelope(zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env, char** ret_enve);
-ZXID_DECL struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body);
-ZXID_DECL struct zx_root_s* zxid_soap_call_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Body_s* body);
-ZXID_DECL int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_str* entid);
 
 ZXID_DECL struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* payload, char* relay_state, int sign, struct zx_str* action_url);
 ZXID_DECL struct zx_str* zxid_saml2_redir_enc(zxid_conf* cf, char* cgivar, struct zx_str* pay_load, char* relay_state);
@@ -821,7 +824,7 @@ ZXID_DECL struct zx_str* zxid_decrypt_newnym(zxid_conf* cf, struct zx_str* newny
 
 ZXID_DECL int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* elem, struct zx_ds_Signature_s* sig, struct zx_sa_Issuer_s* issue_ent, struct zx_ns_s* pop_seen, const char* lk);
 
-ZXID_DECL struct zx_str* zxid_map_val(zxid_conf* cf, struct zxid_map* map, struct zx_str* val);
+ZXID_DECL struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, struct zx_str* val);
 ZXID_DECL char* zxid_extract_body(zxid_conf* cf, char* enve);
 
 ZXID_DECL char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey);
@@ -1176,9 +1179,11 @@ ZXID_DECL struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf*
 
 #define COPYVAL(to,what,lim) MB (to) = ZX_ALLOC(cf->ctx, (lim)-(what)+1); memcpy((to), (what),  (lim)-(what)); (to)[(lim)-(what)] = 0; ME
 
-extern char std_basis_64[64];
-extern char safe_basis_64[64];
-extern unsigned char zx_std_index_64[256];
+extern const char std_basis_64[64];
+extern const char safe_basis_64[64];
+extern const unsigned char zx_std_index_64[256];
+extern const unsigned char const * hex_trans;
+extern const unsigned char const * ykmodhex_trans;
 
 ZXID_DECL char* base64_fancy_raw(const char* p, int len, char* r, const char* basis_64, int line_len, int eol_len, const char* eol, char eq_pad);
 ZXID_DECL char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char* index_64);
@@ -1187,9 +1192,7 @@ ZXID_DECL char* zx_zlib_raw_deflate(struct zx_ctx* c, int in_len, const char* in
 ZXID_DECL char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out_len);  /* gunzip */
 ZXID_DECL int   zx_url_encode_len(int in_len, const char* in);
 ZXID_DECL char* zx_url_encode_raw(int in_len, const char* in, char* out);
-ZXID_DECL char* zx_url_encode(struct zx_ctx* c, int in_len, char* in, int* out_len);
-ZXID_DECL extern const unsigned char const * hex_trans;
-ZXID_DECL extern const unsigned char const * ykmodhex_trans;
+ZXID_DECL char* zx_url_encode(struct zx_ctx* c, int in_len, const char* in, int* out_len);
 ZXID_DECL char* zx_hexdec(char* dst, char* src, int src_len, const unsigned char* trans);
 
 ZXID_DECL int get_file_size(fdtype fd);

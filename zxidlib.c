@@ -55,6 +55,19 @@ char* zxid_version_str()
   return ZXID_REL " " ZXID_COMPILE_DATE " libzxid (zxid.org)";
 }
 
+/*(i) Render any element with some options, controlled by
+ * config option ENC_TAIL_OPT. Often used to generate slightly optimized
+ * version for wire transfer. Not suitable for generating canonicalization. */
+
+struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x)
+{
+  struct zx_str* ss;
+  cf->ctx->enc_tail_opt = cf->enc_tail_opt;
+  ss = zx_EASY_ENC_elem(cf->ctx, x);
+  cf->ctx->enc_tail_opt = 0;
+  return ss;
+}
+
 /*() Generate pseudorandom or statistically unique identifier of given length. The
  * unique identifier will be safe base64 encoded.
  *
@@ -133,124 +146,6 @@ struct zx_attr_s* zxid_date_time_attr(zxid_conf* cf, struct zx_elem_s* father, i
   return zx_attrf(cf->ctx, father, tok, "%04d-%02d-%02dT%02d:%02d:%02dZ",
 		  t.tm_year+1900, t.tm_mon+1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec);
 #endif
-}
-
-/* ============== SOAP Call ============= */
-
-/*() Encode XML data structure representing SOAP envelope (request)
- * and send the message to the server using Curl. Return the parsed
- * XML response data structure.  This call will block while the HTTP
- * request-response is happening. To be called from ID-WSF world.
- * Wrapper for zxid_soap_call_raw().
- *
- * cf::     ZXID configuration object, also used for memory allocation
- * url::    The endpoint where the request will be sent
- * env::    XML data structure representing the request
- * ret_enve:: result parameter allowing the higher layers to see the original message
- * return:: XML data structure representing the response  */
-
-/* Called by:  zxid_wsc_call */
-struct zx_root_s* zxid_soap_call_envelope(zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env, char** ret_enve)
-{
-  struct zx_root_s* r;
-  struct zx_str* ss;
-  ss = zx_EASY_ENC_elem(cf->ctx, &env->gg);
-  DD("ss(%.*s) len=%d", ss->len, ss->s, ss->len);
-  r = zxid_soap_call_raw(cf, url, ss, ret_enve);
-  zx_str_free(cf->ctx, ss);
-  return r;
-}
-
-/*() Encode XML data structure representing SOAP envelope (request)
- * and send the message to the server using Curl. Return the parsed
- * XML response data structure.  This call will block while the HTTP
- * request-response is happening. To be called from SSO world.
- * Wrapper for zxid_soap_call_raw().
- *
- * cf::     ZXID configuration object, also used for memory allocation
- * url::    The endpoint where the request will be sent
- * hdr::    XML data structure representing the SOAP headers. Possibly 0 if no headers are desired
- * body::   XML data structure representing the SOAP body
- * return:: XML data structure representing the response  */
-
-/* Called by:  zxid_az_soap, zxid_soap_call_body */
-struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body)
-{
-  struct zx_root_s* r;
-  struct zx_str* ss;
-  struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx,0);
-  env->Header = hdr;
-  env->Body = body;
-  zx_add_kid(&env->gg, &body->gg);
-  if (hdr)
-    zx_add_kid(&env->gg, &hdr->gg);
-  ss = zx_EASY_ENC_elem(cf->ctx, &env->gg);
-  r = zxid_soap_call_raw(cf, url, ss, 0);
-  zx_str_free(cf->ctx, ss);
-  return r;
-}
-
-/*() Encode XML data structure representing SOAP envelope (request)
- * and send the message to the server using Curl. Return the parsed
- * XML response data structure.  This call will block while the HTTP
- * request-response is happening. To be called from SSO world.
- * Wrapper for zxid_soap_call_raw().
- *
- * cf::     ZXID configuration object, also used for memory allocation
- * url::    The endpoint where the request will be sent
- * body::   XML data structure representing the SOAP body
- * return:: XML data structure representing the response  */
-
-/* Called by:  zxid_as_call_ses, zxid_idp_soap, zxid_sp_deref_art, zxid_sp_soap */
-struct zx_root_s* zxid_soap_call_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Body_s* body)
-{
-  /*return zxid_soap_call_hdr_body(cf, url, zx_NEW_e_Header(cf->ctx,0), body);*/
-  return zxid_soap_call_hdr_body(cf, url, 0, body);
-}
-
-/*() Emit to stdout XML data structure representing SOAP envelope (request).
- * Typically used in CGI environment, e.g. by the IdP and Discovery.
- * Optionally logs the issued message to local audit trail.
- *
- * cf::     ZXID configuration object, also used for memory allocation
- * body::   XML data structure representing the request
- * return:: 0 if fail, ZXID_REDIR_OK if success. */
-
-/* Called by:  zxid_idp_soap_dispatch x2, zxid_sp_soap_dispatch x7 */
-int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_str* entid)
-{
-  struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx,0);
-  struct zx_str* ss;
-  struct zx_str* logpath;
-  env->Body = body;
-  zx_add_kid(&env->gg, &body->gg);
-  env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
-  zxid_wsf_decor(cf, 0, env, 1);
-  ss = zx_EASY_ENC_elem(cf->ctx, &env->gg);
-
-  if (cf->log_issue_msg) {
-    logpath = zxlog_path(cf, entid, ss, ZXLOG_ISSUE_DIR, ZXLOG_WIR_KIND, 1);
-    if (logpath) {
-      if (zxlog_dup_check(cf, logpath, "cgi_resp")) {
-	ERR("Duplicate wire msg(%.*s) (Simple Sign)", ss->len, ss->s);
-#if 0
-	if (cf->dup_msg_fatal) {
-	  ERR("FATAL (by configuration): Duplicate wire msg(%.*s) (cgi_resp)", ss->len, ss->s);
-	  zxlog_blob(cf, 1, logpath, ss, "cgi_resp dup");
-	  zx_str_free(cf->ctx, logpath);
-	  return 0;
-	}
-#endif
-      }
-      zxlog_blob(cf, 1, logpath, ss, "cgi_resp");
-      zxlog(cf, 0, 0, 0, entid, 0, 0, 0, "N", "K", "CGIRESP", 0, "logpath(%.*s)", logpath->len, logpath->s);
-      zx_str_free(cf->ctx, logpath);
-    }
-  }
-  
-  if (zx_debug & ZXID_INOUT) INFO("SOAP_RESP(%.*s)", ss->len, ss->s);
-  printf("CONTENT-TYPE: text/xml" CRLF "CONTENT-LENGTH: %d" CRLF2 "%.*s", ss->len, ss->len, ss->s);
-  return ZXID_REDIR_OK;
 }
 
 /* ============== Redirect Encodings ============= */
@@ -850,48 +745,72 @@ zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str
 struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, struct zx_str* val)
 {
   zxid_a7n* a7n;
+  zxid_nid* nameid;
   struct zx_sa_AttributeStatement_s* at_stmt;
   struct zx_sa_Attribute_s* at;
-  struct zx_str* ss = val;
-  char sp_name_buf[ZXID_MAX_SP_NAME_BUF];
+  struct zx_str* prvid;
+  struct zx_str* affil;
+  struct zx_str* ss;
+  char buf[MIN(ZXID_MAX_SP_NAME_BUF,4096)];
   char* bin;
   char* p;
   int len;
   if (!map)
     return val;
+
   switch (map->rule & ZXID_MAP_RULE_WRAP_MASK) {
   case 0: break /* No wrap */
   case ZXID_MAP_RULE_WRAP_A7N:   /* 0x10 Wrap the attribute in SAML2 assertion */
-    affil = zxid_get_affil_and_sp_name_buf(cf, sp_meta, sp_name_buf);
-    nameid = zxid_get_fed_nameid(cf, meta && meta->ed ? &meta->ed->entityID->g : 0, affil,
-				 ses->uid, sp_name_buf, cf->di_allow_create,
+    if (!meta || !ses || !ses->uid) {
+      ERR("MAP_RULE_WRAP_A7N requires SP metadata and session to be specified. %p %p", meta, ses);
+      break;
+    }
+    affil = zxid_get_affil_and_sp_name_buf(cf, meta, buf);
+    prvid = meta->ed ? &meta->ed->entityID->g : 0;
+    nameid = zxid_get_fed_nameid(cf, prvid, affil, ses->uid, buf, cf->di_allow_create,
 				 (cf->di_nid_fmt == 't'), 0, 0, 0);
 
     at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0);
-    at_stmt->Attribute = zxid_mk_sa_attribute_ss(cf, &at_stmt->gg, rule->dst?rule->dst:"val", 0, val);
+    at_stmt->Attribute = zxid_mk_sa_attribute_ss(cf,&at_stmt->gg,rule->dst?rule->dst:"val",0,val);
 
-    a7n = zxid_mk_a7n(cf,
-		      zx_dup_str(cf->ctx, meta->eid),
-		      zxid_mk_subj(cf, 0, meta, nameid),
-		      0,
-		      at_stmt);
+    a7n = zxid_mk_a7n(cf, prvid, zxid_mk_subj(cf, 0, meta, nameid), 0, at_stmt);
+    zxid_anoint_a7n(cf, 1, a7n, prvid, "map_val", ses->uid);
+    val = zx_easy_enc_elem_opt(cf, &a7n->gg);
     break;
   case ZXID_MAP_RULE_WRAP_X509:  /* 0x20 Wrap the attribute in X509 attribute certificate */
+    if (!meta || !ses || !ses->uid) {
+      ERR("MAP_RULE_WRAP_X509 requires SP metadata and session to be specified. %p %p", meta, ses);
+      break;
+    }
+    affil = zxid_get_affil_and_sp_name_buf(cf, meta, buf);
+    prvid = meta->ed ? &meta->ed->entityID->g : 0;
+    nameid = zxid_get_fed_nameid(cf, prvid, affil, ses->uid, buf, cf->di_allow_create,
+				 (cf->di_nid_fmt == 't'), 0, 0, 0);
+
+    zxid_mk_at_cert(cf, sizeof(buf), buf, "map_val", nameid,
+		    &at_stmt->gg,rule->dst?rule->dst:"val", val);
+    val = zx_dup_str(cf->ctx, buf);
     break;
   case ZXID_MAP_RULE_WRAP_FILE:  /* 0x30 Get attribute value from file specified in ext */
-    zxid_get_affil_and_sp_name_buf(cf, meta, sp_name_buf);
+    if (!meta || !ses || !ses->uid) {
+      ERR("MAP_RULE_WRAP_FILE requires SP metadata and session to be specified. %p %p", meta, ses);
+      break;
+    }
+    zxid_get_affil_and_sp_name_buf(cf, meta, buf);
     bin = read_all_alloc(cf->ctx, "map_val from file", 0, 0,
-			 "%s" ZXID_UID_DIR "%s/%s/%s", cf->path, uid, sp_name_buf, map->ext);
+			 "%s" ZXID_UID_DIR "%s/%s/%s", cf->path, ses->uid, buf, map->ext);
+    val = zx_ref_str(cf->ctx, bin);
     break;
   default:
     NEVER("unknow map_val rule=%x", map->rule);
   }
+
   switch (map->rule & ZXID_MAP_RULE_ENC_MASK) {
-  case ZXID_MAP_RULE_RENAME:     break;
+  case ZXID_MAP_RULE_RENAME:     ss = val; break;
   case ZXID_MAP_RULE_FEIDEDEC:   /* Norway */
-    /*   "feide": FEIDE currently (2008) stores several values in a single
+    /*  "feide": FEIDE currently (2008) stores several values in a single
      *           AttributeValue element. The values are base64 encoded
-     *           and separated by a underscore. This decoder reverses this encoding. */
+     *           and separated by an underscore. This decoder reverses that encoding. */
     D("*** FEIDEDEC only base64 decodes one attribute: it does not handle the concatenatenation with _ of several attributes. %d", 0);
     ss = zx_new_len_str(cf->ctx, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(val->len));
     p = unbase64_raw(val->s, val->s + val->len, ss->s, zx_std_index_64);

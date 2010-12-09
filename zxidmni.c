@@ -102,7 +102,7 @@ struct zx_str* zxid_sp_mni_redir(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, st
       return zx_dup_str(cf->ctx, "* ERR");
     r = zxid_mk_mni(cf, zxid_get_user_nameid(cf, ses->nameid), new_nym, 0);
     r->Destination = zx_ref_len_attr(cf->ctx, &r->gg, zx_Destination_ATTR, loc->len, loc->s);
-    rs = zx_EASY_ENC_elem(cf->ctx, &r->gg);
+    rs = zx_easy_enc_elem_opt(cf, &r->gg);
     D("NIReq(%.*s)", rs->len, rs->s);
     return zxid_saml2_redir(cf, loc, rs, 0);
   }
@@ -153,7 +153,7 @@ struct zx_str* zxid_mni_do_ss(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struc
   res = zxid_mk_mni_resp(cf, zxid_OK(cf,0), &mni->ID->g);
   res = zxid_mni_do(cf, cgi, ses, mni);
   res->Destination = zx_ref_len_attr(cf->ctx, &res->gg, zx_Destination_ATTR, loc->len, loc->s);
-  return zx_EASY_ENC_elem(cf->ctx, &res->gg);
+  return zx_easy_enc_elem_opt(cf, &res->gg);
 }
 
 /* EOF  --  zxidmni.c */

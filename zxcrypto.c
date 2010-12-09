@@ -414,7 +414,7 @@ void zx_rand(char* buf, int n_bytes)
 }
 
 /* Called by:  zxid_mk_self_sig_cert x6 */
-static void zxid_add_subject_field(X509_NAME* subj, int typ, int nid, char* val)
+static void zxid_add_name_field(X509_NAME* subj, int typ, int nid, char* val)
 {
   X509_NAME_ENTRY* ne;
   if (!val || !*val)
@@ -430,14 +430,15 @@ static void zxid_add_subject_field(X509_NAME* subj, int typ, int nid, char* val)
  *
  * cf:: zxid configuration object, of which cf->ctx will be used for memory allocation
  * buflen:: sizeof(buf)
- * buf:: Buffer used for rendering pem representations of the data
+ * buf:: Buffer used for rendering pem representations of the certificate
  * log key:: Who and why is calling
  * name:: Name of the certificate file to be created
+ * returns:: 0 on failure, 1 on success
  *
  * See also: keygen() in keygen.c */
 
 /* Called by:  zxid_read_cert, zxid_read_private_key */
-int zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, char* lk, char* name)
+int zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, const char* name)
 {
 #ifdef USE_OPENSSL
   BIO* wbio_cert;
@@ -462,6 +463,18 @@ int zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, char* lk, char* 
   
   D("keygen start lk(%s) name(%s)", lk, name);
 
+  p = strstr(cf->url, "://");
+  if (p) {
+    p += sizeof("://")-1;
+    len = strcspn(p, ":/");
+    if (len > sizeof(cn)-2)
+      len = sizeof(cn)-2;
+    memcpy(cn, p, len);
+    cn[len] = 0;
+  } else {
+    strcpy(cn, "Unknown server cn. Misconfiguration.");
+  }
+  
   snprintf(ou, sizeof(ou)-1, "SSO Dept ZXID Auto-Cert %s", cf->url);
   ou[sizeof(ou)-1] = 0;  /* must terminate manually as on win32 termination is not guaranteed */
 
@@ -496,6 +509,7 @@ int zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, char* lk, char* 
   DD("keygen populate: set version %d (real vers is one higher)", 2);
   ASN1_INTEGER_set(ri->version, 2L /* version 3 (binary value is one less) */);
 
+#if 0 /* See cn code above */
   /* Parse domain name out of the URL: skip https:// and then scan name without port or path */
   
   for (p = cf->url; !ONE_OF_2(*p, '/', 0); ++p) ;
@@ -511,7 +525,8 @@ badurl:
   *q = 0;
 
   D("keygen populate DN: cn(%s) org(%s) c(%s) url=%p cn=%p p=%p q=%p", cn, cf->org_name, cf->country, cf->url, cn, p, q);
-  
+#endif
+
   /* Note on string types and allowable char sets:
    * V_ASN1_PRINTABLESTRING  [A-Za-z0-9 '()+,-./:=?]   -- Any domain name, but not query string
    * V_ASN1_IA5STRING        Any 7bit string
@@ -519,13 +534,13 @@ badurl:
 
   /* Construct DN part by part. We want cn=www.site.com,o=ZXID Auto-Cert */
 
-  zxid_add_subject_field(ri->subject, V_ASN1_PRINTABLESTRING, NID_commonName, cn);
-  zxid_add_subject_field(ri->subject, V_ASN1_T61STRING, NID_organizationalUnitName, ou);
-  zxid_add_subject_field(ri->subject, V_ASN1_T61STRING, NID_organizationName, cf->org_name);
+  zxid_add_name_field(ri->subject, V_ASN1_PRINTABLESTRING, NID_commonName, cn);
+  zxid_add_name_field(ri->subject, V_ASN1_T61STRING, NID_organizationalUnitName, ou);
+  zxid_add_name_field(ri->subject, V_ASN1_T61STRING, NID_organizationName, cf->org_name);
 
-  zxid_add_subject_field(ri->subject, V_ASN1_T61STRING, NID_localityName, cf->locality);
-  zxid_add_subject_field(ri->subject, V_ASN1_T61STRING, NID_stateOrProvinceName, cf->state);
-  zxid_add_subject_field(ri->subject, V_ASN1_T61STRING, NID_countryName, cf->country);
+  zxid_add_name_field(ri->subject, V_ASN1_T61STRING, NID_localityName, cf->locality);
+  zxid_add_name_field(ri->subject, V_ASN1_T61STRING, NID_stateOrProvinceName, cf->state);
+  zxid_add_name_field(ri->subject, V_ASN1_T61STRING, NID_countryName, cf->country);
 
 #if 0
   X509_ATTRIBUTE*  xa;
@@ -665,6 +680,160 @@ badurl:
   return 1;
 #else
   ERR("ZXID was compiled without USE_OPENSSL. This means self signed certificate generation facility is unavailable. Recompile ZXID. %s", lk);
+  return 0;
+#endif
+}
+
+/*() Create X509 attribute certificate for one attribute and user specified by nameid (pseudonym)
+ *
+ * cf:: zxid configuration object, of which cf->ctx will be used for memory allocation
+ * buflen:: sizeof(buf)
+ * buf:: Buffer used for rendering pem representations of the certificate
+ * log key:: Who and why is calling
+ * name:: Name of the attribute in certificate
+ * val:: Value of the attribute in certificate
+ */
+
+/* Called by:  zxid_map_val */
+int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_nid* nameid, const char* name, const char* val)
+{
+#ifdef USE_OPENSSL
+  BIO*   wbio_cert;
+  int    len;
+  long   cert_ser;
+  char*  p;
+  time_t ts;
+  X509*  x509ss;
+  X509_NAME* issuer;
+  X509_NAME* subject;
+  X509_EXTENSION*  ext;
+  X509*  sign_cert;
+  RSA*   sign_pkey;
+  char   cn[256];
+  char   ou[256];
+
+  X509V3_add_standard_extensions();
+  
+  D("keygen start lk(%s) name(%s)", lk, name);
+
+  p = strstr(cf->url, "://");
+  if (p) {
+    p += sizeof("://")-1;
+    len = strcspn(p, ":/");
+    if (len > sizeof(cn)-2)
+      len = sizeof(cn)-2;
+    memcpy(cn, p, len);
+    cn[len] = 0;
+  } else {
+    strcpy(cn, "Unknown server cn. Misconfiguration.");
+  }
+  
+  snprintf(ou, sizeof(ou)-1, "SSO Dept ZXID Auto-Cert %s", cf->url);
+  ou[sizeof(ou)-1] = 0;  /* must terminate manually as on win32 termination is not guaranteed */
+
+  ts = time(0);
+  RAND_seed(&ts,sizeof(ts));
+#ifdef WINDOWS
+  RAND_screen(); /* Loading video display memory into random state */
+#endif
+  
+  //ASN1_INTEGER_set(ri->version, 2L /* version 3 (binary value is one less) */);
+  
+  /* Note on string types and allowable char sets:
+   * V_ASN1_PRINTABLESTRING  [A-Za-z0-9 '()+,-./:=?]   -- Any domain name, but not query string
+   * V_ASN1_IA5STRING        Any 7bit string
+   * V_ASN1_T61STRING        8bit string   */
+
+  issuer = X509_NAME_new();
+  subject = X509_NAME_new();  
+
+  /* Construct DN part by part. We want cn=www.site.com,o=ZXID Auto-Cert */
+
+  zxid_add_name_field(issuer, V_ASN1_PRINTABLESTRING, NID_commonName, cn);
+  zxid_add_name_field(issuer, V_ASN1_T61STRING, NID_organizationalUnitName, ou);
+  zxid_add_name_field(issuer, V_ASN1_T61STRING, NID_organizationName, cf->org_name);
+
+  zxid_add_name_field(issuer, V_ASN1_T61STRING, NID_localityName, cf->locality);
+  zxid_add_name_field(issuer, V_ASN1_T61STRING, NID_stateOrProvinceName, cf->state);
+  zxid_add_name_field(issuer, V_ASN1_T61STRING, NID_countryName, cf->country);
+
+  /* Construct Subject part by part. */
+
+  if (nameid) {
+    zxid_add_name_field(subject, V_ASN1_PRINTABLESTRING, NID_commonName, zx_str_to_c(cf->ctx, ZX_GET_CONTENT(nameid)));
+  } else {
+    zxid_add_name_field(subject, V_ASN1_PRINTABLESTRING, NID_commonName, "unspecified-see-zxid_mk_at_cert");
+  }
+
+  /* ----- Create X509 certificate ----- */
+  
+  x509ss = X509_new();
+  X509_set_version(x509ss, 2); /* Set version to V3 and serial number to zero */
+  zx_rand((char*)&cert_ser, 4);
+  ASN1_INTEGER_set(X509_get_serialNumber(x509ss), cert_ser);
+    
+  X509_set_issuer_name(x509ss, issuer);
+#if 1
+  ASN1_TIME_set(X509_get_notBefore(x509ss),0);
+  ASN1_TIME_set(X509_get_notAfter(x509ss), 0x7fffffffL); /* The end of the 32 bit Unix epoch */
+#else
+  X509_gmtime_adj(X509_get_notBefore(x509ss),0);
+  X509_gmtime_adj(X509_get_notAfter(x509ss), 0x7fffffffL); /* The end of the 32 bit Unix epoch */
+#endif
+  X509_set_subject_name(x509ss,	subject);
+  
+#if 0 /* *** schedule to remove */  
+  /* Set up V3 context struct and add certificate extensions. */
+  
+  ext = X509V3_EXT_conf_nid(0, 0, NID_basic_constraints, "CA:TRUE,pathlen:3");
+  X509_add_ext(x509ss, ext, -1);
+  
+  ext = X509V3_EXT_conf_nid(0, 0, NID_netscape_cert_type, "client,server,email,objsign,sslCA,emailCA,objCA");
+  X509_add_ext(x509ss, ext, -1);
+  
+  ext = X509V3_EXT_conf_nid(0, 0, NID_key_usage, "digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment,keyAgreement,keyCertSign,cRLSign");
+  X509_add_ext(x509ss, ext, -1);
+#endif
+
+  ext = X509V3_EXT_conf_nid(0, 0, NID_netscape_comment, "Attribute cert, see zxid.org");
+  X509_add_ext(x509ss, ext, -1);
+  
+  zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "mk_at_cert");
+
+  DD("keygen signing x509ss %s", lk);
+  if (!(X509_sign(x509ss, sign_pkey, EVP_md5()))) {
+    ERR("Failed to sign x509ss %s", lk);
+    zx_report_openssl_error("X509_sign");
+    return 0;
+  }
+  DD("keygen x509ss ready %s", lk);
+
+  /* ----- Output phase ----- */
+
+  wbio_cert = BIO_new(BIO_s_mem());
+  DD("write_cert %s", lk);
+  if (!PEM_write_bio_X509(wbio_cert, x509ss)) {
+    ERR("write_cert %s", lk);
+    zx_report_openssl_error("write_cert");
+    return 0;
+  }
+  len = BIO_get_mem_data(wbio_cert, &p);
+  memcpy(buf, p, MIN(len, buflen-1));
+  buf[MIN(len, buflen-1)] = 0;
+
+  //***write_all_path_fmt("auto_cert ss", buflen, buf, "%s" ZXID_PEM_DIR "%s", cf->path, name,  "%.*s", len, p);
+
+  BIO_free_all(wbio_cert);
+
+  X509_free(x509ss);
+  X509V3_EXT_cleanup();
+  OBJ_cleanup();
+
+  zxlog(cf, 0, 0, 0, 0, 0, 0, 0, 0, "K", "X509ATCERT", name, 0);
+  D("at cert done. %s", lk);
+  return 1;
+#else
+  ERR("ZXID was compiled without USE_OPENSSL. This means X509 attribute certificate generation facility is unavailable. Recompile ZXID. %s", lk);
   return 0;
 #endif
 }

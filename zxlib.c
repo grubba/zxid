@@ -417,7 +417,7 @@ struct zx_elem_s* zx_replace_kid(struct zx_elem_s* father, struct zx_elem_s* kid
     return kid;
   }
   if (father->kids->g.tok == kid->g.tok) {
-    kid->g.n = &father->kids->g.n;
+    kid->g.n = father->kids->g.n;
     father->kids = kid;
     return kid;
   }
@@ -539,8 +539,8 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
     /* fall thru */
   default:
     if (x->g.s) {
-      /*    <   ns:elem    >   </  ns:elem    >  */
-      len = 1 + x->g.len + 1 + 2 + x->g.len + 1;
+      /*    <   ns:elem    >                                    </  ns:elem    >    / */
+      len = 1 + x->g.len + 1 + ((x->kids || !c->enc_tail_opt) ? (2 + x->g.len + 1) : 1);
     } else { /* Construct elem string from tok */
       ix = (x->g.tok >> ZX_TOK_NS_SHIFT)&(ZX_TOK_NS_MASK >> ZX_TOK_NS_SHIFT);
       if (ix >= zx__NS_MAX) {
@@ -557,8 +557,8 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
       el_tok = zx_el_tab + ix;
       len = strlen(el_tok->name);
       DD("ns prefix_len=%d el_len=%d", x->ns->prefix_len, len);
-      /*    <   ns                  :   elem  >   </  ns                  :   elem  >  */
-      len = 1 + x->ns->prefix_len + 1 + len + 1 + 2 + x->ns->prefix_len + 1 + len + 1;
+      /*    <   ns                  :   elem  >                                    </  ns                  :   elem  >    / */
+      len = 1 + x->ns->prefix_len + 1 + len + 1 + ((x->kids || !c->enc_tail_opt) ? (2 + x->ns->prefix_len + 1 + len + 1) : 1);
     }
     D_LEN("%06x ** tag start: %d", x->g.tok, len);
     len += zx_len_xmlns_if_not_seen(c, x->ns, &pop_seen);
@@ -739,21 +739,26 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
 
     for (attr = x->attr; attr; attr = (struct zx_attr_s*)attr->g.n)
       p = zx_attr_wo_enc(p, attr);
-    ZX_OUT_CH(p, '>');
-    D_LEN("%06x   after attrs: %d", x->g.tok, p-b);
-    
-    for (kid = x->kids; kid; kid = (struct zx_elem_s*)kid->g.n)
-      p = zx_ENC_WO_any_elem(c, kid, p);
-    D_LEN("%06x   after kids: %d", x->g.tok, p-b);
-    
-    ZX_OUT_CH(p, '<');
-    ZX_OUT_CH(p, '/');
-    if (x->g.s) {
-      ZX_OUT_MEM(p, x->g.s, x->g.len);
-    } else { /* Construct elem string from tok */
-      ZX_OUT_MEM(p, x->ns->prefix, x->ns->prefix_len);
-      ZX_OUT_CH(p, ':');
-      ZX_OUT_MEM(p, el_tok->name, strlen(el_tok->name));
+
+    if (x->kids || !c->enc_tail_opt) {
+      ZX_OUT_CH(p, '>');
+      D_LEN("%06x   after attrs: %d", x->g.tok, p-b);
+      
+      for (kid = x->kids; kid; kid = (struct zx_elem_s*)kid->g.n)
+	p = zx_ENC_WO_any_elem(c, kid, p);
+      D_LEN("%06x   after kids: %d", x->g.tok, p-b);
+
+      ZX_OUT_CH(p, '<');
+      ZX_OUT_CH(p, '/');
+      if (x->g.s) {
+	ZX_OUT_MEM(p, x->g.s, x->g.len);
+      } else { /* Construct elem string from tok */
+	ZX_OUT_MEM(p, x->ns->prefix, x->ns->prefix_len);
+	ZX_OUT_CH(p, ':');
+	ZX_OUT_MEM(p, el_tok->name, strlen(el_tok->name));
+      }
+    } else {
+      ZX_OUT_CH(p, '/');  /* Also an XML legal way to terminate an empty tag, e.g. <ns:foo/> */
     }
     ZX_OUT_CH(p, '>');
   }
@@ -762,7 +767,8 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
   return p;
 }
 
-/*(i) Render any element in wire order, as often needed in validating canonicalizations. */
+/*(i) Render any element in wire order, as often needed in validating canonicalizations.
+ * See also: zx_easy_enc_opt() */
 
 /* Called by:  main x3, so_enc_dec, zxid_a7n2str, zxid_add_header_refs x29, zxid_addmd, zxid_anoint_a7n x2, zxid_anoint_sso_resp x2, zxid_az_soap x2, zxid_cache_epr, zxid_call_epr, zxid_idp_sso x2, zxid_lecp_check, zxid_mk_art_deref, zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni, zxid_mni_do_ss, zxid_nid2str, zxid_pep_az_base_soap_pepmap x3, zxid_pep_az_soap_pepmap x3, zxid_reg_svc, zxid_slo_resp_redir, zxid_snarf_eprs_from_ses, zxid_soap_call_envelope, zxid_soap_call_hdr_body, zxid_soap_cgi_resp_body, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_mni_soap, zxid_sp_slo_redir, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_sp_sso_finalize, zxid_ssos_anreq, zxid_start_sso_url, zxid_token2str, zxid_write_ent_to_cache, zxid_wsc_prepare_call, zxid_wsf_sign x2, zxid_wsf_validate_a7n, zxid_wsp_decorate, zxsig_sign, zxsig_validate x2 */
 struct zx_str* zx_EASY_ENC_elem(struct zx_ctx* c, struct zx_elem_s* x)

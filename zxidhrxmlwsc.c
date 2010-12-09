@@ -305,7 +305,7 @@ int main(int argc, char** argv)
 	ERR("There was no candidate %p", env->Body);
 	break;
       }
-      ss = zx_EASY_ENC_elem(cf->ctx, &env->Body->idhrxml_QueryResponse->Data->Candidate->gg);
+      ss = zx_easy_enc_elem_opt(cf, &env->Body->idhrxml_QueryResponse->Data->Candidate->gg);
       hrxml_resp = ss->s;
     } else {
       hrxml_resp = "Query Failed.";

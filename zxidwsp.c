@@ -227,7 +227,7 @@ struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cr
   }
   zx_reverse_elem_lists(&env->Header->gg);
   
-  ss = zx_EASY_ENC_elem(cf->ctx, &env->gg);
+  ss = zx_easy_enc_elem_opt(cf, &env->gg);
   DD("DECOR len=%d envelope(%.*s)", ss->len, ss->len, ss->s);
   D_XML_BLOB(cf, "WSP_DECOR", ss->len, ss->s);
   D_DEDENT("decor: ");
@@ -355,6 +355,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
       }
       zxlog_blob(cf, cf->log_rely_a7n, logpath, a7nss, "wsp_validate");
       zxlog(cf, 0, srcts, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "A7N VALID", logpath->s, 0);
+      zx_str_free(cf->ctx, a7nss);
     }
   }
   return 1;

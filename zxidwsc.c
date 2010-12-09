@@ -418,7 +418,7 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
     }
     ses->wsc_msgid = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(env->Header->MessageID));
     
-    root = zxid_soap_call_envelope(cf, ZX_GET_CONTENT(epr->Address), env, ret_enve);
+    root = zxid_soap_call_raw(cf, ZX_GET_CONTENT(epr->Address), env, ret_enve);
     if (!root || !root->Envelope || !root->Envelope->Body) {
       ERR("soap call returned empty or seriously flawed response %p", root);
       D_DEDENT("wsc_call: ");
@@ -585,7 +585,7 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
     return 0;
   }
   
-  ret = zx_EASY_ENC_elem(cf->ctx, &env->gg);
+  ret = zx_easy_enc_elem_opt(cf, &env->gg);
   D_DEDENT("call: ");
   return ret;
 }
@@ -750,7 +750,7 @@ struct zx_str* zxid_wsc_prepare_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr
   
   /* *** add usage directives */
 
-  ret = zx_EASY_ENC_elem(cf->ctx, &env->gg);
+  ret = zx_easy_enc_elem_opt(cf, &env->gg);
   D_DEDENT("prep: ");
   return ret;
 }

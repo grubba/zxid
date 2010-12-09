@@ -189,7 +189,7 @@ int zxid_write_ent_to_cache(zxid_conf* cf, zxid_entity* ent)
     return 0;
   }
   
-  ss = zx_EASY_ENC_elem(cf->ctx, &ent->ed->gg);
+  ss = zx_easy_enc_elem_opt(cf, &ent->ed->gg);
   if (!ss)
     return 0;
   write_all_fd(fd, ss->s, ss->len);
@@ -849,7 +849,7 @@ struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
   
   if (cf->log_level>0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "MYMD", 0, 0);
-  return zx_EASY_ENC_elem(cf->ctx, &ed->gg);
+  return zx_easy_enc_elem_opt(cf, &ed->gg);
 }
 
 /*() Generate our SP metadata and send it to remote partner.

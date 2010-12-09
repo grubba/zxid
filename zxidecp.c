@@ -153,7 +153,7 @@ struct zx_str* zxid_lecp_check(zxid_conf* cf, zxid_cgi* cgi)
   se->Header = zx_NEW_e_Header(cf->ctx, &se->gg);
   se->Header->Request = zxid_mk_paos_Request_hdr(cf);
   se->Header->ecp_Request = zxid_mk_ecp_Request_hdr(cf);
-  env = zx_EASY_ENC_elem(cf->ctx, &se->gg);
+  env = zx_easy_enc_elem_opt(cf, &se->gg);
   req = zx_strf(cf->ctx,
 		"Cache-Control: no-cache, no-store, must-revalidate, private" CRLF
 		"Pragma: no-cache" CRLF

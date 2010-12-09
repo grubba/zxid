@@ -54,7 +54,7 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
 	D("attribute(%s) filtered out by del rule in OUTMAP", at->name);
 	continue;
       }
-      at->map_val = zxid_map_val(cf, map, zx_ref_str(cf->ctx, STRNULLCHK(at->val)));
+      at->map_val = zxid_map_val(cf, 0, 0, map, zx_ref_str(cf->ctx, STRNULLCHK(at->val)));
       if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
 	name_len = strlen(map->dst);
       } else {
@@ -64,7 +64,7 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
       DD("len1=%d", len);
 
       for (av = at->nv; av; av = av->n) {
-	av->map_val = zxid_map_val(cf, map, zx_ref_str(cf->ctx, STRNULLCHK(av->val)));
+	av->map_val = zxid_map_val(cf, 0, 0, map, zx_ref_str(cf->ctx, STRNULLCHK(av->val)));
 	len += name_len + sizeof(": \n")-1 + av->map_val->len;
 	DD("len2=%d", len);
       }
@@ -199,7 +199,7 @@ static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
 	D("attribute(%s) filtered out by del rule in OUTMAP", at->name);
 	continue;
       }
-      at->map_val = zxid_map_val(cf, map, zx_ref_str(cf->ctx, STRNULLCHK(at->val)));
+      at->map_val = zxid_map_val(cf, 0, 0, map, zx_ref_str(cf->ctx, STRNULLCHK(at->val)));
       if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
 	name_len = strlen(map->dst);
       } else {
@@ -209,7 +209,7 @@ static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
       if (at->nv) {  /* Multivalue requires array */
 	len += name_len + sizeof("\"\":[\"\"],")-1 + at->map_val->len;
 	for (av = at->nv; av; av = av->n) {
-	  av->map_val = zxid_map_val(cf, map, zx_ref_str(cf->ctx, STRNULLCHK(av->val)));
+	  av->map_val = zxid_map_val(cf, 0, 0, map, zx_ref_str(cf->ctx, STRNULLCHK(av->val)));
 	  len += name_len + sizeof(",\"\"")-1 + av->map_val->len;
 	}
       } else {
@@ -336,7 +336,7 @@ static struct zx_str* zxid_pool_to_qs(zxid_conf* cf, struct zxid_attr* pool)
 	D("attribute(%s) filtered out by del rule in OUTMAP", at->name);
 	continue;
       }
-      at->map_val = zxid_map_val(cf, map, zx_ref_str(cf->ctx, STRNULLCHK(at->val)));
+      at->map_val = zxid_map_val(cf, 0, 0, map, zx_ref_str(cf->ctx, STRNULLCHK(at->val)));
       if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
 	name_len = strlen(map->dst);
       } else {
@@ -344,7 +344,7 @@ static struct zx_str* zxid_pool_to_qs(zxid_conf* cf, struct zxid_attr* pool)
       }
       len += name_len + sizeof("=&")-1 + zx_url_encode_len(at->map_val->len,at->map_val->s)-1;
       for (av = at->nv; av; av = av->n) {
-	av->map_val = zxid_map_val(cf, map, zx_ref_str(cf->ctx, STRNULLCHK(av->val)));
+	av->map_val = zxid_map_val(cf, 0, 0, map, zx_ref_str(cf->ctx, STRNULLCHK(av->val)));
 	len += name_len + sizeof("=&")-1 + zx_url_encode_len(av->map_val->len,av->map_val->s)-1;
       }
       D("len=%d name_len=%d %s", len, name_len, at->name);
@@ -475,7 +475,7 @@ static int zxid_add_at_values(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribu
     if (av->EndpointReference || av->ResourceOffering)
       continue;  /* Skip bootstraps. They are handled elsewhere, see zxid_snarf_eprs_from_ses(). */
     if (ZX_GET_CONTENT(av)) {
-      ss = zxid_map_val(cf, map, ZX_GET_CONTENT(av));
+      ss = zxid_map_val(cf, ses, 0, map, ZX_GET_CONTENT(av));
       if (ses->at->val) {
 	D("map val(%.*s)", ss->len, ss->s);
 	ses->at->nv = zxid_new_at(cf, ses->at->nv, 0, 0, ss->len, ss->s, "multival");
@@ -653,7 +653,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   /* Format some pseudo attributes that describe the SSO */
 
   if (a7n) {
-    zxid_add_attr_to_ses(cf, ses, "ssoa7n", zx_EASY_ENC_elem(cf->ctx, &a7n->gg));
+    zxid_add_attr_to_ses(cf, ses, "ssoa7n", zx_easy_enc_elem_opt(cf, &a7n->gg));
     issuer = ZX_GET_CONTENT(a7n->Issuer);
   }
   zxid_add_attr_to_ses(cf, ses, "issuer", issuer);
@@ -683,7 +683,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   else
     tgta7n = a7n;
   if (tgta7n) {
-    zxid_add_attr_to_ses(cf, ses, "tgta7n", zx_EASY_ENC_elem(cf->ctx, &a7n->gg));
+    zxid_add_attr_to_ses(cf, ses, "tgta7n", zx_easy_enc_elem_opt(cf, &a7n->gg));
     tgtissuer = ZX_GET_CONTENT(tgta7n->Issuer);
   }
   if (tgtissuer)
