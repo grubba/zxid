@@ -349,14 +349,14 @@ struct zxid_conf {
   pthread_mutex_t curl_mx;   /* Avoid holding the main lock for duration of HTTP request */
 #endif
 #ifdef USE_OPENSSL
-  RSA*  sign_pkey;
+  EVP_PKEY*  sign_pkey;
   X509* sign_cert;
-  RSA*  enc_pkey;
+  EVP_PKEY*  enc_pkey;
   X509* enc_cert;
 
   char  psobj_symkey[20];    /* sha1 hash of key data */
   char  log_symkey[20];      /* sha1 hash of key data */
-  RSA*  log_sign_pkey;
+  EVP_PKEY*  log_sign_pkey;
   X509* log_enc_cert;
 #endif
 };
@@ -663,10 +663,10 @@ struct zxsig_ref {
 #define ZXSIG_AUDIENCE   9  /* V Assertion has wrong audience. */
 
 #ifdef USE_OPENSSL
-ZXID_DECL struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* sref, X509* cert, RSA* priv_key);
+ZXID_DECL struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* sref, X509* cert, EVP_PKEY* priv_key);
 ZXID_DECL int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, int n, struct zxsig_ref* refs);
-ZXID_DECL int zxsig_data_rsa_sha1(struct zx_ctx* c, int len, const char* d, char** sig, RSA* priv_key, const char* lk);
-ZXID_DECL int zxsig_verify_data_rsa_sha1(int len, char* data, int siglen, char* sig, X509* cert, char* lk);
+ZXID_DECL int zxsig_data(struct zx_ctx* c, int len, const char* d, char** sig, EVP_PKEY* priv_key, const char* lk);
+ZXID_DECL int zxsig_verify_data(int len, char* data, int siglen, char* sig, X509* cert, char* lk);
 ZXID_DECL struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* data, struct zx_xenc_EncryptedKey_s** ekp, X509* cert, char* idsuffix, zxid_entity* meta);
 #endif
 ZXID_DECL struct zx_str* zxenc_privkey_dec(zxid_conf* cf, struct zx_xenc_EncryptedData_s* ed, struct zx_xenc_EncryptedKey_s* ek);
@@ -728,10 +728,10 @@ ZXID_DECL struct zx_sa_Issuer_s* zxid_issuer(zxid_conf* cf, struct zx_elem_s* fa
 
 #ifdef USE_OPENSSL
 ZXID_DECL X509* zxid_extract_cert(char* buf, char* name);
-ZXID_DECL RSA*  zxid_extract_private_key(char* buf, char* name);
+ZXID_DECL EVP_PKEY*  zxid_extract_private_key(char* buf, char* name);
 ZXID_DECL X509* zxid_read_cert(zxid_conf* cf, char* name);
-ZXID_DECL RSA*  zxid_read_private_key(zxid_conf* cf, char* name);
-ZXID_DECL int zxid_lazy_load_sign_cert_and_pkey(zxid_conf* cf, X509** cert, RSA** pkey, const char* logkey);
+ZXID_DECL EVP_PKEY*  zxid_read_private_key(zxid_conf* cf, char* name);
+ZXID_DECL int zxid_lazy_load_sign_cert_and_pkey(zxid_conf* cf, X509** cert, EVP_PKEY** pkey, const char* logkey);
 #endif
 ZXID_DECL int   zxid_set_opt(zxid_conf* cf, int which, int val);
 ZXID_DECL char* zxid_set_opt_cstr(zxid_conf* cf, int which, char* val);
@@ -742,15 +742,16 @@ ZXID_DECL zxid_conf* zxid_new_conf(const char* zxid_path);
 ZXID_DECL int   zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs);
 ZXID_DECL int   zxid_parse_conf(zxid_conf* cf, char* qs);
 ZXID_DECL int   zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, const char* name);
+ZXID_DECL int   zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_nid* nameid, const char* name, struct zx_str* val);
 ZXID_DECL struct zxid_map*   zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v);
 ZXID_DECL struct zxid_need*  zxid_load_need(zxid_conf* cf, struct zxid_need* need, char* v);
 ZXID_DECL struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsrc, char* v);
 ZXID_DECL struct zxid_attr*  zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len, char* name, int val_len, char* val, char* lk);
 ZXID_DECL struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list* lst, char* v);
-ZXID_DECL struct zxid_need*  zxid_is_needed(struct zxid_need* need, char* name);
-ZXID_DECL struct zxid_map*   zxid_find_map(struct zxid_map* map, char* name);
-ZXID_DECL struct zxid_cstr_list* zxid_find_cstr_list(struct zxid_cstr_list* lst, char* name);
-ZXID_DECL struct zxid_attr* zxid_find_at(struct zxid_attr* pool, char* name);
+ZXID_DECL struct zxid_need*  zxid_is_needed(struct zxid_need* need, const char* name);
+ZXID_DECL struct zxid_map*   zxid_find_map(struct zxid_map* map, const char* name);
+ZXID_DECL struct zxid_cstr_list* zxid_find_cstr_list(struct zxid_cstr_list* lst, const char* name);
+ZXID_DECL struct zxid_attr* zxid_find_at(struct zxid_attr* pool, const char* name);
 ZXID_DECL struct zx_str* zxid_show_conf(zxid_conf* cf);
 
 /* zxidcgi */
@@ -791,7 +792,7 @@ ZXID_DECL int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses);
 /* zxidcurl */
 
 ZXID_DECL struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data);
-ZXID_DECL struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_str* data, char** ret_enve);
+ZXID_DECL struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env, char** ret_enve);
 ZXID_DECL struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body);
 ZXID_DECL int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_str* entid);
 
@@ -956,7 +957,7 @@ ZXID_DECL struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, stru
 ZXID_DECL struct zx_xac_Request_s* zxid_mk_xac_az(zxid_conf* cf, struct zx_elem_s* father, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env);
 ZXID_DECL struct zx_xasp_XACMLAuthzDecisionQuery_s* zxid_mk_az(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env);
 ZXID_DECL struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zxid_mk_az_cd1(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env);
-ZXID_DECL struct zx_sa_Attribute_s* zxid_mk_sa_attribute_ss(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, struct zx_str** val);
+ZXID_DECL struct zx_sa_Attribute_s* zxid_mk_sa_attribute_ss(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, struct zx_str* val);
 ZXID_DECL struct zx_sa_Attribute_s* zxid_mk_sa_attribute(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, const char* val);
 
 /* zxidmkwsf */

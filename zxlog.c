@@ -90,7 +90,7 @@ static char* zxlog_alloc_zbuf(zxid_conf* cf, int *zlen, char* zbuf, int len, cha
 /* Called by:  test_mode x12 */
 void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const char* logbuf)
 {
-  RSA* log_sign_pkey;
+  EVP_PKEY* log_sign_pkey;
   struct rsa_st* rsa_pkey;
   struct aes_key_st aes_key;
   int len = 0, blen, zlen;
@@ -122,7 +122,7 @@ void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
       UNLOCK(cf->mx, "logsign wrln");      
       if (!log_sign_pkey)
 	break;
-      len = zxsig_data_rsa_sha1(cf->ctx, zlen, zbuf, &sig, log_sign_pkey, "enc log line");
+      len = zxsig_data(cf->ctx, zlen, zbuf, &sig, log_sign_pkey, "enc log line");
       break;
     case 0x06:      /* Dx DSA-SHA1 signature */
       ERR("DSA-SHA1 sig not implemented in encrypted mode. Use RSA-SHA1 or none. %x", encflags);
@@ -221,7 +221,7 @@ void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
     UNLOCK(cf->mx, "logsign wrln");
     if (!log_sign_pkey)
       break;
-    zlen = zxsig_data_rsa_sha1(cf->ctx, n-1, logbuf, &zbuf, log_sign_pkey, "log line");
+    zlen = zxsig_data(cf->ctx, n-1, logbuf, &zbuf, log_sign_pkey, "log line");
     len = SIMPLE_BASE64_LEN(zlen) + 4;
     sig = ZX_ALLOC(cf->ctx, len);
     strcpy(sig, "RP ");

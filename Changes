@@ -78,6 +78,7 @@ zxid-0.73:: 6.12.2010
     - Fixed element ordering in zxcot generated EPRs
     - Added IdP side AAMAP capability to transform attributes
     - Added <ns:foo/> close tag tail optimization to encoder, controlled by c->enc_tail_opt flag
+    - Added preliminary DSA support
     - NOTPUB
 
 zxid-0.72:: 5.12.2010

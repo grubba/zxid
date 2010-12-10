@@ -271,7 +271,7 @@ static void zxlog_zsig_verify_print(zxid_conf* cf, int len, char* buf, char* se,
       ERR("RSA sig claimed by no sig found. %d", siglen);
       break;
     }
-    verdict = zxsig_verify_data_rsa_sha1(len-(p-buf), p, siglen, sig, log_verify_cert, "log vfy");
+    verdict = zxsig_verify_data(len-(p-buf), p, siglen, sig, log_verify_cert, "log vfy");
     if (verdict) {
       printf("RSA signature FAIL. Log file may have been tampered - or bad certificate.\n");
     } else {

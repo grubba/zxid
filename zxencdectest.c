@@ -178,6 +178,39 @@ void a7n_test()
   zxid_sp_mni_soap(cf, &cgi, &sess, zx_ref_str(cf->ctx, "newnym"));
 }
 
+void x509_test()
+{
+  struct timeval srctss;
+  zxid_conf* cf;
+  zxid_cgi cgi;
+  zxid_ses sess;
+  zxid_nid* nameid;
+  char buf[4096];
+  memset(&cgi, 0, sizeof(cgi));
+  memset(&sess, 0, sizeof(sess));
+  memset(&srctss, 0, sizeof(srctss));
+
+  sess.uid = "test";
+  cf = zxid_new_conf("/var/zxid/");
+
+#if 1
+  nameid = zx_NEW_sa_NameID(cf->ctx,0);
+  nameid->Format = zx_ref_attr(cf->ctx, &nameid->gg, zx_Format_ATTR, "persistent");
+  nameid->NameQualifier = zx_ref_attr(cf->ctx, &nameid->gg, zx_NameQualifier_ATTR, "http://myidp?o=B");
+  nameid->SPNameQualifier = zx_ref_attr(cf->ctx, &nameid->gg, zx_SPNameQualifier_ATTR, "http://mysp?o=B");
+  zx_add_content(cf->ctx, &nameid->gg, zx_ref_str(cf->ctx, "a-persistent-nid"));
+#else
+  struct zx_sp_AuthnRequest_s* ar;
+  zxid_entity* sp_meta;
+  zxid_a7n* a7n;
+  ar = zxid_mk_authn_req(cf, &cgi);
+  sp_meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(ar->Issuer));
+  a7n = zxid_sso_issue_a7n(cf, &cgi, &sess, &srctss, sp_meta, 0, &nameid, 0, ar);
+#endif
+  zxid_mk_at_cert(cf, sizeof(buf), buf, "test", nameid, "1.2.826.0.1.3344810.1.1.14", "Role0");
+  printf("%s",buf);
+}
+
 const char foobar[] = "foobar";
 const char goobar[] = "goo\r\n~[]";
 
@@ -316,6 +349,7 @@ void opt(int* argc, char*** argv, char*** env)
 	case 4: attribute_sort_test(); break;
 	case 5: covimp_test(); break;
 	case 6: a7n_test(); break;
+	case 7: x509_test(); break;
 	}
 	exit(0);
 

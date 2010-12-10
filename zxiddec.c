@@ -219,10 +219,10 @@ log_msg:
   /* strcmp(cgi->sigalg, SIG_ALGO_RSA_SHA1) would be the right test, but as
    * SigAlg can be arbitrarily URL encoded, we make the match fuzzier. */
   if (cgi->sigalg && strstr(cgi->sigalg, "rsa-sha1")) {
-    ses->sigres = zxsig_verify_data_rsa_sha1(ss->len  /* Adjust for Signature= which we log */
-					     - (sizeof("&Signature=")-1 + strlen(cgi->sig)),
-					     ss->s, p2-sigbuf, sigbuf,
-					     meta->sign_cert, "Simple or Redir SigVfy");
+    ses->sigres = zxsig_verify_data(ss->len  /* Adjust for Signature= which we log */
+				    - (sizeof("&Signature=")-1 + strlen(cgi->sig)),
+				    ss->s, p2-sigbuf, sigbuf,
+				    meta->sign_cert, "Simple or Redir SigVfy");
     zxid_sigres_map(ses->sigres, &cgi->sigval, &cgi->sigmsg);
   } else {
     ERR("Unsupported or bad signature algorithm(%s).", STRNULLCHK(cgi->sigalg));

@@ -454,7 +454,7 @@ int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, stru
 void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec, struct zx_wsse_SecurityTokenReference_s* str, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy)
 {
   X509* sign_cert;
-  RSA*  sign_pkey;
+  EVP_PKEY* sign_pkey;
   int n_refs;
   struct zxsig_ref refs[ZXID_N_WSF_SIGNED_HEADERS];
       

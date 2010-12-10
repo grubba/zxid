@@ -96,19 +96,23 @@ X509* zxid_extract_cert(char* buf, char* name)
   return x;
 }
 
-/*() Extract a private key from PEM encoded string. */
+/*() Extract a private key from PEM encoded string.
+ * *** This function needs to expand to handle DSA */
 
 /* Called by:  opt, test_mode, zxid_read_private_key */
-RSA* zxid_extract_private_key(char* buf, char* name)
+EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
 {
   char* p;
   char* e;
+  int typ;
   EVP_PKEY* pk = 0;  /* Forces d2i_PrivateKey() to alloc the memory. */
-  RSA* rsa = 0;
   OpenSSL_add_all_algorithms();
   
-  p = strstr(buf, PEM_RSA_PRIV_KEY_START);
-  if (!p) {
+  if (p = strstr(buf, PEM_RSA_PRIV_KEY_START)) {
+    typ = EVP_PKEY_RSA;
+  } else if (p = strstr(buf, PEM_DSA_PRIV_KEY_START)) {
+    typ = EVP_PKEY_DSA;
+  } else {
     ERR("No private key found in file(%s)\n", name);
     return 0;
   }
@@ -116,17 +120,16 @@ RSA* zxid_extract_private_key(char* buf, char* name)
   if (*p == 0xd) ++p;
   if (*p != 0xa) return 0;
   ++p;
-  
-  e = strstr(buf, PEM_RSA_PRIV_KEY_END);
+
+  e = strstr(buf, typ == EVP_PKEY_RSA ? PEM_RSA_PRIV_KEY_END : PEM_RSA_PRIV_KEY_END);
   if (!e) return 0;
   
   p = unbase64_raw(p, e, buf, zx_std_index_64);
-  if (!d2i_PrivateKey(EVP_PKEY_RSA, &pk, (const unsigned char**)&buf /* *** compile warning */, p-buf) || !pk) {
+  if (!d2i_PrivateKey(typ, &pk, (const unsigned char**)&buf, p-buf) || !pk) {
     ERR("DER decoding of private key failed.\n%d", 0);
     return 0;
   }
-  rsa = EVP_PKEY_get1_RSA(pk);
-  return rsa;
+  return pk; /* RSA* rsa = EVP_PKEY_get1_RSA(pk); */
 }
 
 /*() Extract a certificate from PEM encoded file. */
@@ -144,7 +147,7 @@ X509* zxid_read_cert(zxid_conf* cf, char* name)
 /*() Extract a private key from PEM encoded file. */
 
 /* Called by:  test_ibm_cert_problem x2, test_ibm_cert_problem_enc_dec x2, zxenc_privkey_dec, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxlog_write_line x2 */
-RSA* zxid_read_private_key(zxid_conf* cf, char* name)
+EVP_PKEY* zxid_read_private_key(zxid_conf* cf, char* name)
 {
   char buf[4096];
   int got = read_all(sizeof(buf), buf, "read_private_key", 1, "%s" ZXID_PEM_DIR "%s", cf->path, name);
@@ -159,7 +162,7 @@ RSA* zxid_read_private_key(zxid_conf* cf, char* name)
  * memory. */
 
 /* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_az_soap x3, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x7, zxid_ssos_anreq, zxid_wsf_sign */
-int zxid_lazy_load_sign_cert_and_pkey(zxid_conf* cf, X509** cert, RSA** pkey, const char* logkey)
+int zxid_lazy_load_sign_cert_and_pkey(zxid_conf* cf, X509** cert, EVP_PKEY** pkey, const char* logkey)
 {
   LOCK(cf->mx, logkey);
   if (cert) {
@@ -253,45 +256,45 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->path = ZX_ALLOC(cf->ctx, cf->path_len+1);
   memcpy(cf->path, zxid_path, cf->path_len);
   cf->path[cf->path_len] = 0;
-  cf->nice_name = ZXID_NICE_NAME;
-  cf->org_name = ZXID_ORG_NAME;
-  cf->org_url = ZXID_ORG_URL;
-  cf->locality = ZXID_LOCALITY;
-  cf->state = ZXID_STATE;
-  cf->country = ZXID_COUNTRY;
-  cf->contact_org = ZXID_CONTACT_ORG;
-  cf->contact_name = ZXID_CONTACT_NAME;
+  cf->nice_name     = ZXID_NICE_NAME;
+  cf->org_name      = ZXID_ORG_NAME;
+  cf->org_url       = ZXID_ORG_URL;
+  cf->locality      = ZXID_LOCALITY;
+  cf->state         = ZXID_STATE;
+  cf->country       = ZXID_COUNTRY;
+  cf->contact_org   = ZXID_CONTACT_ORG;
+  cf->contact_name  = ZXID_CONTACT_NAME;
   cf->contact_email = ZXID_CONTACT_EMAIL;
-  cf->contact_tel = ZXID_CONTACT_TEL;
+  cf->contact_tel   = ZXID_CONTACT_TEL;
   cf->fedusername_suffix = ZXID_FEDUSERNAME_SUFFIX;
   cf->url = ZXID_URL;
   cf->non_standard_entityid = ZXID_NON_STANDARD_ENTITYID;
   cf->redirect_hack_imposed_url = ZXID_REDIRECT_HACK_IMPOSED_URL;
   cf->redirect_hack_zxid_url = ZXID_REDIRECT_HACK_ZXID_URL;
-  cf->cdc_url = ZXID_CDC_URL;
-  cf->cdc_choice = ZXID_CDC_CHOICE;
+  cf->cdc_url       = ZXID_CDC_URL;
+  cf->cdc_choice    = ZXID_CDC_CHOICE;
   cf->authn_req_sign = ZXID_AUTHN_REQ_SIGN;
   cf->want_sso_a7n_signed = ZXID_WANT_SSO_A7N_SIGNED;
   cf->want_authn_req_signed = ZXID_WANT_AUTHN_REQ_SIGNED;
   cf->sso_soap_sign = ZXID_SSO_SOAP_SIGN;
   cf->sso_soap_resp_sign = ZXID_SSO_SOAP_RESP_SIGN;
-  cf->sso_sign     = ZXID_SSO_SIGN;
-  cf->wsc_sign     = ZXID_WSC_SIGN;
-  cf->wsp_sign     = ZXID_WSP_SIGN;
-  cf->wspcgicmd    = ZXID_WSPCGICMD;
-  cf->nameid_enc   = ZXID_NAMEID_ENC;
-  cf->post_a7n_enc = ZXID_POST_A7N_ENC;
-  cf->canon_inopt  = ZXID_CANON_INOPT;
+  cf->sso_sign      = ZXID_SSO_SIGN;
+  cf->wsc_sign      = ZXID_WSC_SIGN;
+  cf->wsp_sign      = ZXID_WSP_SIGN;
+  cf->wspcgicmd     = ZXID_WSPCGICMD;
+  cf->nameid_enc    = ZXID_NAMEID_ENC;
+  cf->post_a7n_enc  = ZXID_POST_A7N_ENC;
+  cf->canon_inopt   = ZXID_CANON_INOPT;
   if (cf->ctx) cf->ctx->canon_inopt = cf->canon_inopt;
-  cf->enc_tail_opt = ZXID_ENC_TAIL_OPT;
-  cf->enckey_opt   = ZXID_ENCKEY_OPT;
-  cf->idpatopt     = ZXID_IDPATOPT;
-  cf->idp_list_meth   = ZXID_IDP_LIST_METH;
+  cf->enc_tail_opt  = ZXID_ENC_TAIL_OPT;
+  cf->enckey_opt    = ZXID_ENCKEY_OPT;
+  cf->idpatopt      = ZXID_IDPATOPT;
+  cf->idp_list_meth = ZXID_IDP_LIST_METH;
   cf->di_allow_create = ZXID_DI_ALLOW_CREATE;
-  cf->di_nid_fmt   = ZXID_DI_NID_FMT;
-  cf->di_a7n_enc   = ZXID_DI_A7N_ENC;
+  cf->di_nid_fmt    = ZXID_DI_NID_FMT;
+  cf->di_a7n_enc    = ZXID_DI_A7N_ENC;
   cf->bootstrap_level = ZXID_BOOTSTRAP_LEVEL;
-  cf->show_conf    = ZXID_SHOW_CONF;
+  cf->show_conf     = ZXID_SHOW_CONF;
 #ifdef USE_OPENSSL
   if (zxid_path) {
 #if 0
@@ -557,6 +560,7 @@ struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
   char* b;
   char* ext;
   char* p = v;
+  int len;
   struct zxid_map* mm;
 
   DD("v(%s)", v);
@@ -591,9 +595,8 @@ struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
     }
     
     ext = ++p;
-    p = strchr(p, ';');  /* Stanza ends in separator ; or end of string nul */
-    if (!p)
-      p = ext + strlen(ext);
+    len = strcspn(p, ";\n");  /* Stanza ends in separator ; or end of string nul */
+    p = ext + len;
     
     if (IS_RULE(rule, "reset")) {
       INFO("Reset map %p", map);
@@ -645,7 +648,7 @@ struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
     COPYVAL(mm->ext, ext, p);
 
     DD("map ns(%s) src(%s) rule=%d dst(%s) ext(%s)", mm->ns, mm->src, mm->rule, mm->dst, mm->ext);
-    if (!*p) break;
+    if (!*p || *p == '\n') break;
     ++p;
   }
 
@@ -869,7 +872,7 @@ struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsrc, char
  * scan as it is simple and good enough for handful of attributes. */
 
 /* Called by:  zxid_add_at_values x2, zxid_add_attr_to_ses x2 */
-struct zxid_need* zxid_is_needed(struct zxid_need* need, char* name)
+struct zxid_need* zxid_is_needed(struct zxid_need* need, const char* name)
 {
   struct zxid_attr* at;
   if (!name || !*name)

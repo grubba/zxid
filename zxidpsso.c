@@ -278,7 +278,6 @@ static void zxid_add_mapped_attr(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta
 /* Called by:  zxid_mk_usr_a7n_to_sp x4 */
 static void zxid_add_ldif_attrs(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zx_elem_s* father, char* p, char* lk, struct zxid_map* aamap, struct zxid_map* sp_aamap)
 {
-  struct zxid_map* map;
   char* name;
   char* val;
 
@@ -320,12 +319,12 @@ static struct zxid_map* zxid_read_map(zxid_conf* cf, const char* sp_name_buf, co
   return zxid_load_map(cf, 0, p);
 }
 
-static void zxid_read_ldif_attrs(zxid_conf* cf, const char* sp_name_buf, const char* uid, struct zxid_map* aamap, struct zxid_map* sp_aamap, struct zx_sa_AttributeStatement_s* at_stmt)
+static void zxid_read_ldif_attrs(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, const char* sp_name_buf, const char* uid, struct zxid_map* aamap, struct zxid_map* sp_aamap, struct zx_sa_AttributeStatement_s* at_stmt)
 {
   char* buf = read_all_alloc(cf->ctx, "read_ldif_attrs", 0, 0,
 			     "%s" ZXID_UID_DIR "%s/%s/.at", cf->path, uid, sp_name_buf);
   if (buf)
-    zxid_add_ldif_attrs(cf, &at_stmt->gg, buf, "read_ldif_attrs", aamap, sp_aamap);
+    zxid_add_ldif_attrs(cf, ses, meta, &at_stmt->gg, buf, "read_ldif_attrs", aamap, sp_aamap);
 }
 
 /*(i) Construct an assertion given user's attribute and bootstrap configuration.
@@ -344,16 +343,15 @@ zxid_a7n* zxid_mk_usr_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, z
   struct zxid_map* sp_aamap;
   zxid_a7n* a7n;
   struct zx_sa_AttributeStatement_s* at_stmt;
-  char* buf;
   char dir[ZXID_MAX_DIR];
 
   D_INDENT("mka7n: ");
   D("sp_eid(%s)", sp_meta->eid);
 
-  aamap = zxid_read_aamap(cf, ".bs", "AAMAP=");
+  aamap = zxid_read_map(cf, ".bs", "AAMAP=");
   if (!aamap)
     zxid_load_map(cf, 0, ZXID_DEFAULT_IDP_AAMAP);
-  sp_aamap = zxid_read_aamap(cf, sp_name_buf, "AAMAP=");
+  sp_aamap = zxid_read_map(cf, sp_name_buf, "AAMAP=");
 
   at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0);
   at_stmt->Attribute = zxid_mk_sa_attribute(cf, &at_stmt->gg, "zxididp", 0, ZXID_REL " " ZXID_COMPILE_DATE);
@@ -625,7 +623,7 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
   *nameid = zxid_get_fed_nameid(cf, issuer, affil, ses->uid, sp_name_buf, cgi->allow_create,
 				(cgi->nid_fmt && !strcmp(cgi->nid_fmt, "trnsnt")),
 				srcts, &ar->ID->g, logop);
-  logop[3] = 'S';  logop[4] = 'S';  logop[5] = 'O';  /* Patch in SSO */
+  if (logop) { *logop[3] = 'S';  *logop[4] = 'S';  *logop[5] = 'O';  /* Patch in SSO */ }
 
   a7n = zxid_mk_usr_a7n_to_sp(cf, ses, ses->uid, *nameid, sp_meta, sp_name_buf, 1);  /* SSO a7n */
 

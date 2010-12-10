@@ -362,7 +362,7 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses, str
 
 /*() Construct SAML SAML Attribute from string */
 
-struct zx_sa_Attribute_s* zxid_mk_sa_attribute_ss(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, struct zx_str** val)
+struct zx_sa_Attribute_s* zxid_mk_sa_attribute_ss(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, struct zx_str* val)
 {
   struct zx_sa_Attribute_s* r = zx_NEW_sa_Attribute(cf->ctx, father);
   if (namfmt)

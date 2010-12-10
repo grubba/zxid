@@ -37,7 +37,7 @@
 struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_sp_AuthnRequest_s* ar, struct zx_str* issuer)
 {
   X509* sign_cert;
-  RSA*  sign_pkey;
+  EVP_PKEY* sign_pkey;
   struct zxsig_ref refs;
   struct timeval srcts = {0,501000};
   zxid_cgi cgi;

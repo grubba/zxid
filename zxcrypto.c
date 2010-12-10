@@ -16,6 +16,7 @@
 #include <zx/errmac.h>
 #include <zx/zx.h>
 #include <zx/zxid.h>
+#include <zx/c/zx-sa-data.h>
 #include <string.h>
 #include <sys/stat.h>  /* umask(2) */
 
@@ -219,7 +220,7 @@ struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, st
 #else
   /* Patch from Eric Rybski <rybskej@yahoo.com> */
   if (encflag) {
-    if(!EVP_CipherFinal_ex(&ctx, out->s + iv_len + outlen, &tmplen)) { /* Append final block */
+    if(!EVP_CipherFinal_ex(&ctx, (unsigned char*)out->s + iv_len + outlen, &tmplen)) { /* Append final block */
       where = "EVP_CipherFinal_ex()";
       goto sslerr;
     }
@@ -228,7 +229,7 @@ struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, st
      * with OpenSSL & RFC 1423. See OpenSSL bug 1067
      * http://rt.openssl.org/Ticket/Display.html?user=guest&;pass=guest&id=1067 */
     EVP_CIPHER_CTX_set_padding(&ctx, 0);
-    if(!zx_EVP_DecryptFinal_ex(&ctx, out->s + iv_len + outlen, &tmplen)) { /* Append final block */
+    if(!zx_EVP_DecryptFinal_ex(&ctx, (unsigned char*)out->s + iv_len + outlen, &tmplen)) { /* Append final block */
       where = "zx_EVP_DecryptFinal_ex()";
       goto sslerr;
     }
@@ -684,18 +685,41 @@ badurl:
 #endif
 }
 
+/*
+
+A Practical Approach of X.509 Attribute Certificate Framework as Support to Obtain Privilege Delegation
+Jose A. Montenegro and Fernando Moya
+Computer Science Department, E.T.S. Ingenieria Informatica, Universidad de Malage, Spain
+Lecture Notes in Computer Science, 2004, Volume 3093/2004, 624, DOI: 10.1007/978-3-540-25980-0_13 
+
+ Abstract This work introduces a particular implementation of the
+X.509 Attribute Certificate framework (Xac), presented in the ITU-T
+Recommendation. The implementation is based on the use of the Openssl
+library, that we have chosen for its advantages in comparison with
+other libraries. The paper also describes how the implementation is
+middleware-oriented, focusing on the delegation model specified by
+ITU-T proposal, and taking into consideration the ETSI report about
+Xac.
+
+RFC3281
+http://tools.ietf.org/html/draft-ietf-pkix-3281update-05
+
+*/
+
 /*() Create X509 attribute certificate for one attribute and user specified by nameid (pseudonym)
  *
  * cf:: zxid configuration object, of which cf->ctx will be used for memory allocation
  * buflen:: sizeof(buf)
- * buf:: Buffer used for rendering pem representations of the certificate
+ * buf:: Buffer used for rendering pem representation of the certificate
  * log key:: Who and why is calling
+ * nameid:: Name of the subject
  * name:: Name of the attribute in certificate
  * val:: Value of the attribute in certificate
+ * returns:: 0 on failure, 1 on success
  */
 
 /* Called by:  zxid_map_val */
-int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_nid* nameid, const char* name, const char* val)
+int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_nid* nameid, const char* name, struct zx_str* val)
 {
 #ifdef USE_OPENSSL
   BIO*   wbio_cert;
@@ -708,7 +732,7 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
   X509_NAME* subject;
   X509_EXTENSION*  ext;
   X509*  sign_cert;
-  RSA*   sign_pkey;
+  EVP_PKEY* sign_pkey;
   char   cn[256];
   char   ou[256];
 
@@ -760,7 +784,12 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
   /* Construct Subject part by part. */
 
   if (nameid) {
-    zxid_add_name_field(subject, V_ASN1_PRINTABLESTRING, NID_commonName, zx_str_to_c(cf->ctx, ZX_GET_CONTENT(nameid)));
+    zxid_add_name_field(subject, V_ASN1_PRINTABLESTRING, NID_commonName,
+			zx_str_to_c(cf->ctx, ZX_GET_CONTENT(nameid)));
+    zxid_add_name_field(issuer, V_ASN1_T61STRING, NID_organizationalUnitName,
+			zx_str_to_c(cf->ctx, &nameid->SPNameQualifier->g));  /* SP */
+    zxid_add_name_field(issuer, V_ASN1_T61STRING, NID_organizationName,
+			zx_str_to_c(cf->ctx, &nameid->NameQualifier->g));    /* IdP */
   } else {
     zxid_add_name_field(subject, V_ASN1_PRINTABLESTRING, NID_commonName, "unspecified-see-zxid_mk_at_cert");
   }
@@ -771,7 +800,7 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
   X509_set_version(x509ss, 2); /* Set version to V3 and serial number to zero */
   zx_rand((char*)&cert_ser, 4);
   ASN1_INTEGER_set(X509_get_serialNumber(x509ss), cert_ser);
-    
+  
   X509_set_issuer_name(x509ss, issuer);
 #if 1
   ASN1_TIME_set(X509_get_notBefore(x509ss),0);
@@ -797,6 +826,30 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
 
   ext = X509V3_EXT_conf_nid(0, 0, NID_netscape_comment, "Attribute cert, see zxid.org");
   X509_add_ext(x509ss, ext, -1);
+
+#if 0
+  X509_ATTRIBUTE*  xa;
+  ASN1_BIT_STRING* bs;
+  ASN1_TYPE* at;
+
+  /* It seems this gives indigestion to the default CA */
+  DD("keygen populate attributes %s", lk);  /* Add attributes: we really only need cn */
+  
+  xa = X509_ATTRIBUTE_new();
+  xa->value.set = sk_ASN1_TYPE_new_null();
+  /*xa->single = 1; **** this may also be set on some versions */
+  xa->object=OBJ_nid2obj(NID_commonName);
+
+  bs = ASN1_BIT_STRING_new();
+  bs->type = V_ASN1_PRINTABLESTRING;
+  ASN1_STRING_set(bs, cn, strlen(cn)+1);  /* *** +1 why? Some archaic bug work-around? */
+
+  at = ASN1_TYPE_new();
+  ASN1_TYPE_set(at, bs->type, (char*)bs);
+  sk_ASN1_TYPE_push(xa->value.set, at);
+  sk_X509_ATTRIBUTE_push(ri->attributes, xa);
+  STACK_OF(X509_ATTRIBUTE) *X509at_add1_attr(STACK_OF(X509_ATTRIBUTE) **x, X509_ATTRIBUTE *attr);
+#endif
   
   zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "mk_at_cert");
 

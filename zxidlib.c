@@ -172,7 +172,7 @@ struct zx_attr_s* zxid_date_time_attr(zxid_conf* cf, struct zx_elem_s* father, i
 /* Called by:  zxid_idp_sso x3 */
 struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* payload, char* relay_state, int sign, struct zx_str* action_url)
 {
-  RSA* sign_pkey;
+  EVP_PKEY* sign_pkey;
   struct zx_str id_str;
   struct zx_str* logpath;
   char* sigbuf[SIG_SIZE];
@@ -222,7 +222,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
     p += sizeof("&SigAlg=" SIG_ALGO)-1;
 
     if (zxid_lazy_load_sign_cert_and_pkey(cf, 0, &sign_pkey, "SAML2 post"))
-      zlen = zxsig_data_rsa_sha1(cf->ctx, p-url, url, &zbuf, sign_pkey, "SAML2 post");
+      zlen = zxsig_data(cf->ctx, p-url, url, &zbuf, sign_pkey, "SAML2 post");
     if (zlen == -1)
       return 0;
 
@@ -324,7 +324,7 @@ struct zx_str zxstr_unknown = {0,0,sizeof("UNKNOWN")-1, "UNKNOWN"};
 /* Called by:  zxid_saml2_redir, zxid_saml2_redir_url, zxid_saml2_resp_redir */
 struct zx_str* zxid_saml2_redir_enc(zxid_conf* cf, char* field, struct zx_str* pay_load, char* relay_state)
 {
-  RSA* sign_pkey;
+  EVP_PKEY* sign_pkey;
   struct zx_str* logpath;
   struct zx_str* ss;
   char* zbuf;
@@ -369,7 +369,7 @@ struct zx_str* zxid_saml2_redir_enc(zxid_conf* cf, char* field, struct zx_str* p
   memcpy(url+len, "&SigAlg=" SIG_ALGO_URLENC, sizeof("&SigAlg=" SIG_ALGO_URLENC)-1);
   len += sizeof("&SigAlg=" SIG_ALGO_URLENC)-1;
   if (zxid_lazy_load_sign_cert_and_pkey(cf, 0, &sign_pkey, "SAML2 redir"))
-    zlen = zxsig_data_rsa_sha1(cf->ctx, len, url, &zbuf, sign_pkey, "SAML2 redir");
+    zlen = zxsig_data(cf->ctx, len, url, &zbuf, sign_pkey, "SAML2 redir");
   if (zlen == -1)
     return 0;
   
@@ -747,7 +747,6 @@ struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, str
   zxid_a7n* a7n;
   zxid_nid* nameid;
   struct zx_sa_AttributeStatement_s* at_stmt;
-  struct zx_sa_Attribute_s* at;
   struct zx_str* prvid;
   struct zx_str* affil;
   struct zx_str* ss;
@@ -759,7 +758,7 @@ struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, str
     return val;
 
   switch (map->rule & ZXID_MAP_RULE_WRAP_MASK) {
-  case 0: break /* No wrap */
+  case 0: break; /* No wrap */
   case ZXID_MAP_RULE_WRAP_A7N:   /* 0x10 Wrap the attribute in SAML2 assertion */
     if (!meta || !ses || !ses->uid) {
       ERR("MAP_RULE_WRAP_A7N requires SP metadata and session to be specified. %p %p", meta, ses);
@@ -771,7 +770,7 @@ struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, str
 				 (cf->di_nid_fmt == 't'), 0, 0, 0);
 
     at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0);
-    at_stmt->Attribute = zxid_mk_sa_attribute_ss(cf,&at_stmt->gg,rule->dst?rule->dst:"val",0,val);
+    at_stmt->Attribute = zxid_mk_sa_attribute_ss(cf, &at_stmt->gg, map->dst?map->dst:"val",0,val);
 
     a7n = zxid_mk_a7n(cf, prvid, zxid_mk_subj(cf, 0, meta, nameid), 0, at_stmt);
     zxid_anoint_a7n(cf, 1, a7n, prvid, "map_val", ses->uid);
@@ -787,8 +786,7 @@ struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, str
     nameid = zxid_get_fed_nameid(cf, prvid, affil, ses->uid, buf, cf->di_allow_create,
 				 (cf->di_nid_fmt == 't'), 0, 0, 0);
 
-    zxid_mk_at_cert(cf, sizeof(buf), buf, "map_val", nameid,
-		    &at_stmt->gg,rule->dst?rule->dst:"val", val);
+    zxid_mk_at_cert(cf, sizeof(buf), buf, "map_val", nameid, map->dst?map->dst:"val", val);
     val = zx_dup_str(cf->ctx, buf);
     break;
   case ZXID_MAP_RULE_WRAP_FILE:  /* 0x30 Get attribute value from file specified in ext */
