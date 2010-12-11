@@ -39,7 +39,7 @@ int trace = 0;
  * used to effectuate a runtime version number check. For compile time you
  * should check the value of the ~ZXID_VERSION~ macro. */
 
-/* Called by:  opt x2 */
+/* Called by:  covimp_test, opt x2 */
 int zxid_version()
 {
   return ZXID_VERSION;
@@ -59,6 +59,7 @@ char* zxid_version_str()
  * config option ENC_TAIL_OPT. Often used to generate slightly optimized
  * version for wire transfer. Not suitable for generating canonicalization. */
 
+/* Called by:  main x3, zxid_anoint_sso_resp, zxid_cache_epr, zxid_call_epr, zxid_idp_sso, zxid_lecp_check, zxid_map_val_ss, zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni, zxid_mni_do_ss, zxid_pep_az_base_soap_pepmap x3, zxid_pep_az_soap_pepmap x3, zxid_ses_to_pool x2, zxid_slo_resp_redir, zxid_snarf_eprs_from_ses, zxid_soap_call_raw, zxid_soap_cgi_resp_body, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_slo_redir, zxid_start_sso_url, zxid_write_ent_to_cache, zxid_wsc_prepare_call, zxid_wsp_decorate */
 struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x)
 {
   struct zx_str* ss;
@@ -698,6 +699,7 @@ erro:
 
 /*() Figure out sp_name_buf corresponding to affiliation */
 
+/* Called by:  zxid_add_fed_tok2epr, zxid_map_val_ss x3 */
 struct zx_str* zxid_get_affil_and_sp_name_buf(zxid_conf* cf, zxid_entity* meta, char* sp_name_buf)
 {
   struct zx_str* affil;
@@ -716,6 +718,7 @@ struct zx_str* zxid_get_affil_and_sp_name_buf(zxid_conf* cf, zxid_entity* meta, 
   return affil;
 }
 
+/* Called by:  zxid_add_fed_tok2epr, zxid_map_val_ss x2, zxid_sso_issue_a7n */
 zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str* affil, const char* uid, const char* sp_name_buf, int allow_create, int want_transient, struct timeval* srcts, struct zx_str* id, char** logop)
 {
   zxid_nid* nameid = zxid_check_fed(cf, affil, uid, allow_create, srcts, prvid, id, sp_name_buf);
@@ -741,7 +744,7 @@ zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str
  * Thus you should place most specific rules last and most generic rules first.
  * See also: zxid_load_map() and zxid_find_map() */
 
-/* Called by:  pool2apache x2, zxid_add_at_values, zxid_pepmap_extract x2, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
+/* Called by:  zxid_add_at_values, zxid_map_val */
 struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, const char* atname, struct zx_str* val)
 {
   zxid_a7n* a7n;
@@ -885,6 +888,7 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
   return ss;
 }
 
+/* Called by:  pool2apache x2, zxid_add_mapped_attr, zxid_pepmap_extract x2, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
 struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, const char* atname, const char* val) {
   return zxid_map_val_ss(cf, ses, meta, map, atname, zx_dup_str(cf->ctx, STRNULLCHK(val)));
 }

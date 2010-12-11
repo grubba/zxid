@@ -515,7 +515,7 @@ static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
 
 /*() Add simple attribute to pool, applying NEED, WANT, and INMAP */
 
-/* Called by:  zxid_add_ldif_at2ses, zxid_add_qs_to_ses, zxid_ses_to_pool x23 */
+/* Called by:  zxid_add_ldif_at2ses, zxid_add_qs_to_ses, zxid_ses_to_pool x25 */
 void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx_str* val)
 {
   struct zxid_map* map;
@@ -624,7 +624,7 @@ static void zxid_cp_usr_eprs2ses(zxid_conf* cf, zxid_ses* ses, struct zx_str* pa
  * rendering to LDIF (or JSON). This function also implements
  * local attribute authority. */
 
-/* Called by:  zxid_as_call_ses, zxid_fetch_ses, zxid_simple_ab_pep, zxid_wsc_validate_resp_env, zxid_wsp_validate */
+/* Called by:  zxid_as_call_ses, zxid_fetch_ses, zxid_simple_ab_pep, zxid_wsc_valid_re_env, zxid_wsp_validate */
 void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
 {
   char* src;

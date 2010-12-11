@@ -138,6 +138,7 @@ void so_enc_dec()
   printf("%.*s", ss->len, ss->s);
 }
 
+/* Called by:  opt */
 void attribute_sort_test()
 {
   zxid_conf* cf;
@@ -149,6 +150,7 @@ void attribute_sort_test()
   printf("%.*s", ss->len, ss->s);
 }
 
+/* Called by:  opt */
 void a7n_test()
 {
   struct timeval srctss;
@@ -178,6 +180,7 @@ void a7n_test()
   zxid_sp_mni_soap(cf, &cgi, &sess, zx_ref_str(cf->ctx, "newnym"));
 }
 
+/* Called by:  opt */
 void x509_test()
 {
   struct timeval srctss;
@@ -214,6 +217,7 @@ void x509_test()
 const char foobar[] = "foobar";
 const char goobar[] = "goo\r\n~[]";
 
+/* Called by:  opt */
 void covimp_test()
 {
   char buf[256];

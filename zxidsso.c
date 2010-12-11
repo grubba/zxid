@@ -56,7 +56,7 @@ int zxid_pick_sso_profile(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* idp_meta)
 }
 
 /*() Map name id format form field to SAML specified URN string. */
-/* Called by:  zxid_map_identity_token, zxid_mk_authn_req */
+/* Called by:  zxid_map_identity_token, zxid_mk_authn_req, zxid_nidmap_identity_token */
 const char* zxid_saml2_map_nid_fmt(const char* f)
 {
   switch (f[0]) {
@@ -328,7 +328,7 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 
 /*() Map ZXSIG constant to letter for log and string message. */
 
-/* Called by:  zxid_chk_sig, zxid_decode_redir_or_post, zxid_sp_sso_finalize, zxid_wsc_validate_resp_env, zxid_wsf_validate_a7n, zxid_wsp_validate */
+/* Called by:  zxid_chk_sig, zxid_decode_redir_or_post, zxid_sp_sso_finalize, zxid_wsc_valid_re_env, zxid_wsf_validate_a7n, zxid_wsp_validate */
 void zxid_sigres_map(int sigres, char** sigval, char** sigmsg)
 {
   switch (sigres) {

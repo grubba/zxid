@@ -23,7 +23,7 @@
 
 /*() Interpret ZXID standard form fields to construct a XML structure for AuthnRequest */
 
-/* Called by:  zxid_lecp_check, zxid_start_sso_url */
+/* Called by:  a7n_test, x509_test, zxid_lecp_check, zxid_start_sso_url */
 struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
 {
   char index[2] = "1";
@@ -205,7 +205,7 @@ struct zx_sp_LogoutResponse_s* zxid_mk_logout_resp(zxid_conf* cf, struct zx_sp_S
 /*() Change SPNameID (newnym supplied), or Terminate federation (newnym not supplied).
  * Create XML data structure for <ManageNameIDRequest> element. Low level API. */
 
-/* Called by:  zxid_sp_mni_redir, zxid_sp_mni_soap */
+/* Called by:  a7n_test, zxid_sp_mni_redir, zxid_sp_mni_soap */
 struct zx_sp_ManageNameIDRequest_s* zxid_mk_mni(zxid_conf* cf, zxid_nid* nid, struct zx_str* new_nym, zxid_entity* idp_meta)
 {
   struct zx_str* ss;
@@ -266,7 +266,7 @@ struct zx_sp_ManageNameIDResponse_s* zxid_mk_mni_resp(zxid_conf* cf, struct zx_s
 
 /*() Constructor for Assertion */
 
-/* Called by:  zxid_mk_user_a7n_to_sp, zxid_xacml_az_cd1_do x2, zxid_xacml_az_do x2 */
+/* Called by:  zxid_map_val_ss, zxid_mk_usr_a7n_to_sp, zxid_xacml_az_cd1_do x2, zxid_xacml_az_do x2 */
 zxid_a7n* zxid_mk_a7n(zxid_conf* cf, struct zx_str* audience, struct zx_sa_Subject_s* subj, struct zx_sa_AuthnStatement_s* an_stmt, struct zx_sa_AttributeStatement_s* at_stmt)
 {
   zxid_a7n* a7n =  zx_NEW_sa_Assertion(cf->ctx,0);
@@ -296,7 +296,7 @@ zxid_a7n* zxid_mk_a7n(zxid_conf* cf, struct zx_str* audience, struct zx_sa_Subje
 
 /*() Construct Subject, possibly with EncryptedID */
 
-/* Called by:  zxid_mk_user_a7n_to_sp, zxid_xacml_az_cd1_do, zxid_xacml_az_do */
+/* Called by:  zxid_map_val_ss, zxid_mk_usr_a7n_to_sp, zxid_xacml_az_cd1_do, zxid_xacml_az_do */
 struct zx_sa_Subject_s* zxid_mk_subj(zxid_conf* cf, struct zx_elem_s* father, zxid_entity* sp_meta, zxid_nid* nid)
 {
   struct zx_sa_Subject_s* subj = zx_NEW_sa_Subject(cf->ctx, father);
@@ -329,7 +329,7 @@ struct zx_sa_Subject_s* zxid_mk_subj(zxid_conf* cf, struct zx_elem_s* father, zx
 
 /*() Construct AuthnStatement */
 
-/* Called by:  zxid_mk_user_a7n_to_sp */
+/* Called by:  zxid_mk_usr_a7n_to_sp */
 struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses, struct zx_elem_s* father, const char* eid)
 {
   struct zx_str sesix;
@@ -362,6 +362,7 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses, str
 
 /*() Construct SAML SAML Attribute from string */
 
+/* Called by:  zxid_add_mapped_attr, zxid_map_val_ss, zxid_mk_sa_attribute */
 struct zx_sa_Attribute_s* zxid_mk_sa_attribute_ss(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, struct zx_str* val)
 {
   struct zx_sa_Attribute_s* r = zx_NEW_sa_Attribute(cf->ctx, father);
@@ -376,7 +377,7 @@ struct zx_sa_Attribute_s* zxid_mk_sa_attribute_ss(zxid_conf* cf, struct zx_elem_
 
 /*() Construct SAML SAML Attribute */
 
-/* Called by:  zxid_add_ldif_attrs, zxid_gen_boots, zxid_mk_user_a7n_to_sp x3 */
+/* Called by:  zxid_gen_boots, zxid_mk_usr_a7n_to_sp x2 */
 struct zx_sa_Attribute_s* zxid_mk_sa_attribute(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, const char* val)
 {
   return zxid_mk_sa_attribute_ss(cf, father, name, namfmt, zx_dup_str(cf->ctx, val));
@@ -465,7 +466,7 @@ struct zx_xac_Request_s* zxid_mk_xac_az(zxid_conf* cf, struct zx_elem_s* father,
 
 /*() Construct XACMLAuthzDecisionQuery */
 
-/* Called by:  zxid_az_soap */
+/* Called by:  attribute_sort_test, zxid_az_soap */
 struct zx_xasp_XACMLAuthzDecisionQuery_s* zxid_mk_az(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
 {
   struct zx_xasp_XACMLAuthzDecisionQuery_s* r = zx_NEW_xasp_XACMLAuthzDecisionQuery(cf->ctx,0);

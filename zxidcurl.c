@@ -311,7 +311,7 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
  * objects.
  */
 
-/* Called by:  zxid_soap_call_envelope, zxid_soap_call_hdr_body */
+/* Called by:  zxid_soap_call_hdr_body, zxid_wsc_call */
 struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env, char** ret_enve)
 {
 #ifdef USE_CURL
@@ -354,7 +354,7 @@ struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct z
  * body::   XML data structure representing the SOAP body
  * return:: XML data structure representing the response  */
 
-/* Called by:  zxid_az_soap, zxid_soap_call_body */
+/* Called by:  zxid_as_call_ses, zxid_az_soap, zxid_idp_soap, zxid_soap_call_body, zxid_sp_deref_art, zxid_sp_soap */
 struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body)
 {
   struct zx_root_s* r;
@@ -379,7 +379,7 @@ struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, str
  * body::   XML data structure representing the SOAP body
  * return:: XML data structure representing the response  */
 
-/* Called by:  zxid_as_call_ses, zxid_idp_soap, zxid_sp_deref_art, zxid_sp_soap */
+/* Called by: */
 struct zx_root_s* zxid_soap_call_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Body_s* body)
 {
   /*return zxid_soap_call_hdr_body(cf, url, zx_NEW_e_Header(cf->ctx,0), body);*/

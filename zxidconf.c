@@ -161,7 +161,7 @@ EVP_PKEY* zxid_read_private_key(zxid_conf* cf, char* name)
  * generated on disk and the read. Once read from disk, they will be cached in
  * memory. */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_az_soap x3, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x7, zxid_ssos_anreq, zxid_wsf_sign */
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_az_soap x3, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_mk_at_cert, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x7, zxid_ssos_anreq, zxid_wsf_sign */
 int zxid_lazy_load_sign_cert_and_pkey(zxid_conf* cf, X509** cert, EVP_PKEY** pkey, const char* logkey)
 {
   LOCK(cf->mx, logkey);
@@ -512,7 +512,7 @@ zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path)
  * Just initializes the config object to factory defaults (see zxidconf.h).
  * Previous content of the config object is lost. */
 
-/* Called by:  main x5, so_enc_dec, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode */
+/* Called by:  a7n_test, attribute_sort_test, covimp_test, main x5, so_enc_dec, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode, x509_test */
 zxid_conf* zxid_new_conf(const char* zxid_path)
 {
   /* *** unholy malloc()s: should use our own allocator! */
@@ -551,7 +551,7 @@ struct zxid_attr* zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len,
  * See also: zxid_find_map() and zxid_map_val()
  */
 
-/* Called by:  zxid_init_conf x7, zxid_parse_conf_raw x7 */
+/* Called by:  zxid_init_conf x7, zxid_mk_usr_a7n_to_sp, zxid_parse_conf_raw x7, zxid_read_map */
 struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
 {
   char* ns;
@@ -892,7 +892,7 @@ struct zxid_need* zxid_is_needed(struct zxid_need* need, const char* name)
  * Thus you should place most specific rules last and most generic rules first.
  * See also: zxid_load_map() and zxid_map_val() */
 
-/* Called by:  pool2apache, zxid_add_at_values, zxid_add_attr_to_ses, zxid_pepmap_extract, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
+/* Called by:  pool2apache, zxid_add_at_values, zxid_add_attr_to_ses, zxid_add_mapped_attr x2, zxid_pepmap_extract, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
 struct zxid_map* zxid_find_map(struct zxid_map* map, const char* name)
 {
   if (!name || !*name)

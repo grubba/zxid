@@ -37,7 +37,7 @@
  * additional SOAP headers at will before calling this function. This function
  * will add Liberty ID-WSF specific SOAP headers. */
 
-/* Called by:  main, zxid_wsc_prep, zxid_wsp_decorate */
+/* Called by:  main, zxid_soap_cgi_resp_body, zxid_wsc_prep, zxid_wsp_decorate */
 int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, int is_resp)
 {
   struct zx_wsse_Security_s* sec;
@@ -183,7 +183,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
  * return:: SOAP Envelope of the response, as a string, ready to be
  *     sent as HTTP response. */
 
-/* Called by:  main x9, zxid_wsp_decoratef, zxidwspcgi_parent */
+/* Called by:  covimp_test, main x9, zxid_wsp_decoratef, zxidwspcgi_parent */
 struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve)
 {
   struct zx_str* ss;

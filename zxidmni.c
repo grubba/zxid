@@ -26,7 +26,7 @@
 /*() Change SPNameID (newnym supplied), or Terminate federation (newnym not supplied),
  * using SAML2 SOAP binding. This is the (SP) client side that contacts the IdP. */
 
-/* Called by:  zxid_mgmt, zxid_simple_ses_active_cf */
+/* Called by:  a7n_test, zxid_mgmt, zxid_simple_ses_active_cf */
 int zxid_sp_mni_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_str* new_nym)
 {
   X509* sign_cert;
@@ -146,7 +146,7 @@ struct zx_sp_ManageNameIDResponse_s* zxid_mni_do(zxid_conf* cf, zxid_cgi* cgi, z
 
 /*() Wrapper for zxid_mni_do(), which see. */
 
-/* Called by:  zxid_idp_dispatch, zxid_sp_dispatch */
+/* Called by:  a7n_test, zxid_idp_dispatch, zxid_sp_dispatch */
 struct zx_str* zxid_mni_do_ss(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_ManageNameIDRequest_s* mni, struct zx_str* loc)
 {
   struct zx_sp_ManageNameIDResponse_s* res;

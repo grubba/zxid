@@ -112,7 +112,7 @@ int zxid_map_sec_mech(zxid_epr* epr)
  * of all apparently signed message parts.
  * See also: zxid_add_header_refs() and zxsig_sign() or zxid_chk_sig() + zxsig_validate() */
 
-/* Called by:  wsse_sec_validate, zxid_wsc_validate_resp_env, zxid_wsp_validate */
+/* Called by:  wsse_sec_validate, zxid_wsc_valid_re_env, zxid_wsp_validate */
 int zxid_hunt_sig_parts(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struct zx_ds_Reference_s* sref, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy)
 {
   for (; sref && sref->gg.g.tok == zx_ds_Reference_ELEM
@@ -521,7 +521,7 @@ int zxid_timestamp_chk(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* 
  * The ud argument typically comes from cf->wsc_localpdp_obl_pledge
  * or cf->wsp_localpdp_obl_emit */
 
-/* Called by:  zxid_wsc_prep, zxid_wsp_decorate */
+/* Called by:  zxid_wsc_prep, zxid_wsf_decor */
 void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, const char* attrid, const char* obl)
 {
   struct zx_b_UsageDirective_s* ud;

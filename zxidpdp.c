@@ -30,7 +30,7 @@
 /*() Local Policy Decision Point - decide on role and idpnid.
  * Return: 0 for Deny and 1 for Permit.  */
 
-/* Called by:  zxid_call_epr, zxid_simple_ab_pep, zxid_wsc_prepare_call, zxid_wsc_validate_resp_env, zxid_wsp_decorate, zxid_wsp_validate */
+/* Called by:  zxid_call_epr, zxid_simple_ab_pep, zxid_wsc_prepare_call, zxid_wsc_valid_re_env, zxid_wsp_decorate, zxid_wsp_validate */
 int zxid_localpdp(zxid_conf* cf, zxid_ses* ses)
 {
   struct zxid_attr* at;

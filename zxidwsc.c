@@ -394,7 +394,7 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
  * additional SOAP headers at will before calling this function. This function
  * will add Liberty ID-WSF specific SOAP headers. */
 
-/* Called by:  main x9, zxid_call_epr, zxid_get_epr, zxid_map_identity_token */
+/* Called by:  main x9, zxid_call_epr, zxid_get_epr, zxid_map_identity_token, zxid_nidmap_identity_token */
 struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env, char** ret_enve)
 {
   int i, res;

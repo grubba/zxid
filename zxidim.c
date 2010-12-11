@@ -33,7 +33,7 @@
 /*() ID-WSF Single Sign-On Service (SSOS): Issue SSO assertion in response to receiving a token.
  * See also zxid_idp_sso() for similar code. */
 
-/* Called by:  zxid_sp_soap_dispatch */
+/* Called by:  a7n_test, zxid_sp_soap_dispatch */
 struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_sp_AuthnRequest_s* ar, struct zx_str* issuer)
 {
   X509* sign_cert;

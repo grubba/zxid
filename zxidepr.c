@@ -61,7 +61,7 @@ void zxid_fold_svc(char* p, int len)
  * ign_prefix:: How many characters to ignore from beginning of name: 0 or 7 (http://)
  * return:: 0 on success (the real return value is returned via ~buf~ result parameter) */
 
-/* Called by:  zxid_add_fed_tok2epr, zxid_epr_path, zxid_idp_map_nid2uid, zxid_imreq, zxid_nidmap_do x2, zxid_sso_issue_a7n */
+/* Called by:  zxid_epr_path, zxid_get_affil_and_sp_name_buf, zxid_idp_map_nid2uid, zxid_imreq, zxid_nidmap_do x2, zxid_sso_issue_a7n */
 int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len,
 		   struct zx_str* name, struct zx_str* cont, int ign_prefix)
 {
@@ -209,7 +209,7 @@ void zxid_snarf_eprs(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
  * that looks like an EPR and that is strcturally in right place will work.
  * Typical name /var/zxid/ses/SESID/SVCTYPE,SHA1 */
 
-/* Called by:  zxid_sp_anon_finalize, zxid_sp_sso_finalize, zxid_wsc_validate_resp_env, zxid_wsp_validate */
+/* Called by:  zxid_sp_anon_finalize, zxid_sp_sso_finalize, zxid_wsc_valid_re_env, zxid_wsp_validate */
 void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
 {
   struct zx_sa_AttributeStatement_s* as;
@@ -407,7 +407,7 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
  *     of EPRs is returned.
  */
 
-/* Called by:  main x5, zxcall_main, zxid_call, zxid_map_identity_token */
+/* Called by:  main x5, zxcall_main, zxid_call, zxid_map_identity_token, zxid_nidmap_identity_token */
 zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
 {
   int wsf20 = 0;

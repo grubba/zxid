@@ -222,7 +222,7 @@ set_eid:
   return 0;
 }
 
-/* Called by: */
+/* Called by:  covimp_test */
 zxid_cgi* zxid_new_cgi(zxid_conf* cf, char* qs)
 {
   zxid_cgi* cgi = ZX_ZALLOC(cf->ctx, zxid_cgi);

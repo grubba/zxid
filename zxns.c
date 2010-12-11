@@ -209,7 +209,7 @@ struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, const char* prefix)
 /*() zx_prefix_seen_whine() is a good place to detect, and add stub for,
  * wholly unknown prefixes. Seldom returns NULL, just always makes something up. */
 
-/* Called by:  zx_attr_lookup, zx_elem_lookup */
+/* Called by:  zx_attr_lookup, zx_el_lookup */
 struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, const char* prefix, const char* logkey, int mk_dummy_ns)
 {
   struct zx_str* url;
@@ -315,7 +315,7 @@ void zx_see_elem_ns(struct zx_ctx* c, struct zx_ns_s** pop_seen, struct zx_elem_
  * at this level, i.e. pushed to the seen stacks. This list is used to pop the
  * seen stacks after we are through with the element. */
 
-/* Called by:  zx_elem_lookup */
+/* Called by:  zx_el_lookup */
 struct zx_ns_s* zx_scan_xmlns(struct zx_ctx* c)
 {
   struct zx_ns_s* pop_seen = 0;  /* build a list of namespaces declared here */

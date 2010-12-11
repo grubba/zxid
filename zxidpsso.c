@@ -34,7 +34,7 @@
  * Checks for Assertion ID duplicate and returns 0 on
  * failure (i.e. duplicate), 1 on success. */
 
-/* Called by:  zxid_add_fed_tok2epr, zxid_idp_sso x3, zxid_imreq */
+/* Called by:  zxid_add_fed_tok2epr, zxid_idp_sso x3, zxid_imreq, zxid_map_val_ss */
 int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issued_to, const char* lk, const char* uid)
 {
   X509* sign_cert;
@@ -255,6 +255,7 @@ void zxid_gen_boots(zxid_conf* cf, struct zx_sa_AttributeStatement_s* father, co
   D_DEDENT("gen_bs: ");
 }
 
+/* Called by:  zxid_add_ldif_attrs, zxid_mk_usr_a7n_to_sp x3 */
 static void zxid_add_mapped_attr(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zx_elem_s* father, char* lk, struct zxid_map* aamap, struct zxid_map* sp_aamap, const char* name, const char* val)
 {
   struct zxid_map* map;
@@ -274,7 +275,7 @@ static void zxid_add_mapped_attr(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta
 /*() Parse LDIF format and insert attributes to linked list. Return new head of the list.
  * The input is temporarily modified and then restored. Do not pass const string. */
 
-/* Called by:  zxid_mk_usr_a7n_to_sp x4 */
+/* Called by:  zxid_read_ldif_attrs */
 static void zxid_add_ldif_attrs(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zx_elem_s* father, char* p, char* lk, struct zxid_map* aamap, struct zxid_map* sp_aamap)
 {
   char* name;
@@ -303,6 +304,7 @@ static void zxid_add_ldif_attrs(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta,
 
 /*() Read Attribute Authority Map */
 
+/* Called by:  zxid_mk_usr_a7n_to_sp x2 */
 static struct zxid_map* zxid_read_map(zxid_conf* cf, const char* sp_name_buf, const char* mapname)
 {
   char* p;
@@ -318,6 +320,7 @@ static struct zxid_map* zxid_read_map(zxid_conf* cf, const char* sp_name_buf, co
   return zxid_load_map(cf, 0, p);
 }
 
+/* Called by:  zxid_mk_usr_a7n_to_sp x4 */
 static void zxid_read_ldif_attrs(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, const char* sp_name_buf, const char* uid, struct zxid_map* aamap, struct zxid_map* sp_aamap, struct zx_sa_AttributeStatement_s* at_stmt)
 {
   char* buf = read_all_alloc(cf->ctx, "read_ldif_attrs", 0, 0,
@@ -335,7 +338,7 @@ static void zxid_read_ldif_attrs(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta
  * bs_lvl:: 0: DI (do not add any bs), 1: add all bootstraps at sso level,
  *     <= cf->bootstrap_level: add all boostraps, > cf->bootstrap_level: only add di BS. */
 
-/* Called by:  zxid_add_fed_tok2epr, zxid_imreq, zxid_sso_issue_a7n */
+/* Called by:  a7n_test, zxid_add_fed_tok2epr, zxid_imreq, zxid_sso_issue_a7n */
 zxid_a7n* zxid_mk_usr_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, int bs_lvl)
 {
   struct zxid_map* aamap;
@@ -400,7 +403,7 @@ zxid_a7n* zxid_mk_usr_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, z
 
 /*(i) Check federation, create federation if appropriate. */
 
-/* Called by:  zxid_add_fed_tok2epr, zxid_imreq, zxid_nidmap_do, zxid_sso_issue_a7n */
+/* Called by:  zxid_get_fed_nameid, zxid_imreq, zxid_nidmap_do */
 zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, char allow_create, struct timeval* srcts, struct zx_str* issuer, struct zx_str* req_id, const char* sp_name_buf)
 {
   int got;
@@ -485,7 +488,7 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
 
 /*() Change NameID to be transient and record corresponding mapping. */
 
-/* Called by:  zxid_add_fed_tok2epr x2, zxid_imreq x2, zxid_nidmap_do x2, zxid_sso_issue_a7n x2 */
+/* Called by:  zxid_get_fed_nameid x2, zxid_imreq x2, zxid_nidmap_do x2 */
 void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_buf, const char* uid)
 {
   struct zx_str* nid;
@@ -586,7 +589,7 @@ char* zxid_add_fed_tok2epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int bs
 
 /*() Internal function, just to factor out some commonality between SSO and SSOS. */
 
-/* Called by:  zxid_idp_sso, zxid_ssos_anreq */
+/* Called by:  a7n_test, x509_test, zxid_idp_sso, zxid_ssos_anreq */
 zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct timeval* srcts, zxid_entity* sp_meta, struct zx_str* acsurl, zxid_nid** nameid, char** logop, struct zx_sp_AuthnRequest_s* ar)
 {
   zxid_a7n* a7n;

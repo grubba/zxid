@@ -400,7 +400,7 @@ RSA* zx_get_rsa_pub_from_cert(X509* cert, char* logkey)
  * available. If you want to use /dev/random, which may block, you need
  * to recompile with ZXID_TRUE_RAND set to true. */
 
-/* Called by:  main x2, zx_get_symkey, zxenc_pubkey_enc, zxid_mk_id, zxid_mk_id_attr, zxid_mk_self_sig_cert, zxlog_alloc_zbuf, zxlog_write_line */
+/* Called by:  main x2, zx_get_symkey, zxenc_pubkey_enc, zxid_mk_at_cert, zxid_mk_id, zxid_mk_id_attr, zxid_mk_self_sig_cert, zxlog_alloc_zbuf, zxlog_write_line */
 void zx_rand(char* buf, int n_bytes)
 {
 #ifdef USE_OPENSSL
@@ -414,7 +414,7 @@ void zx_rand(char* buf, int n_bytes)
 #endif
 }
 
-/* Called by:  zxid_mk_self_sig_cert x6 */
+/* Called by:  zxid_mk_at_cert x10, zxid_mk_self_sig_cert x6 */
 static void zxid_add_name_field(X509_NAME* subj, int typ, int nid, char* val)
 {
   X509_NAME_ENTRY* ne;
@@ -718,7 +718,7 @@ http://tools.ietf.org/html/draft-ietf-pkix-3281update-05
  * returns:: 0 on failure, 1 on success
  */
 
-/* Called by:  zxid_map_val */
+/* Called by:  x509_test, zxid_map_val_ss */
 int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_nid* nameid, const char* name, struct zx_str* val)
 {
 #ifdef USE_OPENSSL
