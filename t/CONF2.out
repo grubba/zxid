@@ -1,9 +1,9 @@
 Content-Type: text/html
-Content-Length: 10594
+Content-Length: 10842
 
 <title>ZXID Conf for http://sp1.zxidsp.org:8081/zxidhlo</title><body bgcolor=white><h1>ZXID Conf for http://sp1.zxidsp.org:8081/zxidhlo?o=B</h1><p>Please see config file in /var/zxid/zxid.conf, and documentation in zxid-conf.pd and zxidconf.h
 <p>[ <a href="?o=B">Metadata</a> | <a href="?o=c">CARML</a> | <a href="?o=d">This Conf Dump</a> ]
-<p>Version: R0.71 (1290467692)
+<p>Version: R0.73 (1292029609)
 <pre>PATH=/var/zxid/
 URL=http://sp1.zxidsp.org:8081/zxidhlo
 AFFILIATION=
@@ -45,6 +45,7 @@ WSPCGICMD=./zxid-wspcgicmd.sh
 NAMEID_ENC=f
 POST_A7N_ENC=1
 CANON_INOPT=0
+ENC_TAIL_OPT=1
 ENCKEY_OPT=32
 IDPATOPT=1
 DI_ALLOW_CREATE=49
@@ -153,7 +154,11 @@ ATTRSRC=
 INMAP=
 
 OUTMAP=
-
+  rule=0$ ns()$ src(*)$ dst()$ ext();
+  rule=5$ ns()$ src(IdPSesID)$ dst(IdPsesid)$ ext();
+  rule=7$ ns()$ src(testa7nsb64)$ dst()$ ext();
+  rule=3$ ns()$ src(testfeide)$ dst()$ ext();
+  rule=1$ ns()$ src(testfilefeide)$ dst()$ ext()
 PEPMAP=
   rule=0$ ns(env)$ src(*)$ dst()$ ext();
   rule=0$ ns(subj)$ src(idpnid)$ dst(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ ext();

@@ -2,6 +2,6 @@
 #define _zxidvers_h
 #define ZXID_VERSION 0x000073
 #define ZXID_REL "0.73"
-#define ZXID_COMPILE_DATE "1291865800"
-#define ZXID_REV "$Id: 0.73-3-g86b4d2a 20101208-170717 sampo@ $"
+#define ZXID_COMPILE_DATE "1292029609"
+#define ZXID_REV "$Id: 0.73-6-g2ad13e8 20101210-225633 sampo@ $"
 #endif

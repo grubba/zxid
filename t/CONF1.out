@@ -2,7 +2,7 @@
 ======== CONF ========
 <title>ZXID Conf for http://sp.tas3.pt:8080/zxidservlet/sso</title><body bgcolor=white><h1>ZXID Conf for http://sp.tas3.pt:8080/zxidservlet/sso?o=B</h1><p>Please see config file in /var/zxid/zxid.conf, and documentation in zxid-conf.pd and zxidconf.h
 <p>[ <a href="?o=B">Metadata</a> | <a href="?o=c">CARML</a> | <a href="?o=d">This Conf Dump</a> ]
-<p>Version: R0.70 (1288061018)
+<p>Version: R0.73 (1292029609)
 <pre>PATH=/var/zxid/
 URL=http://sp.tas3.pt:8080/zxidservlet/sso
 AFFILIATION=
@@ -44,6 +44,7 @@ WSPCGICMD=./zxid-wspcgicmd.sh
 NAMEID_ENC=f
 POST_A7N_ENC=1
 CANON_INOPT=0
+ENC_TAIL_OPT=1
 ENCKEY_OPT=32
 IDPATOPT=1
 DI_ALLOW_CREATE=49

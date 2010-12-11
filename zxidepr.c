@@ -573,7 +573,7 @@ void zxid_set_epr_token(zxid_conf* cf, zxid_epr* epr, zxid_tok* tok) {
 
 /*() Constructor for "blank" EPR. Such EPR lacks security context so it is
  * not directly usable for identity web service calls. However, it could
- * be useful as a building block, or for non-idenity web service.
+ * be useful as a building block, or for non-identity web service.
  * Also id, actor, and mustUnderstand fields need to be filled in by
  * other means (we may eventually have defaults for some of these). */
 

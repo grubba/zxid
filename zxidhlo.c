@@ -30,7 +30,7 @@
 
 char* help =
 "zxidhlo  -  SAML 2.0 SP CGI - R" ZXID_REL "\n\
-SAML 2.0 is a standard for federated idenity and Sinlg Sign-On.\n\
+SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
 Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
 Author: Sampo Kellomaki (sampo@iki.fi)\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
@@ -48,7 +48,7 @@ Usage: zxidhlo [options]   (when used as CGI, no options can be supplied)\n\
 
 #define ZXIDHLO "zxidhlo"
 //#define CONF "PATH=/var/zxid/&URL=http://sp1.zxid.org/demohlo"
-#define CONF "PATH=/var/zxid/&URL=http://sp1.zxidsp.org:8081/" ZXIDHLO "&NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0"
+#define CONF "PATH=/var/zxid/&URL=http://sp1.zxidsp.org:8081/" ZXIDHLO "&NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
 //#define CONF "URL=https://sp1.zxidsp.org:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
 //#define CONF "URL=https://lima.tas3.eu:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
 

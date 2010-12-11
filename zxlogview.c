@@ -48,7 +48,7 @@
 
 char* help =
 "zxlogview  -  Decrypt logs and validate log signatures - R" ZXID_REL "\n\
-SAML 2.0 is a standard for federated idenity and Single Sign-On.\n\
+SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
 Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
 Author: Sampo Kellomaki (sampo@iki.fi)\n\
@@ -72,7 +72,7 @@ extern int zx_debug;
 int leak_free = 0;
 
 X509* log_verify_cert;
-RSA*  log_decrypt_pkey;
+EVP_PKEY* log_decrypt_pkey;
 char  log_symkey[20];
 char  buf[4096];
 
@@ -304,6 +304,7 @@ static void zxlog_zsig_verify_print(zxid_conf* cf, int len, char* buf, char* se,
 /* Called by: */
 int main(int argc, char** argv, char** env)
 {
+  RSA* rsa;
   int len, seslen, ver;
   char* p;
   char* pp;
@@ -336,7 +337,7 @@ int main(int argc, char** argv, char** env)
       case 'R':
 	pp = unbase64_raw(buf, p, buf, zx_std_index_64);  /* In place, overwrite. */
 	++p;
-	ver = zxsig_verify_data_rsa_sha1(len-(p-buf), p, pp-buf, buf, log_verify_cert, "log vfy");
+	ver = zxsig_verify_data(len-(p-buf), p, pp-buf, buf, log_verify_cert, "log vfy");
 	if (ver) {
 	  printf("RSA signature FAIL. Log file may have been tampered - or bad certificate.\n");
 	} else {
@@ -365,7 +366,12 @@ int main(int argc, char** argv, char** env)
       seslen = (unsigned char)buf[0] << 8 | (unsigned char)buf[1];
       D("seslen(%d)", seslen);
       
-      seslen = RSA_private_decrypt(seslen, (unsigned char*)buf+2, (unsigned char*)ses, log_decrypt_pkey, RSA_PKCS1_OAEP_PADDING);
+      rsa = EVP_PKEY_get1_RSA(log_decrypt_pkey);
+      if (!rsa) {
+	ERR("No RSA key found in log decryption key type=0x%x", log_decrypt_pkey->type);
+	break;
+      }
+      seslen = RSA_private_decrypt(seslen, (unsigned char*)buf+2, (unsigned char*)ses, rsa, RSA_PKCS1_OAEP_PADDING);
       if (seslen < 0) {
 	ERR("RSA dec fail %x", seslen);
 	zx_report_openssl_error("zxlog rsa enc");

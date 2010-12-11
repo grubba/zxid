@@ -46,7 +46,7 @@
 
 char* help =
 "zxid  -  SAML 2.0 SP CGI - R" ZXID_REL "\n\
-SAML 2.0 is a standard for federated idenity and Sinlg Sign-On.\n\
+SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
 Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
 Author: Sampo Kellomaki (sampo@iki.fi)\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\

@@ -901,6 +901,7 @@ CMD('HELP5', 'zxlogview -h', "./zxlogview -v -h");
 
 CMD('SOENC1', 'EncDec Status',     "./zxencdectest -r 3");
 CMD('ATORD1', 'Attribute sorting', "./zxencdectest -r 4");
+CMD('ATCERT1', 'Attribute certificate', "./zxencdectest -r 7");
 
 CMD('CONF1', 'zxcall -dc dump config',       "./zxcall -v -v -c PATH=/var/zxid/ -dc");
 CMD('CONF2', 'zxidhlo o=d dump config',      "QUERY_STRING=o=d ./zxidhlo");

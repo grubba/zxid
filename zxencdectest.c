@@ -207,7 +207,7 @@ void x509_test()
   sp_meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(ar->Issuer));
   a7n = zxid_sso_issue_a7n(cf, &cgi, &sess, &srctss, sp_meta, 0, &nameid, 0, ar);
 #endif
-  zxid_mk_at_cert(cf, sizeof(buf), buf, "test", nameid, "1.2.826.0.1.3344810.1.1.14", "Role0");
+  zxid_mk_at_cert(cf, sizeof(buf), buf, "test", nameid, "1.2.826.0.1.3344810.1.1.14", zx_ref_str(cf->ctx, "Role0"));
   printf("%s",buf);
 }
 
@@ -229,7 +229,8 @@ void covimp_test()
   printf("version(%x)\n", zxid_version());
   cf = zxid_new_conf("/var/zxid/");
   printf("urlenc(%s)\n", zx_url_encode(cf->ctx, sizeof("test1://foo?a=b&c=d e")-1, "test1://foo?a=b&c=d e", &outlen));
-  printf("hexdec(%.6s)\n", zx_hexdec(buf, "313233", 3, hex_trans));
+  zx_hexdec(buf, "313233", 6, hex_trans);
+  printf("hexdec(%.3s)\n", buf);
   hexdmp("test2: ", (char*)foobar, sizeof(foobar), 1000);
   hexdmp("test2b: ", (char*)goobar, sizeof(goobar), 1000);
   copy_file("t/XML1.out","tmp/foo3","test3",0);

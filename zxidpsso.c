@@ -265,8 +265,7 @@ static void zxid_add_mapped_attr(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta
   if (map && map->rule != ZXID_MAP_RULE_DEL) {
     if (map->dst)
       name = map->dst;
-    zxid_mk_sa_attribute_ss(cf, father, name, 0,
-			    zxid_map_val(cf, ses, meta, map, zx_ref_str(cf->ctx, val)));
+    zxid_mk_sa_attribute_ss(cf, father, name, 0, zxid_map_val(cf, ses, meta, map, name, val));
   } else {
     D("Attribute(%s) filtered out either by del rule in aamap, or does not match aamap %p", name, map);
   }
@@ -378,7 +377,8 @@ zxid_a7n* zxid_mk_usr_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, z
    * As this is dangerous to privacy, it is disabled in the default AAMAP. You need to
    * enable it explicitly in deployment specific AAMAP (in .all/.bs/.cf file) if you
    * want it. There you can also specify whether it will be wrapped in assertion. */
-  zxid_add_mapped_attr(cf, ses, sp_meta, &at_stmt->gg, "mk_usr_a7n_to_sp", aamap,sp_aamap, "idpsesid", ses->sid);
+  if (ses && ses->sid && *ses->sid)
+    zxid_add_mapped_attr(cf, ses, sp_meta, &at_stmt->gg, "mk_usr_a7n_to_sp", aamap,sp_aamap, "idpsesid", ses->sid);
 
   zxid_read_ldif_attrs(cf, ses, sp_meta, ".bs",       uid,    aamap, sp_aamap, at_stmt);
   zxid_read_ldif_attrs(cf, ses, sp_meta, sp_name_buf, uid,    aamap, sp_aamap, at_stmt);

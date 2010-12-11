@@ -825,7 +825,8 @@ ZXID_DECL struct zx_str* zxid_decrypt_newnym(zxid_conf* cf, struct zx_str* newny
 
 ZXID_DECL int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* elem, struct zx_ds_Signature_s* sig, struct zx_sa_Issuer_s* issue_ent, struct zx_ns_s* pop_seen, const char* lk);
 
-ZXID_DECL struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, struct zx_str* val);
+ZXID_DECL struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, const char* atname, struct zx_str* val);
+ZXID_DECL struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, const char* atname, const char* val);
 ZXID_DECL char* zxid_extract_body(zxid_conf* cf, char* enve);
 
 ZXID_DECL char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey);
@@ -1179,12 +1180,6 @@ ZXID_DECL struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf*
 #define CRLF2 CRLF CRLF
 
 #define COPYVAL(to,what,lim) MB (to) = ZX_ALLOC(cf->ctx, (lim)-(what)+1); memcpy((to), (what),  (lim)-(what)); (to)[(lim)-(what)] = 0; ME
-
-extern const char std_basis_64[64];
-extern const char safe_basis_64[64];
-extern const unsigned char zx_std_index_64[256];
-extern const unsigned char const * hex_trans;
-extern const unsigned char const * ykmodhex_trans;
 
 ZXID_DECL char* base64_fancy_raw(const char* p, int len, char* r, const char* basis_64, int line_len, int eol_len, const char* eol, char eq_pad);
 ZXID_DECL char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char* index_64);

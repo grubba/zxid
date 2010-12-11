@@ -102,7 +102,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 	D("attribute(%s) filtered out by del rule in OUTMAP", at->name);
 	continue;
       }
-      at->map_val = zxid_map_val(cf, 0, 0, map, zx_ref_str(cf->ctx, at->val));
+      at->map_val = zxid_map_val(cf, 0, 0, map, at->name, at->val);
       if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
 	name = map->dst;
       } else {
@@ -112,7 +112,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
       name = apr_psprintf(r->pool, "%s%s", cf->mod_saml_attr_prefix, name);
       apr_table_set(r->subprocess_env, name, at->val);
       for (av = at->nv; av; av = av->n) {
-	av->map_val = zxid_map_val(cf, 0, 0, map, zx_ref_str(cf->ctx, av->val));
+	av->map_val = zxid_map_val(cf, 0, 0, map, at->name, av->val);
 	apr_table_set(r->subprocess_env, name, av->map_val->s);
       }
     } else {

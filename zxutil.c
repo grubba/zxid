@@ -215,7 +215,11 @@ char* read_all_alloc(struct zx_ctx* c, const char* logkey, int reperr, int* lenp
   va_start(ap, name_fmt);
   fd = vopen_fd_from_path(O_RDONLY, 0, logkey, reperr, name_fmt, ap);
   va_end(ap);
-  if (fd == BADFD) { if (lenp) *lenp = 0; return 0; }
+  if (fd == BADFD) {
+    if (lenp)
+      *lenp = 0;
+    return 0;
+  }
 
   len = get_file_size(fd);
   buf = ZX_ALLOC(c, len+1);
@@ -864,7 +868,7 @@ char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out
 int zx_url_encode_len(int in_len, const char* in)
 {
   int n;
-  char* lim;
+  const char* lim;
   /* scan through to see how many escape expansions are needed */
   lim = in + in_len;
   for (n = 0; in < lim; ++in)

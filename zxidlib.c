@@ -742,7 +742,7 @@ zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str
  * See also: zxid_load_map() and zxid_find_map() */
 
 /* Called by:  pool2apache x2, zxid_add_at_values, zxid_pepmap_extract x2, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
-struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, struct zx_str* val)
+struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, const char* atname, struct zx_str* val)
 {
   zxid_a7n* a7n;
   zxid_nid* nameid;
@@ -754,6 +754,10 @@ struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, str
   char* bin;
   char* p;
   int len;
+  if (!val) {
+    ERR("NULL ponter as val %p", map);
+    val = zx_dup_str(cf->ctx, "");
+  }
   if (!map)
     return val;
 
@@ -770,7 +774,7 @@ struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, str
 				 (cf->di_nid_fmt == 't'), 0, 0, 0);
 
     at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0);
-    at_stmt->Attribute = zxid_mk_sa_attribute_ss(cf, &at_stmt->gg, map->dst?map->dst:"val",0,val);
+    at_stmt->Attribute = zxid_mk_sa_attribute_ss(cf, &at_stmt->gg, map->dst?map->dst:atname,0,val);
 
     a7n = zxid_mk_a7n(cf, prvid, zxid_mk_subj(cf, 0, meta, nameid), 0, at_stmt);
     zxid_anoint_a7n(cf, 1, a7n, prvid, "map_val", ses->uid);
@@ -786,7 +790,7 @@ struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, str
     nameid = zxid_get_fed_nameid(cf, prvid, affil, ses->uid, buf, cf->di_allow_create,
 				 (cf->di_nid_fmt == 't'), 0, 0, 0);
 
-    zxid_mk_at_cert(cf, sizeof(buf), buf, "map_val", nameid, map->dst?map->dst:"val", val);
+    zxid_mk_at_cert(cf, sizeof(buf), buf, "map_val", nameid, map->dst?map->dst:atname, val);
     val = zx_dup_str(cf->ctx, buf);
     break;
   case ZXID_MAP_RULE_WRAP_FILE:  /* 0x30 Get attribute value from file specified in ext */
@@ -795,9 +799,32 @@ struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, str
       break;
     }
     zxid_get_affil_and_sp_name_buf(cf, meta, buf);
-    bin = read_all_alloc(cf->ctx, "map_val from file", 0, 0,
-			 "%s" ZXID_UID_DIR "%s/%s/%s", cf->path, ses->uid, buf, map->ext);
-    val = zx_ref_str(cf->ctx, bin);
+    if (!map->ext || !*map->ext) {
+      ERR("WRAP_FILE rule without file name in ext field of stanza %p", map->ext);
+      break;
+    } else if (!strcmp(map->ext, "_VAL_FROM_FILE")) {
+      D("_VAL_FROM_FILE specified, taking filename from attribute value(%.*s)", val->len, val->s);
+      p = zx_str_to_c(cf->ctx, val);
+    } else {
+      p = map->ext;
+    }
+    bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
+			 "%s" ZXID_UID_DIR "%s/%s/%s", cf->path, ses->uid, buf, p);
+    if (!bin)
+      bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
+			   "%s" ZXID_UID_DIR "%s/.bs/%s", cf->path, ses->uid, p);
+    if (!bin)
+      bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
+			   "%s" ZXID_UID_DIR ".all/%s/%s", cf->path, buf, p);
+    if (!bin)
+      bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
+			   "%s" ZXID_UID_DIR ".all/.bs/%s", cf->path, p);
+    if (bin)
+      val = zx_ref_len_str(cf->ctx, len, bin);
+    else {
+      INFO("Attribute(%s) value not found in any file(%s" ZXID_UID_DIR "%s/%s/%s)", STRNULLCHKQ(atname), cf->path, ses->uid, buf, p);
+      val = zx_ref_str(cf->ctx, "");
+    }
     break;
   default:
     NEVER("unknow map_val rule=%x", map->rule);
@@ -856,6 +883,10 @@ struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, str
     NEVER("unknow map_val rule=%x", map->rule);
   }
   return ss;
+}
+
+struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, const char* atname, const char* val) {
+  return zxid_map_val_ss(cf, ses, meta, map, atname, zx_dup_str(cf->ctx, STRNULLCHK(val)));
 }
 
 /*() Extract from a string representing SOAP envelope, the payload part in the body. */

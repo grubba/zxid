@@ -42,7 +42,8 @@ int write_all_fd(int fd, char* p, int pending);
 
 CU8* help =
 "zxbench  -  SAML 2.0 encoding and decoding benchmark - R" ZXID_REL "\n\
-SAML 2.0 is a standard for federated idenity and Single Sign-On.\n\
+SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
+Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
 Author: Sampo Kellomaki (sampo@iki.fi)\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\

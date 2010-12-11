@@ -786,9 +786,9 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
   if (nameid) {
     zxid_add_name_field(subject, V_ASN1_PRINTABLESTRING, NID_commonName,
 			zx_str_to_c(cf->ctx, ZX_GET_CONTENT(nameid)));
-    zxid_add_name_field(issuer, V_ASN1_T61STRING, NID_organizationalUnitName,
+    zxid_add_name_field(subject, V_ASN1_T61STRING, NID_organizationalUnitName,
 			zx_str_to_c(cf->ctx, &nameid->SPNameQualifier->g));  /* SP */
-    zxid_add_name_field(issuer, V_ASN1_T61STRING, NID_organizationName,
+    zxid_add_name_field(subject, V_ASN1_T61STRING, NID_organizationName,
 			zx_str_to_c(cf->ctx, &nameid->NameQualifier->g));    /* IdP */
   } else {
     zxid_add_name_field(subject, V_ASN1_PRINTABLESTRING, NID_commonName, "unspecified-see-zxid_mk_at_cert");
@@ -849,6 +849,8 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
   sk_ASN1_TYPE_push(xa->value.set, at);
   sk_X509_ATTRIBUTE_push(ri->attributes, xa);
   STACK_OF(X509_ATTRIBUTE) *X509at_add1_attr(STACK_OF(X509_ATTRIBUTE) **x, X509_ATTRIBUTE *attr);
+
+  /* *** Exactly where on x509ss are the attributes supposed to attach?!? */
 #endif
   
   zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "mk_at_cert");

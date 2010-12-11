@@ -1,4 +1,5 @@
 /* zxidnoswig.h  -  Prototypes that give indigestion to SWIG
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -24,6 +25,12 @@
 
 #ifndef _zxidnoswig_h
 #define _zxidnoswig_h
+
+extern const char std_basis_64[64];
+extern const char safe_basis_64[64];
+extern const unsigned char zx_std_index_64[256];
+extern const unsigned char const * hex_trans;
+extern const unsigned char const * ykmodhex_trans;
 
 int vname_from_path(char* buf, int buf_len, const char* name_fmt, va_list ap);
 char* zx_alloc_vasprintf(struct zx_ctx* c, int *retlen, const char* f, va_list ap);

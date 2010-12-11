@@ -68,7 +68,7 @@ static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, str
       continue;
     }
 
-    at->map_val = zxid_map_val(cf, ses, 0, map, zx_ref_str(cf->ctx, at->val));
+    at->map_val = zxid_map_val(cf, ses, 0, map, at->name, at->val);
     if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
       D("renaming(%s) to(%s) orig_val(%s) map_val(%.*s)", at->name, map->dst, at->val, at->map_val->len, at->map_val->s);
       name = map->dst;
@@ -104,7 +104,7 @@ static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, str
     }
     
     for (av = at->nv; av; av = av->n) {
-      av->map_val = zxid_map_val(cf, ses, 0, map, zx_ref_str(cf->ctx, av->val));
+      av->map_val = zxid_map_val(cf, ses, 0, map, at->name, av->val);
       xac_at = zxid_mk_xacml_simple_at(cf, 0,
 				       zx_dup_str(cf->ctx, name),
 				       zx_dup_str(cf->ctx, XS_STRING),
