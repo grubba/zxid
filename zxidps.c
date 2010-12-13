@@ -22,6 +22,7 @@
 #include "platform.h"  /* for dirent.h */
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "saml2.h"
 #include "wsf.h"

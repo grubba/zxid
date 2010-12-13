@@ -19,6 +19,7 @@
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "c/zxidvers.h"
 #include "c/zx-const.h"

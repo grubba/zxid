@@ -85,4 +85,24 @@ tcpdump -lnA -s 1024 dst port 8080
 
 ./zxcall -d -a http://idp.tas3.pt:8081/zxididp?o=B tastest:tastest -t urn:x-foobar -e '<foobar>Do It!</foobar>'
 
+GDB setup
+---------
+
+set env CONTENT_LENGTH=222
+set env QUERY_STRING=o=S
+set env LD_LIBRARY_PATH=/apps/lib
+dir /aino/openssl-0.9.8q/ssl
+dir /aino/openssl-0.9.8q/crypto/evp
+dir /aino/openssl-0.9.8q/crypto/asn1
+dir /aino/openssl-0.9.8q/crypto/pem
+dir /aino/openssl-0.9.8q/crypto/x509
+dir /aino/openssl-0.9.8q/crypto/object
+
+dir /aino/openssl-1.0.0c/ssl
+dir /aino/openssl-1.0.0c/crypto/evp
+dir /aino/openssl-1.0.0c/crypto/asn1
+dir /aino/openssl-1.0.0c/crypto/pem
+dir /aino/openssl-1.0.0c/crypto/x509
+dir /aino/openssl-1.0.0c/crypto/object
+
 <<EOF: >>

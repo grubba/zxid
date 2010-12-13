@@ -36,13 +36,15 @@
 #include <curl/curl.h>
 #endif
 
-#include "errmac.h"
-#include "zx.h"
-#include "zxid.h"
-#include "zxidconf.h"
-#include "c/zxidvers.h"
-#include "c/zx-ns.h"
-#include "c/zx-md-data.h"
+#include <zx/errmac.h>
+#include <zx/zx.h>
+#include <zx/zxid.h>
+#include <zx/zxidpriv.h>
+#include <zx/zxidutil.h>
+#include <zx/zxidconf.h>
+#include <zx/c/zxidvers.h>
+#include <zx/c/zx-ns.h>
+#include <zx/c/zx-md-data.h>
 
 char* help =
 "zxid  -  SAML 2.0 SP CGI - R" ZXID_REL "\n\

@@ -30,6 +30,8 @@
 
 #include "zx.h"
 #include "zxid.h"
+#include "zxidpriv.h"
+#include "zxidutil.h"
 #include "c/zxidvers.h"
 #include "c/zx-data.h"
 #include "c/zx-const.h"
@@ -70,7 +72,7 @@ Usage: zxencdectest [options] <foo.xml >reencoded-foo.xml\n\
 char buf[256*1024];
 
 /* Called by:  opt x2 */
-void test_ibm_cert_problem()
+void test_ibm_cert_problem()  /* -r 1 */
 {
   int len, got_all;
   zxid_conf* cf;
@@ -99,7 +101,7 @@ void test_ibm_cert_problem()
 }
 
 /* Called by:  opt x2 */
-void test_ibm_cert_problem_enc_dec()
+void test_ibm_cert_problem_enc_dec()  /* -r 2 */
 {
   zxid_conf* cf;
   struct zx_sp_LogoutRequest_s* req;
@@ -127,7 +129,7 @@ void test_ibm_cert_problem_enc_dec()
 }
 
 /* Called by:  opt */
-void so_enc_dec()
+void so_enc_dec()     /* -r 3 */
 {
   zxid_conf* cf;
   struct zx_sp_Status_s* st;
@@ -139,7 +141,7 @@ void so_enc_dec()
 }
 
 /* Called by:  opt */
-void attribute_sort_test()
+void attribute_sort_test()  /* -r 4 */
 {
   zxid_conf* cf;
   struct zx_xasp_XACMLAuthzDecisionQuery_s* q;
@@ -151,7 +153,7 @@ void attribute_sort_test()
 }
 
 /* Called by:  opt */
-void a7n_test()
+void a7n_test()       /* -r 6 */
 {
   struct timeval srctss;
   zxid_conf* cf;
@@ -165,6 +167,7 @@ void a7n_test()
   memset(&sess, 0, sizeof(sess));
   memset(&srctss, 0, sizeof(srctss));
 
+  sess.sid = "MSES1234";
   sess.uid = "test";
   cf = zxid_new_conf("/var/zxid/");
 #if 1
@@ -181,7 +184,7 @@ void a7n_test()
 }
 
 /* Called by:  opt */
-void x509_test()
+void x509_test()      /* -r 7 */
 {
   struct timeval srctss;
   zxid_conf* cf;
@@ -218,7 +221,7 @@ const char foobar[] = "foobar";
 const char goobar[] = "goo\r\n~[]";
 
 /* Called by:  opt */
-void covimp_test()
+void covimp_test()       /* -r 5 */
 {
   char buf[256];
   int outlen;

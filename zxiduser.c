@@ -29,6 +29,7 @@
 
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "yubikey.h"   /* from libyubikey-1.5 */
 #include "c/zx-sa-data.h"

@@ -24,6 +24,7 @@
 
 #include <zx/errmac.h>
 #include <zx/zxid.h>      /* ZXID main API, including zxid_simple(). */
+#include <zx/zxidutil.h>
 #include <zx/zxidconf.h>  /* Default and compile-time configuration options. */
 #include <zx/c/zxidvers.h>
 

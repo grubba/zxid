@@ -37,6 +37,8 @@
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"
+#include "zxidpriv.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "c/zxidvers.h"
 #include "c/zx-md-data.h"
@@ -389,7 +391,9 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
     
     mark[0] = 0;
     if (cgi) {    /* Was IdP recommended in IdP list supplied via CDC? See zxid_cdc_check() */
-      for (idp_cdc = cgi->idp_list, i=1; idp_cdc && idp_cdc != idp; idp_cdc = idp_cdc->n_cdc, ++i);
+      for (idp_cdc = cgi->idp_list, i=1;
+	   idp_cdc && idp_cdc != idp;
+	   idp_cdc = idp_cdc->n_cdc, ++i);
       if (cf->cdc_choice == ZXID_CDC_CHOICE_UI_ONLY_CDC && cgi->idp_list && !idp_cdc)
 	continue;
       if (idp_cdc) {
@@ -1371,13 +1375,13 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
   
   if (!qs) {
     qs = getenv("QUERY_STRING");
-    D("QUERY_STRING(%s) %s", STRNULLCHK(qs), ZXID_REL);
     if (qs) {
       zxid_parse_cgi(&cgi, qs);
       if (ONE_OF_3(cgi.op, 'P', 'R', 'S')) {
 	cont_len = getenv("CONTENT_LENGTH");
 	if (cont_len) {
 	  sscanf(cont_len, "%d", &got);
+	  D("QUERY_STRING(%s) cont_len=%s got=%d rel=%s", qs, cont_len, got, ZXID_REL);
 	  buf = ZX_ALLOC(cf->ctx, got);
 	  if (!buf) {
 	    ERR("out of memory len=%d", got);
@@ -1418,7 +1422,11 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
 	    }
 	    zxid_parse_cgi(&cgi, buf);
 	  }
+	} else {
+	  D("QUERY_STRING(%s) post, but no CONTENT_LENGTH rel=%s", qs, ZXID_REL);
 	}
+      } else {
+	D("QUERY_STRING(%s) other rel=%s", qs, ZXID_REL);
       }
     }
   } else {

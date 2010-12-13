@@ -23,13 +23,12 @@
 
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidpriv.h"
 #include "zxidconf.h"
 #include "saml2.h"
 #include "c/zx-const.h"
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
-
-/* ============== Dispatch incoming requests and responses ============== */
 
 /*() Extract an assertion, decrypting EncryptedAssertion if needed. */
 
@@ -312,7 +311,7 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cg
 int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_root_s* r)
 {
   X509* sign_cert;
-  RSA*  sign_pkey;
+  EVP_PKEY* sign_pkey;
   struct zxsig_ref refs;
   struct zx_e_Header_s* hdr;  /* Request headers */
   struct zx_e_Body_s* bdy;    /* Request Body */

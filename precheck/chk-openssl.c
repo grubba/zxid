@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 {
   SSL_library_init();  /* in -lssl */
   ERR_clear_error();   /* in -lcrypto */
-  printf("  -- OpenSSL version from opensslv.h: %s, crypto.h: %lx\n",
+  printf("  -- OpenSSL version from opensslv.h: %s, crypto.h: %x\n",
 	 OPENSSL_VERSION_TEXT, SSLEAY_VERSION_NUMBER);
   printf("  -- from SSLeay_version(): %s\n", SSLeay_version(SSLEAY_VERSION));
   return 0;

@@ -17,6 +17,8 @@
 
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidpriv.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "saml2.h"
 #include "wsf.h"
@@ -55,14 +57,14 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   /* Populate SOAP headers. */
   
   hdr->Framework = zx_NEW_sbf_Framework(cf->ctx, &hdr->gg);
-  hdr->Framework->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Framework->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->Framework->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Framework->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->Framework->actor = zx_ref_attr(cf->ctx, &hdr->Framework->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->Framework->version = zx_ref_attr(cf->ctx, &hdr->Framework->gg, zx_version_ATTR, "2.0");
 
 #if 1
   /* *** Conor claims Sender is not mandatory */
   hdr->Sender = zx_NEW_b_Sender(cf->ctx, &hdr->gg);
-  hdr->Sender->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->Sender->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->Sender->actor = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->Sender->providerID = zxid_my_ent_id_attr(cf, &hdr->Sender->gg, zx_providerID_ATTR);
   if (cf->affiliation)
@@ -70,32 +72,32 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
 #endif
 
   hdr->MessageID = zx_NEW_a_MessageID(cf->ctx, &hdr->gg);
-  hdr->MessageID->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->MessageID->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->MessageID->actor = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 
 #if 0
   hdr->Action = zx_NEW_a_Action(cf->ctx, &hdr->gg);
   zx_add_content(cf->ctx, &hdr->Action->gg, zx_ref_str(cf->ctx, ***));
-  hdr->Action->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Action->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->Action->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Action->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->Action->actor = zx_ref_attr(cf->ctx, gghdr->Action->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 #endif
 
 #if 0
   hdr->From = zx_NEW_a_From(cf->ctx, &hdr->gg);
-  hdr->From->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->From->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->From->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->From->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->From->actor = zx_ref_attr(cf->ctx, &hdr->From->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->From->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));
 #endif
 
 #if 0
   hdr->ReferenceParameters = zx_NEW_a_ReferenceParameters(cf->ctx, &hdr->gg);
-  hdr->ReferenceParameters->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->ReferenceParameters->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->ReferenceParameters->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->ReferenceParameters->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->ReferenceParameters->actor = zx_ref_attr(cf->ctx, &hdr->ReferenceParameters->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 #endif
 
 #if 0
   hdr->Credentials = zx_NEW_tas3_Credentials(cf->ctx, &hdr->gg);
-  hdr->Credentials->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Credentials->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->Credentials->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Credentials->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->Credentials->actor = zx_ref_attr(cf->ctx, &hdr->Credentials->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 #endif
 
@@ -103,7 +105,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   /* If you want this header, you should
    * create it prior to calling zxid_wsc_call() */
   hdr->UsageDirective = zx_NEW_b_UsageDirective(cf->ctx, &hdr->gg);
-  hdr->UsageDirective->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->UsageDirective->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->UsageDirective->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->UsageDirective->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->UsageDirective->actor = zx_ref_attr(cf->ctx, &hdr->UsageDirective->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 #endif
 
@@ -111,7 +113,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   /* Interaction or redirection. If you want this header, you should
    * create it prior to calling zxid_wsc_call() */
   hdr->UserInteraction = zx_NEW_b_UserInteraction(cf->ctx, &hdr->gg);
-  hdr->UserInteraction->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->UserInteraction->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->UserInteraction->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->UserInteraction->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->UserInteraction->actor = zx_ref_attr(cf->ctx, &hdr->UserInteraction->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 #endif
 
@@ -121,7 +123,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   
   sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx, &hdr->gg);
   sec->actor = zx_ref_attr(cf->ctx, &sec->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-  sec->mustUnderstand = zx_ref_attr(cf->ctx, &sec->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  sec->mustUnderstand = zx_ref_attr(cf->ctx, &sec->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx, &sec->gg);
   sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx, &sec->Timestamp->gg);
   zx_reverse_elem_lists(&sec->gg);
@@ -141,7 +143,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     if (ses && ses->wsp_msgid && *ses->wsp_msgid) {
       hdr->RelatesTo = zx_NEW_a_RelatesTo(cf->ctx, &hdr->gg);
       zx_add_content(cf->ctx, &hdr->RelatesTo->gg, zx_ref_str(cf->ctx, ses->wsp_msgid));
-      hdr->RelatesTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+      hdr->RelatesTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
       hdr->RelatesTo->actor = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
     }
 #endif

@@ -281,7 +281,7 @@ struct zx_dap_Select_s* zxid_mk_dap_select(zxid_conf* cf, struct zx_elem_s* fath
   if (scope)        sel->scope = zx_attrf(cf->ctx, &sel->gg, zx_scope_ATTR, "%d", scope);
   if (sizelimit)    sel->sizelimit = zx_attrf(cf->ctx, &sel->gg, zx_sizelimit_ATTR, "%d", sizelimit);
   if (timelimit)    sel->timelimit = zx_attrf(cf->ctx, &sel->gg, zx_timelimit_ATTR, "%d", timelimit);
-  if (typesonly)    sel->typesonly = zx_ref_attr(cf->ctx, &sel->gg, zx_typesonly_ATTR, ZXID_TRUE);
+  if (typesonly)    sel->typesonly = zx_ref_attr(cf->ctx, &sel->gg, zx_typesonly_ATTR, XML_TRUE);
   return sel;
 }
 
@@ -310,7 +310,7 @@ struct zx_dap_QueryItem_s* zxid_mk_dap_query_item(zxid_conf* cf, struct zx_elem_
   }
 #endif
 
-  if (incl_common_attr) qi->includeCommonAttributes = zx_ref_attr(cf->ctx, &qi->gg, zx_includeCommonAttributes_ATTR, ZXID_TRUE);
+  if (incl_common_attr) qi->includeCommonAttributes = zx_ref_attr(cf->ctx, &qi->gg, zx_includeCommonAttributes_ATTR, XML_TRUE);
   if (offset)           qi->offset = zx_attrf(cf->ctx, &qi->gg, zx_offset_ATTR, "%d", offset);
   if (count)            qi->count  = zx_attrf(cf->ctx, &qi->gg, zx_count_ATTR,  "%d", count);
   
@@ -321,7 +321,7 @@ struct zx_dap_QueryItem_s* zxid_mk_dap_query_item(zxid_conf* cf, struct zx_elem_
   
   if (contingent_itemidref) {
     qi->itemIDRef = zx_ref_attr(cf->ctx, &qi->gg, zx_itemIDRef_ATTR, contingent_itemidref);
-    qi->contingency = zx_ref_attr(cf->ctx, &qi->gg, zx_contingency_ATTR, ZXID_TRUE);
+    qi->contingency = zx_ref_attr(cf->ctx, &qi->gg, zx_contingency_ATTR, XML_TRUE);
   }
   return qi;
 }
@@ -341,7 +341,7 @@ struct zx_dap_TestOp_s* zxid_mk_dap_testop(zxid_conf* cf, struct zx_elem_s* fath
   if (scope)        sel->scope = zx_attrf(cf->ctx, &sel->gg, zx_scope_ATTR, "%d", scope);
   if (sizelimit)    sel->sizelimit = zx_attrf(cf->ctx, &sel->gg, zx_sizelimit_ATTR, "%d", sizelimit);
   if (timelimit)    sel->timelimit = zx_attrf(cf->ctx, &sel->gg, zx_timelimit_ATTR, "%d", timelimit);
-  if (typesonly)    sel->typesonly = zx_ref_attr(cf->ctx, &sel->gg, zx_typesonly_ATTR, ZXID_TRUE);
+  if (typesonly)    sel->typesonly = zx_ref_attr(cf->ctx, &sel->gg, zx_typesonly_ATTR, XML_TRUE);
   return sel;
 }
 
@@ -386,13 +386,13 @@ struct zx_dap_ResultQuery_s* zxid_mk_dap_resquery(zxid_conf* cf, struct zx_elem_
 #endif
   
   if (incl_common_attr)
-    qi->includeCommonAttributes = zx_ref_attr(cf->ctx, &qi->gg, zx_includeCommonAttributes_ATTR, ZXID_TRUE);
+    qi->includeCommonAttributes = zx_ref_attr(cf->ctx, &qi->gg, zx_includeCommonAttributes_ATTR, XML_TRUE);
   
   qi->itemID = zxid_mk_id_attr(cf, &qi->gg, zx_itemID_ATTR, "qi", ZXID_ID_BITS);
   
   if (contingent_itemidref) {
     qi->itemIDRef = zx_ref_attr(cf->ctx, &qi->gg, zx_itemIDRef_ATTR, contingent_itemidref);
-    qi->contingency = zx_ref_attr(cf->ctx, &qi->gg, zx_contingency_ATTR, ZXID_TRUE);
+    qi->contingency = zx_ref_attr(cf->ctx, &qi->gg, zx_contingency_ATTR, XML_TRUE);
   }
   return qi;
 }
@@ -414,7 +414,7 @@ struct zx_dap_Subscription_s* zxid_mk_dap_subscription(zxid_conf* cf, struct zx_
   if (trig)    subs->Trigger = zx_ref_elem(cf->ctx, &subs->gg, zx_dap_Trigger_ELEM, trig);
   if (starts)  subs->starts = zx_ref_attr(cf->ctx, &subs->gg, zx_starts_ATTR, starts);
   if (expires) subs->expires = zx_ref_attr(cf->ctx, &subs->gg, zx_expires_ATTR, expires);
-  if (incl_data)   subs->includeData = zx_ref_attr(cf->ctx, &subs->gg, zx_includeData_ATTR, ZXID_TRUE);
+  if (incl_data)   subs->includeData = zx_ref_attr(cf->ctx, &subs->gg, zx_includeData_ATTR, XML_TRUE);
   if (admin_notif) subs->adminNotifyToRef = zx_ref_attr(cf->ctx, &subs->gg, zx_adminNotifyToRef_ATTR, admin_notif);
   if (notify_ref)  subs->notifyToRef = zx_ref_attr(cf->ctx, &subs->gg, zx_notifyToRef_ATTR, notify_ref);
   subs->subscriptionID = zxid_mk_id_attr(cf, &subs->gg, zx_subscriptionID_ATTR, "subs", ZXID_ID_BITS);;

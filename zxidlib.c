@@ -21,6 +21,8 @@
 
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidpriv.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "saml2.h"
 #include "c/zxidvers.h"
@@ -719,21 +721,21 @@ struct zx_str* zxid_get_affil_and_sp_name_buf(zxid_conf* cf, zxid_entity* meta, 
 }
 
 /* Called by:  zxid_add_fed_tok2epr, zxid_map_val_ss x2, zxid_sso_issue_a7n */
-zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str* affil, const char* uid, const char* sp_name_buf, int allow_create, int want_transient, struct timeval* srcts, struct zx_str* id, char** logop)
+zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str* affil, const char* uid, const char* sp_name_buf, int allow_create, int want_transient, struct timeval* srcts, struct zx_str* id, char* logop)
 {
   zxid_nid* nameid = zxid_check_fed(cf, affil, uid, allow_create, srcts, prvid, id, sp_name_buf);
   if (nameid) {
     if (want_transient) {
       D("Despite old fed, using transient due to want_transient=%d", want_transient);
       zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
-      if (logop) *logop = "TMPDI\0";
+      if (logop) strcpy(logop, "TMPDI");
     } else
-      if (logop) *logop = "FEDDI\0";
+      if (logop) strcpy(logop, "FEDDI");
   } else {
     D("No nameid (because of no federation), using transient %d", 0);
     nameid = zx_NEW_sa_NameID(cf->ctx,0);
     zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
-    if (logop) *logop = "TMPDI\0";
+    if (logop) strcpy(logop, "TMPDI");
   }
   return nameid;
 }

@@ -20,6 +20,8 @@
 #include "platform.h"  /* for dirent.h */
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidpriv.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "saml2.h"
 #include "wsf.h"
@@ -65,12 +67,11 @@ int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struc
 /* Called by:  zxid_sp_soap_dispatch */
 struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct zx_di_Query_s* req, struct zx_str* issuer)
 {
-  zxid_nid* nameid;
   struct zx_di_RequestedService_s* rs;
   struct zx_di_QueryResponse_s* resp = zx_NEW_di_QueryResponse(cf->ctx,0);
   struct zx_root_s* r;
-  char* logop;
   int len, epr_len, match, n_discovered = 0;
+  char logop[8];
   char uid[ZXID_MAX_USER];
   char mdpath[ZXID_MAX_BUF];
   char path[ZXID_MAX_BUF];
@@ -83,13 +84,17 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
   struct zx_str* tt;
   struct zx_str* addr = 0;  
   zxid_epr* epr = 0;
+  zxid_ses sess;
   D_INDENT("di_query: ");
-
-  if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, a7n, &resp->Status, &nameid)) {
+  ZERO(&sess, sizeof(zxid_ses));
+  sess.uid = uid;
+  sess.sid = zx_str_to_c(cf->ctx, &a7n->ID->g);
+  sess.a7n = a7n;
+  
+  if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, a7n, &resp->Status, &sess.nameid)) {
     D_DEDENT("di_query: ");
     return resp;
   }
-
   name_from_path(mdpath, sizeof(mdpath), "%sdimd", cf->path);
 
   /* Work through all requests */
@@ -262,8 +267,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 #endif
       ++n_discovered;
       D("%d: DISCOVERED EPR url(%.*s)", n_discovered, addr->len, addr->s);
-      logop = zxid_add_fed_tok2epr(cf, epr, uid, 1);
-      if (!logop) {
+      if (!zxid_add_fed_tok2epr(cf, &sess, epr, 1, logop)) {
 	ZX_FREE(cf->ctx, epr_buf);
 	goto next_file;
       }
@@ -272,7 +276,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       if (!resp->EndpointReference)
 	resp->EndpointReference = epr;
 
-      zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, uid, "");
+      zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(sess.nameid), "N", "K", logop, sess.uid, "");
 
       if (rs->resultsType && rs->resultsType->g.s
 	  && (!memcmp(rs->resultsType->g.s, "only-one", rs->resultsType->g.len)
@@ -289,7 +293,7 @@ next_file:
   }
   ss = ZX_GET_CONTENT(req->RequestedService->ServiceType);
   D("TOTAL discovered %d svctype(%.*s)", n_discovered, ss?ss->len:0, ss?ss->s:"");
-  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "DIOK", 0, "%.*s n=%d", ss?ss->len:1, ss?ss->s:"-", n_discovered);
+  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(sess.nameid), "N", "K", "DIOK", 0, "%.*s n=%d", ss?ss->len:1, ss?ss->s:"-", n_discovered);
   resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "OK", 0, 0, 0);  /* last is first */
   D_DEDENT("di_query: ");
   return resp;

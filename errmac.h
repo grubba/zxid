@@ -695,4 +695,24 @@ extern char* assert_msg;
 #define PEM_DSA_PRIV_KEY_START  "-----BEGIN DSA PRIVATE KEY-----"
 #define PEM_DSA_PRIV_KEY_END    "-----END DSA PRIVATE KEY-----"
 
+/* Define this so it results CR (0xd) and LF (0xa) on your platform. N.B. \n is not always 0xa! */
+#define CRLF "\015\012"
+#define CRLF2 CRLF CRLF
+
+/* Both methods are valid for booleans, but the default "1" and "0" approach is more compact.
+ * If you have to interop with buggy software that insists on the "true" and "false",
+ * tweak this conditional. */
+
+#ifdef XML_BOOL_WASTE_SPACE
+#define XML_TRUE  "true"
+#define XML_FALSE "false"
+#else
+#define XML_TRUE  "1"
+#define XML_FALSE "0"
+#endif
+
+/* Test XML boolean field (zx_str) for XML valid "true" values */
+#define XML_TRUE_TEST(x) ((x) && (x)->s && (((x)->len == 1 && (x)->s[0] == '1') || ((x)->len == 4 && !memcmp((x)->s, "true", 4))))
+
+
 #endif /* errmac.h */

@@ -19,6 +19,7 @@
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "c/zxidvers.h"
 #include "c/zx-const.h"
@@ -435,8 +436,8 @@ int zxcall_main(int argc, char** argv, char** env)
   }
 
   if (nidmap_to) {
-    D("SAML Map to identity at eid(%s)", im_to);
-    zxid_nidmap_identity_token(cf, ses, im_to, 0);
+    D("SAML Map to identity at eid(%s)", nidmap_to);
+    zxid_nidmap_identity_token(cf, ses, nidmap_to, 0);
     //printf("%.*s\n", ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
     return 0;
   }

@@ -1,9 +1,11 @@
+TESTING DECODE
 8dLS-STphqyG_fezbJS83zK-7BU.
 oo
+TESTING ENCDEC
 r2 nid(a-persistent-nid) should be(a-persistent-nid)
-<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"></sp:StatusCode></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status><xasp:XACMLAuthzDecisionQuery xmlns:xasp="urn:oasis:xacml:2.0:saml:protocol:schema:os" ID="RMIKAIVYNPvAduDsXGk0UGWHP" IssueInstant="2010-12-11T02:37:13Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xasp:XACMLAuthzDecisionQuery>version(73)
+<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"></sp:StatusCode></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status><xasp:XACMLAuthzDecisionQuery xmlns:xasp="urn:oasis:xacml:2.0:saml:protocol:schema:os" ID="R2x7HOR6iv4BgDBUFA9nOZa5H" IssueInstant="2010-12-13T02:18:25Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xasp:XACMLAuthzDecisionQuery>version(73)
 urlenc(test1%3A%2F%2Ffoo%3Fa%3Db%26c%3Dd%20e5)
-hexdec(†W·)
+hexdec(123)
 parse err(test6: Parse error at char 0/7 (prev char, char, next char: 0x00 0x66 0x6f)
 foobar
 ^
@@ -11,6 +13,7 @@ foobar
 memmem(obar)
 Location: https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=E&c=test8
 
+TESTING PASSWD
 SP specific NameID:   (bob)
 SP specific NameID:   (foo)
 SP specific NameID:   (fool)
@@ -29,8 +32,9 @@ SP specific NameID:   (sampo)
 SP specific NameID:   (beefiiij)
 SP specific NameID:   (mallory)
 SP specific NameID:   (tastest)
-SP specific NameID:   (pwtest)
 SP specific NameID:   (refucenikj)
+TESTING LOGVIEW
+TESTING ZXCOT
 /var/zxid/cot/THuOFn5WPO49n6esrG22rUFW6Go http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B            TAS3 App Demo SP and WSC
 /var/zxid/cot/s36Te-rgbzReSjVc8vDDGy89tT8 http://idp.ssocircle.com                           -
 /var/zxid/cot/_CBGcFVVbIEmt5oh3jUx4GEfHLM https://idp.symdemo.com:8880/idp.xml               -

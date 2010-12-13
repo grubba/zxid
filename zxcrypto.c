@@ -16,6 +16,7 @@
 #include <zx/errmac.h>
 #include <zx/zx.h>
 #include <zx/zxid.h>
+#include <zx/zxidutil.h>
 #include <zx/c/zx-sa-data.h>
 #include <string.h>
 #include <sys/stat.h>  /* umask(2) */

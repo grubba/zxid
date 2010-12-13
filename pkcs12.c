@@ -109,8 +109,8 @@ x509_and_pkey_to_pkcs12(const char* friendly_name,  /* e.g. foo@bar.com */
 	      const char* pkcs12_passwd)  /* used to encrypt pkcs12 */
 {
   PKCS12* p12 = NULL;
-  STACK* bags = NULL;
-  STACK* safes = NULL;
+  STACK_OF(PKCS12_SAFEBAG)* bags = NULL;
+  STACK_OF(PKCS7)* safes = NULL;
   PKCS12_SAFEBAG* bag;
   PKCS8_PRIV_KEY_INFO* p8;
   PKCS7* authsafe;
@@ -236,8 +236,8 @@ smime_pem_to_pkcs12_generic(const char* friendly_name,  /* e.g. foo@bar.com */
   /*STACK *canames = NULL;
   char* catmp; */
   EVP_PKEY* pkey;
-  STACK* bags;
-  STACK* safes;
+  STACK_OF(PKCS12_SAFEBAG)* bags;
+  STACK_OF(PKCS7)* safes;
   PKCS12_SAFEBAG* bag;
   PKCS8_PRIV_KEY_INFO* p8;
   PKCS7* authsafe;
@@ -388,8 +388,8 @@ pkcs12_to_x509_and_pkey(PKCS12* p12,
 	      EVP_PKEY**  pkey_out)       /* private key */
 {
   int i, j;
-  STACK* bags = NULL;
-  STACK* authsafes = NULL;
+  STACK_OF(PKCS12_SAFEBAG)* bags = NULL;
+  STACK_OF(PKCS7)* authsafes = NULL;
   PKCS8_PRIV_KEY_INFO* p8 = NULL;
 
   if (!p12) GOTO_ERR("NULL arg");
@@ -525,7 +525,8 @@ smime_pkcs12_to_pem_generic(const char* pkcs12, int pkcs12_len,
   PKCS12* p12 = NULL;
   X509*  x509;
   int i, j;
-  STACK* authsafes;
+  STACK_OF(PKCS12_SAFEBAG)* bags;
+  STACK_OF(PKCS7)* authsafes;
 
   if (!pkcs12_passwd || !pkcs12) GOTO_ERR("NULL arg(s)");
   
@@ -549,7 +550,6 @@ smime_pkcs12_to_pem_generic(const char* pkcs12, int pkcs12_len,
   if (!(cbio = BIO_new(BIO_s_mem()))) GOTO_ERR("no memory?");
   
   for (i = 0; i < sk_num (authsafes); i++) {
-    STACK* bags;
     PKCS7* authsafe = (PKCS7*)sk_value(authsafes, i);
     int bagnid = OBJ_obj2nid(authsafe->type);
     

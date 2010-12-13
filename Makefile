@@ -1039,8 +1039,8 @@ zxidjava/zxid_wrap.c: $(ZX_GEN_H) zxid.h javazxid.i
 	mv zxidjava/SWIGTYPE_p_zxid_ses.java zxidjava/zxid_ses.java
 	$(PERL) -pi -e 's/SWIGTYPE_p_zxid_cgi/zxid_cgi/g' zxidjava/*.java
 	mv zxidjava/SWIGTYPE_p_zxid_cgi.java zxidjava/zxid_cgi.java
-	$(PERL) -pi -e 's/SWIGTYPE_p_zxid_entity/zxid_entity/g' zxidjava/*.java
-	mv zxidjava/SWIGTYPE_p_zxid_entity.java zxidjava/zxid_entity.java
+	$(PERL) -pi -e 's/SWIGTYPE_p_zxid_entity_s/zxid_entity/g' zxidjava/*.java
+	mv zxidjava/SWIGTYPE_p_zxid_entity_s.java zxidjava/zxid_entity.java
 	$(PERL) -pi -e 's/SWIGTYPE_p_zx_sa_Assertion_s/zxid_a7n/g' zxidjava/*.java
 	mv zxidjava/SWIGTYPE_p_zx_sa_Assertion_s.java zxidjava/zxid_a7n.java
 	$(PERL) -pi -e 's/SWIGTYPE_p_zx_sa_NameID_s/zxid_nid/g' zxidjava/*.java
@@ -1564,7 +1564,8 @@ install: zxid $(LIBZXID_A) libzxid.so.0.0 dir
 tags:
 	etags *.[hc] c/*.[hc]
 
-SSL=/aino/openssl-0.9.8g
+#SSL=/aino/openssl-0.9.8g
+SSL=/aino/openssl-1.0.0c
 BB=/aino/busybox-1.11.1
 #DS=~/ds
 #DS=/d/sampo/ds4/ds

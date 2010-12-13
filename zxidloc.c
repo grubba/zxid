@@ -18,6 +18,7 @@
 
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "saml2.h"
 #include "c/zx-data.h"

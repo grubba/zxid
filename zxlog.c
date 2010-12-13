@@ -38,6 +38,7 @@
 
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidutil.h"  /* for zx_zlib_raw_deflate(), safe_basis_64, and name_from_path */
 #include "zxidconf.h"
 
 #define ZXID_LOG_DIR "log/"

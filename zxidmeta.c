@@ -43,6 +43,7 @@
 #include "errmac.h"
 #include "saml2.h"
 #include "zxid.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "c/zx-const.h"
 #include "c/zx-ns.h"

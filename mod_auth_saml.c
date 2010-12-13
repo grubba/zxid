@@ -33,6 +33,7 @@
 
 #include <zx/errmac.h>
 #include <zx/zxid.h>
+#include <zx/zxidpriv.h>
 #include <zx/zxidconf.h>
 #include <zx/c/zxidvers.h>
 

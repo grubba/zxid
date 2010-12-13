@@ -482,7 +482,7 @@ smime_encrypt(const char* pubkey, const char* mime_entity)
   b = encrypt1(x509, mime_entity);
   
 err:
-  if (x509) X509_free(x509);
+  //if (x509) X509_free(x509);
   return b; /* return value must be freed by caller */
 }
 

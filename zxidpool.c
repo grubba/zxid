@@ -22,6 +22,8 @@
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"
+#include "zxidpriv.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "c/zx-sa-data.h"
 

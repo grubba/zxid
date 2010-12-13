@@ -82,8 +82,9 @@ FILE* Log = NULL;
 int smime_init(const char* random_file, const char* randomness, int randlen)
 {
   time_t t;
-  SSLeay_add_all_algorithms();  /* calling this multiple times does not
-				   seem to have any negative effect. */
+  OpenSSL_add_all_algorithms();  /* calling this multiple times does not seem to have any negative effect. */
+  OpenSSL_add_all_ciphers();  /* Needed to avoid 10069:error:0906B072:PEM routines:PEM_get_EVP_CIPHER_INFO:unsupported encryption:pem_lib.c:481: */
+  OpenSSL_add_all_digests();
 
 #ifdef DEBUGLOG
   Log = fopen("smimeutil.log", "w");

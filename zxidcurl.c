@@ -33,6 +33,7 @@
 
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "c/zx-ns.h"
 #include "c/zx-data.h"

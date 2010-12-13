@@ -66,9 +66,11 @@ saml2.h          - SAML related constants
 wsf.h            - Liberty ID-WSF related constants
 tas3.h           - Mapping from ZXID API to official TAS3 API
 zx.h             - General data structures and prototypes used by generated code
-zxid.h           - Specific data structures and prototypes for handwritten code
+zxid.h           - Specific data structures and prototypes for handwritten code, public API
+zxidpriv.h       - Private API function prototypes
+zxidutil.h       - (Private) Utility API function prototypes
+zxidnoswig.h     - Prototypes that give indigestion to SWIG, private API
 zxidconf.h       - Configuration parameters and default configuration of ZXID
-zxidnoswig.h     - Prototypes that give indigestion to SWIG
 zxwsc.h          - Specific data structures and prototypes for Web Services Client
 aux-templ.c      - Code generation template for auxiliary functions
 dec-templ.c      - Code generation template for decoders
@@ -584,30 +586,14 @@ zxidjava/SWIGTYPE_p_f_p_void_size_t__p_void.java
 zxidjava/SWIGTYPE_p_f_size_t__p_void.java
 zxidjava/SWIGTYPE_p_int.java
 zxidjava/SWIGTYPE_p_p_char.java
-zxidjava/SWIGTYPE_p_p_zx_lu_Status_s.java
 zxidjava/SWIGTYPE_p_p_zx_ns_s.java
-zxidjava/SWIGTYPE_p_p_zx_sa_NameID_s.java
 zxidjava/SWIGTYPE_p_time_t.java
 zxidjava/SWIGTYPE_p_timeval.java
-zxidjava/SWIGTYPE_p_unsigned_char.java
 zxidjava/SWIGTYPE_p_void.java
-zxidjava/SWIGTYPE_p_zx_a_Address_s.java
-zxidjava/SWIGTYPE_p_zx_as_SASLRequest_s.java
-zxidjava/SWIGTYPE_p_zx_as_SASLResponse_s.java
 zxidjava/SWIGTYPE_p_zx_at_tok.java
 zxidjava/SWIGTYPE_p_zx_attr_s.java
 zxidjava/SWIGTYPE_p_zx_ctx.java
-zxidjava/SWIGTYPE_p_zx_dap_QueryItem_s.java
-zxidjava/SWIGTYPE_p_zx_dap_Query_s.java
-zxidjava/SWIGTYPE_p_zx_dap_ResultQuery_s.java
-zxidjava/SWIGTYPE_p_zx_dap_Select_s.java
-zxidjava/SWIGTYPE_p_zx_dap_Subscription_s.java
-zxidjava/SWIGTYPE_p_zx_dap_TestItem_s.java
-zxidjava/SWIGTYPE_p_zx_dap_TestOp_s.java
-zxidjava/SWIGTYPE_p_zx_di_QueryResponse_s.java
-zxidjava/SWIGTYPE_p_zx_di_Query_s.java
 zxidjava/SWIGTYPE_p_zx_ds_Reference_s.java
-zxidjava/SWIGTYPE_p_zx_ds_Signature_s.java
 zxidjava/SWIGTYPE_p_zx_e_Body_s.java
 zxidjava/SWIGTYPE_p_zx_e_Envelope_s.java
 zxidjava/SWIGTYPE_p_zx_e_Header_s.java
@@ -615,57 +601,22 @@ zxidjava/SWIGTYPE_p_zx_el_desc.java
 zxidjava/SWIGTYPE_p_zx_el_tok.java
 zxidjava/SWIGTYPE_p_zx_elem_s.java
 zxidjava/SWIGTYPE_p_zx_ff12_Assertion_s.java
-zxidjava/SWIGTYPE_p_zx_im_IdentityMappingRequest_s.java
-zxidjava/SWIGTYPE_p_zx_im_IdentityMappingResponse_s.java
 zxidjava/SWIGTYPE_p_zx_lu_Status_s.java
-zxidjava/SWIGTYPE_p_zx_md_ArtifactResolutionService_s.java
-zxidjava/SWIGTYPE_p_zx_md_AssertionConsumerService_s.java
 zxidjava/SWIGTYPE_p_zx_md_EntityDescriptor_s.java
-zxidjava/SWIGTYPE_p_zx_md_IDPSSODescriptor_s.java
-zxidjava/SWIGTYPE_p_zx_md_ManageNameIDService_s.java
-zxidjava/SWIGTYPE_p_zx_md_SPSSODescriptor_s.java
-zxidjava/SWIGTYPE_p_zx_md_SingleLogoutService_s.java
-zxidjava/SWIGTYPE_p_zx_md_SingleSignOnService_s.java
 zxidjava/SWIGTYPE_p_zx_ns_s.java
-zxidjava/SWIGTYPE_p_zx_ps_AddEntityRequest_s.java
-zxidjava/SWIGTYPE_p_zx_ps_AddEntityResponse_s.java
-zxidjava/SWIGTYPE_p_zx_ps_ResolveIdentifierRequest_s.java
-zxidjava/SWIGTYPE_p_zx_ps_ResolveIdentifierResponse_s.java
 zxidjava/SWIGTYPE_p_zx_root_s.java
 zxidjava/SWIGTYPE_p_zx_sa11_Assertion_s.java
-zxidjava/SWIGTYPE_p_zx_sa_AttributeStatement_s.java
 zxidjava/SWIGTYPE_p_zx_sa_Attribute_s.java
-zxidjava/SWIGTYPE_p_zx_sa_AuthnStatement_s.java
 zxidjava/SWIGTYPE_p_zx_sa_EncryptedAssertion_s.java
 zxidjava/SWIGTYPE_p_zx_sa_EncryptedID_s.java
 zxidjava/SWIGTYPE_p_zx_sa_Issuer_s.java
-zxidjava/SWIGTYPE_p_zx_sa_Subject_s.java
-zxidjava/SWIGTYPE_p_zx_sp_ArtifactResolve_s.java
-zxidjava/SWIGTYPE_p_zx_sp_AuthnRequest_s.java
-zxidjava/SWIGTYPE_p_zx_sp_LogoutRequest_s.java
-zxidjava/SWIGTYPE_p_zx_sp_LogoutResponse_s.java
-zxidjava/SWIGTYPE_p_zx_sp_ManageNameIDRequest_s.java
-zxidjava/SWIGTYPE_p_zx_sp_ManageNameIDResponse_s.java
-zxidjava/SWIGTYPE_p_zx_sp_NameIDMappingRequest_s.java
-zxidjava/SWIGTYPE_p_zx_sp_NameIDMappingResponse_s.java
 zxidjava/SWIGTYPE_p_zx_sp_NewEncryptedID_s.java
-zxidjava/SWIGTYPE_p_zx_sp_Response_s.java
 zxidjava/SWIGTYPE_p_zx_sp_Status_s.java
-zxidjava/SWIGTYPE_p_zx_wsse_SecurityTokenReference_s.java
-zxidjava/SWIGTYPE_p_zx_wsse_Security_s.java
-zxidjava/SWIGTYPE_p_zx_wsu_Timestamp_s.java
-zxidjava/SWIGTYPE_p_zx_xac_Attribute_s.java
-zxidjava/SWIGTYPE_p_zx_xac_Request_s.java
-zxidjava/SWIGTYPE_p_zx_xac_Response_s.java
-zxidjava/SWIGTYPE_p_zx_xasa_XACMLAuthzDecisionStatement_s.java
-zxidjava/SWIGTYPE_p_zx_xasp_XACMLAuthzDecisionQuery_s.java
-zxidjava/SWIGTYPE_p_zx_xaspcd1_XACMLAuthzDecisionQuery_s.java
 zxidjava/SWIGTYPE_p_zx_xenc_EncryptedData_s.java
 zxidjava/SWIGTYPE_p_zx_xenc_EncryptedKey_s.java
 zxidjava/SWIGTYPE_p_zxid_atsrc.java
 zxidjava/SWIGTYPE_p_zxid_attr.java
 zxidjava/SWIGTYPE_p_zxid_cstr_list.java
-zxidjava/SWIGTYPE_p_zxid_curl_ctx.java
 zxidjava/SWIGTYPE_p_zxid_invite.java
 zxidjava/SWIGTYPE_p_zxid_map.java
 zxidjava/SWIGTYPE_p_zxid_need.java

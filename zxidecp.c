@@ -23,6 +23,7 @@
 
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidpriv.h"
 #include "zxidconf.h"
 #include "saml2.h"
 #include "c/zx-const.h"
@@ -38,7 +39,7 @@ extern char **environ;
 struct zx_paos_Request_s* zxid_mk_paos_Request_hdr(zxid_conf* cf)
 {
   struct zx_paos_Request_s* hdr= zx_NEW_paos_Request(cf->ctx,0);
-  hdr->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->actor   = zx_ref_attr(cf->ctx, &hdr->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->service = zx_ref_attr(cf->ctx, &hdr->gg, zx_service_ATTR, SAML2_SSO_ECP);
   hdr->responseConsumerURL = zx_attrf(cf->ctx, &hdr->gg, zx_responseConsumerURL_ATTR, "%s?o=P", cf->url);
@@ -97,9 +98,9 @@ struct zx_sp_IDPList_s* zxid_mk_idp_list(zxid_conf* cf, char* binding)
 struct zx_ecp_Request_s* zxid_mk_ecp_Request_hdr(zxid_conf* cf)
 {
   struct zx_ecp_Request_s* hdr= zx_NEW_ecp_Request(cf->ctx,0);
-  hdr->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->actor = zx_ref_attr(cf->ctx, &hdr->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-  /*hdr->IsPassive = zx_ref_attr(cf->ctx, &hdr->gg, zx_IsPassive_ATTR, ZXID_TRUE);  OPTIONAL, default=? */
+  /*hdr->IsPassive = zx_ref_attr(cf->ctx, &hdr->gg, zx_IsPassive_ATTR, XML_TRUE);  OPTIONAL, default=? */
   hdr->ProviderName = zxid_my_ent_id_attr(cf, &hdr->gg, zx_ProviderName_ATTR);  /* *** Friendly name? */
   hdr->Issuer = zxid_my_issuer(cf, &hdr->gg);
   hdr->IDPList = zxid_mk_idp_list(cf, SAML2_SOAP);

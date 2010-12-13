@@ -15,6 +15,7 @@
 
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidpriv.h"
 #include "zxidconf.h"
 #include "saml2.h"
 #include "c/zx-const.h"
@@ -33,8 +34,8 @@ struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
   ar->Version = zx_ref_attr(cf->ctx, &ar->gg, zx_Version_ATTR, SAML2_VERSION);
   ar->IssueInstant = zxid_date_time_attr(cf, &ar->gg, zx_IssueInstant_ATTR, time(0));
   if (cf->nice_name && cf->nice_name[0])  ar->ProviderName = zx_ref_attr(cf->ctx, &ar->gg, zx_ProviderName_ATTR, cf->nice_name);
-  if (BOOL_STR_TEST(cgi->force_authn))    ar->ForceAuthn = zx_ref_attr(cf->ctx, &ar->gg, zx_ForceAuthn_ATTR, ZXID_TRUE);
-  if (BOOL_STR_TEST(cgi->ispassive))      ar->IsPassive = zx_ref_attr(cf->ctx, &ar->gg, zx_IsPassive_ATTR, ZXID_TRUE);
+  if (BOOL_STR_TEST(cgi->force_authn))    ar->ForceAuthn = zx_ref_attr(cf->ctx, &ar->gg, zx_ForceAuthn_ATTR, XML_TRUE);
+  if (BOOL_STR_TEST(cgi->ispassive))      ar->IsPassive = zx_ref_attr(cf->ctx, &ar->gg, zx_IsPassive_ATTR, XML_TRUE);
   if (cgi->consent && cgi->consent[0])    ar->Consent = zx_ref_attr(cf->ctx, &ar->gg, zx_Consent_ATTR, cgi->consent);
   D("nid_fmt(%s) allow_create=%c ispassive=%c", cgi->nid_fmt, cgi->allow_create, cgi->ispassive);
   if (cgi->nid_fmt && cgi->nid_fmt[0] || cgi->affil && cgi->affil[0]
@@ -45,7 +46,7 @@ struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
     if (cgi->affil && cgi->affil[0])
       ar->NameIDPolicy->SPNameQualifier = zx_ref_attr(cf->ctx, &ar->NameIDPolicy->gg, zx_SPNameQualifier_ATTR, cgi->affil);
     if (BOOL_STR_TEST(cgi->allow_create))
-      ar->NameIDPolicy->AllowCreate = zx_ref_attr(cf->ctx, &ar->NameIDPolicy->gg, zx_AllowCreate_ATTR, ZXID_TRUE);  /* default false */
+      ar->NameIDPolicy->AllowCreate = zx_ref_attr(cf->ctx, &ar->NameIDPolicy->gg, zx_AllowCreate_ATTR, XML_TRUE);  /* default false */
   }
   if (cgi->authn_ctx && cgi->authn_ctx[0]) {
     ar->RequestedAuthnContext = zx_NEW_sp_RequestedAuthnContext(cf->ctx, &ar->gg);
@@ -80,7 +81,7 @@ struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
 struct zx_sp_ArtifactResolve_s* zxid_mk_art_deref(zxid_conf* cf, zxid_entity* idp_meta, char* artifact)
 {
   X509* sign_cert;
-  RSA*  sign_pkey;
+  EVP_PKEY* sign_pkey;
   struct zxsig_ref refs;
   struct zx_sp_ArtifactResolve_s* ar = zx_NEW_sp_ArtifactResolve(cf->ctx,0);
   ar->Issuer = zxid_my_issuer(cf, &ar->gg);
@@ -380,7 +381,7 @@ struct zx_sa_Attribute_s* zxid_mk_sa_attribute_ss(zxid_conf* cf, struct zx_elem_
 /* Called by:  zxid_gen_boots, zxid_mk_usr_a7n_to_sp x2 */
 struct zx_sa_Attribute_s* zxid_mk_sa_attribute(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, const char* val)
 {
-  return zxid_mk_sa_attribute_ss(cf, father, name, namfmt, zx_dup_str(cf->ctx, val));
+  return zxid_mk_sa_attribute_ss(cf, father, name, namfmt, val?zx_dup_str(cf->ctx, val):0);
 }
 
 /*() Construct SAML protocol Response (such as may be used to carry assertion in SSO) */

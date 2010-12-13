@@ -878,8 +878,8 @@ int zx_url_encode_len(int in_len, const char* in)
 
 /*() URL encode input into output. The encoding is done to
  * characters listed in URL_BAD() macro in zxutil.c. The output must already
- * have been allocated to correct length (which can be obtained from
- * zx_url_encode_len() function). zx_url_encode() is higher
+ * have been allocated to correct length, which can be obtained from
+ * zx_url_encode_len() function. zx_url_encode() is higher
  * level function that does just that. Raw version does not nul terminate.
  * Returns pointer one past last byte written. */
 
@@ -899,6 +899,8 @@ char* zx_url_encode_raw(int in_len, const char* in, char* out)
 
 /*() Perform URL encoding on buffer. New output buffer is allocated.
  * The low level work is performed by zx_url_encode_raw().
+ * Returns the length of the output string (not including nul termination,
+ * but nul termination is actually allocated and made).
  *
  * N.B. For zx_url_decode() operation see URL_DECODE() macro in errmac.h */
 
@@ -907,14 +909,15 @@ char* zx_url_encode(struct zx_ctx* c, int in_len, const char* in, int* out_len)
 {
   int olen;
   char* out;
+  char* p;
   if (in_len == -2)
     in_len = strlen(in);
   olen = zx_url_encode_len(in_len, in) + 1;
   out = ZX_ALLOC(c, olen);
-  zx_url_encode_raw(in_len, in, out);
-  out[olen-1] = '\0';
+  p = zx_url_encode_raw(in_len, in, out);
+  *p = '\0';
   if (out_len)
-    *out_len = olen;
+    *out_len = p - out;
   return out;
 }
 

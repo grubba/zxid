@@ -23,6 +23,8 @@
 #include "platform.h"  /* for dirent.h */
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidpriv.h"
+#include "zxidutil.h"
 #include "zxidconf.h"
 #include "saml2.h"
 #include "wsf.h"
@@ -43,7 +45,7 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
   zxid_cgi cgi;
   zxid_ses ses;
   zxid_nid* nameid;
-  char* logop;
+  char logop[8];
   struct zx_sp_Response_s* resp = zx_NEW_sp_Response(cf->ctx,0);
   struct zx_str* payload;
   struct zx_str* ss;
@@ -86,7 +88,7 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
   }
   D("sp_eid(%s)", sp_meta->eid);
 
-  a7n = zxid_sso_issue_a7n(cf, &cgi, &ses, &srcts, sp_meta, 0, &nameid, &logop, ar);
+  a7n = zxid_sso_issue_a7n(cf, &cgi, &ses, &srcts, sp_meta, 0, &nameid, logop, ar);
 
   if (cf->sso_sign & ZXID_SSO_SIGN_A7N) {
     ZERO(&refs, sizeof(refs));
@@ -169,7 +171,7 @@ zxid_tok* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_e
   inp->TokenPolicy->NameIDPolicy = zx_NEW_sp_NameIDPolicy(cf->ctx, &inp->TokenPolicy->gg);
   inp->TokenPolicy->NameIDPolicy->Format = zx_ref_attr(cf->ctx, &inp->TokenPolicy->NameIDPolicy->gg, zx_Format_ATTR, zxid_saml2_map_nid_fmt("prstnt"));
   inp->TokenPolicy->NameIDPolicy->SPNameQualifier = zx_dup_attr(cf->ctx, &inp->TokenPolicy->NameIDPolicy->gg, zx_SPNameQualifier_ATTR, at_eid);
-  inp->TokenPolicy->NameIDPolicy->AllowCreate = zx_ref_attr(cf->ctx, &inp->TokenPolicy->NameIDPolicy->gg, zx_AllowCreate_ATTR, ZXID_TRUE); /* default false */
+  inp->TokenPolicy->NameIDPolicy->AllowCreate = zx_ref_attr(cf->ctx, &inp->TokenPolicy->NameIDPolicy->gg, zx_AllowCreate_ATTR, XML_TRUE); /* default false */
 
   env = zxid_wsc_call(cf, ses, epr, env, 0);
   if (!env || !env->Body) {
@@ -219,7 +221,12 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
   char uid[ZXID_MAX_BUF];
   char sp_name_buf[1024];
   zxid_entity* sp_meta;
+  zxid_ses sess;
   D_INDENT("imreq: ");
+  ZERO(&sess, sizeof(zxid_ses));
+  sess.uid = uid;
+  sess.sid = zx_str_to_c(cf->ctx, &a7n->ID->g);
+  sess.a7n = a7n;
 
   if (!req || !req->MappingInput) {
     ERR("No IdentityMappingRequest/MappingInput found (WSC error) %p", req);
@@ -266,7 +273,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
     if (mapinp->TokenPolicy->NameIDPolicy) {
       issue_to = &mapinp->TokenPolicy->NameIDPolicy->SPNameQualifier->g;
       nid_fmt = ZX_STR_EQ(&mapinp->TokenPolicy->NameIDPolicy->Format->g, SAML2_TRANSIENT_NID_FMT) ? "trnsnt" : "prstnt";
-      allow_create = ZXID_XML_TRUE_TEST(&mapinp->TokenPolicy->NameIDPolicy->AllowCreate->g) ? '1' : '0';
+      allow_create = XML_TRUE_TEST(&mapinp->TokenPolicy->NameIDPolicy->AllowCreate->g) ? '1':'0';
     } else {
       issue_to = &mapinp->TokenPolicy->issueTo->g;
       nid_fmt = "prstnt";
@@ -283,18 +290,18 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
 
     /* Check for federation */
 
-    nameid = zxid_check_fed(cf, issue_to, uid, allow_create, 0, 0, 0, sp_name_buf);
+    nameid = zxid_check_fed(cf, issue_to, sess.uid, allow_create, 0, 0, 0, sp_name_buf);
     if (nameid) {
       if (nid_fmt && !strcmp(nid_fmt, "trnsnt")) {
 	D("Despite old fed, using transient due to nid_fmt(%s)", STRNULLCHKD(nid_fmt));
-	zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
+	zxid_mk_transient_nid(cf, nameid, sp_name_buf, sess.uid);
 	logop = "ITIM";
       } else
 	logop = "IFIM";
     } else {
       D("No nameid (because of no federation), using transient %d", 0);
       nameid = zx_NEW_sa_NameID(cf->ctx,0);
-      zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
+      zxid_mk_transient_nid(cf, nameid, sp_name_buf, sess.uid);
       logop = "ITIM";
     }
 
@@ -307,10 +314,10 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
       D_DEDENT("imreq: ");
       return resp;
     }
-
-    outa7n = zxid_mk_usr_a7n_to_sp(cf, 0, uid, nameid, sp_meta, sp_name_buf, 1);
-
-    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, outa7n, issue_to, "IMA7N", uid)) {
+    
+    outa7n = zxid_mk_usr_a7n_to_sp(cf, &sess, nameid, sp_meta, sp_name_buf, 1);
+    
+    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, outa7n, issue_to, "IMA7N", sess.uid)) {
       resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "Fail", 0, 0, 0);
       D_DEDENT("imreq: ");
       return resp;
@@ -386,7 +393,7 @@ zxid_tok* zxid_nidmap_identity_token(zxid_conf* cf, zxid_ses* ses, const char* a
   req->NameIDPolicy = zx_NEW_sp_NameIDPolicy(cf->ctx, &req->gg);
   req->NameIDPolicy->Format = zx_ref_attr(cf->ctx, &req->NameIDPolicy->gg, zx_Format_ATTR, zxid_saml2_map_nid_fmt("prstnt"));
   req->NameIDPolicy->SPNameQualifier = zx_dup_attr(cf->ctx, &req->NameIDPolicy->gg, zx_SPNameQualifier_ATTR, at_eid);
-  req->NameIDPolicy->AllowCreate = zx_ref_attr(cf->ctx, &req->NameIDPolicy->gg, zx_AllowCreate_ATTR, ZXID_TRUE); /* default false */
+  req->NameIDPolicy->AllowCreate = zx_ref_attr(cf->ctx, &req->NameIDPolicy->gg, zx_AllowCreate_ATTR, XML_TRUE); /* default false */
   
   req->NameID = ses->nameid;  /* or tgtnameid? */
 
@@ -462,7 +469,7 @@ struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp
   if (req->NameIDPolicy) {
     issue_to = &req->NameIDPolicy->SPNameQualifier->g;
     nid_fmt = ZX_STR_EQ(&req->NameIDPolicy->Format->g, SAML2_TRANSIENT_NID_FMT) ? "trnsnt" : "prstnt";
-    allow_create = ZXID_XML_TRUE_TEST(&req->NameIDPolicy->AllowCreate->g) ? '1' : '0';
+    allow_create = XML_TRUE_TEST(&req->NameIDPolicy->AllowCreate->g) ? '1':'0';
   } else {
     issue_to = 0;
   }

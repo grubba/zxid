@@ -44,6 +44,7 @@
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"
+#include "zxidutil.h"
 #include "c/zxidvers.h"
 
 char* help =

@@ -18,6 +18,7 @@
 
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidpriv.h"
 #include "zxidconf.h"
 #include "saml2.h"
 #include "wsf.h"
@@ -541,7 +542,7 @@ void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_
     return;
 
   env->Header->UsageDirective = ud = zx_NEW_b_UsageDirective(cf->ctx, &env->Header->gg);
-  ud->mustUnderstand = zx_ref_attr(cf->ctx, &ud->gg, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  ud->mustUnderstand = zx_ref_attr(cf->ctx, &ud->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   ud->actor = zx_ref_attr(cf->ctx, &ud->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   ud->Obligation = zx_NEW_xa_Obligation(cf->ctx, &ud->gg);
   ud->Obligation->ObligationId = zx_ref_attr(cf->ctx, &ud->Obligation->gg, zx_ObligationId_ATTR, TAS3_SOL1_ENGINE);
