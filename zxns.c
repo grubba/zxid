@@ -206,6 +206,8 @@ struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, const char* prefix)
   return 0;
 }
 
+#define zx_unknown_prefix "urn:zxid:unknown-ns-prefix"
+
 /*() zx_prefix_seen_whine() is a good place to detect, and add stub for,
  * wholly unknown prefixes. Seldom returns NULL, just always makes something up. */
 
@@ -220,7 +222,7 @@ struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, const char* pref
     ns = zx_locate_ns_by_prefix(c, len, prefix);
     if (!ns) {
       if (mk_dummy_ns) {
-	url = zx_strf(c, "urn:zxid:unknown-ns-prefix:%s:%.*s", logkey, len, STRNULLCHK(prefix));
+	url = zx_strf(c, "%s:%s:%.*s", zx_unknown_prefix, logkey, len, STRNULLCHK(prefix));
 	ns = zx_new_unknown_ns(c, len, prefix, url->len, url->s);
 	ns->n = c->unknown_ns;
 	c->unknown_ns = ns;
@@ -438,6 +440,10 @@ int zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_
     return 0;
   if (!zx_push_seen(c, ns->prefix_len, ns->prefix, ns->url_len, ns->url, pop_seenp))
     return 0;
+  /* Check for undeclared empty prefix, as seen in namespaceless XML */
+  if ((!ns->prefix || !*ns->prefix)
+      && !memcmp(ns->url, zx_unknown_prefix, sizeof(zx_unknown_prefix))-1)
+    return 0;
   return sizeof(" xmlns")-1
     + (ns->prefix_len ? ns->prefix_len+1 : 0) + 2 + ns->url_len + 1;
 }
@@ -491,6 +497,10 @@ first:
 char* zx_enc_seen(char* p, struct zx_ns_s* ns)
 {
   for (; ns; ns = ns->seen_pop) {
+    /* Check for undeclared empty prefix, as seen in namespaceless XML */
+    if ((!ns->prefix || !*ns->prefix)
+	&& !memcmp(ns->url, zx_unknown_prefix, sizeof(zx_unknown_prefix))-1)
+      continue;
     ZX_OUT_MEM(p, " xmlns", sizeof(" xmlns")-1);
     if (ns->prefix_len) {
       ZX_OUT_CH(p, ':');

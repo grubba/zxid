@@ -358,13 +358,13 @@ int zxid_hunt_sig_parts(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struc
 #define ZXID_ADD_WSU_ID(H,idval) MB if (!H->Id) \
   H->Id = zx_ord_ins_at(&H->gg, zx_ref_attr(cf->ctx, 0, zx_wsu_Id_ATTR, idval)); \
   refs[n_refs].id = &H->Id->g; \
-  refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &H->gg); \
+  refs[n_refs].canon = zx_easy_enc_elem_sig(cf, &H->gg); \
   ++n_refs; ME
 
 #define ZXID_ADD_ID(H,idval) MB if (!H->id) \
   H->id = zx_ord_ins_at(&H->gg, zx_ref_attr(cf->ctx, 0, zx_id_ATTR, idval)); \
   refs[n_refs].id = &H->id->g; \
-  refs[n_refs].canon = zx_EASY_ENC_elem(cf->ctx, &H->gg); \
+  refs[n_refs].canon = zx_easy_enc_elem_sig(cf, &H->gg); \
   ++n_refs; ME
 
 

@@ -126,6 +126,7 @@ struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* 
   }
   zx_reverse_elem_lists(&si->gg);
   
+  c->enc_tail_opt = 0;
   ss = zx_EASY_ENC_elem(c, &si->gg);
   SHA1((unsigned char*)ss->s, ss->len, (unsigned char*)sha1);
   zx_str_free(c, ss);
@@ -275,6 +276,7 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
 
   algo = &sref->sref->DigestMethod->Algorithm->g;
   for (; n; --n, ++sref) {
+    c->enc_tail_opt = 0;
     ss = zx_EASY_ENC_elem(c, sref->blob);
     zxsig_canon_crnl_inplace(ss);
     if (       ZX_STR_ENDS_IN_CONST(algo, "#sha1")) {
@@ -314,6 +316,7 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
     return ZXSIG_BAD_CERT;
   }
   c->exclude_sig = 0;
+  c->enc_tail_opt = 0;
   ss = zx_EASY_ENC_elem(c, &sig->SignedInfo->gg);
   zxsig_canon_crnl_inplace(ss);
   algo = &sig->SignedInfo->SignatureMethod->Algorithm->g;

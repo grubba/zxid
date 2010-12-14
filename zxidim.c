@@ -89,7 +89,7 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_ses* ses, struct zx
   if (cf->sso_sign & ZXID_SSO_SIGN_A7N) {
     ZERO(&refs, sizeof(refs));
     refs.id = &outa7n->ID->g;
-    refs.canon = zx_EASY_ENC_elem(cf->ctx, &outa7n->gg);
+    refs.canon = zx_easy_enc_elem_sig(cf, &outa7n->gg);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert paos")) {
       outa7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_add_kid_after_sa_Issuer(&outa7n->gg, &outa7n->Signature->gg);

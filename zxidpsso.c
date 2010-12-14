@@ -50,7 +50,7 @@ int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issue
   if (sign) {
     ZERO(&refs, sizeof(refs));
     refs.id = &a7n->ID->g;
-    refs.canon = zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
+    refs.canon = zx_easy_enc_elem_sig(cf, &a7n->gg);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey,"use sign cert anoint a7n")) {
       a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_add_kid_after_sa_Issuer(&a7n->gg, &a7n->Signature->gg);
@@ -76,7 +76,7 @@ int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issue
   if (cf->log_issue_a7n) {
     logpath = zxlog_path(cf, issued_to, &a7n->ID->g, ZXLOG_ISSUE_DIR, ZXLOG_A7N_KIND, 1);
     if (logpath) {
-      ss = zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
+      ss = zx_easy_enc_elem_sig(cf, &a7n->gg);
       if (zxlog_dup_check(cf, logpath, "IdP POST Assertion")) {
 	ERR("Duplicate Assertion ID(%.*s)", a7n->ID->g.len, a7n->ID->g.s);
 	if (cf->dup_a7n_fatal) {
@@ -115,7 +115,7 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
   if (sign) {
     ZERO(&refs, sizeof(refs));
     refs.id = &resp->ID->g;
-    refs.canon = zx_EASY_ENC_elem(cf->ctx, &resp->gg);
+    refs.canon = zx_easy_enc_elem_sig(cf, &resp->gg);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert,&sign_pkey,"use sign cert anoint resp")) {
       resp->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_add_kid_after_sa_Issuer(&resp->gg, &resp->Signature->gg);
@@ -734,7 +734,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
     if (cf->sso_sign & ZXID_SSO_SIGN_A7N) {
       ZERO(&refs, sizeof(refs));
       refs.id = &a7n->ID->g;
-      refs.canon = zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
+      refs.canon = zx_easy_enc_elem_sig(cf, &a7n->gg);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert paos")) {
 	a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
 	zx_add_kid_after_sa_Issuer(&a7n->gg, &a7n->Signature->gg);

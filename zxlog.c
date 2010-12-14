@@ -651,10 +651,10 @@ int zxlog_dup_check(zxid_conf* cf, struct zx_str* path, const char* logkey)
  *   logpath = zxlog_path(cf, issuer, a7n->ID, "rely/", "/a7n/", 1);
  *   if (logpath) {
  *     if (zxlog_dup_check(cf, logpath, "SSO assertion")) {
- *       zxlog_blob(cf, cf->log_rely_a7n, logpath, zx_EASY_ENC_elem(cf->ctx,&a7n->gg), "E");
+ *       zxlog_blob(cf, cf->log_rely_a7n, logpath, zx_easy_enc_elem_sig(cf,&a7n->gg), "E");
  *       goto erro;
  *     }
- *     zxlog_blob(cf, cf->log_rely_a7n, logpath, zx_EASY_ENC_elem(cf->ctx, a7n), "OK");
+ *     zxlog_blob(cf, cf->log_rely_a7n, logpath, zx_easy_enc_elem_sig(cf, a7n), "OK");
  *   }
  *
  * In the above example we determine the logpath and check for the duplicate and then log even

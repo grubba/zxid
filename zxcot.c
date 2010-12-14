@@ -317,7 +317,7 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
 
   /* *** possibly add something here and double check the required fields are available. */
 
-  ss = zx_EASY_ENC_elem(cf->ctx, &epr->gg);
+  ss = zx_easy_enc_elem_opt(cf, &epr->gg);
   if (!ss)
     return 2;
   
@@ -412,7 +412,7 @@ static int zxid_addmd(zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
   }
 
   for (; ent; ent = ent->n) {
-    ss = zx_EASY_ENC_elem(cf->ctx, &ent->ed->gg);
+    ss = zx_easy_enc_elem_opt(cf, &ent->ed->gg);
     if (!ss)
       return 2;
   

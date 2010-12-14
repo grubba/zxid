@@ -60,7 +60,7 @@ int zxid_sp_slo_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
       refs.id = &body->LogoutRequest->ID->g;
-      refs.canon = zx_EASY_ENC_elem(cf->ctx, &body->LogoutRequest->gg);
+      refs.canon = zx_easy_enc_elem_sig(cf, &body->LogoutRequest->gg);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert slo")) {
 	body->LogoutRequest->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
 	zx_add_kid_after_sa_Issuer(&body->LogoutRequest->gg, &body->LogoutRequest->Signature->gg);

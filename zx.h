@@ -301,11 +301,9 @@ int   zx_check_elem_order(struct zx_elem_s* x);
 int   zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 void  zx_add_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 char* zx_enc_seen(char* p, struct zx_ns_s* ns);
-void  zx_see_attr_ns(struct zx_ctx* c, struct zx_attr_s* aa, struct zx_ns_s** pop_seenp);
 int   zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x);
 char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_elem(struct zx_ctx* c, struct zx_elem_s* x);
-char* zx_attr_wo_enc(char* p, struct zx_attr_s* attr);
 void  zx_free_attr(struct zx_ctx* c, struct zx_attr_s* attr, int free_strs);
 void  zx_free_elem(struct zx_ctx* c, struct zx_elem_s* x, int free_strs);
 
@@ -325,8 +323,6 @@ void  zx_xml_parse_err(struct zx_ctx* c, char quote, const char* func, const cha
 void  zx_xml_parse_dbg(struct zx_ctx* c, char quote, const char* func, const char* msg);
 struct zx_ns_s* zx_xmlns_detected(struct zx_ctx* c, struct zx_elem_s* x, const char* data);
 
-int   zx_len_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);
-void  zx_add_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);
 int   zx_in_inc_ns(struct zx_ctx* c, struct zx_ns_s* new_ns);
 
 void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, int n_ns, const char* start, const char* lim);

@@ -924,6 +924,7 @@ CMD('IDP1', 'zxididp o=R fail', "QUERY_STRING=o=R ./zxididp");
 CMD('IDP2', 'zxididp o=F fail', "QUERY_STRING=o=F ./zxididp");
 CMD('IDP3', 'zxididp o=N new user fail', "QUERY_STRING=o=N ./zxididp");
 CMD('IDP4', 'zxididp o=W pwreset fail',  "QUERY_STRING=o=W ./zxididp");
+CMD('IDP5', 'zxididp o=S SASL Req',  "QUERY_STRING=o=S CONTENT_LENGTH=222 ./zxididp <t/sasl_req.xml");
 
 CMD('PW1', 'zxpasswd list user',   "./zxpasswd -l tastest");
 CMD('PW2', 'zxpasswd pw an ok',    "echo tas123 | ./zxpasswd -v -a tastest");

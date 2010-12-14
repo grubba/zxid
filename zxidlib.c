@@ -71,6 +71,13 @@ struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x)
   return ss;
 }
 
+struct zx_str* zx_easy_enc_elem_sig(zxid_conf* cf, struct zx_elem_s* x)
+{
+  struct zx_str* ss;
+  cf->ctx->enc_tail_opt = 0;
+  return zx_EASY_ENC_elem(cf->ctx, x);
+}
+
 /*() Generate pseudorandom or statistically unique identifier of given length. The
  * unique identifier will be safe base64 encoded.
  *

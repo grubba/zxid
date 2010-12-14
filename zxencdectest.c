@@ -136,7 +136,7 @@ void so_enc_dec()     /* -r 3 */
   struct zx_str* ss;
   cf = zxid_new_conf("/var/zxid/");
   st = zxid_mk_Status(cf, 0, "SC1", "SC2", "MESSAGE");
-  ss = zx_EASY_ENC_elem(cf->ctx, &st->gg);
+  ss = zx_easy_enc_elem_opt(cf, &st->gg);
   printf("%.*s", ss->len, ss->s);
 }
 
@@ -148,7 +148,7 @@ void attribute_sort_test()  /* -r 4 */
   struct zx_str* ss;
   cf = zxid_new_conf("/var/zxid/");
   q = zxid_mk_az(cf, 0, 0, 0, 0);
-  ss = zx_EASY_ENC_elem(cf->ctx, &q->gg);
+  ss = zx_easy_enc_elem_sig(cf, &q->gg);
   printf("%.*s", ss->len, ss->s);
 }
 
