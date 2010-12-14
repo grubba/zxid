@@ -34,22 +34,15 @@
  * Returns 1 on success, 0 on failure. */
 
 /* Called by:  zxid_di_query, zxid_imreq, zxid_ps_addent_invite, zxid_ps_resolv_id, zxid_ssos_anreq */
-int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struct zx_lu_Status_s** stp, zxid_nid** nameidp)
+int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_nid* nameid, struct zx_lu_Status_s** stp)
 {
-  zxid_nid* nameid;
   struct zx_str* affil;
   char sp_name_buf[1024];
-
-  if (!a7n || !a7n->Subject) {
-    ERR("Malformed Assertion(%p): Subject missing.", a7n);
-    if (stp)
-      *stp = zxid_mk_lu_Status(cf, 0, "Fail", 0, 0, 0);
+  if (!nameid) {
+    ERR("Missing nameid %d",0);
     return 0;
   }
 
-  nameid = zxid_decrypt_nameid(cf, a7n->Subject->NameID, a7n->Subject->EncryptedID);
-  if (nameidp)
-    *nameidp = nameid;
   affil = nameid->SPNameQualifier ? &nameid->SPNameQualifier->g : zxid_my_ent_id(cf);
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
   len = read_all(len-1, uid, "idp_map_nid2uid", 1, "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
@@ -65,7 +58,7 @@ int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struc
 /*() Server side Discovery Service Query processing. See also zxid_gen_bootstraps() */
 
 /* Called by:  zxid_sp_soap_dispatch */
-struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct zx_di_Query_s* req, struct zx_str* issuer)
+struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct zx_di_Query_s* req)
 {
   struct zx_di_RequestedService_s* rs;
   struct zx_di_QueryResponse_s* resp = zx_NEW_di_QueryResponse(cf->ctx,0);
@@ -84,14 +77,10 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
   struct zx_str* tt;
   struct zx_str* addr = 0;  
   zxid_epr* epr = 0;
-  zxid_ses sess;
   D_INDENT("di_query: ");
-  ZERO(&sess, sizeof(zxid_ses));
-  sess.uid = uid;
-  sess.sid = zx_str_to_c(cf->ctx, &a7n->ID->g);
-  sess.a7n = a7n;
+  ses->uid = uid;
   
-  if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, a7n, &resp->Status, &sess.nameid)) {
+  if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, ses->tgtnameid, &resp->Status)) {
     D_DEDENT("di_query: ");
     return resp;
   }
@@ -267,7 +256,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 #endif
       ++n_discovered;
       D("%d: DISCOVERED EPR url(%.*s)", n_discovered, addr->len, addr->s);
-      if (!zxid_add_fed_tok2epr(cf, &sess, epr, 1, logop)) {
+      if (!zxid_add_fed_tok2epr(cf, ses, epr, 1, logop)) {
 	ZX_FREE(cf->ctx, epr_buf);
 	goto next_file;
       }
@@ -276,7 +265,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       if (!resp->EndpointReference)
 	resp->EndpointReference = epr;
 
-      zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(sess.nameid), "N", "K", logop, sess.uid, "");
+      zxlogwsp(cf, ses, "K", logop, uid, 0);
 
       if (rs->resultsType && rs->resultsType->g.s
 	  && (!memcmp(rs->resultsType->g.s, "only-one", rs->resultsType->g.len)
@@ -293,7 +282,7 @@ next_file:
   }
   ss = ZX_GET_CONTENT(req->RequestedService->ServiceType);
   D("TOTAL discovered %d svctype(%.*s)", n_discovered, ss?ss->len:0, ss?ss->s:"");
-  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(sess.nameid), "N", "K", "DIOK", 0, "%.*s n=%d", ss?ss->len:1, ss?ss->s:"-", n_discovered);
+  zxlogwsp(cf, ses, "K", "DIOK", 0, "%.*s n=%d", ss?ss->len:1, ss?ss->s:"-", n_discovered);
   resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "OK", 0, 0, 0);  /* last is first */
   D_DEDENT("di_query: ");
   return resp;

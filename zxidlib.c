@@ -779,7 +779,9 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
 				 (cf->di_nid_fmt == 't'), 0, 0, 0);
 
     at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0);
-    at_stmt->Attribute = zxid_mk_sa_attribute_ss(cf, &at_stmt->gg, map->dst?map->dst:atname,0,val);
+    if (map->dst && *map->dst && map->src && map->src[0] != '*')
+      atname = map->dst;
+    at_stmt->Attribute = zxid_mk_sa_attribute_ss(cf, &at_stmt->gg, atname, 0, val);
 
     a7n = zxid_mk_a7n(cf, prvid, zxid_mk_subj(cf, 0, meta, nameid), 0, at_stmt);
     zxid_anoint_a7n(cf, 1, a7n, prvid, "map_val", ses->uid);
@@ -795,7 +797,9 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
     nameid = zxid_get_fed_nameid(cf, prvid, affil, ses->uid, buf, cf->di_allow_create,
 				 (cf->di_nid_fmt == 't'), 0, 0, 0);
 
-    zxid_mk_at_cert(cf, sizeof(buf), buf, "map_val", nameid, map->dst?map->dst:atname, val);
+    if (map->dst && *map->dst && map->src && map->src[0] != '*')
+      atname = map->dst;
+    zxid_mk_at_cert(cf, sizeof(buf), buf, "map_val", nameid, atname, val);
     val = zx_dup_str(cf->ctx, buf);
     break;
   case ZXID_MAP_RULE_WRAP_FILE:  /* 0x30 Get attribute value from file specified in ext */
@@ -841,14 +845,14 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
     /*  "feide": FEIDE currently (2008) stores several values in a single
      *           AttributeValue element. The values are base64 encoded
      *           and separated by an underscore. This decoder reverses that encoding. */
-    D("*** FEIDEDEC only base64 decodes one attribute: it does not handle the concatenatenation with _ of several attributes. %d", 0);
+    DD("*** FEIDEDEC only base64 decodes one attribute: it does not handle the concatenatenation with _ of several attributes. val_before(%.*s)", val->len, val->s);
     ss = zx_new_len_str(cf->ctx, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(val->len));
     p = unbase64_raw(val->s, val->s + val->len, ss->s, zx_std_index_64);
     *p = 0;
     ss->len = p - ss->s;
     break;
   case ZXID_MAP_RULE_FEIDEENC:   /* Norway */
-    D("*** FEIDEENC only base64 encodes one attribute: it does not concatenate with _ several attributes. %d", 0);
+    DD("*** FEIDEENC only base64 encodes one attribute: it does not concatenate with _ several attributes. %d", 0);
     ss = zx_new_len_str(cf->ctx, SIMPLE_BASE64_LEN(val->len));
     base64_fancy_raw(val->s, val->len, ss->s, std_basis_64, 1<<31, 0, 0, '=');
     break;

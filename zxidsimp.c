@@ -1367,8 +1367,9 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
   if (!cf->ipport) {
     remote_addr = getenv("REMOTE_ADDR");
     if (remote_addr) {
-      cf->ipport = ZX_ALLOC(cf->ctx, strlen(remote_addr) + 6 + 1); /* :12345 */
-      sprintf(cf->ipport, "%s:-", remote_addr);
+      ses->ipport = ZX_ALLOC(cf->ctx, strlen(remote_addr) + 6 + 1); /* :12345 */
+      sprintf(ses->ipport, "%s:-", remote_addr);
+      cf->ipport = ses->ipport;
     }
   }
   UNLOCK(cf->mx, "simple ipport");

@@ -396,7 +396,7 @@ struct zx_root_s* zxid_soap_call_body(zxid_conf* cf, struct zx_str* url, struct 
  * return:: 0 if fail, ZXID_REDIR_OK if success. */
 
 /* Called by:  zxid_idp_soap_dispatch x2, zxid_sp_soap_dispatch x7 */
-int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_str* entid)
+int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_Body_s* body)
 {
   struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx,0);
   struct zx_str* ss;
@@ -404,11 +404,11 @@ int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_s
   env->Body = body;
   zx_add_kid(&env->gg, &body->gg);
   env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
-  zxid_wsf_decor(cf, 0, env, 1);
+  zxid_wsf_decor(cf, ses, env, 1);
   ss = zx_easy_enc_elem_opt(cf, &env->gg);
 
   if (cf->log_issue_msg) {
-    logpath = zxlog_path(cf, entid, ss, ZXLOG_ISSUE_DIR, ZXLOG_WIR_KIND, 1);
+    logpath = zxlog_path(cf, ses->issuer, ss, ZXLOG_ISSUE_DIR, ZXLOG_WIR_KIND, 1);
     if (logpath) {
       if (zxlog_dup_check(cf, logpath, "cgi_resp")) {
 	ERR("Duplicate wire msg(%.*s) (Simple Sign)", ss->len, ss->s);
@@ -422,7 +422,7 @@ int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_s
 #endif
       }
       zxlog_blob(cf, 1, logpath, ss, "cgi_resp");
-      zxlog(cf, 0, 0, 0, entid, 0, 0, 0, "N", "K", "CGIRESP", 0, "logpath(%.*s)", logpath->len, logpath->s);
+      zxlogwsp(cf, ses, "K", "CGIRESP", 0, "logpath(%.*s)", logpath->len, logpath->s);
       zx_str_free(cf->ctx, logpath);
     }
   }

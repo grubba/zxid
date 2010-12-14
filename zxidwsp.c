@@ -140,9 +140,9 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     sec->ff12_Assertion = 0;
     
 #if 1
-    if (ses && ses->wsp_msgid && *ses->wsp_msgid) {
+    if (ses && ses->wsp_msgid && ses->wsp_msgid->len) {
       hdr->RelatesTo = zx_NEW_a_RelatesTo(cf->ctx, &hdr->gg);
-      zx_add_content(cf->ctx, &hdr->RelatesTo->gg, zx_ref_str(cf->ctx, ses->wsp_msgid));
+      zx_add_content(cf->ctx, &hdr->RelatesTo->gg, ses->wsp_msgid);
       hdr->RelatesTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
       hdr->RelatesTo->actor = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
     }
@@ -356,18 +356,14 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
 	}
       }
       zxlog_blob(cf, cf->log_rely_a7n, logpath, a7nss, "wsp_validate");
-      zxlog(cf, 0, srcts, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "A7N VALID", logpath->s, 0);
+      zxlog(cf, 0, srcts, ses->ipport, issuer, ses->wsp_msgid, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "A7N VALID", logpath->s, lk);
       zx_str_free(cf->ctx, a7nss);
     }
   }
   return 1;
 }
 
-/*(i) Validate SOAP request (envelope), specified by the string.
- *
- * If the string starts by "<e:Envelope", then string
- * should be a complete SOAP envelope including <e:Header> (and <e:Body>)
- * parts.
+/*() Validate SOAP request envelope, specified as data structure
  *
  * cf:: ZXID configuration object, see zxid_new_conf()
  * ses:: Session object that contains the EPR cache
@@ -380,7 +376,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
  *     also PEPMAP configuration option. This implements generalized
  *     (application independent) Responder In PEP. To implement
  *     application dependent PEP features you should call zxid_az() directly.
- * env:: Entire SOAP envelope as a string
+ * env:: SOAP envelope as data structure
  * return:: idpnid of target identity of the request (rest of the information
  *     is populated to the session object, from where it can be retrieved).
  *     NULL if the validation fails. The target identity is still retrievable
@@ -390,86 +386,56 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
  * See also: zxid_wsc_validate_resp_env() */
 
 /* Called by:  main, zxidwspcgi_main */
-char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve)
+char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env)
 {
   int n_refs = 0;
   struct zxsig_ref refs[ZXID_N_WSF_SIGNED_HEADERS];
   struct timeval ourts;
-  struct timeval srcts = {0,501000};
-  struct zx_root_s* r;
   zxid_entity* wsc_meta;
-  struct zx_e_Envelope_s* env;
   struct zx_e_Header_s* hdr;
   struct zx_wsse_Security_s* sec;
-  //zxid_a7n* a7n;
-  struct zx_str* issuer;
-  struct zx_str* logpath;
-  struct zx_str  ss;
   zxid_cgi cgi;
-  char* p;
-  char msg[256];
 
   D_INDENT("valid: ");
-  D("HERE %p",ses);
   GETTIMEOFDAY(&ourts, 0);
   zxid_set_fault(cf, ses, 0);
-  D("HERE %d",0);
   zxid_set_tas3_status(cf, ses, 0);
-  D("HERE %d",0);
   
-  ss.s = (char*)enve;
-  ss.len = strlen(enve);
-  D_XML_BLOB(cf, "WSP_VALIDATE", ss.len, ss.s);
-  r = zx_dec_zx_root(cf->ctx, ss.len, enve, "valid");
-  if (!r) {
-    zx_format_parse_error(cf->ctx, msg, sizeof(msg), "valid");
-    ERR("Malformed XML: %s", msg);
-    /* Squash " to ' because the message will appear in XML attribute value delimited by " */
-    for (p = msg; *p; ++p)
-      if (*p == '"')
-	*p = '\'';
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "Malformed XML", "IDStarMsgNotUnderstood", 0, msg, 0));
-    D_DEDENT("valid: ");
-    return 0;
-  }
-  env = r->Envelope;
   if (!env) {
-    ERR("No <e:Envelope> found. %p", enve);
+    ERR("No <e:Envelope> found. %d", 0);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "No SOAP Envelope found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }
-  ZX_FREE(cf->ctx, r);
 
   hdr = env->Header;
   if (!hdr) {
-    ERR("No <e:Header> found. %p", enve);
+    ERR("No <e:Header> found. %d", 0);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "No SOAP Header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }
   if (!ZX_SIMPLE_ELEM_CHK(hdr->MessageID)) {
-    ERR("No <a:MessageID> found. %p", enve);
+    ERR("No <a:MessageID> found. %d", 0);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "No MessageID header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }
   /* Remember MessageID for generating RelatesTo in Response */
-  ses->wsp_msgid = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(hdr->MessageID));
+  ses->wsp_msgid = ZX_GET_CONTENT(hdr->MessageID);
   
-  if (!hdr->Sender || !hdr->Sender->providerID
-      && !hdr->Sender->affiliationID) {
-    ERR("No <b:Sender> found (or missing providerID or affiliationID). %p", enve);
+  if (!hdr->Sender || !hdr->Sender->providerID && !hdr->Sender->affiliationID) {
+    ERR("No <b:Sender> found (or missing providerID or affiliationID). %p", hdr->Sender);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "No b:Sender header found (or missing providerID or affiliationID).", "IDStarMsgNotUnderstood", 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }
-  issuer = &hdr->Sender->providerID->g;
+  ses->issuer = &hdr->Sender->providerID->g;
   
   /* Validate message signature (*** add Issuer trusted check, CA validation, etc.) */
   
   if (!(sec = hdr->Security)) {
-    ERR("No <wsse:Security> found. %p", enve);
+    ERR("No <wsse:Security> found. %d", 0);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "No wsse:Security header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
@@ -487,7 +453,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     }
   }
   
-  wsc_meta = zxid_get_ent_ss(cf, issuer);
+  wsc_meta = zxid_get_ent_ss(cf, ses->issuer);
   if (wsc_meta) {
     ZERO(refs, sizeof(refs));
     n_refs = zxid_hunt_sig_parts(cf, n_refs, refs, sec->Signature->SignedInfo->Reference, hdr, env->Body);
@@ -503,29 +469,29 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   } else {
     ses->sigres = ZXSIG_NO_SIG;
     if (cf->nosig_fatal) {
-      INFO("Unable to find SAML metadata for Sender(%.*s), but configured to ignore this problem (NOSIG_FATAL=0).", issuer->len, issuer->s);
+      INFO("Unable to find SAML metadata for Sender(%.*s), but configured to ignore this problem (NOSIG_FATAL=0).", ses->issuer->len, ses->issuer->s);
     } else {
-      ERR("Unable to find SAML metadata for Sender(%.*s).", issuer->len, issuer->s);
+      ERR("Unable to find SAML metadata for Sender(%.*s).", ses->issuer->len, ses->issuer->s);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "No unable to find SAML metadata for sender.", "ProviderIDNotValid", 0, 0, 0));
       D_DEDENT("valid: ");
       return 0;
     }
   }
 
-  if (!zxid_timestamp_chk(cf, ses, sec->Timestamp,&ourts,&srcts,TAS3_PEP_RQ_IN,"e:Client"))
+  if (!zxid_timestamp_chk(cf, ses, sec->Timestamp, &ourts, &ses->srcts, TAS3_PEP_RQ_IN,"e:Client"))
     return 0;
   
   /* Check Requester Identity */
 
   ses->a7n = zxid_dec_a7n(cf, sec->Assertion, sec->EncryptedAssertion);
   if (ses->a7n && ses->a7n->Subject) {
-    if (!zxid_wsf_validate_a7n(cf, ses, ses->a7n, "req", &srcts)) {
+    if (!zxid_wsf_validate_a7n(cf, ses, ses->a7n, "req", &ses->srcts)) {
       D_DEDENT("valid: ");
       return 0;
     }
   } else {
     /* *** should there be absolute requirement for a requester assertion to exist? */
-    ERR("No Requester <sa:Assertion> found. enve(%s)", enve);
+    ERR("No Requester <sa:Assertion> found. %p", ses->a7n);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "No assertion found.", TAS3_STATUS_BADCOND, 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
@@ -536,12 +502,12 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   if (hdr->TargetIdentity) {
     ses->tgta7n = zxid_dec_a7n(cf, hdr->TargetIdentity->Assertion, hdr->TargetIdentity->EncryptedAssertion);
     if (ses->tgta7n && ses->tgta7n->Subject) {
-      if (!zxid_wsf_validate_a7n(cf, ses, ses->a7n, "tgt", &srcts)) {
+      if (!zxid_wsf_validate_a7n(cf, ses, ses->a7n, "tgt", &ses->srcts)) {
 	D_DEDENT("valid: ");
 	return 0;
       }
     } else {
-      ERR("No TargetIdentity <sa:Assertion> found. enve(%s)", enve);
+      ERR("No TargetIdentity <sa:Assertion> found. %p", ses->tgta7n);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "No TargetIdentity Assertion found.", TAS3_STATUS_BADCOND, 0, 0, 0));
       D_DEDENT("valid: ");
       return 0;
@@ -577,7 +543,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   zxid_ses_to_pool(cf, ses);
   zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
   zxid_put_user(cf, &ses->nameid->Format->g, &ses->nameid->NameQualifier->g, &ses->nameid->SPNameQualifier->g, ZX_GET_CONTENT(ses->nameid), 0);
-  zxlog(cf, &ourts, &srcts, 0, issuer, 0, &ses->a7n->ID->g, ZX_GET_CONTENT(ses->nameid), "N", "K", "PNEWSES", ses->sid, 0);
+  zxlogwsp(cf, ses, "K", "PNEWSES", ses->sid, 0);
   
   /* Call Rq-In PDP */
   
@@ -595,8 +561,63 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     }
   }
   
-  logpath = zxlog_path(cf, issuer, ZX_GET_CONTENT(hdr->MessageID),
-		       ZXLOG_RELY_DIR, ZXLOG_MSG_KIND, 1);
+  D_DEDENT("valid: ");
+  return ses->tgt;
+}
+
+/*(i) Validate SOAP request (envelope), specified by the string.
+ *
+ * If the string starts by "<e:Envelope", then string
+ * should be a complete SOAP envelope including <e:Header> (and <e:Body>)
+ * parts.
+ *
+ * cf:: ZXID configuration object, see zxid_new_conf()
+ * ses:: Session object that contains the EPR cache
+ * az_cred:: (Optional) Additional authorization credentials or
+ *     attributes, query string format. These credentials will be populated
+ *     to the attribute pool in addition to the ones obtained from token and
+ *     other sources. Then a PDP is called to get an authorization
+ *     decision (matching obligations we support to those in the request,
+ *     and obligations pleged by caller to those we insist on). See
+ *     also PEPMAP configuration option. This implements generalized
+ *     (application independent) Responder In PEP. To implement
+ *     application dependent PEP features you should call zxid_az() directly.
+ * env:: Entire SOAP envelope as a string
+ * return:: idpnid of target identity of the request (rest of the information
+ *     is populated to the session object, from where it can be retrieved).
+ *     NULL if the validation fails. The target identity is still retrievable
+ *     from the session, should there be desire to process the message despite
+ *     the validation failure.
+ *
+ * See also: zxid_wsc_validate_resp_env() */
+
+/* Called by:  main, zxidwspcgi_main */
+char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve)
+{
+  struct zx_str  ss;
+  char* p;
+  char msg[256];
+  struct zx_str* logpath;
+  struct zx_root_s* r;
+
+  ss.s = (char*)enve;
+  ss.len = strlen(enve);
+  D_XML_BLOB(cf, "WSP_VALIDATE", ss.len, ss.s);
+  r = zx_dec_zx_root(cf->ctx, ss.len, enve, "valid");
+  if (!r) {
+    zx_format_parse_error(cf->ctx, msg, sizeof(msg), "valid");
+    ERR("Malformed XML: %s", msg);
+    /* Squash " to ' because the message will appear in XML attribute value delimited by " */
+    for (p = msg; *p; ++p)
+      if (*p == '"')
+	*p = '\'';
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "Malformed XML", "IDStarMsgNotUnderstood", 0, msg, 0));
+    return 0;
+  }
+  p = zxid_wsp_validate_env(cf, ses, az_cred, r->Envelope);
+  ZX_FREE(cf->ctx, r);
+  
+  logpath = zxlog_path(cf, ses->issuer, ses->wsp_msgid, ZXLOG_RELY_DIR, ZXLOG_MSG_KIND, 1);
   if (zxlog_dup_check(cf, logpath, "validate request")) {
     if (cf->dup_msg_fatal) {
       zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate request dup err");
@@ -608,10 +629,8 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     }
   }
   zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate request");
-  zxlog(cf, &ourts, &srcts, 0, issuer, 0, &ses->a7n->ID->g, ZX_GET_CONTENT(ses->nameid), "N", "K", "VALID", logpath->s, 0);
-  
-  D_DEDENT("valid: ");
-  return ses->tgt;
+  zxlogwsp(cf, ses, "K", "VALID", logpath->s, 0);
+  return p;
 }
 
 /* EOF  --  zxidwsp.c */

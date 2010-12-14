@@ -278,20 +278,20 @@ ZXID_DECL struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zx
 
 ZXID_DECL int zxid_epr_path(zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, struct zx_str* svc, struct zx_str* cont);
 
-ZXID_DECL int zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr);
+ZXID_DECL int  zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr);
 ZXID_DECL void zxid_snarf_eprs(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr);
 ZXID_DECL void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses);
 
 /* zxiddi -  Discovery Service */
 
-ZXID_DECL int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struct zx_lu_Status_s** stp, zxid_nid** nameidp);
+ZXID_DECL int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_nid* nameid, struct zx_lu_Status_s** stp);
 
-ZXID_DECL struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct zx_di_Query_s* req, struct zx_str* issuer);
+ZXID_DECL struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_ses* ses, struct zx_di_Query_s* req);
 
 /* zxidim -  Identity Mapping Service, Single Sign-On Service (SSOS) */
 
-ZXID_DECL struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_sp_AuthnRequest_s* req, struct zx_str* issuer);
-ZXID_DECL struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_im_IdentityMappingRequest_s* req, struct zx_str* issuer);
+ZXID_DECL struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_ses* ses, struct zx_sp_AuthnRequest_s* req);
+ZXID_DECL struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_ses* ses, struct zx_im_IdentityMappingRequest_s* req);
 
 ZXID_DECL struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp_NameIDMappingRequest_s* req);
 
@@ -300,8 +300,8 @@ ZXID_DECL struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, st
 ZXID_DECL struct zx_str* zxid_psobj_enc(zxid_conf* cf, struct zx_str* eid, const char* prefix, struct zx_str* psobj);
 ZXID_DECL struct zx_str* zxid_psobj_dec(zxid_conf* cf, struct zx_str* eid, const char* prefix, struct zx_str* psobj);
 
-ZXID_DECL struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n* a7n, struct zx_ps_AddEntityRequest_s* req, struct zx_str* issuer);
-ZXID_DECL struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_a7n* a7n, struct zx_ps_ResolveIdentifierRequest_s* req, struct zx_str* issuer);
+ZXID_DECL struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_ses* ses, struct zx_ps_AddEntityRequest_s* req);
+ZXID_DECL struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_ses* ses, struct zx_ps_ResolveIdentifierRequest_s* req);
 
 #ifdef __cplusplus
 } // extern "C"

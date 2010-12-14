@@ -412,7 +412,7 @@ struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
     else if (IS_RULE(rule, "unsb64"))        { mm->rule = ZXID_MAP_RULE_UNSB64; }
     else if (IS_RULE(rule, "sb64"))          { mm->rule = ZXID_MAP_RULE_SB64; }
 
-    else if (IS_RULE(rule, "a7n"))           { mm->rule = ZXID_MAP_RULE_WRAP_A7N | ZXID_MAP_RULE_FEIDEDEC; }
+    else if (IS_RULE(rule, "a7n"))           { mm->rule = ZXID_MAP_RULE_WRAP_A7N; }
     else if (IS_RULE(rule, "a7n-feideenc"))  { mm->rule = ZXID_MAP_RULE_WRAP_A7N | ZXID_MAP_RULE_FEIDEENC; }
     else if (IS_RULE(rule, "a7n-def-sb64"))  { mm->rule = ZXID_MAP_RULE_WRAP_A7N | ZXID_MAP_RULE_DEF_SB64; }
     else if (IS_RULE(rule, "a7n-sb64"))      { mm->rule = ZXID_MAP_RULE_WRAP_A7N | ZXID_MAP_RULE_SB64; }

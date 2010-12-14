@@ -260,16 +260,16 @@ void zxid_gen_boots(zxid_conf* cf, zxid_ses* ses, struct zx_sa_AttributeStatemen
 static void zxid_add_mapped_attr(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zx_elem_s* father, char* lk, struct zxid_map* sp_aamap, const char* name, const char* val)
 {
   struct zxid_map* map;
-  D("%s: ATTR(%s)=VAL(%s)", lk, name, val);
   map = zxid_find_map(sp_aamap, name);
   if (!map)
     map = zxid_find_map(cf->aamap, name);
   if (map && map->rule != ZXID_MAP_RULE_DEL) {
-    if (map->dst)
+    D("%s: ATTR(%s)=VAL(%s)", lk, name, val);
+    if (map->dst && *map->dst && map->src && map->src[0] != '*')
       name = map->dst;
     zxid_mk_sa_attribute_ss(cf, father, name, 0, zxid_map_val(cf, ses, meta, map, name, val));
   } else {
-    D("Attribute(%s) filtered out either by del rule in aamap, or does not match aamap %p", name, map);
+    D("%s: Attribute(%s) filtered out either by del rule in aamap, or does not match aamap %p", lk, name, map);
   }
 }
 
@@ -597,8 +597,11 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
   struct zx_sa_SubjectConfirmation_s* sc;
   struct zx_str* issuer;
   struct zx_str* affil;
+  zxid_nid* tmpnameid;
   char sp_name_buf[ZXID_MAX_SP_NAME_BUF];
   D("sp_eid(%s)", sp_meta->eid);
+  if (!nameid)
+    nameid = &tmpnameid;
 
   if (ar->IssueInstant && ar->IssueInstant->g.len && ar->IssueInstant->g.s)
     srcts->tv_sec = zx_date_time_to_secs(ar->IssueInstant->g.s);

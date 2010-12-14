@@ -104,7 +104,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 	continue;
       }
       at->map_val = zxid_map_val(cf, 0, 0, map, at->name, at->val);
-      if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
+      if (map->dst && *map->dst && map->src && map->src[0] != '*') {
 	name = map->dst;
       } else {
 	name = at->name;

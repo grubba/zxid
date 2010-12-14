@@ -380,8 +380,9 @@ struct zxid_ses {
   char* nid;           /* String representation of Subject NameID. See also nameid. */
   char* tgt;           /* String representation of Target NameID. See also nameid. */
   char* sesix;         /* SessionIndex */
+  char* ipport;        /* Source IP and port for logging, e.g: "1.2.3.4:5" */
   char* wsc_msgid;     /* Request MessageID, to facilitate Response RelatesTo validation at WSC. */
-  char* wsp_msgid;     /* Request MessageID, to facilitate Response RelatesTo generation at WSP. */
+  struct zx_str* wsp_msgid; /* Request MessageID, to facilitate Response RelatesTo generation at WSP. */
   char* an_ctx;        /* Authentication Context (esp in IdP. On SP look inside a7n). */
   char  nidfmt;        /* Subject nameid format: 0=tmp NameID, 1=persistent */
   char  tgtfmt;        /* Target nameid format: 0=tmp NameID, 1=persistent */
@@ -407,6 +408,8 @@ struct zxid_ses {
   zxid_epr* deleg_di_epr;  /* If set, see zxid_set_delegated_discovery_epr(), used for disco. */
   zxid_fault* curflt;      /* SOAP fault, if any, reported by zxid_wsp_validate() */
   zxid_tas3_status* curstatus;  /* TAS3 status header, if any. */
+  struct zx_str* issuer; /* WSP processing: the content of Sender header of request */
+  struct timeval srcts;  /* WSP processing: the timestamp of the request */
   char* sesbuf;
   char* sso_a7n_buf;
   struct zxid_attr* at; /* Attributes extracted from a7n and translated using inmap. Linked list */
@@ -643,6 +646,7 @@ ZXID_DECL void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n
 ZXID_DECL int zxlog_dup_check(zxid_conf* cf, struct zx_str* path, const char* logkey);
 ZXID_DECL int zxlog_blob(zxid_conf* cf, int logflag, struct zx_str* path, struct zx_str* blob, const char* lk);
 ZXID_DECL int zxlog(zxid_conf* cf, struct timeval* ourts, struct timeval* srcts, const char* ipport, struct zx_str* entid, struct zx_str* msgid, struct zx_str* a7nid, struct zx_str* nid, const char* sigval, const char* res, const char* op, const char* arg, const char* fmt, ...);
+ZXID_DECL int zxlogwsp(zxid_conf* cf, zxid_ses* ses, const char* res, const char* op, const char* arg, const char* fmt, ...);
 ZXID_DECL int zxlogusr(zxid_conf* cf, const char* uid, struct timeval* ourts, struct timeval* srcts, const char* ipport, struct zx_str* entid, struct zx_str* msgid, struct zx_str* a7nid, struct zx_str* nid, const char* sigval, const char* res, const char* op, const char* arg, const char* fmt, ...);
 ZXID_DECL void zxlog_debug_xml_blob(zxid_conf* cf, const char* file, int line, const char* func, const char* lk, int len, const char* xml);
 
@@ -729,7 +733,7 @@ ZXID_DECL int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses);
 ZXID_DECL struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data);
 ZXID_DECL struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env, char** ret_enve);
 ZXID_DECL struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body);
-ZXID_DECL int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_str* entid);
+ZXID_DECL int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_Body_s* body);
 
 /* zxidlib */
 
@@ -838,6 +842,7 @@ ZXID_DECL char* zxid_get_tas3_status_ctlpt(zxid_conf* cf, zxid_tas3_status* st);
 
 /* zxidwsp */
 
+ZXID_DECL char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env);
 ZXID_DECL char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve);
 ZXID_DECL struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve);
 ZXID_DECL struct zx_str* zxid_wsp_decoratef(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* env_f, ...);

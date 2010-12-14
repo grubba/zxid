@@ -76,12 +76,12 @@ static int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cr
   }
   hdr = env->Header;
   if (!hdr) {
-    ERR("No <e:Header> found. enve(%s)", STRNULLCHK(enve));
+    ERR("No <e:Header> found. %d", 0);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Server", "No SOAP Header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
   if (!ZX_SIMPLE_ELEM_CHK(hdr->MessageID)) {
-    ERR("No <a:MessageID> found. enve(%s)", STRNULLCHK(enve));
+    ERR("No <a:MessageID> found. %d", 0);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Server", "No MessageID header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
@@ -106,7 +106,7 @@ static int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cr
     }
   } else {
     if (cf->relto_fatal) {
-      ERR("No <a:RelatesTo> found. enve(%s)", STRNULLCHK(enve));
+      ERR("No <a:RelatesTo> found. %d", 0);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Server", "No RelatesTo header found in reply.", "IDStarMsgNotUnderstood", 0, 0, 0));
       return 0;
     } else {
@@ -116,7 +116,7 @@ static int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cr
   }
 
   if (!hdr->Sender || !hdr->Sender->providerID && !hdr->Sender->affiliationID) {
-    ERR("No <b:Sender> found (or missing providerID or affiliationID). enve(%s)", STRNULLCHK(enve));
+    ERR("No <b:Sender> found (or missing providerID or affiliationID). %p", hdr->Sender);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Server", "No b:Sender header found (or missing providerID or affiliationID).", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
@@ -125,7 +125,7 @@ static int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cr
   /* Validate message signature (*** add Issuer trusted check, CA validation, etc.) */
   
   if (!(sec = hdr->Security)) {
-    ERR("No <wsse:Security> found. enve(%s)", STRNULLCHK(enve));
+    ERR("No <wsse:Security> found. %d", 0);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Server", "No wsse:Security header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
@@ -133,12 +133,11 @@ static int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cr
   if (!sec->Signature || !sec->Signature->SignedInfo || !sec->Signature->SignedInfo->Reference) {
     ses->sigres = ZXSIG_NO_SIG;
     if (cf->wsp_nosig_fatal) {
-      ERR("No Security/Signature found. enve(%s) %p", STRNULLCHK(enve), sec->Signature);
+      ERR("No Security/Signature found. %p", sec->Signature);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Server", "No wsse:Security/ds:Signature found.", TAS3_STATUS_NOSIG, 0, 0, 0));
       return 0;
     } else {
-      INFO("No Security/Signature found, but configured to ignore this problem. %p", sec->Signature);
-      D("No sig OK enve(%s)", STRNULLCHK(enve));
+      INFO("No Security/Signature found, but configured to ignore this problem (WSP_NOSIG_FATAL=0). %p", sec->Signature);
     }
   }
   

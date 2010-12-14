@@ -40,6 +40,7 @@
 #include "zxid.h"
 #include "zxidutil.h"  /* for zx_zlib_raw_deflate(), safe_basis_64, and name_from_path */
 #include "zxidconf.h"
+#include "c/zx-data.h"  /* Generated. If missing, run `make dep ENA_GEN=1' */
 
 #define ZXID_LOG_DIR "log/"
 #define ZXLOG_TIME_FMT "%04d%02d%02d-%02d%02d%02d.%03ld"
@@ -350,6 +351,23 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
   return n;
 }
 
+/*() Figure out which log file should receive the message */
+
+static int zxlog_output(zxid_conf* cf, int n, const char* logbuf, const char* res)
+{
+  char c_path[ZXID_MAX_BUF];
+  DD("LOG(%.*s)", n-1, logbuf);
+  if ((cf->log_err_in_act || res[0] == 'K') && cf->log_act) {
+    name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "act", cf->path);
+    zxlog_write_line(cf, c_path, cf->log_act, n, logbuf);
+  }
+  if (cf->log_err && (cf->log_act_in_err || res[0] != 'K')) {  /* If enabled, everything goes to err */
+    name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "err", cf->path);
+    zxlog_write_line(cf, c_path, cf->log_err, n, logbuf);
+  }
+  return 0;
+}
+
 /*(i) Log to activity and/or error log depending on ~res~ and configuration settings.
  * This is the main audit logging function you should call. Please see <<link:../../html/zxid-log.html: zxid-log.pd>>
  * for detailed description of the log format and features. See <<link:../../html/zxid-conf.html: zxid-conf.pd>> for
@@ -397,7 +415,6 @@ int zxlog(zxid_conf* cf,   /* 1 */
 {
   int n;
   char logbuf[1024];
-  char c_path[ZXID_MAX_BUF];
   va_list ap;
   
   /* Avoid computation if logging is hopeless. */
@@ -412,19 +429,42 @@ int zxlog(zxid_conf* cf,   /* 1 */
 		ourts, srcts, ipport, entid, msgid, a7nid, nid, sigval, res,
 		op, arg, fmt, ap);
   va_end(ap);
+  return zxlog_output(cf, n, logbuf, res);
+}
+
+/*() Log to activity and/or error log depending on ~res~ and configuration settings.
+ * This variant uses the ses object to extract many of the log fields. These fields
+ * were populated to ses by zxid_wsp_validate()
+ */
+
+int zxlogwsp(zxid_conf* cf,    /* 1 */
+	     zxid_ses* ses,    /* 2 */
+	     const char* res,  /* 3 */
+	     const char* op,   /* 4 */
+	     const char* arg,  /* 5 null allowed, - if not given */
+	     const char* fmt, ...)   /* 13 null allowed as format, ends the line w/o further ado */
+{
+  int n;
+  char logbuf[1024];
+  va_list ap;
   
-  /* Output stage */
+  /* Avoid computation if logging is hopeless. */
   
-  DD("LOG(%.*s)", n-1, logbuf);
-  if ((cf->log_err_in_act || res[0] == 'K') && cf->log_act) {
-    name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "act", cf->path);
-    zxlog_write_line(cf, c_path, cf->log_act, n, logbuf);
+  if (!((cf->log_err_in_act || res[0] == 'K') && cf->log_act)
+      && !(cf->log_err && res[0] != 'K')) {
+    return 0;
   }
-  if (cf->log_err && (cf->log_act_in_err || res[0] != 'K')) {  /* If enabled, everything goes to err */
-    name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "err", cf->path);
-    zxlog_write_line(cf, c_path, cf->log_err, n, logbuf);
-  }
-  return 0;
+
+  va_start(ap, fmt);
+  n = zxlog_fmt(cf, sizeof(logbuf), logbuf,
+		0, &ses->srcts, ses->ipport,
+		ses->issuer, ses->wsp_msgid,
+		&ses->a7n->ID->g,
+		ZX_GET_CONTENT(ses->nameid),
+		&ses->sigres, res,
+		op, arg, fmt, ap);
+  va_end(ap);
+  return zxlog_output(cf, n, logbuf, res);
 }
 
 /*() Log user specific data */

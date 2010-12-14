@@ -22,6 +22,7 @@
 #include "platform.h"  /* for dirent.h */
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidpriv.h"
 #include "zxidutil.h"
 #include "zxidconf.h"
 #include "saml2.h"
@@ -515,14 +516,13 @@ char* zxid_ps_finalize_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* 
  * tag "perm". */
 
 /* Called by:  zxid_sp_soap_dispatch */
-struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n* a7n, struct zx_ps_AddEntityRequest_s* req, struct zx_str* issuer)
+struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_ses* ses, struct zx_ps_AddEntityRequest_s* req)
 {
   struct zx_str* tag;
   struct zx_ps_AddEntityResponse_s* resp = zx_NEW_ps_AddEntityResponse(cf->ctx,0);
   struct zxid_invite* inv;
   struct zxid_psobj* obj;
   char uid[ZXID_MAX_USER];
-  zxid_nid* nameid;
   D_INDENT("ps_inv: ");
 
   if (!req || !req->Object) {
@@ -532,7 +532,7 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
     return resp;
   }
 
-  if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, a7n, &resp->Status, &nameid)) {
+  if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, ses->tgtnameid, &resp->Status)) {
     D_DEDENT("ps_inv: ");
     return resp;
   }
@@ -545,11 +545,11 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
   inv->expires = time(0) + 86400 * 30;  /* *** make configurable (about a month) */
   inv->ps2spredir = ZX_GET_CONTENT(req->PStoSPRedirectURL);
   inv->perms = ZX_ZALLOC(cf->ctx, struct zxid_perm);
-  inv->perms->eid = issuer;
+  inv->perms->eid = ses->issuer;
 
   obj = ZX_ZALLOC(cf->ctx, struct zxid_psobj);
 #if 0
-  obj->psobj = req->Object->ObjectID ? zxid_psobj_dec(cf, issuer, "ZO", req->Object->ObjectID) : zxid_mk_id(cf, "o", 48);  /* What is secure and sufficient space? */
+  obj->psobj = req->Object->ObjectID ? zxid_psobj_dec(cf, ses->issuer, "ZO", req->Object->ObjectID) : zxid_mk_id(cf, "o", 48);  /* What is secure and sufficient space? */
 #else
   if (req->Object->ObjectID) {
     ERR("AddEntityRequest contained ObjectID(%.*s), but AddEntity is about creating new objects and the object IDs are assigned by People Service, not client. Ignoring ObjectID.", ZX_GET_CONTENT_LEN(req->Object->ObjectID), ZX_GET_CONTENT_S(req->Object->ObjectID));
@@ -571,7 +571,7 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
     = zx_new_str_elem(cf->ctx, &resp->gg, zx_ps_SPtoPSRedirectURL_ELEM,
 		      zx_strf(cf->ctx, "%s?o=D&inv=%.*s", cf->url, inv->invid->len, inv->invid->s));
   resp->Object = zx_NEW_ps_Object(cf->ctx, &resp->gg);
-  resp->Object->ObjectID = zx_new_str_elem(cf->ctx, &resp->Object->gg, zx_ps_ObjectID_ELEM, zxid_psobj_enc(cf, issuer,"ZO",obj->psobj));
+  resp->Object->ObjectID = zx_new_str_elem(cf->ctx, &resp->Object->gg, zx_ps_ObjectID_ELEM, zxid_psobj_enc(cf, ses->issuer, "ZO", obj->psobj));
   resp->Object->DisplayName = zx_NEW_ps_DisplayName(cf->ctx, &resp->Object->gg);
   zx_add_content(cf->ctx, &resp->Object->DisplayName->gg, obj->dispname);
   resp->Object->DisplayName->Locale = zx_ref_attr(cf->ctx, &resp->Object->DisplayName->gg, zx_Locale_ATTR, "xx");  /* unknown locale */
@@ -585,7 +585,7 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
   resp->TimeStamp = resp->Object->CreatedDateTime;
   resp->id = zx_ref_len_attr(cf->ctx, &resp->gg, zx_id_ATTR, inv->invid->len, inv->invid->s);  /* *** why is ID requred by schema at all? */
   resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "OK", 0, 0, 0);
-  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "PSINV", 0, "inv=%.*s", inv->invid->len, inv->invid->s);
+  zxlogwsp(cf, ses, "K", "PSINV", 0, "inv=%.*s", inv->invid->len, inv->invid->s);
   D_DEDENT("ps_inv: ");
   return resp;
 }
@@ -593,20 +593,18 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
 /*() Resolve an invitation token to identity */
 
 /* Called by:  zxid_sp_soap_dispatch */
-struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_a7n* a7n, struct zx_ps_ResolveIdentifierRequest_s* req, struct zx_str* issuer)
+struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_ses* ses, struct zx_ps_ResolveIdentifierRequest_s* req)
 {
   struct zx_ps_ResolveIdentifierResponse_s* resp = zx_NEW_ps_ResolveIdentifierResponse(cf->ctx,0);
   struct zx_ps_ResolveInput_s* inp;
   //struct zx_ps_ResolveOutput_s* out;
   int n_resolv = 0;
   char uid[ZXID_MAX_USER];
-  zxid_nid* nameid;
   D_INDENT("ps_resolv: ");
-
+  
   //resp->ID = zxid_mk_id(cf, "DIR", ZXID_ID_BITS);
   
-
-  if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, a7n, &resp->Status, &nameid)) {
+  if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, ses->tgtnameid, &resp->Status)) {
     D_DEDENT("ps_resolv: ");
     return resp;
   }
@@ -617,8 +615,8 @@ struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_
     // ***
   }
 
-  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "PSRESOLVOK", 0, "n=%d", n_resolv);
   resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "OK", 0, 0, 0);
+  zxlogwsp(cf, ses, "K", "PSRESOLVOK", 0, "n=%d", n_resolv);
   D_DEDENT("ps_resolv: ");
   return resp;
 }

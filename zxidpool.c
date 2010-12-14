@@ -57,7 +57,7 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
 	continue;
       }
       at->map_val = zxid_map_val(cf, 0, 0, map, at->name, at->val);
-      if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
+      if (map->dst && *map->dst && map->src && map->src[0] != '*') {
 	name_len = strlen(map->dst);
       } else {
 	name_len = strlen(at->name);
@@ -112,7 +112,7 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
     if (map) {
       if (map->rule == ZXID_MAP_RULE_DEL)
 	continue;
-      if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
+      if (map->dst && *map->dst && map->src && map->src[0] != '*') {
 	name = map->dst;
       } else {
 	name = at->name;
@@ -202,7 +202,7 @@ static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
 	continue;
       }
       at->map_val = zxid_map_val(cf, 0, 0, map, at->name, at->val);
-      if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
+      if (map->dst && *map->dst && map->src && map->src[0] != '*') {
 	name_len = strlen(map->dst);
       } else {
 	name_len = strlen(at->name);
@@ -240,7 +240,7 @@ static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
     if (map) {
       if (map->rule == ZXID_MAP_RULE_DEL)
 	continue;
-      if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
+      if (map->dst && *map->dst && map->src && map->src[0] != '*') {
 	name = map->dst;
       } else {
 	name = at->name;
@@ -339,7 +339,7 @@ static struct zx_str* zxid_pool_to_qs(zxid_conf* cf, struct zxid_attr* pool)
 	continue;
       }
       at->map_val = zxid_map_val(cf, 0, 0, map, at->name, at->val);
-      if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
+      if (map->dst && *map->dst && map->src && map->src[0] != '*') {
 	name_len = strlen(map->dst);
       } else {
 	name_len = strlen(at->name);
@@ -373,7 +373,7 @@ static struct zx_str* zxid_pool_to_qs(zxid_conf* cf, struct zxid_attr* pool)
     if (map) {
       if (map->rule == ZXID_MAP_RULE_DEL)
 	continue;
-      if (map->dst && map->src && map->src[0] != '*') {
+      if (map->dst && *map->dst && map->src && map->src[0] != '*') {
 	name = map->dst;
       } else {
 	name = at->name;
@@ -462,7 +462,7 @@ static int zxid_add_at_values(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribu
     return 0;
   }
   
-  if (map && map->dst && map->src && map->src[0] != '*') {
+  if (map && map->dst && *map->dst && map->src && map->src[0] != '*') {
     ses->at = zxid_new_at(cf, ses->at, strlen(map->dst), map->dst, 0, 0, "mapped");
   } else {
     ses->at = zxid_new_at(cf, ses->at, strlen(name), name, 0, 0, "as is");
@@ -529,7 +529,7 @@ void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx
     if (map && map->rule == ZXID_MAP_RULE_DEL) {
       D("attribute(%s) filtered out by del rule in INMAP", at_name);
     } else {
-      if (map && map->dst && map->src && map->src[0] != '*') {
+      if (map && map->dst && *map->dst && map->src && map->src[0] != '*') {
 	ses->at = zxid_new_at(cf, ses->at, strlen(map->dst), map->dst, val->len, val->s, "mapd2");
       } else {
 	ses->at = zxid_new_at(cf, ses->at, strlen(at_name), at_name, val->len, val->s, "as is2");
@@ -728,13 +728,13 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   zxid_add_attr_to_ses(cf, ses, "sigres",     zx_strf(cf->ctx, "%x", ses->sigres));
   zxid_add_attr_to_ses(cf, ses, "ssores",     zx_strf(cf->ctx, "%x", ses->ssores));
   if (ses->sid && *ses->sid) {
-    zxid_add_attr_to_ses(cf, ses, "sesid",      zx_dup_str(cf->ctx, STRNULLCHK(ses->sid)));
-    zxid_add_attr_to_ses(cf, ses, "sespath",    zx_strf(cf->ctx, "%s" ZXID_SES_DIR "%s", cf->path, STRNULLCHK(ses->sid)));
+    zxid_add_attr_to_ses(cf, ses, "sesid",    zx_dup_str(cf->ctx, STRNULLCHK(ses->sid)));
+    zxid_add_attr_to_ses(cf, ses, "sespath",  zx_strf(cf->ctx, "%s" ZXID_SES_DIR "%s", cf->path, STRNULLCHK(ses->sid)));
   }
   zxid_add_attr_to_ses(cf, ses, "sesix",      zx_dup_str(cf->ctx, STRNULLCHK(ses->sesix)));
   zxid_add_attr_to_ses(cf, ses, "setcookie",  zx_dup_str(cf->ctx, STRNULLCHK(ses->setcookie)));
   zxid_add_attr_to_ses(cf, ses, "cookie",     zx_dup_str(cf->ctx, STRNULLCHK(ses->cookie)));
-  zxid_add_attr_to_ses(cf, ses, "msgid",      zx_dup_str(cf->ctx, STRNULLCHK(ses->wsp_msgid)));
+  zxid_add_attr_to_ses(cf, ses, "msgid",      ses->wsp_msgid);
 
   zxid_add_attr_to_ses(cf, ses, "rs",         zx_dup_str(cf->ctx, STRNULLCHK(ses->rs)));
   src = dst = ses->at->val;

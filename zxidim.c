@@ -36,15 +36,13 @@
  * See also zxid_idp_sso() for similar code. */
 
 /* Called by:  a7n_test, zxid_sp_soap_dispatch */
-struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_sp_AuthnRequest_s* ar, struct zx_str* issuer)
+struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_ses* ses, struct zx_sp_AuthnRequest_s* ar)
 {
+  zxid_a7n* outa7n;
   X509* sign_cert;
   EVP_PKEY* sign_pkey;
   struct zxsig_ref refs;
-  struct timeval srcts = {0,501000};
   zxid_cgi cgi;
-  zxid_ses ses;
-  zxid_nid* nameid;
   char logop[8];
   struct zx_sp_Response_s* resp = zx_NEW_sp_Response(cf->ctx,0);
   struct zx_str* payload;
@@ -60,23 +58,21 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
     return resp;
   }
 
-  if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, a7n, 0, &nameid)) {
+  if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, ses->tgtnameid, 0)) {
     resp->Status = zxid_mk_Status(cf, &resp->gg, "Fail", 0, 0);
     D_DEDENT("ssos: ");
     return resp;
   }
-
+  
   ZERO(&cgi, sizeof(cgi));
-  ZERO(&ses, sizeof(ses));
-  ses.magic = ZXID_SES_MAGIC;
-  ses.an_instant = time(0);  /* This will be later used by AuthnStatement constructor. */
-  ses.an_ctx = SAML_AUTHCTX_PREVSESS;  /* Is there better one to use for token based auth? */
+  ses->an_instant = time(0);  /* This will be later used by AuthnStatement constructor. */
+  ses->an_ctx = SAML_AUTHCTX_PREVSESS;  /* Is there better one to use for token based auth? */
   ss = zxid_mk_id(cf, "OSES", ZXID_ID_BITS);  /* Onetime Master session. Each pairwise SSO should have its own to avoid correlation. The session can not be used for SLO. */
-  ses.sesix = ss->s;
+  ses->sesix = ss->s;
   ZX_FREE(cf->ctx, ss);
-  ses.sid = cgi.sid = ses.sesix;
+  ses->sid = cgi.sid = ses->sesix;
   cgi.uid = uid;
-  ses.uid = cgi.uid;
+  ses->uid = cgi.uid;
   /*zxid_put_ses(cf, ses);*/
   
   sp_meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(ar->Issuer));
@@ -88,18 +84,18 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
   }
   D("sp_eid(%s)", sp_meta->eid);
 
-  a7n = zxid_sso_issue_a7n(cf, &cgi, &ses, &srcts, sp_meta, 0, &nameid, logop, ar);
+  outa7n = zxid_sso_issue_a7n(cf, &cgi, ses, &ses->srcts, sp_meta, 0, 0, logop, ar);
 
   if (cf->sso_sign & ZXID_SSO_SIGN_A7N) {
     ZERO(&refs, sizeof(refs));
-    refs.id = &a7n->ID->g;
-    refs.canon = zx_EASY_ENC_elem(cf->ctx, &a7n->gg);
+    refs.id = &outa7n->ID->g;
+    refs.canon = zx_EASY_ENC_elem(cf->ctx, &outa7n->gg);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert paos")) {
-      a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
-      zx_add_kid_after_sa_Issuer(&a7n->gg, &a7n->Signature->gg);
+      outa7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+      zx_add_kid_after_sa_Issuer(&outa7n->gg, &outa7n->Signature->gg);
     }
   }
-  resp = zxid_mk_saml_resp(cf, a7n, cf->post_a7n_enc?sp_meta:0);
+  resp = zxid_mk_saml_resp(cf, outa7n, cf->post_a7n_enc?sp_meta:0);
   payload = zxid_anoint_sso_resp(cf, cf->sso_sign & ZXID_SSO_SIGN_RESP, resp, ar);
   if (!payload) {
     resp->Status = zxid_mk_Status(cf, &resp->gg, "Fail", 0, 0);
@@ -108,7 +104,7 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
   }
   zx_str_free(cf->ctx, payload);
 
-  zxlog(cf, 0, &srcts, 0, ZX_GET_CONTENT(ar->Issuer), 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, ses.uid, "SSOS");
+  zxlogwsp(cf, ses, "K", logop, uid, "SSOS");
 
   /* *** Generate SOAP envelope with ECP header as required by ECP PAOS */
   
@@ -204,7 +200,7 @@ zxid_tok* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_e
 /*() ID-WSF Identity Mapping Service: Issue token in response to receiving a token */
 
 /* Called by:  zxid_sp_soap_dispatch */
-struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_im_IdentityMappingRequest_s* req, struct zx_str* issuer)
+struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_ses* ses, struct zx_im_IdentityMappingRequest_s* req)
 {
   struct zx_im_IdentityMappingResponse_s* resp = zx_NEW_im_IdentityMappingResponse(cf->ctx,0);
   struct zx_im_MappingInput_s* mapinp;
@@ -218,15 +214,11 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
   zxid_nid* nameid;
   char* logop;
   int  n_mapped = 0;
-  char uid[ZXID_MAX_BUF];
-  char sp_name_buf[1024];
   zxid_entity* sp_meta;
-  zxid_ses sess;
+  char sp_name_buf[1024];
+  char uid[ZXID_MAX_BUF];
   D_INDENT("imreq: ");
-  ZERO(&sess, sizeof(zxid_ses));
-  sess.uid = uid;
-  sess.sid = zx_str_to_c(cf->ctx, &a7n->ID->g);
-  sess.a7n = a7n;
+  ses->uid = uid;
 
   if (!req || !req->MappingInput) {
     ERR("No IdentityMappingRequest/MappingInput found (WSC error) %p", req);
@@ -242,18 +234,23 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
     if (tok = mapinp->Token) {
       if (tok->Assertion || tok->EncryptedAssertion) {
 	ina7n = zxid_dec_a7n(cf, tok->Assertion, tok->EncryptedAssertion);
-      } else if (tok->ref && !ZX_STRCMP(&tok->ref->g, &a7n->ID->g)) {
+	if (!ina7n || !ina7n->Subject) {
+	  ERR("Missing or malformed MappingInput/Token/Assertion %p", ina7n);
+	  continue;
+	}
+	ses->tgtnameid = zxid_decrypt_nameid(cf, ina7n->Subject->NameID, ina7n->Subject->EncryptedID);
+      } else if (tok->ref && !ZX_STRCMP(&tok->ref->g, &ses->a7n->ID->g)) {
 	D("Token->ref(%.*s) matches invocation security token.", tok->ref->g.len, tok->ref->g.s);
 	/* N.B. This is a common optimization as it often happens that invoker (delegatee) needs to
 	 * IDMap his own token, while delegator's token can usually be found using discovery. */
-	ina7n = a7n;
+	ina7n = ses->a7n;
       } else {
-	ERR("*** Missing IdentityMappingRequest/MappingInput/Token/(Encrypted)Assertion (WSC error). Using invocation identity instead. %p", a7n);
-	ina7n = a7n;
+	ERR("*** Missing IdentityMappingRequest/MappingInput/Token/(Encrypted)Assertion (WSC error). Using invocation identity instead. %p", tok);
+	ina7n = ses->a7n;
       }
     } else {
-      ERR("*** Missing IdentityMappingRequest/MappingInput/Token (WSC error). Using invocation identity instead. %p", a7n);
-      ina7n = a7n;
+      ERR("*** Missing IdentityMappingRequest/MappingInput/Token (WSC error). Using invocation identity instead. %d", 0);
+      ina7n = ses->a7n;
     }
     
     if (!mapinp->TokenPolicy) {
@@ -263,7 +260,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
       return resp;
     }
 
-    if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, ina7n, &resp->Status, 0)) {
+    if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, ses->tgtnameid, &resp->Status)) {
       D_DEDENT("imreq: ");
       return resp;
     }
@@ -290,18 +287,18 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
 
     /* Check for federation */
 
-    nameid = zxid_check_fed(cf, issue_to, sess.uid, allow_create, 0, 0, 0, sp_name_buf);
+    nameid = zxid_check_fed(cf, issue_to, uid, allow_create, 0, 0, 0, sp_name_buf);
     if (nameid) {
       if (nid_fmt && !strcmp(nid_fmt, "trnsnt")) {
 	D("Despite old fed, using transient due to nid_fmt(%s)", STRNULLCHKD(nid_fmt));
-	zxid_mk_transient_nid(cf, nameid, sp_name_buf, sess.uid);
+	zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
 	logop = "ITIM";
       } else
 	logop = "IFIM";
     } else {
       D("No nameid (because of no federation), using transient %d", 0);
       nameid = zx_NEW_sa_NameID(cf->ctx,0);
-      zxid_mk_transient_nid(cf, nameid, sp_name_buf, sess.uid);
+      zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
       logop = "ITIM";
     }
 
@@ -315,9 +312,9 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
       return resp;
     }
     
-    outa7n = zxid_mk_usr_a7n_to_sp(cf, &sess, nameid, sp_meta, sp_name_buf, 1);
+    outa7n = zxid_mk_usr_a7n_to_sp(cf, ses, nameid, sp_meta, sp_name_buf, 1);
     
-    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, outa7n, issue_to, "IMA7N", sess.uid)) {
+    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, outa7n, issue_to, "IMA7N", uid)) {
       resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "Fail", 0, 0, 0);
       D_DEDENT("imreq: ");
       return resp;
@@ -337,11 +334,11 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
     }
 
     ++n_mapped;
-    zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, 0,"n=%d", n_mapped);
+    zxlogwsp(cf, ses, "K", logop, 0,"n=%d", n_mapped);
   }
   
   D("TOTAL Identity Mappings issued %d", n_mapped);
-  zxlog(cf, 0, 0, 0, 0, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "IMOK", 0, "n=%d", n_mapped);
+  zxlogwsp(cf, ses, "K", "IMOK", 0, "n=%d", n_mapped);
   resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "OK", 0, 0, 0);
   D_DEDENT("imreq: ");
   return resp;
