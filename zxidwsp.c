@@ -255,7 +255,7 @@ struct zx_str* zxid_wsp_decoratef(zxid_conf* cf, zxid_ses* ses, const char* az_c
  * returns 0 on failure and 1 on success.
  * See zxid_sp_sso_finalize() for similar code.  *** consider factoring out commonality */
 
-/* Called by:  zxid_wsp_validate x2 */
+/* Called by:  zxid_wsp_validate_env x2 */
 static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, const char* lk, struct timeval* srcts)
 {
   struct zx_str* logpath;
@@ -385,7 +385,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
  *
  * See also: zxid_wsc_validate_resp_env() */
 
-/* Called by:  main, zxidwspcgi_main */
+/* Called by:  zxid_sp_soap_dispatch, zxid_wsp_validate */
 char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env)
 {
   int n_refs = 0;

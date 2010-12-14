@@ -32,7 +32,7 @@
 
 /*() Extract an assertion, decrypting EncryptedAssertion if needed. */
 
-/* Called by:  sig_validate x2, zxid_imreq, zxid_sp_dig_sso_a7n, zxid_sp_soap_dispatch, zxid_wsp_validate x2 */
+/* Called by:  sig_validate x2, zxid_imreq, zxid_sp_dig_sso_a7n, zxid_wsp_validate_env x2 */
 zxid_a7n* zxid_dec_a7n(zxid_conf* cf, zxid_a7n* a7n, struct zx_sa_EncryptedAssertion_s* enca7n)
 {
   struct zx_str* ss;

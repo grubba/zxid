@@ -300,7 +300,7 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
 /*(i) Render any element in wire order, as often needed in validating canonicalizations.
  * See also: zx_easy_enc_elem_opt() */
 
-/* Called by:  attribute_sort_test, so_enc_dec, zx_easy_enc_elem_opt, zxid_a7n2str, zxid_addmd, zxid_anoint_a7n x2, zxid_anoint_sso_resp, zxid_az_soap x2, zxid_idp_sso, zxid_mk_art_deref, zxid_nid2str, zxid_reg_svc, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_sp_sso_finalize, zxid_ssos_anreq, zxid_token2str, zxid_wsf_validate_a7n, zxsig_sign, zxsig_validate x2 */
+/* Called by:  zx_easy_enc_elem_opt, zx_easy_enc_elem_sig, zxsig_sign, zxsig_validate x2 */
 struct zx_str* zx_EASY_ENC_elem(struct zx_ctx* c, struct zx_elem_s* x)
 {
   int len = zx_LEN_WO_any_elem(c, x);

@@ -89,7 +89,7 @@ static char* zxlog_alloc_zbuf(zxid_conf* cf, int *zlen, char* zbuf, int len, cha
 * logbuf:: The data that should be logged
 */
 
-/* Called by:  test_mode x12 */
+/* Called by:  test_mode x12, zxlog_output x2 */
 void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const char* logbuf)
 {
   EVP_PKEY* log_sign_pkey;
@@ -353,6 +353,7 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
 
 /*() Figure out which log file should receive the message */
 
+/* Called by: */
 static int zxlog_output(zxid_conf* cf, int n, const char* logbuf, const char* res)
 {
   char c_path[ZXID_MAX_BUF];

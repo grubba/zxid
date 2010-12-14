@@ -211,7 +211,7 @@ void zxid_snarf_eprs(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
  * that looks like an EPR and that is strcturally in right place will work.
  * Typical name /var/zxid/ses/SESID/SVCTYPE,SHA1 */
 
-/* Called by:  zxid_sp_anon_finalize, zxid_sp_sso_finalize, zxid_wsc_valid_re_env, zxid_wsp_validate */
+/* Called by:  zxid_sp_anon_finalize, zxid_sp_sso_finalize, zxid_wsc_valid_re_env, zxid_wsp_validate_env */
 void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
 {
   struct zx_sa_AttributeStatement_s* as;

@@ -228,7 +228,7 @@ int zxid_get_ses(zxid_conf* cf, zxid_ses* ses, const char* sid)
  * ses:: Pointer to previously allocated and populated session object
  * return:: 1 upon success, 0 on failure. */
 
-/* Called by:  zxid_as_call_ses, zxid_pw_authn, zxid_sp_anon_finalize, zxid_sp_sso_finalize, zxid_wsp_validate */
+/* Called by:  zxid_as_call_ses, zxid_pw_authn, zxid_sp_anon_finalize, zxid_sp_sso_finalize, zxid_wsp_validate_env */
 int zxid_put_ses(zxid_conf* cf, zxid_ses* ses)
 {
   char dir[ZXID_MAX_BUF];

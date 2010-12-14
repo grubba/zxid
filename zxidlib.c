@@ -61,7 +61,7 @@ char* zxid_version_str()
  * config option ENC_TAIL_OPT. Often used to generate slightly optimized
  * version for wire transfer. Not suitable for generating canonicalization. */
 
-/* Called by:  main x3, zxid_anoint_sso_resp, zxid_cache_epr, zxid_call_epr, zxid_idp_sso, zxid_lecp_check, zxid_map_val_ss, zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni, zxid_mni_do_ss, zxid_pep_az_base_soap_pepmap x3, zxid_pep_az_soap_pepmap x3, zxid_ses_to_pool x2, zxid_slo_resp_redir, zxid_snarf_eprs_from_ses, zxid_soap_call_raw, zxid_soap_cgi_resp_body, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_slo_redir, zxid_start_sso_url, zxid_write_ent_to_cache, zxid_wsc_prepare_call, zxid_wsp_decorate */
+/* Called by:  main x3, so_enc_dec, zxid_addmd, zxid_anoint_sso_resp, zxid_cache_epr, zxid_call_epr, zxid_idp_sso, zxid_lecp_check, zxid_map_val_ss, zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni, zxid_mni_do_ss, zxid_pep_az_base_soap_pepmap x3, zxid_pep_az_soap_pepmap x3, zxid_reg_svc, zxid_ses_to_pool x2, zxid_slo_resp_redir, zxid_snarf_eprs_from_ses, zxid_soap_call_raw, zxid_soap_cgi_resp_body, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_slo_redir, zxid_start_sso_url, zxid_write_ent_to_cache, zxid_wsc_prepare_call, zxid_wsp_decorate */
 struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x)
 {
   struct zx_str* ss;
@@ -71,6 +71,7 @@ struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x)
   return ss;
 }
 
+/* Called by:  attribute_sort_test, zxid_a7n2str, zxid_anoint_a7n x2, zxid_anoint_sso_resp, zxid_az_soap x2, zxid_idp_sso, zxid_mk_art_deref, zxid_nid2str, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_sp_sso_finalize, zxid_ssos_anreq, zxid_token2str, zxid_wsf_validate_a7n */
 struct zx_str* zx_easy_enc_elem_sig(zxid_conf* cf, struct zx_elem_s* x)
 {
   struct zx_str* ss;
@@ -566,7 +567,7 @@ int zxid_saml_ok(zxid_conf* cf, zxid_cgi* cgi, struct zx_sp_Status_s* st, char* 
  *     structure is decrypted and its contents returned as the Name ID
  * return:: XML data structure corresponding to (possibly decrypted) Name ID */
 
-/* Called by:  test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, zxid_idp_map_nid2uid, zxid_idp_slo_do, zxid_mni_do, zxid_nidmap_do, zxid_sp_slo_do, zxid_sp_sso_finalize, zxid_wsf_validate_a7n */
+/* Called by:  test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, zxid_idp_slo_do, zxid_imreq, zxid_mni_do, zxid_nidmap_do, zxid_sp_slo_do, zxid_sp_sso_finalize, zxid_wsf_validate_a7n */
 zxid_nid* zxid_decrypt_nameid(zxid_conf* cf, zxid_nid* nid, struct zx_sa_EncryptedID_s* encid)
 {
   struct zx_str* ss;

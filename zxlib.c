@@ -105,7 +105,7 @@ void* zx_free(struct zx_ctx* c, void* p)
 
 /*() Convert zx_str to C string. The ZX context will provide the memory. */
 
-/* Called by:  zxid_add_a7n_at_to_pool x2, zxid_get_meta_ss, zxid_get_ses_sso_a7n, zxid_get_tas3_fault_actor, zxid_get_tas3_fault_comment, zxid_get_tas3_fault_ref, zxid_get_tas3_fault_sc1, zxid_get_tas3_fault_sc2, zxid_get_tas3_status_comment, zxid_get_tas3_status_ctlpt, zxid_get_tas3_status_ref, zxid_get_tas3_status_sc1, zxid_get_tas3_status_sc2, zxid_idp_sso, zxid_map_val_ss, zxid_mk_at_cert x3, zxid_mk_ent x2, zxid_saml2_post_enc, zxid_simple_idp_show_an, zxid_sp_sso_finalize x3, zxid_wsc_call, zxid_wsc_valid_re_env x2, zxid_wsf_validate_a7n x3, zxid_wsp_validate x3 */
+/* Called by:  zxid_add_a7n_at_to_pool x2, zxid_get_meta_ss, zxid_get_ses_sso_a7n, zxid_get_tas3_fault_actor, zxid_get_tas3_fault_comment, zxid_get_tas3_fault_ref, zxid_get_tas3_fault_sc1, zxid_get_tas3_fault_sc2, zxid_get_tas3_status_comment, zxid_get_tas3_status_ctlpt, zxid_get_tas3_status_ref, zxid_get_tas3_status_sc1, zxid_get_tas3_status_sc2, zxid_idp_sso, zxid_map_val_ss, zxid_mk_at_cert x3, zxid_mk_ent x2, zxid_saml2_post_enc, zxid_simple_idp_show_an, zxid_sp_sso_finalize x3, zxid_wsc_call, zxid_wsc_valid_re_env x2, zxid_wsf_validate_a7n x3, zxid_wsp_validate_env x2 */
 char* zx_str_to_c(struct zx_ctx* c, struct zx_str* ss)
 {
   char* p = ZX_ALLOC(c, ss->len+1);
@@ -152,7 +152,7 @@ struct zx_str* zx_ref_len_str(struct zx_ctx* c, int len, const char* s)
 
 /*() Construct zx_str from C string, which will be referenced, not copied. */
 
-/* Called by:  a7n_test x3, covimp_test, test_ibm_cert_problem_enc_dec, x509_test x2, zxid_az_soap x8, zxid_ins_xacml_az_cd1_stmt, zxid_ins_xacml_az_stmt, zxid_map_val_ss, zxid_mk_di_req_svc, zxid_org_desc x5, zxid_simple_ses_active_cf x2, zxid_wsf_decor x2 */
+/* Called by:  a7n_test x3, covimp_test, test_ibm_cert_problem_enc_dec, x509_test x2, zxid_az_soap x8, zxid_ins_xacml_az_cd1_stmt, zxid_ins_xacml_az_stmt, zxid_map_val_ss, zxid_mk_di_req_svc, zxid_org_desc x5, zxid_simple_ses_active_cf x2, zxid_wsf_decor */
 struct zx_str* zx_ref_str(struct zx_ctx* c, const char* s)
 {
   if (!s)
@@ -184,7 +184,7 @@ struct zx_str* zx_dup_len_str(struct zx_ctx* c, int len, const char* s)
 
 /*() Construct zx_str by duplication of C string. */
 
-/* Called by:  zxid_add_attr_to_ses, zxid_add_qs_to_ses, zxid_anoint_a7n x2, zxid_anoint_sso_resp x3, zxid_attach_sol1_usage_directive, zxid_az_soap x4, zxid_call_epr, zxid_fed_mgmt_cf, zxid_get_at x2, zxid_idp_dispatch x8, zxid_idp_list_cf_cgi x2, zxid_idp_select_zxstr_cf_cgi, zxid_idp_sso x13, zxid_map_identity_token, zxid_map_val, zxid_map_val_ss x3, zxid_mk_an_stmt, zxid_mk_sa_attribute, zxid_mk_subj, zxid_mk_usr_a7n_to_sp, zxid_new_epr, zxid_parse_invite x6, zxid_parse_mni, zxid_parse_psobj x7, zxid_pepmap_extract x7, zxid_saml2_redir, zxid_saml2_resp_redir, zxid_ses_to_pool x10, zxid_show_conf x3, zxid_show_cstr_list, zxid_show_map, zxid_show_need x2, zxid_simple_ab_pep x3, zxid_slo_resp_redir, zxid_sp_dispatch x15, zxid_sp_mni_redir x3, zxid_sp_slo_redir x3, zxid_start_sso_location, zxid_wsc_prep, zxid_wsc_prepare_call, zxid_wsc_valid_re_env, zxid_wsp_decorate, zxid_wsp_validate */
+/* Called by:  zxid_add_attr_to_ses, zxid_add_qs_to_ses, zxid_anoint_a7n x2, zxid_anoint_sso_resp x3, zxid_attach_sol1_usage_directive, zxid_az_soap x4, zxid_call_epr, zxid_fed_mgmt_cf, zxid_get_at x2, zxid_idp_dispatch x8, zxid_idp_list_cf_cgi x2, zxid_idp_select_zxstr_cf_cgi, zxid_idp_sso x13, zxid_map_identity_token, zxid_map_val, zxid_map_val_ss x3, zxid_mk_an_stmt, zxid_mk_sa_attribute, zxid_mk_subj, zxid_mk_usr_a7n_to_sp, zxid_new_epr, zxid_parse_invite x6, zxid_parse_mni, zxid_parse_psobj x7, zxid_pepmap_extract x7, zxid_saml2_redir, zxid_saml2_resp_redir, zxid_ses_to_pool x9, zxid_show_conf x3, zxid_show_cstr_list, zxid_show_map, zxid_show_need x2, zxid_simple_ab_pep x3, zxid_slo_resp_redir, zxid_sp_dispatch x15, zxid_sp_mni_redir x3, zxid_sp_slo_redir x3, zxid_start_sso_location, zxid_wsc_prep, zxid_wsc_prepare_call, zxid_wsc_valid_re_env, zxid_wsp_decorate, zxid_wsp_validate_env */
 struct zx_str* zx_dup_str(struct zx_ctx* c, const char* s)
 {
   return zx_dup_len_str(c, strlen(s), s);

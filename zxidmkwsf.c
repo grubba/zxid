@@ -38,7 +38,7 @@
  *
  * See also: zxid_mk_fault() */
 
-/* Called by:  zxid_di_query x2, zxid_idp_as_do x3, zxid_idp_map_nid2uid x2, zxid_imreq x6, zxid_mk_fault, zxid_mk_lu_Status, zxid_mk_tas3_status, zxid_ps_addent_invite x2, zxid_ps_resolv_id */
+/* Called by:  zxid_di_query x2, zxid_idp_as_do x3, zxid_idp_map_nid2uid, zxid_imreq x6, zxid_mk_fault, zxid_mk_lu_Status, zxid_mk_tas3_status, zxid_ps_addent_invite x2, zxid_ps_resolv_id */
 struct zx_lu_Status_s* zxid_mk_lu_Status(zxid_conf* cf, struct zx_elem_s* father, const char* sc1, const char* sc2, const char* msg, const char* ref)
 {
   struct zx_lu_Status_s* st = zx_NEW_lu_Status(cf->ctx,father);
@@ -85,7 +85,7 @@ zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, struct zx_elem_s* father, c
  * See also: zxid_mk_lu_Status()
  */
 
-/* Called by:  zxid_call_epr x2, zxid_timestamp_chk x2, zxid_wsc_prepare_call x2, zxid_wsc_valid_re_env x13, zxid_wsf_validate_a7n x6, zxid_wsp_decorate x2, zxid_wsp_validate x14 */
+/* Called by:  zxid_call_epr x2, zxid_timestamp_chk x2, zxid_wsc_prepare_call x2, zxid_wsc_valid_re_env x13, zxid_wsf_validate_a7n x6, zxid_wsp_decorate x2, zxid_wsp_validate x2, zxid_wsp_validate_env x12 */
 zxid_fault* zxid_mk_fault(zxid_conf* cf, struct zx_elem_s* father, const char* fa, const char* fc, const char* fs, const char* sc1, const char* sc2, const char* msg, const char* ref)
 {
   zxid_fault* flt = zx_NEW_e_Fault(cf->ctx, father);
@@ -105,7 +105,7 @@ zxid_fault* zxid_mk_fault(zxid_conf* cf, struct zx_elem_s* father, const char* f
  * you wish to return application response in situation where fault has been
  * detected, you can use this function to reset the current fault to null. */
 
-/* Called by:  zxid_call_epr x2, zxid_timestamp_chk x2, zxid_wsc_prepare_call x2, zxid_wsc_valid_re_env x14, zxid_wsf_validate_a7n x6, zxid_wsp_decorate x2, zxid_wsp_validate x15 */
+/* Called by:  zxid_call_epr x2, zxid_timestamp_chk x2, zxid_wsc_prepare_call x2, zxid_wsc_valid_re_env x14, zxid_wsf_validate_a7n x6, zxid_wsp_decorate x2, zxid_wsp_validate x2, zxid_wsp_validate_env x13 */
 void zxid_set_fault(zxid_conf* cf, zxid_ses* ses, zxid_fault* flt) {
   if (ses->curflt) /* Free the previous fault */
     zx_free_elem(cf->ctx, &ses->curflt->gg, 1);
@@ -169,7 +169,7 @@ zxid_tas3_status* zxid_get_fault_status(zxid_conf* cf, zxid_fault* flt) {
  * the zxid_wsp_decorate() function will generate a TAS3 status
  * header. */
 
-/* Called by:  zxid_wsc_valid_re_env, zxid_wsp_validate */
+/* Called by:  zxid_wsc_valid_re_env, zxid_wsp_validate_env */
 void zxid_set_tas3_status(zxid_conf* cf, zxid_ses* ses, zxid_tas3_status* status) {
   D("curstatus=%p status=%p", ses->curstatus, status);
   if (ses->curstatus) /* Free the previous fault */

@@ -215,7 +215,7 @@ static void zxsig_canon_crnl_inplace(struct zx_str* ss)
  *     referenced by the signature
  * return:: ZXSIG value. 0 (ZXSIG_OK) means success. Any other value is some sort of failure */
 
-/* Called by:  main x5, sig_validate x2, wsse_sec_validate, zxid_chk_sig, zxid_sp_sso_finalize, zxid_wsc_valid_re_env, zxid_wsf_validate_a7n, zxid_wsp_validate */
+/* Called by:  main x5, sig_validate x2, wsse_sec_validate, zxid_chk_sig, zxid_sp_sso_finalize, zxid_wsc_valid_re_env, zxid_wsf_validate_a7n, zxid_wsp_validate_env */
 int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, int n, struct zxsig_ref* sref)
 {
   EVP_PKEY* evp_pkey;
