@@ -1,13 +1,12 @@
 Content-type: text/plain
 
-Original and WO are different lengths 294 != 538
-Original and WO differ.
-Re-encoded result WO (len=538):
+Original and WO are different lengths 294 != 293
+Re-encoded result WO (len=293):
 <ws:FindPatients xmlns:ws="http://ws.impl.services.repository.pils.custodix.com/">
-	<FirstName xmlns="urn:zxid:unknown-ns-prefix:zx_el_lookup:">bart</FirstName>
-	<LastName xmlns="urn:zxid:unknown-ns-prefix:zx_el_lookup:">simpson</LastName>
-	<Gender xmlns="urn:zxid:unknown-ns-prefix:zx_el_lookup:">MALE</Gender>
-	<BirthDateLowerBound xmlns="urn:zxid:unknown-ns-prefix:zx_el_lookup:">1995-02-03</BirthDateLowerBound>
-	<BirthDateUpperBound xmlns="urn:zxid:unknown-ns-prefix:zx_el_lookup:">2005-02-03</BirthDateUpperBound>
+	<FirstName>bart</FirstName>
+	<LastName>simpson</LastName>
+	<Gender>MALE</Gender>
+	<BirthDateLowerBound>1995-02-03</BirthDateLowerBound>
+	<BirthDateUpperBound>2005-02-03</BirthDateUpperBound>
 </ws:FindPatients>
 

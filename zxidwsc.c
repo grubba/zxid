@@ -577,10 +577,6 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
   /* *** add usage directives */
 
   env = zxid_wsc_call(cf, ses, epr, env, &ret_enve);
-  if (!env) {
-    ERR("Web services call failed %d", 0);
-    /* Let validate report the error so that tas3 status gets set correctly */
-  }
   if (zxid_wsc_valid_re_env(cf, ses, az_cred, env, ret_enve) != 1) {
     D_DEDENT("call: ");
     return 0;

@@ -1025,28 +1025,28 @@ CMD('SIG32b', 'sig vry enc-nid-enc-attr', "./zxdecode -v -s -s <t/enc-nid-enc-at
 #CMD('SIG34', 'sig vry symsp-ibmidp-slo',     "./zxdecode -v -s -s <t/symsp-ibmidp-slo.xml");
 #CMD('SIG35', 'sig vry symsp-symidp-slo',     "./zxdecode -v -s -s <t/symsp-symidp-slo-soap.xml");
 #CMD('SIG36', 'sig vry zxidp-ki-old',     "./zxdecode -v -s -s <t/zxidp-ki-a7n-20100906.xml"); # ***fail canon
-CMD('SIG37', 'sig vry', "./zxdecode -v -s -s <t/enve-sigval-err.xml");
+CMD('SIG37', 'sig vry', "./zxdecode -v -s -s <t/enve-sigval-err.xml", 2560);
 
-ED('XML1',  'Decode-Encode SO and WO: ns-bug', 1000, 't/default-ns-bug.xml');
-ED('XML2',  'Decode-Encode SO and WO: azrq1',  1000, 't/azrq1.xml');
-ED('XML3',  'Decode-Encode SO and WO: azrs1',  1000, 't/azrs1.xml');
-ED('XML4',  '* Decode-Encode RIS malformed 1', 1,    't/risaris-bad.xml');  # Order of unknown elements gets inverted
-ED('XML5',  'Decode-Encode SO and WO: ana7n1', 1000, 't/ana7n1.xml');
-ED('XML6',  'Decode-Encode SO and WO: anrq1',  1000, 't/anrq1.xml');
-ED('XML7',  'Decode-Encode SO and WO: anrs1',  1000, 't/anrs1.xml');
-ED('XML8',  'Decode-Encode SO and WO: dirq1',  1000, 't/dirq1.xml');
-ED('XML9',  'Decode-Encode SO and WO: dirs1',  1000, 't/dirs1.xml');
-ED('XML10', 'Decode-Encode SO and WO: dirq2',  1000, 't/dirq2.xml');
-ED('XML11', 'Decode-Encode SO and WO: dia7n1', 1000, 't/dia7n1.xml');
-ED('XML12', 'Decode-Encode SO and WO: epr1',   1000, 't/epr1.xml');
-ED('XML13', 'Decode-Encode SO and WO: wsrq1',  1000, 't/wsrq1.xml');
-ED('XML14', 'Decode-Encode SO and WO: wsrs1',  1000, 't/wsrs1.xml');
-ED('XML15', 'Decode-Encode SO and WO: wsrq2',  1000, 't/wsrq2.xml');
-ED('XML16', 'Decode-Encode SO and WO: wsrs2',  1000, 't/wsrs2.xml');
+ED('XML1',  'Decode-Encode SO and WO: ns-bug',  1000, 't/default-ns-bug.xml');
+ED('XML2',  'Decode-Encode SO and WO: azrq1',   1000, 't/azrq1.xml');
+ED('XML3',  'Decode-Encode SO and WO: azrs1',   1000, 't/azrs1.xml');
+ED('XML4',  '* Decode-Encode RIS malformed 1',  1,    't/risaris-bad.xml');  # Order of unknown elements gets inverted
+ED('XML5',  'Decode-Encode SO and WO: ana7n1',  1000, 't/ana7n1.xml');
+ED('XML6',  'Decode-Encode SO and WO: anrq1',   1000, 't/anrq1.xml');
+ED('XML7',  'Decode-Encode SO and WO: anrs1',   1000, 't/anrs1.xml');
+ED('XML8',  'Decode-Encode SO and WO: dirq1',   1000, 't/dirq1.xml');
+ED('XML9',  'Decode-Encode SO and WO: dirs1',   1000, 't/dirs1.xml');
+ED('XML10', 'Decode-Encode SO and WO: dirq2',   1000, 't/dirq2.xml');
+ED('XML11', 'Decode-Encode SO and WO: dia7n1',  1000, 't/dia7n1.xml');
+ED('XML12', 'Decode-Encode SO and WO: epr1',    1000, 't/epr1.xml');
+ED('XML13', 'Decode-Encode SO and WO: wsrq1',   1000, 't/wsrq1.xml');
+ED('XML14', 'Decode-Encode SO and WO: wsrs1',   1000, 't/wsrs1.xml');
+ED('XML15', 'Decode-Encode SO and WO: wsrq2',   1000, 't/wsrq2.xml');
+ED('XML16', 'Decode-Encode SO and WO: wsrs2',   1000, 't/wsrs2.xml');
 ED('XML17', 'Decode-Encode SO and WO: as-req',  1000, 't/as-req.xml');
 ED('XML18', 'Decode-Encode SO and WO: as-resp', 1000, 't/as-resp.xml');
 ED('XML19', 'Decode-Encode SO and WO: authnreq',1000, 't/authnreq.xml');
-ED('XML20', 'Decode-Encode SO and WO: sun-md', 10, 't/sun-md.xml');
+ED('XML20', 'Decode-Encode SO and WO: sun-md',  10, 't/sun-md.xml');
 ED('XML21', 'Decode-Encode SO and WO: provisioning-req',  10, 't/pmdreg-req.xml');
 ED('XML22', 'Decode-Encode SO and WO: provisioning-resp', 10, 't/pmdreg-resp.xml');
 ED('XML23', 'Decode-Encode SO and WO: pds-create-uc1',    10, 't/pds-create-uc1.xml');
