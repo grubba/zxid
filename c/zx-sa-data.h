@@ -142,7 +142,7 @@ void zx_sa_Advice_REV_ff12_Assertion(struct zx_sa_Advice_s* x);
 
 #endif
 /* -------------------------- sa_Assertion -------------------------- */
-/* refby( zx_gl_Credential_s zx_wsse_Security_s zx_cb_Credential_s zx_b_TargetIdentity_s zx_sa11_Advice_s zx_sa_Evidence_s zx_sec_Token_s zx_tas3_Credentials_s zx_idp_AssertionItem_s zx_sa_Advice_s zx_sp_Response_s ) */
+/* refby( zx_gl_Credential_s zx_wsse_Security_s zx_cb_Credential_s zx_b_TargetIdentity_s zx_sa11_Advice_s zx_sa_Evidence_s zx_sec_Token_s zx_sa_AttributeValue_s zx_tas3_Credentials_s zx_idp_AssertionItem_s zx_sa_Advice_s zx_sp_Response_s ) */
 #ifndef zx_sa_Assertion_EXT
 #define zx_sa_Assertion_EXT
 #endif
@@ -412,6 +412,8 @@ struct zx_sa_AttributeValue_s {
   zx_sa_AttributeValue_EXT
   struct zx_di12_ResourceOffering_s* ResourceOffering;	/* {0,-1} nada */
   struct zx_a_EndpointReference_s* EndpointReference;	/* {0,-1} nada */
+  struct zx_sa_Assertion_s* Assertion;	/* {0,-1} nada */
+  struct zx_sa_EncryptedAssertion_s* EncryptedAssertion;	/* {0,-1} nada */
   struct zx_attr_s* type;	/* {0,1} attribute xs:string */
 };
 
@@ -431,29 +433,45 @@ struct zx_attr_s* zx_sa_AttributeValue_GET_type(struct zx_sa_AttributeValue_s* x
 
 struct zx_di12_ResourceOffering_s* zx_sa_AttributeValue_GET_ResourceOffering(struct zx_sa_AttributeValue_s* x, int n);
 struct zx_a_EndpointReference_s* zx_sa_AttributeValue_GET_EndpointReference(struct zx_sa_AttributeValue_s* x, int n);
+struct zx_sa_Assertion_s* zx_sa_AttributeValue_GET_Assertion(struct zx_sa_AttributeValue_s* x, int n);
+struct zx_sa_EncryptedAssertion_s* zx_sa_AttributeValue_GET_EncryptedAssertion(struct zx_sa_AttributeValue_s* x, int n);
 
 int zx_sa_AttributeValue_NUM_ResourceOffering(struct zx_sa_AttributeValue_s* x);
 int zx_sa_AttributeValue_NUM_EndpointReference(struct zx_sa_AttributeValue_s* x);
+int zx_sa_AttributeValue_NUM_Assertion(struct zx_sa_AttributeValue_s* x);
+int zx_sa_AttributeValue_NUM_EncryptedAssertion(struct zx_sa_AttributeValue_s* x);
 
 struct zx_di12_ResourceOffering_s* zx_sa_AttributeValue_POP_ResourceOffering(struct zx_sa_AttributeValue_s* x);
 struct zx_a_EndpointReference_s* zx_sa_AttributeValue_POP_EndpointReference(struct zx_sa_AttributeValue_s* x);
+struct zx_sa_Assertion_s* zx_sa_AttributeValue_POP_Assertion(struct zx_sa_AttributeValue_s* x);
+struct zx_sa_EncryptedAssertion_s* zx_sa_AttributeValue_POP_EncryptedAssertion(struct zx_sa_AttributeValue_s* x);
 
 void zx_sa_AttributeValue_PUSH_ResourceOffering(struct zx_sa_AttributeValue_s* x, struct zx_di12_ResourceOffering_s* y);
 void zx_sa_AttributeValue_PUSH_EndpointReference(struct zx_sa_AttributeValue_s* x, struct zx_a_EndpointReference_s* y);
+void zx_sa_AttributeValue_PUSH_Assertion(struct zx_sa_AttributeValue_s* x, struct zx_sa_Assertion_s* y);
+void zx_sa_AttributeValue_PUSH_EncryptedAssertion(struct zx_sa_AttributeValue_s* x, struct zx_sa_EncryptedAssertion_s* y);
 
 void zx_sa_AttributeValue_PUT_type(struct zx_sa_AttributeValue_s* x, struct zx_attr_s* y);
 
 void zx_sa_AttributeValue_PUT_ResourceOffering(struct zx_sa_AttributeValue_s* x, int n, struct zx_di12_ResourceOffering_s* y);
 void zx_sa_AttributeValue_PUT_EndpointReference(struct zx_sa_AttributeValue_s* x, int n, struct zx_a_EndpointReference_s* y);
+void zx_sa_AttributeValue_PUT_Assertion(struct zx_sa_AttributeValue_s* x, int n, struct zx_sa_Assertion_s* y);
+void zx_sa_AttributeValue_PUT_EncryptedAssertion(struct zx_sa_AttributeValue_s* x, int n, struct zx_sa_EncryptedAssertion_s* y);
 
 void zx_sa_AttributeValue_ADD_ResourceOffering(struct zx_sa_AttributeValue_s* x, int n, struct zx_di12_ResourceOffering_s* z);
 void zx_sa_AttributeValue_ADD_EndpointReference(struct zx_sa_AttributeValue_s* x, int n, struct zx_a_EndpointReference_s* z);
+void zx_sa_AttributeValue_ADD_Assertion(struct zx_sa_AttributeValue_s* x, int n, struct zx_sa_Assertion_s* z);
+void zx_sa_AttributeValue_ADD_EncryptedAssertion(struct zx_sa_AttributeValue_s* x, int n, struct zx_sa_EncryptedAssertion_s* z);
 
 void zx_sa_AttributeValue_DEL_ResourceOffering(struct zx_sa_AttributeValue_s* x, int n);
 void zx_sa_AttributeValue_DEL_EndpointReference(struct zx_sa_AttributeValue_s* x, int n);
+void zx_sa_AttributeValue_DEL_Assertion(struct zx_sa_AttributeValue_s* x, int n);
+void zx_sa_AttributeValue_DEL_EncryptedAssertion(struct zx_sa_AttributeValue_s* x, int n);
 
 void zx_sa_AttributeValue_REV_ResourceOffering(struct zx_sa_AttributeValue_s* x);
 void zx_sa_AttributeValue_REV_EndpointReference(struct zx_sa_AttributeValue_s* x);
+void zx_sa_AttributeValue_REV_Assertion(struct zx_sa_AttributeValue_s* x);
+void zx_sa_AttributeValue_REV_EncryptedAssertion(struct zx_sa_AttributeValue_s* x);
 
 #endif
 /* -------------------------- sa_AudienceRestriction -------------------------- */
@@ -808,7 +826,7 @@ void zx_sa_Conditions_REV_SubjectRestriction(struct zx_sa_Conditions_s* x);
 
 #endif
 /* -------------------------- sa_EncryptedAssertion -------------------------- */
-/* refby( zx_wsse_Security_s zx_b_TargetIdentity_s zx_sa_Evidence_s zx_sec_Token_s zx_tas3_Credentials_s zx_sa_Advice_s zx_sp_Response_s ) */
+/* refby( zx_wsse_Security_s zx_b_TargetIdentity_s zx_sa_Evidence_s zx_sec_Token_s zx_sa_AttributeValue_s zx_tas3_Credentials_s zx_sa_Advice_s zx_sp_Response_s ) */
 #ifndef zx_sa_EncryptedAssertion_EXT
 #define zx_sa_EncryptedAssertion_EXT
 #endif

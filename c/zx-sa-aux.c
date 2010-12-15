@@ -1006,6 +1006,14 @@ void zx_DUP_STRS_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue
        se && se->g.tok == zx_a_EndpointReference_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se);
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    zx_DUP_STRS_sa_Assertion(c, (struct zx_sa_Assertion_s*)se);
+  for (se = &x->EncryptedAssertion->gg;
+       se && se->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    zx_DUP_STRS_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)se);
 
 }
 
@@ -1046,6 +1054,26 @@ struct zx_sa_AttributeValue_s* zx_DEEP_CLONE_sa_AttributeValue(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
+  for (enn = 0, e = &x->Assertion->gg;
+       e && e->g.tok == zx_sa_Assertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+  	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa_Assertion(c,(struct zx_sa_Assertion_s*)e,dup_strs);
+  	  if (!enn)
+  	      x->Assertion = (struct zx_sa_Assertion_s*)en;
+  	  else
+  	      enn->g.n = &en->g;
+  	  enn = en;
+  }
+  for (enn = 0, e = &x->EncryptedAssertion->gg;
+       e && e->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+  	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa_EncryptedAssertion(c,(struct zx_sa_EncryptedAssertion_s*)e,dup_strs);
+  	  if (!enn)
+  	      x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)en;
+  	  else
+  	      enn->g.n = &en->g;
+  	  enn = en;
+  }
 
   return x;
 }
@@ -1080,6 +1108,20 @@ int zx_WALK_SO_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_s
        e && e->g.tok == zx_a_EndpointReference_ELEM;
        e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)e, ctx, callback);
+    if (ret)
+      return ret;
+  }
+  for (e = &x->Assertion->gg;
+       e && e->g.tok == zx_sa_Assertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+    ret = zx_WALK_SO_sa_Assertion(c, (struct zx_sa_Assertion_s*)e, ctx, callback);
+    if (ret)
+      return ret;
+  }
+  for (e = &x->EncryptedAssertion->gg;
+       e && e->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+    ret = zx_WALK_SO_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)e, ctx, callback);
     if (ret)
       return ret;
   }

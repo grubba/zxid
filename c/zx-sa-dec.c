@@ -254,6 +254,14 @@ int zx_DEC_ELEM_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_
     if (!x->EndpointReference)
       x->EndpointReference = (struct zx_a_EndpointReference_s*)el;
     return 1;
+  case zx_sa_Assertion_ELEM:
+    if (!x->Assertion)
+      x->Assertion = (struct zx_sa_Assertion_s*)el;
+    return 1;
+  case zx_sa_EncryptedAssertion_ELEM:
+    if (!x->EncryptedAssertion)
+      x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)el;
+    return 1;
 
   default: return 0;
   }

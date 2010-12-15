@@ -458,11 +458,11 @@ int zxlogwsp(zxid_conf* cf,    /* 1 */
 
   va_start(ap, fmt);
   n = zxlog_fmt(cf, sizeof(logbuf), logbuf,
-		0, &ses->srcts, ses->ipport,
-		ses->issuer, ses->wsp_msgid,
-		&ses->a7n->ID->g,
-		ZX_GET_CONTENT(ses->nameid),
-		&ses->sigres, res,
+		0, ses?&ses->srcts:0, ses?ses->ipport:0,
+		ses?ses->issuer:0, ses?ses->wsp_msgid:0,
+		ses&&ses->a7n?&ses->a7n->ID->g:0,
+		ses?ZX_GET_CONTENT(ses->nameid):0,
+		ses?&ses->sigres:"X", res,
 		op, arg, fmt, ap);
   va_end(ap);
   return zxlog_output(cf, n, logbuf, res);

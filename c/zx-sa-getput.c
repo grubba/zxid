@@ -3298,6 +3298,274 @@ void zx_sa_AttributeValue_DEL_EndpointReference(struct zx_sa_AttributeValue_s* x
 
 #endif
 
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_sa_AttributeValue_NUM_Assertion) */
+
+int zx_sa_AttributeValue_NUM_Assertion(struct zx_sa_AttributeValue_s* x)
+{
+  struct zx_sa_Assertion_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->Assertion; y && y->gg.g.tok == zx_sa_Assertion_ELEM; ++n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_sa_AttributeValue_GET_Assertion) */
+
+struct zx_sa_Assertion_s* zx_sa_AttributeValue_GET_Assertion(struct zx_sa_AttributeValue_s* x, int n)
+{
+  struct zx_sa_Assertion_s* y;
+  if (!x) return 0;
+  for (y = x->Assertion; n>=0 && y && y->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_sa_AttributeValue_POP_Assertion) */
+
+struct zx_sa_Assertion_s* zx_sa_AttributeValue_POP_Assertion(struct zx_sa_AttributeValue_s* x)
+{
+  struct zx_sa_Assertion_s* y;
+  if (!x) return 0;
+  y = x->Assertion;
+  if (y)
+    x->Assertion = (struct zx_sa_Assertion_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_sa_AttributeValue_PUSH_Assertion) */
+
+void zx_sa_AttributeValue_PUSH_Assertion(struct zx_sa_AttributeValue_s* x, struct zx_sa_Assertion_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->Assertion->gg.g;
+  x->Assertion = z;
+}
+
+/* FUNC(zx_sa_AttributeValue_REV_Assertion) */
+
+void zx_sa_AttributeValue_REV_Assertion(struct zx_sa_AttributeValue_s* x)
+{
+  struct zx_sa_Assertion_s* nxt;
+  struct zx_sa_Assertion_s* y;
+  if (!x) return;
+  y = x->Assertion;
+  if (!y) return;
+  x->Assertion = 0;
+  while (y) {
+    nxt = (struct zx_sa_Assertion_s*)y->gg.g.n;
+    y->gg.g.n = &x->Assertion->gg.g;
+    x->Assertion = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_sa_AttributeValue_PUT_Assertion) */
+
+void zx_sa_AttributeValue_PUT_Assertion(struct zx_sa_AttributeValue_s* x, int n, struct zx_sa_Assertion_s* z)
+{
+  struct zx_sa_Assertion_s* y;
+  if (!x || !z) return;
+  y = x->Assertion;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->Assertion = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_sa_AttributeValue_ADD_Assertion) */
+
+void zx_sa_AttributeValue_ADD_Assertion(struct zx_sa_AttributeValue_s* x, int n, struct zx_sa_Assertion_s* z)
+{
+  struct zx_sa_Assertion_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->Assertion->gg.g;
+    x->Assertion = z;
+    return;
+  case -1:
+    y = x->Assertion;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Assertion; n > 1 && y && y->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_sa_AttributeValue_DEL_Assertion) */
+
+void zx_sa_AttributeValue_DEL_Assertion(struct zx_sa_AttributeValue_s* x, int n)
+{
+  struct zx_sa_Assertion_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->Assertion = (struct zx_sa_Assertion_s*)x->Assertion->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_sa_Assertion_s*)x->Assertion;
+    if (!y) return;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Assertion; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_sa_AttributeValue_NUM_EncryptedAssertion) */
+
+int zx_sa_AttributeValue_NUM_EncryptedAssertion(struct zx_sa_AttributeValue_s* x)
+{
+  struct zx_sa_EncryptedAssertion_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->EncryptedAssertion; y && y->gg.g.tok == zx_sa_EncryptedAssertion_ELEM; ++n, y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_sa_AttributeValue_GET_EncryptedAssertion) */
+
+struct zx_sa_EncryptedAssertion_s* zx_sa_AttributeValue_GET_EncryptedAssertion(struct zx_sa_AttributeValue_s* x, int n)
+{
+  struct zx_sa_EncryptedAssertion_s* y;
+  if (!x) return 0;
+  for (y = x->EncryptedAssertion; n>=0 && y && y->gg.g.tok == zx_sa_EncryptedAssertion_ELEM; --n, y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_sa_AttributeValue_POP_EncryptedAssertion) */
+
+struct zx_sa_EncryptedAssertion_s* zx_sa_AttributeValue_POP_EncryptedAssertion(struct zx_sa_AttributeValue_s* x)
+{
+  struct zx_sa_EncryptedAssertion_s* y;
+  if (!x) return 0;
+  y = x->EncryptedAssertion;
+  if (y)
+    x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_sa_AttributeValue_PUSH_EncryptedAssertion) */
+
+void zx_sa_AttributeValue_PUSH_EncryptedAssertion(struct zx_sa_AttributeValue_s* x, struct zx_sa_EncryptedAssertion_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->EncryptedAssertion->gg.g;
+  x->EncryptedAssertion = z;
+}
+
+/* FUNC(zx_sa_AttributeValue_REV_EncryptedAssertion) */
+
+void zx_sa_AttributeValue_REV_EncryptedAssertion(struct zx_sa_AttributeValue_s* x)
+{
+  struct zx_sa_EncryptedAssertion_s* nxt;
+  struct zx_sa_EncryptedAssertion_s* y;
+  if (!x) return;
+  y = x->EncryptedAssertion;
+  if (!y) return;
+  x->EncryptedAssertion = 0;
+  while (y) {
+    nxt = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n;
+    y->gg.g.n = &x->EncryptedAssertion->gg.g;
+    x->EncryptedAssertion = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_sa_AttributeValue_PUT_EncryptedAssertion) */
+
+void zx_sa_AttributeValue_PUT_EncryptedAssertion(struct zx_sa_AttributeValue_s* x, int n, struct zx_sa_EncryptedAssertion_s* z)
+{
+  struct zx_sa_EncryptedAssertion_s* y;
+  if (!x || !z) return;
+  y = x->EncryptedAssertion;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->EncryptedAssertion = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_EncryptedAssertion_ELEM; --n, y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_sa_AttributeValue_ADD_EncryptedAssertion) */
+
+void zx_sa_AttributeValue_ADD_EncryptedAssertion(struct zx_sa_AttributeValue_s* x, int n, struct zx_sa_EncryptedAssertion_s* z)
+{
+  struct zx_sa_EncryptedAssertion_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->EncryptedAssertion->gg.g;
+    x->EncryptedAssertion = z;
+    return;
+  case -1:
+    y = x->EncryptedAssertion;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_EncryptedAssertion_ELEM; y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->EncryptedAssertion; n > 1 && y && y->gg.g.tok == zx_sa_EncryptedAssertion_ELEM; --n, y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_sa_AttributeValue_DEL_EncryptedAssertion) */
+
+void zx_sa_AttributeValue_DEL_EncryptedAssertion(struct zx_sa_AttributeValue_s* x, int n)
+{
+  struct zx_sa_EncryptedAssertion_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)x->EncryptedAssertion->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_sa_EncryptedAssertion_s*)x->EncryptedAssertion;
+    if (!y) return;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_EncryptedAssertion_ELEM; y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->EncryptedAssertion; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_EncryptedAssertion_ELEM; --n, y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
 /* FUNC(zx_sa_AttributeValue_GET_type) */
 struct zx_attr_s* zx_sa_AttributeValue_GET_type(struct zx_sa_AttributeValue_s* x) { return x->type; }
 /* FUNC(zx_sa_AttributeValue_PUT_type) */

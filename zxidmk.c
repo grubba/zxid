@@ -367,14 +367,39 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses, str
 /* Called by:  zxid_add_mapped_attr, zxid_map_val_ss, zxid_mk_sa_attribute */
 struct zx_sa_Attribute_s* zxid_mk_sa_attribute_ss(zxid_conf* cf, struct zx_elem_s* father, const char* name, const char* namfmt, struct zx_str* val)
 {
-  struct zx_sa_Attribute_s* r = zx_NEW_sa_Attribute(cf->ctx, father);
+  struct zx_root_s* r;
+  struct zx_sa_Attribute_s* at = zx_NEW_sa_Attribute(cf->ctx, father);
   if (namfmt)
-    r->NameFormat = zx_ref_attr(cf->ctx, &r->gg, zx_NameFormat_ATTR, namfmt);
-  r->Name = zx_dup_attr(cf->ctx, &r->gg, zx_Name_ATTR, name);
-  r->AttributeValue = zx_NEW_sa_AttributeValue(cf->ctx, &r->gg);
-  if (val)
-    zx_add_content(cf->ctx, &r->AttributeValue->gg, val);
-  return r;
+    at->NameFormat = zx_ref_attr(cf->ctx, &at->gg, zx_NameFormat_ATTR, namfmt);
+  at->Name = zx_dup_attr(cf->ctx, &at->gg, zx_Name_ATTR, name);
+  at->AttributeValue = zx_NEW_sa_AttributeValue(cf->ctx, &at->gg);
+  if (!val)
+    return at;
+
+  if (val->s[0] == '<') {
+    /* Looks like the value may be XML data. We need to pass it as XML data structure for
+     * canonicalization to work right (e.g. value is an A7N that is rendered one
+     * way when canonicalized independently, but in different way when canonicalized
+     * as part of a bigger structure - for example sa namespace may be omitted as it
+     * is already supplied by the parent element). */
+    r = zx_dec_zx_root(cf->ctx, val->len, val->s, "sa at parse");
+    if (r && r->gg.kids) {
+      at->AttributeValue->gg.kids = r->gg.kids;
+      switch (r->gg.kids->g.tok) {
+      case zx_sa_Assertion_ELEM:          at->AttributeValue->Assertion = (void*)r->gg.kids; break;
+      case zx_sa_EncryptedAssertion_ELEM: at->AttributeValue->EncryptedAssertion = (void*)r->gg.kids; break;
+      case zx_di12_ResourceOffering_ELEM: at->AttributeValue->ResourceOffering = (void*)r->gg.kids; break;
+      case zx_a_EndpointReference_ELEM:   at->AttributeValue->EndpointReference = (void*)r->gg.kids; break;
+      }
+      ZX_FREE(cf->ctx, r);
+    } else {
+      /* XML did not parse, may be its just string data, after all. */
+      zx_add_content(cf->ctx, &at->AttributeValue->gg, val);
+    }
+  } else {
+    zx_add_content(cf->ctx, &at->AttributeValue->gg, val);
+  }
+  return at;
 }
 
 /*() Construct SAML SAML Attribute */
@@ -431,14 +456,30 @@ struct zx_xac_Response_s* zxid_mk_xacml_resp(zxid_conf* cf, char* decision)
 /* Called by:  zxid_pepmap_extract x3 */
 struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, struct zx_elem_s* father, struct zx_str* atid, struct zx_str* attype, struct zx_str* atissuer, struct zx_str* atvalue)
 {
+  struct zx_root_s* r;
   struct zx_xac_Attribute_s* at = zx_NEW_xac_Attribute(cf->ctx, father);
   at->AttributeId = zx_ref_len_attr(cf->ctx, &at->gg, zx_AttributeId_ATTR, atid->len, atid->s);
   at->DataType = zx_ref_len_attr(cf->ctx, &at->gg, zx_DataType_ATTR, attype->len, attype->s);
   if (atissuer)
     at->Issuer = zx_ref_len_attr(cf->ctx, &at->gg, zx_Issuer_ATTR, atissuer->len, atissuer->s);
-  //at->AttributeValue = zx_NEW_xac_AttributeValue(cf->ctx, &at->gg);
-  at->AttributeValue = zx_new_str_elem(cf->ctx, &at->gg, zx_xac_AttributeValue_ELEM, atvalue);
-  
+  if (atvalue->s[0] == '<') {
+    /* Looks like the value may be XML data. We need to pass it as XML data structure for
+     * canonicalization to work right (e.g. value is an A7N that is rendered one
+     * way when canonicalized independently, but in different way when canonicalized
+     * as part of a bigger structure - for example sa namespace may be omitted as it
+     * is already supplied by the parent element). */
+    r = zx_dec_zx_root(cf->ctx, atvalue->len, atvalue->s, "xac at parse");
+    if (r && r->gg.kids) {
+      at->AttributeValue = zx_new_elem(cf->ctx, &at->gg, zx_xac_AttributeValue_ELEM);
+      at->AttributeValue->kids = r->gg.kids;
+      ZX_FREE(cf->ctx, r);
+    } else {
+      /* XML did not parse, may be its just string data, after all. */
+      at->AttributeValue = zx_new_str_elem(cf->ctx, &at->gg, zx_xac_AttributeValue_ELEM, atvalue);
+    }
+  } else {
+    at->AttributeValue = zx_new_str_elem(cf->ctx, &at->gg, zx_xac_AttributeValue_ELEM, atvalue);
+  }
   zx_reverse_elem_lists(&at->gg);
   return at;
 }

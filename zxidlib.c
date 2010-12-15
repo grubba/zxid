@@ -74,7 +74,6 @@ struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x)
 /* Called by:  attribute_sort_test, zxid_a7n2str, zxid_anoint_a7n x2, zxid_anoint_sso_resp, zxid_az_soap x2, zxid_idp_sso, zxid_mk_art_deref, zxid_nid2str, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_sp_sso_finalize, zxid_ssos_anreq, zxid_token2str, zxid_wsf_validate_a7n */
 struct zx_str* zx_easy_enc_elem_sig(zxid_conf* cf, struct zx_elem_s* x)
 {
-  struct zx_str* ss;
   cf->ctx->enc_tail_opt = 0;
   return zx_EASY_ENC_elem(cf->ctx, x);
 }

@@ -935,6 +935,14 @@ int zx_LEN_SO_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_s*
        se && se->g.tok == zx_a_EndpointReference_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se);
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_sa_Assertion(c, (struct zx_sa_Assertion_s*)se);
+  for (se = &x->EncryptedAssertion->gg;
+       se && se->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)se);
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -986,6 +994,14 @@ char* zx_ENC_SO_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_
        se && se->g.tok == zx_a_EndpointReference_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se, p);
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_sa_Assertion(c, (struct zx_sa_Assertion_s*)se, p);
+  for (se = &x->EncryptedAssertion->gg;
+       se && se->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
