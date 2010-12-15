@@ -1473,7 +1473,7 @@ t/wspcot:
 t/wsp2cot:
 	sh ./zxmkdirs.sh t/wsp2
 
-test: t/cot t/idp t/wsp t/wsp2 zxencdectest zxcall zxididp
+test: t/cot t/idpcot t/wsp t/wsp2 zxencdectest zxcall zxididp
 	$(PERL) zxtest.pl -a
 
 #test: test.$(OBJ_EXT)

@@ -297,7 +297,6 @@ struct zx_elem_s* zx_replace_kid(struct zx_elem_s* father, struct zx_elem_s* kid
 void  zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont);
 struct zx_attr_s* zx_ord_ins_at(struct zx_elem_s* x, struct zx_attr_s* in_at);
 void  zx_reverse_elem_lists(struct zx_elem_s* x);
-int   zx_check_elem_order(struct zx_elem_s* x);
 int   zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 void  zx_add_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 char* zx_enc_seen(char* p, struct zx_ns_s* ns);

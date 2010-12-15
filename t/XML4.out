@@ -1,6 +1,7 @@
+Original and WO are different lengths 281 != 225
 Original and WO differ.
-Re-encoded result WO (len=281):
-<invokeInputElement xmlns="http://www.risaris.com/namespaces/calculate_fee">
+Re-encoded result WO (len=225):
+<invokeInputElement>
   <calculate_feeRoot>
       <calculate_feeGroup>
       <varx>

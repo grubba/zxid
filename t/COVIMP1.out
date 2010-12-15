@@ -3,8 +3,8 @@ TESTING DECODE
 oo
 TESTING ENCDEC
 r2 nid(a-persistent-nid) should be(a-persistent-nid)
-<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"></sp:StatusCode></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status><xasp:XACMLAuthzDecisionQuery xmlns:xasp="urn:oasis:xacml:2.0:saml:protocol:schema:os" ID="R2x7HOR6iv4BgDBUFA9nOZa5H" IssueInstant="2010-12-13T02:18:25Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xasp:XACMLAuthzDecisionQuery>version(73)
-urlenc(test1%3A%2F%2Ffoo%3Fa%3Db%26c%3Dd%20e5)
+<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"/></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status><xasp:XACMLAuthzDecisionQuery xmlns:xasp="urn:oasis:xacml:2.0:saml:protocol:schema:os" ID="RpRVXSWfp0jiJsCYhFpoHRQ2T" IssueInstant="2010-12-15T01:18:48Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xasp:XACMLAuthzDecisionQuery>version(73)
+urlenc(test1%3A%2F%2Ffoo%3Fa%3Db%26c%3Dd%20e)
 hexdec(123)
 parse err(test6: Parse error at char 0/7 (prev char, char, next char: 0x00 0x66 0x6f)
 foobar
@@ -32,6 +32,7 @@ SP specific NameID:   (sampo)
 SP specific NameID:   (beefiiij)
 SP specific NameID:   (mallory)
 SP specific NameID:   (tastest)
+SP specific NameID:   (pwtest)
 SP specific NameID:   (refucenikj)
 TESTING LOGVIEW
 TESTING ZXCOT
@@ -54,7 +55,7 @@ TESTING ZXCOT
 /var/zxid/cot/dgsDrHIE3WTSvxSsu8zCClSeFYg https://sp1.zxidsp.org:8443/zxidhlo?o=B            -
 /var/zxid/cot/LrmskITZZexv2pk5c7qKRvLMicw http://sp.tas3.pt:8080/zxidservlet/wspleaf?o=B     TAS3 App Demo SP and WSC
 /var/zxid/cot/ZLIYSwzbSQdzIWHISwoWtdrx6JI http://auth.orange.fr                              -
-<a:EndpointReference xmlns:a="http://www.w3.org/2005/08/addressing" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" notOnOrAfter="2037-01-05T23:03:59.001Z" wsu:Id="EPRID92lFPo3ZNEt_3rHtJFoU"><a:Address>http://localhost</a:Address><a:Metadata><sbf:Framework xmlns:sbf="urn:liberty:sb" version="2.0"></sbf:Framework><di:Abstract xmlns:di="urn:liberty:disco:2006-08">Abstract</di:Abstract><di:ProviderID xmlns:di="urn:liberty:disco:2006-08">http://localhost</di:ProviderID><di:ServiceType xmlns:di="urn:liberty:disco:2006-08">urn:x-testi</di:ServiceType></a:Metadata></a:EndpointReference>tmp/test/ses
+<a:EndpointReference xmlns:a="http://www.w3.org/2005/08/addressing" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" notOnOrAfter="2037-01-05T23:03:59.001Z" wsu:Id="EPRID92lFPo3ZNEt_3rHtJFoU"><a:Address>http://localhost</a:Address><a:Metadata><sbf:Framework xmlns:sbf="urn:liberty:sb" version="2.0"/><di:Abstract xmlns:di="urn:liberty:disco:2006-08">Abstract</di:Abstract><di:ProviderID xmlns:di="urn:liberty:disco:2006-08">http://localhost</di:ProviderID><di:ServiceType xmlns:di="urn:liberty:disco:2006-08">urn:x-testi</di:ServiceType></a:Metadata></a:EndpointReference>tmp/test/ses
 tmp/test/user
 tmp/test/uid
 tmp/test/nid

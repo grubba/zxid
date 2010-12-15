@@ -1,1 +1,1 @@
-<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"></sp:StatusCode></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status>
+<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"/></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status>
