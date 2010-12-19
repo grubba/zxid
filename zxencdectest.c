@@ -229,6 +229,8 @@ void x509_test()      /* -r 7 */
 const char foobar[] = "foobar";
 const char goobar[] = "goo\r\n~[]";
 
+int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env, const char* enve);
+
 /* Called by:  opt */
 void covimp_test()       /* -r 5 */
 {

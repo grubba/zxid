@@ -50,7 +50,7 @@
  * See also: zxid_wsp_validate() */
 
 /* Called by:  zxid_call_epr, zxid_wsc_valid_resp */
-static int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env, const char* enve)
+/*static*/ int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env, const char* enve)
 {
   int n_refs = 0;
   struct zxsig_ref refs[ZXID_N_WSF_SIGNED_HEADERS];

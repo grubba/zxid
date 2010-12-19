@@ -1678,8 +1678,8 @@ winbindist:
 #   make winbindist
 #   make winbinrel
 #   make tas3rel
-#   make tas3copyrel    # tas3pool -u T3-ZXID-LINUX-X86_0.54.zip
-#    ./pool-submit.sh 0.62
+#   make tas3copyrel         # tas3pool -u T3-ZXID-LINUX-X86_0.54.zip
+#    ./pool-submit.sh 0.62   # ssh kilo.tas3.eu
 #   make gen ENA_GEN=1
 # zxid.user@lists.unh.edu, wsf-dev@lists.openliberty.org
 
