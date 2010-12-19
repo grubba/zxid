@@ -835,9 +835,10 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
     if (!bin)
       bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
 			   "%s" ZXID_UID_DIR ".all/.bs/%s", cf->path, p);
-    if (bin)
+    if (bin) {
       val = zx_ref_len_str(cf->ctx, len, bin);
-    else {
+      D("FILE RULE uid(%s) sp_name_buf(%s) file(%s) GOT(%.*s)",ses->uid,buf,p,val->len,val->s);
+    } else {
       INFO("Attribute(%s) value not found in any file(%s" ZXID_UID_DIR "%s/%s/%s)", STRNULLCHKQ(atname), cf->path, ses->uid, buf, p);
       val = zx_ref_str(cf->ctx, "");
     }

@@ -1085,7 +1085,7 @@ ZXC('ZXC-WS2', 'AS + WSF call: x-foobar', 1000, "-t urn:x-foobar", 't/x-foobar-r
 CMD('ZXC-WS3', 'AS + WSF call leaf (x-recurs)', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t x-recurs -e '<foobar>Hello</foobar>' -b");
 CMD('ZXC-WS4', 'AS + WSF call EPR not found', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t x-none -e '<foobar>Hello</foobar>' -b",512);
 CMD('ZXC-WS5', 'AS + WSF call bad pw', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:bad -t x-none -e '<foobar>Hello</foobar>' -b",256);
-ZXC('ZXC-WS6', 'AS + WSF call: x-foobar', 1000, "-t urn:x-foobar", 't/x-foobar-rq.xml');
+#ZXC('ZXC-WS6', 'AS + WSF call: x-foobar', 1000, "-t urn:x-foobar", 't/x-foobar-rq.xml');
 
 ### Simulated browsing tests (bit fragile)
 
@@ -1100,6 +1100,8 @@ tA('SP','SSOHLO3', 'http://idp.tas3.pt:8081/zxididp?au=&alp=+Login+&au=test&ap=f
 
 pA('ST','SSOHLO4', 'http://sp1.zxidsp.org:8081/zxidhlo?o=P', "SAMLResponse=$SAMLResponse");
 tA('ST','SSOHLO5', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Local+Logout+');
+
+#tA('ST','javaexit', 'http://sp1.zxidsp.org:8080/appdemo?exit');
 
 # *** TODO: add through GUI testing for SSO
 # *** TODO: via zxidhlo

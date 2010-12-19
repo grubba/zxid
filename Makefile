@@ -341,6 +341,10 @@ else
 # Flags for Linux 2.6 native compile (gcc + gnu binutils)
 CDEF+=-DLINUX
 
+ifeq ($(DISTRO),fedora)
+CDEF+=-DFEDORA
+endif
+
 endif
 endif
 endif

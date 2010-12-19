@@ -201,6 +201,11 @@ char* zx_dup_cstr(struct zx_ctx* c, const char* str)
   return s;
 }
 
+struct zx_str* zx_dup_zx_str(struct zx_ctx* c, struct zx_str* ss)
+{
+  return zx_dup_len_str(c, ss->len, ss->s);
+}
+
 /* ------------------ ATTR ------------------ */
 
 /*() Construct zx_attr_s from length and raw string data, which will be referenced, not copied. */

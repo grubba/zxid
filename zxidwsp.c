@@ -16,6 +16,7 @@
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
 
 #include "errmac.h"
+#include "zx.h"
 #include "zxid.h"
 #include "zxidpriv.h"
 #include "zxidutil.h"
@@ -139,14 +140,13 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     sec->sa11_Assertion = 0;
     sec->ff12_Assertion = 0;
     
-#if 1
     if (ses && ses->wsp_msgid && ses->wsp_msgid->len) {
+      D("wsp_msgid(%.*s) %p %d %p", ses->wsp_msgid->len, ses->wsp_msgid->s, ses->wsp_msgid, ses->wsp_msgid->len, ses->wsp_msgid->s);
       hdr->RelatesTo = zx_NEW_a_RelatesTo(cf->ctx, &hdr->gg);
       zx_add_content(cf->ctx, &hdr->RelatesTo->gg, ses->wsp_msgid);
       hdr->RelatesTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
       hdr->RelatesTo->actor = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
     }
-#endif
 
     zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_REQUIRE, cf->wsp_localpdp_obl_emit);
     zxid_wsf_sign(cf, cf->wsp_sign, sec, 0, hdr, env->Body);
@@ -422,7 +422,8 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
     return 0;
   }
   /* Remember MessageID for generating RelatesTo in Response */
-  ses->wsp_msgid = ZX_GET_CONTENT(hdr->MessageID);
+  ses->wsp_msgid = zx_dup_zx_str(cf->ctx, ZX_GET_CONTENT(hdr->MessageID));
+  DD("wsp_msgid(%.*s) %p %d %p", ses->wsp_msgid->len, ses->wsp_msgid->s, ses->wsp_msgid, ses->wsp_msgid->len, ses->wsp_msgid->s);
   
   if (!hdr->Sender || !hdr->Sender->providerID && !hdr->Sender->affiliationID) {
     ERR("No <b:Sender> found (or missing providerID or affiliationID). %p", hdr->Sender);
@@ -430,7 +431,8 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
     D_DEDENT("valid: ");
     return 0;
   }
-  ses->issuer = &hdr->Sender->providerID->g;
+  ses->issuer = zx_dup_zx_str(cf->ctx, hdr->Sender->providerID?
+			      &hdr->Sender->providerID->g : &hdr->Sender->affiliationID->g);
   
   /* Validate message signature (*** add Issuer trusted check, CA validation, etc.) */
   

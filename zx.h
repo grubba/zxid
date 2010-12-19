@@ -166,6 +166,7 @@ struct zx_str* zx_ref_len_str(struct zx_ctx* c, int len, const char* s);
 struct zx_str* zx_new_len_str(struct zx_ctx* c, int len);
 struct zx_str* zx_dup_len_str(struct zx_ctx* c, int len, const char* s);
 struct zx_str* zx_dup_str(struct zx_ctx* c, const char* s);  /* data is new memory */
+struct zx_str* zx_dup_zx_str(struct zx_ctx* c, struct zx_str* ss); /* data is new memory */
 struct zx_str* zx_strf(struct zx_ctx* c, const char* f, ...);  /* data is new memory */
 
 char* zx_alloc_sprintf(struct zx_ctx* c, int* retlen, const char* f, ...);

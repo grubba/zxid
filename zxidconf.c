@@ -417,12 +417,12 @@ struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
     else if (IS_RULE(rule, "a7n-def-sb64"))  { mm->rule = ZXID_MAP_RULE_WRAP_A7N | ZXID_MAP_RULE_DEF_SB64; }
     else if (IS_RULE(rule, "a7n-sb64"))      { mm->rule = ZXID_MAP_RULE_WRAP_A7N | ZXID_MAP_RULE_SB64; }
 
-    else if (IS_RULE(rule, "x509"))          { mm->rule = ZXID_MAP_RULE_WRAP_X509 | ZXID_MAP_RULE_FEIDEDEC; }
+    else if (IS_RULE(rule, "x509"))          { mm->rule = ZXID_MAP_RULE_WRAP_X509; }
     else if (IS_RULE(rule, "x509-feideenc")) { mm->rule = ZXID_MAP_RULE_WRAP_X509 | ZXID_MAP_RULE_FEIDEENC; }
     else if (IS_RULE(rule, "x509-def-sb64")) { mm->rule = ZXID_MAP_RULE_WRAP_X509 | ZXID_MAP_RULE_DEF_SB64; }
     else if (IS_RULE(rule, "x509-sb64"))     { mm->rule = ZXID_MAP_RULE_WRAP_X509 | ZXID_MAP_RULE_SB64; }
 
-    else if (IS_RULE(rule, "file"))          { mm->rule = ZXID_MAP_RULE_WRAP_FILE | ZXID_MAP_RULE_FEIDEDEC; }
+    else if (IS_RULE(rule, "file"))          { mm->rule = ZXID_MAP_RULE_WRAP_FILE; }
     else if (IS_RULE(rule, "file-feideenc")) { mm->rule = ZXID_MAP_RULE_WRAP_FILE | ZXID_MAP_RULE_FEIDEENC; }
     else if (IS_RULE(rule, "file-def-sb64")) { mm->rule = ZXID_MAP_RULE_WRAP_FILE | ZXID_MAP_RULE_DEF_SB64; }
     else if (IS_RULE(rule, "file-sb64"))     { mm->rule = ZXID_MAP_RULE_WRAP_FILE | ZXID_MAP_RULE_SB64; }

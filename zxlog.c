@@ -462,7 +462,7 @@ int zxlogwsp(zxid_conf* cf,    /* 1 */
 		ses?ses->issuer:0, ses?ses->wsp_msgid:0,
 		ses&&ses->a7n?&ses->a7n->ID->g:0,
 		ses?ZX_GET_CONTENT(ses->nameid):0,
-		ses?&ses->sigres:"X", res,
+		ses&&ses->sigres?&ses->sigres:"-", res,
 		op, arg, fmt, ap);
   va_end(ap);
   return zxlog_output(cf, n, logbuf, res);
@@ -675,8 +675,8 @@ int zxlog_blob(zxid_conf* cf, int logflag, struct zx_str* path, struct zx_str* b
   
   /* We need a c path, but get zx_str. However, the zx_str will come from zxlog_path()
    * so we should be having the nul termination as needed. Just checking. */
-  D("lk(%s): LOGBLOB15(%.*s) len=%d path(%.*s)", lk, MIN(blob->len,15), blob->s, blob->len, path->len, path->s);
-  DD("lk(%s): LOGBLOB(%.*s)", lk, blob->len, blob->s);
+  D("%s: LOGBLOB15(%.*s) len=%d path(%.*s)", lk, MIN(blob->len,15), blob->s, blob->len, path->len, path->s);
+  DD("%s: LOGBLOB(%.*s)", lk, blob->len, blob->s);
   ASSERTOP(path->s[path->len], ==, 0);
   if (!write2_or_append_lock_c_path(path->s, blob->len, blob->s, 0, 0, "zxlog blob", SEEK_END,O_APPEND)) {
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "S", "EFILE", 0, "Could not write blob. Permissions?");
@@ -749,7 +749,8 @@ nobody:
   bdy_len = MIN(q-p, 100);
 
 print_it:
-  fprintf(stderr, "t %10s:%-3d %-16s %s d %s%s(%.*s) len=%d\n", file, line, func, ERRMAC_INSTANCE, zx_indent, lk, bdy_len, bdy, len);
+  ++zxlog_seq;
+  fprintf(stderr, "t %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", file, line, func, ERRMAC_INSTANCE, zx_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
 
   if (!zx_xml_debug_log) {
     if (zx_xml_debug_log_err)

@@ -1382,7 +1382,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
 	cont_len = getenv("CONTENT_LENGTH");
 	if (cont_len) {
 	  sscanf(cont_len, "%d", &got);
-	  D("QUERY_STRING(%s) cont_len=%s got=%d rel=%s", qs, cont_len, got, ZXID_REL);
+	  D("QUERY_STRING(%c) cont_len=%s got=%d rel=%s", cgi.op, cont_len, got, ZXID_REL);
 	  buf = ZX_ALLOC(cf->ctx, got);
 	  if (!buf) {
 	    ERR("out of memory len=%d", got);
