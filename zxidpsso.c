@@ -670,7 +670,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
   struct zx_sp_Response_s* resp;
   struct zx_e_Envelope_s* e;
   char* p;
-  char* logop;
+  char logop[8];
 
   if (!ar || !ZX_GET_CONTENT(ar->Issuer)) {
     ERR("No Issuer found in AuthnRequest %p", ar);

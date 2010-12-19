@@ -1,5 +1,5 @@
 Content-Type: text/html
-Content-Length: 5909
+Content-Length: 1950
 
 <title>ZXID IdP: Authentication</title>
 <link type="text/css" rel=stylesheet href="an.css">
@@ -47,4 +47,4 @@ User NOT logged in, no session.
 <input type=hidden name=ar value="">
 <input type=hidden name=zxapp value="">
 </form>
-<div class=zxbot><a href="/zxidservlet/appdemo">App Demo</a> | <a href="http://zxid.org/">zxid.org</a>, 0.71 1290467692 libzxid (zxid.org)</div>
+<div class=zxbot><a href="/zxidservlet/appdemo">App Demo</a> | <a href="http://zxid.org/">zxid.org</a>, 0.73 1292754986 libzxid (zxid.org)</div>

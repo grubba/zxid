@@ -70,7 +70,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
 
-zxid-0.73:: 11.12.2010
+zxid-0.73:: 19.12.2010
     - Added ssoa7n and tgta7n attributes (TAS3 feature req #484)
     - Added optional sessionwide idpsesid attribute (TAS3 feature req # )
     - Added IDWSF SOAP headers to discovery and as responses
@@ -80,7 +80,7 @@ zxid-0.73:: 11.12.2010
     - Added <ns:foo/> close tag tail optimization to encoder, controlled by c->enc_tail_opt flag
     - Added preliminary DSA support
     - Crude and preliminary X509 attribute cert support
-    - NOTPUB
+    - Fixed excessive content-length in CGI output
 
 zxid-0.72:: 5.12.2010
     - Major rewrite: Eliminated SO encoders entirely, enhancing WO encoder to do their job

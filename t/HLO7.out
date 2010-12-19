@@ -1,5 +1,5 @@
 Content-Type: text/html
-Content-Length: 4537
+Content-Length: 494
 
 <title>ZXID Error</title>
 <link type="text/css" rel=stylesheet href="idpsel.css">
@@ -14,4 +14,4 @@ Content-Length: 4537
 
 <input type=hidden name=zxapp value="">
 </form>
-<div class=zxbot><a href="/zxidservlet/appdemo">App Demo</a> | <a href="http://zxid.org/">zxid.org</a>, 0.71 1290467692 libzxid (zxid.org)</div>
+<div class=zxbot><a href="/zxidservlet/appdemo">App Demo</a> | <a href="http://zxid.org/">zxid.org</a>, 0.73 1292754986 libzxid (zxid.org)</div>

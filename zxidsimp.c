@@ -1378,7 +1378,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
   if (!qs) {
     qs = getenv("QUERY_STRING");
     if (qs) {
-      DD("QUERY_STRING(%s) %s", STRNULLCHK(qs), ZXID_REL);
+      D("QUERY_STRING(%s) %s", STRNULLCHK(qs), ZXID_REL);
       zxid_parse_cgi(&cgi, qs);
       if (ONE_OF_3(cgi.op, 'P', 'R', 'S')) {
 	cont_len = getenv("CONTENT_LENGTH");

@@ -151,7 +151,7 @@ sub test_http {
     my ($curl, $cmd, $tsti, $expl, $url, $timeout, $slow) = @_;
     return unless $tst eq 'all' || $tst eq substr($tsti,0,length $tst);
     return if $ntst && $ntst eq substr($tsti,0,length $ntst);
-    warn "\n======= $tsti =======";
+    #warn "\n======= $tsti =======";
     
     $slow ||= 0.5;
     $timeout ||= 15;
@@ -198,7 +198,7 @@ sub test_http_post {
     my ($curl, $cmd, $tsti, $expl, $url, $body, $timeout, $slow) = @_;
     return unless $tst eq 'all' || $tst eq substr($tsti,0,length $tst);
     return if $ntst && $ntst eq substr($tsti,0,length $ntst);
-    warn "\n======= $tsti =======";
+    #warn "\n======= $tsti =======";
 
     $slow ||= 0.5;
     $timeout ||= 15;
@@ -404,9 +404,9 @@ sub wait_response {
 	    if (length $rsp) {
 		if ($cmd{$id} eq 'PING'
 		    || $cmd{$id} eq 'LOGOUT') {
-		    warn "Non XML cmd($cmd{$id}) url($easy_url{$id}) response($rsp)";
+		    #warn "Non XML cmd($cmd{$id}) url($easy_url{$id}) response($rsp)";
 		} elsif ($cmd{$id} eq 'ST') {
-		    warn "static response len=".length($rsp);
+		    #warn "static response len=".length($rsp);
 		} else {
 		    # Wrapped in eval {} to avoid death when web service sends non XML errors
 		    eval {
@@ -416,13 +416,13 @@ sub wait_response {
 			if (($lasterror) = $rsp =~ /^(.*?Exception.*?)\n/s) {
 			    $cmd{$id} = 'exception';
 			}
-			warn "XMLin: $@";
-			warn "cmd($cmd{$id}) resp($id)=($rsp)";
+			#warn "XMLin: $@";
+			#warn "cmd($cmd{$id}) resp($id)=($rsp)";
 			$xx = undef;
 		    }
 		}
 	    } else {
-		warn "Empty response (possibly OK)";
+		#warn "Empty response (possibly OK)";
 		$xx = undef;
 	    }
 	    #warn "XML::Simple: " . Dumper($xx);
@@ -704,6 +704,8 @@ sub ediffy {
     $data2 =~ s/^(zxididp: 0\.).+/$1/gm;
 
     return 0 if $data1 eq $data2;
+
+    warn "enter heavy diff len1=".length($data1)." len2=".length($data2);
 
     my $ret = 0;
 
@@ -1087,19 +1089,19 @@ CMD('ZXC-WS4', 'AS + WSF call EPR not found', "./zxcall -d -a http://idp.tas3.pt
 CMD('ZXC-WS5', 'AS + WSF call bad pw', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:bad -t x-none -e '<foobar>Hello</foobar>' -b",256);
 #ZXC('ZXC-WS6', 'AS + WSF call: x-foobar', 1000, "-t urn:x-foobar", 't/x-foobar-rq.xml');
 
-### Simulated browsing tests (bit fragile)
+### Simulated browsing tests (a bit fragile)
 
-tA('ST','LOGIN-IDP1', 'IdP Login screen', 'http://idp.tas3.pt:8081/zxididp?o=F');
-tA('ST','LOGIN-IDP2', 'http://idp.tas3.pt:8081/zxididp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=&zxapp=');
-tA('ST','LOGIN-IDP3', 'http://idp.tas3.pt:8081/zxididp?gl=+Local+Logout+');
+tA('ST','LOGIN-IDP1', 'IdP Login screen',  'http://idp.tas3.pt:8081/zxididp?o=F');
+tA('ST','LOGIN-IDP2', 'IdP Give password', 'http://idp.tas3.pt:8081/zxididp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=&zxapp=');
+tA('ST','LOGIN-IDP3', 'IdP Local Logout',  'http://idp.tas3.pt:8081/zxididp?gl=+Local+Logout+');
 
-tA('ST','SSOHLO1', 'http://sp1.zxidsp.org:8081/zxidhlo?o=E');
-tA('AR','SSOHLO2', 'http://sp1.zxidsp.org:8081/zxidhlo?e=&l0http%3A%2F%2Fidp.tas3.pt%3A8081%2Fzxididp=+Login+with+TAS3+Demo+IdP+%28http%3A%2F%2Fidp.tas3.pt%3A8081%2Fzxididp%29+&fc=1&fn=prstnt&fr=&fq=&fy=&fa=&fm=&fp=0&ff=0');
+tA('ST','SSOHLO1', 'IdP selection screen', 'http://sp1.zxidsp.org:8081/zxidhlo?o=E');
+tA('AR','SSOHLO2', 'Selected IdP', 'http://sp1.zxidsp.org:8081/zxidhlo?e=&l0http%3A%2F%2Fidp.tas3.pt%3A8081%2Fzxididp=+Login+with+TAS3+Demo+IdP+%28http%3A%2F%2Fidp.tas3.pt%3A8081%2Fzxididp%29+&fc=1&fn=prstnt&fr=&fq=&fy=&fa=&fm=&fp=0&ff=0');
 
-tA('SP','SSOHLO3', 'http://idp.tas3.pt:8081/zxididp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=$AR&zxapp=');
+tA('SP','SSOHLO3', 'Login to IdP', 'http://idp.tas3.pt:8081/zxididp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=$AR&zxapp=');
 
-pA('ST','SSOHLO4', 'http://sp1.zxidsp.org:8081/zxidhlo?o=P', "SAMLResponse=$SAMLResponse");
-tA('ST','SSOHLO5', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Local+Logout+');
+pA('ST','SSOHLO4', 'POST to SP', 'http://sp1.zxidsp.org:8081/zxidhlo?o=P', "SAMLResponse=$SAMLResponse");
+tA('ST','SSOHLO5', 'SP local logout', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Local+Logout+');
 
 #tA('ST','javaexit', 'http://sp1.zxidsp.org:8080/appdemo?exit');
 

@@ -1,5 +1,5 @@
 Content-Type: text/html
-Content-Length: 5529
+Content-Length: 3308
 
 <title>ZXID SP SSO: Choose IdP</title>
 <link type="text/css" rel=stylesheet href="idpsel.css"><body bgcolor=white>
@@ -51,4 +51,4 @@ Entity ID of this SP (click on the link to fetch the SP metadata): <a href="http
 <input type=hidden name=fp value=0>
 <input type=hidden name=ff value=0>
 
-<div class=zxbot><a class=zx href="http://zxid.org/">zxid.org</a>, 0.71 1290467692 libzxid (zxid.org)</div>
+<div class=zxbot><a class=zx href="http://zxid.org/">zxid.org</a>, 0.73 1292754986 libzxid (zxid.org)</div>
