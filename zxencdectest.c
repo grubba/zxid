@@ -32,6 +32,7 @@
 #include "zxid.h"
 #include "zxidpriv.h"
 #include "zxidutil.h"
+#include "saml2.h"
 #include "c/zxidvers.h"
 #include "c/zx-data.h"
 #include "c/zx-const.h"
@@ -137,7 +138,7 @@ void so_enc_dec()     /* -r 3 */
   cf = zxid_new_conf("/var/zxid/");
   st = zxid_mk_Status(cf, 0, "SC1", "SC2", "MESSAGE");
   ss = zx_easy_enc_elem_opt(cf, &st->gg);
-  printf("%.*s", ss->len, ss->s);
+  printf("%.*s", ss->len, ss->s);  zx_dump_ns_tab(cf->ctx, 0);
 }
 
 /* Called by:  opt */
@@ -145,11 +146,16 @@ void attribute_sort_test()  /* -r 4 */
 {
   zxid_conf* cf;
   struct zx_xasp_XACMLAuthzDecisionQuery_s* q;
+  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* q2;
   struct zx_str* ss;
   cf = zxid_new_conf("/var/zxid/");
   q = zxid_mk_az(cf, 0, 0, 0, 0);
   ss = zx_easy_enc_elem_sig(cf, &q->gg);
   printf("%.*s", ss->len, ss->s);
+
+  q2 = zxid_mk_az_cd1(cf, 0, 0, 0, 0);
+  ss = zx_easy_enc_elem_sig(cf, &q2->gg);
+  printf("CD1: %.*s", ss->len, ss->s);
 }
 
 /* Called by:  opt */
@@ -160,6 +166,7 @@ void a7n_test()       /* -r 6 */
   zxid_cgi cgi;
   zxid_ses sess;
   zxid_nid* nameid;
+  struct zx_str* issuer;
   struct zx_sp_AuthnRequest_s* ar;
   zxid_entity* sp_meta;
   zxid_a7n* a7n;
@@ -169,10 +176,12 @@ void a7n_test()       /* -r 6 */
 
   sess.sid = "MSES1234";
   sess.uid = "test";
-  cf = zxid_new_conf("/var/zxid/");
+  cf = zxid_new_conf_to_cf("PATH=/var/zxid/&URL=http://sp1.zxidsp.org:8081/zxidhlo");
 #if 1
   ar = zxid_mk_authn_req(cf, &cgi);
-  sp_meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(ar->Issuer));
+  issuer = ZX_GET_CONTENT(ar->Issuer);
+  D("issuer(%.*s)", issuer->len, issuer->s);
+  sp_meta = zxid_get_ent_ss(cf, issuer);
   a7n = zxid_sso_issue_a7n(cf, &cgi, &sess, &srctss, sp_meta, 0, &nameid, 0, ar);
 #else
   a7n = zxid_mk_usr_a7n_to_sp(cf, &sess, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, 0);
@@ -226,7 +235,13 @@ void covimp_test()       /* -r 5 */
   char buf[256];
   int outlen;
   char* out;
+  char* sigval;
+  char* sigmsg;
   struct zx_str* ss;
+  struct zx_e_Envelope_s* env;
+  zxid_fault* flt;
+  zxid_tas3_status* st;
+  zxid_entity* meta;
   zxid_conf* cf;
   zxid_cgi cgi;
   zxid_ses sess;
@@ -260,6 +275,116 @@ void covimp_test()       /* -r 5 */
   cgi.cdc = "test9";
   zxid_cdc_check(cf, &cgi);
   zxid_new_cgi(cf, "=test10&ok=1&okx=2&s=S123&c=test11&e=abc&d=def&&l=x&l1=y&l1foo=z&inv=qwe&fg=1&fh=7&fr=RS&gu=1&gn=asa&ge=1&an=&aw=&at=&SAMLart=artti&SAMLResponse=respis");
+
+  printf("n=%s\n", zxid_saml2_map_nid_fmt("n"));
+  printf("p=%s\n", zxid_saml2_map_nid_fmt("p"));
+  printf("t=%s\n", zxid_saml2_map_nid_fmt("t"));
+  printf("u=%s\n", zxid_saml2_map_nid_fmt("u"));
+  printf("e=%s\n", zxid_saml2_map_nid_fmt("e"));
+  printf("x=%s\n", zxid_saml2_map_nid_fmt("x"));
+  printf("w=%s\n", zxid_saml2_map_nid_fmt("w"));
+  printf("k=%s\n", zxid_saml2_map_nid_fmt("k"));
+  printf("s=%s\n", zxid_saml2_map_nid_fmt("s"));
+  printf("X=%s\n", zxid_saml2_map_nid_fmt("X"));
+
+  printf("r=%s\n", zxid_saml2_map_protocol_binding("r"));
+  printf("a=%s\n", zxid_saml2_map_protocol_binding("a"));
+  printf("p=%s\n", zxid_saml2_map_protocol_binding("p"));
+  printf("q=%s\n", zxid_saml2_map_protocol_binding("q"));
+  printf("s=%s\n", zxid_saml2_map_protocol_binding("s"));
+  printf("e=%s\n", zxid_saml2_map_protocol_binding("e"));
+  printf("X=%s\n", zxid_saml2_map_protocol_binding("X"));
+
+  printf("NULL=%d\n",       zxid_protocol_binding_map_saml2(0));
+  printf("SAML2_REDIR=%d\n", zxid_protocol_binding_map_saml2(zx_ref_str(cf->ctx, SAML2_REDIR)));
+  printf("SAML2_ART=%d\n",   zxid_protocol_binding_map_saml2(zx_ref_str(cf->ctx, SAML2_ART)));
+  printf("SAML2_POST=%d\n",  zxid_protocol_binding_map_saml2(zx_ref_str(cf->ctx, SAML2_POST)));
+  printf("SAML2_POST_SIMPLE_SIGN=%d\n", zxid_protocol_binding_map_saml2(zx_ref_str(cf->ctx, SAML2_POST_SIMPLE_SIGN)));
+  printf("SAML2_SOAP=%d\n",  zxid_protocol_binding_map_saml2(zx_ref_str(cf->ctx, SAML2_SOAP)));
+  printf("SAML2_PAOS=%d\n",  zxid_protocol_binding_map_saml2(zx_ref_str(cf->ctx, SAML2_PAOS)));
+  printf("unknown=%d\n",    zxid_protocol_binding_map_saml2(zx_ref_str(cf->ctx, "unknown")));
+
+  printf("n=%s\n",       zxid_saml2_map_authn_ctx("n"));
+  printf("pwp=%s\n",     zxid_saml2_map_authn_ctx("pwp"));
+  printf("pw=%s\n",      zxid_saml2_map_authn_ctx("pw"));
+  printf("prvses=%s\n",  zxid_saml2_map_authn_ctx("prvses"));
+  printf("clicert=%s\n", zxid_saml2_map_authn_ctx("clicert"));
+  printf("unspcf=%s\n",  zxid_saml2_map_authn_ctx("unspcf"));
+  printf("ip=%s\n",      zxid_saml2_map_authn_ctx("ip"));
+  printf("X=%s\n",       zxid_saml2_map_authn_ctx("X"));
+
+  zxid_sigres_map(ZXSIG_OK, &sigval, &sigmsg);         printf("%s %s\n", sigval, sigmsg);
+  zxid_sigres_map(ZXSIG_BAD_DALGO, &sigval, &sigmsg);  printf("%s %s\n", sigval, sigmsg);
+  zxid_sigres_map(ZXSIG_DIGEST_LEN, &sigval, &sigmsg); printf("%s %s\n", sigval, sigmsg);
+  zxid_sigres_map(ZXSIG_BAD_DIGEST, &sigval, &sigmsg); printf("%s %s\n", sigval, sigmsg);
+  zxid_sigres_map(ZXSIG_BAD_SALGO, &sigval, &sigmsg);  printf("%s %s\n", sigval, sigmsg);
+  zxid_sigres_map(ZXSIG_BAD_CERT, &sigval, &sigmsg);   printf("%s %s\n", sigval, sigmsg);
+  zxid_sigres_map(ZXSIG_VFY_FAIL, &sigval, &sigmsg);   printf("%s %s\n", sigval, sigmsg);
+  zxid_sigres_map(ZXSIG_NO_SIG, &sigval, &sigmsg);     printf("%s %s\n", sigval, sigmsg);
+  zxid_sigres_map(ZXSIG_TIMEOUT, &sigval, &sigmsg);    printf("%s %s\n", sigval, sigmsg);
+  zxid_sigres_map(ZXSIG_AUDIENCE, &sigval, &sigmsg);   printf("%s %s\n", sigval, sigmsg);
+  zxid_sigres_map(99, &sigval, &sigmsg);               printf("%s %s (other)\n", sigval, sigmsg);
+
+  printf("fake_sso=%d\n", zxid_sp_anon_finalize(cf, &cgi, &sess));
+
+  setenv("HTTP_PAOS", SAML2_SSO_ECP, 1);
+  zxid_lecp_check(cf, &cgi);        /* *** should test in realistic context */
+
+  meta = zxid_get_ent_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU"); /* IBMIdP */
+  zxid_mk_art_deref(cf, meta, "ART124121");  /* *** should test in realistic context */
+  
+  zxid_mk_lu_Status(cf, 0, 0, "SC2-dummy", "MSG-dummy", "REF-dummy");
+  st = zxid_mk_tas3_status(cf, 0, 0, 0, "SC2-dummy", "MSG-dummy", "REF-dummy");
+  zxid_get_fault(cf, &sess);
+  zxid_get_tas3_status(cf, &sess);
+
+  zxid_get_tas3_fault_sc1(cf, 0);
+  zxid_get_tas3_fault_sc2(cf, 0);
+  zxid_get_tas3_fault_comment(cf, 0);
+  zxid_get_tas3_fault_ref(cf, 0);
+  zxid_get_tas3_fault_actor(cf, 0);
+
+  zxid_get_tas3_status_sc1(cf, 0);
+  zxid_get_tas3_status_sc2(cf, 0);
+  zxid_get_tas3_status_comment(cf, 0);
+  zxid_get_tas3_status_ref(cf, 0);
+  zxid_get_tas3_status_ctlpt(cf, 0);
+
+  flt = zxid_mk_fault(cf, 0, "actor", "fc1", "fault string", "SC1", "SC2", "MSG", "REF");
+  zxid_get_tas3_fault_sc1(cf, flt);
+  zxid_get_tas3_fault_sc2(cf, flt);
+  zxid_get_tas3_fault_comment(cf, flt);
+  zxid_get_tas3_fault_ref(cf, flt);
+  zxid_get_tas3_fault_actor(cf, flt);
+
+  zxid_get_tas3_status_sc1(cf, st);
+  zxid_get_tas3_status_sc2(cf, st);
+  zxid_get_tas3_status_comment(cf, st);
+  zxid_get_tas3_status_ref(cf, st);
+  zxid_get_tas3_status_ctlpt(cf, st);
+
+  /* *** should test in realistic context */
+  zxid_mk_dap_query(cf, 0, 
+		    zxid_mk_dap_test_item(cf, 0,
+					  zxid_mk_dap_testop(cf, 0, 0, 0, 0, 1, 2, 3, 4, 5),
+					  0, 0),
+		    zxid_mk_dap_query_item(cf, 0,
+					   zxid_mk_dap_select(cf, 0, 0, 0, 0, 0, 1, 0, 0, 0),
+					   0, 0, 0, 0, 1, 2, 3, 0, 0, 0),
+		    zxid_mk_dap_subscription(cf, 0, "SUBSID", "#ITEMID",
+					     zxid_mk_dap_resquery(cf, 0,
+								   zxid_mk_dap_select(cf, 0, 0, 0, 0, 0, 1, 0, 0, 0),
+								   0, 0, 0, 0, 1, 0),
+					     0, 0, 0, 0, 1, 0, 0));
+
+  zxid_wsf_decor(cf,0,0,0);
+  zxid_map_sec_mech(0);
+  zxid_wsc_valid_re_env(cf,0,0,0,0);
+  env = zx_NEW_e_Envelope(cf->ctx, 0);
+  zxid_wsc_valid_re_env(cf,0,0,env,0);
+  zxid_wsf_decor(cf,0,env,0);
+  zxid_wsc_valid_re_env(cf,0,0,env,0);
+  printf("covimp ok\n");
 }
 
 int afr_buf_size = 0;

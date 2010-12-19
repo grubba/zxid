@@ -34,7 +34,8 @@ echo TESTING ENCDEC
 
 echo TESTING PASSWD
 
-./zxpasswd -d -s foo # too few args
+./zxpasswd   # too few args
+./zxpasswd -d -s foo
 ./zxpasswd -q -v --
 ./zxpasswd -d -l foo /impossible
 ./zxpasswd -l
@@ -46,6 +47,7 @@ echo TESTING LOGVIEW
 
 ./zxlogview -q -v -- </dev/null
 ./zxlogview -d -di test -rf -ra </dev/null
+./zxlogview -license >/dev/null
 
 echo TESTING ZXCOT
 
@@ -56,5 +58,11 @@ echo TESTING ZXCOT
 rm -rf tmp/test
 ./zxmkdirs.sh tmp/test/
 ./zxcot -c PATH=tmp/test/ -m >tmp/meta.xml
+
+echo TESTING MISC
+
+./zxidhrxmlwsp 1
+QUERY_STRING=o=S ./zxidhrxmlwsp
+QUERY_STRING=o=B ./zxidhrxmlwsp
 
 #EOF

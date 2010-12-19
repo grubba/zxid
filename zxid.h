@@ -812,7 +812,7 @@ ZXID_DECL struct zx_sa_Attribute_s* zxid_find_attribute(zxid_a7n* a7n, int nfmt_
 
 /* zxidmk */
 
-ZXID_DECL struct zx_sp_Status_s* zxid_mk_Status(zxid_conf* cf, struct zx_elem_s* father, char* sc1, char* sc2, char* msg);
+ZXID_DECL struct zx_sp_Status_s* zxid_mk_Status(zxid_conf* cf, struct zx_elem_s* father, const char* sc1, const char* sc2, const char* msg);
 ZXID_DECL struct zx_sp_Status_s* zxid_OK(zxid_conf* cf, struct zx_elem_s* father);
 
 /* zxidmkwsf */

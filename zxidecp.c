@@ -36,7 +36,7 @@ extern char **environ;
  * If you do not know what PAOS, ECP or LECP means, you should read [SAML2bind] specification. */
 
 /* Called by:  zxid_lecp_check */
-struct zx_paos_Request_s* zxid_mk_paos_Request_hdr(zxid_conf* cf)
+static struct zx_paos_Request_s* zxid_mk_paos_Request_hdr(zxid_conf* cf)
 {
   struct zx_paos_Request_s* hdr= zx_NEW_paos_Request(cf->ctx,0);
   hdr->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
@@ -56,7 +56,7 @@ struct zx_paos_Request_s* zxid_mk_paos_Request_hdr(zxid_conf* cf)
  * return:: IdP list data structure or 0 on failure */
 
 /* Called by:  zxid_mk_ecp_Request_hdr */
-struct zx_sp_IDPList_s* zxid_mk_idp_list(zxid_conf* cf, char* binding)
+static struct zx_sp_IDPList_s* zxid_mk_idp_list(zxid_conf* cf, char* binding)
 {
   zxid_entity* idp;
   struct zx_md_SingleSignOnService_s* sso_svc;
@@ -95,7 +95,7 @@ struct zx_sp_IDPList_s* zxid_mk_idp_list(zxid_conf* cf, char* binding)
  * If you do not know what PAOS, ECP or LECP means, you should read [SAML2bind] specification. */
 
 /* Called by:  zxid_lecp_check */
-struct zx_ecp_Request_s* zxid_mk_ecp_Request_hdr(zxid_conf* cf)
+static struct zx_ecp_Request_s* zxid_mk_ecp_Request_hdr(zxid_conf* cf)
 {
   struct zx_ecp_Request_s* hdr= zx_NEW_ecp_Request(cf->ctx,0);
   hdr->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);

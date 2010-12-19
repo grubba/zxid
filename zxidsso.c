@@ -694,7 +694,7 @@ erro:
 /* Called by:  zxid_sp_dig_sso_a7n */
 int zxid_sp_anon_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
-  D_INDENT("anoan_ssof: ");
+  D_INDENT("anon_ssof: ");
   cgi->sigval = "N";
   cgi->sigmsg = "Anonymous login. No signature.";
   ses->sigres = ZXSIG_NO_SIG;

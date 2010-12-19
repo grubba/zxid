@@ -34,21 +34,34 @@ struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
   ar->ID = zxid_mk_id_attr(cf, &ar->gg, zx_ID_ATTR, "N", ZXID_ID_BITS);
   ar->Version = zx_ref_attr(cf->ctx, &ar->gg, zx_Version_ATTR, SAML2_VERSION);
   ar->IssueInstant = zxid_date_time_attr(cf, &ar->gg, zx_IssueInstant_ATTR, time(0));
-  if (cf->nice_name && cf->nice_name[0])  ar->ProviderName = zx_ref_attr(cf->ctx, &ar->gg, zx_ProviderName_ATTR, cf->nice_name);
-  if (BOOL_STR_TEST(cgi->force_authn))    ar->ForceAuthn = zx_ref_attr(cf->ctx, &ar->gg, zx_ForceAuthn_ATTR, XML_TRUE);
-  if (BOOL_STR_TEST(cgi->ispassive))      ar->IsPassive = zx_ref_attr(cf->ctx, &ar->gg, zx_IsPassive_ATTR, XML_TRUE);
-  if (cgi->consent && cgi->consent[0])    ar->Consent = zx_ref_attr(cf->ctx, &ar->gg, zx_Consent_ATTR, cgi->consent);
+
+  if (cf->nice_name && cf->nice_name[0])
+    ar->ProviderName = zx_ref_attr(cf->ctx, &ar->gg, zx_ProviderName_ATTR, cf->nice_name);
+
+  if (BOOL_STR_TEST(cgi->force_authn))
+    ar->ForceAuthn = zx_ref_attr(cf->ctx, &ar->gg, zx_ForceAuthn_ATTR, XML_TRUE);
+
+  if (BOOL_STR_TEST(cgi->ispassive))
+    ar->IsPassive = zx_ref_attr(cf->ctx, &ar->gg, zx_IsPassive_ATTR, XML_TRUE);
+
+  if (cgi->consent && cgi->consent[0])
+    ar->Consent = zx_ref_attr(cf->ctx, &ar->gg, zx_Consent_ATTR, cgi->consent);
+
   D("nid_fmt(%s) allow_create=%c ispassive=%c", cgi->nid_fmt, cgi->allow_create, cgi->ispassive);
   if (cgi->nid_fmt && cgi->nid_fmt[0] || cgi->affil && cgi->affil[0]
       || BOOL_STR_TEST(cgi->allow_create)) {
     ar->NameIDPolicy = zx_NEW_sp_NameIDPolicy(cf->ctx, &ar->gg);
+
     if (cgi->nid_fmt && cgi->nid_fmt[0])
       ar->NameIDPolicy->Format = zx_ref_attr(cf->ctx, &ar->NameIDPolicy->gg, zx_Format_ATTR, zxid_saml2_map_nid_fmt(cgi->nid_fmt));
+
     if (cgi->affil && cgi->affil[0])
       ar->NameIDPolicy->SPNameQualifier = zx_ref_attr(cf->ctx, &ar->NameIDPolicy->gg, zx_SPNameQualifier_ATTR, cgi->affil);
+
     if (BOOL_STR_TEST(cgi->allow_create))
       ar->NameIDPolicy->AllowCreate = zx_ref_attr(cf->ctx, &ar->NameIDPolicy->gg, zx_AllowCreate_ATTR, XML_TRUE);  /* default false */
   }
+
   if (cgi->authn_ctx && cgi->authn_ctx[0]) {
     ar->RequestedAuthnContext = zx_NEW_sp_RequestedAuthnContext(cf->ctx, &ar->gg);
     ar->RequestedAuthnContext->AuthnContextClassRef
@@ -79,7 +92,7 @@ struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
 /*() Make the body for the ArtifactResolve SOAP message, signing it if needed. */
 
 /* Called by:  zxid_sp_deref_art */
-struct zx_sp_ArtifactResolve_s* zxid_mk_art_deref(zxid_conf* cf, zxid_entity* idp_meta, char* artifact)
+struct zx_sp_ArtifactResolve_s* zxid_mk_art_deref(zxid_conf* cf, zxid_entity* idp_meta, const char* artifact)
 {
   X509* sign_cert;
   EVP_PKEY* sign_pkey;
@@ -106,7 +119,7 @@ struct zx_sp_ArtifactResolve_s* zxid_mk_art_deref(zxid_conf* cf, zxid_entity* id
 /*() Create SAML protocol <Status> element, given various levels of error input. */
 
 /* Called by:  so_enc_dec, zxid_OK, zxid_nidmap_do x2, zxid_ssos_anreq x4 */
-struct zx_sp_Status_s* zxid_mk_Status(zxid_conf* cf, struct zx_elem_s* father, char* sc1, char* sc2, char* msg)
+struct zx_sp_Status_s* zxid_mk_Status(zxid_conf* cf, struct zx_elem_s* father, const char* sc1, const char* sc2, const char* msg)
 {
   struct zx_sp_Status_s* st = zx_NEW_sp_Status(cf->ctx, father);
   if (msg)

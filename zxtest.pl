@@ -1087,7 +1087,14 @@ ZXC('ZXC-WS2', 'AS + WSF call: x-foobar', 1000, "-t urn:x-foobar", 't/x-foobar-r
 CMD('ZXC-WS3', 'AS + WSF call leaf (x-recurs)', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t x-recurs -e '<foobar>Hello</foobar>' -b");
 CMD('ZXC-WS4', 'AS + WSF call EPR not found', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t x-none -e '<foobar>Hello</foobar>' -b",512);
 CMD('ZXC-WS5', 'AS + WSF call bad pw', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:bad -t x-none -e '<foobar>Hello</foobar>' -b",256);
-#ZXC('ZXC-WS6', 'AS + WSF call: x-foobar', 1000, "-t urn:x-foobar", 't/x-foobar-rq.xml');
+
+CMD('ZXC-WS6', 'AS + WSF call hr-xml bad', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<foobar>Hello</foobar>' -b");
+
+CMD('ZXC-WS7', 'AS + WSF call hr-xml create', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Create xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:CreateItem><idhrxml:NewData><hrxml:Candidate xmlns:hrxml=\"http://ns.hr-xml.org/2007-04-15\">test candidate</hrxml:Candidate></idhrxml:NewData></idhrxml:CreateItem></idhrxml:Create>' -b");
+CMD('ZXC-WS8', 'AS + WSF call hr-xml query', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Query xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:QueryItem><idhrxml:Select>test query</idhrxml:Select></idhrxml:QueryItem></idhrxml:Query>' -b");
+CMD('ZXC-WS9', 'AS + WSF call hr-xml mod', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Modify xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:ModifyItem><idhrxml:Select>test query</idhrxml:Select><idhrxml:NewData><hrxml:Candidate xmlns:hrxml=\"http://ns.hr-xml.org/2007-04-15\">test mod</hrxml:Candidate></idhrxml:NewData></idhrxml:ModifyItem></idhrxml:Modify>' -b");
+CMD('ZXC-WS10', 'AS + WSF call hr-xml mod', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Delete xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:DeleteItem><idhrxml:Select>test query</idhrxml:Select></idhrxml:DeleteItem></idhrxml:Delete>' -b");
+
 
 ### Simulated browsing tests (a bit fragile)
 
@@ -1101,7 +1108,11 @@ tA('AR','SSOHLO2', 'Selected IdP', 'http://sp1.zxidsp.org:8081/zxidhlo?e=&l0http
 tA('SP','SSOHLO3', 'Login to IdP', 'http://idp.tas3.pt:8081/zxididp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=$AR&zxapp=');
 
 pA('ST','SSOHLO4', 'POST to SP', 'http://sp1.zxidsp.org:8081/zxidhlo?o=P', "SAMLResponse=$SAMLResponse");
-tA('ST','SSOHLO5', 'SP local logout', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Local+Logout+');
+tA('ST','SSOHLO5', 'SP SOAP Az',      'http://sp1.zxidsp.org:8081/zxidhlo?gv=1');
+tA('ST','SSOHLO6', 'SP SOAP defed',   'http://sp1.zxidsp.org:8081/zxidhlo?gu=1');
+tA('ST','SSOHLO7', 'SP SOAP defed',   'http://sp1.zxidsp.org:8081/zxidhlo?gt=1');
+tA('ST','SSOHLO8', 'SP SOAP logout',  'http://sp1.zxidsp.org:8081/zxidhlo?gs=1');
+tA('ST','SSOHLO9', 'SP local logout', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Local+Logout+');
 
 #tA('ST','javaexit', 'http://sp1.zxidsp.org:8080/appdemo?exit');
 
@@ -1111,7 +1122,10 @@ tA('ST','SSOHLO5', 'SP local logout', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Lo
 # *** TODO: via zxidhlo.php
 # *** TODO: via Net::SAML
 # *** TODO: via SSO servlet
-# http://sp.tas3.pt:8080/zxidservlet/sso/wscprepdemo
+# http://sp1.zxidsp.org:8081/zxidhlo?o=E
+# http://sp1.zxidsp.org:8080/zxidservlet/zxidHLO?o=E
+# http://sp.tas3.pt:8080/zxidservlet/appdemo
+# http://sp.tas3.pt:8080/zxidservlet/wscprepdemo
 
 CMD('COVIMP1', 'Silly tests just to improve test coverage', "./zxcovimp.sh", 0, 60, 10);
 

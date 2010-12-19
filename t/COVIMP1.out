@@ -3,7 +3,7 @@ TESTING DECODE
 oo
 TESTING ENCDEC
 r2 nid(a-persistent-nid) should be(a-persistent-nid)
-<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"/></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status><xasp:XACMLAuthzDecisionQuery xmlns:xasp="urn:oasis:xacml:2.0:saml:protocol:schema:os" ID="RpRVXSWfp0jiJsCYhFpoHRQ2T" IssueInstant="2010-12-15T01:18:48Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xasp:XACMLAuthzDecisionQuery>version(73)
+<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"/></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status><xasp:XACMLAuthzDecisionQuery xmlns:xasp="urn:oasis:xacml:2.0:saml:protocol:schema:os" ID="RxYbQX1Cbca9QLJicfSPRirR3" IssueInstant="2010-12-19T19:43:02Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xasp:XACMLAuthzDecisionQuery>CD1: <xaspcd1:XACMLAuthzDecisionQuery xmlns:xaspcd1="urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:protocol:cd-01" ID="RoNvLDrtonz3mXbHGVJjVm1dL" IssueInstant="2010-12-19T19:43:02Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xaspcd1:XACMLAuthzDecisionQuery>version(73)
 urlenc(test1%3A%2F%2Ffoo%3Fa%3Db%26c%3Dd%20e)
 hexdec(123)
 parse err(test6: Parse error at char 0/7 (prev char, char, next char: 0x00 0x66 0x6f)
@@ -13,6 +13,52 @@ foobar
 memmem(obar)
 Location: https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=E&c=test8
 
+n=
+p=urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
+t=urn:oasis:names:tc:SAML:2.0:nameid-format:transient
+u=urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
+e=urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+x=urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName
+w=urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName
+k=urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos
+s=urn:oasis:names:tc:SAML:2.0:nameid-format:entity
+X=X
+r=urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect
+a=urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact
+p=urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST
+q=urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign
+s=urn:oasis:names:tc:SAML:2.0:bindings:SOAP
+e=urn:oasis:names:tc:SAML:2.0:bindings:PAOS
+X=X
+NULL=114
+SAML2_REDIR=114
+SAML2_ART=97
+SAML2_POST=112
+SAML2_POST_SIMPLE_SIGN=113
+SAML2_SOAP=115
+SAML2_PAOS=101
+unknown=114
+n=
+pwp=urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport
+pw=urn:oasis:names:tc:SAML:2.0:ac:classes:Password
+prvses=urn:oasis:names:tc:SAML:2.0:ac:classes:PreviousSession
+clicert=urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient
+unspcf=urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified
+ip=urn:oasis:names:tc:SAML:2.0:ac:classes:InternetProtocol
+X=X
+O Signature validated.
+A Unsupported digest algorithm. Signature can not be validated.
+G Wrong digest length. Signature can not be validated.
+G Message digest does not match signed content. Canonicalization problem? Or falsified or altered or substituted content. Signature can not be validated.
+A Unsupported signature algorithm. Signature can not be validated.
+I Bad IdP certificate or bad IdP metadata or unknown IdP. Signature can not be validated.
+R Signature does not match signed content (but content checksum matches). Content may have been falsified, altered, or substituted; or IdP metadata does not match the keys actually used by the IdP.
+N No signature found.
+V Assertion is not in its validity period.
+V Assertion has wrong audience.
+E Broken or unvalidatable signature. (other)
+fake_sso=3
+covimp ok
 TESTING PASSWD
 SP specific NameID:   (bob)
 SP specific NameID:   (foo)
@@ -36,6 +82,7 @@ SP specific NameID:   (pwtest)
 SP specific NameID:   (refucenikj)
 TESTING LOGVIEW
 TESTING ZXCOT
+/var/zxid/cot/7226zILkb6t9aGT89NyvhKvbZS0 http://sp1.zxidsp.org:8081/zxidhlo?o=B             TAS3 App Demo SP and WSC
 /var/zxid/cot/THuOFn5WPO49n6esrG22rUFW6Go http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B            TAS3 App Demo SP and WSC
 /var/zxid/cot/s36Te-rgbzReSjVc8vDDGy89tT8 http://idp.ssocircle.com                           -
 /var/zxid/cot/_CBGcFVVbIEmt5oh3jUx4GEfHLM https://idp.symdemo.com:8880/idp.xml               -
@@ -71,3 +118,76 @@ You may need to run
 to make sure the zxid CGI script can write to the tmp/test/
 directory (substitute nobody with the user your web server runs as).
 
+TESTING MISC
+Content-Type: text/xml
+Content-Length: 6721
+
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://?o=B"><md:SPSSODescriptor AuthnRequestsSigned="1" WantAssertionsSigned="1" errorURL="http://?o=E" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><md:KeyDescriptor use="encryption"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data><ds:X509Certificate>MIIGWTCCBcKgAwIBAgIDAJEBMA0GCSqGSIb3DQEBBQUAMIIBEjELMAkGA1UEBhMC
+RVMxEjAQBgNVBAgTCUJhcmNlbG9uYTESMBAGA1UEBxMJQmFyY2Vsb25hMSkwJwYD
+VQQKEyBJUFMgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkgcy5sLjEuMCwGA1UEChQl
+Z2VuZXJhbEBpcHNjYS5jb20gQy5JLkYuICBCLUI2MjIxMDY5NTEuMCwGA1UECxMl
+aXBzQ0EgQ0xBU0VBMSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEuMCwGA1UEAxMl
+aXBzQ0EgQ0xBU0VBMSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEgMB4GCSqGSIb3
+DQEJARYRZ2VuZXJhbEBpcHNjYS5jb20wHhcNMDYwNDI2MTUzNjU0WhcNMDgwNDI1
+MTUzNjU0WjCBljELMAkGA1UEBhMCUFQxDzANBgNVBAgTBkxpc2JvYTEPMA0GA1UE
+BxMGTGlzYm9hMRMwEQYDVQQKEwpTeW1sYWJzIFNBMRQwEgYDVQQLEwtJVCBTZXJ2
+aWNlczEYMBYGA1UEAxMPaWRwLnN5bWRlbW8uY29tMSAwHgYJKoZIhvcNAQkBFhFm
+ZWxpeEBzeW1sYWJzLmNvbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA06ux
+x5ZjAl06CZcSMVtjoaS2sCbrBq/whwWnuVgbD6gAM9EO9qDDEs9eB5n4lHGY8S94
+iFTWuZy9jdxL5wNgr2Zk8NxytyaznQgAddKLCSqPZh7Dd+U3Z5hoGtLelJoq2Yi8
+Sopfj3m6TKOzURgg/Ad/0/cuF9TyCpQprBcpsAECAwEAAaOCAzQwggMwMAkGA1Ud
+EwQCMAAwEQYJYIZIAYb4QgEBBAQDAgZAMAsGA1UdDwQEAwID+DATBgNVHSUEDDAK
+BggrBgEFBQcDATAdBgNVHQ4EFgQUbChmdTnQyOFzW59+dakqD/KXpy4wHwYDVR0j
+BBgwFoAUDgdg1DnJG1tdkHsjyNI0nUqaRjkwHAYDVR0RBBUwE4ERZmVsaXhAc3lt
+bGFicy5jb20wHAYDVR0SBBUwE4ERZ2VuZXJhbEBpcHNjYS5jb20wcgYJYIZIAYb4
+QgENBGUWY09yZ2FuaXphdGlvbiBJbmZvcm1hdGlvbiBOT1QgVkFMSURBVEVELiBD
+TEFTRUExIFNlcnZlciBDZXJ0aWZpY2F0ZSBpc3N1ZWQgYnkgaHR0cHM6Ly93d3cu
+aXBzY2EuY29tLzAvBglghkgBhvhCAQIEIhYgaHR0cHM6Ly93d3cuaXBzY2EuY29t
+L2lwc2NhMjAwMi8wQwYJYIZIAYb4QgEEBDYWNGh0dHBzOi8vd3d3Lmlwc2NhLmNv
+bS9pcHNjYTIwMDIvaXBzY2EyMDAyQ0xBU0VBMS5jcmwwRgYJYIZIAYb4QgEDBDkW
+N2h0dHBzOi8vd3d3Lmlwc2NhLmNvbS9pcHNjYTIwMDIvcmV2b2NhdGlvbkNMQVNF
+QTEuaHRtbD8wQwYJYIZIAYb4QgEHBDYWNGh0dHBzOi8vd3d3Lmlwc2NhLmNvbS9p
+cHNjYTIwMDIvcmVuZXdhbENMQVNFQTEuaHRtbD8wQQYJYIZIAYb4QgEIBDQWMmh0
+dHBzOi8vd3d3Lmlwc2NhLmNvbS9pcHNjYTIwMDIvcG9saWN5Q0xBU0VBMS5odG1s
+MIGDBgNVHR8EfDB6MDmgN6A1hjNodHRwOi8vd3d3Lmlwc2NhLmNvbS9pcHNjYTIw
+MDIvaXBzY2EyMDAyQ0xBU0VBMS5jcmwwPaA7oDmGN2h0dHA6Ly93d3diYWNrLmlw
+c2NhLmNvbS9pcHNjYTIwMDIvaXBzY2EyMDAyQ0xBU0VBMS5jcmwwMgYIKwYBBQUH
+AQEEJjAkMCIGCCsGAQUFBzABhhZodHRwOi8vb2NzcC5pcHNjYS5jb20vMA0GCSqG
+SIb3DQEBBQUAA4GBACan4TGRFHayR38xPkMabzwz9VmCbm0uwPxkUhSB8DQ8gNWi
+jkSenPpwpvomvNfp4G0WJdavd7KnZBbMbnKx1qTMgge/ftBnuqcrn6w90jnSC4RK
+aHftQ+r2gFYiVX4HEa6NU5AgpiQjme0Vh3Hzs228lVllgsFqv6YbdIyTYIUe
+</ds:X509Certificate></ds:X509Data></ds:KeyInfo></md:KeyDescriptor><md:KeyDescriptor use="signing"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data><ds:X509Certificate>MIIGWTCCBcKgAwIBAgIDAJEBMA0GCSqGSIb3DQEBBQUAMIIBEjELMAkGA1UEBhMC
+RVMxEjAQBgNVBAgTCUJhcmNlbG9uYTESMBAGA1UEBxMJQmFyY2Vsb25hMSkwJwYD
+VQQKEyBJUFMgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkgcy5sLjEuMCwGA1UEChQl
+Z2VuZXJhbEBpcHNjYS5jb20gQy5JLkYuICBCLUI2MjIxMDY5NTEuMCwGA1UECxMl
+aXBzQ0EgQ0xBU0VBMSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEuMCwGA1UEAxMl
+aXBzQ0EgQ0xBU0VBMSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEgMB4GCSqGSIb3
+DQEJARYRZ2VuZXJhbEBpcHNjYS5jb20wHhcNMDYwNDI2MTUzNjU0WhcNMDgwNDI1
+MTUzNjU0WjCBljELMAkGA1UEBhMCUFQxDzANBgNVBAgTBkxpc2JvYTEPMA0GA1UE
+BxMGTGlzYm9hMRMwEQYDVQQKEwpTeW1sYWJzIFNBMRQwEgYDVQQLEwtJVCBTZXJ2
+aWNlczEYMBYGA1UEAxMPaWRwLnN5bWRlbW8uY29tMSAwHgYJKoZIhvcNAQkBFhFm
+ZWxpeEBzeW1sYWJzLmNvbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA06ux
+x5ZjAl06CZcSMVtjoaS2sCbrBq/whwWnuVgbD6gAM9EO9qDDEs9eB5n4lHGY8S94
+iFTWuZy9jdxL5wNgr2Zk8NxytyaznQgAddKLCSqPZh7Dd+U3Z5hoGtLelJoq2Yi8
+Sopfj3m6TKOzURgg/Ad/0/cuF9TyCpQprBcpsAECAwEAAaOCAzQwggMwMAkGA1Ud
+EwQCMAAwEQYJYIZIAYb4QgEBBAQDAgZAMAsGA1UdDwQEAwID+DATBgNVHSUEDDAK
+BggrBgEFBQcDATAdBgNVHQ4EFgQUbChmdTnQyOFzW59+dakqD/KXpy4wHwYDVR0j
+BBgwFoAUDgdg1DnJG1tdkHsjyNI0nUqaRjkwHAYDVR0RBBUwE4ERZmVsaXhAc3lt
+bGFicy5jb20wHAYDVR0SBBUwE4ERZ2VuZXJhbEBpcHNjYS5jb20wcgYJYIZIAYb4
+QgENBGUWY09yZ2FuaXphdGlvbiBJbmZvcm1hdGlvbiBOT1QgVkFMSURBVEVELiBD
+TEFTRUExIFNlcnZlciBDZXJ0aWZpY2F0ZSBpc3N1ZWQgYnkgaHR0cHM6Ly93d3cu
+aXBzY2EuY29tLzAvBglghkgBhvhCAQIEIhYgaHR0cHM6Ly93d3cuaXBzY2EuY29t
+L2lwc2NhMjAwMi8wQwYJYIZIAYb4QgEEBDYWNGh0dHBzOi8vd3d3Lmlwc2NhLmNv
+bS9pcHNjYTIwMDIvaXBzY2EyMDAyQ0xBU0VBMS5jcmwwRgYJYIZIAYb4QgEDBDkW
+N2h0dHBzOi8vd3d3Lmlwc2NhLmNvbS9pcHNjYTIwMDIvcmV2b2NhdGlvbkNMQVNF
+QTEuaHRtbD8wQwYJYIZIAYb4QgEHBDYWNGh0dHBzOi8vd3d3Lmlwc2NhLmNvbS9p
+cHNjYTIwMDIvcmVuZXdhbENMQVNFQTEuaHRtbD8wQQYJYIZIAYb4QgEIBDQWMmh0
+dHBzOi8vd3d3Lmlwc2NhLmNvbS9pcHNjYTIwMDIvcG9saWN5Q0xBU0VBMS5odG1s
+MIGDBgNVHR8EfDB6MDmgN6A1hjNodHRwOi8vd3d3Lmlwc2NhLmNvbS9pcHNjYTIw
+MDIvaXBzY2EyMDAyQ0xBU0VBMS5jcmwwPaA7oDmGN2h0dHA6Ly93d3diYWNrLmlw
+c2NhLmNvbS9pcHNjYTIwMDIvaXBzY2EyMDAyQ0xBU0VBMS5jcmwwMgYIKwYBBQUH
+AQEEJjAkMCIGCCsGAQUFBzABhhZodHRwOi8vb2NzcC5pcHNjYS5jb20vMA0GCSqG
+SIb3DQEBBQUAA4GBACan4TGRFHayR38xPkMabzwz9VmCbm0uwPxkUhSB8DQ8gNWi
+jkSenPpwpvomvNfp4G0WJdavd7KnZBbMbnKx1qTMgge/ftBnuqcrn6w90jnSC4RK
+aHftQ+r2gFYiVX4HEa6NU5AgpiQjme0Vh3Hzs228lVllgsFqv6YbdIyTYIUe
+</ds:X509Certificate></ds:X509Data></ds:KeyInfo></md:KeyDescriptor><md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://?o=Q" ResponseLocation="http://?o=Q"/><md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://?o=S"/><md:ManageNameIDService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://?o=Q" ResponseLocation="http://?o=Q"/><md:ManageNameIDService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://?o=S"/><md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat><md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat><md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="http://" index="1"/><md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://?o=P" index="2"/><md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://?o=S" index="3"/><md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="http://?o=P" index="4"/><md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="http://?o=P" index="5"/></md:SPSSODescriptor><md:Organization><md:OrganizationName xml:lang="en">TAS3 Testing SP</md:OrganizationName><md:OrganizationDisplayName xml:lang="en">TAS3 App Demo SP and WSC</md:OrganizationDisplayName><md:OrganizationURL xml:lang="en">http://zxid.org/</md:OrganizationURL></md:Organization><md:ContactPerson contactType="administrative"><md:Company>TAS3 Testing SP</md:Company></md:ContactPerson></md:EntityDescriptor>

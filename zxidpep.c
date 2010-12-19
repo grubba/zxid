@@ -322,7 +322,7 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   zxid_pepmap_extract(cf, cgi, ses, pepmap, &subj, &rsrc, &act, &env);
   resp = zxid_az_soap(cf, cgi, ses, pdp_url, subj, rsrc, act, env);
   if (!resp || !resp->Assertion) {
-    ERR("DENY due to malformed authorization response from PDP. Either no response or response lacjing assertion. %p", resp);
+    ERR("DENY due to malformed authorization response from PDP. Either no response or response lacking assertion. %p", resp);
     return 0;
   }
   
