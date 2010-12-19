@@ -343,6 +343,7 @@ struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* t
     break;
   }
   *pp = 0;
+  ss->len = pp - ss->s;
   return ss;
 }
 
@@ -1377,12 +1378,13 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
   if (!qs) {
     qs = getenv("QUERY_STRING");
     if (qs) {
+      DD("QUERY_STRING(%s) %s", STRNULLCHK(qs), ZXID_REL);
       zxid_parse_cgi(&cgi, qs);
       if (ONE_OF_3(cgi.op, 'P', 'R', 'S')) {
 	cont_len = getenv("CONTENT_LENGTH");
 	if (cont_len) {
 	  sscanf(cont_len, "%d", &got);
-	  D("QUERY_STRING(%c) cont_len=%s got=%d rel=%s", cgi.op, cont_len, got, ZXID_REL);
+	  D("o=%c cont_len=%s got=%d rel=%s", cgi.op, cont_len, got, ZXID_REL);
 	  buf = ZX_ALLOC(cf->ctx, got);
 	  if (!buf) {
 	    ERR("out of memory len=%d", got);
@@ -1424,10 +1426,10 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
 	    zxid_parse_cgi(&cgi, buf);
 	  }
 	} else {
-	  D("QUERY_STRING(%s) post, but no CONTENT_LENGTH rel=%s", qs, ZXID_REL);
+	  D("o=%c post, but no CONTENT_LENGTH rel=%s", cgi.op, ZXID_REL);
 	}
       } else {
-	D("QUERY_STRING(%s) other rel=%s", qs, ZXID_REL);
+	D("o=%c other rel=%s", cgi.op, ZXID_REL);
       }
     }
   } else {

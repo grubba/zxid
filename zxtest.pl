@@ -136,7 +136,7 @@ sub urienc {
 if (1) {
 sub resp_cb {
     my ($chunk,$curl_id) = @_;
-    #warn "resp_cb curl_id($curl_id)";
+    #warn "resp_cb curl_id($curl_id) chunk($chunk) len=".length($chunk);
     $resp{$curl_id} .= $chunk;
     return length $chunk; # OK
 }
