@@ -40,8 +40,8 @@ all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcg
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000073
-ZXIDREL=0.73
+ZXIDVERSION=0x000074
+ZXIDREL=0.74
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -1275,7 +1275,7 @@ endif
 endif
 
 libzxid.so.0.0: $(LIBZXID_A)
-	$(LD) $(OUTOPT)libzxid.so.0.0 $(SHARED_FLAGS) $^ $(SHARED_CLOSE)
+	$(LD) $(OUTOPT)libzxid.so.0.0 $(SHARED_FLAGS) $^ $(SHARED_CLOSE) -lcurl -lssl -lcrypt
 
 zxid.dll zxidimp.lib: $(LIBZXID_A)
 	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib $^ $(SHARED_CLOSE) $(WIN_LIBS)

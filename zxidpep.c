@@ -367,6 +367,24 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
       INFO("PERMIT found in stmt len=%d", ss->len);
       ZX_FREE(cf->ctx, ss);
       return p;
+    } else if (ZX_CONTENT_EQ_CONST(decision, "Deny")) {
+      ss = zx_easy_enc_elem_opt(cf, &stmt->Response->gg);
+      if (!ss || !ss->len)
+	return 0;
+      p = ss->s;
+      D("Deny stmt(%s)", p);
+      INFO("DENY found in stmt len=%d", ss->len);
+      ZX_FREE(cf->ctx, ss);
+      return p;
+    } else {
+      ss = zx_easy_enc_elem_opt(cf, &stmt->Response->gg);
+      if (!ss || !ss->len)
+       return 0;
+      p = ss->s;
+      D("Other stmt(%s)", p);
+      INFO("Other (treated as Deny) found in stmt len=%d", ss->len);
+      ZX_FREE(cf->ctx, ss);
+      return p;
     }
   }
   /*if (resp->Assertion->AuthzDecisionStatement) {  }*/

@@ -70,6 +70,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
 
+zxid-0.74:: 20.12.2010
+
 zxid-0.73:: 19.12.2010
     - Added ssoa7n and tgta7n attributes (TAS3 feature req #484)
     - Added optional sessionwide idpsesid attribute (TAS3 feature req #419)

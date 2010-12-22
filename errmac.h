@@ -146,6 +146,7 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define STR_TERM '\0'
  
 #define TOUPPER(x) (IN_RANGE(x, 'a', 'z') ? ((x) - ('a' - 'A')) : (x))
+#define TOLOWER(x) (IN_RANGE(x, 'A', 'Z') ? ((x) - ('A' - 'z')) : (x))
 
 #define BOOL_STR_TEST(x) ((x) && (x) != '0')
  
@@ -160,6 +161,9 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
                     IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z') )
 #define AZaz_09_dot(x) ( IN_RANGE((x), '0', '9') || ((x) == '_') || \
                     ((x)=='.') || ((x) == '-') || \
+                    IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z') )
+#define AZaz_09_dot_plus(x) ( IN_RANGE((x), '0', '9') || ((x) == '_') || \
+                    ((x)=='.') || ((x) == '-') || ((x) == '+') || \
                     IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z') )
 #define AZaz_(x) ( ((x) == '_') || \
                     IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z') )
