@@ -1,15 +1,22 @@
 #!/usr/bin/perl
+# 20101111, Sampo Kellomaki (sampo@zxidp.org)
 
 use Net::SSLeay;
 
-$exchange = 'audit.tas3.nottingham.ac.uk';
+$exchange = 'localhost';
+#$exchange = '89.200.142.218';
+#$exchange = 'audit.tas3.nottingham.ac.uk';
 $port = 5672;  # default is 5672
 
+# Sec 4.2 (p.40)              class, instance (1=TCP), major, minor
 $req = pack 'a4CCCC', 'AMQP', 1, 1, 1 ,0;
 
-$tack = 0;
+$seg_type = 0x00;  # ***
+$track = 0;
 $channel = 0;
+$len = 12;         # Min size is 12
 
+# Sec 4.4.1 (p.41), 4.4.3 (p.43)
 # vv00BEbe  = version (00), beginning and end bits at frame and segment level; 0x0f = single frame
 $frame_hdr = pack 'CCnCCnN', 0x0f, $seg_type, $len, 0, $track, $channel, 0;
 
@@ -39,5 +46,8 @@ tomkirkham2: QPID Broker
 [AMQP06] "AMQP: A General-Purpose Middleware Standard" (a.k.a Advanced Message Queueing Protocol), 2006. File: amqp.0-10.pdf
 
 /home/sampo/tas3/arch/amqp.0-10.pdf
+
+AMQP-Messaging-Broker-CPP-Book.pdf
+
 
 --Sampo

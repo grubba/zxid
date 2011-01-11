@@ -202,7 +202,7 @@ ifeq ($(TARGET),macosx)
 # Flags for MacOS 10 / Darwin native compile (gcc + Apple linker)
 #   alias ldd='otool -L'
 #   alias strace=ktrace or dtrace or dtruss
-CFLAGS=-g -fPIC -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing
+CFLAGS=-g -fPIC -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -DMAYBE_UNUSED=''
 CDEF+=-DMACOSX
 JNI_INC=-I/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Headers
 SHARED_FLAGS=-dylib -all_load -bundle
@@ -266,7 +266,7 @@ WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lw
 LIBS= -mconsole $(WIN_LIBS)
 #SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,-whole-archive
 SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
-CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing  -mno-cygwin
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing  -mno-cygwin -DMAYBE_UNUSED='__attribute__ ((unused))'
 
 # java.lang.UnsatisfiedLinkError: Given procedure could not be found
 # -mno-cygwin -mrtd -Wl,--kill-at -Wl,--add-stdcall-alias
@@ -283,7 +283,7 @@ OPENSSL_ROOT=/usr/local/ssl
 WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
 LIBS= -mconsole $(WIN_LIBS)
 SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
-CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -DMAYBE_UNUSED='__attribute__ ((unused))'
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
@@ -317,7 +317,7 @@ LIBS= $(WIN_LIBS)
 #SHARED_CLOSE=/SUBSYSTEM:WINDOWS
 SHARED_FLAGS=-DLL -shared --export-all-symbols
 SHARED_CLOSE=
-CFLAGS=-Zi -WL
+CFLAGS=-Zi -WL  -DMAYBE_UNUSED=''
 #CFLAGS+=-Yd
 OUTOPT=-OUT:
 OBJ_EXT=obj

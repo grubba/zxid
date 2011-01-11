@@ -70,7 +70,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
 
-zxid-0.74:: 20.12.2010
+zxid-0.74:: 10.1.2011
 
 zxid-0.73:: 19.12.2010
     - Added ssoa7n and tgta7n attributes (TAS3 feature req #484)
@@ -83,6 +83,7 @@ zxid-0.73:: 19.12.2010
     - Added preliminary DSA support
     - Crude and preliminary X509 attribute cert support
     - Fixed excessive content-length in CGI output
+    - Fixed XML valued attributes (TAS3 bug #385)
     - Test coverage 63%
 
 zxid-0.72:: 5.12.2010

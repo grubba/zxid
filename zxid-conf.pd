@@ -521,6 +521,18 @@ rule:: transformation rule:
         rule (NZ). Also rename if +b+ provided.
     sb64:: Encode the attribute value according to safebase64 [RFC3548]
         rule (NZ). Also rename if +b+ provided.
+    a7n:: Wrap the attribute in a SAML2 assertion
+    x509:: Wrap the attribute in a X509 AC attribute certificate
+    file:: Obtain the value of the attribute from file specified in the +ext+ field
+    a7n-feideenc:: Combination of ~a7n~ and ~fedieenc~
+    a7n-def-sb64:: Combination of ~a7n~ and ~def-sb64~
+    a7n-sb64:: Combination of ~a7n~ and ~sb64~
+    x509-feideenc:: Combination of ~x509~ and ~fedieenc~
+    x509-def-sb64:: Combination of ~x509~ and ~def-sb64~
+    x509-sb64:: Combination of ~x509~ and ~sb64~
+    file-feideenc:: Combination of ~file~ and ~fedieenc~
+    file-def-sb64:: Combination of ~file~ and ~def-sb64~
+    file-sb64:: Combination of ~file~ and ~sb64~
     reset:: Special pseudo rule that clears previous map configuration.
 ext:: Extended argument that may be used by some rules.
 
@@ -541,6 +553,27 @@ subprocess environment (i.e. what CGI scripts see). Syntax and
 available operations are the same as for ~INMAP~.
 
   OUTMAP=src$A$rule$b$ext
+
+4.1.6 AAMAP specification
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~AAMAP~ specification is used by IdP Attribute Authority feature to
+decide whinc attributes from the .at files to include in the
+assertion.  Unlike other MAP directives, AAMAP can not be placed in
+regular configuration. Instead it is looked for in .cf file in
+following paths (first found will be used):
+
+  /var/zxid/idpuid/.all/SP_SHA1_NAME/.cf
+  /var/zxid/idpuid/.all/.bs/.cf
+
+The first allows per SP tweaking of what attributes are sent. The
+latter allows global policy to be set. In absence of either .cf file,
+the default is
+
+  AAMAP=$*$$$;$idpsesid$del$$
+
+which passes all attributes excapt for ~idpsesid~ (passing ~idpsesid~ would
+cause privacy loss as it can be used as correlation handle).
 
 <<ignore:
 4.1.6 Additional Filtering

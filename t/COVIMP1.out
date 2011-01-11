@@ -3,63 +3,7 @@ TESTING DECODE
 oo
 TESTING ENCDEC
 r2 nid(a-persistent-nid) should be(a-persistent-nid)
-<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"/></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status><xasp:XACMLAuthzDecisionQuery xmlns:xasp="urn:oasis:xacml:2.0:saml:protocol:schema:os" ID="RxYbQX1Cbca9QLJicfSPRirR3" IssueInstant="2010-12-19T19:43:02Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xasp:XACMLAuthzDecisionQuery>CD1: <xaspcd1:XACMLAuthzDecisionQuery xmlns:xaspcd1="urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:protocol:cd-01" ID="RoNvLDrtonz3mXbHGVJjVm1dL" IssueInstant="2010-12-19T19:43:02Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xaspcd1:XACMLAuthzDecisionQuery>version(73)
-urlenc(test1%3A%2F%2Ffoo%3Fa%3Db%26c%3Dd%20e)
-hexdec(123)
-parse err(test6: Parse error at char 0/7 (prev char, char, next char: 0x00 0x66 0x6f)
-foobar
-^
-)
-memmem(obar)
-Location: https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=E&c=test8
-
-n=
-p=urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
-t=urn:oasis:names:tc:SAML:2.0:nameid-format:transient
-u=urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
-e=urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
-x=urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName
-w=urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName
-k=urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos
-s=urn:oasis:names:tc:SAML:2.0:nameid-format:entity
-X=X
-r=urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect
-a=urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact
-p=urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST
-q=urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign
-s=urn:oasis:names:tc:SAML:2.0:bindings:SOAP
-e=urn:oasis:names:tc:SAML:2.0:bindings:PAOS
-X=X
-NULL=114
-SAML2_REDIR=114
-SAML2_ART=97
-SAML2_POST=112
-SAML2_POST_SIMPLE_SIGN=113
-SAML2_SOAP=115
-SAML2_PAOS=101
-unknown=114
-n=
-pwp=urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport
-pw=urn:oasis:names:tc:SAML:2.0:ac:classes:Password
-prvses=urn:oasis:names:tc:SAML:2.0:ac:classes:PreviousSession
-clicert=urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient
-unspcf=urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified
-ip=urn:oasis:names:tc:SAML:2.0:ac:classes:InternetProtocol
-X=X
-O Signature validated.
-A Unsupported digest algorithm. Signature can not be validated.
-G Wrong digest length. Signature can not be validated.
-G Message digest does not match signed content. Canonicalization problem? Or falsified or altered or substituted content. Signature can not be validated.
-A Unsupported signature algorithm. Signature can not be validated.
-I Bad IdP certificate or bad IdP metadata or unknown IdP. Signature can not be validated.
-R Signature does not match signed content (but content checksum matches). Content may have been falsified, altered, or substituted; or IdP metadata does not match the keys actually used by the IdP.
-N No signature found.
-V Assertion is not in its validity period.
-V Assertion has wrong audience.
-E Broken or unvalidatable signature. (other)
-fake_sso=3
-covimp ok
-TESTING PASSWD
+<sp:Status xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"><sp:StatusCode Value="SC1"><sp:StatusCode Value="SC2"/></sp:StatusCode><sp:StatusMessage>MESSAGE</sp:StatusMessage></sp:Status><xasp:XACMLAuthzDecisionQuery xmlns:xasp="urn:oasis:xacml:2.0:saml:protocol:schema:os" ID="RJaOBMmlWY6B3qFr9CZw7x0sD" IssueInstant="2010-12-23T21:15:58Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xasp:XACMLAuthzDecisionQuery>CD1: <xaspcd1:XACMLAuthzDecisionQuery xmlns:xaspcd1="urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:protocol:cd-01" ID="ROXBsfj-bFk00CGN18aodYJWL" IssueInstant="2010-12-23T21:15:58Z" Version="2.0"><sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid?o=B</sa:Issuer><xac:Request xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os"><xac:Subject></xac:Subject><xac:Resource></xac:Resource><xac:Action></xac:Action><xac:Environment></xac:Environment></xac:Request></xaspcd1:XACMLAuthzDecisionQuery>TESTING PASSWD
 SP specific NameID:   (bob)
 SP specific NameID:   (foo)
 SP specific NameID:   (fool)

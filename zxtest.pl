@@ -133,6 +133,8 @@ sub urienc {
     return $val;
 }
 
+### HTTP clients
+
 if (1) {
 sub resp_cb {
     my ($chunk,$curl_id) = @_;
@@ -672,40 +674,46 @@ sub C {
     tst_ok($latency, $slow, $test);
 }
 
+# Erase some common innocent differences
+
+sub blot_out_std_diffs {
+    my ($x) = @_;
+    $x =~ s/(ID)=".*?"/$1=""/g;
+    $x =~ s/(IssueInstant)=".*?"/$1=""/g;
+    
+    $x =~ s/0\.\d+ 12\d+ libzxid \(zxid\.org\)/0./g;
+    $x =~ s/R0\.\d+ \(\d+\)/R0./g;
+    $x =~ s/R0\.\d+/R0./g;
+    
+    $x =~ s/^(msgid: ).+/$1/gm;
+    $x =~ s/^(sespath: ).+/$1/gm;
+    $x =~ s/^(sesid: ).+/$1/gm;
+    $x =~ s/^(tgta7npath: ).+/$1/gm;
+    $x =~ s/^(ssoa7npath: ).+/$1/gm;
+    $x =~ s/^(zxididp: 0\.).+/$1/gm;
+
+    $x =~ s%<wsu:Created>.*?</wsu:Created>%CREATED_TS%g;
+    $x =~ s%<a:MessageID[^>]*>.*?</a:MessageID>%MessageID%g;
+    $x =~ s%<a:InReplyTo[^>]*>.*?</a:InReplyTo>%InReplyTo%g;
+    $x =~ s%<ds:DigestValue>.*?</ds:DigestValue>%DIGESTVAL%g;
+    $x =~ s%<ds:SignatureValue>.*?</ds:SignatureValue>%SIGVAL%g;
+    $x =~ s%<xenc:CipherValue>.*?</xenc:CipherValue>%CIPHERVALUE%g;
+    return $x;
+}
+
 sub ediffy {
-    my ($data1,$data2) = @_;
-    return 0 if $data1 eq $data2;
+    my ($a,$b) = @_;
+    return 0 if $a eq $b;
 
     # Ignore some common innocent differences
 
-    $data1 =~ s/(ID)=".*?"/$1=""/g;
-    $data2 =~ s/(ID)=".*?"/$1=""/g;
-    $data1 =~ s/(IssueInstant)=".*?"/$1=""/g;
-    $data2 =~ s/(IssueInstant)=".*?"/$1=""/g;
+    $a = blot_out_std_diffs($a);
+    $b = blot_out_std_diffs($b);
+    return 0 if $a eq $b;
 
-    $data1 =~ s/0\.\d+ 12\d+ libzxid \(zxid\.org\)/0./g;
-    $data2 =~ s/0\.\d+ 12\d+ libzxid \(zxid\.org\)/0./g;
-    $data1 =~ s/R0\.\d+ \(\d+\)/R0./g;
-    $data2 =~ s/R0\.\d+ \(\d+\)/R0./g;
-    $data1 =~ s/R0\.\d+/R0./g;
-    $data2 =~ s/R0\.\d+/R0./g;
-
-    $data1 =~ s/^(msgid: ).+/$1/gm;
-    $data2 =~ s/^(msgid: ).+/$1/gm;
-    $data1 =~ s/^(sespath: ).+/$1/gm;
-    $data2 =~ s/^(sespath: ).+/$1/gm;
-    $data1 =~ s/^(sesid: ).+/$1/gm;
-    $data2 =~ s/^(sesid: ).+/$1/gm;
-    $data1 =~ s/^(tgta7npath: ).+/$1/gm;
-    $data2 =~ s/^(tgta7npath: ).+/$1/gm;
-    $data1 =~ s/^(ssoa7npath: ).+/$1/gm;
-    $data2 =~ s/^(ssoa7npath: ).+/$1/gm;
-    $data1 =~ s/^(zxididp: 0\.).+/$1/gm;
-    $data2 =~ s/^(zxididp: 0\.).+/$1/gm;
-
-    return 0 if $data1 eq $data2;
-
-    warn "enter heavy diff len1=".length($data1)." len2=".length($data2);
+    warn "enter heavy diff -u tmp/a tmp/b; len1=".length($a)." len2=".length($b);
+    writeall("tmp/a", $a);
+    writeall("tmp/b", $b);
 
     my $ret = 0;
 
@@ -713,8 +721,8 @@ sub ediffy {
 	local $SIG{ALRM} = sub { die "TIMEOUT\n"; };
 	alarm 60;   # The ediff algorithm seems exponential time, so lets not wait forever.
 	require Algorithm::Diff;
-	my @seq1 = split //, $data1;
-	my @seq2 = split //, $data2;
+	my @seq1 = split //, $a;
+	my @seq2 = split //, $b;
 	my $diff = Algorithm::Diff->new( \@seq1, \@seq2 );
 	
 	$diff->Base(1);   # Return line numbers, not indices
@@ -745,6 +753,16 @@ sub ediffy_read {
     return ediffy($data1,$data2);
 }
 
+sub isdiff_read {
+    my ($file1,$file2) = @_;
+    my $data1 = readall $file1;
+    my $data2 = readall $file2;
+    $data1 = blot_out_std_diffs($data1);
+    $data2 = blot_out_std_diffs($data2);
+    return 0 if $data1 eq $data2;
+    return 1;
+}
+
 sub ED {  # enc-dec command with diff
     my ($tsti, $expl, $n_iter, $file, $exitval, $timeout) = @_;
     return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
@@ -763,9 +781,14 @@ sub ED {  # enc-dec command with diff
 	    tst_print('col1r', 'Diff ERR', $latency, $slow, $test, '');
 	    return;
 	}
-    } else {
+    } elsif ($diffmeth eq 'diffu') {
 	if (system "/usr/bin/diff t/$tsti.out tmp/$tsti.out") {
 	    tst_print('col1r', 'Diff Err', $latency, $slow, $test, '');
+	    return;
+	}
+    } else {
+	if (isdiff_read("t/$tsti.out", "tmp/$tsti.out")) {
+	    tst_print('col1r', 'Diff ERR', $latency, $slow, $test, '');
 	    return;
 	}
     }
@@ -802,7 +825,7 @@ sub CMD {  # zxpasswd command with diff
 
     unlink "tmp/$tsti.out";
     
-    my $latency = call_system($test, $timeout, $slow, "$cmd >tmp/$tsti.out 2>tmp/tst.err", $exitval);
+    my $latency = call_system($test,$timeout,$slow, "$cmd >tmp/$tsti.out 2>tmp/tst.err", $exitval);
     return if $latency == -1;
     
     if ($diffx) {
@@ -810,9 +833,14 @@ sub CMD {  # zxpasswd command with diff
 	    tst_print('col1r', 'Diff ERR', $latency, $slow, $test, '');
 	    return;
 	}
-    } else {
+    } elsif ($diffmeth eq 'diffu') {
 	if (system "/usr/bin/diff t/$tsti.out tmp/$tsti.out") {
 	    tst_print('col1r', 'Diff Err', $latency, $slow, $test, '');
+	    return;
+	}
+    } else {
+	if (isdiff_read("t/$tsti.out", "tmp/$tsti.out")) {
+	    tst_print('col1r', 'Diff ERR', $latency, $slow, $test, '');
 	    return;
 	}
     }
@@ -826,6 +854,7 @@ sub CMD {  # zxpasswd command with diff
 $cgi = cgidec($ENV{'QUERY_STRING'} || shift);
 $tst = $$cgi{'tst'} || 'all';
 $ntst = $$cgi{'ntst'};
+$diffmeth = $$cgi{'diffmeth'} || 'nodiff';
 
 my ($ss, $mm, $hh, $day, $mon, $year) = gmtime();
 $ts = sprintf "%04d%02d%02d-%02d%02d%02d", $year+1900,$mon+1,$day,$hh,$mm,$ss;
@@ -844,7 +873,7 @@ table.line  {  table-layout: fixed; width: 980px;  }
 table       {  table-layout: fixed; width: 980px;  }
 td  {  vertical-align: top;  white-space: nowrap; }
 td.col1  {  width=80px;  padding-left: 3px; padding-right: 7px; border-right: 1px dotted #066;  }
-td.col1r {  width=80px;  padding-left: 3px; padding-right: 7px; border-right: 1px dotted #066;  background-color: red;  }
+td.col1r {  width=60px;  padding-left: 3px; padding-right: 7px; border-right: 1px dotted #066;  background-color: red;  }
 td.col1g {  width=80px;  padding-left: 3px; padding-right: 7px; border-right: 1px dotted #066;  background-color: green;  }
 td.col1y {  width=80px;  padding-left: 3px; padding-right: 7px; border-right: 1px dotted #066;  background-color: yellow;  }
 td.col2  {  width=50px;  padding-left: 3px; padding-right: 7px; border-right: 1px dotted #066;  }
@@ -853,7 +882,7 @@ td.col4  {  width=300px; padding-left: 3px; padding-right: 7px; border-right: 1p
 td.col5  {  width=500px; padding-left: 3px; padding-right: 3px; border-right: 0px;  white-space: normal; } 
 </style>
 <body bgcolor=white>
-<h1>ZXID Testing Tool $ts</h1>
+<h1>ZXID Testing Tool $ts $diffmeth</h1>
 <a href="zxtest.pl">zxtest.pl</a>
 <p>
 HTML

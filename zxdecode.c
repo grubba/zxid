@@ -376,7 +376,7 @@ b64_dec:
     /* msglen = q - msg; */
     p = unbase64_raw(msg, q, msg, zx_std_index_64);  /* inplace */
     *p = 0;
-    D("Unbase64 Msg(%s) x=%x (n.b. message data may be binary at this point)", msg, *msg);
+    D("Unbase64 Msg(%s) x=%x len=%d (n.b. message data may be binary at this point)", msg, *msg, p-msg);
     break;
   case 2:
     if (*msg == '<') {
@@ -390,9 +390,9 @@ b64_dec:
   
   switch (inflate_flag) {
   case 0:
-    D("No decompression by user choice %d",0);
     len = p-msg;
     p = msg;
+    D("No decompression by user choice len=%d",len);
     break;
   case 1:
     D("Decompressing... (force) %d",0);
@@ -418,7 +418,7 @@ decompress:
     }
     break;
   }
-  printf("%.*s", len, p);
+  fwrite(p, 1, len, stdout);
   
   if (sig_flag)
     return sig_validate(len, p);
@@ -453,7 +453,7 @@ int zxdecode_main(int argc, char** argv, char** env)
   }
 
   /* Try to detect relevant input, iterating if -i N was specified.
-   * The detection is supposed to pick SAMLREquest or SAMLResponse from
+   * The detection is supposed to pick SAMLRequest or SAMLResponse from
    * middle of HTML form, or from log output. Whatever is convenient. */
 
   for (pp = buf; pp && pp < lim; pp = p+1) {
@@ -494,9 +494,9 @@ int zxdecode_main(int argc, char** argv, char** env)
       }
     }
     if (--ix) { p = pp; continue; }
-    return decode(pp, lim);
+    return decode(pp, lim);  /* Decode the object identified above. */
   }
-  ERR("Found no SAMLRequest or SAMLResponse to decode %d",2);
+  ERR("No SAMLRequest or SAMLResponse found to decode %p %p %p", buf, pp, lim);
   return 1;
 }
 

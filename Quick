@@ -27,9 +27,10 @@ fi
 mini_httpd -p 8443 -c 'zxid*' -S -E zxid.pem -l /tmp/mini.stderr &
 mini_httpd -p 8444 -c 'zxid*' -S -E /var/zxid/pem/ssl-nopw-cert.pem -l /tmp/mini.stderr &
 
+export LD_LIBRARY_PATH=/apps/lib
 ulimit -c unlimited
 mini_httpd -p 8081 -c 'zxid*' &
-tail -f /var/tmp/zxid.stderr &
+tailf /var/tmp/zxid.stderr &
 tailf /var/zxid/log/xml.dbg | ~/zxid/xml-pretty.pl &
 
 tail -f tmp/err-httpd &
@@ -59,12 +60,18 @@ echo wireshark -i eth0 -f 'host 87.106.206.244' -k -S -l
 
 (ip.addr eq 1.1.1.1)
 
+Testing
+-------
+
+http://idp.tas3.pt:8081/zxidtest.pl
+./zxtest.pl -a -a -dx
+
 Testing mod_php and mod_perl
 ----------------------------
 
 emacs /apps/apache/std/conf/httpd.conf
 /apps/apache/std/bin/apachectl start
-tail -f tmp/err-httpd &
+tailf tmp/err-httpd &
 
 Testing Java
 ------------
