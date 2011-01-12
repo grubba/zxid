@@ -1390,7 +1390,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
 	    ERR("out of memory len=%d", got);
 	    exit(1);
 	  }
-	  if (read_all_fd(0, buf, got, &got) == -1) {
+	  if (read_all_fd(fileno(stdin), buf, got, &got) == -1) {
 	    perror("Trouble reading post content.");
 	  } else {
 	    buf[got] = 0;

@@ -467,7 +467,7 @@ int main(int argc, char** argv, char** env)
       cont_len = getenv("CONTENT_LENGTH");
       if (cont_len) {
 	sscanf(cont_len, "%d", &got);
-	if (read_all_fd(0, buf, got, &got) == -1) {
+	if (read_all_fd(fileno(stdin), buf, got, &got) == -1) {
 	  perror("Trouble reading post content");
 	} else {
 	  buf[got] = 0;

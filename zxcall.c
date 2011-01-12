@@ -467,7 +467,7 @@ int zxcall_main(int argc, char** argv, char** env)
       siz = 4096;
       p = bdy = ZX_ALLOC(cf->ctx, siz);
       while (1) {
-	n = read_all_fd(0, p, siz+bdy-p-1, &got);
+	n = read_all_fd(fileno(stdin), p, siz+bdy-p-1, &got);
 	if (n == -1) {
 	  perror("reading SOAP req from stdin");
 	  break;

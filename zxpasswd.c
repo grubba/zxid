@@ -318,7 +318,7 @@ int main(int argc, char** argv, char** env)
     D("yubikey user(%s) ticket(%s)", user, pw);
     isyk = 1;
   } else {
-    read_all_fd(0, pw, sizeof(pw)-1, &pwgot);  /* Password from stdin */
+    read_all_fd(fileno(stdin), pw, sizeof(pw)-1, &pwgot);  /* Password from stdin */
   }
   if (pwgot) {
     if (pw[pwgot-1] == '\012') --pwgot;

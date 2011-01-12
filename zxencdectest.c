@@ -80,7 +80,7 @@ void test_ibm_cert_problem()  /* -r 1 */
   struct zx_root_s* r;
   struct zx_sp_LogoutRequest_s* req;
 
-  len = read_all_fd(0, buf, sizeof(buf)-1, &got_all);
+  len = read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
   buf[got_all] = 0;
 
@@ -611,7 +611,7 @@ int main(int argc, char** argv, char** env)
   char* wo_p;
   opt(&argc, &argv, &env);
   
-  len_wo = read_all_fd(0, buf, sizeof(buf)-1, &got_all);
+  len_wo = read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
   buf[got_all] = 0;
 

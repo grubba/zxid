@@ -288,7 +288,7 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
   struct zx_str* ss;
   struct zx_str* tt;
   
-  read_all_fd(0, buf, sizeof(buf)-1, &got);  /* Read EPR */
+  read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got);  /* Read EPR */
   buf[got] = 0;
   p = buf;
   
@@ -400,7 +400,7 @@ static int zxid_addmd(zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
   if (mdurl) {
     ent = zxid_get_meta(cf, mdurl);
   } else {
-    read_all_fd(0, buf, sizeof(buf)-1, &got);
+    read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got);
     buf[got] = 0;
     p = buf;
     ent = zxid_parse_meta(cf, &p, buf+got);

@@ -253,7 +253,7 @@ int main(int argc, char** argv, char** env)
   char buf[256*1024];
   opt(&argc, &argv, &env);
   
-  len_so = read_all_fd(0, buf, sizeof(buf)-1, &got_all);
+  len_so = read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
   buf[got_all] = 0;
   

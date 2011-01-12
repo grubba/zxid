@@ -8,6 +8,7 @@ target(a, http://www.w3.org/2005/08/addressing)
 import(di,  urn:liberty:disco:2006-08, liberty-idwsf-disco-svc-v2.0.xsd)
 import(e,   http://schemas.xmlsoap.org/soap/envelope/)
 import(wsu, http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd,wss-util-1.0.xsd)
+import(tas3, http://tas3.eu/tas3/200911/)
 ns(sbf,     urn:liberty:sb)
 ns(b,       urn:liberty:sb:2006-08)
 
@@ -45,6 +46,7 @@ Metadata	 -> %a:MetadataType
   di:ProviderID?
   di:ServiceType?
   di:SecurityContext?
+  tas3:Trust?
   any*  processContents(lax)
   @any
   ;

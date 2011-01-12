@@ -50,4 +50,17 @@ Status -> %tas3:StatusType
   &@b:hdr
   ;
 
+Trust -> %tas3:TrustType
+%TrustType:
+  tas3:TrustRanking*
+  @vers -> %xs:string
+  ;
+
+TrustRanking -> %tas3:TrustRankingType
+%TrustRankingType:
+  @metric -> %xs:string
+  @val -> %xs:string
+  ;
+
+
 #EOF

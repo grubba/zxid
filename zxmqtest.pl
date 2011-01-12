@@ -50,4 +50,13 @@ tomkirkham2: QPID Broker
 AMQP-Messaging-Broker-CPP-Book.pdf
 
 
+http://download.imatix.com/openamq/unstable/OpenAMQ-1.4c1.tar.gz
+Compiled on first try
+
+http://www.zyre.com/  -- part of openamq
+
+http://www.openamq.org/
+
+* Generally GPL licensed, but with "certain results of code generation under BSD" (openamq/readme)
+
 --Sampo
