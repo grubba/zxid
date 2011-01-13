@@ -409,6 +409,7 @@ struct zx_a_Metadata_s {
   struct zx_elem_s* ProviderID;	/* {0,1} xs:anyURI */
   struct zx_elem_s* ServiceType;	/* {0,1} xs:anyURI */
   struct zx_di_SecurityContext_s* SecurityContext;	/* {0,1} nada */
+  struct zx_tas3_Trust_s* Trust;	/* {0,1} nada */
 };
 
 #define zx_NEW_a_Metadata(c, father) (struct zx_a_Metadata_s*)zx_new_elem((c),(father),zx_a_Metadata_ELEM)
@@ -429,24 +430,28 @@ struct zx_elem_s* zx_a_Metadata_GET_Abstract(struct zx_a_Metadata_s* x, int n);
 struct zx_elem_s* zx_a_Metadata_GET_ProviderID(struct zx_a_Metadata_s* x, int n);
 struct zx_elem_s* zx_a_Metadata_GET_ServiceType(struct zx_a_Metadata_s* x, int n);
 struct zx_di_SecurityContext_s* zx_a_Metadata_GET_SecurityContext(struct zx_a_Metadata_s* x, int n);
+struct zx_tas3_Trust_s* zx_a_Metadata_GET_Trust(struct zx_a_Metadata_s* x, int n);
 
 int zx_a_Metadata_NUM_Framework(struct zx_a_Metadata_s* x);
 int zx_a_Metadata_NUM_Abstract(struct zx_a_Metadata_s* x);
 int zx_a_Metadata_NUM_ProviderID(struct zx_a_Metadata_s* x);
 int zx_a_Metadata_NUM_ServiceType(struct zx_a_Metadata_s* x);
 int zx_a_Metadata_NUM_SecurityContext(struct zx_a_Metadata_s* x);
+int zx_a_Metadata_NUM_Trust(struct zx_a_Metadata_s* x);
 
 struct zx_sbf_Framework_s* zx_a_Metadata_POP_Framework(struct zx_a_Metadata_s* x);
 struct zx_elem_s* zx_a_Metadata_POP_Abstract(struct zx_a_Metadata_s* x);
 struct zx_elem_s* zx_a_Metadata_POP_ProviderID(struct zx_a_Metadata_s* x);
 struct zx_elem_s* zx_a_Metadata_POP_ServiceType(struct zx_a_Metadata_s* x);
 struct zx_di_SecurityContext_s* zx_a_Metadata_POP_SecurityContext(struct zx_a_Metadata_s* x);
+struct zx_tas3_Trust_s* zx_a_Metadata_POP_Trust(struct zx_a_Metadata_s* x);
 
 void zx_a_Metadata_PUSH_Framework(struct zx_a_Metadata_s* x, struct zx_sbf_Framework_s* y);
 void zx_a_Metadata_PUSH_Abstract(struct zx_a_Metadata_s* x, struct zx_elem_s* y);
 void zx_a_Metadata_PUSH_ProviderID(struct zx_a_Metadata_s* x, struct zx_elem_s* y);
 void zx_a_Metadata_PUSH_ServiceType(struct zx_a_Metadata_s* x, struct zx_elem_s* y);
 void zx_a_Metadata_PUSH_SecurityContext(struct zx_a_Metadata_s* x, struct zx_di_SecurityContext_s* y);
+void zx_a_Metadata_PUSH_Trust(struct zx_a_Metadata_s* x, struct zx_tas3_Trust_s* y);
 
 
 void zx_a_Metadata_PUT_Framework(struct zx_a_Metadata_s* x, int n, struct zx_sbf_Framework_s* y);
@@ -454,24 +459,28 @@ void zx_a_Metadata_PUT_Abstract(struct zx_a_Metadata_s* x, int n, struct zx_elem
 void zx_a_Metadata_PUT_ProviderID(struct zx_a_Metadata_s* x, int n, struct zx_elem_s* y);
 void zx_a_Metadata_PUT_ServiceType(struct zx_a_Metadata_s* x, int n, struct zx_elem_s* y);
 void zx_a_Metadata_PUT_SecurityContext(struct zx_a_Metadata_s* x, int n, struct zx_di_SecurityContext_s* y);
+void zx_a_Metadata_PUT_Trust(struct zx_a_Metadata_s* x, int n, struct zx_tas3_Trust_s* y);
 
 void zx_a_Metadata_ADD_Framework(struct zx_a_Metadata_s* x, int n, struct zx_sbf_Framework_s* z);
 void zx_a_Metadata_ADD_Abstract(struct zx_a_Metadata_s* x, int n, struct zx_elem_s* z);
 void zx_a_Metadata_ADD_ProviderID(struct zx_a_Metadata_s* x, int n, struct zx_elem_s* z);
 void zx_a_Metadata_ADD_ServiceType(struct zx_a_Metadata_s* x, int n, struct zx_elem_s* z);
 void zx_a_Metadata_ADD_SecurityContext(struct zx_a_Metadata_s* x, int n, struct zx_di_SecurityContext_s* z);
+void zx_a_Metadata_ADD_Trust(struct zx_a_Metadata_s* x, int n, struct zx_tas3_Trust_s* z);
 
 void zx_a_Metadata_DEL_Framework(struct zx_a_Metadata_s* x, int n);
 void zx_a_Metadata_DEL_Abstract(struct zx_a_Metadata_s* x,int n);
 void zx_a_Metadata_DEL_ProviderID(struct zx_a_Metadata_s* x,int n);
 void zx_a_Metadata_DEL_ServiceType(struct zx_a_Metadata_s* x,int n);
 void zx_a_Metadata_DEL_SecurityContext(struct zx_a_Metadata_s* x, int n);
+void zx_a_Metadata_DEL_Trust(struct zx_a_Metadata_s* x, int n);
 
 void zx_a_Metadata_REV_Framework(struct zx_a_Metadata_s* x);
 void zx_a_Metadata_REV_Abstract(struct zx_a_Metadata_s* x);
 void zx_a_Metadata_REV_ProviderID(struct zx_a_Metadata_s* x);
 void zx_a_Metadata_REV_ServiceType(struct zx_a_Metadata_s* x);
 void zx_a_Metadata_REV_SecurityContext(struct zx_a_Metadata_s* x);
+void zx_a_Metadata_REV_Trust(struct zx_a_Metadata_s* x);
 
 #endif
 /* -------------------------- a_ProblemAction -------------------------- */

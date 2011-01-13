@@ -259,6 +259,10 @@ int zx_DEC_ELEM_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x)
     if (!x->SecurityContext)
       x->SecurityContext = (struct zx_di_SecurityContext_s*)el;
     return 1;
+  case zx_tas3_Trust_ELEM:
+    if (!x->Trust)
+      x->Trust = (struct zx_tas3_Trust_s*)el;
+    return 1;
 
   default: return 0;
   }

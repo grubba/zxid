@@ -916,6 +916,10 @@ void zx_DUP_STRS_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x)
        se && se->g.tok == zx_di_SecurityContext_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di_SecurityContext(c, (struct zx_di_SecurityContext_s*)se);
+  for (se = &x->Trust->gg;
+       se && se->g.tok == zx_tas3_Trust_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    zx_DUP_STRS_tas3_Trust(c, (struct zx_tas3_Trust_s*)se);
 
 }
 
@@ -954,6 +958,16 @@ struct zx_a_Metadata_s* zx_DEEP_CLONE_a_Metadata(struct zx_ctx* c, struct zx_a_M
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di_SecurityContext(c,(struct zx_di_SecurityContext_s*)e,dup_strs);
   	  if (!enn)
   	      x->SecurityContext = (struct zx_di_SecurityContext_s*)en;
+  	  else
+  	      enn->g.n = &en->g;
+  	  enn = en;
+  }
+  for (enn = 0, e = &x->Trust->gg;
+       e && e->g.tok == zx_tas3_Trust_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+  	  en=(struct zx_elem_s*)zx_DEEP_CLONE_tas3_Trust(c,(struct zx_tas3_Trust_s*)e,dup_strs);
+  	  if (!enn)
+  	      x->Trust = (struct zx_tas3_Trust_s*)en;
   	  else
   	      enn->g.n = &en->g;
   	  enn = en;
@@ -1001,6 +1015,13 @@ int zx_WALK_SO_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x, void* ctx
        e && e->g.tok == zx_di_SecurityContext_ELEM;
        e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di_SecurityContext(c, (struct zx_di_SecurityContext_s*)e, ctx, callback);
+    if (ret)
+      return ret;
+  }
+  for (e = &x->Trust->gg;
+       e && e->g.tok == zx_tas3_Trust_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+    ret = zx_WALK_SO_tas3_Trust(c, (struct zx_tas3_Trust_s*)e, ctx, callback);
     if (ret)
       return ret;
   }

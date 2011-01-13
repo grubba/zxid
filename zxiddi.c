@@ -1,5 +1,5 @@
 /* zxiddi.c  -  Discovery Server
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -9,6 +9,7 @@
  * $Id: zxiddi.c,v 1.2 2009-11-24 23:53:40 sampo Exp $
  *
  * 15.11.2009, created --Sampo
+ * 10.1.2011,  added TrustPDP and CPN support --Sampo
  *
  * See also zxidepr.c for discovery client code.
  *
@@ -24,6 +25,7 @@
 #include "zxidutil.h"
 #include "zxidconf.h"
 #include "saml2.h"
+#include "tas3.h"
 #include "wsf.h"
 #include "c/zx-const.h"
 #include "c/zx-ns.h"
@@ -69,6 +71,9 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
   char mdpath[ZXID_MAX_BUF];
   char path[ZXID_MAX_BUF];
   char* epr_buf;
+  char* p;
+  char* start;
+  char* lim;
   DIR* dir;
   struct dirent* de;
   struct zx_elem_s* el;
@@ -243,8 +248,53 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 	ZX_FREE(cf->ctx, epr_buf);
 	goto next_file;
       }
+      
+      /* Check Options, in particular whether Trust parameters are there. */
 
-      /* *** Check Options */
+      if (rs->Options) {
+	for (el = rs->Options->Option;
+	     el && el->g.tok == zx_di_Option_ELEM;
+	     el = (struct zx_elem_s*)el->g.n) {
+	  ss = ZX_GET_CONTENT(el);
+	  if (!ss || !ss->len) {
+	    D("Option element does not have content %p", ss);
+	    continue;
+	  }
+	  p = zx_memmem(ss->s, ss->len, TAS3_TRUST_CTL1_INPUT, sizeof(TAS3_TRUST_CTL1_INPUT));
+	  if (!p) {
+	    D("Option(%.*s) is not trust related", ss->len, ss->s);	    
+	    continue;
+	  }
+	  start = p;
+	  lim = memchr(p+sizeof(TAS3_TRUST_CTL1_INPUT)-1, '&', ss->len - (p - ss->s));
+	  if (!lim) {
+	    lim = ss->s + ss->len;
+	  } else {
+	    while (p = zx_memmem(lim, ss->len - (lim - ss->s), TAS3_TRUST_CTL1_INPUT, sizeof(TAS3_TRUST_CTL1_INPUT))) {
+	      lim = memchr(p+sizeof(TAS3_TRUST_CTL1_INPUT)-1, '&', ss->len - (p - ss->s));
+	      if (!lim) {
+		lim = ss->s + ss->len;
+		break;
+	      }
+	    }
+	  }
+	  
+	  if (cf->trustpdp_url && *cf->trustpdp_url) {
+	    D("Trust related discovery options(%.*s), TRUSTPDP_URL(%s)", lim-start, start, cf->trustpdp_url);
+	    if (zxid_call_trustpdp(cf, 0, ses, cf->pepmap_rsin, start, lim, epr)) {
+	      D("%d: Trust PERMIT. file(%s)", n_discovered, de->d_name);
+	      continue;
+	    } else {
+	      D("%d: Rejected due to Trust DENY. file(%s)", n_discovered, de->d_name);
+	      ZX_FREE(cf->ctx, epr_buf);
+	      goto next_file;
+	    }
+	  } else {
+	    INFO("Trust related discovery options(%.*s), but no TRUSTPDP_URL configured", lim-start, start);
+	    continue;
+	  }
+	}
+      }
 
       /* *** Check Framework */
 
@@ -253,6 +303,18 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 #if 0
       /* Call Trust and Privacy Negotiation (TrustBuilder), Andreas. */
       systemf("./tpn-client.sh %s %s %s", idpnid, "urn:idhrxml:cv:update", host);
+#else
+      zxid_callf(cf, ses, "urn:tas3:cpn-agent",0,0,0,
+		 "<tas3cpn:CPNRequest xmlns:tas3cpn=\"urn:tas3:cpn-agent\">"
+		   "<di:RequestedService xmlns:di=\"urn:liberty:disco:2006-08\">"
+		     "<di:ServiceType>%s</di:ServiceType>"
+		     "<di:ProviderID>%s</di:ProviderID>"
+		     "<di:Framework version=\"2.0\"/>"
+		     /*"<di:Action>urn:x-foobar:Create</di:Action>"*/
+		   "</di:RequestedService>"
+		 "</tas3cpn:CPNRequest>",
+		 
+		 );
 #endif
       ++n_discovered;
       D("%d: DISCOVERED EPR url(%.*s)", n_discovered, addr->len, addr->s);
@@ -289,3 +351,4 @@ next_file:
 }
 
 /* EOF  --  zxiddi.c */
+

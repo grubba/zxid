@@ -81,12 +81,12 @@
 
 struct zx_ns_s* zx_url2ns(const char* str, unsigned int len);
 
-#define zx_N_ATTR 333
+#define zx_N_ATTR 336
 extern struct zx_at_tok zx_at_tab[zx__ATTR_MAX]; /* gperf generated, see zx-attrs.c */
 struct zx_at_tok* zx_attr2tok(const char* s, unsigned int len);
 
-#define zx_N_ELEM 1336
-#define zx_N_EL_DESC (1147 + 499)
+#define zx_N_ELEM 1338
+#define zx_N_EL_DESC (1149 + 499)
 extern struct zx_el_tok zx_el_tab[zx__ELEM_MAX]; /* gperf generated, see zx-elems.c */
 struct zx_el_tok* zx_elem2tok(const char* s, unsigned int len);
 

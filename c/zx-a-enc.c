@@ -1065,6 +1065,10 @@ int zx_LEN_SO_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x )
        se && se->g.tok == zx_di_SecurityContext_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SecurityContext(c, (struct zx_di_SecurityContext_s*)se);
+  for (se = &x->Trust->gg;
+       se && se->g.tok == zx_tas3_Trust_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_tas3_Trust(c, (struct zx_tas3_Trust_s*)se);
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1125,6 +1129,10 @@ char* zx_ENC_SO_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x, char* p 
        se && se->g.tok == zx_di_SecurityContext_ELEM;
        se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SecurityContext(c, (struct zx_di_SecurityContext_s*)se, p);
+  for (se = &x->Trust->gg;
+       se && se->g.tok == zx_tas3_Trust_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_tas3_Trust(c, (struct zx_tas3_Trust_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   

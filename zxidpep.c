@@ -1,5 +1,5 @@
 /* zxidpep.c  -  Handwritten functions for XACML Policy Enforcement Point
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -13,6 +13,7 @@
  * 12.2.2010,  added locking to lazy loading --Sampo
  * 31.5.2010,  generalized to several PEPs model --Sampo
  * 7.9.2010,   merged patches from Stijn Lievens --Sampo
+ * 10.1.2011,  added TrustPDP support --Sampo
  */
 
 #include "errmac.h"
@@ -20,6 +21,7 @@
 #include "zxidpriv.h"
 #include "zxidconf.h"
 #include "saml2.h"
+#include "tas3.h"
 #include "c/zx-const.h"
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
@@ -608,6 +610,134 @@ char* zxid_az_base(const char* conf, const char* qs, const char* sid)
   cf.ctx = &ctx;
   zxid_conf_to_cf_len(&cf, -1, conf);
   return zxid_az_base_cf(&cf, qs, sid);
+}
+
+/*() Call Trust Policy Decision Point (PDP) to obtain a trust evaluation and scoring
+ *
+ * You should use this function if the Deny message contains interesting
+ * obligations (normally it does not).
+ *
+ * cf:: the configuration will need to have ~PEPMAP~ and ~PDP_URL~ options
+ *     set according to your situation.
+ * cgi:: if non-null, will receive error and status codes
+ * ses:: all attributes are obtained from the session. You may wish
+ *     to add additional attributes that are not known by SSO.
+ * pepmap:: The map used to extract the attributes from the pool to the XACML request
+ * start:: Start of query string format buffer of trust options
+ * lim:: One past end of trust option buffer
+ * returns:: 0 on error; in case of deny (or indeterminate, etc.) as well as
+ *     permit returns <xac:Response> as string, allowing the obligations to be extracted.
+ */
+
+/* Called by:  zxid_di_query() */
+int zxid_call_trustpdp(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_map* pepmap, const char* start, const char* lim, zxid_epr* epr)
+{
+  struct zx_xac_Attribute_s* xac_at;
+  struct zx_xac_Attribute_s* subj = 0;
+  struct zx_xac_Attribute_s* rsrc = 0;
+  struct zx_xac_Attribute_s* act = 0;
+  struct zx_xac_Attribute_s* env = 0;
+  const char* val;
+  const char* sep;
+  struct zx_str* ss;
+  struct zx_sp_Response_s* resp;
+  struct zx_sp_StatusCode_s* sc;
+  struct zx_sa_Statement_s* stmt;
+  struct zx_xasa_XACMLAuthzDecisionStatement_s* az_stmt;
+  struct zx_xasacd1_XACMLAuthzDecisionStatement_s* az_stmt_cd1;
+  struct zx_elem_s* decision;
+  struct zx_tas3_TrustRanking_s* tr;
+
+  D("option(%.*s)", lim-start, start);
+
+  if (cf->log_level>0)
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ses?ZX_GET_CONTENT(ses->nameid):0, "N", "W", "TRUSTPDP", ses?ses->sid:0, " ");
+  
+  if (!cf->trustpdp_url || !*cf->trustpdp_url) {
+    ERR("No TRUSTPDP_URL. Deny. %p", cf->trustpdp_url);
+    return 0;
+  }
+
+  zxid_pepmap_extract(cf, cgi, ses, pepmap, &subj, &rsrc, &act, &env);
+  
+  while (start < lim && (start = zx_memmem(start, (lim - start), TAS3_TRUST_CTL1_INPUT, sizeof(TAS3_TRUST_CTL1_INPUT)))) {
+
+    val = memchr(start+sizeof(TAS3_TRUST_CTL1_INPUT)-1, '=', lim - (start+sizeof(TAS3_TRUST_CTL1_INPUT)-1));
+    if (!val) {
+      ERR("Malformed trust option(%.*s)", lim-start, start);
+      break;
+    }
+    ++val;
+    sep = memchr(val, '&', lim-val);
+    if (!sep) {
+      sep = lim;
+    }
+    
+    D("add trust attr(%.*s) val(%.*s)", val-1-start, start, sep-val, val);
+    xac_at = zxid_mk_xacml_simple_at(cf, 0,
+				     zx_dup_len_str(cf->ctx, val-1-start, start),
+				     zx_dup_str(cf->ctx, XS_STRING),
+				     0, zx_dup_len_str(cf->ctx, sep-val, val));
+    ZX_NEXT(xac_at) = &env->gg.g;
+    env = xac_at;
+    start = sep;
+  }
+
+  resp = zxid_az_soap(cf, cgi, ses, cf->trustpdp_url, subj, rsrc, act, env);
+  if (!resp)
+    return 0;
+
+  az_stmt = resp->Assertion->XACMLAuthzDecisionStatement;
+  if (az_stmt && az_stmt->Response) {
+    decision = az_stmt->Response->Result->Decision;
+  } else {
+    az_stmt_cd1 = resp->Assertion->xasacd1_XACMLAuthzDecisionStatement;
+    if (az_stmt_cd1 && az_stmt_cd1->Response) {
+      decision = az_stmt_cd1->Response->Result->Decision;
+    } else {
+      stmt = resp->Assertion->Statement;
+      if (stmt && stmt->Response) {  /* Response here is xac:Response */
+	decision = stmt->Response->Result->Decision;
+      } else {
+	D("Missing az related Response element %d",0);
+	return 0;
+      }
+    }
+  }
+  if (ZX_CONTENT_EQ_CONST(decision, "Permit")) {
+    D("Permit %d",0);
+    if (resp->Status && resp->Status->StatusCode && resp->Status->StatusCode->StatusCode) {
+      /* Second and further layer status codes may contain Trust Rankings */
+      for (sc = resp->Status->StatusCode->StatusCode; sc; sc = sc->StatusCode) {
+	if (!sc->Value || !sc->Value->g.len < sizeof(TAS3_TRUST_CTL1_RANKING)-1 ||!sc->Value->g.s
+	    || memcmp(sc->Value->g.s, TAS3_TRUST_CTL1_RANKING,sizeof(TAS3_TRUST_CTL1_RANKING)-1))
+	  continue;
+	val = memchr(sc->Value->g.s + sizeof(TAS3_TRUST_CTL1_RANKING)-1, '=', sc->Value->g.len - (sizeof(TAS3_TRUST_CTL1_RANKING)-1));
+	if (!val) {
+	  ERR("Malformed trust renking(%.*s)", sc->Value->g.len, sc->Value->g.s);
+	  continue;
+	}
+	
+	if (!epr->Metadata)
+	  epr->Metadata = zx_NEW_a_Metadata(cf->ctx, &epr->gg);
+	if (!epr->Metadata->Trust)
+	  epr->Metadata->Trust = zx_NEW_tas3_Trust(cf->ctx, &epr->Metadata->gg);
+	tr = zx_NEW_tas3_TrustRanking(cf->ctx, &epr->Metadata->Trust->gg);
+	tr->metric = zx_dup_len_attr(cf->ctx, &tr->gg, zx_metric_ATTR,
+				     val - sc->Value->g.s, sc->Value->g.s);
+	++val;
+	tr->val = zx_dup_len_attr(cf->ctx, &tr->gg, zx_val_ATTR,
+				  sc->Value->g.len - (val - sc->Value->g.s), val);
+      }
+    }
+    
+    INFO("PERMIT found in azstmt len=%d", ss->len);
+    ZX_FREE(cf->ctx, ss);
+    return 1;
+  } else {
+    D("Deny %d",0);
+    return 0;
+  }
 }
 
 /* EOF  --  zxidpep.c */

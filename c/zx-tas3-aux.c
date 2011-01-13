@@ -785,4 +785,225 @@ int zx_WALK_WO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x, void* c
 #endif
 
 
+
+
+#ifdef EL_NAME
+#undef EL_NAME
+#endif
+#ifdef EL_STRUCT
+#undef EL_STRUCT
+#endif
+#ifdef EL_NS
+#undef EL_NS
+#endif
+#ifdef EL_TAG
+#undef EL_TAG
+#endif
+
+#define EL_NAME   tas3_Trust
+#define EL_STRUCT zx_tas3_Trust_s
+#define EL_NS     tas3
+#define EL_TAG    Trust
+
+#ifdef ZX_ENA_AUX
+
+/* FUNC(zx_DUP_STRS_tas3_Trust) */
+
+/* Depth first traversal of data structure to copy its simple strings
+ * to memory allocated from the memory allocator. The decoder will
+ * use the underlying wireprotocol PDU buffer for strings, i.e.
+ * strings are not copied - they point to the real data. If the
+ * datastructure needs to outlast the protocol data or needs a different
+ * memory allocation strategy, you need to call this function.  */
+
+/* Called by: */
+void zx_DUP_STRS_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x)
+{
+  struct zx_elem_s* se  MAYBE_UNUSED;
+  zx_dup_strs_common(c, &x->gg);
+  /* *** deal with xmlns specifications in exc c14n way */
+
+  zx_dup_attr(c, x->vers);
+
+  for (se = &x->TrustRanking->gg;
+       se && se->g.tok == zx_tas3_TrustRanking_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    zx_DUP_STRS_tas3_TrustRanking(c, (struct zx_tas3_TrustRanking_s*)se);
+
+}
+
+/* FUNC(zx_DEEP_CLONE_tas3_Trust) */
+
+/* Depth first traversal of data structure to clone it and its sublements.
+ * The simple strings are handled as a special case according to dup_strs flag. */
+
+/* Called by: */
+struct zx_tas3_Trust_s* zx_DEEP_CLONE_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x, int dup_strs)
+{
+  struct zx_elem_s* e   MAYBE_UNUSED;
+  struct zx_elem_s* en  MAYBE_UNUSED;
+  struct zx_elem_s* enn MAYBE_UNUSED;
+
+  x = (struct zx_tas3_Trust_s*)zx_clone_elem_common(c, &x->gg, sizeof(struct zx_tas3_Trust_s), dup_strs);
+  /* *** deal with xmlns specifications in exc c14n way */
+
+  x->vers = zx_clone_attr(c, x->vers);
+
+  for (enn = 0, e = &x->TrustRanking->gg;
+       e && e->g.tok == zx_tas3_TrustRanking_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+  	  en=(struct zx_elem_s*)zx_DEEP_CLONE_tas3_TrustRanking(c,(struct zx_tas3_TrustRanking_s*)e,dup_strs);
+  	  if (!enn)
+  	      x->TrustRanking = (struct zx_tas3_TrustRanking_s*)en;
+  	  else
+  	      enn->g.n = &en->g;
+  	  enn = en;
+  }
+
+  return x;
+}
+
+/* FUNC(zx_WALK_SO_tas3_Trust) */
+
+/* Depth first traversal of the tree in either schema order or the wire order. */
+ 
+int zx_WALK_SO_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx))
+{
+  struct zx_elem_s* e   MAYBE_UNUSED;
+  int ret = callback(&x->gg.g, ctx);
+  if (ret)
+    return ret;
+  
+  /* *** deal with xmlns specifications in exc c14n way */
+
+
+  
+  ret = zx_walk_so_unknown_attributes(c, &x->gg, ctx, callback); 
+  if (ret)
+    return ret;
+
+  for (e = &x->TrustRanking->gg;
+       e && e->g.tok == zx_tas3_TrustRanking_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
+    ret = zx_WALK_SO_tas3_TrustRanking(c, (struct zx_tas3_TrustRanking_s*)e, ctx, callback);
+    if (ret)
+      return ret;
+  }
+
+  
+  return zx_walk_so_unknown_elems_and_content(c, &x->gg, ctx, callback);
+}
+
+/* FUNC(zx_WALK_WO_tas3_Trust) */
+
+int zx_WALK_WO_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx))
+{
+  ERR("*** walk_wo not implemented %d", 0);
+  return 0;
+}
+
+#endif
+
+
+
+
+#ifdef EL_NAME
+#undef EL_NAME
+#endif
+#ifdef EL_STRUCT
+#undef EL_STRUCT
+#endif
+#ifdef EL_NS
+#undef EL_NS
+#endif
+#ifdef EL_TAG
+#undef EL_TAG
+#endif
+
+#define EL_NAME   tas3_TrustRanking
+#define EL_STRUCT zx_tas3_TrustRanking_s
+#define EL_NS     tas3
+#define EL_TAG    TrustRanking
+
+#ifdef ZX_ENA_AUX
+
+/* FUNC(zx_DUP_STRS_tas3_TrustRanking) */
+
+/* Depth first traversal of data structure to copy its simple strings
+ * to memory allocated from the memory allocator. The decoder will
+ * use the underlying wireprotocol PDU buffer for strings, i.e.
+ * strings are not copied - they point to the real data. If the
+ * datastructure needs to outlast the protocol data or needs a different
+ * memory allocation strategy, you need to call this function.  */
+
+/* Called by: */
+void zx_DUP_STRS_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x)
+{
+  struct zx_elem_s* se  MAYBE_UNUSED;
+  zx_dup_strs_common(c, &x->gg);
+  /* *** deal with xmlns specifications in exc c14n way */
+
+  zx_dup_attr(c, x->metric);
+  zx_dup_attr(c, x->val);
+
+
+}
+
+/* FUNC(zx_DEEP_CLONE_tas3_TrustRanking) */
+
+/* Depth first traversal of data structure to clone it and its sublements.
+ * The simple strings are handled as a special case according to dup_strs flag. */
+
+/* Called by: */
+struct zx_tas3_TrustRanking_s* zx_DEEP_CLONE_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x, int dup_strs)
+{
+  struct zx_elem_s* e   MAYBE_UNUSED;
+  struct zx_elem_s* en  MAYBE_UNUSED;
+  struct zx_elem_s* enn MAYBE_UNUSED;
+
+  x = (struct zx_tas3_TrustRanking_s*)zx_clone_elem_common(c, &x->gg, sizeof(struct zx_tas3_TrustRanking_s), dup_strs);
+  /* *** deal with xmlns specifications in exc c14n way */
+
+  x->metric = zx_clone_attr(c, x->metric);
+  x->val = zx_clone_attr(c, x->val);
+
+
+  return x;
+}
+
+/* FUNC(zx_WALK_SO_tas3_TrustRanking) */
+
+/* Depth first traversal of the tree in either schema order or the wire order. */
+ 
+int zx_WALK_SO_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx))
+{
+  struct zx_elem_s* e   MAYBE_UNUSED;
+  int ret = callback(&x->gg.g, ctx);
+  if (ret)
+    return ret;
+  
+  /* *** deal with xmlns specifications in exc c14n way */
+
+
+  
+  ret = zx_walk_so_unknown_attributes(c, &x->gg, ctx, callback); 
+  if (ret)
+    return ret;
+
+
+  
+  return zx_walk_so_unknown_elems_and_content(c, &x->gg, ctx, callback);
+}
+
+/* FUNC(zx_WALK_WO_tas3_TrustRanking) */
+
+int zx_WALK_WO_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx))
+{
+  ERR("*** walk_wo not implemented %d", 0);
+  return 0;
+}
+
+#endif
+
+
 /* EOF -- c/zx-tas3-aux.c */

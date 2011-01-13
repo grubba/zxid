@@ -51,7 +51,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxid_select_tgt() (?)
     - Each credential as its own a7n
     - X509 attr certs
-    - Use post screen as confirmation screen
+    - Use post screen as confirmation screen, option for federation confirmation question
     - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
     - Config option for redirection after SLO
     - WSP_LOCALPDP_OBL_REQ processing

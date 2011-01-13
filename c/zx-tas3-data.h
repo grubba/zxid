@@ -342,5 +342,89 @@ void zx_tas3_Status_DEL_Status(struct zx_tas3_Status_s* x, int n);
 void zx_tas3_Status_REV_Status(struct zx_tas3_Status_s* x);
 
 #endif
+/* -------------------------- tas3_Trust -------------------------- */
+/* refby( zx_a_Metadata_s ) */
+#ifndef zx_tas3_Trust_EXT
+#define zx_tas3_Trust_EXT
+#endif
+struct zx_tas3_Trust_s {
+  ZX_ELEM_EXT
+  zx_tas3_Trust_EXT
+  struct zx_tas3_TrustRanking_s* TrustRanking;	/* {0,-1} nada */
+  struct zx_attr_s* vers;	/* {1,1} attribute xs:string */
+};
+
+#define zx_NEW_tas3_Trust(c, father) (struct zx_tas3_Trust_s*)zx_new_elem((c),(father),zx_tas3_Trust_ELEM)
+int zx_DEC_ATTR_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x);
+int zx_DEC_ELEM_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x);
+
+#ifdef ZX_ENA_AUX
+struct zx_tas3_Trust_s* zx_DEEP_CLONE_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x, int dup_strs);
+void zx_DUP_STRS_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x);
+int zx_WALK_SO_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx));
+int zx_WALK_WO_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx));
+#endif
+
+#ifdef ZX_ENA_GETPUT
+struct zx_attr_s* zx_tas3_Trust_GET_vers(struct zx_tas3_Trust_s* x);
+
+struct zx_tas3_TrustRanking_s* zx_tas3_Trust_GET_TrustRanking(struct zx_tas3_Trust_s* x, int n);
+
+int zx_tas3_Trust_NUM_TrustRanking(struct zx_tas3_Trust_s* x);
+
+struct zx_tas3_TrustRanking_s* zx_tas3_Trust_POP_TrustRanking(struct zx_tas3_Trust_s* x);
+
+void zx_tas3_Trust_PUSH_TrustRanking(struct zx_tas3_Trust_s* x, struct zx_tas3_TrustRanking_s* y);
+
+void zx_tas3_Trust_PUT_vers(struct zx_tas3_Trust_s* x, struct zx_attr_s* y);
+
+void zx_tas3_Trust_PUT_TrustRanking(struct zx_tas3_Trust_s* x, int n, struct zx_tas3_TrustRanking_s* y);
+
+void zx_tas3_Trust_ADD_TrustRanking(struct zx_tas3_Trust_s* x, int n, struct zx_tas3_TrustRanking_s* z);
+
+void zx_tas3_Trust_DEL_TrustRanking(struct zx_tas3_Trust_s* x, int n);
+
+void zx_tas3_Trust_REV_TrustRanking(struct zx_tas3_Trust_s* x);
+
+#endif
+/* -------------------------- tas3_TrustRanking -------------------------- */
+/* refby( zx_tas3_Trust_s ) */
+#ifndef zx_tas3_TrustRanking_EXT
+#define zx_tas3_TrustRanking_EXT
+#endif
+struct zx_tas3_TrustRanking_s {
+  ZX_ELEM_EXT
+  zx_tas3_TrustRanking_EXT
+  struct zx_attr_s* metric;	/* {1,1} attribute xs:string */
+  struct zx_attr_s* val;	/* {1,1} attribute xs:string */
+};
+
+#define zx_NEW_tas3_TrustRanking(c, father) (struct zx_tas3_TrustRanking_s*)zx_new_elem((c),(father),zx_tas3_TrustRanking_ELEM)
+int zx_DEC_ATTR_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x);
+int zx_DEC_ELEM_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x);
+
+#ifdef ZX_ENA_AUX
+struct zx_tas3_TrustRanking_s* zx_DEEP_CLONE_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x, int dup_strs);
+void zx_DUP_STRS_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x);
+int zx_WALK_SO_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx));
+int zx_WALK_WO_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx));
+#endif
+
+#ifdef ZX_ENA_GETPUT
+struct zx_attr_s* zx_tas3_TrustRanking_GET_metric(struct zx_tas3_TrustRanking_s* x);
+struct zx_attr_s* zx_tas3_TrustRanking_GET_val(struct zx_tas3_TrustRanking_s* x);
+
+
+
+
+
+void zx_tas3_TrustRanking_PUT_metric(struct zx_tas3_TrustRanking_s* x, struct zx_attr_s* y);
+void zx_tas3_TrustRanking_PUT_val(struct zx_tas3_TrustRanking_s* x, struct zx_attr_s* y);
+
+
+
+
+
+#endif
 
 #endif

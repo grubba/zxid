@@ -200,4 +200,51 @@ int zx_DEC_ELEM_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x)
 }
 
 
+
+
+int zx_DEC_ATTR_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_vers_ATTR:  x->vers = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+  case zx_tas3_TrustRanking_ELEM:
+    if (!x->TrustRanking)
+      x->TrustRanking = (struct zx_tas3_TrustRanking_s*)el;
+    return 1;
+
+  default: return 0;
+  }
+}
+
+
+
+
+int zx_DEC_ATTR_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x)
+{
+  switch (x->gg.attr->g.tok) {
+    case zx_metric_ATTR:  x->metric = x->gg.attr; return 1;
+    case zx_val_ATTR:  x->val = x->gg.attr; return 1;
+
+  default: return 0;
+  }
+}
+
+int zx_DEC_ELEM_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x)
+{
+  struct zx_elem_s* el = x->gg.kids;
+  switch (el->g.tok) {
+
+  default: return 0;
+  }
+}
+
+
 /* EOF -- c/zx-tas3-dec.c */

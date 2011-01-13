@@ -1,5 +1,5 @@
 /* zxidconf.c  -  Handwritten functions for parsing ZXID configuration file
- * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -793,6 +793,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->pdp_url        = ZXID_PDP_URL;
   cf->pdp_call_url   = ZXID_PDP_CALL_URL;
   cf->xasp_vers      = ZXID_XASP_VERS;
+  cf->trustpdp_url   = ZXID_TRUSTPDP_URL;
 
   cf->need           = zxid_load_need(cf, 0, ZXID_NEED);
   cf->want           = zxid_load_need(cf, 0, ZXID_WANT);
@@ -1212,6 +1213,7 @@ scan_end:
     case 'T':  /* TIMEOUT_FATAL */
       if (!strcmp(n, "TIMEOUT_FATAL"))  { SCAN_INT(v, cf->timeout_fatal); break; }
       if (!strcmp(n, "TIMESKEW"))       { SCAN_INT(v, cf->timeskew); break; }
+      if (!strcmp(n, "TRUSTPDP_URL"))   { cf->trustpdp_url = v; break; }
       goto badcf;
     case 'U':  /* URL, USER_LOCAL */
       if (!strcmp(n, "URL"))            { cf->url = v; cf->fedusername_suffix = zxid_grab_domain_name(cf, cf->url); break; }
@@ -1502,6 +1504,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "PDP_URL=%s\n"
 "PDP_CALL_URL=%s\n"
 "XASP_VERS=%s\n"
+"TRUSTPDP_URL=%s\n"
 "MOD_SAML_ATTR_PREFIX=%s\n"
 "BARE_URL_ENTITYID=%d\n"
 "SHOW_TECH=%d\n"
@@ -1680,6 +1683,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 STRNULLCHK(cf->pdp_url),
 		 STRNULLCHK(cf->pdp_call_url),
 		 STRNULLCHK(cf->xasp_vers),
+		 STRNULLCHK(cf->trustpdp_url),
 		 STRNULLCHK(cf->mod_saml_attr_prefix),
 		 cf->bare_url_entityid,
 		 cf->show_tech,

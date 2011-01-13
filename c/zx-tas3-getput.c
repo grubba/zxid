@@ -1608,4 +1608,160 @@ void zx_tas3_Status_PUT_mustUnderstand(struct zx_tas3_Status_s* x, struct zx_att
 
 
 
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_tas3_Trust_NUM_TrustRanking) */
+
+int zx_tas3_Trust_NUM_TrustRanking(struct zx_tas3_Trust_s* x)
+{
+  struct zx_tas3_TrustRanking_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->TrustRanking; y && y->gg.g.tok == zx_tas3_TrustRanking_ELEM; ++n, y = (struct zx_tas3_TrustRanking_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_tas3_Trust_GET_TrustRanking) */
+
+struct zx_tas3_TrustRanking_s* zx_tas3_Trust_GET_TrustRanking(struct zx_tas3_Trust_s* x, int n)
+{
+  struct zx_tas3_TrustRanking_s* y;
+  if (!x) return 0;
+  for (y = x->TrustRanking; n>=0 && y && y->gg.g.tok == zx_tas3_TrustRanking_ELEM; --n, y = (struct zx_tas3_TrustRanking_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_tas3_Trust_POP_TrustRanking) */
+
+struct zx_tas3_TrustRanking_s* zx_tas3_Trust_POP_TrustRanking(struct zx_tas3_Trust_s* x)
+{
+  struct zx_tas3_TrustRanking_s* y;
+  if (!x) return 0;
+  y = x->TrustRanking;
+  if (y)
+    x->TrustRanking = (struct zx_tas3_TrustRanking_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_tas3_Trust_PUSH_TrustRanking) */
+
+void zx_tas3_Trust_PUSH_TrustRanking(struct zx_tas3_Trust_s* x, struct zx_tas3_TrustRanking_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->TrustRanking->gg.g;
+  x->TrustRanking = z;
+}
+
+/* FUNC(zx_tas3_Trust_REV_TrustRanking) */
+
+void zx_tas3_Trust_REV_TrustRanking(struct zx_tas3_Trust_s* x)
+{
+  struct zx_tas3_TrustRanking_s* nxt;
+  struct zx_tas3_TrustRanking_s* y;
+  if (!x) return;
+  y = x->TrustRanking;
+  if (!y) return;
+  x->TrustRanking = 0;
+  while (y) {
+    nxt = (struct zx_tas3_TrustRanking_s*)y->gg.g.n;
+    y->gg.g.n = &x->TrustRanking->gg.g;
+    x->TrustRanking = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_tas3_Trust_PUT_TrustRanking) */
+
+void zx_tas3_Trust_PUT_TrustRanking(struct zx_tas3_Trust_s* x, int n, struct zx_tas3_TrustRanking_s* z)
+{
+  struct zx_tas3_TrustRanking_s* y;
+  if (!x || !z) return;
+  y = x->TrustRanking;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->TrustRanking = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_TrustRanking_ELEM; --n, y = (struct zx_tas3_TrustRanking_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_tas3_Trust_ADD_TrustRanking) */
+
+void zx_tas3_Trust_ADD_TrustRanking(struct zx_tas3_Trust_s* x, int n, struct zx_tas3_TrustRanking_s* z)
+{
+  struct zx_tas3_TrustRanking_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->TrustRanking->gg.g;
+    x->TrustRanking = z;
+    return;
+  case -1:
+    y = x->TrustRanking;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_TrustRanking_ELEM; y = (struct zx_tas3_TrustRanking_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->TrustRanking; n > 1 && y && y->gg.g.tok == zx_tas3_TrustRanking_ELEM; --n, y = (struct zx_tas3_TrustRanking_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_tas3_Trust_DEL_TrustRanking) */
+
+void zx_tas3_Trust_DEL_TrustRanking(struct zx_tas3_Trust_s* x, int n)
+{
+  struct zx_tas3_TrustRanking_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->TrustRanking = (struct zx_tas3_TrustRanking_s*)x->TrustRanking->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_tas3_TrustRanking_s*)x->TrustRanking;
+    if (!y) return;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_TrustRanking_ELEM; y = (struct zx_tas3_TrustRanking_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->TrustRanking; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_TrustRanking_ELEM; --n, y = (struct zx_tas3_TrustRanking_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+/* FUNC(zx_tas3_Trust_GET_vers) */
+struct zx_attr_s* zx_tas3_Trust_GET_vers(struct zx_tas3_Trust_s* x) { return x->vers; }
+/* FUNC(zx_tas3_Trust_PUT_vers) */
+void zx_tas3_Trust_PUT_vers(struct zx_tas3_Trust_s* x, struct zx_attr_s* y) { x->vers = y; }
+
+
+
+
+
+/* FUNC(zx_tas3_TrustRanking_GET_metric) */
+struct zx_attr_s* zx_tas3_TrustRanking_GET_metric(struct zx_tas3_TrustRanking_s* x) { return x->metric; }
+/* FUNC(zx_tas3_TrustRanking_PUT_metric) */
+void zx_tas3_TrustRanking_PUT_metric(struct zx_tas3_TrustRanking_s* x, struct zx_attr_s* y) { x->metric = y; }
+/* FUNC(zx_tas3_TrustRanking_GET_val) */
+struct zx_attr_s* zx_tas3_TrustRanking_GET_val(struct zx_tas3_TrustRanking_s* x) { return x->val; }
+/* FUNC(zx_tas3_TrustRanking_PUT_val) */
+void zx_tas3_TrustRanking_PUT_val(struct zx_tas3_TrustRanking_s* x, struct zx_attr_s* y) { x->val = y; }
+
+
+
+
+
 /* EOF -- c/zx-tas3-getput.c */

@@ -826,4 +826,272 @@ struct zx_str* zx_EASY_ENC_SO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Statu
 #endif
 
 
+
+
+#if 0
+
+#ifdef EL_NAME
+#undef EL_NAME
+#endif
+#ifdef EL_STRUCT
+#undef EL_STRUCT
+#endif
+#ifdef EL_NS
+#undef EL_NS
+#endif
+#ifdef EL_TAG
+#undef EL_TAG
+#endif
+
+#define EL_NAME   tas3_Trust
+#define EL_STRUCT zx_tas3_Trust_s
+#define EL_NS     tas3
+#define EL_TAG    Trust
+
+#ifndef MAYBE_UNUSED
+#define MAYBE_UNUSED   /* May appear as unused variable, but is needed by some generated code. */
+#endif
+
+#if 0
+#define ENC_LEN_DEBUG(x,tag,len) D("x=%p tag(%s) len=%d",(x),(tag),(len))
+#define ENC_LEN_DEBUG_BASE char* enc_base = p
+#else
+#define ENC_LEN_DEBUG(x,tag,len)
+#define ENC_LEN_DEBUG_BASE
+#endif
+
+/* FUNC(zx_LEN_SO_tas3_Trust) */
+
+/* Compute length of an element (and its subelements). The XML attributes
+ * and elements are processed in schema order. */
+
+/* Called by: */
+int zx_LEN_SO_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x )
+{
+  struct zx_ns_s* pop_seen = 0;
+  struct zx_elem_s* se MAYBE_UNUSED;
+#if 1 /* NORMALMODE */
+  /* *** in simple_elem case should output ns prefix from ns node. */
+  int len = sizeof("<tas3:Trust")-1 + 1 + sizeof("</tas3:Trust>")-1;
+  if (c->inc_ns_len)
+    len += zx_len_inc_ns(c, &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+
+  len += zx_attr_so_len(c, x->vers, sizeof("vers")-1, &pop_seen);
+
+#else
+  /* root node has no begin tag */
+  int len = 0;
+#endif
+  
+  for (se = &x->TrustRanking->gg;
+       se && se->g.tok == zx_tas3_TrustRanking_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_tas3_TrustRanking(c, (struct zx_tas3_TrustRanking_s*)se);
+
+
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
+  zx_pop_seen(pop_seen);
+  ENC_LEN_DEBUG(x, "tas3:Trust", len);
+  return len;
+}
+
+/* FUNC(zx_ENC_SO_tas3_Trust) */
+
+/* Render element into string. The XML attributes and elements are
+ * processed in schema order. This is what you generally want for
+ * rendering new data structure to a string. The wo pointers are not used. */
+
+/* Called by: */
+char* zx_ENC_SO_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x, char* p )
+{
+  struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_attr_s* attr MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
+  /* *** in simple_elem case should output ns prefix from ns node. */
+  ZX_OUT_TAG(p, "<tas3:Trust");
+  if (c->inc_ns)
+    zx_add_inc_ns(c, &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+
+  zx_see_attr_ns(c, x->gg.attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
+  p = zx_attr_so_enc(p, x->vers, " vers=\"", sizeof(" vers=\"")-1);
+
+  for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
+  ZX_OUT_CH(p, '>');
+#else
+  /* root node has no begin tag */
+#endif
+  
+  for (se = &x->TrustRanking->gg;
+       se && se->g.tok == zx_tas3_TrustRanking_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_tas3_TrustRanking(c, (struct zx_tas3_TrustRanking_s*)se, p);
+
+  p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
+  
+#if 1 /* NORMALMODE */
+  ZX_OUT_CLOSE_TAG(p, "</tas3:Trust>");
+  zx_pop_seen(pop_seen);
+#else
+  /* root node has no end tag either */
+#endif
+  ENC_LEN_DEBUG(x, "tas3:Trust", p-enc_base);
+  return p;
+}
+
+/* FUNC(zx_EASY_ENC_SO_tas3_Trust) */
+
+/* Called by: */
+struct zx_str* zx_EASY_ENC_SO_tas3_Trust(struct zx_ctx* c, struct zx_tas3_Trust_s* x )
+{
+  int len;
+  char* buf;
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
+  memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
+  len = zx_LEN_SO_tas3_Trust(c, x );
+  buf = ZX_ALLOC(c, len+1);
+  return zx_easy_enc_common(c, zx_ENC_SO_tas3_Trust(c, x, buf ), buf, len);
+}
+#endif
+
+
+
+
+#if 0
+
+#ifdef EL_NAME
+#undef EL_NAME
+#endif
+#ifdef EL_STRUCT
+#undef EL_STRUCT
+#endif
+#ifdef EL_NS
+#undef EL_NS
+#endif
+#ifdef EL_TAG
+#undef EL_TAG
+#endif
+
+#define EL_NAME   tas3_TrustRanking
+#define EL_STRUCT zx_tas3_TrustRanking_s
+#define EL_NS     tas3
+#define EL_TAG    TrustRanking
+
+#ifndef MAYBE_UNUSED
+#define MAYBE_UNUSED   /* May appear as unused variable, but is needed by some generated code. */
+#endif
+
+#if 0
+#define ENC_LEN_DEBUG(x,tag,len) D("x=%p tag(%s) len=%d",(x),(tag),(len))
+#define ENC_LEN_DEBUG_BASE char* enc_base = p
+#else
+#define ENC_LEN_DEBUG(x,tag,len)
+#define ENC_LEN_DEBUG_BASE
+#endif
+
+/* FUNC(zx_LEN_SO_tas3_TrustRanking) */
+
+/* Compute length of an element (and its subelements). The XML attributes
+ * and elements are processed in schema order. */
+
+/* Called by: */
+int zx_LEN_SO_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x )
+{
+  struct zx_ns_s* pop_seen = 0;
+  struct zx_elem_s* se MAYBE_UNUSED;
+#if 1 /* NORMALMODE */
+  /* *** in simple_elem case should output ns prefix from ns node. */
+  int len = sizeof("<tas3:TrustRanking")-1 + 1 + sizeof("</tas3:TrustRanking>")-1;
+  if (c->inc_ns_len)
+    len += zx_len_inc_ns(c, &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+
+  len += zx_attr_so_len(c, x->metric, sizeof("metric")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->val, sizeof("val")-1, &pop_seen);
+
+#else
+  /* root node has no begin tag */
+  int len = 0;
+#endif
+  
+
+
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
+  zx_pop_seen(pop_seen);
+  ENC_LEN_DEBUG(x, "tas3:TrustRanking", len);
+  return len;
+}
+
+/* FUNC(zx_ENC_SO_tas3_TrustRanking) */
+
+/* Render element into string. The XML attributes and elements are
+ * processed in schema order. This is what you generally want for
+ * rendering new data structure to a string. The wo pointers are not used. */
+
+/* Called by: */
+char* zx_ENC_SO_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x, char* p )
+{
+  struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_attr_s* attr MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
+  /* *** in simple_elem case should output ns prefix from ns node. */
+  ZX_OUT_TAG(p, "<tas3:TrustRanking");
+  if (c->inc_ns)
+    zx_add_inc_ns(c, &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+
+  zx_see_attr_ns(c, x->gg.attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
+  p = zx_attr_so_enc(p, x->metric, " metric=\"", sizeof(" metric=\"")-1);
+  p = zx_attr_so_enc(p, x->val, " val=\"", sizeof(" val=\"")-1);
+
+  for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
+  ZX_OUT_CH(p, '>');
+#else
+  /* root node has no begin tag */
+#endif
+  
+
+  p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
+  
+#if 1 /* NORMALMODE */
+  ZX_OUT_CLOSE_TAG(p, "</tas3:TrustRanking>");
+  zx_pop_seen(pop_seen);
+#else
+  /* root node has no end tag either */
+#endif
+  ENC_LEN_DEBUG(x, "tas3:TrustRanking", p-enc_base);
+  return p;
+}
+
+/* FUNC(zx_EASY_ENC_SO_tas3_TrustRanking) */
+
+/* Called by: */
+struct zx_str* zx_EASY_ENC_SO_tas3_TrustRanking(struct zx_ctx* c, struct zx_tas3_TrustRanking_s* x )
+{
+  int len;
+  char* buf;
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
+  memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
+  len = zx_LEN_SO_tas3_TrustRanking(c, x );
+  buf = ZX_ALLOC(c, len+1);
+  return zx_easy_enc_common(c, zx_ENC_SO_tas3_TrustRanking(c, x, buf ), buf, len);
+}
+#endif
+
+
 /* EOF -- c/zx-tas3-enc.c */

@@ -219,6 +219,7 @@ struct zxid_conf {
   char* pdp_url;             /* If non-NULL, the inline PEP is enabled and PDP at URL is called. */
   char* pdp_call_url;        /* PDP URL for zxid_az() API */
   char* xasp_vers;
+  char* trustpdp_url;
   char* defaultqs;
   char* mod_saml_attr_prefix;  /* Prefix for req variables in mod_auth_saml */
 

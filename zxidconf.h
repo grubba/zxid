@@ -604,6 +604,12 @@
 #define ZXID_PDP_URL 0
 #define ZXID_PDP_CALL_URL 0
 
+/*(c) Trust Policy Decision Point (PDP) URL If TRUSTPDP_URL is set and
+ * appropriate discovery options are passed, then the indicated PDP
+ * will be consulted during discovery processing to determine if a
+ * service should be returned. Default value 0 prevents such processing. */
+#define ZXID_TRUSTPDP_URL 0
+
 /*(c) Which version of XACML to speak */
 
 #define ZXID_XASP_VERS "2.0"

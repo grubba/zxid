@@ -2069,6 +2069,140 @@ void zx_a_Metadata_DEL_SecurityContext(struct zx_a_Metadata_s* x, int n)
 
 
 
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_a_Metadata_NUM_Trust) */
+
+int zx_a_Metadata_NUM_Trust(struct zx_a_Metadata_s* x)
+{
+  struct zx_tas3_Trust_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->Trust; y && y->gg.g.tok == zx_tas3_Trust_ELEM; ++n, y = (struct zx_tas3_Trust_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_a_Metadata_GET_Trust) */
+
+struct zx_tas3_Trust_s* zx_a_Metadata_GET_Trust(struct zx_a_Metadata_s* x, int n)
+{
+  struct zx_tas3_Trust_s* y;
+  if (!x) return 0;
+  for (y = x->Trust; n>=0 && y && y->gg.g.tok == zx_tas3_Trust_ELEM; --n, y = (struct zx_tas3_Trust_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_a_Metadata_POP_Trust) */
+
+struct zx_tas3_Trust_s* zx_a_Metadata_POP_Trust(struct zx_a_Metadata_s* x)
+{
+  struct zx_tas3_Trust_s* y;
+  if (!x) return 0;
+  y = x->Trust;
+  if (y)
+    x->Trust = (struct zx_tas3_Trust_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_a_Metadata_PUSH_Trust) */
+
+void zx_a_Metadata_PUSH_Trust(struct zx_a_Metadata_s* x, struct zx_tas3_Trust_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->Trust->gg.g;
+  x->Trust = z;
+}
+
+/* FUNC(zx_a_Metadata_REV_Trust) */
+
+void zx_a_Metadata_REV_Trust(struct zx_a_Metadata_s* x)
+{
+  struct zx_tas3_Trust_s* nxt;
+  struct zx_tas3_Trust_s* y;
+  if (!x) return;
+  y = x->Trust;
+  if (!y) return;
+  x->Trust = 0;
+  while (y) {
+    nxt = (struct zx_tas3_Trust_s*)y->gg.g.n;
+    y->gg.g.n = &x->Trust->gg.g;
+    x->Trust = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_a_Metadata_PUT_Trust) */
+
+void zx_a_Metadata_PUT_Trust(struct zx_a_Metadata_s* x, int n, struct zx_tas3_Trust_s* z)
+{
+  struct zx_tas3_Trust_s* y;
+  if (!x || !z) return;
+  y = x->Trust;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->Trust = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_Trust_ELEM; --n, y = (struct zx_tas3_Trust_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_a_Metadata_ADD_Trust) */
+
+void zx_a_Metadata_ADD_Trust(struct zx_a_Metadata_s* x, int n, struct zx_tas3_Trust_s* z)
+{
+  struct zx_tas3_Trust_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->Trust->gg.g;
+    x->Trust = z;
+    return;
+  case -1:
+    y = x->Trust;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_Trust_ELEM; y = (struct zx_tas3_Trust_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Trust; n > 1 && y && y->gg.g.tok == zx_tas3_Trust_ELEM; --n, y = (struct zx_tas3_Trust_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_a_Metadata_DEL_Trust) */
+
+void zx_a_Metadata_DEL_Trust(struct zx_a_Metadata_s* x, int n)
+{
+  struct zx_tas3_Trust_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->Trust = (struct zx_tas3_Trust_s*)x->Trust->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_tas3_Trust_s*)x->Trust;
+    if (!y) return;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_Trust_ELEM; y = (struct zx_tas3_Trust_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Trust; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_tas3_Trust_ELEM; --n, y = (struct zx_tas3_Trust_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
 
 
 
