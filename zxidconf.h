@@ -619,6 +619,10 @@
  * for service type urn:tas3:cpn-agent as well. */
 #define ZXID_CPN_ENA 0
 
+
+/*(c) Kludgy options for AZ debugging and to work-around bugs of others. */
+#define ZXID_AZ_OPT 0
+
 /*(c) Which version of XACML to speak */
 
 #define ZXID_XASP_VERS "2.0"

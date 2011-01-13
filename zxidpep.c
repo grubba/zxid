@@ -188,15 +188,16 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
   /* Add our own token so PDP can do whatever PEP can (they are considered to be
    * part of the same entity). This is TAS3 specific hack. */
 
-  sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx, &hdr->gg);
-  sec->actor = zx_ref_attr(cf->ctx, &sec->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-  sec->mustUnderstand = zx_ref_attr(cf->ctx, &sec->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
-  sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx, &sec->gg);
-  sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx, &sec->Timestamp->gg);
-  sec->Assertion = ses->tgta7n;
-  zx_reverse_elem_lists(&sec->gg);
-  D("tgta7n=%p", ses->tgta7n);
-
+  if (!(cf->az_opt & 0x01)) {
+    sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx, &hdr->gg);
+    sec->actor = zx_ref_attr(cf->ctx, &sec->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+    sec->mustUnderstand = zx_ref_attr(cf->ctx, &sec->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
+    sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx, &sec->gg);
+    sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx, &sec->Timestamp->gg);
+    sec->Assertion = ses->tgta7n;
+    zx_reverse_elem_lists(&sec->gg);
+    D("tgta7n=%p", ses->tgta7n);
+  }
   /* Prepare request according to the version */
 
   body = zx_NEW_e_Body(cf->ctx,0);
