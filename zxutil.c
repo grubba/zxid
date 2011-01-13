@@ -136,7 +136,9 @@ int read_all_fd(fdtype fd, char* p, int want, int* got_all)
   if (got_all) *got_all = got;
 #elif defined(MINGW)
   DWORD got;
-  if (!ReadFile(fd, p, want, &got, 0))
+  if( fdh == 0 ) // stdin
+      fdh = GetStdHandle(STD_INPUT_HANDLE);
+  if (!ReadFile(fdh, p, want, &got, 0))
     return -1;
   if (got_all) *got_all = got;
 #else  /* The Unix way */
