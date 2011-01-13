@@ -286,18 +286,24 @@ struct zxid_conf {
   char  log_act;
   char  log_issue_a7n;
   char  log_issue_msg;
+
   char  log_rely_a7n;
   char  log_rely_msg;
   char  log_err_in_act;      /* Log errors to action log flag (may also log to error log) */
   char  log_act_in_err;      /* Log actions to error log flag (may also log to action log) */
+
   char  log_sigfail_is_err;  /* Log signature failures to error log */
   char  log_level;           /* act log level: 0=audit, 1=audit+extio, 2=audit+extio+events */
   char  user_local;          /* Whether local user accounts should be maintained. */
   char  redir_to_content;    /* Should explicit redirect to content be used (vs. internal redir) */
+
   char  remote_user_ena;
   char  show_tech;
   char  bare_url_entityid;
   char  loguser;
+
+  char  az_opt;        /* Kludgy options for AZ debugging and to work-around bugs of others */
+  char  pad1; char pad2; char pad3; char pad4; char pad5; char pad6; char pad7;
 
 #ifdef USE_CURL
   CURL* curl;
