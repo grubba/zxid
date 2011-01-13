@@ -1377,7 +1377,7 @@ tas3win32pkg: zxid.dll zxididp zxpasswd zxcot zxdecode zxlogview $(ZXIDJNI_SO) z
 	mkdir $(TAS3WIN32)/include/zx
 	mkdir $(TAS3WIN32)/include/zx/c
 	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-ZXID-WIN32 > $(TAS3WIN32)/Manifest
-	$(CP) zxid.dll zxid.lib $(TAS3WIN32)/
+	$(CP) zxid.dll zxid*.lib $(TAS3WIN32)/
 	$(CP) $(ZXIDHDRS) $(TAS3WIN32)/include/zx
 	$(CP) zxididp $(TAS3WIN32)/zxididp.exe
 	$(CP) zxpasswd $(TAS3WIN32)/zxpasswd.exe
@@ -1387,6 +1387,28 @@ tas3win32pkg: zxid.dll zxididp zxpasswd zxcot zxdecode zxlogview $(ZXIDJNI_SO) z
 	$(CP) zxid-idp.pd $(TAS3WIN32)
 	$(CP) mod_auth_saml.dll $(TAS3WIN32)
 	$(CP) *.php php/php_zxid.dll php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3WIN32)
+	$(CP) $(ZXIDJNI_SO) $(TAS3WIN32)/
+	$(CP) zxidjava.jar zxiddemo.war zxid-java.pd $(TAS3WIN32)
+	$(CP) *.java *.class $(TAS3WIN32)
+	$(CP) $(TAS3COMMONFILES) $(TAS3WIN32)
+	zip -r $(TAS3WIN32).zip $(TAS3WIN32)
+
+# Minimal package with mod_auth_saml or PHP
+tas3win32pkg-mini: zxid.dll zxididp zxpasswd zxcot zxdecode zxlogview $(ZXIDJNI_SO) zxidjava/zxidjni.class zxidappdemo.class zxidjava.jar zxiddemo.war
+	rm -rf $(TAS3WIN32) $(TAS3WIN32).zip
+	mkdir $(TAS3WIN32)
+	mkdir $(TAS3WIN32)/include
+	mkdir $(TAS3WIN32)/include/zx
+	mkdir $(TAS3WIN32)/include/zx/c
+	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-ZXID-WIN32 > $(TAS3WIN32)/Manifest
+	$(CP) zxid.dll zxid*.lib $(TAS3WIN32)/
+	$(CP) $(ZXIDHDRS) $(TAS3WIN32)/include/zx
+	$(CP) zxididp $(TAS3WIN32)/zxididp.exe
+	$(CP) zxpasswd $(TAS3WIN32)/zxpasswd.exe
+	$(CP) zxcot $(TAS3WIN32)/zxcot.exe
+	$(CP) zxdecode $(TAS3WIN32)/zxdecode.exe
+	$(CP) zxlogview $(TAS3WIN32)/zxlogview.exe
+	$(CP) zxid-idp.pd $(TAS3WIN32)
 	$(CP) $(ZXIDJNI_SO) $(TAS3WIN32)/
 	$(CP) zxidjava.jar zxiddemo.war zxid-java.pd $(TAS3WIN32)
 	$(CP) *.java *.class $(TAS3WIN32)
