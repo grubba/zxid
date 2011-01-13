@@ -287,6 +287,7 @@ WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lw
 LIBS= -mconsole $(WIN_LIBS)
 SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
 CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -DMAYBE_UNUSED='__attribute__ ((unused))'
+JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:/Program Files/Java/jdk1.5.0_14/include/win32"
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
