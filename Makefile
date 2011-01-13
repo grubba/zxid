@@ -277,9 +277,12 @@ CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-
 else
 ifeq ($(TARGET),mingw)
 
-CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
+ZXID_PATH=c:/var/zxid/
+
+CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB
 CURL_ROOT=/usr/local
 OPENSSL_ROOT=/usr/local/ssl
+ZLIB_ROOT=/usr/local/lib/
 WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
 LIBS= -mconsole $(WIN_LIBS)
 SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
@@ -1218,8 +1221,10 @@ zxbench: $(ZXBENCH_OBJ) $(LIBZXID_A)
 zxidssofinalizetest: $(ZXIDSSOFINALIZETEST_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxidssofinalizetest$(EXE) $(ZXIDSSOFINALIZETEST_OBJ) $(LIBZXID) $(LIBS)
 
+ifneq ($(TARGET),mingw)
 zxencdectest: $(ZXENCDECTEST_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxencdectest$(EXE) $^ $(LIBZXID) $(LIBS)
+endif
 
 zxmqtest: $(ZXMQTEST_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxmqtest$(EXE) $^ -lzmq $(LIBZXID) $(LIBS)
@@ -1412,10 +1417,10 @@ tas3copyrel: tas3rel
 ###
 
 precheck/chk-zlib.exe: precheck/chk-zlib.$(OBJ_EXT)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< -lz
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
 
 precheck/chk-openssl.exe: precheck/chk-openssl.$(OBJ_EXT)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< -lssl -lcrypto
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
 
 precheck/chk-curl.exe: precheck/chk-curl.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
@@ -1443,7 +1448,6 @@ precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib.exe precheck/chk-openss
 else
 precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib.exe precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl.exe precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl.exe zx/zx.h
 	echo CC=$(CC)
-	which cc
 	which gcc
 	$(CC) -v
 	@$(ECHO)
