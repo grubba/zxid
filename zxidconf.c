@@ -758,6 +758,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->as_ena            = ZXID_AS_ENA;
   cf->pdp_ena           = ZXID_PDP_ENA;
   cf->cpn_ena           = ZXID_CPN_ENA;
+  cf->az_opt            = ZXID_AZ_OPT;
 
   cf->loguser = ZXID_LOGUSER;
   cf->log_level = ZXLOG_LEVEL;
@@ -1038,6 +1039,7 @@ scan_end:
       if (!strcmp(n, "ATTRSRC"))     { cf->attrsrc = zxid_load_atsrc(cf, cf->attrsrc, v); break; }
       if (!strcmp(n, "A7NTTL"))          { SCAN_INT(v, cf->a7nttl); break; }
       if (!strcmp(n, "AS_ENA"))          { SCAN_INT(v, cf->as_ena); break; }
+      if (!strcmp(n, "AZ_OPT"))          { SCAN_INT(v, cf->az_opt); break; }
       goto badcf;
     case 'B':  /* BEFORE_SLOP */
       if (!strcmp(n, "BEFORE_SLOP"))       { SCAN_INT(v, cf->before_slop); break; }
@@ -1467,6 +1469,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "AS_ENA=%d\n"
 "PDP_ENA=%d\n"
 "CPN_ENA=%d\n"
+"AZ_OPT=%d\n"
 "#ZXID_MAX_BUF=%d (compile)\n"
 
 "LOG_ERR=%d\n"
@@ -1647,6 +1650,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->as_ena,
 		 cf->pdp_ena,
 		 cf->cpn_ena,
+		 cf->az_opt,
 		 ZXID_MAX_BUF,
 
 		 cf->log_err,

@@ -659,7 +659,27 @@ int zxid_call_trustpdp(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_
     return 0;
   }
 
+#if 1
+  if (epr->Metadata && epr->Metadata->ProviderID) {
+    D("Using ProviderID(%.*s) as resource-id", epr->Metadata->ProviderID->g.len, epr->Metadata->ProviderID->g.s);
+    xac_at = zxid_mk_xacml_simple_at(cf, 0,
+				     zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:1.0:resource:resource-id"),
+				     zx_dup_str(cf->ctx, XS_STRING),
+				     0, zx_dup_len_str(cf->ctx, epr->Metadata->ProviderID->g.len, epr->Metadata->ProviderID->g.s));
+    ZX_NEXT(xac_at) = &rsrc->gg.g;
+    rsrc = xac_at;
+  } else {
+    ERR("EPR does not have Metadata or Metadata/ProviderID. resource-id not set %p",epr->Metadata);
+  }
+
+  act = zxid_mk_xacml_simple_at(cf, 0,
+	     zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:1.0:action:action-id"),
+	     zx_dup_str(cf->ctx, XS_STRING),
+	     0,
+	     zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:1.0:action:implied-action"));
+#else
   zxid_pepmap_extract(cf, cgi, ses, pepmap, &subj, &rsrc, &act, &env);
+#endif
   
   while (start < lim && (start = zx_memmem(start, (lim - start), TAS3_TRUST_CTL1_INPUT, sizeof(TAS3_TRUST_CTL1_INPUT)-1))) {
 

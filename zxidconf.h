@@ -619,8 +619,8 @@
  * for service type urn:tas3:cpn-agent as well. */
 #define ZXID_CPN_ENA 0
 
-
-/*(c) Kludgy options for AZ debugging and to work-around bugs of others. */
+/*(c) Kludgy options for AZ debugging and to work-around bugs of others.
+ * 0x01: prevent WS-Security header in SOAP XACML requests.  */
 #define ZXID_AZ_OPT 0
 
 /*(c) Which version of XACML to speak */

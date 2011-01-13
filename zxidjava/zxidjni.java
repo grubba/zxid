@@ -2100,6 +2100,70 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_loguser_get(zxid_conf.getCPtr(self));
   }
 
+  public static void conf_az_opt_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_az_opt_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static char conf_az_opt_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_az_opt_get(zxid_conf.getCPtr(self));
+  }
+
+  public static void conf_pad1_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_pad1_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static char conf_pad1_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_pad1_get(zxid_conf.getCPtr(self));
+  }
+
+  public static void conf_pad2_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_pad2_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static char conf_pad2_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_pad2_get(zxid_conf.getCPtr(self));
+  }
+
+  public static void conf_pad3_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_pad3_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static char conf_pad3_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_pad3_get(zxid_conf.getCPtr(self));
+  }
+
+  public static void conf_pad4_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_pad4_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static char conf_pad4_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_pad4_get(zxid_conf.getCPtr(self));
+  }
+
+  public static void conf_pad5_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_pad5_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static char conf_pad5_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_pad5_get(zxid_conf.getCPtr(self));
+  }
+
+  public static void conf_pad6_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_pad6_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static char conf_pad6_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_pad6_get(zxid_conf.getCPtr(self));
+  }
+
+  public static void conf_pad7_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_pad7_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static char conf_pad7_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_pad7_get(zxid_conf.getCPtr(self));
+  }
+
   public static zxid_conf new_zxid_conf() {
     long cPtr = zxidjniJNI.new_zxid_conf();
     return (cPtr == 0) ? null : new zxid_conf(cPtr, true);
