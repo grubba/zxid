@@ -29,6 +29,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #include "errmac.h"
 #include "zx.h"
@@ -45,6 +46,26 @@ char* zx_memmem(const char* haystack, int haystack_len, const char* needle, int 
     if (!memcmp(haystack, needle, needle_len))
       return (char*)haystack; /* discards const qualifier, but is right if haystack was modifiable, as often is the case. */
   return 0;
+}
+
+#ifdef MINGW
+ #ifdef stat
+  #undef stat 
+ #endif
+#endif
+/* ZX implmentation of stat for mingw which is dumb */
+int zx_stat( const char *path, struct stat *buffer )
+{
+    int rv = 0;
+    char *p = (char*)malloc( strlen( path ) + 1 );
+    strcpy( p, path );
+
+    if( p[ strlen(p) - 1 ] == '/' )
+        p[ strlen(p) - 1 ] = '\0';
+
+    rv = stat( p, buffer );
+    free( p );
+    return rv;
 }
 
 /*() ZX memory allocator that does not zero the buffer. Allocation is

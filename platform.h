@@ -20,6 +20,7 @@ extern "C" {
 #define openfile_ro(path) CreateFile((path), GENERIC_READ, FILE_SHARE_READ, 0 /*security*/, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0)
 #define geteuid() 0
 #define getegid() 0
+#define stat(X,Y) zx_stat(X,Y)
 
 #ifdef WIN32CL
 /* The directory handling is quite different on Windows. The following

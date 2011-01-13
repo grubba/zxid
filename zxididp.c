@@ -43,10 +43,14 @@ Usage: zxididp [options]   (when used as CGI, no options can be supplied)\n\
 
 /* ============== M A I N ============== */
 
-/* CONFIG: You must have created /var/zxid directory hierarchy. See `make dir' */
+/* CONFIG: You must have created /var/zxid OR c:/var/zxid directory hierarchy. See `make dir' */
 /* CONFIG: You must edit the URL to match your domain name and port */
 
+#ifdef MINGW
+#define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=c:/var/zxid/idp"
+#else
 #define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=/var/zxid/idp"
+#endif
 
 /* Called by: */
 int main(int argc, char** argv)
