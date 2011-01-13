@@ -660,7 +660,7 @@ int zxid_call_trustpdp(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_
 
   zxid_pepmap_extract(cf, cgi, ses, pepmap, &subj, &rsrc, &act, &env);
   
-  while (start < lim && (start = zx_memmem(start, (lim - start), TAS3_TRUST_CTL1_INPUT, sizeof(TAS3_TRUST_CTL1_INPUT)))) {
+  while (start < lim && (start = zx_memmem(start, (lim - start), TAS3_TRUST_CTL1_INPUT, sizeof(TAS3_TRUST_CTL1_INPUT)-1))) {
 
     val = memchr(start+sizeof(TAS3_TRUST_CTL1_INPUT)-1, '=', lim - (start+sizeof(TAS3_TRUST_CTL1_INPUT)-1));
     if (!val) {
