@@ -610,6 +610,11 @@
  * service should be returned. Default value 0 prevents such processing. */
 #define ZXID_TRUSTPDP_URL 0
 
+/*(c) Enable discovery and web service call to perform TAS3 Credentials
+ * and Privacy Negotiation call. For this to work, there must be discovery registration
+ * for service type urn:tas3:cpn-agent as well. */
+#define ZXID_CPN_ENA 0
+
 /*(c) Which version of XACML to speak */
 
 #define ZXID_XASP_VERS "2.0"

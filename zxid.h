@@ -187,7 +187,7 @@ struct zxid_conf {
   char  enckey_opt;
   char  idpatopt;
   char  idp_list_meth;
-  char  pad8;
+  char  cpn_ena;
   
   char* affiliation;
   char* nice_name;           /* Human readable "nice" name. Used in AuthnReq->ProviderName */

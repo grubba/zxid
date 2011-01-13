@@ -757,6 +757,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->imps_ena          = ZXID_IMPS_ENA;
   cf->as_ena            = ZXID_AS_ENA;
   cf->pdp_ena           = ZXID_PDP_ENA;
+  cf->cpn_ena           = ZXID_CPN_ENA;
 
   cf->loguser = ZXID_LOGUSER;
   cf->log_level = ZXLOG_LEVEL;
@@ -1052,6 +1053,7 @@ scan_end:
       if (!strcmp(n, "CONTACT_TEL"))     { cf->contact_tel = v; break; }
       if (!strcmp(n, "COUNTRY"))         { cf->country = v; break; }
       if (!strcmp(n, "CANON_INOPT"))     { SCAN_INT(v, cf->canon_inopt); if (cf->ctx) cf->ctx->canon_inopt = cf->canon_inopt; break; }
+      if (!strcmp(n, "CPN_ENA"))         { SCAN_INT(v, cf->cpn_ena); break; }
       goto badcf;
     case 'D':  /* DUP_A7N_FATAL, DUP_MSG_FATAL */
       if (!strcmp(n, "DEFAULTQS"))       { cf->defaultqs = v; break; }
@@ -1464,6 +1466,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "IMPS_ENA=%d\n"
 "AS_ENA=%d\n"
 "PDP_ENA=%d\n"
+"CPN_ENA=%d\n"
 "#ZXID_MAX_BUF=%d (compile)\n"
 
 "LOG_ERR=%d\n"
@@ -1643,6 +1646,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->imps_ena,
 		 cf->as_ena,
 		 cf->pdp_ena,
+		 cf->cpn_ena,
 		 ZXID_MAX_BUF,
 
 		 cf->log_err,

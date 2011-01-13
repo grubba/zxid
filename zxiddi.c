@@ -260,7 +260,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 	    D("Option element does not have content %p", ss);
 	    continue;
 	  }
-	  p = zx_memmem(ss->s, ss->len, TAS3_TRUST_CTL1_INPUT, sizeof(TAS3_TRUST_CTL1_INPUT));
+	  p = zx_memmem(ss->s, ss->len, TAS3_TRUST_CTL1_INPUT, sizeof(TAS3_TRUST_CTL1_INPUT)-1);
 	  if (!p) {
 	    D("Option(%.*s) is not trust related", ss->len, ss->s);	    
 	    continue;
@@ -270,7 +270,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 	  if (!lim) {
 	    lim = ss->s + ss->len;
 	  } else {
-	    while (p = zx_memmem(lim, ss->len - (lim - ss->s), TAS3_TRUST_CTL1_INPUT, sizeof(TAS3_TRUST_CTL1_INPUT))) {
+	    while (p = zx_memmem(lim, ss->len - (lim - ss->s), TAS3_TRUST_CTL1_INPUT, sizeof(TAS3_TRUST_CTL1_INPUT)-1)) {
 	      lim = memchr(p+sizeof(TAS3_TRUST_CTL1_INPUT)-1, '&', ss->len - (p - ss->s));
 	      if (!lim) {
 		lim = ss->s + ss->len;
@@ -300,11 +300,14 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 
       /* *** Check Action */
 
+      if (cf->cpn_ena) {
 #if 0
       /* Call Trust and Privacy Negotiation (TrustBuilder), Andreas. */
       systemf("./tpn-client.sh %s %s %s", idpnid, "urn:idhrxml:cv:update", host);
 #else
-      zxid_callf(cf, ses, "urn:tas3:cpn-agent",0,0,0,
+      if (md->ServiceType && md->ServiceType->g.len
+	  && md->ProviderID && md->ProviderID->g.len) {
+	ss = zxid_callf(cf, ses, "urn:tas3:cpn-agent",0,0,0,
 		 "<tas3cpn:CPNRequest xmlns:tas3cpn=\"urn:tas3:cpn-agent\">"
 		   "<di:RequestedService xmlns:di=\"urn:liberty:disco:2006-08\">"
 		     "<di:ServiceType>%s</di:ServiceType>"
@@ -313,9 +316,18 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 		     /*"<di:Action>urn:x-foobar:Create</di:Action>"*/
 		   "</di:RequestedService>"
 		 "</tas3cpn:CPNRequest>",
-		 
-		 );
+			md->ServiceType->g.len, md->ServiceType->g.s,
+			md->ProviderID->g.len, md->ProviderID->g.s);
+	if (!ss || !ss->s) {
+	  D("CPN returned nothing or emptiness (no CPN agent discoverable?) %p", ss);
+	} else {
+	  D("CPN returned(%.*s)", ss->len, ss->s);	  
+	}
+      } else {
+	ERR("Service Metadata missing ServiceType(%p) or ProviderID(%p)", md->ServiceType, md->ProviderID);
+      }
 #endif
+      }
       ++n_discovered;
       D("%d: DISCOVERED EPR url(%.*s)", n_discovered, addr->len, addr->s);
       if (!zxid_add_fed_tok2epr(cf, ses, epr, 1, logop)) {
