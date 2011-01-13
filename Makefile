@@ -1224,6 +1224,9 @@ zxidssofinalizetest: $(ZXIDSSOFINALIZETEST_OBJ) $(LIBZXID_A)
 ifneq ($(TARGET),mingw)
 zxencdectest: $(ZXENCDECTEST_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxencdectest$(EXE) $^ $(LIBZXID) $(LIBS)
+else
+zxencdectest:
+	echo "Port this for mingw" > zxencdectest
 endif
 
 zxmqtest: $(ZXMQTEST_OBJ) $(LIBZXID_A)
