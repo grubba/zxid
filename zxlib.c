@@ -386,6 +386,10 @@ void zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont)
 /* Called by:  zx_add_kid_after_sa_Issuer, zxid_add_fed_tok2epr, zxid_az_soap, zxid_di_query, zxid_idp_as_do, zxid_imreq, zxid_mk_a7n x3, zxid_mk_logout_resp, zxid_mk_mni_resp, zxid_mk_saml_resp, zxid_soap_call_hdr_body x2, zxid_soap_cgi_resp_body, zxid_sp_soap_dispatch, zxid_wsf_sign */
 struct zx_elem_s* zx_add_kid(struct zx_elem_s* father, struct zx_elem_s* kid)
 {
+  if (!kid) {
+    ERR("kid argument missing father=%p", father);
+    return 0;
+  }
   if (father) {
     kid->g.n = &father->kids->g;
     father->kids = kid;
