@@ -662,14 +662,28 @@ int zxid_call_trustpdp(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_
 #if 1
   if (epr->Metadata && epr->Metadata->ProviderID) {
     D("Using ProviderID(%.*s) as resource-id", epr->Metadata->ProviderID->g.len, epr->Metadata->ProviderID->g.s);
-    xac_at = zxid_mk_xacml_simple_at(cf, 0,
+    rsrc = zxid_mk_xacml_simple_at(cf, 0,
 				     zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:1.0:resource:resource-id"),
 				     zx_dup_str(cf->ctx, XS_STRING),
 				     0, zx_dup_len_str(cf->ctx, epr->Metadata->ProviderID->g.len, epr->Metadata->ProviderID->g.s));
+    xac_at = zxid_mk_xacml_simple_at(cf, 0,
+				     zx_dup_str(cf->ctx, "urn:tas3:servicetype"),
+				     zx_dup_str(cf->ctx, XS_STRING),
+				     0, zx_dup_len_str(cf->ctx, epr->Metadata->ServiceType->g.len, epr->Metadata->ServiceType->g.s));
     ZX_NEXT(xac_at) = &rsrc->gg.g;
     rsrc = xac_at;
   } else {
     ERR("EPR does not have Metadata or Metadata/ProviderID. resource-id not set %p",epr->Metadata);
+  }
+
+  if (ses->nid && *ses->nid) {
+    subj = zxid_mk_xacml_simple_at(cf, 0,
+		zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:1.0:subject:subject-id"),
+		zx_dup_str(cf->ctx, XS_STRING),
+		0,
+		zx_dup_str(cf->ctx, ses->nid));
+  } else {
+    D("No ses->nid %p", ses->nid);
   }
 
   act = zxid_mk_xacml_simple_at(cf, 0,

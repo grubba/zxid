@@ -170,6 +170,8 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
       }
       addr = ZX_GET_CONTENT(epr->Address);
       md = epr->Metadata;
+      D("EPR ProviderID(%.*s)", md->ProviderID->g.len, md->ProviderID->g.s);
+      D("EPR ServiceType(%.*s)", md->ServiceType->g.len, md->ServiceType->g.s);
 
       /* Filter by service type */
       
@@ -302,12 +304,12 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 
       if (cf->cpn_ena) {
 #if 0
-      /* Call Trust and Privacy Negotiation (TrustBuilder), Andreas. */
-      systemf("./tpn-client.sh %s %s %s", idpnid, "urn:idhrxml:cv:update", host);
+	/* Call Trust and Privacy Negotiation (TrustBuilder), Andreas. */
+	systemf("./tpn-client.sh %s %s %s", idpnid, "urn:idhrxml:cv:update", host);
 #else
-      if (md->ServiceType && md->ServiceType->g.len
-	  && md->ProviderID && md->ProviderID->g.len) {
-	ss = zxid_callf(cf, ses, "urn:tas3:cpn-agent",0,0,0,
+	if (md->ServiceType && md->ServiceType->g.len
+	    && md->ProviderID && md->ProviderID->g.len) {
+	  ss = zxid_callf(cf, ses, "urn:tas3:cpn-agent",0,0,0,
 		 "<tas3cpn:CPNRequest xmlns:tas3cpn=\"urn:tas3:cpn-agent\">"
 		   "<di:RequestedService xmlns:di=\"urn:liberty:disco:2006-08\">"
 		     "<di:ServiceType>%s</di:ServiceType>"
@@ -316,16 +318,16 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 		     /*"<di:Action>urn:x-foobar:Create</di:Action>"*/
 		   "</di:RequestedService>"
 		 "</tas3cpn:CPNRequest>",
-			md->ServiceType->g.len, md->ServiceType->g.s,
-			md->ProviderID->g.len, md->ProviderID->g.s);
-	if (!ss || !ss->s) {
-	  D("CPN returned nothing or emptiness (no CPN agent discoverable?) %p", ss);
+			  md->ServiceType->g.len, md->ServiceType->g.s,
+			  md->ProviderID->g.len, md->ProviderID->g.s);
+	  if (!ss || !ss->s) {
+	    D("CPN returned nothing or emptiness (no CPN agent discoverable?) %p", ss);
+	  } else {
+	    D("CPN returned(%.*s)", ss->len, ss->s);	  
+	  }
 	} else {
-	  D("CPN returned(%.*s)", ss->len, ss->s);	  
+	  ERR("Service Metadata missing ServiceType(%p) or ProviderID(%p)", md->ServiceType, md->ProviderID);
 	}
-      } else {
-	ERR("Service Metadata missing ServiceType(%p) or ProviderID(%p)", md->ServiceType, md->ProviderID);
-      }
 #endif
       }
       ++n_discovered;

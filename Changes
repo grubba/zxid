@@ -22,6 +22,7 @@ To do:
     - Add attribute editor support to IdP
 
     - Support Danish profiles: http://digitaliser.dk/resource/516724
+    - Support http://saml2int.org/ (interoperability profile and club)
 
 Regarding mod_perl stability: I would assume most of that has to do
 with underlying memory allocator. All allocation activity in zxid code
