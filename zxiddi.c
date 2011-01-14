@@ -79,7 +79,8 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
   struct zx_elem_s* el;
   struct zx_a_Metadata_s* md = 0;  
   struct zx_str* ss;
-  struct zx_str* tt;
+  struct zx_str* svctyp;
+  struct zx_str* prvid;
   struct zx_str* addr = 0;  
   zxid_epr* epr = 0;
   D_INDENT("di_query: ");
@@ -170,6 +171,8 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
       }
       addr = ZX_GET_CONTENT(epr->Address);
       md = epr->Metadata;
+      svctyp = ZX_GET_CONTENT(md->ServiceType);
+      prvid = ZX_GET_CONTENT(md->ProviderID);
 
       /* Filter by service type */
       
@@ -181,14 +184,13 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 	if (!ss || !ss->len)
 	  continue;
 	match = 0;
-	tt = ZX_GET_CONTENT(md->ServiceType);
-	if (!tt || !tt->len) {
+	if (!svctyp || !svctyp->len) {
 	  INFO("EPR missing ServiceType. Rejected. epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
 	  ZX_FREE(cf->ctx, epr_buf);
 	  goto next_file;
 	}
-	if (ss->len != tt->len || memcmp(ss->s, tt->s, ss->len)) {
-	  D("%d: Internal svctype(%.*s) does not match desired(%.*s)", n_discovered, tt->len, tt->s, ss->len, ss->s);
+	if (ss->len != svctyp->len || memcmp(ss->s, svctyp->s, ss->len)) {
+	  D("%d: Internal svctype(%.*s) does not match desired(%.*s)", n_discovered, svctyp->len, svctyp->s, ss->len, ss->s);
 	  continue;
 	}
 	D("%d: ServiceType matches. file(%s)", n_discovered, de->d_name);
@@ -210,13 +212,12 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 	if (!ss || !ss->len)
 	  continue;
 	match = 0;
-	tt = ZX_GET_CONTENT(md->ProviderID);
-	if (!tt || !tt->len) {
+	if (!prvid || !prvid->len) {
 	  INFO("EPR missing ProviderID. epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
 	  break;
 	}
-	if (ss->len != tt->len || memcmp(ss->s, tt->s, ss->len)) {
-	  D("%d: ProviderID(%.*s) does not match desired(%.*s)", n_discovered, tt->len, tt->s, ss->len, ss->s);
+	if (ss->len != prvid->len || memcmp(ss->s, prvid->s, ss->len)) {
+	  D("%d: ProviderID(%.*s) does not match desired(%.*s)", n_discovered, prvid->len, prvid->s, ss->len, ss->s);
 	  continue;
 	}
 	D("%d: ProviderID matches. file(%s)", n_discovered, de->d_name);
@@ -305,8 +306,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 	/* Call Trust and Privacy Negotiation (TrustBuilder), Andreas. */
 	systemf("./tpn-client.sh %s %s %s", idpnid, "urn:idhrxml:cv:update", host);
 #else
-	if (md->ServiceType && md->ServiceType->g.len
-	    && md->ProviderID && md->ProviderID->g.len) {
+	if (svctyp && svctyp->len && prvid && prvid->len) {
 	  ss = zxid_callf(cf, ses, "urn:tas3:cpn-agent",0,0,0,
 		 "<tas3cpn:CPNRequest xmlns:tas3cpn=\"urn:tas3:cpn-agent\">"
 		   "<di:RequestedService xmlns:di=\"urn:liberty:disco:2006-08\">"
@@ -316,8 +316,8 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 		     /*"<di:Action>urn:x-foobar:Create</di:Action>"*/
 		   "</di:RequestedService>"
 		 "</tas3cpn:CPNRequest>",
-			  md->ServiceType->g.len, md->ServiceType->g.s,
-			  md->ProviderID->g.len, md->ProviderID->g.s);
+			  svctyp->len, svctyp->s,
+			  prvid->len, prvid->s);
 	  if (!ss || !ss->s) {
 	    D("CPN returned nothing or emptiness (no CPN agent discoverable?) %p", ss);
 	  } else {

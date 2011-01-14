@@ -679,11 +679,22 @@ int zxid_call_trustpdp(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_
   }
 
   if (ses->nid && *ses->nid) {
+#if 0
+    /* Pass user as subject. This is TAS3 correct behaviour. */
     subj = zxid_mk_xacml_simple_at(cf, 0,
 		zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:1.0:subject:subject-id"),
 		zx_dup_str(cf->ctx, XS_STRING),
 		0,
 		zx_dup_str(cf->ctx, ses->nid));
+#else
+    /* *** Pass service to rank as subject. This is a kludge to work around Jerry's bug. */
+    ss = ZX_GET_CONTENT(epr->Metadata->ProviderID);
+    D("*** Using ProviderID(%.*s) as subject-id", ss->len, ss->s);
+    subj = zxid_mk_xacml_simple_at(cf, 0,
+		zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:1.0:subject:subject-id"),
+		zx_dup_str(cf->ctx, XS_STRING),
+		0, zx_dup_zx_str(cf->ctx, ss));
+#endif
   } else {
     D("No ses->nid %p", ses->nid);
   }
