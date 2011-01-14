@@ -170,8 +170,6 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
       }
       addr = ZX_GET_CONTENT(epr->Address);
       md = epr->Metadata;
-      D("EPR ProviderID(%.*s)", md->ProviderID->g.len, md->ProviderID->g.s);
-      D("EPR ServiceType(%.*s)", md->ServiceType->g.len, md->ServiceType->g.s);
 
       /* Filter by service type */
       
