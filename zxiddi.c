@@ -310,8 +310,8 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 	  ss = zxid_callf(cf, ses, "urn:tas3:cpn-agent",0,0,0,
 		 "<tas3cpn:CPNRequest xmlns:tas3cpn=\"urn:tas3:cpn-agent\">"
 		   "<di:RequestedService xmlns:di=\"urn:liberty:disco:2006-08\">"
-		     "<di:ServiceType>%s</di:ServiceType>"
-		     "<di:ProviderID>%s</di:ProviderID>"
+		     "<di:ServiceType>%.*s</di:ServiceType>"
+		     "<di:ProviderID>%.*s</di:ProviderID>"
 		     "<di:Framework version=\"2.0\"/>"
 		     /*"<di:Action>urn:x-foobar:Create</di:Action>"*/
 		   "</di:RequestedService>"
