@@ -639,6 +639,8 @@ zxidjava/zxidjni.java
 zxidjava/zxidjniConstants.java
 zxidjava/zxidjniJNI.java
 
+Axis2ZXIDModule.zip    - Ready to use .mar file for ZXID Axis2 integration
+
 # Test suite
 
 zxtest.pl              - Test suite driver program

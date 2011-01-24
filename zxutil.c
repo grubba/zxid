@@ -85,13 +85,14 @@ fdtype vopen_fd_from_path(int flags, int mode, const char* logkey, int reperr, c
 {
   fdtype fd;
   char buf[ZXID_MAX_BUF];
+  DD("vopen_fd_from_path(%d, %d, %s, %d, %s)", flags, mode, logkey, reperr, name_fmt);
   if (!vname_from_path(buf, sizeof(buf), name_fmt, ap))
     return BADFD;
 #ifdef MINGW
   if (flags == O_RDONLY) {
     fd = openfile_ro(buf);
   } else {
-    fd = CreateFile(buf, MINGW_RW_PERM, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+    fd = zx_CreateFile(buf, MINGW_RW_PERM, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
   }
 #else
   fd = open(buf, flags, mode);
@@ -333,7 +334,7 @@ int write2_or_append_lock_c_path(const char* c_path,
   if (!c_path)
     return 0;
 #ifdef MINGW
-  fd = CreateFile(c_path, MINGW_RW_PERM, /*0*/FILE_SHARE_READ | FILE_SHARE_WRITE /* 0  means no sharing allowed */, 0 /* security */,
+  fd = zx_CreateFile(c_path, MINGW_RW_PERM, /*0*/FILE_SHARE_READ | FILE_SHARE_WRITE /* 0  means no sharing allowed */, 0 /* security */,
 		  (flag == O_APPEND) ? OPEN_ALWAYS : CREATE_ALWAYS /* truncates, too? */,
 		  FILE_ATTRIBUTE_NORMAL, 0);
   if (fd == BADFD) goto badopen;
@@ -451,7 +452,7 @@ linkrest:
 
   }
 #ifdef MINGW
-  fd_to = CreateFile(to, MINGW_RW_PERM, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+  fd_to = zx_CreateFile(to, MINGW_RW_PERM, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 #else
   fd_to = open(to, O_RDWR | O_CREAT, 0666);
 #endif

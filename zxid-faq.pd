@@ -958,6 +958,67 @@ is that the users tend to use the same passwords at the multiple
 parties, allowing each party to impersonate the user at the other
 party - and then there is the guessable password vulnearability).
 
+97.7.2 Receipe for debugging signature validation problems
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This mail thread fragment discusses how to debug signature problems
+between ZXID deployments. If the signer is not ZXID, then you
+need to figure out how to get it to print the canonicalized
+form. Often this turns out to be surprisingly difficult because
+the signing end uses some library which does not document
+how this vital debugging information can be obtained.
+
+<<logoutput:
+> > Message digest does not match because canonicalizations
+> > are different. You can dig the canonicalized forms of body from /var/zxid/log/xml.dbg
+> > There should be one entry from time when signature is created and another from time
+> > the signature validation was attempted. The two are different.
+> >
+> > BTW, I usually run
+> >
+> > tailf /var/zxid/log/xml.dbg | ./xml-pretty.pl
+> >
+
+> The failure appears in log as:
+>
+> <!-- XMLBEG 1548:46  zxsig.c:308 zxsig_validate  zx d call:  VFY FAIL CANON BLOB len=337 -->
+> <a:MessageID xmlns:a="http://www.w3.org/2005/08/addressing" 
+> xmlns:e="http://schemas.xmlsoap.org/soap/envelope/" 
+> xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" 
+> wsu:Id="MID" e:actor="http://schemas.xmlsoap.org/soap/actor/next" 
+> e:mustUnderstand="1">urn:MlQY4jARBIitwHPf6vIIyk_LZ</a:MessageID>
+> <!-- XMLEND 1548:46 -->
+>
+> now what?
+
+Yes, this is the failure, but somewhere earlier in the log (perhaps in different server - the
+WSC server), there should be block labelled similar to
+
+<!-- XMLBEG 13098:108  zxsig.c:124 zxsig_sign   zx d call:  SIG CANON len=337 -->
+...
+<!-- XMLEND 13098:108 -->
+
+You can find it quickly by searching backwards for something like the message ID or timestamp
+string.
+
+That block indicates how the signer canonicalized the blob. I claim the two will turn
+out to be different. Once the difference is known, I can investigate whether it is
+my bug or due to somehow malformed or incomplete input.
+>>
+
+97.7.3 Signature validation problems in body
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In typical web service call, using zxid_call() API, the programmer supplies
+a fragment of payload XML. This can be a source of canonicalization problems.
+
+ZXID will attempt to canonicalize it on basis of well formed XML and if it is not
+well formed, it will almost certainly give unpredictable results.
+
+Another common problem is omitting namespace declarations: ZXID considers
+all XML to have namespace, and if it does not find a namespace, then it will
+fabricate one. By supplying a namespace declaration, you control the situation
+instead of relying on unpredictable fabricated one.
 
 97.8 Audit Trail
 ----------------
@@ -1054,7 +1115,7 @@ this off by editing slimidp.ldif:
   encnids: 0
 
 If this is not done, the SSO will fail (with what appears like signature
-error).1x
+error).
 
 97.9.2 Shibboleth and OpenSAML
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

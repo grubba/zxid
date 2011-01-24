@@ -17,7 +17,7 @@ extern "C" {
 /*#define fdtype HANDLE   see zxid.h */
 #define BADFD (INVALID_HANDLE_VALUE)
 #define closefile(x) (CloseHandle(x)?0:-1)
-#define openfile_ro(path) CreateFile((path), GENERIC_READ, FILE_SHARE_READ, 0 /*security*/, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0)
+#define openfile_ro(path) zx_CreateFile((path), GENERIC_READ, FILE_SHARE_READ, 0 /*security*/, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0)
 #define geteuid() 0
 #define getegid() 0
 #define stat(X,Y) zx_stat(X,Y)
@@ -49,6 +49,11 @@ typedef struct stack_st STACK;  /* MSVC seems to have some problem with openssl/
 #define getpid()  0
 #define geteuid() 0
 #define getegid() 0
+
+HANDLE zx_CreateFile(LPCTSTR lpFileName, 
+		     DWORD dwDesiredAccess, DWORD dwShareMode, 
+		     LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, 
+		     DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
 
 #else
 #include <dirent.h>

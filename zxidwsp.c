@@ -64,17 +64,25 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
 
 #if 1
   /* *** Conor claims Sender is not mandatory */
-  hdr->Sender = zx_NEW_b_Sender(cf->ctx, &hdr->gg);
-  hdr->Sender->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
-  hdr->Sender->actor = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-  hdr->Sender->providerID = zxid_my_ent_id_attr(cf, &hdr->Sender->gg, zx_providerID_ATTR);
-  if (cf->affiliation)
-    hdr->Sender->affiliationID = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_affiliationID_ATTR, cf->affiliation);
+  if (!hdr->Sender && hdr->Sender->providerID) {
+    hdr->Sender = zx_NEW_b_Sender(cf->ctx, &hdr->gg);
+    hdr->Sender->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
+    hdr->Sender->actor = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+    hdr->Sender->providerID = zxid_my_ent_id_attr(cf, &hdr->Sender->gg, zx_providerID_ATTR);
+    if (cf->affiliation)
+      hdr->Sender->affiliationID = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_affiliationID_ATTR, cf->affiliation);
+  } else {
+    D("Using caller supplied Sender(%.*s)", hdr->Sender->providerID->g.len, hdr->Sender->providerID->g.s);
+  }
 #endif
 
-  hdr->MessageID = zx_NEW_a_MessageID(cf->ctx, &hdr->gg);
-  hdr->MessageID->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
-  hdr->MessageID->actor = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  if (!hdr->MessageID) {
+    hdr->MessageID = zx_NEW_a_MessageID(cf->ctx, &hdr->gg);
+    hdr->MessageID->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
+    hdr->MessageID->actor = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  } else {
+    D("Using caller supplied MessageID(%.*s)", ZX_GET_CONTENT_LEN(hdr->MessageID), ZX_GET_CONTENT_S(hdr->MessageID));
+  }
 
 #if 0
   hdr->Action = zx_NEW_a_Action(cf->ctx, &hdr->gg);
@@ -131,7 +139,8 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
 
   if (is_resp) {
     zx_add_content(cf->ctx, &sec->Timestamp->Created->gg, zxid_date_time(cf, time(0)));
-    zx_add_content(cf->ctx, &hdr->MessageID->gg, zxid_mk_id(cf, "urn:M", ZXID_ID_BITS));
+    if (!ZX_GET_CONTENT(hdr->MessageID))
+      zx_add_content(cf->ctx, &hdr->MessageID->gg, zxid_mk_id(cf, "urn:M", ZXID_ID_BITS));
     /* Clear away any credentials from previous iteration. *** clear kids list, too */
     sec->Signature = 0;
     sec->BinarySecurityToken = 0;
@@ -146,6 +155,8 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
       zx_add_content(cf->ctx, &hdr->RelatesTo->gg, ses->wsp_msgid);
       hdr->RelatesTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
       hdr->RelatesTo->actor = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+    } else {
+      ERR("RelatesTo header not created due to missing wsp_msgid. Are you passing same session to zxid_wsp_validate() and zxid_wsp_decorate()? %p", ses);
     }
 
     zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_REQUIRE, cf->wsp_localpdp_obl_emit);

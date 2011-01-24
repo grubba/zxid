@@ -1,5 +1,5 @@
 # zxid/Makefile  -  How to build ZXID
-# Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+# Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 # Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
 # Author: Sampo Kellomaki (sampo@iki.fi)
 # This is confidential unpublished proprietary source code of the author.
@@ -40,8 +40,8 @@ all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcg
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000074
-ZXIDREL=0.74
+ZXIDVERSION=0x000075
+ZXIDREL=0.75
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -103,6 +103,7 @@ CFLAGS += -Wall -Wno-parentheses -DMAYBE_UNUSED='__attribute__ ((unused))'
 #LDFLAGS += -Wl,--gc-sections
 LIBZXID_A=libzxid.a
 LIBZXID=-L. -lzxid
+SSL_LIBS= -lssl -lcrypto
 OBJ_EXT=o
 PLATFORM_OBJ=
 EXE=
@@ -277,16 +278,29 @@ CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-
 else
 ifeq ($(TARGET),mingw)
 
-ZXID_PATH=c:/var/zxid/
+# These options work with late 2010 vintage mingw (x86-mingw32-build-1.0-sh.tar.bz2?)
+
+CP=ln
+ZXID_PATH=/c/zxid/
 
 CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB
 CURL_ROOT=/usr/local
 OPENSSL_ROOT=/usr/local/ssl
 ZLIB_ROOT=/usr/local/lib/
-WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
-LIBS= -mconsole $(WIN_LIBS)
-SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
-CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -DMAYBE_UNUSED='__attribute__ ((unused))'
+
+SSL_LIBS= -lssl -lcrypto -lgdi32 -lwsock32
+CURL_LIBS= -lcurl -lssh2 -lidn -lwldap32
+WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib $(CURL_LIBS) $(SSL_LIBS) -lwinmm -lkernel32 -lz
+LIBS= -mconsole $(WIN_LIBS) -lpthread
+SHARED_FLAGS=-Wl,--add-stdcall-alias -mdll -static -Wl,--export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -D'ZXID_PATH="$(ZXID_PATH)"'  -DMAYBE_UNUSED='__attribute__ ((unused))'
+
+
+#WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
+#LIBS= -mconsole $(WIN_LIBS)
+#SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+#CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -DMAYBE_UNUSED='__attribute__ ((unused))'
+
 JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:/Program Files/Java/jdk1.5.0_14/include/win32"
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
@@ -1287,7 +1301,7 @@ libzxid.so.0.0: $(LIBZXID_A)
 	$(LD) $(OUTOPT)libzxid.so.0.0 $(SHARED_FLAGS) $^ $(SHARED_CLOSE) -lcurl -lssl -lcrypt
 
 zxid.dll zxidimp.lib: $(LIBZXID_A)
-	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib $^ $(SHARED_CLOSE) $(WIN_LIBS)
+	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib $^ $(SHARED_CLOSE) $(WIN_LIBS) -mdll
 
 # N.B. Failing to supply -Wl,-no-whole-archive above will cause
 # /apps/gcc/mingw/sysroot/lib/libmingw32.a(main.o):main.c:(.text+0x106): undefined reference to `WinMain@16'
@@ -1446,7 +1460,7 @@ precheck/chk-zlib.exe: precheck/chk-zlib.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
 
 precheck/chk-openssl.exe: precheck/chk-openssl.$(OBJ_EXT)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(SSL_LIBS)
 
 precheck/chk-curl.exe: precheck/chk-curl.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)

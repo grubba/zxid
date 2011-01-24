@@ -1,5 +1,13 @@
 *.[ao]
+*.so
 *~
 .*~
 #*
 .#*
+*.exe
+*.def
+*.dll
+*.lib
+*.tmp
+*.obj
+zx/

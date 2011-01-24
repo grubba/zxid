@@ -42,10 +42,12 @@
  * is not hashed: you should use a file system that scales easily to oodles
  * of small files in one directory. Say `make dir' to create the directory
  * with proper layout. If you change it here, also edit Makefile. */
+#ifndef ZXID_PATH
 #ifdef MINGW
- #define ZXID_PATH "c:/var/zxid/"
+#define ZXID_PATH "c:/var/zxid/"
 #else
- #define ZXID_PATH "/var/zxid/"
+#define ZXID_PATH "/var/zxid/"
+#endif
 #endif
 
 /*(c) SP Nickname for IdP User Interface

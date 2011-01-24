@@ -1,5 +1,5 @@
 /* zxlib.c  -  Utility functions for generated (and other) code
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -18,6 +18,9 @@
  * 27.10.2010, re-engineered namespace handling --Sampo
  */
 
+#ifdef MINGW
+#include <windows.h>
+#endif
 #include "platform.h"  /* needed on Win32 for snprintf(), va_copy() et al. */
 
 //#include <pthread.h>
@@ -49,11 +52,27 @@ char* zx_memmem(const char* haystack, int haystack_len, const char* needle, int 
 }
 
 #ifdef MINGW
- #ifdef stat
-  #undef stat 
- #endif
+/*() On windows the errno is not set. */
+HANDLE zx_CreateFile(LPCTSTR lpFileName, 
+		     DWORD dwDesiredAccess, DWORD dwShareMode, 
+		     LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, 
+		     DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) 
+{
+  D("CreateFile(%s)", lpFileName);
+  HANDLE res = CreateFile(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes,
+			  dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+  errno = GetLastError();
+  return res;
+}
 #endif
-/* ZX implmentation of stat for mingw which is dumb */
+
+#ifdef MINGW
+#ifdef stat
+#undef stat 
+#endif
+#endif
+
+/*() ZX implmentation of stat for mingw which is dumb */
 int zx_stat( const char *path, struct stat *buffer )
 {
     int rv = 0;

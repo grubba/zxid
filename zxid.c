@@ -195,7 +195,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
       case '\0':
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	read_all_fd(atoi((*argv)[0]), symmetric_key, sizeof(symmetric_key), &symmetric_key_len);
+	read_all_fd((fdtype)atoi((*argv)[0]), symmetric_key, sizeof(symmetric_key), &symmetric_key_len);
 	D("Got %d characters of symmetric key", symmetric_key_len);
 	continue;
       }
@@ -542,7 +542,7 @@ int main(int argc, char** argv, char** env)
     }
     break;
   case 'B':  /* Metadata */
-    write_all_fd(1, "Content-Type: text/xml\r\n\r\n", sizeof("Content-Type: text/xml\r\n\r\n")-1);
+    write_all_fd(fileno(stdout), "Content-Type: text/xml\r\n\r\n", sizeof("Content-Type: text/xml\r\n\r\n")-1);
     return zxid_send_sp_meta(cf, &cgi);
   default: D("unknown op(%c)", cgi.op);
   }
