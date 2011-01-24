@@ -436,14 +436,21 @@ int zx_init_tok_tab(struct zx_ctx* c, struct zx_tok* tok_tab, struct zx_tok* tok
 /* Called by:  zx_LEN_WO_any_elem x2, zx_len_inc_ns */
 int zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seenp)
 {
-  if (!ns)
+  if (!ns) {
+    DD("no ns %p", ns);
     return 0;
-  if (!zx_push_seen(c, ns->prefix_len, ns->prefix, ns->url_len, ns->url, pop_seenp))
+  }
+  if (!zx_push_seen(c, ns->prefix_len, ns->prefix, ns->url_len, ns->url, pop_seenp)) {
+    DD("no push seen %p", ns);
     return 0;
+  }
   /* Check for undeclared empty prefix, as seen in namespaceless XML */
   if ((!ns->prefix || !*ns->prefix)
-      && !memcmp(ns->url, zx_unknown_prefix, sizeof(zx_unknown_prefix))-1)
+      && !memcmp(ns->url, zx_unknown_prefix, sizeof(zx_unknown_prefix)-1)) {
+    DD("undeclared empty prefix %p", ns);
     return 0;
+  }
+  DD("add xmlns %p", ns);
   return sizeof(" xmlns")-1
     + (ns->prefix_len ? ns->prefix_len+1 : 0) + 2 + ns->url_len + 1;
 }
@@ -459,19 +466,25 @@ void zx_add_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns
   struct zx_ns_s* pop_seen_dummy=0;
   struct zx_ns_s* new_ns;
   int res;
-  if (!ns)
+  if (!ns) {
+    DD("no ns %p", ns);
     return;
+  }
   new_ns = zx_push_seen(c, ns->prefix_len, ns->prefix, ns->url_len, ns->url, &pop_seen_dummy);
-  if (!new_ns)
+  if (!new_ns) {
+    DD("no new_ns %p", ns);
     return;
+  }
   if (!*pop_seenp) {
     *pop_seenp = new_ns;
+    DD("no pop_seen %p", ns);
     return;
   }
   if (!new_ns->prefix_len) {       /* Default namespace (empty prefix) sorts first. */
 first:
     new_ns->seen_pop = *pop_seenp;
     *pop_seenp = new_ns;
+    DD("empty prefix %p", ns);
     return;
   }
 
@@ -499,7 +512,7 @@ char* zx_enc_seen(char* p, struct zx_ns_s* ns)
   for (; ns; ns = ns->seen_pop) {
     /* Check for undeclared empty prefix, as seen in namespaceless XML */
     if ((!ns->prefix || !*ns->prefix)
-	&& !memcmp(ns->url, zx_unknown_prefix, sizeof(zx_unknown_prefix))-1)
+	&& !memcmp(ns->url, zx_unknown_prefix, sizeof(zx_unknown_prefix)-1))
       continue;
     ZX_OUT_MEM(p, " xmlns", sizeof(" xmlns")-1);
     if (ns->prefix_len) {
