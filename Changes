@@ -71,7 +71,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
 
-zxid-0.75:: 23.1.2022
+zxid-0.75:: 23.1.2011
     - MINGW fixes
     - User supplied MessageID duplicate fix
 
