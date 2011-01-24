@@ -1,9 +1,9 @@
 Content-Type: text/html
-Content-Length: 10842
+Content-Length: 10875
 
 <title>ZXID Conf for http://sp1.zxidsp.org:8081/zxidhlo</title><body bgcolor=white><h1>ZXID Conf for http://sp1.zxidsp.org:8081/zxidhlo?o=B</h1><p>Please see config file in /var/zxid/zxid.conf, and documentation in zxid-conf.pd and zxidconf.h
 <p>[ <a href="?o=B">Metadata</a> | <a href="?o=c">CARML</a> | <a href="?o=d">This Conf Dump</a> ]
-<p>Version: R0.73 (1292029609)
+<p>Version: R0.75 (1295881027)
 <pre>PATH=/var/zxid/
 URL=http://sp1.zxidsp.org:8081/zxidhlo
 AFFILIATION=
@@ -64,6 +64,8 @@ IDP_ENA=0
 IMPS_ENA=0
 AS_ENA=0
 PDP_ENA=1
+CPN_ENA=0
+AZ_OPT=0
 #ZXID_MAX_BUF=1024 (compile)
 LOG_ERR=1
 LOG_ACT=1
@@ -100,6 +102,7 @@ MANDATORY_ATTR=zxidvers,zxidloa
 PDP_URL=http://idp.tas3.pt:8081/zxididp?o=S
 PDP_CALL_URL=
 XASP_VERS=2.0
+TRUSTPDP_URL=
 MOD_SAML_ATTR_PREFIX=SAML_
 BARE_URL_ENTITYID=0
 SHOW_TECH=0

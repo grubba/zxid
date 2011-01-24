@@ -64,7 +64,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
 
 #if 1
   /* *** Conor claims Sender is not mandatory */
-  if (!hdr->Sender && hdr->Sender->providerID) {
+  if (!hdr->Sender || !hdr->Sender->providerID) {
     hdr->Sender = zx_NEW_b_Sender(cf->ctx, &hdr->gg);
     hdr->Sender->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
     hdr->Sender->actor = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
