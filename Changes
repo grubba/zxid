@@ -71,6 +71,10 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
 
+zxid-0.75:: 23.1.2022
+    - MINGW fixes
+    - User supplied MessageID duplicate fix
+
 zxid-0.74:: 22.1.2011
     - Changed o to fileno(stdin) in calls to read_all_fd() for better Windows portability
     - Included Axis2ZXIDModule.zip
