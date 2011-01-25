@@ -1,5 +1,5 @@
 /* zxidwsp.c  -  Handwritten nitty-gritty functions for Liberty ID-WSF Web Services Provider
- * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -11,6 +11,7 @@
  * 22.11.2009, created --Sampo
  * 7.1.2010,   added WSP signing --Sampo
  * 31.5.2010,  reworked PEPs extensively --Sampo
+ * 25.1.2011,  tweaked RelatesTo header --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -84,18 +85,30 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     D("Using caller supplied MessageID(%.*s)", ZX_GET_CONTENT_LEN(hdr->MessageID), ZX_GET_CONTENT_S(hdr->MessageID));
   }
 
-#if 0
-  hdr->Action = zx_NEW_a_Action(cf->ctx, &hdr->gg);
-  zx_add_content(cf->ctx, &hdr->Action->gg, zx_ref_str(cf->ctx, ***));
-  hdr->Action->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Action->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
-  hdr->Action->actor = zx_ref_attr(cf->ctx, gghdr->Action->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-#endif
+  if (is_resp) {
+    if (ses && ses->wsp_msgid && ses->wsp_msgid->len) {
+      D("wsp_msgid(%.*s) %p %d %p", ses->wsp_msgid->len, ses->wsp_msgid->s, ses->wsp_msgid, ses->wsp_msgid->len, ses->wsp_msgid->s);
+      hdr->RelatesTo = zx_NEW_a_RelatesTo(cf->ctx, &hdr->gg);
+      zx_add_content(cf->ctx, &hdr->RelatesTo->gg, ses->wsp_msgid);
+      hdr->RelatesTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
+      hdr->RelatesTo->actor = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+    } else {
+      ERR("RelatesTo header not created due to missing wsp_msgid. Are you passing same session to zxid_wsp_validate() and zxid_wsp_decorate()? %p", ses);
+    }
+  }
 
 #if 0
   hdr->From = zx_NEW_a_From(cf->ctx, &hdr->gg);
   hdr->From->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->From->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->From->actor = zx_ref_attr(cf->ctx, &hdr->From->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->From->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));
+#endif
+
+#if 0
+  hdr->Action = zx_NEW_a_Action(cf->ctx, &hdr->gg);
+  zx_add_content(cf->ctx, &hdr->Action->gg, zx_ref_str(cf->ctx, ***));
+  hdr->Action->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Action->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
+  hdr->Action->actor = zx_ref_attr(cf->ctx, gghdr->Action->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 #endif
 
 #if 0
@@ -149,16 +162,6 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     sec->sa11_Assertion = 0;
     sec->ff12_Assertion = 0;
     
-    if (ses && ses->wsp_msgid && ses->wsp_msgid->len) {
-      D("wsp_msgid(%.*s) %p %d %p", ses->wsp_msgid->len, ses->wsp_msgid->s, ses->wsp_msgid, ses->wsp_msgid->len, ses->wsp_msgid->s);
-      hdr->RelatesTo = zx_NEW_a_RelatesTo(cf->ctx, &hdr->gg);
-      zx_add_content(cf->ctx, &hdr->RelatesTo->gg, ses->wsp_msgid);
-      hdr->RelatesTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
-      hdr->RelatesTo->actor = zx_ref_attr(cf->ctx, &hdr->RelatesTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-    } else {
-      ERR("RelatesTo header not created due to missing wsp_msgid. Are you passing same session to zxid_wsp_validate() and zxid_wsp_decorate()? %p", ses);
-    }
-
     zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_REQUIRE, cf->wsp_localpdp_obl_emit);
     zxid_wsf_sign(cf, cf->wsp_sign, sec, 0, hdr, env->Body);
   }
@@ -201,6 +204,11 @@ struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cr
 {
   struct zx_str* ss;
   struct zx_e_Envelope_s* env;
+
+  if (!cf || !ses || !enve) {
+    ERR("Missing config, session, or envelope argument %p %p %p (programmer error)", cf,ses,enve);
+    return 0;
+  }
   D_INDENT("decor: ");
 
   env = zxid_add_env_if_needed(cf, enve);
@@ -613,6 +621,10 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   struct zx_str* logpath;
   struct zx_root_s* r;
 
+  if (!cf || !ses || !enve) {
+    ERR("Missing config, session, or envelope argument %p %p %p (programmer error)", cf,ses,enve);
+    return 0;
+  }
   ss.s = (char*)enve;
   ss.len = strlen(enve);
   D_XML_BLOB(cf, "WSP_VALIDATE", ss.len, ss.s);
@@ -631,11 +643,14 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   ZX_FREE(cf->ctx, r);
   
   logpath = zxlog_path(cf, ses->issuer, ses->wsp_msgid, ZXLOG_RELY_DIR, ZXLOG_MSG_KIND, 1);
+  if (!logpath) {
+    ERR("Log path not valid, empty issuer? %p %p", ses->issuer, ses->wsp_msgid);
+    return 0;
+  }
   if (zxlog_dup_check(cf, logpath, "validate request")) {
     if (cf->dup_msg_fatal) {
       zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate request dup err");
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Client", "Duplicate Message.", "DuplicateMsg", 0, 0, 0));
-      D_DEDENT("valid: ");
       return 0;
     } else {
       INFO("Duplicate message detected, but configured to ignore this (DUP_MSG_FATAL=0). %d",0);

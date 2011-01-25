@@ -624,6 +624,10 @@ struct zx_str* zxlog_path(zxid_conf* cf,
 int zxlog_dup_check(zxid_conf* cf, struct zx_str* path, const char* logkey)
 {
   struct stat st;
+  if (!cf || !path || !logkey) {
+    ERR("Missing config, path, or logkey argument %p %p (programmer error)", path, logkey);
+    return 0;
+  }
   /* We need a c path, but get zx_str. However, the zx_str will come from zxlog_path()
    * so we should be having the nul termination as needed. Just checking. */
   ASSERTOP(path->s[path->len], ==, 0);
