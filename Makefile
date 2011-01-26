@@ -1158,6 +1158,9 @@ javaswigchk:
 	ls zxidjava/SWIGTYPE*.java >foo
 	fgrep zxidjava/SWIGTYPE Manifest | cmp - foo
 
+gitreadd:
+	git add zxidjava/*.java zxidjava/*.c Net/Makefile Net/SAML.pm Net/*.c php/*.[hc]
+
 javaclean:
 	rm -rf zxidjava/*.$(OBJ_EXT) zxidjava/*~ zxidjava/*.so zxidjava/*.class *.class
 
@@ -1712,6 +1715,7 @@ winbindist:
 #     pd2tex apache.pd
 #     pd2tex mod_auth_saml.pd
 #   make javaswigchk
+#   make gitreadd
 #   make dist
 #   make copydist
 #   make release
