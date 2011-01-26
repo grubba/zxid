@@ -195,6 +195,7 @@ char* zx_dup_cstr(struct zx_ctx* c, const char* str);
 #define ZX_DUPALLOC(c, typ, n, o) (n) = (typ*)zx_alloc((c), sizeof(typ)); memcpy((n), (o), sizeof(typ))
 #define ZX_FREE(c, p) zx_free((c), (p))
 
+void  zx_reset_ns_ctx(struct zx_ctx* ctx);
 void  zx_reset_ctx(struct zx_ctx* ctx);
 struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 

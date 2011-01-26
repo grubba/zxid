@@ -74,6 +74,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
 zxid-0.76:: 25.1.2011
     - Added error checks
     - Fixed ordering of RelatesTo header
+    - Fixed leakage of unknown namespaces to decoder
+    - Made memory allocators really use function pointers
 
 zxid-0.75:: 24.1.2011
     - MINGW fixes

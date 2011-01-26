@@ -614,8 +614,7 @@ no_attr:
 /* Called by:  covimp_test, zx_dec_zx_root */
 void zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, int n_ns, const char* start, const char* lim)
 {
-  c->guard_seen_n.seen_n = &c->guard_seen_p;
-  c->guard_seen_p.seen_p = &c->guard_seen_n;
+  zx_reset_ns_ctx(c);
   c->ns_tab = ns_tab;
   c->n_ns = n_ns;
   c->bas = c->p = start;

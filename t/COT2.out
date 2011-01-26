@@ -1,6 +1,7 @@
 http://sp1.zxidsp.org:8081/zxidhlo?o=B             /var/zxid/cot/7226zILkb6t9aGT89NyvhKvbZS0 TAS3 App Demo SP and WSC
 http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B            /var/zxid/cot/THuOFn5WPO49n6esrG22rUFW6Go TAS3 App Demo SP and WSC
 http://idp.ssocircle.com                           /var/zxid/cot/s36Te-rgbzReSjVc8vDDGy89tT8 -
+http://tripod.kenteq.nl/SSO/ZXID.ashx              /var/zxid/cot/48uIfks4yTO6mjaF5IP3IQFqtW0 Kenteq is het kennis- en adviescentrum voor technisch vakmanschap. Ons doel is bij te dragen aan loopbaanontwikkeling en hoogwaardig vakmanschap in de techniek. Door kennisoverdracht, begeleiding, training, scholing en advisering. Kenteq zoekt daarbij bewust naar samenwerking.
 https://idp.symdemo.com:8880/idp.xml               /var/zxid/cot/_CBGcFVVbIEmt5oh3jUx4GEfHLM -
 https://idp.tas3.kent.ac.uk/idp/shibboleth         /var/zxid/cot/crE4cE1_K3Vd5oQkgDxi_vD6GNE -
 http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B     /var/zxid/cot/RoxLhhcxK04xzJRrW6ZuroX7Ing -

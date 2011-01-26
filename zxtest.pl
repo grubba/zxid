@@ -1060,6 +1060,7 @@ CMD('SIG37', 'sig vry', "./zxdecode -v -s -s <t/enve-sigval-err.xml", 2560);
 CMD('SIG38', 'sig vry', "./zxdecode -v -s -s <t/default-ns-req-simple.xml");
 CMD('SIG39', 'sig vry', "./zxdecode -v -s -s <t/default-ns-req-simple-nons.xml", 2560);
 CMD('SIG40', 'sig vry', "./zxdecode -v -s -s <t/default-ns-req.xml");
+CMD('SIG41', 'sig vry', "./zxdecode -v -s -s <t/soag-namespace-issue.xml");
 
 ED('XML1',  'Decode-Encode SO and WO: ns-bug',  1000, 't/default-ns-bug.xml');
 ED('XML2',  'Decode-Encode SO and WO: azrq1',   1000, 't/azrq1.xml');

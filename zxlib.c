@@ -89,7 +89,7 @@ int zx_stat( const char *path, struct stat *buffer )
 
 /*() ZX memory allocator that does not zero the buffer. Allocation is
  * potentially done relative to ZX context <<italic: c>>, though
- * actual (2008) implementation simply uses malloc(3).
+ * actual (2008) implementation simply uses malloc(3). See also zx_reset_ctx().
  *
  * Rather than reference this function directly, you should
  * use the ZX_ALLOC() macro as much as possible.
@@ -101,7 +101,7 @@ int zx_stat( const char *path, struct stat *buffer )
 void* zx_alloc(struct zx_ctx* c, int size)
 {
   char* p;
-  p = malloc(size);
+  p = c->malloc_func?c->malloc_func(size):malloc(size);
   DD("malloc %p size=%d", p, size);
   if (!p) {
     ERR("Out-of-memory(%d)", size);
@@ -138,7 +138,11 @@ void* zx_zalloc(struct zx_ctx* c, int size)
 /* Called by: */
 void* zx_free(struct zx_ctx* c, void* p)
 {
-  if (p)
+  if (!p)
+    return 0;
+  if (c->free_func)
+    c->free_func(p);
+  else
     free(p);
   return 0;
 }

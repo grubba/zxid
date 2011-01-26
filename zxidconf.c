@@ -876,6 +876,18 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   return 0;
 }
 
+/*() Reset the doubly linked seen list and unknown_ns list to empty.
+ * This is "light" version of zx_reset_ctx() that can be called
+ * safely from inside lock. */
+
+/* Called by:  dirconf, main x3, zx_init_ctx, zxid_az, zxid_az_base, zxid_simple_len */
+void zx_reset_ns_ctx(struct zx_ctx* ctx)
+{
+  ctx->guard_seen_n.seen_n = &ctx->guard_seen_p;
+  ctx->guard_seen_p.seen_p = &ctx->guard_seen_n;
+  ctx->unknown_ns = 0;
+}
+
 /*() Reset the seen doubly linked list to empty and initialize memory
  * allocation related function pointers to system malloc(3). Without
  * such initialization, any meomory allocation activity as well as
@@ -886,11 +898,10 @@ void zx_reset_ctx(struct zx_ctx* ctx)
 {
   ZERO(ctx, sizeof(struct zx_ctx));
   LOCK_INIT(ctx->mx);
-  ctx->guard_seen_n.seen_n = &ctx->guard_seen_p;
-  ctx->guard_seen_p.seen_p = &ctx->guard_seen_n;
   ctx->malloc_func = &malloc;
   ctx->realloc_func = &realloc;
   ctx->free_func = &free;
+  zx_reset_ns_ctx(ctx);
 }
 
 /*() Allocate new ZX object and initialize it in standard

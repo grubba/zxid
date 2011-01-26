@@ -328,7 +328,7 @@ struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct z
     *ret_enve = ret?ret->s:0;
   if (!ret)
     return 0;
-  
+
   r = zx_dec_zx_root(cf->ctx, ret->len, ret->s, "soap_call");
   if (!r || !r->Envelope || !r->Envelope->Body) {
     ERR("Failed to parse SOAP response url(%.*s)", url->len, url->s);

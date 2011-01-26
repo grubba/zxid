@@ -1,4 +1,4 @@
-zxdecode  -  Decode SAML Redirect and POST Messages R0.70
+zxdecode  -  Decode SAML Redirect and POST Messages R0.76
 Copyright (c) 2008-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0
 See http://www.apache.org/licenses/LICENSE-2.0
@@ -12,6 +12,10 @@ Usage: zxdecode [options] <message >decoded
   -s -s            Only validate hashes (check canon), do not fetch meta or check RSA
   -c CONF          For -s, optional configuration string (default -c PATH=/var/zxid/)
                    Most of the configuration is read from /var/zxid/zxid.conf
+  -wscp            Call zxid_wsc_prepare_call() on SOAP request
+  -wspv            Call zxid_wsp_validate() on SOAP request
+  -wspd            Call zxid_wsp_decorate() on SOAP response
+  -wscv            Call zxid_wsc_valid_resp() on SOAP response
   -sha1            Compute sha1 over input and print as base64. For debugging canon.
   -v               Verbose messages.
   -q               Be extra quiet.
