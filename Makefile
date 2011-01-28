@@ -40,8 +40,8 @@ all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcg
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000076
-ZXIDREL=0.76
+ZXIDVERSION=0x000077
+ZXIDREL=0.77
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -1247,8 +1247,14 @@ zxencdectest:
 	echo "Port this for mingw" > zxencdectest
 endif
 
-zxmqtest: $(ZXMQTEST_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxmqtest$(EXE) $^ -lzmq $(LIBZXID) $(LIBS)
+zxmqtest-zmq: $(ZXMQTEST_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxmqtest-zmq$(EXE) $^ -lzmq $(LIBZXID) $(LIBS)
+
+zxmqtest.o: zxmqtest.c
+	$(CC) $(CFLAGS) -DOPENAMQ -I/apps/openamq/std/include -c $^ -o zxmqtest.o
+
+zxmqtest-amq: $(ZXMQTEST_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxmqtest-amq$(EXE) $^ -L/apps/openamq/std/lib -lamq_wireapi -lamq_common -lsmt -lasl -lipr -licl -lpcre -laprutil -lapr -lcrypt -lm $(LIBZXID) $(LIBS)
 
 zxidxmltool: $(ZXIDXMLTOOL_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxidxmltool$(EXE) $^ $(LIBS)

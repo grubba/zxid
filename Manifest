@@ -51,6 +51,7 @@ gen-conf-ref.pl  - Generate configuration reference from zxidconf.h
 sed-zxid.pl      - Perform in portable way the few string edits needed by build to eliminate sed
 pulverize.pl     - A build tool for generating pulverized libraries for dead function elimination
 mockpdp.pl       - A mockup of a PDP, run as CGI
+xacml2ldif.pl    - Extract attributes from XACML request
 call-anal.pl     - Call graph analysis tool (see make callgraph)
 xml-pretty.pl    - XML Pretty Printer
 zximport-htpasswd.pl - Script to create users in /var/zxid/idpuid from .htpasswd

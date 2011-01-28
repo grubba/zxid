@@ -5,7 +5,6 @@
 Usual suspects: zxid.user@lists.unh.edu
 
 To do:
-    - Add Trust and Privacy Negotiation capability to discovery
     - Wishlist of built-in attributes
       1. HTTP method (GET, POST, HEAD, etc.)
       2. Full URL including the hostname part (currently only local URL is passed)
@@ -13,8 +12,7 @@ To do:
       4. If SOAP, the name of the first direct child element of the SOAP Body
       5. Any SOAP Action header, from SOAP message or from HTTP header.
     - (Local) logout should either return to referer, or to configurable page
-    - Depend logging validate, az response, emit logging decorate, azreq
-    - Brian's ordering problem (risaris-bad.xml)
+    - Depend logging in validate, az response, emit logging in decorate, azreq
     - Static linking, dynamic linking libzxid
     - IdP initiated SLO
     - IdP should include URL for correcting information
@@ -26,8 +24,7 @@ To do:
 
 Regarding mod_perl stability: I would assume most of that has to do
 with underlying memory allocator. All allocation activity in zxid code
-goes through zx_alloc() (in zxlib.c:55). The ctx->malloc_func function
-pointer is not currently used. I should fix zx_alloc() to use it.
+goes through zx_alloc() (in zxlib.c:55). I should fix zx_alloc() to use it.
 Anyway, all this is in place to ensure that you could replace malloc()
 with an alternative allocator, such as Apache pool allocator.
 
@@ -50,10 +47,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxpasswd should have user federation listing mode
     - zxid_pw_authn() should not report scary error when checking .ykspent in not spent case
     - zxid_select_tgt() (?)
-    - Each credential as its own a7n
-    - X509 attr certs
+    - X509 attr certs (some code is in place, but does not work correctly)
     - Use post screen as confirmation screen, option for federation confirmation question
-    - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
     - Config option for redirection after SLO
     - WSP_LOCALPDP_OBL_REQ processing
     - WSC_LOCALPDP_OBL_ACCEPT processing
@@ -66,10 +61,11 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - AuthnReq QS option for SP to request that attribute list is not shown up front
     - Consider removing zx_scan_pi_or_comment() from most tags, only leaving for top level.
     - Show whether SP wants a persistent or transient, or some other type of Id for the user.
-    - Sort unknown attributes wrt known attributes in SO and WO enc
-    - Add MessageID and InReplyTo headers to discovery queries.
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
+    - Clarify signature validation error codes, e.g. <SignedInfo> canon fail vs. bad cert
+
+zxid-0.77:: 27.1.2011
 
 zxid-0.76:: 26.1.2011
     - Added error checks
@@ -81,10 +77,13 @@ zxid-0.75:: 24.1.2011
     - MINGW fixes
     - User supplied MessageID duplicate fix
     - Fixed XML encoding of empty namespace prefixes
+    - Fixed Brian's ordering problem (risaris-bad.xml)
 
 zxid-0.74:: 22.1.2011
     - Changed 0 to fileno(stdin) in calls to read_all_fd() for better Windows portability
     - Included Axis2ZXIDModule.zip
+    - Added Trust PDP call to discovery
+    - Added Credentials and Privacy Negotiation capability to discovery
 
 zxid-0.73:: 19.12.2010
     - Added ssoa7n and tgta7n attributes (TAS3 feature req #484)
@@ -93,15 +92,19 @@ zxid-0.73:: 19.12.2010
     - Fixed a problem with copy_file(). This could cause lost audit trail when copy instead of deletion was chosen on platform that does not use links.
     - Fixed element ordering in zxcot generated EPRs
     - Added IdP side AAMAP capability to transform attributes, including a7n wrap
+    - Each credential as its own a7n
     - Added <ns:foo/> close tag tail optimization to encoder, controlled by c->enc_tail_opt flag
     - Added preliminary DSA support
     - Crude and preliminary X509 attribute cert support
     - Fixed excessive content-length in CGI output
     - Fixed XML valued attributes (TAS3 bug #385)
+    - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
+    - Added MessageID and RelatesTo headers to discovery queries.
     - Test coverage 63%
 
 zxid-0.72:: 5.12.2010
     - Major rewrite: Eliminated SO encoders entirely, enhancing WO encoder to do their job
+    - Sort unknown attributes wrt known attributes in enc
 
 zxid-0.71:: 22.11.2010
     - Moved back to global elems hash, but with separate namespace hash

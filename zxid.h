@@ -26,6 +26,7 @@
 
 #include <memory.h>
 #include <string.h>
+#include <sys/time.h>  /* for struct timeval */
 #ifdef USE_CURL
 #include <curl/curl.h>
 #endif

@@ -1020,6 +1020,36 @@ all XML to have namespace, and if it does not find a namespace, then it will
 fabricate one. By supplying a namespace declaration, you control the situation
 instead of relying on unpredictable fabricated one.
 
+97.7.4 VFY FAIL CANON SIGINFO
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The logs say VFY FAIL CANON SIGINFO
+
+Basically a signature has message digests at two layers: 1. over
+payload data (e.g. #BDY), 2. over the <SignedInfo> element. The latter
+is what gets private key encrypted when signature is made. The
+encrypted value appears in <SignatureValue>.
+
+The validation decrypts <SignatureValue> with public key from cert. If
+the public key does not match the private key, you will get, if you
+are lucky, a padding error, which you were getting earlier. But if you
+are not lucky, you will just get garbage decrypt.
+
+The garbage decrypt is then compared against message digest computed
+over <SignedInfo>.
+
+This is reported as VFY FAIL CANON SIGINFO, which may be misleading if
+the real reson was garbage decrypt. However, it would be the right
+error message in case the <SignatureValue> decrypt was valid, but the
+<SignedInfo> had actually been tampered with.
+
+I would concentrate the investigation on the theory of garbage decrypt
+due to wrong certificate.
+
+The certificate for signature validation is chosen on basis of
+<Sender> header's ~providerID~ XML attribute.
+
+
 97.8 Audit Trail
 ----------------
 

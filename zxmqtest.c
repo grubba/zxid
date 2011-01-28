@@ -1,20 +1,20 @@
 /* zxmqtest.c  -  Test message queues
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
- * Copyright (c) 2006-2007 Symlabs (symlabs@symlabs.com), All Rights Reserved.
- * Author: Sampo Kellomaki (sampo@iki.fi)
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id: zxencdectest.c,v 1.9 2009-11-24 23:53:40 sampo Exp $
  *
- * 1.7.2006, started --Sampo
- * 9.2.2007, improved to make basis of a test suite tool --Sampo
- *
- * Test encoding and decoding SAML 2.0 assertions and other related stuff.
+ * 1.1.2011, started --Sampo
 
 /apps/bin/ccache /apps/bin/gcc -g -fpic -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -Wall -Wno-parentheses -DMAYBE_UNUSED='__attribute__ ((unused))' -ffunction-sections -fdata-sections -DUSE_CURL -DUSE_OPENSSL -DUSE_PTHREAD -DLINUX -D_REENTRANT -DDEBUG -I. -I/home/sampo/zxid -I/apps/openssl/std/include -I/apps/include -I/include -I/apps/apache/std/include -I/apps/apache/std/srclib/apr-util/include -o zxmqtest  zxmqtest.c /s/zeromq-2.0.9/libzmq.a -L. -lzxid -lstdc++ -lcurl -lssl -lcrypto -lpthread -luuid
 
+ * See also: http://www.openamq.org/doc:prog-wireapi
+ * openamq-dev@lists.openamq.org
+ * http://www.mail-archive.com/qpid-dev@incubator.apache.org/msg07651.html   (2008 test problems)
+ * http://news.ycombinator.com/item?id=1232242  (harsh critique of AMQP)
+ * http://wiki.secondlife.com/wiki/Message_Queue_Evaluation_Notes  (comparison)
  */
 
 #include <signal.h>
@@ -28,12 +28,25 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <openssl/x509.h>
+//#include <unistd.h>  // off64_t needed by /apps/openamq/std/include/apr.h
+
+#ifdef OPENAMQ
+typedef __off64_t off64_t;   // off64_t needed by /apps/openamq/std/include/apr.h:285
+#include "wireapi.h"
+//#include "asl.h"
+//#include "amq_client_connection.h"
+//#include "amq_client_session.h"
+#endif
+
+#ifdef ZMQ
 #include <zmq.h>
+#endif
 
 #include "errmac.h"
 
 #include "zx.h"
 #include "zxid.h"
+#include "zxidutil.h"
 #include "c/zxidvers.h"
 #include "c/zx-data.h"
 #include "c/zx-const.h"
@@ -41,14 +54,13 @@
 
 const char* help =
 "zxmqtest  -  ZX Message Queue tester - R" ZXID_REL "\n\
-Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
-Copyright (c) 2006-2007 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
-Author: Sampo Kellomaki (sampo@iki.fi)\n\
+Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
-Usage: zxencdectest [options] <foo.xml >reencoded-foo.xml\n\
+Usage: zxmqtest [options]\n\
+  -l           Listener mode\n\
   -r N         Run test number N. 1 = IBM cert dec, 2 = IBM cert enc dec\n\
   -i N         Number of iterations to benchmark (default 1).\n\
   -t SECONDS   Timeout. Default: 0=no timeout.\n\
@@ -60,8 +72,6 @@ Usage: zxencdectest [options] <foo.xml >reencoded-foo.xml\n\
                http://www.aet.tu-cottbus.de/personen/jaenicke/postfix_tls/prngd.html\n\
   -rand PATH   Location of random number seed file. On Solaris EGD is used.\n\
                On Linux the default is /dev/urandom. See RFC1750.\n\
-  -so PATH     File to write schema order encoding in\n\
-  -wo PATH     File to write wire order encoding in\n\
   -v           Verbose messages.\n\
   -q           Be extra quiet.\n\
   -d           Turn on debugging.\n\
@@ -87,8 +97,7 @@ char* egd_path;
 char  symmetric_key[1024];
 int symmetric_key_len;
 int n_iter = 1;
-char* so_path = 0;
-char* wo_path = 0;
+int listen_mode = 0;
 
 /* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
 void opt(int* argc, char*** argv, char*** env)
@@ -159,15 +168,6 @@ void opt(int* argc, char*** argv, char*** env)
       
     case 'r':
       switch ((*argv)[0][2]) {
-      case '\0':
-	++(*argv); --(*argc);
-	if (!(*argc)) break;
-	switch (atoi((*argv)[0])) {
-	case 1: test_ibm_cert_problem(); break;
-	case 2: test_ibm_cert_problem_enc_dec(); break;
-	}
-	exit(0);
-
       case 'f':
 	/*AFR_TS(LEAK, 0, "memory leaks enabled");*/
 #if 1
@@ -218,26 +218,6 @@ void opt(int* argc, char*** argv, char*** env)
       }
       break;
 
-    case 's':
-      switch ((*argv)[0][2]) {
-      case 'o': if ((*argv)[0][3]) break;
-	++(*argv); --(*argc);
-	if (!(*argc)) break;
-	so_path = (*argv)[0];
-	continue;
-      }
-      break;
-
-    case 'w':
-      switch ((*argv)[0][2]) {
-      case 'o': if ((*argv)[0][3]) break;
-	++(*argv); --(*argc);
-	if (!(*argc)) break;
-	wo_path = (*argv)[0];
-	continue;
-      }
-      break;
-
     case 'k':
       switch ((*argv)[0][2]) {
       case '\0':
@@ -269,6 +249,9 @@ void opt(int* argc, char*** argv, char*** env)
 
     case 'l':
       switch ((*argv)[0][2]) {
+      case 0:
+	++listen_mode;
+	continue;
       case 'i':
 	if (!strcmp((*argv)[0],"-license")) {
 	  extern char* license;
@@ -294,18 +277,192 @@ void opt(int* argc, char*** argv, char*** env)
 /* Called by: */
 int main(int argc, char** argv, char** env)
 {
+  int ret, got_all, len;
+#ifdef OPENAMQ
+  amq_client_connection_t* amq_conn;
+  amq_client_session_t* amq_ses;
+  amq_content_basic_t* content = NULL;
+  icl_longstr_t* auth_data;
+#endif
+#ifdef ZMQ
   struct zx_ctx ctx;
   struct zx_root_s* r;
-  int ret, got_all, len_so, len_wo, major, minor, patch;
-  char so_out[256*1024];
-  char* so_p;
-  char wo_out[256*1024];
-  char* wo_p;
+  int major, minor, patch;
   void* zmq_ctx;
   void* zmq_fd;
   zmq_msg_t msg;
+#endif
   opt(&argc, &argv, &env);
+
+#ifdef OPENAMQ
+  icl_system_initialise(argc, argv);
+  auth_data  = amq_client_connection_auth_plain("guest", "guest");
+  if (!auth_data) {
+    ERR("auth plain: %d %s", errno, STRERROR(errno));
+    exit(1);
+  }
+  amq_conn = amq_client_connection_new("localhost", "/", auth_data, "test", 0, 30000);
+  icl_longstr_destroy(&auth_data);
+  if (!amq_conn) {
+    ERR("new client conn: %d %s", errno, STRERROR(errno));
+    exit(1);
+  }
+
+  D("amq_conn:\n direct(%d)\n alive(%d)\n silent(%d)\n error_text(%s)\n reply_text(%s)\n reply_code(%d)\n version_major(%d)\n version_minor(%d)\n server_product(%s)\n server_version(%s)\n server_platform(%s)\n server_copyright(%s)\n server_information(%s)\n server_identifier(%s)\n id(%s)", amq_conn->direct, amq_conn->alive, amq_conn->silent, amq_conn->error_text, amq_conn->reply_text, amq_conn->reply_code, amq_conn->version_major, amq_conn->version_minor, amq_conn->server_product, amq_conn->server_version, amq_conn->server_platform, amq_conn->server_copyright, amq_conn->server_information, amq_conn->server_identifier, amq_conn->id);
+
+  amq_ses = amq_client_session_new(amq_conn);
+  if (!amq_ses) {
+    ERR("new ses: %d %s", errno, STRERROR(errno));
+    exit(1);
+  }
+
+  DD("amq_ses:\n alive(%d)\n timestamp(%d)\n error_text(%s)\n ticket(%d)\n queue(%s)\n exchange(%s)\n message_count(%s)\n consumer_count(%d)\n active(%d)\n reply_text(%s)\n reply_code(%d)\n consumer_tag(%d)\n routing_key(%s)\n scope(%s)\n delivery_tag(%d)\n redelivered(%d)", amq_ses->alive, amq_ses->timestamp, amq_ses->error_text, amq_ses->ticket, amq_ses->queue, amq_ses->exchange, amq_ses->message_count, amq_ses->consumer_count, amq_ses->active, amq_ses->reply_text, amq_ses->reply_code, amq_ses->consumer_tag, amq_ses->routing_key, amq_ses->scope, amq_ses->delivery_tag, amq_ses->redelivered);
+  D("amq_ses:\n alive(%d)\n timestamp(%lld)\n error_text(%s)\n queue(%s)\n exchange(%s)\n message_count(%ld)\n consumer_count(%d)\n active(%d)\n reply_text(%s)\n reply_code(%d)\n consumer_tag(%s)\n routing_key(%s)\n delivery_tag(%lld)\n redelivered(%d)", amq_ses->alive, amq_ses->timestamp, amq_ses->error_text, amq_ses->queue, amq_ses->exchange, amq_ses->message_count, amq_ses->consumer_count, amq_ses->active, amq_ses->reply_text, amq_ses->reply_code, amq_ses->consumer_tag, amq_ses->routing_key, amq_ses->delivery_tag, amq_ses->redelivered);
+
+  if (listen_mode) {
+    //  Create a private queue
+    ret = amq_client_session_queue_declare(
+        amq_ses,                        //  session
+        0,                              //  ticket
+        0,                              //  queue name
+        FALSE,                          //  passive
+        TRUE,                           //  durable
+        TRUE,                           //  exclusive
+        FALSE,                          //  auto-delete
+        0);                             //  arguments tab
+    if (ret) {
+      ERR("ret=%d: %d %s", ret, errno, STRERROR(errno));
+      exit(1);
+    }
+
+    DD("amq_ses: QUEUE(%s)\n alive(%d)\n timestamp(%d)\n error_text(%s)\n ticket(%d)\n queue(%s)\n exchange(%s)\n message_count(%s)\n consumer_count(%d)\n active(%d)\n reply_text(%s)\n reply_code(%d)\n consumer_tag(%d)\n routing_key(%s)\n scope(%s)\n delivery_tag(%d)\n redelivered(%d)", amq_ses->queue, amq_ses->alive, amq_ses->timestamp, amq_ses->error_text, amq_ses->ticket, amq_ses->queue, amq_ses->exchange, amq_ses->message_count, amq_ses->consumer_count, amq_ses->active, amq_ses->reply_text, amq_ses->reply_code, amq_ses->consumer_tag, amq_ses->routing_key, amq_ses->scope, amq_ses->delivery_tag, amq_ses->redelivered);
+    D("amq_ses: QUEUE(%s)\n alive(%d)\n timestamp(%lld)\n error_text(%s)\n queue(%s)\n exchange(%s)\n message_count(%ld)\n consumer_count(%d)\n active(%d)\n reply_text(%s)\n reply_code(%d)\n consumer_tag(%s)\n routing_key(%s)\n delivery_tag(%lld)\n redelivered(%d)", amq_ses->queue, amq_ses->alive, amq_ses->timestamp, amq_ses->error_text, amq_ses->queue, amq_ses->exchange, amq_ses->message_count, amq_ses->consumer_count, amq_ses->active, amq_ses->reply_text, amq_ses->reply_code, amq_ses->consumer_tag, amq_ses->routing_key, amq_ses->delivery_tag, amq_ses->redelivered);
+    
+    /* *** consider setting our own exchange, see:
+     * http://blogs.digitar.com/jjww/2009/01/rabbits-and-warrens/ */
+
+    /* A binding is a routing rule that links an exchange to a queue
+     * based on a routing key. It is possible for two binding rules to
+     * use the same routing key. For example, maybe messages with the
+     * routing key "audit" need to go both to the "log-forever" queue
+     * and the "alert-the-big-dude" queue. To accomplish this, just
+     * create two binding rules (each one linking the exchange to one
+     * of the queues) that both trigger on routing key "audit". In
+     * this case, the exchange duplicates the message and sends it to
+     * both queues. Exchanges are just routing tables containing
+     * bindings. */
+
+    //  Bind the queue to the exchange
+    ret = amq_client_session_queue_bind(
+        amq_ses,                        //  session
+        0,                              //  ticket
+        0,                              //  queue (0=last declared queue of ses)
+        "amq.direct",                   //  exchange
+        "reitti",                       //  routing-key
+        0);                             //  arguments tab
+    if (ret) {
+      ERR("ret=%d: %d %s", ret, errno, STRERROR(errno));
+      exit(1);
+    }
+
+    //  Consume from the queue
+    ret = amq_client_session_basic_consume(
+        amq_ses,                        //  session
+        0,                              //  ticket
+        0,                              //  queue (0=?)
+        0,                              //  consumer-tag
+        TRUE,                           //  no-local
+        TRUE,                           //  no-ack
+        TRUE,                           //  exclusive
+        0);                             //  arguments tab
+    if (ret) {
+      ERR("ret=%d: %d %s", ret, errno, STRERROR(errno));
+      exit(1);
+    }
+
+    while (1) {
+      while (1) {
+	ret = amq_client_session_get_basic_arrived_count(amq_ses);
+	D("arrived count=%d", ret);
+	//  Get next message
+	content = amq_client_session_basic_arrived(amq_ses);
+	if (!content)
+	  break;
+	D("content:\n body_size(%lld)\n exchange(%s)\n routing_key(%s)\n producer_id(%s)\n content_type(%s)\n content_encoding(%s)\n headers(%p)\n delivery_mode(%d)\n priority(%d)\n correlation_id(%s)\n reply_to(%s)\n expiration(%s)\n message_id(%s)\n timestamp(%lld)\n type(%s)\n user_id(%s)\n app_id(%s)\n sender_id(%s)", content->body_size, content->exchange, content->routing_key, content->producer_id, content->content_type, content->content_encoding, content->headers, content->delivery_mode, content->priority, content->correlation_id, content->reply_to, content->expiration, content->message_id, content->timestamp, content->type, content->user_id, content->app_id, content->sender_id);
+
+	//  Get the message body and write it to stdout
+	len = amq_content_basic_get_body(content, (byte*)buf, sizeof(buf)-1);
+	if (len) {
+	  buf[len] = 0;
+	  printf("got(%s)\n",buf);
+	  //fputs(buf, stdout);
+	}
+	//  Destroy the message
+	amq_content_basic_unlink(&content);
+      }
+      //  Wait while next message arrives
+      amq_client_session_wait(amq_ses, 0);
+
+      //  Exit the loop if Ctrl+C is encountered
+      if (!amq_conn->alive)
+	break;
+    }
+  } else {
+
+    /* Send message experiment */
+    //  Create a content and send it to the "queue" exchange
+    content = amq_content_basic_new();
+    if (!content) {
+      ERR("new content: %d %s", errno, STRERROR(errno));
+      exit(1);
+    }
+    ret = amq_content_basic_set_body(content, "Hello World!", 10, NULL);
+    if (ret) {
+      ERR("ret=%d: %d %s", ret, errno, STRERROR(errno));
+      exit(1);
+    }
+    ret = amq_content_basic_set_message_id(content, "ID001");
+    if (ret) {
+      ERR("ret=%d: %d %s", ret, errno, STRERROR(errno));
+      exit(1);
+    }
+
+    D("content:\n body_size(%lld)\n exchange(%s)\n routing_key(%s)\n producer_id(%s)\n content_type(%s)\n content_encoding(%s)\n headers(%p)\n delivery_mode(%d)\n priority(%d)\n correlation_id(%s)\n reply_to(%s)\n expiration(%s)\n message_id(%s)\n timestamp(%lld)\n type(%s)\n user_id(%s)\n app_id(%s)\n sender_id(%s)", content->body_size, content->exchange, content->routing_key, content->producer_id, content->content_type, content->content_encoding, content->headers, content->delivery_mode, content->priority, content->correlation_id, content->reply_to, content->expiration, content->message_id, content->timestamp, content->type, content->user_id, content->app_id, content->sender_id);
+
+    /* When you publish your message to an exchange, there's a flag
+     * called "Delivery Mode". Depending on the AMQP library you're
+     * using there will be different ways of setting it. But the long
+     * and the short of it is you want the "Delivery Mode" set to the
+     * value 2, which means "persistent". "Delivery Mode" usually
+     * (depending on your AMQP library) defaults to a value of 1,
+     * which means "non-persistent". So the steps for persistent
+     * messaging are:
+     *   1. Mark the exchange "durable".
+     *   2. Mark the queue "durable".
+     *   3. Set the message's "delivery mode" to a value of 2
+     */
+
+    ret = amq_client_session_basic_publish(amq_ses,
+					   content,
+					   0,               /* ticket */
+					   "amq.direct",    /* Exchange */
+					   "reitti",        /* Routing key */
+					   FALSE,           /* Mandatory */
+					   FALSE);          /* Immediate */
+    amq_content_basic_unlink(&content);
+    if (ret) {
+      ERR("ret=%d: %d %s", ret, errno, STRERROR(errno));
+      exit(1);
+    }
+  }
   
+  amq_client_session_destroy(&amq_ses);
+  amq_client_connection_destroy(&amq_conn);
+  icl_system_terminate();
+  exit(0);
+#endif
+  
+#ifdef ZMQ
   zmq_ctx = zmq_init(1);
   if (!zmq_ctx) {
     ERR("Init fail: %d %s", errno, STRERROR(errno));
@@ -356,60 +513,39 @@ int main(int argc, char** argv, char** env)
   zmq_term(zmq_ctx);
   D("done %d", 0);
   exit(0);
+#endif
 
-  len_so = read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got_all);
+  len = read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
   buf[got_all] = 0;
-
-  D("Decoding %d chars, n_iter(%d)\n", got_all, n_iter);
-  
-  for (; n_iter; --n_iter) {
-    ZERO(&ctx, sizeof(ctx));
-    r = zx_dec_zx_root(cf->ctx, got_all, buf, "zxencdectest main");
-    if (!r)
-      DIE("Decode failure");
-
-    len_so = zx_LEN_SO_root(&ctx, r);
-    D("Enc so len %d chars", len_so);
-
-    ctx.bas = so_out;
-    so_p = zx_ENC_SO_root(&ctx, r, so_out);
-    if (!so_p)
-      DIE("encoding error");
-
-    len_wo = zx_LEN_WO_root(&ctx, r);
-    D("Enc wo len %d chars", len_wo);
-
-    ctx.bas = wo_out;
-    wo_p = zx_ENC_WO_root(&ctx, r, wo_out);  /* *** trouble */
-    if (!wo_p)
-      DIE("encoding error");
-
-    zx_FREE_root(&ctx, r, 0);
-  }
-
-  if (got_all != len_wo)
-    printf("Original and WO are different lengths %d != %d\n", got_all, len_wo);
-
-  if (memcmp(buf, wo_out, MIN(got_all, len_wo)))
-    printf("Original and WO differ.\n");
-
-  if (memcmp(so_out, wo_out, MIN(len_so, len_wo)))
-    printf("SO and WO differ.\n");
-
-  if (so_p - so_out != len_so)
-    ERR("SO encode length mismatch %d vs. %d (len)", so_p - so_out, len_so);
-  printf("Re-encoded result SO (len=%d):\n%.*s\n\n", len_so, len_so, so_out);
-
-  if (wo_p - wo_out != len_wo)
-    ERR("WO encode length mismatch %d vs %d (len)", wo_p - wo_out, len_wo);
-  printf("Re-encoded result WO (len=%d):\n%.*s\n\n", len_wo, len_wo, wo_out);
-
-  if (so_path)
-    write_all_path_fmt("SO", sizeof(buf), buf, "%s", so_path, 0, "%.*s", len_so, so_out);
-  if (wo_path)
-    write_all_path_fmt("WO", sizeof(buf), buf, "%s", wo_path, 0, "%.*s", len_wo, wo_out);
   return 0;
 }
 
-/* EOF  --  zxencdectest.c */
+/* EOF  --  zxmqtest.c */
+
+/*
+openamq-dev@lists.openamq.org
+
+I need a pure C implementation of AMQP and found OpenAMQP. Basically I am using wireapi
+and amq_server. For me the more important part is the wireapi and I hope to interoperate
+with other AMQP implementations.
+
+However, I have some questions
+
+1. Is the project really abandoned? Is 0-10 or 1-0 support ever forthcoming?
+2. Is there any SSL support, at least in wireapi client?
+
+On the latter point I have further specifics:
+
+a. In addition to using SSL for encryption, I would like to use Client-TLS authentication (but
+basic auth over server-TLS remains an option if nothing better is available).
+
+b. If, as it appears, SSL support is not there, how would folks feel about using OpenSSL
+for this? If I were to add OpenSSL support, any pointers to where to insert it in
+the source code? OpenAMQ at 1 million lines of code is quite daunting for
+what it does (OpenSSL is 300k lines and that is already a lot of bloat), so I would
+appreciate pointers about what to learn and what to ignore.
+
+Cheers,
+--Sampo
+*/
