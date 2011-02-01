@@ -38,7 +38,7 @@
  *
  * See also: zxid_mk_fault() */
 
-/* Called by:  zxid_di_query x2, zxid_idp_as_do x3, zxid_idp_map_nid2uid, zxid_imreq x6, zxid_mk_fault, zxid_mk_lu_Status, zxid_mk_tas3_status, zxid_ps_addent_invite x2, zxid_ps_resolv_id */
+/* Called by:  covimp_test, zxid_di_query x2, zxid_idp_as_do x3, zxid_idp_map_nid2uid, zxid_imreq x6, zxid_mk_fault, zxid_mk_lu_Status, zxid_mk_tas3_status, zxid_ps_addent_invite x2, zxid_ps_resolv_id */
 struct zx_lu_Status_s* zxid_mk_lu_Status(zxid_conf* cf, struct zx_elem_s* father, const char* sc1, const char* sc2, const char* msg, const char* ref)
 {
   struct zx_lu_Status_s* st = zx_NEW_lu_Status(cf->ctx,father);
@@ -54,7 +54,7 @@ struct zx_lu_Status_s* zxid_mk_lu_Status(zxid_conf* cf, struct zx_elem_s* father
 
 /*() Create TAS3 application level Status (error) header. */
 
-/* Called by:  zxid_get_fault_status */
+/* Called by:  covimp_test, zxid_get_fault_status */
 zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, struct zx_elem_s* father, const char* ctlpt, const char* sc1, const char* sc2, const char* msg, const char* ref)
 {
   zxid_tas3_status* st = zx_NEW_tas3_Status(cf->ctx, father);
@@ -85,7 +85,7 @@ zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, struct zx_elem_s* father, c
  * See also: zxid_mk_lu_Status()
  */
 
-/* Called by:  zxid_call_epr x2, zxid_timestamp_chk x2, zxid_wsc_prepare_call x2, zxid_wsc_valid_re_env x13, zxid_wsf_validate_a7n x6, zxid_wsp_decorate x2, zxid_wsp_validate x2, zxid_wsp_validate_env x12 */
+/* Called by:  covimp_test, zxid_call_epr x2, zxid_timestamp_chk x2, zxid_wsc_prepare_call x2, zxid_wsc_valid_re_env x13, zxid_wsf_validate_a7n x6, zxid_wsp_decorate x2, zxid_wsp_validate x2, zxid_wsp_validate_env x12 */
 zxid_fault* zxid_mk_fault(zxid_conf* cf, struct zx_elem_s* father, const char* fa, const char* fc, const char* fs, const char* sc1, const char* sc2, const char* msg, const char* ref)
 {
   zxid_fault* flt = zx_NEW_e_Fault(cf->ctx, father);
@@ -114,36 +114,36 @@ void zxid_set_fault(zxid_conf* cf, zxid_ses* ses, zxid_fault* flt) {
 
 /*() Read current fault of the session. NULL return means that there was no fault. */
 
-/* Called by: */
+/* Called by:  covimp_test */
 zxid_fault* zxid_get_fault(zxid_conf* cf, zxid_ses* ses) {
   return ses->curflt;
 }
 
-/* Called by:  zxid_get_fault_status */
+/* Called by:  covimp_test x2, zxid_get_fault_status */
 char* zxid_get_tas3_fault_sc1(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !ZX_SIMPLE_ELEM_CHK(flt->faultcode))
     return 0;
   return zx_str_to_c(cf->ctx, ZX_GET_CONTENT(flt->faultcode));
 }
-/* Called by: */
+/* Called by:  covimp_test x2 */
 char* zxid_get_tas3_fault_sc2(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !flt->detail || !flt->detail->Status || !flt->detail->Status->code || !flt->detail->Status->code->g.s)
     return 0;
   return zx_str_to_c(cf->ctx, &flt->detail->Status->code->g);
 }
-/* Called by:  zxid_get_fault_status */
+/* Called by:  covimp_test x2, zxid_get_fault_status */
 char* zxid_get_tas3_fault_comment(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !ZX_SIMPLE_ELEM_CHK(flt->faultstring))
     return 0;
   return zx_str_to_c(cf->ctx, ZX_GET_CONTENT(flt->faultstring));
 }
-/* Called by: */
+/* Called by:  covimp_test x2 */
 char* zxid_get_tas3_fault_ref(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !flt->detail || !flt->detail->Status || !flt->detail->Status->ref || !flt->detail->Status->ref->g.s)
     return 0;
   return zx_str_to_c(cf->ctx, &flt->detail->Status->ref->g);
 }
-/* Called by:  zxid_get_fault_status */
+/* Called by:  covimp_test x2, zxid_get_fault_status */
 char* zxid_get_tas3_fault_actor(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !ZX_SIMPLE_ELEM_CHK(flt->faultactor))
     return 0;
@@ -179,36 +179,36 @@ void zxid_set_tas3_status(zxid_conf* cf, zxid_ses* ses, zxid_tas3_status* status
 
 /*() Read current fault of the session. NULL return means that there was no fault. */
 
-/* Called by: */
+/* Called by:  covimp_test */
 zxid_tas3_status* zxid_get_tas3_status(zxid_conf* cf, zxid_ses* ses) {
   return ses->curstatus;
 }
 
-/* Called by: */
+/* Called by:  covimp_test x2 */
 char* zxid_get_tas3_status_sc1(zxid_conf* cf, zxid_tas3_status* st) {
   if (!st || !st->code || !st->code->g.s)
     return 0;
   return zx_str_to_c(cf->ctx, &st->code->g);
 }
-/* Called by: */
+/* Called by:  covimp_test x2 */
 char* zxid_get_tas3_status_sc2(zxid_conf* cf, zxid_tas3_status* st) {
   if (!st || !st->Status || !st->Status->code || !st->Status->code->g.s)
     return 0;
   return zx_str_to_c(cf->ctx, &st->Status->code->g);
 }
-/* Called by: */
+/* Called by:  covimp_test x2 */
 char* zxid_get_tas3_status_comment(zxid_conf* cf, zxid_tas3_status* st) {
   if (!st || !st->comment || !st->comment->g.s)
     return 0;
   return zx_str_to_c(cf->ctx, &st->comment->g);
 }
-/* Called by: */
+/* Called by:  covimp_test x2 */
 char* zxid_get_tas3_status_ref(zxid_conf* cf, zxid_tas3_status* st) {
   if (!st || !st->ref || !st->ref->g.s)
     return 0;
   return zx_str_to_c(cf->ctx, &st->ref->g);
 }
-/* Called by: */
+/* Called by:  covimp_test x2 */
 char* zxid_get_tas3_status_ctlpt(zxid_conf* cf, zxid_tas3_status* st) {
   if (!st || !st->ctlpt || !st->ctlpt->g.s)
     return 0;
@@ -270,7 +270,7 @@ struct zx_a_Address_s* zxid_mk_addr(zxid_conf* cf, struct zx_elem_s* father, str
 
 /*() Low level constructor for <dap:Select>. */
 
-/* Called by:  main x4 */
+/* Called by:  covimp_test x2, main x4 */
 struct zx_dap_Select_s* zxid_mk_dap_select(zxid_conf* cf, struct zx_elem_s* father, char* dn, char* filter, char* attributes, int derefaliases, int scope, int sizelimit, int timelimit, int typesonly)
 {
   struct zx_dap_Select_s* sel = zx_NEW_dap_Select(cf->ctx, father);
@@ -287,7 +287,7 @@ struct zx_dap_Select_s* zxid_mk_dap_select(zxid_conf* cf, struct zx_elem_s* fath
 
 /*() Low level constructor for <dap:QueryItem>. */
 
-/* Called by:  main x3 */
+/* Called by:  covimp_test, main x3 */
 struct zx_dap_QueryItem_s* zxid_mk_dap_query_item(zxid_conf* cf, struct zx_elem_s* father, struct zx_dap_Select_s* sel, char* objtype, char* predef, char* sort, char* changed_since, int incl_common_attr, int offset, int count, char* setreq, char* setid, char* contingent_itemidref)
 {
   struct zx_dap_QueryItem_s* qi = zx_NEW_dap_QueryItem(cf->ctx, father);
@@ -330,7 +330,7 @@ struct zx_dap_QueryItem_s* zxid_mk_dap_query_item(zxid_conf* cf, struct zx_elem_
 
 /*() Low level constructor for <dap:TestOp>. */
 
-/* Called by:  main */
+/* Called by:  covimp_test, main */
 struct zx_dap_TestOp_s* zxid_mk_dap_testop(zxid_conf* cf, struct zx_elem_s* father, char* dn, char* filter, char* attributes, int derefaliases, int scope, int sizelimit, int timelimit, int typesonly)
 {
   struct zx_dap_TestOp_s* sel = zx_NEW_dap_TestOp(cf->ctx, father);
@@ -347,7 +347,7 @@ struct zx_dap_TestOp_s* zxid_mk_dap_testop(zxid_conf* cf, struct zx_elem_s* fath
 
 /*() Low level constructor for <dap:TestItem>. */
 
-/* Called by:  main */
+/* Called by:  covimp_test, main */
 struct zx_dap_TestItem_s* zxid_mk_dap_test_item(zxid_conf* cf, struct zx_elem_s* father, struct zx_dap_TestOp_s* top, char* objtype, char* predef)
 {
   struct zx_dap_TestItem_s* ti = zx_NEW_dap_TestItem(cf->ctx, father);
@@ -362,7 +362,7 @@ struct zx_dap_TestItem_s* zxid_mk_dap_test_item(zxid_conf* cf, struct zx_elem_s*
 
 /*() Low level constructor for <dap:ResultQuery>. */
 
-/* Called by:  main */
+/* Called by:  covimp_test, main */
 struct zx_dap_ResultQuery_s* zxid_mk_dap_resquery(zxid_conf* cf, struct zx_elem_s* father, struct zx_dap_Select_s* sel, char* objtype, char* predef, char* sort, char* changed_since, int incl_common_attr, char* contingent_itemidref)
 {
   struct zx_dap_ResultQuery_s* qi = zx_NEW_dap_ResultQuery(cf->ctx, father);
@@ -399,7 +399,7 @@ struct zx_dap_ResultQuery_s* zxid_mk_dap_resquery(zxid_conf* cf, struct zx_elem_
 
 /*() Low level constructor for <dap:Subscription>. */
 
-/* Called by:  main */
+/* Called by:  covimp_test, main */
 struct zx_dap_Subscription_s* zxid_mk_dap_subscription(zxid_conf* cf, struct zx_elem_s* father, char* subsID, char* itemidref, struct zx_dap_ResultQuery_s* rq, char* aggreg, char* trig, char* starts, char* expires, int incl_data, char* admin_notif, char* notify_ref)
 {
   struct zx_dap_Subscription_s* subs = zx_NEW_dap_Subscription(cf->ctx, father);
@@ -425,7 +425,7 @@ struct zx_dap_Subscription_s* zxid_mk_dap_subscription(zxid_conf* cf, struct zx_
 
 /*() Low level constructor for <dap:Query>. */
 
-/* Called by:  main x3 */
+/* Called by:  covimp_test, main x3 */
 struct zx_dap_Query_s* zxid_mk_dap_query(zxid_conf* cf, struct zx_elem_s* father, struct zx_dap_TestItem_s* tis, struct zx_dap_QueryItem_s* qis, struct zx_dap_Subscription_s* subs)
 {
   struct zx_dap_Query_s* q = zx_NEW_dap_Query(cf->ctx, father);

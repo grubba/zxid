@@ -5,7 +5,8 @@
 
 <<ignore: $Id: zxid-license.pd,v 1.1 2009-08-25 16:22:44 sampo Exp $ >>
 
-Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
+Copyright (c) 2010-2011 Sampo Kellomäki (sampo@iki.fi), All Rights Reserved.\\
+Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.\\
 Author: Sampo Kellomäki (sampo@iki.fi)
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -75,3 +76,25 @@ available for a fee. Please contact sales@symlabs.com
 
 Legal queries and clarifications will be answered at then-current
 Symlabs Professional Services rate, please contact sales@symlabs.com.
+
+96.4 TAS3 Free to Implement and Use Pledge
+------------------------------------------
+
+Per decisions of TAS3 General Assembly of 2010-09-13\\
+(TAS3_General_Assembly_minutes_2010_09_13_Leuven_V03.doc), following
+declaration was made:
+
+> TAS3 architecture and specifications, as described in public
+> deliverables D2.1, D2.4, and D7.1, are licensed free for
+> implementation and use by anyone. Up to June 2010, TAS3 consortium
+> partners do not hold patents nor will exercise patents that cover
+> implementation and use of the TAS3 architecture and specifications of
+> those deliverables. This license is only granted for the specific
+> purpose of correct implementations of TAS3 specifications.
+
+For further openness, it should be noted that ZXID, which is
+distributed under Apache2 open source license, is the Reference
+Implementation of the TAS3 Core Security Architecture, i.e. from
+software licensing perspective TAS3 is available in open source. Many
+other components of TAS3 are available in open source as well.
+

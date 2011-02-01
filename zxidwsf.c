@@ -33,7 +33,7 @@
  * function. This also makes some elementary checks as to whether the
  * EPR is even capable of supporting the sec mech. */
 
-/* Called by:  zxid_wsc_prep_secmech */
+/* Called by:  covimp_test, zxid_wsc_prep_secmech */
 int zxid_map_sec_mech(zxid_epr* epr)
 {
   int len;

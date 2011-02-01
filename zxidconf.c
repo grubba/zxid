@@ -212,12 +212,14 @@ char* zxid_set_opt_cstr(zxid_conf* cf, int which, char* val)
   return 0;
 }
 
-/*() Set the URL configuration variable. Usually you would use zxid_parse_conf()
- * to manipulate this and some other options. This function exists for some
- * special cases encountered in scripting language bindings. */
+/*() Set the URL configuration variable.  Special accessor function to
+ * manipulate URL config option. Manipulating this option is common in
+ * virtual hosting situations - hence this convenience function.  You
+ * could use zxid_parse_conf() instead to manipulate URL and some other
+ * options. */
 
 /* Called by:  main x2, zxidwspcgi_main */
-void zxid_url_set(zxid_conf* cf, char* url)
+void zxid_url_set(zxid_conf* cf, const char* url)
 {
   if (!cf || !url) {
     ERR("NULL pointer as cf or url argument cf=%p url=%p", cf, url);
@@ -880,7 +882,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
  * This is "light" version of zx_reset_ctx() that can be called
  * safely from inside lock. */
 
-/* Called by:  dirconf, main x3, zx_init_ctx, zxid_az, zxid_az_base, zxid_simple_len */
+/* Called by:  sig_validate, zx_prepare_dec_ctx, zx_reset_ctx, zxid_sp_sso_finalize */
 void zx_reset_ns_ctx(struct zx_ctx* ctx)
 {
   ctx->guard_seen_n.seen_n = &ctx->guard_seen_p;
@@ -959,7 +961,7 @@ zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path)
  * Just initializes the config object to factory defaults (see zxidconf.h).
  * Previous content of the config object is lost. */
 
-/* Called by:  a7n_test, attribute_sort_test, covimp_test, main x5, so_enc_dec, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode, x509_test */
+/* Called by:  attribute_sort_test, covimp_test, main x5, so_enc_dec, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode, x509_test */
 zxid_conf* zxid_new_conf(const char* zxid_path)
 {
   /* *** unholy malloc()s: should use our own allocator! */

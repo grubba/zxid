@@ -50,7 +50,7 @@
  * env::  Value-result parameter. Linked list of environment attributes.
  */
 
-/* Called by:  zxid_pep_az_base_soap_pepmap, zxid_pep_az_soap_pepmap */
+/* Called by:  zxid_call_trustpdp, zxid_pep_az_base_soap_pepmap, zxid_pep_az_soap_pepmap */
 static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_map* pepmap, struct zx_xac_Attribute_s** subj, struct zx_xac_Attribute_s** rsrc, struct zx_xac_Attribute_s** act, struct zx_xac_Attribute_s** env)
 {
   struct zxid_map* map;
@@ -160,7 +160,7 @@ static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, str
  * returns:: SAML Response as data structure or null upon error.
  */
 
-/* Called by:  zxid_pep_az_base_soap_pepmap, zxid_pep_az_soap_pepmap */
+/* Called by:  zxid_call_trustpdp, zxid_pep_az_base_soap_pepmap, zxid_pep_az_soap_pepmap */
 static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
 {
   X509* sign_cert;
@@ -630,7 +630,7 @@ char* zxid_az_base(const char* conf, const char* qs, const char* sid)
  *     permit returns <xac:Response> as string, allowing the obligations to be extracted.
  */
 
-/* Called by:  zxid_di_query() */
+/* Called by:  zxid_di_query */
 int zxid_call_trustpdp(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_map* pepmap, const char* start, const char* lim, zxid_epr* epr)
 {
   struct zx_xac_Attribute_s* xac_at;

@@ -1,8 +1,10 @@
-Schemata of Various IdM Protocols
+<<if: ZXIDBOOK>>
+<<else: >>Schemata of Various IdM Protocols
 #################################
 <<class: article!a4paper!!Schemata 01>>
 <<author: Sampo Kellomäki (sampo@iki.fi)>>
 <<cvsid: $Id: schemata.pd,v 1.3 2009-09-16 10:14:57 sampo Exp $>>
+<<fi: >>
 
 99 Appendix: Schema Grammars
 ============================
@@ -743,48 +745,8 @@ the NameID at the WSP.
                 <xac:StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"/></></></></></></></></>
 
 
-<<references:
+<<htmlpreamble: <title>ZXID Schemata</title><body bgcolor="#330033" text="#ffaaff" link="#ffddff" vlink="#aa44aa" alink="#ffffff"><font face=sans><h1>ZXID Schemata</h1> >>
 
-[SAMLCore11] SAML 1.1 Core
-
-[SAMLCore2] SAML 2.0 Core
-
-[xml-c14n] XML Canonicalization (non-exclusive), http://www.w3.org/TR/2001/REC-xml-c14n-20010315
-
-[xml-exc-c14n] Exclusive XML Canonicalization, http://www.w3.org/TR/xml-exc-c14n/
-
-[Disco2] Liberty ID-WSF Discovery service 2.0
-
-[Disco12] Liberty ID-WSF Discovery service 1.1 (liberty-idwsf-disco-svc-v1.2.pdf)
-
-[SecMech2] Liberty ID-WSF 2.0 Security Mechanisms
-
-[SOAPAuthn2] Liberty ID-WSF 2.0 Authentication Service
-
-[SOAPBinding2] Liberty ID-WSF 2.0 framework document that pulls together all aspects
-
-[DST21] Liberty Data Services Template 2.1
-
-[DST20] Liberty DST v2.0
-
-[DST11] Liberty DST v1.1
-
-[IDDAP] Liberty Identity based Directory Access Protocol
-
-[IDPP] Liberty Personal Profile specification.
-
-[Interact11] Liberty ID-WSF Interaction Service protocol 1.1
-
-[FF12] Liberty ID Federation Framework 1.2, Protocols and Schemas
-
-[SUBS2] Liberty Subscriptions and Notifications specification
-
-[Schema1-2] Henry S. Thompson et al. (eds): XML Schema Part 1: Structures, 2nd Ed., WSC Recommendation, 28. Oct. 2004, http://www.w3.org/2002/XMLSchema
-
-[XML] http://www.w3.org/TR/REC-xml
-
->>
-
-<<htmlpreamble: <title>README ZXID</title><body bgcolor="#330033" text="#ffaaff" link="#ffddff" vlink="#aa44aa" alink="#ffffff"><font face=sans><h1>README ZXID</h1> >>
-
-<<EOF: >>
+<<if: ZXIDBOOK>>
+<<else: >><<EOF: >>
+<<fi: >>

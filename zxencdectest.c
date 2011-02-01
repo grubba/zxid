@@ -72,7 +72,7 @@ Usage: zxencdectest [options] <foo.xml >reencoded-foo.xml\n\
 #define DIE(reason) MB fprintf(stderr, "%s\n", reason); exit(2); ME
 char buf[256*1024];
 
-/* Called by:  opt x2 */
+/* Called by:  opt */
 void test_ibm_cert_problem()  /* -r 1 */
 {
   int len, got_all;
@@ -101,7 +101,7 @@ void test_ibm_cert_problem()  /* -r 1 */
   printf("r1 nid(%.*s)\n", ZX_GET_CONTENT_LEN(req->NameID), ZX_GET_CONTENT_S(req->NameID));
 }
 
-/* Called by:  opt x2 */
+/* Called by:  opt */
 void test_ibm_cert_problem_enc_dec()  /* -r 2 */
 {
   zxid_conf* cf;

@@ -168,7 +168,7 @@ Some of the known distribution locations
 
   /etc/apache2/sites-available/default   # Ubuntu ca. 2009
 
-<<code:
+<<logoutput:
 diff -u /apps/apache/std/conf/httpd.conf.orig /apps/apache/std/conf/httpd.conf
 --- httpd.conf.orig     2006-08-31 19:23:42.000000000 -0400
 +++ httpd.conf  2006-08-31 20:31:17.000000000 -0400

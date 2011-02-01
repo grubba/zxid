@@ -692,7 +692,7 @@ ZXID_DECL int zxid_lazy_load_sign_cert_and_pkey(zxid_conf* cf, X509** cert, EVP_
 #endif
 ZXID_DECL int   zxid_set_opt(zxid_conf* cf, int which, int val);
 ZXID_DECL char* zxid_set_opt_cstr(zxid_conf* cf, int which, char* val);
-ZXID_DECL void  zxid_url_set(zxid_conf* cf, char* url);
+ZXID_DECL void  zxid_url_set(zxid_conf* cf, const char* url);
 ZXID_DECL int   zxid_init_conf(zxid_conf* cf, const char* conf_dir);
 ZXID_DECL zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path);
 ZXID_DECL zxid_conf* zxid_new_conf(const char* zxid_path);

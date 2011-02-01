@@ -623,7 +623,7 @@ void zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, int n_ns, cons
 
 /*(i) Decode arbitary xml with zx_ns_tab set of namespaces and parsers. */
 
-/* Called by:  main x8, sig_validate, test_ibm_cert_problem, zxid_add_env_if_needed x2, zxid_dec_a7n, zxid_decode_redir_or_post, zxid_decrypt_nameid, zxid_decrypt_newnym, zxid_di_query, zxid_find_epr, zxid_gen_boots, zxid_get_ses_sso_a7n x2, zxid_idp_soap_parse, zxid_parse_meta, zxid_print_session, zxid_reg_svc, zxid_soap_call_raw, zxid_sp_soap_parse, zxid_str2a7n, zxid_str2nid, zxid_str2token, zxid_wsp_validate */
+/* Called by:  main x7, sig_validate, test_ibm_cert_problem, zxid_add_env_if_needed x2, zxid_dec_a7n, zxid_decode_redir_or_post, zxid_decrypt_nameid, zxid_decrypt_newnym, zxid_di_query, zxid_find_epr, zxid_gen_boots, zxid_get_ses_sso_a7n x2, zxid_idp_soap_parse, zxid_mk_sa_attribute_ss, zxid_mk_xacml_simple_at, zxid_parse_meta, zxid_print_session, zxid_reg_svc, zxid_soap_call_raw, zxid_sp_soap_parse, zxid_str2a7n, zxid_str2nid, zxid_str2token, zxid_wsp_validate */
 struct zx_root_s* zx_dec_zx_root(struct zx_ctx* c, int len, const char* start, const char* func)
 {
   struct zx_root_s* r = zx_NEW_root(c, 0);

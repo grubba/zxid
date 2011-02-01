@@ -1,5 +1,5 @@
 /* zxpasswd.c  -  Password creation and user management tool
- * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
@@ -9,6 +9,7 @@
  * 18.10.2009, created --Sampo
  * 14.11.2009, added yubikey support --Sampo
  * 16.9.2010,  added support for traditional Unix crypt(3) hashed passwords --Sampo
+ * 1.2.2011,   tweaked -at option --Sampo
  *
  * See also: http://www.users.zetnet.co.uk/hopwood/crypto/scan/ph.html
  * http://www.usenix.org/events/usenix99/provos/provos_html/index.html
@@ -47,7 +48,7 @@
 
 char* help =
 "zxpasswd  -  Password creation and user management tool R" ZXID_REL "\n\
-Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
+Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
@@ -82,6 +83,7 @@ char* udir = "/var/zxid/idpuid/";
 char* user = 0;
 char* symlink_user = 0;
 char* at = 0;
+unsigned char pw_hash[120];
 char pw[1024];
 char userdir[4096];
 char buf[4096];
@@ -106,14 +108,6 @@ static void opt(int* argc, char*** argv, char*** env)
       DD("End of options by --");
       goto last;  /* -- ends the options */
 
-    case 'c':
-      switch ((*argv)[0][2]) {
-      case '\0':
-	++create;
-	continue;
-      }
-      break;
-
     case 'a':
       switch ((*argv)[0][2]) {
       case '\0':
@@ -123,6 +117,14 @@ static void opt(int* argc, char*** argv, char*** env)
 	++(*argv); --(*argc);
 	if ((*argc) < 1) break;
 	at = (*argv)[0];
+	continue;
+      }
+      break;
+
+    case 'c':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	++create;
 	continue;
       }
       break;
@@ -275,16 +277,93 @@ static int list_users(char* udir)
 
 extern char pw_basis_64[64];
 
+/*() Authenticate user with the password (or other credential)
+ * See also: zxid_pw_authn() in zxiduser.c */
+
+static int authn_user(int isyk, int pwgot)
+{
+  int got;
+  yubikey_token_st yktok;
+  
+  if (isyk) {
+    snprintf(userdir, sizeof(userdir)-1, "%s/%s", udir, user);
+    userdir[sizeof(userdir)-1] = 0;
+    got = read_all(sizeof(buf), buf, "ykspent", 1, "%s/.ykspent/%s", userdir, pw);
+    if (got) {
+      ERR("The Yubikey One Time Password has already been spent. ticket(%s%s) buf(%.*s)", user, pw, got, buf);
+      return 5;
+    }
+    if (!write_all_path_fmt("ykspent", sizeof(buf), buf, "%s/.ykspent/%s", userdir, pw, "1"))
+      return 1;
+    
+    got = read_all(sizeof(buf), buf, "ykaes", 1, "%s/%s/.yk", udir, user);
+    D("buf    (%s) got=%d", buf, got);
+    if (got < 32) {
+      ERR("User's %s/.yk file must contain aes128 key as 32 hexadecimal characters. Too few characters %d ticket(%s)", user, got, pw);
+      return 6;
+    }
+    if (got > 32) {
+      INFO("User's %s/.yk file must contain aes128 key as 32 hexadecimal characters. Too many characters %d ticket(%s). Truncating.", user, got, pw);
+      got = 32;
+      buf[got] = 0;
+    }
+    zx_hexdec(buf, buf, got, hex_trans);
+    ZERO(&yktok, sizeof(yktok));
+    zx_hexdec((void *)&yktok, pw, pwgot, ykmodhex_trans);
+    yubikey_aes_decrypt((void *)&yktok, (unsigned char*)buf);
+    D("internal uid %02x %02x %02x %02x %02x %02x counter=%d 0x%x timestamp=%d (hi=%x lo=%x) use=%d 0x%x rnd=0x%x crc=0x%x", yktok.uid[0], yktok.uid[1], yktok.uid[2], yktok.uid[3], yktok.uid[4], yktok.uid[5], yktok.ctr, yktok.ctr, (yktok.tstph << 16) | yktok.tstpl, yktok.tstph, yktok.tstpl, yktok.use, yktok.use, yktok.rnd, yktok.crc);
+    
+    if (yubikey_crc_ok_p((unsigned char*)&yktok)) {
+      D("yubikey ticket validates ok %d", 0);
+      if (verbose) printf("yubikey ticket validates ok\n");
+      return 0;
+    }
+    D("yubikey ticket validation failure %d", 0);
+    if (verbose) printf("yubikey ticket validation failure\n");
+    return 7;
+  }
+  got = read_all(sizeof(buf), buf, "pw", 1, "%s/%s/.pw", udir, user);
+  if (got>0) {
+    if (buf[got-1] == '\012') --got;
+    if (buf[got-1] == '\015') --got;
+  }
+  buf[got] = 0;
+  D("buf    (%s) got=%d", buf, got);
+  if (!memcmp(buf, "$1$", sizeof("$1$")-1)) {
+    zx_md5_crypt(pw, buf, (char*)pw_hash);
+    D("pw_hash(%s)", pw_hash);
+    got = strcmp(buf, (char*)pw_hash)?7:0;
+    if (verbose) printf("md5_crypt hash ($1$) validate: %s\n", got?"fail":"ok");
+    return got;
+  }
+#ifdef USE_OPENSSL
+  if (!memcmp(buf, "$c$", sizeof("$c$")-1)) {
+    DES_fcrypt(pw, buf+3, (char*)pw_hash);
+    D("pw_hash(%s)", pw_hash);
+    got = strcmp(buf+3, (char*)pw_hash)?7:0;
+    if (verbose) printf("Unix DES_crypt hash ($c$) validate: %s\n", got?"fail":"ok");
+    return got;
+  }
+#endif
+  if (ONE_OF_2(buf[0], '$', '_')) {
+    fprintf(stderr, "Unsupported password hash algorithm (%s).\n", buf);
+    return 8;
+  }
+  D("Assume plain text password %d", 0);
+  got = strcmp(buf, pw)?7:0;
+  if (verbose) printf("plaintext password validate: %s\n", got?"fail":"ok");
+  return got;
+}
+
 /* Called by: */
 int main(int argc, char** argv, char** env)
 {
   int isyk = 0;
-  int got, pwgot;
+  int pwgot = 0;
+  int got;
   char* p;
   unsigned char salt[16];
-  unsigned char pw_hash[120];
   unsigned char ch;
-  yubikey_token_st yktok;
   
   strcpy(zx_instance, "\tzxpw");
   zx_reset_ctx(&ctx);
@@ -317,7 +396,7 @@ int main(int argc, char** argv, char** env)
     pwgot = 32;
     D("yubikey user(%s) ticket(%s)", user, pw);
     isyk = 1;
-  } else {
+  } else if (!at || create) {
     read_all_fd(fileno(stdin), pw, sizeof(pw)-1, &pwgot);  /* Password from stdin */
   }
   if (pwgot) {
@@ -326,79 +405,9 @@ int main(int argc, char** argv, char** env)
   }
   pw[pwgot] = 0;
   D("pw(%s) len=%d", pw, pwgot);
-
-  if (an) {
-    /* See also: zxid_pw_authn() in zxiduser.c */
-
-    if (isyk) {
-      snprintf(userdir, sizeof(userdir)-1, "%s/%s", udir, user);
-      userdir[sizeof(userdir)-1] = 0;
-      got = read_all(sizeof(buf), buf, "ykspent", 1, "%s/.ykspent/%s", userdir, pw);
-      if (got) {
-	ERR("The One Time Password has already been spent. ticket(%s%s) buf(%.*s)", user, pw, got, buf);
-	return 5;
-      }
-      if (!write_all_path_fmt("ykspent", sizeof(buf), buf, "%s/.ykspent/%s", userdir, pw, "1"))
-	return 1;
-
-      got = read_all(sizeof(buf), buf, "ykaes", 1, "%s/%s/.yk", udir, user);
-      D("buf    (%s) got=%d", buf, got);
-      if (got < 32) {
-	ERR("User's %s/.yk file must contain aes128 key as 32 hexadecimal characters. Too few characters %d ticket(%s)", user, got, pw);
-	return 6;
-      }
-      if (got > 32) {
-	INFO("User's %s/.yk file must contain aes128 key as 32 hexadecimal characters. Too many characters %d ticket(%s). Truncating.", user, got, pw);
-	got = 32;
-	buf[got] = 0;
-      }
-      zx_hexdec(buf, buf, got, hex_trans);
-      ZERO(&yktok, sizeof(yktok));
-      zx_hexdec((void *)&yktok, pw, pwgot, ykmodhex_trans);
-      yubikey_aes_decrypt((void *)&yktok, (unsigned char*)buf);
-      D("internal uid %02x %02x %02x %02x %02x %02x counter=%d 0x%x timestamp=%d (hi=%x lo=%x) use=%d 0x%x rnd=0x%x crc=0x%x", yktok.uid[0], yktok.uid[1], yktok.uid[2], yktok.uid[3], yktok.uid[4], yktok.uid[5], yktok.ctr, yktok.ctr, (yktok.tstph << 16) | yktok.tstpl, yktok.tstph, yktok.tstpl, yktok.use, yktok.use, yktok.rnd, yktok.crc);
-            
-      if (yubikey_crc_ok_p((unsigned char*)&yktok)) {
-	D("yubikey ticket validates ok %d", 0);
-	if (verbose) printf("yubikey ticket validates ok\n");
-	return 0;
-      }
-      D("yubikey ticket validation failure %d", 0);
-      if (verbose) printf("yubikey ticket validation failure\n");
-      return 7;
-    }
-    got = read_all(sizeof(buf), buf, "pw", 1, "%s/%s/.pw", udir, user);
-    if (got>0) {
-      if (buf[got-1] == '\012') --got;
-      if (buf[got-1] == '\015') --got;
-    }
-    buf[got] = 0;
-    D("buf    (%s) got=%d", buf, got);
-    if (!memcmp(buf, "$1$", sizeof("$1$")-1)) {
-      zx_md5_crypt(pw, buf, (char*)pw_hash);
-      D("pw_hash(%s)", pw_hash);
-      got = strcmp(buf, (char*)pw_hash)?7:0;
-      if (verbose) printf("md5_crypt hash ($1$) validate: %s\n", got?"fail":"ok");
-      return got;
-    }
-#ifdef USE_OPENSSL
-    if (!memcmp(buf, "$c$", sizeof("$c$")-1)) {
-      DES_fcrypt(pw, buf+3, (char*)pw_hash);
-      D("pw_hash(%s)", pw_hash);
-      got = strcmp(buf+3, (char*)pw_hash)?7:0;
-      if (verbose) printf("Unix DES_crypt hash ($c$) validate: %s\n", got?"fail":"ok");
-      return got;
-    }
-#endif
-    if (ONE_OF_2(buf[0], '$', '_')) {
-      fprintf(stderr, "Unsupported password hash algorithm (%s).\n", buf);
-      return 8;
-    }
-    D("Assume plain text password %d", 0);
-    got = strcmp(buf, pw)?7:0;
-    if (verbose) printf("plaintext password validate: %s\n", got?"fail":"ok");
-    return got;
-  }
+  
+  if (an)
+    return authn_user(isyk, pwgot);
 
   /* Create and other user management functions */
   
@@ -438,8 +447,12 @@ int main(int argc, char** argv, char** env)
     D("Appending to(%s) attributes(%s)", buf, at);
     buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
     write2_or_append_lock_c_path(buf, strlen(at), at, 0, 0, "append .bs/.at", SEEK_END, O_APPEND);
+    if (!create)
+      return 0;
   }
   
+  /* ----- Change password logic ----- */
+
   /* $1$$6C2jXXYmjnyAkfWXmnCSf0 */
   /* $y$$6012cab434c66ab87d43d4babe463331 */
 

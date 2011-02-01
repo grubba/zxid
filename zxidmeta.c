@@ -211,7 +211,7 @@ int zxid_write_ent_to_cache(zxid_conf* cf, zxid_entity* ent)
  * See also zxid_get_ent_cache() which will compute the sha1_name
  * and then read the metadata. */
 
-/* Called by:  main x3, test_ibm_cert_problem_enc_dec, zxid_get_ent_by_sha1_name, zxid_get_ent_cache, zxid_load_cot_cache_from_file */
+/* Called by:  covimp_test, main x3, test_ibm_cert_problem_enc_dec, zxid_get_ent_by_sha1_name, zxid_get_ent_cache, zxid_load_cot_cache_from_file */
 zxid_entity* zxid_get_ent_file(zxid_conf* cf, char* sha1_name)
 {
   int n, got, siz;

@@ -58,7 +58,7 @@ int zxid_pick_sso_profile(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* idp_meta)
 }
 
 /*() Map name id format form field to SAML specified URN string. */
-/* Called by:  zxid_map_identity_token, zxid_mk_authn_req, zxid_nidmap_identity_token */
+/* Called by:  covimp_test x10, zxid_map_identity_token, zxid_mk_authn_req, zxid_nidmap_identity_token */
 const char* zxid_saml2_map_nid_fmt(const char* f)
 {
   switch (f[0]) {
@@ -76,7 +76,7 @@ const char* zxid_saml2_map_nid_fmt(const char* f)
 }
 
 /*() Map protocol binding form field to SAML specified URN string. */
-/* Called by: */
+/* Called by:  covimp_test x7 */
 const char* zxid_saml2_map_protocol_binding(const char* b)
 {
   switch (b[0]) {
@@ -92,7 +92,7 @@ const char* zxid_saml2_map_protocol_binding(const char* b)
 }
 
 /*() Map SAML protocol binding URN to form field. */
-/* Called by:  zxid_idp_sso x3, zxid_sp_loc_by_index_raw */
+/* Called by:  covimp_test x8, zxid_idp_sso x3, zxid_sp_loc_by_index_raw */
 int zxid_protocol_binding_map_saml2(struct zx_str* b)
 {
   if (!b || !b->len || !b->s) {
@@ -110,7 +110,7 @@ int zxid_protocol_binding_map_saml2(struct zx_str* b)
 }
 
 /*() Map authentication contest class ref form field to SAML specified URN string. */
-/* Called by:  zxid_mk_authn_req */
+/* Called by:  covimp_test x8, zxid_mk_authn_req */
 char* zxid_saml2_map_authn_ctx(char* c)
 {
   switch (c[0]) {
@@ -330,7 +330,7 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 
 /*() Map ZXSIG constant to letter for log and string message. */
 
-/* Called by:  zxid_chk_sig, zxid_decode_redir_or_post, zxid_sp_sso_finalize, zxid_wsc_valid_re_env, zxid_wsf_validate_a7n, zxid_wsp_validate_env */
+/* Called by:  covimp_test x11, zxid_chk_sig, zxid_decode_redir_or_post, zxid_sp_sso_finalize, zxid_wsc_valid_re_env, zxid_wsf_validate_a7n, zxid_wsp_validate_env */
 void zxid_sigres_map(int sigres, char** sigval, char** sigmsg)
 {
   switch (sigres) {
@@ -690,7 +690,7 @@ erro:
  * ses:: Session object. Will be modified according to new session created from the SSO assertion.
  * return:: 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 
-/* Called by:  zxid_sp_dig_sso_a7n */
+/* Called by:  covimp_test, zxid_sp_dig_sso_a7n */
 int zxid_sp_anon_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   D_INDENT("anon_ssof: ");

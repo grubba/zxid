@@ -232,6 +232,7 @@ static void opt(int* argc, char*** argv, char*** env)
   }
 }
 
+/* Called by:  zxdecode_main */
 static int ws_validations()
 {
   int ret;

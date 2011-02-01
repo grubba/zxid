@@ -65,7 +65,9 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
     - Clarify signature validation error codes, e.g. <SignedInfo> canon fail vs. bad cert
 
-zxid-0.77:: 27.1.2011
+zxid-0.77:: 1.2.2011
+    - upgraded for php-5.3 support (patch from Jeroen Asselman)
+    - Improved -at handling in zxpasswd
 
 zxid-0.76:: 26.1.2011
     - Added error checks

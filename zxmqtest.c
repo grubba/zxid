@@ -15,6 +15,7 @@
  * http://www.mail-archive.com/qpid-dev@incubator.apache.org/msg07651.html   (2008 test problems)
  * http://news.ycombinator.com/item?id=1232242  (harsh critique of AMQP)
  * http://wiki.secondlife.com/wiki/Message_Queue_Evaluation_Notes  (comparison)
+ * http://www.h-online.com/open/news/forum/S-Re-So-what-went-wrong-Why-other-Big-open-source-projects-thrive/forum-114743/msg-14370740/read/
  */
 
 #include <signal.h>

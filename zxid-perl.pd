@@ -68,7 +68,7 @@ you need to have SWIG installed and then say in main zxid directory
 
 <<ignore: perl -ne 'printf "%02d %s", ++$i, $_' <zxidhlo.pl >>
 
-<<code:
+<<logoutput:
 01 use Net::SAML;
 02 $| = 1; undef $/;  # Flush pipes, read all in at once
 03 $url = "http://sp.tas3.pt:8082/zxidhlo.pl";  # Edit to match your situation

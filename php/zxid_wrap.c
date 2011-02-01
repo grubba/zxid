@@ -1419,6 +1419,9 @@ static int le_swig__p_zxid_map=0; /* handle for zxid_map */
 static int le_swig__p_zxid_attr=0; /* handle for zxid_attr */
 /* end vdecl subsection */
 /* wrapper section */
+
+#define zend_error_noreturn zend_error
+
 ZEND_NAMED_FUNCTION(_wrap_zx_ns_s_url_set) {
   struct zx_ns_s *arg1 = (struct zx_ns_s *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -27489,6 +27492,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_cf) {
   char *arg3 = (char *) 0 ;
   int *arg4 = (int *) 0 ;
   int arg5 ;
+  int tmp4 ;
   zval **args[5];
   char *result = 0 ;
   
@@ -27518,11 +27522,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_cf) {
   }
   /*@SWIG@*/;
   
-  {
-    if(SWIG_ConvertPtr(*args[3], (void **) &arg4, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 4 of zxid_simple_cf. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[3] ) ) {
+    arg4 = 0;
+  } else if ( PZVAL_IS_REF( *args[3] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[3]);
+    tmp4 = (int) Z_LVAL_PP(args[3]);
+    /*@SWIG@*/;
+    arg4 = &tmp4;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(4, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[4]);
@@ -27537,6 +27551,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_cf) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[3], tmp4 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -27547,6 +27562,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_list_cf) {
   zxid_conf *arg1 = (zxid_conf *) 0 ;
   int *arg2 = (int *) 0 ;
   int arg3 ;
+  int tmp2 ;
   zval **args[3];
   char *result = 0 ;
   
@@ -27560,11 +27576,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_list_cf) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_idp_list_cf. Expected SWIGTYPE_p_zxid_conf");
     }
   }
-  {
-    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_idp_list_cf. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[1] ) ) {
+    arg2 = 0;
+  } else if ( PZVAL_IS_REF( *args[1] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[1]);
+    tmp2 = (int) Z_LVAL_PP(args[1]);
+    /*@SWIG@*/;
+    arg2 = &tmp2;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(2, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[2]);
@@ -27579,6 +27605,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_list_cf) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[1], tmp2 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -27589,6 +27616,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_select_cf) {
   zxid_conf *arg1 = (zxid_conf *) 0 ;
   int *arg2 = (int *) 0 ;
   int arg3 ;
+  int tmp2 ;
   zval **args[3];
   char *result = 0 ;
   
@@ -27602,11 +27630,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_select_cf) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_idp_select_cf. Expected SWIGTYPE_p_zxid_conf");
     }
   }
-  {
-    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_idp_select_cf. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[1] ) ) {
+    arg2 = 0;
+  } else if ( PZVAL_IS_REF( *args[1] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[1]);
+    tmp2 = (int) Z_LVAL_PP(args[1]);
+    /*@SWIG@*/;
+    arg2 = &tmp2;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(2, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[2]);
@@ -27621,6 +27659,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_select_cf) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[1], tmp2 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -27633,6 +27672,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_fed_mgmt_cf) {
   int arg3 ;
   char *arg4 = (char *) 0 ;
   int arg5 ;
+  int tmp2 ;
   zval **args[5];
   char *result = 0 ;
   
@@ -27646,11 +27686,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_fed_mgmt_cf) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_fed_mgmt_cf. Expected SWIGTYPE_p_zxid_conf");
     }
   }
-  {
-    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_fed_mgmt_cf. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[1] ) ) {
+    arg2 = 0;
+  } else if ( PZVAL_IS_REF( *args[1] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[1]);
+    tmp2 = (int) Z_LVAL_PP(args[1]);
+    /*@SWIG@*/;
+    arg2 = &tmp2;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(2, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[2]);
@@ -27681,6 +27731,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_fed_mgmt_cf) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[1], tmp2 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -27737,6 +27788,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_len) {
   char *arg4 = (char *) 0 ;
   int *arg5 = (int *) 0 ;
   int arg6 ;
+  int tmp5 ;
   zval **args[6];
   char *result = 0 ;
   
@@ -27777,11 +27829,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_len) {
   }
   /*@SWIG@*/;
   
-  {
-    if(SWIG_ConvertPtr(*args[4], (void **) &arg5, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 5 of zxid_simple_len. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[4] ) ) {
+    arg5 = 0;
+  } else if ( PZVAL_IS_REF( *args[4] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[4]);
+    tmp5 = (int) Z_LVAL_PP(args[4]);
+    /*@SWIG@*/;
+    arg5 = &tmp5;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(5, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[5]);
@@ -27796,6 +27858,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_len) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[4], tmp5 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -27807,6 +27870,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_show_idp_sel) {
   zxid_cgi *arg2 = (zxid_cgi *) 0 ;
   int *arg3 = (int *) 0 ;
   int arg4 ;
+  int tmp3 ;
   zval **args[4];
   char *result = 0 ;
   
@@ -27825,11 +27889,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_show_idp_sel) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_simple_show_idp_sel. Expected SWIGTYPE_p_zxid_cgi");
     }
   }
-  {
-    if(SWIG_ConvertPtr(*args[2], (void **) &arg3, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zxid_simple_show_idp_sel. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[2] ) ) {
+    arg3 = 0;
+  } else if ( PZVAL_IS_REF( *args[2] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[2]);
+    tmp3 = (int) Z_LVAL_PP(args[2]);
+    /*@SWIG@*/;
+    arg3 = &tmp3;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(3, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[3]);
@@ -27844,6 +27918,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_show_idp_sel) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[2], tmp3 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -27855,6 +27930,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_list_len) {
   char *arg2 = (char *) 0 ;
   int *arg3 = (int *) 0 ;
   int arg4 ;
+  int tmp3 ;
   zval **args[4];
   char *result = 0 ;
   
@@ -27879,11 +27955,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_list_len) {
   }
   /*@SWIG@*/;
   
-  {
-    if(SWIG_ConvertPtr(*args[2], (void **) &arg3, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zxid_idp_list_len. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[2] ) ) {
+    arg3 = 0;
+  } else if ( PZVAL_IS_REF( *args[2] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[2]);
+    tmp3 = (int) Z_LVAL_PP(args[2]);
+    /*@SWIG@*/;
+    arg3 = &tmp3;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(3, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[3]);
@@ -27898,6 +27984,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_list_len) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[2], tmp3 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -27909,6 +27996,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_list_cf_cgi) {
   zxid_cgi *arg2 = (zxid_cgi *) 0 ;
   int *arg3 = (int *) 0 ;
   int arg4 ;
+  int tmp3 ;
   zval **args[4];
   char *result = 0 ;
   
@@ -27927,11 +28015,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_list_cf_cgi) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_idp_list_cf_cgi. Expected SWIGTYPE_p_zxid_cgi");
     }
   }
-  {
-    if(SWIG_ConvertPtr(*args[2], (void **) &arg3, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zxid_idp_list_cf_cgi. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[2] ) ) {
+    arg3 = 0;
+  } else if ( PZVAL_IS_REF( *args[2] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[2]);
+    tmp3 = (int) Z_LVAL_PP(args[2]);
+    /*@SWIG@*/;
+    arg3 = &tmp3;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(3, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[3]);
@@ -27946,6 +28044,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_list_cf_cgi) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[2], tmp3 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -27957,6 +28056,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_select_len) {
   char *arg2 = (char *) 0 ;
   int *arg3 = (int *) 0 ;
   int arg4 ;
+  int tmp3 ;
   zval **args[4];
   char *result = 0 ;
   
@@ -27981,11 +28081,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_select_len) {
   }
   /*@SWIG@*/;
   
-  {
-    if(SWIG_ConvertPtr(*args[2], (void **) &arg3, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zxid_idp_select_len. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[2] ) ) {
+    arg3 = 0;
+  } else if ( PZVAL_IS_REF( *args[2] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[2]);
+    tmp3 = (int) Z_LVAL_PP(args[2]);
+    /*@SWIG@*/;
+    arg3 = &tmp3;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(3, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[3]);
@@ -28000,6 +28110,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_idp_select_len) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[2], tmp3 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -28012,6 +28123,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_fed_mgmt_len) {
   int *arg3 = (int *) 0 ;
   char *arg4 = (char *) 0 ;
   int arg5 ;
+  int tmp3 ;
   zval **args[5];
   char *result = 0 ;
   
@@ -28036,11 +28148,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_fed_mgmt_len) {
   }
   /*@SWIG@*/;
   
-  {
-    if(SWIG_ConvertPtr(*args[2], (void **) &arg3, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zxid_fed_mgmt_len. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[2] ) ) {
+    arg3 = 0;
+  } else if ( PZVAL_IS_REF( *args[2] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[2]);
+    tmp3 = (int) Z_LVAL_PP(args[2]);
+    /*@SWIG@*/;
+    arg3 = &tmp3;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(3, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
   if ((*args[3])->type==IS_NULL) {
@@ -28065,6 +28187,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_fed_mgmt_len) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[2], tmp3 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -28110,6 +28233,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_show_err) {
   zxid_cgi *arg2 = (zxid_cgi *) 0 ;
   int *arg3 = (int *) 0 ;
   int arg4 ;
+  int tmp3 ;
   zval **args[4];
   char *result = 0 ;
   
@@ -28128,11 +28252,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_show_err) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_simple_show_err. Expected SWIGTYPE_p_zxid_cgi");
     }
   }
-  {
-    if(SWIG_ConvertPtr(*args[2], (void **) &arg3, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zxid_simple_show_err. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[2] ) ) {
+    arg3 = 0;
+  } else if ( PZVAL_IS_REF( *args[2] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[2]);
+    tmp3 = (int) Z_LVAL_PP(args[2]);
+    /*@SWIG@*/;
+    arg3 = &tmp3;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(3, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[3]);
@@ -28147,6 +28281,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_show_err) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[2], tmp3 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -28159,6 +28294,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_ses_active_cf) {
   zxid_ses *arg3 = (zxid_ses *) 0 ;
   int *arg4 = (int *) 0 ;
   int arg5 ;
+  int tmp4 ;
   zval **args[5];
   char *result = 0 ;
   
@@ -28182,11 +28318,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_ses_active_cf) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zxid_simple_ses_active_cf. Expected SWIGTYPE_p_zxid_ses");
     }
   }
-  {
-    if(SWIG_ConvertPtr(*args[3], (void **) &arg4, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 4 of zxid_simple_ses_active_cf. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[3] ) ) {
+    arg4 = 0;
+  } else if ( PZVAL_IS_REF( *args[3] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[3]);
+    tmp4 = (int) Z_LVAL_PP(args[3]);
+    /*@SWIG@*/;
+    arg4 = &tmp4;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(4, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[4]);
@@ -28201,6 +28347,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_ses_active_cf) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[3], tmp4 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -28213,6 +28360,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_no_ses_cf) {
   zxid_ses *arg3 = (zxid_ses *) 0 ;
   int *arg4 = (int *) 0 ;
   int arg5 ;
+  int tmp4 ;
   zval **args[5];
   char *result = 0 ;
   
@@ -28236,11 +28384,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_no_ses_cf) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zxid_simple_no_ses_cf. Expected SWIGTYPE_p_zxid_ses");
     }
   }
-  {
-    if(SWIG_ConvertPtr(*args[3], (void **) &arg4, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 4 of zxid_simple_no_ses_cf. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[3] ) ) {
+    arg4 = 0;
+  } else if ( PZVAL_IS_REF( *args[3] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[3]);
+    tmp4 = (int) Z_LVAL_PP(args[3]);
+    /*@SWIG@*/;
+    arg4 = &tmp4;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(4, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[4]);
@@ -28255,6 +28413,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_no_ses_cf) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[3], tmp4 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -28268,6 +28427,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_cf_ses) {
   zxid_ses *arg4 = (zxid_ses *) 0 ;
   int *arg5 = (int *) 0 ;
   int arg6 ;
+  int tmp5 ;
   zval **args[6];
   char *result = 0 ;
   
@@ -28302,11 +28462,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_cf_ses) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 4 of zxid_simple_cf_ses. Expected SWIGTYPE_p_zxid_ses");
     }
   }
-  {
-    if(SWIG_ConvertPtr(*args[4], (void **) &arg5, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 5 of zxid_simple_cf_ses. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[4] ) ) {
+    arg5 = 0;
+  } else if ( PZVAL_IS_REF( *args[4] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[4]);
+    tmp5 = (int) Z_LVAL_PP(args[4]);
+    /*@SWIG@*/;
+    arg5 = &tmp5;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(5, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[5]);
@@ -28321,6 +28491,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_simple_cf_ses) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[4], tmp5 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -36081,6 +36252,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_ps_accept_invite) {
   zxid_ses *arg3 = (zxid_ses *) 0 ;
   int *arg4 = (int *) 0 ;
   int arg5 ;
+  int tmp4 ;
   zval **args[5];
   char *result = 0 ;
   
@@ -36104,11 +36276,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_ps_accept_invite) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zxid_ps_accept_invite. Expected SWIGTYPE_p_zxid_ses");
     }
   }
-  {
-    if(SWIG_ConvertPtr(*args[3], (void **) &arg4, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 4 of zxid_ps_accept_invite. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[3] ) ) {
+    arg4 = 0;
+  } else if ( PZVAL_IS_REF( *args[3] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[3]);
+    tmp4 = (int) Z_LVAL_PP(args[3]);
+    /*@SWIG@*/;
+    arg4 = &tmp4;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(4, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[4]);
@@ -36123,6 +36305,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_ps_accept_invite) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[3], tmp4 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -36135,6 +36318,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_ps_finalize_invite) {
   zxid_ses *arg3 = (zxid_ses *) 0 ;
   int *arg4 = (int *) 0 ;
   int arg5 ;
+  int tmp4 ;
   zval **args[5];
   char *result = 0 ;
   
@@ -36158,11 +36342,21 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_ps_finalize_invite) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zxid_ps_finalize_invite. Expected SWIGTYPE_p_zxid_ses");
     }
   }
-  {
-    if(SWIG_ConvertPtr(*args[3], (void **) &arg4, SWIGTYPE_p_int, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 4 of zxid_ps_finalize_invite. Expected SWIGTYPE_p_int");
-    }
+  
+  /* First Check for SWIG wrapped type */
+  if ( ZVAL_IS_NULL( *args[3] ) ) {
+    arg4 = 0;
+  } else if ( PZVAL_IS_REF( *args[3] ) ) {
+    /* Not swig wrapped type, so we check if it's a PHP reference type */
+    /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+    convert_to_long_ex(args[3]);
+    tmp4 = (int) Z_LVAL_PP(args[3]);
+    /*@SWIG@*/;
+    arg4 = &tmp4;
+  } else {
+    SWIG_PHP_Error( E_ERROR, SWIG_PHP_Arg_Error_Msg(4, Expected a reference) );
   }
+  
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
   convert_to_long_ex(args[4]);
@@ -36177,6 +36371,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_ps_finalize_invite) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  ZVAL_LONG(*args[3], tmp4 );
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());

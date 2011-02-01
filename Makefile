@@ -1868,7 +1868,7 @@ API_REF_SRC=aux-templ.c dec-templ.c enc-templ.c getput-templ.c \
  zxidses.c zxidsimp.c zxidpool.c zxidslo.c zxidspx.c zxididpx.c zxiddec.c \
  zxidsso.c zxidpsso.c zxiddi.c   zxidim.c  zxidps.c \
  zxiduser.c zxidwsc.c zxidwsp.c \
- zxlib.c zxlog.c zxlogview.c zxns.c zxsig.c zxutil.c
+ zxlib.c zxlibdec.c zxlibenc.c zxlog.c zxlogview.c zxns.c zxsig.c zxutil.c
 
 refcall:
 	$(PERL) ./call-anal.pl -n $(API_REF_SRC) >callgraph.dot

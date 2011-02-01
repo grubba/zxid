@@ -60,3 +60,14 @@ http://www.openamq.org/
 * Generally GPL licensed, but with "certain results of code generation under BSD" (openamq/readme)
 
 --Sampo
+
+
+
+
+== Network ports and other IT requirements ==
+
+ * Sampo
+    - Outbound ports: 53/udp, 22/tcp, 80/tcp, 8080/tcp, 8081/tcp, 5671/tcp, 5672/tcp, 443/tcp, 8443/tcp, 1104/tcp
+    - Inbound ports: none
+
+|| Sampo          || not defined yet             ||  14.2. noonish, by train from BRU || 18.2. afternoon  || ||

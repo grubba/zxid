@@ -600,10 +600,10 @@ Consider
 
 See also zxid-perl.pd
 
-<<code:
+<<logoutput:
 01 use Net::SAML;
 02 $| = 1; undef $/;  # Flush pipes, read all in at once
-03 $url = "http://sp.tas3.pt:8082/zxidhlo.pl";  # Edit to match your situation
+03 $url = "http://sp.tas3.pt:8082/zxidhlo.pl";  # Edit to match your conf
 04 $conf = "PATH=/var/zxid/&URL=$url";
 05 $cf = Net::SAML::new_conf_to_cf($conf);
 06 $qs = $ENV{'QUERY_STRING'};
@@ -670,7 +670,7 @@ See also zxid-perl.pd
 67 }
 >>
 
-This example only demosntrates SSO.
+This example only demonstrates SSO.
 
 Lines 1-5 set up the configuration. See zxid-conf.pd for guidance.
 
@@ -960,18 +960,15 @@ See also <<link:ref/html/index.html:Function reference>>
 4.1 Creating Configuration Object
 ---------------------------------
 
-<<code:
-
-int zxid_conf_to_cf_len(struct zxid_conf* cf, int conf_len, char* conf)
-struct zxid_conf* zxid_new_conf_to_cf(char* conf)
-
+<<logoutput:
+int zxid_conf_to_cf_len(struct zxid_conf* cf, int conf_len, char* conf);
+struct zxid_conf* zxid_new_conf_to_cf(char* conf);
 >>
 
 4.2 zxid_simple() main protocol dispatch
 ----------------------------------------
 
-<<code:
-
+<<logoutput:
 /* Simple handler that assumes the configuration has already been read in.
  * The memory for result is grabbed from ZX_ALLOC(), usually malloc(3)
  * and is "given" away to the caller, i.e. caller must free it. The
@@ -981,17 +978,15 @@ struct zxid_conf* zxid_new_conf_to_cf(char* conf)
 /* Process simple configuration and then call simple handler. Strings
  * are length + pointer (no C string nul termination needed). */
 
-char* zxid_simple_cf(struct zxid_conf* cf, int qs_len, char* qs, int* res_len, int auto_flags)
-char* zxid_simple_len(int conf_len, char* conf, int qs_len, char* qs, int* res_len, int auto_flags)
-char* zxid_simple(char* conf, char* qs, int auto_flags)
-
+char* zxid_simple_cf(struct zxid_conf* cf, int qs_len, char* qs, int* res_len, int auto_flags);
+char* zxid_simple_len(int conf_len, char* conf, int qs_len, char* qs, int* res_len, int auto_flags);
+char* zxid_simple(char* conf, char* qs, int auto_flags);
 >>
 
 4.3 Generating Login Screen
 ---------------------------
 
-<<code:
-
+<<logoutput:
 /* ------------ zxid_idp_list() ------------ */
 
 char* zxid_idp_list_cf_cgi(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
@@ -1017,13 +1012,12 @@ static char* zxid_simple_show_meta(struct zxid_conf* cf, struct zxid_cgi* cgi, i
 char* zxid_simple_ses_active_cf(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int* res_len, int auto_flags)
 
 char* zxid_simple_no_ses_cf(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int* res_len, int auto_flags)
-
 >>
 
 4.4 Generating HTML for Logout button or Management Screens
 -----------------------------------------------------------
 
-<<code:
+<<logoutput:
 char* zxid_fed_mgmt_cf(struct zxid_conf* cf, int* res_len, int sid_len, char* sid, int auto_flags)
 char* zxid_fed_mgmt_len(int conf_len, char* conf, int* res_len, char* sid, int auto_flags)
 char* zxid_fed_mgmt(char* conf, char* sid, int auto_flags)

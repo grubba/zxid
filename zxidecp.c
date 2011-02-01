@@ -118,7 +118,7 @@ static struct zx_ecp_Request_s* zxid_mk_ecp_Request_hdr(zxid_conf* cf)
  *
  * If you do not know what PAOS, ECP or LECP means, you should read [SAML2bind] specification. */
 
-/* Called by:  main x4, zxid_simple_no_ses_cf x2 */
+/* Called by:  covimp_test, main x4, zxid_simple_no_ses_cf x2 */
 struct zx_str* zxid_lecp_check(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_e_Envelope_s* se;

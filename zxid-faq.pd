@@ -414,7 +414,7 @@ easily *without using the IDE*, i.e. using simple text editor.
 
 1. Q: In mod_auth_saml, what is the relation between ZXIDConf and httpd.conf?
 
-   A:†httpd.conf can contain ZXIDConf directives. Those directives are
+   A: httpd.conf can contain ZXIDConf directives. Those directives are
    processed as if they came from /var/zxid/zxid.conf file (which is
    processed first, before and ZXIDConf directives), except that if you
    specify ZXIDConf "PATH=/your/path", this triggers reporcessing of
@@ -1265,15 +1265,7 @@ the EVP_CIPHER_CTX_set_padding() route.
 Following are known limitations. We document them here
 because we do not plan to fix them in foreseeable future.
 
-1. Unknown XML attributes are not sorted according to rules
-   of exc-c14n. Instead they appear always +after+ known
-   XML attributes and in the order they happen to be
-   in the linked list.
-
-   *Work around:* Add the attribute to schema (.sg) and
-   regenerate and rebuild.
-
-2. Namespace qualified XML attributes have underscore instead of colon
+1. Namespace qualified XML attributes have underscore instead of colon
 
 97.11 Mysterious Error Messages
 -------------------------------
@@ -1323,7 +1315,7 @@ response in the query string.
 
 A mysterious error is when you see yourself receiving
 as input the stuff that was supposed to be sent to the
-other. The way this happens is if for some reason the
+other end. The way this happens is, if for some reason the
 other party's URL can not be determined, then the
 Location header will only consist of the query string
 that you are trying to send. Without domain name part
@@ -1352,7 +1344,7 @@ One way to remove password is
 
   openssl rsa -in key.pem -out keyout-nopw.pem
 
-For this to work, key.pem must have only the provate key. On the other
+For this to work, key.pem must have only the private key. On the other
 hand, for ZXID to work, the file must have both certificate and
 private key. You will need to use your favorite text editor to
 accomplish this.
@@ -1532,7 +1524,7 @@ To fix this
 
 A recent (Sept 2006) conversation that touched on the aims of ZXID project:
 
-> So just generally, what are your goals for it, are you interested in making
+> Q: So just generally, what are your goals for it, are you interested in making
 > it work well with what other people are producing (e.g. SAML -> WSF
 > cross-over), etc? I'm certainly assuming the answer's yes to that.
 
@@ -1544,7 +1536,9 @@ Some WSP support has now been written as well (complete WSP support
 was completed as of July 2007).
 
 It is Apache licensed project, of course, so if someone contributes
-the IdP and WSP capabilities, I'll merge them into the distribution.
+the IdP and WSP capabilities, I'll merge them into the
+distribution. (IdP and Discovery exist in the distribution as of
+Janyary 2010.)
 
 I am interested to have it working with other people's code at 3 levels:
 
@@ -1583,7 +1577,7 @@ In the end, it seems that ZXID is actually somewhat layered approach -
 what I mean by "vertical integration" is that all the layers are
 designed and controlled by the same mind.
 
-> BTW, I gather that it's SAML 2.0 at the moment, which I can't offer any test
+> Q: I gather that it's SAML 2.0 at the moment, which I can't offer any test
 > capability for, but if you get to SAML 1.1, I'm happy to set up some kind of
 > IdP test capability for that.
 
@@ -1597,6 +1591,8 @@ there.>>
 
 97.13.2 Annoyances and improvement ideas
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(*** http://systoilet.wordpress.com/2010/09/29/i-hate-saml/)
 
 There is a lot of commonality that is not leveraged, especially in the
 way service end points are chosen given the metadata.  The descriptors
@@ -1708,10 +1704,10 @@ different decoding engines.
 
     a. The EncryptedData/KeyInfo/RetrievalMethod references the Id attribute of
        the EncryptedKey element, which is sister of the EncryptedData.
-	Shibboleth 2010 can be kludged to work with this method if
-	EncryptedKey element has Recipient XML attribute equal to the
-        EntityID of the SP. This is nowhere well documented, but appears
-        to work.
+       Shibboleth 2010 can be kludged to work with this method if
+       EncryptedKey element has Recipient XML attribute equal to the
+       EntityID of the SP. This is nowhere well documented, but appears
+       to work.
 
     b. EncryptedKey is child of EncryptedData/KeyInfo, i.e.
        EncryptedData/KeyInfo/EncryptedKey. Shibboleth SP appears to use
@@ -1725,145 +1721,145 @@ different decoding engines.
     as does 2.7.3.2 Element <EncryptedAttribute> on p.31.
 
 <<ignore:
-†Oliver:†2010-09-06 08:06:29 DEBUG OpenSAML.MessageDecoder.SAML2 [30]: extracting issuer from SAML 2.0 protocol message
+ Oliver: 2010-09-06 08:06:29 DEBUG OpenSAML.MessageDecoder.SAML2 [30]: extracting issuer from SAML 2.0 protocol message
 2010-09-06 08:06:29 DEBUG OpenSAML.MessageDecoder.SAML2 [30]: message from (https://zxidp.org/idp)
 2010-09-06 08:06:29 DEBUG OpenSAML.MessageDecoder.SAML2 [30]: searching metadata for message issuer...
 2010-09-06 08:06:29 DEBUG OpenSAML.SecurityPolicyRule.MessageFlow [30]: evaluating message flow policy (replay checking on, expiration 60)
 2010-09-06 08:06:29 DEBUG XMLTooling.StorageService [30]: inserted record (R6AEwkbaM6nahxpvSNOyr0dTe) in context (MessageFlow)
 2010-09-06 08:06:29 DEBUG Shibboleth.SSO.SAML2 [30]: processing message against SAML 2.0 SSO profile
 2010-09-06 08:06:29 ERROR Shibboleth.SSO.SAML2 [30]: Unable to locate an encrypted key.
-[12:07:53]†sampo.kellomaki:†Ok, looking for encrypted key.
-[12:10:41]†?†This is is what I sent on the wire.
-[12:11:49]†Oliver:†ok let me make a diff and see if that is what i received
-[12:13:30]†sampo.kellomaki:†If we analyze this you can see that EncryptedKey is sister element of EncryptedData element.
-[12:14:48]†Oliver:†ok it is exactly identical to what i have in the log
-[12:15:28]†sampo.kellomaki:†The KeyInfo of the EncryptedData references #EK39 and the EncryptedKey has Id attribute EK39
-[12:15:43]†?†That is the mechanism by which it is supposed to find the encrypted key.
-[12:16:17]†?†Now the next step is that EncryptedKey itself has KeyInfo that contains X509 certificate.
-[12:16:45]†?†That certificate is supposed to be your SP's encryption certificate, taken from your metadata.
-[12:17:22]†?†Do you follow me?
-[12:17:41]†Oliver:†yes
-[12:18:43]†sampo.kellomaki:†Now, at cursory inspection the cert in the message matches the cert in your metadata.
-[12:19:01]†?†Can you spot any error here?
-[12:19:20]†Oliver:†let me do a diff to double check ... one sec
-[12:19:56]†sampo.kellomaki:†Your metadata says you are using same certificate for encryption and signing.
-[12:20:48]†?†Next verification would be to see if your metadata matches the certificate actually used by SP at this step.
-[12:22:25]†?†I think the log messages that Scott provides are too terse to analyze this problem. Giving one blanket "Unable to locate an encrypted key" error message for all potential points of failure outlined thus far is not sufficient.
-[12:23:15]†?†I have to go eat now. I hope these ideas help. I'll be back in an hour.
-[12:23:35]†?†You do have credentials on zxidp.org so you can reproduce all this at will, right?
-[12:23:45]†Oliver:†i am checking ... but so far everything looks identical to what is in the log
-[12:23:58]†?†i have an account there yes
-[12:24:49]†sampo.kellomaki:†Good. Talk to you in an hour.
-[12:25:15]†Oliver:†enjoy your lunch
-[13:50:51]†sampo.kellomaki:†I'm back
-[13:51:19]†Oliver:†hey
-[13:52:09]†?†double checked the certs in fhe configuration and compared them to what you were sending and they are identical
-[13:52:53]†sampo.kellomaki:†Next theory why it is not working?
-[13:54:23]†Oliver:†as you might have noticed ... i am not an saml expert ... so I don&apos;t really have a theory why it is not working
-[13:54:57]†?†the strange thing is that it seems to work fine with protectnetwork and the kantara idp
-[13:55:03]†sampo.kellomaki:†Huh, I actually thought you were SAML knowledgeable or at least wanted to learn and become SAML expert?
-[13:55:52]†Oliver:†i am doing the system administration for kantara ... and very much interested in saml and learning more about it
-[13:56:02]†?†but still far from being an expert
-[13:56:09]†sampo.kellomaki:†Can you capture the wire message from protect network?
-[13:56:46]†?†For example turn off JavaScript and perform the login. When it stops on the POST page, save that page so you can see what the IdP is sending to the SP.
-[13:56:47]†Oliver:†sure let me login via protect network and capture it ... once sec
-[13:57:29]†?†i can see the wire message in the logs
-[13:57:34]†?†just once sec
-[14:00:22]†*†Oliver posted file protect-network.debug to members of this chat
-[14:00:42]†?†here is what i got from them
-[14:01:25]†sampo.kellomaki:†THe assertion is not encrypted at all!
-[14:02:01]†?†That leaves them open to attacks by infected web browsers.
-[14:02:19]†?†The so called active intemediary man in the middle attack.
-[14:02:55]†?†Can you make similar verification to see if Kantara IdP encrypts the assertion?
-[14:02:57]†Oliver:†oh you wanted the encrypted version?
-[14:03:25]†sampo.kellomaki:†If encrypted version was passed on the wire, I want to see it.
-[14:04:28]†?†If https is used, the most reliable place to capture is stopthe POST flow just before the form with the assertion is posted to the SP. Give me the content of the SAMLResponse form field.
-[14:04:29]†Oliver:†ok let me try the turn off  javascript  thing then
-[14:08:53]†*†Oliver posted file encrypted.txt to members of this chat
-[14:09:22]†?†this is the enctypted version from protect network
-[14:13:00]†sampo.kellomaki:†Analyzing...
-[14:16:05]†?†Ok, I see the difference: I use EncryptedData/KeyInfo/RetrievalMethod to designate the EncryptedKey where as protectednet uses EncryptedData/KeyInfo/EncryptedKey
-[14:16:24]†?†Schemawise both appear valid and I support both in my SP.
-[14:16:35]†Oliver:†ok
-[14:17:08]†sampo.kellomaki:†Which code does protect-network use?
-[14:17:22]†Oliver:†so you think it is a bug in shibboleth?
-[14:17:42]†sampo.kellomaki:†protected-network uses shibboleth?
-[14:17:51]†Oliver:†no that is our sp
-[14:17:59]†?†i don&apos;t know what they use
-[14:18:07]†sampo.kellomaki:†Yes, I think it is bug in shibboleth SP. It should accept either way of doing it.
-[14:18:41]†Oliver:†ok so maybe we should forward that info to scott
-[14:18:45]†sampo.kellomaki:†What software do you use for Kantara IdP?
-[14:19:02]†Oliver:†simplesamlphp
-[14:19:27]†sampo.kellomaki:†Can you capture their output and see how they designate the EncryptedKey?
-[14:19:49]†Oliver:†sure you want the decrypted version only right?
-[14:20:20]†sampo.kellomaki:†Meanwhile, I will add to my IdP an option to generate it the EncryptedData/KeyInfo/EncryptedKey way.
-[14:20:37]†?†Since the problem is with encryption, I want the encrypted version.
-[14:21:53]†*†Oliver posted file encrypted.txt to members of this chat
-[14:22:05]†?†oops sorry wrong file
-[14:22:11]†?†one sec
-[14:22:18]†*†Oliver posted file encrypted-simplesamlphp.txt to members of this chat
-[14:22:24]†sampo.kellomaki:†Fundamentally this is a bug in xml-enc and saml specs in not specifying only one way of doing it.
-[14:23:11]†Oliver:†the second one is the correct file (the one that says simplesamlphp) the first one was the one from protecnetwork
-[14:23:22]†sampo.kellomaki:†Yes, I am looking at it...
-[14:25:44]†?†The encrytped-simplesamlphp.txt does not contain encrypted assertion (or ancrypted anything).
-[14:26:14]†?†If this really is what you captured from the POST SAMLResponse field, then your IdP is vulnearable to the MITM attack.
-[14:30:30]†?†You are using the POST binding in all cases, right?
-[14:30:50]†Oliver:†yes
-[14:30:56]†?†one sec looking at the xml
-[14:31:19]†sampo.kellomaki:†That is important because encrypting the assertion is not needed in artifact binding.
-[14:32:38]†Oliver:†yes i see the encrypted is missing
-[14:33:49]†?†i need to update the software on the ipd anyway. so i will try to get this to work right during that maintenance
-[14:35:22]†?†thanks for pointing that out
-[14:37:20]†sampo.kellomaki:†See saml-bindings-2.0-os.pdf, sec 3.5.5.2 Security Considerations, p.24, ll.847-851
-[14:37:53]†?†After publication it was understood that the SHOULD NOT could be eliminated if EncryptedAssertion is used.
-[14:39:09]†Oliver:†noted
-[14:53:14]†sampo.kellomaki:†See saml-core-2.0-os.pdf, sec 2.2.4 Element <EncryptedID>, p.14, l.495 specifies that EncryptedData and EncryptedKey are sister elements. Thus this really appears to be a bug in shibboleth SP.
-[14:53:50]†?†See also ll.515-521 for schema fragment.
-[14:55:59]†Oliver:†ok
-[14:56:30]†sampo.kellomaki:†Sec 2.3.4 Element <EncryptedAssertion> on p.17 contains similar language.
-[14:56:49]†Oliver:†so what do we do? include scott in the loop?
-[14:57:00]†sampo.kellomaki:†Please raise this issue with Scott.
-[14:57:14]†Oliver:†ok
-[14:57:20]†?†will do
-[14:57:55]†sampo.kellomaki:†Meanwhile I will implement an option to be spec noncompliant so that it still works with his buggy code.
-[15:04:23]†Oliver:†ok sent him an email
-[15:04:28]†?†lets see what he says
-[15:08:41]†sampo.kellomaki:†It is quite sad that sec 6 SAML and XML Encryption Syntax and Processing, p.73, does not provide any clarification on this matter either. The core spec does not provide a single example of EncryptedID or EncryptedAssertion. Seems OASIS SSTC was pretty sloppy when defining this part of the spec.
-[15:10:33]†Oliver:†yes that should be defined in detail
-[15:19:23]†sampo.kellomaki:†Umm, it seems you did not Cc me in the mail. Please let me know what he replies.
-[15:21:43]†Oliver:†oops sorry
-[15:21:56]†?†yes will forward the answer as soon as i get it
-[16:13:42]†sampo.kellomaki:†Little progress now:
-[16:13:45]†?†opensaml::FatalProfileException at (http://kantarainitiative.org/Shibboleth.sso/SAML2/POST)
+Sampo: Ok, looking for encrypted key.
+? This is is what I sent on the wire.
+Oliver: ok let me make a diff and see if that is what i received
+Sampo: If we analyze this you can see that EncryptedKey is sister element of EncryptedData element.
+Oliver: ok it is exactly identical to what i have in the log
+Sampo: The KeyInfo of the EncryptedData references #EK39 and the EncryptedKey has Id attribute EK39
+? That is the mechanism by which it is supposed to find the encrypted key.
+? Now the next step is that EncryptedKey itself has KeyInfo that contains X509 certificate.
+? That certificate is supposed to be your SP's encryption certificate, taken from your metadata.
+? Do you follow me?
+Oliver: yes
+Sampo: Now, at cursory inspection the cert in the message matches the cert in your metadata.
+? Can you spot any error here?
+Oliver: let me do a diff to double check ... one sec
+Sampo: Your metadata says you are using same certificate for encryption and signing.
+? Next verification would be to see if your metadata matches the certificate actually used by SP at this step.
+? I think the log messages that Scott provides are too terse to analyze this problem. Giving one blanket "Unable to locate an encrypted key" error message for all potential points of failure outlined thus far is not sufficient.
+? I have to go eat now. I hope these ideas help. I'll be back in an hour.
+? You do have credentials on zxidp.org so you can reproduce all this at will, right?
+Oliver: i am checking ... but so far everything looks identical to what is in the log
+? i have an account there yes
+Sampo: Good. Talk to you in an hour.
+Oliver: enjoy your lunch
+Sampo: I'm back
+Oliver: hey
+? double checked the certs in fhe configuration and compared them to what you were sending and they are identical
+Sampo: Next theory why it is not working?
+Oliver: as you might have noticed ... i am not an saml expert ... so I don&apos;t really have a theory why it is not working
+? the strange thing is that it seems to work fine with protectnetwork and the kantara idp
+Sampo: Huh, I actually thought you were SAML knowledgeable or at least wanted to learn and become SAML expert?
+Oliver: i am doing the system administration for kantara ... and very much interested in saml and learning more about it
+? but still far from being an expert
+Sampo: Can you capture the wire message from protect network?
+? For example turn off JavaScript and perform the login. When it stops on the POST page, save that page so you can see what the IdP is sending to the SP.
+Oliver: sure let me login via protect network and capture it ... once sec
+? i can see the wire message in the logs
+? just once sec
+* Oliver posted file protect-network.debug to members of this chat
+? here is what i got from them
+Sampo: THe assertion is not encrypted at all!
+? That leaves them open to attacks by infected web browsers.
+? The so called active intemediary man in the middle attack.
+? Can you make similar verification to see if Kantara IdP encrypts the assertion?
+Oliver: oh you wanted the encrypted version?
+Sampo: If encrypted version was passed on the wire, I want to see it.
+? If https is used, the most reliable place to capture is stopthe POST flow just before the form with the assertion is posted to the SP. Give me the content of the SAMLResponse form field.
+Oliver: ok let me try the turn off  javascript  thing then
+* Oliver posted file encrypted.txt to members of this chat
+? this is the enctypted version from protect network
+Sampo: Analyzing...
+? Ok, I see the difference: I use EncryptedData/KeyInfo/RetrievalMethod to designate the EncryptedKey where as protectednet uses EncryptedData/KeyInfo/EncryptedKey
+? Schemawise both appear valid and I support both in my SP.
+Oliver: ok
+Sampo: Which code does protect-network use?
+Oliver: so you think it is a bug in shibboleth?
+Sampo: protected-network uses shibboleth?
+Oliver: no that is our sp
+? i don&apos;t know what they use
+Sampo: Yes, I think it is bug in shibboleth SP. It should accept either way of doing it.
+Oliver: ok so maybe we should forward that info to scott
+Sampo: What software do you use for Kantara IdP?
+Oliver: simplesamlphp
+Sampo: Can you capture their output and see how they designate the EncryptedKey?
+Oliver: sure you want the decrypted version only right?
+Sampo: Meanwhile, I will add to my IdP an option to generate it the EncryptedData/KeyInfo/EncryptedKey way.
+? Since the problem is with encryption, I want the encrypted version.
+* Oliver posted file encrypted.txt to members of this chat
+? oops sorry wrong file
+? one sec
+* Oliver posted file encrypted-simplesamlphp.txt to members of this chat
+Sampo: Fundamentally this is a bug in xml-enc and saml specs in not specifying only one way of doing it.
+Oliver: the second one is the correct file (the one that says simplesamlphp) the first one was the one from protecnetwork
+Sampo: Yes, I am looking at it...
+? The encrytped-simplesamlphp.txt does not contain encrypted assertion (or ancrypted anything).
+? If this really is what you captured from the POST SAMLResponse field, then your IdP is vulnearable to the MITM attack.
+? You are using the POST binding in all cases, right?
+Oliver: yes
+? one sec looking at the xml
+Sampo: That is important because encrypting the assertion is not needed in artifact binding.
+Oliver: yes i see the encrypted is missing
+? i need to update the software on the ipd anyway. so i will try to get this to work right during that maintenance
+? thanks for pointing that out
+Sampo: See saml-bindings-2.0-os.pdf, sec 3.5.5.2 Security Considerations, p.24, ll.847-851
+? After publication it was understood that the SHOULD NOT could be eliminated if EncryptedAssertion is used.
+Oliver: noted
+Sampo: See saml-core-2.0-os.pdf, sec 2.2.4 Element <EncryptedID>, p.14, l.495 specifies that EncryptedData and EncryptedKey are sister elements. Thus this really appears to be a bug in shibboleth SP.
+? See also ll.515-521 for schema fragment.
+Oliver: ok
+Sampo: Sec 2.3.4 Element <EncryptedAssertion> on p.17 contains similar language.
+Oliver: so what do we do? include scott in the loop?
+Sampo: Please raise this issue with Scott.
+Oliver: ok
+? will do
+Sampo: Meanwhile I will implement an option to be spec noncompliant so that it still works with his buggy code.
+Oliver: ok sent him an email
+? lets see what he says
+Sampo: It is quite sad that sec 6 SAML and XML Encryption Syntax and Processing, p.73, does not provide any clarification on this matter either. The core spec does not provide a single example of EncryptedID or EncryptedAssertion. Seems OASIS SSTC was pretty sloppy when defining this part of the spec.
+Oliver: yes that should be defined in detail
+Sampo: Umm, it seems you did not Cc me in the mail. Please let me know what he replies.
+Oliver: oops sorry
+? yes will forward the answer as soon as i get it
+Sampo: Little progress now:
+? opensaml::FatalProfileException at (http://kantarainitiative.org/Shibboleth.sso/SAML2/POST)
  
 Unable to locate satisfiable bearer SubjectConfirmation in assertion.
-[16:14:24]†?†I guess that means it is at least able to decrypt. Can you paste there the corresponding log lines?
-[16:15:03]†Oliver:†oncesec
-[16:17:03]†*†Oliver posted file shibd.log to members of this chat
-[16:19:43]†sampo.kellomaki:†2010-09-06 12:13:16 ERROR OpenSAML.SecurityPolicyRule.BearerConfirmation [30]: bearer confirmation failed with recipient mismatch
-[16:20:37]†?†I have a hunch on this. I'll check the specs.
-[16:20:46]†Oliver:†ok
-[16:21:02]†sampo.kellomaki:†Is there any way I could just use http request to a CGI to obtain a tail of your log?
-[16:21:51]†Oliver:†we don&apos;t have anything setup right now
-[16:24:10]†sampo.kellomaki:†There may be a good policy reason why not to set up such log access, but if there is no rule against it, it would be pretty trivial php or perl CGI script to write.
-[16:24:34]†?†Think about that while I think about BearerConfirmation :-)
-[16:25:56]†Oliver:†yes would not be too hard to write a little php for that but I would have to check with joni if she is ok with it
-[16:26:28]†?†i think there have a national holiday there today though
-[16:26:35]†?†they
-[16:26:53]†sampo.kellomaki:†Hope that means Scott has time to read mails :-)
-[16:27:22]†Oliver:†true
-[16:53:03]†sampo.kellomaki:†One step further.
-[16:53:04]†?†shibsp::ConfigurationException at (http://kantarainitiative.org/Shibboleth.sso/SAML2/cookie:982a07ae)
+? I guess that means it is at least able to decrypt. Can you paste there the corresponding log lines?
+Oliver: oncesec
+* Oliver posted file shibd.log to members of this chat
+Sampo: 2010-09-06 12:13:16 ERROR OpenSAML.SecurityPolicyRule.BearerConfirmation [30]: bearer confirmation failed with recipient mismatch
+? I have a hunch on this. I'll check the specs.
+Oliver: ok
+Sampo: Is there any way I could just use http request to a CGI to obtain a tail of your log?
+Oliver: we don&apos;t have anything setup right now
+Sampo: There may be a good policy reason why not to set up such log access, but if there is no rule against it, it would be pretty trivial php or perl CGI script to write.
+? Think about that while I think about BearerConfirmation :-)
+Oliver: yes would not be too hard to write a little php for that but I would have to check with joni if she is ok with it
+? i think there have a national holiday there today though
+? they
+Sampo: Hope that means Scott has time to read mails :-)
+Oliver: true
+Sampo: One step further.
+? shibsp::ConfigurationException at (http://kantarainitiative.org/Shibboleth.sso/SAML2/cookie:982a07ae)
  
 Shibboleth handler invoked at an unconfigured location.
-[16:53:49]†Oliver:†just sent you the responce from scott
-[16:54:22]†?†do you want the logs from the errorﬂ
-[16:54:23]†?†?
-[16:56:12]†sampo.kellomaki:†At least the tail of the log from DEBUG Shibboleth.SSO.SAML2 [30]: extracting issuer from SAML 2.0 assertion onwards
-[16:56:28]†?†Hopefully that is so little you can just paste it here.
-[16:56:30]†Oliver:†one sec
-[16:56:40]†sampo.kellomaki:†I'll check Scott's response...
-[16:59:14]†Oliver:†2010-09-06 12:52:36 DEBUG Shibboleth.SSO.SAML2 [46]: extracting issuer from SAML 2.0 assertion
+Oliver: just sent you the responce from scott
+? do you want the logs from the errorﬂ
+? ?
+Sampo: At least the tail of the log from DEBUG Shibboleth.SSO.SAML2 [30]: extracting issuer from SAML 2.0 assertion onwards
+? Hopefully that is so little you can just paste it here.
+Oliver: one sec
+Sampo: I'll check Scott's response...
+Oliver: 2010-09-06 12:52:36 DEBUG Shibboleth.SSO.SAML2 [46]: extracting issuer from SAML 2.0 assertion
 2010-09-06 12:52:36 DEBUG OpenSAML.SecurityPolicyRule.MessageFlow [46]: evaluating message flow policy (replay checking on, expiration 60)
 2010-09-06 12:52:36 DEBUG XMLTooling.StorageService [46]: inserted record (Ajq-JsiQEM4thfqIZ4T911pUp) in context (MessageFlow)
 2010-09-06 12:52:36 DEBUG OpenSAML.SecurityPolicyRule.XMLSigning [46]: validating signature profile
@@ -1888,23 +1884,23 @@ Shibboleth handler invoked at an unconfigured location.
 2010-09-06 12:52:36 DEBUG XMLTooling.StorageService [46]: inserted record (Ajq-JsiQEM4thfqIZ4T911pUp) in context (_a1e19c299c142bf732871dbff386f7d9)
 2010-09-06 12:52:36 INFO Shibboleth.SessionCache [46]: new session created: ID (_a1e19c299c142bf732871dbff386f7d9) IdP (https://zxidp.org/idp) Protocol(urn:oasis:names:tc:SAML:2.0:protocol) Address (93.108.147.200)
 2010-09-06 12:52:36 DEBUG Shibboleth.SSO.SAML2 [46]: ACS returning via redirect to: cookie%3A982a07ae
-[17:01:58]†sampo.kellomaki:†It appears SP side session was created all right.
-[17:02:20]†?†I think we are now at the point where SAML is no longer involved. 
-[17:02:24]†Oliver:†yes I still need to map some attributes but looks allright
-[17:02:43]†sampo.kellomaki:†Where did that cookie%3A982a07ae come from?
-[17:03:08]†?†It appears that the equals sign got URI escaped and perhaps that is throwing it off?
-[17:04:30]†Oliver:†is there maybe a ? missing?
-[17:04:59]†sampo.kellomaki:†That could be, as well.
-[17:05:50]†?†Lets entertain the theory that cookie%3A982a07ae came from the RelayState field and investigate how it was passed in AuthnRequest and Response.
-[17:08:52]†Oliver:†but then the same thing should happen with the protect network
-[17:09:09]†sampo.kellomaki:†If you look at the original HTTP redirect that is made to convey AuthnRequest, you can see QueryString argument RelayState=cookie%3A8cd0ff4c
-[17:10:11]†?†So clearly your SP (or WAYF service?) already passes it in that format. As far as I have understood the protocol, I am not supposed to decode it (nor reencode).
-[17:12:11]†?†If I intercept a POST, I can see the field <input name="RelayState" value="cookie%3A982a07ae" type="hidden">
-[17:13:04]†?†Perhaps the field should have been <input name="RelayState" value="cookie=982a07ae" type="hidden">
-[17:13:42]†?†I.e. the RelayState gets encoded twice because the browser, when posting the form will encode again.
-[17:14:13]†Oliver:†i think it needs to be a :
-[17:14:37]†?†this is what i am getting from protect network
-[17:14:39]†?†&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot;&gt;
+Sampo: It appears SP side session was created all right.
+? I think we are now at the point where SAML is no longer involved. 
+Oliver: yes I still need to map some attributes but looks allright
+Sampo: Where did that cookie%3A982a07ae come from?
+? It appears that the equals sign got URI escaped and perhaps that is throwing it off?
+Oliver: is there maybe a ? missing?
+Sampo: That could be, as well.
+? Lets entertain the theory that cookie%3A982a07ae came from the RelayState field and investigate how it was passed in AuthnRequest and Response.
+Oliver: but then the same thing should happen with the protect network
+Sampo: If you look at the original HTTP redirect that is made to convey AuthnRequest, you can see QueryString argument RelayState=cookie%3A8cd0ff4c
+? So clearly your SP (or WAYF service?) already passes it in that format. As far as I have understood the protocol, I am not supposed to decode it (nor reencode).
+? If I intercept a POST, I can see the field <input name="RelayState" value="cookie%3A982a07ae" type="hidden">
+? Perhaps the field should have been <input name="RelayState" value="cookie=982a07ae" type="hidden">
+? I.e. the RelayState gets encoded twice because the browser, when posting the form will encode again.
+Oliver: i think it needs to be a :
+? this is what i am getting from protect network
+? &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot;&gt;
  
     &lt;body onload=&quot;document.forms[0].submit()&quot;&gt;
         &lt;noscript&gt;
@@ -1918,186 +1914,186 @@ Shibboleth handler invoked at an unconfigured location.
  
             &lt;div&gt;
                 &lt;input type=&quot;hidden&quot; name=&quot;RelayState&quot; value=&quot;cookie:109e37f6&quot;/&gt;
-[17:14:40]†?†...
-[17:15:10]†sampo.kellomaki:†Hex 3a is a colon? Not equals?
-[17:15:34]†Oliver:†i think so yes
-[17:15:44]†?†looked it up
-[17:15:51]†sampo.kellomaki:†I'll try this and see if it fixes...
-[17:17:29]†Oliver:†ok
-[17:30:56]†sampo.kellomaki:†It went through!
-[17:31:31]†?†But I landed back on the Current Members page where I had started by clicking the Log In.
-[17:31:51]†?†The Log In still appears.
-[17:32:00]†Oliver:†yes probably some attribute mapping missing hold on
-[17:32:01]†sampo.kellomaki:†How do I know that I am logged in?
-[17:32:33]†?†Shouldn't Single Logout button of some sort appear (and Log In disappear)?
-[17:32:53]†Oliver:†yes your username appears
-[17:32:57]†?†hold one one second
-[17:33:05]†?†need to logout and login to try it
-[17:33:24]†sampo.kellomaki:†But how can I logout? I do not see any logout button?
-[17:33:40]†Oliver:†no i do have to logout to try it here
-[17:33:55]†sampo.kellomaki:†So zap cookies is the only way?
-[17:34:34]†Oliver:†2010-09-06 13:34:04 DEBUG Shibboleth.AttributeDecoder.NameID [28]: decoding NameIDAttribute (persistent-id) from SAML 2 NameID with Format (urn:oasis:names:tc:SAML:2.0:nameid-format:persistent)
+? ...
+Sampo: Hex 3a is a colon? Not equals?
+Oliver: i think so yes
+? looked it up
+Sampo: I'll try this and see if it fixes...
+Oliver: ok
+Sampo: It went through!
+? But I landed back on the Current Members page where I had started by clicking the Log In.
+? The Log In still appears.
+Oliver: yes probably some attribute mapping missing hold on
+Sampo: How do I know that I am logged in?
+? Shouldn't Single Logout button of some sort appear (and Log In disappear)?
+Oliver: yes your username appears
+? hold one one second
+? need to logout and login to try it
+Sampo: But how can I logout? I do not see any logout button?
+Oliver: no i do have to logout to try it here
+Sampo: So zap cookies is the only way?
+Oliver: 2010-09-06 13:34:04 DEBUG Shibboleth.AttributeDecoder.NameID [28]: decoding NameIDAttribute (persistent-id) from SAML 2 NameID with Format (urn:oasis:names:tc:SAML:2.0:nameid-format:persistent)
 2010-09-06 13:34:04 INFO Shibboleth.AttributeExtractor.XML [28]: skipping unmapped SAML 2.0 Attribute with Name: urn:liberty:disco:2006-08:DiscoveryEPR, Format:urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
 2010-09-06 13:34:04 INFO Shibboleth.AttributeExtractor.XML [28]: skipping unmapped SAML 2.0 Attribute with Name: idpinfo, Format:urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
 2010-09-06 13:34:04 INFO Shibboleth.AttributeExtractor.XML [28]: skipping unmapped SAML 2.0 Attribute with Name: zxididp, Format:urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
-[17:34:36]†sampo.kellomaki:†FYI, the page I am using for these tests: http://kantarainitiative.org/confluence/display/GI/Current+Members
-[17:35:22]†?†Those attributes can be safely ignored for time being.
-[17:35:34]†Oliver:†where do you pass the username?
-[17:35:40]†?†what attribute?
-[17:35:48]†?†and format?
-[17:36:02]†sampo.kellomaki:†No attribute. I pass pseudonymous NameID.
-[17:36:16]†?†That appears in Subject element of the SAML assertion.
-[17:36:47]†?†In your log 2010-09-06 13:34:04 DEBUG Shibboleth.AttributeDecoder.NameID [28]: decoding NameIDAttribute (persistent-id) from SAML 2 NameID with Format (urn:oasis:names:tc:SAML:2.0:nameid-format:persistent)
-[17:37:01]†?†would appear to correspond to that.
-[17:37:40]†Oliver:†ok so let me try to map NameID to our username
-[17:38:28]†sampo.kellomaki:†But perhaps we need to take a step back at this point: assume a random user of zxidp.org wants to access kantara. How would kantara know that user (identified by persistent pseudonym) is in fact a user that is allowed to access Kantara?
-[17:38:58]†?†I vaguely recollect that last time I asked this question, the answer was that Kantara does not care.
-[17:39:02]†Oliver:†all end up in the standard user group first
-[17:39:22]†?†where you see the same as if you were not logged in
-[17:39:44]†?†and then you contact staff and ask to be assigned to another group
-[17:39:54]†sampo.kellomaki:†But you should see at least the logout button or some indication that you are logged in.
-[17:40:43]†Oliver:†yes you see your username where it says login etc
-[17:40:53]†?†can edit your profile
-[17:40:55]†?†etc.
-[17:41:12]†sampo.kellomaki:†"username"? Is that something Kantara assigns internally?
-[17:42:01]†Oliver:†it is something like omaerz@protectnetwork.com
-[17:42:30]†sampo.kellomaki:†Are you expecting the IdP to pass you that?
-[17:42:40]†Oliver:†yes
-[17:43:03]†sampo.kellomaki:†That looks like globally unique id, a correlation handle.
-[17:43:05]†Oliver:†that is why i was looking at the attributes
-[17:43:14]†sampo.kellomaki:†That  is privacy hostile.
-[17:43:50]†Oliver:†that is the way the shibboleth plugin for confluence works
-[17:44:19]†sampo.kellomaki:†Liberty Alliance spent 8 years engineering relationshipwise pseudonymous privacy friendly protocols and now you want global correlation handle.
-[17:44:23]†Oliver:†we can map that username, name and email address if we get it from an idp
-[17:44:39]†?†i don&apos;t
-[17:44:53]†?†the people who implement the plugin do
-[17:45:20]†?†i was only asked to set that system up in that way
-[17:45:41]†sampo.kellomaki:†Basically my IdP will give you persistent pseudonym. That allows you to keep your local database that knows some things about me.
-[17:46:18]†?†Towards some other SP the IdP will give a different pseudonym so that the other site can not correlate information with Kantara.
-[17:46:27]†?†This is very important for privacy.
-[17:46:58]†?†In the end it reduces to what is the minimum amount of information that Kantara needs to know about me.
-[17:47:26]†Oliver:†ok
-[17:47:30]†sampo.kellomaki:†Perhaps some email is needed, but I would hope to use different email at each SP.
-[17:48:17]†Oliver:†email is optional and you can fill it in manually in confluence
-[17:48:22]†sampo.kellomaki:†How tightly are the mailinglists integrated to the web site?
-[17:48:22]†Oliver:†same with name
-[17:48:38]†?†no mailman integration
-[17:49:02]†sampo.kellomaki:†Ok, so I can SSO with IdP and then selectively supply the pieces of information and the versions of those pieces just for Kantara.
-[17:49:04]†Oliver:†do you know of a saml module for mailman?
-[17:49:27]†sampo.kellomaki:†In that case, wouldn't it work well to just use the persistent pseudonym as username?
-[17:49:32]†Oliver:†the only thing i need to get this to work is a username
-[17:49:43]†?†yes let me try
-[17:49:53]†?†what does that pseudonym look like?
-[17:50:14]†sampo.kellomaki:†Base64 encoded 128bit random number.
-[17:51:00]†Oliver:†i have to make sure they are unique ... so some other idp does not give us the same username
-[17:51:09]†?†i.e. you second ipd
-[17:51:14]†?†idp
-[17:51:25]†sampo.kellomaki:†<sa:NameID xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" NameQualifier="https://zxidp.org/idp" SPNameQualifier="https://kantarainitiative.org/shibboleth-sp">FRsLTG-ZdKuVJ-Pes_MiQ44cz</sa:NameID>
-[17:51:54]†?†In this XML snippet you see NameQualifier.
-[17:52:26]†?†That is essentially the namespace inside which the 128bit thing (FRsLTG-ZdKuVJ-Pes_MiQ44cz) is unique.
-[17:53:18]†?†So to form your username, you could concatenate the two. You could even use @ character as a separator, but that still would not make it workable email.
-[17:54:04]†?†BTW, the SPNameQualifier for you is always same. But for IdP serving multiple SPs that also forms important part of the namespace.
-[17:55:06]†?†Another approach you could take is simply do a sha1 hash over the canonical serialization of the whole NameID element.
-[17:55:20]†?†and use that as username.
-[17:56:13]†?†When SAML was designed, the choice was to identify IdP by a URL rather than just domain name. This makes it difficult to construct any meaningful email address that would include IdP identification.
-[17:56:36]†?†You can talk to Scott about that. May be he remembers why this design was adopted.
-[17:57:17]†Oliver:†hmm this is really ugly: https://zxidp.org/idp!https://kantarainitiative.org/shibboleth-sp!frsltg-zdkuvj-pes_miq44cz
-[17:57:25]†?†also this will break confluence
-[17:57:57]†sampo.kellomaki:†That would be a bug in Confluence, IMNSHO.
-[17:57:57]†Oliver:†like when click on a user to see his profile
-[17:58:39]†?†is it really such a big deal if you passed some unique identifier that looks more like an email address?
-[17:59:00]†?†i mean you could stick the id in there
-[17:59:10]†sampo.kellomaki:†How about this: FRsLTG-ZdKuVJ-Pes_MiQ44cz@yBeCTPt0NQ2vMuI-srKw5h4N2i8
-[17:59:12]†Oliver:†something like sp!frsltg-zdkuvj-pes_miq44cz@zxidp.org
-[17:59:25]†?†or that
-[18:00:03]†sampo.kellomaki:†where  the FR stuff is the persistent pseudonym and the yBe stuff is safe_base64 encoded sha1 hash of https://zxidp.org/idp
-[18:01:10]†Oliver:†sure
-[18:01:11]†sampo.kellomaki:†Personally I would find  FRsLTG-ZdKuVJ-Pes_MiQ44cz@zxidp.org ok as long as you do not make any assumption that you can actually send mail there :-0
-[18:01:21]†Oliver:†no
-[18:01:28]†?†it is not used as an email address
-[18:01:50]†?†the email address CAN be passed as an attribute but that is optional
-[18:02:41]†?†if it is passed then only to pre-populate the email field in confluence the very first time somebody logs in
-[18:02:42]†sampo.kellomaki:†If you adopt that convention it would be really cool if you also documented it so that could become a widely adopted solution and convention to this problem in the confluence and even wider world.
-[18:03:23]†?†What attribute others are passing to you to pick the user name?
-[18:03:31]†Oliver:†you mean the †FRsLTG-ZdKuVJ-Pes_MiQ44cz type usernames?
-[18:03:51]†sampo.kellomaki:†Does anyone else try to pass you persistent pseudonym?
-[18:04:14]†Oliver:†protectnetwork is passing &lt;protectnetwork username&gt;@protectnetwork.com
-[18:04:37]†?†kantara idp is passing the username without the @... at the then
-[18:04:52]†?†end
-[18:04:54]†sampo.kellomaki:†I guess what I am saying that if there is some industry convention (that I do not know about), I could pass the pseudonym the same way.
-[18:05:17]†?†So for kantaraidp you need to add the @idp.ki
-[18:05:20]†?†?
-[18:05:36]†Oliver:†i guess i could add it
-[18:05:50]†sampo.kellomaki:†What is the name of the attribute protectnetwork uses to pass this?
-[18:06:04]†Oliver:†hold on let me look it up
-[18:06:24]†?†http://www.protectnetwork.org/support/policies/attribute-release-policy
-[18:06:38]†?†we do not user firstname lastname though
-[18:06:58]†?†as the confluence plugin expects the whole name in one field
-[18:07:46]†?†so urn:oid:1.3.6.1.4.1.5923.1.1.1.6 is what we use for the username
-[18:08:00]†?†they do not pass the email
-[18:08:02]†?†to us
-[18:08:38]†sampo.kellomaki:†That is, urn:mace:dir:attribute-def:eduPersonPrincipalName .
-[18:09:46]†Oliver:†but they do not pass it to us
-[18:09:53]†?†for whatever reason
-[18:10:00]†?†they pass it to others
-[18:10:24]†sampo.kellomaki:†In urn:oid:1.3.6.1.4.1.5923.1.1.1.6 they the pass the email like thing.
-[18:10:43]†Oliver:†yes
-[18:11:06]†sampo.kellomaki:†So they do not pass email attribute, but pass in eduPersonPrincipalName something that most of the time is the email.
-[18:11:33]†Oliver:†they do not pass either one
-[18:11:58]†?†neither the real email nor the first + lastname in one field
-[18:12:12]†sampo.kellomaki:†Ok, decision now: do I reconfig my IdP to pass in urn:oid:1.3.6.1.4.1.5923.1.1.1.6 something like FRsLTG-ZdKuVJ-Pes_MiQ44cz@zxidp.org 
-[18:12:28]†Oliver:†sure that looks good
-[18:12:39]†sampo.kellomaki:†or do you just add the @zxidp.org to the persistent pseudonym I pass to you (i.e. no change for me)?
-[18:13:15]†?†I take it that you pick the first option. Very well. It will take me perhaps 20min or so.
-[18:15:37]†Oliver:†ok that would really be the best solution
-[18:15:52]†?†i am looking at a way how i could put the name together on my side
-[18:16:07]†sampo.kellomaki:†I suspect there are other sysadmins who would appreciate this as well.
-[18:16:16]†Oliver:†but it would probably take longer that 20 mins
-[18:17:02]†?†this is the config for shib + confluence
-[18:18:52]†?†https://studio.plugins.atlassian.com/wiki/display/SHBL/How+to+Shibbolize+Confluence
-[18:19:43]†?†ok gotta run to the store will be back in 30 mins
-[18:19:59]†sampo.kellomaki:†Ok, I'll do the same. Back in 30 min.
-[19:10:48]†?†Back.
-[19:01:38]†Oliver:†oral exam
-[19:02:53]†?†oops wrong window
-[19:44:05]†Sampo Kellom‰ki:†I am now sending urn:oid:1.3.6.1.4.1.5923.1.1.1.6 but I still am not considered logged in.
-[19:44:40]†Oliver:†let me look at the log one sec
-[19:49:34]†?†was the format
-[19:50:23]†?†you are sending it as urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
-[19:50:37]†?†added it to the attribute map and now it works
-[19:50:54]†Sampo Kellom‰ki:†Should I tweak my code to send something other than unspec?
-[19:51:23]†Oliver:†no it is fine i added it to the attribute map
-[19:51:42]†Sampo Kellom‰ki:†I see protectednetwork sent urn:oasis:names:tc:SAML:2.0:attrname-format:uri
-[19:51:51]†?†Perhaps I do the same.
-[19:52:02]†Oliver:†ok
-[19:57:59]†Sampo Kellom‰ki:†Ok, now I see my login succeed.
-[19:58:31]†?†I'll implement the Recipient work around Scott suggests.
-[20:12:25]†Oliver:†just forwarded you another mail from scott that i have received
-[20:14:32]†Sampo Kellom‰ki:†In the Recipient case it is not clear what should go to that field.
-[20:15:15]†Oliver:†i don&apos;t know either
-[20:15:24]†?†:(
-[20:17:06]†Sampo Kellom‰ki:†I'll put the EntotyID URL and we will see.
-[21:05:59]†?†Works with the Recipient workaround.
-[21:06:18]†?†On the Kantara site, where can I edit my test user's profile?
-[21:08:58]†?†I notice you lowercase the persistent pseudonym when you form the username. You realize that my uniqueness guarantee assumes full 64 character characterset. By lowercasing you loose nearly one bit of search space :-)
-[21:09:02]†?†Out of 128.
-[21:09:16]†?†I guess you are still ok, statistically speaking.
-[22:11:14]†Oliver:†that is an intersting point
-[22:11:31]†?†i wonder if confluence does that or the shib plugin
-[22:12:00]†?†you can edit your userprofile when you click on your name
-[22:12:26]†?†and then there should be a dropdown menu with the item profile
-[22:12:48]†?†once on your profile you need to click on the edit link
-[22:13:02]†Sampo Kellom‰ki:†No doubt this needs JavaScript...
-[22:15:45]†?†The user name appears in the "Full Name" field. Is there no provision for human readable nick name?
-[22:16:06]†Oliver:†you can just overwrite that
-[22:16:19]†?†click on the edit link
-[22:16:36]†?†it is put in there if no name is passed from the idp
-[22:16:51]†?†confluence probably needs something in there
-[22:16:53]†Sampo Kellom‰ki:†The internal federated username is just initial value for Full Name - I see.
-[22:18:13]†Oliver:†yup
-[22:18:45]†Sampo Kellom‰ki:†Ok, appears to work.
-[22:19:30]†?†I'll make a new release of zxid and upgrade idp.tas3.eu to the latest and greatest. Then we can consider this issue closed for time being.
-[22:19:40]†Oliver:†cool
+Sampo: FYI, the page I am using for these tests: http://kantarainitiative.org/confluence/display/GI/Current+Members
+? Those attributes can be safely ignored for time being.
+Oliver: where do you pass the username?
+? what attribute?
+? and format?
+Sampo: No attribute. I pass pseudonymous NameID.
+? That appears in Subject element of the SAML assertion.
+? In your log 2010-09-06 13:34:04 DEBUG Shibboleth.AttributeDecoder.NameID [28]: decoding NameIDAttribute (persistent-id) from SAML 2 NameID with Format (urn:oasis:names:tc:SAML:2.0:nameid-format:persistent)
+? would appear to correspond to that.
+Oliver: ok so let me try to map NameID to our username
+Sampo: But perhaps we need to take a step back at this point: assume a random user of zxidp.org wants to access kantara. How would kantara know that user (identified by persistent pseudonym) is in fact a user that is allowed to access Kantara?
+? I vaguely recollect that last time I asked this question, the answer was that Kantara does not care.
+Oliver: all end up in the standard user group first
+? where you see the same as if you were not logged in
+? and then you contact staff and ask to be assigned to another group
+Sampo: But you should see at least the logout button or some indication that you are logged in.
+Oliver: yes you see your username where it says login etc
+? can edit your profile
+? etc.
+Sampo: "username"? Is that something Kantara assigns internally?
+Oliver: it is something like omaerz@protectnetwork.com
+Sampo: Are you expecting the IdP to pass you that?
+Oliver: yes
+Sampo: That looks like globally unique id, a correlation handle.
+Oliver: that is why i was looking at the attributes
+Sampo: That  is privacy hostile.
+Oliver: that is the way the shibboleth plugin for confluence works
+Sampo: Liberty Alliance spent 8 years engineering relationshipwise pseudonymous privacy friendly protocols and now you want global correlation handle.
+Oliver: we can map that username, name and email address if we get it from an idp
+? i don&apos;t
+? the people who implement the plugin do
+? i was only asked to set that system up in that way
+Sampo: Basically my IdP will give you persistent pseudonym. That allows you to keep your local database that knows some things about me.
+? Towards some other SP the IdP will give a different pseudonym so that the other site can not correlate information with Kantara.
+? This is very important for privacy.
+? In the end it reduces to what is the minimum amount of information that Kantara needs to know about me.
+Oliver: ok
+Sampo: Perhaps some email is needed, but I would hope to use different email at each SP.
+Oliver: email is optional and you can fill it in manually in confluence
+Sampo: How tightly are the mailinglists integrated to the web site?
+Oliver: same with name
+? no mailman integration
+Sampo: Ok, so I can SSO with IdP and then selectively supply the pieces of information and the versions of those pieces just for Kantara.
+Oliver: do you know of a saml module for mailman?
+Sampo: In that case, wouldn't it work well to just use the persistent pseudonym as username?
+Oliver: the only thing i need to get this to work is a username
+? yes let me try
+? what does that pseudonym look like?
+Sampo: Base64 encoded 128bit random number.
+Oliver: i have to make sure they are unique ... so some other idp does not give us the same username
+? i.e. you second ipd
+? idp
+Sampo: <sa:NameID xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" NameQualifier="https://zxidp.org/idp" SPNameQualifier="https://kantarainitiative.org/shibboleth-sp">FRsLTG-ZdKuVJ-Pes_MiQ44cz</sa:NameID>
+? In this XML snippet you see NameQualifier.
+? That is essentially the namespace inside which the 128bit thing (FRsLTG-ZdKuVJ-Pes_MiQ44cz) is unique.
+? So to form your username, you could concatenate the two. You could even use @ character as a separator, but that still would not make it workable email.
+? BTW, the SPNameQualifier for you is always same. But for IdP serving multiple SPs that also forms important part of the namespace.
+? Another approach you could take is simply do a sha1 hash over the canonical serialization of the whole NameID element.
+? and use that as username.
+? When SAML was designed, the choice was to identify IdP by a URL rather than just domain name. This makes it difficult to construct any meaningful email address that would include IdP identification.
+? You can talk to Scott about that. May be he remembers why this design was adopted.
+Oliver: hmm this is really ugly: https://zxidp.org/idp!https://kantarainitiative.org/shibboleth-sp!frsltg-zdkuvj-pes_miq44cz
+? also this will break confluence
+Sampo: That would be a bug in Confluence, IMNSHO.
+Oliver: like when click on a user to see his profile
+? is it really such a big deal if you passed some unique identifier that looks more like an email address?
+? i mean you could stick the id in there
+Sampo: How about this: FRsLTG-ZdKuVJ-Pes_MiQ44cz@yBeCTPt0NQ2vMuI-srKw5h4N2i8
+Oliver: something like sp!frsltg-zdkuvj-pes_miq44cz@zxidp.org
+? or that
+Sampo: where  the FR stuff is the persistent pseudonym and the yBe stuff is safe_base64 encoded sha1 hash of https://zxidp.org/idp
+Oliver: sure
+Sampo: Personally I would find  FRsLTG-ZdKuVJ-Pes_MiQ44cz@zxidp.org ok as long as you do not make any assumption that you can actually send mail there :-0
+Oliver: no
+? it is not used as an email address
+? the email address CAN be passed as an attribute but that is optional
+? if it is passed then only to pre-populate the email field in confluence the very first time somebody logs in
+Sampo: If you adopt that convention it would be really cool if you also documented it so that could become a widely adopted solution and convention to this problem in the confluence and even wider world.
+? What attribute others are passing to you to pick the user name?
+Oliver: you mean the  FRsLTG-ZdKuVJ-Pes_MiQ44cz type usernames?
+Sampo: Does anyone else try to pass you persistent pseudonym?
+Oliver: protectnetwork is passing &lt;protectnetwork username&gt;@protectnetwork.com
+? kantara idp is passing the username without the @... at the then
+? end
+Sampo: I guess what I am saying that if there is some industry convention (that I do not know about), I could pass the pseudonym the same way.
+? So for kantaraidp you need to add the @idp.ki
+? ?
+Oliver: i guess i could add it
+Sampo: What is the name of the attribute protectnetwork uses to pass this?
+Oliver: hold on let me look it up
+? http://www.protectnetwork.org/support/policies/attribute-release-policy
+? we do not user firstname lastname though
+? as the confluence plugin expects the whole name in one field
+? so urn:oid:1.3.6.1.4.1.5923.1.1.1.6 is what we use for the username
+? they do not pass the email
+? to us
+Sampo: That is, urn:mace:dir:attribute-def:eduPersonPrincipalName .
+Oliver: but they do not pass it to us
+? for whatever reason
+? they pass it to others
+Sampo: In urn:oid:1.3.6.1.4.1.5923.1.1.1.6 they the pass the email like thing.
+Oliver: yes
+Sampo: So they do not pass email attribute, but pass in eduPersonPrincipalName something that most of the time is the email.
+Oliver: they do not pass either one
+? neither the real email nor the first + lastname in one field
+Sampo: Ok, decision now: do I reconfig my IdP to pass in urn:oid:1.3.6.1.4.1.5923.1.1.1.6 something like FRsLTG-ZdKuVJ-Pes_MiQ44cz@zxidp.org 
+Oliver: sure that looks good
+Sampo: or do you just add the @zxidp.org to the persistent pseudonym I pass to you (i.e. no change for me)?
+? I take it that you pick the first option. Very well. It will take me perhaps 20min or so.
+Oliver: ok that would really be the best solution
+? i am looking at a way how i could put the name together on my side
+Sampo: I suspect there are other sysadmins who would appreciate this as well.
+Oliver: but it would probably take longer that 20 mins
+? this is the config for shib + confluence
+? https://studio.plugins.atlassian.com/wiki/display/SHBL/How+to+Shibbolize+Confluence
+? ok gotta run to the store will be back in 30 mins
+Sampo: Ok, I'll do the same. Back in 30 min.
+? Back.
+Oliver: oral exam
+? oops wrong window
+Sampo Kellom‰ki: I am now sending urn:oid:1.3.6.1.4.1.5923.1.1.1.6 but I still am not considered logged in.
+Oliver: let me look at the log one sec
+? was the format
+? you are sending it as urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
+? added it to the attribute map and now it works
+Sampo Kellom‰ki: Should I tweak my code to send something other than unspec?
+Oliver: no it is fine i added it to the attribute map
+Sampo Kellom‰ki: I see protectednetwork sent urn:oasis:names:tc:SAML:2.0:attrname-format:uri
+? Perhaps I do the same.
+Oliver: ok
+Sampo Kellom‰ki: Ok, now I see my login succeed.
+? I'll implement the Recipient work around Scott suggests.
+Oliver: just forwarded you another mail from scott that i have received
+Sampo Kellom‰ki: In the Recipient case it is not clear what should go to that field.
+Oliver: i don&apos;t know either
+? :(
+Sampo Kellom‰ki: I'll put the EntotyID URL and we will see.
+? Works with the Recipient workaround.
+? On the Kantara site, where can I edit my test user's profile?
+? I notice you lowercase the persistent pseudonym when you form the username. You realize that my uniqueness guarantee assumes full 64 character characterset. By lowercasing you loose nearly one bit of search space :-)
+? Out of 128.
+? I guess you are still ok, statistically speaking.
+Oliver: that is an intersting point
+? i wonder if confluence does that or the shib plugin
+? you can edit your userprofile when you click on your name
+? and then there should be a dropdown menu with the item profile
+? once on your profile you need to click on the edit link
+Sampo Kellom‰ki: No doubt this needs JavaScript...
+? The user name appears in the "Full Name" field. Is there no provision for human readable nick name?
+Oliver: you can just overwrite that
+? click on the edit link
+? it is put in there if no name is passed from the idp
+? confluence probably needs something in there
+Sampo Kellom‰ki: The internal federated username is just initial value for Full Name - I see.
+Oliver: yup
+Sampo Kellom‰ki: Ok, appears to work.
+? I'll make a new release of zxid and upgrade idp.tas3.eu to the latest and greatest. Then we can consider this issue closed for time being.
+Oliver: cool
 >>
 
 97.13.4 Non-obvious ID-WSF
@@ -2145,119 +2141,158 @@ certificates are taken care of). Here are some gotchas:
 97.13.6 I do not want to know service type, but I want to call the service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-†if possible i would be able to create a new structure zx_a_EndpointReference_s
-[11:50:11]†?†from scratch where i can set the url that can be get from
-[11:50:21]†?†zxidjni.get_epr_address(cf, epr);
-[11:59:00]†sampo.kellomaki:†Hmm. EPRs are complex objects. Even if you created a blank EPR with just URL in it, it would not be all that useful without the <Metadata> and especially <SecurityContext> with token within.
-[11:59:52]†Gulyx:†ok i see
-[12:00:05]†?†however as we discussed in sophia
-[12:00:35]†?†the statement : SWIGTYPE_p_zx_a_EndpointReference_s epr = zxidjni.get_epr(cf, zxses, &quot;x-recurs&quot;, null, null, null, 1);
-[12:00:52]†?†may be moven from the axis2 zxid module
-[12:00:59]†?†to the application level
-[12:01:23]†?†in this way the developer can choose
-[12:01:27]†sampo.kellomaki:†It is also suboptimal that the datatype is as ugly as zx_a_EndpointReference_s. Since EPRs clearly have arisen to be a concept that user of the API actively have to known about, I should typedef that to be zxid_epr or something.
-[12:02:01]†Gulyx:†...
-[12:02:07]†?†sorry i am lost
-[12:03:48]†?†what i am saying is that a developer of a web service client can explicitely define a url, or may use your disco in order to look for the most appropriate one
-[12:04:07]†sampo.kellomaki:†I am saying that EPR, being common documented concept, should not be SWIGTYPE_p_zx_a_EndpointReference_s, but should be named zxid_epr.
-[12:04:30]†Gulyx:†ok
-[12:04:51]†sampo.kellomaki:†Explicitly defining URL is inadequate unless you also define the security token to access the service.
-[12:05:28]†?†Generally creating security token without consulting discovery (or ID Mapper service in more general context) is not feasible.
-[12:05:45]†?†THerefore having a simple constructor for EPR accomplishes very little.
-[12:06:36]†Gulyx:†mmm
-[12:07:15]†?†what i am saying is that is due to the developer of a web service client choose
-[12:07:17]†sampo.kellomaki:†If you know the URL (and the service has been registered to discovery), then you can get the EPR with zxidjni.get_epr(cf, ses, svc_type, URL, null, null, 1).
-[12:07:29]†Gulyx:†an explicit url or look for one from a disco
-[12:07:58]†?†thus this part of the zxidapi should be used (in case) at the application layer
-[12:08:05]†sampo.kellomaki:†Rather than look for URL from disco, why not just get the EPR from disco, i.e. call get_epr()?
-[12:08:08]†Gulyx:†and not in the zxid security module
-[12:09:01]†sampo.kellomaki:†What would you do with the EPR created by the constructor?
-[12:09:30]†Gulyx:†well it is ok to use  &quot;zxidjni.get_epr(cf, ses, svc_type, URL, null, null, 1).&quot;
-[12:09:59]†?†however is not always given that &quot;svc_type&quot; is known/available
-[12:10:13]†?†what happen if it is not provided?
-[12:10:21]†?†that it may be possible
-[12:10:45]†?†i understand that is important from a discovery point of view
-[12:11:23]†?†but the coould be the case in which the developer of a web service client do not want to use it or does not know it
-[12:11:39]†?†he would only contat that URL
-[12:11:54]†sampo.kellomaki:†If you do not know service type, how do you know what kind of SOAP body you are supposed to send to the service?
-[12:12:47]†?†Developer of the web service ultimately is the authority that decides what the service type URI. If he does not know it, he can just invent it.
-[12:13:03]†Gulyx:†for example because i am executing a RPC and i got all the information from the wsdl
-[12:13:29]†?†in this case i simply need a URL
-[12:14:00]†?†isn&apos;t it ?
-[12:14:17]†sampo.kellomaki:†As a general rule, if web service developer has poor imagination in inventing a service type URI, I recommend using the namespace URI of the top level element in the SOAP body.
-[12:14:45]†Gulyx:†sampo i am not saying that what you are proposing is wrong
-[12:15:03]†?†i am just sayin that in some cases people does not use the service type
-[12:15:03]†sampo.kellomaki:†To speak RPC, you do need to know how to format the SOAP body according to the RPC marshalling conventions.
-[12:15:22]†?†CLearly you need to know what the body looks like, therefore you should know its namespace.
-[12:15:33]†Gulyx:†and the zxid module in axis shuould support both
-[12:15:59]†sampo.kellomaki:†If people do not use service type, then they can not get registered in discovery.
-[12:16:14]†Gulyx:†so the case in which the developer (at the application level) specified the service type and the case when he does not
-[12:16:22]†sampo.kellomaki:†If they are not registered in discovery, how do you propose to generate the token for accessing the web service?
-[12:16:59]†Gulyx:†&quot;[15.18.49] sampo.kellomaki: If people do not use service type, then they can not get registered in discovery.&quot; ????
-[12:17:20]†?†should a client be registered to a disco?
-[12:17:27]†sampo.kellomaki:†That's right. Registering without service type is not possible.
-[12:17:38]†Gulyx:†no sorry
-[12:17:59]†?†probably i was
-[12:18:06]†?†saying something in the wrong manner
-[12:18:16]†?†let&apos;s start again
-[12:18:27]†?†service MUST have a service type
-[12:18:39]†?†service MUST register to a disco with a service type
-[12:19:12]†?†clients SHOULD know the service type and MAY use it in order to look for a service
-[12:19:33]†?†client MAY contact directly a service without knowing a service type
-[12:19:49]†?†client MAY not be registered to the disco
-[12:19:55]†?†ok?
-[12:22:11]†sampo.kellomaki:†Client is need not be registered in Disco.
-[12:22:22]†Gulyx:†ok
-[12:22:25]†?†perfect
-[12:22:37]†sampo.kellomaki:†However, I claim that client can not contact the service without knowing what the SOAP body looks like.
-[12:23:08]†Gulyx:†of course
-[12:23:40]†?†but they can also do it from the wsdl
-[12:23:59]†?†?
-[12:24:01]†?†as i said above
-[12:24:45]†sampo.kellomaki:†Yes, knowing WSDL constitutes knowing what the SOAP body is.
-[12:25:02]†Gulyx:†ok
-[12:25:08]†sampo.kellomaki:†If you know WSDL, you know what the namespace URI of the top level element of the SOAP body is.
-[12:25:25]†?†Now if you follow the convention that the namespace is the service-type, then you are done.
-[12:25:37]†Gulyx:†so a client may not know the service type
-[12:25:56]†sampo.kellomaki:†If the service developer chose  a service type different from the namespace, then you have to find out from the documentation the service developer provided.
-[12:25:59]†Gulyx:†(i am not saying that is the most appropriate or the only way to do it)
-[12:26:07]†?†yes
-[12:26:11]†?†of course
-[12:26:33]†?†i am only proposing to include into the zxid axis2 module
-[12:26:38]†?†both the possibility
-[12:26:43]†?†possibilities
-[12:26:49]†?†with and without service type
-[12:27:30]†?†(sorry i got a call back to you soon)
-[12:32:59]†sampo.kellomaki:†If you want to support the without service type case, then you should program in the axis2 module automatic derivation of the service type using the rule that the namespace of the top level element is the service type.
-[12:37:41]†Gulyx:†(back)
-[12:39:38]†?†well if is it possible to forge from the service url an &quot;appropriate&quot; epr that i can pass to the zxidjni.wsc_prepare_call
-[12:39:56]†?†i would prefere
-[12:40:15]†?†what do you think?
-[12:40:24]†sampo.kellomaki:†If you "forge" wrong, then things will not work.
-[12:41:04]†Gulyx:†if the automatic derivation is wrong ,  then things will not work too :-D
-[12:41:07]†sampo.kellomaki:†Having a default rule like using top level namespace as service type will work if that indeed was the convention everybody uses.
-[12:41:25]†?†But there is no universal agreement that this is always the convention.
-[12:41:36]†Gulyx:†exactely
-[12:41:38]†sampo.kellomaki:†In practise in Liberty it has been the convention, but there is no guarantee.
-[12:42:38]†Gulyx:†so having something like &quot;zxidjni.get_defaultEpr(URL)&quot;
-[12:42:43]†sampo.kellomaki:†Why are you so hell bent in not wanting to know the service type?
-[12:42:47]†Gulyx:†would be useful
-[12:42:53]†sampo.kellomaki:†What service type do you not know?
-[12:43:00]†Gulyx:†i want service type
-[12:43:20]†?†and i am almost supporting it into the module
-[12:43:49]†?†i am just saying that people that i hope would use the module
-[12:44:15]†?†may not use service type
-[12:44:40]†sampo.kellomaki:†If the people want to play in TAS3, they need to know the service type. Knowing it is a requirement to join TAS3.
-[12:44:43]†Gulyx:†so i would that the module supports both the cases
-[12:44:51]†?†yes yes
-[12:44:55]†?†ok
-[12:45:04]†?†i was referring people out of tas3
-[12:45:14]†?†i mean if we realese the zxid module for apache
-[12:45:27]†?†i assume that axis2 users may
-[12:45:34]†?†prefer zxid module instead of rampart
-[12:45:51]†?†so i would include this feature into the module too
-[12:47:31]†sampo.kellomaki:†Ok, if you do not want to make TAS3 web service calls and do not want to use identities or security tokens, then plain EPR with just URL would be good enough.
-[12:47:57]†Gulyx:†right
+Q:: Can I create a new ~struct zx_a_EndpointReference_s~ (~zxid_epr~ since 0.69)
+    from scratch where i can set the url that can be get from\\
+    zxidjni.get_epr_address(cf, epr)?
+
+A:: EPRs are complex objects. Even if you created a blank EPR with just
+    URL in it, it would not be all that useful without the <Metadata> and
+    especially <SecurityContext> with token within.
+
+Gulyx:: Ok i see, however as we discussed the statement:
+
+      zxid_epr epr = zxidjni.get_epr(cf, zxses, "x-recurs", null, null, null, 1);
+
+    may be moven from the axis2 zxid module to the application level
+    in this way the developer can choose.
+
+    What i am saying is that a developer of a web service client
+    can explicitely define a url, or may use your disco in order to look
+    for the most appropriate one
+
+Sampo:: Explicitly defining URL is inadequate unless you also define
+    the security token to access the service.  Generally creating security
+    token without consulting discovery (or ID Mapper service in more
+    general context) is not feasible.  Therefore having a simple
+    constructor for EPR accomplishes very little.
+
+Gulyx:: What i am saying is that is due to the developer of a web service client choose
+
+Sampo:: If you know the URL (and the service has been registered to
+    discovery), then you can get the EPR with
+    zxidjni.get_epr(cf, ses, svc_type, URL, null, null, 1).
+
+Gulyx:: an explicit url or look for one from a disco
+    thus this part of the zxidapi should be used (in case) at the application layer
+
+Sampo:: Rather than look for URL from disco, why not just get the EPR
+    from disco, i.e. call get_epr()?
+
+Gulyx:: and not in the zxid security module
+
+Sampo:: What would you do with the EPR created by the constructor?
+
+Gulyx:: well it is ok to use zxidjni.get_epr(cf, ses, svc_type, URL,
+    null, null, 1).  However is not always given that "svc_type"
+    is known/available what happen if it is not provided?  that it may be
+    possible i understand that is important from a discovery point of view
+    but the coould be the case in which the developer of a web service
+    client do not want to use it or does not know it he would only contat
+    that URL
+
+Sampo:: If you do not know service type, how do you know what kind of
+    SOAP body you are supposed to send to the service?  Developer of the
+    web service ultimately is the authority that decides what the service
+    type URI. If he does not know it, he can just invent it.
+
+Gulyx:: for example because i am executing a RPC and i got all the information from the wsdl
+    in this case i simply need a URL
+    isn't it ?
+
+Sampo:: As a general rule, if web service developer has poor
+    imagination in inventing a service type URI, I recommend using the
+    namespace URI of the top level element in the SOAP body.
+
+Gulyx:: sampo i am not saying that what you are proposing is wrong
+    i am just sayin that in some cases people do not use the service type.
+
+Sampo:: To speak RPC, you do need to know how to format the SOAP body
+    according to the RPC marshalling conventions.  Clearly you need to
+    know what the body looks like, therefore you should know its
+    namespace.
+
+Gulyx:: and the zxid module in axis shuould support both
+
+Sampo:: If people do not use service type, then they can not get registered in discovery.
+
+Gulyx:: so the case in which the developer (at the application level)
+    specified the service type and the case when he does not
+
+Sampo:: If they are not registered in discovery, how do you propose to
+    generate the token for accessing the web service?
+
+Gulyx:: Recap
+
+    * service MUST have a service type
+    * service MUST register to a disco with a service type
+    * clients SHOULD know the service type and MAY use it in order to look for a service
+    * client MAY contact directly a service without knowing a service type
+
+Sampo:: I claim that client can not contact the service without
+    knowing what the SOAP body looks like.
+
+Gulyx:: Of course, but they can also do it from the wsdl as i said above
+
+Sampo:: Yes, knowing WSDL constitutes knowing what the SOAP body is.
+    If you know WSDL, you know what the namespace URI of the top level
+    element of the SOAP body is.  Now if you follow the convention that
+    the namespace is the service-type, then you are done.
+
+Gulyx:: So a client may not know the service type
+
+Sampo:: If the service developer chose a service type different from
+    the namespace, then you have to find out from the documentation the
+    service developer provided.
+
+Gulyx:: I am only proposing to include into the zxid axis2 module both
+    the possibility possibilities with and without service type
+
+Sampo:: If you want to support the without service type case, then you
+    should program in the axis2 module automatic derivation of the service
+    type using the rule that the namespace of the top level element is the
+    service type.
+
+Gulyx:: Well if is it possible to forge from the service url an
+    "appropriate" epr that i can pass to the zxidjni.wsc_prepare_call I
+    would prefere what do you think?
+
+Sampo:: If you "forge" wrong, then things will not work.
+
+Gulyx:: if the automatic derivation is wrong ,  then things will not work too :-D
+
+Sampo:: Having a default rule like using top level namespace as service
+    type will work if that indeed was the convention everybody uses.  But
+    there is no universal agreement that this is always the convention.
+
+Gulyx:: exactely
+
+Sampo:: In practise in Liberty it has been the convention, but there is no guarantee.
+
+Gulyx:: so having something like zxidjni.get_defaultEpr(URL)
+
+Sampo:: Why are you so hell bent in not wanting to know the service type?
+
+Gulyx:: would be useful
+
+Sampo:: What service type do you not know?
+
+Gulyx:: i want service type and i am almost supporting it into the
+    module i am just saying that people that i hope would use the module
+    may not use service type
+
+Sampo:: If the people want to play in TAS3, they need to know the
+    service type. Knowing it is a requirement to join TAS3.
+
+Gulyx:: so i would that the module supports both the cases.  I was
+    referring people out of TAS3. I mean if we realese the zxid module for
+    apache, I assume that axis2 users may prefer zxid module instead of
+    rampart so i would include this feature into the module too.
+
+Sampo:: Ok, if you do not want to make TAS3 web service calls and do
+    not want to use identities or security tokens, then plain EPR with
+    just URL would be good enough.
+
+Gulyx:: right
 
 97.14 Best Practises
 --------------------
@@ -2366,7 +2401,7 @@ Microsoft promises to not sue you: http://www.microsoft.com/interop/osp/default.
 97.17 Attributes
 ----------------
 
-Q:: I want to read the attributes that come in the assertion. how do I do that?
+Q:: I want to read the attributes that come in the assertion. How do I do that?
 
 A:: You get attributes back as an LDIF entry as return value of zxid_simple()
     The attributes are also available by reparsing the assertion, which gets
@@ -2374,9 +2409,9 @@ A:: You get attributes back as an LDIF entry as return value of zxid_simple()
 
     /var/zxid/ses/SuzZQS5Ub/.ses file contains the path to the assertion file.
 
-Q::†In the zxid directory you store some users. what does the extension .mni stand for?
+Q:: In the zxid directory you store some users. What does the extension .mni stand for?
     Why is the info stored? I assume it is some sort of local cache. I would like
-    to store the attributes there too. how do I do that?
+    to store the attributes there too. How do I do that?
 
 A:: The .mni file is used to support Manage NameID requests. In normal operation of ZXID
     it really is not needed, but to support some of the SAML conformance test requests
@@ -2389,9 +2424,9 @@ A:: The .mni file is used to support Manage NameID requests. In normal operation
     ZXID: Your file extension should start by ".x-", for example:
     "attributes.x-attr"
 
-Q::†The ldif returned by zxid_simple() is perfect for my needs. but
-    nothing is being stored in log\rely directory. could be some
-    configuration issue? also, can I have zxid automatically store the
+Q:: The ldif returned by zxid_simple() is perfect for my needs, but
+    nothing is being stored in log/rely directory. Could be some
+    configuration issue? Also, can I have zxid automatically store the
     ldif file returned zxid_simple()?
 
 A:: The log/rely should be populated by default, but if the directory
@@ -2403,7 +2438,7 @@ A:: Re ldif cached: the logic is supposed to be that the zxid_simple() will
     on every page.
 
     If you do not call it every time, but instead bootstrap some sort of
-    app specific session, then you would strore the LDIF (or the attributes
+    app specific session, then you would store the LDIF (or the attributes
     parsed out of it) to that app specific session.
 
 97.17 SOAP Binding
@@ -2434,14 +2469,12 @@ mess.
 
 If you really want to have a wsa:Action  header, you can generate one yourself:
 
-zxid_call(...,"<e:Envelope><e:Header><a:Action>...</a:Action></e:Header><e:Body>...</e:Body></e:Envelope>", ...)
+    zxid_call(...,"<e:Envelope><e:Header><a:Action>...</a:Action></e:Header>
+                   <e:Body>...</e:Body></e:Envelope>", ...)
 
 In other words, the zxid_call() family of functions will accept full SOAP envelope if
 you give it one. It will then add the TAS3 specific headers to it, but it will preserve
 the headers you supplied as long as there is no conflict.
-
-Cheers,
---Sampo
 
 98 Support
 ==========
@@ -2455,22 +2488,25 @@ Cheers,
 98.2 Bugs
 ---------
 
-Mail the author until we get bug tracking set up. Or volunteer.
+Mail the author or mailing list until we get bug tracking set up. Or volunteer.
 
 98.3 Developer access
 ---------------------
 
-We use CVS, but access needs to be manually configured and is not
-anonymous. If you contribute significantly, I will bother. Others
-can send patches (good way to show you are worthy of CVS access)
+We use +git+ for source code. Anonymous access is available
+
+  git clone git://zxid.org/zxid    # Main ZXID source
+  git clone git://zxid.org/pd      # Plaindoc (pd2tex) and xsd2sg.pl tools
+
+Commit access needs to be manually configured and is not
+anonymous. If you contribute significantly, please write the author. Others
+can send patches (good way to show you are worthy of git commit access)
 to me. I've heard some mixed experiences about open source
 sites like sourceforge. If you run such site and want to
 host ZXID Project, please contact me.
 
 If you just always want the latest source: get the tar ball from
-the downloads section. Trust me, this is still so much in flux
-that only the tar ball snapshots are in any usable state. CVS
-access just to get latest source would be pointless.
+the downloads section of the web site (zxid.org).
 
 98.9 Commercial Support
 -----------------------

@@ -106,7 +106,7 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
  * conf::   Configuration string
  * return:: Configuration object */
 
-/* Called by:  main x6, opt x2, zxcall_main, zxcot_main, zxidwspcgi_main x2 */
+/* Called by:  a7n_test, main x6, opt x2, ws_validations, zxcall_main, zxcot_main, zxidwspcgi_main x2 */
 zxid_conf* zxid_new_conf_to_cf(const char* conf)
 {
   zxid_conf* cf = malloc(sizeof(zxid_conf));  /* *** direct use of malloc */

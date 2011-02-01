@@ -60,7 +60,7 @@ int zx_is_ns_prefix(struct zx_ns_s* ns, int len, const char* prefix)
 
 /*() Debugging function. You can say in gdb: print zx_dump_ns_tab(c,0) */
 
-/* Called by: */
+/* Called by:  so_enc_dec */
 int zx_dump_ns_tab(struct zx_ctx* c, int flags)
 {
   struct zx_ns_s* ns;

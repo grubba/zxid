@@ -3,7 +3,7 @@
 #
 # Extract attributes from XACML request
 #
-# Usage: ./xacml2ldif <xacml.xml >attrs.ldif
+# Usage: ./xacml2ldif.pl <xacml.xml >attrs.ldif
 #
 # The input can be SOAP <e:Envelope> containing <xasp:XACMLAuthzDecisionQuery> or
 # just raw <xasp:XACMLAuthzDecisionQuery> or even bare <xac:Request>

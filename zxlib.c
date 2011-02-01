@@ -41,7 +41,7 @@
 
 /*() ZX implementation of memmem(3) for platforms that do not have this. */
 
-/* Called by:  covimp_test, zxid_map_sec_mech x3 */
+/* Called by:  covimp_test, zxid_call_trustpdp, zxid_di_query x2, zxid_map_sec_mech x3 */
 char* zx_memmem(const char* haystack, int haystack_len, const char* needle, int needle_len)
 {
   const char* lim = haystack + haystack_len - needle_len;
@@ -53,6 +53,7 @@ char* zx_memmem(const char* haystack, int haystack_len, const char* needle, int 
 
 #ifdef MINGW
 /*() On windows the errno is not set. */
+/* Called by:  copy_file, vopen_fd_from_path, write2_or_append_lock_c_path */
 HANDLE zx_CreateFile(LPCTSTR lpFileName, 
 		     DWORD dwDesiredAccess, DWORD dwShareMode, 
 		     LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, 
@@ -73,6 +74,7 @@ HANDLE zx_CreateFile(LPCTSTR lpFileName,
 #endif
 
 /*() ZX implmentation of stat for mingw which is dumb */
+/* Called by: */
 int zx_stat( const char *path, struct stat *buffer )
 {
     int rv = 0;
@@ -196,7 +198,7 @@ struct zx_str* zx_ref_len_str(struct zx_ctx* c, int len, const char* s)
 
 /*() Construct zx_str from C string, which will be referenced, not copied. */
 
-/* Called by:  a7n_test x3, covimp_test, test_ibm_cert_problem_enc_dec, x509_test x2, zxid_az_soap x8, zxid_ins_xacml_az_cd1_stmt, zxid_ins_xacml_az_stmt, zxid_map_val_ss, zxid_mk_di_req_svc, zxid_org_desc x5, zxid_simple_ses_active_cf x2, zxid_wsf_decor */
+/* Called by:  a7n_test x3, covimp_test x8, test_ibm_cert_problem_enc_dec, x509_test x2, zxid_az_soap x8, zxid_ins_xacml_az_cd1_stmt, zxid_ins_xacml_az_stmt, zxid_map_val_ss, zxid_mk_di_req_svc, zxid_org_desc x5, zxid_simple_ses_active_cf x2, zxid_wsf_decor */
 struct zx_str* zx_ref_str(struct zx_ctx* c, const char* s)
 {
   if (!s)
@@ -218,7 +220,7 @@ struct zx_str* zx_new_len_str(struct zx_ctx* c, int len)
 
 /*() Construct zx_str by duplication of raw string data of given length. */
 
-/* Called by:  zx_dup_len_elem, zx_dup_str, zxid_add_ldif_at2ses, zxid_parse_invite, zxid_parse_psobj */
+/* Called by:  zx_dup_len_elem, zx_dup_str, zx_dup_zx_str, zxid_add_ldif_at2ses, zxid_call_trustpdp x2, zxid_parse_invite, zxid_parse_psobj */
 struct zx_str* zx_dup_len_str(struct zx_ctx* c, int len, const char* s)
 {
   struct zx_str* ss = zx_new_len_str(c, len);
@@ -228,7 +230,7 @@ struct zx_str* zx_dup_len_str(struct zx_ctx* c, int len, const char* s)
 
 /*() Construct zx_str by duplication of C string. */
 
-/* Called by:  zxid_add_attr_to_ses, zxid_add_qs_to_ses, zxid_anoint_a7n x2, zxid_anoint_sso_resp x3, zxid_attach_sol1_usage_directive, zxid_az_soap x4, zxid_call_epr, zxid_fed_mgmt_cf, zxid_get_at x2, zxid_idp_dispatch x8, zxid_idp_list_cf_cgi x2, zxid_idp_select_zxstr_cf_cgi, zxid_idp_sso x13, zxid_map_identity_token, zxid_map_val, zxid_map_val_ss x3, zxid_mk_an_stmt, zxid_mk_sa_attribute, zxid_mk_subj, zxid_mk_usr_a7n_to_sp, zxid_new_epr, zxid_parse_invite x6, zxid_parse_mni, zxid_parse_psobj x7, zxid_pepmap_extract x7, zxid_saml2_redir, zxid_saml2_resp_redir, zxid_ses_to_pool x9, zxid_show_conf x3, zxid_show_cstr_list, zxid_show_map, zxid_show_need x2, zxid_simple_ab_pep x3, zxid_slo_resp_redir, zxid_sp_dispatch x15, zxid_sp_mni_redir x3, zxid_sp_slo_redir x3, zxid_start_sso_location, zxid_wsc_prep, zxid_wsc_prepare_call, zxid_wsc_valid_re_env, zxid_wsp_decorate, zxid_wsp_validate_env */
+/* Called by:  zxid_add_attr_to_ses, zxid_add_qs_to_ses, zxid_anoint_a7n x2, zxid_anoint_sso_resp x3, zxid_attach_sol1_usage_directive, zxid_az_soap x4, zxid_call_epr, zxid_call_trustpdp x13, zxid_fed_mgmt_cf, zxid_get_at x2, zxid_idp_dispatch x8, zxid_idp_list_cf_cgi x2, zxid_idp_select_zxstr_cf_cgi, zxid_idp_sso x13, zxid_map_identity_token, zxid_map_val, zxid_map_val_ss x3, zxid_mk_an_stmt, zxid_mk_sa_attribute, zxid_mk_subj, zxid_mk_usr_a7n_to_sp, zxid_new_epr, zxid_parse_invite x6, zxid_parse_mni, zxid_parse_psobj x7, zxid_pepmap_extract x7, zxid_saml2_redir, zxid_saml2_resp_redir, zxid_ses_to_pool x9, zxid_show_conf x3, zxid_show_cstr_list, zxid_show_map, zxid_show_need x2, zxid_simple_ab_pep x3, zxid_slo_resp_redir, zxid_sp_dispatch x15, zxid_sp_mni_redir x3, zxid_sp_slo_redir x3, zxid_start_sso_location, zxid_wsc_prep, zxid_wsc_prepare_call, zxid_wsc_valid_re_env, zxid_wsp_decorate, zxid_wsp_validate_env */
 struct zx_str* zx_dup_str(struct zx_ctx* c, const char* s)
 {
   return zx_dup_len_str(c, strlen(s), s);
@@ -245,6 +247,7 @@ char* zx_dup_cstr(struct zx_ctx* c, const char* str)
   return s;
 }
 
+/* Called by:  zxid_call_trustpdp x3, zxid_wsp_validate_env x2 */
 struct zx_str* zx_dup_zx_str(struct zx_ctx* c, struct zx_str* ss)
 {
   return zx_dup_len_str(c, ss->len, ss->s);
@@ -297,7 +300,7 @@ struct zx_attr_s* zx_new_len_attr(struct zx_ctx* c, struct zx_elem_s* father, in
 
 /*() Construct zx_str by duplication of raw string data of given length. */
 
-/* Called by:  zx_dup_attr, zxid_imreq */
+/* Called by:  zx_dup_attr, zxid_call_trustpdp x2, zxid_imreq */
 struct zx_attr_s* zx_dup_len_attr(struct zx_ctx* c, struct zx_elem_s* father, int tok, int len, const char* s)
 {
   struct zx_attr_s* ss = zx_new_len_attr(c, father, tok, len);
@@ -391,7 +394,7 @@ int zx_str_ends_in(struct zx_str* ss, int len, const char* suffix)
 
 /*() Add non-XML content to the kids list. These essentially appear as DATA items. */
 
-/* Called by:  test_ibm_cert_problem_enc_dec, x509_test, zx_new_str_elem, zxid_attach_sol1_usage_directive, zxid_az_soap x4, zxid_check_fed, zxid_issuer, zxid_mk_addr, zxid_mk_sa_attribute_ss, zxid_mk_subj, zxid_mk_transient_nid, zxid_new_epr, zxid_org_desc x5, zxid_parse_mni, zxid_ps_addent_invite x2, zxid_wsc_prep, zxid_wsc_prep_secmech x3, zxid_wsf_decor x4, zxsig_sign */
+/* Called by:  test_ibm_cert_problem_enc_dec, x509_test, zx_new_str_elem, zxid_attach_sol1_usage_directive, zxid_az_soap x4, zxid_check_fed, zxid_issuer, zxid_mk_addr, zxid_mk_sa_attribute_ss x2, zxid_mk_subj, zxid_mk_transient_nid, zxid_new_epr, zxid_org_desc x5, zxid_parse_mni, zxid_ps_addent_invite x2, zxid_wsc_prep, zxid_wsc_prep_secmech x3, zxid_wsf_decor x4, zxsig_sign */
 void zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont)
 {
   if (!cont || !x) {
@@ -486,7 +489,7 @@ struct zx_elem_s* zx_replace_kid(struct zx_elem_s* father, struct zx_elem_s* kid
 
 /*() Construct new simple element from zx_str by referencing, not copying, it. */
 
-/* Called by:  main, zx_dup_len_elem, zx_ref_len_elem, zxenc_pubkey_enc, zxenc_symkey_enc, zxid_mk_a7n, zxid_mk_logout, zxid_mk_mni x4, zxid_mk_xacml_simple_at, zxid_ps_addent_invite x2, zxsig_sign */
+/* Called by:  main, zx_dup_len_elem, zx_ref_len_elem, zxenc_pubkey_enc, zxenc_symkey_enc, zxid_mk_a7n, zxid_mk_logout, zxid_mk_mni x4, zxid_mk_xacml_simple_at x2, zxid_ps_addent_invite x2, zxsig_sign */
 struct zx_elem_s* zx_new_str_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, struct zx_str* ss)
 {
   struct zx_elem_s* el;
@@ -502,7 +505,7 @@ struct zx_elem_s* zx_new_str_elem(struct zx_ctx* c, struct zx_elem_s* father, in
 
 /*() Helper function for the zx_NEW_*() macros */
 
-/* Called by: */
+/* Called by:  zxid_mk_xacml_simple_at */
 struct zx_elem_s* zx_new_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok)
 {
   const struct zx_el_desc* ed;

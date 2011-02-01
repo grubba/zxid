@@ -49,7 +49,7 @@
  *
  * See also: zxid_wsp_validate() */
 
-/* Called by:  zxid_call_epr, zxid_wsc_valid_resp */
+/* Called by:  covimp_test x3, zxid_call_epr, zxid_wsc_valid_resp */
 int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env, const char* enve)
 {
   int n_refs = 0;
@@ -659,7 +659,7 @@ struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, cons
 
 /*() Call web service, printf style. See zxid_call() for more documentation. */
 
-/* Called by:  main */
+/* Called by:  main, zxid_di_query */
 struct zx_str* zxid_callf(zxid_conf* cf, zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* env_f, ...)
 {
   char* s;
@@ -699,7 +699,7 @@ struct zx_str* zxid_callf(zxid_conf* cf, zxid_ses* ses, const char* svctype, con
  * env:: XML payload as a string
  * return:: SOAP Envelope ready to be sent to the WSP. You can pass this to HTTP client. */
 
-/* Called by:  zxid_wsc_prepare_callf */
+/* Called by:  ws_validations, zxid_wsc_prepare_callf */
 struct zx_str* zxid_wsc_prepare_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* enve)
 {
   struct zx_str* ret;
@@ -768,7 +768,7 @@ struct zx_str* zxid_wsc_prepare_callf(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
 
 /*(i) Validate a response to web service call. Return: 1=valid. */
 
-/* Called by: */
+/* Called by:  ws_validations */
 int zxid_wsc_valid_resp(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve)
 {
   int ret;

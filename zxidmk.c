@@ -91,7 +91,7 @@ struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
 
 /*() Make the body for the ArtifactResolve SOAP message, signing it if needed. */
 
-/* Called by:  zxid_sp_deref_art */
+/* Called by:  covimp_test, zxid_sp_deref_art */
 struct zx_sp_ArtifactResolve_s* zxid_mk_art_deref(zxid_conf* cf, zxid_entity* idp_meta, const char* artifact)
 {
   X509* sign_cert;
@@ -466,7 +466,7 @@ struct zx_xac_Response_s* zxid_mk_xacml_resp(zxid_conf* cf, char* decision)
   return resp;
 }
 
-/* Called by:  zxid_pepmap_extract x3 */
+/* Called by:  zxid_call_trustpdp x6, zxid_pepmap_extract x3 */
 struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, struct zx_elem_s* father, struct zx_str* atid, struct zx_str* attype, struct zx_str* atissuer, struct zx_str* atvalue)
 {
   struct zx_root_s* r;
@@ -537,7 +537,7 @@ struct zx_xasp_XACMLAuthzDecisionQuery_s* zxid_mk_az(zxid_conf* cf, struct zx_xa
 
 /*() Construct XACMLAuthzDecisionQuery according to Commitee Draft 1 */
 
-/* Called by:  zxid_az_soap */
+/* Called by:  attribute_sort_test, zxid_az_soap */
 struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zxid_mk_az_cd1(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
 {
   struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* r = zx_NEW_xaspcd1_XACMLAuthzDecisionQuery(cf->ctx,0);
