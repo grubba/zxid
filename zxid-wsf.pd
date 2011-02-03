@@ -1,5 +1,5 @@
 <<if: ZXIDBOOK>>
-<<else: >>ZXID ID-WSF API
+<<else: >>ZXID ID-WSF API (SOAP Web Services)
 ###############
 <<author: Sampo Kellomäki (sampo@iki.fi)>>
 <<cvsid: $Id: zxid-wsf.pd,v 1.4 2010-01-08 02:10:09 sampo Exp $>>
@@ -28,6 +28,7 @@ APIs. Some function level documentation is available from
 -------------------
 
 <<doc-inc.pd>>
+<<htmlpreamble: <title>ZXID ID-WSF API (SOAP Web Services)</title><link type="text/css" rel=stylesheet href="zx.css"><body><h1>ZXID ID-WSF API (SOAP Web Services)</h1> >>
 
 13 ID-WSF Features of ZXID
 ==========================

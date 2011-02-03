@@ -34,6 +34,7 @@ Happy hacking!
 -------------------
 
 <<doc-inc.pd>>
+<<htmlpreamble: <title>ZXID Low Level ("Raw") API</title><link type="text/css" rel=stylesheet href="zx.css"><body><h1>ZXID Low Level ("Raw") API</h1> >>
 
 12 Full Native C API
 ====================

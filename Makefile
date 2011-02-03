@@ -1767,25 +1767,25 @@ cleandoc:
 	rm -f $(DOC)
 
 release:
-	scp tex/README.zxid.pdf html/README.zxid-win32.html html/i-*.png zxid-frame.html $(WEBROOT)
+	rsync tex/README.zxid.pdf html/README.zxid-win32.html html/i-*.png zxid-frame.html $(WEBROOT)
 
 winbinrel:
-	scp zxid-$(ZXIDREL)-win32-bin.zip $(WEBROOT)
+	rsync zxid-$(ZXIDREL)-win32-bin.zip $(WEBROOT)
 
 indexrel: zxid-tas3-ios-index.html
 	rsync $< $(WEBROOT)
 
 reldoc:
-	scp $(DOC)  $(WEBROOT)/html
+	rsync $(DOC)  $(WEBROOT)/html
 
 relhtml:
-	scp html/*  $(WEBROOT)/html
+	rsync html/*  $(WEBROOT)/html
 
 refhtml:
-	scp ref/html/*  $(WEBROOT)/ref/html
+	rsync ref/html/*  $(WEBROOT)/ref/html
 
 zxidpcopytc: html/zxidp-user-terms.html html/zxidp-sp-terms.html
-	scp html/zxidp-user-terms.html html/zxidp-sp-terms.html $(WEBROOT)/html
+	rsync html/zxidp-user-terms.html html/zxidp-sp-terms.html $(WEBROOT)/html
 
 rsynclite:
 	cd ..; rsync -a '--exclude=*.o' '--exclude=*.zip' '--exclude=TAGS' '--exclude=*.tgz' '--exclude=*.class' '--exclude=*.so' '--exclude=*.a'  '--exclude=zxlogview' '--exclude=zxidsimple'  '--exclude=zxidhlowsf'  '--exclude=zxidhlo' '--exclude=zxidsp' zxid mesozoic.homeip.net:

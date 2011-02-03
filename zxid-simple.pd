@@ -38,6 +38,7 @@ effort of just configuring your web server.
 -------------------
 
 <<doc-inc.pd>>
+<<htmlpreamble: <title>ZXID FAQ</title><link type="text/css" rel=stylesheet href="zx.css"><body><h1>ZXID Simple API</h1> >>
 
 2 ZXID Simple API Tutorial
 ==========================

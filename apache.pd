@@ -30,6 +30,9 @@ reading in <<link:../html/README.zxid.html: README.zxid>>.
 1 Architectural Overview
 ========================
 
+<<doc-inc.pd>>
+<<htmlpreamble: <title>Apache Setup Receipe for ZXID</title><link type="text/css" rel=stylesheet href="zx.css"><body><h1>Apache Setup Receipe for ZXID</h1> >>
+
 <<dia: arch-zxid-apache:bg,fg: ZXID, via mod_auth_saml, adds to Apache httpd Single Sign-On (SSO), Attribute Broker, and XACML PEP Capabilities that can be used by existing static and dynamic content without alteration.>>
 <<newpage: >>
 

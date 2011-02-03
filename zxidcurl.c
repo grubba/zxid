@@ -124,6 +124,7 @@ zxid_entity* zxid_get_meta(zxid_conf* cf, const char* url)
   rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_MD_BUF+1);
   rc.lim = rc.buf + ZXID_INIT_MD_BUF;
   LOCK(cf->curl_mx, "curl get_meta");
+  curl_easy_reset(cf->curl);
   curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
 #else
   {

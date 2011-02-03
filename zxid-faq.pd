@@ -9,7 +9,7 @@
 -------------------
 
 <<doc-inc.pd>>
-
+<<htmlpreamble: <title>ZXID FAQ</title><link type="text/css" rel=stylesheet href="zx.css"><body><h1>ZXID FAQ</h1> >>
 <<fi: >>
 
 <<ignore: $Id: zxid-faq.pd,v 1.6 2010-01-08 02:10:09 sampo Exp $ >>
@@ -2137,6 +2137,51 @@ certificates are taken care of). Here are some gotchas:
 
 4.  Namespace declarations are ordered by namespace prefix, while
     namespaced attributes are ordered by namespace URI. Gotcha!
+
+<<ignore:
+
+Seems this thread is vendors (even if some are open
+source) galore, so here goes my blurb...
+
+I'm sorry ZXID.org documentation is seen
+as "disgusting". At least it was found.
+
+The criticism is bit unconstructive as it does not give
+me any idea about what the gaps were or why it was not
+palatable.
+
+At any rate, I recommend starting from top level
+of the documentation (left hand column of zxid.org web site)
+before drilling to the low level reference sections that
+were linked in the article.
+
+If you find a gap, just mail zxid.user@lists.unh.edu
+or me: sampo@zxidp.org
+
+Regarding the claimed segfault: I would love to receive
+a bug report on this (and any claims should cite version
+number). As of zxid-0.76 I challenge the critiquer
+to reproduce the problem. Only that way things get
+fixed.
+
+Re SAML not open: I find SAML itself is fully open, albeit
+complex and with too much alternative/optional behaviour
+opening scope for bugs.
+
+The real evil comes from XML (agree with critiquer),
+especially its namespace mechanism and the underspecified
+canonicalization mechanism. It does not help that the
+committee overseeing XML-DSIG and canonicalization
+are not open to clarifications. You can report to them
+any number of bugs in their specs and they will find
+a reason to not publish errata.
+
+The interested reader should check my <a href="http://zxid.org/html/zxid-faq.html#-ZXIDFAQ-AuthorsPetPeeves-NonobviousXMLExclusiveCanonicalizationXMLEXCC14N">FAQ</a>.
+
+Cheers,
+--Sampo
+
+>>
 
 97.13.6 I do not want to know service type, but I want to call the service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

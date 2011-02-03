@@ -33993,10 +33993,10 @@ XS(_wrap_zxid_url_set) {
     arg1 = (zxid_conf *)(argp1);
     res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_url_set" "', argument " "2"" of type '" "char *""'");
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_url_set" "', argument " "2"" of type '" "char const *""'");
     }
     arg2 = (char *)(buf2);
-    zxid_url_set(arg1,arg2);
+    zxid_url_set(arg1,(char const *)arg2);
     ST(argvi) = sv_newmortal();
     
     if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);

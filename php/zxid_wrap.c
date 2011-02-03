@@ -30332,7 +30332,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_url_set) {
   }
   /*@SWIG@*/;
   
-  zxid_url_set(arg1,arg2);
+  zxid_url_set(arg1,(char const *)arg2);
   
   return;
 fail:

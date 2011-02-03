@@ -24,6 +24,11 @@ reading in <<link:../html/README.zxid.html: README.zxid>>.
 1 Architectural Overview
 ========================
 
+1.1 Other documents
+-------------------
+
+<<doc-inc.pd>>
+<<htmlpreamble: <title>Apache with mod_auth_saml Receipe</title><link type="text/css" rel=stylesheet href="zx.css"><body><h1>Apache with mod_auth_saml Receipe</h1> >>
 <<fi: >>
 
 <<dia: arch-zxid-apache:bg,fg: ZXID, via mod_auth_saml, adds to Apache httpd Single Sign-On (SSO), Attribute Broker, and XACML PEP Capabilities that can be used by existing static and dynamic content without alteration.>>
@@ -422,7 +427,6 @@ still WIP.
 
 If you have any trouble, please do not hesitate to contact the author.
 
-<<htmlpreamble: <title>Apache with mod_auth_saml Receipe</title><body bgcolor="#330033" text="#ffaaff" link="#ffddff" vlink="#aa44aa" alink="#ffffff"><font face=sans><h1>Apache with mod_auth_saml Receipe</h1> >>
 <<EOF: >>
 
 grep ap_internal_redirect * */* */*/* */*/*/* */*/*/*/* */*/*/*/*/*

@@ -103,7 +103,7 @@ int zx_stat( const char *path, struct stat *buffer )
 void* zx_alloc(struct zx_ctx* c, int size)
 {
   char* p;
-  p = c->malloc_func?c->malloc_func(size):malloc(size);
+  p = (c&&c->malloc_func)?c->malloc_func(size):malloc(size);
   DD("malloc %p size=%d", p, size);
   if (!p) {
     ERR("Out-of-memory(%d)", size);
@@ -142,7 +142,7 @@ void* zx_free(struct zx_ctx* c, void* p)
 {
   if (!p)
     return 0;
-  if (c->free_func)
+  if (c && c->free_func)
     c->free_func(p);
   else
     free(p);
