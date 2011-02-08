@@ -691,6 +691,33 @@ easily displaying to the user recents events about him, raising
 awareness and allowing user to spot anomalous transactions.
 The log is kept in file /var/zxid/idpuid/UID/.log
 
+4.8 Proxy IdP Support
+---------------------
+
+To adapt non-!!TAS3 IdPs to !!TAS3 environment, the strategy of using
+SAML2 Proxy IdP profile is recommended. The !!TAS3 SP redirects the
+use to a !!TAS3 enabled +proxy IdP+ (aka "middle IdP"), which then
+offers the user a choice of actual (non-!!TAS3) IdP to use and
+plays the SAML SP role towards that IdP. When the user has been
+authenticated, the assertion is returned to the middle IdP, which
+will use information in it to mint an assertion that is returned
+to the !!TAS3 enabled SP. The !!TAS3 assertion SHOULD contain the
+attributes of the original assertion. It MAY contain the original
+assertion as well, if audience restriction permits this.
+
+The Proxy IdP Profile can also used for facilitation of interoperation
+across trust networks. SPs in one trust network use the IdP in their
+home trust network, which then contacts the foreign IdP. This way only
+the home trust network's IdP needs to have trust relationship with
+the foreign IdP. This is much more scalable than each SP having to
+trust directly the foreing IdPs. See [LibertyInterFed] for further
+discussion.
+
+The Proxy IdP Profile is described in [SAML2core] section 3.4.1.5
+"Proxying" (pp.54-55) and also in [SAML2iop] section 3.3.1 IdP Proxy
+Feature (pp.11-12), as well as in [SAML2iopDGI] Step D (p.17-19)
+associated with "IdP Extended" and "SP Extended" conformance modes.
+
 4.9 Supported Specifications
 ----------------------------
 

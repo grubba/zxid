@@ -55,6 +55,7 @@ xacml2ldif.pl    - Extract attributes from XACML request
 call-anal.pl     - Call graph analysis tool (see make callgraph)
 xml-pretty.pl    - XML Pretty Printer
 zximport-htpasswd.pl - Script to create users in /var/zxid/idpuid from .htpasswd
+zximport-ldif.pl - Script to create users in /var/zxid/idpuid from LDIF file
 
 # Handwritten code, mainly for libzxid.a
 

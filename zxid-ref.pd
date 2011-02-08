@@ -26,6 +26,10 @@
 
 [SAML2conf] "Conformance Requirements for the OASIS Security Assertion Markup Language (SAML) V2.0", Oasis Standard, 15.3.2005, saml-conformance-2.0-os
 
+[SAML2iop] Eric Tiffany, ed.: "SAML 2.0 Interoperability Testing Procedures, Version 2.0", Liberty Alliance, 7 July 2006. File: Liberty-SAMLv2.0-TestPlan-v2.0-Final.pdf
+
+[SAML2iopDGI] "Test Plan for Liberty Alliance SAML Test Event, Test Criteria SAML 2.0 Version 3.0 Errata F", Drummon Group Inc, 2007. File: Liberty_DGI_4Q07_Interoperability_SAML_Test_Criteria_Test_Plan_vs.3.0.Errata.F.pdf
+
 [SAML2glossary] "Glossary for the OASIS Security Assertion Markup Language (SAML) V2.0", Oasis Standard, 15.3.2005, saml-glossary-2.0-os
 
 [XML-C14N] XML Canonicalization (non-exclusive), http://www.w3.org/TR/2001/REC-xml-c14n-20010315; J. Boyer: "Canonical XML Version 1.0", W3C Recommendation, 15.3.2001, http://www.w3.org/TR/xml-c14n, RFC3076
