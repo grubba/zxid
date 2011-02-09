@@ -61,6 +61,11 @@ int zxid_pick_sso_profile(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* idp_meta)
 /* Called by:  covimp_test x10, zxid_map_identity_token, zxid_mk_authn_req, zxid_nidmap_identity_token */
 const char* zxid_saml2_map_nid_fmt(const char* f)
 {
+  if (!f || !f[0]) {
+    ERR("NULL argument %p", f);
+    return "trnsnt";
+  }
+#if 0
   switch (f[0]) {
   case 'n' /*'none'*/:   return "";
   case 'p' /*'prstnt'*/: return SAML2_PERSISTENT_NID_FMT;
@@ -71,8 +76,19 @@ const char* zxid_saml2_map_nid_fmt(const char* f)
   case 'w' /*'windmn'*/: return SAML2_WINDOMAINQN_NID_FMT;
   case 'k' /*'kerbrs'*/: return SAML2_KERBEROS_NID_FMT;
   case 's' /*'saml'*/:   return SAML2_ENTITY_NID_FMT;
-  default:               return f;
   }
+#else
+  if (!strcmp("none", f))      return "";
+  if (!strcmp("prstnt", f))    return SAML2_PERSISTENT_NID_FMT;
+  if (!strcmp("trnsnt", f))    return SAML2_TRANSIENT_NID_FMT;
+  if (!strcmp("unspfd", f))    return SAML2_UNSPECIFIED_NID_FMT;
+  if (!strcmp("emladr", f))    return SAML2_EMAILADDR_NID_FMT;
+  if (!strcmp("x509sn", f))    return SAML2_X509_NID_FMT;
+  if (!strcmp("windmn", f))    return SAML2_WINDOMAINQN_NID_FMT;
+  if (!strcmp("kerbrs", f))    return SAML2_KERBEROS_NID_FMT;
+  if (!strcmp("saml", f))      return SAML2_ENTITY_NID_FMT;
+#endif
+  return f;
 }
 
 /*() Map protocol binding form field to SAML specified URN string. */

@@ -55,7 +55,7 @@
  * The nice name may be used by IdP user interface to refer to the SP. It
  * is usually a short human readable name or description. It will also
  * appear in metadata as Organization/OrganizationDisplayName */
-#define ZXID_NICE_NAME "ZXID CONF NICE_NAME: Set this to describe your site to humans"
+#define ZXID_NICE_NAME "ZXID configuration NICE_NAME: Set this to describe your site to humans"
 
 /*(c) Web Site URL - root of EntityID
  * IMPORTANT: Failure to config this option may block zxid from operating.
@@ -373,7 +373,7 @@
  * Must AuthnReq be signed (controls both IdP metadata and actual behavior, i.e. the check). */
 #define ZXID_WANT_AUTHN_REQ_SIGNED 1
 
-/*() Maximum filesystem path used in /var/zxid tree. */
+/*() Maximum filesystem path length used in /var/zxid tree. */
 #define ZXID_MAX_BUF 1024  /* (compile) */
 
 /*(c) Logging Options
@@ -634,20 +634,29 @@
 
 #define ZXID_XA_POLICY_SET_ID_REF ""  /* *** implement */
 
-/*(c) Specify XACML Attributes for SSO PEP in format ns$A$rule$b$ext */
-#define ZXID_PEPMAP "env$*$$$;subj$idpnid$rename$urn:oasis:names:tc:xacml:1.0:subject:subject-id$;subj$role$$$;rsrc$rs$rename$urn:oasis:names:tc:xacml:1.0:resource:resource-id$;act$Action$rename$urn:oasis:names:tc:xacml:1.0:action:action-id$;env$ZXID_PEPvers$$$;$cookie$del$$;$setcookie$del$$"
+/*(c) Specify common XACML Attributes for PEPs in format ns$A$rule$b$ext (compile)
+ * The ZXID_COMMAP can only be specified at compile time. At run time
+ * each map has to be specified separately, sorry.
+ * The order of processing rules has not been fixed yet, but
+ * currently (Feb2011/R0.76) the first rule is processed last, e.g.
+ * the "env$*$$$" stanza that appears as first below causes
+ * all other attributes to be considered environment attributes. */
+#define ZXID_COMMAP       "env$*$$$;subj$idpnid$rename$urn:oasis:names:tc:xacml:1.0:subject:subject-id$;subj$urn:oasis:names:tc:xacml:1.0:subject:subject-id$$$;subj$urn:oid:1.3.6.1.4.1.5923.1.1.1.1$$$;subj$urn:oid:1.3.6.1.4.1.5923.1.1.1.7$$$;subj$eduPersonAffiliation$$$;subj$eduPersonEntitlement$$$subj$role$$$;rsrc$rs$rename$urn:oasis:names:tc:xacml:1.0:resource:resource-id$;rsrc$urn:oasis:names:tc:xacml:1.0:resource:resource-id$$$;act$Action$rename$urn:oasis:names:tc:xacml:1.0:action:action-id$;act$urn:oasis:names:tc:xacml:1.0:action:action-id$$$;env$ZXID_PEPvers$$$;$cookie$del$$;$setcookie$del$$"
+
+/*(c) Specify XACML Attributes for SSO / frontchannel request in PEP in format ns$A$rule$b$ext */
+#define ZXID_PEPMAP       ZXID_COMMAP
 
 /*(c) Specify XACML Attributes for Request Outbound PEP at WSC (1) in format ns$A$rule$b$ext */
-#define ZXID_PEPMAP_RQOUT "env$*$$$;subj$idpnid$rename$urn:oasis:names:tc:xacml:1.0:subject:subject-id$;subj$role$$$;rsrc$rs$rename$urn:oasis:names:tc:xacml:1.0:resource:resource-id$;act$Action$rename$urn:oasis:names:tc:xacml:1.0:action:action-id$;env$ZXID_PEPvers$$$;$cookie$del$$;$setcookie$del$$"
+#define ZXID_PEPMAP_RQOUT ZXID_COMMAP
 
 /*(c) Specify XACML Attributes for Request Inbound PEP at WSP (2) in format ns$A$rule$b$ext */
-#define ZXID_PEPMAP_RQIN  "env$*$$$;subj$idpnid$rename$urn:oasis:names:tc:xacml:1.0:subject:subject-id$;subj$role$$$;rsrc$rs$rename$urn:oasis:names:tc:xacml:1.0:resource:resource-id$;act$Action$rename$urn:oasis:names:tc:xacml:1.0:action:action-id$;env$ZXID_PEPvers$$$;$cookie$del$$;$setcookie$del$$"
+#define ZXID_PEPMAP_RQIN  ZXID_COMMAP
 
 /*(c) Specify XACML Attributes for Response Outbound PEP at WSP (3) in format ns$A$rule$b$ext */
-#define ZXID_PEPMAP_RSOUT "env$*$$$;subj$idpnid$rename$urn:oasis:names:tc:xacml:1.0:subject:subject-id$;subj$role$$$;rsrc$rs$rename$urn:oasis:names:tc:xacml:1.0:resource:resource-id$;act$Action$rename$urn:oasis:names:tc:xacml:1.0:action:action-id$;env$ZXID_PEPvers$$$;$cookie$del$$;$setcookie$del$$"
+#define ZXID_PEPMAP_RSOUT ZXID_COMMAP
 
 /*(c) Specify XACML Attributes for Response Inbound PEP at WSC (4) in format ns$A$rule$b$ext */
-#define ZXID_PEPMAP_RSIN  "env$*$$$;subj$idpnid$rename$urn:oasis:names:tc:xacml:1.0:subject:subject-id$;subj$role$$$;rsrc$rs$rename$urn:oasis:names:tc:xacml:1.0:resource:resource-id$;act$Action$rename$urn:oasis:names:tc:xacml:1.0:action:action-id$;env$ZXID_PEPvers$$$;$cookie$del$$;$setcookie$del$$"
+#define ZXID_PEPMAP_RSIN  ZXID_COMMAP
 
 //#define ZXID_XACML2_SUBJ  "idpnid=$idpnid&role=$role"
 //#define ZXID_XACML2_RSRC  "URL=$URL"

@@ -69,6 +69,7 @@ zxid-0.77:: 1.2.2011
     - upgraded for php-5.3 support (patch from Jeroen Asselman)
     - Improved -at handling in zxpasswd
     - curl_easy_reset() patch from Jeroen Asselman (fixes crach on Win32)
+    - Appied zxid_saml2_map_nid_fmt() patch by Cal Heldenbrand
 
 zxid-0.76:: 26.1.2011
     - Added error checks
