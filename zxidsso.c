@@ -78,15 +78,15 @@ const char* zxid_saml2_map_nid_fmt(const char* f)
   case 's' /*'saml'*/:   return SAML2_ENTITY_NID_FMT;
   }
 #else
-  if (!strcmp("none", f))      return "";
-  if (!strcmp("prstnt", f))    return SAML2_PERSISTENT_NID_FMT;
-  if (!strcmp("trnsnt", f))    return SAML2_TRANSIENT_NID_FMT;
-  if (!strcmp("unspfd", f))    return SAML2_UNSPECIFIED_NID_FMT;
-  if (!strcmp("emladr", f))    return SAML2_EMAILADDR_NID_FMT;
-  if (!strcmp("x509sn", f))    return SAML2_X509_NID_FMT;
-  if (!strcmp("windmn", f))    return SAML2_WINDOMAINQN_NID_FMT;
-  if (!strcmp("kerbrs", f))    return SAML2_KERBEROS_NID_FMT;
-  if (!strcmp("saml", f))      return SAML2_ENTITY_NID_FMT;
+  if (!strcmp("prstnt", f)) return SAML2_PERSISTENT_NID_FMT;
+  if (!strcmp("trnsnt", f)) return SAML2_TRANSIENT_NID_FMT;
+  if (!strcmp("none",   f)) return "";
+  if (!strcmp("unspfd", f)) return SAML2_UNSPECIFIED_NID_FMT;
+  if (!strcmp("emladr", f)) return SAML2_EMAILADDR_NID_FMT;
+  if (!strcmp("x509sn", f)) return SAML2_X509_NID_FMT;
+  if (!strcmp("windmn", f)) return SAML2_WINDOMAINQN_NID_FMT;
+  if (!strcmp("kerbrs", f)) return SAML2_KERBEROS_NID_FMT;
+  if (!strcmp("saml",   f)) return SAML2_ENTITY_NID_FMT;
 #endif
   return f;
 }

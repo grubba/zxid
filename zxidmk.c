@@ -147,15 +147,35 @@ struct zx_sp_Status_s* zxid_OK(zxid_conf* cf, struct zx_elem_s* father)
 /* Called by:  zxid_mk_logout, zxid_mk_mni, zxid_mk_subj */
 struct zx_sa_EncryptedID_s* zxid_mk_enc_id(zxid_conf* cf, struct zx_elem_s* father, zxid_nid* nid, zxid_entity* meta)
 {
-  struct zx_sa_EncryptedID_s* encid = zx_NEW_sa_EncryptedID(cf->ctx, father);
-  struct zx_str* ss = zx_easy_enc_elem_opt(cf, &nid->gg);
+  struct zx_xenc_EncryptedData_s* ed;
+  struct zx_sa_EncryptedID_s* encid;
+  struct zx_str* ss;
+  if (!cf || !nid) {
+    ERR("NULL arguments (programmer error) %p", cf);
+    return 0;
+  }
+  if (!meta || !meta->enc_cert) {
+    ERR("Missing destination metadata or the metadata does not have encryption certificate. %p", meta);
+    return 0;
+  }
+  ss = zx_easy_enc_elem_opt(cf, &nid->gg);
+  if (!ss) {
+    ERR("Failed to XML serialize nameid %p", nid);
+    return 0;
+  }
+  encid = zx_NEW_sa_EncryptedID(cf->ctx, father);
   if (cf->enckey_opt & 0x20) {
     /* Nested EncryptedKey approach (Shibboleth early 2010) */
-    ZX_ADD_KID(encid, EncryptedData, zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "41", 0));
+    ed = zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "41", 0);
   } else {
     /* RetrievalMethod approach */
-    ZX_ADD_KID(encid, EncryptedData, zxenc_pubkey_enc(cf, ss, &encid->EncryptedKey, meta->enc_cert, "38", meta));
+    ed = zxenc_pubkey_enc(cf, ss, &encid->EncryptedKey, meta->enc_cert, "38", meta);
   }
+  if (!ed) {
+    ERR("Failed to encrypt a nameid (this could be due to problems with encryption certificate of the destination or destination's metadata; you may be able to work around this problem by manipulating NAMEID_ENC config option, but consider the security implication) cert=%p", meta->enc_cert);
+    return 0;
+  }
+  ZX_ADD_KID(encid, EncryptedData, ed);
   zx_str_free(cf->ctx, ss);
   return encid;
 }
@@ -166,15 +186,35 @@ struct zx_sa_EncryptedID_s* zxid_mk_enc_id(zxid_conf* cf, struct zx_elem_s* fath
 /* Called by:  zxid_add_fed_tok2epr, zxid_imreq, zxid_mk_saml_resp */
 struct zx_sa_EncryptedAssertion_s* zxid_mk_enc_a7n(zxid_conf* cf, struct zx_elem_s* father, zxid_a7n* a7n, zxid_entity* meta)
 {
-  struct zx_sa_EncryptedAssertion_s* enc_a7n = zx_NEW_sa_EncryptedAssertion(cf->ctx, father);
-  struct zx_str* ss = zx_easy_enc_elem_opt(cf, &a7n->gg);
+  struct zx_xenc_EncryptedData_s* ed;
+  struct zx_str* ss;
+  struct zx_sa_EncryptedAssertion_s* enc_a7n;
+  if (!cf || !a7n) {
+    ERR("NULL arguments (programmer error) %p", cf);
+    return 0;
+  }
+  if (!meta || !meta->enc_cert) {
+    ERR("Missing destination metadata or the metadata does not have encryption certificate. %p", meta);
+    return 0;
+  }
+  ss = zx_easy_enc_elem_opt(cf, &a7n->gg);
+  if (!ss) {
+    ERR("Failed to XML serialize assertion", a7n);
+    return 0;
+  }
+  enc_a7n = zx_NEW_sa_EncryptedAssertion(cf->ctx, father);
   if (cf->enckey_opt & 0x20) {
     /* Nested EncryptedKey approach (Shibboleth early 2010) */
-    ZX_ADD_KID(enc_a7n, EncryptedData, zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "40", 0));
+    ed = zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "40", 0);
   } else {
     /* RetrievalMethod approach */
-    ZX_ADD_KID(enc_a7n, EncryptedData, zxenc_pubkey_enc(cf, ss, &enc_a7n->EncryptedKey, meta->enc_cert, "39", meta));
+    ed = zxenc_pubkey_enc(cf, ss, &enc_a7n->EncryptedKey, meta->enc_cert, "39", meta);
   }
+  if (!ed) {
+    ERR("Failed to encrypt assertion %p (this could be due to problems with encryption certificate of the destination or destination's metadata; you may be able to work around this problem by manipulating POST_A7N_ENC or DI_A7N_ENC config option, but consider the security implication)", a7n);
+    return 0;
+  }
+  ZX_ADD_KID(enc_a7n, EncryptedData, ed);
   zx_str_free(cf->ctx, ss);
   return enc_a7n;
 }

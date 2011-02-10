@@ -85,6 +85,8 @@ zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, struct zx_elem_s* father, c
  * See also: zxid_mk_lu_Status()
  */
 
+/*() Construct SOAP Fault data structure. */
+
 /* Called by:  covimp_test, zxid_call_epr x2, zxid_timestamp_chk x2, zxid_wsc_prepare_call x2, zxid_wsc_valid_re_env x13, zxid_wsf_validate_a7n x6, zxid_wsp_decorate x2, zxid_wsp_validate x2, zxid_wsp_validate_env x12 */
 zxid_fault* zxid_mk_fault(zxid_conf* cf, struct zx_elem_s* father, const char* fa, const char* fc, const char* fs, const char* sc1, const char* sc2, const char* msg, const char* ref)
 {
@@ -100,7 +102,7 @@ zxid_fault* zxid_mk_fault(zxid_conf* cf, struct zx_elem_s* father, const char* f
   return flt;
 }
 
-/*() Set current fault of the session. If current fault is set, the zxid_wsp_decorate()
+/*() Set current SOAP Fault of the session. If current fault is set, the zxid_wsp_decorate()
  * function will generate a SOAP Fault response instead of normal SOAP response. If
  * you wish to return application response in situation where fault has been
  * detected, you can use this function to reset the current fault to null. */
@@ -112,12 +114,15 @@ void zxid_set_fault(zxid_conf* cf, zxid_ses* ses, zxid_fault* flt) {
   ses->curflt = flt;
 }
 
-/*() Read current fault of the session. NULL return means that there was no fault. */
+/*() Read current SOAP Fault of the session. NULL return means that there was no fault. */
 
 /* Called by:  covimp_test */
 zxid_fault* zxid_get_fault(zxid_conf* cf, zxid_ses* ses) {
   return ses->curflt;
 }
+
+/*() Return first level status code from SOAP Fault.
+ * Typically called as  sc1 = zxid_get_tas3_fault_sc1(cf, zxid_get_fault(cf, ses)); */
 
 /* Called by:  covimp_test x2, zxid_get_fault_status */
 char* zxid_get_tas3_fault_sc1(zxid_conf* cf, zxid_fault* flt) {
@@ -125,30 +130,53 @@ char* zxid_get_tas3_fault_sc1(zxid_conf* cf, zxid_fault* flt) {
     return 0;
   return zx_str_to_c(cf->ctx, ZX_GET_CONTENT(flt->faultcode));
 }
+
+/*() Return second level status code from SOAP Fault.
+ * Typically called as  sc2 = zxid_get_tas3_fault_sc2(cf, zxid_get_fault(cf, ses)); */
+
 /* Called by:  covimp_test x2 */
 char* zxid_get_tas3_fault_sc2(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !flt->detail || !flt->detail->Status || !flt->detail->Status->code || !flt->detail->Status->code->g.s)
     return 0;
   return zx_str_to_c(cf->ctx, &flt->detail->Status->code->g);
 }
+
+/*() Return comment field from SOAP Fault.
+ * Typically called as  c = zxid_get_tas3_fault_comment(cf, zxid_get_fault(cf, ses)); */
+
 /* Called by:  covimp_test x2, zxid_get_fault_status */
 char* zxid_get_tas3_fault_comment(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !ZX_SIMPLE_ELEM_CHK(flt->faultstring))
     return 0;
   return zx_str_to_c(cf->ctx, ZX_GET_CONTENT(flt->faultstring));
 }
+
+/*() Return reference field from SOAP Fault.
+ * Typically called as  ref = zxid_get_tas3_fault_ref(cf, zxid_get_fault(cf, ses));
+ *
+ * Reference field may indicate which XML element is causing the fault.
+ * Its value correspons to id XML attribute of the faulting element. */
+
 /* Called by:  covimp_test x2 */
 char* zxid_get_tas3_fault_ref(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !flt->detail || !flt->detail->Status || !flt->detail->Status->ref || !flt->detail->Status->ref->g.s)
     return 0;
   return zx_str_to_c(cf->ctx, &flt->detail->Status->ref->g);
 }
+
+/*() Return actor field from SOAP Fault.
+ * Typically called as  act = zxid_get_tas3_fault_actor(cf, zxid_get_fault(cf, ses));
+ *
+ * Actor field may indicate whether the detected error is attributable to Server or Client. */
+
 /* Called by:  covimp_test x2, zxid_get_fault_status */
 char* zxid_get_tas3_fault_actor(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !ZX_SIMPLE_ELEM_CHK(flt->faultactor))
     return 0;
   return zx_str_to_c(cf->ctx, ZX_GET_CONTENT(flt->faultactor));
 }
+
+/*() Extract TAS3 status from SOAP Fault */
 
 /* Called by: */
 zxid_tas3_status* zxid_get_fault_status(zxid_conf* cf, zxid_fault* flt) {
@@ -184,30 +212,56 @@ zxid_tas3_status* zxid_get_tas3_status(zxid_conf* cf, zxid_ses* ses) {
   return ses->curstatus;
 }
 
+/*() Return first level status code from TAS3 status.
+ * Typically called as  sc1 = zxid_get_tas3_status_sc1(cf, zxid_get_tas3_status(cf, ses)); */
+
 /* Called by:  covimp_test x2 */
 char* zxid_get_tas3_status_sc1(zxid_conf* cf, zxid_tas3_status* st) {
   if (!st || !st->code || !st->code->g.s)
     return 0;
   return zx_str_to_c(cf->ctx, &st->code->g);
 }
+
+/*() Return second level status code from TAS3 status.
+ * Typically called as  sc2 = zxid_get_tas3_status_sc2(cf, zxid_get_tas3_status(cf, ses)); */
+
 /* Called by:  covimp_test x2 */
 char* zxid_get_tas3_status_sc2(zxid_conf* cf, zxid_tas3_status* st) {
   if (!st || !st->Status || !st->Status->code || !st->Status->code->g.s)
     return 0;
   return zx_str_to_c(cf->ctx, &st->Status->code->g);
 }
+
+/*() Return comment from TAS3 status.
+ * Typically called as  c = zxid_get_tas3_status_comment(cf, zxid_get_tas3_status(cf, ses)); */
+
 /* Called by:  covimp_test x2 */
 char* zxid_get_tas3_status_comment(zxid_conf* cf, zxid_tas3_status* st) {
   if (!st || !st->comment || !st->comment->g.s)
     return 0;
   return zx_str_to_c(cf->ctx, &st->comment->g);
 }
+
+/*() Return reference field from TAS3 status.
+ * Typically called as  ref = zxid_get_tas3_status_ref(cf, zxid_get_tas3_status(cf, ses));
+ *
+ * Reference field may indicate which XML element is causing the fault.
+ * Its value correspons to id XML attribute of the faulting element. */
+
 /* Called by:  covimp_test x2 */
 char* zxid_get_tas3_status_ref(zxid_conf* cf, zxid_tas3_status* st) {
   if (!st || !st->ref || !st->ref->g.s)
     return 0;
   return zx_str_to_c(cf->ctx, &st->ref->g);
 }
+
+/*() Return control point from TAS3 status.
+ * Typically called as  cp = zxid_get_tas3_status_ctlpt(cf, zxid_get_tas3_status(cf, ses));
+ *
+ * Control points are Policy Enforcement Points (PEPs) defined in TAS3
+ * architecture, e.g. "urn:tas3:ctlpt:pep:rq:out", "urn:tas3:ctlpt:pep:rq:in",
+ * "urn:tas3:ctlpt:pep:rs:out", or "urn:tas3:ctlpt:pep:rs:in". */
+
 /* Called by:  covimp_test x2 */
 char* zxid_get_tas3_status_ctlpt(zxid_conf* cf, zxid_tas3_status* st) {
   if (!st || !st->ctlpt || !st->ctlpt->g.s)
