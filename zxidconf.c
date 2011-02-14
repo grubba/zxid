@@ -756,6 +756,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->ses_cookie_name   = ZXID_SES_COOKIE_NAME;
   cf->user_local        = ZXID_USER_LOCAL;
   cf->idp_ena           = ZXID_IDP_ENA;
+  cf->idp_pxy_ena       = ZXID_IDP_PXY_ENA;
   cf->imps_ena          = ZXID_IMPS_ENA;
   cf->as_ena            = ZXID_AS_ENA;
   cf->pdp_ena           = ZXID_PDP_ENA;
@@ -1107,6 +1108,7 @@ scan_end:
       if (!strcmp(n, "IDP_SEL_TEMPL_FILE")) { cf->idp_sel_templ_file = v; break; }
       if (!strcmp(n, "IDP_SEL_TEMPL"))   { cf->idp_sel_templ = v; break; }
       if (!strcmp(n, "IDP_ENA"))         { SCAN_INT(v, cf->idp_ena); break; }
+      if (!strcmp(n, "IDP_PXY_ENA"))     { SCAN_INT(v, cf->idp_pxy_ena); break; }
       if (!strcmp(n, "IMPS_ENA"))        { SCAN_INT(v, cf->imps_ena); break; }
       if (!strcmp(n, "IDP_PREF_ACS_BINDING")) { cf->idp_pref_acs_binding = v; break; }
       if (!strcmp(n, "IDPATOPT"))        { SCAN_INT(v, cf->idpatopt); break; }
@@ -1478,6 +1480,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "IPPORT=%s\n"
 "USER_LOCAL=%d\n"
 "IDP_ENA=%d\n"
+"IDP_PXY_ENA=%d\n"
 "IMPS_ENA=%d\n"
 "AS_ENA=%d\n"
 "PDP_ENA=%d\n"
@@ -1659,6 +1662,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 STRNULLCHK(cf->ipport),
 		 cf->user_local,
 		 cf->idp_ena,
+		 cf->idp_pxy_ena,
 		 cf->imps_ena,
 		 cf->as_ena,
 		 cf->pdp_ena,

@@ -1,5 +1,5 @@
 /* zxcot.c  -  CoT (Circle-of-Trust) management tool: list CoT, add metadata to CoT
- * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
@@ -28,7 +28,7 @@
 
 char* help =
 "zxcot  -  Circle-of-Trust and metadata management tool R" ZXID_REL "\n\
-Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
+Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
@@ -43,6 +43,7 @@ Usage: zxcot [options] [dir]         # Gives listing of metadata\n\
   [dir]            CoT directory. Default /var/zxid/cot\n\
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
                    Most of the configuration is read from /var/zxid/zxid.conf\n\
+  -ci              IdP conf, synonym for -c PATH=/var/zxid/idp\n\
   -a               Add metadata from stdin\n\
   -b               Register Web Service, add Service EPR from stdin\n\
   -bs              Register Web Service and Bootstrap, add Service EPR from stdin\n\
@@ -50,11 +51,14 @@ Usage: zxcot [options] [dir]         # Gives listing of metadata\n\
   -g URL           Do HTTP(S) GET to URL and add as metadata (if compiled w/libcurl)\n\
   -n               Dryrun. Do not actually add the metadata. Instead print it to stdout.\n\
   -s               Swap columns, for easier sorting by URL\n\
-  -m               Output metadata of this installation (our own metadata)\n\
+  -m               Output metadata of this installation (our own metadata). Caveat: If your\n\
+                   own code, or virtual hosting, sets options like URL, you need to supply\n\
+                   them with appropriate -c CONF option. zxcot is not able to guess them!\n\
   -p ENTID         Print sha1 name corresponding to an entity ID.\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
   -d               Turn on debugging.\n\
+  -dc              Dump configuration.\n\
   -h               This help message\n\
   --               End of options\n\
 \n\
@@ -69,14 +73,15 @@ int regsvc = 0;
 int regbs = 0;
 int genmd = 0;
 int dryrun = 0;
+int explicit_conf = 0;
 int inflate_flag = 2;  /* Auto */
 int verbose = 1;
-char buf[ZXID_MAX_MD+1];
+char buf[ZXID_MAX_MD+1] = "PATH=/var/zxid/idp";
 char* mdurl = 0;
 char* entid = 0;
-char* cotdir  = ZXID_PATH ZXID_COT_DIR;
-char* dimddir = ZXID_PATH ZXID_DIMD_DIR;
-char* uiddir  = ZXID_PATH ZXID_UID_DIR;
+char* cotdir;
+char* dimddir;
+char* uiddir;
 zxid_conf* cf = 0;
 
 /* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
@@ -111,22 +116,33 @@ static void opt(int* argc, char*** argv, char*** env)
       case 's':
 	++regsvc;
 	++regbs;
-	dimddir = ZXID_PATH "idp" ZXID_DIMD_DIR;
-	uiddir  = ZXID_PATH "idp" ZXID_UID_DIR;
+	if (!explicit_conf)
+	  cf->path = ZXID_PATH "idp";
 	continue;
       case '\0':
 	++regsvc;
-	dimddir  = ZXID_PATH "idp" ZXID_DIMD_DIR;
+	if (!explicit_conf)
+	  cf->path = ZXID_PATH "idp";
 	continue;
       }
       break;
 
     case 'c':
       switch ((*argv)[0][2]) {
+      case 'i':
+	switch ((*argv)[0][3]) {
+	case '\0':
+	  cf->idp_ena = 1;
+	  zxid_parse_conf(cf, buf); /* buf was statically initialised to "PATH=/var/zxid/idp" */
+	  ++explicit_conf;
+	  continue;
+	}
+	break;
       case '\0':
 	++(*argv); --(*argc);
 	if ((*argc) < 1) break;
 	zxid_parse_conf(cf, (*argv)[0]);
+	++explicit_conf;
 	continue;
       }
       break;
@@ -261,6 +277,19 @@ static void opt(int* argc, char*** argv, char*** env)
       cotdir[len+1] = 0;
       uiddir = dimddir = cotdir;
     }
+  } else {
+    len = strlen(cf->path);
+    cotdir = malloc(len+sizeof(ZXID_COT_DIR));
+    strcpy(cotdir, cf->path);
+    strcpy(cotdir+len, ZXID_COT_DIR);
+
+    dimddir = malloc(len+sizeof(ZXID_DIMD_DIR));
+    strcpy(dimddir, cf->path);
+    strcpy(dimddir+len, ZXID_DIMD_DIR);
+
+    uiddir = malloc(len+sizeof(ZXID_UID_DIR));
+    strcpy(uiddir, cf->path);
+    strcpy(uiddir+len, ZXID_UID_DIR);
   }
 }
 
@@ -281,7 +310,6 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
   char sha1_name[28];
   char path[ZXID_MAX_BUF];
   char* p;
-  //char* uiddir;
   int got, fd;
   struct zx_root_s* r;
   zxid_epr* epr;

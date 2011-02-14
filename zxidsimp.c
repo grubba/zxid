@@ -787,8 +787,8 @@ static int zxid_decode_ssoreq(zxid_conf* cf, zxid_cgi* cgi)
   char* p;
   if (!cgi->ssoreq || !cgi->ssoreq[0])
     return 1;
-  D("ssoreq(%s)", cgi->ssoreq);
   len = strlen(cgi->ssoreq);
+  D("ssoreq(%s) len=%d pessimistic_len=%d", cgi->ssoreq, len, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(len));
   buf = ZX_ALLOC(cf->ctx, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(len));
   p = unbase64_raw(cgi->ssoreq, cgi->ssoreq + len, buf, zx_std_index_64);
   p = zx_zlib_raw_inflate(0, p-buf, buf, &len);
@@ -797,7 +797,7 @@ static int zxid_decode_ssoreq(zxid_conf* cf, zxid_cgi* cgi)
     return 0;
   p[len] = 0;
   cgi->op = 0;
-  D("ar/ssoreq decoded(%s)", p);
+  D("ar/ssoreq decoded(%s) len=%d", p, len);
   zxid_parse_cgi(cgi, p);  /* cgi->op will be Q due to SAMLRequest inside ssoreq */
   cgi->op = 'F';
   return 1;

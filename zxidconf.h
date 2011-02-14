@@ -1,5 +1,5 @@
 /* zxidconf.h  -  Configuration of ZXID
- * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -11,6 +11,7 @@
  * 12.8.2006, created --Sampo
  * 29.8.2009, added PDP_URL --Sampo
  * 7.1.2010,  added WSC and WSP signing options --Sampo
+ * 12.2.2011, added proxy IdP related options --Sampo
  *
  * Most of the configuration options can be set via configuration
  * file /var/zxid/zxid.conf or using -O command line flag(s). In
@@ -352,6 +353,9 @@
 /*(c) Mini IdP
  * Whether limited IdP functionality is enabled. Affects generated metadata. */
 #define ZXID_IDP_ENA 0
+
+/*(c) IdP Proxying, i.e. IdP can be SP towards another IdP. */
+#define ZXID_IDP_PXY_ENA 0
 
 /*(c) Identity Mapper and People Service
  * Whether limited Identity Mapper and People Service functionality is enabled.
@@ -722,12 +726,7 @@
   "<p>IdP URL <input name=e size=60><input type=submit name=l0 value=\" Login \"><br>"\
   "Entity ID of this SP (click on the link to fetch the SP metadata): <a href=\"!!EID\">!!EID</a>"\
   "!!IDP_LIST<h3>Technical options</h3>"\
-  "<input type=checkbox name=fc value=1 checked> Create federation, NID Format:"\
-  "<select name=fn>"\
-  "<option value=prstnt>Persistent"\
-  "<option value=trnsnt>Transient"\
-  "<option value=\"\">(none)"\
-  "</select><br>"\
+  "<input type=hidden name=fc value=1><input type=hidden name=fn value=prstnt>"\
   "<!-- ZXID built-in defaults, see zxidconf.h and zxid-conf.pd for explanation -->"\
   "<input type=hidden name=fq value=\"\">"\
   "<input type=hidden name=fy value=\"\">"\
@@ -786,7 +785,7 @@
   "<ol><li> Yubikey <a href=\"http://yubico.com\"><img src=\"yubiright_16x16.gif\" width=16 height=16 border=0></a>:<input name=au><input type=submit name=alp value=\" Login \">"\
   "<li> User: <input name=au> Password: <input type=password name=ap><input type=submit name=alp value=\" Login \">"\
   "<li><input type=submit name=an value=\" Create New User \"></ol>"\
-  "<h3>Technical options</h3><input type=checkbox name=fc value=1 checked> Create federation, NID Format: <select name=fn><option value=prstnt>Persistent<option value=trnsnt>Transient<option value=\"\">(none)</select><br>"\
+  "<input type=hidden name=fc value=1><input type=hidden name=fn value=prstnt><br>"\
   "<input type=hidden name=fq value=\"\"><input type=hidden name=fy value=\"\"><input type=hidden name=fa value=\"\"><input type=hidden name=fm value=\"\"><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h-->"\
   "<input type=hidden name=ar value=\"!!SSOREQ\">"\
   "<input type=hidden name=zxapp value=\"!!ZXAPP\">"\
