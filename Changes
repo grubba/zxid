@@ -71,6 +71,8 @@ zxid-0.77:: 10.2.2011
     - curl_easy_reset() patch from Jeroen Asselman (fixes crash on Win32)
     - Applied zxid_saml2_map_nid_fmt() patch by Cal Heldenbrand
     - Robustified error processing in cases where encryption certificate is missing
+    - Fixed NAMEID_ENC=0 missing a NameID element (TAS3 bug #493, found by Stijn)
+    - Fixed IdP crash due to null pointer in zx_alloc() (TAS3 bug #494, found by Stijn)
 
 zxid-0.76:: 26.1.2011
     - Added error checks

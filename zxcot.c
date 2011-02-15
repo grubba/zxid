@@ -90,7 +90,7 @@ static void opt(int* argc, char*** argv, char*** env)
   int len;
   struct zx_str* ss;
   
-  if (*argc <= 1) return;
+  if (*argc <= 1) goto path_to_dir;
   
   while (1) {
     ++(*argv); --(*argc);
@@ -278,6 +278,7 @@ static void opt(int* argc, char*** argv, char*** env)
       uiddir = dimddir = cotdir;
     }
   } else {
+path_to_dir:
     len = strlen(cf->path);
     cotdir = malloc(len+sizeof(ZXID_COT_DIR));
     strcpy(cotdir, cf->path);

@@ -373,7 +373,7 @@ struct zx_sa_Subject_s* zxid_mk_subj(zxid_conf* cf, struct zx_elem_s* father, zx
     if (sp_meta)
       subj->EncryptedID = zxid_mk_enc_id(cf, &subj->gg, nid, sp_meta);
     else {
-      ERR("NameID encryption confugred, but no metadata supplied. Defaulting to unencrypted NameID %d", 0);
+      ERR("NameID encryption configred, but no metadata supplied. Defaulting to unencrypted NameID %d", 0);
       subj->NameID = nid;
     }
   } else
