@@ -199,7 +199,7 @@ struct zx_sa_EncryptedAssertion_s* zxid_mk_enc_a7n(zxid_conf* cf, struct zx_elem
   }
   ss = zx_easy_enc_elem_opt(cf, &a7n->gg);
   if (!ss) {
-    ERR("Failed to XML serialize assertion", a7n);
+    ERR("Failed to XML serialize assertion %p", a7n);
     return 0;
   }
   enc_a7n = zx_NEW_sa_EncryptedAssertion(cf->ctx, father);
@@ -359,9 +359,9 @@ struct zx_sa_Subject_s* zxid_mk_subj(zxid_conf* cf, struct zx_elem_s* father, zx
 #if 0
   // , struct zx_str* affil, char* fmt
   nid = zx_NEW_sa_NameID(cf->ctx,0);
-  nid->Format = zx_dup_str(cf->ctx, fmt);  /* *** implement persistent */
-  nid->NameQualifier = zxid_my_ent_id(cf);
   nid->SPNameQualifier = affil;
+  nid->NameQualifier = zxid_my_ent_id(cf);
+  nid->Format = zx_dup_str(cf->ctx, fmt);  /* *** implement persistent */
   if (!strcmp(fmt, SAML2_TRANSIENT_NID_FMT)) {
     zx_add_content(cf->ctx, nid, zxid_mk_id(cf, "T", ZXID_ID_BITS));
   } else {
@@ -374,10 +374,11 @@ struct zx_sa_Subject_s* zxid_mk_subj(zxid_conf* cf, struct zx_elem_s* father, zx
       subj->EncryptedID = zxid_mk_enc_id(cf, &subj->gg, nid, sp_meta);
     else {
       ERR("NameID encryption configred, but no metadata supplied. Defaulting to unencrypted NameID %d", 0);
-      subj->NameID = nid;
+      ZX_ADD_KID(subj, NameID, nid);
     }
-  } else
-    subj->NameID = nid;
+  } else {
+    ZX_ADD_KID(subj, NameID, nid);
+  }
   /* SAML spec is more lax than the schema: saml-core-2.0-os.pdf ll.653-657 says <SubjectConfirmation> [Zero or More] */
   return subj;
 }

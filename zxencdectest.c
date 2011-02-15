@@ -112,9 +112,9 @@ void test_ibm_cert_problem_enc_dec()  /* -r 2 */
   cf = zxid_new_conf("/var/zxid/");
 
   nameid = zx_NEW_sa_NameID(cf->ctx,0);
-  nameid->Format = zx_ref_attr(cf->ctx, &nameid->gg, zx_Format_ATTR, "persistent");
-  nameid->NameQualifier = zx_ref_attr(cf->ctx, &nameid->gg, zx_NameQualifier_ATTR, "ibmidp");
   /*nameid->SPNameQualifier = zx_ref_attr(cf->ctx, &nameid->gg, zx_SPNameQualifier_ATTR, spqual);*/
+  nameid->NameQualifier = zx_ref_attr(cf->ctx, &nameid->gg, zx_NameQualifier_ATTR, "ibmidp");
+  nameid->Format = zx_ref_attr(cf->ctx, &nameid->gg, zx_Format_ATTR, "persistent");
   zx_add_content(cf->ctx, &nameid->gg, zx_ref_str(cf->ctx, "a-persistent-nid"));
 
 #if 0
@@ -210,9 +210,9 @@ void x509_test()      /* -r 7 */
 
 #if 1
   nameid = zx_NEW_sa_NameID(cf->ctx,0);
-  nameid->Format = zx_ref_attr(cf->ctx, &nameid->gg, zx_Format_ATTR, "persistent");
-  nameid->NameQualifier = zx_ref_attr(cf->ctx, &nameid->gg, zx_NameQualifier_ATTR, "http://myidp?o=B");
   nameid->SPNameQualifier = zx_ref_attr(cf->ctx, &nameid->gg, zx_SPNameQualifier_ATTR, "http://mysp?o=B");
+  nameid->NameQualifier = zx_ref_attr(cf->ctx, &nameid->gg, zx_NameQualifier_ATTR, "http://myidp?o=B");
+  nameid->Format = zx_ref_attr(cf->ctx, &nameid->gg, zx_Format_ATTR, "persistent");
   zx_add_content(cf->ctx, &nameid->gg, zx_ref_str(cf->ctx, "a-persistent-nid"));
 #else
   struct zx_sp_AuthnRequest_s* ar;

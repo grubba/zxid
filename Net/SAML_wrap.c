@@ -20147,7 +20147,7 @@ XS(_wrap_zxid_conf_az_opt_get) {
 }
 
 
-XS(_wrap_zxid_conf_pad1_set) {
+XS(_wrap_zxid_conf_idp_pxy_ena_set) {
   {
     struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
     char arg2 ;
@@ -20159,19 +20159,19 @@ XS(_wrap_zxid_conf_pad1_set) {
     dXSARGS;
     
     if ((items < 2) || (items > 2)) {
-      SWIG_croak("Usage: zxid_conf_pad1_set(self,pad1);");
+      SWIG_croak("Usage: zxid_conf_idp_pxy_ena_set(self,idp_pxy_ena);");
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_pad1_set" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_idp_pxy_ena_set" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
     }
     arg1 = (struct zxid_conf *)(argp1);
     ecode2 = SWIG_AsVal_char SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
     if (!SWIG_IsOK(ecode2)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "zxid_conf_pad1_set" "', argument " "2"" of type '" "char""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "zxid_conf_idp_pxy_ena_set" "', argument " "2"" of type '" "char""'");
     } 
     arg2 = (char)(val2);
-    if (arg1) (arg1)->pad1 = arg2;
+    if (arg1) (arg1)->idp_pxy_ena = arg2;
     ST(argvi) = sv_newmortal();
     
     
@@ -20184,7 +20184,7 @@ XS(_wrap_zxid_conf_pad1_set) {
 }
 
 
-XS(_wrap_zxid_conf_pad1_get) {
+XS(_wrap_zxid_conf_idp_pxy_ena_get) {
   {
     struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
     void *argp1 = 0 ;
@@ -20194,14 +20194,14 @@ XS(_wrap_zxid_conf_pad1_get) {
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: zxid_conf_pad1_get(self);");
+      SWIG_croak("Usage: zxid_conf_idp_pxy_ena_get(self);");
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_pad1_get" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_idp_pxy_ena_get" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
     }
     arg1 = (struct zxid_conf *)(argp1);
-    result = (char) ((arg1)->pad1);
+    result = (char) ((arg1)->idp_pxy_ena);
     ST(argvi) = SWIG_From_char  SWIG_PERL_CALL_ARGS_1((char)(result)); argvi++ ;
     
     XSRETURN(argvi);
@@ -42172,8 +42172,8 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_conf_loguser_get", _wrap_zxid_conf_loguser_get},
 {"Net::SAMLc::zxid_conf_az_opt_set", _wrap_zxid_conf_az_opt_set},
 {"Net::SAMLc::zxid_conf_az_opt_get", _wrap_zxid_conf_az_opt_get},
-{"Net::SAMLc::zxid_conf_pad1_set", _wrap_zxid_conf_pad1_set},
-{"Net::SAMLc::zxid_conf_pad1_get", _wrap_zxid_conf_pad1_get},
+{"Net::SAMLc::zxid_conf_idp_pxy_ena_set", _wrap_zxid_conf_idp_pxy_ena_set},
+{"Net::SAMLc::zxid_conf_idp_pxy_ena_get", _wrap_zxid_conf_idp_pxy_ena_get},
 {"Net::SAMLc::zxid_conf_pad2_set", _wrap_zxid_conf_pad2_set},
 {"Net::SAMLc::zxid_conf_pad2_get", _wrap_zxid_conf_pad2_get},
 {"Net::SAMLc::zxid_conf_pad3_set", _wrap_zxid_conf_pad3_set},

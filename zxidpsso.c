@@ -432,9 +432,9 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
       
       nid = zxid_mk_id(cf, "F", ZXID_ID_BITS);
       nameid = zx_NEW_sa_NameID(cf->ctx,0);
-      nameid->Format = zx_ref_attr(cf->ctx, &nameid->gg, zx_Format_ATTR, SAML2_PERSISTENT_NID_FMT);
-      nameid->NameQualifier = idp_eid = zxid_my_ent_id_attr(cf,&nameid->gg,zx_NameQualifier_ATTR);
       nameid->SPNameQualifier = zx_ref_len_attr(cf->ctx, &nameid->gg, zx_SPNameQualifier_ATTR, affil->len, affil->s);
+      nameid->NameQualifier = idp_eid = zxid_my_ent_id_attr(cf,&nameid->gg,zx_NameQualifier_ATTR);
+      nameid->Format = zx_ref_attr(cf->ctx, &nameid->gg, zx_Format_ATTR, SAML2_PERSISTENT_NID_FMT);
       zx_add_content(cf->ctx, &nameid->gg, nid);
 
       if (!write_all_path_fmt("put_fed", ZXID_MAX_USER, buf,

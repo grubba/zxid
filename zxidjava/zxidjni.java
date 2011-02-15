@@ -2112,12 +2112,12 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_az_opt_get(zxid_conf.getCPtr(self));
   }
 
-  public static void conf_pad1_set(zxid_conf self, char value) {
-    zxidjniJNI.zxid_conf_pad1_set(zxid_conf.getCPtr(self), value);
+  public static void conf_idp_pxy_ena_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_idp_pxy_ena_set(zxid_conf.getCPtr(self), value);
   }
 
-  public static char conf_pad1_get(zxid_conf self) {
-    return zxidjniJNI.zxid_conf_pad1_get(zxid_conf.getCPtr(self));
+  public static char conf_idp_pxy_ena_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_idp_pxy_ena_get(zxid_conf.getCPtr(self));
   }
 
   public static void conf_pad2_set(zxid_conf self, char value) {

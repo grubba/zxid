@@ -740,7 +740,7 @@ char* sha1_safe_base64(char* out_buf, int len, const char* data)
 /* Called by: */
 voidpf zx_zlib_zalloc(void* opaque, uInt items, uInt size)
 {
-  D("HERE5 len= %d x %d = %d", items, size, items*size);
+  DD("HERE5 len= %d x %d = %d", items, size, items*size);
   return ZX_ALLOC(opaque, items*size);
 }
 
