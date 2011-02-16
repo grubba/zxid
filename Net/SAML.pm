@@ -1080,6 +1080,8 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_loguser_set = *Net::SAMLc::zxid_conf_loguser_set;
 *swig_az_opt_get = *Net::SAMLc::zxid_conf_az_opt_get;
 *swig_az_opt_set = *Net::SAMLc::zxid_conf_az_opt_set;
+*swig_valid_opt_get = *Net::SAMLc::zxid_conf_valid_opt_get;
+*swig_valid_opt_set = *Net::SAMLc::zxid_conf_valid_opt_set;
 *swig_idp_pxy_ena_get = *Net::SAMLc::zxid_conf_idp_pxy_ena_get;
 *swig_idp_pxy_ena_set = *Net::SAMLc::zxid_conf_idp_pxy_ena_set;
 *swig_pad2_get = *Net::SAMLc::zxid_conf_pad2_get;

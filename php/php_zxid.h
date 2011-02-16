@@ -534,6 +534,8 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_loguser_set);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_loguser_get);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_az_opt_set);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_az_opt_get);
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_valid_opt_set);
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_valid_opt_get);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_idp_pxy_ena_set);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_idp_pxy_ena_get);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_pad2_set);

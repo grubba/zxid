@@ -445,6 +445,7 @@ struct zx_str* zxid_saml2_redir_url(zxid_conf* cf, struct zx_str* loc, struct zx
   ss = zx_strf(cf->ctx, (memchr(loc->s, '?', loc->len)
 			 ? "%.*s&%.*s" CRLF2
 			 : "%.*s?%.*s" CRLF2), loc->len, loc->s, rse->len, rse->s);
+  D("%.*s", ss->len, ss->s);
   if (zx_debug & ZXID_INOUT) INFO("%.*s", ss->len, ss->s);
   zx_str_free(cf->ctx, rse);
   return ss;

@@ -250,7 +250,7 @@ zxid_entity* zxid_get_ent_file(zxid_conf* cf, char* sha1_name)
     goto readerr;
   close_file(fd, (const char*)__FUNCTION__);
 
-  DD("md_buf(%.*s) got=%d siz=%d md_buf(%s)", got, md_buf, got, siz, sha1_name);
+  DD("md_buf(%.*s) got=%d siz=%d sha1_name(%s)", got, md_buf, got, siz, sha1_name);
   
   p = md_buf;
   while (p < md_buf+got) {   /* Loop over concatenated descriptors. */

@@ -304,6 +304,7 @@ struct zxid_conf {
   char  loguser;
 
   char  az_opt;        /* Kludgy options for AZ debugging and to work-around bugs of others */
+  char  valid_opt;     /* Kludgy options for AZ debugging and to work-around bugs of others */
   char  idp_pxy_ena;
   char  pad2; char pad3; char pad4; char pad5; char pad6; char pad7;
 

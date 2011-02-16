@@ -105,6 +105,8 @@ fdtype vopen_fd_from_path(int flags, int mode, const char* logkey, int reperr, c
       D("File(%s) not found lk(%s) errno=%d err(%s). flags=0x%x, euid=%d egid=%d", buf, logkey, errno, STRERROR(errno), flags, geteuid(), getegid());
     }
     return BADFD;
+  } else {
+    D("File(%s) opened lk(%s) flags=0x%x", buf, logkey, flags);
   }
   return fd;
 }

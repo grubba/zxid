@@ -20147,6 +20147,71 @@ XS(_wrap_zxid_conf_az_opt_get) {
 }
 
 
+XS(_wrap_zxid_conf_valid_opt_set) {
+  {
+    struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+    char arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    char val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: zxid_conf_valid_opt_set(self,valid_opt);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_valid_opt_set" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+    }
+    arg1 = (struct zxid_conf *)(argp1);
+    ecode2 = SWIG_AsVal_char SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "zxid_conf_valid_opt_set" "', argument " "2"" of type '" "char""'");
+    } 
+    arg2 = (char)(val2);
+    if (arg1) (arg1)->valid_opt = arg2;
+    ST(argvi) = sv_newmortal();
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_zxid_conf_valid_opt_get) {
+  {
+    struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    char result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: zxid_conf_valid_opt_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_valid_opt_get" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+    }
+    arg1 = (struct zxid_conf *)(argp1);
+    result = (char) ((arg1)->valid_opt);
+    ST(argvi) = SWIG_From_char  SWIG_PERL_CALL_ARGS_1((char)(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_zxid_conf_idp_pxy_ena_set) {
   {
     struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
@@ -42172,6 +42237,8 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_conf_loguser_get", _wrap_zxid_conf_loguser_get},
 {"Net::SAMLc::zxid_conf_az_opt_set", _wrap_zxid_conf_az_opt_set},
 {"Net::SAMLc::zxid_conf_az_opt_get", _wrap_zxid_conf_az_opt_get},
+{"Net::SAMLc::zxid_conf_valid_opt_set", _wrap_zxid_conf_valid_opt_set},
+{"Net::SAMLc::zxid_conf_valid_opt_get", _wrap_zxid_conf_valid_opt_get},
 {"Net::SAMLc::zxid_conf_idp_pxy_ena_set", _wrap_zxid_conf_idp_pxy_ena_set},
 {"Net::SAMLc::zxid_conf_idp_pxy_ena_get", _wrap_zxid_conf_idp_pxy_ena_get},
 {"Net::SAMLc::zxid_conf_pad2_set", _wrap_zxid_conf_pad2_set},

@@ -723,6 +723,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   if (cf->ctx) cf->ctx->canon_inopt = cf->canon_inopt;
   cf->enc_tail_opt  = ZXID_ENC_TAIL_OPT;
   cf->enckey_opt    = ZXID_ENCKEY_OPT;
+  cf->valid_opt     = ZXID_VALID_OPT;
   cf->idpatopt      = ZXID_IDPATOPT;
   cf->idp_list_meth = ZXID_IDP_LIST_METH;
   cf->di_allow_create = ZXID_DI_ALLOW_CREATE;
@@ -1238,6 +1239,9 @@ scan_end:
       if (!strcmp(n, "URL"))            { cf->url = v; cf->fedusername_suffix = zxid_grab_domain_name(cf, cf->url); break; }
       if (!strcmp(n, "USER_LOCAL"))     { SCAN_INT(v, cf->user_local); break; }
       goto badcf;
+    case 'V':  /* VALID_OPT */
+      if (!strcmp(n, "VALID_OPT"))      { SCAN_INT(v, cf->valid_opt); break; }
+      goto badcf;
     case 'W':  /* WANT_SSO_A7N_SIGNED */
       if (!strcmp(n, "WANT"))           { cf->want = zxid_load_need(cf, cf->want, v); break; }
       if (!strcmp(n, "WANT_SSO_A7N_SIGNED"))   { SCAN_INT(v, cf->want_sso_a7n_signed); break; }
@@ -1466,6 +1470,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "CANON_INOPT=%x\n"
 "ENC_TAIL_OPT=%x\n"
 "ENCKEY_OPT=%d\n"
+"VALID_OPT=0x%x\n"
 "IDPATOPT=%d\n"
 "DI_ALLOW_CREATE=%d\n"
 "DI_NID_FMT=%d\n"
@@ -1648,6 +1653,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->canon_inopt,
 		 cf->enc_tail_opt,
 		 cf->enckey_opt,
+		 cf->valid_opt,
 		 cf->idpatopt,
 		 cf->di_allow_create,
 		 cf->di_nid_fmt,

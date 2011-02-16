@@ -2112,6 +2112,14 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_az_opt_get(zxid_conf.getCPtr(self));
   }
 
+  public static void conf_valid_opt_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_valid_opt_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static char conf_valid_opt_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_valid_opt_get(zxid_conf.getCPtr(self));
+  }
+
   public static void conf_idp_pxy_ena_set(zxid_conf self, char value) {
     zxidjniJNI.zxid_conf_idp_pxy_ena_set(zxid_conf.getCPtr(self), value);
   }

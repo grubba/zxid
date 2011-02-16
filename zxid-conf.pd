@@ -524,10 +524,10 @@ rule:: transformation rule:
     a7n:: Wrap the attribute in a SAML2 assertion
     x509:: Wrap the attribute in a X509 AC attribute certificate
     file:: Obtain the value of the attribute from file specified in the +ext+ field
-    a7n-feideenc:: Combination of ~a7n~ and ~fedieenc~
+    a7n-feideenc:: Combination of ~a7n~ and ~feideenc~
     a7n-def-sb64:: Combination of ~a7n~ and ~def-sb64~
     a7n-sb64:: Combination of ~a7n~ and ~sb64~
-    x509-feideenc:: Combination of ~x509~ and ~fedieenc~
+    x509-feideenc:: Combination of ~x509~ and ~feideenc~
     x509-def-sb64:: Combination of ~x509~ and ~def-sb64~
     x509-sb64:: Combination of ~x509~ and ~sb64~
     file-feideenc:: Combination of ~file~ and ~fedieenc~

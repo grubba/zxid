@@ -195,8 +195,11 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
       D_DEDENT("start_sso: ");
       return 0;
     }
+    D("HERE1 %p", sso_svc);
+    D("HERE2 %p", sso_svc->Location);
+    D("HERE3 len=%d (%.*s)", sso_svc->Location->g.len, sso_svc->Location->g.len, sso_svc->Location->g.s);
     ar = zxid_mk_authn_req(cf, cgi);
-    ar->Destination = sso_svc->Location;
+    ZX_ORD_INS_ATTR(ar, Destination, sso_svc->Location);
     ars = zx_easy_enc_elem_opt(cf, &ar->gg);
     D("AuthnReq(%.*s)", ars->len, ars->s);
     break;

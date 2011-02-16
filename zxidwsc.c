@@ -1,5 +1,5 @@
 /* zxidwsc.c  -  Handwritten nitty-gritty functions for Liberty ID-WSF Web Services Client
- * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -12,6 +12,7 @@
  * 7.10.2008, added documentation --Sampo
  * 7.1.2010,  added WSC signing --Sampo
  * 31.5.2010, added WSC sig validation and PDP calls --Sampo
+ * 16.2.2011, added disable security option VALID_OPT --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -68,6 +69,11 @@ int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, str
   GETTIMEOFDAY(&ourts, 0);
   zxid_set_fault(cf, ses, 0);
   zxid_set_tas3_status(cf, ses, 0);
+
+  if (cf->valid_opt & ZXID_VALID_OPT_SKIP_RESP_HDR) {
+    ERR("WARNING! Important response security valdidations disabled by VALID_OPT=0x%x", cf->valid_opt);
+    return 0;
+  }
   
   if (!env) {
     ERR("No <e:Envelope> found. enve(%s)", STRNULLCHK(enve));

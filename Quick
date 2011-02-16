@@ -32,7 +32,7 @@ ulimit -c unlimited
 mini_httpd -p 8081 -c 'zxid*' &
 tailf /var/tmp/zxid.stderr &
 tailf /var/zxid/log/xml.dbg | ~/zxid/xml-pretty.pl &
-tailf /var/log/apache2/error.log | perl -pe 's/((zxidp)|(eid))/\e[1;31m$1\e[0m/g' &
+tailf /var/log/apache2/error.log | perl -pe 's/((zxidp)|(eid))/\e[1;31m$1\e[0m/g; s/, referer: .*?$//' &
 tail -f tmp/err-httpd &
 
 echo Edit your /etc/hosts to contain

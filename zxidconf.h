@@ -499,6 +499,15 @@
  * 1 = optimize close tag of empty elements as <ns:foo/> */
 #define ZXID_ENC_TAIL_OPT 1
 
+/*(c) SOAP Envelope validation options. In well configured and
+ * bug free environment, you should not need any of these options.
+ * Turning them on will reduce security as validations are not made.
+ *
+ * 0x01 Skip response header validation entirely, see zxid_wsc_valid_re_env()
+ */
+#define ZXID_VALID_OPT 0x00
+#define ZXID_VALID_OPT_SKIP_RESP_HDR 0x01
+
 /*(c) Time Slop
  * Because clock sychronization amoung the servers in the CoT is unlikely
  * to be perfect, not to speak of timezone misconfigurations and the
@@ -629,7 +638,7 @@
  * 0x01: prevent WS-Security header in SOAP XACML requests.  */
 #define ZXID_AZ_OPT 0
 
-/*(c) Which version of XACML to speak */
+/*(c) Which version of XACML to speak, e.g. "2.0" or "2.0-cd1" or "xac-soap" */
 
 #define ZXID_XASP_VERS "2.0"
 

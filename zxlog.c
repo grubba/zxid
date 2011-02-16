@@ -704,6 +704,16 @@ extern struct flock zx_wrlk; /* = { F_WRLCK, SEEK_SET, 0, 1 };*/
 extern struct flock zx_unlk; /* = { F_UNLCK, SEEK_SET, 0, 1 };*/
 #endif
 
+static FILE* zx_open_xml_log_file(zxid_conf* cf)
+{
+  char buf[ZXID_MAX_DIR];
+  if (!cf||!cf->path)
+    return fopen(XML_LOG_FILE, "a+");
+  snprintf(buf, sizeof(buf)-1, "%slog/xml.dbg", cf->path);
+  buf[sizeof(buf)-1]=0;
+  return fopen(buf, "a+");
+}
+
 /*() Log a blob of XML data to auxiliary log file. This avoids
  * mega clutter in the main debug logs. You are supposed
  * to view this file with:
@@ -759,7 +769,8 @@ print_it:
   if (!zx_xml_debug_log) {
     if (zx_xml_debug_log_err)
       return;
-    zx_xml_debug_log = fopen(XML_LOG_FILE, "a+");
+    
+    zx_xml_debug_log = zx_open_xml_log_file(cf);
     if (!zx_xml_debug_log) {  /* If it did not work out, do not insist. */
       perror(XML_LOG_FILE);
       ERR("Can't open for appending %s: %d", XML_LOG_FILE, errno);

@@ -554,6 +554,8 @@ class zxidjniJNI {
   public final static native char zxid_conf_loguser_get(long jarg1);
   public final static native void zxid_conf_az_opt_set(long jarg1, char jarg2);
   public final static native char zxid_conf_az_opt_get(long jarg1);
+  public final static native void zxid_conf_valid_opt_set(long jarg1, char jarg2);
+  public final static native char zxid_conf_valid_opt_get(long jarg1);
   public final static native void zxid_conf_idp_pxy_ena_set(long jarg1, char jarg2);
   public final static native char zxid_conf_idp_pxy_ena_get(long jarg1);
   public final static native void zxid_conf_pad2_set(long jarg1, char jarg2);
