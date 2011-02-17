@@ -71,8 +71,8 @@ int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, str
   zxid_set_tas3_status(cf, ses, 0);
 
   if (cf->valid_opt & ZXID_VALID_OPT_SKIP_RESP_HDR) {
-    ERR("WARNING! Important response security valdidations disabled by VALID_OPT=0x%x", cf->valid_opt);
-    return 0;
+    ERR("WARNING! Important response security validations disabled by VALID_OPT=0x%x", cf->valid_opt);
+    return 1;
   }
   
   if (!env) {
@@ -136,17 +136,6 @@ int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, str
     return 0;
   }
 
-  if (!sec->Signature || !sec->Signature->SignedInfo || !sec->Signature->SignedInfo->Reference) {
-    ses->sigres = ZXSIG_NO_SIG;
-    if (cf->wsp_nosig_fatal) {
-      ERR("No Security/Signature found. %p", sec->Signature);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Server", "No wsse:Security/ds:Signature found.", TAS3_STATUS_NOSIG, 0, 0, 0));
-      return 0;
-    } else {
-      INFO("No Security/Signature found, but configured to ignore this problem (WSP_NOSIG_FATAL=0). %p", sec->Signature);
-    }
-  }
-  
   wsc_meta = zxid_get_ent_ss(cf, issuer);
   if (!wsc_meta) {
     ses->sigres = ZXSIG_NO_SIG;
@@ -158,18 +147,28 @@ int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, str
       return 0;
     }
   }
-
-  ZERO(refs, sizeof(refs));
-  n_refs = zxid_hunt_sig_parts(cf, n_refs, refs, sec->Signature->SignedInfo->Reference, hdr, env->Body);
-  /* *** Consider adding BDY and STR */
-  ses->sigres = zxsig_validate(cf->ctx, wsc_meta?wsc_meta->sign_cert:0, sec->Signature, n_refs, refs);
-  zxid_sigres_map(ses->sigres, &cgi.sigval, &cgi.sigmsg);
-  if (cf->sig_fatal && ses->sigres) {
-    ERR("Fail due to failed message signature sigres=%d", ses->sigres);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Server", "Message signature did not validate.", TAS3_STATUS_BADSIG, 0, 0, 0));
-    return 0;
+  
+  if (!sec->Signature || !sec->Signature->SignedInfo || !sec->Signature->SignedInfo->Reference) {
+    ses->sigres = ZXSIG_NO_SIG;
+    if (cf->wsp_nosig_fatal) {
+      ERR("No Security/Signature found. %p", sec->Signature);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Server", "No wsse:Security/ds:Signature found.", TAS3_STATUS_NOSIG, 0, 0, 0));
+      return 0;
+    } else {
+      INFO("No Security/Signature found, but configured to ignore this problem (WSP_NOSIG_FATAL=0). %p", sec->Signature);
+    }
+  } else {
+    ZERO(refs, sizeof(refs));
+    n_refs = zxid_hunt_sig_parts(cf, n_refs, refs, sec->Signature->SignedInfo->Reference, hdr, env->Body);
+    /* *** Consider adding BDY and STR */
+    ses->sigres = zxsig_validate(cf->ctx, wsc_meta?wsc_meta->sign_cert:0, sec->Signature, n_refs, refs);
+    zxid_sigres_map(ses->sigres, &cgi.sigval, &cgi.sigmsg);
+    if (cf->sig_fatal && ses->sigres) {
+      ERR("Fail due to failed message signature sigres=%d", ses->sigres);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Server", "Message signature did not validate.", TAS3_STATUS_BADSIG, 0, 0, 0));
+      return 0;
+    }
   }
-
   if (!zxid_timestamp_chk(cf, ses, sec->Timestamp, &ourts, &srcts, TAS3_PEP_RS_IN, "e:Server"))
     return 0;
 

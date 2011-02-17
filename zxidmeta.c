@@ -22,6 +22,7 @@
  * 7.10.2008,  added documentation --Sampo
  * 1.2.2010,   removed arbitrary size limit --Sampo
  * 12.2.2010,  added pthread locking --Sampo
+ * 17.2.2011,  fixed processing of whitespace in metadata --Sampo
  */
 
 #include "platform.h"  /* for dirent.h */
@@ -64,9 +65,9 @@ static void zxid_process_keys(zxid_conf* cf, zxid_entity* ent, struct zx_md_KeyD
   char* e;
   X509* x;
 
-  for (;
-       kd && kd->gg.g.tok == zx_md_KeyDescriptor_ELEM;
-       kd = (struct zx_md_KeyDescriptor_s*)kd->gg.g.n) {
+  for (; kd; kd = (struct zx_md_KeyDescriptor_s*)kd->gg.g.n) {
+    if (kd->gg.g.tok != zx_md_KeyDescriptor_ELEM)
+      continue;
     if (!kd->KeyInfo || !kd->KeyInfo->X509Data || !ZX_GET_CONTENT(kd->KeyInfo->X509Data->X509Certificate)) {
       ERR("KeyDescriptor for %s missing essential subelements KeyInfo=%p", logkey, kd->KeyInfo);
       return;
@@ -171,8 +172,10 @@ zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
     if (!r->EntitiesDescriptor->EntityDescriptor)
       goto bad_md;
     for (ed = r->EntitiesDescriptor->EntityDescriptor;
-	 ed && ed->gg.g.tok == zx_md_EntityDescriptor_ELEM;
+	 ed;
 	 ed = (struct zx_md_EntityDescriptor_s*)ZX_NEXT(ed)) {
+      if (ed->gg.g.tok != zx_md_EntityDescriptor_ELEM)
+	continue;
       ent = zxid_mk_ent(cf, ed);
       ent->n = ee;
       ee = ent;

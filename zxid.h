@@ -902,6 +902,7 @@ ZXID_DECL zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc,
 ZXID_DECL struct zx_str* zxid_get_epr_address(zxid_conf* cf, zxid_epr* epr);
 ZXID_DECL struct zx_str* zxid_get_epr_entid(zxid_conf* cf, zxid_epr* epr);
 ZXID_DECL struct zx_str* zxid_get_epr_desc(zxid_conf* cf, zxid_epr* epr);
+ZXID_DECL struct zx_str* zxid_get_epr_tas3_trust(zxid_conf* cf, zxid_epr* epr);
 ZXID_DECL struct zx_str* zxid_get_epr_secmech(zxid_conf* cf, zxid_epr* epr);
 
 ZXID_DECL void zxid_set_epr_secmech(zxid_conf* cf, zxid_epr* epr, const char* secmec);
@@ -917,6 +918,7 @@ ZXID_DECL void zxid_set_call_invoktok(zxid_conf* cf, zxid_ses* ses, zxid_tok* to
 ZXID_DECL zxid_tok* zxid_get_call_tgttok(zxid_conf* cf, zxid_ses* ses);
 ZXID_DECL void zxid_set_call_tgttok(zxid_conf* cf, zxid_ses* ses, zxid_tok* tok);
 
+ZXID_DECL struct zx_str* zxid_epr2str(zxid_conf* cf, zxid_epr* epr);
 ZXID_DECL struct zx_str* zxid_token2str(zxid_conf* cf, zxid_tok* tok);
 ZXID_DECL zxid_tok* zxid_str2token(zxid_conf* cf, struct zx_str* ss);
 ZXID_DECL struct zx_str* zxid_a7n2str(zxid_conf* cf, zxid_a7n* a7n);

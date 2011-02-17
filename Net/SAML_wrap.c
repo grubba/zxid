@@ -40023,6 +40023,51 @@ XS(_wrap_zxid_get_epr_desc) {
 }
 
 
+XS(_wrap_zxid_get_epr_tas3_trust) {
+  {
+    zxid_conf *arg1 = (zxid_conf *) 0 ;
+    zxid_epr *arg2 = (zxid_epr *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    struct zx_str *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: zxid_get_epr_tas3_trust(cf,epr);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_get_epr_tas3_trust" "', argument " "1"" of type '" "zxid_conf *""'"); 
+    }
+    arg1 = (zxid_conf *)(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_zx_a_EndpointReference_s, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_get_epr_tas3_trust" "', argument " "2"" of type '" "zxid_epr *""'"); 
+    }
+    arg2 = (zxid_epr *)(argp2);
+    result = (struct zx_str *)zxid_get_epr_tas3_trust(arg1,arg2);
+    {
+      if (argvi >= items) {
+        EXTEND(sp,1);
+      }
+      ST(argvi) = newSVpv(result->s, result->len);
+      /* Do not free underlying zx_str because they are usually returned by reference. */
+      ++argvi;
+    }
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_zxid_get_epr_secmech) {
   {
     zxid_conf *arg1 = (zxid_conf *) 0 ;
@@ -40521,6 +40566,51 @@ XS(_wrap_zxid_set_call_tgttok) {
     XSRETURN(argvi);
   fail:
     
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_zxid_epr2str) {
+  {
+    zxid_conf *arg1 = (zxid_conf *) 0 ;
+    zxid_epr *arg2 = (zxid_epr *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    struct zx_str *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: zxid_epr2str(cf,epr);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_epr2str" "', argument " "1"" of type '" "zxid_conf *""'"); 
+    }
+    arg1 = (zxid_conf *)(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_zx_a_EndpointReference_s, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_epr2str" "', argument " "2"" of type '" "zxid_epr *""'"); 
+    }
+    arg2 = (zxid_epr *)(argp2);
+    result = (struct zx_str *)zxid_epr2str(arg1,arg2);
+    {
+      if (argvi >= items) {
+        EXTEND(sp,1);
+      }
+      ST(argvi) = newSVpv(result->s, result->len);
+      /* Do not free underlying zx_str because they are usually returned by reference. */
+      ++argvi;
+    }
+    
+    
+    XSRETURN(argvi);
+  fail:
     
     
     SWIG_croak_null();
@@ -42724,6 +42814,7 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_get_epr_address", _wrap_zxid_get_epr_address},
 {"Net::SAMLc::zxid_get_epr_entid", _wrap_zxid_get_epr_entid},
 {"Net::SAMLc::zxid_get_epr_desc", _wrap_zxid_get_epr_desc},
+{"Net::SAMLc::zxid_get_epr_tas3_trust", _wrap_zxid_get_epr_tas3_trust},
 {"Net::SAMLc::zxid_get_epr_secmech", _wrap_zxid_get_epr_secmech},
 {"Net::SAMLc::zxid_set_epr_secmech", _wrap_zxid_set_epr_secmech},
 {"Net::SAMLc::zxid_get_epr_token", _wrap_zxid_get_epr_token},
@@ -42735,6 +42826,7 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_set_call_invoktok", _wrap_zxid_set_call_invoktok},
 {"Net::SAMLc::zxid_get_call_tgttok", _wrap_zxid_get_call_tgttok},
 {"Net::SAMLc::zxid_set_call_tgttok", _wrap_zxid_set_call_tgttok},
+{"Net::SAMLc::zxid_epr2str", _wrap_zxid_epr2str},
 {"Net::SAMLc::zxid_token2str", _wrap_zxid_token2str},
 {"Net::SAMLc::zxid_str2token", _wrap_zxid_str2token},
 {"Net::SAMLc::zxid_a7n2str", _wrap_zxid_a7n2str},

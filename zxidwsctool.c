@@ -113,9 +113,12 @@ int main(int argc, char** argv)
     env = zxid_wsc_call(cf, ses, epr, env, 0);
     if (env->Body->QueryResponse)
       for (epr = env->Body->QueryResponse->EndpointReference;
-	   epr && epr->gg.g.tok == zx_a_EndpointReference_ELEM;
-	   epr = (void*)ZX_NEXT(epr))
+	   epr;
+	   epr = (void*)ZX_NEXT(epr)) {
+	if (epr->gg.g.tok != zx_a_EndpointReference_ELEM)
+	  continue;
 	zxid_cache_epr(cf, ses, epr);
+      }
     
   } else if (!strcmp(svc, XMLNS_DAP)) {
 
@@ -260,8 +263,10 @@ int main(int argc, char** argv)
 	    first_objinfo = env->Body->GetObjectListResponse->ObjectInfo;
 	    D("Successful response %p", first_objinfo);
 	    for (objinfo = first_objinfo;
-		 objinfo && objinfo->gg.g.tok == zx_demomed_ObjectInfo_ELEM;
+		 objinfo;
 		 objinfo = (struct zx_demomed_ObjectInfo_s*)objinfo->gg.g.n) {
+	      if (objinfo->gg.g.tok != zx_demomed_ObjectInfo_ELEM)
+		continue;
 	      D("objectID(%.*s) Dir(%.*s) Name(%.*s) Type(%.*s) Created(%.*s) Comment(%.*s)",
 		objinfo->objectID->g.len,       objinfo->objectID->g.s,
 		ZX_GET_CONTENT_LEN(objinfo->Dir),     ZX_GET_CONTENT_S(objinfo->Dir),
@@ -294,8 +299,10 @@ int main(int argc, char** argv)
 	    first_objdata = env->Body->GetObjectResponse->ObjectData;
 	    D("Successful response %p", first_objdata);
 	    for (objdata = first_objdata;
-		 objdata && objdata->gg.g.tok == zx_demomed_ObjectData_ELEM;
+		 objdata;
 		 objdata = (struct zx_demomed_ObjectData_s*)objdata->gg.g.n) {
+	      if (objdata->gg.g.tok != zx_demomed_ObjectData_ELEM)
+		continue;
 	      // show image
 	    }
 	  } else {

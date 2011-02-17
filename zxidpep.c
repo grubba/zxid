@@ -762,7 +762,7 @@ int zxid_call_trustpdp(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_
 	  continue;
 	val = memchr(sc->Value->g.s + sizeof(TAS3_TRUST_CTL1_RANKING)-1, '=', sc->Value->g.len - (sizeof(TAS3_TRUST_CTL1_RANKING)-1));
 	if (!val) {
-	  ERR("Malformed trust renking(%.*s)", sc->Value->g.len, sc->Value->g.s);
+	  ERR("Malformed trust ranking(%.*s)", sc->Value->g.len, sc->Value->g.s);
 	  continue;
 	}
 	

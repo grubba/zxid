@@ -1,4 +1,5 @@
 http://sp1.zxidsp.org:8081/zxidhlo?o=B
+https://kent.nekton.tas3.eu/idp/shibboleth
 http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B
 http://idp.ssocircle.com
 http://tripod.kenteq.nl/SSO/ZXID.ashx
@@ -13,6 +14,7 @@ http://idp.tas3.pt:8081/zxididp
 https://cardspace-idp.symlabs.net:8002/idp.xml
 https://zxidp.org/idp
 ehp-stage.uhg.UMICH
+https://nekton.tas3.eu:13942/simplesaml/module.php/saml/sp/metadata.php/default-sp
 http://rolacast.labse.isti.cnr.it/meta.xml
 http://saml.flexmls.com/idp/shibboleth
 https://idpdemo.tas3.eu:8443/zxididp?o=B

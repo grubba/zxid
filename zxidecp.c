@@ -73,10 +73,13 @@ static struct zx_sp_IDPList_s* zxid_mk_idp_list(zxid_conf* cf, char* binding)
     if (!idp->ed->IDPSSODescriptor)
       continue;
     for (sso_svc = idp->ed->IDPSSODescriptor->SingleSignOnService;
-	 sso_svc && sso_svc->gg.g.tok == zx_md_SingleSignOnService_ELEM;
-	 sso_svc = (struct zx_md_SingleSignOnService_s*)sso_svc->gg.g.n)
+	 sso_svc;
+	 sso_svc = (struct zx_md_SingleSignOnService_s*)sso_svc->gg.g.n) {
+      if (sso_svc->gg.g.tok != zx_md_SingleSignOnService_ELEM)
+	continue;
       if (sso_svc->Binding && !memcmp(binding, sso_svc->Binding->g.s, sso_svc->Binding->g.len))
 	break;
+    }
     if (!sso_svc) {
       D("Entity(%s) does not have any IdP SSO Service with binding(%s)", idp->eid, binding);
       continue;  /* Not eligible IdP, next one please. */

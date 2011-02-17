@@ -1108,6 +1108,7 @@ class zxidjniJNI {
   public final static native String zxid_get_epr_address(long jarg1, long jarg2);
   public final static native String zxid_get_epr_entid(long jarg1, long jarg2);
   public final static native String zxid_get_epr_desc(long jarg1, long jarg2);
+  public final static native String zxid_get_epr_tas3_trust(long jarg1, long jarg2);
   public final static native String zxid_get_epr_secmech(long jarg1, long jarg2);
   public final static native void zxid_set_epr_secmech(long jarg1, long jarg2, String jarg3);
   public final static native long zxid_get_epr_token(long jarg1, long jarg2);
@@ -1119,6 +1120,7 @@ class zxidjniJNI {
   public final static native void zxid_set_call_invoktok(long jarg1, long jarg2, long jarg3);
   public final static native long zxid_get_call_tgttok(long jarg1, long jarg2);
   public final static native void zxid_set_call_tgttok(long jarg1, long jarg2, long jarg3);
+  public final static native String zxid_epr2str(long jarg1, long jarg2);
   public final static native String zxid_token2str(long jarg1, long jarg2);
   public final static native long zxid_str2token(long jarg1, String jarg2);
   public final static native String zxid_a7n2str(long jarg1, long jarg2);

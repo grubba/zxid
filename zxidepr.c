@@ -189,7 +189,9 @@ void zxid_snarf_eprs(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
   struct zx_str* ss;
   struct zx_str* urlss;
   int wsf20 = 0;
-  for (; epr && epr->gg.g.tok == zx_a_EndpointReference_ELEM; epr = (zxid_epr*)epr->gg.g.n) {
+  for (; epr; epr = (zxid_epr*)epr->gg.g.n) {
+    if (epr->gg.g.tok != zx_a_EndpointReference_ELEM)
+      continue;
     ss = ZX_GET_CONTENT(epr->Metadata->ServiceType);
     urlss = ZX_GET_CONTENT(epr->Address);
     D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
@@ -221,16 +223,17 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
   
   D_INDENT("snarf_eprs: ");
   zxid_get_ses_sso_a7n(cf, ses);
-  if (ses->a7n)
-    for (as = ses->a7n->AttributeStatement;
-	 as && as->gg.g.tok == zx_sa_AttributeStatement_ELEM;
-	 as = (struct zx_sa_AttributeStatement_s*)as->gg.g.n)
-      for (at = as->Attribute;
-	   at && at->gg.g.tok == zx_sa_Attribute_ELEM;
-	   at = (struct zx_sa_Attribute_s*)at->gg.g.n)
-	for (av = at->AttributeValue;
-	     av && av->gg.g.tok == zx_sa_AttributeValue_ELEM;
-	     av = (struct zx_sa_AttributeValue_s*)av->gg.g.n) {
+  if (ses->a7n) {
+    for (as = ses->a7n->AttributeStatement; as;
+	 as = (struct zx_sa_AttributeStatement_s*)as->gg.g.n) {
+      if (as->gg.g.tok != zx_sa_AttributeStatement_ELEM)
+	continue;
+      for (at = as->Attribute; at; at = (struct zx_sa_Attribute_s*)at->gg.g.n) {
+	if (at->gg.g.tok != zx_sa_Attribute_ELEM)
+	  continue;
+	for (av = at->AttributeValue; av; av = (struct zx_sa_AttributeValue_s*)av->gg.g.n) {
+	  if (av->gg.g.tok != zx_sa_AttributeValue_ELEM)
+	    continue;
 	  zxid_snarf_eprs(cf, ses, av->EndpointReference);
 	  if (av->ResourceOffering) {
 	    ++wsf11;
@@ -251,18 +254,25 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
 #endif
 	  }
 	}
+      }
+    }
+  }
 #if 0
-  if (ses->a7n12)
-    for (as = ses->a7n->AttributeStatement;
-	 as && as->gg.g.tok == zx_sa11_AttributeStatement_ELEM;
-	 as = (struct zx_sa11_AttributeStatement_s*)as->gg.g.n)
-      for (at = as->Attribute;
-	   at && at->gg.g.tok == zx_sa11_Attribute_ELEM;
-	   at = (struct zx_sa11_Attribute_s*)at->gg.g.n)
-	for (av = at->AttributeValue;
-	     av && av->gg.g.tok == zx_sa11_AttributeValue_ELEM;
-	     av = (struct zx_sa11_AttributeValue_s*)av->gg.g.n) {
+  if (ses->a7n12) {
+    for (as = ses->a7n->AttributeStatement; as;
+	 as = (struct zx_sa11_AttributeStatement_s*)as->gg.g.n) {
+      if (as->gg.g.tok != zx_sa11_AttributeStatement_ELEM)
+	continue;
+      for (at = as->Attribute; at; at = (struct zx_sa11_Attribute_s*)at->gg.g.n) {
+	if (at->gg.g.tok != zx_sa11_Attribute_ELEM)
+	  continue;
+	for (av = at->AttributeValue; av; av = (struct zx_sa11_AttributeValue_s*)av->gg.g.n) {
+	  if (av->gg.g.tok != zx_sa11_AttributeValue_ELEM)
+	    continue;
 	}
+      }
+    }
+  }
 #endif
   D_DEDENT("snarf_eprs: ");
 }
@@ -442,8 +452,10 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
   if (env && env->Body) {
     if (env->Body->QueryResponse) {
       for (epr = env->Body->QueryResponse->EndpointReference;
-	   epr && epr->gg.g.tok == zx_a_EndpointReference_ELEM;
+	   epr;
 	   epr = (zxid_epr*)ZX_NEXT(epr)) {
+	if (epr->gg.g.tok != zx_a_EndpointReference_ELEM)
+	  continue;
 	ss = ZX_GET_CONTENT(epr->Metadata->ServiceType);
 	urlss = ZX_GET_CONTENT(epr->Address);
 	D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
@@ -490,6 +502,15 @@ struct zx_str* zxid_get_epr_desc(zxid_conf* cf, zxid_epr* epr) {
   if (!epr || !epr->Metadata)
     return 0;
   return ZX_GET_CONTENT(epr->Metadata->Abstract);
+}
+
+/*() Accessor function for extracting endpoint TAS3 Trust scores. */
+
+/* Called by:  */
+struct zx_str* zxid_get_epr_tas3_trust(zxid_conf* cf, zxid_epr* epr) {
+  if (!epr || !epr->Metadata)
+    return 0;
+  return zx_easy_enc_elem_sig(cf, epr->Metadata->Trust);
 }
 
 /*() Accessor function for extracting security mechanism ID. */
@@ -662,10 +683,25 @@ void zxid_set_call_tgttok(zxid_conf* cf, zxid_ses* ses, zxid_tok* tok) {
   ses->call_tgttok = tok;
 }
 
+/*() Serialize an EPR. */
+
+/* Called by: */
+struct zx_str* zxid_epr2str(zxid_conf* cf, zxid_epr* epr) {
+  if (!epr) {
+    ERR("NULL EPR. %p", epr);
+    return 0;
+  }
+  return zx_easy_enc_elem_sig(cf, &epr->gg);
+}
+
 /*() Serialize a token. */
 
 /* Called by: */
 struct zx_str* zxid_token2str(zxid_conf* cf, zxid_tok* tok) {
+  if (!tok) {
+    ERR("NULL Token. %p", tok);
+    return 0;
+  }
   if (!tok)
     return 0;
   return zx_easy_enc_elem_sig(cf, &tok->gg);

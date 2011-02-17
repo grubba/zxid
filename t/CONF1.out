@@ -2,7 +2,7 @@
 ======== CONF ========
 <title>ZXID Conf for http://sp.tas3.pt:8080/zxidservlet/sso</title><body bgcolor=white><h1>ZXID Conf for http://sp.tas3.pt:8080/zxidservlet/sso?o=B</h1><p>Please see config file in /var/zxid/zxid.conf, and documentation in zxid-conf.pd and zxidconf.h
 <p>[ <a href="?o=B">Metadata</a> | <a href="?o=c">CARML</a> | <a href="?o=d">This Conf Dump</a> ]
-<p>Version: R0.75 (1295881027)
+<p>Version: R0.78 (1297957944)
 <pre>PATH=/var/zxid/
 URL=http://sp.tas3.pt:8080/zxidservlet/sso
 AFFILIATION=
@@ -46,6 +46,7 @@ POST_A7N_ENC=1
 CANON_INOPT=0
 ENC_TAIL_OPT=1
 ENCKEY_OPT=32
+VALID_OPT=0x0
 IDPATOPT=1
 DI_ALLOW_CREATE=49
 DI_NID_FMT=112
@@ -60,6 +61,7 @@ SES_COOKIE_NAME=ZXIDSES
 IPPORT=
 USER_LOCAL=1
 IDP_ENA=0
+IDP_PXY_ENA=0
 IMPS_ENA=0
 AS_ENA=0
 PDP_ENA=1
@@ -108,11 +110,11 @@ SHOW_TECH=0
 IDP_LIST_METH=1
 IDP_SEL_PAGE=
 IDP_SEL_TEMPL_FILE=idpsel.html
-</pre><textarea cols=100 rows=20>IDP_SEL_TEMPL=<title>ZXID SP SSO: Choose IdP</title><link type="text/css" rel=stylesheet href="idpsel.css"><body bgcolor=white><h1 class=zxtop>ZXID SP Federated SSO (user NOT logged in, no session)</h1><form method=get action="!!URL"><div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div><h3>Login Using New IdP</h3><i>A new IdP is one whose metadata we do not have yet. We need to knowthe IdP URL (aka Entity ID) in order to fetch the metadata using thewell known location method. You will need to ask the adminstrator ofthe IdP to tell you what the EntityID is.</i><p>IdP URL <input name=e size=60><input type=submit name=l0 value=" Login "><br>Entity ID of this SP (click on the link to fetch the SP metadata): <a href="!!EID">!!EID</a>!!IDP_LIST<h3>Technical options</h3><input type=checkbox name=fc value=1 checked> Create federation, NID Format:<select name=fn><option value=prstnt>Persistent<option value=trnsnt>Transient<option value="">(none)</select><br><!-- ZXID built-in defaults, see zxidconf.h and zxid-conf.pd for explanation --><input type=hidden name=fq value=""><input type=hidden name=fy value=""><input type=hidden name=fa value=""><input type=hidden name=fm value=""><input type=hidden name=fp value=0><input type=hidden name=ff value=0><div class=zxbot><a class=zx href="http://zxid.org/">zxid.org</a>, !!VERSION (builtin)</div>
+</pre><textarea cols=100 rows=20>IDP_SEL_TEMPL=<title>ZXID SP SSO: Choose IdP</title><link type="text/css" rel=stylesheet href="idpsel.css"><body bgcolor=white><h1 class=zxtop>ZXID SP Federated SSO (user NOT logged in, no session)</h1><form method=get action="!!URL"><div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div><h3>Login Using New IdP</h3><i>A new IdP is one whose metadata we do not have yet. We need to knowthe IdP URL (aka Entity ID) in order to fetch the metadata using thewell known location method. You will need to ask the adminstrator ofthe IdP to tell you what the EntityID is.</i><p>IdP URL <input name=e size=60><input type=submit name=l0 value=" Login "><br>Entity ID of this SP (click on the link to fetch the SP metadata): <a href="!!EID">!!EID</a>!!IDP_LIST<h3>Technical options</h3><input type=hidden name=fc value=1><input type=hidden name=fn value=prstnt><!-- ZXID built-in defaults, see zxidconf.h and zxid-conf.pd for explanation --><input type=hidden name=fq value=""><input type=hidden name=fy value=""><input type=hidden name=fa value=""><input type=hidden name=fm value=""><input type=hidden name=fp value=0><input type=hidden name=ff value=0><div class=zxbot><a class=zx href="http://zxid.org/">zxid.org</a>, !!VERSION (builtin)</div>
 </textarea><pre>
 AN_PAGE=
 AN_TEMPL_FILE=an-main.html
-</pre><textarea cols=100 rows=20>AN_TEMPL=<title>ZXID IdP: Authentication</title><link type="text/css" rel=stylesheet href="an.css"><body bgcolor=white><form method=get action="!!URL"><h1 class=zxtop>ZXID IdP Authentication for Federated SSO</h1><p>Entity ID of this IdP (click for the IdP metadata): <a href="!!EID">!!EID</a><br><p>Login requested by !!SP_DPY_NAME (<a href="!!SP_EID">!!SP_EID</a>)<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>User NOT logged in, no session.<h3>Please authenticate using one of the following methods:</h3><!--input type=checkbox name=at> Adjust attribute sharing after authentication--><ol><li> Yubikey <a href="http://yubico.com"><img src="yubiright_16x16.gif" width=16 height=16 border=0></a>:<input name=au><input type=submit name=alp value=" Login "><li> User: <input name=au> Password: <input type=password name=ap><input type=submit name=alp value=" Login "><li><input type=submit name=an value=" Create New User "></ol><h3>Technical options</h3><input type=checkbox name=fc value=1 checked> Create federation, NID Format: <select name=fn><option value=prstnt>Persistent<option value=trnsnt>Transient<option value="">(none)</select><br><input type=hidden name=fq value=""><input type=hidden name=fy value=""><input type=hidden name=fa value=""><input type=hidden name=fm value=""><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h--><input type=hidden name=ar value="!!SSOREQ"><input type=hidden name=zxapp value="!!ZXAPP"></form><div class=zxbot><a href="http://zxid.org/">zxid.org</a>, !!VERSION (builtin)</div>
+</pre><textarea cols=100 rows=20>AN_TEMPL=<title>ZXID IdP: Authentication</title><link type="text/css" rel=stylesheet href="an.css"><body bgcolor=white><form method=get action="!!URL"><h1 class=zxtop>ZXID IdP Authentication for Federated SSO</h1><p>Entity ID of this IdP (click for the IdP metadata): <a href="!!EID">!!EID</a><br><p>Login requested by !!SP_DPY_NAME (<a href="!!SP_EID">!!SP_EID</a>)<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>User NOT logged in, no session.<h3>Please authenticate using one of the following methods:</h3><!--input type=checkbox name=at> Adjust attribute sharing after authentication--><ol><li> Yubikey <a href="http://yubico.com"><img src="yubiright_16x16.gif" width=16 height=16 border=0></a>:<input name=au><input type=submit name=alp value=" Login "><li> User: <input name=au> Password: <input type=password name=ap><input type=submit name=alp value=" Login "><li><input type=submit name=an value=" Create New User "></ol><input type=hidden name=fc value=1><input type=hidden name=fn value=prstnt><br><input type=hidden name=fq value=""><input type=hidden name=fy value=""><input type=hidden name=fa value=""><input type=hidden name=fm value=""><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h--><input type=hidden name=ar value="!!SSOREQ"><input type=hidden name=zxapp value="!!ZXAPP"></form><div class=zxbot><a href="http://zxid.org/">zxid.org</a>, !!VERSION (builtin)</div>
 </textarea><pre>
 POST_TEMPL_FILE=post.html
 </pre><textarea cols=100 rows=7>POST_TEMPL=<title>ZXID Post Profile</title><link type="text/css" rel=stylesheet href="an.css"><body bgcolor=white OnLoad="document.forms[0].submit()"><form method=post action="!!ACTION_URL"><h1 class=zxtop>ZXID POST Profile POST</h1><div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div><input type=hidden name=!!SAML_ART value="!!SAML_RESP">!!RS!!SIG<input type=submit name=ok value=" If JavaScript is not on, please click here to complete the transaction "></form><div class=zxbot><a href="http://zxid.org/">zxid.org</a>, !!VERSION (builtin)</div>
@@ -160,9 +162,15 @@ OUTMAP=
 PEPMAP=
   rule=0$ ns(env)$ src(*)$ dst()$ ext();
   rule=0$ ns(subj)$ src(idpnid)$ dst(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ ext();
-  rule=0$ ns(subj)$ src(role)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oid:1.3.6.1.4.1.5923.1.1.1.1)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oid:1.3.6.1.4.1.5923.1.1.1.7)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(eduPersonAffiliation)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(eduPersonEntitlement)$ dst()$ ext(subj$role$$$);
   rule=0$ ns(rsrc)$ src(rs)$ dst(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ ext();
+  rule=0$ ns(rsrc)$ src(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ dst()$ ext();
   rule=0$ ns(act)$ src(Action)$ dst(urn:oasis:names:tc:xacml:1.0:action:action-id)$ ext();
+  rule=0$ ns(act)$ src(urn:oasis:names:tc:xacml:1.0:action:action-id)$ dst()$ ext();
   rule=0$ ns(env)$ src(ZXID_PEPvers)$ dst()$ ext();
   rule=1$ ns()$ src(cookie)$ dst()$ ext();
   rule=1$ ns()$ src(setcookie)$ dst()$ ext();
@@ -171,36 +179,60 @@ PEPMAP=
 PEPMAP_RQOUT=
   rule=0$ ns(env)$ src(*)$ dst()$ ext();
   rule=0$ ns(subj)$ src(idpnid)$ dst(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ ext();
-  rule=0$ ns(subj)$ src(role)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oid:1.3.6.1.4.1.5923.1.1.1.1)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oid:1.3.6.1.4.1.5923.1.1.1.7)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(eduPersonAffiliation)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(eduPersonEntitlement)$ dst()$ ext(subj$role$$$);
   rule=0$ ns(rsrc)$ src(rs)$ dst(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ ext();
+  rule=0$ ns(rsrc)$ src(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ dst()$ ext();
   rule=0$ ns(act)$ src(Action)$ dst(urn:oasis:names:tc:xacml:1.0:action:action-id)$ ext();
+  rule=0$ ns(act)$ src(urn:oasis:names:tc:xacml:1.0:action:action-id)$ dst()$ ext();
   rule=0$ ns(env)$ src(ZXID_PEPvers)$ dst()$ ext();
   rule=1$ ns()$ src(cookie)$ dst()$ ext();
   rule=1$ ns()$ src(setcookie)$ dst()$ ext()
 PEPMAP_RQIN=
   rule=0$ ns(env)$ src(*)$ dst()$ ext();
   rule=0$ ns(subj)$ src(idpnid)$ dst(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ ext();
-  rule=0$ ns(subj)$ src(role)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oid:1.3.6.1.4.1.5923.1.1.1.1)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oid:1.3.6.1.4.1.5923.1.1.1.7)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(eduPersonAffiliation)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(eduPersonEntitlement)$ dst()$ ext(subj$role$$$);
   rule=0$ ns(rsrc)$ src(rs)$ dst(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ ext();
+  rule=0$ ns(rsrc)$ src(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ dst()$ ext();
   rule=0$ ns(act)$ src(Action)$ dst(urn:oasis:names:tc:xacml:1.0:action:action-id)$ ext();
+  rule=0$ ns(act)$ src(urn:oasis:names:tc:xacml:1.0:action:action-id)$ dst()$ ext();
   rule=0$ ns(env)$ src(ZXID_PEPvers)$ dst()$ ext();
   rule=1$ ns()$ src(cookie)$ dst()$ ext();
   rule=1$ ns()$ src(setcookie)$ dst()$ ext()
 PEPMAP_RSOUT=
   rule=0$ ns(env)$ src(*)$ dst()$ ext();
   rule=0$ ns(subj)$ src(idpnid)$ dst(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ ext();
-  rule=0$ ns(subj)$ src(role)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oid:1.3.6.1.4.1.5923.1.1.1.1)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oid:1.3.6.1.4.1.5923.1.1.1.7)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(eduPersonAffiliation)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(eduPersonEntitlement)$ dst()$ ext(subj$role$$$);
   rule=0$ ns(rsrc)$ src(rs)$ dst(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ ext();
+  rule=0$ ns(rsrc)$ src(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ dst()$ ext();
   rule=0$ ns(act)$ src(Action)$ dst(urn:oasis:names:tc:xacml:1.0:action:action-id)$ ext();
+  rule=0$ ns(act)$ src(urn:oasis:names:tc:xacml:1.0:action:action-id)$ dst()$ ext();
   rule=0$ ns(env)$ src(ZXID_PEPvers)$ dst()$ ext();
   rule=1$ ns()$ src(cookie)$ dst()$ ext();
   rule=1$ ns()$ src(setcookie)$ dst()$ ext()
 PEPMAP_RSIN=
   rule=0$ ns(env)$ src(*)$ dst()$ ext();
   rule=0$ ns(subj)$ src(idpnid)$ dst(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ ext();
-  rule=0$ ns(subj)$ src(role)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oasis:names:tc:xacml:1.0:subject:subject-id)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oid:1.3.6.1.4.1.5923.1.1.1.1)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(urn:oid:1.3.6.1.4.1.5923.1.1.1.7)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(eduPersonAffiliation)$ dst()$ ext();
+  rule=0$ ns(subj)$ src(eduPersonEntitlement)$ dst()$ ext(subj$role$$$);
   rule=0$ ns(rsrc)$ src(rs)$ dst(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ ext();
+  rule=0$ ns(rsrc)$ src(urn:oasis:names:tc:xacml:1.0:resource:resource-id)$ dst()$ ext();
   rule=0$ ns(act)$ src(Action)$ dst(urn:oasis:names:tc:xacml:1.0:action:action-id)$ ext();
+  rule=0$ ns(act)$ src(urn:oasis:names:tc:xacml:1.0:action:action-id)$ dst()$ ext();
   rule=0$ ns(env)$ src(ZXID_PEPvers)$ dst()$ ext();
   rule=1$ ns()$ src(cookie)$ dst()$ ext();
   rule=1$ ns()$ src(setcookie)$ dst()$ ext()

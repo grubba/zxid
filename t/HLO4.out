@@ -1,5 +1,5 @@
 Content-Type: text/html
-Content-Length: 3308
+Content-Length: 3475
 
 <title>ZXID SP SSO: Choose IdP</title>
 <link type="text/css" rel=stylesheet href="idpsel.css"><body bgcolor=white>
@@ -26,11 +26,12 @@ Entity ID of this SP (click on the link to fetch the SP metadata): <a href="http
 <input type=submit name="l0https://zxidp.org/idp" value=" Login with ZXIDP - Free IdP (https://zxidp.org/idp) "><br>
 <input type=submit name="l0https://cardspace-idp.symlabs.net:8002/idp.xml" value=" Login with  (https://cardspace-idp.symlabs.net:8002/idp.xml) "><br>
 <input type=submit name="l0https://idp.kantarainitiative.org/simplesaml/saml2/idp/metadata.php" value=" Login with  (https://idp.kantarainitiative.org/simplesaml/saml2/idp/metadata.php) "><br>
-<input type=submit name="l0https://idp.tas3.eu/zxididp?o=B" value=" Login with  (https://idp.tas3.eu/zxididp?o=B) "><br>
+<input type=submit name="l0https://idp.tas3.eu/zxididp?o=B" value=" Login with ZXIdP (https://idp.tas3.eu/zxididp?o=B) "><br>
 <input type=submit name="l0http://idp.tas3.pt:8081/zxididp" value=" Login with TAS3 Demo IdP (http://idp.tas3.pt:8081/zxididp) "><br>
 <input type=submit name="l0https://idp.tas3.kent.ac.uk/idp/shibboleth" value=" Login with  (https://idp.tas3.kent.ac.uk/idp/shibboleth) "><br>
 <input type=submit name="l0https://idp.symdemo.com:8880/idp.xml" value=" Login with  (https://idp.symdemo.com:8880/idp.xml) "><br>
 <input type=submit name="l0http://idp.ssocircle.com" value=" Login with  (http://idp.ssocircle.com) "><br>
+<input type=submit name="l0https://kent.nekton.tas3.eu/idp/shibboleth" value=" Login with kent.nekton.tas3.eu (https://kent.nekton.tas3.eu/idp/shibboleth) "><br>
 
 
 <h3>Technical options</h3>
@@ -51,4 +52,4 @@ Entity ID of this SP (click on the link to fetch the SP metadata): <a href="http
 <input type=hidden name=fp value=0>
 <input type=hidden name=ff value=0>
 
-<div class=zxbot><a class=zx href="http://zxid.org/">zxid.org</a>, 0.73 1292754986 libzxid (zxid.org)</div>
+<div class=zxbot><a class=zx href="http://zxid.org/">zxid.org</a>, 0.78 1297957944 libzxid (zxid.org)</div>

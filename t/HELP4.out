@@ -1,5 +1,5 @@
-zxdecode  -  Decode SAML Redirect and POST Messages R0.76
-Copyright (c) 2008-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+zxdecode  -  Decode SAML Redirect and POST Messages R0.78
+Copyright (c) 2008-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0
 See http://www.apache.org/licenses/LICENSE-2.0
 Send well researched bug reports to the author. Home: zxid.org

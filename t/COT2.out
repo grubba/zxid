@@ -1,4 +1,5 @@
 http://sp1.zxidsp.org:8081/zxidhlo?o=B             /var/zxid/cot/7226zILkb6t9aGT89NyvhKvbZS0 TAS3 App Demo SP and WSC
+https://kent.nekton.tas3.eu/idp/shibboleth         /var/zxid/cot/YXfe5FNkf75PSHYMAbmjbhgvSC4 kent.nekton.tas3.eu
 http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B            /var/zxid/cot/THuOFn5WPO49n6esrG22rUFW6Go TAS3 App Demo SP and WSC
 http://idp.ssocircle.com                           /var/zxid/cot/s36Te-rgbzReSjVc8vDDGy89tT8 -
 http://tripod.kenteq.nl/SSO/ZXID.ashx              /var/zxid/cot/48uIfks4yTO6mjaF5IP3IQFqtW0 Kenteq is het kennis- en adviescentrum voor technisch vakmanschap. Ons doel is bij te dragen aan loopbaanontwikkeling en hoogwaardig vakmanschap in de techniek. Door kennisoverdracht, begeleiding, training, scholing en advisering. Kenteq zoekt daarbij bewust naar samenwerking.
@@ -7,12 +8,13 @@ https://idp.tas3.kent.ac.uk/idp/shibboleth         /var/zxid/cot/crE4cE1_K3Vd5oQ
 http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B     /var/zxid/cot/RoxLhhcxK04xzJRrW6ZuroX7Ing -
 http://idp.tas3.pt:8081/zxididp                    /var/zxid/cot/xsKJr3DL7sUPDdbdqgC2H_eP-UM TAS3 Demo IdP
 http://sp.tas3.pt:8080/zxidservlet/sso?o=B         /var/zxid/cot/9u_7LsQjkz0VaXKucmx1_sYjQnM TAS3 App Demo SP and WSC
-https://idp.tas3.eu/zxididp?o=B                    /var/zxid/cot/xOjD65W1OVltx35kfHMs7ZLD9Sg -
+https://idp.tas3.eu/zxididp?o=B                    /var/zxid/cot/xOjD65W1OVltx35kfHMs7ZLD9Sg ZXIdP
 https://idp.kantarainitiative.org/simplesaml/saml2/idp/metadata.php /var/zxid/cot/JiB-7CyH0JYURjZj3slF2sl7CO4 -
 http://idp.tas3.pt:8081/zxididp                    /var/zxid/cot/HP5IP9fE_HtNMNuTisquh7oNqg4 TAS3 Demo IdP
 https://cardspace-idp.symlabs.net:8002/idp.xml     /var/zxid/cot/v1tVvR0_Z_ZjW2p0GQzQYSUDY0M -
 https://zxidp.org/idp                              /var/zxid/cot/yBeCTPt0NQ2vMuI-srKw5h4N2i8 ZXIDP - Free IdP
 ehp-stage.uhg.UMICH                                /var/zxid/cot/sVKeK_EW5Kdgt_3_dty3Pvpkvn4 TAS3 Demo IdP
+https://nekton.tas3.eu:13942/simplesaml/module.php/saml/sp/metadata.php/default-sp /var/zxid/cot/iehL3xyjv1v7xtqh8885nyMOiug -
 http://rolacast.labse.isti.cnr.it/meta.xml         /var/zxid/cot/JwZcQkNISe3yGNqYkRkhC6MsPI4 -
 http://saml.flexmls.com/idp/shibboleth             /var/zxid/cot/U1P0XrwXMFHdAqVbFUpnrDvDV3g -
 https://idpdemo.tas3.eu:8443/zxididp?o=B           /var/zxid/cot/kBxtAcQLGjHtsHvYvHDhOoehdTY -

@@ -4042,6 +4042,8 @@ public class zxidjni implements zxidjniConstants {
 
   public static String get_epr_desc(zxid_conf cf, zxid_epr epr) { return zxidjniJNI.zxid_get_epr_desc(zxid_conf.getCPtr(cf), zxid_epr.getCPtr(epr)); }
 
+  public static String get_epr_tas3_trust(zxid_conf cf, zxid_epr epr) { return zxidjniJNI.zxid_get_epr_tas3_trust(zxid_conf.getCPtr(cf), zxid_epr.getCPtr(epr)); }
+
   public static String get_epr_secmech(zxid_conf cf, zxid_epr epr) { return zxidjniJNI.zxid_get_epr_secmech(zxid_conf.getCPtr(cf), zxid_epr.getCPtr(epr)); }
 
   public static void set_epr_secmech(zxid_conf cf, zxid_epr epr, String secmec) {
@@ -4088,6 +4090,8 @@ public class zxidjni implements zxidjniConstants {
   public static void set_call_tgttok(zxid_conf cf, zxid_ses ses, zxid_tok tok) {
     zxidjniJNI.zxid_set_call_tgttok(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), zxid_tok.getCPtr(tok));
   }
+
+  public static String epr2str(zxid_conf cf, zxid_epr epr) { return zxidjniJNI.zxid_epr2str(zxid_conf.getCPtr(cf), zxid_epr.getCPtr(epr)); }
 
   public static String token2str(zxid_conf cf, zxid_tok tok) { return zxidjniJNI.zxid_token2str(zxid_conf.getCPtr(cf), zxid_tok.getCPtr(tok)); }
 

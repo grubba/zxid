@@ -48,12 +48,15 @@ struct zx_str* zxid_idp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
   switch (svc_type) {
   case ZXID_SLO_SVC:
     for (slo_svc = idp_meta->ed->IDPSSODescriptor->SingleLogoutService;
-	 slo_svc && slo_svc->gg.g.tok == zx_md_SingleLogoutService_ELEM;
-	 slo_svc = (struct zx_md_SingleLogoutService_s*)slo_svc->gg.g.n)
+	 slo_svc;
+	 slo_svc = (struct zx_md_SingleLogoutService_s*)slo_svc->gg.g.n) {
+      if (slo_svc->gg.g.tok != zx_md_SingleLogoutService_ELEM)
+	continue;
       if (slo_svc->Binding  && !memcmp(binding, slo_svc->Binding->g.s, slo_svc->Binding->g.len)
 	  /*&& svc->index && !memcmp(end_pt_ix, svc->index->s, svc->index->len)*/
 	  && slo_svc->Location)
 	break;
+    }
     if (!slo_svc)
       break;
     loc = req ? &slo_svc->Location->g : (slo_svc->ResponseLocation ? &slo_svc->ResponseLocation->g : &slo_svc->Location->g);
@@ -62,12 +65,15 @@ struct zx_str* zxid_idp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
     return loc;
   case ZXID_MNI_SVC:
     for (mni_svc = idp_meta->ed->IDPSSODescriptor->ManageNameIDService;
-	 mni_svc && mni_svc->gg.g.tok == zx_md_ManageNameIDService_ELEM;
-	 mni_svc = (struct zx_md_ManageNameIDService_s*)mni_svc->gg.g.n)
+	 mni_svc;
+	 mni_svc = (struct zx_md_ManageNameIDService_s*)mni_svc->gg.g.n) {
+      if (mni_svc->gg.g.tok != zx_md_ManageNameIDService_ELEM)
+	continue;
       if (mni_svc->Binding  && !memcmp(binding, mni_svc->Binding->g.s, mni_svc->Binding->g.len)
 	  /*&& svc->index && !memcmp(end_pt_ix, svc->index->s, svc->index->len)*/
 	  && mni_svc->Location)
 	break;
+    }
     if (!mni_svc)
       break;
     loc = req ? &mni_svc->Location->g : (mni_svc->ResponseLocation ? &mni_svc->ResponseLocation->g : &mni_svc->Location->g);
@@ -167,12 +173,15 @@ struct zx_str* zxid_sp_loc_by_index_raw(zxid_conf* cf, zxid_cgi* cgi,
   switch (svc_type) {
   case ZXID_ACS_SVC:
     for (acs_svc = sp_meta->ed->SPSSODescriptor->AssertionConsumerService;
-	 acs_svc && acs_svc->gg.g.tok == zx_md_AssertionConsumerService_ELEM;
-	 acs_svc = (struct zx_md_AssertionConsumerService_s*)acs_svc->gg.g.n)
+	 acs_svc;
+	 acs_svc = (struct zx_md_AssertionConsumerService_s*)acs_svc->gg.g.n) {
+      if (acs_svc->gg.g.tok != zx_md_AssertionConsumerService_ELEM)
+	continue;
       if (acs_svc->index && ix->len == acs_svc->index->g.len
 	  && !memcmp(ix->s, acs_svc->index->g.s, ix->len)
 	  && acs_svc->Location)
 	break;
+    }
     if (!acs_svc)
       break;
     loc = &acs_svc->Location->g;
@@ -209,12 +218,15 @@ struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* sp_met
   switch (svc_type) {
   case ZXID_SLO_SVC:
     for (slo_svc = sp_meta->ed->SPSSODescriptor->SingleLogoutService;
-	 slo_svc && slo_svc->gg.g.tok == zx_md_SingleLogoutService_ELEM;
-	 slo_svc = (struct zx_md_SingleLogoutService_s*)slo_svc->gg.g.n)
+	 slo_svc;
+	 slo_svc = (struct zx_md_SingleLogoutService_s*)slo_svc->gg.g.n) {
+      if (slo_svc->gg.g.tok != zx_md_SingleLogoutService_ELEM)
+	continue;
       if (slo_svc->Binding  && !memcmp(binding, slo_svc->Binding->g.s, slo_svc->Binding->g.len)
 	  /*&& svc->index && !memcmp(end_pt_ix, svc->index->s, svc->index->len)*/
 	  && slo_svc->Location)
 	break;
+    }
     if (!slo_svc)
       break;
     loc = req ? &slo_svc->Location->g : (slo_svc->ResponseLocation ? &slo_svc->ResponseLocation->g : &slo_svc->Location->g);
@@ -223,12 +235,15 @@ struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* sp_met
     return loc;
   case ZXID_MNI_SVC:
     for (mni_svc = sp_meta->ed->SPSSODescriptor->ManageNameIDService;
-	 mni_svc && mni_svc->gg.g.tok == zx_md_ManageNameIDService_ELEM;
-	 mni_svc = (struct zx_md_ManageNameIDService_s*)mni_svc->gg.g.n)
+	 mni_svc;
+	 mni_svc = (struct zx_md_ManageNameIDService_s*)mni_svc->gg.g.n) {
+      if (mni_svc->gg.g.tok != zx_md_ManageNameIDService_ELEM)
+	continue;
       if (mni_svc->Binding  && !memcmp(binding, mni_svc->Binding->g.s, mni_svc->Binding->g.len)
 	  /*&& svc->index && !memcmp(end_pt_ix, svc->index->s, svc->index->len)*/
 	  && mni_svc->Location)
 	break;
+    }
     if (!mni_svc)
       break;
     loc = req ? &mni_svc->Location->g : (mni_svc->ResponseLocation ? &mni_svc->ResponseLocation->g : &mni_svc->Location->g);
@@ -237,12 +252,15 @@ struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* sp_met
     return loc;
   case ZXID_ACS_SVC:
     for (acs_svc = sp_meta->ed->SPSSODescriptor->AssertionConsumerService;
-	 acs_svc && acs_svc->gg.g.tok == zx_md_AssertionConsumerService_ELEM;
-	 acs_svc = (struct zx_md_AssertionConsumerService_s*)acs_svc->gg.g.n)
+	 acs_svc;
+	 acs_svc = (struct zx_md_AssertionConsumerService_s*)acs_svc->gg.g.n) {
+      if (acs_svc->gg.g.tok != zx_md_AssertionConsumerService_ELEM)
+	continue;
       if (acs_svc->Binding  && !memcmp(binding, acs_svc->Binding->g.s, acs_svc->Binding->g.len)
 	  /*&& svc->index && !memcmp(end_pt_ix, svc->index->s, svc->index->len)*/
 	  && acs_svc->Location)
 	break;
+    }
     if (!acs_svc)
       break;
     loc = &acs_svc->Location->g;

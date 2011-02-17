@@ -184,10 +184,13 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
       return 0;
     }
     for (sso_svc = idp_meta->ed->IDPSSODescriptor->SingleSignOnService;
-	 sso_svc && sso_svc->gg.g.tok == zx_md_SingleSignOnService_ELEM;
-	 sso_svc = (struct zx_md_SingleSignOnService_s*)sso_svc->gg.g.n)
+	 sso_svc;
+	 sso_svc = (struct zx_md_SingleSignOnService_s*)sso_svc->gg.g.n) {
+      if (sso_svc->gg.g.tok != zx_md_SingleSignOnService_ELEM)
+	continue;
       if (sso_svc->Binding && !memcmp(SAML2_REDIR, sso_svc->Binding->g.s, sso_svc->Binding->g.len))
 	break;
+    }
     if (!sso_svc) {
       ERR("IdP Entity(%s) does not have any IdP SSO Service with " SAML2_REDIR " binding (metadata problem)", cgi->eid);
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", cgi->eid, "No redir binding");
@@ -318,12 +321,15 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
       return 0;
     }
     for (ar_svc = idp_meta->ed->IDPSSODescriptor->ArtifactResolutionService;
-	 ar_svc && ar_svc->gg.g.tok == zx_md_ArtifactResolutionService_ELEM;
-	 ar_svc = (struct zx_md_ArtifactResolutionService_s*)ar_svc->gg.g.n)
+	 ar_svc;
+	 ar_svc = (struct zx_md_ArtifactResolutionService_s*)ar_svc->gg.g.n) {
+      if (ar_svc->gg.g.tok != zx_md_ArtifactResolutionService_ELEM)
+	continue;
       if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->g.s, ar_svc->Binding->g.len)
 	  && ar_svc->index && !memcmp(end_pt_ix, ar_svc->index->g.s, ar_svc->index->g.len)
 	  && ar_svc->Location)
 	break;
+    }
     if (!ar_svc) {
       ERR("Entity(%s) does not have any IdP Artifact Resolution Service with " SAML2_SOAP " binding and index(%s) (metadata problem)", idp_meta->eid, end_pt_ix);
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "No Artifact Resolution Svc eid(%s) ep_ix(%s)", idp_meta->eid, end_pt_ix);
@@ -452,11 +458,15 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
 
   if (a7n->Conditions->AudienceRestriction) {
     for (audr = a7n->Conditions->AudienceRestriction;
-	 audr && audr->gg.g.tok == zx_sa_AudienceRestriction_ELEM;
+	 audr;
 	 audr = (struct zx_sa_AudienceRestriction_s*)audr->gg.g.n) {
+      if (audr->gg.g.tok != zx_sa_AudienceRestriction_ELEM)
+	continue;
       for (aud = audr->Audience;
-	   aud && aud->g.tok == zx_sa_Audience_ELEM;
+	   aud;
 	   aud = (struct zx_elem_s*)aud->g.n) {
+	if (aud->g.tok != zx_sa_Audience_ELEM)
+	  continue;
 	ss = ZX_GET_CONTENT(aud);
 	if (ss?ss->len:0 == myentid->len && !memcmp(ss->s, myentid->s, ss->len)) {
 	  D("Found audience. %d", 0);
@@ -771,21 +781,27 @@ int zxid_as_call_ses(zxid_conf* cf, zxid_entity* idp_meta, zxid_cgi* cgi, zxid_s
 
 #if 0
   for (ar_svc = idp_meta->ed->IDPSSODescriptor->ArtifactResolutionService;
-       ar_svc && ar_svc->gg.g.tok == zx_md_ArtifactResolutionService_ELEM;
-       ar_svc = (struct zx_md_ArtifactResolutionService_s*)ar_svc->gg.g.n)
+       ar_svc;
+       ar_svc = (struct zx_md_ArtifactResolutionService_s*)ar_svc->gg.g.n) {
+    if (ar_svc->gg.g.tok != zx_md_ArtifactResolutionService_ELEM)
+      continue;
     if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->s, ar_svc->Binding->len)
 	/*&& ar_svc->index && !memcmp(end_pt_ix, ar_svc->index->s, ar_svc->index->len)*/
 	&& ar_svc->Location)
       break;
+  }
 #else
   /* *** Kludge: We use the SLO SOAP endpoint for AS. ArtifactResolution might be more natural. */
   for (ar_svc = idp_meta->ed->IDPSSODescriptor->SingleLogoutService;
-       ar_svc && ar_svc->gg.g.tok == zx_md_SingleLogoutService_ELEM;
-       ar_svc = (struct zx_md_SingleLogoutService_s*)ar_svc->gg.g.n)
+       ar_svc;
+       ar_svc = (struct zx_md_SingleLogoutService_s*)ar_svc->gg.g.n) {
+    if (ar_svc->gg.g.tok != zx_md_SingleLogoutService_ELEM)
+      continue;
     if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->g.s, ar_svc->Binding->g.len)
 	/*&& ar_svc->index && !memcmp(end_pt_ix, ar_svc->index->s, ar_svc->index->len)*/
 	&& ar_svc->Location)
       break;
+  }
 #endif
   if (!ar_svc) {
     ERR("Entity(%s) does not have any IdP Artifact Resolution Service with " SAML2_SOAP " binding (metadata problem)", idp_meta->eid);

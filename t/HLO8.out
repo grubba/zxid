@@ -1,5 +1,5 @@
 Content-Type: text/html
-Content-Length: 1950
+Content-Length: 3937
 
 <title>ZXID IdP: Authentication</title>
 <link type="text/css" rel=stylesheet href="an.css">
@@ -23,6 +23,24 @@ User NOT logged in, no session.
 &nbsp;<!--input type=checkbox name=at> Adjust attribute sharing after authentication-->
 
 <ol>
+
+<!--li> Authenticate using another IdP (Proxy IdP)<br><h3>Login Using Known IdP</h3>
+<input type=submit name="l0http://auth.orange.fr" value=" Login with  (http://auth.orange.fr) "><br>
+<input type=submit name="l0https://idpdemo.tas3.eu:8443/zxididp?o=B" value=" Login with  (https://idpdemo.tas3.eu:8443/zxididp?o=B) "><br>
+<input type=submit name="l0http://saml.flexmls.com/idp/shibboleth" value=" Login with  (http://saml.flexmls.com/idp/shibboleth) "><br>
+<input type=submit name="l0http://rolacast.labse.isti.cnr.it/meta.xml" value=" Login with  (http://rolacast.labse.isti.cnr.it/meta.xml) "><br>
+<input type=submit name="l0ehp-stage.uhg.UMICH" value=" Login with TAS3 Demo IdP (ehp-stage.uhg.UMICH) "><br>
+<input type=submit name="l0https://zxidp.org/idp" value=" Login with ZXIDP - Free IdP (https://zxidp.org/idp) "><br>
+<input type=submit name="l0https://cardspace-idp.symlabs.net:8002/idp.xml" value=" Login with  (https://cardspace-idp.symlabs.net:8002/idp.xml) "><br>
+<input type=submit name="l0https://idp.kantarainitiative.org/simplesaml/saml2/idp/metadata.php" value=" Login with  (https://idp.kantarainitiative.org/simplesaml/saml2/idp/metadata.php) "><br>
+<input type=submit name="l0https://idp.tas3.eu/zxididp?o=B" value=" Login with ZXIdP (https://idp.tas3.eu/zxididp?o=B) "><br>
+<input type=submit name="l0http://idp.tas3.pt:8081/zxididp" value=" Login with TAS3 Demo IdP (http://idp.tas3.pt:8081/zxididp) "><br>
+<input type=submit name="l0https://idp.tas3.kent.ac.uk/idp/shibboleth" value=" Login with  (https://idp.tas3.kent.ac.uk/idp/shibboleth) "><br>
+<input type=submit name="l0https://idp.symdemo.com:8880/idp.xml" value=" Login with  (https://idp.symdemo.com:8880/idp.xml) "><br>
+<input type=submit name="l0http://idp.ssocircle.com" value=" Login with  (http://idp.ssocircle.com) "><br>
+<input type=submit name="l0https://kent.nekton.tas3.eu/idp/shibboleth" value=" Login with kent.nekton.tas3.eu (https://kent.nekton.tas3.eu/idp/shibboleth) "><br>
+</li-->
+
 <li> Yubikey <a href="http://yubico.com"><img
      src="yubiright_16x16.gif" width=16 height=16 border=0></a>:
      <input name=au>
@@ -47,4 +65,4 @@ User NOT logged in, no session.
 <input type=hidden name=ar value="">
 <input type=hidden name=zxapp value="">
 </form>
-<div class=zxbot><a href="/zxidservlet/appdemo">App Demo</a> | <a href="http://zxid.org/">zxid.org</a>, 0.73 1292754986 libzxid (zxid.org)</div>
+<div class=zxbot><a href="/zxidservlet/appdemo">App Demo</a> | <a href="http://zxid.org/">zxid.org</a>, 0.78 1297957944 libzxid (zxid.org)</div>

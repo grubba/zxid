@@ -908,7 +908,9 @@ struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, str
   return zxid_map_val_ss(cf, ses, meta, map, atname, zx_dup_str(cf->ctx, STRNULLCHK(val)));
 }
 
-/*() Extract from a string representing SOAP envelope, the payload part in the body. */
+/*() Extract the payload part in the SOAP Body from a string representing SOAP Envelope.
+ * This does not really parse the XML. It uses simple, but robust, string matching
+ * based heuristic that can tolerate some garbage input. */
 
 /* Called by:  zxcall_main */
 char* zxid_extract_body(zxid_conf* cf, char* enve)

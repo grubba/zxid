@@ -116,9 +116,9 @@ int zxid_map_sec_mech(zxid_epr* epr)
 /* Called by:  wsse_sec_validate, zxid_wsc_valid_re_env, zxid_wsp_validate_env */
 int zxid_hunt_sig_parts(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struct zx_ds_Reference_s* sref, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy)
 {
-  for (; sref && sref->gg.g.tok == zx_ds_Reference_ELEM
-	 && n_refs < ZXID_N_WSF_SIGNED_HEADERS;
-       sref = (void*)ZX_NEXT(sref)) {
+  for (; sref && n_refs < ZXID_N_WSF_SIGNED_HEADERS; sref = (void*)ZX_NEXT(sref)) {
+    if (sref->gg.g.tok != zx_ds_Reference_ELEM)
+      continue;
     if (!sref->URI || !sref->URI->g.len || !sref->URI->g.s || !sref->URI->g.s[0]) {
       ERR("Malformed signature: Reference is missing URI %p n_refs=%d", sref->URI, n_refs);
       continue;

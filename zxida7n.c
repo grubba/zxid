@@ -1,5 +1,5 @@
 /* zxida7n.c  -  Handwritten functions for Assertion handling
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -10,6 +10,7 @@
  *
  * 3.2.2007, created --Sampo
  * 7.10.2008, added documentation --Sampo
+ * 17.2.2011, XML whitespace handling fix --Sampo
  *
  * See also: zxidsimp.c (attributes to LDIF), and zxidepr.c
  */
@@ -63,11 +64,15 @@ struct zx_sa_Attribute_s* zxid_find_attribute(zxid_a7n* a7n, int nfmt_len, char*
     return 0;
   }
   for (as = a7n->AttributeStatement;
-       as && as->gg.g.tok == zx_sa_AttributeStatement_ELEM;
-       as = (struct zx_sa_AttributeStatement_s*)as->gg.g.n)
+       as;
+       as = (struct zx_sa_AttributeStatement_s*)as->gg.g.n) {
+    if (as->gg.g.tok != zx_sa_AttributeStatement_ELEM)
+      continue;
     for (at = as->Attribute;
-	 at && at->gg.g.tok == zx_sa_Attribute_ELEM;
-	 at = (struct zx_sa_Attribute_s*)at->gg.g.n)
+	 at;
+	 at = (struct zx_sa_Attribute_s*)at->gg.g.n) {
+      if (at->gg.g.tok != zx_sa_Attribute_ELEM)
+	continue;
       if ((nfmt_len ? (at->NameFormat
 		       && at->NameFormat->g.len == nfmt_len
 		       && !memcmp(at->NameFormat->g.s, nfmt, nfmt_len)) : 1)
@@ -81,6 +86,8 @@ struct zx_sa_Attribute_s* zxid_find_attribute(zxid_a7n* a7n, int nfmt_len, char*
 	if (!n)
 	  return at;
       }
+    }
+  }
   return 0;
 }
 

@@ -35351,6 +35351,39 @@ fail:
 }
 
 
+ZEND_NAMED_FUNCTION(_wrap_zxid_get_epr_tas3_trust) {
+  zxid_conf *arg1 = (zxid_conf *) 0 ;
+  zxid_epr *arg2 = (zxid_epr *) 0 ;
+  zval **args[2];
+  struct zx_str *result = 0 ;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_get_epr_tas3_trust. Expected SWIGTYPE_p_zxid_conf");
+    }
+  }
+  {
+    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zx_a_EndpointReference_s, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_get_epr_tas3_trust. Expected SWIGTYPE_p_zx_a_EndpointReference_s");
+    }
+  }
+  result = (struct zx_str *)zxid_get_epr_tas3_trust(arg1,arg2);
+  {
+    if (result)
+    ZVAL_STRINGL(return_value, result->s, result->len, 1);
+    /* Do not free underlying zx_str because they are usually returned by reference. */
+  }
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
 ZEND_NAMED_FUNCTION(_wrap_zxid_get_epr_secmech) {
   zxid_conf *arg1 = (zxid_conf *) 0 ;
   zxid_epr *arg2 = (zxid_epr *) 0 ;
@@ -35746,6 +35779,39 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_set_call_tgttok) {
   }
   zxid_set_call_tgttok(arg1,arg2,arg3);
   
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zxid_epr2str) {
+  zxid_conf *arg1 = (zxid_conf *) 0 ;
+  zxid_epr *arg2 = (zxid_epr *) 0 ;
+  zval **args[2];
+  struct zx_str *result = 0 ;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_epr2str. Expected SWIGTYPE_p_zxid_conf");
+    }
+  }
+  {
+    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zx_a_EndpointReference_s, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_epr2str. Expected SWIGTYPE_p_zx_a_EndpointReference_s");
+    }
+  }
+  result = (struct zx_str *)zxid_epr2str(arg1,arg2);
+  {
+    if (result)
+    ZVAL_STRINGL(return_value, result->s, result->len, 1);
+    /* Do not free underlying zx_str because they are usually returned by reference. */
+  }
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -37735,6 +37801,7 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zxid_get_epr_address,_wrap_zxid_get_epr_address,NULL)
  SWIG_ZEND_NAMED_FE(zxid_get_epr_entid,_wrap_zxid_get_epr_entid,NULL)
  SWIG_ZEND_NAMED_FE(zxid_get_epr_desc,_wrap_zxid_get_epr_desc,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_get_epr_tas3_trust,_wrap_zxid_get_epr_tas3_trust,NULL)
  SWIG_ZEND_NAMED_FE(zxid_get_epr_secmech,_wrap_zxid_get_epr_secmech,NULL)
  SWIG_ZEND_NAMED_FE(zxid_set_epr_secmech,_wrap_zxid_set_epr_secmech,NULL)
  SWIG_ZEND_NAMED_FE(zxid_get_epr_token,_wrap_zxid_get_epr_token,NULL)
@@ -37746,6 +37813,7 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zxid_set_call_invoktok,_wrap_zxid_set_call_invoktok,NULL)
  SWIG_ZEND_NAMED_FE(zxid_get_call_tgttok,_wrap_zxid_get_call_tgttok,NULL)
  SWIG_ZEND_NAMED_FE(zxid_set_call_tgttok,_wrap_zxid_set_call_tgttok,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_epr2str,_wrap_zxid_epr2str,NULL)
  SWIG_ZEND_NAMED_FE(zxid_token2str,_wrap_zxid_token2str,NULL)
  SWIG_ZEND_NAMED_FE(zxid_str2token,_wrap_zxid_str2token,NULL)
  SWIG_ZEND_NAMED_FE(zxid_a7n2str,_wrap_zxid_a7n2str,NULL)

@@ -471,8 +471,10 @@ static int zxid_add_at_values(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribu
   ses->at->issuer = issuer;
   
   for (av = at->AttributeValue;
-       av && av->gg.g.tok == zx_sa_AttributeValue_ELEM;
+       av;
        av = (struct zx_sa_AttributeValue_s*)ZX_NEXT(av)) {
+    if (av->gg.g.tok != zx_sa_AttributeValue_ELEM)
+      continue;
     D("Adding value: %p", ZX_GET_CONTENT(av));
     if (av->EndpointReference || av->ResourceOffering)
       continue;  /* Skip bootstraps. They are handled elsewhere, see zxid_snarf_eprs_from_ses(). */
@@ -502,11 +504,15 @@ static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
     return;
   
   for (as = a7n->AttributeStatement;
-       as && as->gg.g.tok == zx_sa_AttributeStatement_ELEM;
+       as;
        as = (struct zx_sa_AttributeStatement_s*)ZX_NEXT(as)) {
+    if (as->gg.g.tok != zx_sa_AttributeStatement_ELEM)
+      continue;
     for (at = as->Attribute;
-	 at && at->gg.g.tok == zx_sa_Attribute_ELEM;
-	 at = (struct zx_sa_Attribute_s*)ZX_NEXT(at)) {      
+	 at;
+	 at = (struct zx_sa_Attribute_s*)ZX_NEXT(at)) {
+      if (at->gg.g.tok != zx_sa_Attribute_ELEM)
+	continue;
       if (at->Name)
 	zxid_add_at_values(cf, ses, at, zx_str_to_c(cf->ctx, &at->Name->g), ZX_GET_CONTENT(a7n->Issuer));
       if (at->FriendlyName)

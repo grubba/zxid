@@ -1,5 +1,5 @@
-zxcot  -  Circle-of-Trust and metadata management tool R0.71
-Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+zxcot  -  Circle-of-Trust and metadata management tool R0.78
+Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0
 See http://www.apache.org/licenses/LICENSE-2.0
 Send well researched bug reports to the author. Home: zxid.org
@@ -14,6 +14,7 @@ Usage: zxcot [options] [dir]         # Gives listing of metadata
   [dir]            CoT directory. Default /var/zxid/cot
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)
                    Most of the configuration is read from /var/zxid/zxid.conf
+  -ci              IdP conf, synonym for -c PATH=/var/zxid/idp
   -a               Add metadata from stdin
   -b               Register Web Service, add Service EPR from stdin
   -bs              Register Web Service and Bootstrap, add Service EPR from stdin
@@ -21,11 +22,14 @@ Usage: zxcot [options] [dir]         # Gives listing of metadata
   -g URL           Do HTTP(S) GET to URL and add as metadata (if compiled w/libcurl)
   -n               Dryrun. Do not actually add the metadata. Instead print it to stdout.
   -s               Swap columns, for easier sorting by URL
-  -m               Output metadata of this installation (our own metadata)
+  -m               Output metadata of this installation (our own metadata). Caveat: If your
+                   own code, or virtual hosting, sets options like URL, you need to supply
+                   them with appropriate -c CONF option. zxcot is not able to guess them!
   -p ENTID         Print sha1 name corresponding to an entity ID.
   -v               Verbose messages.
   -q               Be extra quiet.
   -d               Turn on debugging.
+  -dc              Dump configuration.
   -h               This help message
   --               End of options
 
