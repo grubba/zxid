@@ -79,7 +79,7 @@
 
 /* Special discovery options and attribute names for Trust PDP interface. */
 
-#define TAS3_TRUST_CTL1_INPUT   "urn:tas3:trust:ctl1:input:"
-#define TAS3_TRUST_CTL1_RANKING "urn:tas3:trust:ctl1:ranking:"
+#define TAS3_TRUST_INPUT_CTL1   "urn:tas3:trust:input:ctl1:"
+#define TAS3_TRUST_RANKING_CTL1 "urn:tas3:trust:ranking:ctl1:"
 
 #endif

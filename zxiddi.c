@@ -261,18 +261,18 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 	    D("Option element does not have content %p", ss);
 	    continue;
 	  }
-	  p = zx_memmem(ss->s, ss->len, TAS3_TRUST_CTL1_INPUT, sizeof(TAS3_TRUST_CTL1_INPUT)-1);
+	  p = zx_memmem(ss->s, ss->len, TAS3_TRUST_INPUT_CTL1, sizeof(TAS3_TRUST_INPUT_CTL1)-1);
 	  if (!p) {
 	    D("Option(%.*s) is not trust related", ss->len, ss->s);	    
 	    continue;
 	  }
 	  start = p;
-	  lim = memchr(p+sizeof(TAS3_TRUST_CTL1_INPUT)-1, '&', ss->len - (p - ss->s));
+	  lim = memchr(p+sizeof(TAS3_TRUST_INPUT_CTL1)-1, '&', ss->len - (p - ss->s));
 	  if (!lim) {
 	    lim = ss->s + ss->len;
 	  } else {
-	    while (p = zx_memmem(lim, ss->len - (lim - ss->s), TAS3_TRUST_CTL1_INPUT, sizeof(TAS3_TRUST_CTL1_INPUT)-1)) {
-	      lim = memchr(p+sizeof(TAS3_TRUST_CTL1_INPUT)-1, '&', ss->len - (p - ss->s));
+	    while (p = zx_memmem(lim, ss->len - (lim - ss->s), TAS3_TRUST_INPUT_CTL1, sizeof(TAS3_TRUST_INPUT_CTL1)-1)) {
+	      lim = memchr(p+sizeof(TAS3_TRUST_INPUT_CTL1)-1, '&', ss->len - (p - ss->s));
 	      if (!lim) {
 		lim = ss->s + ss->len;
 		break;
