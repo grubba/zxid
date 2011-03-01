@@ -208,10 +208,12 @@
 
 /* control point enumerators */
 
-#define TAS3_PEP_RQ_OUT "urn:tas3:ctlpt:pep:rq:out"
-#define TAS3_PEP_RQ_IN  "urn:tas3:ctlpt:pep:rq:in"
-#define TAS3_PEP_RS_OUT "urn:tas3:ctlpt:pep:rs:out"
-#define TAS3_PEP_RS_IN  "urn:tas3:ctlpt:pep:rs:in"
+#define TAS3_PEP_RQ_OUT   "urn:tas3:ctlpt:pep:rq:out"
+#define TAS3_PEP_RQ_IN    "urn:tas3:ctlpt:pep:rq:in"
+#define TAS3_PEP_RS_PARSE "urn:tas3:ctlpt:pep:rs:parse"
+#define TAS3_PEP_RS_VAL   "urn:tas3:ctlpt:pep:rs:val"
+#define TAS3_PEP_RS_OUT   "urn:tas3:ctlpt:pep:rs:out"
+#define TAS3_PEP_RS_IN    "urn:tas3:ctlpt:pep:rs:in"
 
 /* status and fault codes */
 
@@ -221,6 +223,8 @@
 #define TAS3_STATUS_NOSIG   "urn:tas3:status:nosig"
 #define TAS3_STATUS_BADSIG  "urn:tas3:status:badsig"
 #define TAS3_STATUS_BADCOND "urn:tas3:status:badcond"
+#define TAS3_STATUS_BADXML  "urn:tas3:status:badxml"
+#define TAS3_STATUS_FAULT   "urn:tas3:status:fault"
 
 /* Special value for ObligationId to identify the SOL1 processing engine. */
 

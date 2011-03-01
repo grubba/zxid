@@ -290,7 +290,7 @@ char* zx_md5_crypt(const char* pw, const char* salt, char* buf);
 
 /* Common Subexpression Elimination (CSE) for generated code. */
 
-#define ZX_ORD_INS_ATTR(b,f,k) (zx_ord_ins_at(&(b)->gg,(struct zx_elem_s*)((b)->f=(k))))
+#define ZX_ORD_INS_ATTR(b,f,k) (zx_ord_ins_at(&(b)->gg,((b)->f=(k))))
 #define ZX_ADD_KID(b,f,k)  (zx_add_kid(&(b)->gg,(struct zx_elem_s*)((b)->f=(k))))
 
 struct zx_elem_s* zx_add_kid(struct zx_elem_s* father, struct zx_elem_s* kid);

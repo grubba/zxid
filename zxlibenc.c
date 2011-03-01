@@ -1,5 +1,5 @@
 /* zxlibenc.c  -  XML encoder
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -303,9 +303,16 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
 /* Called by:  zx_easy_enc_elem_opt, zx_easy_enc_elem_sig, zxsig_sign, zxsig_validate x2 */
 struct zx_str* zx_EASY_ENC_elem(struct zx_ctx* c, struct zx_elem_s* x)
 {
-  int len = zx_LEN_WO_any_elem(c, x);
-  char* buf = ZX_ALLOC(c, len+1);
-  char* p = zx_ENC_WO_any_elem(c, x, buf);
+  int len;
+  char* buf;
+  char* p;
+  if (!c || !x) {
+    ERR("zx_easy_enc_elem called with NULL argument %p (programmer error)", x);
+    return 0;
+  }
+  len = zx_LEN_WO_any_elem(c, x);
+  buf = ZX_ALLOC(c, len+1);
+  p = zx_ENC_WO_any_elem(c, x, buf);
   if (p != buf+len) {
     ERR("Encoded length(%d) does not match computed length(%d). ED(%.*s)", p-buf, len, p-buf, buf);
     len = p-buf;

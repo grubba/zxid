@@ -1076,6 +1076,7 @@ class zxidjniJNI {
   public final static native long zxid_mk_lu_Status(long jarg1, long jarg2, String jarg3, String jarg4, String jarg5, String jarg6);
   public final static native long zxid_mk_tas3_status(long jarg1, long jarg2, String jarg3, String jarg4, String jarg5, String jarg6, String jarg7);
   public final static native long zxid_mk_fault(long jarg1, long jarg2, String jarg3, String jarg4, String jarg5, String jarg6, String jarg7, String jarg8, String jarg9);
+  public final static native long zxid_mk_fault_zx_str(long jarg1, long jarg2, String jarg3, String jarg4, String jarg5);
   public final static native void zxid_set_fault(long jarg1, long jarg2, long jarg3);
   public final static native long zxid_get_fault(long jarg1, long jarg2);
   public final static native String zxid_get_tas3_fault_sc1(long jarg1, long jarg2);
@@ -1388,6 +1389,8 @@ class zxidjniJNI {
   public final static native String XMLNS_DAP_get();
   public final static native String TAS3_PEP_RQ_OUT_get();
   public final static native String TAS3_PEP_RQ_IN_get();
+  public final static native String TAS3_PEP_RS_PARSE_get();
+  public final static native String TAS3_PEP_RS_VAL_get();
   public final static native String TAS3_PEP_RS_OUT_get();
   public final static native String TAS3_PEP_RS_IN_get();
   public final static native String TAS3_STATUS_OK_get();
@@ -1396,6 +1399,8 @@ class zxidjniJNI {
   public final static native String TAS3_STATUS_NOSIG_get();
   public final static native String TAS3_STATUS_BADSIG_get();
   public final static native String TAS3_STATUS_BADCOND_get();
+  public final static native String TAS3_STATUS_BADXML_get();
+  public final static native String TAS3_STATUS_FAULT_get();
   public final static native String TAS3_SOL1_ENGINE_get();
   public final static native String TAS3_PLEDGE_get();
   public final static native String TAS3_REQUIRE_get();

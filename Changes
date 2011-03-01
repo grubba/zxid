@@ -65,8 +65,16 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
     - Clarify signature validation error codes, e.g. <SignedInfo> canon fail vs. bad cert
 
-zxid-0.78:: 17.2.2011
+zxid-0.79:: 1.3.2011
+    - Enhanced zxidhlo to show attributes
+    - Added ability comment out AAMAP directives
+    - Fixed timegm bug
+
+zxid-0.78:: 23.2.2011
     - Fixed processing (by ignoring it) of whitespace in metadata (and elsewhere)
+    - Improved fault handing in zxid_call()
+    - Fixed segv caused by other side returning illegal XML in zxid_call()
+
 zxid-0.77:: 16.2.2011
     - upgraded for php-5.3 support (patch from Jeroen Asselman)
     - Improved -at handling in zxpasswd

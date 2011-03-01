@@ -427,6 +427,7 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
     root = zxid_soap_call_raw(cf, ZX_GET_CONTENT(epr->Address), env, ret_enve);
     if (!root || !root->Envelope || !root->Envelope->Body) {
       ERR("soap call returned empty or seriously flawed response %p", root);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_PARSE, "e:Server", "Server sent empty or invalid reply. SOAP Envelope or Body can not be found.", 0, 0, 0, 0));
       D_DEDENT("wsc_call: ");
       return 0;
     }
@@ -436,11 +437,13 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
       str = ZX_GET_CONTENT(flt->faultstring);
       actor = ZX_GET_CONTENT(flt->faultactor);
       D("SOAP Fault(%.*s) string(%.*s) actor(%.*s)", code?code->len:1, code?code->s:"?", str?str->len:1, str?str->s:"?", actor?actor->len:1, actor?actor->s:"?");
+      zxid_set_fault(cf, ses, zxid_mk_fault_zx_str(cf, 0, TAS3_PEP_RS_VAL, code?code:zx_dup_str(cf->ctx,"e:Server"), str));
+
       D_DEDENT("wsc_call: ");
       return 0;
     }
     
-    //res = zxid_wsf_analyze_result_headers(cf, ret);
+    //res = zxid_wsf_analyze_result_headers(cf, ret); // detect, e.g., redirect
     res = ZXID_OK;
     switch (res) {
     case ZXID_OK:
@@ -582,6 +585,16 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
   /* *** add usage directives */
 
   env = zxid_wsc_call(cf, ses, epr, env, &ret_enve);
+  if (!env) {
+    ERR("Parsing return value failed %p", env);
+    D("ret_enve(%s) len=%d", ret_enve, strlen(ret_enve));
+    D_DEDENT("call: ");
+    if (cf->valid_opt & ZXID_VALID_OPT_SKIP_RESP_HDR) {
+      ERR("WARNING! Important response security validations disabled by VALID_OPT=0x%x AND Fault occured or parsing return value failed. Pretending success anyway.", cf->valid_opt);
+      return zx_dup_str(cf->ctx, ret_enve);
+    }
+    return 0;
+  }
   if (zxid_wsc_valid_re_env(cf, ses, az_cred, env, ret_enve) != 1) {
     D_DEDENT("call: ");
     return 0;

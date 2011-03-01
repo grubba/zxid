@@ -3931,6 +3931,11 @@ public class zxidjni implements zxidjniConstants {
     return (cPtr == 0) ? null : new zxid_fault(cPtr, false);
   }
 
+  public static zxid_fault mk_fault_zx_str(zxid_conf cf, SWIGTYPE_p_zx_elem_s father, String fa, String fc, String fs) {
+    long cPtr = zxidjniJNI.zxid_mk_fault_zx_str(zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_elem_s.getCPtr(father), fa, fc, fs);
+    return (cPtr == 0) ? null : new zxid_fault(cPtr, false);
+  }
+
   public static void set_fault(zxid_conf cf, zxid_ses ses, zxid_fault flt) {
     zxidjniJNI.zxid_set_fault(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), zxid_fault.getCPtr(flt));
   }

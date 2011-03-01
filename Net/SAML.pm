@@ -254,6 +254,7 @@ package Net::SAML;
 *mk_lu_Status = *Net::SAMLc::zxid_mk_lu_Status;
 *mk_tas3_status = *Net::SAMLc::zxid_mk_tas3_status;
 *mk_fault = *Net::SAMLc::zxid_mk_fault;
+*mk_fault_zx_str = *Net::SAMLc::zxid_mk_fault_zx_str;
 *set_fault = *Net::SAMLc::zxid_set_fault;
 *get_fault = *Net::SAMLc::zxid_get_fault;
 *get_tas3_fault_sc1 = *Net::SAMLc::zxid_get_tas3_fault_sc1;

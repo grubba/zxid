@@ -1008,7 +1008,7 @@ static int zx_timegm(const struct tm* t)
     x -= aa;
   }
   
-  x += zx_mmdd[mon] + dd-1 + (LEAP(aa+1970) && mon>1?1:0);
+  x += zx_mmdd[mon] + dd-1 + (LEAP(t->tm_year+1900) && mon>1?1:0);
   x *= 24; /* Days to hours */
   return ((x + hh) * 60 + mm) * 60 + ss;
 }
@@ -1016,7 +1016,9 @@ static int zx_timegm(const struct tm* t)
 /*() Convert a date-time format timestamp into seconds since Unix epoch.
  * Format is as follows
  *   01234567890123456789
- *   yyyy-MM-ddThh:mm:ssZ */
+ *   yyyy-MM-ddThh:mm:ssZ
+ *
+ * See also zxid_date_time() for inverse. */
 
 /* Called by:  zxid_parse_invite x2, zxid_sp_sso_finalize, zxid_sso_issue_a7n, zxid_timestamp_chk, zxid_validate_cond x2 */
 int zx_date_time_to_secs(const char* dt)

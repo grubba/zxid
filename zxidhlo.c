@@ -1,4 +1,5 @@
 /* zxidhlo.c  -  Hello World CGI binary for SAML 2 SP
+ * Copyright (c) 2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -8,6 +9,7 @@
  * $Id: zxidhlo.c,v 1.16 2009-08-30 15:09:26 sampo Exp $
  *
  * 16.1.2007, created --Sampo
+ * 28.2.2011, added attribute dump --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  *           README-zxid, section 10 "zxid_simple() API"
@@ -31,6 +33,7 @@
 char* help =
 "zxidhlo  -  SAML 2.0 SP CGI - R" ZXID_REL "\n\
 SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
+Copyright (c) 2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
 Author: Sampo Kellomaki (sampo@iki.fi)\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
@@ -55,11 +58,12 @@ Usage: zxidhlo [options]   (when used as CGI, no options can be supplied)\n\
 /* Called by: */
 int main(int argc, char** argv)
 {
-  char* p;
-  char* sid;
-  char* nid;
   char* res;
-  char* setcookie;
+  char* p;
+  char* q;
+  char sid[192];
+  char nid[ZXID_MAX_EID];
+  char setcookie[256];
 
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */
@@ -87,40 +91,60 @@ int main(int argc, char** argv)
 
   /* Parse the LDIF to figure out session ID and the federated ID */
 
-  sid = strstr(res, "sesid: ");
-  nid = strstr(res, "idpnid: ");
-  setcookie = strstr(res, "setcookie: ");
-  if (sid) {
-    sid += sizeof("sesid: ") - 1;
-    p = strchr(sid, '\n');
-    if (p)
-      *p = 0;  /* nul termination */
-  }
-  if (nid) {
-    nid += sizeof("idpnid: ") - 1;
-    p = strchr(nid, '\n');
-    if (p)
-      *p = 0;  /* nul termination */
-  }
-  if (setcookie) {
-    setcookie += sizeof("setcookie: ") - 1;
-    p = strchr(setcookie, '\n');
-    if (p)
-      *p = 0;  /* nul termination */
-  }
+  p = strstr(res, "sesid: ");
+  if (p) {
+    p += sizeof("sesid: ")-1;
+    q = strchr(sid, '\n');
+    if (q) {
+      memcpy(sid, p, MIN(q-p, sizeof(sid)-1));
+      sid[MIN(q-p, sizeof(sid)-1)] = 0;
+    } else {
+      strncpy(sid, p, sizeof(sid));
+      sid[sizeof(sid)-1] = 0;
+    }
+  } else
+    sid[0] = 0;
+
+  p = strstr(res, "idpnid: ");
+  if (p) {
+    p += sizeof("idpnid: ")-1;
+    q = strchr(nid, '\n');
+    if (q) {
+      memcpy(nid, p, MIN(q-p, sizeof(nid)-1));
+      nid[MIN(q-p, sizeof(nid)-1)] = 0;
+    } else {
+      strncpy(nid, p, sizeof(nid));
+      nid[sizeof(nid)-1] = 0;
+    }
+  } else
+    nid[0] = 0;
+
+  p = strstr(res, "setcookie: ");
+  if (p) {
+    p += sizeof("setcookie: ")-1;
+    q = strchr(setcookie, '\n');
+    if (q) {
+      memcpy(setcookie, p, MIN(q-p, sizeof(setcookie)-1));
+      setcookie[MIN(q-p, sizeof(setcookie)-1)] = 0;
+    } else {
+      strncpy(setcookie, p, sizeof(setcookie));
+      setcookie[sizeof(setcookie)-1] = 0;
+    }
+  } else
+    setcookie[0] = 0;
   
   /* Render protected content page. You should replace this
    * with your own content, or establishment of your own session
    * and then redirection to your own content. Whatever makes sense. */
   
-  if (setcookie && !ONE_OF_2(*setcookie, '-', 0))
+  if (!ONE_OF_2(*setcookie, '-', 0))
     printf("SET-COOKIE: %s\r\n", setcookie);
   printf("Content-Type: text/html\r\n\r\n");
   printf("<title>ZXID HELLO SP Mgmt</title>" ZXID_BODY_TAG "<h1>ZXID HELLO SP Management (user logged in, session active)</h1><pre>\n");
   printf("</pre><form method=post action=\"?o=P\">");
   //if (err) printf("<p><font color=red><i>%s</i></font></p>\n", err);
   //if (msg) printf("<p><i>%s</i></p>\n", msg);
-  if (sid) {
+  if (*sid) {
     printf("<input type=hidden name=s value=\"%s\">", sid);
     printf("<input type=submit name=gl value=\" Local Logout \">\n");
     printf("<input type=submit name=gr value=\" Single Logout (Redir) \">\n");
@@ -128,10 +152,13 @@ int main(int argc, char** argv)
     printf("<input type=submit name=gt value=\" Defederate (Redir) \">\n");
     printf("<input type=submit name=gu value=\" Defederate (SOAP) \"><br>\n");
     printf("sid(%s) nid(%s) <a href=\"?s=%s\">Reload</a> | "
-	   "<a href=\"?o=v&s=%s\">PEP</a>", sid, nid?nid:"?!?", sid, sid);
+	   "<a href=\"?o=v&s=%s\">PEP</a>", sid, *nid?nid:"?!?", sid, sid);
+  } else {
+    printf("<p>No session established.\n");
   }
   
-  printf("</form><hr>");
+  printf("</form><hr>\n");
+  printf("<pre>%s</pre>\n<hr>\n", res);
   printf("<a href=\"http://zxid.org/\">zxid.org</a>, %s", zxid_version_str());
   return 0;
 }

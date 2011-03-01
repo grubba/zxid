@@ -182,7 +182,7 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
  
 #define CONV_DIGIT(x) ((x) - '0')
 
-#define LEAP(a) (!((a)%4) && (((a)%100) || !((a)%400)))
+#define LEAP(a) (!((a)%4) && (((a)%100) || !((a)%400))) /* Input full year, like 1984 or 2011 */
 
 #define ROUND_UP(x,n) if ((n) && (x) % (n)) x += (n) - (x) % (n);
 

@@ -1,5 +1,5 @@
 /* zxencdectest.c  -  Test XML encoding and decoding using zx generated code
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2007 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -10,6 +10,7 @@
  *
  * 1.7.2006, started --Sampo
  * 9.2.2007, improved to make basis of a test suite tool --Sampo
+ * 1.3.2011, added zx_timegm() testing --Sampo
  *
  * Test encoding and decoding SAML 2.0 assertions and other related stuff.
  */
@@ -42,7 +43,7 @@ int read_all_fd(int fd, char* p, int want, int* got_all);
 
 char* help =
 "zxencdectest  -  ZX encoding and decoding tester - R" ZXID_REL "\n\
-Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
+Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 Copyright (c) 2006-2007 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
 Author: Sampo Kellomaki (sampo@iki.fi)\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
@@ -70,6 +71,22 @@ Usage: zxencdectest [options] <foo.xml >reencoded-foo.xml\n\
   --           End of options\n";
 
 #define DIE(reason) MB fprintf(stderr, "%s\n", reason); exit(2); ME
+
+int afr_buf_size = 0;
+int verbose = 1;
+extern int debug;
+int timeout = 0;
+int gcthreshold = 0;
+int leak_free = 0;
+extern int assert_nonfatal;
+int drop_uid = 0;
+int drop_gid = 0;
+char* rand_path;
+char* egd_path;
+char  symmetric_key[1024];
+int symmetric_key_len;
+int n_iter = 1;
+char* wo_path = 0;
 char buf[256*1024];
 
 /* Called by:  opt */
@@ -224,6 +241,54 @@ void x509_test()      /* -r 7 */
 #endif
   zxid_mk_at_cert(cf, sizeof(buf), buf, "test", nameid, "1.2.826.0.1.3344810.1.1.14", zx_ref_str(cf->ctx, "Role0"));
   printf("%s",buf);
+}
+
+int timegm_tester(zxid_conf* cf, const char* date_time)
+{
+  struct zx_str* ss;
+  int secs;
+  cf = zxid_new_conf("/var/zxid/");
+  secs = zx_date_time_to_secs(date_time);
+  ss = zxid_date_time(cf, secs);
+  if (memcmp(date_time, ss->s, ss->len)) {
+    printf("%s %d\n%.*s ERR\n\n", date_time, secs, ss->len, ss->s);
+    return 0;
+  } else {
+    if (verbose)
+      printf("%s %d\n%.*s OK\n\n", date_time, secs, ss->len, ss->s);
+    return 1;
+  }
+}
+
+int leap_test(int aa) {
+  return LEAP(aa);
+}
+
+void timegm_test()      /* -r 8 */
+{
+  int aa;
+  zxid_conf* cf = zxid_new_conf("/var/zxid/");
+  printf("leap(2011)=%d\n", leap_test(2011));
+
+  timegm_tester(cf, "2011-02-28T11:30:19Z");
+  timegm_tester(cf, "2011-03-01T11:30:19Z");
+  timegm_tester(cf, "2011-03-02T11:30:19Z");
+  timegm_tester(cf, "2011-03-03T11:30:19Z");
+  timegm_tester(cf, "2011-03-04T11:30:19Z");
+  timegm_tester(cf, "2011-03-31T11:30:19Z");
+  timegm_tester(cf, "2011-04-01T11:30:19Z");
+  timegm_tester(cf, "2011-04-02T11:30:19Z");
+
+  for (aa = 1970; aa < 2028; ++aa) {
+    snprintf(buf, sizeof(buf), "%d-02-28T11:30:19Z", aa); if (!timegm_tester(cf, buf)) exit(1);
+    snprintf(buf, sizeof(buf), "%d-03-01T11:30:19Z", aa); if (!timegm_tester(cf, buf)) exit(1);
+    snprintf(buf, sizeof(buf), "%d-03-02T11:30:19Z", aa); if (!timegm_tester(cf, buf)) exit(1);
+    snprintf(buf, sizeof(buf), "%d-03-03T11:30:19Z", aa); if (!timegm_tester(cf, buf)) exit(1);
+    snprintf(buf, sizeof(buf), "%d-03-04T11:30:19Z", aa); if (!timegm_tester(cf, buf)) exit(1);
+    snprintf(buf, sizeof(buf), "%d-03-31T11:30:19Z", aa); if (!timegm_tester(cf, buf)) exit(1);
+    snprintf(buf, sizeof(buf), "%d-04-01T11:30:19Z", aa); if (!timegm_tester(cf, buf)) exit(1);
+    snprintf(buf, sizeof(buf), "%d-04-02T11:30:19Z", aa); if (!timegm_tester(cf, buf)) exit(1);
+  }
 }
 
 const char foobar[] = "foobar";
@@ -389,22 +454,6 @@ void covimp_test()       /* -r 5 */
   printf("covimp ok\n");
 }
 
-int afr_buf_size = 0;
-int verbose = 1;
-extern int debug;
-int timeout = 0;
-int gcthreshold = 0;
-int leak_free = 0;
-extern int assert_nonfatal;
-int drop_uid = 0;
-int drop_gid = 0;
-char* rand_path;
-char* egd_path;
-char  symmetric_key[1024];
-int symmetric_key_len;
-int n_iter = 1;
-char* wo_path = 0;
-
 /* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
 void opt(int* argc, char*** argv, char*** env)
 {
@@ -485,6 +534,7 @@ void opt(int* argc, char*** argv, char*** env)
 	case 5: covimp_test(); break;
 	case 6: a7n_test(); break;
 	case 7: x509_test(); break;
+	case 8: timegm_test(); break;
 	}
 	exit(0);
 

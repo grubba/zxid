@@ -73,6 +73,8 @@ zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, struct zx_elem_s* father, c
 
 /*() Create SOAP Fault element (see Table 2 of [SOAPBind2], pp.12-13)
  *
+ * cf:: Configuration object
+ * father:: Optional father XML element
  * fa:: Optional fault actor, such as one of the TAS3 control points (ctlpt)
  * fc:: Fault code. Should be "e:Client" or "e:Server".
  * fs:: Fault string. Human readable string explanation of the fault.
@@ -84,8 +86,6 @@ zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, struct zx_elem_s* father, c
  *
  * See also: zxid_mk_lu_Status()
  */
-
-/*() Construct SOAP Fault data structure. */
 
 /* Called by:  covimp_test, zxid_call_epr x2, zxid_timestamp_chk x2, zxid_wsc_prepare_call x2, zxid_wsc_valid_re_env x13, zxid_wsf_validate_a7n x6, zxid_wsp_decorate x2, zxid_wsp_validate x2, zxid_wsp_validate_env x12 */
 zxid_fault* zxid_mk_fault(zxid_conf* cf, struct zx_elem_s* father, const char* fa, const char* fc, const char* fs, const char* sc1, const char* sc2, const char* msg, const char* ref)
@@ -99,6 +99,18 @@ zxid_fault* zxid_mk_fault(zxid_conf* cf, struct zx_elem_s* father, const char* f
     flt->faultactor  = zx_dup_elem(cf->ctx, &flt->gg, zx_e_faultactor_ELEM, fa);
   flt->faultstring   = zx_dup_elem(cf->ctx, &flt->gg, zx_e_faultstring_ELEM, fs?fs:"Unknown");
   flt->faultcode     = zx_dup_elem(cf->ctx, &flt->gg, zx_e_faultcode_ELEM,fc?fc:"e:Client");
+  return flt;
+}
+
+/*() Construct SOAP Fault data structure from zx_str arguments. */
+
+zxid_fault* zxid_mk_fault_zx_str(zxid_conf* cf, struct zx_elem_s* father, struct zx_str* fa, struct zx_str* fc, struct zx_str* fs)
+{
+  zxid_fault* flt = zx_NEW_e_Fault(cf->ctx, father);
+  if (fa)
+    flt->faultactor  = zx_dup_len_elem(cf->ctx, &flt->gg, zx_e_faultactor_ELEM, fa->len, fa->s);
+  flt->faultstring   = zx_dup_len_elem(cf->ctx, &flt->gg, zx_e_faultstring_ELEM, fs?fs->len:sizeof("Unknown")-1, fs?fs->s:"Unknown");
+  flt->faultcode     = zx_dup_len_elem(cf->ctx, &flt->gg, zx_e_faultcode_ELEM, fc?fc->len:sizeof("e:Client")-1, fc?fc->s:"e:Client");
   return flt;
 }
 

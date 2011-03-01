@@ -977,6 +977,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_OK);
 ZEND_NAMED_FUNCTION(_wrap_zxid_mk_lu_Status);
 ZEND_NAMED_FUNCTION(_wrap_zxid_mk_tas3_status);
 ZEND_NAMED_FUNCTION(_wrap_zxid_mk_fault);
+ZEND_NAMED_FUNCTION(_wrap_zxid_mk_fault_zx_str);
 ZEND_NAMED_FUNCTION(_wrap_zxid_set_fault);
 ZEND_NAMED_FUNCTION(_wrap_zxid_get_fault);
 ZEND_NAMED_FUNCTION(_wrap_zxid_get_tas3_fault_sc1);

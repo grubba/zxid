@@ -1,5 +1,5 @@
 /* zxid.h  -  Definitions for zxid CGI
- * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -830,6 +830,7 @@ ZXID_DECL struct zx_sp_Status_s* zxid_OK(zxid_conf* cf, struct zx_elem_s* father
 ZXID_DECL struct zx_lu_Status_s* zxid_mk_lu_Status(zxid_conf* cf, struct zx_elem_s* father, const char* sc1, const char* sc2, const char* msg, const char* ref);
 ZXID_DECL zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, struct zx_elem_s* father, const char* ctlpt,  const char* sc1, const char* sc2, const char* msg, const char* ref);
 ZXID_DECL zxid_fault* zxid_mk_fault(zxid_conf* cf, struct zx_elem_s* father, const char* fa, const char* fc, const char* fs, const char* sc1, const char* sc2, const char* msg, const char* ref);
+ZXID_DECL zxid_fault* zxid_mk_fault_zx_str(zxid_conf* cf, struct zx_elem_s* father, struct zx_str* fa, struct zx_str* fc, struct zx_str* fs);
 
 ZXID_DECL void zxid_set_fault(zxid_conf* cf, zxid_ses* ses, zxid_fault* flt);
 ZXID_DECL zxid_fault*  zxid_get_fault(zxid_conf* cf, zxid_ses* ses);

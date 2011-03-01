@@ -18560,6 +18560,28 @@ SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zxid_1mk_1fault(JNIEnv *jenv, 
 }
 
 
+SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zxid_1mk_1fault_1zx_1str(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jstring jarg3, jstring jarg4, jstring jarg5) {
+  jlong jresult = 0 ;
+  zxid_conf *arg1 = (zxid_conf *) 0 ;
+  struct zx_elem_s *arg2 = (struct zx_elem_s *) 0 ;
+  struct zx_str *arg3 = (struct zx_str *) 0 ;
+  struct zx_str *arg4 = (struct zx_str *) 0 ;
+  struct zx_str *arg5 = (struct zx_str *) 0 ;
+  zxid_fault *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(zxid_conf **)&jarg1; 
+  arg2 = *(struct zx_elem_s **)&jarg2; 
+  arg3 = *(struct zx_str **)&jarg3; 
+  arg4 = *(struct zx_str **)&jarg4; 
+  arg5 = *(struct zx_str **)&jarg5; 
+  result = (zxid_fault *)zxid_mk_fault_zx_str(arg1,arg2,arg3,arg4,arg5);
+  *(zxid_fault **)&jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zxid_1set_1fault(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
   zxid_conf *arg1 = (zxid_conf *) 0 ;
   zxid_ses *arg2 = (zxid_ses *) 0 ;
@@ -23163,6 +23185,30 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1PEP_1RQ_1IN_1get(JNIEn
 }
 
 
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1PEP_1RS_1PARSE_1get(JNIEnv *jenv, jclass jcls) {
+  jstring jresult = 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (char *) "urn:tas3:ctlpt:pep:rs:parse";
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1PEP_1RS_1VAL_1get(JNIEnv *jenv, jclass jcls) {
+  jstring jresult = 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (char *) "urn:tas3:ctlpt:pep:rs:val";
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
 SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1PEP_1RS_1OUT_1get(JNIEnv *jenv, jclass jcls) {
   jstring jresult = 0 ;
   char *result = 0 ;
@@ -23259,6 +23305,30 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1STATUS_1BADCOND_1get(J
 }
 
 
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1STATUS_1BADXML_1get(JNIEnv *jenv, jclass jcls) {
+  jstring jresult = 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (char *) "urn:tas3:status:badxml";
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1STATUS_1FAULT_1get(JNIEnv *jenv, jclass jcls) {
+  jstring jresult = 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (char *) "urn:tas3:status:fault";
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
 SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1SOL1_1ENGINE_1get(JNIEnv *jenv, jclass jcls) {
   jstring jresult = 0 ;
   char *result = 0 ;
@@ -23325,7 +23395,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1COMPILE_1DATE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "1297957944";
+  result = (char *) "1298938433";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }
@@ -23337,7 +23407,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1REV_1get(JNIEnv *jenv,
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "$Id: 0.77-10-g5620a78 20110216-181302 sampo@ $";
+  result = (char *) "$Id: 0.77-12-gc07cbe3 20110223-042056 sampo@ $";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }

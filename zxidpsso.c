@@ -317,6 +317,10 @@ static struct zxid_map* zxid_read_map(zxid_conf* cf, const char* sp_name_buf, co
     ERR(".cf file does not contain AAMAP directive buf(%s)", buf);
     return 0;
   }
+  if (p > buf && p[-1] == '#') {
+    INFO(".cf file contains commented out AAMAP directive buf(%s)", buf);
+    return 0;
+  }
   p += strlen(mapname);
   return zxid_load_map(cf, 0, p);
 }

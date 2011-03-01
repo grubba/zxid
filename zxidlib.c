@@ -1,5 +1,5 @@
 /* zxidlib.c  -  Handwritten functions for implementing common application logic for SP
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -122,7 +122,9 @@ struct zx_attr_s* zxid_mk_id_attr(zxid_conf* cf, struct zx_elem_s* father, int t
  * either form as input, as they are both legal, but will only generate the
  * without milliseconds form. Some other softwares are buggy and fail to
  * accept the without milliseconds form. You can change the format at compile time
- * by editing zxidlib.c:94.
+ * by editing zxidlib.c:140.
+ *
+ * See also: zx_date_time_to_secs()
  */
 /* Called by:  zxid_put_invite x2, zxid_put_psobj x2, zxid_wsc_prep_secmech, zxid_wsf_decor */
 struct zx_str* zxid_date_time(zxid_conf* cf, time_t secs)
