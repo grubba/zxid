@@ -63,7 +63,8 @@ for $rec (@recs) {
     $rec =~ s/^cn: .*?\r?\n//m;
     $rec =~ s/^urn:oasis:names:tc:xacml:1.0:subject:subject-id: .*?\r?\n//m;
     warn "REC2($rec) idpnid($idpnid) uid($uid) pw($pw) cn($cn)";
-    $uid ||= "user".$uidn++;
+    #$uid ||= "user".$uidn++;
+    $uid ||= "testUserReview2011-".$uidn++;
     $pw  ||= "tas123";
     $cn  ||= "Mr. $uid";
     warn "REC3($rec) idpnid($idpnid) uid($uid) pw($pw) cn($cn)";
@@ -72,3 +73,56 @@ for $rec (@recs) {
 }
 
 __END__
+
+https://portal.tas3.eu/trac/ticket/495
+
+RequestNOTScenario_1.ldif
+RequestNOTScenario_2.ldif
+RequestNOTScenario_3.ldif
+RequestNOTScenario_4.ldif
+RequestNOTScenario_5.ldif
+RequestNOTScenario_6.ldif
+RequestNOTScenario_7.ldif
+RequestNOTScenario_8.ldif
+RequestNOTScenario_9.ldif
+RequestNOTScenario_10.ldif
+RequestNOTScenario_11.ldif
+RequestNOTScenario_12.ldif
+RequestNOTScenario_13.ldif
+RequestNOTScenario_14.ldif
+RequestNOTScenario_15.ldif
+RequestNOTScenario_16.ldif
+RequestNOTScenario_17.ldif
+RequestNOTScenario_18.ldif
+RequestNOTScenario_19.ldif
+RequestNOTScenario_20.ldif
+RequestNOTScenario_21.ldif
+RequestNOTScenario_22.ldif
+RequestNOTScenario_23.ldif
+RequestNOTScenario_24.ldif
+RequestNOTScenario_25.ldif
+RequestNOTScenario_26.ldif
+RequestNOTScenario_27.ldif
+RequestNOTScenario_28.ldif
+RequestNOTScenario_29.ldif
+RequestNOTScenario_30.ldif
+RequestNOTScenario_31.ldif
+RequestNOTScenario_32.ldif
+RequestNOTScenario_33.ldif
+RequestNOTScenario_34.ldif
+RequestNOTScenario_35.ldif
+RequestNOTScenario_36.ldif
+RequestNOTScenario_37.ldif
+RequestNOTScenario_38.ldif
+RequestNOTScenario_39.ldif
+RequestNOTScenario_40.ldif
+RequestNOTScenario_41.ldif
+RequestNOTScenario_42.ldif
+RequestNOTScenario_43.ldif
+RequestNOTScenario_44.ldif
+RequestNOTScenario_45.ldif
+RequestNOTScenario_46.ldif
+RequestNOTScenario_47.ldif
+RequestNOTScenario_48.ldif
+RequestNOTScenario_49.ldif
+RequestNOTScenario_50.ldif

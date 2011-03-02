@@ -540,7 +540,7 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
     }
     
   } else {
-    INFO("No explicit TargetIdentity, using requester identity as target identity. %d", 0);
+    INFO("No explicit TargetIdentity, using requester identity(%s) as target identity.", ses->nid);
     ses->tgta7n = ses->a7n;
     ses->tgtnameid = ses->nameid;
     ses->tgt = ses->nid;

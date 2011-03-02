@@ -437,7 +437,7 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
       str = ZX_GET_CONTENT(flt->faultstring);
       actor = ZX_GET_CONTENT(flt->faultactor);
       D("SOAP Fault(%.*s) string(%.*s) actor(%.*s)", code?code->len:1, code?code->s:"?", str?str->len:1, str?str->s:"?", actor?actor->len:1, actor?actor->s:"?");
-      zxid_set_fault(cf, ses, zxid_mk_fault_zx_str(cf, 0, TAS3_PEP_RS_VAL, code?code:zx_dup_str(cf->ctx,"e:Server"), str));
+      zxid_set_fault(cf, ses, zxid_mk_fault_zx_str(cf, 0, zx_dup_str(cf->ctx,TAS3_PEP_RS_VAL), code?code:zx_dup_str(cf->ctx,"e:Server"), str));
 
       D_DEDENT("wsc_call: ");
       return 0;

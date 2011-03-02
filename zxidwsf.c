@@ -499,7 +499,7 @@ int zxid_timestamp_chk(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* 
 	zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, ctlpt, faultactor, "Message signature did not validate.", "StaleMsg", 0, 0, 0));
 	return 0;
       } else {
-	INFO("Timestamp rejected: src=%d our=%d before_slop=%d after_slop=%d secs, but configured to ignore this (NOTIMESTAMPFATAL=0)", (int)srcts->tv_sec, (int)ourts->tv_sec, cf->before_slop, cf->after_slop);
+	INFO("Timestamp rejected: src=%d our=%d before_slop=%d after_slop=%d secs, but configured to ignore this (NOTIMESTAMP_FATAL=0)", (int)srcts->tv_sec, (int)ourts->tv_sec, cf->before_slop, cf->after_slop);
       }
     }
 
