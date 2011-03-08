@@ -34,6 +34,7 @@ tailf /var/tmp/zxid.stderr &
 tailf /var/zxid/log/xml.dbg | ~/zxid/xml-pretty.pl &
 tailf /var/log/apache2/error.log | perl -pe 's/((zxidp)|(eid))/\e[1;31m$1\e[0m/g; s/, referer: .*?$//' &
 tail -f tmp/err-httpd &
+tailf ~/error.log | perl -pe 'substr($_,0,60)=""; s/((zxidp)|(eid))/\e[1;31m$1\e[0m/g; s/, referer: .*?$//' &
 
 echo Edit your /etc/hosts to contain
 echo 127.0.0.1       localhost sp1.zxidcommon.org sp1.zxidsp.org idp1.zxidp.org sp.tas3.pt idp.tas3.pt

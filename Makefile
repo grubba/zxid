@@ -1772,7 +1772,7 @@ release:
 winbinrel:
 	rsync zxid-$(ZXIDREL)-win32-bin.zip $(WEBROOT)
 
-indexrel: zxid-tas3-ios-index.html
+indexrel: zxid-tas3-ios-index.html old-releases.html
 	rsync $< $(WEBROOT)
 
 reldoc:
