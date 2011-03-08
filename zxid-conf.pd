@@ -533,7 +533,7 @@ rule:: transformation rule:
     file-feideenc:: Combination of ~file~ and ~fedieenc~
     file-def-sb64:: Combination of ~file~ and ~def-sb64~
     file-sb64:: Combination of ~file~ and ~sb64~
-    reset:: Special pseudo rule that clears previous map configuration.
+    reset:: Special pseudo rule that clears previous map configuration. (e.g. $$reset$$)
 ext:: Extended argument that may be used by some rules.
 
 The order of evaluation of ~INMAP~ stanzas is not defined, therefore it is
