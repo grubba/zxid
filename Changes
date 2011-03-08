@@ -65,6 +65,10 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
     - Clarify signature validation error codes, e.g. <SignedInfo> canon fail vs. bad cert
 
+zxid-0.81:: 8.3.2011
+    - Eliminate empty valued and duplicate attributes from XACML requests
+    - Fixed return value of zxid_az() family to be null upon deny.
+
 zxid-0.80:: 2.3.2011
     - Fixed out of memory in zxidwsc.c caused by malformed fault input.
 

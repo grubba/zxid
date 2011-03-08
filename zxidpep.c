@@ -33,7 +33,47 @@
 #define XS_STRING "http://www.w3.org/2001/XMLSchema#string"
 #endif
 
-/* ============== Policy Enforcement Point, Authorization Decision Query ============== */
+/*() Check for duplicate attribute in XACML attribute chain
+ * for nth occurance of named attribute.
+ *
+ * - NULL or zero length name will match any
+ * - minus one (-1) as either length field will cause strlen() to be done
+ * - the index n is one based
+ *
+ * *Arguments*
+ *
+ * xac_at_list:: List of xac attributes to scan
+ * name_len:: Length of the attribute name, or 0 if no matching by attribute name is desired
+ * name:: attribute name to match (or 0)
+ * n:: Howmanieth instance of the matching attribute is desired. 1 means first.
+ * return:: Data structure representing the matching attribute.
+ */
+
+static struct zx_xac_Attribute_s* zxid_find_xac_attribute(struct zx_xac_Attribute_s* xac_at_list, int name_len, char* name, int n)
+{
+  struct zx_xac_Attribute_s* at;
+  if (!name) { name_len = 0; name = ""; }
+  if (name_len == -1 && name) name_len = strlen(name);
+  if (!xac_at_list) {
+    ERR("No xac attribute list when looking for attribute name(%.*s) n=%d", name_len, name, n);
+    return 0;
+  }
+  for (at = xac_at_list;
+       at;
+       at = (struct zx_xac_Attribute_s*)at->gg.g.n) {
+    if (at->gg.g.tok != zx_xac_Attribute_ELEM)
+      continue;
+    if ((name_len ? (at->AttributeId
+		     && at->AttributeId->g.len == name_len
+		     && !memcmp(at->AttributeId->g.s, name, name_len)) : 1)
+	) {
+      --n;
+      if (!n)
+	return at;
+    }
+  }
+  return 0;
+}
 
 /*() Extract attributes from session pool according to pepmap, usually the PEPMAP
  * configuration variable.
@@ -70,8 +110,19 @@ static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, str
       D("attribute(%s) filtered out by del rule in PEPMAP", at->name);
       continue;
     }
-
+    
     at->map_val = zxid_map_val(cf, ses, 0, map, at->name, at->val);
+    
+    if (!at->map_val || !at->map_val->len || !at->map_val->s) {
+      if (cf->az_opt & 0x02) {
+	INFO("attribute(%s) with empty value passed due to AZ_OPT=0x02", at->name);
+	continue;
+      } else {
+	INFO("attribute(%s) filtered out due to empty value", at->name);
+	continue;
+      }
+    }
+
     if (map->dst && *map->dst && map->src && map->src[0] != '*') {
       D("renaming(%s) to(%s) orig_val(%s) map_val(%.*s)", at->name, map->dst, at->val, at->map_val->len, at->map_val->s);
       name = map->dst;
@@ -84,12 +135,30 @@ static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, str
 				     at->issuer, at->map_val);
     if (map->ns && *map->ns) {
       if (!strcmp(map->ns, "subj")) {
+	if (cf->az_opt & 0x04) {
+	  DD("Dup allowed by AZ_OPT=0x04");
+	} else if (zxid_find_xac_attribute(*subj, -1, at->name, 1)) {
+	  INFO("attribute(%s) filtered out as duplicate", at->name);
+	  continue;
+	}
 	ZX_NEXT(xac_at) = (void*)*subj;
 	*subj = xac_at;
       } else if (!strcmp(map->ns, "rsrc")) {
+	if (cf->az_opt & 0x04) {
+	  DD("Dup allowed by AZ_OPT=0x04");
+	} else if (zxid_find_xac_attribute(*rsrc, -1, at->name, 1)) {
+	  INFO("attribute(%s) filtered out as duplicate", at->name);
+	  continue;
+	}
 	ZX_NEXT(xac_at) = (void*)*rsrc;
 	*rsrc = xac_at;
       } else if (!strcmp(map->ns, "act")) {
+	if (cf->az_opt & 0x04) {
+	  DD("Dup allowed by AZ_OPT=0x04");
+	} else if (zxid_find_xac_attribute(*act, -1, at->name, 1)) {
+	  INFO("attribute(%s) filtered out as duplicate", at->name);
+	  continue;
+	}
 #if 0
 	*act = xac_at;  /* there can be only one */
 #else
@@ -97,6 +166,12 @@ static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, str
         *act = xac_at;  /* We can have multiple attributes in the action section */
 #endif
       } else if (!strcmp(map->ns, "env")) {
+	if (cf->az_opt & 0x04) {
+	  DD("Dup allowed by AZ_OPT=0x04");
+	} else if (zxid_find_xac_attribute(*env, -1, at->name, 1)) {
+	  INFO("attribute(%s) filtered out as duplicate", at->name);
+	  continue;
+	}
 	ZX_NEXT(xac_at) = (void*)*env;
 	*env = xac_at;
       } else {
@@ -141,6 +216,8 @@ static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, str
 	     zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:1.0:action:implied-action"));
   }
 }
+
+/* ============== Policy Enforcement Point, Authorization Decision Query ============== */
 
 /*() Call Policy Decision Point (PDP) to obtain an authorization decision
  * about a contemplated action on a resource. The attributes from the session
@@ -371,23 +448,11 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
       ZX_FREE(cf->ctx, ss);
       return p;
     } else if (ZX_CONTENT_EQ_CONST(decision, "Deny")) {
-      ss = zx_easy_enc_elem_opt(cf, &stmt->Response->gg);
-      if (!ss || !ss->len)
-	return 0;
-      p = ss->s;
-      D("Deny stmt(%s)", p);
-      INFO("DENY found in stmt len=%d", ss->len);
-      ZX_FREE(cf->ctx, ss);
-      return p;
+      INFO("DENY found in stmt %d", 0);
+      return 0;
     } else {
-      ss = zx_easy_enc_elem_opt(cf, &stmt->Response->gg);
-      if (!ss || !ss->len)
-       return 0;
-      p = ss->s;
-      D("Other stmt(%s)", p);
-      INFO("Other (treated as Deny) found in stmt len=%d", ss->len);
-      ZX_FREE(cf->ctx, ss);
-      return p;
+      INFO("Other (treated as Deny) found in stmt %d", 0);
+      return 0;
     }
   }
   /*if (resp->Assertion->AuthzDecisionStatement) {  }*/
@@ -447,8 +512,10 @@ char* zxid_pep_az_base_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, 
 
   zxid_pepmap_extract(cf, cgi, ses, pepmap, &subj, &rsrc, &act, &env);
   resp = zxid_az_soap(cf, cgi, ses, pdp_url, subj, rsrc, act, env);
-  if (!resp)
+  if (!resp || !resp->Assertion) {
+    ERR("DENY due to malformed authorization response from PDP. Either no response or response lacking assertion. %p", resp);
     return 0;
+  }
 
   az_stmt = resp->Assertion->XACMLAuthzDecisionStatement;
   if (az_stmt && az_stmt->Response) {

@@ -507,6 +507,9 @@ struct zx_xac_Response_s* zxid_mk_xacml_resp(zxid_conf* cf, char* decision)
   return resp;
 }
 
+/*() Low level constructor for simple XACML attribute (see the
+ * source to understand how "simple" they are). */
+
 /* Called by:  zxid_call_trustpdp x6, zxid_pepmap_extract x3 */
 struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, struct zx_elem_s* father, struct zx_str* atid, struct zx_str* attype, struct zx_str* atissuer, struct zx_str* atvalue)
 {
