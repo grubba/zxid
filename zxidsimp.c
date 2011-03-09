@@ -780,7 +780,7 @@ char* zxid_simple_show_err(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
 /*() Decode ssoreq (ar=), i.e. the preserved original AuthnReq */
 
 /* Called by:  zxid_simple_idp_pw_authn, zxid_simple_idp_show_an */
-static int zxid_decode_ssoreq(zxid_conf* cf, zxid_cgi* cgi)
+int zxid_decode_ssoreq(zxid_conf* cf, zxid_cgi* cgi)
 {
   int len;
   char* buf;
@@ -1073,13 +1073,14 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * I = used for IdP ???
    * K = used?
    * F = IdP: Return SSO A7N after successful An; no ses case, generate IdP ui
+   * V = Proxy IdP return
    *
-   * Still available: GHJORTUVWXYZabcdefghijkoqwxyz
+   * Still available: HJOTUVWXYZabcdefghijkoqwxyz
    */
   
   if (cgi->enc_hint)
     cf->nameid_enc = cgi->enc_hint != '0';
-  D("op(%c) session(%s) active", cgi->op, cgi->sid);
+  D("op(%c) sesid(%s) active", cgi->op, STRNULLCHK(cgi->sid));
   DD("session(%s) active op(%c) saml_req(%s)", cgi->sid, cgi->op, STRNULLCHK(cgi->saml_req));
   switch (cgi->op) {
   case 'l':
@@ -1131,12 +1132,16 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
   case 'D':  return zxid_ps_accept_invite(cf, cgi, ses, res_len, auto_flags);
   case 'G':  return zxid_ps_finalize_invite(cf, cgi, ses, res_len, auto_flags);
 
+  case 'V':  /* (PXY) Middle IdP of Proxy IdP flow */
+    ss = zxid_idp_dispatch(cf, cgi, ses, 0);  /* N.B. The original request is in cgi->saml_req */
+    goto ret_idp_dispatch;
   case 'R':
     cgi->op = 'F';
     /* Fall thru */
   case 'F': /*  IdP: Return SSO A7N after successful An; no ses case, generate IdP ui */
   idp:
     ss = zxid_idp_dispatch(cf, cgi, ses, 1);  /* N.B. The original request is in cgi->saml_req */
+  ret_idp_dispatch:
     switch (ss->s[0]) {
     case 'K': return zxid_simple_show_idp_sel(cf, cgi, res_len, auto_flags);
     case 'C': /* Content-type:  -- i.e. ship page or XML out */
@@ -1306,7 +1311,7 @@ show_protected_content_setcookie:
   case 'c':    return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
   case 'd':    return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
   case 'B':    return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
-  case 'D': /*  Delegation / Inviatation URL clicked. */
+  case 'D': /*  Delegation / Invitation URL clicked. */
      return zxid_ps_accept_invite(cf, cgi, ses, res_len, auto_flags);
   case 'R':
     cgi->op = 'F';

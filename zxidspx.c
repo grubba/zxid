@@ -107,11 +107,15 @@ struct zx_str* zxid_sp_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     if (!zxid_saml_ok(cf, cgi, r->Response->Status, "SAMLresp"))
       return zx_dup_str(cf->ctx, "* ERR");
     ret = zxid_sp_dig_sso_a7n(cf, cgi, ses, r->Response);
-    D("ret=%d", ret);
+    D("ret=%d ses=%p", ret, ses);
     switch (ret) {
-    case ZXID_OK:     return zx_dup_str(cf->ctx, "K");
-    case ZXID_SSO_OK: return zx_dup_str(cf->ctx, "O");
-    case ZXID_FAIL:   D("*** FAIL, should send back to IdP select %d", 0); return zx_dup_str(cf->ctx, "* ERR");
+    case ZXID_OK:      return zx_dup_str(cf->ctx, "K");
+    case ZXID_SSO_OK:  return zx_dup_str(cf->ctx, "O");
+    case ZXID_IDP_REQ: /* (PXY) Middle IdP of IdP Proxy flow */
+      return zx_dup_str(cf->ctx, zxid_simple_ses_active_cf(cf, cgi, ses, 0, 0x1fff));
+    case ZXID_FAIL:
+      D("*** FAIL, should send back to IdP select %d", 0);
+      return zx_dup_str(cf->ctx, "* ERR");
     }
     return zx_dup_str(cf->ctx, "M");  /* Management screen, please. */
   }

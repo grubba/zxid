@@ -1,5 +1,5 @@
 /* zxidsso.c  -  Handwritten functions for implementing Single Sign-On logic for SP
- * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -14,6 +14,7 @@
  * 22.3.2008, permitted passing RelayState for SSO --Sampo
  * 7.10.2008, added documentation --Sampo
  * 1.2.2010,  added authentication service client --Sampo
+ * 9.3.2011,  added Proxy IdP processing --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
@@ -198,9 +199,9 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
       D_DEDENT("start_sso: ");
       return 0;
     }
-    D("HERE1 %p", sso_svc);
-    D("HERE2 %p", sso_svc->Location);
-    D("HERE3 len=%d (%.*s)", sso_svc->Location->g.len, sso_svc->Location->g.len, sso_svc->Location->g.s);
+    DD("HERE1 %p", sso_svc);
+    DD("HERE2 %p", sso_svc->Location);
+    DD("HERE3 len=%d (%.*s)", sso_svc->Location->g.len, sso_svc->Location->g.len, sso_svc->Location->g.s);
     ar = zxid_mk_authn_req(cf, cgi);
     ZX_ORD_INS_ATTR(ar, Destination, sso_svc->Location);
     ars = zx_easy_enc_elem_opt(cf, &ar->gg);
@@ -212,6 +213,15 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
     D_DEDENT("start_sso: ");
     return 0;
   }
+  
+  if (cf->idp_ena) {  /* (PXY) Middle IdP of Proxy IdP scenario */
+    if (cgi->rs) {
+      ERR("Attempt to supply RelayState(%s) in middle IdP of Proxy IdP flow. Ignored.", cgi->rs);
+    }
+    cgi->rs = cgi->ssoreq; /* Carry the original authn req in RelayState */
+    D("Middle IdP of Proxy IdP flow RelayState(%s)", STRNULLCHK(cgi->rs));
+  }
+  
   if (cf->log_level>0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "ANREDIR", cgi->eid, 0);
   ars = zxid_saml2_redir_url(cf, &sso_svc->Location->g, ars, cgi->rs);
@@ -699,6 +709,20 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
 	cgi->sigval, "K", "NEWSES", ses->sid, "sesix(%s)", ses->sesix?ses->sesix:"-");
   zxlog(cf, &ourts, &srcts, 0, issuer, 0, &a7n->ID->g, subj,
 	cgi->sigval, "K", ses->nidfmt?"FEDSSO":"TMPSSO", ses->sesix?ses->sesix:"-", 0);
+
+  if (cf->idp_ena) {  /* (PXY) Middle IdP of Proxy IdP flow */
+    if (cgi->rs && cgi->rs[0]) {
+      D("ProxyIdP got RelayState(%s) ar(%s)", cgi->rs, cgi->ssoreq?cgi->ssoreq:"");
+      cgi->saml_resp = 0;  /* Clear Response to prevent re-interpretation. We want Request. */
+      cgi->ssoreq = cgi->rs;
+      zxid_decode_ssoreq(cf, cgi);
+      cgi->op = 'V';
+      D_DEDENT("ssof: ");
+      return ZXID_IDP_REQ; /* Cause zxid_simple_idp_an_ok_do_rest() to be called from zxid_sp_dispatch(); */
+    } else {
+      INFO("Middle IdP of Proxy IdP flow did not receive RelayState from upstream IdP %p", cgi->rs);
+    }
+  }
   D_DEDENT("ssof: ");
   return ZXID_SSO_OK;
 

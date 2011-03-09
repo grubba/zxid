@@ -114,6 +114,10 @@ struct zx_dap_Subscription_s;
 struct zx_dap_Query_s;
 #endif
 
+/* zxidsimp */
+
+ZXID_DECL int zxid_decode_ssoreq(zxid_conf* cf, zxid_cgi* cgi);
+
 /* zxidmeta */
 
 #ifdef USE_OPENSSL
