@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 # 2.2.2010, Sampo Kellomaki (sampo@iki.fi)
 # 18.11.2010, greatly enchanced --Sampo
+# 10.3.2011,  from zxtest.pl, adapted for special purpose of TAS3 review --Sampo
 #
 # Test suite for ZXID
 
@@ -28,9 +29,9 @@ sub redy   { $ascii > 1 ? "\e[41m$_[0]\e[0m" : $_[0]; }    # red background, bla
 sub greeny { $ascii > 1 ? "\e[42m$_[0]\e[0m" : $_[0]; }
 
 use Encode;
-use Digest::MD5;
-use Digest::SHA1;
-use Net::SSLeay qw(get_httpx post_httpx make_headers make_form);  # Need Net::SSLeay-1.24
+#use Digest::MD5;
+#use Digest::SHA1;
+#use Net::SSLeay qw(get_httpx post_httpx make_headers make_form);  # Need Net::SSLeay-1.24
 use WWW::Curl::Easy;    # HTTP client library, see curl.haxx.se
 use WWW::Curl::Multi;
 use XML::Simple;
@@ -56,6 +57,9 @@ $diffx = shift if $ARGV[0] eq '-dx';
 $ENV{'LD_LIBRARY_PATH'} = '/apps/lib';  # *** Specific to Sampo's environment
 warn "START pid=$$ $cvsid qs($ENV{'QUERY_STRING'}) LD($ENV{'LD_LIBRARY_PATH'})";
 syswrite STDOUT, "Content-Type: text/html\r\n\r\n" if !$ascii;
+
+#$idp = 'http://idp.tas3.pt:8081/zxididp';
+$idp = 'https://idp.tas3.eu/zxididp?o=B';
 
 ### N.B. Ignoring SIGCHLD breaks return value of system() and $?
 #$x=system "false"; warn "x($x) q($?) $!";
@@ -805,7 +809,7 @@ sub ZXC {  # zxcall
     unlink "tmp/$tsti.out";
     
     #my $latency = call_system($test, 60, $slow, "./zxcall -a http://idp.tas3.pt:8081/zxididp?o=B tastest:tas123 $arg <$file >tmp/$tsti.out 2>tmp/tst.err");
-    my $latency = call_system($test, 60, $slow, "./zxcall -a http://idp.tas3.pt:8081/zxididp tastest:tas123 $arg <$file >tmp/$tsti.out 2>tmp/tst.err");
+    my $latency = call_system($test, 60, $slow, "./zxcall -a $idp tastest:tas123 $arg <$file >tmp/$tsti.out 2>tmp/tst.err");
     return if $latency == -1;
     
     #if (system "/usr/bin/diff -u t/$tsti.out tmp/$tsti.out") {
@@ -983,28 +987,28 @@ CMD('LOG1', 'zxlogview list',      "./zxlogview /var/zxid/pem/logsign-nopw-cert.
 CMD('LOG2', 'zxlogview list',      "./zxlogview -t /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem");
 
 # See also README.smime for tutorial of these commands
-CMD('SMIME1', 'smime key gen ca',  "echo 'commonName=TestCA|emailAddress=test\@test.com' | ./smime -kg 'description=CA' passwd tmp/careq.pem >tmp/capriv_ss.pem; wc -l tmp/capriv_ss.pem");
-CMD('SMIME2', 'smime key gen joe', "echo 'commonName=Joe Smith|emailAddress=joe\@test.com' | ./smime -kg 'description=foo' passwd tmp/req.pem >tmp/priv_ss.pem; wc -l tmp/priv_ss.pem");
-CMD('SMIME3', 'smime ca',          "./smime -ca tmp/capriv_ss.pem passwd 1 <tmp/req.pem >tmp/cert.pem; wc -l tmp/cert.pem");
-CMD('SMIME4', 'smime code sig',    "./smime -ds tmp/priv_ss.pem passwd <t/XML1.out >tmp/XML1.sig; wc -l tmp/XML1.sig");
-CMD('SMIME5', 'smime code vfy',    "cat tmp/priv_ss.pem tmp/XML1.sig |./smime -dv t/XML1.out");
-CMD('SMIME6', 'smime sig',         "echo foo|./smime -mime text/plain|./smime -s tmp/priv_ss.pem passwd >tmp/foo.p7m; wc -l tmp/foo.p7m");
-CMD('SMIME7', 'smime clear sig',   "echo foo|./smime -mime text/plain|./smime -cs tmp/priv_ss.pem passwd >tmp/foo.clear.smime; wc -l tmp/foo.clear.smime");
-CMD('SMIME8', 'smime pubenc',      "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem|wc -l");
-CMD('SMIME8b', 'smime pubencdec',   "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem|./smime -d tmp/priv_ss.pem passwd");
-CMD('SMIME9', 'smime sigenc',      "echo foo|./smime -mime text/plain|./smime -cs tmp/priv_ss.pem passwd|./smime -e tmp/priv_ss.pem");
-CMD('SMIME10', 'smime encsig',     "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem|./smime -cs tmp/priv_ss.pem passwd");
-CMD('SMIME11', 'smime multi sigenc', "echo bar|./smime -m image/gif t/XML1.out|./smime -cs tmp/priv_ss.pem passwd|./smime -e tmp/priv_ss.pem");
-CMD('SMIME12', 'smime query sig',   "./smime -qs <tmp/foo.p7m");
-CMD('SMIME13', 'smime verify',      "./smime -v tmp/priv_ss.pem <tmp/foo.p7m");
-CMD('SMIME14', 'smime query cert',  "./smime -qc <tmp/cert.pem");
-CMD('SMIME15', 'smime verify cert', "./smime -vc tmp/capriv_ss.pem <tmp/req.pem");
-CMD('SMIME16', 'smime mime ent',    "./smime -mime text/plain <tmp/XML1.out");
-CMD('SMIME17', 'smime mime ent b64',"./smime -mime_base64 image/gif <tmp/XML1.out");
-CMD('SMIME18', 'smime pkcs12 exp',  "./smime -pem-p12 you\@test.com passwd pw-for-p12 <tmp/priv_ss.pem >tmp/me.p12; wc -l tmp/me.p12");
-CMD('SMIME19', 'smime pkcs12 imp',  "./smime -p12-pem pw-for-p12 passwd <tmp/me.p12 >tmp/me.pem; wc -l tmp/me.pem");
-CMD('SMIME20', 'smime query req',   "./smime -qr <tmp/req.pem");
-CMD('SMIME21', 'smime covimp',      "echo foo|./smime -base64|./smime -cat|./smime -unbase64");
+# CMD('SMIME1', 'smime key gen ca',  "echo 'commonName=TestCA|emailAddress=test\@test.com' | ./smime -kg 'description=CA' passwd tmp/careq.pem >tmp/capriv_ss.pem; wc -l tmp/capriv_ss.pem");
+# CMD('SMIME2', 'smime key gen joe', "echo 'commonName=Joe Smith|emailAddress=joe\@test.com' | ./smime -kg 'description=foo' passwd tmp/req.pem >tmp/priv_ss.pem; wc -l tmp/priv_ss.pem");
+# CMD('SMIME3', 'smime ca',          "./smime -ca tmp/capriv_ss.pem passwd 1 <tmp/req.pem >tmp/cert.pem; wc -l tmp/cert.pem");
+# CMD('SMIME4', 'smime code sig',    "./smime -ds tmp/priv_ss.pem passwd <t/XML1.out >tmp/XML1.sig; wc -l tmp/XML1.sig");
+# CMD('SMIME5', 'smime code vfy',    "cat tmp/priv_ss.pem tmp/XML1.sig |./smime -dv t/XML1.out");
+# CMD('SMIME6', 'smime sig',         "echo foo|./smime -mime text/plain|./smime -s tmp/priv_ss.pem passwd >tmp/foo.p7m; wc -l tmp/foo.p7m");
+# CMD('SMIME7', 'smime clear sig',   "echo foo|./smime -mime text/plain|./smime -cs tmp/priv_ss.pem passwd >tmp/foo.clear.smime; wc -l tmp/foo.clear.smime");
+# CMD('SMIME8', 'smime pubenc',      "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem|wc -l");
+# CMD('SMIME8b', 'smime pubencdec',   "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem|./smime -d tmp/priv_ss.pem passwd");
+# CMD('SMIME9', 'smime sigenc',      "echo foo|./smime -mime text/plain|./smime -cs tmp/priv_ss.pem passwd|./smime -e tmp/priv_ss.pem");
+# CMD('SMIME10', 'smime encsig',     "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem|./smime -cs tmp/priv_ss.pem passwd");
+# CMD('SMIME11', 'smime multi sigenc', "echo bar|./smime -m image/gif t/XML1.out|./smime -cs tmp/priv_ss.pem passwd|./smime -e tmp/priv_ss.pem");
+# CMD('SMIME12', 'smime query sig',   "./smime -qs <tmp/foo.p7m");
+# CMD('SMIME13', 'smime verify',      "./smime -v tmp/priv_ss.pem <tmp/foo.p7m");
+# CMD('SMIME14', 'smime query cert',  "./smime -qc <tmp/cert.pem");
+# CMD('SMIME15', 'smime verify cert', "./smime -vc tmp/capriv_ss.pem <tmp/req.pem");
+# CMD('SMIME16', 'smime mime ent',    "./smime -mime text/plain <tmp/XML1.out");
+# CMD('SMIME17', 'smime mime ent b64',"./smime -mime_base64 image/gif <tmp/XML1.out");
+# CMD('SMIME18', 'smime pkcs12 exp',  "./smime -pem-p12 you\@test.com passwd pw-for-p12 <tmp/priv_ss.pem >tmp/me.p12; wc -l tmp/me.p12");
+# CMD('SMIME19', 'smime pkcs12 imp',  "./smime -p12-pem pw-for-p12 passwd <tmp/me.p12 >tmp/me.pem; wc -l tmp/me.pem");
+# CMD('SMIME20', 'smime query req',   "./smime -qr <tmp/req.pem");
+# CMD('SMIME21', 'smime covimp',      "echo foo|./smime -base64|./smime -cat|./smime -unbase64");
 
 CMD('SIG1',  'sig vry shib resp',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal-private/shib-resp.xml");
 CMD('SIG2',  'sig vry shib post',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal-private/shib-resp.qs");
@@ -1097,8 +1101,6 @@ ED('XML28', 'Decode-Encode SO and WO: AdvClient ming-ntt',     10, 't/ac-ming-nt
 ED('XML29', 'Decode-Encode SO and WO: AdvClient ntt-fixed',    10, 't/ac-ming-ntt-fixed.xml');
 ED('XML30', 'Decode-Encode SO and WO: zx a7n',    10, 't/a7n-len-err.xml');
 ED('XML31', 'Decode-Encode SO and WO: covimp',    10, 't/covimp.xml');
-ED('XML32', 'Decode-Encode SO and WO: bad-body malformed close',  10, 't/bad-body.xml');
-ED('XML33', 'Decode-Encode SO and WO: bad-body2 malformed close', 10, 't/bad-body2.xml');
 
 # *** TODO: add EncDec for all other types of protocol messages
 # *** TODO: add specific SSO signature validation tests
@@ -1111,7 +1113,7 @@ ED('XML33', 'Decode-Encode SO and WO: bad-body2 malformed close', 10, 't/bad-bod
 
 
 ZXC('ZXC-AS1', 'Authentication Service call: SSO + AZ', 1000, "-az ''", '/dev/null');
-CMD('ZXC-AS2', 'Authentication Service call: An Fail', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:tas -t urn:x-foobar -e '<foobar>Hello</foobar>' -b", 256);
+CMD('ZXC-AS2', 'Authentication Service call: An Fail', "./zxcall -d -a $idp test:tas -t urn:x-foobar -e '<foobar>Hello</foobar>' -b", 256);
 
 ZXC('ZXC-IM1', 'Identity Mapping Service call', 1000, "-im http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B", '/dev/null');
 ZXC('ZXC-IM2', '* SAML NID Map call', 1000, "-nidmap http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B", '/dev/null');  # SEGV
@@ -1123,28 +1125,28 @@ ZXC('ZXC-DI2', 'List EPR cache', 1, "-l", '/dev/null');
 ZXC('ZXC-WS1', 'AS + WSF call: idhrxml',  1000, "-t urn:id-sis-idhrxml:2007-06:dst-2.1", 't/id-hrxml-rq.xml');
 ZXC('ZXC-WS2', 'AS + WSF call: x-foobar', 1000, "-t urn:x-foobar", 't/x-foobar-rq.xml');
 
-CMD('ZXC-WS3', 'AS + WSF call leaf (x-recurs)', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t x-recurs -e '<foobar>Hello</foobar>' -b");
-CMD('ZXC-WS4', 'AS + WSF call EPR not found', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t x-none -e '<foobar>Hello</foobar>' -b",512);
-CMD('ZXC-WS5', 'AS + WSF call bad pw', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:bad -t x-none -e '<foobar>Hello</foobar>' -b",256);
+CMD('ZXC-WS3', 'AS + WSF call leaf (x-recurs)', "./zxcall -d -a $idp test:foo -t x-recurs -e '<foobar>Hello</foobar>' -b");
+CMD('ZXC-WS4', 'AS + WSF call EPR not found', "./zxcall -d -a $idp test:foo -t x-none -e '<foobar>Hello</foobar>' -b",512);
+CMD('ZXC-WS5', 'AS + WSF call bad pw', "./zxcall -d -a $idp test:bad -t x-none -e '<foobar>Hello</foobar>' -b",256);
 
-CMD('ZXC-WS6', 'AS + WSF call hr-xml bad', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<foobar>Hello</foobar>' -b");
+CMD('ZXC-WS6', 'AS + WSF call hr-xml bad', "./zxcall -d -a $idp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<foobar>Hello</foobar>' -b");
 
-CMD('ZXC-WS7', 'AS + WSF call hr-xml create', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Create xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:CreateItem><idhrxml:NewData><hrxml:Candidate xmlns:hrxml=\"http://ns.hr-xml.org/2007-04-15\">test candidate</hrxml:Candidate></idhrxml:NewData></idhrxml:CreateItem></idhrxml:Create>' -b");
-CMD('ZXC-WS8', 'AS + WSF call hr-xml query', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Query xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:QueryItem><idhrxml:Select>test query</idhrxml:Select></idhrxml:QueryItem></idhrxml:Query>' -b");
-CMD('ZXC-WS9', 'AS + WSF call hr-xml mod', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Modify xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:ModifyItem><idhrxml:Select>test query</idhrxml:Select><idhrxml:NewData><hrxml:Candidate xmlns:hrxml=\"http://ns.hr-xml.org/2007-04-15\">test mod</hrxml:Candidate></idhrxml:NewData></idhrxml:ModifyItem></idhrxml:Modify>' -b");
-CMD('ZXC-WS10', 'AS + WSF call hr-xml mod', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Delete xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:DeleteItem><idhrxml:Select>test query</idhrxml:Select></idhrxml:DeleteItem></idhrxml:Delete>' -b");
+CMD('ZXC-WS7', 'AS + WSF call hr-xml create', "./zxcall -d -a $idp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Create xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:CreateItem><idhrxml:NewData><hrxml:Candidate xmlns:hrxml=\"http://ns.hr-xml.org/2007-04-15\">test candidate</hrxml:Candidate></idhrxml:NewData></idhrxml:CreateItem></idhrxml:Create>' -b");
+CMD('ZXC-WS8', 'AS + WSF call hr-xml query', "./zxcall -d -a $idp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Query xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:QueryItem><idhrxml:Select>test query</idhrxml:Select></idhrxml:QueryItem></idhrxml:Query>' -b");
+CMD('ZXC-WS9', 'AS + WSF call hr-xml mod', "./zxcall -d -a $idp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Modify xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:ModifyItem><idhrxml:Select>test query</idhrxml:Select><idhrxml:NewData><hrxml:Candidate xmlns:hrxml=\"http://ns.hr-xml.org/2007-04-15\">test mod</hrxml:Candidate></idhrxml:NewData></idhrxml:ModifyItem></idhrxml:Modify>' -b");
+CMD('ZXC-WS10', 'AS + WSF call hr-xml mod', "./zxcall -d -a $idp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Delete xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:DeleteItem><idhrxml:Select>test query</idhrxml:Select></idhrxml:DeleteItem></idhrxml:Delete>' -b");
 
 
 ### Simulated browsing tests (a bit fragile)
 
-tA('ST','LOGIN-IDP1', 'IdP Login screen',  'http://idp.tas3.pt:8081/zxididp?o=F');
-tA('ST','LOGIN-IDP2', 'IdP Give password', 'http://idp.tas3.pt:8081/zxididp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=&zxapp=');
-tA('ST','LOGIN-IDP3', 'IdP Local Logout',  'http://idp.tas3.pt:8081/zxididp?gl=+Local+Logout+');
+tA('ST','LOGIN-IDP1', 'IdP Login screen',  '$idp?o=F');
+tA('ST','LOGIN-IDP2', 'IdP Give password', '$idp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=&zxapp=');
+tA('ST','LOGIN-IDP3', 'IdP Local Logout',  '$idp?gl=+Local+Logout+');
 
 tA('ST','SSOHLO1', 'IdP selection screen', 'http://sp1.zxidsp.org:8081/zxidhlo?o=E');
 tA('AR','SSOHLO2', 'Selected IdP', 'http://sp1.zxidsp.org:8081/zxidhlo?e=&l0http%3A%2F%2Fidp.tas3.pt%3A8081%2Fzxididp=+Login+with+TAS3+Demo+IdP+%28http%3A%2F%2Fidp.tas3.pt%3A8081%2Fzxididp%29+&fc=1&fn=prstnt&fr=&fq=&fy=&fa=&fm=&fp=0&ff=0');
 
-tA('SP','SSOHLO3', 'Login to IdP', 'http://idp.tas3.pt:8081/zxididp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=$AR&zxapp=');
+tA('SP','SSOHLO3', 'Login to IdP', '$idp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=$AR&zxapp=');
 
 pA('ST','SSOHLO4', 'POST to SP', 'http://sp1.zxidsp.org:8081/zxidhlo?o=P', "SAMLResponse=$SAMLResponse");
 tA('ST','SSOHLO5', 'SP SOAP Az',      'http://sp1.zxidsp.org:8081/zxidhlo?gv=1');

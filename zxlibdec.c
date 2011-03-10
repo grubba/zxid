@@ -170,7 +170,7 @@ static int zx_scan_elem_end(struct zx_ctx* c, const char* start, const char* fun
   ++c->p;
   name = c->p;
   ZX_LOOK_FOR(c,'>');
-  if (memcmp(start, name, c->p-name))	{
+  if (memcmp(start?start:"", name, c->p-name))	{
     errloc = MAX(c->p - 20, c->bas);
     ERR("%s: Mismatching close tag(%.*s) pos=%d (%.*s)", func, c->p-name, name, c->p - c->bas, MIN(c->lim - errloc, 40), errloc);
     ++c->p;

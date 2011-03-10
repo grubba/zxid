@@ -163,6 +163,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     sec->ff12_Assertion = 0;
     
     zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_REQUIRE, cf->wsp_localpdp_obl_emit);
+    zx_reverse_elem_lists(&hdr->gg);
     zxid_wsf_sign(cf, cf->wsp_sign, sec, 0, hdr, env->Body);
   }
   return 1;

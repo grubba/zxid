@@ -449,13 +449,18 @@ int zxcall_main(int argc, char** argv, char** env)
       ERR("Discovery failed to find any epr of service type(%s)", STRNULLCHK(svc));
       return 3;
     }
-    ss = zxid_get_epr_address(cf, epr);
-    printf("Found epr. index=%d service type(%s)\n  URL:         %.*s\n",
-	   din, STRNULLCHK(svc), ss?ss->len:0, ss?ss->s:"");
-    ss = zxid_get_epr_entid(cf, epr);
-    printf("  EntityID:    %.*s\n", ss?ss->len:0, ss?ss->s:"");
-    ss = zxid_get_epr_desc(cf, epr);
-    printf("  Description: %.*s\n", ss?ss->len:0, ss?ss->s:"");
+    for (din = 1; ;++din) {
+      epr = zxid_get_epr(cf, ses, svc, url, di, 0 /*action*/, din);
+      if (!epr)
+	break;
+      ss = zxid_get_epr_address(cf, epr);
+      printf("%d. Found epr for service type(%s)\n   URL:         %.*s\n",
+	     din, STRNULLCHK(svc), ss?ss->len:0, ss?ss->s:"");
+      ss = zxid_get_epr_entid(cf, epr);
+      printf("   EntityID:    %.*s\n", ss?ss->len:0, ss?ss->s:"");
+      ss = zxid_get_epr_desc(cf, epr);
+      printf("   Description: %.*s\n", ss?ss->len:0, ss?ss->s:"");
+    }
     return 0;
   }
   

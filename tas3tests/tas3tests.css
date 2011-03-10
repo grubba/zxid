@@ -2,6 +2,10 @@ body { font-family: sans-serif; background: white; color: black; }
 .t3top { background: #330033; color: #ffaaff;
        padding-left: 20px;  padding-right:  20px;
        padding-top:  10px;  padding-bottom: 10px; }
+//.t3top:after { content: url(../logo-zxid-128x128.png) url(../tas3-logo.jpg); }
+//.t3top:after { content: '<a href="http://zxid.org/"><img src="../logo-zxid-128x128.png" height=70 border=0 alt="ZXID.org - Open Source IdM for the Masses"></a><a href="http://www.tas3.eu/"><img src="../tas3-logo.jpg" height=70 border=0 alt="TAS3.eu - Trusted Architecture for Securely Shareable Services (with Privacy)"></a>'; }
+.t3fltright { float: right; }
+
 .t3bot { background: #330033; color: #ffaaff;
        padding-left: 20px;  padding-right:  20px;
        padding-top:  10px;  padding-bottom: 10px; }

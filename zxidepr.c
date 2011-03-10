@@ -510,7 +510,7 @@ struct zx_str* zxid_get_epr_desc(zxid_conf* cf, zxid_epr* epr) {
 struct zx_str* zxid_get_epr_tas3_trust(zxid_conf* cf, zxid_epr* epr) {
   if (!epr || !epr->Metadata)
     return 0;
-  return zx_easy_enc_elem_sig(cf, epr->Metadata->Trust);
+  return zx_easy_enc_elem_sig(cf, &epr->Metadata->Trust->gg);
 }
 
 /*() Accessor function for extracting security mechanism ID. */
