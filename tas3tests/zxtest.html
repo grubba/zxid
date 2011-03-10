@@ -1,0 +1,54 @@
+<title>ZXID-TAS3 Test Suite: Reference Implementation Test</title>
+<link type="text/css" rel=stylesheet href="tas3tests.css">
+<body bgcolor=white>
+<h1 class=t3top>ZXID TAS3 Test Suite: Reference Implementation Test Battery</h1>
+
+<p>This tool allows you to run the test battery of the Reference
+Implementation of the Core Security Architecture.
+
+<form method=get action="idpzxtest.pl">
+<table>
+
+<tr>
+<th>URL of SP Start Page</th>
+<td><input name=spstart></td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>IdP to test with</th>
+<td><select name=idpeid>
+<option value="http://idp.tas3.pt:8081/zxididp">http://idp.tas3.pt:8081/zxididp
+<option value="https://idp.tas3.eu/zxididp?o=B">https://idp.tas3.eu/zxididp?o=B
+<option value="https://zxidp.org/idp">https://zxidp.org/idp
+</select>
+</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>IdP user for test</th>
+<td><input name=idpuid value="test"></td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>Password of IdP user</th>
+<td><input name=idppw value="foo"></td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>Service Type for Test</th>
+<td><input name=svctype value="urn:x-foobar"></td>
+</tr>
+
+<tr>
+<th>&nbsp;</th>
+<td><input type=submit name=starttest value=" Start Test "></td>
+<td>&nbsp;</td>
+</tr>
+
+</table>
+</form>
+<div class=zxbot></div>

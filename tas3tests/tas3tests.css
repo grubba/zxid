@@ -1,0 +1,16 @@
+body { font-family: sans-serif; background: white; color: black; }
+.t3top { background: #330033; color: #ffaaff;
+       padding-left: 20px;  padding-right:  20px;
+       padding-top:  10px;  padding-bottom: 10px; }
+.t3bot { background: #330033; color: #ffaaff;
+       padding-left: 20px;  padding-right:  20px;
+       padding-top:  10px;  padding-bottom: 10px; }
+.t3err { color: red; }
+.t3msg { color: green; }
+.t3dbg { color: white; }
+a.t3:link    { color: #ffccff; }
+a.t3:visited { color: #aa44aa; }
+a.t3:active  { color: #ff0000; }
+a.t3:hover   { color: #ffffff; }
+th { background: #ffbbff; text-align: left; }
+td { background: #ffddff; }

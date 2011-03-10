@@ -1,0 +1,56 @@
+<title>ZXID-TAS3 Test Suite: SSO</title>
+<link type="text/css" rel=stylesheet href="tas3tests.css">
+<body bgcolor=white>
+<h1 class=t3top>ZXID TAS3 Test Suite: Single Sign-On (SSO)</h1>
+
+<p>This tool allows you to run a Single Sign-On (SSO) test, testing
+Service Provider (SP) for TAS3 compatibility on front channel level.
+
+<h3>Prerequisites for Test</h3>
+
+<ol>
+<li>Exchange metadata of your SP with IdP
+</ol>
+
+<h3>Test Input</h3>
+
+<form method=get action="idpzxtest.pl">
+<table>
+
+<tr>
+<th>URL of SP Start Page</th>
+<td><input name=spstart></td>
+<td><i>(URL of GUI, not the entity ID)</i></td>
+</tr>
+
+<tr>
+<th>IdP to test against</th>
+<td><select name=idpeid>
+<option value="https://idp.tas3.eu/zxididp?o=B">https://idp.tas3.eu/zxididp?o=B
+<option value="https://zxidp.org/idp">https://zxidp.org/idp
+</select>
+</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>IdP user for test</th>
+<td><input name=idpuid value="test"></td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>Password of IdP user</th>
+<td><input name=idppw value="foo"></td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>&nbsp;</th>
+<td><input type=submit name=starttest value=" Start Test "></td>
+<td>&nbsp;</td>
+</tr>
+
+</table>
+</form>
+<div class=zxbot></div>

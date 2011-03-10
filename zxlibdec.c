@@ -221,7 +221,7 @@ static int zx_chk_el_ord(struct zx_elem_s* x)
   return 0;
 }
 
-/*() Insert an attribute to element's attribtue list in canoncically sorted
+/*() Insert an attribute to element's attribute list in canoncically sorted
  * place, i.e. no namespace sorts first, namespaced attribute sort by
  * namespace URI (not namespace prefix). Assumes the attribute
  * list has so far been sorted. Used as part of insertion sort. */

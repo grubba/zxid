@@ -92,17 +92,17 @@ struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
 /*() Make the body for the ArtifactResolve SOAP message, signing it if needed. */
 
 /* Called by:  covimp_test, zxid_sp_deref_art */
-struct zx_sp_ArtifactResolve_s* zxid_mk_art_deref(zxid_conf* cf, zxid_entity* idp_meta, const char* artifact)
+struct zx_sp_ArtifactResolve_s* zxid_mk_art_deref(zxid_conf* cf, struct zx_elem_s* father, zxid_entity* idp_meta, const char* artifact)
 {
   X509* sign_cert;
   EVP_PKEY* sign_pkey;
   struct zxsig_ref refs;
-  struct zx_sp_ArtifactResolve_s* ar = zx_NEW_sp_ArtifactResolve(cf->ctx,0);
-  ar->Issuer = zxid_my_issuer(cf, &ar->gg);
-  ar->ID = zxid_mk_id_attr(cf, &ar->gg, zx_ID_ATTR, "R", ZXID_ID_BITS);
+  struct zx_sp_ArtifactResolve_s* ar = zx_NEW_sp_ArtifactResolve(cf->ctx, father);
   ar->Version = zx_ref_attr(cf->ctx, &ar->gg, zx_Version_ATTR, SAML2_VERSION);
   ar->IssueInstant = zxid_date_time_attr(cf, &ar->gg, zx_IssueInstant_ATTR, time(0));
+  ar->ID = zxid_mk_id_attr(cf, &ar->gg, zx_ID_ATTR, "R", ZXID_ID_BITS);
   ar->Artifact = zx_ref_elem(cf->ctx, &ar->gg, zx_sp_Artifact_ELEM, artifact);
+  ar->Issuer = zxid_my_issuer(cf, &ar->gg);
   if (cf->sso_soap_sign) {
     ZERO(&refs, sizeof(refs));
     refs.id = &ar->ID->g;

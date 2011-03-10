@@ -21,8 +21,6 @@ User NOT logged in, no session.
 
 <ol>
 
-<li> Authenticate using another IdP (Proxy IdP)<br>!!IDP_LIST</li>
-
 <li> Yubikey <a href="http://yubico.com"><img
      src="yubiright_16x16.gif" width=16 height=16 border=0></a>:
      <input name=au>
@@ -33,6 +31,9 @@ User NOT logged in, no session.
      <input type=submit name=alp value=" Login ">
 
 <li><input type=submit name=an  value=" Create New User "> or <input type=submit name=aw value=" Recover Password ">
+
+<li> Authenticate using another IdP (Proxy IdP)<br>!!IDP_LIST</li>
+
 </ol>
 
 <h3>Technical options</h3><input type=checkbox name=fc value=1 checked> Create federation, NID Format: <select name=fn><option value=prstnt>Persistent<option value=trnsnt>Transient<option value="">(none)</select><br>

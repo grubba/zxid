@@ -1,5 +1,6 @@
 http://sp1.zxidsp.org:8080/zxidservlet/zxidHLO?o=B /var/zxid/idpcot/2-KjhkXzy0BznBjZrFQtDLYeYyE -
 https://sp1.zxidsp.org:5443/protected/saml?o=B     /var/zxid/idpcot/pjxvzhnRg5jmD-Z_Ku89x8dwSwg -
+https://nottingham.nekton.tas3.eu/idp/shibboleth   /var/zxid/idpcot/QjXl-TJJHvvHYzLcp_DUDzuylnM -
 http://sp1.zxidsp.org:8081/zxidhlo?o=B             /var/zxid/idpcot/7226zILkb6t9aGT89NyvhKvbZS0 TAS3 App Demo SP and WSC
 https://idp.tas3.pt:8443/zxididp?o=B               /var/zxid/idpcot/j78ObrTlKC6ptOs04NpEmkTiUWM -
 https://kent.nekton.tas3.eu/idp/shibboleth         /var/zxid/idpcot/YXfe5FNkf75PSHYMAbmjbhgvSC4 kent.nekton.tas3.eu

@@ -1,0 +1,82 @@
+<title>ZXID-TAS3 Test Suite: Call</title>
+<link type="text/css" rel=stylesheet href="tas3tests.css">
+<body bgcolor=white>
+<h1 class=t3top>ZXID TAS3 Test Suite: Web Service Call</h1>
+
+<p>This page allows you to call your web service
+to ensure its TAS3 compliance.
+
+<h3>Prerequisites for Test</h3>
+
+<ol>
+<li>Exchange metadata of your service with IdP
+<li>Registered your service in the Discovery Service
+</ol>
+
+<h3>Test Input</h3>
+
+<form method=get action="idpzxtest.pl">
+<table>
+
+<tr>
+<th>IdP to test with</th>
+<td><select name=idpeid>
+<option value="http://idp.tas3.pt:8081/zxididp">http://idp.tas3.pt:8081/zxididp
+<option value="https://idp.tas3.eu/zxididp?o=B">https://idp.tas3.eu/zxididp?o=B
+<option value="https://zxidp.org/idp">https://zxidp.org/idp
+</select>
+</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>IdP user for test</th>
+<td><input name=idpuid value="test"></td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>Password of IdP user</th>
+<td><input name=idppw value="foo"></td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>Service Type for Test</th>
+<td><input name=svctype value="urn:x-foobar"></td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>URL of service</th>
+<td><input name=svctype value=""></td>
+<td><i>(optional, normally discovered)</i></td>
+</tr>
+
+<tr>
+<th>Test Request Body</th>
+<td><input name=svctype value="<req/>"></td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>&nbsp;</th>
+<td><input type=submit name=starttest value=" Test Authentication Only "></td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>&nbsp;</th>
+<td><input type=submit name=starttest value=" Test Discovery "></td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<th>&nbsp;</th>
+<td><input type=submit name=starttest value=" Test Complete Call "></td>
+<td>&nbsp;</td>
+</tr>
+
+</table>
+</form>
+<div class=zxbot></div>

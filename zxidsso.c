@@ -156,6 +156,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_md_SingleSignOnService_s* sso_svc;
   struct zx_sp_AuthnRequest_s* ar;
+  struct zx_attr_s* dest;
   struct zx_str* ars;
   int sso_profile_ix;
   zxid_entity* idp_meta;
@@ -203,9 +204,10 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
     DD("HERE2 %p", sso_svc->Location);
     DD("HERE3 len=%d (%.*s)", sso_svc->Location->g.len, sso_svc->Location->g.len, sso_svc->Location->g.s);
     ar = zxid_mk_authn_req(cf, cgi);
-    ZX_ORD_INS_ATTR(ar, Destination, sso_svc->Location);
+    dest = zx_dup_len_attr(cf->ctx, 0, zx_Destination_ATTR, sso_svc->Location->g.len, sso_svc->Location->g.s);
+    ZX_ORD_INS_ATTR(ar, Destination, dest);
     ars = zx_easy_enc_elem_opt(cf, &ar->gg);
-    D("AuthnReq(%.*s)", ars->len, ars->s);
+    D("AuthnReq(%.*s) %p", ars->len, ars->s, dest);
     break;
   default:
     NEVER("Inappropriate SSO profile: %d", sso_profile_ix);
@@ -348,7 +350,7 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     }
     
     body = zx_NEW_e_Body(cf->ctx,0);
-    body->ArtifactResolve = zxid_mk_art_deref(cf, idp_meta, cgi->saml_art);
+    body->ArtifactResolve = zxid_mk_art_deref(cf, &body->gg, idp_meta, cgi->saml_art);
     r = zxid_soap_call_hdr_body(cf, &ar_svc->Location->g, 0, body);
     len =  zxid_sp_soap_dispatch(cf, cgi, ses, r);
     D_DEDENT("deref: ");

@@ -64,6 +64,12 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
     - Clarify signature validation error codes, e.g. <SignedInfo> canon fail vs. bad cert
+    - Instantiation of declared prefix that only appears in innards of the XML (e.g. xs)
+
+zxid-0.82:: 9.3.2011
+    - Added Proxy IdP support
+    - Fixed supplying Destination attribute in AuthnReq, restoring Shib compatibility
+    - Fixed artifact binding on SP
 
 zxid-0.81:: 8.3.2011
     - Eliminate empty valued and duplicate attributes from XACML requests

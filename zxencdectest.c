@@ -398,7 +398,7 @@ void covimp_test()       /* -r 5 */
   zxid_lecp_check(cf, &cgi);        /* *** should test in realistic context */
 
   meta = zxid_get_ent_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU"); /* IBMIdP */
-  zxid_mk_art_deref(cf, meta, "ART124121");  /* *** should test in realistic context */
+  zxid_mk_art_deref(cf, 0, meta, "ART124121");  /* *** should test in realistic context */
   
   zxid_mk_lu_Status(cf, 0, 0, "SC2-dummy", "MSG-dummy", "REF-dummy");
   st = zxid_mk_tas3_status(cf, 0, 0, 0, "SC2-dummy", "MSG-dummy", "REF-dummy");
