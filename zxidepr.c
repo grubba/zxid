@@ -471,6 +471,9 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
     if (!epr)
       ERR("No end point discovered for svc(%s)", STRNULLCHK(svc));
     D("TOTAL wsf20 EPRs discovered: %d", wsf20);
+
+    /* We need to call zxid_find_epr() to ensure the order is always same. */
+    epr = zxid_find_epr(cf, ses, svc, url, di_opt, action, n);
     return epr;
   }
   ERR("discovery call failed envelope=%p", env);
