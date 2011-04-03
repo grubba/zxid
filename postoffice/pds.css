@@ -1,8 +1,8 @@
 body { font-family: sans-serif; background: white; color: black; }
-.zxtop { background: #f88; color: #000000;
+.zxtop { background: #680000; color: #000000;
        padding-left: 20px;  padding-right:  20px;
        padding-top:  10px;  padding-bottom: 10px; }
-.zxbot { background: #f88; color: #000000;
+.zxbot { background: #680000; color: #000000;
        padding-left: 20px;  padding-right:  20px;
        padding-top:  10px;  padding-bottom: 10px; }
 a.zx:link    { color: #ffccff; }

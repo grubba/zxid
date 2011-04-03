@@ -34,12 +34,23 @@ if (Net::SAML::az_cf($cf, "Action=Show", $sid)) {
 }
 
 print <<HTML;
+CONTENT-TYPE: text/html
+
 <title>Skills Funding Agency PDS: Logged in</title>
-<frameset><frame name=c src="http://admin:admin@82.195.143.12:8080/synergetics.html"></frameset>
+<frameset frameborder=0 framespacing=0 border=0 rows="100%,*" noresize>
+<frame name=c src="http://82.195.143.12:8080/synergetics_H50/allHoreca.html" noresize scrolling=auto>
+</frameset>
+<noframes>
+<body>
+No frames support.
+Enter <a href="http://82.195.143.12:8080/synergetics_H50/allHoreca.html">here</a>
+or <a href="http://82.195.143.12:8080/synergetics.html">here</a>
+</body>
+</noframes>
 HTML
     ;
 
-warn "HERE";
+warn "HERE99";
 exit;
 
 __END__
