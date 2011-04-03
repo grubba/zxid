@@ -33,6 +33,7 @@
 
 #include <memory.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "errmac.h"
 #include "zx.h"
@@ -82,6 +83,17 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
       if (buf && len)
 	zxid_parse_conf_raw(cf, len, buf);
     }
+
+    buf = getenv("ZXID_PRE_CONF");
+    if (buf) {
+      /* Copy the conf string because we are going to modify it in place. */
+      clen = strlen(buf);
+      cc = ZX_ALLOC(cf->ctx, clen+1);
+      memcpy(cc, buf, clen);
+      cc[clen] = 0;
+      zxid_parse_conf_raw(cf, clen, cc);
+
+    }
     
     if (conf && conf_len) {
       /* Copy the conf string because we are going to modify it in place. */
@@ -90,6 +102,17 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
       cc[clen] = 0;
       zxid_parse_conf_raw(cf, clen, cc);
     }
+
+    buf = getenv("ZXID_CONF");
+    if (buf) {
+      /* Copy the conf string because we are going to modify it in place. */
+      clen = strlen(buf);
+      cc = ZX_ALLOC(cf->ctx, clen+1);
+      memcpy(cc, buf, clen);
+      cc[clen] = 0;
+      zxid_parse_conf_raw(cf, clen, cc);
+    }
+    
   }
 #endif
   return 0;

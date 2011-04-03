@@ -1,0 +1,17 @@
+echo 'test123' | ~/zxid/zxpasswd -at 'cn: Luk Vervenne$role: manager$o: Synergetics$ou: E2ETA Dept' -c luk /home/sampo/zxid/postoffice/conf/idpuid/
+
+echo 'see ykissue' | ~/zxid/zxpasswd -t y -s luk tructedjkkkiij /home/sampo/zxid/postoffice/conf/idpuid/
+
+echo 'test123' | ~/zxid/zxpasswd alice /home/sampo/zxid/postoffice/conf/idpuid/
+
+echo 'see ykissue' | ~/zxid/zxpasswd -t y -s alice tructedjkkkivj /home/sampo/zxid/postoffice/conf/idpuid/
+
+refucenikj == sampo:test123
+
+sudo LD_LIBRARY_PATH=/apps/lib ZXID_CONF=PATH=/home/sampo/zxid/postoffice/conf /apps/bin/mini_httpd -p 443 -c '*.x' -u sampo -S -E postoffice.pem  &
+
+
+https://idp.postoffice.co.uk/idp.x
+https://idp.postoffice.co.uk/index.html
+
+192.168.1.7 idp.postoffice.co.uk talent.workjobs.co.uk benefit.gov.uk pds.skillsfundingagency.bis.gov.uk

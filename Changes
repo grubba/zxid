@@ -65,6 +65,12 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
     - Clarify signature validation error codes, e.g. <SignedInfo> canon fail vs. bad cert
     - Instantiation of declared prefix that only appears in innards of the XML (e.g. xs)
+    - Merge Jeroen's mega patch
+    - Idea: authorization through interaction service, get it logged to audit trail as evidence
+    - Idea: discovery and consent questions up-front in the beginning of the business process
+
+zxid-0.83:: 11.3.2011
+    - Fixed ordering of EPRs returned by zxid_get_epr() to always to be same as with zxid_find_epr().
 
 zxid-0.82:: 10.3.2011
     - Added Proxy IdP support

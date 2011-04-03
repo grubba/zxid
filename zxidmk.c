@@ -30,7 +30,6 @@ struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
 {
   char index[2] = "1";
   struct zx_sp_AuthnRequest_s* ar = zx_NEW_sp_AuthnRequest(cf->ctx,0);
-  ar->Issuer = zxid_my_issuer(cf, &ar->gg);
   ar->ID = zxid_mk_id_attr(cf, &ar->gg, zx_ID_ATTR, "N", ZXID_ID_BITS);
   ar->Version = zx_ref_attr(cf->ctx, &ar->gg, zx_Version_ATTR, SAML2_VERSION);
   ar->IssueInstant = zxid_date_time_attr(cf, &ar->gg, zx_IssueInstant_ATTR, time(0));
@@ -47,6 +46,8 @@ struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
   if (cgi->consent && cgi->consent[0])
     ar->Consent = zx_ref_attr(cf->ctx, &ar->gg, zx_Consent_ATTR, cgi->consent);
 
+  ar->Issuer = zxid_my_issuer(cf, &ar->gg);
+  
   D("nid_fmt(%s) allow_create=%c ispassive=%c", cgi->nid_fmt, cgi->allow_create, cgi->ispassive);
   if (cgi->nid_fmt && cgi->nid_fmt[0] || cgi->affil && cgi->affil[0]
       || BOOL_STR_TEST(cgi->allow_create)) {
@@ -86,6 +87,7 @@ struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
     }
 #endif
   }
+  zx_reverse_elem_lists(&ar->gg);  /* Ensure Issuer comes first. */
   return ar;
 }
 

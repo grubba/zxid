@@ -339,6 +339,11 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
   zxid_fold_svc(path, len);
   D("Folded path prefix(%.*s) len=%d n=%d", len, path, len, n);
   
+  /* *** The index ordering of EPRs ends up being whatever the order that
+   *     the readdir(3) returns, which is difficult to predict hash ordering.
+   *     It is unclear if the ordering is even guaranteed to be same from
+   *     call to call. Perhaps an explicit sort is needed. --Sampo */
+  
   while (de = readdir(dir)) {
     D("%d Considering file(%s)", n, de->d_name);
     if (de->d_name[0] == '.')  /* . .. and "hidden" files */

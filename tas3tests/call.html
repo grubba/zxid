@@ -17,7 +17,7 @@ to ensure its TAS3 compliance.
 
 <h3>Test Input</h3>
 
-<form method=get action="idpzxtest.pl">
+<form method=get action="/demotas3call.pl">
 <table>
 
 <tr>
@@ -33,19 +33,19 @@ to ensure its TAS3 compliance.
 
 <tr>
 <th>IdP user for test</th>
-<td><input name=idpuid value="test"></td>
+<td><input name=idpuid value="bh"></td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <th>Password of IdP user</th>
-<td><input name=idppw value="foo"></td>
+<td><input name=idppw value="betty"></td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <th>Service Type for Test</th>
-<td><input name=svctype value="urn:x-foobar"></td>
+<td><input name=svctype value="urn:tas3:demo:nottingham:processstart:v2"></td>
 <td>&nbsp;</td>
 </tr>
 
@@ -63,19 +63,19 @@ to ensure its TAS3 compliance.
 
 <tr>
 <th>&nbsp;</th>
-<td><input type=submit name=starttest value=" Test Authentication Only "></td>
+<td><input type=submit name=start1 value=" Test Authentication Only "></td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <th>&nbsp;</th>
-<td><input type=submit name=starttest value=" Test Discovery "></td>
+<td><input type=submit name=start2 value=" Test Discovery "></td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <th>&nbsp;</th>
-<td><input type=submit name=starttest value=" Test Complete Call "></td>
+<td><input type=submit name=start3 value=" Test Complete Call "></td>
 <td>&nbsp;</td>
 </tr>
 

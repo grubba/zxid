@@ -16,12 +16,12 @@ Service Provider (SP) for TAS3 compatibility on front channel level.
 
 <h3>Test Input</h3>
 
-<form method=get action="idpzxtest.pl">
+<form method=get action="/demotas3sso.pl">
 <table>
 
 <tr>
 <th>URL of SP Start Page</th>
-<td><input name=spstart></td>
+<td><input name=spstart value="http://sp1.zxid.org/demohlo?o=B"></td>
 <td><i>(URL of GUI, not the entity ID)</i></td>
 </tr>
 
@@ -37,13 +37,13 @@ Service Provider (SP) for TAS3 compatibility on front channel level.
 
 <tr>
 <th>IdP user for test</th>
-<td><input name=idpuid value="test"></td>
+<td><input name=idpuid value="bh"></td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <th>Password of IdP user</th>
-<td><input name=idppw value="foo"></td>
+<td><input name=idppw value="betty"></td>
 <td>&nbsp;</td>
 </tr>
 

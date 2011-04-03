@@ -886,7 +886,7 @@ td.col4  {  width=300px; padding-left: 3px; padding-right: 7px; border-right: 1p
 td.col5  {  width=500px; padding-left: 3px; padding-right: 3px; border-right: 0px;  white-space: normal; } 
 </style>
 <body bgcolor=white>
-<h1>ZXID Testing Tool $ts $diffmeth</h1>
+<h1>ZXID TAS3 Web Service Call Test $ts $diffmeth</h1>
 <a href="zxtest.pl">zxtest.pl</a>
 <p>
 HTML
@@ -928,189 +928,6 @@ if ($ascii) {
 
 ### Service testing
 
-CMD('HELP1', 'zxcall -h',    "./zxcall -v -h");
-CMD('HELP2', 'zxpasswd -h',  "./zxpasswd -v -h");
-CMD('HELP3', 'zxcot -h',     "./zxcot -v -h");
-CMD('HELP4', 'zxdecode -h',  "./zxdecode -v -h");
-CMD('HELP5', 'zxlogview -h', "./zxlogview -v -h");
-
-CMD('SOENC1', 'EncDec Status',     "./zxencdectest -r 3");
-CMD('ATORD1', 'Attribute sorting', "./zxencdectest -r 4");
-CMD('ATCERT1', 'Attribute certificate', "./zxencdectest -r 7|wc -l");
-CMD('TIMEGM1', 'zx_timegm leaps', "./zxencdectest -r 8");
-
-CMD('CONF1', 'zxcall -dc dump config',       "./zxcall -v -v -c PATH=/var/zxid/ -dc");
-CMD('CONF2', 'zxidhlo o=d dump config',      "QUERY_STRING=o=d ./zxidhlo");
-CMD('CONF3', 'zxidhlo o=c dump carml',       "QUERY_STRING=o=c ./zxidhlo");
-CMD('CONF4', 'zxidhlo o=B dump metadata',    "QUERY_STRING=o=B ./zxidhlo");
-CMD('CONF5', 'zxididp o=B dump metadata',    "QUERY_STRING=o=B ./zxididp");
-
-CMD('META1', 'Java LEAF Meta', "curl 'http://sp.tas3.pt:8080/zxidservlet/wspleaf?o=B'");
-
-CMD('HLO1', 'zxidhlo o=M LECP check',        "QUERY_STRING=o=M ./zxidhlo");
-CMD('HLO2', 'zxidhlo o=C CDC',               "QUERY_STRING=o=C ./zxidhlo");
-CMD('HLO3', 'zxidhlo o=E idp select page',   "QUERY_STRING=o=E ./zxidhlo");
-CMD('HLO4', 'zxidhlo o=L start sso failure', "QUERY_STRING=o=L ./zxidhlo");
-CMD('HLO5', 'zxidhlo o=A artifact failure',  "QUERY_STRING=o=A ./zxidhlo");
-CMD('HLO6', 'zxidhlo o=P POST failure',      "QUERY_STRING=o=P ./zxidhlo");
-CMD('HLO7', 'zxidhlo o=D deleg invite fail', "QUERY_STRING=o=D ./zxidhlo");
-CMD('HLO8', 'zxidhlo o=F not an idp fail',   "QUERY_STRING=o=F ./zxidhlo");
-
-CMD('IDP1', 'zxididp o=R fail', "QUERY_STRING=o=R ./zxididp");
-CMD('IDP2', 'zxididp o=F fail', "QUERY_STRING=o=F ./zxididp");
-CMD('IDP3', 'zxididp o=N new user fail', "QUERY_STRING=o=N ./zxididp");
-CMD('IDP4', 'zxididp o=W pwreset fail',  "QUERY_STRING=o=W ./zxididp");
-CMD('IDP5', 'zxididp o=S SASL Req',  "QUERY_STRING=o=S CONTENT_LENGTH=222 ./zxididp <t/sasl_req.xml");
-
-CMD('PW1', 'zxpasswd list user',   "./zxpasswd -l tastest");
-CMD('PW2', 'zxpasswd pw an ok',    "echo tas123 | ./zxpasswd -v -a tastest");
-CMD('PW3', 'zxpasswd pw an fail',  "echo tas124 | ./zxpasswd -v -a tastest",1792);
-
-system 'rm -rf /var/zxid/idpuid/pwtest';  # Delete user so we can test again
-CMD('PW4', 'zxpasswd create user', "echo tas125 | ./zxpasswd -t y -at 'cn: pw test user\$o: test corp' -c pwtest");
-CMD('PW5', 'zxpasswd change pw',   "echo tas126 | ./zxpasswd -t y pwtest");
-CMD('PW6', 'zxpasswd list user',   "./zxpasswd -l pwtest");
-
-CMD('COT1', 'zxcot list',          "./zxcot");
-CMD('COT2', 'zxcot list swap',     "./zxcot -s");
-CMD('COT3', 'zxcot list s2',       "./zxcot -s -s");
-CMD('COT4', 'zxcot get idp meta dry', "./zxcot -g http://idp.tas3.pt:8081/zxididp?o=B -n -v");
-CMD('COT5', 'zxcot get sp meta dry',"./zxcot -g http://sp.tas3.pt:8080/zxidservlet/sso?o=B -n -v");
-CMD('COT6', 'zxcot my meta',       "./zxcot -m");
-CMD('COT7', 'zxcot my meta add',   "./zxcot -m | ./zxcot -a");
-CMD('COT8', 'zxcot gen epr',       "./zxcot -e http://localhost:1234/ testabstract http://localhost:1234/?o=B x-impossible");
-CMD('COT9', 'zxcot gen epr add',   "./zxcot -e http://localhost:1234/ testabstract http://localhost:1234/?o=B x-impossible | ./zxcot -b -bs");
-CMD('COT10', 'zxcot my meta',      "./zxcot -p http://localhost:1234/?o=B");
-CMD('COT11', 'zxcot list s2',      "./zxcot -s /var/zxid/idpcot");
-
-CMD('LOG1', 'zxlogview list',      "./zxlogview /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem <t/act");
-CMD('LOG2', 'zxlogview list',      "./zxlogview -t /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem");
-
-# See also README.smime for tutorial of these commands
-# CMD('SMIME1', 'smime key gen ca',  "echo 'commonName=TestCA|emailAddress=test\@test.com' | ./smime -kg 'description=CA' passwd tmp/careq.pem >tmp/capriv_ss.pem; wc -l tmp/capriv_ss.pem");
-# CMD('SMIME2', 'smime key gen joe', "echo 'commonName=Joe Smith|emailAddress=joe\@test.com' | ./smime -kg 'description=foo' passwd tmp/req.pem >tmp/priv_ss.pem; wc -l tmp/priv_ss.pem");
-# CMD('SMIME3', 'smime ca',          "./smime -ca tmp/capriv_ss.pem passwd 1 <tmp/req.pem >tmp/cert.pem; wc -l tmp/cert.pem");
-# CMD('SMIME4', 'smime code sig',    "./smime -ds tmp/priv_ss.pem passwd <t/XML1.out >tmp/XML1.sig; wc -l tmp/XML1.sig");
-# CMD('SMIME5', 'smime code vfy',    "cat tmp/priv_ss.pem tmp/XML1.sig |./smime -dv t/XML1.out");
-# CMD('SMIME6', 'smime sig',         "echo foo|./smime -mime text/plain|./smime -s tmp/priv_ss.pem passwd >tmp/foo.p7m; wc -l tmp/foo.p7m");
-# CMD('SMIME7', 'smime clear sig',   "echo foo|./smime -mime text/plain|./smime -cs tmp/priv_ss.pem passwd >tmp/foo.clear.smime; wc -l tmp/foo.clear.smime");
-# CMD('SMIME8', 'smime pubenc',      "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem|wc -l");
-# CMD('SMIME8b', 'smime pubencdec',   "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem|./smime -d tmp/priv_ss.pem passwd");
-# CMD('SMIME9', 'smime sigenc',      "echo foo|./smime -mime text/plain|./smime -cs tmp/priv_ss.pem passwd|./smime -e tmp/priv_ss.pem");
-# CMD('SMIME10', 'smime encsig',     "echo foo|./smime -mime text/plain|./smime -e tmp/priv_ss.pem|./smime -cs tmp/priv_ss.pem passwd");
-# CMD('SMIME11', 'smime multi sigenc', "echo bar|./smime -m image/gif t/XML1.out|./smime -cs tmp/priv_ss.pem passwd|./smime -e tmp/priv_ss.pem");
-# CMD('SMIME12', 'smime query sig',   "./smime -qs <tmp/foo.p7m");
-# CMD('SMIME13', 'smime verify',      "./smime -v tmp/priv_ss.pem <tmp/foo.p7m");
-# CMD('SMIME14', 'smime query cert',  "./smime -qc <tmp/cert.pem");
-# CMD('SMIME15', 'smime verify cert', "./smime -vc tmp/capriv_ss.pem <tmp/req.pem");
-# CMD('SMIME16', 'smime mime ent',    "./smime -mime text/plain <tmp/XML1.out");
-# CMD('SMIME17', 'smime mime ent b64',"./smime -mime_base64 image/gif <tmp/XML1.out");
-# CMD('SMIME18', 'smime pkcs12 exp',  "./smime -pem-p12 you\@test.com passwd pw-for-p12 <tmp/priv_ss.pem >tmp/me.p12; wc -l tmp/me.p12");
-# CMD('SMIME19', 'smime pkcs12 imp',  "./smime -p12-pem pw-for-p12 passwd <tmp/me.p12 >tmp/me.pem; wc -l tmp/me.pem");
-# CMD('SMIME20', 'smime query req',   "./smime -qr <tmp/req.pem");
-# CMD('SMIME21', 'smime covimp',      "echo foo|./smime -base64|./smime -cat|./smime -unbase64");
-
-CMD('SIG1',  'sig vry shib resp',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal-private/shib-resp.xml");
-CMD('SIG2',  'sig vry shib post',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal-private/shib-resp.qs");
-
-CMD('SIG3',  'sig vry zxid resp',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/anrs1.xml");
-CMD('SIG4',  'sig vry zxid post',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/anrs1.post");
-
-CMD('SIG5',  'sig vry sm resp',    "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/siteminder-resp.xml");
-CMD('SIG6',  'sig vry sm post',    "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/siteminder-resp.b64");
-
-CMD('SIG7',  '* sig vry shib resp undecl prefix deep', "./zxdecode -v -s -s <t/shib-a7n2.xml");  # fail due to inclusive ns prefix that is declared only deep in the document
-CMD('SIG8',  '* sig vry ping resp', "./zxdecode -v -s -s <t/ping-resp.xml");  # Ping miscanonicalizes. Fail due to lack of InclusiveNamespace/@PrefixList="xs" (and declares namespace deep in the document)
-CMD('SIG9',  'sig vry ping post',  "./zxdecode -v -s -s <t/ping-resp.qs");
-CMD('SIG10', 'sig vry hp a7n',     "./zxdecode -v -s -s <t/hp-a7n.xml");
-CMD('SIG11', 'sig vry hp post',    "./zxdecode -v -s -s <t/hp-idp-post-resp.cgi");
-CMD('SIG12', 'sig vry hp resp',    "./zxdecode -v -s -s <t/hp-idp-post-resp.xml");
-CMD('SIG13', 'sig vry hp resp2',   "./zxdecode -v -s -s <t/hp-idp-post-resp2.xml");
-#CMD('SIG14', 'sig vry saml artifact request',  "./zxdecode -v -s -s <t/se-req2.xml"); # no a7n
-CMD('SIG15', 'sig vry saml artifact response', "./zxdecode -v -s -s <t/se-resp.xml");
-CMD('SIG16', 'sig vry saml artifact response', "./zxdecode -v -s -s <t/se-req.xml");
-CMD('SIG17', 'sig vry saml artifact response', "./zxdecode -v -s -s <t/se-artif-resp.xml");
-#CMD('SIG18', 'sig vry prstnt-a7n',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/prstnt-a7n.xml");  # RSA padding check fail (wrong private key)
-CMD('SIG18b', 'sig vry prstnt-a7n',  "./zxdecode -v -s -s <t/prstnt-a7n.xml");
-
-#CMD('SIG19', 'sig vry rsa-slo-req', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/rsa-slo-req.xml");
-#CMD('SIG20', 'sig vry rsa-a7n', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/rsa-a7n.xml");  # RSA padding check fail (wrong private key)
-CMD('SIG20b', 'sig vry rsa-a7n', "./zxdecode -v -s -s <t/rsa-a7n.xml");
-#CMD('SIG21', 'sig vry rsa-a7n2', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/rsa-a7n2.xml");  # RSA padding check fail (wrong private key)
-CMD('SIG21b', 'sig vry rsa-a7n2', "./zxdecode -v -s -s <t/rsa-a7n2.xml");
-#CMD('SIG22', 'sig vry rsa-idp-post',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/rsa-idp-post-resp.cgi");  # RSA padding check fail (wrong private key)
-CMD('SIG22b', 'sig vry rsa-idp-post',  "./zxdecode -v -s -s <t/rsa-idp-post-resp.cgi");
-
-#CMD('SIG23', 'sig vry rsa-idp-post-enc-a7n', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/rsa-idp-post-resp2.cgi");  # RSA padding check fail (wrong private key)
-
-#CMD('SIG24', 'sig vry protectednet-post-enc-a7n', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/protectednet-encrypted.txt");
-#CMD('SIG25', 'sig vry protectednet-resp-enc-a7n', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/protectednet-encrypted.xml");
-
-#CMD('SIG26', 'sig vry orange simple sign', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/orange1.post-simple-sign");  # No metadata
-#CMD('SIG27', 'sig vry orange simple sign2', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/orange2-sig-data.b64");  # No metadata
-
-#CMD('SIG28', 'sig vry ibm-enc-a7n', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/ibm-enc-a7n.xml");
-#CMD('SIG29', 'sig vry ibm-resp-extra-ns', "./zxdecode -v encdec-s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/ibm-resp-extra-ns.xml");  # No a7n, no metadata
-
-#CMD('SIG30', 'sig vry simplesamlphp enc a7n', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/encrypted-simplesamlphp.xml"); # Messed up by whitespace
-#CMD('SIG31', 'sig vry simplesamlphp enc post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/encrypted-simplesamlphp.txt"); # Messed up by whitespace
-
-#CMD('SIG32', 'sig vry enc-nid-enc-attr', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/enc-nid-enc-attr.xml");  # wrong private key
-CMD('SIG32b', 'sig vry enc-nid-enc-attr', "./zxdecode -v -s -s <t/enc-nid-enc-attr.xml");
-#CMD('SIG33', 'sig vry a7n stijn', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/assertion-stijn-20100108.xml");  # Corrupt with non-printable chars
-#CMD('SIG34', 'sig vry symsp-ibmidp-slo',     "./zxdecode -v -s -s <t/symsp-ibmidp-slo.xml");
-#CMD('SIG35', 'sig vry symsp-symidp-slo',     "./zxdecode -v -s -s <t/symsp-symidp-slo-soap.xml");
-#CMD('SIG36', 'sig vry zxidp-ki-old',     "./zxdecode -v -s -s <t/zxidp-ki-a7n-20100906.xml"); # ***fail canon
-CMD('SIG37', 'sig vry', "./zxdecode -v -s -s <t/enve-sigval-err.xml", 2560);
-CMD('SIG38', 'sig vry', "./zxdecode -v -s -s <t/default-ns-req-simple.xml");
-CMD('SIG39', 'sig vry', "./zxdecode -v -s -s <t/default-ns-req-simple-nons.xml", 2560);
-CMD('SIG40', 'sig vry', "./zxdecode -v -s -s <t/default-ns-req.xml");
-CMD('SIG41', 'sig vry', "./zxdecode -v -s -s <t/soag-namespace-issue.xml");
-CMD('SIG42', 'sig vry shib a7n art',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/shib-a7n-art.xml");
-CMD('SIG43', 'sig vry shib a7n art2',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/shib-a7n-art2.xml");
-CMD('SIG44', 'sig vry shib a7n art3',  "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/shib-a7n-art3.xml");
-
-ED('XML1',  'Decode-Encode SO and WO: ns-bug',  1000, 't/default-ns-bug.xml');
-ED('XML2',  'Decode-Encode SO and WO: azrq1',   1000, 't/azrq1.xml');
-ED('XML3',  'Decode-Encode SO and WO: azrs1',   1000, 't/azrs1.xml');
-ED('XML4',  '* Decode-Encode RIS malformed 1',  1,    't/risaris-bad.xml');  # Order of unknown elements gets inverted
-ED('XML5',  'Decode-Encode SO and WO: ana7n1',  1000, 't/ana7n1.xml');
-ED('XML6',  'Decode-Encode SO and WO: anrq1',   1000, 't/anrq1.xml');
-ED('XML7',  'Decode-Encode SO and WO: anrs1',   1000, 't/anrs1.xml');
-ED('XML8',  'Decode-Encode SO and WO: dirq1',   1000, 't/dirq1.xml');
-ED('XML9',  'Decode-Encode SO and WO: dirs1',   1000, 't/dirs1.xml');
-ED('XML10', 'Decode-Encode SO and WO: dirq2',   1000, 't/dirq2.xml');
-ED('XML11', 'Decode-Encode SO and WO: dia7n1',  1000, 't/dia7n1.xml');
-ED('XML12', 'Decode-Encode SO and WO: epr1',    1000, 't/epr1.xml');
-ED('XML13', 'Decode-Encode SO and WO: wsrq1',   1000, 't/wsrq1.xml');
-ED('XML14', 'Decode-Encode SO and WO: wsrs1',   1000, 't/wsrs1.xml');
-ED('XML15', 'Decode-Encode SO and WO: wsrq2',   1000, 't/wsrq2.xml');
-ED('XML16', 'Decode-Encode SO and WO: wsrs2',   1000, 't/wsrs2.xml');
-ED('XML17', 'Decode-Encode SO and WO: as-req',  1000, 't/as-req.xml');
-ED('XML18', 'Decode-Encode SO and WO: as-resp', 1000, 't/as-resp.xml');
-ED('XML19', 'Decode-Encode SO and WO: authnreq',1000, 't/authnreq.xml');
-ED('XML20', 'Decode-Encode SO and WO: sun-md',  10, 't/sun-md.xml');
-ED('XML21', 'Decode-Encode SO and WO: provisioning-req',  10, 't/pmdreg-req.xml');
-ED('XML22', 'Decode-Encode SO and WO: provisioning-resp', 10, 't/pmdreg-resp.xml');
-ED('XML23', 'Decode-Encode SO and WO: pds-create-uc1',    10, 't/pds-create-uc1.xml');
-ED('XML24', 'Decode-Encode SO and WO: pds-query-uc1',     10, 't/pds-query-uc1.xml');
-ED('XML25', 'Decode-Encode SO and WO: AdvClient hoard-trnsnt', 10, 't/ac-hoard-trnsnt.xml');
-ED('XML26', 'Decode-Encode SO and WO: AdvClient ming-trnsnt',  10, 't/ac-ming-trnsnt.xml');
-ED('XML27', 'Decode-Encode SO and WO: AdvClient ming-prstnt',  10, 't/ac-ming-prstnt.xml');
-ED('XML28', 'Decode-Encode SO and WO: AdvClient ming-ntt',     10, 't/ac-ming-ntt.xml');
-ED('XML29', 'Decode-Encode SO and WO: AdvClient ntt-fixed',    10, 't/ac-ming-ntt-fixed.xml');
-ED('XML30', 'Decode-Encode SO and WO: zx a7n',    10, 't/a7n-len-err.xml');
-ED('XML31', 'Decode-Encode SO and WO: covimp',    10, 't/covimp.xml');
-
-# *** TODO: add EncDec for all other types of protocol messages
-# *** TODO: add specific SSO signature validation tests
-
-# *** TODO: benchmark raw RSA performance using logging w/ zxlogview
-
-# *** TODO: set up test IdP using zxcot (for disco registrations and bootstrap) and zxpasswd
-# *** TODO: set up test SP
-# *** TODO: set up test WSP
-
 
 ZXC('ZXC-AS1', 'Authentication Service call: SSO + AZ', 1000, "-az ''", '/dev/null');
 CMD('ZXC-AS2', 'Authentication Service call: An Fail', "./zxcall -d -a $idp test:tas -t urn:x-foobar -e '<foobar>Hello</foobar>' -b", 256);
@@ -1136,48 +953,6 @@ CMD('ZXC-WS8', 'AS + WSF call hr-xml query', "./zxcall -d -a $idp test:foo -t ur
 CMD('ZXC-WS9', 'AS + WSF call hr-xml mod', "./zxcall -d -a $idp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Modify xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:ModifyItem><idhrxml:Select>test query</idhrxml:Select><idhrxml:NewData><hrxml:Candidate xmlns:hrxml=\"http://ns.hr-xml.org/2007-04-15\">test mod</hrxml:Candidate></idhrxml:NewData></idhrxml:ModifyItem></idhrxml:Modify>' -b");
 CMD('ZXC-WS10', 'AS + WSF call hr-xml mod', "./zxcall -d -a $idp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Delete xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:DeleteItem><idhrxml:Select>test query</idhrxml:Select></idhrxml:DeleteItem></idhrxml:Delete>' -b");
 
-
-### Simulated browsing tests (a bit fragile)
-
-tA('ST','LOGIN-IDP1', 'IdP Login screen',  '$idp?o=F');
-tA('ST','LOGIN-IDP2', 'IdP Give password', '$idp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=&zxapp=');
-tA('ST','LOGIN-IDP3', 'IdP Local Logout',  '$idp?gl=+Local+Logout+');
-
-tA('ST','SSOHLO1', 'IdP selection screen', 'http://sp1.zxidsp.org:8081/zxidhlo?o=E');
-tA('AR','SSOHLO2', 'Selected IdP', 'http://sp1.zxidsp.org:8081/zxidhlo?e=&l0http%3A%2F%2Fidp.tas3.pt%3A8081%2Fzxididp=+Login+with+TAS3+Demo+IdP+%28http%3A%2F%2Fidp.tas3.pt%3A8081%2Fzxididp%29+&fc=1&fn=prstnt&fr=&fq=&fy=&fa=&fm=&fp=0&ff=0');
-
-tA('SP','SSOHLO3', 'Login to IdP', '$idp?au=&alp=+Login+&au=test&ap=foo&fc=1&fn=prstnt&fq=&fy=&fa=&fm=&fp=0&ff=0&ar=$AR&zxapp=');
-
-pA('ST','SSOHLO4', 'POST to SP', 'http://sp1.zxidsp.org:8081/zxidhlo?o=P', "SAMLResponse=$SAMLResponse");
-tA('ST','SSOHLO5', 'SP SOAP Az',      'http://sp1.zxidsp.org:8081/zxidhlo?gv=1');
-tA('ST','SSOHLO6', 'SP SOAP defed',   'http://sp1.zxidsp.org:8081/zxidhlo?gu=1');
-tA('ST','SSOHLO7', 'SP SOAP defed',   'http://sp1.zxidsp.org:8081/zxidhlo?gt=1');
-tA('ST','SSOHLO8', 'SP SOAP logout',  'http://sp1.zxidsp.org:8081/zxidhlo?gs=1');
-tA('ST','SSOHLO9', 'SP local logout', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Local+Logout+');
-
-#tA('ST','javaexit', 'http://sp1.zxidsp.org:8080/appdemo?exit');
-
-# *** TODO: add through GUI testing for SSO
-# *** TODO: via zxidhlo
-# *** TODO: via mod_auth_saml
-# *** TODO: via zxidhlo.php
-# *** TODO: via Net::SAML
-# *** TODO: via SSO servlet
-# http://sp1.zxidsp.org:8081/zxidhlo?o=E
-# http://sp1.zxidsp.org:8080/zxidservlet/zxidHLO?o=E
-# http://sp.tas3.pt:8080/zxidservlet/appdemo
-# http://sp.tas3.pt:8080/zxidservlet/wscprepdemo
-
-CMD('COVIMP1', 'Silly tests just to improve test coverage', "./zxcovimp.sh", 0, 60, 10);
-
-if (0) {
-#C('DBG1', 'Test exit value', 0.5, 0.1, "echo foo");
-C('SRV1', 'mini_http -p 2301 idp', 5, 0.5, "");
-
-tA('ST', 'ST1', 'static content bypass svn.zxid.org', 5, 0.5, "http://svn.zxid.org/wr/redx.png");
-tP('ST', 'ST2', 'static content bypass zxid.org', 5, 0.5, "http://zxid.org/favicon.ico");
-}
-
 $success_ratio = $n_tst ? sprintf("=== Test success %d/%d (%.1f%%) ===\n", $n_tst_ok, $n_tst, $n_tst_ok*100.0/$n_tst) : "No tests run.\n";
 
 print $success_ratio if $ascii;
@@ -1187,10 +962,6 @@ syswrite STDOUT, <<HTML if !$ascii;
 <p><i>Hint: Click on test name to run just that test.</i>
 
 <p><b>$success_ratio</b>
-
-[ <a href="zxtest.pl">zxtest.pl</a> 
-| <a href="zxtest.pl?tst=XML">XML Encoding and Decoding</a> 
-| <a href="zxtest.pl?tst=ZXC-WS">Web Service calls</a> ]
 
 <hr>
 <i>$cvsid</i>
