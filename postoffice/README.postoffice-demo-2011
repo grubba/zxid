@@ -22,3 +22,7 @@ cd /home/sampo/apache-tomcat-5.5.20/
 tail -f logs/catalina.out &
 ulimit -c unlimited
 killall java; bin/startup.sh
+
+
+$JAVA_HOME/bin/keytool -genkey -alias tomcat -keyalg RSA
+Edit  conf/server.xml to change port number and enable SSL

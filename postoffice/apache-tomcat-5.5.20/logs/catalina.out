@@ -1,1 +1,63 @@
 
+Created MBeanServer with ID: 4413ee:12f1de30ae2:-8000:ami:1
+Apr 4, 2011 12:21:51 AM org.apache.catalina.core.AprLifecycleListener lifecycleEvent
+INFO: The Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /apps/java/j2sdk1.4.2/jre/lib/i386/client:/apps/java/j2sdk1.4.2/jre/lib/i386:/apps/java/j2sdk1.4.2/jre/../lib/i386:/home/sampo/zxid/zxidjava:/apps/lib::/usr/lib:/lib
+Apr 4, 2011 12:21:51 AM org.apache.coyote.http11.Http11BaseProtocol init
+INFO: Initializing Coyote HTTP/1.1 on http-8888
+Apr 4, 2011 12:21:52 AM org.apache.coyote.http11.Http11BaseProtocol init
+INFO: Initializing Coyote HTTP/1.1 on http-8443
+Apr 4, 2011 12:21:52 AM org.apache.catalina.startup.Catalina load
+INFO: Initialization processed in 2636 ms
+Apr 4, 2011 12:21:52 AM org.apache.catalina.core.StandardService start
+INFO: Starting service Catalina
+Apr 4, 2011 12:21:52 AM org.apache.catalina.core.StandardEngine start
+INFO: Starting Servlet Engine: Apache Tomcat/5.5.20
+Apr 4, 2011 12:21:52 AM org.apache.catalina.core.StandardHost start
+INFO: XML validation disabled
+Apr 4, 2011 12:21:53 AM org.apache.catalina.startup.HostConfig deployWAR
+INFO: Deploying web application archive axis2.war
+[INFO] Disabled - org.apache.axis2.jaxws.addressing.migrator.EndpointContextMapMigrator - org/apache/axis2/jaxws/addressing/migrator/EndpointContextMapMigrator (Unsupported major.minor version 49.0)
+[INFO] Disabled - org.apache.axis2.description.HandlerDescription@1fc1a6 - org/apache/axis2/jaxws/dispatchers/GenericProviderDispatcher (Unsupported major.minor version 49.0)
+[INFO] Disabled - org.apache.axis2.description.HandlerDescription@718242 - org/apache/axis2/jaxws/dispatchers/MustUnderstandValidationDispatcher (Unsupported major.minor version 49.0)
+[INFO] Disabled - org.apache.axis2.description.HandlerDescription@3afb99 - org/apache/axis2/jaxws/dispatchers/MustUnderstandChecker (Unsupported major.minor version 49.0)
+[INFO] Disabled - org.apache.axis2.description.HandlerDescription@5c3987 - org/apache/axis2/jaxws/dispatchers/GenericProviderDispatcher (Unsupported major.minor version 49.0)
+[INFO] Disabled - org.apache.axis2.description.HandlerDescription@c4d04d - org/apache/axis2/jaxws/dispatchers/MustUnderstandValidationDispatcher (Unsupported major.minor version 49.0)
+[INFO] Disabled - org.apache.axis2.jaxws.framework.JAXWSDeployer - org/apache/axis2/jaxws/framework/JAXWSDeployer (Unsupported major.minor version 49.0)
+[INFO] Deploying module: script-1.41 - file:/home/sampo/zxid/postoffice/apache-tomcat-5.5.20/webapps/axis2/WEB-INF/modules/axis2-scripting-1.41.mar
+[INFO] Deploying module: soapmonitor-1.41 - file:/home/sampo/zxid/postoffice/apache-tomcat-5.5.20/webapps/axis2/WEB-INF/modules/soapmonitor-1.41.mar
+[INFO] Deploying module: metadataExchange-1.41 - file:/home/sampo/zxid/postoffice/apache-tomcat-5.5.20/webapps/axis2/WEB-INF/modules/mex-1.41.mar
+[INFO] Deploying module: addressing - file:/home/sampo/zxid/postoffice/apache-tomcat-5.5.20/webapps/axis2/WEB-INF/modules/addressing-1.4.1.mar
+[INFO] Deploying module: ping-1.41 - file:/home/sampo/zxid/postoffice/apache-tomcat-5.5.20/webapps/axis2/WEB-INF/modules/ping-1.41.mar
+[JAM] Warning: You are running under a pre-1.5 JDK.  JSR175-style source annotations will not be available
+[INFO] Deploying Web service: version-1.4.1.aar - file:/home/sampo/zxid/postoffice/apache-tomcat-5.5.20/webapps/axis2/WEB-INF/services/version-1.4.1.aar
+Apr 4, 2011 12:21:59 AM org.apache.coyote.http11.Http11BaseProtocol start
+INFO: Starting Coyote HTTP/1.1 on http-8888
+Apr 4, 2011 12:21:59 AM org.apache.coyote.http11.Http11BaseProtocol start
+INFO: Starting Coyote HTTP/1.1 on http-8443
+Apr 4, 2011 12:21:59 AM org.apache.jk.common.ChannelSocket init
+INFO: Port busy 8009 java.net.BindException: Address already in use
+Apr 4, 2011 12:21:59 AM org.apache.jk.common.ChannelSocket init
+INFO: JK: ajp13 listening on /0.0.0.0:8010
+Apr 4, 2011 12:21:59 AM org.apache.jk.server.JkMain start
+INFO: Jk running ID=1 time=0/71  config=null
+Apr 4, 2011 12:21:59 AM org.apache.catalina.storeconfig.StoreLoader load
+INFO: Find registry server-registry.xml at classpath resource
+Apr 4, 2011 12:21:59 AM org.apache.catalina.startup.Catalina start
+INFO: Server startup in 7283 ms
+Apr 4, 2011 12:21:59 AM org.apache.catalina.core.StandardServer await
+SEVERE: StandardServer.await: create[8005]: 
+java.net.BindException: Address already in use
+	at java.net.PlainSocketImpl.socketBind(Native Method)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:331)
+	at java.net.ServerSocket.bind(ServerSocket.java:318)
+	at java.net.ServerSocket.<init>(ServerSocket.java:185)
+	at org.apache.catalina.core.StandardServer.await(StandardServer.java:372)
+	at org.apache.catalina.startup.Catalina.await(Catalina.java:615)
+	at org.apache.catalina.startup.Catalina.start(Catalina.java:575)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:294)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:432)
+log4j:ERROR LogMananger.repositorySelector was null likely due to error in class reloading, using NOPLoggerRepository.

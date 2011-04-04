@@ -1167,6 +1167,9 @@ javaclean:
 javacleaner: javaclean
 	rm -rf zxidjava/*.java zxidjava/zxid_wrap.c
 
+benedemo.class: benedemo.java zxidjava/zxidjni.class
+	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java benedemo.java
+
 ###
 ### Apache authentication module
 ###
