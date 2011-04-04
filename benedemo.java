@@ -151,7 +151,7 @@ public class benedemo extends HttpServlet {
 	//out.print("<a href=\"http://www.tas3.eu/\"><img src=\"tas3-logo.jpg\" height=64 border=0></a>");
 	//out.print("<a href=\"http://zxid.org/\"><img src=\"logo-zxid-128x128.png\" height=64 border=0></a>");
 	//out.print("</td></tr></table>");
-	out.print("<h1 class=zxtop><img align=right src=\"DirectgovLogo.gif\"><br>Benefits Demo Protected Content</h1>\n");
+	out.print("<h1 class=zxtop><img align=right src=\"DirectgovLogo.gif\"><br>Benefits Demo<br>Protected Content</h1>\n");
 	//out.print("<h1>ZXID Demo App Protected Content</h1> at " + fullURL + "\n");
 
 	// Render logout buttons (optional)
@@ -235,7 +235,7 @@ public class benedemo extends HttpServlet {
 			       "<foobar>Do it!</foobar>");
 	    
 	    ret = zxidjni.extract_body(cf, ret);
-	    if (ret.indexOf("code=\"OK\"") == -1) {
+	    if (ret == null || ret.indexOf("code=\"OK\"") == -1) {
 		out.print("<p>Error from call:<br>\n<textarea cols=80 rows=20>");
 		out.print(ret);
 		out.print("</textarea>\n");
@@ -259,7 +259,7 @@ public class benedemo extends HttpServlet {
 			       "<foobar>Do it!</foobar>");
 	    
 	    ret = zxidjni.extract_body(cf, ret);
-	    if (ret.indexOf("code=\"OK\"") == -1) {
+	    if (ret == null || ret.indexOf("code=\"OK\"") == -1) {
 		out.print("<p>Error from call:<br>\n<textarea cols=80 rows=20>");
 		out.print(ret);
 		out.print("</textarea>\n");

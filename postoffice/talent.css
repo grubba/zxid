@@ -1,11 +1,13 @@
 body { font-family: sans-serif; background: white; color: black; }
-.zxtop { background: #8888ff; color: #000000;
+.zxtop { background: #88f; color: #000;
        padding-left: 20px;  padding-right:  20px;
        padding-top:  10px;  padding-bottom: 10px; }
-.zxbot { background: #8888ff; color: #000000;
+.zxbot { background: #88f; color: #000;
        padding-left: 20px;  padding-right:  20px;
        padding-top:  10px;  padding-bottom: 10px; }
 a.zx:link    { color: #ffccff; }
 a.zx:visited { color: #aa44aa; }
 a.zx:active  { color: #ff0000; }
 a.zx:hover   { color: #ffffff; }
+th { background: #8ac; text-align: left; }
+td { background: #ace; }

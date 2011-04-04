@@ -48,14 +48,14 @@ if ($ENV{CONTENT_LENGTH}) {
 }
 warn "$$: cgi: " . Dumper(\%cgi);
 
-$sesdata = readall("${dir}ses/$cgi{'s'}/.ses");
-$persona = readall("${dir}ses/$cgi{'s'}/.persona");
+$sesdata = readall("${dir}ses/$cgi{'s'}/.ses", 1);
+$persona = readall("${dir}ses/$cgi{'s'}/.persona", 1);
 if (!length $sesdata) {
     $proto = $ENV{SERVER_PORT} =~ /443$/ ? 'https' : 'http';
     $url = "$proto://$ENV{HTTP_HOST}$ENV{SCRIPT_NAME}";
     warn "No session! Need to login($cgi{'s'}). url($url)";
-    $cf = Net::SAML::new_conf_to_cf("PATH=$dir&URL=$proto");
-    $res = Net::SAML::simple_cf($cf, -1, $qs, undef, 0x1829  0x3fff);
+    $cf = Net::SAML::new_conf_to_cf("PATH=$dir&URL=$url");
+    $res = Net::SAML::simple_cf($cf, -1, $qs, undef, 0x3fff); # 0x1829
     cgidec($res);
     warn "$$: SSO done($res): " . Dumper(\%cgi);
     # *** figure out the IdP session
@@ -98,7 +98,7 @@ sub read_user_log {
     while ($line = <LOG>) {
 	# 0     1   2  3 4                   5                   6   7 8 9 10     mm11   v r op
 	# ----+ 104 PP - 20100217-151751.352 19700101-000000.501 -:- - - - -      zxcall N W GOTMD http://idp.tas3.eu/zxididp?o=B -
-	my ($pre, $len, $se, $sig3 $ourts, $srcts5 $ipport6 $ent, $mid, $a7nid, $nid, $mm11, $vvv, $res, $op, $para, @rest) = split /\s+/, $line;
+	my ($pre, $len, $se, $sig3, $ourts, $srcts5, $ipport6, $ent, $mid, $a7nid, $nid, $mm11, $vvv, $res, $op, $para, @rest) = split /\s+/, $line;
 	#                                                                                           $para                        rest0       rest1
 	# ----+ 124 PP - 20100314-172308.720 19700101-000000.501 -:- - - - -      zxidp N K INEWSES MSESey_n-6_oVkMlBR2dQCkgAlKs uid(Fool11) pw
 	if ($op eq 'INEWSES') {
@@ -133,7 +133,7 @@ sub read_cot {
     while ($line = <COT>) {
 	my ($file, $eid, $dpy_name) = split /\s+/, $line;
 	my $selected = $eid eq $selected_sp ? 'selected' : '';
-	my %s = (sp => $eid, spnice => $dpy_name, selectedsp = $selected);
+	my %s = (sp => $eid, spnice => $dpy_name, selectedsp => $selected);
 	($x = $repeat) =~ s/!!(\w+)/$s{$1}/g;
 	$accu .= $x;
     }
@@ -147,7 +147,7 @@ sub persona_menu {
     my $accu = '';
     for $line (sort @{$ar_personae}) {
 	my $selected = $line eq $selected_persona ? 'selected' : '';
-	my %s = (pp => $line, selectedpp = $selected);
+	my %s = (pp => $line, selectedpp => $selected);
 	($x = $repeat) =~ s/!!(\w+)/$s{$1}/g;
 	$accu .= $x;
     }
@@ -158,7 +158,7 @@ sub readall {
     my ($f) = @_;
     my ($pkg, $srcfile, $line) = caller;
     undef $/;         # Read all in, without breaking on lines
-    open F, "<$f" or die "$srcfile:$line: Cant read($f): $!";
+    open F, "<$f" or do { if ($nofatal) { warn "$srcfile:$line: Cant read($f): $!"; return undef; } else { die "$srcfile:$line: Cant read($f): $!"; } };
     binmode F;
     my $x = <F>;
     close F;
