@@ -69,6 +69,16 @@
 </servlet-mapping>
 
 <servlet>
+<servlet-name>benessosrvlet</servlet-name>
+<servlet-class>benessosrvlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+<servlet-name>benessosrvlet</servlet-name>
+<url-pattern>/benesso</url-pattern>
+</servlet-mapping>
+
+<servlet>
 <servlet-name>benedemo</servlet-name>
 <servlet-class>benedemo</servlet-class>
 </servlet>
@@ -77,6 +87,5 @@
 <servlet-name>benedemo</servlet-name>
 <url-pattern>/bene</url-pattern>
 </servlet-mapping>
-
 
 </web-app>

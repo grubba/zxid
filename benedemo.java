@@ -40,7 +40,7 @@ public class benedemo extends HttpServlet {
     static final Pattern role_pat   = Pattern.compile("role:[ ]([^\\n]*)");
     static final Pattern boot_pat   = Pattern.compile("urn:liberty:disco:2006-08:DiscoveryEPR:[ ]([^\\n]*)");
 
-    static final String conf = "URL=https://benefit.gov.uk:8443/serv/sso&PATH=/home/sampo/zxid/postoffice/conf/";
+    static final String conf = "URL=https://benefit.gov.uk:8443/serv/benesso&PATH=/home/sampo/zxid/postoffice/conf/";
     static zxidjava.zxid_conf cf;
     static {
 	// CONFIG: You must have created /var/zxid directory hierarchy. See `make dir'
@@ -138,23 +138,25 @@ public class benedemo extends HttpServlet {
 	System.err.print("Start ZXID App Demo GET("+fullURL+")...\n");
 	HttpSession ses = req.getSession(false);  // Important: do not allow automatic session.
 	if (ses == null) {                        // Instead, redirect to sso servlet.
-	    res.sendRedirect("sso?o=E&fr=" + fullURL);
+	    res.sendRedirect("benesso?o=E&fr=" + fullURL);
 	    return;
 	}
 	ServletOutputStream out = res.getOutputStream();
 	
 	res.setContentType("text/html");
 	out.print("<title>Benefits Demo Protected Content</title><body>\n");
+	out.print("<link rel=\"shortcut icon\" href=\"/favicon.ico\" type=\"image/x-icon\" />");
+	out.print("<link type=\"text/css\" rel=stylesheet href=\"bene.css\"><body bgcolor=white>");
 	//out.print("<table align=right><tr><td>");
 	//out.print("<a href=\"http://www.tas3.eu/\"><img src=\"tas3-logo.jpg\" height=64 border=0></a>");
 	//out.print("<a href=\"http://zxid.org/\"><img src=\"logo-zxid-128x128.png\" height=64 border=0></a>");
 	//out.print("</td></tr></table>");
-	out.print("<h1>Benefits Demo Protected Content</h1>\n");
+	out.print("<h1 class=zxtop><img align=right src=\"DirectgovLogo.gif\"><br>Benefits Demo Protected Content</h1>\n");
 	//out.print("<h1>ZXID Demo App Protected Content</h1> at " + fullURL + "\n");
 
 	// Render logout buttons (optional)
 
-	out.print("[<a href=\"sso?gl=1&s="+ses.getAttribute("sesid")+"\">Local Logout</a> | <a href=\"sso?gr=1&s="+ses.getAttribute("sesid")+"\">Single Logout</a>]\n");
+	out.print("[<a href=\"benesso?gl=1&s="+ses.getAttribute("sesid")+"\">Local Logout</a> | <a href=\"benesso?gr=1&s="+ses.getAttribute("sesid")+"\">Single Logout</a>]\n");
 
 	// The SSO servlet will have done one iteration of authorization. The following
 	// serves to illustrate, how to explicitly call a PDP from your code.
@@ -199,7 +201,7 @@ public class benedemo extends HttpServlet {
 	out.print(" | <a href=\"?multi\">Multi discovery and call</a>");
 	out.print(" | <a href=\"?all\">All</a>");
 	out.print(" | <a href=\"?exit\">Exit Java</a>");
-	out.print("]<p>");
+	out.print("]</p>");
 
 	// Demo web service call to zxidhrxmlwsp
 
@@ -353,7 +355,7 @@ public class benedemo extends HttpServlet {
 	    zxidjni.set_opt(cf, 5, 0);
 	}
 
-	out.print("<p>Done.\n");
+	out.print("<p>Done.\n<div class=zxbot><a class=zx href=\"/index.html\">Demo Index</a></div>");
     }
 }
 

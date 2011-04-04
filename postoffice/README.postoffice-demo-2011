@@ -26,3 +26,12 @@ killall java; bin/startup.sh
 
 $JAVA_HOME/bin/keytool -genkey -alias tomcat -keyalg RSA
 Edit  conf/server.xml to change port number and enable SSL
+
+
+~/zxid/zxcot -c PATH=/home/sampo/zxid/postoffice/conf/idp -e 'https://idp.postoffice.co.uk/idp.x?o=S' 'Post Office IdP: Service Discovery' 'https://idp.postoffice.co.uk/idp.x' urn:liberty:disco:2006-08 | ~/zxid/zxcot -c PATH=/home/sampo/zxid/postoffice/conf/idp -bs
+
+~/zxid/zxcot -c PATH=/home/sampo/zxid/postoffice/conf/idp -e 'https://idp.postoffice.co.uk/idp.x?o=S' 'Post Office IdP: Identity Mapper' 'https://idp.postoffice.co.uk/idp.x' urn:liberty:ims:2006-08 | ~/zxid/zxcot -c PATH=/home/sampo/zxid/postoffice/conf/idp -b
+
+~/zxid/zxcot -c PATH=/home/sampo/zxid/postoffice/conf/idp -e 'https://idp.postoffice.co.uk/idp.x?o=S' 'Post Office IdP: People Service' 'https://idp.postoffice.co.uk/idp.x' urn:liberty:ps:2006-08 | ~/zxid/zxcot -c PATH=/home/sampo/zxid/postoffice/conf/idp -b
+
+#EOF

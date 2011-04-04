@@ -59,7 +59,7 @@ $res
 <a href="#" onClick="vis('techopt',0);">Hide Technical Options</a>
 </div>
 <br clear=right>
-<div class=zxbot><a class=zx href="http://synergetics.be/">Synergetics</a></div>
+<div class=zxbot><a class=zx href="/index.html">Demo Index</a> | <a class=zx href="http://synergetics.be/">Synergetics</a></div>
 
 <script language="javascript" type="text/javascript"><!--
 function vis(el, state) { document.getElementById(el).style.display=state?"block":"none"; }
