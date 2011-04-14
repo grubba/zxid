@@ -17,7 +17,7 @@ $dir = '/home/sampo/zxid/postoffice/conf/';
 
 $| = 1;
 
-open STDERR, ">>/tmp/audit.err";   # Helps CGI debugging where web server eats the stderr
+#open STDERR, ">>/tmp/audit.err";   # Helps CGI debugging where web server eats the stderr
 
 open EVS, ">>${dir}log/audit.evs" or die "Failed to open ${dir}log/audit.evs for writing: $!";
 
@@ -25,8 +25,11 @@ open IDP, "<${dir}idplog/act" or die "Failed to open ${dir}idplog/act for readin
 seek IDP,0,2;
 
 seek EVS,0,2;
-while ($line = <IDP>) {
+while (1) {
+    warn "read";
+    $line = <IDP>;
     print EVS "$line<br>";
+    sleep 1;
 }
 
 exit;

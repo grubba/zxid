@@ -37,6 +37,9 @@ int assert_nonfatal = 0;
 char* assert_msg = "%s: Internal error caused an ASSERT to fire. Deliberately trying to dump core.\nSorry for the inconvenience. If no core appears, try `ulimit -c unlimited'\n";
 int trace = 0;
 
+int zxid_version_var = ZXID_VERSION;
+const char* zxid_version_str_var = ZXID_REL " " ZXID_COMPILE_DATE " libzxid (zxid.org)";
+
 /*() Obtain the hex encoded version integer describing the libzxid. This can be
  * used to effectuate a runtime version number check. For compile time you
  * should check the value of the ~ZXID_VERSION~ macro. */
@@ -52,9 +55,9 @@ int zxid_version()
  * should check the value of the ~ZXID_VERSION~ macro. */
 
 /* Called by:  main x7, opt x2, zxid_fed_mgmt_cf, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_mgmt */
-char* zxid_version_str()
+const char* zxid_version_str()
 {
-  return ZXID_REL " " ZXID_COMPILE_DATE " libzxid (zxid.org)";
+  return zxid_version_str_var;
 }
 
 /*(i) Render any element with some options, controlled by

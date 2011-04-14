@@ -1,4 +1,4 @@
-/* C code produced by gperf version 3.0.3 */
+/* C code produced by gperf version 3.0.1 */
 /* Command-line: gperf c/zx-elems.gperf  */
 /* Computed positions: -k'1-5,7-8,11,$' */
 
@@ -8991,9 +8991,6 @@ struct zx_el_tok zx_el_tab[] =
 
 #ifdef __GNUC__
 __inline
-#ifdef __GNUC_STDC_INLINE__
-__attribute__ ((__gnu_inline__))
-#endif
 #endif
 struct zx_el_tok *
 zx_elem2tok (str, len)

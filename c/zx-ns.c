@@ -1,4 +1,4 @@
-/* C code produced by gperf version 3.0.3 */
+/* C code produced by gperf version 3.0.1 */
 /* Command-line: gperf c/zx-ns.gperf  */
 /* Computed positions: -k'13-14,19,22,25,29' */
 
@@ -274,9 +274,6 @@ struct zx_ns_s zx_ns_tab[] =
 
 #ifdef __GNUC__
 __inline
-#ifdef __GNUC_STDC_INLINE__
-__attribute__ ((__gnu_inline__))
-#endif
 #endif
 struct zx_ns_s *
 zx_url2ns (str, len)

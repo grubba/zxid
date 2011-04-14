@@ -15,7 +15,7 @@ $dir = '/home/sampo/zxid/postoffice/conf/';
 
 $| = 1;
 
-open STDERR, ">>/tmp/talent.err";   # Helps CGI debugging where web server eats the stderr
+open STDERR, ">>/tmp/audit.err";   # Helps CGI debugging where web server eats the stderr
 
 sub uridec {
     my ($val) = @_;
@@ -79,7 +79,9 @@ if ($cgi{'tail'}) {
 HTML
     ;
     seek EVS,0,2;
-    while ($line = <EVS>) {
+    while (1) {
+	warn "read loop";
+	$line = <EVS>;
 	print $line;
 	sleep 1;
     }

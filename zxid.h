@@ -747,8 +747,8 @@ ZXID_DECL int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_
 
 /* zxidlib */
 
-ZXID_DECL int   zxid_version();
-ZXID_DECL char* zxid_version_str();
+ZXID_DECL int zxid_version();
+ZXID_DECL const char* zxid_version_str();
 
 ZXID_DECL struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x);
 ZXID_DECL struct zx_str* zx_easy_enc_elem_sig(zxid_conf* cf, struct zx_elem_s* x);
