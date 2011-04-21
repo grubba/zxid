@@ -114,7 +114,7 @@ EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
   } else if (p = strstr(buf, PEM_DSA_PRIV_KEY_START)) {
     typ = EVP_PKEY_DSA;
   } else {
-    ERR("No private key found in file(%s)\n", name);
+    ERR("No private key found in file(%s). Looking for separator (%s) or (%s).\npem data(%s)", name, PEM_RSA_PRIV_KEY_START, PEM_DSA_PRIV_KEY_START, buf);
     return 0;
   }
   p += sizeof(PEM_RSA_PRIV_KEY_START) - 1;

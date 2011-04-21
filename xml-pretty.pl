@@ -32,13 +32,25 @@ sub xml_pretty {
 	if ($x !~ /^</) {
 	    $last_tag = undef;
 	    if (length $x < 40) {
-		chomp $res;
-		$res .= green($x);
+		if ($x =~ /^\s*$/s) {
+		    #$res .= "\n";
+		    #warn "HERE1($x)";
+		} else {
+		    #warn "HERE3($x)";
+		    chomp $res;
+		    $res .= green($x);
+		}
 		$noindent = 1;
 	    } else {
 		my $xx = $x;
 		chomp $xx;
-		$res .= $indent.greeny($xx)."\n";
+		if ($xx =~ /^\s*$/s) {
+		    $res .= "\n";
+		    #warn "HERE($xx)";
+		} else {
+		    #warn "HERE2($xx)";
+		    $res .= $indent.greeny($xx)."\n";
+		}
 	    }
 	    next;
 	}
@@ -108,6 +120,7 @@ sub xml_pretty {
 }
 
 while (defined($line = <STDIN>)) {
+    #$line =~ tr[\r][];
     print xml_pretty($line);
 }
 
