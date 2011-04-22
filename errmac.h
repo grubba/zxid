@@ -697,12 +697,14 @@ extern char* assert_msg;
                                  *((p)++) =  (x) & 0xff; }      \
   else { NEVER("length %d too big to encode in BERLEN\n",(x)); }; ME
 
-#define PEM_CERT_START  "-----BEGIN CERTIFICATE-----"
-#define PEM_CERT_END    "-----END CERTIFICATE-----"
+#define PEM_CERT_START          "-----BEGIN CERTIFICATE-----"
+#define PEM_CERT_END              "-----END CERTIFICATE-----"
 #define PEM_RSA_PRIV_KEY_START  "-----BEGIN RSA PRIVATE KEY-----"
-#define PEM_RSA_PRIV_KEY_END    "-----END RSA PRIVATE KEY-----"
+#define PEM_RSA_PRIV_KEY_END      "-----END RSA PRIVATE KEY-----"
 #define PEM_DSA_PRIV_KEY_START  "-----BEGIN DSA PRIVATE KEY-----"
-#define PEM_DSA_PRIV_KEY_END    "-----END DSA PRIVATE KEY-----"
+#define PEM_DSA_PRIV_KEY_END      "-----END DSA PRIVATE KEY-----"
+#define PEM_PRIV_KEY_START      "-----BEGIN PRIVATE KEY-----"
+#define PEM_PRIV_KEY_END          "-----END PRIVATE KEY-----"
 
 /* Define this so it results CR (0xd) and LF (0xa) on your platform. N.B. \n is not always 0xa! */
 #define CRLF "\015\012"

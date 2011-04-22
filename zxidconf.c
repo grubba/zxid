@@ -19,6 +19,7 @@
  * 7.1.2010,  added WSC and WSP signing options --Sampo
  * 12.2.2010, added pthread locking --Sampo
  * 31.5.2010, added 4 web service call PEPs --Sampo
+ * 21.4.2011, fixed DSA key reading and reading unqualified keys --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -111,8 +112,13 @@ EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
   
   if (p = strstr(buf, PEM_RSA_PRIV_KEY_START)) {
     typ = EVP_PKEY_RSA;
+    e = PEM_RSA_PRIV_KEY_END;
   } else if (p = strstr(buf, PEM_DSA_PRIV_KEY_START)) {
     typ = EVP_PKEY_DSA;
+    e = PEM_DSA_PRIV_KEY_END;
+  } else if (p = strstr(buf, PEM_PRIV_KEY_START)) {  /* Not official format, but sometimes seen. */
+    typ = EVP_PKEY_RSA;
+    e = PEM_PRIV_KEY_END;
   } else {
     ERR("No private key found in file(%s). Looking for separator (%s) or (%s).\npem data(%s)", name, PEM_RSA_PRIV_KEY_START, PEM_DSA_PRIV_KEY_START, buf);
     return 0;
@@ -122,7 +128,7 @@ EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
   if (*p != 0xa) return 0;
   ++p;
 
-  e = strstr(buf, typ == EVP_PKEY_RSA ? PEM_RSA_PRIV_KEY_END : PEM_RSA_PRIV_KEY_END);
+  e = strstr(buf, e);
   if (!e) return 0;
   
   p = unbase64_raw(p, e, buf, zx_std_index_64);

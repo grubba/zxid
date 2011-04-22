@@ -61,8 +61,6 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - AuthnReq QS option for SP to request that attribute list is not shown up front
     - Consider removing zx_scan_pi_or_comment() from most tags, only leaving for top level.
     - Show whether SP wants a persistent or transient, or some other type of Id for the user.
-    - zxpasswd account creation problems
-        echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
     - Clarify signature validation error codes, e.g. <SignedInfo> canon fail vs. bad cert
     - Instantiation of declared prefix that only appears in innards of the XML (e.g. xs)
     - Merge Jeroen's mega patch
@@ -71,6 +69,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
 
 zxid-0.83:: 11.3.2011
     - Fixed ordering of EPRs returned by zxid_get_epr() to always to be same as with zxid_find_epr().
+    - Made private key reading more robust by tolerating omission of RSA or DSA designation
 
 zxid-0.82:: 10.3.2011
     - Added Proxy IdP support
