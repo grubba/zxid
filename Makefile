@@ -1158,8 +1158,11 @@ javaswigchk:
 	ls zxidjava/SWIGTYPE*.java >foo
 	fgrep zxidjava/SWIGTYPE Manifest | cmp - foo
 
-gitreadd:
+gitreaddnoc:
 	git add zxidjava/*.java zxidjava/*.c Net/Makefile Net/SAML.pm Net/*.c php/*.[hc]
+
+gitreadd:
+	git add zxidjava/*.java zxidjava/*.c Net/Makefile Net/SAML.pm Net/*.c php/*.[hc] c/*.[hc]
 
 javaclean:
 	rm -rf zxidjava/*.$(OBJ_EXT) zxidjava/*~ zxidjava/*.so zxidjava/*.class *.class
