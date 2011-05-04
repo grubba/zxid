@@ -4,6 +4,8 @@ README.zxid
 <<cvsid: $Id: README.zxid,v 1.125 2009-11-24 23:53:40 sampo Exp $>>
 <<class: article!a4paper!!ZXID 23>>
 
+See INSTALL.zxid for installation and quick tutorial.
+
 <<abstract:
 
 ZXID.org Identity Management toolkit implements standalone SAML 2.0 and

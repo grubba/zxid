@@ -4,40 +4,15 @@
 # Sampo Kellomäki (sampo@iki.fi)
 # $Id: Quick,v 1.9 2010-01-08 02:10:09 sampo Exp $
 
+make all
 time (LD_LIBRARY_PATH=/apps/lib make all ENA_GEN=1 ENA_PG=1)
-set env LD_LIBRARY_PATH=/apps/lib
-
-if false; then
-  tar xvzf zxid-0.7.tgz
-  cd zxid-0.8
-  # N.B.  There is no configure script. The Makefile works for all
-  #       supported platforms by provision of correct TARGET option.
-  # N.B2: We distribute some generated files. If they are missing, you need
-  #       to regenerate them: make cleaner; make dep ENA_GEN=1
-  make                   # default Linux. Do `make TARGET=sol8' for Solaris
-  make dir               # Creates /var/zxid hierarchy
-  make samlmod           # optional
-  make samlmod_install   # optional: install Net::SAML perl module
-  make phpzxid           # optional
-  make phpzxid_install   # optional: install php_zxid.so PHP extension
-  cp zxid <webroot>/
-fi
 
 # configure your web server to recognize zxid a CGI, e.g.
 mini_httpd -p 8443 -c 'zxid*' -S -E zxid.pem -l /tmp/mini.stderr &
-mini_httpd -p 8444 -c 'zxid*' -S -E /var/zxid/pem/ssl-nopw-cert.pem -l /tmp/mini.stderr &
-
-export LD_LIBRARY_PATH=/apps/lib
-ulimit -c unlimited
-mini_httpd -p 8081 -c 'zxid*' &
-tailf /var/tmp/zxid.stderr &
-tailf /var/zxid/log/xml.dbg | ~/zxid/xml-pretty.pl &
-tailf /var/log/apache2/error.log | perl -pe 's/((zxidp)|(eid))/\e[1;31m$1\e[0m/g; s/, referer: .*?$//' &
-tail -f tmp/err-httpd &
-tailf ~/error.log | perl -pe 'substr($_,0,60)=""; s/((zxidp)|(eid))/\e[1;31m$1\e[0m/g; s/, referer: .*?$//' &
+mini_httpd -p 8444 -c 'zxid*' -S -E /var/zxid/pem/enc-nopw-cert.pem -l /tmp/mini.stderr &
 
 echo Edit your /etc/hosts to contain
-echo 127.0.0.1       localhost sp1.zxidcommon.org sp1.zxidsp.org idp1.zxidp.org sp.tas3.pt idp.tas3.pt
+echo 127.0.0.1 localhost sp1.zxidcommon.org sp1.zxidsp.org idp1.zxidp.org sp.tas3.pt idp.tas3.pt
 echo
 echo Point your browser to
 echo  http://sp1.zxidsp.org:8081/zxidhlo?o=E
@@ -45,9 +20,9 @@ echo  https://sp1.zxidsp.org:8443/zxidhlo?o=E
 echo  https://sp1.zxidsp.org:8443/zxidhlo.pl?o=E      # Perl version
 echo  https://sp1.zxidsp.org:8443/zxidhlo.php?o=E     # PHP version
 echo  https://sp1.zxidsp.org:8443/zxidhrxmlwsc?o=E
-echo  https://idp1.zxidp.org:8443/zxididp?o=F         # The IdP
+echo  https://idp1.zxidp.org:8443/zxididp?o=F         # Local IdP
 echo
-echo  http://sp.tas3.pt:8080/zxidservlet/appdemo
+echo  http://sp.tas3.pt:8080/zxidservlet/appdemo      # Main TAS3 demo
 echo  http://sp.tas3.pt:8082/zxidhlo.pl?o=E
 echo  http://sp.tas3.pt:8082/zxidhlo.php?o=E
 echo  http://sp.tas3.pt:8082/protected/saml?o=E       # mod_auth_saml
@@ -62,17 +37,26 @@ echo wireshark -i eth0 -f 'host 87.106.206.244' -k -S -l
 
 (ip.addr eq 1.1.1.1)
 
+STD TEST SETUP
+--------------
+
+export LD_LIBRARY_PATH=/apps/lib
+ulimit -c unlimited
+mini_httpd -p 8081 -c 'zxid*' &
+tailf /var/tmp/zxid.stderr &
+tailf /var/zxid/log/xml.dbg | ~/zxid/xml-pretty.pl &
+tailf /var/log/apache2/error.log | perl -pe 's/((zxidp)|(eid))/\e[1;31m$1\e[0m/g; s/, referer: .*?$//' &
+tail -f tmp/err-httpd &
+tailf ~/error.log | perl -pe 'substr($_,0,60)=""; s/((zxidp)|(eid))/\e[1;31m$1\e[0m/g; s/, referer: .*?$//' &
+
 Testing
 -------
 
 http://idp.tas3.pt:8081/zxidtest.pl
 ./zxtest.pl -a -a -dx
 
-Testing mod_php and mod_perl
-----------------------------
-
 emacs /apps/apache/std/conf/httpd.conf
-/apps/apache/std/bin/apachectl start
+/apps/apache/std/bin/apachectl start                  # Apache2
 tailf tmp/err-httpd &
 
 Testing Java
