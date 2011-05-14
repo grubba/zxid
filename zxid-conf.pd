@@ -20,7 +20,7 @@ of ZXID.
 ==============
 
 ZXID, out-of-box, needs very little configuration. Generally you
-only need to decide the URL of your web site.
+only need to decide the URL and NICE_NAME of your web site.
 
 > Tip: You can view current configuration by supplying URL suffix o=d
 
@@ -595,6 +595,10 @@ to all attributes just before +out-map+ stage):
 
 5 ZXID XACML PEP (and local PDP)
 ================================
+
+> *Terminology*: PEP = Policy Enforcement Point, PDP = Policy Decision
+> Point, XACML = XML Access Control Markup Language, an OASIS standard
+> architecture and protocol for making authorization decision.
 
 > *Important*: You need a functioning XACML PDP (Policy Decision Point
 > to use this functionality. zxididp includes a PDP that always

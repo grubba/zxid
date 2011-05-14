@@ -66,6 +66,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Merge Jeroen's mega patch
     - Idea: authorization through interaction service, get it logged to audit trail as evidence
     - Idea: discovery and consent questions up-front in the beginning of the business process
+    - AuthnCtx comparison or matching
+    - Proxy IdP AuthnCtx, RequesterID mapping
 
 zxid-0.83:: 11.3.2011
     - Fixed ordering of EPRs returned by zxid_get_epr() to always to be same as with zxid_find_epr().

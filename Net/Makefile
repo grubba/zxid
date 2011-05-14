@@ -280,7 +280,7 @@ MPOLLUTE =
 EXTRALIBS = -L/home/sampo/zxid/Net/.. -L/apps/openssl/std/lib -L/apps/lib -lzxid -lcrypto -lcurl -lz
 LDLOADLIBS = -L/home/sampo/zxid/Net/.. -L/apps/openssl/std/lib -L/apps/lib -lzxid -lcrypto -lcurl -ldl -lz
 BSLOADLIBS = 
-LD_RUN_PATH = /apps/openssl/std/lib:/apps/lib
+LD_RUN_PATH = /home/sampo/zxid/Net/..:/apps/openssl/std/lib:/apps/lib
 
 
 # --- MakeMaker const_cccmd section:

@@ -82,7 +82,7 @@ as bootstrap during the SSO).
 -----------------------
 
 The high level API is based on the idea of constructing
-the SOAB body (the payload) as a string and passing that
+the SOAP body (the payload) as a string and passing that
 to function that performs the SOAP call and returns
 response.
 

@@ -894,6 +894,10 @@ triggers following sequence of events
 20 Testing
 ==========
 
+You can skip this section if you are not a developer. However, you may
+be interested, from quality assurance perspective, in the extent of
+the testing that we perform.
+
 ZXID test suite is driven by zxtest.pl and the test input in t/ subdirectory.
 The test suite is not distributed in the tar ball, but is available from
 the git repository. Some tests still rely on detailed manual setup, YMMV.
@@ -1178,6 +1182,8 @@ level, but not yet realized in hand written logic.
 
 Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
 Author: Sampo Kellomäki (sampo@iki.fi)
+
+Copyright (c) 2011 Sampo Kellomäki (sampo@iki.fi), All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
