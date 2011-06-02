@@ -69,6 +69,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - AuthnCtx comparison or matching
     - Proxy IdP AuthnCtx, RequesterID mapping
 
+zxid-1.0:: 31.5.2011
+    - Promoted to 1.0 status
 zxid-0.83:: 11.3.2011
     - Fixed ordering of EPRs returned by zxid_get_epr() to always to be same as with zxid_find_epr().
     - Made private key reading more robust by tolerating omission of RSA or DSA designation
