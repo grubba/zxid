@@ -5,7 +5,7 @@ $Id: INSTALL.zxid,v 1.5 2009-10-16 13:36:33 sampo Exp $
 Quick
 -----
 
-  make         # beware of need to specify TARGET if not linux, or localconf.mk
+  make         # beware of need to specify TARGET if not linux; or edit localconf.mk
   make all     # all bindings beyond C (perl, php, Java, mod_auth_saml for Apache httpd)
   make install
 

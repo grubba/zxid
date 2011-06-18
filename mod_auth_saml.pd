@@ -281,7 +281,9 @@ protected strongly, others moderately, and some not at all.
    g. The IDP_SEL_PAGE allows you to build a fully custom
       IdP selection page. Here we use it for requesting strong
       authentication context. Other simpler ways to customize
-      the IdP Selection Page exist, see e.g. IDP_SEL_START.
+      the IdP Selection Page exist, see e.g. IDP_SEL_TEMPL_FILE
+      whose default value is "idpsel.html" (you can edit that
+      file or "idpsel.css" for customization).
 
 2. Create directories in the web root according to above plan.
    You also need to create the /var/other hierarchy since

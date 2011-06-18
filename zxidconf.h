@@ -708,19 +708,14 @@
  * you should be editing stylesheet or template. */
 #define ZXID_BODY_TAG "<body bgcolor=white>"  /* (compile) */
 
-/*(c) IdP Selector Page URL
- * If the above simple customization options are not sufficient, you can
- * provide URL to page of your own design. This page will receive as
- * query string argument the relay state.
- * 0 (zero) disables. */
-
-#define ZXID_IDP_SEL_PAGE 0
-
-/*(c) Path for Template for IdP Authentication Page */
+/*(c) Path for Template for IdP Selector Page. This template is used
+ * by Service Provider to render the SP "login" screen which really
+ * is the IdP selection screen (as the authentication login is done
+ * on IdP side). */
 
 #define ZXID_IDP_SEL_TEMPL_FILE "idpsel.html"
 
-/*(c) Template for IdP Authentication Page that is used if the
+/*(c) Template for IdP Selector Page that is used if the
  * path does not work. This is really meant to be the last resort. */
 
 #define ZXID_IDP_SEL_TEMPL "<title>ZXID SP SSO: Choose IdP</title>"\
@@ -737,7 +732,7 @@
   "Entity ID of this SP (click on the link to fetch the SP metadata): <a href=\"!!EID\">!!EID</a>"\
   "!!IDP_LIST<h3>Technical options</h3>"\
   "<input type=hidden name=fc value=1><input type=hidden name=fn value=prstnt>"\
-  "<!-- ZXID built-in defaults, see zxidconf.h and zxid-conf.pd for explanation -->"\
+  "<!-- ZXID built-in defaults, see IDP_SEL_TEMPL in zxidconf.h and zxid-conf.pd for explanation -->"\
   "<input type=hidden name=fq value=\"\">"\
   "<input type=hidden name=fy value=\"\">"\
   "<input type=hidden name=fa value=\"\">"\
@@ -755,6 +750,14 @@
 #define ZXID_IDP_LIST_POPUP   0
 #define ZXID_IDP_LIST_BUTTON  1
 #define ZXID_IDP_LIST_BRAND   2
+
+/*(c) IdP Selector Page URL
+ * If the IDP_SEL_TEMPL_FILE or IDP_SEL_TEMPL, above, is not sufficient for
+ * your customization needs, you can provide URL to page of your own design.
+ *This page will receive as query string argument the relay state.
+ * 0 (zero) disables. */
+
+#define ZXID_IDP_SEL_PAGE 0
 
 /*(c) If user clicks "Create New User" he is redirected to this page. */
 
@@ -796,7 +799,7 @@
   "<li> User: <input name=au> Password: <input type=password name=ap><input type=submit name=alp value=\" Login \">"\
   "<li><input type=submit name=an value=\" Create New User \"></ol>"\
   "<input type=hidden name=fc value=1><input type=hidden name=fn value=prstnt><br>"\
-  "<input type=hidden name=fq value=\"\"><input type=hidden name=fy value=\"\"><input type=hidden name=fa value=\"\"><input type=hidden name=fm value=\"\"><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h-->"\
+  "<input type=hidden name=fq value=\"\"><input type=hidden name=fy value=\"\"><input type=hidden name=fa value=\"\"><input type=hidden name=fm value=\"\"><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see AN_TEMPL zxidconf.h-->"\
   "<input type=hidden name=ar value=\"!!SSOREQ\">"\
   "<input type=hidden name=zxapp value=\"!!ZXAPP\">"\
   "</form><div class=zxbot><a href=\"http://zxid.org/\">zxid.org</a>, !!VERSION (builtin)</div>"

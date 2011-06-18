@@ -38,7 +38,7 @@ effort of just configuring your web server.
 -------------------
 
 <<doc-inc.pd>>
-<<htmlpreamble: <title>ZXID FAQ</title><link type="text/css" rel=stylesheet href="zx.css"><body><h1>ZXID Simple API</h1> >>
+<<htmlpreamble: <title>ZXID Simple API</title><link type="text/css" rel=stylesheet href="zx.css"><body><h1>ZXID Simple API</h1> >>
 
 2 ZXID Simple API Tutorial
 ==========================
@@ -314,43 +314,55 @@ as follows
 When whole page is generated, some templating information is taken
 from the configuration.
 
-IDP_SEL_START:: All the HTML before <form> tag. This can include HTML headers
-    and the <body> tag, as well as beginning of the page, allowing
-    for complete color selection, stylesheet embedding, and general
-    branding of the page.
+IDP_SEL_TEMPL_FILE:: Path for Template for IdP Selecton Page. Default "idpsel.html".
+    This file, which you can edit for customization, is used as template to
+    render the IdP selection page on the SP side. If the file does not exist,
+    the value of ZXID_IDP_SEL_TEMPL configuration option is used as template.
+    By default idpsel.html uses idpsel.css as stylesheet. You can make many
+    kinds of customization just by editing this stylesheet.
 
-IDP_SEL_NEW_IDP:: The HTML fragment to allow login using a new IdP (Auto
-    CoT using IdP URL). Set to empty to hide this possibility.
+IDP_SEL_TEMPL:: Template for IdP Authentication Page that is used if the
+    path does not work. This is really meant to be the last resort. The default
+    value of this page is the compiled in template "ZXID SP SSO: Choose IdP".
 
-IDP_SEL_OUR_EID:: Message displaying SP Entity ID, in case (technically
-    minded) user needs to know this to establish relationship with an IdP.
+IDP_LIST_METH:: Choose the method for rendeing IdP list.
+    0 = popup menu, 1 = buttons,
+    2 = branded image buttons (not implemented as of 20100922)
 
-IDP_TECH_USER:: Technical parameters that user might want to set, and
-    typically would be allowed to set. May be hidden (not user
-    controllable) or visible.
-    fc:: Create federation (AllowCreate flag)
-    fn:: Name ID format
-        prstnt:: Persistent (pseudonym)
-        trnsnt:: Transient, temporary pseudonym
+IDP_SEL_PAGE::  IdP Selector Page URL
+   If the IDP_SEL_TEMPL_FILE or IDP_SEL_TEMPL, above, is not sufficient for
+   your customization needs, you can provide URL to page of your own design.
+   This page will receive as query string argument the relay state.
+   0 (zero) disables.
 
-IDP_TECH_SITE:: Technical parameters that the site administrator
-    should decide and set. Usually hidden fields:
-    fq:: Affiliation ID (usually empty)
-    fy:: Consent obtained by SP for the federation or SSO
-        empty:: No statement about consent
-        urn:liberty:consent:obtained:: Has been obtained (unspecified way)
-        urn:liberty:consent:obtained:prior:: Obtained prior to present
-            transaction, e.g. user signed terms and conditions of service
-        urn:liberty:consent:obtained:current:implicit:: Consent
-            is implicit in the situation where user came to invoke service
-        urn:liberty:consent:obtained:current:explicit:: Obtained explicitly
-        urn:liberty:consent:unavailable:: Consent can not be obtained
-        urn:liberty:consent:inapplicable:: Obtaining consent is not
-            relevant for the SP or service.
-    fa:: Authentication Context (strength of authentication) needed by the SP
-    fm:: Matching rule for authentication strength (usually empty, IdP decides)
-    fp:: Forbid IdP from interacting with the user (IsPassive flag)
-    ff:: Request reauthentication of user (ForceAuthn flag)
+You can set several rather technical configuration options by editing
+the IdP selection template and adding (hidden) form fields. You may
+want to hardwire these or allow user to set them
+
+fc:: Create federation (AllowCreate flag)
+fn:: Name ID format
+    prstnt:: Persistent (pseudonym)
+    trnsnt:: Transient, temporary pseudonym
+
+Technical parameters that the site administrator
+should decide and set. Usually hidden form fields in the template:
+
+fq:: Affiliation ID (usually empty)
+fy:: Consent obtained by SP for the federation or SSO
+    empty:: No statement about consent
+    urn:liberty:consent:obtained:: Has been obtained (unspecified way)
+    urn:liberty:consent:obtained:prior:: Obtained prior to present
+        transaction, e.g. user signed terms and conditions of service
+    urn:liberty:consent:obtained:current:implicit:: Consent
+        is implicit in the situation where user came to invoke service
+    urn:liberty:consent:obtained:current:explicit:: Obtained explicitly
+    urn:liberty:consent:unavailable:: Consent can not be obtained
+    urn:liberty:consent:inapplicable:: Obtaining consent is not
+        relevant for the SP or service.
+fa:: Authentication Context (strength of authentication) needed by the SP
+fm:: Matching rule for authentication strength (usually empty, IdP decides)
+fp:: Forbid IdP from interacting with the user (IsPassive flag)
+ff:: Request reauthentication of user (ForceAuthn flag)
 
 2.2 Gaining More Control
 ------------------------
