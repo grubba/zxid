@@ -57,7 +57,7 @@ void zx_xml_parse_err(struct zx_ctx* c, char quote, const char* func, const char
 {
   const char* errloc = MAX(c->p - 20, c->bas);
   ERR("%s: %s: char(%c) pos=%d (%.*s)", func, msg, quote,
-      c->p - c->bas, MIN(c->lim - errloc, 40), errloc);
+      ((int)(c->p - c->bas)), (int)MIN(c->lim - errloc, 40), errloc);
 }
 
 /* Called by:  zx_xmlns_decl */
@@ -65,7 +65,7 @@ void zx_xml_parse_dbg(struct zx_ctx* c, char quote, const char* func, const char
 {
   const char* errloc = MAX(c->p - 20, c->bas);
   D("%s: %s: char(%c) pos=%d (%.*s)", func, msg, quote,
-    c->p - c->bas, MIN(c->lim - errloc, 40), errloc);
+    ((int)(c->p - c->bas)), (int)MIN(c->lim - errloc, 40), errloc);
 }
 
 /* --------------------- D e c o d e r ---------------------- */
@@ -116,7 +116,7 @@ static int zx_scan_pi_or_comment(struct zx_ctx* c)
       D("DOCTYPE detected (%.*s)", 60, c->p-1);
       ZX_LOOK_FOR(c,'>');
       ++c->p;
-      D("DOCTYPE scanned (%.*s)", c->p-name, name);
+      D("DOCTYPE scanned (%.*s)", ((int)(c->p-name)), name);
       return 0;
     }
     c->p += 2;
@@ -134,7 +134,7 @@ static int zx_scan_pi_or_comment(struct zx_ctx* c)
       }
     }
     ++c->p;
-    D("Comment scanned (%.*s)", c->p-name, name);
+    D("Comment scanned (%.*s)", ((int)(c->p-name)), name);
     /*ZX_COMMENT_DEC_EXT(comment);*/
     return 0;
   }
@@ -172,7 +172,7 @@ static int zx_scan_elem_end(struct zx_ctx* c, const char* start, const char* fun
   ZX_LOOK_FOR(c,'>');
   if (memcmp(start?start:"", name, c->p-name))	{
     errloc = MAX(c->p - 20, c->bas);
-    ERR("%s: Mismatching close tag(%.*s) pos=%d (%.*s)", func, c->p-name, name, c->p - c->bas, MIN(c->lim - errloc, 40), errloc);
+    ERR("%s: Mismatching close tag(%.*s) pos=%d (%.*s)", func, ((int)(c->p-name)), name, ((int)(c->p - c->bas)), (int)MIN(c->lim - errloc, 40), errloc);
     ++c->p;
     return 0;
   }
@@ -418,10 +418,10 @@ static int zx_attr_lookup(struct zx_ctx* c, struct zx_elem_s* x)
       if (ns > c->ns_tab && ns - c->ns_tab < c->n_ns) {
 	attr->g.tok = (ns - c->ns_tab) << ZX_TOK_NS_SHIFT;
       } else {
-	INFO("Non-native prefix(%.*s) attr(%.*s) in elem(%.*s)", (name-1)-prefix, prefix, attr->name_len, attr->name, x->g.len, x->g.s);
+	INFO("Non-native prefix(%.*s) attr(%.*s) in elem(%.*s)", ((int)((name-1)-prefix)), prefix, attr->name_len, attr->name, x->g.len, x->g.s);
       }
     } else {
-      INFO("Undeclared (and unknown) prefix(%.*s) attr(%.*s) in elem(%.*s)", (name-1)-prefix, prefix, attr->name_len, attr->name, x->g.len, x->g.s);
+      INFO("Undeclared (and unknown) prefix(%.*s) attr(%.*s) in elem(%.*s)", ((int)((name-1)-prefix)), prefix, attr->name_len, attr->name, x->g.len, x->g.s);
     }
   } else {
     if (lim-name == sizeof("xmlns")-1 && !memcmp("xmlns", name, sizeof("xmlns")-1)) {
@@ -503,7 +503,7 @@ static struct zx_elem_s* zx_el_lookup(struct zx_ctx* c, struct zx_elem_s* x, str
       goto unknown_el;
   } else {
 unknown_el:
-    INFO("Unknown element <%.*s>, child of <%.*s>", c->p - full_name, full_name, x->g.len, x->g.s);
+    INFO("Unknown element <%.*s>, child of <%.*s>", ((int)(c->p - full_name)), full_name, x->g.len, x->g.s);
     el = ZX_ZALLOC(c, struct zx_elem_s);
     tok = ZX_TOK_NOT_FOUND;
   }

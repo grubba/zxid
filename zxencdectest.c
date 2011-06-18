@@ -691,7 +691,7 @@ int main(int argc, char** argv, char** env)
     printf("Original and WO differ.\n");
 
   if (wo_p - wo_out != len_wo)
-    ERR("WO encode length mismatch %d vs %d (len)", wo_p - wo_out, len_wo);
+    ERR("WO encode length mismatch %d vs %d (len)", ((int)(wo_p - wo_out)), len_wo);
   printf("Re-encoded result WO (len=%d):\n%.*s\n\n", len_wo, len_wo, wo_out);
 
   if (wo_path)

@@ -193,7 +193,7 @@ static void zxsig_canon_crnl_inplace(struct zx_str* ss)
     if (!p)
       break;
     --lim;
-    D("Canonicalizing CRNL to NL %d", lim-p);
+    D("Canonicalizing CRNL to NL %d", ((int)(lim-p)));
     memmove(p, p+1, lim-p);  /* *** could be more efficient */
   }
   ss->len = lim - ss->s;

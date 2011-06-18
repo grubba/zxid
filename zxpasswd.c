@@ -458,7 +458,7 @@ int main(int argc, char** argv, char** env)
 
   if (!strcmp(hash_type, "0")) {
     strcpy((char*)pw_hash, pw);
-    D("pw0(%s) len=%d", pw, strlen(pw));
+    D("pw0(%s) len=%d", pw, (int)strlen(pw));
 #ifdef USE_OPENSSL
   } else if (!strcmp(hash_type, "c")) {  /* Unix crypt(3) hash */
     zx_rand((char*)salt, 2);

@@ -314,7 +314,7 @@ struct zx_str* zx_EASY_ENC_elem(struct zx_ctx* c, struct zx_elem_s* x)
   buf = ZX_ALLOC(c, len+1);
   p = zx_ENC_WO_any_elem(c, x, buf);
   if (p != buf+len) {
-    ERR("Encoded length(%d) does not match computed length(%d). ED(%.*s)", p-buf, len, p-buf, buf);
+    ERR("Encoded length(%d) does not match computed length(%d). ED(%.*s)", ((int)(p-buf)), len, ((int)(p-buf)), buf);
     len = p-buf;
   }
   buf[len] = 0;

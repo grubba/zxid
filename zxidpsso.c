@@ -871,7 +871,7 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
   ZERO(&sess, sizeof(zxid_ses));
 
   if (SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(ZX_GET_CONTENT_LEN(req->Data)) >= sizeof(buf)-1) {
-    ERR("Too long username and password %p. limit=%d",ZX_GET_CONTENT(req->Data),sizeof(buf)-1);
+    ERR("Too long username and password %p. limit=%d", ZX_GET_CONTENT(req->Data), (int)sizeof(buf)-1);
     res->Status = zxid_mk_lu_Status(cf, &res->gg, "ERR", 0, 0, 0);
     return res;
   }

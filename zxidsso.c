@@ -291,7 +291,7 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   if (cf->log_level > 0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "W", "ART", cgi->saml_art, 0);
   if (len-7 >= sizeof(buf)*4/3) {
-    ERR("SAMLart(%s), %d chars, too long. Max(%d) chars.", cgi->saml_art, len, sizeof(buf)*4/3+6);
+    ERR("SAMLart(%s), %d chars, too long. Max(%d) chars.", cgi->saml_art, len, (int)sizeof(buf)*4/3+6);
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "ERR", cgi->saml_art, "Artifact too long");
     D_DEDENT("deref: ");
     return 0;

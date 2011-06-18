@@ -281,7 +281,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 	  }
 	  
 	  if (cf->trustpdp_url && *cf->trustpdp_url) {
-	    D("Trust related discovery options(%.*s), TRUSTPDP_URL(%s)", lim-start, start, cf->trustpdp_url);
+	    D("Trust related discovery options(%.*s), TRUSTPDP_URL(%s)", ((int)(lim-start)), start, cf->trustpdp_url);
 	    if (zxid_call_trustpdp(cf, 0, ses, cf->pepmap_rsin, start, lim, epr)) {
 	      D("%d: Trust PERMIT. file(%s)", n_discovered, de->d_name);
 	      /* *** return trust scorings as part of the EPR */
@@ -292,7 +292,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
 	      goto next_file;
 	    }
 	  } else {
-	    INFO("Trust related discovery options(%.*s), but no TRUSTPDP_URL configured", lim-start, start);
+	    INFO("Trust related discovery options(%.*s), but no TRUSTPDP_URL configured", ((int)(lim-start)), start);
 	    continue;
 	  }
 	}

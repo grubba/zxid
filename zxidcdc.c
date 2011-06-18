@@ -112,7 +112,7 @@ int zxid_cdc_check(zxid_conf* cf, zxid_cgi* cgi)
     len = p ? p-q : strlen(q);
     
     if (SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(len) > sizeof(eid)-1) {
-      ERR("EntityID len=%d larger than built in limit=%d. Base64 len=%d", SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(len), sizeof(eid)-1, len);
+      ERR("EntityID len=%d larger than built in limit=%d. Base64 len=%d", SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(len), (int)sizeof(eid)-1, len);
       continue;
     }
     q = unbase64_raw(q, q + len, eid, zx_std_index_64);

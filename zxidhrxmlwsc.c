@@ -119,7 +119,7 @@ int main(int argc, char** argv)
   zxid_ses sess;
   zxid_ses* ses;
   struct zx_root_s* r;
-  struct zx_e_Envelope_s* env;
+  struct zx_e_Envelope_s* env = 0;
   zxid_epr* epr;
   struct zx_str* ss;
   char* p;

@@ -276,28 +276,28 @@ static struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need, c
     attrs = p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed NEED or WANT directive: attribute list at pos %d", p-v);
+      ERR("Malformed NEED or WANT directive: attribute list at pos %d", ((int)(p-v)));
       return need;
     }
 
     usage = ++p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed NEED or WANT directive: usage missing at pos %d", p-v);
+      ERR("Malformed NEED or WANT directive: usage missing at pos %d", ((int)(p-v)));
       return need;
     }
 
     retent = ++p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed NEED or WANT directive: retention missing at pos %d", p-v);
+      ERR("Malformed NEED or WANT directive: retention missing at pos %d", ((int)(p-v)));
       return need;
     }
 
     oblig = ++p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed NEED or WANT directive: obligations missing at pos %d", p-v);
+      ERR("Malformed NEED or WANT directive: obligations missing at pos %d", ((int)(p-v)));
       return need;
     }
     
@@ -367,28 +367,28 @@ struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
     ns = p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed MAP directive: source namespace missing at pos %d", p-v);
+      ERR("Malformed MAP directive: source namespace missing at pos %d", ((int)(p-v)));
       return map;
     }
 
     A = ++p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed MAP directive: source attribute name missing at pos %d", p-v);
+      ERR("Malformed MAP directive: source attribute name missing at pos %d", ((int)(p-v)));
       return map;
     }
 
     rule = ++p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed MAP directive: rule missing at pos %d", p-v);
+      ERR("Malformed MAP directive: rule missing at pos %d", ((int)(p-v)));
       return map;
     }
 
     b = ++p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed MAP directive: destination attribute name missing at pos %d", p-v);
+      ERR("Malformed MAP directive: destination attribute name missing at pos %d", ((int)(p-v)));
       return map;
     }
     
@@ -436,7 +436,7 @@ struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
     else if (IS_RULE(rule, "file-sb64"))     { mm->rule = ZXID_MAP_RULE_WRAP_FILE | ZXID_MAP_RULE_SB64; }
 
     else {
-      ERR("Unknown map rule(%.*s) at col %d of (%s)", b-rule, rule, rule-v, v);
+      ERR("Unknown map rule(%.*s) at col %d of (%s)", ((int)(b-rule)), rule, ((int)(rule-v)), v);
       //ERR("sizeof(rename)=%d cmp=%d c(%c)", sizeof("rename"), memcmp(rule, "rename", sizeof("rename")-1), rule[sizeof("rename")]);
     }
 
@@ -499,42 +499,42 @@ static struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsr
     ns = p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed ATSRC directive: namespace missing at pos %d", p-v);
+      ERR("Malformed ATSRC directive: namespace missing at pos %d", ((int)(p-v)));
       return atsrc;
     }
 
     attrs = ++p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed ATSRC directive: attribute list missing at pos %d", p-v);
+      ERR("Malformed ATSRC directive: attribute list missing at pos %d", ((int)(p-v)));
       return atsrc;
     }
 
     weight = ++p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed ATSRC directive: weight missing at pos %d", p-v);
+      ERR("Malformed ATSRC directive: weight missing at pos %d", ((int)(p-v)));
       return atsrc;
     }
 
     url = ++p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed ATSRC directive: url missing at pos %d", p-v);
+      ERR("Malformed ATSRC directive: url missing at pos %d", ((int)(p-v)));
       return atsrc;
     }
 
     aapml = ++p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed ATSRC directive: aapml ref missing at pos %d", p-v);
+      ERR("Malformed ATSRC directive: aapml ref missing at pos %d", ((int)(p-v)));
       return atsrc;
     }
     
     otherlim = ++p;
     p = strchr(p, '$');
     if (!p) {
-      ERR("Malformed ATSRC directive: otherlim missing at pos %d", p-v);
+      ERR("Malformed ATSRC directive: otherlim missing at pos %d", ((int)(p-v)));
       return atsrc;
     }
     
@@ -565,7 +565,7 @@ static struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsr
     COPYVAL(as->otherlim, otherlim,  ext-1);
     COPYVAL(as->ext,      ext,       p);
 
-    D("atsrc ns(%s) attrs(%.*s) weight(%s) url(%s) aapml(%s) otherlim(%s) ext(%s)", as->ns, weight-attrs-1, attrs, as->weight, as->url, as->aapml, as->otherlim, as->ext);
+    D("atsrc ns(%s) attrs(%.*s) weight(%s) url(%s) aapml(%s) otherlim(%s) ext(%s)", as->ns, ((int)(weight-attrs-1)), attrs, as->weight, as->url, as->aapml, as->otherlim, as->ext);
 
     for (a = attrs; ; a += len+1) {
       len = strcspn(a, ",$");
@@ -922,9 +922,9 @@ struct zx_ctx* zx_init_ctx()
 {
   struct zx_ctx* ctx;
   ctx = malloc(sizeof(struct zx_ctx));
-  D("malloc %p size=%d", ctx, sizeof(struct zx_ctx));
+  D("malloc %p size=%d", ctx, (int)sizeof(struct zx_ctx));
   if (!ctx) {
-    ERR("out-of-memory in ctx alloc sizeof=%d", sizeof(struct zx_ctx));
+    ERR("out-of-memory in ctx alloc sizeof=%d", (int)sizeof(struct zx_ctx));
     return 0;
   }
   zx_reset_ctx(ctx);
@@ -975,7 +975,7 @@ zxid_conf* zxid_new_conf(const char* zxid_path)
   /* *** unholy malloc()s: should use our own allocator! */
   zxid_conf* cf = malloc(sizeof(zxid_conf));
   if (!cf) {
-    ERR("out-of-memory %d", sizeof(zxid_conf));
+    ERR("out-of-memory %d", (int)sizeof(zxid_conf));
     exit(1);
   }
   return zxid_init_conf_ctx(cf, zxid_path);

@@ -133,9 +133,9 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
 zxid_conf* zxid_new_conf_to_cf(const char* conf)
 {
   zxid_conf* cf = malloc(sizeof(zxid_conf));  /* *** direct use of malloc */
-  D("malloc %p size=%d", cf, sizeof(zxid_conf));
+  D("malloc %p size=%d", cf, (int)sizeof(zxid_conf));
   if (!cf) {
-    ERR("out-of-memory %d", sizeof(zxid_conf));
+    ERR("out-of-memory %d", (int)sizeof(zxid_conf));
     exit(1); /* *** perhaps too severe! */
   }
   cf = ZERO(cf, sizeof(zxid_conf));
@@ -267,7 +267,7 @@ char* zxid_fed_mgmt(char* conf, char* sid, int auto_flags) {
 /*() Bang-bang expansions (!!VAR) understood in the templates. */
 
 /* Called by:  zxid_template_page_cf */
-static char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, const char* lim, int auto_flags)
+static const char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, const char* lim, int auto_flags)
 {
   char* s;
   struct zx_str* ss;
@@ -314,7 +314,7 @@ static char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, co
     if (BBMATCH("ZXAPP", key, lim)) return cgi->zxapp;
     break;
   }
-  D("Unmatched bangbang key(%.*s), taken as empty.", lim-key, key);
+  D("Unmatched bangbang key(%.*s), taken as empty.", ((int)(lim-key)), key);
   return 0;
 }
 
@@ -334,7 +334,7 @@ struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* t
     D("Template at path(%s) not found. Using default template.", templ_path);
     templ = default_templ;
   } else if (got == sizeof(buf)-1) {
-    ERR("Template at path(%s) does not fit in buffer of %d. Using default template.", templ_path, sizeof(buf)-1);
+    ERR("Template at path(%s) does not fit in buffer of %d. Using default template.", templ_path, (int)sizeof(buf)-1);
     templ = default_templ;
   } else
     templ = buf;

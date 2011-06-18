@@ -157,14 +157,14 @@ zxid_entity* zxid_get_meta(zxid_conf* cf, const char* url)
   rc.p[1] = 0;
   rc.p = rc.buf;
   if (rc.lim - rc.p < 300) {
-    ERR("Metadata response too short (%d chars, min 300 required). url(%s) CURLcode(%d) CURLerr(%s) buf(%.*s)",	rc.lim-rc.buf, url, res, CURL_EASY_STRERR(res), rc.lim-rc.buf, rc.buf);
+    ERR("Metadata response too short (%d chars, min 300 required). url(%s) CURLcode(%d) CURLerr(%s) buf(%.*s)",	((int)(rc.lim-rc.buf)), url, res, CURL_EASY_STRERR(res), ((int)(rc.lim-rc.buf)), rc.buf);
     ZX_FREE(cf->ctx, rc.buf);
     return 0;
   }
   
   ent = zxid_parse_meta(cf, &rc.p, rc.lim);
   if (!ent) {
-    ERR("Failed to parse metadata response url(%s) CURLcode(%d) CURLerr(%s) buf(%.*s)",	url, res, CURL_EASY_STRERR(res), rc.lim-rc.buf, rc.buf);
+    ERR("Failed to parse metadata response url(%s) CURLcode(%d) CURLerr(%s) buf(%.*s)",	url, res, CURL_EASY_STRERR(res), ((int)(rc.lim-rc.buf)), rc.buf);
     ZX_FREE(cf->ctx, rc.buf);
     return 0;
   }

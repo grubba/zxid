@@ -207,7 +207,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
     *p = 0;
     rs_len = p - relay_state;
     while (p = strchr(relay_state,'"')) {
-      ERR("RelayState(%s) MUST NOT contain double quote character because it would interfere with HTML form hidden field double quotes. Bad character squashed at position %d.", relay_state, p-relay_state);
+      ERR("RelayState(%s) MUST NOT contain double quote character because it would interfere with HTML form hidden field double quotes. Bad character squashed at position %d.", relay_state, ((int)(p-relay_state)));
       *p = '_';
     }
   }
@@ -255,9 +255,9 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
       logpath = zxlog_path(cf, action_url, &id_str, ZXLOG_ISSUE_DIR, ZXLOG_WIR_KIND, 1);
       if (logpath) {
 	if (zxlog_dup_check(cf, logpath, "IdP POST SimpleSign")) {
-	  ERR("Duplicate wire msg(%.*s) (Simple Sign)", p-url, url);
+	  ERR("Duplicate wire msg(%.*s) (Simple Sign)", ((int)(p-url)), url);
 	  if (cf->dup_msg_fatal) {
-	    ERR("FATAL (by configuration): Duplicate wire msg(%.*s) (Simple Sign)", p-url, url);
+	    ERR("FATAL (by configuration): Duplicate wire msg(%.*s) (Simple Sign)", ((int)(p-url)), url);
 	    zxlog_blob(cf, 1, logpath, &id_str, "POST SimpleSign dup");
 	    zx_str_free(cf->ctx, logpath);
 	    ZX_FREE(cf->ctx, url);
@@ -479,7 +479,7 @@ struct zx_str* zxid_saml2_redir(zxid_conf* cf, struct zx_str* loc, struct zx_str
   ss = zx_strf(cf->ctx, (memchr(loc->s, '?', loc->len)
 			 ? "Location: %.*s&%.*s" CRLF2
 			 : "Location: %.*s?%.*s" CRLF2), loc->len, loc->s, rse->len, rse->s);
-  if (zx_debug & ZXID_INOUT) INFO("%.*s", ss->len - sizeof(CRLF2) + 1, ss->s);
+  if (zx_debug & ZXID_INOUT) INFO("%.*s", ((int)(ss->len - sizeof(CRLF2) + 1)), ss->s);
   zx_str_free(cf->ctx, rse);
   return ss;
 }
@@ -506,7 +506,7 @@ struct zx_str* zxid_saml2_resp_redir(zxid_conf* cf, struct zx_str* loc, struct z
   ss = zx_strf(cf->ctx, (memchr(loc->s, '?', loc->len)
 			 ? "Location: %.*s&%.*s" CRLF2
 			 : "Location: %.*s?%.*s" CRLF2), loc->len, loc->s, rse->len, rse->s);
-  if (zx_debug & ZXID_INOUT) INFO("%.*s", ss->len - sizeof(CRLF2) + 1, ss->s);
+  if (zx_debug & ZXID_INOUT) INFO("%.*s", ((int)(ss->len - sizeof(CRLF2) + 1)), ss->s);
   zx_str_free(cf->ctx, rse);
   return ss;
 }
@@ -923,7 +923,7 @@ char* zxid_extract_body(zxid_conf* cf, char* enve)
   char* p;
   char* q;
 
-  if (!p)
+  if (!enve)
     goto nobody;
   for (p = enve; p; p+=4) {
     p = strstr(p, "Body");

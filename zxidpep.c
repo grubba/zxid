@@ -716,7 +716,7 @@ int zxid_call_trustpdp(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_
   struct zx_elem_s* decision;
   struct zx_tas3_TrustRanking_s* tr;
 
-  D("option(%.*s)", lim-start, start);
+  D("option(%.*s)", ((int)(lim-start)), start);
 
   if (cf->log_level>0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, ses?ZX_GET_CONTENT(ses->nameid):0, "N", "W", "TRUSTPDP", ses?ses->sid:0, " ");
@@ -779,7 +779,7 @@ int zxid_call_trustpdp(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_
 
     val = memchr(start+sizeof(TAS3_TRUST_INPUT_CTL1)-1, '=', lim - (start+sizeof(TAS3_TRUST_INPUT_CTL1)-1));
     if (!val) {
-      ERR("Malformed trust option(%.*s)", lim-start, start);
+      ERR("Malformed trust option(%.*s)", ((int)(lim-start)), start);
       break;
     }
     ++val;
@@ -788,7 +788,7 @@ int zxid_call_trustpdp(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_
       sep = lim;
     }
     
-    D("add trust attr(%.*s) val(%.*s)", val-1-start, start, sep-val, val);
+    D("add trust attr(%.*s) val(%.*s)", ((int)(val-1-start)), start, ((int)(sep-val)), val);
     xac_at = zxid_mk_xacml_simple_at(cf, 0,
 				     zx_dup_len_str(cf->ctx, val-1-start, start),
 				     zx_dup_str(cf->ctx, XS_STRING),

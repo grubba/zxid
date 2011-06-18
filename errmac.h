@@ -264,7 +264,7 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 /* Catch mallocs of zero size */
 #define MALLOCN(p,n) MB ASSERT(n); CHK_NULL((p)=malloc(n)); ME
 #define REALLOCN(p,n) MB ASSERT(n); if (p) CHK_NULL((p)=realloc((p),(n))); \
-		         else   CHK_NULL((p)=malloc(n)); ME
+		                    else   CHK_NULL((p)=malloc(n)); ME
 #define STRDUP(d,s) MB (d) = strdup(s); ME
 #endif
 #define DUPN(d,s,n) MB MALLOCN(d,n); if (d) memcpy((d),(s),(n)); ME

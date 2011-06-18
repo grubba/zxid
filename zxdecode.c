@@ -454,7 +454,7 @@ b64_dec:
     /* msglen = q - msg; */
     p = unbase64_raw(msg, q, msg, zx_std_index_64);  /* inplace */
     *p = 0;
-    D("Unbase64 Msg(%s) x=%x len=%d (n.b. message data may be binary at this point)", msg, *msg, p-msg);
+    D("Unbase64 Msg(%s) x=%x len=%d (n.b. message data may be binary at this point)", msg, *msg, ((int)(p-msg)));
     break;
   case 2:
     if (*msg == '<') {
@@ -485,7 +485,7 @@ decompress:
     for (p2 = p-1; m2 < p2; --p2)
       if (!ONE_OF_4(*p2, ' ', '\t', '\015', '\012'))
 	break;
-    D("Msg_minus_whitespace(%.*s) start=%x end=%x", p2-m2+1, m2, *m2, *p2);
+    D("Msg_minus_whitespace(%.*s) start=%x end=%x", ((int)(p2-m2+1)), m2, *m2, *p2);
     
     if (*m2 == '<' && *p2 == '>') {  /* POST profiles do not compress the payload */
       len = p2 - m2 + 1;

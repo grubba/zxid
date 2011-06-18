@@ -185,8 +185,8 @@ zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
     return ee;
   }  
  bad_md:
-  ERR("Bad metadata. EntityDescriptor could not be found or was corrupt. MD(%.*s) %d chars parsed.", lim-cf->ctx->bas, cf->ctx->bas, *md - cf->ctx->bas);
-  zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "BADMD", 0, "chars_parsed(%d)", *md - cf->ctx->bas);
+  ERR("Bad metadata. EntityDescriptor could not be found or was corrupt. MD(%.*s) %d chars parsed.", ((int)(lim-cf->ctx->bas)), cf->ctx->bas, ((int)(*md - cf->ctx->bas)));
+  zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "BADMD", 0, "chars_parsed(%d)", ((int)(*md - cf->ctx->bas)));
   zx_free_elem(cf->ctx, &r->gg, 0);
   return 0;
 }
@@ -459,7 +459,7 @@ zxid_entity* zxid_load_cot_cache(zxid_conf* cf)
   char buf[4096];
   if (cf->path_len + sizeof(ZXID_COT_DIR) > sizeof(buf)) {
    ERR("Too long path(%.*s) for config dir. Has %d chars. Max allowed %d. (config problem)",
-	cf->path_len, cf->path, cf->path_len, sizeof(buf) - sizeof(ZXID_COT_DIR));
+	cf->path_len, cf->path, cf->path_len, ((int)(sizeof(buf) - sizeof(ZXID_COT_DIR))));
     return 0;
   }
   memcpy(buf, cf->path, cf->path_len);
