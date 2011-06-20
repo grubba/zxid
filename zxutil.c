@@ -1,5 +1,5 @@
 /* zxutil.c  -  Utility functions
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -11,6 +11,7 @@
  * 15.4.2006, created over Easter holiday --Sampo
  * 7.10.2008, added documentation --Sampo
  * 21.5.2010, added file copy --Sampo
+ * 20.6.2011, improved error reporting to show cwd in vopen_fd_from_path() --Sampo
  */
 
 #include "platform.h"
@@ -98,11 +99,12 @@ fdtype vopen_fd_from_path(int flags, int mode, const char* logkey, int reperr, c
   fd = open(buf, flags, mode);
 #endif
   if (fd == BADFD) {
+    char err_buf[PATH_MAX];
     if (reperr && logkey[0] != '-') {
       perror("open (vopen_fd_from_path)");
-      ERR("File(%s) not found lk(%s) errno=%d err(%s). flags=0x%x, euid=%d egid=%d", buf, logkey, errno, STRERROR(errno), flags, geteuid(), getegid());
+      ERR("File(%s) not found lk(%s) errno=%d err(%s). flags=0x%x, euid=%d egid=%d cwd(%s)", buf, logkey, errno, STRERROR(errno), flags, geteuid(), getegid(), getcwd(err_buf, sizeof(err_buf)));
     } else {
-      D("File(%s) not found lk(%s) errno=%d err(%s). flags=0x%x, euid=%d egid=%d", buf, logkey, errno, STRERROR(errno), flags, geteuid(), getegid());
+      D("File(%s) not found lk(%s) errno=%d err(%s). flags=0x%x, euid=%d egid=%d cwd(%s)", buf, logkey, errno, STRERROR(errno), flags, geteuid(), getegid(), getcwd(err_buf, sizeof(err_buf)));
     }
     return BADFD;
   } else {

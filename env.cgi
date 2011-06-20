@@ -2,6 +2,7 @@
 
 echo content-type: text/plain
 echo
+pwd
 env | sort
 ulimit -a
 id
