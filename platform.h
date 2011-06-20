@@ -49,6 +49,7 @@ typedef struct stack_st STACK;  /* MSVC seems to have some problem with openssl/
 #define getpid()  0
 #define geteuid() 0
 #define getegid() 0
+#define getcwd(b,n) "cwd on supported by Win32"
 
 HANDLE zx_CreateFile(LPCTSTR lpFileName, 
 		     DWORD dwDesiredAccess, DWORD dwShareMode, 
@@ -118,6 +119,7 @@ int geteuid(void);
 int getegid(void);
 int setuid(int);
 int setgid(int);
+char* getcwd(char* buf, int size);
 int fork(void);
 int execl(const char *path, const char *arg, ...);
 int dup(int);
