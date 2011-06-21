@@ -1,5 +1,5 @@
 /* mod_auth_saml.c  -  Handwritten functions for Apache mod_auth_saml module
- * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2008-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -145,14 +145,15 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
     }
   }
   if (setcookie && setcookie[0] != '-') {
+    /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
     D("Set-Cookie(%s)", setcookie);
-    apr_table_setn(r->headers_out, "Set-Cookie", setcookie);
-    apr_table_setn(r->err_headers_out, "Set-Cookie", setcookie);  /* Only way to get redir to set header */
-    apr_table_setn(r->headers_in,  "Set-Cookie", setcookie);  /* So subrequest can pick them up! */
+    apr_table_addn(r->headers_out, "Set-Cookie", setcookie);
+    apr_table_addn(r->err_headers_out, "Set-Cookie", setcookie);  /* Only way to get redir to set header */
+    apr_table_addn(r->headers_in,  "Set-Cookie", setcookie);  /* So subrequest can pick them up! */
   }
   if (cookie && cookie[0] != '-') {
     D("Cookie(%s)", cookie);
-    apr_table_setn(r->headers_in, "Cookie", cookie);  /* so internal redirect sees it */
+    apr_table_addn(r->headers_in, "Cookie", cookie);  /* so internal redirect sees it */
   }
   if (idpnid && idpnid[0] != '-') {
     D("REMOTE_USER(%s)", idpnid);
@@ -300,7 +301,7 @@ static int chkuid(request_rec* r)
       cookie_hdr = apr_table_get(r->headers_in, "Set-Cookie");
       if (cookie_hdr) {
 	D("subrequest set-cookie(%s)", cookie_hdr);
-	apr_table_setn(r->headers_out, "Set-Cookie", cookie_hdr);
+	apr_table_addn(r->headers_out, "Set-Cookie", cookie_hdr);
       }
     }
   }

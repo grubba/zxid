@@ -1,6 +1,7 @@
 #!/bin/sh
 
 echo content-type: text/plain
+echo Set-Cookie: envtest=foo; path=/; secure;
 echo
 pwd
 env | sort
