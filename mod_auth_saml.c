@@ -300,7 +300,8 @@ static int chkuid(request_rec* r)
       /* Kludge to get subrequest to set-cookie, i.e. on return path */
       cookie_hdr = apr_table_get(r->headers_in, "Set-Cookie");
       if (cookie_hdr) {
-	D("subrequest set-cookie(%s)", cookie_hdr);
+	D("subrequest cookie & set-cookie(%s)", cookie_hdr);
+	apr_table_addn(r->headers_out, "Cookie", cookie_hdr);       /* Pass cookies to subreq */
 	apr_table_addn(r->headers_out, "Set-Cookie", cookie_hdr);
       }
     }
@@ -391,7 +392,7 @@ static int chkuid(request_rec* r)
     }
     D("other page: no_ses uri(%s)", r->uri);
   }
-step_up:  
+step_up:
   res = zxid_simple_no_ses_cf(cf, &cgi, &ses, 0, AUTO_FLAGS);
 
 process_zxid_simple_outcome:
