@@ -280,15 +280,18 @@ static int chkuid(request_rec* r)
   ZERO(&ses, sizeof(zxid_ses));
 
   D("===== START %s req=%p uri(%s) args(%s)", ZXID_REL, r, r?STRNULLCHK(r->uri):"", r?STRNULLCHK(r->args):"");
-  
+  D_INDENT("chkuid: ");
+
   if (r->main) {  /* subreq can't come from net: always auth. */
     D("sub ok %d", OK);
+    D_DEDENT("chkuid: ");
     return OK;
   }
   
   cur_auth = ap_auth_type(r);   /* From directive: AuthType "saml" */
   if (!cur_auth || strcasecmp(cur_auth, "saml")) {
     D("not saml auth (%s) %d", STRNULLCHKD(cur_auth), DECLINED);
+    D_DEDENT("chkuid: ");
     return DECLINED;
   }
   r->ap_auth_type = "saml";
@@ -298,9 +301,8 @@ static int chkuid(request_rec* r)
     if (cookie_hdr) {
       D("found cookie(%s) 3", STRNULLCHK(cookie_hdr));
       zxid_get_sid_from_cookie(cf, &cgi, cookie_hdr);
-      D("found cookie(%s) 4", STRNULLCHK(cookie_hdr));
       apr_table_addn(r->headers_out, "Cookie", cookie_hdr);       /* Pass cookies to subreq */
-      D("found cookie(%s) 5", STRNULLCHK(cookie_hdr));
+      DD("found cookie(%s) 5", STRNULLCHK(cookie_hdr));
       /* Kludge to get subrequest to set-cookie, i.e. on return path */
       set_cookie_hdr = apr_table_get(r->headers_in, "Set-Cookie");
       if (set_cookie_hdr) {
@@ -348,8 +350,11 @@ static int chkuid(request_rec* r)
 	  D("POST soap parse returned %d", ret);
 #if 0
 	  /* *** TODO: SOAP response should not be sent internally unless there is auto */
-	  if (ret == ZXID_SSO_OK)
-	    return zxid_simple_ab_pep(cf, &ses, res_len, auto_flags);
+	  if (ret == ZXID_SSO_OK) {
+	    ret = zxid_simple_ab_pep(cf, &ses, res_len, auto_flags);
+	    D_DEDENT("chkuid: ");
+	    return ret;
+	  }
 	  if (auto_flags & ZXID_AUTO_SOAPC || auto_flags & ZXID_AUTO_SOAPH) {
 	    res = zx_dup_cstr(cf->ctx, "n");
 	    if (res_len)
@@ -408,28 +413,38 @@ process_zxid_simple_outcome:
   case 'L':
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
     apr_table_setn(r->headers_out, "Location", res+10);
+    D_DEDENT("chkuid: ");
     return HTTP_SEE_OTHER;
   case 'C':
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("CONTENT(%s)", res);
-    return send_res(cf, r, res);
+    ret = send_res(cf, r, res);
+    D_DEDENT("chkuid: ");
+    return ret;
   case 'z':
     INFO("User not authorized %d", 0);
+    D_DEDENT("chkuid: ");
     return HTTP_UNAUTHORIZED;
   case 0: /* Logged in case */
     D("SSO OK pre uri(%s) filename(%s) path_info(%s)", r->uri, r->filename, r->path_info);
-    return pool2apache(cf, r, ses.at);
+    ret = pool2apache(cf, r, ses.at);
+    D_DEDENT("chkuid: ");
+    return ret;
 #if 0
   case 'd': /* Logged in case */
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("SSO OK LDIF(%s)", res);
     D("SSO OK pre uri(%s) filename(%s) path_info(%s)", r->uri, r->filename, r->path_info);
-    return ldif2apache(cf, r, res);
+    ret = ldif2apache(cf, r, res);
+    D_DEDENT("chkuid: ");
+    return ret;
 #endif
   default:
     ERR("Unknown zxid_simple response(%s)", res);
+    D_DEDENT("chkuid: ");
     return HTTP_INTERNAL_SERVER_ERROR;
   }
 
   D("final ok %d", OK);
+  D_DEDENT("chkuid: ");
   return OK;
 }
 

@@ -739,7 +739,8 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   }
   zxid_add_attr_to_ses(cf, ses, "sesix",      zx_dup_str(cf->ctx, STRNULLCHK(ses->sesix)));
   zxid_add_attr_to_ses(cf, ses, "setcookie",  zx_dup_str(cf->ctx, STRNULLCHK(ses->setcookie)));
-  zxid_add_attr_to_ses(cf, ses, "cookie",     zx_dup_str(cf->ctx, STRNULLCHK(ses->cookie)));
+  if (ses->cookie && ses->cookie[0])
+    zxid_add_attr_to_ses(cf, ses, "cookie",   zx_dup_str(cf->ctx, ses->cookie));
   zxid_add_attr_to_ses(cf, ses, "msgid",      ses->wsp_msgid);
 
   zxid_add_attr_to_ses(cf, ses, "rs",         zx_dup_str(cf->ctx, STRNULLCHK(ses->rs)));
