@@ -269,7 +269,7 @@ static int chkuid(request_rec* r)
   int ret, uri_len, url_len;
   char* p;
   char* res;
-  const char* cookie_hdr;
+  const char* cookie_hdr=0;
   const char* set_cookie_hdr;
   const char* cur_auth;
   struct zx_str* ss;
@@ -296,9 +296,11 @@ static int chkuid(request_rec* r)
   if (cf->ses_cookie_name && *cf->ses_cookie_name) {
     cookie_hdr = apr_table_get(r->headers_in, "Cookie");
     if (cookie_hdr) {
-      D("found cookie(%s) 2", STRNULLCHK(cookie_hdr));
+      D("found cookie(%s) 3", STRNULLCHK(cookie_hdr));
       zxid_get_sid_from_cookie(cf, &cgi, cookie_hdr);
+      D("found cookie(%s) 4", STRNULLCHK(cookie_hdr));
       apr_table_addn(r->headers_out, "Cookie", cookie_hdr);       /* Pass cookies to subreq */
+      D("found cookie(%s) 5", STRNULLCHK(cookie_hdr));
       /* Kludge to get subrequest to set-cookie, i.e. on return path */
       set_cookie_hdr = apr_table_get(r->headers_in, "Set-Cookie");
       if (set_cookie_hdr) {
@@ -397,8 +399,10 @@ step_up:
   res = zxid_simple_no_ses_cf(cf, &cgi, &ses, 0, AUTO_FLAGS);
 
 process_zxid_simple_outcome:
-  if (cookie_hdr && cookie_hdr[0])
+  if (cookie_hdr && cookie_hdr[0]) {
+    D("Passing cookie(%s) to environment", cookie_hdr);
     zxid_add_attr_to_ses(cf, &ses, "cookie", zx_dup_str(cf->ctx, cookie_hdr));
+  }
 
   switch (res[0]) {
   case 'L':
