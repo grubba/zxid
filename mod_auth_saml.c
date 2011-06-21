@@ -195,7 +195,7 @@ static int send_res(zxid_conf* cf, request_rec* r, char* res)
   DD("CONTENT-LENGTH(%d)", len);
   ap_set_content_length(r, len);
   
-  if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("LEN(%d) strlen(%d) RES(%s)", len, strlen(res), res);
+  if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("LEN(%d) strlen(%d) RES(%s)", len, (int)strlen(res), res);
   
   //register_timeout("send", r);
   ap_send_http_header(r);
