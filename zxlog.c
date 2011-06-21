@@ -764,7 +764,7 @@ nobody:
 
 print_it:
   ++zxlog_seq;
-  fprintf(stderr, "t %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", file, line, func, ERRMAC_INSTANCE, zx_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+  fprintf(stderr, "p%d %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), file, line, func, ERRMAC_INSTANCE, zx_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
 
   if (!zx_xml_debug_log) {
     if (zx_xml_debug_log_err)

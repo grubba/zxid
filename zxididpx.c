@@ -12,6 +12,7 @@
  * TODO: *** Review of all of IdP SLO and MNI code
  */
 
+#include "platform.h"
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidpriv.h"

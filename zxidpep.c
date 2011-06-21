@@ -16,6 +16,7 @@
  * 10.1.2011,  added TrustPDP support --Sampo
  */
 
+#include "platform.h"
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidpriv.h"

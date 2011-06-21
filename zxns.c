@@ -1,5 +1,5 @@
 /* zxns.c  -  Namespace manipulation functions for generated (and other) code
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -18,7 +18,8 @@
  */
 
 #include <string.h>
-
+#include <stdio.h>
+#include "platform.h"
 #include "errmac.h"
 #include "zx.h"
 #include "c/zx-data.h"

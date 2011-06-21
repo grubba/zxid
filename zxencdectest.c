@@ -15,18 +15,12 @@
  * Test encoding and decoding SAML 2.0 assertions and other related stuff.
  */
 
-#include <signal.h>
-#include <fcntl.h>
-#include <netdb.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <openssl/x509.h>
 
+#include "platform.h"
 #include "errmac.h"
 
 #include "zx.h"

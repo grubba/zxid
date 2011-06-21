@@ -1,5 +1,5 @@
 /* zxcall.c  -  Web Service Client tool
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
@@ -16,6 +16,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#include "platform.h"
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"

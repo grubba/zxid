@@ -15,7 +15,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "platform.h"
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidutil.h"

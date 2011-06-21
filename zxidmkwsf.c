@@ -1,5 +1,5 @@
 /* zxidmkwsf.c  -  Handwritten nitty-gritty functions for constructing various elems
- * Copyright (c) 2010 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -14,6 +14,7 @@
  * 25.5.2010, added SOAP fault, tas3:Status, error formatting --Sampo
  */
 
+#include "platform.h"
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidconf.h"

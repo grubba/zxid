@@ -1,5 +1,5 @@
 /* zxidcgi.c  -  Handwritten functions for parsing SP specific CGI options
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -18,6 +18,7 @@
 
 #include <memory.h>
 #include <string.h>
+#include "platform.h"
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidconf.h"

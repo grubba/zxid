@@ -21,6 +21,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <zx/platform.h>
 #include <zx/errmac.h>
 #include <zx/zxid.h>      /* ZXID main API, including zxid_simple(). */
 #include <zx/zxidpriv.h>

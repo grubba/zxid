@@ -13,6 +13,7 @@
  * 12.2.2010,  added locking to lazy loading --Sampo
  */
 
+#include "platform.h"
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidpriv.h"

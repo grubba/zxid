@@ -1,5 +1,5 @@
 /* zxidmk.c  -  Handwritten nitty-gritty functions for constructing various elems
- * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
+ * Copyright (c) 2006-2011 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
@@ -13,6 +13,7 @@
  * 24.8.2009, added XACML stuff --Sampo
  */
 
+#include "platform.h"
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidpriv.h"
