@@ -152,7 +152,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
     apr_table_addn(r->headers_in,  "Set-Cookie", setcookie);  /* So subrequest can pick them up! */
   }
   if (cookie && cookie[0] != '-') {
-    D("Cookie(%s)", cookie);
+    D("Cookie(%s) 2", cookie);
     apr_table_addn(r->headers_in, "Cookie", cookie);  /* so internal redirect sees it */
   }
   if (idpnid && idpnid[0] != '-') {
@@ -270,6 +270,7 @@ static int chkuid(request_rec* r)
   char* p;
   char* res;
   const char* cookie_hdr;
+  const char* set_cookie_hdr;
   const char* cur_auth;
   struct zx_str* ss;
   zxid_conf* cf = dir_cf(r);
@@ -295,14 +296,14 @@ static int chkuid(request_rec* r)
   if (cf->ses_cookie_name && *cf->ses_cookie_name) {
     cookie_hdr = apr_table_get(r->headers_in, "Cookie");
     if (cookie_hdr) {
-      D("found cookie(%s)", STRNULLCHK(cookie_hdr));
+      D("found cookie(%s) 2", STRNULLCHK(cookie_hdr));
       zxid_get_sid_from_cookie(cf, &cgi, cookie_hdr);
+      apr_table_addn(r->headers_out, "Cookie", cookie_hdr);       /* Pass cookies to subreq */
       /* Kludge to get subrequest to set-cookie, i.e. on return path */
-      cookie_hdr = apr_table_get(r->headers_in, "Set-Cookie");
-      if (cookie_hdr) {
-	D("subrequest cookie & set-cookie(%s)", cookie_hdr);
-	apr_table_addn(r->headers_out, "Cookie", cookie_hdr);       /* Pass cookies to subreq */
-	apr_table_addn(r->headers_out, "Set-Cookie", cookie_hdr);
+      set_cookie_hdr = apr_table_get(r->headers_in, "Set-Cookie");
+      if (set_cookie_hdr) {
+	D("subrequest set-cookie(%s) 2", set_cookie_hdr);
+	apr_table_addn(r->headers_out, "Set-Cookie", set_cookie_hdr);
       }
     }
   }
