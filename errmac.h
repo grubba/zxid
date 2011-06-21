@@ -436,17 +436,17 @@ extern char zx_indent[256];  /* Defined in zxidlib.c. *** Locking issues? */
 #define D_DEDENT(s)
 #endif
 #ifdef VERBOSE
-#define D(format,...) (void)((fprintf(stderr, "t %10s:%-3d %-16s %s d %s" format "\n", __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(stderr)))
+#define D(format,...) (void)((fprintf(stderr, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(stderr)))
 #define DD D
 #else
-#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(stderr, "t %10s:%-3d %-16s %s d %s" format "\n", __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(stderr)))
+#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(stderr, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(stderr)))
 /*#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(stderr, "t%x %10s:%-3d %-16s %s d " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(stderr)))*/
 #define DD(format,...)  /* Documentative */
 #endif
 
-#define ERR(format,...) (fprintf(stderr, "t %10s:%-3d %-16s %s E %s" format "\n", __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(stderr))
+#define ERR(format,...) (fprintf(stderr, "p%d %10s:%-3d %-16s %s E %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(stderr))
 /*#define ERR(format,...) (fprintf(stderr, "t%x %10s:%-3d %-16s %s E " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(stderr))*/
-#define INFO(format,...) (fprintf(stderr, "t %10s:%-3d %-16s %s I %s" format "\n", __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(stderr))
+#define INFO(format,...) (fprintf(stderr, "p%d %10s:%-3d %-16s %s I %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(stderr))
 /*#define INFO(format,...) (fprintf(stderr, "t%x %10s:%-3d %-16s %s I %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(stderr))*/
 
 #define D_XML_BLOB(cf, lk, len, xml) zxlog_debug_xml_blob((cf), __FILE__, __LINE__, __FUNCTION__, (lk), (len), (xml))
