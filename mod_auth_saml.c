@@ -397,6 +397,9 @@ step_up:
   res = zxid_simple_no_ses_cf(cf, &cgi, &ses, 0, AUTO_FLAGS);
 
 process_zxid_simple_outcome:
+  if (cookie_hdr && cookie_hdr[0])
+    zxid_add_attr_to_ses(cf, &ses, "cookie", zx_dup_str(cf->ctx, cookie_hdr));
+
   switch (res[0]) {
   case 'L':
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
