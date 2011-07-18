@@ -139,6 +139,16 @@ Install instructions: http://www.php.net/manual/en/install.unix.apache2.php
   make
   make install
 
+2.5 php-5.3.6
+-------------
+
+  EXTRA_LIBS="-lresolv" ./configure --prefix=/apps/php/5.3.6 --with-apxs2=/apps/apache/std/bin/apxs --with-openssl=/apps/openssl/std --with-zlib --with-curl=/apps --enable-soap --with-libxml-dir=/apps -with-mysql=shared
+  make
+  make install
+
+/home/navarrb/CPHP/source/php-5.3.1/ext/standard/dns.c:418: undefined reference to `__dn_expand'
+# Add -lresolv:  export EXTRA_LIBS="-lresolv" 
+
 3 Configuring Apache
 ====================
 

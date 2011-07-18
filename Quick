@@ -27,6 +27,7 @@ echo  http://sp.tas3.pt:8082/zxidhlo.pl?o=E
 echo  http://sp.tas3.pt:8082/zxidhlo.php?o=E
 echo  http://sp.tas3.pt:8082/protected/saml?o=E       # mod_auth_saml
 echo  http://sp.tas3.pt:8082/protected/env.cgi
+echo  http://sp.tas3.pt:8082/OS-Iconic
 echo  http://idp.tas3.pt:8081/zxididp?o=F
 echo
 echo tail -f /var/tmp/zxid.stderr &

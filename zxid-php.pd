@@ -68,6 +68,11 @@ php(1) can find the module.
 Next you need to decide whether to run under Apache mod_php
 setup (apache), or as CGI (any web server).
 
+We have tested ZXID with php-5.1.6 and php-5.3.6 (current development
+target as of 20110707). For mod_php operation, the Apache httpd 2.2.3
+and 2.2.19 (current development target as of 20110707) have been
+tested.
+
 7.2.1 Running PHP as Apache mod_php
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

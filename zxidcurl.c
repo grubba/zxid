@@ -209,7 +209,15 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   char* urli;
   rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_SOAP_BUF+1);
   rc.lim = rc.buf + ZXID_INIT_SOAP_BUF;
+#if 0
+  cf->curl = curl_easy_init();
+  curl_easy_reset(cf->curl);
+  LOCK_INIT(cf->curl_mx);
   LOCK(cf->curl_mx, "curl soap");
+#else
+  LOCK(cf->curl_mx, "curl soap");
+  curl_easy_reset(cf->curl);
+#endif
   curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
   curl_easy_setopt(cf->curl, CURLOPT_WRITEFUNCTION, zxid_curl_write_data);
   curl_easy_setopt(cf->curl, CURLOPT_NOPROGRESS, 1);

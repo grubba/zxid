@@ -495,8 +495,6 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
 {
   struct zx_e_Envelope_s* env;
   struct zx_root_s* r;
-#if 0
-#endif
   r = zx_dec_zx_root(cf->ctx, strlen(enve), enve, "add_env");
   if (!r) {
     ERR("Malformed XML enve(%s)", enve);

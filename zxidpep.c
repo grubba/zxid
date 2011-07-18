@@ -234,12 +234,12 @@ static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, str
  * subj:: Linked list of subject attributes.
  * rsrc:: Linked list of resource attributes.
  * act::  Linked list of action attributes (usually just one attribute).
- * env::  Linked list of environment attributes.
+ * envi::  Linked list of environment attributes.
  * returns:: SAML Response as data structure or null upon error.
  */
 
 /* Called by:  zxid_call_trustpdp, zxid_pep_az_base_soap_pepmap, zxid_pep_az_soap_pepmap */
-static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
+static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* envi)
 {
   X509* sign_cert;
   EVP_PKEY* sign_pkey;
@@ -280,7 +280,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
 
   body = zx_NEW_e_Body(cf->ctx,0);
   if (!strcmp(cf->xasp_vers, "xac-soap")) {
-    ZX_ADD_KID(body, xac_Request, zxid_mk_xac_az(cf, &body->gg, subj, rsrc, act, env));
+    ZX_ADD_KID(body, xac_Request, zxid_mk_xac_az(cf, &body->gg, subj, rsrc, act, envi));
 #if 0
     /* *** xac:Response does not have signature field */
     if (cf->sso_soap_sign) {
@@ -295,7 +295,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
     }
 #endif
   } else if (!strcmp(cf->xasp_vers, "2.0-cd1")) {
-    ZX_ADD_KID(body, xaspcd1_XACMLAuthzDecisionQuery, zxid_mk_az_cd1(cf, subj, rsrc, act, env));
+    ZX_ADD_KID(body, xaspcd1_XACMLAuthzDecisionQuery, zxid_mk_az_cd1(cf, subj, rsrc, act, envi));
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
       refs.id = &body->xaspcd1_XACMLAuthzDecisionQuery->ID->g;
@@ -308,7 +308,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
       zx_str_free(cf->ctx, refs.canon);
     }
   } else {
-    ZX_ADD_KID(body, XACMLAuthzDecisionQuery, zxid_mk_az(cf, subj, rsrc, act, env));
+    ZX_ADD_KID(body, XACMLAuthzDecisionQuery, zxid_mk_az(cf, subj, rsrc, act, envi));
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
       refs.id = &body->XACMLAuthzDecisionQuery->ID->g;
