@@ -84,7 +84,7 @@ int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len,
   /* Sanity scan the name part (svc or eid), folding dangerous chars to _. */
 
   p = buf;
-  q = MIN(p + MAX(name->len-7,0), buf + buf_len);
+  q = MIN(p + MAX(name->len-ign_prefix,0), p + buf_len);
   zxid_fold_svc(p, q-p);
   return 0;
 }
