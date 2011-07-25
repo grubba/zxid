@@ -40,8 +40,8 @@ all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcg
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000101
-ZXIDREL=1.01
+ZXIDVERSION=0x000102
+ZXIDREL=1.02
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/var/zxid/$(ZXIDREL)
@@ -1725,8 +1725,8 @@ winbindist:
 
 # To create release
 #   make cleaner          # remember c/zxidvers.h
-#   make dep ENA_GEN=1
-#   make all ENA_GEN=1
+#   time make dep ENA_GEN=1
+#   time make all ENA_GEN=1
 #   make doc
 #     pd2tex README.zxid
 #     pd2tex index.pd

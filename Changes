@@ -69,6 +69,10 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - AuthnCtx comparison or matching
     - Proxy IdP AuthnCtx, RequesterID mapping
 
+zxid-1.02:: 22.7.2011
+    - Fixed a file name folding bug that could lead to failure to discover a service
+    - Added curl_easy_reset() to zxid_http_post_raw(), reportedly fixing a segv
+
 zxid-1.01:: 21.6.2011
     - Added to zxidhlo a possibility of giving CONF using -D at compile time
     - Fixed long int argument to %d warnings (happened with x86_64 architecture build)
