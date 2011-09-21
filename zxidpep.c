@@ -272,6 +272,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
     sec->mustUnderstand = zx_ref_attr(cf->ctx, &sec->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
     sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx, &sec->gg);
     sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx, &sec->Timestamp->gg);
+    zx_add_content(cf->ctx, &sec->Timestamp->Created->gg, zxid_date_time(cf, time(0)));
     sec->Assertion = ses->tgta7n;
     zx_reverse_elem_lists(&sec->gg);
     D("tgta7n=%p", ses->tgta7n);

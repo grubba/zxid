@@ -39,7 +39,143 @@ them.
 Authentication Service, and ID-WSF 2.0 Discovery Service. It is one
 of the cornerstones of a federated identity architecture.
 
-4.1 IdP Use of Local UID Directory (idpuid/)
+4.1 IdP Install Tutorial
+------------------------
+
+First you need the following binaries
+
+* zxididp
+* zxcot
+* zxpasswd
+* ./zxmkdirs.sh
+
+You can get all of these from the ZXID package by compiling it. Just say `make'
+
+You also need a web server that can run CGI scripts. For
+simplicity, I recommend mini_httpd.
+
+You need to decide what URL the IdP will live on. Typically the URL
+will end in zxididp, but you can change this by renaming the zxididp
+binary. You need to register the domain name and obtain certificate
+for it, unless you are willing to use the self signed certificates
+that ZXID generates. This tutorial assumes you chose following URL
+
+  https://idp.your-org.com/zxididp
+
+4.1.1 Directories and Config File for IdP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  sudo ./zxmkdirs.sh /var/zxid/idp
+  sudoedit /var/zxid/idpzxid.conf
+  NICE_NAME=Your IdP Name for End Users to See
+  ORG_NAME=Your org
+  ORG_URL=http://your-org.com/
+  URL=https://idp.your-org.com/zxididp
+  IDP_ENA=1
+  AS_ENA=1
+
+4.1.2 Install Certificates and Private Keys
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Assuming you have obtained a certificate, here's how you would install
+it.  We assume you have the certificate in file cert.pem and the
+private key in priv.pem.
+
+  sudo su
+  cat cert.pem priv.pem >/var/zxid/idppem/ssl-nopw-cert.pem  # put both in one file
+  cp /var/zxid/idppem/ssl-nopw-cert.pem /var/zxid/idppem/sign-nopw-cert.pem
+  cp /var/zxid/idppem/ssl-nopw-cert.pem /var/zxid/idppem/enc-nopw-cert.pem
+  cp /var/zxid/idppem/ssl-nopw-cert.pem /var/zxid/idppem/logenc-nopw-cert.pem
+  cp /var/zxid/idppem/ssl-nopw-cert.pem /var/zxid/idppem/logsign-nopw-cert.pem
+  chmod 600 /var/zxid/idppem/*
+  # end su
+
+4.1.3 Install GUI templates and stylesheets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  cd zxid-1.02
+  sudo mkdir /var/zxid/webroot
+  sudo mv *.html *.css /var/zxid/webroot
+  sudo cp zxididp /var/zxid/webroot
+
+4.1.4 Exchange Metadata
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Metadata exchange introduces SAML SP to SAML IdP. Among other
+things the certificates are exchaged and trust relationship
+is formed. ZXID supports fully automatic metadata exchage ("Auto-Cot"),
+see MD_FETCH=0 config option. Here we show how to exchange metadata manually.
+
+Generate our own metadata for exportation to SP
+
+  sudo zxcot -ci -m >idp-meta.xml
+
+Alternately the SP can access the metadata at URL https://idp.your-org.com/zxididp?o=B
+
+For each SP metadata needs to be obtained and imported. If the SP
+supports well known location method, then accessing SP's entity ID as
+a URL will return the metadata. ZXID based SPs support this
+method. Typically the URL ends in "o=B". If SP metadata is available
+from a URL, you would import it like this:
+
+  zxcot -ci -g https://sp.example.com/saml?o=B
+
+Alternately you can obtain the metadata as a file and transfer it to
+the IdP machine. If SP is ZXID based, you can create its metadata with
+command
+
+  zxcot -m >sp-meta.xml
+
+Then to import it to IdP, run
+
+  sudo /usr/local/bin/zxcot -ci -a <sp-meta.xml
+
+4.1.5 Add users to the IdP
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  sudo /usr/local/bin/zxpasswd -at 'cn: Nomen Nescitur$email: nn@your-org.com$o: Your Org' -c nn
+  # Password will be asked on console
+
+4.1.6 Add Discovery Bootstrap
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  zxcot -e https://idp.your-org.com/zxididp?o=S 'TAS3 Default Discovery Service (ID-WSF 2.0)' https://idp.yuor-org.com/zxididp?o=B urn:liberty:disco:2006-08 | zxcot -bs
+
+4.1.7 Add Other Web Services
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  zxcot -e https://sp.example.com/saml?o=S 'Your service human readable description' https://sp.example.com/saml?o=B urn:yoursvc:2011-08 | zxcot -b
+
+4.1.8 Trying out using mini_httpd
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  cd /var/zxid/webroot
+  mini_httpd -u root -p 443 -c 'zxid*' -S -E /var/zxid/idppem/enc-nopw-cert.pem
+
+4.1.9 ZXID startup after boot
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By design the idp will not start automatically after reboot. Operator
+intervention is required to supply the password for the encrypted
+filesystem.
+
+sudoedit /etc/idp-start
+#!/bin/sh
+# 20110618, sampo@zxid.org
+modprobe fuse
+/usr/local/bin/encfs /var/.zxid /var/zxid     # you will need to supply password manually
+cd /var/zxid/webroot
+/usr/local/bin/mini_httpd -u root -p 443 -c 'zxid*' -S -E /var/zxid/idppem/enc-nopw-cert.pem -l /var/zxid/log/mini_443.log &
+#EOF
+
+sudo chmod a+x /etc/idp-start
+
+Then just run
+
+sudo /etc/idp-start     # you will be asked for encfs password, which you must know
+
+
+4.2 IdP Use of Local UID Directory (idpuid/)
 --------------------------------------------
 
 zxididp uses local idpuid/ directory to implement the IdP logins and
@@ -113,7 +249,7 @@ to store users federations, bootstraps, and attributes.
 zxpasswd(8) is a user provisioning tool that allows creation of
 new accounts as well as manipulation of .pw and .yk files.
 
-4.1.1 Attaching Attributes to Assertions
+4.2.1 Attaching Attributes to Assertions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When generating a SSO assertion, the attributes are collected as follows:
@@ -128,7 +264,7 @@ singlevalued. If multiple occurrances of an attribute happen,
 the first instance is used and others ignored. However, in
 a future version, we expect to support multivalued attributes.
 
-4.1.2 New Design for Attribute Selection
+4.2.2 New Design for Attribute Selection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Keep attributes, that are not shared by default, in .optat file.
@@ -198,7 +334,7 @@ web service request for them. Eventually, we may support using
 interaction service to query user about release of the extra
 attributes.
 
-4.1.3 Attaching Bootstrap Attributes to Assertions
+4.2.3 Attaching Bootstrap Attributes to Assertions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The bootstrap attributes (ID-WSF 2.0 EPRs with credentials) are
@@ -229,7 +365,7 @@ additional bootstraps can be added for the individual users.
 > will be considered and federations automatically created,
 > irrespective of user's .di or .all/.di.
 
-4.1.4 Yubikey Authentication Support
+4.2.4 Yubikey Authentication Support
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Yubikey support works by using the initial part of the ticket (passed
@@ -249,7 +385,7 @@ and then presses yubikey to add UID and ticket.
 To program yubikeys with the shared secrets, you need ykpersonalize(8)
 tool, available from Yubico as open source.
 
-4.1.5 Client Certificate Authetication of the User
+4.2.5 Client Certificate Authetication of the User
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 TLS Client Certificate authentication of users has not been
@@ -260,14 +396,14 @@ already have happened. HTTP Basic authentication works in similar way
 and we make no attempt to cater for it, although it can be used of
 configured separately (in the traditional way).
 
-4.2 Installing zxididp
+4.3 Installing zxididp
 ----------------------
 
 First you need to obtain ~zxididp~ either by downloading a binary
 package (and installing it) or by compiling from source. See
 zxid-install.pd for further details.
 
-4.2.1 Configuring CGI Script in Web Server
+4.3.1 Configuring CGI Script in Web Server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 zxididp(8) is a CGI script (written in C) that you can install under
@@ -317,7 +453,7 @@ For *IIS* this could mean something like
      Create new value name "zxididp" and value "c:/var/zxid/bin/zxididp.exe"
 
 
-4.2.2 Creating Directory Hirearchy
+4.3.2 Creating Directory Hirearchy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You must choose location for the configuration and logging hierachy
@@ -341,7 +477,7 @@ You can create this hierarchy by running
 
   make dir ZXID_PATH=/var/zxid/idp
 
-4.3 Adding Service Providers to Circle of Trust (CoT) of zxididp
+4.4 Adding Service Providers to Circle of Trust (CoT) of zxididp
 ----------------------------------------------------------------
 
 See zxid-cot.pd for full scoop.
@@ -364,7 +500,7 @@ page. Metadata is a XML blob.
 When all else fails, you can just manipulate the filesystem
 manually, creating the necessary files and directories.
 
-4.3.1 Sending zxididp Metadata to SP
+4.4.1 Sending zxididp Metadata to SP
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If SP and IdP can communicate over the internet (n.b. problems with
@@ -383,7 +519,7 @@ If you need to perform the metadata exchange manually, your best bet is
 to download the metadata with your web browser (see WKL above)
 and send it to the other party.
 
-4.3.2 zxidcot.pl Web GUI
+4.4.2 zxidcot.pl Web GUI
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 One way to facilitate adding new SPs to the  Circle of Trust is
@@ -411,7 +547,7 @@ for discovery registration.
 The underlying implementation uses the ~zxcot~ command
 line tool.
 
-4.4 Configuring Users into zxididp
+4.5 Configuring Users into zxididp
 ----------------------------------
 
 User provisioning and administration: Currently all this is manual
@@ -422,7 +558,7 @@ Generally you should be able to administer the users using
 zxpasswd(8), but when all else fails, you can just manipulate the
 filesystem manually, creating the necessary files and directories.
 
-4.4.1 Adding New User
+4.5.1 Adding New User
 ~~~~~~~~~~~~~~~~~~~~~
 
 Adding a new user consist of creating a directory corresponding
@@ -435,7 +571,7 @@ Easiest way to create a new user is using -c option:
 
   zxpasswd -c user /var/zxid/idpuid <passwd
 
-4.4.2 Setting or Changing Password
+4.5.2 Setting or Changing Password
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   zxpasswd user /var/zxid/idpuid <newpasswd
@@ -443,7 +579,7 @@ Easiest way to create a new user is using -c option:
 N.B. By default the password is stored as MD5 hash. Use -h X command
 line option to choose other hashing algorithm.
 
-4.4.3 Adding Yubikey Authentication
+4.5.3 Adding Yubikey Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Yubikeys are One Time Password (OTP) hardware tokens that connect to
@@ -454,7 +590,7 @@ the USB port and act as keyboard emulators. They are sold by yubico.com
 N.B. To program a Yubikey and agree to a AES 128 bit shared secret, you
 need ~ykpersonalize~ program, available from Yubico.
 
-4.4.4 Adding Attributes to User
+4.5.4 Adding Attributes to User
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There is no command line interface for adding the attributes currently
@@ -483,7 +619,7 @@ zxid-conf.pd, section "INMAP specification", for further information.
 
 The attributes from all the available sources are accumulated.
 
-4.4.5 zxidnewuser.pl web GUI
+4.5.5 zxidnewuser.pl web GUI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you are willing to accept new users on self asserted basis,
@@ -518,7 +654,7 @@ of the web site.
 The underlying implementation uses the zxpasswd command
 line tool.
 
-4.5 Configuring Bootstraps and Discovery
+4.6 Configuring Bootstraps and Discovery
 ----------------------------------------
 
 > N.B. Before this step you should check that the SAML metadata of the
@@ -580,7 +716,7 @@ This registers the bootstrap under .all user.
 When all else fails, you can just manipulate the filesystem
 manually, creating the necessary files and directories.
 
-4.5.1 Creating Discovery Bootstrap
+4.6.1 Creating Discovery Bootstrap
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By far the most common type of bootstrap is a discovery bootstrap:
@@ -589,7 +725,7 @@ By far the most common type of bootstrap is a discovery bootstrap:
     http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 \
     | zxcot -bs /var/zxid/idpdimd
 
-4.5.2 Creating Identity Mapping and People Service Registrations
+4.6.2 Creating Identity Mapping and People Service Registrations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want zxididp to support delegation, you would usually
@@ -603,7 +739,7 @@ configure following registrations as well:
     http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:ps:2006-08 \
     | zxcot -b /var/zxid/idpdimd
 
-4.5.3 Bootstrap Recursiveness
+4.6.3 Bootstrap Recursiveness
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A problem that arises with the bootstraps is the support for recursive
@@ -646,7 +782,7 @@ idp_sso -> mk_user_a7n_to_sp;
 
 >>
 
-4.5.4 Using zxidcot.pl Web GUI to Register Web Service Providers
+4.6.4 Using zxidcot.pl Web GUI to Register Web Service Providers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As described in the metadata registration section, zxidcot.pl
@@ -663,7 +799,7 @@ ServiceType:: a URN to identify the kind of service offered
 The underlying implementation uses the ~zxcot -e | zxcot -b~ command
 line technique.
 
-4.6 Attribute Selection and Privacy Manager
+4.7 Attribute Selection and Privacy Manager
 -------------------------------------------
 
 zxidatsel.pl CGI script provides a web GUI for attribute release
@@ -682,7 +818,7 @@ after authentication step, but it is also possible to access it
 directly to manage User's attribute sharing preferences. In this
 respect it serves as a Privacy Manager.
 
-4.7 User Specific Logging
+4.8 User Specific Logging
 -------------------------
 
 In addition to the official audit trail logging, zxididp logs
@@ -691,7 +827,7 @@ easily displaying to the user recents events about him, raising
 awareness and allowing user to spot anomalous transactions.
 The log is kept in file /var/zxid/idpuid/UID/.log
 
-4.8 Proxy IdP Support
+4.9 Proxy IdP Support
 ---------------------
 
 To adapt non-!!TAS3 IdPs to !!TAS3 environment, the strategy of using
@@ -718,8 +854,8 @@ The Proxy IdP Profile is described in [SAML2core] section 3.4.1.5
 Feature (pp.11-12), as well as in [SAML2iopDGI] Step D (p.17-19)
 associated with "IdP Extended" and "SP Extended" conformance modes.
 
-4.9 Supported Specifications
-----------------------------
+4.10 Supported Specifications
+-----------------------------
 
 As of version 0.47 (20100114) zxididp supports the following specifications
 
@@ -737,8 +873,8 @@ As of version 0.47 (20100114) zxididp supports the following specifications
 * ID-WSF 2.0 Authentication Service [SOAPAuthn2]
 * TAS3 Architecture Core
 
-4.9.1 Imminently Planned Specifications (TODO)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+4.10.1 Imminently Planned Specifications (TODO)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * TAS3 Trust and Privacy Negotiation
 * Master and TAS3 audit busses
@@ -748,8 +884,8 @@ As of version 0.47 (20100114) zxididp supports the following specifications
 * MASTER project event modelling
 * AAPML (and CARML) support
 
-4.9.2 Nice to Have Specifications (TBD)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+4.10.2 Nice to Have Specifications (TBD)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * SAML 1.1
 * Infocard (Cardspace) and WS-Federation [MS-MWBF]

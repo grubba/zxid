@@ -31,7 +31,7 @@ char* help =
 Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
-Send well researched bug reports to the author. Home: zxid.org\n\
+Send well researched bug reports to the author. Home: http://zxid.org\n\
 \n\
 Usage: zxcot [options] [dir]         # Gives listing of metadata\n\
        zxcot -a [options] [dir] <meta.xml\n\
@@ -43,11 +43,11 @@ Usage: zxcot [options] [dir]         # Gives listing of metadata\n\
   [dir]            CoT directory. Default /var/zxid/cot\n\
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
                    Most of the configuration is read from /var/zxid/zxid.conf\n\
-  -ci              IdP conf, synonym for -c PATH=/var/zxid/idp\n\
+  -ci              IdP conf, synonym for -c PATH=/var/zxid/idp&IDP_ENA=1\n\
   -a               Add metadata from stdin\n\
   -b               Register Web Service, add Service EPR from stdin\n\
   -bs              Register Web Service and Bootstrap, add Service EPR from stdin\n\
-  -e endpoint abstract entid servicetype   Dump EPR to stdout.\n\
+  -e endpoint abstract entid servicetype   Construct and dump EPR to stdout.\n\
   -g URL           Do HTTP(S) GET to URL and add as metadata (if compiled w/libcurl)\n\
   -n               Dryrun. Do not actually add the metadata. Instead print it to stdout.\n\
   -s               Swap columns, for easier sorting by URL\n\
@@ -270,12 +270,16 @@ static void opt(int* argc, char*** argv, char*** env)
   if (*argc) {
     uiddir = dimddir = cotdir = (*argv)[0];
     len = strlen(cotdir);
-    if (cotdir[len-1] != '/') {
+    if (cotdir[len-1] != '/') {  /* Append slash as that is required */
       cotdir = malloc(len+1);
       strcpy(cotdir, (*argv)[0]);
       cotdir[len] = '/';
-      cotdir[len+1] = 0;
+      cotdir[++len] = 0;
       uiddir = dimddir = cotdir;
+    }
+    if (!strcmp(uiddir+len-sizeof("/dimd/")+1, "/dimd/")) {
+      uiddir = strdup(uiddir);
+      strcpy(uiddir+len-sizeof("/dimd/")+1, "/uid/");
     }
   } else {
 path_to_dir:

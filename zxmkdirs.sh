@@ -9,7 +9,7 @@
 ZXID_PATH=$1
 if [ "x$ZXID_PATH" = "x" ] ; then ZXID_PATH=/var/zxid/; fi
 
-ZXDIR="ses user uid nid log log/rely log/issue cot inv"
+ZXDIR="ses user uid nid log log/rely log/issue cot inv dimd uid/.all uid/.all/.bs"
 
 mkdir -p $ZXID_PATH
 
