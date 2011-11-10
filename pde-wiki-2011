@@ -1,0 +1,548 @@
+Personal Data Ecosystem Wiki Maintenance
+########################################
+
+Joseph Boyle
+Markus Sabadello
+J. Clark
+Kaliya
+Mary Hodder
+
+Voicecalling from skype client just contact +9900827047990866 as if it was a nickname in your buddy list.
+
+Joseph Boyle: I am on via that number, just it has dropped me 3 times so far
+? hub.pde.cc
+Markus Sabadello: http://personaldataecosystem.org/2011/06/startup/
+Joseph Boyle: http://hub.personaldataecosystem.org/  wiki
+http://hub.personaldataecosystem.org/wagn/Tech_Documentation     outline of questions
+http://hub.personaldataecosystem.org/wagn/Organization           List of organizations
+http://hub.personaldataecosystem.org/wagn/Tech_Documentation
+
+http://hub.personaldataecosystem.org/wagn/TAS3
+http://hub.personaldataecosystem.org/wagn/end2nd_Trust_Assurance
+http://hub.personaldataecosystem.org/wagn/TAS3_Consortium
+
+? http://wagn.org
+? back
+? Can add feature requests at http://www.wagn.org/wagn/Support
+J Clark: Joseph, you are having a bad skype day. I&apos;ve had those too. The rest of us have stayed connected without problem--intriguing and isolated so far.
+Joseph Boyle: Could be my local connection then
+Mary Hodder: really? someone has to approve new hub accounts?
+Joseph Boyle: yes, always has
+? http://hub.personaldataecosystem.org/wagn/Account_Requests
+
+Sampo Kellomäki
+sampo@synergetics.be (pw: 3D34at%q)
+Lead architect of www.tas3.eu
+Lead developer zxid.org
+CTO, Synergetics SA
+
+Previous / Organizational TAS3
+==============================
+
+Purpose:
+
+www.tas3.eu
+
+ 
+TAS³ aims to have a European-wide impact on services based upon personal information which is typically generated over a human lifetime and therefore is collected & stored at distributed locations and used in a multitude of business processes. The main achievement of TAS³ is a public "end2end Trust Assurance" architecture wireframe covering (1) federated identity management, (2) fine-grained sticky-policy-based authorization, (3) privacy enhancement, (4) trust ranking and (5) end2end monitoring & auditing.
+User get realtime dashboards, reporting on their data usage & service requests. TAS³'s prime application domain are domain-specific trusted ecosystems involving personal data such as employability, ehealth ecosystems where the TAS³ trust assurance touches all stakeholders. 
+
+ 
+
+Goals of TAS³
+The goal of TAS³ is to demonstrate that its architecture can deal with the following challenges in a generic and scalable way.
+
+   1. User & Service Provider Authentication & Credential management
+   2. Establishing Trust between Users, Information Repositories and Service Providers
+   3. Data Protection Policies
+   4. Transparency of Business Processes
+   5. Demonstrator Challenges
+
+ 
+
+ 
+
+ 
+Type:
+
+Nonprofit Advocacy Group
+add/edit
+Parent Organization:
+
+Add +Parent
+Website:
+
+www.tas3.eu
+Blog:
+
+http://tas3.eu/?page_id=10
+Twitter:
+
+http://twitter.com/tas3_eu
+
+ 
+People:
+
+Luk Vervenne luk@synergetics.be
+Projects:
+
+Add +projects
+Technology Overview:
+
+Add +Technology Overview
+Open Source Software Implemented:
+
+Add +Open Source Projects
+Standards Implemented:
+
+Add +Standard
+Publications:
+
+Add +Publications
+Location:
+
+Belgium
+Funding:
+
+Add +Funding
+Tags:
+
+Add +tags
+Founded:
+
+Add +date
+
+Wagn 20111109
+=============
+
+[20:27:30] Sampo Kellomäki: How do I create =sections=, ==subsections==, and *bold*?
+[20:27:48] Joseph Boyle: Try using that syntax for now. I&apos;ll look it up.
+[20:27:48] Sampo Kellomäki: Normal Wiki ways of doing this do not appear to work. Ditto for bulleted lists.
+[20:28:26] ? http://www.wagn.org/wagn/Documentation
+[20:28:48] ? unfortunately they say: Wagn is "syntax averse", meaning we use as little syntax as possible.  Casual users shouldn't need any syntax at all; they should rarely even see it.
+[20:28:48] Joseph Boyle: http://www.wagn.org/wagn/Syntax_Reference
+[20:29:39] Sampo Kellomäki: But I do not plan to edit my text inside the web GUI. I edit it with plain text editor and just cut and paste it to the web gui, so I need syntax so it carries through with the cut and paste.
+[20:31:51] Joseph Boyle: http://www.wagn.org/wagn/wysiwyg is how to do it in the web gui
+[20:32:36] ? There is a HTML button at right of toolbar letting you edit raw HTML
+[20:32:57] ? I am gong to try editing
+[20:33:22] Sampo Kellomäki: I would prefer traditional wiki formatting syntax. Raw HTML is a pain.
+[20:33:59] Joseph Boyle: I would like to use wikitext too. I&apos;ll keep looking
+[20:34:14] ? The WYSIWYG does seem to work
+[20:35:34] Sampo Kellomäki: If I cut the text out of Wang GUI to text editor and then back, the formatting is lost.
+[20:36:24] Joseph Boyle: http://www.wagn.org/wagn/add_user_selectable_markup_options    Looks unimplemented :/
+[20:37:13] Sampo Kellomäki: Basically I believe the Wang system stores the text with some wiki type syntax in the database. I wuld like to be able to edit that directly.
+[20:37:35] ? With HTML syntax, I can create constructs that their underlying system can not handle.
+[20:37:35] Joseph Boyle: http://www.wagn.org/wagn/markup   &quot;Markup is used in Wagn only for creating links and inclusions.&quot;   Bad news
+[20:38:48] Sampo Kellomäki: You know the Wang developers personally?
+[20:39:14] Joseph Boyle: Yes one of my complaints about Wagn is that they try to make simple stuff WYSIWYG and easy for non-geeks but that doesn&apos;t cover the more complex cases. They usually respond they can add a feature but their time and money is limited so doesn&apos;t mean it always happens soon.
+[20:39:17] ? Yes
+[20:39:47] ? Are you copy/pasting with a rich text editor or plain text editor
+[20:41:11] Sampo Kellomäki: The killer argument for editing with syntax rather than Wysiwyg is that big contributors like to use their favorite text editor rather than Wang's wysiwyg editor. This way they are productive and they stay with local copy just in case the wiki screws up and edits your text. Happens pretty often when two people accidentally simultaneously edit the same page.
+[20:41:28] ? I use plain text editor. Emacs to be exact.
+[20:41:44] Joseph Boyle: I am used to Wikipedia and MediaWiki syntax and agree
+[20:42:05] Sampo Kellomäki: Plain text with wiki syntax usually works well and allows bidirectional cut-and-paste.
+[20:43:58] ? If you think you can get quick turn-around from Wang developers, I will do my editing in plain text. If they are not responsive, I will later convert to HTML (I already have perl program that can do that).
+[20:44:24] Joseph Boyle: Pasting into Pages seems to preserve formatting. Pasting into TextWrangler did not
+[20:44:28] Sampo Kellomäki: If they are responsive, or simply disclose their internal syntax, I will adapt my piece to use their syntax.
+[20:44:49] Joseph Boyle: You could edit as plain text until content is stable then format headings
+[20:45:36] ? You might want to file a Wagn.org support request directly since you can give the best description. I will help you pursue the request
+[20:47:22] ? This support ticket might be related http://www.wagn.org/wagn/Indenting_heading_2
+[20:48:11] ? Another one about losing formatting (on way in) http://www.wagn.org/wagn/improve_pasting_in_from_various_sources
+[20:49:25] Sampo Kellomäki: Yes, that ticket partially describes my problem.
+[20:49:41] ? In addition to header problem, I also lost the structure of the bulleted lists.
+[20:50:10] Joseph Boyle: http://www.wagn.org/new/Support_Ticket    Will ask you to create account
+[20:54:31] Sampo Kellomäki: Yes, good way to make sure you do not get bug reports.
+[20:54:53] Joseph Boyle: ethan.mccutchen is Skype name of the lead developer. Don&apos;t see him on now though
+[20:55:18] ? I can file the ticket - do you want to write description text and paste
+[20:55:35] J Clark: I wonder if the developers at wagn know what a pain it is to work with their system (and help)
+[20:55:47] Sampo Kellomäki: Sure, I'll paraphrase the above discussion. It'll take a minute.
+
+
+Subject: Cut and paste to and from plain text editor looses formatting
+
+The killer argument for editing with syntax rather than wysiwyg is
+that big contributors like to use their favorite text editor rather
+than Wagn's wysiwyg editor (sorry, wagn developers, but world does
+not need yet another editor - everybody already has his favorite one).
+
+This way they are productive and they stay with local copy just in
+case the wiki screws up and eats your text. Happens pretty often when
+two people accidentally simultaneously edit the same page (do not yet
+know what Wagn does in this situation, but I have learned to mistrust
+wikis in this respect and am not easily convinced otherwise).
+
+Proposed fixes:
+
+1. Allow use of traditional wiki syntax (e.g. mediawiki), or
+2. Document and allow use of Wagn's internal syntax (I am pretty
+   certain Wagn uses some syntax to serialize rich text to
+   a database field).
+
+The "fix" of editing in HTML is not particularly attractive as
+the syntax is cumbersome and even more geeky than wiki syntax.
+Furthermore, I'm pretty sure I can create using HTML constructs
+that Wagn wysiwyg editor can not cope with. Possibly even wagn
+rendering can not cope with.
+
+Until bidirectional cut and paste without loss of formatting
+is supported, I will not choose Wagn for any of my projects
+and will lobby other projects to not use it either. I hope
+you understand the importantce of this feature and how it
+affects your adoption.
+
+--Sampo
+
+Version: wagn-1.7.1
+
+Template 20111109
+=================
+
+
+Introduction
+
+    * What is the system trying to achieve? (set the context for the technology)
+    * Terminology used by the system (e.g. "Personal Data Store", "Connectors", etc.)
+
+Personal Data
+
+    * Where is personal data located? (e.g. in a centralized system? multiple providers? self-hosting possible?)
+    * How is personal data stored internally (e.g. LDAP, RDF triple store, etc.)?
+    * Data model / Schema / Ontology / Dictionary?
+    * What kind of data (e.g. PII, browsing behavior, shopping preferences, etc.)?
+    * Technologies for protecting privacy and security of stored personal data (e.g. encryption, etc.)?
+    * Data synchronization between clients and the cloud?
+
+
+Data Access
+
+
+    * What interfaces, APIs, etc. exist for accessing the personal data?
+    * Does the system acquire personal data automatically?
+    * Can personal data be typed into the system manually?
+    * Can personal data be imported into the system by 3rd parties?
+    * Can personal data be requested from the system by 3rd parties?
+    * Does the system support the right to be updated / forgotten?
+
+
+Data Portability
+
+
+    * Can data be ported between different instances of the system? (how?)
+    * Can data be ported between the system and a different system? (how?)
+
+
+Identity
+
+
+    * How are users authenticated with the system? (e.g. username/password, etc.)
+    * Can the system act as an IdP? (e.g. SAML2, OpenID Connect, etc.)
+    * Can the system act as an RP? (e.g. SAML2, OpenID Connect, etc.)
+    * Anonymity? Pseudonymity? Veronymity?
+
+
+Security and Permissioning
+
+
+    * Security model for accessing personal data?
+    * What permissions and obligations exist?
+    * How can 3rd parties request permissions to work with the system?
+
+
+Events
+
+
+    * What events does the system deal with?
+    * How are events handled?
+
+
+UI
+
+
+    * How can the system be accessed / managed by users?
+
+
+Deployment
+
+
+    * Federation? Peer-to-peer patterns?
+
+
+"Meta" - Topics
+
+
+    * Tech Resources and Links about the system
+    * Interoperability with other systems
+    * Temporal Aspects: What works now, what is planned?
+
+
+TAS3 20111109
+=================
+
+= TAS3 - Trusted Architecture for Securely Shareable Services, with Privacy =
+
+TAS3 Architecture is a result of European Commission FP7 project of
+the same name (2008-2011). It is a holistic, yet concrete,
+architecture, including reference implementation, that allows
+ecosystems based on trust and interoperable technology to be
+built. For handling of Personal Data (or PII), such ecosystem tends to
+be needed in order to ensure that the user is a stake holder and that
+his privacy is protected.
+
+== Introduction ==
+
+* What is the system trying to achieve?
+** Architecture and technology to support trust based ecosystems, a.k.a. Trust Networks
+** User centric solution - make user a stake holder in his processes
+** Comprehensive solution
+*** Trust establishment and management
+*** Single Sign-On (SSO)
+*** Web Services with identity, privacy, and security
+*** Authorization by User and Service Provider
+*** Audit by User and Service Provider
+*** Legal and contractual framework
+*** Suggested Business Model (but many others are possible)
+** Wire interoperable protocol profiles
+
+* Terminology used by the system (e.g. "Personal Data Store", "Connectors", etc.)
+** Illdefined question: TAS3 glossary is very long. Generally standard terminology like IdPs, Relying Parties, Service Providers, Attribute Providers, WSCs, WSPs, PEPs, PDPs, etc., is used.
+** ''4th party'' can act as User's agent or anonymizer
+
+* IPR status
+** TAS3 Architecture and specifications are ''Royalty Free (RF)'' to implement per TAS3 Consortium pledge at tas3.eu section "Software" (http://vds1628.sivit.org/tas3/?page_id=138)
+
+:: In TAS3 General Assembly of 2010-09-13, following declaration was made:
+
+::: "TAS3 architecture and specifications, as described in public deliverables D2.1, D2.4, and D7.1, are licensed free for implementation and use by anyone. Up to June 2010, TAS3 consortium partners do not hold patents nor will exercise patents that cover implementation and use of the TAS3 architecture and specifications of those deliverables. This license is only granted for the specific purpose of correct implementations of TAS3 specifications."
+
+** Underlying standards, such as SAML2, ID-WSF2, and XACML2, are ''Royalty Free''
+** Reference implementation is ''Apache2 Open Source'' licensed (underlying libraries OpenSSL, libcurl, and zlib are similarily liberally licensed - and there really are no other dependency libraries)
+** Commercial implementations can be commecially licensed
+
+== Personal Data ==
+
+* Where is personal data located?
+** Mainly ''pull'', consistent with ''data minimization'', from Attribute Providers (APs), but push also supported
+** Distributed model, with User choice of AP (competitive market place of providers)
+** Emphasis on Personal Data Store
+** Complemented by authorative sources (a form of trusted 3rd party)
+** Self-hosting possible, but most users choose from plurality of hosting providers
+** 4th party can act as User's agent or anonymizer
+
+* How is personal data stored internally (e.g. LDAP, RDF triple, etc.)?
+** No position / agnostic
+** TAS3 focuses on trust and wire protocol interoperability
+** TAS3 mandates encrypted local storage (block device or filesystem)
+
+* Data model / Schema / Ontology / Dictionary?
+** No specific model / agnostic
+** Data interoperability handled by ontologies and mappings (app dependent)
+
+* What kind of data (e.g. PII, browsing behavior, shopping preferences, etc.)?
+** Engineered to strictest PII policy standards
+** No particular dataset mandated or preferred (all possible due to strong privacy, security, and access control)
+** Pilots conducted using e-profiles (employability data)
+
+* Technologies for protecting privacy and security of stored personal data (e.g. encryption, etc.)?
+** Pairwise Pseudonymous Identifiers (PPIDs) at all layers: SSO, Web Services, including deep call chains, Authorization, Reputation, and Audit trail.
+** 4-point authorization framework allows filtering based on actual data about to be returned
+** Sticky policies attach to data (among other possibilities)
+*** Intended use
+*** Data retention
+*** Subscription for rectification and deletion ("right to be forgotten")
+*** Data use notification
+** Obligations and simple online contract negotiation allow digitally signed contracts about promised policies to be documented in the audit trail
+** Service Provider independent summary audit trail irrevocably and independently documents Service Provider obligations
+*** Users can see audit events via dashboard
+*** Enable User to enforce his rights in a court of law even if Service Provider deletes evidence
+*** Provide to user visibility about the "behind the scenes" transactions involving his data
+
+* Data synchronization between clients and the cloud?
+** Inherently a cloud model - a client (device) would be modelled as a node in the cloud
+** Subscription for rectification and deletion is a transitive mechanism that allows updates to be synchronized to all data consumers
+
+== Data Access ==
+
+* What interfaces, APIs, etc. exist for accessing the personal data?
+** SOAP CRUD API (mature)
+*** Personal Data is expressed as SAML Attribute Assertions, which can be hierarchical to express data aggregator passing along data from authorative source with signature intact
+*** X509 attribute certificates as optional mechanism
+** UMA based RESTful API (beta)
+** TAS3 Programming API
+*** C/C++
+*** Java
+*** CSharp
+*** PHP
+*** Perl
+*** Others on demand, just ask!
+
+* Does the system acquire personal data automatically?
+** No
+** Interaction facility allows data to be acquired inline with user consent
+
+* Can personal data be typed into the system manually?
+** Not at system level, but Service Provider application GUI can collect personal data
+** Interaction facility allows data to be acquired inline with user consent
+
+* Can personal data be imported into the system by 3rd parties?
+** Yes, but 3rd party needs to belong to the trust network
+** 3rd party would need to prove, using digitally signed tokens, that it was authorized by user or the trust network management
+* Can personal data be requested from the system by 3rd parties?
+** Yes, but 3rd party needs to belong to the trust network
+** 3rd party would need to prove, using digitally signed tokens, that it was authorized by user
+
+* Does the system support the right to be updated / forgotten?
+** Yes, subscription for rectification and deletion is a transitive mechanism that allows updates to be synchronized to all data consumers
+
+== Data Portability ==
+
+* Can data be ported between different instances of the system? (how?)
+** Yes, simple CRUD operation, provided that it is authorized
+*** Direct push by Create web service call
+*** Direct pull by Read web service call
+*** Third party port with Read followed by Create. The 3rd party model is best when ontological/data mapping is needed.
+* Can data be ported between the system and a different system? (how?)
+** Yes, simple CRUD operation, provided that it is authorized
+** Issues of interoperability may in reality hamper porting between totally dissimilar systems. The third party port approach can address this problem by acting as a gateway.
+
+== Identity ==
+
+* How are users authenticated with the system? (e.g. username/password, etc.)
+** No particular method mandated
+** Single Sign-On approach, with IdP deciding authentication method, within legal-contractual framework
+** Strong authentication supported, e.g. Yubikey or other one time password tokens
+** eID or client certificate based authentication supported without adverse effect on privacy
+
+* Can the system act as an IdP? (e.g. SAML2, OpenID Connect, etc.)
+** Yes, TAS3 Architecture specifies SAML2 and OpenID Connect IdP roles
+** Multiple IdPs are foreseen to exist and they need not be run by Trust Network operator. Rather any number of trusted third parties can exist in the ecosystem.
+** TAS3 Architecture specifies how IdP Proxying can be used to create a "federation of federations"
+
+* Can the system act as an RP? (e.g. SAML2, OpenID Connect, etc.)
+** Yes, TAS3 architecture specifies SAML2 and OpenID Connect RP (SP for SAML2) roles
+
+* Anonymity? Pseudonymity? Veronymity?
+** Pairwise pseudonymous by default for best privacy protection with reasonable functionality
+** Strong anonymity can be supported through transient identifiers, but was not seen as a valuable use case. We rather see strong forms of pseudonymity being what most users mean by "anonymity"
+** Pairwise Pseudonymous Identifiers (PPIDs) at all layers: SSO, Web Services, including deep call chains, Authorization, Reputation, and Audit trail
+** Veronymity in case of abuse supported by court order to IdP or relevant Attribute Provider
+** Upfront veronymity supported by an option to disable pseudonyms and use a globally unique identifier for a particular transaction
+
+== Security and Permissioning ==
+
+* Security model for accessing personal data?
+** All accesses require security token(s) that document
+*** Whose data (subject)
+*** Who is accessing
+**** In case different from "whose", the delegation relationship that permits access is documented by a digitally signed token
+*** Which system entities are involved (client/requester and server/responder)
+** All accesses pass through 4-point authorization process
+*** Pledged intended use and other policies
+*** Is request acceptable apriori, given
+**** Security tokens
+**** Intended use and other pledged policies in general
+*** Given the data about to be returned (after query but before returning) and its sticky policies, is request acceptable considering
+**** Security tokens
+**** Intended use and other pledged policies in particular context of the data and its sticky policies
+**** Attach any obligations
+*** Are returned obligations acceptable (reject of not, record for future performance if yes)
+
+* What permissions and obligations exist?
+** In general TAS3 allows various permissions languages including Permis (KENT) and XACML2
+** In practise we have initially focussed on
+*** Intended use
+*** Data retention
+*** Subscription for rectification and deletion
+*** Data use notification
+
+* How can 3rd parties request permissions to work with the system?
+** They have to join the Trust Network. This typically involves a vetting procedure to keep the rotten apples out. Of course Trust Network policy could be very lax, making everything self asserted, but we do not see much value in this.
+** Typically there is a simple web self service inteface to kick off the vetting process, not much more complex than subscribing to a mailing list
+** 3rd party can belong to several Trust Networks simultaneously
+** Typical TAS3 Trust Network accepts existing commercially issud SSL/TLS (X509) certificates. The Trust Network uses them for signatures and authentication, but it does not rely on PKI for actual trust establishment. Also Users are not required to have certificates (though they may, if they want, as in eID).
+** 3rd party could also work through a Gateway partner who is a member of the Trust Network
+*** Gateway supports liability towards Trust Network
+*** 3rd party registration and liability are commercial (proprietary) matters up to the Gateway
+
+== Events ==
+
+* What events does the system deal with?
+** Partner intake, suspension for bad behaviour, and potential expulsion
+** User intake (and expulsion)
+** Request to be forgotten
+** Request for rectification
+** Usage notifications
+** Request to interact with a business process (e.g. to supply additional data or consent to an operation otherwise not permitted)
+
+* How are events handled?
+** Audit bus to which every entity (RP, IdP, etc.) logs summary record of transactions
+** User dashboard where all pending events are visualized
+** Instant messaging, sms, or email alerts to user (as configured by the user)
+
+== User Interface (UI) ==
+
+* How can the system be accessed / managed by users?
+** Primary access is by user pointing their browser to Service Provider web site, resulting in Single Sign-On which may involve IdP authentication screen (if authentication requires interaction)
+** Dashboard
+*** View audit trail and request more detail
+*** Privacy Manager / Permissions editing
+*** Visualize personal data and request rectification or deletion
+*** Tweak settings and preferences
+** Inline interaction iFrames: much of the Dashboard functionality can be provided in a contextualized manner inline with the transaction or business process that requires user interaction
+** Side channel interaction: the questions posed through iFrames can also bbe posed through Instant Messaging (IM) or other means of communcation
+
+== Deployment ==
+
+* Federation? Peer-to-peer patterns?
+** TAS3 is intended mainly as Trust Network, or federation, technology
+** Peer-to-peer models are possible through suitable definition of "federation"
+** Essentially federation vs. p2p choice is not dictated in TAS3 technology, but rather by the policies that the relying parties choose to adopt. That being said, generally the federated Trust Networks are capable of carrying out higher value transactions where the strong trust, security, privacy, and audit guarantees of TAS3 come to their own.
+
+== Standards Support ==
+
+* SSO
+** SAML2 (mature)
+** OpenID Connect (beta)
+* Web Services
+** ID-WSF2 (mature)
+** WS-Security (mature)
+** WS-Addressing (mature)
+** WS-Trust
+** OAUTH2/RESTful (beta)
+* Authorization
+** XACML2 (mature)
+** XACML3 (alpha)
+** UMA (beta)
+
+== "Meta" - Topics ==
+
+* Tech Resources and Links about the system
+** Official web site: www.tas3.eu
+** Reference implementation: zxid.org
+
+* Interoperability with other systems (tested with the reference implementation, zxid.org)
+** SAML2 and XACML2 interoperability has been tested with numerous commercial and open source implementations
+*** Shibboleth2
+*** SimpleSAMLphp
+*** Ping Identity
+*** Symlabs
+*** Computer Associactes
+*** Sun/Oracle
+** ID-WSF2 interoperability has been tested with a number of vendors
+*** Symlabs
+*** NTT
+*** NEC
+** OpenID Connect+OAUTH2+UMA interoperability testing is in progress (Oct. 2011)
+
+* Temporal Aspects: What works now, what is planned?
+** SAML2+ID-WSF+XACML2 is fully mature
+** OpenID Connect+OAUTH2+UMA is beta
+
+* Acknowledgement: TAS3 project has been funded under European Commission Framework Program 7 (FP7) project number ICT-216287
+
+
+---------
+
+http://hub.personaldataecosystem.org/wagn/TAS3
+http://en.wikipedia.org/wiki/TAS3
+
+--Sampo
