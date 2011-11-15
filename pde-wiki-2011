@@ -266,7 +266,7 @@ Deployment
 
     * Federation? Peer-to-peer patterns?
 
-
+============
 "Meta" - Topics
 
 
@@ -458,7 +458,7 @@ his privacy is protected.
 ** They have to join the Trust Network. This typically involves a vetting procedure to keep the rotten apples out. Of course Trust Network policy could be very lax, making everything self asserted, but we do not see much value in this.
 ** Typically there is a simple web self service inteface to kick off the vetting process, not much more complex than subscribing to a mailing list
 ** 3rd party can belong to several Trust Networks simultaneously
-** Typical TAS3 Trust Network accepts existing commercially issud SSL/TLS (X509) certificates. The Trust Network uses them for signatures and authentication, but it does not rely on PKI for actual trust establishment. Also Users are not required to have certificates (though they may, if they want, as in eID).
+** Typical TAS3 Trust Network accepts existing commercially issued SSL/TLS (X509) certificates. The Trust Network uses them for signatures and authentication, but it does not rely on PKI for actual trust establishment. Also Users are not required to have certificates (though they may, if they want, as in eID).
 ** 3rd party could also work through a Gateway partner who is a member of the Trust Network
 *** Gateway supports liability towards Trust Network
 *** 3rd party registration and liability are commercial (proprietary) matters up to the Gateway
@@ -488,7 +488,7 @@ his privacy is protected.
 *** Visualize personal data and request rectification or deletion
 *** Tweak settings and preferences
 ** Inline interaction iFrames: much of the Dashboard functionality can be provided in a contextualized manner inline with the transaction or business process that requires user interaction
-** Side channel interaction: the questions posed through iFrames can also bbe posed through Instant Messaging (IM) or other means of communcation
+** Side channel interaction: the questions posed through iFrames can also be posed through Instant Messaging (IM) or other means of communcation
 
 == Deployment ==
 
@@ -539,8 +539,405 @@ his privacy is protected.
 
 * Acknowledgement: TAS3 project has been funded under European Commission Framework Program 7 (FP7) project number ICT-216287
 
+---------
+
+{{Multiple issues|wikify = November 2011|dead end = November 2011|orphan = November 2011|unreferenced = November 2011}}
+
+'''TAS3 - Trusted Architecture for Securely Shareable Services, with Privacy'''
+
+TAS3 Architecture is a result of European Commission FP7 project of
+the same name (2008\u20132011). It is a holistic, yet concrete,
+architecture, including reference implementation, that allows
+ecosystems based on trust and interoperable technology to be
+built. For handling of Personal Data (or PII), such ecosystem tends to
+be needed in order to ensure that the user is a stake holder and that
+his privacy is protected.
+
+== Introduction ==
+
+* What is the system trying to achieve?
+** Architecture and technology to support trust based ecosystems, a.k.a. Trust Networks
+** User centric solution - make user a stake holder in his processes
+** Comprehensive solution
+*** Trust establishment and management
+*** Single Sign-On (SSO)
+*** Web Services with identity, privacy, and security
+*** Authorization by User and Service Provider
+*** Audit by User and Service Provider
+*** Legal and contractual framework
+*** Suggested Business Model (but many others are possible)
+** Wire interoperable protocol profiles
+
+* Terminology used by the system (e.g. "Personal Data Store", "Connectors", etc.)
+** Illdefined question: TAS3 glossary is very long. Generally standard terminology like IdPs, Relying Parties, Service Providers, Attribute Providers, WSCs, WSPs, PEPs, PDPs, etc., is used.
+** ''4th party'' can act as User's agent or anonymizer
+
+* IPR status
+** TAS3 Architecture and specifications are ''Royalty Free (RF)'' to implement per TAS3 Consortium pledge at tas3.eu section "Software" (http://vds1628.sivit.org/tas3/?page_id=138)
+
+:: In TAS3 General Assembly of 2010-09-13, following declaration was made:
+
+::: "TAS3 architecture and specifications, as described in public deliverables D2.1, D2.4, and D7.1, are licensed free for implementation and use by anyone. Up to June 2010, TAS3 consortium partners do not hold patents nor will exercise patents that cover implementation and use of the TAS3 architecture and specifications of those deliverables. This license is only granted for the specific purpose of correct implementations of TAS3 specifications." <ref>[http://vds1628.sivit.org/tas3/?page_id=138 TAS3 Consortium General Assembly minutes from 2010-09-13, as excerpted on tas3.eu section "Software"]</ref>
+
+** Underlying standards, such as SAML2, ID-WSF2, and XACML2, are ''Royalty Free''
+** Reference implementation is ''Apache2 Open Source'' licensed (underlying libraries OpenSSL, libcurl, and zlib are similarly liberally licensed - and there really are no other dependency libraries)<ref>http://zxid.org</ref>
+** Commercial implementations can be commecially licensed
+
+== Personal data ==
+
+* Where is personal data located?
+** Mainly ''pull'', consistent with ''data minimization'', from Attribute Providers (APs), but push also supported
+** Distributed model, with User choice of AP (competitive market place of providers)
+** Emphasis on Personal Data Store
+** Complemented by authoritative sources (a form of trusted 3rd party)
+** Self-hosting possible, but most users choose from plurality of hosting providers
+** 4th party can act as User's agent or anonymizer
+
+* How is personal data stored internally (e.g. LDAP, RDF triple, etc.)?
+** No position / agnostic
+** TAS3 focuses on trust and wire protocol interoperability
+** TAS3 mandates encrypted local storage (block device or filesystem)
+
+* Data model / Schema / Ontology / Dictionary?
+** No specific model / agnostic
+** Data interoperability handled by ontologies and mappings (app dependent)
+
+* What kind of data (e.g. PII, browsing behavior, shopping preferences, etc.)?
+** Engineered to strictest PII policy standards
+** No particular dataset mandated or preferred (all possible due to strong privacy, security, and access control)
+** Pilots conducted using e-profiles (employability data)
+
+* Technologies for protecting privacy and security of stored personal data (e.g. encryption, etc.)?
+** Pairwise Pseudonymous Identifiers (PPIDs) at all layers: SSO, Web Services, including deep call chains, Authorization, Reputation, and Audit trail.
+** 4-point authorization framework allows filtering based on actual data about to be returned
+** Sticky policies attach to data (among other possibilities)
+*** Intended use
+*** Data retention
+*** Subscription for rectification and deletion ("right to be forgotten")
+*** Data use notification
+** Obligations and simple online contract negotiation allow digitally signed contracts about promised policies to be documented in the audit trail
+** Service Provider independent summary audit trail irrevocably and independently documents Service Provider obligations
+*** Users can see audit events via dashboard
+*** Enable User to enforce his rights in a court of law even if Service Provider deletes evidence
+*** Provide to user visibility about the "behind the scenes" transactions involving his data
+
+* Data synchronization between clients and the cloud?
+** Inherently a cloud model - a client (device) would be modelled as a node in the cloud
+** Subscription for rectification and deletion is a transitive mechanism that allows updates to be synchronized to all data consumers
+
+== Data access ==
+
+* What interfaces, APIs, etc. exist for accessing the personal data?
+** SOAP CRUD API (mature)
+*** Personal Data is expressed as SAML Attribute Assertions, which can be hierarchical to express data aggregator passing along data from authoritative source with signature intact
+*** X509 attribute certificates as optional mechanism
+** UMA based RESTful API (beta)
+** TAS3 Programming API
+*** C/C++
+*** Java
+*** CSharp
+*** PHP
+*** Perl
+*** Others on demand, just ask!
+
+* Does the system acquire personal data automatically?
+** No
+** Interaction facility allows data to be acquired inline with user consent
+
+* Can personal data be typed into the system manually?
+** Not at system level, but Service Provider application GUI can collect personal data
+** Interaction facility allows data to be acquired inline with user consent
+
+* Can personal data be imported into the system by 3rd parties?
+** Yes, but 3rd party needs to belong to the trust network
+** 3rd party would need to prove, using digitally signed tokens, that it was authorized by user or the trust network management
+* Can personal data be requested from the system by 3rd parties?
+** Yes, but 3rd party needs to belong to the trust network
+** 3rd party would need to prove, using digitally signed tokens, that it was authorized by user
+
+* Does the system support the right to be updated / forgotten?
+** Yes, subscription for rectification and deletion is a transitive mechanism that allows updates to be synchronized to all data consumers
+
+== Data portability ==
+
+* Can data be ported between different instances of the system? (how?)
+** Yes, simple CRUD operation, provided that it is authorized
+*** Direct push by Create web service call
+*** Direct pull by Read web service call
+*** Third party port with Read followed by Create. The 3rd party model is best when ontological/data mapping is needed.
+* Can data be ported between the system and a different system? (how?)
+** Yes, simple CRUD operation, provided that it is authorized
+** Issues of interoperability may in reality hamper porting between totally dissimilar systems. The third party port approach can address this problem by acting as a gateway.
+
+== Identity ==
+
+* How are users authenticated with the system? (e.g. username/password, etc.)
+** No particular method mandated
+** Single Sign-On approach, with IdP deciding authentication method, within legal-contractual framework
+** Strong authentication supported, e.g. Yubikey or other one time password tokens
+** eID or client certificate based authentication supported without adverse effect on privacy
+
+* Can the system act as an IdP? (e.g. SAML2, OpenID Connect, etc.)
+** Yes, TAS3 Architecture specifies SAML2 and OpenID Connect IdP roles
+** Multiple IdPs are foreseen to exist and they need not be run by Trust Network operator. Rather any number of trusted third parties can exist in the ecosystem.
+** TAS3 Architecture specifies how IdP Proxying can be used to create a "federation of federations"
+
+* Can the system act as an RP? (e.g. SAML2, OpenID Connect, etc.)
+** Yes, TAS3 architecture specifies SAML2 and OpenID Connect RP (SP for SAML2) roles
+
+* Anonymity? Pseudonymity? Veronymity?
+** Pairwise pseudonymous by default for best privacy protection with reasonable functionality
+** Strong anonymity can be supported through transient identifiers, but was not seen as a valuable use case. We rather see strong forms of pseudonymity being what most users mean by "anonymity"
+** Pairwise Pseudonymous Identifiers (PPIDs) at all layers: SSO, Web Services, including deep call chains, Authorization, Reputation, and Audit trail
+** Veronymity in case of abuse supported by court order to IdP or relevant Attribute Provider
+** Upfront veronymity supported by an option to disable pseudonyms and use a globally unique identifier for a particular transaction
+
+== Security and permissioning ==
+
+* Security model for accessing personal data?
+** All accesses require security token(s) that document
+*** Whose data (subject)
+*** Who is accessing
+**** In case different from "whose", the delegation relationship that permits access is documented by a digitally signed token
+*** Which system entities are involved (client/requester and server/responder)
+** All accesses pass through 4-point authorization process
+*** Pledged intended use and other policies
+*** Is request acceptable apriori, given
+**** Security tokens
+**** Intended use and other pledged policies in general
+*** Given the data about to be returned (after query but before returning) and its sticky policies, is request acceptable considering
+**** Security tokens
+**** Intended use and other pledged policies in particular context of the data and its sticky policies
+**** Attach any obligations
+*** Are returned obligations acceptable (reject of not, record for future performance if yes)
+
+* What permissions and obligations exist?
+** In general TAS3 allows various permissions languages including Permis (KENT) and XACML2
+** In practise we have initially focussed on
+*** Intended use
+*** Data retention
+*** Subscription for rectification and deletion
+*** Data use notification
+
+* How can 3rd parties request permissions to work with the system?
+** They have to join the Trust Network. This typically involves a vetting procedure to keep the rotten apples out. Of course Trust Network policy could be very lax, making everything self asserted, but we do not see much value in this.
+** Typically there is a simple web self service inteface to kick off the vetting process, not much more complex than subscribing to a mailing list
+** 3rd party can belong to several Trust Networks simultaneously
+** Typical TAS3 Trust Network accepts existing commercially issued SSL/TLS (X509) certificates. The Trust Network uses them for signatures and authentication, but it does not rely on PKI for actual trust establishment. Also Users are not required to have certificates (though they may, if they want, as in eID).
+** 3rd party could also work through a Gateway partner who is a member of the Trust Network
+*** Gateway supports liability towards Trust Network
+*** 3rd party registration and liability are commercial (proprietary) matters up to the Gateway
+
+== Events ==
+
+* What events does the system deal with?
+** Partner intake, suspension for bad behaviour, and potential expulsion
+** User intake (and expulsion)
+** Request to be forgotten
+** Request for rectification
+** Usage notifications
+** Request to interact with a business process (e.g. to supply additional data or consent to an operation otherwise not permitted)
+
+* How are events handled?
+** Audit bus to which every entity (RP, IdP, etc.) logs summary record of transactions
+** User dashboard where all pending events are visualized
+** Instant messaging, sms, or email alerts to user (as configured by the user)
+
+== User interface (UI) ==
+
+* How can the system be accessed / managed by users?
+** Primary access is by user pointing their browser to Service Provider web site, resulting in Single Sign-On which may involve IdP authentication screen (if authentication requires interaction)
+** Dashboard
+*** View audit trail and request more detail
+*** Privacy Manager / Permissions editing
+*** Visualize personal data and request rectification or deletion
+*** Tweak settings and preferences
+** Inline interaction iFrames: much of the Dashboard functionality can be provided in a contextualized manner inline with the transaction or business process that requires user interaction
+** Side channel interaction: the questions posed through iFrames can also be posed through Instant Messaging (IM) or other means of communcation
+
+== Deployment ==
+
+* Federation? Peer-to-peer patterns?
+** TAS3 is intended mainly as Trust Network, or federation, technology
+** Peer-to-peer models are possible through suitable definition of "federation"
+** Essentially federation vs. p2p choice is not dictated in TAS3 technology, but rather by the policies that the relying parties choose to adopt. That being said, generally the federated Trust Networks are capable of carrying out higher value transactions where the strong trust, security, privacy, and audit guarantees of TAS3 come to their own.
+
+== Standards support ==
+
+* SSO
+** SAML2 (mature)
+** OpenID Connect (beta)
+* Web Services
+** ID-WSF2 (mature)
+** WS-Security (mature)
+** WS-Addressing (mature)
+** WS-Trust
+** OAUTH2/RESTful (beta)
+* Authorization
+** XACML2 (mature)
+** XACML3 (alpha)
+** UMA (beta)
+
+== "Meta" - Topics ==
+
+* Tech Resources and Links about the system
+** Official web site: www.tas3.eu
+** Reference implementation: http://zxid.org
+
+* Interoperability with other systems (tested with the reference implementation, zxid.org)
+** SAML2 and XACML2 interoperability has been tested with numerous commercial and open source implementations <ref>Liberty Alliance, 2006: "SAML 2.0 (test procedure v2.0) Interoperable Implementation Table", http://projectliberty.org/liberty/liberty_interoperable/implementations/saml_2_0_test_procedure_v2_0_interoperable_implementation_table</ref>, <ref>Liberty Alliance, 2007: "SAML 2.0 (test procedure v3.0) full matrix Implementation Table Q407", http://projectliberty.org/liberty/liberty_interoperable/implementations/saml_2_0_test_procedure_v3_0_full_matrix_implementation_table_q407</ref>
+*** Shibboleth2
+*** SimpleSAMLphp
+*** Ping Identity
+*** Symlabs
+*** Computer Associactes
+*** Sun/Oracle
+** ID-WSF2 interoperability has been tested with a number of vendors<ref>Liberty Alliance, 2006: "ID-WSF 2.0 Interoperable Implementation Table", http://projectliberty.org/liberty/liberty_interoperable/implementations/id_wsf_2_0_interoperable_implementation_table</ref>
+*** Symlabs
+*** NTT
+*** NEC
+** OpenID Connect+OAUTH2+UMA interoperability testing is in progress (Oct. 2011)
+
+* Temporal Aspects: What works now, what is planned?
+** SAML2+ID-WSF+XACML2 is fully mature
+** OpenID Connect+OAUTH2+UMA is beta
+
+* Acknowledgement: TAS3 project has been funded under European Commission Framework Program 7 (FP7) project number ICT-216287
+
+==References==
+{{reflist}}
+
+{{Uncategorized|date=November 2011}}
 
 ---------
+
+{{db-spam}}
+= ZXID =
+
+{{Infobox software
+| name                   = ZXID
+| logo                   = [[Image:zxid-tas3-ios.png]]
+| screenshot             = [[Image:zxid-login.png|300px]]
+| caption                = ZXID IdP Selection
+| released               = {{release date|mf=yes|2005|08|01}}
+| frequently updated     = Yes
+| latest release version = Release 1.03
+| latest release date    = {{release date|mf=yes|2011|08|12}}
+| operating system       = [[Cross-platform]]
+| programming language   = C/C++, Java, CSharp, PHP, Perl, others per SWIG
+| language               = English
+| status                 = Active
+| genre                  = [[Identity and access management]]
+| license                = [[Apache_License|Apache2]]
+| website                = http://zxid.org/
+}}
+
+
+ZXID.org<ref>Sampo Kellomäki: "ZXID", http://zxid.org/</ref> Identity Management toolkit implements standalone [[SAML_2.0|SAML 2.0]],
+Liberty [[ID-WSF_2.0|ID-WSF 2.0]], and [[XACML]] 2.0 stacks and aims at implementing all popular
+federation, [[Single sign-on|SSO]], and ID Web Services protocols.  It is a C implementation
+with minimal external dependencies - OpenSSL, CURL, and zlib -
+ensuring easy deployment (no DLLhell). Due to its small footprint and
+efficient and accurate schema driven implementation, it is suitable
+for embedded and high volume applications. Language bindings to all
+popular highlevel languages such as PHP, Perl, and Java, are provided
+via SWIG.  ZXID implements, as of Nov 2011, SP, IdP, WSC, WSP,
+Discovery, PEP, and PDP roles. ZXID is the reference implementation
+of the core security architecture of the [[TAS3|TAS3.eu]] project.
+
+==IPR Status==
+
+Apache2 Open Source License. All dependency libraries (OpenSSL, libcurl, zlib) are under
+similarily liberal open source license.
+
+The underlying standards are all Royalty Free as specified in Libery Alliance and OASIS IPR policies.
+The TAS3 architecure, of which ZXID is the reference implementation, is covered by TAS3 Consortium "Royalty free to implement and use" pledge at www.tas3.eu section "Software" (http://vds1628.sivit.org/tas3/?page_id=138)
+
+:: In TAS3 General Assembly of 2010-09-13, following declaration was made:
+
+::: "TAS3 architecture and specifications, as described in public deliverables D2.1, D2.4, and D7.1, are licensed free for implementation and use by anyone. Up to June 2010, TAS3 consortium partners do not hold patents nor will exercise patents that cover implementation and use of the TAS3 architecture and specifications of those deliverables. This license is only granted for the specific purpose of correct implementations of TAS3 specifications." <ref>[http://vds1628.sivit.org/tas3/?page_id=138 TAS3 Consortium General Assembly minutes from 2010-09-13, as excerpted on tas3.eu section "Software"]</ref>
+
+==History==
+
+ZXID was started in 2006 by Sampo Kellomäki while still working
+with Symlabs. Sampo obtained from Symlabs committment to release the
+code under Apache2 license, which effectively made ZXID an open source
+project. In 2009 TAS3 project adopted ZXID as the reference
+implementation of TAS3 core security technologies. The 1.0 release and
+end of intial development phase happened in May 2011. ZXID is
+considered to be stable with respect to SAML2, ID-WSF2, and XACML2
+features. ZXID continues to be an active open source project (as of
+November 2011) and new features, some of which may not be stable,
+continue to be added.
+
+==References==
+{{reflist}}
+
+
+---------
+
+
+{{Infobox software
+| name                   = OpenAM
+| logo                   = [[Image:OpenAM-web-transparent.png]]
+| screenshot             = [[Image:Openamconsole.png|300px]]
+| caption                = OpenAM Admin Console
+| released               = {{release date|mf=yes|2010|02|07}}
+| frequently updated     = Yes
+| latest release version = Release 9.5.2
+| latest release date    = {{release date|mf=yes|2011|03|03}}
+| operating system       = [[Cross-platform]]
+| programming language   = [[Java (programming language)|Java]]
+| language               = English, French, German, Spanish, Japanese, Korean, Simplified Chinese and Traditional Chinese
+| status                 = Active
+| genre                  = [[Identity and access management]]
+| license                = [[Common Development and Distribution License|CDDL]]
+| website                = http://www.forgerock.com/openam.html
+}}
+'''OpenAM''' is an [[open source]] access management, entitlements and [[Federated identity|federation]] server platform.
+
+ForgeRock announced in February 2010 that they would continue to develop and support [[OpenSSO]] from Sun now that Oracle have chosen to discontinue development on the project<ref>[http://www.internetnews.com/dev-news/article.php/3881681/ForgeRock+Extending+Suns+OpenSSO+Platform.htm ForgeRock Extending Sun's OpenSSO Platform - InternetNews.com<!-- Bot generated title -->]</ref>. ForgeRock have renamed the product OpenAM as Oracle retain the rights to the name OpenSSO.
+
+ForgeRock have announced that they will continue delivering on Sun Microsystems original roadmap.<ref>[http://www.networkworld.com/news/2010/072610-opensso-neglected-by-oracle-gets.html OpenSSO, neglected by Oracle, gets second life<!-- Bot generated title -->]</ref><ref>[http://itmanagement.earthweb.com/osrc/article.php/3881611/ForgeRock-Picks-Up-Suns-Open-Source-Identity.htm ForgeRock Picks Up Sun's Open Source Identity \u2014 Datamation.com<!-- Bot generated title -->]</ref>
+
+== Capabilities ==
+* [[Authentication]] - Validation of [[digital identity]]
+* [[Authorization]] - Includes enforcement of access policies on network resources
+* Web [[Single Sign-On]] (SSO)
+* [[Federated identity]]
+
+==OpenAM Release==
+A ForgeRock OpenAM release is equivalent to Sun's OpenSSO Enterprise release. Full support through sustaining patches is available.
+
+==OpenSSO Snapshot==
+A ForgeRock snapshot release is equivalent to Sun's OpenSSO Express release. Full support is available with fixes being made available in the nightly builds.
+
+==See also==
+{{Portal|Java}}
+*[[OpenSSO]]
+*[[OpenDJ]]
+*[[OpenPTK]]
+
+== References ==
+{{Reflist}}
+
+==External links==
+*[http://www.forgerock.com/openam.html OpenAM project page]
+*[https://wikis.forgerock.org/confluence/display/openam/Home/ OpenAM project wiki]
+*[https://bugster.forgerock.org/jira/secure/Dashboard.jspa OpenAM Issue Tracker]
+*[http://sources.forgerock.org/browse/openam OpenAM Source Code Browser]
+
+{{DEFAULTSORT:Openam}}
+[[Category:Java enterprise platform]]
+[[Category:Federated identity]]
+
+[[fr:OpenAM]]
+
+{{computer-security-stub}}
+{{free-software-stub}}
+
+---------
+
 
 http://hub.personaldataecosystem.org/wagn/TAS3
 http://en.wikipedia.org/wiki/TAS3

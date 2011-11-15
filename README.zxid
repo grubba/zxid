@@ -8,16 +8,17 @@ See INSTALL.zxid for installation and quick tutorial.
 
 <<abstract:
 
-ZXID.org Identity Management toolkit implements standalone SAML 2.0 and
-Liberty ID-WSF 2.0 stacks and aims at implementing all popular
-federation and ID Web Services protocols.  It is a C implementation
+ZXID.org Identity Management toolkit implements standalone SAML 2.0,
+Liberty ID-WSF 2.0, and XACML 2.0 stacks and aims at implementing all popular
+federation, SSO, and ID Web Services protocols.  It is a C implementation
 with minimal external dependencies - OpenSSL, CURL, and zlib -
 ensuring easy deployment (no DLLhell). Due to its small footprint and
 efficient and accurate schema driven implementation, it is suitable
 for embedded and high volume applications. Language bindings to all
 popular highlevel languages such as PHP, Perl, and Java, are provided
-via SWIG.  ZXID implements, as of July 07, SP, WSC, and WSP roles. IdP
-role will follow as the project evolves.\\\\
+via SWIG.  ZXID implements, as of Nov 2011, SP, IdP, WSC, WSP,
+Discovery, PEP, and PDP roles. ZXID is the reference implementation
+of the core security architecture of the TAS3.eu project.\\\\
 
 ZXID.org ist eine C-Bibliothek, die den vollständigen SAML
 2.0-Stack implementiert und alle populären
@@ -26,47 +27,54 @@ WS-Federation, WS-Trust und ID-Webservices wie Liberty ID-WSF 1.1 und
 2.0 implementieren will. Sie beruht auf Schema-basierter
 Code-Erzeugung, woraus eine genaue Implementation resultiert. SWIG
 wird verwendet, um Schnittstellen zu Skriptsprachen wie Perl, PHP und
-Python sowie zu Java bereitzustellen. Sie kann als SP, WSC und
-WSP fungieren.\\\\
+Python sowie zu Java bereitzustellen. Sie kann als SP, IdP, WSC,
+WSP, Discovery, PEP, und PDP fungieren.\\\\
 
 A biblioteca de gestão de identidades ZXID.org é uma
-implementação, em C, das normas SAML 2.0 e Liberty ID-WSF 2.0 com
-dependências externas mínimas - OpenSSL, CURL, e zlib - facilitando
-uma implantação fácil sem "inferno dos DLL". Sendo económica em
-consumo de recursos é indicada para aplicações embutidas ou
-de grande volume e performance. A biblioteca é disponibilizada para
-todos os linguagens de programação de alto nível como, p.ex.,
-PHP, Perl, e Java, atravez de interfáces SWIG. ZXID de hoje (Jul
-07) pode funcionar nos papeis SP (Provedor de Serviços), WSC
-(Cliente de Serviços Web) e WSP (Provedor de Serviços Web),
-sendo o papel IdP (Provedor de Identidade) suportado
-na futura evolução do projecto.\\\\
+implementação, em C, das normas SAML 2.0, Liberty ID-WSF 2.0 e
+XACML 2.0 com dependências externas mínimas - OpenSSL, CURL, e
+zlib - facilitando uma implantação fácil sem "inferno dos
+DLL". Sendo económica em consumo de recursos é indicada para
+aplicações embutidas ou de grande volume e performance. A
+biblioteca é disponibilizada para todos os linguagens de
+programação de alto nível como, p.ex., PHP, Perl, e Java,
+atravez de interfáces SWIG. ZXID de hoje (Nov 2011) pode funcionar
+nos papeis SP (Provedor de Serviços), IdP (Provedor de Identidade),
+WSC (Cliente de Serviços Web) WSP (Provedor de Serviços Web),
+Discovery (descobrimento de serviços), PEP (controlo de acesso), e
+PDP (decisão de acesso). ZXID é a implementação de referência
+do parte segurança do projecto TAS3.eu.\\\\
 
 La librería de gestión de identidades ZXID.org es una
-implementación en C de las normas SAML 2.0 y Liberty ID-WSF 2.0,
-con dependencias externas mínimas - OpenSSL, CURL, y zlib - que
-elimina el "Infierno DLL" en su implantación. Como ZXID es muy económica,
-es apta para aplicaciones embebidas o de gran volumen y
-envergadura. Los lenguajes de programación de alto nivel, como Perl,
-PHP, y Java, son soportados con generador de interfaces SWIG. Hoy (Feb
-07) el ZXID soporta los roles SP (proveedor de servicios) y WSC
-(cliente de los servicios web). Los roles IdP (proveedor de
-identidades) y WSP (proveedor de servicios web) serán soportados
-en fases futuras del proyecto.\\\\
+implementación en C de las normas SAML 2.0, Liberty ID-WSF 2.0, y
+XACML 2.0 con dependencias externas mínimas - OpenSSL, CURL, y zlib
+- que elimina el "Infierno DLL" en su implantación. Como ZXID es
+muy económica, es apta para aplicaciones embebidas o de gran
+volumen y envergadura. Los lenguajes de programación de alto nivel,
+como Perl, PHP, y Java, son soportados con generador de interfaces
+SWIG. Hoy (Nov 2011) el ZXID soporta los roles SP (proveedor de
+servicios), IdP (proveedor de identidades), WSC (cliente de los
+servicios web) WSP (proveedor de servicios web), Discovery
+(descubrimeinto de servicios), PEP (copntrolo de acesso), y PDP
+(deciciónes de acesso).\ ZXID es el implementación de referencia
+de parte seguridad de proyecto TAS3.eu.\\\
 
 ZXID.org on verkkohenkilöllisyyden ja -tunnisteiden
-hallintakirjasto joka tukee SAML 2.0 (sisäänkirjaantuminen) ja
-Liberty ID-WSF 2.0 (henkilöllisyyteen pohjautuvat webbipalvelut)
-standardeja. ZXID vaatii vain OpenSSL, CURL ja zlib
-kirjastot joten se välttää "DLL helvetti"-ongelman.
-Skemapohjaisena C toteutuksena se on tarkka ja
-taloudellinen ja kelpaa sulautettuihin ja erittäin kovaa
+hallintakirjasto joka tukee SAML 2.0 (sisäänkirjaantuminen),
+Liberty ID-WSF 2.0 (henkilöllisyyteen pohjautuvat webbipalvelut),
+ja XACML 2.0 (käyttöoikeuksien hallinta) standardeja. ZXID
+vaatii vain OpenSSL, CURL ja zlib kirjastot joten se välttää
+"DLL helvetti"-ongelman.  Skemapohjaisena C toteutuksena se on tarkka
+ja taloudellinen ja kelpaa sulautettuihin ja erittäin kovaa
 suorituskykyä vaativiin sovelluksiin. Se tukee korkeantason
-kieliä - kuten Perliä, PHP:tä, ja Javaa - SWIG generoiduin
-rajapinnoin. ZXID tukee (Heinäkuu 07) SP (palveluntarjoaja), WSC
-(webbipalvelunkutsuja), ja WSP (webbipalveluntarjoaja) rooleja.  IdP
-(henkilöllisyydenvarmentaja) rooli toteutetaan projektin tulevissa
-vaiheissa.
+kieliä - kuten Perliä, PHP:tä, CSharp:ia, ja Javaa - SWIG
+generoiduin rajapinnoin. ZXID tukee (Marraskuu 2011) SP
+(palveluntarjoaja), IdP (henkilöllisyydenvarmentaja), WSC
+(webbipalvelunkutsuja), WSP (webbipalveluntarjoaja), Discovery
+(webbipalveluiden löytäminen), PEP (käyttöoikeuden
+tarkistus), ja PDP (käyttöoikeuden päätös) rooleja.
+ZXID on TAS3.eu projektin referenssi toteutis turvallisuus ja
+luottamus teknologioissa.
 
 >>
 
