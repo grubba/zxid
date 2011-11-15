@@ -320,10 +320,8 @@ struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need, char* v)
     
     if (IS_RULE(usage, "reset")) {
       INFO("Reset need %p", need);
-      for (; need; need = nn) {
-	nn = need->n;
-	ZX_FREE(cf->ctx, need);
-      }
+      zxid_free_need(cf, need);
+      need = NULL;
       if (!*p) break;
       ++p;
       continue;
@@ -598,10 +596,8 @@ struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsrc, char
     
     if (IS_RULE(url, "reset")) {
       INFO("Reset atsrc %p", atsrc);
-      for (; atsrc; atsrc = as) {
-	as = atsrc->n;
-	ZX_FREE(cf->ctx, atsrc);
-      }
+      zxid_free_atsrc(cf, atsrc);
+      atsrc = NULL;
       if (!*p) break;
       ++p;
       continue;
