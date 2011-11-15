@@ -707,7 +707,9 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->contact_name  = ZXID_CONTACT_NAME;
   cf->contact_email = ZXID_CONTACT_EMAIL;
   cf->contact_tel   = ZXID_CONTACT_TEL;
-  cf->fedusername_suffix = ZXID_FEDUSERNAME_SUFFIX;
+  /* NB: Typically allocated by zxid_grab_domain_name(). */
+  COPYVAL(cf->fedusername_suffix, ZXID_FEDUSERNAME_SUFFIX,
+	  ZXID_FEDUSERNAME_SUFFIX + strlen(ZXID_FEDUSERNAME_SUFFIX));
   cf->url = ZXID_URL;
   cf->non_standard_entityid = ZXID_NON_STANDARD_ENTITYID;
   cf->redirect_hack_imposed_url = ZXID_REDIRECT_HACK_IMPOSED_URL;
@@ -793,7 +795,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->wsp_nosig_fatal = ZXID_WSP_NOSIG_FATAL;
   cf->notimestamp_fatal = ZXID_NOTIMESTAMP_FATAL;
   cf->anon_ok        = ZXID_ANON_OK;
-  cf->required_authnctx = ZXID_REQUIRED_AUTHNCTX;
+  cf->required_authnctx = ZXID_REQUIRED_AUTHNCTX;	/* NB: NULL. */
   cf->issue_authnctx_pw = ZXID_ISSUE_AUTHNCTX_PW;
   cf->idp_pref_acs_binding = ZXID_IDP_PREF_ACS_BINDING;
   cf->mandatory_attr = ZXID_MANDATORY_ATTR;
