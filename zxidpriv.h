@@ -147,7 +147,7 @@ ZXID_DECL zxid_nid* zxid_parse_mni(zxid_conf* cf, char* buf, char** pmniptr);
 /* zxidlib */
 
 ZXID_DECL struct zx_str* zxid_lecp_check(zxid_conf* cf, zxid_cgi* cgi);
-ZXID_DECL int zxid_cdc_read(zxid_conf* cf, zxid_cgi* cgi);
+ZXID_DECL struct zx_str* zxid_cdc_read(zxid_conf* cf, zxid_cgi* cgi);
 ZXID_DECL int zxid_cdc_check(zxid_conf* cf, zxid_cgi* cgi);
 
 ZXID_DECL int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* elem, struct zx_ds_Signature_s* sig, struct zx_sa_Issuer_s* issue_ent, struct zx_ns_s* pop_seen, const char* lk);

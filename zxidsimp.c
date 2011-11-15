@@ -1265,8 +1265,13 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
       }
     }
   case 'C':  /* CDC Read: Common Domain Cookie Reader */
-    zxid_cdc_read(cf, cgi);
-    goto cgi_exit;
+    ss = zxid_cdc_read(cf, cgi);
+    if (auto_flags & ZXID_AUTO_REDIR) {
+      printf("%.*s", ss->len, ss->s);
+      zx_str_free(cf->ctx, ss);
+      goto cgi_exit;
+    } else
+      goto res_zx_str;
   case 'E':  /* Return from CDC read, or start here to by-pass CDC read. */
     ss = zxid_lecp_check(cf, cgi);  /* use o=E&fc=1&fn=p  to set allow create true */
     D("LECP check: ss(%.*s)", ss?ss->len:1, ss?ss->s:"?");
