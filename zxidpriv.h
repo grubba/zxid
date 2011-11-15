@@ -134,11 +134,17 @@ ZXID_DECL struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf, struct
 /* zxidconf */
 
 ZXID_DECL struct zxid_map*   zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v);
+ZXID_DECL void zxid_free_map(struct zxid_conf *cf, struct zxid_map *map);
 ZXID_DECL struct zxid_need*  zxid_is_needed(struct zxid_need* need, const char* name);
 ZXID_DECL struct zxid_map*   zxid_find_map(struct zxid_map* map, const char* name);
 ZXID_DECL struct zxid_cstr_list* zxid_find_cstr_list(struct zxid_cstr_list* lst, const char* name);
 ZXID_DECL struct zxid_attr*  zxid_find_at(struct zxid_attr* pool, const char* name);
 ZXID_DECL struct zxid_attr*  zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len, char* name, int val_len, char* val, char* lk);
+ZXID_DECL void zxid_free_at(struct zxid_conf *cf, struct zxid_attr *attr);
+ZXID_DECL struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need, char* v);
+ZXID_DECL void zxid_free_need(struct zxid_conf *cf, struct zxid_need *need);
+ZXID_DECL struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsrc, char* v);
+ZXID_DECL void zxid_free_atsrc(struct zxid_conf *cf, struct zxid_atsrc *src);
 
 /* zxiduser */
 

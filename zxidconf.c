@@ -34,6 +34,7 @@
 #include "zxid.h"
 #include "zxidutil.h"
 #include "zxidconf.h"
+#include "zxidpriv.h"
 #include "c/zxidvers.h"
 
 /* ============== Configuration ============== */
@@ -254,13 +255,24 @@ struct zxid_attr* zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len,
   return aa;
 }
 
+/* Reverse of zxid_new_at(). */
+void zxid_free_at(struct zxid_conf *cf, struct zxid_attr *attr)
+{
+  while (attr) {
+    struct zxid_attr *next = attr->n;
+    ZX_FREE(cf->ctx, attr->name);
+    if (attr->val) ZX_FREE(cf->ctx, attr->val);
+    ZX_FREE(cf->ctx, attr);
+    attr = next;
+  }
+}
 
 /*() Parse need specification and add it to linked list
  * A,B$usage$retention$oblig$ext;A,B$usage$retention$oblig$ext;...
  */
 
 /* Called by:  zxid_init_conf x2, zxid_parse_conf_raw x2 */
-static struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need, char* v)
+struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need, char* v)
 {
   char* attrs;
   char* usage;
@@ -339,6 +351,21 @@ static struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need, c
   }
 
   return need;
+}
+
+/* Reverse of zxid_load_need(). */
+void zxid_free_need(struct zxid_conf *cf, struct zxid_need *need)
+{
+  while (need) {
+    struct zxid_need *next = need->n;
+    ZX_FREE(cf->ctx, need->usage);
+    ZX_FREE(cf->ctx, need->retent);
+    ZX_FREE(cf->ctx, need->oblig);
+    ZX_FREE(cf->ctx, need->ext);
+    zxid_free_at(cf, need->at);
+    ZX_FREE(cf->ctx, need);
+    need = next;
+  }
 }
 
 /*() Parse map specification and add it to linked list
@@ -453,6 +480,20 @@ struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
   return map;
 }
 
+/* Reverse of zxid_load_map(). */
+void zxid_free_map(struct zxid_conf *cf, struct zxid_map *map)
+{
+  while (map) {
+    struct zxid_map *next = map->n;
+    ZX_FREE(cf->ctx, map->ns);
+    ZX_FREE(cf->ctx, map->src);
+    ZX_FREE(cf->ctx, map->dst);
+    ZX_FREE(cf->ctx, map->ext);
+    ZX_FREE(cf->ctx, map);
+    map = next;
+  }
+}
+
 /*() Parse ATTRSRC specification and add it to linked list
  * namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;...
  */
@@ -476,12 +517,24 @@ static struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cst
   return l;
 }
 
+/* Reverse of zxid_load_cstr_list(). */
+static void zxid_free_cstr_list(struct zxid_conf *cf,
+				struct zxid_cstr_list *l)
+{
+  while (l) {
+    struct zxid_cstr_list *next = l->n;
+    ZX_FREE(cf->ctx, l->s);
+    ZX_FREE(cf->ctx, l);
+    l = next;
+  }
+}
+
 /*() Parse ATTRSRC specification and add it to linked list
  * namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;...
  */
 
 /* Called by:  zxid_init_conf, zxid_parse_conf_raw */
-static struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsrc, char* v)
+struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsrc, char* v)
 {
   char* ns;
   char* attrs;
@@ -578,6 +631,23 @@ static struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsr
   }
 
   return atsrc;
+}
+
+/* Reverse of zxid_load_atsrc(). */
+void zxid_free_atsrc(struct zxid_conf *cf, struct zxid_atsrc *src)
+{
+  while (src) {
+    struct zxid_atsrc *next = src->n;
+    zxid_free_at(cf, src->at);
+    ZX_FREE(cf->ctx, src->ns);
+    ZX_FREE(cf->ctx, src->weight);
+    ZX_FREE(cf->ctx, src->url);
+    ZX_FREE(cf->ctx, src->aapml);
+    ZX_FREE(cf->ctx, src->otherlim);
+    ZX_FREE(cf->ctx, src->ext);
+    ZX_FREE(cf->ctx, src);
+    src = next;
+  }
 }
 
 /*() Check whether attribute is in a (needed or wanted) list. Just a linear
@@ -888,6 +958,34 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   return 0;
 }
 
+/* Reverse of zxid_init_conf() and zxid_parse_conf_raw(). */
+void zxid_free_conf(zxid_conf *cf)
+{
+  zxid_free_need(cf, cf->need);
+  zxid_free_need(cf, cf->want);
+  zxid_free_atsrc(cf, cf->attrsrc);
+  zxid_free_map(cf, cf->inmap);
+  zxid_free_map(cf, cf->outmap);
+  zxid_free_map(cf, cf->pepmap);
+  zxid_free_map(cf, cf->pepmap_rqout);
+  zxid_free_map(cf, cf->pepmap_rqin);
+  zxid_free_map(cf, cf->pepmap_rsout);
+  zxid_free_map(cf, cf->pepmap_rsin);
+  zxid_free_cstr_list(cf, cf->localpdp_role_permit);
+  zxid_free_cstr_list(cf, cf->localpdp_role_deny);
+  zxid_free_cstr_list(cf, cf->localpdp_idpnid_permit);
+  zxid_free_cstr_list(cf, cf->localpdp_idpnid_deny);
+  if (cf->required_authnctx) {
+    ZX_FREE(cf->ctx, cf->required_authnctx);
+  }
+  if (cf->fedusername_suffix) {
+    ZX_FREE(cf->ctx, cf->fedusername_suffix);
+  }
+  if (cf->path) {
+    ZX_FREE(cf->ctx, cf->path);
+  }
+}
+
 /*() Reset the doubly linked seen list and unknown_ns list to empty.
  * This is "light" version of zx_reset_ctx() that can be called
  * safely from inside lock. */
@@ -902,7 +1000,7 @@ void zx_reset_ns_ctx(struct zx_ctx* ctx)
 
 /*() Reset the seen doubly linked list to empty and initialize memory
  * allocation related function pointers to system malloc(3). Without
- * such initialization, any meomory allocation activity as well as
+ * such initialization, any memory allocation activity as well as
  * any XML parsing activity is doomed to segmentation fault. */
 
 /* Called by:  dirconf, main x3, zx_init_ctx, zxid_az, zxid_az_base, zxid_simple_len */
@@ -931,6 +1029,12 @@ struct zx_ctx* zx_init_ctx()
   }
   zx_reset_ctx(ctx);
   return ctx;
+}
+
+/* Reverse of zx_init_ctx(). */
+void zx_free_ctx(struct zx_ctx* ctx)
+{
+  free(ctx);
 }
 
 /*() Minimal initialization of
@@ -1175,6 +1279,7 @@ scan_end:
 	cf->path = v;
 	cf->path_len = strlen(v);
 	++cf->path_supplied;
+	/* NB: The buffer read here leaks. */
 	buf = read_all_alloc(cf->ctx, "-conf_to_cf", 1, &len, "%szxid.conf", cf->path);
 	if (buf && len)
 	  zxid_parse_conf_raw(cf, len, buf);  /* Recurse */
