@@ -195,7 +195,22 @@ ifeq ($(TARGET),sol8)
 
 # Flags for Solaris 8 native compile (with gc and gnu binutils) (BIG_ENDIAN BYTE_ORDER)
 CDEF+=-DSUNOS -DBYTE_ORDER=4321 -DBIG_ENDIAN=4321
-LIBS+=-lxnet -lsocket
+LIBS+=-R$(CURL_ROOT)/lib -R$(OPENSSL_ROOT)/lib -lxnet -lsocket
+CURL_ROOT=/opt/sfw
+OPENSSL_ROOT=/usr/sfw
+SHARED_FLAGS=-shared --export-all-symbols -Wl,-z -Wl,allextract
+SHARED_CLOSE=-Wl,-z -Wl,defaultextract
+
+else
+ifeq ($(TARGET),sol8x86)
+
+# Flags for Solaris 8/x86 native compile (with gc and gnu binutils) (LITTLE_ENDIAN BYTE_ORDER)
+CDEF+=-DSUNOS -DBYTE_ORDER=1234
+LIBS+=-R$(CURL_ROOT)/lib -R$(OPENSSL_ROOT)/lib -lxnet -lsocket
+CURL_ROOT=/opt/csw
+OPENSSL_ROOT=/usr/sfw
+SHARED_FLAGS=-shared --export-all-symbols -Wl,-z -Wl,allextract
+SHARED_CLOSE=-Wl,-z -Wl,defaultextract
 
 else
 ifeq ($(TARGET),macosx)
@@ -363,6 +378,7 @@ ifeq ($(DISTRO),fedora)
 CDEF+=-DFEDORA
 endif
 
+endif
 endif
 endif
 endif
@@ -1318,7 +1334,7 @@ endif
 endif
 
 libzxid.so.0.0: $(LIBZXID_A)
-	$(LD) $(OUTOPT)libzxid.so.0.0 $(SHARED_FLAGS) $^ $(SHARED_CLOSE) -lcurl -lssl -lcrypt
+	$(LD) $(OUTOPT)libzxid.so.0.0 $(SHARED_FLAGS) $^ $(SHARED_CLOSE) $(LIBS)
 
 zxid.dll zxidimp.lib: $(LIBZXID_A)
 	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib $^ $(SHARED_CLOSE) $(WIN_LIBS) -mdll

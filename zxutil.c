@@ -99,6 +99,9 @@ fdtype vopen_fd_from_path(int flags, int mode, const char* logkey, int reperr, c
   fd = open(buf, flags, mode);
 #endif
   if (fd == BADFD) {
+#ifndef PATH_MAX
+#define PATH_MAX ZXID_MAX_BUF
+#endif
     char err_buf[PATH_MAX];
     if (reperr && logkey[0] != '-') {
       perror("open (vopen_fd_from_path)");
