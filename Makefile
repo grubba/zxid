@@ -1620,11 +1620,12 @@ dirs: dir
 
 install: zxid $(LIBZXID_A) libzxid.so.0.0 dir
 	@$(ECHO) "===== Installing in $(PREFIX) (to change do make install PREFIX=/your/path)"
-	-mkdir -p $(PREFIX) $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/include/zxid $(PREFIX)/doc
+	-mkdir -p $(PREFIX) $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/include/zxid $(PREFIX)/include/zx $(PREFIX)/doc
 	$(CP) zxmkdirs.sh zxcall zxpasswd zxcot zxlogview zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl zxsizeof $(PREFIX)/bin
 	$(CP) $(LIBZXID_A) libzxid.so* $(PREFIX)/lib
 	$(CP) libzxid.so.0.0 $(PREFIX)/lib
 	$(CP) *.h c/*.h $(PREFIX)/include/zxid
+	$(CP) zx.h $(PREFIX)/include/zx
 	$(CP) *.pd *.dia $(PREFIX)/doc
 	@$(ECHO) "You will need to copy zxidhlo binary where your web server can find it and"
 	@$(ECHO) "make sure your web server is configured to recognize zxidhlo as a CGI script."
