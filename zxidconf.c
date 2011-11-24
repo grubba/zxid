@@ -497,7 +497,7 @@ void zxid_free_map(struct zxid_conf *cf, struct zxid_map *map)
  */
 
 /* Called by:  zxid_init_conf x4, zxid_parse_conf_raw x4 */
-static struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list* l, char* p)
+struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list* l, char* p)
 {
   char* q;
   struct zxid_cstr_list* cs;
@@ -516,8 +516,7 @@ static struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cst
 }
 
 /* Reverse of zxid_load_cstr_list(). */
-static void zxid_free_cstr_list(struct zxid_conf *cf,
-				struct zxid_cstr_list *l)
+void zxid_free_cstr_list(struct zxid_conf *cf, struct zxid_cstr_list *l)
 {
   while (l) {
     struct zxid_cstr_list *next = l->n;
@@ -714,7 +713,7 @@ struct zxid_attr* zxid_find_at(struct zxid_attr* pool, const char* name)
  * from the url config option. */
 
 /* Called by:  zxid_parse_conf_raw */
-static char* zxid_grab_domain_name(zxid_conf* cf, const char* url)
+char* zxid_grab_domain_name(zxid_conf* cf, const char* url)
 {
   char* dom;
   char* p;

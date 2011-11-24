@@ -696,6 +696,7 @@ ZXID_DECL int   zxid_set_opt(zxid_conf* cf, int which, int val);
 ZXID_DECL char* zxid_set_opt_cstr(zxid_conf* cf, int which, char* val);
 ZXID_DECL void  zxid_url_set(zxid_conf* cf, const char* url);
 ZXID_DECL int   zxid_init_conf(zxid_conf* cf, const char* conf_dir);
+ZXID_DECL void zxid_free_conf(zxid_conf *cf);
 ZXID_DECL zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path);
 ZXID_DECL zxid_conf* zxid_new_conf(const char* zxid_path);
 ZXID_DECL int   zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs);
