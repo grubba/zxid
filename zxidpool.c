@@ -178,8 +178,72 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
   return ss;
 }
 
-/*() Convert attributes from (session) pool to JSON, applying OUTMAP.
- * *** Need to check escaping JSON values, e.g. " or \n */
+static int zxid_json_strlen(char* string)
+{
+  int res = 0;
+  for (;*string;string++, res++) {
+    int c = *(unsigned char*)string;
+    if (c < ' ') {
+      if ((c == '\n') || (c == '\r') || (c == '\t') ||
+	  (c == '\b') || (c == '\f')) {
+	/* \X */
+	res++;
+      } else {
+	/* \uXXXX */
+	res += 5;
+      }
+    } else if ((c == '\'') || (c == '\"') || (c == '\\')) {
+      /* \X */
+      res++;
+    } else if ((c == 0xe2) && (((unsigned char*)string)[1] == 0x80) &&
+	       ((((unsigned char*)string)[2] & 0xfe) == 0xa8)) {
+      /* Some java-script based JSON decoders don't like
+       * unescaped \u2028 and \u2029. */
+      /* \uXXXX */
+      res += 5;
+      string += 2;
+    }
+  }
+  return res;
+}
+
+static char* zxid_json_strcpy(char* dest, char* string)
+{
+  for (;*string; string++) {
+    int c = *(unsigned char*)string;
+    if (c < ' ') {
+      /* Control character. */
+      *dest++ = '\\';
+      if (c == '\n') c = 'n';
+      else if (c == '\r') c = 'r';
+      else if (c == '\t') c = 't';
+      else if (c == '\b') c = 'b';
+      else if (c == '\f') c = 'f';
+      else {
+	/* \uXXXX */
+	sprintf(dest, "u%04x", c);
+	dest += 5;
+	continue;
+      }
+    } else if ((c == '\'') || (c == '\"') || (c == '\\')) {
+      /* \X */
+      *dest++ = '\\';
+    } else if ((c == 0xe2) && (((unsigned char*)string)[1] == 0x80) &&
+	       ((((unsigned char*)string)[2] & 0xfe) == 0xa8)) {
+      /* Some java-script based JSON decoders don't like
+       * unescaped \u2028 and \u2029. */
+      /* \uXXXX */
+      sprintf(dest, "\\u%04x", 0x2028 | (string[2] & 1));
+      string += 2;
+      dest += 6;
+      continue;
+    }
+    *dest++ = c;
+  }
+  return dest;
+}
+
+/*() Convert attributes from (session) pool to JSON, applying OUTMAP. */
 
 /* Called by:  zxid_ses_to_json */
 static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
@@ -203,28 +267,34 @@ static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
       }
       at->map_val = zxid_map_val(cf, 0, 0, map, at->name, at->val);
       if (map->dst && *map->dst && map->src && map->src[0] != '*') {
-	name_len = strlen(map->dst);
+	name_len = zxid_json_strlen(map->dst);
       } else {
-	name_len = strlen(at->name);
+	name_len = zxid_json_strlen(at->name);
       }
 
       if (at->nv) {  /* Multivalue requires array */
-	len += name_len + sizeof("\"\":[\"\"],")-1 + at->map_val->len;
+	len += name_len + sizeof("\"\":[\"\"],")-1 +
+	  zxid_json_strlen(at->map_val->s);
 	for (av = at->nv; av; av = av->n) {
 	  av->map_val = zxid_map_val(cf, 0, 0, map, at->name, av->val);
-	  len += name_len + sizeof(",\"\"")-1 + av->map_val->len;
+	  len += name_len + sizeof(",\"\"")-1 +
+	    zxid_json_strlen(at->map_val->s);
 	}
       } else {
-	len += name_len + sizeof("\"\":\"\",")-1 + at->map_val->len;
+	len += name_len + sizeof("\"\":\"\",")-1 +
+	  zxid_json_strlen(at->map_val->s);
       }
     } else {
-      name_len = strlen(at->name);
+      name_len = zxid_json_strlen(at->name);
       if (at->nv) {  /* Multivalue requires array */
-	len += name_len + sizeof("\"\":[\"\"],")-1 + (at->val?strlen(at->val):0);
+	len += name_len + sizeof("\"\":[\"\"],")-1 +
+	  (at->val?zxid_json_strlen(at->val):0);
 	for (av = at->nv; av; av = av->n)
-	  len += name_len + sizeof(",\"\"")-1 + (av->val?strlen(av->val):0);
+	  len += name_len + sizeof(",\"\"")-1 +
+	    (av->val?zxid_json_strlen(av->val):0);
       } else {
-	len += name_len + sizeof("\"\":\"\",")-1 + (at->val?strlen(at->val):0);
+	len += name_len + sizeof("\"\":\"\",")-1 +
+	  (at->val?zxid_json_strlen(at->val):0);
       }
     }
   }
@@ -247,51 +317,45 @@ static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
       }
 
       *p++ = '"';
-      strcpy(p, name);
+      p = zxid_json_strcpy(p, name);
       p += strlen(name);
       *p++ = '"';
       *p++ = ':';
       if (at->nv) {
 	*p++ = '[';
 	*p++ = '"';
-	memcpy(p, at->map_val->s, at->map_val->len);
-	p += at->map_val->len;
+	p = zxid_json_strcpy(p, at->map_val->s);
 	*p++ = '"';
 	for (av = at->nv; av; av = av->n) {
 	  *p++ = ',';
 	  *p++ = '"';
-	  memcpy(p, av->map_val->s, av->map_val->len);
-	  p += av->map_val->len;
+	  p = zxid_json_strcpy(p, av->map_val->s);
 	  *p++ = '"';
 	}
 	*p++ = ']';
       } else {
 	*p++ = '"';
-	memcpy(p, at->map_val->s, at->map_val->len);
-	p += at->map_val->len;
+	p = zxid_json_strcpy(p, at->map_val->s);
 	*p++ = '"';
       }
 
     } else {
       *p++ = '"';
-      strcpy(p, at->name);
-      p += strlen(at->name);
+      p = zxid_json_strcpy(p, at->name);
       *p++ = '"';
       *p++ = ':';
       if (at->nv) {
 	*p++ = '[';
 	*p++ = '"';
 	if (at->val) {
-	  strcpy(p, at->val);
-	  p += strlen(at->val);
+	  p = zxid_json_strcpy(p, at->val);
 	}
 	*p++ = '"';
 	for (av = at->nv; av; av = av->n) {
 	  *p++ = ',';
 	  *p++ = '"';
 	  if (at->val) {
-	    strcpy(p, av->val);
-	    p += strlen(av->val);
+	    p = zxid_json_strcpy(p, av->val);
 	  }
 	  *p++ = '"';
 	}
@@ -299,15 +363,14 @@ static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
       } else {
 	*p++ = '"';
 	if (at->val) {
-	  strcpy(p, at->val);
-	  p += strlen(at->val);
+	  p = zxid_json_strcpy(p, at->val);
 	}
 	*p++ = '"';
       }
     }
     *p++ = ',';
   }
-  *p = '}';   /* Overwrites last comma */
+  p[-1] = '}';   /* Overwrites last comma */
   ASSERTOP(p, ==, ss->s+len);
   return ss;
 }
