@@ -133,6 +133,7 @@ Then to import it to IdP, run
 4.1.5 Add users to the IdP
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+  head /dev/urandom | sudo /usr/local/bin/zxpasswd -c .all  # dummy user to represent commonality
   sudo /usr/local/bin/zxpasswd -at 'cn: Nomen Nescitur$email: nn@your-org.com$o: Your Org' -c nn
   # Password will be asked on console
 

@@ -168,7 +168,7 @@ public class zxidappdemo extends HttpServlet {
 	}
 
 	out.print("<table align=right><tr><td>");
-	out.print("<img src=\"tas3-recurs-demo.png\" border=0>");
+	out.print("<img src=\"tas3-recurs-demo.png\" width=500 border=0>");
 	out.print("</td></tr></table>");
 
 	// Render protected content page (your application starts working)

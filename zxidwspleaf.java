@@ -1,5 +1,5 @@
 /* zxidwspleaf.java  -  Demonstrate server side of handling a web service cal
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -28,6 +28,8 @@ public class zxidwspleaf extends HttpServlet {
     static {
 	// CONFIG: You must have created /var/zxid directory hierarchy. See `make dir'
 	// CONFIG: You must create edit the URL to match your domain name and port
+	// CONFIG: Usually you create and edit /var/zxid/zxid.conf and override the URL there.
+	// CONFIG: However, this program sets the URL dynamically, see calls to zxidjni.url_set()
 	System.loadLibrary("zxidjni");
 	cf = zxidjni.new_conf_to_cf(conf);
 	zxidjni.set_opt(cf, 1, 1);
@@ -45,7 +47,7 @@ public class zxidwspleaf extends HttpServlet {
 	String fullURL = req.getRequestURI();
 	String qs = req.getQueryString();
 	String url = scheme + "://" + host_hdr + fullURL;
-	System.err.print("url("+url+")\n");	
+	System.err.print("url("+url+")\n"); // URL=http://sp.tas3.pt:8080/zxidservlet/wspleaf
 	zxidjni.url_set(cf, url);  // Virtual host support
 	
 	if (qs != null && qs.equals("o=B")) {  // Metadata check
