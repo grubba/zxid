@@ -115,7 +115,7 @@ Alternately the SP can access the metadata at URL https://idp.your-org.com/zxidi
 For each SP metadata needs to be obtained and imported. If the SP
 supports well known location method, then accessing SP's entity ID as
 a URL will return the metadata. ZXID based SPs support this
-method. Typically the URL ends in "o=B". If SP metadata is available
+method. Typically the URL ends in "?o=B". If SP metadata is available
 from a URL, you would import it like this:
 
   zxcot -ci -g https://sp.example.com/saml?o=B
