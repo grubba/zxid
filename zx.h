@@ -105,7 +105,8 @@ struct zx_ctx {
 #endif
   char canon_inopt;   /* Shib2 InclusiveNamespaces/@PrefixList kludge and other sundry options. */
   char enc_tail_opt;  /* In encoding, use non-canon empty tag tail optimization, e.g. <ns:foo/> */
-  char pad2; char pad3; char pad4; char pad5; char pad6; char pad7;
+  char pad2; char pad3;
+  int  zx_errno;      /* Outcome of last filesystem operation */
 };
 
 /* We arrange all structs to start with a common header (16 bytes on 32bit platforms).

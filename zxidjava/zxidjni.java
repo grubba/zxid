@@ -267,36 +267,12 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zx_ctx_pad3_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
   }
 
-  public static void zx_ctx_pad4_set(SWIGTYPE_p_zx_ctx self, char value) {
-    zxidjniJNI.zx_ctx_pad4_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
+  public static void zx_ctx_zx_errno_set(SWIGTYPE_p_zx_ctx self, int value) {
+    zxidjniJNI.zx_ctx_zx_errno_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
   }
 
-  public static char zx_ctx_pad4_get(SWIGTYPE_p_zx_ctx self) {
-    return zxidjniJNI.zx_ctx_pad4_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
-  }
-
-  public static void zx_ctx_pad5_set(SWIGTYPE_p_zx_ctx self, char value) {
-    zxidjniJNI.zx_ctx_pad5_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
-  }
-
-  public static char zx_ctx_pad5_get(SWIGTYPE_p_zx_ctx self) {
-    return zxidjniJNI.zx_ctx_pad5_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
-  }
-
-  public static void zx_ctx_pad6_set(SWIGTYPE_p_zx_ctx self, char value) {
-    zxidjniJNI.zx_ctx_pad6_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
-  }
-
-  public static char zx_ctx_pad6_get(SWIGTYPE_p_zx_ctx self) {
-    return zxidjniJNI.zx_ctx_pad6_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
-  }
-
-  public static void zx_ctx_pad7_set(SWIGTYPE_p_zx_ctx self, char value) {
-    zxidjniJNI.zx_ctx_pad7_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
-  }
-
-  public static char zx_ctx_pad7_get(SWIGTYPE_p_zx_ctx self) {
-    return zxidjniJNI.zx_ctx_pad7_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
+  public static int zx_ctx_zx_errno_get(SWIGTYPE_p_zx_ctx self) {
+    return zxidjniJNI.zx_ctx_zx_errno_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
   }
 
   public static SWIGTYPE_p_zx_ctx new_zx_ctx() {

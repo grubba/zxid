@@ -20,6 +20,7 @@
  * 12.2.2010, added pthread locking --Sampo
  * 31.5.2010, added 4 web service call PEPs --Sampo
  * 21.4.2011, fixed DSA key reading and reading unqualified keys --Sampo
+ * 3.12.2011, adde VPATH feature --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -987,6 +988,111 @@ zxid_conf* zxid_new_conf(const char* zxid_path)
 
 #define SCAN_INT(v, lval) sscanf(v,"%i",&i); lval=i /* Safe for char, too */
 
+/*() Helper to evaluate a new PATH. check_file_exists helps to implement
+ * the sematic where PATH is not changed unless corresponding zxid.conf
+ * is found. This is used by VPATH. */
+
+static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exists)
+{
+  int len;
+  char *buf;
+
+  buf = read_all_alloc(cf->ctx, "-parse_conf_raw", 1, &len, "%szxid.conf", v);
+  if (buf) {
+    cf->path = v;
+    cf->path_len = strlen(v);
+    ++cf->path_supplied;   /* Record level of recursion so we can avoid infinite recursion. */
+    if (len)
+      zxid_parse_conf_raw(cf, len, buf);  /* Recurse */
+    --cf->path_supplied;
+  } else if (!check_file_exists) {
+    cf->path = v;  /* Set PATH anyway. */
+    cf->path_len = strlen(v);
+  }
+}
+
+/*() Helper to evaluate environment variables for VPATH */
+
+static int zxid_eval_vpath_env(char* vpath, const char* exp, char* env_hdr, char* n, char* lim)
+{
+  int len;
+  char* val = getenv(env_hdr);
+  if (!val) {
+    ERR("VPATH(%s) %s expansion specified, but env(%s) not defined?!? Violation of CGI spec? SERVER_SOFTWARE(%s)", vpath, exp, env_hdr, STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
+    return 0;
+  }
+  len = strlen(val);
+  if (n + len >= lim) {
+    ERR("TOO LONG: VPATH(%s) %s expansion specified env(%s) val(%s) does not fit, missing %d bytes. SERVER_SOFTWARE(%s)", vpath, exp, env_hdr, val, lim - (n + len), STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
+    return 0;
+  }
+
+  /* Squash suspicious */
+
+  for (; *val; ++val, ++n)
+    if (IN_RANGE(*val, 'A', 'Z')) {
+      *n = *val - ('A' - 'a');
+    } else if (IN_RANGE(*val, 'a', 'z') || IN_RANGE(*val, '0', '9') || ONE_OF_2(*val, '.', '-')) {
+      *n = *val;
+    } else {
+      *n = '_';
+    }
+  return len;
+}
+
+/*() Parse VPATH (virtual host) related config file.
+ * If the file VPATHzxid.conf does not exist (note that the specified
+ * VPATH usually ends in a slash (/)), the PATH is not changed.
+ * Effectively unconfigured VPATHs are handled by the default PATH. */
+
+static int zxid_parse_vpath_conf_raw(zxid_conf* cf, char* vpath)
+{
+  char name[PATH_MAX];
+  char *p, *n, *lim;
+
+  DD("VPATH inside file(%.*s) %d new(%s)", cf->path_len, cf->path, cf->path_supplied, vpath);
+  if (cf->path_supplied && !memcmp(cf->path, vpath, cf->path_len)
+      || cf->path_supplied > ZXID_PATH_MAX_RECURS_EXPAND_DEPTH) {
+    D("Skipping VPATH inside file(%.*s) path_supplied=%d", cf->path_len, cf->path, cf->path_supplied);
+    return 0;
+  }
+
+  /* Check for relative path and prepend PATH if needed. */
+  
+  n = name;
+  lim = name + sizeof(name)-1;
+  
+  if (*vpath != '/') {
+    if (cf->path_len > lim-n) {
+      ERR("TOO LONG: PATH(%.*s) len=%d does not fit in vpath buffer size=%d", cf->path_len, cf->path, cf->path_len, lim-n);
+      return 0;
+    }
+    memcpy(n, cf->path, cf->path_len);
+    n +=  cf->path_len;
+  }
+  
+  /* Expand % */
+  
+  for (p = vpath; *p && n < lim; ++p) {
+    if (*p != '%') {
+      *n++ = *p;
+      continue;
+    }
+    switch (*++p) {
+    case 'h': n += zxid_eval_vpath_env(vpath, "%h", "HTTP_HOST", n, lim);    break;
+    case 'p': n += zxid_eval_vpath_env(vpath, "%p", "SERVER_PORT", n, lim);  break;
+    case 's': n += zxid_eval_vpath_env(vpath, "%s", "SCRIPT_NAME", n, lim);  break;
+    case '%': *n++ = '%';  break;
+    default:
+      ERR("VPATH(%s): Syntactically wrong character(%c) 0x%x, ignored", vpath, p[-1], p[-1]);      
+    }
+  }
+  *n = 0;
+
+  zxid_parse_conf_path_raw(cf, zx_dup_cstr(cf->ctx, name), 1);
+  return 1;
+}
+
 /*(i) Parse partial configuration specifications, such as may occur
  * on command line or in a configuration file.
  *
@@ -1013,8 +1119,8 @@ zxid_conf* zxid_new_conf(const char* zxid_path)
 /* Called by:  zxid_conf_to_cf_len x2, zxid_parse_conf, zxid_parse_conf_raw */
 int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
 {
-  int i, len;
-  char *p, *n, *v, *val, *name, *buf;
+  int i;
+  char *p, *n, *v, *val, *name;
   if (qs_len != -1 && qs[qs_len]) {  /* *** access one past end of buffer */
     ERR("LIMITATION: The configuration strings MUST be nul terminated (even when length is supplied explicitly). qs_len=%d qs(%.*s)", qs_len, qs_len, qs);
     return -1;
@@ -1166,16 +1272,12 @@ scan_end:
       DD("PATH maybe n(%s)=v(%s)", n, v);
       if (!strcmp(n, "PATH")) {
 	DD("PATH inside file(%.*s) %d new(%s)", cf->path_len, cf->path, cf->path_supplied, v);
-	if (cf->path_supplied && !memcmp(cf->path, v, cf->path_len) || cf->path_supplied > 5) {
-	  D("Skipping PATH inside file(%.*s) %d", cf->path_len, cf->path, cf->path_supplied);
+	if (cf->path_supplied && !memcmp(cf->path, v, cf->path_len)
+	    || cf->path_supplied > ZXID_PATH_MAX_RECURS_EXPAND_DEPTH) {
+	  D("Skipping PATH inside file(%.*s) path_supplied=%d", cf->path_len, cf->path, cf->path_supplied);
 	  break;
 	}
-	cf->path = v;
-	cf->path_len = strlen(v);
-	++cf->path_supplied;
-	buf = read_all_alloc(cf->ctx, "-conf_to_cf", 1, &len, "%szxid.conf", cf->path);
-	if (buf && len)
-	  zxid_parse_conf_raw(cf, len, buf);  /* Recurse */
+	zxid_parse_conf_path_raw(cf, v, 0);
 	break;
       }
       if (!strcmp(n, "PDP_ENA"))        { SCAN_INT(v, cf->pdp_ena); break; }
@@ -1247,6 +1349,7 @@ scan_end:
       goto badcf;
     case 'V':  /* VALID_OPT */
       if (!strcmp(n, "VALID_OPT"))      { SCAN_INT(v, cf->valid_opt); break; }
+      if (!strcmp(n, "VPATH"))          { zxid_parse_vpath_conf_raw(cf, v); break; }
       goto badcf;
     case 'W':  /* WANT_SSO_A7N_SIGNED */
       if (!strcmp(n, "WANT"))           { cf->want = zxid_load_need(cf, cf->want, v); break; }

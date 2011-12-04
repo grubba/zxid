@@ -22,8 +22,6 @@ of ZXID.
 ZXID, out-of-box, needs very little configuration. Generally you
 only need to decide the URL and NICE_NAME of your web site.
 
-> Tip: You can view current configuration by supplying URL suffix o=d
-
 Compile time configuration, based on Makefile and zxidconf.h is
 explained in separate
 document <<link:zxid-install.html: ZXID Compilation and Installation>>.
@@ -53,53 +51,258 @@ ZXID ships with working demo configuration so you can run it right
 away and once you are familiar with the concepts, you can return
 to this chapter.
 
-ZXID uses a configuration file in default path<<footnote: See Simple
-API for description on how to change this path at deplyment or run
-time.>>
+> Tip: You can view current configuration by supplying URL suffix ?o=d,
+> e.g. http://sp1.zxidsp.org:8080/sso?o=d
 
-  /var/zxid/zxid.conf
+2.1 Overview of Configuration
+-----------------------------
 
-for figuring out its parameters. If this file is not present, built-in
-default configuration is used (see zxidconf.h).<<footnote: You can
-override configuration options at run time by supplying fragments of
-configuration using -O flags, but for CGI use you would have to use a
-wrapper shell script to supply them. Hence, easier to just use the
-config file.>> The built-in configuration will allow you to test
-features of ZXID, but should not be used in production because it uses
-default certificates and private keys. Obviously the demo private key
-is of public knowledge since it is distributed with the ZXID package,
-and as such it provides no privacy protection what-so-ever. For
-production use you MUST generate your own certificate and private key.
+The bare built-in configuration will allow you to test features of
+ZXID, but +should not be used in production+ because it uses default
+certificates and private keys. Obviously the +demo private key is of
+public knowledge+ since it is distributed with the ZXID package, and as
+such +it provides no privacy protection what-so-ever+. For production
+use you MUST obtain or generate your own certificate and private key.
 
-Usually configuring a system involves following tasks
+Minimal configuration file /var/zxid/zxid.conf is as follows (see sections "ZXID
+Configuration File Format", "Configuration Parameters", "Full
+Configuration Option Reference", and file zxidconf.h for full
+explanation):
 
-1. Configure web server (see your web server documentation)
+  # Demo /var/zxid/zxid.conf file
+  PATH=/var/zxid/
+  URL=https://sp.mydomain.com:8443/zxid
+  NICE_NAME=My SP's human%0areadable name.
+  ORG_NAME=My Company, Inc.
+  ORG_URL=http://www.mycompany.be/
+  LOCALITY=City of Industry
+  STATE=Vlaams
+  COUNTRY=BE
+  #EOF
+
+Usually configuring a system involves the following tasks
+
+1. Configure a safe operating environment. In addition to physical
+   security and vetting personnel, this typically involves following
+   sysadmin tasks (be sure to have competent sysadmim understand
+   and implement these):
+
+   a. Install machine (instantiate) from reliable OS media, secure logins and
+      have rigour in issuance of ssh credentials and sudo root rights
+   b. Harden system by eliminating unnecessary services, applying patches, and
+      configuring firewalls (decide which ports you use: typical is 443 for https)
+   c. Implement encrypted filesystem to protect /var/zxid directory (or other
+      ZXID directories depending on your chosen filesystem layout). In implementing
+      encrypted filesystem, pay attention to narrow key distribution and escrow procedures.
+      These need to cater for reboots (manually supply passphrase for the encfs)
+      and disaster recovery scenarios.
+   d. Implement secure log collection, analysis, and storage (encrypt data at rest)
+   e. Implement secure backup. Encrypt data at rest, e.g. using pgp(1). Do not
+      forget key escrow.
+   f. Register domain names and have certificates issued
+
+2. Configure web server (see your web server documentation)
 
    a. HTTPS operation and TLS certificate. In the minimum you need
       the main site, but you may want to configure the Common Domain
       Cookie virtual host as well.
 
    b. Arrange for ZXID to be invoked. This could mean configuring
-      zxid, zxid-java.sh, or zxid.pl to be recognized as a CGI script, or
+      zxidhlo, zxid-java.sh, or zxidhlo.pl to be recognized as a CGI script, or
       it could mean setting up your ~mod_perl~ or ~mod_php~ system to call
       ZXID at the appropriate place.
 
-2. Configure ZXID, including signing certificate and CoT with peer metadata
+3. Configure ZXID, including signing certificate and CoT with peer metadata
 
-   a. generate or acquire certificate
+   a. Edit the configuration options (e.g. in /var/zxid/zxid.conf, but see below).
+      You must set at least URL and NICE_NAME.
 
-   b. Obtain peer metadata (from their well known location) or
-      enable +Auto CoT+ feature.
+   b. Generate or acquire certificate
 
-3. Configure CoT peers with your metadata. They can download your
+   c. Obtain peer metadata (from their well known location) or
+      enable +Auto CoT+ feature (see below). You can also
+      use zxcot(1) command line tool to import their metadata.
+
+4. Configure CoT peers with your metadata. They can download your
    metadata from your well known location (which is the URL that
-   is your entity ID). For this to happen you need to have web
-   server and ZXID up and running.
+   is your entity ID, usually ending in "?o=B"). For this to happen you
+   need to have a web server and ZXID up and running. Other route
+   is to use zxcot(1) command line tool, e.g.
 
-2.1 Configuration Parameters
+     zxcot -c URL=https://example.com/sso -c NICE_NAME='Your SP Brand' >your-md.xml
+
+   to generate metadata and then manually transfer it to CoT peers.
+
+5. If you are setting up an IdP (especially with Discovery), you need
+   to address several other points. Please see zxid-idp.pd for
+   further information.
+
+2.2 Sources of Configuration
 ----------------------------
 
-2.1.1 zxidroot (PATH configuration parameter)
+The configuration options of ZXID can be set using various methods,
+with later occurrance of an option overriding the previous value.
+Thus default configuration can (and should) provide most options,
+while you can override the ones that interest your particular
+deployment (you should override at least URL and NICE_NAME).
+The order, from earliest application to last application,
+of the sources of configuration options is as follows:
+
+1.  Compile time default configuration, see zxidconf.h
+
+2.  Default configuration file /var/zxid/zxid.conf (n.b. this file
+    need not exist, in which case it does not affect the configuration)
+
+3.  VPATH configuration file /var/zxid/<host:port>/zxid.conf (n.b. this file
+    need not exist, in which case it does not affect the configuration).
+    See (10) for full description.
+
+4.  ZXID_PRE_CONF environment variable, if supplied
+
+5.  Configuration string passed as an argument to one of the
+    API calls, e.g. zxid_new_conf_to_cf() or zxid_simple(). Usually
+    this is a hardwired string that the application programmer
+    provides, but the programmer might provide application dependent
+    mechanism to configure it.
+
+6.  ZXID_CONF environment variable, if supplied
+
+7.  In case of mod_auth_saml, the ZXIDConf options in the
+    httpd.conf file (in some distributions apache2.conf)
+
+8.  In case of command line utilities, like zxcot(1),
+    commandline flags like -c OPT=VAL or -ci (for default IdP config)
+
+9.  If PATH configuration option is changed by any of the above methods (2)-(8),
+    a new configuration file PATH $ "zxid.conf" (where $ (dollar) denotes
+    string concatenation) is read and evaluated at the spot where
+    the PATH changed (i.e. such configurations are evaluated in the middle
+    of the other methods).
+
+10. If VPATH configuration option is changed by any of the above methods,
+    a new configuration file PATH $ fold(HTTP_HOST) $ "zxid.conf",
+    where $ (dollar) denotes string concatenation and fold() denotes function squashing
+    all suspicious characters to underscores, is read and evaluated at the spot where
+    the VPATH is changed (i.e. such configurations are evaluated in the middle
+    of the other methods).
+
+    The VPATH option is meant to implement a virtual hosting feature where
+    the PATH is automatically determined from apparent host name and port
+    number, and consequently different zxid.conf is read for each virtual
+    host. The feature is on by default, but if no corresponding file
+    is found, no configuration change happens. If the file is found, then
+    PATH is also changed. Thus unlike in many other cases, for virtual
+    hosting the virtual host specific zxid.conf files are mandatory.
+    This makes sense as NICE_NAME, et al. should be specified anyway.
+
+Interplay of the respecification of PATH (you can specify even the same path)
+and other configuration methods allow all sorts of *default scenarios*
+to be implemented. For example, specification like
+
+  URL=http://sp1.zxidsp.org:8080/sso&PATH=/var/zxid/&PEP_ENA=0
+
+sets the URL configuration option, then rereads the /var/zxid/zxid.conf
+configuration file which allows URL to be overridden in the configuration
+file, but finally disables the PEP functionality such that it overrides
+the configuration file (unless some later configuration
+source causes the configuration file to be reread anyway).
+
+> N.B. Avoid recursive speficications of PATH and/or VPATH. They will be
+> expanded to depth of 5, but are almost always errors.
+
+2.3 Virtual Hosting
+-------------------
+
+As alluded in bullet (10) above, ZXID supports hostname based virtual
+hosting (multihoming). For this setup you would lay out your /var/zxid
+directory as follows
+
+  /var/zxid/
+   |
+   +-- zxid.conf  Main configuration file for generic options
+   +-- pem/       Not used
+   +-- cot/       Not used
+   +-- ses/       Not used
+   +-- log/       Some pid files (but see virtual host specific log dir)
+   |
+   +-- <host1:port>    Virtual host specific subdirectory (VPATH)
+   |    |
+   |    +-- zxid.conf  VPATH configuration file
+   |    +-- pem/       VPATH certificates
+   |    +-- cot/       VPATH metadata of CoT partners
+   |    +-- ses/       VPATH sessions
+   |    `-- log/       VPATH log and pid files
+   |
+   `-- <host2:port>    Virtual host specific subdirectory (VPATH)
+        |
+        +-- zxid.conf  VPATH configuration file
+        +-- pem/       VPATH certificates
+        +-- cot/       VPATH metadata of CoT partners
+        +-- ses/       VPATH sessions
+        `-- log/       VPATH log and pid files
+
+For virtual hosting to work, the web server layer must also be
+configured to support virtual hosting. In Apache2 httpd this can be
+done using ~VirtualDocumentRoot~ directive and directory layout where
+each virtual host has a subdirectory named after its hostname
+(preferred and philosphically similar to our approach), or using
+<VirtualHost> directives.
+
+> N.B. Another way to implement virtual hosting, that only works
+> with mod_auth_saml, is to use Apache2 httpd.conf
+> file where each <VirtualHost> section specifies different
+> PATH using ZXIDConf directive.
+
+For virtual hosting in Tomcat, there are two cases: if Apache2 httpd
+is a frontend, as it often is to implement https (recommended), then
+above instructions apply. If, however, you want to run Tomcat itself
+directly on virtual host basis, you need to consult Tomcat
+documentation (which the author has not tried, so there is no
+guarantee).
+
+If you use mini_httpd, then you need to run one server per IP address
++ port number combination. (If https is not involved, you could
+use mini_httpd -v with directory layout, but this is not recommended
+because all identity related services should be https.)
+
+2.4 Important Configuration Options
+-----------------------------------
+
+For full reference of the configuration parameters, see section "Full
+Configuration Option Reference", below, or the file zxidconf.h.
+
+2.4.1 NICE_NAME: SP Nickname for IdP User Interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+IMPORTANT: You should really configure this option. It is an
+important part of your +branding+ towards customers.
+
+The nice name may be used by IdP user interface to refer to the SP. It
+is usually a short human readable name or description. It will also
+appear in metadata as Organization/OrganizationDisplayName 
+
+NICE_NAME::  (default: "ZXID configuration NICE_NAME: Set this to describe your site to humans")
+
+2.4.2 URL: Web Site URL - root of EntityID
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+MUST: Failure to config this option usually blocks zxid from operating.
+
+URL for most zxid operations. It must end in whatever
+triggers the ZXID functionality in the web server (which depends on
+how you have configured the web server, see httpd.conf). The hostname
+and port number should match the server under which zxid CGI is
+accessible.  N.B. There is no explicit way to configure Entity ID
+(Provider ID) for the zxid SP. The Entity ID is always of form
+ZXID_URL?o=B .<<footnote: Actually there is: BARE_URL_ENTITYID option,
+but that is an advanced topic and will not be discussed here.>> For
+example
+
+  https://sp1.zxidsp.org:8443/zxid?o=B 
+
+URL::  (default: "https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid")
+
+2.4.3 zxidroot (PATH configuration parameter)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The root directory of ZXID configuration files and directories. By default this
@@ -115,7 +318,7 @@ is /var/zxid and has following directories and files in it
 
 See also zxid-log.pd for detailed description of the filesystem layout.
 
-2.1.2 pem
+2.4.4 pem
 ~~~~~~~~~
 
 Directory that holds various certificates. The certificates
@@ -149,7 +352,7 @@ cdc-nopw-cert.pem:: SSL or TLS certificate for Common Domain Cookie
     of this certificate should match the domain name of the site. The SSL
     certificate can be same as signing or encryption certificate.
 
-2.1.3 cot
+2.4.5 cot
 ~~~~~~~~~
 
 Directory that holds metadata of the Circle of Trust (CoT)
@@ -167,7 +370,7 @@ The file name component of the path is safe base64 encoded
 SHA1 hash of the Entity ID, with last character stripped (that
 character would always be an equals sign).
 
-2.2 ZXID Configuration File Format
+2.5 ZXID Configuration File Format
 ----------------------------------
 
 Most configuration details are kept as comments in
@@ -200,7 +403,7 @@ The configuration is processed in following order, with
 last instance of an option prevailing:
 
 1. Built in default configuration
-2. Configuration file, usually /var/zxid/zxid.conf, if any
+2. Configuration file /var/zxid/zxid.conf
 3. Configuration string passed as first argument.
 
    Configuration string is processed in order and
@@ -210,6 +413,9 @@ last instance of an option prevailing:
    While processing options, if PATH is found, the
    (new) config file is read, effectively overriding any
    options thus far.
+
+   See section "Sources of Configuration", above, for full
+   description.
 
 Essentially this allows you to provide early in configuration string options that
 can then be overridden by the config file ready by virtue of PATH apprearing
@@ -242,6 +448,7 @@ configuration options, but generally it is
 sufficient to specify only a handful:
 
 PATH:: Where files are kept and configuration file is found.
+NICE_NAME:: Human readable namme of the SP
 URL:: The URL of the SP
 CDC_URL:: The Common Domain URL (optional, if omitted
     the Common Domain Cookie processing is disabled)

@@ -69,14 +69,8 @@ class zxidjniJNI {
   public final static native char zx_ctx_pad2_get(long jarg1);
   public final static native void zx_ctx_pad3_set(long jarg1, char jarg2);
   public final static native char zx_ctx_pad3_get(long jarg1);
-  public final static native void zx_ctx_pad4_set(long jarg1, char jarg2);
-  public final static native char zx_ctx_pad4_get(long jarg1);
-  public final static native void zx_ctx_pad5_set(long jarg1, char jarg2);
-  public final static native char zx_ctx_pad5_get(long jarg1);
-  public final static native void zx_ctx_pad6_set(long jarg1, char jarg2);
-  public final static native char zx_ctx_pad6_get(long jarg1);
-  public final static native void zx_ctx_pad7_set(long jarg1, char jarg2);
-  public final static native char zx_ctx_pad7_get(long jarg1);
+  public final static native void zx_ctx_zx_errno_set(long jarg1, int jarg2);
+  public final static native int zx_ctx_zx_errno_get(long jarg1);
   public final static native long new_zx_ctx();
   public final static native void delete_zx_ctx(long jarg1);
   public final static native void zx_str_n_set(String jarg1, String jarg2);

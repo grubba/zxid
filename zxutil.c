@@ -144,8 +144,10 @@ int read_all_fd(fdtype fd, char* p, int want, int* got_all)
   HANDLE fdh = fd;
   if( fdh == 0 ) // stdin
       fdh = GetStdHandle(STD_INPUT_HANDLE);
-  if (!ReadFile(fdh, p, want, &got, 0))
+  if (!ReadFile(fdh, p, want, &got, 0)) {
+    c->zx_errno = errno ? errno : 1;
     return -1;
+  }
   if (got_all) *got_all = got;
 #else  /* The Unix way */
   int got = 0;
@@ -226,6 +228,7 @@ char* read_all_alloc(struct zx_ctx* c, const char* logkey, int reperr, int* lenp
   if (fd == BADFD) {
     if (lenp)
       *lenp = 0;
+    c->zx_errno = errno;
     return 0;
   }
 
@@ -234,6 +237,7 @@ char* read_all_alloc(struct zx_ctx* c, const char* logkey, int reperr, int* lenp
   
   if (read_all_fd(fd, buf, len, &gotall) == -1) {
     perror("Trouble reading.");
+    c->zx_errno = errno;
     D("read error lk(%s)", logkey);
     close_file(fd, logkey);
     buf[len] = 0;
@@ -245,6 +249,7 @@ char* read_all_alloc(struct zx_ctx* c, const char* logkey, int reperr, int* lenp
   buf[MIN(gotall, len)] = 0;  /* nul terminate */
   if (lenp)
     *lenp = gotall;
+  c->zx_errno = 0;
   return buf;
 }
 

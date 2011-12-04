@@ -1,6 +1,6 @@
 /* errmac.h  -  Utility, debugging, and error checking macros
  *
- * Copyright (c) 1998,2001,2006,2010 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
+ * Copyright (c) 1998,2001,2006,2010-2011 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
  * Copyright (c) 2001-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * This is free software and comes with NO WARRANTY. For licensing
  * see file COPYING in the distribution directory.
@@ -17,6 +17,7 @@
  * 3.10.2007, added FLOCK() and FUNLOCK() --Sampo
  * 22.3.2008, renamed debug to zx_debug to avoid conflicts in any .so module usage --Sampo
  * 4.12.2010, fixed bug in locking where range was zero length --Sampo
+ * 4.12.2011, fixed bug in TOUPPER() macro --Sampo
  */
 
 #ifndef _macro_h
@@ -146,7 +147,7 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define STR_TERM '\0'
  
 #define TOUPPER(x) (IN_RANGE(x, 'a', 'z') ? ((x) - ('a' - 'A')) : (x))
-#define TOLOWER(x) (IN_RANGE(x, 'A', 'Z') ? ((x) - ('A' - 'z')) : (x))
+#define TOLOWER(x) (IN_RANGE(x, 'A', 'Z') ? ((x) - ('A' - 'a')) : (x))
 
 #define BOOL_STR_TEST(x) ((x) && (x) != '0')
  

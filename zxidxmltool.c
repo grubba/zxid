@@ -41,9 +41,8 @@ Usage: zxid [options] < foo.xml\n\
                    or Provider ID, aka well known location. The imported metadata\n\
                    is written to CoT cache directory.\n\
   -C CONFPATH      Path to (optional) config file, default /var/zxid/zxid.conf\n\
-  -O OPT=VAL       Override default or config file option. Only after -C, if any.\n\
+  -c OPT=VAL       Override default or config file option. Only after -C, if any.\n\
   -t SECONDS       Timeout. Default: 0=no timeout.\n\
-  -c CIPHER        Enable crypto on DTS interface using specified cipher. Use '?' for list.\n\
   -k FDNUMBER      File descriptor for reading symmetric key. Use 0 for stdin.\n\
   -egd PATH        Specify path of Entropy Gathering Daemon socket, default on\n\
                    Solaris: /tmp/entropy. On Linux /dev/urandom is used instead\n\
@@ -95,7 +94,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
       conf_path = **argv;
       continue;
 
-    case 'O': if ((*argv)[0][2]) break;
+    case 'c': if ((*argv)[0][2]) break;
       ++(*argv); --(*argc);
       if (!(*argc)) break;
       if (conf_path != (char*)1) {

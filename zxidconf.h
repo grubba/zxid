@@ -30,13 +30,14 @@
 /*(c) Compile time configuration enforcement
  * Whether configuration is entirely determined at compile time by this file
  * or whether it is possible to use a config file or provide options on
- * command line using -O flags (such as via shell script wrapper). When zxid
- * is used as a library, it depends on application to call zxid_parse_conf().
+ * command line using -c flags (such as via shell script wrapper) or via ZXID_CONF
+ * environment variable. When zxid is used as a library, it depends on application to
+ * call zxid_parse_conf().
  * Generally we recommend you leave these turned on (1). */
 
 #define ZXID_CONF_FILE 1     /* (compile) */
-#define ZXID_CONF_FLAG 1     /* (compile) */
-#define ZXID_SHOW_CONF 1     /* Whether configuration is viewable from url o=d */
+#define ZXID_CONF_FLAG 1     /* (compile) ZXID_CONF environment variable and -c flag enable. */
+#define ZXID_SHOW_CONF 1     /* Whether configuration is viewable from URL?o=d */
 
 /*(c) ZXID configuration and working directory path
  * Where metadata cache and session files are created. Note that the directory
@@ -45,11 +46,43 @@
  * with proper layout. If you change it here, also edit Makefile. */
 #ifndef ZXID_PATH
 #ifdef MINGW
-#define ZXID_PATH "c:/var/zxid/"
+#define ZXID_PATH  "c:/var/zxid/"
+#define ZXID_VPATH "c:/var/zxid/%h:%p/"
 #else
-#define ZXID_PATH "/var/zxid/"
+#define ZXID_PATH  "/var/zxid/"
+#define ZXID_VPATH "/var/zxid/%h:%p/"
 #endif
 #endif
+
+#define ZXID_PATH_MAX_RECURS_EXPAND_DEPTH 5  /* (compile) Max no of incls, nested PATH or VPATH */
+
+/*(c) VPATH - PATH for a virtual server
+ *
+ * The VPATH allows different configuration PATH for different
+ * virtual servers (multihoming) to exist, thus allowing
+ * different zxid.conf files and different /var/zxid/ subdirectory.
+ * If the config file <PATH><VPATH>zxid.conf exists (i.e. /var/zxid/<VPATH>zxid.conf
+ * when using default PATH), then the PATH configuration variable is changed
+ * to point to the VPATH, and the virtual host specific config file is read.
+ *
+ * VPATH is rendered by first inserting current PATH, unless VPATH starts by '/',
+ * and then rendering each ordinary letter as is, but expanding the
+ * following % (percent) specifications, inline:
+ *
+ *   %%  expands as single percent sign
+ *   %h  the contents of environment variable HTTP_HOST (see CGI spec)
+ *   %p  the contents of environment variable SERVER_PORT (see CGI spec)
+ *   %s  the contents of environment variable SCRIPT_NAME (see CGI spec)
+ *
+ * > N.B. All other %-specs are reserved for future expansion
+ *
+ * VPATH is not really a configuration option on its own right (there is
+ * no corresponding entry in struct zxid_conf), but rather a directive
+ * that instructs on point of occurrance the PATH variable (see zxid.h)
+ * to change and configuration file to be read.
+ *
+ * Default value: "/var/zxid/%h:%p/" (see definition of PATH for example).
+ */
 
 /*(c) SP Nickname for IdP User Interface
  * IMPORTANT: You should really configure this option.
@@ -285,7 +318,9 @@
 #define ZXID_WSP_SIGN 0x03
 
 /*(c) Command that will be executed by zxidwspcgi to respond to a web service call. */
+#ifndef ZXID_WSPCGICMD
 #define ZXID_WSPCGICMD "./zxid-wspcgicmd.sh"
+#endif
 
 /*(c) Bit length of identifiers, unguessability
  * How many random bits to use in an ID. It would be useful if this was
@@ -324,7 +359,8 @@
  * You may want to archive old sessions because they contain
  * the SSO assertions that allowed the users to log in. This
  * may have legal value for your application, you may even be required
- * by law to keep this audit trail.
+ * by law to keep this audit trail. On the other hand, other
+ * jurisdictions will require you to delete this information.
  *
  * If set to 0, causes old sessions to be unlink(2)'d. */
 #define ZXID_SES_ARCH_DIR 0  /* 0=Remove dead sessions. */
@@ -339,7 +375,9 @@
  * generally the need to set a cookie is expressed by presence of
  * setcookie attribute in the LDIF entry. setcookie specifies what
  * should appear in the Set-Cookie HTTP header of HTTP response). */
+#ifndef ZXID_SES_COOKIE_NAME
 #define ZXID_SES_COOKIE_NAME "ZXIDSES"
+#endif
 
 /*(c) Local user account management.
  * This is optional unless you require IdP

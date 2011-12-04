@@ -68,6 +68,13 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Idea: discovery and consent questions up-front in the beginning of the business process
     - AuthnCtx comparison or matching
     - Proxy IdP AuthnCtx, RequesterID mapping
+    - Config option to turn off audience restriction
+    - U-Prove (https://connect.microsoft.com/site1188  /t/U-Prove_CTP_R2_Whitepaper.pdf) support
+    - Idemix support http://www.zurich.ibm.com/security/idemix/
+    - AuthnSvc (AS) should check caller credential, in addition to the login credential, see comment on AS_ENA in zxidconf.h
+
+zxid-1.04:: 5.12.2011
+    - Added VPATH for virtual hosting support, documented ZXID_CONF environment variable
 
 zxid-1.03:: 12.8.2011
     - Fixed timestamp generation in pep call

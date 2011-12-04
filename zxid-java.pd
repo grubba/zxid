@@ -3,7 +3,7 @@
 ##########################
 <<author: Sampo Kellomäki (sampo@iki.fi)>>
 <<cvsid: $Id: zxid-java.pd,v 1.7 2010-01-08 02:10:09 sampo Exp $>>
-<<class: article!a4paper!!ZXID-JAVA 01>>
+<<class: article!a4paper!!ZXID-JAVA 02>>
 <<define: ZXDOC=ZXID Java Interface>>
 
 <<abstract:
@@ -496,10 +496,40 @@ If you get
         org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)
         java.lang.Thread.run(Thread.java:595)
 
-Then you forgot to turn on the symlinks (see ~allowLinking~, above).
+Then you forgot to turn on the symlinks (see ~allowLinking~, above). Or you
+forgot to make the symlinks (e.g. ln -s ../.. classes). Alternately can
+just copy the files aqnd directories to the right place in the Tomcat tree.
+See section "Running as servlet under Tomcat", above.
 
-9.7.2 Class Path
-~~~~~~~~~~~~~~~~
+Following is another manifestation of the same problem:
+
+  javax.servlet.ServletException: Wrapper cannot find servlet class zxidappdemo or a class it depends on
+	org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:105)
+	org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:148)
+	org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:869)
+	org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.processConnection(Http11BaseProtocol.java:664)
+	org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpoint.java:527)
+	org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFollowerWorkerThread.java:80)
+	org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)
+	java.lang.Thread.run(Thread.java:534)
+
+  root cause
+
+  java.lang.ClassNotFoundException: zxidappdemo
+	org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1355)
+	org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1201)
+	org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:105)
+	org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:148)
+	org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:869)
+	org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.processConnection(Http11BaseProtocol.java:664)
+	org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpoint.java:527)
+	org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFollowerWorkerThread.java:80)
+	org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)
+	java.lang.Thread.run(Thread.java:534)
+
+
+9.7.2 Class Path or Java Version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you get
 
@@ -540,6 +570,47 @@ If you get
 
 Then the problem is with class path. Apparently running the startup.sh script from anywhere
 else than top level of Tomcat distribution produces the above error.
+
+If, however, you get
+
+  javax.servlet.ServletException: Error allocating a servlet instance
+	org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:105)
+	org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:148)
+	org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:869)
+	org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.processConnection(Http11BaseProtocol.java:664)
+	org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpoint.java:527)
+	org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFollowerWorkerThread.java:80)
+	org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)
+	java.lang.Thread.run(Thread.java:534)
+
+  root cause
+
+  java.lang.UnsupportedClassVersionError: zxidappdemo (Unsupported major.minor version 50.0)
+	java.lang.ClassLoader.defineClass0(Native Method)
+	java.lang.ClassLoader.defineClass(ClassLoader.java:537)
+	java.security.SecureClassLoader.defineClass(SecureClassLoader.java:123)
+	org.apache.catalina.loader.WebappClassLoader.findClassInternal(WebappClassLoader.java:1815)
+	org.apache.catalina.loader.WebappClassLoader.findClass(WebappClassLoader.java:869)
+	org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1322)
+	org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1201)
+	org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:105)
+	org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:148)
+	org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:869)
+	org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.processConnection(Http11BaseProtocol.java:664)
+	org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpoint.java:527)
+	org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFollowerWorkerThread.java:80)
+	org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)
+	java.lang.Thread.run(Thread.java:534)
+
+the reason is that you have compiled the zxidappdemo.class (and/or other classes) with
+newer version of Java that what is running the Tomcat server, e.g. compiled with
+Java 1.6, running with Java 1.4. This is a common problem, just search the web.
+
+Some common Java class version numbers:
+
+* Java 6 (1.6): Version 50.0
+* Java 5 (1.5): Version 49.0
+* Java 1.4.2: Version 48.0
 
 9.7.3 LD_LIBRARY_PATH
 ~~~~~~~~~~~~~~~~~~~~~
@@ -675,6 +746,8 @@ jdb prompt.
 
 Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
 Author: Sampo Kellomäki (sampo@iki.fi)
+
+Copyright (c) 2010-2011 Sampo Kellomäki (sampo@iki.fi), All Rights Reserved.
 
 See file COPYING for complete information.
 
