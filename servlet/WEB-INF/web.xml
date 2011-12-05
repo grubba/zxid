@@ -29,6 +29,16 @@
 </servlet-mapping>
 
 <servlet>
+<servlet-name>app-demo</servlet-name>
+<servlet-class>app_demo</servlet-class>
+</servlet>
+
+<servlet-mapping>
+<servlet-name>app-demo</servlet-name>
+<url-pattern>/app-demo</url-pattern>
+</servlet-mapping>
+
+<servlet>
 <servlet-name>zxidappdemo</servlet-name>
 <servlet-class>zxidappdemo</servlet-class>
 </servlet>

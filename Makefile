@@ -1105,6 +1105,9 @@ zxidhlo.class: zxidhlo.java zxidjava/zxidjni.class
 zxidsrvlet.class: zxidsrvlet.java zxidjava/zxidjni.class
 	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java zxidsrvlet.java
 
+app_demo.class: app_demo.java zxidjava/zxidjni.class
+	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java app_demo.java
+
 zxidappdemo.class: zxidappdemo.java zxidjava/zxidjni.class
 	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java zxidappdemo.java
 
