@@ -109,13 +109,13 @@ public class zxidsrvlet extends HttpServlet {
 	System.err.print("Start POST....\n");
 	String qs;
 	int len = req.getContentLength();
-	System.err.print("Got Content-Length="+len+"\n");
+	//System.err.print("Got Content-Length="+len+"\n");
 	byte[] b = new byte[len];
 	int here, got;
 	for (here = 0; here < len; here += got)
 	    got = req.getInputStream().read(b, here, len - here);
 	qs = new String(b, 0, len);
-	System.err.print("Got "+len+" bytes qs("+qs+")\n");
+	//System.err.print("Got "+len+" bytes qs("+qs+")\n");
 	do_zxid(req, res, qs);
     }
 }

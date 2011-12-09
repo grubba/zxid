@@ -426,6 +426,7 @@ int main(int argc, char** argv, char** env)
     exit(2);
   fprintf(stderr, "=================== Running ===================\n");
   ++zx_debug;
+  zxid_set_opt(cf, 6, 0);
 #endif
   cf->nosig_fatal = 0;  // *** For SimpleSign the signature is checked at other level
 

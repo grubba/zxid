@@ -425,8 +425,9 @@ extern char zx_instance[64];
 #define CURL_INOUT          0x40   /* Back Channel */
 
 extern int zx_debug;         /* Defined in zxidlib.c */
-extern FILE* zx_debug_log;   /* Defined in zxidlib.c as alias to stderr */
 extern char zx_indent[256];  /* Defined in zxidlib.c *** Locking issues? */
+extern FILE* zx_debug_log;   /* Defined in zxidlib.c as 0 alias to stderr */
+#define ZX_DEBUG_LOG (zx_debug_log?zx_debug_log:(stderr))
 #if 1
 /* In some scenarios multithreaded access can cause zx_indent to be scrambled.
  * However, it should not under- or overflow. Thus no lock. */
@@ -437,18 +438,18 @@ extern char zx_indent[256];  /* Defined in zxidlib.c *** Locking issues? */
 #define D_DEDENT(s)
 #endif
 #ifdef VERBOSE
-#define D(format,...) (void)((fprintf(zx_debug_log, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(zx_debug_log)))
+#define D(format,...) (void)((fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
 #define DD D
 #else
-#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(zx_debug_log, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(zx_debug_log)))
-/*#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(zx_debug_log, "t%x %10s:%-3d %-16s %s d " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(zx_debug_log)))*/
+#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
+/*#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s d " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG)))*/
 #define DD(format,...)  /* Documentative */
 #endif
 
-#define ERR(format,...) (fprintf(zx_debug_log, "p%d %10s:%-3d %-16s %s E %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(zx_debug_log))
-/*#define ERR(format,...) (fprintf(zx_debug_log, "t%x %10s:%-3d %-16s %s E " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(zx_debug_log))*/
-#define INFO(format,...) (fprintf(zx_debug_log, "p%d %10s:%-3d %-16s %s I %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(zx_debug_log))
-/*#define INFO(format,...) (fprintf(zx_debug_log, "t%x %10s:%-3d %-16s %s I %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(zx_debug_log))*/
+#define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s E %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+/*#define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s E " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG))*/
+#define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s I %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+/*#define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s I %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))*/
 
 #define D_XML_BLOB(cf, lk, len, xml) zxlog_debug_xml_blob((cf), __FILE__, __LINE__, __FUNCTION__, (lk), (len), (xml))
 #define DD_XML_BLOB(cf, lk, len, xml) /* Documentative */
@@ -471,12 +472,12 @@ int hexdump(char* msg, char* p, char* lim, int max);
 #define SET_MUTEX_INFO(name, msg)
 /*#define SET_MUTEX_INFO(name, msg) name ## info = __FILE__ " " msg; name ## line = __LINE__; name ## thr = pthread_self();*/
 # ifdef STDOUT_DEBUG
-#  define LOG zx_debug_log,
+#  define LOG ZX_DEBUG_LOG,
 #  define OPEN_LOG()
 #  define CLOSE_LOG()
 #  define FLUSH() fflush(stdout)
 # else
-#  define LOG zx_debug_log,
+#  define LOG ZX_DEBUG_LOG,
 #  define LOG_FILE HOME "foo.log"
 #  define OPEN_LOG() MB TR { if ((zx_debug_log = fopen(LOG_FILE, "a")) == NULL) trace = 0; } ME
 #  define CLOSE_LOG() MB TR if (zx_debug_log) { fclose(zx_debug_log); debug_log=0; trace = 0; } ME
@@ -500,13 +501,13 @@ int hexdump(char* msg, char* p, char* lim, int max);
 #define OPEN_LOG()
 #define CLOSE_LOG()
 # ifdef STDOUT_DEBUG
-#  define LOG zx_debug_log,
+#  define LOG ZX_DEBUG_LOG,
 #  define FLUSH() fflush(zx_debug_log)
 # else
 
    /* N.B. these macros assume existence of global variable debug_log, unless STDOUT_DEBUG
     *      is defined. */
-#  define LOG zx_debug_log,
+#  define LOG ZX_DEBUG_LOG,
 #  define FLUSH() fflush(zx_debug_log)
 # endif
 #define PR fprintf
@@ -527,7 +528,7 @@ int hexdump(char* msg, char* p, char* lim, int max);
 /* Try to produce some exception, unless global setting says asserting is NOT ok. */
 
 extern char* assert_msg;
-#define DIE_ACTION(b) MB fprintf(zx_debug_log, assert_msg, ERRMAC_INSTANCE); if (assert_nonfatal == 0) { *((int*)0xffffffff) = 1; } ME
+#define DIE_ACTION(b) MB fprintf(ZX_DEBUG_LOG, assert_msg, ERRMAC_INSTANCE); if (assert_nonfatal == 0) { *((int*)0xffffffff) = 1; } ME
 
 /* Many development time sanity checks use these macros so that they can be compiled away from
  * the final version. ASSERT macros are more convenient than their library counter

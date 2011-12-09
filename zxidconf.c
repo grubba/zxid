@@ -227,7 +227,7 @@ char* zxid_set_opt_cstr(zxid_conf* cf, int which, char* val)
     }
     INFO("zxid_set_opt_cstr: opened new log file(%s), rel=" ZXID_REL " euid=%d egid=%d cwd(%s)", STRNULLCHK(val), geteuid(), getegid(), getcwd(buf, sizeof(buf)));
     return "";
-  default: ERR("zxid_set_opt_cstr: this version " ZXID_REL " does not support which=%d val=%d (ignored)", which, val);
+  default: ERR("zxid_set_opt_cstr: this version " ZXID_REL " does not support which=%d val(%s) (ignored)", which, STRNULLCHK(val));
   }
   return 0;
 }
