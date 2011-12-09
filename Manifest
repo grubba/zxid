@@ -56,6 +56,8 @@ call-anal.pl     - Call graph analysis tool (see make callgraph)
 xml-pretty.pl    - XML Pretty Printer
 zximport-htpasswd.pl - Script to create users in /var/zxid/idpuid from .htpasswd
 zximport-ldif.pl - Script to create users in /var/zxid/idpuid from LDIF file
+diffy.pl         - Colorized diff utility
+env.cgi          - Dump environment - a helper to debug CGI
 
 # Handwritten code, mainly for libzxid.a
 

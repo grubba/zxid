@@ -92,7 +92,6 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define I32_MAX 0x7fffffff
 #endif
 
-
 /* Pessimistic maximum string conversion lengths.
  *   2^n == 10^x
  *   x = n * l(2)/l(10)   ; l == ln or log
@@ -151,8 +150,8 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 
 #define BOOL_STR_TEST(x) ((x) && (x) != '0')
  
-     /* Copy memory and null terminate string. strncpy strings and
-        guarantee null termination (strncpy does not). */
+/* Copy memory and null terminate string. strncpy strings and
+   guarantee null termination (strncpy does not). */
  
 #define MEMCPYZ(to,fro,l) MB memcpy((to),(fro),(l)); (to)[(l)]   = 0x00; ME
 #define strnzcpy(to,f,l)  MB strncpy((to),(f),(l));  (to)[(l)-1] = '\0'; ME
@@ -426,7 +425,8 @@ extern char zx_instance[64];
 #define CURL_INOUT          0x40   /* Back Channel */
 
 extern int zx_debug;         /* Defined in zxidlib.c */
-extern char zx_indent[256];  /* Defined in zxidlib.c. *** Locking issues? */
+extern FILE* zx_debug_log;   /* Defined in zxidlib.c as alias to stderr */
+extern char zx_indent[256];  /* Defined in zxidlib.c *** Locking issues? */
 #if 1
 /* In some scenarios multithreaded access can cause zx_indent to be scrambled.
  * However, it should not under- or overflow. Thus no lock. */
@@ -437,18 +437,18 @@ extern char zx_indent[256];  /* Defined in zxidlib.c. *** Locking issues? */
 #define D_DEDENT(s)
 #endif
 #ifdef VERBOSE
-#define D(format,...) (void)((fprintf(stderr, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(stderr)))
+#define D(format,...) (void)((fprintf(zx_debug_log, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(zx_debug_log)))
 #define DD D
 #else
-#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(stderr, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(stderr)))
-/*#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(stderr, "t%x %10s:%-3d %-16s %s d " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(stderr)))*/
+#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(zx_debug_log, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(zx_debug_log)))
+/*#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(zx_debug_log, "t%x %10s:%-3d %-16s %s d " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(zx_debug_log)))*/
 #define DD(format,...)  /* Documentative */
 #endif
 
-#define ERR(format,...) (fprintf(stderr, "p%d %10s:%-3d %-16s %s E %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(stderr))
-/*#define ERR(format,...) (fprintf(stderr, "t%x %10s:%-3d %-16s %s E " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(stderr))*/
-#define INFO(format,...) (fprintf(stderr, "p%d %10s:%-3d %-16s %s I %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(stderr))
-/*#define INFO(format,...) (fprintf(stderr, "t%x %10s:%-3d %-16s %s I %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(stderr))*/
+#define ERR(format,...) (fprintf(zx_debug_log, "p%d %10s:%-3d %-16s %s E %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(zx_debug_log))
+/*#define ERR(format,...) (fprintf(zx_debug_log, "t%x %10s:%-3d %-16s %s E " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(zx_debug_log))*/
+#define INFO(format,...) (fprintf(zx_debug_log, "p%d %10s:%-3d %-16s %s I %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(zx_debug_log))
+/*#define INFO(format,...) (fprintf(zx_debug_log, "t%x %10s:%-3d %-16s %s I %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(zx_debug_log))*/
 
 #define D_XML_BLOB(cf, lk, len, xml) zxlog_debug_xml_blob((cf), __FILE__, __LINE__, __FUNCTION__, (lk), (len), (xml))
 #define DD_XML_BLOB(cf, lk, len, xml) /* Documentative */
@@ -471,7 +471,7 @@ int hexdump(char* msg, char* p, char* lim, int max);
 #define SET_MUTEX_INFO(name, msg)
 /*#define SET_MUTEX_INFO(name, msg) name ## info = __FILE__ " " msg; name ## line = __LINE__; name ## thr = pthread_self();*/
 # ifdef STDOUT_DEBUG
-#  define LOG stderr,
+#  define LOG zx_debug_log,
 #  define OPEN_LOG()
 #  define CLOSE_LOG()
 #  define FLUSH() fflush(stdout)
@@ -500,8 +500,8 @@ int hexdump(char* msg, char* p, char* lim, int max);
 #define OPEN_LOG()
 #define CLOSE_LOG()
 # ifdef STDOUT_DEBUG
-#  define LOG stderr,
-#  define FLUSH() fflush(stderr)
+#  define LOG zx_debug_log,
+#  define FLUSH() fflush(zx_debug_log)
 # else
 
    /* N.B. these macros assume existence of global variable debug_log, unless STDOUT_DEBUG
@@ -527,7 +527,7 @@ int hexdump(char* msg, char* p, char* lim, int max);
 /* Try to produce some exception, unless global setting says asserting is NOT ok. */
 
 extern char* assert_msg;
-#define DIE_ACTION(b) MB fprintf(stderr, assert_msg, ERRMAC_INSTANCE); if (assert_nonfatal == 0) { *((int*)0xffffffff) = 1; } ME
+#define DIE_ACTION(b) MB fprintf(zx_debug_log, assert_msg, ERRMAC_INSTANCE); if (assert_nonfatal == 0) { *((int*)0xffffffff) = 1; } ME
 
 /* Many development time sanity checks use these macros so that they can be compiled away from
  * the final version. ASSERT macros are more convenient than their library counter

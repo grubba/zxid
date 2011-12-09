@@ -654,7 +654,7 @@ Then it is not finding zxidjava/libzxidjni.so. Either say
   export LD_LIBRARY_PATH=~/zxid-0.34/zxidjava:$LD_LIBRARY_PATH
 
 or place libzxidjni.so in $CATALINA_HOME/shared/lib. Note that the
-library name really is libzxidjni.so despite the misleading exception
+library file name really is libzxidjni.so despite the misleading exception
 suggesting just "zxidjni".
 
 9.7.4 Native Library Already Loaded

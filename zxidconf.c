@@ -198,6 +198,8 @@ int zxid_set_opt(zxid_conf* cf, int which, int val)
   switch (which) {
   case 1: zx_debug = val; return val;
   case 5: exit(val);  /* This is typically used to force __gcov_flush() */
+  case 6: zxid_set_opt_cstr(cf, 6, "/var/zxid/log/log.dbg"); return 0;
+  default: ERR("zxid_set_opt: this version " ZXID_REL " does not support which=%d val=%d (ignored)", which, val);
   }
   return -1;
 }
@@ -211,10 +213,21 @@ int zxid_set_opt(zxid_conf* cf, int which, int val)
 /* Called by: */
 char* zxid_set_opt_cstr(zxid_conf* cf, int which, char* val)
 {
+  char buf[PATH_MAX];
   switch (which) {
   case 2: strncpy(zx_instance, val, sizeof(zx_instance)); return zx_instance;
   case 3: D_INDENT(val); return zx_indent;
   case 4: D_DEDENT(val); return zx_indent;
+  case 6:
+    zx_debug_log = fopen(val, "a");
+    if (!zx_debug_log) {
+      perror("zxid_set_opt_cstr: failed to open new log file");
+      fprintf(stderr, "zxid_set_opt_cstr: failed to open new log file(%s), euid=%d egid=%d cwd(%s)", STRNULLCHK(val), geteuid(), getegid(), getcwd(buf, sizeof(buf)));
+      exit(1);
+    }
+    INFO("zxid_set_opt_cstr: opened new log file(%s), rel=" ZXID_REL " euid=%d egid=%d cwd(%s)", STRNULLCHK(val), geteuid(), getegid(), getcwd(buf, sizeof(buf)));
+    return "";
+  default: ERR("zxid_set_opt_cstr: this version " ZXID_REL " does not support which=%d val=%d (ignored)", which, val);
   }
   return 0;
 }

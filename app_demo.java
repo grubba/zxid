@@ -42,7 +42,8 @@ public class app_demo extends HttpServlet {
     static final Pattern role_pat   = Pattern.compile("role:[ ]([^\\n]*)");
     static final Pattern boot_pat   = Pattern.compile("urn:liberty:disco:2006-08:DiscoveryEPR:[ ]([^\\n]*)");
 
-    static final String conf = "PATH=/var/zxid/&URL=http://sp.employeedata.com:8080/app-demo/sso";
+    static final String conf = "PATH=/var/zxid/";
+    //static final String conf = "PATH=/var/zxid/&URL=http://sp.employeedata.com:8080/app-demo/sso";
     static zxidjava.zxid_conf cf;
     static {
 	// CONFIG: You must have created /var/zxid directory hierarchy. See `make dir'
@@ -151,7 +152,7 @@ public class app_demo extends HttpServlet {
 	out.print("<table align=right><tr><td>");
 	//out.print("<a href=\"http://www.tas3.eu/\"><img src=\"tas3-logo.jpg\" height=64 border=0></a>");
 	//out.print("<a href=\"http://zxid.org/\"><img src=\"logo-zxid-128x128.png\" height=64 border=0></a>");
-	out.print("<a href=\"http://synergetics.be/\"><img src=\"synlogo_s.jpg\" height=67 border=0></a>");
+	out.print("<a href=\"http://synergetics.be/\"><img src=\"synlogo_s.jpg\" height=67 border=0></a><br>");
 	out.print("</td></tr></table>");
 	out.print("<h1>end2end Trust Assurance Demo App Protected Content</h1>\n");
 	//out.print("<h1>ZXID Demo App Protected Content</h1> at " + fullURL + "\n");

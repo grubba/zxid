@@ -31,6 +31,7 @@
 #include "c/zx-data.h"
 
 int zx_debug = 0;              /* declared in errmac.h */
+FILE* zx_debug_log = stderr;   /* declared in errmac.h */
 char zx_indent[256] = "";      /* declared in errmac.h */
 char zx_instance[64] = "\tzx"; /* declared in errmac.h */
 int assert_nonfatal = 0;

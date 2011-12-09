@@ -34,6 +34,7 @@ public class zxidsrvlet extends HttpServlet {
     {
 	if (req.getParameter("gr") != null || req.getParameter("gl") != null)
 	    req.getSession(true).invalidate();  // Invalidate local ses in case of SLO
+	System.err.print("Calling zxid\n");
 	String ret = zxidjni.simple_cf(cf, -1, qs, null, 0x3d54);  // QS response requested
 	System.err.print(ret);
 	switch (ret.charAt(0)) {
@@ -105,14 +106,16 @@ public class zxidsrvlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res)
 	throws ServletException, IOException
     {
-	System.err.print("Start POST...\n");
+	System.err.print("Start POST....\n");
 	String qs;
 	int len = req.getContentLength();
+	System.err.print("Got Content-Length="+len+"\n");
 	byte[] b = new byte[len];
 	int here, got;
 	for (here = 0; here < len; here += got)
 	    got = req.getInputStream().read(b, here, len - here);
 	qs = new String(b, 0, len);
+	System.err.print("Got "+len+" bytes qs("+qs+")\n");
 	do_zxid(req, res, qs);
     }
 }

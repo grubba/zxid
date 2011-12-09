@@ -40,7 +40,8 @@
 
 <servlet>
 <servlet-name>zxidappdemo</servlet-name>
-<servlet-class>zxidappdemo</servlet-class>
+<!--servlet-class>zxidappdemo</servlet-class-->
+<servlet-class>app_demo</servlet-class>
 </servlet>
 
 <servlet-mapping>
