@@ -46,6 +46,13 @@ public class zxidappdemo extends HttpServlet {
 	// CONFIG: You must have created /var/zxid directory hierarchy. See `make dir'
 	// CONFIG: You must create edit the URL to match your domain name and port
 	// CONFIG: Usually you create and edit /var/zxid/zxid.conf and override the URL there
+
+	//System.out.println(System.getProperty("java.version"));
+	//System.out.println(System.getProperty("java.vm.version"));
+	//System.out.println(System.getProperty("java.class.version"));
+	//System.out.println(System.getProperty("java.class.path"));
+	//System.out.println(System.getProperty("java.library.path"));
+
 	System.loadLibrary("zxidjni");
 	cf = zxidjni.new_conf_to_cf(conf);
 	zxidjni.set_opt(cf, 1, 1);

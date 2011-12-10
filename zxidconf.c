@@ -219,6 +219,7 @@ char* zxid_set_opt_cstr(zxid_conf* cf, int which, char* val)
   case 3: D_INDENT(val); return zx_indent;
   case 4: D_DEDENT(val); return zx_indent;
   case 6:
+    D("Forwarding debug output to file(%s) cwd(%s)", STRNULLCHK(val), getcwd(buf, sizeof(buf)));
     zx_debug_log = fopen(val, "a");
     if (!zx_debug_log) {
       perror("zxid_set_opt_cstr: failed to open new log file");
@@ -1204,6 +1205,8 @@ scan_end:
       if (!strcmp(n, "DI_ALLOW_CREATE")) { cf->di_allow_create = *v; break; }
       if (!strcmp(n, "DI_NID_FMT"))      { SCAN_INT(v, cf->di_nid_fmt); break; }
       if (!strcmp(n, "DI_A7N_ENC"))      { SCAN_INT(v, cf->di_a7n_enc); break; }
+      if (!strcmp(n, "DEBUG"))           { SCAN_INT(v, zx_debug); break; }
+      if (!strcmp(n, "DEBUG_LOG"))       { zxid_set_opt_cstr(cf, 6, v); break; }
       goto badcf;
     case 'E':  /* ERR, ERR_IN_ACT */
       if (!strcmp(n, "ERR"))             { SCAN_INT(v, cf->log_err); break; }

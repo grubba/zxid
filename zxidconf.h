@@ -506,6 +506,17 @@
  * events such as authentication, SSO, and SLO. */
 #define ZXID_LOGUSER 1
 
+/*(c) Set debug option. You can also set this via zxid_set_opt().
+ * 0 = debug output off
+ * 1 = debug on
+ * other values are reserver, experimental, or otherwise undocumented. */
+#define ZXID_DEBUG 0
+
+/*(c) Send debug output to a file. You can also set this via zxid_set_opt_cstr().
+ * By default the debug output goes to stderr, which often goes to
+ * web server's error_log. */
+#define ZXID_DEBUG_LOG 0
+
 /*(c) Assertion validation options.
  * These MUST all be turned on (and assertions signed)
  * if you want to rely on assertions to hold the other party liable. */

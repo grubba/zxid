@@ -74,6 +74,12 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - AuthnSvc (AS) should check caller credential, in addition to the login credential, see comment on AS_ENA in zxidconf.h
     - VURL feature?
 
+zxid-1.06:: 10.12.2011
+    - Merge improvements from Grubba
+
+zxid-1.05:: 7.12.2011
+    - Added DEBUG and DEBUG_LOG options to manipulate debug level from config file
+
 zxid-1.04:: 5.12.2011
     - Added VPATH for virtual hosting support, documented ZXID_CONF environment variable
 
