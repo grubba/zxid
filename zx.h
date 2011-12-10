@@ -199,6 +199,7 @@ char* zx_dup_cstr(struct zx_ctx* c, const char* str);
 void  zx_reset_ns_ctx(struct zx_ctx* ctx);
 void  zx_reset_ctx(struct zx_ctx* ctx);
 struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
+void zx_free_ctx(struct zx_ctx* ctx);	/* Wrapper for free(3C). */
 
 /* N.B. All string scanning assumes buffer is terminated with C string style nul byte. */
 /*#define ZX_SKIP_WS_P(c,p,x) MB for (; ONE_OF_4(*(p), ' ', '\n', '\r', '\t'); ++(p)) ; if (!*(p)) return x; ME*/

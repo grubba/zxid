@@ -102,7 +102,7 @@ extern "C" {
 #define closefile(x) close(x)
 #define openfile_ro(path) open((path),O_RDONLY)
 
-#ifndef _UNISTD_H
+#if !defined(_UNISTD_H) && !defined(_UNISTD_H_)
 #define _UNISTD_H 1  /* Prevent confusing double inclusion. */
 #define _UNISTD_H_ 1 /* MacOS: Prevent confusing double inclusion. */
 /* We do not want to include unistd.h because it does not exist on Win32.
@@ -119,7 +119,7 @@ int geteuid(void);
 int getegid(void);
 int setuid(int);
 int setgid(int);
-char* getcwd(char* buf, int size);
+char* getcwd(char* buf, size_t size);
 int fork(void);
 int execl(const char *path, const char *arg, ...);
 int dup(int);

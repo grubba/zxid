@@ -5167,6 +5167,28 @@ fail:
 }
 
 
+ZEND_NAMED_FUNCTION(_wrap_zx_free_ctx) {
+  struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
+  zval **args[1];
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_ctx, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_free_ctx. Expected SWIGTYPE_p_zx_ctx");
+    }
+  }
+  zx_free_ctx(arg1);
+  
+  return;
+fail:
+  zend_error(SWIG_ErrorCode(),SWIG_ErrorMsg());
+}
+
+
 ZEND_NAMED_FUNCTION(_wrap_zx_at_tok_name_set) {
   struct zx_at_tok *arg1 = (struct zx_at_tok *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -29130,6 +29152,28 @@ fail:
 }
 
 
+ZEND_NAMED_FUNCTION(_wrap_zxid_free_conf) {
+  zxid_conf *arg1 = (zxid_conf *) 0 ;
+  zval **args[1];
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_free_conf. Expected SWIGTYPE_p_zxid_conf");
+    }
+  }
+  zxid_free_conf(arg1);
+  
+  return;
+fail:
+  zend_error(SWIG_ErrorCode(),SWIG_ErrorMsg());
+}
+
+
 ZEND_NAMED_FUNCTION(_wrap_zxid_init_conf_ctx) {
   zxid_conf *arg1 = (zxid_conf *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -35250,6 +35294,7 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zx_reset_ns_ctx,_wrap_zx_reset_ns_ctx,NULL)
  SWIG_ZEND_NAMED_FE(zx_reset_ctx,_wrap_zx_reset_ctx,NULL)
  SWIG_ZEND_NAMED_FE(zx_init_ctx,_wrap_zx_init_ctx,NULL)
+ SWIG_ZEND_NAMED_FE(zx_free_ctx,_wrap_zx_free_ctx,NULL)
  SWIG_ZEND_NAMED_FE(zx_at_tok_name_set,_wrap_zx_at_tok_name_set,NULL)
  SWIG_ZEND_NAMED_FE(zx_at_tok_name_get,_wrap_zx_at_tok_name_get,NULL)
  SWIG_ZEND_NAMED_FE(new_zx_at_tok,_wrap_new_zx_at_tok,NULL)
@@ -35992,6 +36037,7 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zxid_set_opt_cstr,_wrap_zxid_set_opt_cstr,NULL)
  SWIG_ZEND_NAMED_FE(zxid_url_set,_wrap_zxid_url_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_init_conf,_wrap_zxid_init_conf,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_free_conf,_wrap_zxid_free_conf,NULL)
  SWIG_ZEND_NAMED_FE(zxid_init_conf_ctx,_wrap_zxid_init_conf_ctx,NULL)
  SWIG_ZEND_NAMED_FE(zxid_new_conf,_wrap_zxid_new_conf,NULL)
  SWIG_ZEND_NAMED_FE(zxid_parse_conf_raw,_wrap_zxid_parse_conf_raw,NULL)

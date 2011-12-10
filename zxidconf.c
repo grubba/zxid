@@ -20,7 +20,7 @@
  * 12.2.2010, added pthread locking --Sampo
  * 31.5.2010, added 4 web service call PEPs --Sampo
  * 21.4.2011, fixed DSA key reading and reading unqualified keys --Sampo
- * 3.12.2011, adde VPATH feature --Sampo
+ * 3.12.2011, added VPATH feature --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -35,6 +35,7 @@
 #include "zxid.h"
 #include "zxidutil.h"
 #include "zxidconf.h"
+#include "zxidpriv.h"
 #include "c/zxidvers.h"
 
 /* ============== Configuration ============== */
@@ -269,13 +270,25 @@ struct zxid_attr* zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len,
   return aa;
 }
 
+/*() Reverse of zxid_new_at(). */
+
+void zxid_free_at(struct zxid_conf *cf, struct zxid_attr *attr)
+{
+  while (attr) {
+    struct zxid_attr *next = attr->n;
+    ZX_FREE(cf->ctx, attr->name);
+    if (attr->val) ZX_FREE(cf->ctx, attr->val);
+    ZX_FREE(cf->ctx, attr);
+    attr = next;
+  }
+}
 
 /*() Parse need specification and add it to linked list
  * A,B$usage$retention$oblig$ext;A,B$usage$retention$oblig$ext;...
  */
 
 /* Called by:  zxid_init_conf x2, zxid_parse_conf_raw x2 */
-static struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need, char* v)
+struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need, char* v)
 {
   char* attrs;
   char* usage;
@@ -323,10 +336,8 @@ static struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need, c
     
     if (IS_RULE(usage, "reset")) {
       INFO("Reset need %p", need);
-      for (; need; need = nn) {
-	nn = need->n;
-	ZX_FREE(cf->ctx, need);
-      }
+      zxid_free_need(cf, need);
+      need = 0;
       if (!*p) break;
       ++p;
       continue;
@@ -354,6 +365,22 @@ static struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need, c
   }
 
   return need;
+}
+
+/*() Reverse of zxid_load_need(). */
+
+void zxid_free_need(struct zxid_conf *cf, struct zxid_need *need)
+{
+  while (need) {
+    struct zxid_need *next = need->n;
+    ZX_FREE(cf->ctx, need->usage);
+    ZX_FREE(cf->ctx, need->retent);
+    ZX_FREE(cf->ctx, need->oblig);
+    ZX_FREE(cf->ctx, need->ext);
+    zxid_free_at(cf, need->at);
+    ZX_FREE(cf->ctx, need);
+    need = next;
+  }
 }
 
 /*() Parse map specification and add it to linked list
@@ -468,12 +495,27 @@ struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
   return map;
 }
 
+/*() Reverse of zxid_load_map(). */
+
+void zxid_free_map(struct zxid_conf *cf, struct zxid_map *map)
+{
+  while (map) {
+    struct zxid_map *next = map->n;
+    ZX_FREE(cf->ctx, map->ns);
+    ZX_FREE(cf->ctx, map->src);
+    ZX_FREE(cf->ctx, map->dst);
+    ZX_FREE(cf->ctx, map->ext);
+    ZX_FREE(cf->ctx, map);
+    map = next;
+  }
+}
+
 /*() Parse ATTRSRC specification and add it to linked list
  * namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;...
  */
 
 /* Called by:  zxid_init_conf x4, zxid_parse_conf_raw x4 */
-static struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list* l, char* p)
+struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list* l, char* p)
 {
   char* q;
   struct zxid_cstr_list* cs;
@@ -491,12 +533,24 @@ static struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cst
   return l;
 }
 
+/*() Reverse of zxid_load_cstr_list(). */
+
+void zxid_free_cstr_list(struct zxid_conf* cf, struct zxid_cstr_list* l)
+{
+  while (l) {
+    struct zxid_cstr_list *next = l->n;
+    ZX_FREE(cf->ctx, l->s);
+    ZX_FREE(cf->ctx, l);
+    l = next;
+  }
+}
+
 /*() Parse ATTRSRC specification and add it to linked list
  * namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;...
  */
 
 /* Called by:  zxid_init_conf, zxid_parse_conf_raw */
-static struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsrc, char* v)
+struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsrc, char* v)
 {
   char* ns;
   char* attrs;
@@ -560,10 +614,8 @@ static struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsr
     
     if (IS_RULE(url, "reset")) {
       INFO("Reset atsrc %p", atsrc);
-      for (; atsrc; atsrc = as) {
-	as = atsrc->n;
-	ZX_FREE(cf->ctx, atsrc);
-      }
+      zxid_free_atsrc(cf, atsrc);
+      atsrc = NULL;
       if (!*p) break;
       ++p;
       continue;
@@ -593,6 +645,24 @@ static struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsr
   }
 
   return atsrc;
+}
+
+/*() Reverse of zxid_load_atsrc(). */
+
+void zxid_free_atsrc(struct zxid_conf *cf, struct zxid_atsrc *src)
+{
+  while (src) {
+    struct zxid_atsrc *next = src->n;
+    zxid_free_at(cf, src->at);
+    ZX_FREE(cf->ctx, src->ns);
+    ZX_FREE(cf->ctx, src->weight);
+    ZX_FREE(cf->ctx, src->url);
+    ZX_FREE(cf->ctx, src->aapml);
+    ZX_FREE(cf->ctx, src->otherlim);
+    ZX_FREE(cf->ctx, src->ext);
+    ZX_FREE(cf->ctx, src);
+    src = next;
+  }
 }
 
 /*() Check whether attribute is in a (needed or wanted) list. Just a linear
@@ -663,7 +733,7 @@ struct zxid_attr* zxid_find_at(struct zxid_attr* pool, const char* name)
  * from the url config option. */
 
 /* Called by:  zxid_parse_conf_raw */
-static char* zxid_grab_domain_name(zxid_conf* cf, const char* url)
+char* zxid_grab_domain_name(zxid_conf* cf, const char* url)
 {
   char* dom;
   char* p;
@@ -722,7 +792,9 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->contact_name  = ZXID_CONTACT_NAME;
   cf->contact_email = ZXID_CONTACT_EMAIL;
   cf->contact_tel   = ZXID_CONTACT_TEL;
-  cf->fedusername_suffix = ZXID_FEDUSERNAME_SUFFIX;
+  /* NB: Typically allocated by zxid_grab_domain_name(). */
+  COPYVAL(cf->fedusername_suffix, ZXID_FEDUSERNAME_SUFFIX,
+	  ZXID_FEDUSERNAME_SUFFIX + strlen(ZXID_FEDUSERNAME_SUFFIX));
   cf->url = ZXID_URL;
   cf->non_standard_entityid = ZXID_NON_STANDARD_ENTITYID;
   cf->redirect_hack_imposed_url = ZXID_REDIRECT_HACK_IMPOSED_URL;
@@ -808,7 +880,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->wsp_nosig_fatal = ZXID_WSP_NOSIG_FATAL;
   cf->notimestamp_fatal = ZXID_NOTIMESTAMP_FATAL;
   cf->anon_ok        = ZXID_ANON_OK;
-  cf->required_authnctx = ZXID_REQUIRED_AUTHNCTX;
+  cf->required_authnctx = ZXID_REQUIRED_AUTHNCTX;	/* NB: NULL. */
   cf->issue_authnctx_pw = ZXID_ISSUE_AUTHNCTX_PW;
   cf->idp_pref_acs_binding = ZXID_IDP_PREF_ACS_BINDING;
   cf->mandatory_attr = ZXID_MANDATORY_ATTR;
@@ -901,6 +973,35 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   return 0;
 }
 
+/*() Reverse of zxid_init_conf() and zxid_parse_conf_raw(). */
+
+void zxid_free_conf(zxid_conf *cf)
+{
+  zxid_free_need(cf, cf->need);
+  zxid_free_need(cf, cf->want);
+  zxid_free_atsrc(cf, cf->attrsrc);
+  zxid_free_map(cf, cf->inmap);
+  zxid_free_map(cf, cf->outmap);
+  zxid_free_map(cf, cf->pepmap);
+  zxid_free_map(cf, cf->pepmap_rqout);
+  zxid_free_map(cf, cf->pepmap_rqin);
+  zxid_free_map(cf, cf->pepmap_rsout);
+  zxid_free_map(cf, cf->pepmap_rsin);
+  zxid_free_cstr_list(cf, cf->localpdp_role_permit);
+  zxid_free_cstr_list(cf, cf->localpdp_role_deny);
+  zxid_free_cstr_list(cf, cf->localpdp_idpnid_permit);
+  zxid_free_cstr_list(cf, cf->localpdp_idpnid_deny);
+  if (cf->required_authnctx) {
+    ZX_FREE(cf->ctx, cf->required_authnctx);
+  }
+  if (cf->fedusername_suffix) {
+    ZX_FREE(cf->ctx, cf->fedusername_suffix);
+  }
+  if (cf->path) {
+    ZX_FREE(cf->ctx, cf->path);
+  }
+}
+
 /*() Reset the doubly linked seen list and unknown_ns list to empty.
  * This is "light" version of zx_reset_ctx() that can be called
  * safely from inside lock. */
@@ -915,7 +1016,7 @@ void zx_reset_ns_ctx(struct zx_ctx* ctx)
 
 /*() Reset the seen doubly linked list to empty and initialize memory
  * allocation related function pointers to system malloc(3). Without
- * such initialization, any meomory allocation activity as well as
+ * such initialization, any memory allocation activity as well as
  * any XML parsing activity is doomed to segmentation fault. */
 
 /* Called by:  dirconf, main x3, zx_init_ctx, zxid_az, zxid_az_base, zxid_simple_len */
@@ -944,6 +1045,15 @@ struct zx_ctx* zx_init_ctx()
   }
   zx_reset_ctx(ctx);
   return ctx;
+}
+
+/*() Reverse of zx_init_ctx().
+ * N.B. As of now (20111210) does not free the dependency structures. This
+ * may be added in future. */
+
+void zx_free_ctx(struct zx_ctx* ctx)
+{
+  free(ctx);
 }
 
 /*() Minimal initialization of
@@ -1011,6 +1121,7 @@ static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exis
   int len;
   char *buf;
 
+  /* NB: The buffer read here leaks on purpose as conf parsing takes references inside it. */
   buf = read_all_alloc(cf->ctx, "-parse_conf_raw", 1, &len, "%szxid.conf", v);
   if (buf) {
     cf->path = v;
@@ -1025,19 +1136,19 @@ static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exis
   }
 }
 
-/*() Helper to evaluate environment variables for VPATH */
+/*() Helper to evaluate environment variables for VPATH and VURL */
 
-static int zxid_eval_vpath_env(char* vpath, const char* exp, char* env_hdr, char* n, char* lim)
+static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, char* n, char* lim)
 {
   int len;
   char* val = getenv(env_hdr);
   if (!val) {
-    ERR("VPATH(%s) %s expansion specified, but env(%s) not defined?!? Violation of CGI spec? SERVER_SOFTWARE(%s)", vpath, exp, env_hdr, STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
+    ERR("VPATH or VURL(%s) %s expansion specified, but env(%s) not defined?!? Violation of CGI spec? SERVER_SOFTWARE(%s)", vorig, exp, env_hdr, STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
     return 0;
   }
   len = strlen(val);
-  if (n + len >= lim) {
-    ERR("TOO LONG: VPATH(%s) %s expansion specified env(%s) val(%s) does not fit, missing %d bytes. SERVER_SOFTWARE(%s)", vpath, exp, env_hdr, val, lim - (n + len), STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
+  if (n + len > lim) {
+    ERR("TOO LONG: VPATH or VURL(%s) %s expansion specified env(%s) val(%s) does not fit, missing %d bytes. SERVER_SOFTWARE(%s)", vorig, exp, env_hdr, val, lim - (n + len), STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
     return 0;
   }
 
@@ -1054,6 +1165,37 @@ static int zxid_eval_vpath_env(char* vpath, const char* exp, char* env_hdr, char
   return len;
 }
 
+/*() Expand percent expansions as found in VPATH and VURL */
+
+static char* zxid_expand_percent(char* vorig, char* n, char* lim)
+{
+  char* p;
+  char* val;
+  --lim;
+  for (p = vorig; *p && n < lim; ++p) {
+    if (*p != '%') {
+      *n++ = *p;
+      continue;
+    }
+    switch (*++p) {
+    case 'h': n += zxid_eval_squash_env(vorig, "%h", "HTTP_HOST", n, lim);    break;
+    case 'P': 
+      val = getenv("SERVER_PORT");
+      if (!strcmp(val, "443") || !strcmp(val, "80"))
+	break;     /* omit default ports */
+      *n++ = ':';  /* colon in front of port, e.g. :8080 */
+      /* fall thru */
+    case 'p': n += zxid_eval_squash_env(vorig, "%p", "SERVER_PORT", n, lim);  break;
+    case 's': n += zxid_eval_squash_env(vorig, "%s", "SCRIPT_NAME", n, lim);  break;
+    case '%': *n++ = '%';  break;
+    default:
+      ERR("VPATH or VURL(%s): Syntactically wrong percent expansion character(%c) 0x%x, ignored", vorig, p[-1], p[-1]);
+    }
+  }
+  *n = 0;
+  return n;
+}
+
 /*() Parse VPATH (virtual host) related config file.
  * If the file VPATHzxid.conf does not exist (note that the specified
  * VPATH usually ends in a slash (/)), the PATH is not changed.
@@ -1062,7 +1204,7 @@ static int zxid_eval_vpath_env(char* vpath, const char* exp, char* env_hdr, char
 static int zxid_parse_vpath_conf_raw(zxid_conf* cf, char* vpath)
 {
   char name[PATH_MAX];
-  char *p, *n, *lim;
+  char *n, *lim;
 
   DD("VPATH inside file(%.*s) %d new(%s)", cf->path_len, cf->path, cf->path_supplied, vpath);
   if (cf->path_supplied && !memcmp(cf->path, vpath, cf->path_len)
@@ -1074,7 +1216,7 @@ static int zxid_parse_vpath_conf_raw(zxid_conf* cf, char* vpath)
   /* Check for relative path and prepend PATH if needed. */
   
   n = name;
-  lim = name + sizeof(name)-1;
+  lim = name + sizeof(name);
   
   if (*vpath != '/') {
     if (cf->path_len > lim-n) {
@@ -1085,25 +1227,19 @@ static int zxid_parse_vpath_conf_raw(zxid_conf* cf, char* vpath)
     n +=  cf->path_len;
   }
   
-  /* Expand % */
-  
-  for (p = vpath; *p && n < lim; ++p) {
-    if (*p != '%') {
-      *n++ = *p;
-      continue;
-    }
-    switch (*++p) {
-    case 'h': n += zxid_eval_vpath_env(vpath, "%h", "HTTP_HOST", n, lim);    break;
-    case 'p': n += zxid_eval_vpath_env(vpath, "%p", "SERVER_PORT", n, lim);  break;
-    case 's': n += zxid_eval_vpath_env(vpath, "%s", "SCRIPT_NAME", n, lim);  break;
-    case '%': *n++ = '%';  break;
-    default:
-      ERR("VPATH(%s): Syntactically wrong character(%c) 0x%x, ignored", vpath, p[-1], p[-1]);      
-    }
-  }
-  *n = 0;
-
+  zxid_expand_percent(vpath, n, lim);
   zxid_parse_conf_path_raw(cf, zx_dup_cstr(cf->ctx, name), 1);
+  return 1;
+}
+
+/*() Parse VURL (virtual host) to URL */
+
+static int zxid_parse_vurl(zxid_conf* cf, char* vurl)
+{
+  char newurl[PATH_MAX];
+  zxid_expand_percent(vurl, newurl, newurl + sizeof(newurl));
+  INFO("VURL(%s) alters URL(%s) to new URL(%s)", vurl, newurl, cf->url);
+  cf->url = zx_dup_cstr(cf->ctx, newurl);
   return 1;
 }
 
@@ -1366,6 +1502,7 @@ scan_end:
     case 'V':  /* VALID_OPT */
       if (!strcmp(n, "VALID_OPT"))      { SCAN_INT(v, cf->valid_opt); break; }
       if (!strcmp(n, "VPATH"))          { zxid_parse_vpath_conf_raw(cf, v); break; }
+      if (!strcmp(n, "VURL"))           { zxid_parse_vurl(cf, v); break; }
       goto badcf;
     case 'W':  /* WANT_SSO_A7N_SIGNED */
       if (!strcmp(n, "WANT"))           { cf->want = zxid_load_need(cf, cf->want, v); break; }

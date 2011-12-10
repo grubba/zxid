@@ -541,6 +541,10 @@ public class zxidjni implements zxidjniConstants {
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_ctx(cPtr, false);
   }
 
+  public static void zx_free_ctx(SWIGTYPE_p_zx_ctx ctx) {
+    zxidjniJNI.zx_free_ctx(SWIGTYPE_p_zx_ctx.getCPtr(ctx));
+  }
+
   public static void zx_at_tok_name_set(SWIGTYPE_p_zx_at_tok self, String value) {
     zxidjniJNI.zx_at_tok_name_set(SWIGTYPE_p_zx_at_tok.getCPtr(self), value);
   }
@@ -3611,6 +3615,10 @@ public class zxidjni implements zxidjniConstants {
 
   public static int init_conf(zxid_conf cf, String conf_dir) {
     return zxidjniJNI.zxid_init_conf(zxid_conf.getCPtr(cf), conf_dir);
+  }
+
+  public static void free_conf(zxid_conf cf) {
+    zxidjniJNI.zxid_free_conf(zxid_conf.getCPtr(cf));
   }
 
   public static zxid_conf init_conf_ctx(zxid_conf cf, String zxid_path) {

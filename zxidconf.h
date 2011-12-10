@@ -12,6 +12,7 @@
  * 29.8.2009, added PDP_URL --Sampo
  * 7.1.2010,  added WSC and WSP signing options --Sampo
  * 12.2.2011, added proxy IdP related options --Sampo
+ * 10.12.2011, added VPATH and VURL --Sampo
  *
  * Most of the configuration options can be set via configuration
  * file /var/zxid/zxid.conf or using -O command line flag(s). In
@@ -82,6 +83,7 @@
  * to change and configuration file to be read.
  *
  * Default value: "/var/zxid/%h:%p/" (see definition of PATH for example).
+ * See also: VURL
  */
 
 /*(c) SP Nickname for IdP User Interface
@@ -99,7 +101,37 @@
  * N.B. There is no explicit way to configure Entity ID (Provider ID) for
  * the zxid SP. The Entity ID is always of form ZXID_URL?o=B, for example
  *   https://sp1.zxidsp.org:8443/zxid?o=B */
-#define ZXID_URL "https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid"
+#define ZXID_URL "https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxidhlo"
+
+/*(c) VURL - URL for a virtual server
+ *
+ * The VURL allows different URL for different
+ * virtual servers (multihoming) to be generated automatically based
+ * on the (CGI) environment variables. However, often you would
+ * override the URL in /var/zxid/zxid.conf
+ *
+ * In VURL each ordinary letter is rendered as is, but the
+ * following % (percent) specifications are expanded inline:
+ *
+ *   %%  expands as single percent sign
+ *   %h  the contents of environment variable HTTP_HOST (see CGI spec)
+ *   %p  the contents of environment variable SERVER_PORT (see CGI spec).
+ *   %P  Similar to %p, but renders a colon before the portnumber, unless
+ *       the SERVER_PORT is 443 or 80, in which case nothing is rendered.
+ *       This deals with default ports of the http and https protocols.
+ *   %s  the contents of environment variable SCRIPT_NAME (see CGI spec)
+ *
+ * > N.B. All other %-specs are reserved for future expansion
+ *
+ * VURL is not really a configuration option on its own right (there is
+ * no corresponding entry in struct zxid_conf), but rather a directive
+ * that instructs on point of occurrance the URL variable (see zxid.h)
+ * to change.
+ *
+ * Default value: "https://%h%P%s"
+ * See also: VPATH
+ */
+#define ZXID_VURL "https://%h%P%s"
 
 /*(c) Override standard EntityID Construction
  * The best practise is that SP Entity ID is chosen by the SP (and not

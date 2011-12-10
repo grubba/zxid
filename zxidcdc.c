@@ -19,6 +19,7 @@
 #include "platform.h"
 #include "errmac.h"
 #include "zxid.h"
+#include "zxidpriv.h"
 #include "zxidutil.h"
 #include "zxidconf.h"
 
@@ -26,12 +27,10 @@
 
 /*() Read Common Domain Cookie and formulate HTTP redirection to pass it back.
  *
- * Limitations:: In its current form (2008) this function only works for CGI scripts. (*** fix me)
- *
  * The SAML CDC is a standards based method for SSO IdP discovery. */
 
 /* Called by:  covimp_test, main x2, zxid_simple_no_ses_cf */
-int zxid_cdc_read(zxid_conf* cf, zxid_cgi* cgi)
+struct zx_str* zxid_cdc_read(zxid_conf* cf, zxid_cgi* cgi)
 {
   char* p;
   char* cdc = 0;
@@ -63,9 +62,8 @@ int zxid_cdc_read(zxid_conf* cf, zxid_cgi* cgi)
     D("No CDC _saml_idp in CGI environment host(%s)", STRNULLCHK(host));
   }
   D("Location: %s?o=E&c=%s\r\n\r\n", cf->url, cdc?cdc:"(missing)");
-  printf("Location: %s?o=E&c=%s\r\n\r\n", cf->url, cdc?cdc:"");  /* *** Generalize this to non CGI situation */
   /* *** should prepare AuthnReq and redirect directly to the IdP (if any). */
-  return 0;
+  return zx_strf(cf->ctx, "Location: %s?o=E&c=%s\r\n\r\n", cf->url, cdc?cdc:"");
 }
 
 /*() Process second part of Common Domain Cookie redirection.

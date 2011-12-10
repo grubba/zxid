@@ -75,7 +75,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - VURL feature?
 
 zxid-1.06:: 10.12.2011
-    - Merge improvements from Grubba
+    - Merged improvements (CDC, sol8x86, free functions, mem leak fixes) by grubba@@grubba.org from git://github.com/grubba/zxid.git
+    - Added VURL for virtual hosting
 
 zxid-1.05:: 7.12.2011
     - Added DEBUG and DEBUG_LOG options to manipulate debug level from config file

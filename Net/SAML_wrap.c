@@ -6478,6 +6478,33 @@ XS(_wrap_zx_init_ctx) {
 }
 
 
+XS(_wrap_zx_free_ctx) {
+  {
+    struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: zx_free_ctx(ctx);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zx_ctx, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zx_free_ctx" "', argument " "1"" of type '" "struct zx_ctx *""'"); 
+    }
+    arg1 = (struct zx_ctx *)(argp1);
+    zx_free_ctx(arg1);
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_zx_at_tok_name_set) {
   {
     struct zx_at_tok *arg1 = (struct zx_at_tok *) 0 ;
@@ -33856,6 +33883,33 @@ XS(_wrap_zxid_init_conf) {
 }
 
 
+XS(_wrap_zxid_free_conf) {
+  {
+    zxid_conf *arg1 = (zxid_conf *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: zxid_free_conf(cf);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_free_conf" "', argument " "1"" of type '" "zxid_conf *""'"); 
+    }
+    arg1 = (zxid_conf *)(argp1);
+    zxid_free_conf(arg1);
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_zxid_init_conf_ctx) {
   {
     zxid_conf *arg1 = (zxid_conf *) 0 ;
@@ -41753,6 +41807,7 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zx_reset_ns_ctx", _wrap_zx_reset_ns_ctx},
 {"Net::SAMLc::zx_reset_ctx", _wrap_zx_reset_ctx},
 {"Net::SAMLc::zx_init_ctx", _wrap_zx_init_ctx},
+{"Net::SAMLc::zx_free_ctx", _wrap_zx_free_ctx},
 {"Net::SAMLc::zx_at_tok_name_set", _wrap_zx_at_tok_name_set},
 {"Net::SAMLc::zx_at_tok_name_get", _wrap_zx_at_tok_name_get},
 {"Net::SAMLc::new_zx_at_tok", _wrap_new_zx_at_tok},
@@ -42511,6 +42566,7 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_set_opt_cstr", _wrap_zxid_set_opt_cstr},
 {"Net::SAMLc::zxid_url_set", _wrap_zxid_url_set},
 {"Net::SAMLc::zxid_init_conf", _wrap_zxid_init_conf},
+{"Net::SAMLc::zxid_free_conf", _wrap_zxid_free_conf},
 {"Net::SAMLc::zxid_init_conf_ctx", _wrap_zxid_init_conf_ctx},
 {"Net::SAMLc::zxid_new_conf", _wrap_zxid_new_conf},
 {"Net::SAMLc::zxid_parse_conf_raw", _wrap_zxid_parse_conf_raw},

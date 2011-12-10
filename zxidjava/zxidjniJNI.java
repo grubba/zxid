@@ -137,6 +137,7 @@ class zxidjniJNI {
   public final static native void zx_reset_ns_ctx(long jarg1);
   public final static native void zx_reset_ctx(long jarg1);
   public final static native long zx_init_ctx();
+  public final static native void zx_free_ctx(long jarg1);
   public final static native int ZX_TOK_NO_ATTR_get();
   public final static native int ZX_TOK_ATTR_ERR_get();
   public final static native int ZX_TOK_XMLNS_get();
@@ -994,6 +995,7 @@ class zxidjniJNI {
   public final static native String zxid_set_opt_cstr(long jarg1, int jarg2, String jarg3);
   public final static native void zxid_url_set(long jarg1, String jarg2);
   public final static native int zxid_init_conf(long jarg1, String jarg2);
+  public final static native void zxid_free_conf(long jarg1);
   public final static native long zxid_init_conf_ctx(long jarg1, String jarg2);
   public final static native long zxid_new_conf(String jarg1);
   public final static native int zxid_parse_conf_raw(long jarg1, int jarg2, String jarg3);

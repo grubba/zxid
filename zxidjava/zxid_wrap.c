@@ -2349,6 +2349,16 @@ SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zx_1init_1ctx(JNIEnv *jenv, jc
 }
 
 
+SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zx_1free_1ctx(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zx_ctx **)&jarg1; 
+  zx_free_ctx(arg1);
+}
+
+
 SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_ZX_1TOK_1NO_1ATTR_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   int result;
@@ -16437,6 +16447,16 @@ SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_zxid_1init_1conf(JNIEnv *jenv, 
 }
 
 
+SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zxid_1free_1conf(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  zxid_conf *arg1 = (zxid_conf *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(zxid_conf **)&jarg1; 
+  zxid_free_conf(arg1);
+}
+
+
 SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zxid_1init_1conf_1ctx(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
   jlong jresult = 0 ;
   zxid_conf *arg1 = (zxid_conf *) 0 ;
@@ -23286,7 +23306,7 @@ SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_ZXID_1VERSION_1get(JNIEnv *jenv
   
   (void)jenv;
   (void)jcls;
-  result = (int) 0x000104;
+  result = (int) 0x000106;
   jresult = (jint)result; 
   return jresult;
 }
@@ -23298,7 +23318,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1REL_1get(JNIEnv *jenv,
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "1.04";
+  result = (char *) "1.06";
   if(result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }
@@ -23310,7 +23330,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1COMPILE_1DATE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "1323439869";
+  result = (char *) "1323528894";
   if(result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }
@@ -23322,7 +23342,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1REV_1get(JNIEnv *jenv,
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "$Id:  20111209-140832 sampo@ $";
+  result = (char *) "$Id:  20111210-123449 sampo@ $";
   if(result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }

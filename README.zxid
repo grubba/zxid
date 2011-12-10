@@ -56,8 +56,8 @@ SWIG. Hoy (Nov 2011) el ZXID soporta los roles SP (proveedor de
 servicios), IdP (proveedor de identidades), WSC (cliente de los
 servicios web) WSP (proveedor de servicios web), Discovery
 (descubrimeinto de servicios), PEP (copntrolo de acesso), y PDP
-(deciciónes de acesso).\ ZXID es el implementación de referencia
-de parte seguridad de proyecto TAS3.eu.\\\
+(deciciónes de acesso). ZXID es el implementación de referencia
+de parte seguridad de proyecto TAS3.eu.\\\\
 
 ZXID.org on verkkohenkilöllisyyden ja -tunnisteiden
 hallintakirjasto joka tukee SAML 2.0 (sisäänkirjaantuminen),

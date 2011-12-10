@@ -12,5 +12,11 @@ sed -i "s/\$Id[^\$]*/\$Id: `git describe` `date +%Y%m%d-%H%M%S` $USER@$HOST /g" 
 #exit
 git commit -a -m "$1."
 git push
+exit;
 
 #EOF
+
+# Merging changes from grubba
+git pull grubba master
+# fix conflicts
+./ci 'Merged from grubba'

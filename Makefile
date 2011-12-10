@@ -40,8 +40,8 @@ all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcg
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000105
-ZXIDREL=1.05
+ZXIDVERSION=0x000106
+ZXIDREL=1.06
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/var/zxid/$(ZXIDREL)
@@ -178,7 +178,7 @@ OUTOPT=-o
 
 ifeq ($(TARGET),xsol8)
 
-# Cross compilation for Solaris 8 target (on Linux host) Invoke as `make TARGET=xsol8'
+# Cross compilation for Solaris 8 target (on Linux host). Invoke as `make TARGET=xsol8'
 # You must have the cross compiler installed in /apps/gcc/sol8 and in path. Similarily
 # the cross binutils must be in path.
 #    export PATH=/apps/gcc/sol8/bin:/apps/binutils/sol8/bin:$PATH
@@ -195,7 +195,22 @@ ifeq ($(TARGET),sol8)
 
 # Flags for Solaris 8 native compile (with gc and gnu binutils) (BIG_ENDIAN BYTE_ORDER)
 CDEF+=-DSUNOS -DBYTE_ORDER=4321 -DBIG_ENDIAN=4321
-LIBS+=-lxnet -lsocket
+LIBS+=-R$(CURL_ROOT)/lib -R$(OPENSSL_ROOT)/lib -lxnet -lsocket
+CURL_ROOT=/opt/sfw
+OPENSSL_ROOT=/usr/sfw
+SHARED_FLAGS=-shared --export-all-symbols -Wl,-z -Wl,allextract
+SHARED_CLOSE=-Wl,-z -Wl,defaultextract
+
+else
+ifeq ($(TARGET),sol8x86)
+
+# Flags for Solaris 8/x86 native compile (with gc and gnu binutils) (LITTLE_ENDIAN BYTE_ORDER)
+CDEF+=-DSUNOS -DBYTE_ORDER=1234
+LIBS+=-R$(CURL_ROOT)/lib -R$(OPENSSL_ROOT)/lib -lxnet -lsocket
+CURL_ROOT=/opt/csw
+OPENSSL_ROOT=/usr/sfw
+SHARED_FLAGS=-shared --export-all-symbols -Wl,-z -Wl,allextract
+SHARED_CLOSE=-Wl,-z -Wl,defaultextract
 
 else
 ifeq ($(TARGET),macosx)
@@ -363,6 +378,7 @@ ifeq ($(DISTRO),fedora)
 CDEF+=-DFEDORA
 endif
 
+endif
 endif
 endif
 endif
@@ -1321,7 +1337,7 @@ endif
 endif
 
 libzxid.so.0.0: $(LIBZXID_A)
-	$(LD) $(OUTOPT)libzxid.so.0.0 $(SHARED_FLAGS) $^ $(SHARED_CLOSE) -lcurl -lssl -lcrypt
+	$(LD) $(OUTOPT)libzxid.so.0.0 $(SHARED_FLAGS) $^ $(SHARED_CLOSE) $(LIBS)
 
 zxid.dll zxidimp.lib: $(LIBZXID_A)
 	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib $^ $(SHARED_CLOSE) $(WIN_LIBS) -mdll
@@ -1607,11 +1623,12 @@ dirs: dir
 
 install: zxid $(LIBZXID_A) libzxid.so.0.0 dir
 	@$(ECHO) "===== Installing in $(PREFIX) (to change do make install PREFIX=/your/path)"
-	-mkdir -p $(PREFIX) $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/include/zxid $(PREFIX)/doc
+	-mkdir -p $(PREFIX) $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/include/zxid $(PREFIX)/include/zx $(PREFIX)/doc
 	$(CP) zxmkdirs.sh zxcall zxpasswd zxcot zxlogview zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl zxsizeof $(PREFIX)/bin
 	$(CP) $(LIBZXID_A) libzxid.so* $(PREFIX)/lib
 	$(CP) libzxid.so.0.0 $(PREFIX)/lib
 	$(CP) *.h c/*.h $(PREFIX)/include/zxid
+	$(CP) zx.h $(PREFIX)/include/zx
 	$(CP) *.pd *.dia $(PREFIX)/doc
 	@$(ECHO) "You will need to copy zxidhlo binary where your web server can find it and"
 	@$(ECHO) "make sure your web server is configured to recognize zxidhlo as a CGI script."
