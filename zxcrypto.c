@@ -1,4 +1,5 @@
 /* zxid/zxcrypto.c  -  Glue for cryptographical functions
+ * Copyright (c) 2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -9,6 +10,7 @@
  *
  * 7.10.2008, added documentation --Sampo
  * 29.8.2009, added zxid_mk_self_signed_cert() --Sampo
+ * 12.12.2011, added HMAC SHA-256 as needed by JWT/JWS --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for snprintf() et al. */
@@ -31,6 +33,10 @@
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
 #endif
+
+char* zx_hmac_sha256(struct zx_ctx* c, int key_len, const char* key, int data_len, const char* data, char* md, int* md_len) {
+  return (char*)HMAC(EVP_sha256(), key, key_len, (unsigned char*)data, data_len, (unsigned char*)md, (unsigned int*)md_len);
+}
 
 #if 0
 /* Called by: */

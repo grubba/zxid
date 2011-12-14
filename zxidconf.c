@@ -21,6 +21,7 @@
  * 31.5.2010, added 4 web service call PEPs --Sampo
  * 21.4.2011, fixed DSA key reading and reading unqualified keys --Sampo
  * 3.12.2011, added VPATH feature --Sampo
+ * 10.12.2011, added VURL and BUTTON_URL, deleted ORG_URL except for legacy check --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -783,8 +784,9 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   memcpy(cf->path, zxid_path, cf->path_len);
   cf->path[cf->path_len] = 0;
   cf->nice_name     = ZXID_NICE_NAME;
+  cf->button_url    = ZXID_BUTTON_URL;
+  cf->pref_button_size = ZXID_PREF_BUTTON_SIZE;
   cf->org_name      = ZXID_ORG_NAME;
-  cf->org_url       = ZXID_ORG_URL;
   cf->locality      = ZXID_LOCALITY;
   cf->state         = ZXID_STATE;
   cf->country       = ZXID_COUNTRY;
@@ -809,6 +811,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->sso_sign      = ZXID_SSO_SIGN;
   cf->wsc_sign      = ZXID_WSC_SIGN;
   cf->wsp_sign      = ZXID_WSP_SIGN;
+  cf->oaz_jwt_sigenc_alg = ZXID_OAZ_JWT_SIGENC_ALG;
   cf->wspcgicmd     = ZXID_WSPCGICMD;
   cf->nameid_enc    = ZXID_NAMEID_ENC;
   cf->post_a7n_enc  = ZXID_POST_A7N_ENC;
@@ -1136,9 +1139,10 @@ static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exis
   }
 }
 
-/*() Helper to evaluate environment variables for VPATH and VURL */
+/*() Helper to evaluate environment variables for VPATH and VURL.
+ * squash_type: 0=VPATH, 1=VURL */
 
-static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, char* n, char* lim)
+static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, char* n, char* lim, int squash_type)
 {
   int len;
   char* val = getenv(env_hdr);
@@ -1155,9 +1159,11 @@ static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, cha
   /* Squash suspicious */
 
   for (; *val; ++val, ++n)
-    if (IN_RANGE(*val, 'A', 'Z')) {
+    if (!squash_type && IN_RANGE(*val, 'A', 'Z')) {
       *n = *val - ('A' - 'a');
     } else if (IN_RANGE(*val, 'a', 'z') || IN_RANGE(*val, '0', '9') || ONE_OF_2(*val, '.', '-')) {
+      *n = *val;
+    } else if (squash_type == 1 && ONE_OF_5(*val, '/', ':', '?', '&', '=')) {
       *n = *val;
     } else {
       *n = '_';
@@ -1165,10 +1171,12 @@ static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, cha
   return len;
 }
 
-/*() Expand percent expansions as found in VPATH and VURL */
+/*() Expand percent expansions as found in VPATH and VURL
+ * squash_type: 0=VPATH, 1=VURL */
 
-static char* zxid_expand_percent(char* vorig, char* n, char* lim)
+static char* zxid_expand_percent(char* vorig, char* n, char* lim, int squash_type)
 {
+  char* x;
   char* p;
   char* val;
   --lim;
@@ -1178,20 +1186,41 @@ static char* zxid_expand_percent(char* vorig, char* n, char* lim)
       continue;
     }
     switch (*++p) {
-    case 'h': n += zxid_eval_squash_env(vorig, "%h", "HTTP_HOST", n, lim);    break;
+    case 'a':
+      val = getenv("SERVER_PORT");
+      if (!val)
+	val = "";
+      if (!memcmp(val, "80", MIN(strlen(val), 2)) || !memcmp(val, "88", MIN(strlen(val), 2)))
+	x = squash_type?"http://":"http_";
+      else
+	x = squash_type?"https://":"https_";
+      if (n + strlen(x) >= lim)
+	goto toobig;
+      strcpy(n, x);
+      n += strlen(x);
+      break;
+    case 'h': n += zxid_eval_squash_env(vorig, "%h", "HTTP_HOST", n, lim, squash_type); break;
     case 'P': 
       val = getenv("SERVER_PORT");
+      if (!val)
+	val = "";
       if (!strcmp(val, "443") || !strcmp(val, "80"))
 	break;     /* omit default ports */
+      if (n >= lim)
+	goto toobig;
       *n++ = ':';  /* colon in front of port, e.g. :8080 */
       /* fall thru */
-    case 'p': n += zxid_eval_squash_env(vorig, "%p", "SERVER_PORT", n, lim);  break;
-    case 's': n += zxid_eval_squash_env(vorig, "%s", "SCRIPT_NAME", n, lim);  break;
+    case 'p': n += zxid_eval_squash_env(vorig, "%p", "SERVER_PORT", n, lim, squash_type);  break;
+    case 's': n += zxid_eval_squash_env(vorig, "%s", "SCRIPT_NAME", n, lim, squash_type);  break;
     case '%': *n++ = '%';  break;
     default:
       ERR("VPATH or VURL(%s): Syntactically wrong percent expansion character(%c) 0x%x, ignored", vorig, p[-1], p[-1]);
     }
   }
+  *n = 0;
+  return n;
+ toobig:
+  ERR("VPATH or VURL(%s) extrapolation does not fit in buffer", vorig);
   *n = 0;
   return n;
 }
@@ -1201,10 +1230,10 @@ static char* zxid_expand_percent(char* vorig, char* n, char* lim)
  * VPATH usually ends in a slash (/)), the PATH is not changed.
  * Effectively unconfigured VPATHs are handled by the default PATH. */
 
-static int zxid_parse_vpath_conf_raw(zxid_conf* cf, char* vpath)
+static int zxid_parse_vpath_conf(zxid_conf* cf, char* vpath)
 {
-  char name[PATH_MAX];
-  char *n, *lim;
+  char newpath[PATH_MAX];
+  char *np, *lim;
 
   DD("VPATH inside file(%.*s) %d new(%s)", cf->path_len, cf->path, cf->path_supplied, vpath);
   if (cf->path_supplied && !memcmp(cf->path, vpath, cf->path_len)
@@ -1215,20 +1244,21 @@ static int zxid_parse_vpath_conf_raw(zxid_conf* cf, char* vpath)
 
   /* Check for relative path and prepend PATH if needed. */
   
-  n = name;
-  lim = name + sizeof(name);
+  np = newpath;
+  lim = newpath + sizeof(newpath);
   
   if (*vpath != '/') {
-    if (cf->path_len > lim-n) {
-      ERR("TOO LONG: PATH(%.*s) len=%d does not fit in vpath buffer size=%d", cf->path_len, cf->path, cf->path_len, lim-n);
+    if (cf->path_len > lim-np) {
+      ERR("TOO LONG: PATH(%.*s) len=%d does not fit in vpath buffer size=%d", cf->path_len, cf->path, cf->path_len, lim-np);
       return 0;
     }
-    memcpy(n, cf->path, cf->path_len);
-    n +=  cf->path_len;
+    memcpy(np, cf->path, cf->path_len);
+    np +=  cf->path_len;
   }
   
-  zxid_expand_percent(vpath, n, lim);
-  zxid_parse_conf_path_raw(cf, zx_dup_cstr(cf->ctx, name), 1);
+  zxid_expand_percent(vpath, np, lim, 0);
+  INFO("VPATH(%s) alters PATH(%s) to new PATH(%s)", vpath, cf->path, newpath);
+  zxid_parse_conf_path_raw(cf, zx_dup_cstr(cf->ctx, newpath), 1);
   return 1;
 }
 
@@ -1237,8 +1267,8 @@ static int zxid_parse_vpath_conf_raw(zxid_conf* cf, char* vpath)
 static int zxid_parse_vurl(zxid_conf* cf, char* vurl)
 {
   char newurl[PATH_MAX];
-  zxid_expand_percent(vurl, newurl, newurl + sizeof(newurl));
-  INFO("VURL(%s) alters URL(%s) to new URL(%s)", vurl, newurl, cf->url);
+  zxid_expand_percent(vurl, newurl, newurl + sizeof(newurl), 1);
+  INFO("VURL(%s) alters URL(%s) to new URL(%s)", vurl, cf->url, newurl);
   cf->url = zx_dup_cstr(cf->ctx, newurl);
   return 1;
 }
@@ -1322,6 +1352,13 @@ scan_end:
       if (!strcmp(n, "BEFORE_SLOP"))       { SCAN_INT(v, cf->before_slop); break; }
       if (!strcmp(n, "BOOTSTRAP_LEVEL"))   { SCAN_INT(v, cf->bootstrap_level); break; }
       if (!strcmp(n, "BARE_URL_ENTITYID")) { SCAN_INT(v, cf->bare_url_entityid); break; }
+      if (!strcmp(n, "BUTTON_URL"))        {
+	if (!strstr(v, "saml2_icon_468x60") && !strstr(v, "saml2_icon_150x60") && !strstr(v, "saml2_icon_16x16"))
+	  ERR("BUTTON_URL has to specify button image and the image filename MUST contain substring \"saml2_icon\" in it (see symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC). Furthermore, this substring must specify the size, which must be one of 468x60, 150x60, or 16x16. Acceptable substrings are are \"saml2_icon_468x60\", \"saml2_icon_150x60\", \"saml2_icon_16x16\", e.g. \"https://your-domain.com/your-brand-saml2_icon_150x60.png\". Current value(%s) may be used despite this error. Only last acceptable specification of BUTTON_URL will be used.", v);
+	if (!cf->button_url || strstr(v, cf->pref_button_size)) /* Pref overrides previous. */
+	  cf->button_url = v;
+	break;
+      }
       goto badcf;
     case 'C':  /* CDC_URL, CDC_CHOICE */
       if (!strcmp(n, "CDC_URL"))         { cf->cdc_url = v; break; }
@@ -1418,7 +1455,12 @@ scan_end:
     case 'O':  /* OUTMAP */
       if (!strcmp(n, "OUTMAP"))         { cf->outmap = zxid_load_map(cf, cf->outmap, v); break; }
       if (!strcmp(n, "ORG_NAME"))       { cf->org_name = v; break; }
-      if (!strcmp(n, "ORG_URL"))        { cf->org_url = v; break; }
+      if (!strcmp(n, "ORG_URL"))        {
+	ERR("Discontinued configuration option ORG_URL supplied. This option has been deleted. Use BUTTON_URL instead, but note that the URL has to specify button image instead of home page (the image filename MUST contain substring \"saml2_icon\" in it). Current value(%s)", v);
+	cf->button_url = v;
+	break;
+      }
+      if (!strcmp(n, "OAZ_JWT_SIGENC_ALG")) { cf->oaz_jwt_sigenc_alg = *v; break; }
       goto badcf;
     case 'P':  /* PATH (e.g. /var/zxid) */
       DD("PATH maybe n(%s)=v(%s)", n, v);
@@ -1443,6 +1485,12 @@ scan_end:
       if (!strcmp(n, "POST_A7N_ENC"))   { SCAN_INT(v, cf->post_a7n_enc); break; }
       if (!strcmp(n, "POST_TEMPL_FILE"))   { cf->post_templ_file = v; break; }
       if (!strcmp(n, "POST_TEMPL"))        { cf->post_templ = v; break; }
+      if (!strcmp(n, "PREF_BUTTON_SIZE"))        {
+	if (!strstr(v, "468x60") && !strstr(v, "150x60") && !strstr(v, "16x16"))
+	  ERR("PREF_BUTTON_SIZE should specify one of the standard button image sizes, such as 468x60, 150x60, or 16x16 (and the image filename MUST contain substring \"saml2_icon\" in it, see symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC). Current value(%s) is used despite this error.", v);
+	cf->pref_button_size = v;
+	break;
+      }
       goto badcf;
     case 'R':  /* RELY_A7N, RELY_MSG */
       if (!strcmp(n, "REDIRECT_HACK_IMPOSED_URL")) { cf->redirect_hack_imposed_url = v; break; }
@@ -1501,7 +1549,7 @@ scan_end:
       goto badcf;
     case 'V':  /* VALID_OPT */
       if (!strcmp(n, "VALID_OPT"))      { SCAN_INT(v, cf->valid_opt); break; }
-      if (!strcmp(n, "VPATH"))          { zxid_parse_vpath_conf_raw(cf, v); break; }
+      if (!strcmp(n, "VPATH"))          { zxid_parse_vpath_conf(cf, v); break; }
       if (!strcmp(n, "VURL"))           { zxid_parse_vurl(cf, v); break; }
       goto badcf;
     case 'W':  /* WANT_SSO_A7N_SIGNED */
@@ -1691,8 +1739,9 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "URL=%s\n"
 "AFFILIATION=%s\n"
 "NICE_NAME=%s\n"
+"BUTTON_URL=%s\n"
+"PREF_BUTTON_SIZE=%s\n"
 "ORG_NAME=%s\n"
-"ORG_URL=%s\n"
 "LOCALITY=%s\n"
 "STATE=%s\n"
 "COUNTRY=%s\n"
@@ -1726,6 +1775,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "SSO_SIGN=%x\n"
 "WSC_SIGN=%x\n"
 "WSP_SIGN=%x\n"
+"OAZ_JWT_SIGENC_ALG=%c\n"
 "WSPCGICMD=%s\n"
 "NAMEID_ENC=%x\n"
 "POST_A7N_ENC=%d\n"
@@ -1874,8 +1924,9 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->url,
 		 STRNULLCHK(cf->affiliation),
 		 STRNULLCHK(cf->nice_name),
+		 STRNULLCHK(cf->button_url),
+		 STRNULLCHK(cf->pref_button_size),
 		 STRNULLCHK(cf->org_name),
-		 STRNULLCHK(cf->org_url),
 		 STRNULLCHK(cf->locality),
 		 STRNULLCHK(cf->state),
 		 STRNULLCHK(cf->country),
@@ -1909,6 +1960,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->sso_sign,
 		 cf->wsc_sign,
 		 cf->wsp_sign,
+		 cf->oaz_jwt_sigenc_alg,
 		 cf->wspcgicmd,
 		 cf->nameid_enc,
 		 cf->post_a7n_enc,

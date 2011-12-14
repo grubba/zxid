@@ -83,6 +83,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf,zxid_ses* ses,struct z
   struct zx_str* prvid;
   struct zx_str* addr = 0;  
   zxid_epr* epr = 0;
+  strcpy(logop, "xxxDIyy");
   D_INDENT("di_query: ");
   ses->uid = uid;
   

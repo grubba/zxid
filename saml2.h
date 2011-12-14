@@ -1,4 +1,5 @@
 /* saml2.h  -  Widely used SAML 2.0 constants
+ * Copyright (c) 2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -7,8 +8,9 @@
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id: saml2.h,v 1.3 2008-04-14 04:23:58 sampo Exp $
  *
- * 26.8.2006, created --Sampo
- * 14.4.2008, added SimpleSign --Sampo
+ * 26.8.2006,  created --Sampo
+ * 14.4.2008,  added SimpleSign --Sampo
+ * 10.12.2011, added OAuth2, OpenID Connect, and UMA support --Sampo
  */
 
 #ifndef _saml2_h
@@ -81,6 +83,10 @@
 #define SAML2_POST     "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
 #define SAML2_POST_SIMPLE_SIGN "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign"
 #define SAML2_URI      "urn:oasis:names:tc:SAML:2.0:bindings:URI"
+
+/* OAUTH2.0 or OpenID-Connect 1.0 specifics */
+
+#define OAUTH2_REDIR   "urn:zxid:OAUTH:2.0:bindings:HTTP-Redirect"
 
 /* Attribute types describe how attributes are encoded. */
 

@@ -250,6 +250,13 @@ which should be passed to the calling application,
 see "Gaining More Control" section, below, for
 full description of this case.
 
+> N.B. ~auto_flags~ are specified in code rather than in configuration
+> file (/var/zxid/zxid.conf) because their correct values are highly
+> dependent on the surrounding program that calls zxid_simple(), i.e.
+> changing them wihtou changing the surroundiing program does not make
+> sense. Their correct seetting is a programmer decision, not a sysadmin
+> decision.
+
 The auto options can be added together.
 
 <<table: zxid_simple() AUTO options

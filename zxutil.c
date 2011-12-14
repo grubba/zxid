@@ -580,8 +580,12 @@ const char pw_basis_64[64]   = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij
 /*() Raw version. Can use any encoding table and arbitrary line length.
  * Known bug: line_len is not fully respected on last line - it can
  * be up to 3 characters longer than specified due to padding.
- * Every three chars (from alphabet of 256) of input map to
+ * Every three bytes (from alphabet of 256) of input map to
  * four chars (from alphabet of 64) of output. See also SIMPLE_BASE64_LEN().
+ *
+ * > +Base64url Encoding+ URL- and filename-safe Base64 encoding
+ * > described in RFC 4648 [RFC4648], Section 5, with the (non URL-
+ * > safe) '=' padding characters may be omitted, as permitted by Section 3.2.
  *
  * p::        input
  * len::      length of input
@@ -591,7 +595,7 @@ const char pw_basis_64[64]   = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij
  *     avoid any line breaks
  * eol_len::  Length of End-of-Line string.
  * eol::      End-of-Line string, inserted every line_len.
- * eq_pad::   Padding character, usually equals (=)
+ * eq_pad::   Padding character, usually equals (=). If nul (0), no padding is added.
  * return::   Pointer one past last byte written in r. This function never fails. */
 
 /* Called by:  base64_fancy, safe_base64 */
@@ -632,13 +636,16 @@ char* base64_fancy_raw(const char* p, int len, /* input and its length */
     *r++ = basis_64[c1>>2];
     *r++ = basis_64[((c1 & 0x0003)<< 4) | ((c2 & 0x00f0) >> 4)];
     *r++ = basis_64[(c2 & 0x000f) << 2];
-    *r++ = eq_pad;
+    if (eq_pad)
+      *r++ = eq_pad;
     break;
   case 1:
     *r++ = basis_64[c1>>2];
     *r++ = basis_64[(c1 & 0x0003)<< 4];
-    *r++ = eq_pad;
-    *r++ = eq_pad;
+    if (eq_pad) {
+      *r++ = eq_pad;
+      *r++ = eq_pad;
+    }
     break;
   case 0:
     break;  /* no padding needed */
@@ -801,6 +808,37 @@ char* zx_zlib_raw_deflate(struct zx_ctx* c, int in_len, const char* in, int* out
   *out_len = z.total_out;
   deflateEnd(&z);
   return out;
+}
+
+/*() Helper to compress and ascii armour the original request. */
+
+char* zxid_deflate_safe_b64_raw(struct zx_ctx* c, int len, const char* s)
+{
+  int zlen;
+  char* zbuf;
+  char* p;
+  char* b64 = 0;
+  D("z input(%.*s) len=%d", len, s, len);
+  zbuf = zx_zlib_raw_deflate(c, len, s, &zlen);
+  if (!zbuf)
+    return 0;
+  
+  len = SIMPLE_BASE64_LEN(zlen);
+  DD("zbuf(%.*s) zlen=%d len=%d", zlen, zbuf, zlen, len);
+  b64 = ZX_ALLOC(c, len+1);
+  p = base64_fancy_raw(zbuf, zlen, b64, safe_basis_64, 1<<31, 0, 0, '=');
+  *p = 0;
+  ZX_FREE(c, zbuf);
+  return b64;  /* so it can be encoded as hidden form field "ar". */
+}
+
+/*() Helper to compress and ascii armour the original request. */
+
+char* zxid_deflate_safe_b64(struct zx_ctx* c, struct zx_str* ss)
+{
+  char* b64 = zxid_deflate_safe_b64_raw(c, ss->len, ss->s);
+  zx_str_free(c, ss);
+  return b64;  /* so it can be encoded as hidden form field "ar". */
 }
 
 /*() Decompress zlib-deflate (RFC1951) compressed data. The decompressed data will

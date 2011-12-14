@@ -209,6 +209,38 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
     ars = zx_easy_enc_elem_opt(cf, &ar->gg);
     D("AuthnReq(%.*s) %p", ars->len, ars->s, dest);
     break;
+  case ZXID_OPID_CONNECT:
+    if (!idp_meta->ed->IDPSSODescriptor) {
+      ERR("Entity(%s) does not have IdP SSO Descriptor (OAUTH2) (metadata problem)", cgi->eid);
+      zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", cgi->eid, "No IDPSSODescriptor (OAUTH2)");
+      cgi->err = "Bad IdP metadata (OAUTH). Try different IdP.";
+      D_DEDENT("start_sso: ");
+      return 0;
+    }
+    for (sso_svc = idp_meta->ed->IDPSSODescriptor->SingleSignOnService;
+	 sso_svc;
+	 sso_svc = (struct zx_md_SingleSignOnService_s*)sso_svc->gg.g.n) {
+      if (sso_svc->gg.g.tok != zx_md_SingleSignOnService_ELEM)
+	continue;
+      if (sso_svc->Binding && !memcmp(OAUTH2_REDIR,sso_svc->Binding->g.s,sso_svc->Binding->g.len))
+	break;
+    }
+    if (!sso_svc) {
+      ERR("IdP Entity(%s) does not have any IdP SSO Service with " OAUTH2_REDIR " binding (metadata problem)", cgi->eid);
+      zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", cgi->eid, "No OAUTH2 redir binding");
+      cgi->err = "Bad IdP metadata. Try different IdP.";
+      D_DEDENT("start_sso: ");
+      return 0;
+    }
+    DD("HERE1 %p", sso_svc);
+    DD("HERE2 %p", sso_svc->Location);
+    DD("HERE3 len=%d (%.*s)", sso_svc->Location->g.len, sso_svc->Location->g.len, sso_svc->Location->g.s);
+    if (cf->log_level>0)
+      zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "OANREDIR", cgi->eid, 0);
+    ars = zxid_mk_oauth_az_req(cf, cgi, &sso_svc->Location->g, cgi->rs);
+
+    D_DEDENT("start_sso: ");
+    return ars;
   default:
     NEVER("Inappropriate SSO profile: %d", sso_profile_ix);
     cgi->err = "Inappropriate SSO profile. Bad metadata?";

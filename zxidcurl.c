@@ -8,10 +8,11 @@
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id: zxidcurl.c,v 1.9 2009-11-24 23:53:40 sampo Exp $
  *
- * 12.8.2006, created --Sampo
- * 4.10.2007, fixed missing Content-length header found by Damien Laniel --Sampo
- * 4.10.2008, added documentation --Sampo
- * 1.2.2010,  removed arbitrary limit on SOAP response size --Sampo
+ * 12.8.2006,  created --Sampo
+ * 4.10.2007,  fixed missing Content-length header found by Damien Laniel --Sampo
+ * 4.10.2008,  added documentation --Sampo
+ * 1.2.2010,   removed arbitrary limit on SOAP response size --Sampo
+ * 11.12.2011, refactored HTTP GET client --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  *           http://curl.haxx.se/libcurl/
@@ -38,7 +39,7 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
-/* ============== CoT and Metadata of Others ============== */
+/* ============== CURL callbacks ============== */
 
 /*() Call back used by Curl to move received data to application buffer.
  * Internal. Do not use directly. */
@@ -94,18 +95,20 @@ size_t zxid_curl_read_data(void *buffer, size_t size, size_t nmemb, void *userp)
   return len;
 }
 
-/*() Send HTTP request for metadata using Well Known Location (WKL) method
- * and wait for response. Send the message to the server using Curl. Return
- * the metadata as parsed XML for the entity.
+/* ============== HTTP(S) GET and POST Clients ============== */
+
+/*() Send HTTP GET request and wait for response.
+ * Send the message to the server using Curl. Return raw data.
  * This call will block while the HTTP request-response is happening.
  *
  * cf::      ZXID configuration object, also used for memory allocation
- * url::     Where the request will be sent, i.e. the WKL
- * return::  XML data structure representing the entity, or 0 upon failure
+ * url::     Where the request will be sent
+ * lim::     Result parameter, allowing return of pointer to one-past-last of return string. Maybe NULL.
+ * return::  GET body as a string, or 0 upon failure
  *
  * The underlying HTTP client is libcurl. While libcurl is documented to
- * be "entirely thread safe", one limitation is that chrl handle can not
- * be shared between threads. Since we keep the curl handle a part
+ * be "entirely thread safe", one limitation is that curl handle can not
+ * be shared between threads. Since we keep the curl handle as a part
  * of the configuration object, which may be shared between threads,
  * we need to take a lock for duration of the curl operation. Thus any
  * given configuration object can have only one HTTP request active
@@ -113,33 +116,18 @@ size_t zxid_curl_read_data(void *buffer, size_t size, size_t nmemb, void *userp)
  * objects.
  */
 
-/* Called by:  opt x3, zxid_addmd, zxid_get_meta_ss */
-zxid_entity* zxid_get_meta(zxid_conf* cf, const char* url)
+/* Called by:  */
+char* zxid_http_get(zxid_conf* cf, const char* url, char** lim)
 {
 #ifdef USE_CURL
-  zxid_entity* ent;
   CURLcode res;
   struct zxid_curl_ctx rc;
-#if 1
+
   rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_MD_BUF+1);
   rc.lim = rc.buf + ZXID_INIT_MD_BUF;
-  LOCK(cf->curl_mx, "curl get_meta");
+  LOCK(cf->curl_mx, "curl http_get");
   curl_easy_reset(cf->curl);
   curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
-#else
-  {
-    /* TEST CODE (usually disabled) */
-    int fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "get_meta TEST", 1,
-			       "%s" ZXID_COT_DIR "test", cf->path);
-    if (fd == -1) {
-      perror("open meta to write");
-      /*UNLOCK(cf->curl_mx, "curl get_meta");*/
-      ERR("Failed to open file(%s) for writing metadata", url);
-      return 0;
-    }
-    curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, fd);
-  }
-#endif
   curl_easy_setopt(cf->curl, CURLOPT_WRITEFUNCTION, zxid_curl_write_data);
   curl_easy_setopt(cf->curl, CURLOPT_NOPROGRESS, 1);
   curl_easy_setopt(cf->curl, CURLOPT_FOLLOWLOCATION, 1);
@@ -148,43 +136,27 @@ zxid_entity* zxid_get_meta(zxid_conf* cf, const char* url)
   curl_easy_setopt(cf->curl, CURLOPT_SSL_VERIFYHOST, 0);
   curl_easy_setopt(cf->curl, CURLOPT_URL, url);
 
-  D("get_meta: url(%s)", url);
+  D("http get: url(%s)", url);
   if (cf->log_level>1)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "GETMD", url, 0);
   res = curl_easy_perform(cf->curl);
-  UNLOCK(cf->curl_mx, "curl get_meta");
+  UNLOCK(cf->curl_mx, "curl http_get");
   rc.lim = rc.p;
   rc.p[1] = 0;
   rc.p = rc.buf;
-  if (rc.lim - rc.p < 300) {
-    ERR("Metadata response too short (%d chars, min 300 required). url(%s) CURLcode(%d) CURLerr(%s) buf(%.*s)",	((int)(rc.lim-rc.buf)), url, res, CURL_EASY_STRERR(res), ((int)(rc.lim-rc.buf)), rc.buf);
+  if (rc.lim - rc.p < 100) {
+    ERR("Response too short (%d chars, min 100 required). url(%s) CURLcode(%d) CURLerr(%s) buf(%.*s)",	((int)(rc.lim-rc.buf)), url, res, CURL_EASY_STRERR(res), ((int)(rc.lim-rc.buf)), rc.buf);
     ZX_FREE(cf->ctx, rc.buf);
     return 0;
   }
-  
-  ent = zxid_parse_meta(cf, &rc.p, rc.lim);
-  if (!ent) {
-    ERR("Failed to parse metadata response url(%s) CURLcode(%d) CURLerr(%s) buf(%.*s)",	url, res, CURL_EASY_STRERR(res), ((int)(rc.lim-rc.buf)), rc.buf);
-    ZX_FREE(cf->ctx, rc.buf);
-    return 0;
-  }
-  if (cf->log_level>0)
-    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "GOTMD", url, 0);
-  return ent;
+  if (lim)
+    *lim = rc.lim;
+  return rc.p;
 #else
-  ERR("This copy of zxid was compiled to NOT use libcurl. As such metadata fetching and web service calling are not supported. Add -DUSE_CURL and recompile. %d", 0);
+  ERR("This copy of zxid was compiled to NOT use libcurl. As such http client operations, like OAUTH2, metadata fetching, and web service calling are not supported. Add -DUSE_CURL and recompile. %d", 0);
   return 0;
 #endif
 }
-
-/*() Wrapper for zxid_get_meta() so you can provide the URL as ~zx_str~. */
-/* Called by:  zxid_get_ent_ss */
-zxid_entity* zxid_get_meta_ss(zxid_conf* cf, struct zx_str* url)
-{
-  return zxid_get_meta(cf, zx_str_to_c(cf->ctx, url));
-}
-
-/* ============== SOAP Call ============= */
 
 /*() HTTP client for POST method.
  * This method is just a wrapper around underlying libcurl HTTP client.
@@ -300,6 +272,55 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   return 0;
 #endif
 }
+
+/* ============== CoT and Metadata of Others ============== */
+
+/*() Send HTTP request for metadata using Well Known Location (WKL) method
+ * and wait for response. Send the message to the server using Curl. Return
+ * the metadata as parsed XML for the entity.
+ * This call will block while the HTTP request-response is happening.
+ *
+ * cf::      ZXID configuration object, also used for memory allocation
+ * url::     Where the request will be sent, i.e. the WKL
+ * return::  XML data structure representing the entity, or 0 upon failure
+ *
+ * The underlying HTTP client is libcurl. While libcurl is documented to
+ * be "entirely thread safe", one limitation is that chrl handle can not
+ * be shared between threads. Since we keep the curl handle a part
+ * of the configuration object, which may be shared between threads,
+ * we need to take a lock for duration of the curl operation. Thus any
+ * given configuration object can have only one HTTP request active
+ * at a time. If you need more parallelism, you need more configuration
+ * objects.
+ */
+
+/* Called by:  opt x3, zxid_addmd, zxid_get_meta_ss */
+zxid_entity* zxid_get_meta(zxid_conf* cf, const char* url)
+{
+  char* buf;
+  char* md;
+  char* lim;
+  zxid_entity* ent;
+  buf = md = zxid_http_get(cf, url, &lim);
+  ent = zxid_parse_meta(cf, &md, lim);
+  if (!ent) {
+    ERR("Failed to parse metadata response url(%s) buf(%.*s)",	url, ((int)(lim-buf)), buf);
+    ZX_FREE(cf->ctx, buf);
+    return 0;
+  }
+  if (cf->log_level>0)
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "GOTMD", url, 0);
+  return ent;
+}
+
+/*() Wrapper for zxid_get_meta() so you can provide the URL as ~zx_str~. */
+/* Called by:  zxid_get_ent_ss */
+zxid_entity* zxid_get_meta_ss(zxid_conf* cf, struct zx_str* url)
+{
+  return zxid_get_meta(cf, zx_str_to_c(cf->ctx, url));
+}
+
+/* ============== SOAP Call ============= */
 
 /*(i) Send SOAP request and wait for response. Send the message to the
  * server using Curl. Return the parsed XML response data structure.

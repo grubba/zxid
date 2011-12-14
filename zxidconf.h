@@ -12,7 +12,7 @@
  * 29.8.2009, added PDP_URL --Sampo
  * 7.1.2010,  added WSC and WSP signing options --Sampo
  * 12.2.2011, added proxy IdP related options --Sampo
- * 10.12.2011, added VPATH and VURL --Sampo
+ * 10.12.2011, added VPATH, VURL, BUTTON_URL, delete ORG_URL --Sampo
  *
  * Most of the configuration options can be set via configuration
  * file /var/zxid/zxid.conf or using -O command line flag(s). In
@@ -48,10 +48,10 @@
 #ifndef ZXID_PATH
 #ifdef MINGW
 #define ZXID_PATH  "c:/var/zxid/"
-#define ZXID_VPATH "c:/var/zxid/%h:%p/"
+#define ZXID_VPATH "c:/var/zxid/%h/"
 #else
 #define ZXID_PATH  "/var/zxid/"
-#define ZXID_VPATH "/var/zxid/%h:%p/"
+#define ZXID_VPATH "/var/zxid/%h/"
 #endif
 #endif
 
@@ -71,18 +71,24 @@
  * following % (percent) specifications, inline:
  *
  *   %%  expands as single percent sign
- *   %h  the contents of environment variable HTTP_HOST (see CGI spec)
+ *   %a  access protocol prefix, e.g. "https://" or "http://"
+ *   %h  the contents of environment variable HTTP_HOST (see CGI spec) This
+ *       usually ends in :port if the port is nonstandard (thus usually
+ *       you do not need %p or %P).
  *   %p  the contents of environment variable SERVER_PORT (see CGI spec)
  *   %s  the contents of environment variable SCRIPT_NAME (see CGI spec)
  *
  * > N.B. All other %-specs are reserved for future expansion
+ *
+ * After % expansion, the values are squashed to file path safe character set. In
+ * particular, the / (slash) characters are converted to _ (underscore).
  *
  * VPATH is not really a configuration option on its own right (there is
  * no corresponding entry in struct zxid_conf), but rather a directive
  * that instructs on point of occurrance the PATH variable (see zxid.h)
  * to change and configuration file to be read.
  *
- * Default value: "/var/zxid/%h:%p/" (see definition of PATH for example).
+ * Default value: "/var/zxid/%h/" (see definition of PATH for example).
  * See also: VURL
  */
 
@@ -92,6 +98,57 @@
  * is usually a short human readable name or description. It will also
  * appear in metadata as Organization/OrganizationDisplayName */
 #define ZXID_NICE_NAME "ZXID configuration NICE_NAME: Set this to describe your site to humans"
+
+/*(c) Branding button image URL for user interfaces (optional).
+ * IdP BUTTON_URL is (may be) shown in SP IdP selection screens as
+ * a button (provided that IDP_LIST_METH=2 (IDP_LIST_BRAND)) that
+ * user can click to login using that IdP.
+ *
+ * SP BUTTON_URL is shown by IdP login screen so user understands which SP
+ * requested the SSO. In this use, the "button" is not (usually?) clickable.
+ *
+ * BUTTON_URL will also appear in metadata as Organization/OrganizationURL,
+ * see symlabs-saml-displayname-2008.pdf (submitted to OASIS SSTC) for
+ * specification.
+ *
+ * The BUTTON_URL MUST contain substring "saml2_icon" and size designator (see spec),
+ * to distinguish it from other uses of SAML2 MD Organization/OrganizationURL (which
+ * are unspecified, but presumably include home page URL; original SAML2 MD spec
+ * was too loose). ZXID only supports the usage as button image URL (as of 20111210).
+ *
+ * Typical value::  https://your-site.com/your_brand_saml2_icon_150x60.png
+ *
+ * Other possible values:: Depending on SP user interface, you may
+ *     use any of
+ *
+ *       https://your-site.com/your_brand_saml2_icon_468x60.png
+ *       https://your-site.com/your_brand_saml2_icon_150x60.png
+ *       https://your-site.com/your_brand_saml2_icon_16x16.png
+ *
+ *     This allows different types of user interfaces to be rendered, see
+ *     PREF_BUTTON_SIZE config option. Check with your Trust Operator
+ *     organization to understand the convention they use.
+ *
+ *     > N.B. As of 20111210, you can only specify one in configuration and
+ *     > your own metadata, but any number are tolerated in foreign metadata.
+ *
+ * If BUTTON_URL is not supplied (the default (0)), the NICE_NAME, and
+ * possibly EntityID, is displayed instead. */
+#define ZXID_BUTTON_URL 0  /* By default no button URL is supplied. */
+
+/*(c) Preferred branding button size (squash or ignore others)
+ * See description of BUTTON_URL, above, for general notion of branding button.
+ *
+ * Since different user interfaces may require different sizes of branding button,
+ * many SAML2 metadata provide several. PREF_BUTTON_SIZE must be a substring
+ * of the OrganizationURL for it to be considered as preferred branding button.
+ * Branding button will also have "saml2_icon" as substring. Lacking correct size,
+ * any other branding button may be squashed to fit the right size, or textual
+ * NICE_NAME and possibly EntityID may be displayed instead. Value SHOULD be
+ * one of "468x60" (banners only mode, typically one per row), "150x60" (default,
+ * multicolumn mode), "16x16" (detailed listing mode, typically with
+ * OreanizationDisplayName and EntityID displayed as well). */
+#define ZXID_PREF_BUTTON_SIZE "150x60"
 
 /*(c) Web Site URL - root of EntityID
  * IMPORTANT: Failure to config this option may block zxid from operating.
@@ -114,7 +171,10 @@
  * following % (percent) specifications are expanded inline:
  *
  *   %%  expands as single percent sign
- *   %h  the contents of environment variable HTTP_HOST (see CGI spec)
+ *   %a  access protocol prefix, e.g. "https://" or "http://"
+ *   %h  the contents of environment variable HTTP_HOST (see CGI spec). This
+ *       usually ends in :port if the port is nonstandard (thus usually
+ *       you do not need %p or %P).
  *   %p  the contents of environment variable SERVER_PORT (see CGI spec).
  *   %P  Similar to %p, but renders a colon before the portnumber, unless
  *       the SERVER_PORT is 443 or 80, in which case nothing is rendered.
@@ -128,10 +188,10 @@
  * that instructs on point of occurrance the URL variable (see zxid.h)
  * to change.
  *
- * Default value: "https://%h%P%s"
+ * Default value: "%a%h%s"
  * See also: VPATH
  */
-#define ZXID_VURL "https://%h%P%s"
+#define ZXID_VURL "%a%h%s"
 
 /*(c) Override standard EntityID Construction
  * The best practise is that SP Entity ID is chosen by the SP (and not
@@ -162,7 +222,6 @@
  * The LOCALITY, STATE, and COUNTRY will appear in certificates
  * so you may want to set them to sensible values. */
 #define ZXID_ORG_NAME "Unspecified ORG_NAME conf variable"
-#define ZXID_ORG_URL  0
 #define ZXID_LOCALITY "Lisboa"
 #define ZXID_STATE    "Lisboa"
 #define ZXID_COUNTRY  "PT"
@@ -348,6 +407,13 @@
  *   0x02  SOAP Body
  *   0x03  Both Headers and Body are signed. */
 #define ZXID_WSP_SIGN 0x03
+
+/*(c) OAUTH2 / OpenID-Connect1 id_token signing and encryption options
+ * 'n': alg=none
+ * 'h': alg=HS256 (HMAC using SHA256)
+ * 'r': alg=RS256 (RSA using SHA256)
+ */
+#define ZXID_OAZ_JWT_SIGENC_ALG 'n'
 
 /*(c) Command that will be executed by zxidwspcgi to respond to a web service call. */
 #ifndef ZXID_WSPCGICMD
@@ -825,7 +891,7 @@
 /*(c) Choose the method for rendeing IdP list.
  * 0 = popup menu
  * 1 = buttons
- * 2 = branded image buttons (not implemented as of 20100922) */
+ * 2 = branded image buttons (a la "nascar") */
 #define ZXID_IDP_LIST_METH 0
 
 #define ZXID_IDP_LIST_POPUP   0
@@ -871,7 +937,7 @@
   "<form method=get action=\"!!URL\">"\
   "<h1 class=zxtop>ZXID IdP Authentication for Federated SSO</h1>"\
   "<p>Entity ID of this IdP (click for the IdP metadata): <a href=\"!!EID\">!!EID</a><br>"\
-  "<p>Login requested by !!SP_DPY_NAME (<a href=\"!!SP_EID\">!!SP_EID</a>)"\
+  "<p>Login requested by <img src=\"!!SP_BUTTON_URL\"> !!SP_DPY_NAME (<a href=\"!!SP_EID\">!!SP_EID</a>)"\
   "<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>"\
   "User NOT logged in, no session."\
   "<h3>Please authenticate using one of the following methods:</h3>"\

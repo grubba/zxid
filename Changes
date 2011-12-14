@@ -72,11 +72,17 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - U-Prove (https://connect.microsoft.com/site1188  /t/U-Prove_CTP_R2_Whitepaper.pdf) support
     - Idemix support http://www.zurich.ibm.com/security/idemix/
     - AuthnSvc (AS) should check caller credential, in addition to the login credential, see comment on AS_ENA in zxidconf.h
-    - VURL feature?
+    - Add support for multiple $ separated button_url's, see zxidmeta.c:zxid_org_desc()
+
+zxid-1.10:: 12.12.2011
+    - Added support for OAUTH2 / OpenID-Connect1 Minimal / Basic Profile (both RP and IdP)
+    - Adapted SAML2 metadata to support OAUTH2, using Binding="urn:zxid:OAUTH:2.0:bindings:HTTP-Redirect" (OAUTH2-REDIR)
 
 zxid-1.06:: 10.12.2011
     - Merged improvements (CDC, sol8x86, free functions, mem leak fixes) by grubba@@grubba.org from git://github.com/grubba/zxid.git
     - Added VURL for virtual hosting
+    - Added support for OrganizationURL as button_url for branding buttons (per symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC)
+    - Deleted ORG_URL config option. Use BUTTON_URL instead.
 
 zxid-1.05:: 7.12.2011
     - Added DEBUG and DEBUG_LOG options to manipulate debug level from config file

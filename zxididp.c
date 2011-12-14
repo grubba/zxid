@@ -1,5 +1,5 @@
 /* zxididp.c  -  CGI binary for SAML 2 IdP
- * Copyright (c) 2008-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2008-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
@@ -8,6 +8,7 @@
  *
  * 12.11.2008, created --Sampo
  * 24.8.2009,  perfected for TAS3 workshop --Sampo
+ * 13.12.2011, added  VPATH and VURL --Sampo
  *
  * See zxid_idp_dispatch() in zxididpx.c for most interesting parts of IdP implementation.
  *
@@ -49,7 +50,8 @@ Usage: zxididp [options]   (when used as CGI, no options can be supplied)\n\
 #ifdef MINGW
 #define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=c:/var/zxid/idp"
 #else
-#define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=/var/zxid/idp"
+/*#define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=/var/zxid/idp"*/
+#define CONF "NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=/var/zxid/idp&VPATH=/var/zxid/%h/&VURL=%a%h%s"
 #endif
 
 /* Called by: */

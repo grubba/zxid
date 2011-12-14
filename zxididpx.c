@@ -1,5 +1,5 @@
 /* zxididpx.c  -  Handwritten functions for IdP dispatch
- * Copyright (c) 2008-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2008-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
@@ -8,6 +8,7 @@
  *
  * 14.11.2008,  created --Sampo
  * 12.2.2010,   added locking to lazy loading --Sampo
+ * 11.12.2011,  added OAUTH2 and OpenID-Connect support --Sampo
  *
  * TODO: *** Review of all of IdP SLO and MNI code
  */
@@ -38,6 +39,9 @@ struct zx_str* zxid_idp_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, in
   struct zx_str* ss2;
   struct zx_root_s* r;
   ses->sigres = ZXSIG_NO_SIG;
+
+  if (cgi->response_type)  /* OAUTH2 / OpenID-Connect */
+    return zxid_oauth2_az_server_sso(cf, cgi, ses);
 
   r = zxid_decode_redir_or_post(cf, cgi, ses, chk_dup);
   if (!r)

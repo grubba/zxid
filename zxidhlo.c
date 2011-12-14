@@ -10,6 +10,7 @@
  *
  * 16.1.2007, created --Sampo
  * 28.2.2011, added attribute dump --Sampo
+ * 13.12.2011, added VPATH and VURL specs --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  *           README-zxid, section 10 "zxid_simple() API"
@@ -52,7 +53,7 @@ Usage: zxidhlo [options]   (when used as CGI, no options can be supplied)\n\
 #define ZXIDHLO "zxidhlo"
 //#define CONF "PATH=/var/zxid/&URL=http://sp1.zxid.org/demohlo"
 #ifndef CONF
-#define CONF "PATH=/var/zxid/&URL=http://sp1.zxidsp.org:8081/" ZXIDHLO "&NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
+#define CONF "VPATH=%h/&VURL=%a%h%s&NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
 #endif
 //#define CONF "URL=https://sp1.zxidsp.org:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
 //#define CONF "URL=https://lima.tas3.eu:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"

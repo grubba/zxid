@@ -21,6 +21,7 @@ public interface zxidjniConstants {
   public final static int ZX_TOK_NS_MASK = zxidjniJNI.ZX_TOK_NS_MASK_get();
   public final static int ZX_TOK_NS_SHIFT = zxidjniJNI.ZX_TOK_NS_SHIFT_get();
   public final static int ZX_TOK_FLAGS_MASK = zxidjniJNI.ZX_TOK_FLAGS_MASK_get();
+  public final static int ZX_SYMKEY_LEN = zxidjniJNI.ZX_SYMKEY_LEN_get();
   public final static String SIG_ALGO_RSA_SHA1 = zxidjniJNI.SIG_ALGO_RSA_SHA1_get();
   public final static String SIG_ALGO_DSA_SHA1 = zxidjniJNI.SIG_ALGO_DSA_SHA1_get();
   public final static String SIG_ALGO = zxidjniJNI.SIG_ALGO_get();
@@ -106,6 +107,7 @@ public interface zxidjniConstants {
   public final static String ZXLOG_RELY_DIR = zxidjniJNI.ZXLOG_RELY_DIR_get();
   public final static String ZXLOG_ISSUE_DIR = zxidjniJNI.ZXLOG_ISSUE_DIR_get();
   public final static String ZXLOG_A7N_KIND = zxidjniJNI.ZXLOG_A7N_KIND_get();
+  public final static String ZXLOG_JWT_KIND = zxidjniJNI.ZXLOG_JWT_KIND_get();
   public final static String ZXLOG_MSG_KIND = zxidjniJNI.ZXLOG_MSG_KIND_get();
   public final static String ZXLOG_WIR_KIND = zxidjniJNI.ZXLOG_WIR_KIND_get();
   public final static int ZXID_DAP_SCOPE_BASE = zxidjniJNI.ZXID_DAP_SCOPE_BASE_get();
@@ -124,6 +126,7 @@ public interface zxidjniConstants {
   public final static int ZXID_SAML2_POST_SIMPLE_SIGN = zxidjniJNI.ZXID_SAML2_POST_SIMPLE_SIGN_get();
   public final static int ZXID_SAML2_REDIR = zxidjniJNI.ZXID_SAML2_REDIR_get();
   public final static int ZXID_SAML2_URI = zxidjniJNI.ZXID_SAML2_URI_get();
+  public final static int ZXID_OPID_CONNECT = zxidjniJNI.ZXID_OPID_CONNECT_get();
   public final static int ZXID_SLO_SVC = zxidjniJNI.ZXID_SLO_SVC_get();
   public final static int ZXID_MNI_SVC = zxidjniJNI.ZXID_MNI_SVC_get();
   public final static int ZXID_ACS_SVC = zxidjniJNI.ZXID_ACS_SVC_get();
@@ -190,6 +193,7 @@ public interface zxidjniConstants {
   public final static String SAML2_POST = zxidjniJNI.SAML2_POST_get();
   public final static String SAML2_POST_SIMPLE_SIGN = zxidjniJNI.SAML2_POST_SIMPLE_SIGN_get();
   public final static String SAML2_URI = zxidjniJNI.SAML2_URI_get();
+  public final static String OAUTH2_REDIR = zxidjniJNI.OAUTH2_REDIR_get();
   public final static String SAML2_AP_BASIC = zxidjniJNI.SAML2_AP_BASIC_get();
   public final static String SAML2_AP_X500 = zxidjniJNI.SAML2_AP_X500_get();
   public final static String SAML2_AP_UUID = zxidjniJNI.SAML2_AP_UUID_get();

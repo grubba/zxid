@@ -23,6 +23,8 @@
  * 1.2.2010,   removed arbitrary size limit --Sampo
  * 12.2.2010,  added pthread locking --Sampo
  * 17.2.2011,  fixed processing of whitespace in metadata --Sampo
+ * 10.12.2011, added OAuth2, OpenID Connect, and UMA support --Sampo
+ * 11.12.2011, added OrganizationURL support per symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC --Sampo
  */
 
 #include "platform.h"  /* for dirent.h */
@@ -104,9 +106,12 @@ static void zxid_process_keys(zxid_conf* cf, zxid_entity* ent, struct zx_md_KeyD
   }
 }
 
+/*() Helper to create EntityDescriptor */
+
 /* Called by:  zxid_parse_meta x2 */
 static zxid_entity* zxid_mk_ent(zxid_conf* cf, struct zx_md_EntityDescriptor_s* ed)
 {
+  struct zx_str* val;
   zxid_entity* ent = ZX_ZALLOC(cf->ctx, zxid_entity);
   ent->ed = ed;
   if (!ed->entityID)
@@ -115,8 +120,21 @@ static zxid_entity* zxid_mk_ent(zxid_conf* cf, struct zx_md_EntityDescriptor_s* 
   sha1_safe_base64(ent->sha1_name, ed->entityID->g.len, ent->eid);
   ent->sha1_name[27] = 0;
   
-  if (ed->Organization && ZX_GET_CONTENT(ed->Organization->OrganizationDisplayName))
-    ent->dpy_name = zx_str_to_c(cf->ctx,ZX_GET_CONTENT(ed->Organization->OrganizationDisplayName));
+  if (ed->Organization) {  /* see symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC */
+    if (val = ZX_GET_CONTENT(ed->Organization->OrganizationDisplayName))
+      ent->dpy_name = zx_str_to_c(cf->ctx, val);
+    if (val = ZX_GET_CONTENT(ed->Organization->OrganizationURL)) {
+      if (zx_memmem(val->s, val->len, "saml2_icon", sizeof("saml2_icon"))) {
+	if (   !zx_memmem(val->s, val->len, "saml2_icon_468x60", sizeof("saml2_icon_468x60"))
+	    && !zx_memmem(val->s, val->len, "saml2_icon_150x60", sizeof("saml2_icon_150x60"))
+	    && !zx_memmem(val->s, val->len, "saml2_icon_16x16",  sizeof("saml2_icon_16x16")))
+	  ERR("OrganizationURL has to specify button image and the image filename MUST contain substring \"saml2_icon\" in it (see symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC). Furthermore, this substring must specify the size, which must be one of 468x60, 150x60, or 16x16. Acceptable substrings are are \"saml2_icon_468x60\", \"saml2_icon_150x60\", \"saml2_icon_16x16\", e.g. \"https://example.com/example-brand-saml2_icon_150x60.png\". Current value(%.*s) may be used despite this error. The preferred size is \"%s\". Only last acceptable specification of OrganizationURL will be used.", val->len, val->s, cf->pref_button_size);
+	if (!ent->button_url || !zx_memmem(val->s, val->len, cf->pref_button_size, strlen(cf->pref_button_size))) /* Pref overrides previous. */
+	  ent->button_url = zx_str_to_c(cf->ctx, val);
+      } else
+	ERR("OrganizationURL SHOULD specify user interface button image and the image filename MUST contain substring \"saml2_icon\" in it. Current value(%.*s) is not usable and will be ignored. See symlabs-saml-displayname-2008.pdf, submitted to OASIS SSTC.", val->len, val->s);
+    }
+  }
   
   if (ed->IDPSSODescriptor)
     zxid_process_keys(cf, ent, ed->IDPSSODescriptor->KeyDescriptor, "IDP SSO");
@@ -549,7 +567,7 @@ struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, struct zx_
   return d;
 }
 
-/*() Generate Single SignOn (SSO) Descriptor idp metadata fragment [SAML2meta]. */
+/*() Constructor for Single Sign-On (SSO) Descriptor idp metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc */
 struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
@@ -662,6 +680,7 @@ struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf, struct zx_elem_s
   sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_SOAP, "?o=S", "3");
   sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_PAOS, "?o=P", "4");
   sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_POST_SIMPLE_SIGN, "?o=P", "5");
+  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, OAUTH2_REDIR, "?o=O", "6");
   zx_reverse_elem_lists(&sp_ssod->gg);
   return sp_ssod;
 }
@@ -672,9 +691,13 @@ struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf, struct zx_elem_s
 struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf, struct zx_elem_s* father)
 {
   struct zx_md_IDPSSODescriptor_s* idp_ssod = zx_NEW_md_IDPSSODescriptor(cf->ctx,father);
-  idp_ssod->WantAuthnRequestsSigned    = zx_ref_attr(cf->ctx, &idp_ssod->gg, zx_WantAuthnRequestsSigned_ATTR, cf->want_authn_req_signed?"1":"0");
-  idp_ssod->errorURL                   = zx_attrf(cf->ctx, &idp_ssod->gg, zx_errorURL_ATTR, "%s?o=E", cf->url);
-  idp_ssod->protocolSupportEnumeration = zx_ref_attr(cf->ctx, &idp_ssod->gg, zx_protocolSupportEnumeration_ATTR, SAML2_PROTO);
+  idp_ssod->WantAuthnRequestsSigned
+    = zx_ref_attr(cf->ctx, &idp_ssod->gg, zx_WantAuthnRequestsSigned_ATTR,
+		  cf->want_authn_req_signed?"1":"0");
+  idp_ssod->errorURL
+    = zx_attrf(cf->ctx, &idp_ssod->gg, zx_errorURL_ATTR, "%s?o=E", cf->url);
+  idp_ssod->protocolSupportEnumeration
+    = zx_ref_attr(cf->ctx, &idp_ssod->gg, zx_protocolSupportEnumeration_ATTR, SAML2_PROTO);
 
   LOCK(cf->mx, "read certs for our md idp");
   if (!cf->enc_cert)
@@ -685,7 +708,7 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf, struct zx_elem
 
   if (!cf->enc_cert || !cf->sign_cert) {
     UNLOCK(cf->mx, "read certs for our md idp");
-    ERR("Signing or encryption certificate not found (or both are corrupt). %p", cf->enc_cert);
+    ERR("Neither signing nor encryption certificate found (or both are corrupt). %p", cf->enc_cert);
   } else {
     idp_ssod->KeyDescriptor = zxid_key_desc(cf, &idp_ssod->gg, "encryption", cf->enc_cert);
     idp_ssod->KeyDescriptor = zxid_key_desc(cf, &idp_ssod->gg, "signing", cf->sign_cert);
@@ -710,6 +733,7 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf, struct zx_elem
   idp_ssod->NameIDFormat = zx_ref_elem(cf->ctx, &idp_ssod->gg, zx_md_NameIDFormat_ELEM, SAML2_TRANSIENT_NID_FMT);
 
   idp_ssod->SingleSignOnService = zxid_sso_desc(cf, &idp_ssod->gg, SAML2_REDIR, "?o=F", 0);
+  idp_ssod->SingleSignOnService = zxid_sso_desc(cf, &idp_ssod->gg, OAUTH2_REDIR, "?o=F", 0);
 
   if (cf->imps_ena)
     idp_ssod->NameIDMappingService = zxid_nimap_desc(cf, &idp_ssod->gg, SAML2_SOAP, "?o=S", 0);
@@ -735,13 +759,13 @@ struct zx_md_Organization_s* zxid_org_desc(zxid_conf* cf, struct zx_elem_s* fath
   org->OrganizationDisplayName->lang = zx_ref_attr(cf->ctx, &org->OrganizationDisplayName->gg, zx_xml_lang_ATTR, "en");  /* *** config */
   zx_add_content(cf->ctx, &org->OrganizationDisplayName->gg, zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name)));
 
-  org->OrganizationURL = zx_NEW_md_OrganizationURL(cf->ctx, &org->gg);
-  org->OrganizationURL->lang = zx_ref_attr(cf->ctx, &org->OrganizationURL->gg, zx_xml_lang_ATTR, "en");  /* *** config */
-  if (cf->org_url && cf->org_url[0])
-    zx_add_content(cf->ctx, &org->OrganizationURL->gg, zx_ref_str(cf->ctx, cf->org_url));
-  else
-    zx_add_content(cf->ctx, &org->OrganizationURL->gg, zx_ref_str(cf->ctx, cf->url));
-
+  if (cf->button_url && cf->button_url[0]) {
+    /* see symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC) */
+    /* *** add support for multiple $ separated button_url's */
+    org->OrganizationURL = zx_NEW_md_OrganizationURL(cf->ctx, &org->gg);
+    org->OrganizationURL->lang = zx_ref_attr(cf->ctx, &org->OrganizationURL->gg, zx_xml_lang_ATTR, "en");  /* *** config */
+    zx_add_content(cf->ctx, &org->OrganizationURL->gg, zx_ref_str(cf->ctx, cf->button_url));
+  }
   zx_reverse_elem_lists(&org->gg);
   return org;
 }
@@ -779,12 +803,12 @@ struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf, struct zx_elem_s*
 
 /*(i) Primary interface to our own Entity ID. While this would usually be
  * automatically generated from URL configuration option so as to conform
- * to the Well Known Location (WKL) metadata exchange convention [SAML2meta],
- * on some sites the entity ID may be different and thus everybody who
+ * to the Well Known Location (WKL) metadata exchange convention [SAML2meta].
+ * On some sites the entity ID may be different and thus everybody who
  * does not know better should use this interface to obtain it.
  *
  * cf:: ZXID configuration object, used to compute EntityID and also for memory allocation
- * return:: Entity ID as zx_str */
+ * return:: Entity ID as zx_str (caller must free with zx_str_free()) */
 
 /* Called by:  main x2, zxid_idp_map_nid2uid, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_mk_subj, zxid_my_issuer, zxid_nidmap_do, zxid_ses_to_pool, zxid_show_conf, zxid_sp_sso_finalize, zxid_wsf_validate_a7n */
 struct zx_str* zxid_my_ent_id(zxid_conf* cf)

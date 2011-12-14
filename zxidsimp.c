@@ -1,5 +1,5 @@
 /* zxidsimp.c  -  Handwritten zxid_simple() API
- * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -16,6 +16,7 @@
  * 31.5.2010, moved local PEP and attribute broker functionality to zxidpep.c --Sampo
  * 7.9.2010,  tweaked the az requests to separate ses az from resource az --Sampo
  * 22.9.2010, added People Service invitation resolution --Sampo
+ * 10.12.2011, added OAuth2, OpenID Connect, and UMA support --Sampo
  *
  * Login button abbreviations
  * A2 = SAML 2.0 Artifact Profile
@@ -303,6 +304,7 @@ static const char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* k
     if (BBMATCH("SIG", key, lim)) return cgi->sig;
     if (BBMATCH("SP_EID", key, lim)) return cgi->sp_eid;
     if (BBMATCH("SP_DPY_NAME", key, lim)) return cgi->sp_dpy_name;
+    if (BBMATCH("SP_BUTTON_URL", key, lim)) return cgi->sp_button_url;
     if (BBMATCH("SSOREQ", key, lim)) return cgi->ssoreq;
     if (BBMATCH("SAML_ART", key, lim)) return cgi->saml_art;
     if (BBMATCH("SAML_RESP", key, lim)) return cgi->saml_resp;
@@ -442,8 +444,11 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
 		     "<input type=submit name=\"l0%s\" value=\" Login with %s (%s)\">\n"
 		     "<input type=submit name=\"l1%s\" value=\" Login with %s (%s) (A2) \">\n"
 		     "<input type=submit name=\"l2%s\" value=\" Login with %s (%s) (P2) \">\n"
-		     "<input type=submit name=\"l5%s\" value=\" Login with %s (%s) (S2) \">%s<br>\n",
+		     "<input type=submit name=\"l5%s\" value=\" Login with %s (%s) (S2) \">\n"
+		     "<input type=submit name=\"l6%s\" value=\" Login with %s (%s) (O2) \">"
+		     "%s<br>\n",
 		     ss->len, ss->s,
+		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
 		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
 		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
 		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
@@ -452,6 +457,17 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
       } else {
 	dd = zx_strf(cf->ctx, "%.*s"
 		     "<input type=submit name=\"l0%s\" value=\" Login with %s (%s) \">%s<br>\n",
+		     ss->len, ss->s, idp->eid, STRNULLCHK(idp->dpy_name), idp->eid, mark);
+      }
+      break;
+    case ZXID_IDP_LIST_BRAND:
+      if (idp->button_url) {  /* see symlabs-saml-displayname-2008.pdf */
+	dd = zx_strf(cf->ctx, "%.*s"
+		     "<input type=image name=\"l0%s\" src=\"%s\" title=\"%s (%s)\">%s<br>\n",
+		     ss->len, ss->s, idp->eid, idp->button_url, STRNULLCHK(idp->dpy_name), idp->eid, mark);
+      } else {
+	dd = zx_strf(cf->ctx, "%.*s"
+		     "<input type=submit name=\"l0%s\" value=\" %s (%s) \">%s<br>\n",
 		     ss->len, ss->s, idp->eid, STRNULLCHK(idp->dpy_name), idp->eid, mark);
       }
       break;
@@ -465,7 +481,8 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
 		   "<input type=submit name=\"l0\" value=\" Login \">\n"
 		   "<input type=submit name=\"l1\" value=\" Login (A2) \">\n"
 		   "<input type=submit name=\"l2\" value=\" Login (P2) \">\n"
-		   "<input type=submit name=\"l5\" value=\" Login (S2) \"><br>\n",
+		   "<input type=submit name=\"l5\" value=\" Login (S2) \">\n",
+		   "<input type=submit name=\"l6\" value=\" Login (O2) \"><br>\n",
 		   ss->len, ss->s);
     } else {
       dd = zx_strf(cf->ctx, "%.*s</select>"
@@ -636,7 +653,7 @@ char* zxid_idp_select(char* conf, int auto_flags) {
  * page is in ss. */
 
 /* Called by:  zxid_simple_idp_show_an, zxid_simple_show_carml, zxid_simple_show_conf, zxid_simple_show_err, zxid_simple_show_idp_sel, zxid_simple_show_meta */
-static char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_mask, char* rets, char* cont_type, int* res_len, int auto_flags)
+char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_mask, char* rets, char* cont_type, int* res_len, int auto_flags)
 {
   char* res;
   struct zx_str* ss2;
@@ -849,7 +866,7 @@ static char* zxid_simple_idp_an_ok_do_rest(zxid_conf* cf, zxid_cgi* cgi, zxid_se
     D("atsel_page(%s) redir(%s)", cf->atsel_page, p);
     return zxid_simple_redir_page(cf, cf->atsel_page, p, res_len, auto_flags);
   }
-  return zxid_simple_ses_active_cf(cf, cgi, ses, res_len, auto_flags);
+  return zxid_simple_ses_active_cf(cf, cgi, ses, res_len, auto_flags); /* o=F variant */
 }
 
 /*() Show Authentication screen. Generally this will be in response to
@@ -866,14 +883,10 @@ static char* zxid_simple_idp_an_ok_do_rest(zxid_conf* cf, zxid_cgi* cgi, zxid_se
 /* Called by:  zxid_simple_idp_new_user, zxid_simple_idp_pw_authn, zxid_simple_idp_recover_password, zxid_simple_no_ses_cf */
 static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
-  int zlen, len;
-  char* zbuf;
-  char* b64 = 0;
-  char* p;
   char* ar;
   struct zx_sa_Issuer_s* issuer;
   zxid_entity* meta;
-  struct zx_root_s* r;
+  struct zx_root_s* root;
   struct zx_str* ss;
   zxid_ses sess;
   ZERO(&sess, sizeof(sess));
@@ -883,35 +896,46 @@ static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len,
   if (cgi->uid && zxid_pw_authn(cf, cgi, &sess)) {  /* Try login, just in case. */
     return zxid_simple_idp_an_ok_do_rest(cf, cgi, &sess, res_len, auto_flags);
   }
-  if (cgi->saml_req) {
-    DD("zz saml_req(%s) rs(%s) sigalg(%s) sig(%s)", cgi->saml_req, cgi->rs, cgi->sigalg, cgi->sig);  
-    ss = zx_strf(cf->ctx, "SAMLRequest=%s%s%s&SigAlg=%s&Signature=%s",
-		 STRNULLCHK(cgi->saml_req),
-		 cgi->rs && cgi->rs[0] ? "&RelayState=" : "", cgi->rs ? cgi->rs : "",
-		 STRNULLCHK(cgi->sigalg),
-		 STRNULLCHK(cgi->sig));
-    D("z input(%.*s) len=%d", ss->len, ss->s, ss->len);
-    zbuf = zx_zlib_raw_deflate(cf->ctx, ss->len, ss->s, &zlen);
-    if (!zbuf)
-      return 0;
-    
-    len = SIMPLE_BASE64_LEN(zlen);
-    DD("zbuf(%.*s) zlen=%d len=%d", zlen, zbuf, zlen, len);
-    b64 = ZX_ALLOC(cf->ctx, len+1);
-    p = base64_fancy_raw(zbuf, zlen, b64, safe_basis_64, 1<<31, 0, 0, '=');
-    *p = 0;
-    zx_str_free(cf->ctx, ss);
-    cgi->ssoreq = b64;
+  if (cgi->response_type) { /* Save incoming OAUTH2 / OpenID-Connect Az request as hidden field */
+    DD("zz response_type(%s) rs(%s)", cgi->response_type, cgi->rs);  
+    cgi->ssoreq = zxid_deflate_safe_b64(cf->ctx,
+		    zx_strf(cf->ctx,
+			    "response_type=%s"
+			    "&client_id=%s"
+			    "&scope=%s"
+			    "&redirect_uri=%s"
+			    "&nonce=%s"
+			    "%s%s"           /* &state= */
+			    "%s%s"           /* &display= */
+			    "%s%s",          /* &prompt= */
+			    cgi->response_type,
+			    cgi->client_id,
+			    cgi->scope,
+			    cgi->redirect_uri,
+			    cgi->nonce,
+			    cgi->state?"&state=":"", STRNULLCHK(cgi->state),
+			    cgi->display?"&display=":"", STRNULLCHK(cgi->display),
+			    cgi->prompt?"&prompt=":"", STRNULLCHK(cgi->prompt)
+			    ));
+  }
+  if (cgi->saml_req) {  /* Save incoming SAMLRequest as hidden form field ar */
+    DD("zz saml_req(%s) rs(%s) sigalg(%s) sig(%s)", cgi->saml_req, cgi->rs, cgi->sigalg, cgi->sig);
+    cgi->ssoreq = zxid_deflate_safe_b64(cf->ctx,
+		    zx_strf(cf->ctx, "SAMLRequest=%s%s%s&SigAlg=%s&Signature=%s",
+			    STRNULLCHK(cgi->saml_req),
+			    cgi->rs && cgi->rs[0] ? "&RelayState=" : "", cgi->rs ? cgi->rs : "",
+			    STRNULLCHK(cgi->sigalg),
+			    STRNULLCHK(cgi->sig)));
   }
   
-  if (cf->an_page && cf->an_page[0]) {
+  if (cf->an_page && cf->an_page[0]) {  /* Redirect to sysadmin configured page */
     ss = zx_strf(cf->ctx, "ar=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
 		 cgi->ssoreq,
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
 		 cf->url);
-    if (b64)
-      ZX_FREE(cf->ctx, b64);
+    if (cgi->ssoreq)
+      ZX_FREE(cf->ctx, cgi->ssoreq);
     ar = ss->s;
     ZX_FREE(cf->ctx, ss);
     D("an_page(%s) ar(%s)", cf->an_page, ar);
@@ -924,38 +948,61 @@ static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len,
   /* Attempt to provisorily decode the request and fetch metadata of the SP so we
    * can detect trouble early on and provide some assuring knowledge to the user. */
   
-  if (!cgi->saml_req && cgi->ssoreq) {
+  if (!cgi->saml_req && !cgi->response_type && cgi->ssoreq) {
     zxid_decode_ssoreq(cf, cgi);
   }
   
-  r = zxid_decode_redir_or_post(cf, cgi, &sess, 0x2);
-  if (r) {
-    issuer = zxid_extract_issuer(cf, cgi, &sess, r);
-    if (ZX_SIMPLE_ELEM_CHK(issuer)) {
-      meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(issuer));
+  if (cgi->response_type) {  /* OAUTH2 AzReq redir (OpenID-Connect) */
+    if (cgi->client_id) {
+      meta = zxid_get_ent(cf, cgi->client_id);
       if (meta) {
 	cgi->sp_eid = meta->eid;
 	cgi->sp_dpy_name = meta->dpy_name;
+	cgi->sp_button_url = meta->button_url;
       } else {
-	ERR("Unable to find metadata for Issuer(%.*s) in AnReq Redir", ZX_GET_CONTENT_LEN(issuer), ZX_GET_CONTENT_S(issuer));
-	cgi->err = "Issuer unknown - metadata exchange may be needed (AnReq).";
+	ERR("Unable to find metadata for client_id(%s) in OAUTH2 AzReq Redir", cgi->client_id);
+	cgi->err = "OAUTH2 client_id unknown - metadata exchange may be needed (AnReq).";
 	cgi->sp_dpy_name = "--SP description unavailable--";
-	cgi->sp_eid = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(issuer));
+	cgi->sp_eid = zx_dup_cstr(cf->ctx, cgi->client_id);
       }
     } else {
-      cgi->err = "Issuer could not be determined from Authentication Request.";
+      cgi->err = "OAUTH2 client_id missing.";
       cgi->sp_eid = "";
       cgi->sp_dpy_name = "--No SP could be determined--";
     }
-  } else {
+  } else { /* Assume SAML2 */
+    root = zxid_decode_redir_or_post(cf, cgi, &sess, 0x2);
+    if (root) {
+      issuer = zxid_extract_issuer(cf, cgi, &sess, root);
+      if (ZX_SIMPLE_ELEM_CHK(issuer)) {
+	meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(issuer));
+	if (meta) {
+	  cgi->sp_eid = meta->eid;
+	  cgi->sp_dpy_name = meta->dpy_name;
+	  cgi->sp_button_url = meta->button_url;
+	} else {
+	  ERR("Unable to find metadata for Issuer(%.*s) in AnReq Redir", ZX_GET_CONTENT_LEN(issuer), ZX_GET_CONTENT_S(issuer));
+	  cgi->err = "Issuer unknown - metadata exchange may be needed (AnReq).";
+	  cgi->sp_dpy_name = "--SP description unavailable--";
+	  cgi->sp_eid = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(issuer));
+	}
+      } else {
+	cgi->err = "Issuer could not be determined from Authentication Request.";
+	cgi->sp_eid = "";
+	cgi->sp_dpy_name = "--No SP could be determined--";
+      }
+    } else {
       cgi->err = "Malformed or nonexistant Authentication Request";
       cgi->sp_eid = "";
       cgi->sp_dpy_name = "--No SP could be determined--";
+    }
   }
-  
+
+  /* Render the authentication page */
+
   ss = zxid_template_page_cf(cf, cgi, cf->an_templ_file, cf->an_templ, 4096, auto_flags);
-  if (b64)
-    ZX_FREE(cf->ctx, b64);
+  if (cgi->ssoreq)
+    ZX_FREE(cf->ctx, cgi->ssoreq);
   DD("an_page: ret(%s)", ss?ss->len:1, ss?ss->s:"?");
   return zxid_simple_show_page(cf, ss, ZXID_AUTO_LOGINC, ZXID_AUTO_LOGINH,
 			       "a", "text/html", res_len, auto_flags);
@@ -1092,13 +1139,15 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * W = Recover password,  during IdP Login (form aw)
    * D = Delegation / Invitation acceptance user interface, the idp selection
    * G = Delegation / Invitation finalization after SSO (via RelayState)
+   * O = OAuth2 redirect destination
+   * T = OAuth2 Check ID Endpoint
    *
    * I = used for IdP ???
    * K = used?
    * F = IdP: Return SSO A7N after successful An; no ses case, generate IdP ui
    * V = Proxy IdP return
    *
-   * Still available: HJOTUVWXYZabcdefghijkoqwxyz
+   * Still available: HJUVWXYZabcdefghijkoqwxyz
    */
   
   if (cgi->enc_hint)
@@ -1166,7 +1215,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
     ss = zxid_idp_dispatch(cf, cgi, ses, 1);  /* N.B. The original request is in cgi->saml_req */
   ret_idp_dispatch:
     switch (ss->s[0]) {
-    case 'K': return zxid_simple_show_idp_sel(cf, cgi, res_len, auto_flags);
+    case 'K': return zxid_simple_show_idp_sel(cf, cgi, res_len, auto_flags); /* proxy IdP */
     case 'C': /* Content-type:  -- i.e. ship page or XML out */
     case 'L':
   redir_ok:
@@ -1314,12 +1363,20 @@ show_protected_content_setcookie:
       return zxid_simple_ab_pep(cf, ses, res_len, auto_flags);
     }
     break;
+  case 'O':
+    D("Process OAUTH2 / OpenID-Connect1 pid=%d", getpid());
+    ss = zxid_sp_oauth2_dispatch(cf, cgi, ses);
+    goto post_dispatch;
+  case 'T':
+    D("Process OAUTH2 / OpenID-Connect1 check id pid=%d", getpid());
+    return zxid_idp_oauth2_check_id(cf, cgi, ses, auto_flags);
   case 'P':    /* POST Profile Responses */
   case 'I':
   case 'K':
   case 'Q':    /* POST Profile Requests */
     DD("PRE saml_req(%s) saml_resp(%s) rs(%s) sigalg(%s) sig(%s)", STRNULLCHK(cgi->saml_req),  STRNULLCHK(cgi->saml_resp), cgi->rs, cgi->sigalg, cgi->sig);
     ss = zxid_sp_dispatch(cf, cgi, ses);
+  post_dispatch:
     D("POST dispatch_loc(%s)", ss->s);
     switch (ss->s[0]) {
     case 'O': goto show_protected_content_setcookie;

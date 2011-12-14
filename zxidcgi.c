@@ -12,6 +12,7 @@
  * 16.1.2007, split from zxidlib.c --Sampo
  * 12.10.2007, added cookie scanning --Sampo
  * 7.10.2008, added documentation --Sampo
+ * 10.12.2011, added OAuth2, OpenID Connect, and UMA support --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
@@ -78,20 +79,42 @@ int zxid_parse_cgi(zxid_cgi* cgi, char* qs)
     *p = 0;                                     /* Nul-term v (value) */
     
     switch (n[0]) {
+    case 'n':
+      if (!strcmp(n, "nonce")) { cgi->nonce = v; break; }
+      goto unknown;
     case 'o':
       if (!n[1]) { cgi->op = v[0];    break; }
       if (n[1] = 'k' && !n[2]) { cgi->ok = v;  break; }  /* ok button */
       goto unknown;
+    case 'p':
+      if (!strcmp(n, "prompt")) { cgi->prompt = v; break; }
+      goto unknown;
+    case 'r':
+      if (!strcmp(n, "response_type")) { cgi->response_type = v; break; }
+      if (!strcmp(n, "redirect_uri"))  { cgi->redirect_uri = v;	 break; }
+      goto unknown;
     case 's':
       if (!n[1]) { cgi->sid = v; break; }
+      if (!strcmp(n, "scope"))  { cgi->scope = v; break; }
+      if (!strcmp(n, "state"))  { cgi->state = v; break; }
+      if (!strcmp(n, "schema")) { cgi->schema = v; break; }
+      goto unknown;
+    case 't':
+      if (!strcmp(n, "token_type")) { cgi->token_type = v; break; }
+      goto unknown;
+    case 'u':
+      if (!strcmp(n, "user_id")) { cgi->user_id = v; break; }
       goto unknown;
     case 'c':
       if (!n[1]) { cgi->cdc = v; break; }
+      if (!strcmp(n, "client_id")) { cgi->client_id = v; break; }
       goto unknown;
       /* The following two entity IDs, combined with various login buttons
        * aim at supporting may different user interface layouts. You need to
        * understand how they interact to avoid undesired conflicts. */
     case 'e':  /* EntityID field (manual entry). Overrides 'd'. */
+      if (!strcmp(n, "expires_in")) { cgi->nonce = v; break; }
+      if (!strcmp(n, "exp"))        { cgi->exp = v; break; }
       if (!n[1]) {
 set_eid:
 	if (v[0]) cgi->eid = v;
@@ -107,6 +130,7 @@ set_eid:
 	}
 	goto set_eid;
       }
+      if (!strcmp(n, "display")) { cgi->display = v; break; }
       goto unknown;
     case 'l':
       /* Login button names are like lP<eid>, where "l" is literal ell, P is
@@ -120,10 +144,11 @@ set_eid:
       D("cgi: login eid(%s)", cgi->eid);
       break;
     case 'i':
-      if (!strcmp(n, "inv")) {
-	cgi->inv = v;
-	break;
-      }
+      if (!strcmp(n, "id_token")) { cgi->id_token = v; break; }
+      if (!strcmp(n, "iss")) { cgi->iss = v; break; }
+      if (!strcmp(n, "iso29115")) { cgi->iso29115 = v; break; }
+      if (!strcmp(n, "id"))  { cgi->id = v; break; }
+      if (!strcmp(n, "inv")) { cgi->inv = v; break; }
       /* IdP and protocol index selection popup values are like P<eid>
        * N.B. If eid is omitted from button name, it may be provided using
        * d or e fields (see above). This effectively allows i to be just
@@ -163,6 +188,8 @@ set_eid:
       break;
     case 'a':
       if (!n[1]) goto unknown;
+      if (!strcmp(n, "access_token")) { cgi->access_token = v; break; }
+      if (!strcmp(n, "aud"))          { cgi->aud = v; break; }
       switch (n[1]) {
       case 'l': if (n[3]) goto unknown;  cgi->op = n[2];           break;
       case 'u': if (n[2]) goto unknown;  if (v[0] || !cgi->uid) cgi->uid = v; break;
@@ -184,11 +211,8 @@ set_eid:
       }
       break;
     case 'R':
-      if (!strcmp(n, "RelayState")) {
-	cgi->rs = v;
-	break;
-      }
-      break;
+      if (!strcmp(n, "RelayState")) { cgi->rs = v; break; }
+      goto unknown;
     case 'S':
       if (!strcmp(n, "SAMLart")) {
 	cgi->saml_art = v;

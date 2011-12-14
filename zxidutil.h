@@ -64,8 +64,11 @@ ZXID_DECL char* base64_fancy_raw(const char* p, int len, char* r, const char* ba
 ZXID_DECL char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char* index_64);
 ZXID_DECL char* zx_zlib_raw_deflate(struct zx_ctx* c, int in_len, const char* in, int* out_len);  /* gzip */
 ZXID_DECL char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out_len);  /* gunzip */
+ZXID_DECL char* zxid_deflate_safe_b64_raw(struct zx_ctx* c, int len, const char* s);
+ZXID_DECL char* zxid_deflate_safe_b64(struct zx_ctx* c, struct zx_str* ss);
 ZXID_DECL int   zx_url_encode_len(int in_len, const char* in);
 ZXID_DECL char* zx_url_encode_raw(int in_len, const char* in, char* out);
+ZXID_DECL char* zx_url_encode(struct zx_ctx* c, int in_len, const char* in, int* out_len);
 ZXID_DECL char* zx_hexdec(char* dst, char* src, int src_len, const unsigned char* trans);
 
 ZXID_DECL int get_file_size(fdtype fd);
@@ -87,6 +90,7 @@ struct zxid_curl_ctx {
 
 ZXID_DECL size_t zxid_curl_write_data(void* buffer, size_t size, size_t nmemb, void* userp);
 ZXID_DECL size_t zxid_curl_read_data(void* buffer, size_t size, size_t nmemb, void* userp);
+ZXID_DECL char* zxid_http_get(zxid_conf* cf, const char* url, char** lim);
 
 #include <zx/zxidnoswig.h>
 

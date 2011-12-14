@@ -316,7 +316,9 @@ struct zx_attr_s* zx_dup_attr(struct zx_ctx* c, struct zx_elem_s* father, int to
   return zx_dup_len_attr(c, father, tok, strlen(s), s);
 }
 
-/*() vasprintf(3) implementation that will grab its memory from ZX memory allocator. */
+/*() vasprintf(3) implementation that will grab its memory from ZX memory allocator.
+ * String will be nul terminated. Optional retlen result paremeter allows the
+ * length to be returned. Specify 0 if this is not needed. */
 
 /* Called by:  zx_alloc_sprintf, zx_attrf, zx_strf, zxid_callf, zxid_callf_epr, zxid_wsc_prepare_callf, zxid_wsp_decoratef */
 char* zx_alloc_vasprintf(struct zx_ctx* c, int* retlen, const char* f, va_list ap) /* data is new memory */
@@ -345,7 +347,9 @@ char* zx_alloc_vasprintf(struct zx_ctx* c, int* retlen, const char* f, va_list a
   return s;
 }
 
-/*() sprintf(3) implementation that will grab its memory from ZX memory allocator. */
+/*() sprintf(3) implementation that will grab its memory from ZX memory allocator.
+ * String will be nul terminated. Optional retlen result paremeter allows the
+ * length to be returned. Specify 0 if this is not needed. */
 
 /* Called by:  main x2, zxid_add_env_if_needed, zxid_pw_authn x2, zxid_simple_no_ses_cf x2 */
 char* zx_alloc_sprintf(struct zx_ctx* c, int* retlen, const char* f, ...)  /* data is new memory */

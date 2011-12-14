@@ -798,7 +798,7 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
     at_stmt->Attribute = zxid_mk_sa_attribute_ss(cf, &at_stmt->gg, atname, 0, val);
 
     a7n = zxid_mk_a7n(cf, prvid, zxid_mk_subj(cf, 0, meta, nameid), 0, at_stmt);
-    zxid_anoint_a7n(cf, 1, a7n, prvid, "map_val", ses->uid);
+    zxid_anoint_a7n(cf, 1, a7n, prvid, "map_val", ses->uid, 0);
     val = zx_easy_enc_elem_opt(cf, &a7n->gg);
     break;
   case ZXID_MAP_RULE_WRAP_X509:  /* 0x20 Wrap the attribute in X509 attribute certificate */
@@ -958,7 +958,9 @@ nobody:
   return enve;
 }
 
-/*() Get symmetric key, generating it if necessary. */
+/*() Get symmetric key, generating it if necessary. The symkey buffer must
+ * already have been allocated and MUST hold 20 characters. It will not be
+ * nul terminated and in fact will contain binary data (sha1 hash output). */
 
 /* Called by:  zxid_psobj_key_setup, zxlog_write_line */
 char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey)

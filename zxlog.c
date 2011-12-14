@@ -1,5 +1,5 @@
 /* zxlog.c  -  Liberty oriented logging facility with log signing and encryption
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -47,11 +47,11 @@
 #define ZXLOG_TIME_ARG(t,usec) t.tm_year + 1900, t.tm_mon + 1, t.tm_mday, \
                                t.tm_hour, t.tm_min, t.tm_sec, usec/1000
 
-/*() Allocate memory for logging purpose.
+/*() Allocate memory for logging purposes.
  * Generally memory allocation goes via zx_alloc() family of functions. However
  * dues to special requirements of cryptographically implemeted logging,
  * we maintain this special allocation function (which backends to zx_alloc()).
- * Among the special features: This functin makes sure the buffer size is
+ * Among the special features: This function makes sure the buffer size is
  * rounded up to multiple of nonce to accommodate block ciphers.
  *
  * This function is considered internal. Do not use unless you know what you are doing. */

@@ -49,6 +49,7 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_ses* ses, struct zx
   struct zx_str* ss;
   zxid_entity* sp_meta;
   char uid[ZXID_MAX_BUF];
+  strcpy(logop, "xxxANyy");
   D_INDENT("ssos: ");
 
   if (!ar || !ZX_GET_CONTENT(ar->Issuer)) {
@@ -318,7 +319,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_ses* ses,
     
     outa7n = zxid_mk_usr_a7n_to_sp(cf, ses, nameid, sp_meta, sp_name_buf, 1);
     
-    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, outa7n, issue_to, "IMA7N", uid)) {
+    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, outa7n, issue_to, "IMA7N", uid,0)) {
       resp->Status = zxid_mk_lu_Status(cf, &resp->gg, "Fail", 0, 0, 0);
       D_DEDENT("imreq: ");
       return resp;

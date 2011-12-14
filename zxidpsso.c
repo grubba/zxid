@@ -34,10 +34,12 @@
 
 /*() Helper function to sign, if needed, and log the issued assertion.
  * Checks for Assertion ID duplicate and returns 0 on
- * failure (i.e. duplicate), 1 on success. */
+ * failure (i.e. duplicate), 1 on success. The ret_logpath argument,
+ * if not NULL, allows returnign the logpath to caller, e.g. to use
+ * as an artifact (caller frees). */
 
 /* Called by:  zxid_add_fed_tok2epr, zxid_idp_sso x3, zxid_imreq, zxid_map_val_ss */
-int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issued_to, const char* lk, const char* uid)
+int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issued_to, const char* lk, const char* uid, struct zx_str** ret_logpath)
 {
   X509* sign_cert;
   EVP_PKEY*  sign_pkey;
@@ -88,7 +90,10 @@ int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issue
 	}
       }
       zxlog_blob(cf, 1, logpath, ss, "anoint_a7n");
-      zx_str_free(cf->ctx, logpath);
+      if (ret_logpath)
+	*ret_logpath = logpath;
+      else
+	zx_str_free(cf->ctx, logpath);
       zx_str_free(cf->ctx, ss);
     }
   }
@@ -175,7 +180,7 @@ void zxid_gen_boots(zxid_conf* cf, zxid_ses* ses, struct zx_sa_AttributeStatemen
   char logop[8];
   char* epr_buf;
   int epr_len, is_di, ret;
-
+  strcpy(logop, "xxxBSyy");
   D_INDENT("gen_bs: ");
 
   if (!bs_lvl) {
@@ -564,7 +569,7 @@ int zxid_add_fed_tok2epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, int bs_lvl
   
   a7n = zxid_mk_usr_a7n_to_sp(cf, ses, nameid, sp_meta, sp_name_buf, bs_lvl);
   
-  if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, prvid, "DIA7N", ses->uid)) {
+  if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, prvid, "DIA7N", ses->uid, 0)) {
     ERR("Failed to sign the assertion %d", 0);
     return 0;
   }
@@ -607,10 +612,10 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
   if (!nameid)
     nameid = &tmpnameid;
 
-  if (ar->IssueInstant && ar->IssueInstant->g.len && ar->IssueInstant->g.s)
+  if (ar && ar->IssueInstant && ar->IssueInstant->g.len && ar->IssueInstant->g.s)
     srcts->tv_sec = zx_date_time_to_secs(ar->IssueInstant->g.s);
   
-  nidpol = ar->NameIDPolicy;
+  nidpol = ar ? ar->NameIDPolicy : 0;
   if (!cgi->allow_create && nidpol && nidpol->AllowCreate && nidpol->AllowCreate->g.s) {
     D("No allow_create from form, extract from SAMLRequest (%.*s) len=%d", nidpol->AllowCreate->g.len, nidpol->AllowCreate->g.s, nidpol->AllowCreate->g.len);
     cgi->allow_create = XML_TRUE_TEST(&nidpol->AllowCreate->g) ? '1':'0';
@@ -625,14 +630,14 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
 
   /* Check for federation. */
   
-  issuer = ZX_GET_CONTENT(ar->Issuer);
+  issuer = ar ? ZX_GET_CONTENT(ar->Issuer) : 0;  /* *** must arrange AR issuer somehow */
   affil = nidpol && nidpol->SPNameQualifier ? &nidpol->SPNameQualifier->g : issuer;
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
   D("sp_name_buf(%s)  allow_create=%d", sp_name_buf, cgi->allow_create);
 
   *nameid = zxid_get_fed_nameid(cf, issuer, affil, ses->uid, sp_name_buf, cgi->allow_create,
 				(cgi->nid_fmt && !strcmp(cgi->nid_fmt, "trnsnt")),
-				srcts, &ar->ID->g, logop);
+				srcts, ar?&ar->ID->g:0, logop);
   if (logop) { logop[3]='S';  logop[4]='S';  logop[5]='O';  logop[6]=0;  /* Patch in SSO */ }
 
   a7n = zxid_mk_usr_a7n_to_sp(cf, ses, *nameid, sp_meta, sp_name_buf, 1);  /* SSO a7n */
@@ -654,7 +659,8 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
 }
 
 /*(i) Generate SSO assertion and ship it to SP by chosen binding. User has already
- * logged in by the time this is called. See also zxid_ssos_anreq() */
+ * logged in by the time this is called. See also zxid_ssos_anreq()
+ * and zxid_oauth2_az_server_sso() */
 
 /* Called by:  zxid_idp_dispatch */
 struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_AuthnRequest_s* ar)
@@ -667,7 +673,9 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
   struct zx_str* acsurl = 0;
   struct zx_str tmpss;
   struct zx_str* ss;
+  struct zx_str* ss2;
   struct zx_str* payload;
+  struct zx_str* logpath;
   struct timeval srcts = {0,501000};
   zxid_nid* nameid;
   zxid_a7n* a7n;
@@ -675,6 +683,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
   struct zx_e_Envelope_s* e;
   char* p;
   char logop[8];
+  strcpy(logop, "IDPxxxx");
 
   if (!ar || !ZX_GET_CONTENT(ar->Issuer)) {
     ERR("No Issuer found in AuthnRequest %p", ar);
@@ -777,7 +786,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
   case 'q':
     D("SAML2 BRWS-POST-SIMPLE-SIGN ep(%.*s)", acsurl->len, acsurl->s);
 
-    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N_SIMPLE, a7n, ZX_GET_CONTENT(ar->Issuer), "SSOA7N", ses->uid))
+    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N_SIMPLE, a7n, ZX_GET_CONTENT(ar->Issuer), "SSOA7N", ses->uid, 0))
       return zx_dup_str(cf->ctx, "* ERR");
     resp = zxid_mk_saml_resp(cf, a7n, cf->post_a7n_enc?sp_meta:0);
     payload = zxid_anoint_sso_resp(cf, 0, resp, ar);
@@ -798,7 +807,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
   case 'p':
     D("SAML2 BRWS-POST ep(%.*s)", acsurl->len, acsurl->s);
 
-    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, ZX_GET_CONTENT(ar->Issuer), "SSOA7N", ses->uid))
+    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, ZX_GET_CONTENT(ar->Issuer), "SSOA7N", ses->uid, 0))
       return zx_dup_str(cf->ctx, "* ERR");
     resp = zxid_mk_saml_resp(cf, a7n, cf->post_a7n_enc?sp_meta:0);
     payload = zxid_anoint_sso_resp(cf, cf->sso_sign & ZXID_SSO_SIGN_RESP, resp, ar);
@@ -824,7 +833,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
       INFO("LOG_ISSUE_A7N must be turned on in IdP configuration for artifact profile to work. Turning on now automatically. %d", 0);
       cf->log_issue_a7n = 1;
     }
-    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, ZX_GET_CONTENT(ar->Issuer), "SSOA7N", ses->uid))
+    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, ZX_GET_CONTENT(ar->Issuer), "SSOA7N", ses->uid, &logpath))
       return zx_dup_str(cf->ctx, "* ERR");
     resp = zxid_mk_saml_resp(cf, a7n, 0);
     payload = zxid_anoint_sso_resp(cf, cf->sso_sign & ZXID_SSO_SIGN_RESP, resp, ar);
@@ -832,12 +841,22 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
       return zx_dup_str(cf->ctx, "* ERR");
     
     //ss = zxid_saml2_post_enc(cf, "SAMLResponse", pay_load, ar->RelayState);  *** redirect
-    zx_str_free(cf->ctx, payload);
-    /* *** Do artifact processing */
+    /* *** Do artifact processing: artifact can be the file name in /var/zxid/idplog/issue/SPEID/art/ */
+
+    ERR("Trying to use SAML2 Artifact Binding, but code not fully implemented. %d", 0);
 
     zxlog(cf, 0, &srcts, 0, ZX_GET_CONTENT(ar->Issuer), 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, ses->uid, "BRWS-ART");
 
-
+    ss2 = zx_strf(cf->ctx, "Location: %.*s%c"
+		   "SAMLResponse=%.*s" CRLF
+		   "%s%s%s",   /* Set-Cookie */
+		   acsurl->len, acsurl->s, (memchr(acsurl->s, '?', acsurl->len) ? '&' : '?'),
+		  payload->len, payload->s,
+		   (ses->setcookie?"Set-Cookie: ":""), (ses->setcookie?ses->setcookie:""), (ses->setcookie?CRLF:""),
+		   ss->len, ss->s);
+    zx_str_free(cf->ctx, payload);
+    return ss2;
+    
   default:
     NEVER("Unknown or unsupported binding %d", binding);
   }

@@ -91,6 +91,7 @@ struct zxid_entity_s {
   struct zxid_entity_s* n_cdc;  /* *** not thread safe */
   char* eid;            /* Entity ID. Always nul terminated. */
   char* dpy_name;       /* OrganizationDisplayName. Always nul terminated. */
+  char* button_url;     /* OrganizationURL. Used for branding buttons in IdP sel screen, etc. */
   char  sha1_name[28];  /* 27 chars (+1 that is overwritten with nul) */
   struct zx_md_EntityDescriptor_s* ed;  /* Metadata */
   struct zxid_map* aamap;  /* Optional. Read from /var/zxid/idpuid/.all/sp_name_buf/.cf */
@@ -133,9 +134,9 @@ typedef struct zxid_ses     zxid_ses;
 
 struct zxid_conf {
   unsigned int magic;
-  struct zx_ctx* ctx;        /* ZX parsing context. Usually used for memory allocation. */
+  struct zx_ctx* ctx; /* ZX parsing context. Usually used for memory allocation. */
   zxid_entity* cot;   /* Linked list of metadata for CoT partners (in-memory CoT cache) */
-  int path_supplied;         /* FLAG: If config variable PATH is supplied, it may trigger reading config file from the supplied location. */
+  int path_supplied;  /* FLAG: If config variable PATH is supplied, it may trigger reading config file from the supplied location. */
   int path_len;
   char* path;
   char* url;
@@ -192,8 +193,10 @@ struct zxid_conf {
   
   char* affiliation;
   char* nice_name;           /* Human readable "nice" name. Used in AuthnReq->ProviderName */
+  char* button_url;          /* OrganizationURL. Used for branding buttons. */
+  char* pref_button_size;    /* Preferred branding button size (thers are ignored). */
   char* org_name;
-  char* org_url;
+  /*char* org_url;           renamed as button_url and given new semantics */
   char* locality;            /* Used for CSR locality (L) field. */
   char* state;               /* Used for CSR state (ST) field. */
   char* country;             /* Used for CSR country (C) field. */
@@ -306,7 +309,8 @@ struct zxid_conf {
   char  az_opt;        /* Kludgy options for AZ debugging and to work-around bugs of others */
   char  valid_opt;     /* Kludgy options for AZ debugging and to work-around bugs of others */
   char  idp_pxy_ena;
-  char  pad2; char pad3; char pad4; char pad5; char pad6; char pad7;
+  char  oaz_jwt_sigenc_alg;  /* What signature and encryption to apply to issued JWT (OAUTH2) */
+  char  pad4; char pad5; char pad6; char pad7;
 
 #ifdef USE_CURL
   CURL* curl;
@@ -323,6 +327,7 @@ struct zxid_conf {
 
   char  psobj_symkey[20];    /* sha1 hash of key data */
   char  log_symkey[20];      /* sha1 hash of key data */
+  char  hmac_key[20];        /* sha1 hash of key data */
   EVP_PKEY*  log_sign_pkey;
   X509* log_enc_cert;
 #endif
@@ -376,6 +381,45 @@ struct zxid_cgi {
   char* ok;            /* Ok button in some forms */
   char* sp_eid;        /* IdP An for to generate page */
   char* sp_dpy_name;
+  char* sp_button_url;
+  char* response_type; /* OAuth2 / OpenID-Connect */
+  char* client_id;     /* OAuth2 */
+  char* scope;         /* OAuth2 */
+  char* redirect_uri;  /* OAuth2 */
+  char* nonce;         /* OAuth2 */
+  char* state;         /* OAuth2 */
+  char* display;       /* OAuth2 */
+  char* prompt;        /* OAuth2 */
+  char* access_token;  /* OAuth2 */
+  char* token_type;    /* OAuth2 */
+  char* id_token;      /* OAuth2 */
+  char* expires_in;    /* OAuth2 */
+  char* iss;           /* OAuth2 */
+  char* user_id;       /* OAuth2 */
+  char* aud;           /* OAuth2 */
+  char* exp;           /* OAuth2 */
+  char* iso29115;      /* OAuth2 */
+  char* schema;        /* OAuth2 */
+  char* id;            /* OAuth2 */
+#if 0
+  char* name;          /* OAuth2 */
+  char* given_name;    /* OAuth2 */
+  char* family_name;   /* OAuth2 */
+  char* middle_name;   /* OAuth2 */
+  char* nickname;      /* OAuth2 */
+  char* profile;       /* OAuth2 */
+  char* picture;       /* OAuth2 */
+  char* website;       /* OAuth2 */
+  char* email;         /* OAuth2 */
+  char* verified;      /* OAuth2 */
+  char* gender;        /* OAuth2 */
+  char* birthday;      /* OAuth2 */
+  char* zoneinfo;      /* OAuth2 */
+  char* locale;        /* OAuth2 */
+  char* phone_number;  /* OAuth2 */
+  char* address;       /* OAuth2 */
+  char* updated_time;  /* OAuth2 */
+#endif
   char* inv;           /* Invitation ID */
   char* action_url;    /* action URL in some forms, such as post.html */
   zxid_entity* idp_list;   /* IdPs from CDC */
@@ -649,6 +693,7 @@ ZXID_DECL struct zx_str* zxenc_symkey_dec(zxid_conf* cf, struct zx_xenc_Encrypte
 #define ZXLOG_RELY_DIR  "rely/"
 #define ZXLOG_ISSUE_DIR "issue/"
 #define ZXLOG_A7N_KIND  "/a7n/"
+#define ZXLOG_JWT_KIND  "/jwt/"
 #define ZXLOG_MSG_KIND  "/msg/"
 #define ZXLOG_WIR_KIND  "/wir/"
 
@@ -741,6 +786,7 @@ ZXID_DECL int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses);
 
 /* zxidcurl */
 
+ZXID_DECL char* zxid_http_get(zxid_conf* cf, const char* url, char** lim);
 ZXID_DECL struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data);
 ZXID_DECL struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env, char** ret_enve);
 ZXID_DECL struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body);
@@ -825,6 +871,10 @@ ZXID_DECL struct zx_sa_Attribute_s* zxid_find_attribute(zxid_a7n* a7n, int nfmt_
 
 ZXID_DECL struct zx_sp_Status_s* zxid_mk_Status(zxid_conf* cf, struct zx_elem_s* father, const char* sc1, const char* sc2, const char* msg);
 ZXID_DECL struct zx_sp_Status_s* zxid_OK(zxid_conf* cf, struct zx_elem_s* father);
+
+/* zxidoauth */
+
+ZXID_DECL struct zx_str* zxid_mk_oauth_az_req(zxid_conf* cf, zxid_cgi* cgi, struct zx_str* loc, char* relay_state);
 
 /* zxidmkwsf */
 
@@ -971,6 +1021,9 @@ ZXID_DECL char* zxid_ps_finalize_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* 
 #define ZXID_SAML2_POST_SIMPLE_SIGN  5
 #define ZXID_SAML2_REDIR 6   /* for function of same name, see */
 #define ZXID_SAML2_URI   7
+
+/* Following are experimental protocol bindings (2011) */
+#define ZXID_OPID_CONNECT 8
 
 #define ZXID_SLO_SVC 1
 #define ZXID_MNI_SVC 2
