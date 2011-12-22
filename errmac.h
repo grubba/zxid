@@ -576,7 +576,7 @@ extern char* assert_msg;
 /* Asserting and sanity checks */
  
 #define ASSERT(c)      CHK(!(c), 1)
-#define CHK_NULL(n)    ASSERT((int)(n))
+#define CHK_NULL(n)    ASSERT((long int)(n))
 #define CHK_ERRNO(n)   CHK(((n)<0), errno)
 #define CHK_MAGIC(p,m) MB ASSERT(p); ASSERTOP((p)->magic, ==, (m)); ME
 

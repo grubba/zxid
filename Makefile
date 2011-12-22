@@ -90,6 +90,7 @@ GPERF=gperf
 SWIG=swig
 AR=ar -crs
 ARX=ar -x
+#CC=ccache gcc
 CC=gcc
 LD=gcc
 GCOV=gcov
@@ -1982,6 +1983,20 @@ help:
 	@$(ECHO) "  JNI_INC       Where jni.h and jni_md.h are found"
 	@$(ECHO) "  SERVLET_PATH  Where servlet-api.jar is found; where Tomcat is installed."
 	@$(ECHO) "  SHARED        Set to 1 for shared object (DLL) build. Default: static."
+	@$(ECHO)
+	@$(ECHO) "You may need to install dependency packages. For compilation you"
+	@$(ECHO) "need the devel versions. For example: "
+	@$(ECHO) "  sudo apt-get install libssl-dev     # Debian"
+	@$(ECHO) "  sudo apt-get install libcurl4-openssl-dev"
+	@$(ECHO) "  sudo yum -y install openssl-devel   # Redhat"
+	@$(ECHO) "  sudo yum -y install libcurl-devel"
+	@$(ECHO) "  "
+	@$(ECHO) "  "
+	@$(ECHO) "  "
+	@$(ECHO) "  "
+	@$(ECHO) "  "
+	@$(ECHO) "  "
+	@$(ECHO) "  "
 	@$(ECHO)
 	@$(ECHO) "Following make targets are available:"
 	@$(ECHO)

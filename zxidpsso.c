@@ -673,7 +673,6 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
   struct zx_str* acsurl = 0;
   struct zx_str tmpss;
   struct zx_str* ss;
-  struct zx_str* ss2;
   struct zx_str* payload;
   struct zx_str* logpath;
   struct timeval srcts = {0,501000};
@@ -847,15 +846,14 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
 
     zxlog(cf, 0, &srcts, 0, ZX_GET_CONTENT(ar->Issuer), 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, ses->uid, "BRWS-ART");
 
-    ss2 = zx_strf(cf->ctx, "Location: %.*s%c"
-		   "SAMLResponse=%.*s" CRLF
-		   "%s%s%s",   /* Set-Cookie */
-		   acsurl->len, acsurl->s, (memchr(acsurl->s, '?', acsurl->len) ? '&' : '?'),
-		  payload->len, payload->s,
-		   (ses->setcookie?"Set-Cookie: ":""), (ses->setcookie?ses->setcookie:""), (ses->setcookie?CRLF:""),
-		   ss->len, ss->s);
+    ss = zx_strf(cf->ctx, "Location: %.*s%c"
+		 "SAMLResponse=%.*s" CRLF
+		 "%s%s%s",   /* Set-Cookie */
+		 acsurl->len, acsurl->s, (memchr(acsurl->s, '?', acsurl->len) ? '&' : '?'),
+		 payload->len, payload->s,
+		 (ses->setcookie?"Set-Cookie: ":""), (ses->setcookie?ses->setcookie:""), (ses->setcookie?CRLF:""));
     zx_str_free(cf->ctx, payload);
-    return ss2;
+    return ss;
     
   default:
     NEVER("Unknown or unsupported binding %d", binding);

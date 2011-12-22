@@ -481,7 +481,7 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
 		   "<input type=submit name=\"l0\" value=\" Login \">\n"
 		   "<input type=submit name=\"l1\" value=\" Login (A2) \">\n"
 		   "<input type=submit name=\"l2\" value=\" Login (P2) \">\n"
-		   "<input type=submit name=\"l5\" value=\" Login (S2) \">\n",
+		   "<input type=submit name=\"l5\" value=\" Login (S2) \">\n"
 		   "<input type=submit name=\"l6\" value=\" Login (O2) \"><br>\n",
 		   ss->len, ss->s);
     } else {

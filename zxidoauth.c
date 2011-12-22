@@ -264,7 +264,6 @@ char* zxid_sso_issue_jwt(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct tim
 /* Called by: zxid_idp_dispatch */
 struct zx_str* zxid_oauth2_az_server_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
-  int len;
   zxid_entity* sp_meta;
   struct zx_str* acsurl = 0;
   struct timeval srcts = {0,501000};
@@ -326,14 +325,14 @@ struct zx_str* zxid_oauth2_az_server_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses*
   /* Formulate OAUTH2 / OpenID-Connect1 Az Redir Response */
   
   return zx_strf(cf->ctx, "Location: %s%c"
-		 "access_token=%.*s"
+		 "access_token=%s"
 		 "&token_type=bearer"
-		 "&id_token=%.*s"
+		 "&id_token=%s"
 		 "&expires_in=%d" CRLF
 		 "%s%s%s",   /* Set-Cookie */
 		 cgi->redirect_uri, (strchr(cgi->redirect_uri, '?') ? '&' : '?'),
-		 len, idtok,
-		 len, idtok,
+		 idtok,
+		 idtok,
 		 cf->a7nttl,
 		 ses->setcookie?"Set-Cookie: ":"", ses->setcookie?ses->setcookie:"", ses->setcookie?CRLF:"");
 }
@@ -374,7 +373,6 @@ static int zxid_sp_dig_oauth_sso_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses
 /* Called by:  main x3, zxid_mgmt, zxid_simple_no_ses_cf, zxid_simple_ses_active_cf */
 struct zx_str* zxid_sp_oauth2_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
-  struct zx_root_s* r;
   int ret;
 
   if (cgi->id_token) {  /* OAUTH2 artifact / redir biding, aka OpenID-Connect1 */    
@@ -394,7 +392,7 @@ struct zx_str* zxid_sp_oauth2_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* s
     
   if (cf->log_level > 0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "C", "SPOADISP", 0, "sid(%s) unknown req or resp", STRNULLCHK(ses->sid));
-  ERR("Unknown request or response %p", r);
+  ERR("Unknown request or response %d", 0);
   return zx_dup_str(cf->ctx, "* ERR");
 }
 
@@ -411,7 +409,7 @@ struct zx_str* zxid_sp_oauth2_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* s
 /* Called by:  zxid_simple_no_ses_cf */
 char* zxid_idp_oauth2_check_id(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int auto_flags)
 {
-  int ret;
+  int ret = 0;
 
   if (cgi->id_token) {  /* OAUTH2 artifact / redir biding, aka OpenID-Connect1 */
     /* The id_token is directly the local filename of the corresponsing assertion. */

@@ -385,7 +385,7 @@ mime_canon(const char* s)
 
   /* Shrink the buffer back to actual size (not very likely to fail) */
 
-  return (char*)OPENSSL_realloc(d, (int)p-(int)d);
+  return (char*)OPENSSL_realloc(d, (p-d));
 err:
   return NULL;
 }

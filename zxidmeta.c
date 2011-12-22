@@ -271,6 +271,10 @@ zxid_entity* zxid_get_ent_file(zxid_conf* cf, char* sha1_name)
     goto readerr;
   close_file(fd, (const char*)__FUNCTION__);
 
+  if (got <= 20) {
+    ERR("Metadata found is too short, only %d bytes. sha1_name(%s) md_buf(%.*s)", got, sha1_name, got, md_buf);
+    return 0;
+  }
   DD("md_buf(%.*s) got=%d siz=%d sha1_name(%s)", got, md_buf, got, siz, sha1_name);
   
   p = md_buf;

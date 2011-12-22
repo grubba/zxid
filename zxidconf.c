@@ -1152,7 +1152,7 @@ static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, cha
   }
   len = strlen(val);
   if (n + len > lim) {
-    ERR("TOO LONG: VPATH or VURL(%s) %s expansion specified env(%s) val(%s) does not fit, missing %d bytes. SERVER_SOFTWARE(%s)", vorig, exp, env_hdr, val, lim - (n + len), STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
+    ERR("TOO LONG: VPATH or VURL(%s) %s expansion specified env(%s) val(%s) does not fit, missing %ld bytes. SERVER_SOFTWARE(%s)", vorig, exp, env_hdr, val, (long)(lim - (n + len)), STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
     return 0;
   }
 
@@ -1249,7 +1249,7 @@ static int zxid_parse_vpath_conf(zxid_conf* cf, char* vpath)
   
   if (*vpath != '/') {
     if (cf->path_len > lim-np) {
-      ERR("TOO LONG: PATH(%.*s) len=%d does not fit in vpath buffer size=%d", cf->path_len, cf->path, cf->path_len, lim-np);
+      ERR("TOO LONG: PATH(%.*s) len=%d does not fit in vpath buffer size=%ld", cf->path_len, cf->path, cf->path_len, (long)(lim-np));
       return 0;
     }
     memcpy(np, cf->path, cf->path_len);

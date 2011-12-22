@@ -506,7 +506,9 @@ int main(int argc, char** argv, char** env)
     printf("Location: %s?o=C\r\n\r\n", ZXID_CDC_URL);
     return 0;
   case 'C':  /* CDC Read: Common Domain Cookie Reader */
-    return zxid_cdc_read(cf, &cgi);
+    if (zxid_cdc_read(cf, &cgi))
+      return 0;
+    return 1;
   case 'E':  /* Return from CDC read, or start here to by-pass CDC read. */
     if (zxid_lecp_check(cf, &cgi))
       return 0;    

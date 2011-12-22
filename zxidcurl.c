@@ -302,6 +302,10 @@ zxid_entity* zxid_get_meta(zxid_conf* cf, const char* url)
   char* lim;
   zxid_entity* ent;
   buf = md = zxid_http_get(cf, url, &lim);
+  if (!md) {
+    ERR("Failed to get metadata response url(%s)", url);
+    return 0;
+  }
   ent = zxid_parse_meta(cf, &md, lim);
   if (!ent) {
     ERR("Failed to parse metadata response url(%s) buf(%.*s)",	url, ((int)(lim-buf)), buf);
