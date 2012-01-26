@@ -277,7 +277,7 @@ static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
 	  zxid_json_strlen(at->map_val->s);
 	for (av = at->nv; av; av = av->n) {
 	  av->map_val = zxid_map_val(cf, 0, 0, map, at->name, av->val);
-	  len += name_len + sizeof(",\"\"")-1 +
+	  len += sizeof(",\"\"")-1 +
 	    zxid_json_strlen(at->map_val->s);
 	}
       } else {
@@ -290,7 +290,7 @@ static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
 	len += name_len + sizeof("\"\":[\"\"],")-1 +
 	  (at->val?zxid_json_strlen(at->val):0);
 	for (av = at->nv; av; av = av->n)
-	  len += name_len + sizeof(",\"\"")-1 +
+	  len += sizeof(",\"\"")-1 +
 	    (av->val?zxid_json_strlen(av->val):0);
       } else {
 	len += name_len + sizeof("\"\":\"\",")-1 +
