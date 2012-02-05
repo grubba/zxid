@@ -1,4 +1,5 @@
 /* zxididp.c  -  CGI binary for SAML 2 IdP
+ * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2008-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
@@ -51,7 +52,8 @@ Usage: zxididp [options]   (when used as CGI, no options can be supplied)\n\
 #define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=c:/var/zxid/idp"
 #else
 /*#define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=/var/zxid/idp"*/
-#define CONF "NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=/var/zxid/idp&VPATH=/var/zxid/%h/&VURL=%a%h%s"
+//#define CONF "NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=/var/zxid/idp&VPATH=/var/zxid/%h/&VURL=%a%h%s"
+#define CONF "IDP_ENA=1"
 #endif
 
 /* Called by: */
@@ -69,8 +71,10 @@ int main(int argc, char** argv)
   p = getenv("SERVER_SOFTWARE");
   if (p && !memcmp(p, "mini_httpd", sizeof("mini_httpd")-1)) {
     close(2);
-    if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2)
+    if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2) {
+      perror("/var/tmp/zxid.stderr");
       exit(2);
+    }
   }
   fprintf(stderr, "=================== Running zxididp %s ===================\n", ZXID_REL);
   //fprintf(stderr, "p(%s)\n", p);
@@ -86,6 +90,7 @@ int main(int argc, char** argv)
 #else
   strncpy(zx_instance, "\tzxidp", sizeof(zx_instance));
 #endif
+
   //zx_debug = 1;
   res = zxid_simple(CONF, 0, 0x1fff);  /* 0xfff == full CGI automation */
   switch (res[0]) {

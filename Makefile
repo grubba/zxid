@@ -139,8 +139,11 @@ JAVAC_FLAGS=-J-Xmx128m -g
 # JNI library name is very platform dependent (see macosx and mingw)
 ZXIDJNI_SO=zxidjava/libzxidjni.so
 # find / -name jni.h; find / -name jni_md.h
+# apt-get install openjdk-6-jdk
 JNI_INC=-I/usr/java/include -I/usr/java/include/linux
-# Path where HttpServlet supplied by your application server resides: find / -name servlet-api.jar
+# Path where HttpServlet supplied by your application server resides
+# find / -name servlet-api.jar
+# sudo apt-get install tomcat6
 SERVLET_PATH=../apache-tomcat-5.5.20/common/lib/servlet-api.jar
 #SERVLET_PATH=../apache-tomcat-6.0.18/lib/servlet-api.jar
 
@@ -158,7 +161,9 @@ CDEF+= -DUSE_PTHREAD
 
 -include localconf.mk
 
-# Try find / -name ap_config.h; find / -name apr.h
+# Try find / -name ap_config.h; find / -name apr.h; find / -name mod_auth_basic.so
+# apt-get install libapr1-dev
+# apt-get install apache2-dev
 APACHE_INCLUDE ?= -I$(APACHE_ROOT)/include
 APR_INCLUDE    ?= -I$(APACHE_ROOT)/srclib/apr-util/include
 APACHE_MODULES ?= $(APACHE_ROOT)/modules
@@ -1988,15 +1993,13 @@ help:
 	@$(ECHO) "need the devel versions. For example: "
 	@$(ECHO) "  sudo apt-get install libssl-dev     # Debian"
 	@$(ECHO) "  sudo apt-get install libcurl4-openssl-dev"
+	@$(ECHO) "  sudo apt-get install libapr1-dev"
+	@$(ECHO) "  sudo apt-get install apache2-dev"
+	@$(ECHO) "  sudo apt-get install php5-dev"
+	@$(ECHO) "  sudo apt-get install openjdk-6-jdk"
+	@$(ECHO) "  sudo apt-get install mini-httpd"
 	@$(ECHO) "  sudo yum -y install openssl-devel   # Redhat"
 	@$(ECHO) "  sudo yum -y install libcurl-devel"
-	@$(ECHO) "  "
-	@$(ECHO) "  "
-	@$(ECHO) "  "
-	@$(ECHO) "  "
-	@$(ECHO) "  "
-	@$(ECHO) "  "
-	@$(ECHO) "  "
 	@$(ECHO)
 	@$(ECHO) "Following make targets are available:"
 	@$(ECHO)

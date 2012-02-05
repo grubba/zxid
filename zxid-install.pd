@@ -129,6 +129,31 @@ This software depends on the following packages:
 2.1.1 Additional Prerequisites for Complete Rebuild from Scratch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+While you may compile the dependency libraries from their respective sources,
+generally you can use the libraries that come with your operating system
+distribution. In this case you need to ensure that "development" versions
+of the packages are installed (the non-development versions do not include
+header files, which are needed for compiling zxid).
+
+Unfortunately the manner how development packages are installed is
+highly distribution dependent. Here are some commands that have
+been empirically found to work (tested 2011):
+
+  sudo apt-get install libssl-dev     # Debian
+  sudo apt-get install libcurl4-openssl-dev
+  sudo apt-get install libapr1-dev
+  sudo apt-get install apache2-dev
+  sudo apt-get install php5-dev
+  sudo apt-get install openjdk-6-jdk
+  sudo apt-get install mini-httpd
+
+  sudo yum -y install openssl-devel   # Redhat
+  sudo yum -y install libcurl-devel
+
+
+2.1.2 Additional Prerequisites for Complete Rebuild from Scratch
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Following additional packages are needed by developers who wish
 to build from scratch, including the code generation (the standard
 distribution includes the output of the code generation, so most

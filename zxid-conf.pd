@@ -246,7 +246,8 @@ configured to support virtual hosting. In Apache2 httpd this can be
 done using ~VirtualDocumentRoot~ directive and directory layout where
 each virtual host has a subdirectory named after its hostname
 (preferred and philosphically similar to our approach), or using
-<VirtualHost> directives.
+<VirtualHost> directive blocks (more laboursome as you need to
+explicitly include such blocks to your config file).
 
 > N.B. Another way to implement virtual hosting, that only works
 > with mod_auth_saml, is to use Apache2 httpd.conf

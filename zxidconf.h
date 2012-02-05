@@ -48,10 +48,8 @@
 #ifndef ZXID_PATH
 #ifdef MINGW
 #define ZXID_PATH  "c:/var/zxid/"
-#define ZXID_VPATH "c:/var/zxid/%h/"
 #else
 #define ZXID_PATH  "/var/zxid/"
-#define ZXID_VPATH "/var/zxid/%h/"
 #endif
 #endif
 
@@ -88,9 +86,11 @@
  * that instructs on point of occurrance the PATH variable (see zxid.h)
  * to change and configuration file to be read.
  *
- * Default value: "/var/zxid/%h/" (see definition of PATH for example).
+ * Default value: "%h/" (see definition of PATH for example).
  * See also: VURL
  */
+
+#define ZXID_VPATH "%h/"
 
 /*(c) SP Nickname for IdP User Interface
  * IMPORTANT: You should really configure this option.
@@ -607,7 +607,7 @@
 /*(c) Set debug option. You can also set this via zxid_set_opt().
  * 0 = debug output off
  * 1 = debug on
- * other values are reserver, experimental, or otherwise undocumented. */
+ * other values are reserved, experimental, or otherwise undocumented. */
 #define ZXID_DEBUG 0
 
 /*(c) Send debug output to a file. You can also set this via zxid_set_opt_cstr().

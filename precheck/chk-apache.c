@@ -8,6 +8,9 @@
  * $Id: chk-apache.c,v 1.3 2008-09-18 20:27:23 sampo Exp $
  *
  * 16.9.2008, created --Sampo
+ *
+ * sudo apt-get install libapr1-dev
+ * sudo apt-get install apache2-dev
  */
 
 /* In apr.h off64_t is used, but getting it properly defined seems

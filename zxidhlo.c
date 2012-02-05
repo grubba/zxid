@@ -1,4 +1,5 @@
 /* zxidhlo.c  -  Hello World CGI binary for SAML 2 SP
+ * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -53,8 +54,9 @@ Usage: zxidhlo [options]   (when used as CGI, no options can be supplied)\n\
 #define ZXIDHLO "zxidhlo"
 //#define CONF "PATH=/var/zxid/&URL=http://sp1.zxid.org/demohlo"
 #ifndef CONF
-#define CONF "VPATH=%h/&VURL=%a%h%s&NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
+#define CONF "NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
 #endif
+//#define CONF "VPATH=%h/&VURL=%a%h%s&NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
 //#define CONF "URL=https://sp1.zxidsp.org:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
 //#define CONF "URL=https://lima.tas3.eu:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
 
@@ -74,8 +76,10 @@ int main(int argc, char** argv)
   p = getenv("SERVER_SOFTWARE");
   if (p && !memcmp(p, "mini_httpd", sizeof("mini_httpd")-1)) {
     close(2);
-    if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2)
+    if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2) {
+      perror("/var/tmp/zxid.stderr");
       exit(2);
+    }
   }
   fprintf(stderr, "=================== Running " ZXIDHLO " ===================\n");
 #endif
