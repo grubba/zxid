@@ -186,7 +186,9 @@
  * VURL is not really a configuration option on its own right (there is
  * no corresponding entry in struct zxid_conf), but rather a directive
  * that instructs on point of occurrance the URL variable (see zxid.h)
- * to change.
+ * to change. It will not have any effect unless evaluted at run time,
+ * thus this "default value" is rather moot. You really need to specify
+ * VURL in your own configuration.
  *
  * Default value: "%a%h%s"
  * See also: VPATH
