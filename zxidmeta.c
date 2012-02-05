@@ -124,10 +124,10 @@ static zxid_entity* zxid_mk_ent(zxid_conf* cf, struct zx_md_EntityDescriptor_s* 
     if (val = ZX_GET_CONTENT(ed->Organization->OrganizationDisplayName))
       ent->dpy_name = zx_str_to_c(cf->ctx, val);
     if (val = ZX_GET_CONTENT(ed->Organization->OrganizationURL)) {
-      if (     !zx_memmem(val->s, val->len, "saml2_icon", sizeof("saml2_icon"))) {
-	if (   !zx_memmem(val->s, val->len, "saml2_icon_468x60", sizeof("saml2_icon_468x60"))
-	    && !zx_memmem(val->s, val->len, "saml2_icon_150x60", sizeof("saml2_icon_150x60"))
-	    && !zx_memmem(val->s, val->len, "saml2_icon_16x16",  sizeof("saml2_icon_16x16")))
+      if (     zx_memmem(val->s, val->len, "saml2_icon", sizeof("saml2_icon")-1)) {
+	if (   !zx_memmem(val->s, val->len, "saml2_icon_468x60", sizeof("saml2_icon_468x60")-1)
+	    && !zx_memmem(val->s, val->len, "saml2_icon_150x60", sizeof("saml2_icon_150x60")-1)
+	    && !zx_memmem(val->s, val->len, "saml2_icon_16x16",  sizeof("saml2_icon_16x16")-1))
 	  ERR("OrganizationURL has to specify button image and the image filename MUST contain substring \"saml2_icon\" in it (see symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC). Furthermore, this substring must specify the size, which must be one of 468x60, 150x60, or 16x16. Acceptable substrings are are \"saml2_icon_468x60\", \"saml2_icon_150x60\", \"saml2_icon_16x16\", e.g. \"https://example.com/example-brand-saml2_icon_150x60.png\". Current value(%.*s) may be used despite this error. The preferred size is \"%s\". Only last acceptable specification of OrganizationURL will be used.", val->len, val->s, cf->pref_button_size);
 	if (!ent->button_url      /* Pref overrides previous. */
 	    || !zx_memmem(val->s, val->len, cf->pref_button_size, strlen(cf->pref_button_size)))

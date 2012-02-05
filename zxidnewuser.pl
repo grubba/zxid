@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
 # Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 # This is confidential unpublished proprietary source code of the author.
 # NO WARRANTY, not even implied warranties. Contains trade secrets.
@@ -7,6 +8,7 @@
 # $Id$
 #
 # 8.3.2010, created --Sampo
+# 5.2.2012, changed zxpasswd to use -n instead of -c --Sampo
 #
 # Web GUI for creating new user, possibly in middle of login sequence.
 # The AuthnRequest is preserved through new user creation by passing ar.
@@ -100,7 +102,7 @@ if (length $cgi{'ok'}) {
 	$cgi{'ERR'} = "Username already taken.";
     } else {
 	warn "Creating new user($cgi{'au'})";
-	open P, "|./zxpasswd -c $cgi{'au'}" or die "Cant open pipe to zxpasswd: $! $? $*";
+	open P, "|./zxpasswd -n $cgi{'au'}" or die "Cant open pipe to zxpasswd: $! $? $*";
 	print P $cgi{'ap'};
 	close P;
 	warn "Populating user($cgi{'au'})";

@@ -1,4 +1,5 @@
 /* zxpasswd.c  -  Password creation and user management tool
+ * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
@@ -10,6 +11,7 @@
  * 14.11.2009, added yubikey support --Sampo
  * 16.9.2010,  added support for traditional Unix crypt(3) hashed passwords --Sampo
  * 1.2.2011,   tweaked -at option --Sampo
+ * 5.2.2012,   changed -c flag to -n to reserve -c for config (to be consistent with other utils) --Sampo
  *
  * See also: http://www.users.zetnet.co.uk/hopwood/crypto/scan/ph.html
  * http://www.usenix.org/events/usenix99/provos/provos_html/index.html
@@ -48,17 +50,18 @@
 
 char* help =
 "zxpasswd  -  Password creation and user management tool R" ZXID_REL "\n\
+Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.\n\
 Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
 Usage: zxpasswd [options] user [udir] <passwd    # Set user's password\n\
-       zxpasswd [options] -c user [udir] <passwd # Create user and set password\n\
+       zxpasswd [options] -n user [udir] <passwd # Create user and set password\n\
        zxpasswd [options] -a user [udir] <passwd # Authenticate as user using pw\n\
        zxpasswd [options] -l [user [udir]]       # List information about user\n\
   [udir]           Specify zxididp user directory. Default " UDIR "\n\
-  -c               Create user\n\
+  -n               Create New user\n\
   -at 'attr: val'  Append attribute(s) to .bs/.at\n\
   -s exist_uid     Symlink user to an existing user (e.g. yubikey alias)\n\
   -a               Authenticate as user. exit(2) value 0 means success\n\
@@ -121,7 +124,7 @@ static void opt(int* argc, char*** argv, char*** env)
       }
       break;
 
-    case 'c':
+    case 'n':
       switch ((*argv)[0][2]) {
       case '\0':
 	++create;

@@ -133,7 +133,7 @@ Then to import it to IdP, run
 4.1.5 Add users to the IdP
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  head /dev/urandom | sudo /usr/local/bin/zxpasswd -c .all  # dummy user to represent commonality
+  head /dev/urandom | sudo /usr/local/bin/zxpasswd -n .all  # dummy user to represent commonality
   sudo /usr/local/bin/zxpasswd -at 'cn: Nomen Nescitur$email: nn@your-org.com$o: Your Org' -c nn
   # Password will be asked on console
 
@@ -568,9 +568,9 @@ directory will contain the .pw file for password authentication
 and possibly a .yk file for Yubikey authentication. The directory
 will also contain .bs/.at file for specifying user's attributes.
 
-Easiest way to create a new user is using -c option:
+Easiest way to create a new user is using -n option:
 
-  zxpasswd -c user /var/zxid/idpuid <passwd
+  zxpasswd -n user /var/zxid/idpuid <passwd
 
 4.5.2 Setting or Changing Password
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

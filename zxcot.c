@@ -1,4 +1,5 @@
 /* zxcot.c  -  CoT (Circle-of-Trust) management tool: list CoT, add metadata to CoT
+ * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
@@ -28,6 +29,7 @@
 
 char* help =
 "zxcot  -  Circle-of-Trust and metadata management tool R" ZXID_REL "\n\
+Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.\n\
 Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
