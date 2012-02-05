@@ -52,9 +52,9 @@ Usage: zxididp [options]   (when used as CGI, no options can be supplied)\n\
 #define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=c:/var/zxid/idp"
 #else
 /*#define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=/var/zxid/idp"*/
-#define CONF "IDP_ENA=1&VPATH=%h/&VURL=%a%h%s"
+//#define CONF "IDP_ENA=1&VPATH=%h/&VURL=%a%h%s"
 //#define CONF "IDP_ENA=1&PATH=/var/zxid/idp&VPATH=/var/zxid/%h/&VURL=%a%h%s"
-//#define CONF "IDP_ENA=1"
+#define CONF "IDP_ENA=1"
 #endif
 
 /* Called by: */
