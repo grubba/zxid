@@ -150,7 +150,7 @@ set_eid:
 	/* We need to remove the .x and/or .y from the end */
 	if (v[-3] == '.' && ONE_OF_2(v[-2], 'x', 'y')) {
 	  v[-3] = 0;
-	  D("eid(%s) (%s)=(%s)", cgi->eid, n, v);
+	  D("eid(%s) v[-3]=%x n=%p v=%p (%s)=(%s)", cgi->eid, v[-3], n, v, n, v);
 	}
       }
       cgi->op = 'L';
