@@ -86,6 +86,8 @@ zxid-1.10:: 6.2.2012
     - Corrected the OrganizationURL to be absolute
     - VPATH and VURL processing tweaks
     - Improved error reporting in zxididp and zxidhlo
+    - Eliminate coordinates from the end of the branding login buttons
+
 zxid-1.06:: 10.12.2011
     - Merged improvements (CDC, sol8x86, free functions, mem leak fixes) by grubba@@grubba.org from git://github.com/grubba/zxid.git
     - Added VURL for virtual hosting

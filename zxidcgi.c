@@ -1,4 +1,5 @@
 /* zxidcgi.c  -  Handwritten functions for parsing SP specific CGI options
+ * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -138,8 +139,13 @@ set_eid:
        * N.B. If eid is omitted from button name, it may be provided using
        * d or e fields (see above). */
       cgi->pr_ix = n[1];
-      if (n[2])
+      if (n[2]) {
 	cgi->eid = n+2;
+	/*if (cf->idp_list_meth == ZXID_IDP_LIST_BRAND)*/
+	/* We need to remove the .x and/or .y from the end */
+	if (v[-3] == '.' && ONE_OF_2(v[-2], 'x', 'y'))
+	  v[-3] = 0;
+      }
       cgi->op = 'L';
       D("cgi: login eid(%s)", cgi->eid);
       break;
