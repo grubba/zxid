@@ -145,13 +145,13 @@ set_eid:
       cgi->pr_ix = n[1];
       if (n[2]) {
 	cgi->eid = n+2;
-	DD("v[-3] %x (%c%c%c) name(%s) val(%s)", v[-3], v[-3], v[-2], v[-1], n, v);
 	/*if (cf->idp_list_meth == ZXID_IDP_LIST_BRAND)*/
 	/* We need to remove the .x and/or .y from the end */
 	p = strchr(cgi->eid, 0);  /* Pointer to end of string */
+	D("p[-2] %x (%c%c) n=%p p=%p name(%s) val(%s)", v[-2], v[-2], v[-1], n, p, n, v);
 	if (p[-2] == '.' && ONE_OF_2(p[-1], 'x', 'y')) {
 	  v[-2] = 0;
-	  DD("eid=%p eid(%s) v[-3]=%x n=%p v=%p (%s)=(%s)", cgi->eid, cgi->eid, v[-3], n, v, n, v);
+	  D("eid=%p eid(%s) v[-2]=%x n=%p p=%p v=%p (%s)=(%s)", cgi->eid, cgi->eid, v[-2], n, p, v, n, v);
 	}
       }
       cgi->op = 'L';
