@@ -115,6 +115,8 @@
  * to distinguish it from other uses of SAML2 MD Organization/OrganizationURL (which
  * are unspecified, but presumably include home page URL; original SAML2 MD spec
  * was too loose). ZXID only supports the usage as button image URL (as of 20111210).
+ * BUTTON_URL is typically absolute URL (relative would not make sense as it
+ * is referenced from other web site referring to your web site).
  *
  * Typical value::  https://your-site.com/your_brand_saml2_icon_150x60.png
  *
