@@ -141,6 +141,7 @@ set_eid:
       cgi->pr_ix = n[1];
       if (n[2]) {
 	cgi->eid = n+2;
+	D("v[-3] %x (%c%c%c) %s", v[-3], v[-3], v[-2], v[-1], v);
 	/*if (cf->idp_list_meth == ZXID_IDP_LIST_BRAND)*/
 	/* We need to remove the .x and/or .y from the end */
 	if (v[-3] == '.' && ONE_OF_2(v[-2], 'x', 'y'))
