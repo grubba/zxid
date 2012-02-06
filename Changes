@@ -80,10 +80,12 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
       udk only when it has received it during session from the IdP (or discovery?) (solve
       problem of it being kept in audit trail, such as in logged signed message)
 
-zxid-1.10:: 12.12.2011
+zxid-1.10:: 6.2.2012
     - Added support for OAUTH2 / OpenID-Connect1 Minimal / Basic Profile (both RP and IdP)
     - Adapted SAML2 metadata to support OAUTH2, using Binding="urn:zxid:OAUTH:2.0:bindings:HTTP-Redirect" (OAUTH2-REDIR)
-
+    - Corrected the OrganizationURL to be absolute
+    - VPATH and VURL processing tweaks
+    - Improved error reporting in zxididp and zxidhlo
 zxid-1.06:: 10.12.2011
     - Merged improvements (CDC, sol8x86, free functions, mem leak fixes) by grubba@@grubba.org from git://github.com/grubba/zxid.git
     - Added VURL for virtual hosting

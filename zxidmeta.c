@@ -1,4 +1,5 @@
 /* zxidmeta.c  -  Handwritten functions for metadata parsing and generation as well as CoT handling
+ * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -25,6 +26,7 @@
  * 17.2.2011,  fixed processing of whitespace in metadata --Sampo
  * 10.12.2011, added OAuth2, OpenID Connect, and UMA support --Sampo
  * 11.12.2011, added OrganizationURL support per symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC --Sampo
+ * 6.2.2012,   corrected the OrganizationURL to be absolute --Sampo
  */
 
 #include "platform.h"  /* for dirent.h */
@@ -131,7 +133,7 @@ static zxid_entity* zxid_mk_ent(zxid_conf* cf, struct zx_md_EntityDescriptor_s* 
 	  ERR("OrganizationURL has to specify button image and the image filename MUST contain substring \"saml2_icon\" in it (see symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC). Furthermore, this substring must specify the size, which must be one of 468x60, 150x60, or 16x16. Acceptable substrings are are \"saml2_icon_468x60\", \"saml2_icon_150x60\", \"saml2_icon_16x16\", e.g. \"https://example.com/example-brand-saml2_icon_150x60.png\". Current value(%.*s) may be used despite this error. The preferred size is \"%s\". Only last acceptable specification of OrganizationURL will be used.", val->len, val->s, cf->pref_button_size);
 	if (!ent->button_url      /* Pref overrides previous. */
 	    || !zx_memmem(val->s, val->len, cf->pref_button_size, strlen(cf->pref_button_size)))
-	  ent->button_url = zx_str_to_c(cf->ctx, val);
+	  ent->button_url = zx_strf(cf->ctx, "%s%.*s", cf->url, val->len, val->s);
       } else
 	ERR("OrganizationURL SHOULD specify user interface button image and the image filename MUST contain substring \"saml2_icon\" in it. Current value(%.*s) is not usable and will be ignored. See symlabs-saml-displayname-2008.pdf, submitted to OASIS SSTC.", val->len, val->s);
     }
