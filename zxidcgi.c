@@ -36,6 +36,10 @@
  *     results from multiple sources, e.g. foirst for query string, and then
  *     for form POST.
  * qs:: CGI formatted input. Usually query string or form POST content.
+ *     qs is modified in-place  e.g. to perform url decoding and nul termination.
+ *     References to the qs will be taken, e.g. pointers in cgi struct point
+ *     to it, thus qs MUST NOT be freed before cgi struct is freed, which
+ *     may be long after the call to zxid_parse_cgi().
  * return:: 0 on success. Other values reserved. Usually return value is
  *     ignored as there really is no way for this function to fail. Unrecognized
  *     CGI arguments are simply ignored with assumption that some other processing
@@ -141,11 +145,13 @@ set_eid:
       cgi->pr_ix = n[1];
       if (n[2]) {
 	cgi->eid = n+2;
-	D("v[-3] %x (%c%c%c) %s", v[-3], v[-3], v[-2], v[-1], v);
+	D("v[-3] %x (%c%c%c) name(%s) val(%s)", v[-3], v[-3], v[-2], v[-1], n, v);
 	/*if (cf->idp_list_meth == ZXID_IDP_LIST_BRAND)*/
 	/* We need to remove the .x and/or .y from the end */
-	if (v[-3] == '.' && ONE_OF_2(v[-2], 'x', 'y'))
+	if (v[-3] == '.' && ONE_OF_2(v[-2], 'x', 'y')) {
 	  v[-3] = 0;
+	  D("eid(%s) (%s)=(%s)", cgi->eid, n, v);
+	}
       }
       cgi->op = 'L';
       D("cgi: login eid(%s)", cgi->eid);
