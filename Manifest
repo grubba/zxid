@@ -442,6 +442,7 @@ index-idp.html
 # Apache authentication module
 
 mod_auth_saml.c        - Apache auth module to SAML protect web pages
+mod_auth_saml.load     - Apache2 config snipped to put in /etc/apache2/mods_available
 protected/content.txt  - Test content for mod_auth_saml
 protected/saml         - Test content for mod_auth_saml
 protected/orange.cgi   - Demonstration of using Orange Personal APIs

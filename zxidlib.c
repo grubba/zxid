@@ -38,8 +38,12 @@ int assert_nonfatal = 0;
 char* assert_msg = "%s: Internal error caused an ASSERT to fire. Deliberately trying to dump core.\nSorry for the inconvenience. If no core appears, try `ulimit -c unlimited'\n";
 int trace = 0;
 
+#ifndef ZXID_LIBNAME
+#define ZXID_LIBNAME " libzxid (zxid.org)"
+#endif
+
 int zxid_version_var = ZXID_VERSION;
-const char* zxid_version_str_var = ZXID_REL " " ZXID_COMPILE_DATE " libzxid (zxid.org)";
+const char* zxid_version_str_var = ZXID_REL " " ZXID_COMPILE_DATE ZXID_LIBNAME;
 
 /*() Obtain the hex encoded version integer describing the libzxid. This can be
  * used to effectuate a runtime version number check. For compile time you

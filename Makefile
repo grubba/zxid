@@ -1,4 +1,5 @@
 # zxid/Makefile  -  How to build ZXID
+# Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
 # Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 # Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
 # Author: Sampo Kellomaki (sampo@iki.fi)
@@ -20,6 +21,7 @@
 # 12.2.2010, added pthread support --Sampo
 # 25.2.2010, added gcov support --Sampo
 # 15.9.2010, major hacking to support win32cl (MSVC cl compiler, link (ld), and lib (ar) --Sampo
+# 6.2.2012,  improved mutiple config support --Sampo
 #
 # Build so far only tested on Linux, Solaris 8 and MacOS 10.3. This
 # makefile needs gmake-3.78 or newer.
