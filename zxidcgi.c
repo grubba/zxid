@@ -145,16 +145,17 @@ set_eid:
       cgi->pr_ix = n[1];
       if (n[2]) {
 	cgi->eid = n+2;
-	D("v[-3] %x (%c%c%c) name(%s) val(%s)", v[-3], v[-3], v[-2], v[-1], n, v);
+	DD("v[-3] %x (%c%c%c) name(%s) val(%s)", v[-3], v[-3], v[-2], v[-1], n, v);
 	/*if (cf->idp_list_meth == ZXID_IDP_LIST_BRAND)*/
 	/* We need to remove the .x and/or .y from the end */
-	if (v[-3] == '.' && ONE_OF_2(v[-2], 'x', 'y')) {
-	  v[-3] = 0;
-	  D("eid(%s) v[-3]=%x n=%p v=%p (%s)=(%s)", cgi->eid, v[-3], n, v, n, v);
+	p = strchr(cgi->eid, 0);  /* Pointer to end of string */
+	if (p[-2] == '.' && ONE_OF_2(p[-1], 'x', 'y')) {
+	  v[-2] = 0;
+	  DD("eid=%p eid(%s) v[-3]=%x n=%p v=%p (%s)=(%s)", cgi->eid, cgi->eid, v[-3], n, v, n, v);
 	}
       }
       cgi->op = 'L';
-      D("cgi: login eid(%s)", cgi->eid);
+      D("cgi: login eid=%p eid(%s)", cgi->eid, cgi->eid);
       break;
     case 'i':
       if (!strcmp(n, "id_token")) { cgi->id_token = v; break; }
