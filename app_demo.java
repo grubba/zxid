@@ -1,6 +1,6 @@
 /* app_demo.java  -  Demonstrate detecting missing session and redirection to zxidsrvlet
  * Adapted from  zxidappdemo.java
- * Copyright (c) 2011 Synergetics (info@synergetics.com), All Rights Reserved.
+ * Copyright (c) 2011-2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -44,6 +44,7 @@ public class app_demo extends HttpServlet {
 
     static final String conf = "PATH=/var/zxid/";
     //static final String conf = "PATH=/var/zxid/&URL=http://sp.employeedata.com:8080/app-demo/sso";
+    //static final String conf = "PATH=/var/zxid/&URL=https://sp.employeedata.com:8444/app-demo/sso";
     static zxidjava.zxid_conf cf;
     static {
 	// CONFIG: You must have created /var/zxid directory hierarchy. See `make dir'

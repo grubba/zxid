@@ -48,7 +48,7 @@ document.
 9.1 Installing Binaries or from Package
 ---------------------------------------
 
-Currently (2009) ZXID.org itself does not distribute relevant binaries. However,
+Currently (2011) ZXID.org itself does not distribute relevant binaries. However,
 we may in future. You are also welcome to contribute binaries so we distribute
 them, or point people to them in this documentation.
 
@@ -75,7 +75,7 @@ localconf.mk) and ~javac~ must be in path (or you must set ~JAVAC~
 variable). For the servlet or Tomcat support, you must make sure
 ~SERVLET_PATH~ points to your servlet-api.jar file. The ZXID Java
 interface has been mainly tested with ~j2sdk1.4.2~ and some versions
-of Java SDK 1.5.
+of Java SDK 1.5 and 1.6.
 
 > *Advanced compile*:
 > If you have done changes that require regeneration of the

@@ -1,4 +1,7 @@
+
 /* zxidsrvlet.java  -  SAML SSO Java/Tomcat servlet script that calls libzxid using JNI
+ * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomäki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
