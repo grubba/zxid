@@ -166,8 +166,9 @@ public class app_demo extends HttpServlet {
 	if (qs.equals("x-foobar") || qs.equals("all")) {
 	    out.print("<p>Output from recursive web service call:<br>\n");
 	    ret = zxidjni.call(cf, zxses, "urn:x-foobar",
-			       "http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B", null, null,
-			       "<foobar>Do it!</foobar>");
+			       //"http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B",
+			       "https://sp.employeedata.eu:8444/e2eTA/wspdemo?o=B",
+			       null, null, "<foobar>Do it!</foobar>");
 	    
 	    ret = zxidjni.extract_body(cf, ret);
 	    if (ret.indexOf("code=\"OK\"") == -1) {
