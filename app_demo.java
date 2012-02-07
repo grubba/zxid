@@ -10,6 +10,7 @@
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id: zxidappdemo.java,v 1.4 2009-11-29 12:23:06 sampo Exp $
  * 16.10.2009, created --Sampo
+ * 6.2.2012, added use of ZXIDConf <init-param> --Sampo
  *
  * This servlet plays the role of "payload" servlet in ZXID SSO servlet
  * integration demonstration. It illustrates the steps
@@ -42,95 +43,21 @@ public class app_demo extends HttpServlet {
     static final Pattern role_pat   = Pattern.compile("role:[ ]([^\\n]*)");
     static final Pattern boot_pat   = Pattern.compile("urn:liberty:disco:2006-08:DiscoveryEPR:[ ]([^\\n]*)");
 
-    static final String conf = "PATH=/var/zxid/";
+    //static final String conf = "PATH=/var/zxid/";
     //static final String conf = "PATH=/var/zxid/&URL=http://sp.employeedata.com:8080/app-demo/sso";
-    //static final String conf = "PATH=/var/zxid/&URL=https://sp.employeedata.com:8444/app-demo/sso";
+    //static final String conf = "PATH=/var/zxid/&URL=https://sp.employeedata.com:8444/sso";
     static zxidjava.zxid_conf cf;
     static {
+	System.loadLibrary("zxidjni");
 	// CONFIG: You must have created /var/zxid directory hierarchy. See `make dir'
 	// CONFIG: You must create edit the URL to match your domain name and port
 	// CONFIG: Usually you create and edit /var/zxid/zxid.conf and override the URL there
-	System.loadLibrary("zxidjni");
-	cf = zxidjni.new_conf_to_cf(conf);
-	zxidjni.set_opt(cf, 1, 1);
+	//String conf = getServletConfig().getInitParameter("ZXIDConf"); 
+	//String conf = getServletContext().getInitParameter("ZXIDConf"); 
+	//cf = zxidjni.new_conf_to_cf(conf);
+	//zxidjni.set_opt(cf, 1, 1);
     }
     
-    public void hilite_fields(ServletOutputStream out, String ret, int n)
-	throws IOException
-    {
-	int i;
-	try {
-	    Matcher matcher = idpnid_pat.matcher(ret);
-	    for (i = n; i > 0; --i)
-		matcher.find();
-	    out.print("<b>fedusername</b>: " + matcher.group(1) + "<br>\n");
-	} catch(IllegalStateException e) { }
-
-	try {
-	    Matcher matcher = idpnid_pat.matcher(ret);
-	    for (i = n; i > 0; --i)
-		matcher.find();
-	    out.print("<b>idpnid</b>: " + matcher.group(1) + "<br>\n");
-	} catch(IllegalStateException e) { }
-
-	try {
-	    Matcher matcher2 = nidfmt_pat.matcher(ret);
-	    for (i = n; i > 0; --i)
-		matcher2.find();
-	    out.print("<b>nidfmt</b>: " + matcher2.group(1) + "<br>\n");
-	} catch(IllegalStateException e) { }
-
-	try {
-	    Matcher matcher3 = affid_pat.matcher(ret);
-	    for (i = n; i > 0; --i)
-		matcher3.find();
-	    out.print("<b>affid</b>: " + matcher3.group(1) + "<br>\n");
-	} catch(IllegalStateException e) { }
-
-	try {
-	    Matcher matcher = eid_pat.matcher(ret);
-	    for (i = n; i > 0; --i)
-		matcher.find();
-	    out.print("<b>eid</b>: " + matcher.group(1) + "<br>\n");
-	} catch(IllegalStateException e) { }
-
-	try {
-	    Matcher matcher = cn_pat.matcher(ret);
-	    for (i = n; i > 0; --i)
-		matcher.find();
-	    out.print("<b>cn</b>: " + matcher.group(1) + "<br>\n");
-	} catch(IllegalStateException e) { }
-
-	try {
-	    Matcher matcher = o_pat.matcher(ret);
-	    for (i = n; i > 0; --i)
-		matcher.find();
-	    out.print("<b>o</b>: " + matcher.group(1) + "<br>\n");
-	} catch(IllegalStateException e) { }
-
-	try {
-	    Matcher matcher = ou_pat.matcher(ret);
-	    for (i = n; i > 0; --i)
-		matcher.find();
-	    out.print("<b>ou</b>: " + matcher.group(1) + "<br>\n");
-	} catch(IllegalStateException e) { }
-
-	try {
-	    Matcher matcher = role_pat.matcher(ret);
-	    for (i = n; i > 0; --i)
-		matcher.find();
-	    out.print("<b>role</b>: " + matcher.group(1) + "<br>\n");
-	} catch(IllegalStateException e) { }
-
-	try {
-	    Matcher matcher = boot_pat.matcher(ret);
-	    for (i = n; i > 0; --i)
-		matcher.find();
-	    out.print("<b>urn:liberty:disco:2006-08:DiscoveryEPR</b>: " + matcher.group(1) + "<br>\n");
-	} catch(IllegalStateException e) { }
-
-    }
-
     public void doGet(HttpServletRequest req, HttpServletResponse res)
 	throws ServletException, IOException
     {
@@ -146,6 +73,14 @@ public class app_demo extends HttpServlet {
 	    res.sendRedirect("sso?o=E&fr=" + fullURL);
 	    return;
 	}
+	
+	if (cf == null) {
+	    String conf = getServletConfig().getInitParameter("ZXIDConf"); 
+	    cf = zxidjni.new_conf_to_cf(conf);
+	    zxidjni.set_opt(cf, 1, 1);
+	}
+
+
 	ServletOutputStream out = res.getOutputStream();
 	
 	res.setContentType("text/html");
@@ -361,6 +296,83 @@ public class app_demo extends HttpServlet {
 
 	out.print("<p>Done.\n");
     }
+
+    public void hilite_fields(ServletOutputStream out, String ret, int n)
+	throws IOException
+    {
+	int i;
+	try {
+	    Matcher matcher = idpnid_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>fedusername</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = idpnid_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>idpnid</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher2 = nidfmt_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher2.find();
+	    out.print("<b>nidfmt</b>: " + matcher2.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher3 = affid_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher3.find();
+	    out.print("<b>affid</b>: " + matcher3.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = eid_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>eid</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = cn_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>cn</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = o_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>o</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = ou_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>ou</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = role_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>role</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = boot_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>urn:liberty:disco:2006-08:DiscoveryEPR</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+    }
+
 }
 
 /* EOF */

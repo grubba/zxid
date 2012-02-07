@@ -251,37 +251,53 @@ file (servlet/WEB-INF/web.xml in zxid source tree). Consider
 06   <servlet>
 07     <servlet-name>zxidsrvlet</servlet-name>
 08     <servlet-class>zxidsrvlet</servlet-class>
-09   </servlet>
-10 
-11   <servlet-mapping>
-12     <servlet-name>zxidsrvlet</servlet-name>
-13     <url-pattern>/sso</url-pattern>
-14   </servlet-mapping>
-15 
-16   <servlet>
-17     <servlet-name>zxidappdemo</servlet-name>
-18     <servlet-class>zxidappdemo</servlet-class>
-19   </servlet>
-20 
-21   <servlet-mapping>
-22     <servlet-name>zxidappdemo</servlet-name>
-23     <url-pattern>/appdemo</url-pattern>
-24   </servlet-mapping>
-25 
-26 </web-app>
+09     <init-param>
+10       <param-name>ZXIDConf</param-name>
+11       <param-value>PATH=/home/sampo/sidemo/zxid/sp.employeedata.eu:8444/</param-value>
+12     </init-param>
+13   </servlet>
+14 
+15   <servlet-mapping>
+16     <servlet-name>zxidsrvlet</servlet-name>
+17     <url-pattern>/sso</url-pattern>
+18   </servlet-mapping>
+19 
+20   <servlet>
+21     <servlet-name>zxidappdemo</servlet-name>
+22     <servlet-class>zxidappdemo</servlet-class>
+23     <init-param>
+24       <param-name>ZXIDConf</param-name>
+25       <param-value>PATH=/home/sampo/sidemo/zxid/sp.employeedata.eu:8444/</param-value>
+26     </init-param>
+27   </servlet>
+28 
+29   <servlet-mapping>
+30     <servlet-name>zxidappdemo</servlet-name>
+31     <url-pattern>/appdemo</url-pattern>
+32   </servlet-mapping>
+33 
+34 </web-app>
 >>
 
-Here lines 16-24 represent your own payload application.  The
+Here lines 20-32 represent your own payload application.  The
 <servlet-name> is used to match together <servlet> and the
 <servlet-mapping> sections. <servlet-class> points to the Java class
-file that implements the servler, in this case
-zxidappdemo.class. Finally <url-pattern> specifies where in the web
-servers hierarchy the servlet will appear. Here you have to realize
-that the pattern will be prefixed by the directory path where the
-servlet lives (i.e. in our example the actual path is
-/zxidservlet/appdemo).
+file that implements the servler, in this case zxidappdemo.class.
+You can pass configuration data using <init-data> element: use ZXIDConf
+as <param-name> and ZXID configruation syntax for <param-value>. These
+configuration options are additive to default config and previously read config
+files, such as /var/zxid/zxid.conf. You only need to specify what changes
+viz-a-viz the already read configuration. You application needs to
+use the getServletConfig().getInitParameter("ZXIDConf") Java method to actually
+pull in the config string. If your servlet hardcodes the config string,
+then the <init-params> does not have any effect.
 
-ll.06-14 represent the SSO servlet. As can be seen, the corresponding
+Finally <url-pattern> specifies where in the web servers hierarchy the
+servlet will appear. Here you have to realize that the pattern will be
+prefixed by the directory path where the servlet lives (i.e. in our
+example the actual path is /zxidservlet/appdemo).
+
+ll.06-18 represent the SSO servlet. As can be seen, the corresponding
 class file is zxidsrvlet.class, which you will find at top level
 of the zxid distribution after compiling. The <url-pattern>
 and the servlet directory MUST match the redirection on l.16
@@ -289,7 +305,7 @@ of the servlet code example above. If application servlet and
 the SSO servlet live in the same directory, mere local redirect
 will do the trick, as illustrated on l.16.
 
-The <url-patterm> also MUST correspond to the URL parameter in the
+The <url-pattern> also MUST correspond to the URL parameter in the
 /var/zxid/zxid.conf file (the URL parameter is also prefix of the
 EntityID which is also the Well Know Location (WKL) for metadata
 exchange).
@@ -315,7 +331,7 @@ apache-tomcat-5.5.20/conf/context.xml (the ~reloadable~
 flag avoids having to restart Tomcat if you recompile
 the .class file):
 
-  <Context allowLinking="true" reloadable="true">...
+  <Context allowLinking="true" reloadable="true"/etc/tomcat6/context.xml>...
 
 The file servlet/WEB-INF/web.xml describes the example zxid
 application. The actual application lives in servlet/WEB-INF/classes

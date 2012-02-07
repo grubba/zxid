@@ -1,7 +1,7 @@
 
 /* zxidsrvlet.java  -  SAML SSO Java/Tomcat servlet script that calls libzxid using JNI
  * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
- * Copyright (c) 2010-2011 Sampo Kellomäki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -11,8 +11,10 @@
  * $Id: zxidsrvlet.java,v 1.3 2009-11-20 20:27:13 sampo Exp $
  * 12.1.2007, created --Sampo
  * 16.10.2009, refined from zxidhlo example to truly useful servlet that populates session --Sampo
+ * 6.2.2012, added use of ZXIDConf <init-param> --Sampo
  *
  * See also: README-zxid section 10 "zxid_simple() API"
+ * http://www.easywms.com/easywms/?q=en/read-parameters-web-xml-servlet-release-work-programmer
  */
 
 import zxidjava.*;
@@ -22,19 +24,33 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 public class zxidsrvlet extends HttpServlet {
-    static final String conf = "URL=http://sp1.zxidsp.org:8080/sso&PATH=/var/zxid/";
+    //static final String conf = "URL=http://sp1.zxidsp.org:8080/sso&PATH=/var/zxid/";
     static zxidjava.zxid_conf cf;
     static {
+	System.loadLibrary("zxidjni");
 	// CONFIG: You must have created /var/zxid directory hierarchy. See `make dir'
 	// CONFIG: You must create edit the URL to match your domain name and port
-	System.loadLibrary("zxidjni");
-	cf = zxidjni.new_conf_to_cf(conf);
+	// CONFIG: To set config string, edit web.xml (hope you know where it is) and
+	// add to your servlets sections like
+        //  <servlet>
+	//    <servlet-name>zxidsrvlet</servlet-name><servlet-class>zxidsrvlet</servlet-class>
+	//    <init-param>
+	//      <param-name>ZXIDConf</param-name><param-value>PATH=/var/zxid/</param-value>
+	//    </init-param>
+	//  </servlet>
+	//String conf = getServletConfig().getInitParameter("ZXIDConf"); 
+	//String conf = getServletContext().getInitParameter("ZXIDConf"); 
+	//cf = zxidjni.new_conf_to_cf(conf);
     }
     
     //public static void main(String argv[]) throws java.io.IOException  {  }
     public void do_zxid(HttpServletRequest req, HttpServletResponse res, String qs)
 	throws ServletException, IOException
     {
+	if (cf == null) {
+	    String conf = getServletConfig().getInitParameter("ZXIDConf"); 
+	    cf = zxidjni.new_conf_to_cf(conf);
+	}
 	if (req.getParameter("gr") != null || req.getParameter("gl") != null)
 	    req.getSession(true).invalidate();  // Invalidate local ses in case of SLO
 	System.err.print("Calling zxid\n");
