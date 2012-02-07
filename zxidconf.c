@@ -258,7 +258,7 @@ void zxid_url_set(zxid_conf* cf, const char* url)
 
 /*() Create new (common pool) attribute and add it to a linked list */
 
-/* Called by:  zxid_add_at_values x3, zxid_add_attr_to_ses x2, zxid_add_qs_to_ses, zxid_load_atsrc, zxid_load_need */
+/* Called by:  zxid_add_at_values x3, zxid_add_attr_to_ses x2, zxid_add_qs2ses, zxid_load_atsrc, zxid_load_need */
 struct zxid_attr* zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len, char* name, int val_len, char* val, char* lk)
 {
   struct zxid_attr* aa = ZX_ZALLOC(cf->ctx, struct zxid_attr);

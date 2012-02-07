@@ -312,6 +312,9 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cg
 /*() SOAP dispatch can also handle requests and responses received via artifact
  * resolution. However only some combinations make sense.
  * See zxid/sg/wsf-soap11.sg for the master SOAP dispatch from parsing perspective.
+ * Despite being called zxid_sp_soap_dispatch(), this actually dispatches
+ * the IdP functions, such as ManageNameIDRequest, XACMLAuthzDecisionQuery,
+ * SASLRequest (AnSvc), Query (Discovery), and People Service requests.
  *
  * Return 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 

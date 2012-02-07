@@ -97,7 +97,7 @@ public class app_demo extends HttpServlet {
 	// The SSO servlet will have done one iteration of authorization. The following
 	// serves to illustrate, how to explicitly call a PDP from your code.
 
-	System.err.print("about to az\n");
+	System.err.print("----- about to az\n");
 	if (zxidjni.az_cf(cf, "Action=Show", sid) == null) {
 	    out.print("<p><b>Denied.</b> Normally page would not be shown, but we show the session attributes for debugging purposes.\n");
 	    //res.setStatus(302, "Denied");
@@ -145,7 +145,7 @@ public class app_demo extends HttpServlet {
 	String ret;
 	zxid_ses zxses = zxidjni.fetch_ses(cf, sid);
 	
-	System.err.print("dispatch qs="+qs+"\n");
+	System.err.print("----- dispatch qs="+qs+"\n");
 	if (qs.equals("idhrxml") || qs.equals("all")) {
 	    out.print("<p>Output from idhrxml web service call sid("+sid+"):<br>\n<textarea cols=80 rows=20>");
 	    ret = zxidjni.call(cf, zxses,
@@ -193,14 +193,17 @@ public class app_demo extends HttpServlet {
 	// Demo another web service call, this time the service by zxidwspleaf.java
 
 	if (qs.equals("leaf") || qs.equals("all")) {
+	    System.err.print("--- leaf call\n");
 	    ret = zxidjni.call(cf, zxses, "x-recurs", null, null, null,
 			       "<foobar>Do it!</foobar>");
+	    System.err.print("--- leaf ret("+ret+")\n");
 	    
 	    ret = zxidjni.extract_body(cf, ret);
 	    if (ret.indexOf("code=\"OK\"") == -1) {
 		out.print("<p>Error from call:<br>\n<textarea cols=80 rows=20>");
 		out.print(ret);
 		out.print("</textarea>\n");
+		System.err.print("^^^ leaf err done\n");
 	    } else {
 		out.print("<p>Output from Leaf web services call:<br>\n");
 		hilite_fields(out, ret, 1);
@@ -209,6 +212,7 @@ public class app_demo extends HttpServlet {
 		    out.print(ret);
 		    out.print("</textarea>\n");
 		}
+		System.err.print("^^^ leaf done\n");
 	    }
 	}
 	
@@ -294,6 +298,7 @@ public class app_demo extends HttpServlet {
 	}
 
 	out.print("<p>Done.\n");
+	System.err.print("^^^^^^^^^ DONE App-Demo GET("+fullURL+").\n");
     }
 
     public void hilite_fields(ServletOutputStream out, String ret, int n)

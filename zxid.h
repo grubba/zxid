@@ -774,7 +774,7 @@ ZXID_DECL struct zx_str* zxid_ses_to_json(zxid_conf* cf, zxid_ses* ses);
 ZXID_DECL struct zx_str* zxid_ses_to_qs(zxid_conf* cf, zxid_ses* ses);
 ZXID_DECL void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses);
 ZXID_DECL void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx_str* val);
-ZXID_DECL int zxid_add_qs_to_ses(zxid_conf* cf, zxid_ses* ses, char* qs, int apply_map);
+ZXID_DECL int zxid_add_qs2ses(zxid_conf* cf, zxid_ses* ses, char* qs, int apply_map);
 
 /* zxiduser */
 

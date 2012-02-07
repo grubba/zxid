@@ -506,7 +506,7 @@ struct zx_str* zxid_ses_to_qs(zxid_conf* cf, zxid_ses* ses) {
 /*() Add values, applying NEED, WANT, and INMAP */
 
 /* Called by:  zxid_add_a7n_at_to_pool x2 */
-static int zxid_add_at_values(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribute_s* at, char* name, struct zx_str* issuer)
+static int zxid_add_at_vals(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribute_s* at, char* name, struct zx_str* issuer)
 {
   struct zx_str* ss;
   struct zxid_map* map;
@@ -577,16 +577,16 @@ static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
       if (at->gg.g.tok != zx_sa_Attribute_ELEM)
 	continue;
       if (at->Name)
-	zxid_add_at_values(cf, ses, at, zx_str_to_c(cf->ctx, &at->Name->g), ZX_GET_CONTENT(a7n->Issuer));
+	zxid_add_at_vals(cf, ses, at, zx_str_to_c(cf->ctx, &at->Name->g), ZX_GET_CONTENT(a7n->Issuer));
       if (at->FriendlyName)
-	zxid_add_at_values(cf, ses, at, zx_str_to_c(cf->ctx, &at->FriendlyName->g), ZX_GET_CONTENT(a7n->Issuer));
+	zxid_add_at_vals(cf, ses, at, zx_str_to_c(cf->ctx, &at->FriendlyName->g), ZX_GET_CONTENT(a7n->Issuer));
     }
   }
 }
 
 /*() Add simple attribute to pool, applying NEED, WANT, and INMAP */
 
-/* Called by:  zxid_add_ldif_at2ses, zxid_add_qs_to_ses, zxid_ses_to_pool x25 */
+/* Called by:  zxid_add_ldif_at2ses, zxid_add_qs2ses, zxid_ses_to_pool x25 */
 void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx_str* val)
 {
   struct zxid_map* map;
@@ -826,7 +826,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
  * Returns 1 on success, 0 on failure (return value often not checked). */
 
 /* Called by:  zxid_az_base_cf_ses, zxid_az_cf_ses */
-int zxid_add_qs_to_ses(zxid_conf* cf, zxid_ses* ses, char* qs, int apply_map)
+int zxid_add_qs2ses(zxid_conf* cf, zxid_ses* ses, char* qs, int apply_map)
 {
   char *p, *n, *v, *val, *name;
   if (!qs || !ses)
