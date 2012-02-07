@@ -292,6 +292,20 @@ use the getServletConfig().getInitParameter("ZXIDConf") Java method to actually
 pull in the config string. If your servlet hardcodes the config string,
 then the <init-params> does not have any effect.
 
+> N.B. Unlike in Apache2 httpd.conf where ZXIDConf directive
+> can appear multiple times, you can have only one init param
+> called "ZXIDConf". Thus if you have more than one parameter,
+> you have to combine them using URL syntax, i.e. & as separator,
+> but this in turn causes complication because & is used in XML entity
+> escapes, so actually you have to write &amp;, for example:
+>
+>   <init-param>
+>     <param-name>ZXIDConf</param-name>
+>     <param-value>PATH=/home/sampo/sidemo/zxid/sp.employeedata.eu:8444/&amp;URL=sp.employeedata.eu:8444/e2eTA/sso&amp;NICE_NAME=Nice+Example</param-value>
+>   </init-param>
+>
+> Confused yet?
+
 Finally <url-pattern> specifies where in the web servers hierarchy the
 servlet will appear. Here you have to realize that the pattern will be
 prefixed by the directory path where the servlet lives (i.e. in our

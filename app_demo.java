@@ -64,7 +64,7 @@ public class app_demo extends HttpServlet {
 	    fullURL += "?" + req.getQueryString();
 	else
 	    qs = "";
-	System.err.print("Start App-Demo GET("+fullURL+")...\n");
+	System.err.print("========= Start App-Demo GET("+fullURL+")...\n");
 	HttpSession ses = req.getSession(false);  // Important: do not allow automatic session.
 	if (ses == null) {                        // Instead, redirect to sso servlet.
 	    res.sendRedirect("sso?o=E&fr=" + fullURL);
@@ -72,11 +72,12 @@ public class app_demo extends HttpServlet {
 	}
 	
 	if (cf == null) {
+	    System.err.print("running conf\n");
 	    String conf = getServletConfig().getInitParameter("ZXIDConf"); 
 	    cf = zxidjni.new_conf_to_cf(conf);
 	    zxidjni.set_opt(cf, 1, 1);
 	}
-
+	String sid = ses.getAttribute("sesid").toString();
 	ServletOutputStream out = res.getOutputStream();
 	
 	res.setContentType("text/html");
@@ -91,12 +92,13 @@ public class app_demo extends HttpServlet {
 
 	// Render logout buttons (optional)
 
-	out.print("[<a href=\"sso?gl=1&s="+ses.getAttribute("sesid")+"\">Local Logout</a> | <a href=\"sso?gr=1&s="+ses.getAttribute("sesid")+"\">Single Logout</a>]\n");
+	out.print("[<a href=\"sso?gl=1&s="+sid+"\">Local Logout</a> | <a href=\"sso?gr=1&s="+sid+"\">Single Logout</a>]\n");
 
 	// The SSO servlet will have done one iteration of authorization. The following
 	// serves to illustrate, how to explicitly call a PDP from your code.
 
-	if (zxidjni.az_cf(cf, "Action=Show", ses.getAttribute("sesid").toString()) == null) {
+	System.err.print("about to az\n");
+	if (zxidjni.az_cf(cf, "Action=Show", sid) == null) {
 	    out.print("<p><b>Denied.</b> Normally page would not be shown, but we show the session attributes for debugging purposes.\n");
 	    //res.setStatus(302, "Denied");
 	} else {
@@ -141,9 +143,9 @@ public class app_demo extends HttpServlet {
 	// Demo web service call to zxidhrxmlwsp
 
 	String ret;
-	String sid = ses.getAttribute("sesid").toString();
 	zxid_ses zxses = zxidjni.fetch_ses(cf, sid);
 	
+	System.err.print("dispatch qs="+qs+"\n");
 	if (qs.equals("idhrxml") || qs.equals("all")) {
 	    out.print("<p>Output from idhrxml web service call sid("+sid+"):<br>\n<textarea cols=80 rows=20>");
 	    ret = zxidjni.call(cf, zxses,

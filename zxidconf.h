@@ -875,9 +875,9 @@
   "<form method=get action=\"!!URL\">"\
   "<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>"\
   "<h3>Login Using New IdP</h3>"\
-  "<i>A new IdP is one whose metadata we do not have yet. We need to know"\
-  "the IdP URL (aka Entity ID) in order to fetch the metadata using the"\
-  "well known location method. You will need to ask the adminstrator of"\
+  "<i>A new IdP is one whose metadata we do not have yet. We need to know "\
+  "the IdP URL (aka Entity ID) in order to fetch the metadata using the "\
+  "well known location method. You will need to ask the adminstrator of "\
   "the IdP to tell you what the EntityID is.</i>"\
   "<p>IdP URL <input name=e size=60><input type=submit name=l0 value=\" Login \"><br>"\
   "Entity ID of this SP (click on the link to fetch the SP metadata): <a href=\"!!EID\">!!EID</a>"\
