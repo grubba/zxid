@@ -43,9 +43,6 @@ public class app_demo extends HttpServlet {
     static final Pattern role_pat   = Pattern.compile("role:[ ]([^\\n]*)");
     static final Pattern boot_pat   = Pattern.compile("urn:liberty:disco:2006-08:DiscoveryEPR:[ ]([^\\n]*)");
 
-    //static final String conf = "PATH=/var/zxid/";
-    //static final String conf = "PATH=/var/zxid/&URL=http://sp.employeedata.com:8080/app-demo/sso";
-    //static final String conf = "PATH=/var/zxid/&URL=https://sp.employeedata.com:8444/sso";
     static zxidjava.zxid_conf cf;
     static {
 	System.loadLibrary("zxidjni");
@@ -79,7 +76,6 @@ public class app_demo extends HttpServlet {
 	    cf = zxidjni.new_conf_to_cf(conf);
 	    zxidjni.set_opt(cf, 1, 1);
 	}
-
 
 	ServletOutputStream out = res.getOutputStream();
 	

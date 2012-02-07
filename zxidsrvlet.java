@@ -1,4 +1,3 @@
-
 /* zxidsrvlet.java  -  SAML SSO Java/Tomcat servlet script that calls libzxid using JNI
  * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
@@ -26,10 +25,13 @@ import javax.servlet.http.*;
 public class zxidsrvlet extends HttpServlet {
     //static final String conf = "URL=http://sp1.zxidsp.org:8080/sso&PATH=/var/zxid/";
     static zxidjava.zxid_conf cf;
-    static {
-	System.loadLibrary("zxidjni");
+    static { System.loadLibrary("zxidjni"); }
+    
+    //public static void main(String argv[]) throws java.io.IOException  {  }
+    public void do_zxid(HttpServletRequest req, HttpServletResponse res, String qs)
+	throws ServletException, IOException
+    {
 	// CONFIG: You must have created /var/zxid directory hierarchy. See `make dir'
-	// CONFIG: You must create edit the URL to match your domain name and port
 	// CONFIG: To set config string, edit web.xml (hope you know where it is) and
 	// add to your servlets sections like
         //  <servlet>
@@ -38,15 +40,8 @@ public class zxidsrvlet extends HttpServlet {
 	//      <param-name>ZXIDConf</param-name><param-value>PATH=/var/zxid/</param-value>
 	//    </init-param>
 	//  </servlet>
-	//String conf = getServletConfig().getInitParameter("ZXIDConf"); 
-	//String conf = getServletContext().getInitParameter("ZXIDConf"); 
-	//cf = zxidjni.new_conf_to_cf(conf);
-    }
-    
-    //public static void main(String argv[]) throws java.io.IOException  {  }
-    public void do_zxid(HttpServletRequest req, HttpServletResponse res, String qs)
-	throws ServletException, IOException
-    {
+	// CONFIG: You must edit the URL to match your domain name and port, usually you
+	// CONFIG: would create and edit /var/zxid/zxid.conf and override the URL there.
 	if (cf == null) {
 	    String conf = getServletConfig().getInitParameter("ZXIDConf"); 
 	    cf = zxidjni.new_conf_to_cf(conf);

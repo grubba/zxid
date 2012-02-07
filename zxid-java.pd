@@ -333,6 +333,18 @@ the .class file):
 
   <Context allowLinking="true" reloadable="true"/etc/tomcat6/context.xml>...
 
+> N.B. It has been reported that on Tomcat6 this is broken and
+> symlinks can not be made to work, so your only option is to
+> simply copy the files over, e.g.
+>
+>   cd /var/lib/tomcat6/webapps
+>   cp -r ~/zxid-1.10/servlet zxidservlet
+>   cd /var/lib/tomcat6/webapps/zxidservlet/WEB-INF
+>   mkdir classes # if not existing yet
+>   cp -r ~/zxid-1.10/*.class ~/zxid-0.34/zxidjava classes/
+>   sudo cp ~/zxid-1.10/zxidjava/libzxidjni.so /usr/lib
+>   sudo chmod a+rx /usr/lib/libzxidjni.so
+
 The file servlet/WEB-INF/web.xml describes the example zxid
 application. The actual application lives in servlet/WEB-INF/classes
 which is actually just a symlink back to the top level of the ZXID
@@ -516,7 +528,7 @@ If you get
 
 Then you forgot to turn on the symlinks (see ~allowLinking~, above). Or you
 forgot to make the symlinks (e.g. ln -s ../.. classes). Alternately can
-just copy the files aqnd directories to the right place in the Tomcat tree.
+just copy the files and directories to the right place in the Tomcat tree.
 See section "Running as servlet under Tomcat", above.
 
 Following is another manifestation of the same problem:
@@ -545,6 +557,16 @@ Following is another manifestation of the same problem:
 	org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)
 	java.lang.Thread.run(Thread.java:534)
 
+Overall, it is incomprehensible why Tomcat developers hate symlinks so
+much that they make every effort to deny the developers benefit of
+this useful mechanism.
+
+In Tomcat6 the symlink enablement receipe of Tomcat5 apparently does
+not work any longer and the web is full of confused users who loose
+hours and days wrestling with this problem. If you are stuck with
+this, do yourself a favor: just copy the directory and files that the
+symlink would have pointed to. Its sub optima, but in the end of the
+day it works.
 
 9.7.2 Class Path or Java Version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -671,9 +693,12 @@ Then it is not finding zxidjava/libzxidjni.so. Either say
 
   export LD_LIBRARY_PATH=~/zxid-0.34/zxidjava:$LD_LIBRARY_PATH
 
-or place libzxidjni.so in $CATALINA_HOME/shared/lib. Note that the
-library file name really is libzxidjni.so despite the misleading exception
-suggesting just "zxidjni".
+or place libzxidjni.so in $CATALINA_HOME/shared/lib or even /usr/lib
+(perhaps overkill, but if you are desperate). Make sure the library
+has at least read and execute permissions for the tomcat user, or make
+it world readable and executable. Note that the library file name
+really is libzxidjni.so despite the misleading exception suggesting
+just "zxidjni".
 
 9.7.4 Native Library Already Loaded
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -723,6 +748,57 @@ of the libzxidjni.so with different names.
 
 No documented solution to this mystery error. It is believed to come
 from Windows dynamic linker.
+
+9.7.6 Mystery
+~~~~~~~~~~~~~
+
+java.lang.IllegalArgumentException: Document base /var/lib/tomcat6/webapps/e2eTA does not exist or is not a readable directory
+       at org.apache.naming.resources.FileDirContext.setDocBase(FileDirContext.java:142)
+       at org.apache.catalina.core.StandardContext.resourcesStart(StandardContext.java:4249)
+       at org.apache.catalina.core.StandardContext.start(StandardContext.java:4418)
+       at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:791)
+       at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:771)
+       at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:546)
+       at org.apache.catalina.startup.HostConfig.deployDirectory(HostConfig.java:1041)
+       at org.apache.catalina.startup.HostConfig.deployDirectories(HostConfig.java:964)
+       at org.apache.catalina.startup.HostConfig.deployApps(HostConfig.java:502)
+       at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1345)
+       at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:303)
+       at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:119)
+       at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1337)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1601)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1610)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1590)
+       at java.lang.Thread.run(Thread.java:636)
+07-Feb-2012 11:52:49 org.apache.catalina.core.StandardContext resourcesStart
+SEVERE: Error starting static Resources
+java.lang.IllegalArgumentException: Document base /var/lib/tomcat6/webapps/e2eTA does not exist or is not a readable directory
+       at org.apache.naming.resources.FileDirContext.setDocBase(FileDirContext.java:142)
+       at org.apache.catalina.core.StandardContext.resourcesStart(StandardContext.java:4249)
+       at org.apache.catalina.core.StandardContext.start(StandardContext.java:4418)
+       at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:791)
+       at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:771)
+       at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:546)
+       at org.apache.catalina.startup.HostConfig.deployDirectory(HostConfig.java:1041)
+       at org.apache.catalina.startup.HostConfig.deployDirectories(HostConfig.java:964)
+       at org.apache.catalina.startup.HostConfig.deployApps(HostConfig.java:502)
+       at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1345)
+       at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:303)
+       at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:119)
+       at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1337)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1601)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1610)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1590)
+       at java.lang.Thread.run(Thread.java:636)
+
+Yet the directory /var/lib/tomcat6/webapps/e2eTA does exist and has WEB-INF subdirectory
+with web.xml in it.
+
+Seems the problem was that the e2eTA was a symlink. Despite being correctly made
+and despite <Context allowLinking="true" reloadable="true"> being set, it still
+would not work until I copied the link's destination to its place.
+
+Potentially permissions error, says google, and this indeed seemed to fix it.
 
 9.8 Logging and Debugging Tips
 ------------------------------

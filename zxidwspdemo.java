@@ -1,4 +1,5 @@
 /* zxidwspdemo.java  -  Demonstrate server side of handling a web service call
+ * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -9,6 +10,7 @@
  * $Id: zxidappdemo.java,v 1.3 2009-11-20 20:27:13 sampo Exp $
  * 16.10.2009, created --Sampo
  * 16.2.2010, fixed virtual hosting --Sampo
+ * 7.2.2012, new virtual hosting with <init-param> supplied config --Sampo
  *
  * See also: zxid-java.pd, zxidappdemo.java for client side
  *
@@ -23,15 +25,35 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 public class zxidwspdemo extends HttpServlet {
-    static final String conf = "URL=http://sp1.zxidsp.org:8080/sso&PATH=/var/zxid/";
     static zxidjava.zxid_conf cf;
-    static {
+    static { System.loadLibrary("zxidjni"); }
+
+    public void init_zxid_vhost(HttpServletRequest req)
+	throws ServletException
+    {
 	// CONFIG: You must have created /var/zxid directory hierarchy. See `make dir'
-	// CONFIG: You must create edit the URL to match your domain name and port
-	// CONFIG: Usually you create and edit /var/zxid/zxid.conf and override the URL there.
+	// CONFIG: To set config string, edit web.xml (hope you know where it is) and
+	// add to your servlets sections like
+        //  <servlet>
+	//    <servlet-name>zxidsrvlet</servlet-name><servlet-class>zxidsrvlet</servlet-class>
+	//    <init-param>
+	//      <param-name>ZXIDConf</param-name><param-value>PATH=/var/zxid/</param-value>
+	//    </init-param>
+	//  </servlet>
+	// CONFIG: You must edit the URL to match your domain name and port, usually you
+	// CONFIG: would create and edit /var/zxid/zxid.conf and override the URL there.
 	// CONFIG: However, this program sets the URL dynamically, see calls to zxidjni.url_set()
-	System.loadLibrary("zxidjni");
-	cf = zxidjni.new_conf_to_cf(conf);
+	if (cf == null) {
+	    String conf = getServletConfig().getInitParameter("ZXIDConf"); 
+	    cf = zxidjni.new_conf_to_cf(conf);
+	    zxidjni.set_opt(cf, 1, 1);
+	}
+	String scheme = req.getScheme();
+	String host_hdr = req.getHeader("HOST");
+	String fullURL = req.getRequestURI();
+	String url = scheme + "://" + host_hdr + fullURL;
+	System.err.print("url("+url+")\n");  // URL=http://sp.tas3.pt:8080/zxidservlet/wspdemo
+	zxidjni.url_set(cf, url);  // Virtual host support
     }
 
     // Only reason why a pure WSP would handle GET is supporting WKL metadata
@@ -41,27 +63,8 @@ public class zxidwspdemo extends HttpServlet {
 	throws ServletException, IOException
     {
 	System.err.print("Start GET...\n");
-	//String proto = req.getProtocol();
-	String scheme = req.getScheme();
-	//String servername = req.getServerName();
-	//int serverport = req.getServerPort();
-	String host_hdr = req.getHeader("HOST");
-	String fullURL = req.getRequestURI();
+	init_zxid_vhost(req);
 	String qs = req.getQueryString();
-	//System.err.print("proto("+proto+")\n");	
-	//System.err.print("scheme("+scheme+")\n");	
-	//System.err.print("servername("+servername+")\n");	
-	//System.err.print("serverport("+serverport+")\n");	
-	//System.err.print("host_hdr("+host_hdr+")\n");	
-	//System.err.print("fullURL("+fullURL+")\n");	
-	//System.err.print("qs("+qs+")\n");	
-	//String url = scheme + "://" + servername
-	//    + (serverport != 80 && serverport != 443 ? ":"+serverport : "")
-	//    + fullURL;
-	String url = scheme + "://" + host_hdr + fullURL;
-	System.err.print("url("+url+")\n");  // URL=http://sp.tas3.pt:8080/zxidservlet/wspdemo
-	zxidjni.url_set(cf, url);  // Virtual host support
-	
 	if (qs != null && (qs.equals("o=B") || qs.equals("o=d"))) {  // Metadata check
 	    String ret = zxidjni.simple_cf(cf, -1, qs, null, 0x3d54);  // QS response requested
 	    System.err.print(ret);
@@ -84,7 +87,7 @@ public class zxidwspdemo extends HttpServlet {
 	}
 	
 	res.setContentType("text/html");
-	res.getOutputStream().print("<title>ZXID Demo WSP</title><body><h1>ZXID Demo WSP does not offer web GUI (" + fullURL + ")</H1>\n<pre>"+qs+"</pre>");
+	res.getOutputStream().print("<title>ZXID Demo WSP</title><body><h1>ZXID Demo WSP does not offer web GUI (" + req.getRequestURI() + ")</H1>\n<pre>"+qs+"</pre>");
     }
 
     // Handle a SOAP call, which is always a POST
@@ -94,14 +97,8 @@ public class zxidwspdemo extends HttpServlet {
     {
 	String ret;
 	System.err.print("\n============ WSP Start SOAP POST ============\n");
+	init_zxid_vhost(req);
 	zxidjava.zxid_ses ses = zxidjni.alloc_ses(cf);
-	String scheme = req.getScheme();
-	String host_hdr = req.getHeader("HOST");
-	String fullURL = req.getRequestURI();
-	String qs = req.getQueryString();
-	String url = scheme + "://" + host_hdr + fullURL;
-	System.err.print("url("+url+")\n");	
-	zxidjni.url_set(cf, url);  // Virtual host support
 
 	// Java / Servlet complicated way of reading in the POST input
 
@@ -163,3 +160,17 @@ public class zxidwspdemo extends HttpServlet {
 }
 
 /* EOF */
+	//String proto = req.getProtocol();
+	//String servername = req.getServerName();
+	//int serverport = req.getServerPort();
+	//String qs = req.getQueryString();
+	//System.err.print("proto("+proto+")\n");	
+	//System.err.print("scheme("+scheme+")\n");	
+	//System.err.print("servername("+servername+")\n");	
+	//System.err.print("serverport("+serverport+")\n");	
+	//System.err.print("host_hdr("+host_hdr+")\n");	
+	//System.err.print("fullURL("+fullURL+")\n");	
+	//System.err.print("qs("+qs+")\n");	
+	//String url = scheme + "://" + servername
+	//    + (serverport != 80 && serverport != 443 ? ":"+serverport : "")
+	//    + fullURL;
