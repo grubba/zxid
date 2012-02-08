@@ -435,7 +435,7 @@ char* zxid_ps_accept_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
   int got;
 
   if (!cgi->inv) {
-    ERR("Invitation missing.");
+    ERR("Invitation missing.%s", "");
     cgi->err = "Invitation missing.";
     return zxid_simple_show_err(cf, cgi, res_len, auto_flags);
   }
