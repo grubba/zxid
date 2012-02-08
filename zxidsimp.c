@@ -1561,6 +1561,13 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
 	  goto done;
   }
 
+  if (ses->sesbuf) {
+    ZX_FREE(cf->ctx, ses->sesbuf);
+  }
+  if (ses->sid) {
+    ZX_FREE(cf->ctx, ses->sid);
+  }
+
   ZERO(ses, sizeof(zxid_ses));   /* No session yet! Process login form */
   res = zxid_simple_no_ses_cf(cf, &cgi, ses, res_len, auto_flags);
 
