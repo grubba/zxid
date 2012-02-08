@@ -89,6 +89,7 @@ zxid-1.10:: 6.2.2012
     - Eliminate coordinates from the end of the branding login buttons
     - Added use of ZXIDConf <init-param> (you define it in web.xml) to servlets
     - Refactored virtual hosting code in zxidwspleaf.java and zxidwspdemo.java
+    - Added -r option to zxdecode for decoding encrypted messages from the audit trail
 
 zxid-1.06:: 10.12.2011
     - Merged improvements (CDC, sol8x86, free functions, mem leak fixes) by grubba@@grubba.org from git://github.com/grubba/zxid.git

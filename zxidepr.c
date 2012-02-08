@@ -189,6 +189,8 @@ void zxid_snarf_eprs(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
   struct zx_str* ss;
   struct zx_str* urlss;
   int wsf20 = 0;
+  if (!epr)
+    return;
   for (; epr; epr = (zxid_epr*)epr->gg.g.n) {
     if (epr->gg.g.tok != zx_a_EndpointReference_ELEM)
       continue;

@@ -48,12 +48,13 @@ public class zxidsrvlet extends HttpServlet {
 	}
 	if (req.getParameter("gr") != null || req.getParameter("gl") != null)
 	    req.getSession(true).invalidate();  // Invalidate local ses in case of SLO
-	System.err.print("Calling zxid\n");
+	System.err.print("----- Calling zxid_simple\n");
 	String ret = zxidjni.simple_cf(cf, -1, qs, null, 0x3d54);  // QS response requested
 	System.err.print(ret);
 	switch (ret.charAt(0)) {
 	case 'L':  /* Redirect: ret == "LOCATION: urlCRLF2" */
 	    res.sendRedirect(ret.substring(10, ret.length() - 4));
+	    System.err.print("^^^^^^^^^^^^ SSO Servlet Redirect ^^^^^^^^^^^^\n");
 	    return;
 	case '<':
 	    switch (ret.charAt(1)) {
@@ -71,6 +72,7 @@ public class zxidsrvlet extends HttpServlet {
         case 'z': /* Authorization denied case (if PDP_URL was configured) */
 	    System.err.print("Deny (z)\n");
 	    res.sendError(403, "Denied. Authorization to rs("+req.getParameter("RelayState")+") was refused by a PDP.");
+	    System.err.print("^^^^^^^^^^^^ SSO Servlet DENIED ^^^^^^^^^^^^\n");
 	    return;
 	case 'd': /* Logged in case (both LDIF and QS will start by "dn") */
 	    HttpSession ses = req.getSession(true);
@@ -107,12 +109,13 @@ public class zxidsrvlet extends HttpServlet {
 	default:
 	    System.err.print("Unknown zxid_simple() response("+ret+").\n");
 	}
+	System.err.print("^^^^^^^^^^^^ SSO Servlet Done ^^^^^^^^^^^^\n");
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res)
 	throws ServletException, IOException
     {
-	System.err.print("Start GET...\n");
+	System.err.print("\n============ SSO Servlet GET ============\n");
 	// LECP/ECP PAOS header checks
 	do_zxid(req, res, req.getQueryString());
     }
@@ -120,7 +123,7 @@ public class zxidsrvlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res)
 	throws ServletException, IOException
     {
-	System.err.print("Start POST....\n");
+	System.err.print("\n============ SSO Servlet POST ============\n");
 	String qs;
 	int len = req.getContentLength();
 	//System.err.print("Got Content-Length="+len+"\n");
