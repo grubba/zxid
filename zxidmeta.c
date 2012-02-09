@@ -385,7 +385,7 @@ zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
 	}
 	/* Check whether entity is already in the cache. */
 	if (zxid_get_ent_cache(cf, &ent->ed->entityID->g)) {
-	  INFO("While fetching metadata for eid(%.*s) got metadata for eid(%s), but the metadata was already in the cache. New metadata ignored.", eid->len, eid->s, ent->eid);
+	  INFO("While fetching metadata for eid(%.*s) got metadata for eid(%s), but the metadata was already in the cache. NEW METADATA IGNORED.", eid->len, eid->s, ent->eid);
 	  ent = ent->n;
 	} else {
 	  INFO("While fetching metadata for eid(%.*s) got metadata for eid(%s). New metadata cached.", eid->len, eid->s, ent->eid);

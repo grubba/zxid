@@ -43,7 +43,7 @@
  *
  * *Arguments*
  *
- * xac_at_list:: List of xac attributes to scan
+ * xac_at_list:: List of (already existing) xac attributes to scan, potentially NULL.
  * name_len:: Length of the attribute name, or 0 if no matching by attribute name is desired
  * name:: attribute name to match (or 0)
  * n:: Howmanieth instance of the matching attribute is desired. 1 means first.
@@ -56,7 +56,7 @@ static struct zx_xac_Attribute_s* zxid_find_xac_attribute(struct zx_xac_Attribut
   if (!name) { name_len = 0; name = ""; }
   if (name_len == -1 && name) name_len = strlen(name);
   if (!xac_at_list) {
-    ERR("No xac attribute list when looking for attribute name(%.*s) n=%d", name_len, name, n);
+    D("No xac attribute list when looking for attribute name(%.*s) n=%d", name_len, name, n);
     return 0;
   }
   for (at = xac_at_list;

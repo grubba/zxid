@@ -706,12 +706,23 @@ extern struct flock zx_unlk; /* = { F_UNLCK, SEEK_SET, 0, 1 };*/
 
 static FILE* zx_open_xml_log_file(zxid_conf* cf)
 {
+  FILE* f;
   char buf[ZXID_MAX_DIR];
-  if (!cf||!cf->path)
-    return fopen(XML_LOG_FILE, "a+");
-  snprintf(buf, sizeof(buf)-1, "%slog/xml.dbg", cf->path);
-  buf[sizeof(buf)-1]=0;
-  return fopen(buf, "a+");
+  if (!cf||!cf->path) {
+    strncpy(buf, XML_LOG_FILE, sizeof(buf));
+  } else {
+    snprintf(buf, sizeof(buf)-1, "%slog/xml.dbg", cf->path);
+    buf[sizeof(buf)-1]=0;
+  }
+  f = fopen(buf, "a+");
+  if (!f) {  /* If it did not work out, do not insist. */
+    perror(buf);
+    ERR("Can't open for appending %s: %d", buf, errno);
+    zx_xml_debug_log_err = 1;
+    return 0;
+  }
+  D("OPEN BLOB LOG: tailf %s | ./xml-pretty.pl", buf);
+  return f;
 }
 
 /*() Log a blob of XML data to auxiliary log file. This avoids
@@ -769,15 +780,9 @@ print_it:
   if (!zx_xml_debug_log) {
     if (zx_xml_debug_log_err)
       return;
-    
     zx_xml_debug_log = zx_open_xml_log_file(cf);
-    if (!zx_xml_debug_log) {  /* If it did not work out, do not insist. */
-      perror(XML_LOG_FILE);
-      ERR("Can't open for appending %s: %d", XML_LOG_FILE, errno);
-      zx_xml_debug_log_err = 1;
+    if (!zx_xml_debug_log)
       return;
-    }
-    D("OPEN BLOB LOG: tailf %s | ./xml-pretty.pl", XML_LOG_FILE);
   }
   
   if (FLOCKEX(fileno(zx_xml_debug_log)) == -1) {
