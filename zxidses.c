@@ -159,17 +159,27 @@ int zxid_get_ses(zxid_conf* cf, zxid_ses* ses, const char* sid)
 {
   char* p;
   int gotall;
+  char *oldsid;
+  if (ses->sesbuf) {
+    ZX_FREE(cf->ctx, ses->sesbuf);
+  }
 #if 0
   if (cf->ses_cookie_name && ses->setcookie
       && !memcmp(cf->ses_cookie_name, ses->setcookie, strlen(cf->ses_cookie_name)))
     p = ses->setcookie;
   else
     p = 0;
+  /* Keep any already set sid, in case the caller has explicitly set one. */
+  oldsid = ses->sid;
   ZERO(ses, sizeof(zxid_ses));
+  ses->sid = oldsid;
   ses->magic = ZXID_SES_MAGIC;
   ses->setcookie = p;
 #else
+  /* Keep any already set sid, in case the caller has explicitly set one. */
+  oldsid = ses->sid;
   ZERO(ses, sizeof(zxid_ses));
+  ses->sid = oldsid;
   ses->magic = ZXID_SES_MAGIC;
 #endif
 
@@ -187,6 +197,9 @@ int zxid_get_ses(zxid_conf* cf, zxid_ses* ses, const char* sid)
   D("ses(%.*s) len=%d sid(%s) sesptr=%p", gotall, ses->sesbuf, gotall, sid, ses);
   ses->sesbuf[gotall] = 0;
   DD("ses(%s)", ses->sesbuf);
+  if (ses->sid) {
+    ZX_FREE(cf->ctx, ses->sid);
+  }
   ses->sid = zx_dup_cstr(cf->ctx, sid);
 
   ses->nid = ses->sesbuf;

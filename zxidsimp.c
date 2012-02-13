@@ -1459,6 +1459,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
   char* cont_len;
   char* buf = 0;
   char* res = 0;
+  char *sid;
   zxid_cgi cgi;
   ZERO(&cgi, sizeof(cgi));
   
@@ -1564,11 +1565,10 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
   if (ses->sesbuf) {
     ZX_FREE(cf->ctx, ses->sesbuf);
   }
-  if (ses->sid) {
-    ZX_FREE(cf->ctx, ses->sid);
-  }
-
+  sid = ses->sid;	/* Keep the sid (if any), since it might be
+			 * used as an object identifier by the caller. */
   ZERO(ses, sizeof(zxid_ses));   /* No session yet! Process login form */
+  ses->sid = sid;
   res = zxid_simple_no_ses_cf(cf, &cgi, ses, res_len, auto_flags);
 
 done:
