@@ -127,7 +127,7 @@ attach(char* b,
        const char* type,
        const char* name)
 {
-  int n;
+  /*int n;*/
   char* b64;
   
   if (!type) return b;  /* type==NULL */
@@ -135,7 +135,7 @@ attach(char* b,
   if (!data) return b;
   if (!name) return b;
   
-  n = smime_base64(1, data, len, &b64);
+  /*n =*/ smime_base64(1, data, len, &b64);
   if (!b64) return b;
   
   if (!(b = concat(b, CRLF "Content-type: "))) goto err;
@@ -339,14 +339,14 @@ err:
 char*
 mime_base64_entity(const char* data, int len, const char* type)
 {
-  int n;
+  /*int n;*/
   char* b64;
   char* b;  
   if (!(b = strdup("Content-type: "))) GOTO_ERR("no memory?");
   if (!(b = concat(b, type))) goto err;
   if (!(b = concat(b, CRLF CRLF))) goto err;
   
-  n = smime_base64(1, data, len, &b64);
+  /*n =*/ smime_base64(1, data, len, &b64);
   if (!b64) GOTO_ERR("no memory?");
   if (!(b = concat(b, b64))) goto err;
   return b;

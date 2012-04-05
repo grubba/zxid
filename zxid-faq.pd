@@ -198,7 +198,7 @@ You need to symlink zx to zxid source directory, thus
 If you do not have it, then you will get a lot of file inclusion errors for
 headers that are supposed to be in path starting by zx/
 
-The symlink is there to keep all hand written source files on top
+The symlink is there to keep all handwritten source files on top
 level of directory for ease of development, yet allow inclusions to go
 through ~zx~ subdirectory. When zxid is installed, it goes to
 /usr/include/zx. Hence the symlink keeps the includes the same whether
@@ -466,9 +466,6 @@ easily *without using the IDE*, i.e. using simple text editor.
       part depends on the URL configuration parameter.
    b. Service Type should be the namespace URI of the (first) top level child
       of SOAP envelope Body element.
-
-Cheers,
---Sampo
 
 
 97.3.1 No certificates appear in metadata
@@ -1049,6 +1046,34 @@ due to wrong certificate.
 The certificate for signature validation is chosen on basis of
 <Sender> header's ~providerID~ XML attribute.
 
+97.7.5 Perils of Turning Off AuthnReq Signing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Q: In response to signature problems relating to missing root
+authority certificate and AuthnRequest, other vendor is proposing
+that they do not require signed requests for web applications. Is it
+possible to turn off the need for certificates?
+
+A: Yes. In SP's zxid.conf, set AUTHN_REQ_SIGN=0
+
+However, this opens the IdP to a variant of unsolicited
+request attack as they would not know if the request is coming from
+a legitimate source. It saves the request signature verification cost,
+but allows Denial of Service by incurring SAML assertion generation and
+signing cost. You could argue that these cancel each other out. In any
+case the user would be entering the password to legitimate place: the IdP,
+so this is not really a phising attack.
+
+If IdP is buggy and blindly trusts the AssertionConsumerServiceURL
+field in the authentication request, not verifying the request
+signature could lead to inappropriate party being able to obtain the
+SSO assertion.  Unless the assertion is encrypted (the default in
+ZXID), this could lead to that party gaining knowledge of the
+attributes passed in that assertion. It is not uncommon for IdPs to be
+buggy in this way (as of 2012). Such bug constitutes a violation of
+SAML2 specs, but may not be caught in software testing as everything
+seems to work. Only negative testing would catch it. (Needless to say,
+zxididp paid attention to this detail.)
 
 97.8 Audit Trail
 ----------------
@@ -1258,6 +1283,49 @@ Steve.
 
 Since ZXID version 0.65 (Oct 2010), this has been addressed via
 the EVP_CIPHER_CTX_set_padding() route.
+
+97.9.7 Active Directory Federation Services (ADFS)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ZXID 1.02 SP has been confirmed to work with ADFS IdP (STS,
+unknown verion in April 2012).
+
+Sometimes ADFS IdP does not emit assertion at all. There seems to be
+some configuration change in ADFS viz its default install that is
+needed to get it to emit SAML2. Symptom may be the following ZXID
+debug log (see Apache error.log, catalina.out, or
+/var/tmp/zxid.stderr, depending on your installation) entries:
+
+  p2192    zxlog.c:682 zxlog_blob    zx d dec_redir_post nosig: LOGBLOB15(<samlp:Response) len=3994 path(/var/zxid/log/rely/hJ7us-0hhS2XLwl3VTPZoStmgRY/wir/n4CfarJbNloArnYTCI1BfOmIHg4)
+  p2192  zxidlib.c:540 zxid_saml_ok  zx E SAML Fail what(SAMLresp) SC1(urn:oasis:names:tc:SAML:2.0:status:Responder)
+
+although this could be caused by other errors that send status. Basically
+you can check the file indicated by the path on the LOGBLOB15 line and
+verify that it does not have Assertion. The Status element may also
+have human readable error string, though in the specific case of ADFS refusing
+to send assertion, no human readable error was supplied. At any
+rate, the status code 
+
+  urn:oasis:names:tc:SAML:2.0:status:Responder
+
+signifies that the error happened due to the IdP (which is responding
+to the AuthnRequest, hence "Responder") and that the request sent by
+SP was considered OK.
+
+Sometimes ADFS IdP emits an assertion without NameID (or EncryptedID)
+element, which makes it difficult for other SAML2 compliant SPs to
+work. Symptom may be the following ZXID debug log (see Apache
+error.log, catalina.out, or /var/tmp/zxid.stderr, depending on your
+installation) entries:
+
+  p18379 zxidlib.c:662 zxid_chk_sig zx d No signature in Response
+  p18379 zxidlib.c:595 zxid_decrypt_nameid zx E ssof: Neither NameID nor EncryptedID available 0
+  p18379 zxidsso.c:617 zxid_sp_sso_finalize zx E ssof: SSO failed: assertion does not have Subject->NameID. 0x0
+
+Reportedly the fix at ADFS IdP side is
+
+> "Create a claim rule to set the PartnerImmutableID as the the unique identifier.
+> This should then send it as the SAML NameID in assertion."
 
 97.10 Known Bugs
 ----------------

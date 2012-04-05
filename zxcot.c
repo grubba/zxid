@@ -262,10 +262,10 @@ static void opt(int* argc, char*** argv, char*** env)
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
     if (verbose>1) {
-      printf(help);
+      printf("%s", help);
       exit(0);
     }
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     /*fprintf(stderr, "version=0x%06x rel(%s)\n", zxid_version(), zxid_version_str());*/
     exit(3);
   }
@@ -316,7 +316,6 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
 {
   char sha1_name[28];
   char path[ZXID_MAX_BUF];
-  char* p;
   int got, fd;
   struct zx_root_s* r;
   zxid_epr* epr;
@@ -325,7 +324,6 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
   
   read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got);  /* Read EPR */
   buf[got] = 0;
-  p = buf;
   
   r = zx_dec_zx_root(cf->ctx, got, buf, "cot reg_svc");
   if (!r || !r->EndpointReference) {

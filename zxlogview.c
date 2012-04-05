@@ -169,7 +169,7 @@ static void opt(int* argc, char*** argv, char*** env)
       case 'i':
 	if (!strcmp((*argv)[0],"-license")) {
 	  extern char* license;
-	  fprintf(stderr, license);
+	  fprintf(stderr, "%s", license);
 	  exit(0);
 	}
 	break;
@@ -183,10 +183,10 @@ static void opt(int* argc, char*** argv, char*** env)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
   argerr:
     if (verbose>1) {
-      printf(help);
+      printf("%s", help);
       exit(0);
     }
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     exit(3);
   }
 

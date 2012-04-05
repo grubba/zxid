@@ -199,10 +199,10 @@ static void opt(int* argc, char*** argv, char*** env)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
   help:
     if (verbose>1) {
-      printf(help);
+      printf("%s", help);
       exit(0);
     }
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     /*fprintf(stderr, "version=0x%06x rel(%s)\n", zxid_version(), zxid_version_str());*/
     exit(3);
   }
@@ -216,7 +216,7 @@ static void opt(int* argc, char*** argv, char*** env)
 /* Called by:  main */
 static int list_user(char* userdir, char* udir)
 {
-  int got;
+  /*int got;*/
   char* at;
   struct dirent* de;
   DIR* dir;
@@ -227,7 +227,7 @@ static int list_user(char* userdir, char* udir)
     return 4;
   }
   printf("User dir:              %s\n", userdir);
-  got = read_all(sizeof(buf), buf, "pw", 0, "%s/%s/.pw", udir, user);
+  /*got =*/ read_all(sizeof(buf), buf, "pw", 0, "%s/%s/.pw", udir, user);
   printf("Password hash:         %s\n", buf);
   at = read_all_alloc(&ctx, "at", 0, 0, "%s/%s/.bs/.at", udir, user);
   if (at) printf("User attributes:       %s\n", at);
@@ -238,7 +238,7 @@ static int list_user(char* userdir, char* udir)
 
   while (de = readdir(dir))
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
-      got = read_all(sizeof(buf), buf, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
+      /*got =*/ read_all(sizeof(buf), buf, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
       printf("SP specific NameID:  %s (%s)\n", buf, de->d_name);
       at = read_all_alloc(&ctx, "sp at", 0, 0, "%s/%s/.at", userdir, de->d_name);
       if (at) printf("SP specific attrib:  %s (%s)\n", buf, de->d_name);
@@ -255,7 +255,7 @@ static int list_user(char* userdir, char* udir)
 /* Called by:  main */
 static int list_users(char* udir)
 {
-  int got;
+  /*int got;*/
   char* at;
   struct dirent* de;
   DIR* dir;
@@ -268,7 +268,7 @@ static int list_users(char* udir)
   }
   while (de = readdir(dir))
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
-      got = read_all(sizeof(buf), buf, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
+      /*got =*/ read_all(sizeof(buf), buf, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
       printf("SP specific NameID:  %s (%s)\n", buf, de->d_name);
       at = read_all_alloc(&ctx, "sp at", 0, 0, "%s/%s/.bs/.at", userdir, de->d_name);
       if (at) printf("SP specific attrib:  %s (%s)\n", buf, de->d_name);
@@ -374,8 +374,7 @@ int main(int argc, char** argv, char** env)
   if (argc)
     user = argv[0];
   else if (!list) {
-    fprintf(stderr, "Too few arguments (%d). Specify at least user name.\n", argc);
-    fprintf(stderr, help);
+    fprintf(stderr, "Too few arguments (%d). Specify at least user name.\n%s", argc, help);
     /*fprintf(stderr, "version=0x%06x rel(%s)\n", zxid_version(), zxid_version_str());*/
     exit(3);
   }

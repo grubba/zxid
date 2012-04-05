@@ -50,7 +50,7 @@ void zxid_fold_svc(char* p, int len)
 /*() Compute (and fold) unique nice sha1 name according to NAME,SHA1
  *
  * This name format is designed to ensure unique name, while
- * maintainting human readability. This is
+ * maintainting human (=sysadmin) readability. This is
  * useful in the common case where WSC wants to call a specific type of web service.
  *
  * cf::  ZXID configuration object, also used for memory allocation
@@ -67,25 +67,13 @@ void zxid_fold_svc(char* p, int len)
 int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len,
 		   struct zx_str* name, struct zx_str* cont, int ign_prefix)
 {
-  char* p;
-  char* q;
-  int len;
+  int len = MAX(name->len - ign_prefix, 0);
   char sha1_cont[28];
   sha1_safe_base64(sha1_cont, cont->len, cont->s);
   sha1_cont[27] = 0;
-  len = snprintf(buf, buf_len, "%.*s,%s",
-		 MAX(name->len-ign_prefix,0), name->s+ign_prefix, sha1_cont);
+  len = snprintf(buf, buf_len, "%.*s,%s", len, name->s+ign_prefix, sha1_cont);
   buf[buf_len-1] = 0; /* must terminate manually as on win32 termination is not guaranteed */
-  
-  /* 012345678
-   * http://
-   * https://   */
-
-  /* Sanity scan the name part (svc or eid), folding dangerous chars to _. */
-
-  p = buf;
-  q = MIN(p + MAX(name->len-ign_prefix,0), p + buf_len);
-  zxid_fold_svc(p, q-p);
+  zxid_fold_svc(buf, len);
   return 0;
 }
 

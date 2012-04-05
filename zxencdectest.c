@@ -86,12 +86,12 @@ char buf[256*1024];
 /* Called by:  opt */
 void test_ibm_cert_problem()  /* -r 1 */
 {
-  int len, got_all;
+  int got_all;
   zxid_conf* cf;
   struct zx_root_s* r;
   struct zx_sp_LogoutRequest_s* req;
 
-  len = read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got_all);
+  read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
   buf[got_all] = 0;
 
@@ -626,7 +626,7 @@ void opt(int* argc, char*** argv, char*** env)
       case 'i':
 	if (!strcmp((*argv)[0],"-license")) {
 	  extern char* license;
-	  fprintf(stderr, license);
+	  fprintf(stderr, "%s", license);
 	  exit(0);
 	}
 	break;
@@ -638,7 +638,7 @@ void opt(int* argc, char*** argv, char*** env)
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
   argerr:
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     exit(3);
   }
 }

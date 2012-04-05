@@ -329,7 +329,7 @@
 #define ZXID_AUTO_CERT 1
 
 /*(c) Authentication Request Signing
- * Whether AuthnReq is signed SP (controls both metadata and actual behavior). */
+ * Whether AuthnReq is signed by SP (controls both metadata and actual behavior). */
 #define ZXID_AUTHN_REQ_SIGN 1
 
 /*(c) Assertion Signing
