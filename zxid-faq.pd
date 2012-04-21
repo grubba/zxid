@@ -535,6 +535,20 @@ layer the question mark needs to be escaped. The %26 means
 ampersand that separates the arguments at querystring layer. It
 is encoded only once. Hope this is not too confusing.
 
+> >   The big question is which IdP? If for your
+> > user base there is only one, then user can be redirected to that one
+> > without any further ado and if they are already logged in at the IdP,
+> > they will be redirected back without user having to interact (otherwise
+> > user needs to log into the IdP and then he is redirected back).
+> In this case, it'll be an internal IdP, totally private.
+
+Ok, that makes it easy. With mod_auth_saml you may want to set the
+configuration option DEFAULTQS=l2EEE=1 where EEE is the EntityID URL
+of the IdP. Without mod_auth_saml, upon user clicking "Login using SAML",
+you would formulate to zxid_simple() call a query string containing
+"l2EEE=1". Then redirect to the return value.
+
+
 97.3.3 Web Service Provider Metadata
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

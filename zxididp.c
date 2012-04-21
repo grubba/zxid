@@ -67,6 +67,11 @@ int main(int argc, char** argv)
   char* res;
   char* setcookie;
 
+#ifdef _GNU_SOURCE
+  if (getenv("MALLOC_TRACE"))
+    mtrace();
+#endif
+
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */
   /* Reopen stderr only in mini_httpd case */

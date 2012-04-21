@@ -22,6 +22,14 @@ To do:
     - Support Danish profiles: http://digitaliser.dk/resource/516724
     - Support http://saml2int.org/ (interoperability profile and club)
 
+To do from EIC 2012:
+    - Scopes in AuthnRequests
+    - SAML2INT.org profiles, including branding icons
+    = http://openidtest.uninett.no/connect-provider
+    - http://tinyurl.com/umav1
+    - osis.idcommons.net
+    - Chat April 25: http://tinyurl.com/umachat
+
 Regarding mod_perl stability: I would assume most of that has to do
 with underlying memory allocator. All allocation activity in zxid code
 goes through zx_alloc() (in zxlib.c:55). I should fix zx_alloc() to use it.
