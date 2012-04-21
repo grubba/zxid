@@ -1490,7 +1490,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
 	if (cont_len) {
 	  sscanf(cont_len, "%d", &got);
 	  D("o=%c cont_len=%s got=%d rel=%s", cgi.op, cont_len, got, ZXID_REL);
-	  buf = ZX_ALLOC(cf->ctx, got);
+	  buf = ZX_ALLOC(cf->ctx, got + 1 /* nul term */);
 	  if (!buf) {
 	    ERR("out of memory len=%d", got);
 	    exit(1);
