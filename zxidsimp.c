@@ -399,10 +399,12 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
       *res_len = 0;
     return "";
   }
-  
+
+#if 0
   if ((auto_flags & ZXID_AUTO_FORMT) && (auto_flags & ZXID_AUTO_FORMF))
     ss = zx_dup_str(cf->ctx, "<h3>Login Using Known IdP</h3>\n");
   else
+#endif
     ss = zx_dup_str(cf->ctx, "");
 
   if (cf->idp_list_meth == ZXID_IDP_LIST_POPUP) {
