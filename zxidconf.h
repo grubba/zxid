@@ -881,7 +881,7 @@
   "the IdP to tell you what the EntityID is.</i>"\
   "<p>IdP URL <input name=e size=60><input type=submit name=l0 value=\" Login \"><br>"\
   "Entity ID of this SP (click on the link to fetch the SP metadata): <a href=\"!!EID\">!!EID</a>"\
-  "!!IDP_LIST<h3>Technical options</h3>"\
+  "<p>!!IDP_LIST<h3>Technical options</h3>"\
   "<input type=hidden name=fc value=1><input type=hidden name=fn value=prstnt>"\
   "<!-- ZXID built-in defaults, see IDP_SEL_TEMPL in zxidconf.h and zxid-conf.pd for explanation -->"\
   "<input type=hidden name=fq value=\"\">"\

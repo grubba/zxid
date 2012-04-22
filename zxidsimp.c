@@ -556,7 +556,7 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
   if (cgi->templ) {
     cf->idp_sel_templ_file = cgi->templ;
     for (p = cf->idp_sel_templ_file; *p; ++p)
-      if (*p == '/') {
+      if (*p == '/') {  /* Squash to avoid accessing files beyond webroot */
 	ERR("Illegal character 0x%x (%c) in templ CGI variable (possible attack or misconfiguration)", *p, *p);
 	*p = '_';
       }
@@ -907,6 +907,7 @@ static char* zxid_simple_idp_an_ok_do_rest(zxid_conf* cf, zxid_cgi* cgi, zxid_se
 /* Called by:  zxid_simple_idp_new_user, zxid_simple_idp_pw_authn, zxid_simple_idp_recover_password, zxid_simple_no_ses_cf */
 static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
+  char* p;
   char* ar;
   struct zx_sa_Issuer_s* issuer;
   zxid_entity* meta;
@@ -1023,7 +1024,14 @@ static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len,
   }
 
   /* Render the authentication page */
-
+  if (cgi->templ) {
+    cf->an_templ_file = cgi->templ;
+    for (p = cf->an_templ_file; *p; ++p)
+      if (*p == '/') {  /* Squash to avoid accessing files beyond webroot */
+	ERR("Illegal character 0x%x (%c) in templ CGI variable (possible attack or misconfiguration)", *p, *p);
+	*p = '_';
+      }
+  }
   ss = zxid_template_page_cf(cf, cgi, cf->an_templ_file, cf->an_templ, 4096, auto_flags);
   if (cgi->ssoreq)
     ZX_FREE(cf->ctx, cgi->ssoreq);
