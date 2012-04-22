@@ -292,15 +292,15 @@ static const char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* k
   case 'I':
     if (BBMATCH("IDP_LIST", key, lim)) return zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
     if (BBMATCH("IDP_POPUP", key, lim)) {
-      cgi->idp_list_meth = ZXID_IDP_LIST_POPUP;
+      cf->idp_list_meth = ZXID_IDP_LIST_POPUP;
       return zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
     }
     if (BBMATCH("IDP_BUTTON", key, lim)) {
-      cgi->idp_list_meth = ZXID_IDP_LIST_BUTTON;
+      cf->idp_list_meth = ZXID_IDP_LIST_BUTTON;
       return zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
     }
     if (BBMATCH("IDP_BRAND", key, lim)) {
-      cgi->idp_list_meth = ZXID_IDP_LIST_BRAND;
+      cf->idp_list_meth = ZXID_IDP_LIST_BRAND;
       return zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
     }
     break;
