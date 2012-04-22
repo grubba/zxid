@@ -1033,8 +1033,7 @@ static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len,
       }
   }
   ss = zxid_template_page_cf(cf, cgi, cf->an_templ_file, cf->an_templ, 4096, auto_flags);
-  if (cgi->ssoreq)
-    ZX_FREE(cf->ctx, cgi->ssoreq);
+  /* if (cgi->ssoreq) ZX_FREE(cf->ctx, cgi->ssoreq); might not be malloc'd if tabs have CGI */
   DD("an_page: ret(%s)", ss?ss->len:1, ss?ss->s:"?");
   return zxid_simple_show_page(cf, ss, ZXID_AUTO_LOGINC, ZXID_AUTO_LOGINH,
 			       "a", "text/html", res_len, auto_flags);
