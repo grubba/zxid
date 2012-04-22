@@ -202,6 +202,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
   char* p;
   int alloc_len, zlen, slen, field_len, rs_len;
   zxid_cgi cgi;
+
   field_len = strlen(field);
   rs_len = relay_state?strlen(relay_state):0;
   if (rs_len) {
@@ -288,8 +289,9 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
   /* Template based POST page, see post.html */
   ZERO(&cgi, sizeof(cgi));
   cgi.action_url = zx_str_to_c(cf->ctx, action_url);
-  cgi.saml_art  = field;
-  cgi.saml_resp = url;
+  D("action_url(%s)", cgi.action_url);
+  cgi.saml_art   = field;
+  cgi.saml_resp  = url;
   if (rs_len) {
     logpath = zx_strf(cf->ctx, "<input type=hidden name=RelayState value=\"%s\">", relay_state);
     cgi.rs = logpath->s;
