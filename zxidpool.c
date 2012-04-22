@@ -538,16 +538,16 @@ static int zxid_add_at_vals(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribute
        av = (struct zx_sa_AttributeValue_s*)ZX_NEXT(av)) {
     if (av->gg.g.tok != zx_sa_AttributeValue_ELEM)
       continue;
-    D("Adding value: %p", ZX_GET_CONTENT(av));
+    D("  adding value: %p", ZX_GET_CONTENT(av));
     if (av->EndpointReference || av->ResourceOffering)
       continue;  /* Skip bootstraps. They are handled elsewhere, see zxid_snarf_eprs_from_ses(). */
     if (ZX_GET_CONTENT(av)) {
       ss = zxid_map_val_ss(cf, ses, 0, map, ses->at->name, ZX_GET_CONTENT(av));
       if (ses->at->val) {
-	D("map val(%.*s)", ss->len, ss->s);
+	D("  map val(%.*s)", ss->len, ss->s);
 	ses->at->nv = zxid_new_at(cf, ses->at->nv, 0, 0, ss->len, ss->s, "multival");
       } else {
-	D("copy val(%.*s)", ss->len, ss->s);
+	D("  copy val(%.*s)", ss->len, ss->s);
 	COPYVAL(ses->at->val, ss->s, ss->s+ss->len);
       }
     }
@@ -861,7 +861,7 @@ int zxid_add_qs2ses(zxid_conf* cf, zxid_ses* ses, char* qs, int apply_map)
       zxid_add_attr_to_ses(cf, ses, n, zx_dup_str(cf->ctx, v));  
     } else {
       D("asis %s=%s", n,v);
-      ses->at = zxid_new_at(cf, ses->at, v-n-1, n, p-v, v, "as is");
+      ses->at = zxid_new_at(cf, ses->at, v-n-1, n, p-v, v, "as is3");
     }
   }
   return 1;

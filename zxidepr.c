@@ -1,4 +1,5 @@
 /* zxidepr.c  -  Handwritten functions for client side EPR and bootstrap handling
+ * Copyright (c) 2012 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -10,6 +11,7 @@
  *
  * 5.2.2007, created --Sampo
  * 7.10.2008, added documentation --Sampo
+ * 22.4.2012, fixed folding EPR names (to avoid folding comma) --Sampo
  *
  * See also: zxidsimp.c (attributes to LDIF), and zxida7n.c (general attribute querying)
  *
@@ -57,21 +59,20 @@ void zxid_fold_svc(char* p, int len)
  * buf:: result parameter. The buffer, which must have been allocated, will be
  *     modified to have the path. The path will be nul terminated.
  * buf_len:: The length of the buf (including nul termination), usually sizeof(buf)
- * name:: Often Service name or SP Entity ID
+ * name:: Often Service type name or SP Entity ID
  * cont:: content of EPR or the SP EntityID, used to compute sha1 hash that becomes part
  *     of the file name
  * ign_prefix:: How many characters to ignore from beginning of name: 0 or 7 (http://)
  * return:: 0 on success (the real return value is returned via ~buf~ result parameter) */
 
 /* Called by:  zxid_epr_path, zxid_get_affil_and_sp_name_buf, zxid_idp_map_nid2uid, zxid_imreq, zxid_nidmap_do x2, zxid_sso_issue_a7n */
-int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len,
-		   struct zx_str* name, struct zx_str* cont, int ign_prefix)
+int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len, struct zx_str* name, struct zx_str* cont, int ign_prefix)
 {
   int len = MAX(name->len - ign_prefix, 0);
   char sha1_cont[28];
   sha1_safe_base64(sha1_cont, cont->len, cont->s);
   sha1_cont[27] = 0;
-  len = snprintf(buf, buf_len, "%.*s,%s", len, name->s+ign_prefix, sha1_cont);
+  snprintf(buf, buf_len, "%.*s,%s", len, name->s+ign_prefix, sha1_cont);
   buf[buf_len-1] = 0; /* must terminate manually as on win32 termination is not guaranteed */
   zxid_fold_svc(buf, len);
   return 0;
@@ -89,7 +90,7 @@ int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len,
  * buf:: result parameter. The buffer, which must have been allocated, will be
  *     modified to have the path. The path will be nul terminated.
  * buf_len:: The length of the buf (including nul termination), usually sizeof(buf)
- * svc:: Service name
+ * svc:: Service type name
  * cont:: content of EPR, used to compute sha1 hash that becomes part of the file name
  * return:: 0 on success (the real return value is returned via ~buf~ result parameter)
  *
@@ -103,8 +104,7 @@ int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len,
  * especially if you get errors about multibyte characters. */
 
 /* Called by:  zxid_cache_epr, zxid_snarf_eprs_from_ses */
-int zxid_epr_path(zxid_conf* cf, char* dir, char* sid,
-		  char* buf, int buf_len, struct zx_str* svc, struct zx_str* cont)
+int zxid_epr_path(zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, struct zx_str* svc, struct zx_str* cont)
 {
   int len = snprintf(buf, buf_len, "%s%s%s/", cf->path, dir, sid);
   buf[buf_len-1] = 0; /* must terminate manually as on win32 termination is not guaranteed */
@@ -621,6 +621,7 @@ zxid_epr* zxid_new_epr(zxid_conf* cf, char* address, char* desc, char* entid, ch
   return epr;
 }
 
+/*() Returns delegated discovery EPR, such as someone else's discovery epr. */
 /* Called by: */
 zxid_epr* zxid_get_delegated_discovery_epr(zxid_conf* cf, zxid_ses* ses)
 {
