@@ -291,6 +291,18 @@ static const char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* k
     break;
   case 'I':
     if (BBMATCH("IDP_LIST", key, lim)) return zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
+    if (BBMATCH("IDP_POPUP", key, lim)) {
+      cgi->idp_list_meth = ZXID_IDP_LIST_POPUP;
+      return zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
+    }
+    if (BBMATCH("IDP_BUTTON", key, lim)) {
+      cgi->idp_list_meth = ZXID_IDP_LIST_BUTTON;
+      return zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
+    }
+    if (BBMATCH("IDP_BRAND", key, lim)) {
+      cgi->idp_list_meth = ZXID_IDP_LIST_BRAND;
+      return zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
+    }
     break;
   case 'M':
     if (BBMATCH("MSG", key, lim)) return cgi->msg;
@@ -534,12 +546,21 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
 {
   struct zx_str* eid=0;
   struct zx_str* ss;
+  char* p;
 
   D("HERE %p e(%s) m(%s) d(%s)", eid, FLDCHK(cgi, err), FLDCHK(cgi, msg), FLDCHK(cgi, dbg));
   if (cf->log_level>1)
     zxlog(cf, 0,0,0,0,0,0,0, "N", "W", "IDPSEL", 0, 0);
 
 #if 1
+  if (cgi->templ) {
+    cf->idp_sel_templ_file = cgi->templ;
+    for (p = cf->idp_sel_templ_file; *p; ++p)
+      if (*p == '/') {
+	ERR("Illegal character 0x%x (%c) in templ CGI variable (possible attack or misconfiguration)", *p, *p);
+	*p = '_';
+      }
+  }
   ss = zxid_template_page_cf(cf, cgi, cf->idp_sel_templ_file, cf->idp_sel_templ, 4096, auto_flags);
 #else
   if (cf->idp_sel_our_eid && cf->idp_sel_our_eid[0])

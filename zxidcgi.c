@@ -1,5 +1,5 @@
 /* zxidcgi.c  -  Handwritten functions for parsing SP specific CGI options
- * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -106,6 +106,7 @@ int zxid_parse_cgi(zxid_cgi* cgi, char* qs)
       goto unknown;
     case 't':
       if (!strcmp(n, "token_type")) { cgi->token_type = v; break; }
+      if (!strcmp(n, "templ"))   { cgi->templ = v; break; }
       goto unknown;
     case 'u':
       if (!strcmp(n, "user_id")) { cgi->user_id = v; break; }

@@ -890,12 +890,16 @@
   "<input type=hidden name=fm value=\"\">"\
   "<input type=hidden name=fp value=0>"\
   "<input type=hidden name=ff value=0>"\
+  "</form>"\
   "<div class=zxbot><a class=zx href=\"http://zxid.org/\">zxid.org</a>, !!VERSION (builtin)</div>"
 
 /*(c) Choose the method for rendeing IdP list.
  * 0 = popup menu
  * 1 = buttons
- * 2 = branded image buttons (a la "nascar") */
+ * 2 = branded image buttons (a la "nascar")
+ * This configuration option is effective if !!IDP_LIST variable
+ * is used in template. The variables !!IDP_POPUP, !!IDP_BUTTON, and !!IDP_BRAND
+ * in template override this option. */
 #define ZXID_IDP_LIST_METH 0
 
 #define ZXID_IDP_LIST_POPUP   0

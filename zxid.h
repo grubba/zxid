@@ -1,4 +1,5 @@
 /* zxid.h  -  Definitions for zxid CGI
+ * Copyright (c) 2012 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -379,6 +380,7 @@ struct zxid_cgi {
   char* zxapp;         /* Deployment specific application parameter passed in some querystrings. */
   char* zxrfr;         /* ZX Referer. Indicates to some external pages why user was redirected. */
   char* ok;            /* Ok button in some forms */
+  char* templ;         /* Template name in some forms (used to implement tabs, e.g. in idpsel) */
   char* sp_eid;        /* IdP An for to generate page */
   char* sp_dpy_name;
   char* sp_button_url;
