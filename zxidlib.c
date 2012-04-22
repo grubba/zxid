@@ -289,7 +289,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
   /* Template based POST page, see post.html */
   ZERO(&cgi, sizeof(cgi));
   cgi.action_url = zx_str_to_c(cf->ctx, action_url);
-  D("action_url(%s)", cgi.action_url);
+  DD("action_url(%s)", cgi.action_url);
   cgi.saml_art   = field;
   cgi.saml_resp  = url;
   if (rs_len) {
