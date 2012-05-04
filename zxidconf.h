@@ -160,7 +160,7 @@
  * N.B. There is no explicit way to configure Entity ID (Provider ID) for
  * the zxid SP. The Entity ID is always of form ZXID_URL?o=B, for example
  *   https://sp1.zxidsp.org:8443/zxid?o=B */
-#define ZXID_URL "https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxidhlo"
+#define ZXID_URL "https://sp1.please-set-URL-zxid.conf-variable-to-some-useful-site-dep-value.org:8443/zxidhlo"
 
 /*(c) VURL - URL for a virtual server
  *
@@ -187,8 +187,8 @@
  *
  * VURL is not really a configuration option on its own right (there is
  * no corresponding entry in struct zxid_conf), but rather a directive
- * that instructs on point of occurrance the URL variable (see zxid.h)
- * to change. It will not have any effect unless evaluted at run time,
+ * that instructs, on point of its occurrance, the URL variable (see zxid.h)
+ * to be computed. It will not have any effect unless evaluted at run time,
  * thus this "default value" is rather moot. You really need to specify
  * VURL in your own configuration.
  *
@@ -414,7 +414,7 @@
 
 /*(c) OAUTH2 / OpenID-Connect1 id_token signing and encryption options
  * 'n': alg=none
- * 'h': alg=HS256 (HMAC using SHA256)
+ * 'h': alg=HS256 (HMAC using SHWA256)
  * 'r': alg=RS256 (RSA using SHA256)
  */
 #define ZXID_OAZ_JWT_SIGENC_ALG 'n'

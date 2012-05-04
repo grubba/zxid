@@ -12,6 +12,7 @@
  * 16.9.2010,  added support for traditional Unix crypt(3) hashed passwords --Sampo
  * 1.2.2011,   tweaked -at option --Sampo
  * 5.2.2012,   changed -c flag to -n to reserve -c for config (to be consistent with other utils) --Sampo
+ * 24.4.2012,  obsoleted PATH=/var/zxid/idp. From now on, just use /var/zxid/ or VPATH --Sampo
  *
  * See also: http://www.users.zetnet.co.uk/hopwood/crypto/scan/ph.html
  * http://www.usenix.org/events/usenix99/provos/provos_html/index.html
@@ -46,7 +47,7 @@
 #include "c/zx-ns.h"
 #include "yubikey.h"
 
-#define UDIR "/var/zxid/idpuid"
+#define UDIR "/var/zxid/uid/"
 
 char* help =
 "zxpasswd  -  Password creation and user management tool R" ZXID_REL "\n\
@@ -82,7 +83,7 @@ int create = 0;
 int an = 0;
 int list = 0;
 char* hash_type = "1";
-char* udir = "/var/zxid/idpuid/";
+char* udir = UDIR;
 char* user = 0;
 char* symlink_user = 0;
 char* at = 0;
@@ -262,7 +263,7 @@ static int list_users(char* udir)
 
   dir = opendir(udir);
   if (!dir) {
-    perror("opendir for /var/zxid/idpuid (or other if configured)");
+    perror("opendir for " UDIR " (or other if configured)");
     D("failed path(%s)", udir);
     return 1;
   }

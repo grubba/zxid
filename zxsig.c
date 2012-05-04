@@ -474,9 +474,9 @@ int zxsig_data(struct zx_ctx* c, int len, const char* data, char** sig, EVP_PKEY
 int zxsig_verify_data(int len, char* data, int siglen, char* sig, X509* cert, char* lk)
 {
   int verdict;
-  EVP_PKEY* evp_pkey;
-  struct rsa_st* rsa_pkey;
-  struct dsa_st* dsa_pkey;
+  EVP_PKEY* evp_pubk;
+  struct rsa_st* rsa_pubk;
+  struct dsa_st* dsa_pubk;
   char sha1[20];  /* 160 bits */
   SHA1((unsigned char*)data, len, (unsigned char*)sha1);
   
@@ -484,22 +484,22 @@ int zxsig_verify_data(int len, char* data, int siglen, char* sig, X509* cert, ch
   DD("%s: vfy sig above %d",  lk, hexdump("sig: ",  sig,  sig+siglen, 4096));
   DD("%s: vfy sha1 above %d", lk, hexdump("sha1: ", sha1, sha1+20, 20));
   
-  evp_pkey = X509_get_pubkey(cert);
-  if (!evp_pkey) {
+  evp_pubk = X509_get_pubkey(cert);
+  if (!evp_pubk) {
     ERR("%s: Verify failed to get public key from certificate (perhaps you have not supplied any certificate, or it is corrupt or of wrong type) %p", lk, cert);
     zx_report_openssl_error("zxsig rsa vfy get_pub");
     return ZXSIG_BAD_CERT;
   }
-  switch (EVP_PKEY_type(evp_pkey->type)) {
+  switch (EVP_PKEY_type(evp_pubk->type)) {
   case EVP_PKEY_RSA:
-    rsa_pkey = EVP_PKEY_get1_RSA(evp_pkey);
-    if (!rsa_pkey) {
+    rsa_pubk = EVP_PKEY_get1_RSA(evp_pubk);
+    if (!rsa_pubk) {
       ERR("RSA vfy: failed to extract RSA get public key from certificate (perhaps you have not supplied any certificate, or it is corrupt or of wrong type) %p", cert);
       zx_report_openssl_error("zxsig rsa vfy rsa get_pub rsa");
       return ZXSIG_BAD_CERT;
     }
   
-    verdict = RSA_verify(NID_sha1, (unsigned char*)sha1, 20, (unsigned char*)sig, siglen, rsa_pkey);  /* PKCS#1 v2.0 */
+    verdict = RSA_verify(NID_sha1, (unsigned char*)sha1, 20, (unsigned char*)sig, siglen, rsa_pubk);  /* PKCS#1 v2.0 */
     if (!verdict) {
       ERR("RSA signature verify in %s data failed. Perhaps you have bad or no certificate(%p) len=%d data=%p siglen=%d sig=%p", lk, cert, len, data, siglen, sig);
       zx_report_openssl_error(lk);
@@ -510,14 +510,14 @@ int zxsig_verify_data(int len, char* data, int siglen, char* sig, X509* cert, ch
       return 0;
     }
   case EVP_PKEY_DSA:
-    dsa_pkey = EVP_PKEY_get1_DSA(evp_pkey);
-    if (!dsa_pkey) {
+    dsa_pubk = EVP_PKEY_get1_DSA(evp_pubk);
+    if (!dsa_pubk) {
       ERR("DSA vfy: failed to extract DSA get public key from certificate (perhaps you have not supplied any certificate, or it is corrupt or of wrong type) %p", cert);
       zx_report_openssl_error("zxsig dsa vfy dsa get_pub dsa");
       return ZXSIG_BAD_CERT;
     }
   
-    verdict = DSA_verify(NID_sha1, (unsigned char*)sha1, 20, (unsigned char*)sig, siglen, dsa_pkey);  /* PKCS#1 v2.0 */
+    verdict = DSA_verify(NID_sha1, (unsigned char*)sha1, 20, (unsigned char*)sig, siglen, dsa_pubk);  /* PKCS#1 v2.0 */
     if (!verdict) {
       ERR("DSA signature verify in %s data failed. Perhaps you have bad or no certificate(%p) len=%d data=%p siglen=%d sig=%p", lk, cert, len, data, siglen, sig);
       zx_report_openssl_error(lk);
@@ -528,7 +528,7 @@ int zxsig_verify_data(int len, char* data, int siglen, char* sig, X509* cert, ch
       return 0;
     }
   default:
-    ERR("%s: Unknown public key type 0x%x. Wrong or corrupt certificate key?", lk, evp_pkey->type);
+    ERR("%s: Unknown public key type 0x%x. Wrong or corrupt certificate key?", lk, evp_pubk->type);
     return -1;
   }    
 }

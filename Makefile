@@ -1664,7 +1664,8 @@ tags:
 	etags *.[hc] c/*.[hc]
 
 #SSL=/aino/openssl-0.9.8g
-SSL=/aino/openssl-1.0.0c
+#SSL=/aino/openssl-1.0.0c
+SSL=/home/sampo/openssl-1.0.1a
 BB=/aino/busybox-1.11.1
 #DS=~/ds
 #DS=/d/sampo/ds4/ds
@@ -1674,8 +1675,9 @@ PD=/home/sampo/pd
 APACHE=/aino/httpd-2.2.8
 
 megatags:
-	etags *.[hc] c/*.[hc] c/*.ds $(SSL)/*/*.[hc] $(SSL)/*/*/*.[hc] $(DS)/*/*.[hc] $(DS)/*/*.ds $(DS)/io/dsproxy-test.pl $(SLIM)/*/*.ds $(SLIM)/conf/*/*.ds $(PD)/xsd2sg.pl $(PD)/pd2tex $(BB)/*/*.[hc] $(BB)/*/*/*.[hc] $(BB)/*/*/*/*.[hc]
+	etags *.[hc] c/*.[hc] c/*.ds $(SSL)/*/*.[hc] $(SSL)/*/*/*.[hc] $(PD)/xsd2sg.pl $(PD)/pd2tex $(BB)/*/*.[hc] $(BB)/*/*/*.[hc] $(BB)/*/*/*/*.[hc]
 
+# $(DS)/*/*.[hc] $(DS)/*/*.ds $(DS)/io/dsproxy-test.pl $(SLIM)/*/*.ds $(SLIM)/conf/*/*.ds
 # $(APACHE)/*/*.[hc] $(APACHE)/*/*/*.[hc] $(APACHE)/*/*/*/*.[hc] $(APACHE)/*/*/*/*/*.[hc] $(APACHE)/*/*/*/*/*/*.[hc]
 
 docclean:
@@ -1996,6 +1998,7 @@ help:
 	@$(ECHO) "  sudo apt-get install build-essential  # Debian"
 	@$(ECHO) "  sudo apt-get install linux-libc-dev"
 	@$(ECHO) "  sudo apt-get install libc6-dev-i386"
+	@$(ECHO) "  sudo apt-get install libgcrypt-dev"
 	@$(ECHO) "  sudo apt-get install libssl-dev"
 	@$(ECHO) "  sudo apt-get install libcurl4-openssl-dev"
 	@$(ECHO) "  sudo apt-get install libapr1-dev"

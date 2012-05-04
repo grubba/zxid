@@ -43,12 +43,17 @@ STD TEST SETUP
 
 export LD_LIBRARY_PATH=/apps/lib
 ulimit -c unlimited
-mini_httpd -p 8081 -c 'zxid*' &
+mini_httpd -p 8081 -c 'zxid*' &   # IdP
+mini_httpd -p 8082 -c 'zxid*' &   # SP
 tailf /var/tmp/zxid.stderr &
 tailf /var/zxid/log/xml.dbg | ~/zxid/xml-pretty.pl &
 tailf /var/log/apache2/error.log | perl -pe 's/((zxidp)|(eid))/\e[1;31m$1\e[0m/g; s/, referer: .*?$//' &
 tail -f tmp/err-httpd &
 tailf ~/error.log | perl -pe 'substr($_,0,60)=""; s/((zxidp)|(eid))/\e[1;31m$1\e[0m/g; s/, referer: .*?$//' &
+
+http://idp.tas3.pt:8081/zxididp?o=B
+http://idp.tas3.pt:8081/zxididp?o=F
+http://sp.tas3.pt:8082/zxidhlo?o=E
 
 Testing
 -------

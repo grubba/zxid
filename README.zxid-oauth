@@ -199,11 +199,11 @@ OpenID Connect Basic Client 1.0 - draft 143.2.  Implicit Flow
 
 The implicit flow consists of the following steps:
 
-   1. Client Prepares an Authorization Request containing the desired request parameters.
-   2. Client sends a request to the Authorization Server.
-   3. Authorization Server Authenticates the End-User.
-   4. Authorization Server Obtains the End-User Consent/Authorization.
-   5. Authorization Server Sends the End-User back to the Client with an Access Token and ID Token.
+1. Client Prepares an Authorization Request containing the desired request parameters.
+2. Client sends a request to the Authorization Server.
+3. Authorization Server Authenticates the End-User.
+4. Authorization Server Obtains the End-User Consent/Authorization.
+5. Authorization Server Sends the End-User back to the Client with an Access Token and ID Token.
 
 ZXID Adaptation Plan (todo)
 ===========================

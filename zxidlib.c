@@ -394,6 +394,7 @@ struct zx_str* zxid_saml2_redir_enc(zxid_conf* cf, char* field, struct zx_str* p
     zlen = zxsig_data(cf->ctx, len, url, &zbuf, sign_pkey, "SAML2 redir");
   if (zlen == -1)
     return 0;
+  D("siglen=%d", zlen);
   
   /* Base64 and URL encode the sig. Had SAML2 specified safe base64, world would be simpler! */
   

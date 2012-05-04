@@ -99,6 +99,7 @@ zxid-1.10:: 21.4.2012
     - Refactored virtual hosting code in zxidwspleaf.java and zxidwspdemo.java
     - Added -r option to zxdecode for decoding encrypted messages from the audit trail
     - Fixed buffer overrun by one in processing zxid_simple() POST
+    - Obsoleted PATH=/var/zxid/idp convention. From now on, just use /var/zxid/ or VPATH for IdP
 
 zxid-1.06:: 10.12.2011
     - Merged improvements (CDC, sol8x86, free functions, mem leak fixes) by grubba@@grubba.org from git://github.com/grubba/zxid.git

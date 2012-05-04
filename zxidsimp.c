@@ -544,25 +544,27 @@ char* zxid_idp_list(char* conf, int auto_flags) {
 /* Called by:  zxid_idp_select_zxstr_cf, zxid_simple_show_idp_sel */
 struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int auto_flags)
 {
-  struct zx_str* eid=0;
   struct zx_str* ss;
   char* p;
 
-  D("HERE %p e(%s) m(%s) d(%s)", eid, FLDCHK(cgi, err), FLDCHK(cgi, msg), FLDCHK(cgi, dbg));
+  DD("HERE e(%s) m(%s) d(%s)", FLDCHK(cgi, err), FLDCHK(cgi, msg), FLDCHK(cgi, dbg));
   if (cf->log_level>1)
     zxlog(cf, 0,0,0,0,0,0,0, "N", "W", "IDPSEL", 0, 0);
 
 #if 1
-  if (cgi->templ) {
+  if (cgi->templ && *cgi->templ) {
     cf->idp_sel_templ_file = cgi->templ;
+    D("HERE t(%s)", cgi->templ);
     for (p = cf->idp_sel_templ_file; *p; ++p)
       if (*p == '/') {  /* Squash to avoid accessing files beyond webroot */
 	ERR("Illegal character 0x%x (%c) in templ CGI variable (possible attack or misconfiguration)", *p, *p);
 	*p = '_';
       }
   }
+  D("HERE tf(%s) t(%s)", STRNULLCHKNULL(cf->idp_sel_templ_file), STRNULLCHKNULL(cf->idp_sel_templ));
   ss = zxid_template_page_cf(cf, cgi, cf->idp_sel_templ_file, cf->idp_sel_templ, 4096, auto_flags);
 #else
+  struct zx_str* eid=0;
   if (cf->idp_sel_our_eid && cf->idp_sel_our_eid[0])
     eid = zxid_my_ent_id(cf);
   char* idp_list = zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
@@ -685,8 +687,7 @@ char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_
     D("CGI %x", auto_flags);
 	int extralen = 0;
 #ifdef MINGW
-    /* 
-     * It seems that Apache strips off the \n in this output when running as a CGI Script. 
+    /* It seems that Apache strips off the \n in this output when running as a CGI Script. 
      * This means the content length does not reflect reality, and we end up losing the 
      * last N bytes, where N is the number of newlines in the output
      */

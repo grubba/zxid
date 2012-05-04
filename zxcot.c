@@ -8,6 +8,7 @@
  * $Id: zxcot.c,v 1.5 2009-11-29 12:23:06 sampo Exp $
  *
  * 27.8.2009, created --Sampo
+ * 24.4.2012, obsoleted PATH=/var/zxid/idp. From now on, just use /var/zxid/ or VPATH --Sampo
  */
 
 #include "platform.h"  /* for dirent.h */
@@ -45,7 +46,10 @@ Usage: zxcot [options] [dir]         # Gives listing of metadata\n\
   [dir]            CoT directory. Default /var/zxid/cot\n\
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
                    Most of the configuration is read from /var/zxid/zxid.conf\n\
-  -ci              IdP conf, synonym for -c PATH=/var/zxid/idp&IDP_ENA=1\n\
+                   N.B. If VURL and/or VPATH are used, you should set\n\
+                   environment variables that affect virtualization, e.g.\n\
+                     HTTP_HOST=example.com:8443 SERVER_PORT=8443 SCRIPT_NAME=zxidhlo zxcot -m\n\
+  -ci              IdP conf, synonym for -c IDP_ENA=1\n\
   -a               Add metadata from stdin\n\
   -b               Register Web Service, add Service EPR from stdin\n\
   -bs              Register Web Service and Bootstrap, add Service EPR from stdin\n\
@@ -75,10 +79,9 @@ int regsvc = 0;
 int regbs = 0;
 int genmd = 0;
 int dryrun = 0;
-int explicit_conf = 0;
 int inflate_flag = 2;  /* Auto */
 int verbose = 1;
-char buf[ZXID_MAX_MD+1] = "PATH=/var/zxid/idp";
+char buf[ZXID_MAX_MD+1] = "PATH=/var/zxid/";
 char* mdurl = 0;
 char* entid = 0;
 char* cotdir;
@@ -118,13 +121,9 @@ static void opt(int* argc, char*** argv, char*** env)
       case 's':
 	++regsvc;
 	++regbs;
-	if (!explicit_conf)
-	  cf->path = ZXID_PATH "idp";
 	continue;
       case '\0':
 	++regsvc;
-	if (!explicit_conf)
-	  cf->path = ZXID_PATH "idp";
 	continue;
       }
       break;
@@ -135,8 +134,7 @@ static void opt(int* argc, char*** argv, char*** env)
 	switch ((*argv)[0][3]) {
 	case '\0':
 	  cf->idp_ena = 1;
-	  zxid_parse_conf(cf, buf); /* buf was statically initialised to "PATH=/var/zxid/idp" */
-	  ++explicit_conf;
+	  zxid_parse_conf(cf, buf); /* buf was statically initialised to "PATH=/var/zxid/" */
 	  continue;
 	}
 	break;
@@ -144,7 +142,6 @@ static void opt(int* argc, char*** argv, char*** env)
 	++(*argv); --(*argc);
 	if ((*argc) < 1) break;
 	zxid_parse_conf(cf, (*argv)[0]);
-	++explicit_conf;
 	continue;
       }
       break;
