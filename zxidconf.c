@@ -150,7 +150,7 @@ X509* zxid_read_cert(zxid_conf* cf, char* name)
   char buf[4096];
   int got = read_all(sizeof(buf), buf, "read_cert", 1, "%s" ZXID_PEM_DIR "%s", cf->path, name);
   if (!got && cf->auto_cert)
-     zxid_mk_self_sig_cert(cf, sizeof(buf), buf, "read_cert", name);
+    zxid_mk_self_sig_cert(cf, sizeof(buf), buf, "read_cert", name);
   return zxid_extract_cert(buf, name);
 }
 
@@ -162,7 +162,7 @@ EVP_PKEY* zxid_read_private_key(zxid_conf* cf, char* name)
   char buf[4096];
   int got = read_all(sizeof(buf), buf, "read_private_key", 1, "%s" ZXID_PEM_DIR "%s", cf->path, name);
   if (!got && cf->auto_cert)
-     zxid_mk_self_sig_cert(cf, sizeof(buf), buf, "read_private_key", name);
+    zxid_mk_self_sig_cert(cf, sizeof(buf), buf, "read_private_key", name);
   return zxid_extract_private_key(buf, name);
 }
 

@@ -1429,7 +1429,7 @@ show_protected_content_setcookie:
   case 'd':    return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
   case 'B':    return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
   case 'D': /*  Delegation / Invitation URL clicked. */
-     return zxid_ps_accept_invite(cf, cgi, ses, res_len, auto_flags);
+    return zxid_ps_accept_invite(cf, cgi, ses, res_len, auto_flags);
   case 'R':
     cgi->op = 'F';
     /* Fall thru */
