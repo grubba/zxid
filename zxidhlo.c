@@ -71,15 +71,17 @@ int main(int argc, char** argv)
   char setcookie[256];
 
 #if 1
+  int ret;
   /* Helps debugging CGI scripts if you see stderr. */
   /* Reopen stderr only in mini_httpd case */
   p = getenv("SERVER_SOFTWARE");
   if (p && !memcmp(p, "mini_httpd", sizeof("mini_httpd")-1)) {
-    close(2);
-    if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2) {
+    ret = open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666);
+    if (ret == -1) {
       perror("/var/tmp/zxid.stderr");
       exit(2);
     }
+    dup2(ret, 2);
   }
   fprintf(stderr, "=================== Running " ZXIDHLO " ===================\n");
 #endif

@@ -295,8 +295,8 @@ then the <init-params> does not have any effect.
 > N.B. Unlike in Apache2 httpd.conf where ZXIDConf directive
 > can appear multiple times, you can have only one init param
 > called "ZXIDConf". Thus if you have more than one parameter,
-> you have to combine them using URL syntax, i.e. & as separator,
-> but this in turn causes complication because & is used in XML entity
+> you have to combine them using URL syntax, i.e. with "&" (ampersand) as separator,
+> but this in turn causes complication because "&" is used in XML entity
 > escapes, so actually you have to write &amp;, for example:
 >
 >   <init-param>

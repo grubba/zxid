@@ -657,8 +657,6 @@ See also zxid-perl.pd
 34 CONTENT-TYPE: text/html
 35
 36 <title>ZXID SP PERL HLO SSO IdP Selection</title>
-37 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-38 <link type="text/css" rel=stylesheet href="idpsel.css">
 39 <body bgcolor=white><font face=sans>
 40 <h1>ZXID SP Perl HLO Federated SSO IdP Selection (user NOT logged in, no session.)</h1>
 41 <form method=get action="zxidhlo.pl">

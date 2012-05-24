@@ -1509,7 +1509,7 @@ precheck/chk-zlib.exe: precheck/chk-zlib.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
 
 precheck/chk-openssl.exe: precheck/chk-openssl.$(OBJ_EXT)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(SSL_LIBS)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< -L$(OPENSSL_ROOT)/lib $(SSL_LIBS)
 
 precheck/chk-curl.exe: precheck/chk-curl.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
