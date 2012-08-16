@@ -144,8 +144,25 @@ an.css           - Stylesheet for an-main.html, post.html, and err.html
 zxcot.c          - CoT (Circle-of-Trust) management tool: list CoT, add metadata to CoT
 zxpasswd.c       - Password creation and user management tool
 zxcall.c         - Web Service Client tool
-zxlogview.c      - Log viewing tool with log decryption and log sig verification
+zxlogview.c      - Local log viewing tool with log decryption and log sig verification
 zxdecode.c       - SAML redirect and post message decoding tool
+
+# ZXID Audit Bus
+
+zxbusd.c         - Audit Bus Daemon (message queue broker)
+hiios.h          - Header for Hiquu high performance I/O Engine
+hiios.c          - Hiquu high performance I/O Engine main loop
+hiread.c         - Hiquu high performance I/O Engine read dispatcher
+hiwrite.c        - Hiquu high performance I/O Engine write dispatcher
+testping.c       - testping benchmarking protocol module for hiios
+http.c           - Primitive http/1.0 protocol module for hiios
+smtp.c           - Pipelined SMTP protocol module for hiios
+akbox.h          - Application Black Box - an inmemory multithreaded logging system
+akbox.c          - Application Black Box decoder
+aktab.h
+akgviz.c
+aklog.c
+ak-lock.pl       - AKB lock analysis tool for debugging
 
 # Test utilities (haphazardly maintained)
 

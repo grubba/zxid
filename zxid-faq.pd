@@ -2691,4 +2691,74 @@ Cheers,
 --Sampo
 
 
+
+Shawn O'Connor <soconnor@falconknight.com> said:
+> Any ideas? Thanks!
+
+What was being attempted?
+
+What was the ZXID version and what was the counter part
+software and version?
+
+If this was SSO attempt, then I would
+be inclined to belive the error message, more below.
+ 
+>        -Shawn
+> 
+> Begin forwarded message:
+> 
+> > From: Denis Shaposhnikov <dsh@falconknight.com>
+> > Date: May 25, 2012 11:05:52 AM PDT
+> > To: Shawn O'Connor <soconnor@falconknight.com>
+> > Subject: Re: Fwd: Test
+> > 
+> > On 25/05/12 20:01, Shawn O'Connor wrote:
+> > 
+> >> Did it work?
+> > 
+> > I see next error messages:
+> > 
+> > p79064 zxidmeta.c:127 zxid_mk_ent       zx E ssof: Metadata did not have any certificates! Incomplete metadata? 0
+> > 
+
+Have you checked
+
+A. Is there metadata for the IdP in the /var/zxid/cot directory? (Directory
+   may vary due to your configuration.)
+   - If not: perhaps some firewalling or name resolution problem is
+     preventing the metadata from being fetched - or perhaps the IdP
+     in remote end does not support metadata fetch using Well Known
+     Location method?
+   - If you suspect any of the above, please attempt manual metadata
+     exchange (try running zxcot -h for brief summary)
+B. If the metadata is there, does it actually have certs? If not, ask
+   remote IdP to produce metadata that has certs. It may well be
+   configuration error in their end.
+C. If the metadata fetching is working OK, but the permissions in
+   /var/zxid/cot are not allowing the SP to write the metadata (or more
+   rarely read metadata that was already written), you could get error
+   messages of this nature.
+
+> > p79064    zxsig.c:317 zxsig_validate    zx E ssof: No certificate supplied. Only hashes (and hence canonicalization) verified. 0
+> > p79064  zxidsso.c:400 zxid_sigres_map   zx E ssof: Bad cert. 5
+> > p79064  zxidsso.c:677 zxid_sp_sso_finalize      zx E ssof: Fail SSO due to failed signature sigres=5
+
+Presumably the message was signed, but if there is no certificate
+to validate signature against, it will fail. There are ways to configure
+ZXID to ignore this problem, but they should not be used in a production
+deployment.
+
+> > p79064  zxidsso.c:732 zxid_sp_sso_finalize      zx E ssof: SSO fail (P)
+> > p79064  zxidspx.c:110 zxid_sp_dispatch  zx d ret=0 ses=0x7fffffffe200
+> > p79064  zxidspx.c:117 zxid_sp_dispatch  zx d *** FAIL, should send back to IdP select 0
+> > 
+> > I don't know what does it mean. Should I ask on the zxid's forum?
+
+I think it means what it says, but before you ask ZXID forum, you should
+make more complete investigation on the IdP metadata.
+
+Cheers,
+--Sampo
+
+
 >>

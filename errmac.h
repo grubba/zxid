@@ -1,6 +1,6 @@
 /* errmac.h  -  Utility, debugging, and error checking macros
  *
- * Copyright (c) 1998,2001,2006,2010-2011 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
+ * Copyright (c) 1998,2001,2006,2010-2012 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
  * Copyright (c) 2001-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * This is free software and comes with NO WARRANTY. For licensing
  * see file COPYING in the distribution directory.
@@ -10,7 +10,7 @@
  * 4.6.2003,  added STRERROR() macro --Sampo
  * 11.7.2003, added MUTEX_DEBUG, ASSERT_THR(), ASSERT_NOT_IN_LOCK() --Sampo
  * 6.10.2003, added ALIGN128 (16 byte alignment) --Sampo
- * 12.12.2003, added AFR support to asserts --Sampo
+ * 12.12.2003, added AK support to asserts --Sampo
  * 15.1.2004, added STRNULLCHK() --Sampo
  * 24.2.2006, made some definitions conditional --Sampo
  * 15.4.2006, new adaptation over Easter holiday --Sampo
@@ -541,18 +541,18 @@ extern char* assert_msg;
 
 #if 0
 #define CHK(cond,err) MB if ((cond)) { \
-      afr_ts(AFR_FUNCNO(__FUNCTION__), __LINE__, AFR_ASSERT_RAZ, "CHK FAIL: " #cond, ""); \
+      ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERT_RAZ, "CHK FAIL: " #cond, ""); \
       DIE_ACTION((err)); } ME
 
 #define ASSERTOP(a,op,b) MB if (!((a) op (b))) { \
-      afr_ts(AFR_FUNCNO(__FUNCTION__), __LINE__, AFR_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b); \
+      ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b); \
       DIE_ACTION(1); } ME
 
-#define FAIL(x,why) MB afr_ts(AFR_FUNCNO(__FUNCTION__), __LINE__, AFR_FAIL_RAZ, (char*)(x), why); DIE_ACTION(1); ME
+#define FAIL(x,why) MB ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_FAIL_RAZ, (char*)(x), why); DIE_ACTION(1); ME
 
 /* SANITY_CHK is a smaller assert which checks a condition but will not force an abort */
 #define SANITY_CHK(cond,...) MB if (!(cond)) \
-  afr_tsf(AFR_FUNCNO(__FUNCTION__), __LINE__, AFR_SANITY_RAZ, #cond, __VA_ARGS__); ME
+  ak_tsf(AK_NFN(__FUNCTION__), __LINE__, AK_SANITY_RAZ, #cond, __VA_ARGS__); ME
 #else
 # define CHK(cond,err) MB if ((cond)) { DIE_ACTION((err)); } ME
 # define ASSERTOP(a,op,b) MB if (!((a) op (b))) { DIE_ACTION(1); } ME

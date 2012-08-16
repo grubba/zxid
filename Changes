@@ -22,6 +22,14 @@ To do:
     - Support Danish profiles: http://digitaliser.dk/resource/516724
     - Support http://saml2int.org/ (interoperability profile and club)
 
+    - Rule names by URN or URL to be logged to ab
+    - mod_auth_saml_ws module
+    - Using Apache frontend todo TAS3 for java apps
+    - PDS with DITA (OASIS)
+    - Partial XML parsing: stop after header
+      - Header removal / unwrapping vs. header extraction, but still passing through
+    - Pentaho investigation, use dwh as the backing store of the PDS
+
 To do from EIC 2012:
     - Scopes in AuthnRequests
     - SAML2INT.org profiles, including branding icons
@@ -89,7 +97,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
       problem of it being kept in audit trail, such as in logged signed message)
     - Slow mode: pause for 2 seconds on every web service call and offer user
       opportunity to interact
-    -  Delegation to job coaches
+    - Delegation to job coaches
+    - Distressed authentication, persona selection at authentication by using prefix (pin)
 
 zxid-1.10:: 21.4.2012
     - Added support for OAUTH2 / OpenID-Connect1 Minimal / Basic Profile (both RP and IdP)

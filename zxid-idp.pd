@@ -906,6 +906,17 @@ As of version 0.47 (20100114) zxididp supports the following specifications
 * OAuth-WRAP support [Tom09]
 * XACML Authorization Decision Query for SSO
 
+4.11 Cleaning Up Old Sessions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Old session files will accumulate in the filesystem. You should use
+a cron job to clean them up
+
+  touch /var/zxid/idpses; find /var/zxid/idpses -atime +30 | xargs rm -rf
+
+N.B. the ~touch~ is needed in the above command line to ensure that
+the entire directory is not deleted.
+
 5 People Service and Delegation Support
 =======================================
 
