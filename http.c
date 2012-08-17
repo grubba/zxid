@@ -1,4 +1,4 @@
-/* http.c  -  Hype Text Transfer Protocol, 1.0
+/* http.c  -  Hyper Text Transfer Protocol, 1.0
  * Copyright (c) 2006,2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.

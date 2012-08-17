@@ -155,6 +155,7 @@ hiios.c          - Hiquu high performance I/O Engine main loop
 hiread.c         - Hiquu high performance I/O Engine read dispatcher
 hiwrite.c        - Hiquu high performance I/O Engine write dispatcher
 testping.c       - testping benchmarking protocol module for hiios
+stomp.c          - STOMP 1.1 protocol module for hiios
 http.c           - Primitive http/1.0 protocol module for hiios
 smtp.c           - Pipelined SMTP protocol module for hiios
 akbox.h          - Application Black Box - an inmemory multithreaded logging system

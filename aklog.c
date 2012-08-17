@@ -1,4 +1,4 @@
-/* aklog.c  -  Application Black (K) Box Logging
+/* aklog.c  -  Application Black (K) Box Logging Library
  *
  * Copyright (c) 2006,2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is unpublished proprietary source code. All dissemination
