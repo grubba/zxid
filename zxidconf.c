@@ -1,4 +1,5 @@
 /* zxidconf.c  -  Handwritten functions for parsing ZXID configuration file
+ * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -22,6 +23,7 @@
  * 21.4.2011, fixed DSA key reading and reading unqualified keys --Sampo
  * 3.12.2011, added VPATH feature --Sampo
  * 10.12.2011, added VURL and BUTTON_URL, deleted ORG_URL except for legacy check --Sampo
+ * 17.8.2012, added audit bus configuration --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -511,9 +513,7 @@ void zxid_free_map(struct zxid_conf *cf, struct zxid_map *map)
   }
 }
 
-/*() Parse ATTRSRC specification and add it to linked list
- * namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;...
- */
+/*() Parse comma separated strings and add to linked list */
 
 /* Called by:  zxid_init_conf x4, zxid_parse_conf_raw x4 */
 struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list* l, char* p)
@@ -539,7 +539,40 @@ struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list*
 void zxid_free_cstr_list(struct zxid_conf* cf, struct zxid_cstr_list* l)
 {
   while (l) {
-    struct zxid_cstr_list *next = l->n;
+    struct zxid_cstr_list* next = l->n;
+    ZX_FREE(cf->ctx, l->s);
+    ZX_FREE(cf->ctx, l);
+    l = next;
+  }
+}
+
+/*() Parse comma separated bus_urls and add to linked list */
+
+/* Called by:  zxid_init_conf x4, zxid_parse_conf_raw x4 */
+struct zxid_bus_url* zxid_load_bus_url(zxid_conf* cf, struct zxid_bus_url* l, char* p)
+{
+  char* q;
+  struct zxid_bus_url* cs;
+
+  for (; p && *p;) {
+    q = p;
+    p = strchr(p, ',');
+    if (!p)
+      p = q + strlen(q);
+    cs = ZX_ZALLOC(cf->ctx, struct zxid_bus_url);
+    cs->n = l;
+    l = cs;
+    COPYVAL(cs->s, q, p);    
+  }
+  return l;
+}
+
+/*() Reverse of zxid_load_bus_url(). */
+
+void zxid_free_bus_url(struct zxid_conf* cf, struct zxid_bus_url* l)
+{
+  while (l) {
+    struct zxid_bus_url* next = l->n;
     ZX_FREE(cf->ctx, l->s);
     ZX_FREE(cf->ctx, l);
     l = next;
@@ -702,7 +735,7 @@ struct zxid_map* zxid_find_map(struct zxid_map* map, const char* name)
   return 0;
 }
 
-/*() Check whether name is in the list. Used for Local PDP wite and black lists. */
+/*() Check whether name is in the list. Used for Local PDP white and black lists. */
 
 /* Called by:  zxid_localpdp x4 */
 struct zxid_cstr_list* zxid_find_cstr_list(struct zxid_cstr_list* cs, const char* name)
@@ -871,6 +904,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->log_err_in_act = ZXLOG_ERR_IN_ACT;
   cf->log_act_in_err = ZXLOG_ACT_IN_ERR;
   cf->log_sigfail_is_err = ZXLOG_SIGFAIL_IS_ERR;
+  cf->bus_url        = zxid_load_bus_url(cf, 0, ZXID_BUS_URL);
 
   cf->sig_fatal      = ZXID_SIG_FATAL;
   cf->nosig_fatal    = ZXID_NOSIG_FATAL;
@@ -983,6 +1017,7 @@ void zxid_free_conf(zxid_conf *cf)
   zxid_free_need(cf, cf->need);
   zxid_free_need(cf, cf->want);
   zxid_free_atsrc(cf, cf->attrsrc);
+  zxid_free_bus_url(cf, cf->bus_url);
   zxid_free_map(cf, cf->inmap);
   zxid_free_map(cf, cf->outmap);
   zxid_free_map(cf, cf->pepmap);
@@ -1359,6 +1394,7 @@ scan_end:
 	  cf->button_url = v;
 	break;
       }
+      if (!strcmp(n, "BUS_URL"))         { cf->bus_url = zxid_load_bus_url(cf, cf->bus_url, v);   break; }
       goto badcf;
     case 'C':  /* CDC_URL, CDC_CHOICE */
       if (!strcmp(n, "CDC_URL"))         { cf->cdc_url = v; break; }
@@ -1649,6 +1685,22 @@ static struct zx_str* zxid_show_cstr_list(zxid_conf* cf, struct zxid_cstr_list* 
   return ss;
 }
 
+/*() Pretty print bus_url list. */
+
+/* Called by:  zxid_show_conf x4 */
+static struct zx_str* zxid_show_bus_url(zxid_conf* cf, struct zxid_bus_url* cp)
+{
+  struct zx_str* ss = zx_dup_str(cf->ctx, "");
+  for (; cp; cp = cp->n) {
+    ss = zx_strf(cf->ctx, "  %s,\n%.*s", STRNULLCHK(cp->s), ss->len, ss->s);
+  }
+  if (ss->len) {  /* chop off last comma separator */
+    ss->len -= 2;
+    ss->s[ss->len] = 0;
+  }
+  return ss;
+}
+
 /*() Generate our SP CARML and return it as a string. */
 
 /* Called by:  opt x2, zxid_simple_show_conf */
@@ -1662,6 +1714,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
   struct zx_str* need;
   struct zx_str* want;
   struct zx_str* attrsrc;
+  struct zx_str* bus_url;
   struct zx_str* inmap;
   struct zx_str* outmap;
   struct zx_str* pepmap;
@@ -1712,6 +1765,8 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
     attrsrc->len -= 2;
     attrsrc->s[attrsrc->len] = 0;
   }
+
+  bus_url = zxid_show_bus_url(cf, cf->bus_url);
 
   inmap = zxid_show_map(cf, cf->inmap);
   outmap = zxid_show_map(cf, cf->outmap);
@@ -1901,6 +1956,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "NEED=\n%s\n"
 "WANT=\n%s\n"
 "ATTRSRC=\n%s\n"
+"BUS_URL=\n%s\n"
 "INMAP=\n%s\n"
 "OUTMAP=\n%s\n"
 "PEPMAP=\n%s\n"
@@ -2073,6 +2129,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 need->s,
 		 want->s,
 		 attrsrc->s,
+		 bus_url->s,
 		 inmap->s,
 		 outmap->s,
 		 pepmap->s,

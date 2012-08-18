@@ -83,6 +83,8 @@ ds-templ.c       - Code generation template for DS script API
 getput-templ.c   - Code generation template for accessor functions
 zx_ext_pt.h      - Included by decoders. Define dummy extention point macros if not already set.
 zxdirent.c       - Kevlin Henney's dirent.c (modified by Sampo) for WIN32CL port
+zxbuslisten.c    - *** Audit bus listener library
+zxbusprod.c      - *** Audit bus producer library
 zxlog.c          - Logging routines with encryption and signing
 zxcrypto.c       - Cryptographical functions
 zxsig.c          - XML DSIG support
@@ -146,6 +148,8 @@ zxpasswd.c       - Password creation and user management tool
 zxcall.c         - Web Service Client tool
 zxlogview.c      - Local log viewing tool with log decryption and log sig verification
 zxdecode.c       - SAML redirect and post message decoding tool
+zxbusdump.c      - *** utility for listening to zxbus and sending output to stdout
+zxbustailf.c     - *** tailf like utility for sending tail of a log to zxbus
 
 # ZXID Audit Bus
 
@@ -154,6 +158,7 @@ hiios.h          - Header for Hiquu high performance I/O Engine
 hiios.c          - Hiquu high performance I/O Engine main loop
 hiread.c         - Hiquu high performance I/O Engine read dispatcher
 hiwrite.c        - Hiquu high performance I/O Engine write dispatcher
+hiproto.h        - Hiquu high performance I/O Engine protocol constants
 testping.c       - testping benchmarking protocol module for hiios
 stomp.c          - STOMP 1.1 protocol module for hiios
 http.c           - Primitive http/1.0 protocol module for hiios

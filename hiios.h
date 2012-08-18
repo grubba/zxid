@@ -1,5 +1,5 @@
 /* hiios.h  -  Hiquu I/O Engine
- * Copyright (c) 2006 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2006,2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing. See file COPYING.
@@ -61,7 +61,7 @@ struct hi_io {
   struct hi_io* n;           /* next among io objects, esp. backends */
   struct hi_io* pair;        /* the other half of a proxy connection */
   int fd;
-  char *description;         /* Nito: To be able to map fd->devices/ports. Link to hi_host_spec->specstr */
+  char* description;         /* Nito: To be able to map fd->devices/ports. Link to hi_host_spec->specstr */
   char events;               /* events from last poll */
   char n_iov;
   struct iovec* iov_cur;     /* not used by listeners, only useful for sessions and backend ses */
@@ -86,6 +86,9 @@ struct hi_io {
       struct hi_pdu* uni_ind_hmtp;
       int state;
     } smtp;
+    struct {
+      int state;
+    } stomp;
   } ad;                      /* Application specific data */
 };
 
@@ -95,8 +98,8 @@ struct hi_pdu {
   struct hi_pdu* wn;         /* Write next. Used by in_write, to_write, and subresps queues. */
   struct hi_io* fe;
   
-  struct hi_pdu* req;
-  struct hi_pdu* parent;
+  struct hi_pdu* req;        /* Set for response to indicate which request it is responmse to. */
+  struct hi_pdu* parent;     /* Set for sub-requests and -responses */
   
   struct hi_pdu* subresps;   /* subreq: list of resps, to ds_wait() upon */
   struct hi_pdu* reals;      /* linked list of real resps to this req */
@@ -106,12 +109,12 @@ struct hi_pdu {
   char n_iov;
   struct iovec iov[3];       /* Enough for header, payload, and CRC */
   
-  int need;                  /* how much more is needed to complete a PDU? */
+  int need;                  /* How much more is needed to complete a PDU? */
   char* scan;                /* How far has protocol parsin progressed, e.g. in SMTP. */
-  char* ap;                  /* allocation pointer: next free memory location */
-  char* m;                   /* beginning of memory (often m == mem, but could be malloc'd) */
-  char* lim;                 /* one past end of memory */
-  char mem[HI_PDU_MEM];      /* memory for processing a PDU */
+  char* ap;                  /* Allocation pointer: next free memory location */
+  char* m;                   /* Beginning of memory (often m == mem, but could be malloc'd) */
+  char* lim;                 /* One past end of memory */
+  char mem[HI_PDU_MEM];      /* Memory for processing a PDU */
 
   union {
     struct {
@@ -125,6 +128,15 @@ struct hi_pdu {
     struct {
       char* skip_ehlo;
     } smtp;
+    struct {
+      int len;               /* Populated from content-length header, if one is supplied. */
+      char* body;            /* Body of the message */
+      char* host;            /* also receipt and receipt_id */
+      char* vers;            /* version, also accept-version, tx_id */
+      char* login;           /* also session, subs_id, subsc */
+      char* pw;              /* also server, ack, msg_id */
+      char* dest;            /* destination, also heart_bt */
+    } stomp;
   } ad;                      /* Application specific data */
   int len;
   int op;
@@ -197,12 +209,9 @@ struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind, char *de
 
 struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit);
 void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp);
-void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp,
-	      int len0, char* d0);
-void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp,
-	      int len0, char* d0, int len1, char* d1);
-void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp,
-	      int len0, char* d0, int len1, char* d1, int len2, char* d2);
+void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0);
+void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1);
+void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1, int len2, char* d2);
 void hi_sendf(struct hi_thr* hit, struct hi_io* io, char* fmt, ...);
 void hi_todo_produce(struct hiios* shf, struct hi_qel* qe);
 void hi_shuffle(struct hi_thr* hit, struct hiios* shf);

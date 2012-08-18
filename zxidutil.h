@@ -81,6 +81,7 @@ ZXID_DECL int write_all_fd(fdtype fd, const char* p, int pending);
 ZXID_DECL int write_all_path_fmt(const char* logkey, int len, char* buf, const char* path_fmt, const char* prepath, const char* postpath, const char* data_fmt, ...);
 ZXID_DECL int copy_file(const char* from, const char* to, const char* logkey, int may_link);
 ZXID_DECL int close_file(fdtype fd, const char* logkey);
+ZXID_DECL int send_all_socket(fdtype fd, const char* p, int pending);
 
 struct zxid_curl_ctx {
   char* p;

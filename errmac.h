@@ -224,11 +224,11 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define REVERSE_LIST(root,nodes) REVERSE_LIST_NEXT((root),(nodes),next)
 
 #if 0
-#define DLIST_ADD(head,x) MB (x)->next = (head).next;  /* add to head of doubly linked list */ \
+# define DLIST_ADD(head,x) MB (x)->next = (head).next;  /* add to head of doubly linked list */ \
                              ((x)->prev) = (void*)&(head); \
  	                     (head).next->prev = (x); \
 	                     (head).next = (x);  ME
-#define DLIST_DEL(prv,nxt) MB (nxt)->prev = (prv); (prv)->next = (nxt); (prv)=(nxt)=0; ME
+# define DLIST_DEL(prv,nxt) MB (nxt)->prev = (prv); (prv)->next = (nxt); (prv)=(nxt)=0; ME
 #endif
 
 #define DPDU_ADD(head,x) MB (x)->g.pdunext = (head).pdunext;  /* add to head of doubly linked list */ \
@@ -256,25 +256,26 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
                       else   CHK_NULL((p)=malloc(sizeof(*(p)))); ME
 
 #if 0
-#define MALLOCN(p,n) CHK_NULL((void*)(p)=malloc(n))
-#define REALLOCN(p,n) MB if (p) CHK_NULL((void*)(p)=realloc((p),(n))); \
+# define MALLOCN(p,n) CHK_NULL((void*)(p)=malloc(n))
+# define REALLOCN(p,n) MB if (p) CHK_NULL((void*)(p)=realloc((p),(n))); \
 		         else   CHK_NULL((void*)(p)=malloc(n)); ME
-#define STRDUP(d,s) MB (d) = strdup(s); ME
+# define STRDUP(d,s) MB (d) = strdup(s); ME
 #else
 /* Catch mallocs of zero size */
-#define MALLOCN(p,n) MB ASSERT(n); CHK_NULL((p)=malloc(n)); ME
-#define REALLOCN(p,n) MB ASSERT(n); if (p) CHK_NULL((p)=realloc((p),(n))); \
+# define MALLOCN(p,n) MB ASSERT(n); CHK_NULL((p)=malloc(n)); ME
+# define REALLOCN(p,n) MB ASSERT(n); if (p) CHK_NULL((p)=realloc((p),(n))); \
 		                    else   CHK_NULL((p)=malloc(n)); ME
-#define STRDUP(d,s) MB (d) = strdup(s); ME
+# define STRDUP(d,s) MB (d) = strdup(s); ME
 #endif
+
 #define DUPN(d,s,n) MB MALLOCN(d,n); if (d) memcpy((d),(s),(n)); ME
 
 #if 1
-#define FREE(p) (p) = ds_free(p, __FUNCTION__)
-#define FREE_EXPR(p) ds_free(p, __FUNCTION__)
+# define FREE(p) (p) = zx_free(p, __FUNCTION__)
+# define FREE_EXPR(p) zx_free(p, __FUNCTION__)
 #else
-#define FREE(p) 0
-#define FREE_EXPR(p) (0)
+# define FREE(p) 0
+# define FREE_EXPR(p) (0)
 #endif
 
 #define ZERO(p,n) memset((p), 0, (n))

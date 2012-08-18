@@ -22,6 +22,7 @@
 #include <string.h>
 #include "akbox.h"
 #include "hiios.h"
+#include "hiproto.h"
 #include "errmac.h"
 
 struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
@@ -118,22 +119,31 @@ void hi_read(struct hi_thr* hit, struct hi_io* io)
 	     && io->cur_pdu->need <= (io->cur_pdu->ap - io->cur_pdu->m)) {
 	switch (io->qel.proto) {
 	  /* *** add here a project dependent include? Or a macro. */
-	  /* Following decoders MUST
+	  /* Following decoders MUST either
 	   * a. drop connection in which case any rescheduling is moot
 	   * b. consume cur_pdu (set it to 0 or new PDU). This will cause
 	   *    read to be consumed until exhausted, and later trigger new todo
 	   *    when there is more data to be had, see hi_poll()
 	   * c. take some other action such as scheduling PDU to todo. Typically
 	   *    the req->need is zero when I/O is not expected.	   */
-	case S5066_SIS:   if (sis_decode(hit, io))   goto conn_close;  break;
-	case S5066_DTS:	  if (dts_decode(hit, io))   goto conn_close;  break;
-	case S5066_HTTP:  if (http_decode(hit, io))  goto conn_close;  break;
-	case S5066_TEST_PING: test_ping(hit, io);  break;
-	case S5066_SMTP:
+#ifdef ENA_S5066
+	case HIPROTO_SIS:   if (sis_decode(hit, io))   goto conn_close;  break;
+	case HIPROTO_DTS:   if (dts_decode(hit, io))   goto conn_close;  break;
+#endif
+	case HIPROTO_HTTP:  if (http_decode(hit, io))  goto conn_close;  break;
+	case HIPROTO_TEST_PING: test_ping(hit, io);  break;
+	case HIPROTO_SMTP:
 	  if (io->qel.kind == HI_TCP_C) {
 	    if (smtp_decode_resp(hit, io))  return;
 	  } else {
 	    if (smtp_decode_req(hit, io))   return;
+	  }
+	  break;
+	case HIPROTO_STOMP:
+	  if (io->qel.kind == HI_TCP_C) {
+	    if (stomp_decode_resp(hit, io))  return;
+	  } else {
+	    if (stomp_decode_req(hit, io))   return;
 	  }
 	  break;
 	default: NEVERNEVER("unknown proto(%x)", io->qel.proto);

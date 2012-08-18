@@ -20,6 +20,7 @@
  * 31.5.2010,  eliminated many include dependencies from the public API --Sampo
  * 13.11.2010, added ZXID_DECL for benefit of the Windows port --Sampo
  * 12.12.2010, separate zxidpriv.h and zxidutil.h from zxid.h --Sampo
+ * 17.8.2012,  added audit bus configuration --Sampo
  */
 
 #ifndef _zxid_h
@@ -287,6 +288,8 @@ struct zxid_conf {
 
   char* dbg;           /* Debug message that may be shown. */
 
+  struct zxid_bus_url* bus_url;  /* Audit bus URLs to contact. */
+
   char  log_err;             /* Log enables and signing and encryption flags (if USE_OPENSSL) */
   char  log_act;
   char  log_issue_a7n;
@@ -529,6 +532,17 @@ struct zxid_cstr_list {
 #define ZXID_MAP_RULE_WRAP_X509  0x20  /* Wrap the attribute in X509 attribute certificate */
 #define ZXID_MAP_RULE_WRAP_FILE  0x30  /* Get attribute value from file specified in ext */
 #define ZXID_MAP_RULE_WRAP_MASK  0x30
+
+/*(s) Used for maintaining audit bus URL and connections */
+
+struct zxid_bus_url {
+  struct zxid_bus_url* n;
+  char* s;              /* The config URL */
+  fdtype fd;            /* Remember already open connection to zxbusd instance. */
+  char* buf;            /* I/O buffer */
+  char* ap;             /* How far the buffer is filled */
+  int   receipt;
+};
 
 /*(s) Attribute source definition */
 

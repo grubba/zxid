@@ -1,5 +1,5 @@
 /* hiios.c  -  Hiquu I/O Engine I/O shuffler
- * Copyright (c) 2006 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2006,2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing. See file COPYING.
@@ -39,6 +39,7 @@
 #include <string.h>
 
 #include "akbox.h"
+#include "hiproto.h"
 #include "hiios.h"
 #include "errmac.h"
 
@@ -120,7 +121,7 @@ void nonblock(int fd)
 /* Tweaking kernel buffers to be smaller can be a win if a massive number
  * of connections are simultaneously open. On many systems default buffer
  * size is 64KB in each direction, leading to 128KB memory consumption. Tweaking
- * to only, say, 8KB can brin substantial savings (but may hurt TCP performance). */
+ * to only, say, 8KB can bring substantial savings (but may hurt TCP performance). */
 
 void setkernelbufsizes(int fd, int tx, int rx)
 {
@@ -251,7 +252,7 @@ struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind, char *de
 struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto)
 {
   int fd;
-  if ((fd = socket(AF_INET, SOCK_STREAM, 0))== -1) {
+  if ((fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
     ERR("Unable to create socket(AF_INET, SOCK_STREAM, 0) %d %s", errno, STRERROR(errno));
     return 0;
   }
@@ -292,26 +293,28 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
   ++listener->n_read;  /* n_read counter is used for accounting accepts */
   
   switch (listener->qel.proto) {
-  case S5066_SMTP: /* In SMTP, server starts speaking first */
+  case HIPROTO_SMTP: /* In SMTP, server starts speaking first */
     hi_sendf(hit, io, "220 %s smtp ready\r\n", SMTP_GREET_DOMAIN);
     io->ad.smtp.state = SMTP_START;
     break;
-  case S5066_DTS:
+#ifdef ENA_S5066
+  case HIPROTO_DTS:
     ZMALLOC(io->ad.dts);
     io->ad.dts->remote_station_addr[0] = 0x61;   /* three nibbles long (padded with zeroes) */
     io->ad.dts->remote_station_addr[1] = 0x45;
     io->ad.dts->remote_station_addr[2] = 0x00;
     io->ad.dts->remote_station_addr[3] = 0x00;
-    if (!(hs = prototab[S5066_DTS].specs)) {
+    if (!(hs = prototab[HIPROTO_DTS].specs)) {
       ZMALLOC(hs);
-      hs->proto = S5066_DTS;
+      hs->proto = HIPROTO_DTS;
       hs->specstr = "dts:accepted:connections";
-      hs->next = prototab[S5066_DTS].specs;
-      prototab[S5066_DTS].specs = hs;
+      hs->next = prototab[HIPROTO_DTS].specs;
+      prototab[HIPROTO_DTS].specs = hs;
     }
     io->n = hs->conns;
     hs->conns = io;
     break;
+#endif
   }
   
   hi_todo_produce(hit->shf, &listener->qel);  /* Must exhaust accept. Either loop here or reenqueue. */

@@ -497,7 +497,7 @@ int main(int argc, char** argv, char** env)
   memset(&hit, 0, sizeof(hit));
   ak_init(*argv);
 #ifdef MINGW
-  pthread_mutex_init(&dsdbilock, 0);
+  pthread_mutex_init(&dbilock, 0);
   pthread_mutex_init(&shuff_mutex, 0);
   pthread_mutex_init(&gethostbyname_mutex, 0);
   {
@@ -505,7 +505,7 @@ int main(int argc, char** argv, char** env)
     WORD vers = MAKEWORD(2,2);  /* or 2.0? */
     ret = WSAStartup(vers, &wsaDat);
     if (ret) {
-      DSERR_DETECT(EBM_PROTO_TCP, ret, "WinSock DLL could not be initialized: %d", ret);
+      ERR("WinSock DLL could not be initialized: %d", ret);
       return -1;
     }
   }
@@ -514,20 +514,20 @@ int main(int argc, char** argv, char** env)
 # ifdef MUTEX_DEBUG
   if (pthread_mutexattr_init(MUTEXATTR)) NEVERNEVER("unable to initialize mutexattr %d",argc);
   if (pthread_mutexattr_settype(MUTEXATTR, PTHREAD_MUTEX_ERRORCHECK_NP))
-    DSNEVERNEVER("unable to set mutexattr %d",argc);
+    NEVERNEVER("unable to set mutexattr %d",argc);
 # endif
 #endif
 #ifdef COMPILED_DATE
   int now = time(0);
   if (COMPILED_DATE + TWO_MONTHS < now) {   /* *** this logic needs refinement and error code of its own --Sampo */
-     if (COMPILED_DATE+ THREE_MONTHS < now){ 
-        DSCRIT_DETECT(ECONF_DEMO_EXP,0,"Evaluation copy expired.");
+     if (COMPILED_DATE + THREE_MONTHS < now){ 
+        ERR("Evaluation copy expired. %d",0);
 	exit(4);
      } else
-        DSCRIT_DETECT(ECONF_DEMO_EXP,0,"Evaluation copy expired, in %d secs this program will stop working", COMPILED_DATE + THREE_MONTHS-now);
+        ERR("Evaluation copy expired, in %d secs this program will stop working", COMPILED_DATE + THREE_MONTHS-now);
   } else {
     if (now + ONE_DAY < COMPILED_DATE){
-      DSCRIT_DETECT(ECONF_DEMO_EXP,0,"Check for demo erroneus");
+      ERR("Check for demo erroneus. Clock set too far in past? %d",0);
       exit(4);
     }
   }
@@ -545,7 +545,7 @@ int main(int argc, char** argv, char** env)
     len = sprintf(buf, "%d", (int)getpid());
     DD("pid_path=`%s'", pid_path);
     if (write_or_append_lock_c_path(pid_path, buf, len, "write pid", SEEK_SET, O_TRUNC) <= 0) {
-      ERR("Failed to write PID file at `%s'. Check that all directories exist and that permissions allow dsproxy (pid=%d, euid=%d, egid=%d) to write the file. Disk could also be full or ulimit(1) too low. Continuing anyway.",
+      ERR("Failed to write PID file at `%s'. Check that all directories exist and that permissions allow zxbusd (pid=%d, euid=%d, egid=%d) to write the file. Disk could also be full or ulimit(1) too low. Continuing anyway.",
 	  pid_path, getpid(), geteuid(), getegid());
     }
   }
@@ -589,7 +589,7 @@ int main(int argc, char** argv, char** env)
     char buf[INTSTRLEN];
     len = sprintf(buf, "%d", (int)getpid());
     if (write_or_append_lock_c_path(pid_path, buf, len, "write pid", SEEK_SET, O_TRUNC) <= 0) {
-      ERR("Failed to write kidpid file at `%s'. Check that all directories exist and that permissions allow dsproxy (pid=%d, euid=%d, egid=%d) to write the file. Disk could also be full or ulimit(1) too low. Continuing anyway.",
+      ERR("Failed to write kidpid file at `%s'. Check that all directories exist and that permissions allow zxbusd (pid=%d, euid=%d, egid=%d) to write the file. Disk could also be full or ulimit(1) too low. Continuing anyway.",
 	  pid_path, getpid(), geteuid(), getegid());
     }
   }
@@ -601,7 +601,7 @@ int main(int argc, char** argv, char** env)
   }
 
   /* Cause exit(3) to be called with the intent that any gcov profiling will get
-   * written to disk before we die. If dsproxy is not stopped `kill -USR1' but you
+   * written to disk before we die. If zxbusd is not stopped with `kill -USR1' and you
    * use plain kill instead, the profile will indicate many unexecuted (#####) lines. */
   if (signal(SIGUSR1, exit) == SIG_ERR) {
     perror("signal USR1 exit");

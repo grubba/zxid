@@ -256,7 +256,7 @@ char* read_all_alloc(struct zx_ctx* c, const char* logkey, int reperr, int* lenp
   return buf;
 }
 
-/*() Low level function that keeps writing data to a file descriptor unil
+/*() Low level function that keeps writing data to a file descriptor until
  * everything is written. It may block in the process. */
 
 /* Called by:  main x4, write2_or_append_lock_c_path x4, write_all_path_fmt, zxid_addmd x2, zxid_cache_epr, zxid_curl_write_data, zxid_reg_svc x3, zxid_send_sp_meta x2, zxid_snarf_eprs_from_ses, zxid_write_ent_to_cache, zxidwspcgi_child */
@@ -279,6 +279,25 @@ int write_all_fd(fdtype fd, const char* p, int pending)
     p += wrote;
   }
 #endif
+  return 1;
+}
+
+/*() Low level function that keeps writing data to a socket until
+ * everything is written. It may block in the process. (On Unix
+ * it would be possible to use write_all_fd(), but using send(2)
+ * works on all platforms that support sockets.) */
+
+/* Called by:  main x4, write2_or_append_lock_c_path x4, write_all_path_fmt, zxid_addmd x2, zxid_cache_epr, zxid_curl_write_data, zxid_reg_svc x3, zxid_send_sp_meta x2, zxid_snarf_eprs_from_ses, zxid_write_ent_to_cache, zxidwspcgi_child */
+int send_all_socket(fdtype fd, const char* p, int pending)
+{
+  int wrote;
+  if ((fd == BADFD) || !pending || !p) return 0;
+  while (pending) {
+    wrote = send(fd, (char*)p, pending, 0);
+    if (wrote <= 0) return 0;
+    pending -= wrote;
+    p += wrote;
+  }
   return 1;
 }
 

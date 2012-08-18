@@ -1,4 +1,5 @@
 /* zxidconf.h  -  Configuration of ZXID
+ * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -13,6 +14,7 @@
  * 7.1.2010,  added WSC and WSP signing options --Sampo
  * 12.2.2011, added proxy IdP related options --Sampo
  * 10.12.2011, added VPATH, VURL, BUTTON_URL, delete ORG_URL --Sampo
+ * 17.8.2012, added audit bus configuration --Sampo
  *
  * Most of the configuration options can be set via configuration
  * file /var/zxid/zxid.conf or using -O command line flag(s). In
@@ -618,6 +620,11 @@
  * By default the debug output goes to stderr, which often goes to
  * web server's error_log. */
 #define ZXID_DEBUG_LOG 0
+
+/*(c) Audit Bus servers. Multiple, comma separated, URLs may be
+ * specified (audit bus servers are instances of zxbusd, which see).
+ * If no BUS_URL is configured, no audit bus logging is performed. */
+#define ZXID_BUS_URL 0
 
 /*(c) Assertion validation options.
  * These MUST all be turned on (and assertions signed)

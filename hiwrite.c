@@ -60,31 +60,28 @@ void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi
   hi_send1(hit, io, req, resp, resp->len, resp->m);
 }
 
-void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp,
-	      int len0, char* d0)
+void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0)
 {
   resp->n_iov = 1;
   resp->iov[0].iov_len = len0;
   resp->iov[0].iov_base = d0;
-  HEXDUMP("iov0: ", d0, d0+len0, 800);
+  //HEXDUMP("iov0: ", d0, d0+len0, 800);
   hi_send0(hit, io, req, resp);
 }
 
-void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp,
-	      int len0, char* d0, int len1, char* d1)
+void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1)
 {
   resp->n_iov = 2;
   resp->iov[0].iov_len  = len0;
   resp->iov[0].iov_base = d0;
   resp->iov[1].iov_len  = len1;
   resp->iov[1].iov_base = d1;
-  HEXDUMP("iov0: ", d0, d0+len0, 800);
-  HEXDUMP("iov1: ", d1, d1+len1, 800);
+  //HEXDUMP("iov0: ", d0, d0+len0, 800);
+  //HEXDUMP("iov1: ", d1, d1+len1, 800);
   hi_send0(hit, io, req, resp);
 }
 
-void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp,
-	      int len0, char* d0, int len1, char* d1, int len2, char* d2)
+void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1, int len2, char* d2)
 {
   resp->n_iov = 3;
   resp->iov[0].iov_len  = len0;
@@ -93,9 +90,9 @@ void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   resp->iov[1].iov_base = d1;
   resp->iov[2].iov_len  = len2;
   resp->iov[2].iov_base = d2;
-  HEXDUMP("iov0: ", d0, d0+len0, 800);
-  HEXDUMP("iov1: ", d1, d1+len1, 800);
-  HEXDUMP("iov2: ", d2, d2+len2, 800);
+  //HEXDUMP("iov0: ", d0, d0+len0, 800);
+  //HEXDUMP("iov1: ", d1, d1+len1, 800);
+  //HEXDUMP("iov2: ", d2, d2+len2, 800);
   hi_send0(hit, io, req, resp);
 }
 
@@ -207,7 +204,7 @@ void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
 }
 
 /* Often moving PDU to reqs means it should stop being cur_pdu. This is either
- * handeld by explicit manipulation of io->cur_pdu or by calling hi_checkmore() */
+ * handled by explicit manipulation of io->cur_pdu or by calling hi_checkmore() */
 
 void hi_add_to_reqs(struct hi_io* io, struct hi_pdu* req)
 {
