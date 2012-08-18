@@ -114,18 +114,20 @@ struct hi_host_spec* remotes = 0;
 
 struct hi_proto prototab[] = {
   { "dummy0",  0, 0 },
-  { "sis",  5066, 0 },
-  { "dts",  5067, 0 },
-  { "smtp",   25, 0 },
-  { "http", 8080, 0 },
-  { "tp",   5068, 0 },
+  { "sis",    5066, 0 },
+  { "dts",    5067, 0 },
+  { "smtp",     25, 0 },
+  { "http",   8080, 0 },
+  { "stomp",  2228, 0 },
+  { "stomps", 2229, 0 },
+  { "tp",     5068, 0 },
   { "", 0 }
 };
 
 char remote_station_addr[] = { 0x61, 0x89, 0x00, 0x00 };   /* *** temp kludge */
 struct hiios* shuff;        /* Main I/O shuffler object */
 
-#define SNMPLOGFILE "/var/tmp/snmpOpen5066.log"
+#define SNMPLOGFILE "/var/zxid/log/snmp.log"
 
 /* proto:host:port or proto:host or proto::port */
 
@@ -639,6 +641,7 @@ int main(int argc, char** argv, char** env)
       if (!io) break;
       io->n = hs->conns;
       hs->conns = io;
+#ifdef ENA_S5066
       switch (hs->proto) {
       case S5066_SIS:   /* *** Always bind as HMTP. Make configurable. */
 	sis_send_bind(&hit, io, SAP_ID_HMTP, 0, 0x0200);  /* 0x0200 == nonarq, no repeats */
@@ -651,6 +654,7 @@ int main(int argc, char** argv, char** env)
 	io->ad.dts->remote_station_addr[3] = 0x00;
 	break;
       }
+#endif
     }
   }
 

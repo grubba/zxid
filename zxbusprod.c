@@ -510,14 +510,87 @@ static int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* 
   return 1;
 }
 
-/*() Open a bus_url, i.e. STOMP 1.1 connection to zxbusd */
+/*() Open a bus_url, i.e. STOMP 1.1 connection to zxbusd.
+ * Return 0 on failure, 1 on success. */
 
 static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
 {
-  struct stomp_hdr stomp;
-  int got, gotten;
+  struct hostent* he;
   struct sockaddr_in sin;
-  char* p;
+  struct stomp_hdr stomp;
+  int got, gotten, host_len;
+  char* proto;
+  char* host;
+  char* port;
+  char* local;
+  char* qs;
+
+  /* Parse the bus_url */
+
+  if (!bu || !bu->s || !*bu->s) {
+    ERR("Null arguments or empty bus_url supplied %p", bu);
+    return 0;
+  }
+  
+  host = strstr(bu->s, "://");
+  if (!host) {
+    ERR("Malformed bus_url(%s): missing protocol field", bu->s);
+    proto = "stomps:";
+    host = bu->s;
+  } else {
+    proto = bu->s;
+    host += 3;
+  }
+  
+  if (!memcmp(proto, "stomps:", sizeof("stomps:"))) {
+    bu->tls = 1;
+  } else if (!memcmp(proto, "stomp:", sizeof("stomp:"))) {
+    bu->tls = 0;
+  } else {
+    ERR("Unknown protocol(%*s)", 6, proto);
+    return 0;
+  }
+  
+  port = strchr(host, ':');
+  if (!port) {
+    port = bu->tls ? ":2229/" : ":2228/";  /* ZXID default ports for stomps: and plain stomp: */
+    local = strchr(host, '/');
+    if (!local) {
+      qs = strchr(host, '?');
+      if (!qs) {
+	host_len = strlen(host);
+      } else {
+	host_len = qs-host;
+      }
+    } else {
+      host_len = local-host;
+      qs = strchr(local, '?');
+    }
+  } else {
+    host_len = port-host;
+    local = strchr(port, '/');
+    if (!local) {
+      qs = strchr(port, '?');
+    } else {
+      qs = strchr(local, '?');
+    }
+  }
+
+  bu->buf = bu->ap = ZX_ALLOC(cf->ctx, ZXBUS_BUF_SIZE);
+
+  memcpy(bu->buf, host, MIN(host_len, ZXBUS_BUF_SIZE-2));
+  bu->buf[MIN(host_len, ZXBUS_BUF_SIZE-2)+1] = 0;
+  he = gethostbyname(bu->buf);
+  if (!he) {
+    ERR("hostname(%s) did not resolve(%d)", bu->buf, h_errno);
+    exit(5);
+  }
+  
+  memset(sin, 0, sizeof(sin));
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(atoi(port));
+  memcpy(&(sin.sin_addr.s_addr), he->h_addr, sizeof(sin.sin_addr.s_addr));
+  
   if ((bu->fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
     ERR("Unable to create socket(AF_INET, SOCK_STREAM, 0) %d %s", errno, STRERROR(errno));
     return 0;
@@ -539,8 +612,6 @@ static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   
   D("connect(%x) hs(%s)", bu->fd, bu->s);
 
-  bu->buf = bu->ap = ZX_ALLOC(cf->ctx, ZXBUS_BUF_SIZE);
-
 #define STOMP_CONNECT  "STOMP\naccept-version:1.1\nhost:localhost\n\n\0";
   send_all_socket(bu->fd, STOMP_CONNECT, sizeof(STOMP_CONNECT)-1);
 
@@ -558,7 +629,10 @@ static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   return 0;
 }
 
-/*() Figure out which bus daemons should receive the message */
+/*() SEND a STOMP 1.1 message to audit bus and wait for RECEIPT.
+ * Blocks until the transaction completes (or fails). Figures out
+ * from configuration, which bus daemon to contact (looks at bus_urls).
+ * Returns:: zero on failure and 1 on success. */
 
 /* Called by: */
 int zxbus_send(zxid_conf* cf, int n, const char* logbuf)
