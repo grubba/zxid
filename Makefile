@@ -155,7 +155,7 @@ CDEF+= -DUSE_CURL
 # Without OpenSSL signing and signature verification are not possible
 CDEF+= -DUSE_OPENSSL
 # Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
-CDEF+= -DUSE_PTHREAD
+CDEF+= -DUSE_PTHREAD -pthread
 
 ### To change any of the above options, you can either supply
 ### alternate values on make command line, like `make PREFIX=/your/path'
@@ -173,7 +173,7 @@ APACHE_MODULES ?= $(APACHE_ROOT)/modules
 
 ### Compute options based on local modifications
 
-LIBS+= -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz
+LIBS+= -pthread -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz
 #LIBS+=-ldl
 OUTOPT=-o 
 

@@ -18,8 +18,9 @@
  *
  * PDU is always somehow reachable through pdu->qel.n (next) pointer, but
  * membership in queue is mutually exclusive as follows
- * 1. shf->free_pdus  -- may appear to be in shf->pdus too, but that is coincidence
- * 2. hit->free_pdus  -- per thread free list, the usual source for allocation within a thread
+ * 1. shf->free_pdus    -- may appear to be in shf->pdus too, but that is coincidence
+ * 2. hit->free_pdus    -- per thread free list, the usual source for allocation within a thread
+ * 3. shf->todo_consume -- The todo list, marking that some polling needs to be done
  *
  * PDU also has its own next pointer, the pdu->n which is used to keep lists of active PDUs
  * A. io->reqs        -- linked list of real reqs of this session, protect by qel.mut
@@ -48,6 +49,35 @@
  * Empty queue is expressed by both pointer being null.
  *
  * to_write_produce:0                                to_write_consume:0
+ *
+ * Threading strategy:
+ *
+ * An I/O object needs to "belong" to single thread for duration of a
+ * polled I/O activity: if a thread responsd to poll for read, it needs
+ * to maintain control of the io object until it has read and decoded
+ * the PDU to a point where it moves from io->cur_pdu to io->reqs. After
+ * this another thread may be enabled to read another PDU from the
+ * socket.
+ * 
+ * Alternatively, if the decode state of a PDU is stored in a thread
+ * safe way, the current thread may relinguish control when it sets pdu->need
+ * to indicate that further data needs to be read. At this point, some other
+ * thread may actually perform the additional read and finish the decoding.
+ *
+ * In general, after decoding PDU, the thread should not hang on to the I/O object
+ * even if it continues to perform the payload function of the PDU, as a worker thread.
+ * Thus same thread is expected to transform from an I/O thread to worker thread
+ * on the fly. If the payload processing produces response or subrequest, in principle
+ * the additional processing can go through the poll, but there does not seem to
+ * be much harm in "short circuiting" this process by having same worker thread
+ * assume the I/O thread role for sending the response or subrequest, provided
+ * that the destination I/O object is not occupied by another thread. If it is,
+ * the short circuiting can not be done and the response or subrequest must go
+ * through write poll.
+ *
+ * The basic mechanism to avoid other thread squatting on I/O object is to
+ * ensure that it is not scheduled to poll or todo list while exclusive
+ * access is desired.
  *
  * See http://pl.atyp.us/content/tech/servers.html for inspiration on threading strategy.
  * http://www.kegel.com/c10k.html
@@ -78,6 +108,7 @@
 #endif
 #define HI_PDU_MEM 3072 /* Default PDU memory buffer size, for log lines */
 
+/* qel.kind constants */
 #define HI_POLL    1    /* Trigger epoll */
 #define HI_PDU     2    /* PDU */
 #define HI_LISTEN  3    /* Listening socket for TCP */
@@ -86,18 +117,18 @@
 #define HI_SNMP    6    /* SNMP (UDP) socket */
 
 struct hi_qel {         /* hiios task queue element. This is the 1st thing on io and pdu objects */
-  struct hi_qel* n;     /* Next in todo_queue for IOs or in free_pdus and elsewhere for PDUs. */
+  struct hi_qel* n;     /* Next in todo_queue for IOs or in free_pdus. */
   pthread_mutex_t mut;
   char kind;
-  char proto;
+  char proto;           /* See HIPROTO_* constants */
   char flags;
-  char inqueue;
+  char intodo;          /* Flag indicating object (io or pdu) is in shf->todo_consume queue */
 };
 
 /*(s) Connection object */
 
 struct hi_io {
-  struct hi_qel qel;
+  struct hi_qel qel;         /* Next in todo_queue for IOs or in free_pdus. */
   struct hi_io* n;           /* next among io objects, esp. backends */
   struct hi_io* pair;        /* the other half of a proxy connection */
   int fd;                    /* file descriptor (socket), or 0x80000000 flag if not in use */
@@ -138,7 +169,7 @@ struct hi_pdu {
   struct hi_qel qel;
   struct hi_pdu* n;          /* Next among requests or responses */
   struct hi_pdu* wn;         /* Write next. Used by in_write, to_write, and subresps queues. */
-  struct hi_io* fe;
+  struct hi_io* fe;          /* Frontend of the PDU, e.g. where req was read from. */
   
   struct hi_pdu* req;        /* Set for response to indicate which request it is response to. */
   struct hi_pdu* parent;     /* Set for sub-requests and -responses */
@@ -147,10 +178,9 @@ struct hi_pdu {
   struct hi_pdu* reals;      /* pdu->n linked list of real resps to this req */
   struct hi_pdu* synths;     /* pdu->n linked list of subreqs and synth resps */
 
+  short color;               /* Coloring flag for integrity tests, e.g. to detect circular ptrs */
   char events;               /* events needed by this PDU (EPOLLIN or EPOLLOUT) */
   char n_iov;
-  char color;                /* Coloring flar gor integrity tests, e.g. to detect circular ptrs */
-  char res3;
   struct iovec iov[3];       /* Enough for header, payload, and CRC */
   
   int need;                  /* How much more is needed to complete a PDU? */
@@ -192,7 +222,9 @@ struct hi_pdu {
 struct c_pdu_buf;
 #endif
 
-/*(s) Main shuffler object */
+/*(s) Main shuffler object.
+ * Principal function is to hold epoll_event array and todo list.
+ * Secondary function is to be memory pool of last resort. */
 
 struct hiios {
   int ep;       /* epoll(4) (Linux 2.6) or /dev/poll (Solaris 8, man -s 7d poll) file descriptor */
@@ -225,7 +257,7 @@ struct hiios {
   struct hi_qel* todo_consume;  /* PDUs and I/O objects that need processing. */
   struct hi_qel* todo_produce;
   int n_todo;
-  struct hi_qel poll_tok;
+  struct hi_qel poll_tok;       /* Special qel to be inserted in todo_consume to trigger poll. */
 };
 
 /*(s) Thread object */

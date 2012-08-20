@@ -15,7 +15,7 @@
  *   MANY ELEMENTS IN QUEUE            ONE ELEMENT IN Q   EMPTY QUEUE
  *   consume             produce       consume  produce   consume  produce
  *    |                   |             | ,-------'         |        |
- *    V                   V             V V                 V        V
+ *    v                   v             v v                 v        v
  *   qel.n --> qel.n --> qel.n --> 0   qel.n --> 0          0        0
  */
 
@@ -47,12 +47,13 @@
  * analysis iterations involve several classes of next pointers. This
  * is solved by having different classes being represented by color plus
  * offset. However, this means that color must be incremented in steps of 4.
- *   hi_color+0 qel.n
- *   hi_color+1 pdu->n, io->n
- *   hi_color+2 pdu->wn
- * The color takes space as a struct field, thus ony 8 bits are supplied, which
- * should allow most debugging chores, but may not be adequate for some. */
-char hi_color = 4;
+ *   hi_color+0 qel.n           -- free_pdus, todo_consume
+ *   hi_color+1 pdu->n, io->n   -- reqs
+ *   hi_color+2 pdu->wn         -- to_write
+ * The color takes space as a struct field, thus only 8 or 16 bits are
+ * supplied (varies over time with implementation), which should
+ * allow most debugging chores, but may not be adequate for some. */
+short hi_color = 4;
 
 /*() Sanity check hiios pdu data structures. */
 
@@ -274,6 +275,7 @@ int hi_sanity_shf(int mode, struct hiios* root_shf)
   int res;
   int errs = 0;
   int nodes = 0;
+  struct hi_qel* qe;
   struct hi_pdu* pdu;
   struct hi_io* io;
 
@@ -299,8 +301,33 @@ int hi_sanity_shf(int mode, struct hiios* root_shf)
   if (mode&0x80 && root_shf->ios) printf("[label=ios];\n");
 
   if (mode&0x80) {
+    if (root_shf->todo_consume)
+      printf("shf_%p   // todo_consume (color=%d)\n", root_shf, hi_color+0);
+    else
+      printf("shf_%p -> null [label=todo_consume];\n", root_shf);
+  }
+  for (qe = root_shf->todo_consume; qe; qe = qe->n) {
+    if (mode&0x80) printf("-> qe_%p\n", qe);
+    if (pdu->color == hi_color+0) {
+      printf("ERR *** pdu_%p has circular reference (color=%d) wrt hit->free_pdus pdu->qel.n\n", pdu, pdu->color);
+      --errs;
+      break;
+    }
+    pdu->color = hi_color+0;
+    ++nodes;
+    if (!(mode&0x08)) {
+      res = hi_sanity_pdu(mode, pdu);
+      if (res < 0)
+	errs += res;
+      else
+	nodes += res;
+    }
+  }
+  if (mode&0x80 && root_shf->todo_consume) printf("[label=todo_consume];\n");
+
+  if (mode&0x80) {
     if (root_shf->free_pdus)
-      printf("shf_%p   // free_pdus (color=%d)\n", root_shf, hi_color);
+      printf("shf_%p   // free_pdus (color=%d)\n", root_shf, hi_color+0);
     else
       printf("shf_%p -> null [label=free_pdus];\n", root_shf);
   }

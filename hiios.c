@@ -72,8 +72,8 @@ struct hiios* hi_new_shuffler(int nfd, int npdu)
   pthread_cond_init(&shf->todo_cond, 0);
   pthread_mutex_init(&shf->todo_mut, MUTEXATTR);
 
-  shf->poll_tok.kind = HI_POLL;
-  shf->poll_tok.proto = 1;       /* token is available */
+  shf->poll_tok.kind = HI_POLL;           /* Permanently labeled as poll_tok (there is only 1) */
+  shf->poll_tok.proto = HIPROTO_POLL_ON;  /* token is available */
 
   shf->max_evs = MIN(nfd, 1024);
 #ifdef LINUX
@@ -334,7 +334,8 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
   hi_todo_produce(hit->shf, &listener->qel);  /* Must exhaust accept: reenqueue (could also loop). */
 }
 
-void sis_clean(struct hi_io* io);
+/*() Close an I/O object.
+ * This involves special cleanup of todo queue. */
 
 void hi_close(struct hi_thr* hit, struct hi_io* io)
 {
@@ -343,11 +344,11 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
   D("close(%x)", fd);
 #if 0  /* should never happen because io had to be consumed before hi_in_out() was called. */
   LOCK(hit->shf->todo_mut, "hi_close");
-  if (io->qel.inqueue) {
+  if (io->qel.intodo) {
     if (hit->shf->todo_consume == &io->qel) {
       hi_todo_consume_inlock(hit->shf);
     } else {  /* Tricky consume from middle of queue. O(n) to queue size :-( */
-      /* Since io->inqueue is set, io must be in the queue. If it's not, following loop
+      /* Since io->intodo is set, io must be in the queue. If it's not, following loop
        * will crash with NULL next pointer in the end. Or be infinite loop if a
        * loop of next pointers was somehow created. Both are programming errors. */
       for (qe = hit->shf->todo_consume; 1; qe = qe->n)
@@ -358,15 +359,15 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
       if (!qe->n)
 	hit->shf->todo_produce = qe;
       qe->n = 0;
-      qe->inqueue = 0;
+      qe->intodo = 0;
       --hit->shf->n_todo;
     }
   }
   UNLOCK(hit->shf->todo_mut, "hi_close");
 #else
-  ASSERT(!io->qel.inqueue);
+  ASSERT(!io->qel.intodo);
 #endif
-  /* *** deal with freeing associated PDUs. If fail, consider shutdown() of socket
+  /* *** deal with freeing associated PDUs. If fail, consider shutdown(2) of socket
    *     and reenqueue to todo list so freeing can be tried again later. */
   
   for (pdu = io->reqs; pdu; pdu = pdu->n)
@@ -377,6 +378,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
     io->cur_pdu = 0;
   }
 #ifdef ENA_S5066
+  void sis_clean(struct hi_io* io);
   sis_clean(io);
 #endif
 
@@ -385,7 +387,9 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
   D("closed(%x)", fd);
 }
 
-/* -------- todo_queue management -------- */
+/* -------- todo_queue management, waking up threads to consume work (io, pdu) -------- */
+
+/*() Simple mechanics of deque operation against shf->todo_consumer */
 
 static struct hi_qel* hi_todo_consume_inlock(struct hiios* shf)
 {
@@ -394,41 +398,47 @@ static struct hi_qel* hi_todo_consume_inlock(struct hiios* shf)
   if (!qe->n)
     shf->todo_produce = 0;
   qe->n = 0;
-  qe->inqueue = 0;
+  qe->intodo = 0;
   --shf->n_todo;
   return qe;
 }
+
+/*(i) Consume from todo queue. If nothing is available,
+ * block until there is work to do. This is the main
+ * mechanism by which worker threads get something to do. */
 
 static struct hi_qel* hi_todo_consume(struct hiios* shf)
 {
   struct hi_qel* qe;
   LOCK(shf->todo_mut, "todo_con");
-  while (!shf->todo_consume && !shf->poll_tok.proto)
-    pthread_cond_wait(&shf->todo_cond, &shf->todo_mut);
+  while (!shf->todo_consume && !shf->poll_tok.proto)    /* Empty todo queue? */
+    pthread_cond_wait(&shf->todo_cond, &shf->todo_mut); /* Block until there is work. */
   if (shf->todo_consume)
     qe = hi_todo_consume_inlock(shf);
   else {
     ASSERT(shf->poll_tok.proto);
-    shf->poll_tok.proto = 0;
+    shf->poll_tok.proto = HIPROTO_POLL_OFF;
     qe = &shf->poll_tok;
   }
   UNLOCK(shf->todo_mut, "todo_con");
   return qe;
 }
 
+/*(i) Schedule new work to be done, potentially waking up the consumer threads! */
+
 void hi_todo_produce(struct hiios* shf, struct hi_qel* qe)
 {
   LOCK(shf->todo_mut, "todo_prod");
-  if (!qe->inqueue) {
+  if (!qe->intodo) {
     if (shf->todo_produce)
       shf->todo_produce->n = qe;
     else
       shf->todo_consume = qe;
     shf->todo_produce = qe;
     qe->n = 0;
-    qe->inqueue = 1;
+    qe->intodo = 1;
     ++shf->n_todo;
-    pthread_cond_signal(&shf->todo_cond);
+    pthread_cond_signal(&shf->todo_cond);  /* Wake up consumers */
   }
   UNLOCK(shf->todo_mut, "todo_prod");
 }
@@ -452,6 +462,12 @@ static void hi_poll(struct hiios* shf)
   for (i = 0; i < shf->n_evs; ++i) {
     io = (struct hi_io*)shf->evs[i].data.ptr;
     io->events = shf->evs[i].events;
+    /* Poll says work is possible: sched wk for io if not under wk yet, or cur_pdu needs wk.
+     * The inverse is also important: if io->cur_pdu is set, but need is not, then someone
+     * is alredy working on decoding the cur_pdu and we should not interfere.
+     * *** How can we allow writes to be done by different thread, while cur_pdu
+     * *** processing is happening? Currently ignoring this problem as writes are usually
+     * *** desired (for response or subreq) once pdu has been decoded and cur_pdu unset. */
     if (!io->cur_pdu || io->cur_pdu->need)
       hi_todo_produce(shf, &io->qel);  /* *** should the todo_mut lock be batched instead? */
   }
@@ -470,13 +486,14 @@ static void hi_poll(struct hiios* shf)
     for (i = 0; i < shf->n_evs; ++i) {
       io = shf->ios + shf->evs[i].fd;
       io->events = shf->evs[i].revents;
+      /* Poll says work is possible: sched wk for io if not under wk yet, or cur_pdu needs wk. */
       if (!io->cur_pdu || io->cur_pdu->need)
 	hi_todo_produce(shf, &io->qel);  /* *** should the todo_mut lock be batched instead? */
     }
   }
 #endif
   LOCK(shf->todo_mut, "todo_prod");
-  shf->poll_tok.proto = 1;
+  shf->poll_tok.proto = HIPROTO_POLL_ON;  /* special "on" flag - not a real protocol */
   UNLOCK(shf->todo_mut, "todo_prod");
 }
 
@@ -512,7 +529,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
   }
 }
 
-/*() Main I/O shuffling loop. */
+/*() Main I/O shuffling loop. Never returns. Main loop of most (all?) threads. */
 
 void hi_shuffle(struct hi_thr* hit, struct hiios* shf)
 {
@@ -520,7 +537,7 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf)
   hit->shf = shf;
   while (1) {
     HI_SANITY(hit->shf, hit);
-    qe = hi_todo_consume(shf);
+    qe = hi_todo_consume(shf);  /* Wakes up the heard to receive work. */
     switch (qe->kind) {
     case HI_POLL:    hi_poll(shf); break;
     case HI_LISTEN:  hi_accept(hit, (struct hi_io*)qe); break;

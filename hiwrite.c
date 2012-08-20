@@ -58,8 +58,8 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   
   HI_SANITY(hit->shf, hit);
   D("hisend pdu(%p) fd(%x)", resp, io->fd);
-  hi_write(hit, io);   /* Try cranking the write machine right away! */
-  /*hi_todo_produce(hit->shf, &io->qel);*/
+  hi_write(hit, io);   /* Try cranking the write machine right away! *** should we fish out any todo queue item that may stomp on us? How to deal with thread that has already consumed from the todo_queue? */
+  /*hi_todo_produce(hit->shf, &io->qel);  -- superceded by direct write approach! */
 }
 
 void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp)
@@ -274,7 +274,8 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
   }
 }
 
-/* This function can only be called by one thread at a time because the todo_queue
+/*() Attempt to write pending iovs.
+ * This function can only be called by one thread at a time because the todo_queue
  * only admits an io object once and only one thread can consume it. Thus locking
  * is really needed only to protect the to_write queue, see hi_make_iov(). */
 

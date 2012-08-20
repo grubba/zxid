@@ -442,15 +442,21 @@ extern FILE* zx_debug_log;   /* Defined in zxidlib.c as 0 alias to stderr */
 #define D(format,...) (void)((fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
 #define DD D
 #else
+#ifdef USE_PTHREAD
+#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s d " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
+#else
 #define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
-/*#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s d " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG)))*/
+#endif
 #define DD(format,...)  /* Documentative */
 #endif
 
+#ifdef USE_PTHREAD
+#define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s E " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s I %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#else
 #define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s E %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
-/*#define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s E " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG))*/
 #define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s I %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
-/*#define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s I %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))*/
+#endif
 
 #define D_XML_BLOB(cf, lk, len, xml) zxlog_debug_xml_blob((cf), __FILE__, __LINE__, __FUNCTION__, (lk), (len), (xml))
 #define DD_XML_BLOB(cf, lk, len, xml) /* Documentative */

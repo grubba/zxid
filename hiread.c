@@ -95,8 +95,7 @@ void hi_read(struct hi_thr* hit, struct hi_io* io)
     if (!io->cur_pdu) {  /* need to create a new PDU */
       io->cur_pdu = hi_pdu_alloc(hit);
       if (!io->cur_pdu) {
-	/* Allocation failure, retry later. Back to todo because we did not exhaust read */
-	hi_todo_produce(hit->shf, &io->qel);
+	hi_todo_produce(hit->shf, &io->qel); /* Alloc fail, retry later. Back to todo because we did not exhaust read */
 	return;
       }
       ++io->n_pdu_in;

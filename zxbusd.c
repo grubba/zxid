@@ -209,7 +209,7 @@ void opt(int* argc, char*** argv, char*** env)
       ak_buf_size = atoi((*argv)[0]);
       ak_buf_size = ak_buf_size << 20;  /* Mega bytes */
       if (ak_buf_size)
-	ak_add_thread(ak_buf_size,1);
+	ak_add_thread(ak_buf_size,1);   /* Add current "main" thread. */
       continue;
 
     case 'n':
@@ -492,8 +492,8 @@ void* thread_loop(void* _shf)
   struct hiios* shf = (struct hiios*)_shf;
   memset(&hit, 0, sizeof(hit));
   if (ak_buf_size)
-    ak_add_thread(ak_buf_size, 1);
-  hi_shuffle(&hit, shf);
+    ak_add_thread(ak_buf_size, 1);  /* Add newly born thread */
+  hi_shuffle(&hit, shf);            /* Never returns. */
   return 0;
 }
 
