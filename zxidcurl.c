@@ -116,7 +116,7 @@ size_t zxid_curl_read_data(void *buffer, size_t size, size_t nmemb, void *userp)
  * objects.
  */
 
-/* Called by:  */
+/* Called by:  zxid_get_meta, zxid_sp_dig_oauth_sso_a7n */
 char* zxid_http_get(zxid_conf* cf, const char* url, char** lim)
 {
 #ifdef USE_CURL

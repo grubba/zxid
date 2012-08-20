@@ -237,6 +237,7 @@ void x509_test()      /* -r 7 */
   printf("%s",buf);
 }
 
+/* Called by:  timegm_test x16 */
 int timegm_tester(zxid_conf* cf, const char* date_time)
 {
   struct zx_str* ss;
@@ -254,10 +255,12 @@ int timegm_tester(zxid_conf* cf, const char* date_time)
   }
 }
 
+/* Called by:  timegm_test */
 int leap_test(int aa) {
   return LEAP(aa);
 }
 
+/* Called by:  opt */
 void timegm_test()      /* -r 8 */
 {
   int aa;
@@ -448,7 +451,7 @@ void covimp_test()       /* -r 5 */
   printf("covimp ok\n");
 }
 
-/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x9, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc < 1) goto argerr;

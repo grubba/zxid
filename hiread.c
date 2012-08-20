@@ -29,9 +29,9 @@
 /*() Allocate pdu.  First allocation from per thread pool is
  * attempted. This does not require any locking.  If that does not
  * work out, recourse to the shuffler level global pool, with locking,
- * is made.
- */
+ * is made. */
 
+/* Called by:  hi_checkmore, hi_read, hi_sendf, http_encode_start, smtp_resp_wait_250_from_ehlo, smtp_resp_wait_354_from_data, smtp_send, stomp_encode_start, test_ping, test_ping_reply */
 struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
 {
   struct hi_pdu* pdu;
@@ -69,8 +69,13 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
   return pdu;
 }
 
-/* As hi_checkmore() will cause cur_pdu to change, it is common to call hi_add_reqs() */
+/*() Check if there is more in the input buffer.
+ * Sometimes the input buffer contains more than
+ * a PDU's worth and therefore needs to be prepared
+ * as input for the next PDU.
+ * As hi_checkmore() will cause cur_pdu to change, it is common to call hi_add_reqs() */
 
+/* Called by: */
 void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
 {
   int n = req->ap - req->m;
@@ -88,6 +93,9 @@ void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int 
     io->cur_pdu = 0;
 }
 
+/*() Read from the network, with all the repercussions. */
+
+/* Called by:  hi_in_out */
 void hi_read(struct hi_thr* hit, struct hi_io* io)
 {
   int ret;

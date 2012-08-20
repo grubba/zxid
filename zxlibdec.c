@@ -308,7 +308,7 @@ struct zx_attr_s* zx_ord_ins_at(struct zx_elem_s* x, struct zx_attr_s* in_at)
 
 /*() Called from dec-templ.c for CSE elimination. */
 
-/* Called by:  zx_DEC_elem, zxenc_pubkey_enc, zxenc_symkey_enc, zxid_ac_desc, zxid_add_fed_tok2epr, zxid_ar_desc, zxid_az_soap, zxid_contact_desc, zxid_idp_sso_desc, zxid_key_desc, zxid_key_info, zxid_mk_a7n, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_di_req_svc, zxid_mk_mni, zxid_mk_saml_resp, zxid_mk_xac_az, zxid_mk_xacml_resp, zxid_mk_xacml_simple_at, zxid_mni_desc, zxid_nimap_desc, zxid_org_desc, zxid_slo_desc, zxid_sp_meta, zxid_sp_sso_desc, zxid_sso_desc, zxid_wsc_prep, zxid_wsf_decor, zxid_wsp_decorate, zxsig_sign x3 */
+/* Called by:  zx_DEC_elem, zxenc_pubkey_enc, zxenc_symkey_enc, zxid_ac_desc, zxid_add_fed_tok2epr, zxid_ar_desc, zxid_az_soap, zxid_contact_desc, zxid_idp_sso_desc, zxid_key_desc, zxid_key_info, zxid_mk_a7n, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_di_req_svc, zxid_mk_mni, zxid_mk_saml_resp, zxid_mk_xac_az, zxid_mk_xacml_resp, zxid_mk_xacml_simple_at, zxid_mni_desc, zxid_nimap_desc, zxid_org_desc, zxid_slo_desc, zxid_sp_meta, zxid_sp_sso_desc, zxid_sso_desc, zxid_wsc_prep, zxid_wsf_decor x2, zxid_wsp_decorate, zxsig_sign x3 */
 void zx_reverse_elem_lists(struct zx_elem_s* x)
 {
   struct zx_elem_s* iternode;
@@ -623,7 +623,7 @@ void zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, int n_ns, cons
 
 /*(i) Decode arbitary xml with zx_ns_tab set of namespaces and parsers. */
 
-/* Called by:  main x7, sig_validate, test_ibm_cert_problem, zxid_add_env_if_needed x2, zxid_dec_a7n, zxid_decode_redir_or_post, zxid_decrypt_nameid, zxid_decrypt_newnym, zxid_di_query, zxid_find_epr, zxid_gen_boots, zxid_get_ses_sso_a7n x2, zxid_idp_soap_parse, zxid_mk_sa_attribute_ss, zxid_mk_xacml_simple_at, zxid_parse_meta, zxid_print_session, zxid_reg_svc, zxid_soap_call_raw, zxid_sp_soap_parse, zxid_str2a7n, zxid_str2nid, zxid_str2token, zxid_wsp_validate */
+/* Called by:  main x6, sig_validate, test_ibm_cert_problem, zxid_add_env_if_needed x2, zxid_dec_a7n, zxid_decode_redir_or_post, zxid_decrypt_nameid, zxid_decrypt_newnym, zxid_di_query, zxid_find_epr, zxid_gen_boots, zxid_get_ses_sso_a7n x2, zxid_idp_soap_parse, zxid_mk_sa_attribute_ss, zxid_mk_xacml_simple_at, zxid_parse_meta, zxid_print_session, zxid_reg_svc, zxid_soap_call_raw, zxid_sp_soap_parse, zxid_str2a7n, zxid_str2nid, zxid_str2token, zxid_wsp_validate */
 struct zx_root_s* zx_dec_zx_root(struct zx_ctx* c, int len, const char* start, const char* func)
 {
   struct zx_root_s* r = zx_NEW_root(c, 0);

@@ -146,7 +146,7 @@ EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
 
 /*() Extract a certificate from PEM encoded file. */
 
-/* Called by:  zxid_idp_sso_desc x2, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxid_sp_sso_desc x2, zxlog_write_line */
+/* Called by:  zxbus_write_line, zxid_idp_sso_desc x2, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxid_sp_sso_desc x2, zxlog_write_line */
 X509* zxid_read_cert(zxid_conf* cf, char* name)
 {
   char buf[4096];
@@ -158,7 +158,7 @@ X509* zxid_read_cert(zxid_conf* cf, char* name)
 
 /*() Extract a private key from PEM encoded file. */
 
-/* Called by:  test_ibm_cert_problem x2, test_ibm_cert_problem_enc_dec x2, zxenc_privkey_dec, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxlog_write_line x2 */
+/* Called by:  test_ibm_cert_problem x2, test_ibm_cert_problem_enc_dec x2, zxbus_write_line x2, zxenc_privkey_dec, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxlog_write_line x2 */
 EVP_PKEY* zxid_read_private_key(zxid_conf* cf, char* name)
 {
   char buf[4096];
@@ -196,7 +196,7 @@ int zxid_lazy_load_sign_cert_and_pkey(zxid_conf* cf, X509** cert, EVP_PKEY** pke
  * way the unsupported activity will happen in one controlled place where
  * it can be ignored, if need to be. You have been warned. */
 
-/* Called by:  zxid_fed_mgmt_cf, zxid_idp_list_cf_cgi, zxid_simple_cf_ses */
+/* Called by:  main, zxid_fed_mgmt_cf, zxid_idp_list_cf_cgi, zxid_simple_cf_ses */
 int zxid_set_opt(zxid_conf* cf, int which, int val)
 {
   switch (which) {
@@ -214,7 +214,7 @@ int zxid_set_opt(zxid_conf* cf, int which, int val)
  * way the unsupported activity will happen in one controlled place where
  * it can be ignored, if need to be. You have been warned. */
 
-/* Called by: */
+/* Called by:  zxid_parse_conf_raw, zxid_set_opt */
 char* zxid_set_opt_cstr(zxid_conf* cf, int which, char* val)
 {
   char buf[PATH_MAX];
@@ -260,7 +260,7 @@ void zxid_url_set(zxid_conf* cf, const char* url)
 
 /*() Create new (common pool) attribute and add it to a linked list */
 
-/* Called by:  zxid_add_at_values x3, zxid_add_attr_to_ses x2, zxid_add_qs2ses, zxid_load_atsrc, zxid_load_need */
+/* Called by:  zxid_add_at_vals x3, zxid_add_attr_to_ses x2, zxid_add_qs2ses, zxid_load_atsrc, zxid_load_need */
 struct zxid_attr* zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len, char* name, int val_len, char* val, char* lk)
 {
   struct zxid_attr* aa = ZX_ZALLOC(cf->ctx, struct zxid_attr);
@@ -275,6 +275,7 @@ struct zxid_attr* zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len,
 
 /*() Reverse of zxid_new_at(). */
 
+/* Called by:  zxid_free_atsrc, zxid_free_need */
 void zxid_free_at(struct zxid_conf *cf, struct zxid_attr *attr)
 {
   while (attr) {
@@ -372,6 +373,7 @@ struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need, char* v)
 
 /*() Reverse of zxid_load_need(). */
 
+/* Called by:  zxid_free_conf x2, zxid_load_need */
 void zxid_free_need(struct zxid_conf *cf, struct zxid_need *need)
 {
   while (need) {
@@ -500,6 +502,7 @@ struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
 
 /*() Reverse of zxid_load_map(). */
 
+/* Called by:  zxid_free_conf x7 */
 void zxid_free_map(struct zxid_conf *cf, struct zxid_map *map)
 {
   while (map) {
@@ -536,6 +539,7 @@ struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list*
 
 /*() Reverse of zxid_load_cstr_list(). */
 
+/* Called by:  zxid_free_conf x4 */
 void zxid_free_cstr_list(struct zxid_conf* cf, struct zxid_cstr_list* l)
 {
   while (l) {
@@ -548,7 +552,7 @@ void zxid_free_cstr_list(struct zxid_conf* cf, struct zxid_cstr_list* l)
 
 /*() Parse comma separated bus_urls and add to linked list */
 
-/* Called by:  zxid_init_conf x4, zxid_parse_conf_raw x4 */
+/* Called by:  zxid_init_conf, zxid_parse_conf_raw */
 struct zxid_bus_url* zxid_load_bus_url(zxid_conf* cf, struct zxid_bus_url* l, char* p)
 {
   char* q;
@@ -569,6 +573,7 @@ struct zxid_bus_url* zxid_load_bus_url(zxid_conf* cf, struct zxid_bus_url* l, ch
 
 /*() Reverse of zxid_load_bus_url(). */
 
+/* Called by:  zxid_free_conf */
 void zxid_free_bus_url(struct zxid_conf* cf, struct zxid_bus_url* l)
 {
   while (l) {
@@ -683,6 +688,7 @@ struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsrc, char
 
 /*() Reverse of zxid_load_atsrc(). */
 
+/* Called by:  zxid_free_conf, zxid_load_atsrc */
 void zxid_free_atsrc(struct zxid_conf *cf, struct zxid_atsrc *src)
 {
   while (src) {
@@ -702,7 +708,7 @@ void zxid_free_atsrc(struct zxid_conf *cf, struct zxid_atsrc *src)
 /*() Check whether attribute is in a (needed or wanted) list. Just a linear
  * scan as it is simple and good enough for handful of attributes. */
 
-/* Called by:  zxid_add_at_values x2, zxid_add_attr_to_ses x2 */
+/* Called by:  zxid_add_at_vals x2, zxid_add_attr_to_ses x2 */
 struct zxid_need* zxid_is_needed(struct zxid_need* need, const char* name)
 {
   struct zxid_attr* at;
@@ -723,7 +729,7 @@ struct zxid_need* zxid_is_needed(struct zxid_need* need, const char* name)
  * Thus you should place most specific rules last and most generic rules first.
  * See also: zxid_load_map() and zxid_map_val() */
 
-/* Called by:  pool2apache, zxid_add_at_values, zxid_add_attr_to_ses, zxid_add_mapped_attr x2, zxid_pepmap_extract, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
+/* Called by:  pool2apache, zxid_add_at_vals, zxid_add_attr_to_ses, zxid_add_mapped_attr x2, zxid_pepmap_extract, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
 struct zxid_map* zxid_find_map(struct zxid_map* map, const char* name)
 {
   if (!name || !*name)
@@ -1012,6 +1018,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
 
 /*() Reverse of zxid_init_conf() and zxid_parse_conf_raw(). */
 
+/* Called by: */
 void zxid_free_conf(zxid_conf *cf)
 {
   zxid_free_need(cf, cf->need);
@@ -1089,6 +1096,7 @@ struct zx_ctx* zx_init_ctx()
  * N.B. As of now (20111210) does not free the dependency structures. This
  * may be added in future. */
 
+/* Called by: */
 void zx_free_ctx(struct zx_ctx* ctx)
 {
   free(ctx);
@@ -1132,7 +1140,7 @@ zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path)
  * Just initializes the config object to factory defaults (see zxidconf.h).
  * Previous content of the config object is lost. */
 
-/* Called by:  attribute_sort_test, covimp_test, main x5, so_enc_dec, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode, x509_test */
+/* Called by:  attribute_sort_test, covimp_test, main x4, so_enc_dec, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode, timegm_test, timegm_tester, x509_test */
 zxid_conf* zxid_new_conf(const char* zxid_path)
 {
   /* *** unholy malloc()s: should use our own allocator! */
@@ -1154,6 +1162,7 @@ zxid_conf* zxid_new_conf(const char* zxid_path)
  * the sematic where PATH is not changed unless corresponding zxid.conf
  * is found. This is used by VPATH. */
 
+/* Called by:  zxid_parse_conf_raw, zxid_parse_vpath_conf */
 static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exists)
 {
   int len;
@@ -1177,6 +1186,7 @@ static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exis
 /*() Helper to evaluate environment variables for VPATH and VURL.
  * squash_type: 0=VPATH, 1=VURL */
 
+/* Called by:  zxid_expand_percent x3 */
 static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, char* n, char* lim, int squash_type)
 {
   int len;
@@ -1209,6 +1219,7 @@ static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, cha
 /*() Expand percent expansions as found in VPATH and VURL
  * squash_type: 0=VPATH, 1=VURL */
 
+/* Called by:  zxid_parse_vpath_conf, zxid_parse_vurl */
 static char* zxid_expand_percent(char* vorig, char* n, char* lim, int squash_type)
 {
   char* x;
@@ -1265,6 +1276,7 @@ static char* zxid_expand_percent(char* vorig, char* n, char* lim, int squash_typ
  * VPATH usually ends in a slash (/)), the PATH is not changed.
  * Effectively unconfigured VPATHs are handled by the default PATH. */
 
+/* Called by:  zxid_parse_conf_raw */
 static int zxid_parse_vpath_conf(zxid_conf* cf, char* vpath)
 {
   char newpath[PATH_MAX];
@@ -1299,6 +1311,7 @@ static int zxid_parse_vpath_conf(zxid_conf* cf, char* vpath)
 
 /*() Parse VURL (virtual host) to URL */
 
+/* Called by:  zxid_parse_conf_raw */
 static int zxid_parse_vurl(zxid_conf* cf, char* vurl)
 {
   char newurl[PATH_MAX];
@@ -1331,7 +1344,7 @@ static int zxid_parse_vurl(zxid_conf* cf, char* vurl)
  *     terminations.
  * return:: -1 on failure, 0 on success */
 
-/* Called by:  zxid_conf_to_cf_len x2, zxid_parse_conf, zxid_parse_conf_raw */
+/* Called by:  zxid_conf_to_cf_len x4, zxid_parse_conf, zxid_parse_conf_path_raw */
 int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
 {
   int i;
@@ -1615,7 +1628,7 @@ scan_end:
 
 /*() Wrapper with initial error checking for zxid_parse_conf_raw(), which see. */
 
-/* Called by:  opt x9, set_zxid_conf */
+/* Called by:  opt x11, set_zxid_conf */
 int zxid_parse_conf(zxid_conf* cf, char* qs)
 {
   if (!cf || !qs)
@@ -1687,7 +1700,7 @@ static struct zx_str* zxid_show_cstr_list(zxid_conf* cf, struct zxid_cstr_list* 
 
 /*() Pretty print bus_url list. */
 
-/* Called by:  zxid_show_conf x4 */
+/* Called by:  zxid_show_conf */
 static struct zx_str* zxid_show_bus_url(zxid_conf* cf, struct zxid_bus_url* cp)
 {
   struct zx_str* ss = zx_dup_str(cf->ctx, "");
@@ -1703,7 +1716,7 @@ static struct zx_str* zxid_show_bus_url(zxid_conf* cf, struct zxid_bus_url* cp)
 
 /*() Generate our SP CARML and return it as a string. */
 
-/* Called by:  opt x2, zxid_simple_show_conf */
+/* Called by:  opt x3, zxid_simple_show_conf */
 struct zx_str* zxid_show_conf(zxid_conf* cf)
 {
   char* p;

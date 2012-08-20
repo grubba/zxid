@@ -23,6 +23,7 @@
 #define MIN_PING 5
 #define MAX_PING 10
 
+/* Called by:  test_ping */
 void test_ping_reply(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   int i;
@@ -37,6 +38,7 @@ void test_ping_reply(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   hi_send(hit, io, req, resp);
 }
 
+/* Called by:  hi_read */
 void test_ping(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* req = io->cur_pdu;

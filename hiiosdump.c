@@ -57,6 +57,7 @@ short hi_color = 4;
 
 /*() Sanity check hiios pdu data structures. */
 
+/* Called by:  hi_sanity_hit, hi_sanity_io x3, hi_sanity_pdu x3, hi_sanity_shf x2 */
 int hi_sanity_pdu(int mode, struct hi_pdu* root_pdu)
 {
   int errs = 0;
@@ -128,6 +129,7 @@ int hi_sanity_pdu(int mode, struct hi_pdu* root_pdu)
 
 /*() Sanity check hiios io data structures. */
 
+/* Called by:  hi_sanity_shf */
 int hi_sanity_io(int mode, struct hi_io* root_io)
 {
   int errs = 0;
@@ -218,6 +220,7 @@ int hi_sanity_io(int mode, struct hi_io* root_io)
 
 /*() Sanity check hiios thread data structures. */
 
+/* Called by:  hi_sanity */
 int hi_sanity_hit(int mode, struct hi_thr* root_hit)
 {
   int errs = 0;
@@ -270,6 +273,7 @@ int hi_sanity_hit(int mode, struct hi_thr* root_hit)
  *   (gdb) p hi_color+=4, hi_sanity(255, shuff)
  */
 
+/* Called by:  hi_sanity */
 int hi_sanity_shf(int mode, struct hiios* root_shf)
 {
   int res;
@@ -358,6 +362,9 @@ int hi_sanity_shf(int mode, struct hiios* root_shf)
   return errs?errs:nodes;
 }
 
+/*() hi_sanity is called by macro HI_SANITY() and is meant to be called from gdb interactively. */
+
+/* Called by: */
 int hi_sanity(int mode, struct hiios* root_shf, struct hi_thr* root_hit, const char* fn, int line)
 {
   int res;

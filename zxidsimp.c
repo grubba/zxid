@@ -131,7 +131,7 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
  * conf::   Configuration string
  * return:: Configuration object */
 
-/* Called by:  a7n_test, main x6, opt x2, ws_validations, zxcall_main, zxcot_main, zxidwspcgi_main x2 */
+/* Called by:  a7n_test, main x6, opt x2, ws_validations, zxbustailf_main, zxcall_main, zxcot_main, zxidwspcgi_main x2 */
 zxid_conf* zxid_new_conf_to_cf(const char* conf)
 {
   zxid_conf* cf = malloc(sizeof(zxid_conf));  /* *** direct use of malloc */
@@ -393,7 +393,7 @@ struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* t
  *
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
-/* Called by:  zxid_idp_list_cf, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang */
+/* Called by:  zxid_idp_list_cf, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang x4 */
 char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   int i;
@@ -678,7 +678,7 @@ char* zxid_idp_select(char* conf, int auto_flags) {
  * as string with or without headers, as indicated by the auto_flag. The
  * page is in ss. */
 
-/* Called by:  zxid_simple_idp_show_an, zxid_simple_show_carml, zxid_simple_show_conf, zxid_simple_show_err, zxid_simple_show_idp_sel, zxid_simple_show_meta */
+/* Called by:  zxid_idp_oauth2_check_id, zxid_simple_idp_show_an, zxid_simple_show_carml, zxid_simple_show_conf, zxid_simple_show_err, zxid_simple_show_idp_sel, zxid_simple_show_meta */
 char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_mask, char* rets, char* cont_type, int* res_len, int auto_flags)
 {
   char* res;
@@ -844,7 +844,7 @@ char* zxid_simple_show_err(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
 
 /*() Decode ssoreq (ar=), i.e. the preserved original AuthnReq */
 
-/* Called by:  zxid_simple_idp_pw_authn, zxid_simple_idp_show_an */
+/* Called by:  zxid_simple_idp_pw_authn, zxid_simple_idp_show_an, zxid_sp_sso_finalize */
 int zxid_decode_ssoreq(zxid_conf* cf, zxid_cgi* cgi)
 {
   int len;
@@ -1131,7 +1131,7 @@ static char* zxid_simple_idp_recover_password(zxid_conf* cf, zxid_cgi* cgi, int*
  *
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
-/* Called by:  chkuid x2, zxid_simple_cf_ses, zxid_simple_idp_an_ok_do_rest */
+/* Called by:  chkuid x2, zxid_simple_cf_ses, zxid_simple_idp_an_ok_do_rest, zxid_sp_dispatch, zxid_sp_oauth2_dispatch */
 char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags)
 {
   struct zx_str* accr;

@@ -63,7 +63,7 @@ char* bdy = 0;
 char* chan = 0;
 zxid_conf* cf;
 
-/* Called by:  main x8, zxbustailf_main, zxcot_main, zxdecode_main */
+/* Called by:  main x9, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   struct zx_str* ss;

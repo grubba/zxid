@@ -72,7 +72,7 @@ char valid_opt = 0;
 zxid_conf* cf = 0;
 char buf[256*1024];
 
-/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x9, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc <= 1) return;
@@ -323,7 +323,7 @@ static int wsse_sec_validate(struct zx_e_Envelope_s* env)
 
 /*() Process SAML2 response */
 
-/* Called by:  decode */
+/* Called by:  decode, zxdecode_main */
 static int sig_validate(int len, char* p)
 {
   int ret;

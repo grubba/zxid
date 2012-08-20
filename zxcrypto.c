@@ -34,6 +34,7 @@
 #include <openssl/pem.h>
 #endif
 
+/* Called by:  zxid_mk_jwt x2 */
 char* zx_hmac_sha256(struct zx_ctx* c, int key_len, const char* key, int data_len, const char* data, char* md, int* md_len) {
   return (char*)HMAC(EVP_sha256(), key, key_len, (unsigned char*)data, data_len, (unsigned char*)md, (unsigned int*)md_len);
 }
@@ -382,7 +383,7 @@ struct zx_str* zx_rsa_priv_enc(struct zx_ctx* c, struct zx_str* plain, RSA* rsa_
 /*() Obtain RSA public key from X509 certificate. The certificate must have been
  * previously read into a data structure. See zxid_read_cert() and zxid_extract_cert() */
 
-/* Called by:  zxenc_pubkey_enc, zxlog_write_line */
+/* Called by:  zxbus_write_line, zxenc_pubkey_enc, zxlog_write_line */
 RSA* zx_get_rsa_pub_from_cert(X509* cert, char* logkey)
 {
   EVP_PKEY* evp_pkey;
@@ -407,7 +408,7 @@ RSA* zx_get_rsa_pub_from_cert(X509* cert, char* logkey)
  * available. If you want to use /dev/random, which may block, you need
  * to recompile with ZXID_TRUE_RAND set to true. */
 
-/* Called by:  main x2, zx_get_symkey, zxenc_pubkey_enc, zxid_mk_at_cert, zxid_mk_id, zxid_mk_id_attr, zxid_mk_self_sig_cert, zxlog_alloc_zbuf, zxlog_write_line */
+/* Called by:  main x2, zx_get_symkey, zxbus_alloc_zbuf, zxbus_write_line, zxenc_pubkey_enc, zxid_mk_at_cert, zxid_mk_id, zxid_mk_id_attr, zxid_mk_self_sig_cert, zxlog_alloc_zbuf, zxlog_write_line */
 void zx_rand(char* buf, int n_bytes)
 {
 #ifdef USE_OPENSSL
@@ -926,7 +927,7 @@ static void to64(char *s, unsigned long v, int n) {
  * buf:: must be at least 120 chars
  * return:: buf, nul terminated */
 
-/* Called by:  main x2, zxid_pw_authn */
+/* Called by:  authn_user, main, zxid_pw_authn */
 char* zx_md5_crypt(const char* pw, const char* salt, char* buf)
 {
   const char* magic = "$1$";    /* magic prefix to identify algo */

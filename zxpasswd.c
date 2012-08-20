@@ -93,7 +93,7 @@ char userdir[4096];
 char buf[4096];
 struct zx_ctx ctx;
 
-/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x9, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc <= 1) {
@@ -284,6 +284,7 @@ extern char pw_basis_64[64];
 /*() Authenticate user with the password (or other credential)
  * See also: zxid_pw_authn() in zxiduser.c */
 
+/* Called by:  main */
 static int authn_user(int isyk, int pwgot)
 {
   int got;

@@ -91,7 +91,7 @@ static char* zxbus_alloc_zbuf(zxid_conf* cf, int *zlen, char* zbuf, int len, cha
 * logbuf:: The data that should be logged
 */
 
-/* Called by:  test_mode x12, zxbus_output x2 */
+/* Called by: */
 void zxbus_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const char* logbuf)
 {
   EVP_PKEY* log_sign_pkey;
@@ -394,6 +394,7 @@ struct stomp_hdr {
  * the structure that is passed in.
  * The parsed headers are returned in the struct stomp_hdr. */
 
+/* Called by:  zxbus_close, zxbus_open_bus_url, zxbus_send */
 static int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
 {
   int len = 0, got;
@@ -533,6 +534,7 @@ static int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* 
 /*() Open a bus_url, i.e. STOMP 1.1 connection to zxbusd.
  * Return 0 on failure, 1 on success. */
 
+/* Called by:  zxbus_send */
 static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
 {
   struct hostent* he;
@@ -654,7 +656,7 @@ static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
 /*() SEND a STOMP 1.1 DISCONNECT to audit bus and wait for RECEIPT.
  * Returns:: zero on failure and 1 on success. Connection is closed in either case. */
 
-/* Called by: */
+/* Called by:  zxbus_close_all */
 int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
 {
   int len;
@@ -699,7 +701,7 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
 /*() SEND a STOMP 1.1 DISCONNECT to audit bus and wait for RECEIPT.
  * Returns:: nothing. Ignores any errors (but errors cause fd to be closed). */
 
-/* Called by: */
+/* Called by:  zxbustailf_main */
 void zxbus_close_all(zxid_conf* cf)
 {
   struct zxid_bus_url* bu;
@@ -712,7 +714,7 @@ void zxbus_close_all(zxid_conf* cf)
  * from configuration, which bus daemon to contact (looks at bus_urls).
  * Returns:: zero on failure and 1 on success. */
 
-/* Called by: */
+/* Called by:  zxbustailf_main x2 */
 int zxbus_send(zxid_conf* cf, int n, const char* logbuf)
 {
   int len;

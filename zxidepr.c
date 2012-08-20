@@ -65,7 +65,7 @@ void zxid_fold_svc(char* p, int len)
  * ign_prefix:: How many characters to ignore from beginning of name: 0 or 7 (http://)
  * return:: 0 on success (the real return value is returned via ~buf~ result parameter) */
 
-/* Called by:  zxid_epr_path, zxid_get_affil_and_sp_name_buf, zxid_idp_map_nid2uid, zxid_imreq, zxid_nidmap_do x2, zxid_sso_issue_a7n */
+/* Called by:  zxid_epr_path, zxid_get_affil_and_sp_name_buf, zxid_idp_map_nid2uid, zxid_imreq, zxid_nidmap_do x2, zxid_sso_issue_a7n, zxid_sso_issue_jwt */
 int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len, struct zx_str* name, struct zx_str* cont, int ign_prefix)
 {
   int len = MAX(name->len - ign_prefix, 0);
@@ -284,7 +284,7 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
  *
  * See also: zxid_print_session() in zxcall.c */
 
-/* Called by:  main x2, zxid_get_epr x2 */
+/* Called by:  main x2, zxid_get_epr x3 */
 zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
 {
   struct zx_root_s* r;
@@ -414,7 +414,7 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
  *     of EPRs is returned.
  */
 
-/* Called by:  main x5, zxcall_main, zxid_call, zxid_map_identity_token, zxid_nidmap_identity_token */
+/* Called by:  main x5, zxcall_main x2, zxid_call, zxid_map_identity_token, zxid_nidmap_identity_token */
 zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
 {
   int wsf20 = 0;
@@ -504,7 +504,7 @@ struct zx_str* zxid_get_epr_desc(zxid_conf* cf, zxid_epr* epr) {
 
 /*() Accessor function for extracting endpoint TAS3 Trust scores. */
 
-/* Called by:  */
+/* Called by: */
 struct zx_str* zxid_get_epr_tas3_trust(zxid_conf* cf, zxid_epr* epr) {
   if (!epr || !epr->Metadata)
     return 0;

@@ -69,7 +69,7 @@ const char* zxid_version_str()
  * config option ENC_TAIL_OPT. Often used to generate slightly optimized
  * version for wire transfer. Not suitable for generating canonicalization. */
 
-/* Called by:  main x3, so_enc_dec, zxid_addmd, zxid_anoint_sso_resp, zxid_cache_epr, zxid_call_epr, zxid_idp_sso, zxid_lecp_check, zxid_map_val_ss, zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni, zxid_mni_do_ss, zxid_pep_az_base_soap_pepmap x3, zxid_pep_az_soap_pepmap x5, zxid_reg_svc, zxid_ses_to_pool x2, zxid_slo_resp_redir, zxid_snarf_eprs_from_ses, zxid_soap_call_raw, zxid_soap_cgi_resp_body, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_slo_redir, zxid_start_sso_url, zxid_write_ent_to_cache, zxid_wsc_prepare_call, zxid_wsp_decorate */
+/* Called by:  main x3, so_enc_dec, zxid_addmd, zxid_anoint_sso_resp, zxid_cache_epr, zxid_call_epr, zxid_idp_sso, zxid_lecp_check, zxid_map_val_ss, zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni, zxid_mni_do_ss, zxid_pep_az_base_soap_pepmap x3, zxid_pep_az_soap_pepmap x3, zxid_reg_svc, zxid_ses_to_pool x2, zxid_slo_resp_redir, zxid_snarf_eprs_from_ses, zxid_soap_call_raw, zxid_soap_cgi_resp_body, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_slo_redir, zxid_start_sso_url, zxid_write_ent_to_cache, zxid_wsc_prepare_call, zxid_wsp_decorate */
 struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x)
 {
   struct zx_str* ss;
@@ -79,7 +79,7 @@ struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x)
   return ss;
 }
 
-/* Called by:  attribute_sort_test x2, zxid_a7n2str, zxid_anoint_a7n x2, zxid_anoint_sso_resp, zxid_az_soap x2, zxid_idp_sso, zxid_mk_art_deref, zxid_nid2str, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_sp_sso_finalize, zxid_ssos_anreq, zxid_token2str, zxid_wsf_validate_a7n */
+/* Called by:  attribute_sort_test x2, zxid_a7n2str, zxid_anoint_a7n x2, zxid_anoint_sso_resp, zxid_az_soap x2, zxid_epr2str, zxid_get_epr_tas3_trust, zxid_idp_sso, zxid_mk_art_deref, zxid_nid2str, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_sp_sso_finalize, zxid_ssos_anreq, zxid_token2str, zxid_wsf_validate_a7n */
 struct zx_str* zx_easy_enc_elem_sig(zxid_conf* cf, struct zx_elem_s* x)
 {
   cf->ctx->enc_tail_opt = 0;
@@ -95,7 +95,7 @@ struct zx_str* zx_easy_enc_elem_sig(zxid_conf* cf, struct zx_elem_s* x)
  *     bits should be multiple of 24 (3 bytes expands to 4 safe base64 chars)
  * return:: The identifier as zx_str. Caller should eventually free this memory.
  */
-/* Called by:  zxid_check_fed, zxid_mk_subj, zxid_mk_transient_nid, zxid_ps_addent_invite x3, zxid_ps_resolv_id, zxid_put_ses, zxid_pw_authn, zxid_ssos_anreq, zxid_wsc_prep_secmech, zxid_wsf_decor */
+/* Called by:  zxid_check_fed, zxid_mk_oauth_az_req, zxid_mk_subj, zxid_mk_transient_nid, zxid_ps_addent_invite x3, zxid_ps_resolv_id, zxid_put_ses, zxid_pw_authn, zxid_ssos_anreq, zxid_wsc_prep_secmech, zxid_wsf_decor */
 struct zx_str* zxid_mk_id(zxid_conf* cf, char* prefix, int bits)
 {
   char bit_buf[ZXID_ID_MAX_BITS/8];
@@ -134,7 +134,7 @@ struct zx_attr_s* zxid_mk_id_attr(zxid_conf* cf, struct zx_elem_s* father, int t
  *
  * See also: zx_date_time_to_secs()
  */
-/* Called by:  zxid_put_invite x2, zxid_put_psobj x2, zxid_wsc_prep_secmech, zxid_wsf_decor */
+/* Called by:  timegm_tester, zxid_az_soap, zxid_put_invite x2, zxid_put_psobj x2, zxid_wsc_prep_secmech, zxid_wsf_decor */
 struct zx_str* zxid_date_time(zxid_conf* cf, time_t secs)
 {
   struct tm t;
@@ -659,7 +659,7 @@ struct zx_str* zxid_decrypt_newnym(zxid_conf* cf, struct zx_str* newnym, struct 
  * manually and then call zxsig_validate() with correctly populate refs array.
  */
 
-/* Called by:  sig_validate, zxid_idp_slo_do, zxid_mni_do, zxid_sp_dig_sso_a7n, zxid_sp_slo_do, zxid_xacml_az_cd1_do, zxid_xacml_az_do */
+/* Called by:  sig_validate, zxid_idp_slo_do, zxid_mni_do, zxid_sp_dig_oauth_sso_a7n, zxid_sp_dig_sso_a7n, zxid_sp_slo_do, zxid_xacml_az_cd1_do, zxid_xacml_az_do */
 int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* elem, struct zx_ds_Signature_s* sig, struct zx_sa_Issuer_s* issue_ent, struct zx_ns_s* pop_seen, const char* lk)
 {
   struct zx_str* issuer = 0;
@@ -741,7 +741,7 @@ struct zx_str* zxid_get_affil_and_sp_name_buf(zxid_conf* cf, zxid_entity* meta, 
   return affil;
 }
 
-/* Called by:  zxid_add_fed_tok2epr, zxid_map_val_ss x2, zxid_sso_issue_a7n */
+/* Called by:  zxid_add_fed_tok2epr, zxid_map_val_ss x2, zxid_sso_issue_a7n, zxid_sso_issue_jwt */
 zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str* affil, const char* uid, const char* sp_name_buf, int allow_create, int want_transient, struct timeval* srcts, struct zx_str* id, char* logop)
 {
   zxid_nid* nameid = zxid_check_fed(cf, affil, uid, allow_create, srcts, prvid, id, sp_name_buf);
@@ -767,7 +767,7 @@ zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str
  * Thus you should place most specific rules last and most generic rules first.
  * See also: zxid_load_map() and zxid_find_map() */
 
-/* Called by:  zxid_add_at_values, zxid_map_val */
+/* Called by:  zxid_add_at_vals, zxid_map_val */
 struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, const char* atname, struct zx_str* val)
 {
   zxid_a7n* a7n;
@@ -969,7 +969,7 @@ nobody:
  * already have been allocated and MUST hold 20 characters. It will not be
  * nul terminated and in fact will contain binary data (sha1 hash output). */
 
-/* Called by:  zxid_psobj_key_setup, zxlog_write_line */
+/* Called by:  zxbus_write_line, zxid_mk_jwt, zxid_psobj_key_setup, zxlog_write_line */
 char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey)
 {
   char buf[1024];

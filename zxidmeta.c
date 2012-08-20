@@ -422,7 +422,7 @@ zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
 
 /*() Wrapper for zxid_get_ent_ss(), which see. */
 
-/* Called by:  zxcall_main, zxid_cdc_check x2, zxid_start_sso_url */
+/* Called by:  zxcall_main, zxid_cdc_check x2, zxid_oauth2_az_server_sso, zxid_simple_idp_show_an, zxid_start_sso_url */
 zxid_entity* zxid_get_ent(zxid_conf* cf, char* eid)
 {
   struct zx_str ss;
@@ -576,7 +576,7 @@ struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, struct zx_
 
 /*() Constructor for Single Sign-On (SSO) Descriptor idp metadata fragment [SAML2meta]. */
 
-/* Called by:  zxid_idp_sso_desc */
+/* Called by:  zxid_idp_sso_desc x2 */
 struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_SingleSignOnService_s* d = zx_NEW_md_SingleSignOnService(cf->ctx,father);
@@ -632,7 +632,7 @@ struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, struct zx_el
 
 /*() Generate Assertion Consumer Service (SSO) Descriptor metadata fragment [SAML2meta]. */
 
-/* Called by:  zxid_sp_sso_desc x5 */
+/* Called by:  zxid_sp_sso_desc x6 */
 struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* ix)
 {
   struct zx_md_AssertionConsumerService_s* d = zx_NEW_md_AssertionConsumerService(cf->ctx,father);
@@ -817,7 +817,7 @@ struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf, struct zx_elem_s*
  * cf:: ZXID configuration object, used to compute EntityID and also for memory allocation
  * return:: Entity ID as zx_str (caller must free with zx_str_free()) */
 
-/* Called by:  main x2, zxid_idp_map_nid2uid, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_mk_subj, zxid_my_issuer, zxid_nidmap_do, zxid_ses_to_pool, zxid_show_conf, zxid_sp_sso_finalize, zxid_wsf_validate_a7n */
+/* Called by:  main x2, zxid_idp_map_nid2uid, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_mk_oauth_az_req, zxid_mk_subj, zxid_my_issuer, zxid_nidmap_do, zxid_ses_to_pool, zxid_show_conf, zxid_sp_sso_finalize, zxid_sso_issue_jwt, zxid_wsf_validate_a7n */
 struct zx_str* zxid_my_ent_id(zxid_conf* cf)
 {
   if (cf->non_standard_entityid) {

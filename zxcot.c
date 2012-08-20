@@ -89,7 +89,7 @@ char* dimddir;
 char* uiddir;
 zxid_conf* cf = 0;
 
-/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x9, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   int len;

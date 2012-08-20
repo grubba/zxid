@@ -239,7 +239,7 @@ void ak_init(char* argv0) {
 /* Creates AFR buffer explicitly. You may want to call this directly if you need
  * a special buffer other than thread buffer. */
 
-/* Called by:  ak_add_thread, include_file_fd */
+/* Called by:  ak_add_thread */
 struct ak_buf* ak_add_buf(int afr_buffer_size, int flags, char* comment)
 {
   struct ak_buf* buf = 0;
@@ -281,7 +281,7 @@ struct ak_buf* ak_add_buf(int afr_buffer_size, int flags, char* comment)
  *   T=regular worket thread, W=witer thread, F=fe polling thead, f=fe consumer thread,
  *   B=backend poller thread, b=backedn consumer thread, S=shuffler, s=static, etc. */
 
-/* Called by:  init_super, main, thread_consume, thread_poller_loop, write_loop */
+/* Called by:  main, opt, thread_loop */
 void ak_add_thread(int afr_buffer_size, char* prefix, int flags)
 {
   struct ak_buf* buf;
@@ -343,7 +343,7 @@ void ak_buf_err_va(struct ak_buf* buf, int func, int line, int sev, int act, int
 #endif
 }
 
-/* Called by:  */
+/* Called by:  ak_errf */
 void ak_err_va(int func, int line, int sev, int act, int err_code, int arg, char* format, va_list pv)
 {
   ak_buf_err_va((struct ak_buf*)pthread_getspecific(ak_buf_key), func, line, sev, act, err_code, arg, format, pv);
@@ -565,7 +565,7 @@ void ak_buf_io_full(struct ak_buf* buf, int func, int line, int raz, char* logke
   }
 }
 
-/* Called by:  */
+/* Called by: */
 void ak_io_full(int func, int line, int raz, char* logkey, struct io* io, char* msg) {
   ak_buf_io_full((struct ak_buf*)pthread_getspecific(ak_buf_key), func, line, raz, logkey, io, msg);
 }

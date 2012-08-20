@@ -47,6 +47,7 @@
  * pool, from which per thread pools will be plensihed - see
  * hi_pdu_alloc() - and initialize syncronization primitives. */
 
+/* Called by:  main */
 struct hiios* hi_new_shuffler(int nfd, int npdu)
 {
   int i;
@@ -92,6 +93,7 @@ struct hiios* hi_new_shuffler(int nfd, int npdu)
 /*() Set socket to be nonblocking.
  * Our I/O strategy (edge triggered epoll or /dev/poll) depends on nonblocking fds. */
 
+/* Called by:  hi_accept, hi_open_listener, hi_open_tcp, serial_init, zxbus_open_bus_url */
 void nonblock(int fd)
 {
 #ifdef MINGW
@@ -129,6 +131,7 @@ void nonblock(int fd)
  * size is 64KB in each direction, leading to 128KB memory consumption. Tweaking
  * to only, say, 8KB can bring substantial savings (but may hurt TCP performance). */
 
+/* Called by:  hi_accept, hi_open_listener, hi_open_tcp, zxbus_open_bus_url */
 void setkernelbufsizes(int fd, int tx, int rx)
 {
   /* See `man 7 tcp' for TCP_CORK, TCP_NODELAY, etc. */
@@ -145,6 +148,7 @@ void setkernelbufsizes(int fd, int tx, int rx)
 extern int nkbuf;
 extern int listen_backlog;
 
+/* Called by:  main */
 struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int proto)
 {
   struct hi_io* io;
@@ -221,6 +225,7 @@ struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int p
 
 /*() Add file descriptor to poll */
 
+/* Called by:  hi_accept, hi_open_tcp, serial_init */
 struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind, char *desc)
 {
   struct hi_io* io = shf->ios + fd;  /* uniqueness of fd acts as mutual exclusion mechanism */
@@ -260,6 +265,7 @@ struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind, char *de
 
 /*() Create client socket. */
 
+/* Called by:  main, smtp_send */
 struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto)
 {
   int fd;
@@ -286,6 +292,7 @@ struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto)
 
 /*() Create server side worker socket by accept(2)ing from listener socket. */
 
+/* Called by:  hi_shuffle */
 static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
 {
   //struct hi_host_spec* hs;
@@ -337,6 +344,7 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
 /*() Close an I/O object.
  * This involves special cleanup of todo queue. */
 
+/* Called by:  hi_in_out, hi_read x3, hi_write */
 void hi_close(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* pdu;
@@ -391,6 +399,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
 
 /*() Simple mechanics of deque operation against shf->todo_consumer */
 
+/* Called by:  hi_close, hi_todo_consume */
 static struct hi_qel* hi_todo_consume_inlock(struct hiios* shf)
 {
   struct hi_qel* qe = shf->todo_consume;
@@ -407,6 +416,7 @@ static struct hi_qel* hi_todo_consume_inlock(struct hiios* shf)
  * block until there is work to do. This is the main
  * mechanism by which worker threads get something to do. */
 
+/* Called by:  hi_shuffle */
 static struct hi_qel* hi_todo_consume(struct hiios* shf)
 {
   struct hi_qel* qe;
@@ -426,6 +436,7 @@ static struct hi_qel* hi_todo_consume(struct hiios* shf)
 
 /*(i) Schedule new work to be done, potentially waking up the consumer threads! */
 
+/* Called by:  hi_accept, hi_poll x2, hi_read */
 void hi_todo_produce(struct hiios* shf, struct hi_qel* qe)
 {
   LOCK(shf->todo_mut, "todo_prod");
@@ -448,6 +459,7 @@ void hi_todo_produce(struct hiios* shf, struct hi_qel* qe)
 extern int debugpoll;
 #define DP(format,...) (debugpoll && (fprintf(stderr, "t%x %9s:%-3d %-16s p " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__), fflush(stderr)))
 
+/* Called by:  hi_shuffle */
 static void hi_poll(struct hiios* shf)
 {
   struct hi_io* io;
@@ -497,12 +509,14 @@ static void hi_poll(struct hiios* shf)
   UNLOCK(shf->todo_mut, "todo_prod");
 }
 
+/* Called by:  hi_shuffle */
 void hi_process(struct hi_thr* hit, struct hi_pdu* pdu)
 {
   D("pdu(%x) events=0x%x", pdu->op, pdu->events);
   /* *** process "continuing" event on a PDU */
 }
 
+/* Called by:  hi_shuffle */
 void hi_in_out(struct hi_thr* hit, struct hi_io* io)
 {
   DP("in_out(%x) events=0x%x", io->fd, io->events);
@@ -531,6 +545,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
 
 /*() Main I/O shuffling loop. Never returns. Main loop of most (all?) threads. */
 
+/* Called by:  main, thread_loop */
 void hi_shuffle(struct hi_thr* hit, struct hiios* shf)
 {
   struct hi_qel* qe;

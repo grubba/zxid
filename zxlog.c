@@ -523,7 +523,7 @@ int zxlogusr(zxid_conf* cf,   /* 1 */
  *     is to write a file to the computed path. Usually 0 if the intent is to read.
  * return:: The path, as zx_str or 0 if failure */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_decode_redir_or_post x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_soap_cgi_resp_body, zxid_sp_sso_finalize, zxid_wsc_valid_re_env, zxid_wsf_validate_a7n, zxid_wsp_validate */
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_decode_redir_or_post x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_soap_cgi_resp_body, zxid_sp_sso_finalize, zxid_sso_issue_jwt, zxid_wsc_valid_re_env, zxid_wsf_validate_a7n, zxid_wsp_validate */
 struct zx_str* zxlog_path(zxid_conf* cf,
 			  struct zx_str* entid,  /* issuer or target entity ID */
 			  struct zx_str* objid,  /* AssertionID or MessageID */
@@ -620,7 +620,7 @@ struct zx_str* zxlog_path(zxid_conf* cf,
  * return::  0 if no duplicate (success), 1 if duplicate (failure)
  */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_decode_redir_or_post x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_soap_cgi_resp_body, zxid_sp_sso_finalize, zxid_wsc_valid_re_env, zxid_wsf_validate_a7n, zxid_wsp_validate */
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_decode_redir_or_post x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_soap_cgi_resp_body, zxid_sp_sso_finalize, zxid_sso_issue_jwt, zxid_wsc_valid_re_env, zxid_wsf_validate_a7n, zxid_wsp_validate */
 int zxlog_dup_check(zxid_conf* cf, struct zx_str* path, const char* logkey)
 {
   struct stat st;
@@ -667,7 +667,7 @@ int zxlog_dup_check(zxid_conf* cf, struct zx_str* path, const char* logkey)
  * captures both the original and the duplicate assertion (the logging is an append),
  * which may have forensic value. */
 
-/* Called by:  zxid_anoint_a7n x2, zxid_anoint_sso_resp x2, zxid_decode_redir_or_post x2, zxid_saml2_post_enc x2, zxid_saml2_redir_enc x2, zxid_soap_cgi_resp_body x2, zxid_sp_sso_finalize x2, zxid_wsc_valid_re_env x2, zxid_wsf_validate_a7n x2, zxid_wsp_validate x2 */
+/* Called by:  zxid_anoint_a7n x2, zxid_anoint_sso_resp x2, zxid_decode_redir_or_post x2, zxid_saml2_post_enc x2, zxid_saml2_redir_enc x2, zxid_soap_cgi_resp_body x2, zxid_sp_sso_finalize x2, zxid_sso_issue_jwt x2, zxid_wsc_valid_re_env x2, zxid_wsf_validate_a7n x2, zxid_wsp_validate x2 */
 int zxlog_blob(zxid_conf* cf, int logflag, struct zx_str* path, struct zx_str* blob, const char* lk)
 {
   if (!logflag || !blob)
@@ -704,6 +704,7 @@ extern struct flock zx_wrlk; /* = { F_WRLCK, SEEK_SET, 0, 1 };*/
 extern struct flock zx_unlk; /* = { F_UNLCK, SEEK_SET, 0, 1 };*/
 #endif
 
+/* Called by:  zxlog_debug_xml_blob */
 static FILE* zx_open_xml_log_file(zxid_conf* cf)
 {
   FILE* f;

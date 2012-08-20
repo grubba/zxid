@@ -34,6 +34,7 @@
  * If req is supplied, the response is taken to be response to that.
  * Otherwise resp istreated as a stand along PDU, unsolicited response if you like. */
 
+/* Called by:  hi_send1, hi_send2, hi_send3 */
 void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp)
 {
   HI_SANITY(hit->shf, hit);
@@ -62,11 +63,17 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   /*hi_todo_produce(hit->shf, &io->qel);  -- superceded by direct write approach! */
 }
 
+/*() Frontend to hi_send1() which uses hi_send0() to send one segment message. */
+
+/* Called by:  hi_sendf, http_send_err, stomp_cmd_ni, stomp_err, test_ping_reply */
 void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp)
 {
   hi_send1(hit, io, req, resp, resp->len, resp->m);
 }
 
+/*() Uses hi_send0() to send one segment message. */
+
+/* Called by:  hi_send, smtp_resp_wait_250_from_ehlo, smtp_resp_wait_354_from_data, smtp_send */
 void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0)
 {
   resp->n_iov = 1;
@@ -76,6 +83,9 @@ void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   hi_send0(hit, io, req, resp);
 }
 
+/*() Uses hi_send0() to send two segment message. */
+
+/* Called by:  hmtp_send */
 void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1)
 {
   resp->n_iov = 2;
@@ -88,6 +98,9 @@ void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   hi_send0(hit, io, req, resp);
 }
 
+/*() Uses hi_send0() to send three segment message. */
+
+/* Called by:  hmtp_send */
 void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1, int len2, char* d2)
 {
   resp->n_iov = 3;
@@ -104,8 +117,10 @@ void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
 }
 
 /*() Send formatted response.
+ * Uses underlying machiner of hi_send0().
  * *** As req argument is entirely lacking, this must be to send unsolicited responses. */
 
+/* Called by:  hi_accept, smtp_data, smtp_ehlo, smtp_mail_from x2, smtp_rcpt_to x3, smtp_resp_wait_220_greet, smtp_resp_wait_250_msg_sent, stomp_got_disc, stomp_got_login, stomp_got_send x2 */
 void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* fmt, ...)
 {
   va_list pv;
@@ -120,6 +135,11 @@ void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* fm
   hi_send(hit, io, req, pdu);
 }
 
+/*() Process io->to_write_consume to produce an iov and move the PDUs to io->inwrite.
+ * This is the main (only?) way how writes end up in hiios poll machinery to be written.
+ * The only consumer of the io->to_write_consume queue. */
+
+/* Called by:  hi_write */
 static void hi_make_iov(struct hi_io* io)
 {
   struct hi_pdu* pdu;
@@ -143,7 +163,8 @@ static void hi_make_iov(struct hi_io* io)
   io->n_iov = cur - io->iov_cur;
 }
 
-/* *** Here complex determination about freeability of a PDU needs to be done.
+/*() Free a response PDU.
+ * *** Here complex determination about freeability of a PDU needs to be done.
  * For now we "fake" it by assuming that a response sufficies to free request.
  * In real life you would have to consider
  * a. multiple responses
@@ -151,6 +172,7 @@ static void hi_make_iov(struct hi_io* io)
  * c. possibility of sending a response before processing of request itself has ended
  */
 
+/* Called by:  hi_clear_iov */
 void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
 {
   struct hi_pdu* pdu = resp->req->reals;
@@ -176,8 +198,10 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
   HI_SANITY(hit->shf, hit);
 }
 
-/* May be called either because individual resp was done, or because of connection close. */
+/*() Free a request, and its real consequences (response, subrequests, etc.).
+ * May be called either because individual resp was done, or because of connection close. */
 
+/* Called by:  hi_close x2, hi_free_req_fe */
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
 {
   struct hi_pdu* pdu;
@@ -196,6 +220,10 @@ void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
   HI_SANITY(hit->shf, hit);
 }
 
+/*() Free a request, assuming it is associated with a frontend.
+ * Will also remove the PDU frm the frontend reqs queue. */
+
+/* Called by:  hi_clear_iov */
 void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
 {
   struct hi_pdu* pdu;
@@ -224,9 +252,11 @@ void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
   hi_free_req(hit, req);
 }
 
-/* Often moving PDU to reqs means it should stop being cur_pdu. This is either
+/*() Add a PDU to the reqs associated with the io object.
+ * Often moving PDU to reqs means it should stop being cur_pdu. This is either
  * handled by explicit manipulation of io->cur_pdu or by calling hi_checkmore() */
 
+/* Called by:  http_decode, stomp_decode, test_ping */
 void hi_add_to_reqs(struct hi_io* io, struct hi_pdu* req)
 {
   LOCK(io->qel.mut, "add_to_reqs");
@@ -236,6 +266,12 @@ void hi_add_to_reqs(struct hi_io* io, struct hi_pdu* req)
   UNLOCK(io->qel.mut, "add_to_reqs");
 }
 
+/*() Post process iov after write.
+ * Determine if any (resp) PDUs got completely written and
+ * warrant deletion of entire chaing of req and responses,
+ * including subreqs and their responses. */
+
+/* Called by:  hi_write */
 static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
 {
   struct hi_pdu* pdu;
@@ -279,6 +315,7 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
  * only admits an io object once and only one thread can consume it. Thus locking
  * is really needed only to protect the to_write queue, see hi_make_iov(). */
 
+/* Called by:  hi_in_out, hi_send0 */
 void hi_write(struct hi_thr* hit, struct hi_io* io)
 {
   int ret;

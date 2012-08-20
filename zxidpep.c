@@ -50,6 +50,7 @@
  * return:: Data structure representing the matching attribute.
  */
 
+/* Called by:  zxid_pepmap_extract x4 */
 static struct zx_xac_Attribute_s* zxid_find_xac_attribute(struct zx_xac_Attribute_s* xac_at_list, int name_len, char* name, int n)
 {
   struct zx_xac_Attribute_s* at;

@@ -29,7 +29,7 @@
  *
  * return:: a string (such as Location: header) and let the caller output it. */
 
-/* Called by:  zxid_simple_ses_active_cf */
+/* Called by:  zxid_simple_ses_active_cf x2 */
 struct zx_str* zxid_idp_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int chk_dup)
 {
   struct zx_sp_LogoutRequest_s* req;

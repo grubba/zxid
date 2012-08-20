@@ -124,7 +124,7 @@ zxid_entity* zxid_get_ses_idp(zxid_conf* cf, zxid_ses* ses)
 
 /*() Allocate memory for session object. Used with zxid_simple_cf_ses(). */
 
-/* Called by:  main, zxid_as_call, zxid_fetch_ses */
+/* Called by:  zxid_as_call, zxid_fetch_ses */
 zxid_ses* zxid_alloc_ses(zxid_conf* cf)
 {
   zxid_ses* ses = ZX_ZALLOC(cf->ctx, zxid_ses);

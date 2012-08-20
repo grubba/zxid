@@ -28,6 +28,7 @@
 
 extern char remote_station_addr[];
 
+/* Called by:  smtp_data, smtp_resp_wait_220_greet, smtp_resp_wait_250_from_ehlo x2, smtp_resp_wait_250_msg_sent x2, smtp_resp_wait_354_from_data x2 */
 static void hmtp_send(struct hi_thr* hit, struct hi_io* io, int len, char* d, int len2, char* d2)
 {
 #ifdef ENA_S5066
@@ -57,6 +58,7 @@ static void hmtp_send(struct hi_thr* hit, struct hi_io* io, int len, char* d, in
  * On request path, we need to collect and batch the responses so they can be
  * sent in one go to HMTP pipe. */
 
+/* Called by: */
 void smtp_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len, char* d)
 {
   struct hi_pdu* smtp_resp;
@@ -120,6 +122,7 @@ void smtp_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len
   else goto bad
 
 
+/* Called by:  smtp_decode_req */
 static int smtp_ehlo(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   char* p = req->m;
@@ -156,6 +159,7 @@ static int smtp_ehlo(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   return HI_CONN_CLOSE;
 }
 
+/* Called by:  smtp_decode_req x2 */
 static int smtp_mail_from(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   char* p = req->scan;
@@ -209,6 +213,7 @@ static int smtp_mail_from(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
   return HI_CONN_CLOSE;
 }
 
+/* Called by:  smtp_decode_req */
 static int smtp_rcpt_to(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   char* p = req->scan;
@@ -269,6 +274,7 @@ static int smtp_rcpt_to(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req
   return HI_CONN_CLOSE;
 }
 
+/* Called by:  smtp_decode_req */
 static int smtp_data(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   char* p = req->scan;
@@ -323,6 +329,7 @@ static int smtp_data(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   return HI_CONN_CLOSE;
 }
 
+/* Called by:  hi_read */
 int smtp_decode_req(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* req = io->cur_pdu;
@@ -351,6 +358,7 @@ int smtp_decode_req(struct hi_thr* hit, struct hi_io* io)
  * must not trigger HMTP pdu. Any other response than 250, 354, or 221 quit triggers
  * HMTP error response. */
 
+/* Called by:  smtp_decode_resp */
 static int smtp_resp_wait_220_greet(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* resp)
 {
   char* p = resp->scan;
@@ -389,6 +397,7 @@ static int smtp_resp_wait_220_greet(struct hi_thr* hit, struct hi_io* io, struct
   return HI_CONN_CLOSE;
 }
 
+/* Called by:  smtp_decode_resp */
 static int smtp_resp_wait_250_from_ehlo(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* resp)
 {
   char* p = resp->scan;
@@ -494,6 +503,7 @@ static int smtp_resp_wait_250_from_ehlo(struct hi_thr* hit, struct hi_io* io, st
   return HI_CONN_CLOSE;
 }
 
+/* Called by:  smtp_decode_resp */
 static int smtp_resp_wait_354_from_data(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* resp)
 {
   char* p = resp->scan;
@@ -573,6 +583,7 @@ static int smtp_resp_wait_354_from_data(struct hi_thr* hit, struct hi_io* io, st
   return HI_CONN_CLOSE;
 }
 
+/* Called by:  smtp_decode_resp */
 static int smtp_resp_wait_250_msg_sent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* resp)
 {
   char* p = resp->scan;
@@ -613,6 +624,7 @@ static int smtp_resp_wait_250_msg_sent(struct hi_thr* hit, struct hi_io* io, str
   return HI_CONN_CLOSE;
 }
 
+/* Called by:  smtp_decode_resp */
 static int smtp_resp_wait_221_goodbye(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* resp)
 {
   char* p = resp->scan;
@@ -649,6 +661,7 @@ static int smtp_resp_wait_221_goodbye(struct hi_thr* hit, struct hi_io* io, stru
   return HI_CONN_CLOSE;
 }
 
+/* Called by:  hi_read */
 int smtp_decode_resp(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* resp = io->cur_pdu;

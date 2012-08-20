@@ -30,6 +30,7 @@
 
 /*() Interpret ZXID standard form fields to construct a XML structure for AuthnRequest */
 
+/* Called by:  zxid_start_sso_url */
 struct zx_str* zxid_mk_oauth_az_req(zxid_conf* cf, zxid_cgi* cgi, struct zx_str* loc, char* relay_state)
 {
   struct zx_str* ss;
@@ -89,7 +90,7 @@ struct zx_str* zxid_mk_oauth_az_req(zxid_conf* cf, zxid_cgi* cgi, struct zx_str*
 
 /*() Construct OAUTH2 / OpenID-Connect1 id_token. */
 
-/* Called by:   */
+/* Called by:  zxid_sso_issue_jwt */
 char* zxid_mk_jwt(zxid_conf* cf, int claims_len, char* claims)
 {
   char hash[64 /*EVP_MAX_MD_SIZE*/];
@@ -153,7 +154,7 @@ char* zxid_mk_jwt(zxid_conf* cf, int claims_len, char* claims)
 
 /*() Issue OAUTH2 / OpenID-Connect1 id_token. */
 
-/* Called by:   */
+/* Called by:  zxid_oauth2_az_server_sso */
 char* zxid_sso_issue_jwt(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct timeval* srcts, zxid_entity* sp_meta, struct zx_str* acsurl, zxid_nid** nameid, char* logop)
 {
   int rawlen;
@@ -261,7 +262,7 @@ char* zxid_sso_issue_jwt(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct tim
 /*(i) Generate SSO assertion and ship it to SP by OAUTH2 Az redir binding. User has already
  * logged in by the time this is called. See also zxid_ssos_anreq() and zxid_idp_sso(). */
 
-/* Called by: zxid_idp_dispatch */
+/* Called by:  zxid_idp_dispatch */
 struct zx_str* zxid_oauth2_az_server_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   zxid_entity* sp_meta;
@@ -339,7 +340,7 @@ struct zx_str* zxid_oauth2_az_server_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses*
 
 /*() Extract an assertion from OAUTH Az response, and perform SSO */
 
-/* Called by:  zxid_idp_soap_dispatch, zxid_sp_dispatch, zxid_sp_soap_dispatch x3 */
+/* Called by:  zxid_sp_oauth2_dispatch */
 static int zxid_sp_dig_oauth_sso_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   //if (!zxid_chk_sig(cf, cgi, ses, &resp->gg, resp->Signature, resp->Issuer, 0, "Response")) return 0;
@@ -370,7 +371,7 @@ static int zxid_sp_dig_oauth_sso_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses
  *     are allocated from static storage and MUST NOT be freed. Other
  *     strings such as "Location: ..." should be freed by caller. */
 
-/* Called by:  main x3, zxid_mgmt, zxid_simple_no_ses_cf, zxid_simple_ses_active_cf */
+/* Called by:  zxid_simple_no_ses_cf */
 struct zx_str* zxid_sp_oauth2_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   int ret;

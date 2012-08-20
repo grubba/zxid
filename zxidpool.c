@@ -178,6 +178,7 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
   return ss;
 }
 
+/* Called by:  zxid_pool_to_json x9 */
 static int zxid_json_strlen(char* string)
 {
   int res = 0;
@@ -207,6 +208,7 @@ static int zxid_json_strlen(char* string)
   return res;
 }
 
+/* Called by:  zxid_pool_to_json x8 */
 static char* zxid_json_strcpy(char* dest, char* string)
 {
   for (;*string; string++) {
@@ -586,7 +588,7 @@ static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
 
 /*() Add simple attribute to pool, applying NEED, WANT, and INMAP */
 
-/* Called by:  zxid_add_ldif_at2ses, zxid_add_qs2ses, zxid_ses_to_pool x25 */
+/* Called by:  chkuid, zxid_add_ldif_at2ses, zxid_add_qs2ses, zxid_ses_to_pool x25 */
 void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx_str* val)
 {
   struct zxid_map* map;

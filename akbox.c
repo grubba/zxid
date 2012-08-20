@@ -93,7 +93,7 @@ void usage(char* err) {
   exit(1);
 }
 
-/* Called by:   */
+/* Called by:  ak_gviz, anal_live x3, extract_a_sym x2, extract_exe, extract_syms, open_obj x6 */
 void die(char* why) {
   perror(why); exit(2);
 }
@@ -147,6 +147,7 @@ void die_bfd(char* why) {
 #define BFD_DEBUG(x)
 #define BFD_DEBUG_ON(x) x
 
+/* Called by:  covimp_test, extract_a_sym x2, locate_buffers x2, zxid_call_trustpdp, zxid_di_query x2, zxid_map_sec_mech x3, zxid_mk_ent x5 */
 CU8* zx_memmem(CU8* haystack, int haystacklen, CU8* needle, int needlelen)
 {
   CU8* p = haystack;
@@ -523,12 +524,14 @@ struct split_ll{
   };
 };
 
+/* Called by:  get_low */
 int am_big_endian()
 {
   long one= 1;
   return !(*((char *)(&one)));
 }
 
+/* Called by:  get_nano, get_secs */
 unsigned long get_low (unsigned long long num){
   struct split_ll ll;
   ll.full = num;
@@ -538,12 +541,14 @@ unsigned long get_low (unsigned long long num){
     return ll.high; 
 }
 
+/* Called by:  print_line x2 */
 int get_secs (ak_time act_tick){
   unsigned long a;
   a = get_low ((act_tick - mr->first_tick)/1000000000.0);
   return (int)(a);
 }
 
+/* Called by:  print_line x2 */
 unsigned long get_nano (ak_time act_tick){
   ak_time rest;
   rest = ((act_tick - mr->first_tick)%1000000000);
@@ -552,10 +557,12 @@ unsigned long get_nano (ak_time act_tick){
 #endif
 
 #ifdef MINGW
+/* Called by:  print_line x2 */
 int get_secs (ak_time act_tick){
   return (int)((act_tick.QuadPart - mr->first_tick.QuadPart)/mr->ticksPerSecond.QuadPart);
 }
 
+/* Called by:  print_line x2 */
 unsigned long get_nano (ak_time act_tick){
   ak_time rest;
   double ticksPerNano;
@@ -569,7 +576,7 @@ unsigned long get_nano (ak_time act_tick){
 /* You need to teach this function about every possible message type. When (if) swimlanes
  * are implemented, this function probably needs to be aware of them. */
 
-/* Called by:  print_buffers */
+/* Called by:  print_buffers x3 */
 static void print_line(int i)
 {
   int seve;
@@ -653,6 +660,7 @@ static void print_line(int i)
 }
 
 #ifdef MINGW
+/* Called by:  anal_core, anal_live */
 static void print_buffers()
 {
   unsigned long long old_tv;
@@ -693,6 +701,7 @@ static void print_buffers()
 }
 #endif
 #ifdef SUNOS
+/* Called by:  anal_core, anal_live */
 static void print_buffers()
 {
   unsigned long long old_tv;

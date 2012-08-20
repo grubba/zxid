@@ -603,7 +603,7 @@ struct zx_str unknown_str = {0,0,1,"??"};  /* Static string used as dummy value.
  * a7n:: Single Sign-On assertion
  * return:: 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 
-/* Called by:  main, sig_validate, zxid_sp_dig_sso_a7n */
+/* Called by:  main, sig_validate, zxid_sp_dig_oauth_sso_a7n, zxid_sp_dig_sso_a7n */
 int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7n, struct zx_ns_s* pop_seen)
 {
   char* err = "S"; /* See: RES in zxid-log.pd, section "ZXID Log Format" */
@@ -777,7 +777,7 @@ erro:
  * ses:: Session object. Will be modified according to new session created from the SSO assertion.
  * return:: 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 
-/* Called by:  covimp_test, zxid_sp_dig_sso_a7n */
+/* Called by:  covimp_test, zxid_sp_dig_oauth_sso_a7n, zxid_sp_dig_sso_a7n */
 int zxid_sp_anon_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   D_INDENT("anon_ssof: ");

@@ -49,6 +49,7 @@
 #define heart_bt  dest
 #define STOMP_MIN_PDU_SIZE (sizeof("ACK\n\n\0")-1)
 
+/* Called by:  stomp_cmd_ni, stomp_err, stomp_got_err */
 static struct hi_pdu* stomp_encode_start(struct hi_thr* hit)
 {
   struct hi_pdu* resp = hi_pdu_alloc(hit);
@@ -56,6 +57,7 @@ static struct hi_pdu* stomp_encode_start(struct hi_thr* hit)
   return resp;
 }
 
+/* Called by:  stomp_cmd_ni, stomp_decode x2 */
 static int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* receipt_id, char* ecode, char* emsg)
 {
   struct hi_pdu* resp = stomp_encode_start(hit);
@@ -66,6 +68,7 @@ static int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, c
 
 #define CMD_NI_MSG "Command(%*s) not implemented by server."
 
+/* Called by:  stomp_decode x8, stomp_got_ack, stomp_got_subsc, stomp_got_unsubsc */
 static int stomp_cmd_ni(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* receipt_id, char* cmd)
 {
 #if 0
@@ -79,6 +82,7 @@ static int stomp_cmd_ni(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req
 #endif
 }
 
+/* Called by:  stomp_decode */
 static int stomp_got_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   //struct hi_pdu* resp = stomp_encode_start(hit);
@@ -88,6 +92,7 @@ static int stomp_got_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
 
 /* STOMP Received Command Handling */
 
+/* Called by:  stomp_decode */
 static void stomp_got_login(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   /* *** add login checks */
@@ -95,12 +100,14 @@ static void stomp_got_login(struct hi_thr* hit, struct hi_io* io, struct hi_pdu*
   hi_sendf(hit, io, req, "CONNECTED\nversion:1.1\nserver:zxbusd-1.x\n\n%c", 0);
 }
 
+/* Called by:  stomp_decode */
 static int stomp_got_disc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   hi_sendf(hit, io, req, "RECEIPT\nreceipt-id:0\n\n%c", 0);  /* *** figure out the real receipt id */
   return HI_CONN_CLOSE;
 }
 
+/* Called by:  stomp_got_send */
 int zxbus_persist(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   /* *** Actually persist the message */
@@ -119,6 +126,7 @@ int zxbus_persist(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
  * first and then have a separate process attempt the sending. This
  * latter is the approach adopted here. */
 
+/* Called by:  stomp_decode */
 static void stomp_got_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   HI_SANITY(hit->shf, hit);
@@ -130,6 +138,7 @@ static void stomp_got_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* 
   }
 }
 
+/* Called by:  stomp_decode */
 static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   stomp_cmd_ni(hit,io,req,0,"ACK\n");
@@ -137,11 +146,13 @@ static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
      hi_sendv(hit, io, req, resp, len, resp->m, size, req->m + len);*/
 }
 
+/* Called by:  stomp_decode */
 static void stomp_got_subsc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   stomp_cmd_ni(hit,io,req,0,"SUBSCRIBE\n");
 }
 
+/* Called by:  stomp_decode */
 static void stomp_got_unsubsc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   stomp_cmd_ni(hit,io,req,0,"UNSUBSCRIBE\n");
@@ -149,6 +160,7 @@ static void stomp_got_unsubsc(struct hi_thr* hit, struct hi_io* io, struct hi_pd
 
 /*() STOMP decoder and dispatch */
 
+/* Called by:  hi_read */
 int stomp_decode(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* req = io->cur_pdu;
@@ -306,6 +318,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
 #if 0
 /*() STOMP server side decoder: Decode requests from producer. */
 
+/* Called by:  hi_read */
 int stomp_decode_req(struct hi_thr* hit, struct hi_io* io)
 {
   int ret;
@@ -324,6 +337,7 @@ int stomp_decode_req(struct hi_thr* hit, struct hi_io* io)
 
 /*() STOMP client side decoder: decode responses from remote server */
 
+/* Called by:  hi_read */
 int stomp_decode_resp(struct hi_thr* hit, struct hi_io* io)
 {
   int ret;

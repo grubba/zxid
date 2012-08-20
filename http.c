@@ -20,6 +20,7 @@
 #include <memory.h>
 #include <netinet/in.h> /* htons(3) and friends */
 
+/* Called by:  http_send_data, http_send_err, http_send_file */
 struct hi_pdu* http_encode_start(struct hi_thr* hit)
 {
   struct hi_pdu* resp = hi_pdu_alloc(hit);
@@ -27,6 +28,7 @@ struct hi_pdu* http_encode_start(struct hi_thr* hit)
   return resp;
 }
 
+/* Called by:  http_decode */
 void http_send_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int r, char* m)
 {
   struct hi_pdu* resp = http_encode_start(hit);
@@ -34,12 +36,14 @@ void http_send_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int
   hi_send(hit, io, req, resp);
 }
 
+/* Called by:  http_decode */
 void http_send_data(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len, char* d)
 {
   struct hi_pdu* resp = http_encode_start(hit);
   /*hi_sendv(hit, io, req, resp, len, resp->m, size, req->m + len);*/
 }
 
+/* Called by:  http_decode */
 void http_send_file(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len, char* d)
 {
   struct hi_pdu* resp = http_encode_start(hit);
@@ -48,6 +52,7 @@ void http_send_file(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, in
 
 #define HTTP_MIN_PDU_SIZE (sizeof("GET / HTTP/1.0\n\n")-1)
 
+/* Called by:  hi_read */
 int http_decode(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* req = io->cur_pdu;
