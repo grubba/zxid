@@ -11,9 +11,10 @@
  * 16.8.2012, modified license grant to allow use with ZXID.org --Sampo
  */
 
+#include "platform.h"
+#include "errmac.h"
 #include "akbox.h"
 #include "hiios.h"
-#include "errmac.h"
 
 #include <ctype.h>
 #include <memory.h>

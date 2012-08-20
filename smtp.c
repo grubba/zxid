@@ -13,9 +13,11 @@
  * 16.8.2012, modified license grant to allow use with ZXID.org --Sampo
  */
 
+#include "platform.h"
+#include "errmac.h"
 #include "akbox.h"
 #include "hiios.h"
-#include "errmac.h"
+#include "hiproto.h"
 
 #include <ctype.h>
 #include <memory.h>
@@ -28,6 +30,7 @@ extern char remote_station_addr[];
 
 static void hmtp_send(struct hi_thr* hit, struct hi_io* io, int len, char* d, int len2, char* d2)
 {
+#ifdef ENA_S5066
   struct hi_pdu* resp = sis_encode_start(hit, S_UNIDATA_REQUEST,
 					 SPRIM_TLEN(unidata_req) + len + len2);
   resp->m[6]  = SAP_ID_HMTP;
@@ -43,6 +46,7 @@ static void hmtp_send(struct hi_thr* hit, struct hi_io* io, int len, char* d, in
     hi_send3(hit, io, 0, resp, 17, resp->m, len, d, len2, d2);
   else
     hi_send2(hit, io, 0, resp, 17, resp->m, len, d);
+#endif
 }
 
 /* Called from SIS rx layer with u_pdu payload. This could be either HMTP client
@@ -64,12 +68,12 @@ void smtp_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len
     struct hi_io* smtp_c;
     /* If we are SMTP server, the pairing will already exist. Thus lack of pairing means
      * we are SMTP client and must open a new connection to remote. */
-    hs = prototab[S5066_SMTP].specs;
+    hs = prototab[HIPROTO_SMTP].specs;
     if (!hs) {
       ERR("You MUST configure a SMTP remote for HMTP-to-SMTP gateway to work. %d", io->fd);
       exit(1);
     }
-    smtp_c = hi_open_tcp(hit->shf, hs, S5066_SMTP);
+    smtp_c = hi_open_tcp(hit->shf, hs, HIPROTO_SMTP);
     if (!smtp_c) {
       ERR("Failed to establish SMTP client connection %x", io->fd);
       return;
@@ -80,7 +84,7 @@ void smtp_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len
     smtp_c->pair = io;
   }
   
-  HEXDUMP("smtp_send: ", d, d+len, 800);
+  //HEXDUMP("smtp_send: ", d, d+len, 800);
   
   switch (io->pair->qel.kind) { /* Pairing already established, the pair determiones the role. */
   case HI_TCP_S:   /* We are acting as an SMTP server, SIS primitive contains HMTP status  */
@@ -136,9 +140,9 @@ static int smtp_ehlo(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   for (; p < lim && !ONE_OF_2(*p, '\r', '\n'); ++p) ;
   CRLF_CHECK(p, lim, req);
 
-  hi_sendf(hit, io, "250-%s\r\n250-PIPELINING\r\n250 8-BIT MIME\r\n", SMTP_EHLO_CLI);
-  io->pair = prototab[S5066_SIS].specs->conns;
-  prototab[S5066_SIS].specs->conns->pair = io;  /* But there could be multiple? */
+  hi_sendf(hit, io, 0, "250-%s\r\n250-PIPELINING\r\n250 8-BIT MIME\r\n", SMTP_EHLO_CLI);
+  io->pair = prototab[HIPROTO_SIS].specs->conns;
+  prototab[HIPROTO_SIS].specs->conns->pair = io;  /* But there could be multiple? */
 #if 0   /* We do this nowdays during setup */
   sis_send_bind(hit, io->pair, SAP_ID_HMTP, 0, 0x0200);  /* 0x0200 == nonarq, no repeats */
 #endif
@@ -170,7 +174,7 @@ static int smtp_mail_from(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
   if (!memcmp(p, "QUIT", 4)) {
     p += 4;
     CRLF_CHECK(p, lim, req);
-    hi_sendf(hit, io, "221 bye\r\n");
+    hi_sendf(hit, io, 0, "221 bye\r\n");
     return HI_CONN_CLOSE;
   }
   
@@ -192,7 +196,7 @@ static int smtp_mail_from(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
   if (*p != '>') goto bad;
   ++p;
   CRLF_CHECK(p, lim, req);
-  hi_sendf(hit, io, "250 sok\r\n");
+  hi_sendf(hit, io, 0, "250 sok\r\n");
   io->ad.smtp.state = SMTP_TO;
   req->need = (p - req->m) + 5;   /* "DATA\n" */
   req->scan = p;
@@ -200,8 +204,8 @@ static int smtp_mail_from(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
   return 0;
  bad:
   ERR("Bad SMTP PDU(%p). fd(%x)", req, io->fd);
-  HEXDUMP("p: ", p, lim, 50);
-  HEXDUMP("m: ", req->m, lim, 50);
+  //HEXDUMP("p: ", p, lim, 50);
+  //HEXDUMP("m: ", req->m, lim, 50);
   return HI_CONN_CLOSE;
 }
 
@@ -223,14 +227,14 @@ static int smtp_rcpt_to(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req
   if (!memcmp(p, "QUIT", 4)) {
     p += 4;
     CRLF_CHECK(p, lim, req);
-    hi_sendf(hit, io, "221 bye\r\n");
+    hi_sendf(hit, io, 0, "221 bye\r\n");
     return HI_CONN_CLOSE;
   }
 
   if (!memcmp(p, "DATA", 4)) {
     p += 4;
     CRLF_CHECK(p, lim, req);
-    hi_sendf(hit, io, "354 end with .\r\n");
+    hi_sendf(hit, io, 0, "354 end with .\r\n");
     io->ad.smtp.state = SMTP_MORE1;
     req->need = (p - req->m) + 2; /* .\n */
     req->scan = p-1;  /* leave \n to be scanned to avoid beginning of mail special case */
@@ -254,7 +258,7 @@ static int smtp_rcpt_to(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req
   if (*p != '>') goto bad;
   ++p;
   CRLF_CHECK(p, lim, req);
-  hi_sendf(hit, io, "250 rok\r\n");
+  hi_sendf(hit, io, 0, "250 rok\r\n");
   req->need = (p - req->m) + 5;
   req->scan = p;
   D("RCPT TO ok req(%p)", req);
@@ -300,7 +304,7 @@ static int smtp_data(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
       io->ad.smtp.state = SMTP_WAIT;
       req->need = 0;  /* Hold it until we get response from SIS layer. */
 #else
-      hi_sendf(hit, io, "250 sent\r\n");   /* *** hold this off? */
+      hi_sendf(hit, io, 0, "250 sent\r\n");   /* *** hold this off? */
       req->need = (p - req->m) + 5;
       /* *** not clear how second message could be sent. Perhaps we need second scan pointer? */
 #endif
@@ -321,8 +325,6 @@ static int smtp_data(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 
 int smtp_decode_req(struct hi_thr* hit, struct hi_io* io)
 {
-  int ret;
-  char* p;
   struct hi_pdu* req = io->cur_pdu;
   D("smtp_state(%d) scan(%.*s)", io->ad.smtp.state, MIN(7, req->ap - req->scan), req->scan);
   switch (io->ad.smtp.state) {
@@ -374,7 +376,7 @@ static int smtp_resp_wait_220_greet(struct hi_thr* hit, struct hi_io* io, struct
   }
   if (n == ' ') {
     D("220 greet seen resp(%p)", resp);
-    hi_sendf(hit, io, "EHLO %s\r\n", SMTP_GREET_DOMAIN);
+    hi_sendf(hit, io, 0, "EHLO %s\r\n", SMTP_GREET_DOMAIN);
     io->ad.smtp.state = SMTP_RDY;
   }
   resp->need = 6 + p - resp->m;  /* Prime the pump for next response */
@@ -598,7 +600,7 @@ static int smtp_resp_wait_250_msg_sent(struct hi_thr* hit, struct hi_io* io, str
     /* *** should we attempt to skip the 220 greeting? */
     D("250 after data 354 seen resp(%p)", resp);
     hmtp_send(hit, io->pair, p-resp->m, resp->m, 13, "221 goodbye\r\n");
-    hi_sendf(hit, io, "QUIT\r\n");   /* One message per connection! */
+    hi_sendf(hit, io, 0, "QUIT\r\n");   /* One message per connection! */
     io->ad.smtp.state = SMTP_QUIT;
   }
   resp->need = 6 + p - resp->m;  /* Prime the pump for next response */
@@ -649,8 +651,6 @@ static int smtp_resp_wait_221_goodbye(struct hi_thr* hit, struct hi_io* io, stru
 
 int smtp_decode_resp(struct hi_thr* hit, struct hi_io* io)
 {
-  int ret;
-  char* p;
   struct hi_pdu* resp = io->cur_pdu;
   D("smtp_state(%d) scan(%.*s)", io->ad.smtp.state, MIN(7, resp->ap - resp->scan), resp->scan);
   switch (io->ad.smtp.state) {

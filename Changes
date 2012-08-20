@@ -102,7 +102,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Audit bus receipt confirmation signature bus-confirm: BASE64FORSIGNEDRECEIPT
 
 zxid-1.11:: 17.8.2012
-    - Added audit bus infrastructure (not yet unoversally propagated)
+    - Added audit bus infrastructure (not yet universally propagated)
 
 zxid-1.10:: 21.4.2012
     - Added support for OAUTH2 / OpenID-Connect1 Minimal / Basic Profile (both RP and IdP)

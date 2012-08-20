@@ -1,4 +1,5 @@
 /* zxutil.c  -  Utility functions
+ * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -12,6 +13,7 @@
  * 7.10.2008, added documentation --Sampo
  * 21.5.2010, added file copy --Sampo
  * 20.6.2011, improved error reporting to show cwd in vopen_fd_from_path() --Sampo
+ * 17.8.2012, added socket specific utilities --Sampo
  */
 
 #include "platform.h"
@@ -21,6 +23,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
+#include <sys/socket.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <time.h>
@@ -544,9 +547,10 @@ linkrest:
 /*() Output a hexdump to stderr. Used for debugging purposes. */
 
 /* Called by:  hexdmp, zxsig_data x2, zxsig_verify_data x5 */
-int hexdump(char* msg, char* p, char* lim, int max)
+int hexdump(char* msg, char* data, char* lim, int max)
 {
   int i;
+  char* p = data;
   char* lim16;
   char buf[3*16+1+1+16+1];
   if (!msg)
@@ -564,16 +568,17 @@ int hexdump(char* msg, char* p, char* lim, int max)
       buf[3*i+1+(i>7?1:0)] = HEX_DIGIT(*p & 0x0f);
       switch (*p) {
       case '\0': buf[3*16+1+1+i] = '~'; break;
-      case '\r': buf[3*16+1+1+i] = '['; break;
-      case '\n': buf[3*16+1+1+i] = ']'; break;
+      case '\r': buf[3*16+1+1+i] = '^'; break;
+      case '\n': buf[3*16+1+1+i] = '\\'; break;
       case '~':  buf[3*16+1+1+i] = '^'; break;
-      case '[':  buf[3*16+1+1+i] = '^'; break;
-      case ']':  buf[3*16+1+1+i] = '^'; break;
+      case '\\': buf[3*16+1+1+i] = '^'; break;
+	//case ']':  buf[3*16+1+1+i] = '^'; break;
       default:
 	buf[3*16+1+1+i] = *p < ' ' ? '^' : *p;
       }
     }
-    fprintf(stderr, "%s%s\n", msg, buf);
+    fprintf(stderr, "%s %s\n", msg, buf);
+    /*fprintf(stderr, "%s %s  ;;%*s\n", msg, buf, lim-data, data);*/
   }
   return 0;
 }

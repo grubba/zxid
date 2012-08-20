@@ -541,8 +541,9 @@ struct zxid_bus_url {
   fdtype fd;            /* Remember already open connection to zxbusd instance. */
   char* buf;            /* I/O buffer */
   char* ap;             /* How far the buffer is filled */
-  int   receipt;        /* Rolling receipt ID */
+  int   cur_rcpt;       /* Rolling receipt ID */
   char  tls;
+  char  scalingpart;    /* Scaling partition number. */
 };
 
 /*(s) Attribute source definition */
@@ -724,7 +725,9 @@ ZXID_DECL void zxlog_debug_xml_blob(zxid_conf* cf, const char* file, int line, c
 
 /* zxbusprod */
 
-ZXIDDECL int zxbus_send(zxid_conf* cf, int n, const char* logbuf);
+ZXID_DECL int zxbus_send(zxid_conf* cf, int n, const char* logbuf);
+ZXID_DECL int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu);
+ZXID_DECL void zxbus_close_all(zxid_conf* cf);
 
 /* zxidmeta */
 

@@ -31,17 +31,17 @@
 #endif
 
 /*#include "dialout.h"       / * Async serial support */
-#include "serial_sync.h"   /* Sync serial support */
+/*#include "serial_sync.h"   / * Sync serial support */
 #include "errmac.h"
 #include "hiios.h"
+#include "hiproto.h"
 #include "akbox.h"
+#include "c/zxidvers.h"
+#include <zx/zxid.h>
+#include <zx/zxidutil.h>
 
-int read_all_fd(int fd, char* p, int want, int* got_all);
-int write_all_fd(int fd, char* p, int pending);
-int write_or_append_lock_c_path(char* c_path, char* data, int len, CU8* lk, int seeky, int flag);
-
-CU8* help =
-"zxbusd.  -  Audit bus daemon using STOMP 1.1 - R" REL "\n\
+const char* help =
+"zxbusd.  -  Audit bus daemon using STOMP 1.1 - R" ZXID_REL "\n\
 Copyright (c) 2006,2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties.\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
@@ -88,7 +88,7 @@ N.B. Although zxbusd is a 'daemon', it does not daemonize itself. You can always
 char* instance = "zxbusd";  /* how this server is identified in logs */
 int ak_buf_size = 0;
 int verbose = 1;
-int debug = 0;
+extern int zx_debug;
 int debugpoll = 0;
 int timeout = 0;
 int nfd = 20;
@@ -98,7 +98,7 @@ int nkbuf = 0;
 int listen_backlog = 128;   /* what is right tuning for this? */
 int gcthreshold = 0;
 int leak_free = 0;
-int assert_nonfatal = 0;
+//int assert_nonfatal = 0;
 int drop_uid = 0;
 int drop_gid = 0;
 int watchdog;
@@ -112,20 +112,20 @@ int symmetric_key_len;
 struct hi_host_spec* listen_ports = 0;
 struct hi_host_spec* remotes = 0;
 
-struct hi_proto prototab[] = {
+struct hi_proto prototab[] = {  /* n.b. order in this table must match constants in hiproto.h */
   { "dummy0",  0, 0 },
   { "sis",    5066, 0 },
   { "dts",    5067, 0 },
   { "smtp",     25, 0 },
   { "http",   8080, 0 },
+  { "tp",     5068, 0 },  /* testping */
   { "stomp",  2228, 0 },
-  { "stomps", 2229, 0 },
-  { "tp",     5068, 0 },
+  { "stomps", 2229, 0 },  /* n.b. 2229 is zxbus assigned port. Normal STOMP port is 61613 */
   { "", 0 }
 };
 
 char remote_station_addr[] = { 0x61, 0x89, 0x00, 0x00 };   /* *** temp kludge */
-struct hiios* shuff;        /* Main I/O shuffler object */
+struct hiios* shuff;        /* Main I/O shuffler object (global to help debugging) */
 
 #define SNMPLOGFILE "/var/zxid/log/snmp.log"
 
@@ -261,7 +261,7 @@ void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++debug;
+	++zx_debug;
 	continue;
       case 'p':  if ((*argv)[0][3]) break;
 	++debugpoll;
@@ -423,7 +423,7 @@ void opt(int* argc, char*** argv, char*** env)
       case 'i':
 	if (!strcmp((*argv)[0],"-license")) {
 	  extern char* license;
-	  fprintf(stderr, license);
+	  fprintf(stderr, "%s", license);
 	  exit(0);
 	}
 	break;
@@ -435,16 +435,18 @@ void opt(int* argc, char*** argv, char*** env)
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
   argerr:
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     exit(3);
   }
-  
+
+#if 0  
   /* Remaining commandline is the remote host spec for DTS */
   while (*argc) {
     if (!parse_port_spec((*argv)[0], &remotes, "127.0.0.1")) break;
     ++(*argv); --(*argc);
   }
-  
+#endif
+
   if (nfd < 1)  nfd = 1;
   if (npdu < 1) npdu = 1;
   if (nthr < 1) nthr = 1;
@@ -454,6 +456,7 @@ void opt(int* argc, char*** argv, char*** env)
 
 static struct hi_io* serial_init(struct hi_host_spec* hs)
 {
+#ifdef ENA_SERIAL
   char tty[256];
   char sync = 'S', parity = 'N';
   int fd, ret, baud = 9600, bits = 8, stop = 1, framesize = 1000;
@@ -478,6 +481,9 @@ static struct hi_io* serial_init(struct hi_host_spec* hs)
     log_port_info(fd, tty, "after");
   nonblock(fd);
   return hi_add_fd(shuff, fd, hs->proto, HI_TCP_C, hs->specstr);
+#else
+  return 0;
+#endif
 }
 
 void* thread_loop(void* _shf)
@@ -540,7 +546,8 @@ int main(int argc, char** argv, char** env)
 
   /*if (stats_prefix) init_cmdline(argc, argv, env, stats_prefix);*/
   CMDLINE("init");
-  
+
+#if 0  
   if (pid_path) {
     int len;
     char buf[INTSTRLEN];
@@ -551,7 +558,8 @@ int main(int argc, char** argv, char** env)
 	  pid_path, getpid(), geteuid(), getegid());
     }
   }
-  
+#endif
+
   if (watchdog) {
 #ifdef MINGW
     ERR("Watch dog feature not supported on Windows.");
@@ -586,6 +594,7 @@ int main(int argc, char** argv, char** env)
  normal_child:
   D("Real server pid %d", getpid());
 
+#if 0
   if (kidpid_path) {
     int len;
     char buf[INTSTRLEN];
@@ -595,6 +604,7 @@ int main(int argc, char** argv, char** env)
 	  pid_path, getpid(), geteuid(), getegid());
     }
   }
+#endif
 
 #ifndef MINGW  
   if (signal(SIGPIPE, SIG_IGN) == SIG_ERR) {   /* Ignore SIGPIPE */
@@ -631,7 +641,7 @@ int main(int argc, char** argv, char** env)
       hs_next = hs->next;
       hs->next = prototab[hs->proto].specs;
       prototab[hs->proto].specs = hs;
-      if (hs->proto == S5066_SMTP)
+      if (hs->proto == HIPROTO_SMTP)
 	continue;  /* SMTP connections are opened later, when actual data from SIS arrives. */
 
       if (hs->sin.sin_family == 0xfead)
@@ -690,6 +700,6 @@ int main(int argc, char** argv, char** env)
   return 0; /* never really happens because hi_shuffle() never returns */
 }
 
-char* assert_msg = "%s: Internal error caused an ASSERT to fire. Deliberately provoking a core dump.\nSorry for the inconvenience and thank you for your collaboration.\n";
+//char* assert_msg = "%s: Internal error caused an ASSERT to fire. Deliberately provoking a core dump.\nSorry for the inconvenience and thank you for your collaboration.\n";
 
 /* EOF  --  zxbusd.c */

@@ -112,6 +112,7 @@ extern "C" {
  * the very few exceptions as ifdefs right in here. --Sampo */
 int close(int);
 int dup(int);
+int dup2(int,int);
 int execl(const char *path, const char *arg, ...);
 int fcntl(int fd, int cmd, ...);         /* Preferred */
 int fork(void);

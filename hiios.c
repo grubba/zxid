@@ -43,6 +43,10 @@
 #include "hiios.h"
 #include "errmac.h"
 
+/*() Allocate io structure (connection) pool and global PDU
+ * pool, from which per thread pools will be plensihed - see
+ * hi_pdu_alloc() - and initialize syncronization primitives. */
+
 struct hiios* hi_new_shuffler(int nfd, int npdu)
 {
   int i;
@@ -54,14 +58,15 @@ struct hiios* hi_new_shuffler(int nfd, int npdu)
     pthread_mutex_init(&shf->ios[i].qel.mut, MUTEXATTR);
   }
   
-  ZMALLOCN(shf->pdus, sizeof(struct hi_pdu)*npdu);
+  /* Allocate global pool of PDUs (as a blob) */
+  ZMALLOCN(shf->pdu_buf_blob, sizeof(struct hi_pdu)*npdu);
   shf->max_pdus = npdu;
-  for (i = npdu - 1; i; --i) {
-    shf->pdus[i-1].qel.n = (struct hi_qel*)(shf->pdus + i);
-    pthread_mutex_init(&shf->pdus[i].qel.mut, MUTEXATTR);
+  for (i = npdu - 1; i; --i) {  /* Link the PDUs to a list. */
+    shf->pdu_buf_blob[i-1].qel.n = (struct hi_qel*)(shf->pdu_buf_blob + i);
+    pthread_mutex_init(&shf->pdu_buf_blob[i].qel.mut, MUTEXATTR);
   }
-  pthread_mutex_init(&shf->pdus[0].qel.mut, MUTEXATTR);
-  shf->free_pdus = shf->pdus;
+  pthread_mutex_init(&shf->pdu_buf_blob[0].qel.mut, MUTEXATTR);
+  shf->free_pdus = shf->pdu_buf_blob;  /* Make PDUs available as free. */
   pthread_mutex_init(&shf->pdu_mut, MUTEXATTR);
   
   pthread_cond_init(&shf->todo_cond, 0);
@@ -84,7 +89,8 @@ struct hiios* hi_new_shuffler(int nfd, int npdu)
   return shf;
 }
 
-/* Our I/O strategy (edgetriggered epoll or /dev/poll) depends on nonblocking fds. */
+/*() Set socket to be nonblocking.
+ * Our I/O strategy (edge triggered epoll or /dev/poll) depends on nonblocking fds. */
 
 void nonblock(int fd)
 {
@@ -213,6 +219,8 @@ struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int p
   return io;
 }
 
+/*() Add file descriptor to poll */
+
 struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind, char *desc)
 {
   struct hi_io* io = shf->ios + fd;  /* uniqueness of fd acts as mutual exclusion mechanism */
@@ -242,12 +250,15 @@ struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind, char *de
   }
 #endif
 
+  memset(io, 0, sizeof(struct hi_io));
   io->fd = fd;
   io->qel.kind = kind;
   io->qel.proto = proto;
   io->description = desc;
   return io;
 }
+
+/*() Create client socket. */
 
 struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto)
 {
@@ -273,12 +284,15 @@ struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto)
   return hi_add_fd(shf, fd, proto, HI_TCP_C, hs->specstr);
 }
 
+/*() Create server side worker socket by accept(2)ing from listener socket. */
+
 static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
 {
-  struct hi_host_spec* hs;
+  //struct hi_host_spec* hs;
   struct hi_io* io;
   struct sockaddr_in sa;
-  int fd, size;
+  int fd;
+  size_t size;
   size = sizeof(sa);
   if ((fd = accept(listener->fd, (struct sockaddr*)&sa, &size)) == -1) {
     if (errno != EAGAIN)
@@ -294,7 +308,7 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
   
   switch (listener->qel.proto) {
   case HIPROTO_SMTP: /* In SMTP, server starts speaking first */
-    hi_sendf(hit, io, "220 %s smtp ready\r\n", SMTP_GREET_DOMAIN);
+    hi_sendf(hit, io, 0, "220 %s smtp ready\r\n", SMTP_GREET_DOMAIN);
     io->ad.smtp.state = SMTP_START;
     break;
 #ifdef ENA_S5066
@@ -317,7 +331,7 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
 #endif
   }
   
-  hi_todo_produce(hit->shf, &listener->qel);  /* Must exhaust accept. Either loop here or reenqueue. */
+  hi_todo_produce(hit->shf, &listener->qel);  /* Must exhaust accept: reenqueue (could also loop). */
 }
 
 void sis_clean(struct hi_io* io);
@@ -358,11 +372,14 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
   for (pdu = io->reqs; pdu; pdu = pdu->n)
     hi_free_req(hit, pdu);
   
-  if (io->cur_pdu)
+  if (io->cur_pdu) {
     hi_free_req(hit, io->cur_pdu);
-  
+    io->cur_pdu = 0;
+  }
+#ifdef ENA_S5066
   sis_clean(io);
-  
+#endif
+
   io->fd |= 0x80000000;  /* mark as free */
   close(fd);             /* now some other thread may reuse the slot by accept()ing same fd */
   D("closed(%x)", fd);
@@ -495,11 +512,14 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
   }
 }
 
+/*() Main I/O shuffling loop. */
+
 void hi_shuffle(struct hi_thr* hit, struct hiios* shf)
 {
   struct hi_qel* qe;
   hit->shf = shf;
   while (1) {
+    HI_SANITY(hit->shf, hit);
     qe = hi_todo_consume(shf);
     switch (qe->kind) {
     case HI_POLL:    hi_poll(shf); break;

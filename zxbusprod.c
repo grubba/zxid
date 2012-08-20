@@ -10,6 +10,7 @@
  * $Id$
  *
  * 17.8.2012,  creted, based on zxlog.c --Sampo
+ * 19.8.2012, added tolerance for CRLF where strictly LF is meant --Sampo
  *
  * Apart from formatting code, this is effectively a STOMP 1.1 client. Typically
  * it will talk to zxbusd instances configured using BUS_URL options.
@@ -26,6 +27,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
+#include <netdb.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -118,10 +120,10 @@ void zxbus_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
       break;
     case 0x04:      /* Rx RSA-SHA1 signature */
       sigletter = 'R';
-      LOCK(cf->mx, "logsign wrln");      
+      LOCK(cf->mx, "logsign-wrln");      
       if (!(log_sign_pkey = cf->log_sign_pkey))
 	log_sign_pkey = cf->log_sign_pkey = zxid_read_private_key(cf, "logsign-nopw-cert.pem");
-      UNLOCK(cf->mx, "logsign wrln");      
+      UNLOCK(cf->mx, "logsign-wrln");      
       if (!log_sign_pkey)
 	break;
       len = zxsig_data(cf->ctx, zlen, zbuf, &sig, log_sign_pkey, "enc log line");
@@ -146,11 +148,11 @@ void zxbus_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
       AES_cbc_encrypt((unsigned char*)zbuf+16, (unsigned char*)zbuf+16, zlen-16, &aes_key, (unsigned char*)ivec, 1);
       ROUND_UP(zlen, 16);        /* Round up to block size */
 
-      LOCK(cf->mx, "logenc wrln");
+      LOCK(cf->mx, "logenc-wrln");
       if (!cf->log_enc_cert)
 	cf->log_enc_cert = zxid_read_cert(cf, "logenc-nopw-cert.pem");
       rsa_pkey = zx_get_rsa_pub_from_cert(cf->log_enc_cert, "log_enc_cert");
-      UNLOCK(cf->mx, "logenc wrln");
+      UNLOCK(cf->mx, "logenc-wrln");
       if (!rsa_pkey)
 	break;
       
@@ -217,10 +219,10 @@ void zxbus_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
     p = sigbuf;
     break;
   case 0x04:   /* RP RSA-SHA1 signature */
-    LOCK(cf->mx, "logsign wrln");      
+    LOCK(cf->mx, "logsign-wrln");      
     if (!(log_sign_pkey = cf->log_sign_pkey))
       log_sign_pkey = cf->log_sign_pkey = zxid_read_private_key(cf, "logsign-nopw-cert.pem");
-    UNLOCK(cf->mx, "logsign wrln");
+    UNLOCK(cf->mx, "logsign-wrln");
     if (!log_sign_pkey)
       break;
     zlen = zxsig_data(cf->ctx, n-1, logbuf, &zbuf, log_sign_pkey, "log line");
@@ -374,7 +376,7 @@ struct stomp_hdr {
   char* login;           /* also session, subs_id, subsc */
   char* pw;              /* also server, ack, msg_id */
   char* dest;            /* destination, also heart_bt */
-  char* end_of_pdu;      /* Where frame data ends. Helps in cleaning buffer for next PDU. */
+  char* end_of_pdu;      /* One past end of frame data. Helps in cleaning buffer for next PDU. */
 };
 
 #define STOMP_MIN_PDU_SIZE (sizeof("ACK\n\n\0\n")-1)
@@ -385,22 +387,25 @@ struct stomp_hdr {
  * data is left in bu->buf, possibly with the following pdu as well. The
  * caller shouldclean the buffer without loosing the next pdu
  * fragment before calling this function again. For example:
- *   memmove(bu->buf, stomp->end_of_pdu, bu->ap-stomp->end_of_pdu)
+ *   memmove(bu->buf, stomp->end_of_pdu, bu->ap-stomp->end_of_pdu);
+ *   bu->ap = bu->buf + (bu->ap-stomp->end_of_pdu);
+ *   stomp->end_of_pdu = 0;
  * This is performed automatically if stomp->end_of_pdu is set in
  * the structure that is passed in.
  * The parsed headers are returned in the struct stomp_hdr. */
 
 static int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
 {
-  int len, got;
+  int len = 0, got;
   char* hdr;
   char* h;
   char* v;
   char* p;
 
-  if (stomp->end_of_pdu)
+  if (stomp->end_of_pdu) {
     memmove(bu->buf, stomp->end_of_pdu, bu->ap-stomp->end_of_pdu);
-
+    bu->ap = bu->buf + (bu->ap-stomp->end_of_pdu);
+  }
   memset(stomp, 0, sizeof(struct stomp_hdr));
 
   while (bu->ap - bu->buf < ZXBUS_BUF_SIZE) {
@@ -410,11 +415,12 @@ static int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* 
       return 0;
     }
     if (!got) {
-      D("recv: returned empty, gotten=%d", gotten);
+      D("recv: returned empty, gotten=%d", (bu->ap - bu->buf));
+      return 0;
     }
-    buf->ap += got;
+    bu->ap += got;
 
-    for (p = bu->buf; p < bu->ap && *p == '\n'; ++p) ;
+    for (p = bu->buf; p < bu->ap && ONE_OF_2(*p, '\n', '\r'); ++p) ;
     if (p > bu->buf) {
       /* Wipe out initial newlines */
       memmove(bu->buf, p, bu->ap - p);
@@ -431,15 +437,28 @@ static int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* 
       goto read_more;
     p = hdr;
 
-    /* Decode headers */
-    
-    while (1) {
+    /* Decode headers
+     * 01234 5 6 7
+     * STOMP\n\n\0
+     *         ^-p
+     * 01234 5 6 7 8 9
+     * STOMP\r\n\r\n\0
+     *           ^-p
+     * STOMP\nhost:foo\n\n\0
+     *        ^-p        ^-pp
+     * STOMP\r\nhost:foo\r\n\r\n\0
+     *          ^-p          ^-pp
+     * STOMP\nhost:foo\naccept-version:1.1\n\n\0
+     *        ^-p       ^-pp                 ^-ppp
+     * STOMP\r\nhost:foo\r\naccept-version:1.1\r\n\r\n\0
+     *          ^-p         ^-pp                   ^-ppp
+     */
+
+    while (!ONE_OF_2(*p,'\n','\r')) { /* Empty line separates headers from body. */
       h = p;
       p = memchr(p, '\n', bu->ap - p);
-      if (!p || ++p == lim)
+      if (!p || ++p == bu->ap)
 	goto read_more;
-      if (*p == '\n')
-	break;         /* Empty line separates headers from body. */
       v = memchr(h, ':', p-h);
       if (!v) {
 	ERR("Header missing colon. hdr(%*s)", bu->ap-h,h);
@@ -473,17 +492,17 @@ static int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* 
   
     /* Now body */
 
+    if (*p == '\r') ++p;
     stomp->body = ++p;
 
     if (len) {
-      if (len < bu->ap) {
+      if (len < bu->ap - p) {
         /* Got complete with content-length */
         p += len;
-        if (!*p++) {
-	  ERR("No nul to terminate body. %d",0);
-	  return 0;
-	}
-	goto done;
+        if (!*p++)
+	  goto done;
+	ERR("No nul to terminate body. %d",0);
+	return 0;
       } else {
 	goto read_more;
       }
@@ -507,6 +526,7 @@ static int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* 
     return 0;
   }
  done:
+  stomp->end_of_pdu = p;
   return 1;
 }
 
@@ -518,7 +538,7 @@ static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   struct hostent* he;
   struct sockaddr_in sin;
   struct stomp_hdr stomp;
-  int got, gotten, host_len;
+  int host_len;
   char* proto;
   char* host;
   char* port;
@@ -542,9 +562,9 @@ static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     host += 3;
   }
   
-  if (!memcmp(proto, "stomps:", sizeof("stomps:"))) {
+  if (!memcmp(proto, "stomps:", sizeof("stomps:")-1)) {
     bu->tls = 1;
-  } else if (!memcmp(proto, "stomp:", sizeof("stomp:"))) {
+  } else if (!memcmp(proto, "stomp:", sizeof("stomp:")-1)) {
     bu->tls = 0;
   } else {
     ERR("Unknown protocol(%*s)", 6, proto);
@@ -586,9 +606,9 @@ static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     exit(5);
   }
   
-  memset(sin, 0, sizeof(sin));
+  memset(&sin, 0, sizeof(sin));
   sin.sin_family = AF_INET;
-  sin.sin_port = htons(atoi(port));
+  sin.sin_port = htons(atoi(port+1));
   memcpy(&(sin.sin_addr.s_addr), he->h_addr, sizeof(sin.sin_addr.s_addr));
   
   if ((bu->fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
@@ -612,14 +632,16 @@ static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   
   D("connect(%x) hs(%s)", bu->fd, bu->s);
 
-#define STOMP_CONNECT  "STOMP\naccept-version:1.1\nhost:localhost\n\n\0";
+#define STOMP_CONNECT  "STOMP\naccept-version:1.1\nhost:localhost\n\n\0"
   send_all_socket(bu->fd, STOMP_CONNECT, sizeof(STOMP_CONNECT)-1);
 
   memset(&stomp, 0, sizeof(struct stomp_hdr));
   if (zxbus_read(cf, bu, &stomp)) {
-    if (!memcmp(bu->buf, "CONNECTED\n", sizeof("CONNECTED\n")-1)) {
-      if (stomp.end_of_pdu)
-	memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
+    if (!memcmp(bu->buf, "CONNECTED", sizeof("CONNECTED")-1)) {
+      memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
+      bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
+      stomp.end_of_pdu = 0;
+      D("STOMP got CONNECTED %d", 0);
       return 1;
     }
   }
@@ -627,6 +649,62 @@ static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   bu->fd = 0;
   ERR("Connection to %s failed. Other end did not send CONNECTED", bu->s);
   return 0;
+}
+
+/*() SEND a STOMP 1.1 DISCONNECT to audit bus and wait for RECEIPT.
+ * Returns:: zero on failure and 1 on success. Connection is closed in either case. */
+
+/* Called by: */
+int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
+{
+  int len;
+  char buf[1024];
+  struct stomp_hdr stomp;
+  
+  if (!bu || !bu->s || !bu->s[0] || !bu->fd)
+    return 0;         /* No bus_url configured means audit bus reporting is disabled. */
+
+  /* *** implement intelligent lbfo algo */
+  
+  len = snprintf(buf, sizeof(buf), "DISCONNECT\nreceipt:%d\n\n%c", bu->cur_rcpt-1, 0);
+  send_all_socket(bu->fd, buf, len);
+
+  memset(&stomp, 0, sizeof(struct stomp_hdr));
+  if (zxbus_read(cf, bu, &stomp)) {
+    if (!memcmp(bu->buf, "RECEIPT", sizeof("RECEIPT")-1)) {
+      if (atoi(stomp.rcpt_id) == bu->cur_rcpt - 1) {
+	memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
+	bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
+	D("DISCONNECT got RECEIPT %d", bu->cur_rcpt-1);
+	close(bu->fd);
+	bu->fd = 0;
+	return 1;
+      } else {
+	close(bu->fd);
+	bu->fd = 0;
+	ERR("DISCONNECT to %s failed. RECEIPT number(%*s)=%d mismatch cur_rcpt-1=%d", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1);
+	return 0;
+      }
+    } else {
+      ERR("DISCONNECT to %s failed. Other end did not send RECEIPT(%*ss)", bu->s, bu->ap - bu->buf, bu->buf);
+    }
+  } else {
+    ERR("DISCONNECT to %s failed. Other end did not send RECEIPT. Read error.", bu->s);
+  }
+  close(bu->fd);
+  bu->fd = 0;
+  return 0;
+}
+
+/*() SEND a STOMP 1.1 DISCONNECT to audit bus and wait for RECEIPT.
+ * Returns:: nothing. Ignores any errors (but errors cause fd to be closed). */
+
+/* Called by: */
+void zxbus_close_all(zxid_conf* cf)
+{
+  struct zxid_bus_url* bu;
+  for (bu = cf->bus_url; bu; bu = bu->n)
+    zxbus_close(cf, bu);
 }
 
 /*() SEND a STOMP 1.1 message to audit bus and wait for RECEIPT.
@@ -647,7 +725,7 @@ int zxbus_send(zxid_conf* cf, int n, const char* logbuf)
   DD("LOG(%.*s)", n-1, logbuf);
 
   bu = cf->bus_url;
-  if (!bu || !bu[0])
+  if (!bu || !bu->s || !bu->s[0])
     return 0;         /* No bus_url configured means audit bus reporting is disabled. */
 
   /* *** implement intelligent lbfo algo */
@@ -657,29 +735,33 @@ int zxbus_send(zxid_conf* cf, int n, const char* logbuf)
   if (!bu->fd)
     return 0;
   
-  len = snprintf(buf, "SEND\nreceipt:%d\ncontent-length:%d\n\n", bu->receipt++, n);
+  len = snprintf(buf, sizeof(buf), "SEND\nreceipt:%d\ncontent-length:%d\n\n", bu->cur_rcpt++, n);
   send_all_socket(bu->fd, buf, len);
   send_all_socket(bu->fd, logbuf, n);
   send_all_socket(bu->fd, "\0", 1);
 
   memset(&stomp, 0, sizeof(struct stomp_hdr));
   if (zxbus_read(cf, bu, &stomp)) {
-    if (!memcmp(bu->buf, "RECEIPT\n", sizeof("RECEIPT\n")-1)) {
-      if (stomp.end_of_pdu)
+    if (!memcmp(bu->buf, "RECEIPT", sizeof("RECEIPT")-1)) {
+      if (atoi(stomp.rcpt_id) == bu->cur_rcpt - 1) {
 	memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
-      if (atoi(stomp.rcpt_id) == bu->receipt - 1)
+	bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
+	D("SEND got RECEIPT %d", bu->cur_rcpt-1);
 	return 1;
-      else {
+      } else {
 	close(bu->fd);
 	bu->fd = 0;
-	ERR("Send to %s failed. RECEIPT number mismatch", bu->s);
+	ERR("Send to %s failed. RECEIPT number(%*s)=%d mismatch cur_rcpt-1=%d", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1);
 	return 0;
       }
+    } else {
+      ERR("Send to %s failed. Other end did not send RECEIPT(%*ss)", bu->s, bu->ap - bu->buf, bu->buf);
     }
+  } else {
+    ERR("Send to %s failed. Other end did not send RECEIPT. Read error.", bu->s);
   }
   close(bu->fd);
   bu->fd = 0;
-  ERR("Send to %s failed. Other end did not send RECEIPT", bu->s);
   return 0;
 }
 

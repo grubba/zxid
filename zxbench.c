@@ -103,7 +103,7 @@ void opt(int* argc, char*** argv, char*** env)
       DD("End of options by --");
       return;  /* -- ends the options */
 
-    case 'n': if ((*argv)[0][2]) break;
+    case 'i': if ((*argv)[0][2]) break;
       ++(*argv); --(*argc);
       if (!(*argc)) break;
       n_iter = atoi((*argv)[0]);

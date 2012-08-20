@@ -43,6 +43,8 @@ Usage: zxbustailf [options] < stream-to-log   # Will stop at EOF\n\
   -ch CHAN         Indicate logging channel. Default is to use configuration.\n\
   -n N or -N       Output the last N lines of file - the default is to log all.\n\
   -e MSG           Log message from command line\n\
+  -i N             Number of iterations of connect-send-disconnect cycle. For benchmarking.\n\
+  -is N            Number of sends per connection, for benchmarking.\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
   -d               Turn on debugging.\n\
@@ -55,6 +57,8 @@ echo '<query>Foo</query>' | zxbustailf -a https://idp.tas3.eu/zxididp?o=B user:p
 
 int dryrun  = 0;
 int verbose = 1;
+int n_iter = 1;
+int n_send = 2;
 char* bdy = 0;
 char* chan = 0;
 zxid_conf* cf;
@@ -121,6 +125,23 @@ static void opt(int* argc, char*** argv, char*** env)
       break;
 
 
+    case 'i':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	++(*argv); --(*argc);
+	if (!(*argc)) break;
+	n_iter = atoi((*argv)[0]);
+	continue;
+      case 's':
+	if ((*argv)[0][3]) break;
+	++(*argv); --(*argc);
+	if (!(*argc)) break;
+	n_send = atoi((*argv)[0]);
+	continue;
+      }
+      break;
+
+
     case 'n':
       switch ((*argv)[0][2]) {
       case '\0':
@@ -170,23 +191,27 @@ help:
 /* Called by: */
 int zxbustailf_main(int argc, char** argv, char** env)
 {
-  int siz, got, n;
-  char* p;
-  struct zx_str* ss;
-  zxid_ses* ses;
-  zxid_entity* idp_meta;
-  zxid_epr* epr;
-
+  int ns;
+  char buf[64];
   strncpy(zx_instance, "\tzxbustailf", sizeof(zx_instance));
   cf = zxid_new_conf_to_cf(0);
   opt(&argc, &argv, &env);
 
-  if (bdy) {
-    zxbus_sendf("%s", bdy);
+  for (; n_iter; --n_iter) {
+    if (ns > 1 || n_iter > 1) {
+      for (ns = n_send; ns; --ns) {
+	snprintf(buf, sizeof(buf), "test(%d,%d)", n_iter, ns);
+	zxbus_send(cf, strlen(bdy), buf);
+      }
+    } else {
+      if (bdy) {
+	zxbus_send(cf, strlen(bdy), bdy);
+      }
+    }
+    /* *** implement actual tail functionality */
+    
+    zxbus_close_all(cf);
   }
-  
-  /* *** implement actual tail functionality */
-  
   return 0;
 }
 

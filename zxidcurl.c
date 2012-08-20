@@ -125,7 +125,7 @@ char* zxid_http_get(zxid_conf* cf, const char* url, char** lim)
 
   rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_MD_BUF+1);
   rc.lim = rc.buf + ZXID_INIT_MD_BUF;
-  LOCK(cf->curl_mx, "curl http_get");
+  LOCK(cf->curl_mx, "curl-http_get");
   curl_easy_reset(cf->curl);
   curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
   curl_easy_setopt(cf->curl, CURLOPT_WRITEFUNCTION, zxid_curl_write_data);
@@ -140,7 +140,7 @@ char* zxid_http_get(zxid_conf* cf, const char* url, char** lim)
   if (cf->log_level>1)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "GETMD", url, 0);
   res = curl_easy_perform(cf->curl);
-  UNLOCK(cf->curl_mx, "curl http_get");
+  UNLOCK(cf->curl_mx, "curl-http_get");
   rc.lim = rc.p;
   rc.p[1] = 0;
   rc.p = rc.buf;
@@ -185,9 +185,9 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   cf->curl = curl_easy_init();
   curl_easy_reset(cf->curl);
   LOCK_INIT(cf->curl_mx);
-  LOCK(cf->curl_mx, "curl soap");
+  LOCK(cf->curl_mx, "curl-soap");
 #else
-  LOCK(cf->curl_mx, "curl soap");
+  LOCK(cf->curl_mx, "curl-soap");
   curl_easy_reset(cf->curl);
 #endif
   curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
@@ -257,7 +257,7 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
     ERR("Failed post to url(%s) CURLcode(%d) CURLerr(%s)", urli, res, CURL_EASY_STRERR(res));
     DD("buf(%.*s)", rc.lim-rc.buf, rc.buf);
   }
-  UNLOCK(cf->curl_mx, "curl soap");
+  UNLOCK(cf->curl_mx, "curl-soap");
   ZX_FREE(cf->ctx, urli);
   rc.lim = rc.p;
   rc.p[0] = 0;

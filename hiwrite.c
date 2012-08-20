@@ -25,12 +25,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "platform.h"
+#include "errmac.h"
 #include "akbox.h"
 #include "hiios.h"
-#include "errmac.h"
+
+/*() Schedule to be sent a response.
+ * If req is supplied, the response is taken to be response to that.
+ * Otherwise resp istreated as a stand along PDU, unsolicited response if you like. */
 
 void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp)
 {
+  HI_SANITY(hit->shf, hit);
   if (req) {
     resp->req = req;
     resp->n = req->reals;
@@ -39,7 +45,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
     resp->req = resp->n = 0;
   }
   
-  LOCK(io->qel.mut, "");
+  LOCK(io->qel.mut, "send0");
   if (!io->to_write_produce)
     io->to_write_consume = resp;
   else
@@ -48,8 +54,9 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   resp->qel.n = 0;
   ++io->n_to_write;
   ++io->n_pdu_out;
-  UNLOCK(io->qel.mut, "");
+  UNLOCK(io->qel.mut, "send0");
   
+  HI_SANITY(hit->shf, hit);
   D("hisend pdu(%p) fd(%x)", resp, io->fd);
   hi_write(hit, io);   /* Try cranking the write machine right away! */
   /*hi_todo_produce(hit->shf, &io->qel);*/
@@ -96,7 +103,10 @@ void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   hi_send0(hit, io, req, resp);
 }
 
-void hi_sendf(struct hi_thr* hit, struct hi_io* io, char* fmt, ...)
+/*() Send formatted response.
+ * *** As req argument is entirely lacking, this must be to send unsolicited responses. */
+
+void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* fmt, ...)
 {
   va_list pv;
   struct hi_pdu* pdu = hi_pdu_alloc(hit);
@@ -107,7 +117,7 @@ void hi_sendf(struct hi_thr* hit, struct hi_io* io, char* fmt, ...)
   va_end(pv);
   
   pdu->ap += pdu->len;
-  hi_send(hit, io, 0, pdu);
+  hi_send(hit, io, req, pdu);
 }
 
 static void hi_make_iov(struct hi_io* io)
@@ -115,7 +125,7 @@ static void hi_make_iov(struct hi_io* io)
   struct hi_pdu* pdu;
   struct iovec* lim = io->iov+HI_N_IOV;
   struct iovec* cur = io->iov_cur = io->iov;
-  LOCK(io->qel.mut, "");
+  LOCK(io->qel.mut, "make_iov");
   while ((pdu = io->to_write_consume) && (cur + pdu->n_iov) <= lim) {
     memcpy(cur, pdu->iov, pdu->n_iov * sizeof(struct iovec));
     cur += pdu->n_iov;
@@ -129,7 +139,7 @@ static void hi_make_iov(struct hi_io* io)
     ASSERT(io->n_to_write >= 0);
     ASSERT(pdu->n_iov && pdu->iov[0].iov_len);   /* Empty writes can lead to infinite loops */
   }
-  UNLOCK(io->qel.mut, "");
+  UNLOCK(io->qel.mut, "make_iov");
   io->n_iov = cur - io->iov_cur;
 }
 
@@ -145,6 +155,8 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
 {
   struct hi_pdu* pdu = resp->req->reals;
   
+  HI_SANITY(hit->shf, hit);
+
   /* Remove resp from request's real response list. resp MUST be in this list: if it
    * is not, pdu-n (next) pointer chasing will lead to NULL dereference (by design). */
   
@@ -157,9 +169,11 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
 	break;
       }
   
-  resp->qel.n = (struct hi_qel*)(hit->free_pdus);         /* move to free list */
+  resp->qel.n = &hit->free_pdus->qel;         /* move to free list */
   hit->free_pdus = resp;
   D("resp(%p) freed", resp);
+
+  HI_SANITY(hit->shf, hit);
 }
 
 /* May be called either because individual resp was done, or because of connection close. */
@@ -168,29 +182,33 @@ void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
 {
   struct hi_pdu* pdu;
   
+  HI_SANITY(hit->shf, hit);
+
   for (pdu = req->reals; pdu; pdu = pdu->n) { /* free dependent resps */
     pdu->qel.n = &hit->free_pdus->qel;
     hit->free_pdus = pdu;
   }
   
-  req->qel.n = (struct hi_qel*)(hit->free_pdus);          /* move to free list */
+  req->qel.n = &hit->free_pdus->qel;         /* move to free list */
   hit->free_pdus = req;
   D("req(%p) freed", req);
+
+  HI_SANITY(hit->shf, hit);
 }
 
 void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
 {
   struct hi_pdu* pdu;
-  hi_free_req(hit, req);
   ASSERT(req->fe);
   if (!req->fe)
     return;
-  
+  HI_SANITY(hit->shf, hit);
+
   /* Scan the frontend to find the reference. The theory is that
    * hi_free_req_fe() only gets called when its known that the request is in the queue.
    * If it is not, the loop will run off the end and crash with NULL pointer. */
   
-  LOCK(req->fe->qel.mut, "del from reqs");
+  LOCK(req->fe->qel.mut, "del-from-reqs");
   pdu = req->fe->reqs;
   if (pdu == req)
     req->fe->reqs = req->n;
@@ -200,7 +218,10 @@ void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
 	pdu->n = req->n;
 	break;
       }
-  UNLOCK(req->fe->qel.mut, "del from reqs");
+  UNLOCK(req->fe->qel.mut, "del-from-reqs");
+
+  HI_SANITY(hit->shf, hit);
+  hi_free_req(hit, req);
 }
 
 /* Often moving PDU to reqs means it should stop being cur_pdu. This is either
@@ -208,11 +229,11 @@ void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
 
 void hi_add_to_reqs(struct hi_io* io, struct hi_pdu* req)
 {
-  LOCK(io->qel.mut, "add to reqs");
+  LOCK(io->qel.mut, "add_to_reqs");
   req->fe = io;
   req->n = io->reqs;
   io->reqs = req;
-  UNLOCK(io->qel.mut, "add to reqs");
+  UNLOCK(io->qel.mut, "add_to_reqs");
 }
 
 static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
@@ -249,7 +270,7 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
     
     hi_free_resp(hit, pdu);
     if (!pdu->req->reals)
-      hi_free_req(hit, pdu->req);  /* last response, free the request */
+      hi_free_req_fe(hit, pdu->req);  /* last response, free the request */
   }
 }
 
@@ -267,6 +288,7 @@ void hi_write(struct hi_thr* hit, struct hi_io* io)
       return;            /* Nothing further to write */
   retry:
     D("writev(%x) n_iov=%d", io->fd, io->n_iov);
+    HEXDUMP("iov0:", io->iov_cur->iov_base, io->iov_cur->iov_base + io->iov_cur->iov_len, 16);
     ret = writev(io->fd, io->iov_cur, io->n_iov);
     switch (ret) {
     case 0: NEVERNEVER("writev on %x returned 0", io->fd);

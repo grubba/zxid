@@ -9,6 +9,7 @@
  *
  * 15.4.2006, created over Easter holiday --Sampo
  * 16.8.2012, modified license grant to allow use with ZXID.org --Sampo
+ * 19.8.2012, fixed serious free_pds manipulation bug in hi_pdu_alloc() --Sampo
  *
  * Read more data to existing PDU (cur_pdu), or create new PDU and read data into it.
  */
@@ -25,9 +26,18 @@
 #include "hiproto.h"
 #include "errmac.h"
 
+/*() Allocate pdu.  First allocation from per thread pool is
+ * attempted. This does not require any locking.  If that does not
+ * work out, recourse to the shuffler level global pool, with locking,
+ * is made.
+ */
+
 struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
 {
   struct hi_pdu* pdu;
+
+  HI_SANITY(hit->shf, hit);
+
   if (hit->free_pdus) {
     pdu = hit->free_pdus;
     hit->free_pdus = (struct hi_pdu*)pdu->qel.n;
@@ -38,12 +48,12 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
   LOCK(hit->shf->pdu_mut, "pdu_alloc");
   if (hit->shf->free_pdus) {
     pdu = hit->shf->free_pdus;
-    hit->free_pdus = (struct hi_pdu*)pdu->qel.n;
-    UNLOCK(hit->shf->pdu_mut, "pdu_alloc ok");
+    hit->shf->free_pdus = (struct hi_pdu*)pdu->qel.n;
+    UNLOCK(hit->shf->pdu_mut, "pdu_alloc-ok");
     D("alloc pdu(%p) from shuffler", pdu);
     goto retpdu;
   }
-  UNLOCK(hit->shf->pdu_mut, "pdu_alloc no pdu");
+  UNLOCK(hit->shf->pdu_mut, "pdu_alloc-no-pdu");
   
   D("out of pdus %d", 0);
   return 0;
@@ -55,6 +65,7 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
   pdu->fe = 0;
   pdu->need = 1;  /* trigger network I/O */
   pdu->n = 0;
+  HI_SANITY(hit->shf, hit);
   return pdu;
 }
 
@@ -63,6 +74,7 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
 void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
 {
   int n = req->ap - req->m;
+  D("checkmore %d", minlen);
   ASSERT(minlen);  /* If this is ever zero it will prevent hi_poll() from producing. */
   if (n > req->len) {
     struct hi_pdu* nreq = hi_pdu_alloc(hit);
@@ -111,7 +123,7 @@ void hi_read(struct hi_thr* hit, struct hi_io* io)
       }
     default:  /* something was read, invoke PDU parsing layer */
       D("got(%x) %d bytes, proto=%d cur_pdu(%p) need=%d", io->fd, ret, io->qel.proto, io->cur_pdu, io->cur_pdu->need);
-      HEXDUMP("got: ", io->cur_pdu->ap, io->cur_pdu->ap + ret, 800);
+      HEXDUMP("got:", io->cur_pdu->ap, io->cur_pdu->ap + ret, 16);
       io->cur_pdu->ap += ret;
       io->n_read += ret;
       while (io->cur_pdu
@@ -140,12 +152,16 @@ void hi_read(struct hi_thr* hit, struct hi_io* io)
 	  }
 	  break;
 	case HIPROTO_STOMP:
+#if 1
+	  if (stomp_decode(hit, io))  goto conn_close; break;
+#else
 	  if (io->qel.kind == HI_TCP_C) {
 	    if (stomp_decode_resp(hit, io))  return;
 	  } else {
 	    if (stomp_decode_req(hit, io))   return;
 	  }
 	  break;
+#endif
 	default: NEVERNEVER("unknown proto(%x)", io->qel.proto);
 	}
       }

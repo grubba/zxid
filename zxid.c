@@ -205,7 +205,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
       case 'i':
 	if (!strcmp((*argv)[0],"-license")) {
 	  extern char* license;
-	  fprintf(stderr, license);
+	  fprintf(stderr, "%s", license);
 	  exit(0);
 	}
 	break;

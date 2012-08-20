@@ -8,6 +8,7 @@
  * $Id$
  *
  * 16.8.2012, created, based on http and smtp --Sampo
+ * 19.8.2012, added tolerance for CRLF where strictly LF is meant --Sampo
  *
  * STOMP 1.1 frame is considered a PDU and consists of
  *
@@ -22,12 +23,15 @@
  * Todo: implement heart beat generation and checking
  */
 
+#include "platform.h"
+#include "errmac.h"
 #include "akbox.h"
 #include "hiios.h"
-#include "errmac.h"
+#include "hiproto.h"
 
 #include <ctype.h>
 #include <memory.h>
+#include <stdlib.h>
 #include <netinet/in.h> /* htons(3) and friends */
 
 
@@ -43,7 +47,7 @@
 #define ack       pw
 #define msg_id    pw
 #define heart_bt  dest
-#define STOMP_MIN_PDU_SIZE (sizeof("ACK\n\n\0\n")-1)
+#define STOMP_MIN_PDU_SIZE (sizeof("ACK\n\n\0")-1)
 
 static struct hi_pdu* stomp_encode_start(struct hi_thr* hit)
 {
@@ -52,33 +56,34 @@ static struct hi_pdu* stomp_encode_start(struct hi_thr* hit)
   return resp;
 }
 
-static int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* rctp_id, char* ecode, char* emsg)
+static int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* receipt_id, char* ecode, char* emsg)
 {
   struct hi_pdu* resp = stomp_encode_start(hit);
-  resp->len = sprintf(resp->m, "ERROR\nreceipt-id:%s\nmessage:%s\ncontent-type:text/plain\ncontent-length:%d\n\n%s\0", rcpt_id?rcpt_id:"-", ecode, strlen(emsg), emsg);
+  resp->len = sprintf(resp->m, "ERROR\nreceipt-id:%s\nmessage:%s\ncontent-type:text/plain\ncontent-length:%d\n\n%s%c", receipt_id?receipt_id:"-", ecode, strlen(emsg), emsg, 0);
   hi_send(hit, io, req, resp);
   return HI_CONN_CLOSE;
 }
 
 #define CMD_NI_MSG "Command(%*s) not implemented by server."
 
-static int stomp_cmd_ni(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* rctp_id, char* cmd)
+static int stomp_cmd_ni(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* receipt_id, char* cmd)
 {
 #if 0
-  return stomp_err(hit, io, req, rcpt_id, "command not implemented by server", cmd);
+  return stomp_err(hit, io, req, receipt_id, "command not implemented by server", cmd);
 #else
   struct hi_pdu* resp = stomp_encode_start(hit);
   char* nl = strchr(cmd, '\n');
-  resp->len = sprintf(resp->m, "ERROR\nreceipt-id:%s\nmessage:command not implemented by server\ncontent-type:text/plain\ncontent-length:%d\n\n" CMD_NI_MSG "\0", rcpt_id?rcpt_id:"-", sizeof(CMD_NI_MSG)-3+(nl-cmd), cmd);
+  resp->len = sprintf(resp->m, "ERROR\nreceipt-id:%s\nmessage:command not implemented by server\ncontent-type:text/plain\ncontent-length:%d\n\n" CMD_NI_MSG "%c", receipt_id?receipt_id:"-", sizeof(CMD_NI_MSG)-3+(nl-cmd), (nl-cmd), cmd, 0);
   hi_send(hit, io, req, resp);
   return HI_CONN_CLOSE;
 #endif
 }
 
-static void stomp_got_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
+static int stomp_got_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
-  struct hi_pdu* resp = stomp_encode_start(hit);
+  //struct hi_pdu* resp = stomp_encode_start(hit);
   /*hi_sendv(hit, io, req, resp, len, resp->m, size, req->m + len);*/
+  return HI_CONN_CLOSE;
 }
 
 /* STOMP Received Command Handling */
@@ -86,18 +91,20 @@ static void stomp_got_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
 static void stomp_got_login(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   /* *** add login checks */
-  io->ad.stomp.state = STOMP_CONNECTED;
-  hi_sendf(hit, io, "CONNECTED\nversion:1.1\nserver:zxbusd-1.x\n\n%c", 0);
+  io->ad.stomp.state = STOMP_CONN;
+  hi_sendf(hit, io, req, "CONNECTED\nversion:1.1\nserver:zxbusd-1.x\n\n%c", 0);
 }
 
 static int stomp_got_disc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
-#if 0
-  return stomp_cmd_ni(hit,io,req,0,"DISCONNECT\n");
-#else
-  hi_sendf(hit, io, "RECEIPT\nreceipt-id:0\n\n%c", 0);  /* *** figure out the real receipt id */
+  hi_sendf(hit, io, req, "RECEIPT\nreceipt-id:0\n\n%c", 0);  /* *** figure out the real receipt id */
   return HI_CONN_CLOSE;
-#endif
+}
+
+int zxbus_persist(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
+{
+  /* *** Actually persist the message */
+  return 1;
 }
 
 /*() Main function for receiving audit bus summary log lines from SPs.
@@ -114,13 +121,13 @@ static int stomp_got_disc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
 
 static void stomp_got_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
+  HI_SANITY(hit->shf, hit);
   if (zxbus_persist(hit, io, req)) {
-    hi_sendf(hit, io, "RECEIPT\nreceipt-id:0\n\n%c", 0);  /* *** figure out the real receipt id */
+    hi_sendf(hit, io, req, "RECEIPT\nreceipt-id:0\n\n%c", 0);  /* *** figure out the real receipt id */
   } else {
-
+    ERR("Persist Problem. Disk full? %d", 0);
+    hi_sendf(hit, io, req, "ERROR\nmessage:persist failure\nreceipt-id:0\n\nUnable to persist message. Can not guarantee reliable delivery, therefore rejecting.%c", 0);  /* *** figure out the real receipt id */
   }
-  /* struct hi_pdu* resp = stomp_encode_start(hit);
-     hi_sendv(hit, io, req, resp, len, resp->m, size, req->m + len);*/
 }
 
 static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
@@ -140,24 +147,29 @@ static void stomp_got_unsubsc(struct hi_thr* hit, struct hi_io* io, struct hi_pd
   stomp_cmd_ni(hit,io,req,0,"UNSUBSCRIBE\n");
 }
 
-/* STOMP decoder and dispatch */
+/*() STOMP decoder and dispatch */
 
-static int stomp_decode_frame(struct hi_thr* hit, struct hi_io* io)
+int stomp_decode(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* req = io->cur_pdu;
-  int len;
+  int len = 0;
   char* command;
   char* hdr;
   char* h;
   char* v;
   char* p = req->m;
+
+  D("decode req(%p) (%.*s)", req, MIN(req->ap - req->m, 4), req->m);
   
+  HI_SANITY(hit->shf, hit);
+
   /* Skip newlines and check size */
 
-  for (; p < req->ap && *p == '\n'; ++p) ;
+  for (; p < req->ap && ONE_OF_2(*p, '\n', '\r'); ++p) ;
 
   if (req->ap - p < STOMP_MIN_PDU_SIZE) {   /* too little, need more */
-    req->need = STOMP_MIN_PDU_SIZE - (req->ap - p);
+    req->need = STOMP_MIN_PDU_SIZE;
+    D("need=%d",req->need);
     return 0;
   }
 
@@ -166,30 +178,44 @@ static int stomp_decode_frame(struct hi_thr* hit, struct hi_io* io)
   command = p;
   hdr = memchr(p, '\n', req->ap - p);
   if (!hdr || ++hdr == req->ap) {
-    req->need = MAX(STOMP_MIN_PDU_SIZE - (req->ap - p), 1);
+    req->need = MAX(STOMP_MIN_PDU_SIZE, req->ap - p + 1);
+    D("need=%d",req->need);
     return 0;
   }
   p = hdr;
 
-  /* Decode headers */
+  /* Decode headers
+   * 012345678901234567890
+   * STOMP\n\n\0
+   *         ^-p
+   * STOMP\r\n\r\n\0
+   *           ^-p
+   * STOMP\nhost:foo\n\n\0
+   *        ^-p        ^-pp
+   * STOMP\r\nhost:foo\r\n\r\n\0
+   *          ^-p          ^-pp
+   * STOMP\nhost:foo\naccept-version:1.1\n\n\0
+   *        ^-p       ^-pp                 ^-ppp
+   * STOMP\r\nhost:foo\r\naccept-version:1.1\r\n\r\n\0
+   *          ^-p         ^-pp                   ^-ppp
+   */
 
-  while (1) {
+  while (!ONE_OF_2(*p,'\n','\r')) {
     h = p;
     p = memchr(p, '\n', req->ap - p);
     if (!p || ++p == req->ap) {
-      req->need = MAX(STOMP_MIN_PDU_SIZE - (req->ap - p), 1);
+      req->need = MAX(STOMP_MIN_PDU_SIZE, req->ap - p + 1);
+      D("need=%d",req->need);
       return 0;
     }
-    if (*p == '\n')
-      break;         /* Empty line separates headers from body. */
     v = memchr(h, ':', p-h);
     if (!v)
       return stomp_err(hit,io,req,0,"malformed frame received","Header missing colon.");
  
 #define HDR(hdr, field, val) } else if (!memcmp(h, hdr, sizeof(hdr)-1)) { if (!req->ad.stomp.field) req->ad.stomp.field = (val)
 
-    if (!memcmp(p, "content-length:", sizeof("content-length:")-1))
-    { if (!req->ad.stomp.len) req->ad.stomp.len = len = atoi(v);
+    if (!memcmp(h, "content-length:", sizeof("content-length:")-1))
+    { if (!req->ad.stomp.len) req->ad.stomp.len = len = atoi(v); D("len=%d",len);
     HDR("host:",           host,      v);
     HDR("receipt:",        receipt,   v);
     HDR("receipt-id:",     rcpt_id,   v);
@@ -214,56 +240,62 @@ static int stomp_decode_frame(struct hi_thr* hit, struct hi_io* io)
   
   /* Now body */
 
+  if (*p == '\r') ++p;
   req->ad.stomp.body = ++p;
 
   if (len) {
     if (len < req->ap - p) {
       /* Got complete with content-length */
       p += len;
-      if (!*p++)
+      if (*p++)
 	return stomp_err(hit,io,req,0,"malformed frame received","No nul to terminate body.");
     } else {
-      req->need = len - (req->ap - p) + 1 /* nul */;
+      req->need = len + 1 /* nul */;
+      D("need=%d",req->need);
       return 0;
     }
   } else {
     /* Scan until nul */
     while (1) {
       if (req->ap - p < 1) {   /* too little, need more */
-	req->need = 1;
+	req->need = req->ap - req->m + 1;
+	D("need=%d",req->need);
 	return 0;
       }
-      if (!*p++) {
+      if (!*p++) {  /* nul termination found */
 	req->ad.stomp.len = len = p - req->ad.stomp.body - 1;
 	break;
       }
     }
   }
   
+  HI_SANITY(hit->shf, hit);
   io->cur_pdu = 0;
   hi_add_to_reqs(io, req);
+  HI_SANITY(hit->shf, hit);
 
   /* Command dispatch */
 
 #define CMD(vrb, action) } else if (!memcmp(command, vrb, sizeof(vrb)-1)) { action
  
-  if (!memcmp(command, "STOMP\n", sizeof("STOMP\n")-1)
-      || !memcmp(command, "CONNECT\n", sizeof("CONNECT\n")-1))
-  { stomp_got_login(hit,io,req)
-  CMD("SEND\n",        stomp_got_send(hit,io,req) );
-  CMD("ACK\n",         stomp_got_ack(hit,io,req) );
-  CMD("DISCONNECT\n",  return stomp_got_disc(hit,io,req) );
-  CMD("SUBSCRIBE\n",   stomp_got_subsc(hit,io,req) );
-  CMD("UNSUBSCRIBE\n", stomp_got_unsubsc(hit,io,req) );
-  CMD("BEGIN\n",       stomp_cmd_ni(hit,io,req,0,p) );
-  CMD("COMMIT\n",      stomp_cmd_ni(hit,io,req,0,p) );
-  CMD("ABORT\n",       stomp_cmd_ni(hit,io,req,0,p) );
-  CMD("NACK\n",        stomp_cmd_ni(hit,io,req,0,p) );
+  if (!memcmp(command, "STOMP", sizeof("STOMP")-1)
+      || (!memcmp(command, "CONNECT", sizeof("CONNECT")-1)
+	  &&ONE_OF_2(command[sizeof("CONNECT")],'\n','\r')))
+  { stomp_got_login(hit,io,req);
+  CMD("SEND",        stomp_got_send(hit,io,req) );
+  CMD("ACK",         stomp_got_ack(hit,io,req) );
+  CMD("DISCONNECT",  return stomp_got_disc(hit,io,req) );
+  CMD("SUBSCRIBE",   stomp_got_subsc(hit,io,req) );
+  CMD("UNSUBSCRIBE", stomp_got_unsubsc(hit,io,req) );
+  CMD("BEGIN",       stomp_cmd_ni(hit,io,req,0,p) );
+  CMD("COMMIT",      stomp_cmd_ni(hit,io,req,0,p) );
+  CMD("ABORT",       stomp_cmd_ni(hit,io,req,0,p) );
+  CMD("NACK",        stomp_cmd_ni(hit,io,req,0,p) );
   /* Commands client would see (sent by server) */
-  CMD("CONNECTED\n",   stomp_cmd_ni(hit,io,req,0,p) );
-  CMD("MESSAGE\n",     stomp_cmd_ni(hit,io,req,0,p) );
-  CMD("RECEIPT\n",     stomp_cmd_ni(hit,io,req,0,p) );
-  CMD("ERROR\n",       return stomp_got_err(hit,io,req)    );
+  CMD("CONNECTED",   stomp_cmd_ni(hit,io,req,0,p) );
+  CMD("MESSAGE",     stomp_cmd_ni(hit,io,req,0,p) );
+  CMD("RECEIPT",     stomp_cmd_ni(hit,io,req,0,p) );
+  CMD("ERROR",       return stomp_got_err(hit,io,req)    );
   } else {
     D("Unknown command(%*s) ignored.", 4, command);
     stomp_cmd_ni(hit,io,req,0,p);
