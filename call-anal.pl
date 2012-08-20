@@ -69,7 +69,7 @@ push @ignore_callee,
        va_end va_start vprintf vsnprintf vsprintf vsyslog
        write writev);
 
-push @ignore_callee, qw(new_ds_ei);
+push @ignore_callee, qw(new_zx_ei);
 
 select STDERR; $|=1; select STDOUT;
 
@@ -97,10 +97,10 @@ sub process_func {
 	next if $callee =~ /^[A-Z0-9_]{3,}/; # Ignore all caps starts
 	next if grep $callee eq $_, @ignore_callee;
 	$callee =~ s/^~/D_/;
-	#warn "dslex2() body: >$callee< >>$func_calls[0]<<" if $func eq 'dslex2';
+	#warn "zxlex2() body: >$callee< >>$func_calls[0]<<" if $func eq 'zxlex2';
 	$called_by{$callee}{$func}++;
 	$calls{$func}{$callee}++;
-	#warn "ds_scan_identifier x dslex2: `$called_by{$callee}{$func}' `$calls{$func}{$callee}'" if ($func eq 'dslex2') && ($callee eq 'ds_scan_identifier');
+	#warn "zx_scan_identifier x zxlex2: `$called_by{$callee}{$func}' `$calls{$func}{$callee}'" if ($func eq 'zxlex2') && ($callee eq 'zx_scan_identifier');
 	$fnf{$fn}{$func}{$callee}++;
 	#warn "fn=$fn func=$func callee=$callee: $fnf{$fn}{$func}{$callee}";
     } continue {
@@ -242,19 +242,19 @@ DEBUG
   }
 }
 
-$callee = 'ds_scan_identifier';
-$func = 'dslex2';
-#warn "ds_scan_identifier x dslex2: `$called_by{$callee}{$func}' `$calls{$func}{$callee}'";
+$callee = 'zx_scan_id';
+$func = 'zxlex2';
+#warn "zx_scan_id x zxlex2: `$called_by{$callee}{$func}' `$calls{$func}{$callee}'";
 
 $0 = "generating output";
 warn "Generating output...\n";
 
 open F, ">function.list" or die "Cant write function.list: $!";
-print F map qq(DSFUNC_DEF("$_","$def{$_}[0]")\n), sort keys %def;
+print F map qq(ZXFUNC_DEF("$_","$def{$_}[0]")\n), sort keys %def;
 close F;
 
 open F, ">file.list" or die "Cant write file.list: $!";
-print F map qq(DSFILE_DEF("$_")\n), sort keys %fnf;
+print F map qq(ZXFILE_DEF("$_")\n), sort keys %fnf;
 close F;
 
 print "$dot_header\n// Files of definition\n// =====\n";
@@ -298,9 +298,9 @@ for $fn (sort keys %fnf) {
     print "subgraph cluster_$fn2 {\n  label=\"$fn\";\n";
     for $f (sort keys %{$fnf{$fn}}) {
 	next if !$def{$f};
-	if ($f =~ /^dsvm/) {
+	if ($f =~ /^zxvm/) {
 	    print "  $f [style=filled,color=red];\n";  # [shape=box]
-	} elsif ($f =~ /^ds/) {
+	} elsif ($f =~ /^zx/) {
 	    print "  $f [style=filled,color=yellow];\n";  # [shape=box]
 	} elsif ($f eq 'main') {
 	    print "  $f [style=filled,color=red, shape=octagon];\n";  # [shape=box]
