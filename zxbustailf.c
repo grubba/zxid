@@ -191,7 +191,7 @@ help:
 /* Called by: */
 int zxbustailf_main(int argc, char** argv, char** env)
 {
-  int ns;
+  int len,ns;
   char buf[64];
   strncpy(zx_instance, "\tzxbustailf", sizeof(zx_instance));
   cf = zxid_new_conf_to_cf(0);
@@ -200,8 +200,8 @@ int zxbustailf_main(int argc, char** argv, char** env)
   for (; n_iter; --n_iter) {
     if (ns > 1 || n_iter > 1) {
       for (ns = n_send; ns; --ns) {
-	snprintf(buf, sizeof(buf), "test(%d,%d)", n_iter, ns);
-	zxbus_send(cf, strlen(bdy), buf);
+	len = snprintf(buf, sizeof(buf), "test(%d,%d)", n_iter, ns);
+	zxbus_send(cf, len, buf);
       }
     } else {
       if (bdy) {

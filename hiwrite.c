@@ -30,6 +30,8 @@
 #include "akbox.h"
 #include "hiios.h"
 
+extern int zx_debug;
+
 /*() Schedule to be sent a response.
  * If req is supplied, the response is taken to be response to that.
  * Otherwise resp istreated as a stand along PDU, unsolicited response if you like. */
@@ -58,7 +60,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   UNLOCK(io->qel.mut, "send0");
   
   HI_SANITY(hit->shf, hit);
-  D("hisend pdu(%p) fd(%x)", resp, io->fd);
+  D("hisend fd(%x) pdu(%p) n_iov=%d iov0(%.*s)", io->fd, resp, resp->n_iov, MIN(resp->iov->iov_len,4), (char*)resp->iov->iov_base);
   hi_write(hit, io);   /* Try cranking the write machine right away! *** should we fish out any todo queue item that may stomp on us? How to deal with thread that has already consumed from the todo_queue? */
   /*hi_todo_produce(hit->shf, &io->qel);  -- superceded by direct write approach! */
 }
@@ -68,7 +70,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
 /* Called by:  hi_sendf, http_send_err, stomp_cmd_ni, stomp_err, test_ping_reply */
 void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp)
 {
-  hi_send1(hit, io, req, resp, resp->len, resp->m);
+  hi_send1(hit, io, req, resp, resp->need, resp->m);
 }
 
 /*() Uses hi_send0() to send one segment message. */
@@ -128,10 +130,10 @@ void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* fm
   if (!pdu) { ERR("Out of PDUs in bad place fmt(%s)", fmt); return; }
   
   va_start(pv, fmt);
-  pdu->len = vsnprintf(pdu->m, pdu->lim - pdu->m, fmt, pv);
+  pdu->need = vsnprintf(pdu->m, pdu->lim - pdu->m, fmt, pv);
   va_end(pv);
   
-  pdu->ap += pdu->len;
+  pdu->ap += pdu->need;
   hi_send(hit, io, req, pdu);
 }
 
@@ -145,6 +147,7 @@ static void hi_make_iov(struct hi_io* io)
   struct hi_pdu* pdu;
   struct iovec* lim = io->iov+HI_N_IOV;
   struct iovec* cur = io->iov_cur = io->iov;
+  D("make_iov(%x)", io->fd);
   LOCK(io->qel.mut, "make_iov");
   while ((pdu = io->to_write_consume) && (cur + pdu->n_iov) <= lim) {
     memcpy(cur, pdu->iov, pdu->n_iov * sizeof(struct iovec));
@@ -158,6 +161,7 @@ static void hi_make_iov(struct hi_io* io)
     
     ASSERT(io->n_to_write >= 0);
     ASSERT(pdu->n_iov && pdu->iov[0].iov_len);   /* Empty writes can lead to infinite loops */
+    D("make_iov(%x) added pdu(%p) n_iov=%d", io->fd, pdu, cur - io->iov_cur);
   }
   UNLOCK(io->qel.mut, "make_iov");
   io->n_iov = cur - io->iov_cur;
@@ -253,13 +257,20 @@ void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
 }
 
 /*() Add a PDU to the reqs associated with the io object.
- * Often moving PDU to reqs means it should stop being cur_pdu. This is either
- * handled by explicit manipulation of io->cur_pdu or by calling hi_checkmore() */
+ * Often moving PDU to reqs means it should stop being cur_pdu.
+ * If minlen (protocol dependent PDU minimum length) is passed,
+ * hi_ckeckmore() processing is triggered and cur_pdu dealt with.
+ * Clearing cur_pdu is important to enable the hi_in_out() to
+ * admit new worker thread to perform read work. */
 
 /* Called by:  http_decode, stomp_decode, test_ping */
-void hi_add_to_reqs(struct hi_io* io, struct hi_pdu* req)
+void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
 {
   LOCK(io->qel.mut, "add_to_reqs");
+  if (minlen) {
+    ASSERTOP(io->cur_pdu, ==, req);
+    hi_checkmore(hit, io, req, minlen);
+  }
   req->fe = io;
   req->n = io->reqs;
   io->reqs = req;
@@ -336,7 +347,7 @@ void hi_write(struct hi_thr* hit, struct hi_io* io)
       case EAGAIN: return;  /* writev(2) exhausted (c.f. edge triggered epoll) */
       default:
 	ERR("writev(%x) failed: %d %s (closing connection)", io->fd, errno, STRERROR(errno));
-	UNLOCK(io->qel.mut, "closefd");
+	/* *** why this here? UNLOCK(io->qel.mut, "closefd"); */
 	hi_close(hit, io);
 	return;
       }

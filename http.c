@@ -32,7 +32,7 @@ struct hi_pdu* http_encode_start(struct hi_thr* hit)
 void http_send_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int r, char* m)
 {
   struct hi_pdu* resp = http_encode_start(hit);
-  resp->len = sprintf(resp->m, "HTTP/1.0 %03d %s\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", r, m, strlen(m), m);
+  resp->need = sprintf(resp->m, "HTTP/1.0 %03d %s\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", r, m, strlen(m), m);
   hi_send(hit, io, req, resp);
 }
 
@@ -83,16 +83,19 @@ int http_decode(struct hi_thr* hit, struct hi_io* io)
     req->need = 1;
     return 0;
   }
-  
-  io->cur_pdu = 0;
-  hi_add_to_reqs(io, req);
+  /* *** Proper processing of content-length and setting need to length of PDU is still needed. */
+  D("need=%d len=%d buf(%.*s)", req->need, req->ap-req->m, req->ap-req->m, req->m);
 
+  hi_add_to_reqs(hit, io, req, HTTP_MIN_PDU_SIZE);
+
+  /* 01234567890
+   * GET / HTTP/1.0 */
   switch (req->m[6]) {
   case 'a': http_send_data(hit, io, req, url_lim-url, url); break;
   case 'b': http_send_file(hit, io, req, url_lim-url, url); break;  /* *** */
   default:  http_send_err(hit, io, req, 500, "Error"); break;
   }
-  return 0;
+  return HI_CONN_CLOSE; /* HTTP/1.0 without keep-alive: close connection after every req-resp */
 }
 
 /* EOF  --  http.c */

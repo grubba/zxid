@@ -61,7 +61,7 @@ void test_ping(struct hi_thr* hit, struct hi_io* io)
   
   /* Got enough. Associate request with frontend. */
   
-  hi_add_to_reqs(io, req);  
+  hi_add_to_reqs(hit, io, req, MIN_PING);  
   test_ping_reply(hit, io, req);
 }
 

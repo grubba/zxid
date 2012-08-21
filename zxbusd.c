@@ -114,11 +114,12 @@ struct hi_host_spec* remotes = 0;
 
 struct hi_proto prototab[] = {  /* n.b. order in this table must match constants in hiproto.h */
   { "dummy0",  0, 0 },
+  { "pollon",  0, 0 },
   { "sis",    5066, 0 },
   { "dts",    5067, 0 },
   { "smtp",     25, 0 },
   { "http",   8080, 0 },
-  { "tp",     5068, 0 },  /* testping */
+  { "tp",     5068, 0 },  /* testping (6) */
   { "stomp",  2228, 0 },
   { "stomps", 2229, 0 },  /* n.b. 2229 is zxbus assigned port. Normal STOMP port is 61613 */
   { "", 0 }

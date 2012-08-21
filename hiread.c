@@ -26,6 +26,8 @@
 #include "hiproto.h"
 #include "errmac.h"
 
+extern int zx_debug;
+
 /*() Allocate pdu.  First allocation from per thread pool is
  * attempted. This does not require any locking.  If that does not
  * work out, recourse to the shuffler level global pool, with locking,
@@ -69,26 +71,28 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
   return pdu;
 }
 
-/*() Check if there is more in the input buffer.
+/*() Check if there is more (than need for cur_pdu) in the input buffer.
  * Sometimes the input buffer contains more than
  * a PDU's worth and therefore needs to be prepared
  * as input for the next PDU.
+ * The req->need field has to accurately reflact the size of the PDU. Typically
+ * it is set in later stages of decoder.
  * As hi_checkmore() will cause cur_pdu to change, it is common to call hi_add_reqs() */
 
-/* Called by: */
+/* Called by: hi_add_to_reqs */
 void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
 {
   int n = req->ap - req->m;
-  D("checkmore %d", minlen);
-  ASSERT(minlen);  /* If this is ever zero it will prevent hi_poll() from producing. */
-  if (n > req->len) {
+  D("Checkmore(%x) mn=%d n=%d req(%p)->need=%d", io->fd, minlen, n, req, req->need);
+  ASSERT(minlen > 0);  /* If this is ever zero it will prevent hi_poll() from producing. */
+  if (n > req->need) {
     struct hi_pdu* nreq = hi_pdu_alloc(hit);
     if (!nreq) { NEVERNEVER("*** out of pdus in bad place %d", n); }
     nreq->need = minlen;
-    memcpy(nreq->ap, req->m + req->len, n - req->len);
-    nreq->ap += n - req->len;
+    memcpy(nreq->ap, req->m + req->need, n - req->need);
+    nreq->ap += n - req->need;
     io->cur_pdu = nreq;
-    req->ap = req->m + req->len;
+    req->ap = req->m + req->need;
   } else
     io->cur_pdu = 0;
 }
@@ -100,6 +104,7 @@ void hi_read(struct hi_thr* hit, struct hi_io* io)
 {
   int ret;
   while (1) {  /* eagerly read until we exhaust the read (c.f. edge triggered epoll) */
+    D("read_loop io(%x)->cur_pdu=%p", io->fd, io->cur_pdu);
     if (!io->cur_pdu) {  /* need to create a new PDU */
       io->cur_pdu = hi_pdu_alloc(hit);
       if (!io->cur_pdu) {
@@ -115,27 +120,25 @@ void hi_read(struct hi_thr* hit, struct hi_io* io)
     switch (ret) {
     case 0:
       /* *** any provision to process still pending PDUs? */
-      hi_close(hit, io);
-      return;
+      D("EOF fd(%x)", io->fd);
+      goto conn_close;
     case -1:
       switch (errno) {
-      case EINTR:  goto retry;
-      case EAGAIN: return;  /* read(2) exhausted (c.f. edge triggered epoll) */
+      case EINTR:  D("EINTR fd(%x)", io->fd); goto retry;
+      case EAGAIN: D("EAGAIN fd(%x)", io->fd); return;  /* read(2) exhausted (c.f. edge triggered epoll) */
       default:
-	ERR("read(%x) failed: %d %s (closing connection)", io->fd, 
-	    errno, 
-	    STRERROR(errno));
-	hi_close(hit, io);
-	return;
+	ERR("read(%x) failed: %d %s (closing connection)", io->fd, errno, STRERROR(errno));
+	goto conn_close;
       }
     default:  /* something was read, invoke PDU parsing layer */
-      D("got(%x) %d bytes, proto=%d cur_pdu(%p) need=%d", io->fd, ret, io->qel.proto, io->cur_pdu, io->cur_pdu->need);
+      D("got(%x)=%d, proto=%d cur_pdu(%p) need=%d", io->fd, ret, io->qel.proto, io->cur_pdu, io->cur_pdu->need);
       HEXDUMP("got:", io->cur_pdu->ap, io->cur_pdu->ap + ret, 16);
       io->cur_pdu->ap += ret;
       io->n_read += ret;
       while (io->cur_pdu
 	     && io->cur_pdu->need   /* no further I/O desired */
 	     && io->cur_pdu->need <= (io->cur_pdu->ap - io->cur_pdu->m)) {
+	D("decode_loop io(%x)->cur_pdu=%p need=%d", io->fd, io->cur_pdu, io->cur_pdu?io->cur_pdu->need:-99);
 	switch (io->qel.proto) {
 	  /* *** add here a project dependent include? Or a macro. */
 	  /* Following decoders MUST either
@@ -150,6 +153,7 @@ void hi_read(struct hi_thr* hit, struct hi_io* io)
 	case HIPROTO_DTS:   if (dts_decode(hit, io))   goto conn_close;  break;
 #endif
 	case HIPROTO_HTTP:  if (http_decode(hit, io))  goto conn_close;  break;
+	case HIPROTO_STOMP: if (stomp_decode(hit, io)) goto conn_close;  break;
 	case HIPROTO_TEST_PING: test_ping(hit, io);  break;
 	case HIPROTO_SMTP:
 	  if (io->qel.kind == HI_TCP_C) {
@@ -158,17 +162,6 @@ void hi_read(struct hi_thr* hit, struct hi_io* io)
 	    if (smtp_decode_req(hit, io))   return;
 	  }
 	  break;
-	case HIPROTO_STOMP:
-#if 1
-	  if (stomp_decode(hit, io))  goto conn_close; break;
-#else
-	  if (io->qel.kind == HI_TCP_C) {
-	    if (stomp_decode_resp(hit, io))  return;
-	  } else {
-	    if (stomp_decode_req(hit, io))   return;
-	  }
-	  break;
-#endif
 	default: NEVERNEVER("unknown proto(%x)", io->qel.proto);
 	}
       }

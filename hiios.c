@@ -43,6 +43,8 @@
 #include "hiios.h"
 #include "errmac.h"
 
+extern int zx_debug;
+
 /*() Allocate io structure (connection) pool and global PDU
  * pool, from which per thread pools will be plensihed - see
  * hi_pdu_alloc() - and initialize syncronization primitives. */
@@ -295,10 +297,10 @@ struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto)
 /* Called by:  hi_shuffle */
 static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
 {
-  //struct hi_host_spec* hs;
+  struct hi_host_spec* hs;
   struct hi_io* io;
   struct sockaddr_in sa;
-  int fd;
+  int res,fd;
   size_t size;
   size = sizeof(sa);
   if ((fd = accept(listener->fd, (struct sockaddr*)&sa, &size)) == -1) {
@@ -309,6 +311,17 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
   nonblock(fd);
   if (nkbuf)
     setkernelbufsizes(fd, nkbuf, nkbuf);
+  
+  io = hit->shf->ios + fd;  /* uniqueness of fd acts as mutual exclusion mechanism */
+  LOCK(hit->shf->todo_mut, "hi_accept");
+  res = io->n_thr;
+  UNLOCK(hit->shf->todo_mut, "hi_accept");
+  if (res) {
+    D("old fd(%x) n_thr=%d still going", io->fd, res);
+    hi_todo_produce(hit->shf, &io->qel);
+    return;
+  }
+
   io = hi_add_fd(hit->shf, fd, listener->qel.proto, HI_TCP_S, listener->description);
   D("accept(%x) from(%x)", fd, listener->fd);
   ++listener->n_read;  /* n_read counter is used for accounting accepts */
@@ -342,13 +355,22 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
 }
 
 /*() Close an I/O object.
- * This involves special cleanup of todo queue. */
+ * This involves special cleanup of todo queue to prevent any further
+ * work. However, there might be threads already at work with
+ * the connection. It will not be safe to reuse the io object until
+ * they are done. If fd is not opened or accepted again, then presumably
+ * such threads will sooner or later terminate due to I/O errors.
+ * However, the next accept(2) is almost guaranteed to reuse the
+ * fd number. Thus we need a reference count of sorts on the io
+ * object to understand when a thread has let go of it. Upon accept
+ * with same number, we are bound to wait, postpone any reads,
+ * until the old threads have let go. */
 
 /* Called by:  hi_in_out, hi_read x3, hi_write */
 void hi_close(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* pdu;
-  int fd = io->fd;
+  int n_thr, fd = io->fd;
   D("close(%x)", fd);
 #if 0  /* should never happen because io had to be consumed before hi_in_out() was called. */
   LOCK(hit->shf->todo_mut, "hi_close");
@@ -373,7 +395,11 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
   }
   UNLOCK(hit->shf->todo_mut, "hi_close");
 #else
+  LOCK(hit->shf->todo_mut, "hi_close");
   ASSERT(!io->qel.intodo);
+  n_thr = --io->n_thr;
+  ASSERT(io->n_thr >= 0);
+  UNLOCK(hit->shf->todo_mut, "hi_close");
 #endif
   /* *** deal with freeing associated PDUs. If fail, consider shutdown(2) of socket
    *     and reenqueue to todo list so freeing can be tried again later. */
@@ -391,8 +417,14 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
 #endif
 
   io->fd |= 0x80000000;  /* mark as free */
-  close(fd);             /* now some other thread may reuse the slot by accept()ing same fd */
-  D("closed(%x)", fd);
+  if (n_thr) {           /* Some threads are still tinkering with this fd: delay closing */
+    if (shutdown(fd, SHUT_RD))
+      ERR("shutdown %d %s", errno, STRERROR(errno));
+    D("close(%x) pending n_thr=%d", fd, io->n_thr);
+  } else {
+    close(fd);             /* now some other thread may reuse the slot by accept()ing same fd */
+    D("closed(%x)", fd);
+  }
 }
 
 /* -------- todo_queue management, waking up threads to consume work (io, pdu) -------- */
@@ -430,6 +462,10 @@ static struct hi_qel* hi_todo_consume(struct hiios* shf)
     shf->poll_tok.proto = HIPROTO_POLL_OFF;
     qe = &shf->poll_tok;
   }
+  if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
+    ++((struct hi_io*)qe)->n_thr;
+    D("use(%x)  n_thr=%d", ((struct hi_io*)qe)->fd, ((struct hi_io*)qe)->n_thr);
+  }
   UNLOCK(shf->todo_mut, "todo_con");
   return qe;
 }
@@ -457,7 +493,7 @@ void hi_todo_produce(struct hiios* shf, struct hi_qel* qe)
 /* ---------- shuffler ---------- */
 
 extern int debugpoll;
-#define DP(format,...) (debugpoll && (fprintf(stderr, "t%x %9s:%-3d %-16s p " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__), fflush(stderr)))
+#define DP(format,...) if (debugpoll) MB fprintf(stderr, "t%x %9s:%-3d %-16s p " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); fflush(stderr); ME
 
 /* Called by:  hi_shuffle */
 static void hi_poll(struct hiios* shf)
@@ -474,14 +510,7 @@ static void hi_poll(struct hiios* shf)
   for (i = 0; i < shf->n_evs; ++i) {
     io = (struct hi_io*)shf->evs[i].data.ptr;
     io->events = shf->evs[i].events;
-    /* Poll says work is possible: sched wk for io if not under wk yet, or cur_pdu needs wk.
-     * The inverse is also important: if io->cur_pdu is set, but need is not, then someone
-     * is alredy working on decoding the cur_pdu and we should not interfere.
-     * *** How can we allow writes to be done by different thread, while cur_pdu
-     * *** processing is happening? Currently ignoring this problem as writes are usually
-     * *** desired (for response or subreq) once pdu has been decoded and cur_pdu unset. */
-    if (!io->cur_pdu || io->cur_pdu->need)
-      hi_todo_produce(shf, &io->qel);  /* *** should the todo_mut lock be batched instead? */
+    hi_todo_produce(shf, &io->qel);  /* *** should the todo_mut lock be batched instead? */
   }
 #endif
 #ifdef SUNOS
@@ -512,13 +541,14 @@ static void hi_poll(struct hiios* shf)
 /* Called by:  hi_shuffle */
 void hi_process(struct hi_thr* hit, struct hi_pdu* pdu)
 {
-  D("pdu(%x) events=0x%x", pdu->op, pdu->events);
+  D("pdu(%p) events=0x%x", pdu, pdu->events);
   /* *** process "continuing" event on a PDU */
 }
 
 /* Called by:  hi_shuffle */
 void hi_in_out(struct hi_thr* hit, struct hi_io* io)
 {
+  int res;
   DP("in_out(%x) events=0x%x", io->fd, io->events);
 #ifdef SUNOS
 #define EPOLLHUP (POLLHUP)
@@ -538,8 +568,15 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
   }
   
   if (io->events & EPOLLIN) {
-    DP("IN fd=%x", io->fd);
-    hi_read(hit, io);
+    DP("IN fd=%x cur_pdu=%p need=%d", io->fd, io->cur_pdu, io->cur_pdu?io->cur_pdu->need:-99);
+    /* Poll says work is possible: sched wk for io if not under wk yet, or cur_pdu needs wk.
+     * The inverse is also important: if io->cur_pdu is set, but pdu->need is not, then someone
+     * is alredy working on decoding the cur_pdu and we should not interfere. */
+    LOCK(io->qel.mut, "in_out read allowed");
+    res = !io->cur_pdu || io->cur_pdu->need;
+    UNLOCK(io->qel.mut, "in_out read allowed");
+    if (res)
+      hi_read(hit, io);
   }
 }
 

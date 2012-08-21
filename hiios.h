@@ -18,8 +18,8 @@
  *
  * PDU is always somehow reachable through pdu->qel.n (next) pointer, but
  * membership in queue is mutually exclusive as follows
- * 1. shf->free_pdus    -- may appear to be in shf->pdus too, but that is coincidence
- * 2. hit->free_pdus    -- per thread free list, the usual source for allocation within a thread
+ * 1. shf->free_pdus    -- global memalloc pool (shf->pdus is backing store)
+ * 2. hit->free_pdus    -- per thread free list, for allocation within a thread
  * 3. shf->todo_consume -- The todo list, marking that some polling needs to be done
  *
  * PDU also has its own next pointer, the pdu->n which is used to keep lists of active PDUs
@@ -64,20 +64,29 @@
  * to indicate that further data needs to be read. At this point, some other
  * thread may actually perform the additional read and finish the decoding.
  *
- * In general, after decoding PDU, the thread should not hang on to the I/O object
- * even if it continues to perform the payload function of the PDU, as a worker thread.
- * Thus same thread is expected to transform from an I/O thread to worker thread
- * on the fly. If the payload processing produces response or subrequest, in principle
- * the additional processing can go through the poll, but there does not seem to
- * be much harm in "short circuiting" this process by having same worker thread
- * assume the I/O thread role for sending the response or subrequest, provided
- * that the destination I/O object is not occupied by another thread. If it is,
- * the short circuiting can not be done and the response or subrequest must go
+ * In general, after decoding PDU, the thread should not hang on to
+ * the I/O object even if it continues to perform the payload function
+ * of the PDU, as a worker thread.  Thus same thread is expected to
+ * transform from an I/O thread to worker thread on the fly. If the
+ * payload processing produces response or subrequest, in principle
+ * the additional processing can go through the poll, but there does
+ * not seem to be much harm in "short circuiting" this process by
+ * having same worker thread assume the I/O thread role for sending
+ * the response or subrequest, provided that the destination I/O
+ * object is not occupied by another thread. If it is, the short
+ * circuiting can not be done and the response or subrequest must go
  * through write poll.
  *
  * The basic mechanism to avoid other thread squatting on I/O object is to
  * ensure that it is not scheduled to poll or todo list while exclusive
  * access is desired.
+ *
+ * Lock ordering
+ * 1. shf->todo_mut
+ * 2. shf->todo_cond
+ * 3. io->qel.mut
+ * 1. io->qel.mut
+ * 2. shf->pdu_mut
  *
  * See http://pl.atyp.us/content/tech/servers.html for inspiration on threading strategy.
  * http://www.kegel.com/c10k.html
@@ -97,6 +106,8 @@
 #include <netinet/in.h>
 #include <sys/uio.h>
 #include <pthread.h>
+
+#include "hiproto.h"
 
 #ifndef IOV_MAX
 #define IOV_MAX 16
@@ -135,10 +146,11 @@ struct hi_io {
   char* description;         /* Nito: To be able to map fd->devices/ports. Link to hi_host_spec->specstr */
   char events;               /* events from last poll */
   char n_iov;
-  struct iovec* iov_cur;     /* not used by listeners, only useful for sessions and backend ses */
+  struct iovec* iov_cur;     /* not used by listeners, only used for writev by sessions and backend ses */
   struct iovec iov[HI_N_IOV];
-  struct hi_pdu* in_write;   /* wn list of pdus that are in process of being written (have iovs) */
+  int n_thr;                 /* num threads processing this io, lock qel.mut */
   int n_to_write;            /* length of to_write queue */
+  struct hi_pdu* in_write;   /* wn list of pdus that are in process of being written (have iovs) */
   struct hi_pdu* to_write_consume;  /* wn list of PDUs that are imminently going to be written */
   struct hi_pdu* to_write_produce;  /* wn add new pdus here (main thr only) */
   
@@ -148,7 +160,7 @@ struct hi_io {
   int n_pdu_out;
   int n_pdu_in;
   
-  struct hi_pdu* cur_pdu;    /* PDU for which we currently expect to do I/O */
+  struct hi_pdu* cur_pdu;    /* PDU for which we currently expect to do read I/O */
   struct hi_pdu* reqs;       /* n linked list of real reqs of this session, protect by qel.mut */
   union {
     struct dts_conn* dts;
@@ -183,7 +195,7 @@ struct hi_pdu {
   char n_iov;
   struct iovec iov[3];       /* Enough for header, payload, and CRC */
   
-  int need;                  /* How much more is needed to complete a PDU? */
+  int need;                  /* How much more is needed to complete a PDU? Also final length. */
   char* scan;                /* How far has protocol parsin progressed, e.g. in SMTP. */
   char* ap;                  /* Allocation pointer: next free memory location */
   char* m;                   /* Beginning of memory (often m == mem, but could be malloc'd) */
@@ -214,8 +226,6 @@ struct hi_pdu {
       char* dest;            /* destination, also heart_bt */
     } stomp;
   } ad;                      /* Application specific data */
-  int len;
-  int op;
 };
 
 #if 0
@@ -317,11 +327,11 @@ void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int 
 
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* pdu);
 void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req);
-void hi_add_to_reqs(struct hi_io* io, struct hi_pdu* req);
+void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen);
 
 /* Sanity checking and data structure dumping for debugging. */
 
-extern char hi_color;  /* color usid for data structure circularity checks */
+extern short hi_color;  /* color usid for data structure circularity checks */
 
 int hi_sanity_pdu(int mode, struct hi_pdu* root_pdu);
 int hi_sanity_io(int mode, struct hi_io* root_io);

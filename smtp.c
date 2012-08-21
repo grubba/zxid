@@ -24,6 +24,10 @@
 #include <netinet/in.h> /* htons(3) and friends */
 #include <stdlib.h>
 
+#ifdef ENA_S5066
+#include "sis5066.h"
+#endif
+
 /* ================== SENDING SMTP PRIMITIVES ================== */
 
 extern char remote_station_addr[];
@@ -393,7 +397,7 @@ static int smtp_resp_wait_220_greet(struct hi_thr* hit, struct hi_io* io, struct
  bad:
   D("SMTP server sent bad response(%.*s)", n, p);
   if (io->pair)
-    hmtp_send(hit, io->pair, resp->len, resp->m, 0, 0);
+    hmtp_send(hit, io->pair, resp->need, resp->m, 0, 0);
   return HI_CONN_CLOSE;
 }
 
@@ -494,7 +498,7 @@ static int smtp_resp_wait_250_from_ehlo(struct hi_thr* hit, struct hi_io* io, st
  bad:
   D("SMTP server sent bad response(%.*s)", n, p);
   if (io->pair)
-    hmtp_send(hit, io->pair, resp->len, resp->m, 0, 0);
+    hmtp_send(hit, io->pair, resp->need, resp->m, 0, 0);
   return HI_CONN_CLOSE;
  badhmtp:
   D("Bad HMTP PDU from SIS layer %d", 0);
@@ -574,7 +578,7 @@ static int smtp_resp_wait_354_from_data(struct hi_thr* hit, struct hi_io* io, st
  bad:
   D("SMTP server sent bad response(%.*s)", n, p);
   if (io->pair)
-    hmtp_send(hit, io->pair, resp->len, resp->m, 0, 0);
+    hmtp_send(hit, io->pair, resp->need, resp->m, 0, 0);
   return HI_CONN_CLOSE;
  badhmtp:
   D("Bad HMTP PDU from SIS layer %d", 0);
@@ -620,7 +624,7 @@ static int smtp_resp_wait_250_msg_sent(struct hi_thr* hit, struct hi_io* io, str
  bad:
   D("SMTP server sent bad response(%.*s)", n, p);
   if (io->pair)
-    hmtp_send(hit, io->pair, resp->len, resp->m, 0, 0);
+    hmtp_send(hit, io->pair, resp->need, resp->m, 0, 0);
   return HI_CONN_CLOSE;
 }
 

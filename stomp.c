@@ -58,28 +58,20 @@ static struct hi_pdu* stomp_encode_start(struct hi_thr* hit)
 }
 
 /* Called by:  stomp_cmd_ni, stomp_decode x2 */
-static int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* receipt_id, char* ecode, char* emsg)
+static int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const char* receipt_id, const char* ecode, const char* emsg)
 {
-  struct hi_pdu* resp = stomp_encode_start(hit);
-  resp->len = sprintf(resp->m, "ERROR\nreceipt-id:%s\nmessage:%s\ncontent-type:text/plain\ncontent-length:%d\n\n%s%c", receipt_id?receipt_id:"-", ecode, strlen(emsg), emsg, 0);
-  hi_send(hit, io, req, resp);
+  hi_sendf(hit, io, req, "ERROR\nmessage:%s\nreceipt-id:%s\ncontent-type:text/plain\ncontent-length:%d\n\n%s%c", ecode, receipt_id?receipt_id:"-", strlen(emsg), emsg, 0);
   return HI_CONN_CLOSE;
 }
 
-#define CMD_NI_MSG "Command(%*s) not implemented by server."
+#define CMD_NI_MSG "Command(%.*s) not implemented by server."
 
 /* Called by:  stomp_decode x8, stomp_got_ack, stomp_got_subsc, stomp_got_unsubsc */
-static int stomp_cmd_ni(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* receipt_id, char* cmd)
+static int stomp_cmd_ni(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const char* receipt_id, const char* cmd)
 {
-#if 0
-  return stomp_err(hit, io, req, receipt_id, "command not implemented by server", cmd);
-#else
-  struct hi_pdu* resp = stomp_encode_start(hit);
-  char* nl = strchr(cmd, '\n');
-  resp->len = sprintf(resp->m, "ERROR\nreceipt-id:%s\nmessage:command not implemented by server\ncontent-type:text/plain\ncontent-length:%d\n\n" CMD_NI_MSG "%c", receipt_id?receipt_id:"-", sizeof(CMD_NI_MSG)-3+(nl-cmd), (nl-cmd), cmd, 0);
-  hi_send(hit, io, req, resp);
+  const char* nl = strchr(cmd, '\n');
+  hi_sendf(hit, io, req, "ERROR\nmessage:command not implemented by server\nreceipt-id:%s\ncontent-type:text/plain\ncontent-length:%d\n\n" CMD_NI_MSG "%c", receipt_id?receipt_id:"-", sizeof(CMD_NI_MSG)-3+(nl-cmd), (nl-cmd), cmd, 0);
   return HI_CONN_CLOSE;
-#endif
 }
 
 /* Called by:  stomp_decode */
@@ -158,7 +150,9 @@ static void stomp_got_unsubsc(struct hi_thr* hit, struct hi_io* io, struct hi_pd
   stomp_cmd_ni(hit,io,req,0,"UNSUBSCRIBE\n");
 }
 
-/*() STOMP decoder and dispatch */
+/*() STOMP decoder and dispatch.
+ * Return 0 for no error (including need more and PDU complete and processed),
+ * 1 to force closing connection. */
 
 /* Called by:  hi_read */
 int stomp_decode(struct hi_thr* hit, struct hi_io* io)
@@ -171,7 +165,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
   char* v;
   char* p = req->m;
 
-  D("decode req(%p) (%.*s)", req, MIN(req->ap - req->m, 4), req->m);
+  D("decode req(%p)->need=%d (%.*s)", req, req->need, MIN(req->ap - req->m, 4), req->m);
   
   HI_SANITY(hit->shf, hit);
 
@@ -227,7 +221,11 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
 #define HDR(hdr, field, val) } else if (!memcmp(h, hdr, sizeof(hdr)-1)) { if (!req->ad.stomp.field) req->ad.stomp.field = (val)
 
     if (!memcmp(h, "content-length:", sizeof("content-length:")-1))
-    { if (!req->ad.stomp.len) req->ad.stomp.len = len = atoi(v); D("len=%d",len);
+    { if (!req->ad.stomp.len) {
+        req->ad.stomp.len = len = atoi(v);
+	req->need = len + p - req->ap;
+      }
+      D("len=%d need=%d", len, req->need);
     HDR("host:",           host,      v);
     HDR("receipt:",        receipt,   v);
     HDR("receipt-id:",     rcpt_id,   v);
@@ -246,7 +244,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
     HDR("heart-beat:",     heart_bt,  v);
     } else if (!memcmp(p, "content-type:", sizeof("content-type:"))) { /* ignore */
     } else {
-      D("Unknown header(%*s) ignored.", h-p, h);
+      D("Unknown header(%.*s) ignored.", h-p, h);
     }
   }
   
@@ -256,13 +254,13 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
   req->ad.stomp.body = ++p;
 
   if (len) {
+    req->need = p - req->ap + len + 1 /* nul */;  /* req->need has to be set correctly for hi_checkmore() to work right. */
     if (len < req->ap - p) {
       /* Got complete with content-length */
       p += len;
       if (*p++)
 	return stomp_err(hit,io,req,0,"malformed frame received","No nul to terminate body.");
     } else {
-      req->need = len + 1 /* nul */;
       D("need=%d",req->need);
       return 0;
     }
@@ -276,14 +274,14 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
       }
       if (!*p++) {  /* nul termination found */
 	req->ad.stomp.len = len = p - req->ad.stomp.body - 1;
+	req->need = p - req->m;
 	break;
       }
     }
   }
   
   HI_SANITY(hit->shf, hit);
-  io->cur_pdu = 0;
-  hi_add_to_reqs(io, req);
+  hi_add_to_reqs(hit, io, req, STOMP_MIN_PDU_SIZE);
   HI_SANITY(hit->shf, hit);
 
   /* Command dispatch */
@@ -309,55 +307,10 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
   CMD("RECEIPT",     stomp_cmd_ni(hit,io,req,0,p) );
   CMD("ERROR",       return stomp_got_err(hit,io,req)    );
   } else {
-    D("Unknown command(%*s) ignored.", 4, command);
+    D("Unknown command(%.*s) ignored.", 4, command);
     stomp_cmd_ni(hit,io,req,0,p);
   }
   return 0;
 }
-
-#if 0
-/*() STOMP server side decoder: Decode requests from producer. */
-
-/* Called by:  hi_read */
-int stomp_decode_req(struct hi_thr* hit, struct hi_io* io)
-{
-  int ret;
-  char* p;
-  struct hi_pdu* req = io->cur_pdu;
-  D("stomp_state(%d) scan(%.*s)", io->ad.stomp.state, MIN(7, req->ap - req->scan), req->scan);
-  switch (io->ad.stomp.state) {
-  case STOMP_START:  return stomp_connected(hit, io, req);
-  case STOMP_MAIN:   return stomp_main(hit, io, req);
-  case STOMP_MSG:    return stomp_wait_ack(hit, io, req);
-  case STOMP_END:    return stomp_close(hit, io, req);
-  default: NEVERNEVER("impossible STOMP state %d", io->ad.stomp.state);
-  }
-  return 0;
-}
-
-/*() STOMP client side decoder: decode responses from remote server */
-
-/* Called by:  hi_read */
-int stomp_decode_resp(struct hi_thr* hit, struct hi_io* io)
-{
-  int ret;
-  char* p;
-  struct hi_pdu* resp = io->cur_pdu;
-  D("stomp_state(%d) scan(%.*s)", io->ad.stomp.state, MIN(7, resp->ap - resp->scan), resp->scan);
-  switch (io->ad.stomp.state) {
-  case STOMP_INIT: return stomp_resp_wait_220_greet(hit, io, resp);
-  case STOMP_EHLO: D("Unexpected state %x", io->ad.stomp.state);
-  case STOMP_RDY:  return stomp_resp_wait_250_from_ehlo(hit, io, resp);
-  case STOMP_MAIL:
-  case STOMP_RCPT:
-  case STOMP_DATA: D("Unexpected state %x", io->ad.stomp.state);
-  case STOMP_SEND: return stomp_resp_wait_354_from_data(hit, io, resp);
-  case STOMP_SENT: return stomp_resp_wait_250_msg_sent(hit, io, resp);
-  case STOMP_QUIT: return stomp_resp_wait_221_goodbye(hit, io, resp);
-  default: NEVERNEVER("impossible STOMP state %d", io->ad.stomp.state);
-  }
-  return 0;
-}
-#endif
 
 /* EOF  --  stomp.c */

@@ -312,6 +312,7 @@ int hi_sanity_shf(int mode, struct hiios* root_shf)
   }
   for (qe = root_shf->todo_consume; qe; qe = qe->n) {
     if (mode&0x80) printf("-> qe_%p\n", qe);
+#if 0
     if (pdu->color == hi_color+0) {
       printf("ERR *** pdu_%p has circular reference (color=%d) wrt hit->free_pdus pdu->qel.n\n", pdu, pdu->color);
       --errs;
@@ -326,6 +327,7 @@ int hi_sanity_shf(int mode, struct hiios* root_shf)
       else
 	nodes += res;
     }
+#endif
   }
   if (mode&0x80 && root_shf->todo_consume) printf("[label=todo_consume];\n");
 
