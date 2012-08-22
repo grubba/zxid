@@ -39,6 +39,7 @@ extern int zx_debug;
 /* Called by:  hi_send1, hi_send2, hi_send3 */
 void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp)
 {
+  int write_now = 0;
   HI_SANITY(hit->shf, hit);
   if (req) {
     resp->req = req;
@@ -47,7 +48,14 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   } else {
     resp->req = resp->n = 0;
   }
-  
+
+#if 0
+  LOCK(hit->shf->todo_mut, "hi_in_out-done");
+  --io->n_thr;
+  ASSERT(io->n_thr >= 0);
+  UNLOCK(hit->shf->todo_mut, "hi_in_out-done");
+#endif
+
   LOCK(io->qel.mut, "send0");
   if (!io->to_write_produce)
     io->to_write_consume = resp;
@@ -57,12 +65,25 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   resp->qel.n = 0;
   ++io->n_to_write;
   ++io->n_pdu_out;
+  if (!io->writing)
+    io->writing = write_now = 1;
   UNLOCK(io->qel.mut, "send0");
   
   HI_SANITY(hit->shf, hit);
   D("hisend fd(%x) pdu(%p) n_iov=%d iov0(%.*s)", io->fd, resp, resp->n_iov, MIN(resp->iov->iov_len,4), (char*)resp->iov->iov_base);
-  hi_write(hit, io);   /* Try cranking the write machine right away! *** should we fish out any todo queue item that may stomp on us? How to deal with thread that has already consumed from the todo_queue? */
-  /*hi_todo_produce(hit->shf, &io->qel);  -- superceded by direct write approach! */
+
+  if (write_now) {
+    /* Try cranking the write machine right away! *** should we fish out any todo queue item that may stomp on us? How to deal with thread that has already consumed from the todo_queue? */
+    hi_write(hit, io);
+#if 0
+    LOCK(hit->shf->todo_mut, "hi_in_out-done");
+    --io->n_thr;
+    ASSERT(io->n_thr >= 0);
+    UNLOCK(hit->shf->todo_mut, "hi_in_out-done");
+#endif
+  } else {
+    hi_todo_produce(hit->shf, &io->qel);
+  }
 }
 
 /*() Frontend to hi_send1() which uses hi_send0() to send one segment message. */
@@ -184,7 +205,7 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
   HI_SANITY(hit->shf, hit);
 
   /* Remove resp from request's real response list. resp MUST be in this list: if it
-   * is not, pdu-n (next) pointer chasing will lead to NULL dereference (by design). */
+   * is not, pdu->n (next) pointer chasing will lead to NULL dereference (by design). */
   
   if (resp == pdu)
     resp->req->reals = pdu->n;
@@ -269,6 +290,8 @@ void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, in
   LOCK(io->qel.mut, "add_to_reqs");
   if (minlen) {
     ASSERTOP(io->cur_pdu, ==, req);
+    ASSERT(io->reading);
+    io->reading = 0;  /* reading was set in hi_in_out() */
     hi_checkmore(hit, io, req, minlen);
   }
   req->fe = io;
@@ -324,17 +347,20 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
 /*() Attempt to write pending iovs.
  * This function can only be called by one thread at a time because the todo_queue
  * only admits an io object once and only one thread can consume it. Thus locking
- * is really needed only to protect the to_write queue, see hi_make_iov(). */
+ * is really needed only to protect the to_write queue, see hi_make_iov().
+ * Returns 1 if connection got closed (and n_thr decremented).
+ * Returns 0 if connection remains open (permitting, e.g., a read(2)). */
 
 /* Called by:  hi_in_out, hi_send0 */
-void hi_write(struct hi_thr* hit, struct hi_io* io)
+int hi_write(struct hi_thr* hit, struct hi_io* io)
 {
   int ret;
+  ASSERT(io->writing);
   while (1) {   /* Write until exhausted! */
     if (!io->in_write)  /* Need to prepare new iov? */
       hi_make_iov(io);
     if (!io->in_write)
-      return;            /* Nothing further to write */
+      goto out;         /* Nothing further to write */
   retry:
     D("writev(%x) n_iov=%d", io->fd, io->n_iov);
     HEXDUMP("iov0:", io->iov_cur->iov_base, io->iov_cur->iov_base + io->iov_cur->iov_len, 16);
@@ -344,18 +370,27 @@ void hi_write(struct hi_thr* hit, struct hi_io* io)
     case -1:
       switch (errno) {
       case EINTR:  goto retry;
-      case EAGAIN: return;  /* writev(2) exhausted (c.f. edge triggered epoll) */
+      case EAGAIN: goto out;   /* writev(2) exhausted (c.f. edge triggered epoll) */
       default:
 	ERR("writev(%x) failed: %d %s (closing connection)", io->fd, errno, STRERROR(errno));
-	/* *** why this here? UNLOCK(io->qel.mut, "closefd"); */
+	LOCK(io->qel.mut, "clear-writing");   /* The io->writing was set in hi_in_out() */
+	ASSERT(io->writing);
+	io->writing = 0;
+	UNLOCK(io->qel.mut, "clear-writing");
 	hi_close(hit, io);
-	return;
+	return 1;
       }
     default:  /* something was written, deduce it from the iov */
       D("wrote(%x) %d bytes", io->fd, ret);
       hi_clear_iov(hit, io, ret);
     }
   }
+ out:
+  LOCK(io->qel.mut, "clear-writing");   /* The io->writing was set in hi_in_out() or hi_send0() */
+  ASSERT(io->writing);
+  io->writing = 0;
+  UNLOCK(io->qel.mut, "clear-writing");
+  return 0;
 }
 
 /* EOF  --  hiwrite.c */

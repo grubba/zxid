@@ -88,6 +88,12 @@
  * 1. io->qel.mut
  * 2. shf->pdu_mut
  *
+ * io->reading and io->writing flags are used to ensure that only single
+ * thread will be doing the I/O at a time (one thread for read, other for
+ * write is allowed). In addition to this, we need to ensure that
+ * fd is not completely closed while any thread may still be
+ * using it. This is accomplished using the n_thr counter.
+ *
  * See http://pl.atyp.us/content/tech/servers.html for inspiration on threading strategy.
  * http://www.kegel.com/c10k.html
  */
@@ -146,9 +152,11 @@ struct hi_io {
   char* description;         /* Nito: To be able to map fd->devices/ports. Link to hi_host_spec->specstr */
   char events;               /* events from last poll */
   char n_iov;
+  char writing;              /* Flag, protected by io->qel.mut, that indicates that some thread is processing a write on the io object. */
+  char reading;              /* Flag, protected by io->qel.mut, that indicates that some thread is processing a read on the io object. */
   struct iovec* iov_cur;     /* not used by listeners, only used for writev by sessions and backend ses */
   struct iovec iov[HI_N_IOV];
-  int n_thr;                 /* num threads processing this io, lock qel.mut */
+  int n_thr;                 /* num threads using this io, lock io->qel.mut */
   int n_to_write;            /* length of to_write queue */
   struct hi_pdu* in_write;   /* wn list of pdus that are in process of being written (have iovs) */
   struct hi_pdu* to_write_consume;  /* wn list of PDUs that are imminently going to be written */
@@ -320,8 +328,8 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf);
 void hi_process(struct hi_thr* hit, struct hi_pdu* pdu);
 void hi_in_out( struct hi_thr* hit, struct hi_io* io);
 void hi_close(  struct hi_thr* hit, struct hi_io* io);
-void hi_write(  struct hi_thr* hit, struct hi_io* io);
-void hi_read(   struct hi_thr* hit, struct hi_io* io);
+int  hi_write(  struct hi_thr* hit, struct hi_io* io);
+int  hi_read(   struct hi_thr* hit, struct hi_io* io);
 
 void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen);
 

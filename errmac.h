@@ -464,7 +464,7 @@ extern FILE* zx_debug_log;   /* Defined in zxidlib.c as 0 alias to stderr */
 int hexdmp(char* msg, char* p, int len, int max);
 int hexdump(char* msg, char* p, char* lim, int max);
 
-#define HEXDUMP(msg, p, lim, max) (zx_debug > 1 && hexdump((msg), (p), (lim), (max)))
+#define HEXDUMP(msg, p, lim, max) if (zx_debug > 1) hexdump((msg), (p), (lim), (max))
 #define DHEXDUMP(msg, p, lim, max) /* Disabled hex dump */
 
 #define DUMP_CORE() ASSERT(0)

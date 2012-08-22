@@ -297,7 +297,6 @@ struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto)
 /* Called by:  hi_shuffle */
 static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
 {
-  struct hi_host_spec* hs;
   struct hi_io* io;
   struct sockaddr_in sa;
   int res,fd;
@@ -311,7 +310,11 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
   nonblock(fd);
   if (nkbuf)
     setkernelbufsizes(fd, nkbuf, nkbuf);
-  
+
+#if 0  
+  /* We may accept new connection with same fd as an old one before all references
+   * to the old one are gone. We could try reference counting - or we can delay
+   * fully closing the fd before every reference has gone away. */
   io = hit->shf->ios + fd;  /* uniqueness of fd acts as mutual exclusion mechanism */
   LOCK(hit->shf->todo_mut, "hi_accept");
   res = io->n_thr;
@@ -321,6 +324,7 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
     hi_todo_produce(hit->shf, &io->qel);
     return;
   }
+#endif
 
   io = hi_add_fd(hit->shf, fd, listener->qel.proto, HI_TCP_S, listener->description);
   D("accept(%x) from(%x)", fd, listener->fd);
@@ -333,20 +337,23 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
     break;
 #ifdef ENA_S5066
   case HIPROTO_DTS:
-    ZMALLOC(io->ad.dts);
-    io->ad.dts->remote_station_addr[0] = 0x61;   /* three nibbles long (padded with zeroes) */
-    io->ad.dts->remote_station_addr[1] = 0x45;
-    io->ad.dts->remote_station_addr[2] = 0x00;
-    io->ad.dts->remote_station_addr[3] = 0x00;
-    if (!(hs = prototab[HIPROTO_DTS].specs)) {
-      ZMALLOC(hs);
-      hs->proto = HIPROTO_DTS;
-      hs->specstr = "dts:accepted:connections";
-      hs->next = prototab[HIPROTO_DTS].specs;
-      prototab[HIPROTO_DTS].specs = hs;
+    {
+      struct hi_host_spec* hs;
+      ZMALLOC(io->ad.dts);
+      io->ad.dts->remote_station_addr[0] = 0x61;   /* three nibbles long (padded with zeroes) */
+      io->ad.dts->remote_station_addr[1] = 0x45;
+      io->ad.dts->remote_station_addr[2] = 0x00;
+      io->ad.dts->remote_station_addr[3] = 0x00;
+      if (!(hs = prototab[HIPROTO_DTS].specs)) {
+	ZMALLOC(hs);
+	hs->proto = HIPROTO_DTS;
+	hs->specstr = "dts:accepted:connections";
+	hs->next = prototab[HIPROTO_DTS].specs;
+	prototab[HIPROTO_DTS].specs = hs;
+      }
+      io->n = hs->conns;
+      hs->conns = io;
     }
-    io->n = hs->conns;
-    hs->conns = io;
     break;
 #endif
   }
@@ -370,7 +377,7 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
 void hi_close(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* pdu;
-  int n_thr, fd = io->fd;
+  int n_thr = 0, fd = io->fd;
   D("close(%x)", fd);
 #if 0  /* should never happen because io had to be consumed before hi_in_out() was called. */
   LOCK(hit->shf->todo_mut, "hi_close");
@@ -394,7 +401,8 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
     }
   }
   UNLOCK(hit->shf->todo_mut, "hi_close");
-#else
+#endif
+#if 0
   LOCK(hit->shf->todo_mut, "hi_close");
   ASSERT(!io->qel.intodo);
   n_thr = --io->n_thr;
@@ -404,6 +412,10 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
   /* *** deal with freeing associated PDUs. If fail, consider shutdown(2) of socket
    *     and reenqueue to todo list so freeing can be tried again later. */
   
+  LOCK(io->qel.mut, "hi_close");
+  n_thr = --io->n_thr;
+  ASSERT(io->n_thr >= 0);
+
   for (pdu = io->reqs; pdu; pdu = pdu->n)
     hi_free_req(hit, pdu);
   
@@ -417,6 +429,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
 #endif
 
   io->fd |= 0x80000000;  /* mark as free */
+  UNLOCK(io->qel.mut, "hi_close");
   if (n_thr) {           /* Some threads are still tinkering with this fd: delay closing */
     if (shutdown(fd, SHUT_RD))
       ERR("shutdown %d %s", errno, STRERROR(errno));
@@ -463,7 +476,7 @@ static struct hi_qel* hi_todo_consume(struct hiios* shf)
     qe = &shf->poll_tok;
   }
   if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
-    ++((struct hi_io*)qe)->n_thr;
+    //++((struct hi_io*)qe)->n_thr;
     D("use(%x)  n_thr=%d", ((struct hi_io*)qe)->fd, ((struct hi_io*)qe)->n_thr);
   }
   UNLOCK(shf->todo_mut, "todo_con");
@@ -562,22 +575,39 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
     return;
   }
   
-  if (io->events & EPOLLOUT) {
+  /* We must ensure that only one thread is trying to write. The poll may
+   * still report the io as writable after a thread has taken the
+   * task, in that case we want the second thread to skip write and
+   * go process the read. */
+  LOCK(io->qel.mut, "check-writing");
+  if (io->events & EPOLLOUT && !io->writing) {
+    io->writing = 1;
+    UNLOCK(io->qel.mut, "check-writing-enter");
     DP("OUT fd=%x n_iov=%d n_to_write=%d", io->fd, io->n_iov, io->n_to_write);
-    hi_write(hit, io);
+    if (hi_write(hit, io))  /* will clear io->writing */
+      return; /* Write lead to close */
+    LOCK(io->qel.mut, "check-reading");
   }
   
-  if (io->events & EPOLLIN) {
+  if (io->events & EPOLLIN && !io->reading) {
     DP("IN fd=%x cur_pdu=%p need=%d", io->fd, io->cur_pdu, io->cur_pdu?io->cur_pdu->need:-99);
     /* Poll says work is possible: sched wk for io if not under wk yet, or cur_pdu needs wk.
      * The inverse is also important: if io->cur_pdu is set, but pdu->need is not, then someone
      * is alredy working on decoding the cur_pdu and we should not interfere. */
-    LOCK(io->qel.mut, "in_out read allowed");
-    res = !io->cur_pdu || io->cur_pdu->need;
-    UNLOCK(io->qel.mut, "in_out read allowed");
-    if (res)
-      hi_read(hit, io);
+    io->reading = !io->cur_pdu || io->cur_pdu->need;
+    UNLOCK(io->qel.mut, "check-reading");
+    if (io->reading)
+      if (hi_read(hit, io))
+	return;  /* io->n_thr had already been decremented */
+  } else {
+    UNLOCK(io->qel.mut, "check-reading-pass");
   }
+#if 0
+  LOCK(hit->shf->todo_mut, "hi_in_out-done");
+  --io->n_thr;
+  ASSERT(io->n_thr >= 0);
+  UNLOCK(hit->shf->todo_mut, "hi_in_out-done");
+#endif
 }
 
 /*() Main I/O shuffling loop. Never returns. Main loop of most (all?) threads. */

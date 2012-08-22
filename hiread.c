@@ -95,12 +95,19 @@ void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int 
     req->ap = req->m + req->need;
   } else
     io->cur_pdu = 0;
+#if 0
+  /* Let go of the I/O object so that other threads can have a chance */
+  LOCK(hit->shf->todo_mut, "checkmore-letgo");
+  --io->n_thr;
+  ASSERT(io->n_thr >= 0);
+  UNLOCK(hit->shf->todo_mut, "checkmore-letgo");
+#endif
 }
 
 /*() Read from the network, with all the repercussions. */
 
 /* Called by:  hi_in_out */
-void hi_read(struct hi_thr* hit, struct hi_io* io)
+int hi_read(struct hi_thr* hit, struct hi_io* io)
 {
   int ret;
   while (1) {  /* eagerly read until we exhaust the read (c.f. edge triggered epoll) */
@@ -109,7 +116,7 @@ void hi_read(struct hi_thr* hit, struct hi_io* io)
       io->cur_pdu = hi_pdu_alloc(hit);
       if (!io->cur_pdu) {
 	hi_todo_produce(hit->shf, &io->qel); /* Alloc fail, retry later. Back to todo because we did not exhaust read */
-	return;
+	goto out;
       }
       ++io->n_pdu_in;
       /* set fe? */
@@ -125,7 +132,7 @@ void hi_read(struct hi_thr* hit, struct hi_io* io)
     case -1:
       switch (errno) {
       case EINTR:  D("EINTR fd(%x)", io->fd); goto retry;
-      case EAGAIN: D("EAGAIN fd(%x)", io->fd); return;  /* read(2) exhausted (c.f. edge triggered epoll) */
+      case EAGAIN: D("EAGAIN fd(%x)", io->fd); goto out;  /* read(2) exhausted (c.f. edge triggered epoll) */
       default:
 	ERR("read(%x) failed: %d %s (closing connection)", io->fd, errno, STRERROR(errno));
 	goto conn_close;
@@ -157,9 +164,9 @@ void hi_read(struct hi_thr* hit, struct hi_io* io)
 	case HIPROTO_TEST_PING: test_ping(hit, io);  break;
 	case HIPROTO_SMTP:
 	  if (io->qel.kind == HI_TCP_C) {
-	    if (smtp_decode_resp(hit, io))  return;
+	    if (smtp_decode_resp(hit, io))  goto out;
 	  } else {
-	    if (smtp_decode_req(hit, io))   return;
+	    if (smtp_decode_req(hit, io))   goto out;
 	  }
 	  break;
 	default: NEVERNEVER("unknown proto(%x)", io->qel.proto);
@@ -167,8 +174,21 @@ void hi_read(struct hi_thr* hit, struct hi_io* io)
       }
     }
   }
+
+ out:
+  LOCK(io->qel.mut, "clear-reading");
+  ASSERT(io->reading);
+  io->reading = 0;
+  UNLOCK(io->qel.mut, "clear-reading");
+  return 0;
+
  conn_close:
+  LOCK(io->qel.mut, "clear-reading-close");
+  ASSERT(io->reading);
+  io->reading = 0;
+  UNLOCK(io->qel.mut, "clear-reading-close");
   hi_close(hit, io);
+  return 1;
 }
 
 /* EOF  --  hiread.c */
