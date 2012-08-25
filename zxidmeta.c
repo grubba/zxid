@@ -311,7 +311,7 @@ readerr:
 }
 
 /*LOCK_STATIC(zxid_ent_cache_mx);*/
-extern pthread_mutex_t zxid_ent_cache_mx;
+extern struct zx_lock zxid_ent_cache_mx;
 
 /* Called by:  zxid_get_ent_cache, zxid_load_cot_cache */
 static void zxid_load_cot_cache_from_file(zxid_conf* cf)

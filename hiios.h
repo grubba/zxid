@@ -94,6 +94,10 @@
  * fd is not completely closed while any thread may still be
  * using it. This is accomplished using the n_thr counter.
  *
+ * n_thr is incremented in hi_todo_consume() or upon short circuit
+ * write. It is decremented either on end of write, end of read,
+ * or in hi_in_out() if nothing was done.
+ *
  * See http://pl.atyp.us/content/tech/servers.html for inspiration on threading strategy.
  * http://www.kegel.com/c10k.html
  */
@@ -115,6 +119,13 @@
 
 #include "hiproto.h"
 
+struct hi_lock {
+  pthread_mutex_t ptmut;
+  const char* func;        /* Remember where we locked to ease debugging. */
+  int line;
+  int thr;
+};
+
 #ifndef IOV_MAX
 #define IOV_MAX 16
 #endif
@@ -129,13 +140,14 @@
 #define HI_POLL    1    /* Trigger epoll */
 #define HI_PDU     2    /* PDU */
 #define HI_LISTEN  3    /* Listening socket for TCP */
-#define HI_TCP_S   4    /* TCP server socket, i.e. accept(2)'d from listening socket */
-#define HI_TCP_C   5    /* TCP client socket, i.e. formed using connect(2) */
-#define HI_SNMP    6    /* SNMP (UDP) socket */
+#define HI_HALF_ACCEPT 4    /* Accepted at TCP, but delayed booking due to threads expecting old dead connection. */
+#define HI_TCP_S   5    /* TCP server socket, i.e. accept(2)'d from listening socket */
+#define HI_TCP_C   6    /* TCP client socket, i.e. formed using connect(2) */
+#define HI_SNMP    7    /* SNMP (UDP) socket */
 
 struct hi_qel {         /* hiios task queue element. This is the 1st thing on io and pdu objects */
   struct hi_qel* n;     /* Next in todo_queue for IOs or in free_pdus. */
-  pthread_mutex_t mut;
+  struct hi_lock mut;
   char kind;
   char proto;           /* See HIPROTO_* constants */
   char flags;
@@ -149,7 +161,6 @@ struct hi_io {
   struct hi_io* n;           /* next among io objects, esp. backends */
   struct hi_io* pair;        /* the other half of a proxy connection */
   int fd;                    /* file descriptor (socket), or 0x80000000 flag if not in use */
-  char* description;         /* Nito: To be able to map fd->devices/ports. Link to hi_host_spec->specstr */
   char events;               /* events from last poll */
   char n_iov;
   char writing;              /* Flag, protected by io->qel.mut, that indicates that some thread is processing a write on the io object. */
@@ -258,19 +269,19 @@ struct hiios {
   int max_ios;
   struct hi_io* ios;
 
-  pthread_mutex_t pdu_mut;
+  struct hi_lock pdu_mut;
   int max_pdus;
   struct hi_pdu* pdu_buf_blob;  /* Backingstore for the PDU pool (big blob) */
   struct hi_pdu* free_pdus;     /* Global pool of PDUs (linked list) */
 
 #if 0
-  pthread_mutex_t c_pdu_buf_mut;
+  struct hi_lock c_pdu_buf_mut;
   int max_c_pdu_bufs;
   struct c_pdu_buf* c_pdu_bufs; /* global pool for c_pdu buffers */
   struct c_pdu_buf* free_c_pdu_bufs;
 #endif
 
-  pthread_mutex_t todo_mut;
+  struct hi_lock todo_mut;
   pthread_cond_t todo_cond;
   struct hi_qel* todo_consume;  /* PDUs and I/O objects that need processing. */
   struct hi_qel* todo_produce;
@@ -309,7 +320,7 @@ extern struct hi_proto prototab[];
 struct hiios* hi_new_shuffler(int nfd, int npdu);
 struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int proto);
 struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto);
-struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind, char *description);
+struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind);
 
 struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit);
 void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp);
@@ -322,16 +333,15 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf);
 
 /* Internal APIs */
 
-#define HI_NOERR 0
+#define HI_NOERR      0
 #define HI_CONN_CLOSE 1
+#define HI_NEED_MORE  2
 
 void hi_process(struct hi_thr* hit, struct hi_pdu* pdu);
 void hi_in_out( struct hi_thr* hit, struct hi_io* io);
 void hi_close(  struct hi_thr* hit, struct hi_io* io);
 int  hi_write(  struct hi_thr* hit, struct hi_io* io);
 int  hi_read(   struct hi_thr* hit, struct hi_io* io);
-
-void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen);
 
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* pdu);
 void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req);

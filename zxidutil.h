@@ -21,6 +21,7 @@
 #include <memory.h>
 #include <string.h>
 #include <zx/zx.h>
+#include <zx/zxid.h>
 
 /* ZXID_DECL allows all API functions to be qualified with a declatation, such
  * as relating to the calling convention (e.g. c-decl). Such qualification

@@ -80,7 +80,7 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
  * As hi_checkmore() will cause cur_pdu to change, it is common to call hi_add_reqs() */
 
 /* Called by: hi_add_to_reqs */
-void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
+static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
 {
   int n = req->ap - req->m;
   D("Checkmore(%x) mn=%d n=%d req(%p)->need=%d", io->fd, minlen, n, req, req->need);
@@ -97,20 +97,51 @@ void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int 
     io->cur_pdu = 0;
 #if 0
   /* Let go of the I/O object so that other threads can have a chance */
-  LOCK(hit->shf->todo_mut, "checkmore-letgo");
+  LOCK(io->qel.mut, "checkmore-letgo");
   --io->n_thr;
   ASSERT(io->n_thr >= 0);
-  UNLOCK(hit->shf->todo_mut, "checkmore-letgo");
+  UNLOCK(io->qel.mut, "checkmore-letgo");
 #endif
 }
 
-/*() Read from the network, with all the repercussions. */
+/*() Add a PDU to the reqs associated with the io object.
+ * Often moving PDU to reqs means it should stop being cur_pdu.
+ * If minlen (protocol dependent PDU minimum length) is passed,
+ * hi_checkmore() processing is triggered and cur_pdu dealt with.
+ * Clearing cur_pdu is important to enable the hi_in_out() to
+ * admit new worker thread to perform read work. */
+
+/* Called by:  http_decode, stomp_decode, test_ping */
+void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
+{
+  LOCK(io->qel.mut, "add_to_reqs");
+  if (minlen) {
+    ASSERTOP(io->cur_pdu, ==, req, io->cur_pdu);
+    ASSERT(io->reading);
+    io->reading = 0;  /* reading was set in hi_in_out() */
+    D("out of reading(%x) n_thr=%d (add_to_reqs)", io->fd, io->n_thr);
+    hi_checkmore(hit, io, req, minlen);
+  }
+  /* --io->n_thr; ASSERT(io->n_thr >= 0);  N.B. dec n_thr for read is handled in hi_read() */
+  req->fe = io;
+  req->n = io->reqs;
+  io->reqs = req;
+  UNLOCK(io->qel.mut, "add_to_reqs");
+}
+
+/*() Read from the network, with all the repercussions.
+ * When entering, n_thr will have been incremented for the read count.
+ * No matter how many iterations may happen (and PDUs be processed),
+ * the n_thr count will be decremented by one in end of this
+ * function. There is no need to manipulate n_thr in decoders, but if
+ * decoder also engages in write, this is handled in hi_send0(). */
 
 /* Called by:  hi_in_out */
 int hi_read(struct hi_thr* hit, struct hi_io* io)
 {
   int ret;
   while (1) {  /* eagerly read until we exhaust the read (c.f. edge triggered epoll) */
+    ASSERT(io->reading);
     D("read_loop io(%x)->cur_pdu=%p", io->fd, io->cur_pdu);
     if (!io->cur_pdu) {  /* need to create a new PDU */
       io->cur_pdu = hi_pdu_alloc(hit);
@@ -123,6 +154,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
     }
   retry:
     D("read(%x)", io->fd);
+    ASSERT(io->reading);
     ret = read(io->fd, io->cur_pdu->ap, io->cur_pdu->lim - io->cur_pdu->ap); /* *** vs. need */
     switch (ret) {
     case 0:
@@ -160,7 +192,8 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 	case HIPROTO_DTS:   if (dts_decode(hit, io))   goto conn_close;  break;
 #endif
 	case HIPROTO_HTTP:  if (http_decode(hit, io))  goto conn_close;  break;
-	case HIPROTO_STOMP: if (stomp_decode(hit, io)) goto conn_close;  break;
+	  //case HIPROTO_STOMP: if (stomp_decode(hit, io)) goto conn_close;  break;
+	case HIPROTO_STOMP: ret = stomp_decode(hit, io);  break;
 	case HIPROTO_TEST_PING: test_ping(hit, io);  break;
 	case HIPROTO_SMTP:
 	  if (io->qel.kind == HI_TCP_C) {
@@ -171,6 +204,32 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 	  break;
 	default: NEVERNEVER("unknown proto(%x)", io->qel.proto);
 	}
+	
+	/* Take another iteration. io->reading may have already been set (incompletely decoded
+	 * PDU) or it may have been cleared (completely decoded PDU). Additional
+	 * complication is that it may have been cleared during PDU processing, but
+	 * then set again bu a different thread, such as second reader. *** */
+
+	switch (ret) {
+	case HI_NOERR: /* 0: In this case io->reading has been cleared at hi_add_req() due to
+			* completely decoded PDU. It may have been acquired by other thread. */
+	  LOCK(io->qel.mut, "reset-reading");
+	  if (io->reading) {
+	    D("Somebody else already reading n_thr=%d", io->n_thr);
+	    --io->n_thr;              /* Remove read count. */
+	    ASSERT(io->n_thr >= 0);
+	    UNLOCK(io->qel.mut, "reset-reading-abort");
+	    return 0;
+	  }
+	  io->reading = 1;
+	  D("reacquired reading(%x) n_thr=%d", io->fd, io->n_thr);
+	  UNLOCK(io->qel.mut, "reset-reading");
+	  break;
+	case HI_CONN_CLOSE:         goto conn_close;
+	case HI_NEED_MORE: /* 2: Incomplete decode, we still hold io->reading. */
+	  ASSERT(io->reading);
+	  break;
+	}
       }
     }
   }
@@ -179,6 +238,9 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
   LOCK(io->qel.mut, "clear-reading");
   ASSERT(io->reading);
   io->reading = 0;
+  --io->n_thr;              /* Remove read count. */
+  D("out of reading(%x) n_thr=%d", io->fd, io->n_thr);
+  ASSERT(io->n_thr >= 0);
   UNLOCK(io->qel.mut, "clear-reading");
   return 0;
 
@@ -186,6 +248,9 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
   LOCK(io->qel.mut, "clear-reading-close");
   ASSERT(io->reading);
   io->reading = 0;
+  --io->n_thr;              /* Remove read count. */
+  D("out of reading(%x) n_thr=%d (close)", io->fd, io->n_thr);
+  ASSERT(io->n_thr >= 0);
   UNLOCK(io->qel.mut, "clear-reading-close");
   hi_close(hit, io);
   return 1;

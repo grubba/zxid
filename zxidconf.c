@@ -792,7 +792,7 @@ char* zxid_grab_domain_name(zxid_conf* cf, const char* url)
   return p;
 }
 
-pthread_mutex_t zxid_ent_cache_mx;
+struct zx_lock zxid_ent_cache_mx;
 int zxid_ent_cache_mx_init = 0;
 
 /*(i) Initialize configuration object, which must have already been

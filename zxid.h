@@ -320,8 +320,8 @@ struct zxid_conf {
   CURL* curl;
 #endif
 #ifdef USE_PTHREAD
-  pthread_mutex_t mx;
-  pthread_mutex_t curl_mx;   /* Avoid holding the main lock for duration of HTTP request */
+  struct zx_lock mx;
+  struct zx_lock curl_mx;   /* Avoid holding the main lock for duration of HTTP request */
 #endif
 #ifdef USE_OPENSSL
   EVP_PKEY*  sign_pkey;
@@ -473,7 +473,7 @@ struct zxid_ses {
   char* sso_a7n_buf;
   struct zxid_attr* at; /* Attributes extracted from a7n and translated using inmap. Linked list */
 #ifdef USE_PTHREAD
-  pthread_mutex_t mx;
+  struct zx_lock mx;
 #endif
 };
 
@@ -725,7 +725,7 @@ ZXID_DECL void zxlog_debug_xml_blob(zxid_conf* cf, const char* file, int line, c
 
 /* zxbusprod */
 
-ZXID_DECL int zxbus_send(zxid_conf* cf, int n, const char* logbuf);
+ZXID_DECL int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf);
 ZXID_DECL int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu);
 ZXID_DECL void zxbus_close_all(zxid_conf* cf);
 

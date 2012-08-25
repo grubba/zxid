@@ -484,11 +484,13 @@ static struct hi_io* serial_init(struct hi_host_spec* hs)
   if (verbose)
     log_port_info(fd, tty, "after");
   nonblock(fd);
-  return hi_add_fd(shuff, fd, hs->proto, HI_TCP_C, hs->specstr);
+  return hi_add_fd(shuff, fd, hs->proto, HI_TCP_C);
 #else
   return 0;
 #endif
 }
+
+/*() New born threads start here. */
 
 /* Called by: */
 void* thread_loop(void* _shf)
@@ -503,6 +505,8 @@ void* thread_loop(void* _shf)
 }
 
 /* ============== M A I N ============== */
+
+pthread_mutexattr_t MUTEXATTR_DECL;
 
 /* Called by: */
 int main(int argc, char** argv, char** env)

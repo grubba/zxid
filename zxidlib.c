@@ -251,7 +251,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
     p += sizeof(ETSIGNATURE_EQ)-1;
     sig = p;
     p = base64_fancy_raw(zbuf, zlen, p, std_basis_64, 1<<31, 0, 0, '=');
-    ASSERTOP(p-url, <, alloc_len);  /* Check sig did not overrun its fixed size alloc SIG_SIZE */
+    ASSERTOP(p-url, <, alloc_len, p-url);  /* Check sig did not overrun its fixed size alloc SIG_SIZE */
     slen = p-sig;
     ZX_FREE(cf->ctx, zbuf);
     
@@ -274,7 +274,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
 	zx_str_free(cf->ctx, logpath);
       }
     }
-    ASSERTOP(slen, <, SIG_SIZE-1);
+    ASSERTOP(slen, <, SIG_SIZE-1, SIG_SIZE-1);
     memcpy(sigbuf, sig, slen);
     sigbuf[slen] = 0;
   } else {
@@ -283,7 +283,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
 
   p = base64_fancy_raw(payload->s, payload->len, url, std_basis_64, 1<<31, 0, 0, '=');
   *p = 0;
-  ASSERTOP(p-url, <=, alloc_len);  /* Check sig did not overrun its fixed size alloc SIG_SIZE */  
+  ASSERTOP(p-url, <=, alloc_len, p-url); /* Check sig didn't overrun its fixed size alloc SIG_SIZE */  
 
 #if 1
   /* Template based POST page, see post.html */

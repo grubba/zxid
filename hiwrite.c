@@ -48,15 +48,9 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   } else {
     resp->req = resp->n = 0;
   }
-
-#if 0
-  LOCK(hit->shf->todo_mut, "hi_in_out-done");
-  --io->n_thr;
-  ASSERT(io->n_thr >= 0);
-  UNLOCK(hit->shf->todo_mut, "hi_in_out-done");
-#endif
-
+  
   LOCK(io->qel.mut, "send0");
+  ASSERT(io->n_thr >= 0);
   if (!io->to_write_produce)
     io->to_write_consume = resp;
   else
@@ -65,22 +59,18 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   resp->qel.n = 0;
   ++io->n_to_write;
   ++io->n_pdu_out;
-  if (!io->writing)
+  if (!io->writing) {
     io->writing = write_now = 1;
+    ++io->n_thr;         /* Account for anticipated call to hi_write() */
+  }
   UNLOCK(io->qel.mut, "send0");
   
   HI_SANITY(hit->shf, hit);
-  D("hisend fd(%x) pdu(%p) n_iov=%d iov0(%.*s)", io->fd, resp, resp->n_iov, MIN(resp->iov->iov_len,4), (char*)resp->iov->iov_base);
+  D("send fd(%x) pdu(%p) n_iov=%d iov0(%.*s)", io->fd, resp, resp->n_iov, MIN(resp->iov->iov_len,4), (char*)resp->iov->iov_base);
 
   if (write_now) {
     /* Try cranking the write machine right away! *** should we fish out any todo queue item that may stomp on us? How to deal with thread that has already consumed from the todo_queue? */
-    hi_write(hit, io);
-#if 0
-    LOCK(hit->shf->todo_mut, "hi_in_out-done");
-    --io->n_thr;
-    ASSERT(io->n_thr >= 0);
-    UNLOCK(hit->shf->todo_mut, "hi_in_out-done");
-#endif
+    hi_write(hit, io);   /* Will decrement io->n_thr for write */
   } else {
     hi_todo_produce(hit->shf, &io->qel);
   }
@@ -168,8 +158,8 @@ static void hi_make_iov(struct hi_io* io)
   struct hi_pdu* pdu;
   struct iovec* lim = io->iov+HI_N_IOV;
   struct iovec* cur = io->iov_cur = io->iov;
-  D("make_iov(%x)", io->fd);
   LOCK(io->qel.mut, "make_iov");
+  D("make_iov(%x) n_to_write=%d", io->fd, io->n_to_write);
   while ((pdu = io->to_write_consume) && (cur + pdu->n_iov) <= lim) {
     memcpy(cur, pdu->iov, pdu->n_iov * sizeof(struct iovec));
     cur += pdu->n_iov;
@@ -218,7 +208,7 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
   
   resp->qel.n = &hit->free_pdus->qel;         /* move to free list */
   hit->free_pdus = resp;
-  D("resp(%p) freed", resp);
+  D("resp(%p) freed (%.*s)", resp, MIN(resp->ap-resp->m,4), resp->m);
 
   HI_SANITY(hit->shf, hit);
 }
@@ -240,7 +230,7 @@ void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
   
   req->qel.n = &hit->free_pdus->qel;         /* move to free list */
   hit->free_pdus = req;
-  D("req(%p) freed", req);
+  D("req(%p) freed (%.*s)", req, MIN(req->ap-req->m,4), req->m);
 
   HI_SANITY(hit->shf, hit);
 }
@@ -277,29 +267,6 @@ void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
   hi_free_req(hit, req);
 }
 
-/*() Add a PDU to the reqs associated with the io object.
- * Often moving PDU to reqs means it should stop being cur_pdu.
- * If minlen (protocol dependent PDU minimum length) is passed,
- * hi_ckeckmore() processing is triggered and cur_pdu dealt with.
- * Clearing cur_pdu is important to enable the hi_in_out() to
- * admit new worker thread to perform read work. */
-
-/* Called by:  http_decode, stomp_decode, test_ping */
-void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
-{
-  LOCK(io->qel.mut, "add_to_reqs");
-  if (minlen) {
-    ASSERTOP(io->cur_pdu, ==, req);
-    ASSERT(io->reading);
-    io->reading = 0;  /* reading was set in hi_in_out() */
-    hi_checkmore(hit, io, req, minlen);
-  }
-  req->fe = io;
-  req->n = io->reqs;
-  io->reqs = req;
-  UNLOCK(io->qel.mut, "add_to_reqs");
-}
-
 /*() Post process iov after write.
  * Determine if any (resp) PDUs got completely written and
  * warrant deletion of entire chaing of req and responses,
@@ -315,7 +282,7 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
       n -= io->iov_cur->iov_len;
       ++io->iov_cur;
       --io->n_iov;
-      ASSERTOP(io->iov_cur, >=, 0);
+      ASSERTOP(io->iov_cur, >=, 0, io->iov_cur);
     } else {
       /* partial write: need to adjust iov_cur->iov_base */
       io->iov_cur->iov_base = ((char*)(io->iov_cur->iov_base)) + n;
@@ -323,13 +290,13 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
       return;  /* we are not in end so nothing to free */
     }
   }
-  ASSERTOP(n, ==, 0);
+  ASSERTOP(n, ==, 0, n);
   if (io->n_iov)
     return;
   
   /* Everything has now been written. Time to free in_write list. */
   
-  D("freeing responses (and possibly requests) %d", 0);
+  D("freeing resps (and possibly reqs) in_write=%p", io->in_write);
   while ((pdu = io->in_write)) {
     io->in_write = pdu->wn;
     pdu->wn = 0;
@@ -373,10 +340,12 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
       case EAGAIN: goto out;   /* writev(2) exhausted (c.f. edge triggered epoll) */
       default:
 	ERR("writev(%x) failed: %d %s (closing connection)", io->fd, errno, STRERROR(errno));
-	LOCK(io->qel.mut, "clear-writing");   /* The io->writing was set in hi_in_out() */
+	LOCK(io->qel.mut, "clear-writing-err");   /* The io->writing was set in hi_in_out() */
 	ASSERT(io->writing);
 	io->writing = 0;
-	UNLOCK(io->qel.mut, "clear-writing");
+	--io->n_thr;
+	ASSERT(io->n_thr >= 0);
+	UNLOCK(io->qel.mut, "clear-writing-err");
 	hi_close(hit, io);
 	return 1;
       }
@@ -389,6 +358,8 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
   LOCK(io->qel.mut, "clear-writing");   /* The io->writing was set in hi_in_out() or hi_send0() */
   ASSERT(io->writing);
   io->writing = 0;
+  --io->n_thr;
+  ASSERT(io->n_thr >= 0);
   UNLOCK(io->qel.mut, "clear-writing");
   return 0;
 }

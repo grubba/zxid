@@ -378,40 +378,6 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define ZPALLOCEXT(p,k,e)    MB PALLOCEXT((p),(k),(e)); ZERO((p), sizeof(*(p))); ME
 #define ZPALLOCEXTN(p,k,n,e) MB PALLOCEXTN((p),(k),(n),(e)); ZERO((p), (n)); ME
 
-/* =============== pthread locking =============== */
-
-#ifdef USE_PTHREAD
-/*#define LOCK_STATIC(l) pthread_mutex_t l = PTHREAD_MUTEX_INITIALIZER  do not use */
-#define LOCK_INIT(l) pthread_mutex_init(&(l), 0)
-#define LOCK(l,lk)   if (pthread_mutex_lock(&(l)))   NEVERNEVER("DEADLOCK(%s)", (lk))
-#define UNLOCK(l,lk) if (pthread_mutex_unlock(&(l))) NEVERNEVER("UNLOCK-TWICE(%s)", (lk))
-#else
-#define LOCK_STATIC(l) 
-#define LOCK_INIT(l)
-#define LOCK(l,lk)
-#define UNLOCK(l,lk)
-#endif
-
-/* =============== file system flocking =============== */
-
-#ifndef USE_LOCK
-#if 0
-#define FLOCKEX(fd) lockf((fd), F_LOCK, 1)
-#define FUNLOCK(fd) lockf((fd), F_ULOCK, 1)
-#else
-#define FLOCKEX(fd) fcntl((fd), F_SETLKW, &zx_rdlk)
-#define FUNLOCK(fd) fcntl((fd), F_SETLKW, &zx_unlk)
-#endif
-#else
-/* If you have neither flock() nor lockf(), then -DUSE-LOCK=dummy_no_flock
- * but beware that this means NO file locking will be done, possibly
- * leading to corrupt audit logs, or other files. You need to judge
- * the probability of this happening as well as the cost of clean-up. */
-#define dummy_no_flock(x,y) (0)  /* no file locking where locking should be */
-#define FLOCKEX(fd) USE_LOCK((fd), LOCK_EX)
-#define FUNLOCK(fd) USE_LOCK((fd), LOCK_UN)
-#endif
-
 /* =============== Debugging macro system =============== */
 
 #ifndef ERRMAC_INSTANCE
@@ -537,32 +503,36 @@ int hexdump(char* msg, char* p, char* lim, int max);
 extern char* assert_msg;
 #define DIE_ACTION(b) MB fprintf(ZX_DEBUG_LOG, assert_msg, ERRMAC_INSTANCE); if (assert_nonfatal == 0) { *((int*)0xffffffff) = 1; } ME
 
-/* Many development time sanity checks use these macros so that they can be compiled away from
- * the final version. ASSERT macros are more convenient than their library counter
- * parts, such as assert(3), in that core is dumped in the function where the ASSERT
- * fired, rather than somewhere deep inside a library. N.B. Since these are macros,
- * any arguments may get evaluated zero or more times, producing no, one, or multiple
- * side effects, depending on circumstances. Therefore arguments, should NOT have
- * any side effects. Otherwise "Heisenbugs" will result that manifest depending
+/* Many development time sanity checks use these macros so that they
+ * can be compiled away from the final version. ASSERT macros are more
+ * convenient than their library counter parts, such as assert(3), in
+ * that core is dumped in the function where the ASSERT fired, rather
+ * than somewhere deep inside a library. N.B. Since these are macros,
+ * any arguments may get evaluated zero or more times, producing no,
+ * one, or multiple side effects, depending on
+ * circumstances. Therefore arguments, should NOT have any side
+ * effects. Otherwise "Heisenbugs" will result that manifest depending
  * on whether ASSERTs are enabled or not. */
 
-#if 0
-#define CHK(cond,err) MB if ((cond)) { \
-      ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERT_RAZ, "CHK FAIL: " #cond, ""); \
-      DIE_ACTION((err)); } ME
+#if 1  /* More verbose versions */
+# define CHK(cond,err) MB if ((cond)) { \
+      /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERT_RAZ, "CHK FAIL: " #cond, "");*/ \
+      ERR("CHK FAIL: " #cond " %x", err); \
+      DIE_ACTION(err); } ME
 
-#define ASSERTOP(a,op,b) MB if (!((a) op (b))) { \
-      ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b); \
+# define ASSERTOP(a,op,b,err) MB if (!((a) op (b))) { \
+      /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b);*/ \
+      ERR("ASSERTOP FAIL: " #a #op #b " %x", (int)(err)); \
       DIE_ACTION(1); } ME
 
-#define FAIL(x,why) MB ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_FAIL_RAZ, (char*)(x), why); DIE_ACTION(1); ME
+# define FAIL(x,why) MB /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_FAIL_RAZ, (char*)(x), why);*/ DIE_ACTION(1); ME
 
 /* SANITY_CHK is a smaller assert which checks a condition but will not force an abort */
-#define SANITY_CHK(cond,...) MB if (!(cond)) \
-  ak_tsf(AK_NFN(__FUNCTION__), __LINE__, AK_SANITY_RAZ, #cond, __VA_ARGS__); ME
-#else
-# define CHK(cond,err) MB if ((cond)) { DIE_ACTION((err)); } ME
-# define ASSERTOP(a,op,b) MB if (!((a) op (b))) { DIE_ACTION(1); } ME
+# define SANITY_CHK(cond,...) MB if (!(cond)) \
+  /*ak_tsf(AK_NFN(__FUNCTION__), __LINE__, AK_SANITY_RAZ, #cond, __VA_ARGS__);*/ 1; ME
+#else  /* More sterile versions */
+# define CHK(cond,err) MB if ((cond)) { DIE_ACTION(err); } ME
+# define ASSERTOP(a,op,b,err) MB if (!((a) op (b))) { DIE_ACTION(err); } ME
 # define FAIL(x,why) MB DIE_ACTION(1); ME
 # define SANITY_CHK(cond,...) MB if (!(cond)) NEVER("insanity %d",0); ME
 #endif
@@ -574,7 +544,7 @@ extern char* assert_msg;
 
 #else /* ---------------- no debug --------------- */
 # define CHK(cond,err)
-# define ASSERTOP(a,op,b)
+# define ASSERTOP(a,op,b,err)
 # define FAIL(format)
 # define BOGUS_UNINITIALIZED_WARNING_0
 #endif /* DEBUG */
@@ -585,13 +555,14 @@ extern char* assert_msg;
 #define ASSERT(c)      CHK(!(c), 1)
 #define CHK_NULL(n)    ASSERT((long int)(n))
 #define CHK_ERRNO(n)   CHK(((n)<0), errno)
-#define CHK_MAGIC(p,m) MB ASSERT(p); ASSERTOP((p)->magic, ==, (m)); ME
+#define CHK_MAGIC(p,m) MB ASSERT(p); ASSERTOP((p)->magic, ==, (m), (p)->magic); ME
 
-#define ASSERT_THR(t)  ASSERTOP(pthread_self(), ==, (t))
-/* following macro assumes that each lock is accompanied by a variable describing who holds it.
- * This macro takes that variable as an argument (e.g. shuff_locked). */
+#define ASSERT_THR(t)  ASSERTOP(pthread_self(), ==, (t), (t))
+/* Following macro assumes that each lock is accompanied by a variable
+ * describing who holds it. This macro takes that variable as an
+ * argument (e.g. shuff_locked). */
 #define ASSERT_NOT_IN_LOCK(t) ASSERT((unsigned)(t) != (unsigned)pthread_self())
-#define ASSERT_IN_LOCK(t) ASSERTOP((unsigned)(t), ==, (unsigned)pthread_self())
+#define ASSERT_IN_LOCK(t) ASSERTOP((unsigned)(t), ==, (unsigned)pthread_self(),(t))
 
 /* DASSERT family is "documentative" assert, i.e. not compiled in even in debug mode */
 #define DASSERT(c)
@@ -607,6 +578,57 @@ extern char* assert_msg;
 # define MUTEXATTR 0
 #endif
 #define MUTEXATTR_DECL debug_mutexattr
+
+/* =============== pthread locking =============== */
+
+#ifdef USE_PTHREAD
+# if 1
+/*#define LOCK_STATIC(l) pthread_mutex_t l.ptmut = PTHREAD_MUTEX_INITIALIZER  do not use */
+#  define LOCK_INIT(l) pthread_mutex_init(&(l).ptmut, 0)
+#  define LOCK(l,lk)   MB if (pthread_mutex_lock(&(l).ptmut))   NEVERNEVER("DEADLOCK(%s)", (lk)); (l).func = __FUNCTION__; (l).line = __LINE__; (l).thr = pthread_self(); ME
+#  define UNLOCK(l,lk) MB ASSERTOP((l).thr, ==, pthread_self(),(l).thr); /*(l).func = __FUNCTION__; (l).line = __LINE__;*/ (l).thr = 0; if (pthread_mutex_unlock(&(l).ptmut)) NEVERNEVER("UNLOCK-ERR(%s)", (lk)); ME
+  /* pthread_cond_wait(3) does some important magic: it unlocks the mutex (l)
+   * so that other threads may move. But it will reacquire the lock before
+   * returning. Due to this, other threads may have set lock debugging variables,
+   * so we need to reset them back here. */
+#  define COND_WAIT(c,l,lk) MB pthread_cond_wait((c), &(l).ptmut); (l).func = __FUNCTION__; (l).line = __LINE__; (l).thr = pthread_self(); ME
+#  define COND_SIG(c,lk) pthread_cond_signal(c)
+# else
+/*#define LOCK_STATIC(l) pthread_mutex_t l = PTHREAD_MUTEX_INITIALIZER  do not use */
+#  define LOCK_INIT(l) pthread_mutex_init(&(l), 0)
+#  define LOCK(l,lk)   if (pthread_mutex_lock(&(l)))   NEVERNEVER("DEADLOCK(%s)", (lk))
+#  define UNLOCK(l,lk) if (pthread_mutex_unlock(&(l))) NEVERNEVER("UNLOCK-TWICE(%s)", (lk))
+#  define COND_WAIT(c,l,lk) pthread_cond_wait((c), &(l).ptmut)
+#  define COND_SIG(c,lk) pthread_cond_signal(c)
+# endif
+#else
+# define LOCK_STATIC(l) 
+# define LOCK_INIT(l)
+# define LOCK(l,lk)
+# define UNLOCK(l,lk)
+# define COND_WAIT(c,l,lk) NEVERNEVER("Program written to use pthread_cond_wait() can not work if compiled to not use it (%s).",(lk));
+#  define COND_SIG(c,lk) 
+#endif
+
+/* =============== file system flocking =============== */
+
+#ifndef USE_LOCK
+#if 0
+#define FLOCKEX(fd) lockf((fd), F_LOCK, 1)
+#define FUNLOCK(fd) lockf((fd), F_ULOCK, 1)
+#else
+#define FLOCKEX(fd) fcntl((fd), F_SETLKW, &zx_rdlk)
+#define FUNLOCK(fd) fcntl((fd), F_SETLKW, &zx_unlk)
+#endif
+#else
+/* If you have neither flock() nor lockf(), then -DUSE-LOCK=dummy_no_flock
+ * but beware that this means NO file locking will be done, possibly
+ * leading to corrupt audit logs, or other files. You need to judge
+ * the probability of this happening as well as the cost of clean-up. */
+#define dummy_no_flock(x,y) (0)  /* no file locking where locking should be */
+#define FLOCKEX(fd) USE_LOCK((fd), LOCK_EX)
+#define FUNLOCK(fd) USE_LOCK((fd), LOCK_UN)
+#endif
 
 /* Nibble and bit arrays */
 

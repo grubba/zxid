@@ -673,46 +673,6 @@ void ak_pdu(int func, int line, int raz, char* logkey, struct any_pdu* pdu, char
   ak_buf_pdu((struct ak_buf*)pthread_getspecific(ak_buf_key), func, line, raz, logkey, pdu, msg);
 }
 
-#if 0
-/* Full analysis of a PDU and stuff around it. Good when an error has happened.
- * Usually this must be called from within pdu_lock or similar because pduprev,
- * pdunext, and write_next are generally protected by a lock. */
-
-/* Called by:  ak_pdu_full */
-void ak_buf_pdu_full(struct ak_buf* buf, int func, int line, int raz, char* logkey, struct any_pdu* pdu, char* msg)
-{
-  ak_buf_pdu(buf, func, line, raz, logkey, pdu, msg);
-  if (!pdu) return;
-  if (IS_RESP(pdu))    ak_buf_pdu(buf, func, line, AK_REQ_RAZ, logkey, pdu->req, "");
-  if (pdu->parent) ak_buf_pdu(buf, func, line, AK_PARENT_RAZ, logkey, pdu->parent, "");
-  if (pdu->g.pdunext && pdu->g.pduprev) {  /* member of doubly linked list */
-    if (pdu->g.pdunext->g.pdunext)
-      ak_buf_pdu(buf, func, line, AK_NEXT_RAZ, logkey, pdu->g.pdunext, "nxt");
-    else
-      ak_buf_ts(buf, func, line, AK_NEXT_GUARD_RAZ, logkey, "next guard");
-    if (pdu->g.pduprev->g.pduprev)
-      ak_buf_pdu(buf, func, line, AK_PREV_RAZ, logkey, pdu->g.pduprev, "prv");
-    else
-      ak_buf_ts(buf, func, line, AK_PREV_GUARD_RAZ, logkey, "prev guard");
-    ASSERTOP(pdu->g.pdunext->g.pduprev, ==, pdu);
-    ASSERTOP(pdu->g.pduprev->g.pdunext, ==, pdu);
-  } else {
-    ASSERTOP(pdu->g.pduprev, ==, 0);
-    if (pdu->g.pdunext)
-      ak_buf_pdu(buf, func, line, AK_NEXT_RAZ, logkey, pdu->g.pdunext,"fnxt"); /* freeable */
-  }
-  if (pdu->g.write_next)
-    ak_buf_pdu(buf, func, line, AK_WRITENEXT_RAZ, logkey, pdu->g.write_next, "wrnx");
-  if (pdu->fe)
-    ak_buf_io(buf, func, line, AK_FE_RAZ, logkey, &pdu->fe->io, "fe");
-}
-
-/* Called by: */
-void ak_pdu_full(int func, int line, int raz, char* logkey, struct any_pdu* pdu, char* msg) {
-  ak_buf_pdu_full((struct ak_buf*)pthread_getspecific(ak_buf_key), func, line, raz, logkey, pdu, msg);
-}
-#endif
-
 /* PDU with an argument instead of a message. */
 
 /* Called by:  ak_pdu_arg */

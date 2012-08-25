@@ -624,6 +624,7 @@ static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     setkernelbufsizes(bu->fd, nkbuf, nkbuf);
 #endif
 
+  D("connecting(%x) hs(%s)", bu->fd, bu->s);
   if ((connect(bu->fd, (struct sockaddr*)&sin, sizeof(sin)) == -1) && (errno != EINPROGRESS)) {
     int myerrno = errno;
     close(bu->fd);
@@ -632,7 +633,7 @@ static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     return 0;
   }
   
-  D("connect(%x) hs(%s)", bu->fd, bu->s);
+  D("connected(%x) at TCP layer hs(%s)", bu->fd, bu->s);
 
 #define STOMP_CONNECT  "STOMP\naccept-version:1.1\nhost:localhost\n\n\0"
   send_all_socket(bu->fd, STOMP_CONNECT, sizeof(STOMP_CONNECT)-1);
@@ -662,12 +663,16 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
   int len;
   char buf[1024];
   struct stomp_hdr stomp;
+
+  D("closing(%p)", bu);
   
   if (!bu || !bu->s || !bu->s[0] || !bu->fd)
     return 0;         /* No bus_url configured means audit bus reporting is disabled. */
 
   /* *** implement intelligent lbfo algo */
   
+  D("disconnecting(%p)", bu);
+
   len = snprintf(buf, sizeof(buf), "DISCONNECT\nreceipt:%d\n\n%c", bu->cur_rcpt-1, 0);
   send_all_socket(bu->fd, buf, len);
 
@@ -715,7 +720,7 @@ void zxbus_close_all(zxid_conf* cf)
  * Returns:: zero on failure and 1 on success. */
 
 /* Called by:  zxbustailf_main x2 */
-int zxbus_send(zxid_conf* cf, int n, const char* logbuf)
+int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf)
 {
   int len;
   char buf[1024];
@@ -737,7 +742,7 @@ int zxbus_send(zxid_conf* cf, int n, const char* logbuf)
   if (!bu->fd)
     return 0;
   
-  len = snprintf(buf, sizeof(buf), "SEND\nreceipt:%d\ncontent-length:%d\n\n", bu->cur_rcpt++, n);
+  len = snprintf(buf, sizeof(buf), "SEND\ndestination:%s\nreceipt:%d\ncontent-length:%d\n\n", dest, bu->cur_rcpt++, n);
   send_all_socket(bu->fd, buf, len);
   send_all_socket(bu->fd, logbuf, n);
   send_all_socket(bu->fd, "\0", 1);

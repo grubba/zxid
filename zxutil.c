@@ -54,7 +54,7 @@ struct flock zx_unlk = { F_UNLCK, SEEK_SET, 0, 1 };
 
 int close_file(fdtype fd, const char* logkey);
 
-/*() Generate formatted file name path. */
+/*() Generate formatted file name path. Returns length of path or 0 on failure. */
 
 /* Called by:  name_from_path, vopen_fd_from_path */
 int vname_from_path(char* buf, int buf_len, const char* name_fmt, va_list ap)
@@ -66,10 +66,10 @@ int vname_from_path(char* buf, int buf_len, const char* name_fmt, va_list ap)
     D("Broken vsnprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", len);
     return 0;
   }
-  return 1;
+  return len;
 }
 
-/*() Generate formatted file name path. */
+/*() Generate formatted file name path. Returns length of path or 0 on failure. */
 
 /* Called by:  main, zxid_check_fed x3, zxid_del_ses x3, zxid_di_query, zxid_find_epr, zxid_find_ses, zxid_gen_boots, zxid_idp_as_do x2, zxid_mk_transient_nid x2, zxid_mk_usr_a7n_to_sp x2, zxid_print_session, zxid_put_ses, zxid_put_user, zxlog_output x2 */
 int name_from_path(char* buf, int buf_len, const char* name_fmt, ...)
@@ -345,8 +345,8 @@ int write_all_path_fmt(const char* logkey, int maxlen, char* buf, const char* pa
   return 1;
 }
 
-/*() Write or append all data to a file at the formatted path. The
- * file is opened for appending, data written, and file closed
+/*() Write or append all data to a file at the already formatted path.
+ * The file is opened for appending, data written, and file closed
  * (flushing the data).  Will perform file locking to ensure
  * consistent results. Will create the file if needed, but will not
  * create parent directories. Up to two items of data can

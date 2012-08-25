@@ -51,6 +51,13 @@
 extern "C" {
 #endif
 
+struct zx_lock {
+  pthread_mutex_t ptmut;
+  const char* func;        /* Remember where we locked to ease debugging. */
+  int line;
+  int thr;
+};
+
 /*(s) Namespace management. The context references this table. The array is
  * terminated by an element with empty URL (url_len == 0). The elements
  * of the array are the official namespace prefixes derived from
@@ -101,7 +108,7 @@ struct zx_ctx {
   void* (*realloc_func)(void*, size_t);
   void  (*free_func)(void*);
 #ifdef USE_PTHREAD
-  pthread_mutex_t mx;
+  struct zx_lock mx;
 #endif
   char canon_inopt;   /* Shib2 InclusiveNamespaces/@PrefixList kludge and other sundry options. */
   char enc_tail_opt;  /* In encoding, use non-canon empty tag tail optimization, e.g. <ns:foo/> */

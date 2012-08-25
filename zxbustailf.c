@@ -60,7 +60,7 @@ int verbose = 1;
 int n_iter = 1;
 int n_send = 2;
 char* bdy = 0;
-char* chan = 0;
+char* chan = "default";
 zxid_conf* cf;
 
 /* Called by:  main x9, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
@@ -201,11 +201,12 @@ int zxbustailf_main(int argc, char** argv, char** env)
     if (ns > 1 || n_iter > 1) {
       for (ns = n_send; ns; --ns) {
 	len = snprintf(buf, sizeof(buf), "test(%d,%d)", n_iter, ns);
-	zxbus_send(cf, len, buf);
+	D("sending(%.*s)", len, buf);
+	zxbus_send(cf, chan, len, buf);
       }
     } else {
       if (bdy) {
-	zxbus_send(cf, strlen(bdy), bdy);
+	zxbus_send(cf, chan, strlen(bdy), bdy);
       }
     }
     /* *** implement actual tail functionality */

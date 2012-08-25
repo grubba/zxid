@@ -865,7 +865,7 @@ static void locate_buffers(FILE* file)
 
 /** This ASSERT causes some problems in AIX **/
 #if !defined(AIXOS)
-  ASSERTOP(((char*)(mr)),==,amap((char*)(mr->self)));
+  ASSERTOP(((char*)(mr)),==,amap((char*)(mr->self)),mr);
 #endif
   n_thr = mr->n_threads;
   fprintf(file, "Master record found\n");

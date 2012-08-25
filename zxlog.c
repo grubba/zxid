@@ -630,7 +630,7 @@ int zxlog_dup_check(zxid_conf* cf, struct zx_str* path, const char* logkey)
   }
   /* We need a c path, but get zx_str. However, the zx_str will come from zxlog_path()
    * so we should be having the nul termination as needed. Just checking. */
-  ASSERTOP(path->s[path->len], ==, 0);
+  ASSERTOP(path->s[path->len], ==, 0, path->s[path->len]);
   if (!stat(path->s, &st)) {
     ERR("Duplicate %s path(%.*s)", logkey, path->len, path->s);
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "EDUP", path->s, "%s", logkey);
@@ -681,7 +681,7 @@ int zxlog_blob(zxid_conf* cf, int logflag, struct zx_str* path, struct zx_str* b
    * so we should be having the nul termination as needed. Just checking. */
   D("%s: LOGBLOB15(%.*s) len=%d path(%.*s)", lk, MIN(blob->len,15), blob->s, blob->len, path->len, path->s);
   DD("%s: LOGBLOB(%.*s)", lk, blob->len, blob->s);
-  ASSERTOP(path->s[path->len], ==, 0);
+  ASSERTOP(path->s[path->len], ==, 0, path->s[path->len]);
   if (!write2_or_append_lock_c_path(path->s, blob->len, blob->s, 0, 0, "zxlog blob", SEEK_END,O_APPEND)) {
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "S", "EFILE", 0, "Could not write blob. Permissions?");
   }

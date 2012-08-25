@@ -130,7 +130,7 @@ char* zxid_render_perms(zxid_conf* cf, struct zxid_perm* perms)
     p += n;
   }
   
-  ASSERTOP(p-ret, ==, len);
+  ASSERTOP(p-ret, ==, len, p-ret);
   *p = 0; /* nul terminate */
   return ret;
 }
@@ -159,7 +159,7 @@ char* zxid_render_str_list(zxid_conf* cf, struct zx_str* strs, const char* attr_
     p += n;
   }
   
-  ASSERTOP(p-ret, ==, len);
+  ASSERTOP(p-ret, ==, len, p-ret);
   *p = 0; /* nul terminate */
   return ret;
 }
