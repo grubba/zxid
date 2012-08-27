@@ -57,7 +57,7 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
   }
   UNLOCK(hit->shf->pdu_mut, "pdu_alloc-no-pdu");
   
-  D("out of pdus %d", 0);
+  ERR("Out of PDUs. Use -npdu to specify a value at least twice the value of -nfd. %d",0);
   return 0;
 
  retpdu:
@@ -83,25 +83,23 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
 static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
 {
   int n = req->ap - req->m;
+
+  /* Allocate next io->cur_pdu here
+   * a. because we already hold io->qel.mut (saves lock, otherwise hi_read() will alloc)
+   * b. because we might need to copy tail of previous req to it */
+
+  io->cur_pdu = hi_pdu_alloc(hit);
+  if (!io->cur_pdu) { NEVERNEVER("*** out of pdus in bad place %d", n); }
+  io->cur_pdu->need = minlen;
+  ++io->n_pdu_in;
+  
   D("Checkmore(%x) mn=%d n=%d req(%p)->need=%d", io->fd, minlen, n, req, req->need);
   ASSERT(minlen > 0);  /* If this is ever zero it will prevent hi_poll() from producing. */
   if (n > req->need) {
-    struct hi_pdu* nreq = hi_pdu_alloc(hit);
-    if (!nreq) { NEVERNEVER("*** out of pdus in bad place %d", n); }
-    nreq->need = minlen;
-    memcpy(nreq->ap, req->m + req->need, n - req->need);
-    nreq->ap += n - req->need;
-    io->cur_pdu = nreq;
-    req->ap = req->m + req->need;
-  } else
-    io->cur_pdu = 0;
-#if 0
-  /* Let go of the I/O object so that other threads can have a chance */
-  LOCK(io->qel.mut, "checkmore-letgo");
-  --io->n_thr;
-  ASSERT(io->n_thr >= 0);
-  UNLOCK(io->qel.mut, "checkmore-letgo");
-#endif
+    memcpy(io->cur_pdu->ap, req->m + req->need, n - req->need);
+    io->cur_pdu->ap += n - req->need;
+    req->ap = req->m + req->need;  /* final length of decoded PDU */
+  }
 }
 
 /*() Add a PDU to the reqs associated with the io object.
@@ -115,17 +113,19 @@ static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
 void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
 {
   LOCK(io->qel.mut, "add_to_reqs");
+  D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   if (minlen) {
     ASSERTOP(io->cur_pdu, ==, req, io->cur_pdu);
     ASSERT(io->reading);
     io->reading = 0;  /* reading was set in hi_in_out() */
-    D("out of reading(%x) n_thr=%d (add_to_reqs)", io->fd, io->n_thr);
+    D("out of reading(%x) n_thr=%d (reset cur_pdu)", io->fd, io->n_thr);
     hi_checkmore(hit, io, req, minlen);
   }
   /* --io->n_thr; ASSERT(io->n_thr >= 0);  N.B. dec n_thr for read is handled in hi_read() */
   req->fe = io;
   req->n = io->reqs;
   io->reqs = req;
+  D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   UNLOCK(io->qel.mut, "add_to_reqs");
 }
 
@@ -140,22 +140,29 @@ void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, in
 int hi_read(struct hi_thr* hit, struct hi_io* io)
 {
   int ret;
+  struct hi_pdu* pdu;
   while (1) {  /* eagerly read until we exhaust the read (c.f. edge triggered epoll) */
     ASSERT(io->reading);
-    D("read_loop io(%x)->cur_pdu=%p", io->fd, io->cur_pdu);
-    if (!io->cur_pdu) {  /* need to create a new PDU */
-      io->cur_pdu = hi_pdu_alloc(hit);
-      if (!io->cur_pdu) {
+    pdu = io->cur_pdu;
+    D("read_loop io(%x)->cur_pdu=%p", io->fd, pdu);
+#if 0
+    if (!pdu) {  /* need to create a new PDU */
+      NEVERNEVER("io(%x)->cur_pdu null", io->fd);
+      io->cur_pdu = pdu = hi_pdu_alloc(hit);
+      if (!pdu) {
 	hi_todo_produce(hit->shf, &io->qel); /* Alloc fail, retry later. Back to todo because we did not exhaust read */
 	goto out;
       }
       ++io->n_pdu_in;
       /* set fe? */
     }
+#else
+    ASSERT(io->cur_pdu);  /* Exists either through hi_shuff_init() or through hi_check_more() */
+#endif
   retry:
     D("read(%x)", io->fd);
     ASSERT(io->reading);
-    ret = read(io->fd, io->cur_pdu->ap, io->cur_pdu->lim - io->cur_pdu->ap); /* *** vs. need */
+    ret = read(io->fd, pdu->ap, pdu->lim - pdu->ap); /* *** vs. need */
     switch (ret) {
     case 0:
       /* *** any provision to process still pending PDUs? */
@@ -170,14 +177,15 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 	goto conn_close;
       }
     default:  /* something was read, invoke PDU parsing layer */
-      D("got(%x)=%d, proto=%d cur_pdu(%p) need=%d", io->fd, ret, io->qel.proto, io->cur_pdu, io->cur_pdu->need);
-      HEXDUMP("got:", io->cur_pdu->ap, io->cur_pdu->ap + ret, 16);
-      io->cur_pdu->ap += ret;
+      D("got(%x)=%d, proto=%d cur_pdu(%p) need=%d", io->fd, ret, io->qel.proto, pdu, pdu->need);
+      HEXDUMP("got:", pdu->ap, pdu->ap + ret, 16);
+      pdu->ap += ret;
       io->n_read += ret;
-      while (io->cur_pdu
-	     && io->cur_pdu->need   /* no further I/O desired */
-	     && io->cur_pdu->need <= (io->cur_pdu->ap - io->cur_pdu->m)) {
-	D("decode_loop io(%x)->cur_pdu=%p need=%d", io->fd, io->cur_pdu, io->cur_pdu?io->cur_pdu->need:-99);
+      while (pdu
+	     && pdu->need   /* no further I/O desired */
+	     && pdu->need <= (pdu->ap - pdu->m)) {
+	D("decode_loop io(%x)->cur_pdu=%p need=%d", io->fd, pdu, pdu?pdu->need:-99);
+	ASSERTOP(pdu, ==, io->cur_pdu, pdu);
 	switch (io->qel.proto) {
 	  /* *** add here a project dependent include? Or a macro. */
 	  /* Following decoders MUST either
@@ -214,15 +222,19 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 	case HI_NOERR: /* 0: In this case io->reading has been cleared at hi_add_req() due to
 			* completely decoded PDU. It may have been acquired by other thread. */
 	  LOCK(io->qel.mut, "reset-reading");
+	  D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
 	  if (io->reading) {
 	    D("Somebody else already reading n_thr=%d", io->n_thr);
 	    --io->n_thr;              /* Remove read count. */
 	    ASSERT(io->n_thr >= 0);
+	    D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
 	    UNLOCK(io->qel.mut, "reset-reading-abort");
 	    return 0;
 	  }
 	  io->reading = 1;
+	  pdu = io->cur_pdu;
 	  D("reacquired reading(%x) n_thr=%d", io->fd, io->n_thr);
+	  D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
 	  UNLOCK(io->qel.mut, "reset-reading");
 	  break;
 	case HI_CONN_CLOSE:         goto conn_close;
@@ -236,6 +248,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 
  out:
   LOCK(io->qel.mut, "clear-reading");
+  D("READ-OUT: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   ASSERT(io->reading);
   io->reading = 0;
   --io->n_thr;              /* Remove read count. */
@@ -246,6 +259,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 
  conn_close:
   LOCK(io->qel.mut, "clear-reading-close");
+  D("READ-CLOSE: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   ASSERT(io->reading);
   io->reading = 0;
   --io->n_thr;              /* Remove read count. */

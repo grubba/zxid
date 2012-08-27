@@ -475,6 +475,11 @@ static struct hi_io* serial_init(struct hi_host_spec* hs)
     ERR("open(%s): Error opening serial port: %d %s", tty, errno, STRERROR(errno));
     exit(3);
   }
+  if (fd >= shf->max_ios) {
+    ERR("serial: File descriptor limit(%d) exceeded fd=%d. Consider increasing the limit with -nfd flag, or figure out if there are any descriptor leaks.", shf->max_ios, fd);
+    close(fd);
+    return 0;
+  }
   if (verbose)
     log_port_info(fd, tty, "before");
   if (set_baud_rate(fd, tty, baud) == -1)
@@ -490,14 +495,16 @@ static struct hi_io* serial_init(struct hi_host_spec* hs)
 #endif
 }
 
-/*() New born threads start here. */
+/*() New born threads start here. hit is allocated from stack.
+ * In principle all threads are created equal and any one of
+ * then can act as the shuffler on its turn. */
 
 /* Called by: */
 void* thread_loop(void* _shf)
 {
   struct hi_thr hit;
   struct hiios* shf = (struct hiios*)_shf;
-  memset(&hit, 0, sizeof(hit));
+  hi_hit_init(&hit);
   if (ak_buf_size)
     ak_add_thread(ak_buf_size, 1);  /* Add newly born thread */
   hi_shuffle(&hit, shf);            /* Never returns. */
@@ -512,7 +519,7 @@ pthread_mutexattr_t MUTEXATTR_DECL;
 int main(int argc, char** argv, char** env)
 { 
   struct hi_thr hit;
-  memset(&hit, 0, sizeof(hit));
+  hi_hit_init(&hit);
   ak_init(*argv);
 #ifdef MINGW
   pthread_mutex_init(&dbilock, 0);
@@ -631,7 +638,7 @@ int main(int argc, char** argv, char** env)
   }
 #endif
 
-  hit.shf = shuff = hi_new_shuffler(nfd, npdu);
+  shuff = hi_new_shuffler(&hit, nfd, npdu);
   {
     struct hi_io* io;
     struct hi_host_spec* hs;

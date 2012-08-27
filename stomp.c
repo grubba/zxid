@@ -145,7 +145,7 @@ int zxbus_persist(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   if (*dest == '/')
     ++dest; /* skip initial /, if any */
   
-  D("persist(%.*s)", nl-dest, dest);
+  DD("persist(%.*s)", nl-dest, dest);
   
   /* Sanity check destination for any cracking attempts. */
   for (p = dest; p < nl; ++p) {
@@ -169,10 +169,10 @@ int zxbus_persist(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
     stomp_err(hit,io,req,"persist failure at server","Unable to persist message. Can not guarantee reliable delivery, therefore rejecting. Internal error (d_path too long).");    
     return 0;
   }
-  D("d_path(%s) len=%d", d_path, len);
+  DD("d_path(%s) len=%d", d_path, len);
   sha1_safe_base64(d_path+len, nl-p, p);  /* append */
   d_path[len+27] = 0;
-  D("d_path(%s)", d_path);
+  DD("d_path(%s)", d_path);
   
   name_from_path(t_path,sizeof(t_path), "%s" ZXID_BUS_DIR "tmp/%.*s", ZXID_PATH, 27, d_path+len);
   
@@ -187,7 +187,7 @@ int zxbus_persist(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
     //hi_sendf(hit, io, req, "ERROR\nmessage:persist failure\nreceipt-id:%.*s\n\nUnable to persist message. Can not guarantee reliable delivery, therefore rejecting. Perhaps filesystem is full?%c", len, rcpt, 0);
     return 0;
   }
-  
+  D("persisted at(%s)", d_path);
   /* *** Schedule delivery to happen - or have this PDU take care of it. */
   return 1;
 }

@@ -265,9 +265,9 @@ struct hiios {
 #ifdef SUNOS
   struct pollfd* evs;
 #endif
-  int n_ios;
-  int max_ios;
-  struct hi_io* ios;
+  //int n_ios;
+  int max_ios;                  /* Size of ios array = maximum number of fds */
+  struct hi_io* ios;            /* Dynamically allocated array of io objects, one per fd. */
 
   struct hi_lock pdu_mut;
   int max_pdus;
@@ -317,7 +317,8 @@ extern struct hi_proto prototab[];
 
 /* External APIs */
 
-struct hiios* hi_new_shuffler(int nfd, int npdu);
+void hi_hit_init(struct hi_thr* hit);
+struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu);
 struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int proto);
 struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto);
 struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind);
@@ -346,6 +347,7 @@ int  hi_read(   struct hi_thr* hit, struct hi_io* io);
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* pdu);
 void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req);
 void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen);
+void hi_make_iov_nolock(struct hi_io* io);
 
 /* Sanity checking and data structure dumping for debugging. */
 

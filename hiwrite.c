@@ -50,6 +50,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   }
   
   LOCK(io->qel.mut, "send0");
+  D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   ASSERT(io->n_thr >= 0);
   if (!io->to_write_produce)
     io->to_write_consume = resp;
@@ -63,6 +64,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
     io->writing = write_now = 1;
     ++io->n_thr;         /* Account for anticipated call to hi_write() */
   }
+  D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   UNLOCK(io->qel.mut, "send0");
   
   HI_SANITY(hit->shf, hit);
@@ -152,13 +154,12 @@ void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* fm
  * This is the main (only?) way how writes end up in hiios poll machinery to be written.
  * The only consumer of the io->to_write_consume queue. */
 
-/* Called by:  hi_write */
-static void hi_make_iov(struct hi_io* io)
+/* Called by:  hi_make_iov, hi_in_out */
+void hi_make_iov_nolock(struct hi_io* io)
 {
   struct hi_pdu* pdu;
   struct iovec* lim = io->iov+HI_N_IOV;
   struct iovec* cur = io->iov_cur = io->iov;
-  LOCK(io->qel.mut, "make_iov");
   D("make_iov(%x) n_to_write=%d", io->fd, io->n_to_write);
   while ((pdu = io->to_write_consume) && (cur + pdu->n_iov) <= lim) {
     memcpy(cur, pdu->iov, pdu->n_iov * sizeof(struct iovec));
@@ -174,8 +175,20 @@ static void hi_make_iov(struct hi_io* io)
     ASSERT(pdu->n_iov && pdu->iov[0].iov_len);   /* Empty writes can lead to infinite loops */
     D("make_iov(%x) added pdu(%p) n_iov=%d", io->fd, pdu, cur - io->iov_cur);
   }
-  UNLOCK(io->qel.mut, "make_iov");
   io->n_iov = cur - io->iov_cur;
+}
+
+/* Called by:  hi_write */
+static void hi_make_iov(struct hi_io* io)
+{
+  struct hi_pdu* pdu;
+  struct iovec* lim = io->iov+HI_N_IOV;
+  struct iovec* cur = io->iov_cur = io->iov;
+  LOCK(io->qel.mut, "make_iov");
+  D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  hi_make_iov_nolock(io);
+  D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  UNLOCK(io->qel.mut, "make_iov");
 }
 
 /*() Free a response PDU.
@@ -296,7 +309,7 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
   
   /* Everything has now been written. Time to free in_write list. */
   
-  D("freeing resps (and possibly reqs) in_write=%p", io->in_write);
+  D("freeing resps (&reqs?) in_write=%p", io->in_write);
   while ((pdu = io->in_write)) {
     io->in_write = pdu->wn;
     pdu->wn = 0;
@@ -340,14 +353,7 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
       case EAGAIN: goto out;   /* writev(2) exhausted (c.f. edge triggered epoll) */
       default:
 	ERR("writev(%x) failed: %d %s (closing connection)", io->fd, errno, STRERROR(errno));
-	LOCK(io->qel.mut, "clear-writing-err");   /* The io->writing was set in hi_in_out() */
-	ASSERT(io->writing);
-	io->writing = 0;
-	--io->n_thr;
-	ASSERT(io->n_thr >= 0);
-	UNLOCK(io->qel.mut, "clear-writing-err");
-	hi_close(hit, io);
-	return 1;
+	goto clear_writing_err;
       }
     default:  /* something was written, deduce it from the iov */
       D("wrote(%x) %d bytes", io->fd, ret);
@@ -356,12 +362,24 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
   }
  out:
   LOCK(io->qel.mut, "clear-writing");   /* The io->writing was set in hi_in_out() or hi_send0() */
+  D("WR-OUT: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   ASSERT(io->writing);
   io->writing = 0;
   --io->n_thr;
   ASSERT(io->n_thr >= 0);
   UNLOCK(io->qel.mut, "clear-writing");
   return 0;
+
+ clear_writing_err:
+  LOCK(io->qel.mut, "clear-writing-err");   /* The io->writing was set in hi_in_out() */
+  D("WR-FAIL: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  ASSERT(io->writing);
+  io->writing = 0;
+  --io->n_thr;
+  ASSERT(io->n_thr >= 0);
+  UNLOCK(io->qel.mut, "clear-writing-err");
+  hi_close(hit, io);
+  return 1;
 }
 
 /* EOF  --  hiwrite.c */

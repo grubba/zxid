@@ -48,17 +48,7 @@ void test_ping(struct hi_thr* hit, struct hi_io* io)
     req->need = MIN_PING - n;
     return;
   }
-  
-  if (n > MAX_PING) {  /* more than enough */
-    struct hi_pdu* nreq = hi_pdu_alloc(hit);
-    if (!nreq) { NEVERNEVER("*** out of pdus in bad place %d", n); }
-    memcpy(nreq->ap, req->m + MAX_PING, n - MAX_PING);
-    nreq->ap += n - MAX_PING;
-    n = MAX_PING;
-    io->cur_pdu = nreq;
-  } else
-    io->cur_pdu = 0;
-  
+
   /* Got enough. Associate request with frontend. */
   
   hi_add_to_reqs(hit, io, req, MIN_PING);  
