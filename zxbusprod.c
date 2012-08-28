@@ -462,9 +462,11 @@ static int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* 
 	goto read_more;
       v = memchr(h, ':', p-h);
       if (!v) {
-	ERR("Header missing colon. hdr(%*s)", bu->ap-h,h);
+	ERR("Header missing colon. hdr(%.*s)", bu->ap-h,h);
 	return 0;
       }
+      ++v; /* skip : */
+
 #define HDR(hdr, field, val) } else if (!memcmp(h, hdr, sizeof(hdr)-1)) { if (!stomp->field) stomp->field = (val)
 
       if (!memcmp(p, "content-length:", sizeof("content-length:")-1))
@@ -487,7 +489,7 @@ static int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* 
       HDR("heart-beat:",     heart_bt,  v);
       } else if (!memcmp(p, "content-type:", sizeof("content-type:"))) { /* ignore */
       } else {
-        D("Unknown header(%*s) ignored.", h-p, h);
+        D("Unknown header(%.*s) ignored.", h-p, h);
       }
     }
   
@@ -569,7 +571,7 @@ static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   } else if (!memcmp(proto, "stomp:", sizeof("stomp:")-1)) {
     bu->tls = 0;
   } else {
-    ERR("Unknown protocol(%*s)", 6, proto);
+    ERR("Unknown protocol(%.*s)", 6, proto);
     return 0;
   }
   
@@ -689,11 +691,11 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
       } else {
 	close(bu->fd);
 	bu->fd = 0;
-	ERR("DISCONNECT to %s failed. RECEIPT number(%*s)=%d mismatch cur_rcpt-1=%d", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1);
+	ERR("DISCONNECT to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1);
 	return 0;
       }
     } else {
-      ERR("DISCONNECT to %s failed. Other end did not send RECEIPT(%*ss)", bu->s, bu->ap - bu->buf, bu->buf);
+      ERR("DISCONNECT to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, bu->ap - bu->buf, bu->buf);
     }
   } else {
     ERR("DISCONNECT to %s failed. Other end did not send RECEIPT. Read error.", bu->s);
@@ -758,11 +760,11 @@ int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf)
       } else {
 	close(bu->fd);
 	bu->fd = 0;
-	ERR("Send to %s failed. RECEIPT number(%*s)=%d mismatch cur_rcpt-1=%d", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1);
+	ERR("Send to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d (%s)", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1, bu->buf);
 	return 0;
       }
     } else {
-      ERR("Send to %s failed. Other end did not send RECEIPT(%*ss)", bu->s, bu->ap - bu->buf, bu->buf);
+      ERR("Send to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, bu->ap - bu->buf, bu->buf);
     }
   } else {
     ERR("Send to %s failed. Other end did not send RECEIPT. Read error.", bu->s);

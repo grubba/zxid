@@ -323,7 +323,7 @@ struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int p
 struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto);
 struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind);
 
-struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit);
+struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk);
 void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp);
 void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0);
 void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1);

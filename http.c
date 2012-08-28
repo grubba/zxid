@@ -23,7 +23,7 @@
 /* Called by:  http_send_data, http_send_err, http_send_file */
 struct hi_pdu* http_encode_start(struct hi_thr* hit)
 {
-  struct hi_pdu* resp = hi_pdu_alloc(hit);
+  struct hi_pdu* resp = hi_pdu_alloc(hit, "http-enc-start");
   if (!resp) { NEVERNEVER("*** out of pdus in bad place %d", 0); }
   return resp;
 }

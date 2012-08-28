@@ -88,7 +88,7 @@ struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu)
   shf->max_ios = nfd;
   for (i = 0; i < nfd; ++i) {
     pthread_mutex_init(&shf->ios[i].qel.mut.ptmut, MUTEXATTR);
-    if (!(shf->ios[i].cur_pdu = hi_pdu_alloc(hit))) {
+    if (!(shf->ios[i].cur_pdu = hi_pdu_alloc(hit, "new_shuffler"))) {
       ERR("Out of PDUs when preparing cur_pdu for each I/O object. Use -npdu to specify a value at least twice the value of -nfd. Current values: npdu=%d, nfd=%d", npdu, nfd);
       exit(1);
     }
@@ -347,7 +347,7 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io)
     D("old fd(%x) n_thr=%d still going", io->fd, n_thr);
     NEVERNEVER("NOT POSSIBLE due to half close n_thr=%d", n_thr);
     io->qel.kind = HI_HALF_ACCEPT;
-    hi_todo_produce(hit->shf, &io->qel);
+    hi_todo_produce(hit->shf, &io->qel);  /* schedule a new try */
     return;
   }
 
@@ -434,9 +434,13 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
 void hi_close(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* pdu;
-  int n_thr = 0, fd = io->fd;
+  int fd = io->fd;
   D("closing(%x)", fd);
-#if 0  /* should never happen because io had to be consumed before hi_in_out() was called. */
+#if 0
+  /* *** should never happen because io had to be consumed before hi_in_out() was called.
+   * err, the io could have been consumed twice: once for reading and once for writing.
+   * Thus it may be optimal to clean up the todo queue here, but this still will
+   * not stop the other thread that already consumed. */
   LOCK(hit->shf->todo_mut, "hi_close");
   if (io->qel.intodo) {
     if (hit->shf->todo_consume == &io->qel) {
@@ -459,8 +463,10 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
   }
   UNLOCK(hit->shf->todo_mut, "hi_close");
 #endif
-#if 1
-  /* Expensive assert. Consider disabling. */
+#if 0
+  /* Expensive assert. Consider disabling. Not even true, because it is possible
+   * to consume twice before close, so the other thread could already be causing
+   * intodo situation. */
   LOCK(hit->shf->todo_mut, "hi_close");
   D("CLOSE LOCK & UNLOCK todo_mut.thr=%x", hit->shf->todo_mut.thr);
   ASSERT(!io->qel.intodo);
@@ -471,32 +477,36 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
   
   LOCK(io->qel.mut, "hi_close");
   D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
-  n_thr = io->n_thr; /* N.B. n_thr manipulations are done before calling hi_close() */
   ASSERT(io->n_thr >= 0);
+  io->fd |= 0x80000000;  /* mark as free */
 
+  /* N.B. n_thr manipulations are done before calling hi_close() */
+  if (io->n_thr) {           /* Some threads are still tinkering with this fd: delay closing */
+    if (shutdown(fd & 0x7ffffff, SHUT_RD))
+      ERR("shutdown %d %s", errno, STRERROR(errno));
+    D("close(%x) pending n_thr=%d", fd, io->n_thr);
+    D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+    UNLOCK(io->qel.mut, "hi_close");
+    return;
+  }
+  
   for (pdu = io->reqs; pdu; pdu = pdu->n)
     hi_free_req(hit, pdu);
+  io->reqs = 0;
   
   if (io->cur_pdu) {
     hi_free_req(hit, io->cur_pdu);
-    io->cur_pdu = hi_alloc_pdu(hit);  /* *** Anyway to recycle the PDU without freeing? */
+    io->cur_pdu = hi_pdu_alloc(hit, "cur_pdu-clo");  /* *** Could we recycle the PDU without freeing? */
   }
 #ifdef ENA_S5066
   void sis_clean(struct hi_io* io);
   sis_clean(io);
 #endif
-
-  io->fd |= 0x80000000;  /* mark as free */
-  if (n_thr) {             /* Some threads are still tinkering with this fd: delay closing */
-    if (shutdown(fd & 0x7ffffff, SHUT_RD))
-      ERR("shutdown %d %s", errno, STRERROR(errno));
-    D("close(%x) pending n_thr=%d", fd, n_thr);
-  } else {
-    close(fd & 0x7ffffff); /* Now some other thread may reuse the slot by accept()ing same fd */
-    D("closed(%x)", fd);
-  }
+  
+  close(fd & 0x7ffffff); /* Now some other thread may reuse the slot by accept()ing same fd */
+  D("closed(%x)", fd);
   /* Must let go of the lock only after close so no read can creep in. */
-  D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
   UNLOCK(io->qel.mut, "hi_close");
 }
 
@@ -528,29 +538,38 @@ static struct hi_qel* hi_todo_consume(struct hiios* shf)
   struct hi_qel* qe;
   LOCK(shf->todo_mut, "todo_cons");
   D("LOCK todo_mut.thr=%x (cond_wait)", shf->todo_mut.thr);
-  while (!shf->todo_consume && !shf->poll_tok.proto)        /* Empty todo queue? */
-    COND_WAIT(&shf->todo_cond, shf->todo_mut, "todo-cons"); /* Block until there is work. */
-  D("Out of cond_wait todo_mut.thr=%x", shf->todo_mut.thr);
-  if (shf->todo_consume)
-    qe = hi_todo_consume_inlock(shf);
-  else {
-    ASSERT(shf->poll_tok.proto);
-    shf->poll_tok.proto = HIPROTO_POLL_OFF;
-    qe = &shf->poll_tok;
+
+  while (1) {
+  try_next:
+    while (!shf->todo_consume && !shf->poll_tok.proto)        /* Empty todo queue? */
+      COND_WAIT(&shf->todo_cond, shf->todo_mut, "todo-cons"); /* Block until there is work. */
+    D("Out of cond_wait todo_mut.thr=%x", shf->todo_mut.thr);
+    if (shf->todo_consume)
+      qe = hi_todo_consume_inlock(shf);
+    else {
+      ASSERT(shf->poll_tok.proto);
+      shf->poll_tok.proto = HIPROTO_POLL_OFF;
+      qe = &shf->poll_tok;
+    }
+    if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
+      io = ((struct hi_io*)qe);
+      LOCK(io->qel.mut, "n_thr inc");
+      if (io->fd & 0x80000000) {
+	D("CONS-CLOSED: LK&UNLK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+	UNLOCK(io->qel.mut, "n_thr inc-fail");
+	goto try_next;
+      }
+      io->n_thr += 2;  /* Increase two counts: once for write, and once for read */
+      D("CONS: LK&UNLK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+      UNLOCK(io->qel.mut, "n_thr inc");
+      D("use(%x) n_thr=%d reading=%d writing=%d ev=%x", io->fd, io->n_thr, io->reading, io->writing, io->events);
+    } else {
+      D("consume qe(%p) kind=%d", qe, qe->kind);
+    }
+    D("UNLOCK todo_mut.thr=%x", shf->todo_mut.thr);
+    UNLOCK(shf->todo_mut, "todo_cons");
+    return qe;
   }
-  if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
-    io = ((struct hi_io*)qe);
-    LOCK(io->qel.mut, "n_thr inc");
-    D("CONS: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
-    io->n_thr += 2;  /* Increase two counts: once for write, and once for read */
-    UNLOCK(io->qel.mut, "n_thr inc");
-    D("use(%x) n_thr=%d reading=%d writing=%d ev=%x", io->fd, io->n_thr, io->reading, io->writing, io->events);
-  } else {
-    D("consume qe(%p) kind=%d", qe, qe->kind);
-  }
-  D("UNLOCK todo_mut.thr=%x", shf->todo_mut.thr);
-  UNLOCK(shf->todo_mut, "todo_cons");
-  return qe;
 }
 
 /*(i) Schedule new work to be done, potentially waking up the consumer threads! */

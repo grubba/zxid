@@ -139,7 +139,7 @@ void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
 void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* fmt, ...)
 {
   va_list pv;
-  struct hi_pdu* pdu = hi_pdu_alloc(hit);
+  struct hi_pdu* pdu = hi_pdu_alloc(hit, "send");
   if (!pdu) { ERR("Out of PDUs in bad place fmt(%s)", fmt); return; }
   
   va_start(pv, fmt);
@@ -181,9 +181,6 @@ void hi_make_iov_nolock(struct hi_io* io)
 /* Called by:  hi_write */
 static void hi_make_iov(struct hi_io* io)
 {
-  struct hi_pdu* pdu;
-  struct iovec* lim = io->iov+HI_N_IOV;
-  struct iovec* cur = io->iov_cur = io->iov;
   LOCK(io->qel.mut, "make_iov");
   D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   hi_make_iov_nolock(io);
@@ -226,7 +223,7 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
   HI_SANITY(hit->shf, hit);
 }
 
-/*() Free a request, and its real consequences (response, subrequests, etc.).
+/*() Free a request, and transitively its real consequences (response, subrequests, etc.).
  * May be called either because individual resp was done, or because of connection close. */
 
 /* Called by:  hi_close x2, hi_free_req_fe */
@@ -249,7 +246,7 @@ void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
 }
 
 /*() Free a request, assuming it is associated with a frontend.
- * Will also remove the PDU frm the frontend reqs queue. */
+ * Will also remove the PDU from the frontend reqs queue. */
 
 /* Called by:  hi_clear_iov */
 void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
@@ -266,14 +263,19 @@ void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
   
   LOCK(req->fe->qel.mut, "del-from-reqs");
   pdu = req->fe->reqs;
-  if (pdu == req)
+  if (pdu == req) {
     req->fe->reqs = req->n;
-  else
-    for (; 1; pdu = pdu->n)
+  } else {
+    for (; pdu; pdu = pdu->n) {
       if (pdu->n == req) {
 	pdu->n = req->n;
-	break;
+	goto out;
       }
+    }
+    ERR("req(%p) not found in fe(%x)->reqs", req, req->fe->fd);
+    NEVERNEVER("req not found in fe(%x)->reqs", req->fe->fd);
+  out: ;
+  }
   UNLOCK(req->fe->qel.mut, "del-from-reqs");
 
   HI_SANITY(hit->shf, hit);
@@ -288,7 +290,8 @@ void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
 /* Called by:  hi_write */
 static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
 {
-  struct hi_pdu* pdu;
+  struct hi_pdu* req;
+  struct hi_pdu* resp;
   io->n_written += n;
   while (io->n_iov && n) {
     if (n >= io->iov_cur->iov_len) {
@@ -310,17 +313,18 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
   /* Everything has now been written. Time to free in_write list. */
   
   D("freeing resps (&reqs?) in_write=%p", io->in_write);
-  while ((pdu = io->in_write)) {
-    io->in_write = pdu->wn;
-    pdu->wn = 0;
+  while ((resp = io->in_write)) {
+    io->in_write = resp->wn;
+    resp->wn = 0;
     
-    if (!pdu->req) continue;
+    if (!resp->req) continue;
     
     /* Only a response can cause anything freed, and every response is freeable upon write. */
     
-    hi_free_resp(hit, pdu);
-    if (!pdu->req->reals)
-      hi_free_req_fe(hit, pdu->req);  /* last response, free the request */
+    req = resp->req;
+    hi_free_resp(hit, resp);
+    if (!req->reals)                   /* last response, free the request */
+      hi_free_req_fe(hit, req);
   }
 }
 
@@ -342,9 +346,11 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
     if (!io->in_write)
       goto out;         /* Nothing further to write */
   retry:
+    ASSERT(io->writing);
     D("writev(%x) n_iov=%d", io->fd, io->n_iov);
     HEXDUMP("iov0:", io->iov_cur->iov_base, io->iov_cur->iov_base + io->iov_cur->iov_len, 16);
     ret = writev(io->fd, io->iov_cur, io->n_iov);
+    ASSERT(io->writing);
     switch (ret) {
     case 0: NEVERNEVER("writev on %x returned 0", io->fd);
     case -1:

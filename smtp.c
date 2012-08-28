@@ -96,7 +96,7 @@ void smtp_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len
   case HI_TCP_S:   /* We are acting as an SMTP server, SIS primitive contains HMTP status  */
     D("HI_TCP_S req(%p) len=%x", req, len);
     /* *** may need to strip away some redundant cruft */
-    smtp_resp = hi_pdu_alloc(hit);
+    smtp_resp = hi_pdu_alloc(hit, "hmtp_send");
     hi_send1(hit, io->pair, 0, smtp_resp, len, d);
     io->pair->ad.smtp.state = SMTP_END;
     break;
@@ -432,7 +432,7 @@ static int smtp_resp_wait_250_from_ehlo(struct hi_thr* hit, struct hi_io* io, st
       char* payload;
       char* q = io->ad.smtp.uni_ind_hmtp->scan;
       char* qlim = io->ad.smtp.uni_ind_hmtp->ap;
-      struct hi_pdu* pdu = hi_pdu_alloc(hit);
+      struct hi_pdu* pdu = hi_pdu_alloc(hit, "smtp_wait_250");
       
       if (qlim-q < 25)   /* *** should determine this number better */
 	goto badhmtp;
@@ -542,7 +542,7 @@ static int smtp_resp_wait_354_from_data(struct hi_thr* hit, struct hi_io* io, st
       char* payload;
       char* q = io->ad.smtp.uni_ind_hmtp->scan;
       char* qlim = io->ad.smtp.uni_ind_hmtp->ap;
-      struct hi_pdu* pdu = hi_pdu_alloc(hit);
+      struct hi_pdu* pdu = hi_pdu_alloc(hit, "smtp_wait_354");
       
       payload = q;
       --q;  /* Take the new line from preceding DATA to avoid special case later */

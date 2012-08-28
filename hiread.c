@@ -33,8 +33,8 @@ extern int zx_debug;
  * work out, recourse to the shuffler level global pool, with locking,
  * is made. */
 
-/* Called by:  hi_checkmore, hi_read, hi_sendf, http_encode_start, smtp_resp_wait_250_from_ehlo, smtp_resp_wait_354_from_data, smtp_send, stomp_encode_start, test_ping, test_ping_reply */
-struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
+/* Called by:  hi_checkmore, hi_sendf, http_encode_start, smtp_resp_wait_250_from_ehlo, smtp_resp_wait_354_from_data, stomp_encode_start, test_ping_reply */
+struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk)
 {
   struct hi_pdu* pdu;
 
@@ -43,7 +43,7 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
   if (hit->free_pdus) {
     pdu = hit->free_pdus;
     hit->free_pdus = (struct hi_pdu*)pdu->qel.n;
-    D("alloc pdu(%p) from thread", pdu);
+    D("%s: alloc pdu(%p) from thread", lk, pdu);
     goto retpdu;
   }
 
@@ -52,12 +52,12 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit)
     pdu = hit->shf->free_pdus;
     hit->shf->free_pdus = (struct hi_pdu*)pdu->qel.n;
     UNLOCK(hit->shf->pdu_mut, "pdu_alloc-ok");
-    D("alloc pdu(%p) from shuffler", pdu);
+    D("%s: alloc pdu(%p) from shuff", lk, pdu);
     goto retpdu;
   }
   UNLOCK(hit->shf->pdu_mut, "pdu_alloc-no-pdu");
   
-  ERR("Out of PDUs. Use -npdu to specify a value at least twice the value of -nfd. %d",0);
+  ERR("Out of PDUs. Use -npdu to specify a value at least twice the value of -nfd. (%s)",lk);
   return 0;
 
  retpdu:
@@ -88,7 +88,7 @@ static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
    * a. because we already hold io->qel.mut (saves lock, otherwise hi_read() will alloc)
    * b. because we might need to copy tail of previous req to it */
 
-  io->cur_pdu = hi_pdu_alloc(hit);
+  io->cur_pdu = hi_pdu_alloc(hit, "cur_pdu-ckm");
   if (!io->cur_pdu) { NEVERNEVER("*** out of pdus in bad place %d", n); }
   io->cur_pdu->need = minlen;
   ++io->n_pdu_in;
@@ -145,20 +145,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
     ASSERT(io->reading);
     pdu = io->cur_pdu;
     D("read_loop io(%x)->cur_pdu=%p", io->fd, pdu);
-#if 0
-    if (!pdu) {  /* need to create a new PDU */
-      NEVERNEVER("io(%x)->cur_pdu null", io->fd);
-      io->cur_pdu = pdu = hi_pdu_alloc(hit);
-      if (!pdu) {
-	hi_todo_produce(hit->shf, &io->qel); /* Alloc fail, retry later. Back to todo because we did not exhaust read */
-	goto out;
-      }
-      ++io->n_pdu_in;
-      /* set fe? */
-    }
-#else
-    ASSERT(io->cur_pdu);  /* Exists either through hi_shuff_init() or through hi_check_more() */
-#endif
+    ASSERT(pdu);  /* Exists either through hi_shuff_init() or through hi_check_more() */
   retry:
     D("read(%x)", io->fd);
     ASSERT(io->reading);
@@ -248,7 +235,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 
  out:
   LOCK(io->qel.mut, "clear-reading");
-  D("READ-OUT: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("RD-OUT: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   ASSERT(io->reading);
   io->reading = 0;
   --io->n_thr;              /* Remove read count. */
@@ -259,7 +246,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 
  conn_close:
   LOCK(io->qel.mut, "clear-reading-close");
-  D("READ-CLOSE: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("RD-CLO: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   ASSERT(io->reading);
   io->reading = 0;
   --io->n_thr;              /* Remove read count. */
