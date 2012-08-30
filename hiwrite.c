@@ -62,8 +62,9 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   ++io->n_pdu_out;
   if (!io->writing) {
     io->writing = write_now = 1;
-    ++io->n_thr;         /* Account for anticipated call to hi_write() */
+    ++io->n_thr;           /* Account for anticipated call to hi_write() */
   }
+  io->events |= EPOLLOUT;  /* Set write event in case there is no poll before write opportunity. */
   D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   UNLOCK(io->qel.mut, "send0");
   
@@ -74,7 +75,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
     /* Try cranking the write machine right away! *** should we fish out any todo queue item that may stomp on us? How to deal with thread that has already consumed from the todo_queue? */
     hi_write(hit, io);   /* Will decrement io->n_thr for write */
   } else {
-    hi_todo_produce(hit->shf, &io->qel);
+    hi_todo_produce(hit->shf, &io->qel, "send0");
   }
 }
 
@@ -347,7 +348,7 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
       goto out;         /* Nothing further to write */
   retry:
     ASSERT(io->writing);
-    D("writev(%x) n_iov=%d", io->fd, io->n_iov);
+    D("writev(%x) n_iov=%d n_thr=%d r/w=%d/%d ev=%x", io->fd, io->n_iov, io->n_thr, io->reading, io->writing, io->events);
     HEXDUMP("iov0:", io->iov_cur->iov_base, io->iov_cur->iov_base + io->iov_cur->iov_len, 16);
     ret = writev(io->fd, io->iov_cur, io->n_iov);
     ASSERT(io->writing);
@@ -362,7 +363,7 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
 	goto clear_writing_err;
       }
     default:  /* something was written, deduce it from the iov */
-      D("wrote(%x) %d bytes", io->fd, ret);
+      D("wrote(%x) %d bytes n_thr=%d r/w=%d/%d ev=%x", io->fd, ret, io->n_thr, io->reading, io->writing, io->events);
       hi_clear_iov(hit, io, ret);
     }
   }
@@ -384,7 +385,7 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
   --io->n_thr;
   ASSERT(io->n_thr >= 0);
   UNLOCK(io->qel.mut, "clear-writing-err");
-  hi_close(hit, io);
+  hi_close(hit, io, "hi_write");
   return 1;
 }
 

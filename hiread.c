@@ -147,7 +147,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
     D("read_loop io(%x)->cur_pdu=%p", io->fd, pdu);
     ASSERT(pdu);  /* Exists either through hi_shuff_init() or through hi_check_more() */
   retry:
-    D("read(%x)", io->fd);
+    D("read(%x) have=%d need=%d", io->fd, pdu->ap-pdu->m, pdu->need);
     ASSERT(io->reading);
     ret = read(io->fd, pdu->ap, pdu->lim - pdu->ap); /* *** vs. need */
     switch (ret) {
@@ -158,7 +158,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
     case -1:
       switch (errno) {
       case EINTR:  D("EINTR fd(%x)", io->fd); goto retry;
-      case EAGAIN: D("EAGAIN fd(%x)", io->fd); goto out;  /* read(2) exhausted (c.f. edge triggered epoll) */
+      case EAGAIN: D("EAGAIN fd(%x)", io->fd); goto eagain_out;  /* read(2) exhausted (c.f. edge triggered epoll) */
       default:
 	ERR("read(%x) failed: %d %s (closing connection)", io->fd, errno, STRERROR(errno));
 	goto conn_close;
@@ -183,14 +183,14 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 	   * c. take some other action such as scheduling PDU to todo. Typically
 	   *    the req->need is zero when I/O is not expected.	   */
 #ifdef ENA_S5066
-	case HIPROTO_SIS:   if (sis_decode(hit, io))   goto conn_close;  break;
-	case HIPROTO_DTS:   if (dts_decode(hit, io))   goto conn_close;  break;
+	case HIPROTO_SIS:   if (sis_decode(hit, io))   goto conn_close;  break; /* *** use ret */
+	case HIPROTO_DTS:   if (dts_decode(hit, io))   goto conn_close;  break; /* *** use ret */
 #endif
-	case HIPROTO_HTTP:  if (http_decode(hit, io))  goto conn_close;  break;
+	case HIPROTO_HTTP:  if (http_decode(hit, io))  goto conn_close;  break; /* *** use ret */
 	  //case HIPROTO_STOMP: if (stomp_decode(hit, io)) goto conn_close;  break;
 	case HIPROTO_STOMP: ret = stomp_decode(hit, io);  break;
-	case HIPROTO_TEST_PING: test_ping(hit, io);  break;
-	case HIPROTO_SMTP:
+	case HIPROTO_TEST_PING: test_ping(hit, io);  break; /* *** use ret */
+	case HIPROTO_SMTP: /* *** use ret */
 	  if (io->qel.kind == HI_TCP_C) {
 	    if (smtp_decode_resp(hit, io))  goto out;
 	  } else {
@@ -218,13 +218,13 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 	    UNLOCK(io->qel.mut, "reset-reading-abort");
 	    return 0;
 	  }
-	  io->reading = 1;
+	  io->reading = 1;  /* reacquire */
 	  pdu = io->cur_pdu;
 	  D("reacquired reading(%x) n_thr=%d", io->fd, io->n_thr);
 	  D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
 	  UNLOCK(io->qel.mut, "reset-reading");
 	  break;
-	case HI_CONN_CLOSE:         goto conn_close;
+	case HI_CONN_CLOSE:         goto conn_close_not_reading;
 	case HI_NEED_MORE: /* 2: Incomplete decode, we still hold io->reading. */
 	  ASSERT(io->reading);
 	  break;
@@ -233,6 +233,16 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
     }
   }
 
+ eagain_out:
+  /* A special problem with EAGAIN: read(2) is not guaranteed to arm edge triggered epoll(2)
+   * unless at least one EAGAIN read has happened. The problem is that as we are still
+   * in io->reading, if after this EAGAIN another thread polls and consumes from todo, it
+   * will not be able to read due to io->reading even though poll told it to read. After
+   * missing the opportunity, the next poll will not report fd anymore because no read has
+   * happened since previous report. Ouch!
+   * Solution attempt: if read was polled, but could not be served due to io->reading.
+   * the PDU is added back to the todo queue. This may cause the other thread to spin
+   * for a while, but at least things will move on eventually. */
  out:
   LOCK(io->qel.mut, "clear-reading");
   D("RD-OUT: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
@@ -245,6 +255,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
   return 0;
 
  conn_close:
+  /* Connection close due to EOF, etc. We are still in io->reading. */
   LOCK(io->qel.mut, "clear-reading-close");
   D("RD-CLO: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   ASSERT(io->reading);
@@ -253,7 +264,21 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
   D("out of reading(%x) n_thr=%d (close)", io->fd, io->n_thr);
   ASSERT(io->n_thr >= 0);
   UNLOCK(io->qel.mut, "clear-reading-close");
-  hi_close(hit, io);
+  hi_close(hit, io, "hi_read");
+  return 1;
+
+ conn_close_not_reading:
+  /* Connection close after PDU has been read, e.g. protocol level DISCONNECT.
+   * We are no longer in io->reading (but other thread might be).
+   * io->n_thr still needs to be decremented. */
+  LOCK(io->qel.mut, "clear-reading-close");
+  D("RD-NRC: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  /*ASSERT(!io->reading); This can not be asserted as other thread might have gone to read. */
+  --io->n_thr;              /* Remove read count. */
+  D("not_reading-close(%x) n_thr=%d r/w=%d/%d ev=%d", io->fd, io->n_thr, io->reading, io->writing, io->events);
+  ASSERT(io->n_thr >= 0);
+  UNLOCK(io->qel.mut, "not_reading-close");
+  hi_close(hit, io, "hi_read-not_reading-close");
   return 1;
 }
 

@@ -52,6 +52,20 @@ extern int zx_debug;
 extern pthread_mutexattr_t MUTEXATTR_DECL;
 #endif
 
+const char* qel_kind[] = {
+  "OFF0",
+  "pdu1",
+  "poll2",
+  "listen3",
+  "half_accept4",
+  "tcp_s5",
+  "tcp_c6",
+  "snmp7",
+  0
+};
+
+#define QEL_KIND(x) (((x) >= 0 && (x) < sizeof(qel_kind)/sizeof(char*))?qel_kind[(x)]:"???")
+
 void hi_hit_init(struct hi_thr* hit)
 {
   memset(hit, 0, sizeof(struct hi_thr));
@@ -347,7 +361,7 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io)
     D("old fd(%x) n_thr=%d still going", io->fd, n_thr);
     NEVERNEVER("NOT POSSIBLE due to half close n_thr=%d", n_thr);
     io->qel.kind = HI_HALF_ACCEPT;
-    hi_todo_produce(hit->shf, &io->qel);  /* schedule a new try */
+    hi_todo_produce(hit->shf, &io->qel, "accept");  /* schedule a new try */
     return;
   }
 
@@ -415,7 +429,7 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
   io->fd = fd | 0x80000000;
   io->qel.proto = listener->qel.proto;
   hi_accept_book(hit, io);
-  hi_todo_produce(hit->shf, &listener->qel); /* Must exhaust accept: reenqueue (could also loop) */
+  hi_todo_produce(hit->shf, &listener->qel, "relisten"); /* Must exhaust accept: reenqueue (could also loop) */
 }
 
 /*() Close an I/O object.
@@ -431,11 +445,11 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
  * until the old threads have let go. */
 
 /* Called by:  hi_in_out, hi_read x3, hi_write */
-void hi_close(struct hi_thr* hit, struct hi_io* io)
+void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
 {
   struct hi_pdu* pdu;
   int fd = io->fd;
-  D("closing(%x)", fd);
+  D("%s: closing(%x)", lk, fd);
 #if 0
   /* *** should never happen because io had to be consumed before hi_in_out() was called.
    * err, the io could have been consumed twice: once for reading and once for writing.
@@ -468,7 +482,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
    * to consume twice before close, so the other thread could already be causing
    * intodo situation. */
   LOCK(hit->shf->todo_mut, "hi_close");
-  D("CLOSE LOCK & UNLOCK todo_mut.thr=%x", hit->shf->todo_mut.thr);
+  D("%s: close LK&UNLK todo_mut.thr=%x", lk, hit->shf->todo_mut.thr);
   ASSERT(!io->qel.intodo);
   UNLOCK(hit->shf->todo_mut, "hi_close");
 #endif
@@ -484,7 +498,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
   if (io->n_thr) {           /* Some threads are still tinkering with this fd: delay closing */
     if (shutdown(fd & 0x7ffffff, SHUT_RD))
       ERR("shutdown %d %s", errno, STRERROR(errno));
-    D("close(%x) pending n_thr=%d", fd, io->n_thr);
+    D("%s: close(%x) pending n_thr=%d", lk, fd, io->n_thr);
     D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
     UNLOCK(io->qel.mut, "hi_close");
     return;
@@ -504,7 +518,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io)
 #endif
   
   close(fd & 0x7ffffff); /* Now some other thread may reuse the slot by accept()ing same fd */
-  D("closed(%x)", fd);
+  D("%s: closed(%x)", lk, fd);
   /* Must let go of the lock only after close so no read can creep in. */
   D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
   UNLOCK(io->qel.mut, "hi_close");
@@ -555,16 +569,15 @@ static struct hi_qel* hi_todo_consume(struct hiios* shf)
       io = ((struct hi_io*)qe);
       LOCK(io->qel.mut, "n_thr inc");
       if (io->fd & 0x80000000) {
-	D("CONS-CLOSED: LK&UNLK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+	D("cons-closed: LK&UNLK io(%x)->qel.thr=%x n_thr=%d r/w=%d/%d ev=%d", io->fd, io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events);
 	UNLOCK(io->qel.mut, "n_thr inc-fail");
 	goto try_next;
       }
       io->n_thr += 2;  /* Increase two counts: once for write, and once for read */
-      D("CONS: LK&UNLK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+      D("cons: LK&UNLK io(%x)->qel.thr=%x n_thr=%d r/w=%d/%d ev=%x", io->fd, io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events);
       UNLOCK(io->qel.mut, "n_thr inc");
-      D("use(%x) n_thr=%d reading=%d writing=%d ev=%x", io->fd, io->n_thr, io->reading, io->writing, io->events);
     } else {
-      D("consume qe(%p) kind=%d", qe, qe->kind);
+      D("cons qe(%p) kind(%s)", qe, QEL_KIND(qe->kind));
     }
     D("UNLOCK todo_mut.thr=%x", shf->todo_mut.thr);
     UNLOCK(shf->todo_mut, "todo_cons");
@@ -575,11 +588,11 @@ static struct hi_qel* hi_todo_consume(struct hiios* shf)
 /*(i) Schedule new work to be done, potentially waking up the consumer threads! */
 
 /* Called by:  hi_accept, hi_poll x2, hi_read */
-void hi_todo_produce(struct hiios* shf, struct hi_qel* qe)
+void hi_todo_produce(struct hiios* shf, struct hi_qel* qe, const char* lk)
 {
   struct hi_io* io;
   LOCK(shf->todo_mut, "todo_prod");
-  D("LOCK todo_mut.thr=%x", shf->todo_mut.thr);
+  D("%s: LOCK todo_mut.thr=%x", lk, shf->todo_mut.thr);
   if (!qe->intodo) {
     if (shf->todo_produce)
       shf->todo_produce->n = qe;
@@ -591,20 +604,20 @@ void hi_todo_produce(struct hiios* shf, struct hi_qel* qe)
     ++shf->n_todo;
     if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
       io = ((struct hi_io*)qe);
-      D("todo(%x) n_thr=%d r/w'ing=%d/%d ev=%x", io->fd, io->n_thr, io->reading, io->writing, io->events);
+      D("%s: prod(%x) n_thr=%d r/w=%d/%d ev=%x", lk, io->fd, io->n_thr, io->reading, io->writing, io->events);
     } else {
-      D("todo qe(%p) kind=%x", qe, qe->kind);
+      D("%s: prod qe(%p) kind(%s)", lk, qe, QEL_KIND(qe->kind));
     }
     COND_SIG(&shf->todo_cond, "todo-prod");  /* Wake up consumers */
   } else {
     if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
       io = ((struct hi_io*)qe);
-      D("already in todo(%x) n_thr=%d reading=%d writing=%d ev=%x", io->fd, io->n_thr, io->reading, io->writing, io->events);
+      D("%s: prod already in todo(%x) n_thr=%d r/w=%d/%d ev=%x", lk, io->fd, io->n_thr, io->reading, io->writing, io->events);
     } else {
-      D("already in todo qe(%p) kind=%x", qe, qe->kind);
+      D("%s: prod already in todo qe(%p) kind(%s)", lk, qe, QEL_KIND(qe->kind));
     }
   }
-  D("UNLOCK todo_mut.thr=%x", shf->todo_mut.thr);
+  D("%s: UNLOCK todo_mut.thr=%x", lk, shf->todo_mut.thr);
   UNLOCK(shf->todo_mut, "todo_prod");
 }
 
@@ -628,7 +641,7 @@ static void hi_poll(struct hiios* shf)
   for (i = 0; i < shf->n_evs; ++i) {
     io = (struct hi_io*)shf->evs[i].data.ptr;
     io->events = shf->evs[i].events;
-    hi_todo_produce(shf, &io->qel);  /* *** should the todo_mut lock be batched instead? */
+    hi_todo_produce(shf, &io->qel, "poll");  /* *** should the todo_mut lock be batched instead? */
   }
 #endif
 #ifdef SUNOS
@@ -647,12 +660,12 @@ static void hi_poll(struct hiios* shf)
       io->events = shf->evs[i].revents;
       /* Poll says work is possible: sched wk for io if not under wk yet, or cur_pdu needs wk. */
       /*if (!io->cur_pdu || io->cur_pdu->need)   *** cur_pdu is always set */
-      hi_todo_produce(shf, &io->qel);  /* *** should the todo_mut lock be batched instead? */
+      hi_todo_produce(shf, &io->qel, "poll");  /* *** should the todo_mut lock be batched instead? */
     }
   }
 #endif
   LOCK(shf->todo_mut, "todo_poll");
-  D("POLL LOCK & UNLOCK todo_mut.thr=%x", shf->todo_mut.thr);
+  D("POLL LK&UNLK todo_mut.thr=%x repoll", shf->todo_mut.thr);
   shf->poll_tok.proto = HIPROTO_POLL_ON;  /* special "on" flag - not a real protocol */
   UNLOCK(shf->todo_mut, "todo_poll");
 }
@@ -672,8 +685,8 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
 #ifdef SUNOS
 #define EPOLLHUP (POLLHUP)
 #define EPOLLERR (POLLERR)
-#define EPOLLOUT (POLLOUT)
-#define EPOLLIN  (POLLIN)
+#define EPOLLOUT (POLLOUT)  /* 0x004 */
+#define EPOLLIN  (POLLIN)   /* 0x001 */
 #endif
   if (io->events & (EPOLLHUP | EPOLLERR)) {
     D("HUP or ERR on fd=%x events=0x%x", io->fd, io->events);
@@ -682,7 +695,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
     io->n_thr -= 2;                   /* Remove both counts (write and read) */
     ASSERT(io->n_thr >= 0);
     UNLOCK(io->qel.mut, "n_thr-dec1");
-    hi_close(hit, io);
+    hi_close(hit, io, "hi_in_out");
     return;
   }
   
@@ -705,41 +718,60 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
     
     if (hi_write(hit, io))  { /* will clear io->writing */
       LOCK(io->qel.mut, "n_thr-dec2");
-      D("IN_OUT: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
-      io->n_thr -= 1;         /* Remove read count, write count already removed by hi_write() */
+      D("IN_OUT: LOCK & UNLOCK io(%x)->qel.thr=%x closed", io->fd, io->qel.mut.thr);
+      --io->n_thr;            /* Remove read count, write count already removed by hi_write() */
       ASSERT(io->n_thr >= 0);
       UNLOCK(io->qel.mut, "n_thr-dec2");
       return; /* Write caused close */
     }
     LOCK(io->qel.mut, "check-reading");
     D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+    io->events &= ~EPOLLOUT;  /* Clear poll flag in case we get read rescheduling */
   } else {
     --io->n_thr;              /* Remove write count as no write happened. */
     ASSERT(io->n_thr >= 0);
   }
   
-  if (io->events & EPOLLIN && !io->reading) {
-    DP("IN fd=%x cur_pdu=%p need=%d", io->fd, io->cur_pdu, io->cur_pdu->need);
-    /* Poll says work is possible: sched wk for io if not under wk yet, or cur_pdu needs wk.
-     * The inverse is also important: if io->cur_pdu is set, but pdu->need is not, then someone
-     * is alredy working on decoding the cur_pdu and we should not interfere. */
-    reading = io->reading = io->cur_pdu->need; /* only place where io->reading is set */
-    D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
-    UNLOCK(io->qel.mut, "check-reading");
-    if (reading) {
-      hi_read(hit, io);       /* io->n_thr had already been decremented */
+  if (io->events & EPOLLIN) {
+    /* A special problem with EAGAIN: read(2) is not guaranteed to arm edge triggered epoll(2)
+     * unless at least one EAGAIN read has happened. The problem is that as we are still
+     * in io->reading, if after this EAGAIN another thread polls and consumes from todo, it
+     * will not be able to read due to io->reading even though poll told it to read. After
+     * missing the opportunity, the next poll will not report fd anymore because no read has
+     * happened since previous report. Ouch!
+     * Solution attempt: if read was polled, but could not be served due to io->reading.
+     * the PDU is added back to the todo queue. This may cause the other thread to spin
+     * for a while, but at least things will move on eventually. */
+    if (!io->reading) {
+      DP("IN fd=%x cur_pdu=%p need=%d", io->fd, io->cur_pdu, io->cur_pdu->need);
+      /* Poll says work is possible: sched wk for io if not under wk yet, or cur_pdu needs wk.
+       * The inverse is also important: if io->cur_pdu is set, but pdu->need is not, then someone
+       * is alredy working on decoding the cur_pdu and we should not interfere. */
+      reading = io->reading = io->cur_pdu->need; /* only place where io->reading is set */
+      D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+      UNLOCK(io->qel.mut, "check-reading");
+      if (reading) {
+	hi_read(hit, io);       /* io->n_thr had already been decremented */
+      } else {
+	LOCK(io->qel.mut, "n_thr-dec3");
+	D("IN_OUT: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+	--io->n_thr;            /* Remove read count as no read happened. */
+	ASSERT(io->n_thr >= 0);
+	UNLOCK(io->qel.mut, "n_thr-dec3");
+      }
     } else {
-      LOCK(io->qel.mut, "n_thr-dec3");
-      D("IN_OUT: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
-      --io->n_thr;            /* Remove read count as no read happened. */
+      --io->n_thr;              /* Remove read count as no read happened. */
       ASSERT(io->n_thr >= 0);
-      UNLOCK(io->qel.mut, "n_thr-dec3");
+      D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+      UNLOCK(io->qel.mut, "n_thr-dec4");
+      D("resched(%x) to avoid missing polled read", io->fd);
+      hi_todo_produce(hit->shf, &io->qel, "reread");  /* try again so read poll is not lost */
     }
   } else {
     --io->n_thr;              /* Remove read count as no read happened. */
     ASSERT(io->n_thr >= 0);
     D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
-    UNLOCK(io->qel.mut, "n_thr-dec4");
+    UNLOCK(io->qel.mut, "n_thr-dec5");
   }
 }
 

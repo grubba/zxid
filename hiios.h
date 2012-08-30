@@ -137,8 +137,8 @@ struct hi_lock {
 #define HI_PDU_MEM 3072 /* Default PDU memory buffer size, for log lines */
 
 /* qel.kind constants */
-#define HI_POLL    1    /* Trigger epoll */
-#define HI_PDU     2    /* PDU */
+#define HI_PDU     1    /* PDU */
+#define HI_POLL    2    /* Trigger epoll */
 #define HI_LISTEN  3    /* Listening socket for TCP */
 #define HI_HALF_ACCEPT 4    /* Accepted at TCP, but delayed booking due to threads expecting old dead connection. */
 #define HI_TCP_S   5    /* TCP server socket, i.e. accept(2)'d from listening socket */
@@ -329,7 +329,7 @@ void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
 void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1);
 void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1, int len2, char* d2);
 void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* fmt, ...);
-void hi_todo_produce(struct hiios* shf, struct hi_qel* qe);
+void hi_todo_produce(struct hiios* shf, struct hi_qel* qe, const char* lk);
 void hi_shuffle(struct hi_thr* hit, struct hiios* shf);
 
 /* Internal APIs */
@@ -340,7 +340,7 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf);
 
 void hi_process(struct hi_thr* hit, struct hi_pdu* pdu);
 void hi_in_out( struct hi_thr* hit, struct hi_io* io);
-void hi_close(  struct hi_thr* hit, struct hi_io* io);
+void hi_close(  struct hi_thr* hit, struct hi_io* io, const char* lk);
 int  hi_write(  struct hi_thr* hit, struct hi_io* io);
 int  hi_read(   struct hi_thr* hit, struct hi_io* io);
 

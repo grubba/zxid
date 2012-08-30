@@ -564,19 +564,17 @@ int main(int argc, char** argv, char** env)
   /*if (stats_prefix) init_cmdline(argc, argv, env, stats_prefix);*/
   CMDLINE("init");
 
-#if 0  
   if (pid_path) {
     int len;
     char buf[INTSTRLEN];
     len = sprintf(buf, "%d", (int)getpid());
     DD("pid_path=`%s'", pid_path);
-    if (write_or_append_lock_c_path(pid_path, buf, len, "write pid", SEEK_SET, O_TRUNC) <= 0) {
-      ERR("Failed to write PID file at `%s'. Check that all directories exist and that permissions allow zxbusd (pid=%d, euid=%d, egid=%d) to write the file. Disk could also be full or ulimit(1) too low. Continuing anyway.",
-	  pid_path, getpid(), geteuid(), getegid());
+    if (write2_or_append_lock_c_path(pid_path,0,0,len,buf, "write pid", SEEK_SET, O_TRUNC) <= 0) {
+      ERR("Failed to write PID file(%s). Exiting. (Do not supply -pid if you do not want pid file.)", pid_path);
+      exit(1);
     }
   }
-#endif
-
+  
   if (watchdog) {
 #ifdef MINGW
     ERR("Watch dog feature not supported on Windows.");
@@ -587,20 +585,17 @@ int main(int argc, char** argv, char** env)
       D("Watch dog loop %d", watch_dog_iteration);
       switch (ret = fork()) {
       case -1:
-	ERR("Watch dog %d: attempt to fork() real server failed: %d %s. Perhaps max number of processes has been reached or we are out of memory. Will try again in a sec. To stop a vicious cycle `kill -9 %d' to terminate this watch dog.",
-	    watch_dog_iteration, errno, STRERROR(errno), getpid());
+	ERR("Watch dog %d: attempt to fork() real server failed: %d %s. Perhaps max number of processes has been reached or we are out of memory. Will try again in a sec. To stop a vicious cycle `kill -9 %d' to terminate this watch dog.", watch_dog_iteration, errno, STRERROR(errno), getpid());
 	break;
       case 0:   goto normal_child;  /* Only way out of this loop */
       default:
 	/* Reap the child */
 	switch (waitpid(ret, &ret, 0)) {
 	case -1:
-	  ERR("Watch dog %d: attempt to waitpid() real server failed: %d %s. To stop a vicious cycle `kill -9 %d' to terminate this watch dog.",
-			watch_dog_iteration, errno, STRERROR(errno), getpid());
+	  ERR("Watch dog %d: attempt to waitpid() real server failed: %d %s. To stop a vicious cycle `kill -9 %d' to terminate this watch dog.", watch_dog_iteration, errno, STRERROR(errno), getpid());
 	  break;
 	default:
-	  ERR("Watch dog %d: Real server exited. Will restart in a sec. To stop a vicious cycle `kill -9 %d' to terminate this watch dog.",
-	      watch_dog_iteration, getpid());
+	  ERR("Watch dog %d: Real server exited. Will restart in a sec. To stop a vicious cycle `kill -9 %d' to terminate this watch dog.", watch_dog_iteration, getpid());
 	}
       }
       sleep(1); /* avoid spinning tightly */
@@ -611,17 +606,14 @@ int main(int argc, char** argv, char** env)
  normal_child:
   D("Real server pid %d", getpid());
 
-#if 0
   if (kidpid_path) {
     int len;
     char buf[INTSTRLEN];
     len = sprintf(buf, "%d", (int)getpid());
-    if (write_or_append_lock_c_path(pid_path, buf, len, "write pid", SEEK_SET, O_TRUNC) <= 0) {
-      ERR("Failed to write kidpid file at `%s'. Check that all directories exist and that permissions allow zxbusd (pid=%d, euid=%d, egid=%d) to write the file. Disk could also be full or ulimit(1) too low. Continuing anyway.",
-	  pid_path, getpid(), geteuid(), getegid());
+    if (write2_or_append_lock_c_path(pid_path,0,0,len,buf,"write kidpid",SEEK_SET,O_TRUNC) <= 0) {
+      ERR("Failed to write kidpid file(%s). If you do not want kidpid file, do not supply -kidpid option. Continuing anyway.", pid_path);
     }
   }
-#endif
 
 #ifndef MINGW  
   if (signal(SIGPIPE, SIG_IGN) == SIG_ERR) {   /* Ignore SIGPIPE */

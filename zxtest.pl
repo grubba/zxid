@@ -1,16 +1,17 @@
 #!/usr/bin/perl
 # 2.2.2010, Sampo Kellomaki (sampo@iki.fi)
 # 18.11.2010, greatly enchanced --Sampo
+# 28.8.2012, added some features from hitest.pl, added zxbusd tests --Sampo
 #
 # Test suite for ZXID
 
 $usage = <<USAGE;
 Test driver for ZXID
-Usage: http://localhost:8081/zxtest.pl?tst=XML1
-       ./zxtest.pl -a [-x] [-dx] tst=XML1    # Run specific test
-       ./zxtest.pl -a [-x] [-dx] ntst=XML    # Run all tests except specified
+Usage: http://localhost:8081/zxtest.pl?tst=XML1  # Run as CGI with HTML putput
+       ./zxtest.pl -a [-x] [-dx] tst=XML1        # Run specific test
+       ./zxtest.pl -a [-x] [-dx] ntst=XML        # Run all tests except specified
          -a  Ascii mode (give twice for colored ascii)
-         -x  Print exec command lines to stderr
+         -x  Print exec(2) command lines to stderr
          -dx Proprietary per character color diff (default: system diff -u)
          N.B. Positional order of even optional arguments is significant.
 USAGE
@@ -29,11 +30,11 @@ sub greeny { $ascii > 1 ? "\e[42m$_[0]\e[0m" : $_[0]; }
 
 use Encode;
 use Digest::MD5;
-use Digest::SHA1;
+use Digest::SHA1;  # apt-get install libdigest-sha1-perl
 use Net::SSLeay qw(get_httpx post_httpx make_headers make_form);  # Need Net::SSLeay-1.24
-use WWW::Curl::Easy;    # HTTP client library, see curl.haxx.se
+use WWW::Curl::Easy;    # HTTP client library, see curl.haxx.se. apt-get install libwww-curl-perl
 use WWW::Curl::Multi;
-use XML::Simple;
+use XML::Simple;   # apt-get install libxml-simple-perl
 #use Net::SMTP;
 #use MIME::Base64;  # plain=decode_base64(b64)   # RFC3548
 #sub decode_safe_base64 { my ($x) = @_; $x=~tr[-_][+/]; return decode_base64 $x; }
@@ -65,7 +66,9 @@ syswrite STDOUT, "Content-Type: text/html\r\n\r\n" if !$ascii;
 $uname_minus_s = `uname -s`;
 chop $uname_minus_s;
 
+###
 ### Library Functions
+###
 
 sub writeall {
     my ($f,$d) = @_;
@@ -90,6 +93,7 @@ sub readall {
 	return $x;
     } else {
 	warn "$srcfile:$line: Cant read($f): $!";
+	warn "pwd(".`pwd`.")";
 	return undef;
     }
 }
@@ -131,6 +135,99 @@ sub urienc {
     my ($val) = @_;
     $val =~ s/([^A-Za-z0-9.,_-])/sprintf("%%%02x",ord($1))/gsex; # URI enc
     return $val;
+}
+
+###
+### Custome diff package
+###
+
+# Erase some common innocent differences
+
+sub blot_out_std_diffs {
+    my ($x) = @_;
+    $x =~ s/(ID)=".*?"/$1=""/g;
+    $x =~ s/(IssueInstant)=".*?"/$1=""/g;
+    
+    $x =~ s/0\.\d+ 12\d+ libzxid \(zxid\.org\)/0./g;
+    $x =~ s/R0\.\d+ \(\d+\)/R0./g;
+    $x =~ s/R0\.\d+/R0./g;
+    
+    $x =~ s/^(msgid: ).+/$1/gm;
+    $x =~ s/^(sespath: ).+/$1/gm;
+    $x =~ s/^(sesid: ).+/$1/gm;
+    $x =~ s/^(tgta7npath: ).+/$1/gm;
+    $x =~ s/^(ssoa7npath: ).+/$1/gm;
+    $x =~ s/^(zxididp: 0\.).+/$1/gm;
+
+    $x =~ s%<wsu:Created>.*?</wsu:Created>%CREATED_TS%g;
+    $x =~ s%<a:MessageID[^>]*>.*?</a:MessageID>%MessageID%g;
+    $x =~ s%<a:InReplyTo[^>]*>.*?</a:InReplyTo>%InReplyTo%g;
+    $x =~ s%<ds:DigestValue>.*?</ds:DigestValue>%DIGESTVAL%g;
+    $x =~ s%<ds:SignatureValue>.*?</ds:SignatureValue>%SIGVAL%g;
+    $x =~ s%<xenc:CipherValue>.*?</xenc:CipherValue>%CIPHERVALUE%g;
+    return $x;
+}
+
+sub ediffy {
+    my ($a,$b) = @_;
+    return 0 if $a eq $b;
+
+    # Ignore some common innocent differences
+
+    $a = blot_out_std_diffs($a);
+    $b = blot_out_std_diffs($b);
+    return 0 if $a eq $b;
+
+    warn "enter heavy diff -u tmp/a tmp/b; len1=".length($a)." len2=".length($b);
+    writeall("tmp/a", $a);
+    writeall("tmp/b", $b);
+
+    my $ret = 0;
+
+    eval {
+	local $SIG{ALRM} = sub { die "TIMEOUT\n"; };
+	alarm 60;   # The ediff algorithm seems exponential time, so lets not wait forever.
+	require Algorithm::Diff;
+	my @seq1 = split //, $a;
+	my @seq2 = split //, $b;
+	my $diff = Algorithm::Diff->new( \@seq1, \@seq2 );
+	
+	$diff->Base(1);   # Return line numbers, not indices
+	while(  $diff->Next()  ) {
+	    if (@sames = $diff->Same()) {
+		print @sames;
+		next;
+	    }
+	    if (@dels = $diff->Items(1)) {
+		print redy(join '', @dels);
+		++$ret;;
+	    }
+	    if (@adds = $diff->Items(2)) {
+		print greeny(join '', @adds);
+		++$ret;
+	    }
+	}
+    };
+    alarm 0;
+    print "\n" if $ret;
+    return $ret;
+}
+
+sub ediffy_read {
+    my ($file1,$file2) = @_;
+    my $data1 = readall $file1;
+    my $data2 = readall $file2;
+    return ediffy($data1,$data2);
+}
+
+sub isdiff_read {
+    my ($file1,$file2) = @_;
+    my $data1 = readall $file1;
+    my $data2 = readall $file2;
+    $data1 = blot_out_std_diffs($data1);
+    $data2 = blot_out_std_diffs($data2);
+    return 0 if $data1 eq $data2;
+    return 1;
 }
 
 ### HTTP clients
@@ -513,10 +610,102 @@ sub process_sent_response {
 }
 } # Close if (0) several pages above
 
+###
+### Daemon management routines
+###
+
+### Persist in killing a child process
+
+sub kill_child {
+    my ($pid,$sig) = @_;
+    return 1 unless $pid;
+    $sig ||= USR1;  # 1 = SIGHUP, 10 = SIGUSR1 (which cause gcov friendly exit(3))
+    #warn "KILL CHILD $pid";
+    kill $sig, $pid;
+    eval {
+	local $SIG{ALRM} = sub { die "timeout\n"; };
+	alarm 5;
+	waitpid $pid,0;
+	alarm 0;
+    };
+    if ($@) {
+	die "waitpid $pid failed: $@ / $!" unless $@ eq "timeout\n";
+	warn "Die hard process $pid refuses to die. Trying kill -9";
+	kill 9, $pid for (1..3);
+	alarm 5;       # If it won't die, its an error so do not catch the timeout
+	waitpid $pid,0;
+	alarm 0;
+    }
+    return 1;
+}
+
+### Check that the port numbers and take them out of the message (because
+### port numbers could be variable and cause test log comparison to fail).
+
+sub check_ports {
+   my ($m) = @_;
+   my @a=split (/\n/,$m);
+   my %port;
+   my $cont=0;
+   my $fin='';
+   for my $m (@a) {
+       my @aux = split (/:/,$m);
+       if ($aux[0] eq "search_port"){
+	  if ($cont == 0){    #The first port is used to compare
+	     $cont=$aux[1];
+	  }else{
+       	     $port{$aux[1]}++;
+	  }
+       }else{
+           $fin .= "$m\n";
+       }
+   }
+
+   $fin .= "\n";
+
+   my $number = keys(%port);
+   $fin.= "There are $number ports\n";
+   $fin.="\n";
+   for my $p (keys(%port)){
+	if ($p < $cont){
+	   $fin.= "One port minor than first port \n";
+	   $fin.="\n";
+	}else {  #It should not be the same port
+	   $fin.= "One port mayor than first port \n";
+	   $fin.="\n";
+	}
+   }
+   return $fin;
+}
+
+sub check_nums {
+   my ($m) = @_;
+   my @a=split (/\n/,$m);
+   my %nums;
+   my $cont=0;
+   my $fin='';
+   for my $m (@a) {
+       my @aux = split (/:/,$m);
+       if ($aux[0] eq "numorder"){
+       	     $nums{$aux[1]}++;
+       }
+   }
+
+   $fin .= "\n";
+
+   my $number = keys(%nums);
+   $fin.= "There are $number nums\n";
+   $fin.="\n";
+   for my $p (keys(%nums)){
+	   $fin.= "$p,";
+   }
+   $fin.="\n";
+   return $fin;
+}
 
 sub check_for_listener {
     my $port = shift @_;
-    return 1 if $always_external_test_servers;  # avoid netstat 'cause it oopes Linux 2.5.74
+    return 1 if $always_external_test_servers;  # avoid netstat because it oopes Linux 2.5.74
     if ($uname_minus_s eq "SunOS" || $uname_minus_s eq "Darwin" || $uname_minus_s eq "AIX" || $uname_minus_s eq "Interix") {
 	if (`netstat -an` =~ /\.$port\s+.+LISTEN$/m) {
 	    return 1;
@@ -535,6 +724,84 @@ sub check_for_listener {
     return 0;
 }
 
+sub check_for_udp {
+    my $port = shift @_;
+    return 1 if $always_external_test_servers;  # avoid netstat 'cause it oopes Linux 2.5.74
+    if ($uname_minus_s eq "SunOS") {         # Solaris8
+	if (`netstat -an -P udp` =~ /^\s+\*.$port\s+Idle\s*$/m) {
+	    return 1;
+	}
+    } elsif ($uname_minus_s eq "Darwin") {   # this probably works for SunOS 2.6, too
+	if (`netstat -an` =~ /^udp[\d\s.]+\.$port\s+/m) {
+	    return 1;
+	}
+    } elsif ($uname_minus_s eq "Linux") {
+	my $x = `netstat -an`;
+	#warn ">>$x<<";
+	if ($x =~ /^udp[0-9. \t]+\:$port\s+/m) {
+	    return 1;
+	}
+    } else {
+	die "Unknown system type($uname_minus_s)";
+    }
+    return 0;
+}
+
+### Wait for a network service to ramp up and start listening for a port
+
+sub wait_for_port {
+    my ($p) = @_;
+    return 1 if $host ne 'localhost';
+    my $iter = 0;
+    my $sleep = 0.05;
+    # sleep 10; return;
+    eval {
+	local $SIG{ALRM} = sub { die "timeout\n"; };
+	alarm $port_wait_secs;
+	while (1) {
+	    last if (&check_for_listener($p));
+	    warn "Waiting for exe to come up on TCP port $p" if $iter++>6;
+	    select(undef, undef, undef, $sleep);
+	    $sleep += 0.05;
+	}
+	alarm 0;
+    };
+    if ($@) {
+	die "wait for port $p failed: $@ / $!" unless $@ eq "timeout\n";
+	warn "Port number $p did not come up LISTENing in reasonable time";
+	#success_report();
+	return undef;
+    }
+    return 1;
+}
+
+sub wait_for_udp {
+    my ($p) = @_;
+    return 1 if $host ne 'localhost';
+    my $iter = 0;
+    my $sleep = 0.05;
+    # sleep 10; return;
+    eval {
+	local $SIG{ALRM} = sub { die "timeout\n"; };
+	alarm $port_wait_secs;
+	while (1) {
+	    last if (&check_for_udp($p));
+	    warn "Waiting for exe to come up on UDP port $p" if $iter++>6;
+	    select(undef, undef, undef, $sleep);
+	    $sleep += 0.05;
+	}
+	alarm 0;
+    };
+    if ($@) {
+	die "wait for port $p failed: $@ / $!" unless $@ eq "timeout\n";
+	warn "Port number $p did not come up LISTENing in reasonable time";
+	#success_report();
+	return undef;
+    }
+    #warn "udp $p came up";
+    return 1;
+}
+
 # Launches a server, unless one is already listening on the targeted port,
 # and arranges for logs to go to the right place.
 
@@ -550,7 +817,7 @@ sub launch_server {
     }
     return if $host ne 'localhost';   # Presumably it was set up somewhere else
     return if check_for_listener($port);
-    success_report() && die "Test server (port $port) died. Tried to relaunch"
+    die "Test server (port $port) died. Tried to relaunch"
 	if $relaunch_testserver{$port}++;
     #warn "Launching @cmd_line";
     if ($pid = fork) {
@@ -568,12 +835,37 @@ sub launch_server {
     die "exec($port) failed: $!";
 }
 
-#only kill the "ldap server", proxy that runs testserver.ldif
+sub launch_udp_server {
+#   for some tests to work with -e flag
+#   my ($port, $log_file, @cmd_line,$file) = @_;
+#   @cmd_line = "@cmd_line" . "$file";
+    my ($port, $log_file, @cmd_line) = @_;
+    my $pid;
+    return if $host ne 'localhost';   # Presumably it was set up somewhere else
+    return if check_for_udp($port);
+    die "Test server died (port $port). Tried to relaunch"
+	if $relaunch_testserver{$port}++;
+    #warn "Launching @cmd_line";
+    if ($pid = fork) {
+	wait_for_udp($port) or kill_child($pid) and exit 1;
+	return $pid;
+    }
+    die "fork($port) failed: $!" unless defined $pid;
+    open STDIN, "</dev/null";  # Keep fd 0 occupied as it has special meaning
+    warn "\nEXEC @cmd_line (>$log_file pid=$$)\n" if $show_exec;
+    open STDOUT, ">>$log_file"
+	or die "Redirect of STDOUT to $log_file failed: $!";
+    open STDERR, ">&STDOUT" or die "Redirect of STDERR failed: $!";
+    exec @cmd_line;
+    die "exec($port) failed: $!";
+}
+
+#only kill the zxbusd that runs foo
 sub kill_server {
-    my @process=split ' ',`ps -efa | grep dsproxy | grep testserver.ldif | grep -v "ps -efa"`;
+    my @process=split ' ',`ps -efa | grep zxbusd | grep foo | grep -v "ps -efa"`;
     my $proc=$process[1];
     if ($proc){
-	kill_child ($proc);
+	kill_child($proc);
 	#The next line initialize the relaunch counter
 	$relaunch_testserver{$testserver_port}=0;
     }
@@ -662,7 +954,7 @@ sub call_system {
     return $latency;
 }
 
-sub C {
+sub C { # simple command
     my ($tsti, $expl, $timeout, $slow, $command_line) = @_;
     return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
     return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
@@ -672,95 +964,6 @@ sub C {
     my $latency = call_system($test, $timeout, $slow, $command_line);
     return if $latency == -1;
     tst_ok($latency, $slow, $test);
-}
-
-# Erase some common innocent differences
-
-sub blot_out_std_diffs {
-    my ($x) = @_;
-    $x =~ s/(ID)=".*?"/$1=""/g;
-    $x =~ s/(IssueInstant)=".*?"/$1=""/g;
-    
-    $x =~ s/0\.\d+ 12\d+ libzxid \(zxid\.org\)/0./g;
-    $x =~ s/R0\.\d+ \(\d+\)/R0./g;
-    $x =~ s/R0\.\d+/R0./g;
-    
-    $x =~ s/^(msgid: ).+/$1/gm;
-    $x =~ s/^(sespath: ).+/$1/gm;
-    $x =~ s/^(sesid: ).+/$1/gm;
-    $x =~ s/^(tgta7npath: ).+/$1/gm;
-    $x =~ s/^(ssoa7npath: ).+/$1/gm;
-    $x =~ s/^(zxididp: 0\.).+/$1/gm;
-
-    $x =~ s%<wsu:Created>.*?</wsu:Created>%CREATED_TS%g;
-    $x =~ s%<a:MessageID[^>]*>.*?</a:MessageID>%MessageID%g;
-    $x =~ s%<a:InReplyTo[^>]*>.*?</a:InReplyTo>%InReplyTo%g;
-    $x =~ s%<ds:DigestValue>.*?</ds:DigestValue>%DIGESTVAL%g;
-    $x =~ s%<ds:SignatureValue>.*?</ds:SignatureValue>%SIGVAL%g;
-    $x =~ s%<xenc:CipherValue>.*?</xenc:CipherValue>%CIPHERVALUE%g;
-    return $x;
-}
-
-sub ediffy {
-    my ($a,$b) = @_;
-    return 0 if $a eq $b;
-
-    # Ignore some common innocent differences
-
-    $a = blot_out_std_diffs($a);
-    $b = blot_out_std_diffs($b);
-    return 0 if $a eq $b;
-
-    warn "enter heavy diff -u tmp/a tmp/b; len1=".length($a)." len2=".length($b);
-    writeall("tmp/a", $a);
-    writeall("tmp/b", $b);
-
-    my $ret = 0;
-
-    eval {
-	local $SIG{ALRM} = sub { die "TIMEOUT\n"; };
-	alarm 60;   # The ediff algorithm seems exponential time, so lets not wait forever.
-	require Algorithm::Diff;
-	my @seq1 = split //, $a;
-	my @seq2 = split //, $b;
-	my $diff = Algorithm::Diff->new( \@seq1, \@seq2 );
-	
-	$diff->Base(1);   # Return line numbers, not indices
-	while(  $diff->Next()  ) {
-	    if (@sames = $diff->Same()) {
-		print @sames;
-		next;
-	    }
-	    if (@dels = $diff->Items(1)) {
-		print redy(join '', @dels);
-		++$ret;;
-	    }
-	    if (@adds = $diff->Items(2)) {
-		print greeny(join '', @adds);
-		++$ret;
-	    }
-	}
-    };
-    alarm 0;
-    print "\n" if $ret;
-    return $ret;
-}
-
-sub ediffy_read {
-    my ($file1,$file2) = @_;
-    my $data1 = readall $file1;
-    my $data2 = readall $file2;
-    return ediffy($data1,$data2);
-}
-
-sub isdiff_read {
-    my ($file1,$file2) = @_;
-    my $data1 = readall $file1;
-    my $data2 = readall $file2;
-    $data1 = blot_out_std_diffs($data1);
-    $data2 = blot_out_std_diffs($data2);
-    return 0 if $data1 eq $data2;
-    return 1;
 }
 
 sub ED {  # enc-dec command with diff
@@ -815,7 +1018,7 @@ sub ZXC {  # zxcall
     tst_ok($latency, $slow, $test);
 }
 
-sub CMD {  # zxpasswd command with diff
+sub CMD {  # command with diff
     my ($tsti, $expl, $cmd, $exitval, $timeout, $slow) = @_;
     return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
     return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
@@ -828,6 +1031,63 @@ sub CMD {  # zxpasswd command with diff
     my $latency = call_system($test,$timeout,$slow, "$cmd >tmp/$tsti.out 2>tmp/tst.err", $exitval);
     return if $latency == -1;
     
+    if ($diffx) {
+	if (ediffy_read("t/$tsti.out", "tmp/$tsti.out")) {
+	    tst_print('col1r', 'Diff ERR', $latency, $slow, $test, '');
+	    return;
+	}
+    } elsif ($diffmeth eq 'diffu') {
+	if (system "/usr/bin/diff t/$tsti.out tmp/$tsti.out") {
+	    tst_print('col1r', 'Diff Err', $latency, $slow, $test, '');
+	    return;
+	}
+    } else {
+	if (isdiff_read("t/$tsti.out", "tmp/$tsti.out")) {
+	    tst_print('col1r', 'Diff ERR', $latency, $slow, $test, '');
+	    return;
+	}
+    }
+    tst_ok($latency, $slow, $test);
+}
+
+sub DAEMON {  # launch a daemon that can be used as test target by clients. See also KILLD.
+    my ($tsti, $expl, $port, $cmd, $exitval, $timeout, $slow) = @_;
+    return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
+    return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
+    my $test = tst_link($tsti, $expl, '');
+    $slow ||= 0.1;
+    $timeout ||= 60;
+
+    unlink "tmp/$tsti.out";
+    unlink "tmp/$tsti.pid";
+
+    if (check_for_listener($port)) {
+	die "Some server is already using the port($port). Test can not continue. killall...";
+    }
+    
+    $send_ts{$tsti} = Time::HiRes::time();
+    my $latency = call_system($test,$timeout,$slow, "$cmd >tmp/$tsti.out 2>tmp/tstd.err &", $exitval);
+    return if $latency == -1;
+    die "Daemon not up in time" unless wait_for_port($port);
+    tst_ok($latency, $slow, $test);
+}
+
+sub KILLD {  # Collect results of a daemon (see DAEMON) after client tests.
+    my ($tsti, $expl, $cmd, $exitval, $timeout, $slow) = @_;
+    return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
+    return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
+    my $test = tst_link($tsti, $expl, '');
+    $slow ||= 60;
+    $timeout ||= 600;
+    my $latency = substr(Time::HiRes::time() - $send_ts{$tsti}, 0, 5);
+
+    $pid = readall("tmp/$tsti.pid");
+    if (!kill(0, $pid)) {
+	tst_print('col1r', 'Daemon dead', $latency, $slow, $test, '');
+	return;
+    }
+    kill_child($pid);
+
     if ($diffx) {
 	if (ediffy_read("t/$tsti.out", "tmp/$tsti.out")) {
 	    tst_print('col1r', 'Diff ERR', $latency, $slow, $test, '');
@@ -1165,6 +1425,73 @@ tA('ST','SSOHLO9', 'SP local logout', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Lo
 # http://sp1.zxidsp.org:8080/zxidservlet/zxidHLO?o=E
 # http://sp.tas3.pt:8080/zxidservlet/appdemo
 # http://sp.tas3.pt:8080/zxidservlet/wscprepdemo
+
+### Audit bus tests
+
+DAEMON('ZXBUS10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUS10.pid -d -d -dp -nthr 1 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+CMD('ZXBUS11', 'One shot', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
+CMD('ZXBUS12', 'zero len', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e ''");
+CMD('ZXBUS13', 'len1',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+CMD('ZXBUS14', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 8);
+CMD('ZXBUS15', 'len2',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+KILLD('ZXBUS10', 'collect zxbusd 1');
+
+DAEMON('ZXBUS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUS20.pid -d -d -dp -nthr 2 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+CMD('ZXBUS21', 'One shot', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
+CMD('ZXBUS22', 'zero len', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e ''");
+CMD('ZXBUS23', 'len1',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+CMD('ZXBUS24', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 8);
+CMD('ZXBUS25', 'len2',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+KILLD('ZXBUS20', 'collect zxbusd 2');
+
+DAEMON('ZXBUS30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUS30.pid -nthr 1 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+CMD('ZXBUS31', 'One shot', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
+CMD('ZXBUS32', 'zero len', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e ''");
+CMD('ZXBUS33', 'len1',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+CMD('ZXBUS34', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 8);
+CMD('ZXBUS35', 'len2',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+KILLD('ZXBUS30', 'collect zxbusd 3');
+
+DAEMON('ZXBUS40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUS40.pid -nthr 2 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+CMD('ZXBUS41', 'One shot', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
+CMD('ZXBUS42', 'zero len', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e ''");
+CMD('ZXBUS43', 'len1',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+CMD('ZXBUS44', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 8);
+CMD('ZXBUS45', 'len2',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+KILLD('ZXBUS40', 'collect zxbusd 4');
+
+DAEMON('ZXBUS50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUS50.pid -d -d -dp -nthr 3 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+CMD('ZXBUS51', 'One shot', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
+CMD('ZXBUS52', 'zero len', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e ''");
+CMD('ZXBUS53', 'len1',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+CMD('ZXBUS54', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 8);
+CMD('ZXBUS55', 'len2',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+KILLD('ZXBUS50', 'collect zxbusd 5');
+
+DAEMON('ZXBUS60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUS60.pid -nthr 3 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+CMD('ZXBUS61', 'One shot', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
+CMD('ZXBUS62', 'zero len', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e ''");
+CMD('ZXBUS63', 'len1',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+CMD('ZXBUS64', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 8);
+CMD('ZXBUS65', 'len2',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+KILLD('ZXBUS60', 'collect zxbusd 6');
+
+DAEMON('ZXBUS70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUS70.pid -d -d -dp -nthr 10 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+CMD('ZXBUS71', 'One shot', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
+CMD('ZXBUS72', 'zero len', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e ''");
+CMD('ZXBUS73', 'len1',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+CMD('ZXBUS74', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 8);
+CMD('ZXBUS75', 'len2',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+KILLD('ZXBUS70', 'collect zxbusd 7');
+
+DAEMON('ZXBUS80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUS80.pid -nthr 10 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+CMD('ZXBUS81', 'One shot', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
+CMD('ZXBUS82', 'zero len', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e ''");
+CMD('ZXBUS83', 'len1',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+CMD('ZXBUS84', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 8);
+CMD('ZXBUS85', 'len2',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
+KILLD('ZXBUS80', 'collect zxbusd 8');
+
 
 CMD('COVIMP1', 'Silly tests just to improve test coverage', "./zxcovimp.sh", 0, 60, 10);
 

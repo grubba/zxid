@@ -54,6 +54,8 @@
 #define heart_bt  dest
 #define STOMP_MIN_PDU_SIZE (sizeof("ACK\n\n\0")-1)
 
+extern int verbose;  /* defined in option parsing in zxbusd.c */
+
 #if 0
 /* Called by: */
 static struct hi_pdu* stomp_encode_start(struct hi_thr* hit)
@@ -187,7 +189,14 @@ int zxbus_persist(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
     //hi_sendf(hit, io, req, "ERROR\nmessage:persist failure\nreceipt-id:%.*s\n\nUnable to persist message. Can not guarantee reliable delivery, therefore rejecting. Perhaps filesystem is full?%c", len, rcpt, 0);
     return 0;
   }
-  D("persisted at(%s) (%.*s) len=%d", d_path, MIN(req->ap-req->m, 10), req->m, req->ap-req->m);
+  D("persisted at(%s) (%.*s) len=%d", d_path, MIN(req->ap-req->ad.stomp.body, 10), req->ad.stomp.body, req->ap-req->m);
+  if (verbose) {
+    if (req->ad.stomp.receipt)
+      nl = memchr(req->ad.stomp.receipt, '\n', req->ap - req->ad.stomp.receipt);
+    else
+      nl = 0;
+    printf("FMT0 persisted at(%s) (%.*s) len=%d receipt(%.*s)\n", d_path, MIN(req->ap-req->ad.stomp.body, 10), req->ad.stomp.body, req->ap-req->m, nl?(nl-req->ad.stomp.receipt):0, nl?req->ad.stomp.receipt:"");
+  }
   /* *** Schedule delivery to happen - or have this PDU take care of it. */
   return 1;
 }
@@ -215,6 +224,7 @@ static void stomp_got_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* 
     len = 1;
     rcpt = "-";
   }
+  DD("rcpt(%.*s) len=%d", len, rcpt, len);
   HI_SANITY(hit->shf, hit);
   if (zxbus_persist(hit, io, req)) {
     hi_sendf(hit, io, req, "RECEIPT\nreceipt-id:%.*s\n\n%c", len, rcpt, 0);
@@ -281,6 +291,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
     D("need=%d have=%d",req->need,req->ap-req->m);
     return  HI_NEED_MORE;
   }
+  memset(&req->ad.stomp, 0, sizeof(req->ad.stomp));
   p = hdr;
 
   /* Decode headers
@@ -312,7 +323,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
       return stomp_err(hit,io,req,"malformed frame received","Header missing colon.");
     ++val; /* skip : */
 
-#define HDR(header, field, val) } else if (!memcmp(hdr, header, sizeof(header)-1)) { if (!req->ad.stomp.field) req->ad.stomp.field = (val)
+#define HDR(header, field, valu) } else if (!memcmp(hdr, header, sizeof(header)-1)) { if (!req->ad.stomp.field) req->ad.stomp.field = (valu)
 
     if (!memcmp(hdr, "content-length:", sizeof("content-length:")-1))
     { if (!req->ad.stomp.len) {
@@ -336,7 +347,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
     HDR("subscription:",   subsc,     val);
     HDR("ack:",            ack,       val);
     HDR("message-id:",     msg_id,    val);
-    HDR("receipt-id:",     rcpt_id,   val);
+    HDR("receipt-id:",     rcpt_id,   val);  D("receipt-id(%.*s)", 4, req->ad.stomp.rcpt_id);
     } else {
       D("Unknown header(%.*s) ignored.", p-hdr, hdr);
     }

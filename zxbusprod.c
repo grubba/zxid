@@ -16,6 +16,8 @@
  * it will talk to zxbusd instances configured using BUS_URL options.
  *
  * See also:  http://stomp.github.com/stomp-specification-1.1.html (20110331)
+ * Todo: implement anti fragmentation option (tcp CORK (check Nagle algo) or
+ * bundle writes in this code).
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -42,7 +44,9 @@
 #include "zxid.h"
 #include "zxidutil.h"  /* for zx_zlib_raw_deflate(), safe_basis_64, and name_from_path */
 #include "zxidconf.h"
-#include "c/zx-data.h"  /* Generated. If missing, run `make dep ENA_GEN=1' */
+#include "c/zx-data.h" /* Generated. If missing, run `make dep ENA_GEN=1' */
+
+extern int verbose;    /* This is defined by option processing in zxbustailf */
 
 #define ZXBUS_TIME_FMT "%04d%02d%02d-%02d%02d%02d.%03ld"
 #define ZXBUS_TIME_ARG(t,usec) t.tm_year + 1900, t.tm_mon + 1, t.tm_mday, \
@@ -726,6 +730,7 @@ int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf)
 {
   int len;
   char buf[1024];
+  char* body;
   struct zxid_bus_url* bu;
   struct stomp_hdr stomp;
   
@@ -756,6 +761,10 @@ int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf)
 	memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
 	bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
 	D("SEND got RECEIPT %d", bu->cur_rcpt-1);
+	if (verbose) {
+	  body = strstr(buf, "\n\n");
+	  printf("SEND(%s) got RECEIPT %d\n", body, bu->cur_rcpt-1);
+	}
 	return 1;
       } else {
 	close(bu->fd);

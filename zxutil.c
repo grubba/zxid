@@ -345,6 +345,8 @@ int write_all_path_fmt(const char* logkey, int maxlen, char* buf, const char* pa
   return 1;
 }
 
+#define WRITE_FAIL_MSG "Check that all directories exist, permissions allow writing, and disk is not full or that ulimit(1) is not too low."
+
 /*() Write or append all data to a file at the already formatted path.
  * The file is opened for appending, data written, and file closed
  * (flushing the data).  Will perform file locking to ensure
@@ -379,14 +381,14 @@ int write2_or_append_lock_c_path(const char* c_path,
 
   if (len1 && data1) {
     if (!write_all_fd(fd, data1, len1)) {
-      ERR("%s: Writing to file `%s' %d bytes failed: %d %s. Check permissions and disk space. euid=%d egid=%d", which, c_path, len1, errno, STRERROR(errno), geteuid(), getegid());
+      ERR("%s: Writing to file `%s' %d bytes failed: %d %s; euid=%d egid=%d. %s", which, c_path, len1, errno, STRERROR(errno), geteuid(), getegid(), WRITE_FAIL_MSG);
       close_file(fd, which);
       return 0;
     }
   }
   if (len2 && data2) {
     if (!write_all_fd(fd, data2, len2)) {
-      ERR("%s: Writing to file `%s' %d bytes failed: %d %s. Check permissions and disk space. euid=%d egid=%d", which, c_path, len2, errno, STRERROR(errno), geteuid(), getegid());
+      ERR("%s: Writing to file `%s' %d bytes failed: %d %s; euid=%d egid=%d. %s", which, c_path, len2, errno, STRERROR(errno), geteuid(), getegid(), WRITE_FAIL_MSG);
       close_file(fd, which);
       return 0;
     }
@@ -395,7 +397,7 @@ int write2_or_append_lock_c_path(const char* c_path,
   fd = open(c_path, O_RDWR | O_CREAT | flag, 0666);
   if (fd == BADFD) goto badopen;
   if (FLOCKEX(fd)  == -1) {
-    ERR("%s: Locking exclusively file `%s' failed: %d %s. Check permissions and that the file system supports locking. euid=%d egid=%d", which, c_path, errno, STRERROR(errno), geteuid(), getegid());
+    ERR("%s: Locking exclusively file `%s' failed: %d %s; euid=%d egid=%d. Check that the file system supports locking. %s", which, c_path, errno, STRERROR(errno), geteuid(), getegid(), WRITE_FAIL_MSG);
     close_file(fd, which);
     return 0;
   }
@@ -403,7 +405,7 @@ int write2_or_append_lock_c_path(const char* c_path,
   lseek(fd,0,seeky);
   if (len1 && data1) {
     if (!write_all_fd(fd, data1, len1)) {
-      ERR("%s: Writing to file(%s) fd=%d %d bytes failed: %d %s. Check permissions and disk space. euid=%d egid=%d", which, c_path, fd, len1, errno, STRERROR(errno), geteuid(), getegid());
+      ERR("%s: Writing to file(%s) fd=%d %d bytes failed: %d %s; euid=%d egid=%d. %s", which, c_path, fd, len1, errno, STRERROR(errno), geteuid(), getegid(), WRITE_FAIL_MSG);
       FUNLOCK(fd);
       close_file(fd, which);
       return 0;
@@ -412,7 +414,7 @@ int write2_or_append_lock_c_path(const char* c_path,
 
   if (len2 && data2) {
     if (!write_all_fd(fd, data2, len2)) {
-      ERR("%s: Writing to file(%s) %d bytes failed: %d %s. Check permissions and disk space. euid=%d egid=%d", which, c_path, len2, errno, STRERROR(errno), geteuid(), getegid());
+      ERR("%s: Writing to file(%s) %d bytes failed: %d %s; euid=%d egid=%d. %s", which, c_path, len2, errno, STRERROR(errno), geteuid(), getegid(), WRITE_FAIL_MSG);
       FUNLOCK(fd);
       close_file(fd, which);
       return 0;
@@ -422,12 +424,12 @@ int write2_or_append_lock_c_path(const char* c_path,
   FUNLOCK(fd);
 #endif
   if (close_file(fd, which) < 0) {
-    ERR("%s: closing file(%s) after write failed: %d %s. Check permissions and disk space. Could be NFS problem. euid=%d egid=%d", which, c_path, errno, STRERROR(errno), geteuid(), getegid());
+    ERR("%s: closing file(%s) after write failed: %d %s; euid=%d egid=%d. %s Could be NFS problem.", which, c_path, errno, STRERROR(errno), geteuid(), getegid(), WRITE_FAIL_MSG);
     return 0;
   }
   return 1;
 badopen:
-  ERR("%s: Opening file(%s) for writing failed: %d %s. Check permissions and that directories exist. euid=%d egid=%d", which, c_path, errno, STRERROR(errno), geteuid(), getegid());
+  ERR("%s: Opening file(%s) for writing failed: %d %s; euid=%d egid=%d. %s", which, c_path, errno, STRERROR(errno), geteuid(), getegid(), WRITE_FAIL_MSG);
   return 0;
 }
 
