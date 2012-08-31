@@ -1,6 +1,1 @@
-SEND(
-
-) got RECEIPT 0
-SEND(
-
-) got RECEIPT 1
+SEND(foo bar) got RECEIPT 0

@@ -24,7 +24,7 @@
 struct hi_pdu* http_encode_start(struct hi_thr* hit)
 {
   struct hi_pdu* resp = hi_pdu_alloc(hit, "http-enc-start");
-  if (!resp) { NEVERNEVER("*** out of pdus in bad place %d", 0); }
+  if (!resp) {  hi_dump(hit->shf); NEVERNEVER("*** out of pdus in bad place %d", 0); }
   return resp;
 }
 

@@ -55,7 +55,8 @@
  * allow most debugging chores, but may not be adequate for some. */
 short hi_color = 4;
 
-/*() Sanity check hiios pdu data structures. */
+/*() Sanity check hiios pdu data structures.
+ * Returns number of nodes scanned, or negative for errors. */
 
 /* Called by:  hi_sanity_hit, hi_sanity_io x3, hi_sanity_pdu x3, hi_sanity_shf x2 */
 int hi_sanity_pdu(int mode, struct hi_pdu* root_pdu)
@@ -127,7 +128,8 @@ int hi_sanity_pdu(int mode, struct hi_pdu* root_pdu)
   return errs?errs:nodes;
 }
 
-/*() Sanity check hiios io data structures. */
+/*() Sanity check hiios io data structures.
+ * Returns number of nodes scanned, or negative for errors. */
 
 /* Called by:  hi_sanity_shf */
 int hi_sanity_io(int mode, struct hi_io* root_io)
@@ -218,7 +220,8 @@ int hi_sanity_io(int mode, struct hi_io* root_io)
   return errs?errs:nodes;
 }
 
-/*() Sanity check hiios thread data structures. */
+/*() Sanity check hiios thread data structures.
+ * Returns number of nodes scanned, or negative for errors. */
 
 /* Called by:  hi_sanity */
 int hi_sanity_hit(int mode, struct hi_thr* root_hit)
@@ -227,6 +230,7 @@ int hi_sanity_hit(int mode, struct hi_thr* root_hit)
   int nodes = 0;
   struct hi_pdu* pdu;
 
+  printf("hit_%p [label=\"tid_%x\"];\n", root_hit, (unsigned int)root_hit->self);
   if (mode&0x80) {
     if (root_hit->free_pdus)
       printf("hit_%p  // free_pdus\n", root_hit);
@@ -364,7 +368,8 @@ int hi_sanity_shf(int mode, struct hiios* root_shf)
   return errs?errs:nodes;
 }
 
-/*() hi_sanity is called by macro HI_SANITY() and is meant to be called from gdb interactively. */
+/*() hi_sanity is called by macro HI_SANITY() and is meant to be called from gdb interactively.
+ * Returns number of nodes scanned, or negative for errors. */
 
 /* Called by: */
 int hi_sanity(int mode, struct hiios* root_shf, struct hi_thr* root_hit, const char* fn, int line)
@@ -382,6 +387,22 @@ int hi_sanity(int mode, struct hiios* root_shf, struct hi_thr* root_hit, const c
     ASSERT(res >= 0);
   }
   return 0;
+}
+
+/*() All thread data structure check.
+ * Returns number of nodes scanned, or negative for errors. */
+
+void hi_dump(struct hiios* shf)
+{
+  struct hi_thr* hit;
+  int res = hi_sanity_shf(255, shf);
+  hi_color += 4;
+  D("Dumping shf=%p hi_color=%d", shf, hi_color);
+  printf("Data structure dump %d\n----------------------\n", res);
+  for (hit = shf->threads; hit; hit = hit->n) {
+    res = hi_sanity_hit(255, hit);
+    printf("Hit structure dump %d\n======================\n", res);
+  }
 }
 
 /* EOF  --  hiiosdump.c */

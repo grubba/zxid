@@ -57,7 +57,7 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk)
   }
   UNLOCK(hit->shf->pdu_mut, "pdu_alloc-no-pdu");
   
-  ERR("Out of PDUs. Use -npdu to specify a value at least twice the value of -nfd. (%s)",lk);
+  ERR("Out of PDUs. Use -npdu to specify a value at least the value of 2x-nfd + 2x-nthr + 5. (%s)",lk);
   return 0;
 
  retpdu:
@@ -89,7 +89,7 @@ static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
    * b. because we might need to copy tail of previous req to it */
 
   io->cur_pdu = hi_pdu_alloc(hit, "cur_pdu-ckm");
-  if (!io->cur_pdu) { NEVERNEVER("*** out of pdus in bad place %d", n); }
+  if (!io->cur_pdu) {  hi_dump(hit->shf); NEVERNEVER("*** out of pdus in bad place %d", n); }
   io->cur_pdu->need = minlen;
   ++io->n_pdu_in;
   
@@ -278,7 +278,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
   D("not_reading-close(%x) n_thr=%d r/w=%d/%d ev=%d", io->fd, io->n_thr, io->reading, io->writing, io->events);
   ASSERT(io->n_thr >= 0);
   UNLOCK(io->qel.mut, "not_reading-close");
-  hi_close(hit, io, "hi_read-not_reading-close");
+  hi_close(hit, io, "hi_read-not_reading");
   return 1;
 }
 

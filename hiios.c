@@ -69,6 +69,7 @@ const char* qel_kind[] = {
 void hi_hit_init(struct hi_thr* hit)
 {
   memset(hit, 0, sizeof(struct hi_thr));
+  hit->self = pthread_self();
 }
 
 /*() Allocate io structure (connection) pool and global PDU
@@ -347,7 +348,8 @@ struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto)
 static void hi_accept_book(struct hi_thr* hit, struct hi_io* io)
 {
   int n_thr;
-
+  struct hi_io* nio;
+  
   /* We may accept new connection with same fd as an old one before all references
    * to the old one are gone. We could try reference counting - or we can delay
    * fully closing the fd before every reference has gone away.
@@ -366,7 +368,11 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io)
   }
 
   io->fd &= 0x7fffffff;
-  io = hi_add_fd(hit->shf, io->fd, io->qel.proto, HI_TCP_S);
+  nio = hi_add_fd(hit->shf, io->fd, io->qel.proto, HI_TCP_S);
+  if (!nio || nio != io) {
+    ERR("Adding fd failed: io=%p nio=%p", io, nio);
+    return;
+  }
   D("accepted and booked(%x)", io->fd);
   
   switch (io->qel.proto) {
@@ -782,6 +788,10 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf)
 {
   struct hi_qel* qe;
   hit->shf = shf;
+  LOCK(shf->todo_mut, "add-thread");
+  hit->n = shf->threads;
+  shf->threads = hit;
+  UNLOCK(shf->todo_mut, "add-thread");
   D("Start shuffling hit(%p) shf(%p)", hit, shf);
   while (1) {
     HI_SANITY(hit->shf, hit);

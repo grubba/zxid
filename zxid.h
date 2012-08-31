@@ -725,6 +725,7 @@ ZXID_DECL void zxlog_debug_xml_blob(zxid_conf* cf, const char* file, int line, c
 
 /* zxbusprod */
 
+ZXID_DECL int zxbus_send_cmd(zxid_conf* cf, const char* cmd, const char* dest, int n, const char* logbuf);
 ZXID_DECL int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf);
 ZXID_DECL int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu);
 ZXID_DECL void zxbus_close_all(zxid_conf* cf);

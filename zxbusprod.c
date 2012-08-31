@@ -720,17 +720,16 @@ void zxbus_close_all(zxid_conf* cf)
     zxbus_close(cf, bu);
 }
 
-/*() SEND a STOMP 1.1 message to audit bus and wait for RECEIPT.
+/*() Send the specified STOMP 1.1 message to audit bus and wait for RECEIPT.
  * Blocks until the transaction completes (or fails). Figures out
  * from configuration, which bus daemon to contact (looks at bus_urls).
  * Returns:: zero on failure and 1 on success. */
 
 /* Called by:  zxbustailf_main x2 */
-int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf)
+int zxbus_send_cmd(zxid_conf* cf, const char* cmd, const char* dest, int n, const char* logbuf)
 {
   int len;
   char buf[1024];
-  char* body;
   struct zxid_bus_url* bu;
   struct stomp_hdr stomp;
   
@@ -749,7 +748,7 @@ int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf)
   if (!bu->fd)
     return 0;
   
-  len = snprintf(buf, sizeof(buf), "SEND\ndestination:%s\nreceipt:%d\ncontent-length:%d\n\n", dest, bu->cur_rcpt++, n);
+  len = snprintf(buf, sizeof(buf), "%s\ndestination:%s\nreceipt:%d\ncontent-length:%d\n\n", cmd, dest, bu->cur_rcpt++, n);
   send_all_socket(bu->fd, buf, len);
   send_all_socket(bu->fd, logbuf, n);
   send_all_socket(bu->fd, "\0", 1);
@@ -760,10 +759,9 @@ int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf)
       if (atoi(stomp.rcpt_id) == bu->cur_rcpt - 1) {
 	memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
 	bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
-	D("SEND got RECEIPT %d", bu->cur_rcpt-1);
+	D("%s got RECEIPT %d", cmd, bu->cur_rcpt-1);
 	if (verbose) {
-	  body = strstr(buf, "\n\n");
-	  printf("SEND(%s) got RECEIPT %d\n", body, bu->cur_rcpt-1);
+	  printf("%s(%.*s) got RECEIPT %d\n", cmd, n, logbuf, bu->cur_rcpt-1);
 	}
 	return 1;
       } else {
@@ -781,6 +779,17 @@ int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf)
   close(bu->fd);
   bu->fd = 0;
   return 0;
+}
+
+/*() SEND a STOMP 1.1 message to audit bus and wait for RECEIPT.
+ * Blocks until the transaction completes (or fails). Figures out
+ * from configuration, which bus daemon to contact (looks at bus_urls).
+ * Returns:: zero on failure and 1 on success. */
+
+/* Called by:  zxbustailf_main x2 */
+int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf)
+{
+  return zxbus_send_cmd(cf, "SEND", dest, n, logbuf);
 }
 
 #if 0

@@ -1,0 +1,85 @@
+shf_0x82fd438  // max_ios=11
+-> io_0x8316bf0
+  io_0x8316bf0 -> pdu_0x8300778 [label=cur_pdu]; // fd=0x4
+  io_0x8316bf0 -> null [label=reqs];
+  io_0x8316bf0 -> null [label=to_write_produce];
+  io_0x8316bf0 -> null [label=to_write_consume];  // n_to_write=0
+  io_0x8316bf0 -> null [label=in_write];
+-> io_0x8316dd8
+  io_0x8316dd8 -> pdu_0x83078d0 [label=cur_pdu]; // fd=0x6
+  io_0x8316dd8  // reqs
+    -> pdu_0x8305fa0  // (ZXCT)
+    pdu_0x8305fa0 -> null [label=reals];
+    pdu_0x8305fa0 -> null [label=synths];
+    pdu_0x8305fa0 -> null [label=subresps];
+[label=reqs];
+  io_0x8316dd8 -> null [label=to_write_produce];
+  io_0x8316dd8 -> null [label=to_write_consume];  // n_to_write=0
+  io_0x8316dd8 -> null [label=in_write];
+[label=ios];
+shf_0x82fd438 -> null [label=todo_consume];
+shf_0x82fd438   // free_pdus (color=4)
+-> pdu_0x8308568
+-> pdu_0x8309200
+-> pdu_0x8309e98
+-> pdu_0x830ab30
+-> pdu_0x830b7c8
+-> pdu_0x830c460
+-> pdu_0x830d0f8
+-> pdu_0x830dd90
+-> pdu_0x830ea28
+-> pdu_0x830f6c0
+-> pdu_0x8310358
+-> pdu_0x8310ff0
+-> pdu_0x8311c88
+-> pdu_0x8312920
+-> pdu_0x83135b8
+-> pdu_0x8314250
+-> pdu_0x8314ee8
+-> pdu_0x8315b80
+[label=free_pdus];
+Data structure dump 21
+----------------------
+hit_0x2f4e35c [label="tid_2f4eb70"];
+hit_0x2f4e35c -> null [label=free_pdus];
+Hit structure dump 0
+======================
+hit_0xbfaea414 [label="tid_b774aa30"];
+hit_0xbfaea414 -> null [label=free_pdus];
+Hit structure dump 0
+======================
+hit_0x274d35c [label="tid_274db70"];
+hit_0x274d35c -> null [label=free_pdus];
+Hit structure dump 0
+======================
+hit_0x7fe435c [label="tid_7fe4b70"];
+hit_0x7fe435c -> null [label=free_pdus];
+Hit structure dump 0
+======================
+hit_0x61d235c [label="tid_61d2b70"];
+hit_0x61d235c -> null [label=free_pdus];
+Hit structure dump 0
+======================
+hit_0x3d9235c [label="tid_3d92b70"];
+hit_0x3d9235c -> null [label=free_pdus];
+Hit structure dump 0
+======================
+hit_0x1f4c35c [label="tid_1f4cb70"];
+hit_0x1f4c35c -> null [label=free_pdus];
+Hit structure dump 0
+======================
+hit_0x776135c [label="tid_7761b70"];
+hit_0x776135c -> null [label=free_pdus];
+Hit structure dump 0
+======================
+hit_0x460835c [label="tid_4608b70"];
+hit_0x460835c  // free_pdus
+-> pdu_0x83020a8  // (STOM)
+-> pdu_0x8306c38  // (CONN)
+[label=free_pdus];
+Hit structure dump 2
+======================
+hit_0x174b35c [label="tid_174bb70"];
+hit_0x174b35c -> null [label=free_pdus];
+Hit structure dump 0
+======================

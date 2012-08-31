@@ -435,7 +435,7 @@ int hexdump(char* msg, char* p, char* lim, int max);
 
 #define DUMP_CORE() ASSERT(0)
 #define NEVER(explanation,val) D(explanation,(val))
-#define NEVERNEVER(explanation,val) MB ERR(explanation,(val)); DUMP_CORE(); ME
+#define NEVERNEVER(explanation,val) MB ERR(explanation,(val)); fflush(stdout); fflush(ZX_DEBUG_LOG); DUMP_CORE(); ME
 
 #define CMDLINE(x)
 

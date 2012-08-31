@@ -141,7 +141,7 @@ void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* fm
 {
   va_list pv;
   struct hi_pdu* pdu = hi_pdu_alloc(hit, "send");
-  if (!pdu) { ERR("Out of PDUs in bad place fmt(%s)", fmt); return; }
+  if (!pdu) { hi_dump(hit->shf); NEVERNEVER("Out of PDUs in bad place. fmt(%s)", fmt); }
   
   va_start(pv, fmt);
   pdu->need = vsnprintf(pdu->m, pdu->lim - pdu->m, fmt, pv);
@@ -153,7 +153,8 @@ void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* fm
 
 /*() Process io->to_write_consume to produce an iov and move the PDUs to io->inwrite.
  * This is the main (only?) way how writes end up in hiios poll machinery to be written.
- * The only consumer of the io->to_write_consume queue. */
+ * The only consumer of the io->to_write_consume queue.
+ * Must only be called with io->qel.mut held. */
 
 /* Called by:  hi_make_iov, hi_in_out */
 void hi_make_iov_nolock(struct hi_io* io)
@@ -166,10 +167,10 @@ void hi_make_iov_nolock(struct hi_io* io)
     memcpy(cur, pdu->iov, pdu->n_iov * sizeof(struct iovec));
     cur += pdu->n_iov;
     
-    if (!(io->to_write_consume = pdu->wn))    /* consume from to_write */
+    if (!(io->to_write_consume = pdu->wn)) /* consume from to_write */
       io->to_write_produce = 0;
     --io->n_to_write;
-    pdu->wn = io->in_write;                   /* produce to in_write */
+    pdu->wn = io->in_write;                /* produce to in_write so pdu can eventually be freed */
     io->in_write = pdu;
     
     ASSERT(io->n_to_write >= 0);
@@ -178,6 +179,8 @@ void hi_make_iov_nolock(struct hi_io* io)
   }
   io->n_iov = cur - io->iov_cur;
 }
+
+/*() The locked (and usual) way of calling hi_make_iov_nolock() */
 
 /* Called by:  hi_write */
 static void hi_make_iov(struct hi_io* io)
@@ -350,7 +353,7 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
     ASSERT(io->writing);
     D("writev(%x) n_iov=%d n_thr=%d r/w=%d/%d ev=%x", io->fd, io->n_iov, io->n_thr, io->reading, io->writing, io->events);
     HEXDUMP("iov0:", io->iov_cur->iov_base, io->iov_cur->iov_base + io->iov_cur->iov_len, 16);
-    ret = writev(io->fd, io->iov_cur, io->n_iov);
+    ret = writev(io->fd&0x7fffffff /* in case of write after close */, io->iov_cur, io->n_iov);
     ASSERT(io->writing);
     switch (ret) {
     case 0: NEVERNEVER("writev on %x returned 0", io->fd);

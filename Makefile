@@ -37,7 +37,7 @@
 vpath %.c ../zxid
 vpath %.h ../zxid
 
-default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall zxbusd zxbustailf zxencdectest
+default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall zxbusd zxbustailf zxbuslist zxencdectest
 
 all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcgi
 
@@ -101,9 +101,10 @@ LCOV=lcov
 GENHTML=genhtml
 SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,--allow-multiple-definition
 SHARED_CLOSE=-Wl,-no-whole-archive
-CFLAGS=-g -fpic -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -Wno-char-subscripts -fno-strict-aliasing
-#CFLAGS += -Os    # gcc-3.4.6 miscompiles with -Os on ix86
-CFLAGS += -Wall -Wno-parentheses -DMAYBE_UNUSED='__attribute__ ((unused))'
+CFLAGS =  -g -fpic -fno-strict-aliasing
+#CFLAGS += -Os    # gcc-3.4.6 miscompiles with -Os on ix86 (2010 --Sampo)
+CFLAGS += -fmessage-length=0 -DMAYBE_UNUSED='__attribute__ ((unused))'
+CFLAGS += -Wall -Wno-parentheses -Wno-unused-label -Wno-unknown-pragmas -Wno-char-subscripts
 #LDFLAGS += -Wl,--gc-sections
 LIBZXID_A=libzxid.a
 LIBZXID=-L. -lzxid
@@ -507,6 +508,7 @@ ZXIDWSCTOOL_OBJ=zxidwsctool.$(OBJ_EXT)
 ZXIDSP_OBJ=zxidsp.$(OBJ_EXT)
 ZXIDHLO_OBJ=zxidhlo.$(OBJ_EXT)
 ZXBUSTAILF_OBJ=zxbustailf.$(OBJ_EXT)
+ZXBUSLIST_OBJ=zxbuslist.$(OBJ_EXT)
 ZXBUSD_OBJ=zxbusd.$(OBJ_EXT) hiios.$(OBJ_EXT) hiread.$(OBJ_EXT) hiwrite.$(OBJ_EXT) hiiosdump.$(OBJ_EXT) testping.$(OBJ_EXT) http.$(OBJ_EXT) smtp.$(OBJ_EXT) stomp.$(OBJ_EXT)
 ZXIDGSA_OBJ=zxidgsa.$(OBJ_EXT)
 ZXIDHLOWSF_OBJ=zxidhlowsf.$(OBJ_EXT)
@@ -1309,6 +1311,9 @@ zxlogview: $(ZXLOGVIEW_OBJ) $(LIBZXID_A)
 zxbustailf: $(ZXBUSTAILF_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxbustailf$(EXE) $^ $(LIBS)
 
+zxbuslist: $(ZXBUSLIST_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxbuslist$(EXE) $^ $(LIBS)
+
 zxbusd: $(ZXBUSD_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxbusd$(EXE) $^ $(LIBS)
 
@@ -1644,7 +1649,7 @@ dirs: dir
 install: zxid $(LIBZXID_A) libzxid.so.0.0 dir
 	@$(ECHO) "===== Installing in $(PREFIX) (to change do make install PREFIX=/your/path)"
 	-mkdir -p $(PREFIX) $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/include/zxid $(PREFIX)/include/zx $(PREFIX)/doc
-	$(CP) zxmkdirs.sh zxcall zxpasswd zxcot zxlogview zxbusd zxbustailf zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl zxsizeof $(PREFIX)/bin
+	$(CP) zxmkdirs.sh zxcall zxpasswd zxcot zxlogview zxbusd zxbustailf zxbuslist zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl zxsizeof $(PREFIX)/bin
 	$(CP) $(LIBZXID_A) libzxid.so* $(PREFIX)/lib
 	$(CP) libzxid.so.0.0 $(PREFIX)/lib
 	$(CP) *.h c/*.h $(PREFIX)/include/zxid
@@ -1698,14 +1703,14 @@ distclean: clean
 cleanbin:
 	rm -f zxid zxlogview zxbench zxencdectest zxmqtest $(LIBZXID_A) libzxid.so* sizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
-	rm -f zxidwspcgi zxidxfoobarwsp zxpasswd zxcot zxcall zxbusd zxbustailf
+	rm -f zxidwspcgi zxidxfoobarwsp zxpasswd zxcot zxcall zxbusd zxbustailf zxbuslist
 	rm -f mod_auth_saml.so zxididp zxdecode
 
 miniclean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean
 	@$(ECHO) ------------------ Making miniclean
 	rm -f *.o *.obj zxid zxlogview zxbench zxencdectest zxmqtest $(LIBZXID_A) libzxid.so* sizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
-	rm -f mod_auth_saml.so zxididp zxbusd zxbustailf
+	rm -f mod_auth_saml.so zxididp zxbusd zxbustailf zxbuslist
 	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar ak.*
 
 # make cleany && make genwrap ENA_GEN=1 && make all ENA_GEN=1
@@ -1755,7 +1760,7 @@ linbindist:
 winbindist:
 	rm -rf zxid-$(ZXIDREL)-win32-bin
 	mkdir zxid-$(ZXIDREL)-win32-bin zxid-$(ZXIDREL)-win32-bin/c zxid-$(ZXIDREL)-win32-bin/zxidjava  zxid-$(ZXIDREL)-win32-bin/php
-	$(CP) zxid.dll zxidhlo zxidsimple zxididp zxcot zxpasswd zxdecode zxlogview zxbusd zxbustailf smime *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
+	$(CP) zxid.dll zxidhlo zxidsimple zxididp zxcot zxpasswd zxdecode zxlogview zxbusd zxbustailf zxbuslist smime *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
 	$(CP) zxidjava/*.class $(ZXIDJNI_SO) zxidjava/zxid_wrap.c zxid-$(ZXIDREL)-win32-bin/zxidjava
 	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay README.zxid README.zxid-win32 zxid-$(ZXIDREL)-win32-bin
 	$(CP) c/*.h zxid-$(ZXIDREL)-win32-bin/c
@@ -1842,7 +1847,7 @@ zxidpcopytc: html/zxidp-user-terms.html html/zxidp-sp-terms.html
 	rsync html/zxidp-user-terms.html html/zxidp-sp-terms.html $(WEBROOT)/html
 
 rsynclite:
-	cd ..; rsync -a '--exclude=*.o' '--exclude=*.zip' '--exclude=TAGS' '--exclude=*.tgz' '--exclude=*.class' '--exclude=*.so' '--exclude=*.a'  '--exclude=zxlogview' '--exclude=zxidsimple'  '--exclude=zxidhlowsf'  '--exclude=zxidhlo' '--exclude=zxidsp' '--exclude=zxbusd' '--exclude=zxbustailf' zxid mesozoic.homeip.net:
+	cd ..; rsync -a '--exclude=*.o' '--exclude=*.zip' '--exclude=TAGS' '--exclude=*.tgz' '--exclude=*.class' '--exclude=*.so' '--exclude=*.a'  '--exclude=zxlogview' '--exclude=zxidsimple'  '--exclude=zxidhlowsf'  '--exclude=zxidhlo' '--exclude=zxidsp' '--exclude=zxbusd' '--exclude=zxbustailf' '--exclude=zxbuslist' zxid mesozoic.homeip.net:
 
 cvstag:
 	cvs tag ZXID_ZXIDREL_$(ZXIDVERSION)
@@ -1938,7 +1943,7 @@ dep: $(PULVER_DEPS)
 	rm -f deps.dep
 	$(MAKE) deps.dep
 
-deps: $(ZXID_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxidsimple.c $(ZX_OBJ:.o=.c) c/saml2-const.h c/saml2md-const.h c/wsf-const.h $(PULVER_DEPS) c/zxidvers.h
+deps: $(ZXID_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxbuslist.c zxidsimple.c $(ZX_OBJ:.o=.c) c/saml2-const.h c/saml2md-const.h c/wsf-const.h $(PULVER_DEPS) c/zxidvers.h
 	@$(ECHO) ================== Making deps
 	cat pulver/c_saml2_dec_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
 	cat pulver/c_saml2_enc_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
@@ -1948,7 +1953,7 @@ deps: $(ZXID_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbusta
 	cat pulver/c_saml2md_enc_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
 	cat pulver/c_saml2md_aux_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
 	cat pulver/c_saml2md_getput_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	$(CC) $(CDEF) $(CDIR) -MM $(ZXID_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxidsimple.c c/saml2-const.h c/saml2md-const.h >>deps.dep
+	$(CC) $(CDEF) $(CDIR) -MM $(ZXID_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxbuslist.c zxidsimple.c c/saml2-const.h c/saml2md-const.h >>deps.dep
 
 #	$(ECHO) Deps built. $(foreach fil,$^,$(shell $(fil) >>deps.dep))
 
@@ -1956,7 +1961,7 @@ else
 
 dep: deps
 
-deps: $(ZXID_OBJ:.o=.c) $(ZX_OBJ:.o=.c) $(ZXID_LIB_OBJ:.o=.c) $(WSF_OBJ:.o=.c) $(OAUTH_OBJ:.o=.c) $(SMIME_LIB_OBJ) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxidsp.c zxidsimple.c $(ZX_OBJ:.o=.c) $(ZX_GEN_H) $(ZX_GEN_C) c/zx-const.h c/zxidvers.h
+deps: $(ZXID_OBJ:.o=.c) $(ZX_OBJ:.o=.c) $(ZXID_LIB_OBJ:.o=.c) $(WSF_OBJ:.o=.c) $(OAUTH_OBJ:.o=.c) $(SMIME_LIB_OBJ) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxbuslist.c zxidsp.c zxidsimple.c $(ZX_OBJ:.o=.c) $(ZX_GEN_H) $(ZX_GEN_C) c/zx-const.h c/zxidvers.h
 	$(CC) $(CDEF) $(CDIR) -MM $^ >deps.dep
 
 # make gen ENA_GEN=1

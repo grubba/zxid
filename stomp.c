@@ -61,7 +61,7 @@ extern int verbose;  /* defined in option parsing in zxbusd.c */
 static struct hi_pdu* stomp_encode_start(struct hi_thr* hit)
 {
   struct hi_pdu* resp = hi_pdu_alloc(hit,"stomp_enc_start");
-  if (!resp) { NEVERNEVER("*** out of pdus in bad place %d", 0); }
+  if (!resp) { hi_dump(hit->shf); NEVERNEVER("*** out of pdus in bad place %d", 0); }
   return resp;
 }
 #endif
@@ -195,7 +195,7 @@ int zxbus_persist(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
       nl = memchr(req->ad.stomp.receipt, '\n', req->ap - req->ad.stomp.receipt);
     else
       nl = 0;
-    printf("FMT0 persisted at(%s) (%.*s) len=%d receipt(%.*s)\n", d_path, MIN(req->ap-req->ad.stomp.body, 10), req->ad.stomp.body, req->ap-req->m, nl?(nl-req->ad.stomp.receipt):0, nl?req->ad.stomp.receipt:"");
+    printf("FMT0 persist at %s '%.*s' len=%d rcpt(%.*s)\n", d_path, MIN(req->ap-req->ad.stomp.body, 10), req->ad.stomp.body, req->ap-req->m, nl?(nl-req->ad.stomp.receipt):0, nl?req->ad.stomp.receipt:"");
   }
   /* *** Schedule delivery to happen - or have this PDU take care of it. */
   return 1;
@@ -252,6 +252,26 @@ static void stomp_got_subsc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu*
 static void stomp_got_unsubsc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   stomp_cmd_ni(hit,io,req,"UNSUBSCRIBE\n");
+}
+
+/*() Nonstandard STOMP command for ZXBUS testing.
+ * Based on different body content, diffrent magic can be invoked:
+ * dump - dump data structures to stdout with hi_dump() */
+
+/* Called by:  stomp_decode */
+static void stomp_got_zxctl(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
+{
+  int len;
+  char* rcpt;
+  if ((rcpt = req->ad.stomp.receipt)) {
+    len = (char*)memchr(rcpt, '\n', req->ap - rcpt) - rcpt;
+  } else {
+    len = 1;
+    rcpt = "-";
+  }
+  D("ZXCTL(%.*s) rcpt(%.*s) len=%d", req->ad.stomp.len, req->ad.stomp.body, len, rcpt, len);
+  if (!memcmp(req->ad.stomp.body, "dump", sizeof("dump")-1)) hi_dump(hit->shf);
+  hi_sendf(hit, io, req, "RECEIPT\nreceipt-id:%.*s\n\n%c", len, rcpt, 0);
 }
 
 /*() STOMP decoder and dispatch.
@@ -412,7 +432,8 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
   CMD("CONNECTED",   stomp_cmd_ni(hit,io,req,p) );
   CMD("MESSAGE",     stomp_cmd_ni(hit,io,req,p) );
   CMD("RECEIPT",     stomp_cmd_ni(hit,io,req,p) );
-  CMD("ERROR",       return stomp_got_err(hit,io,req)    );
+  CMD("ERROR",       return stomp_got_err(hit,io,req) );
+  CMD("ZXCTL",       stomp_got_zxctl(hit,io,req) );  /* Custom command */
   } else {
     D("Unknown command(%.*s) ignored.", 4, command);
     stomp_cmd_ni(hit,io,req,p);

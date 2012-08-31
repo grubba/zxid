@@ -29,7 +29,7 @@ void test_ping_reply(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   int i;
   int n = req->ap - req->m;
   struct hi_pdu* resp = hi_pdu_alloc(hit,"test_ping_reply");
-  if (!resp) { NEVERNEVER("*** out of pdus in bad place %d", n); }
+  if (!resp) {  hi_dump(hit->shf); NEVERNEVER("*** out of pdus in bad place %d", n); }
   memcpy(resp->ap, req->m, n);
   resp->ap += n;
   for (i = n-1; i; --i)  /* all but the first letter */

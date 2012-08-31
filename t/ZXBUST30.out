@@ -1,0 +1,47 @@
+shf_0x96f2438  // max_ios=11
+-> io_0x970a2c0
+  io_0x970a2c0 -> pdu_0x96f5778 [label=cur_pdu]; // fd=0x4
+  io_0x970a2c0 -> null [label=reqs];
+  io_0x970a2c0 -> null [label=to_write_produce];
+  io_0x970a2c0 -> null [label=to_write_consume];  // n_to_write=0
+  io_0x970a2c0 -> null [label=in_write];
+-> io_0x970a4a8
+  io_0x970a4a8 -> pdu_0x96f70a8 [label=cur_pdu]; // fd=0x6
+  io_0x970a4a8  // reqs
+    -> pdu_0x96fafa0  // (ZXCT)
+    pdu_0x96fafa0 -> null [label=reals];
+    pdu_0x96fafa0 -> null [label=synths];
+    pdu_0x96fafa0 -> null [label=subresps];
+[label=reqs];
+  io_0x970a4a8 -> null [label=to_write_produce];
+  io_0x970a4a8 -> null [label=to_write_consume];  // n_to_write=0
+  io_0x970a4a8 -> null [label=in_write];
+[label=ios];
+shf_0x96f2438 -> null [label=todo_consume];
+shf_0x96f2438   // free_pdus (color=4)
+-> pdu_0x96fc8d0
+-> pdu_0x96fd568
+-> pdu_0x96fe200
+-> pdu_0x96fee98
+-> pdu_0x96ffb30
+-> pdu_0x97007c8
+-> pdu_0x9701460
+-> pdu_0x97020f8
+-> pdu_0x9702d90
+-> pdu_0x9703a28
+-> pdu_0x97046c0
+-> pdu_0x9705358
+-> pdu_0x9705ff0
+-> pdu_0x9706c88
+-> pdu_0x9707920
+-> pdu_0x97085b8
+-> pdu_0x9709250
+[label=free_pdus];
+Data structure dump 20
+----------------------
+hit_0xbfe12a44 [label="tid_b77d5a30"];
+hit_0xbfe12a44  // free_pdus
+-> pdu_0x96fbc38  // (CONN)
+[label=free_pdus];
+Hit structure dump 1
+======================

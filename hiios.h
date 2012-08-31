@@ -287,16 +287,20 @@ struct hiios {
   struct hi_qel* todo_produce;
   int n_todo;
   struct hi_qel poll_tok;       /* Special qel to be inserted in todo_consume to trigger poll. */
+
+  struct hi_thr* threads;       /* List of threads. */
 };
 
 /*(s) Thread object */
 
 struct hi_thr {
+  struct hi_thr* n;
   struct hiios* shf;
   struct hi_pdu* free_pdus;     /* Per thread pool of PDUs */
 #if 0
   struct c_pdu_buf* free_c_pdu_bufs;
 #endif
+  pthread_t self;
 };
 
 struct hi_host_spec {
@@ -351,8 +355,9 @@ void hi_make_iov_nolock(struct hi_io* io);
 
 /* Sanity checking and data structure dumping for debugging. */
 
-extern short hi_color;  /* color usid for data structure circularity checks */
+extern short hi_color;  /* color used for data structure circularity checks */
 
+void hi_dump(struct hiios* shf);
 int hi_sanity_pdu(int mode, struct hi_pdu* root_pdu);
 int hi_sanity_io(int mode, struct hi_io* root_io);
 int hi_sanity_hit(int mode, struct hi_thr* root_hit);
@@ -360,5 +365,6 @@ int hi_sanity_shf(int mode, struct hiios* root_shf);
 int hi_sanity(int mode, struct hiios* root_shf, struct hi_thr* root_hit, const char* fn, int line);
 
 #define HI_SANITY(shf, hit) if (zx_debug>2) hi_sanity(255, (shf), (hit), __FUNCTION__, __LINE__)
+#define DHI_SANITY(shf, hit) /* disabled */
 
 #endif /* _hiios_h */

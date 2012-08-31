@@ -148,7 +148,7 @@ zxpasswd.c       - Password creation and user management tool
 zxcall.c         - Web Service Client tool
 zxlogview.c      - Local log viewing tool with log decryption and log sig verification
 zxdecode.c       - SAML redirect and post message decoding tool
-zxbusdump.c      - *** utility for listening to zxbus and sending output to stdout
+zxbuslist.c      - Utility for listening to zxbus and sending output to stdout
 zxbustailf.c     - tailf like utility for sending tail of a log to zxbus
 
 # ZXID Audit Bus

@@ -9,12 +9,13 @@
  * 27.8.2009, created --Sampo
  */
 
-#include "platform.h"  /* for dirent.h */
+#include "platform.h"  /* for dirent.h and unistd.h */
 
 #include <string.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <wait.h>
 
 #include "platform.h"
 #include "errmac.h"
@@ -43,8 +44,10 @@ Usage: zxbustailf [options] < stream-to-log   # Will stop at EOF\n\
   -ch CHAN         Indicate logging channel. Default is to use configuration.\n\
   -n N or -N       Output the last N lines of file - the default is to log all.\n\
   -e MSG           Log message from command line\n\
+  -ctl CTL         Send ZXCTL command (for testing and benchmarking)\n\
   -i N             Number of iterations of connect-send-disconnect cycle. For benchmarking.\n\
   -is N            Number of sends per connection, for benchmarking.\n\
+  -it N            Number of threads launching parallel sessions, for benchmarking.\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
   -d               Turn on debugging.\n\
@@ -58,8 +61,10 @@ echo '<query>Foo</query>' | zxbustailf -a https://idp.tas3.eu/zxididp?o=B user:p
 int dryrun  = 0;
 int verbose = 1;
 int n_iter = 1;
-int n_send = 2;
+int n_send = 1;
+int n_thr = 1;
 char* bdy = 0;
+char* ctl = 0;
 char* chan = "default";
 zxid_conf* cf;
 
@@ -92,6 +97,11 @@ static void opt(int* argc, char*** argv, char*** env)
 	++(*argv); --(*argc);
 	if ((*argc) < 1) break;
 	chan = (*argv)[0];
+	continue;
+      case 't':
+	++(*argv); --(*argc);
+	if ((*argc) < 1) break;
+	ctl = (*argv)[0];
 	continue;
       }
       break;
@@ -137,6 +147,12 @@ static void opt(int* argc, char*** argv, char*** env)
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
 	n_send = atoi((*argv)[0]);
+	continue;
+      case 't':
+	if ((*argv)[0][3]) break;
+	++(*argv); --(*argc);
+	if (!(*argc)) break;
+	n_thr = atoi((*argv)[0]);
 	continue;
       }
       break;
@@ -191,21 +207,50 @@ help:
 /* Called by: */
 int zxbustailf_main(int argc, char** argv, char** env)
 {
-  int len,ns;
+  int len,ns,nt,pid;
   char buf[64];
+  pid_t* kids;
   strncpy(zx_instance, "\tzxbustailf", sizeof(zx_instance));
   cf = zxid_new_conf_to_cf(0);
   opt(&argc, &argv, &env);
 
+  if (n_thr > 1) {
+    /* Fork test clients in great (specified) numbers. */
+    kids = ZX_ALLOC(cf->ctx, n_thr * sizeof(pid_t));
+    
+    for (nt = 0; nt < n_thr; ++nt) {
+      if ((kids[nt] = fork()) == -1) { perror("fork"); exit(1); }
+      if (!kids[n_thr])
+	goto kid;
+    }
+    D("All forked (%d), now waiting...", n_thr);
+    for (nt = 0; nt < n_thr; ++nt) {
+      if ((pid = wait(&len))==-1) { perror("wait"); exit(1); }
+      if (WIFEXITED(len)) {
+	if (WEXITSTATUS(len)) {
+	  ERR("wait(%d): Process exited with nozero status %x.", pid, WEXITSTATUS(len));
+	}
+      } else {
+	ERR("wait(%d): Process died abnormally %x.", pid, len);
+      }
+    }
+    D("All waited (%d), done.", n_thr);
+    return 0;
+  } else {
+    nt = -1;
+  }
+ kid:
   for (; n_iter; --n_iter) {
-    if (ns > 1 || n_iter > 1) {
+    if (n_send > 1 || n_iter > 1) {
       for (ns = n_send; ns; --ns) {
-	len = snprintf(buf, sizeof(buf), "test(%d,%d)", n_iter, ns);
-	D("sending(%.*s)", len, buf);
+	len = snprintf(buf, sizeof(buf), "test(%d,%d,%d)", nt, n_iter, ns);
+	D("sending(%.*s) n_send=%d n_iter=%d", len, buf, n_send, n_iter);
 	zxbus_send(cf, chan, len, buf);
       }
     } else {
-      if (bdy) {
+      if (ctl) {
+	zxbus_send_cmd(cf, "ZXCTL", chan, strlen(ctl), ctl);
+      } else if (bdy) {
 	zxbus_send(cf, chan, strlen(bdy), bdy);
       }
     }
