@@ -124,83 +124,6 @@ static int stomp_got_disc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
   return HI_CONN_CLOSE;
 }
 
-#define ZXID_BUS_DIR "bus/"
-
-/*() Attempt to presist a message.
- * Persisting involves synchronous write and an atomic filesystem rename operation, ala Maildir.
- * Returns: 0 on failure, 1 on success. */
-
-/* Called by:  stomp_got_send */
-int zxbus_persist(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
-{
-  int len;
-  const char* dest;
-  const char* p;
-  const char* nl;
-  char t_path[ZXID_MAX_BUF];  /* temp path before atomic rename */
-  char d_path[ZXID_MAX_BUF];  /* destination path after atomic rename */
-  if (!(dest = req->ad.stomp.dest)) {
-    stomp_err(hit,io,req,"no destination - client error","SEND MUST specify destination header, i.e. channel to send to.");
-    return 0;
-  }
-  nl = memchr(dest, '\n', req->ap - dest);
-  if (*dest == '/')
-    ++dest; /* skip initial /, if any */
-  
-  DD("persist(%.*s)", nl-dest, dest);
-  
-  /* Sanity check destination for any cracking attempts. */
-  for (p = dest; p < nl; ++p) {
-    if (p[0] == '.' && p[1] == '.') {
-      ERR("SEND destination is a .. hack(%.*s)", nl-dest, dest);
-      stomp_err(hit,io,req,"bad destination client error","SEND destination is not a valid channel.");    
-      return 0;
-    }
-    if (ONE_OF_2(*p, '~', '\\') || *p > 122 || *p < 33) {
-      ERR("SEND destination bad char 0x%x hack(%.*s)", *p, nl-dest, dest);
-      stomp_err(hit,io,req,"bad destination client error","SEND destination is not a valid channel.");    
-      return 0;
-    }
-  }
-  
-  /* Persist the message, use Maildir style rename from tmp/ to ch/ */
-  
-  len = name_from_path(d_path, sizeof(d_path), "%s" ZXID_BUS_DIR "ch/%.*s/", ZXID_PATH, nl-dest, dest);
-  if (sizeof(d_path)-len < 28+1 /* +1 accounts for t_path having one more char (tmp vs. ch) */) {
-    ERR("The d_path for persisting exceeds limit. len=%d", len);
-    stomp_err(hit,io,req,"persist failure at server","Unable to persist message. Can not guarantee reliable delivery, therefore rejecting. Internal error (d_path too long).");    
-    return 0;
-  }
-  DD("d_path(%s) len=%d", d_path, len);
-  sha1_safe_base64(d_path+len, req->ap-req->m, req->m);
-  d_path[len+27] = 0;
-  DD("d_path(%s)", d_path);
-  
-  name_from_path(t_path, sizeof(t_path), "%s" ZXID_BUS_DIR "tmp/%.*s", ZXID_PATH, 27, d_path+len);
-  
-  if (!write2_or_append_lock_c_path(t_path, 0, 0, req->ap-req->m, req->m, "zxbus persist", SEEK_SET, O_TRUNC)) {
-    stomp_err(hit,io,req,"persist failure at server","Unable to persist message. Can not guarantee reliable delivery, therefore rejecting. Perhaps filesystem is full, read only, wrong permissions, not mounted, or unreachable?");    
-    return 0;
-  }
-  
-  if (rename(t_path, d_path)) {
-    ERR("Renaming file(%s) to(%s) for atomicity failed: %d %s. Check permissions and that directories exist. euid=%d egid=%d", t_path, d_path, errno, STRERROR(errno), geteuid(), getegid());
-    stomp_err(hit,io,req,"persist failure at server","Unable to persist message. Can not guarantee reliable delivery, therefore rejecting. Perhaps filesystem is read only, wrong permissions, full, not mounted, or unreachable?");    
-    //hi_sendf(hit, io, req, "ERROR\nmessage:persist failure\nreceipt-id:%.*s\n\nUnable to persist message. Can not guarantee reliable delivery, therefore rejecting. Perhaps filesystem is full?%c", len, rcpt, 0);
-    return 0;
-  }
-  D("persisted at(%s) (%.*s) len=%d", d_path, MIN(req->ap-req->ad.stomp.body, 10), req->ad.stomp.body, req->ap-req->m);
-  if (verbose) {
-    if (req->ad.stomp.receipt)
-      nl = memchr(req->ad.stomp.receipt, '\n', req->ap - req->ad.stomp.receipt);
-    else
-      nl = 0;
-    printf("FMT0 persist at %s '%.*s' len=%d rcpt(%.*s)\n", d_path, MIN(req->ap-req->ad.stomp.body, 10), req->ad.stomp.body, req->ap-req->m, nl?(nl-req->ad.stomp.receipt):0, nl?req->ad.stomp.receipt:"");
-  }
-  /* *** Schedule delivery to happen - or have this PDU take care of it. */
-  return 1;
-}
-
 /*() Main function for receiving audit bus summary log lines from SPs.
  * This function will first store the line in a persistent way (RAID1
  * arrangement needs to be implemented at the OS level), and then,
@@ -245,7 +168,21 @@ static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
 /* Called by:  stomp_decode */
 static void stomp_got_subsc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
-  stomp_cmd_ni(hit,io,req,"SUBSCRIBE\n");
+  int len;
+  char* rcpt;
+  if ((rcpt = req->ad.stomp.receipt)) {
+    len = (char*)memchr(rcpt, '\n', req->ap - rcpt) - rcpt;
+  } else {
+    len = 1;
+    rcpt = "-";
+  }
+  DD("rcpt(%.*s) len=%d", len, rcpt, len);
+  HI_SANITY(hit->shf, hit);
+  if (zxbus_subscribe(hit, io, req)) {
+    hi_sendf(hit, io, req, "RECEIPT\nreceipt-id:%.*s\n\n%c", len, rcpt, 0);
+  } else {
+    ERR("Subscribe Problem. Disk full? %d", 0);
+  }
 }
 
 /* Called by:  stomp_decode */

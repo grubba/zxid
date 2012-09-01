@@ -39,14 +39,14 @@ void http_send_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int
 /* Called by:  http_decode */
 void http_send_data(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len, char* d)
 {
-  struct hi_pdu* resp = http_encode_start(hit);
+  //struct hi_pdu* resp = http_encode_start(hit);
   /*hi_sendv(hit, io, req, resp, len, resp->m, size, req->m + len);*/
 }
 
 /* Called by:  http_decode */
 void http_send_file(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len, char* d)
 {
-  struct hi_pdu* resp = http_encode_start(hit);
+  //struct hi_pdu* resp = http_encode_start(hit);
   /*hi_sendv(hit, io, req, resp, len, resp->m, size, req->m + len);*/
 }
 

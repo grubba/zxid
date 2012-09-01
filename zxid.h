@@ -533,6 +533,19 @@ struct zxid_cstr_list {
 #define ZXID_MAP_RULE_WRAP_FILE  0x30  /* Get attribute value from file specified in ext */
 #define ZXID_MAP_RULE_WRAP_MASK  0x30
 
+/*(s) Parsed STOMP 1.1 headers */
+
+struct stomp_hdr {
+  int len;               /* Populated from content-length header, if one is supplied. */
+  char* body;            /* Body of the message */
+  char* host;            /* also receipt and receipt_id */
+  char* vers;            /* version, also accept-version, tx_id */
+  char* login;           /* also session, subs_id, subsc */
+  char* pw;              /* also server, ack, msg_id */
+  char* dest;            /* destination, also heart_bt */
+  char* end_of_pdu;      /* One past end of frame data. Helps in cleaning buffer for next PDU. */
+};
+
 /*(s) Used for maintaining audit bus URL and connections */
 
 struct zxid_bus_url {
@@ -725,10 +738,15 @@ ZXID_DECL void zxlog_debug_xml_blob(zxid_conf* cf, const char* file, int line, c
 
 /* zxbusprod */
 
-ZXID_DECL int zxbus_send_cmd(zxid_conf* cf, const char* cmd, const char* dest, int n, const char* logbuf);
-ZXID_DECL int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf);
+ZXID_DECL int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu);
 ZXID_DECL int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu);
 ZXID_DECL void zxbus_close_all(zxid_conf* cf);
+ZXID_DECL int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const char* body, const char* fmt, ...);
+ZXID_DECL int zxbus_send_cmd(zxid_conf* cf, const char* cmd, const char* dest, int body_len, const char* body);
+ZXID_DECL int zxbus_send(zxid_conf* cf, const char* dest, int body_len, const char* body);
+ZXID_DECL int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp);
+ZXID_DECL int zxbus_ack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stompp);
+ZXID_DECL char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu);
 
 /* zxidmeta */
 

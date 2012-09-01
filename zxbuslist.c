@@ -157,18 +157,30 @@ help:
   }
 }
 
+/* Alias some struct fields for headers that can not be seen together. */
+#define receipt   host
+#define rcpt_id   host
+#define acpt_vers vers
+#define tx_id     vers
+#define session   login
+#define subs_id   login
+#define subsc     login
+#define server    pw
+#define ack       pw
+#define msg_id    pw
+#define heart_bt  dest
 
 #ifndef zxbuslist_main
 #define zxbuslist_main main
 #endif
 
-/*() Web Services Client tool */
+/*() Audit Bus listening tool */
 
 /* Called by: */
 int zxbuslist_main(int argc, char** argv, char** env)
 {
-  int len,ns,nt,pid;
-  char buf[64];
+  int len,nt,pid;
+  struct zxid_bus_url* bu;
   pid_t* kids;
   strncpy(zx_instance, "\tzxbuslist", sizeof(zx_instance));
   cf = zxid_new_conf_to_cf(0);
@@ -201,28 +213,22 @@ int zxbuslist_main(int argc, char** argv, char** env)
   }
  kid:
 
-  // ***
-  
-  zxbus_send_cmd(cf, "subscribe", chan, 0, 0); // ***
-
-  for (; n_iter; --n_iter) {
-    if (n_send > 1 || n_iter > 1) {
-      for (ns = n_send; ns; --ns) {
-	len = snprintf(buf, sizeof(buf), "test(%d,%d,%d)", nt, n_iter, ns);
-	D("sending(%.*s) n_send=%d n_iter=%d", len, buf, n_send, n_iter);
-	zxbus_send(cf, chan, len, buf);
-      }
-    } else {
-      if (ctl) {
-	zxbus_send_cmd(cf, "ZXCTL", chan, strlen(ctl), ctl);
-      } else if (bdy) {
-	zxbus_send(cf, chan, strlen(bdy), bdy);
-      }
-    }
-    /* *** implement actual tail functionality */
-    
-    zxbus_close_all(cf);
+  bu = cf->bus_url;
+  if (!bu || !bu->s || !bu->s[0]) {
+    ERR("No bus_url configured means audit bus reporting is disabled. %p", bu);
+    return 1;
   }
+
+  /* *** implement intelligent lbfo algo */
+
+  if (!bu->fd)
+    zxbus_open_bus_url(cf, bu);
+  if (!bu->fd)
+    return 1;
+  zxbus_send_cmdf(cf, bu, 0, 0, "SUBSCRIBE\ndestination:%s\nid:0\nack:client-individual\nreceipt:%d\n\n", chan, bu->cur_rcpt++);
+  
+  while (zxbus_listen_msg(cf, bu));
+  zxbus_close_all(cf);
   return 0;
 }
 

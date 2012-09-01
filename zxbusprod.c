@@ -372,24 +372,13 @@ static int zxbus_fmt(zxid_conf* cf,   /* 1 */
 #define msg_id    pw
 #define heart_bt  dest
 
-struct stomp_hdr {
-  int len;               /* Populated from content-length header, if one is supplied. */
-  char* body;            /* Body of the message */
-  char* host;            /* also receipt and receipt_id */
-  char* vers;            /* version, also accept-version, tx_id */
-  char* login;           /* also session, subs_id, subsc */
-  char* pw;              /* also server, ack, msg_id */
-  char* dest;            /* destination, also heart_bt */
-  char* end_of_pdu;      /* One past end of frame data. Helps in cleaning buffer for next PDU. */
-};
-
 #define STOMP_MIN_PDU_SIZE (sizeof("ACK\n\n\0\n")-1)
 
 /*() Read and parse a frame from STOMP 1.1 connection (from zxbusd).
  * Blocks until frame has been read. Returns 1 on success, 0 on failure.
  * In case of failure, caller should close the connection. The PDU
  * data is left in bu->buf, possibly with the following pdu as well. The
- * caller shouldclean the buffer without loosing the next pdu
+ * caller should clean the buffer without loosing the next pdu
  * fragment before calling this function again. For example:
  *   memmove(bu->buf, stomp->end_of_pdu, bu->ap-stomp->end_of_pdu);
  *   bu->ap = bu->buf + (bu->ap-stomp->end_of_pdu);
@@ -399,7 +388,7 @@ struct stomp_hdr {
  * The parsed headers are returned in the struct stomp_hdr. */
 
 /* Called by:  zxbus_close, zxbus_open_bus_url, zxbus_send */
-static int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
+int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
 {
   int len = 0, got;
   char* hdr;
@@ -537,11 +526,54 @@ static int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* 
   return 1;
 }
 
+/*() ACK a message to STOMP 1.1 connection.
+ * Returns:: zero on failure and 1 on success. */
+
+int zxbus_ack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stompp)
+{
+  int subs_id_len, msg_id_len;
+  subs_id_len = strchr(stompp->subs_id, '\n') - stompp->subs_id;
+  msg_id_len = strchr(stompp->msg_id, '\n') - stompp->msg_id;
+  return zxbus_send_cmdf(cf, bu, 0, 0, "ACK\nsubscription:%.*s\nmessage-id:%.*s\n\n", subs_id_len, stompp->subs_id, msg_id_len, stompp->msg_id);
+}
+
+/*() Listen for a MESSAGE from the STOMP 1.1 connection and ACK it.
+ * Returns pointer to the body (which is nul terminated as the
+ * STOMP 1.1 frame ends in nul). Returns NULL on error.
+ * N.B. Depending on situation, you may NOT want automatic ACK.
+ * In that case you should call zxbus_read() and zxbus_ack_msg()
+ * directly and do your persistence in between. */
+
+char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
+{
+  struct stomp_hdr stomp;
+  memset(&stomp, 0, sizeof(struct stomp_hdr));
+  if (zxbus_read(cf, bu, &stomp)) {
+    if (!memcmp(bu->buf, "MESSAGE", sizeof("MESSAGE")-1)) {
+      if (verbose) {
+	if (verbose>1) {
+	  printf("%.*s\n", bu->ap - bu->buf, bu->buf);
+	} else {
+	  printf("%.*s\n", stomp.len, stomp.body);
+	}
+      }
+      zxbus_ack_msg(cf, bu, &stomp);
+      return stomp.body;  /* normal successful return */
+    } else {
+      ERR("Unknown command received(%.*s)", bu->ap - bu->buf, bu->buf);
+      return 0;
+    }
+  } else {
+    ERR("Read from %s failed.", bu->s);
+    return 0;
+  }
+}
+
 /*() Open a bus_url, i.e. STOMP 1.1 connection to zxbusd.
  * Return 0 on failure, 1 on success. */
 
 /* Called by:  zxbus_send */
-static int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
+int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
 {
   struct hostent* he;
   struct sockaddr_in sin;
@@ -723,34 +755,24 @@ void zxbus_close_all(zxid_conf* cf)
 /*() Send the specified STOMP 1.1 message to audit bus and wait for RECEIPT.
  * Blocks until the transaction completes (or fails). Figures out
  * from configuration, which bus daemon to contact (looks at bus_urls).
+ * The fmt must contain command, headers, and double newline that
+ * separates the body.
  * Returns:: zero on failure and 1 on success. */
 
 /* Called by:  zxbustailf_main x2 */
-int zxbus_send_cmdf(zxid_conf* cf, int body_len, const char* body, const char* fmt, ...)
+int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const char* body, const char* fmt, ...)
 {
   va_list ap;
   int len;
   char buf[1024];
-  struct zxid_bus_url* bu;
   struct stomp_hdr stomp;
   
   if (body_len == -1 && body)
     body_len = strlen(body);
   
-  bu = cf->bus_url;
-  if (!bu || !bu->s || !bu->s[0])
-    return 0;         /* No bus_url configured means audit bus reporting is disabled. */
-
-  /* *** implement intelligent lbfo algo */
-
-  if (!bu->fd)
-    zxbus_open_bus_url(cf, bu);
-  if (!bu->fd)
-    return 0;
-  
   va_start(ap, fmt);
-  len = vsnprintf(buf, sizeof(buf), fmt, va);
-  va_end(ap, fmt);
+  len = vsnprintf(buf, sizeof(buf), fmt, ap);
+  va_end(ap);
   send_all_socket(bu->fd, buf, len);
   if (body)
     send_all_socket(bu->fd, body, body_len);
@@ -762,11 +784,11 @@ int zxbus_send_cmdf(zxid_conf* cf, int body_len, const char* body, const char* f
       if (atoi(stomp.rcpt_id) == bu->cur_rcpt - 1) {
 	memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
 	bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
-	D("%s got RECEIPT %d", cmd, bu->cur_rcpt-1);
+	D("%.*s got RECEIPT %d", 4, buf, bu->cur_rcpt-1);
 	if (verbose) {
-	  printf("%s(%.*s) got RECEIPT %d\n", cmd, n, logbuf, bu->cur_rcpt-1);
+	  printf("%.*s(%.*s) got RECEIPT %d\n", 4, buf, body?body_len:0, body?body:"", bu->cur_rcpt-1);
 	}
-	return 1;
+	return 1;  /* normal successful return */
       } else {
 	close(bu->fd);
 	bu->fd = 0;
@@ -792,16 +814,7 @@ int zxbus_send_cmdf(zxid_conf* cf, int body_len, const char* body, const char* f
 /* Called by:  zxbustailf_main x2 */
 int zxbus_send_cmd(zxid_conf* cf, const char* cmd, const char* dest, int n, const char* logbuf)
 {
-  return zxbus_send_cmdf(cf, n, logbuf);
-  int len;
-  char buf[1024];
   struct zxid_bus_url* bu;
-  struct stomp_hdr stomp;
-  
-  if (n == -1)
-    n = strlen(logbuf);
-  DD("LOG(%.*s)", n-1, logbuf);
-
   bu = cf->bus_url;
   if (!bu || !bu->s || !bu->s[0])
     return 0;         /* No bus_url configured means audit bus reporting is disabled. */
@@ -812,38 +825,7 @@ int zxbus_send_cmd(zxid_conf* cf, const char* cmd, const char* dest, int n, cons
     zxbus_open_bus_url(cf, bu);
   if (!bu->fd)
     return 0;
-  
-  len = snprintf(buf, sizeof(buf), "%s\ndestination:%s\nreceipt:%d\ncontent-length:%d\n\n", cmd, dest, bu->cur_rcpt++, n);
-  send_all_socket(bu->fd, buf, len);
-  send_all_socket(bu->fd, logbuf, n);
-  send_all_socket(bu->fd, "\0", 1);
-
-  memset(&stomp, 0, sizeof(struct stomp_hdr));
-  if (zxbus_read(cf, bu, &stomp)) {
-    if (!memcmp(bu->buf, "RECEIPT", sizeof("RECEIPT")-1)) {
-      if (atoi(stomp.rcpt_id) == bu->cur_rcpt - 1) {
-	memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
-	bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
-	D("%s got RECEIPT %d", cmd, bu->cur_rcpt-1);
-	if (verbose) {
-	  printf("%s(%.*s) got RECEIPT %d\n", cmd, n, logbuf, bu->cur_rcpt-1);
-	}
-	return 1;
-      } else {
-	close(bu->fd);
-	bu->fd = 0;
-	ERR("Send to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d (%s)", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1, bu->buf);
-	return 0;
-      }
-    } else {
-      ERR("Send to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, bu->ap - bu->buf, bu->buf);
-    }
-  } else {
-    ERR("Send to %s failed. Other end did not send RECEIPT. Read error.", bu->s);
-  }
-  close(bu->fd);
-  bu->fd = 0;
-  return 0;
+  return zxbus_send_cmdf(cf, bu, n, logbuf, "%s\ndestination:%s\nreceipt:%d\ncontent-length:%d\n\n", cmd, dest, bu->cur_rcpt++, n);
 }
 
 /*() SEND a STOMP 1.1 message to audit bus and wait for RECEIPT.
