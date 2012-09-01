@@ -726,8 +726,73 @@ void zxbus_close_all(zxid_conf* cf)
  * Returns:: zero on failure and 1 on success. */
 
 /* Called by:  zxbustailf_main x2 */
+int zxbus_send_cmdf(zxid_conf* cf, int body_len, const char* body, const char* fmt, ...)
+{
+  va_list ap;
+  int len;
+  char buf[1024];
+  struct zxid_bus_url* bu;
+  struct stomp_hdr stomp;
+  
+  if (body_len == -1 && body)
+    body_len = strlen(body);
+  
+  bu = cf->bus_url;
+  if (!bu || !bu->s || !bu->s[0])
+    return 0;         /* No bus_url configured means audit bus reporting is disabled. */
+
+  /* *** implement intelligent lbfo algo */
+
+  if (!bu->fd)
+    zxbus_open_bus_url(cf, bu);
+  if (!bu->fd)
+    return 0;
+  
+  va_start(ap, fmt);
+  len = vsnprintf(buf, sizeof(buf), fmt, va);
+  va_end(ap, fmt);
+  send_all_socket(bu->fd, buf, len);
+  if (body)
+    send_all_socket(bu->fd, body, body_len);
+  send_all_socket(bu->fd, "\0", 1);
+
+  memset(&stomp, 0, sizeof(struct stomp_hdr));
+  if (zxbus_read(cf, bu, &stomp)) {
+    if (!memcmp(bu->buf, "RECEIPT", sizeof("RECEIPT")-1)) {
+      if (atoi(stomp.rcpt_id) == bu->cur_rcpt - 1) {
+	memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
+	bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
+	D("%s got RECEIPT %d", cmd, bu->cur_rcpt-1);
+	if (verbose) {
+	  printf("%s(%.*s) got RECEIPT %d\n", cmd, n, logbuf, bu->cur_rcpt-1);
+	}
+	return 1;
+      } else {
+	close(bu->fd);
+	bu->fd = 0;
+	ERR("Send to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d (%s)", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1, bu->buf);
+	return 0;
+      }
+    } else {
+      ERR("Send to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, bu->ap - bu->buf, bu->buf);
+    }
+  } else {
+    ERR("Send to %s failed. Other end did not send RECEIPT. Read error.", bu->s);
+  }
+  close(bu->fd);
+  bu->fd = 0;
+  return 0;
+}
+
+/*() Send the specified STOMP 1.1 message to audit bus and wait for RECEIPT.
+ * Blocks until the transaction completes (or fails). Figures out
+ * from configuration, which bus daemon to contact (looks at bus_urls).
+ * Returns:: zero on failure and 1 on success. */
+
+/* Called by:  zxbustailf_main x2 */
 int zxbus_send_cmd(zxid_conf* cf, const char* cmd, const char* dest, int n, const char* logbuf)
 {
+  return zxbus_send_cmdf(cf, n, logbuf);
   int len;
   char buf[1024];
   struct zxid_bus_url* bu;

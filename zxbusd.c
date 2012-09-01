@@ -41,7 +41,7 @@
 #include <zx/zxidutil.h>
 
 const char* help =
-"zxbusd.  -  Audit bus daemon using STOMP 1.1 - R" ZXID_REL "\n\
+"zxbusd  -  Audit bus daemon using STOMP 1.1 - R" ZXID_REL "\n\
 Copyright (c) 2006,2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties.\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
@@ -80,7 +80,7 @@ Usage: zxbusd [options] PROTO:REMOTEHOST:PORT\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
   -d               Turn on debugging.\n\
-  -license         Show licensing details, including NATO C3 Agency disclaimer.\n\
+  -license         Show licensing details\n\
   -h               This help message\n\
   --               End of options\n\
 N.B. Although zxbusd is a 'daemon', it does not daemonize itself. You can always say zxbusd&\n";

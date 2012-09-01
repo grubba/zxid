@@ -41,6 +41,7 @@ Usage: zxbustailf [options] < stream-to-log   # Will stop at EOF\n\
        zxbustailf [options] -e MSG </dev/null\n\
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
                    Most of the configuration is read from /var/zxid/zxid.conf\n\
+  -c 'BUS_URL=stomps://localhost:2229/'   -- Typical invocation
   -ch CHAN         Indicate logging channel. Default is to use configuration.\n\
   -n N or -N       Output the last N lines of file - the default is to log all.\n\
   -e MSG           Log message from command line\n\
@@ -134,7 +135,6 @@ static void opt(int* argc, char*** argv, char*** env)
       }
       break;
 
-
     case 'i':
       switch ((*argv)[0][2]) {
       case '\0':
@@ -156,7 +156,6 @@ static void opt(int* argc, char*** argv, char*** env)
 	continue;
       }
       break;
-
 
     case 'n':
       switch ((*argv)[0][2]) {

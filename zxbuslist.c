@@ -1,10 +1,10 @@
-/* zxbuslist.c  -  list like utility for sending tail of a log to zxbus
+/* zxbuslist.c  -  Utility for listening for events on zxbus
  * Copyright (c) 2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
  * Licensed under Apache License 2.0, see file COPYING.
- * $Id: zxcot.c,v 1.5 2009-11-29 12:23:06 sampo Exp $
+ * $Id$
  *
  * 27.8.2009, created --Sampo
  */
@@ -29,24 +29,18 @@
 #include "c/zx-data.h"
 
 char* help =
-"zxbuslist  -  tail a log file and send events to zxbus R" ZXID_REL "\n\
+"zxbuslist  -  Listen to zxbus and send output to stdout R" ZXID_REL "\n\
 zxbus is an Audit Bus for TAS3 or end2end Trus Assurance (e2eTA).\n\
 Copyright (c) 2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
-Usage: zxbuslist [options] < stream-to-log   # Will stop at EOF\n\
-       zxbuslist [options] /file/to/list\n\
-       zxbuslist [options] -e MSG </dev/null\n\
+Usage: zxbuslist [options] > bus-traffic\n\
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
                    Most of the configuration is read from /var/zxid/zxid.conf\n\
-  -ch CHAN         Indicate logging channel. Default is to use configuration.\n\
-  -n N or -N       Output the last N lines of file - the default is to log all.\n\
-  -e MSG           Log message from command line\n\
-  -ctl CTL         Send ZXCTL command (for testing and benchmarking)\n\
-  -i N             Number of iterations of connect-send-disconnect cycle. For benchmarking.\n\
-  -is N            Number of sends per connection, for benchmarking.\n\
+  -c 'BUS_URL=stomps://localhost:2229/'   -- Typical invocation, indicates zxbusd to contact\n\
+  -ch CHAN         Indicate channel to subscribe to\n\
   -it N            Number of threads launching parallel sessions, for benchmarking.\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
@@ -54,17 +48,11 @@ Usage: zxbuslist [options] < stream-to-log   # Will stop at EOF\n\
   -dc              Dump config.\n\
   -h               This help message\n\
   --               End of options\n\
-\n\
-echo '<query>Foo</query>' | zxbuslist -a https://idp.tas3.eu/zxididp?o=B user:pw -t urn:x-demo-svc\n\
 \n";
 
 int dryrun  = 0;
 int verbose = 1;
-int n_iter = 1;
-int n_send = 1;
 int n_thr = 1;
-char* bdy = 0;
-char* ctl = 0;
 char* chan = "default";
 zxid_conf* cf;
 
@@ -98,11 +86,6 @@ static void opt(int* argc, char*** argv, char*** env)
 	if ((*argc) < 1) break;
 	chan = (*argv)[0];
 	continue;
-      case 't':
-	++(*argv); --(*argc);
-	if ((*argc) < 1) break;
-	ctl = (*argv)[0];
-	continue;
       }
       break;
 
@@ -124,30 +107,8 @@ static void opt(int* argc, char*** argv, char*** env)
       }
       break;
 
-    case 'e':
-      switch ((*argv)[0][2]) {
-      case '\0':
-	++(*argv); --(*argc);
-	if ((*argc) < 1) break;
-	bdy = (*argv)[0];
-	continue;
-      }
-      break;
-
-
     case 'i':
       switch ((*argv)[0][2]) {
-      case '\0':
-	++(*argv); --(*argc);
-	if (!(*argc)) break;
-	n_iter = atoi((*argv)[0]);
-	continue;
-      case 's':
-	if ((*argv)[0][3]) break;
-	++(*argv); --(*argc);
-	if (!(*argc)) break;
-	n_send = atoi((*argv)[0]);
-	continue;
       case 't':
 	if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
@@ -156,7 +117,6 @@ static void opt(int* argc, char*** argv, char*** env)
 	continue;
       }
       break;
-
 
     case 'n':
       switch ((*argv)[0][2]) {
@@ -240,6 +200,11 @@ int zxbuslist_main(int argc, char** argv, char** env)
     nt = -1;
   }
  kid:
+
+  // ***
+  
+  zxbus_send_cmd(cf, "subscribe", chan, 0, 0); // ***
+
   for (; n_iter; --n_iter) {
     if (n_send > 1 || n_iter > 1) {
       for (ns = n_send; ns; --ns) {
