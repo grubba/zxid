@@ -911,6 +911,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->log_act_in_err = ZXLOG_ACT_IN_ERR;
   cf->log_sigfail_is_err = ZXLOG_SIGFAIL_IS_ERR;
   cf->bus_url        = zxid_load_bus_url(cf, 0, ZXID_BUS_URL);
+  cf->bus_pw         = ZXID_BUS_PW;
 
   cf->sig_fatal      = ZXID_SIG_FATAL;
   cf->nosig_fatal    = ZXID_NOSIG_FATAL;
@@ -1408,6 +1409,7 @@ scan_end:
 	break;
       }
       if (!strcmp(n, "BUS_URL"))         { cf->bus_url = zxid_load_bus_url(cf, cf->bus_url, v);   break; }
+      if (!strcmp(n, "BUS_PW"))          { cf->bus_pw = v; break; }
       goto badcf;
     case 'C':  /* CDC_URL, CDC_CHOICE */
       if (!strcmp(n, "CDC_URL"))         { cf->cdc_url = v; break; }
@@ -1970,6 +1972,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "WANT=\n%s\n"
 "ATTRSRC=\n%s\n"
 "BUS_URL=\n%s\n"
+"BUS_PW=%s\n"
 "INMAP=\n%s\n"
 "OUTMAP=\n%s\n"
 "PEPMAP=\n%s\n"
@@ -2143,6 +2146,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 want->s,
 		 attrsrc->s,
 		 bus_url->s,
+		 STRNULLCHK(cf->bus_pw),
 		 inmap->s,
 		 outmap->s,
 		 pepmap->s,

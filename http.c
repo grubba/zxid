@@ -33,21 +33,21 @@ void http_send_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int
 {
   struct hi_pdu* resp = http_encode_start(hit);
   resp->need = sprintf(resp->m, "HTTP/1.0 %03d %s\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", r, m, strlen(m), m);
-  hi_send(hit, io, req, resp);
+  hi_send(hit, io, 0, req, resp);
 }
 
 /* Called by:  http_decode */
 void http_send_data(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len, char* d)
 {
   //struct hi_pdu* resp = http_encode_start(hit);
-  /*hi_sendv(hit, io, req, resp, len, resp->m, size, req->m + len);*/
+  /*hi_sendv(hit, io, 0, req, resp, len, resp->m, size, req->m + len);*/
 }
 
 /* Called by:  http_decode */
 void http_send_file(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len, char* d)
 {
   //struct hi_pdu* resp = http_encode_start(hit);
-  /*hi_sendv(hit, io, req, resp, len, resp->m, size, req->m + len);*/
+  /*hi_sendv(hit, io, 0, req, resp, len, resp->m, size, req->m + len);*/
 }
 
 #define HTTP_MIN_PDU_SIZE (sizeof("GET / HTTP/1.0\n\n")-1)

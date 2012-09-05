@@ -173,8 +173,9 @@ int read_all_fd(fdtype fd, char* p, int want, int* got_all)
 /*() Read all data from a file at formatted file name path.
  *
  * maxlen:: Length of buffer
- * buf:: Result parameter. This buffer will be populated with data from the file.
+ * buf:: Result parameter. This buffer will be filled with data from the file. Caller allocates.
  * logkey:: Logging key to help debugging
+ * reperr:: Whether to report an error (flag)
  * name_fmt:: Format string for building file name
  * return:: actual total length. The buffer will always be nul terminated. */
 
@@ -213,10 +214,11 @@ int get_file_size(fdtype fd)
 }
 
 /*() Read all data from a file at formatted file name path, allocating
- * the buffer as needed.
+ * the buffer as needed using ZX allocator.
  *
  * c:: ZX allocation context
  * logkey:: Logging key to help debugging
+ * reperr:: Whether to report an error (flag)
  * lenp:: Optional result parameter returning the length of the data read. Null ok.
  * name_fmt:: Format string for building file name
  * return:: The data or null on fail. The buffer will always be nul terminated. */
@@ -256,6 +258,50 @@ char* read_all_alloc(struct zx_ctx* c, const char* logkey, int reperr, int* lenp
   if (lenp)
     *lenp = gotall;
   c->zx_errno = 0;
+  return buf;
+}
+
+/*() Read all data from a file at formatted file name path, allocating
+ * the buffer as needed using malloc(3).
+ *
+ * logkey:: Logging key to help debugging
+ * reperr:: Whether to report an error (flag)
+ * lenp:: Optional result parameter returning the length of the data read. Null ok.
+ * name_fmt:: Format string for building file name
+ * return:: The data or null on fail. The buffer will always be nul terminated. */
+
+/* Called by:  */
+char* read_all_malloc(const char* logkey, int reperr, int* lenp, const char* name_fmt, ...)
+{
+  va_list ap;
+  char* buf;
+  int len, gotall;
+  fdtype fd;
+  va_start(ap, name_fmt);
+  fd = vopen_fd_from_path(O_RDONLY, 0, logkey, reperr, name_fmt, ap);
+  va_end(ap);
+  if (fd == BADFD) {
+    if (lenp)
+      *lenp = 0;
+    return 0;
+  }
+
+  len = get_file_size(fd);
+  ZMALLOCN(buf, len+1);
+  
+  if (read_all_fd(fd, buf, len, &gotall) == -1) {
+    perror("Trouble reading.");
+    D("read error lk(%s)", logkey);
+    close_file(fd, logkey);
+    buf[len] = 0;
+    if (lenp)
+      *lenp = 0;
+    return 0;
+  }
+  close_file(fd, logkey);
+  buf[MIN(gotall, len)] = 0;  /* nul terminate */
+  if (lenp)
+    *lenp = gotall;
   return buf;
 }
 

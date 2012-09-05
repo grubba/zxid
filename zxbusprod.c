@@ -462,8 +462,8 @@ int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
 
 #define HDR(hdr, field, val) } else if (!memcmp(h, hdr, sizeof(hdr)-1)) { if (!stomp->field) stomp->field = (val)
 
-      if (!memcmp(p, "content-length:", sizeof("content-length:")-1))
-      { if (!stomp->len) stomp->len = len = atoi(v);
+      if (!memcmp(h, "content-length:", sizeof("content-length:")-1)) {
+	if (!stomp->len) stomp->len = len = atoi(v); D("len=%d", stomp->len);
       HDR("host:",           host,      v);
       HDR("receipt:",        receipt,   v);
       HDR("receipt-id:",     rcpt_id,   v);
@@ -480,9 +480,9 @@ int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
       HDR("message-id:",     msg_id,    v);
       HDR("destination:",    dest,      v);
       HDR("heart-beat:",     heart_bt,  v);
-      } else if (!memcmp(p, "content-type:", sizeof("content-type:"))) { /* ignore */
+      } else if (!memcmp(h, "content-type:", sizeof("content-type:"))) { /* ignore */
       } else {
-        D("Unknown header(%.*s) ignored.", h-p, h);
+        D("Unknown header(%.*s) ignored.", p-h, h);
       }
     }
   
@@ -570,11 +570,14 @@ char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
 }
 
 /*() Open a bus_url, i.e. STOMP 1.1 connection to zxbusd.
- * Return 0 on failure, 1 on success. */
+ * return:: 0 on failure, 1 on success. */
 
 /* Called by:  zxbus_send */
 int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
 {
+  int len;
+  char buf[1024];
+  struct zx_str* eid;
   struct hostent* he;
   struct sockaddr_in sin;
   struct stomp_hdr stomp;
@@ -584,6 +587,7 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   char* port;
   char* local;
   char* qs;
+  char* p;
 
   /* Parse the bus_url */
 
@@ -673,8 +677,19 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   
   D("connected(%x) at TCP layer hs(%s)", bu->fd, bu->s);
 
-#define STOMP_CONNECT  "STOMP\naccept-version:1.1\nhost:localhost\n\n\0"
-  send_all_socket(bu->fd, STOMP_CONNECT, sizeof(STOMP_CONNECT)-1);
+  eid = zxid_my_ent_id(cf);
+  if (!eid)
+    return 0;
+  for (p = eid->s; p < eid->s + eid->len; ++p)
+    if (*p == ':')  /* deal with colon that is forbidden character in STOMP 1.1 header */
+      *p = '|';
+  
+  if (cf->bus_pw) {
+    len = snprintf(buf, sizeof(buf)-1, "STOMP\naccept-version:1.1\nhost:%s\nlogin:%.*s\npasscode:%s\n\n%c", bu->buf, eid->len, eid->s, cf->bus_pw, 0);
+  } else {
+    len = snprintf(buf, sizeof(buf)-1, "STOMP\naccept-version:1.1\nhost:%s\nlogin:%.*s\n\n%c", bu->buf, eid->len, eid->s, 0);
+  }
+  send_all_socket(bu->fd, buf, len);
 
   memset(&stomp, 0, sizeof(struct stomp_hdr));
   if (zxbus_read(cf, bu, &stomp)) {

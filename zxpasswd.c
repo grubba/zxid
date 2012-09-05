@@ -57,12 +57,12 @@ NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
-Usage: zxpasswd [options] user [udir] <passwd    # Set user's password\n\
-       zxpasswd [options] -n user [udir] <passwd # Create user and set password\n\
-       zxpasswd [options] -a user [udir] <passwd # Authenticate as user using pw\n\
-       zxpasswd [options] -l [user [udir]]       # List information about user\n\
+Usage: zxpasswd [options] user [udir] <passwd      # Set user's password\n\
+       zxpasswd [options] -new user [udir] <passwd # Create user and set password\n\
+       zxpasswd [options] -a   user [udir] <passwd # Authenticate as user using pw\n\
+       zxpasswd [options] -l   [user [udir]]       # List information about user\n\
   [udir]           Specify zxididp user directory. Default " UDIR "\n\
-  -n               Create New user\n\
+  -new             Create New user\n\
   -at 'attr: val'  Append attribute(s) to .bs/.at\n\
   -s exist_uid     Symlink user to an existing user (e.g. yubikey alias)\n\
   -a               Authenticate as user. exit(2) value 0 means success\n\
@@ -127,7 +127,7 @@ static void opt(int* argc, char*** argv, char*** env)
 
     case 'n':
       switch ((*argv)[0][2]) {
-      case '\0':
+      case 'e':
 	++create;
 	continue;
       }

@@ -87,6 +87,8 @@
  * 3. io->qel.mut
  * 1. io->qel.mut
  * 2. shf->pdu_mut
+ * 1. shf->ent_mut
+ * 2. io->qel.mut
  *
  * io->reading and io->writing flags are used to ensure that only single
  * thread will be doing the I/O at a time (one thread for read, other for
@@ -137,13 +139,13 @@ struct hi_lock {
 #define HI_PDU_MEM 3072 /* Default PDU memory buffer size, for log lines */
 
 /* qel.kind constants */
-#define HI_PDU     1    /* PDU */
-#define HI_POLL    2    /* Trigger epoll */
-#define HI_LISTEN  3    /* Listening socket for TCP */
-#define HI_HALF_ACCEPT 4    /* Accepted at TCP, but delayed booking due to threads expecting old dead connection. */
-#define HI_TCP_S   5    /* TCP server socket, i.e. accept(2)'d from listening socket */
-#define HI_TCP_C   6    /* TCP client socket, i.e. formed using connect(2) */
-#define HI_SNMP    7    /* SNMP (UDP) socket */
+#define HI_POLL     1   /* Trigger epoll */
+#define HI_LISTEN   2   /* Listening socket for TCP */
+#define HI_HALF_ACCEPT 3 /* Accepted at TCP, but delayed booking due to threads expecting old dead connection. */
+#define HI_TCP_S    4   /* TCP server socket, i.e. accept(2)'d from listening socket */
+#define HI_TCP_C    5   /* TCP client socket, i.e. formed using connect(2) */
+#define HI_SNMP     6   /* SNMP (UDP) socket */
+#define HI_PDU_DIST 7   /* PDU with intent to deliver STOMP message */
 
 struct hi_qel {         /* hiios task queue element. This is the 1st thing on io and pdu objects */
   struct hi_qel* n;     /* Next in todo_queue for IOs or in free_pdus. */
@@ -160,6 +162,7 @@ struct hi_io {
   struct hi_qel qel;         /* Next in todo_queue for IOs or in free_pdus. */
   struct hi_io* n;           /* next among io objects, esp. backends */
   struct hi_io* pair;        /* the other half of a proxy connection */
+  struct hi_ent* ent;        /* Login entity associated with connection */
   int fd;                    /* file descriptor (socket), or 0x80000000 flag if not in use */
   char events;               /* events from last poll */
   char n_iov;
@@ -181,6 +184,7 @@ struct hi_io {
   
   struct hi_pdu* cur_pdu;    /* PDU for which we currently expect to do read I/O */
   struct hi_pdu* reqs;       /* n linked list of real reqs of this session, protect by qel.mut */
+  struct hi_pdu* pending;    /* n linked list of requests sent to client and pending response, protect by qel.mut */
   union {
     struct dts_conn* dts;
     int sap;                 /* S5066 SAP ID, indexes into saptab[] and svc_type_tab[] */
@@ -244,6 +248,11 @@ struct hi_pdu {
       char* pw;              /* also server, ack, msg_id */
       char* dest;            /* destination, also heart_bt */
     } stomp;
+    struct {
+      int len;               /* Populated from content-length header, if one is supplied. */
+      char* body;            /* Body of the message */
+      char* dest;            /* destination, also heart_bt */
+    } delivb;
   } ad;                      /* Application specific data */
 };
 
@@ -289,6 +298,15 @@ struct hiios {
   struct hi_qel poll_tok;       /* Special qel to be inserted in todo_consume to trigger poll. */
 
   struct hi_thr* threads;       /* List of threads. */
+  struct hi_lock ent_mut;
+  struct hi_ent* ents;          /* List of subscribing entities */
+  int max_chs;                  /* Maximum number of channels */
+  struct hi_ch* chs;            /* Array of channels */
+  
+  char anonlogin;               /* Config: whether anonymous login is ok. */
+  char res1;
+  char res2;
+  char res3;
 };
 
 /*(s) Thread object */
@@ -319,20 +337,35 @@ struct hi_proto {
 
 extern struct hi_proto prototab[];
 
+/*(s) Channel or destination designation object */
+
+struct hi_ch {
+  char* dest;
+};
+
+/*(s) Entity or subscriber object. Typically loaded from /var/bus/.ents */
+
+struct hi_ent {
+  struct hi_ent* n;
+  char* eid;           /* EntityID as seen in STOMP 1.1 login header */
+  struct hi_io* io;
+  char* chs;           /* Subscribed channels as an array of char */
+};
+
 /* External APIs */
 
 void hi_hit_init(struct hi_thr* hit);
-struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu);
+struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch);
 struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int proto);
 struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto);
 struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind);
 
 struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk);
-void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp);
-void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0);
-void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1);
-void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1, int len2, char* d2);
-void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* fmt, ...);
+void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp);
+void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0);
+void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1);
+void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1, int len2, char* d2);
+void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, char* fmt, ...);
 void hi_todo_produce(struct hiios* shf, struct hi_qel* qe, const char* lk);
 void hi_shuffle(struct hi_thr* hit, struct hiios* shf);
 
@@ -342,12 +375,12 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf);
 #define HI_CONN_CLOSE 1
 #define HI_NEED_MORE  2
 
-void hi_process(struct hi_thr* hit, struct hi_pdu* pdu);
 void hi_in_out( struct hi_thr* hit, struct hi_io* io);
 void hi_close(  struct hi_thr* hit, struct hi_io* io, const char* lk);
 int  hi_write(  struct hi_thr* hit, struct hi_io* io);
 int  hi_read(   struct hi_thr* hit, struct hi_io* io);
 
+void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp);
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* pdu);
 void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req);
 void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen);

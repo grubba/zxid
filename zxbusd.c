@@ -12,6 +12,11 @@
  * 16.8.2012, modified license grant to allow use with ZXID.org --Sampo
  *
  * This file contains option processing, configuration, and main().
+ *
+ * To create bus users, you should follow these steps
+ * 1. Run ./zxbuslist -c 'URL=https://sp.foo.com/' -dc to determine the entity ID
+ * 2. Convert entity ID to SHA1 hash: ./zxcot -p 'http://sp.foo.com?o=B'
+ * 3. Create the user: ./zxpasswd -new G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/ <passwd
  */
 
 #include <signal.h>
@@ -50,6 +55,7 @@ Usage: zxbusd [options] PROTO:REMOTEHOST:PORT\n\
        echo secret | zxbusd -p sis::5066 -c AES256 -k 0 dts:quebec.cellmail.com:5067\n\
        echo secret | zxbusd -p sis::5066 -c AES256 -k 0 dts:/dev/se_hdlc1:S-9600-1000-8N1\n\
        zxbusd -p smtp::25 sis:localhost:5066 smtp:mail.cellmail.com:25\n\
+  -cp PATH         Path for message and user databases. Default: /var/zxid/bus/\n\
   -p  PROT:IF:PORT Protocol, network interface and TCP port for listening\n\
                    connections. If you omit interface, all interfaces are bound.\n\
                      stomp:0.0.0.0:2229 - Listen for STOMP 1.1 (default if no -p supplied)\n\
@@ -57,11 +63,12 @@ Usage: zxbusd [options] PROTO:REMOTEHOST:PORT\n\
                      http:0.0.0.0:80    - Listen for HTTP/1.0 (simplified)\n\
                      tp:0.0.0.0:5068    - Listen for test ping protocol\n\
   -t  SECONDS      Connection timeout. Default: 0=no timeout.\n\
-  -c  CIPHER       Enable crypto on DTS interface using specified cipher. Use '?' for list.\n\
+  -cy CIPHER       Enable crypto on DTS interface using specified cipher. Use '?' for list.\n\
   -k  FDNUMBER     File descriptor for reading symmetric key. Use 0 for stdin.\n\
   -nfd  NUMBER     Maximum number of file descriptors, i.e. simultaneous\n\
                    connections. Default 20 (about 16 connections).\n\
   -npdu NUMBER     Maximum number of simultaneously active PDUs. Default 60.\n\
+  -nch  NUMBER     Maximum number of subscribable channels. Default 10.\n\
   -nthr NUMBER     Number of threads. Default 1. Should not exceed number of CPUs.\n\
   -nkbuf BYTES     Size of kernel buffers. Default is not to change kernel buffer size.\n\
   -nlisten NUMBER  Listen backlog size. Default 128.\n\
@@ -86,6 +93,7 @@ Usage: zxbusd [options] PROTO:REMOTEHOST:PORT\n\
 N.B. Although zxbusd is a 'daemon', it does not daemonize itself. You can always say zxbusd&\n";
 
 char* instance = "zxbusd";  /* how this server is identified in logs */
+char* zxbus_path = "/var/zxid/bus/";
 int ak_buf_size = 0;
 int verbose = 1;
 extern int zx_debug;
@@ -93,6 +101,7 @@ int debugpoll = 0;
 int timeout = 0;
 int nfd = 20;
 int npdu = 60;
+int nch = 10;
 int nthr = 1;
 int nkbuf = 0;
 int listen_backlog = 128;   /* what is right tuning for this? */
@@ -103,8 +112,8 @@ int drop_uid = 0;
 int drop_gid = 0;
 int watchdog;
 int snmp_port = 0;
-char* pid_path;
-char* kidpid_path;
+char* pid_path = 0;
+char* kidpid_path = 0;
 char* rand_path;
 char* egd_path;
 char  symmetric_key[1024];
@@ -221,6 +230,11 @@ void opt(int* argc, char*** argv, char*** env)
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
 	nfd = atoi((*argv)[0]);
+	continue;
+      case 'c': if ((*argv)[0][3] != 'h' || (*argv)[0][4]) break;
+	++(*argv); --(*argc);
+	if (!(*argc)) break;
+	nch = atoi((*argv)[0]);
 	continue;
       case 'p': if ((*argv)[0][3] != 'd' || (*argv)[0][4] != 'u' || (*argv)[0][5]) break;
 	++(*argv); --(*argc);
@@ -403,13 +417,22 @@ void opt(int* argc, char*** argv, char*** env)
       }
       break;
 
-    case 'c': if ((*argv)[0][2]) break;
-      ++(*argv); --(*argc);
-      if (!(*argc)) break;
+    case 'c':
+      switch ((*argv)[0][2]) {
+      case 'y':
+	++(*argv); --(*argc);
+	if (!(*argc)) break;
 #ifndef ENCRYPTION
-      ERR("Encryption not compiled in. %d",0);
+	ERR("Encryption not compiled in. %d",0);
 #endif
-      continue;
+	continue;
+      case 'p':
+	++(*argv); --(*argc);
+	if (!(*argc)) break;
+	zxbus_path = (*argv)[0];	
+	continue;
+      }
+      break;
 
     case 'u':
       switch ((*argv)[0][2]) {
@@ -630,7 +653,7 @@ int main(int argc, char** argv, char** env)
   }
 #endif
 
-  shuff = hi_new_shuffler(&hit, nfd, npdu);
+  shuff = hi_new_shuffler(&hit, nfd, npdu, nch);
   {
     struct hi_io* io;
     struct hi_host_spec* hs;
@@ -691,6 +714,9 @@ int main(int argc, char** argv, char** env)
   
   if (drop_gid) if (setgid(drop_gid)) { perror("setgid"); exit(1); }
   if (drop_uid) if (setuid(drop_uid)) { perror("setuid"); exit(1); }
+
+  CMDLINE("load_subs");
+  zxbus_load_subs(shuff);
   
   /* Unleash threads so that the listeners are served. */
   

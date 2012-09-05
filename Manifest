@@ -92,6 +92,7 @@ zxlibdec.c       - XML decoder
 zxlib.c          - Functions used to capture commonalities in generated code
 zxns.c           - Namespace manipulation functions for generated code
 zxutil.c         - Common library functions used by zx system
+zxpw.c           - Password authentication backend
 zxidcgi.c        - SP specific CGI parsing (see zxid.h)
 zxidconf.c       - Configuration file and option parsing (see zxid.h)
 zxidpool.c       - Attribute pool management

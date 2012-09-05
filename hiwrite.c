@@ -37,7 +37,7 @@ extern int zx_debug;
  * Otherwise resp istreated as a stand along PDU, unsolicited response if you like. */
 
 /* Called by:  hi_send1, hi_send2, hi_send3 */
-void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp)
+void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp)
 {
   int write_now = 0;
   HI_SANITY(hit->shf, hit);
@@ -45,12 +45,19 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
     resp->req = req;
     resp->n = req->reals;
     req->reals = resp;
+    req->parent = parent;
   } else {
     resp->req = resp->n = 0;
   }
-  
+  resp->parent = parent;
+
   LOCK(io->qel.mut, "send0");
   D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  if (!resp->req) {
+    /* resp is really a request sent by server to the client */
+    resp->n = io->pending;
+    io->pending = resp;
+  }
   ASSERT(io->n_thr >= 0);
   if (!io->to_write_produce)
     io->to_write_consume = resp;
@@ -69,7 +76,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   UNLOCK(io->qel.mut, "send0");
   
   HI_SANITY(hit->shf, hit);
-  D("send fd(%x) pdu(%p) n_iov=%d iov0(%.*s)", io->fd, resp, resp->n_iov, MIN(resp->iov->iov_len,4), (char*)resp->iov->iov_base);
+  D("send fd(%x) parent_%p req_%p resp_%p n_iov=%d iov0(%.*s)", io->fd, parent, req, resp, resp->n_iov, MIN(resp->iov->iov_len,4), (char*)resp->iov->iov_base);
 
   if (write_now) {
     /* Try cranking the write machine right away! *** should we fish out any todo queue item that may stomp on us? How to deal with thread that has already consumed from the todo_queue? */
@@ -82,27 +89,27 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
 /*() Frontend to hi_send1() which uses hi_send0() to send one segment message. */
 
 /* Called by:  hi_sendf, http_send_err, stomp_cmd_ni, stomp_err, test_ping_reply */
-void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp)
+void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp)
 {
-  hi_send1(hit, io, req, resp, resp->need, resp->m);
+  hi_send1(hit, io, parent, req, resp, resp->need, resp->m);
 }
 
 /*() Uses hi_send0() to send one segment message. */
 
 /* Called by:  hi_send, smtp_resp_wait_250_from_ehlo, smtp_resp_wait_354_from_data, smtp_send */
-void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0)
+void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0)
 {
   resp->n_iov = 1;
   resp->iov[0].iov_len = len0;
   resp->iov[0].iov_base = d0;
   //HEXDUMP("iov0: ", d0, d0+len0, 800);
-  hi_send0(hit, io, req, resp);
+  hi_send0(hit, io, parent, req, resp);
 }
 
 /*() Uses hi_send0() to send two segment message. */
 
 /* Called by:  hmtp_send */
-void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1)
+void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1)
 {
   resp->n_iov = 2;
   resp->iov[0].iov_len  = len0;
@@ -111,13 +118,13 @@ void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   resp->iov[1].iov_base = d1;
   //HEXDUMP("iov0: ", d0, d0+len0, 800);
   //HEXDUMP("iov1: ", d1, d1+len1, 800);
-  hi_send0(hit, io, req, resp);
+  hi_send0(hit, io, parent, req, resp);
 }
 
 /*() Uses hi_send0() to send three segment message. */
 
 /* Called by:  hmtp_send */
-void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1, int len2, char* d2)
+void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1, int len2, char* d2)
 {
   resp->n_iov = 3;
   resp->iov[0].iov_len  = len0;
@@ -129,7 +136,7 @@ void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
   //HEXDUMP("iov0: ", d0, d0+len0, 800);
   //HEXDUMP("iov1: ", d1, d1+len1, 800);
   //HEXDUMP("iov2: ", d2, d2+len2, 800);
-  hi_send0(hit, io, req, resp);
+  hi_send0(hit, io, parent, req, resp);
 }
 
 /*() Send formatted response.
@@ -137,7 +144,7 @@ void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, struct h
  * *** As req argument is entirely lacking, this must be to send unsolicited responses. */
 
 /* Called by:  hi_accept, smtp_data, smtp_ehlo, smtp_mail_from x2, smtp_rcpt_to x3, smtp_resp_wait_220_greet, smtp_resp_wait_250_msg_sent, stomp_got_disc, stomp_got_login, stomp_got_send x2 */
-void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* fmt, ...)
+void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, char* fmt, ...)
 {
   va_list pv;
   struct hi_pdu* pdu = hi_pdu_alloc(hit, "send");
@@ -148,7 +155,7 @@ void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, char* fm
   va_end(pv);
   
   pdu->ap += pdu->need;
-  hi_send(hit, io, req, pdu);
+  hi_send1(hit, io, parent, req, pdu, pdu->need, pdu->m);
 }
 
 /*() Process io->to_write_consume to produce an iov and move the PDUs to io->inwrite.
@@ -214,7 +221,7 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
   if (resp == pdu)
     resp->req->reals = pdu->n;
   else
-    for (; 1; pdu = pdu->n)
+    for (; pdu; pdu = pdu->n)
       if (pdu->n == resp) {
 	pdu->n = resp->n;
 	break;
@@ -321,7 +328,7 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
     io->in_write = resp->wn;
     resp->wn = 0;
     
-    if (!resp->req) continue;
+    if (!resp->req) continue;  /* It is a request */
     
     /* Only a response can cause anything freed, and every response is freeable upon write. */
     

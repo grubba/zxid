@@ -41,6 +41,8 @@ default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool
 
 all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcgi
 
+zxbus:  zxbusd zxbustailf zxbuslist
+
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
 ZXIDVERSION=0x000111
@@ -413,7 +415,7 @@ ZXIDHDRS=zx.h zxid.h zxidnoswig.h c/zxidvers.h
 
 ZXID_LIB_OBJ=zxidsimp.$(OBJ_EXT) zxidpool.$(OBJ_EXT) zxidpsso.$(OBJ_EXT) zxidsso.$(OBJ_EXT) zxidslo.$(OBJ_EXT) zxiddec.$(OBJ_EXT) zxidspx.$(OBJ_EXT) zxididpx.$(OBJ_EXT) zxidmni.$(OBJ_EXT) zxidpep.$(OBJ_EXT) zxidpdp.$(OBJ_EXT) zxidmk.$(OBJ_EXT) zxida7n.$(OBJ_EXT) zxidses.$(OBJ_EXT) zxiduser.$(OBJ_EXT) zxidcgi.$(OBJ_EXT) zxidconf.$(OBJ_EXT) zxidecp.$(OBJ_EXT) zxidcdc.$(OBJ_EXT) zxidloc.$(OBJ_EXT) zxidlib.$(OBJ_EXT) zxidmeta.$(OBJ_EXT) zxidcurl.$(OBJ_EXT) zxidepr.$(OBJ_EXT) zxida7n.$(OBJ_EXT) ykcrc.$(OBJ_EXT) ykaes.$(OBJ_EXT) $(PLATFORM_OBJ)
 
-ZX_OBJ=c/zx-ns.$(OBJ_EXT) c/zx-attrs.$(OBJ_EXT) c/zx-elems.$(OBJ_EXT) zxlibdec.$(OBJ_EXT) zxlibenc.$(OBJ_EXT) zxlib.$(OBJ_EXT) zxns.$(OBJ_EXT) zxutil.$(OBJ_EXT) zxbusprod.$(OBJ_EXT) zxlog.$(OBJ_EXT) zxsig.$(OBJ_EXT) zxcrypto.$(OBJ_EXT) c/license.$(OBJ_EXT)
+ZX_OBJ=c/zx-ns.$(OBJ_EXT) c/zx-attrs.$(OBJ_EXT) c/zx-elems.$(OBJ_EXT) zxlibdec.$(OBJ_EXT) zxlibenc.$(OBJ_EXT) zxlib.$(OBJ_EXT) zxns.$(OBJ_EXT) zxpw.$(OBJ_EXT) zxutil.$(OBJ_EXT) zxbusprod.$(OBJ_EXT) zxlog.$(OBJ_EXT) zxsig.$(OBJ_EXT) zxcrypto.$(OBJ_EXT) c/license.$(OBJ_EXT)
 
 WSF_OBJ=zxidmkwsf.$(OBJ_EXT) zxidwsf.$(OBJ_EXT) zxidwsc.$(OBJ_EXT) zxidwsp.$(OBJ_EXT) zxiddi.$(OBJ_EXT) zxidim.$(OBJ_EXT) zxidps.$(OBJ_EXT)
 
@@ -509,7 +511,7 @@ ZXIDSP_OBJ=zxidsp.$(OBJ_EXT)
 ZXIDHLO_OBJ=zxidhlo.$(OBJ_EXT)
 ZXBUSTAILF_OBJ=zxbustailf.$(OBJ_EXT)
 ZXBUSLIST_OBJ=zxbuslist.$(OBJ_EXT)
-ZXBUSD_OBJ=zxbusd.$(OBJ_EXT) hiios.$(OBJ_EXT) hiread.$(OBJ_EXT) hiwrite.$(OBJ_EXT) hiiosdump.$(OBJ_EXT) testping.$(OBJ_EXT) http.$(OBJ_EXT) smtp.$(OBJ_EXT) stomp.$(OBJ_EXT)
+ZXBUSD_OBJ=zxbusd.$(OBJ_EXT) hiios.$(OBJ_EXT) hiread.$(OBJ_EXT) hiwrite.$(OBJ_EXT) hiiosdump.$(OBJ_EXT) testping.$(OBJ_EXT) http.$(OBJ_EXT) smtp.$(OBJ_EXT) stomp.$(OBJ_EXT) zxbusdist.$(OBJ_EXT)
 ZXIDGSA_OBJ=zxidgsa.$(OBJ_EXT)
 ZXIDHLOWSF_OBJ=zxidhlowsf.$(OBJ_EXT)
 ZXIDSIMPLE_OBJ=zxidsimple.$(OBJ_EXT)
@@ -1927,7 +1929,7 @@ API_REF_SRC=aux-templ.c dec-templ.c enc-templ.c getput-templ.c \
  zxidses.c zxidsimp.c zxidpool.c zxidslo.c zxidspx.c zxididpx.c zxiddec.c \
  zxidsso.c zxidpsso.c zxiddi.c   zxidim.c  zxidps.c \
  zxiduser.c zxidwsc.c zxidwsp.c \
- zxlib.c zxlibdec.c zxlibenc.c zxbusprod.c zxlog.c zxlogview.c zxns.c zxsig.c zxutil.c
+ zxlib.c zxlibdec.c zxlibenc.c zxbusprod.c zxlog.c zxlogview.c zxns.c zxpw.c zxsig.c zxutil.c
 
 refcall:
 	$(PERL) ./call-anal.pl -n $(API_REF_SRC) >callgraph.dot

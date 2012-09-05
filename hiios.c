@@ -54,13 +54,13 @@ extern pthread_mutexattr_t MUTEXATTR_DECL;
 
 const char* qel_kind[] = {
   "OFF0",
-  "pdu1",
-  "poll2",
-  "listen3",
-  "half_accept4",
-  "tcp_s5",
-  "tcp_c6",
-  "snmp7",
+  "poll1",
+  "listen2",
+  "half_accept3",
+  "tcp_s4",
+  "tcp_c5",
+  "snmp6",
+  "pdu7",
   0
 };
 
@@ -77,7 +77,7 @@ void hi_hit_init(struct hi_thr* hit)
  * hi_pdu_alloc() - and initialize syncronization primitives. */
 
 /* Called by:  main */
-struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu)
+struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch)
 {
   int i;
   struct hiios* shf;
@@ -126,6 +126,11 @@ struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu)
   if (shf->ep == -1) { perror("open(/dev/poll)"); exit(1); }
   ZMALLOCN(shf->evs, sizeof(struct pollfd) * shf->max_evs);
 #endif
+
+  pthread_mutex_init(&shf->ent_mut.ptmut, MUTEXATTR);
+
+  shf->max_chs = nch;
+  ZMALLOCN(shf->chs, sizeof(struct hi_ch) * shf->max_chs);
   return shf;
 }
 
@@ -303,6 +308,17 @@ struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind)
   io->fd = fd;
   io->qel.kind = kind;
   io->qel.proto = proto;
+  io->ent = 0;
+  ASSERTOP(io->writing, ==, 0, io->writing);
+  ASSERTOP(io->reading, ==, 0, io->reading);
+  ASSERTOP(io->n_thr, ==, 0, io->n_thr);
+  ASSERTOP(io->n_to_write, ==, 0, io->n_to_write);
+  ASSERTOP(io->in_write, ==, 0, io->in_write);
+  ASSERTOP(io->to_write_consume, ==, 0, io->to_write_consume);
+  ASSERTOP(io->to_write_produce, ==, 0, io->to_write_produce);
+  ASSERT(io->cur_pdu);  /* cur_pdu is always set to some value */
+  ASSERTOP(io->reqs, ==, 0, io->reqs);
+  ASSERTOP(io->pending, ==, 0, io->pending);
   return io;
 }
 
@@ -377,7 +393,7 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io)
   
   switch (io->qel.proto) {
   case HIPROTO_SMTP: /* In SMTP, server starts speaking first */
-    hi_sendf(hit, io, 0, "220 %s smtp ready\r\n", SMTP_GREET_DOMAIN);
+    hi_sendf(hit, io, 0, 0, "220 %s smtp ready\r\n", SMTP_GREET_DOMAIN);
     io->ad.smtp.state = SMTP_START;
     break;
 #ifdef ENA_S5066
@@ -677,13 +693,6 @@ static void hi_poll(struct hiios* shf)
 }
 
 /* Called by:  hi_shuffle */
-void hi_process(struct hi_thr* hit, struct hi_pdu* pdu)
-{
-  D("pdu(%p) events=0x%x", pdu, pdu->events);
-  /* *** process "continuing" event on a PDU */
-}
-
-/* Called by:  hi_shuffle */
 void hi_in_out(struct hi_thr* hit, struct hi_io* io)
 {
   int reading;
@@ -797,14 +806,14 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf)
     HI_SANITY(hit->shf, hit);
     qe = hi_todo_consume(shf);  /* Wakes up the heard to receive work. */
     switch (qe->kind) {
-    case HI_POLL:    hi_poll(shf); break;
-    case HI_LISTEN:  hi_accept(hit, (struct hi_io*)qe); break;
+    case HI_POLL:     hi_poll(shf); break;
+    case HI_LISTEN:   hi_accept(hit, (struct hi_io*)qe); break;
     case HI_HALF_ACCEPT: hi_accept_book(hit, (struct hi_io*)qe);
     case HI_TCP_C:
-    case HI_TCP_S:   hi_in_out(hit, (struct hi_io*)qe); break;
-    case HI_PDU:     hi_process(hit, (struct hi_pdu*)qe); break;
+    case HI_TCP_S:    hi_in_out(hit, (struct hi_io*)qe); break;
+    case HI_PDU_DIST: stomp_msg_deliver(hit, (struct hi_pdu*)qe); break;
 #ifdef HAVE_NET_SNMP
-    case HI_SNMP:    if (snmp_port) processSNMP(); break; /* *** needs more thought */
+    case HI_SNMP:     if (snmp_port) processSNMP(); break; /* *** needs more thought */
 #endif
     default: NEVER("unknown qel->kind 0x%x", qe->kind);
     }

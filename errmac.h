@@ -271,8 +271,8 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define DUPN(d,s,n) MB MALLOCN(d,n); if (d) memcpy((d),(s),(n)); ME
 
 #if 1
-# define FREE(p) (p) = zx_free(p, __FUNCTION__)
-# define FREE_EXPR(p) zx_free(p, __FUNCTION__)
+# define FREE(p) (p) = 0; free(p)
+# define FREE_EXPR(p) free(p)
 #else
 # define FREE(p) 0
 # define FREE_EXPR(p) (0)

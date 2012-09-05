@@ -1065,14 +1065,18 @@ sub DAEMON {  # launch a daemon that can be used as test target by clients. See 
     unlink "tmp/$tsti.out";
     unlink "tmp/$tsti.pid";
 
-    if (check_for_listener($port)) {
-	die "Some server is already using the port($port). Test can not continue. killall...";
+    if ($port != -1) {
+	if (check_for_listener($port)) {
+	    die "Some server is already using the port($port). Test can not continue. killall...";
+	}
     }
-    
     $send_ts{$tsti} = Time::HiRes::time();
     my $latency = call_system($test,$timeout,$slow, "$cmd >tmp/$tsti.out 2>tmp/$tsti.err &", $exitval);
     return if $latency == -1;
-    die "Daemon not up in time" unless wait_for_port($port);
+    
+    if ($port != -1) {
+	die "Daemon not up in time" unless wait_for_port($port);
+    }
     tst_ok($latency, $slow, $test);
 }
 
@@ -1418,204 +1422,213 @@ tA('ST','SSOHLO9', 'SP local logout', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Lo
 ### Audit bus tests
 ###
 
+$bus_cli_conf = "BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buscli.zxid.org/";
+$bus_list_conf = "BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist.zxid.org/";
+# To create bus users, you should follow these steps
+# 1. Run ./zxbuslist -c 'URL=https://sp.foo.com/' -dc to determine the entity ID
+# 2. Convert entity ID to SHA1 hash: ./zxcot -p 'http://sp.foo.com?o=B'
+# 3. Create the user: ./zxpasswd -new G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/ <passwd
+
 ### Single client, various numbers of threads at zxbusd
 
 DAEMON('ZXBUS10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUS10.pid -d -d -dp -nthr 1 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUS11', 'One shot', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
-CMD('ZXBUS12', 'zero len', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e ''");
-CMD('ZXBUS13', 'len1',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS14', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUS15', 'len2',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS19', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+DAEMON('ZXBUS10b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUS10b.pid -d -d -c '$bus_list_conf'");
+CMD('ZXBUS11', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS12', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS13', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS14', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUS15', 'len2',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS10b', 'collect zxbuslist 1');
 KILLD('ZXBUS10', 'collect zxbusd 1');
 
 DAEMON('ZXBUS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUS20.pid -d -d -dp -nthr 2 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUS21', 'One shot', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
-CMD('ZXBUS22', 'zero len', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e ''");
-CMD('ZXBUS23', 'len1',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS24', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUS25', 'len2',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS29', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUS21', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS22', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS23', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS24', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUS25', 'len2',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS29', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUS20', 'collect zxbusd 2');
 
 DAEMON('ZXBUS30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUS30.pid -nthr 1 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUS31', 'One shot', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
-CMD('ZXBUS32', 'zero len', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e ''");
-CMD('ZXBUS33', 'len1',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS34', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUS35', 'len2',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS39', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUS31', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS32', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS33', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS34', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUS35', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS39', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUS30', 'collect zxbusd 3');
 
 DAEMON('ZXBUS40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUS40.pid -nthr 2 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUS41', 'One shot', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
-CMD('ZXBUS42', 'zero len', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e ''");
-CMD('ZXBUS43', 'len1',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS44', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUS45', 'len2',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS49', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUS41', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS42', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS43', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS44', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUS45', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUS40', 'collect zxbusd 4');
 
 DAEMON('ZXBUS50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUS50.pid -d -d -dp -nthr 3 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUS51', 'One shot', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
-CMD('ZXBUS52', 'zero len', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e ''");
-CMD('ZXBUS53', 'len1',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS54', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUS55', 'len2',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS59', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUS51', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS52', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS53', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS54', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUS55', 'len2',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS59', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUS50', 'collect zxbusd 5');
 
 DAEMON('ZXBUS60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUS60.pid -nthr 3 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUS61', 'One shot', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
-CMD('ZXBUS62', 'zero len', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e ''");
-CMD('ZXBUS63', 'len1',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS64', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUS65', 'len2',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS69', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUS61', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS62', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS63', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS64', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUS65', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS69', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUS60', 'collect zxbusd 6');
 
 DAEMON('ZXBUS70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUS70.pid -d -d -dp -nthr 10 -nfd 11 -npdu 32 -p stomp:0.0.0.0:2229");
-CMD('ZXBUS71', 'One shot', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
-CMD('ZXBUS72', 'zero len', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e ''");
-CMD('ZXBUS73', 'len1',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS74', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUS75', 'len2',     "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS79', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUS71', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS72', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS73', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS74', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUS75', 'len2',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS79', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUS70', 'collect zxbusd 7');
 
 DAEMON('ZXBUS80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUS80.pid -nthr 10 -nfd 11 -npdu 32 -p stomp:0.0.0.0:2229");
-CMD('ZXBUS81', 'One shot', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar'");
-CMD('ZXBUS82', 'zero len', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e ''");
-CMD('ZXBUS83', 'len1',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS84', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUS85', 'len2',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'F'");
-CMD('ZXBUS89', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUS81', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS82', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS83', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS84', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUS85', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS89', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUS80', 'collect zxbusd 8');
 
 ### Dual threaded client, various numbers of threads at zxbusd
 
 DAEMON('ZXBUSD10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUSD10.pid -d -d -dp -nthr 1 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD14', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSD19', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSD14', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSD19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSD10', 'collect zxbusd 1');
 
 DAEMON('ZXBUSD20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSD20.pid -d -d -dp -nthr 2 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD24', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSD29', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSD24', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSD29', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSD20', 'collect zxbusd 2');
 
 DAEMON('ZXBUSD30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUSD30.pid -nthr 1 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD34', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSD39', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSD34', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSD39', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSD30', 'collect zxbusd 3');
 
 DAEMON('ZXBUSD40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUSD40.pid -nthr 2 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD44', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSD49', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSD44', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSD49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSD40', 'collect zxbusd 4');
 
 DAEMON('ZXBUSD50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUSD50.pid -d -d -dp -nthr 3 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD54', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSD59', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSD54', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSD59', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSD50', 'collect zxbusd 5');
 
 DAEMON('ZXBUSD60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUSD60.pid -nthr 3 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD64', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSD69', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSD64', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSD69', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSD60', 'collect zxbusd 6');
 
 DAEMON('ZXBUSD70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUSD70.pid -d -d -dp -nthr 10 -nfd 11 -npdu 36 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD74', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSD79', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSD74', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSD79', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSD70', 'collect zxbusd 7');
 
 DAEMON('ZXBUSD80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUSD80.pid -nthr 10 -nfd 11 -npdu 36 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD84', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSD89', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSD84', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSD89', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSD80', 'collect zxbusd 8');
 
 ### Triple threaded client, various numbers of threads at zxbusd
 
 DAEMON('ZXBUST10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUST10.pid -d -d -dp -nthr 1 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST14', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUST19', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUST14', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUST19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUST10', 'collect zxbusd 1');
 
 DAEMON('ZXBUST20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUST20.pid -d -d -dp -nthr 2 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST24', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUST29', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUST24', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUST29', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUST20', 'collect zxbusd 2');
 
 DAEMON('ZXBUST30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUST30.pid -nthr 1 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST34', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUST39', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUST34', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUST39', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUST30', 'collect zxbusd 3');
 
 DAEMON('ZXBUST40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUST40.pid -nthr 2 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST44', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUST49', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUST44', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUST49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUST40', 'collect zxbusd 4');
 
 DAEMON('ZXBUST50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUST50.pid -d -d -dp -nthr 3 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST54', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUST59', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUST54', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUST59', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUST50', 'collect zxbusd 5');
 
 DAEMON('ZXBUST60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUST60.pid -nthr 3 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST64', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUST69', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUST64', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUST69', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUST60', 'collect zxbusd 6');
 
 DAEMON('ZXBUST70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUST70.pid -d -d -dp -nthr 10 -nfd 11 -npdu 36 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST74', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUST79', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUST74', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUST79', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUST70', 'collect zxbusd 7');
 
 DAEMON('ZXBUST80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUST80.pid -nthr 10 -nfd 11 -npdu 36 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST84', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUST89', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUST84', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUST89', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUST80', 'collect zxbusd 8');
 
 ### Multi threaded client, various numbers of threads at zxbusd
 
 DAEMON('ZXBUSM10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUSM10.pid -d -d -dp -nthr 1 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM14', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSM19', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSM14', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSM19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSM10', 'collect zxbusd 1');
 
 DAEMON('ZXBUSM20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSM20.pid -d -d -dp -nthr 2 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM24', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSM29', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSM24', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSM29', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSM20', 'collect zxbusd 2');
 
 DAEMON('ZXBUSM30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUSM30.pid -nthr 1 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM34', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSM39', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSM34', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSM39', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSM30', 'collect zxbusd 3');
 
 DAEMON('ZXBUSM40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUSM40.pid -nthr 2 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM44', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSM49', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSM44', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSM49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSM40', 'collect zxbusd 4');
 
 DAEMON('ZXBUSM50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUSM50.pid -d -d -dp -nthr 3 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM54', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSM59', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSM54', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSM59', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSM50', 'collect zxbusd 5');
 
 DAEMON('ZXBUSM60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUSM60.pid -nthr 3 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM64', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSM69', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSM64', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSM69', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSM60', 'collect zxbusd 6');
 
 DAEMON('ZXBUSM70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUSM70.pid -d -d -dp -nthr 10 -nfd 11 -npdu 36 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM74', '10x20 battery', "./zxbustailf -d -d -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSM79', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSM74', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSM79', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSM70', 'collect zxbusd 7');
 
 DAEMON('ZXBUSM80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUSM80.pid -nthr 10 -nfd 11 -npdu 36 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM84', '10x20 battery', "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
-CMD('ZXBUSM89', 'dump',     "./zxbustailf -c 'BUS_URL=stomp://localhost:2229/' -ctl 'dump'");
+CMD('ZXBUSM84', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUSM89', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSM80', 'collect zxbusd 8');
 
 CMD('COVIMP1', 'Silly tests just to improve test coverage', "./zxcovimp.sh", 0, 60, 10);

@@ -626,6 +626,16 @@
  * If no BUS_URL is configured, no audit bus logging is performed. */
 #define ZXID_BUS_URL 0
 
+/*(c) Audit bus password if not using ClientTLS. Generally using
+ * ClientTLS is RECOMMENDED and the certificate is taken from
+ * metadata encryption certificate field so there is nothing
+ * special to configure here. However, if for some reason you
+ * need to run plain TLS, with STOMP 1.1 passcode filed for authentication,
+ * the set this option to the passcode. Note that using passcode is much
+ * less secure than using ClientTLS. Another limitation of BUS_PW
+ * approach is that it is shared across all audit bus servers. */
+#define ZXID_BUS_PW 0
+
 /*(c) Assertion validation options.
  * These MUST all be turned on (and assertions signed)
  * if you want to rely on assertions to hold the other party liable. */

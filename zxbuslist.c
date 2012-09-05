@@ -42,6 +42,7 @@ Usage: zxbuslist [options] > bus-traffic\n\
   -c 'BUS_URL=stomps://localhost:2229/'   -- Typical invocation, indicates zxbusd to contact\n\
   -ch CHAN         Indicate channel to subscribe to\n\
   -it N            Number of threads launching parallel sessions, for benchmarking.\n\
+  -pid PATH        Write process id in the supplied path\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
   -d               Turn on debugging.\n\
@@ -53,6 +54,7 @@ Usage: zxbuslist [options] > bus-traffic\n\
 int dryrun  = 0;
 int verbose = 1;
 int n_thr = 1;
+char* pid_path = 0;
 char* chan = "default";
 zxid_conf* cf;
 
@@ -115,6 +117,19 @@ static void opt(int* argc, char*** argv, char*** env)
 	if (!(*argc)) break;
 	n_thr = atoi((*argv)[0]);
 	continue;
+      }
+      break;
+
+    case 'p':
+      switch ((*argv)[0][2]) {
+      case 'i':
+	if (!strcmp((*argv)[0],"-pid")) {
+	  ++(*argv); --(*argc);
+	  if (!(*argc)) break;
+	  pid_path = (*argv)[0];
+	  continue;
+	}
+	break;
       }
       break;
 
@@ -185,6 +200,17 @@ int zxbuslist_main(int argc, char** argv, char** env)
   strncpy(zx_instance, "\tzxbuslist", sizeof(zx_instance));
   cf = zxid_new_conf_to_cf(0);
   opt(&argc, &argv, &env);
+
+  if (pid_path) {
+    int len;
+    char buf[INTSTRLEN];
+    len = sprintf(buf, "%d", (int)getpid());
+    DD("pid_path=`%s'", pid_path);
+    if (write2_or_append_lock_c_path(pid_path,0,0,len,buf, "write pid", SEEK_SET, O_TRUNC) <= 0) {
+      ERR("Failed to write PID file(%s). Exiting. (Do not supply -pid if you do not want pid file.)", pid_path);
+      exit(1);
+    }
+  }
 
   if (n_thr > 1) {
     /* Fork test clients in great (specified) numbers. */

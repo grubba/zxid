@@ -36,6 +36,10 @@
 extern "C" {
 #endif
 
+/* zxpw */
+
+ZXID_DECL int zx_pw_authn(const char* path, char* uid, const char* passw);
+
 /* zxidsso - trivial mapping functions */
 
 ZXID_DECL int zxid_protocol_binding_map_saml2(struct zx_str* b);
@@ -74,6 +78,7 @@ ZXID_DECL char* zx_hexdec(char* dst, char* src, int src_len, const unsigned char
 
 ZXID_DECL int get_file_size(fdtype fd);
 ZXID_DECL char* read_all_alloc(struct zx_ctx* c, const char* logkey, int reperr, int* lenp, const char* name_fmt, ...);
+ZXID_DECL char* read_all_malloc(const char* logkey, int reperr, int* lenp, const char* name_fmt, ...);
 ZXID_DECL int read_all(int maxlen, char* buf, const char* logkey, int reperr, const char* name_fmt, ...);
 ZXID_DECL int name_from_path(char* buf, int buf_len, const char* name_fmt, ...);
 ZXID_DECL fdtype open_fd_from_path(int flags, int mode, const char* logkey, int reperr, const char* name_fmt, ...);

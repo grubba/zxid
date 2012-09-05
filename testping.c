@@ -35,7 +35,7 @@ void test_ping_reply(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   for (i = n-1; i; --i)  /* all but the first letter */
     resp->m[i] = toupper(resp->m[i]);
   D("test_ping(%.*s) %d chars", n, resp->m, n);
-  hi_send(hit, io, req, resp);
+  hi_send(hit, io, 0, req, resp);
 }
 
 /* Called by:  hi_read */

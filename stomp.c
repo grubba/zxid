@@ -67,7 +67,7 @@ static struct hi_pdu* stomp_encode_start(struct hi_thr* hit)
 #endif
 
 /* Called by:  stomp_cmd_ni, stomp_decode x2 */
-static int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const char* ecode, const char* emsg)
+int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const char* ecode, const char* emsg)
 {
   int len;
   char* rcpt;
@@ -77,7 +77,7 @@ static int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, c
     len = 1;
     rcpt = "-";
   }
-  hi_sendf(hit, io, req, "ERROR\nmessage:%s\nreceipt-id:%.*s\ncontent-type:text/plain\ncontent-length:%d\n\n%s%c", ecode, len, rcpt, strlen(emsg), emsg, 0);
+  hi_sendf(hit, io, 0, req, "ERROR\nmessage:%s\nreceipt-id:%.*s\ncontent-type:text/plain\ncontent-length:%d\n\n%s%c", ecode, len, rcpt, strlen(emsg), emsg, 0);
   return HI_CONN_CLOSE;
 }
 
@@ -95,7 +95,7 @@ static int stomp_cmd_ni(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req
     len = 1;
     rcpt = "-";
   }
-  hi_sendf(hit, io, req, "ERROR\nmessage:command not implemented by server\nreceipt-id:%.*s\ncontent-type:text/plain\ncontent-length:%d\n\n" CMD_NI_MSG "%c", len, rcpt, sizeof(CMD_NI_MSG)-3+(nl-cmd), (nl-cmd), cmd, 0);
+  hi_sendf(hit, io, 0, req, "ERROR\nmessage:command not implemented by server\nreceipt-id:%.*s\ncontent-type:text/plain\ncontent-length:%d\n\n" CMD_NI_MSG "%c", len, rcpt, sizeof(CMD_NI_MSG)-3+(nl-cmd), (nl-cmd), cmd, 0);
   return HI_CONN_CLOSE;
 }
 
@@ -103,24 +103,45 @@ static int stomp_cmd_ni(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req
 static int stomp_got_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   //struct hi_pdu* resp = stomp_encode_start(hit);
-  /*hi_sendv(hit, io, req, resp, len, resp->m, size, req->m + len);*/
+  /*hi_sendv(hit, io, 0, req, resp, len, resp->m, size, req->m + len);*/
   return HI_CONN_CLOSE;
+}
+
+/*() Send a receipt to client. */
+
+static void stomp_send_receipt(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
+{
+  int len;
+  char* rcpt;
+  if ((rcpt = req->ad.stomp.receipt)) {
+    len = (char*)memchr(rcpt, '\n', req->ap - rcpt) - rcpt;
+  } else {
+    len = 1;
+    rcpt = "-";
+  }
+  DD("rcpt(%.*s) len=%d", len, rcpt, len);
+  hi_sendf(hit, io, 0, req, "RECEIPT\nreceipt-id:%.*s\n\n%c", len, rcpt, 0);
 }
 
 /* STOMP Received Command Handling */
 
 /* Called by:  stomp_decode */
-static void stomp_got_login(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
+static int stomp_got_login(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   /* *** add login checks */
-  io->ad.stomp.state = STOMP_CONN;
-  hi_sendf(hit, io, req, "CONNECTED\nversion:1.1\nserver:zxbusd-1.x\n\n%c", 0);
+  if (zxbus_login_ent(hit, io, req)) {
+    io->ad.stomp.state = STOMP_CONN;
+    hi_sendf(hit, io, 0, req, "CONNECTED\nversion:1.1\nserver:zxbusd-1.x\n\n%c", 0);
+    return 0;
+  } else
+    return stomp_err(hit, io, req, "login fail", "login failed either due to nonexistent entity id or bad credential");
 }
 
 /* Called by:  stomp_decode */
 static int stomp_got_disc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
-  hi_sendf(hit, io, req, "RECEIPT\nreceipt-id:0\n\n%c", 0);  /* *** figure out the real receipt id */
+  /* *** figure out the real receipt id */
+  stomp_send_receipt(hit, io, req);
   return HI_CONN_CLOSE;
 }
 
@@ -139,47 +160,56 @@ static int stomp_got_disc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
 /* Called by:  stomp_decode */
 static void stomp_got_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
-  int len;
-  char* rcpt;
-  if ((rcpt = req->ad.stomp.receipt)) {
-    len = (char*)memchr(rcpt, '\n', req->ap - rcpt) - rcpt;
-  } else {
-    len = 1;
-    rcpt = "-";
-  }
-  DD("rcpt(%.*s) len=%d", len, rcpt, len);
-  HI_SANITY(hit->shf, hit);
   if (zxbus_persist(hit, io, req)) {
-    hi_sendf(hit, io, req, "RECEIPT\nreceipt-id:%.*s\n\n%c", len, rcpt, 0);
+    stomp_send_receipt(hit, io, req);
   } else {
     ERR("Persist Problem. Disk full? %d", 0);
-    //hi_sendf(hit, io, req, "ERROR\nmessage:persist failure\nreceipt-id:%.*s\n\nUnable to persist message. Can not guarantee reliable delivery, therefore rejecting.%c", len, rcpt, 0);
+    //hi_sendf(hit, io, 0, req, "ERROR\nmessage:persist failure\nreceipt-id:%.*s\n\nUnable to persist message. Can not guarantee reliable delivery, therefore rejecting.%c", len, rcpt, 0);
   }
 }
 
+/*() Process ACK response from client to MESSAGE request sent by server. */
+
 /* Called by:  stomp_decode */
-static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
+static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* resp)
 {
-  stomp_cmd_ni(hit,io,req,"ACK\n");
-  /* struct hi_pdu* resp = stomp_encode_start(hit);
-     hi_sendv(hit, io, req, resp, len, resp->m, size, req->m + len);*/
+  int subsc_len, msg_id_len;
+  struct hi_pdu* parent;
+
+  subsc_len = resp->ad.stomp.subsc ? (strchr(resp->ad.stomp.subsc, '\n') - resp->ad.stomp.subsc) : 0;
+  msg_id_len = resp->ad.stomp.msg_id ? (strchr(resp->ad.stomp.msg_id, '\n') - resp->ad.stomp.msg_id) : 0;
+  D("ACK subsc(%.*s) msg_id(%.*s)", subsc_len, subsc_len?resp->ad.stomp.subsc:"", msg_id_len, msg_id_len?resp->ad.stomp.msg_id:"");
+
+  ASSERTOP(resp->req, ==, 0, resp->req);
+  LOCK(io->qel.mut, "ack");
+  if (io->pending) {
+    resp->req = io->pending;
+    io->pending = io->pending->n;
+    parent = resp->parent = resp->req->parent;
+    UNLOCK(io->qel.mut, "ack");
+  } else {
+    ERR("Unsolicited ACK subsc(%.*s) msg_id(%.*s)", subsc_len, subsc_len?resp->ad.stomp.subsc:"", msg_id_len, msg_id_len?resp->ad.stomp.msg_id:"");
+    UNLOCK(io->qel.mut, "ack-unsolicited");
+    return;
+  }
+  
+  ASSERT(resp->parent);
+  hi_free_resp(hit, resp);
+  
+  if (--(parent->ad.stomp.ack) <= 0) {
+    D("freeing parent(%p)", parent);
+    ASSERTOP(parent->ad.stomp.ack, ==, 0, parent->ad.stomp.ack);
+    /* Clean up */
+    hi_free_req(hit, parent);
+  }
 }
 
 /* Called by:  stomp_decode */
 static void stomp_got_subsc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
-  int len;
-  char* rcpt;
-  if ((rcpt = req->ad.stomp.receipt)) {
-    len = (char*)memchr(rcpt, '\n', req->ap - rcpt) - rcpt;
-  } else {
-    len = 1;
-    rcpt = "-";
-  }
-  DD("rcpt(%.*s) len=%d", len, rcpt, len);
   HI_SANITY(hit->shf, hit);
   if (zxbus_subscribe(hit, io, req)) {
-    hi_sendf(hit, io, req, "RECEIPT\nreceipt-id:%.*s\n\n%c", len, rcpt, 0);
+    stomp_send_receipt(hit, io, req);
   } else {
     ERR("Subscribe Problem. Disk full? %d", 0);
   }
@@ -198,17 +228,9 @@ static void stomp_got_unsubsc(struct hi_thr* hit, struct hi_io* io, struct hi_pd
 /* Called by:  stomp_decode */
 static void stomp_got_zxctl(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
-  int len;
-  char* rcpt;
-  if ((rcpt = req->ad.stomp.receipt)) {
-    len = (char*)memchr(rcpt, '\n', req->ap - rcpt) - rcpt;
-  } else {
-    len = 1;
-    rcpt = "-";
-  }
-  D("ZXCTL(%.*s) rcpt(%.*s) len=%d", req->ad.stomp.len, req->ad.stomp.body, len, rcpt, len);
+  D("ZXCTL(%.*s)", req->ad.stomp.len, req->ad.stomp.body);
   if (!memcmp(req->ad.stomp.body, "dump", sizeof("dump")-1)) hi_dump(hit->shf);
-  hi_sendf(hit, io, req, "RECEIPT\nreceipt-id:%.*s\n\n%c", len, rcpt, 0);
+  stomp_send_receipt(hit, io, req);
 }
 
 /*() STOMP decoder and dispatch.
@@ -288,7 +310,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
 	req->need = len + p - req->m + 2;  /* not accurate if more headers follow, but fix below */
       }
       D("len=%d need=%d (%.*s)", len, req->need, p-hdr-1, hdr);
-    } else if (!memcmp(p, "content-type:", sizeof("content-type:"))) { /* ignore */
+    } else if (!memcmp(hdr, "content-type:", sizeof("content-type:"))) { /* ignore */
     HDR("receipt:",        receipt,   val);
     HDR("destination:",    dest,      val);
     HDR("host:",           host,      val);
@@ -355,7 +377,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
   if (!memcmp(command, "STOMP", sizeof("STOMP")-1)
       || (!memcmp(command, "CONNECT", sizeof("CONNECT")-1)
 	  &&ONE_OF_2(command[sizeof("CONNECT")],'\n','\r')))
-  { stomp_got_login(hit,io,req);
+  { return stomp_got_login(hit,io,req);
   CMD("SEND",        stomp_got_send(hit,io,req) );
   CMD("ACK",         stomp_got_ack(hit,io,req) );
   CMD("DISCONNECT",  return stomp_got_disc(hit,io,req) );

@@ -289,6 +289,7 @@ struct zxid_conf {
   char* dbg;           /* Debug message that may be shown. */
 
   struct zxid_bus_url* bus_url;  /* Audit bus URLs to contact. */
+  char*  bus_pw;             /* Audit bus password if not using ClientTLS */
 
   char  log_err;             /* Log enables and signing and encryption flags (if USE_OPENSSL) */
   char  log_act;
