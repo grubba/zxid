@@ -23,10 +23,11 @@ of the logs. Of course such operations come at a cost.
 
 All ZXID logging is filesystem based and consists mainly of text files
 to which lines are appended. This document describes the filesystem
-layout for other purposes as well (to keep it all in one place). The
-logging system has also some tactical uses, such as detecting duplicate
-messages and assertions - within validity period, they are detected
-by checking if corrseponding blob log already exists.
+layout for other purposes as well (to keep it all in one place, but
+see also zxid-idp.pd). The logging system has also some tactical uses,
+such as detecting duplicate messages and assertions - within validity
+period, they are detected by checking if corresponding blob log
+already exists.
 
 1.1 Other documents
 -------------------
@@ -84,12 +85,13 @@ N.B. zxidconf.h contains a wealth of logging related config options, see
 > Tip: Your web server also has logging options. You may want
 > to correlate the web server logs with zxid audit logs.
 
-In serious use of SSO it is fundamental that the relying party, the SP,
-WSC, or WSP, archives the digitally signed evidence that justifies its
-actions. Generally this means that at least the SSO or credential
-assertions have to be archived. Quite often, especially in the WSC
-world, the entire SOAP response (which may be partially signed) needs
-to be preserved as a proof of an authorized action or attested attributes.
+In serious use of SSO and web services it is fundamental that the
+relying party, the SP, WSC, or WSP, archives the digitally signed
+evidence that justifies its actions. Generally this means that, at
+least, the SSO or credential assertions have to be archived. Quite
+often, especially in the WSC world, the entire SOAP response (which
+may be partially signed) needs to be preserved as a proof of an
+authorized action or attested attributes.
 
 To lesser extent, it is also important that the issuing party, the IdP
 (or sometimes the DS, PS, WSC, or WSP), keeps records so that it can
@@ -97,9 +99,10 @@ confirm or refute the claims of the relying party -- in the minimum it
 should be able to refute any obviously false claim and it should be
 able to detect breaches of its own security arrangements,
 e.g. situations where somebody is signing messages in its name
-although internal audit trail demonstrates this to be impossible. The
-IdP audit trail consists of preserving any (signed) request made by
-anyone as well as preserving every (signed) response it makes.
+although internal audit trail demonstrates this to be impossible (it
+is important to be able to compare independent audit trails). The IdP
+audit trail consists of preserving any (signed) request made by anyone
+as well as preserving every (signed) response it makes.
 
 Generally every assertion, request, and response will have its unique
 ID that can be used as the primary key, or filename, for storing it in
@@ -110,14 +113,15 @@ interact or how wide their uniqueness properties are).<<footnote: Many
 rational implementations use 128 bit random identifiers, which
 statistically guarantees that there will not be collisions, but
 unfortunately we can not rely on other parties to adopt this
-behaviour.>> The only safe assumption is the pessimistic one: each
+reasonable behaviour.>> The only safe assumption is the pessimistic one: each
 type of object observes a unique namespace only towards its issuer and
 type and hence we need to map such namespaces to subdirectories.
 
 4.1 Filesystem Layout for Logs
 ------------------------------
 
-Please consider following layout of the log directory:
+Please consider following layout of the log directory at SP (or IdP,
+but see zxid-idp.pd for more detail):
 
   /var/zxid/
    |
@@ -152,30 +156,37 @@ Please consider following layout of the log directory:
         +-- err              Global error log
         `-- debug            Global debugging log
 
+The Audit Bus will log its messages and acknowledgements in its own hierarchy,
+typically under /var/zxid/bus. See Audit Bus documentation (and source) for
+further documentation.
+
 4.2 ZXID Log Format
 -------------------
 
 The log file is line oriented, one record per line irrespective of
-line length, and plain text: binary data is generally omitted or
-represented as (safe) base64. Fields are separated by exactly one
-space character (0x20), except for the last free format field. Records
-are separated by exactly one new line (0x0a) character (never by CRLF
-sequence).
+line length, and plain text: binary data is generally omitted (perhaps
+the blob file name will be referenced) or represented as (safe)
+base64. Fields are separated by exactly one space character (0x20),
+except for the last free format field. Records are separated by
+exactly one new line (0x0a) character (never by CRLF sequence, but
+analysis tools should tolerate the CRLF as well due to braindamaged
+OSs that perform conversions unknown to the user).
 
 The log file format supports
 
 1. Plain text logging
-2. Signed plain text logging using either RSA-SHA1 or DSA-SHA1
-3. Symmetrically encrypted logging using either 3DES or AES
+2. Signed plain text logging using either RSA-SHA1 or DSA-SHA1 (more algos?)
+3. Symmetrically encrypted logging using either 3DES or AES (more algos?)
 4. Asymmetrically encrypted logging using RSA (or DSA?)
 5. Signed and symmetrically encrypted logging
 6. Signed and Asymmetrically encrypted logging
 
-All activity and error log file lines have the following format (any one of the 3):
+All activity and error log file lines have the following format (any one of the 4):
 
   # comment
   SE HH CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
   SE HH SIG OURTS SRCTS IP:PORT SUCCEID MID A7NID NID MM VVV RES OP PPP FMT
+  SE HH SSS OURTS SRCTS IP:PORT SUCCEID MID A7NID NID MM VVV RES OP PPP FMT
 
 <<ignore:
 
@@ -183,7 +194,7 @@ PP - 20070929-041314.599 20070929-121312.501 0.0.0.0:0 zIDxx57qGA-qwnsymUf4JD0Er
 
 PP - 20070929-041314.599 - 0.0.0.0:0 - - - - N K GETMD https://s-xtra.liberty-iop.org:8443/zxidgsa?o=B time 237ms
 
-  SE SSSS OURTS SRCTS IP:PORT VVV RES OP SUCCENTID MSGID A7NID NID PPP FMT
+  SE SSS OURTS SRCTS IP:PORT VVV RES OP SUCCENTID MSGID A7NID NID PPP FMT
 
 PP - 20070929-041314.599 20070929-121312.501 0.0.0.0:0 G K FEDSSO zIDxx57qGA-qwnsymUf4JD0Er2A - A7NHKJdRVk8P_WNEV-RFqB4 PT7cP8WWiZy3g3jCTDciT - -
 
@@ -195,13 +206,13 @@ where
 
 SE:: Log signing and encryption designator. In all cases
     the actual signing or encryption key is not identified on the log line.
-    This will need to be determined out-of-band.
+    This will need to be determined out-of-band, typically using SAML2 metadata.
 
     PP:: PlainPlain: not signed and not encrypted
     Rx:: RSA-SHA1 signed (x = any encryption)
     Dx:: DSA-SHA1 signed
-    Sx:: SHA1 check-summed, but not signed (SSSS is the checksum)
-    xA:: Asymmetrically AES encrypted (x = any signing method)
+    Sx:: SHA1 check-summed, but not signed (SSS is the checksum)
+    xA:: Asymmetrically AES encrypted (x = any signing method, same meth for assymmetrical-enc)
     xT:: Asymmetrically 3DES encrypted
     xB:: Symmetrically AES encrypted (theoretical: how to safeguard the key?)
     xU:: Symmetrically 3DES encrypted (theoretical: how to safeguard the key?)
@@ -213,7 +224,7 @@ HH:: HMAC chaining code to previous message, to protect against log line
 
 CCCC:: Safe base64 encoded log encryption blob. In case of encryption blob,
     the rest of the log fields will not appear. Decrypted logline will contain
-    fields starting from SSSS.
+    fields starting from SSS.
 
 SIG:: Safe base64 encoded log line signature blob. If no signature, this is
     a dash ("-").
@@ -372,15 +383,16 @@ zxidconf.h (compile time):
 4:: RSA-SHA1 (Rx)
 6:: DSA-SHA1 (Dx)
 
-For actual signing (options 2 and 3), the private key for signing must
+For actual signing (options 4 and 6), the private key for signing must
 be available in /var/zxid/pem/logsign-nopw-cert.pem. Note that this
 file need not contain the actual certificate (but it may, it just will
-not be used).
+be ignored).
 
 The weak point of log signing is that if the private key is stolen,
 then someone can create falsified logs and the private key needs
 to be available on the point where the logs are generated - thus
-it is actually quite vulnerable.
+it is actually quite vulnerable as these might be very forward
+positioned servers.
 
 Log encryption may help to keep the logs confidential.  You can
 configure the configuration level in the config file zxidconf.h
@@ -410,7 +422,7 @@ before encryption and safe-base64 encode the result of the
 encryption. All encryption modes, except 0 and 1, prefix the zipped log
 line with 128 bit nonce before encrypting.
 
-The algorithm is roughly
+The algorithm is roughly (see source for detail):
 
 1. If encrypt, zip the raw log line
 2. If sign, compute the signature (over zipped version if applicable)
@@ -432,7 +444,7 @@ sign. Similarly logenc-nopw-cert.pem needs to contain the private key
 
 > N.B. While encrypted logs are cool, you should evaluate the
 > gain against the incovenience: if you encrypt them, the lesser
-> mortal sysadmins may not be able to debug  your installation
+> mortal sysadmins may not be able to debug your installation
 > because they do not know how to decrypt logs or you are not
 > willing to trust them with the keys. For this reason, you
 > can configure the encryption of error log separately.
@@ -487,13 +499,13 @@ Sha1 names are used to avoid any attack through issuer entity ID or
 the assertion ID being evilly crafted to contain shell metacharacters
 or filesystem significant characters.
 
-Assertions issued by ourselves follow similar pattern
+Assertions issued by ourselves follow the pattern
 
   /var/zxid/log/issue/DEST-SHA1-NAME/a7n/A7N-ID-AS-SHA1
 
-If the logfile starts by less-than character ("<") then it is in
-plain text. Encrypted or signed formats will start in another way,
-but are not specified at this time.
+If the logfile starts by less-than character ("<" - from XML opening
+tag) then it is in plain text. Encrypted or signed formats will start
+in another way, but are not specified at this time.
 
 N.B. The relied-on assertions may be referenced from session objects
 and used in construction of credentials for ID-WSF based web services

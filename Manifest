@@ -154,7 +154,9 @@ zxbustailf.c     - tailf like utility for sending tail of a log to zxbus
 # ZXID Audit Bus
 
 zxbusd.c         - Audit Bus Daemon (message queue broker)
-zxbusdist.c      - Message persist and distribution, subscription management
+zxbusdist.c      - Message persist and distribution
+zxbusent.c       - Entity management
+zxbussubs.c      - Subscription management
 hiios.h          - Header for Hiquu high performance I/O Engine
 hiios.c          - Hiquu high performance I/O Engine main loop
 hiread.c         - Hiquu high performance I/O Engine read dispatcher

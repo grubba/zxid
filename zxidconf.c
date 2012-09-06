@@ -130,7 +130,7 @@ EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
   }
   p += sizeof(PEM_RSA_PRIV_KEY_START) - 1;
   if (*p == 0xd) ++p;
-  if (*p != 0xa) return 0;
+  if (*p != 0xa) { ERR("Bad cert missing newline ch(%x)", *p); return 0; }
   ++p;
 
   e = strstr(buf, e);
@@ -158,11 +158,11 @@ X509* zxid_read_cert(zxid_conf* cf, char* name)
 
 /*() Extract a private key from PEM encoded file. */
 
-/* Called by:  test_ibm_cert_problem x2, test_ibm_cert_problem_enc_dec x2, zxbus_write_line x2, zxenc_privkey_dec, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxlog_write_line x2 */
+/* Called by:  test_ibm_cert_problem x2, test_ibm_cert_problem_enc_dec x2, zxbus_mint_receipt x2, zxbus_write_line x2, zxenc_privkey_dec, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxlog_write_line x2 */
 EVP_PKEY* zxid_read_private_key(zxid_conf* cf, char* name)
 {
   char buf[4096];
-  int got = read_all(sizeof(buf), buf, "read_private_key", 1, "%s" ZXID_PEM_DIR "%s", cf->path, name);
+  int got = read_all(sizeof(buf),buf,"read_private_key",1, "%s" ZXID_PEM_DIR "%s", cf->path, name);
   if (!got && cf->auto_cert)
     zxid_mk_self_sig_cert(cf, sizeof(buf), buf, "read_private_key", name);
   return zxid_extract_private_key(buf, name);
@@ -553,34 +553,37 @@ void zxid_free_cstr_list(struct zxid_conf* cf, struct zxid_cstr_list* l)
 /*() Parse comma separated bus_urls and add to linked list */
 
 /* Called by:  zxid_init_conf, zxid_parse_conf_raw */
-struct zxid_bus_url* zxid_load_bus_url(zxid_conf* cf, struct zxid_bus_url* l, char* p)
+struct zxid_bus_url* zxid_load_bus_url(zxid_conf* cf, struct zxid_bus_url* bu_root, char* p)
 {
   char* q;
-  struct zxid_bus_url* cs;
+  struct zxid_bus_url* bu;
 
   for (; p && *p;) {
     q = p;
     p = strchr(p, ',');
     if (!p)
       p = q + strlen(q);
-    cs = ZX_ZALLOC(cf->ctx, struct zxid_bus_url);
-    cs->n = l;
-    l = cs;
-    COPYVAL(cs->s, q, p);    
+    bu = ZX_ZALLOC(cf->ctx, struct zxid_bus_url);
+    bu->n = bu_root;
+    bu_root = bu;
+    COPYVAL(bu->s, q, p);
+    COPYVAL(bu->eid, q, p);
   }
-  return l;
+  return bu_root;
 }
 
 /*() Reverse of zxid_load_bus_url(). */
 
 /* Called by:  zxid_free_conf */
-void zxid_free_bus_url(struct zxid_conf* cf, struct zxid_bus_url* l)
+void zxid_free_bus_url(struct zxid_conf* cf, struct zxid_bus_url* bu)
 {
-  while (l) {
-    struct zxid_bus_url* next = l->n;
-    ZX_FREE(cf->ctx, l->s);
-    ZX_FREE(cf->ctx, l);
-    l = next;
+  struct zxid_bus_url* next;
+  while (bu) {
+    next = bu->n;
+    ZX_FREE(cf->ctx, bu->s);
+    ZX_FREE(cf->ctx, bu->eid);
+    ZX_FREE(cf->ctx, bu);
+    bu = next;
   }
 }
 
@@ -910,6 +913,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->log_err_in_act = ZXLOG_ERR_IN_ACT;
   cf->log_act_in_err = ZXLOG_ACT_IN_ERR;
   cf->log_sigfail_is_err = ZXLOG_SIGFAIL_IS_ERR;
+  cf->bus_rcpt       = ZXBUS_RCPT;
   cf->bus_url        = zxid_load_bus_url(cf, 0, ZXID_BUS_URL);
   cf->bus_pw         = ZXID_BUS_PW;
 
@@ -1184,6 +1188,8 @@ static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exis
   }
 }
 
+int zxid_suppress_vpath_warning = 10000;
+
 /*() Helper to evaluate environment variables for VPATH and VURL.
  * squash_type: 0=VPATH, 1=VURL */
 
@@ -1193,7 +1199,7 @@ static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, cha
   int len;
   char* val = getenv(env_hdr);
   if (!val) {
-    ERR("VPATH or VURL(%s) %s expansion specified, but env(%s) not defined?!? Violation of CGI spec? SERVER_SOFTWARE(%s)", vorig, exp, env_hdr, STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
+    if (--zxid_suppress_vpath_warning > 0) ERR("VPATH or VURL(%s) %s expansion specified, but env(%s) not defined?!? Violation of CGI spec? SERVER_SOFTWARE(%s)", vorig, exp, env_hdr, STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
     return 0;
   }
   len = strlen(val);
@@ -1305,7 +1311,8 @@ static int zxid_parse_vpath_conf(zxid_conf* cf, char* vpath)
   }
   
   zxid_expand_percent(vpath, np, lim, 0);
-  INFO("VPATH(%s) alters PATH(%s) to new PATH(%s)", vpath, cf->path, newpath);
+  if (--zxid_suppress_vpath_warning > 0)
+    INFO("VPATH(%s) alters PATH(%s) to new PATH(%s)", vpath, cf->path, newpath);
   zxid_parse_conf_path_raw(cf, zx_dup_cstr(cf->ctx, newpath), 1);
   return 1;
 }
@@ -1317,7 +1324,8 @@ static int zxid_parse_vurl(zxid_conf* cf, char* vurl)
 {
   char newurl[PATH_MAX];
   zxid_expand_percent(vurl, newurl, newurl + sizeof(newurl), 1);
-  INFO("VURL(%s) alters URL(%s) to new URL(%s)", vurl, cf->url, newurl);
+  if (--zxid_suppress_vpath_warning > 0)
+    INFO("VURL(%s) alters URL(%s) to new URL(%s)", vurl, cf->url, newurl);
   cf->url = zx_dup_cstr(cf->ctx, newurl);
   return 1;
 }
@@ -1576,6 +1584,7 @@ scan_end:
       }
       if (!strcmp(n, "RECOVER_PASSWD")) { cf->recover_passwd = v; break; }
       if (!strcmp(n, "RELTO_FATAL"))    { SCAN_INT(v, cf->relto_fatal); break; }
+      if (!strcmp(n, "RCPT"))           { SCAN_INT(v, cf->bus_rcpt); break; }
       goto badcf;
     case 'S':  /* SES_ARCH_DIR, SIGFAIL_IS_ERR, SIG_FATAL */
       if (!strcmp(n, "SES_ARCH_DIR"))   { cf->ses_arch_dir = (v[0]=='0' && !v[1]) ? 0 : v; break; }
@@ -1630,7 +1639,7 @@ scan_end:
 
 /*() Wrapper with initial error checking for zxid_parse_conf_raw(), which see. */
 
-/* Called by:  opt x11, set_zxid_conf */
+/* Called by:  opt x13, set_zxid_conf */
 int zxid_parse_conf(zxid_conf* cf, char* qs)
 {
   if (!cf || !qs)
@@ -1718,7 +1727,7 @@ static struct zx_str* zxid_show_bus_url(zxid_conf* cf, struct zxid_bus_url* cp)
 
 /*() Generate our SP CARML and return it as a string. */
 
-/* Called by:  opt x3, zxid_simple_show_conf */
+/* Called by:  opt x5, zxid_simple_show_conf */
 struct zx_str* zxid_show_conf(zxid_conf* cf)
 {
   char* p;
@@ -1875,6 +1884,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "AZ_OPT=%d\n"
 "#ZXID_MAX_BUF=%d (compile)\n"
 
+/* *** should these be prefixed by LOG? */
 "LOG_ERR=%d\n"
 "LOG_ACT=%d\n"
 "LOG_ISSUE_A7N=%d\n"
@@ -1973,6 +1983,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "ATTRSRC=\n%s\n"
 "BUS_URL=\n%s\n"
 "BUS_PW=%s\n"
+"RCPT=%d\n"
 "INMAP=\n%s\n"
 "OUTMAP=\n%s\n"
 "PEPMAP=\n%s\n"
@@ -2147,6 +2158,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 attrsrc->s,
 		 bus_url->s,
 		 STRNULLCHK(cf->bus_pw),
+		 cf->bus_rcpt,
 		 inmap->s,
 		 outmap->s,
 		 pepmap->s,

@@ -451,7 +451,7 @@ void covimp_test()       /* -r 5 */
   printf("covimp ok\n");
 }
 
-/* Called by:  main x9, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x9, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc < 1) goto argerr;

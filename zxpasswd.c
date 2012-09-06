@@ -93,7 +93,7 @@ char userdir[4096];
 char buf[4096];
 struct zx_ctx ctx;
 
-/* Called by:  main x9, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x9, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc <= 1) {
@@ -360,6 +360,8 @@ static int authn_user(int isyk, int pwgot)
   return got;
 }
 
+extern int zxid_suppress_vpath_warning;
+
 /* Called by: */
 int main(int argc, char** argv, char** env)
 {
@@ -371,6 +373,7 @@ int main(int argc, char** argv, char** env)
   unsigned char ch;
   
   strcpy(zx_instance, "\tzxpw");
+  zxid_suppress_vpath_warning = 1;
   zx_reset_ctx(&ctx);
   opt(&argc, &argv, &env);
   if (argc)

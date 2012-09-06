@@ -418,7 +418,7 @@ int zx_report_openssl_error(const char* logkey)
  * lk::       Log key. Used to make logs and error messages more meaningful.
  * return::   -1 on failure. Upon success the length of the raw signature data. */
 
-/* Called by:  zxbus_write_line x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxlog_write_line x2 */
+/* Called by:  zxbus_mint_receipt, zxbus_write_line x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxlog_write_line x2 */
 int zxsig_data(struct zx_ctx* c, int len, const char* data, char** sig, EVP_PKEY* priv_key, const char* lk)
 {
   RSA* rsa;
@@ -463,14 +463,14 @@ int zxsig_data(struct zx_ctx* c, int len, const char* data, char** sig, EVP_PKEY
 /*() Verify a signature over a blob of data using rsa-sha1 algorithm.
  *
  * len::      Length of the raw data
- * data::     Raw data to sign
+ * data::     Raw data that was signed
  * siglen::   Length of the raw binary signature data
  * sig::      Raw binary signature data
  * cert::     Certificate used for signing
  * lk::       Log key. Used to make logs and error messages more meaningful
- * return::   ZX_SIG value. o (ZXSIG_OK) means success. Other values mean failure of some sort. */
+ * return::   ZX_SIG value. 0 (ZXSIG_OK) means success. Other values mean failure of some sort. */
 
-/* Called by:  main, zxid_decode_redir_or_post, zxlog_zsig_verify_print */
+/* Called by:  main, zxbus_verify_receipt, zxid_decode_redir_or_post, zxlog_zsig_verify_print */
 int zxsig_verify_data(int len, char* data, int siglen, char* sig, X509* cert, char* lk)
 {
   int verdict;

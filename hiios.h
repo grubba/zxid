@@ -198,6 +198,16 @@ struct hi_io {
   } ad;                      /* Application specific data */
 };
 
+struct hi_ad_stomp {
+  int len;               /* Populated from content-length header, if one is supplied. */
+  char* body;            /* Body of the message */
+  char* dest;            /* destination, also heart_bt, zx_rcpt_sig */
+  char* host;            /* also receipt and receipt_id */
+  char* vers;            /* version, also accept-version, tx_id */
+  char* login;           /* also session, subs_id, subsc */
+  char* pw;              /* also server, ack, msg_id */
+};
+
 /*(s) PDU object */
 
 struct hi_pdu {
@@ -239,19 +249,14 @@ struct hi_pdu {
     struct {
       char* skip_ehlo;
     } smtp;
+    struct hi_ad_stomp stomp;
     struct {
-      int len;               /* Populated from content-length header, if one is supplied. */
-      char* body;            /* Body of the message */
-      char* host;            /* also receipt and receipt_id */
-      char* vers;            /* version, also accept-version, tx_id */
-      char* login;           /* also session, subs_id, subsc */
-      char* pw;              /* also server, ack, msg_id */
-      char* dest;            /* destination, also heart_bt */
-    } stomp;
-    struct {
-      int len;               /* Populated from content-length header, if one is supplied. */
+      int len;               /* Body length. */
       char* body;            /* Body of the message */
       char* dest;            /* destination, also heart_bt */
+      int ack_fd;            /* File where acks are collected. */
+      int acks;              /* Ack counter for delivery. */
+      int nacks;             /* Nack counter: incontactables for delivery. */
     } delivb;
   } ad;                      /* Application specific data */
 };
@@ -343,6 +348,13 @@ struct hi_ch {
   char* dest;
 };
 
+/*(s) Node for linked list of PDUs acknowledged by the entity */
+
+struct hi_ack {
+  struct hi_ack* n;
+  struct hi_pdu* pdu;
+};
+
 /*(s) Entity or subscriber object. Typically loaded from /var/bus/.ents */
 
 struct hi_ent {
@@ -350,7 +362,12 @@ struct hi_ent {
   char* eid;           /* EntityID as seen in STOMP 1.1 login header */
   struct hi_io* io;
   char* chs;           /* Subscribed channels as an array of char */
+  struct hi_ack* acks;
 };
+
+#define HI_NOSUBS    0
+#define HI_SUBS      1
+#define HI_SUBS_PEND 2 /* Subscribed and messages pending. */
 
 /* External APIs */
 

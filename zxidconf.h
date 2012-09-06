@@ -586,6 +586,10 @@
 #define ZXLOG_RELY_MSG   0x11
 #endif
 
+/*(c) How Audit Bus receipts are issued. 0x00 = no receipt, 0x01 = plain, 0x05 = RSA-SHA1 */
+
+#define ZXBUS_RCPT 0x05
+
 /*(c) Choice of log given Error or Action
  * Each operation has its status code and generally those lines that indicate
  * successful status (or intermediate status like "continue" or "redirect")

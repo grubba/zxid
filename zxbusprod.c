@@ -46,6 +46,22 @@
 #include "zxidconf.h"
 #include "c/zx-data.h" /* Generated. If missing, run `make dep ENA_GEN=1' */
 
+#define ZXBUS_BUF_SIZE 4096
+/* Alias some struct fields for headers that can not be seen together. */
+#define receipt   host
+#define rcpt_id   host
+#define acpt_vers vers
+#define tx_id     vers
+#define session   login
+#define subs_id   login
+#define subsc     login
+#define server    pw
+#define ack       pw
+#define msg_id    pw
+#define heart_bt  dest
+#define zx_rcpt_sig dest
+
+#define STOMP_MIN_PDU_SIZE (sizeof("ACK\n\n\0\n")-1)
 extern int verbose;    /* This is defined by option processing in zxbustailf */
 
 #define ZXBUS_TIME_FMT "%04d%02d%02d-%02d%02d%02d.%03ld"
@@ -358,22 +374,6 @@ static int zxbus_fmt(zxid_conf* cf,   /* 1 */
 }
 #endif
 
-#define ZXBUS_BUF_SIZE 4096
-/* Alias some struct fields for headers that can not be seen together. */
-#define receipt   host
-#define rcpt_id   host
-#define acpt_vers vers
-#define tx_id     vers
-#define session   login
-#define subs_id   login
-#define subsc     login
-#define server    pw
-#define ack       pw
-#define msg_id    pw
-#define heart_bt  dest
-
-#define STOMP_MIN_PDU_SIZE (sizeof("ACK\n\n\0\n")-1)
-
 /*() Read and parse a frame from STOMP 1.1 connection (from zxbusd).
  * Blocks until frame has been read. Returns 1 on success, 0 on failure.
  * In case of failure, caller should close the connection. The PDU
@@ -387,7 +387,7 @@ static int zxbus_fmt(zxid_conf* cf,   /* 1 */
  * the structure that is passed in.
  * The parsed headers are returned in the struct stomp_hdr. */
 
-/* Called by:  zxbus_close, zxbus_open_bus_url, zxbus_send */
+/* Called by:  zxbus_close, zxbus_listen_msg, zxbus_open_bus_url, zxbus_send_cmdf */
 int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
 {
   int len = 0, got;
@@ -467,6 +467,7 @@ int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
       HDR("host:",           host,      v);
       HDR("receipt:",        receipt,   v);
       HDR("receipt-id:",     rcpt_id,   v);
+      HDR("zx-rcpt-sig:",    zx_rcpt_sig, v);
       HDR("version:",        vers,      v);
       HDR("accept-version:", acpt_vers, v);
       HDR("transaction:",    tx_id,     v);
@@ -527,14 +528,25 @@ int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
 }
 
 /*() ACK a message to STOMP 1.1 connection.
+ * N.B. ACK is not a command. Thus no RECEIPT is expected from server
+ * end (ACK really is the receipt for MESSAGE sent by server).
  * Returns:: zero on failure and 1 on success. */
 
+/* Called by:  zxbus_listen_msg */
 int zxbus_ack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stompp)
 {
+  int len;
+  char sigbuf[1024];
+  char buf[1024];
   int subs_id_len, msg_id_len;
   subs_id_len = strchr(stompp->subs_id, '\n') - stompp->subs_id;
   msg_id_len = strchr(stompp->msg_id, '\n') - stompp->msg_id;
-  return zxbus_send_cmdf(cf, bu, 0, 0, "ACK\nsubscription:%.*s\nmessage-id:%.*s\n\n", subs_id_len, stompp->subs_id, msg_id_len, stompp->msg_id);
+
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, stompp->len, stompp->body);
+  len = snprintf(buf, sizeof(buf), "ACK\nsubscription:%.*s\nmessage-id:%.*s\nzx-rcpt-sig:%s\n\n%c",
+		 subs_id_len, stompp->subs_id, msg_id_len, stompp->msg_id, sigbuf, 0);
+  send_all_socket(bu->fd, buf, len);
+  return 1;
 }
 
 /*() Listen for a MESSAGE from the STOMP 1.1 connection and ACK it.
@@ -544,6 +556,7 @@ int zxbus_ack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stom
  * In that case you should call zxbus_read() and zxbus_ack_msg()
  * directly and do your persistence in between. */
 
+/* Called by:  zxbuslist_main */
 char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
 {
   struct stomp_hdr stomp;
@@ -572,7 +585,7 @@ char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
 /*() Open a bus_url, i.e. STOMP 1.1 connection to zxbusd.
  * return:: 0 on failure, 1 on success. */
 
-/* Called by:  zxbus_send */
+/* Called by:  zxbus_send_cmd, zxbuslist_main */
 int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
 {
   int len;
@@ -759,7 +772,7 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
 /*() SEND a STOMP 1.1 DISCONNECT to audit bus and wait for RECEIPT.
  * Returns:: nothing. Ignores any errors (but errors cause fd to be closed). */
 
-/* Called by:  zxbustailf_main */
+/* Called by:  zxbuslist_main, zxbustailf_main */
 void zxbus_close_all(zxid_conf* cf)
 {
   struct zxid_bus_url* bu;
@@ -774,11 +787,11 @@ void zxbus_close_all(zxid_conf* cf)
  * separates the body.
  * Returns:: zero on failure and 1 on success. */
 
-/* Called by:  zxbustailf_main x2 */
+/* Called by:  zxbus_send_cmd, zxbuslist_main */
 int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const char* body, const char* fmt, ...)
 {
   va_list ap;
-  int len;
+  int len, zx_rcpt_sig_len, ver;
   char buf[1024];
   struct stomp_hdr stomp;
   
@@ -800,6 +813,17 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 	memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
 	bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
 	D("%.*s got RECEIPT %d", 4, buf, bu->cur_rcpt-1);
+
+	zx_rcpt_sig_len = stomp.zx_rcpt_sig ? (strchr(stomp.zx_rcpt_sig, '\n') - stomp.zx_rcpt_sig) : 0;
+
+	ver = zxbus_verify_receipt(cf, bu->eid,
+				   zx_rcpt_sig_len, zx_rcpt_sig_len?stomp.zx_rcpt_sig:"",
+				   body_len, body);
+	if (ver != ZXSIG_OK) {
+	  ERR("RECEIPT signature validation failed: %d", ver);
+	  return 0;
+	}
+
 	if (verbose) {
 	  printf("%.*s(%.*s) got RECEIPT %d\n", 4, buf, body?body_len:0, body?body:"", bu->cur_rcpt-1);
 	}
@@ -826,7 +850,7 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
  * from configuration, which bus daemon to contact (looks at bus_urls).
  * Returns:: zero on failure and 1 on success. */
 
-/* Called by:  zxbustailf_main x2 */
+/* Called by:  zxbus_send, zxbustailf_main */
 int zxbus_send_cmd(zxid_conf* cf, const char* cmd, const char* dest, int n, const char* logbuf)
 {
   struct zxid_bus_url* bu;

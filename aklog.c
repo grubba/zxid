@@ -433,7 +433,7 @@ void ak_tsf(int func, int line, int raz, char* logkey, char* format, ...)
   va_end(pv);
 }
 
-/* Called by:  ak_buf_pdu_full x2, ak_buf_ts_va, ak_ts */
+/* Called by:  ak_buf_ts_va, ak_ts */
 void ak_buf_ts(struct ak_buf* buf, int func, int line, int raz, char* logkey, char* msg)
 {
   struct ak_ts* p;
@@ -480,7 +480,7 @@ void ak_tsa(int func, int line, int raz, char* logkey, char* msg, void* arg) {
 
 /* Analysis of FE */
 
-/* Called by:  ak_buf_io_full, ak_buf_io_va, ak_buf_pdu_full, ak_io */
+/* Called by:  ak_buf_io_full, ak_buf_io_va, ak_io */
 void ak_buf_io(struct ak_buf* buf, int func, int line, int raz, char* logkey, struct io* io, char* msg)
 {
   struct ak_io* p = (struct ak_io*)ak_new_line(buf, func, line, logkey);
@@ -647,7 +647,7 @@ void ak_pdu_lite(int func, int line, int raz, char* logkey, struct any_pdu* pdu,
 
 /* Analysis of PDU */
 
-/* Called by:  ak_buf_io_full x2, ak_buf_pdu_full x7, ak_pdu */
+/* Called by:  ak_buf_io_full x2, ak_pdu */
 void ak_buf_pdu(struct ak_buf* buf, int func, int line, int raz, char* logkey, struct any_pdu* pdu, char* msg)
 {
   struct ak_pdu* p = (struct ak_pdu*)ak_new_line(buf, func, line, logkey);

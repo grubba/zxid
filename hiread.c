@@ -33,7 +33,7 @@ extern int zx_debug;
  * work out, recourse to the shuffler level global pool, with locking,
  * is made. */
 
-/* Called by:  hi_checkmore, hi_sendf, http_encode_start, smtp_resp_wait_250_from_ehlo, smtp_resp_wait_354_from_data, stomp_encode_start, test_ping_reply */
+/* Called by:  hi_checkmore, hi_close, hi_new_shuffler, hi_sendf, http_encode_start, smtp_resp_wait_250_from_ehlo, smtp_resp_wait_354_from_data, smtp_send, stomp_encode_start, test_ping_reply, zxbus_sched_new_delivery, zxbus_sched_pending_delivery */
 struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk)
 {
   struct hi_pdu* pdu;
@@ -79,7 +79,7 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk)
  * it is set in later stages of decoder.
  * As hi_checkmore() will cause cur_pdu to change, it is common to call hi_add_reqs() */
 
-/* Called by: hi_add_to_reqs */
+/* Called by:  hi_add_to_reqs */
 static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
 {
   int n = req->ap - req->m;

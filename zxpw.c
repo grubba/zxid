@@ -42,6 +42,7 @@
  * See: yubico.com
  * return:: 0 on failure, 1 on success  */
 
+/* Called by:  zx_pw_authn */
 int zx_yubikey_authn(const char* path, char* uid, const char* passw)
 {
   unsigned char buf[256];
@@ -91,6 +92,7 @@ int zx_yubikey_authn(const char* path, char* uid, const char* passw)
 /*() Low level password check using various different types of hash
  * return:: 0 on failure, 1 on success  */
 
+/* Called by:  zx_pw_authn */
 int zx_pw_chk(const char* uid, const char* pw_buf, const char* passw)
 {
   unsigned char pw_hash[120];
@@ -142,7 +144,7 @@ int zx_pw_chk(const char* uid, const char* pw_buf, const char* passw)
  *
  * return:: 0 on failure, 1 on success  */
 
-/* Called by:  zxid_idp_as_do, zxid_simple_idp_pw_authn, zxid_simple_idp_show_an */
+/* Called by:  zxbus_pw_authn_ent, zxid_pw_authn */
 int zx_pw_authn(const char* path, char* uid, const char* passw)
 {
   char pw_buf[256];

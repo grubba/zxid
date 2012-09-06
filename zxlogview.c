@@ -80,7 +80,7 @@ char  buf[4096];
 
 static void test_mode(int* argc, char*** argv, char*** env);
 
-/* Called by:  main x9, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x9, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   int gotall;

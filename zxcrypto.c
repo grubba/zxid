@@ -927,7 +927,7 @@ static void to64(char *s, unsigned long v, int n) {
  * buf:: must be at least 120 chars
  * return:: buf, nul terminated */
 
-/* Called by:  authn_user, main, zxid_pw_authn */
+/* Called by:  authn_user, main, zx_pw_chk */
 char* zx_md5_crypt(const char* pw, const char* salt, char* buf)
 {
   const char* magic = "$1$";    /* magic prefix to identify algo */

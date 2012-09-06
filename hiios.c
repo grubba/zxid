@@ -66,6 +66,7 @@ const char* qel_kind[] = {
 
 #define QEL_KIND(x) (((x) >= 0 && (x) < sizeof(qel_kind)/sizeof(char*))?qel_kind[(x)]:"???")
 
+/* Called by:  main, thread_loop */
 void hi_hit_init(struct hi_thr* hit)
 {
   memset(hit, 0, sizeof(struct hi_thr));
@@ -273,7 +274,7 @@ struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int p
 
 /*() Add file descriptor to poll */
 
-/* Called by:  hi_accept, hi_open_tcp, serial_init */
+/* Called by:  hi_accept_book, hi_open_tcp, serial_init */
 struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind)
 {
   struct hi_io* io = shf->ios + fd;  /* uniqueness of fd acts as mutual exclusion mechanism */
@@ -360,7 +361,7 @@ struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto)
  * booking used to cope with threads that are still looking at
  * the old connection. */
 
-/* Called by:  hi_shuffle */
+/* Called by:  hi_accept, hi_shuffle */
 static void hi_accept_book(struct hi_thr* hit, struct hi_io* io)
 {
   int n_thr;
@@ -422,6 +423,7 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io)
 
 /*() Create server side worker socket by accept(2)ing from listener socket. */
 
+/* Called by:  hi_shuffle */
 static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
 {
   struct hi_io* io;
@@ -466,7 +468,7 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
  * with same number, we are bound to wait, postpone any reads,
  * until the old threads have let go. */
 
-/* Called by:  hi_in_out, hi_read x3, hi_write */
+/* Called by:  hi_in_out, hi_read x2, hi_write */
 void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
 {
   struct hi_pdu* pdu;
@@ -609,7 +611,7 @@ static struct hi_qel* hi_todo_consume(struct hiios* shf)
 
 /*(i) Schedule new work to be done, potentially waking up the consumer threads! */
 
-/* Called by:  hi_accept, hi_poll x2, hi_read */
+/* Called by:  hi_accept, hi_accept_book, hi_in_out, hi_poll x2, hi_send0, stomp_msg_deliver, zxbus_sched_new_delivery, zxbus_sched_pending_delivery */
 void hi_todo_produce(struct hiios* shf, struct hi_qel* qe, const char* lk)
 {
   struct hi_io* io;

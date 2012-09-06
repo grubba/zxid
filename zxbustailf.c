@@ -69,7 +69,7 @@ char* ctl = 0;
 char* chan = "default";
 zxid_conf* cf;
 
-/* Called by:  main x9, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x9, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   struct zx_str* ss;
@@ -200,6 +200,7 @@ help:
 #ifndef zxbustailf_main
 #define zxbustailf_main main
 #endif
+extern int zxid_suppress_vpath_warning;
 
 /*() Audit Bus producer tool */
 
@@ -210,6 +211,7 @@ int zxbustailf_main(int argc, char** argv, char** env)
   char buf[64];
   pid_t* kids;
   strncpy(zx_instance, "\tzxbustailf", sizeof(zx_instance));
+  zxid_suppress_vpath_warning = 1;
   cf = zxid_new_conf_to_cf(0);
   opt(&argc, &argv, &env);
 

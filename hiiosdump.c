@@ -223,7 +223,7 @@ int hi_sanity_io(int mode, struct hi_io* root_io)
 /*() Sanity check hiios thread data structures.
  * Returns number of nodes scanned, or negative for errors. */
 
-/* Called by:  hi_sanity */
+/* Called by:  hi_dump, hi_sanity */
 int hi_sanity_hit(int mode, struct hi_thr* root_hit)
 {
   int errs = 0;
@@ -277,7 +277,7 @@ int hi_sanity_hit(int mode, struct hi_thr* root_hit)
  *   (gdb) p hi_color+=4, hi_sanity(255, shuff)
  */
 
-/* Called by:  hi_sanity */
+/* Called by:  hi_dump, hi_sanity */
 int hi_sanity_shf(int mode, struct hiios* root_shf)
 {
   int res;
@@ -392,6 +392,7 @@ int hi_sanity(int mode, struct hiios* root_shf, struct hi_thr* root_hit, const c
 /*() All thread data structure check.
  * Returns number of nodes scanned, or negative for errors. */
 
+/* Called by:  hi_checkmore, hi_sendf, http_encode_start, stomp_encode_start, stomp_got_zxctl, test_ping_reply */
 void hi_dump(struct hiios* shf)
 {
   struct hi_thr* hit;

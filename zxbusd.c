@@ -45,6 +45,8 @@
 #include <zx/zxid.h>
 #include <zx/zxidutil.h>
 
+#define ZXBUS_PATH "/var/zxid/bus/"
+
 const char* help =
 "zxbusd  -  Audit bus daemon using STOMP 1.1 - R" ZXID_REL "\n\
 Copyright (c) 2006,2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
@@ -55,7 +57,9 @@ Usage: zxbusd [options] PROTO:REMOTEHOST:PORT\n\
        echo secret | zxbusd -p sis::5066 -c AES256 -k 0 dts:quebec.cellmail.com:5067\n\
        echo secret | zxbusd -p sis::5066 -c AES256 -k 0 dts:/dev/se_hdlc1:S-9600-1000-8N1\n\
        zxbusd -p smtp::25 sis:localhost:5066 smtp:mail.cellmail.com:25\n\
-  -cp PATH         Path for message and user databases. Default: /var/zxid/bus/\n\
+  -c CONF          Optional configuration string (default -c PATH=" ZXBUS_PATH ")\n\
+                   Most of the configuration is read from " ZXBUS_PATH "zxid.conf\n\
+  -cp PATH         Path for message and user databases. Default: " ZXBUS_PATH "\n\
   -p  PROT:IF:PORT Protocol, network interface and TCP port for listening\n\
                    connections. If you omit interface, all interfaces are bound.\n\
                      stomp:0.0.0.0:2229 - Listen for STOMP 1.1 (default if no -p supplied)\n\
@@ -87,13 +91,15 @@ Usage: zxbusd [options] PROTO:REMOTEHOST:PORT\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
   -d               Turn on debugging.\n\
+  -dc              Dump config.\n\
   -license         Show licensing details\n\
   -h               This help message\n\
   --               End of options\n\
 N.B. Although zxbusd is a 'daemon', it does not daemonize itself. You can always say zxbusd&\n";
 
 char* instance = "zxbusd";  /* how this server is identified in logs */
-char* zxbus_path = "/var/zxid/bus/";
+char* zxbus_path = ZXBUS_PATH;
+zxid_conf* zxbus_cf;
 int ak_buf_size = 0;
 int verbose = 1;
 extern int zx_debug;
@@ -199,9 +205,10 @@ int parse_port_spec(char* arg, struct hi_host_spec** head, char* default_host)
   return 1;
 }
 
-/* Called by:  main x9, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x9, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 void opt(int* argc, char*** argv, char*** env)
 {
+  struct zx_str* ss;
   if (*argc <= 1) goto argerr;
   
   while (1) {
@@ -215,7 +222,7 @@ void opt(int* argc, char*** argv, char*** env)
       DD("End of options by --");
       return;  /* -- ends the options */
 
-    case 'a': if ((*argv)[0][2] != 'f' || (*argv)[0][3] != 'r' || (*argv)[0][4]) break;
+    case 'a': if ((*argv)[0][2] != 'k' || (*argv)[0][3]) break;
       ++(*argv); --(*argc);
       if (!(*argc)) break;
       ak_buf_size = atoi((*argv)[0]);
@@ -287,6 +294,14 @@ void opt(int* argc, char*** argv, char*** env)
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
 	instance = (*argv)[0];
+	continue;
+      case 'c':
+	ss = zxid_show_conf(zxbus_cf);
+	if (verbose>1) {
+	  printf("\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
+	  exit(0);
+	}
+	fprintf(stderr, "\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
 	continue;
       }
       break;
@@ -419,6 +434,11 @@ void opt(int* argc, char*** argv, char*** env)
 
     case 'c':
       switch ((*argv)[0][2]) {
+      case '\0':
+	++(*argv); --(*argc);
+	if ((*argc) < 1) break;
+	zxid_parse_conf(zxbus_cf, (*argv)[0]);
+	continue;
       case 'y':
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
@@ -537,6 +557,7 @@ void* thread_loop(void* _shf)
 /* ============== M A I N ============== */
 
 pthread_mutexattr_t MUTEXATTR_DECL;
+extern int zxid_suppress_vpath_warning;
 
 /* Called by: */
 int main(int argc, char** argv, char** env)
@@ -581,8 +602,11 @@ int main(int argc, char** argv, char** env)
   }
 #endif
   
-  /*openlog("zxbusd", LOG_PID, LOG_LOCAL0);     Do we want syslog logging? */
+  zxid_suppress_vpath_warning = 1;
+  zxbus_cf = zxid_new_conf_to_cf("PATH=" ZXBUS_PATH);
+  /*openlog("zxbusd", LOG_PID, LOG_LOCAL0);     *** Do we want syslog logging? */
   opt(&argc, &argv, &env);
+  zxbus_path = zxbus_cf->path;
 
   /*if (stats_prefix) init_cmdline(argc, argv, env, stats_prefix);*/
   CMDLINE("init");

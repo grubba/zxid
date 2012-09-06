@@ -88,7 +88,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
 
 /*() Frontend to hi_send1() which uses hi_send0() to send one segment message. */
 
-/* Called by:  hi_sendf, http_send_err, stomp_cmd_ni, stomp_err, test_ping_reply */
+/* Called by:  http_send_err, test_ping_reply */
 void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp)
 {
   hi_send1(hit, io, parent, req, resp, resp->need, resp->m);
@@ -96,7 +96,7 @@ void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct
 
 /*() Uses hi_send0() to send one segment message. */
 
-/* Called by:  hi_send, smtp_resp_wait_250_from_ehlo, smtp_resp_wait_354_from_data, smtp_send */
+/* Called by:  hi_send, hi_sendf, smtp_resp_wait_250_from_ehlo, smtp_resp_wait_354_from_data, smtp_send */
 void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0)
 {
   resp->n_iov = 1;
@@ -143,7 +143,7 @@ void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
  * Uses underlying machiner of hi_send0().
  * *** As req argument is entirely lacking, this must be to send unsolicited responses. */
 
-/* Called by:  hi_accept, smtp_data, smtp_ehlo, smtp_mail_from x2, smtp_rcpt_to x3, smtp_resp_wait_220_greet, smtp_resp_wait_250_msg_sent, stomp_got_disc, stomp_got_login, stomp_got_send x2 */
+/* Called by:  hi_accept_book, smtp_data, smtp_ehlo, smtp_mail_from x2, smtp_rcpt_to x3, smtp_resp_wait_220_greet, smtp_resp_wait_250_msg_sent, stomp_cmd_ni, stomp_err, stomp_got_login, stomp_got_send, stomp_msg_deliver, stomp_send_receipt */
 void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, char* fmt, ...)
 {
   va_list pv;
@@ -163,7 +163,7 @@ void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
  * The only consumer of the io->to_write_consume queue.
  * Must only be called with io->qel.mut held. */
 
-/* Called by:  hi_make_iov, hi_in_out */
+/* Called by:  hi_in_out, hi_make_iov */
 void hi_make_iov_nolock(struct hi_io* io)
 {
   struct hi_pdu* pdu;
@@ -208,7 +208,7 @@ static void hi_make_iov(struct hi_io* io)
  * c. possibility of sending a response before processing of request itself has ended
  */
 
-/* Called by:  hi_clear_iov */
+/* Called by:  hi_clear_iov, stomp_got_ack x2, stomp_got_nack */
 void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
 {
   struct hi_pdu* pdu = resp->req->reals;
@@ -237,7 +237,7 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
 /*() Free a request, and transitively its real consequences (response, subrequests, etc.).
  * May be called either because individual resp was done, or because of connection close. */
 
-/* Called by:  hi_close x2, hi_free_req_fe */
+/* Called by:  hi_close x2, hi_free_req_fe, stomp_got_ack, stomp_got_nack, stomp_msg_deliver */
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
 {
   struct hi_pdu* pdu;

@@ -89,7 +89,7 @@ char* dimddir;
 char* uiddir;
 zxid_conf* cf = 0;
 
-/* Called by:  main x9, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x9, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   int len;
@@ -559,6 +559,7 @@ static int zxid_lscot(zxid_conf* cf, int col_swap, const char* dcot)
 #ifndef zxcot_main
 #define zxcot_main main
 #endif
+extern int zxid_suppress_vpath_warning;
 
 /*() Circle of Trust management tool */
 
@@ -566,6 +567,7 @@ static int zxid_lscot(zxid_conf* cf, int col_swap, const char* dcot)
 int zxcot_main(int argc, char** argv, char** env)
 {
   strncpy(zx_instance, "\tzxcot", sizeof(zx_instance));
+  zxid_suppress_vpath_warning = 1;
   cf = zxid_new_conf_to_cf(0);
 
   opt(&argc, &argv, &env);

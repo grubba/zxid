@@ -41,7 +41,7 @@
 
 /*() ZX implementation of memmem(3) for platforms that do not have this. */
 
-/* Called by:  covimp_test, extract_a_sym x2, locate_buffers x2, zxid_call_trustpdp, zxid_di_query x2, zxid_map_sec_mech x3, zxid_mk_ent x5 */
+/* Called by:  covimp_test, extract_a_sym x2, locate_buffers x2, zxbus_load_acks, zxid_call_trustpdp, zxid_di_query x2, zxid_map_sec_mech x3, zxid_mk_ent x5 */
 char* zx_memmem(const char* haystack, int haystack_len, const char* needle, int needle_len)
 {
   const char* lim = haystack + haystack_len - needle_len;
