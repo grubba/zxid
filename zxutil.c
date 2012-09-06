@@ -108,13 +108,13 @@ fdtype vopen_fd_from_path(int flags, int mode, const char* logkey, int reperr, c
     char err_buf[PATH_MAX];
     if (reperr && logkey[0] != '-') {
       perror("open (vopen_fd_from_path)");
-      ERR("File(%s) not found lk(%s) errno=%d err(%s). flags=0x%x, euid=%d egid=%d cwd(%s)", buf, logkey, errno, STRERROR(errno), flags, geteuid(), getegid(), getcwd(err_buf, sizeof(err_buf)));
+      ERR("%s: File(%s) not found errno=%d err(%s). flags=0x%x %o, euid=%d egid=%d cwd(%s)", logkey, buf, errno, STRERROR(errno), flags, flags, geteuid(), getegid(), getcwd(err_buf, sizeof(err_buf)));
     } else {
-      D("File(%s) not found lk(%s) errno=%d err(%s). flags=0x%x, euid=%d egid=%d cwd(%s)", buf, logkey, errno, STRERROR(errno), flags, geteuid(), getegid(), getcwd(err_buf, sizeof(err_buf)));
+      D("%s: File(%s) not found errno=%d err(%s). flags=0x%x, euid=%d egid=%d cwd(%s)", logkey, buf, errno, STRERROR(errno), flags, geteuid(), getegid(), getcwd(err_buf, sizeof(err_buf)));
     }
     return BADFD;
   } else {
-    D("File(%s) opened lk(%s) flags=0x%x", buf, logkey, flags);
+    D("%s: Opened(%s) flags=0x%x", logkey, buf, flags);
   }
   return fd;
 }

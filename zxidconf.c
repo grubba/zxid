@@ -118,23 +118,31 @@ EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
   if (p = strstr(buf, PEM_RSA_PRIV_KEY_START)) {
     typ = EVP_PKEY_RSA;
     e = PEM_RSA_PRIV_KEY_END;
+    p += sizeof(PEM_RSA_PRIV_KEY_START) - 1;
   } else if (p = strstr(buf, PEM_DSA_PRIV_KEY_START)) {
     typ = EVP_PKEY_DSA;
     e = PEM_DSA_PRIV_KEY_END;
+    p += sizeof(PEM_DSA_PRIV_KEY_START) - 1;
   } else if (p = strstr(buf, PEM_PRIV_KEY_START)) {  /* Not official format, but sometimes seen. */
     typ = EVP_PKEY_RSA;
     e = PEM_PRIV_KEY_END;
+    p += sizeof(PEM_PRIV_KEY_START) - 1;
   } else {
     ERR("No private key found in file(%s). Looking for separator (%s) or (%s).\npem data(%s)", name, PEM_RSA_PRIV_KEY_START, PEM_DSA_PRIV_KEY_START, buf);
     return 0;
   }
-  p += sizeof(PEM_RSA_PRIV_KEY_START) - 1;
   if (*p == 0xd) ++p;
-  if (*p != 0xa) { ERR("Bad cert missing newline ch(%x)", *p); return 0; }
+  if (*p != 0xa) {
+    ERR("Bad privkey missing newline ch(0x%x) at %d (%.*s) of buf(%s)", *p, p-buf, 5, p-2, buf);
+    return 0;
+  }
   ++p;
 
   e = strstr(buf, e);
-  if (!e) return 0;
+  if (!e) {
+    ERR("End marker not found, typ=%d", typ);
+    return 0;
+  }
   
   p = unbase64_raw(p, e, buf, zx_std_index_64);
   if (!d2i_PrivateKey(typ, &pk, (const unsigned char**)&buf, p-buf) || !pk) {

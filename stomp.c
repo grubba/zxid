@@ -12,6 +12,7 @@
  *
  * STOMP 1.1 frame is considered a PDU and consists of
  *
+ *   \n              -- zero, or more in case of heart beats
  *   COMMAND\n       -- lines end in LF (not CRLF)
  *   header:value\n  -- zero or more
  *   \n              -- blank line separates headers and body
@@ -68,6 +69,8 @@ static struct hi_pdu* stomp_encode_start(struct hi_thr* hit)
 }
 #endif
 
+/*() Send ERROR to remote client. */
+
 /* Called by:  stomp_decode x2, stomp_got_login, zxbus_persist x6 */
 int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const char* ecode, const char* emsg)
 {
@@ -79,11 +82,14 @@ int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const ch
     len = 1;
     rcpt = "-";
   }
+  ERR("%s", emsg);
   hi_sendf(hit, io, 0, req, "ERROR\nmessage:%s\nreceipt-id:%.*s\ncontent-type:text/plain\ncontent-length:%d\n\n%s%c", ecode, len, rcpt, strlen(emsg), emsg, 0);
   return HI_CONN_CLOSE;
 }
 
 #define CMD_NI_MSG "Command(%.*s) not implemented by server."
+
+/*() Send not implemented ERROR to remote client. */
 
 /* Called by:  stomp_decode x7, stomp_got_unsubsc */
 static int stomp_cmd_ni(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const char* cmd)
@@ -97,15 +103,19 @@ static int stomp_cmd_ni(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req
     len = 1;
     rcpt = "-";
   }
-  hi_sendf(hit, io, 0, req, "ERROR\nmessage:command not implemented by server\nreceipt-id:%.*s\ncontent-type:text/plain\ncontent-length:%d\n\n" CMD_NI_MSG "%c", len, rcpt, sizeof(CMD_NI_MSG)-3+(nl-cmd), (nl-cmd), cmd, 0);
+  ERR(CMD_NI_MSG, nl-cmd, cmd);
+  hi_sendf(hit, io, 0, req, "ERROR\nmessage:command not implemented by server\nreceipt-id:%.*s\ncontent-type:text/plain\ncontent-length:%d\n\n" CMD_NI_MSG "%c", len, rcpt, sizeof(CMD_NI_MSG)-3+(nl-cmd), nl-cmd, cmd, 0);
   return HI_CONN_CLOSE;
 }
+
+/*() Got ERROR from remote client. */
 
 /* Called by:  stomp_decode */
 static int stomp_got_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   //struct hi_pdu* resp = stomp_encode_start(hit);
   /*hi_sendv(hit, io, 0, req, resp, len, resp->m, size, req->m + len);*/
+  ERR("remote sent error(%.*s)", req->ap-req->m, req->m);
   return HI_CONN_CLOSE;
 }
 
@@ -320,7 +330,8 @@ void stomp_parse_header(struct hi_pdu* req, char* hdr, char* val)
       req->need = req->ad.stomp.len + val - req->m + 3;  /* not accurate if more headers follow, but fix below */
     }
     DD("len=%d need=%d (%.*s)", req->ad.stomp.len, req->need, val-hdr-1, hdr);
-  } else if (!memcmp(hdr, "content-type:", sizeof("content-type:"))) { /* ignore */
+  } else if (!memcmp(hdr, "content-type:", sizeof("content-type:")-1)) { /* ignore */
+  } else if (!memcmp(hdr, "message:", sizeof("message:")-1)) { /* ignore */
   HDR("receipt:",        receipt,   val);
   HDR("destination:",    dest,      val);
   HDR("zx-rcpt-sig:",    zx_rcpt_sig, val);

@@ -279,9 +279,9 @@ void zxbus_sched_pending_delivery(struct hi_thr* hit, const char* dest)
   
   while (de = readdir(dir))
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') { /* ign hidden&backup */
-      pdu = hi_pdu_alloc(hit, "pending bitch");
+      pdu = hi_pdu_alloc(hit, "pend-bitch");
       pdu->qel.kind = HI_PDU_DIST;
-      pdu->ap += read_all(pdu->lim - pdu->ap, pdu->ap, "pending-bitch", 1,
+      pdu->ap += read_all(pdu->lim - pdu->ap, pdu->ap, "pend-bitch", 1,
 			  "%s" ZXID_CH_DIR "%s/%s", zxbus_path, dest, de->d_name);
 
       if (stomp_parse_pdu(pdu))
@@ -293,9 +293,9 @@ void zxbus_sched_pending_delivery(struct hi_thr* hit, const char* dest)
       pdu->ad.delivb.nacks = 0;
 
       //  | O_DIRECT  -- seems to give alignment problems, i.e. 22 EINVAL Invalid Argument
-      pdu->ad.delivb.ack_fd = open_fd_from_path(O_CREAT | O_RDWR | O_APPEND | O_SYNC, 0666, "pending", 1, "%s" ZXID_CH_DIR "%s/.ack/%s", zxbus_path, dest, de->d_name);
+      pdu->ad.delivb.ack_fd = open_fd_from_path(O_CREAT | O_RDWR | O_APPEND | O_SYNC, 0666, "pend", 1, "%s" ZXID_CH_DIR "%s/.ack/%s", zxbus_path, dest, de->d_name);
       zxbus_load_acks(hit, pdu, pdu->ad.delivb.ack_fd);
-      hi_todo_produce(hit->shf, &pdu->qel, "pending-bitch");
+      hi_todo_produce(hit->shf, &pdu->qel, "pend-bitch");
     }
   closedir(dir);
 }

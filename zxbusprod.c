@@ -481,7 +481,8 @@ int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
       HDR("message-id:",     msg_id,    v);
       HDR("destination:",    dest,      v);
       HDR("heart-beat:",     heart_bt,  v);
-      } else if (!memcmp(h, "content-type:", sizeof("content-type:"))) { /* ignore */
+      } else if (!memcmp(h, "message:", sizeof("message:")-1)) { /* ignore */
+      } else if (!memcmp(h, "content-type:", sizeof("content-type:")-1)) { /* ignore */
       } else {
         D("Unknown header(%.*s) ignored.", p-h, h);
       }
