@@ -792,7 +792,7 @@ void zxbus_close_all(zxid_conf* cf)
 int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const char* body, const char* fmt, ...)
 {
   va_list ap;
-  int len, zx_rcpt_sig_len, ver;
+  int len, siglen, ver;
   char buf[1024];
   struct stomp_hdr stomp;
   
@@ -815,13 +815,13 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 	bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
 	D("%.*s got RECEIPT %d", 4, buf, bu->cur_rcpt-1);
 
-	zx_rcpt_sig_len = stomp.zx_rcpt_sig ? (strchr(stomp.zx_rcpt_sig, '\n') - stomp.zx_rcpt_sig) : 0;
+	siglen = stomp.zx_rcpt_sig ? (strchr(stomp.zx_rcpt_sig, '\n') - stomp.zx_rcpt_sig) : 0;
 
 	ver = zxbus_verify_receipt(cf, bu->eid,
-				   zx_rcpt_sig_len, zx_rcpt_sig_len?stomp.zx_rcpt_sig:"",
+				   siglen, zx_rcpt_sig_len?stomp.zx_rcpt_sig:"",
 				   body_len, body);
 	if (ver != ZXSIG_OK) {
-	  ERR("RECEIPT signature validation failed: %d", ver);
+	  ERR("RECEIPT signature validation failed: %d sig(%.*s) body(%.*s)", ver, siglen, siglen?stomp.zx_rcpt_sig:"", body_len, body);
 	  return 0;
 	}
 

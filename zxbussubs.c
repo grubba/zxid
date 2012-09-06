@@ -192,7 +192,7 @@ int zxbus_subscribe(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   ent = io->ent;
   UNLOCK(io->qel.mut, "login");
   if (!ent) {
-    ERR("No entity assiciated with io_%p", io);
+    ERR("No entity associated with io_%p", io);
     return 0;
   }
   

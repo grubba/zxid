@@ -874,7 +874,10 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int body_l
   if (zbuf)
     ZX_FREE(cf->ctx, zbuf);
   ZX_FREE(cf->ctx, buf);
-  D("zx-rcpt-sig(%s) %x %x", sigbuf, cf->bus_rcpt, cf->bus_rcpt & 0x06);
+  if (zx_debug>1)
+    D("zx-rcpt-sig(%s) body(%.*s) %x %x", sigbuf, body_len, body, cf->bus_rcpt, cf->bus_rcpt&0x06);
+  else
+    D("zx-rcpt-sig(%s) %x %x", sigbuf, cf->bus_rcpt, cf->bus_rcpt & 0x06);
   return sigbuf;
 }
 

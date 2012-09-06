@@ -130,7 +130,7 @@ int zx_pw_chk(const char* uid, const char* pw_buf, const char* passw)
       return 0;
     }
   }
-  INFO("Login account(%s) ok", uid);
+  INFO("Login OK account(%s)", uid);
   return 1;
 }
 

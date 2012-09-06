@@ -144,7 +144,9 @@ static void stomp_send_receipt(struct hi_thr* hit, struct hi_io* io, struct hi_p
 /* Called by:  stomp_decode */
 static int stomp_got_login(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
-  /* *** add login checks */
+  if (!req->ad.stomp.login)
+    return stomp_err(hit, io, req, "login fail", "No login header supplied (client error). zxbusd(8) requires login header whose value is the EntityID of the connecting client.");
+  
   if (zxbus_login_ent(hit, io, req)) {
     io->ad.stomp.state = STOMP_CONN;
     hi_sendf(hit, io, 0, req, "CONNECTED\nversion:1.1\nserver:zxbusd-1.x\n\n%c", 0);

@@ -73,7 +73,6 @@ struct hi_ent* zxbus_new_ent(struct hiios* shf, int len, const char* eid)
 /* Called by:  zxbus_load_acks, zxbus_load_ch_subs, zxbus_login_ent */
 struct hi_ent* zxbus_load_ent(struct hiios* shf, int len, const char* eid)
 {
-  char* p;
   char eid_buf[256];
   char sha1_name[28];
   char u_path[ZXID_MAX_BUF];
@@ -98,9 +97,6 @@ struct hi_ent* zxbus_load_ent(struct hiios* shf, int len, const char* eid)
   memcpy(eid_buf, eid, len);
   eid_buf[len] = 0;
   
-  for (p = eid_buf; *p; ++p)   /* Undo STOMP 1.1 : forbidden escaping */
-    if (*p == '|')
-      *p = ':';
   sha1_safe_base64(sha1_name, len, eid_buf);
   sha1_name[27] = 0;
 
@@ -120,23 +116,20 @@ struct hi_ent* zxbus_load_ent(struct hiios* shf, int len, const char* eid)
 /*() Perform zxbus specifics to call generic zx_pw_authn() */
 
 /* Called by:  zxbus_login_ent */
-static int zxbus_pw_authn_ent(int len, const char* eid, const char* passw)
+static int zxbus_pw_authn_ent(const char* eid, const char* passw)
 {
   char sha1_name[28];
   char eid_buf[256];
   char pw_buf[256];
-  char* p;
+  int len = strlen(eid);
 
   if (len > sizeof(eid_buf)-2) {
-    ERR("Entity ID too long (%.*s) len=%d", len, eid, len);
+    ERR("Entity ID too long (%s) len=%d", eid, len);
     return 0;
   }
   memcpy(eid_buf, eid, len);
   eid_buf[len] = 0;
   
-  for (p = eid_buf; *p; ++p)   /* Undo STOMP 1.1 : forbidden escaping */
-    if (*p == '|')
-      *p = ':';
   sha1_safe_base64(sha1_name, len, eid_buf);
   sha1_name[27] = 0;
   
@@ -169,25 +162,33 @@ static int zxbus_pw_authn_ent(int len, const char* eid, const char* passw)
 /* Called by:  stomp_got_login */
 int zxbus_login_ent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
+  char* p;
+  char* login = req->ad.stomp.login;
   struct hi_ent* ent;
-  int len = strchr(req->ad.stomp.login, '\n') - req->ad.stomp.login;
-  D("login_ent(%.*s) len=%d", len, req->ad.stomp.login, len);
+  int eidlen;
+  eidlen = strchr(login, '\n') - login;
+  login[eidlen] = 0; /* nul term */
+  D("login_ent(%s) eidlen=%d", login, eidlen);
+  for (p = login; *p; ++p)   /* Undo STOMP 1.1 forbidden ':' escaping */
+    if (*p == '|')
+      *p = ':';
+  D("login_ent(%s) eidlen=%d - unescaped", login, eidlen);
 
   LOCK(hit->shf->ent_mut, "login");
-  if (!(ent = zxbus_load_ent(hit->shf, len, req->ad.stomp.login))) {
+  if (!(ent = zxbus_load_ent(hit->shf, eidlen, login))) {
     if (hit->shf->anonlogin) {
-      ent = zxbus_new_ent(hit->shf, len, req->ad.stomp.login);
+      ent = zxbus_new_ent(hit->shf, eidlen, login);
       INFO("Anon login eid(%s)", ent->eid);
       /* *** consider persisting the newly created account */
     } else {
       UNLOCK(hit->shf->ent_mut, "login-fail");
-      ERR("Login account(%.*s) does not exist and no anon login", len, req->ad.stomp.login);
+      ERR("Login account(%s) does not exist and no anon login", login);
       return 0;
     }
   }
 
   if (req->ad.stomp.pw) {
-    if (!zxbus_pw_authn_ent(len, req->ad.stomp.login, req->ad.stomp.pw)) {
+    if (!zxbus_pw_authn_ent(login, req->ad.stomp.pw)) {
       UNLOCK(hit->shf->ent_mut, "login-fail3");
       return 0;
     }
