@@ -177,7 +177,7 @@ int read_all_fd(fdtype fd, char* p, int want, int* got_all)
  * logkey:: Logging key to help debugging
  * reperr:: Whether to report an error (flag)
  * name_fmt:: Format string for building file name
- * return:: actual total length. The buffer will always be nul terminated. */
+ * return:: actual total length. The buffer will always be nul terminated. Zero on failure. */
 
 /* Called by:  authn_user x3, covimp_test, list_user x2, list_users, main, opt x10, test_mode x2, zx_get_symkey, zx_pw_authn, zx_yubikey_authn x2, zxbus_sched_pending_delivery, zxid_check_fed, zxid_get_ses, zxid_get_user_nameid, zxid_idp_map_nid2uid, zxid_lscot_line, zxid_nidmap_do, zxid_ps_accept_invite, zxid_ps_finalize_invite, zxid_read_cert, zxid_read_private_key, zxid_template_page_cf */
 int read_all(int maxlen, char* buf, const char* logkey, int reperr, const char* name_fmt, ...)

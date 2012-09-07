@@ -9,8 +9,9 @@
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id$
  *
- * 17.8.2012,  creted, based on zxlog.c --Sampo
+ * 17.8.2012, creted, based on zxlog.c --Sampo
  * 19.8.2012, added tolerance for CRLF where strictly LF is meant --Sampo
+ * 6.9.2012,  added SSL support --Sampo
  *
  * Apart from formatting code, this is effectively a STOMP 1.1 client. Typically
  * it will talk to zxbusd instances configured using BUS_URL options.
@@ -38,6 +39,7 @@
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
 #include <openssl/aes.h>
+#include <openssl/ssl.h>
 #endif
 
 #include "errmac.h"
@@ -64,6 +66,7 @@
 #define STOMP_MIN_PDU_SIZE (sizeof("ACK\n\n\0\n")-1)
 extern int verbose;    /* This is defined by option processing in zxbustailf */
 
+#define SSL_ENCRYPTED_HINT "TLS or SSL connection wanted but other end did not speak protocol.\n"
 #define ZXBUS_TIME_FMT "%04d%02d%02d-%02d%02d%02d.%03ld"
 #define ZXBUS_TIME_ARG(t,usec) t.tm_year + 1900, t.tm_mon + 1, t.tm_mday, \
                                t.tm_hour, t.tm_min, t.tm_sec, usec/1000
@@ -375,7 +378,8 @@ static int zxbus_fmt(zxid_conf* cf,   /* 1 */
 #endif
 
 /*() Read and parse a frame from STOMP 1.1 connection (from zxbusd).
- * Blocks until frame has been read. Returns 1 on success, 0 on failure.
+ * Blocks until frame has been read.
+ * Return:: 1 on success, 0 on failure.
  * In case of failure, caller should close the connection. The PDU
  * data is left in bu->buf, possibly with the following pdu as well. The
  * caller should clean the buffer without loosing the next pdu
@@ -403,11 +407,28 @@ int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
   memset(stomp, 0, sizeof(struct stomp_hdr));
 
   while (bu->ap - bu->buf < ZXBUS_BUF_SIZE) {
+#ifdef USE_OPENSSL
+    if (bu->ssl) {
+      got = SSL_read(bu->ssl, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->buf));
+      if (got < 0) {
+	ERR("recv: %d %s", errno, STRERROR(errno));
+	zx_report_openssl_error("zxbus_read-ssl");
+	return 0;
+      }
+    } else {
+      got = recv(bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->buf), 0);
+      if (got < 0) {
+	ERR("recv: %d %s", errno, STRERROR(errno));
+	return 0;
+      }
+    }
+#else
     got = recv(bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->buf), 0);
     if (got < 0) {
       ERR("recv: %d %s", errno, STRERROR(errno));
       return 0;
     }
+#endif
     if (!got) {
       D("recv: returned empty, gotten=%d", (bu->ap - bu->buf));
       return 0;
@@ -546,7 +567,12 @@ int zxbus_ack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stom
   zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, stompp->len, stompp->body);
   len = snprintf(buf, sizeof(buf), "ACK\nsubscription:%.*s\nmessage-id:%.*s\nzx-rcpt-sig:%s\n\n%c",
 		 subs_id_len, stompp->subs_id, msg_id_len, stompp->msg_id, sigbuf, 0);
-  send_all_socket(bu->fd, buf, len);
+#ifdef USE_OPENSSL
+  if (bu->ssl)
+    SSL_write(bu->ssl, buf, len);
+  else
+#endif
+    send_all_socket(bu->fd, buf, len);
   return 1;
 }
 
@@ -583,13 +609,20 @@ char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
   }
 }
 
+//int zxbus_cert_verify_cb(X509_STORE_CTX* st_ctx, void* arg) {  zxid_conf* cf = arg;  return 0; }
+
 /*() Open a bus_url, i.e. STOMP 1.1 connection to zxbusd.
  * return:: 0 on failure, 1 on success. */
 
 /* Called by:  zxbus_send_cmd, zxbuslist_main */
 int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
 {
-  int len;
+#ifdef USE_OPENSSL
+  X509* peer_cert;
+  zxid_entity* meta;
+#endif
+  long vfy_err;
+  int len,tls;
   char buf[1024];
   struct zx_str* eid;
   struct hostent* he;
@@ -621,9 +654,9 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   }
   
   if (!memcmp(proto, "stomps:", sizeof("stomps:")-1)) {
-    bu->tls = 1;
+    tls = 1;
   } else if (!memcmp(proto, "stomp:", sizeof("stomp:")-1)) {
-    bu->tls = 0;
+    tls = 0;
   } else {
     ERR("Unknown protocol(%.*s)", 6, proto);
     return 0;
@@ -631,7 +664,7 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   
   port = strchr(host, ':');
   if (!port) {
-    port = bu->tls ? ":2229/" : ":2228/";  /* ZXID default ports for stomps: and plain stomp: */
+    port = tls ? ":2229/" : ":2228/";  /* ZXID default ports for stomps: and plain stomp: */
     local = strchr(host, '/');
     if (!local) {
       qs = strchr(host, '?');
@@ -682,14 +715,109 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
 
   D("connecting(%x) hs(%s)", bu->fd, bu->s);
   if ((connect(bu->fd, (struct sockaddr*)&sin, sizeof(sin)) == -1) && (errno != EINPROGRESS)) {
-    int myerrno = errno;
-    close(bu->fd);
-    ERR("Connection to %s failed: %d %s", bu->s, myerrno, STRERROR(myerrno));
-    bu->fd = 0;
-    return 0;
+    ERR("Connection to %s failed: %d %s", bu->s, errno, STRERROR(errno));
+    goto errout;
   }
   
   D("connected(%x) at TCP layer hs(%s)", bu->fd, bu->s);
+
+  if (tls) {
+#ifdef USE_OPENSSL
+    if (!cf->ssl_ctx) {
+      SSL_load_error_strings();
+      SSL_library_init();
+      cf->ssl_ctx = SSL_CTX_new(SSLv23_method());
+    }
+    if (!cf->ssl_ctx) {
+      ERR("TLS/SSL connection to(%s) can not be made. SSL context initialization problem", bu->s);
+      zx_report_openssl_error("open_bus_url-ssl_ctx");
+      goto errout;
+    } else {
+      SSL_CTX_set_mode(cf->ssl_ctx, SSL_MODE_AUTO_RETRY);  /* R/W only return when complete. */
+      /* Verification strategy: do not attempt verification at SSL layer. Instead
+       * check the result afterwards against metadata based cert. */
+      SSL_CTX_set_verify(cf->ssl_ctx, SSL_VERIFY_NONE,0);
+      //SSL_CTX_set_verify(cf->ssl_ctx, SSL_VERIFY_PEER,0);
+      //SSL_CTX_set_cert_verify_callback(cf->ssl_ctx, zxbus_cert_verify_cb, cf);
+      /*SSL_CTX_load_verify_locations() SSL_CTX_set_client_CA_list(3) SSL_CTX_set_cert_store(3) */
+      LOCK(cf->mx, "logenc wrln");
+      if (!cf->enc_cert)
+	cf->enc_cert = zxid_read_cert(cf, "enc-nopw-cert.pem");
+      if (!cf->enc_pkey)
+	cf->enc_pkey = zxid_read_private_key(cf, "enc-nopw-cert.pem");
+      UNLOCK(cf->mx, "logenc wrln");
+      if (!SSL_CTX_use_certificate(cf->ssl_ctx, cf->enc_cert)) {
+	ERR("TLS/SSL connection to(%s) can not be made. SSL certificate problem", bu->s);
+	zx_report_openssl_error("open_bus_url-cert");
+	goto errout;
+      }
+      if (!SSL_CTX_use_PrivateKey(cf->ssl_ctx, cf->enc_pkey)) {
+	ERR("TLS/SSL connection to(%s) can not be made. SSL private key problem", bu->s);
+	zx_report_openssl_error("open_bus_url-privkey");
+	goto errout;
+      }
+      if (!SSL_CTX_check_private_key(cf->ssl_ctx)) {
+	ERR("TLS/SSL connection to(%s) can not be made. SSL certificate-private key consistency problem", bu->s);
+	zx_report_openssl_error("open_bus_url-chk-privkey");
+	goto errout;
+      }
+      /*SSL_CTX_add_extra_chain_cert(cf->ssl_ctx, ca_cert);*/
+    }
+    bu->ssl = SSL_new(cf->ssl_ctx);
+    if (!bu->ssl) {
+      ERR("TLS/SSL connection to(%s) can not be made. SSL object initialization problem", bu->s);
+      zx_report_openssl_error("open_bus_url-ssl");
+      goto errout;
+    }
+    if (!SSL_set_fd(bu->ssl, bu->fd)) {
+      ERR("TLS/SSL connection to(%s) can not be made. SSL fd(%x) initialization problem", bu->s, bu->fd);
+      zx_report_openssl_error("open_bus_url-set_fd");
+      goto sslerrout;
+    }
+    
+    switch (vfy_err = SSL_get_error(bu->ssl, SSL_connect(bu->ssl))) {
+    case SSL_ERROR_NONE: break;
+      /*case SSL_ERROR_WANT_ACCEPT:  documented, but undeclared */
+    case SSL_ERROR_WANT_READ:
+    case SSL_ERROR_WANT_CONNECT:
+    case SSL_ERROR_WANT_WRITE:
+    default:
+      ERR("TLS/SSL connection to(%s) can not be made. SSL connect or handshake problem (%d)", bu->s, vfy_err);
+      zx_report_openssl_error("open_bus_url-ssl_connect");
+      write(bu->fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1);
+      goto sslerrout;
+    }
+
+    if ((vfy_err = SSL_get_verify_result(bu->ssl)) != X509_V_OK) {
+      ERR("TLS/SSL connection to(%s) made, but certificate not acceptable. (%d)",bu->s,vfy_err);
+      zx_report_openssl_error("open_bus_url-verify_res");
+      goto sslerrout;
+    }
+    if (!(peer_cert = SSL_get_peer_certificate(bu->ssl))) {
+      ERR("TLS/SSL connection to(%s) made, but peer did not send certificate", bu->s);
+      zx_report_openssl_error("open_bus_url-peer_cert");
+      goto sslerrout;
+    }
+    meta = zxid_get_ent(cf, eid);
+    if (!meta) {
+      ERR("Unable to find metadata for eid(%s) in verify peer cert", eid);
+      goto sslerrout;
+    }
+    if (!meta->enc_cert) {
+      ERR("Metadata for eid(%s) does not contain enc cert", eid);
+      goto sslerrout;
+    }
+    if (!X509_cmp(meta->enc_cert, peer_cert)) {
+      ERR("Peer certificate does not match metadata for eid(%s)", eid);
+      goto sslerrout;
+    }
+    /* *** should we free peer_cert? */
+    /*SSL_get_verify_result(bu->ssl); no need as SSL_VERIFY_PEER causes SSL_connect() to fail. */
+#else
+    ERR("TLS/SSL connection to(%s) can not be made. SSL not compiled in", bu->s);
+    goto errout;
+#endif
+  }
 
   eid = zxid_my_ent_id(cf);
   if (!eid)
@@ -703,7 +831,12 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   } else {
     len = snprintf(buf, sizeof(buf)-1, "STOMP\naccept-version:1.1\nhost:%s\nlogin:%.*s\n\n%c", bu->buf, eid->len, eid->s, 0);
   }
-  send_all_socket(bu->fd, buf, len);
+#ifdef USE_OPENSSL
+  if (bu->ssl)
+    SSL_write(bu->ssl, buf, len);
+  else
+#endif
+    send_all_socket(bu->fd, buf, len);
 
   memset(&stomp, 0, sizeof(struct stomp_hdr));
   if (zxbus_read(cf, bu, &stomp)) {
@@ -715,9 +848,18 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
       return 1;
     }
   }
+  ERR("Connection to %s failed. Other end did not send CONNECTED", bu->s);
+#ifdef USE_OPENSSL
+ sslerrout:
+  if (bu->ssl) {
+    SSL_shutdown(bu->ssl);
+    SSL_free(bu->ssl);
+    bu->ssl = 0;
+  }
+#endif
+ errout:
   close(bu->fd);
   bu->fd = 0;
-  ERR("Connection to %s failed. Other end did not send CONNECTED", bu->s);
   return 0;
 }
 
@@ -750,14 +892,19 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
 	memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
 	bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
 	D("DISCONNECT got RECEIPT %d", bu->cur_rcpt-1);
+#ifdef USE_OPENSSL
+	if (bu->ssl) {
+	  SSL_shutdown(bu->ssl);
+	  SSL_free(bu->ssl);
+	  bu->ssl = 0;
+	}
+#endif
 	close(bu->fd);
 	bu->fd = 0;
 	return 1;
       } else {
-	close(bu->fd);
-	bu->fd = 0;
 	ERR("DISCONNECT to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1);
-	return 0;
+	goto errout;
       }
     } else {
       ERR("DISCONNECT to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, bu->ap - bu->buf, bu->buf);
@@ -765,6 +912,14 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
   } else {
     ERR("DISCONNECT to %s failed. Other end did not send RECEIPT. Read error.", bu->s);
   }
+ errout:
+#ifdef USE_OPENSSL
+  if (bu->ssl) {
+    SSL_shutdown(bu->ssl);
+    SSL_free(bu->ssl);
+    bu->ssl = 0;
+  }
+#endif
   close(bu->fd);
   bu->fd = 0;
   return 0;
@@ -802,11 +957,24 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
   va_start(ap, fmt);
   len = vsnprintf(buf, sizeof(buf), fmt, ap);
   va_end(ap);
+#ifdef USE_OPENSSL
+  if (bu->ssl) {
+    SSL_write(bu->ssl, buf, len);
+    if (body)
+      SSL_write(bu->ssl, body, body_len);
+    SSL_write(bu->ssl, "\0", 1);
+  } else {
+    send_all_socket(bu->fd, buf, len);
+    if (body)
+      send_all_socket(bu->fd, body, body_len);
+    send_all_socket(bu->fd, "\0", 1);
+  }
+#else
   send_all_socket(bu->fd, buf, len);
   if (body)
     send_all_socket(bu->fd, body, body_len);
   send_all_socket(bu->fd, "\0", 1);
-
+#endif
   memset(&stomp, 0, sizeof(struct stomp_hdr));
   if (zxbus_read(cf, bu, &stomp)) {
     if (!memcmp(bu->buf, "RECEIPT", sizeof("RECEIPT")-1)) {
@@ -830,10 +998,8 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 	}
 	return 1;  /* normal successful return */
       } else {
-	close(bu->fd);
-	bu->fd = 0;
 	ERR("Send to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d (%s)", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1, bu->buf);
-	return 0;
+	goto errout;
       }
     } else {
       ERR("Send to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, bu->ap - bu->buf, bu->buf);
@@ -841,6 +1007,14 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
   } else {
     ERR("Send to %s failed. Other end did not send RECEIPT. Read error.", bu->s);
   }
+ errout:
+#ifdef USE_OPENSSL
+  if (bu->ssl) {
+    SSL_shutdown(bu->ssl);
+    SSL_free(bu->ssl);
+    bu->ssl = 0;
+  }
+#endif
   close(bu->fd);
   bu->fd = 0;
   return 0;

@@ -336,6 +336,7 @@ struct zxid_conf {
   char  hmac_key[20];        /* sha1 hash of key data */
   EVP_PKEY*  log_sign_pkey;
   X509* log_enc_cert;
+  SSL_CTX* ssl_ctx;
 #endif
 };
 
@@ -558,8 +559,11 @@ struct zxid_bus_url {
   char* buf;            /* I/O buffer */
   char* ap;             /* How far the buffer is filled */
   int   cur_rcpt;       /* Rolling receipt ID */
-  char  tls;
   char  scalingpart;    /* Scaling partition number. */
+  char  pad1,pad2,pad3;
+#ifdef USE_OPENSSL
+  SSL*  ssl;
+#endif
 };
 
 /*(s) Attribute source definition */

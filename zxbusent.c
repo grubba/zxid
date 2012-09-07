@@ -56,6 +56,8 @@ extern char* zxbus_path;
 struct hi_ent* zxbus_new_ent(struct hiios* shf, int len, const char* eid)
 {
   struct hi_ent* ent;
+  if (len == -1)
+    len = strlen(eid);
   ZMALLOC(ent);
   ent->n = shf->ents;
   shf->ents = ent;
@@ -156,7 +158,12 @@ static int zxbus_pw_authn_ent(const char* eid, const char* passw)
  * in STOMP 1.1 login header) as username, you should follow these steps
  * 1. Run ./zxbuslist -c 'URL=https://sp.foo.com/' -dc to determine the entity ID
  * 2. Convert entity ID to SHA1 hash: ./zxcot -p 'http://sp.foo.com?o=B'
- * 3. Create the user: ./zxpasswd -new G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/ <passwd
+ * 3. Create the user: ./zxpasswd -a 'eid: http://sp.foo.com?o=B' -new G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/ <passwd
+ * 4. To enable ClientTLS authentication, determine the subject_hash of
+ *    the encryption certificate and symlink that to the main account:
+ *      > openssl x509 -subject_hash -noout </var/zxid/buscli/pem/enc-nopw-cert.pem
+ *      162553b8
+ *      > ln -s /var/zxid/bus/uid/G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/162553b8
  */
 
 /* Called by:  stomp_got_login */
@@ -193,9 +200,18 @@ int zxbus_login_ent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
       return 0;
     }
   } else {
-    UNLOCK(hit->shf->ent_mut, "login-fail5");
-    ERR("Login account(%s): no password supplied", ent->eid);
-    return 0;
+    /* This could be ClientTLS */
+    if (!hi_verify_peer_ssl_credential(hit, io, login) {
+      UNLOCK(hit->shf->ent_mut, "login-fail5");
+      ERR("Login account(%s): no password supplied and no ClientTLS match", ent->eid);
+      return 0;      
+    }
+    LOCK(io->qel.mut, "login-clienttls");
+    if (io->ent == ent && ent->io == io) {
+      D("ClientTLS confirmed by CONNECT eid(%s)", ent->eid);
+      goto loginok;
+    }
+    UNLOCK(io->qel.mut, "login-clienttls");
   }
   
   if (ent->io) {
@@ -216,8 +232,69 @@ int zxbus_login_ent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
     }
   }
   io->ent = ent;
+ loginok:
   UNLOCK(io->qel.mut, "login");
   UNLOCK(hit->shf->ent_mut, "login");
+  return 1;
+}
+
+/*() Login an entity using ClientTLS authentication, as evidenced
+ * by a hash of the certificate subject field.
+ * return:: zero on failure, 1 on success */
+
+int zxbus_login_subj_hash(struct hi_thr* hit, struct hi_io* io, unsigned long subj_hash)
+{
+  struct hi_ent* ent;
+  char* p;
+  char* eid;
+  char buf[1024];
+  
+  if (!read_all(sizeof(buf), buf, "ClientTLS login", 1,
+		"%s" ZXID_UID_DIR "/%lu/.bs/.at", zxbus_path, subj_hash)) {
+    ERR("Login by ClienTLS failed subj_hash(%lu). No such uid.", subj_hash);
+    return 0;
+  }
+  if (!(eid = strstr(buf, "eid: "))) {
+    ERR("Login by ClienTLS failed subj_hash(%lu). .bs/.at file does not specify eid", subj_hash);
+    return 0;
+  }
+  eid += sizeof("eid: ")-1;
+  if (p = strchr(eid, '\n'))
+    *p = 0;
+  
+  LOCK(hit->shf->ent_mut, "subj_hash");
+  if (!(ent = zxbus_load_ent(hit->shf, -1, eid))) {
+    if (hit->shf->anonlogin) {
+      ent = zxbus_new_ent(hit->shf, -1, eid);
+      INFO("Anon login eid(%s)", ent->eid);
+      /* *** consider persisting the newly created account */
+    } else {
+      UNLOCK(hit->shf->ent_mut, "subj_hash-fail");
+      ERR("Login account(%s) does not exist and no anon login", eid);
+      return 0;
+    }
+  }
+
+  if (ent->io) {
+    if (ent->io == io) {
+      NEVER("Entity has io already set to current io_%p", io);
+    } else {
+      NEVER("Entity has io already set to different io_%p", ent->io);
+    }
+  }
+  
+  ent->io = io;
+  LOCK(io->qel.mut, "subj_hash");
+  if (io->ent) {
+    if (io->ent == ent) {
+      NEVER("io has ent already set to current ent_%p", ent);
+    } else {
+      NEVER("io has ent already set to different ent_%p", ent);
+    }
+  }
+  io->ent = ent;
+  UNLOCK(io->qel.mut, "subj_hash");
+  UNLOCK(hit->shf->ent_mut, "subj_hash");
   return 1;
 }
 

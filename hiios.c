@@ -9,6 +9,7 @@
  *
  * 15.4.2006, created over Easter holiday --Sampo
  * 16.8.2012, modified license grant to allow use with ZXID.org --Sampo
+ * 6.9.2012,  added support for TLS and SSL --Sampo
  *
  * See http://pl.atyp.us/content/tech/servers.html for inspiration on threading strategy.
  *
@@ -52,6 +53,8 @@ extern int zx_debug;
 extern pthread_mutexattr_t MUTEXATTR_DECL;
 #endif
 
+#define SSL_ENCRYPTED_HINT "ERROR\nmessage:tls-needed\n\nTLS or SSL connection wanted but other end did not speak protocol.\n\0"
+
 const char* qel_kind[] = {
   "OFF0",
   "poll1",
@@ -72,6 +75,28 @@ void hi_hit_init(struct hi_thr* hit)
   memset(hit, 0, sizeof(struct hi_thr));
   hit->self = pthread_self();
 }
+
+#ifdef USE_OPENSSL
+//int zxbus_cert_verify_cb(X509_STORE_CTX* st_ctx, void* arg) {  zxid_conf* cf = arg;  return 0; }
+int zxbus_cert_verify_cb(int preverify_ok, X509_STORE_CTX* st_ctx)
+{
+  X509* err_cert = X509_STORE_CTX_get_current_cert(st_ctx);
+  int err;
+
+  if (preverify_ok)
+    return 1;  /* Always Good! */
+  err = X509_STORE_CTX_get_error(st_ctx);
+  D("verify err %d %s", err, );
+  if (ONE_OF_4(err,
+	       X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT,
+	       X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN,
+	       X509_V_ERR_UNABLE_TO_VERIFY_LEAF_SIGNATURE,
+	       X509_V_ERR_CERT_UNTRUSTED))
+    return 1;
+  ERR("verify fail %d %s", err, );
+  return 0;
+}
+#endif
 
 /*() Allocate io structure (connection) pool and global PDU
  * pool, from which per thread pools will be plensihed - see
@@ -132,6 +157,48 @@ struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch)
 
   shf->max_chs = nch;
   ZMALLOCN(shf->chs, sizeof(struct hi_ch) * shf->max_chs);
+
+#ifdef USE_OPENSSL
+  SSL_load_error_strings();
+  SSL_library_init();
+  shf->ssl_ctx = SSL_CTX_new(SSLv23_method());
+  if (!shf->ssl_ctx) {
+    ERR("SSL context initialization problem %d", 0);
+    zx_report_openssl_error("new_shuffler-ssl_ctx");
+    return 0;
+  }
+  /*SSL_CTX_set_mode(shf->ssl_ctx, SSL_MODE_AUTO_RETRY); R/W only return w/complete. We use nonblocking I/O. */
+
+  /* Verification strategy: do not attempt verification at SSL layer. Instead
+   * check the result afterwards against metadata based cert. However,
+   * we need to specify SSL_VERIFY_PEER to cause server to ask for ClientTLS.
+   * Normally this would cause the verification to happen, but we supply
+   * a callback that effectively causes verification to pass in any case,
+   * so that we postpone it to the moment when we see CONNECT. */
+  SSL_CTX_set_verify(shf->ssl_ctx, SSL_VERIFY_PEER | SSL_VERIFY_CLIENT_ONCE, zxbus_verify_cb);
+  //SSL_CTX_set_cert_verify_callback(shf->ssl_ctx, zxbus_cert_verify_cb, cf);
+
+  /*SSL_CTX_load_verify_locations() SSL_CTX_set_client_CA_list(3) SSL_CTX_set_cert_store(3) */
+  if (!zxbus_cf->enc_cert)
+    zxbus_cf->enc_cert = zxid_read_cert(zxbus_cf, "enc-nopw-cert.pem");
+  if (!zxbus_cf->enc_pkey)
+    zxbus_cf->enc_pkey = zxid_read_private_key(zxbus_cf, "enc-nopw-cert.pem");
+  if (!SSL_CTX_use_certificate(shf->ssl_ctx, zxbus_cf->enc_cert)) {
+    ERR("SSL certificate problem %d", 0);
+    zx_report_openssl_error("new_shuffler-cert");
+    return 0;
+  }
+  if (!SSL_CTX_use_PrivateKey(shf->ssl_ctx, zxbus_cf->enc_pkey)) {
+    ERR("SSL private key problem %d", 0);
+    zx_report_openssl_error("new_shuffler-privkey");
+    return 0;
+  }
+  if (!SSL_CTX_check_private_key(shf->ssl_ctx)) {
+    ERR("SSL certificate-private key consistency problem %d", 0);
+    zx_report_openssl_error("new_shuffler-chk-privkey");
+    return 0;
+  }
+#endif
   return shf;
 }
 
@@ -275,11 +342,10 @@ struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int p
 /*() Add file descriptor to poll */
 
 /* Called by:  hi_accept_book, hi_open_tcp, serial_init */
-struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind)
+struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
 {
-  struct hi_io* io = shf->ios + fd;  /* uniqueness of fd acts as mutual exclusion mechanism */
-  ASSERTOP(fd, <, shf->max_ios, fd);
-
+  ASSERTOP(fd, <, hit->shf->max_ios, fd);
+  
 #ifdef LINUX
   {
     struct epoll_event ev;
@@ -287,6 +353,12 @@ struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind)
     ev.data.ptr = io;
     if (epoll_ctl(shf->ep, EPOLL_CTL_ADD, fd, &ev)) {
       ERR("Unable to epoll_ctl(%d): %d %s", fd, errno, STRERROR(errno));
+#ifdef USE_OPENSSL
+      if (io->ssl) {
+	SSL_Free(io->ssl);
+	io->ssl = 0;
+      }
+#endif
       close(fd);
       return 0;
     }
@@ -299,6 +371,12 @@ struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind)
     pfd.events = POLLIN | POLLOUT | POLLERR | POLLHUP;
     if (write(shf->ep, &pfd, sizeof(pfd)) == -1) {
       ERR("Unable to write to /dev/poll fd(%d): %d %s", fd, errno, STRERROR(errno));
+#ifdef USE_OPENSSL
+      if (io->ssl) {
+	SSL_Free(io->ssl);
+	io->ssl = 0;
+      }
+#endif
       close(fd);
       return 0;
     }
@@ -306,10 +384,6 @@ struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind)
 #endif
 
   /* memset(io, 0, sizeof(struct hi_io)); *** MUST NOT clear as there are important fields like cur_pdu and lock initializations already set. All memory was zeroed in hi_new_shuff(). After that all changes should be field by field. */
-  io->fd = fd;
-  io->qel.kind = kind;
-  io->qel.proto = proto;
-  io->ent = 0;
   ASSERTOP(io->writing, ==, 0, io->writing);
   ASSERTOP(io->reading, ==, 0, io->reading);
   ASSERTOP(io->n_thr, ==, 0, io->n_thr);
@@ -320,25 +394,91 @@ struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind)
   ASSERT(io->cur_pdu);  /* cur_pdu is always set to some value */
   ASSERTOP(io->reqs, ==, 0, io->reqs);
   ASSERTOP(io->pending, ==, 0, io->pending);
+  io->ent = 0;          /* Not authenticated yet */
+  io->qel.kind = kind;
+  io->fd = fd;          /* This change marks the slot as used in the big table. */
   return io;
 }
+
+#ifdef USE_OPENSSL
+
+/*() Verify peer ClientTLS credential.
+ * If known peer, eid should be the eid of the peer and is used to look up
+ * the metadata if the peer.
+ * If unknown peer, pass NULL as eid, and a search will be done across all known
+ * entities.
+ * return:: 0 on error, 1 on success */
+
+static int hi_verify_peer_ssl_credential(struct hi_thr* hit, struct hi_io* io, const char* eid)
+{
+  //char subj[1024];
+  //X509_NAME* subject;
+  unsigned long subj_hash;
+  X509* peer_cert;
+  zxid_entity* meta;
+  long vfy_err;
+
+  if ((vfy_err = SSL_get_verify_result(io->ssl)) != X509_V_OK) {
+    ERR("TLS/SSL connection to(%s) made, but cert not acceptable. (%d)",eid,vfy_err);
+    zx_report_openssl_error("verify_res");
+    return 0;
+  }
+  if (!(peer_cert = SSL_get_peer_certificate(io->ssl))) {
+    ERR("TLS/SSL connection to(%s) made, but peer did not send certificate", eid);
+    zx_report_openssl_error("peer_cert");
+    return 0;
+  }
+  if (eid) {
+    meta = zxid_get_ent(cf, eid);
+    if (!meta) {
+      ERR("Unable to find metadata for eid(%s) in verify peer cert", eid);
+      return 0;
+    }
+    if (!meta->enc_cert) {
+      ERR("Metadata for eid(%s) does not contain enc cert", eid);
+      return 0;
+    }
+    if (!X509_cmp(meta->enc_cert, peer_cert)) {
+      ERR("Peer certificate does not match metadata for eid(%s)", eid);
+      return 0;
+    }
+  } else {
+    /* Given the information in peer certificate, try to identify the entity it belongs to. */
+    //subject = X509_get_subject_name(peer_cert);
+    //X509_NAME_oneline(subject, subj, sizeof(subj));
+    subj_hash = X509_subject_name_hash(peer_cert);
+    if (!zxbus_login_subj_hash(hit, io, subj_hash)) {
+      ERR("Login by ClienTLS failed %lu", subj_hash);
+      return 0;
+    }
+  }
+  /* *** should we free peer_cert? */
+  /*SSL_get_verify_result(ssl); no need as SSL_VERIFY_PEER causes SSL_connect() to fail. */
+  return 1;
+}
+#endif
 
 /*() Create client socket. */
 
 /* Called by:  main, smtp_send */
-struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto)
+struct hi_io* hi_open_tcp(struct hi_thr* hit, struct hi_host_spec* hs, int proto)
 {
+  struct hi_io* io;
+#ifdef USE_OPENSSL
+  long vfy_err;
+#endif
   int fd;
   if ((fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
     ERR("Unable to create socket(AF_INET, SOCK_STREAM, 0) %d %s", errno, STRERROR(errno));
     return 0;
   }
 
-  if (fd >= shf->max_ios) {
-    ERR("File descriptor limit(%d) exceeded fd=%d. Consider increasing the limit with -nfd flag, or figure out if there are any descriptor leaks.", shf->max_ios, fd);
-    close(fd);
-    return 0;
+  if (fd >= hit->shf->max_ios) {
+    ERR("File descriptor limit(%d) exceeded fd=%d. Consider increasing the limit with -nfd flag, or figure out if there are any descriptor leaks.", hit->shf->max_ios, fd);
+    goto errout;
   }
+  io = hit->shf->ios + fd;
+  io->qel.proto = proto;
 
   nonblock(fd);
   if (nkbuf)
@@ -346,14 +486,56 @@ struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto)
   
   if ((connect(fd, (struct sockaddr*)&hs->sin, sizeof(hs->sin)) == -1)
       && (errno != EINPROGRESS)) {
-    int myerrno = errno;
-    close(fd);
-    ERR("Connection to %s failed: %d %s", hs->specstr, myerrno, STRERROR(myerrno));
-    return 0;
+    ERR("Connection to %s failed: %d %s", hs->specstr, errno, STRERROR(errno));
+    goto errout;
   }
   
   D("connect(%x) hs(%s)", fd, hs->specstr);
-  return hi_add_fd(shf, fd, proto, HI_TCP_C);
+  /*SSL_CTX_add_extra_chain_cert(hit->shf->ssl_ctx, ca_cert);*/
+
+#ifdef USE_OPENSSL
+  if (hi_prototab[proto].is_tls) {
+    --io->proto;  /* Nonssl protocol is always one smaller than SSL variant. */
+    io->ssl = SSL_new(hit->shf->ssl_ctx);
+    if (!io->ssl) {
+      ERR("TLS/SSL connection to(%s) can not be made. SSL object initialization problem", hs->specstr);
+      zx_report_openssl_error("open_tcp-ssl");
+      goto errout;
+    }
+    if (!SSL_set_fd(io->ssl, fd)) {
+      ERR("TLS/SSL connection to(%s) can not be made. SSL fd(%x) initialization problem", hs->specstr, bu->fd);
+      zx_report_openssl_error("open_tcp-set_fd");
+      goto sslerrout;
+    }
+    
+    switch (vfy_err = SSL_get_error(io->ssl, SSL_connect(io->ssl))) {
+    case SSL_ERROR_NONE: break;
+      /*case SSL_ERROR_WANT_ACCEPT:  documented, but undeclared */
+    case SSL_ERROR_WANT_READ:
+    case SSL_ERROR_WANT_CONNECT:
+    case SSL_ERROR_WANT_WRITE: break;
+    default:
+      ERR("TLS/SSL connection to(%s) can not be made. SSL connect or handshake problem (%d)", hs->specstr, vfy_err);
+      zx_report_openssl_error("open_tcp-ssl_connect");
+      write(fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1);
+      goto sslerrout;
+    }
+    if (!hi_verify_peer_ssl_credential(hit, io, hs->specstr))
+      goto sslerrout;
+  }
+  return hi_add_fd(hit, io, fd, HI_TCP_C);
+ sslerrout:
+  if (io->ssl) {
+    SSL_Free(io->ssl);
+    io->ssl = 0;
+  }
+#else
+  io->ssl = 0;
+  return hi_add_fd(hit, io, fd, HI_TCP_C);
+#endif
+ errout:
+  close(fd);
+  return 0;
 }
 
 /*() Process half accepted socket (already accepted at socket layer, but
@@ -362,10 +544,46 @@ struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto)
  * the old connection. */
 
 /* Called by:  hi_accept, hi_shuffle */
-static void hi_accept_book(struct hi_thr* hit, struct hi_io* io)
+static void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd)
 {
   int n_thr;
   struct hi_io* nio;
+#ifdef USE_OPENSSL
+  SSL* ssl;
+  long vfy_err;
+
+  io->ssl = 0;
+  if (hi_prototab[io->qel.proto].is_tls) {
+    --io->qel.proto;  /* Non SSL protocol is always one smaller */
+    io->ssl = SSL_new(hit->shf->ssl_ctx);
+    if (!io->ssl) {
+      ERR("TLS/SSL accept: SSL object initialization problem %d", 0);
+      zx_report_openssl_error("accept-ssl");
+      goto errout;
+    }
+    if (!SSL_set_fd(io->ssl, fd)) {
+      ERR("TLS/SSL accept: fd(%x) initialization problem", fd);
+      zx_report_openssl_error("accept-set_fd");
+      goto sslerrout;
+    }
+    
+    switch (vfy_err = SSL_get_error(io->ssl, SSL_accept(io->ssl))) {
+    case SSL_ERROR_NONE:
+      if (!hi_verify_peer_ssl_credential(hit, io, 0))
+	goto sslerrout;
+      break;
+      /*case SSL_ERROR_WANT_ACCEPT:  documented, but undeclared */
+    case SSL_ERROR_WANT_READ:
+    case SSL_ERROR_WANT_CONNECT:
+    case SSL_ERROR_WANT_WRITE: break;
+    default:
+      ERR("TLS/SSL accept: connect or handshake problem (%d)", vfy_err);
+      zx_report_openssl_error("accept-ssl_accept");
+      write(fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1);
+      goto sslerrout;
+    }
+  }
+#endif
   
   /* We may accept new connection with same fd as an old one before all references
    * to the old one are gone. We could try reference counting - or we can delay
@@ -373,22 +591,21 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io)
    * *** Arguably this should never happen due to our half close strategy
    * keeping the fd occupied until all threads really are gone. */
   LOCK(io->qel.mut, "hi_accept");
-  D("ACCEPT LK&UNLK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("ACCEPT LK&UNLK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
   n_thr = io->n_thr;
   UNLOCK(io->qel.mut, "hi_accept");
   if (n_thr) {
-    D("old fd(%x) n_thr=%d still going", io->fd, n_thr);
+    D("old fd(%x) n_thr=%d still going", fd, n_thr);
     NEVERNEVER("NOT POSSIBLE due to half close n_thr=%d", n_thr);
     io->qel.kind = HI_HALF_ACCEPT;
     hi_todo_produce(hit->shf, &io->qel, "accept");  /* schedule a new try */
     return;
   }
 
-  io->fd &= 0x7fffffff;
-  nio = hi_add_fd(hit->shf, io->fd, io->qel.proto, HI_TCP_S);
+  nio = hi_add_fd(hit, io, fd, HI_TCP_S);
   if (!nio || nio != io) {
     ERR("Adding fd failed: io=%p nio=%p", io, nio);
-    return;
+    goto sslerrout;
   }
   D("accepted and booked(%x)", io->fd);
   
@@ -406,12 +623,12 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io)
       io->ad.dts->remote_station_addr[1] = 0x45;
       io->ad.dts->remote_station_addr[2] = 0x00;
       io->ad.dts->remote_station_addr[3] = 0x00;
-      if (!(hs = prototab[HIPROTO_DTS].specs)) {
+      if (!(hs = hi_prototab[HIPROTO_DTS].specs)) {
 	ZMALLOC(hs);
 	hs->proto = HIPROTO_DTS;
 	hs->specstr = "dts:accepted:connections";
-	hs->next = prototab[HIPROTO_DTS].specs;
-	prototab[HIPROTO_DTS].specs = hs;
+	hs->next = hi_prototab[HIPROTO_DTS].specs;
+	hi_prototab[HIPROTO_DTS].specs = hs;
       }
       io->n = hs->conns;
       hs->conns = io;
@@ -419,6 +636,18 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io)
     break;
 #endif
   }
+  return;
+
+ sslerrout:
+#ifdef USE_OPENSSL
+  if (io->ssl) {
+    SSL_shutdown(io->ssl);
+    SSL_free(io->ssl);
+    io->ssl = 0;
+  }
+#endif
+ errout:
+  close(fd);
 }
 
 /*() Create server side worker socket by accept(2)ing from listener socket. */
@@ -450,9 +679,8 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
 
   ++listener->n_read;  /* n_read counter is used for accounting accepts */
   io = hit->shf->ios + fd;
-  io->fd = fd | 0x80000000;
   io->qel.proto = listener->qel.proto;
-  hi_accept_book(hit, io);
+  hi_accept_book(hit, io, fd);
   hi_todo_produce(hit->shf, &listener->qel, "relisten"); /* Must exhaust accept: reenqueue (could also loop) */
 }
 
@@ -541,6 +769,13 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   sis_clean(io);
 #endif
   
+#ifdef USE_OPENSSL
+  if (io->ssl) {
+    SSL_shutdown(io->ssl);
+    SSL_free(io->ssl);
+    io->ssl = 0;
+  }
+#endif
   close(fd & 0x7ffffff); /* Now some other thread may reuse the slot by accept()ing same fd */
   D("%s: closed(%x)", lk, fd);
   /* Must let go of the lock only after close so no read can creep in. */

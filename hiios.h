@@ -114,6 +114,9 @@
 #include <sys/devpoll.h>   /* See man -s 7d poll (Solaris 8) */
 #include <sys/poll.h>
 #endif
+#ifdef USE_OPENSSL
+#include <openssl/ssl.h>
+#endif
 
 #include <netinet/in.h>
 #include <sys/uio.h>
@@ -192,10 +195,10 @@ struct hi_io {
       struct hi_pdu* uni_ind_hmtp;
       int state;
     } smtp;
-    struct {
-      int state;
-    } stomp;
   } ad;                      /* Application specific data */
+#ifdef USE_OPENSSL
+  SSL* ssl;
+#endif
 };
 
 struct hi_ad_stomp {
@@ -312,6 +315,9 @@ struct hiios {
   char res1;
   char res2;
   char res3;
+#ifdef USE_OPENSSL
+  SSL_CTX* ssl_ctx;
+#endif
 };
 
 /*(s) Thread object */
@@ -337,10 +343,11 @@ struct hi_host_spec {
 struct hi_proto {
   char name[8];
   int default_port;
+  int is_tls;
   struct hi_host_spec* specs;
 };
 
-extern struct hi_proto prototab[];
+extern struct hi_proto hi_prototab[];
 
 /*(s) Channel or destination designation object */
 
@@ -374,8 +381,8 @@ struct hi_ent {
 void hi_hit_init(struct hi_thr* hit);
 struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch);
 struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int proto);
-struct hi_io* hi_open_tcp(struct hiios* shf, struct hi_host_spec* hs, int proto);
-struct hi_io* hi_add_fd(struct hiios* shf, int fd, int proto, int kind);
+struct hi_io* hi_open_tcp(struct hi_thr* hit, struct hi_host_spec* hs, int proto);
+struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind);
 
 struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk);
 void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp);

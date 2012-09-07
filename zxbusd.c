@@ -16,7 +16,12 @@
  * To create bus users, you should follow these steps
  * 1. Run ./zxbuslist -c 'URL=https://sp.foo.com/' -dc to determine the entity ID
  * 2. Convert entity ID to SHA1 hash: ./zxcot -p 'http://sp.foo.com?o=B'
- * 3. Create the user: ./zxpasswd -new G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/ <passwd
+ * 3. Create the user: ./zxpasswd -a 'eid: http://sp.foo.com?o=B' -new G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/ <passwd
+ * 4. To enable ClientTLS authentication, determine the subject_hash of
+ *    the encryption certificate and symlink that to the main account:
+ *      > openssl x509 -subject_hash -noout </var/zxid/buscli/pem/enc-nopw-cert.pem
+ *      162553b8
+ *      > ln -s /var/zxid/bus/uid/G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/162553b8
  */
 
 #include <signal.h>
@@ -127,16 +132,16 @@ int symmetric_key_len;
 struct hi_host_spec* listen_ports = 0;
 struct hi_host_spec* remotes = 0;
 
-struct hi_proto prototab[] = {  /* n.b. order in this table must match constants in hiproto.h */
-  { "dummy0",  0, 0 },
-  { "pollon",  0, 0 },
-  { "sis",    5066, 0 },
-  { "dts",    5067, 0 },
-  { "smtp",     25, 0 },
-  { "http",   8080, 0 },
-  { "tp",     5068, 0 },  /* testping (6) */
-  { "stomp",  2228, 0 },
-  { "stomps", 2229, 0 },  /* n.b. 2229 is zxbus assigned port. Normal STOMP port is 61613 */
+struct hi_proto hi_prototab[] = {  /* n.b. order in this table must match constants in hiproto.h */
+  { "dummy0",  0, 0, 0 },
+  { "pollon",  0, 0, 0 },
+  { "sis",    5066, 0, 0 },
+  { "dts",    5067, 0, 0 },
+  { "smtp",     25, 0, 0 },
+  { "http",   8080, 0, 0 },
+  { "tp",     5068, 0, 0 },  /* testping (6) */
+  { "stomp",  2228, 0, 0 },
+  { "stomps", 2229, 0, 0 },  /* n.b. 2229 is zxbus assigned port. Normal STOMP port is 61613 */
   { "", 0 }
 };
 
@@ -165,15 +170,15 @@ int parse_port_spec(char* arg, struct hi_host_spec** head, char* default_host)
       ERR("Bad proto:host:port spec(%s). You MUST specify proto.", arg);
       exit(5);
     }
-    for (proto = 0; prototab[proto].name[0]; ++proto)
-      if (!strcmp(prototab[proto].name, prot))
+    for (proto = 0; hi_prototab[proto].name[0]; ++proto)
+      if (!strcmp(hi_prototab[proto].name, prot))
 	break;
-    if (!prototab[proto].name[0]) {
+    if (!hi_prototab[proto].name[0]) {
       ERR("Bad proto:host:port spec(%s). Unknown proto.", arg);
       exit(5);
     }
     if (port == -1)
-      port = prototab[proto].default_port;
+      port = hi_prototab[proto].default_port;
     if (strlen(host))
       default_host = host;
     break;
@@ -501,9 +506,10 @@ void opt(int* argc, char*** argv, char*** env)
 /* Parse serial port config string and do all the ioctls to get it right. */
 
 /* Called by:  main */
-static struct hi_io* serial_init(struct hi_host_spec* hs)
+static struct hi_io* serial_init(struct hi_thr* hit, struct hi_host_spec* hs)
 {
 #ifdef ENA_SERIAL
+  struct hi_io* io;
   char tty[256];
   char sync = 'S', parity = 'N';
   int fd, ret, baud = 9600, bits = 8, stop = 1, framesize = 1000;
@@ -523,6 +529,8 @@ static struct hi_io* serial_init(struct hi_host_spec* hs)
     close(fd);
     return 0;
   }
+  io = hit->shf->ios + fd;
+  io->qel.proto = hs->proto;
   if (verbose)
     log_port_info(fd, tty, "before");
   if (set_baud_rate(fd, tty, baud) == -1)
@@ -532,7 +540,7 @@ static struct hi_io* serial_init(struct hi_host_spec* hs)
   if (verbose)
     log_port_info(fd, tty, "after");
   nonblock(fd);
-  return hi_add_fd(shuff, fd, hs->proto, HI_TCP_C);
+  return hi_add_fd(hit, io, fd, HI_TCP_C);
 #else
   return 0;
 #endif
@@ -559,8 +567,12 @@ void* thread_loop(void* _shf)
 pthread_mutexattr_t MUTEXATTR_DECL;
 extern int zxid_suppress_vpath_warning;
 
+#ifndef zxbusd_main
+#define zxbusd_main main
+#endif
+
 /* Called by: */
-int main(int argc, char** argv, char** env)
+int zxbusd_main(int argc, char** argv, char** env)
 { 
   struct hi_thr hit;
   hi_hit_init(&hit);
@@ -687,7 +699,7 @@ int main(int argc, char** argv, char** env)
     CMDLINE("listen");
 
     for (hs = listen_ports; hs; hs = hs->next) {
-      io = hi_open_listener(shuff, hs, hs->proto);
+      io = hi_open_listener(hit, hs, hs->proto);
       if (!io) break;
       io->n = hs->conns;
       hs->conns = io;
@@ -695,15 +707,15 @@ int main(int argc, char** argv, char** env)
     
     for (hs = remotes; hs; hs = hs_next) {
       hs_next = hs->next;
-      hs->next = prototab[hs->proto].specs;
-      prototab[hs->proto].specs = hs;
+      hs->next = hi_prototab[hs->proto].specs;
+      hi_prototab[hs->proto].specs = hs;
       if (hs->proto == HIPROTO_SMTP)
 	continue;  /* SMTP connections are opened later, when actual data from SIS arrives. */
 
       if (hs->sin.sin_family == 0xfead)
-	io = serial_init(hs);
+	io = serial_init(hit, hs);
       else
-	io = hi_open_tcp(shuff, hs, hs->proto);
+	io = hi_open_tcp(hit, hs, hs->proto);
       if (!io) break;
       io->n = hs->conns;
       hs->conns = io;

@@ -79,7 +79,7 @@ void smtp_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len
       ERR("You MUST configure a SMTP remote for HMTP-to-SMTP gateway to work. %d", io->fd);
       exit(1);
     }
-    smtp_c = hi_open_tcp(hit->shf, hs, HIPROTO_SMTP);
+    smtp_c = hi_open_tcp(hit, hs, HIPROTO_SMTP);
     if (!smtp_c) {
       ERR("Failed to establish SMTP client connection %x", io->fd);
       return;

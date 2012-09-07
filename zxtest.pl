@@ -1426,6 +1426,13 @@ $busd_conf = "PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/"
 $bus_cli_conf = "PATH=/var/zxid/buscli/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buscli.zxid.org/";
 $bus_list_conf = "PATH=/var/zxid/buslist/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist.zxid.org/";
 $bus_list2_conf = "PATH=/var/zxid/buslist2/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist2.zxid.org/";
+
+# For SSL tests it is important to NOT supply BUS_PW so that ClientTLS takes precedence.
+$bussd_conf = "PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomps://localhost:2229/";
+$buss_cli_conf = "PATH=/var/zxid/buscli/&BUS_URL=stomps://localhost:2229/&URL=https://buscli.zxid.org/";
+$buss_list_conf = "PATH=/var/zxid/buslist/&BUS_URL=stomps://localhost:2229/&URL=https://buslist.zxid.org/";
+$buss_list2_conf = "PATH=/var/zxid/buslist2/&BUS_URL=stomps://localhost:2229/&URL=https://buslist2.zxid.org/";
+
 # Metadata exchange
 # ./zxcot -c 'PATH=/var/zxid/buscli/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buscli.zxid.org/' -m | ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -a
 # ./zxcot -c 'PATH=/var/zxid/buslist/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist.zxid.org/' -m | ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -a
@@ -1435,7 +1442,12 @@ $bus_list2_conf = "PATH=/var/zxid/buslist2/&BUS_URL=stomp://localhost:2229/&BUS_
 # To create bus users, you should follow these steps
 # 1. Run ./zxbuslist -c 'URL=https://sp.foo.com/' -dc to determine the entity ID
 # 2. Convert entity ID to SHA1 hash: ./zxcot -p 'http://sp.foo.com?o=B'
-# 3. Create the user: ./zxpasswd -new G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/ <passwd
+# 3. Create the user: ./zxpasswd -a 'eid: http://sp.foo.com?o=B' -new G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/ <passwd  # N.B. the default password is pw123
+# 4. To enable ClientTLS authentication, determine the subject_hash of
+#    the encryption certificate and symlink that to the main account:
+#      > openssl x509 -subject_hash -noout </var/zxid/buscli/pem/enc-nopw-cert.pem
+#      162553b8
+#      > ln -s /var/zxid/bus/uid/G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/162553b8
 
 ### Single client, various numbers of threads at zxbusd
 
