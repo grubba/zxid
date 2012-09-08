@@ -624,7 +624,6 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   long vfy_err;
   int len,tls;
   char buf[1024];
-  struct zx_str* eid;
   struct hostent* he;
   struct sockaddr_in sin;
   struct stomp_hdr stomp;
@@ -634,6 +633,7 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   char* port;
   char* local;
   char* qs;
+  char* eid;
   char* p;
 
   /* Parse the bus_url */
@@ -782,14 +782,14 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     case SSL_ERROR_WANT_CONNECT:
     case SSL_ERROR_WANT_WRITE:
     default:
-      ERR("TLS/SSL connection to(%s) can not be made. SSL connect or handshake problem (%d)", bu->s, vfy_err);
+      ERR("TLS/SSL connection to(%s) can not be made. SSL connect or handshake problem (%ld)", bu->s, vfy_err);
       zx_report_openssl_error("open_bus_url-ssl_connect");
       write(bu->fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1);
       goto sslerrout;
     }
 
     if ((vfy_err = SSL_get_verify_result(bu->ssl)) != X509_V_OK) {
-      ERR("TLS/SSL connection to(%s) made, but certificate not acceptable. (%d)",bu->s,vfy_err);
+      ERR("TLS/SSL connection to(%s) made, but certificate not acceptable. (%ld)", bu->s, vfy_err);
       zx_report_openssl_error("open_bus_url-verify_res");
       goto sslerrout;
     }
@@ -798,17 +798,17 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
       zx_report_openssl_error("open_bus_url-peer_cert");
       goto sslerrout;
     }
-    meta = zxid_get_ent(cf, eid);
+    meta = zxid_get_ent(cf, bu->eid);
     if (!meta) {
-      ERR("Unable to find metadata for eid(%s) in verify peer cert", eid);
+      ERR("Unable to find metadata for eid(%s) in verify peer cert", bu->eid);
       goto sslerrout;
     }
     if (!meta->enc_cert) {
-      ERR("Metadata for eid(%s) does not contain enc cert", eid);
+      ERR("Metadata for eid(%s) does not contain enc cert", bu->eid);
       goto sslerrout;
     }
     if (!X509_cmp(meta->enc_cert, peer_cert)) {
-      ERR("Peer certificate does not match metadata for eid(%s)", eid);
+      ERR("Peer certificate does not match metadata for eid(%s)", bu->eid);
       goto sslerrout;
     }
     /* *** should we free peer_cert? */
@@ -819,17 +819,17 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
 #endif
   }
 
-  eid = zxid_my_ent_id(cf);
+  eid = zxid_my_ent_id_cstr(cf);
   if (!eid)
     return 0;
-  for (p = eid->s; p < eid->s + eid->len; ++p)
+  for (p = eid; *p; ++p)
     if (*p == ':')  /* deal with colon that is forbidden character in STOMP 1.1 header */
       *p = '|';
   
   if (cf->bus_pw) {
-    len = snprintf(buf, sizeof(buf)-1, "STOMP\naccept-version:1.1\nhost:%s\nlogin:%.*s\npasscode:%s\n\n%c", bu->buf, eid->len, eid->s, cf->bus_pw, 0);
+    len = snprintf(buf, sizeof(buf)-1, "STOMP\naccept-version:1.1\nhost:%s\nlogin:%s\npasscode:%s\n\n%c", bu->buf, eid, cf->bus_pw, 0);
   } else {
-    len = snprintf(buf, sizeof(buf)-1, "STOMP\naccept-version:1.1\nhost:%s\nlogin:%.*s\n\n%c", bu->buf, eid->len, eid->s, 0);
+    len = snprintf(buf, sizeof(buf)-1, "STOMP\naccept-version:1.1\nhost:%s\nlogin:%s\n\n%c", bu->buf, eid, 0);
   }
 #ifdef USE_OPENSSL
   if (bu->ssl)
@@ -986,7 +986,7 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 	siglen = stomp.zx_rcpt_sig ? (strchr(stomp.zx_rcpt_sig, '\n') - stomp.zx_rcpt_sig) : 0;
 
 	ver = zxbus_verify_receipt(cf, bu->eid,
-				   siglen, zx_rcpt_sig_len?stomp.zx_rcpt_sig:"",
+				   siglen, siglen?stomp.zx_rcpt_sig:"",
 				   body_len, body);
 	if (ver != ZXSIG_OK) {
 	  ERR("RECEIPT signature validation failed: %d sig(%.*s) body(%.*s)", ver, siglen, siglen?stomp.zx_rcpt_sig:"", body_len, body);

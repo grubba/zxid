@@ -428,7 +428,7 @@ zxid_entity* zxid_get_ent(zxid_conf* cf, const char* eid)
   struct zx_str ss;
   if (!eid)
     return 0;
-  ss.s = eid;
+  ss.s = (char*)eid;
   ss.len = strlen(eid);
   DD("eid: (%s)", eid);
   return zxid_get_ent_ss(cf, &ss);
@@ -827,10 +827,34 @@ struct zx_str* zxid_my_ent_id(zxid_conf* cf)
     D("my_entity_id bare url(%s)", cf->url);
     return zx_strf(cf->ctx, "%s", cf->url);
   } else {
-    D("my_entity_id url(%s)", cf->url);
+    D("my_entity_id(%s?o=B)", cf->url);
     return zx_strf(cf->ctx, "%s?o=B", cf->url);
   }
 }
+
+/*() Return our EntityID as c-string. Caller must free with ZX_FREE(cf->ctx, eid) */
+
+char* zxid_my_ent_id_cstr(zxid_conf* cf)
+{
+  int len;
+  char* eid;
+  if (cf->non_standard_entityid) {
+    D("my_entity_id non_standard_entytid(%s)", cf->non_standard_entityid);
+    return zx_dup_cstr(cf->ctx, cf->non_standard_entityid);
+  } else if (cf->bare_url_entityid) {
+    D("my_entity_id bare url(%s)", cf->url);
+    return zx_dup_cstr(cf->ctx, cf->url);
+  } else {
+    D("my_entity_id(%s?o=B)", cf->url);
+    len = strlen(cf->url);
+    eid = ZX_ALLOC(cf->ctx, len+sizeof("?o=B"));
+    strcpy(eid, cf->url);
+    strcpy(eid+len, "?o=B");
+    return eid;
+  }
+}
+
+/*() Return our EntityID as an attribute. Caller must free. */
 
 /* Called by:  zxid_check_fed, zxid_mk_ecp_Request_hdr, zxid_sp_meta, zxid_wsf_decor */
 struct zx_attr_s* zxid_my_ent_id_attr(zxid_conf* cf, struct zx_elem_s* father, int tok)
@@ -842,7 +866,7 @@ struct zx_attr_s* zxid_my_ent_id_attr(zxid_conf* cf, struct zx_elem_s* father, i
     D("my_entity_id bare url(%s)", cf->url);
     return zx_attrf(cf->ctx, father, tok, "%s", cf->url);
   } else {
-    D("my_entity_id url(%s)", cf->url);
+    D("my_entity_id(%s?o=B)", cf->url);
     return zx_attrf(cf->ctx, father, tok, "%s?o=B", cf->url);
   }
 }

@@ -74,7 +74,7 @@ void smtp_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int len
     struct hi_io* smtp_c;
     /* If we are SMTP server, the pairing will already exist. Thus lack of pairing means
      * we are SMTP client and must open a new connection to remote. */
-    hs = prototab[HIPROTO_SMTP].specs;
+    hs = hi_prototab[HIPROTO_SMTP].specs;
     if (!hs) {
       ERR("You MUST configure a SMTP remote for HMTP-to-SMTP gateway to work. %d", io->fd);
       exit(1);
@@ -148,8 +148,8 @@ static int smtp_ehlo(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   CRLF_CHECK(p, lim, req);
 
   hi_sendf(hit, io, 0, 0, "250-%s\r\n250-PIPELINING\r\n250 8-BIT MIME\r\n", SMTP_EHLO_CLI);
-  io->pair = prototab[HIPROTO_SIS].specs->conns;
-  prototab[HIPROTO_SIS].specs->conns->pair = io;  /* But there could be multiple? */
+  io->pair = hi_prototab[HIPROTO_SIS].specs->conns;
+  hi_prototab[HIPROTO_SIS].specs->conns->pair = io;  /* But there could be multiple? */
 #if 0   /* We do this nowdays during setup */
   sis_send_bind(hit, io->pair, SAP_ID_HMTP, 0, 0x0200);  /* 0x0200 == nonarq, no repeats */
 #endif

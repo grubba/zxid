@@ -416,6 +416,7 @@ int main(int argc, char** argv, char** env)
   char* qs;
   char* cont_len;
   struct zx_str* ss;
+  char* eid;
   zxid_entity* idp;
   
 #if 1
@@ -594,9 +595,8 @@ int main(int argc, char** argv, char** env)
 #endif
 
   printf("<h3>CoT configuration parameters your IdP may need to know</h3>\n");
-  ss = zxid_my_ent_id(cf);
-  printf("Entity ID of this SP: <a href=\"%.*s\">%.*s</a> (Click on the link to fetch SP metadata.)\n",
-	 ss->len, ss->s, ss->len, ss->s);
+  eid = zxid_my_ent_id_cstr(cf);
+  printf("Entity ID of this SP: <a href=\"%s\">%s</a> (Click on the link to fetch SP metadata.)\n", eid, eid);
 
   printf("<h3>Technical options (typically hidden fields on production site)</h3>\n");
   printf("<input type=checkbox name=fc value=1 checked> Allow new federation to be created<br>\n");

@@ -591,23 +591,23 @@ extern char* assert_msg;
    * so that other threads may move. But it will reacquire the lock before
    * returning. Due to this, other threads may have set lock debugging variables,
    * so we need to reset them back here. */
-#  define COND_WAIT(c,l,lk) MB pthread_cond_wait((c), &(l).ptmut); (l).func = __FUNCTION__; (l).line = __LINE__; (l).thr = pthread_self(); ME
-#  define COND_SIG(c,lk) pthread_cond_signal(c)
+#  define ZX_COND_WAIT(c,l,lk) MB pthread_cond_wait((c), &(l).ptmut); (l).func = __FUNCTION__; (l).line = __LINE__; (l).thr = pthread_self(); ME
+#  define ZX_COND_SIG(c,lk) pthread_cond_signal(c)
 # else
 /*#define LOCK_STATIC(l) pthread_mutex_t l = PTHREAD_MUTEX_INITIALIZER  do not use */
 #  define LOCK_INIT(l) pthread_mutex_init(&(l), 0)
 #  define LOCK(l,lk)   if (pthread_mutex_lock(&(l)))   NEVERNEVER("DEADLOCK(%s)", (lk))
 #  define UNLOCK(l,lk) if (pthread_mutex_unlock(&(l))) NEVERNEVER("UNLOCK-TWICE(%s)", (lk))
-#  define COND_WAIT(c,l,lk) pthread_cond_wait((c), &(l).ptmut)
-#  define COND_SIG(c,lk) pthread_cond_signal(c)
+#  define ZX_COND_WAIT(c,l,lk) pthread_cond_wait((c), &(l).ptmut)
+#  define ZX_COND_SIG(c,lk) pthread_cond_signal(c)
 # endif
 #else
 # define LOCK_STATIC(l) 
 # define LOCK_INIT(l)
 # define LOCK(l,lk)
 # define UNLOCK(l,lk)
-# define COND_WAIT(c,l,lk) NEVERNEVER("Program written to use pthread_cond_wait() can not work if compiled to not use it (%s).",(lk));
-#  define COND_SIG(c,lk) 
+# define ZX_COND_WAIT(c,l,lk) NEVERNEVER("Program written to use pthread_cond_wait() can not work if compiled to not use it (%s).",(lk));
+#  define ZX_COND_SIG(c,lk)  NEVERNEVER("Program written to use pthread_cond_sig() can not work if compiled to not use it (%s).",(lk));
 #endif
 
 /* =============== file system flocking =============== */

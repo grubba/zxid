@@ -383,6 +383,7 @@ struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch);
 struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int proto);
 struct hi_io* hi_open_tcp(struct hi_thr* hit, struct hi_host_spec* hs, int proto);
 struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind);
+int hi_verify_peer_ssl_credential(struct hi_thr* hit, struct hi_io* io, const char* eid);
 
 struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk);
 void hi_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp);

@@ -10,6 +10,7 @@
  * 15.4.2006, created over Easter holiday --Sampo
  * 22.4.2006, refined multi iov sends over the weekend --Sampo
  * 16.8.2012, modified license grant to allow use with ZXID.org --Sampo
+ * 6.9.2012,  added support for TLS and SSL --Sampo
  *
  * Idea: Consider separate lock for maintenance of to_write queue and separate
  * for in_write, iov, and actual wrintev().
@@ -349,7 +350,7 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
 /* Called by:  hi_in_out, hi_send0 */
 int hi_write(struct hi_thr* hit, struct hi_io* io)
 {
-  int ret;
+  int ret,err;
   ASSERT(io->writing);
   while (1) {   /* Write until exhausted! */
     if (!io->in_write)  /* Need to prepare new iov? */
@@ -358,23 +359,48 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
       goto out;         /* Nothing further to write */
   retry:
     ASSERT(io->writing);
-    D("writev(%x) n_iov=%d n_thr=%d r/w=%d/%d ev=%x", io->fd, io->n_iov, io->n_thr, io->reading, io->writing, io->events);
-    HEXDUMP("iov0:", io->iov_cur->iov_base, io->iov_cur->iov_base + io->iov_cur->iov_len, 16);
-    ret = writev(io->fd&0x7fffffff /* in case of write after close */, io->iov_cur, io->n_iov);
-    ASSERT(io->writing);
-    switch (ret) {
-    case 0: NEVERNEVER("writev on %x returned 0", io->fd);
-    case -1:
-      switch (errno) {
-      case EINTR:  goto retry;
-      case EAGAIN: goto out;   /* writev(2) exhausted (c.f. edge triggered epoll) */
+#ifdef USE_OPENSSL
+    if (io->ssl) {
+      D("SSL_write(%x) n_iov=%d n_thr=%d r/w=%d/%d ev=%x", io->fd, io->n_iov, io->n_thr, io->reading, io->writing, io->events);
+      HEXDUMP("iov0:", io->iov_cur->iov_base, io->iov_cur->iov_base + io->iov_cur->iov_len, 16);
+      /* N.B. As SSL_write() does not support vector of iovs, we just write the
+       * first iov here. Eventually the loop will iterate and others get written. */
+      ret = SSL_write(io->ssl, io->iov_cur->iov_base, io->iov_cur->iov_len);
+      ASSERT(io->writing);
+      switch (err = SSL_get_error(io->ssl, ret)) {
+      case SSL_ERROR_NONE:  /* Something written case */
+	D("SSL_wrote(%x) %d bytes n_thr=%d r/w=%d/%d ev=%x", io->fd, ret, io->n_thr, io->reading, io->writing, io->events);
+	hi_clear_iov(hit, io, ret);
+	break; /* iterate write loop again */
+      case SSL_ERROR_WANT_READ:  D("SSL EAGAIN READ fd(%x)", io->fd); goto out; /* Comparable to EAGAIN. Should we remember which? */
+      case SSL_ERROR_WANT_WRITE: D("SSL EAGAIN WRITE fd(%x)", io->fd); goto out; /* Comparable to EAGAIN. Should we remember which? */
+      case SSL_ERROR_ZERO_RETURN: /* Probably close from other end */
       default:
-	ERR("writev(%x) failed: %d %s (closing connection)", io->fd, errno, STRERROR(errno));
+	ERR("SSL_write ret=%d err=%d", ret, err);
+	zx_report_openssl_error("SSL_write");
 	goto clear_writing_err;
       }
-    default:  /* something was written, deduce it from the iov */
-      D("wrote(%x) %d bytes n_thr=%d r/w=%d/%d ev=%x", io->fd, ret, io->n_thr, io->reading, io->writing, io->events);
-      hi_clear_iov(hit, io, ret);
+    } else
+#endif
+    {
+      D("writev(%x) n_iov=%d n_thr=%d r/w=%d/%d ev=%x", io->fd, io->n_iov, io->n_thr, io->reading, io->writing, io->events);
+      HEXDUMP("iov0:", io->iov_cur->iov_base, io->iov_cur->iov_base + io->iov_cur->iov_len, 16);
+      ret = writev(io->fd&0x7fffffff /* in case of write after close */, io->iov_cur, io->n_iov);
+      ASSERT(io->writing);
+      switch (ret) {
+      case 0: NEVERNEVER("writev on %x returned 0", io->fd);
+      case -1:
+	switch (errno) {
+	case EINTR:  D("EINTR fd(%x)", io->fd); goto retry;
+	case EAGAIN: D("EAGAIN WRITE fd(%x)", io->fd); goto out;   /* writev(2) exhausted (c.f. edge triggered epoll) */
+	default:
+	  ERR("writev(%x) failed: %d %s (closing connection)", io->fd, errno, STRERROR(errno));
+	  goto clear_writing_err;
+	}
+      default:  /* something was written, deduce it from the iov */
+	D("wrote(%x) %d bytes n_thr=%d r/w=%d/%d ev=%x", io->fd, ret, io->n_thr, io->reading, io->writing, io->events);
+	hi_clear_iov(hit, io, ret);
+      }
     }
   }
  out:

@@ -1232,7 +1232,8 @@ CMD('COT10', 'zxcot my meta',      "./zxcot -p http://localhost:1234/?o=B");
 CMD('COT11', 'zxcot list s2',      "./zxcot -s /var/zxid/idpcot");
 
 CMD('LOG1', 'zxlogview list',      "./zxlogview /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem <t/act");
-CMD('LOG2', 'zxlogview list',      "./zxlogview -t /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem");
+CMD('LOG2', 'zxlogview test',      "./zxlogview -t /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem");
+CMD('LOG3', 'zxlogview receipt',   "./zxlogview -t1");
 
 # See also README.smime for tutorial of these commands
 CMD('SMIME1', 'smime key gen ca',  "echo 'commonName=TestCA|emailAddress=test\@test.com' | ./smime -kg 'description=CA' passwd tmp/careq.pem >tmp/capriv_ss.pem; wc -l tmp/capriv_ss.pem");
@@ -1422,6 +1423,7 @@ tA('ST','SSOHLO9', 'SP local logout', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Lo
 ### Audit bus tests
 ###
 
+# N.B. Although the nonSSL port should be 2228, we use 2229 so we can use same metadata
 $busd_conf = "PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/";
 $bus_cli_conf = "PATH=/var/zxid/buscli/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buscli.zxid.org/";
 $bus_list_conf = "PATH=/var/zxid/buslist/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist.zxid.org/";

@@ -24,6 +24,8 @@
  * see if edge triggered epoll has some special consideration for accept(2).
  */
 
+#include "platform.h"
+
 #ifdef LINUX
 #include <sys/epoll.h>     /* See man 4 epoll (Linux 2.6) */
 #endif
@@ -36,18 +38,20 @@
 #include <malloc.h>
 #include <memory.h>
 #include <stdlib.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <errno.h>
 #include <string.h>
 
+#include <zx/zxid.h>
 #include "akbox.h"
 #include "hiproto.h"
 #include "hiios.h"
 #include "errmac.h"
 
+extern zxid_conf* zxbus_cf;
 extern int zx_debug;
 #ifdef MUTEX_DEBUG
 extern pthread_mutexattr_t MUTEXATTR_DECL;
@@ -78,22 +82,22 @@ void hi_hit_init(struct hi_thr* hit)
 
 #ifdef USE_OPENSSL
 //int zxbus_cert_verify_cb(X509_STORE_CTX* st_ctx, void* arg) {  zxid_conf* cf = arg;  return 0; }
-int zxbus_cert_verify_cb(int preverify_ok, X509_STORE_CTX* st_ctx)
+int zxbus_verify_cb(int preverify_ok, X509_STORE_CTX* st_ctx)
 {
-  X509* err_cert = X509_STORE_CTX_get_current_cert(st_ctx);
+  //X509* err_cert = X509_STORE_CTX_get_current_cert(st_ctx);
   int err;
 
   if (preverify_ok)
     return 1;  /* Always Good! */
   err = X509_STORE_CTX_get_error(st_ctx);
-  D("verify err %d %s", err, );
+  D("verify err %d %s", err, X509_verify_cert_error_string(err));
   if (ONE_OF_4(err,
 	       X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT,
 	       X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN,
 	       X509_V_ERR_UNABLE_TO_VERIFY_LEAF_SIGNATURE,
 	       X509_V_ERR_CERT_UNTRUSTED))
-    return 1;
-  ERR("verify fail %d %s", err, );
+    return 1;  /* ignore errors relating cert not being trusted */
+  ERR("verify fail %d %s", err, X509_verify_cert_error_string(err));
   return 0;
 }
 #endif
@@ -351,11 +355,11 @@ struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
     struct epoll_event ev;
     ev.events = EPOLLIN | EPOLLOUT | EPOLLERR | EPOLLHUP | EPOLLET;  /* ET == EdgeTriggered */
     ev.data.ptr = io;
-    if (epoll_ctl(shf->ep, EPOLL_CTL_ADD, fd, &ev)) {
+    if (epoll_ctl(hit->shf->ep, EPOLL_CTL_ADD, fd, &ev)) {
       ERR("Unable to epoll_ctl(%d): %d %s", fd, errno, STRERROR(errno));
 #ifdef USE_OPENSSL
       if (io->ssl) {
-	SSL_Free(io->ssl);
+	SSL_free(io->ssl);
 	io->ssl = 0;
       }
 #endif
@@ -369,11 +373,11 @@ struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
     struct pollfd pfd;
     pfd.fd = fd;
     pfd.events = POLLIN | POLLOUT | POLLERR | POLLHUP;
-    if (write(shf->ep, &pfd, sizeof(pfd)) == -1) {
+    if (write(hit->shf->ep, &pfd, sizeof(pfd)) == -1) {
       ERR("Unable to write to /dev/poll fd(%d): %d %s", fd, errno, STRERROR(errno));
 #ifdef USE_OPENSSL
       if (io->ssl) {
-	SSL_Free(io->ssl);
+	SSL_free(io->ssl);
 	io->ssl = 0;
       }
 #endif
@@ -404,22 +408,23 @@ struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
 
 /*() Verify peer ClientTLS credential.
  * If known peer, eid should be the eid of the peer and is used to look up
- * the metadata if the peer.
- * If unknown peer, pass NULL as eid, and a search will be done across all known
- * entities.
+ * the metadata if the peer. The general strategy is that verification
+ * is done only after TLS handshake. This ie either achived by supplying
+ * SSL_VERIFY_NONE or SSL_VERIFY_PEER with verify callback that causes any
+ * certificate to be accepted. In case of STOMP, the STOMP (or CONNECT) connect
+ * message will contain the appropriate eid in login header. In case of client
+ * side, the client knows which server it is contacting so it can look up
+ * the eid for that server.
  * return:: 0 on error, 1 on success */
 
-static int hi_verify_peer_ssl_credential(struct hi_thr* hit, struct hi_io* io, const char* eid)
+int hi_verify_peer_ssl_credential(struct hi_thr* hit, struct hi_io* io, const char* eid)
 {
-  //char subj[1024];
-  //X509_NAME* subject;
-  unsigned long subj_hash;
   X509* peer_cert;
   zxid_entity* meta;
   long vfy_err;
 
   if ((vfy_err = SSL_get_verify_result(io->ssl)) != X509_V_OK) {
-    ERR("TLS/SSL connection to(%s) made, but cert not acceptable. (%d)",eid,vfy_err);
+    ERR("TLS/SSL connection to(%s) made, but cert not acceptable. (%ld)",eid,vfy_err);
     zx_report_openssl_error("verify_res");
     return 0;
   }
@@ -428,32 +433,19 @@ static int hi_verify_peer_ssl_credential(struct hi_thr* hit, struct hi_io* io, c
     zx_report_openssl_error("peer_cert");
     return 0;
   }
-  if (eid) {
-    meta = zxid_get_ent(cf, eid);
-    if (!meta) {
-      ERR("Unable to find metadata for eid(%s) in verify peer cert", eid);
-      return 0;
-    }
-    if (!meta->enc_cert) {
-      ERR("Metadata for eid(%s) does not contain enc cert", eid);
-      return 0;
-    }
-    if (!X509_cmp(meta->enc_cert, peer_cert)) {
-      ERR("Peer certificate does not match metadata for eid(%s)", eid);
-      return 0;
-    }
-  } else {
-    /* Given the information in peer certificate, try to identify the entity it belongs to. */
-    //subject = X509_get_subject_name(peer_cert);
-    //X509_NAME_oneline(subject, subj, sizeof(subj));
-    subj_hash = X509_subject_name_hash(peer_cert);
-    if (!zxbus_login_subj_hash(hit, io, subj_hash)) {
-      ERR("Login by ClienTLS failed %lu", subj_hash);
-      return 0;
-    }
+  meta = zxid_get_ent(zxbus_cf, eid);
+  if (!meta) {
+    ERR("Unable to find metadata for eid(%s) in verify peer cert", eid);
+    return 0;
   }
-  /* *** should we free peer_cert? */
-  /*SSL_get_verify_result(ssl); no need as SSL_VERIFY_PEER causes SSL_connect() to fail. */
+  if (!meta->enc_cert) {
+    ERR("Metadata for eid(%s) does not contain enc cert", eid);
+    return 0;
+  }
+  if (!X509_cmp(meta->enc_cert, peer_cert)) {
+    ERR("Peer certificate does not match metadata for eid(%s)", eid);
+    return 0;
+  }
   return 1;
 }
 #endif
@@ -464,9 +456,6 @@ static int hi_verify_peer_ssl_credential(struct hi_thr* hit, struct hi_io* io, c
 struct hi_io* hi_open_tcp(struct hi_thr* hit, struct hi_host_spec* hs, int proto)
 {
   struct hi_io* io;
-#ifdef USE_OPENSSL
-  long vfy_err;
-#endif
   int fd;
   if ((fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
     ERR("Unable to create socket(AF_INET, SOCK_STREAM, 0) %d %s", errno, STRERROR(errno));
@@ -495,38 +484,43 @@ struct hi_io* hi_open_tcp(struct hi_thr* hit, struct hi_host_spec* hs, int proto
 
 #ifdef USE_OPENSSL
   if (hi_prototab[proto].is_tls) {
-    --io->proto;  /* Nonssl protocol is always one smaller than SSL variant. */
+    --io->qel.proto;  /* Nonssl protocol is always one smaller than SSL variant. */
     io->ssl = SSL_new(hit->shf->ssl_ctx);
     if (!io->ssl) {
-      ERR("TLS/SSL connection to(%s) can not be made. SSL object initialization problem", hs->specstr);
+      ERR("TLS/SSL connect to(%s): SSL object initialization problem", hs->specstr);
       zx_report_openssl_error("open_tcp-ssl");
       goto errout;
     }
     if (!SSL_set_fd(io->ssl, fd)) {
-      ERR("TLS/SSL connection to(%s) can not be made. SSL fd(%x) initialization problem", hs->specstr, bu->fd);
+      ERR("TLS/SSL connect to(%s): SSL fd(%x) initialization problem", hs->specstr, fd);
       zx_report_openssl_error("open_tcp-set_fd");
       goto sslerrout;
     }
     
-    switch (vfy_err = SSL_get_error(io->ssl, SSL_connect(io->ssl))) {
+#ifdef SSL_IMMEDIATE    
+    switch (err = SSL_get_error(io->ssl, SSL_connect(io->ssl))) {
     case SSL_ERROR_NONE: break;
       /*case SSL_ERROR_WANT_ACCEPT:  documented, but undeclared */
     case SSL_ERROR_WANT_READ:
     case SSL_ERROR_WANT_CONNECT:
     case SSL_ERROR_WANT_WRITE: break;
     default:
-      ERR("TLS/SSL connection to(%s) can not be made. SSL connect or handshake problem (%d)", hs->specstr, vfy_err);
+      ERR("TLS/SSL connect to(%s): handshake problem (%d)", hs->specstr, err);
       zx_report_openssl_error("open_tcp-ssl_connect");
       write(fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1);
       goto sslerrout;
     }
     if (!hi_verify_peer_ssl_credential(hit, io, hs->specstr))
       goto sslerrout;
+#else
+    SSL_set_connect_state(io->ssl);
+    /* *** how/when to hi_verify_peer_ssl_credential() ? */
+#endif
   }
   return hi_add_fd(hit, io, fd, HI_TCP_C);
  sslerrout:
   if (io->ssl) {
-    SSL_Free(io->ssl);
+    SSL_free(io->ssl);
     io->ssl = 0;
   }
 #else
@@ -548,10 +542,8 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd)
 {
   int n_thr;
   struct hi_io* nio;
-#ifdef USE_OPENSSL
-  SSL* ssl;
-  long vfy_err;
 
+#ifdef USE_OPENSSL
   io->ssl = 0;
   if (hi_prototab[io->qel.proto].is_tls) {
     --io->qel.proto;  /* Non SSL protocol is always one smaller */
@@ -562,26 +554,27 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd)
       goto errout;
     }
     if (!SSL_set_fd(io->ssl, fd)) {
-      ERR("TLS/SSL accept: fd(%x) initialization problem", fd);
+      ERR("TLS/SSL accept: fd(%x) SSL initialization problem", fd);
       zx_report_openssl_error("accept-set_fd");
       goto sslerrout;
     }
-    
-    switch (vfy_err = SSL_get_error(io->ssl, SSL_accept(io->ssl))) {
-    case SSL_ERROR_NONE:
-      if (!hi_verify_peer_ssl_credential(hit, io, 0))
-	goto sslerrout;
-      break;
+
+#ifdef SSL_IMMEDIATE    
+    switch (err = SSL_get_error(io->ssl, SSL_accept(io->ssl))) {
+    case SSL_ERROR_NONE: break;
       /*case SSL_ERROR_WANT_ACCEPT:  documented, but undeclared */
     case SSL_ERROR_WANT_READ:
     case SSL_ERROR_WANT_CONNECT:
     case SSL_ERROR_WANT_WRITE: break;
     default:
-      ERR("TLS/SSL accept: connect or handshake problem (%d)", vfy_err);
+      ERR("TLS/SSL accept: connect or handshake problem (%d)", err);
       zx_report_openssl_error("accept-ssl_accept");
       write(fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1);
       goto sslerrout;
     }
+#else
+    SSL_set_accept_state(io->ssl);
+#endif
   }
 #endif
   
@@ -815,7 +808,7 @@ static struct hi_qel* hi_todo_consume(struct hiios* shf)
   while (1) {
   try_next:
     while (!shf->todo_consume && !shf->poll_tok.proto)        /* Empty todo queue? */
-      COND_WAIT(&shf->todo_cond, shf->todo_mut, "todo-cons"); /* Block until there is work. */
+      ZX_COND_WAIT(&shf->todo_cond, shf->todo_mut, "todo-cons"); /* Block until there is work. */
     D("Out of cond_wait todo_mut.thr=%x", shf->todo_mut.thr);
     if (shf->todo_consume)
       qe = hi_todo_consume_inlock(shf);
@@ -867,7 +860,7 @@ void hi_todo_produce(struct hiios* shf, struct hi_qel* qe, const char* lk)
     } else {
       D("%s: prod qe(%p) kind(%s)", lk, qe, QEL_KIND(qe->kind));
     }
-    COND_SIG(&shf->todo_cond, "todo-prod");  /* Wake up consumers */
+    ZX_COND_SIG(&shf->todo_cond, "todo-prod");  /* Wake up consumers */
   } else {
     if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
       io = ((struct hi_io*)qe);
@@ -1045,7 +1038,7 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf)
     switch (qe->kind) {
     case HI_POLL:     hi_poll(shf); break;
     case HI_LISTEN:   hi_accept(hit, (struct hi_io*)qe); break;
-    case HI_HALF_ACCEPT: hi_accept_book(hit, (struct hi_io*)qe);
+    case HI_HALF_ACCEPT: hi_accept_book(hit, (struct hi_io*)qe, ((struct hi_io*)qe)->fd);
     case HI_TCP_C:
     case HI_TCP_S:    hi_in_out(hit, (struct hi_io*)qe); break;
     case HI_PDU_DIST: stomp_msg_deliver(hit, (struct hi_pdu*)qe); break;

@@ -10,6 +10,7 @@
  * 15.4.2006, created over Easter holiday --Sampo
  * 16.8.2012, modified license grant to allow use with ZXID.org --Sampo
  * 19.8.2012, fixed serious free_pds manipulation bug in hi_pdu_alloc() --Sampo
+ * 6.9.2012,  added support for TLS and SSL --Sampo
  *
  * Read more data to existing PDU (cur_pdu), or create new PDU and read data into it.
  */
@@ -27,6 +28,8 @@
 #include "errmac.h"
 
 extern int zx_debug;
+
+#define SSL_ENCRYPTED_HINT "ERROR\nmessage:tls-needed\n\nTLS or SSL connection wanted but other end did not speak protocol.\n\0"
 
 /*() Allocate pdu.  First allocation from per thread pool is
  * attempted. This does not require any locking.  If that does not
@@ -139,7 +142,7 @@ void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, in
 /* Called by:  hi_in_out */
 int hi_read(struct hi_thr* hit, struct hi_io* io)
 {
-  int ret;
+  int ret,err;
   struct hi_pdu* pdu;
   while (1) {  /* eagerly read until we exhaust the read (c.f. edge triggered epoll) */
     ASSERT(io->reading);
@@ -149,86 +152,114 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
   retry:
     D("read(%x) have=%d need=%d", io->fd, pdu->ap-pdu->m, pdu->need);
     ASSERT(io->reading);
-    ret = read(io->fd, pdu->ap, pdu->lim - pdu->ap); /* *** vs. need */
-    switch (ret) {
-    case 0:
-      /* *** any provision to process still pending PDUs? */
-      D("EOF fd(%x)", io->fd);
-      goto conn_close;
-    case -1:
-      switch (errno) {
-      case EINTR:  D("EINTR fd(%x)", io->fd); goto retry;
-      case EAGAIN: D("EAGAIN fd(%x)", io->fd); goto eagain_out;  /* read(2) exhausted (c.f. edge triggered epoll) */
+#ifdef USE_OPENSSL
+    if (io->ssl) {
+      ret = SSL_read(io->ssl, pdu->ap, pdu->lim - pdu->ap);
+      switch ((err = SSL_get_error(io->ssl, ret))) {
+      case SSL_ERROR_NONE: break; /* Something read case */
+      case SSL_ERROR_WANT_READ:
+	D("SSL EAGAIN READ fd(%x)", io->fd); /* Comparable to EAGAIN. Should we remember which? */
+	//h->ioflags |= IO_MISSPOLL; /** Need more data after poll() **/
+	goto eagain_out;
+      case SSL_ERROR_WANT_WRITE:
+	D("SSL EAGAIN WRITE fd(%x)", io->fd); /* Comparable to EAGAIN. Should we remember which? */
+	goto eagain_out;
+      case SSL_ERROR_ZERO_RETURN: D("SSL EOF fd(%x)", io->fd);	goto conn_close;
       default:
-	ERR("read(%x) failed: %d %s (closing connection)", io->fd, errno, STRERROR(errno));
+	ERR("SSL_write ret=%d err=%d", ret, err);
+	zx_report_openssl_error("SSL_read");
+	if (!io->n_read) {
+	  ERR("SSL Conn. failed fd=%x ret=%d err=%d errno=%d %s", io->fd, ret, err, errno, STRERROR(errno));
+	  if (errno != ECONNREFUSED)
+	    write(io->fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1);
+	}
+	/* N.B. A socket layer EOF not detected, but would be an I/O error from SSL perspective. */
 	goto conn_close;
       }
-    default:  /* something was read, invoke PDU parsing layer */
-      D("got(%x)=%d, proto=%d cur_pdu(%p) need=%d", io->fd, ret, io->qel.proto, pdu, pdu->need);
-      HEXDUMP("got:", pdu->ap, pdu->ap + ret, 16);
-      pdu->ap += ret;
-      io->n_read += ret;
-      while (pdu
-	     && pdu->need   /* no further I/O desired */
-	     && pdu->need <= (pdu->ap - pdu->m)) {
-	D("decode_loop io(%x)->cur_pdu=%p need=%d", io->fd, pdu, pdu?pdu->need:-99);
-	ASSERTOP(pdu, ==, io->cur_pdu, pdu);
-	switch (io->qel.proto) {
-	  /* *** add here a project dependent include? Or a macro. */
-	  /* Following decoders MUST either
-	   * a. drop connection in which case any rescheduling is moot
-	   * b. consume cur_pdu (set it to 0 or new PDU). This will cause
-	   *    read to be consumed until exhausted, and later trigger new todo
-	   *    when there is more data to be had, see hi_poll()
-	   * c. take some other action such as scheduling PDU to todo. Typically
-	   *    the req->need is zero when I/O is not expected.	   */
-#ifdef ENA_S5066
-	case HIPROTO_SIS:   if (sis_decode(hit, io))   goto conn_close;  break; /* *** use ret */
-	case HIPROTO_DTS:   if (dts_decode(hit, io))   goto conn_close;  break; /* *** use ret */
+    } else
 #endif
-	case HIPROTO_HTTP:  if (http_decode(hit, io))  goto conn_close;  break; /* *** use ret */
-	  //case HIPROTO_STOMP: if (stomp_decode(hit, io)) goto conn_close;  break;
-	case HIPROTO_STOMP: ret = stomp_decode(hit, io);  break;
-	case HIPROTO_TEST_PING: test_ping(hit, io);  break; /* *** use ret */
-	case HIPROTO_SMTP: /* *** use ret */
-	  if (io->qel.kind == HI_TCP_C) {
-	    if (smtp_decode_resp(hit, io))  goto out;
-	  } else {
-	    if (smtp_decode_req(hit, io))   goto out;
-	  }
-	  break;
-	default: NEVERNEVER("unknown proto(%x)", io->qel.proto);
+    {
+      ret = read(io->fd, pdu->ap, pdu->lim - pdu->ap); /* *** vs. need */
+      switch (ret) {
+      case 0:
+	/* *** any provision to process still pending PDUs? */
+	D("EOF fd(%x)", io->fd);
+	goto conn_close;
+      case -1:
+	switch (errno) {
+	case EINTR:  D("EINTR fd(%x)", io->fd); goto retry;
+	case EAGAIN: D("EAGAIN READ fd(%x)", io->fd); goto eagain_out;  /* read(2) exhausted (c.f. edge triggered epoll) */
+	default:
+	  ERR("read(%x) failed: %d %s (closing connection)", io->fd, errno, STRERROR(errno));
+	  goto conn_close;
 	}
-	
-	/* Take another iteration. io->reading may have already been set (incompletely decoded
-	 * PDU) or it may have been cleared (completely decoded PDU). Additional
-	 * complication is that it may have been cleared during PDU processing, but
-	 * then set again bu a different thread, such as second reader. *** */
-
-	switch (ret) {
-	case HI_NOERR: /* 0: In this case io->reading has been cleared at hi_add_req() due to
-			* completely decoded PDU. It may have been acquired by other thread. */
-	  LOCK(io->qel.mut, "reset-reading");
-	  D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
-	  if (io->reading) {
-	    D("Somebody else already reading n_thr=%d", io->n_thr);
-	    --io->n_thr;              /* Remove read count. */
-	    ASSERT(io->n_thr >= 0);
-	    D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
-	    UNLOCK(io->qel.mut, "reset-reading-abort");
-	    return 0;
-	  }
-	  io->reading = 1;  /* reacquire */
-	  pdu = io->cur_pdu;
-	  D("reacquired reading(%x) n_thr=%d", io->fd, io->n_thr);
+      }
+    }
+    /* something was read, invoke PDU parsing layer */
+    D("got(%x)=%d, proto=%d cur_pdu(%p) need=%d", io->fd, ret, io->qel.proto, pdu, pdu->need);
+    HEXDUMP("got:", pdu->ap, pdu->ap + ret, 16);
+    pdu->ap += ret;
+    io->n_read += ret;
+    while (pdu
+	   && pdu->need   /* no further I/O desired */
+	   && pdu->need <= (pdu->ap - pdu->m)) {
+      D("decode_loop io(%x)->cur_pdu=%p need=%d", io->fd, pdu, pdu?pdu->need:-99);
+      ASSERTOP(pdu, ==, io->cur_pdu, pdu);
+      switch (io->qel.proto) {
+	/* DISPATCH: Following decoders MUST either
+	 * a. drop connection in which case any rescheduling is moot
+	 * b. consume cur_pdu (set it to 0 or new PDU). This will cause
+	 *    read to be consumed until exhausted, and later trigger new todo
+	 *    when there is more data to be had, see hi_poll()
+	 * c. take some other action such as scheduling PDU to todo. Typically
+	 *    the req->need is zero when I/O is not expected.	   */
+#ifdef ENA_S5066
+      case HIPROTO_SIS:   if (sis_decode(hit, io))   goto conn_close;  break; /* *** use ret */
+      case HIPROTO_DTS:   if (dts_decode(hit, io))   goto conn_close;  break; /* *** use ret */
+#endif
+      case HIPROTO_HTTP:  if (http_decode(hit, io))  goto conn_close;  break; /* *** use ret */
+	//case HIPROTO_STOMP: if (stomp_decode(hit, io)) goto conn_close;  break;
+      case HIPROTO_STOMP: ret = stomp_decode(hit, io);  break;
+      case HIPROTO_TEST_PING: test_ping(hit, io);  break; /* *** use ret */
+      case HIPROTO_SMTP: /* *** use ret */
+	if (io->qel.kind == HI_TCP_C) {
+	  if (smtp_decode_resp(hit, io))  goto out;
+	} else {
+	  if (smtp_decode_req(hit, io))   goto out;
+	}
+	break;
+	/* *** add here a project dependent include? Or a macro. */
+      default: NEVERNEVER("unknown proto(%x)", io->qel.proto);
+      }
+      
+      /* Take another iteration. io->reading may have already been set (incompletely decoded
+       * PDU) or it may have been cleared (completely decoded PDU). Additional
+       * complication is that it may have been cleared during PDU processing, but
+       * then set again bu a different thread, such as second reader. *** */
+      
+      switch (ret) {
+      case HI_NOERR: /* 0: In this case io->reading has been cleared at hi_add_req() due to
+		      * completely decoded PDU. It may have been acquired by other thread. */
+	LOCK(io->qel.mut, "reset-reading");
+	D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+	if (io->reading) {
+	  D("Somebody else already reading n_thr=%d", io->n_thr);
+	  --io->n_thr;              /* Remove read count. */
+	  ASSERT(io->n_thr >= 0);
 	  D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
-	  UNLOCK(io->qel.mut, "reset-reading");
-	  break;
-	case HI_CONN_CLOSE:         goto conn_close_not_reading;
-	case HI_NEED_MORE: /* 2: Incomplete decode, we still hold io->reading. */
-	  ASSERT(io->reading);
-	  break;
+	  UNLOCK(io->qel.mut, "reset-reading-abort");
+	  return 0;
 	}
+	io->reading = 1;  /* reacquire */
+	pdu = io->cur_pdu;
+	D("reacquired reading(%x) n_thr=%d", io->fd, io->n_thr);
+	D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+	UNLOCK(io->qel.mut, "reset-reading");
+	break;
+      case HI_CONN_CLOSE:         goto conn_close_not_reading;
+      case HI_NEED_MORE: /* 2: Incomplete decode, we still hold io->reading. */
+	ASSERT(io->reading);
+	break;
       }
     }
   }

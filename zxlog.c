@@ -800,9 +800,9 @@ print_it:
  * Typically used for issuing receipts on audit bus. The current time
  * and our own signing certificate are used.
  * cf::         ZXID configuration object, used for memory allocation and cert mgmt
- * sigbuf_len:: Maximum length of signature buffer. On return the buffer is nul terminated.
- * sigbuf::     Result parameter. Caller allocated buffer that receives the receipt.
- * body_len::   Length of data to issue receipt about
+ * sigbuf_len:: Maximum length of signature buffer, e.g. 1024. On return buffer is nul terminated.
+ * sigbuf::     Result parameter. Caller allocated buffer that receives the receipt. nul term.
+ * body_len::   Length of data to issue receipt about (-1 to use strlen(body))
  * body::       Data to issue receipt about, i.e. data that will be signed.
  * return::     sigbuf. If there was error, sigbuf[0] is set to 'E' */
 
@@ -817,16 +817,21 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int body_l
   struct tm ot;
   struct timeval ourts;
   
+  if (!body)
+    body_len = 0;
+  if (body_len == -1)
+    body_len = strlen(body);
+
   /* Prepare values */
 
   GETTIMEOFDAY(&ourts, 0);
   GMTIME_R(ourts.tv_sec, ot);
 
   /* Prepare timestamp prepended data for hashing */
-  len = ZXLOG_TIME_SIZ+1+body_len+1;
-  buf = ZX_ALLOC(cf->ctx, len);
-  len = snprintf(buf, len-1, ZXLOG_TIME_FMT " %.*s",
-		 ZXLOG_TIME_ARG(ot, ourts.tv_usec), body_len, body);
+  len = ZXLOG_TIME_SIZ+1+body_len;
+  buf = ZX_ALLOC(cf->ctx, len+1);
+  len = snprintf(buf, len+1, ZXLOG_TIME_FMT " %.*s",
+		 ZXLOG_TIME_ARG(ot, ourts.tv_usec), body_len, body_len?body:"");
   buf[len] = 0; /* must terminate manually as on win32 nul is not guaranteed */
 
   ASSERT(sigbuf_len >= 3+ZXLOG_TIME_SIZ+1);
@@ -836,7 +841,7 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int body_l
   
   switch (cf->bus_rcpt & 0x06) {
   case 0x02:   /* SP plain sha1 */
-    if (sigbuf_len < 3+ZXLOG_TIME_SIZ+1+27+1) { ERR("Too small sigbuf %d",sigbuf_len); break; }
+    if (sigbuf_len < 3+ZXLOG_TIME_SIZ+1+27+1) { ERR("Too small sigbuf %d", sigbuf_len); break; }
     memcpy(sigbuf+3, buf, ZXLOG_TIME_SIZ);
     sigbuf[3+ZXLOG_TIME_SIZ] = ' ';
     sha1_safe_base64(sigbuf+3+ZXLOG_TIME_SIZ+1, len, buf);
@@ -844,7 +849,7 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int body_l
     sigbuf[0] = 'S';
     break;
   case 0x04:   /* RP RSA-SHA1 signature */
-    LOCK(cf->mx, "logsign wrln");      
+    LOCK(cf->mx, "mint_receipt");      
 #if 0
     if (!(sign_pkey = cf->log_sign_pkey))
       sign_pkey = cf->log_sign_pkey = zxid_read_private_key(cf, "logsign-nopw-cert.pem");
@@ -852,13 +857,13 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int body_l
     if (!(sign_pkey = cf->sign_pkey))
       sign_pkey = cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
 #endif
-    UNLOCK(cf->mx, "logsign wrln");
-    D("sign_pkey=%p", sign_pkey);
+    UNLOCK(cf->mx, "mint_receipt");
+    D("sign_pkey=%p buf(%.*s) len=%d", sign_pkey, len, buf, len);
     if (!sign_pkey)
       break;
     zlen = zxsig_data(cf->ctx, len, buf, &zbuf, sign_pkey, "receipt");
     len = 3+ZXLOG_TIME_SIZ+1+SIMPLE_BASE64_LEN(zlen)+1;
-    if (sigbuf_len < len) { ERR("Too small sigsigbuf_len=%d, need=%d",sigbuf_len,len); break; }
+    if (sigbuf_len < len) { ERR("Too small sigbuf_len=%d, need=%d", sigbuf_len, len); break; }
     sigbuf[3+ZXLOG_TIME_SIZ] = ' ';
     p = base64_fancy_raw(zbuf, zlen, sigbuf+3+ZXLOG_TIME_SIZ+1, safe_basis_64, 1<<31, 0, 0, '.');
     *p = 0;
@@ -875,7 +880,7 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int body_l
     ZX_FREE(cf->ctx, zbuf);
   ZX_FREE(cf->ctx, buf);
   if (zx_debug>1)
-    D("zx-rcpt-sig(%s) body(%.*s) %x %x", sigbuf, body_len, body, cf->bus_rcpt, cf->bus_rcpt&0x06);
+    D("zx-rcpt-sig(%s) body(%.*s) buf(%s) len=%d %x %x", sigbuf, body_len, body_len?body:"", buf, strlen(buf), cf->bus_rcpt, cf->bus_rcpt&0x06);
   else
     D("zx-rcpt-sig(%s) %x %x", sigbuf, cf->bus_rcpt, cf->bus_rcpt & 0x06);
   return sigbuf;
@@ -884,9 +889,9 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int body_l
 /*() Verify a receipt signature.
  * cf::         ZXID configuration object, used for memory allocation and CoT mgmt
  * eid::        EntityID of the receipt issuing party, used to lookup metadata
- * sigbuf_len:: Length of signature buffer (from zx-rcpt-sig header)
+ * sigbuf_len:: Length of signature buffer (from zx-rcpt-sig header) or -1 for strlen(sigbuf)
  * sigbuf::     The receipt (from zx-rcpt-sig header)
- * body_len::   Length of data pertaining to receipt
+ * body_len::   Length of data pertaining to receipt (-1 to use strlen(body))
  * body::       Data pertaining to receipt
  * return::     0 (ZXSIG_OK) on success, nonzero on failure. */
 
@@ -898,14 +903,26 @@ int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* s
   char* buf;
   char sig[1024];
   zxid_entity* meta;
+
+  if (sigbuf_len == -1)
+    sigbuf_len = strlen(sigbuf);
   
-  len = ZXLOG_TIME_SIZ+1+body_len+1;
-  buf = ZX_ALLOC(cf->ctx, len);
+  if (!body)
+    body_len = 0;
+  if (body_len == -1)
+    body_len = strlen(body);
+  D("body(%.*s) body_len=%d", body_len, body, body_len);
+  D("sigbuf(%.*s) sigbuf_len=%d", sigbuf_len, sigbuf, sigbuf_len);
+
+  len = ZXLOG_TIME_SIZ+1+body_len;
+  buf = ZX_ALLOC(cf->ctx, len+1);
   memcpy(buf, sigbuf+3, ZXLOG_TIME_SIZ);
   buf[ZXLOG_TIME_SIZ] = ' ';
-  memcpy(buf+ZXLOG_TIME_SIZ+1, body, body_len);
-  buf[ZXLOG_TIME_SIZ+1+body_len] = 0;
-
+  if (body_len)
+    memcpy(buf+ZXLOG_TIME_SIZ+1, body, body_len);
+  buf[len] = 0;
+  D("buf(%.*s) len=%d", len, buf, len);
+  
   switch (sigbuf[0]) {
   case 'R':
     meta = zxid_get_ent(cf, eid);

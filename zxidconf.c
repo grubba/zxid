@@ -1513,7 +1513,7 @@ scan_end:
     case 'N':  /* NAMEID_ENC, NICE_NAME, NOSIG_FATAL */
       if (!strcmp(n, "NAMEID_ENC"))     { SCAN_INT(v, cf->nameid_enc); break; }
       if (!strcmp(n, "NICE_NAME"))      { cf->nice_name = v; break; }
-      if (!strcmp(n, "NON_STANDARD_ENTITYID")) { cf->non_standard_entityid = v; break; }
+      if (!strcmp(n, "NON_STANDARD_ENTITYID")) { cf->non_standard_entityid = v; D("NON_STANDARD_ENTITYID set(%s)", v); break; }
       if (!strcmp(n, "NOSIG_FATAL"))    { SCAN_INT(v, cf->nosig_fatal); break; }
       if (!strcmp(n, "NOTIMESTAMP_FATAL")) { SCAN_INT(v, cf->notimestamp_fatal); break; }
       if (!strcmp(n, "NEED"))           { cf->need = zxid_load_need(cf, cf->need, v); break; }
@@ -1738,6 +1738,7 @@ static struct zx_str* zxid_show_bus_url(zxid_conf* cf, struct zxid_bus_url* cp)
 /* Called by:  opt x5, zxid_simple_show_conf */
 struct zx_str* zxid_show_conf(zxid_conf* cf)
 {
+  char* eid;
   char* p;
   struct zxid_attr* ap;
   struct zxid_atsrc* sp;
@@ -1813,7 +1814,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
   localpdp_idpnid_permit = zxid_show_cstr_list(cf, cf->localpdp_idpnid_permit);
   localpdp_idpnid_deny   = zxid_show_cstr_list(cf, cf->localpdp_idpnid_deny);
 
-  ss = zxid_my_ent_id(cf);
+  eid = zxid_my_ent_id_cstr(cf);
 
   return zx_strf(cf->ctx,
 "<title>ZXID Conf for %s</title><body bgcolor=white><h1>ZXID Conf for %s</h1>"
@@ -2008,7 +2009,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "WSP_LOCALPDP_OBL_EMIT=%s\n"
 "WSC_LOCALPDP_OBL_ACCEPT=%s\n"
 "</pre>",
-		 cf->url, ss->s,
+		 cf->url, eid,
 		 cf->path,
 
 		 cf->path,

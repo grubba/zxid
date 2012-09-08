@@ -201,17 +201,11 @@ int zxbus_login_ent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
     }
   } else {
     /* This could be ClientTLS */
-    if (!hi_verify_peer_ssl_credential(hit, io, login) {
+    if (!hi_verify_peer_ssl_credential(hit, io, login)) {
       UNLOCK(hit->shf->ent_mut, "login-fail5");
       ERR("Login account(%s): no password supplied and no ClientTLS match", ent->eid);
       return 0;      
     }
-    LOCK(io->qel.mut, "login-clienttls");
-    if (io->ent == ent && ent->io == io) {
-      D("ClientTLS confirmed by CONNECT eid(%s)", ent->eid);
-      goto loginok;
-    }
-    UNLOCK(io->qel.mut, "login-clienttls");
   }
   
   if (ent->io) {
@@ -238,6 +232,7 @@ int zxbus_login_ent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   return 1;
 }
 
+#if 0
 /*() Login an entity using ClientTLS authentication, as evidenced
  * by a hash of the certificate subject field.
  * return:: zero on failure, 1 on success */
@@ -297,5 +292,6 @@ int zxbus_login_subj_hash(struct hi_thr* hit, struct hi_io* io, unsigned long su
   UNLOCK(hit->shf->ent_mut, "subj_hash");
   return 1;
 }
+#endif
 
 /* EOF  --  zxbusent.c */

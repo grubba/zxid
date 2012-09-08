@@ -32,6 +32,9 @@
 #ifdef USE_CURL
 #include <curl/curl.h>
 #endif
+#ifdef USE_OPENSSL
+#include <openssl/ssl.h>
+#endif
 
 #include <zx/zx.h>
 
@@ -775,6 +778,7 @@ ZXID_DECL struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi);
 ZXID_DECL int zxid_send_sp_meta(zxid_conf* cf, zxid_cgi* cgi);
 ZXID_DECL struct zx_str* zxid_sp_carml(zxid_conf* cf);
 ZXID_DECL struct zx_str* zxid_my_ent_id(zxid_conf* cf);
+ZXID_DECL char* zxid_my_ent_id_cstr(zxid_conf* cf);
 ZXID_DECL struct zx_attr_s* zxid_my_ent_id_attr(zxid_conf* cf, struct zx_elem_s* father, int tok);
 ZXID_DECL struct zx_str* zxid_my_cdc_url(zxid_conf* cf);
 ZXID_DECL struct zx_sa_Issuer_s* zxid_my_issuer(zxid_conf* cf, struct zx_elem_s* father);

@@ -163,7 +163,7 @@ char* zxid_sso_issue_jwt(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct tim
   char* jwt_id; /* sha1 hash of the jwt, taken from log_path */
   struct zx_str issuer;
   struct zx_str* affil;
-  struct zx_str* eid;
+  char* eid;
   struct zx_str* logpath;
   struct zx_str ss;
   struct zx_str nn;
@@ -198,19 +198,20 @@ char* zxid_sso_issue_jwt(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct tim
     return 0;
   }
 
-  eid = zxid_my_ent_id(cf);
+  eid = zxid_my_ent_id_cstr(cf);
   // ,\"\":\"\"
   buf = zx_alloc_sprintf(cf->ctx, &rawlen,
-		       "{\"iss\":\"%.s\""
+		       "{\"iss\":\"%s\""
 		       ",\"user_id\":\"%.*s\""
 		       ",\"aud\":\"%s\""
 		       ",\"exp\":%d"
 		       ",\"nonce\":\"%s\"}",
-		       eid->len, eid->s,
+		       eid,
 		       ZX_GET_CONTENT_LEN(*nameid), ZX_GET_CONTENT_S(*nameid),
 		       cgi->client_id,
 		       time(0) + cf->timeskew + cf->a7nttl,
 		       cgi->nonce);
+  ZX_FREE(cf->ctx, eid);
   jwt = zxid_mk_jwt(cf, rawlen, buf);
   ZX_FREE(cf->ctx, buf);
 

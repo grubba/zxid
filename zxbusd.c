@@ -699,8 +699,9 @@ int zxbusd_main(int argc, char** argv, char** env)
     CMDLINE("listen");
 
     for (hs = listen_ports; hs; hs = hs->next) {
-      io = hi_open_listener(hit, hs, hs->proto);
-      if (!io) break;
+      io = hi_open_listener(shuff, hs, hs->proto);
+      if (!io)
+	break;
       io->n = hs->conns;
       hs->conns = io;
     }
@@ -713,10 +714,11 @@ int zxbusd_main(int argc, char** argv, char** env)
 	continue;  /* SMTP connections are opened later, when actual data from SIS arrives. */
 
       if (hs->sin.sin_family == 0xfead)
-	io = serial_init(hit, hs);
+	io = serial_init(&hit, hs);
       else
-	io = hi_open_tcp(hit, hs, hs->proto);
-      if (!io) break;
+	io = hi_open_tcp(&hit, hs, hs->proto);
+      if (!io)
+	break;
       io->n = hs->conns;
       hs->conns = io;
 #ifdef ENA_S5066

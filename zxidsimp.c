@@ -271,9 +271,6 @@ char* zxid_fed_mgmt(char* conf, char* sid, int auto_flags) {
 /* Called by:  zxid_template_page_cf */
 static const char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, const char* lim, int auto_flags)
 {
-  char* s;
-  struct zx_str* ss;
-  
   switch (*key) {
   case 'A':
     if (BBMATCH("ACTION_URL", key, lim)) return cgi->action_url;
@@ -282,11 +279,7 @@ static const char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* k
     if (BBMATCH("DBG", key, lim)) return cgi->dbg;
     break;
   case 'E':
-    if (BBMATCH("EID", key, lim)) {
-      ss = zxid_my_ent_id(cf);
-      s = ss->s; ZX_FREE(cf->ctx, ss);
-      return s;
-    }
+    if (BBMATCH("EID", key, lim)) return zxid_my_ent_id_cstr(cf);
     if (BBMATCH("ERR", key, lim)) return cgi->err;
     break;
   case 'I':
@@ -564,9 +557,9 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
   D("HERE tf(%s) t(%s)", STRNULLCHKNULL(cf->idp_sel_templ_file), STRNULLCHKNULL(cf->idp_sel_templ));
   ss = zxid_template_page_cf(cf, cgi, cf->idp_sel_templ_file, cf->idp_sel_templ, 4096, auto_flags);
 #else
-  struct zx_str* eid=0;
+  char* eid=0;
   if (cf->idp_sel_our_eid && cf->idp_sel_our_eid[0])
-    eid = zxid_my_ent_id(cf);
+    eid = zxid_my_ent_id_cstr(cf);
   char* idp_list = zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
   if ((auto_flags & ZXID_AUTO_FORMT) && (auto_flags & ZXID_AUTO_FORMF)) {
     DD("HERE %p", cgi->idp_list);
@@ -579,7 +572,7 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
 #endif
 		 "<font color=red>%s</font><font color=green>%s</font><font color=white>%s</font>"
 		 "%s"
-		 "%s<a href=\"%.*s\">%.*s</a><br>"
+		 "%s<a href=\"%s\">%s</a><br>"
 		 "%s"    /* IdP List */
 		 "%s%s"
 		 "<input type=hidden name=fr value=\"%s\">\n"
@@ -588,7 +581,7 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
 		 cf->url,
 		 FLDCHK(cgi, err), FLDCHK(cgi, msg), FLDCHK(cgi, dbg),
 		 cf->idp_sel_new_idp,
-		 cf->idp_sel_our_eid, eid?eid->len:0, eid?eid->s:"", eid?eid->len:0, eid?eid->s:"",
+		 cf->idp_sel_our_eid, STRNULLCHK(eid), STRNULLCHK(eid),
 		 idp_list,
 		 cf->idp_sel_tech_user, cf->idp_sel_tech_site,
 		 FLDCHK(cgi, rs),
@@ -603,7 +596,7 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
 #endif
 		 "<font color=red>%s</font><font color=green>%s</font><font color=white>%s</font>"
 		 "%s"
-		 "%s<a href=\"%.*s\">%.*s</a><br>"
+		 "%s<a href=\"%s\">%s</a><br>"
 		 "%s"    /* IdP List */
 		 "%s%s"
 		 "<input type=hidden name=fr value=\"%s\">\n"
@@ -611,7 +604,7 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
 		 cf->url,
 		 FLDCHK(cgi, err), FLDCHK(cgi, msg), FLDCHK(cgi, dbg),
 		 cf->idp_sel_new_idp,
-		 cf->idp_sel_our_eid, eid?eid->len:0, eid?eid->s:"", eid?eid->len:0, eid?eid->s:"",
+		 cf->idp_sel_our_eid, STRNULLCHK(eid), STRNULLCHK(eid),
 		 idp_list,
 		 cf->idp_sel_tech_user, cf->idp_sel_tech_site,
 		 FLDCHK(cgi, rs));
@@ -619,13 +612,13 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
     ss = zx_strf(cf->ctx,
 		 "<font color=red>%s</font><font color=green>%s</font><font color=white>%s</font>"
 		 "%s"
-		 "%s<a href=\"%.*s\">%.*s</a><br>"
+		 "%s<a href=\"%s\">%s</a><br>"
 		 "%s"    /* IdP List */
 		 "%s%s"
 		 "<input type=hidden name=fr value=\"%s\">\n",
 		 FLDCHK(cgi, err), FLDCHK(cgi, msg), FLDCHK(cgi, dbg),
 		 cf->idp_sel_new_idp,
-		 cf->idp_sel_our_eid, eid?eid->len:0, eid?eid->s:"", eid?eid->len:0, eid?eid->s:"",
+		 cf->idp_sel_our_eid, STRNULLCHK(eid), STRNULLCHK(eid),
 		 idp_list,
 		 cf->idp_sel_tech_user, cf->idp_sel_tech_site,
 		 FLDCHK(cgi, rs));

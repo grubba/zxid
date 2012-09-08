@@ -131,6 +131,7 @@ int setgid(int);
 int symlink(const char *oldpath, const char *newpath);
 int unlink(const char *pathname);
 int write(int fd, void* buf, int count);
+unsigned int sleep(unsigned int secs);
 #define F_LOCK 1
 #define F_ULOCK 0
 #endif
