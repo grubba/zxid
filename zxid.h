@@ -559,7 +559,7 @@ struct zxid_bus_url {
   char* s;              /* The config URL */
   char* eid;            /* EntityID of the auditbus node (for metadata and zx-rcpt-sig validate) */
   fdtype fd;            /* Remember already open connection to zxbusd instance. */
-  char* buf;            /* I/O buffer */
+  char* m;              /* I/O buffer */
   char* ap;             /* How far the buffer is filled */
   int   cur_rcpt;       /* Rolling receipt ID */
   char  scalingpart;    /* Scaling partition number. */
@@ -745,8 +745,8 @@ ZXID_DECL int zxlog(zxid_conf* cf, struct timeval* ourts, struct timeval* srcts,
 ZXID_DECL int zxlogwsp(zxid_conf* cf, zxid_ses* ses, const char* res, const char* op, const char* arg, const char* fmt, ...);
 ZXID_DECL int zxlogusr(zxid_conf* cf, const char* uid, struct timeval* ourts, struct timeval* srcts, const char* ipport, struct zx_str* entid, struct zx_str* msgid, struct zx_str* a7nid, struct zx_str* nid, const char* sigval, const char* res, const char* op, const char* arg, const char* fmt, ...);
 ZXID_DECL void zxlog_debug_xml_blob(zxid_conf* cf, const char* file, int line, const char* func, const char* lk, int len, const char* xml);
-ZXID_DECL char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int body_len, const char* body);
-ZXID_DECL int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* sigbuf, int body_len, const char* body);
+ZXID_DECL char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int eid_len, const char* eid, int body_len, const char* body);
+ZXID_DECL int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int deid_len, const char* deid, int body_len, const char* body);
 
 /* zxbusprod */
 

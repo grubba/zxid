@@ -126,7 +126,7 @@ static void zxbus_load_acks(struct hi_thr* hit, struct hi_pdu* pdu, int fd)
   buf[gotall] = 0;
   
   LOCK(hit->shf->ent_mut, "load-acks");  // *** very big lock
-  for (p = buf; p < buf+gotall; p = nl) {
+  for (p = buf; p < buf+gotall; p = nl+1) {
     if (!(nl = strchr(p, '\n')))
       nl = buf+gotall;
     if (!memcmp(p, "AB1 ", sizeof("AB1 ")-1)) {
@@ -202,7 +202,7 @@ void stomp_msg_deliver(struct hi_thr* hit, struct hi_pdu* db_pdu)
       if (zxbus_already_ackd(ent, db_pdu)) {
 	DD("Already ACKd entity(%s)", ent->eid);
       } else if (ent->io) {
-	hi_sendf(hit, ent->io, db_pdu, 0, "MESSAGE\nsubscription:%s\nmessage-id:%d\ndestination:%s\ncontent-length:%d\n\n%.*s%c", "0", 0, db_pdu->ad.delivb.dest, db_pdu->ad.delivb.len, db_pdu->ad.delivb.len, db_pdu->ad.delivb.body, 0);
+	hi_sendf(hit, ent->io, db_pdu, 0, "MESSAGE\nsubscription:%s\nmessage-id:%d\ndestination:%s\ncontent-length:%d\n\n%.*s%c", "0", ent->io->ad.stomp.msgid++, db_pdu->ad.delivb.dest, db_pdu->ad.delivb.len, db_pdu->ad.delivb.len, db_pdu->ad.delivb.body, 0);
 	/* the receiving half will decrement  ++(int)db_pdu->ad.delivb.acks */
 	++(db_pdu->ad.delivb.acks); /* number of ACKs pending due to MESSAGEs sent */
       } else {
@@ -277,7 +277,7 @@ void zxbus_sched_pending_delivery(struct hi_thr* hit, const char* dest)
     return;
   }
   
-  while (de = readdir(dir))
+  while (de = readdir(dir))  /* iterate over messages in the channel directory */
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') { /* ign hidden&backup */
       pdu = hi_pdu_alloc(hit, "pend-bitch");
       pdu->qel.kind = HI_PDU_DIST;
@@ -318,6 +318,7 @@ int zxbus_retire(struct hi_thr* hit, struct hi_pdu* db_pdu)
     return 0;
   }
   DD("c_path(%s) len=%d", c_path, len);
+  D("sha1_input(%.*s) len=%d", db_pdu->ap - db_pdu->m, db_pdu->m, db_pdu->ap - db_pdu->m);
   sha1_safe_base64(c_path+len, db_pdu->ap - db_pdu->m, db_pdu->m);
   c_path[len+27] = 0;
   DD("c_path(%s)", c_path);

@@ -50,6 +50,13 @@
 #include "zxidutil.h"
 #include "c/zxidvers.h"
 
+/*
+       zxlogview -rv sign-nopw-cert.pem receipt body  # Check receipt\n\
+       zxlogview -rg sign-nopw-cert.pem receipt body  # Generate receipt\n\
+  -rv CERT RCPT BODY  Receipt verification mode.\n\
+  -rg PRIV RCPT BODY  Receipt generation mode.\n\
+*/
+
 char* help =
 "zxlogview  -  Decrypt logs and validate log signatures - R" ZXID_REL "\n\
 SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
@@ -62,7 +69,7 @@ See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
 Usage: zxlogview [options] logsign-nopw-cert.pem logenc-nopw-cert.pem <loglines\n\
-Usage: zxlogview -t sign-nopw-cert.pem sign-nopw-cert.pem\n\
+       zxlogview -t sign-nopw-cert.pem sign-nopw-cert.pem\n\
   -t        Test mode. The certificates are interpretted from enc & sign perspective.\n\
   -v        Verbose messages.\n\
   -q        Be extra quiet.\n\
@@ -272,10 +279,13 @@ static void test_receipt(int* argc, char*** argv, char*** env)
 
   zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "test13");
   printf("13 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "test13"));
+  //exit(0);
   zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "");
   printf("14 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, ""));
   zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "t15");
   printf("15 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "t15"));
+  sigbuf[3] = '0';
+  printf("15fail expected vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "t15"));
 
   cf->bus_rcpt = 3;
   zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "test16");

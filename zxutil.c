@@ -636,11 +636,11 @@ linkrest:
 /*() Output a hexdump to stderr. Used for debugging purposes. */
 
 /* Called by:  hexdmp, zxsig_data x2, zxsig_verify_data x5 */
-int hexdump(char* msg, char* data, char* lim, int max)
+int hexdump(const char* msg, const char* data, const char* lim, int max)
 {
   int i;
-  char* p = data;
-  char* lim16;
+  const char* p = data;
+  const char* lim16;
   char buf[3*16+1+1+16+1];
   if (!msg)
     msg = "";
@@ -673,7 +673,7 @@ int hexdump(char* msg, char* data, char* lim, int max)
 }
 
 /* Called by:  covimp_test x2, zxsig_validate x6 */
-int hexdmp(char* msg, char* p, int len, int max) {
+int hexdmp(const char* msg, const char* p, int len, int max) {
   return hexdump(msg, p, p+len, max);
 }
 

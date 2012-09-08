@@ -135,7 +135,11 @@ static void stomp_send_receipt(struct hi_thr* hit, struct hi_io* io, struct hi_p
   }
   DD("rcpt(%.*s) len=%d", len, rcpt, len);
 
-  zxbus_mint_receipt(zxbus_cf, sizeof(sigbuf), sigbuf, req->ad.stomp.len, req->ad.stomp.body);
+  zxbus_mint_receipt(zxbus_cf, sizeof(sigbuf), sigbuf,
+		     len, rcpt,
+		     -2, req->ad.stomp.dest,
+		     -1, io->ent->eid,
+		     req->ad.stomp.len, req->ad.stomp.body);
   hi_sendf(hit, io, 0, req, "RECEIPT\nreceipt-id:%.*s\nzx-rcpt-sig:%s\n\n%c", len, rcpt, sigbuf,0);
 }
 
@@ -238,6 +242,8 @@ static void stomp_got_nack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* 
 static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* resp)
 {
   int sublen, midlen, siglen, ver;
+  struct hi_pdu* prev;
+  struct hi_pdu* req;
   struct hi_pdu* parent;
   char buf[1024];
 
@@ -249,21 +255,31 @@ static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
 
   ASSERTOP(resp->req, ==, 0, resp->req);
   LOCK(io->qel.mut, "ack");
-  if (io->pending) {
-    resp->req = io->pending;
-    io->pending = io->pending->n;
-    parent = resp->parent = resp->req->parent;
-    UNLOCK(io->qel.mut, "ack");
-  } else {
+  for (prev = 0, req = io->pending; req; prev = req, req = req->n) {
+    if (!memcmp(resp->ad.stomp.msg_id, req->ad.stomp.msg_id, midlen+1)) {
+      if (prev)
+	prev->n = req->n;
+      else
+	io->pending = req->n;
+      resp->req = req;
+      parent = resp->parent = req->parent;
+      break;
+    }
+  }
+  UNLOCK(io->qel.mut, "ack");
+  if (!resp->req) {
     ERR("Unsolicited ACK subsc(%.*s) msg_id(%.*s)", sublen, sublen?resp->ad.stomp.subsc:"", midlen, midlen?resp->ad.stomp.msg_id:"");
-    UNLOCK(io->qel.mut, "ack-unsolicited");
     return;
   }
   ASSERT(resp->parent);
   
+  D("parent->len=%d req->len=%d\nparent->body(%.*s)\n   req->body(%.*s)", parent->ad.delivb.len, resp->req->ad.stomp.len, parent->ad.delivb.len, parent->ad.delivb.body, resp->req->ad.stomp.len, resp->req->ad.stomp.body);
   ver = zxbus_verify_receipt(zxbus_cf, io->ent->eid,
 			     siglen, siglen?resp->ad.stomp.zx_rcpt_sig:"",
-			     parent->ad.delivb.len, parent->ad.delivb.body);
+			     -2, req->ad.stomp.msg_id,
+			     -1, io->ent->eid,
+			     -2, req->ad.stomp.dest,
+			     resp->req->ad.stomp.len, resp->req->ad.stomp.body);
   if (ver != ZXSIG_OK) {
     ERR("ACK signature validation failed: %d", ver);
     hi_free_resp(hit, resp);

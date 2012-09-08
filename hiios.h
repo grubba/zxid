@@ -195,6 +195,9 @@ struct hi_io {
       struct hi_pdu* uni_ind_hmtp;
       int state;
     } smtp;
+    struct {
+      int msgid;
+    } stomp;
   } ad;                      /* Application specific data */
 #ifdef USE_OPENSSL
   SSL* ssl;

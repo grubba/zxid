@@ -377,18 +377,30 @@ static int zxbus_fmt(zxid_conf* cf,   /* 1 */
 }
 #endif
 
+/*() Clear current PDU from read buffer, moving the data after
+ * it (i.e. next PDU in buffer) in position to be read. */
+
+static void zxbus_shift_read_buf(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
+{
+  if (stomp->end_of_pdu) {
+    memmove(bu->m, stomp->end_of_pdu, bu->ap-stomp->end_of_pdu);
+    bu->ap = bu->m + (bu->ap-stomp->end_of_pdu);
+  }
+  stomp->end_of_pdu = 0;
+}
+
 /*() Read and parse a frame from STOMP 1.1 connection (from zxbusd).
  * Blocks until frame has been read.
  * Return:: 1 on success, 0 on failure.
  * In case of failure, caller should close the connection. The PDU
- * data is left in bu->buf, possibly with the following pdu as well. The
+ * data is left in bu->m, possibly with the following pdu as well. The
  * caller should clean the buffer without loosing the next pdu
  * fragment before calling this function again. For example:
- *   memmove(bu->buf, stomp->end_of_pdu, bu->ap-stomp->end_of_pdu);
- *   bu->ap = bu->buf + (bu->ap-stomp->end_of_pdu);
+ *   memmove(bu->m, stomp->end_of_pdu, bu->ap-stomp->end_of_pdu);
+ *   bu->ap = bu->m + (bu->ap-stomp->end_of_pdu);
  *   stomp->end_of_pdu = 0;
- * This is performed automatically if stomp->end_of_pdu is set in
- * the structure that is passed in.
+ * or by calling
+ *   zxbus_shift_read_buf(cf, bu, stomp);
  * The parsed headers are returned in the struct stomp_hdr. */
 
 /* Called by:  zxbus_close, zxbus_listen_msg, zxbus_open_bus_url, zxbus_send_cmdf */
@@ -400,47 +412,44 @@ int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
   char* v;
   char* p;
 
-  if (stomp->end_of_pdu) {
-    memmove(bu->buf, stomp->end_of_pdu, bu->ap-stomp->end_of_pdu);
-    bu->ap = bu->buf + (bu->ap-stomp->end_of_pdu);
-  }
   memset(stomp, 0, sizeof(struct stomp_hdr));
 
-  while (bu->ap - bu->buf < ZXBUS_BUF_SIZE) {
+  while (bu->ap - bu->m < ZXBUS_BUF_SIZE) {
 #ifdef USE_OPENSSL
     if (bu->ssl) {
-      got = SSL_read(bu->ssl, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->buf));
+      got = SSL_read(bu->ssl, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m));
       if (got < 0) {
 	ERR("recv: %d %s", errno, STRERROR(errno));
 	zx_report_openssl_error("zxbus_read-ssl");
 	return 0;
       }
     } else {
-      got = recv(bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->buf), 0);
+      got = recv(bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m), 0);
       if (got < 0) {
 	ERR("recv: %d %s", errno, STRERROR(errno));
 	return 0;
       }
     }
 #else
-    got = recv(bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->buf), 0);
+    got = recv(bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m), 0);
     if (got < 0) {
       ERR("recv: %d %s", errno, STRERROR(errno));
       return 0;
     }
 #endif
     if (!got) {
-      D("recv: returned empty, gotten=%d", (bu->ap - bu->buf));
+      D("recv: returned empty, gotten=%d", (bu->ap - bu->m));
       return 0;
     }
+    HEXDUMP("read:", bu->ap, bu->ap+got, /*16*/ 256);
     bu->ap += got;
 
-    for (p = bu->buf; p < bu->ap && ONE_OF_2(*p, '\n', '\r'); ++p) ;
-    if (p > bu->buf) {
+    for (p = bu->m; p < bu->ap && ONE_OF_2(*p, '\n', '\r'); ++p) ;
+    if (p > bu->m) {
       /* Wipe out initial newlines */
-      memmove(bu->buf, p, bu->ap - p);
-      bu->ap -= p - bu->buf;
-      p = bu->buf;
+      memmove(bu->m, p, bu->ap - p);
+      bu->ap -= p - bu->m;
+      p = bu->m;
     }
     if (bu->ap - p < STOMP_MIN_PDU_SIZE)
       goto read_more;
@@ -540,8 +549,8 @@ int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
   read_more:
     continue;
   }
-  if (bu->ap - bu->buf >= ZXBUS_BUF_SIZE) {
-    ERR("PDU does not fit in buffer %d", bu->ap - bu->buf);
+  if (bu->ap - bu->m >= ZXBUS_BUF_SIZE) {
+    ERR("PDU does not fit in buffer %d", bu->ap - bu->m);
     return 0;
   }
  done:
@@ -564,9 +573,14 @@ int zxbus_ack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stom
   subs_id_len = strchr(stompp->subs_id, '\n') - stompp->subs_id;
   msg_id_len = strchr(stompp->msg_id, '\n') - stompp->msg_id;
 
-  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, stompp->len, stompp->body);
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf,
+		     msg_id_len, stompp->msg_id,
+		     -2, stompp->dest,
+		     -1, bu->eid,
+		     stompp->len, stompp->body);
   len = snprintf(buf, sizeof(buf), "ACK\nsubscription:%.*s\nmessage-id:%.*s\nzx-rcpt-sig:%s\n\n%c",
 		 subs_id_len, stompp->subs_id, msg_id_len, stompp->msg_id, sigbuf, 0);
+  HEXDUMP(" ack:", buf, buf+len, /*16*/ 256);
 #ifdef USE_OPENSSL
   if (bu->ssl)
     SSL_write(bu->ssl, buf, len);
@@ -587,20 +601,21 @@ int zxbus_ack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stom
 char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
 {
   struct stomp_hdr stomp;
-  memset(&stomp, 0, sizeof(struct stomp_hdr));
   if (zxbus_read(cf, bu, &stomp)) {
-    if (!memcmp(bu->buf, "MESSAGE", sizeof("MESSAGE")-1)) {
+    if (!memcmp(bu->m, "MESSAGE", sizeof("MESSAGE")-1)) {
       if (verbose) {
 	if (verbose>1) {
-	  printf("%.*s\n", bu->ap - bu->buf, bu->buf);
+	  printf("%.*s\n", bu->ap - bu->m, bu->m);
 	} else {
 	  printf("%.*s\n", stomp.len, stomp.body);
 	}
       }
       zxbus_ack_msg(cf, bu, &stomp);
+      zxbus_shift_read_buf(cf, bu, &stomp);
       return stomp.body;  /* normal successful return */
     } else {
-      ERR("Unknown command received(%.*s)", bu->ap - bu->buf, bu->buf);
+      ERR("Unknown command received(%.*s)", bu->ap - bu->m, bu->m);
+      zxbus_shift_read_buf(cf, bu, &stomp);
       return 0;
     }
   } else {
@@ -687,13 +702,13 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     }
   }
 
-  bu->buf = bu->ap = ZX_ALLOC(cf->ctx, ZXBUS_BUF_SIZE);
+  bu->m = bu->ap = ZX_ALLOC(cf->ctx, ZXBUS_BUF_SIZE);
 
-  memcpy(bu->buf, host, MIN(host_len, ZXBUS_BUF_SIZE-2));
-  bu->buf[MIN(host_len, ZXBUS_BUF_SIZE-2)+1] = 0;
-  he = gethostbyname(bu->buf);
+  memcpy(bu->m, host, MIN(host_len, ZXBUS_BUF_SIZE-2));
+  bu->m[MIN(host_len, ZXBUS_BUF_SIZE-2)+1] = 0;
+  he = gethostbyname(bu->m);
   if (!he) {
-    ERR("hostname(%s) did not resolve(%d)", bu->buf, h_errno);
+    ERR("hostname(%s) did not resolve(%d)", bu->m, h_errno);
     exit(5);
   }
   
@@ -827,10 +842,11 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
       *p = '|';
   
   if (cf->bus_pw) {
-    len = snprintf(buf, sizeof(buf)-1, "STOMP\naccept-version:1.1\nhost:%s\nlogin:%s\npasscode:%s\n\n%c", bu->buf, eid, cf->bus_pw, 0);
+    len = snprintf(buf, sizeof(buf)-1, "STOMP\naccept-version:1.1\nhost:%s\nlogin:%s\npasscode:%s\n\n%c", bu->m, eid, cf->bus_pw, 0);
   } else {
-    len = snprintf(buf, sizeof(buf)-1, "STOMP\naccept-version:1.1\nhost:%s\nlogin:%s\n\n%c", bu->buf, eid, 0);
+    len = snprintf(buf, sizeof(buf)-1, "STOMP\naccept-version:1.1\nhost:%s\nlogin:%s\n\n%c", bu->m, eid, 0);
   }
+  HEXDUMP("conn:", buf, buf+len, /*16*/ 256);
 #ifdef USE_OPENSSL
   if (bu->ssl)
     SSL_write(bu->ssl, buf, len);
@@ -840,13 +856,12 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
 
   memset(&stomp, 0, sizeof(struct stomp_hdr));
   if (zxbus_read(cf, bu, &stomp)) {
-    if (!memcmp(bu->buf, "CONNECTED", sizeof("CONNECTED")-1)) {
-      memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
-      bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
-      stomp.end_of_pdu = 0;
+    if (!memcmp(bu->m, "CONNECTED", sizeof("CONNECTED")-1)) {
+      zxbus_shift_read_buf(cf, bu, &stomp);
       D("STOMP got CONNECTED %d", 0);
       return 1;
     }
+    zxbus_shift_read_buf(cf, bu, &stomp);
   }
   ERR("Connection to %s failed. Other end did not send CONNECTED", bu->s);
 #ifdef USE_OPENSSL
@@ -887,10 +902,9 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
 
   memset(&stomp, 0, sizeof(struct stomp_hdr));
   if (zxbus_read(cf, bu, &stomp)) {
-    if (!memcmp(bu->buf, "RECEIPT", sizeof("RECEIPT")-1)) {
+    if (!memcmp(bu->m, "RECEIPT", sizeof("RECEIPT")-1)) {
       if (atoi(stomp.rcpt_id) == bu->cur_rcpt - 1) {
-	memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
-	bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
+	zxbus_shift_read_buf(cf, bu, &stomp);
 	D("DISCONNECT got RECEIPT %d", bu->cur_rcpt-1);
 #ifdef USE_OPENSSL
 	if (bu->ssl) {
@@ -904,10 +918,12 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
 	return 1;
       } else {
 	ERR("DISCONNECT to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1);
+	zxbus_shift_read_buf(cf, bu, &stomp);
 	goto errout;
       }
     } else {
-      ERR("DISCONNECT to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, bu->ap - bu->buf, bu->buf);
+      ERR("DISCONNECT to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, bu->ap - bu->m, bu->m);
+      zxbus_shift_read_buf(cf, bu, &stomp);
     }
   } else {
     ERR("DISCONNECT to %s failed. Other end did not send RECEIPT. Read error.", bu->s);
@@ -948,6 +964,8 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 {
   va_list ap;
   int len, siglen, ver;
+  char* dest;
+  char* rcpt;
   char buf[1024];
   struct stomp_hdr stomp;
   
@@ -957,6 +975,22 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
   va_start(ap, fmt);
   len = vsnprintf(buf, sizeof(buf), fmt, ap);
   va_end(ap);
+
+  rcpt = strstr(buf, "\nreceipt:");
+  if (rcpt)
+    rcpt += sizeof("\nreceipt:")-1;
+  else
+    rcpt = "\n";
+
+  dest = strstr(buf, "\ndestination:");
+  if (dest)
+    dest += sizeof("\ndestination:")-1;
+  else
+    dest = "\n";
+
+  HEXDUMP(" buf:", buf, buf+len, /*16*/ 256);
+  if (body) HEXDUMP("body:", body, body+body_len, /*16*/ 256);
+
 #ifdef USE_OPENSSL
   if (bu->ssl) {
     SSL_write(bu->ssl, buf, len);
@@ -975,18 +1009,20 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
     send_all_socket(bu->fd, body, body_len);
   send_all_socket(bu->fd, "\0", 1);
 #endif
+
   memset(&stomp, 0, sizeof(struct stomp_hdr));
   if (zxbus_read(cf, bu, &stomp)) {
-    if (!memcmp(bu->buf, "RECEIPT", sizeof("RECEIPT")-1)) {
+    if (!memcmp(bu->m, "RECEIPT", sizeof("RECEIPT")-1)) {
       if (atoi(stomp.rcpt_id) == bu->cur_rcpt - 1) {
-	memmove(bu->buf, stomp.end_of_pdu, bu->ap-stomp.end_of_pdu);
-	bu->ap = bu->buf + (bu->ap-stomp.end_of_pdu);
 	D("%.*s got RECEIPT %d", 4, buf, bu->cur_rcpt-1);
 
 	siglen = stomp.zx_rcpt_sig ? (strchr(stomp.zx_rcpt_sig, '\n') - stomp.zx_rcpt_sig) : 0;
 
 	ver = zxbus_verify_receipt(cf, bu->eid,
 				   siglen, siglen?stomp.zx_rcpt_sig:"",
+				   -2, rcpt,
+				   -1, bu->eid,
+				   -2, dest,
 				   body_len, body);
 	if (ver != ZXSIG_OK) {
 	  ERR("RECEIPT signature validation failed: %d sig(%.*s) body(%.*s)", ver, siglen, siglen?stomp.zx_rcpt_sig:"", body_len, body);
@@ -996,13 +1032,16 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 	if (verbose) {
 	  printf("%.*s(%.*s) got RECEIPT %d\n", 4, buf, body?body_len:0, body?body:"", bu->cur_rcpt-1);
 	}
+	zxbus_shift_read_buf(cf, bu, &stomp);
 	return 1;  /* normal successful return */
       } else {
-	ERR("Send to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d (%s)", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1, bu->buf);
+	ERR("Send to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d (%s)", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1, bu->m);
+	zxbus_shift_read_buf(cf, bu, &stomp);
 	goto errout;
       }
     } else {
-      ERR("Send to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, bu->ap - bu->buf, bu->buf);
+      ERR("Send to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, bu->ap - bu->m, bu->m);
+      zxbus_shift_read_buf(cf, bu, &stomp);
     }
   } else {
     ERR("Send to %s failed. Other end did not send RECEIPT. Read error.", bu->s);

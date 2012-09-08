@@ -1,0 +1,10 @@
+13 vfy=0
+14 vfy=0
+15 vfy=0
+15fail expected vfy=6
+16 vfy=-1
+17 vfy=-1
+18 vfy=-1
+19 vfy=-1
+20 vfy=-1
+21 vfy=-1

@@ -197,7 +197,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
     }
     /* something was read, invoke PDU parsing layer */
     D("got(%x)=%d, proto=%d cur_pdu(%p) need=%d", io->fd, ret, io->qel.proto, pdu, pdu->need);
-    HEXDUMP("got:", pdu->ap, pdu->ap + ret, 16);
+    HEXDUMP("got:", pdu->ap, pdu->ap + ret, /*16*/ 256);
     pdu->ap += ret;
     io->n_read += ret;
     while (pdu

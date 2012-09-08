@@ -802,25 +802,53 @@ print_it:
  * cf::         ZXID configuration object, used for memory allocation and cert mgmt
  * sigbuf_len:: Maximum length of signature buffer, e.g. 1024. On return buffer is nul terminated.
  * sigbuf::     Result parameter. Caller allocated buffer that receives the receipt. nul term.
+ * mid_len::    Length of message id to issue receipt about (-1 to use strlen(mid))
+ * mid::        Message ID to issue receipt about, will be part of signature.
+ * dest_len::   Length of destination to issue receipt about (-1 to use strlen(dest))
+ * dest::       Destination channel to issue receipt about, will be signed.
+ * eid_len::    Length of entity id to issue receipt to (-1 to use strlen(eid))
+ * eid::        Entity ID to issue receipt about, will be part of signature.
  * body_len::   Length of data to issue receipt about (-1 to use strlen(body))
  * body::       Data to issue receipt about, i.e. data that will be signed.
  * return::     sigbuf. If there was error, sigbuf[0] is set to 'E' */
 
 /* Called by:  stomp_send_receipt, zxbus_ack_msg */
-char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int body_len, const char* body)
+char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int eid_len, const char* eid, int body_len, const char* body)
 {
   int len, zlen;
-  EVP_PKEY* sign_pkey;
   char* zbuf = 0;
   char* p;
   char* buf;
   struct tm ot;
   struct timeval ourts;
   
+  if (!mid)
+    mid_len = 0;
+  if (mid_len == -1)
+    mid_len = strlen(mid);
+  else if (mid_len == -2)
+    mid_len = strchr(mid, '\n') - mid;
+
+  if (!dest)
+    dest_len = 0;
+  if (dest_len == -1)
+    dest_len = strlen(dest);
+  else if (dest_len == -2)
+    dest_len = strchr(dest, '\n') - dest;
+
+  if (!eid)
+    eid_len = 0;
+  if (eid_len == -1)
+    eid_len = strlen(eid);
+  else if (eid_len == -2)
+    eid_len = strchr(eid, '\n') - eid;
+
   if (!body)
     body_len = 0;
   if (body_len == -1)
     body_len = strlen(body);
+  else if (body_len == -2)
+    body_len = strchr(body, '\n') - body;
 
   /* Prepare values */
 
@@ -828,44 +856,51 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int body_l
   GMTIME_R(ourts.tv_sec, ot);
 
   /* Prepare timestamp prepended data for hashing */
-  len = ZXLOG_TIME_SIZ+1+body_len;
+  len = ZXLOG_TIME_SIZ+1+mid_len+1+dest_len+1+eid_len+1+body_len;
   buf = ZX_ALLOC(cf->ctx, len+1);
-  len = snprintf(buf, len+1, ZXLOG_TIME_FMT " %.*s",
-		 ZXLOG_TIME_ARG(ot, ourts.tv_usec), body_len, body_len?body:"");
+  zlen = snprintf(buf, len+1, ZXLOG_TIME_FMT " %.*s %.*s %.*s %.*s",
+		  ZXLOG_TIME_ARG(ot, ourts.tv_usec),
+		  mid_len, mid_len?mid:"",
+		  dest_len, dest_len?dest:"",
+		  eid_len, eid_len?eid:"",
+		  body_len, body_len?body:"");
+  ASSERTOP(zlen, ==, len, zlen);
   buf[len] = 0; /* must terminate manually as on win32 nul is not guaranteed */
 
   ASSERT(sigbuf_len >= 3+ZXLOG_TIME_SIZ+1);
   strcpy(sigbuf, "EP ");
   memcpy(sigbuf+3, buf, ZXLOG_TIME_SIZ);
-  sigbuf[3+ZXLOG_TIME_SIZ] = 0;
+  sigbuf[3+ZXLOG_TIME_SIZ] = ' ';
+  memcpy(sigbuf+3+ZXLOG_TIME_SIZ+1, mid, mid_len);
+  sigbuf[3+ZXLOG_TIME_SIZ+1+mid_len] = 0;
   
   switch (cf->bus_rcpt & 0x06) {
   case 0x02:   /* SP plain sha1 */
-    if (sigbuf_len < 3+ZXLOG_TIME_SIZ+1+27+1) { ERR("Too small sigbuf %d", sigbuf_len); break; }
-    memcpy(sigbuf+3, buf, ZXLOG_TIME_SIZ);
-    sigbuf[3+ZXLOG_TIME_SIZ] = ' ';
-    sha1_safe_base64(sigbuf+3+ZXLOG_TIME_SIZ+1, len, buf);
-    sigbuf[3+ZXLOG_TIME_SIZ+1+27] = 0;
+    if (sigbuf_len < 3+ZXLOG_TIME_SIZ+1+mid_len+1+27+1) { ERR("Too small sigbuf %d", sigbuf_len); break; }
+    sigbuf[3+ZXLOG_TIME_SIZ+1+mid_len] = ' ';
+    sha1_safe_base64(sigbuf+3+ZXLOG_TIME_SIZ+1+mid_len+1, len, buf);
+    sigbuf[3+ZXLOG_TIME_SIZ+1+mid_len+1+27] = 0;
     sigbuf[0] = 'S';
     break;
   case 0x04:   /* RP RSA-SHA1 signature */
     LOCK(cf->mx, "mint_receipt");      
 #if 0
-    if (!(sign_pkey = cf->log_sign_pkey))
-      sign_pkey = cf->log_sign_pkey = zxid_read_private_key(cf, "logsign-nopw-cert.pem");
+    if (!cf->log_sign_pkey)
+      cf->log_sign_pkey = zxid_read_private_key(cf, "logsign-nopw-cert.pem");
 #else
-    if (!(sign_pkey = cf->sign_pkey))
-      sign_pkey = cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
+    if (!cf->sign_pkey)
+      cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
 #endif
     UNLOCK(cf->mx, "mint_receipt");
-    D("sign_pkey=%p buf(%.*s) len=%d", sign_pkey, len, buf, len);
-    if (!sign_pkey)
+    DD("sign_pkey=%p buf(%.*s) len=%d buf(%s)", cf->sign_pkey, len, buf, len, buf);
+    if (!cf->sign_pkey)
       break;
-    zlen = zxsig_data(cf->ctx, len, buf, &zbuf, sign_pkey, "receipt");
-    len = 3+ZXLOG_TIME_SIZ+1+SIMPLE_BASE64_LEN(zlen)+1;
+    zlen = zxsig_data(cf->ctx, len, buf, &zbuf, cf->sign_pkey, "receipt");
+    if (zx_debug>2) HEXDUMP("zbuf:", zbuf, zbuf+zlen, 4096);
+    len = 3+ZXLOG_TIME_SIZ+1+mid_len+1+SIMPLE_BASE64_LEN(zlen)+1;
     if (sigbuf_len < len) { ERR("Too small sigbuf_len=%d, need=%d", sigbuf_len, len); break; }
-    sigbuf[3+ZXLOG_TIME_SIZ] = ' ';
-    p = base64_fancy_raw(zbuf, zlen, sigbuf+3+ZXLOG_TIME_SIZ+1, safe_basis_64, 1<<31, 0, 0, '.');
+    sigbuf[3+ZXLOG_TIME_SIZ+1+mid_len] = ' ';
+    p = base64_fancy_raw(zbuf, zlen, sigbuf+3+ZXLOG_TIME_SIZ+1+mid_len+1, safe_basis_64, 1<<31, 0, 0, '.');
     *p = 0;
     sigbuf[0] = 'R';
     break;
@@ -876,13 +911,15 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int body_l
     sigbuf[0] = 'P';
     break;
   }
+
+  D("body(%.*s) body_len=%d", body_len, body_len?body:"", body_len);
+  if (zx_debug>1)
+    D("zx-rcpt-sig(%s) sigbuf_len=%d len=%d buf(%s) buflen=%d %x %x", sigbuf, strlen(sigbuf), len, buf, strlen(buf), cf->bus_rcpt, cf->bus_rcpt&0x06);
+  else
+    D("zx-rcpt-sig(%s) %x", sigbuf, cf->bus_rcpt);
   if (zbuf)
     ZX_FREE(cf->ctx, zbuf);
   ZX_FREE(cf->ctx, buf);
-  if (zx_debug>1)
-    D("zx-rcpt-sig(%s) body(%.*s) buf(%s) len=%d %x %x", sigbuf, body_len, body_len?body:"", buf, strlen(buf), cf->bus_rcpt, cf->bus_rcpt&0x06);
-  else
-    D("zx-rcpt-sig(%s) %x %x", sigbuf, cf->bus_rcpt, cf->bus_rcpt & 0x06);
   return sigbuf;
 }
 
@@ -891,12 +928,18 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int body_l
  * eid::        EntityID of the receipt issuing party, used to lookup metadata
  * sigbuf_len:: Length of signature buffer (from zx-rcpt-sig header) or -1 for strlen(sigbuf)
  * sigbuf::     The receipt (from zx-rcpt-sig header)
+ * deid_len::   Length of entity id (-1 to use strlen(eid))
+ * deid::       Entity ID of receiving party
+ * mid_len::    Length of message id (-1 to use strlen(mid))
+ * mid::        Message ID
+ * dest_len::   Length of destination (-1 to use strlen(dest))
+ * dest::       Destination channel for the receipt
  * body_len::   Length of data pertaining to receipt (-1 to use strlen(body))
  * body::       Data pertaining to receipt
  * return::     0 (ZXSIG_OK) on success, nonzero on failure. */
 
 /* Called by:  stomp_got_ack, zxbus_send_cmdf */
-int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* sigbuf, int body_len, const char* body)
+int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int deid_len, const char* deid, int body_len, const char* body)
 {
   int ver = -1, len;
   char* p;
@@ -906,23 +949,69 @@ int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* s
 
   if (sigbuf_len == -1)
     sigbuf_len = strlen(sigbuf);
+  else if (sigbuf_len == -2)
+    sigbuf_len = strchr(sigbuf, '\n') - sigbuf;
   
+  if (!mid)
+    mid_len = 0;
+  if (mid_len == -1)
+    mid_len = strlen(mid);
+  else if (mid_len == -2)
+    mid_len = strchr(mid, '\n') - mid;
+
+  if (!dest)
+    dest_len = 0;
+  if (dest_len == -1)
+    dest_len = strlen(dest);
+  else if (dest_len == -2)
+    dest_len = strchr(dest, '\n') - dest;
+
+  if (!deid)
+    deid_len = 0;
+  if (deid_len == -1)
+    deid_len = strlen(deid);
+  else if (deid_len == -2)
+    deid_len = strchr(deid, '\n') - deid;
+
   if (!body)
     body_len = 0;
   if (body_len == -1)
     body_len = strlen(body);
-  D("body(%.*s) body_len=%d", body_len, body, body_len);
-  D("sigbuf(%.*s) sigbuf_len=%d", sigbuf_len, sigbuf, sigbuf_len);
+  else if (body_len == -2)
+    body_len = strchr(body, '\n') - body;
+  
+  D("body(%.*s) body_len=%d", body_len, body_len?body:"", body_len);
+  D("zx-rcpt-sig(%.*s) sigbuf_len=%d", sigbuf_len, sigbuf, sigbuf_len);
 
-  len = ZXLOG_TIME_SIZ+1+body_len;
+  len = ZXLOG_TIME_SIZ+1+mid_len+1+dest_len+1+deid_len+1+body_len;
+  //len = ZXLOG_TIME_SIZ+1+body_len;
   buf = ZX_ALLOC(cf->ctx, len+1);
+  zlen = snprintf(buf, len+1, "%.*s %.*s %.*s %.*s %.*s",
+		  ZXLOG_TIME_SIZ, sigbuf+3,
+		  mid_len, mid_len?mid:"",
+		  dest_len, dest_len?dest:"",
+		  deid_len, deid_len?deid:"",
+		  body_len, body_len?body:"");
+  ASSERTOP(zlen, ==, len, zlen);
+  buf[len] = 0; /* must terminate manually as on win32 nul is not guaranteed */
+#if 0
   memcpy(buf, sigbuf+3, ZXLOG_TIME_SIZ);
+  buf[ZXLOG_TIME_SIZ] = ' ';
+  if (mid_len)
+    memcpy(buf+ZXLOG_TIME_SIZ+1, mid, mid_len);
+  buf[ZXLOG_TIME_SIZ+1+mid_len] = ' ';
+  if (dest_len)
+    memcpy(buf+ZXLOG_TIME_SIZ+1+mid_len+1, dest, dest_len);
+  buf[ZXLOG_TIME_SIZ+1+mid_len+1+dest_len] = ' ';
+  if (deid_len)
+    memcpy(buf+ZXLOG_TIME_SIZ+1, body, body_len);
   buf[ZXLOG_TIME_SIZ] = ' ';
   if (body_len)
     memcpy(buf+ZXLOG_TIME_SIZ+1, body, body_len);
   buf[len] = 0;
-  D("buf(%.*s) len=%d", len, buf, len);
-  
+  if (zx_debug>1) D("buf(%.*s) len=%d", len, buf, len);
+#endif
+
   switch (sigbuf[0]) {
   case 'R':
     meta = zxid_get_ent(cf, eid);
@@ -930,13 +1019,16 @@ int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* s
       ERR("Unable to find metadata for eid(%s) in verify receipt", eid);
       return -1;
     }
-    
+    //D("check_private_key(%d)",X509_check_private_key(meta->sign_cert, cf->sign_pkey));
     if (SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(sigbuf_len) > sizeof(sig)) {
       ERR("Available signature decoding buffer is too short len=%d, need=%d", sizeof(sig), SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(sigbuf_len));
       return -1;
     }
-    p = unbase64_raw(sigbuf, sigbuf+sigbuf_len, sig, zx_std_index_64);  /* In place, overwrite. */
+    DD("zx-rcpt-sig(%.*s) sigbuf_len=%d", sigbuf_len, sigbuf, sigbuf_len);
+    DD("sigbuf(%s) len=%d sigbuf=%p lim=%p", sigbuf+3+ZXLOG_TIME_SIZ+1, sigbuf_len-(3+ZXLOG_TIME_SIZ+1), sigbuf+3+ZXLOG_TIME_SIZ+1, sigbuf+sigbuf_len);
+    p = unbase64_raw(sigbuf+3+ZXLOG_TIME_SIZ+1+mid_len+1, sigbuf+sigbuf_len, sig, zx_std_index_64);  /* In place, overwrite. */
     ver = zxsig_verify_data(len, buf, p-sig, sig, meta->sign_cert, "rcpt vfy");
+    if (ver) HEXDUMP("zbuf:", sig, p, 4096);
     break;
   default:
     ERR("Unsupported receipt signature algo(%c) sig(%.*s)", sigbuf[0], sigbuf_len, sigbuf);

@@ -427,8 +427,8 @@ extern FILE* zx_debug_log;   /* Defined in zxidlib.c as 0 alias to stderr */
 #define D_XML_BLOB(cf, lk, len, xml) zxlog_debug_xml_blob((cf), __FILE__, __LINE__, __FUNCTION__, (lk), (len), (xml))
 #define DD_XML_BLOB(cf, lk, len, xml) /* Documentative */
 
-int hexdmp(char* msg, char* p, int len, int max);
-int hexdump(char* msg, char* p, char* lim, int max);
+int hexdmp(const char* msg, const char* p, int len, int max);
+int hexdump(const char* msg, const char* p, const char* lim, int max);
 
 #define HEXDUMP(msg, p, lim, max) if (zx_debug > 1) hexdump((msg), (p), (lim), (max))
 #define DHEXDUMP(msg, p, lim, max) /* Disabled hex dump */

@@ -362,7 +362,7 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
 #ifdef USE_OPENSSL
     if (io->ssl) {
       D("SSL_write(%x) n_iov=%d n_thr=%d r/w=%d/%d ev=%x", io->fd, io->n_iov, io->n_thr, io->reading, io->writing, io->events);
-      HEXDUMP("iov0:", io->iov_cur->iov_base, io->iov_cur->iov_base + io->iov_cur->iov_len, 16);
+      HEXDUMP("iov0:", io->iov_cur->iov_base, io->iov_cur->iov_base + io->iov_cur->iov_len, /*16*/ 256);
       /* N.B. As SSL_write() does not support vector of iovs, we just write the
        * first iov here. Eventually the loop will iterate and others get written. */
       ret = SSL_write(io->ssl, io->iov_cur->iov_base, io->iov_cur->iov_len);
@@ -384,7 +384,7 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
 #endif
     {
       D("writev(%x) n_iov=%d n_thr=%d r/w=%d/%d ev=%x", io->fd, io->n_iov, io->n_thr, io->reading, io->writing, io->events);
-      HEXDUMP("iov0:", io->iov_cur->iov_base, io->iov_cur->iov_base + io->iov_cur->iov_len, 16);
+      HEXDUMP("iov0:", io->iov_cur->iov_base, io->iov_cur->iov_base + io->iov_cur->iov_len, /*16*/ 256);
       ret = writev(io->fd&0x7fffffff /* in case of write after close */, io->iov_cur, io->n_iov);
       ASSERT(io->writing);
       switch (ret) {
