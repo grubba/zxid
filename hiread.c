@@ -27,14 +27,17 @@
 #include "hiproto.h"
 #include "errmac.h"
 
+#include <zx/zx.h>  /* for zx_report_openssl_error() */
+
 extern int zx_debug;
 
 #define SSL_ENCRYPTED_HINT "ERROR\nmessage:tls-needed\n\nTLS or SSL connection wanted but other end did not speak protocol.\n\0"
 
 /*() Allocate pdu.  First allocation from per thread pool is
  * attempted. This does not require any locking.  If that does not
- * work out, recourse to the shuffler level global pool, with locking,
- * is made. */
+ * work out, recourse to the shuffler level global pool, with locking, is made.
+ * locking:: takes shf->pdu_mut
+ * see also:: hi_pdu_free() */
 
 /* Called by:  hi_checkmore, hi_close, hi_new_shuffler, hi_sendf, http_encode_start, smtp_resp_wait_250_from_ehlo, smtp_resp_wait_354_from_data, smtp_send, stomp_encode_start, test_ping_reply, zxbus_sched_new_delivery, zxbus_sched_pending_delivery */
 struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk)
@@ -44,9 +47,10 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk)
   HI_SANITY(hit->shf, hit);
 
   if (hit->free_pdus) {
+    --hit->n_free_pdus;
     pdu = hit->free_pdus;
     hit->free_pdus = (struct hi_pdu*)pdu->qel.n;
-    D("%s: alloc pdu(%p) from thread", lk, pdu);
+    D("%s: alloc pdu(%p) from thread n_free=%d", lk, pdu, hit->n_free_pdus);
     goto retpdu;
   }
 
@@ -60,7 +64,7 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk)
   }
   UNLOCK(hit->shf->pdu_mut, "pdu_alloc-no-pdu");
   
-  ERR("Out of PDUs. Use -npdu to specify a value at least the value of 2x-nfd + 2x-nthr + 5. (%s)",lk);
+  ERR("Out of PDUs. Use -npdu (current is %d) to specify a value at least the value of 2x nfd + 2x nthr + 5. (%s)", hit->shf->max_pdus, lk);
   return 0;
 
  retpdu:
@@ -101,7 +105,7 @@ static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
   if (n > req->need) {
     memcpy(io->cur_pdu->ap, req->m + req->need, n - req->need);
     io->cur_pdu->ap += n - req->need;
-    req->ap = req->m + req->need;  /* final length of decoded PDU */
+    req->ap = req->m + req->need;      /* final length of decoded PDU */
   }
 }
 

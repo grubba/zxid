@@ -6,18 +6,18 @@
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id$
  *
- * 27.8.2009, created --Sampo
+ * 27.8.2012, created --Sampo
  */
 
 #include "platform.h"  /* for dirent.h and unistd.h */
 
+#include <signal.h>
 #include <string.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <wait.h>
 
-#include "platform.h"
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"
@@ -41,22 +41,29 @@ Usage: zxbuslist [options] > bus-traffic\n\
                    Most of the configuration is read from /var/zxid/zxid.conf\n\
   -c 'BUS_URL=stomps://localhost:2229/'   -- Typical invocation, indicates zxbusd to contact\n\
   -ch CHAN         Indicate channel to subscribe to\n\
+  -o N             One-shot mode. Receive N messages and then exit. If -1, get all available.\n\
   -it N            Number of threads launching parallel sessions, for benchmarking.\n\
   -pid PATH        Write process id in the supplied path\n\
+  -p               Do not persist. Default is to persist in style similar to zxbus,\n\
+                   in /var/zxid/HOST/ch/DEST directory\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
   -d               Turn on debugging.\n\
   -dc              Dump config.\n\
+  -a -a            Turn on ascii coloring for stdout.\n\
   -h               This help message\n\
   --               End of options\n\
 \n";
 
+int ascii_color = 0;
 int dryrun  = 0;
 int verbose = 1;
 int n_thr = 1;
 char* pid_path = 0;
 char* chan = "default";
 zxid_conf* cf;
+int zxbus_oneshot = -2;  /* -2=Infinite listen (blocks as needed), -1=get all immediately available, >1, get specified number of messages (blocking if needed). */
+extern int zxbus_persist_flag;
 
 /* Called by:  main x9, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
@@ -75,6 +82,13 @@ static void opt(int* argc, char*** argv, char*** env)
       DD("End of options by --");
       return;  /* -- ends the options */
 
+    case 'a':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	++ascii_color;;
+	continue;
+      }
+      break;
 
     case 'c':
       switch ((*argv)[0][2]) {
@@ -120,8 +134,22 @@ static void opt(int* argc, char*** argv, char*** env)
       }
       break;
 
+    case 'o':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	if ((*argv)[0][3]) break;
+	++(*argv); --(*argc);
+	if (!(*argc)) break;
+	zxbus_oneshot = atoi((*argv)[0]);
+	continue;
+      }
+      break;
+
     case 'p':
       switch ((*argv)[0][2]) {
+      case '\0':
+	--zxbus_persist_flag;
+	continue;
       case 'i':
 	if (!strcmp((*argv)[0],"-pid")) {
 	  ++(*argv); --(*argc);
@@ -190,6 +218,12 @@ help:
 #endif
 extern int zxid_suppress_vpath_warning;
 
+static void sig_alarm_to_stop_blocking_read(int signum)
+{
+  D("blocking read interrupted signum(%d)", signum);
+  exit(0);
+}
+
 /*() Audit Bus listening tool */
 
 /* Called by: */
@@ -202,7 +236,7 @@ int zxbuslist_main(int argc, char** argv, char** env)
   zxid_suppress_vpath_warning = 1;
   cf = zxid_new_conf_to_cf(0);
   opt(&argc, &argv, &env);
-
+  
   if (pid_path) {
     int len;
     char buf[INTSTRLEN];
@@ -214,6 +248,14 @@ int zxbuslist_main(int argc, char** argv, char** env)
     }
   }
 
+  /* Cause exit(3) to be called with the intent that any gcov profiling will get
+   * written to disk before we die. If zxbusd is not stopped with `kill -USR1' and you
+   * use plain kill instead, the profile will indicate many unexecuted (#####) lines. */
+  if (signal(SIGUSR1, exit) == SIG_ERR) {
+    perror("signal USR1 exit");
+    exit(2);
+  }
+  
   if (n_thr > 1) {
     /* Fork test clients in great (specified) numbers. */
     kids = ZX_ALLOC(cf->ctx, n_thr * sizeof(pid_t));
@@ -246,16 +288,23 @@ int zxbuslist_main(int argc, char** argv, char** env)
     ERR("No bus_url configured means audit bus reporting is disabled. %p", bu);
     return 1;
   }
-
+  
   /* *** implement intelligent lbfo algo */
-
+  
   if (!bu->fd)
     zxbus_open_bus_url(cf, bu);
   if (!bu->fd)
     return 1;
   zxbus_send_cmdf(cf, bu, 0, 0, "SUBSCRIBE\ndestination:%s\nid:0\nack:client-individual\nreceipt:%d\n\n", chan, bu->cur_rcpt++);
   
-  while (zxbus_listen_msg(cf, bu));
+  if (zxbus_oneshot == -1) {
+    /* In case we hit a blocking read, then this alarm will unblock us
+     * and allow return. */
+    signal(SIGALRM, (__sighandler_t)sig_alarm_to_stop_blocking_read);
+    alarm(1);
+  }
+  while (zxbus_oneshot && zxbus_listen_msg(cf, bu))
+    --zxbus_oneshot;
   zxbus_close_all(cf);
   return 0;
 }

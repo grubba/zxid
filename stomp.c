@@ -138,7 +138,7 @@ static void stomp_send_receipt(struct hi_thr* hit, struct hi_io* io, struct hi_p
   zxbus_mint_receipt(zxbus_cf, sizeof(sigbuf), sigbuf,
 		     len, rcpt,
 		     -2, req->ad.stomp.dest,
-		     -1, io->ent->eid,
+		     -1, io->ent->eid,   /* entity to which we issue receipt */
 		     req->ad.stomp.len, req->ad.stomp.body);
   hi_sendf(hit, io, 0, req, "RECEIPT\nreceipt-id:%.*s\nzx-rcpt-sig:%s\n\n%c", len, rcpt, sigbuf,0);
 }
@@ -189,6 +189,31 @@ static void stomp_got_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* 
   }
 }
 
+/*() Find a request that matches response. Looks in
+ * the io->pending list for message ID match. */
+
+static struct hi_pdu* stomp_find_pending_req_for_resp(struct hi_io* io, struct hi_pdu* resp)
+{
+  struct hi_pdu* prev;
+  struct hi_pdu* req;
+  int midlen=resp->ad.stomp.msg_id?(strchr(resp->ad.stomp.msg_id,'\n')- resp->ad.stomp.msg_id):0;
+  
+  LOCK(io->qel.mut, "ack");
+  for (prev = 0, req = io->pending; req; prev = req, req = req->n) {
+    if (!memcmp(resp->ad.stomp.msg_id, req->ad.stomp.msg_id, midlen+1)) {
+      if (prev)
+	prev->n = req->n;
+      else
+	io->pending = req->n;
+      resp->req = req;
+      resp->parent = req->parent;
+      break;
+    }
+  }
+  UNLOCK(io->qel.mut, "ack");
+  return req;
+}
+
 /*() Process NACK response from client to MESSAGE request sent by server.
  * This is essentially nice way for the client to communicate to us it has
  * difficulty in persisting the message. It could also just hang up and the
@@ -210,18 +235,12 @@ static void stomp_got_nack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* 
   D("NACK subsc(%.*s) msg_id(%.*s) zx_rcpt_sig(%.*s)", sublen, sublen?resp->ad.stomp.subsc:"", midlen, midlen?resp->ad.stomp.msg_id:"", siglen, siglen?resp->ad.stomp.zx_rcpt_sig:"");
   
   ASSERTOP(resp->req, ==, 0, resp->req);
-  LOCK(io->qel.mut, "nack");
-  if (io->pending) {
-    resp->req = io->pending;
-    io->pending = io->pending->n;
-    parent = resp->parent = resp->req->parent;
-    UNLOCK(io->qel.mut, "nack");
-  } else {
+  if (!stomp_find_pending_req_for_resp(io, resp)) {
     ERR("Unsolicited NACK subsc(%.*s) msg_id(%.*s)", sublen, sublen?resp->ad.stomp.subsc:"", midlen, midlen?resp->ad.stomp.msg_id:"");
-    UNLOCK(io->qel.mut, "nack-unsolicited");
     return;
   }
-  ASSERT(resp->parent);
+  parent = resp->parent;
+  ASSERT(parent);
   
   /* *** add validation of zx_rcpt_sig. Lookup the cert using metadata for the EID. */
   /* Remember NACK somewhere? */
@@ -242,44 +261,32 @@ static void stomp_got_nack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* 
 static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* resp)
 {
   int sublen, midlen, siglen, ver;
-  struct hi_pdu* prev;
-  struct hi_pdu* req;
   struct hi_pdu* parent;
+  char* eid;
   char buf[1024];
 
   sublen = resp->ad.stomp.subsc ? (strchr(resp->ad.stomp.subsc, '\n') - resp->ad.stomp.subsc) : 0;
   midlen = resp->ad.stomp.msg_id ?(strchr(resp->ad.stomp.msg_id, '\n')- resp->ad.stomp.msg_id) : 0;
   siglen = resp->ad.stomp.zx_rcpt_sig ? (strchr(resp->ad.stomp.zx_rcpt_sig, '\n') - resp->ad.stomp.zx_rcpt_sig) : 0;
 
-  D("ACK subsc(%.*s) msg_id(%.*s) zx_rcpt_sig(%.*s)", sublen, sublen?resp->ad.stomp.subsc:"", midlen, midlen?resp->ad.stomp.msg_id:"", siglen, siglen?resp->ad.stomp.zx_rcpt_sig:"");
+  DD("ACK subsc(%.*s) msg_id(%.*s) zx_rcpt_sig(%.*s)", sublen, sublen?resp->ad.stomp.subsc:"", midlen, midlen?resp->ad.stomp.msg_id:"", siglen, siglen?resp->ad.stomp.zx_rcpt_sig:"");
 
-  ASSERTOP(resp->req, ==, 0, resp->req);
-  LOCK(io->qel.mut, "ack");
-  for (prev = 0, req = io->pending; req; prev = req, req = req->n) {
-    if (!memcmp(resp->ad.stomp.msg_id, req->ad.stomp.msg_id, midlen+1)) {
-      if (prev)
-	prev->n = req->n;
-      else
-	io->pending = req->n;
-      resp->req = req;
-      parent = resp->parent = req->parent;
-      break;
-    }
-  }
-  UNLOCK(io->qel.mut, "ack");
-  if (!resp->req) {
+  if (!stomp_find_pending_req_for_resp(io, resp)) {
     ERR("Unsolicited ACK subsc(%.*s) msg_id(%.*s)", sublen, sublen?resp->ad.stomp.subsc:"", midlen, midlen?resp->ad.stomp.msg_id:"");
     return;
   }
-  ASSERT(resp->parent);
+  parent = resp->parent;
+  ASSERT(parent);
   
-  D("parent->len=%d req->len=%d\nparent->body(%.*s)\n   req->body(%.*s)", parent->ad.delivb.len, resp->req->ad.stomp.len, parent->ad.delivb.len, parent->ad.delivb.body, resp->req->ad.stomp.len, resp->req->ad.stomp.body);
+  D("ACK par_%p->len=%d req_%p->len=%d\nparent->body(%.*s)\n   req->body(%.*s)", parent, parent->ad.delivb.len, resp->req, resp->req->ad.stomp.len, parent->ad.delivb.len, parent->ad.delivb.body, resp->req->ad.stomp.len, resp->req->ad.stomp.body);
+  eid = zxid_my_ent_id_cstr(zxbus_cf);
   ver = zxbus_verify_receipt(zxbus_cf, io->ent->eid,
 			     siglen, siglen?resp->ad.stomp.zx_rcpt_sig:"",
-			     -2, req->ad.stomp.msg_id,
-			     -1, io->ent->eid,
-			     -2, req->ad.stomp.dest,
+			     -2, resp->req->ad.stomp.msg_id,
+			     -2, resp->req->ad.stomp.dest,
+			     -1, eid,  /* our eid, the receipt was issued to us */
 			     resp->req->ad.stomp.len, resp->req->ad.stomp.body);
+  ZX_FREE(zxbus_cf->ctx, eid);
   if (ver != ZXSIG_OK) {
     ERR("ACK signature validation failed: %d", ver);
     hi_free_resp(hit, resp);
@@ -384,7 +391,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
   char* val;
   char* p = req->m;
 
-  D("decode req(%p)->need=%d (%.*s)", req, req->need, MIN(req->ap - req->m, 4), req->m);
+  D("decode req(%p)->need=%d (%.*s)", req, req->need, MIN(req->ap - req->m, 3), req->m);
   
   HI_SANITY(hit->shf, hit);
   
@@ -394,7 +401,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
   
   if (req->ap - p < STOMP_MIN_PDU_SIZE) {   /* too little, need more */
     req->need = STOMP_MIN_PDU_SIZE;
-    D("need=%d have=%d",req->need,req->ap-req->m);
+    D("need=%d have=%d", req->need, req->ap - req->m);
     return  HI_NEED_MORE;
   }
 
@@ -403,8 +410,8 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
   command = p;
   hdr = memchr(p, '\n', req->ap - p);
   if (!hdr || ++hdr == req->ap) {
-    req->need = MAX(STOMP_MIN_PDU_SIZE, req->ap - p + 1);
-    D("need=%d have=%d",req->need,req->ap-req->m);
+    req->need = MAX(STOMP_MIN_PDU_SIZE, req->ap - req->m + 2);
+    D("need=%d have=%d", req->need, req->ap - req->m);
     return  HI_NEED_MORE;
   }
   memset(&req->ad.stomp, 0, sizeof(req->ad.stomp));
@@ -430,8 +437,8 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
     hdr = p;
     p = memchr(p, '\n', req->ap - p);
     if (!p || ++p == req->ap) {
-      req->need = MAX(STOMP_MIN_PDU_SIZE, req->ap - p + 1);
-      D("need=%d have=%d",req->need,req->ap-req->m);
+      req->need = MAX(STOMP_MIN_PDU_SIZE, req->ap - req->m + 2);
+      D("need=%d have=%d", req->need, req->ap - req->m);
       return HI_NEED_MORE;
     }
     val = memchr(hdr, ':', p-hdr);
@@ -456,7 +463,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
       if (*p++)
 	return stomp_err(hit,io,req,"malformed frame received","No nul to terminate body.");
     } else {
-      D("need=%d have=%d",req->need,req->ap-req->m);
+      D("need=%d have=%d", req->need, req->ap - req->m);
       return HI_NEED_MORE;
     }
   } else {
@@ -464,7 +471,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
     while (1) {
       if (req->ap - p < 1) {   /* too little, need more */
 	req->need = req->ap - req->m + 1;
-	D("need=%d have=%d",req->need,req->ap-req->m);
+	D("need=%d have=%d", req->need, req->ap - req->m);
 	return HI_NEED_MORE;
       }
       if (!*p++) {  /* nul termination found */
@@ -527,8 +534,8 @@ int stomp_parse_pdu(struct hi_pdu* pdu)
   p = pdu->m;
   hdr = memchr(p, '\n', pdu->ap - p);
   if (!hdr || ++hdr == pdu->ap) {
-    pdu->need = MAX(STOMP_MIN_PDU_SIZE, pdu->ap - p + 1);
-    ERR("PDU from file is too small. need=%d have=%d",pdu->need,pdu->ap-pdu->m);
+    pdu->need = MAX(STOMP_MIN_PDU_SIZE, pdu->ap - pdu->m + 2);
+    ERR("PDU from file is too small. need=%d have=%d", pdu->need, pdu->ap - pdu->m);
     return 1;
   }
   p = hdr;
@@ -537,8 +544,8 @@ int stomp_parse_pdu(struct hi_pdu* pdu)
     hdr = p;
     p = memchr(p, '\n', pdu->ap - p);
     if (!p || ++p == pdu->ap) {
-      pdu->need = MAX(STOMP_MIN_PDU_SIZE, pdu->ap - p + 1);
-      ERR("need=%d have=%d",pdu->need,pdu->ap-pdu->m);
+      pdu->need = MAX(STOMP_MIN_PDU_SIZE, pdu->ap - pdu->m + 2);
+      ERR("need=%d have=%d", pdu->need, pdu->ap - pdu->m);
       return 1;
     }
     val = memchr(hdr, ':', p-hdr);
@@ -562,7 +569,7 @@ int stomp_parse_pdu(struct hi_pdu* pdu)
 	ERR("Malformed PDU from file: No nul to terminate body. %x", p[-1]);
       }
     } else {
-      ERR("PDU from file has specified length(%d), but not enough data. need=%d have=%d",pdu->ad.stomp.len,pdu->need,pdu->ap-pdu->m);
+      ERR("PDU from file has specified length(%d), but not enough data. need=%d have=%d", pdu->ad.stomp.len, pdu->need, pdu->ap - pdu->m);
       return 1;
     }
     return 0;
@@ -571,7 +578,7 @@ int stomp_parse_pdu(struct hi_pdu* pdu)
     while (1) {
       if (pdu->ap - p < 1) {   /* too little, need more */
 	pdu->need = pdu->ap - pdu->m + 1;
-	ERR("PDU from file without length but too short to have even nul termination. need=%d have=%d",pdu->need,pdu->ap-pdu->m);
+	ERR("PDU from file without length but too short to have even nul termination. need=%d have=%d", pdu->need, pdu->ap - pdu->m);
 	return 1;
       }
       if (!*p++) {  /* nul termination found */

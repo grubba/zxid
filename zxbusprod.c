@@ -12,6 +12,7 @@
  * 17.8.2012, creted, based on zxlog.c --Sampo
  * 19.8.2012, added tolerance for CRLF where strictly LF is meant --Sampo
  * 6.9.2012,  added SSL support --Sampo
+ * 9.9.2012,  added persist support --Sampo
  *
  * Apart from formatting code, this is effectively a STOMP 1.1 client. Typically
  * it will talk to zxbusd instances configured using BUS_URL options.
@@ -64,7 +65,9 @@
 #define zx_rcpt_sig dest
 
 #define STOMP_MIN_PDU_SIZE (sizeof("ACK\n\n\0\n")-1)
-extern int verbose;    /* This is defined by option processing in zxbustailf */
+extern int zxbus_persist_flag; /* This is defined by option processing of zxbuslist */
+extern int verbose;       /* This is defined by option processing in zxbustailf */
+extern int ascii_color;   /* Defined in option processing of zxbustailf or zxbuslist */
 
 #define SSL_ENCRYPTED_HINT "TLS or SSL connection wanted but other end did not speak protocol.\n"
 #define ZXBUS_TIME_FMT "%04d%02d%02d-%02d%02d%02d.%03ld"
@@ -385,6 +388,7 @@ static void zxbus_shift_read_buf(zxid_conf* cf, struct zxid_bus_url* bu, struct 
   if (stomp->end_of_pdu) {
     memmove(bu->m, stomp->end_of_pdu, bu->ap-stomp->end_of_pdu);
     bu->ap = bu->m + (bu->ap-stomp->end_of_pdu);
+    D("shifted read_buf(%.*s)", bu->ap-bu->m, bu->m);
   }
   stomp->end_of_pdu = 0;
 }
@@ -404,9 +408,9 @@ static void zxbus_shift_read_buf(zxid_conf* cf, struct zxid_bus_url* bu, struct 
  * The parsed headers are returned in the struct stomp_hdr. */
 
 /* Called by:  zxbus_close, zxbus_listen_msg, zxbus_open_bus_url, zxbus_send_cmdf */
-int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
+int zxbus_read_stomp(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
 {
-  int len = 0, got;
+  int need = 0, len = 0, got;
   char* hdr;
   char* h;
   char* v;
@@ -415,35 +419,37 @@ int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
   memset(stomp, 0, sizeof(struct stomp_hdr));
 
   while (bu->ap - bu->m < ZXBUS_BUF_SIZE) {
+    D("read, already buf(%.*s) need=%d", bu->ap-bu->m, bu->m, need);
+    if (need || bu->ap == bu->m) {
 #ifdef USE_OPENSSL
-    if (bu->ssl) {
-      got = SSL_read(bu->ssl, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m));
-      if (got < 0) {
-	ERR("recv: %d %s", errno, STRERROR(errno));
-	zx_report_openssl_error("zxbus_read-ssl");
-	return 0;
+      if (bu->ssl) {
+	got = SSL_read(bu->ssl, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m));
+	if (got < 0) {
+	  ERR("recv: %d %s", errno, STRERROR(errno));
+	  zx_report_openssl_error("zxbus_read-ssl");
+	  return 0;
+	}
+      } else {
+	got = recv(bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m), 0);
+	if (got < 0) {
+	  ERR("recv: %d %s", errno, STRERROR(errno));
+	  return 0;
+	}
       }
-    } else {
+#else
       got = recv(bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m), 0);
       if (got < 0) {
 	ERR("recv: %d %s", errno, STRERROR(errno));
 	return 0;
       }
-    }
-#else
-    got = recv(bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m), 0);
-    if (got < 0) {
-      ERR("recv: %d %s", errno, STRERROR(errno));
-      return 0;
-    }
 #endif
-    if (!got) {
-      D("recv: returned empty, gotten=%d", (bu->ap - bu->m));
-      return 0;
+      if (!got) {
+	D("recv: returned empty, gotten=%d", (bu->ap - bu->m));
+	return 0;
+      }
+      HEXDUMP("read:", bu->ap, bu->ap+got, /*16*/ 256);
+      bu->ap += got;
     }
-    HEXDUMP("read:", bu->ap, bu->ap+got, /*16*/ 256);
-    bu->ap += got;
-
     for (p = bu->m; p < bu->ap && ONE_OF_2(*p, '\n', '\r'); ++p) ;
     if (p > bu->m) {
       /* Wipe out initial newlines */
@@ -541,12 +547,13 @@ int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
 	  goto read_more;
         }
         if (!*p++) {
-	  stomp->len = len = p - stomp->body - 1;
+	  stomp->len = p - stomp->body - 1;
           goto done;
         }
       }
     }
   read_more:
+    need = 1;
     continue;
   }
   if (bu->ap - bu->m >= ZXBUS_BUF_SIZE) {
@@ -576,11 +583,36 @@ int zxbus_ack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stom
   zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf,
 		     msg_id_len, stompp->msg_id,
 		     -2, stompp->dest,
-		     -1, bu->eid,
+		     -1, bu->eid,  /* entity to which we issue this receipt */
 		     stompp->len, stompp->body);
   len = snprintf(buf, sizeof(buf), "ACK\nsubscription:%.*s\nmessage-id:%.*s\nzx-rcpt-sig:%s\n\n%c",
 		 subs_id_len, stompp->subs_id, msg_id_len, stompp->msg_id, sigbuf, 0);
   HEXDUMP(" ack:", buf, buf+len, /*16*/ 256);
+#ifdef USE_OPENSSL
+  if (bu->ssl)
+    SSL_write(bu->ssl, buf, len);
+  else
+#endif
+    send_all_socket(bu->fd, buf, len);
+  return 1;
+}
+
+/*() NACK a message to STOMP 1.1 connection, signalling trouble persisting it.
+ * N.B. NACK is not a command. Thus no RECEIPT is expected from server
+ * end (NACK really is the receipt for MESSAGE sent by server).
+ * Returns:: zero on failure and 1 on success. */
+
+int zxbus_nack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stompp, const char* errmsg)
+{
+  int len;
+  char buf[1024];
+  int subs_id_len, msg_id_len;
+  subs_id_len = strchr(stompp->subs_id, '\n') - stompp->subs_id;
+  msg_id_len = strchr(stompp->msg_id, '\n') - stompp->msg_id;
+
+  len = snprintf(buf, sizeof(buf), "NACK\nsubscription:%.*s\nmessage-id:%.*s\nmessage:%s\n\n%c",
+		 subs_id_len, stompp->subs_id, msg_id_len, stompp->msg_id, errmsg, 0);
+  HEXDUMP("nack:", buf, buf+len, /*16*/ 256);
 #ifdef USE_OPENSSL
   if (bu->ssl)
     SSL_write(bu->ssl, buf, len);
@@ -595,19 +627,47 @@ int zxbus_ack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stom
  * STOMP 1.1 frame ends in nul). Returns NULL on error.
  * N.B. Depending on situation, you may NOT want automatic ACK.
  * In that case you should call zxbus_read() and zxbus_ack_msg()
- * directly and do your persistence in between. */
+ * directly and do your persistence in between.
+ * see also:: zxbus_persist() */
 
 /* Called by:  zxbuslist_main */
 char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
 {
   struct stomp_hdr stomp;
-  if (zxbus_read(cf, bu, &stomp)) {
+  int dest_len;
+  char* dest;
+  char c_path[ZXID_MAX_BUF];
+  if (zxbus_read_stomp(cf, bu, &stomp)) {
     if (!memcmp(bu->m, "MESSAGE", sizeof("MESSAGE")-1)) {
+      if (zxbus_persist_flag) {
+  	if (!(dest = stomp.dest)) {
+	  ERR("SEND MUST specify destination header, i.e. channel to send to. %p", dest);
+	  zxbus_nack_msg(cf, bu, &stomp, "no destination channel. server error.");
+	  zxbus_shift_read_buf(cf, bu, &stomp);
+	  return 0;
+	}
+	dest_len = (char*)memchr(dest, '\n', bu->ap - dest) - dest;  /* there will be \n in STOMP header */
+	DD("persist(%.*s)", dest_len, dest);
+	
+	if (!zxbus_persist_msg(cf, sizeof(c_path), c_path, dest_len, dest, bu->ap - bu->m,bu->m)) {
+	  zxbus_nack_msg(cf, bu, &stomp, "difficulty in persisting (temporary client/local err)");
+	  zxbus_shift_read_buf(cf, bu, &stomp);
+	  return 0;
+	}
+      }
       if (verbose) {
-	if (verbose>1) {
-	  printf("%.*s\n", bu->ap - bu->m, bu->m);
+	if (ascii_color>1) {
+	  if (verbose>1) {
+	    printf("\e[42m%.*s\e[0m\n", bu->ap - bu->m, bu->m);
+	  } else {
+	    printf("\e[42m%.*s\e[0m\n", stomp.len, stomp.body);
+	  }
 	} else {
-	  printf("%.*s\n", stomp.len, stomp.body);
+	  if (verbose>1) {
+	    printf("%.*s\n", bu->ap - bu->m, bu->m);
+	  } else {
+	    printf("%.*s\n", stomp.len, stomp.body);
+	  }
 	}
       }
       zxbus_ack_msg(cf, bu, &stomp);
@@ -855,7 +915,7 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     send_all_socket(bu->fd, buf, len);
 
   memset(&stomp, 0, sizeof(struct stomp_hdr));
-  if (zxbus_read(cf, bu, &stomp)) {
+  if (zxbus_read_stomp(cf, bu, &stomp)) {
     if (!memcmp(bu->m, "CONNECTED", sizeof("CONNECTED")-1)) {
       zxbus_shift_read_buf(cf, bu, &stomp);
       D("STOMP got CONNECTED %d", 0);
@@ -901,7 +961,7 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
   send_all_socket(bu->fd, buf, len);
 
   memset(&stomp, 0, sizeof(struct stomp_hdr));
-  if (zxbus_read(cf, bu, &stomp)) {
+  if (zxbus_read_stomp(cf, bu, &stomp)) {
     if (!memcmp(bu->m, "RECEIPT", sizeof("RECEIPT")-1)) {
       if (atoi(stomp.rcpt_id) == bu->cur_rcpt - 1) {
 	zxbus_shift_read_buf(cf, bu, &stomp);
@@ -964,6 +1024,7 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 {
   va_list ap;
   int len, siglen, ver;
+  char* eid;
   char* dest;
   char* rcpt;
   char buf[1024];
@@ -1011,19 +1072,20 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 #endif
 
   memset(&stomp, 0, sizeof(struct stomp_hdr));
-  if (zxbus_read(cf, bu, &stomp)) {
+  if (zxbus_read_stomp(cf, bu, &stomp)) {
     if (!memcmp(bu->m, "RECEIPT", sizeof("RECEIPT")-1)) {
       if (atoi(stomp.rcpt_id) == bu->cur_rcpt - 1) {
 	D("%.*s got RECEIPT %d", 4, buf, bu->cur_rcpt-1);
 
 	siglen = stomp.zx_rcpt_sig ? (strchr(stomp.zx_rcpt_sig, '\n') - stomp.zx_rcpt_sig) : 0;
-
+	eid = zxid_my_ent_id_cstr(cf);
 	ver = zxbus_verify_receipt(cf, bu->eid,
 				   siglen, siglen?stomp.zx_rcpt_sig:"",
 				   -2, rcpt,
-				   -1, bu->eid,
 				   -2, dest,
+				   -1, eid,  /* our eid, the receipt was issued to us */
 				   body_len, body);
+	ZX_FREE(cf->ctx, eid);
 	if (ver != ZXSIG_OK) {
 	  ERR("RECEIPT signature validation failed: %d sig(%.*s) body(%.*s)", ver, siglen, siglen?stomp.zx_rcpt_sig:"", body_len, body);
 	  return 0;
@@ -1093,7 +1155,6 @@ int zxbus_send(zxid_conf* cf, const char* dest, int n, const char* logbuf)
 }
 
 #if 0
-
 /*(i) Log to activity and/or error log depending on ~res~ and configuration settings.
  * This is the main audit logging function you should call. Please see <<link:../../html/zxid-log.html: zxid-log.pd>>
  * for detailed description of the log format and features. See <<link:../../html/zxid-conf.html: zxid-conf.pd>> for
@@ -1153,41 +1214,6 @@ int zxbus(zxid_conf* cf,   /* 1 */
   va_start(ap, fmt);
   n = zxbus_fmt(cf, sizeof(logbuf), logbuf,
 		ourts, srcts, ipport, entid, msgid, a7nid, nid, sigval, res,
-		op, arg, fmt, ap);
-  va_end(ap);
-  return zxbus_output(cf, n, logbuf, res);
-}
-
-/*() Log to activity and/or error log depending on ~res~ and configuration settings.
- * This variant uses the ses object to extract many of the log fields. These fields
- * were populated to ses by zxid_wsp_validate()
- */
-
-int zxbuswsp(zxid_conf* cf,    /* 1 */
-	     zxid_ses* ses,    /* 2 */
-	     const char* res,  /* 3 */
-	     const char* op,   /* 4 */
-	     const char* arg,  /* 5 null allowed, - if not given */
-	     const char* fmt, ...)   /* 13 null allowed as format, ends the line w/o further ado */
-{
-  int n;
-  char logbuf[1024];
-  va_list ap;
-  
-  /* Avoid computation if logging is hopeless. */
-  
-  if (!((cf->log_err_in_act || res[0] == 'K') && cf->log_act)
-      && !(cf->log_err && res[0] != 'K')) {
-    return 0;
-  }
-
-  va_start(ap, fmt);
-  n = zxbus_fmt(cf, sizeof(logbuf), logbuf,
-		0, ses?&ses->srcts:0, ses?ses->ipport:0,
-		ses?ses->issuer:0, ses?ses->wsp_msgid:0,
-		ses&&ses->a7n?&ses->a7n->ID->g:0,
-		ses?ZX_GET_CONTENT(ses->nameid):0,
-		ses&&ses->sigres?&ses->sigres:"-", res,
 		op, arg, fmt, ap);
   va_end(ap);
   return zxbus_output(cf, n, logbuf, res);

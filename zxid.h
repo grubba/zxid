@@ -731,6 +731,7 @@ ZXID_DECL struct zx_str* zxenc_symkey_dec(zxid_conf* cf, struct zx_xenc_Encrypte
 /* zxlog (see logging chapter in README.zxid) */
 
 /*  /var/zxid/log/rely/ISSUER-SHA1-NAME/a7n/A7N-ID-AS-SHA1 */
+#define ZXBUS_CH_DIR    "ch/"
 #define ZXLOG_RELY_DIR  "rely/"
 #define ZXLOG_ISSUE_DIR "issue/"
 #define ZXLOG_A7N_KIND  "/a7n/"
@@ -747,6 +748,7 @@ ZXID_DECL int zxlogusr(zxid_conf* cf, const char* uid, struct timeval* ourts, st
 ZXID_DECL void zxlog_debug_xml_blob(zxid_conf* cf, const char* file, int line, const char* func, const char* lk, int len, const char* xml);
 ZXID_DECL char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int eid_len, const char* eid, int body_len, const char* body);
 ZXID_DECL int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int deid_len, const char* deid, int body_len, const char* body);
+ZXID_DECL int zxbus_persist_msg(zxid_conf* cf, int c_path_len, char* c_path, int dest_len, const char* dest, int data_len, const char* data);
 
 /* zxbusprod */
 
@@ -756,7 +758,7 @@ ZXID_DECL void zxbus_close_all(zxid_conf* cf);
 ZXID_DECL int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const char* body, const char* fmt, ...);
 ZXID_DECL int zxbus_send_cmd(zxid_conf* cf, const char* cmd, const char* dest, int body_len, const char* body);
 ZXID_DECL int zxbus_send(zxid_conf* cf, const char* dest, int body_len, const char* body);
-ZXID_DECL int zxbus_read(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp);
+ZXID_DECL int zxbus_read_stomp(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp);
 ZXID_DECL int zxbus_ack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stompp);
 ZXID_DECL char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu);
 

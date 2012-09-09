@@ -1,4 +1,5 @@
 /* zxlog.c  -  Liberty oriented logging facility with log signing and encryption
+ * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -13,6 +14,7 @@
  * 7.10.2008,  added inline documentation --Sampo
  * 29.8.2009,  added hmac chaining field --Sampo
  * 12.3.2010,  added per user logging facility --Sampo
+ * 9.9.2012,  added persist support --Sampo
  *
  * See also: Logging chapter in README.zxid
  */
@@ -895,7 +897,9 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_le
     DD("sign_pkey=%p buf(%.*s) len=%d buf(%s)", cf->sign_pkey, len, buf, len, buf);
     if (!cf->sign_pkey)
       break;
+
     zlen = zxsig_data(cf->ctx, len, buf, &zbuf, cf->sign_pkey, "receipt");
+
     if (zx_debug>2) HEXDUMP("zbuf:", zbuf, zbuf+zlen, 4096);
     len = 3+ZXLOG_TIME_SIZ+1+mid_len+1+SIMPLE_BASE64_LEN(zlen)+1;
     if (sigbuf_len < len) { ERR("Too small sigbuf_len=%d, need=%d", sigbuf_len, len); break; }
@@ -912,9 +916,9 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_le
     break;
   }
 
-  D("body(%.*s) body_len=%d", body_len, body_len?body:"", body_len);
+  DD("body(%.*s) body_len=%d", body_len, body_len?body:"", body_len);
   if (zx_debug>1)
-    D("zx-rcpt-sig(%s) sigbuf_len=%d len=%d buf(%s) buflen=%d %x %x", sigbuf, strlen(sigbuf), len, buf, strlen(buf), cf->bus_rcpt, cf->bus_rcpt&0x06);
+    D("zx-rcpt-sig(%s) sigbuf_len=%d len=%d\nbuf(%s) buflen=%d %x %x", sigbuf, strlen(sigbuf), len, buf, strlen(buf), cf->bus_rcpt, cf->bus_rcpt&0x06);
   else
     D("zx-rcpt-sig(%s) %x", sigbuf, cf->bus_rcpt);
   if (zbuf)
@@ -941,7 +945,7 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_le
 /* Called by:  stomp_got_ack, zxbus_send_cmdf */
 int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int deid_len, const char* deid, int body_len, const char* body)
 {
-  int ver = -1, len;
+  int ver = -1, len, zlen;
   char* p;
   char* buf;
   char sig[1024];
@@ -980,7 +984,7 @@ int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* s
   else if (body_len == -2)
     body_len = strchr(body, '\n') - body;
   
-  D("body(%.*s) body_len=%d", body_len, body_len?body:"", body_len);
+  DD("body(%.*s) body_len=%d", body_len, body_len?body:"", body_len);
   D("zx-rcpt-sig(%.*s) sigbuf_len=%d", sigbuf_len, sigbuf, sigbuf_len);
 
   len = ZXLOG_TIME_SIZ+1+mid_len+1+dest_len+1+deid_len+1+body_len;
@@ -994,23 +998,6 @@ int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* s
 		  body_len, body_len?body:"");
   ASSERTOP(zlen, ==, len, zlen);
   buf[len] = 0; /* must terminate manually as on win32 nul is not guaranteed */
-#if 0
-  memcpy(buf, sigbuf+3, ZXLOG_TIME_SIZ);
-  buf[ZXLOG_TIME_SIZ] = ' ';
-  if (mid_len)
-    memcpy(buf+ZXLOG_TIME_SIZ+1, mid, mid_len);
-  buf[ZXLOG_TIME_SIZ+1+mid_len] = ' ';
-  if (dest_len)
-    memcpy(buf+ZXLOG_TIME_SIZ+1+mid_len+1, dest, dest_len);
-  buf[ZXLOG_TIME_SIZ+1+mid_len+1+dest_len] = ' ';
-  if (deid_len)
-    memcpy(buf+ZXLOG_TIME_SIZ+1, body, body_len);
-  buf[ZXLOG_TIME_SIZ] = ' ';
-  if (body_len)
-    memcpy(buf+ZXLOG_TIME_SIZ+1, body, body_len);
-  buf[len] = 0;
-  if (zx_debug>1) D("buf(%.*s) len=%d", len, buf, len);
-#endif
 
   switch (sigbuf[0]) {
   case 'R':
@@ -1024,17 +1011,97 @@ int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* s
       ERR("Available signature decoding buffer is too short len=%d, need=%d", sizeof(sig), SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(sigbuf_len));
       return -1;
     }
+    p = sigbuf+3+ZXLOG_TIME_SIZ+1+mid_len+1;
     DD("zx-rcpt-sig(%.*s) sigbuf_len=%d", sigbuf_len, sigbuf, sigbuf_len);
-    DD("sigbuf(%s) len=%d sigbuf=%p lim=%p", sigbuf+3+ZXLOG_TIME_SIZ+1, sigbuf_len-(3+ZXLOG_TIME_SIZ+1), sigbuf+3+ZXLOG_TIME_SIZ+1, sigbuf+sigbuf_len);
-    p = unbase64_raw(sigbuf+3+ZXLOG_TIME_SIZ+1+mid_len+1, sigbuf+sigbuf_len, sig, zx_std_index_64);  /* In place, overwrite. */
+    D("sigbuf(%.*s) len=%d sigbuf=%p lim=%p", sigbuf_len-(p-sigbuf), p, sigbuf_len-(p-sigbuf), p, sigbuf+sigbuf_len);
+    p = unbase64_raw(p, sigbuf+sigbuf_len, sig, zx_std_index_64);  /* In place, overwrite. */
+
     ver = zxsig_verify_data(len, buf, p-sig, sig, meta->sign_cert, "rcpt vfy");
-    if (ver) HEXDUMP("zbuf:", sig, p, 4096);
+
+    if (ver)
+      D("ver=%d buf(%.*s) len=%d", ver, len, buf, len);
     break;
   default:
     ERR("Unsupported receipt signature algo(%c) sig(%.*s)", sigbuf[0], sigbuf_len, sigbuf);
   }
   ZX_FREE(cf->ctx, buf);
   return ver;
+}
+
+int zxbus_persist_flag = 1;
+
+/*() Attempt to presist a message.
+ * Persisting involves synchronous write and an atomic filesystem rename
+ * operation, ala Maildir. The persisted message is a file that contains
+ * the entire STOMP 1.1 PDU including headers and body. Filename is the sha1
+ * hash of the contents of the file.
+ * return:: 0 on failure, nonzero len of c_path on success.
+ * see also:: persist feature in zxbus_listen_msg() */
+
+/* Called by:  stomp_got_send */
+int zxbus_persist_msg(zxid_conf* cf, int c_path_len, char* c_path, int dest_len, const char* dest, int data_len, const char* data)
+{
+  int len;
+   const char* p;
+  char t_path[ZXID_MAX_BUF];  /* temp path before atomic rename */
+  
+  if (dest_len < 1)
+    return 0;
+  while (*dest == '/') {      /* skip initial /s, if any. I.e. no absolute path permitted */
+    ++dest;
+    --dest_len;
+  }
+  if (dest_len < 1)
+    return 0;
+  if (ONE_OF_3(*dest, '\n', 0, '\r')) {
+    ERR("Empty dest (or one consisting etirely of slashes) %x", *dest);
+    return 0;
+  }
+  
+  /* Sanity check destination for any cracking attempts. */
+  for (p = dest; p < dest+dest_len; ++p) {
+    if (p[0] == '.' && p[1] == '.') {
+      ERR("SEND destination is a .. hack(%.*s)", dest_len, dest);
+      return 0;
+    }
+    if (ONE_OF_2(*p, '~', '\\') || *p > 122 || *p < 33) {
+      ERR("SEND destination bad char 0x%x hack(%.*s)", *p, dest_len, dest);
+      return 0;
+    }
+  }
+  
+  /* Persist the message, use Maildir style rename from tmp/ to ch/ */
+  
+  len = name_from_path(c_path,sizeof(c_path), "%s" ZXBUS_CH_DIR "%.*s/", cf->path, dest_len, dest);
+  if (sizeof(c_path)-len < 28+1 /* +1 accounts for t_path having one more char (tmp vs. ch) */) {
+    ERR("The c_path for persisting exceeds limit. len=%d", len);
+    return 0;
+  }
+  DD("c_path(%s) len=%d", c_path, len);
+  sha1_safe_base64(c_path+len, data_len, data);
+  len += 27;
+  c_path[len] = 0;
+  DD("c_path(%s)", c_path);
+  
+  name_from_path(t_path, sizeof(t_path), "%stmp/%s", cf->path, c_path+len-27);
+  
+  /* Perform synchronous write to disk. Read man 2 open for discussion. It is not
+   * completely clear, but it appears that this is still not sufficient to guarantee
+   * the appearance of the file in the respective directory, but perhaps fsck(8) could
+   * recover it. *** we may want to make a fsync(2) call on the directory fd as well!
+   * The disk should not be NFS mounted as O_SYNC is illdefined in NFS. Also, the
+   * tmp/, ch/DEST/, and ch/DEST/.del directories should be on the same filesystem - otherwise
+   * the rename(2) will not work.*/
+  //  | O_DIRECT  -- seems to give alignment problems, i.e. 22 EINVAL Invalid Argument
+  if (!write2_or_append_lock_c_path(t_path, 0, 0, data_len, data, "zxbus persist", SEEK_SET, O_TRUNC | O_SYNC)) {
+    return 0;
+  }
+  
+  if (rename(t_path, c_path)) {
+    ERR("Renaming file(%s) to(%s) for atomicity failed: %d %s. Check permissions and that directories exist. Directories must be on the same filesystem. euid=%d egid=%d", t_path, c_path, errno, STRERROR(errno), geteuid(), getegid());
+    return 0;
+  }
+  return len;
 }
 
 /* EOF  --  zxlog.c */

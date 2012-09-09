@@ -8,8 +8,8 @@
 $usage = <<USAGE;
 Test driver for ZXID
 Usage: http://localhost:8081/zxtest.pl?tst=XML1  # Run as CGI with HTML putput
-       ./zxtest.pl -a [-x] [-dx] tst=XML1        # Run specific test
-       ./zxtest.pl -a [-x] [-dx] ntst=XML        # Run all tests except specified
+       ./zxtest.pl -a [-a] [-x] [-dx] tst=XML1   # Run specific test
+       ./zxtest.pl -a [-a] [-x] [-dx] ntst=XML   # Run all tests except specified
          -a  Ascii mode (give twice for colored ascii)
          -x  Print exec(2) command lines to stderr
          -dx Proprietary per character color diff (default: system diff -u)
@@ -1438,13 +1438,18 @@ $buss_list2_conf = "PATH=/var/zxid/buslist2/&BUS_URL=stomps://localhost:2229/&UR
 # Metadata exchange
 # ./zxcot -c 'PATH=/var/zxid/buscli/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buscli.zxid.org/' -m | ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -a
 # ./zxcot -c 'PATH=/var/zxid/buslist/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist.zxid.org/' -m | ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -a
+# ./zxcot -c "PATH=/var/zxid/buslist2/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist2.zxid.org/" -m | ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -a
+
 # ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -m | ./zxcot -c 'PATH=/var/zxid/buscli/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buscli.zxid.org/' -a
 # ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -m | ./zxcot -c 'PATH=/var/zxid/buslist/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist.zxid.org/' -a
+# ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -m | ./zxcot -c 'PATH=/var/zxid/buslist2/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist2.zxid.org/' -a
+
 
 # To create bus users, you should follow these steps
+# 0. Create dir: ./zxmkdirs.sh /var/zxid/buslist2/
 # 1. Run ./zxbuslist -c 'URL=https://sp.foo.com/' -dc to determine the entity ID
 # 2. Convert entity ID to SHA1 hash: ./zxcot -p 'http://sp.foo.com?o=B'
-# 3. Create the user: ./zxpasswd -a 'eid: http://sp.foo.com?o=B' -new G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/ <passwd  # N.B. the default password is pw123
+# 3. Create the user: ./zxpasswd -at 'eid: http://sp.foo.com?o=B' -new G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/ <passwd  # N.B. the default password is pw123
 # 4. To enable ClientTLS authentication, determine the subject_hash of
 #    the encryption certificate and symlink that to the main account:
 #      > openssl x509 -subject_hash -noout </var/zxid/buscli/pem/enc-nopw-cert.pem
@@ -1453,7 +1458,11 @@ $buss_list2_conf = "PATH=/var/zxid/buslist2/&BUS_URL=stomps://localhost:2229/&UR
 
 ### Single client, various numbers of threads at zxbusd
 
-DAEMON('ZXBUS10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUS10.pid -c '$busd_conf' -d -d -dp -nthr 1 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+CMD('ZXBUS00', 'Clean', "rm -f /var/zxid/bus/ch/default/*  /var/zxid/bus/ch/default/.del/*  /var/zxid/bus/ch/default/.ack/*");
+CMD('ZXBUS01', 'Fail connect tailf', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'failbar'");
+CMD('ZXBUS02', 'Fail connect list',  "./zxbuslist -d -d -c '$bus_list_conf'");
+
+DAEMON('ZXBUS10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUS10.pid -c '$busd_conf' -d -d -dp -nthr 1 -nfd 11 -npdu 5000 -p stomp:0.0.0.0:2229");
 DAEMON('ZXBUS10b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUS10b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS11', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
 CMD('ZXBUS12', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
@@ -1466,8 +1475,8 @@ KILLD('ZXBUS10', 'collect zxbusd 1');
 
 # 20 two thread debug
 
-DAEMON('ZXBUS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUS20.pid -c '$busd_conf' -d -d -dp -nthr 2 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
-DAEMON('ZXBUS20b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUS10b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUS20.pid -c '$busd_conf' -d -d -dp -nthr 2 -nfd 11 -npdu 50 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS20b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUS20b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS21', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
 CMD('ZXBUS22', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
 CMD('ZXBUS23', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
@@ -1479,32 +1488,33 @@ KILLD('ZXBUS20', 'collect zxbusd 2');
 
 # 30 single thread nodebug, two listeners
 
-DAEMON('ZXBUS30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUS30.pid -c '$busd_conf' -nthr 1 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUS30.pid -c '$busd_conf' -nthr 1 -nfd 15 -npdu 50 -p stomp:0.0.0.0:2229");
 DAEMON('ZXBUS30b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS30b.pid -d -d -c '$bus_list_conf'");
-DAEMON('ZXBUS30c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS30c.pid -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS31', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
+DAEMON('ZXBUS31b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS31b.pid -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS32', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
 CMD('ZXBUS33', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS34', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
 CMD('ZXBUS35', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS39', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUS30b', 'collect zxbuslist 1');
-KILLD('ZXBUS30c', 'collect zxbuslist 2');
+KILLD('ZXBUS31b', 'collect zxbuslist 2');
 KILLD('ZXBUS30', 'collect zxbusd 3');
 
 # 40 two thread nodebug, two listeners
 
-DAEMON('ZXBUS40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUS40.pid -c '$busd_conf' -nthr 2 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUS40.pid -c '$busd_conf' -nthr 2 -nfd 15 -npdu 50 -p stomp:0.0.0.0:2229");
 DAEMON('ZXBUS40b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS40b.pid -d -d -c '$bus_list_conf'");
-DAEMON('ZXBUS40c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS40c.pid -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS41', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS41b','zxbuslist one shot',-1,"./zxbuslist -o -1 -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS42', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
+DAEMON('ZXBUS42b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS42b.pid -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS43', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS44', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
 CMD('ZXBUS45', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUS40b', 'collect zxbuslist 1');
-KILLD('ZXBUS40c', 'collect zxbuslist 2');
+KILLD('ZXBUS42b', 'collect zxbuslist 2');
 KILLD('ZXBUS40', 'collect zxbusd 4');
 
 # *** add tests with some listeners offline and coming back online later
@@ -1512,45 +1522,66 @@ KILLD('ZXBUS40', 'collect zxbusd 4');
 # 50 three thread debug
 
 DAEMON('ZXBUS50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUS50.pid -c '$busd_conf' -d -d -dp -nthr 3 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS50b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS50b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS51', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
 CMD('ZXBUS52', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS52b','zxbuslist one shot',  "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'");
+CMD('ZXBUS52c','zxbuslist one shot2', "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS53', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+DAEMON('ZXBUS53b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS53b.pid -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS54', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
 CMD('ZXBUS55', 'len2',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS59', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS50b', 'collect zxbuslist 1');
+KILLD('ZXBUS53b', 'collect zxbuslist 2');
 KILLD('ZXBUS50', 'collect zxbusd 5');
 
 # 60 three thread nodebug
 
 DAEMON('ZXBUS60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUS60.pid -c '$busd_conf' -nthr 3 -nfd 11 -npdu 30 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS60b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS60b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS61', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
 CMD('ZXBUS62', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS62b','zxbuslist one shot',  "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS63', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+DAEMON('ZXBUS63b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS63b.pid -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS64', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
 CMD('ZXBUS65', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS69', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS60b', 'collect zxbuslist 1');
+KILLD('ZXBUS63b', 'collect zxbuslist 2');
 KILLD('ZXBUS60', 'collect zxbusd 6');
 
 # 70 ten thread debug
 
 DAEMON('ZXBUS70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUS70.pid -c '$busd_conf' -d -d -dp -nthr 10 -nfd 11 -npdu 32 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS70b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS70b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS71', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
 CMD('ZXBUS72', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS72b','zxbuslist one shot',  "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS73', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+DAEMON('ZXBUS73b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS73b.pid -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS74', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
 CMD('ZXBUS75', 'len2',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS79', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS70b', 'collect zxbuslist 1');
+KILLD('ZXBUS73b', 'collect zxbuslist 2');
 KILLD('ZXBUS70', 'collect zxbusd 7');
 
 # 80 ten thread nodebug
 
 DAEMON('ZXBUS80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUS80.pid -c '$busd_conf' -nthr 10 -nfd 11 -npdu 32 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS80b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS80b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS81', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
 CMD('ZXBUS82', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS82b','zxbuslist one shot',  "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS83', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+DAEMON('ZXBUS83b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS83b.pid -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS84', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
 CMD('ZXBUS85', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS89', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS80b', 'collect zxbuslist 1');
+KILLD('ZXBUS83b', 'collect zxbuslist 2');
 KILLD('ZXBUS80', 'collect zxbusd 8');
 
 ### Dual threaded client, various numbers of threads at zxbusd

@@ -85,7 +85,7 @@
  * 1. shf->todo_mut
  * 2. shf->todo_cond
  * 3. io->qel.mut
- * 1. io->qel.mut
+ * 1. io->qel.mut    e.g. hi_close() calling hi_pdu_alloc() or hi_pdu_free()
  * 2. shf->pdu_mut
  * 1. shf->ent_mut
  * 2. io->qel.mut
@@ -328,6 +328,7 @@ struct hiios {
 struct hi_thr {
   struct hi_thr* n;
   struct hiios* shf;
+  int n_free_pdus;
   struct hi_pdu* free_pdus;     /* Per thread pool of PDUs */
 #if 0
   struct c_pdu_buf* free_c_pdu_bufs;

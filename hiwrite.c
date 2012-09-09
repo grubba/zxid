@@ -30,8 +30,24 @@
 #include "errmac.h"
 #include "akbox.h"
 #include "hiios.h"
+#include <zx/zx.h>   /* for zx_report_openssl_error() */
 
 extern int zx_debug;
+
+/* Alias some struct fields for headers that can not be seen together. */
+/* *** this is really STOMP 1.1 specific */
+#define receipt   host
+#define rcpt_id   host
+#define acpt_vers vers
+#define tx_id     vers
+#define session   login
+#define subs_id   login
+#define subsc     login
+#define server    pw
+#define ack       pw
+#define msg_id    pw
+#define heart_bt  dest
+#define zx_rcpt_sig dest
 
 /*() Schedule to be sent a response.
  * If req is supplied, the response is taken to be response to that.
@@ -56,8 +72,28 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
   D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   if (!resp->req) {
     /* resp is really a request sent by server to the client */
-    resp->n = io->pending;
-    io->pending = resp;
+    /* *** this is really STOMP 1.1 specific. Ideally msg_id
+     * and dest would already be set by the STOMP layer before
+     * calling this - or there should be dispatch to protocol
+     * specific method to recover them. */
+    resp->ad.stomp.msg_id = strstr(resp->m, "\nmessage-id:");
+    if (resp->ad.stomp.msg_id) {
+      resp->ad.stomp.msg_id += sizeof("\nmessage-id:")-1;
+      resp->n = io->pending;
+      io->pending = resp;
+      resp->ad.stomp.dest = strstr(resp->m, "\ndestination:");
+      if (resp->ad.stomp.dest)
+	resp->ad.stomp.dest += sizeof("\ndestination:")-1;
+      resp->ad.stomp.body = strstr(resp->m, "\n\n");
+      if (resp->ad.stomp.body) {
+	resp->ad.stomp.body += sizeof("\n\n")-1;
+	resp->ad.stomp.len = resp->ap - resp->ad.stomp.body - 1 /* nul at end of frame */;
+      } else
+	resp->ad.stomp.len = 0;
+      D("pending resp_%p msgid(%.*s)", resp, strchr(resp->ad.stomp.msg_id,'\n')-resp->ad.stomp.msg_id, resp->ad.stomp.msg_id);
+    } else {
+      ERR("request from server to client lacks messge-id header and thus can not expect an ACK. Not scheduling as pending. %p", resp);
+    }
   }
   ASSERT(io->n_thr >= 0);
   if (!io->to_write_produce)
@@ -77,7 +113,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
   UNLOCK(io->qel.mut, "send0");
   
   HI_SANITY(hit->shf, hit);
-  D("send fd(%x) parent_%p req_%p resp_%p n_iov=%d iov0(%.*s)", io->fd, parent, req, resp, resp->n_iov, MIN(resp->iov->iov_len,4), (char*)resp->iov->iov_base);
+  D("send fd(%x) parent_%p req_%p resp_%p n_iov=%d iov0(%.*s)", io->fd, parent, req, resp, resp->n_iov, MIN(resp->iov->iov_len,3), (char*)resp->iov->iov_base);
 
   if (write_now) {
     /* Try cranking the write machine right away! *** should we fish out any todo queue item that may stomp on us? How to deal with thread that has already consumed from the todo_queue? */
@@ -200,6 +236,40 @@ static void hi_make_iov(struct hi_io* io)
   UNLOCK(io->qel.mut, "make_iov");
 }
 
+#define HIT_FREE_HIWATER 10  /* Maximum number of per thread free PDUs */
+#define HIT_FREE_LOWATER 5   /* How many PDS to move from hit to shf if HIWATER is exceeded. */
+
+/*() Low level call to Free a PDU. Usually you would call hi_free_resp() instead.
+ * Usually frees to hit->free_pdus, but if that grows
+ * too long, then to shf->free_pdus, to avoid over accumulation
+ * of PDUs in single thread (i.e. allocated in one, but freed in another).
+ * locking:: will use shf->pdu_mut
+ * see also:: hi_pdu_alloc() */
+
+static void hi_pdu_free(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk)
+{
+  int i;
+
+  pdu->qel.n = &hit->free_pdus->qel;         /* move to free list */
+  hit->free_pdus = pdu;
+  ++hit->n_free_pdus;
+  D("%s: pdu_%p freed (%.*s) n_free=%d",lk,pdu,MIN(pdu->ap - pdu->m,3), pdu->m, hit->n_free_pdus);
+  
+  if (hit->n_free_pdus <= HIT_FREE_HIWATER)  /* high water mark */
+    return;
+
+  LOCK(hit->shf->pdu_mut, "pdu_free");
+  for (i = HIT_FREE_LOWATER; i; --i) {
+    pdu = hit->free_pdus;
+    hit->free_pdus = (struct hi_pdu*)pdu->qel.n;
+
+    pdu->qel.n = &hit->shf->free_pdus->qel;         /* move to free list */
+    hit->shf->free_pdus = pdu;
+  }
+  UNLOCK(hit->shf->pdu_mut, "pdu_free");
+  hit->n_free_pdus -= HIT_FREE_LOWATER;
+}
+
 /*() Free a response PDU.
  * *** Here complex determination about freeability of a PDU needs to be done.
  * For now we "fake" it by assuming that a response sufficies to free request.
@@ -228,10 +298,7 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
 	break;
       }
   
-  resp->qel.n = &hit->free_pdus->qel;         /* move to free list */
-  hit->free_pdus = resp;
-  D("resp(%p) freed (%.*s)", resp, MIN(resp->ap-resp->m,4), resp->m);
-
+  hi_pdu_free(hit, resp, "free_resp");
   HI_SANITY(hit->shf, hit);
 }
 
@@ -250,10 +317,7 @@ void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
     hit->free_pdus = pdu;
   }
   
-  req->qel.n = &hit->free_pdus->qel;         /* move to free list */
-  hit->free_pdus = req;
-  D("req(%p) freed (%.*s)", req, MIN(req->ap-req->m,4), req->m);
-
+  hi_pdu_free(hit, req, "free_req");
   HI_SANITY(hit->shf, hit);
 }
 

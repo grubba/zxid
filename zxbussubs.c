@@ -48,8 +48,6 @@
 extern int verbose;  /* defined in option parsing in zxbusd.c */
 extern char* zxbus_path;
 
-#define ZXID_CH_DIR "ch/"
-
 /*() Find the channel in shf->chs array.
  * N.B. The channel composition is fixed at boot time so no locking is needed.
  * return:: hi_ch pointer on success, 0 on not found */
@@ -61,6 +59,8 @@ struct hi_ch* zxbus_find_ch(struct hiios* shf, int len, const char* dest)
   struct hi_ch* ch;
   if (len == -1)
     len = strlen(dest);
+  else if (len == -2)
+    len = strchr(dest, '\n') - dest;
   for (n = shf->max_chs, ch = shf->chs; n; --n, ++ch) {
     if (!ch->dest)
       break;
@@ -92,7 +92,7 @@ static int zxbus_write_ch_subs(struct hiios* shf, struct hi_ch* ch)
   FILE* out;
 
   D("writing .subs for ch(%s) ch_num=%d", ch->dest, ch_num);
-  name_from_path(buf, sizeof(buf), "%s" ZXID_CH_DIR "%s/.subs", zxbus_path, ch->dest);
+  name_from_path(buf, sizeof(buf), "%s" ZXBUS_CH_DIR "%s/.subs", zxbus_path, ch->dest);
   if (!(out = fopen(buf, "wb"))) {
     perror("open");
     ERR("writing subscriptions: File(%s) not writable errno=%d err(%s). euid=%d egid=%d cwd(%s)", buf, errno, STRERROR(errno), geteuid(), getegid(), getcwd(err_buf, sizeof(err_buf)));
@@ -121,7 +121,7 @@ static int zxbus_load_ch_subs(struct hiios* shf, struct hi_ch* ch)
   struct hi_ent* ent;
 
   D("Loading subs for ch(%s) ch_num=%d", ch->dest, ch_num);
-  buf = p = read_all_malloc("load_ch_subs",1,0, "%s" ZXID_CH_DIR "%s/.subs", zxbus_path, ch->dest);
+  buf = p = read_all_malloc("load_ch_subs",1,0, "%s" ZXBUS_CH_DIR "%s/.subs", zxbus_path, ch->dest);
   if (!p)
     return 0;
   while (nl = strchr(p, '\n')) {
@@ -149,7 +149,7 @@ int zxbus_load_subs(struct hiios* shf)
   struct hi_ch* ch = shf->chs;
   int n = 0;
   
-  name_from_path(path, sizeof(path), "%s" ZXID_CH_DIR, zxbus_path);
+  name_from_path(path, sizeof(path), "%s" ZXBUS_CH_DIR, zxbus_path);
   dir = opendir(path);
   if (!dir) {
     perror("opendir for /var/zxid/bus/ch/ (or other if configured)");
@@ -176,8 +176,6 @@ int zxbus_load_subs(struct hiios* shf)
 /* Called by:  stomp_got_subsc */
 int zxbus_subscribe(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
-  int len;
-  char* dest;
   struct hi_ch* ch;
   struct hi_ent* ent;
 
@@ -185,8 +183,6 @@ int zxbus_subscribe(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
     ERR("Subscription missing destination %p", req);
     return 0;
   }
-  dest = req->ad.stomp.dest;
-  len = strchr(dest, '\n') - dest;
   
   LOCK(io->qel.mut, "login");
   ent = io->ent;
@@ -196,9 +192,9 @@ int zxbus_subscribe(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
     return 0;
   }
   
-  ch = zxbus_find_ch(hit->shf, len, dest);    /* Check that the channel exists. */
+  ch = zxbus_find_ch(hit->shf, -2, req->ad.stomp.dest);    /* Check that the channel exists. */
   if (!ch) {
-    ERR("%s: attempted subscription to nonexistent channel(%.*s)", ent->eid, len, dest);
+    ERR("%s: attempted subscription to nonexistent channel(%.*s)", ent->eid, strchr(req->ad.stomp.dest, '\n') - req->ad.stomp.dest, req->ad.stomp.dest);
     return 0;
   }
 

@@ -51,6 +51,7 @@ Usage: zxbustailf [options] < stream-to-log   # Will stop at EOF\n\
   -it N            Number of threads launching parallel sessions, for benchmarking.\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
+  -a -a            Turn on ascii coloring for stdout.\n\
   -d               Turn on debugging.\n\
   -dc              Dump config.\n\
   -h               This help message\n\
@@ -61,6 +62,7 @@ echo '<query>Foo</query>' | zxbustailf -a https://idp.tas3.eu/zxididp?o=B user:p
 
 int dryrun  = 0;
 int verbose = 1;
+int ascii_color= 0;
 int n_iter = 1;
 int n_send = 1;
 int n_thr = 1;
@@ -86,6 +88,13 @@ static void opt(int* argc, char*** argv, char*** env)
       DD("End of options by --");
       return;  /* -- ends the options */
 
+    case 'a':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	++ascii_color;;
+	continue;
+      }
+      break;
 
     case 'c':
       switch ((*argv)[0][2]) {

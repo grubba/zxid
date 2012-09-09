@@ -50,6 +50,8 @@ typedef struct stack_st STACK;  /* MSVC seems to have some problem with openssl/
 #define geteuid() 0
 #define getegid() 0
 #define getcwd(b,n) "cwd on supported by Win32"
+unsigned int sleep(unsigned int secs);
+unsigned int alarm(unsigned int secs);
 
 HANDLE zx_CreateFile(LPCTSTR lpFileName, 
 		     DWORD dwDesiredAccess, DWORD dwShareMode, 
@@ -132,6 +134,7 @@ int symlink(const char *oldpath, const char *newpath);
 int unlink(const char *pathname);
 int write(int fd, void* buf, int count);
 unsigned int sleep(unsigned int secs);
+unsigned int alarm(unsigned int secs);
 #define F_LOCK 1
 #define F_ULOCK 0
 #endif
