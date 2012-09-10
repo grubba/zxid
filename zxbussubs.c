@@ -185,6 +185,7 @@ int zxbus_subscribe(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   }
   
   LOCK(io->qel.mut, "login");
+  D("LK&UNLK io(%x)->qel.mut->thr=%x (%s:%d)", io->fd, io->qel.mut.thr, io->qel.mut.func, io->qel.mut.line);
   ent = io->ent;
   UNLOCK(io->qel.mut, "login");
   if (!ent) {
@@ -202,14 +203,21 @@ int zxbus_subscribe(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
    * in alignment so we only need to look at the corresponding slot. */
   
   LOCK(hit->shf->ent_mut, "subscribe");
+  D("LOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
   if (ent->chs[ch - hit->shf->chs]) {
+    D("UNLOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
     UNLOCK(hit->shf->ent_mut, "subscribed");
     D("Already subscribed to(%s)", ch->dest);
   } else {
     ent->chs[ch - hit->shf->chs] = 1;
     zxbus_write_ch_subs(hit->shf, ch);
+    D("UNLOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
     UNLOCK(hit->shf->ent_mut, "subscribe2");
   }
+  /* N.B. The receipt needs to be sent before
+   * scheduling pending deliveries, lest the simple listener clients
+   * get confused by seeing a MESSAGE when expecting RECEIPT. */
+  stomp_send_receipt(hit, io, req);
   zxbus_sched_pending_delivery(hit, ch->dest);
   return 1;
 }

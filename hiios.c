@@ -107,14 +107,15 @@ int zxbus_verify_cb(int preverify_ok, X509_STORE_CTX* st_ctx)
  * hi_pdu_alloc() - and initialize syncronization primitives. */
 
 /* Called by:  main */
-struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch)
+struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch, int nthr)
 {
   int i;
   struct hiios* shf;
 
   ZMALLOC(shf);
   hit->shf = shf;
-
+  shf->nthr = nthr;
+  
   /* Allocate global pool of PDUs (as a blob) */
 
   ZMALLOCN(shf->pdu_buf_blob, sizeof(struct hi_pdu)*npdu);
@@ -398,6 +399,9 @@ struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
   ASSERT(io->cur_pdu);  /* cur_pdu is always set to some value */
   ASSERTOP(io->reqs, ==, 0, io->reqs);
   ASSERTOP(io->pending, ==, 0, io->pending);
+  ASSERTOP(io->qel.intodo, ==, HI_INTODO_SHF_FREE, io->qel.intodo);
+  io->qel.intodo = HI_INTODO_IOINUSE;
+  //io->ap = io->m;       /* Nothing read yet */
   io->ent = 0;          /* Not authenticated yet */
   io->qel.kind = kind;
   io->fd = fd;          /* This change marks the slot as used in the big table. */
@@ -591,7 +595,7 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd)
     D("old fd(%x) n_thr=%d still going", fd, n_thr);
     NEVERNEVER("NOT POSSIBLE due to half close n_thr=%d", n_thr);
     io->qel.kind = HI_HALF_ACCEPT;
-    hi_todo_produce(hit->shf, &io->qel, "accept");  /* schedule a new try */
+    hi_todo_produce(hit, &io->qel, "accept");  /* schedule a new try */
     return;
   }
 
@@ -603,6 +607,9 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd)
   D("accepted and booked(%x)", io->fd);
   
   switch (io->qel.proto) {
+  case HIPROTO_STOMP:
+    /* *** Go straight to reading STOMP/CONNECT pdu without passing through TODO */
+    break;
   case HIPROTO_SMTP: /* In SMTP, server starts speaking first */
     hi_sendf(hit, io, 0, 0, "220 %s smtp ready\r\n", SMTP_GREET_DOMAIN);
     io->ad.smtp.state = SMTP_START;
@@ -674,7 +681,7 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
   io = hit->shf->ios + fd;
   io->qel.proto = listener->qel.proto;
   hi_accept_book(hit, io, fd);
-  hi_todo_produce(hit->shf, &listener->qel, "relisten"); /* Must exhaust accept: reenqueue (could also loop) */
+  hi_todo_produce(hit, &listener->qel, "relisten"); /* Must exhaust accept: reenqueue (could also loop) */
 }
 
 /*() Close an I/O object.
@@ -701,7 +708,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
    * Thus it may be optimal to clean up the todo queue here, but this still will
    * not stop the other thread that already consumed. */
   LOCK(hit->shf->todo_mut, "hi_close");
-  if (io->qel.intodo) {
+  if (io->qel.intodo == HI_INTODO_INTODO) {
     if (hit->shf->todo_consume == &io->qel) {
       hi_todo_consume_inlock(hit->shf);
     } else {  /* Tricky consume from middle of queue. O(n) to queue size :-( */
@@ -716,7 +723,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
       if (!qe->n)
 	hit->shf->todo_produce = qe;
       qe->n = 0;
-      qe->intodo = 0;
+      qe->intodo = HI_INTODO_SHF_FREE;
       --hit->shf->n_todo;
     }
   }
@@ -728,7 +735,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
    * intodo situation. */
   LOCK(hit->shf->todo_mut, "hi_close");
   D("%s: close LK&UNLK todo_mut.thr=%x", lk, hit->shf->todo_mut.thr);
-  ASSERT(!io->qel.intodo);
+  ASSERT(!io->qel.intodo == HI_INTODO_INTODO);
   UNLOCK(hit->shf->todo_mut, "hi_close");
 #endif
   /* *** deal with freeing associated PDUs. If fail, consider shutdown(2) of socket
@@ -736,22 +743,35 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   
   LOCK(io->qel.mut, "hi_close");
   D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  if (io->ent) {
+    ASSERTOP(io->ent->io, ==, io, io->ent->io);
+    io->ent->io = 0;
+    io->ent = 0;
+  }
   ASSERT(io->n_thr >= 0);
   io->fd |= 0x80000000;  /* mark as free */
 
+  ASSERT(io->qel.intodo != HI_INTODO_SHF_FREE); /* *** HI_INTODO_INTODO is a possibility if other thread might still be about to write to the connection. */
+
   /* N.B. n_thr manipulations are done before calling hi_close() */
-  if (io->n_thr) {           /* Some threads are still tinkering with this fd: delay closing */
+  if (io->n_thr || io->qel.intodo == HI_INTODO_INTODO) {           /* Some threads are still tinkering with this fd: delay closing */
     if (shutdown(fd & 0x7ffffff, SHUT_RD))
       ERR("shutdown %d %s", errno, STRERROR(errno));
-    D("%s: close(%x) pending n_thr=%d", lk, fd, io->n_thr);
+    D("%s: close(%x) pending n_thr=%d intodo=%x", lk, fd, io->n_thr, io->qel.intodo);
     D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
     UNLOCK(io->qel.mut, "hi_close");
     return;
   }
   
+  ASSERTOP(io->qel.intodo, ==, HI_INTODO_IOINUSE, io->qel.intodo); /* HI_INTODO_INTODO should not be possible anymore. */
+  io->qel.intodo = HI_INTODO_SHF_FREE;
+  
   for (pdu = io->reqs; pdu; pdu = pdu->n)
     hi_free_req(hit, pdu);
   io->reqs = 0;
+  for (pdu = io->pending; pdu; pdu = pdu->n)
+    hi_free_req(hit, pdu);
+  io->pending = 0;
   
   if (io->cur_pdu) {
     hi_free_req(hit, io->cur_pdu);
@@ -788,7 +808,7 @@ static struct hi_qel* hi_todo_consume_inlock(struct hiios* shf)
   if (!qe->n)
     shf->todo_produce = 0;
   qe->n = 0;
-  qe->intodo = 0;
+  qe->intodo = qe->kind == HI_PDU_DIST ? HI_INTODO_PDUINUSE : HI_INTODO_IOINUSE;
   --shf->n_todo;
   return qe;
 }
@@ -821,15 +841,20 @@ static struct hi_qel* hi_todo_consume(struct hiios* shf)
       io = ((struct hi_io*)qe);
       LOCK(io->qel.mut, "n_thr inc");
       if (io->fd & 0x80000000) {
-	D("cons-closed: LK&UNLK io(%x)->qel.thr=%x n_thr=%d r/w=%d/%d ev=%d", io->fd, io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events);
+	D("cons-ign-closed: LK&UNLK io(%x)->qel.thr=%x n_thr=%d r/w=%d/%d ev=%d intodo=%x", io->fd, io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
+#if 0
 	UNLOCK(io->qel.mut, "n_thr inc-fail");
 	goto try_next;
+#else
+      /* Let it be consumed so that r/w will fail and hi_close() is called to clean up.
+       * or consider calling hi_close() right here! *** */
+#endif
       }
       io->n_thr += 2;  /* Increase two counts: once for write, and once for read */
-      D("cons: LK&UNLK io(%x)->qel.thr=%x n_thr=%d r/w=%d/%d ev=%x", io->fd, io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events);
+      D("cons: LK&UNLK io(%x)->qel.thr=%x n_thr=%d r/w=%d/%d ev=%x intodo=%x", io->fd, io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
       UNLOCK(io->qel.mut, "n_thr inc");
     } else {
-      D("cons qe(%p) kind(%s)", qe, QEL_KIND(qe->kind));
+      D("cons qe(%p) kind(%s) intodo=%x", qe, QEL_KIND(qe->kind), qe->intodo);
     }
     D("UNLOCK todo_mut.thr=%x", shf->todo_mut.thr);
     UNLOCK(shf->todo_mut, "todo_cons");
@@ -840,37 +865,51 @@ static struct hi_qel* hi_todo_consume(struct hiios* shf)
 /*(i) Schedule new work to be done, potentially waking up the consumer threads! */
 
 /* Called by:  hi_accept, hi_accept_book, hi_in_out, hi_poll x2, hi_send0, stomp_msg_deliver, zxbus_sched_new_delivery, zxbus_sched_pending_delivery */
-void hi_todo_produce(struct hiios* shf, struct hi_qel* qe, const char* lk)
+void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk)
 {
   struct hi_io* io;
-  LOCK(shf->todo_mut, "todo_prod");
-  D("%s: LOCK todo_mut.thr=%x", lk, shf->todo_mut.thr);
-  if (!qe->intodo) {
-    if (shf->todo_produce)
-      shf->todo_produce->n = qe;
-    else
-      shf->todo_consume = qe;
-    shf->todo_produce = qe;
-    qe->n = 0;
-    qe->intodo = 1;
-    ++shf->n_todo;
+  LOCK(hit->shf->todo_mut, "todo_prod");
+  D("%s: LOCK todo_mut.thr=%x", lk, hit->shf->todo_mut.thr);
+  if (qe->intodo == HI_INTODO_INTODO) {
     if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
       io = ((struct hi_io*)qe);
+      D("%s: prod already in todo(%x) n_thr=%d r/w=%d/%d ev=%x", lk, io->fd, io->n_thr, io->reading, io->writing, io->events);
+      if (io->fd & 0x80000000)
+	D("%s: prod-closed fd(%x) intodo! n_thr=%d r/w=%d/%d ev=%x intodo=%x", lk, io->fd, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
+    } else {
+      D("%s: prod already in todo qe(%p) kind(%s)", lk, qe, QEL_KIND(qe->kind));
+    }
+  } else {
+    if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
+      io = ((struct hi_io*)qe);
+      if (io->fd & 0x80000000) {
+	D("%s: prod-ign-closed fd(%x) n_thr=%d r/w=%d/%d ev=%x intodo=%x", lk, io->fd, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
+#if 0
+	goto out;
+#else
+	/* Better close it right here. If we do not put it in todo queue, nobody
+	 * will ever pick it up and close it. So better close right away. */
+	hi_close(hit, io, lk);
+	goto out;
+#endif
+      }
       D("%s: prod(%x) n_thr=%d r/w=%d/%d ev=%x", lk, io->fd, io->n_thr, io->reading, io->writing, io->events);
     } else {
       D("%s: prod qe(%p) kind(%s)", lk, qe, QEL_KIND(qe->kind));
     }
-    ZX_COND_SIG(&shf->todo_cond, "todo-prod");  /* Wake up consumers */
-  } else {
-    if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
-      io = ((struct hi_io*)qe);
-      D("%s: prod already in todo(%x) n_thr=%d r/w=%d/%d ev=%x", lk, io->fd, io->n_thr, io->reading, io->writing, io->events);
-    } else {
-      D("%s: prod already in todo qe(%p) kind(%s)", lk, qe, QEL_KIND(qe->kind));
-    }
+    if (hit->shf->todo_produce)
+      hit->shf->todo_produce->n = qe;
+    else
+      hit->shf->todo_consume = qe;
+    hit->shf->todo_produce = qe;
+    qe->n = 0;
+    qe->intodo = HI_INTODO_INTODO;
+    ++hit->shf->n_todo;
+    ZX_COND_SIG(&hit->shf->todo_cond, "todo-prod");  /* Wake up consumers */
   }
-  D("%s: UNLOCK todo_mut.thr=%x", lk, shf->todo_mut.thr);
-  UNLOCK(shf->todo_mut, "todo_prod");
+ out:
+  D("%s: UNLOCK todo_mut.thr=%x", lk, hit->shf->todo_mut.thr);
+  UNLOCK(hit->shf->todo_mut, "todo_prod");
 }
 
 /* ---------- shuffler ---------- */
@@ -879,47 +918,51 @@ extern int debugpoll;
 #define DP(format,...) if (debugpoll) MB fprintf(stderr, "t%x %10s:%-3d %-16s p " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); fflush(stderr); ME
 
 /* Called by:  hi_shuffle */
-static void hi_poll(struct hiios* shf)
+static void hi_poll(struct hi_thr* hit)
 {
   struct hi_io* io;
   int i;
-  DP("epoll(%x)", shf->ep);
+  DP("epoll(%x)", hit->shf->ep);
 #ifdef LINUX
-  shf->n_evs = epoll_wait(shf->ep, shf->evs, shf->max_evs, -1);
-  if (shf->n_evs == -1) {
-    ERR("epoll_wait(%x): %d %s", shf->ep, errno, STRERROR(errno));
+  hit->shf->n_evs = epoll_wait(hit->shf->ep, hit->shf->evs, hit->shf->max_evs, -1);
+  if (hit->shf->n_evs == -1) {
+    ERR("epoll_wait(%x): %d %s", hit->shf->ep, errno, STRERROR(errno));
     return;
   }
-  for (i = 0; i < shf->n_evs; ++i) {
-    io = (struct hi_io*)shf->evs[i].data.ptr;
-    io->events = shf->evs[i].events;
-    hi_todo_produce(shf, &io->qel, "poll");  /* *** should the todo_mut lock be batched instead? */
+  for (i = 0; i < hit->shf->n_evs; ++i) {
+    io = (struct hi_io*)hit->shf->evs[i].data.ptr;
+    io->events = hit->shf->evs[i].events;
+    if (io->fd & 0x80000000) {
+      D("poll returned a closed fd(%x). Ignoring. n_thr=%d r/w=%d/%d ev=%x intodo=%x", io->fd, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
+    } else {
+      hi_todo_produce(hit, &io->qel, "poll"); /* *** should the todo_mut lock be batched? */
+    }
   }
 #endif
 #ifdef SUNOS
   {
     struct dvpoll dp;
     dp.dp_timeout = -1;
-    dp.dp_nfds = shf->max_evs;
-    dp.dp_fds = shf->evs;
-    shf->n_evs = ioctl(shf->ep, DP_POLL, &dp);
-    if (shf->n_evs < 0) {
-      ERR("/dev/poll ioctl(%x): %d %s", shf->ep, errno, STRERROR(errno));
+    dp.dp_nfds = hit->shf->max_evs;
+    dp.dp_fds = hit->shf->evs;
+    hit->shf->n_evs = ioctl(hit->shf->ep, DP_POLL, &dp);
+    if (hit->shf->n_evs < 0) {
+      ERR("/dev/poll ioctl(%x): %d %s", hit->shf->ep, errno, STRERROR(errno));
       return;
     }
-    for (i = 0; i < shf->n_evs; ++i) {
-      io = shf->ios + shf->evs[i].fd;
-      io->events = shf->evs[i].revents;
+    for (i = 0; i < hit->shf->n_evs; ++i) {
+      io = hit->shf->ios + hit->shf->evs[i].fd;
+      io->events = hit->shf->evs[i].revents;
       /* Poll says work is possible: sched wk for io if not under wk yet, or cur_pdu needs wk. */
       /*if (!io->cur_pdu || io->cur_pdu->need)   *** cur_pdu is always set */
-      hi_todo_produce(shf, &io->qel, "poll");  /* *** should the todo_mut lock be batched instead? */
+      hi_todo_produce(hit, &io->qel, "poll");  /* *** should the todo_mut lock be batched instead? */
     }
   }
 #endif
-  LOCK(shf->todo_mut, "todo_poll");
-  D("POLL LK&UNLK todo_mut.thr=%x repoll", shf->todo_mut.thr);
-  shf->poll_tok.proto = HIPROTO_POLL_ON;  /* special "on" flag - not a real protocol */
-  UNLOCK(shf->todo_mut, "todo_poll");
+  LOCK(hit->shf->todo_mut, "todo_poll");
+  D("POLL LK&UNLK todo_mut.thr=%x repoll", hit->shf->todo_mut.thr);
+  hit->shf->poll_tok.proto = HIPROTO_POLL_ON;  /* special "on" flag - not a real protocol */
+  UNLOCK(hit->shf->todo_mut, "todo_poll");
 }
 
 /* Called by:  hi_shuffle */
@@ -1010,7 +1053,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
       D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
       UNLOCK(io->qel.mut, "n_thr-dec4");
       D("resched(%x) to avoid missing polled read", io->fd);
-      hi_todo_produce(hit->shf, &io->qel, "reread");  /* try again so read poll is not lost */
+      hi_todo_produce(hit, &io->qel, "reread");  /* try again so read poll is not lost */
     }
   } else {
     --io->n_thr;              /* Remove read count as no read happened. */
@@ -1036,7 +1079,7 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf)
     HI_SANITY(hit->shf, hit);
     qe = hi_todo_consume(shf);  /* Wakes up the heard to receive work. */
     switch (qe->kind) {
-    case HI_POLL:     hi_poll(shf); break;
+    case HI_POLL:     hi_poll(hit); break;
     case HI_LISTEN:   hi_accept(hit, (struct hi_io*)qe); break;
     case HI_HALF_ACCEPT: hi_accept_book(hit, (struct hi_io*)qe, ((struct hi_io*)qe)->fd);
     case HI_TCP_C:

@@ -689,7 +689,7 @@ int zxbusd_main(int argc, char** argv, char** env)
   }
 #endif
 
-  shuff = hi_new_shuffler(&hit, nfd, npdu, nch);
+  shuff = hi_new_shuffler(&hit, nfd, npdu, nch, nthr);
   {
     struct hi_io* io;
     struct hi_host_spec* hs;

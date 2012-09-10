@@ -747,9 +747,13 @@ sub check_for_listener {
 	    return 1;
 	}
     } elsif ($uname_minus_s eq "Linux") {
-	if (`netstat -an` =~ /\:$port\s+.+LISTEN\s*/) {
+	my $netstat = `netstat -ln --inet`;
+	if ($netstat =~ /(\:$port\s+.+LISTEN\s*)/) {
+	    #warn "MATCH netstat($netstat)";
+	    #warn "matched($1)";
 	    return 1;
 	}
+	#warn "NO MATCH netstat($netstat)";
     } elsif (substr($uname_minus_s, 0, 9) eq "CYGWIN_NT" || $uname_minus_s eq "Windows") {
 	if (`netstat -an` =~ /\:$port\s+.+LISTENING\s*/) {
 	    return 1;
@@ -785,9 +789,12 @@ sub check_for_udp {
 
 ### Wait for a network service to ramp up and start listening for a port
 
+$port_wait_secs = 10;
+
 sub wait_for_port {
     my ($p) = @_;
-    return 1 if $host ne 'localhost';
+    #return 1 if $host ne 'localhost';
+    my $ret;
     my $iter = 0;
     my $sleep = 0.05;
     # sleep 10; return;
@@ -795,12 +802,14 @@ sub wait_for_port {
 	local $SIG{ALRM} = sub { die "timeout\n"; };
 	alarm $port_wait_secs;
 	while (1) {
-	    last if (&check_for_listener($p));
-	    warn "Waiting for exe to come up on TCP port $p" if $iter++>6;
+	    last if $ret = check_for_listener($p);
+	    #warn "Waiting for exe to come up on TCP port $p" if $iter++>6;
+	    warn "Waiting for exe to come up on TCP port $p" if $iter++>1;
 	    select(undef, undef, undef, $sleep);
 	    $sleep += 0.05;
 	}
 	alarm 0;
+	#warn "out of check_for_listener($ret)";
     };
     if ($@) {
 	die "wait for port $p failed: $@ / $!" unless $@ eq "timeout\n";
@@ -813,7 +822,7 @@ sub wait_for_port {
 
 sub wait_for_udp {
     my ($p) = @_;
-    return 1 if $host ne 'localhost';
+    #return 1 if $host ne 'localhost';
     my $iter = 0;
     my $sleep = 0.05;
     # sleep 10; return;
@@ -1075,9 +1084,24 @@ sub DAEMON {  # launch a daemon that can be used as test target by clients. See 
     return if $latency == -1;
     
     if ($port != -1) {
+	#warn "port($port)";
 	die "Daemon not up in time" unless wait_for_port($port);
     }
     tst_ok($latency, $slow, $test);
+}
+
+sub STILL {  # Check that daemon is still alive, but do not reap its results
+    my ($tsti, $expl) = @_;
+    return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
+    return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
+    my $test = tst_link($tsti, $expl, '');
+    
+    $pid = readall("tmp/$tsti.pid");
+    if (!kill(0, $pid)) {
+	tst_print('col1r', 'Daemon dead', 0, 0, $test, '');
+	return;
+    }
+    tst_ok(0,0, $test);
 }
 
 sub KILLD {  # Collect results of a daemon (see DAEMON) after client tests.
@@ -1462,12 +1486,13 @@ CMD('ZXBUS00', 'Clean', "rm -f /var/zxid/bus/ch/default/*  /var/zxid/bus/ch/defa
 CMD('ZXBUS01', 'Fail connect tailf', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'failbar'");
 CMD('ZXBUS02', 'Fail connect list',  "./zxbuslist -d -d -c '$bus_list_conf'");
 
-DAEMON('ZXBUS10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUS10.pid -c '$busd_conf' -d -d -dp -nthr 1 -nfd 11 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUS10.pid -c '$busd_conf' -d -d -dp -nthr 1 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
 DAEMON('ZXBUS10b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUS10b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS11', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
+STILL('ZXBUS10b', 'zxbuslist 1 still there');
 CMD('ZXBUS12', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
 CMD('ZXBUS13', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
-CMD('ZXBUS14', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUS14', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
 CMD('ZXBUS15', 'len2',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUS10b', 'collect zxbuslist 1');
@@ -1475,12 +1500,12 @@ KILLD('ZXBUS10', 'collect zxbusd 1');
 
 # 20 two thread debug
 
-DAEMON('ZXBUS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUS20.pid -c '$busd_conf' -d -d -dp -nthr 2 -nfd 11 -npdu 50 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUS20.pid -c '$busd_conf' -d -d -dp -nthr 2 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
 DAEMON('ZXBUS20b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUS20b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS21', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
 CMD('ZXBUS22', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
 CMD('ZXBUS23', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
-CMD('ZXBUS24', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUS24', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 40, 10);
 CMD('ZXBUS25', 'len2',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS29', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUS20b', 'collect zxbuslist 1');

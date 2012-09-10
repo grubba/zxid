@@ -150,13 +150,20 @@ struct hi_lock {
 #define HI_SNMP     6   /* SNMP (UDP) socket */
 #define HI_PDU_DIST 7   /* PDU with intent to deliver STOMP message */
 
+/* qel.intodo constants */
+#define HI_INTODO_SHF_FREE 0 /* in shuffler free queue (PDU or IO) */
+#define HI_INTODO_HIT_FREE 1 /* in thread free queue */
+#define HI_INTODO_INTODO   2 /* intodo queue */
+#define HI_INTODO_IOINUSE  3 /* IO in use */
+#define HI_INTODO_PDUINUSE 4 /* PDU in use */
+
 struct hi_qel {         /* hiios task queue element. This is the 1st thing on io and pdu objects */
   struct hi_qel* n;     /* Next in todo_queue for IOs or in free_pdus. */
   struct hi_lock mut;
   char kind;
   char proto;           /* See HIPROTO_* constants */
-  char flags;
   char intodo;          /* Flag indicating object (io or pdu) is in shf->todo_consume queue */
+  char pad3;
 };
 
 /*(s) Connection object */
@@ -308,6 +315,7 @@ struct hiios {
   int n_todo;
   struct hi_qel poll_tok;       /* Special qel to be inserted in todo_consume to trigger poll. */
 
+  int nthr;                     /* Number of threads referencing this shf */
   struct hi_thr* threads;       /* List of threads. */
   struct hi_lock ent_mut;
   struct hi_ent* ents;          /* List of subscribing entities */
@@ -383,7 +391,7 @@ struct hi_ent {
 /* External APIs */
 
 void hi_hit_init(struct hi_thr* hit);
-struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch);
+struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch, int nthr);
 struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int proto);
 struct hi_io* hi_open_tcp(struct hi_thr* hit, struct hi_host_spec* hs, int proto);
 struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind);
@@ -395,7 +403,7 @@ void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
 void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1);
 void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1, int len2, char* d2);
 void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, char* fmt, ...);
-void hi_todo_produce(struct hiios* shf, struct hi_qel* qe, const char* lk);
+void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk);
 void hi_shuffle(struct hi_thr* hit, struct hiios* shf);
 
 /* Internal APIs */
@@ -412,6 +420,7 @@ int  hi_read(   struct hi_thr* hit, struct hi_io* io);
 void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp);
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* pdu);
 void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req);
+void hi_del_from_reqs(struct hi_io* io,   struct hi_pdu* req);
 void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen);
 void hi_make_iov_nolock(struct hi_io* io);
 

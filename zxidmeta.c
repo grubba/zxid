@@ -821,7 +821,7 @@ struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf, struct zx_elem_s*
 struct zx_str* zxid_my_ent_id(zxid_conf* cf)
 {
   if (cf->non_standard_entityid) {
-    D("my_entity_id non_standard_entytid(%s)", cf->non_standard_entityid);
+    D("my_nonstd_entity_id(%s)", cf->non_standard_entityid);
     return zx_strf(cf->ctx, "%s", cf->non_standard_entityid);
   } else if (cf->bare_url_entityid) {
     D("my_entity_id bare url(%s)", cf->url);
@@ -839,7 +839,7 @@ char* zxid_my_ent_id_cstr(zxid_conf* cf)
   int len;
   char* eid;
   if (cf->non_standard_entityid) {
-    D("my_entity_id non_standard_entytid(%s)", cf->non_standard_entityid);
+    D("my_nonstd_entity_id(%s)", cf->non_standard_entityid);
     return zx_dup_cstr(cf->ctx, cf->non_standard_entityid);
   } else if (cf->bare_url_entityid) {
     D("my_entity_id bare url(%s)", cf->url);
@@ -860,7 +860,7 @@ char* zxid_my_ent_id_cstr(zxid_conf* cf)
 struct zx_attr_s* zxid_my_ent_id_attr(zxid_conf* cf, struct zx_elem_s* father, int tok)
 {
   if (cf->non_standard_entityid) {
-    D("my_entity_id non_standard_entytid(%s)", cf->non_standard_entityid);
+    D("my_nonstd_entity_id(%s)", cf->non_standard_entityid);
     return zx_attrf(cf->ctx, father, tok, "%s", cf->non_standard_entityid);
   } else if (cf->bare_url_entityid) {
     D("my_entity_id bare url(%s)", cf->url);

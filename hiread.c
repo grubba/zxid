@@ -50,7 +50,9 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk)
     --hit->n_free_pdus;
     pdu = hit->free_pdus;
     hit->free_pdus = (struct hi_pdu*)pdu->qel.n;
-    D("%s: alloc pdu(%p) from thread n_free=%d", lk, pdu, hit->n_free_pdus);
+    D("%s: alloc pdu_%p thr n_free=%d", lk, pdu, hit->n_free_pdus);
+    ASSERTOP(pdu->qel.intodo, ==, HI_INTODO_HIT_FREE, pdu->qel.intodo);
+    ASSERT(pdu != hit->free_pdus);
     goto retpdu;
   }
 
@@ -58,16 +60,19 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk)
   if (hit->shf->free_pdus) {
     pdu = hit->shf->free_pdus;
     hit->shf->free_pdus = (struct hi_pdu*)pdu->qel.n;
-    UNLOCK(hit->shf->pdu_mut, "pdu_alloc-ok");
     D("%s: alloc pdu(%p) from shuff", lk, pdu);
+    ASSERT(pdu != hit->shf->free_pdus);
+    ASSERTOP(pdu->qel.intodo, ==, HI_INTODO_SHF_FREE, pdu->qel.intodo);
+    UNLOCK(hit->shf->pdu_mut, "pdu_alloc-ok");
     goto retpdu;
   }
   UNLOCK(hit->shf->pdu_mut, "pdu_alloc-no-pdu");
   
-  ERR("Out of PDUs. Use -npdu (current is %d) to specify a value at least the value of 2x nfd + 2x nthr + 5. (%s)", hit->shf->max_pdus, lk);
+  ERR("Out of PDUs. Use -npdu (current is %d) to specify a value at least the value of 4x nfd + 10x nthr + 5 = %d, or even bigger if there are many pending messages waiting for delivery. (%s)", hit->shf->max_pdus, hit->shf->max_ios*4+hit->shf->nthr*10+5, lk);
   return 0;
 
  retpdu:
+  pdu->qel.intodo = HI_INTODO_PDUINUSE;
   pdu->lim = pdu->mem + HI_PDU_MEM;
   pdu->m = pdu->scan = pdu->ap = pdu->mem;
   pdu->req = pdu->parent = pdu->subresps = pdu->reals = pdu->synths = 0;
@@ -100,7 +105,7 @@ static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
   io->cur_pdu->need = minlen;
   ++io->n_pdu_in;
   
-  D("Checkmore(%x) mn=%d n=%d req(%p)->need=%d", io->fd, minlen, n, req, req->need);
+  D("Checkmore(%x) mn=%d n=%d req_%p->need=%d", io->fd, minlen, n, req, req->need);
   ASSERT(minlen > 0);  /* If this is ever zero it will prevent hi_poll() from producing. */
   if (n > req->need) {
     memcpy(io->cur_pdu->ap, req->m + req->need, n - req->need);
@@ -114,7 +119,9 @@ static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
  * If minlen (protocol dependent PDU minimum length) is passed,
  * hi_checkmore() processing is triggered and cur_pdu dealt with.
  * Clearing cur_pdu is important to enable the hi_in_out() to
- * admit new worker thread to perform read work. */
+ * admit new worker thread to perform read work.
+ * locking:: takes io->qel.mut
+ * see also:: hi_del_from_reqs() */
 
 /* Called by:  http_decode, stomp_decode, test_ping */
 void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
@@ -132,7 +139,7 @@ void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, in
   req->fe = io;
   req->n = io->reqs;
   io->reqs = req;
-  D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("UNLOCK io(%x)->qel.thr=%x req_%p", io->fd, io->qel.mut.thr, req);
   UNLOCK(io->qel.mut, "add_to_reqs");
 }
 

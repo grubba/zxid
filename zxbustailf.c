@@ -62,7 +62,7 @@ echo '<query>Foo</query>' | zxbustailf -a https://idp.tas3.eu/zxididp?o=B user:p
 
 int dryrun  = 0;
 int verbose = 1;
-int ascii_color= 0;
+extern int ascii_color;
 int n_iter = 1;
 int n_send = 1;
 int n_thr = 1;

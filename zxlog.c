@@ -932,12 +932,12 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_le
  * eid::        EntityID of the receipt issuing party, used to lookup metadata
  * sigbuf_len:: Length of signature buffer (from zx-rcpt-sig header) or -1 for strlen(sigbuf)
  * sigbuf::     The receipt (from zx-rcpt-sig header)
- * deid_len::   Length of entity id (-1 to use strlen(eid))
- * deid::       Entity ID of receiving party
  * mid_len::    Length of message id (-1 to use strlen(mid))
  * mid::        Message ID
  * dest_len::   Length of destination (-1 to use strlen(dest))
  * dest::       Destination channel for the receipt
+ * deid_len::   Length of entity id (-1 to use strlen(eid))
+ * deid::       Entity ID of receiving party
  * body_len::   Length of data pertaining to receipt (-1 to use strlen(body))
  * body::       Data pertaining to receipt
  * return::     0 (ZXSIG_OK) on success, nonzero on failure. */
@@ -1072,12 +1072,12 @@ int zxbus_persist_msg(zxid_conf* cf, int c_path_len, char* c_path, int dest_len,
   
   /* Persist the message, use Maildir style rename from tmp/ to ch/ */
   
-  len = name_from_path(c_path,sizeof(c_path), "%s" ZXBUS_CH_DIR "%.*s/", cf->path, dest_len, dest);
+  len = name_from_path(c_path, c_path_len, "%s" ZXBUS_CH_DIR "%.*s/", cf->path, dest_len, dest);
   if (sizeof(c_path)-len < 28+1 /* +1 accounts for t_path having one more char (tmp vs. ch) */) {
     ERR("The c_path for persisting exceeds limit. len=%d", len);
     return 0;
   }
-  DD("c_path(%s) len=%d", c_path, len);
+  DD("c_path(%s) len=%d PATH(%s) dest(%.*s)", c_path, len, cf->path, dest_len, dest);
   sha1_safe_base64(c_path+len, data_len, data);
   len += 27;
   c_path[len] = 0;

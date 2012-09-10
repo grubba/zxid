@@ -122,7 +122,7 @@ static int stomp_got_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
 /*() Send a receipt to client. */
 
 /* Called by:  stomp_got_disc, stomp_got_send, stomp_got_subsc, stomp_got_zxctl */
-static void stomp_send_receipt(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
+void stomp_send_receipt(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   int len;
   char* rcpt;
@@ -190,7 +190,8 @@ static void stomp_got_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* 
 }
 
 /*() Find a request that matches response. Looks in
- * the io->pending list for message ID match. */
+ * the io->pending list for message ID match. When found,
+ * the req is dequeued from pending. */
 
 static struct hi_pdu* stomp_find_pending_req_for_resp(struct hi_io* io, struct hi_pdu* resp)
 {
@@ -264,7 +265,12 @@ static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
   struct hi_pdu* parent;
   char* eid;
   char buf[1024];
-
+  
+  /* First, it was wrong for hi_add_to_reqs() to be called for an ACK as acks are
+   * really responses to MESSAGEs. Thus undo that action here. */
+  
+  hi_del_from_reqs(io, resp);
+  
   sublen = resp->ad.stomp.subsc ? (strchr(resp->ad.stomp.subsc, '\n') - resp->ad.stomp.subsc) : 0;
   midlen = resp->ad.stomp.msg_id ?(strchr(resp->ad.stomp.msg_id, '\n')- resp->ad.stomp.msg_id) : 0;
   siglen = resp->ad.stomp.zx_rcpt_sig ? (strchr(resp->ad.stomp.zx_rcpt_sig, '\n') - resp->ad.stomp.zx_rcpt_sig) : 0;
@@ -278,7 +284,7 @@ static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
   parent = resp->parent;
   ASSERT(parent);
   
-  D("ACK par_%p->len=%d req_%p->len=%d\nparent->body(%.*s)\n   req->body(%.*s)", parent, parent->ad.delivb.len, resp->req, resp->req->ad.stomp.len, parent->ad.delivb.len, parent->ad.delivb.body, resp->req->ad.stomp.len, resp->req->ad.stomp.body);
+  D("ACK par_%p->len=%d rq_%p->len=%d\nparent->body(%.*s)\n   req->body(%.*s)", parent, parent->ad.delivb.len, resp->req, resp->req->ad.stomp.len, parent->ad.delivb.len, parent->ad.delivb.body, resp->req->ad.stomp.len, resp->req->ad.stomp.body);
   eid = zxid_my_ent_id_cstr(zxbus_cf);
   ver = zxbus_verify_receipt(zxbus_cf, io->ent->eid,
 			     siglen, siglen?resp->ad.stomp.zx_rcpt_sig:"",
@@ -317,7 +323,9 @@ static void stomp_got_subsc(struct hi_thr* hit, struct hi_io* io, struct hi_pdu*
 {
   HI_SANITY(hit->shf, hit);
   if (zxbus_subscribe(hit, io, req)) {
-    stomp_send_receipt(hit, io, req);
+    /* N.B. The receipt was already sent. It needs to be sent before
+     * scheduling pending deliveries, lest the simple listener clients
+     * get confused by seeing a MESSAGE when expecting RECEIPT. */
   } else {
     ERR("Subscribe Problem. Disk full? %d", 0);
   }

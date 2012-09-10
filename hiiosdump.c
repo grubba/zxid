@@ -82,6 +82,10 @@ int hi_sanity_pdu(int mode, struct hi_pdu* root_pdu)
       ++nodes;
       if (mode&0x01) nodes += hi_sanity_pdu(mode, pdu);
     }
+    if (pdu->qel.intodo != HI_INTODO_PDUINUSE) {
+      printf("ERR *** pdu_%p has wrong intodo=%x expected %x\n", pdu, pdu->qel.intodo, HI_INTODO_PDUINUSE);
+      --errs;
+    }
   }
   if (mode&0x80 && root_pdu->reals) printf("    [label=reals];\n");
 
@@ -102,6 +106,10 @@ int hi_sanity_pdu(int mode, struct hi_pdu* root_pdu)
       ++nodes;
       if (mode&0x01) nodes += hi_sanity_pdu(mode, pdu);
     }
+    if (pdu->qel.intodo != HI_INTODO_PDUINUSE) {
+      printf("ERR *** pdu_%p has wrong intodo=%x expected %x\n", pdu, pdu->qel.intodo, HI_INTODO_PDUINUSE);
+      --errs;
+    }
   }
   if (mode&0x80 && root_pdu->synths) printf("    [label=synths];\n");
 
@@ -121,6 +129,10 @@ int hi_sanity_pdu(int mode, struct hi_pdu* root_pdu)
       pdu->color = hi_color+2;
       ++nodes;
       if (mode&0x01) nodes += hi_sanity_pdu(mode, pdu);
+    }
+    if (pdu->qel.intodo != HI_INTODO_PDUINUSE) {
+      printf("ERR *** pdu_%p has wrong intodo=%x expected %x\n", pdu, pdu->qel.intodo, HI_INTODO_PDUINUSE);
+      --errs;
     }
   }
   if (mode&0x80 && root_pdu->subresps) printf("    [label=subresps];\n");
@@ -164,15 +176,46 @@ int hi_sanity_io(int mode, struct hi_io* root_io)
       ++nodes;
       if (mode&0x02) nodes += hi_sanity_pdu(mode, pdu);
     }
-
+    if (pdu->qel.intodo != HI_INTODO_PDUINUSE) {
+      printf("ERR *** pdu_%p has wrong intodo=%x expected %x\n", pdu, pdu->qel.intodo, HI_INTODO_PDUINUSE);
+      --errs;
+    }
   }
   if (mode&0x80 && root_io->reqs) printf("[label=reqs];\n");
+
+  if (mode&0x80) {
+    if (root_io->pending)
+      printf("  io_%p  // pending\n", root_io);
+    else
+      printf("  io_%p -> null [label=pending];\n", root_io);
+  }
+  for (pdu = root_io->pending; pdu; pdu = pdu->n) {
+    if (mode&0x80) printf("    -> pdu_%p  // (%.*s)\n", pdu, MIN(pdu->ap-pdu->m,4), pdu->m);
+    if (pdu->color == hi_color+1) {
+      printf("ERR *** pdu_%p has circular reference (color=%d) wrt io->pending pdu->n\n", pdu, pdu->color);
+      --errs;
+      break;
+    } else {
+      pdu->color = hi_color+1;
+      ++nodes;
+      if (mode&0x02) nodes += hi_sanity_pdu(mode, pdu);
+    }
+    if (pdu->qel.intodo != HI_INTODO_PDUINUSE) {
+      printf("ERR *** pdu_%p has wrong intodo=%x expected %x\n", pdu, pdu->qel.intodo, HI_INTODO_PDUINUSE);
+      --errs;
+    }
+  }
+  if (mode&0x80 && root_io->reqs) printf("[label=pending];\n");
 
   if (mode&0x80) {
     if (root_io->to_write_produce) {
       printf("  io_%p -> pdu_%p [label=to_write_produce]; // (%.*s)\n", root_io, root_io->to_write_produce, MIN(root_io->to_write_produce->ap-root_io->to_write_produce->m,4), root_io->to_write_produce->m);
       ASSERT(root_io->to_write_produce->wn == 0);
       /*if (mode&0x02) nodes += hi_sanity_pdu(mode, root_io->to_write_produce);*/
+      if (pdu->qel.intodo != HI_INTODO_PDUINUSE) {
+	printf("ERR *** pdu_%p has wrong intodo=%x expected %x\n", pdu, pdu->qel.intodo, HI_INTODO_PDUINUSE);
+	--errs;
+      }
     } else
       printf("  io_%p -> null [label=to_write_produce];\n", root_io);
   }
@@ -194,6 +237,10 @@ int hi_sanity_io(int mode, struct hi_io* root_io)
       ++nodes;
       if (mode&0x02) nodes += hi_sanity_pdu(mode, pdu);
     }
+    if (pdu->qel.intodo != HI_INTODO_PDUINUSE) {
+      printf("ERR *** pdu_%p has wrong intodo=%x expected %x\n", pdu, pdu->qel.intodo, HI_INTODO_PDUINUSE);
+      --errs;
+    }
   }
   if (mode&0x80 && root_io->to_write_consume) printf("[label=to_write_consume];  // n_to_write=%d\n", root_io->n_to_write);
   
@@ -213,6 +260,10 @@ int hi_sanity_io(int mode, struct hi_io* root_io)
       pdu->color = hi_color+2;
       ++nodes;
       if (mode&0x02) nodes += hi_sanity_pdu(mode, pdu);
+    }
+    if (pdu->qel.intodo != HI_INTODO_PDUINUSE) {
+      printf("ERR *** pdu_%p has wrong intodo=%x expected %x\n", pdu, pdu->qel.intodo, HI_INTODO_PDUINUSE);
+      --errs;
     }
   }
   if (mode&0x80 && root_io->in_write) printf("[label=in_write];\n");
@@ -248,6 +299,10 @@ int hi_sanity_hit(int mode, struct hi_thr* root_hit)
       printf("ERR *** pdu_%p has circular reference (color=%d) wrt hit->free_pdus pdu->qel.n\n", pdu, pdu->color);
       --errs;
       break;
+    }
+    if (pdu->qel.intodo != HI_INTODO_HIT_FREE) {
+      printf("ERR *** pdu_%p has wrong intodo=%x expected %x\n", pdu, pdu->qel.intodo, HI_INTODO_HIT_FREE);
+      --errs;
     }
     pdu->color = hi_color+0;
     ++nodes;
@@ -332,6 +387,10 @@ int hi_sanity_shf(int mode, struct hiios* root_shf)
 	nodes += res;
     }
 #endif
+    if (qe->intodo != HI_INTODO_INTODO) {
+      printf("ERR *** qe_%p has wrong intodo=%x expected %x\n", qe, qe->intodo, HI_INTODO_INTODO);
+      --errs;
+    }
   }
   if (mode&0x80 && root_shf->todo_consume) printf("[label=todo_consume];\n");
 
@@ -352,6 +411,10 @@ int hi_sanity_shf(int mode, struct hiios* root_shf)
       printf("ERR *** pdu_%p has circular reference (color=%d) wrt hit->free_pdus pdu->qel.n\n", pdu, pdu->color);
       --errs;
       break;
+    }
+    if (pdu->qel.intodo != HI_INTODO_SHF_FREE) {
+      printf("ERR *** pdu_%p has wrong intodo=%x expected %x\n", pdu, pdu->qel.intodo, HI_INTODO_SHF_FREE);
+      --errs;
     }
     pdu->color = hi_color+0;
     ++nodes;

@@ -67,7 +67,7 @@
 #define STOMP_MIN_PDU_SIZE (sizeof("ACK\n\n\0\n")-1)
 extern int zxbus_persist_flag; /* This is defined by option processing of zxbuslist */
 extern int verbose;       /* This is defined by option processing in zxbustailf */
-extern int ascii_color;   /* Defined in option processing of zxbustailf or zxbuslist */
+int ascii_color = 0;      /* Defined in option processing of zxbustailf or zxbuslist */
 
 #define SSL_ENCRYPTED_HINT "TLS or SSL connection wanted but other end did not speak protocol.\n"
 #define ZXBUS_TIME_FMT "%04d%02d%02d-%02d%02d%02d.%03ld"
@@ -425,14 +425,14 @@ int zxbus_read_stomp(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* s
       if (bu->ssl) {
 	got = SSL_read(bu->ssl, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m));
 	if (got < 0) {
-	  ERR("recv: %d %s", errno, STRERROR(errno));
+	  ERR("recv(%x) bu_%p: %d %s", bu->fd, bu, errno, STRERROR(errno));
 	  zx_report_openssl_error("zxbus_read-ssl");
 	  return 0;
 	}
       } else {
 	got = recv(bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m), 0);
 	if (got < 0) {
-	  ERR("recv: %d %s", errno, STRERROR(errno));
+	  ERR("recv(%x) bu_%p: %d %s", bu->fd, bu, errno, STRERROR(errno));
 	  return 0;
 	}
       }
@@ -765,10 +765,10 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   bu->m = bu->ap = ZX_ALLOC(cf->ctx, ZXBUS_BUF_SIZE);
 
   memcpy(bu->m, host, MIN(host_len, ZXBUS_BUF_SIZE-2));
-  bu->m[MIN(host_len, ZXBUS_BUF_SIZE-2)+1] = 0;
+  bu->m[MIN(host_len, ZXBUS_BUF_SIZE-2)] = 0;
   he = gethostbyname(bu->m);
   if (!he) {
-    ERR("hostname(%s) did not resolve(%d)", bu->m, h_errno);
+    ERR("hostname(%s) did not resolve(%d) bu->s(%s) host_len=%d %d host(%.*s) %p port(%s) %p", bu->m, h_errno, bu->s, host_len, MIN(host_len, ZXBUS_BUF_SIZE-2), host_len, host, host, port, port);
     exit(5);
   }
   
@@ -918,7 +918,7 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   if (zxbus_read_stomp(cf, bu, &stomp)) {
     if (!memcmp(bu->m, "CONNECTED", sizeof("CONNECTED")-1)) {
       zxbus_shift_read_buf(cf, bu, &stomp);
-      D("STOMP got CONNECTED %d", 0);
+      D("STOMP got CONNECTED bu-s(%s)", bu->s);
       return 1;
     }
     zxbus_shift_read_buf(cf, bu, &stomp);
@@ -948,14 +948,14 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
   char buf[1024];
   struct stomp_hdr stomp;
 
-  D("closing(%p)", bu);
+  D("closing(%x) bu_%p", bu->fd, bu);
   
   if (!bu || !bu->s || !bu->s[0] || !bu->fd)
     return 0;         /* No bus_url configured means audit bus reporting is disabled. */
 
   /* *** implement intelligent lbfo algo */
   
-  D("disconnecting(%p)", bu);
+  D("disconnecting(%p) bu->s(%s)", bu, bu->s);
 
   len = snprintf(buf, sizeof(buf), "DISCONNECT\nreceipt:%d\n\n%c", bu->cur_rcpt-1, 0);
   send_all_socket(bu->fd, buf, len);

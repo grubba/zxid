@@ -277,31 +277,31 @@ static void test_receipt(int* argc, char*** argv, char*** env)
 
   eid = zxid_my_ent_id_cstr(cf);
 
-  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "test13");
-  printf("13 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "test13"));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "test13");
+  printf("13 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "test13"));
   //exit(0);
-  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "");
-  printf("14 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, ""));
-  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "t15");
-  printf("15 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "t15"));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "", -1, "d", -1, "", -1, "");
+  printf("14 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "", -1, "", -1, "", -1, ""));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t15");
+  printf("15 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t15"));
   sigbuf[3] = '0';
-  printf("15fail expected vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "t15"));
+  printf("15fail expected vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t15"));
 
   cf->bus_rcpt = 3;
-  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "test16");
-  printf("16 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "test16"));
-  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "");
-  printf("17 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, ""));
-  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "t18");
-  printf("18 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "t18"));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "test16");
+  printf("16 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "test16"));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "");
+  printf("17 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, ""));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t18");
+  printf("18 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t18"));
 
   cf->bus_rcpt = 1;
-  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "test19");
-  printf("19 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "test19"));
-  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "");
-  printf("20 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, ""));
-  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "t21");
-  printf("21 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "t21"));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "test19");
+  printf("19 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "test19"));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "");
+  printf("20 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, ""));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t21");
+  printf("21 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t21"));
 
   exit(0);
 }

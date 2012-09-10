@@ -92,7 +92,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
 	resp->ad.stomp.len = 0;
       D("pending resp_%p msgid(%.*s)", resp, strchr(resp->ad.stomp.msg_id,'\n')-resp->ad.stomp.msg_id, resp->ad.stomp.msg_id);
     } else {
-      ERR("request from server to client lacks messge-id header and thus can not expect an ACK. Not scheduling as pending. %p", resp);
+      ERR("request from server to client lacks message-id header and thus can not expect an ACK. Not scheduling as pending. %p", resp);
     }
   }
   ASSERT(io->n_thr >= 0);
@@ -113,13 +113,14 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
   UNLOCK(io->qel.mut, "send0");
   
   HI_SANITY(hit->shf, hit);
+  ASSERT(req != resp);
   D("send fd(%x) parent_%p req_%p resp_%p n_iov=%d iov0(%.*s)", io->fd, parent, req, resp, resp->n_iov, MIN(resp->iov->iov_len,3), (char*)resp->iov->iov_base);
 
   if (write_now) {
     /* Try cranking the write machine right away! *** should we fish out any todo queue item that may stomp on us? How to deal with thread that has already consumed from the todo_queue? */
     hi_write(hit, io);   /* Will decrement io->n_thr for write */
   } else {
-    hi_todo_produce(hit->shf, &io->qel, "send0");
+    hi_todo_produce(hit, &io->qel, "send0");
   }
 }
 
@@ -250,21 +251,28 @@ static void hi_pdu_free(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk)
 {
   int i;
 
-  pdu->qel.n = &hit->free_pdus->qel;         /* move to free list */
+  ASSERT(!ONE_OF_2(pdu->qel.intodo, HI_INTODO_SHF_FREE, HI_INTODO_HIT_FREE));
+  pdu->qel.n = &hit->free_pdus->qel;         /* move to hit free list */
   hit->free_pdus = pdu;
   ++hit->n_free_pdus;
+  pdu->qel.intodo = HI_INTODO_HIT_FREE;
   D("%s: pdu_%p freed (%.*s) n_free=%d",lk,pdu,MIN(pdu->ap - pdu->m,3), pdu->m, hit->n_free_pdus);
   
   if (hit->n_free_pdus <= HIT_FREE_HIWATER)  /* high water mark */
     return;
 
+  D("%s: pdu_%p moving some hit->free_pdus to shuffler",lk,pdu);
   LOCK(hit->shf->pdu_mut, "pdu_free");
   for (i = HIT_FREE_LOWATER; i; --i) {
     pdu = hit->free_pdus;
     hit->free_pdus = (struct hi_pdu*)pdu->qel.n;
 
+    D("%s: moving hit free pdu_%p to shuffler",lk,pdu);
+
     pdu->qel.n = &hit->shf->free_pdus->qel;         /* move to free list */
     hit->shf->free_pdus = pdu;
+    ASSERTOP(pdu->qel.intodo, ==, HI_INTODO_HIT_FREE, pdu->qel.intodo);
+    pdu->qel.intodo = HI_INTODO_SHF_FREE;
   }
   UNLOCK(hit->shf->pdu_mut, "pdu_free");
   hit->n_free_pdus -= HIT_FREE_LOWATER;
@@ -312,13 +320,48 @@ void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
   
   HI_SANITY(hit->shf, hit);
 
-  for (pdu = req->reals; pdu; pdu = pdu->n) { /* free dependent resps */
-    pdu->qel.n = &hit->free_pdus->qel;
-    hit->free_pdus = pdu;
-  }
+  for (pdu = req->reals; pdu; pdu = pdu->n)  /* free dependent resps */
+    hi_pdu_free(hit, pdu, "free_req-real");
   
   hi_pdu_free(hit, req, "free_req");
   HI_SANITY(hit->shf, hit);
+}
+
+/*() Remove a PDU from the reqs list of an io object.
+ * Also looks in the pending list.
+ * locking:: takes io->qel.mut
+ * see also:: hi_add_to_reqs() */
+
+void hi_del_from_reqs(struct hi_io* io,   struct hi_pdu* req)
+{
+  struct hi_pdu* pdu;
+  LOCK(io->qel.mut, "del-from-reqs");
+  pdu = io->reqs;
+  if (pdu == req) {
+    io->reqs = req->n;
+  } else {
+    for (; pdu; pdu = pdu->n) {
+      if (pdu->n == req) {
+	pdu->n = req->n;
+	goto out;
+      }
+    }
+    pdu = io->pending;
+    if (pdu == req) {
+      io->pending = req->n;
+    } else {
+      for (; pdu; pdu = pdu->n) {
+	if (pdu->n == req) {
+	  pdu->n = req->n;
+	  goto out;
+	}
+      }
+    }
+    ERR("req(%p) not found in fe(%x)->reqs or pending", req, io->fd);
+    NEVERNEVER("req not found in fe(%x)->reqs or pending", io->fd);
+  out: ;
+  }
+  UNLOCK(io->qel.mut, "del-from-reqs");
 }
 
 /*() Free a request, assuming it is associated with a frontend.
@@ -327,7 +370,6 @@ void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
 /* Called by:  hi_clear_iov */
 void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
 {
-  struct hi_pdu* pdu;
   ASSERT(req->fe);
   if (!req->fe)
     return;
@@ -336,24 +378,7 @@ void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
   /* Scan the frontend to find the reference. The theory is that
    * hi_free_req_fe() only gets called when its known that the request is in the queue.
    * If it is not, the loop will run off the end and crash with NULL pointer. */
-  
-  LOCK(req->fe->qel.mut, "del-from-reqs");
-  pdu = req->fe->reqs;
-  if (pdu == req) {
-    req->fe->reqs = req->n;
-  } else {
-    for (; pdu; pdu = pdu->n) {
-      if (pdu->n == req) {
-	pdu->n = req->n;
-	goto out;
-      }
-    }
-    ERR("req(%p) not found in fe(%x)->reqs", req, req->fe->fd);
-    NEVERNEVER("req not found in fe(%x)->reqs", req->fe->fd);
-  out: ;
-  }
-  UNLOCK(req->fe->qel.mut, "del-from-reqs");
-
+  hi_del_from_reqs(req->fe, req);
   HI_SANITY(hit->shf, hit);
   hi_free_req(hit, req);
 }
@@ -389,15 +414,14 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
   /* Everything has now been written. Time to free in_write list. */
   
   D("freeing resps (&reqs?) in_write=%p", io->in_write);
-  while ((resp = io->in_write)) {
+  while (resp = io->in_write) {
     io->in_write = resp->wn;
     resp->wn = 0;
     
-    if (!resp->req) continue;  /* It is a request */
+    if (!(req = resp->req)) continue;  /* It is a request */
     
     /* Only a response can cause anything freed, and every response is freeable upon write. */
     
-    req = resp->req;
     hi_free_resp(hit, resp);
     if (!req->reals)                   /* last response, free the request */
       hi_free_req_fe(hit, req);

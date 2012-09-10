@@ -55,7 +55,7 @@ Usage: zxbuslist [options] > bus-traffic\n\
   --               End of options\n\
 \n";
 
-int ascii_color = 0;
+extern int ascii_color;
 int dryrun  = 0;
 int verbose = 1;
 int n_thr = 1;

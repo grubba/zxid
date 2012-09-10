@@ -104,7 +104,8 @@ extern char* zxbus_path;
  * lists of hi_ack nodes attached to entities. The file consists
  * of lines like
  *   AB1 eid ACK sig
- */
+ * The pdu should be the delivery or pending bitch PDU.
+ * locking:: whill take hit->shf->ent_mut */
 
 /* Called by:  zxbus_sched_pending_delivery */
 static void zxbus_load_acks(struct hi_thr* hit, struct hi_pdu* pdu, int fd)
@@ -125,6 +126,7 @@ static void zxbus_load_acks(struct hi_thr* hit, struct hi_pdu* pdu, int fd)
   buf[gotall] = 0;
   
   LOCK(hit->shf->ent_mut, "load-acks");  // *** very big lock
+  D("LOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
   for (p = buf; p < buf+gotall; p = nl+1) {
     if (!(nl = strchr(p, '\n')))
       nl = buf+gotall;
@@ -135,6 +137,7 @@ static void zxbus_load_acks(struct hi_thr* hit, struct hi_pdu* pdu, int fd)
 	  ack->pdu = pdu;
 	  ack->n = ent->acks;
 	  ent->acks = ack;
+	  D("Added ack pdu_%p to ent_%p eid(%s)", pdu, ent, ent->eid);
 	} else {
 	  ERR("Entity of the ACK not found. line(%.*s), skipping", nl-p, p);
 	}
@@ -145,11 +148,13 @@ static void zxbus_load_acks(struct hi_thr* hit, struct hi_pdu* pdu, int fd)
       ERR("Bad line(%.*s) in acks, skipping", nl-p, p);
     }
   }
+  D("UNLOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
   UNLOCK(hit->shf->ent_mut, "load-acks");
   FREE(buf);
 }
 
 /*() Check if pdu is in the entity's already acked list.
+ * The pdu should be the delivery or pending bitch PDU.
  * locking:: caller MUST hold shf->ent_mut
  * return:: 1 if found (and as side effect remove), 0=not found */
 
@@ -158,6 +163,7 @@ static int zxbus_already_ackd(struct hi_ent* ent, struct hi_pdu* pdu)
 {
   struct hi_ack* prev;
   struct hi_ack* ack = ent->acks;
+  D("Checking ent_%p eid(%s) io(%x) acks_%p pdu_%p", ent, ent->eid, ent->io?ent->io->fd:0xdeadbeef, ack, pdu);
   if (!ack)
     return 0;
   if (ack->pdu == pdu) {
@@ -181,7 +187,8 @@ static int zxbus_already_ackd(struct hi_ent* ent, struct hi_pdu* pdu)
  * zxbus_persist() creates a synthetic PDU which is scheduled for the delivery
  * work in todo queue. This PDU is not associated to any particular
  * io object and will keep on rescheduling itself until its job
- * has been done. At that point it will free itself. */
+ * has been done. At that point it will free itself.
+ * locking:: whill take hit->shf->ent_mut */
 
 /* Called by:  hi_shuffle */
 void stomp_msg_deliver(struct hi_thr* hit, struct hi_pdu* db_pdu)
@@ -199,7 +206,7 @@ void stomp_msg_deliver(struct hi_thr* hit, struct hi_pdu* db_pdu)
   for (ent = hit->shf->ents; ent; ent = ent->n)
     if (ent->chs[ch_num]) {  /* entity listens on this channel? */
       if (zxbus_already_ackd(ent, db_pdu)) {
-	DD("Already ACKd entity(%s)", ent->eid);
+	DD("Already ACKd eid(%s)", ent->eid);
       } else if (ent->io) {
 	hi_sendf(hit, ent->io, db_pdu, 0,
 		 "MESSAGE\nsubscription:%s\nmessage-id:%d\ndestination:%.*s\ncontent-length:%d\n\n%.*s%c",
@@ -218,7 +225,7 @@ void stomp_msg_deliver(struct hi_thr* hit, struct hi_pdu* db_pdu)
   UNLOCK(hit->shf->ent_mut, "deliver");
 #if 0
   if (db_pdu->ad.delivb.acks)  /* still something pending? */
-    hi_todo_produce(hit->shf, &db_pdu->qel, "delivery bitch again");
+    hi_todo_produce(hit, &db_pdu->qel, "deliv-bitch-again");
   else
     hi_free_req(hit, db_pdu);
 #else
@@ -239,7 +246,7 @@ void stomp_msg_deliver(struct hi_thr* hit, struct hi_pdu* db_pdu)
 /* Called by:  zxbus_persist */
 static void zxbus_sched_new_delivery(struct hi_thr* hit, struct hi_pdu* req, const char* sha1name, int dest_len, const char* dest)
 {
-  struct hi_pdu* pdu = hi_pdu_alloc(hit, "delivery bitch");
+  struct hi_pdu* pdu = hi_pdu_alloc(hit, "deliv-bitch");
   pdu->qel.kind = HI_PDU_DIST;
   memcpy(pdu->m, req->m, req->need);  /* copy PDU substance */
   pdu->ap += req->need;
@@ -252,7 +259,7 @@ static void zxbus_sched_new_delivery(struct hi_thr* hit, struct hi_pdu* req, con
 
   //  | O_DIRECT  -- seems to give alignment problems, i.e. 22 EINVAL Invalid Argument
   pdu->ad.delivb.ack_fd = open_fd_from_path(O_CREAT | O_WRONLY | O_APPEND | O_SYNC, 0666, "sched deliv", 1, "%s" ZXBUS_CH_DIR "%.*s/.ack/%s", zxbus_path, dest_len, dest, sha1name);
-  hi_todo_produce(hit->shf, &pdu->qel, "delivery bitch");
+  hi_todo_produce(hit, &pdu->qel, "deliv-bitch");
 }
 
 /*() Scan messages in channel directory and schedule pending ones for delivery.
@@ -294,7 +301,7 @@ void zxbus_sched_pending_delivery(struct hi_thr* hit, const char* dest)
       //  | O_DIRECT  -- seems to give alignment problems, i.e. 22 EINVAL Invalid Argument
       pdu->ad.delivb.ack_fd = open_fd_from_path(O_CREAT | O_RDWR | O_APPEND | O_SYNC, 0666, "pend", 1, "%s" ZXBUS_CH_DIR "%s/.ack/%s", zxbus_path, dest, de->d_name);
       zxbus_load_acks(hit, pdu, pdu->ad.delivb.ack_fd);
-      hi_todo_produce(hit->shf, &pdu->qel, "pend-bitch");
+      hi_todo_produce(hit, &pdu->qel, "pend-bitch");
     }
   closedir(dir);
 }
