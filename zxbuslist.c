@@ -137,7 +137,6 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'o':
       switch ((*argv)[0][2]) {
       case '\0':
-	if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
 	zxbus_oneshot = atoi((*argv)[0]);

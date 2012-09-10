@@ -202,55 +202,126 @@ FMT0 persist at /var/zxid/bus/ch/default/-mGfiZRtzEvudDjZueFqgkmWPDs 'test(-1,1,
 FMT0 persist at /var/zxid/bus/ch/default/TK4nD0AlE09MVKvIziTJsooAlxQ 'test(-1,1,' len=69 rcpt(198)
 FMT0 persist at /var/zxid/bus/ch/default/Vh27nmUo7GROgR2smUSy5U4yWnw 'test(-1,1,' len=69 rcpt(199)
 FMT0 persist at /var/zxid/bus/ch/default/bjZtT6SuxzOFHc1GLnoFdMdSbm0 'F' len=55 rcpt(0)
-shf_0x99aa438  // max_ios=11
--> io_0x99c22c0
-  io_0x99c22c0 -> pdu_0x99ad778 [label=cur_pdu]; // fd=0x4
-  io_0x99c22c0 -> null [label=reqs];
-  io_0x99c22c0 -> null [label=to_write_produce];
-  io_0x99c22c0 -> null [label=to_write_consume];  // n_to_write=0
-  io_0x99c22c0 -> null [label=in_write];
--> io_0x99c24a8
-  io_0x99c24a8 -> pdu_0x99b2fa0 [label=cur_pdu]; // fd=0x6
-  io_0x99c24a8  // reqs
-    -> pdu_0x99af0a8  // (ZXCT)
-    pdu_0x99af0a8 -> null [label=reals];
-    pdu_0x99af0a8 -> null [label=synths];
-    pdu_0x99af0a8 -> null [label=subresps];
+shf_0x823f550  // max_ios=15
+-> io_0x823fa68
+  io_0x823fa68 -> pdu_0xb757e268 [label=cur_pdu]; // fd=0x4
+  io_0x823fa68 -> null [label=reqs];
+  io_0x823fa68 -> null [label=pending];
+  io_0x823fa68 -> null [label=to_write_produce];
+  io_0x823fa68 -> null [label=to_write_consume];  // n_to_write=0
+  io_0x823fa68 -> null [label=in_write];
+-> io_0x823fc68
+  io_0x823fc68 -> pdu_0xb75814c8 [label=cur_pdu]; // fd=0x6
+  io_0x823fc68 -> null [label=reqs];
+  io_0x823fc68 -> null [label=pending];
+  io_0x823fc68 -> null [label=to_write_produce];
+  io_0x823fc68 -> null [label=to_write_consume];  // n_to_write=0
+  io_0x823fc68 -> null [label=in_write];
+-> io_0x823fd68
+  io_0x823fd68 -> pdu_0xb76c4cd0 [label=cur_pdu]; // fd=0x7
+  io_0x823fd68 -> null [label=reqs];
+  io_0x823fd68 -> null [label=pending];
+  io_0x823fd68 -> null [label=to_write_produce];
+  io_0x823fd68 -> null [label=to_write_consume];  // n_to_write=0
+  io_0x823fd68 -> null [label=in_write];
+-> io_0x823fe68
+  io_0x823fe68 -> pdu_0xb76cbe28 [label=cur_pdu]; // fd=0x8
+  io_0x823fe68  // reqs
+    -> pdu_0xb76b8350  // (ZXCT)
+    pdu_0xb76b8350 -> null [label=reals];
+    pdu_0xb76b8350 -> null [label=synths];
+    pdu_0xb76b8350 -> null [label=subresps];
 [label=reqs];
-  io_0x99c24a8 -> null [label=to_write_produce];
-  io_0x99c24a8 -> null [label=to_write_consume];  // n_to_write=0
-  io_0x99c24a8 -> null [label=in_write];
+  io_0x823fe68 -> null [label=pending];
+[label=pending];
+  io_0x823fe68 -> null [label=to_write_produce];
+  io_0x823fe68 -> null [label=to_write_consume];  // n_to_write=0
+  io_0x823fe68 -> null [label=in_write];
 [label=ios];
-shf_0x99aa438 -> null [label=todo_consume];
-shf_0x99aa438   // free_pdus (color=4)
--> pdu_0x99b6200
--> pdu_0x99b6e98
--> pdu_0x99b7b30
--> pdu_0x99b87c8
--> pdu_0x99b9460
--> pdu_0x99ba0f8
--> pdu_0x99bad90
--> pdu_0x99bba28
--> pdu_0x99bc6c0
--> pdu_0x99bd358
--> pdu_0x99bdff0
--> pdu_0x99bec88
--> pdu_0x99bf920
--> pdu_0x99c05b8
--> pdu_0x99c1250
+shf_0x823f550 -> null [label=todo_consume];
+shf_0x823f550   // free_pdus (color=4)
+-> pdu_0xb76cf088
+-> pdu_0xb76cfd20
+-> pdu_0xb76d09b8
+-> pdu_0xb76d1650
+-> pdu_0xb76d22e8
+-> pdu_0xb76d2f80
+-> pdu_0xb76d3c18
+-> pdu_0xb76d48b0
+-> pdu_0xb76d5548
+-> pdu_0xb76d61e0
+-> pdu_0xb76d6e78
+-> pdu_0xb76d7b10
+-> pdu_0xb76d87a8
+-> pdu_0xb76d9440
+-> pdu_0xb76da0d8
+-> pdu_0xb76dad70
+-> pdu_0xb76dba08
+-> pdu_0xb76dc6a0
+-> pdu_0xb76dd338
+-> pdu_0xb76ddfd0
+-> pdu_0xb76dec68
+-> pdu_0xb76df900
+-> pdu_0xb76e0598
+-> pdu_0xb76e1230
+-> pdu_0xb76e1ec8
+-> pdu_0xb76e2b60
+-> pdu_0xb76e37f8
+-> pdu_0xb76e4490
+-> pdu_0xb76e5128
+-> pdu_0xb76e5dc0
+-> pdu_0xb76e6a58
+-> pdu_0xb76e76f0
+-> pdu_0xb76e8388
+-> pdu_0xb76e9020
+-> pdu_0xb76e9cb8
+-> pdu_0xb76ea950
+-> pdu_0xb76eb5e8
+-> pdu_0xb76ec280
+-> pdu_0xb76ecf18
+-> pdu_0xb76edbb0
+-> pdu_0xb76ee848
+-> pdu_0xb76ef4e0
+-> pdu_0xb76f0178
+-> pdu_0xb76f0e10
+-> pdu_0xb76f1aa8
+-> pdu_0xb76f2740
+-> pdu_0xb76f33d8
+-> pdu_0xb76f4070
+-> pdu_0xb76f4d08
+-> pdu_0xb76f59a0
+-> pdu_0xb76f6638
+-> pdu_0xb76f72d0
+-> pdu_0xb76f7f68
+-> pdu_0xb76f8c00
+-> pdu_0xb76f9898
+-> pdu_0xb76fa530
+-> pdu_0xb76fb1c8
+-> pdu_0xb76fbe60
+-> pdu_0xb76fcaf8
+-> pdu_0xb76fd790
+-> pdu_0xb76fe428
+-> pdu_0xb76ff0c0
+-> pdu_0xb76ffd58
+-> pdu_0xb77009f0
+-> pdu_0xb7701688
+-> pdu_0xb7702320
+-> pdu_0xb7702fb8
+-> pdu_0xb7703c50
 [label=free_pdus];
-Data structure dump 18
+Data structure dump 73
 ----------------------
-hit_0x17fc35c [label="tid_17fcb70"];
-hit_0x17fc35c  // free_pdus
--> pdu_0x99b5568  // (CONN)
+hit_0x163c358 [label="tid_163cb70"];
+hit_0x163c358  // free_pdus
+-> pdu_0xb76cd758  // (RECE)
 [label=free_pdus];
 Hit structure dump 1
 ======================
-hit_0xbfa359b4 [label="tid_b7702a30"];
-hit_0xbfa359b4  // free_pdus
--> pdu_0x99b48d0  // (SEND)
--> pdu_0x99b3c38  // (RECE)
+hit_0xbffb03c0 [label="tid_b7705960"];
+hit_0xbffb03c0  // free_pdus
+-> pdu_0xb76ca4f8  // (ACK
+)
+-> pdu_0xb76ce3f0  // (CONN)
 [label=free_pdus];
 Hit structure dump 2
 ======================

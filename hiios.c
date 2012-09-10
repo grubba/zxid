@@ -743,18 +743,13 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   
   LOCK(io->qel.mut, "hi_close");
   D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
-  if (io->ent) {
-    ASSERTOP(io->ent->io, ==, io, io->ent->io);
-    io->ent->io = 0;
-    io->ent = 0;
-  }
   ASSERT(io->n_thr >= 0);
   io->fd |= 0x80000000;  /* mark as free */
 
   ASSERT(io->qel.intodo != HI_INTODO_SHF_FREE); /* *** HI_INTODO_INTODO is a possibility if other thread might still be about to write to the connection. */
 
   /* N.B. n_thr manipulations are done before calling hi_close() */
-  if (io->n_thr || io->qel.intodo == HI_INTODO_INTODO) {           /* Some threads are still tinkering with this fd: delay closing */
+  if (io->n_thr) {           /* Some threads are still tinkering with this fd: delay closing */
     if (shutdown(fd & 0x7ffffff, SHUT_RD))
       ERR("shutdown %d %s", errno, STRERROR(errno));
     D("%s: close(%x) pending n_thr=%d intodo=%x", lk, fd, io->n_thr, io->qel.intodo);
@@ -762,10 +757,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
     UNLOCK(io->qel.mut, "hi_close");
     return;
   }
-  
-  ASSERTOP(io->qel.intodo, ==, HI_INTODO_IOINUSE, io->qel.intodo); /* HI_INTODO_INTODO should not be possible anymore. */
-  io->qel.intodo = HI_INTODO_SHF_FREE;
-  
+    
   for (pdu = io->reqs; pdu; pdu = pdu->n)
     hi_free_req(hit, pdu);
   io->reqs = 0;
@@ -782,6 +774,20 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   sis_clean(io);
 #endif
   
+  /* Clear the association with entity as late as possible so ACKs may
+   * get a chance of being processed and written. */
+  if (io->ent) {
+    if (io->ent->io == io) {
+      io->ent->io = 0;
+      INFO("Dissassociate ent_%p (%s) from io(%x)", io->ent, io->ent->eid, io->fd);
+    } else {
+      ERR("io(%x)->ent and ent->io(%x) are different", io->fd, io->ent->io->fd);
+    }
+    io->ent = 0;
+  } else {
+    ERR("io(%x) has no entity associated", io->fd);
+  }
+  
 #ifdef USE_OPENSSL
   if (io->ssl) {
     SSL_shutdown(io->ssl);
@@ -789,6 +795,8 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
     io->ssl = 0;
   }
 #endif
+  ASSERTOP(io->qel.intodo, ==, HI_INTODO_IOINUSE, io->qel.intodo); /* HI_INTODO_INTODO should not be possible anymore. */
+  io->qel.intodo = HI_INTODO_SHF_FREE;
   close(fd & 0x7ffffff); /* Now some other thread may reuse the slot by accept()ing same fd */
   D("%s: closed(%x)", lk, fd);
   /* Must let go of the lock only after close so no read can creep in. */
@@ -839,18 +847,18 @@ static struct hi_qel* hi_todo_consume(struct hiios* shf)
     }
     if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
       io = ((struct hi_io*)qe);
-      LOCK(io->qel.mut, "n_thr inc");
+      LOCK(io->qel.mut, "n_thr-inc");
       if (io->fd & 0x80000000) {
 	D("cons-ign-closed: LK&UNLK io(%x)->qel.thr=%x n_thr=%d r/w=%d/%d ev=%d intodo=%x", io->fd, io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
 #if 0
-	UNLOCK(io->qel.mut, "n_thr inc-fail");
+	UNLOCK(io->qel.mut, "n_thr-inc-fail");
 	goto try_next;
 #else
       /* Let it be consumed so that r/w will fail and hi_close() is called to clean up.
        * or consider calling hi_close() right here! *** */
 #endif
       }
-      io->n_thr += 2;  /* Increase two counts: once for write, and once for read */
+      ++io->n_thr;  /* Increase two counts: once for write, and once for read, decrease for intodo ending. Net is +1. */
       D("cons: LK&UNLK io(%x)->qel.thr=%x n_thr=%d r/w=%d/%d ev=%x intodo=%x", io->fd, io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
       UNLOCK(io->qel.mut, "n_thr inc");
     } else {
@@ -893,7 +901,10 @@ void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk)
 	goto out;
 #endif
       }
-      D("%s: prod(%x) n_thr=%d r/w=%d/%d ev=%x", lk, io->fd, io->n_thr, io->reading, io->writing, io->events);
+      LOCK(io->qel.mut, "n_thr-inc-todo");
+      ++io->n_thr;
+      D("%s: prod(%x) LK&UNLK n_thr=%d r/w=%d/%d ev=%x", lk, io->fd, io->n_thr, io->reading, io->writing, io->events);
+      UNLOCK(io->qel.mut, "n_thr-inc-todo");
     } else {
       D("%s: prod qe(%p) kind(%s)", lk, qe, QEL_KIND(qe->kind));
     }

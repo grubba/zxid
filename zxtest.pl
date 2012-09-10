@@ -1506,6 +1506,7 @@ KILLD('ZXBUS10', 'collect zxbusd 1');
 DAEMON('ZXBUS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUS20.pid -c '$busd_conf' -d -d -dp -nthr 2 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
 DAEMON('ZXBUS20b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUS20b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS21', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS21b','zxbuslist 2 one shot', "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS22', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
 CMD('ZXBUS23', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS24', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 40, 10);
@@ -1517,9 +1518,9 @@ KILLD('ZXBUS20', 'collect zxbusd 2');
 # 30 single thread nodebug, two listeners
 
 DAEMON('ZXBUS30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUS30.pid -c '$busd_conf' -nthr 1 -nfd 1000 -npdu 5000 -p stomp:0.0.0.0:2229");
-DAEMON('ZXBUS30b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS30b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUS30b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS30b.pid -c '$bus_list_conf'");
 CMD('ZXBUS31', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
-DAEMON('ZXBUS31b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS31b.pid -d -d -c '$bus_list2_conf'");
+DAEMON('ZXBUS31b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS31b.pid -c '$bus_list2_conf'");
 CMD('ZXBUS32', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
 CMD('ZXBUS33', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS34', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 40, 10);
@@ -1532,13 +1533,13 @@ KILLD('ZXBUS30', 'collect zxbusd 3');
 # 40 two thread nodebug, two listeners
 
 DAEMON('ZXBUS40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUS40.pid -c '$busd_conf' -nthr 2 -nfd 15 -npdu 500 -p stomp:0.0.0.0:2229");
-DAEMON('ZXBUS40b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS40b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUS40b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS40b.pid -c '$bus_list_conf'");
 CMD('ZXBUS41', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
-CMD('ZXBUS41b','zxbuslist one shot',-1,"./zxbuslist -o -1 -d -d -c '$bus_list2_conf'");
+CMD('ZXBUS41b','zxbuslist 2 one shot', "./zxbuslist -o 1 -c '$bus_list2_conf'");
 CMD('ZXBUS42', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
-DAEMON('ZXBUS42b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS42b.pid -d -d -c '$bus_list2_conf'");
+DAEMON('ZXBUS42b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS42b.pid -c '$bus_list2_conf'");
 CMD('ZXBUS43', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
-CMD('ZXBUS44', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);
+CMD('ZXBUS44', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
 CMD('ZXBUS45', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
 CMD('ZXBUS49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
 KILLD('ZXBUS40b', 'collect zxbuslist 1');
@@ -1553,8 +1554,8 @@ DAEMON('ZXBUS50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUS50.pid -c '$busd_con
 DAEMON('ZXBUS50b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS50b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS51', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
 CMD('ZXBUS52', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
-CMD('ZXBUS52b','zxbuslist one shot',  "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'");
-CMD('ZXBUS52c','zxbuslist one shot2', "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'");
+CMD('ZXBUS52b','zxbuslist 2 one shot',  "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'");
+CMD('ZXBUS52c','zxbuslist 2 one shot2', "./zxbuslist -o -1 -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS53', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
 DAEMON('ZXBUS53b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS53b.pid -d -d -c '$bus_list2_conf'");
 CMD('ZXBUS54', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 20, 10);

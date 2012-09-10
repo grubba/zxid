@@ -401,7 +401,7 @@ int hi_sanity_shf(int mode, struct hiios* root_shf)
       printf("shf_%p -> null [label=free_pdus];\n", root_shf);
   }
   for (pdu = root_shf->free_pdus; pdu; pdu = (struct hi_pdu*)pdu->qel.n) {
-    if (mode&0x80) printf("-> pdu_%p\n", pdu);
+    if (mode&0x80) printf("-> pdu_%p ", pdu);
     if (pdu->color == hi_color+1) {
       printf("ERR *** pdu_%p in free list is also in reqs list (color=%d)\n", pdu, pdu->color);
       --errs;
