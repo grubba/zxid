@@ -261,7 +261,8 @@ int zxbustailf_main(int argc, char** argv, char** env)
       if (ctl) {
 	zxbus_send_cmd(cf, "ZXCTL", chan, strlen(ctl), ctl);
       } else if (bdy) {
-	zxbus_send(cf, chan, strlen(bdy), bdy);
+	if (!zxbus_send(cf, chan, strlen(bdy), bdy))
+	  return 1;
       }
     }
     /* *** implement actual tail functionality */
