@@ -542,14 +542,14 @@ struct zxid_cstr_list {
 /*(s) Parsed STOMP 1.1 headers */
 
 struct stomp_hdr {
-  int len;               /* Populated from content-length header, if one is supplied. */
-  char* body;            /* Body of the message */
-  char* host;            /* also receipt and receipt_id */
-  char* vers;            /* version, also accept-version, tx_id */
-  char* login;           /* also session, subs_id, subsc */
-  char* pw;              /* also server, ack, msg_id */
-  char* dest;            /* destination, also heart_bt */
-  char* end_of_pdu;      /* One past end of frame data. Helps in cleaning buffer for next PDU. */
+  int len;              /* Populated from content-length header, if one is supplied. */
+  char* body;           /* Body of the message */
+  char* host;           /* also receipt and receipt_id */
+  char* vers;           /* version, also accept-version, tx_id */
+  char* login;          /* also session, subs_id, subsc */
+  char* pw;             /* also server, ack, msg_id */
+  char* dest;           /* destination, also heart_bt */
+  char* end_of_pdu;     /* One past end of frame data. Helps in cleaning buffer for next PDU. */
 };
 
 /*(s) Used for maintaining audit bus URL and connections */

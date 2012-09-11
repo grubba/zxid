@@ -56,6 +56,7 @@ extern int zx_debug;
 /* Called by:  hi_send1, hi_send2, hi_send3 */
 void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp)
 {
+  struct hi_io* read_io;
   int write_now = 0;
   HI_SANITY(hit->shf, hit);
   if (req) {
@@ -107,6 +108,9 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
   if (!io->writing) {
     io->writing = write_now = 1;
     ++io->n_thr;           /* Account for anticipated call to hi_write() */
+    read_io = hit->cur_io;
+    hit->cur_io = io;
+    hit->cur_n_close = io->n_close;
   }
   io->events |= EPOLLOUT;  /* Set write event in case there is no poll before write opportunity. */
   D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
@@ -119,6 +123,9 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
   if (write_now) {
     /* Try cranking the write machine right away! *** should we fish out any todo queue item that may stomp on us? How to deal with thread that has already consumed from the todo_queue? */
     hi_write(hit, io);   /* Will decrement io->n_thr for write */
+    hit->cur_io = read_io;
+    if (read_io)
+      hit->cur_n_close = read_io->n_close;
   } else {
     hi_todo_produce(hit, &io->qel, "send0");
   }

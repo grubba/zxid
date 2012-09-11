@@ -87,9 +87,9 @@ struct hi_ent* zxbus_load_ent(struct hiios* shf, int len, const char* eid)
   /* Check if already loaded */
   
   for (ent = shf->ents; ent; ent = ent->n) {
-    D("Checking eid(%.*s) against ent_%p->eid(%s)", len, eid, ent, ent->eid);
+    DD("Checking eid(%.*s) against ent_%p->eid(%s)", len, eid, ent, ent->eid);
     if (!memcmp(ent->eid, eid, len) && !ent->eid[len]) {
-      D("Found ent_%p->eid(%s) io(%x) ache_%p", ent, ent->eid, ent->io?ent->io->fd:0xdeadbeef, ent->acks);
+      DD("Found ent_%p->eid(%s) io(%x) ache_%p", ent, ent->eid, ent->io?ent->io->fd:0xdeadbeef, ent->acks);
       return ent;
     }
   }

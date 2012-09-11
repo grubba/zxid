@@ -257,6 +257,9 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 	  D("Somebody else already reading n_thr=%d", io->n_thr);
 	  --io->n_thr;              /* Remove read count. */
 	  ASSERT(io->n_thr >= 0);
+	  ASSERT(hit->cur_io == io);
+	  ASSERT(hit->cur_n_close == io->n_close);
+	  hit->cur_io = 0;
 	  D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
 	  UNLOCK(io->qel.mut, "reset-reading-abort");
 	  return 0;
@@ -291,6 +294,9 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
   ASSERT(io->reading);
   io->reading = 0;
   --io->n_thr;              /* Remove read count. */
+  ASSERT(hit->cur_io == io);
+  ASSERT(hit->cur_n_close == io->n_close);
+  hit->cur_io = 0;
   D("out of reading(%x) n_thr=%d", io->fd, io->n_thr);
   ASSERT(io->n_thr >= 0);
   UNLOCK(io->qel.mut, "clear-reading");
@@ -306,7 +312,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
   D("out of reading(%x) n_thr=%d (close)", io->fd, io->n_thr);
   ASSERT(io->n_thr >= 0);
   UNLOCK(io->qel.mut, "clear-reading-close");
-  hi_close(hit, io, "hi_read");
+  hi_close(hit, io, "hi_read");  /* will clear hit->cur_io */
   return 1;
 
  conn_close_not_reading:
@@ -320,7 +326,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
   D("not_reading-close(%x) n_thr=%d r/w=%d/%d ev=%d", io->fd, io->n_thr, io->reading, io->writing, io->events);
   ASSERT(io->n_thr >= 0);
   UNLOCK(io->qel.mut, "not_reading-close");
-  hi_close(hit, io, "hi_read-not_reading");
+  hi_close(hit, io, "hi_read-not_reading");  /* will clear hit->cur_io */
   return 1;
 }
 

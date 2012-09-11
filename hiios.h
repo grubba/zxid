@@ -187,6 +187,7 @@ struct hi_io {
   struct hi_pdu* to_write_produce;  /* wn add new pdus here (main thr only) */
   
   /* Statistics counters */
+  int n_close;               /* Number of closes. Generation counter. */
   int n_written;  /* bytes */
   int n_read;     /* bytes */
   int n_pdu_out;
@@ -336,6 +337,8 @@ struct hiios {
 struct hi_thr {
   struct hi_thr* n;
   struct hiios* shf;
+  struct hi_io* cur_io;         /* Only valid for HI_TCP_S and HI_TCP_C */
+  int cur_n_close;              /* Generation value of the current io */
   int n_free_pdus;
   struct hi_pdu* free_pdus;     /* Per thread pool of PDUs */
 #if 0
