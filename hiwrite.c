@@ -467,8 +467,14 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
 	D("SSL_wrote(%x) %d bytes n_thr=%d r/w=%d/%d ev=%x", io->fd, ret, io->n_thr, io->reading, io->writing, io->events);
 	hi_clear_iov(hit, io, ret);
 	break; /* iterate write loop again */
-      case SSL_ERROR_WANT_READ:  D("SSL EAGAIN READ fd(%x)", io->fd); goto out; /* Comparable to EAGAIN. Should we remember which? */
-      case SSL_ERROR_WANT_WRITE: D("SSL EAGAIN WRITE fd(%x)", io->fd); goto out; /* Comparable to EAGAIN. Should we remember which? */
+      case SSL_ERROR_WANT_READ:
+	D("SSL EAGAIN READ fd(%x)", io->fd);
+	zx_report_openssl_error("SSL again read"); /* *** do we need this to clear error stack? */
+	goto out; /* Comparable to EAGAIN. Should we remember which? */
+      case SSL_ERROR_WANT_WRITE:
+	D("SSL EAGAIN WRITE fd(%x)", io->fd);
+	zx_report_openssl_error("SSL again write"); /* *** do we need this to clear error stack? */
+	goto out; /* Comparable to EAGAIN. Should we remember which? */
       case SSL_ERROR_ZERO_RETURN: /* Probably close from other end */
       default:
 	ERR("SSL_write ret=%d err=%d", ret, err);

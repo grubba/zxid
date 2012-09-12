@@ -419,13 +419,13 @@ int zxbus_read_stomp(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* s
   memset(stomp, 0, sizeof(struct stomp_hdr));
 
   while (bu->ap - bu->m < ZXBUS_BUF_SIZE) {
-    D("read, already buf(%.*s) need=%d", bu->ap-bu->m, bu->m, need);
+    D("read, already buf(%.*s) need=%d len=%d buf_avail=%d", bu->ap - bu->m, bu->m, need, bu->ap - bu->m, ZXBUS_BUF_SIZE - (bu->ap - bu->m));
     if (need || bu->ap == bu->m) {
 #ifdef USE_OPENSSL
       if (bu->ssl) {
 	got = SSL_read(bu->ssl, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m));
 	if (got < 0) {
-	  ERR("recv(%x) bu_%p: %d %s", bu->fd, bu, errno, STRERROR(errno));
+	  ERR("recv(%x) bu_%p: (%d) %d %s", bu->fd, bu, got, errno, STRERROR(errno));
 	  zx_report_openssl_error("zxbus_read-ssl");
 	  return 0;
 	}
@@ -684,7 +684,30 @@ char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
   }
 }
 
+#ifdef USE_OPENSSL
 //int zxbus_cert_verify_cb(X509_STORE_CTX* st_ctx, void* arg) {  zxid_conf* cf = arg;  return 0; }
+
+static void zx_ssl_info_cb(const SSL *ssl, int where, int ret)
+{
+  const char *str;
+  
+  if ((where & ~SSL_ST_MASK) & SSL_ST_CONNECT) str="SSL_connect";
+  else if ((where & ~SSL_ST_MASK) & SSL_ST_ACCEPT) str="SSL_accept";
+  else str="undefined";
+  
+  if (where & SSL_CB_LOOP) {
+    D("%s:%s",str,SSL_state_string_long(ssl));
+  } else if (where & SSL_CB_ALERT) {
+    str=(where & SSL_CB_READ)?"read":"write";
+    D("SSL3 alert %s:%s:%s",str,SSL_alert_type_string_long(ret),SSL_alert_desc_string_long(ret));
+  } else if (where & SSL_CB_EXIT) {
+    if (ret == 0)
+      D("%s:failed in %s",str,SSL_state_string_long(ssl));
+    else if (ret < 0)
+      D("%s:error in %s",str,SSL_state_string_long(ssl));
+  }
+}
+#endif
 
 /*() Open a bus_url, i.e. STOMP 1.1 connection to zxbusd.
  * return:: 0 on failure, 1 on success. */
@@ -801,13 +824,21 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     if (!cf->ssl_ctx) {
       SSL_load_error_strings();
       SSL_library_init();
+#if 0
       cf->ssl_ctx = SSL_CTX_new(SSLv23_method());
+#else
+      cf->ssl_ctx = SSL_CTX_new(TLSv1_client_method());
+#endif
     }
     if (!cf->ssl_ctx) {
       ERR("TLS/SSL connection to(%s) can not be made. SSL context initialization problem", bu->s);
       zx_report_openssl_error("open_bus_url-ssl_ctx");
       goto errout;
     } else {
+      if (zx_debug>1) {
+	D("OpenSSL header-version(%lx) lib-version(%lx)(%s) %s %s %s %s", OPENSSL_VERSION_NUMBER, SSLeay(), SSLeay_version(SSLEAY_VERSION), SSLeay_version(SSLEAY_CFLAGS), SSLeay_version(SSLEAY_BUILT_ON), SSLeay_version(SSLEAY_PLATFORM), SSLeay_version(SSLEAY_DIR));
+	SSL_CTX_set_info_callback(cf->ssl_ctx, zx_ssl_info_cb);
+      }
       SSL_CTX_set_mode(cf->ssl_ctx, SSL_MODE_AUTO_RETRY);  /* R/W only return when complete. */
       /* Verification strategy: do not attempt verification at SSL layer. Instead
        * check the result afterwards against metadata based cert. */
@@ -863,11 +894,21 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
       goto sslerrout;
     }
 
-    if ((vfy_err = SSL_get_verify_result(bu->ssl)) != X509_V_OK) {
+    if (zx_debug>1) D("SSL_version(%s) cipher(%s)",SSL_get_version(bu->ssl),SSL_get_cipher(bu->ssl));
+
+    vfy_err = SSL_get_verify_result(bu->ssl);
+    switch (vfy_err) {
+    case X509_V_OK: break;
+    case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
+      D("TLS/SSL connection to(%s) made, but certificate err. (%ld)", bu->s, vfy_err);
+      zx_report_openssl_error("open_bus_url-verify_res");
+      break;
+    default:
       ERR("TLS/SSL connection to(%s) made, but certificate not acceptable. (%ld)", bu->s, vfy_err);
       zx_report_openssl_error("open_bus_url-verify_res");
       goto sslerrout;
     }
+
     if (!(peer_cert = SSL_get_peer_certificate(bu->ssl))) {
       ERR("TLS/SSL connection to(%s) made, but peer did not send certificate", bu->s);
       zx_report_openssl_error("open_bus_url-peer_cert");
@@ -882,8 +923,10 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
       ERR("Metadata for eid(%s) does not contain enc cert", bu->eid);
       goto sslerrout;
     }
-    if (!X509_cmp(meta->enc_cert, peer_cert)) {
+    if (X509_cmp(meta->enc_cert, peer_cert)) {
       ERR("Peer certificate does not match metadata for eid(%s)", bu->eid);
+      D("compare: %d", memcmp(meta->enc_cert->sha1_hash, peer_cert->sha1_hash, SHA_DIGEST_LENGTH));
+      PEM_write_X509(ZX_DEBUG_LOG, peer_cert);
       goto sslerrout;
     }
     /* *** should we free peer_cert? */
@@ -986,7 +1029,7 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
       zxbus_shift_read_buf(cf, bu, &stomp);
     }
   } else {
-    ERR("DISCONNECT to %s failed. Other end did not send RECEIPT. Read error.", bu->s);
+    ERR("DISCONNECT to %s failed. Other end did not send RECEIPT. Read error. Probably connection drop.", bu->s);
   }
  errout:
 #ifdef USE_OPENSSL

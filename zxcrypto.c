@@ -693,6 +693,23 @@ badurl:
 #endif
 }
 
+#if 0
+/* use PEM_write_X509(fp, cert) instead! */
+void zx_print_X509(FILE* fp, X509* cert)
+{
+  int len;
+  char* p;
+  BIO* wbio_cert = BIO_new(BIO_s_mem());
+  if (!PEM_write_bio_X509(wbio_cert, peer_cert)) {
+    ERR("write_cert %p", peer_cert);
+    zx_report_openssl_error("write_cert");
+    return;
+  }
+  len = BIO_get_mem_data(wbio_cert, &p);
+  fprintf(fp, "%.*s", len, p);
+}
+#endif
+
 /*
 
 A Practical Approach of X.509 Attribute Certificate Framework as Support to Obtain Privilege Delegation

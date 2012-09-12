@@ -140,8 +140,8 @@ struct hi_proto hi_prototab[] = {  /* n.b. order in this table must match consta
   { "smtp",     25, 0, 0 },
   { "http",   8080, 0, 0 },
   { "tp",     5068, 0, 0 },  /* testping (6) */
-  { "stomp",  2228, 0, 0 },
-  { "stomps", 2229, 0, 0 },  /* n.b. 2229 is zxbus assigned port. Normal STOMP port is 61613 */
+  { "stomp",  2228, 0, 0 },  /* 7 */
+  { "stomps", 2229, 1, 0 },  /* 8 n.b. 2229 is zxbus assigned port. Normal STOMP port is 61613 */
   { "", 0 }
 };
 

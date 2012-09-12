@@ -101,7 +101,9 @@ LD=gcc
 GCOV=gcov
 LCOV=lcov
 GENHTML=genhtml
-SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,--allow-multiple-definition
+#SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,--allow-multiple-definition
+# --export-all-symbols does not seem to work on gcc-4.6.1... try -Wl,--export-dynamic instead
+SHARED_FLAGS=-shared -Wl,--export-dynamic -Wl,-whole-archive -Wl,--allow-multiple-definition
 SHARED_CLOSE=-Wl,-no-whole-archive
 CFLAGS =  -g -fpic -fno-strict-aliasing
 #CFLAGS += -Os    # gcc-3.4.6 miscompiles with -Os on ix86 (2010 --Sampo)
@@ -176,7 +178,9 @@ APACHE_MODULES ?= $(APACHE_ROOT)/modules
 
 ### Compute options based on local modifications
 
-LIBS+= -pthread -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz
+#LIBS+= -pthread -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz
+LIBS+= -pthread -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -static -lcurl -lssl -lcrypto -lz -dynamic
+LIBS+= -lidn -lrt
 #LIBS+=-ldl
 OUTOPT=-o 
 
@@ -261,7 +265,7 @@ ifeq ($(TARGET),xmingw)
 # may have trouble due to linking against cygwin dependent libraries).
 #
 # Cross compiling curl
-#   CPPFLAGS='-I/apps/gcc/mingw/sysroot/include' LDFLAGS='-L/apps/gcc/mingw/sysroot/lib' LIBS='-lz' ./configure --prefix=/usr --with-ssl=/apps/gcc/mingw/sysroot --without-gnutls --enable-thread --enable-nonblocking --host=i586-pc-mingw32 --with-random=/random.txt --disable-shared -enable-static
+#   CPPFLAGS='-I/apps/gcc/mingw/sysroot/include' LDFLAGS='-L/apps/gcc/mingw/sysroot/lib' LIBS='-lz' ./configure --prefix=/usr --with-ssl=/apps/gcc/mingw/sysroot --without-gnutls --enable-thread --enable-nonblocking --host=i586-pc-mingw32 --with-random=/random.txt --disable-shared --enable-static
 #   # Despite apparent misdetection of ar, the compile finishes
 #   make
 #   cp lib/.libs/libcurl* /apps/gcc/mingw/sysroot/lib
@@ -1682,7 +1686,7 @@ tags:
 
 #SSL=/aino/openssl-0.9.8g
 #SSL=/aino/openssl-1.0.0c
-SSL=/home/sampo/openssl-1.0.1a
+SSL=/home/sampo/openssl-1.0.1c
 BB=/aino/busybox-1.11.1
 #DS=~/ds
 #DS=/d/sampo/ds4/ds

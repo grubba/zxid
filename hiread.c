@@ -161,7 +161,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
     D("read_loop io(%x)->cur_pdu=%p", io->fd, pdu);
     ASSERT(pdu);  /* Exists either through hi_shuff_init() or through hi_check_more() */
   retry:
-    D("read(%x) have=%d need=%d", io->fd, pdu->ap-pdu->m, pdu->need);
+    D("read(%x) have=%d need=%d buf_avail=%d", io->fd, pdu->ap-pdu->m, pdu->need, pdu->lim - pdu->ap);
     ASSERT(io->reading);
 #ifdef USE_OPENSSL
     if (io->ssl) {
@@ -171,13 +171,15 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
       case SSL_ERROR_WANT_READ:
 	D("SSL EAGAIN READ fd(%x)", io->fd); /* Comparable to EAGAIN. Should we remember which? */
 	//h->ioflags |= IO_MISSPOLL; /** Need more data after poll() **/
+	zx_report_openssl_error("SSL again read"); /* *** do we need this to clear error stack? */
 	goto eagain_out;
       case SSL_ERROR_WANT_WRITE:
 	D("SSL EAGAIN WRITE fd(%x)", io->fd); /* Comparable to EAGAIN. Should we remember which? */
+	zx_report_openssl_error("SSL again write"); /* *** do we need this to clear error stack? */
 	goto eagain_out;
       case SSL_ERROR_ZERO_RETURN: D("SSL EOF fd(%x)", io->fd);	goto conn_close;
       default:
-	ERR("SSL_write ret=%d err=%d", ret, err);
+	ERR("SSL_read ret=%d err=%d", ret, err);
 	zx_report_openssl_error("SSL_read");
 	if (!io->n_read) {
 	  ERR("SSL Conn. failed fd=%x ret=%d err=%d errno=%d %s", io->fd, ret, err, errno, STRERROR(errno));
@@ -331,3 +333,51 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 }
 
 /* EOF  --  hiread.c */
+
+#if 0
+
+Mystery SSL error
+
+On LinuxMint 12 / Ubuntu / Debian
+tb784d6e0    hiios.c:201 hi_new_shuffler  	zx d OpenSSL header-version(1000005f) lib-version(OpenSSL 1.0.0e 6 Sep 2011) cflags(compiler: cc -fPIC -DOPENSSL_PIC -DZLIB -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -DL_ENDIAN -DTERMIO -O3 -Wa,--noexecstack -g -Wall) builton(built on: Thu Feb  9 00:57:05 UTC 2012) platform(platform: debian-i386) dir(OPENSSLDIR: "/usr/lib/ssl")
+
+// On first connection, after several successful reads and writes
+
+tb784d6e0   hiread.c:164 hi_read          	zx d read(9) have=0 need=6 buf_avail=3072
+tb784d6e0   hiread.c:182 hi_read          	zx E SSL_read ret=-1 err=1
+tb784d6e0    zxsig.c:404 zx_report_openssl_error 	zx E SSL_read: OpenSSL error(218529960) error:0D0680A8:asn1 encoding routines:ASN1_CHECK_TLEN:wrong tag (tasn_dec.c:1319): ? 0
+tb784d6e0    zxsig.c:404 zx_report_openssl_error 	zx E SSL_read: OpenSSL error(218546234) error:0D06C03A:asn1 encoding routines:ASN1_D2I_EX_PRIMITIVE:nested asn1 error (tasn_dec.c:831): ? 0
+tb784d6e0    zxsig.c:404 zx_report_openssl_error 	zx E SSL_read: OpenSSL error(218640442) error:0D08303A:asn1 encoding routines:ASN1_TEMPLATE_NOEXP_D2I:nested asn1 error (tasn_dec.c:751): Field=n, Type=RSA 3
+tb784d6e0    zxsig.c:404 zx_report_openssl_error 	zx E SSL_read: OpenSSL error(67710980) error:04093004:rsa routines:OLD_RSA_PRIV_DECODE:RSA lib (rsa_ameth.c:115): ? 0
+
+// On subsequent connections
+
+tb784d6e0   hiread.c:164 hi_read          	zx d read(a) have=0 need=6 buf_avail=3072
+tb784d6e0    hiios.c:116 zxbus_info_cb    	zx d SSL3 alert write:fatal:protocol version
+
+tb784d6e0   hiread.c:182 hi_read          	zx E SSL_read ret=-1 err=1
+tb784d6e0    zxsig.c:404 zx_report_openssl_error 	zx E SSL_read: OpenSSL error(336130315) error:1408F10B:SSL routines:SSL3_GET_RECORD:wrong version number (s3_pkt.c:339): ? 0
+
+// Someone one the net has similar problem with postfix mail
+
+http://old.nabble.com/error%3A1408F10B%3ASSL-routines%3ASSL3_GET_RECORD%3Awrong-version-number-td33867821.html
+
+Known issue (20120518)
+
+http://cvs.openssl.org/chngview?cn=22565
+
+penssl/ssl/s3_pkt.c 1.72.2.7.2.15 -> 1.72.2.7.2.16
+
+--- s3_pkt.c	2012/04/17 13:20:19	1.72.2.7.2.15
++++ s3_pkt.c	2012/05/11 13:32:26	1.72.2.7.2.16
+@@ -744,6 +744,7 @@
+ 	 * bytes and record version number > TLS 1.0
+ 	 */
+ 	if (s->state == SSL3_ST_CW_CLNT_HELLO_B
++				&& !s->renegotiate
+ 				&& TLS1_get_version(s) > TLS1_VERSION)
+ 		*(p++) = 0x1;
+ 	else
+
+
+#endif

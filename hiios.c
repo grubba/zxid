@@ -82,7 +82,7 @@ void hi_hit_init(struct hi_thr* hit)
 
 #ifdef USE_OPENSSL
 //int zxbus_cert_verify_cb(X509_STORE_CTX* st_ctx, void* arg) {  zxid_conf* cf = arg;  return 0; }
-int zxbus_verify_cb(int preverify_ok, X509_STORE_CTX* st_ctx)
+static int zxbus_verify_cb(int preverify_ok, X509_STORE_CTX* st_ctx)
 {
   //X509* err_cert = X509_STORE_CTX_get_current_cert(st_ctx);
   int err;
@@ -99,6 +99,27 @@ int zxbus_verify_cb(int preverify_ok, X509_STORE_CTX* st_ctx)
     return 1;  /* ignore errors relating cert not being trusted */
   ERR("verify fail %d %s", err, X509_verify_cert_error_string(err));
   return 0;
+}
+
+static void zxbus_info_cb(const SSL *ssl, int where, int ret)
+{
+  const char *str;
+  
+  if ((where & ~SSL_ST_MASK) & SSL_ST_CONNECT) str="SSL_connect";
+  else if ((where & ~SSL_ST_MASK) & SSL_ST_ACCEPT) str="SSL_accept";
+  else str="undefined";
+  
+  if (where & SSL_CB_LOOP) {
+    D("%s:%s",str,SSL_state_string_long(ssl));
+  } else if (where & SSL_CB_ALERT) {
+    str=(where & SSL_CB_READ)?"read":"write";
+    D("SSL3 alert %s:%s:%s",str,SSL_alert_type_string_long(ret),SSL_alert_desc_string_long(ret));
+  } else if (where & SSL_CB_EXIT) {
+    if (ret == 0)
+      D("%s:failed in %s",str,SSL_state_string_long(ssl));
+    else if (ret < 0)
+      D("%s:error in %s",str,SSL_state_string_long(ssl));
+  }
 }
 #endif
 
@@ -166,12 +187,21 @@ struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch, in
 #ifdef USE_OPENSSL
   SSL_load_error_strings();
   SSL_library_init();
+#if 0
   shf->ssl_ctx = SSL_CTX_new(SSLv23_method());
+#else
+  shf->ssl_ctx = SSL_CTX_new(TLSv1_method());
+#endif
   if (!shf->ssl_ctx) {
     ERR("SSL context initialization problem %d", 0);
     zx_report_openssl_error("new_shuffler-ssl_ctx");
     return 0;
   }
+  if (zx_debug>1) {
+    D("OpenSSL header-version(%lx) lib-version(%lx)(%s) %s %s %s %s", OPENSSL_VERSION_NUMBER, SSLeay(), SSLeay_version(SSLEAY_VERSION), SSLeay_version(SSLEAY_CFLAGS), SSLeay_version(SSLEAY_BUILT_ON), SSLeay_version(SSLEAY_PLATFORM), SSLeay_version(SSLEAY_DIR));
+    SSL_CTX_set_info_callback(shf->ssl_ctx, zxbus_info_cb);
+  }
+
   /*SSL_CTX_set_mode(shf->ssl_ctx, SSL_MODE_AUTO_RETRY); R/W only return w/complete. We use nonblocking I/O. */
 
   /* Verification strategy: do not attempt verification at SSL layer. Instead
@@ -452,10 +482,19 @@ int hi_verify_peer_ssl_credential(struct hi_thr* hit, struct hi_io* io, const ch
   X509* peer_cert;
   zxid_entity* meta;
   long vfy_err;
-
-  if ((vfy_err = SSL_get_verify_result(io->ssl)) != X509_V_OK) {
-    ERR("TLS/SSL connection to(%s) made, but cert not acceptable. (%ld)",eid,vfy_err);
-    zx_report_openssl_error("verify_res");
+  
+  if (zx_debug>1) D("SSL_version(%s) cipher(%s)",SSL_get_version(io->ssl),SSL_get_cipher(io->ssl));
+  
+  vfy_err = SSL_get_verify_result(io->ssl);
+  switch (vfy_err) {
+  case X509_V_OK: break;
+  case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
+    D("TLS/SSL connection to(%s) made, but certificate err. (%ld)", eid, vfy_err);
+    zx_report_openssl_error("open_bus_url-verify_res");
+    break;
+  default:
+    ERR("TLS/SSL connection to(%s) made, but certificate not acceptable. (%ld)", eid, vfy_err);
+    zx_report_openssl_error("open_bus_url-verify_res");
     return 0;
   }
   if (!(peer_cert = SSL_get_peer_certificate(io->ssl))) {
@@ -472,8 +511,10 @@ int hi_verify_peer_ssl_credential(struct hi_thr* hit, struct hi_io* io, const ch
     ERR("Metadata for eid(%s) does not contain enc cert", eid);
     return 0;
   }
-  if (!X509_cmp(meta->enc_cert, peer_cert)) {
+  if (X509_cmp(meta->enc_cert, peer_cert)) {
     ERR("Peer certificate does not match metadata for eid(%s)", eid);
+    D("compare: %d", memcmp(meta->enc_cert->sha1_hash, peer_cert->sha1_hash, SHA_DIGEST_LENGTH));
+    PEM_write_X509(ZX_DEBUG_LOG, peer_cert);
     return 0;
   }
   return 1;
@@ -575,8 +616,10 @@ static void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd)
 
 #ifdef USE_OPENSSL
   io->ssl = 0;
+  D("proto(%d), is_tls=%d", io->qel.proto, hi_prototab[io->qel.proto].is_tls);
   if (hi_prototab[io->qel.proto].is_tls) {
     --io->qel.proto;  /* Non SSL protocol is always one smaller */
+    D("SSL proto(%d)", io->qel.proto);
     io->ssl = SSL_new(hit->shf->ssl_ctx);
     if (!io->ssl) {
       ERR("TLS/SSL accept: SSL object initialization problem %d", 0);
@@ -816,7 +859,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   if (io->ent) {
     if (io->ent->io == io) {
       io->ent->io = 0;
-      INFO("Dissassociate ent_%p (%s) from io(%x)", io->ent, io->ent->eid, io->fd);
+      INFO("Dissociate ent_%p (%s) from io(%x)", io->ent, io->ent->eid, io->fd);
     } else {
       ERR("io(%x)->ent and ent->io(%x) are different", io->fd, io->ent->io->fd);
     }
@@ -986,9 +1029,14 @@ static void hi_poll(struct hi_thr* hit)
   struct hi_io* io;
   int i;
   DP("epoll(%x)", hit->shf->ep);
+ retry:
 #ifdef LINUX
   hit->shf->n_evs = epoll_wait(hit->shf->ep, hit->shf->evs, hit->shf->max_evs, -1);
   if (hit->shf->n_evs == -1) {
+    if (errno == EINTR) {
+      D("EINTR fd(%x)", hit->shf->ep);
+      goto retry;
+    }
     ERR("epoll_wait(%x): %d %s", hit->shf->ep, errno, STRERROR(errno));
     return;
   }
@@ -1010,6 +1058,10 @@ static void hi_poll(struct hi_thr* hit)
     dp.dp_fds = hit->shf->evs;
     hit->shf->n_evs = ioctl(hit->shf->ep, DP_POLL, &dp);
     if (hit->shf->n_evs < 0) {
+      if (errno == EINTR) {
+	D("EINTR fd(%x)", hit->shf->ep);
+	goto retry;
+      }
       ERR("/dev/poll ioctl(%x): %d %s", hit->shf->ep, errno, STRERROR(errno));
       return;
     }
