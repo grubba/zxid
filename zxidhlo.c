@@ -107,13 +107,15 @@ int main(int argc, char** argv)
   p = strstr(res, "sesid: ");
   if (p) {
     p += sizeof("sesid: ")-1;
-    q = strchr(sid, '\n');
+    q = strchr(p, '\n');
     if (q) {
       memcpy(sid, p, MIN(q-p, sizeof(sid)-1));
       sid[MIN(q-p, sizeof(sid)-1)] = 0;
+      D("sid(%s)",sid);
     } else {
       strncpy(sid, p, sizeof(sid));
       sid[sizeof(sid)-1] = 0;
+      D("sid(%s)",sid);
     }
   } else
     sid[0] = 0;
@@ -121,13 +123,15 @@ int main(int argc, char** argv)
   p = strstr(res, "idpnid: ");
   if (p) {
     p += sizeof("idpnid: ")-1;
-    q = strchr(nid, '\n');
+    q = strchr(p, '\n');
     if (q) {
       memcpy(nid, p, MIN(q-p, sizeof(nid)-1));
       nid[MIN(q-p, sizeof(nid)-1)] = 0;
+      D("nid(%s)",nid);
     } else {
       strncpy(nid, p, sizeof(nid));
       nid[sizeof(nid)-1] = 0;
+      D("nid(%s)",nid);
     }
   } else
     nid[0] = 0;
@@ -135,13 +139,15 @@ int main(int argc, char** argv)
   p = strstr(res, "setcookie: ");
   if (p) {
     p += sizeof("setcookie: ")-1;
-    q = strchr(setcookie, '\n');
+    q = strchr(p, '\n');
     if (q) {
       memcpy(setcookie, p, MIN(q-p, sizeof(setcookie)-1));
       setcookie[MIN(q-p, sizeof(setcookie)-1)] = 0;
+      D("setcookie(%s)",setcookie);
     } else {
       strncpy(setcookie, p, sizeof(setcookie));
       setcookie[sizeof(setcookie)-1] = 0;
+      D("setcookie(%s)",setcookie);
     }
   } else
     setcookie[0] = 0;
@@ -152,7 +158,6 @@ int main(int argc, char** argv)
   
   if (!ONE_OF_2(*setcookie, '-', 0))
     printf("SET-COOKIE: %s\r\n", setcookie);
-  D("setcookie(%s)",setcookie);
   printf("Content-Type: text/html\r\n\r\n");
   printf("<title>ZXID HELLO SP Mgmt</title>" ZXID_BODY_TAG "<h1>ZXID HELLO SP Management (user logged in, session active)</h1><pre>\n");
   printf("</pre><form method=post action=\"?o=P\">");
