@@ -707,7 +707,7 @@ int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* 
   zx_see_elem_ns(cf->ctx, &refs.pop_seen, elem);
   ses->sigres = zxsig_validate(cf->ctx, idp_meta->sign_cert, sig, 1, &refs);
   zxid_sigres_map(ses->sigres, &cgi->sigval, &cgi->sigmsg);
-  D("Response sigres(%d)", ses->sigres);
+  D("Response sigres(%d) 0=ZXSIG_OK", ses->sigres);
   return 2;
 
 nosig_allow:

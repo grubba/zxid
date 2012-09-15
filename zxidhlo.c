@@ -15,6 +15,9 @@
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  *           README-zxid, section 10 "zxid_simple() API"
+ *
+ * make zxidhlo CDEF="-DCONF='\"URL=http://sp1.zxid.org/demohlo&NICE_NAME=ZXID SP Hello\"'"
+ * cp zxidhlo /var/zxid/webroot/demohlo
  */
 
 #include <zx/platform.h>
@@ -35,6 +38,7 @@
 char* help =
 "zxidhlo  -  SAML 2.0 SP CGI - R" ZXID_REL "\n\
 SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
+Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.\n\
 Copyright (c) 2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
 Author: Sampo Kellomaki (sampo@iki.fi)\n\
@@ -148,6 +152,7 @@ int main(int argc, char** argv)
   
   if (!ONE_OF_2(*setcookie, '-', 0))
     printf("SET-COOKIE: %s\r\n", setcookie);
+  D("setcookie(%s)",setcookie);
   printf("Content-Type: text/html\r\n\r\n");
   printf("<title>ZXID HELLO SP Mgmt</title>" ZXID_BODY_TAG "<h1>ZXID HELLO SP Management (user logged in, session active)</h1><pre>\n");
   printf("</pre><form method=post action=\"?o=P\">");
