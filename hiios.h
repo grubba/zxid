@@ -415,10 +415,11 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf);
 #define HI_CONN_CLOSE 1
 #define HI_NEED_MORE  2
 
-void hi_in_out( struct hi_thr* hit, struct hi_io* io);
-void hi_close(  struct hi_thr* hit, struct hi_io* io, const char* lk);
-int  hi_write(  struct hi_thr* hit, struct hi_io* io);
-int  hi_read(   struct hi_thr* hit, struct hi_io* io);
+void hi_in_out(struct hi_thr* hit, struct hi_io* io);
+void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk);
+void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk);
+int  hi_write(struct hi_thr* hit, struct hi_io* io);
+int  hi_read(struct hi_thr* hit, struct hi_io* io);
 
 void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp);
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* pdu);

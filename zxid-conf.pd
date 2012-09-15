@@ -1679,7 +1679,7 @@ dreaded officially introduced time errors (e.g. daylight "savings" time),
 you can configure some slop in how the timeout is evaluated. For production
 use something like 60 seconds could be a good value. 3600 = 1 hour, 86400 = 1 day.
 All servers of CoT MUST use GMT (aka UTC), not local timezones. You can synchronize
-clocks with ntpdate ntp1.funet.fi (see man ntpdate).
+clocks with ntpdate pool.ntp.org (see man ntpdate).
 Slop is used in assessing validity of assertions as well as message timestamps.
 Time skew allows our end to lie about the time, e.g. if we are in GMT, but
 the other end is not and therefore we are rejected. Note that the time skew

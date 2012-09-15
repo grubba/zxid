@@ -763,7 +763,7 @@ See also zxid-idp.pd for registration of EPR and bootstrap.
 
     You can synchronize using
 
-      TZ=GMT ntpdate ntp1.funet.fi
+      TZ=GMT ntpdate pool.ntp.org
 
     (there may be server closer to you than Finland)
 

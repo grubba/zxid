@@ -768,7 +768,6 @@ static void hi_accept(struct hi_thr* hit, struct hi_io* listener)
 /* Called by:  hi_in_out, hi_read x2, hi_write */
 void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
 {
-  struct hi_pdu* pdu;
   int fd = io->fd;
   D("%s: closing(%x)", lk, fd);
 #if 0
@@ -810,8 +809,10 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   /* *** deal with freeing associated PDUs. If fail, consider shutdown(2) of socket
    *     and reenqueue to todo list so freeing can be tried again later. */
   
+  /* Race between produce and close: see hi_to_do_produce() */
+
   LOCK(io->qel.mut, "hi_close");
-  D("LOCK io(%x)->qel.thr=%x n_close=%d", io->fd, io->qel.mut.thr, io->n_close);
+  D("LOCK io(%x)->qel.thr=%x n_close=%d", fd, io->qel.mut.thr, io->n_close);
   ASSERT(io->n_thr >= 0);
   ASSERT(hit->cur_io == io);
   if (hit->cur_n_close != io->n_close) {
@@ -821,12 +822,12 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
     UNLOCK(io->qel.mut, "hi_close-already");
     return;
   }
-  
+
   io->fd |= 0x80000000;  /* mark as free */
   hi_del_fd(hit, fd);    /* stop poll from returning this fd */
-
+  
   ASSERT(io->qel.intodo != HI_INTODO_SHF_FREE); /* *** HI_INTODO_INTODO is a possibility if other thread might still be about to write to the connection. */
-
+  
   /* N.B. n_thr manipulations are done before calling hi_close() */
   if (io->n_thr) {           /* Some threads are still tinkering with this fd: delay closing */
     if (shutdown(fd & 0x7ffffff, SHUT_RD))
@@ -838,6 +839,20 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
     return;
   }
   
+  hi_close_final(hit, io, lk);
+  /* Must let go of the lock only after close so no read can creep in. */
+  D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+  UNLOCK(io->qel.mut, "hi_close");
+}
+
+/*() Finalize close, actually closing the fd.
+ * locking:: must be called with io->qel.mut held, typically after
+ *     checking that io->n_close == hit->cur_n_close.  */ 
+
+void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk)
+{  
+  struct hi_pdu* pdu;
+  D("%s: close final(%x)", lk, io->fd);
   for (pdu = io->reqs; pdu; pdu = pdu->n)
     hi_free_req(hit, pdu);
   io->reqs = 0;
@@ -877,13 +892,10 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
 #endif
   ASSERTOP(io->qel.intodo, ==, HI_INTODO_IOINUSE, io->qel.intodo); /* HI_INTODO_INTODO should not be possible anymore. */
   io->qel.intodo = HI_INTODO_SHF_FREE;
-  close(fd & 0x7ffffff); /* Now some other thread may reuse the slot by accept()ing same fd */
+  close(io->fd & 0x7ffffff); /* Now some other thread may reuse the slot by accept()ing same fd */
   ++io->n_close;
   hit->cur_io = 0;
-  D("%s: closed(%x) n_close=%d", lk, fd, io->n_close);
-  /* Must let go of the lock only after close so no read can creep in. */
-  D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
-  UNLOCK(io->qel.mut, "hi_close");
+  D("%s: closed(%x) n_close=%d", lk, io->fd, io->n_close);
 }
 
 /* -------- todo_queue management, waking up threads to consume work (io, pdu) -------- */
@@ -960,6 +972,7 @@ static struct hi_qel* hi_todo_consume(struct hi_thr* hit)
 /* Called by:  hi_accept, hi_accept_book, hi_in_out, hi_poll x2, hi_send0, stomp_msg_deliver, zxbus_sched_new_delivery, zxbus_sched_pending_delivery */
 void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk)
 {
+  int n_close;
   struct hi_io* was_io;
   struct hi_io* io;
   LOCK(hit->shf->todo_mut, "todo_prod");
@@ -976,27 +989,41 @@ void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk)
   } else {
     if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
       io = ((struct hi_io*)qe);
+      LOCK(io->qel.mut, "n_thr-inc-todo");
       if (io->fd & 0x80000000) {
-	D("%s: prod-ign-closed fd(%x) n_thr=%d r/w=%d/%d ev=%x intodo=%x", lk, io->fd, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
+	/* Race between produce and close
+	 * It is possible for other thread to be entering hi_close() while we hold
+	 * the lock. As soon as we unlock, it will perform close() and inc n_close.
+	 * We need to take the lock again to see this event.
+	 */
+	n_close = io->n_close;
+	D("%s: prod-ign-closed fd(%x) n_thr=%d r/w=%d/%d ev=%x intodo=%x cur_io(%x)->n_close=%d io->n_close=%d", lk, io->fd, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo, hit->cur_io?hit->cur_io->fd:-1, hit->cur_n_close, n_close);
+	UNLOCK(io->qel.mut, "n_thr_inc-todo-close");
 #if 0
 	goto out;
 #else
 	/* Better close it right here. If we do not put it in todo queue, nobody
 	 * will ever pick it up and close it. So better close right away. */
 	LOCK(io->qel.mut, "prod-quick-close");
-	was_io = hit->cur_io;
-	hit->cur_io = io;
-	hit->cur_n_close = io->n_close;
-	/* io->n_thr should at this point be 0 as io has not been admitted to the todo queue yet */
+	D("stash cur_io(%x) n_close=%d, new_io(%x)->n_close=%d n_close=%d", hit->cur_io?hit->cur_io->fd:-1, hit->cur_n_close, io->fd, io->n_close, n_close);
+	if (n_close == io->n_close) {
+	  was_io = hit->cur_io;
+	  hit->cur_io = io;
+	  hit->cur_n_close = io->n_close;
+	  /* io->n_thr should be 0 as io has not yet been admitted to the todo queue */
+	  hi_close_final(hit, io, lk);
+	  hit->cur_io = was_io;
+	  if (was_io) {
+	    hit->cur_n_close = was_io->n_close;
+	    D("restored cur_io(%x) n_close=%d", hit->cur_io?hit->cur_io->fd:-1, hit->cur_n_close);
+	  }
+	} else {
+	  D("io(%x)->n_close=%d already closed (and potentially reopened). Previous n_close=%d", io->fd, io->n_close, n_close);
+	}
 	UNLOCK(io->qel.mut, "prod-quick-close");
-	hi_close(hit, io, lk);
-	hit->cur_io = was_io;
-	if (was_io)
-	  hit->cur_n_close = was_io->n_close;
 	goto out;
 #endif
       }
-      LOCK(io->qel.mut, "n_thr-inc-todo");
       ++io->n_thr;
       D("%s: prod(%x) LK&UNLK n_thr=%d r/w=%d/%d ev=%x", lk, io->fd, io->n_thr, io->reading, io->writing, io->events);
       UNLOCK(io->qel.mut, "n_thr-inc-todo");

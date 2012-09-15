@@ -108,6 +108,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
   if (!io->writing) {
     io->writing = write_now = 1;
     ++io->n_thr;           /* Account for anticipated call to hi_write() */
+    D("stash cur_io(%x)->n_close=%d, new_io(%x) n_close=%d", hit->cur_io?hit->cur_io->fd:-1, hit->cur_n_close, io->fd, io->n_close);
     read_io = hit->cur_io;
     hit->cur_io = io;
     hit->cur_n_close = io->n_close;
@@ -124,8 +125,10 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
     /* Try cranking the write machine right away! *** should we fish out any todo queue item that may stomp on us? How to deal with thread that has already consumed from the todo_queue? */
     hi_write(hit, io);   /* Will decrement io->n_thr for write */
     hit->cur_io = read_io;
-    if (read_io)
+    if (read_io) {
       hit->cur_n_close = read_io->n_close;
+      D("restored cur_io(%x)->n_close=%d", hit->cur_io?hit->cur_io->fd:-1, hit->cur_n_close);
+    }
   } else {
     hi_todo_produce(hit, &io->qel, "send0");
   }

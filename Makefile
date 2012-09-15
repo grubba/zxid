@@ -178,9 +178,9 @@ APACHE_MODULES ?= $(APACHE_ROOT)/modules
 
 ### Compute options based on local modifications
 
-#LIBS+= -pthread -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz
-LIBS+= -pthread -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -static -lcurl -lssl -lcrypto -lz -dynamic
-LIBS+= -lidn -lrt
+LIBS+= -pthread -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz
+#LIBS+= -pthread -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -static -lcurl -lssl -lcrypto -lz -dynamic
+#LIBS+= -lidn -lrt
 #LIBS+=-ldl
 OUTOPT=-o 
 
