@@ -16,7 +16,7 @@
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  *           README-zxid, section 10 "zxid_simple() API"
  *
- * make zxidhlo CDEF="-DCONF='\"URL=http://sp1.zxid.org/demohlo&NICE_NAME=ZXID SP Hello\"'"
+ * make zxidhlo CDEF="-DZX_CONF='\"URL=http://sp1.zxid.org/demohlo&NICE_NAME=ZXID SP Hello\"'"
  * cp zxidhlo /var/zxid/webroot/demohlo
  */
 
@@ -56,13 +56,13 @@ Usage: zxidhlo [options]   (when used as CGI, no options can be supplied)\n\
 /* CONFIG: You must edit the URL to match your domain name and port */
 
 #define ZXIDHLO "zxidhlo"
-//#define CONF "PATH=/var/zxid/&URL=http://sp1.zxid.org/demohlo"
-#ifndef CONF
-//#define CONF "VPATH=%h/&VURL=%a%h%s&NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
-#define CONF "NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
+//#define ZX_CONF "PATH=/var/zxid/&URL=http://sp1.zxid.org/demohlo"
+#ifndef ZX_CONF
+//#define ZX_CONF "VPATH=%h/&VURL=%a%h%s&NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
+#define ZX_CONF "NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
 #endif
-//#define CONF "URL=https://sp1.zxidsp.org:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
-//#define CONF "URL=https://lima.tas3.eu:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
+//#define ZX_CONF "URL=https://sp1.zxidsp.org:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
+//#define ZX_CONF "URL=https://lima.tas3.eu:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
 
 /* Called by: */
 int main(int argc, char** argv)
@@ -95,7 +95,7 @@ int main(int argc, char** argv)
     exit(1);
   }
   
-  res = zxid_simple(CONF, 0, 0x1fff);  /* 0xfff == full CGI automation */
+  res = zxid_simple(ZX_CONF, 0, 0x1fff);  /* 0xfff == full CGI automation */
   switch (res[0]) {
   default:
     ERR("Unknown zxid_simple() response(%s)", res);
