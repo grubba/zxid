@@ -17,7 +17,8 @@
 #include "platform.h"
 #include <string.h>
 #include <stdio.h>
-#include <sys/stat.h>  /* umask(2) */
+#include <sys/stat.h>     /* umask(2) */
+#include <openssl/evp.h>  /* EVP_PKEY */
 
 #include "errmac.h"
 #include "zxid.h"
