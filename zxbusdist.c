@@ -225,7 +225,7 @@ void stomp_msg_deliver(struct hi_thr* hit, struct hi_pdu* db_pdu)
   UNLOCK(hit->shf->ent_mut, "deliver");
 #if 0
   if (db_pdu->ad.delivb.acks)  /* still something pending? */
-    hi_todo_produce(hit, &db_pdu->qel, "deliv-bitch-again");
+    hi_todo_produce(hit, &db_pdu->qel, "deliv-bitch-again", 0);
   else
     hi_free_req(hit, db_pdu);
 #else
@@ -259,7 +259,7 @@ static void zxbus_sched_new_delivery(struct hi_thr* hit, struct hi_pdu* req, con
 
   //  | O_DIRECT  -- seems to give alignment problems, i.e. 22 EINVAL Invalid Argument
   pdu->ad.delivb.ack_fd = open_fd_from_path(O_CREAT | O_WRONLY | O_APPEND | O_SYNC, 0666, "sched deliv", 1, "%s" ZXBUS_CH_DIR "%.*s/.ack/%s", zxbus_path, dest_len, dest, sha1name);
-  hi_todo_produce(hit, &pdu->qel, "deliv-bitch");
+  hi_todo_produce(hit, &pdu->qel, "deliv-bitch", 0);
 }
 
 /*() Scan messages in channel directory and schedule pending ones for delivery.
@@ -301,7 +301,7 @@ void zxbus_sched_pending_delivery(struct hi_thr* hit, const char* dest)
       //  | O_DIRECT  -- seems to give alignment problems, i.e. 22 EINVAL Invalid Argument
       pdu->ad.delivb.ack_fd = open_fd_from_path(O_CREAT | O_RDWR | O_APPEND | O_SYNC, 0666, "pend", 1, "%s" ZXBUS_CH_DIR "%s/.ack/%s", zxbus_path, dest, de->d_name);
       zxbus_load_acks(hit, pdu, pdu->ad.delivb.ack_fd);
-      hi_todo_produce(hit, &pdu->qel, "pend-bitch");
+      hi_todo_produce(hit, &pdu->qel, "pend-bitch", 0);
     }
   closedir(dir);
 }

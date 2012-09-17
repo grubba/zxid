@@ -253,6 +253,9 @@ struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int p
   return io;
 }
 
+extern int debugpoll;
+#define DP(format,...) if (debugpoll) MB fprintf(stderr, "t%x %10s:%-3d %-16s p " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); fflush(stderr); ME
+
 /*() When poll marker is consumed from the todo, perform OS dependent epoll(2) or similar. */
 
 /* Called by:  hi_shuffle */
