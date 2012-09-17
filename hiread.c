@@ -336,7 +336,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 
 #if 0
 
-Mystery SSL error
+Mystery SSL error (in the end caused by errors left in SSL stack by private key reading)
 
 On LinuxMint 12 / Ubuntu / Debian
 tb784d6e0    hiios.c:201 hi_new_shuffler  	zx d OpenSSL header-version(1000005f) lib-version(OpenSSL 1.0.0e 6 Sep 2011) cflags(compiler: cc -fPIC -DOPENSSL_PIC -DZLIB -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -DL_ENDIAN -DTERMIO -O3 -Wa,--noexecstack -g -Wall) builton(built on: Thu Feb  9 00:57:05 UTC 2012) platform(platform: debian-i386) dir(OPENSSLDIR: "/usr/lib/ssl")

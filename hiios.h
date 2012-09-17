@@ -398,6 +398,7 @@ struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch, in
 struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int proto);
 struct hi_io* hi_open_tcp(struct hi_thr* hit, struct hi_host_spec* hs, int proto);
 struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind);
+void hi_del_fd(struct hi_thr* hit, int fd);
 int hi_verify_peer_ssl_credential(struct hi_thr* hit, struct hi_io* io, const char* eid);
 
 struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk);
@@ -406,7 +407,7 @@ void hi_send1(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
 void hi_send2(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1);
 void hi_send3(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp, int len0, char* d0, int len1, char* d1, int len2, char* d2);
 void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, char* fmt, ...);
-void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk);
+void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk, int from_poll);
 void hi_shuffle(struct hi_thr* hit, struct hiios* shf);
 
 /* Internal APIs */
@@ -420,6 +421,12 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk);
 void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk);
 int  hi_write(struct hi_thr* hit, struct hi_io* io);
 int  hi_read(struct hi_thr* hit, struct hi_io* io);
+void hi_accept(struct hi_thr* hit, struct hi_io* listener);
+void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd);
+void hi_poll(struct hi_thr* hit);
+
+struct hi_qel* hi_todo_consume_inlock(struct hiios* shf);
+struct hi_qel* hi_todo_consume(struct hi_thr* hit);
 
 void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp);
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* pdu);

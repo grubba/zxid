@@ -105,9 +105,9 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
   resp->qel.n = 0;
   ++io->n_to_write;
   ++io->n_pdu_out;
+  ++io->n_thr;           /* Account for anticipated call to hi_write() or hi_todo_produce() */
   if (!io->writing) {
     io->writing = write_now = 1;
-    ++io->n_thr;           /* Account for anticipated call to hi_write() */
     D("stash cur_io(%x)->n_close=%d, new_io(%x) n_close=%d", hit->cur_io?hit->cur_io->fd:-1, hit->cur_n_close, io->fd, io->n_close);
     read_io = hit->cur_io;
     hit->cur_io = io;
@@ -130,7 +130,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
       D("restored cur_io(%x)->n_close=%d", hit->cur_io?hit->cur_io->fd:-1, hit->cur_n_close);
     }
   } else {
-    hi_todo_produce(hit, &io->qel, "send0");
+    hi_todo_produce(hit, &io->qel, "send0", 0);
   }
 }
 
