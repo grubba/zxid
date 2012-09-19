@@ -30,7 +30,7 @@
 #include "errmac.h"
 #include "akbox.h"
 #include "hiios.h"
-#include <zx/zx.h>   /* for zx_report_openssl_error() */
+#include <zx/zx.h>   /* for zx_report_openssl_err() */
 
 extern int zx_debug;
 
@@ -472,16 +472,16 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
 	break; /* iterate write loop again */
       case SSL_ERROR_WANT_READ:
 	D("SSL EAGAIN READ fd(%x)", io->fd);
-	zx_report_openssl_error("SSL again read"); /* *** do we need this to clear error stack? */
+	zx_report_openssl_err("SSL again read"); /* *** do we need this to clear error stack? */
 	goto out; /* Comparable to EAGAIN. Should we remember which? */
       case SSL_ERROR_WANT_WRITE:
 	D("SSL EAGAIN WRITE fd(%x)", io->fd);
-	zx_report_openssl_error("SSL again write"); /* *** do we need this to clear error stack? */
+	zx_report_openssl_err("SSL again write"); /* *** do we need this to clear error stack? */
 	goto out; /* Comparable to EAGAIN. Should we remember which? */
       case SSL_ERROR_ZERO_RETURN: /* Probably close from other end */
       default:
 	ERR("SSL_write ret=%d err=%d", ret, err);
-	zx_report_openssl_error("SSL_write");
+	zx_report_openssl_err("SSL_write");
 	goto clear_writing_err;
       }
     } else

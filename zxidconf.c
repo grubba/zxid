@@ -146,11 +146,11 @@ EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
   
   p = unbase64_raw(p, e, buf, zx_std_index_64);
   if (!d2i_PrivateKey(typ, &pk, (const unsigned char**)&buf, p-buf) || !pk) {
-    zx_report_openssl_error("extract_private_key"); /* *** seems d2i can leave errors on stack */
+    zx_report_openssl_err("extract_private_key"); /* *** seems d2i can leave errors on stack */
     ERR("DER decoding of private key failed.\n%d", 0);
     return 0;
   }
-  zx_report_openssl_error("extract_private_key2"); /* *** seems d2i can leave errors on stack */
+  zx_report_openssl_err("extract_private_key2"); /* *** seems d2i can leave errors on stack */
   return pk; /* RSA* rsa = EVP_PKEY_get1_RSA(pk); */
 }
 

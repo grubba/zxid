@@ -209,7 +209,7 @@ int zxbus_login_ent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
     }
   } else {
     /* This could be ClientTLS */
-    if (!hi_verify_peer_ssl_credential(hit, io, login)) {
+    if (!hi_vfy_peer_ssl_cred(hit, io, login)) {
       D("UNLOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
       UNLOCK(hit->shf->ent_mut, "login-fail5");
       ERR("Login account(%s): no password supplied and no ClientTLS match", ent->eid);

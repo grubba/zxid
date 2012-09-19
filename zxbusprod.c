@@ -186,7 +186,7 @@ void zxbus_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
       sig = ZX_ALLOC(cf->ctx, len);
       if (RSA_public_encrypt(16, (unsigned char*)keybuf, (unsigned char*)sig, rsa_pkey, RSA_PKCS1_OAEP_PADDING) < 0) {
 	ERR("RSA enc fail %x", encflags);
-	zx_report_openssl_error("zxbus rsa enc");
+	zx_report_openssl_err("zxbus rsa enc");
 	return;
       }
       p = ZX_ALLOC(cf->ctx, 2 + len + zlen);
@@ -426,7 +426,7 @@ int zxbus_read_stomp(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* s
 	got = SSL_read(bu->ssl, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m));
 	if (got < 0) {
 	  ERR("recv(%x) bu_%p: (%d) %d %s", bu->fd, bu, got, errno, STRERROR(errno));
-	  zx_report_openssl_error("zxbus_read-ssl");
+	  zx_report_openssl_err("zxbus_read-ssl");
 	  return 0;
 	}
       } else {
@@ -832,7 +832,7 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     }
     if (!cf->ssl_ctx) {
       ERR("TLS/SSL connection to(%s) can not be made. SSL context initialization problem", bu->s);
-      zx_report_openssl_error("open_bus_url-ssl_ctx");
+      zx_report_openssl_err("open_bus_url-ssl_ctx");
       goto errout;
     } else {
       if (zx_debug>1) {
@@ -854,17 +854,17 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
       UNLOCK(cf->mx, "logenc wrln");
       if (!SSL_CTX_use_certificate(cf->ssl_ctx, cf->enc_cert)) {
 	ERR("TLS/SSL connection to(%s) can not be made. SSL certificate problem", bu->s);
-	zx_report_openssl_error("open_bus_url-cert");
+	zx_report_openssl_err("open_bus_url-cert");
 	goto errout;
       }
       if (!SSL_CTX_use_PrivateKey(cf->ssl_ctx, cf->enc_pkey)) {
 	ERR("TLS/SSL connection to(%s) can not be made. SSL private key problem", bu->s);
-	zx_report_openssl_error("open_bus_url-privkey");
+	zx_report_openssl_err("open_bus_url-privkey");
 	goto errout;
       }
       if (!SSL_CTX_check_private_key(cf->ssl_ctx)) {
 	ERR("TLS/SSL connection to(%s) can not be made. SSL certificate-private key consistency problem", bu->s);
-	zx_report_openssl_error("open_bus_url-chk-privkey");
+	zx_report_openssl_err("open_bus_url-chk-privkey");
 	goto errout;
       }
       /*SSL_CTX_add_extra_chain_cert(cf->ssl_ctx, ca_cert);*/
@@ -872,12 +872,12 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     bu->ssl = SSL_new(cf->ssl_ctx);
     if (!bu->ssl) {
       ERR("TLS/SSL connection to(%s) can not be made. SSL object initialization problem", bu->s);
-      zx_report_openssl_error("open_bus_url-ssl");
+      zx_report_openssl_err("open_bus_url-ssl");
       goto errout;
     }
     if (!SSL_set_fd(bu->ssl, bu->fd)) {
       ERR("TLS/SSL connection to(%s) can not be made. SSL fd(%x) initialization problem", bu->s, bu->fd);
-      zx_report_openssl_error("open_bus_url-set_fd");
+      zx_report_openssl_err("open_bus_url-set_fd");
       goto sslerrout;
     }
     
@@ -889,7 +889,7 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     case SSL_ERROR_WANT_WRITE:
     default:
       ERR("TLS/SSL connection to(%s) can not be made. SSL connect or handshake problem (%ld)", bu->s, vfy_err);
-      zx_report_openssl_error("open_bus_url-ssl_connect");
+      zx_report_openssl_err("open_bus_url-ssl_connect");
       write(bu->fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1);
       goto sslerrout;
     }
@@ -901,17 +901,17 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     case X509_V_OK: break;
     case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
       D("TLS/SSL connection to(%s) made, but certificate err. (%ld)", bu->s, vfy_err);
-      zx_report_openssl_error("open_bus_url-verify_res");
+      zx_report_openssl_err("open_bus_url-verify_res");
       break;
     default:
       ERR("TLS/SSL connection to(%s) made, but certificate not acceptable. (%ld)", bu->s, vfy_err);
-      zx_report_openssl_error("open_bus_url-verify_res");
+      zx_report_openssl_err("open_bus_url-verify_res");
       goto sslerrout;
     }
 
     if (!(peer_cert = SSL_get_peer_certificate(bu->ssl))) {
       ERR("TLS/SSL connection to(%s) made, but peer did not send certificate", bu->s);
-      zx_report_openssl_error("open_bus_url-peer_cert");
+      zx_report_openssl_err("open_bus_url-peer_cert");
       goto sslerrout;
     }
     meta = zxid_get_ent(cf, bu->eid);

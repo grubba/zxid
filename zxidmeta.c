@@ -192,6 +192,7 @@ zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
   } else if (r->EntitiesDescriptor) {
     if (!r->EntitiesDescriptor->EntityDescriptor)
       goto bad_md;
+    ee = 0;
     for (ed = r->EntitiesDescriptor->EntityDescriptor;
 	 ed;
 	 ed = (struct zx_md_EntityDescriptor_s*)ZX_NEXT(ed)) {

@@ -71,7 +71,7 @@ extern pthread_mutexattr_t MUTEXATTR_DECL;
  * the eid for that server.
  * return:: 0 on error, 1 on success */
 
-int hi_verify_peer_ssl_credential(struct hi_thr* hit, struct hi_io* io, const char* eid)
+int hi_vfy_peer_ssl_cred(struct hi_thr* hit, struct hi_io* io, const char* eid)
 {
 #ifdef USE_OPENSSL
   X509* peer_cert;
@@ -84,17 +84,17 @@ int hi_verify_peer_ssl_credential(struct hi_thr* hit, struct hi_io* io, const ch
   switch (vfy_err) {
   case X509_V_OK: break;
   case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
-    D("TLS/SSL connection to(%s) made, but certificate err. (%ld)", eid, vfy_err);
-    zx_report_openssl_error("open_bus_url-verify_res");
+    D("TLS/SSL connection to(%s) made, with certificate err that will be ignored. (%ld)", eid, vfy_err);
+    zx_report_openssl_err("open_bus_url-verify_res");
     break;
   default:
     ERR("TLS/SSL connection to(%s) made, but certificate not acceptable. (%ld)", eid, vfy_err);
-    zx_report_openssl_error("open_bus_url-verify_res");
+    zx_report_openssl_err("open_bus_url-verify_res");
     return 0;
   }
   if (!(peer_cert = SSL_get_peer_certificate(io->ssl))) {
     ERR("TLS/SSL connection to(%s) made, but peer did not send certificate", eid);
-    zx_report_openssl_error("peer_cert");
+    zx_report_openssl_err("peer_cert");
     return 0;
   }
   meta = zxid_get_ent(zxbus_cf, eid);
@@ -443,12 +443,12 @@ struct hi_io* hi_open_tcp(struct hi_thr* hit, struct hi_host_spec* hs, int proto
     io->ssl = SSL_new(hit->shf->ssl_ctx);
     if (!io->ssl) {
       ERR("TLS/SSL connect to(%s): SSL object initialization problem", hs->specstr);
-      zx_report_openssl_error("open_tcp-ssl");
+      zx_report_openssl_err("open_tcp-ssl");
       goto errout;
     }
     if (!SSL_set_fd(io->ssl, fd)) {
       ERR("TLS/SSL connect to(%s): SSL fd(%x) initialization problem", hs->specstr, fd);
-      zx_report_openssl_error("open_tcp-set_fd");
+      zx_report_openssl_err("open_tcp-set_fd");
       goto sslerrout;
     }
     
@@ -461,15 +461,15 @@ struct hi_io* hi_open_tcp(struct hi_thr* hit, struct hi_host_spec* hs, int proto
     case SSL_ERROR_WANT_WRITE: break;
     default:
       ERR("TLS/SSL connect to(%s): handshake problem (%d)", hs->specstr, err);
-      zx_report_openssl_error("open_tcp-ssl_connect");
+      zx_report_openssl_err("open_tcp-ssl_connect");
       write(fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1);
       goto sslerrout;
     }
-    if (!hi_verify_peer_ssl_credential(hit, io, hs->specstr))
+    if (!hi_vfy_peer_ssl_cred(hit, io, hs->specstr))
       goto sslerrout;
 #else
     SSL_set_connect_state(io->ssl);
-    /* *** how/when to hi_verify_peer_ssl_credential() ? */
+    /* *** how/when to hi_vfy_peer_ssl_cred() ? */
 #endif
   }
   return hi_add_fd(hit, io, fd, HI_TCP_C);
@@ -507,12 +507,12 @@ void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd)
     io->ssl = SSL_new(hit->shf->ssl_ctx);
     if (!io->ssl) {
       ERR("TLS/SSL accept: SSL object initialization problem %d", 0);
-      zx_report_openssl_error("accept-ssl");
+      zx_report_openssl_err("accept-ssl");
       goto errout;
     }
     if (!SSL_set_fd(io->ssl, fd)) {
       ERR("TLS/SSL accept: fd(%x) SSL initialization problem", fd);
-      zx_report_openssl_error("accept-set_fd");
+      zx_report_openssl_err("accept-set_fd");
       goto sslerrout;
     }
 
@@ -525,7 +525,7 @@ void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd)
     case SSL_ERROR_WANT_WRITE: break;
     default:
       ERR("TLS/SSL accept: connect or handshake problem (%d)", err);
-      zx_report_openssl_error("accept-ssl_accept");
+      zx_report_openssl_err("accept-ssl_accept");
       write(fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1);
       goto sslerrout;
     }

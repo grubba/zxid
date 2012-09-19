@@ -236,36 +236,41 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
    * task, in that case we want the second thread to skip write and
    * go process the read. */
   LOCK(io->qel.mut, "check-writing");
-  D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("LOCK io(%x)->qel.thr=%x r/w=%d/%d ev=%x", io->fd, io->qel.mut.thr, io->reading, io->writing, io->events);
   if (io->events & EPOLLOUT && !io->writing) {
-    io->writing = 1;
-    DP("OUT fd=%x n_iov=%d n_to_write=%d", io->fd, io->n_iov, io->n_to_write);
+    DP("OUT fd=%x n_iov=%d n_to_write=%d writing", io->fd, io->n_iov, io->n_to_write);
 
     /* Although in_write is checked in hi_write() as well, take the opportunity
      * to check it right here while we already hold the lock. */
     if (!io->in_write)  /* Need to prepare new iov? */
       hi_make_iov_nolock(io);
-    D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
-    UNLOCK(io->qel.mut, "check-writing-enter");
+    if (io->in_write) {
+      io->writing = 1;
+      D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+      UNLOCK(io->qel.mut, "check-writing-enter");
     
-    if (hi_write(hit, io))  { /* will clear io->writing */
-      LOCK(io->qel.mut, "n_thr-dec2");
-      D("IN_OUT: LOCK & UNLOCK io(%x)->qel.thr=%x closed", io->fd, io->qel.mut.thr);
-      --io->n_thr;            /* Remove read count, write count already removed by hi_write() */
-      ASSERT(io->n_thr >= 0);
-      ASSERT(hit->cur_io == io);
-      ASSERT(hit->cur_n_close == io->n_close);
-      UNLOCK(io->qel.mut, "n_thr-dec2");
-      hi_close(hit, io, "write-shortcircuit-close");  /* Close again, now that n_thr was reduced */
-      return; /* Write caused close, read will be futile */
+      if (hi_write(hit, io))  { /* will clear io->writing */
+	LOCK(io->qel.mut, "n_thr-dec2");
+	D("IN_OUT: LOCK & UNLOCK io(%x)->qel.thr=%x closed", io->fd, io->qel.mut.thr);
+	--io->n_thr;            /* Remove read count, write count already removed by hi_write() */
+	ASSERT(io->n_thr >= 0);
+	ASSERT(hit->cur_io == io);
+	ASSERT(hit->cur_n_close == io->n_close);
+	UNLOCK(io->qel.mut, "n_thr-dec2");
+	hi_close(hit, io, "write-shortcircuit-close");  /* Close again, now n_thr was reduced */
+	return; /* Write caused close, read will be futile */
+      } else {
+	LOCK(io->qel.mut, "check-reading");
+	D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+      }
+    } else {
+      --io->n_thr;              /* Remove write count as no write happened. */
     }
-    LOCK(io->qel.mut, "check-reading");
-    D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
-    io->events &= ~EPOLLOUT;  /* Clear poll flag in case we get read rescheduling */
   } else {
     --io->n_thr;              /* Remove write count as no write happened. */
-    ASSERT(io->n_thr >= 0);
   }
+  ASSERT(io->n_thr > 0);    /* Read count should still be there. */
+  io->events &= ~EPOLLOUT;  /* Clear poll flag in case we get read rescheduling */
   
   if (io->events & EPOLLIN) {
     /* A special problem with EAGAIN: read(2) is not guaranteed to arm edge triggered epoll(2)
@@ -331,7 +336,7 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf)
   hit->n = shf->threads;
   shf->threads = hit;
   UNLOCK(shf->todo_mut, "add-thread");
-  D("Start shuffling hit(%p) shf(%p)", hit, shf);
+  INFO("Start shuffling hit(%p) shf(%p)", hit, shf);
   while (1) {
     HI_SANITY(hit->shf, hit);
     qe = hi_todo_consume(hit);  /* Wakes up the heard to receive work. */

@@ -167,7 +167,7 @@ struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch, in
 #endif
   if (!shf->ssl_ctx) {
     ERR("SSL context initialization problem %d", 0);
-    zx_report_openssl_error("new_shuffler-ssl_ctx");
+    zx_report_openssl_err("new_shuffler-ssl_ctx");
     return 0;
   }
   if (zx_debug>1) {
@@ -193,17 +193,17 @@ struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch, in
     zxbus_cf->enc_pkey = zxid_read_private_key(zxbus_cf, "enc-nopw-cert.pem");
   if (!SSL_CTX_use_certificate(shf->ssl_ctx, zxbus_cf->enc_cert)) {
     ERR("SSL certificate problem %d", 0);
-    zx_report_openssl_error("new_shuffler-cert");
+    zx_report_openssl_err("new_shuffler-cert");
     return 0;
   }
   if (!SSL_CTX_use_PrivateKey(shf->ssl_ctx, zxbus_cf->enc_pkey)) {
     ERR("SSL private key problem %d", 0);
-    zx_report_openssl_error("new_shuffler-privkey");
+    zx_report_openssl_err("new_shuffler-privkey");
     return 0;
   }
   if (!SSL_CTX_check_private_key(shf->ssl_ctx)) {
     ERR("SSL certificate-private key consistency problem %d", 0);
-    zx_report_openssl_error("new_shuffler-chk-privkey");
+    zx_report_openssl_err("new_shuffler-chk-privkey");
     return 0;
   }
 #endif

@@ -434,7 +434,7 @@ int main(int argc, char** argv, char** env)
       seslen = RSA_private_decrypt(seslen, (unsigned char*)buf+2, (unsigned char*)ses, rsa, RSA_PKCS1_OAEP_PADDING);
       if (seslen < 0) {
 	ERR("RSA dec fail %x", seslen);
-	zx_report_openssl_error("zxlog rsa enc");
+	zx_report_openssl_err("zxlog rsa enc");
 	break;
       }
       D("decrypted session key len(%d)", seslen);

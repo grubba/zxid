@@ -105,7 +105,7 @@ char* zx_raw_digest2(struct zx_ctx* c, char* md, char* const algo, int len, cons
   return md;
 
  sslerr:
-  zx_report_openssl_error(where);
+  zx_report_openssl_err(where);
   EVP_MD_CTX_cleanup(&ctx);
   return 0;
 }
@@ -252,7 +252,7 @@ struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, st
   return out;
 
  sslerr:
-  zx_report_openssl_error(where);
+  zx_report_openssl_err(where);
  clean:
   EVP_CIPHER_CTX_cleanup(&ctx);
   return 0;
@@ -296,7 +296,7 @@ struct zx_str* zx_rsa_pub_enc(struct zx_ctx* c, struct zx_str* plain, RSA* rsa_p
   ret = RSA_public_encrypt(plain->len, (unsigned char*)plain->s, (unsigned char*)ciphered->s, rsa_pkey, pad);
   if (siz != ret) {
     D("RSA pub enc wrong ret=%d siz=%d\n",ret,siz);
-    zx_report_openssl_error("zx_pub_encrypt_rsa fail (${ret})");
+    zx_report_openssl_err("zx_pub_encrypt_rsa fail (${ret})");
     return 0;
   }
   ASSERTOP(ret, <=, siz, ret);
@@ -319,7 +319,7 @@ struct zx_str* zx_rsa_pub_dec(struct zx_ctx* c, struct zx_str* ciphered, RSA* rs
   ret = RSA_public_decrypt(ciphered->len, (unsigned char*)ciphered->s, (unsigned char*)plain->s, rsa_pkey, pad);
   if (ret == -1) {
     D("RSA public decrypt failed ret=%d len_cipher_data=%d",ret,ciphered->len);
-    zx_report_openssl_error("zx_public_decrypt_rsa fail");
+    zx_report_openssl_err("zx_public_decrypt_rsa fail");
     return 0;
   }
   ASSERTOP(ret, <=, siz, ret);
@@ -348,7 +348,7 @@ struct zx_str* zx_rsa_priv_dec(struct zx_ctx* c, struct zx_str* ciphered, RSA* r
   ret = RSA_private_decrypt(ciphered->len, (unsigned char*)ciphered->s, (unsigned char*)plain->s, rsa_pkey, pad);
   if (ret == -1) {
     D("RSA private decrypt failed ret=%d len_cipher_data=%d",ret,ciphered->len);
-    zx_report_openssl_error("zx_priv_decrypt_rsa fail");
+    zx_report_openssl_err("zx_priv_decrypt_rsa fail");
     return 0;
   }
   ASSERTOP(ret, <=, siz, ret);
@@ -371,7 +371,7 @@ struct zx_str* zx_rsa_priv_enc(struct zx_ctx* c, struct zx_str* plain, RSA* rsa_
   ret = RSA_private_encrypt(plain->len, (unsigned char*)plain->s, (unsigned char*)ciphered->s, rsa_pkey, pad);
   if (ret == -1) {
     D("RSA private encrypt failed ret=%d len_plain=%d", ret, plain->len);
-    zx_report_openssl_error("zx_priv_encrypt_rsa fail");
+    zx_report_openssl_err("zx_priv_encrypt_rsa fail");
     return 0;
   }
   ASSERTOP(ret, <=, siz, ret);
@@ -391,13 +391,13 @@ RSA* zx_get_rsa_pub_from_cert(X509* cert, char* logkey)
   evp_pkey = X509_get_pubkey(cert);
   if (!evp_pkey) {
     ERR("RSA enc: failed to get public key from certificate (perhaps you have not supplied any certificate, or it is corrupt or of wrong type) %s", logkey);
-    zx_report_openssl_error("zx_get_rsa_pub_from_cert");
+    zx_report_openssl_err("zx_get_rsa_pub_from_cert");
     return 0;
   }
   rsa_pkey = EVP_PKEY_get1_RSA(evp_pkey);
   if (!rsa_pkey) {
     ERR("RSA enc: failed to extract RSA get public key from certificate (perhaps you have not supplied any certificate, or it is corrupt or of wrong type) %s", logkey);
-    zx_report_openssl_error("zx_get_rsa_pub_from_cert");
+    zx_report_openssl_err("zx_get_rsa_pub_from_cert");
     return 0;
   }
   return rsa_pkey;
@@ -624,7 +624,7 @@ badurl:
   DD("keygen signing x509ss %s", lk);
   if (!(X509_sign(x509ss, pkey, EVP_md5()))) {
     ERR("Failed to sign x509ss %s", lk);
-    zx_report_openssl_error("X509_sign");
+    zx_report_openssl_err("X509_sign");
     return 0;
   }
   DD("keygen x509ss ready %s", lk);
@@ -637,7 +637,7 @@ badurl:
   DD("write_csr %s", lk);
   if (!PEM_write_bio_X509_REQ(wbio_csr, req)) {
     ERR("write_csr %s", lk);
-    zx_report_openssl_error("write_csr");
+    zx_report_openssl_err("write_csr");
     return 0;
   }
   len = BIO_get_mem_data(wbio_csr, &p);
@@ -655,7 +655,7 @@ badurl:
   DD("write_cert %s", lk);
   if (!PEM_write_bio_X509(wbio_cert, x509ss)) {
     ERR("write_cert %s", lk);
-    zx_report_openssl_error("write_cert");
+    zx_report_openssl_err("write_cert");
     return 0;
   }
   len = BIO_get_mem_data(wbio_cert, &p);
@@ -664,7 +664,7 @@ badurl:
   DD("write_private_key %s", lk);
   if (!PEM_write_bio_PrivateKey(wbio_pkey, pkey, 0,0,0,0,0)) {
     ERR("write_private_key %s", lk);
-    zx_report_openssl_error("write_private_key");
+    zx_report_openssl_err("write_private_key");
     return 0;
   }
   lenq = BIO_get_mem_data(wbio_pkey, &q);
@@ -702,7 +702,7 @@ void zx_print_X509(FILE* fp, X509* cert)
   BIO* wbio_cert = BIO_new(BIO_s_mem());
   if (!PEM_write_bio_X509(wbio_cert, peer_cert)) {
     ERR("write_cert %p", peer_cert);
-    zx_report_openssl_error("write_cert");
+    zx_report_openssl_err("write_cert");
     return;
   }
   len = BIO_get_mem_data(wbio_cert, &p);
@@ -883,7 +883,7 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
   DD("keygen signing x509ss %s", lk);
   if (!(X509_sign(x509ss, sign_pkey, EVP_md5()))) {
     ERR("Failed to sign x509ss %s", lk);
-    zx_report_openssl_error("X509_sign");
+    zx_report_openssl_err("X509_sign");
     return 0;
   }
   DD("keygen x509ss ready %s", lk);
@@ -894,7 +894,7 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
   DD("write_cert %s", lk);
   if (!PEM_write_bio_X509(wbio_cert, x509ss)) {
     ERR("write_cert %s", lk);
-    zx_report_openssl_error("write_cert");
+    zx_report_openssl_err("write_cert");
     return 0;
   }
   len = BIO_get_mem_data(wbio_cert, &p);

@@ -161,7 +161,7 @@ void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
       sig = ZX_ALLOC(cf->ctx, len);
       if (RSA_public_encrypt(16, (unsigned char*)keybuf, (unsigned char*)sig, rsa_pkey, RSA_PKCS1_OAEP_PADDING) < 0) {
 	ERR("RSA enc fail %x", encflags);
-	zx_report_openssl_error("zxlog rsa enc");
+	zx_report_openssl_err("zxlog rsa enc");
 	return;
       }
       p = ZX_ALLOC(cf->ctx, 2 + len + zlen);

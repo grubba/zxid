@@ -271,7 +271,7 @@ struct zx_el_tok {
 
 int   zx_date_time_to_secs(const char* dt);
 int   write2_or_append_lock_c_path(const char* c_path, int len1, const char* data1, int len2, const char* data2, const char* which, int seeky, int flag);
-int   zx_report_openssl_error(const char* logkey);
+int   zx_report_openssl_err(const char* logkey);
 
 #if 0
 void  zx_fix_any_elem_dec(struct zx_ctx* c, struct zx_elem_s* x, const char* nam, int namlen);
