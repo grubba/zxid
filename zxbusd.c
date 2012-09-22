@@ -540,7 +540,10 @@ static struct hi_io* serial_init(struct hi_thr* hit, struct hi_host_spec* hs)
   if (verbose)
     log_port_info(fd, tty, "after");
   nonblock(fd);
-  return hi_add_fd(hit, io, fd, HI_TCP_C);
+  LOCK(io->qel.mut, "serial_init");
+  hi_add_fd(hit, io, fd, HI_TCP_C);
+  UNLOCK(io->qel.mut, "serial_init");
+  return io;
 #else
   return 0;
 #endif

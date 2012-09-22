@@ -305,7 +305,11 @@ void hi_poll(struct hi_thr* hit)
       io->events = hit->shf->evs[i].revents;
       /* Poll says work is possible: sched wk for io if not under wk yet, or cur_pdu needs wk. */
       /*if (!io->cur_pdu || io->cur_pdu->need)   *** cur_pdu is always set */
-      hi_todo_produce(hit, &io->qel, "poll", 1);  /* *** should the todo_mut lock be batched instead? */
+      if (io->fd & 0x80000000) {
+	D("poll returned a closed fd(%x). Ignoring. n_thr=%d r/w=%d/%d ev=%x intodo=%x", io->fd, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
+      } else {
+	hi_todo_produce(hit, &io->qel, "poll", 1); /* *** should the todo_mut lock be batched? */
+      }
     }
   }
 #endif
@@ -315,12 +319,15 @@ void hi_poll(struct hi_thr* hit)
   UNLOCK(hit->shf->todo_mut, "todo_poll");
 }
 
-/*() Add file descriptor to poll */
+/*() Add file descriptor to poll
+ * locking:: must be called inside io->qel.mut */
 
 /* Called by:  hi_accept_book, hi_open_tcp, serial_init */
 struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
 {
   ASSERTOP(fd, <, hit->shf->max_ios, fd);
+  ASSERTOP(io->n_thr, ==, 0, io->n_thr);
+  ++io->n_thr;  /* May be returned by poll at any time, thus there is "virtual thread" */
   
 #ifdef LINUX
   {
@@ -362,7 +369,6 @@ struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
   /* memset(io, 0, sizeof(struct hi_io)); *** MUST NOT clear as there are important fields like cur_pdu and lock initializations already set. All memory was zeroed in hi_new_shuff(). After that all changes should be field by field. */
   ASSERTOP(io->writing, ==, 0, io->writing);
   ASSERTOP(io->reading, ==, 0, io->reading);
-  ASSERTOP(io->n_thr, ==, 0, io->n_thr);
   ASSERTOP(io->n_to_write, ==, 0, io->n_to_write);
   ASSERTOP(io->in_write, ==, 0, io->in_write);
   ASSERTOP(io->to_write_consume, ==, 0, io->to_write_consume);
@@ -379,16 +385,16 @@ struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
   return io;
 }
 
-/*() Remove files descriptor from poll */
+/*() Remove files descriptor from poll. */
 
+/* Called by:  hi_close */
 void hi_del_fd(struct hi_thr* hit, int fd)
 {
   ASSERTOP(fd, <, hit->shf->max_ios, fd);
-  
 #ifdef LINUX
   {
-    if (epoll_ctl(hit->shf->ep, EPOLL_CTL_DEL, fd, 0)) {
-      ERR("Unable to epoll_ctl(%d): %d %s", fd, errno, STRERROR(errno));
+    if (epoll_ctl(hit->shf->ep, EPOLL_CTL_DEL, fd&0x7fffffff, 0)) {
+      ERR("Unable to epoll_ctl(%x): %d %s", fd, errno, STRERROR(errno));
       /* N.B. Even if it fails, do not close the fd as we depend on that as synchronization. */
     }
   }
@@ -396,10 +402,10 @@ void hi_del_fd(struct hi_thr* hit, int fd)
 #ifdef SUNOS
   {
     struct pollfd pfd;
-    pfd.fd = fd;
+    pfd.fd = fd&0x7fffffff;
     pfd.events = 0 /*POLLIN | POLLOUT | POLLERR | POLLHUP*/; /* *** not sure if this is right */
     if (write(hit->shf->ep, &pfd, sizeof(pfd)) == -1) {
-      ERR("Unable to write to /dev/poll fd(%d): %d %s", fd, errno, STRERROR(errno));
+      ERR("Unable to write to /dev/poll fd(%x): %d %s", fd, errno, STRERROR(errno));
     }
   }
 #endif
@@ -472,7 +478,10 @@ struct hi_io* hi_open_tcp(struct hi_thr* hit, struct hi_host_spec* hs, int proto
     /* *** how/when to hi_vfy_peer_ssl_cred() ? */
 #endif
   }
-  return hi_add_fd(hit, io, fd, HI_TCP_C);
+  LOCK(io->qel.mut, "hi_open_tcp");
+  hi_add_fd(hit, io, fd, HI_TCP_C);
+  UNLOCK(io->qel.mut, "hi_open_tcp");
+  return io;
  sslerrout:
   if (io->ssl) {
     SSL_free(io->ssl);
@@ -480,7 +489,10 @@ struct hi_io* hi_open_tcp(struct hi_thr* hit, struct hi_host_spec* hs, int proto
   }
 #else
   io->ssl = 0;
-  return hi_add_fd(hit, io, fd, HI_TCP_C);
+  LOCK(io->qel.mut, "hi_open_tcp-2");
+  hi_add_fd(hit, io, fd, HI_TCP_C);
+  UNLOCK(io->qel.mut, "hi_open_tcp-2");
+  return io;
 #endif
  errout:
   close(fd);
@@ -543,16 +555,17 @@ void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd)
   LOCK(io->qel.mut, "hi_accept");
   D("ACCEPT LK&UNLK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
   n_thr = io->n_thr;
-  UNLOCK(io->qel.mut, "hi_accept");
   if (n_thr) {
     D("old fd(%x) n_thr=%d still going", fd, n_thr);
     NEVERNEVER("NOT POSSIBLE due to half close n_thr=%d", n_thr);
     io->qel.kind = HI_HALF_ACCEPT;
+    UNLOCK(io->qel.mut, "hi_accept-fail");
     hi_todo_produce(hit, &io->qel, "accept", 0);  /* schedule a new try */
     return;
   }
 
   nio = hi_add_fd(hit, io, fd, HI_TCP_S);
+  UNLOCK(io->qel.mut, "hi_accept");
   if (!nio || nio != io) {
     ERR("Adding fd failed: io=%p nio=%p", io, nio);
     goto sslerrout;

@@ -73,7 +73,7 @@ extern pthread_mutexattr_t MUTEXATTR_DECL;
 void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
 {
   int fd = io->fd;
-  D("%s: closing(%x)", lk, fd);
+  D("%s: closing(%x) n_close=%d n_thr=%d", lk, fd, io->n_close, io->n_thr);
 #if 0
   /* *** should never happen because io had to be consumed before hi_in_out() was called.
    * err, the io could have been consumed twice: once for reading and once for writing.
@@ -116,7 +116,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   /* Race between produce and close: see hi_to_do_produce() */
 
   LOCK(io->qel.mut, "hi_close");
-  D("LOCK io(%x)->qel.thr=%x n_close=%d", fd, io->qel.mut.thr, io->n_close);
+  D("LOCK io(%x)->qel.thr=%x n_close=%d n_thr=%d", fd, io->qel.mut.thr, io->n_close, io->n_thr);
   ASSERT(io->n_thr >= 0);
   ASSERT(hit->cur_io == io);
   if (hit->cur_n_close != io->n_close) {
@@ -127,16 +127,21 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
     return;
   }
 
-  io->fd |= 0x80000000;  /* mark as free */
-  hi_del_fd(hit, fd);    /* stop poll from returning this fd */
-  
+  if (fd&0x80000000) {
+    D("second close(%x) n_close=%d n_thr=%d", fd, io->n_close, io->n_thr);
+  } else {
+    hi_del_fd(hit, fd);    /* stop poll from returning this fd */
+    io->fd |= 0x80000000;  /* mark as closed */
+    ASSERTOP(io->n_thr, >, 0, io->n_thr);
+    --io->n_thr;  /* Will not be returned by poll any more, thus remove "virtual thread" */
+  }
   ASSERT(io->qel.intodo != HI_INTODO_SHF_FREE); /* *** HI_INTODO_INTODO is a possibility if other thread might still be about to write to the connection. */
   
   /* N.B. n_thr manipulations are done before calling hi_close() */
   if (io->n_thr) {           /* Some threads are still tinkering with this fd: delay closing */
     if (shutdown(fd & 0x7ffffff, SHUT_RD))
       ERR("shutdown %d %s", errno, STRERROR(errno));
-    D("%s: close(%x) waiting n_thr=%d intodo=%x", lk, fd, io->n_thr, io->qel.intodo);
+    D("%s: close(%x) waiting n_thr=%d n_close=%d intodo=%x", lk, fd, io->n_thr, io->n_close, io->qel.intodo);
     D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
     hit->cur_io = 0;
     UNLOCK(io->qel.mut, "hi_close");
@@ -156,7 +161,8 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
 void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk)
 {  
   struct hi_pdu* pdu;
-  D("%s: close final(%x)", lk, io->fd);
+  D("%s: close final(%x) n_close=%d n_thr=%d", lk, io->fd, io->n_close, io->n_thr);
+  ASSERTOP(io->n_thr, ==, 0, io->n_thr);
   for (pdu = io->reqs; pdu; pdu = pdu->n)
     hi_free_req(hit, pdu);
   io->reqs = 0;
@@ -215,8 +221,8 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
   int reading;
   DP("in_out(%x) events=0x%x", io->fd, io->events);
 #ifdef SUNOS
-#define EPOLLHUP (POLLHUP)
-#define EPOLLERR (POLLERR)
+#define EPOLLHUP (POLLHUP)  /* 0x010 */
+#define EPOLLERR (POLLERR)  /* 0x008 */
 #define EPOLLOUT (POLLOUT)  /* 0x004 */
 #define EPOLLIN  (POLLIN)   /* 0x001 */
 #endif
@@ -311,7 +317,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
       hit->cur_io = 0;
       D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
       UNLOCK(io->qel.mut, "n_thr-dec4");
-      D("resched(%x) to avoid missing polled read n_thr=%d", io->fd, io->n_thr);
+      D("resched(%x) to avoid miss poll read n_thr=%d", io->fd, io->n_thr);
       hi_todo_produce(hit, &io->qel, "reread", 0);  /* try again so read poll is not lost */
     }
   } else {

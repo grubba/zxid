@@ -108,7 +108,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
   ++io->n_thr;           /* Account for anticipated call to hi_write() or hi_todo_produce() */
   if (!io->writing) {
     io->writing = write_now = 1;
-    D("stash cur_io(%x)->n_close=%d, new_io(%x) n_close=%d", hit->cur_io?hit->cur_io->fd:-1, hit->cur_n_close, io->fd, io->n_close);
+    D("stash cur_io(%x)->n_close=%d, io(%x) n_close=%d", hit->cur_io?hit->cur_io->fd:-1, hit->cur_n_close, io->fd, io->n_close);
     read_io = hit->cur_io;
     hit->cur_io = io;
     hit->cur_n_close = io->n_close;

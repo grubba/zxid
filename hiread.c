@@ -103,7 +103,7 @@ static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
   io->cur_pdu = hi_pdu_alloc(hit, "cur_pdu-ckm");
   if (!io->cur_pdu) {  hi_dump(hit->shf); NEVERNEVER("*** out of pdus in bad place %d", n); }
   io->cur_pdu->need = minlen;
-  ++io->n_pdu_in;
+  ++io->n_pdu_in;   /* stats */
   
   D("Checkmore(%x) mn=%d n=%d req_%p->need=%d", io->fd, minlen, n, req, req->need);
   ASSERT(minlen > 0);  /* If this is ever zero it will prevent hi_poll() from producing. */
@@ -254,7 +254,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
       case HI_NOERR: /* 0: In this case io->reading has been cleared at hi_add_req() due to
 		      * completely decoded PDU. It may have been acquired by other thread. */
 	LOCK(io->qel.mut, "reset-reading");
-	D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+	D("LOCK io(%x)->qel.thr=%x n_close=%d n_thr=%d", io->fd, io->qel.mut.thr, io->n_close, io->n_thr);
 	if (io->reading) {
 	  D("Somebody else already reading n_thr=%d", io->n_thr);
 	  --io->n_thr;              /* Remove read count. */
@@ -328,7 +328,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
   D("not_reading-close(%x) n_thr=%d r/w=%d/%d ev=%d", io->fd, io->n_thr, io->reading, io->writing, io->events);
   ASSERT(io->n_thr >= 0);
   UNLOCK(io->qel.mut, "not_reading-close");
-  hi_close(hit, io, "hi_read-not_reading");  /* will clear hit->cur_io */
+  hi_close(hit, io, "hi_read-no_reading");  /* will clear hit->cur_io */
   return 1;
 }
 
