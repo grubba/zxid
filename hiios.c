@@ -57,109 +57,13 @@ extern int zx_debug;
 extern pthread_mutexattr_t MUTEXATTR_DECL;
 #endif
 
-/*() Close an I/O object.
- * This involves special cleanup of todo queue to prevent any further
- * work. However, there might be threads already at work with
- * the connection. It will not be safe to reuse the io object until
- * they are done. If fd is not opened or accepted again, then presumably
- * such threads will sooner or later terminate due to I/O errors.
- * However, the next accept(2) is almost guaranteed to reuse the
- * fd number. Thus we need a reference count of sorts on the io
- * object to understand when a thread has let go of it. Upon accept
- * with same number, we are bound to wait, postpone any reads,
- * until the old threads have let go. */
-
-/* Called by:  hi_in_out x2, hi_read x2, hi_write */
-void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
-{
-  int fd = io->fd;
-  D("%s: closing(%x) n_close=%d n_thr=%d", lk, fd, io->n_close, io->n_thr);
 #if 0
-  /* *** should never happen because io had to be consumed before hi_in_out() was called.
-   * err, the io could have been consumed twice: once for reading and once for writing.
-   * Thus it may be optimal to clean up the todo queue here, but this still will
-   * not stop the other thread that already consumed. */
-  LOCK(hit->shf->todo_mut, "hi_close");
-  if (io->qel.intodo == HI_INTODO_INTODO) {
-    if (hit->shf->todo_consume == &io->qel) {
-      hi_todo_consume_inlock(hit->shf);
-    } else {  /* Tricky consume from middle of queue. O(n) to queue size :-( */
-      /* Since io->intodo is set, io must be in the queue. If it's not, following loop
-       * will crash with NULL next pointer in the end. Or be infinite loop if a
-       * loop of next pointers was somehow created. Both are programming errors. */
-      for (qe = hit->shf->todo_consume; 1; qe = qe->n)
-	if (qe->n == &io->qel) {
-	  qe->n = io->qel.n;
-	  break; /* only way out */
-	}
-      if (!qe->n)
-	hit->shf->todo_produce = qe;
-      qe->n = 0;
-      qe->intodo = HI_INTODO_SHF_FREE;
-      --hit->shf->n_todo;
-    }
-  }
-  UNLOCK(hit->shf->todo_mut, "hi_close");
-#endif
-#if 0
-  /* Expensive assert. Consider disabling. Not even true, because it is possible
-   * to consume twice before close, so the other thread could already be causing
-   * intodo situation. */
-  LOCK(hit->shf->todo_mut, "hi_close");
-  D("%s: close LK&UNLK todo_mut.thr=%x", lk, hit->shf->todo_mut.thr);
-  ASSERT(!io->qel.intodo == HI_INTODO_INTODO);
-  UNLOCK(hit->shf->todo_mut, "hi_close");
-#endif
-  /* *** deal with freeing associated PDUs. If fail, consider shutdown(2) of socket
-   *     and reenqueue to todo list so freeing can be tried again later. */
-  
-  /* Race between produce and close: see hi_to_do_produce() */
-
-  LOCK(io->qel.mut, "hi_close");
-  D("LOCK io(%x)->qel.thr=%x n_close=%d n_thr=%d", fd, io->qel.mut.thr, io->n_close, io->n_thr);
-  ASSERT(io->n_thr >= 0);
-  ASSERT(hit->cur_io == io);
-  if (hit->cur_n_close != io->n_close) {
-    D("%s: already closed(%x) cur_n_close=%d != n_close=%d", lk, fd, hit->cur_n_close,io->n_close);
-    D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
-    hit->cur_io = 0;
-    UNLOCK(io->qel.mut, "hi_close-already");
-    return;
-  }
-
-  if (fd&0x80000000) {
-    D("second close(%x) n_close=%d n_thr=%d", fd, io->n_close, io->n_thr);
-  } else {
-    hi_del_fd(hit, fd);    /* stop poll from returning this fd */
-    io->fd |= 0x80000000;  /* mark as closed */
-    ASSERTOP(io->n_thr, >, 0, io->n_thr);
-    --io->n_thr;  /* Will not be returned by poll any more, thus remove "virtual thread" */
-  }
-  ASSERT(io->qel.intodo != HI_INTODO_SHF_FREE); /* *** HI_INTODO_INTODO is a possibility if other thread might still be about to write to the connection. */
-  
-  /* N.B. n_thr manipulations are done before calling hi_close() */
-  if (io->n_thr) {           /* Some threads are still tinkering with this fd: delay closing */
-    if (shutdown(fd & 0x7ffffff, SHUT_RD))
-      ERR("shutdown %d %s", errno, STRERROR(errno));
-    D("%s: close(%x) waiting n_thr=%d n_close=%d intodo=%x", lk, fd, io->n_thr, io->n_close, io->qel.intodo);
-    D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
-    hit->cur_io = 0;
-    UNLOCK(io->qel.mut, "hi_close");
-    return;
-  }
-  
-  hi_close_final(hit, io, lk);
-  /* Must let go of the lock only after close so no read can creep in. */
-  D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
-  UNLOCK(io->qel.mut, "hi_close");
-}
-
-/*() Finalize close, actually closing the fd.
+/*(-) Finalize close, actually closing the fd.
  * locking:: must be called with io->qel.mut held, typically after
  *     checking that io->n_close == hit->cur_n_close.  */ 
 
-/* Called by:  hi_close, hi_todo_produce */
-void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk)
+/* Called by:  hi_close */
+static void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk)
 {  
   struct hi_pdu* pdu;
   D("%s: close final(%x) n_close=%d n_thr=%d", lk, io->fd, io->n_close, io->n_thr);
@@ -207,6 +111,149 @@ void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk)
   ++io->n_close;
   hit->cur_io = 0;
   D("%s: closed(%x) n_close=%d", lk, io->fd, io->n_close);
+}
+#endif
+
+/*() Close an I/O object.
+ * The close may be called in response to I/O errors or for controlled
+ * disconnect. At the time of first calling close, any number of
+ * threads (see io->n_thr) may be able to access the io object and the
+ * io object may still be in todo queue or it may be returned by poll.
+ * We need to wait for all these possibilities to flush out.
+ *
+ * We start by deregistering the io from poll and half closing it
+ * so that no more reads are possible (write to send e.g. TLS disconnect
+ * is still possible). As the different threads encounter the io
+ * object unusable, they will decrement io->n_thr and call hi_close().
+ *
+ * It is important to not fully close(2) the socket as doing so
+ * would allow an accept(2) that would almost certainly use the
+ * same fd number. This would cause the still pending threads
+ * to act on the new connection, which would be a serious error.
+ *
+ * Once the io->n_thr reaches 0, the only possible source of activity
+ * for the fd is that it is returned by poll. Thus we start an end game,
+ * indicated by io->n_thr == HI_IO_N_THR_END_GAME,
+ * where we put to todo queue a poll and then the io object. This
+ * way, if the poll were about to return the io, then it is forced
+ * to do so. After poll, the io is consumed from todo the one last
+ * time and we can safely close(2) the fd.
+ *
+ * By the time we are really ready to close the io, all associated PDUs
+ * have been freed by the respective threads (usually through write
+ * of response freeing both response and request).
+ */
+
+/* Called by:  hi_in_out x2, hi_read x2, hi_write */
+void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
+{
+  struct hi_pdu* pdu;
+  int fd = io->fd;
+  DD("%s: closing(%x) n_close=%d n_thr=%d", lk, fd, io->n_close, io->n_thr);
+  LOCK(io->qel.mut, "hi_close");
+  D("LOCK io(%x)->qel.thr=%x n_close=%d n_thr=%d", fd, io->qel.mut.thr, io->n_close, io->n_thr);
+  
+  if (fd&0x80000000) {
+    D("%s: 2nd close(%x) n_close=%d n_thr=%d", lk, fd, io->n_close, io->n_thr);
+  } else {
+    D("%s: 1st close(%x) n_close=%d n_thr=%d", lk, fd, io->n_close, io->n_thr);
+    if (shutdown(fd, SHUT_RD))
+      ERR("%s: shutdown(%x) %d %s", lk, fd, errno, STRERROR(errno));
+    hi_del_fd(hit, fd);    /* stop poll from returning this fd */
+    io->fd |= 0x80000000;  /* mark as closed */
+    ASSERTOP(io->n_thr, >, 0, io->n_thr);
+    --io->n_thr;  /* Will not be returned by poll any more, thus remove poll "virtual thread" */
+  }
+
+  ASSERT(io->qel.intodo != HI_INTODO_SHF_FREE);
+  ASSERT(hit->cur_io == io);
+  if (hit->cur_n_close != io->n_close) {
+    ERR("%s: already closed(%x) cur_n_close=%d != n_close=%d",lk,fd,hit->cur_n_close,io->n_close);
+    hit->cur_io = 0;
+    D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+    UNLOCK(io->qel.mut, "hi_close-already");
+    return;
+  }
+  
+  /* N.B. n_thr manipulations should be done before calling hi_close() */
+  if (io->n_thr > 0) {
+    D("%s: close-wait(%x) n_thr=%d n_close=%d intodo=%x", lk, fd, io->n_thr, io->n_close, io->qel.intodo);
+    hit->cur_io = 0;
+    D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+    UNLOCK(io->qel.mut, "hi_close-wait");
+    return;
+  }
+  if (io->n_thr == 0) {
+    io->n_thr = HI_IO_N_THR_END_POLL;
+    D("%s: close-poll(%x) n_thr=%d n_close=%d intodo=%x", lk, fd, io->n_thr, io->n_close, io->qel.intodo);
+    hit->cur_io = 0;
+    D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+    UNLOCK(io->qel.mut, "hi_close-poll");
+    hi_todo_produce(hit, &io->qel, "close-poll", 0); /* Trigger 1st poll, see hi_todo_consume() */
+    return;
+  }
+  if (io->n_thr != HI_IO_N_THR_END_GAME) {
+    ERR("%s: close-n_thr(%x) n_thr=%d n_close=%d intodo=%x", lk, fd, io->n_thr, io->n_close, io->qel.intodo);
+    ASSERTOP(io->n_thr, ==, HI_IO_N_THR_END_GAME, io->n_thr);
+    hit->cur_io = 0;
+    D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+    UNLOCK(io->qel.mut, "hi_close-n_thr");
+    return;
+  }
+  
+  /* Now we are ready to really close */
+  /* *** hi_close_final(hit, io, lk);*/
+
+  D("%s: close-final(%x) n_close=%d n_thr=%d", lk, io->fd, io->n_close, io->n_thr);
+
+  for (pdu = io->reqs; pdu; pdu = pdu->n)
+    hi_free_req(hit, pdu);
+  io->reqs = 0;
+  for (pdu = io->pending; pdu; pdu = pdu->n)
+    hi_free_req(hit, pdu);
+  io->pending = 0;
+  
+  if (io->cur_pdu) {
+    hi_free_req(hit, io->cur_pdu);
+    io->cur_pdu = hi_pdu_alloc(hit, "cur_pdu-clo");  /* *** Could we recycle the PDU without freeing? */
+  }
+#ifdef ENA_S5066
+  void sis_clean(struct hi_io* io);
+  sis_clean(io);
+#endif
+  
+  /* Clear the association with entity as late as possible so ACKs may
+   * get a chance of being processed and written. */
+  if (io->ent) {
+    if (io->ent->io == io) {
+      io->ent->io = 0;
+      INFO("Dissociate ent_%p (%s) from io(%x)", io->ent, io->ent->eid, io->fd);
+    } else {
+      ERR("io(%x)->ent and ent->io(%x) are different", io->fd, io->ent->io->fd);
+    }
+    io->ent = 0;
+  } else {
+    ERR("io(%x) has no entity associated", io->fd);
+  }
+  
+#ifdef USE_OPENSSL
+  if (io->ssl) {
+    SSL_shutdown(io->ssl);
+    SSL_free(io->ssl);
+    io->ssl = 0;
+  }
+#endif
+  ASSERTOP(io->qel.intodo, ==, HI_INTODO_IOINUSE, io->qel.intodo); /* HI_INTODO_INTODO should not be possible anymore. */
+  io->qel.intodo = HI_INTODO_SHF_FREE;
+  io->n_thr = 0;
+  ++io->n_close;
+  hit->cur_io = 0;
+  close(io->fd & 0x7ffffff); /* Now some other thread may reuse the slot by accept()ing same fd */
+  D("%s: CLOSED(%x) n_close=%d", lk, io->fd, io->n_close);
+
+  /* Must let go of the lock only after close so no read can creep in. */
+  D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+  UNLOCK(io->qel.mut, "hi_close");
 }
 
 /* ---------- shuffler ---------- */

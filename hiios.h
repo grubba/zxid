@@ -157,6 +157,9 @@ struct hi_lock {
 #define HI_INTODO_IOINUSE  3 /* IO in use */
 #define HI_INTODO_PDUINUSE 4 /* PDU in use */
 
+#define HI_IO_N_THR_END_GAME (-3)  /* Special io->n_thr value to indicate close end game. */
+#define HI_IO_N_THR_END_POLL (-7)  /* Special io->n_thr value to indicate close end game. */
+
 struct hi_qel {         /* hiios task queue element. This is the 1st thing on io and pdu objects */
   struct hi_qel* n;     /* Next in todo_queue for IOs or in free_pdus. */
   struct hi_lock mut;
@@ -418,14 +421,12 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf);
 
 void hi_in_out(struct hi_thr* hit, struct hi_io* io);
 void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk);
-void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk);
 int  hi_write(struct hi_thr* hit, struct hi_io* io);
 int  hi_read(struct hi_thr* hit, struct hi_io* io);
 void hi_accept(struct hi_thr* hit, struct hi_io* listener);
 void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd);
 void hi_poll(struct hi_thr* hit);
 
-struct hi_qel* hi_todo_consume_inlock(struct hiios* shf);
 struct hi_qel* hi_todo_consume(struct hi_thr* hit);
 
 void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp);

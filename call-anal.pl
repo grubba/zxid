@@ -51,9 +51,9 @@ undef $/;
 #%local_graphs = ( main => 6,     # the start
 #		  yyparse => 3,  # center of compiler
 #		  );
-%local_graphs = ( hi_shuffle => 6,
-		  zxbus_listen_msg => 6,
-		  zxid_simple_cf => 6);
+%local_graphs = ( hi_shuffle => 10,
+		  zxbus_listen_msg => 4,
+		  zxid_simple_cf => 4);
 
 # N.B. names in all upper case, i.e. macros, are always ignored
 @ignore_callee = qw(for if return sizeof switch while);
@@ -70,6 +70,23 @@ push @ignore_callee,
        sscanf strlen strncmp strncpy strspn strtok toupper tolower
        va_end va_start vprintf vsnprintf vsprintf vsyslog
        write writev);
+
+push @ignore_callee,
+    qw(name_from_path vname_from_path open_fd_from_path vopen_fd_from_path close_file
+       zx_CreateFile write_all_fd write_all_fd_fmt
+       write_all_path_fmt write2_or_append_lock_c_path
+       read_all_fd read_all hexdump read_all_alloc get_file_size
+       sha1_safe_base64 zxid_nice_sha1
+       zx_strf zx_ref_str zx_ref_len_str zx_dup_str zx_dup_len_str zx_dup_cstr
+       zx_new_len_str zx_str_to_c
+       zx_ref_attr zx_ref_len_attr zx_attrf zx_dup_attr zx_dup_len_attr
+       zx_new_str_elem zx_ref_elem zx_ref_len_elem
+       zx_url_encode zx_url_encode_len zx_url_encode_raw unbase64_raw
+       zx_rand zx_report_openssl_err zx_memmem zxid_mk_self_sig_cert zxid_extract_private_key );
+
+push @ignore_callee,
+    qw(hi_pdu_alloc hi_dump nonblock setkernelbufsizes zxid_get_ent_ss zx_pw_authn
+       xmtp_decode_resp test_ping http_decode smtp_decode_req smtp_decode_resp );
 
 push @ignore_callee, qw(new_zx_ei);
 

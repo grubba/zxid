@@ -113,7 +113,7 @@ static int stomp_cmd_ni(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req
 /* Called by:  stomp_decode */
 static int stomp_got_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
-  //struct hi_pdu* resp = stomp_encode_start(hit);
+  /*struct hi_pdu* resp = stomp_encode_start(hit);*/
   /*hi_sendv(hit, io, 0, req, resp, len, resp->m, size, req->m + len);*/
   ERR("remote sent error(%.*s)", req->ap-req->m, req->m);
   return HI_CONN_CLOSE;

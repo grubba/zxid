@@ -1925,6 +1925,12 @@ callgraph:
 	dot -Tps main-call.dot -o main-call.ps
 	dot -Tps callgraph.dot -o callgraph.ps  # slow
 
+callgraph_zxbus: 
+	$(PERL) ./call-anal.pl -n *.c >callgraph.dot
+	dot -Tps ref/hi_shuffle-call.dot       -o ref/hi_shuffle-call.ps
+	dot -Tps ref/zxbus_listen_msg-call.dot -o ref/zxbus_listen_msg-call.ps
+	dot -Tps ref/zxid_simple_cf-call.dot   -o ref/zxid_simple_cf-call.ps
+
 API_REF_SRC=aux-templ.c dec-templ.c enc-templ.c getput-templ.c \
  mod_auth_saml.c \
  zxcrypto.c zxida7n.c zxidcdc.c zxidcgi.c zxidconf.c zxidcurl.c \
