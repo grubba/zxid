@@ -238,7 +238,7 @@ struct zx_str* zx_dup_str(struct zx_ctx* c, const char* s)
 
 /*() ZX verion of strdup(). */
 
-/* Called by:  chkuid x2, zxid_az_base_cf_ses, zxid_az_cf_ses, zxid_fed_mgmt_cf, zxid_get_ses, zxid_mk_usr_a7n_to_sp, zxid_parse_invite, zxid_parse_psobj, zxid_parse_vpath_conf, zxid_parse_vurl, zxid_simple_cf_ses x2, zxid_simple_idp_show_an, zxid_simple_no_ses_cf, zxid_simple_redir_page, zxid_simple_ses_active_cf, zxid_simple_show_page x2, zxid_url_set */
+/* Called by:  chkuid x2, zxid_az_base_cf_ses, zxid_az_cf_ses, zxid_fed_mgmt_cf, zxid_get_ses, zxid_mk_usr_a7n_to_sp, zxid_my_ent_id_cstr x2, zxid_parse_invite, zxid_parse_psobj, zxid_parse_vpath_conf, zxid_parse_vurl, zxid_simple_cf_ses x2, zxid_simple_idp_show_an, zxid_simple_no_ses_cf, zxid_simple_redir_page, zxid_simple_ses_active_cf, zxid_simple_show_page x2, zxid_url_set */
 char* zx_dup_cstr(struct zx_ctx* c, const char* str)
 {
   int len = strlen(str);

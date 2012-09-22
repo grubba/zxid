@@ -71,6 +71,7 @@ extern pthread_mutexattr_t MUTEXATTR_DECL;
  * the eid for that server.
  * return:: 0 on error, 1 on success */
 
+/* Called by:  hi_open_tcp, zxbus_login_ent */
 int hi_vfy_peer_ssl_cred(struct hi_thr* hit, struct hi_io* io, const char* eid)
 {
 #ifdef USE_OPENSSL
@@ -174,7 +175,7 @@ void setkernelbufsizes(int fd, int tx, int rx)
 extern int nkbuf;
 extern int listen_backlog;
 
-/* Called by:  main */
+/* Called by:  zxbusd_main */
 struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int proto)
 {
   struct hi_io* io;
@@ -322,7 +323,7 @@ void hi_poll(struct hi_thr* hit)
 /*() Add file descriptor to poll
  * locking:: must be called inside io->qel.mut */
 
-/* Called by:  hi_accept_book, hi_open_tcp, serial_init */
+/* Called by:  hi_accept_book, hi_open_tcp x2, serial_init */
 struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
 {
   ASSERTOP(fd, <, hit->shf->max_ios, fd);
@@ -413,7 +414,7 @@ void hi_del_fd(struct hi_thr* hit, int fd)
 
 /*() Create client socket. */
 
-/* Called by:  main, smtp_send */
+/* Called by:  smtp_send, zxbusd_main */
 struct hi_io* hi_open_tcp(struct hi_thr* hit, struct hi_host_spec* hs, int proto)
 {
   struct hi_io* io;

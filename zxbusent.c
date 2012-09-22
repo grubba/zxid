@@ -52,7 +52,7 @@ extern char* zxbus_path;
  * locking:: must be called inside shf->ent_mut
  * return:: pointer to hi_ent on success, 0 on failure */
 
-/* Called by:  zxbus_load_ent, zxbus_login_ent */
+/* Called by:  zxbus_load_ent, zxbus_login_ent, zxbus_login_subj_hash */
 struct hi_ent* zxbus_new_ent(struct hiios* shf, int len, const char* eid)
 {
   struct hi_ent* ent;
@@ -72,7 +72,7 @@ struct hi_ent* zxbus_new_ent(struct hiios* shf, int len, const char* eid)
  * locking:: must be called inside shf->ent_mut
  * return:: pointer to hi_ent on success, 0 on failure */
 
-/* Called by:  zxbus_load_acks, zxbus_load_ch_subs, zxbus_login_ent */
+/* Called by:  zxbus_load_acks, zxbus_load_ch_subs, zxbus_login_ent, zxbus_login_subj_hash */
 struct hi_ent* zxbus_load_ent(struct hiios* shf, int len, const char* eid)
 {
   char eid_buf[256];
@@ -250,6 +250,7 @@ int zxbus_login_ent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
  * by a hash of the certificate subject field.
  * return:: zero on failure, 1 on success */
 
+/* Called by: */
 int zxbus_login_subj_hash(struct hi_thr* hit, struct hi_io* io, unsigned long subj_hash)
 {
   struct hi_ent* ent;

@@ -257,6 +257,7 @@ static void hi_make_iov(struct hi_io* io)
  * locking:: will use shf->pdu_mut
  * see also:: hi_pdu_alloc() */
 
+/* Called by:  hi_free_req x2, hi_free_resp */
 static void hi_pdu_free(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk)
 {
   int i;
@@ -323,7 +324,7 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
 /*() Free a request, and transitively its real consequences (response, subrequests, etc.).
  * May be called either because individual resp was done, or because of connection close. */
 
-/* Called by:  hi_close x2, hi_free_req_fe, stomp_got_ack, stomp_got_nack, stomp_msg_deliver */
+/* Called by:  hi_close_final x3, hi_free_req_fe, stomp_got_ack, stomp_got_nack, stomp_msg_deliver */
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
 {
   struct hi_pdu* pdu;
@@ -342,6 +343,7 @@ void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
  * locking:: takes io->qel.mut
  * see also:: hi_add_to_reqs() */
 
+/* Called by:  hi_free_req_fe, stomp_got_ack */
 void hi_del_from_reqs(struct hi_io* io,   struct hi_pdu* req)
 {
   struct hi_pdu* pdu;
@@ -398,7 +400,7 @@ void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
  * warrant deletion of entire chaing of req and responses,
  * including subreqs and their responses. */
 
-/* Called by:  hi_write */
+/* Called by:  hi_write x2 */
 static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
 {
   struct hi_pdu* req;

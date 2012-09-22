@@ -93,7 +93,7 @@ char userdir[4096];
 char buf[4096];
 struct zx_ctx ctx;
 
-/* Called by:  main x9, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x8, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc <= 1) {

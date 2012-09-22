@@ -695,6 +695,7 @@ badurl:
 
 #if 0
 /* use PEM_write_X509(fp, cert) instead! */
+/* Called by: */
 void zx_print_X509(FILE* fp, X509* cert)
 {
   int len;

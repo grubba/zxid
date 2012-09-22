@@ -58,7 +58,7 @@ short hi_color = 4;
 /*() Sanity check hiios pdu data structures.
  * Returns number of nodes scanned, or negative for errors. */
 
-/* Called by:  hi_sanity_hit, hi_sanity_io x3, hi_sanity_pdu x3, hi_sanity_shf x2 */
+/* Called by:  hi_sanity_hit, hi_sanity_io x4, hi_sanity_pdu x3, hi_sanity_shf x2 */
 int hi_sanity_pdu(int mode, struct hi_pdu* root_pdu)
 {
   int errs = 0;

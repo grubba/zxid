@@ -8,7 +8,7 @@
 #
 # Perform total call graph analysis
 #  - produce graph with graphviz
-#  - annotate the source with comments to effect (Called by:)
+#  - annotate the source with comments to effect /* Called by: ... */
 #
 # Some simplifying assumptions are made:
 #  - Function calls are assumed to be of form
@@ -51,7 +51,9 @@ undef $/;
 #%local_graphs = ( main => 6,     # the start
 #		  yyparse => 3,  # center of compiler
 #		  );
-%local_graphs = ( );
+%local_graphs = ( hi_shuffle => 6,
+		  zxbus_listen_msg => 6,
+		  zxid_simple_cf => 6);
 
 # N.B. names in all upper case, i.e. macros, are always ignored
 @ignore_callee = qw(for if return sizeof switch while);

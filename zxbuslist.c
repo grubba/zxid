@@ -65,7 +65,7 @@ zxid_conf* cf;
 int zxbus_oneshot = -2;  /* -2=Infinite listen (blocks as needed), -1=get all immediately available, >1, get specified number of messages (blocking if needed). */
 extern int zxbus_persist_flag;
 
-/* Called by:  main x9, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x8, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   struct zx_str* ss;
@@ -217,6 +217,7 @@ help:
 #endif
 extern int zxid_suppress_vpath_warning;
 
+/* Called by: */
 static void sig_alarm_to_stop_blocking_read(int signum)
 {
   D("blocking read interrupted signum(%d)", signum);

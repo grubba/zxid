@@ -423,7 +423,7 @@ zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
 
 /*() Wrapper for zxid_get_ent_ss(), which see. */
 
-/* Called by:  zxbus_verify_receipt, zxcall_main, zxid_cdc_check x2, zxid_oauth2_az_server_sso, zxid_simple_idp_show_an, zxid_start_sso_url */
+/* Called by:  hi_vfy_peer_ssl_cred, zxbus_open_bus_url, zxbus_verify_receipt, zxcall_main, zxid_cdc_check x2, zxid_oauth2_az_server_sso, zxid_simple_idp_show_an, zxid_start_sso_url */
 zxid_entity* zxid_get_ent(zxid_conf* cf, const char* eid)
 {
   struct zx_str ss;
@@ -818,7 +818,7 @@ struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf, struct zx_elem_s*
  * cf:: ZXID configuration object, used to compute EntityID and also for memory allocation
  * return:: Entity ID as zx_str (caller must free with zx_str_free()) */
 
-/* Called by:  main x2, zxbus_open_bus_url, zxid_idp_map_nid2uid, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_mk_oauth_az_req, zxid_mk_subj, zxid_my_issuer, zxid_nidmap_do, zxid_ses_to_pool, zxid_show_conf, zxid_sp_sso_finalize, zxid_sso_issue_jwt, zxid_wsf_validate_a7n */
+/* Called by:  zxid_idp_map_nid2uid, zxid_mk_oauth_az_req, zxid_mk_subj, zxid_my_issuer, zxid_nidmap_do, zxid_ses_to_pool, zxid_sp_sso_finalize, zxid_wsf_validate_a7n */
 struct zx_str* zxid_my_ent_id(zxid_conf* cf)
 {
   if (cf->non_standard_entityid) {
@@ -835,6 +835,7 @@ struct zx_str* zxid_my_ent_id(zxid_conf* cf)
 
 /*() Return our EntityID as c-string. Caller must free with ZX_FREE(cf->ctx, eid) */
 
+/* Called by:  main x2, stomp_got_ack, test_receipt, zxbus_open_bus_url, zxbus_send_cmdf, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_show_conf, zxid_sso_issue_jwt */
 char* zxid_my_ent_id_cstr(zxid_conf* cf)
 {
   int len;

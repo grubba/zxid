@@ -71,7 +71,7 @@ int vname_from_path(char* buf, int buf_len, const char* name_fmt, va_list ap)
 
 /*() Generate formatted file name path. Returns length of path or 0 on failure. */
 
-/* Called by:  main, zxbus_load_ent, zxbus_load_subs, zxbus_persist x2, zxbus_retire x2, zxbus_sched_pending_delivery, zxbus_write_ch_subs, zxid_check_fed x3, zxid_del_ses x3, zxid_di_query, zxid_find_epr, zxid_find_ses, zxid_gen_boots, zxid_idp_as_do x2, zxid_mk_transient_nid x2, zxid_mk_usr_a7n_to_sp x2, zxid_print_session, zxid_put_ses, zxid_put_user, zxlog_output x2 */
+/* Called by:  main, zxbus_load_ent, zxbus_load_subs, zxbus_persist_msg x2, zxbus_retire x2, zxbus_sched_pending_delivery, zxbus_write_ch_subs, zxid_check_fed x3, zxid_del_ses x3, zxid_di_query, zxid_find_epr, zxid_find_ses, zxid_gen_boots, zxid_idp_as_do x2, zxid_mk_transient_nid x2, zxid_mk_usr_a7n_to_sp x2, zxid_print_session, zxid_put_ses, zxid_put_user, zxlog_output x2 */
 int name_from_path(char* buf, int buf_len, const char* name_fmt, ...)
 {
   int ret;
@@ -179,7 +179,7 @@ int read_all_fd(fdtype fd, char* p, int want, int* got_all)
  * name_fmt:: Format string for building file name
  * return:: actual total length. The buffer will always be nul terminated. Zero on failure. */
 
-/* Called by:  authn_user x3, covimp_test, list_user x2, list_users, main, opt x10, test_mode x2, zx_get_symkey, zx_pw_authn, zx_yubikey_authn x2, zxbus_sched_pending_delivery, zxid_check_fed, zxid_get_ses, zxid_get_user_nameid, zxid_idp_map_nid2uid, zxid_lscot_line, zxid_nidmap_do, zxid_ps_accept_invite, zxid_ps_finalize_invite, zxid_read_cert, zxid_read_private_key, zxid_template_page_cf */
+/* Called by:  authn_user x3, covimp_test, list_user x2, list_users, main, opt x10, test_mode x2, zx_get_symkey, zx_pw_authn, zx_yubikey_authn x2, zxbus_login_subj_hash, zxbus_sched_pending_delivery, zxid_check_fed, zxid_get_ses, zxid_get_user_nameid, zxid_idp_map_nid2uid, zxid_lscot_line, zxid_nidmap_do, zxid_ps_accept_invite, zxid_ps_finalize_invite, zxid_read_cert, zxid_read_private_key, zxid_template_page_cf */
 int read_all(int maxlen, char* buf, const char* logkey, int reperr, const char* name_fmt, ...)
 {
   va_list ap;
@@ -344,7 +344,7 @@ int write_all_fd(fdtype fd, const char* p, int pending)
  * it would be possible to use write_all_fd(), but using send(2)
  * works on all platforms that support sockets.) */
 
-/* Called by:  zxbus_ack_msg, zxbus_close, zxbus_open_bus_url, zxbus_send_cmdf x3 */
+/* Called by:  zxbus_ack_msg, zxbus_close, zxbus_nack_msg, zxbus_open_bus_url, zxbus_send_cmdf x6 */
 int send_all_socket(fdtype fd, const char* p, int pending)
 {
   int wrote;
@@ -445,7 +445,7 @@ int write_all_path_fmt(const char* logkey, int maxlen, char* buf, const char* pa
  * supply seeky=SEEK_END and flag=O_APPEND.
  * Returns 1 on success, 0 on err */
 
-/* Called by:  main x3, zxbus_persist, zxbus_write_line x2, zxbuslist_main, zxlog_blob, zxlog_write_line x2 */
+/* Called by:  main, zxbus_persist_msg, zxbus_write_line x2, zxbusd_main x2, zxbuslist_main, zxlog_blob, zxlog_write_line x2 */
 int write2_or_append_lock_c_path(const char* c_path,
 				 int len1, const char* data1,
 				 int len2, const char* data2,
@@ -858,7 +858,7 @@ char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char*
  * data:: Data to be digested
  * return:: Pointer one past last character written (not nul terminated) */
 
-/* Called by:  zxbus_load_ent, zxbus_mint_receipt, zxbus_persist, zxbus_pw_authn_ent, zxbus_retire, zxbus_write_line, zxcot_main, zxdecode_main, zxid_decode_redir_or_post x2, zxid_get_ent_cache, zxid_mk_ent, zxid_nice_sha1, zxid_reg_svc, zxid_user_sha1_name x2, zxlog_path x2, zxlog_write_line */
+/* Called by:  zxbus_load_ent, zxbus_mint_receipt, zxbus_persist_msg, zxbus_pw_authn_ent, zxbus_retire, zxbus_write_line, zxcot_main, zxdecode_main, zxid_decode_redir_or_post x2, zxid_get_ent_cache, zxid_mk_ent, zxid_nice_sha1, zxid_reg_svc, zxid_user_sha1_name x2, zxlog_path x2, zxlog_write_line */
 char* sha1_safe_base64(char* out_buf, int len, const char* data)
 {
   char sha1[20];

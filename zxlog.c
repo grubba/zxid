@@ -814,7 +814,7 @@ print_it:
  * body::       Data to issue receipt about, i.e. data that will be signed.
  * return::     sigbuf. If there was error, sigbuf[0] is set to 'E' */
 
-/* Called by:  stomp_send_receipt, zxbus_ack_msg */
+/* Called by:  stomp_send_receipt, test_receipt x9, zxbus_ack_msg */
 char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int eid_len, const char* eid, int body_len, const char* body)
 {
   int len, zlen;
@@ -942,7 +942,7 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_le
  * body::       Data pertaining to receipt
  * return::     0 (ZXSIG_OK) on success, nonzero on failure. */
 
-/* Called by:  stomp_got_ack, zxbus_send_cmdf */
+/* Called by:  stomp_got_ack, test_receipt x10, zxbus_send_cmdf */
 int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int deid_len, const char* deid, int body_len, const char* body)
 {
   int ver = -1, len, zlen;
@@ -1038,7 +1038,7 @@ int zxbus_persist_flag = 1;
  * return:: 0 on failure, nonzero len of c_path on success.
  * see also:: persist feature in zxbus_listen_msg() */
 
-/* Called by:  stomp_got_send */
+/* Called by:  zxbus_listen_msg, zxbus_persist */
 int zxbus_persist_msg(zxid_conf* cf, int c_path_len, char* c_path, int dest_len, const char* dest, int data_len, const char* data)
 {
   int len;

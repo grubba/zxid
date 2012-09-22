@@ -156,7 +156,7 @@ EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
 
 /*() Extract a certificate from PEM encoded file. */
 
-/* Called by:  zxbus_write_line, zxid_idp_sso_desc x2, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxid_sp_sso_desc x2, zxlog_write_line */
+/* Called by:  hi_new_shuffler, zxbus_open_bus_url, zxbus_write_line, zxid_idp_sso_desc x2, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxid_sp_sso_desc x2, zxlog_write_line */
 X509* zxid_read_cert(zxid_conf* cf, char* name)
 {
   char buf[4096];
@@ -168,7 +168,7 @@ X509* zxid_read_cert(zxid_conf* cf, char* name)
 
 /*() Extract a private key from PEM encoded file. */
 
-/* Called by:  test_ibm_cert_problem x2, test_ibm_cert_problem_enc_dec x2, zxbus_mint_receipt x2, zxbus_write_line x2, zxenc_privkey_dec, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxlog_write_line x2 */
+/* Called by:  hi_new_shuffler, test_ibm_cert_problem x2, test_ibm_cert_problem_enc_dec x2, zxbus_mint_receipt x2, zxbus_open_bus_url, zxbus_write_line x2, zxenc_privkey_dec, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxlog_write_line x2 */
 EVP_PKEY* zxid_read_private_key(zxid_conf* cf, char* name)
 {
   char buf[4096];

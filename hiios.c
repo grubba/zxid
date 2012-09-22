@@ -69,7 +69,7 @@ extern pthread_mutexattr_t MUTEXATTR_DECL;
  * with same number, we are bound to wait, postpone any reads,
  * until the old threads have let go. */
 
-/* Called by:  hi_in_out, hi_read x2, hi_write */
+/* Called by:  hi_in_out x2, hi_read x2, hi_write */
 void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
 {
   int fd = io->fd;
@@ -158,6 +158,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
  * locking:: must be called with io->qel.mut held, typically after
  *     checking that io->n_close == hit->cur_n_close.  */ 
 
+/* Called by:  hi_close, hi_todo_produce */
 void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk)
 {  
   struct hi_pdu* pdu;
@@ -333,7 +334,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
 
 /*() Main I/O shuffling loop. Never returns. Main loop of most (all?) threads. */
 
-/* Called by:  main, thread_loop */
+/* Called by:  thread_loop, zxbusd_main */
 void hi_shuffle(struct hi_thr* hit, struct hiios* shf)
 {
   struct hi_qel* qe;

@@ -383,6 +383,7 @@ static int zxbus_fmt(zxid_conf* cf,   /* 1 */
 /*() Clear current PDU from read buffer, moving the data after
  * it (i.e. next PDU in buffer) in position to be read. */
 
+/* Called by:  zxbus_close x3, zxbus_listen_msg x4, zxbus_open_bus_url x2, zxbus_send_cmdf x3 */
 static void zxbus_shift_read_buf(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stomp)
 {
   if (stomp->end_of_pdu) {
@@ -602,6 +603,7 @@ int zxbus_ack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stom
  * end (NACK really is the receipt for MESSAGE sent by server).
  * Returns:: zero on failure and 1 on success. */
 
+/* Called by:  zxbus_listen_msg x2 */
 int zxbus_nack_msg(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* stompp, const char* errmsg)
 {
   int len;
@@ -687,6 +689,7 @@ char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
 #ifdef USE_OPENSSL
 //int zxbus_cert_verify_cb(X509_STORE_CTX* st_ctx, void* arg) {  zxid_conf* cf = arg;  return 0; }
 
+/* Called by: */
 static void zx_ssl_info_cb(const SSL *ssl, int where, int ret)
 {
   const char *str;

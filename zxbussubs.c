@@ -140,7 +140,7 @@ static int zxbus_load_ch_subs(struct hiios* shf, struct hi_ch* ch)
 /*() Load subscriptions of all channels. Called once at startup.
  * N.B. The channel composition is fixed at boot time so no locking is needed. */
 
-/* Called by:  main */
+/* Called by:  zxbusd_main */
 int zxbus_load_subs(struct hiios* shf)
 {
   char path[ZXID_MAX_BUF];

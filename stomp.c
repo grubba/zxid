@@ -71,7 +71,7 @@ static struct hi_pdu* stomp_encode_start(struct hi_thr* hit)
 
 /*() Send ERROR to remote client. */
 
-/* Called by:  stomp_decode x2, stomp_got_login, zxbus_persist x6 */
+/* Called by:  stomp_decode x2, stomp_got_login x2, zxbus_persist x2 */
 int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const char* ecode, const char* emsg)
 {
   int len;
@@ -121,7 +121,7 @@ static int stomp_got_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
 
 /*() Send a receipt to client. */
 
-/* Called by:  stomp_got_disc, stomp_got_send, stomp_got_subsc, stomp_got_zxctl */
+/* Called by:  stomp_got_disc, stomp_got_send, stomp_got_zxctl, zxbus_subscribe */
 void stomp_send_receipt(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 {
   int len;
@@ -193,6 +193,7 @@ static void stomp_got_send(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* 
  * the io->pending list for message ID match. When found,
  * the req is dequeued from pending. */
 
+/* Called by:  stomp_got_ack, stomp_got_nack */
 static struct hi_pdu* stomp_find_pending_req_for_resp(struct hi_io* io, struct hi_pdu* resp)
 {
   struct hi_pdu* prev;

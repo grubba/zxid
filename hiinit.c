@@ -46,7 +46,7 @@ extern int zx_debug;
 extern pthread_mutexattr_t MUTEXATTR_DECL;
 #endif
 
-/* Called by:  main, thread_loop */
+/* Called by:  thread_loop, zxbusd_main */
 void hi_hit_init(struct hi_thr* hit)
 {
   memset(hit, 0, sizeof(struct hi_thr));
@@ -55,6 +55,7 @@ void hi_hit_init(struct hi_thr* hit)
 
 #ifdef USE_OPENSSL
 //int zxbus_cert_verify_cb(X509_STORE_CTX* st_ctx, void* arg) {  zxid_conf* cf = arg;  return 0; }
+/* Called by: */
 static int zxbus_verify_cb(int preverify_ok, X509_STORE_CTX* st_ctx)
 {
   //X509* err_cert = X509_STORE_CTX_get_current_cert(st_ctx);
@@ -74,6 +75,7 @@ static int zxbus_verify_cb(int preverify_ok, X509_STORE_CTX* st_ctx)
   return 0;
 }
 
+/* Called by: */
 static void zxbus_info_cb(const SSL *ssl, int where, int ret)
 {
   const char *str;
@@ -100,7 +102,7 @@ static void zxbus_info_cb(const SSL *ssl, int where, int ret)
  * pool, from which per thread pools will be plensihed - see
  * hi_pdu_alloc() - and initialize syncronization primitives. */
 
-/* Called by:  main */
+/* Called by:  zxbusd_main */
 struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch, int nthr)
 {
   int i;

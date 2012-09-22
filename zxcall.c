@@ -91,7 +91,7 @@ char* nidmap_to = 0;
 char* bdy = 0;
 zxid_conf* cf;
 
-/* Called by:  main x9, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x8, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   struct zx_str* ss;

@@ -188,8 +188,8 @@ struct hi_io {
   
   /* Statistics counters */
   int n_close;               /* Number of closes. Generation counter. */
-  int n_written;  /* bytes */
-  int n_read;     /* bytes */
+  int n_written;             /* bytes */
+  int n_read;                /* bytes */
   int n_pdu_out;
   int n_pdu_in;
   
@@ -311,7 +311,7 @@ struct hiios {
 
   struct hi_lock todo_mut;
   pthread_cond_t todo_cond;
-  struct hi_qel* todo_consume;  /* PDUs and I/O objects that need processing. */
+  struct hi_qel* todo_consume;  /* PDUs and I/O objects that need processing */
   struct hi_qel* todo_produce;
   int n_todo;
   struct hi_qel poll_tok;       /* Special qel to be inserted in todo_consume to trigger poll. */

@@ -47,7 +47,7 @@ struct ak_master_rec ak_master =
 /* pthread specific data key for locating the logging buffer */
 pthread_key_t ak_buf_key;
 
-/* Called by:  main x2 */
+/* Called by:  main, zxbusd_main */
 void ak_init(char* argv0) {
   char buf[8192];
   int x,n=0;
