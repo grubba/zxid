@@ -139,7 +139,7 @@ struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch, in
   pthread_cond_init(&shf->todo_cond, 0);
   pthread_mutex_init(&shf->todo_mut.ptmut, MUTEXATTR);
 
-  shf->poll_tok.kind = HI_POLL;           /* Permanently labeled as poll_tok (there is only 1) */
+  shf->poll_tok.kind = HI_POLLT;          /* Permanently labeled as poll_tok (there is only 1) */
   shf->poll_tok.proto = HIPROTO_POLL_ON;  /* Mark poll token as available */
 
   shf->max_evs = MIN(nfd, 1024);

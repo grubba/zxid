@@ -520,6 +520,11 @@ extern char* assert_msg;
       ERR("CHK FAIL: " #cond " %x", err); \
       DIE_ACTION(err); } ME
 
+# define ASSERT(c) MB if (!(c)) { \
+      /*ak_ts(AK_NFN(__FUNCTION__), __LINE__,AK_ASSERT_RAZ,(char*)(int)(a),"ASSERT FAIL: " #c);*/ \
+      ERR("ASSERT FAIL: " #c " %d", 0); \
+      DIE_ACTION(1); } ME
+
 # define ASSERTOP(a,op,b,err) MB if (!((a) op (b))) { \
       /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b);*/ \
       ERR("ASSERTOP FAIL: " #a #op #b " %x", (int)(err)); \
@@ -531,7 +536,8 @@ extern char* assert_msg;
 # define SANITY_CHK(cond,...) MB if (!(cond)) \
   /*ak_tsf(AK_NFN(__FUNCTION__), __LINE__, AK_SANITY_RAZ, #cond, __VA_ARGS__);*/ 1; ME
 #else  /* More sterile versions */
-# define CHK(cond,err) MB if ((cond)) { DIE_ACTION(err); } ME
+# define CHK(cond,err) MB if (cond) { DIE_ACTION(err); } ME
+# define ASSERT(c) MB if (!(c)) { DIE_ACTION(1); } ME
 # define ASSERTOP(a,op,b,err) MB if (!((a) op (b))) { DIE_ACTION(err); } ME
 # define FAIL(x,why) MB DIE_ACTION(1); ME
 # define SANITY_CHK(cond,...) MB if (!(cond)) NEVER("insanity %d",0); ME
@@ -544,6 +550,7 @@ extern char* assert_msg;
 
 #else /* ---------------- no debug --------------- */
 # define CHK(cond,err)
+# define ASSERT(c)
 # define ASSERTOP(a,op,b,err)
 # define FAIL(format)
 # define BOGUS_UNINITIALIZED_WARNING_0
@@ -552,7 +559,6 @@ extern char* assert_msg;
 /* -------------------------------------------------------- */
 /* Asserting and sanity checks */
  
-#define ASSERT(c)      CHK(!(c), 1)
 #define CHK_NULL(n)    ASSERT((long int)(n))
 #define CHK_ERRNO(n)   CHK(((n)<0), errno)
 #define CHK_MAGIC(p,m) MB ASSERT(p); ASSERTOP((p)->magic, ==, (m), (p)->magic); ME

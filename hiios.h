@@ -142,8 +142,8 @@ struct hi_lock {
 #define HI_PDU_MEM 3072 /* Default PDU memory buffer size, for log lines */
 
 /* qel.kind constants */
-#define HI_POLL     1   /* Trigger epoll */
-#define HI_LISTEN   2   /* Listening socket for TCP */
+#define HI_POLLT    1   /* Trigger epoll */
+#define HI_LISTENT  2   /* Listening socket for TCP */
 #define HI_HALF_ACCEPT 3 /* Accepted at TCP, but delayed booking due to threads expecting old dead connection. */
 #define HI_TCP_S    4   /* TCP server socket, i.e. accept(2)'d from listening socket */
 #define HI_TCP_C    5   /* TCP client socket, i.e. formed using connect(2) */
@@ -318,7 +318,7 @@ struct hiios {
   struct hi_qel* todo_produce;
   int n_todo;
   struct hi_qel poll_tok;       /* Special qel to be inserted in todo_consume to trigger poll. */
-
+  
   int nthr;                     /* Number of threads referencing this shf */
   struct hi_thr* threads;       /* List of threads. */
   struct hi_lock ent_mut;

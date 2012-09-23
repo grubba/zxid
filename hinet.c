@@ -248,14 +248,11 @@ struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int p
 #endif
 
   io->fd = fd;
-  io->qel.kind = HI_LISTEN;
+  io->qel.kind = HI_LISTENT;
   io->qel.proto = proto;
   D("listen(%x) hs(%s)", fd, hs->specstr);
   return io;
 }
-
-extern int debugpoll;
-#define DP(format,...) if (debugpoll) MB fprintf(stderr, "t%x %10s:%-3d %-16s p " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); fflush(stderr); ME
 
 /*() When poll marker is consumed from the todo, perform OS dependent epoll(2) or similar. */
 
@@ -264,7 +261,7 @@ void hi_poll(struct hi_thr* hit)
 {
   struct hi_io* io;
   int i;
-  DP("epoll(%x)", hit->shf->ep);
+  D("epoll(%x)", hit->shf->ep);
  retry:
 #ifdef LINUX
   hit->shf->n_evs = epoll_wait(hit->shf->ep, hit->shf->evs, hit->shf->max_evs, -1);
@@ -282,7 +279,10 @@ void hi_poll(struct hi_thr* hit)
     if (io->fd & 0x80000000) {
       D("poll returned a closed fd(%x). Ignoring. n_thr=%d r/w=%d/%d ev=%x intodo=%x", io->fd, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
     } else {
-      hi_todo_produce(hit, &io->qel, "poll", 1); /* *** should the todo_mut lock be batched? */
+      /* *** Should the todo_mut lock be batched? The advantage might not be big
+       * as we need to either do pthread_cond_signal(3) to wake up one worker
+       * or pthread_cond_broadcast(3) to wake them up all, which may be overkill. */
+      hi_todo_produce(hit, &io->qel, "poll", 1);
     }
   }
 #endif

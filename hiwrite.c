@@ -51,7 +51,8 @@ extern int zx_debug;
 
 /*() Schedule to be sent a response.
  * If req is supplied, the response is taken to be response to that.
- * Otherwise resp istreated as a stand along PDU, unsolicited response if you like. */
+ * Otherwise resp istreated as a stand along PDU, unsolicited response if you like.
+ * locking:: will take io->qel.mut */
 
 /* Called by:  hi_send1, hi_send2, hi_send3 */
 void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struct hi_pdu* req, struct hi_pdu* resp)
@@ -70,7 +71,6 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
   resp->parent = parent;
 
   LOCK(io->qel.mut, "send0");
-  D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   if (!resp->req) {
     /* resp is really a request sent by server to the client */
     /* *** this is really STOMP 1.1 specific. Ideally msg_id
@@ -80,7 +80,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
     resp->ad.stomp.msg_id = strstr(resp->m, "\nmessage-id:");
     if (resp->ad.stomp.msg_id) {
       resp->ad.stomp.msg_id += sizeof("\nmessage-id:")-1;
-      resp->n = io->pending;
+      resp->n = io->pending;  /* add to io->pending, protected by io->qel.mut */
       io->pending = resp;
       resp->ad.stomp.dest = strstr(resp->m, "\ndestination:");
       if (resp->ad.stomp.dest)
@@ -96,6 +96,14 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
       ERR("request from server to client lacks message-id header and thus can not expect an ACK. Not scheduling as pending. %p", resp);
     }
   }
+  
+  if (ONE_OF_2(io->n_thr, HI_IO_N_THR_END_GAME, HI_IO_N_THR_END_POLL)) {
+    D("LK&UNLK end-game io(%x)->qel.thr=%x n_c/t=%d/%d", io->fd, io->qel.mut.thr, io->n_close,io->n_thr);
+    UNLOCK(io->qel.mut, "send0-end");
+    return; /* Ignore write attempt. hi_todo_consume() will eventually call hi_close() last time */
+  }
+  D("LOCK io(%x)->qel.thr=%x n_c/t=%d/%d", io->fd, io->qel.mut.thr, io->n_close,io->n_thr);
+  
   ASSERT(io->n_thr >= 0);
   if (!io->to_write_produce)
     io->to_write_consume = resp;
@@ -272,13 +280,13 @@ static void hi_pdu_free(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk)
   if (hit->n_free_pdus <= HIT_FREE_HIWATER)  /* high water mark */
     return;
 
-  D("%s: pdu_%p moving some hit->free_pdus to shuffler",lk,pdu);
+  D("%s: pdu_%p mv some hit->free_pdus to shf",lk,pdu);
   LOCK(hit->shf->pdu_mut, "pdu_free");
   for (i = HIT_FREE_LOWATER; i; --i) {
     pdu = hit->free_pdus;
     hit->free_pdus = (struct hi_pdu*)pdu->qel.n;
 
-    D("%s: moving hit free pdu_%p to shuffler",lk,pdu);
+    D("%s: mv hit free pdu_%p to shf",lk,pdu);
 
     pdu->qel.n = &hit->shf->free_pdus->qel;         /* move to free list */
     hit->shf->free_pdus = pdu;

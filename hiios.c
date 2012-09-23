@@ -66,7 +66,7 @@ extern pthread_mutexattr_t MUTEXATTR_DECL;
 static void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk)
 {  
   struct hi_pdu* pdu;
-  D("%s: close final(%x) n_close=%d n_thr=%d", lk, io->fd, io->n_close, io->n_thr);
+  D("%s: close final(%x) n_c/t=%d/%d", lk, io->fd, io->n_close, io->n_thr);
   ASSERTOP(io->n_thr, ==, 0, io->n_thr);
   for (pdu = io->reqs; pdu; pdu = pdu->n)
     hi_free_req(hit, pdu);
@@ -114,7 +114,7 @@ static void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk)
 }
 #endif
 
-/*() Close an I/O object.
+/*() Close an I/O object (in multiple stages)
  * The close may be called in response to I/O errors or for controlled
  * disconnect. At the time of first calling close, any number of
  * threads (see io->n_thr) may be able to access the io object and the
@@ -142,21 +142,22 @@ static void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk)
  * By the time we are really ready to close the io, all associated PDUs
  * have been freed by the respective threads (usually through write
  * of response freeing both response and request).
- */
+ *
+ * locking:: will take io->qel.mut */
 
 /* Called by:  hi_in_out x2, hi_read x2, hi_write */
 void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
 {
   struct hi_pdu* pdu;
   int fd = io->fd;
-  DD("%s: closing(%x) n_close=%d n_thr=%d", lk, fd, io->n_close, io->n_thr);
+  DD("%s: closing(%x) n_c/t=%d/%d", lk, fd, io->n_close, io->n_thr);
   LOCK(io->qel.mut, "hi_close");
-  D("LOCK io(%x)->qel.thr=%x n_close=%d n_thr=%d", fd, io->qel.mut.thr, io->n_close, io->n_thr);
-  
+  D("LOCK io(%x)->qel.thr=%x n_c/t=%d/%d", fd, io->qel.mut.thr, io->n_close, io->n_thr);
+
   if (fd&0x80000000) {
-    D("%s: 2nd close(%x) n_close=%d n_thr=%d", lk, fd, io->n_close, io->n_thr);
+    D("%s: 2nd close(%x) n_c/t=%d/%d", lk, fd, io->n_close, io->n_thr);
   } else {
-    D("%s: 1st close(%x) n_close=%d n_thr=%d", lk, fd, io->n_close, io->n_thr);
+    D("%s: 1st close(%x) n_c/t=%d/%d", lk, fd, io->n_close, io->n_thr);
     if (shutdown(fd, SHUT_RD))
       ERR("%s: shutdown(%x) %d %s", lk, fd, errno, STRERROR(errno));
     hi_del_fd(hit, fd);    /* stop poll from returning this fd */
@@ -177,7 +178,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   
   /* N.B. n_thr manipulations should be done before calling hi_close() */
   if (io->n_thr > 0) {
-    D("%s: close-wait(%x) n_thr=%d n_close=%d intodo=%x", lk, fd, io->n_thr, io->n_close, io->qel.intodo);
+    D("%s: close-wait(%x) n_c/t=%d/%d intodo=%x", lk, fd, io->n_close, io->n_thr, io->qel.intodo);
     hit->cur_io = 0;
     D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
     UNLOCK(io->qel.mut, "hi_close-wait");
@@ -185,7 +186,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   }
   if (io->n_thr == 0) {
     io->n_thr = HI_IO_N_THR_END_POLL;
-    D("%s: close-poll(%x) n_thr=%d n_close=%d intodo=%x", lk, fd, io->n_thr, io->n_close, io->qel.intodo);
+    D("%s: close-poll(%x) n_c/t=%d/%d intodo=%x", lk, fd, io->n_close, io->n_thr, io->qel.intodo);
     hit->cur_io = 0;
     D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
     UNLOCK(io->qel.mut, "hi_close-poll");
@@ -193,7 +194,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
     return;
   }
   if (io->n_thr != HI_IO_N_THR_END_GAME) {
-    ERR("%s: close-n_thr(%x) n_thr=%d n_close=%d intodo=%x", lk, fd, io->n_thr, io->n_close, io->qel.intodo);
+    ERR("%s: close-n_thr(%x) n_c/t=%d/%d intodo=%x", lk,fd,io->n_close,io->n_thr,io->qel.intodo);
     ASSERTOP(io->n_thr, ==, HI_IO_N_THR_END_GAME, io->n_thr);
     hit->cur_io = 0;
     D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
@@ -204,7 +205,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   /* Now we are ready to really close */
   /* *** hi_close_final(hit, io, lk);*/
 
-  D("%s: close-final(%x) n_close=%d n_thr=%d", lk, io->fd, io->n_close, io->n_thr);
+  D("%s: close-final(%x) n_c/t=%d/%d", lk, io->fd, io->n_close, io->n_thr);
 
   for (pdu = io->reqs; pdu; pdu = pdu->n)
     hi_free_req(hit, pdu);
@@ -258,16 +259,15 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
 
 /* ---------- shuffler ---------- */
 
-extern int debugpoll;
-#define DP(format,...) if (debugpoll) MB fprintf(stderr, "t%x %10s:%-3d %-16s p " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); fflush(stderr); ME
-
 /*() For a fd that was consumed from todo, deal with potential reads and writes */
 
 /* Called by:  hi_shuffle */
 void hi_in_out(struct hi_thr* hit, struct hi_io* io)
 {
-  int reading;
-  DP("in_out(%x) events=0x%x", io->fd, io->events);
+  int reading;  
+  
+  LOCK(io->qel.mut, "in_out");
+  D("LOCK io(%x)->qel.thr=%x r/w=%d/%d ev=%x", io->fd, io->qel.mut.thr, io->reading, io->writing, io->events);
 #ifdef SUNOS
 #define EPOLLHUP (POLLHUP)  /* 0x010 */
 #define EPOLLERR (POLLERR)  /* 0x008 */
@@ -276,12 +276,10 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
 #endif
   if (io->events & (EPOLLHUP | EPOLLERR)) {
     D("HUP or ERR on fd=%x events=0x%x", io->fd, io->events);
-    LOCK(io->qel.mut, "n_thr-dec1");
-    D("IN_OUT: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
     io->n_thr -= 2;                   /* Remove both counts (write and read) */
     ASSERT(io->n_thr >= 0);
-    UNLOCK(io->qel.mut, "n_thr-dec1");
-    hi_close(hit, io, "hi_in_out");
+    UNLOCK(io->qel.mut, "in_out-hup");
+    hi_close(hit, io, "hi_in_out-hup");
     return;
   }
   
@@ -289,10 +287,8 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
    * still report the io as writable after a thread has taken the
    * task, in that case we want the second thread to skip write and
    * go process the read. */
-  LOCK(io->qel.mut, "check-writing");
-  D("LOCK io(%x)->qel.thr=%x r/w=%d/%d ev=%x", io->fd, io->qel.mut.thr, io->reading, io->writing, io->events);
   if (io->events & EPOLLOUT && !io->writing) {
-    DP("OUT fd=%x n_iov=%d n_to_write=%d writing", io->fd, io->n_iov, io->n_to_write);
+    D("OUT fd=%x n_iov=%d n_to_write=%d writing", io->fd, io->n_iov, io->n_to_write);
 
     /* Although in_write is checked in hi_write() as well, take the opportunity
      * to check it right here while we already hold the lock. */
@@ -323,7 +319,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
   } else {
     --io->n_thr;              /* Remove write count as no write happened. */
   }
-  ASSERT(io->n_thr > 0);    /* Read count should still be there. */
+  ASSERT(io->n_thr > 0 || io->n_thr == HI_IO_N_THR_END_GAME);  /* Read cnt should still be there */
   io->events &= ~EPOLLOUT;  /* Clear poll flag in case we get read rescheduling */
   
   if (io->events & EPOLLIN) {
@@ -337,7 +333,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
      * the PDU is added back to the todo queue. This may cause the other thread to spin
      * for a while, but at least things will move on eventually. */
     if (!io->reading) {
-      DP("IN fd=%x cur_pdu=%p need=%d", io->fd, io->cur_pdu, io->cur_pdu->need);
+      D("IN fd=%x cur_pdu=%p need=%d", io->fd, io->cur_pdu, io->cur_pdu->need);
       /* Poll says work is possible: sched wk for io if not under wk yet, or cur_pdu needs wk.
        * The inverse is also important: if io->cur_pdu is set, but pdu->need is not, then someone
        * is alredy working on decoding the cur_pdu and we should not interfere. */
@@ -395,8 +391,8 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf)
     HI_SANITY(hit->shf, hit);
     qe = hi_todo_consume(hit);  /* Wakes up the heard to receive work. */
     switch (qe->kind) {
-    case HI_POLL:     hi_poll(hit); break;
-    case HI_LISTEN:   hi_accept(hit, (struct hi_io*)qe); break;
+    case HI_POLLT:    hi_poll(hit); break;
+    case HI_LISTENT:  hi_accept(hit, (struct hi_io*)qe); break;
     case HI_HALF_ACCEPT: hi_accept_book(hit, (struct hi_io*)qe, ((struct hi_io*)qe)->fd);
     case HI_TCP_C:
     case HI_TCP_S:    hi_in_out(hit, (struct hi_io*)qe); break;

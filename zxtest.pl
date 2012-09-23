@@ -1661,7 +1661,7 @@ KILLD('ZXBUSS10', 'collect zxbusd 1');
 # 20 two thread debug
 
 tst_nl();
-DAEMON('ZXBUSS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSS20.pid -c '$bussd_conf' -d -d -dp -nthr 2 -nfd 11 -npdu 700 -p stomps:0.0.0.0:2229");
+DAEMON('ZXBUSS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSS20.pid -c '$bussd_conf' -d -d -dp -nthr 2 -nfd 11 -npdu 800 -p stomps:0.0.0.0:2229");
 #CMD('ZXBUSS20a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
 DAEMON('ZXBUSS20b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUSS20b.pid -d -d -c '$buss_list_conf'");
 CMD('ZXBUSS21', 'One shot', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar'");

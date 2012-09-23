@@ -65,7 +65,7 @@ const char* qel_kind[] = {
 /*(-) Simple mechanics of deque operation against shf->todo_consumer */
 
 /* Called by:  hi_todo_consume */
-static struct hi_qel* hi_todo_consume_inlock(struct hiios* shf)
+static struct hi_qel* hi_todo_consume_queue_inlock(struct hiios* shf)
 {
   struct hi_qel* qe = shf->todo_consume;
   shf->todo_consume = qe->n;
@@ -80,7 +80,7 @@ static struct hi_qel* hi_todo_consume_inlock(struct hiios* shf)
 /*(-) Simple mechanics of enque operation against shf->todo_producer */
 
 /* Called by: */
-static void hi_todo_produce_inlock(struct hiios* shf, struct hi_qel* qe)
+static void hi_todo_produce_queue_inlock(struct hiios* shf, struct hi_qel* qe)
 {
   if (shf->todo_produce)
     shf->todo_produce->n = qe;
@@ -93,7 +93,8 @@ static void hi_todo_produce_inlock(struct hiios* shf, struct hi_qel* qe)
 }
 
 /*(i) Consume from todo queue. If nothing is available,
- * block until there is work to do. This is the main
+ * block until there is work to do. If todo queue is
+ * empty, see if we should poll again. This is the main
  * mechanism by which worker threads get something to do. */
 
 /* Called by:  hi_shuffle */
@@ -104,6 +105,7 @@ struct hi_qel* hi_todo_consume(struct hi_thr* hit)
   LOCK(hit->shf->todo_mut, "todo_cons");
   D("LOCK todo_mut.thr=%x (cond_wait)", hit->shf->todo_mut.thr);
 
+ deque_again:
   while (!hit->shf->todo_consume && hit->shf->poll_tok.proto == HIPROTO_POLL_OFF)  /* Empty? */
     ZX_COND_WAIT(&hit->shf->todo_cond, hit->shf->todo_mut, "todo-cons"); /* Block until work */
   D("Out of cond_wait todo_mut.thr=%x", hit->shf->todo_mut.thr);
@@ -117,7 +119,7 @@ struct hi_qel* hi_todo_consume(struct hi_thr* hit)
     return &hit->shf->poll_tok;
   }
   
-  qe = hi_todo_consume_inlock(hit->shf);
+  qe = hi_todo_consume_queue_inlock(hit->shf);
   if (!ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
     D("cons qe_%p kind(%s) intodo=%x todo_mut.thr=%x", qe, QEL_KIND(qe->kind), qe->intodo, hit->shf->todo_mut.thr);
     UNLOCK(hit->shf->todo_mut, "todo_cons");
@@ -127,17 +129,24 @@ struct hi_qel* hi_todo_consume(struct hi_thr* hit)
   io = (struct hi_io*)qe;
   LOCK(io->qel.mut, "n_thr-inc");
   ASSERT(!hit->cur_io);
-  if (io->n_thr == HI_IO_N_THR_END_POLL) {  /* Special close end game, see hi_close() */
+  if (io->n_thr == HI_IO_N_THR_END_POLL) {      /* Special close end game, see hi_close() */
     io->n_thr = HI_IO_N_THR_END_GAME;
-    hi_todo_produce_inlock(hit->shf, qe);   /* Put it back: try again later */
-    UNLOCK(io->qel.mut, "n_thr-end");
+    hi_todo_produce_queue_inlock(hit->shf, qe); /* Put it back: try again later */
+    UNLOCK(io->qel.mut, "n_thr-poll");
     goto force_poll;
   }
-  
+  if (io->n_thr == HI_IO_N_THR_END_GAME) {
+    hit->cur_io = io;
+    hit->cur_n_close = io->n_close;
+    UNLOCK(io->qel.mut, "n_thr-end");
+    hi_close(hit, io, "cons-end");
+    goto deque_again;
+  }
   if (io->fd & 0x80000000) {
     D("cons-ign-closed: LK&UNLK io(%x)->qel.thr=%x n_thr=%d r/w=%d/%d ev=%d intodo=%x", io->fd, io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
     /* Let it be consumed so that r/w will fail and hi_close() is called to clean up. */
   }
+  
   ++io->n_thr;  /* Increase two counts: once for write, and once for read, decrease for intodo ending. Net is +1. */
   hit->cur_io = io;
   hit->cur_n_close = io->n_close;
@@ -182,7 +191,7 @@ void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk, int 
   LOCK(io->qel.mut, "n_thr-inc-todo");
 #if 0
   if (ONE_OF_2(io->n_thr, HI_IO_N_THR_END_GAME, HI_IO_N_THR_END_POLL)) {
-    D("%s: already in end game(%x) n_close=%d n_thr=%d", io->fd, io->n_close, io->n_thr);
+    D("%s: already in end game(%x) n_c/t=%d/%d", io->fd, io->n_close, io->n_thr);
     UNLOCK(io->qel.mut, "prod-quick-close");
     goto out;
   }
@@ -198,7 +207,7 @@ void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk, int 
   UNLOCK(io->qel.mut, "n_thr-inc-todo");
 
 produce:
-  hi_todo_produce_inlock(hit->shf, qe);
+  hi_todo_produce_queue_inlock(hit->shf, qe);
   ZX_COND_SIG(&hit->shf->todo_cond, "todo-prod");  /* Wake up consumers */
 
  out:

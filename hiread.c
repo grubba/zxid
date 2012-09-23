@@ -192,7 +192,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
     } else
 #endif
     {
-      ret = read(io->fd, pdu->ap, pdu->lim - pdu->ap); /* *** vs. need */
+      ret = read(io->fd&0x7fffffff, pdu->ap, pdu->lim - pdu->ap); /* *** vs. need */
       switch (ret) {
       case 0:
 	/* *** any provision to process still pending PDUs? */
@@ -254,7 +254,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
       case HI_NOERR: /* 0: In this case io->reading has been cleared at hi_add_req() due to
 		      * completely decoded PDU. It may have been acquired by other thread. */
 	LOCK(io->qel.mut, "reset-reading");
-	D("LOCK io(%x)->qel.thr=%x n_close=%d n_thr=%d", io->fd, io->qel.mut.thr, io->n_close, io->n_thr);
+	D("LOCK io(%x)->qel.thr=%x n_c/t=%d/%d", io->fd, io->qel.mut.thr, io->n_close, io->n_thr);
 	if (io->reading) {
 	  D("Somebody else already reading n_thr=%d", io->n_thr);
 	  --io->n_thr;              /* Remove read count. */
@@ -310,9 +310,9 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
   D("RD-CLO: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   ASSERT(io->reading);
   io->reading = 0;
-  --io->n_thr;              /* Remove read count. */
-  D("out of reading(%x) n_thr=%d (close)", io->fd, io->n_thr);
+  --io->n_thr;                 /* Remove read count. */
   ASSERT(io->n_thr >= 0);
+  D("out of reading(%x) n_thr=%d (close)", io->fd, io->n_thr);
   UNLOCK(io->qel.mut, "clear-reading-close");
   hi_close(hit, io, "hi_read");  /* will clear hit->cur_io */
   return 1;
@@ -335,6 +335,9 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 /* EOF  --  hiread.c */
 
 #if 0
+
+N.B. Be careful to link against same OPenSSL libraries as headers. Otherwise
+reference count errors may appers (at least with 1.0.1 headers agains 1.0.0 libs).
 
 Mystery SSL error (in the end caused by errors left in SSL stack by private key reading)
 
@@ -366,7 +369,7 @@ Known issue (20120518)
 
 http://cvs.openssl.org/chngview?cn=22565
 
-penssl/ssl/s3_pkt.c 1.72.2.7.2.15 -> 1.72.2.7.2.16
+openssl/ssl/s3_pkt.c 1.72.2.7.2.15 -> 1.72.2.7.2.16
 
 --- s3_pkt.c	2012/04/17 13:20:19	1.72.2.7.2.15
 +++ s3_pkt.c	2012/05/11 13:32:26	1.72.2.7.2.16
