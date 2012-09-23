@@ -276,14 +276,11 @@ void hi_poll(struct hi_thr* hit)
   for (i = 0; i < hit->shf->n_evs; ++i) {
     io = (struct hi_io*)hit->shf->evs[i].data.ptr;
     io->events = hit->shf->evs[i].events;
-    if (io->fd & 0x80000000) {
-      D("poll returned a closed fd(%x). Ignoring. n_thr=%d r/w=%d/%d ev=%x intodo=%x", io->fd, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
-    } else {
-      /* *** Should the todo_mut lock be batched? The advantage might not be big
-       * as we need to either do pthread_cond_signal(3) to wake up one worker
-       * or pthread_cond_broadcast(3) to wake them up all, which may be overkill. */
-      hi_todo_produce(hit, &io->qel, "poll", 1);
-    }
+    /* *** Should the todo_mut lock be batched? The advantage might not be big
+     * as we need to either do pthread_cond_signal(3) to wake up one worker
+     * or pthread_cond_broadcast(3) to wake them up all, which may be overkill.
+     * N.B. hi_todo_produce() has logic to avoid enqueuing io that is closed. */
+    hi_todo_produce(hit, &io->qel, "poll", 1);
   }
 #endif
 #ifdef SUNOS
@@ -306,11 +303,7 @@ void hi_poll(struct hi_thr* hit)
       io->events = hit->shf->evs[i].revents;
       /* Poll says work is possible: sched wk for io if not under wk yet, or cur_pdu needs wk. */
       /*if (!io->cur_pdu || io->cur_pdu->need)   *** cur_pdu is always set */
-      if (io->fd & 0x80000000) {
-	D("poll returned a closed fd(%x). Ignoring. n_thr=%d r/w=%d/%d ev=%x intodo=%x", io->fd, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
-      } else {
-	hi_todo_produce(hit, &io->qel, "poll", 1); /* *** should the todo_mut lock be batched? */
-      }
+      hi_todo_produce(hit, &io->qel, "poll", 1); /* *** should the todo_mut lock be batched? */
     }
   }
 #endif

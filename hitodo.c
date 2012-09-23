@@ -189,21 +189,23 @@ void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk, int 
 
   io = (struct hi_io*)qe;
   LOCK(io->qel.mut, "n_thr-inc-todo");
-#if 0
-  if (ONE_OF_2(io->n_thr, HI_IO_N_THR_END_GAME, HI_IO_N_THR_END_POLL)) {
-    D("%s: already in end game(%x) n_c/t=%d/%d", io->fd, io->n_close, io->n_thr);
-    UNLOCK(io->qel.mut, "prod-quick-close");
-    goto out;
-  }
-#endif
   if (from_poll) {
+    /* Detect already closed (or even end game) io, see hi_close(). Note that
+     * this detection only needs to apply to produce from poll. */
+    if (io->n_thr == HI_IO_N_THR_END_POLL || io->fd & 0x80000000) {
+      D("%s: prod(%x)-ign LK&UNLK n_c/t=%d/%d r/w=%d/%d ev=%x", lk, io->fd, io->n_close, io->n_thr, io->reading, io->writing, io->events);
+      UNLOCK(io->qel.mut, "n_thr-inc-ign");
+      goto out;
+    }
+    ASSERTOP(io->n_thr, >=, 0, io->n_thr);
     ++io->n_thr;  /* Should have been done already by caller, but for poll optimize lock. */
-  }
-  if (io->n_thr != HI_IO_N_THR_END_POLL) {
-    ASSERTOP(io->n_thr, >, 0, io->n_thr);
+  } else {
+    if (io->n_thr != HI_IO_N_THR_END_POLL) {
+      ASSERTOP(io->n_thr, >=, 0, io->n_thr);
+    }
   }
   //if (io->fd & 0x80000000) { /* *** fast fail hi_close() ? */ }
-  D("%s: prod(%x) LK&UNLK n_close=%d n_thr=%d r/w=%d/%d ev=%x", lk, io->fd, io->n_close, io->n_thr, io->reading, io->writing, io->events);
+  D("%s: prod(%x) LK&UNLK n_c/t=%d/%d r/w=%d/%d ev=%x", lk, io->fd, io->n_close, io->n_thr, io->reading, io->writing, io->events);
   UNLOCK(io->qel.mut, "n_thr-inc-todo");
 
 produce:

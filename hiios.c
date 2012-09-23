@@ -20,9 +20,7 @@
  *    V                   V             V V                 V        V
  *   qel.n --> qel.n --> qel.n --> 0   qel.n --> 0          0        0
  *
- ****
- * accept() blocks (after accept returned EAGAIN) - see if this is a blocking socket
- * see if edge triggered epoll has some special consideration for accept(2).
+ * *** see if edge triggered epoll has some special consideration for accept(2).
  */
 
 #include "platform.h"
@@ -55,63 +53,6 @@
 extern int zx_debug;
 #ifdef MUTEX_DEBUG
 extern pthread_mutexattr_t MUTEXATTR_DECL;
-#endif
-
-#if 0
-/*(-) Finalize close, actually closing the fd.
- * locking:: must be called with io->qel.mut held, typically after
- *     checking that io->n_close == hit->cur_n_close.  */ 
-
-/* Called by:  hi_close */
-static void hi_close_final(struct hi_thr* hit, struct hi_io* io, const char* lk)
-{  
-  struct hi_pdu* pdu;
-  D("%s: close final(%x) n_c/t=%d/%d", lk, io->fd, io->n_close, io->n_thr);
-  ASSERTOP(io->n_thr, ==, 0, io->n_thr);
-  for (pdu = io->reqs; pdu; pdu = pdu->n)
-    hi_free_req(hit, pdu);
-  io->reqs = 0;
-  for (pdu = io->pending; pdu; pdu = pdu->n)
-    hi_free_req(hit, pdu);
-  io->pending = 0;
-  
-  if (io->cur_pdu) {
-    hi_free_req(hit, io->cur_pdu);
-    io->cur_pdu = hi_pdu_alloc(hit, "cur_pdu-clo");  /* *** Could we recycle the PDU without freeing? */
-  }
-#ifdef ENA_S5066
-  void sis_clean(struct hi_io* io);
-  sis_clean(io);
-#endif
-  
-  /* Clear the association with entity as late as possible so ACKs may
-   * get a chance of being processed and written. */
-  if (io->ent) {
-    if (io->ent->io == io) {
-      io->ent->io = 0;
-      INFO("Dissociate ent_%p (%s) from io(%x)", io->ent, io->ent->eid, io->fd);
-    } else {
-      ERR("io(%x)->ent and ent->io(%x) are different", io->fd, io->ent->io->fd);
-    }
-    io->ent = 0;
-  } else {
-    ERR("io(%x) has no entity associated", io->fd);
-  }
-  
-#ifdef USE_OPENSSL
-  if (io->ssl) {
-    SSL_shutdown(io->ssl);
-    SSL_free(io->ssl);
-    io->ssl = 0;
-  }
-#endif
-  ASSERTOP(io->qel.intodo, ==, HI_INTODO_IOINUSE, io->qel.intodo); /* HI_INTODO_INTODO should not be possible anymore. */
-  io->qel.intodo = HI_INTODO_SHF_FREE;
-  close(io->fd & 0x7ffffff); /* Now some other thread may reuse the slot by accept()ing same fd */
-  ++io->n_close;
-  hit->cur_io = 0;
-  D("%s: closed(%x) n_close=%d", lk, io->fd, io->n_close);
-}
 #endif
 
 /*() Close an I/O object (in multiple stages)
@@ -203,7 +144,6 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   }
   
   /* Now we are ready to really close */
-  /* *** hi_close_final(hit, io, lk);*/
 
   D("%s: close-final(%x) n_c/t=%d/%d", lk, io->fd, io->n_close, io->n_thr);
 
@@ -315,9 +255,11 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
       }
     } else {
       --io->n_thr;              /* Remove write count as no write happened. */
+      D("no inwrite io(%x)->n_thr=%d", io->fd, io->n_thr);
     }
   } else {
     --io->n_thr;              /* Remove write count as no write happened. */
+    D("no EPOLLOUT io(%x)->n_thr=%d", io->fd, io->n_thr);
   }
   ASSERT(io->n_thr > 0 || io->n_thr == HI_IO_N_THR_END_GAME);  /* Read cnt should still be there */
   io->events &= ~EPOLLOUT;  /* Clear poll flag in case we get read rescheduling */

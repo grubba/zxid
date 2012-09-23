@@ -158,15 +158,15 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
   while (1) {  /* eagerly read until we exhaust the read (c.f. edge triggered epoll) */
     ASSERT(io->reading);
     pdu = io->cur_pdu;
-    D("read_loop io(%x)->cur_pdu=%p", io->fd, pdu);
+    D("loop(%x)->cur_pdu=%p ssl_%p", io->fd, pdu, io->ssl);
     ASSERT(pdu);  /* Exists either through hi_shuff_init() or through hi_check_more() */
   retry:
-    D("read(%x) have=%d need=%d buf_avail=%d", io->fd, pdu->ap-pdu->m, pdu->need, pdu->lim - pdu->ap);
+    D("read(%x) have=%d need=%d buf_avail=%d", io->fd, pdu->ap-pdu->m,pdu->need,pdu->lim-pdu->ap);
     ASSERT(io->reading);
 #ifdef USE_OPENSSL
     if (io->ssl) {
       ret = SSL_read(io->ssl, pdu->ap, pdu->lim - pdu->ap);
-      switch ((err = SSL_get_error(io->ssl, ret))) {
+      switch (err = SSL_get_error(io->ssl, ret)) {
       case SSL_ERROR_NONE: break; /* Something read case */
       case SSL_ERROR_WANT_READ:
 	D("SSL EAGAIN READ fd(%x)", io->fd); /* Comparable to EAGAIN. Should we remember which? */

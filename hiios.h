@@ -431,7 +431,6 @@ struct hi_qel* hi_todo_consume(struct hi_thr* hit);
 
 void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp);
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* pdu);
-void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req);
 void hi_del_from_reqs(struct hi_io* io,   struct hi_pdu* req);
 void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen);
 void hi_make_iov_nolock(struct hi_io* io);

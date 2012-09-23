@@ -85,15 +85,15 @@ static void zxbus_info_cb(const SSL *ssl, int where, int ret)
   else str="undefined";
   
   if (where & SSL_CB_LOOP) {
-    D("%s:%s",str,SSL_state_string_long(ssl));
+    D("ssl_%p %s:%s", ssl, str, SSL_state_string_long(ssl));
   } else if (where & SSL_CB_ALERT) {
     str=(where & SSL_CB_READ)?"read":"write";
-    D("SSL3 alert %s:%s:%s",str,SSL_alert_type_string_long(ret),SSL_alert_desc_string_long(ret));
+    D("ssl_%p SSL3 alert %s:%s:%s", ssl, str, SSL_alert_type_string_long(ret), SSL_alert_desc_string_long(ret));
   } else if (where & SSL_CB_EXIT) {
     if (ret == 0)
-      D("%s:failed in %s",str,SSL_state_string_long(ssl));
+      D("ssl_%p %s:failed in %s", ssl, str, SSL_state_string_long(ssl));
     else if (ret < 0)
-      D("%s:error in %s",str,SSL_state_string_long(ssl));
+      D("ssl_%p %s:error in %s", ssl, str, SSL_state_string_long(ssl));
   }
 }
 #endif

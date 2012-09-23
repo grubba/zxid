@@ -214,7 +214,7 @@ void hi_sendf(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
   hi_send1(hit, io, parent, req, pdu, pdu->need, pdu->m);
 }
 
-/*() Process io->to_write_consume to produce an iov and move the PDUs to io->inwrite.
+/*() Process io->to_write_consume to produce an iov and move the PDUs to io->in_write.
  * This is the main (only?) way how writes end up in hiios poll machinery to be written.
  * The only consumer of the io->to_write_consume queue.
  * Must only be called with io->qel.mut held. */
@@ -304,7 +304,7 @@ static void hi_pdu_free(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk)
  * a. multiple responses
  * b. subrequests and their responses
  * c. possibility of sending a response before processing of request itself has ended
- */
+ * locking:: Called outside io->qel.mut */
 
 /* Called by:  hi_clear_iov, stomp_got_ack x2, stomp_got_nack */
 void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
@@ -330,7 +330,8 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
 }
 
 /*() Free a request, and transitively its real consequences (response, subrequests, etc.).
- * May be called either because individual resp was done, or because of connection close. */
+ * May be called either because individual resp was done, or because of connection close.
+ * locking:: Called outside io->qel.mut */
 
 /* Called by:  hi_close_final x3, hi_free_req_fe, stomp_got_ack, stomp_got_nack, stomp_msg_deliver */
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
@@ -385,10 +386,11 @@ void hi_del_from_reqs(struct hi_io* io,   struct hi_pdu* req)
 }
 
 /*() Free a request, assuming it is associated with a frontend.
- * Will also remove the PDU from the frontend reqs queue. */
+ * Will also remove the PDU from the frontend reqs queue.
+ * locking:: called outside io->qel.mut, takes it indirectly */
 
 /* Called by:  hi_clear_iov */
-void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
+static void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
 {
   ASSERT(req->fe);
   if (!req->fe)
@@ -403,16 +405,41 @@ void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
   hi_free_req(hit, req);
 }
 
+/*() Free the contents of io->in_write list and anything that depends from it.
+ * This is called either after successful write, by hi_clear_iov(), or failed
+ * write when close will mean that no further writes will be attempted.
+ * locking:: called outside io->qel.mut */
+
+/* Called by: hi_write, hi_clear_iov */
+static void hi_free_in_write(struct hi_thr* hit, struct hi_io* io)
+{
+  struct hi_pdu* req;
+  struct hi_pdu* resp;
+  D("freeing resps (&reqs?) io(%x)->in_write=%p", io->fd, io->in_write);
+
+  while (resp = io->in_write) {
+    io->in_write = resp->wn;
+    resp->wn = 0;
+    
+    if (!(req = resp->req)) continue;  /* It is a request */
+    
+    /* Only a response can cause anything freed, and every response is freeable upon write. */
+    
+    hi_free_resp(hit, resp);
+    if (!req->reals)                   /* last response, free the request */
+      hi_free_req_fe(hit, req);
+  }
+}
+
 /*() Post process iov after write.
  * Determine if any (resp) PDUs got completely written and
  * warrant deletion of entire chaing of req and responses,
- * including subreqs and their responses. */
+ * including subreqs and their responses.
+ * locking:: called outside io->qel.mut */
 
 /* Called by:  hi_write x2 */
 static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
 {
-  struct hi_pdu* req;
-  struct hi_pdu* resp;
   io->n_written += n;
   while (io->n_iov && n) {
     if (n >= io->iov_cur->iov_len) {
@@ -433,27 +460,15 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
   
   /* Everything has now been written. Time to free in_write list. */
   
-  D("freeing resps (&reqs?) in_write=%p", io->in_write);
-  while (resp = io->in_write) {
-    io->in_write = resp->wn;
-    resp->wn = 0;
-    
-    if (!(req = resp->req)) continue;  /* It is a request */
-    
-    /* Only a response can cause anything freed, and every response is freeable upon write. */
-    
-    hi_free_resp(hit, resp);
-    if (!req->reals)                   /* last response, free the request */
-      hi_free_req_fe(hit, req);
-  }
+  hi_free_in_write(hit, io);
 }
 
 /*() Attempt to write pending iovs.
  * This function can only be called by one thread at a time because the todo_queue
  * only admits an io object once and only one thread can consume it. Thus locking
  * is really needed only to protect the to_write queue, see hi_make_iov().
- * Returns 1 if connection got closed (and n_thr decremented).
- * Returns 0 if connection remains open (permitting, e.g., a read(2)). */
+ * Return:: 1 if connection got closed (and n_thr decremented),
+ *     0 if connection remains open (permitting, e.g., a read(2)). */
 
 /* Called by:  hi_in_out, hi_send0 */
 int hi_write(struct hi_thr* hit, struct hi_io* io)
@@ -528,8 +543,9 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
   return 0;
 
  clear_writing_err:
+  hi_free_in_write(hit, io);
   LOCK(io->qel.mut, "clear-writing-err");   /* The io->writing was set in hi_in_out() */
-  D("WR-FAIL: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("WR-FAIL: LK&UNLK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   ASSERT(io->writing);
   io->writing = 0;
   --io->n_thr;
