@@ -611,7 +611,7 @@ extern char* assert_msg;
 /*#define LOCK_STATIC(l) pthread_mutex_t l.ptmut = PTHREAD_MUTEX_INITIALIZER  do not use */
 #  define LOCK_INIT(l) pthread_mutex_init(&(l).ptmut, 0)
 #  define LOCK(l,lk)   MB if (pthread_mutex_lock(&(l).ptmut))   NEVERNEVER("DEADLOCK(%s)", (lk)); (l).func = __FUNCTION__; (l).line = __LINE__; (l).thr = pthread_self(); ME
-#  define UNLOCK(l,lk) MB ASSERTOPI((l).thr, ==, pthread_self()); /*(l).func = __FUNCTION__; (l).line = __LINE__;*/ (l).thr = 0; if (pthread_mutex_unlock(&(l).ptmut)) NEVERNEVER("UNLOCK-ERR(%s)", (lk)); ME
+#  define UNLOCK(l,lk) MB ASSERTOPI((long)((l).thr), ==, (long)pthread_self()); /*(l).func = __FUNCTION__; (l).line = __LINE__;*/ (l).thr = 0; if (pthread_mutex_unlock(&(l).ptmut)) NEVERNEVER("UNLOCK-ERR(%s)", (lk)); ME
   /* pthread_cond_wait(3) does some important magic: it unlocks the mutex (l)
    * so that other threads may move. But it will reacquire the lock before
    * returning. Due to this, other threads may have set lock debugging variables,
