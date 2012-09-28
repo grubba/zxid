@@ -246,7 +246,7 @@ static void stomp_got_nack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* 
 
   D("NACK subsc(%.*s) msg_id(%.*s) zx_rcpt_sig(%.*s)", sublen, sublen?resp->ad.stomp.subsc:"", midlen, midlen?resp->ad.stomp.msg_id:"", siglen, siglen?resp->ad.stomp.zx_rcpt_sig:"");
   
-  ASSERTOP(resp->req, ==, 0, resp->req);
+  ASSERTOPP(resp->req, ==, 0);
   if (!stomp_find_pending_req_for_resp(io, resp)) {
     ERR("Unsolicited NACK subsc(%.*s) msg_id(%.*s)", sublen, sublen?resp->ad.stomp.subsc:"", midlen, midlen?resp->ad.stomp.msg_id:"");
     return;
@@ -260,7 +260,7 @@ static void stomp_got_nack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* 
   
   ++(parent->ad.delivb.nacks);
   if (--(parent->ad.delivb.acks) <= 0) {
-    ASSERTOP(parent->ad.delivb.acks, ==, 0, parent->ad.delivb.acks);
+    ASSERTOPI(parent->ad.delivb.acks, ==, 0);
     close_file(parent->ad.delivb.ack_fd, "got_nack");
     D("nack: freeing parent(%p)", parent);
     hi_free_req(hit, parent, "nack ");
@@ -322,7 +322,7 @@ static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
   hi_free_resp(hit, resp, "ack ");
   
   if (--(parent->ad.delivb.acks) <= 0) {
-    ASSERTOP(parent->ad.delivb.acks, ==, 0, parent->ad.delivb.acks);
+    ASSERTOPI(parent->ad.delivb.acks, ==, 0);
     close_file(parent->ad.delivb.ack_fd, "got_ack");
     if (!parent->ad.delivb.nacks) {
       D("Delivered to all: mv msg to .del par_%p", parent);

@@ -126,7 +126,7 @@ int zx_EVP_DecryptFinal_ex(EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl) {
       //EVPerr(EVP_F_EVP_DECRYPTFINAL_EX,EVP_R_WRONG_FINAL_BLOCK_LENGTH);
       return(0);
     }
-    ASSERTOP(b, <=, sizeof ctx->final, b);
+    ASSERTOPI(b, <=, sizeof ctx->final);
     n=ctx->final[b-1];
     if (n == 0 || n > (int)b) {
       //EVPerr(EVP_F_EVP_DECRYPTFINAL_EX,EVP_R_BAD_DECRYPT);
@@ -186,7 +186,7 @@ struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, st
       ivv = iv;
     } else {
       ivv = ZX_DEFAULT_IV;
-      ASSERTOP(EVP_MAX_IV_LENGTH, <=, sizeof(ZX_DEFAULT_IV), EVP_MAX_IV_LENGTH);
+      ASSERTOPI(EVP_MAX_IV_LENGTH, <=, sizeof(ZX_DEFAULT_IV));
     }
   } else
     ivv = 0;
@@ -218,7 +218,7 @@ struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, st
     goto sslerr;
   }
   
-  ASSERTOP(outlen + iv_len, <=, alloclen, outlen + iv_len);
+  ASSERTOPI(outlen + iv_len, <=, alloclen);
 
 #if 0  
   if(!EVP_CipherFinal_ex(&ctx, (unsigned char*)out->s + iv_len + outlen, &tmplen)) {  /* Append final block */
@@ -246,7 +246,7 @@ struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, st
   EVP_CIPHER_CTX_cleanup(&ctx);
   
   outlen += tmplen;
-  ASSERTOP(outlen + iv_len, <=, alloclen, outlen + iv_len);
+  ASSERTOPI(outlen + iv_len, <=, alloclen);
   out->len = outlen + iv_len;
   out->s[outlen + iv_len] = 0;  /* nul term */
   return out;
@@ -299,7 +299,7 @@ struct zx_str* zx_rsa_pub_enc(struct zx_ctx* c, struct zx_str* plain, RSA* rsa_p
     zx_report_openssl_err("zx_pub_encrypt_rsa fail (${ret})");
     return 0;
   }
-  ASSERTOP(ret, <=, siz, ret);
+  ASSERTOPI(ret, <=, siz);
   ciphered->len = ret;
   ciphered->s[ret] = 0;
   return ciphered;
@@ -322,7 +322,7 @@ struct zx_str* zx_rsa_pub_dec(struct zx_ctx* c, struct zx_str* ciphered, RSA* rs
     zx_report_openssl_err("zx_public_decrypt_rsa fail");
     return 0;
   }
-  ASSERTOP(ret, <=, siz, ret);
+  ASSERTOPI(ret, <=, siz);
   plain->len = ret;
   plain->s[ret] = 0;
   return plain;
@@ -351,7 +351,7 @@ struct zx_str* zx_rsa_priv_dec(struct zx_ctx* c, struct zx_str* ciphered, RSA* r
     zx_report_openssl_err("zx_priv_decrypt_rsa fail");
     return 0;
   }
-  ASSERTOP(ret, <=, siz, ret);
+  ASSERTOPI(ret, <=, siz);
   plain->len = ret;
   plain->s[ret] = 0;
   return plain;
@@ -374,7 +374,7 @@ struct zx_str* zx_rsa_priv_enc(struct zx_ctx* c, struct zx_str* plain, RSA* rsa_
     zx_report_openssl_err("zx_priv_encrypt_rsa fail");
     return 0;
   }
-  ASSERTOP(ret, <=, siz, ret);
+  ASSERTOPI(ret, <=, siz);
   ciphered->len = ret;
   ciphered->s[ret] = 0;
   return ciphered;

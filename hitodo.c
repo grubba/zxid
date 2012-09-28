@@ -197,11 +197,11 @@ void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk, int 
       UNLOCK(io->qel.mut, "n_thr-inc-ign");
       goto out;
     }
-    ASSERTOP(io->n_thr, >=, 0, io->n_thr);
+    ASSERTOPI(io->n_thr, >=, 0);
     ++io->n_thr;  /* Should have been done already by caller, but for poll optimize lock. */
   } else {
     if (io->n_thr != HI_IO_N_THR_END_POLL) {
-      ASSERTOP(io->n_thr, >=, 0, io->n_thr);
+      ASSERTOPI(io->n_thr, >=, 0);
     }
   }
   //if (io->fd & 0x80000000) { /* *** fast fail hi_close() ? */ }

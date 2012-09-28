@@ -621,7 +621,7 @@ int zxlog_dup_check(zxid_conf* cf, struct zx_str* path, const char* logkey)
   }
   /* We need a c path, but get zx_str. However, the zx_str will come from zxlog_path()
    * so we should be having the nul termination as needed. Just checking. */
-  ASSERTOP(path->s[path->len], ==, 0, path->s[path->len]);
+  ASSERTOPI(path->s[path->len], ==, 0);
   if (!stat(path->s, &st)) {
     ERR("Duplicate %s path(%.*s)", logkey, path->len, path->s);
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "EDUP", path->s, "%s", logkey);
@@ -672,7 +672,7 @@ int zxlog_blob(zxid_conf* cf, int logflag, struct zx_str* path, struct zx_str* b
    * so we should be having the nul termination as needed. Just checking. */
   D("%s: LOGBLOB15(%.*s) len=%d path(%.*s)", lk, MIN(blob->len,15), blob->s, blob->len, path->len, path->s);
   DD("%s: LOGBLOB(%.*s)", lk, blob->len, blob->s);
-  ASSERTOP(path->s[path->len], ==, 0, path->s[path->len]);
+  ASSERTOPI(path->s[path->len], ==, 0);
   if (!write2_or_append_lock_c_path(path->s, blob->len, blob->s, 0, 0, "zxlog blob", SEEK_END,O_APPEND)) {
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "S", "EFILE", 0, "Could not write blob. Permissions?");
   }
@@ -854,7 +854,7 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_le
 		  dest_len, dest_len?dest:"",
 		  eid_len, eid_len?eid:"",
 		  body_len, body_len?body:"");
-  ASSERTOP(zlen, ==, len, zlen);
+  ASSERTOPI(zlen, ==, len);
   buf[len] = 0; /* must terminate manually as on win32 nul is not guaranteed */
 
   ASSERT(sigbuf_len >= 3+ZXLOG_TIME_SIZ+1);
@@ -906,7 +906,7 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_le
 
   DD("body(%.*s) body_len=%d", body_len, body_len?body:"", body_len);
   if (zx_debug>1)
-    D("zx-rcpt-sig(%s) sigbuf_len=%d len=%d\nbuf(%s) buflen=%d %x %x", sigbuf, strlen(sigbuf), len, buf, strlen(buf), cf->bus_rcpt, cf->bus_rcpt&0x06);
+    D("zx-rcpt-sig(%s) sigbuf_len=%d len=%d\nbuf(%s) buflen=%d %x %x", sigbuf, (int)strlen(sigbuf), len, buf, (int)strlen(buf), cf->bus_rcpt, cf->bus_rcpt&0x06);
   else
     D("zx-rcpt-sig(%s) %x", sigbuf, cf->bus_rcpt);
   if (zbuf)
@@ -984,7 +984,7 @@ int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* s
 		  dest_len, dest_len?dest:"",
 		  deid_len, deid_len?deid:"",
 		  body_len, body_len?body:"");
-  ASSERTOP(zlen, ==, len, zlen);
+  ASSERTOPI(zlen, ==, len);
   buf[len] = 0; /* must terminate manually as on win32 nul is not guaranteed */
 
   switch (sigbuf[0]) {
@@ -996,12 +996,12 @@ int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* s
     }
     //D("check_private_key(%d)",X509_check_private_key(meta->sign_cert, cf->sign_pkey));
     if (SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(sigbuf_len) > sizeof(sig)) {
-      ERR("Available signature decoding buffer is too short len=%d, need=%d", sizeof(sig), SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(sigbuf_len));
+      ERR("Available signature decoding buffer is too short len=%d, need=%d", (int)sizeof(sig), SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(sigbuf_len));
       return -1;
     }
     p = sigbuf+3+ZXLOG_TIME_SIZ+1+mid_len+1;
     DD("zx-rcpt-sig(%.*s) sigbuf_len=%d", sigbuf_len, sigbuf, sigbuf_len);
-    D("sigbuf(%.*s) len=%d sigbuf=%p lim=%p", sigbuf_len-(p-sigbuf), p, sigbuf_len-(p-sigbuf), p, sigbuf+sigbuf_len);
+    D("sigbuf(%.*s) len=%d sigbuf=%p lim=%p", (int)(sigbuf_len-(p-sigbuf)), p, (int)(sigbuf_len-(p-sigbuf)), p, sigbuf+sigbuf_len);
     p = unbase64_raw(p, sigbuf+sigbuf_len, sig, zx_std_index_64);  /* In place, overwrite. */
 
     ver = zxsig_verify_data(len, buf, p-sig, sig, meta->sign_cert, "rcpt vfy");

@@ -383,7 +383,7 @@ static void zxbus_shift_read_buf(zxid_conf* cf, struct zxid_bus_url* bu, struct 
   if (stomp->end_of_pdu) {
     memmove(bu->m, stomp->end_of_pdu, bu->ap-stomp->end_of_pdu);
     bu->ap = bu->m + (bu->ap-stomp->end_of_pdu);
-    D("shifted read_buf(%.*s)", bu->ap-bu->m, bu->m);
+    D("shifted read_buf(%.*s)", (int)(bu->ap-bu->m), bu->m);
   }
   stomp->end_of_pdu = 0;
 }
@@ -414,7 +414,7 @@ int zxbus_read_stomp(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* s
   memset(stomp, 0, sizeof(struct stomp_hdr));
 
   while (bu->ap - bu->m < ZXBUS_BUF_SIZE) {
-    D("read, already buf(%.*s) need=%d len=%d buf_avail=%d", bu->ap - bu->m, bu->m, need, bu->ap - bu->m, ZXBUS_BUF_SIZE - (bu->ap - bu->m));
+    D("read, already buf(%.*s) need=%d len=%d buf_avail=%d", (int)(bu->ap-bu->m), bu->m, need, (int)(bu->ap-bu->m), (int)(ZXBUS_BUF_SIZE-(bu->ap - bu->m)));
     if (need || bu->ap == bu->m) {
 #ifdef USE_OPENSSL
       if (bu->ssl) {
@@ -486,7 +486,7 @@ int zxbus_read_stomp(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* s
 	goto read_more;
       v = memchr(h, ':', p-h);
       if (!v) {
-	ERR("Header missing colon. hdr(%.*s)", bu->ap-h,h);
+	ERR("Header missing colon. hdr(%.*s)", (int)(bu->ap-h), h);
 	return 0;
       }
       ++v; /* skip : */
@@ -515,7 +515,7 @@ int zxbus_read_stomp(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* s
       } else if (!memcmp(h, "message:", sizeof("message:")-1)) { /* ignore */
       } else if (!memcmp(h, "content-type:", sizeof("content-type:")-1)) { /* ignore */
       } else {
-        D("Unknown header(%.*s) ignored.", p-h, h);
+        D("Unknown header(%.*s) ignored.", (int)(p-h), h);
       }
     }
   
@@ -552,7 +552,7 @@ int zxbus_read_stomp(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* s
     continue;
   }
   if (bu->ap - bu->m >= ZXBUS_BUF_SIZE) {
-    ERR("PDU does not fit in buffer %d", bu->ap - bu->m);
+    ERR("PDU does not fit in buffer %d", (int)(bu->ap-bu->m));
     return 0;
   }
  done:
@@ -654,13 +654,13 @@ char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
       if (verbose) {
 	if (ascii_color>1) {
 	  if (verbose>1) {
-	    printf("\e[42m%.*s\e[0m\n", bu->ap - bu->m, bu->m);
+	    printf("\e[42m%.*s\e[0m\n", (int)(bu->ap - bu->m), bu->m);
 	  } else {
 	    printf("\e[42m%.*s\e[0m\n", stomp.len, stomp.body);
 	  }
 	} else {
 	  if (verbose>1) {
-	    printf("%.*s\n", bu->ap - bu->m, bu->m);
+	    printf("%.*s\n", (int)(bu->ap - bu->m), bu->m);
 	  } else {
 	    printf("%.*s\n", stomp.len, stomp.body);
 	  }
@@ -670,7 +670,7 @@ char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
       zxbus_shift_read_buf(cf, bu, &stomp);
       return stomp.body;  /* normal successful return */
     } else {
-      ERR("Unknown command received(%.*s)", bu->ap - bu->m, bu->m);
+      ERR("Unknown command received(%.*s)", (int)(bu->ap - bu->m), bu->m);
       zxbus_shift_read_buf(cf, bu, &stomp);
       return 0;
     }
@@ -1017,12 +1017,12 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
 	bu->fd = 0;
 	return 1;
       } else {
-	ERR("DISCONNECT to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1);
+	ERR("DISCONNECT to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d", bu->s, (int)(bu->ap - stomp.rcpt_id), stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1);
 	zxbus_shift_read_buf(cf, bu, &stomp);
 	goto errout;
       }
     } else {
-      ERR("DISCONNECT to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, bu->ap - bu->m, bu->m);
+      ERR("DISCONNECT to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, (int)(bu->ap - bu->m), bu->m);
       zxbus_shift_read_buf(cf, bu, &stomp);
     }
   } else {
@@ -1222,12 +1222,12 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 	zxbus_shift_read_buf(cf, bu, &stomp);
 	return 1;  /* normal successful return */
       } else {
-	ERR("Send to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d (%s)", bu->s, bu->ap - stomp.rcpt_id, stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1, bu->m);
+	ERR("Send to %s failed. RECEIPT number(%.*s)=%d mismatch cur_rcpt-1=%d (%s)", bu->s, (int)(bu->ap - stomp.rcpt_id), stomp.rcpt_id, atoi(stomp.rcpt_id), bu->cur_rcpt-1, bu->m);
 	zxbus_shift_read_buf(cf, bu, &stomp);
 	goto errout;
       }
     } else {
-      ERR("Send to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, bu->ap - bu->m, bu->m);
+      ERR("Send to %s failed. Other end did not send RECEIPT(%.*s)", bu->s, (int)(bu->ap - bu->m), bu->m);
       zxbus_shift_read_buf(cf, bu, &stomp);
     }
   } else {

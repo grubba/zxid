@@ -138,7 +138,7 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
 	p += av->map_val->len;
 	*p++ = '\n';
 
-	DD("len 2=%d", ((int)(p-ss->s)));
+	DD("len 2=%d", (int)(p-ss->s));
       }
 
 
@@ -154,7 +154,7 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
       }
       *p++ = '\n';
 
-      DD("len 3=%d name_len=%d name(%s)", ((int)(p-ss->s)), name_len, at->name);
+      DD("len 3=%d name_len=%d name(%s)", (int)(p-ss->s), name_len, at->name);
       
       for (av = at->nv; av; av = av->n) {
 	strcpy(p, at->name);
@@ -167,14 +167,14 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
 	}
 	*p++ = '\n';
 
-	D("len 4=%d", ((int)(p-ss->s)));
+	D("len 4=%d", (int)(p-ss->s));
       }
 
     }
   }
-  DD("len Fin=%d", ((int)(p-ss->s)));
+  DD("len Fin=%d", (int)(p-ss->s));
 
-  ASSERTOP(p, ==, ss->s+len, p);
+  ASSERTOPP(p, ==, ss->s+len);
   return ss;
 }
 
@@ -373,7 +373,7 @@ static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
     *p++ = ',';
   }
   p[-1] = '}';   /* Overwrites last comma */
-  ASSERTOP(p, ==, ss->s+len, p);
+  ASSERTOPP(p, ==, ss->s+len);
   return ss;
 }
 
@@ -479,7 +479,7 @@ static struct zx_str* zxid_pool_to_qs(zxid_conf* cf, struct zxid_attr* pool)
   }
   D("p=%p == %p ss=%p len=%d", p, ss->s+len, ss->s, len);
   D("p(%.*s)", len, ss->s);
-  ASSERTOP(p, ==, ss->s+len, p);
+  ASSERTOPP(p, ==, ss->s+len);
   *p = 0;  /* Zap last & */
   return ss;
 }

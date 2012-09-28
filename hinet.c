@@ -319,8 +319,8 @@ void hi_poll(struct hi_thr* hit)
 /* Called by:  hi_accept_book, hi_open_tcp x2, serial_init */
 struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
 {
-  ASSERTOP(fd, <, hit->shf->max_ios, fd);
-  ASSERTOP(io->n_thr, ==, 0, io->n_thr);
+  ASSERTOPI(fd, <, hit->shf->max_ios);
+  ASSERTOPI(io->n_thr, ==, 0);
   ++io->n_thr;  /* May be returned by poll at any time, thus there is "virtual thread" */
   
 #ifdef LINUX
@@ -361,16 +361,16 @@ struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
 #endif
 
   /* memset(io, 0, sizeof(struct hi_io)); *** MUST NOT clear as there are important fields like cur_pdu and lock initializations already set. All memory was zeroed in hi_new_shuff(). After that all changes should be field by field. */
-  ASSERTOP(io->writing, ==, 0, io->writing);
-  ASSERTOP(io->reading, ==, 0, io->reading);
-  ASSERTOP(io->n_to_write, ==, 0, io->n_to_write);
-  ASSERTOP(io->in_write, ==, 0, io->in_write);
-  ASSERTOP(io->to_write_consume, ==, 0, io->to_write_consume);
-  ASSERTOP(io->to_write_produce, ==, 0, io->to_write_produce);
+  ASSERTOPI(io->writing, ==, 0);
+  ASSERTOPI(io->reading, ==, 0);
+  ASSERTOPI(io->n_to_write, ==, 0);
+  ASSERTOPP(io->in_write, ==, 0);
+  ASSERTOPP(io->to_write_consume, ==, 0);
+  ASSERTOPP(io->to_write_produce, ==, 0);
   ASSERT(io->cur_pdu);  /* cur_pdu is always set to some value */
-  ASSERTOP(io->reqs, ==, 0, io->reqs);
-  ASSERTOP(io->pending, ==, 0, io->pending);
-  ASSERTOP(io->qel.intodo, ==, HI_INTODO_SHF_FREE, io->qel.intodo);
+  ASSERTOPP(io->reqs, ==, 0);
+  ASSERTOPP(io->pending, ==, 0);
+  ASSERTOPI(io->qel.intodo, ==, HI_INTODO_SHF_FREE);
   io->qel.intodo = HI_INTODO_IOINUSE;
   //io->ap = io->m;       /* Nothing read yet */
   io->ent = 0;          /* Not authenticated yet */
@@ -384,7 +384,7 @@ struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
 /* Called by:  hi_close */
 void hi_del_fd(struct hi_thr* hit, int fd)
 {
-  ASSERTOP(fd, <, hit->shf->max_ios, fd);
+  ASSERTOPI(fd, <, hit->shf->max_ios);
 #ifdef LINUX
   {
     if (epoll_ctl(hit->shf->ep, EPOLL_CTL_DEL, fd&0x7fffffff, 0)) {

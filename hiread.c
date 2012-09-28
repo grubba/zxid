@@ -51,7 +51,7 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk)
     pdu = hit->free_pdus;
     hit->free_pdus = (struct hi_pdu*)pdu->qel.n;
     D("%s: alloc pdu_%p thr n_free=%d", lk, pdu, hit->n_free_pdus);
-    ASSERTOP(pdu->qel.intodo, ==, HI_INTODO_HIT_FREE, pdu->qel.intodo);
+    ASSERTOPI(pdu->qel.intodo, ==, HI_INTODO_HIT_FREE);
     ASSERT(pdu != hit->free_pdus);
     goto retpdu;
   }
@@ -62,7 +62,7 @@ struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk)
     hit->shf->free_pdus = (struct hi_pdu*)pdu->qel.n;
     D("%s: alloc pdu(%p) from shuff", lk, pdu);
     ASSERT(pdu != hit->shf->free_pdus);
-    ASSERTOP(pdu->qel.intodo, ==, HI_INTODO_SHF_FREE, pdu->qel.intodo);
+    ASSERTOPI(pdu->qel.intodo, ==, HI_INTODO_SHF_FREE);
     UNLOCK(hit->shf->pdu_mut, "pdu_alloc-ok");
     goto retpdu;
   }
@@ -130,14 +130,14 @@ void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, in
   LOCK(io->qel.mut, "add_to_reqs");
   D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
   if (minlen) {
-    ASSERTOP(io->cur_pdu, ==, req, io->cur_pdu);
+    ASSERTOPP(io->cur_pdu, ==, req);
     ASSERT(io->reading);
     io->reading = 0;  /* reading was set in hi_in_out() */
     D("Out of reading(%x) n_thr=%d (reset cur_pdu)", io->fd, io->n_thr);
     hi_checkmore(hit, io, req, minlen);
   }
   /* --io->n_thr; ASSERT(io->n_thr >= 0);  N.B. dec n_thr for read is handled in hi_read() */
-  ASSERTOP(req->fe, ==, io, req->fe);
+  ASSERTOPP(req->fe, ==, io);
   req->n = io->reqs;
   io->reqs = req;
   D("UNLOCK io(%x)->qel.thr=%x req_%p", io->fd, io->qel.mut.thr, req);
@@ -218,7 +218,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 	   && pdu->need   /* no further I/O desired */
 	   && pdu->need <= (pdu->ap - pdu->m)) {
       D("decode_loop io(%x)->cur_pdu=%p need=%d", io->fd, pdu, pdu?pdu->need:-99);
-      ASSERTOP(pdu, ==, io->cur_pdu, pdu);
+      ASSERTOPP(pdu, ==, io->cur_pdu);
       switch (io->qel.proto) {
 	/* DISPATCH: Following decoders MUST either
 	 * a. drop connection in which case any rescheduling is moot

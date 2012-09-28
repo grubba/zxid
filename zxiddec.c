@@ -216,7 +216,7 @@ log_msg:
   
   DD("Signed data(%.*s) len=%d sig(%s)", ss->len, ss->s, ss->len, cgi->sig);
   p2 = unbase64_raw(cgi->sig, cgi->sig + strlen(cgi->sig), sigbuf, zx_std_index_64);
-  ASSERTOP(p2-sigbuf, <, sizeof(sigbuf), p2-sigbuf);
+  ASSERTOPI(p2-sigbuf, <, sizeof(sigbuf));
   
   /* strcmp(cgi->sigalg, SIG_ALGO_RSA_SHA1) would be the right test, but as
    * SigAlg can be arbitrarily URL encoded, we make the match fuzzier. */

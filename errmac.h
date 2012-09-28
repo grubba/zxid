@@ -532,6 +532,16 @@ extern char* assert_msg;
       ERR("ASSERTOP FAIL: " #a #op #b " %x", (int)(err)); \
       DIE_ACTION(1); } ME
 
+# define ASSERTOPI(a,op,b) MB if (!((a) op (b))) { \
+      /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b);*/ \
+      ERR("ASSERTOP FAIL: " #a #op #b " %x", (int)(a)); \
+      DIE_ACTION(1); } ME
+
+# define ASSERTOPP(a,op,b) MB if (!((a) op (b))) { \
+      /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b);*/ \
+      ERR("ASSERTOPP FAIL: " #a #op #b " %p", (a)); \
+      DIE_ACTION(1); } ME
+
 # define FAIL(x,why) MB /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_FAIL_RAZ, (char*)(x), why);*/ DIE_ACTION(1); ME
 
 /* SANITY_CHK is a smaller assert which checks a condition but will not force an abort */
@@ -541,6 +551,8 @@ extern char* assert_msg;
 # define CHK(cond,err) MB if (cond) { DIE_ACTION(err); } ME
 # define ASSERT(c) MB if (!(c)) { DIE_ACTION(1); } ME
 # define ASSERTOP(a,op,b,err) MB if (!((a) op (b))) { DIE_ACTION(err); } ME
+# define ASSERTOPI(a,op,b) MB if (!((a) op (b))) { DIE_ACTION(1); } ME
+# define ASSERTOPP(a,op,b) MB if (!((a) op (b))) { DIE_ACTION(1); } ME
 # define FAIL(x,why) MB DIE_ACTION(1); ME
 # define SANITY_CHK(cond,...) MB if (!(cond)) NEVER("insanity %d",0); ME
 #endif
@@ -554,6 +566,8 @@ extern char* assert_msg;
 # define CHK(cond,err)
 # define ASSERT(c)
 # define ASSERTOP(a,op,b,err)
+# define ASSERTOPI(a,op,b)
+# define ASSERTOPP(a,op,b)
 # define FAIL(format)
 # define BOGUS_UNINITIALIZED_WARNING_0
 #endif /* DEBUG */
@@ -574,6 +588,9 @@ extern char* assert_msg;
 
 /* DASSERT family is "documentative" assert, i.e. not compiled in even in debug mode */
 #define DASSERT(c)
+#define DASSERTOP(a,op,b,err)
+#define DASSERTOPI(a,op,b)
+#define DASSERTOPP(a,op,b)
 #define DASSERT_THR(t)
 #define DASSERT_NOT_IN_LOCK(t)
 #define DASSERT_IN_LOCK(t)

@@ -103,7 +103,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
       ERR("%s: shutdown(%x) %d %s", lk, fd, errno, STRERROR(errno));
     hi_del_fd(hit, fd);    /* stop poll from returning this fd */
     io->fd |= 0x80000000;  /* mark as closed */
-    ASSERTOP(io->n_thr, >, 0, io->n_thr);
+    ASSERTOPI(io->n_thr, >, 0);
     --io->n_thr;  /* Will not be returned by poll any more, thus remove poll "virtual thread" */
   }
 
@@ -136,7 +136,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   }
   if (io->n_thr != HI_IO_N_THR_END_GAME) {
     ERR("%s: close-n_thr(%x) n_c/t=%d/%d intodo=%x", lk,fd,io->n_close,io->n_thr,io->qel.intodo);
-    ASSERTOP(io->n_thr, ==, HI_IO_N_THR_END_GAME, io->n_thr);
+    ASSERTOPI(io->n_thr, ==, HI_IO_N_THR_END_GAME);
     hit->cur_io = 0;
     D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
     UNLOCK(io->qel.mut, "hi_close-n_thr");
@@ -186,7 +186,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
     io->ssl = 0;
   }
 #endif
-  ASSERTOP(io->qel.intodo, ==, HI_INTODO_IOINUSE, io->qel.intodo); /* HI_INTODO_INTODO should not be possible anymore. */
+  ASSERTOPI(io->qel.intodo, ==, HI_INTODO_IOINUSE); /* HI_INTODO_INTODO should not be possible anymore. */
   io->qel.intodo = HI_INTODO_SHF_FREE;
   io->n_thr = 0;
   ++io->n_close;

@@ -290,7 +290,7 @@ static void hi_pdu_free(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk1,
 
     pdu->qel.n = &hit->shf->free_pdus->qel;         /* move to free list */
     hit->shf->free_pdus = pdu;
-    ASSERTOP(pdu->qel.intodo, ==, HI_INTODO_HIT_FREE, pdu->qel.intodo);
+    ASSERTOPI(pdu->qel.intodo, ==, HI_INTODO_HIT_FREE);
     pdu->qel.intodo = HI_INTODO_SHF_FREE;
   }
   UNLOCK(hit->shf->pdu_mut, "pdu_free");
@@ -446,7 +446,7 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
       n -= io->iov_cur->iov_len;
       ++io->iov_cur;
       --io->n_iov;
-      ASSERTOP(io->iov_cur, >=, 0, io->iov_cur);
+      ASSERTOPI(io->iov_cur, >=, 0);
     } else {
       /* partial write: need to adjust iov_cur->iov_base */
       io->iov_cur->iov_base = ((char*)(io->iov_cur->iov_base)) + n;
@@ -454,7 +454,7 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
       return;  /* we are not in end so nothing to free */
     }
   }
-  ASSERTOP(n, ==, 0, n);
+  ASSERTOPI(n, ==, 0);
   if (io->n_iov)
     return;
   
