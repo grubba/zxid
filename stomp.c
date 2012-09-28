@@ -113,7 +113,7 @@ static int stomp_cmd_ni(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req
     len = 1;
     rcpt = "-";
   }
-  ERR(CMD_NI_MSG, nl-cmd, cmd);
+  ERR(CMD_NI_MSG, (int)(nl-cmd), cmd);
   hi_sendf(hit, io, 0, req, "ERROR\nmessage:command not implemented by server\nreceipt-id:%.*s\ncontent-type:text/plain\ncontent-length:%d\n\n" CMD_NI_MSG "%c", len, rcpt, sizeof(CMD_NI_MSG)-3+(nl-cmd), nl-cmd, cmd, 0);
   return HI_CONN_CLOSE;
 }
@@ -125,7 +125,7 @@ static int stomp_got_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
 {
   /*struct hi_pdu* resp = stomp_encode_start(hit);*/
   /*hi_sendv(hit, io, 0, req, resp, len, resp->m, size, req->m + len);*/
-  ERR("remote sent error(%.*s)", req->ap-req->m, req->m);
+  ERR("remote sent error(%.*s)", (int)(req->ap-req->m), req->m);
   return HI_CONN_CLOSE;
 }
 
@@ -413,7 +413,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
   char* val;
   char* p = req->m;
 
-  D("decode req(%p)->need=%d (%.*s)", req, req->need, MIN(req->ap - req->m, 3), req->m);
+  D("decode req(%p)->need=%d (%.*s)", req, req->need, (int)MIN(req->ap - req->m, 3), req->m);
   
   HI_SANITY(hit->shf, hit);
   
@@ -423,7 +423,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
   
   if (req->ap - p < STOMP_MIN_PDU_SIZE) {   /* too little, need more */
     req->need = STOMP_MIN_PDU_SIZE;
-    D("need=%d have=%d", req->need, req->ap - req->m);
+    D("need=%d have=%d", req->need, (int)(req->ap - req->m));
     return  HI_NEED_MORE;
   }
 
@@ -433,7 +433,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
   hdr = memchr(p, '\n', req->ap - p);
   if (!hdr || ++hdr == req->ap) {
     req->need = MAX(STOMP_MIN_PDU_SIZE, req->ap - req->m + 2);
-    D("need=%d have=%d", req->need, req->ap - req->m);
+    D("need=%d have=%d", req->need, (int)(req->ap - req->m));
     return  HI_NEED_MORE;
   }
   memset(&req->ad.stomp, 0, sizeof(req->ad.stomp));
@@ -460,7 +460,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
     p = memchr(p, '\n', req->ap - p);
     if (!p || ++p == req->ap) {
       req->need = MAX(STOMP_MIN_PDU_SIZE, req->ap - req->m + 2);
-      D("need=%d have=%d", req->need, req->ap - req->m);
+      D("need=%d have=%d", req->need, (int)(req->ap - req->m));
       return HI_NEED_MORE;
     }
     val = memchr(hdr, ':', p-hdr);
@@ -485,7 +485,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
       if (*p++)
 	return stomp_frame_err(hit, io, req, "No nul to terminate body.");
     } else {
-      D("need=%d have=%d", req->need, req->ap - req->m);
+      D("need=%d have=%d", req->need, (int)(req->ap - req->m));
       return HI_NEED_MORE;
     }
   } else {
@@ -493,7 +493,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
     while (1) {
       if (req->ap - p < 1) {   /* too little, need more */
 	req->need = req->ap - req->m + 1;
-	D("need=%d have=%d", req->need, req->ap - req->m);
+	D("need=%d have=%d", req->need, (int)(req->ap - req->m));
 	return HI_NEED_MORE;
       }
       if (!*p++) {  /* nul termination found */
@@ -558,7 +558,7 @@ int stomp_parse_pdu(struct hi_pdu* pdu)
   hdr = memchr(p, '\n', pdu->ap - p);
   if (!hdr || ++hdr == pdu->ap) {
     pdu->need = MAX(STOMP_MIN_PDU_SIZE, pdu->ap - pdu->m + 2);
-    ERR("PDU from file is too small. need=%d have=%d", pdu->need, pdu->ap - pdu->m);
+    ERR("PDU from file is too small. need=%d have=%d", pdu->need, (int)(pdu->ap - pdu->m));
     return 1;
   }
   p = hdr;
@@ -568,7 +568,7 @@ int stomp_parse_pdu(struct hi_pdu* pdu)
     p = memchr(p, '\n', pdu->ap - p);
     if (!p || ++p == pdu->ap) {
       pdu->need = MAX(STOMP_MIN_PDU_SIZE, pdu->ap - pdu->m + 2);
-      ERR("need=%d have=%d", pdu->need, pdu->ap - pdu->m);
+      ERR("need=%d have=%d", pdu->need, (int)(pdu->ap - pdu->m));
       return 1;
     }
     val = memchr(hdr, ':', p-hdr);
@@ -592,7 +592,7 @@ int stomp_parse_pdu(struct hi_pdu* pdu)
 	ERR("Malformed PDU from file: No nul to terminate body. %x", p[-1]);
       }
     } else {
-      ERR("PDU from file has specified length(%d), but not enough data. need=%d have=%d", pdu->ad.stomp.len, pdu->need, pdu->ap - pdu->m);
+      ERR("PDU from file has specified length(%d), but not enough data. need=%d have=%d", pdu->ad.stomp.len, pdu->need, (int)(pdu->ap - pdu->m));
       return 1;
     }
     return 0;
@@ -601,7 +601,7 @@ int stomp_parse_pdu(struct hi_pdu* pdu)
     while (1) {
       if (pdu->ap - p < 1) {   /* too little, need more */
 	pdu->need = pdu->ap - pdu->m + 1;
-	ERR("PDU from file without length but too short to have even nul termination. need=%d have=%d", pdu->need, pdu->ap - pdu->m);
+	ERR("PDU from file without length but too short to have even nul termination. need=%d have=%d", pdu->need, (int)(pdu->ap - pdu->m));
 	return 1;
       }
       if (!*p++) {  /* nul termination found */

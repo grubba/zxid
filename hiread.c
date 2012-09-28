@@ -162,7 +162,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
     D("loop(%x)->cur_pdu=%p ssl_%p", io->fd, pdu, io->ssl);
     ASSERT(pdu);  /* Exists either through hi_shuff_init() or through hi_check_more() */
   retry:
-    D("read(%x) have=%d need=%d buf_avail=%d", io->fd, pdu->ap-pdu->m,pdu->need,pdu->lim-pdu->ap);
+    D("read(%x) have=%d need=%d buf_avail=%d", io->fd, (int)(pdu->ap-pdu->m), pdu->need, (int)(pdu->lim-pdu->ap));
     ASSERT(io->reading);
 #ifdef USE_OPENSSL
     if (io->ssl) {

@@ -91,7 +91,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
 	resp->ad.stomp.len = resp->ap - resp->ad.stomp.body - 1 /* nul at end of frame */;
       } else
 	resp->ad.stomp.len = 0;
-      D("pending resp_%p msgid(%.*s)", resp, strchr(resp->ad.stomp.msg_id,'\n')-resp->ad.stomp.msg_id, resp->ad.stomp.msg_id);
+      D("pending resp_%p msgid(%.*s)", resp, (int)(strchr(resp->ad.stomp.msg_id,'\n')-resp->ad.stomp.msg_id), resp->ad.stomp.msg_id);
     } else {
       ERR("request from server to client lacks message-id header and thus can not expect an ACK. Not scheduling as pending. %p", resp);
     }
@@ -127,7 +127,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
   
   HI_SANITY(hit->shf, hit);
   ASSERT(req != resp);
-  D("send fd(%x) parent_%p req_%p resp_%p n_iov=%d iov0(%.*s)", io->fd, parent, req, resp, resp->n_iov, MIN(resp->iov->iov_len,3), (char*)resp->iov->iov_base);
+  D("send fd(%x) parent_%p req_%p resp_%p n_iov=%d iov0(%.*s)", io->fd, parent, req, resp, resp->n_iov, (int)MIN(resp->iov->iov_len,3), (char*)resp->iov->iov_base);
 
   if (write_now) {
     /* Try cranking the write machine right away! *** should we fish out any todo queue item that may stomp on us? How to deal with thread that has already consumed from the todo_queue? */
@@ -238,7 +238,7 @@ void hi_make_iov_nolock(struct hi_io* io)
     
     ASSERT(io->n_to_write >= 0);
     ASSERT(pdu->n_iov && pdu->iov[0].iov_len);   /* Empty writes can lead to infinite loops */
-    D("make_iov(%x) added pdu(%p) n_iov=%d", io->fd, pdu, cur - io->iov_cur);
+    D("make_iov(%x) added pdu(%p) n_iov=%d", io->fd, pdu, (int)(cur - io->iov_cur));
   }
   io->n_iov = cur - io->iov_cur;
 }
@@ -275,7 +275,7 @@ static void hi_pdu_free(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk1,
   hit->free_pdus = pdu;
   ++hit->n_free_pdus;
   pdu->qel.intodo = HI_INTODO_HIT_FREE;
-  D("%s%s: pdu_%p freed (%.*s) n_free=%d",lk1,lk2,pdu,MIN(pdu->ap - pdu->m,3), pdu->m, hit->n_free_pdus);
+  D("%s%s: pdu_%p freed (%.*s) n_free=%d",lk1,lk2, pdu, (int)MIN(pdu->ap - pdu->m,3), pdu->m, hit->n_free_pdus);
   
   if (hit->n_free_pdus <= HIT_FREE_HIWATER)  /* high water mark */
     return;
@@ -446,7 +446,7 @@ static void hi_clear_iov(struct hi_thr* hit, struct hi_io* io, int n)
       n -= io->iov_cur->iov_len;
       ++io->iov_cur;
       --io->n_iov;
-      ASSERTOPI(io->iov_cur, >=, 0);
+      ASSERTOPP(io->iov_cur, >=, 0);
     } else {
       /* partial write: need to adjust iov_cur->iov_base */
       io->iov_cur->iov_base = ((char*)(io->iov_cur->iov_base)) + n;
