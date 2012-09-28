@@ -128,7 +128,7 @@ struct hi_lock {
   pthread_mutex_t ptmut;
   const char* func;        /* Remember where we locked to ease debugging. */
   int line;
-  int thr;
+  pthread_t thr;
 };
 
 #ifndef IOV_MAX
