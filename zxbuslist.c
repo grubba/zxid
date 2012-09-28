@@ -55,9 +55,9 @@ Usage: zxbuslist [options] > bus-traffic\n\
   --               End of options\n\
 \n";
 
-extern int ascii_color;
+extern int zxbus_ascii_color;
 int dryrun  = 0;
-int verbose = 1;
+extern int zxbus_verbose;
 int n_thr = 1;
 char* pid_path = 0;
 char* chan = "default";
@@ -85,7 +85,7 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'a':
       switch ((*argv)[0][2]) {
       case '\0':
-	++ascii_color;;
+	++zxbus_ascii_color;;
 	continue;
       }
       break;
@@ -114,7 +114,7 @@ static void opt(int* argc, char*** argv, char*** env)
 	continue;
       case 'c':
 	ss = zxid_show_conf(cf);
-	if (verbose>1) {
+	if (zxbus_verbose>1) {
 	  printf("\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
 	  exit(0);
 	}
@@ -171,7 +171,7 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'q':
       switch ((*argv)[0][2]) {
       case '\0':
-	verbose = 0;
+	zxbus_verbose = 0;
 	continue;
       }
       break;
@@ -179,7 +179,7 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'v':
       switch ((*argv)[0][2]) {
       case '\0':
-	++verbose;
+	++zxbus_verbose;
 	continue;
       }
       break;
@@ -189,7 +189,7 @@ static void opt(int* argc, char*** argv, char*** env)
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
 help:
-    if (verbose>1) {
+    if (zxbus_verbose>1) {
       printf("%s", help);
       exit(0);
     }
@@ -233,6 +233,7 @@ int zxbuslist_main(int argc, char** argv, char** env)
   struct zxid_bus_url* bu;
   pid_t* kids;
   strncpy(zx_instance, "\tzxbuslist", sizeof(zx_instance));
+  zxbus_verbose = 1;
   zxid_suppress_vpath_warning = 1;
   cf = zxid_new_conf_to_cf(0);
   opt(&argc, &argv, &env);

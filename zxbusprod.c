@@ -66,8 +66,8 @@
 
 #define STOMP_MIN_PDU_SIZE (sizeof("ACK\n\n\0\n")-1)
 extern int zxbus_persist_flag; /* This is defined by option processing of zxbuslist */
-extern int verbose;       /* This is defined by option processing in zxbustailf */
-int ascii_color = 0;      /* Defined in option processing of zxbustailf or zxbuslist */
+int zxbus_verbose = 0;         /* This is set by option processing in zxbustailf */
+int zxbus_ascii_color = 0;     /* Defined in option processing of zxbustailf or zxbuslist */
 
 #define SSL_ENCRYPTED_HINT "TLS or SSL connection wanted but other end did not speak protocol.\n"
 #define ZXBUS_TIME_FMT "%04d%02d%02d-%02d%02d%02d.%03ld"
@@ -651,15 +651,15 @@ char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
 	  return 0;
 	}
       }
-      if (verbose) {
-	if (ascii_color>1) {
-	  if (verbose>1) {
+      if (zxbus_verbose) {
+	if (zxbus_ascii_color>1) {
+	  if (zxbus_verbose>1) {
 	    printf("\e[42m%.*s\e[0m\n", (int)(bu->ap - bu->m), bu->m);
 	  } else {
 	    printf("\e[42m%.*s\e[0m\n", stomp.len, stomp.body);
 	  }
 	} else {
-	  if (verbose>1) {
+	  if (zxbus_verbose>1) {
 	    printf("%.*s\n", (int)(bu->ap - bu->m), bu->m);
 	  } else {
 	    printf("%.*s\n", stomp.len, stomp.body);
@@ -1213,7 +1213,7 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 	  return 0;
 	}
 
-	if (verbose) {
+	if (zxbus_verbose) {
 	  printf("%.*s(%.*s) got RECEIPT %d\n", 4, buf, body?body_len:0, body?body:"", bu->cur_rcpt-1);
 	}
 	if (cf->log_rely_msg) {   /* Log the receipt */
