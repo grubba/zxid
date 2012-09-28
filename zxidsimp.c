@@ -61,14 +61,16 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
   }
   zxid_init_conf(cf, ZXID_PATH);
 #ifdef USE_CURL
+  INFO("%lx == %lx? eq=%d sizeof(pthread_t)=%ld sizeof(int)=%ld sizeof(long)=%ld sizeof(long long)=%ld sizeof(char*)=%ld", cf->curl_mx.thr, pthread_self(), (long)cf->curl_mx.thr == (long)pthread_self(), sizeof(pthread_t), sizeof(int), sizeof(long), sizeof(long long), sizeof(char*));
   LOCK(cf->curl_mx, "curl init");
+  INFO("%lx == %lx? eq=%d sizeof(pthread_t)=%ld sizeof(int)=%ld sizeof(long)=%ld sizeof(long long)=%ld sizeof(char*)=%ld", cf->curl_mx.thr, pthread_self(), (long)cf->curl_mx.thr == (long)pthread_self(), sizeof(pthread_t), sizeof(int), sizeof(long), sizeof(long long), sizeof(char*));
   cf->curl = curl_easy_init();
   if (!cf->curl) {
     ERR("Failed to initialize libcurl %d",0);
     UNLOCK(cf->curl_mx, "curl init");
     exit(2);
   }
-  INFO("%lx == %lx? eq=%d sizeof(pthread_t)=%d sizeof(int)=%d sizeof(long)=%d sizeof(long long)=%d sizeof(char*)=%d", cf->curl_mx.thr, pthread_self(), (long)cf->curl_mx.thr == (long)pthread_self(), sizeof(pthread_t), sizeof(int), sizeof(long), sizeof(long long), sizeof(char*));
+  INFO("%lx == %lx? eq=%d sizeof(pthread_t)=%ld sizeof(int)=%ld sizeof(long)=%ld sizeof(long long)=%ld sizeof(char*)=%ld", cf->curl_mx.thr, pthread_self(), (long)cf->curl_mx.thr == (long)pthread_self(), sizeof(pthread_t), sizeof(int), sizeof(long), sizeof(long long), sizeof(char*));
   UNLOCK(cf->curl_mx, "curl init");
 #endif
 #else

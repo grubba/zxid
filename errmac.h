@@ -557,6 +557,7 @@ extern char* assert_msg;
 # define ASSERT(c) MB if (!(c)) { DIE_ACTION(1); } ME
 # define ASSERTOP(a,op,b,err) MB if (!((a) op (b))) { DIE_ACTION(err); } ME
 # define ASSERTOPI(a,op,b) MB if (!((a) op (b))) { DIE_ACTION(1); } ME
+# define ASSERTOPL(a,op,b) MB if (!((a) op (b))) { DIE_ACTION(1); } ME
 # define ASSERTOPP(a,op,b) MB if (!((a) op (b))) { DIE_ACTION(1); } ME
 # define FAIL(x,why) MB DIE_ACTION(1); ME
 # define SANITY_CHK(cond,...) MB if (!(cond)) NEVER("insanity %d",0); ME
@@ -572,6 +573,7 @@ extern char* assert_msg;
 # define ASSERT(c)
 # define ASSERTOP(a,op,b,err)
 # define ASSERTOPI(a,op,b)
+# define ASSERTOPL(a,op,b)
 # define ASSERTOPP(a,op,b)
 # define FAIL(format)
 # define BOGUS_UNINITIALIZED_WARNING_0
@@ -595,6 +597,7 @@ extern char* assert_msg;
 #define DASSERT(c)
 #define DASSERTOP(a,op,b,err)
 #define DASSERTOPI(a,op,b)
+#define DASSERTOPL(a,op,b)
 #define DASSERTOPP(a,op,b)
 #define DASSERT_THR(t)
 #define DASSERT_NOT_IN_LOCK(t)
