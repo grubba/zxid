@@ -68,6 +68,7 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
     UNLOCK(cf->curl_mx, "curl init");
     exit(2);
   }
+  D("%x == %x? eq=%d", cf->curl_mx.thr, pthread_self(), cf->curl_mx.thr == pthread_self());
   UNLOCK(cf->curl_mx, "curl init");
 #endif
 #else
