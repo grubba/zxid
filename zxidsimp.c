@@ -51,7 +51,6 @@
 /* Called by:  dirconf, main x2, zxid_az, zxid_az_base, zxid_fed_mgmt_len, zxid_idp_list_len, zxid_idp_select_len, zxid_new_conf_to_cf, zxid_simple_len */
 int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
 {
-  pthread_t a = 0;
 #if 1
   if (!cf->ctx) {
     cf->ctx = zx_init_ctx();
@@ -62,17 +61,14 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
   }
   zxid_init_conf(cf, ZXID_PATH);
 #ifdef USE_CURL
-  INFO("%lx == %lx? eq=%d sizeof(cf->curl_mx.thr) a=%lx sizeof(a)=%ld sizeof(pthread_t)=%ld sizeof(int)=%ld sizeof(long)=%ld sizeof(long long)=%ld sizeof(char*)=%ld", cf->curl_mx.thr, pthread_self(), (long)cf->curl_mx.thr == (long)pthread_self(), sizeof(cf->curl_mx.thr), a, sizeof(a), sizeof(pthread_t), sizeof(int), sizeof(long), sizeof(long long), sizeof(char*));
+  //INFO("%lx == %lx? eq=%d sizeof(cf->curl_mx.thr)=%ld a=%lx sizeof(a)=%ld sizeof(pthread_t)=%ld sizeof(int)=%ld sizeof(long)=%ld sizeof(long long)=%ld sizeof(char*)=%ld", cf->curl_mx.thr, pthread_self(), (long)cf->curl_mx.thr == (long)pthread_self(), sizeof(cf->curl_mx.thr), a, sizeof(a), sizeof(pthread_t), sizeof(int), sizeof(long), sizeof(long long), sizeof(char*));
   LOCK(cf->curl_mx, "curl init");
-  a = pthread_self();
-  INFO("%lx == %lx? eq=%d sizeof(cf->curl_mx.thr) a=%lx sizeof(a)=%ld sizeof(pthread_t)=%ld sizeof(int)=%ld sizeof(long)=%ld sizeof(long long)=%ld sizeof(char*)=%ld", cf->curl_mx.thr, pthread_self(), (long)cf->curl_mx.thr == (long)pthread_self(), sizeof(cf->curl_mx.thr), a, sizeof(a), sizeof(pthread_t), sizeof(int), sizeof(long), sizeof(long long), sizeof(char*));
   cf->curl = curl_easy_init();
   if (!cf->curl) {
     ERR("Failed to initialize libcurl %d",0);
     UNLOCK(cf->curl_mx, "curl init");
     exit(2);
   }
-  INFO("%lx == %lx? eq=%d sizeof(cf->curl_mx.thr) a=%lx sizeof(a)=%ld sizeof(pthread_t)=%ld sizeof(int)=%ld sizeof(long)=%ld sizeof(long long)=%ld sizeof(char*)=%ld", cf->curl_mx.thr, pthread_self(), (long)cf->curl_mx.thr == (long)pthread_self(), sizeof(cf->curl_mx.thr), a, sizeof(a), sizeof(pthread_t), sizeof(int), sizeof(long), sizeof(long long), sizeof(char*));
   UNLOCK(cf->curl_mx, "curl init");
 #endif
 #else

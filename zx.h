@@ -55,7 +55,7 @@ struct zx_lock {
   pthread_mutex_t ptmut;
   const char* func;        /* Remember where we locked to ease debugging. */
   int line;
-  int thr;
+  pthread_t thr;
 };
 
 /*(s) Namespace management. The context references this table. The array is
