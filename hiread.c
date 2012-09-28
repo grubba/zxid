@@ -102,10 +102,11 @@ static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
 
   io->cur_pdu = hi_pdu_alloc(hit, "cur_pdu-ckm");
   if (!io->cur_pdu) {  hi_dump(hit->shf); NEVERNEVER("*** out of pdus in bad place %d", n); }
+  io->cur_pdu->fe = io;
   io->cur_pdu->need = minlen;
   ++io->n_pdu_in;   /* stats */
   
-  D("Checkmore(%x) mn=%d n=%d req_%p->need=%d", io->fd, minlen, n, req, req->need);
+  D("Chkmore(%x) mn=%d n=%d req_%p->need=%d", io->fd, minlen, n, req, req->need);
   ASSERT(minlen > 0);  /* If this is ever zero it will prevent hi_poll() from producing. */
   if (n > req->need) {
     memcpy(io->cur_pdu->ap, req->m + req->need, n - req->need);
@@ -132,11 +133,11 @@ void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, in
     ASSERTOP(io->cur_pdu, ==, req, io->cur_pdu);
     ASSERT(io->reading);
     io->reading = 0;  /* reading was set in hi_in_out() */
-    D("out of reading(%x) n_thr=%d (reset cur_pdu)", io->fd, io->n_thr);
+    D("Out of reading(%x) n_thr=%d (reset cur_pdu)", io->fd, io->n_thr);
     hi_checkmore(hit, io, req, minlen);
   }
   /* --io->n_thr; ASSERT(io->n_thr >= 0);  N.B. dec n_thr for read is handled in hi_read() */
-  req->fe = io;
+  ASSERTOP(req->fe, ==, io, req->fe);
   req->n = io->reqs;
   io->reqs = req;
   D("UNLOCK io(%x)->qel.thr=%x req_%p", io->fd, io->qel.mut.thr, req);
@@ -179,10 +180,10 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 	goto eagain_out;
       case SSL_ERROR_ZERO_RETURN: D("SSL EOF fd(%x)", io->fd);	goto conn_close;
       default:
-	ERR("SSL_read ret=%d err=%d", ret, err);
+	ERR("SSL_read(%x) ret=%d err=%d", io->fd, ret, err);
 	zx_report_openssl_err("SSL_read");
 	if (!io->n_read) {
-	  ERR("SSL Conn. failed fd=%x ret=%d err=%d errno=%d %s", io->fd, ret, err, errno, STRERROR(errno));
+	  ERR("SSL Conn. failed(%x) ret=%d err=%d errno=%d %s", io->fd, ret, err, errno, STRERROR(errno));
 	  if (errno != ECONNREFUSED)
 	    write(io->fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1);
 	}

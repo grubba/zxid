@@ -1,85 +1,21 @@
-shf_0x98dc438  // max_ios=11
--> io_0x98f5bf0
-  io_0x98f5bf0 -> pdu_0x98df778 [label=cur_pdu]; // fd=0x4
-  io_0x98f5bf0 -> null [label=reqs];
-  io_0x98f5bf0 -> null [label=to_write_produce];
-  io_0x98f5bf0 -> null [label=to_write_consume];  // n_to_write=0
-  io_0x98f5bf0 -> null [label=in_write];
--> io_0x98f5dd8
-  io_0x98f5dd8 -> pdu_0x98e68d0 [label=cur_pdu]; // fd=0x6
-  io_0x98f5dd8  // reqs
-    -> pdu_0x98e4fa0  // (ZXCT)
-    pdu_0x98e4fa0 -> null [label=reals];
-    pdu_0x98e4fa0 -> null [label=synths];
-    pdu_0x98e4fa0 -> null [label=subresps];
-[label=reqs];
-  io_0x98f5dd8 -> null [label=to_write_produce];
-  io_0x98f5dd8 -> null [label=to_write_consume];  // n_to_write=0
-  io_0x98f5dd8 -> null [label=in_write];
-[label=ios];
-shf_0x98dc438 -> null [label=todo_consume];
-shf_0x98dc438   // free_pdus (color=4)
--> pdu_0x98e7568
--> pdu_0x98e8200
--> pdu_0x98e8e98
--> pdu_0x98e9b30
--> pdu_0x98ea7c8
--> pdu_0x98eb460
--> pdu_0x98ec0f8
--> pdu_0x98ecd90
--> pdu_0x98eda28
--> pdu_0x98ee6c0
--> pdu_0x98ef358
--> pdu_0x98efff0
--> pdu_0x98f0c88
--> pdu_0x98f1920
--> pdu_0x98f25b8
--> pdu_0x98f3250
--> pdu_0x98f3ee8
--> pdu_0x98f4b80
-[label=free_pdus];
-Data structure dump 21
-----------------------
-hit_0x3f4e35c [label="tid_3f4eb70"];
-hit_0x3f4e35c -> null [label=free_pdus];
-Hit structure dump 0
-======================
-hit_0xbfc575d4 [label="tid_b7773a30"];
-hit_0xbfc575d4 -> null [label=free_pdus];
-Hit structure dump 0
-======================
-hit_0x374d35c [label="tid_374db70"];
-hit_0x374d35c -> null [label=free_pdus];
-Hit structure dump 0
-======================
-hit_0x655c35c [label="tid_655cb70"];
-hit_0x655c35c -> null [label=free_pdus];
-Hit structure dump 0
-======================
-hit_0x929035c [label="tid_9290b70"];
-hit_0x929035c -> null [label=free_pdus];
-Hit structure dump 0
-======================
-hit_0x2f4c35c [label="tid_2f4cb70"];
-hit_0x2f4c35c -> null [label=free_pdus];
-Hit structure dump 0
-======================
-hit_0x274b35c [label="tid_274bb70"];
-hit_0x274b35c -> null [label=free_pdus];
-Hit structure dump 0
-======================
-hit_0x5ca535c [label="tid_5ca5b70"];
-hit_0x5ca535c -> null [label=free_pdus];
-Hit structure dump 0
-======================
-hit_0x1f4a35c [label="tid_1f4ab70"];
-hit_0x1f4a35c -> null [label=free_pdus];
-Hit structure dump 0
-======================
-hit_0x174935c [label="tid_1749b70"];
-hit_0x174935c  // free_pdus
--> pdu_0x98e10a8  // (STOM)
--> pdu_0x98e5c38  // (CONN)
-[label=free_pdus];
-Hit structure dump 2
-======================
+FMT0 persist at /var/zxid/bus/ch/default/cW58MOXLTPAh08n1Gchoo8_V2Rk 'test(2,10,' len=68 rcpt(0)
+FMT0 persist at /var/zxid/bus/ch/default/GpybB_X0Qm4l6DB2-fTteUYQRHY 'test(1,10,' len=68 rcpt(0)
+FMT0 persist at /var/zxid/bus/ch/default/rYMt0RJQKPO-ncOXXx2S02Tt0jU 'test(0,10,' len=68 rcpt(0)
+FMT0 persist at /var/zxid/bus/ch/default/9yO16P8-iK_vLT5EV43Pwu4JuLE 'test(0,10,' len=68 rcpt(1)
+FMT0 persist at /var/zxid/bus/ch/default/MBQAyvJL6e5AacNqR8ERlreQ788 'test(2,10,' len=68 rcpt(1)
+FMT0 persist at /var/zxid/bus/ch/default/MC-3pOWKjl-ixdBFtNUMjNgk-AE 'test(1,10,' len=68 rcpt(1)
+FMT0 persist at /var/zxid/bus/ch/default/psTI2tNzBtDYlCwCI-8r0Cw7TUw 'test(0,10,' len=68 rcpt(2)
+FMT0 persist at /var/zxid/bus/ch/default/9-mzkGHk-QG2QXghhBE7ZItnu8Y 'test(2,10,' len=68 rcpt(2)
+FMT0 persist at /var/zxid/bus/ch/default/288uZ_vdEMv_lO_LFZvAs2rilP4 'test(1,10,' len=68 rcpt(2)
+FMT0 persist at /var/zxid/bus/ch/default/bsdiO7G8woPy8jx4Ggarclqr9fc 'test(2,10,' len=68 rcpt(3)
+FMT0 persist at /var/zxid/bus/ch/default/gCMjnkcyRGudjdq0-XLnZM5MHv0 'test(1,10,' len=68 rcpt(3)
+FMT0 persist at /var/zxid/bus/ch/default/tkhTUJn5DqjTay9wfCCtgj4WsfU 'test(0,10,' len=68 rcpt(3)
+FMT0 persist at /var/zxid/bus/ch/default/JYCrFEJmvnfBdJZ_Ws-SJ7UQAp4 'test(1,10,' len=68 rcpt(4)
+FMT0 persist at /var/zxid/bus/ch/default/DgobDoR7gWOIPKXl3ba_ln3C_Vw 'test(2,10,' len=68 rcpt(4)
+FMT0 persist at /var/zxid/bus/ch/default/nAzkQJ6J6CHHWJBYO7GbgPStMk4 'test(0,10,' len=68 rcpt(4)
+FMT0 persist at /var/zxid/bus/ch/default/perk4FnChQ3twBSRFfw12wkDM28 'test(1,5,1' len=66 rcpt(5)
+FMT0 persist at /var/zxid/bus/ch/default/_nTYN-vqgfNYplw2o86S5bH1YLA 'test(0,5,3' len=66 rcpt(5)
+FMT0 persist at /var/zxid/bus/ch/default/IovspttRhr1jz-19JJErx5KYYy4 'test(2,10,' len=68 rcpt(5)
+FMT0 persist at /var/zxid/bus/ch/default/1uyIBlFy9qsb1dzanxIlho7b06M 'test(2,10,' len=67 rcpt(6)
+FMT0 persist at /var/zxid/bus/ch/default/BVyoFFRPvFZTX9XSLXYowt3z0dQ 'test(1,4,1' len=67 rcpt(6)
+FMT0 persist at /var/zxid/bus/ch/default/j20nNGeT4LHKbP6neuGONKVhwMU 'test(0,5,2' len=66 rcpt(6)

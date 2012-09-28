@@ -134,6 +134,7 @@ struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch, in
       ERR("Out of PDUs when preparing cur_pdu for each I/O object. Use -npdu to specify a value at least twice the value of -nfd. Current values: npdu=%d, nfd=%d", npdu, nfd);
       exit(1);
     }
+    shf->ios[i].cur_pdu->fe = &shf->ios[i];
   }
   
   pthread_cond_init(&shf->todo_cond, 0);
@@ -172,10 +173,9 @@ struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch, in
     zx_report_openssl_err("new_shuffler-ssl_ctx");
     return 0;
   }
-  if (zx_debug>1) {
-    D("OpenSSL header-version(%lx) lib-version(%lx)(%s) %s %s %s %s", OPENSSL_VERSION_NUMBER, SSLeay(), SSLeay_version(SSLEAY_VERSION), SSLeay_version(SSLEAY_CFLAGS), SSLeay_version(SSLEAY_BUILT_ON), SSLeay_version(SSLEAY_PLATFORM), SSLeay_version(SSLEAY_DIR));
+  INFO("OpenSSL header-version(%lx) lib-version(%lx)(%s) %s %s %s %s", OPENSSL_VERSION_NUMBER, SSLeay(), SSLeay_version(SSLEAY_VERSION), SSLeay_version(SSLEAY_CFLAGS), SSLeay_version(SSLEAY_BUILT_ON), SSLeay_version(SSLEAY_PLATFORM), SSLeay_version(SSLEAY_DIR));
+  if (zx_debug>1)
     SSL_CTX_set_info_callback(shf->ssl_ctx, zxbus_info_cb);
-  }
 
   /*SSL_CTX_set_mode(shf->ssl_ctx, SSL_MODE_AUTO_RETRY); R/W only return w/complete. We use nonblocking I/O. */
 

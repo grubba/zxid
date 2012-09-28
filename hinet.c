@@ -564,7 +564,7 @@ void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd)
     ERR("Adding fd failed: io=%p nio=%p", io, nio);
     goto sslerrout;
   }
-  D("accepted and booked(%x)", io->fd);
+  INFO("ACCEPTed and booked(%x)", io->fd);  /* add IP and port of client */
   
   switch (io->qel.proto) {
   case HIPROTO_STOMP:

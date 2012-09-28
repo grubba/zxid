@@ -102,7 +102,7 @@ void die2(char* why) {
   fprintf(stderr, "%s\n", why);  exit(3);
 }
 /* Called by:  locate_buffers, main x2 */
-void warn(char* why) {
+void warning(char* why) {
   fprintf(stderr, "%s\n", why);
 }
 
@@ -828,7 +828,7 @@ static void locate_buffers(FILE* file)
     if (!lkmark) die2("AK log key mark (" AK_LOGKEY_MARK ") not found in executable.");
 #endif  
   }
-  if (n_thr > AK_MAX_BUFS) warn("n_threads exceeds limit");
+  if (n_thr > AK_MAX_BUFS) warning("n_threads exceeds limit");
 
   fprintf(file, "Summary\n");
   fprintf(file, "  bin date:    %s %s\n",   mr->date, mr->time);
@@ -1232,10 +1232,10 @@ int main(int argc, char** argv)
               ++argv; --argc; sscanf(argv[0], "%li", &max_size); break;
     case 's': if (argc < 2) usage("missing lane width nn arg\n");
               ++argv; --argc; swimlane = 1; lane_width = atoi(argv[0]); break;
-    case '2': swimlane = 2;   warn("not implemented yet"); break;
+    case '2': swimlane = 2;   warning("not implemented yet"); break;
     case 'c': if (argc < 2) usage("missing lane width nn arg\n");
               ++argv; --argc; swimlane = 3; lane_width = atoi(argv[0]);
-	      warn("not implemented yet"); break;
+	      warning("not implemented yet"); break;
     case 'b': ++brief; format="brief"; break;
     case 'g': if (argc < 2) usage("missing gviz file name arg\n");
               ++argv; --argc; gviz = argv[0]; break;

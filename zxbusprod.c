@@ -343,10 +343,7 @@ static int zxbus_fmt(zxid_conf* cf,   /* 1 */
 	       zx_instance, STRNULLCHKD(sigval), res, op, arg?arg:"-");
   logbuf[len-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   if (n <= 0 || n >= len-3) {
-    if (n < 0) {
-      perror("snprintf");
-      D("Broken snprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", n);
-    }
+    if (n < 0)  zx_broken_snprintf(n);
     D("Log buffer too short: %d chars needed", n);
     if (n <= 0)
       n = 0;
@@ -358,10 +355,7 @@ static int zxbus_fmt(zxid_conf* cf,   /* 1 */
       n = vsnprintf(p, len-n-2, fmt, ap);
       logbuf[len-1] = 0;  /* must terminate manually as on win32 nul term is not guaranteed */
       if (n <= 0 || n >= len-(p-logbuf)-2) {
-	if (n < 0) {
-	  perror("vsnprintf");
-	  D("Broken vsnprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", n);
-	}
+	if (n < 0)  zx_broken_snprintf(n);
 	D("Log buffer truncated during format print: %d chars needed", n);
 	if (n <= 0)
 	  n = p-logbuf;
@@ -1058,12 +1052,73 @@ void zxbus_close_all(zxid_conf* cf)
     zxbus_close(cf, bu);
 }
 
+/*() Log successful receipt (the message should have been logged earlier separately)
+ * cf:: zxid configuration object
+ * bu:: URL and eid of the destination audit bus node
+ * mid:: message ID
+ * dest:: Destination channel where message was sent
+ * sha1_buf:: The sha1 over the message as was used to log the message in issue directory
+ * rcpt_len:: Length of the receipt data returned by remote
+ * rcpt:: Receipt data returned by remote
+ *
+ * Log format is as follows
+ * R1 YYYYMMDD-HHMMSS.sss URL SHA1-OF-EID MID CHANNEL SHA1-OF-MSG INST O K RCPT receipt_data
+ * where receipt_data is like
+ *    AB1 https://buslist.zxid.org/?o=B ACK RP 20120923-170431.868 76 3aSMhrZHtsviQnl3jnb8swYuxe_5uRnegGP0_i-hgPD6pzNkLtJdC7_qA7Ry-Iz1_cSDR7L91Oe9qgQZ64CzqC1qb0l5sSVoHNVQAzUWXgXOuHvXEgkMheAoLAUT8SKM_H9cUlPCrgCkVFWPXcLAR2FHAW7sNrGe7Mcm4MFFXqM.
+ */
+
+static void zxbus_log_receipt(zxid_conf* cf, struct zxid_bus_url* bu, int mid_len, const char* mid, int dest_len, const char* dest, const char* sha1_buf, int rcpt_len, const char* rcpt)
+{
+  int len;
+  struct tm ot;
+  struct timeval ourts;
+  char sha1_name[28];
+  char buf[1024];
+  char c_path[ZXID_MAX_BUF];
+
+  GETTIMEOFDAY(&ourts, 0);
+  GMTIME_R(ourts.tv_sec, ot);
+  sha1_safe_base64(sha1_name, -2, bu->eid);
+  sha1_name[27] = 0;
+
+  if (!mid)
+    mid_len = 0;
+  if (mid_len == -1)
+    mid_len = strlen(mid);
+  else if (mid_len == -2)
+    mid_len = strchr(mid, '\n') - mid;
+
+  if (!dest)
+    dest_len = 0;
+  if (dest_len == -1)
+    dest_len = strlen(dest);
+  else if (dest_len == -2)
+    dest_len = strchr(dest, '\n') - dest;
+
+  len = snprintf(buf, sizeof(buf)-1, "R1 " ZXLOG_TIME_FMT " "
+		 " %s %s"  /* url  sha1_name-of-ent */
+		 " %.*s %.*s %s"  /* mid, sha1 of the message (see zxlog_blob() call), dest */
+		 " %s %s %s %s"
+		 " %.*s\n",
+		 ZXLOG_TIME_ARG(ot, ourts.tv_usec),
+		 bu->s, sha1_name,
+		 mid_len, mid, dest_len, dest, sha1_buf,
+		 zx_instance, "O", "K", "RCPT",
+		 rcpt_len, rcpt);
+  buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
+  if (len < 0) zx_broken_snprintf(len);
+  name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "rcpt", cf->path);
+  write2_or_append_lock_c_path(c_path, len, buf, 0,0, "zxbus_send_cmdf",SEEK_END,O_APPEND);
+}
+
 /*() Send the specified STOMP 1.1 message to audit bus and wait for RECEIPT.
  * Blocks until the transaction completes (or fails). Figures out
  * from configuration, which bus daemon to contact (looks at bus_urls).
  * The fmt must contain command, headers, and double newline that
  * separates the body.
- * Returns:: zero on failure and 1 on success. */
+ * Will also log the message to /var/zxid/buscli/issue/SUCCINCT/wir/SHA1
+ * and receipt to /var/zxid/buscli/log/rcpt
+ * return:: zero on failure and 1 on success. */
 
 /* Called by:  zxbus_send_cmd, zxbuslist_main */
 int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const char* body, const char* fmt, ...)
@@ -1074,8 +1129,12 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
   char* dest;
   char* rcpt;
   char buf[1024];
+  char sha1_buf[28];
+  struct zx_str sha1_ss;
+  struct zx_str eid_ss;
+  struct zx_str* logpath;
   struct stomp_hdr stomp;
-  
+
   if (body_len == -1 && body)
     body_len = strlen(body);
   
@@ -1094,6 +1153,23 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
     dest += sizeof("\ndestination:")-1;
   else
     dest = "\n";
+
+  if (cf->log_issue_msg) {
+    /* Path will be composed of sha1 hash of the data in buf. */
+    sha1_safe_base64(sha1_buf, len, buf);
+    sha1_buf[27] = 0;
+    sha1_ss.len = 27;
+    sha1_ss.s = sha1_buf;
+    eid_ss.len = strlen(bu->eid);
+    eid_ss.s = bu->eid;
+    logpath = zxlog_path(cf, &eid_ss, &sha1_ss, ZXLOG_ISSUE_DIR, ZXLOG_WIR_KIND, 1);
+    if (logpath) {
+      eid_ss.len = body_len;
+      eid_ss.s = (char*)body;
+      zxlog_blob(cf, cf->log_issue_msg, logpath, &eid_ss, "zxbus_send_cmdf");
+      zx_str_free(cf->ctx, logpath);
+    }
+  }
 
   HEXDUMP(" buf:", buf, buf+len, /*16*/ 256);
   if (body) HEXDUMP("body:", body, body+body_len, /*16*/ 256);
@@ -1139,6 +1215,9 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 
 	if (verbose) {
 	  printf("%.*s(%.*s) got RECEIPT %d\n", 4, buf, body?body_len:0, body?body:"", bu->cur_rcpt-1);
+	}
+	if (cf->log_rely_msg) {   /* Log the receipt */
+	  zxbus_log_receipt(cf, bu, -2, rcpt, -2, dest, sha1_buf, siglen, siglen?stomp.zx_rcpt_sig:"");
 	}
 	zxbus_shift_read_buf(cf, bu, &stomp);
 	return 1;  /* normal successful return */

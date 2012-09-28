@@ -633,6 +633,7 @@ struct zxid_invite {
 #define ZXID_COT_DIR  "cot/"
 #define ZXID_DIMD_DIR "dimd/"
 #define ZXID_INV_DIR  "inv/"
+#define ZXID_LOG_DIR  "log/"
 #define ZXID_MAX_USER (256)  /* Maximum size of .mni or user file */
 #define ZXID_INIT_MD_BUF   (8*1024-1)  /* Initial size, will automatically reallocate. */
 #define ZXID_INIT_SOAP_BUF (8*1024-1)  /* Initial size, will automatically reallocate. */

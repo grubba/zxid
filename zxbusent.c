@@ -122,7 +122,7 @@ struct hi_ent* zxbus_load_ent(struct hiios* shf, int len, const char* eid)
 /*() Perform zxbus specifics to call generic zx_pw_authn() */
 
 /* Called by:  zxbus_login_ent */
-static int zxbus_pw_authn_ent(const char* eid, const char* passw)
+static int zxbus_pw_authn_ent(const char* eid, const char* passw, int fd_hint)
 {
   char sha1_name[28];
   char eid_buf[256];
@@ -147,7 +147,7 @@ static int zxbus_pw_authn_ent(const char* eid, const char* passw)
   memcpy(pw_buf, passw, len);
   pw_buf[len] = 0;
   
-  return zx_pw_authn(zxbus_path, sha1_name, pw_buf);
+  return zx_pw_authn(zxbus_path, sha1_name, pw_buf, fd_hint);
   /* *** add password overwrite in memory */
 }
 
@@ -202,7 +202,7 @@ int zxbus_login_ent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   }
 
   if (req->ad.stomp.pw) {
-    if (!zxbus_pw_authn_ent(login, req->ad.stomp.pw)) {
+    if (!zxbus_pw_authn_ent(login, req->ad.stomp.pw, io->fd)) {
       D("UNLOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
       UNLOCK(hit->shf->ent_mut, "login-fail3");
       return 0;

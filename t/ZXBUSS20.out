@@ -202,63 +202,69 @@ FMT0 persist at /var/zxid/bus/ch/default/-mGfiZRtzEvudDjZueFqgkmWPDs 'test(-1,1,
 FMT0 persist at /var/zxid/bus/ch/default/TK4nD0AlE09MVKvIziTJsooAlxQ 'test(-1,1,' len=69 rcpt(198)
 FMT0 persist at /var/zxid/bus/ch/default/Vh27nmUo7GROgR2smUSy5U4yWnw 'test(-1,1,' len=69 rcpt(199)
 FMT0 persist at /var/zxid/bus/ch/default/bjZtT6SuxzOFHc1GLnoFdMdSbm0 'F' len=55 rcpt(0)
-shf_0x87e4400  // max_ios=11
--> io_0x87e4928
-  io_0x87e4928 -> pdu_0x33c268 [label=cur_pdu]; // fd=0x4
-  io_0x87e4928 -> null [label=reqs];
-  io_0x87e4928 -> null [label=pending];
-  io_0x87e4928 -> null [label=to_write_produce];
-  io_0x87e4928 -> null [label=to_write_consume];  // n_to_write=0
-  io_0x87e4928 -> null [label=in_write];
--> io_0x87e4b30
-  io_0x87e4b30 -> pdu_0x4ff2a0 [label=cur_pdu]; // fd=0x6
-  io_0x87e4b30 -> null [label=reqs];
-  io_0x87e4b30  // pending
-    -> pdu_0x525bb8  // (MESS)
-    pdu_0x525bb8 -> null [label=reals];
-    pdu_0x525bb8 -> null [label=synths];
-    pdu_0x525bb8 -> null [label=subresps];
-  io_0x87e4b30 -> null [label=to_write_produce];
-  io_0x87e4b30 -> null [label=to_write_consume];  // n_to_write=0
-  io_0x87e4b30 -> null [label=in_write];
--> io_0x87e4d38
-  io_0x87e4d38 -> pdu_0x503198 [label=cur_pdu]; // fd=0x8
-  io_0x87e4d38  // reqs
-    -> pdu_0x5274e8  // (ZXCT)
-    pdu_0x5274e8 -> null [label=reals];
-    pdu_0x5274e8 -> null [label=synths];
-    pdu_0x5274e8 -> null [label=subresps];
+shf_0x9bc1d28  // max_ios=12
+-> io_0x9bc2250
+  io_0x9bc2250 -> pdu_0xb74ca268 [label=cur_pdu]; // fd=0x4
+  io_0x9bc2250 -> null [label=reqs];
+  io_0x9bc2250 -> null [label=pending];
+  io_0x9bc2250 -> null [label=to_write_produce];
+  io_0x9bc2250 -> null [label=to_write_consume];  // n_to_write=0
+  io_0x9bc2250 -> null [label=in_write];
+-> io_0x9bc2458
+  io_0x9bc2458 -> pdu_0xb76b8748 [label=cur_pdu]; // fd=0x6
+  io_0x9bc2458 -> null [label=reqs];
+  io_0x9bc2458  // pending
+    -> pdu_0xb76b2f20  // (MESS)
+    pdu_0xb76b2f20 -> null [label=reals];
+    pdu_0xb76b2f20 -> null [label=synths];
+    pdu_0xb76b2f20 -> null [label=subresps];
+  io_0x9bc2458 -> null [label=to_write_produce];
+  io_0x9bc2458 -> null [label=to_write_consume];  // n_to_write=0
+  io_0x9bc2458 -> null [label=in_write];
+-> io_0x9bc2660
+  io_0x9bc2660 -> pdu_0xb76b93e0 [label=cur_pdu]; // fd=0x8
+  io_0x9bc2660  // reqs
+    -> pdu_0xb768df38  // (ZXCT)
+    pdu_0xb768df38 -> null [label=reals];
+    pdu_0xb768df38 -> null [label=synths];
+    pdu_0xb768df38 -> null [label=subresps];
 [label=reqs];
-  io_0x87e4d38 -> null [label=pending];
+  io_0x9bc2660 -> null [label=pending];
 [label=pending];
-  io_0x87e4d38 -> null [label=to_write_produce];
-  io_0x87e4d38 -> null [label=to_write_consume];  // n_to_write=0
-  io_0x87e4d38 -> null [label=in_write];
+  io_0x9bc2660 -> null [label=to_write_produce];
+  io_0x9bc2660 -> null [label=to_write_consume];  // n_to_write=0
+  io_0x9bc2660 -> null [label=in_write];
 [label=ios];
-shf_0x87e4400 -> null [label=todo_consume];
-shf_0x87e4400   // free_pdus (color=4)
--> pdu_0x528e18 -> pdu_0x529ab0 -> pdu_0x52a748 -> pdu_0x52b3e0 -> pdu_0x52c078 -> pdu_0x52cd10 -> pdu_0x52d9a8 -> pdu_0x52e640 -> pdu_0x52f2d8 -> pdu_0x52ff70 -> pdu_0x530c08 -> pdu_0x5318a0 -> pdu_0x532538 -> pdu_0x5331d0 -> pdu_0x533e68 -> pdu_0x534b00 -> pdu_0x535798 -> pdu_0x536430 -> pdu_0x5370c8 -> pdu_0x537d60 -> pdu_0x5389f8 -> pdu_0x539690 -> pdu_0x53a328 -> pdu_0x53afc0 -> pdu_0x53bc58 -> pdu_0x53c8f0 -> pdu_0x53d588 -> pdu_0x53e220 -> pdu_0x53eeb8 -> pdu_0x53fb50 -> pdu_0x5407e8 -> pdu_0x541480 -> pdu_0x542118 -> pdu_0x542db0 -> pdu_0x543a48 -> pdu_0x5446e0 -> pdu_0x545378 -> pdu_0x546010 -> pdu_0x546ca8 -> pdu_0x547940 -> pdu_0x5485d8 -> pdu_0x549270 -> pdu_0x549f08 -> pdu_0x54aba0 -> pdu_0x54b838 -> pdu_0x54c4d0 -> pdu_0x54d168 -> pdu_0x54de00 -> pdu_0x54ea98 -> pdu_0x54f730 -> pdu_0x5503c8 -> pdu_0x551060 -> pdu_0x551cf8 -> pdu_0x552990 -> pdu_0x553628 -> pdu_0x5542c0 -> pdu_0x554f58 -> pdu_0x555bf0 -> pdu_0x556888 -> pdu_0x557520 -> pdu_0x5581b8 -> pdu_0x558e50 -> pdu_0x559ae8 -> pdu_0x55a780 -> pdu_0x55b418 -> pdu_0x55c0b0 -> pdu_0x55cd48 -> pdu_0x55d9e0 -> pdu_0x55e678 -> pdu_0x55f310 [label=free_pdus];
-Data structure dump 75
+shf_0x9bc1d28 -> null [label=todo_consume];
+shf_0x9bc1d28   // free_pdus (color=4)
+-> pdu_0xb76ba078 -> pdu_0xb76bad10 -> pdu_0xb76bb9a8 -> pdu_0xb76bc640 -> pdu_0xb76bd2d8 -> pdu_0xb76bdf70 -> pdu_0xb76bec08 -> pdu_0xb76bf8a0 -> pdu_0xb76c0538 -> pdu_0xb76c11d0 -> pdu_0xb76c1e68 -> pdu_0xb76c2b00 -> pdu_0xb76c3798 -> pdu_0xb76c4430 -> pdu_0xb76c50c8 -> pdu_0xb76c5d60 -> pdu_0xb76c69f8 -> pdu_0xb76c7690 -> pdu_0xb76c8328 -> pdu_0xb76c8fc0 -> pdu_0xb76c9c58 -> pdu_0xb76ca8f0 -> pdu_0xb76cb588 -> pdu_0xb76cc220 -> pdu_0xb76cceb8 -> pdu_0xb76cdb50 -> pdu_0xb76ce7e8 -> pdu_0xb76cf480 -> pdu_0xb76d0118 -> pdu_0xb76d0db0 -> pdu_0xb76d1a48 -> pdu_0xb76d26e0 -> pdu_0xb76d3378 -> pdu_0xb76d4010 -> pdu_0xb76d4ca8 -> pdu_0xb76d5940 -> pdu_0xb76d65d8 -> pdu_0xb76d7270 -> pdu_0xb76d7f08 -> pdu_0xb76d8ba0 -> pdu_0xb76d9838 -> pdu_0xb76da4d0 -> pdu_0xb76db168 -> pdu_0xb76dbe00 -> pdu_0xb76dca98 -> pdu_0xb76dd730 -> pdu_0xb76de3c8 -> pdu_0xb76df060 -> pdu_0xb76dfcf8 -> pdu_0xb76e0990 -> pdu_0xb76e1628 -> pdu_0xb76e22c0 -> pdu_0xb76e2f58 -> pdu_0xb76e3bf0 -> pdu_0xb76e4888 -> pdu_0xb76e5520 -> pdu_0xb76e61b8 -> pdu_0xb76e6e50 -> pdu_0xb76e7ae8 -> pdu_0xb76e8780 -> pdu_0xb76e9418 -> pdu_0xb76ea0b0 -> pdu_0xb76ead48 -> pdu_0xb76eb9e0 -> pdu_0xb76ec678 -> pdu_0xb76ed310 -> pdu_0xb76edfa8 -> pdu_0xb76eec40 -> pdu_0xb76ef8d8 -> pdu_0xb76f0570 -> pdu_0xb76f1208 -> pdu_0xb76f1ea0 -> pdu_0xb76f2b38 -> pdu_0xb76f37d0 -> pdu_0xb76f4468 -> pdu_0xb76f5100 -> pdu_0xb76f5d98 -> pdu_0xb76f6a30 -> pdu_0xb76f76c8 -> pdu_0xb76f8360 -> pdu_0xb76f8ff8 -> pdu_0xb76f9c90 -> pdu_0xb76fa928 -> pdu_0xb76fb5c0 -> pdu_0xb76fc258 -> pdu_0xb76fcef0 -> pdu_0xb76fdb88 -> pdu_0xb76fe820 -> pdu_0xb76ff4b8 -> pdu_0xb7700150 -> pdu_0xb7700de8 -> pdu_0xb7701a80 -> pdu_0xb7702718 -> pdu_0xb77033b0 -> pdu_0xb7704048 -> pdu_0xb7704ce0 -> pdu_0xb7705978 -> pdu_0xb7706610 -> pdu_0xb77072a8 -> pdu_0xb7707f40 -> pdu_0xb7708bd8 -> pdu_0xb7709870 -> pdu_0xb770a508 -> pdu_0xb770b1a0 -> pdu_0xb770be38 -> pdu_0xb770cad0 -> pdu_0xb770d768 -> pdu_0xb770e400 -> pdu_0xb770f098 -> pdu_0xb770fd30 -> pdu_0xb77109c8 -> pdu_0xb7711660 -> pdu_0xb77122f8 -> pdu_0xb7712f90 -> pdu_0xb7713c28 -> pdu_0xb77148c0 -> pdu_0xb7715558 -> pdu_0xb77161f0 -> pdu_0xb7716e88 -> pdu_0xb7717b20 -> pdu_0xb77187b8 -> pdu_0xb7719450 -> pdu_0xb771a0e8 -> pdu_0xb771ad80 -> pdu_0xb771ba18 -> pdu_0xb771c6b0 -> pdu_0xb771d348 -> pdu_0xb771dfe0 -> pdu_0xb771ec78 -> pdu_0xb771f910 -> pdu_0xb77205a8 -> pdu_0xb7721240 -> pdu_0xb7721ed8 -> pdu_0xb7722b70 -> pdu_0xb7723808 -> pdu_0xb77244a0 -> pdu_0xb7725138 -> pdu_0xb7725dd0 -> pdu_0xb7726a68 -> pdu_0xb7727700 -> pdu_0xb7728398 -> pdu_0xb7729030 -> pdu_0xb7729cc8 -> pdu_0xb772a960 -> pdu_0xb772b5f8 -> pdu_0xb772c290 -> pdu_0xb772cf28 -> pdu_0xb772dbc0 -> pdu_0xb772e858 -> pdu_0xb772f4f0 -> pdu_0xb7730188 -> pdu_0xb7730e20 -> pdu_0xb7731ab8 -> pdu_0xb7732750 -> pdu_0xb77333e8 -> pdu_0xb7734080 -> pdu_0xb7734d18 -> pdu_0xb77359b0 -> pdu_0xb7736648 -> pdu_0xb77372e0 -> pdu_0xb7737f78 -> pdu_0xb7738c10 -> pdu_0xb77398a8 -> pdu_0xb773a540 -> pdu_0xb773b1d8 -> pdu_0xb773be70 -> pdu_0xb773cb08 -> pdu_0xb773d7a0 -> pdu_0xb773e438 -> pdu_0xb773f0d0 -> pdu_0xb773fd68 -> pdu_0xb7740a00 -> pdu_0xb7741698 -> pdu_0xb7742330 -> pdu_0xb7742fc8 -> pdu_0xb7743c60 -> pdu_0xb77448f8 -> pdu_0xb7745590 -> pdu_0xb7746228 -> pdu_0xb7746ec0 -> pdu_0xb7747b58 -> pdu_0xb77487f0 -> pdu_0xb7749488 -> pdu_0xb774a120 -> pdu_0xb774adb8 -> pdu_0xb774ba50 -> pdu_0xb774c6e8 -> pdu_0xb774d380 -> pdu_0xb774e018 -> pdu_0xb774ecb0 -> pdu_0xb774f948 -> pdu_0xb77505e0 -> pdu_0xb7751278 -> pdu_0xb7751f10 -> pdu_0xb7752ba8 -> pdu_0xb7753840 -> pdu_0xb77544d8 -> pdu_0xb7755170 -> pdu_0xb7755e08 -> pdu_0xb7756aa0 -> pdu_0xb7757738 -> pdu_0xb77583d0 -> pdu_0xb7759068 -> pdu_0xb7759d00 -> pdu_0xb775a998 -> pdu_0xb775b630 -> pdu_0xb775c2c8 -> pdu_0xb775cf60 -> pdu_0xb775dbf8 -> pdu_0xb775e890 -> pdu_0xb775f528 -> pdu_0xb77601c0 -> pdu_0xb7760e58 -> pdu_0xb7761af0 -> pdu_0xb7762788 -> pdu_0xb7763420 -> pdu_0xb77640b8 -> pdu_0xb7764d50 -> pdu_0xb77659e8 -> pdu_0xb7766680 -> pdu_0xb7767318 -> pdu_0xb7767fb0 -> pdu_0xb7768c48 -> pdu_0xb77698e0 -> pdu_0xb776a578 -> pdu_0xb776b210 -> pdu_0xb776bea8 -> pdu_0xb776cb40 -> pdu_0xb776d7d8 -> pdu_0xb776e470 -> pdu_0xb776f108 -> pdu_0xb776fda0 -> pdu_0xb7770a38 -> pdu_0xb77716d0 -> pdu_0xb7772368 -> pdu_0xb7773000 -> pdu_0xb7773c98 -> pdu_0xb7774930 -> pdu_0xb77755c8 -> pdu_0xb7776260 -> pdu_0xb7776ef8 -> pdu_0xb7777b90 -> pdu_0xb7778828 -> pdu_0xb77794c0 -> pdu_0xb777a158 -> pdu_0xb777adf0 -> pdu_0xb777ba88 -> pdu_0xb777c720 -> pdu_0xb777d3b8 -> pdu_0xb777e050 -> pdu_0xb777ece8 -> pdu_0xb777f980 -> pdu_0xb7780618 -> pdu_0xb77812b0 -> pdu_0xb7781f48 -> pdu_0xb7782be0 -> pdu_0xb7783878 -> pdu_0xb7784510 -> pdu_0xb77851a8 -> pdu_0xb7785e40 -> pdu_0xb7786ad8 -> pdu_0xb7787770 -> pdu_0xb7788408 -> pdu_0xb77890a0 -> pdu_0xb7789d38 -> pdu_0xb778a9d0 [label=free_pdus];
+Data structure dump 271
 ----------------------
-hit_0xf7a200 [label="tid_f7ab70"];
-hit_0xf7a200  // free_pdus
--> pdu_0x528180  // (CONN)
+hit_0x17df370 [label="tid_17dfb70"];
+hit_0x17df370  // free_pdus
+-> pdu_0xb7688710  // (SEND)
+-> pdu_0xb76b6e18  // (ACK
+)
+-> pdu_0xb76aca60  // (ACK
+)
+-> pdu_0xb76a7ed0  // (ACK
+)
+-> pdu_0xb769f448  // (ACK
+)
+-> pdu_0xb76a5908  // (ACK
+)
+-> pdu_0xb769a8b8  // (ACK
+)
+-> pdu_0xb76a9800  // (ACK
+)
+-> pdu_0xb76a26a8  // (ACK
+)
+[label=free_pdus];
+Hit structure dump 9
+======================
+hit_0xbfdc6158 [label="tid_b778c6c0"];
+hit_0xbfdc6158  // free_pdus
+-> pdu_0xb76ab130  // (CONN)
 [label=free_pdus];
 Hit structure dump 1
-======================
-hit_0xbf8ae4e8 [label="tid_87c8830"];
-hit_0xbf8ae4e8  // free_pdus
--> pdu_0x51c498  // (SEND)
--> pdu_0x4f4ee8  // (ACK
-)
--> pdu_0x519ed0  // (ACK
-)
--> pdu_0x50c8b8  // (ACK
-)
--> pdu_0x5185a0  // (ACK
-)
--> pdu_0x507d28  // (ACK
-)
-[label=free_pdus];
-Hit structure dump 6
 ======================

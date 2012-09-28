@@ -207,7 +207,7 @@ void stomp_msg_deliver(struct hi_thr* hit, struct hi_pdu* db_pdu)
     if (ent->chs[ch_num]) {  /* entity listens on this channel? */
       if (zxbus_already_ackd(ent, db_pdu)) {
 	DD("Already ACKd eid(%s)", ent->eid);
-      } else if (ent->io) {
+      } else if (ent->io && ent->chs[ch_num] == HI_SUBS_ON) {
 	hi_sendf(hit, ent->io, db_pdu, 0,
 		 "MESSAGE\nsubscription:%s\nmessage-id:%d\ndestination:%.*s\ncontent-length:%d\n\n%.*s%c",
 		 "0", ent->io->ad.stomp.msgid++,
@@ -227,7 +227,7 @@ void stomp_msg_deliver(struct hi_thr* hit, struct hi_pdu* db_pdu)
   if (db_pdu->ad.delivb.acks)  /* still something pending? */
     hi_todo_produce(hit, &db_pdu->qel, "deliv-bitch-again", 0);
   else
-    hi_free_req(hit, db_pdu);
+    hi_free_req(hit, db_pdu, "db_pdu ");
 #else
   /* No rescheduling. Operate in one-shot mode: all connected ones get delivery attempt.
    * The cleanup will happen when last ACK is received and db_pdu->ad.delivb.acks
@@ -325,7 +325,7 @@ int zxbus_retire(struct hi_thr* hit, struct hi_pdu* db_pdu)
     return 0;
   }
   DD("c_path(%s) len=%d", c_path, len);
-  D("sha1_input(%.*s) len=%d", db_pdu->ap - db_pdu->m, db_pdu->m, db_pdu->ap - db_pdu->m);
+  DD("sha1_input(%.*s) len=%d", db_pdu->ap - db_pdu->m, db_pdu->m, db_pdu->ap - db_pdu->m);
   sha1_safe_base64(c_path+len, db_pdu->ap - db_pdu->m, db_pdu->m);
   c_path[len+27] = 0;
   DD("c_path(%s)", c_path);

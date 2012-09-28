@@ -759,6 +759,8 @@ int zxbusd_main(int argc, char** argv, char** env)
   CMDLINE("load_subs");
   zxbus_load_subs(shuff);
   
+  hi_sanity_shf(255, shuff);
+  
   /* Unleash threads so that the listeners are served. */
   
   CMDLINE("unleash");

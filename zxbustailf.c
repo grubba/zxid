@@ -230,7 +230,7 @@ int zxbustailf_main(int argc, char** argv, char** env)
     
     for (nt = 0; nt < n_thr; ++nt) {
       if ((kids[nt] = fork()) == -1) { perror("fork"); exit(1); }
-      if (!kids[n_thr])
+      if (!kids[nt])
 	goto kid;
     }
     D("All forked (%d), now waiting...", n_thr);
@@ -250,6 +250,7 @@ int zxbustailf_main(int argc, char** argv, char** env)
     nt = -1;
   }
  kid:
+  D("Kid (%d/%d)", nt, n_thr);
   for (; n_iter; --n_iter) {
     if (n_send > 1 || n_iter > 1) {
       for (ns = n_send; ns; --ns) {

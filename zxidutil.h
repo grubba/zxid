@@ -1,5 +1,5 @@
 /* zxidutil.h  -  (Private) Utility API functions
- * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -38,7 +38,7 @@ extern "C" {
 
 /* zxpw */
 
-ZXID_DECL int zx_pw_authn(const char* path, char* uid, const char* passw);
+ZXID_DECL int zx_pw_authn(const char* path, char* uid, const char* passw, int fd_hint);
 
 /* zxidsso - trivial mapping functions */
 
@@ -50,6 +50,11 @@ ZXID_DECL void zxid_sigres_map(int sigres, char** sigval, char** sigmsg);
 ZXID_DECL int zxid_map_sec_mech(zxid_epr* epr);
 
 /* zxlog */
+
+#define ZXLOG_TIME_SIZ 19 /* not including nul termination */
+#define ZXLOG_TIME_FMT "%04d%02d%02d-%02d%02d%02d.%03ld"
+#define ZXLOG_TIME_ARG(t,usec) t.tm_year + 1900, t.tm_mon + 1, t.tm_mday, \
+                               t.tm_hour, t.tm_min, t.tm_sec, usec/1000
 
 /* zxlog(cf, ourts, srcts, ipport4, entid, msgid6, a7nid, nid8, sigval, res, op, arg, fmt, ...); */
 

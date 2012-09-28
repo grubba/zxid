@@ -45,6 +45,11 @@ use Time::HiRes;
 die $usage if $ARGV[0] =~ /^--?[hH?]/;
 $trace = 0;
 
+if ($ARGV[0] eq '-t') {
+    warn "Test: ".check_diff("ZXBUSM64", 60, 10, '10x10x20');
+    exit;
+}
+
 # Where error log goes tail -f zxtest.err
 #open STDERR, ">>zxtest.err";
 
@@ -146,6 +151,7 @@ sub urienc {
 
 sub blot_out_std_diffs {
     my ($x) = @_;
+    #warn "len=".length($x);
     $x =~ s/(ID)=".*?"/$1=""/g;
     $x =~ s/(IssueInstant)=".*?"/$1=""/g;
     
@@ -169,6 +175,7 @@ sub blot_out_std_diffs {
 
     # zxbusd hiiosdump related
 
+    #warn "len=".length($x);
     $x =~ s%(shf_0x)[0-9a-f]+%$1%g;
     $x =~ s%(io_0x)[0-9a-f]+%$1%g;
     $x =~ s%(hit_0x)[0-9a-f]+%$1%g;
@@ -177,8 +184,10 @@ sub blot_out_std_diffs {
     $x =~ s%(-> pdu_0x  // \()[A-Z]+\)%$1)%g;
     $x =~ s%(// fd=0x)[0-9a-f]+%$1%g;
 
+    #warn "len=".length($x);
     $x =~ s%test\(-?\d+,\d+,\d+\)%test(,,)%g;
     $x =~ s%RECEIPT \d+%RECEIPT %g;
+    #warn "len=".length($x);
     return $x;
 }
 
@@ -238,19 +247,23 @@ sub isdiff_read {
     my ($file1,$file2,$silent) = @_;
     my $data1 = readall($file1,$silent);
     my $data2 = readall($file2,$silent);
+    #warn "len1($file1)=".length($data1)." def1=".defined($data1)." len2($file2)=".length($data2)." def2=".defined($data2).".";
+    return -6 if !defined($data1) || !defined($data2);
+    #warn "data1($data1)\ndata2($data2)" if $data1 && $data2;
     $data1 = blot_out_std_diffs($data1);
     $data2 = blot_out_std_diffs($data2);
     return 0 if $data1 eq $data2;
-    #warn "len1($file1)=".length($data1)." len2($file2)=".length($data2).".";
-    #warn "data1($data1)\ndata2($data2)" if $data1 && $data2;
     return (length($data1)-length($data2)) || -5;
 }
 
 sub check_diff {
     my ($tsti, $latency, $slow, $test) = @_;
     my $ret;
+    $ok_lvl = '';
     return 0 if !($ret = isdiff_read("t/$tsti.out", "tmp/$tsti.out"));
+    $ok_lvl = 2;
     return 0 if !isdiff_read("t/$tsti.out2", "tmp/$tsti.out", 1);  # second truth matches
+    $ok_lvl = 3;
     return 0 if !isdiff_read("t/$tsti.out3", "tmp/$tsti.out", 1);  # third truth
     if ($diffx) {
 	if ($ret = ediffy_read("t/$tsti.out", "tmp/$tsti.out")) {
@@ -266,6 +279,7 @@ sub check_diff {
 	tst_print('col1r', (abs($ret)>5)?'Size ERR':'Diff ERR', $latency, $slow, $test, ($ret==-5?'':"Difference in size: $ret"));
 	return 1;
     }
+    $ok_lvl = 4;
     return 0;
 }
 
@@ -1182,9 +1196,9 @@ sub tst_ok {
     my ($latency, $slow, $test) = @_;
     ++$n_tst_ok;
     if ($latency > $slow) {
-	tst_print('col1y', 'OK slow', $latency, $slow, $test, $lasterror);
+	tst_print('col1y', "OK slow$ok_lvl", $latency, $slow, $test, $lasterror);
     } else {
-	tst_print('col1g', 'OK', $latency, $slow, $test, $lasterror);
+	tst_print('col1g', "OK $ok_lvl", $latency, $slow, $test, $lasterror);
     }
 }
 
@@ -1504,7 +1518,7 @@ CMD('ZXBUS01', 'Fail connect tailf', "./zxbustailf -d -d -c '$bus_cli_conf' -e '
 CMD('ZXBUS02', 'Fail connect list',  "./zxbuslist -d -d -c '$bus_list_conf'", 256);
 
 tst_nl();
-DAEMON('ZXBUS10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUS10.pid -c '$busd_conf' -d -d -dp -nthr 1 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUS10.pid -c '$busd_conf' -d -d -nthr 1 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
 DAEMON('ZXBUS10b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUS10b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS11', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
 STILL('ZXBUS10b', 'zxbuslist 1 still there');
@@ -1519,7 +1533,7 @@ KILLD('ZXBUS10', 'collect zxbusd 1');
 # 20 two thread debug
 
 tst_nl();
-DAEMON('ZXBUS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUS20.pid -c '$busd_conf' -d -d -dp -nthr 2 -nfd 11 -npdu 700 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUS20.pid -c '$busd_conf' -d -d -nthr 2 -nfd 11 -npdu 700 -p stomp:0.0.0.0:2229");
 DAEMON('ZXBUS20b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUS20b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS21', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
 CMD('ZXBUS21b','zxbuslist 2 one shot', "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'");
@@ -1570,7 +1584,7 @@ KILLD('ZXBUS40', 'collect zxbusd 4');
 # 50 three thread debug
 
 tst_nl();
-DAEMON('ZXBUS50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUS50.pid -c '$busd_conf' -d -d -dp -nthr 3 -nfd 1000 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUS50.pid -c '$busd_conf' -d -d -nthr 3 -nfd 1000 -npdu 5000 -p stomp:0.0.0.0:2229");
 DAEMON('ZXBUS50b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS50b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS51', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
 CMD('ZXBUS52', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
@@ -1605,7 +1619,7 @@ KILLD('ZXBUS60', 'collect zxbusd 6');
 # 70 ten thread debug
 
 tst_nl();
-DAEMON('ZXBUS70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUS70.pid -c '$busd_conf' -d -d -dp -nthr 10 -nfd 1000 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUS70.pid -c '$busd_conf' -d -d -nthr 10 -nfd 1000 -npdu 5000 -p stomp:0.0.0.0:2229");
 DAEMON('ZXBUS70b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS70b.pid -d -d -c '$bus_list_conf'");
 CMD('ZXBUS71', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
 CMD('ZXBUS72', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
@@ -1643,7 +1657,7 @@ CMD('ZXBUSS00', 'Clean', "rm -f /var/zxid/bus/ch/default/*  /var/zxid/bus/ch/def
 CMD('ZXBUSS01', 'Fail connect tailf', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'failbar'", 256);
 CMD('ZXBUSS02', 'Fail connect list',  "./zxbuslist -d -d -c '$buss_list_conf'", 256);
 
-DAEMON('ZXBUSS10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUSS10.pid -c '$bussd_conf' -d -d -dp -nthr 1 -nfd 11 -npdu 500 -p stomps:0.0.0.0:2229");
+DAEMON('ZXBUSS10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUSS10.pid -c '$bussd_conf' -d -d -nthr 1 -nfd 13 -npdu 500 -p stomps:0.0.0.0:2229");
 # *** The current version (20120911) has a bug in that first SSL connection fails.
 # *** Thus we send this priming connection to enable all the rest work.
 #CMD('ZXBUSS10a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
@@ -1661,14 +1675,14 @@ KILLD('ZXBUSS10', 'collect zxbusd 1');
 # 20 two thread debug
 
 tst_nl();
-DAEMON('ZXBUSS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSS20.pid -c '$bussd_conf' -d -d -dp -nthr 2 -nfd 11 -npdu 900 -p stomps:0.0.0.0:2229");
+DAEMON('ZXBUSS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSS20.pid -c '$bussd_conf' -d -d -nthr 2 -nfd 13 -npdu 900 -p stomps:0.0.0.0:2229");
 #CMD('ZXBUSS20a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
 DAEMON('ZXBUSS20b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUSS20b.pid -d -d -c '$buss_list_conf'");
 CMD('ZXBUSS21', 'One shot', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar'");
 CMD('ZXBUSS21b','zxbuslist 2 one shot', "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'");
 CMD('ZXBUSS22', 'zero len', "./zxbustailf -d -d -c '$buss_cli_conf' -e ''");
 CMD('ZXBUSS23', 'len1',     "./zxbustailf -d -d -c '$buss_cli_conf' -e 'F'");
-CMD('ZXBUSS24', '10x20 battery', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 40, 10);
+CMD('ZXBUSS24', '10x20 battery', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
 CMD('ZXBUSS25', 'len2',     "./zxbustailf -d -d -c '$buss_cli_conf' -e 'F'");
 CMD('ZXBUSS29', 'dump',     "./zxbustailf -c '$buss_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSS20b', 'collect zxbuslist 1');
@@ -1684,7 +1698,7 @@ CMD('ZXBUSS31', 'One shot', "./zxbustailf -c '$buss_cli_conf' -e 'foo bar'");
 DAEMON('ZXBUSS31b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSS31b.pid -c '$buss_list2_conf'");
 CMD('ZXBUSS32', 'zero len', "./zxbustailf -c '$buss_cli_conf' -e ''");
 CMD('ZXBUSS33', 'len1',     "./zxbustailf -c '$buss_cli_conf' -e 'F'");
-CMD('ZXBUSS34', '10x20 battery', "./zxbustailf -c '$buss_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 40, 10);
+CMD('ZXBUSS34', '10x20 battery', "./zxbustailf -c '$buss_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
 CMD('ZXBUSS35', 'len2',     "./zxbustailf -c '$buss_cli_conf' -e 'F'");
 CMD('ZXBUSS39', 'dump',     "./zxbustailf -c '$buss_cli_conf' -ctl 'dump'");
 KILLD('ZXBUSS30b', 'collect zxbuslist 1');
@@ -1715,7 +1729,7 @@ KILLD('ZXBUSS40', 'collect zxbusd 4');
 # 50 three thread debug
 
 tst_nl();
-DAEMON('ZXBUSS50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUSS50.pid -c '$bussd_conf' -d -d -dp -nthr 3 -nfd 1000 -npdu 5000 -p stomps:0.0.0.0:2229");
+DAEMON('ZXBUSS50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUSS50.pid -c '$bussd_conf' -d -d -nthr 3 -nfd 1000 -npdu 5000 -p stomps:0.0.0.0:2229");
 #CMD('ZXBUSS50a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
 DAEMON('ZXBUSS50b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSS50b.pid -d -d -c '$buss_list_conf'");
 CMD('ZXBUSS51', 'One shot', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar'");
@@ -1752,7 +1766,7 @@ KILLD('ZXBUSS60', 'collect zxbusd 6');
 # 70 ten thread debug
 
 tst_nl();
-DAEMON('ZXBUSS70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUSS70.pid -c '$bussd_conf' -d -d -dp -nthr 10 -nfd 1000 -npdu 5000 -p stomps:0.0.0.0:2229");
+DAEMON('ZXBUSS70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUSS70.pid -c '$bussd_conf' -d -d -nthr 10 -nfd 1000 -npdu 5000 -p stomps:0.0.0.0:2229");
 #CMD('ZXBUSS70a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
 DAEMON('ZXBUSS70b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSS70b.pid -d -d -c '$buss_list_conf'");
 CMD('ZXBUSS71', 'One shot', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar'");
@@ -1788,151 +1802,259 @@ KILLD('ZXBUSS80', 'collect zxbusd 8');
 ### Dual threaded client, various numbers of threads at zxbusd
 
 tst_nl();
-DAEMON('ZXBUSD10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUSD10.pid -c '$busd_conf' -d -d -dp -nthr 1 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD14', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 60, 10);
-CMD('ZXBUSD19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
-KILLD('ZXBUSD10', 'collect zxbusd 1');
+CMD('ZXBUSD00', 'Clean', "rm -f /var/zxid/bus/ch/default/*  /var/zxid/bus/ch/default/.del/*  /var/zxid/bus/ch/default/.ack/*");
 
 tst_nl();
-DAEMON('ZXBUSD20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSD20.pid -c '$busd_conf' -d -d -dp -nthr 2 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD24', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSD10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUSD10.pid -c '$busd_conf' -d -d -nthr 1 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD10b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD10b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD10c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD10c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD12', 'zxbuslist 2 fail one shot',  "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'", 256, 10, 1);
+CMD('ZXBUSD14', '2x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 90, 10);
+CMD('ZXBUSD19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD10b', 'collect zxbuslist 1');
+KILLD('ZXBUSD10c', 'collect zxbuslist 2');
+KILLD('ZXBUSD10',  'collect zxbusd 1');
+
+tst_nl();
+DAEMON('ZXBUSD20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSD20.pid -c '$busd_conf' -d -d -nthr 2 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD20b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD20b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD20c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD20c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD24', '2x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 180, 10);
 CMD('ZXBUSD29', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD20b', 'collect zxbuslist 1');
+KILLD('ZXBUSD20c', 'collect zxbuslist 2');
 KILLD('ZXBUSD20', 'collect zxbusd 2');
 
 tst_nl();
-DAEMON('ZXBUSD30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUSD30.pid -c '$busd_conf' -nthr 1 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD34', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSD30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUSD30.pid -c '$busd_conf' -nthr 1 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD30b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD30b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD30c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD30c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD34', '2x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 120, 10);
 CMD('ZXBUSD39', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD30b', 'collect zxbuslist 1');
+KILLD('ZXBUSD30c', 'collect zxbuslist 2');
 KILLD('ZXBUSD30', 'collect zxbusd 3');
 
 tst_nl();
-DAEMON('ZXBUSD40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUSD40.pid -c '$busd_conf' -nthr 2 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD44', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSD40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUSD40.pid -c '$busd_conf' -nthr 2 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD40b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD40b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD40c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD40c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD44', '2x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 120, 10);
 CMD('ZXBUSD49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD40b', 'collect zxbuslist 1');
+KILLD('ZXBUSD40c', 'collect zxbuslist 2');
 KILLD('ZXBUSD40', 'collect zxbusd 4');
 
 tst_nl();
-DAEMON('ZXBUSD50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUSD50.pid -c '$busd_conf' -d -d -dp -nthr 3 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD54', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSD50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUSD50.pid -c '$busd_conf' -d -d -nthr 3 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD50b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD50b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD50c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD50c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD54', '2x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 120, 10);
 CMD('ZXBUSD59', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD50b', 'collect zxbuslist 1');
+KILLD('ZXBUSD50c', 'collect zxbuslist 2');
 KILLD('ZXBUSD50', 'collect zxbusd 5');
 
 tst_nl();
-DAEMON('ZXBUSD60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUSD60.pid -c '$busd_conf' -nthr 3 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD64', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSD60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUSD60.pid -c '$busd_conf' -nthr 3 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD60b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD60b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD60c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD60c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD64', '2x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 120, 10);
 CMD('ZXBUSD69', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD60b', 'collect zxbuslist 1');
+KILLD('ZXBUSD60c', 'collect zxbuslist 2');
 KILLD('ZXBUSD60', 'collect zxbusd 6');
 
 tst_nl();
-DAEMON('ZXBUSD70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUSD70.pid -c '$busd_conf' -d -d -dp -nthr 10 -nfd 11 -npdu 36 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD74', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSD70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUSD70.pid -c '$busd_conf' -d -d -nthr 10 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD70b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD70b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD70c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD70c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD74', '2x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 120, 10);
 CMD('ZXBUSD79', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD70b', 'collect zxbuslist 1');
+KILLD('ZXBUSD70c', 'collect zxbuslist 2');
 KILLD('ZXBUSD70', 'collect zxbusd 7');
 
 tst_nl();
-DAEMON('ZXBUSD80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUSD80.pid -c '$busd_conf' -nthr 10 -nfd 11 -npdu 36 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSD84', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSD80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUSD80.pid -c '$busd_conf' -nthr 10 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD80b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD80b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD80c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD80c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD84', '2x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 120, 10);
 CMD('ZXBUSD89', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD80b', 'collect zxbuslist 1');
+KILLD('ZXBUSD80c', 'collect zxbuslist 2');
 KILLD('ZXBUSD80', 'collect zxbusd 8');
 
 ### Triple threaded client, various numbers of threads at zxbusd
 
 tst_nl();
-DAEMON('ZXBUST10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUST10.pid -c '$busd_conf' -d -d -dp -nthr 1 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST14', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 60, 10);
-CMD('ZXBUST19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
-KILLD('ZXBUST10', 'collect zxbusd 1');
+CMD('ZXBUST00', 'Clean', "rm -f /var/zxid/bus/ch/default/*  /var/zxid/bus/ch/default/.del/*  /var/zxid/bus/ch/default/.ack/*");
 
 tst_nl();
-DAEMON('ZXBUST20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUST20.pid -c '$busd_conf' -d -d -dp -nthr 2 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST24', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUST10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUST10.pid -c '$busd_conf' -d -d -nthr 1 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST10b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST10b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST10c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST10c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST12', 'zxbuslist 2 fail one shot',  "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'", 256, 10, 1);
+CMD('ZXBUST14', '3x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
+CMD('ZXBUST19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST10b', 'collect zxbuslist 1');
+KILLD('ZXBUST10c', 'collect zxbuslist 2');
+KILLD('ZXBUST10',  'collect zxbusd 1');
+
+tst_nl();
+DAEMON('ZXBUST20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUST20.pid -c '$busd_conf' -d -d -nthr 2 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST20b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST20b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST20c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST20c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST24', '3x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
 CMD('ZXBUST29', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST20b', 'collect zxbuslist 1');
+KILLD('ZXBUST20c', 'collect zxbuslist 2');
 KILLD('ZXBUST20', 'collect zxbusd 2');
 
 tst_nl();
-DAEMON('ZXBUST30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUST30.pid -c '$busd_conf' -nthr 1 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST34', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUST30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUST30.pid -c '$busd_conf' -nthr 1 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST30b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST30b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST30c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST30c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST34', '3x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
 CMD('ZXBUST39', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST30b', 'collect zxbuslist 1');
+KILLD('ZXBUST30c', 'collect zxbuslist 2');
 KILLD('ZXBUST30', 'collect zxbusd 3');
 
 tst_nl();
-DAEMON('ZXBUST40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUST40.pid -c '$busd_conf' -nthr 2 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST44', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUST40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUST40.pid -c '$busd_conf' -nthr 2 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST40b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST40b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST40c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST40c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST44', '3x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
 CMD('ZXBUST49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST40b', 'collect zxbuslist 1');
+KILLD('ZXBUST40c', 'collect zxbuslist 2');
 KILLD('ZXBUST40', 'collect zxbusd 4');
 
 tst_nl();
-DAEMON('ZXBUST50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUST50.pid -c '$busd_conf' -d -d -dp -nthr 3 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST54', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUST50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUST50.pid -c '$busd_conf' -d -d -nthr 3 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST50b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST50b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST50c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST50c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST54', '3x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
 CMD('ZXBUST59', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST50b', 'collect zxbuslist 1');
+KILLD('ZXBUST50c', 'collect zxbuslist 2');
 KILLD('ZXBUST50', 'collect zxbusd 5');
 
 tst_nl();
-DAEMON('ZXBUST60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUST60.pid -c '$busd_conf' -nthr 3 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST64', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUST60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUST60.pid -c '$busd_conf' -nthr 3 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST60b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST60b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST60c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST60c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST64', '3x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
 CMD('ZXBUST69', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST60b', 'collect zxbuslist 1');
+KILLD('ZXBUST60c', 'collect zxbuslist 2');
 KILLD('ZXBUST60', 'collect zxbusd 6');
 
 tst_nl();
-DAEMON('ZXBUST70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUST70.pid -c '$busd_conf' -d -d -dp -nthr 10 -nfd 11 -npdu 36 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST74', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUST70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUST70.pid -c '$busd_conf' -d -d -nthr 10 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST70b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST70b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST70c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST70c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST74', '3x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
 CMD('ZXBUST79', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST70b', 'collect zxbuslist 1');
+KILLD('ZXBUST70c', 'collect zxbuslist 2');
 KILLD('ZXBUST70', 'collect zxbusd 7');
 
 tst_nl();
-DAEMON('ZXBUST80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUST80.pid -c '$busd_conf' -nthr 10 -nfd 11 -npdu 36 -p stomp:0.0.0.0:2229");
-CMD('ZXBUST84', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUST80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUST80.pid -c '$busd_conf' -nthr 10 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST80b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST80b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST80c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST80c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST84', '3x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
 CMD('ZXBUST89', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST80b', 'collect zxbuslist 1');
+KILLD('ZXBUST80c', 'collect zxbuslist 2');
 KILLD('ZXBUST80', 'collect zxbusd 8');
 
-### Multi threaded client, various numbers of threads at zxbusd
+### Multi threaded (10) client, various numbers of threads at zxbusd
 
 tst_nl();
-DAEMON('ZXBUSM10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUSM10.pid -c '$busd_conf' -d -d -dp -nthr 1 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM14', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 60, 10);
+CMD('ZXBUSM00', 'Clean', "rm -f /var/zxid/bus/ch/default/*  /var/zxid/bus/ch/default/.del/*  /var/zxid/bus/ch/default/.ack/*");
+
+tst_nl();
+DAEMON('ZXBUSM10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUSM10.pid -c '$busd_conf' -d -d -nthr 1 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM10b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM10b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM10c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM10c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM12', 'zxbuslist 2 fail one shot',  "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'", 256, 10, 1);
+CMD('ZXBUSM14', '10x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
 CMD('ZXBUSM19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
-KILLD('ZXBUSM10', 'collect zxbusd 1');
+KILLD('ZXBUSM10b', 'collect zxbuslist 1');
+KILLD('ZXBUSM10c', 'collect zxbuslist 2');
+KILLD('ZXBUSM10',  'collect zxbusd 1');
 
 tst_nl();
-DAEMON('ZXBUSM20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSM20.pid -c '$busd_conf' -d -d -dp -nthr 2 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM24', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSM20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSM20.pid -c '$busd_conf' -d -d -nthr 2 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM20b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM20b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM20c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM20c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM24', '10x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
 CMD('ZXBUSM29', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM20b', 'collect zxbuslist 1');
+KILLD('ZXBUSM20c', 'collect zxbuslist 2');
 KILLD('ZXBUSM20', 'collect zxbusd 2');
 
 tst_nl();
-DAEMON('ZXBUSM30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUSM30.pid -c '$busd_conf' -nthr 1 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM34', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSM30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUSM30.pid -c '$busd_conf' -nthr 1 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM30b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM30b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM30c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM30c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM34', '10x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
 CMD('ZXBUSM39', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM30b', 'collect zxbuslist 1');
+KILLD('ZXBUSM30c', 'collect zxbuslist 2');
 KILLD('ZXBUSM30', 'collect zxbusd 3');
 
 tst_nl();
-DAEMON('ZXBUSM40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUSM40.pid -c '$busd_conf' -nthr 2 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM44', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSM40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUSM40.pid -c '$busd_conf' -nthr 2 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM40b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM40b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM40c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM40c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM44', '10x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
 CMD('ZXBUSM49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM40b', 'collect zxbuslist 1');
+KILLD('ZXBUSM40c', 'collect zxbuslist 2');
 KILLD('ZXBUSM40', 'collect zxbusd 4');
 
 tst_nl();
-DAEMON('ZXBUSM50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUSM50.pid -c '$busd_conf' -d -d -dp -nthr 3 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM54', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSM50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUSM50.pid -c '$busd_conf' -d -d -nthr 3 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM50b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM50b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM50c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM50c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM54', '10x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
 CMD('ZXBUSM59', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM50b', 'collect zxbuslist 1');
+KILLD('ZXBUSM50c', 'collect zxbuslist 2');
 KILLD('ZXBUSM50', 'collect zxbusd 5');
 
 tst_nl();
-DAEMON('ZXBUSM60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUSM60.pid -c '$busd_conf' -nthr 3 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM64', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSM60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUSM60.pid -c '$busd_conf' -nthr 3 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM60b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM60b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM60c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM60c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM64', '10x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
 CMD('ZXBUSM69', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM60b', 'collect zxbuslist 1');
+KILLD('ZXBUSM60c', 'collect zxbuslist 2');
 KILLD('ZXBUSM60', 'collect zxbusd 6');
 
 tst_nl();
-DAEMON('ZXBUSM70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUSM70.pid -c '$busd_conf' -d -d -dp -nthr 10 -nfd 11 -npdu 36 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM74', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSM70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUSM70.pid -c '$busd_conf' -d -d -nthr 10 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM70b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM70b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM70c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM70c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM74', '10x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
 CMD('ZXBUSM79', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM70b', 'collect zxbuslist 1');
+KILLD('ZXBUSM70c', 'collect zxbuslist 2');
 KILLD('ZXBUSM70', 'collect zxbusd 7');
 
 tst_nl();
-DAEMON('ZXBUSM80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUSM80.pid -c '$busd_conf' -nthr 10 -nfd 11 -npdu 36 -p stomp:0.0.0.0:2229");
-CMD('ZXBUSM84', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 60, 10);
+DAEMON('ZXBUSM80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUSM80.pid -c '$busd_conf' -nthr 10 -nfd 1000 -npdu 7000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM80b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM80b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM80c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM80c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM84', '10x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
 CMD('ZXBUSM89', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM80b', 'collect zxbuslist 1');
+KILLD('ZXBUSM80c', 'collect zxbuslist 2');
 KILLD('ZXBUSM80', 'collect zxbusd 8');
 
 ### Unit test code that did not get tested otherwise

@@ -418,9 +418,11 @@ extern FILE* zx_debug_log;   /* Defined in zxidlib.c as 0 alias to stderr */
 
 #ifdef USE_PTHREAD
 #define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s E " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s W %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
 #define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s I %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
 #else
 #define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s E %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s W %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
 #define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s I %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
 #endif
 
@@ -762,5 +764,6 @@ extern char* assert_msg;
 /* Test XML boolean field (zx_str) for XML valid "true" values */
 #define XML_TRUE_TEST(x) ((x) && (x)->s && (((x)->len == 1 && (x)->s[0] == '1') || ((x)->len == 4 && !memcmp((x)->s, "true", 4))))
 
+void zx_broken_snprintf(int n);
 
 #endif /* errmac.h */

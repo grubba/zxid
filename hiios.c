@@ -98,7 +98,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   if (fd&0x80000000) {
     D("%s: 2nd close(%x) n_c/t=%d/%d", lk, fd, io->n_close, io->n_thr);
   } else {
-    D("%s: 1st close(%x) n_c/t=%d/%d", lk, fd, io->n_close, io->n_thr);
+    INFO("%s: 1st close(%x) n_c/t=%d/%d", lk, fd, io->n_close, io->n_thr);
     if (shutdown(fd, SHUT_RD))
       ERR("%s: shutdown(%x) %d %s", lk, fd, errno, STRERROR(errno));
     hi_del_fd(hit, fd);    /* stop poll from returning this fd */
@@ -148,15 +148,16 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   D("%s: close-final(%x) n_c/t=%d/%d", lk, io->fd, io->n_close, io->n_thr);
 
   for (pdu = io->reqs; pdu; pdu = pdu->n)
-    hi_free_req(hit, pdu);
+    hi_free_req(hit, pdu, "close-reqs ");
   io->reqs = 0;
   for (pdu = io->pending; pdu; pdu = pdu->n)
-    hi_free_req(hit, pdu);
+    hi_free_req(hit, pdu, "close-pend ");
   io->pending = 0;
   
   if (io->cur_pdu) {
-    hi_free_req(hit, io->cur_pdu);
+    hi_free_req(hit, io->cur_pdu, "close-cur ");
     io->cur_pdu = hi_pdu_alloc(hit, "cur_pdu-clo");  /* *** Could we recycle the PDU without freeing? */
+    io->cur_pdu->fe = io;
   }
 #ifdef ENA_S5066
   void sis_clean(struct hi_io* io);
@@ -168,9 +169,10 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   if (io->ent) {
     if (io->ent->io == io) {
       io->ent->io = 0;
-      INFO("Dissociate ent_%p (%s) from io(%x)", io->ent, io->ent->eid, io->fd);
+      /*INFO("Dissociate ent_%p (%s) from io(%x)", io->ent, io->ent->eid, io->fd);*/
+      INFO("Dissociate ent_%p from io(%x)", io->ent, io->fd);
     } else {
-      ERR("io(%x)->ent and ent->io(%x) are different", io->fd, io->ent->io->fd);
+      WARN("io(%x)->ent and ent->io(%x) are diff", io->fd, io->ent->io?io->ent->io->fd:-1);
     }
     io->ent = 0;
   } else {
@@ -190,7 +192,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   ++io->n_close;
   hit->cur_io = 0;
   close(io->fd & 0x7ffffff); /* Now some other thread may reuse the slot by accept()ing same fd */
-  D("%s: CLOSED(%x) n_close=%d", lk, io->fd, io->n_close);
+  INFO("%s: CLOSED(%x) n_close=%d", lk, io->fd, io->n_close);
 
   /* Must let go of the lock only after close so no read can creep in. */
   D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
@@ -216,6 +218,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
 #endif
   if (io->events & (EPOLLHUP | EPOLLERR)) {
     D("HUP or ERR on fd=%x events=0x%x", io->fd, io->events);
+  close:
     io->n_thr -= 2;                   /* Remove both counts (write and read) */
     ASSERT(io->n_thr >= 0);
     UNLOCK(io->qel.mut, "in_out-hup");
@@ -254,6 +257,11 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
 	D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
       }
     } else {
+      if (io->fd & 0x80000000) {
+	/* Seems it was already a closed one, but due to no write, no opportunity for error. */
+	D("nothing to write and closed io(%x)->n_thr=%d", io->fd, io->n_thr);
+	goto close;
+      }
       --io->n_thr;              /* Remove write count as no write happened. */
       D("no inwrite io(%x)->n_thr=%d", io->fd, io->n_thr);
     }
@@ -329,6 +337,7 @@ void hi_shuffle(struct hi_thr* hit, struct hiios* shf)
   shf->threads = hit;
   UNLOCK(shf->todo_mut, "add-thread");
   INFO("Start shuffling hit(%p) shf(%p)", hit, shf);
+  hi_sanity_shf(255, shf);
   while (1) {
     HI_SANITY(hit->shf, hit);
     qe = hi_todo_consume(hit);  /* Wakes up the heard to receive work. */

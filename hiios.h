@@ -391,8 +391,9 @@ struct hi_ent {
 };
 
 #define HI_NOSUBS    0
-#define HI_SUBS      1
-#define HI_SUBS_PEND 2 /* Subscribed and messages pending. */
+#define HI_SUBS      1 /* Subscribed, but not logged in. */
+#define HI_SUBS_ON   2 /* Subscribed and logged in with subscribe message */
+#define HI_SUBS_PEND 3 /* Subscribed and messages pending. */
 
 /* External APIs */
 
@@ -429,8 +430,8 @@ void hi_poll(struct hi_thr* hit);
 
 struct hi_qel* hi_todo_consume(struct hi_thr* hit);
 
-void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp);
-void hi_free_req(struct hi_thr* hit, struct hi_pdu* pdu);
+void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp, const char* lk1);
+void hi_free_req(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk1);
 void hi_del_from_reqs(struct hi_io* io,   struct hi_pdu* req);
 void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen);
 void hi_make_iov_nolock(struct hi_io* io);
@@ -439,7 +440,7 @@ void hi_make_iov_nolock(struct hi_io* io);
 
 extern short hi_color;  /* color used for data structure circularity checks */
 
-void hi_dump(struct hiios* shf);
+int hi_dump(struct hiios* shf);
 int hi_sanity_pdu(int mode, struct hi_pdu* root_pdu);
 int hi_sanity_io(int mode, struct hi_io* root_io);
 int hi_sanity_hit(int mode, struct hi_thr* root_hit);

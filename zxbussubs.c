@@ -127,7 +127,7 @@ static int zxbus_load_ch_subs(struct hiios* shf, struct hi_ch* ch)
   while (nl = strchr(p, '\n')) {
     *nl = 0;
     if (ent = zxbus_load_ent(shf, -1, p)) {
-      ent->chs[ch_num] = 1;
+      ent->chs[ch_num] = HI_SUBS;
     } else {
       ERR("entity(%s) does not exist, in %s/.subs", p, ch->dest);
     }
@@ -199,25 +199,27 @@ int zxbus_subscribe(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
     return 0;
   }
 
+  /* N.B. The receipt needs to be sent before registering subscription and
+   * scheduling pending deliveries, lest the simple listener clients
+   * get confused by seeing a MESSAGE when expecting RECEIPT. */
+  stomp_send_receipt(hit, io, req);
+
   /* Check whether entity is already subscribed. The channel arrays are
    * in alignment so we only need to look at the corresponding slot. */
   
   LOCK(hit->shf->ent_mut, "subscribe");
   D("LOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
   if (ent->chs[ch - hit->shf->chs]) {
+    ent->chs[ch - hit->shf->chs] = HI_SUBS_ON;
     D("UNLOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
     UNLOCK(hit->shf->ent_mut, "subscribed");
     D("Already subscribed to(%s)", ch->dest);
   } else {
-    ent->chs[ch - hit->shf->chs] = 1;
+    ent->chs[ch - hit->shf->chs] = HI_SUBS_ON;
     zxbus_write_ch_subs(hit->shf, ch);
     D("UNLOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
     UNLOCK(hit->shf->ent_mut, "subscribe2");
   }
-  /* N.B. The receipt needs to be sent before
-   * scheduling pending deliveries, lest the simple listener clients
-   * get confused by seeing a MESSAGE when expecting RECEIPT. */
-  stomp_send_receipt(hit, io, req);
   zxbus_sched_pending_delivery(hit, ch->dest);
   return 1;
 }

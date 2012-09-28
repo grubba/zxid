@@ -93,17 +93,17 @@ int zx_yubikey_authn(const char* path, char* uid, const char* passw)
  * return:: 0 on failure, 1 on success  */
 
 /* Called by:  zx_pw_authn */
-int zx_pw_chk(const char* uid, const char* pw_buf, const char* passw)
+static int zx_pw_chk(const char* uid, const char* pw_buf, const char* passw, int fd_hint)
 {
   unsigned char pw_hash[120];
   
   /* *** Add here support for other authentication backends */
   
-  DD("pw_buf (%s) len=%d", pw_buf, strlen(pw_buf));
+  DD("io(%x) pw_buf (%s) len=%d", fd_hint, pw_buf, strlen(pw_buf));
   
   if (!memcmp(pw_buf, "$1$", sizeof("$1$")-1)) {
     zx_md5_crypt(passw, (char*)pw_buf, (char*)pw_hash);
-    D("pw_hash(%s)", pw_hash);
+    D("io(%x) pw_hash(%s)", fd_hint, pw_hash);
     if (strcmp((char*)pw_buf, (char*)pw_hash)) {
       ERR("Bad password. uid(%s)", uid);
       D("md5 pw(%s) .pw(%s) pw_hash(%s)", passw, pw_buf, pw_hash);
@@ -112,7 +112,7 @@ int zx_pw_chk(const char* uid, const char* pw_buf, const char* passw)
 #ifdef USE_OPENSSL
   } else if (!memcmp(pw_buf, "$c$", sizeof("$c$")-1)) {
     DES_fcrypt(passw, (char*)pw_buf+3, (char*)pw_hash);
-    D("pw_hash(%s)", pw_hash);
+    D("io(%x) pw_hash(%s)", fd_hint, pw_hash);
     if (strcmp((char*)pw_buf+3, (char*)pw_hash)) {
       ERR("Bad password for uid(%s)", uid);
       D("crypt pw(%s) .pw(%s) pw_hash(%s)", passw, pw_buf, pw_hash);
@@ -121,16 +121,16 @@ int zx_pw_chk(const char* uid, const char* pw_buf, const char* passw)
 #endif
   } else if (ONE_OF_2(pw_buf[0], '$', '_')) {
     ERR("Unsupported password hash. uid(%s)", uid);
-    D("pw(%s) .pw(%s)", passw, pw_buf);
+    D("io(%x) pw(%s) .pw(%s)", fd_hint, passw, pw_buf);
     return 0;
   } else {
     if (strcmp((char*)pw_buf, passw)) {
       ERR("Bad password. uid(%s)", uid);
-      D("pw(%s) .pw(%s)", passw, pw_buf);
+      D("io(%x) pw(%s) .pw(%s)", fd_hint, passw, pw_buf);
       return 0;
     }
   }
-  INFO("Login OK account(%s)", uid);
+  INFO("Login(%x) OK acnt(%s)", fd_hint, uid);
   return 1;
 }
 
@@ -145,14 +145,14 @@ int zx_pw_chk(const char* uid, const char* pw_buf, const char* passw)
  * return:: 0 on failure, 1 on success  */
 
 /* Called by:  zxbus_pw_authn_ent, zxid_pw_authn */
-int zx_pw_authn(const char* path, char* uid, const char* passw)
+int zx_pw_authn(const char* path, char* uid, const char* passw, int fd_hint)
 {
   char pw_buf[256];
   int len;
 
   if (!uid || !uid[0]) {
     ERR("No uid (user's login name) supplied. %p", uid);
-    D("no user name pw(%s)", STRNULLCHK(passw));
+    D("io(%x) no user name pw(%s)", fd_hint, STRNULLCHK(passw));
     return 0;
   }
 
@@ -160,7 +160,7 @@ int zx_pw_authn(const char* path, char* uid, const char* passw)
   if (strstr(uid, "..") || strchr(uid, '/')
       || strchr(uid, '\\') || strchr(uid, '~')) {
     ERR("uid(%s) is not filesystem safe", uid);
-    D("pw(%s)", STRNULLCHK(passw));
+    D("io(%x) pw(%s)", fd_hint, STRNULLCHK(passw));
     return 0;
   }
 
@@ -176,7 +176,7 @@ int zx_pw_authn(const char* path, char* uid, const char* passw)
   len = read_all(sizeof(pw_buf), pw_buf, "pw_authn", 1, "%s" ZXID_UID_DIR "%s/.pw", path, uid);
   if (len < 1) {
     ERR("No account found for uid(%s) or account does not have .pw file.", uid);
-    D("pw(%s)", passw);
+    D("io(%x) pw(%s)", fd_hint, passw);
     return 0;
   }
     
@@ -185,7 +185,7 @@ int zx_pw_authn(const char* path, char* uid, const char* passw)
     if (pw_buf[len-1] == '\015') --len;
   }
   pw_buf[len] = 0;
-  return zx_pw_chk(uid, pw_buf, passw);
+  return zx_pw_chk(uid, pw_buf, passw, fd_hint);
 }
 
 /* EOF  --  zxpw.c */

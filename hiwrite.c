@@ -266,7 +266,7 @@ static void hi_make_iov(struct hi_io* io)
  * see also:: hi_pdu_alloc() */
 
 /* Called by:  hi_free_req x2, hi_free_resp */
-static void hi_pdu_free(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk)
+static void hi_pdu_free(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk1, const char* lk2)
 {
   int i;
 
@@ -275,18 +275,18 @@ static void hi_pdu_free(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk)
   hit->free_pdus = pdu;
   ++hit->n_free_pdus;
   pdu->qel.intodo = HI_INTODO_HIT_FREE;
-  D("%s: pdu_%p freed (%.*s) n_free=%d",lk,pdu,MIN(pdu->ap - pdu->m,3), pdu->m, hit->n_free_pdus);
+  D("%s%s: pdu_%p freed (%.*s) n_free=%d",lk1,lk2,pdu,MIN(pdu->ap - pdu->m,3), pdu->m, hit->n_free_pdus);
   
   if (hit->n_free_pdus <= HIT_FREE_HIWATER)  /* high water mark */
     return;
 
-  D("%s: pdu_%p mv some hit->free_pdus to shf",lk,pdu);
+  D("%s%s: pdu_%p mv some hit->free_pdus to shf",lk1,lk2,pdu);
   LOCK(hit->shf->pdu_mut, "pdu_free");
   for (i = HIT_FREE_LOWATER; i; --i) {
     pdu = hit->free_pdus;
     hit->free_pdus = (struct hi_pdu*)pdu->qel.n;
 
-    D("%s: mv hit free pdu_%p to shf",lk,pdu);
+    D("%s%s: mv hit free pdu_%p to shf",lk1,lk2,pdu);
 
     pdu->qel.n = &hit->shf->free_pdus->qel;         /* move to free list */
     hit->shf->free_pdus = pdu;
@@ -307,7 +307,7 @@ static void hi_pdu_free(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk)
  * locking:: Called outside io->qel.mut */
 
 /* Called by:  hi_clear_iov, stomp_got_ack x2, stomp_got_nack */
-void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
+void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp, const char* lk1)
 {
   struct hi_pdu* pdu = resp->req->reals;
   
@@ -325,7 +325,7 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
 	break;
       }
   
-  hi_pdu_free(hit, resp, "free_resp");
+  hi_pdu_free(hit, resp, lk1, "free_resp");
   HI_SANITY(hit->shf, hit);
 }
 
@@ -334,16 +334,16 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp)
  * locking:: Called outside io->qel.mut */
 
 /* Called by:  hi_close_final x3, hi_free_req_fe, stomp_got_ack, stomp_got_nack, stomp_msg_deliver */
-void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
+void hi_free_req(struct hi_thr* hit, struct hi_pdu* req, const char* lk1)
 {
   struct hi_pdu* pdu;
   
   HI_SANITY(hit->shf, hit);
 
   for (pdu = req->reals; pdu; pdu = pdu->n)  /* free dependent resps */
-    hi_pdu_free(hit, pdu, "free_req-real");
+    hi_pdu_free(hit, pdu, lk1, "free_req-real");
   
-  hi_pdu_free(hit, req, "free_req");
+  hi_pdu_free(hit, req, lk1, "free_req");
   HI_SANITY(hit->shf, hit);
 }
 
@@ -353,7 +353,7 @@ void hi_free_req(struct hi_thr* hit, struct hi_pdu* req)
  * see also:: hi_add_to_reqs() */
 
 /* Called by:  hi_free_req_fe, stomp_got_ack */
-void hi_del_from_reqs(struct hi_io* io,   struct hi_pdu* req)
+void hi_del_from_reqs(struct hi_io* io, struct hi_pdu* req)
 {
   struct hi_pdu* pdu;
   LOCK(io->qel.mut, "del-from-reqs");
@@ -379,7 +379,7 @@ void hi_del_from_reqs(struct hi_io* io,   struct hi_pdu* req)
       }
     }
     ERR("req(%p) not found in fe(%x)->reqs or pending", req, io->fd);
-    NEVERNEVER("req not found in fe(%x)->reqs or pending", io->fd);
+    /*NEVERNEVER("req not found in fe(%x)->reqs or pending", io->fd); can happen for cur_pdu */
   out: ;
   }
   UNLOCK(io->qel.mut, "del-from-reqs");
@@ -402,7 +402,7 @@ static void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
    * If it is not, the loop will run off the end and crash with NULL pointer. */
   hi_del_from_reqs(req->fe, req);
   HI_SANITY(hit->shf, hit);
-  hi_free_req(hit, req);
+  hi_free_req(hit, req, "req_fe ");
 }
 
 /*() Free the contents of io->in_write list and anything that depends from it.
@@ -415,7 +415,7 @@ static void hi_free_in_write(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* req;
   struct hi_pdu* resp;
-  D("freeing resps (&reqs?) io(%x)->in_write=%p", io->fd, io->in_write);
+  D("freeing resps&reqs io(%x)->in_write=%p", io->fd, io->in_write);
 
   while (resp = io->in_write) {
     io->in_write = resp->wn;
@@ -425,7 +425,7 @@ static void hi_free_in_write(struct hi_thr* hit, struct hi_io* io)
     
     /* Only a response can cause anything freed, and every response is freeable upon write. */
     
-    hi_free_resp(hit, resp);
+    hi_free_resp(hit, resp, "in_write ");
     if (!req->reals)                   /* last response, free the request */
       hi_free_req_fe(hit, req);
   }

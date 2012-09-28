@@ -44,12 +44,6 @@
 #include "zxidconf.h"
 #include "c/zx-data.h"  /* Generated. If missing, run `make dep ENA_GEN=1' */
 
-#define ZXID_LOG_DIR "log/"
-#define ZXLOG_TIME_SIZ 19 /* not including nul termination */
-#define ZXLOG_TIME_FMT "%04d%02d%02d-%02d%02d%02d.%03ld"
-#define ZXLOG_TIME_ARG(t,usec) t.tm_year + 1900, t.tm_mon + 1, t.tm_mday, \
-                               t.tm_hour, t.tm_min, t.tm_sec, usec/1000
-
 /*() Allocate memory for logging purposes.
  * Generally memory allocation goes via zx_alloc() family of functions. However
  * dues to special requirements of cryptographically implemeted logging,
@@ -318,10 +312,7 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
 	       zx_instance, STRNULLCHKD(sigval), res, op, arg?arg:"-");
   logbuf[len-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   if (n <= 0 || n >= len-3) {
-    if (n < 0) {
-      perror("snprintf");
-      D("Broken snprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", n);
-    }
+    if (n < 0) zx_broken_snprintf(n);
     D("Log buffer too short: %d chars needed", n);
     if (n <= 0)
       n = 0;
@@ -333,10 +324,7 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
       n = vsnprintf(p, len-n-2, fmt, ap);
       logbuf[len-1] = 0;  /* must terminate manually as on win32 nul term is not guaranteed */
       if (n <= 0 || n >= len-(p-logbuf)-2) {
-	if (n < 0) {
-	  perror("vsnprintf");
-	  D("Broken vsnprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", n);
-	}
+	if (n < 0) zx_broken_snprintf(n);
 	D("Log buffer truncated during format print: %d chars needed", n);
 	if (n <= 0)
 	  n = p-logbuf;

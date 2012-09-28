@@ -315,7 +315,7 @@ int hi_sanity_hit(int mode, struct hi_thr* root_hit)
 
 /*() Sanity check hiios shuffler data structures, i.e. practically everything.
  * Mainly meant to be called from gdb like this: p hi_color+=4, hi_sanity(255, shf)
- * The mode argument controls recursion and controls output of a visualization
+ * The mode argument controls recursion and output of a visualization
  * of the data structure. It consists of bits as follows
  *  76543210
  *  |   |||`-- recurse on sub PDU         (0x01)
@@ -349,8 +349,11 @@ int hi_sanity_shf(int mode, struct hiios* root_shf)
       printf("shf_%p -> null [label=ios];\n", root_shf);
   }
   for (io = root_shf->ios; io < root_shf->ios + root_shf->max_ios; ++io) {
-    if (io->fd & 0x80000000 || io->fd == 0)
+    if (!io->n_thr && (io->fd & 0x80000000 || io->fd == 0)) {
+      /*ASSERT(io->qel.intodo == HI_INTODO_SHF_FREE);  doesn't hold betw 1st close and end game */
+      printf("io_%p  // free? fd(%x) n_c/t=%d/%d in_todo=%d\n", io, io->fd, io->n_close, io->n_thr, io->qel.intodo);
       continue;   /* ios slot not in use */
+    }
     if (mode&0x80) printf("-> io_%p\n", io);
     ++nodes;
     if (mode&0x04) {
@@ -456,7 +459,7 @@ int hi_sanity(int mode, struct hiios* root_shf, struct hi_thr* root_hit, const c
  * Returns number of nodes scanned, or negative for errors. */
 
 /* Called by:  hi_checkmore, hi_sendf, http_encode_start, stomp_encode_start, stomp_got_zxctl, test_ping_reply */
-void hi_dump(struct hiios* shf)
+int hi_dump(struct hiios* shf)
 {
   struct hi_thr* hit;
   int res = hi_sanity_shf(255, shf);
@@ -467,6 +470,7 @@ void hi_dump(struct hiios* shf)
     res = hi_sanity_hit(255, hit);
     printf("Hit structure dump %d\n======================\n", res);
   }
+  return res;
 }
 
 /* EOF  --  hiiosdump.c */

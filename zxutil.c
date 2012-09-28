@@ -54,6 +54,14 @@ struct flock zx_unlk = { F_UNLCK, SEEK_SET, 0, 1 };
 
 int close_file(fdtype fd, const char* logkey);
 
+/*() Report brokenness of snprintf() */
+
+void zx_broken_snprintf(int n)
+{
+  perror("snprintf");
+  D("Broken snprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", n);
+}
+
 /*() Generate formatted file name path. Returns length of path or 0 on failure. */
 
 /* Called by:  name_from_path, vopen_fd_from_path */
@@ -62,8 +70,7 @@ int vname_from_path(char* buf, int buf_len, const char* name_fmt, va_list ap)
   int len = vsnprintf(buf, buf_len, name_fmt, ap);
   buf[buf_len-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   if (len < 0) {
-    perror("vsnprintf");
-    D("Broken vsnprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", len);
+    zx_broken_snprintf(len);
     return 0;
   }
   return len;
@@ -379,8 +386,7 @@ int write_all_fd_fmt(int fd, const char* logkey, int maxlen, char* buf, const ch
   buf[maxlen-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   va_end(ap);
   if (len < 0) {
-    perror("vsnprintf");
-    ERR("%s, Broken snprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", logkey, len);
+    zx_broken_snprintf(len);
     len = 0;
   }
   if (write_all_fd(fd, buf, len) == -1) {
@@ -419,8 +425,7 @@ int write_all_path_fmt(const char* logkey, int maxlen, char* buf, const char* pa
   buf[maxlen-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   va_end(ap);
   if (len < 0) {
-    perror("vsnprintf");
-    ERR("%s, Broken snprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", logkey, len);
+    zx_broken_snprintf(len);
     len = 0;
   }
   if (write_all_fd(fd, buf, len) == -1) {
@@ -661,6 +666,7 @@ int hexdump(const char* msg, const char* data, const char* lim, int max)
       case '\n': buf[3*16+1+1+i] = '\\'; break;
       case '~':  buf[3*16+1+1+i] = '^'; break;
       case '\\': buf[3*16+1+1+i] = '^'; break;
+      case 0x7f: buf[3*16+1+1+i] = '^'; break;
 	//case ']':  buf[3*16+1+1+i] = '^'; break;
       default:
 	buf[3*16+1+1+i] = *p < ' ' ? '^' : *p;

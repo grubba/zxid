@@ -87,6 +87,16 @@ int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const ch
   return HI_CONN_CLOSE;
 }
 
+/*() Send an error early on in decode process */
+
+static int stomp_frame_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const char* emsg)
+{
+  /* At this early stage the req is still a io->cur_pdu. We need to
+   * promote it to a real request so that the free logic will work right. */
+  hi_add_to_reqs(hit, io, req, STOMP_MIN_PDU_SIZE);
+  return stomp_err(hit,io,req,"malformed frame received",emsg);
+}
+
 #define CMD_NI_MSG "Command(%.*s) not implemented by server."
 
 /*() Send not implemented ERROR to remote client. */
@@ -246,14 +256,14 @@ static void stomp_got_nack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* 
   
   /* *** add validation of zx_rcpt_sig. Lookup the cert using metadata for the EID. */
   /* Remember NACK somewhere? */
-  hi_free_resp(hit, resp);
+  hi_free_resp(hit, resp, "nack ");
   
   ++(parent->ad.delivb.nacks);
   if (--(parent->ad.delivb.acks) <= 0) {
     ASSERTOP(parent->ad.delivb.acks, ==, 0, parent->ad.delivb.acks);
     close_file(parent->ad.delivb.ack_fd, "got_nack");
     D("nack: freeing parent(%p)", parent);
-    hi_free_req(hit, parent);
+    hi_free_req(hit, parent, "nack ");
   }
 }
 
@@ -285,7 +295,11 @@ static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
   parent = resp->parent;
   ASSERT(parent);
   
-  D("ACK par_%p->len=%d rq_%p->len=%d\nparent->body(%.*s)\n   req->body(%.*s)", parent, parent->ad.delivb.len, resp->req, resp->req->ad.stomp.len, parent->ad.delivb.len, parent->ad.delivb.body, resp->req->ad.stomp.len, resp->req->ad.stomp.body);
+  if (zx_debug>1)
+    D("ACK par_%p->len=%d rq_%p->len=%d\nparent->body(%.*s)\n   req->body(%.*s)", parent, parent->ad.delivb.len, resp->req, resp->req->ad.stomp.len, parent->ad.delivb.len, parent->ad.delivb.body, resp->req->ad.stomp.len, resp->req->ad.stomp.body);
+  else
+    D("ACK par_%p->len=%d rq_%p->len=%d", parent, parent->ad.delivb.len, resp->req, resp->req->ad.stomp.len);
+
   eid = zxid_my_ent_id_cstr(zxbus_cf);
   ver = zxbus_verify_receipt(zxbus_cf, io->ent->eid,
 			     siglen, siglen?resp->ad.stomp.zx_rcpt_sig:"",
@@ -296,7 +310,7 @@ static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
   ZX_FREE(zxbus_cf->ctx, eid);
   if (ver != ZXSIG_OK) {
     ERR("ACK signature validation failed: %d", ver);
-    hi_free_resp(hit, resp);
+    hi_free_resp(hit, resp, "ack ");
     return;
   }
   
@@ -305,17 +319,16 @@ static void stomp_got_ack(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* r
   write_all_fd_fmt(parent->ad.delivb.ack_fd, "ACK", sizeof(buf), buf, "AB1 %s ACK %.*s\n",
 		   io->ent->eid, siglen, siglen?resp->ad.stomp.zx_rcpt_sig:"");
   
-  hi_free_resp(hit, resp);
+  hi_free_resp(hit, resp, "ack ");
   
   if (--(parent->ad.delivb.acks) <= 0) {
     ASSERTOP(parent->ad.delivb.acks, ==, 0, parent->ad.delivb.acks);
     close_file(parent->ad.delivb.ack_fd, "got_ack");
     if (!parent->ad.delivb.nacks) {
-      D("Delivered to all subscribers. Moving msg to .del parent(%p)", parent);
+      D("Delivered to all: mv msg to .del par_%p", parent);
       zxbus_retire(hit, parent);
     }
-    D("freeing parent(%p)", parent);
-    hi_free_req(hit, parent);
+    hi_free_req(hit, parent, "parent ");
   }
 }
 
@@ -452,7 +465,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
     }
     val = memchr(hdr, ':', p-hdr);
     if (!val)
-      return stomp_err(hit,io,req,"malformed frame received","Header missing colon.");
+      return stomp_frame_err(hit, io, req, "Header missing colon.");
     ++val; /* skip : */
     stomp_parse_header(req, hdr, val);
   }
@@ -470,7 +483,7 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
       /* Got complete with content-length */
       p += req->ad.stomp.len;
       if (*p++)
-	return stomp_err(hit,io,req,"malformed frame received","No nul to terminate body.");
+	return stomp_frame_err(hit, io, req, "No nul to terminate body.");
     } else {
       D("need=%d have=%d", req->need, req->ap - req->m);
       return HI_NEED_MORE;
@@ -528,7 +541,8 @@ int stomp_decode(struct hi_thr* hit, struct hi_io* io)
 /*() Parse PDU to extract headers. Typically this is called
  * to recover a persisted PDU, i.e. we can assume to have
  * all the data at hand already. This simplifies error reporting.
- * return:: 0 on success, 1 on error */
+ * return:: 0 on success, 1 on error
+ * see also:: stomp_decode() is usually used for decoring network traffic */
 
 /* Called by:  zxbus_sched_pending_delivery */
 int stomp_parse_pdu(struct hi_pdu* pdu)
