@@ -409,7 +409,7 @@ extern FILE* zx_debug_log;   /* Defined in zxidlib.c as 0 alias to stderr */
 #define DD D
 #else
 #ifdef USE_PTHREAD
-#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s d " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
+#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s d " format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
 #else
 #define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
 #endif
@@ -417,9 +417,9 @@ extern FILE* zx_debug_log;   /* Defined in zxidlib.c as 0 alias to stderr */
 #endif
 
 #ifdef USE_PTHREAD
-#define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s E " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
-#define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s W %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
-#define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s I %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s E " format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s W %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s I %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
 #else
 #define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s E %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
 #define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s W %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
@@ -535,6 +535,11 @@ extern char* assert_msg;
 # define ASSERTOPI(a,op,b) MB if (!((a) op (b))) { \
       /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b);*/ \
       ERR("ASSERTOP FAIL: " #a #op #b " %x", (int)(a)); \
+      DIE_ACTION(1); } ME
+
+# define ASSERTOPL(a,op,b) MB if (!((a) op (b))) { \
+      /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b);*/ \
+      ERR("ASSERTOP FAIL: " #a #op #b " %lx", (long)(a)); \
       DIE_ACTION(1); } ME
 
 # define ASSERTOPP(a,op,b) MB if (!((a) op (b))) { \

@@ -68,7 +68,7 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
     UNLOCK(cf->curl_mx, "curl init");
     exit(2);
   }
-  /*ERR("%x == %x? eq=%d sizeof(pthread_t)=%d sizeof(int)=%d sizeof(long)=%d sizeof(long long)=%d sizeof(char*)=%d", cf->curl_mx.thr, pthread_self(), (int)cf->curl_mx.thr == (int)pthread_self(), sizeof(pthread_t), sizeof(int), sizeof(long), sizeof(long long), sizeof(char*));*/
+  INFO("%lx == %lx? eq=%d sizeof(pthread_t)=%d sizeof(int)=%d sizeof(long)=%d sizeof(long long)=%d sizeof(char*)=%d", cf->curl_mx.thr, pthread_self(), (long)cf->curl_mx.thr == (long)pthread_self(), sizeof(pthread_t), sizeof(int), sizeof(long), sizeof(long long), sizeof(char*));
   UNLOCK(cf->curl_mx, "curl init");
 #endif
 #else
