@@ -87,6 +87,8 @@ public class app_demo extends HttpServlet {
 	//out.print("<a href=\"http://www.tas3.eu/\"><img src=\"tas3-logo.jpg\" height=64 border=0></a>");
 	//out.print("<a href=\"http://zxid.org/\"><img src=\"logo-zxid-128x128.png\" height=64 border=0></a>");
 	out.print("<a href=\"http://synergetics.be/\"><img src=\"synlogo_s.jpg\" height=67 border=0></a><br>");
+	out.print("<iframe id=localnav class=nav src=\"/nav.html\"><a href=\"https://idp.i-dent.eu/nav.html\">Navigation iFrame</a></iframe><br>");
+	out.print("<iframe id=idpnav class=nav src=\"https://idp.i-dent.eu/nav.html\"><a href=\"https://idp.i-dent.eu/nav.html\">Navigation iFrame from IdP</a></iframe><br>");
 	out.print("</td></tr></table>");
 	out.print("<h1>end2end Trust Assurance Demo App Protected Content</h1>\n");
 	//out.print("<h1>ZXID Demo App Protected Content</h1> at " + fullURL + "\n");

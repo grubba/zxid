@@ -304,28 +304,38 @@ SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_zx_1lock_1line_1get(JNIEnv *jen
 }
 
 
-SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zx_1lock_1thr_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2) {
+SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zx_1lock_1thr_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   struct zx_lock *arg1 = (struct zx_lock *) 0 ;
-  int arg2 ;
+  pthread_t arg2 ;
+  pthread_t *argp2 ;
   
   (void)jenv;
   (void)jcls;
   arg1 = *(struct zx_lock **)&jarg1; 
-  arg2 = (int)jarg2; 
+  argp2 = *(pthread_t **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null pthread_t");
+    return ;
+  }
+  arg2 = *argp2; 
   if (arg1) (arg1)->thr = arg2;
 }
 
 
-SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_zx_1lock_1thr_1get(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  jint jresult = 0 ;
+SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zx_1lock_1thr_1get(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
   struct zx_lock *arg1 = (struct zx_lock *) 0 ;
-  int result;
+  pthread_t result;
   
   (void)jenv;
   (void)jcls;
   arg1 = *(struct zx_lock **)&jarg1; 
-  result = (int) ((arg1)->thr);
-  jresult = (jint)result; 
+  result =  ((arg1)->thr);
+  {
+    pthread_t * resultptr = (pthread_t *) malloc(sizeof(pthread_t));
+    memmove(resultptr, &result, sizeof(pthread_t));
+    *(pthread_t **)&jresult = resultptr;
+  }
   return jresult;
 }
 
@@ -1785,7 +1795,7 @@ SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zx_1ref_1len_1elem(JNIEnv *jen
   arg4 = (*jenv)->GetStringUTFLength(jenv, (jstring)jarg4);
   arg5 = (char*)(*jenv)->GetStringUTFChars(jenv, (jstring)jarg4, 0);
   // *** Whether we can free, or not, the obtained string depends
-  //     on whether the zxid API will take reference to the string.
+  //     on whether the zxid API will take reference to the const string.
   
   result = (struct zx_elem_s *)zx_ref_len_elem(arg1,arg2,arg3,arg4,arg5);
   *(struct zx_elem_s **)&jresult = result; 
@@ -1838,7 +1848,7 @@ SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zx_1dup_1len_1elem(JNIEnv *jen
   arg4 = (*jenv)->GetStringUTFLength(jenv, (jstring)jarg4);
   arg5 = (char*)(*jenv)->GetStringUTFChars(jenv, (jstring)jarg4, 0);
   // *** Whether we can free, or not, the obtained string depends
-  //     on whether the zxid API will take reference to the string.
+  //     on whether the zxid API will take reference to the const string.
   
   result = (struct zx_elem_s *)zx_dup_len_elem(arg1,arg2,arg3,arg4,arg5);
   *(struct zx_elem_s **)&jresult = result; 
@@ -1891,7 +1901,7 @@ SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zx_1ref_1len_1attr(JNIEnv *jen
   arg4 = (*jenv)->GetStringUTFLength(jenv, (jstring)jarg4);
   arg5 = (char*)(*jenv)->GetStringUTFChars(jenv, (jstring)jarg4, 0);
   // *** Whether we can free, or not, the obtained string depends
-  //     on whether the zxid API will take reference to the string.
+  //     on whether the zxid API will take reference to the const string.
   
   result = (struct zx_attr_s *)zx_ref_len_attr(arg1,arg2,arg3,arg4,arg5);
   *(struct zx_attr_s **)&jresult = result; 
@@ -1964,7 +1974,7 @@ SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zx_1dup_1len_1attr(JNIEnv *jen
   arg4 = (*jenv)->GetStringUTFLength(jenv, (jstring)jarg4);
   arg5 = (char*)(*jenv)->GetStringUTFChars(jenv, (jstring)jarg4, 0);
   // *** Whether we can free, or not, the obtained string depends
-  //     on whether the zxid API will take reference to the string.
+  //     on whether the zxid API will take reference to the const string.
   
   result = (struct zx_attr_s *)zx_dup_len_attr(arg1,arg2,arg3,arg4,arg5);
   *(struct zx_attr_s **)&jresult = result; 
@@ -2076,7 +2086,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zx_1ref_1len_1str(JNIEnv *je
   arg2 = (*jenv)->GetStringUTFLength(jenv, (jstring)jarg2);
   arg3 = (char*)(*jenv)->GetStringUTFChars(jenv, (jstring)jarg2, 0);
   // *** Whether we can free, or not, the obtained string depends
-  //     on whether the zxid API will take reference to the string.
+  //     on whether the zxid API will take reference to the const string.
   
   result = (struct zx_str *)zx_ref_len_str(arg1,arg2,arg3);
   {
@@ -2148,7 +2158,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zx_1dup_1len_1str(JNIEnv *je
   arg2 = (*jenv)->GetStringUTFLength(jenv, (jstring)jarg2);
   arg3 = (char*)(*jenv)->GetStringUTFChars(jenv, (jstring)jarg2, 0);
   // *** Whether we can free, or not, the obtained string depends
-  //     on whether the zxid API will take reference to the string.
+  //     on whether the zxid API will take reference to the const string.
   
   result = (struct zx_str *)zx_dup_len_str(arg1,arg2,arg3);
   {
@@ -3273,7 +3283,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zx_1raw_1digest2(JNIEnv *jen
   arg4 = (*jenv)->GetStringUTFLength(jenv, (jstring)jarg4);
   arg5 = (char*)(*jenv)->GetStringUTFChars(jenv, (jstring)jarg4, 0);
   // *** Whether we can free, or not, the obtained string depends
-  //     on whether the zxid API will take reference to the string.
+  //     on whether the zxid API will take reference to the const string.
   
   arg6 = (int)jarg6; 
   arg7 = 0;
@@ -3318,7 +3328,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zx_1raw_1cipher(JNIEnv *jenv
   arg5 = (*jenv)->GetStringUTFLength(jenv, (jstring)jarg5);
   arg6 = (char*)(*jenv)->GetStringUTFChars(jenv, (jstring)jarg5, 0);
   // *** Whether we can free, or not, the obtained string depends
-  //     on whether the zxid API will take reference to the string.
+  //     on whether the zxid API will take reference to the const string.
   
   arg7 = (int)jarg7; 
   arg8 = 0;

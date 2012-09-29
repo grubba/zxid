@@ -1,4 +1,5 @@
 /* mod_auth_saml.c  -  Handwritten functions for Apache mod_auth_saml module
+ * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2008-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -13,6 +14,7 @@
  * 25.8.2009, add attribute passing and pep call --Sampo
  * 11.1.2010, refactoring and review --Sampo
  * 15.7.2010, consider passing to simple layer more data about the request --Sampo
+ * 28.9.2012, changed zx_instance string to "mas" --Sampo
  *
  * To configure this module add to httpd.conf something like
  *
@@ -494,14 +496,16 @@ const command_rec zxid_apache_commands[] = {
 /*() Create default configuration in response for Apache <Location> or <Directory>
  * directives. This is then augmented by ZXIDConf directives.
  * This code may run twice: once for syntax check, and then again for
- * production use. Curently we just redo the work.
+ * production use. Currently we just redo the work.
  *
  * This is considered internal function to mod_auth_saml. Do not call directly. */
 
 /* Called by: */
 static void* dirconf(apr_pool_t* p, char* d)
 {
-  zxid_conf* cf = apr_palloc(p, sizeof(zxid_conf));
+  zxid_conf* cf;
+  strncpy(zx_instance, "\tmas", sizeof(zx_instance));
+  cf = apr_palloc(p, sizeof(zxid_conf));
   ZERO(cf, sizeof(zxid_conf));
   cf->ctx = apr_palloc(p, sizeof(struct zx_ctx));
   zx_reset_ctx(cf->ctx);

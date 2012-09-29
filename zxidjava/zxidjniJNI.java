@@ -15,8 +15,8 @@ class zxidjniJNI {
   public final static native String zx_lock_func_get(long jarg1);
   public final static native void zx_lock_line_set(long jarg1, int jarg2);
   public final static native int zx_lock_line_get(long jarg1);
-  public final static native void zx_lock_thr_set(long jarg1, int jarg2);
-  public final static native int zx_lock_thr_get(long jarg1);
+  public final static native void zx_lock_thr_set(long jarg1, long jarg2);
+  public final static native long zx_lock_thr_get(long jarg1);
   public final static native long new_zx_lock();
   public final static native void delete_zx_lock(long jarg1);
   public final static native void zx_ns_s_url_set(long jarg1, String jarg2);

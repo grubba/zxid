@@ -33,12 +33,12 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zx_lock_line_get(SWIGTYPE_p_zx_lock.getCPtr(self));
   }
 
-  public static void zx_lock_thr_set(SWIGTYPE_p_zx_lock self, int value) {
-    zxidjniJNI.zx_lock_thr_set(SWIGTYPE_p_zx_lock.getCPtr(self), value);
+  public static void zx_lock_thr_set(SWIGTYPE_p_zx_lock self, SWIGTYPE_p_pthread_t value) {
+    zxidjniJNI.zx_lock_thr_set(SWIGTYPE_p_zx_lock.getCPtr(self), SWIGTYPE_p_pthread_t.getCPtr(value));
   }
 
-  public static int zx_lock_thr_get(SWIGTYPE_p_zx_lock self) {
-    return zxidjniJNI.zx_lock_thr_get(SWIGTYPE_p_zx_lock.getCPtr(self));
+  public static SWIGTYPE_p_pthread_t zx_lock_thr_get(SWIGTYPE_p_zx_lock self) {
+    return new SWIGTYPE_p_pthread_t(zxidjniJNI.zx_lock_thr_get(SWIGTYPE_p_zx_lock.getCPtr(self)), true);
   }
 
   public static SWIGTYPE_p_zx_lock new_zx_lock() {
