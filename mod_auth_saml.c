@@ -400,7 +400,7 @@ static int chkuid(request_rec* r)
     } else {
       D("No session(%s) active op(%c)", STRNULLCHK(cgi.sid), cgi.op);
     }
-    D("other page: no_ses uri(%s)", r->uri);
+    D("other page: no_ses uri(%s) templ(%s) tf(%s)", r->uri, STRNULLCHKNULL(cgi.templ), STRNULLCHKNULL(cf->idp_sel_templ_file));
   }
 step_up:
   res = zxid_simple_no_ses_cf(cf, &cgi, &ses, 0, AUTO_FLAGS);

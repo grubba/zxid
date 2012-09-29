@@ -548,6 +548,7 @@ char* zxid_idp_list(char* conf, int auto_flags) {
 struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int auto_flags)
 {
   struct zx_str* ss;
+  char* tf;
   char* p;
 
   DD("HERE e(%s) m(%s) d(%s)", FLDCHK(cgi, err), FLDCHK(cgi, msg), FLDCHK(cgi, dbg));
@@ -556,16 +557,17 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
 
 #if 1
   if (cgi->templ && *cgi->templ) {
-    cf->idp_sel_templ_file = cgi->templ;
+    tf = cgi->templ;
     D("HERE t(%s)", cgi->templ);
-    for (p = cf->idp_sel_templ_file; *p; ++p)
+    for (p = tf; *p; ++p)
       if (*p == '/') {  /* Squash to avoid accessing files beyond webroot */
 	ERR("Illegal character 0x%x (%c) in templ CGI variable (possible attack or misconfiguration)", *p, *p);
 	*p = '_';
       }
-  }
-  D("HERE tf(%s) t(%s)", STRNULLCHKNULL(cf->idp_sel_templ_file), STRNULLCHKNULL(cf->idp_sel_templ));
-  ss = zxid_template_page_cf(cf, cgi, cf->idp_sel_templ_file, cf->idp_sel_templ, 4096, auto_flags);
+  } else
+    tf = cf->idp_sel_templ_file;
+  D("HERE tf(%s) t(%s)", STRNULLCHKNULL(tf), STRNULLCHKNULL(cf->idp_sel_templ));
+  ss = zxid_template_page_cf(cf, cgi, tf, cf->idp_sel_templ, 4096, auto_flags);
 #else
   char* eid=0;
   if (cf->idp_sel_our_eid && cf->idp_sel_our_eid[0])
@@ -770,7 +772,7 @@ static char* zxid_simple_redir_page(zxid_conf* cf, char* redir, char* rs, int* r
 char* zxid_simple_show_idp_sel(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   struct zx_str* ss;
-  D("cf=%p cgi=%p templ(%s)", cf, cgi, STRNULLCHK(cgi->templ));
+  D("cf=%p cgi=%p templ(%s)", cf, cgi, STRNULLCHKQ(cgi->templ));
   if (cf->idp_sel_page && cf->idp_sel_page[0]) {
     D("idp_sel_page(%s) rs(%s)", cf->idp_sel_page, STRNULLCHK(cgi->rs));
     return zxid_simple_redir_page(cf, cf->idp_sel_page, cgi->rs, res_len, auto_flags);
