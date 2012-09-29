@@ -160,6 +160,7 @@ int zxid_get_ses(zxid_conf* cf, zxid_ses* ses, const char* sid)
   char* p;
   int gotall;
 #if 0
+  /* *** why would this set-cookie preservation code ever be needed? */
   if (cf->ses_cookie_name && ses->setcookie
       && !memcmp(cf->ses_cookie_name, ses->setcookie, strlen(cf->ses_cookie_name)))
     p = ses->setcookie;

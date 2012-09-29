@@ -903,6 +903,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->auto_cert         = ZXID_AUTO_CERT;
   cf->ses_arch_dir      = ZXID_SES_ARCH_DIR;
   cf->ses_cookie_name   = ZXID_SES_COOKIE_NAME;
+  cf->ptm_cookie_name   = ZXID_PTM_COOKIE_NAME;
   cf->user_local        = ZXID_USER_LOCAL;
   cf->idp_ena           = ZXID_IDP_ENA;
   cf->idp_pxy_ena       = ZXID_IDP_PXY_ENA;
@@ -1560,6 +1561,7 @@ scan_end:
 	cf->pref_button_size = v;
 	break;
       }
+      if (!strcmp(n, "PTM_COOKIE_NAME")) { cf->ptm_cookie_name = (!v[0] || v[0]=='0' && !v[1]) ? 0 : v; break; }
       goto badcf;
     case 'R':  /* RELY_A7N, RELY_MSG */
       if (!strcmp(n, "REDIRECT_HACK_IMPOSED_URL")) { cf->redirect_hack_imposed_url = v; break; }
@@ -1597,8 +1599,8 @@ scan_end:
       if (!strcmp(n, "RCPT"))           { SCAN_INT(v, cf->bus_rcpt); break; }
       goto badcf;
     case 'S':  /* SES_ARCH_DIR, SIGFAIL_IS_ERR, SIG_FATAL */
-      if (!strcmp(n, "SES_ARCH_DIR"))   { cf->ses_arch_dir = (v[0]=='0' && !v[1]) ? 0 : v; break; }
-      if (!strcmp(n, "SES_COOKIE_NAME")) { cf->ses_cookie_name = (v[0]=='0' && !v[1]) ? 0 : v; break; }
+      if (!strcmp(n, "SES_ARCH_DIR"))   { cf->ses_arch_dir = (!v[0] || v[0]=='0' && !v[1]) ? 0 : v; break; }
+      if (!strcmp(n, "SES_COOKIE_NAME")) { cf->ses_cookie_name = (!v[0] || v[0]=='0' && !v[1]) ? 0 : v; break; }
       if (!strcmp(n, "SIGFAIL_IS_ERR")) { SCAN_INT(v, cf->log_sigfail_is_err); break; }
       if (!strcmp(n, "SIG_FATAL"))      { SCAN_INT(v, cf->sig_fatal); break; }
       if (!strcmp(n, "SSO_SIGN"))       { SCAN_INT(v, cf->sso_sign); break; }
@@ -1884,6 +1886,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "#ZXID_TRUE_RAND=%d (compile)\n"
 "SES_ARCH_DIR=%s\n"
 "SES_COOKIE_NAME=%s\n"
+"PTM_COOKIE_NAME=%s\n"
 "IPPORT=%s\n"
 "USER_LOCAL=%d\n"
 "IDP_ENA=%d\n"
@@ -2073,6 +2076,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 ZXID_TRUE_RAND,
 		 STRNULLCHK(cf->ses_arch_dir),
 		 STRNULLCHK(cf->ses_cookie_name),
+		 STRNULLCHK(cf->ptm_cookie_name),
 		 STRNULLCHK(cf->ipport),
 		 cf->user_local,
 		 cf->idp_ena,

@@ -90,6 +90,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
   char* name;
   char* rs = 0;
   char* setcookie = 0;
+  char* setptmcookie = 0;
   char* cookie = 0;
   char* idpnid = 0;
   struct zxid_map* map;
@@ -127,10 +128,11 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
       for (av = at->nv; av; av = av->n)
 	apr_table_set(r->subprocess_env, name, av->val);
     }
-    if (     !strcmp(at->name, "rs"))        rs = at->val;        /* Capture special */
-    else if (!strcmp(at->name, "idpnid"))    idpnid = at->val;
-    else if (!strcmp(at->name, "setcookie")) setcookie = at->val;
-    else if (!strcmp(at->name, "cookie"))    cookie = at->val;
+    if (     !strcmp(at->name, "rs"))           rs = at->val;      /* Capture special */
+    else if (!strcmp(at->name, "idpnid"))       idpnid = at->val;
+    else if (!strcmp(at->name, "setcookie"))    setcookie = at->val;
+    else if (!strcmp(at->name, "setptmcookie")) setptmcookie = at->val;
+    else if (!strcmp(at->name, "cookie"))       cookie = at->val;
   }
 
   if (rs && rs[0] && rs[0] != '-') {
@@ -152,6 +154,13 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
     apr_table_addn(r->headers_out, "Set-Cookie", setcookie);
     apr_table_addn(r->err_headers_out, "Set-Cookie", setcookie);  /* Only way to get redir to set header */
     apr_table_addn(r->headers_in,  "Set-Cookie", setcookie);  /* So subrequest can pick them up! */
+  }
+  if (setptmcookie && setptmcookie[0] != '-') {
+    /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
+    D("PTM Set-Cookie(%s)", setptmcookie);
+    apr_table_addn(r->headers_out, "Set-Cookie", setptmcookie);
+    apr_table_addn(r->err_headers_out, "Set-Cookie", setptmcookie);  /* Only way to get redir to set header */
+    apr_table_addn(r->headers_in,  "Set-Cookie", setptmcookie);  /* So subrequest can pick them up! */
   }
   if (cookie && cookie[0] != '-') {
     D("Cookie(%s) 2", cookie);

@@ -126,7 +126,7 @@ static void zxbus_load_acks(struct hi_thr* hit, struct hi_pdu* pdu, int fd)
   buf[gotall] = 0;
   
   LOCK(hit->shf->ent_mut, "load-acks");  // *** very big lock
-  D("LOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
+  D("LOCK ent_mut->thr=%lx (%s:%d)", (long)hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
   for (p = buf; p < buf+gotall; p = nl+1) {
     if (!(nl = strchr(p, '\n')))
       nl = buf+gotall;
@@ -148,7 +148,7 @@ static void zxbus_load_acks(struct hi_thr* hit, struct hi_pdu* pdu, int fd)
       ERR("Bad line(%.*s) in acks, skipping", nl-p, p);
     }
   }
-  D("UNLOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
+  D("UNLOCK ent_mut->thr=%lx (%s:%d)", (long)hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
   UNLOCK(hit->shf->ent_mut, "load-acks");
   FREE(buf);
 }

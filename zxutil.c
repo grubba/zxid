@@ -182,7 +182,7 @@ int read_all_fd(fdtype fd, char* p, int want, int* got_all)
  * maxlen:: Length of buffer
  * buf:: Result parameter. This buffer will be filled with data from the file. Caller allocates.
  * logkey:: Logging key to help debugging
- * reperr:: Whether to report an error (flag)
+ * reperr:: Whether to report an error (flag: 0=do not report)
  * name_fmt:: Format string for building file name
  * return:: actual total length. The buffer will always be nul terminated. Zero on failure. */
 

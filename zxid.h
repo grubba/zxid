@@ -212,6 +212,7 @@ struct zxid_conf {
   char* fedusername_suffix;  /* Default is computed from url domain name part when url is set. */
   char* ses_arch_dir;        /* Place where dead sessions go. 0=rm */
   char* ses_cookie_name;
+  char* ptm_cookie_name;
   char* ipport;              /* Source IP and port for logging, e.g: "1.2.3.4:5" */
     
   char* load_cot_cache;
@@ -440,7 +441,7 @@ struct zxid_cgi {
 
 struct zxid_ses {
   unsigned int magic;
-  char* sid;
+  char* sid;           /* Session ID. Same as in cookie, same as file name */
   char* uid;           /* Local uid (only if local login, like in IdP) */
   char* nid;           /* String representation of Subject NameID. See also nameid. */
   char* tgt;           /* String representation of Target NameID. See also nameid. */
@@ -456,6 +457,7 @@ struct zxid_ses {
   char* sso_a7n_path;  /* Reference to the SSO assertion (needed for SLO) */
   char* tgt_a7n_path;  /* Reference to target identity assertion */
   char* setcookie;     /* If set, the content rendering should include set-cookie header. */
+  char* setptmcookie;  /* For PTM related set-cookie header. */
   char* cookie;        /* Cookie seen by downstream internal requests after SSO. */
   char* rs;            /* RelayState at SSO. mod_auth_saml uses this as URI after SSO. */
   char* rcvd_usagedir; /* Received Usage Directives. Populated by zxid_wsc_validate_resp_env() */

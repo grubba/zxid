@@ -93,7 +93,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   int fd = io->fd;
   DD("%s: closing(%x) n_c/t=%d/%d", lk, fd, io->n_close, io->n_thr);
   LOCK(io->qel.mut, "hi_close");
-  D("LOCK io(%x)->qel.thr=%x n_c/t=%d/%d", fd, io->qel.mut.thr, io->n_close, io->n_thr);
+  D("LOCK io(%x)->qel.thr=%lx n_c/t=%d/%d", fd, (long)io->qel.mut.thr, io->n_close, io->n_thr);
 
   if (fd&0x80000000) {
     D("%s: 2nd close(%x) n_c/t=%d/%d", lk, fd, io->n_close, io->n_thr);
@@ -112,7 +112,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   if (hit->cur_n_close != io->n_close) {
     ERR("%s: already closed(%x) cur_n_close=%d != n_close=%d",lk,fd,hit->cur_n_close,io->n_close);
     hit->cur_io = 0;
-    D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+    D("UNLOCK io(%x)->qel.thr=%lx", fd, (long)io->qel.mut.thr);
     UNLOCK(io->qel.mut, "hi_close-already");
     return;
   }
@@ -121,7 +121,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   if (io->n_thr > 0) {
     D("%s: close-wait(%x) n_c/t=%d/%d intodo=%x", lk, fd, io->n_close, io->n_thr, io->qel.intodo);
     hit->cur_io = 0;
-    D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+    D("UNLOCK io(%x)->qel.thr=%lx", fd, (long)io->qel.mut.thr);
     UNLOCK(io->qel.mut, "hi_close-wait");
     return;
   }
@@ -129,7 +129,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
     io->n_thr = HI_IO_N_THR_END_POLL;
     D("%s: close-poll(%x) n_c/t=%d/%d intodo=%x", lk, fd, io->n_close, io->n_thr, io->qel.intodo);
     hit->cur_io = 0;
-    D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+    D("UNLOCK io(%x)->qel.thr=%lx", fd, (long)io->qel.mut.thr);
     UNLOCK(io->qel.mut, "hi_close-poll");
     hi_todo_produce(hit, &io->qel, "close-poll", 0); /* Trigger 1st poll, see hi_todo_consume() */
     return;
@@ -138,7 +138,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
     ERR("%s: close-n_thr(%x) n_c/t=%d/%d intodo=%x", lk,fd,io->n_close,io->n_thr,io->qel.intodo);
     ASSERTOPI(io->n_thr, ==, HI_IO_N_THR_END_GAME);
     hit->cur_io = 0;
-    D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+    D("UNLOCK io(%x)->qel.thr=%lx", fd, (long)io->qel.mut.thr);
     UNLOCK(io->qel.mut, "hi_close-n_thr");
     return;
   }
@@ -195,7 +195,7 @@ void hi_close(struct hi_thr* hit, struct hi_io* io, const char* lk)
   INFO("%s: CLOSED(%x) n_close=%d", lk, io->fd, io->n_close);
 
   /* Must let go of the lock only after close so no read can creep in. */
-  D("UNLOCK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+  D("UNLOCK io(%x)->qel.thr=%lx", fd, (long)io->qel.mut.thr);
   UNLOCK(io->qel.mut, "hi_close");
 }
 
@@ -209,7 +209,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
   int reading;  
   
   LOCK(io->qel.mut, "in_out");
-  D("LOCK io(%x)->qel.thr=%x r/w=%d/%d ev=%x", io->fd, io->qel.mut.thr, io->reading, io->writing, io->events);
+  D("LOCK io(%x)->qel.thr=%lx r/w=%d/%d ev=%x", io->fd, (long)io->qel.mut.thr, io->reading, io->writing, io->events);
 #ifdef SUNOS
 #define EPOLLHUP (POLLHUP)  /* 0x010 */
 #define EPOLLERR (POLLERR)  /* 0x008 */
@@ -239,12 +239,12 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
       hi_make_iov_nolock(io);
     if (io->in_write) {
       io->writing = 1;
-      D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+      D("UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
       UNLOCK(io->qel.mut, "check-writing-enter");
     
       if (hi_write(hit, io))  { /* will clear io->writing */
 	LOCK(io->qel.mut, "n_thr-dec2");
-	D("IN_OUT: LOCK & UNLOCK io(%x)->qel.thr=%x closed", io->fd, io->qel.mut.thr);
+	D("IN_OUT: LOCK & UNLOCK io(%x)->qel.thr=%lx closed", io->fd, (long)io->qel.mut.thr);
 	--io->n_thr;            /* Remove read count, write count already removed by hi_write() */
 	ASSERT(io->n_thr >= 0);
 	ASSERT(hit->cur_io == io);
@@ -254,7 +254,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
 	return; /* Write caused close, read will be futile */
       } else {
 	LOCK(io->qel.mut, "check-reading");
-	D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+	D("LOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
       }
     } else {
       if (io->fd & 0x80000000) {
@@ -288,14 +288,14 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
        * The inverse is also important: if io->cur_pdu is set, but pdu->need is not, then someone
        * is alredy working on decoding the cur_pdu and we should not interfere. */
       reading = io->reading = io->cur_pdu->need; /* only place where io->reading is set */
-      D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+      D("UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
       UNLOCK(io->qel.mut, "check-reading");
       if (reading) {
 	hi_read(hit, io);       /* io->n_thr and hit->cur_io have already been updated */
 	ASSERT(!hit->cur_io);
       } else {
 	LOCK(io->qel.mut, "n_thr-dec3");
-	D("IN_OUT: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+	D("IN_OUT: LOCK & UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
 	--io->n_thr;            /* Remove read count as no read happened. */
 	ASSERT(io->n_thr >= 0);
 	ASSERT(hit->cur_io == io);
@@ -309,7 +309,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
       ASSERT(hit->cur_n_close == io->n_close);
       /*--io->n_thr;     * Do not decrement. We need to keep n_thr until we are in todo queue. */
       hit->cur_io = 0;
-      D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+      D("UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
       UNLOCK(io->qel.mut, "n_thr-dec4");
       D("resched(%x) to avoid miss poll read n_thr=%d", io->fd, io->n_thr);
       hi_todo_produce(hit, &io->qel, "reread", 0);  /* try again so read poll is not lost */
@@ -320,7 +320,7 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
     ASSERT(hit->cur_io == io);
     ASSERT(hit->cur_n_close == io->n_close);
     hit->cur_io = 0;
-    D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+    D("UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
     UNLOCK(io->qel.mut, "n_thr-dec5");
   }
 }

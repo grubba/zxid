@@ -308,7 +308,7 @@ void hi_poll(struct hi_thr* hit)
   }
 #endif
   LOCK(hit->shf->todo_mut, "todo_poll");
-  D("POLL LK&UNLK todo_mut.thr=%x repoll", hit->shf->todo_mut.thr);
+  D("POLL LK&UNLK todo_mut.thr=%lx repoll", (long)hit->shf->todo_mut.thr);
   hit->shf->poll_tok.proto = HIPROTO_POLL_ON;  /* special "on" flag - not a real protocol */
   UNLOCK(hit->shf->todo_mut, "todo_poll");
 }
@@ -547,7 +547,7 @@ void hi_accept_book(struct hi_thr* hit, struct hi_io* io, int fd)
    * *** Arguably this should never happen due to our half close strategy
    * keeping the fd occupied until all threads really are gone. */
   LOCK(io->qel.mut, "hi_accept");
-  D("ACCEPT LK&UNLK io(%x)->qel.thr=%x", fd, io->qel.mut.thr);
+  D("ACCEPT LK&UNLK io(%x)->qel.thr=%lx", fd, (long)io->qel.mut.thr);
   n_thr = io->n_thr;
   if (n_thr) {
     D("old fd(%x) n_thr=%d still going", fd, n_thr);

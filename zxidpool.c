@@ -691,7 +691,7 @@ static void zxid_cp_usr_eprs2ses(zxid_conf* cf, zxid_ses* ses, struct zx_str* pa
   closedir(dir);
 }
 
-/*(i) Process attributes from the AttributeStatements of the session
+/*(i) Process attributes from the AttributeStatements of the session's
  * SSO Assertion and insert them to the pool. NEED, WANT, and INMAP
  * are applied. The pool is suitable for use by PEP or eventually
  * rendering to LDIF (or JSON). This function also implements
@@ -804,6 +804,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   }
   zxid_add_attr_to_ses(cf, ses, "sesix",      zx_dup_str(cf->ctx, STRNULLCHK(ses->sesix)));
   zxid_add_attr_to_ses(cf, ses, "setcookie",  zx_dup_str(cf->ctx, STRNULLCHK(ses->setcookie)));
+  zxid_add_attr_to_ses(cf, ses, "setptmcookie",zx_dup_str(cf->ctx,STRNULLCHK(ses->setptmcookie)));
   if (ses->cookie && ses->cookie[0])
     zxid_add_attr_to_ses(cf, ses, "cookie",   zx_dup_str(cf->ctx, ses->cookie));
   zxid_add_attr_to_ses(cf, ses, "msgid",      ses->wsp_msgid);

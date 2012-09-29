@@ -128,7 +128,7 @@ static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
 void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
 {
   LOCK(io->qel.mut, "add_to_reqs");
-  D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("LOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
   if (minlen) {
     ASSERTOPP(io->cur_pdu, ==, req);
     ASSERT(io->reading);
@@ -140,7 +140,7 @@ void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, in
   ASSERTOPP(req->fe, ==, io);
   req->n = io->reqs;
   io->reqs = req;
-  D("UNLOCK io(%x)->qel.thr=%x req_%p", io->fd, io->qel.mut.thr, req);
+  D("UNLOCK io(%x)->qel.thr=%lx req_%p", io->fd, (long)io->qel.mut.thr, req);
   UNLOCK(io->qel.mut, "add_to_reqs");
 }
 
@@ -255,7 +255,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
       case HI_NOERR: /* 0: In this case io->reading has been cleared at hi_add_req() due to
 		      * completely decoded PDU. It may have been acquired by other thread. */
 	LOCK(io->qel.mut, "reset-reading");
-	D("LOCK io(%x)->qel.thr=%x n_c/t=%d/%d", io->fd, io->qel.mut.thr, io->n_close, io->n_thr);
+	D("LOCK io(%x)->qel.thr=%lx n_c/t=%d/%d", io->fd, (long)io->qel.mut.thr, io->n_close, io->n_thr);
 	if (io->reading) {
 	  D("Somebody else already reading n_thr=%d", io->n_thr);
 	  --io->n_thr;              /* Remove read count. */
@@ -263,14 +263,14 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
 	  ASSERT(hit->cur_io == io);
 	  ASSERT(hit->cur_n_close == io->n_close);
 	  hit->cur_io = 0;
-	  D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+	  D("UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
 	  UNLOCK(io->qel.mut, "reset-reading-abort");
 	  return 0;
 	}
 	io->reading = 1;  /* reacquire */
 	pdu = io->cur_pdu;
 	D("reacquired reading(%x) n_thr=%d", io->fd, io->n_thr);
-	D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+	D("UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
 	UNLOCK(io->qel.mut, "reset-reading");
 	break;
       case HI_CONN_CLOSE:         goto conn_close_not_reading;
@@ -293,7 +293,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
    * for a while, but at least things will move on eventually. */
  out:
   LOCK(io->qel.mut, "clear-reading");
-  D("RD-OUT: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("RD-OUT: LOCK & UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
   ASSERT(io->reading);
   io->reading = 0;
   --io->n_thr;              /* Remove read count. */
@@ -308,7 +308,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
  conn_close:
   /* Connection close due to EOF, etc. We are still in io->reading. */
   LOCK(io->qel.mut, "clear-reading-close");
-  D("RD-CLO: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("RD-CLO: LOCK & UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
   ASSERT(io->reading);
   io->reading = 0;
   --io->n_thr;                 /* Remove read count. */
@@ -323,7 +323,7 @@ int hi_read(struct hi_thr* hit, struct hi_io* io)
    * We are no longer in io->reading (but other thread might be).
    * io->n_thr still needs to be decremented. */
   LOCK(io->qel.mut, "clear-reading-close");
-  D("RD-NRC: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("RD-NRC: LOCK & UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
   /*ASSERT(!io->reading); This can not be asserted as other thread might have gone to read. */
   --io->n_thr;              /* Remove read count. */
   D("not_reading-close(%x) n_thr=%d r/w=%d/%d ev=%d", io->fd, io->n_thr, io->reading, io->writing, io->events);

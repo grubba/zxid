@@ -98,11 +98,11 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
   }
   
   if (ONE_OF_2(io->n_thr, HI_IO_N_THR_END_GAME, HI_IO_N_THR_END_POLL)) {
-    D("LK&UNLK end-game io(%x)->qel.thr=%x n_c/t=%d/%d", io->fd, io->qel.mut.thr, io->n_close,io->n_thr);
+    D("LK&UNLK end-game io(%x)->qel.thr=%lx n_c/t=%d/%d", io->fd, (long)io->qel.mut.thr, io->n_close,io->n_thr);
     UNLOCK(io->qel.mut, "send0-end");
     return; /* Ignore write attempt. hi_todo_consume() will eventually call hi_close() last time */
   }
-  D("LOCK io(%x)->qel.thr=%x n_c/t=%d/%d", io->fd, io->qel.mut.thr, io->n_close,io->n_thr);
+  D("LOCK io(%x)->qel.thr=%lx n_c/t=%d/%d", io->fd, (long)io->qel.mut.thr, io->n_close,io->n_thr);
   
   ASSERT(io->n_thr >= 0);
   if (!io->to_write_produce)
@@ -122,7 +122,7 @@ void hi_send0(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* parent, struc
     hit->cur_n_close = io->n_close;
   }
   io->events |= EPOLLOUT;  /* Set write event in case there is no poll before write opportunity. */
-  D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
   UNLOCK(io->qel.mut, "send0");
   
   HI_SANITY(hit->shf, hit);
@@ -249,9 +249,9 @@ void hi_make_iov_nolock(struct hi_io* io)
 static void hi_make_iov(struct hi_io* io)
 {
   LOCK(io->qel.mut, "make_iov");
-  D("LOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("LOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
   hi_make_iov_nolock(io);
-  D("UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
   UNLOCK(io->qel.mut, "make_iov");
 }
 
@@ -534,7 +534,7 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
   }
  out:
   LOCK(io->qel.mut, "clear-writing");   /* The io->writing was set in hi_in_out() or hi_send0() */
-  D("WR-OUT: LOCK & UNLOCK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("WR-OUT: LOCK & UNLOCK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
   ASSERT(io->writing);
   io->writing = 0;
   --io->n_thr;
@@ -545,7 +545,7 @@ int hi_write(struct hi_thr* hit, struct hi_io* io)
  clear_writing_err:
   hi_free_in_write(hit, io);
   LOCK(io->qel.mut, "clear-writing-err");   /* The io->writing was set in hi_in_out() */
-  D("WR-FAIL: LK&UNLK io(%x)->qel.thr=%x", io->fd, io->qel.mut.thr);
+  D("WR-FAIL: LK&UNLK io(%x)->qel.thr=%lx", io->fd, (long)io->qel.mut.thr);
   ASSERT(io->writing);
   io->writing = 0;
   --io->n_thr;

@@ -6534,6 +6534,44 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1conf_1ses_1cookie_1nam
 }
 
 
+SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zxid_1conf_1ptm_1cookie_1name_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
+  struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zxid_conf **)&jarg1; 
+  arg2 = 0;
+  if (jarg2) {
+    arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
+    if (!arg2) return ;
+  }
+  {
+    if (arg2) {
+      arg1->ptm_cookie_name = (char *) malloc(strlen(( char *)arg2)+1);
+      strcpy((char *)arg1->ptm_cookie_name, ( char *)arg2);
+    } else {
+      arg1->ptm_cookie_name = 0;
+    }
+  }
+  if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, ( char *)arg2);
+}
+
+
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1conf_1ptm_1cookie_1name_1get(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jstring jresult = 0 ;
+  struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zxid_conf **)&jarg1; 
+  result = (char *) ((arg1)->ptm_cookie_name);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zxid_1conf_1ipport_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -12445,6 +12483,44 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1ses_1setcookie_1get(JN
   (void)jcls;
   arg1 = *(struct zxid_ses **)&jarg1; 
   result = (char *) ((arg1)->setcookie);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zxid_1ses_1setptmcookie_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
+  struct zxid_ses *arg1 = (struct zxid_ses *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zxid_ses **)&jarg1; 
+  arg2 = 0;
+  if (jarg2) {
+    arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
+    if (!arg2) return ;
+  }
+  {
+    if (arg2) {
+      arg1->setptmcookie = (char *) malloc(strlen(( char *)arg2)+1);
+      strcpy((char *)arg1->setptmcookie, ( char *)arg2);
+    } else {
+      arg1->setptmcookie = 0;
+    }
+  }
+  if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, ( char *)arg2);
+}
+
+
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1ses_1setptmcookie_1get(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jstring jresult = 0 ;
+  struct zxid_ses *arg1 = (struct zxid_ses *) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zxid_ses **)&jarg1; 
+  result = (char *) ((arg1)->setptmcookie);
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }
@@ -23829,6 +23905,18 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1EPR_1get(JNIEnv *jenv,
   (void)jenv;
   (void)jcls;
   result = (char *) "urn:tas3:epr";
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1PTM_1get(JNIEnv *jenv, jclass jcls) {
+  jstring jresult = 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (char *) "urn:tas3:ptm:2012";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }

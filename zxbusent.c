@@ -184,17 +184,17 @@ int zxbus_login_ent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
     if (*p == '|')
       *p = ':';
   D("login_ent(%s) eidlen=%d - deescaped", login, eidlen);
-  D("WILL LOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
+  D("WILL LOCK ent_mut->thr=%lx (%s:%d)", (long)hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
 
   LOCK(hit->shf->ent_mut, "login");
-  D("LOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
+  D("LOCK ent_mut->thr=%lx (%s:%d)", (long)hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
   if (!(ent = zxbus_load_ent(hit->shf, eidlen, login))) {
     if (hit->shf->anonlogin) {
       ent = zxbus_new_ent(hit->shf, eidlen, login);
       INFO("Anon login eid(%s)", ent->eid);
       /* *** consider persisting the newly created account */
     } else {
-      D("UNLOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
+      D("UNLOCK ent_mut->thr=%lx (%s:%d)", (long)hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
       UNLOCK(hit->shf->ent_mut, "login-fail");
       ERR("Login account(%s) does not exist and no anon login", login);
       return 0;
@@ -203,14 +203,14 @@ int zxbus_login_ent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 
   if (req->ad.stomp.pw) {
     if (!zxbus_pw_authn_ent(login, req->ad.stomp.pw, io->fd)) {
-      D("UNLOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
+      D("UNLOCK ent_mut->thr=%lx (%s:%d)", (long)hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
       UNLOCK(hit->shf->ent_mut, "login-fail3");
       return 0;
     }
   } else {
     /* This could be ClientTLS */
     if (!hi_vfy_peer_ssl_cred(hit, io, login)) {
-      D("UNLOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
+      D("UNLOCK ent_mut->thr=%lx (%s:%d)", (long)hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
       UNLOCK(hit->shf->ent_mut, "login-fail5");
       ERR("Login account(%s): no password supplied and no ClientTLS match", ent->eid);
       return 0;      
@@ -227,7 +227,7 @@ int zxbus_login_ent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   
   ent->io = io;
   LOCK(io->qel.mut, "login");
-  D("LOCK io(%p)->qel.mut->thr=%x (%s:%d)", io, io->qel.mut.thr, io->qel.mut.func, io->qel.mut.line);
+  D("LOCK io(%p)->qel.mut->thr=%lx (%s:%d)", io, (long)io->qel.mut.thr, io->qel.mut.func, io->qel.mut.line);
   if (io->ent) {
     if (io->ent == ent) {
       NEVER("io has ent already set to current ent_%p", ent);
@@ -238,9 +238,9 @@ int zxbus_login_ent(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   io->ent = ent;
   D("Logged in ent_%p eid(%s) io_%p (%x)", ent, ent->eid, io, io->fd);
  loginok:
-  D("UNLOCK io(%p)->qel.mut->thr=%x (%s:%d)", io, io->qel.mut.thr, io->qel.mut.func, io->qel.mut.line);
+  D("UNLOCK io(%p)->qel.mut->thr=%lx (%s:%d)", io, (long)io->qel.mut.thr, io->qel.mut.func, io->qel.mut.line);
   UNLOCK(io->qel.mut, "login");
-  D("UNLOCK ent_mut->thr=%x (%s:%d)", hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
+  D("UNLOCK ent_mut->thr=%lx (%s:%d)", (long)hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
   UNLOCK(hit->shf->ent_mut, "login");
   return 1;
 }

@@ -399,6 +399,8 @@ class zxidjniJNI {
   public final static native String zxid_conf_ses_arch_dir_get(long jarg1);
   public final static native void zxid_conf_ses_cookie_name_set(long jarg1, String jarg2);
   public final static native String zxid_conf_ses_cookie_name_get(long jarg1);
+  public final static native void zxid_conf_ptm_cookie_name_set(long jarg1, String jarg2);
+  public final static native String zxid_conf_ptm_cookie_name_get(long jarg1);
   public final static native void zxid_conf_ipport_set(long jarg1, String jarg2);
   public final static native String zxid_conf_ipport_get(long jarg1);
   public final static native void zxid_conf_load_cot_cache_set(long jarg1, String jarg2);
@@ -751,6 +753,8 @@ class zxidjniJNI {
   public final static native String zxid_ses_tgt_a7n_path_get(long jarg1);
   public final static native void zxid_ses_setcookie_set(long jarg1, String jarg2);
   public final static native String zxid_ses_setcookie_get(long jarg1);
+  public final static native void zxid_ses_setptmcookie_set(long jarg1, String jarg2);
+  public final static native String zxid_ses_setptmcookie_get(long jarg1);
   public final static native void zxid_ses_cookie_set(long jarg1, String jarg2);
   public final static native String zxid_ses_cookie_get(long jarg1);
   public final static native void zxid_ses_rs_set(long jarg1, String jarg2);
@@ -1375,6 +1379,7 @@ class zxidjniJNI {
   public final static native String WSF11_DI_RO_get();
   public final static native String WSF20_DI_RO_get();
   public final static native String TAS3_EPR_get();
+  public final static native String TAS3_PTM_get();
   public final static native String IMPLIED_RSC_get();
   public final static native String XMLNS_DISCO_1_1_get();
   public final static native String XMLNS_DISCO_EXT_get();

@@ -82,6 +82,9 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Merge Jeroen's mega patch
     - Idea: authorization through interaction service, get it logged to audit trail as evidence
     - Idea: discovery and consent questions up-front in the beginning of the business process
+    - Improve 2 factor authn: the pin should be hashed password
+    - Paper scratch list based OTP
+    - Coordinates based authn
     - AuthnCtx comparison or matching
     - Proxy IdP AuthnCtx, RequesterID mapping
     - Config option to turn off audience restriction
@@ -99,13 +102,16 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
       opportunity to interact
     - Delegation to job coaches
     - Distressed authentication, persona selection at authentication by using prefix (pin)
-    - Audit bus receipt confirmation signature bus-confirm: BASE64FORSIGNEDRECEIPT
 
-zxid-1.11:: 17.8.2012
+zxid-1.11:: 30.9.2012
     - Added audit bus infrastructure (not yet universally propagated)
+    - Added simplistic yubikey 2 factor authentication (pin+yubikey)
+    - Fixed templ query string arg, enabling tabbed UI to work
+    - Audit bus receipt confirmation signature bus-confirm: B64FORSIGNEDRECEIPT
+    - Added PTM support
 
 zxid-1.10:: 21.4.2012
-    - Added support for OAUTH2 / OpenID-Connect1 Minimal / Basic Profile (both RP and IdP)
+    - Added support for OAUTH2 / OpenID-Connect1 Minimal / Basic Profile (both RP and IdP) (the support is still very preliminary)
     - Adapted SAML2 metadata to support OAUTH2, using Binding="urn:zxid:OAUTH:2.0:bindings:HTTP-Redirect" (OAUTH2-REDIR)
     - Corrected the OrganizationURL to be absolute
     - VPATH and VURL processing tweaks

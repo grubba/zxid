@@ -981,58 +981,59 @@ static void SWIG_Php_SetModule(swig_module_info *pointer) {
 #define SWIGTYPE_p_p_void swig_types[8]
 #define SWIGTYPE_p_p_zx_ns_s swig_types[9]
 #define SWIGTYPE_p_pthread_mutex_t swig_types[10]
-#define SWIGTYPE_p_stomp_hdr swig_types[11]
-#define SWIGTYPE_p_time_t swig_types[12]
-#define SWIGTYPE_p_timeval swig_types[13]
-#define SWIGTYPE_p_void swig_types[14]
-#define SWIGTYPE_p_zx_a_EndpointReference_s swig_types[15]
-#define SWIGTYPE_p_zx_at_tok swig_types[16]
-#define SWIGTYPE_p_zx_attr_s swig_types[17]
-#define SWIGTYPE_p_zx_ctx swig_types[18]
-#define SWIGTYPE_p_zx_ds_Reference_s swig_types[19]
-#define SWIGTYPE_p_zx_e_Body_s swig_types[20]
-#define SWIGTYPE_p_zx_e_Envelope_s swig_types[21]
-#define SWIGTYPE_p_zx_e_Fault_s swig_types[22]
-#define SWIGTYPE_p_zx_e_Header_s swig_types[23]
-#define SWIGTYPE_p_zx_el_desc swig_types[24]
-#define SWIGTYPE_p_zx_el_tok swig_types[25]
-#define SWIGTYPE_p_zx_elem_s swig_types[26]
-#define SWIGTYPE_p_zx_ff12_Assertion_s swig_types[27]
-#define SWIGTYPE_p_zx_lock swig_types[28]
-#define SWIGTYPE_p_zx_lu_Status_s swig_types[29]
-#define SWIGTYPE_p_zx_md_EntityDescriptor_s swig_types[30]
-#define SWIGTYPE_p_zx_ns_s swig_types[31]
-#define SWIGTYPE_p_zx_root_s swig_types[32]
-#define SWIGTYPE_p_zx_sa11_Assertion_s swig_types[33]
-#define SWIGTYPE_p_zx_sa_Assertion_s swig_types[34]
-#define SWIGTYPE_p_zx_sa_Attribute_s swig_types[35]
-#define SWIGTYPE_p_zx_sa_EncryptedAssertion_s swig_types[36]
-#define SWIGTYPE_p_zx_sa_EncryptedID_s swig_types[37]
-#define SWIGTYPE_p_zx_sa_Issuer_s swig_types[38]
-#define SWIGTYPE_p_zx_sa_NameID_s swig_types[39]
-#define SWIGTYPE_p_zx_sec_Token_s swig_types[40]
-#define SWIGTYPE_p_zx_sp_NewEncryptedID_s swig_types[41]
-#define SWIGTYPE_p_zx_sp_Status_s swig_types[42]
-#define SWIGTYPE_p_zx_str swig_types[43]
-#define SWIGTYPE_p_zx_tas3_Status_s swig_types[44]
-#define SWIGTYPE_p_zx_xenc_EncryptedData_s swig_types[45]
-#define SWIGTYPE_p_zx_xenc_EncryptedKey_s swig_types[46]
-#define SWIGTYPE_p_zxid_atsrc swig_types[47]
-#define SWIGTYPE_p_zxid_attr swig_types[48]
-#define SWIGTYPE_p_zxid_bus_url swig_types[49]
-#define SWIGTYPE_p_zxid_cgi swig_types[50]
-#define SWIGTYPE_p_zxid_conf swig_types[51]
-#define SWIGTYPE_p_zxid_cstr_list swig_types[52]
-#define SWIGTYPE_p_zxid_entity_s swig_types[53]
-#define SWIGTYPE_p_zxid_invite swig_types[54]
-#define SWIGTYPE_p_zxid_map swig_types[55]
-#define SWIGTYPE_p_zxid_need swig_types[56]
-#define SWIGTYPE_p_zxid_perm swig_types[57]
-#define SWIGTYPE_p_zxid_psobj swig_types[58]
-#define SWIGTYPE_p_zxid_ses swig_types[59]
-#define SWIGTYPE_p_zxsig_ref swig_types[60]
-static swig_type_info *swig_types[62];
-static swig_module_info swig_module = {swig_types, 61, 0, 0, 0, 0};
+#define SWIGTYPE_p_pthread_t swig_types[11]
+#define SWIGTYPE_p_stomp_hdr swig_types[12]
+#define SWIGTYPE_p_time_t swig_types[13]
+#define SWIGTYPE_p_timeval swig_types[14]
+#define SWIGTYPE_p_void swig_types[15]
+#define SWIGTYPE_p_zx_a_EndpointReference_s swig_types[16]
+#define SWIGTYPE_p_zx_at_tok swig_types[17]
+#define SWIGTYPE_p_zx_attr_s swig_types[18]
+#define SWIGTYPE_p_zx_ctx swig_types[19]
+#define SWIGTYPE_p_zx_ds_Reference_s swig_types[20]
+#define SWIGTYPE_p_zx_e_Body_s swig_types[21]
+#define SWIGTYPE_p_zx_e_Envelope_s swig_types[22]
+#define SWIGTYPE_p_zx_e_Fault_s swig_types[23]
+#define SWIGTYPE_p_zx_e_Header_s swig_types[24]
+#define SWIGTYPE_p_zx_el_desc swig_types[25]
+#define SWIGTYPE_p_zx_el_tok swig_types[26]
+#define SWIGTYPE_p_zx_elem_s swig_types[27]
+#define SWIGTYPE_p_zx_ff12_Assertion_s swig_types[28]
+#define SWIGTYPE_p_zx_lock swig_types[29]
+#define SWIGTYPE_p_zx_lu_Status_s swig_types[30]
+#define SWIGTYPE_p_zx_md_EntityDescriptor_s swig_types[31]
+#define SWIGTYPE_p_zx_ns_s swig_types[32]
+#define SWIGTYPE_p_zx_root_s swig_types[33]
+#define SWIGTYPE_p_zx_sa11_Assertion_s swig_types[34]
+#define SWIGTYPE_p_zx_sa_Assertion_s swig_types[35]
+#define SWIGTYPE_p_zx_sa_Attribute_s swig_types[36]
+#define SWIGTYPE_p_zx_sa_EncryptedAssertion_s swig_types[37]
+#define SWIGTYPE_p_zx_sa_EncryptedID_s swig_types[38]
+#define SWIGTYPE_p_zx_sa_Issuer_s swig_types[39]
+#define SWIGTYPE_p_zx_sa_NameID_s swig_types[40]
+#define SWIGTYPE_p_zx_sec_Token_s swig_types[41]
+#define SWIGTYPE_p_zx_sp_NewEncryptedID_s swig_types[42]
+#define SWIGTYPE_p_zx_sp_Status_s swig_types[43]
+#define SWIGTYPE_p_zx_str swig_types[44]
+#define SWIGTYPE_p_zx_tas3_Status_s swig_types[45]
+#define SWIGTYPE_p_zx_xenc_EncryptedData_s swig_types[46]
+#define SWIGTYPE_p_zx_xenc_EncryptedKey_s swig_types[47]
+#define SWIGTYPE_p_zxid_atsrc swig_types[48]
+#define SWIGTYPE_p_zxid_attr swig_types[49]
+#define SWIGTYPE_p_zxid_bus_url swig_types[50]
+#define SWIGTYPE_p_zxid_cgi swig_types[51]
+#define SWIGTYPE_p_zxid_conf swig_types[52]
+#define SWIGTYPE_p_zxid_cstr_list swig_types[53]
+#define SWIGTYPE_p_zxid_entity_s swig_types[54]
+#define SWIGTYPE_p_zxid_invite swig_types[55]
+#define SWIGTYPE_p_zxid_map swig_types[56]
+#define SWIGTYPE_p_zxid_need swig_types[57]
+#define SWIGTYPE_p_zxid_perm swig_types[58]
+#define SWIGTYPE_p_zxid_psobj swig_types[59]
+#define SWIGTYPE_p_zxid_ses swig_types[60]
+#define SWIGTYPE_p_zxsig_ref swig_types[61]
+static swig_type_info *swig_types[63];
+static swig_module_info swig_module = {swig_types, 62, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1134,6 +1135,7 @@ static swig_type_info _swigt__p_p_char = {"_p_p_char", "char **", 0, 0, (void*)0
 static swig_type_info _swigt__p_p_void = {"_p_p_void", "void **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_zx_ns_s = {"_p_p_zx_ns_s", "struct zx_ns_s **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_pthread_mutex_t = {"_p_pthread_mutex_t", "pthread_mutex_t *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_pthread_t = {"_p_pthread_t", "pthread_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_stomp_hdr = {"_p_stomp_hdr", "struct stomp_hdr *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_time_t = {"_p_time_t", "time_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_timeval = {"_p_timeval", "struct timeval *", 0, 0, (void*)0, 0};
@@ -1197,6 +1199,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_p_void,
   &_swigt__p_p_zx_ns_s,
   &_swigt__p_pthread_mutex_t,
+  &_swigt__p_pthread_t,
   &_swigt__p_stomp_hdr,
   &_swigt__p_time_t,
   &_swigt__p_timeval,
@@ -1260,6 +1263,7 @@ static swig_cast_info _swigc__p_p_char[] = {  {&_swigt__p_p_char, 0, 0, 0},{0, 0
 static swig_cast_info _swigc__p_p_void[] = {  {&_swigt__p_p_void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_zx_ns_s[] = {  {&_swigt__p_p_zx_ns_s, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_pthread_mutex_t[] = {  {&_swigt__p_pthread_mutex_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_pthread_t[] = {  {&_swigt__p_pthread_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_stomp_hdr[] = {  {&_swigt__p_stomp_hdr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_time_t[] = {  {&_swigt__p_time_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_timeval[] = {  {&_swigt__p_timeval, 0, 0, 0},{0, 0, 0, 0}};
@@ -1323,6 +1327,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_p_void,
   _swigc__p_p_zx_ns_s,
   _swigc__p_pthread_mutex_t,
+  _swigc__p_pthread_t,
   _swigc__p_stomp_hdr,
   _swigc__p_time_t,
   _swigc__p_timeval,
@@ -1397,6 +1402,7 @@ static int le_swig__p_f_size_t__p_void=0; /* handle for _p_f_size_t__p_void */
 static int le_swig__p_f_p_void_size_t__p_void=0; /* handle for _p_f_p_void_size_t__p_void */
 static int le_swig__int=0; /* handle for _int */
 static int le_swig__p_f_p_struct_zx_ctx_p_struct_zx_elem_s__int=0; /* handle for _p_f_p_struct_zx_ctx_p_struct_zx_elem_s__int */
+static int le_swig__p_pthread_t=0; /* handle for _p_pthread_t */
 static int le_swig__p_zxid_perm=0; /* handle for zxid_perm */
 static int le_swig__p_zxid_conf=0; /* handle for _p_zxid_conf */
 static int le_swig__p_zx_at_tok=0; /* handle for zx_at_tok */
@@ -1634,7 +1640,8 @@ fail:
 
 ZEND_NAMED_FUNCTION(_wrap_zx_lock_thr_set) {
   struct zx_lock *arg1 = (struct zx_lock *) 0 ;
-  int arg2 ;
+  pthread_t arg2 ;
+  pthread_t *tmp2 ;
   zval **args[2];
   
   SWIG_ResetError();
@@ -1648,12 +1655,12 @@ ZEND_NAMED_FUNCTION(_wrap_zx_lock_thr_set) {
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
-  
-  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[1]);
-  arg2 = (int) Z_LVAL_PP(args[1]);
-  /*@SWIG@*/;
-  
+  {
+    if(SWIG_ConvertPtr(*args[1], (void **) &tmp2, SWIGTYPE_p_pthread_t, 0) < 0 || tmp2 == NULL) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zx_lock_thr_set. Expected SWIGTYPE_p_pthread_t");
+    }
+    arg2 = *tmp2;
+  }
   if (arg1) (arg1)->thr = arg2;
   
   return;
@@ -1665,7 +1672,7 @@ fail:
 ZEND_NAMED_FUNCTION(_wrap_zx_lock_thr_get) {
   struct zx_lock *arg1 = (struct zx_lock *) 0 ;
   zval **args[1];
-  int result;
+  pthread_t result;
   
   SWIG_ResetError();
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -1678,9 +1685,11 @@ ZEND_NAMED_FUNCTION(_wrap_zx_lock_thr_get) {
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
-  result = (int) ((arg1)->thr);
+  result =  ((arg1)->thr);
   {
-    ZVAL_LONG(return_value,result);
+    pthread_t * resultobj = (pthread_t *) emalloc(sizeof(pthread_t));
+    memcpy(resultobj, &result, sizeof(pthread_t));
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_pthread_t, 1);
   }
   return;
 fail:
@@ -12740,6 +12749,78 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_ses_cookie_name_get) {
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
   result = (char *) ((arg1)->ses_cookie_name);
+  {
+    if(!result) {
+      ZVAL_NULL(return_value);
+    } else {
+      ZVAL_STRING(return_value, (char *)result, 1);
+    }
+  }
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_ptm_cookie_name_set) {
+  struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+  char *arg2 = (char *) 0 ;
+  zval **args[2];
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_ptm_cookie_name_set. Expected SWIGTYPE_p_zxid_conf");
+    }
+  }
+  if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
+  
+  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
+  if ((*args[1])->type==IS_NULL) {
+    arg2 = (char *) 0;
+  } else {
+    convert_to_string_ex(args[1]);
+    arg2 = (char *) Z_STRVAL_PP(args[1]);
+  }
+  /*@SWIG@*/;
+  
+  {
+    if (arg1->ptm_cookie_name) free((char *)arg1->ptm_cookie_name);
+    if (arg2) {
+      arg1->ptm_cookie_name = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->ptm_cookie_name, (const char *)arg2);
+    } else {
+      arg1->ptm_cookie_name = 0;
+    }
+  }
+  
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_ptm_cookie_name_get) {
+  struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+  zval **args[1];
+  char *result = 0 ;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_ptm_cookie_name_get. Expected SWIGTYPE_p_zxid_conf");
+    }
+  }
+  if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
+  result = (char *) ((arg1)->ptm_cookie_name);
   {
     if(!result) {
       ZVAL_NULL(return_value);
@@ -24317,6 +24398,78 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_ses_setcookie_get) {
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
   result = (char *) ((arg1)->setcookie);
+  {
+    if(!result) {
+      ZVAL_NULL(return_value);
+    } else {
+      ZVAL_STRING(return_value, (char *)result, 1);
+    }
+  }
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zxid_ses_setptmcookie_set) {
+  struct zxid_ses *arg1 = (struct zxid_ses *) 0 ;
+  char *arg2 = (char *) 0 ;
+  zval **args[2];
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_ses, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_ses_setptmcookie_set. Expected SWIGTYPE_p_zxid_ses");
+    }
+  }
+  if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
+  
+  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
+  if ((*args[1])->type==IS_NULL) {
+    arg2 = (char *) 0;
+  } else {
+    convert_to_string_ex(args[1]);
+    arg2 = (char *) Z_STRVAL_PP(args[1]);
+  }
+  /*@SWIG@*/;
+  
+  {
+    if (arg1->setptmcookie) free((char *)arg1->setptmcookie);
+    if (arg2) {
+      arg1->setptmcookie = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->setptmcookie, (const char *)arg2);
+    } else {
+      arg1->setptmcookie = 0;
+    }
+  }
+  
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zxid_ses_setptmcookie_get) {
+  struct zxid_ses *arg1 = (struct zxid_ses *) 0 ;
+  zval **args[1];
+  char *result = 0 ;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_ses, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_ses_setptmcookie_get. Expected SWIGTYPE_p_zxid_ses");
+    }
+  }
+  if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
+  result = (char *) ((arg1)->setptmcookie);
   {
     if(!result) {
       ZVAL_NULL(return_value);
@@ -40844,6 +40997,10 @@ static ZEND_RSRC_DTOR_FUNC(_wrap_destroy_p_f_p_struct_zx_ctx_p_struct_zx_elem_s_
   /* No destructor for simple type _p_f_p_struct_zx_ctx_p_struct_zx_elem_s__int */
   efree(rsrc->ptr);
 }
+static ZEND_RSRC_DTOR_FUNC(_wrap_destroy_p_pthread_t) {
+  /* No destructor for simple type _p_pthread_t */
+  efree(rsrc->ptr);
+}
 static ZEND_RSRC_DTOR_FUNC(_wrap_destroy_p_zxid_perm) {
   __wrap_delete_zxid_perm(rsrc, SWIGTYPE_p_zxid_perm->name TSRMLS_CC);
 }
@@ -41354,6 +41511,8 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zxid_conf_ses_arch_dir_get,_wrap_zxid_conf_ses_arch_dir_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_ses_cookie_name_set,_wrap_zxid_conf_ses_cookie_name_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_ses_cookie_name_get,_wrap_zxid_conf_ses_cookie_name_get,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_ptm_cookie_name_set,_wrap_zxid_conf_ptm_cookie_name_set,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_ptm_cookie_name_get,_wrap_zxid_conf_ptm_cookie_name_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_ipport_set,_wrap_zxid_conf_ipport_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_ipport_get,_wrap_zxid_conf_ipport_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_load_cot_cache_set,_wrap_zxid_conf_load_cot_cache_set,NULL)
@@ -41704,6 +41863,8 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zxid_ses_tgt_a7n_path_get,_wrap_zxid_ses_tgt_a7n_path_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_ses_setcookie_set,_wrap_zxid_ses_setcookie_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_ses_setcookie_get,_wrap_zxid_ses_setcookie_get,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_ses_setptmcookie_set,_wrap_zxid_ses_setptmcookie_set,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_ses_setptmcookie_get,_wrap_zxid_ses_setptmcookie_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_ses_cookie_set,_wrap_zxid_ses_cookie_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_ses_cookie_get,_wrap_zxid_ses_cookie_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_ses_rs_set,_wrap_zxid_ses_rs_set,NULL)
@@ -42445,6 +42606,8 @@ le_swig__int=zend_register_list_destructors_ex(_wrap_destroy_int,NULL,(char *)(S
 SWIG_TypeClientData(SWIGTYPE_int,&le_swig__int);
 le_swig__p_f_p_struct_zx_ctx_p_struct_zx_elem_s__int=zend_register_list_destructors_ex(_wrap_destroy_p_f_p_struct_zx_ctx_p_struct_zx_elem_s__int,NULL,(char *)(SWIGTYPE_p_f_p_struct_zx_ctx_p_struct_zx_elem_s__int->name),module_number);
 SWIG_TypeClientData(SWIGTYPE_p_f_p_struct_zx_ctx_p_struct_zx_elem_s__int,&le_swig__p_f_p_struct_zx_ctx_p_struct_zx_elem_s__int);
+le_swig__p_pthread_t=zend_register_list_destructors_ex(_wrap_destroy_p_pthread_t,NULL,(char *)(SWIGTYPE_p_pthread_t->name),module_number);
+SWIG_TypeClientData(SWIGTYPE_p_pthread_t,&le_swig__p_pthread_t);
 le_swig__p_zxid_perm=zend_register_list_destructors_ex(_wrap_destroy_p_zxid_perm,NULL,(char *)(SWIGTYPE_p_zxid_perm->name),module_number);
 SWIG_TypeClientData(SWIGTYPE_p_zxid_perm,&le_swig__p_zxid_perm);
 le_swig__p_zxid_conf=zend_register_list_destructors_ex(_wrap_destroy_p_zxid_conf,NULL,(char *)(SWIGTYPE_p_zxid_conf->name),module_number);

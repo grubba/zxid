@@ -229,6 +229,7 @@ public interface zxidjniConstants {
   public final static String WSF11_DI_RO = zxidjniJNI.WSF11_DI_RO_get();
   public final static String WSF20_DI_RO = zxidjniJNI.WSF20_DI_RO_get();
   public final static String TAS3_EPR = zxidjniJNI.TAS3_EPR_get();
+  public final static String TAS3_PTM = zxidjniJNI.TAS3_PTM_get();
   public final static String IMPLIED_RSC = zxidjniJNI.IMPLIED_RSC_get();
   public final static String XMLNS_DISCO_1_1 = zxidjniJNI.XMLNS_DISCO_1_1_get();
   public final static String XMLNS_DISCO_EXT = zxidjniJNI.XMLNS_DISCO_EXT_get();

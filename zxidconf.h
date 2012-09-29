@@ -483,6 +483,15 @@
 #define ZXID_SES_COOKIE_NAME "ZXIDSES"
 #endif
 
+/*(c) PTM hint cookie
+ * If PTM_COOKIE_NAME is nonempty string, then
+ * zxid_simple() will attempt to set a cookie by that name when new session
+ * is created (but this may rely on some support in the calling app,
+ * generally the need to set a cookie is expressed by presence of
+ * setcookie attribute in the LDIF entry. setcookie specifies what
+ * should appear in the Set-Cookie HTTP header of HTTP response). */
+#define ZXID_PTM_COOKIE_NAME "ZXIDPTM"
+
 /*(c) Local user account management.
  * This is optional unless you require IdP
  * initiated ManageNameID requests to work. Local user account management

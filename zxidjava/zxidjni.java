@@ -1473,6 +1473,14 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_ses_cookie_name_get(zxid_conf.getCPtr(self));
   }
 
+  public static void conf_ptm_cookie_name_set(zxid_conf self, String value) {
+    zxidjniJNI.zxid_conf_ptm_cookie_name_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static String conf_ptm_cookie_name_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_ptm_cookie_name_get(zxid_conf.getCPtr(self));
+  }
+
   public static void conf_ipport_set(zxid_conf self, String value) {
     zxidjniJNI.zxid_conf_ipport_set(zxid_conf.getCPtr(self), value);
   }
@@ -2897,6 +2905,14 @@ public class zxidjni implements zxidjniConstants {
 
   public static String ses_setcookie_get(zxid_ses self) {
     return zxidjniJNI.zxid_ses_setcookie_get(zxid_ses.getCPtr(self));
+  }
+
+  public static void ses_setptmcookie_set(zxid_ses self, String value) {
+    zxidjniJNI.zxid_ses_setptmcookie_set(zxid_ses.getCPtr(self), value);
+  }
+
+  public static String ses_setptmcookie_get(zxid_ses self) {
+    return zxidjniJNI.zxid_ses_setptmcookie_get(zxid_ses.getCPtr(self));
   }
 
   public static void ses_cookie_set(zxid_ses self, String value) {

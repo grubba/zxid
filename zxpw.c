@@ -39,7 +39,23 @@
  * The yubikey system requires that spent OTPs are remembered to prevent
  * replay attack. We do this by keeping per user /PATH/uid/UID/.ykspent/
  * directory: if the key is already in this directory, then fail.
+ * Youbikey OTP liiks like this
+ *  tructedjlkijterkbcfjevdkflenbtbtentfeilkjidt
+ *  tructedjlkijftlbuviijebbjvernhghlieukckvuuhk
+ *  tructedjlkijcbudcjnhbrntktctirtdgrkjbdkgjjfj
+ *              12345678901234567890123456789012
+ *  UID part    OTP part 1         2         3
+ *
+ * The last 32 characters of the input are the actual OTP. The first
+ * variable length part is the username, which can be either the
+ * usename programmed into the key, or concatenation of manually
+ * entered password and username from the key.
+ *
  * See: yubico.com
+ *
+ * path:: The configuration path from which uid directory path is formed, typically cf->path
+ * uid:: Both the UID and OTP concatenated
+ * passw:: not used in Yubikey authentication
  * return:: 0 on failure, 1 on success  */
 
 /* Called by:  zx_pw_authn */
@@ -57,7 +73,7 @@ int zx_yubikey_authn(const char* path, char* uid, const char* passw)
   
   snprintf((char*)buf, sizeof(buf)-1, "%s" ZXID_UID_DIR "%s", path, uid);
   buf[sizeof(buf)-1] = 0;
-  len = read_all(sizeof(pw_buf), (char*)pw_buf, "ykspent", 1, "%s/.ykspent/%s", buf, pw_hash);
+  len = read_all(sizeof(pw_buf), (char*)pw_buf, "ykspent", 0, "%s/.ykspent/%s", buf, pw_hash);
   if (len) {
     ERR("The One Time Password has already been spent. ticket(%s%s) buf(%.*s)", uid, pw_hash, len, pw_buf);
     return 0;
@@ -77,7 +93,7 @@ int zx_yubikey_authn(const char* path, char* uid, const char* passw)
     pw_buf[len] = 0;
   }
   zx_hexdec((char*)pw_buf, (char*)pw_buf, len, hex_trans);
-  ZERO (&yktok, sizeof(yktok));
+  ZERO(&yktok, sizeof(yktok));
   zx_hexdec((void*)&yktok, (char*)pw_hash, 32, ykmodhex_trans);
   yubikey_aes_decrypt((void*)&yktok, pw_buf);
   D("internal uid %02x %02x %02x %02x %02x %02x counter=%d 0x%x timestamp=%d (hi=%x lo=%x) use=%d 0x%x rnd=0x%x crc=0x%x", yktok.uid[0], yktok.uid[1], yktok.uid[2], yktok.uid[3], yktok.uid[4], yktok.uid[5], yktok.ctr, yktok.ctr, (yktok.tstph << 16) | yktok.tstpl, yktok.tstph, yktok.tstpl, yktok.use, yktok.use, yktok.rnd, yktok.crc);

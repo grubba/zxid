@@ -103,25 +103,25 @@ struct hi_qel* hi_todo_consume(struct hi_thr* hit)
   struct hi_io* io;
   struct hi_qel* qe;
   LOCK(hit->shf->todo_mut, "todo_cons");
-  D("LOCK todo_mut.thr=%x (cond_wait)", hit->shf->todo_mut.thr);
+  D("LOCK todo_mut.thr=%lx (cond_wait)", (long)hit->shf->todo_mut.thr);
 
  deque_again:
   while (!hit->shf->todo_consume && hit->shf->poll_tok.proto == HIPROTO_POLL_OFF)  /* Empty? */
     ZX_COND_WAIT(&hit->shf->todo_cond, hit->shf->todo_mut, "todo-cons"); /* Block until work */
-  D("Out of cond_wait todo_mut.thr=%x", hit->shf->todo_mut.thr);
+  D("Out of cond_wait todo_mut.thr=%lx", (long)hit->shf->todo_mut.thr);
   
   if (!hit->shf->todo_consume) {
     ASSERT(hit->shf->poll_tok.proto);
   force_poll:
     hit->shf->poll_tok.proto = HIPROTO_POLL_OFF;
-    D("UNLK cons-poll todo_mut.thr=%x", hit->shf->todo_mut.thr);
+    D("UNLK cons-poll todo_mut.thr=%lx", (long)hit->shf->todo_mut.thr);
     UNLOCK(hit->shf->todo_mut, "todo_cons-poll");
     return &hit->shf->poll_tok;
   }
   
   qe = hi_todo_consume_queue_inlock(hit->shf);
   if (!ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
-    D("cons qe_%p kind(%s) intodo=%x todo_mut.thr=%x", qe, QEL_KIND(qe->kind), qe->intodo, hit->shf->todo_mut.thr);
+    D("cons qe_%p kind(%s) intodo=%x todo_mut.thr=%lx", qe, QEL_KIND(qe->kind), qe->intodo, (long)hit->shf->todo_mut.thr);
     UNLOCK(hit->shf->todo_mut, "todo_cons");
     return qe;
   }
@@ -143,16 +143,16 @@ struct hi_qel* hi_todo_consume(struct hi_thr* hit)
     goto deque_again;
   }
   if (io->fd & 0x80000000) {
-    D("cons-ign-closed: LK&UNLK io(%x)->qel.thr=%x n_thr=%d r/w=%d/%d ev=%d intodo=%x", io->fd, io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
+    D("cons-ign-closed: LK&UNLK io(%x)->qel.thr=%lx n_thr=%d r/w=%d/%d ev=%d intodo=%x", io->fd, (long)io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
     /* Let it be consumed so that r/w will fail and hi_close() is called to clean up. */
   }
   
   ++io->n_thr;  /* Increase two counts: once for write, and once for read, decrease for intodo ending. Net is +1. */
   hit->cur_io = io;
   hit->cur_n_close = io->n_close;
-  D("cons: LK&UNLK io(%x)->qel.thr=%x n_thr=%d r/w=%d/%d ev=%x intodo=%x", io->fd, io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
+  D("cons: LK&UNLK io(%x)->qel.thr=%lx n_thr=%d r/w=%d/%d ev=%x intodo=%x", io->fd, (long)io->qel.mut.thr, io->n_thr, io->reading, io->writing, io->events, io->qel.intodo);
   UNLOCK(io->qel.mut, "n_thr-inc");
-  D("UNLK todo_mut.thr=%x", hit->shf->todo_mut.thr);
+  D("UNLK todo_mut.thr=%lx", (long)hit->shf->todo_mut.thr);
   UNLOCK(hit->shf->todo_mut, "todo_cons-tcp");
   return qe;
 }
@@ -168,7 +168,7 @@ void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk, int 
 {
   struct hi_io* io;
   LOCK(hit->shf->todo_mut, "todo_prod");
-  D("%s: LOCK todo_mut.thr=%x", lk, hit->shf->todo_mut.thr);
+  D("%s: LOCK todo_mut.thr=%lx", lk, (long)hit->shf->todo_mut.thr);
 
   if (qe->intodo == HI_INTODO_INTODO) {
     if (ONE_OF_2(qe->kind, HI_TCP_S, HI_TCP_C)) {
@@ -213,7 +213,7 @@ produce:
   ZX_COND_SIG(&hit->shf->todo_cond, "todo-prod");  /* Wake up consumers */
 
  out:
-  D("%s: UNLOCK todo_mut.thr=%x", lk, hit->shf->todo_mut.thr);
+  D("%s: UNLOCK todo_mut.thr=%lx", lk, (long)hit->shf->todo_mut.thr);
   UNLOCK(hit->shf->todo_mut, "todo_prod");
 }
 
