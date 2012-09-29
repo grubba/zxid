@@ -770,7 +770,7 @@ static char* zxid_simple_redir_page(zxid_conf* cf, char* redir, char* rs, int* r
 char* zxid_simple_show_idp_sel(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   struct zx_str* ss;
-  D("cf=%p cgi=%p", cf, cgi);
+  D("cf=%p cgi=%p templ(%s)", cf, cgi, STRNULLCHK(cgi->templ));
   if (cf->idp_sel_page && cf->idp_sel_page[0]) {
     D("idp_sel_page(%s) rs(%s)", cf->idp_sel_page, STRNULLCHK(cgi->rs));
     return zxid_simple_redir_page(cf, cf->idp_sel_page, cgi->rs, res_len, auto_flags);

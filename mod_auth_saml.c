@@ -14,7 +14,7 @@
  * 25.8.2009, add attribute passing and pep call --Sampo
  * 11.1.2010, refactoring and review --Sampo
  * 15.7.2010, consider passing to simple layer more data about the request --Sampo
- * 28.9.2012, changed zx_instance string to "mas" --Sampo
+ * 28.9.2012, changed zx_instance string to "mas", fixed parsing CGI for other page --Sampo
  *
  * To configure this module add to httpd.conf something like
  *
@@ -341,8 +341,8 @@ static int chkuid(request_rec* r)
   if (p == cf->url)
     p = cf->url + url_len;
   
+  zxid_parse_cgi(&cgi, r->args);
   if (url_len >= uri_len && !memcmp(p - uri_len, r->uri, uri_len)) {  /* Suffix match */
-    zxid_parse_cgi(&cgi, r->args);
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->url(%s) qs(%s) rs(%s) op(%c)", r->uri, cf->url, r->args, cgi.rs, cgi.op);
     if (r->method_number == M_POST) {
       res = read_post(cf, r);   /* Will print some debug output */
