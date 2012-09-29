@@ -439,7 +439,7 @@ int zxbus_read_stomp(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* s
       }
 #endif
       if (!got) {
-	D("recv: returned empty, gotten=%d", (bu->ap - bu->m));
+	D("recv: returned empty, gotten=%ld", (long)(bu->ap - bu->m));
 	return 0;
       }
       HEXDUMP("read:", bu->ap, bu->ap+got, /*16*/ 256);

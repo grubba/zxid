@@ -67,12 +67,12 @@ int hi_sanity_pdu(int mode, struct hi_pdu* root_pdu)
 
   if (mode&0x80) {
     if (root_pdu->reals)
-      printf("    pdu_%p  //reals  (%.*s)\n", root_pdu, MIN(root_pdu->ap-root_pdu->m,4), root_pdu->m);
+      printf("    pdu_%p  //reals  (%.*s)\n", root_pdu, (int)MIN(root_pdu->ap-root_pdu->m,4), root_pdu->m);
     else
       printf("    pdu_%p -> null [label=reals];\n", root_pdu);
   }
   for (pdu = root_pdu->reals; pdu; pdu = pdu->n) {
-    if (mode&0x80) printf("    -> pdu_%p  // (%.*s)\n", pdu, MIN(pdu->ap-pdu->m,4), pdu->m);
+    if (mode&0x80) printf("    -> pdu_%p  // (%.*s)\n", pdu, (int)MIN(pdu->ap-pdu->m,4), pdu->m);
     if (pdu->color == hi_color+1) {
       printf("ERR *** pdu_%p has circular reference (color=%d) wrt pdu->reals pdu->n\n", pdu, pdu->color);
       --errs;
@@ -166,7 +166,7 @@ int hi_sanity_io(int mode, struct hi_io* root_io)
       printf("  io_%p -> null [label=reqs];\n", root_io);
   }
   for (pdu = root_io->reqs; pdu; pdu = pdu->n) {
-    if (mode&0x80) printf("    -> pdu_%p  // (%.*s)\n", pdu, MIN(pdu->ap-pdu->m,4), pdu->m);
+    if (mode&0x80) printf("    -> pdu_%p  // (%.*s)\n", pdu, (int)MIN(pdu->ap-pdu->m,4), pdu->m);
     if (pdu->color == hi_color+1) {
       printf("ERR *** pdu_%p has circular reference (color=%d) wrt io->reqs pdu->n\n", pdu, pdu->color);
       --errs;
@@ -190,7 +190,7 @@ int hi_sanity_io(int mode, struct hi_io* root_io)
       printf("  io_%p -> null [label=pending];\n", root_io);
   }
   for (pdu = root_io->pending; pdu; pdu = pdu->n) {
-    if (mode&0x80) printf("    -> pdu_%p  // (%.*s)\n", pdu, MIN(pdu->ap-pdu->m,4), pdu->m);
+    if (mode&0x80) printf("    -> pdu_%p  // (%.*s)\n", pdu, (int)MIN(pdu->ap-pdu->m,4), pdu->m);
     if (pdu->color == hi_color+1) {
       printf("ERR *** pdu_%p has circular reference (color=%d) wrt io->pending pdu->n\n", pdu, pdu->color);
       --errs;
@@ -209,7 +209,7 @@ int hi_sanity_io(int mode, struct hi_io* root_io)
 
   if (mode&0x80) {
     if (root_io->to_write_produce) {
-      printf("  io_%p -> pdu_%p [label=to_write_produce]; // (%.*s)\n", root_io, root_io->to_write_produce, MIN(root_io->to_write_produce->ap-root_io->to_write_produce->m,4), root_io->to_write_produce->m);
+      printf("  io_%p -> pdu_%p [label=to_write_produce]; // (%.*s)\n", root_io, root_io->to_write_produce, (int)MIN(root_io->to_write_produce->ap-root_io->to_write_produce->m,4), root_io->to_write_produce->m);
       ASSERT(root_io->to_write_produce->wn == 0);
       /*if (mode&0x02) nodes += hi_sanity_pdu(mode, root_io->to_write_produce);*/
       if (pdu->qel.intodo != HI_INTODO_PDUINUSE) {
@@ -227,7 +227,7 @@ int hi_sanity_io(int mode, struct hi_io* root_io)
       printf("  io_%p -> null [label=to_write_consume];  // n_to_write=%d\n", root_io, root_io->n_to_write);
   }
   for (pdu = root_io->to_write_consume; pdu; pdu = pdu->wn) {
-    if (mode&0x80) printf("    -> pdu_%p  // (%.*s)\n", pdu, MIN(pdu->ap-pdu->m,4), pdu->m);
+    if (mode&0x80) printf("    -> pdu_%p  // (%.*s)\n", pdu, (int)MIN(pdu->ap-pdu->m,4), pdu->m);
     if (pdu->color == hi_color+2) {
       printf("ERR *** pdu_%p has circular reference (color=%d) wrt io->to_write_consume pdu->wn\n", pdu, pdu->color);
       --errs;
@@ -251,7 +251,7 @@ int hi_sanity_io(int mode, struct hi_io* root_io)
       printf("  io_%p -> null [label=in_write];\n", root_io);
   }
   for (pdu = root_io->in_write; pdu; pdu = pdu->wn) {
-    if (mode&0x80) printf("-> pdu_%p  // (%.*s)\n", pdu, MIN(pdu->ap-pdu->m,4), pdu->m);
+    if (mode&0x80) printf("-> pdu_%p  // (%.*s)\n", pdu, (int)MIN(pdu->ap-pdu->m,4), pdu->m);
     if (pdu->color == hi_color+2) {
       printf("ERR *** pdu_%p has circular reference (color=%d) wrt io->in_write pdu->wn\n", pdu, pdu->color);
       --errs;
@@ -289,7 +289,7 @@ int hi_sanity_hit(int mode, struct hi_thr* root_hit)
       printf("hit_%p -> null [label=free_pdus];\n", root_hit);
   }
   for (pdu = root_hit->free_pdus; pdu; pdu = (struct hi_pdu*)pdu->qel.n) {
-    if (mode&0x80) printf("-> pdu_%p  // (%.*s)\n", pdu, MIN(pdu->ap-pdu->m,4), pdu->m);
+    if (mode&0x80) printf("-> pdu_%p  // (%.*s)\n", pdu, (int)MIN(pdu->ap-pdu->m,4), pdu->m);
     if (pdu->color == hi_color+1) {
       printf("ERR *** pdu_%p in hit->free_pdus is also in reqs list (color=%d)\n", pdu, pdu->color);
       --errs;

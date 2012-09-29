@@ -195,7 +195,7 @@ int zxbus_subscribe(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   
   ch = zxbus_find_ch(hit->shf, -2, req->ad.stomp.dest);    /* Check that the channel exists. */
   if (!ch) {
-    ERR("%s: attempted subscription to nonexistent channel(%.*s)", ent->eid, strchr(req->ad.stomp.dest, '\n') - req->ad.stomp.dest, req->ad.stomp.dest);
+    ERR("%s: attempted subscription to nonexistent channel(%.*s)", ent->eid, (int)(strchr(req->ad.stomp.dest, '\n') - req->ad.stomp.dest), req->ad.stomp.dest);
     return 0;
   }
 

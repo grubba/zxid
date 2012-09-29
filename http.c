@@ -32,7 +32,7 @@ struct hi_pdu* http_encode_start(struct hi_thr* hit)
 void http_send_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int r, char* m)
 {
   struct hi_pdu* resp = http_encode_start(hit);
-  resp->need = sprintf(resp->m, "HTTP/1.0 %03d %s\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", r, m, strlen(m), m);
+  resp->need = sprintf(resp->m, "HTTP/1.0 %03d %s\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", r, m, (int)strlen(m), m);
   hi_send(hit, io, 0, req, resp);
 }
 
@@ -50,7 +50,7 @@ void http_send_file(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, in
   /*hi_sendv(hit, io, 0, req, resp, len, resp->m, size, req->m + len);*/
 }
 
-#define HTTP_MIN_PDU_SIZE (sizeof("GET / HTTP/1.0\n\n")-1)
+#define HTTP_MIN_PDU_SIZE ((int)sizeof("GET / HTTP/1.0\n\n")-1)
 
 /* Called by:  hi_read */
 int http_decode(struct hi_thr* hit, struct hi_io* io)
@@ -84,7 +84,7 @@ int http_decode(struct hi_thr* hit, struct hi_io* io)
     return 0;
   }
   /* *** Proper processing of content-length and setting need to length of PDU is still needed. */
-  D("need=%d len=%d buf(%.*s)", req->need, req->ap-req->m, req->ap-req->m, req->m);
+  D("need=%d len=%d buf(%.*s)", req->need, (int)(req->ap-req->m), (int)(req->ap-req->m), req->m);
 
   hi_add_to_reqs(hit, io, req, HTTP_MIN_PDU_SIZE);
 

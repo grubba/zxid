@@ -337,7 +337,7 @@ static int smtp_data(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
 int smtp_decode_req(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* req = io->cur_pdu;
-  D("smtp_state(%d) scan(%.*s)", io->ad.smtp.state, MIN(7, req->ap - req->scan), req->scan);
+  D("smtp_state(%d) scan(%.*s)", io->ad.smtp.state, (int)MIN(7, req->ap - req->scan), req->scan);
   switch (io->ad.smtp.state) {
   case SMTP_START:  return smtp_ehlo(hit, io, req);
   case SMTP_MAIN:   return smtp_mail_from(hit, io, req);
@@ -560,7 +560,7 @@ static int smtp_resp_wait_354_from_data(struct hi_thr* hit, struct hi_io* io, st
 	}
       }
       
-      D("354 for DATA seen resp(%p), sending %d bytes", resp, q-payload);
+      D("354 for DATA seen resp(%p), sending %d bytes", resp, (int)(q-payload));
       hi_send1(hit, io, 0, 0, pdu, q-payload, payload);
       io->ad.smtp.state = SMTP_SENT;
       /* *** if hmtp / smtp message was not complete, arrange further SIS layer
@@ -669,7 +669,7 @@ static int smtp_resp_wait_221_goodbye(struct hi_thr* hit, struct hi_io* io, stru
 int smtp_decode_resp(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* resp = io->cur_pdu;
-  D("smtp_state(%d) scan(%.*s)", io->ad.smtp.state, MIN(7, resp->ap - resp->scan), resp->scan);
+  D("smtp_state(%d) scan(%.*s)", io->ad.smtp.state, (int)MIN(7, resp->ap-resp->scan), resp->scan);
   switch (io->ad.smtp.state) {
   case SMTP_INIT: return smtp_resp_wait_220_greet(hit, io, resp);
   case SMTP_EHLO: D("Unexpected state %x", io->ad.smtp.state);

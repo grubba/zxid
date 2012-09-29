@@ -139,13 +139,13 @@ static void zxbus_load_acks(struct hi_thr* hit, struct hi_pdu* pdu, int fd)
 	  ent->acks = ack;
 	  D("Added ack pdu_%p to ent_%p eid(%s)", pdu, ent, ent->eid);
 	} else {
-	  ERR("Entity of the ACK not found. line(%.*s), skipping", nl-p, p);
+	  ERR("Entity of the ACK not found. line(%.*s), skipping", (int)(nl-p), p);
 	}
       } else {
-	ERR("Not an ACK line(%.*s) in acks, skipping", nl-p, p);
+	ERR("Not an ACK line(%.*s) in acks, skipping", (int)(nl-p), p);
       }
     } else {
-      ERR("Bad line(%.*s) in acks, skipping", nl-p, p);
+      ERR("Bad line(%.*s) in acks, skipping", (int)(nl-p), p);
     }
   }
   D("UNLOCK ent_mut->thr=%lx (%s:%d)", (long)hit->shf->ent_mut.thr, hit->shf->ent_mut.func, hit->shf->ent_mut.line);
@@ -375,13 +375,13 @@ int zxbus_persist(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
     /* *** should we make an effort to close the connection? */
     return 0;
   }
-  D("persisted at(%s) (%.*s) len=%d", c_path, MIN(req->ap-req->ad.stomp.body, 10), req->ad.stomp.body, req->ap-req->m);
+  D("persisted at(%s) (%.*s) len=%d", c_path, (int)MIN(req->ap-req->ad.stomp.body, 10), req->ad.stomp.body, (int)(req->ap-req->m));
   if (verbose) {
     if (req->ad.stomp.receipt)
       nl = memchr(req->ad.stomp.receipt, '\n', req->ap - req->ad.stomp.receipt);
     else
       nl = 0;
-    printf("FMT0 persist at %s '%.*s' len=%d rcpt(%.*s)\n", c_path, MIN(req->ap-req->ad.stomp.body, 10), req->ad.stomp.body, req->ap-req->m, nl?(nl-req->ad.stomp.receipt):0, nl?req->ad.stomp.receipt:"");
+    printf("FMT0 persist at %s '%.*s' len=%d rcpt(%.*s)\n", c_path, (int)MIN(req->ap-req->ad.stomp.body, 10), req->ad.stomp.body, (int)(req->ap-req->m), nl?((int)(nl-req->ad.stomp.receipt)):0, nl?req->ad.stomp.receipt:"");
   }
   zxbus_sched_new_delivery(hit, req, c_path+len-27, dest_len, dest);
   return 1;
