@@ -46,7 +46,11 @@
 #include "c/zxidvers.h"
 #include "c/zx-md-data.h"
 
-/*() Convert configuration string ~conf~ to configuration object ~cf~. See zxid_conf_to_cf() */
+/*() Convert configuration string ~conf~ to configuration object ~cf~.
+ * cf:: Configuration object, already allocated
+ * conf_len:: length of conf string, or -1 to use strlen(conf)
+ * conf:: Configuration string in query string format
+ * See also: zxid_conf_to_cf() */
 
 /* Called by:  dirconf, main x2, zxid_az, zxid_az_base, zxid_fed_mgmt_len, zxid_idp_list_len, zxid_idp_select_len, zxid_new_conf_to_cf, zxid_simple_len */
 int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
@@ -59,7 +63,7 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
       exit(2);
     }
   }
-  zxid_init_conf(cf, ZXID_PATH);
+  zxid_init_conf(cf, ZXID_PATH);   /* Hardwired conf from zxidconf.h, and /var/zxid/zxid.conf */
 #ifdef USE_CURL
   //INFO("%lx == %lx? eq=%d sizeof(cf->curl_mx.thr)=%ld a=%lx sizeof(a)=%ld sizeof(pthread_t)=%ld sizeof(int)=%ld sizeof(long)=%ld sizeof(long long)=%ld sizeof(char*)=%ld", cf->curl_mx.thr, pthread_self(), (long)cf->curl_mx.thr == (long)pthread_self(), sizeof(cf->curl_mx.thr), a, sizeof(a), sizeof(pthread_t), sizeof(int), sizeof(long), sizeof(long long), sizeof(char*));
   LOCK(cf->curl_mx, "curl init");
@@ -75,10 +79,17 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
   zxid_init_conf_ctx(cf, ZXID_PATH /* N.B. Often this is overridden. */);
 #endif
 #if defined(ZXID_CONF_FILE) || defined(ZXID_CONF_FLAG)
+  /* The usual case is that config file processing is compiled in, so this code happens. */
   {
     char* buf;
     char* cc;
-    int len, clen = conf_len == -1 && conf ? strlen(conf) : conf_len;
+    int len;
+    if (conf_len == -1) {
+      if (conf)
+	conf_len = strlen(conf);
+      else
+	conf_len = 0;
+    }
 
     if (!conf || conf_len < 5 || memcmp(conf, "PATH=", 5)) {
       /* No conf, or conf does not start by PATH: read from file default values */
@@ -90,32 +101,30 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
     buf = getenv("ZXID_PRE_CONF");
     if (buf) {
       /* Copy the conf string because we are going to modify it in place. */
-      clen = strlen(buf);
-      cc = ZX_ALLOC(cf->ctx, clen+1);
-      memcpy(cc, buf, clen);
-      cc[clen] = 0;
-      zxid_parse_conf_raw(cf, clen, cc);
-
+      len = strlen(buf);
+      cc = ZX_ALLOC(cf->ctx, len+1);
+      memcpy(cc, buf, len);
+      cc[len] = 0;
+      zxid_parse_conf_raw(cf, len, cc);
     }
     
     if (conf && conf_len) {
       /* Copy the conf string because we are going to modify it in place. */
-      cc = ZX_ALLOC(cf->ctx, clen+1);
-      memcpy(cc, conf, clen);
-      cc[clen] = 0;
-      zxid_parse_conf_raw(cf, clen, cc);
+      cc = ZX_ALLOC(cf->ctx, conf_len+1);
+      memcpy(cc, conf, conf_len);
+      cc[conf_len] = 0;
+      zxid_parse_conf_raw(cf, conf_len, cc);
     }
 
     buf = getenv("ZXID_CONF");
     if (buf) {
       /* Copy the conf string because we are going to modify it in place. */
-      clen = strlen(buf);
-      cc = ZX_ALLOC(cf->ctx, clen+1);
-      memcpy(cc, buf, clen);
-      cc[clen] = 0;
-      zxid_parse_conf_raw(cf, clen, cc);
+      len = strlen(buf);
+      cc = ZX_ALLOC(cf->ctx, len+1);
+      memcpy(cc, buf, len);
+      cc[len] = 0;
+      zxid_parse_conf_raw(cf, len, cc);
     }
-    
   }
 #endif
   return 0;
