@@ -1181,7 +1181,7 @@ static char* zxid_show_protected_content_setcookie(zxid_conf* cf, zxid_cgi* cgi,
       url = zxid_get_epr_address(cf, epr);
       if (!url)
 	ERR("EPR does not have Address. %p", epr);
-      ses->setptmcookie = zx_alloc_sprintf(cf->ctx, 0, "%s=%.*s?DEFAULTQS=l0%.*s; path=/%s",
+      ses->setptmcookie = zx_alloc_sprintf(cf->ctx, 0, "%s=%.*s?l0%.*s=1; path=/%s",
 					   cf->ptm_cookie_name,
 					   url?url->len:0, url?url->s:"",
 					   issuer?issuer->len:0, issuer?issuer->s:"",
