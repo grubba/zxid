@@ -20,6 +20,7 @@
  * 9.  Making a web service call by directly calling zxid_call()
  *
  * See also: zxid-java.pd, zxidwspdemo.java for server side
+ * https://sp.personaldata.eu:8443/e2eTA/app-demo
  */
 
 import zxidjava.*;   // Pull in the zxidjni.az() API

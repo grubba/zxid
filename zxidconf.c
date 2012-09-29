@@ -1183,7 +1183,7 @@ static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exis
   int len;
   char *buf;
 
-  /* NB: The buffer read here leaks on purpose as conf parsing takes references inside it. */
+  /* N.B: The buffer read here leaks on purpose as conf parsing takes references inside it. */
   buf = read_all_alloc(cf->ctx, "-parse_conf_raw", 1, &len, "%szxid.conf", v);
   if (buf) {
     cf->path = v;

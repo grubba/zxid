@@ -44,6 +44,7 @@ public class zxidsrvlet extends HttpServlet {
 	// CONFIG: would create and edit /var/zxid/zxid.conf and override the URL there.
 	if (cf == null) {
 	    String conf = getServletConfig().getInitParameter("ZXIDConf"); 
+	    System.err.print("SSO servlet conf("+conf+")\n");
 	    cf = zxidjni.new_conf_to_cf(conf);
 	}
 	if (req.getParameter("gr") != null || req.getParameter("gl") != null)
@@ -137,4 +138,4 @@ public class zxidsrvlet extends HttpServlet {
     }
 }
 
-/* EOF */
+/* EOF - zxidsrvlet.java */
