@@ -106,7 +106,7 @@ int zxid_parse_cgi(zxid_cgi* cgi, char* qs)
       goto unknown;
     case 't':
       if (!strcmp(n, "token_type")) { cgi->token_type = v; break; }
-      if (!strcmp(n, "templ"))   { D("Detect templ(%s) cgi=%p",v,cgi); cgi->templ = v; break; }
+      if (!strcmp(n, "templ"))   { DD("Detect templ(%s) cgi=%p",v,cgi); cgi->templ = v; break; }
       goto unknown;
     case 'u':
       if (!strcmp(n, "user_id")) { cgi->user_id = v; break; }

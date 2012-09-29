@@ -547,6 +547,7 @@ char* zxid_idp_list(char* conf, int auto_flags) {
 /* Called by:  zxid_idp_select_zxstr_cf, zxid_simple_show_idp_sel */
 struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int auto_flags)
 {
+  int please_free_tf = 0;
   struct zx_str* ss;
   char* tf;
   char* p;
@@ -557,17 +558,39 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
 
 #if 1
   if (cgi->templ && *cgi->templ) {
-    tf = cgi->templ;
+    /* Template supplied by cgi Query String. Two problems:
+     * 1. This could be an attack so we need to squash dangerous characters
+     * 2. It is not very portable to give absolute paths in QS as filesystem
+     *    layout and location should not be web developer's concern. Thus
+     *    we make requirement that alternate template is in the same subdirectory
+     *    as the original and we use the path prefix of the original. */
     D("HERE t(%s)", cgi->templ);
-    for (p = tf; *p; ++p)
+    for (p = cgi->templ; *p; ++p)
       if (*p == '/') {  /* Squash to avoid accessing files beyond webroot */
 	ERR("Illegal character 0x%x (%c) in templ CGI variable (possible attack or misconfiguration)", *p, *p);
 	*p = '_';
       }
+    tf = cgi->templ;
+    if (cf->idp_sel_templ_file && *cf->idp_sel_templ_file) {
+      /* scan for end of path component, if any. */
+      for (p = cf->idp_sel_templ_file + strlen(cf->idp_sel_templ_file)-1;
+	   p >= cf->idp_sel_templ_file && !ONE_OF_2(*p, '/', '\\');
+	   --p);
+      if (p > cf->idp_sel_templ_file) {
+	++p;
+	D("making tf from old(%.*s) (%s) templ(%s)", (int)(p-cf->idp_sel_templ_file), cf->idp_sel_templ_file, p, cgi->templ);
+	tf = ZX_ALLOC(cf->ctx, p-cf->idp_sel_templ_file+strlen(cgi->templ)+1);
+	memcpy(tf, cf->idp_sel_templ_file, p-cf->idp_sel_templ_file);
+	strcpy(tf + (p-cf->idp_sel_templ_file), cgi->templ);
+	please_free_tf = 1;
+      }
+    }
   } else
     tf = cf->idp_sel_templ_file;
   D("HERE tf(%s) t(%s)", STRNULLCHKNULL(tf), STRNULLCHKNULL(cf->idp_sel_templ));
   ss = zxid_template_page_cf(cf, cgi, tf, cf->idp_sel_templ, 4096, auto_flags);
+  if (please_free_tf)
+    ZX_FREE(cf->ctx, tf);
 #else
   char* eid=0;
   if (cf->idp_sel_our_eid && cf->idp_sel_our_eid[0])
