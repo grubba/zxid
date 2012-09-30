@@ -342,7 +342,8 @@ static int chkuid(request_rec* r)
     D("After hack uri(%s) args(%s)", STRNULLCHK(r->uri), STRNULLCHK(r->args));
   }
   
-  zxid_parse_cgi(&cgi, r->args);
+  p = zx_dup_cstr(cf->ctx, r->args);  /* leak: the cgi structure will take references to this */
+  zxid_parse_cgi(&cgi, p);
   
   /* Check if we are supposed to enter zxid due to URL suffix. To do this
    * correctly we need to ignore the query string part. We are looking
