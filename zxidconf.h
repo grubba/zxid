@@ -220,7 +220,7 @@
  * try to map the imposed URL to the one that works in ZXID.
  * Normally you should register at IdP to use the ZXID default
  * URLs (the easiest way to do this is to use metadata). This
- * only works in mod_auth_saml. */
+ * config option only works in mod_auth_saml. */
 #define ZXID_REDIRECT_HACK_IMPOSED_URL 0
 #define ZXID_REDIRECT_HACK_ZXID_URL 0
 

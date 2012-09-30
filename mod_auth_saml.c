@@ -307,6 +307,8 @@ static int chkuid(request_rec* r)
   }
   r->ap_auth_type = "saml";
   
+  /* Probe for Session ID in cookie. Also propagate the cookie to subrequests. */
+
   if (cf->ses_cookie_name && *cf->ses_cookie_name) {
     cookie_hdr = apr_table_get(r->headers_in, "Cookie");
     if (cookie_hdr) {
@@ -323,7 +325,7 @@ static int chkuid(request_rec* r)
     }
   }
 
-  /* Redirect hack */
+  /* Redirect hack: deal with externally imposed ACS url that does not follow zxid convention. */
   
   if (cf->redirect_hack_imposed_url && !strcmp(r->uri, cf->redirect_hack_imposed_url)) {
     D("Redirect hack: mapping(%s) imposed to zxid(%s)", r->uri, cf->redirect_hack_zxid_url);
@@ -340,8 +342,15 @@ static int chkuid(request_rec* r)
     D("After hack uri(%s) args(%s)", STRNULLCHK(r->uri), STRNULLCHK(r->args));
   }
   
+  zxid_parse_cgi(&cgi, r->args);
+  
   /* Check if we are supposed to enter zxid due to URL suffix. To do this
-   * correctly we need to ignore the query string part. */
+   * correctly we need to ignore the query string part. We are looking
+   * here at exact match, like /protected/saml, rather than any of
+   * the other documents under /protected/ (which are handled in the
+   * else clause). Both then and else -claue URLs are defined as requiring
+   * SSO by virtue of the web server configuration. */
+
   uri_len = strlen(r->uri);
   url_len = strlen(cf->url);
   for (p = cf->url + url_len - 1; p > cf->url; --p)
@@ -350,7 +359,6 @@ static int chkuid(request_rec* r)
   if (p == cf->url)
     p = cf->url + url_len;
   
-  zxid_parse_cgi(&cgi, r->args);
   if (url_len >= uri_len && !memcmp(p - uri_len, r->uri, uri_len)) {  /* Suffix match */
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->url(%s) qs(%s) rs(%s) op(%c)", r->uri, cf->url, r->args, cgi.rs, cgi.op);
     if (r->method_number == M_POST) {
@@ -396,7 +404,10 @@ static int chkuid(request_rec* r)
   } else {
     /* Some other page. Just check for session. */
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->url(%s) uri_len=%d url_len=%d", r->uri, STRNULLCHKNULL(r->args), cf->url, uri_len, url_len);
-    cgi.op = 'E';
+    if (r->args && r->args[0] == 'l') {
+      D("Detect login(%s)", r->args);
+    } else
+      cgi.op = 'E';   /* Trigger IdP selection screen */
     cgi.rs = r->uri;  /* Will be copied to ses->rs and from there in ab_pep to resource-id */
     if (cf->defaultqs && cf->defaultqs[0]) {
       if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
