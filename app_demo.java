@@ -30,6 +30,9 @@ import javax.servlet.http.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.util.Enumeration;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class app_demo extends HttpServlet {
     static final boolean verbose = false;
@@ -45,6 +48,21 @@ public class app_demo extends HttpServlet {
     static final Pattern boot_pat   = Pattern.compile("urn:liberty:disco:2006-08:DiscoveryEPR:[ ]([^\\n]*)");
 
     static zxidjava.zxid_conf cf;
+    static String ptm;
+
+    public static String ReadAll(String path) throws IOException {
+        FileReader in = new FileReader(path);
+        StringBuilder sb = new StringBuilder();
+        char[] buf = new char[4096];
+        int got = 0;
+        do {
+            sb.append(buf, 0, got);
+            got = in.read(buf);
+        } while (got >= 0);
+	in.close();
+        return sb.toString();
+    }
+
     static {
 	System.loadLibrary("zxidjni");
 	// CONFIG: You must have created /var/zxid directory hierarchy. See `make dir'
@@ -54,6 +72,7 @@ public class app_demo extends HttpServlet {
 	//String conf = getServletContext().getInitParameter("ZXIDConf"); 
 	//cf = zxidjni.new_conf_to_cf(conf);
 	//zxidjni.set_opt(cf, 1, 1);
+	ptm = ReadAll("ptm-include.html");
     }
     
     public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -87,6 +106,7 @@ public class app_demo extends HttpServlet {
 	//out.print("<a href=\"http://www.tas3.eu/\"><img src=\"tas3-logo.jpg\" height=64 border=0></a>");
 	//out.print("<a href=\"http://zxid.org/\"><img src=\"logo-zxid-128x128.png\" height=64 border=0></a>");
 	out.print("<a href=\"http://synergetics.be/\"><img src=\"synlogo_s.jpg\" height=67 border=0></a><br>");
+	out.print(ptm);
 	out.print("<iframe id=localnav class=nav src=\"/nav.html\"><a href=\"https://idp.i-dent.eu/nav.html\">Navigation iFrame</a></iframe><br>");
 	out.print("<iframe id=idpnav class=nav src=\"https://idp.i-dent.eu/nav.html\"><a href=\"https://idp.i-dent.eu/nav.html\">Navigation iFrame from IdP</a></iframe><br>");
 	out.print("</td></tr></table>");
