@@ -123,7 +123,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
       if ((zx_debug & ZX_DEBUG_MASK)>1)
 	D("ATTR(%s)=VAL(%s)", at->name, at->val);
       else
-	D("ATTR(%s)=VAL(%.*s)", at->name, (int)MIN(20,strlen(at->val)), at->val);
+	D("ATTR(%s)=VAL(%.*s)", at->name, (int)MIN(35,strlen(at->val)), at->val);
       /* *** handling of multivalued attributes (right now only last is preserved) */
       name = apr_psprintf(r->pool, "%s%s", cf->mod_saml_attr_prefix, at->name);
       apr_table_set(r->subprocess_env, name, at->val);
@@ -136,7 +136,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
     else if (!strcmp(at->name, "setptmcookie")) setptmcookie = at->val;
     else if (!strcmp(at->name, "cookie"))       cookie = at->val;
   }
-
+  D("HERE %p", rs);
   if (rs && rs[0] && rs[0] != '-') {
     if (strcmp(r->uri, rs)) {  /* Different, need external or internal redirect */
       D("redirect(%s) redir_to_content=%d", rs, cf->redir_to_content);
@@ -292,7 +292,7 @@ static int chkuid(request_rec* r)
   ZERO(&cgi, sizeof(zxid_cgi));
   ZERO(&ses, sizeof(zxid_ses));
 
-  D("===== START %s req=%p uri(%s) args(%s)", ZXID_REL, r, r?STRNULLCHKNULL(r->uri):"(r null)", r?STRNULLCHKNULL(r->args):"(r null)");
+  D("===== START %s req=%p uri(%s) args(%s) pid=%d", ZXID_REL, r, r?STRNULLCHKNULL(r->uri):"(r null)", r?STRNULLCHKNULL(r->args):"(r null)", getpid());
   D_INDENT("chkuid: ");
 
   if (r->main) {  /* subreq can't come from net: always auth. */
