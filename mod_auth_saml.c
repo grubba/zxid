@@ -120,7 +120,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 	apr_table_set(r->subprocess_env, name, av->map_val->s);
       }
     } else {
-      if (zx_debug>1)
+      if ((zx_debug & ZX_DEBUG_MASK)>1)
 	D("ATTR(%s)=VAL(%s)", at->name, at->val);
       else
 	D("ATTR(%s)=VAL(%.*s)", at->name, (int)MIN(20,strlen(at->val)), at->val);
@@ -150,14 +150,14 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
       }
     }
   }
-  if (setcookie && setcookie[0] != '-') {
+  if (setcookie && setcookie[0] && setcookie[0] != '-') {
     /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
     D("Set-Cookie(%s)", setcookie);
     apr_table_addn(r->headers_out, "Set-Cookie", setcookie);
     apr_table_addn(r->err_headers_out, "Set-Cookie", setcookie);  /* Only way to get redir to set header */
     apr_table_addn(r->headers_in,  "Set-Cookie", setcookie);  /* So subrequest can pick them up! */
   }
-  if (setptmcookie && setptmcookie[0] != '-') {
+  if (setptmcookie && setptmcookie[0] && setptmcookie[0] != '-') {
     /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
     D("PTM Set-Cookie(%s)", setptmcookie);
     apr_table_addn(r->headers_out, "Set-Cookie", setptmcookie);
@@ -279,7 +279,7 @@ static char* read_post(zxid_conf* cf, request_rec* r)
 /* Called by: */
 static int chkuid(request_rec* r)
 {
-  int ret, uri_len, url_len;
+  int ret, uri_len, url_len, args_len;
   char* p;
   char* res;
   const char* cookie_hdr=0;
@@ -345,7 +345,10 @@ static int chkuid(request_rec* r)
   }
   
   /* leak the dup str: the cgi structure will take references to this */
-  zxid_parse_cgi(&cgi, r->args?zx_dup_cstr(cf->ctx, r->args):"");
+  args_len = r->args?strlen(r->args):0;
+  p = apr_palloc(r->pool, args_len + 1);
+  strcpy(p, args_len?r->args:"");
+  zxid_parse_cgi(&cgi, p);
   
   /* Check if we are supposed to enter zxid due to URL suffix. To do this
    * correctly we need to ignore the query string part. We are looking
@@ -411,7 +414,12 @@ static int chkuid(request_rec* r)
       D("Detect login(%s)", r->args);
     } else
       cgi.op = 'E';   /* Trigger IdP selection screen */
-    cgi.rs = r->uri;  /* Will be copied to ses->rs and from there in ab_pep to resource-id */
+    p = apr_palloc(r->pool, uri_len+1+args_len+1);
+    strcpy(p, r->uri);
+    p[uri_len] = '?';
+    strcpy(p+uri_len+1, args_len?r->args:"");
+    D("uri(%s) args(%s) rs(%s)",r->uri,STRNULLCHKNULL(r->args), p);
+    cgi.rs = p;  /* Will be copied to ses->rs and from there in ab_pep to resource-id */
     if (cf->defaultqs && cf->defaultqs[0]) {
       if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
       zxid_parse_cgi(&cgi, cf->defaultqs);
