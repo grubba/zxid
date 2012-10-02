@@ -120,8 +120,10 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 	apr_table_set(r->subprocess_env, name, av->map_val->s);
       }
     } else {
-
-      D("ATTR(%s)=VAL(%s)", at->name, at->val);
+      if (zx_debug>1)
+	D("ATTR(%s)=VAL(%s)", at->name, at->val);
+      else
+	D("ATTR(%s)=VAL(%.*s)", at->name, (int)MIN(20,strlen(at->val)), at->val);
       /* *** handling of multivalued attributes (right now only last is preserved) */
       name = apr_psprintf(r->pool, "%s%s", cf->mod_saml_attr_prefix, at->name);
       apr_table_set(r->subprocess_env, name, at->val);
