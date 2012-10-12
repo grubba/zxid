@@ -33,6 +33,7 @@
 
 #define _LARGEFILE64_SOURCE   /* So off64_t is found, see: man 3 lseek64 */
 
+#include <zx/platform.h>
 #include <zx/errmac.h>
 #include <zx/zxid.h>
 #include <zx/zxidpriv.h>
@@ -100,12 +101,14 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
   /* Length computation pass */
 
   for (at = pool; at; at = at->n) {
+  D("HERE %p", rs);
     map = zxid_find_map(cf->outmap, at->name);
     if (map) {
       if (map->rule == ZXID_MAP_RULE_DEL) {
 	D("attribute(%s) filtered out by del rule in OUTMAP", at->name);
 	continue;
       }
+  D("HERE %p", rs);
       at->map_val = zxid_map_val(cf, 0, 0, map, at->name, at->val);
       if (map->dst && *map->dst && map->src && map->src[0] != '*') {
 	name = map->dst;
@@ -126,10 +129,14 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 	D("ATTR(%s)=VAL(%.*s)", at->name, (int)MIN(35,strlen(at->val)), at->val);
       /* *** handling of multivalued attributes (right now only last is preserved) */
       name = apr_psprintf(r->pool, "%s%s", cf->mod_saml_attr_prefix, at->name);
+  D("HERE %p", rs);
       apr_table_set(r->subprocess_env, name, at->val);
+  D("HERE %p", rs);
       for (av = at->nv; av; av = av->n)
 	apr_table_set(r->subprocess_env, name, av->val);
+  D("HERE %p", rs);
     }
+  D("HERE %p", rs);
     if (     !strcmp(at->name, "rs"))           rs = at->val;      /* Capture special */
     else if (!strcmp(at->name, "idpnid"))       idpnid = at->val;
     else if (!strcmp(at->name, "setcookie"))    setcookie = at->val;

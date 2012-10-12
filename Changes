@@ -102,7 +102,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
       opportunity to interact
     - Delegation to job coaches
     - Distressed authentication, persona selection at authentication by using prefix (pin)
-    - Suppoer BrowserID https://developer.mozilla.org/en-US/docs/persona
+    - Support BrowserID https://developer.mozilla.org/en-US/docs/persona
+    - BUG: Passing qs args in RelayState
 
 zxid-1.11:: 30.9.2012
     - Added audit bus infrastructure (not yet universally propagated)
