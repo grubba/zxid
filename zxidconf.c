@@ -748,6 +748,8 @@ struct zxid_map* zxid_find_map(struct zxid_map* map, const char* name)
   if (!name || !*name)
     return 0;
   for (; map; map = map->n) {
+    D("HERE %p", map);
+    D("HERE %p", map->src);
     D("HERE src(%s)", STRNULLCHKNULL(map->src));
     if (map->src[0] == '*' && !map->src[1] /* Wild card (only sensible for del and data xform) */
 	|| !strcmp(map->src, name)) /* Match! */
