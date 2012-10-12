@@ -929,7 +929,8 @@ char* zx_zlib_raw_deflate(struct zx_ctx* c, int in_len, const char* in, int* out
   return out;
 }
 
-/*() Helper to compress and ascii armour the original request. */
+/*() Helper to compress and ascii armour the original request.
+ * return:: string that has been allocated from zx_ctx. Caller frees. */
 
 /* Called by:  zxid_deflate_safe_b64, zxid_mk_oauth_az_req */
 char* zxid_deflate_safe_b64_raw(struct zx_ctx* c, int len, const char* s)
@@ -938,6 +939,8 @@ char* zxid_deflate_safe_b64_raw(struct zx_ctx* c, int len, const char* s)
   char* zbuf;
   char* p;
   char* b64 = 0;
+  if (len == -2)
+    len = strlen(s);
   D("z input(%.*s) len=%d", len, s, len);
   zbuf = zx_zlib_raw_deflate(c, len, s, &zlen);
   if (!zbuf)
@@ -1027,6 +1030,34 @@ char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out
   *out_len = z.total_out;
   inflateEnd(&z);
   return out;
+}
+
+/*() Decode saf base64 and then decompress the content. The decompressed
+ * result may be binary, but will be nul terminated anyway. out_len
+ * will not reflect such termination. */
+
+char* zxid_unbase64_inflate(struct zx_ctx* c, int in_len, const char* in, int* out_len)
+{
+  int len;
+  char* buf;
+  char* p;
+  if (!in) {
+    D("NULL input %d", in_len);
+    return 0;
+  }
+  if (in_len == -2)
+    in_len = strlen(in);
+  if (!out_len)
+    out_len = &len;
+  D("in(%s) len=%d pessimistic_len=%d", in, in_len, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(in_len));
+  buf = ZX_ALLOC(c, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(in_len));
+  p = unbase64_raw(in, in + in_len, buf, zx_std_index_64);
+  p = zx_zlib_raw_inflate(c, p-buf, buf, out_len);
+  ZX_FREE(c, buf);
+  if (!p)
+    return 0;
+  p[*out_len] = 0;
+  return p;
 }
 
 #if 1

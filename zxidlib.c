@@ -880,11 +880,8 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
     base64_fancy_raw(val->s, val->len, ss->s, std_basis_64, 1<<31, 0, 0, '=');
     break;
   case ZXID_MAP_RULE_UNSB64_INF: /* Decode safebase64-inflate ([RFC3548], [RFC1951]) */
-    bin = ZX_ALLOC(cf->ctx, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(val->len));
-    p = unbase64_raw(val->s, val->s + val->len, bin, zx_std_index_64);
     ss = ZX_ZALLOC(cf->ctx, struct zx_str);
-    ss->s = zx_zlib_raw_inflate(cf->ctx, p-bin, bin, &ss->len);
-    ZX_FREE(cf->ctx, bin);
+    ss->s = zxid_unbase64_inflate(cf->ctx, val->len, val->s, &ss->len);
     if (!ss->s) {
       ss->len = 0;
       ss->s = "";

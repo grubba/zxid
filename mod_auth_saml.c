@@ -38,6 +38,7 @@
 #include <zx/zxid.h>
 #include <zx/zxidpriv.h>
 #include <zx/zxidconf.h>
+#include <zx/zxidutil.h>
 #include <zx/c/zxidvers.h>
 
 #include "ap_config.h"
@@ -140,6 +141,11 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
     else if (!strcmp(at->name, "cookie"))       cookie = at->val;
   }
   if (rs && rs[0] && rs[0] != '-') {
+    rs = zxid_unbase64_inflate(cf->ctx, -2, rs, 0);
+    if (!rs) {
+      ERR("Bad relaystate. Error in inflate. %d", 0);
+      return HTTP_BAD_REQUEST;
+    }
     qs = strchr(rs, '?');
     if (qs
 	?(memcmp(r->uri, rs, qs-rs)||strcmp(r->args?r->args:"",qs+1))
@@ -155,6 +161,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
       }
     }
   }
+  
   if (setcookie && setcookie[0] && setcookie[0] != '-') {
     /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
     D("Set-Cookie(%s)", setcookie);
@@ -338,6 +345,7 @@ static int chkuid(request_rec* r)
     r->uri = cf->redirect_hack_zxid_url;
     if (cf->redirect_hack_zxid_qs && *cf->redirect_hack_zxid_qs) {
       if (r->args && *r->args) {
+	/* concatenate redirect_hack_zxid_qs with existing qs */
 	len = strlen(cf->redirect_hack_zxid_qs);
 	args_len = strlen(r->args);
 	p = apr_palloc(r->pool, len+1+args_len+1);
@@ -430,7 +438,9 @@ static int chkuid(request_rec* r)
       strcpy(p+uri_len+1, r->args);
     }
     D("uri(%s) args(%s) rs(%s)", r->uri, STRNULLCHKNULL(r->args), p);
-    cgi.rs = p;  /* Will be copied to ses->rs and from there in ab_pep to resource-id */
+    /* cgi.rs will be copied to ses->rs and from there in ab_pep to resource-id.
+     * We compress and safe_base64 encode it to protect any URL special characters. */
+    cgi.rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, p);
     if (cf->defaultqs && cf->defaultqs[0]) {
       if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
       zxid_parse_cgi(&cgi, cf->defaultqs);

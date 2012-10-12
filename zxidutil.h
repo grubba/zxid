@@ -76,6 +76,7 @@ ZXID_DECL char* zx_zlib_raw_deflate(struct zx_ctx* c, int in_len, const char* in
 ZXID_DECL char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out_len);  /* gunzip */
 ZXID_DECL char* zxid_deflate_safe_b64_raw(struct zx_ctx* c, int len, const char* s);
 ZXID_DECL char* zxid_deflate_safe_b64(struct zx_ctx* c, struct zx_str* ss);
+ZXID_DECL char* zxid_unbase64_inflate(struct zx_ctx* c, int in_len, const char* in, int* out_len);
 ZXID_DECL int   zx_url_encode_len(int in_len, const char* in);
 ZXID_DECL char* zx_url_encode_raw(int in_len, const char* in, char* out);
 ZXID_DECL char* zx_url_encode(struct zx_ctx* c, int in_len, const char* in, int* out_len);

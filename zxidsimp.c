@@ -878,19 +878,12 @@ char* zxid_simple_show_err(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
 int zxid_decode_ssoreq(zxid_conf* cf, zxid_cgi* cgi)
 {
   int len;
-  char* buf;
   char* p;
   if (!cgi->ssoreq || !cgi->ssoreq[0])
     return 1;
-  len = strlen(cgi->ssoreq);
-  D("ssoreq(%s) len=%d pessimistic_len=%d", cgi->ssoreq, len, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(len));
-  buf = ZX_ALLOC(cf->ctx, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(len));
-  p = unbase64_raw(cgi->ssoreq, cgi->ssoreq + len, buf, zx_std_index_64);
-  p = zx_zlib_raw_inflate(0, p-buf, buf, &len);
-  ZX_FREE(cf->ctx, buf);
+  p = zxid_unbase64_inflate(cf->ctx, -2, cgi->ssoreq, &len);
   if (!p)
     return 0;
-  p[len] = 0;
   cgi->op = 0;
   D("ar/ssoreq decoded(%s) len=%d", p, len);
   zxid_parse_cgi(cgi, p);  /* cgi->op will be Q due to SAMLRequest inside ssoreq */
