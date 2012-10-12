@@ -88,6 +88,7 @@ static void chldinit(apr_pool_t* p, server_rec* s)
 static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 {
   int ret = OK;
+  char* qs;
   char* name;
   char* rs = 0;
   char* setcookie = 0;
@@ -139,7 +140,10 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
     else if (!strcmp(at->name, "cookie"))       cookie = at->val;
   }
   if (rs && rs[0] && rs[0] != '-') {
-    if (strcmp(r->uri, rs)) {  /* Different, need external or internal redirect */
+    qs = strchr(rs, '?');
+    if (qs
+	?(memcmp(r->uri, rs, qs-rs)||strcmp(r->args?r->args:"",qs+1))
+	:strcmp(r->uri, rs)) {  /* Different, need external or internal redirect */
       D("redirect(%s) redir_to_content=%d", rs, cf->redir_to_content);
       //r->uri = apr_pstrdup(r->pool, val);
       if (cf->redir_to_content) {
@@ -280,13 +284,12 @@ static char* read_post(zxid_conf* cf, request_rec* r)
 /* Called by: */
 static int chkuid(request_rec* r)
 {
-  int ret, uri_len, url_len, args_len;
+  int ret, len, uri_len, url_len, args_len;
   char* p;
   char* res;
   const char* cookie_hdr=0;
   const char* set_cookie_hdr;
   const char* cur_auth;
-  struct zx_str* ss;
   zxid_conf* cf = dir_cf(r);
   zxid_cgi cgi;
   zxid_ses ses;
@@ -333,11 +336,15 @@ static int chkuid(request_rec* r)
   if (cf->redirect_hack_imposed_url && !strcmp(r->uri, cf->redirect_hack_imposed_url)) {
     D("Redirect hack: mapping(%s) imposed to zxid(%s)", r->uri, cf->redirect_hack_zxid_url);
     r->uri = cf->redirect_hack_zxid_url;
-    if (cf->redirect_hack_zxid_qs) {
-      if (r->args) {
-	ss = zx_strf(cf->ctx, "%s&%s", cf->redirect_hack_zxid_qs, r->args);
-	r->args = ss->s;
-	ZX_FREE(cf->ctx, ss);
+    if (cf->redirect_hack_zxid_qs && *cf->redirect_hack_zxid_qs) {
+      if (r->args && *r->args) {
+	len = strlen(cf->redirect_hack_zxid_qs);
+	args_len = strlen(r->args);
+	p = apr_palloc(r->pool, len+1+args_len+1);
+	strcpy(p, cf->redirect_hack_zxid_qs);
+	p[len] = '&';
+	strcpy(p+len+1, r->args);
+	r->args = p;
       } else {
 	r->args = cf->redirect_hack_zxid_qs;
       }
@@ -345,12 +352,13 @@ static int chkuid(request_rec* r)
     D("After hack uri(%s) args(%s)", STRNULLCHK(r->uri), STRNULLCHK(r->args));
   }
   
-  /* leak the dup str: the cgi structure will take references to this */
   args_len = r->args?strlen(r->args):0;
-  p = apr_palloc(r->pool, args_len + 1);
-  strcpy(p, args_len?r->args:"");
-  zxid_parse_cgi(&cgi, p);
-  
+  if (args_len) {
+    /* leak the dup str: the cgi structure will take references to this and change &s to nuls */
+    p = apr_palloc(r->pool, args_len + 1);
+    strcpy(p, args_len?r->args:"");
+    zxid_parse_cgi(&cgi, p);
+  }
   /* Check if we are supposed to enter zxid due to URL suffix. To do this
    * correctly we need to ignore the query string part. We are looking
    * here at exact match, like /protected/saml, rather than any of
@@ -367,7 +375,7 @@ static int chkuid(request_rec* r)
     p = cf->url + url_len;
   
   if (url_len >= uri_len && !memcmp(p - uri_len, r->uri, uri_len)) {  /* Suffix match */
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->url(%s) qs(%s) rs(%s) op(%c)", r->uri, cf->url, r->args, cgi.rs, cgi.op);
+    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->url(%s) qs(%s) rs(%s) op(%c)", r->uri, cf->url, STRNULLCHKNULL(r->args), STRNULLCHKNULL(cgi.rs), cgi.op);
     if (r->method_number == M_POST) {
       res = read_post(cf, r);   /* Will print some debug output */
       if (res) {
@@ -417,9 +425,11 @@ static int chkuid(request_rec* r)
       cgi.op = 'E';   /* Trigger IdP selection screen */
     p = apr_palloc(r->pool, uri_len+1+args_len+1);
     strcpy(p, r->uri);
-    p[uri_len] = '?';
-    strcpy(p+uri_len+1, args_len?r->args:"");
-    D("uri(%s) args(%s) rs(%s)",r->uri,STRNULLCHKNULL(r->args), p);
+    if (args_len) {
+      p[uri_len] = '?';
+      strcpy(p+uri_len+1, r->args);
+    }
+    D("uri(%s) args(%s) rs(%s)", r->uri, STRNULLCHKNULL(r->args), p);
     cgi.rs = p;  /* Will be copied to ses->rs and from there in ab_pep to resource-id */
     if (cf->defaultqs && cf->defaultqs[0]) {
       if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
