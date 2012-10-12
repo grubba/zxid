@@ -124,9 +124,9 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
       }
     } else {
       if ((zx_debug & ZX_DEBUG_MASK)>1)
-	D("ATTR(%s)=VAL(%s)", at->name, at->val);
+	D("ATTR(%s)=VAL(%s)", at->name, STRNULLCHKNULL(at->val));
       else
-	D("ATTR(%s)=VAL(%.*s)", at->name, (int)MIN(35,strlen(at->val)), at->val);
+	D("ATTR(%s)=VAL(%.*s)", at->name, at->val?(int)MIN(35,strlen(at->val)):0, at->val?at->val:"");
       /* *** handling of multivalued attributes (right now only last is preserved) */
       name = apr_psprintf(r->pool, "%s%s", cf->mod_saml_attr_prefix, at->name);
   D("HERE %p", rs);
