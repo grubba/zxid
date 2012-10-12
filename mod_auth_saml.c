@@ -101,7 +101,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
   /* Length computation pass */
 
   for (at = pool; at; at = at->n) {
-  D("HERE %p", rs);
+  D("HERE name(%s)", at->name);
     map = zxid_find_map(cf->outmap, at->name);
     if (map) {
       if (map->rule == ZXID_MAP_RULE_DEL) {
