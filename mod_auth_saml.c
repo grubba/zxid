@@ -101,14 +101,13 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
   /* Length computation pass */
 
   for (at = pool; at; at = at->n) {
-  D("HERE name(%s)", at->name);
+    DD("HERE name(%s)", at->name);
     map = zxid_find_map(cf->outmap, at->name);
     if (map) {
       if (map->rule == ZXID_MAP_RULE_DEL) {
 	D("attribute(%s) filtered out by del rule in OUTMAP", at->name);
 	continue;
       }
-  D("HERE %p", rs);
       at->map_val = zxid_map_val(cf, 0, 0, map, at->name, at->val);
       if (map->dst && *map->dst && map->src && map->src[0] != '*') {
 	name = map->dst;
@@ -126,24 +125,19 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
       if ((zx_debug & ZX_DEBUG_MASK)>1)
 	D("ATTR(%s)=VAL(%s)", at->name, STRNULLCHKNULL(at->val));
       else
-	D("ATTR(%s)=VAL(%.*s)", at->name, at->val?(int)MIN(35,strlen(at->val)):0, at->val?at->val:"");
+	D("ATTR(%s)=VAL(%.*s)", at->name, at->val?(int)MIN(35,strlen(at->val)):6, at->val?at->val:"(null)");
       /* *** handling of multivalued attributes (right now only last is preserved) */
       name = apr_psprintf(r->pool, "%s%s", cf->mod_saml_attr_prefix, at->name);
-  D("HERE %p", rs);
       apr_table_set(r->subprocess_env, name, at->val);
-  D("HERE %p", rs);
       for (av = at->nv; av; av = av->n)
 	apr_table_set(r->subprocess_env, name, av->val);
-  D("HERE %p", rs);
     }
-  D("HERE %p", rs);
     if (     !strcmp(at->name, "rs"))           rs = at->val;      /* Capture special */
     else if (!strcmp(at->name, "idpnid"))       idpnid = at->val;
     else if (!strcmp(at->name, "setcookie"))    setcookie = at->val;
     else if (!strcmp(at->name, "setptmcookie")) setptmcookie = at->val;
     else if (!strcmp(at->name, "cookie"))       cookie = at->val;
   }
-  D("HERE %p", rs);
   if (rs && rs[0] && rs[0] != '-') {
     if (strcmp(r->uri, rs)) {  /* Different, need external or internal redirect */
       D("redirect(%s) redir_to_content=%d", rs, cf->redir_to_content);
