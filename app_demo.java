@@ -72,6 +72,7 @@ public class app_demo extends HttpServlet {
 	//String conf = getServletContext().getInitParameter("ZXIDConf"); 
 	//cf = zxidjni.new_conf_to_cf(conf);
 	//zxidjni.set_opt(cf, 1, 1);
+	System.err.println("Working Directory(" + System.getProperty("user.dir") + ")");
 	ptm = ReadAll("ptm-include.html");
     }
     
