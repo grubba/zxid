@@ -73,7 +73,12 @@ public class app_demo extends HttpServlet {
 	//cf = zxidjni.new_conf_to_cf(conf);
 	//zxidjni.set_opt(cf, 1, 1);
 	System.err.print("Working Directory(" + System.getProperty("user.dir") + ")\n");
-	ptm = ReadAll("ptm-include.html");
+	try {
+	    ptm = ReadAll("ptm-include.html");
+	} catch(IOException e) {
+	    System.err.print("File not found(ptm-include.html)\n");
+	    System.err.print("Working Directory(" + System.getProperty("user.dir") + ")\n");
+	}
     }
     
     public void doGet(HttpServletRequest req, HttpServletResponse res)
