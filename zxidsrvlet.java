@@ -8,9 +8,10 @@
  * Distribution prohibited unless authorized in writing.
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id: zxidsrvlet.java,v 1.3 2009-11-20 20:27:13 sampo Exp $
- * 12.1.2007, created --Sampo
+ * 12.1.2007,  created --Sampo
  * 16.10.2009, refined from zxidhlo example to truly useful servlet that populates session --Sampo
- * 6.2.2012, added use of ZXIDConf <init-param> --Sampo
+ * 6.2.2012,   added use of ZXIDConf <init-param> --Sampo
+ * 17.10.2012, added passing ZXID cookies --Sampo
  *
  * See also: README-zxid section 10 "zxid_simple() API"
  * http://www.easywms.com/easywms/?q=en/read-parameters-web-xml-servlet-release-work-programmer
@@ -27,6 +28,31 @@ public class zxidsrvlet extends HttpServlet {
     static zxidjava.zxid_conf cf;
     static { System.loadLibrary("zxidjni"); }
     
+    // setptmcookie=SYNPTM%3Dhttps%3A%2F%2Fpds%2Epersonaldata%2Eeu%3A4444%2Fptm%2Fptm%2Ecgi%3Fl0https%3A%2F%2Fidp%2Ei%2Ddent%2Eeu%2Fsynidp%3D1%3B%20path%3D%2F%3B%20secure
+    // setcookie=SYNSES%3DS8M3juzHFe2NbZE%2DTJC10qw1W%3B%20path%3D%2F%3B%20secure
+    // SYNPTM=https://pds.personaldata.eu:4444/ptm/ptm.cgi?l0https://idp.i-dent.eu/synidp=1; path=/; secure
+    // SYNSES=S8M3juzHFe2NbZE-TJC10qw1W; path=/; secure
+
+    private void pass_cookie_from_str(String setcookie, HttpServletResponse res)
+    {
+	if (setcookie == null)
+	    return;
+	int eq = setcookie.indexOf('=');
+	int semi = setcookie.indexOf(';', eq+1);
+	Cookie cookie = new Cookie(setcookie.substring(0, eq),
+				   setcookie.substring(eq+1, semi));
+	eq = setcookie.indexOf("path=", semi);
+	if (eq == -1) {
+	    cookie.setPath("/");
+	    cookie.setSecure(setcookie.indexOf("secure", semi) != -1);
+	} else {
+	    semi = setcookie.indexOf(';', eq+5);
+	    cookie.setPath(setcookie.substring(eq+5, semi));
+	    cookie.setSecure(setcookie.indexOf("secure", semi) != -1);
+	}
+	res.addCookie(cookie);
+    }
+
     //public static void main(String argv[]) throws java.io.IOException  {  }
     public void do_zxid(HttpServletRequest req, HttpServletResponse res, String qs)
 	throws ServletException, IOException
@@ -51,7 +77,7 @@ public class zxidsrvlet extends HttpServlet {
 	    req.getSession(true).invalidate();  // Invalidate local ses in case of SLO
 	System.err.print("----- Calling zxid_simple\n");
 	String ret = zxidjni.simple_cf(cf, -1, qs, null, 0x3d54);  // QS response requested
-	System.err.print(ret);
+	System.err.print("----- ret(" + ret + ")\n");
 	switch (ret.charAt(0)) {
 	case 'L':  /* Redirect: ret == "LOCATION: urlCRLF2" */
 	    res.sendRedirect(ret.substring(10, ret.length() - 4));
@@ -79,7 +105,7 @@ public class zxidsrvlet extends HttpServlet {
 	    HttpSession ses = req.getSession(true);
 	    String[] avs = ret.split("&");
 	    for (int i = 0; i < avs.length; ++i) {
-		String av[] = avs[i].split("=");
+		String av[] = avs[i].split("=", 2);
 		ses.setAttribute(av[0], URLDecoder.decode(av.length > 1 ? av[1] : "", "UTF-8"));
 	    }
 
@@ -94,7 +120,10 @@ public class zxidsrvlet extends HttpServlet {
 		    }
 		}
 	    }
-
+	    
+	    pass_cookie_from_str(ses.getAttribute("setcookie").toString(), res);
+	    pass_cookie_from_str(ses.getAttribute("setptmcookie").toString(), res);
+	    
 	    System.err.print("Logged in. jses("+ses.getId()+") rs("+ses.getAttribute("rs")+")\n");
 	    String rs = URLDecoder.decode(ses.getAttribute("rs").toString(), "UTF-8");
 	    if (rs != null && rs.length() > 0 && rs.charAt(rs.length()-1) != '-')

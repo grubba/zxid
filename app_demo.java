@@ -72,7 +72,6 @@ public class app_demo extends HttpServlet {
 	//String conf = getServletContext().getInitParameter("ZXIDConf"); 
 	//cf = zxidjni.new_conf_to_cf(conf);
 	//zxidjni.set_opt(cf, 1, 1);
-	System.err.print("Working Directory(" + System.getProperty("user.dir") + ")\n");
 	try {
 	    ptm = ReadAll("ptm-include.html");
 	} catch(IOException e) {
@@ -91,7 +90,6 @@ public class app_demo extends HttpServlet {
 	else
 	    qs = "";
 	System.err.print("========= Start App-Demo GET("+fullURL+")...\n");
-	System.err.print("Working directory(" + System.getProperty("user.dir") + ")\n");
 	HttpSession ses = req.getSession(false);  // Important: do not allow automatic session.
 	if (ses == null) {                        // Instead, redirect to sso servlet.
 	    res.sendRedirect("sso?o=E&fr=" + fullURL);
