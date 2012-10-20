@@ -57,7 +57,7 @@ static struct zx_xac_Attribute_s* zxid_find_xac_attribute(struct zx_xac_Attribut
   if (!name) { name_len = 0; name = ""; }
   if (name_len == -1 && name) name_len = strlen(name);
   if (!xac_at_list) {
-    D("No xac attribute list when looking for attribute name(%.*s) n=%d", name_len, name, n);
+    DD("No xac attribute list when looking for attribute name(%.*s) n=%d", name_len, name, n);
     return 0;
   }
   for (at = xac_at_list;
@@ -380,7 +380,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
  */
 
 /* Called by:  zxid_call_epr, zxid_pep_az_soap, zxid_simple_ab_pep, zxid_simple_ses_active_cf, zxid_wsc_prepare_call, zxid_wsc_valid_re_env, zxid_wsp_decorate, zxid_wsp_validate_env */
-char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zxid_map* pepmap)
+char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zxid_map* pepmap, const char* lk)
 {
   struct zx_xac_Attribute_s* subj = 0;
   struct zx_xac_Attribute_s* rsrc = 0;
@@ -391,21 +391,21 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   struct zx_sa_Statement_s* stmt;
   struct zx_xasa_XACMLAuthzDecisionStatement_s* az_stmt;
   struct zx_xasacd1_XACMLAuthzDecisionStatement_s* az_stmt_cd1;
-  struct zx_elem_s* decision;
+  struct zx_elem_s* decision = 0;
   char* p;
 
   if (cf->log_level>0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, ses?ZX_GET_CONTENT(ses->nameid):0, "N", "W", "AZSOAP", ses?ses->sid:0, " ");
   
   if (!pdp_url || !*pdp_url) {
-    ERR("No PDP_URL or PDP_CALL_URL set. Deny. %p", pdp_url);
+    ERR("%s: No PDP_URL or PDP_CALL_URL set. Deny. %p", lk, pdp_url);
     return 0;
   }
 
   zxid_pepmap_extract(cf, cgi, ses, pepmap, &subj, &rsrc, &act, &env);
   resp = zxid_az_soap(cf, cgi, ses, pdp_url, subj, rsrc, act, env);
   if (!resp || !resp->Assertion) {
-    ERR("DENY due to malformed authorization response from PDP. Either no response or response lacking assertion. %p", resp);
+    ERR("%s: DENY due to malformed authorization response from PDP. Either no response or response lacking assertion. %p", lk, resp);
     return 0;
   }
   
@@ -414,11 +414,9 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
     decision = az_stmt->Response->Result->Decision;
     if (ZX_CONTENT_EQ_CONST(decision, "Permit")) {
       ss = zx_easy_enc_elem_opt(cf, &az_stmt->Response->gg);
-      if (!ss || !ss->len)
-	return 0;
+      if (!ss || !ss->len) goto nomem;
       p = ss->s;
-      DD("Permit azstmt(%s)", p);
-      INFO("PERMIT found in azstmt len=%d", ss->len);
+      INFO("%s: PERMIT found in azstmt len=%d", lk, ss->len);
       ZX_FREE(cf->ctx, ss);
       return p;
     }
@@ -428,12 +426,10 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
     decision = az_stmt_cd1->Response->Result->Decision;
     if (ZX_CONTENT_EQ_CONST(decision, "Permit")) {
       ss = zx_easy_enc_elem_opt(cf, &az_stmt_cd1->Response->gg);
-      if (!ss || !ss->len)
-	return 0;
+      if (!ss || !ss->len) goto nomem;
       p = ss->s;
       ZX_FREE(cf->ctx, ss);
-      DD("Permit cd1(%s)", p);
-      INFO("PERMIT found in azstmt_cd1 len=%d", ss->len);
+      INFO("%s: PERMIT found in azstmt_cd1 len=%d", lk, ss->len);
       ZX_FREE(cf->ctx, ss);
       return p;
     }
@@ -443,24 +439,27 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
     decision = stmt->Response->Result->Decision;
     if (ZX_CONTENT_EQ_CONST(decision, "Permit")) {
       ss = zx_easy_enc_elem_opt(cf, &stmt->Response->gg);
-      if (!ss || !ss->len)
-	return 0;
+      if (!ss || !ss->len) goto nomem;
       p = ss->s;
-      D("Permit stmt(%s)", p);
-      INFO("PERMIT found in stmt len=%d", ss->len);
+      INFO("%s: PERMIT found in stmt len=%d", lk, ss->len);
       ZX_FREE(cf->ctx, ss);
       return p;
-    } else if (ZX_CONTENT_EQ_CONST(decision, "Deny")) {
-      INFO("DENY found in stmt %d", 0);
-      return 0;
-    } else {
-      INFO("Other (treated as Deny) found in stmt %d", 0);
-      return 0;
     }
   }
   /*if (resp->Assertion->AuthzDecisionStatement) {  }*/
-  D("Deny or error or no xac:Response in reply %d",0);
-  INFO("DENY or error or no xac:Response from PDP %p %p %p", az_stmt, az_stmt_cd1, stmt);
+  if (decision) {
+    if (ZX_CONTENT_EQ_CONST(decision, "Deny")) {
+      INFO("%s: DENY found in stmt", lk);
+      return 0;
+    } else {
+      INFO("%s: DENY due to Other(%.*s) (treated as Deny) found in stmt", lk, ZX_GET_CONTENT_LEN(decision), ZX_GET_CONTENT_S(decision));
+      return 0;
+    }
+  }
+  ERR("%s: DENY due to error or no xac:Response from PDP %p %p %p", lk, az_stmt,az_stmt_cd1,stmt);
+  return 0;
+ nomem:
+  ERR("%s: DENY due memory allocation error. %p", lk, ss);
   return 0;
 }
 
@@ -560,7 +559,7 @@ char* zxid_pep_az_base_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, 
 
 /* Called by:  zxid_az_cf_ses */
 char* zxid_pep_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url) {
-  return zxid_pep_az_soap_pepmap(cf, cgi, ses, pdp_url, cf->pepmap);
+  return zxid_pep_az_soap_pepmap(cf, cgi, ses, pdp_url, cf->pepmap, "az_soap");
 }
 
 /* Called by:  zxid_az_base_cf_ses */

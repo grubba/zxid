@@ -478,7 +478,7 @@ static struct zx_str* zxid_pool_to_qs(zxid_conf* cf, struct zxid_attr* pool)
     }
   }
   D("p=%p == %p ss=%p len=%d", p, ss->s+len, ss->s, len);
-  D("p(%.*s)", len, ss->s);
+  DD("p(%.*s)", len, ss->s);
   ASSERTOPP(p, ==, ss->s+len);
   *p = 0;  /* Zap last & */
   return ss;

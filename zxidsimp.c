@@ -1280,7 +1280,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
     cgi->msg = "SP Initiated defederation (SOAP).";
     break;     /* Defederation does not have to mean SLO */
   case 'v':    /* N.B. This is just testing facility. The result is ignored. */
-    zxid_pep_az_soap_pepmap(cf, cgi, ses, cf->pdp_call_url?cf->pdp_call_url:cf->pdp_url, cf->pepmap);
+    zxid_pep_az_soap_pepmap(cf, cgi, ses, cf->pdp_call_url?cf->pdp_call_url:cf->pdp_url, cf->pepmap, "test (o=v)");
     cgi->msg = "PEP-to-PDP Authorization call (SOAP).";
     break;     /* Defederation does not have to mean SLO */
   case 'm':

@@ -228,7 +228,7 @@ struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cr
     /* Fall through, letting zxid_wsf_decor() pick up the fault and package it as response. */
   } else if (cf->pdp_url && *cf->pdp_url) {
     //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
-    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rsout)) {
+    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rsout, "RSOUT3")) {
       ERR("RSOUT3 Deny %d", 0);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_OUT, "e:Server", "Response denied by WSP policy at PDP", TAS3_STATUS_DENY, 0, 0, 0));
       /* Fall through, letting zxid_wsf_decor() pick up the fault and package it as response. */
@@ -580,7 +580,7 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
     /* Fall through, letting zxid_wsf_decor() pick up the fault and package it as response. */
   } else if (cf->pdp_url && *cf->pdp_url) {
     //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
-    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqin)) {
+    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqin, "RQIN2")) {
       ERR("RQIN2 Deny %d", 0);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Server", "Request denied by WSP policy", TAS3_STATUS_DENY, 0, 0, 0));
       D_DEDENT("valid: ");
