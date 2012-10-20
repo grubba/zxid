@@ -34927,32 +34927,38 @@ fail:
 
 
 ZEND_NAMED_FUNCTION(_wrap_zxid_parse_cgi) {
-  zxid_cgi *arg1 = (zxid_cgi *) 0 ;
-  char *arg2 = (char *) 0 ;
-  zval **args[2];
+  zxid_conf *arg1 = (zxid_conf *) 0 ;
+  zxid_cgi *arg2 = (zxid_cgi *) 0 ;
+  char *arg3 = (char *) 0 ;
+  zval **args[3];
   int result;
   
   SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
   {
-    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_cgi, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_parse_cgi. Expected SWIGTYPE_p_zxid_cgi");
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_parse_cgi. Expected SWIGTYPE_p_zxid_conf");
+    }
+  }
+  {
+    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zxid_cgi, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_parse_cgi. Expected SWIGTYPE_p_zxid_cgi");
     }
   }
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
-  if ((*args[1])->type==IS_NULL) {
-    arg2 = (char *) 0;
+  if ((*args[2])->type==IS_NULL) {
+    arg3 = (char *) 0;
   } else {
-    convert_to_string_ex(args[1]);
-    arg2 = (char *) Z_STRVAL_PP(args[1]);
+    convert_to_string_ex(args[2]);
+    arg3 = (char *) Z_STRVAL_PP(args[2]);
   }
   /*@SWIG@*/;
   
-  result = (int)zxid_parse_cgi(arg1,arg2);
+  result = (int)zxid_parse_cgi(arg1,arg2,arg3);
   {
     ZVAL_LONG(return_value,result);
   }

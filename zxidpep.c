@@ -595,7 +595,7 @@ char* zxid_az_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses)
   char* url = (cf->pdp_call_url&&*cf->pdp_call_url) ? cf->pdp_call_url : cf->pdp_url;
   D_INDENT("az: ");
   ZERO(&cgi, sizeof(cgi));
-  /*zxid_parse_cgi(&cgi, "");  DD("qs(%s) ses=%p", STRNULLCHKD(qs), ses);*/
+  /*zxid_parse_cgi(cf, &cgi, "");  DD("qs(%s) ses=%p", STRNULLCHKD(qs), ses);*/
   if (qs && ses)
     zxid_add_qs2ses(cf, ses, zx_dup_cstr(cf->ctx, qs), 1);
   ret = zxid_pep_az_soap(cf, &cgi, ses, url);
@@ -611,7 +611,7 @@ char* zxid_az_base_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses)
   char* url = (cf->pdp_call_url&&*cf->pdp_call_url) ? cf->pdp_call_url : cf->pdp_url;
   D_INDENT("azb: ");
   ZERO(&cgi, sizeof(cgi));
-  /*zxid_parse_cgi(&cgi, "");  DD("qs(%s) ses=%p", STRNULLCHKD(qs), ses);*/
+  /*zxid_parse_cgi(cf, &cgi, "");  DD("qs(%s) ses=%p", STRNULLCHKD(qs), ses);*/
   if (qs && ses)
     zxid_add_qs2ses(cf, ses, zx_dup_cstr(cf->ctx, qs), 1);
   ret = zxid_pep_az_base_soap(cf, &cgi, ses, url);

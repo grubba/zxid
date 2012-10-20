@@ -38851,38 +38851,48 @@ XS(_wrap_zxid_show_conf) {
 
 XS(_wrap_zxid_parse_cgi) {
   {
-    zxid_cgi *arg1 = (zxid_cgi *) 0 ;
-    char *arg2 = (char *) 0 ;
+    zxid_conf *arg1 = (zxid_conf *) 0 ;
+    zxid_cgi *arg2 = (zxid_cgi *) 0 ;
+    char *arg3 = (char *) 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
-    int res2 ;
-    char *buf2 = 0 ;
-    int alloc2 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int res3 ;
+    char *buf3 = 0 ;
+    int alloc3 = 0 ;
     int argvi = 0;
     int result;
     dXSARGS;
     
-    if ((items < 2) || (items > 2)) {
-      SWIG_croak("Usage: zxid_parse_cgi(cgi,qs);");
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: zxid_parse_cgi(cf,cgi,qs);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_cgi, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_parse_cgi" "', argument " "1"" of type '" "zxid_cgi *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_parse_cgi" "', argument " "1"" of type '" "zxid_conf *""'"); 
     }
-    arg1 = (zxid_cgi *)(argp1);
-    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    arg1 = (zxid_conf *)(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_zxid_cgi, 0 |  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_parse_cgi" "', argument " "2"" of type '" "char *""'");
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_parse_cgi" "', argument " "2"" of type '" "zxid_cgi *""'"); 
     }
-    arg2 = (char *)(buf2);
-    result = (int)zxid_parse_cgi(arg1,arg2);
+    arg2 = (zxid_cgi *)(argp2);
+    res3 = SWIG_AsCharPtrAndSize(ST(2), &buf3, NULL, &alloc3);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "zxid_parse_cgi" "', argument " "3"" of type '" "char *""'");
+    }
+    arg3 = (char *)(buf3);
+    result = (int)zxid_parse_cgi(arg1,arg2,arg3);
     ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1((int)(result)); argvi++ ;
     
-    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    
+    if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
     XSRETURN(argvi);
   fail:
     
-    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    
+    if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
     SWIG_croak_null();
   }
 }

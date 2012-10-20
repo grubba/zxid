@@ -1125,7 +1125,7 @@ class zxidjniJNI {
   public final static native int zxid_mk_self_sig_cert(long jarg1, int jarg2, String jarg3, String jarg4, String jarg5);
   public final static native int zxid_mk_at_cert(long jarg1, int jarg2, String jarg3, String jarg4, long jarg5, String jarg6, String jarg7);
   public final static native String zxid_show_conf(long jarg1);
-  public final static native int zxid_parse_cgi(long jarg1, String jarg2);
+  public final static native int zxid_parse_cgi(long jarg1, long jarg2, String jarg3);
   public final static native long zxid_new_cgi(long jarg1, String jarg2);
   public final static native void zxid_get_sid_from_cookie(long jarg1, long jarg2, String jarg3);
   public final static native long zxid_alloc_ses(long jarg1);

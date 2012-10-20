@@ -9,11 +9,12 @@
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id: zxidcgi.c,v 1.33 2010-01-08 02:10:09 sampo Exp $
  *
- * 12.8.2006, created --Sampo
- * 16.1.2007, split from zxidlib.c --Sampo
+ * 12.8.2006,  created --Sampo
+ * 16.1.2007,  split from zxidlib.c --Sampo
  * 12.10.2007, added cookie scanning --Sampo
- * 7.10.2008, added documentation --Sampo
+ * 7.10.2008,  added documentation --Sampo
  * 10.12.2011, added OAuth2, OpenID Connect, and UMA support --Sampo
+ * 20.10.2012, made the fr to rs copy cause deflate safe base64 encode --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
@@ -24,12 +25,14 @@
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidconf.h"
+#include "zxidutil.h"
 
 /* ============== CGI Parsing ============== */
 
 /*(i) Parse query string or form POST and detect parameters relevant for ZXID.
  * N.B. This CGI parsing is very specific for needs of ZXID. It is not generic.
  *
+ * cf:: ZXID configuration object, for occasional memory allocation.
  * cgi:: Already allocated CGI structure where results of this function
  *     are deposited. Note that this structure is not cleared. Thus it is
  *     possible to call zxid_parse_cgi() multiple times to accumulate
@@ -46,7 +49,7 @@
  *     layer will pick them up - hence no need to flag error. */
 
 /* Called by:  chkuid x3, main x4, zxid_decode_ssoreq, zxid_new_cgi, zxid_simple_cf_ses x3 */
-int zxid_parse_cgi(zxid_cgi* cgi, char* qs)
+int zxid_parse_cgi(zxid_conf* cf, zxid_cgi* cgi, char* qs)
 {
   char *p, *n, *v, *val, *name;
   DD("qs(%s) len=%d", STRNULLCHK(qs), qs?strlen(qs):-1);
@@ -185,7 +188,7 @@ set_eid:
       case 'n': cgi->nid_fmt = v;         D("nid_fmt=%s", cgi->nid_fmt); break;
       case 'p': cgi->ispassive = v[0];    D("ispassive=%c", cgi->ispassive); break;
       case 'q': cgi->affil = v;           break;
-      case 'r': cgi->rs = v;              break;
+      case 'r': cgi->rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, v); break;
       case 'y': cgi->consent = v;         break;
       }
       break;
@@ -273,7 +276,7 @@ zxid_cgi* zxid_new_cgi(zxid_conf* cf, char* qs)
     qqs = ZX_ALLOC(cf->ctx, len+1);
     memcpy(qqs, qs, len);
     qqs[len] = 0;
-    zxid_parse_cgi(cgi, qqs);
+    zxid_parse_cgi(cf, cgi, qqs);
   }
   return cgi;
 }

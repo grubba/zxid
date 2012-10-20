@@ -4126,8 +4126,8 @@ public class zxidjni implements zxidjniConstants {
 
   public static String show_conf(zxid_conf cf) { return zxidjniJNI.zxid_show_conf(zxid_conf.getCPtr(cf)); }
 
-  public static int parse_cgi(zxid_cgi cgi, String qs) {
-    return zxidjniJNI.zxid_parse_cgi(zxid_cgi.getCPtr(cgi), qs);
+  public static int parse_cgi(zxid_conf cf, zxid_cgi cgi, String qs) {
+    return zxidjniJNI.zxid_parse_cgi(zxid_conf.getCPtr(cf), zxid_cgi.getCPtr(cgi), qs);
   }
 
   public static zxid_cgi new_cgi(zxid_conf cf, String qs) {

@@ -125,7 +125,13 @@ public class zxidsrvlet extends HttpServlet {
 	    pass_cookie_from_str(ses.getAttribute("setptmcookie").toString(), res);
 	    
 	    System.err.print("Logged in. jses("+ses.getId()+") rs("+ses.getAttribute("rs")+")\n");
-	    String rs = URLDecoder.decode(ses.getAttribute("rs").toString(), "UTF-8");
+	    //String rs = URLDecoder.decode(ses.getAttribute("rs").toString(), "UTF-8");
+	    /* N.B. RelayState was set by app servlet by setting fr query string
+	     * parameter when it redirected to SSO servlet. The fr qs param was
+	     * then deflated and safe base64 encoded and sent to IdP as RelayState.
+	     * It then came back from IdP and was decoded as one of the SSO attributes.
+	     * The decoding is controlled by <<tt: rsrc$rs$unsb64-inf$$ >>  rule in OUTMAP. */
+	    String rs = ses.getAttribute("rs").toString();
 	    if (rs != null && rs.length() > 0 && rs.charAt(rs.length()-1) != '-')
 		res.sendRedirect(rs);
 

@@ -886,7 +886,7 @@ int zxid_decode_ssoreq(zxid_conf* cf, zxid_cgi* cgi)
     return 0;
   cgi->op = 0;
   D("ar/ssoreq decoded(%s) len=%d", p, len);
-  zxid_parse_cgi(cgi, p);  /* cgi->op will be Q due to SAMLRequest inside ssoreq */
+  zxid_parse_cgi(cf, cgi, p);  /* cgi->op will be Q due to SAMLRequest inside ssoreq */
   cgi->op = 'F';
   return 1;
 }
@@ -1573,7 +1573,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
     qs = getenv("QUERY_STRING");
     if (qs) {
       D("QUERY_STRING(%s) %s", STRNULLCHK(qs), ZXID_REL);
-      zxid_parse_cgi(&cgi, qs);
+      zxid_parse_cgi(cf, &cgi, qs);
       if (ONE_OF_3(cgi.op, 'P', 'R', 'S')) {
 	cont_len = getenv("CONTENT_LENGTH");
 	if (cont_len) {
@@ -1617,7 +1617,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
 		*res_len = strlen(res);
 	      goto done;
 	    }
-	    zxid_parse_cgi(&cgi, buf);
+	    zxid_parse_cgi(cf, &cgi, buf);
 	  }
 	} else {
 	  D("o=%c post, but no CONTENT_LENGTH rel=%s", cgi.op, ZXID_REL);
@@ -1634,7 +1634,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
       exit(1);
     }
     D("QUERY_STRING(%s) %s", STRNULLCHK(qs), ZXID_REL);
-    zxid_parse_cgi(&cgi, qs);
+    zxid_parse_cgi(cf, &cgi, qs);
   }
   if (!cgi.op && !cf->bare_url_entityid)
     cgi.op = 'M';  /* By default, if no ses, check CDC and offer SSO */

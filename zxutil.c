@@ -1032,7 +1032,7 @@ char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out
   return out;
 }
 
-/*() Decode saf base64 and then decompress the content. The decompressed
+/*() Decode safe base64 and then decompress the content. The decompressed
  * result may be binary, but will be nul terminated anyway. out_len
  * will not reflect such termination. */
 

@@ -788,7 +788,7 @@
 #define ZXID_WANT "*,authnctxlevel,sesid,setcookie,cookie,rs,cn$undisclosed,log$400000$$"
 #define ZXID_ATTRSRC ""
 #define ZXID_INMAP ""
-#define ZXID_OUTMAP ""
+#define ZXID_OUTMAP "rsrc$rs$unsb64-inf$$"
 //#define ZXID_SUPPRESS ""
 
 /* ----------------------------------------------------------------------------- */

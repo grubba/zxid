@@ -813,7 +813,7 @@ ZXID_DECL struct zx_str* zxid_show_conf(zxid_conf* cf);
 
 /* zxidcgi */
 
-ZXID_DECL int zxid_parse_cgi(zxid_cgi* cgi, char* qs);
+ZXID_DECL int zxid_parse_cgi(zxid_conf* cf, zxid_cgi* cgi, char* qs);
 ZXID_DECL zxid_cgi* zxid_new_cgi(zxid_conf* cf, char* qs);
 ZXID_DECL void zxid_get_sid_from_cookie(zxid_conf* cf, zxid_cgi* cgi, const char* cookie);
 

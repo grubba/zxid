@@ -141,11 +141,17 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
     else if (!strcmp(at->name, "cookie"))       cookie = at->val;
   }
   if (rs && rs[0] && rs[0] != '-') {
+    /* N.B. RelayState was set by chkuid() "some other page" section by setting cgi.rs
+     * to deflated and safe base64 encoded value which was then sent to IdP as RelayState.
+     * It then came back from IdP and was decoded as one of the SSO attributes.
+     * The decoding is controlled by <<tt: rsrc$rs$unsb64-inf$$ >>  rule in OUTMAP. */
+#if 0
     rs = zxid_unbase64_inflate(cf->ctx, -2, rs, 0);
     if (!rs) {
       ERR("Bad relaystate. Error in inflate. %d", 0);
       return HTTP_BAD_REQUEST;
     }
+#endif
     qs = strchr(rs, '?');
     if (qs
 	?(memcmp(r->uri, rs, qs-rs)||strcmp(r->args?r->args:"",qs+1))
@@ -365,7 +371,7 @@ static int chkuid(request_rec* r)
     /* leak the dup str: the cgi structure will take references to this and change &s to nuls */
     p = apr_palloc(r->pool, args_len + 1);
     strcpy(p, args_len?r->args:"");
-    zxid_parse_cgi(&cgi, p);
+    zxid_parse_cgi(cf, &cgi, p);
   }
   /* Check if we are supposed to enter zxid due to URL suffix. To do this
    * correctly we need to ignore the query string part. We are looking
@@ -409,7 +415,7 @@ static int chkuid(request_rec* r)
 	  goto done;
 #endif
 	} else {
-	  zxid_parse_cgi(&cgi, res);
+	  zxid_parse_cgi(cf, &cgi, res);
 	  D("POST CGI parsed. rs(%s)", STRNULLCHKQ(cgi.rs));
 	}
       }
@@ -443,7 +449,7 @@ static int chkuid(request_rec* r)
     cgi.rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, p);
     if (cf->defaultqs && cf->defaultqs[0]) {
       if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
-      zxid_parse_cgi(&cgi, cf->defaultqs);
+      zxid_parse_cgi(cf, &cgi, cf->defaultqs);
     }
     if (cgi.sid && cgi.sid[0] && zxid_get_ses(cf, &ses, cgi.sid)) {
       res = zxid_simple_ses_active_cf(cf, &cgi, &ses, 0, AUTO_FLAGS);

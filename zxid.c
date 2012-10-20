@@ -463,7 +463,7 @@ int main(int argc, char** argv, char** env)
   qs = getenv("QUERY_STRING");
   if (qs) {
     D("QS(%s)", qs);
-    zxid_parse_cgi(&cgi, qs);
+    zxid_parse_cgi(cf, &cgi, qs);
     if (cgi.op == 'P') {
       cont_len = getenv("CONTENT_LENGTH");
       if (cont_len) {
@@ -482,7 +482,7 @@ int main(int argc, char** argv, char** env)
 	  if (buf[3] == '<') {  /* UTF-8 BOM and looks XML */
 	    return zxid_sp_soap_parse(cf, &cgi, &ses, got-3, buf+3);
 	  }
-	  zxid_parse_cgi(&cgi, buf);
+	  zxid_parse_cgi(cf, &cgi, buf);
 	}
       }
     }
