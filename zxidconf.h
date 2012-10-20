@@ -914,6 +914,7 @@
   "<p>!!IDP_LIST<h3>Technical options</h3>"\
   "<input type=hidden name=fc value=1><input type=hidden name=fn value=prstnt>"\
   "<!-- ZXID built-in defaults, see IDP_SEL_TEMPL in zxidconf.h and zxid-conf.pd for explanation -->"\
+  "<input type=hidden name=fr value=\"!!FR\">"\
   "<input type=hidden name=fq value=\"\">"\
   "<input type=hidden name=fy value=\"\">"\
   "<input type=hidden name=fa value=\"\">"\

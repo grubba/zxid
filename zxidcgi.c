@@ -100,6 +100,7 @@ int zxid_parse_cgi(zxid_conf* cf, zxid_cgi* cgi, char* qs)
     case 'r':
       if (!strcmp(n, "response_type")) { cgi->response_type = v; break; }
       if (!strcmp(n, "redirect_uri"))  { cgi->redirect_uri = v;	 break; }
+      if (!strcmp(n, "rs"))            { cgi->rs = v; break; }
       goto unknown;
     case 's':
       if (!n[1]) { cgi->sid = v; break; }

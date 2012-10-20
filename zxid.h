@@ -375,7 +375,7 @@ struct zxid_cgi {
   char* pxy_count;     /* ProxyCount for triggering IdP proxying */
   char* get_complete;  /* GetComplete URL for IdP proxying */
   char* idppxylist;    /* IDPList for IdP proxying */
-  char* rs;            /* RelayState in redirect profile. mod_auth_saml: uri to access after SSO */
+  char* rs;            /* RelayState in redirect profile. mod_auth_saml, SSO servlet: def-sb64 armored uri to access after SSO */
   char* newnym;        /* New NameID for MNI/nireg. Empty for federation termination. */
   char* saml_art;      /* SAMLart=... artifact, as in artifact consumer URL. */
   char* saml_resp;     /* SAMLResponse=... in redirect profile */

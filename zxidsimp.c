@@ -294,6 +294,9 @@ static const char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* k
     if (BBMATCH("EID", key, lim)) return zxid_my_ent_id_cstr(cf);
     if (BBMATCH("ERR", key, lim)) return cgi->err;
     break;
+  case 'F':
+    if (BBMATCH("FR", key, lim)) return zxid_unbase64_inflate(cf->ctx, -2, cgi->rs, 0);
+    break;
   case 'I':
     if (BBMATCH("IDP_LIST", key, lim)) return zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
     if (BBMATCH("IDP_POPUP", key, lim)) {
