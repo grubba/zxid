@@ -881,8 +881,7 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
     break;
   case ZXID_MAP_RULE_UNSB64_INF: /* Decode safebase64-inflate ([RFC3548], [RFC1951]) */
     ss = ZX_ZALLOC(cf->ctx, struct zx_str);
-    ss->s = zxid_unbase64_inflate(cf->ctx, val->len, val->s, &ss->len);
-    if (!ss->s) {
+    if (!val->len || !(ss->s = zxid_unbase64_inflate(cf->ctx, val->len, val->s, &ss->len))) {
       ss->len = 0;
       ss->s = "";
       return ss;    /* should return 0, but caller may be assuming this can not fail */
@@ -890,8 +889,7 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
     ss->s[ss->len] = 0;
     break;
   case ZXID_MAP_RULE_DEF_SB64:   /* Encode gzip-safebase64 ([RFC1951], [RFC3548]) */
-    bin = zx_zlib_raw_deflate(cf->ctx, val->len, val->s, &len);
-    if (!bin) {
+    if (!val->len || !(bin = zx_zlib_raw_deflate(cf->ctx, val->len, val->s, &len))) {
       return zx_dup_str(cf->ctx, "");
     }
     ss = zx_new_len_str(cf->ctx, SIMPLE_BASE64_LEN(len));

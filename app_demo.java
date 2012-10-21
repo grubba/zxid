@@ -126,7 +126,7 @@ public class app_demo extends HttpServlet {
 	// serves to illustrate, how to explicitly call a PDP from your code.
 
 	System.err.print("----- about to az\n");
-	if (zxidjni.az_cf(cf, "Action=Show", sid) == null) {
+	if (zxidjni.az_cf(cf, "rs=app_demo&Action=Show", sid) == null) {
 	    out.print("<p><b>Denied.</b> Normally page would not be shown, but we show the session attributes for debugging purposes.\n");
 	    //res.setStatus(302, "Denied");
 	} else {
