@@ -640,8 +640,10 @@ char* zxid_az_cf(zxid_conf* cf, const char* qs, const char* sid)
 {
   zxid_ses ses;
   ZERO(&ses, sizeof(ses));
-  if (sid && sid[0])
+  if (sid && sid[0]) {
     zxid_get_ses(cf, &ses, sid);
+    zxid_ses_to_pool(cf, &ses);
+  }
   return zxid_az_cf_ses(cf, qs, &ses);
 }
 
@@ -650,8 +652,10 @@ char* zxid_az_base_cf(zxid_conf* cf, const char* qs, const char* sid)
 {
   zxid_ses ses;
   ZERO(&ses, sizeof(ses));
-  if (sid && sid[0])
+  if (sid && sid[0]) {
     zxid_get_ses(cf, &ses, sid);
+    zxid_ses_to_pool(cf, &ses);
+  }
   return zxid_az_base_cf_ses(cf, qs, &ses);
 }
 
