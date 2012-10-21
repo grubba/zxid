@@ -528,7 +528,7 @@ static int zxid_add_at_vals(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribute
   }
   
   if (map && map->dst && *map->dst && map->src && map->src[0] != '*') {
-    ses->at = zxid_new_at(cf, ses->at, strlen(map->dst), map->dst, 0, 0, "mapped");
+    ses->at = zxid_new_at(cf, ses->at, strlen(map->dst), map->dst, 0, 0, "mappd");
   } else {
     ses->at = zxid_new_at(cf, ses->at, strlen(name), name, 0, 0, "as is");
   }
@@ -540,7 +540,7 @@ static int zxid_add_at_vals(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribute
        av = (struct zx_sa_AttributeValue_s*)ZX_NEXT(av)) {
     if (av->gg.g.tok != zx_sa_AttributeValue_ELEM)
       continue;
-    D("  adding value: %p", ZX_GET_CONTENT(av));
+    DD("  adding value: %p", ZX_GET_CONTENT(av));
     if (av->EndpointReference || av->ResourceOffering)
       continue;  /* Skip bootstraps. They are handled elsewhere, see zxid_snarf_eprs_from_ses(). */
     if (ZX_GET_CONTENT(av)) {
@@ -601,7 +601,7 @@ void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx
       D("attribute(%s) filtered out by del rule in INMAP", at_name);
     } else {
       if (map && map->dst && *map->dst && map->src && map->src[0] != '*') {
-	ses->at = zxid_new_at(cf, ses->at, strlen(map->dst), map->dst, val->len, val->s, "mapd2");
+	ses->at = zxid_new_at(cf, ses->at, strlen(map->dst), map->dst, val->len, val->s, "mappd2");
       } else {
 	ses->at = zxid_new_at(cf, ses->at, strlen(at_name), at_name, val->len, val->s, "as is2");
       }
@@ -640,7 +640,7 @@ static void zxid_add_ldif_at2ses(zxid_conf* cf, zxid_ses* ses, const char* prefi
     val = p+2;
     p = strchr(val, '\n');  /* *** parsing LDIF is fragile if values are multiline */
     len = p?(p-val):strlen(val);
-    D("%s: ATTR(%s)=VAL(%.*s)", lk, name_buf, len, val);
+    D("%s: ATTR(%s)=(%.*s)", lk, name_buf, len, val);
     zxid_add_attr_to_ses(cf, ses, name_buf,  zx_dup_len_str(cf->ctx, len, val));
   }
 }

@@ -145,7 +145,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
      * to deflated and safe base64 encoded value which was then sent to IdP as RelayState.
      * It then came back from IdP and was decoded as one of the SSO attributes.
      * The decoding is controlled by <<tt: rsrc$rs$unsb64-inf$$ >>  rule in OUTMAP. */
-#if 0
+#if 1
     rs = zxid_unbase64_inflate(cf->ctx, -2, rs, 0);
     if (!rs) {
       ERR("Bad relaystate. Error in inflate. %d", 0);
