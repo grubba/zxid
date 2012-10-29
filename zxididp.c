@@ -50,7 +50,7 @@ Usage: zxididp [options]   (when used as CGI, no options can be supplied)\n\
 /* CONFIG: You must edit the URL to match your domain name and port */
 
 #ifdef MINGW
-#define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=c:/var/zxid/idp"
+#define CONF "URL=https://idp1.zxidp.org:8443/zxididp&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=c:/var/zxid/idp"
 #else
 /*#define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=/var/zxid/idp"*/
 //#define CONF "IDP_ENA=1&VPATH=%h/&VURL=%a%h%s"
@@ -83,7 +83,10 @@ int main(int argc, char** argv)
       exit(2);
     }
   }
-  fprintf(stderr, "=================== Running zxididp %s ===================\n", ZXID_REL);
+  zx_debug = 1;
+  fprintf(stderr, "=================== Running zxididp %s =================== ,\n", ZXID_REL);
+  p = getenv("ZXID_PRE_CONF");
+  D("ZXID_PRE_CONF(%s)", p);
   //fprintf(stderr, "p(%s)\n", p);
 #endif
 

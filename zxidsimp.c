@@ -101,8 +101,10 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
     }
 
     buf = getenv("ZXID_PRE_CONF");
+    D("Check ZXID_PRE_CONF(%s)", buf);
     if (buf) {
       /* Copy the conf string because we are going to modify it in place. */
+      D("Applying ZXID_PRE_CONF(%s)", buf);
       len = strlen(buf);
       cc = ZX_ALLOC(cf->ctx, len+1);
       memcpy(cc, buf, len);
@@ -121,6 +123,7 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
     buf = getenv("ZXID_CONF");
     if (buf) {
       /* Copy the conf string because we are going to modify it in place. */
+      D("Applying ZXID_CONF(%s)", buf);
       len = strlen(buf);
       cc = ZX_ALLOC(cf->ctx, len+1);
       memcpy(cc, buf, len);
