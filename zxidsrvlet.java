@@ -37,20 +37,23 @@ public class zxidsrvlet extends HttpServlet {
     {
 	if (setcookie == null)
 	    return;
+	System.err.print("setcookie("+setcookie+")\n");
 	int eq = setcookie.indexOf('=');
 	int semi = setcookie.indexOf(';', eq+1);
-	Cookie cookie = new Cookie(setcookie.substring(0, eq),
-				   setcookie.substring(eq+1, semi));
-	eq = setcookie.indexOf("path=", semi);
-	if (eq == -1) {
-	    cookie.setPath("/");
-	    cookie.setSecure(setcookie.indexOf("secure", semi) != -1);
-	} else {
-	    semi = setcookie.indexOf(';', eq+5);
-	    cookie.setPath(setcookie.substring(eq+5, semi));
-	    cookie.setSecure(setcookie.indexOf("secure", semi) != -1);
+	if (eq != -1 && semi != -1) {
+	    Cookie cookie = new Cookie(setcookie.substring(0, eq),
+				       setcookie.substring(eq+1, semi));
+	    eq = setcookie.indexOf("path=", semi);
+	    if (eq == -1) {
+		cookie.setPath("/");
+		cookie.setSecure(setcookie.indexOf("secure", semi) != -1);
+	    } else {
+		semi = setcookie.indexOf(';', eq+5);
+		cookie.setPath(setcookie.substring(eq+5, semi));
+		cookie.setSecure(setcookie.indexOf("secure", semi) != -1);
+	    }
+	    res.addCookie(cookie);
 	}
-	res.addCookie(cookie);
     }
 
     //public static void main(String argv[]) throws java.io.IOException  {  }

@@ -2,9 +2,8 @@
  *
  * Copyright (c) 1998,2001,2006,2010-2012 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
  * Copyright (c) 2001-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
- * This is free software and comes with NO WARRANTY. For licensing
- * see file COPYING in the distribution directory.
- * $Id: errmac.h,v 1.24 2009-11-29 12:23:06 sampo Exp $
+ * This is free software and comes with NO WARRANTY. Licensed under Apache2 license.
+ * $Id$
  *
  * 10.1.2003, added option to make ASSERT nonfatal --Sampo
  * 4.6.2003,  added STRERROR() macro --Sampo
@@ -18,6 +17,7 @@
  * 22.3.2008, renamed debug to zx_debug to avoid conflicts in any .so module usage --Sampo
  * 4.12.2010, fixed bug in locking where range was zero length --Sampo
  * 4.12.2011, fixed bug in TOUPPER() macro --Sampo
+ * 30.10.2012, added AKBOX_FN() to logging --Sampo
  */
 
 #ifndef _macro_h
@@ -40,6 +40,10 @@
 #define GMTIME_R(t, res) gmtime_r(&(t),&(res))
 #endif
 #include <stdio.h>    /* For stderr */
+
+#ifdef USE_AKBOX_FN
+#include "akbox.h"
+#endif
 
 /* CONFIG */
 
@@ -404,26 +408,37 @@ extern FILE* zx_debug_log;   /* Defined in zxidlib.c as 0 alias to stderr */
 #define D_INDENT(s) /* no locking issues */
 #define D_DEDENT(s)
 #endif
+
 #ifdef VERBOSE
-#define D(format,...) (void)((fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
-#define DD D
+# define D(format,...) (void)((fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
+# define DD D
 #else
-#ifdef USE_PTHREAD
-#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s d %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
-#else
-#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
-#endif
-#define DD(format,...)  /* Documentative */
+# ifdef USE_PTHREAD
+#  ifdef USE_AKBOX_FN
+#   define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "t%lx %04x:%-3d %04x %s d %s" format "\n", (long)pthread_self(), AKBOX_FN(__FILE__), __LINE__, AKBOX_FN(__FUNCTION__), ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
+#  else
+#   define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s d %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
+#  endif
+# else
+#  define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
+# endif
+# define DD(format,...)  /* Documentative */
 #endif
 
 #ifdef USE_PTHREAD
-#define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s E %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
-#define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s W %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
-#define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s I %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+# ifdef USE_AKBOX_FN
+#  define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %04x:%-3d %04x %s E %s" format "\n", (long)pthread_self(), AKBOX_FN(__FILE__), __LINE__, AKBOX_FN(__FUNCTION__), ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#  define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %04x:%-3d %04x %s W %s" format "\n", (long)pthread_self(), AKBOX_FN(__FILE__), __LINE__, AKBOX_FN(__FUNCTION__), ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#  define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %04x:%-3d %04x %s I %s" format "\n", (long)pthread_self(), AKBOX_FN(__FILE__), __LINE__, AKBOX_FN(__FUNCTION__), ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+# else
+#  define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s E %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#  define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s W %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#  define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s I %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+# endif
 #else
-#define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s E %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
-#define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s W %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
-#define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s I %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+# define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s E %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+# define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s W %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+# define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s I %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
 #endif
 
 #define D_XML_BLOB(cf, lk, len, xml) zxlog_debug_xml_blob((cf), __FILE__, __LINE__, __FUNCTION__, (lk), (len), (xml))

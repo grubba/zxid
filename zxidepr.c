@@ -29,6 +29,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdio.h>
+#include <errno.h>
 
 #include "errmac.h"
 #include "zxid.h"
@@ -315,8 +316,7 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
   D("Looking in session dir(%s) svc(%s) pses=%p", path, svc, ses);
   dir = opendir(path);
   if (!dir) {
-    perror("opendir to find epr in session");
-    ERR("Opening session for find epr by opendir failed path(%s) sesptr=%p", path, ses);
+    ERR("Opening session for find epr by opendir failed path(%s): %d %s; euid=%d egid=%d (sesptr=%p)", path, errno, STRERROR(errno), geteuid(), getegid(), ses);
     D_DEDENT("find_epr: ");
     return 0;
   }

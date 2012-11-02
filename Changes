@@ -4,6 +4,8 @@
 
 Usual suspects: zxid.user@lists.unh.edu
 
+mini_httpd: server does not support RFC 5746, see CVE-2009-3555
+
 To do:
     - Wishlist of built-in attributes
       1. HTTP method (GET, POST, HEAD, etc.)

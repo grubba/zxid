@@ -249,8 +249,7 @@ int zxid_put_ses(zxid_conf* cf, zxid_ses* ses)
   
   name_from_path(dir, sizeof(dir), "%s" ZXID_SES_DIR "%s", cf->path, ses->sid);
   if (MKDIR(dir, 0777) && errno != EEXIST) {
-    perror("mkdir for session");
-    ERR("Creating session directory(%s) failed, euid=%d egid=%d", dir, geteuid(), getegid());
+    ERR("Creating session directory(%s) failed: %d %s; euid=%d egid=%d", dir, errno, STRERROR(errno), geteuid(), getegid());
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "S", "EFILE", dir, "mkdir fail, permissions?");
     return 0;
   }

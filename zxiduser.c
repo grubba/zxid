@@ -174,8 +174,7 @@ int zxid_put_user(zxid_conf* cf, struct zx_str* nidfmt, struct zx_str* idpent, s
   zxid_user_sha1_name(cf, idpent, idpnid, sha1_name);
   name_from_path(dir, sizeof(dir), "%s" ZXID_USER_DIR "%s", cf->path, sha1_name);
   if (MKDIR(dir, 0777) && errno != EEXIST) {
-    perror("mkdir for user");
-    ERR("Creating user directory(%s) failed", dir);
+    ERR("Creating user directory(%s) failed: %d %s; euid=%d egid=%d", dir, errno, STRERROR(errno), geteuid(), getegid());
     return 0;
   }
   

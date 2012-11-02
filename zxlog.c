@@ -500,6 +500,25 @@ int zxlogusr(zxid_conf* cf,   /* 1 */
   return 0;
 }
 
+/*(-) Create a directory and perform error checking. */
+
+static int zx_create_dir_with_check(zxid_conf* cf, const char* dir, int create_dirs)
+{
+  struct stat st;
+  if (stat(dir, &st)) {
+    if (create_dirs) {
+      if (MKDIR(dir, 0777)) {
+	ERR("mkdir path(%s) failed: %d %s; euid=%d egid=%d", dir, errno, STRERROR(errno), geteuid(), getegid());
+	return 0;	
+      }
+    } else {
+      ERR("directory missing path(%s) and no create_dirs (stat: %d %s; euid=%d egid=%d)", dir, errno, STRERROR(errno), geteuid(), getegid());
+      return 0;
+    }
+  }
+  return 1;
+}
+
 /*() Compute path for logging. Optionally attempt to create the necessary
  * directories if they are missing (you should do `make dirs' rather than
  * depend on this).
@@ -540,64 +559,30 @@ struct zx_str* zxlog_path(zxid_conf* cf,
   memcpy(p, "log/", sizeof("log/"));
   p += sizeof("log/")-1;
   if (stat(s, &st)) {
-    ERR("zxid log directory missing path(%s): giving up (%d %s)", s, errno, STRERROR(errno));
-    ZX_FREE(cf->ctx, s);
-    return 0;
+    ERR("zxid log directory missing path(%s): giving up (stat: %d %s; euid=%d egid=%d). Consider checking permissions and running zxmkdirs.sh", s, errno, STRERROR(errno), geteuid(), getegid());
+    goto nodir;
   }
   
   memcpy(p, dir, dir_len+1);
   p += dir_len;
-  if (stat(s, &st)) {
-    if (create_dirs) {
-      if (MKDIR(s, 0777)) {
-	ERR("mkdir path(%s) failed: %d %s", s, errno, STRERROR(errno));
-	ZX_FREE(cf->ctx, s);
-	return 0;	
-      }
-    } else {
-      ERR("directory missing path(%s) and no create_dirs (%d %s)", s, errno, STRERROR(errno));
-      ZX_FREE(cf->ctx, s);
-      return 0;
-    }
-  }
+  if (!zx_create_dir_with_check(cf, s, create_dirs)) goto nodir;
   
   sha1_safe_base64(p, entid->len, entid->s);
   p[27] = 0;
   p+=27;
-  if (stat(s, &st)) {
-    if (create_dirs) {
-      if (MKDIR(s, 0777)) {
-	ERR("mkdir path(%s) failed: %d %s", s, errno, STRERROR(errno));
-	ZX_FREE(cf->ctx, s);
-	return 0;	
-      }
-    } else {
-      ERR("directory missing path(%s) and no create_dirs (%d %s)", s, errno, STRERROR(errno));
-      ZX_FREE(cf->ctx, s);
-      return 0;
-    }
-  }
+  if (!zx_create_dir_with_check(cf, s, create_dirs)) goto nodir;
   
   memcpy(p, kind, kind_len+1);
   p += kind_len;
-  if (stat(s, &st)) {
-    if (create_dirs) {
-      if (MKDIR(s, 0777)) {
-	ERR("mkdir path(%s) failed: %d %s", s, errno, STRERROR(errno));
-	ZX_FREE(cf->ctx, s);
-	return 0;	
-      }
-    } else {
-      ERR("zxid directory missing path(%s) and no create_dirs (%d %s)", s, errno, STRERROR(errno));
-      ZX_FREE(cf->ctx, s);
-      return 0;
-    }
-  }
+  if (!zx_create_dir_with_check(cf, s, create_dirs)) goto nodir;
   
   sha1_safe_base64(p, objid->len, objid->s);
   p[27] = 0;
   p+=27;
   return zx_ref_len_str(cf->ctx, len, s);
+ nodir:
+  ZX_FREE(cf->ctx, s);
+  return 0;
 }
 
 /*() Check if file by path already exist.
@@ -709,7 +694,7 @@ static FILE* zx_open_xml_log_file(zxid_conf* cf)
   f = fopen(buf, "a+");
   if (!f) {  /* If it did not work out, do not insist. */
     perror(buf);
-    ERR("Can't open for appending %s: %d", buf, errno);
+    ERR("Can't open for appending %s: %d %s; euid=%d egid=%d", buf, errno, STRERROR(errno), geteuid(), getegid());
     zx_xml_debug_log_err = 1;
     return 0;
   }
