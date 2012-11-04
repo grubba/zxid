@@ -56,7 +56,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   hdr = env->Header;
 
-  /* Populate SOAP headers. */
+  /* 1. Populate SOAP headers. */
   
   hdr->Framework = zx_NEW_sbf_Framework(cf->ctx, &hdr->gg);
   hdr->Framework->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Framework->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
@@ -64,7 +64,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   hdr->Framework->version = zx_ref_attr(cf->ctx, &hdr->Framework->gg, zx_version_ATTR, "2.0");
 
 #if 1
-  /* *** Conor claims Sender is not mandatory */
+  /* 2. *** Conor claims Sender is not mandatory */
   if (!hdr->Sender || !hdr->Sender->providerID) {
     hdr->Sender = zx_NEW_b_Sender(cf->ctx, &hdr->gg);
     hdr->Sender->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Sender->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
@@ -76,7 +76,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     D("Using caller supplied Sender(%.*s)", hdr->Sender->providerID->g.len, hdr->Sender->providerID->g.s);
   }
 #endif
-
+  /* 3. MessageID */
   if (!hdr->MessageID) {
     hdr->MessageID = zx_NEW_a_MessageID(cf->ctx, &hdr->gg);
     hdr->MessageID->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->MessageID->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
@@ -84,6 +84,23 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   } else {
     D("Using caller supplied MessageID(%.*s)", ZX_GET_CONTENT_LEN(hdr->MessageID), ZX_GET_CONTENT_S(hdr->MessageID));
   }
+
+  /* 4. Security */
+
+  sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx, &hdr->gg);
+  sec->actor = zx_ref_attr(cf->ctx, &sec->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  sec->mustUnderstand = zx_ref_attr(cf->ctx, &sec->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
+  sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx, &sec->gg);
+  sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx, &sec->Timestamp->gg);
+  zx_reverse_elem_lists(&sec->gg);
+
+  /* 5. Status */
+
+  if (ses && ses->curstatus) {
+    ZX_ADD_KID(hdr, Status, ses->curstatus);
+  }
+
+  /* 6. RelatesTo and other WSA headers... */
 
   if (is_resp) {
     if (ses && ses->wsp_msgid && ses->wsp_msgid->len) {
@@ -138,18 +155,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   hdr->UserInteraction->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->UserInteraction->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->UserInteraction->actor = zx_ref_attr(cf->ctx, &hdr->UserInteraction->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 #endif
-
-  if (ses && ses->curstatus) {
-    ZX_ADD_KID(hdr, Status, ses->curstatus);
-  }
   
-  sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx, &hdr->gg);
-  sec->actor = zx_ref_attr(cf->ctx, &sec->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-  sec->mustUnderstand = zx_ref_attr(cf->ctx, &sec->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
-  sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx, &sec->gg);
-  sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx, &sec->Timestamp->gg);
-  zx_reverse_elem_lists(&sec->gg);
-
   if (is_resp) {
     zx_add_content(cf->ctx, &sec->Timestamp->Created->gg, zxid_date_time(cf, time(0)));
     if (!ZX_GET_CONTENT(hdr->MessageID))
@@ -227,7 +233,7 @@ struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cr
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_OUT, "e:Server", "Response denied by WSP local policy", TAS3_STATUS_DENY, 0, 0, 0));
     /* Fall through, letting zxid_wsf_decor() pick up the fault and package it as response. */
   } else if (cf->pdp_url && *cf->pdp_url) {
-    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
+    //zxid_add_attr_to_ses(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
     if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rsout, "RSOUT3")) {
       ERR("RSOUT3 Deny %d", 0);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_OUT, "e:Server", "Response denied by WSP policy at PDP", TAS3_STATUS_DENY, 0, 0, 0));
@@ -414,6 +420,8 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
   zxid_entity* wsc_meta;
   struct zx_e_Header_s* hdr;
   struct zx_wsse_Security_s* sec;
+  int len;
+  char* p;
   zxid_cgi cgi;
 
   D_INDENT("valid: ");
@@ -573,13 +581,47 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
   zxlogwsp(cf, ses, "K", "PNEWSES", ses->sid, 0);
   
   /* Call Rq-In PDP */
-  
+
+  /* Populate action from first subelement of body */
+  if (env->Body && env->Body->gg.kids) {
+#if 0
+    // *** sched for del
+    ed = zx_el_desc_lookup(env->Body->gg.kids->g.tok);
+    int ix =  & ZX_TOK_TOK_MASK;
+    if (ix >= zx__ELEM_MAX) {
+      ERR("Element token(0x%06x) out of range(0x%04x)", env->Body->gg.kids->g.tok, zx__ELEM_MAX);
+      return 0;
+    }
+    D("Action from Body child tok=%d name(%s)", ix, zx_el_tab[ix].name);
+    zxid_add_attr_to_ses(cf, ses, "Action", zx_dup_str(cf->ctx, zx_el_tab[ix].name));
+#else
+    len = env->Body->gg.kids->g.len;
+    p = env->Body->gg.kids->g.s;
+    D("Action from Body child ns(%s) name(%.*s)", env->Body->gg.kids->ns->url, len, p);
+    if (p = memchr(env->Body->gg.kids->g.s, ':', len)) {
+      ++p;
+      len -= p - env->Body->gg.kids->g.s;
+    } else
+      p = env->Body->gg.kids->g.s;
+    zxid_add_attr_to_ses(cf, ses, "Action",
+			 zx_strf(cf->ctx, "%s:%.*s",
+				 env->Body->gg.kids->ns->url,
+				 len, p));
+#endif
+    //zxid_add_attr_to_ses(cf, ses, "rs", zx_dup_str(cf->ctx, zx_el_tab[env->Body->gg.kids->g.tok].name));
+  } else {
+    ERR("SOAP Body does not appear to have any subelements?!? %p", env->Body);
+  }
+
+  /* Populate other attributes, such as rs to indicate resource. */
+  if (az_cred)
+    zxid_add_qs2ses(cf, ses, zx_dup_cstr(cf->ctx, az_cred), 1);
+
   if (!zxid_localpdp(cf, ses)) {
     ERR("RQIN2 Deny by local PDP %d",0);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_OUT, "e:Server", "Request denied by WSP local policy", TAS3_STATUS_DENY, 0, 0, 0));
     /* Fall through, letting zxid_wsf_decor() pick up the fault and package it as response. */
   } else if (cf->pdp_url && *cf->pdp_url) {
-    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
     if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqin, "RQIN2")) {
       ERR("RQIN2 Deny %d", 0);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Server", "Request denied by WSP policy", TAS3_STATUS_DENY, 0, 0, 0));

@@ -469,7 +469,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       return zxid_soap_cgi_resp_body(cf, ses, body);
     }
 
-    if (!zxid_wsp_validate_env(cf, ses, 0, r->Envelope))
+    if (!zxid_wsp_validate_env(cf, ses, "Resource=Discovery", r->Envelope))
       return 0;
 
     if (bdy->Query) { /* Discovery 2.0 Query */

@@ -566,7 +566,7 @@ extern int zxid_suppress_vpath_warning;
 /* Called by: */
 int zxcot_main(int argc, char** argv, char** env)
 {
-  strncpy(zx_instance, "\tzxcot", sizeof(zx_instance));
+  strncpy(zx_instance, "cot", sizeof(zx_instance));
   zxid_suppress_vpath_warning = 1;
   cf = zxid_new_conf_to_cf(0);
 

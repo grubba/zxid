@@ -1176,7 +1176,7 @@ zxid_conf* zxid_new_conf(const char* zxid_path)
 
 #define SCAN_INT(v, lval) sscanf(v,"%i",&i); lval=i /* Safe for char, too */
 
-/*() Helper to evaluate a new PATH. check_file_exists helps to implement
+/*(-) Helper to evaluate a new PATH. check_file_exists helps to implement
  * the sematic where PATH is not changed unless corresponding zxid.conf
  * is found. This is used by VPATH. */
 
@@ -1225,7 +1225,7 @@ static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, cha
 
   for (; *val; ++val, ++n)
     if (!squash_type && IN_RANGE(*val, 'A', 'Z')) {
-      *n = *val - ('A' - 'a');
+      *n = *val - ('A' - 'a');  /* lowercase host names */
     } else if (IN_RANGE(*val, 'a', 'z') || IN_RANGE(*val, '0', '9') || ONE_OF_2(*val, '.', '-')) {
       *n = *val;
     } else if (squash_type == 1 && ONE_OF_5(*val, '/', ':', '?', '&', '=')) {
@@ -1237,7 +1237,11 @@ static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, cha
 }
 
 /*() Expand percent expansions as found in VPATH and VURL
- * squash_type: 0=VPATH, 1=VURL */
+ * squash_type: 0=VPATH, 1=VURL.
+ * See CGI specification for environment variables such as
+ *   %h expands to HTTP_HOST (from Host header, e.g. Host: sp.foo.bar or Host: sp.foo.bar:8443)
+ *   %s expands to SCRIPT_NAME
+ */
 
 /* Called by:  zxid_parse_vpath_conf, zxid_parse_vurl */
 static char* zxid_expand_percent(char* vorig, char* n, char* lim, int squash_type)

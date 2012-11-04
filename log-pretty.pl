@@ -24,10 +24,12 @@ sub greeny { $ascii > 1 ? "\e[42m$_[0]\e[0m" : $_[0]; }
 sub yely { $ascii > 1 ? "\e[43m$_[0]\e[0m" : $_[0]; }
 sub bluy { $ascii > 1 ? "\e[46m$_[0]\e[0m" : $_[0]; }
 
+warn "sep=".ord($/);
+
 sub readall {
     my ($f,$silent) = @_;
     my ($pkg, $srcfile, $line) = caller;
-    undef $/;         # Read all in, without breaking on lines
+    local $/ = undef;         # Read all in, without breaking on lines
     if (open F, "<$f") {
 	binmode F;
 	#flock F, 1;
@@ -52,34 +54,47 @@ while ($xd =~ /\+ \(sizeof\(x\)>(\d+) \? (\d+)\*\(x\)\[(\d+)\] : 0\)/g) {
     $akbox_fn .= "+ $2*ord(substr(\$x,$3,1))\n";
 }
 $akbox_fn .= ') & 0xffff; }';
-warn $akbox_fn;
+#warn $akbox_fn;
 eval $akbox_fn;
 
 $x = readall("file.list");
 #warn "HERE($x) ARGV0($ARGV[0])";
 while ($x =~ /ZXFILE_DEF\("([A-Za-z_0-9.-]+)"\)/g) {
-    $k = sprintf("%04x",akbox_fn($1));
-    #warn "HERE($1)=(".akbox_fn($1).")";
-    $files{$k} = $1;
+    $fn = $1;
+    $k = sprintf("%04x",akbox_fn($fn));
+    #warn "HERE($1)=(".akbox_fn($fn).")";
+    if ($files{$k}) {
+	warn "hash collision for($k)=($files{$k})";
+	$fn .= ",$files{$k}";
+    }
+    $files{$k} = $fn;
 }
 $x = readall("function.list");
 #warn "HERE($x) ARGV0($ARGV[0])";
 while ($x =~ /ZXFUNC_DEF\("([A-Za-z_0-9:]+)","([A-Za-z_0-9.-]+)"\)/g) {
-    $k = sprintf("%04x",akbox_fn($1));
-    $funcs{$k} = $1;
-    $func_files{$k} = $2;    
+    $fn = $1;
+    $fl = $2;
+    $k = sprintf("%04x",akbox_fn($fn));
+    if ($funcs{$k}) {
+	warn "hash collision for($k)=($funcs{$k})";
+	$fn .= ",$funcs{$k}";
+    }
+    $funcs{$k} = $fn;
+    $func_files{$k} = $fl;    
 }
 
 sub decode_fn {
     my ($fn) = @_;
+    chomp $fn;
     my ($file,$line,$func);
     if (($file,$line,$func) = $fn =~ /([0-9a-f]+):(\d+)\s+([0-9a-f]+)/) {
 	print "$fn => $files{$file}:$line \t$funcs{$func} ($func_files{$func})\n";
+    } elsif (($file,$line) = $fn =~ /([0-9a-f]+):(\d+)/) {
+	print "$fn => $files{$file}:$line \t$funcs{$file} ($func_files{$file})\n";
     } else {
 	print "$fn => $files{$fn} \t$funcs{$fn} ($func_files{$fn})\n";
     }
 }
-
 
 if ($ARGV[0] eq '-t') {
     shift;
@@ -90,14 +105,15 @@ if ($ARGV[0] eq '-t') {
 
 if ($ARGV[0] eq '-fn') {
     shift;
-    warn "HERE";
+    #warn "HERE";
     if ($ARGV[0]) {
-	warn "HERE";
+	#warn "HERE";
 	while ($fn = shift) {
 	    decode_fn($fn);
 	}
     } else {
-	warn "HERE";
+	#warn "HERE";
+	#warn "sep=".ord($/);
 	while ($fn = <STDIN>) {
 	    decode_fn($fn);
 	}

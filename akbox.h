@@ -43,6 +43,8 @@
 		  + (sizeof(x)>38 ? 157*(x)[37] : 0)  + (sizeof(x)>39 ? 163*(x)[38] : 0) \
 		  ) & 0xffff)
 
+int akbox_fn(const char* fn);
+
 #define ak_init(x)
 #define ak_add_thread(s,f)
 

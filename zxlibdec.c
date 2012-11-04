@@ -306,7 +306,13 @@ struct zx_attr_s* zx_ord_ins_at(struct zx_elem_s* x, struct zx_attr_s* in_at)
   return in_at;
 }
 
-/*() Called from dec-templ.c for CSE elimination. */
+/*() Since kids lists of elements are usually built by adding
+ * nodes at the root of the list, they end up being in reverse order.
+ * Thus we need to reverse them to get them to right order. We
+ * take this opportunity to also check that the ordering is correct
+ * and also to sort the XML attributes.
+ * N.B. This function is not recursive: only one level is reveresed.
+ * Called from dec-templ.c for CSE elimination. */
 
 /* Called by:  zx_DEC_elem, zxenc_pubkey_enc, zxenc_symkey_enc, zxid_ac_desc, zxid_add_fed_tok2epr, zxid_ar_desc, zxid_az_soap, zxid_contact_desc, zxid_idp_sso_desc, zxid_key_desc, zxid_key_info, zxid_mk_a7n, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_di_req_svc, zxid_mk_mni, zxid_mk_saml_resp, zxid_mk_xac_az, zxid_mk_xacml_resp, zxid_mk_xacml_simple_at, zxid_mni_desc, zxid_nimap_desc, zxid_org_desc, zxid_slo_desc, zxid_sp_meta, zxid_sp_sso_desc, zxid_sso_desc, zxid_wsc_prep, zxid_wsf_decor x2, zxid_wsp_decorate, zxsig_sign x3 */
 void zx_reverse_elem_lists(struct zx_elem_s* x)

@@ -96,9 +96,9 @@ int main(int argc, char** argv)
   }
 
 #if 0
-  strncpy(zx_instance, "\t\e[47mzxidp\e[0m", sizeof(zx_instance));
+  strncpy(zx_instance, "\e[47midp\e[0m", sizeof(zx_instance));
 #else
-  strncpy(zx_instance, "\tzxidp", sizeof(zx_instance));
+  strncpy(zx_instance, "idp", sizeof(zx_instance));
 #endif
 
   //zx_debug = 1;

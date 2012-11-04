@@ -251,6 +251,8 @@ void zx_free_ctx(struct zx_ctx* ctx);	/* Wrapper for free(3C). */
 
 struct zx_at_tok { const char* name; };
 
+/* Element descriptor. These are statically initialized in c/zx-elems.c */
+
 struct zx_el_desc {
   struct zx_el_desc* n;
   int tok;
@@ -259,6 +261,8 @@ struct zx_el_desc {
   int (*el_dec)(struct zx_ctx* c,struct zx_elem_s* x); /* funcptr to elem decode switch */
   int el_order[];  /* Ordered list of tags that should appear as kids. */
 };
+
+/* Node of zx_el_tab[] which is indexed by tok number, see c/zx-elems.c */
 
 struct zx_el_tok {
   const char* name;

@@ -100,8 +100,8 @@ char* zxid_simple_ab_pep(zxid_conf* cf, zxid_ses* ses, int* res_len, int auto_fl
   }
 
   if (cf->pdp_url && *cf->pdp_url) {
-    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
-    //zxid_add_attr_to_pool(cf, ses, "URL", zx_dup_str(cf->ctx, ses->rs));
+    //zxid_add_attr_to_ses(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
+    //zxid_add_attr_to_ses(cf, ses, "URL", zx_dup_str(cf->ctx, ses->rs));
     if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap, "sso az")) {
       INFO("DENY by remote PDP %d", 0);
       D_DEDENT("ab_pep: ");

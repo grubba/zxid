@@ -415,7 +415,7 @@ extern FILE* zx_debug_log;   /* Defined in zxidlib.c as 0 alias to stderr */
 #else
 # ifdef USE_PTHREAD
 #  ifdef USE_AKBOX_FN
-#   define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "t%lx %04x:%-3d %04x %s d %s" format "\n", (long)pthread_self(), AKBOX_FN(__FILE__), __LINE__, AKBOX_FN(__FUNCTION__), ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
+#   define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "t%lx %04x:%-3d %s d %s" format "\n", (long)pthread_self(), AKBOX_FN(__FUNCTION__), __LINE__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
 #  else
 #   define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s d %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
 #  endif
@@ -427,9 +427,9 @@ extern FILE* zx_debug_log;   /* Defined in zxidlib.c as 0 alias to stderr */
 
 #ifdef USE_PTHREAD
 # ifdef USE_AKBOX_FN
-#  define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %04x:%-3d %04x %s E %s" format "\n", (long)pthread_self(), AKBOX_FN(__FILE__), __LINE__, AKBOX_FN(__FUNCTION__), ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
-#  define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %04x:%-3d %04x %s W %s" format "\n", (long)pthread_self(), AKBOX_FN(__FILE__), __LINE__, AKBOX_FN(__FUNCTION__), ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
-#  define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %04x:%-3d %04x %s I %s" format "\n", (long)pthread_self(), AKBOX_FN(__FILE__), __LINE__, AKBOX_FN(__FUNCTION__), ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#  define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %04x:%-3d %s E %s" format "\n", (long)pthread_self(), AKBOX_FN(__FUNCTION__), __LINE__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#  define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %04x:%-3d %s W %s" format "\n", (long)pthread_self(), AKBOX_FN(__FUNCTION__), __LINE__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
+#  define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %04x:%-3d %s I %s" format "\n", (long)pthread_self(), AKBOX_FN(__FUNCTION__), __LINE__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
 # else
 #  define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s E %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
 #  define WARN(format,...) (fprintf(ZX_DEBUG_LOG, "t%lx %10s:%-3d %-16s %s W %s" format "\n", (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))

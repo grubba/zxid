@@ -59,7 +59,7 @@
 void usage(char* err) {
   fputs(err, stderr);
   fputs(
-"DirectoryScript Application Flight Recorder(tm), Rel " AKBOX_RELEASE "\n"
+"Application Blak Box Decoder, Rel " AKBOX_RELEASE "\n"
 "Copyright (c) 2006,2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n"
 "NO WARRANTY. Not even implied warranty of any kind.\n"
 "Send well researched bug reports to sampo@zxid.org\n"

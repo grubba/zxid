@@ -752,7 +752,11 @@ nobody:
 
 print_it:
   ++zxlog_seq;
+#ifdef USE_AKBOX_FN
+  fprintf(stderr, "t%lx %04x:%-3d %04x %s d %s%s(%.*s) len=%d %d:%d\n", (long)pthread_self(), akbox_fn(file), __LINE__, akbox_fn(func), ERRMAC_INSTANCE, zx_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+#else
   fprintf(stderr, "p%d %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), file, line, func, ERRMAC_INSTANCE, zx_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+#endif
 
   if (!zx_xml_debug_log) {
     if (zx_xml_debug_log_err)
@@ -766,7 +770,11 @@ print_it:
     ERR("Locking exclusively file `%s' failed: %d %s. Check permissions and that the file system supports locking. euid=%d egid=%d", XML_LOG_FILE, errno, STRERROR(errno), geteuid(), getegid());
     /* Fall thru to print without locking */
   }
+#ifdef USE_AKBOX_FN
+  fprintf(zx_xml_debug_log, "<!-- XMLBEG %d:%d %04x:%-3d %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d:%d -->\n", getpid(), zxlog_seq, akbox_fn(func), line, ERRMAC_INSTANCE, zx_indent, lk, len, len, xml, getpid(), zxlog_seq);
+#else
   fprintf(zx_xml_debug_log, "<!-- XMLBEG %d:%d %10s:%-3d %-16s %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d:%d -->\n", getpid(), zxlog_seq, file, line, func, ERRMAC_INSTANCE, zx_indent, lk, len, len, xml, getpid(), zxlog_seq);
+#endif
   fflush(zx_xml_debug_log);
   FUNLOCK(fileno(zx_xml_debug_log));
 }

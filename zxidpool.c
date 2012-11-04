@@ -178,12 +178,14 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
   return ss;
 }
 
+/*(-) Length computation of JSON string */
+
 /* Called by:  zxid_pool_to_json x9 */
-static int zxid_json_strlen(char* string)
+static int zxid_json_strlen(char* js)
 {
   int res = 0;
-  for (;*string;string++, res++) {
-    int c = *(unsigned char*)string;
+  for (; *js; ++js, ++res) {
+    int c = *(unsigned char*)js;
     if (c < ' ') {
       if ((c == '\n') || (c == '\r') || (c == '\t') ||
 	  (c == '\b') || (c == '\f')) {
@@ -196,23 +198,25 @@ static int zxid_json_strlen(char* string)
     } else if ((c == '\'') || (c == '\"') || (c == '\\')) {
       /* \X */
       res++;
-    } else if ((c == 0xe2) && (((unsigned char*)string)[1] == 0x80) &&
-	       ((((unsigned char*)string)[2] & 0xfe) == 0xa8)) {
+    } else if ((c == 0xe2) && (((unsigned char*)js)[1] == 0x80) &&
+	       ((((unsigned char*)js)[2] & 0xfe) == 0xa8)) {
       /* Some java-script based JSON decoders don't like
        * unescaped \u2028 and \u2029. */
       /* \uXXXX */
       res += 5;
-      string += 2;
+      js += 2;
     }
   }
   return res;
 }
 
+/*(-) Copy JSON string */
+
 /* Called by:  zxid_pool_to_json x8 */
-static char* zxid_json_strcpy(char* dest, char* string)
+static char* zxid_json_strcpy(char* dest, char* js)
 {
-  for (;*string; string++) {
-    int c = *(unsigned char*)string;
+  for (; *js; ++js) {
+    int c = *(unsigned char*)js;
     if (c < ' ') {
       /* Control character. */
       *dest++ = '\\';
@@ -230,13 +234,13 @@ static char* zxid_json_strcpy(char* dest, char* string)
     } else if ((c == '\'') || (c == '\"') || (c == '\\')) {
       /* \X */
       *dest++ = '\\';
-    } else if ((c == 0xe2) && (((unsigned char*)string)[1] == 0x80) &&
-	       ((((unsigned char*)string)[2] & 0xfe) == 0xa8)) {
+    } else if ((c == 0xe2) && (((unsigned char*)js)[1] == 0x80) &&
+	       ((((unsigned char*)js)[2] & 0xfe) == 0xa8)) {
       /* Some java-script based JSON decoders don't like
        * unescaped \u2028 and \u2029. */
       /* \uXXXX */
-      sprintf(dest, "\\u%04x", 0x2028 | (string[2] & 1));
-      string += 2;
+      sprintf(dest, "\\u%04x", 0x2028 | (js[2] & 1));
+      js += 2;
       dest += 6;
       continue;
     }
@@ -505,7 +509,7 @@ struct zx_str* zxid_ses_to_qs(zxid_conf* cf, zxid_ses* ses) {
   return zxid_pool_to_qs(cf, ses?ses->at:0);
 }
 
-/*() Add values, applying NEED, WANT, and INMAP */
+/*() Add values to session attribute pool, applying NEED, WANT, and INMAP */
 
 /* Called by:  zxid_add_a7n_at_to_pool x2 */
 static int zxid_add_at_vals(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribute_s* at, char* name, struct zx_str* issuer)
@@ -558,7 +562,7 @@ static int zxid_add_at_vals(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribute
   return 1;
 }
 
-/*() Add Attribute Statements of an Assertion to pool, applying NEED, WANT, and INMAP */
+/*() Add Attribute Statements of an Assertion to session attribute pool, applying NEED, WANT, and INMAP */
 
 /* Called by:  zxid_ses_to_pool */
 static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
@@ -586,7 +590,8 @@ static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
   }
 }
 
-/*() Add simple attribute to pool, applying NEED, WANT, and INMAP */
+/*() Add simple attribute to session's attribute pool, applying NEED, WANT, and INMAP.
+ * Replaces zxid_add_attr_to_pool() */
 
 /* Called by:  chkuid, zxid_add_ldif_at2ses, zxid_add_qs2ses, zxid_ses_to_pool x25 */
 void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx_str* val)
@@ -692,7 +697,7 @@ static void zxid_cp_usr_eprs2ses(zxid_conf* cf, zxid_ses* ses, struct zx_str* pa
 }
 
 /*(i) Process attributes from the AttributeStatements of the session's
- * SSO Assertion and insert them to the pool. NEED, WANT, and INMAP
+ * SSO Assertion and insert them to the session's attribute pool. NEED, WANT, and INMAP
  * are applied. The pool is suitable for use by PEP or eventually
  * rendering to LDIF (or JSON). This function also implements
  * local attribute authority. */

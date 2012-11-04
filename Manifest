@@ -172,6 +172,7 @@ http.c           - Primitive http/1.0 protocol module for hiios
 smtp.c           - Pipelined SMTP protocol module for hiios
 akbox.h          - Application Black Box - an inmemory multithreaded logging system
 akbox.c          - Application Black Box decoder
+akbox_fn.c       - Application Black Box FN hash (see also akbox.h)
 aktab.h
 akgviz.c
 aklog.c
