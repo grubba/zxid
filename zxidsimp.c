@@ -856,17 +856,15 @@ char* zxid_simple_show_err(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
 {
   char* p;
   struct zx_str* ss;
-
+  
   if (cf->log_level>1)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "ERR", 0, "");
 
   if (cf->err_page && cf->err_page[0]) {
-    ss = zx_strf(cf->ctx, "zxrfr=F%s%s%s%s&zxidpurl=%s",
+    p = zx_alloc_sprintf(cf->ctx, 0, "zxrfr=F%s%s%s%s&zxidpurl=%s",
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
 		 cf->url);
-    p = ss->s;
-    ZX_FREE(cf->ctx, ss);
     D("err_page(%s) p(%s)", cf->err_page, p);
     return zxid_simple_redir_page(cf, cf->err_page, p, res_len, auto_flags);
   }
@@ -906,17 +904,14 @@ int zxid_decode_ssoreq(zxid_conf* cf, zxid_cgi* cgi)
 /* Called by:  zxid_simple_idp_pw_authn, zxid_simple_idp_show_an */
 static char* zxid_simple_idp_an_ok_do_rest(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags)
 {
-  struct zx_str* ss;
   char* p;
   DD("idp do_rest %p", ses);
   if (cf->atsel_page && cgi->atselafter) { /* *** More sophisticated criteria needed. */
-    ss = zx_strf(cf->ctx, "ar=%s&s=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
+    p = zx_alloc_sprintf(cf->ctx, 0, "ar=%s&s=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
 		 cgi->ssoreq, cgi->sid,
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
 		 cf->url);
-    p = ss->s;
-    ZX_FREE(cf->ctx, ss);
     D("atsel_page(%s) redir(%s)", cf->atsel_page, p);
     return zxid_simple_redir_page(cf, cf->atsel_page, p, res_len, auto_flags);
   }
@@ -984,15 +979,13 @@ static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len,
   }
   
   if (cf->an_page && cf->an_page[0]) {  /* Redirect to sysadmin configured page */
-    ss = zx_strf(cf->ctx, "ar=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
+    ar = zx_alloc_sprintf(cf->ctx, 0, "ar=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
 		 cgi->ssoreq,
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
 		 cf->url);
     if (cgi->ssoreq)
       ZX_FREE(cf->ctx, cgi->ssoreq);
-    ar = ss->s;
-    ZX_FREE(cf->ctx, ss);
     D("an_page(%s) ar(%s)", cf->an_page, ar);
     return zxid_simple_redir_page(cf, cf->an_page, ar, res_len, auto_flags);
   }
@@ -1100,19 +1093,16 @@ static char* zxid_simple_idp_pw_authn(zxid_conf* cf, zxid_cgi* cgi, int* res_len
 static char* zxid_simple_idp_new_user(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   char* p;
-  struct zx_str* ss;
   D("cf=%p cgi=%p", cf, cgi);
 
   // ***
 
   if (cf->new_user_page && cf->new_user_page[0]) {
-    ss = zx_strf(cf->ctx, "ar=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
+    p = zx_alloc_sprintf(cf->ctx, 0, "ar=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
 		 cgi->ssoreq,
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
 		 cf->url);
-    p = ss->s;
-    ZX_FREE(cf->ctx, ss);
     D("new_user_page(%s) redir(%s)", cf->new_user_page, p);
     return zxid_simple_redir_page(cf, cf->new_user_page, p, res_len, auto_flags);
   }
@@ -1129,19 +1119,16 @@ static char* zxid_simple_idp_new_user(zxid_conf* cf, zxid_cgi* cgi, int* res_len
 static char* zxid_simple_idp_recover_password(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   char* p;
-  struct zx_str* ss;
   D("cf=%p cgi=%p", cf, cgi);
 
   // ***
 
   if (cf->recover_passwd && cf->recover_passwd[0]) {
-    ss = zx_strf(cf->ctx, "ar=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
+    p = zx_alloc_sprintf(cf->ctx, 0, "ar=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
 		 cgi->ssoreq,
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
 		 cf->url);
-    p = ss->s;
-    ZX_FREE(cf->ctx, ss);
     D("recover_passwd(%s) redir(%s)", cf->recover_passwd, p);
     return zxid_simple_redir_page(cf, cf->recover_passwd, p, res_len, auto_flags);
   }

@@ -126,7 +126,7 @@ public class app_demo extends HttpServlet {
 	// serves to illustrate, how to explicitly call a PDP from your code.
 
 	System.err.print("----- about to az\n");
-	if (zxidjni.az_cf(cf, "rs=app_demo&Action=Show", sid) == null) {
+	if (zxidjni.az_cf(cf, "Action=Show&Resource=app_demo", sid) == null) {
 	    out.print("<p><b>Denied.</b> Normally page would not be shown, but we show the session attributes for debugging purposes.\n");
 	    //res.setStatus(302, "Denied");
 	} else {
@@ -179,7 +179,8 @@ public class app_demo extends HttpServlet {
 	    ret = zxidjni.call(cf, zxses,
 			       zxidjni.zx_xmlns_idhrxml,
 			       "http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B",
-			       null, null,
+			       null,
+			       "Resource=hrxml",
 			       "<idhrxml:Query>"
 			       + "<idhrxml:QueryItem>"
 			       + "<idhrxml:Select></idhrxml:Select>"
@@ -198,7 +199,9 @@ public class app_demo extends HttpServlet {
 	    ret = zxidjni.call(cf, zxses, "urn:x-foobar",
 			       //"http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B",
 			       "https://sp.employeedata.eu:8444/e2eTA/wspdemo?o=B",
-			       null, null, "<foobar>Do it!</foobar>");
+			       null,
+			       "Resource=demo",
+			       "<foobar>Do it!</foobar>");
 	    
 	    ret = zxidjni.extract_body(cf, ret);
 	    if (ret.indexOf("code=\"OK\"") == -1) {
@@ -222,7 +225,7 @@ public class app_demo extends HttpServlet {
 
 	if (qs.equals("leaf") || qs.equals("all")) {
 	    System.err.print("--- leaf call\n");
-	    ret = zxidjni.call(cf, zxses, "x-recurs", null, null, null,
+	    ret = zxidjni.call(cf, zxses, "x-recurs", null, null, "Resource=leaf",
 			       "<foobar>Do it!</foobar>");
 	    System.err.print("--- leaf ret("+ret+")\n");
 	    
@@ -267,7 +270,7 @@ public class app_demo extends HttpServlet {
 	if (qs.startsWith("o=call&url=")) {
 	    String url = qs.substring(11);
 	    out.print("<h4>Specific Call</h4>\n");
-	    ret = zxidjni.call(cf, zxses, "urn:x-foobar", url, null, null,
+	    ret = zxidjni.call(cf, zxses, "urn:x-foobar", url, null, "Resource=demo",
 			       "<foobar>do it</foobar>");
 	    ret = zxidjni.extract_body(cf, ret);
 	    if (ret.indexOf("code=\"OK\"") == -1) {
@@ -305,14 +308,20 @@ public class app_demo extends HttpServlet {
 		if (epr[i] == null)
 		    break;
 		out.print("<p>Output from multicall "+i+" entid:<br>\n<textarea cols=80 rows=20>");
-		ret = zxidjni.call(cf, zxses, "urn:x-foobar", zxidjni.get_epr_entid(cf, epr[i]), null, null,
+		ret = zxidjni.call(cf, zxses, "urn:x-foobar",
+				   zxidjni.get_epr_entid(cf, epr[i]),
+				   null,
+				   "Resource=demo",
 				   "<foobar>do i="+i+"</foobar>");
 		ret = zxidjni.extract_body(cf, ret);
 		out.print(ret);
 		out.print("</textarea>\n");
 		
 		out.print("<p>Output from multicall "+i+" address:<br>\n<textarea cols=80 rows=20>");
-		ret = zxidjni.call(cf, zxses, "urn:x-foobar", zxidjni.get_epr_address(cf, epr[i]), null, null,
+		ret = zxidjni.call(cf, zxses, "urn:x-foobar",
+				   zxidjni.get_epr_address(cf, epr[i]),
+				   null,
+				   "Resource=demo",
 				   "<foobar>do i="+i+"</foobar>");
 		ret = zxidjni.extract_body(cf, ret);
 		out.print(ret);

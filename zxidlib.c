@@ -294,14 +294,10 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
   cgi.saml_art   = field;
   cgi.saml_resp  = url;
   if (rs_len) {
-    logpath = zx_strf(cf->ctx, "<input type=hidden name=RelayState value=\"%s\">", relay_state);
-    cgi.rs = logpath->s;
-    ZX_FREE(cf->ctx, logpath);
+    cgi.rs = zx_alloc_sprintf(cf->ctx, 0, "<input type=hidden name=RelayState value=\"%s\">", relay_state);
   }
   if (sign) {
-    logpath = zx_strf(cf->ctx, "<input type=hidden name=SigAlg value=\"" SIG_ALGO "\"><input type=hidden name=Signature value=\"%s\">", sigbuf);
-    cgi.sig = logpath->s;
-    ZX_FREE(cf->ctx, logpath);
+    cgi.sig = zx_alloc_sprintf(cf->ctx, 0, "<input type=hidden name=SigAlg value=\"" SIG_ALGO "\"><input type=hidden name=Signature value=\"%s\">", sigbuf);
   }
   payload = zxid_template_page_cf(cf, &cgi, cf->post_templ_file, cf->post_templ, 64*1024, 0);
 #else

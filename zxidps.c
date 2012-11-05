@@ -430,7 +430,6 @@ char* zxid_ps_accept_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
 {
   int now = time(0);
   struct zxid_invite inv;
-  struct zx_str* ss;
   char buf[ZXID_MAX_BUF];
   int got = read_all(sizeof(buf), buf, "accept_invite", 1, "%s" ZXID_INV_DIR "%s",cf->path,cgi->inv);
   if (!got) {
@@ -457,10 +456,7 @@ char* zxid_ps_accept_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
   
   cgi->msg = "This screen aims to complete the invitation process you started by clicking on the invitation link. Once completed, you will be redirected to the web site where the delegated resource is available. To complete invitation, People Service needs to authenticate you with your Identity Provider (IdP). Please choose your Identity Provider from popup menu (or enter the IdP URL in the space provided) and click Login.";
   
-  ss = zx_strf(cf->ctx, "o=G&inv=%s", cgi->inv);
-  cgi->rs = ss->s;
-  ZX_FREE(cf->ctx, ss);
-
+  cgi->rs = zx_alloc_sprintf(cf->ctx, 0, "o=G&inv=%s", cgi->inv);
   return zxid_simple_show_idp_sel(cf, cgi, res_len, auto_flags);
 }
 
@@ -472,7 +468,6 @@ char* zxid_ps_finalize_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* 
 {
   int now = time(0);
   struct zxid_invite inv;
-  struct zx_str* ss;
   char buf[ZXID_MAX_BUF];
   int got = read_all(sizeof(buf), buf, "finalize_invite", 1, "%s" ZXID_INV_DIR "%s",cf->path,cgi->inv);
   if (!got) {
@@ -499,10 +494,7 @@ char* zxid_ps_finalize_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* 
   
   cgi->msg = "This screen aims to complete the invitation process you started by clicking on the invitation link. Once completed, you will be redirected to the web site where the delegated resource is available. To complete invitation, People Service needs to authenticate you with your Identity Provider (IdP). Please choose your Identity Provider from popup menu (or enter the IdP URL in the space provided) and click Login.";
   
-  ss = zx_strf(cf->ctx, "o=G&inv=%s", cgi->inv);
-  cgi->rs = ss->s;
-  ZX_FREE(cf->ctx, ss);
-
+  cgi->rs = zx_alloc_sprintf(cf->ctx, 0, "o=G&inv=%s", cgi->inv);
   return zxid_simple_show_idp_sel(cf, cgi, res_len, auto_flags);
 }
 

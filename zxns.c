@@ -228,7 +228,7 @@ struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, const char* pref
 	ns->n = c->unknown_ns;
 	c->unknown_ns = ns;
 	D("Undefined namespace prefix(%.*s). NS not known from any context. Creating dummy ns(%.*s).", len, prefix, url->len, url->s);
-	ZX_FREE(c, url);
+	zx_str_free(c, url);
       } else {
 	D("Undefined namespace prefix(%.*s) at(%s). NS not known from any context.", len, prefix, logkey);
 	return 0;

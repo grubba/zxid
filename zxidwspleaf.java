@@ -119,11 +119,11 @@ public class zxidwspleaf extends HttpServlet {
 	// Check the input for correct ID-WSF compliance
 
 	//System.err.print("Validating buf("+buf+")\n");	
-	String nid  = zxidjni.wsp_validate(cf, ses, null, buf);
+	String nid  = zxidjni.wsp_validate(cf, ses, "Resource=leaf", buf);
 	System.err.print("VALID3 nid("+nid+")\n");	
 	if (nid == null) {
 	    System.err.print("Validate fail buf("+buf+")\n");	
-	    ret = zxidjni.wsp_decorate(cf, ses, null,
+	    ret = zxidjni.wsp_decorate(cf, ses, "Resource=leaf:fail",
 				       "<recursed>"
 				       + "<lu:Status code=\"Fail\" comment=\"INVALID. Token replay?\"></lu:Status>" +
 				       "</recursed>");
@@ -134,7 +134,7 @@ public class zxidwspleaf extends HttpServlet {
 	String ldif = zxidjni.ses_to_ldif(cf, ses);
 	System.err.print("\n===== Leaf Doing work for user nid("+nid+").\nLDIF: "+ldif+"\n");
 
-	ret = zxidjni.wsp_decorate(cf, ses, null,
+	ret = zxidjni.wsp_decorate(cf, ses, "Resource=leaf",
 				   "<recursed>"
 				   + "<lu:Status code=\"OK\">ok</lu:Status>"
 				   + "<data>nid="+nid+"\n"+ldif+"\n</data>" +

@@ -753,7 +753,7 @@ nobody:
 print_it:
   ++zxlog_seq;
 #ifdef USE_AKBOX_FN
-  fprintf(stderr, "t%lx %04x:%-3d %04x %s d %s%s(%.*s) len=%d %d:%d\n", (long)pthread_self(), akbox_fn(file), __LINE__, akbox_fn(func), ERRMAC_INSTANCE, zx_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+  fprintf(stderr, "t%lx %04x:%-3d %s d %s%s(%.*s) len=%d %d:%d\n", (long)pthread_self(), akbox_fn(func), __LINE__, ERRMAC_INSTANCE, zx_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
 #else
   fprintf(stderr, "p%d %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), file, line, func, ERRMAC_INSTANCE, zx_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
 #endif

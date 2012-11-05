@@ -228,19 +228,10 @@ struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cr
 
   /* Call Rs-Out PDP */
 
-  if (!zxid_localpdp(cf, ses)) {
-    ERR("RSOUT3 Deny by local PDP %d",0);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_OUT, "e:Server", "Response denied by WSP local policy", TAS3_STATUS_DENY, 0, 0, 0));
+  if (!zxid_query_ctlpt_pdp(cf, ses, az_cred, env, TAS3_PEP_RS_OUT,"e:Server", cf->pepmap_rsout)) {
     /* Fall through, letting zxid_wsf_decor() pick up the fault and package it as response. */
-  } else if (cf->pdp_url && *cf->pdp_url) {
-    //zxid_add_attr_to_ses(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
-    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rsout, "RSOUT3")) {
-      ERR("RSOUT3 Deny %d", 0);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_OUT, "e:Server", "Response denied by WSP policy at PDP", TAS3_STATUS_DENY, 0, 0, 0));
-      /* Fall through, letting zxid_wsf_decor() pick up the fault and package it as response. */
-    }
   }
-  
+
   if (ses->curflt) {
     D("Detected curflt, abandoning previous Body content. %d", 0);
     /* *** LEAK: Should free previous body content */
@@ -420,8 +411,6 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
   zxid_entity* wsc_meta;
   struct zx_e_Header_s* hdr;
   struct zx_wsse_Security_s* sec;
-  int len;
-  char* p;
   zxid_cgi cgi;
 
   D_INDENT("valid: ");
@@ -582,52 +571,8 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
   
   /* Call Rq-In PDP */
 
-  /* Populate action from first subelement of body */
-  if (env->Body && env->Body->gg.kids) {
-#if 0
-    // *** sched for del
-    ed = zx_el_desc_lookup(env->Body->gg.kids->g.tok);
-    int ix =  & ZX_TOK_TOK_MASK;
-    if (ix >= zx__ELEM_MAX) {
-      ERR("Element token(0x%06x) out of range(0x%04x)", env->Body->gg.kids->g.tok, zx__ELEM_MAX);
-      return 0;
-    }
-    D("Action from Body child tok=%d name(%s)", ix, zx_el_tab[ix].name);
-    zxid_add_attr_to_ses(cf, ses, "Action", zx_dup_str(cf->ctx, zx_el_tab[ix].name));
-#else
-    len = env->Body->gg.kids->g.len;
-    p = env->Body->gg.kids->g.s;
-    D("Action from Body child ns(%s) name(%.*s)", env->Body->gg.kids->ns->url, len, p);
-    if (p = memchr(env->Body->gg.kids->g.s, ':', len)) {
-      ++p;
-      len -= p - env->Body->gg.kids->g.s;
-    } else
-      p = env->Body->gg.kids->g.s;
-    zxid_add_attr_to_ses(cf, ses, "Action",
-			 zx_strf(cf->ctx, "%s:%.*s",
-				 env->Body->gg.kids->ns->url,
-				 len, p));
-#endif
-    //zxid_add_attr_to_ses(cf, ses, "rs", zx_dup_str(cf->ctx, zx_el_tab[env->Body->gg.kids->g.tok].name));
-  } else {
-    ERR("SOAP Body does not appear to have any subelements?!? %p", env->Body);
-  }
-
-  /* Populate other attributes, such as rs to indicate resource. */
-  if (az_cred)
-    zxid_add_qs2ses(cf, ses, zx_dup_cstr(cf->ctx, az_cred), 1);
-
-  if (!zxid_localpdp(cf, ses)) {
-    ERR("RQIN2 Deny by local PDP %d",0);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_OUT, "e:Server", "Request denied by WSP local policy", TAS3_STATUS_DENY, 0, 0, 0));
-    /* Fall through, letting zxid_wsf_decor() pick up the fault and package it as response. */
-  } else if (cf->pdp_url && *cf->pdp_url) {
-    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqin, "RQIN2")) {
-      ERR("RQIN2 Deny %d", 0);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Server", "Request denied by WSP policy", TAS3_STATUS_DENY, 0, 0, 0));
-      D_DEDENT("valid: ");
-      return 0;
-    }
+  if (!zxid_query_ctlpt_pdp(cf, ses, az_cred, env, TAS3_PEP_RQ_IN, "e:Server", cf->pepmap_rqin)) {
+    return 0;
   }
   
   D_DEDENT("valid: ");
@@ -649,7 +594,7 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
  *     decision (matching obligations we support to those in the request,
  *     and obligations pleged by caller to those we insist on). See
  *     also PEPMAP configuration option. This implements generalized
- *     (application independent) Responder In PEP. To implement
+ *     (application independent) Responder-In PEP. To implement
  *     application dependent PEP features you should call zxid_az() directly.
  * env:: Entire SOAP envelope as a string
  * return:: idpnid of target identity of the request (rest of the information

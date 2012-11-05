@@ -554,4 +554,62 @@ void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_
   D("Attached (%s) obligations(%s)", attrid, obl);
 }
 
+/*() Create Action attribute, which will be used by XACML authorization,
+ * by concatenating the namespace URL and first child of SOAP Body. As
+ * the first child usually is the action verb in many SOAP Requests,
+ * we get a usable action. This convention is also recommended
+ * in Liberty Alliance Data Services Template 2.1 section 9 "Actions".
+ *
+ * Example:
+ *   ...<e:Body><di:Query xmlns:di="urn:liberty:disco:2006-08">...
+ * results
+ *   Action=urn:liberty:disco:2006-08:Query
+ */
+
+void zxid_add_action_from_body_child(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env)
+{
+  int len = env->Body->gg.kids->g.len;
+  char* p = env->Body->gg.kids->g.s;
+  D("Action from Body child ns(%s) name(%.*s)", env->Body->gg.kids->ns->url, len, p);
+  if (p = memchr(env->Body->gg.kids->g.s, ':', len)) {
+    ++p;
+    len -= p - env->Body->gg.kids->g.s;
+  } else
+    p = env->Body->gg.kids->g.s;
+  zxid_add_attr_to_ses(cf, ses, "Action",
+		       zx_strf(cf->ctx, "%s:%.*s",
+			       env->Body->gg.kids->ns->url,
+			       len, p));
+}
+
+/*() Query Local PDP and remote PDP (if PDP_URL is defined). */
+
+int zxid_query_ctlpt_pdp(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env, const char* ctlpt, const char* faultparty, struct zxid_map* pepmap)
+{
+  /* Populate action from first subelement of body */
+  if (env->Body && env->Body->gg.kids) {
+    zxid_add_action_from_body_child(cf, ses, env);
+  } else {
+    ERR("SOAP Body does not appear to have any subelements?!? %p", env->Body);
+  }
+
+  /* Populate other attributes, such as rs to indicate resource. */
+  if (az_cred)
+    zxid_add_qs2ses(cf, ses, zx_dup_cstr(cf->ctx, az_cred), 1);
+  zxid_add_qs2ses(cf, ses, zx_alloc_sprintf(cf->ctx, 0, "urn:tas3:ctlpt=%s", ctlpt), 1);
+  
+  if (!zxid_localpdp(cf, ses)) {
+    ERR("%s: Deny by local PDP", ctlpt);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, ctlpt, faultparty, "Denied by local policy", TAS3_STATUS_DENY, 0, 0, 0));
+    return 0;
+  } else if (cf->pdp_url && *cf->pdp_url) {
+    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, pepmap, ctlpt)) {
+      ERR("%s: Deny", ctlpt);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, ctlpt, faultparty, "Denied by policy at PDP", TAS3_STATUS_DENY, 0, 0, 0));
+      return 0;
+    }
+  }
+  return 1;
+}
+
 /* EOF  --  zxidwsf.c */

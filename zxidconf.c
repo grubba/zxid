@@ -1667,7 +1667,8 @@ int zxid_parse_conf(zxid_conf* cf, char* qs)
 
 #endif
 
-/*() Pretty print need or want chain. */
+/*() Pretty print need or want chain.
+ * *** leaks some ss and need nodes */
 
 /* Called by:  zxid_show_conf x2 */
 static struct zx_str* zxid_show_need(zxid_conf* cf, struct zxid_need* np)
@@ -1684,8 +1685,11 @@ static struct zx_str* zxid_show_need(zxid_conf* cf, struct zxid_need* np)
       ss->len -= 1;
       ss->s[ss->len] = 0;
     }
-    need = zx_strf(cf->ctx, "  attrs(%s)\n    usage(%s)\n    retent(%s)\n    oblig(%s)\n    ext(%s)$\n%.*s", ss->s, STRNULLCHK(np->usage), STRNULLCHK(np->retent), STRNULLCHK(np->oblig), STRNULLCHK(np->ext),
+    need = zx_strf(cf->ctx, "  attrs(%s)\n    usage(%s)\n    retent(%s)\n    oblig(%s)\n    ext(%s)$\n%.*s",
+		   ss->s, STRNULLCHK(np->usage), STRNULLCHK(np->retent),
+		   STRNULLCHK(np->oblig), STRNULLCHK(np->ext),
 		   need->len, need->s);
+    ZX_FREE(cf->ctx, ss);
   }
   if (need->len) {  /* chop off last dollar separator */
     need->len -= 2;

@@ -196,18 +196,9 @@ int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, str
   }
   
   /* Call Rs-In PDP */
-  
-  if (!zxid_localpdp(cf, ses)) {
-    ERR("RSIN4 Deny by local PDP %d",0);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Client", "Response denied by WSC local policy", TAS3_STATUS_DENY, 0, 0, 0));
+
+  if (!zxid_query_ctlpt_pdp(cf, ses, az_cred, env, TAS3_PEP_RS_IN, "e:Client", cf->pepmap_rsin)) {
     return 0;
-  } else if (cf->pdp_url && *cf->pdp_url) {
-    //zxid_add_attr_to_ses(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
-    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rsin, "RSIN4")) {
-      ERR("RSIN4 Deny %d", 0);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Client", "Response denied by WSC policy at PDP", TAS3_STATUS_DENY, 0, 0, 0));
-      return 0;
-    }
   }
   
   /* *** execute (or store for future execution) the obligations. */
@@ -564,20 +555,10 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
   }
   
   /* Call Rq-Out PDP */
-  
-  if (!zxid_localpdp(cf, ses)) {
-    ERR("RQOUT1 Deny by local PDP %d",0);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC local policy", TAS3_STATUS_DENY, 0, 0, 0));
+
+  if (!zxid_query_ctlpt_pdp(cf, ses, az_cred, env, TAS3_PEP_RQ_OUT,"e:Client", cf->pepmap_rqout)) {
     D_DEDENT("call: ");
     return 0;
-  } else if (cf->pdp_url && *cf->pdp_url) {
-    //zxid_add_attr_to_ses(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
-    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqout, "RQOUT1c")) {
-      ERR("RQOUT1 Deny %d", 0);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC policy", TAS3_STATUS_DENY, 0, 0, 0));
-      D_DEDENT("call: ");
-      return 0;
-    }
   }
 
   /* *** add usage directives */
@@ -648,7 +629,7 @@ struct zx_str* zxid_callf_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const
  *     configuration option. This implementes generalized (application
  *     independent) Requestor Out and Requestor In PEPs. To implement
  *     application dependent PEP features you should call zxid_az() directly.
- * env:: XML payload
+ * enve:: XML payload as string
  * return:: SOAP Envelope of the response, as a string. You can parse this
  *     string to obtain all returned SOAP headers as well as the Body and its
  *     content. NULL on failure. ses->curflt and/or ses->curstatus contain
@@ -746,19 +727,9 @@ struct zx_str* zxid_wsc_prepare_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr
 
   /* Call Rq-Out PDP */
   
-  if (!zxid_localpdp(cf, ses)) {
-    ERR("RQOUT1 Deny by local PDP %d",0);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC local policy", TAS3_STATUS_DENY, 0, 0, 0));
+  if (!zxid_query_ctlpt_pdp(cf, ses, az_cred, env, TAS3_PEP_RQ_OUT,"e:Client", cf->pepmap_rqout)) {
     D_DEDENT("prep: ");
     return 0;
-  } else if (cf->pdp_url && *cf->pdp_url) {
-    //zxid_add_attr_to_ses(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
-    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqout, "RQOUT1p")) {
-      ERR("RQOUT1 Deny %d", 0);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "Request denied by WSC policy", TAS3_STATUS_DENY, 0, 0, 0));
-      D_DEDENT("prep: ");
-      return 0;
-    }
   }
   
   /* *** add usage directives */

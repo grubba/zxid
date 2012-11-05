@@ -113,10 +113,10 @@ public class zxidwspdemo extends HttpServlet {
 	// Check the input for correct ID-WSF compliance
 
 	System.err.print("Validating buf("+buf+")\n");	
-	String nid  = zxidjni.wsp_validate(cf, ses, null, buf);
+	String nid  = zxidjni.wsp_validate(cf, ses, "Resource=demo", buf);
 	if (nid == null) {
 	    System.err.print("Validate fail buf("+buf+")\n");	
-	    ret = zxidjni.wsp_decorate(cf, ses, null,
+	    ret = zxidjni.wsp_decorate(cf, ses, "Resource=demo:fail",
 				       "<barfoo>"
 				       + "<lu:Status code=\"Fail\" comment=\"INVALID. Token replay?\"></lu:Status>" +
 				       "</barfoo>");
@@ -130,7 +130,7 @@ public class zxidwspdemo extends HttpServlet {
 	// Perform a application dependent authorization step and ship the response
 
 	if (zxidjni.az_cf_ses(cf, "Action=Call", ses) == null) {
-	    ret = zxidjni.wsp_decorate(cf, ses, null,
+	    ret = zxidjni.wsp_decorate(cf, ses, "Resource=demo:fail",
 				       "<barfoo>"
 				       + "<lu:Status code=\"Fail\" comment=\"Denied\"></lu:Status>"
 				       + "<data>Denied: nid="+nid+"</data>" +
@@ -139,7 +139,7 @@ public class zxidwspdemo extends HttpServlet {
 	    String recurse = "";
 	    if (buf.indexOf("STOP") == -1) {
 		// "http://sp.tas3.pt:8080/zxidservlet/wspleaf?o=B"
-	        recurse = zxidjni.call(cf, ses, "x-recurs", null, null, null, "<recursing>STOP</recursing>");
+	        recurse = zxidjni.call(cf, ses, "x-recurs", null, null, "Resource=leaf", "<recursing>STOP</recursing>");
 	        //recurse = zxidjni.call(cf, ses, "urn:x-foobar", "http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B", null, null, "<recursing>STOP</recursing>");
 		System.err.print("Recursive out("+recurse+")\n");
 		recurse = zxidjni.extract_body(cf, recurse);
@@ -147,7 +147,7 @@ public class zxidwspdemo extends HttpServlet {
 		System.err.print("Recursive STOP\n");		
 	    }
 	    
-	    ret = zxidjni.wsp_decorate(cf, ses, null,
+	    ret = zxidjni.wsp_decorate(cf, ses, "Resource=demo",
 				       "<barfoo>"
 				       + "<lu:Status code=\"OK\" comment=\"Permit\"></lu:Status>"
 				       + "<data>nid="+nid+"\n"+ldif+"\n\nRECURSE OUT:\n"+recurse+"\n</data>" +
