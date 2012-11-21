@@ -25,16 +25,7 @@
 
 #include "platform.h"
 
-#ifdef LINUX
-#include <sys/epoll.h>     /* See man 4 epoll (Linux 2.6) */
-#endif
-#ifdef SUNOS
-#include <sys/devpoll.h>   /* See man -s 7d poll (Solaris 8) */
-#include <sys/poll.h>
-#endif
-
 #include <pthread.h>
-#include <malloc.h>
 #include <memory.h>
 #include <stdlib.h>
 //#include <unistd.h>
@@ -210,12 +201,6 @@ void hi_in_out(struct hi_thr* hit, struct hi_io* io)
   
   LOCK(io->qel.mut, "in_out");
   D("LOCK io(%x)->qel.thr=%lx r/w=%d/%d ev=%x", io->fd, (long)io->qel.mut.thr, io->reading, io->writing, io->events);
-#ifdef SUNOS
-#define EPOLLHUP (POLLHUP)  /* 0x010 */
-#define EPOLLERR (POLLERR)  /* 0x008 */
-#define EPOLLOUT (POLLOUT)  /* 0x004 */
-#define EPOLLIN  (POLLIN)   /* 0x001 */
-#endif
   if (io->events & (EPOLLHUP | EPOLLERR)) {
     D("HUP or ERR on fd=%x events=0x%x", io->fd, io->events);
   close:

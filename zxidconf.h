@@ -870,7 +870,23 @@
 #define ZXID_LOCALPDP_IDPNID_DENY "denynid" /* Blacklist of denied users */
 
 /*(c) Obligations we are willing to respect (unless an explicit UsageDirectives header
- * is specified by caller), require, generate, and accept. */
+ * is specified by caller), require, generate, and accept. Examples:
+ *
+ *   WSC_LOCALPDP_OBL_PLEDGE=urn:tas3:sol1:contract-fwk=urn:syn-trust:obl:base-contract:2012-11
+ *   WSC_LOCALPDP_OBL_PLEDGE=urn:tas3:sol1:contract-fwk=urn:syn-trust:obl:base-contract:2012-11%26urn:tas3:sol1:xborder=urn:tas3:sol1:xdom:eu
+ *   WSC_LOCALPDP_OBL_PLEDGE=urn:tas3:sol1:contract-fwk=urn:syn-trust:obl:base-contract:2012-11$urn:tas3:sol1:xborder=urn:tas3:sol1:xdom:eu
+ *
+ * Since SOL expressions are parsed according to URL query string rules and since
+ * the configuration directives are also parsed according toquery string rules,
+ * a problem arises with multipart SOL expressions. The second expression shows
+ * how to use URL quoting (%26) to protect the SOL ampersand from being processed
+ * by the configuration file. Since this is such a common situation, a special
+ * separator dollar ($, 0x24) may be used instead, as illustrated in third example.
+ *
+ * Multiple WSP_LOCALPDP_OBL_REQ and WSP_LOCALPDP_OBL_EMIT directives accumulate.
+ * Special pledge name "reset" can be used to reset the list.
+ *
+ * See further discussion in tas3-proto.pd section 2.12 Simple Obligations Language (SOL). */
 #define ZXID_WSC_LOCALPDP_OBL_PLEDGE  0  /* String: WSC pledged obligations in SOL notation */
 #define ZXID_WSP_LOCALPDP_OBL_REQ     0  /* String: WSP required obligations in SOL notation */
 #define ZXID_WSP_LOCALPDP_OBL_EMIT    0  /* String: WSP obligations emitted on resp */

@@ -107,6 +107,11 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Support BrowserID https://developer.mozilla.org/en-US/docs/persona
     - BUG: Passing qs args in RelayState
 
+zxid-1.12:: 21.11.2012
+    - Added sketchy kqueue support based on FreeBSD man page, but did not test
+    - Fixed compile errors and warnings on MacOS per Michael Dondrup at uni.no
+    - Added better obligations support
+
 zxid-1.11:: 30.9.2012
     - Added audit bus infrastructure (not yet universally propagated)
     - Added simplistic yubikey 2 factor authentication (pin+yubikey)

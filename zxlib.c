@@ -24,9 +24,6 @@
 #include "platform.h"  /* needed on Win32 for snprintf(), va_copy() et al. */
 
 //#include <pthread.h>
-//#ifndef MACOSX
-//#include <malloc.h>
-//#endif
 #include <memory.h>
 #include <string.h>
 #include <stdarg.h>

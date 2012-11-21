@@ -24,6 +24,7 @@
  *      > ln -s /var/zxid/bus/uid/G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/162553b8
  */
 
+#include <pthread.h>
 #include <signal.h>
 #include <fcntl.h>
 #include <netdb.h>
@@ -191,7 +192,7 @@ int parse_port_spec(char* arg, struct hi_host_spec** head, char* default_host)
   ZMALLOC(hs);
   
   if (default_host[0] == '/') {  /* Its a serial port */
-    hs->sin.sin_family = 0xfead;
+    hs->sin.sin_family = (unsigned short int)0xfead;
   } else {
     he = gethostbyname(default_host);
     if (!he) {
@@ -716,7 +717,7 @@ int zxbusd_main(int argc, char** argv, char** env)
       if (hs->proto == HIPROTO_SMTP)
 	continue;  /* SMTP connections are opened later, when actual data from SIS arrives. */
 
-      if (hs->sin.sin_family == 0xfead)
+      if (hs->sin.sin_family == (unsigned short int)0xfead)
 	io = serial_init(&hit, hs);
       else
 	io = hi_open_tcp(&hit, hs, hs->proto);

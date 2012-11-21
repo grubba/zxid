@@ -1769,12 +1769,13 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_wsc_localpdp_obl_pledge_get(zxid_conf.getCPtr(self));
   }
 
-  public static void conf_wsp_localpdp_obl_req_set(zxid_conf self, String value) {
-    zxidjniJNI.zxid_conf_wsp_localpdp_obl_req_set(zxid_conf.getCPtr(self), value);
+  public static void conf_wsp_localpdp_obl_req_set(zxid_conf self, SWIGTYPE_p_zxid_obl_list value) {
+    zxidjniJNI.zxid_conf_wsp_localpdp_obl_req_set(zxid_conf.getCPtr(self), SWIGTYPE_p_zxid_obl_list.getCPtr(value));
   }
 
-  public static String conf_wsp_localpdp_obl_req_get(zxid_conf self) {
-    return zxidjniJNI.zxid_conf_wsp_localpdp_obl_req_get(zxid_conf.getCPtr(self));
+  public static SWIGTYPE_p_zxid_obl_list conf_wsp_localpdp_obl_req_get(zxid_conf self) {
+    long cPtr = zxidjniJNI.zxid_conf_wsp_localpdp_obl_req_get(zxid_conf.getCPtr(self));
+    return (cPtr == 0) ? null : new SWIGTYPE_p_zxid_obl_list(cPtr, false);
   }
 
   public static void conf_wsp_localpdp_obl_emit_set(zxid_conf self, String value) {
@@ -1785,12 +1786,13 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_wsp_localpdp_obl_emit_get(zxid_conf.getCPtr(self));
   }
 
-  public static void conf_wsc_localpdp_obl_accept_set(zxid_conf self, String value) {
-    zxidjniJNI.zxid_conf_wsc_localpdp_obl_accept_set(zxid_conf.getCPtr(self), value);
+  public static void conf_wsc_localpdp_obl_accept_set(zxid_conf self, SWIGTYPE_p_zxid_obl_list value) {
+    zxidjniJNI.zxid_conf_wsc_localpdp_obl_accept_set(zxid_conf.getCPtr(self), SWIGTYPE_p_zxid_obl_list.getCPtr(value));
   }
 
-  public static String conf_wsc_localpdp_obl_accept_get(zxid_conf self) {
-    return zxidjniJNI.zxid_conf_wsc_localpdp_obl_accept_get(zxid_conf.getCPtr(self));
+  public static SWIGTYPE_p_zxid_obl_list conf_wsc_localpdp_obl_accept_get(zxid_conf self) {
+    long cPtr = zxidjniJNI.zxid_conf_wsc_localpdp_obl_accept_get(zxid_conf.getCPtr(self));
+    return (cPtr == 0) ? null : new SWIGTYPE_p_zxid_obl_list(cPtr, false);
   }
 
   public static void conf_bootstrap_level_set(zxid_conf self, int value) {
@@ -3317,6 +3319,41 @@ public class zxidjni implements zxidjniConstants {
 
   public static void delete_zxid_cstr_list(SWIGTYPE_p_zxid_cstr_list self) {
     zxidjniJNI.delete_zxid_cstr_list(SWIGTYPE_p_zxid_cstr_list.getCPtr(self));
+  }
+
+  public static void obl_list_n_set(SWIGTYPE_p_zxid_obl_list self, SWIGTYPE_p_zxid_obl_list value) {
+    zxidjniJNI.zxid_obl_list_n_set(SWIGTYPE_p_zxid_obl_list.getCPtr(self), SWIGTYPE_p_zxid_obl_list.getCPtr(value));
+  }
+
+  public static SWIGTYPE_p_zxid_obl_list obl_list_n_get(SWIGTYPE_p_zxid_obl_list self) {
+    long cPtr = zxidjniJNI.zxid_obl_list_n_get(SWIGTYPE_p_zxid_obl_list.getCPtr(self));
+    return (cPtr == 0) ? null : new SWIGTYPE_p_zxid_obl_list(cPtr, false);
+  }
+
+  public static void obl_list_name_set(SWIGTYPE_p_zxid_obl_list self, String value) {
+    zxidjniJNI.zxid_obl_list_name_set(SWIGTYPE_p_zxid_obl_list.getCPtr(self), value);
+  }
+
+  public static String obl_list_name_get(SWIGTYPE_p_zxid_obl_list self) {
+    return zxidjniJNI.zxid_obl_list_name_get(SWIGTYPE_p_zxid_obl_list.getCPtr(self));
+  }
+
+  public static void obl_list_vals_set(SWIGTYPE_p_zxid_obl_list self, SWIGTYPE_p_zxid_cstr_list value) {
+    zxidjniJNI.zxid_obl_list_vals_set(SWIGTYPE_p_zxid_obl_list.getCPtr(self), SWIGTYPE_p_zxid_cstr_list.getCPtr(value));
+  }
+
+  public static SWIGTYPE_p_zxid_cstr_list obl_list_vals_get(SWIGTYPE_p_zxid_obl_list self) {
+    long cPtr = zxidjniJNI.zxid_obl_list_vals_get(SWIGTYPE_p_zxid_obl_list.getCPtr(self));
+    return (cPtr == 0) ? null : new SWIGTYPE_p_zxid_cstr_list(cPtr, false);
+  }
+
+  public static SWIGTYPE_p_zxid_obl_list new_zxid_obl_list() {
+    long cPtr = zxidjniJNI.new_zxid_obl_list();
+    return (cPtr == 0) ? null : new SWIGTYPE_p_zxid_obl_list(cPtr, true);
+  }
+
+  public static void delete_zxid_obl_list(SWIGTYPE_p_zxid_obl_list self) {
+    zxidjniJNI.delete_zxid_obl_list(SWIGTYPE_p_zxid_obl_list.getCPtr(self));
   }
 
   public static void stomp_hdr_len_set(SWIGTYPE_p_stomp_hdr self, int value) {

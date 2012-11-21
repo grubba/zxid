@@ -19,16 +19,9 @@
  *   qel.n --> qel.n --> qel.n --> 0   qel.n --> 0          0        0
  */
 
-#ifdef LINUX
-#include <sys/epoll.h>     /* See man 4 epoll (Linux 2.6) */
-#endif
-#ifdef SUNOS
-#include <sys/devpoll.h>   /* See man -s 7d poll (Solaris 8) */
-#include <sys/poll.h>
-#endif
+#include "platform.h"
 
 #include <pthread.h>
-#include <malloc.h>
 #include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>

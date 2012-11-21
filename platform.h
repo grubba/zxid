@@ -143,6 +143,22 @@ unsigned int alarm(unsigned int secs);
 #include <mcheck.h>
 #endif
 
+#if defined(MACOSX) || defined(FREEBSD)
+#include <event.h>          /* for kqueue used by zxbusd */
+#endif
+
+#ifdef LINUX
+#include <sys/epoll.h>      /* See man 4 epoll (Linux 2.6) */
+#endif
+#ifdef SUNOS
+#include <sys/devpoll.h>    /* See man -s 7d poll (Solaris 8) */
+#include <sys/poll.h>
+#define EPOLLHUP (POLLHUP)  /* 0x010 */
+#define EPOLLERR (POLLERR)  /* 0x008 */
+#define EPOLLOUT (POLLOUT)  /* 0x004 */
+#define EPOLLIN  (POLLIN)   /* 0x001 */
+#endif
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

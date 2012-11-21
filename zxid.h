@@ -251,9 +251,9 @@ struct zxid_conf {
   struct zxid_cstr_list* localpdp_idpnid_deny;
 
   char* wsc_localpdp_obl_pledge;
-  char* wsp_localpdp_obl_req;
+  struct zxid_obl_list* wsp_localpdp_obl_req;
   char* wsp_localpdp_obl_emit;
-  char* wsc_localpdp_obl_accept;
+  struct zxid_obl_list* wsc_localpdp_obl_accept;
   
   int   bootstrap_level;     /* How many layers of bootstraps are generated. */
   int   max_soap_retry;      /* How many times a ID-WSF SOAP call can be retried (update EPR) */
@@ -524,6 +524,14 @@ struct zxid_map {
 struct zxid_cstr_list {
   struct zxid_cstr_list* n;
   char* s;
+};
+
+/*(s) Obligations list with multiple values per obligation. */
+
+struct zxid_obl_list {
+  struct zxid_obl_list* n;
+  char* name;
+  struct zxid_cstr_list* vals;
 };
 
 #define ZXID_MAP_RULE_RENAME     0x00

@@ -279,6 +279,9 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
   return 1;
 }
 
+/*(-) Use EncryptedAssertion if available, otherwise plain Assertion.
+ * ses->call_invoktok allows other token to be specified, as an override. */
+
 /* Called by:  zxid_wsc_prep_secmech x2 */
 static void zxid_choose_sectok(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_wsse_Security_s* sec)
 {

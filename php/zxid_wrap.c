@@ -1028,12 +1028,13 @@ static void SWIG_Php_SetModule(swig_module_info *pointer) {
 #define SWIGTYPE_p_zxid_invite swig_types[55]
 #define SWIGTYPE_p_zxid_map swig_types[56]
 #define SWIGTYPE_p_zxid_need swig_types[57]
-#define SWIGTYPE_p_zxid_perm swig_types[58]
-#define SWIGTYPE_p_zxid_psobj swig_types[59]
-#define SWIGTYPE_p_zxid_ses swig_types[60]
-#define SWIGTYPE_p_zxsig_ref swig_types[61]
-static swig_type_info *swig_types[63];
-static swig_module_info swig_module = {swig_types, 62, 0, 0, 0, 0};
+#define SWIGTYPE_p_zxid_obl_list swig_types[58]
+#define SWIGTYPE_p_zxid_perm swig_types[59]
+#define SWIGTYPE_p_zxid_psobj swig_types[60]
+#define SWIGTYPE_p_zxid_ses swig_types[61]
+#define SWIGTYPE_p_zxsig_ref swig_types[62]
+static swig_type_info *swig_types[64];
+static swig_module_info swig_module = {swig_types, 63, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1182,6 +1183,7 @@ static swig_type_info _swigt__p_zxid_entity_s = {"_p_zxid_entity_s", "zxid_entit
 static swig_type_info _swigt__p_zxid_invite = {"_p_zxid_invite", "struct zxid_invite *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_zxid_map = {"_p_zxid_map", "struct zxid_map *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_zxid_need = {"_p_zxid_need", "struct zxid_need *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_zxid_obl_list = {"_p_zxid_obl_list", "struct zxid_obl_list *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_zxid_perm = {"_p_zxid_perm", "struct zxid_perm *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_zxid_psobj = {"_p_zxid_psobj", "struct zxid_psobj *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_zxid_ses = {"_p_zxid_ses", "struct zxid_ses *|zxid_ses *", 0, 0, (void*)0, 0};
@@ -1246,6 +1248,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_zxid_invite,
   &_swigt__p_zxid_map,
   &_swigt__p_zxid_need,
+  &_swigt__p_zxid_obl_list,
   &_swigt__p_zxid_perm,
   &_swigt__p_zxid_psobj,
   &_swigt__p_zxid_ses,
@@ -1310,6 +1313,7 @@ static swig_cast_info _swigc__p_zxid_entity_s[] = {  {&_swigt__p_zxid_entity_s, 
 static swig_cast_info _swigc__p_zxid_invite[] = {  {&_swigt__p_zxid_invite, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_zxid_map[] = {  {&_swigt__p_zxid_map, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_zxid_need[] = {  {&_swigt__p_zxid_need, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_zxid_obl_list[] = {  {&_swigt__p_zxid_obl_list, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_zxid_perm[] = {  {&_swigt__p_zxid_perm, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_zxid_psobj[] = {  {&_swigt__p_zxid_psobj, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_zxid_ses[] = {  {&_swigt__p_zxid_ses, 0, 0, 0},{0, 0, 0, 0}};
@@ -1374,6 +1378,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_zxid_invite,
   _swigc__p_zxid_map,
   _swigc__p_zxid_need,
+  _swigc__p_zxid_obl_list,
   _swigc__p_zxid_perm,
   _swigc__p_zxid_psobj,
   _swigc__p_zxid_ses,
@@ -1393,6 +1398,7 @@ static int le_swig__p_zx_a_EndpointReference_s=0; /* handle for _p_zx_a_Endpoint
 static int le_swig__p_char=0; /* handle for _p_char */
 static int le_swig__p_p_char=0; /* handle for _p_p_char */
 static int le_swig__p_zx_ds_Reference_s=0; /* handle for _p_zx_ds_Reference_s */
+static int le_swig__p_zxid_obl_list=0; /* handle for zxid_obl_list */
 static int le_swig__p_zxid_cgi=0; /* handle for _p_zxid_cgi */
 static int le_swig__p_zx_sec_Token_s=0; /* handle for _p_zx_sec_Token_s */
 static int le_swig__p_zx_str=0; /* handle for zx_str */
@@ -14948,7 +14954,7 @@ fail:
 
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsp_localpdp_obl_req_set) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
-  char *arg2 = (char *) 0 ;
+  struct zxid_obl_list *arg2 = (struct zxid_obl_list *) 0 ;
   zval **args[2];
   
   SWIG_ResetError();
@@ -14962,25 +14968,12 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsp_localpdp_obl_req_set) {
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
-  
-  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
-  if ((*args[1])->type==IS_NULL) {
-    arg2 = (char *) 0;
-  } else {
-    convert_to_string_ex(args[1]);
-    arg2 = (char *) Z_STRVAL_PP(args[1]);
-  }
-  /*@SWIG@*/;
-  
   {
-    if (arg1->wsp_localpdp_obl_req) free((char *)arg1->wsp_localpdp_obl_req);
-    if (arg2) {
-      arg1->wsp_localpdp_obl_req = (char *) malloc(strlen((const char *)arg2)+1);
-      strcpy((char *)arg1->wsp_localpdp_obl_req, (const char *)arg2);
-    } else {
-      arg1->wsp_localpdp_obl_req = 0;
+    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zxid_obl_list, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_conf_wsp_localpdp_obl_req_set. Expected SWIGTYPE_p_zxid_obl_list");
     }
   }
+  if (arg1) (arg1)->wsp_localpdp_obl_req = arg2;
   
   return;
 fail:
@@ -14991,7 +14984,7 @@ fail:
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsp_localpdp_obl_req_get) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   zval **args[1];
-  char *result = 0 ;
+  struct zxid_obl_list *result = 0 ;
   
   SWIG_ResetError();
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -15004,14 +14997,10 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsp_localpdp_obl_req_get) {
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
-  result = (char *) ((arg1)->wsp_localpdp_obl_req);
-  {
-    if(!result) {
-      ZVAL_NULL(return_value);
-    } else {
-      ZVAL_STRING(return_value, (char *)result, 1);
-    }
-  }
+  result = (struct zxid_obl_list *) ((arg1)->wsp_localpdp_obl_req);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_zxid_obl_list, 0);
+  
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -15092,7 +15081,7 @@ fail:
 
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsc_localpdp_obl_accept_set) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
-  char *arg2 = (char *) 0 ;
+  struct zxid_obl_list *arg2 = (struct zxid_obl_list *) 0 ;
   zval **args[2];
   
   SWIG_ResetError();
@@ -15106,25 +15095,12 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsc_localpdp_obl_accept_set) {
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
-  
-  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
-  if ((*args[1])->type==IS_NULL) {
-    arg2 = (char *) 0;
-  } else {
-    convert_to_string_ex(args[1]);
-    arg2 = (char *) Z_STRVAL_PP(args[1]);
-  }
-  /*@SWIG@*/;
-  
   {
-    if (arg1->wsc_localpdp_obl_accept) free((char *)arg1->wsc_localpdp_obl_accept);
-    if (arg2) {
-      arg1->wsc_localpdp_obl_accept = (char *) malloc(strlen((const char *)arg2)+1);
-      strcpy((char *)arg1->wsc_localpdp_obl_accept, (const char *)arg2);
-    } else {
-      arg1->wsc_localpdp_obl_accept = 0;
+    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zxid_obl_list, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_conf_wsc_localpdp_obl_accept_set. Expected SWIGTYPE_p_zxid_obl_list");
     }
   }
+  if (arg1) (arg1)->wsc_localpdp_obl_accept = arg2;
   
   return;
 fail:
@@ -15135,7 +15111,7 @@ fail:
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsc_localpdp_obl_accept_get) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   zval **args[1];
-  char *result = 0 ;
+  struct zxid_obl_list *result = 0 ;
   
   SWIG_ResetError();
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -15148,14 +15124,10 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsc_localpdp_obl_accept_get) {
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
-  result = (char *) ((arg1)->wsc_localpdp_obl_accept);
-  {
-    if(!result) {
-      ZVAL_NULL(return_value);
-    } else {
-      ZVAL_STRING(return_value, (char *)result, 1);
-    }
-  }
+  result = (struct zxid_obl_list *) ((arg1)->wsc_localpdp_obl_accept);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_zxid_obl_list, 0);
+  
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -27310,6 +27282,225 @@ static void __wrap_delete_zxid_cstr_list(zend_rsrc_list_entry *rsrc, const char 
   if (! newobject) return; /* can't delete it! */
   arg1 = (struct zxid_cstr_list *)SWIG_ZTS_ConvertResourceData(ptr,type_name,SWIGTYPE_p_zxid_cstr_list TSRMLS_CC);
   if (! arg1) zend_error(E_ERROR, "zxid_cstr_list resource already free'd");
+  free((char *) arg1);
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zxid_obl_list_n_set) {
+  struct zxid_obl_list *arg1 = (struct zxid_obl_list *) 0 ;
+  struct zxid_obl_list *arg2 = (struct zxid_obl_list *) 0 ;
+  zval **args[2];
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_obl_list, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_obl_list_n_set. Expected SWIGTYPE_p_zxid_obl_list");
+    }
+  }
+  if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
+  {
+    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zxid_obl_list, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_obl_list_n_set. Expected SWIGTYPE_p_zxid_obl_list");
+    }
+  }
+  if (arg1) (arg1)->n = arg2;
+  
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zxid_obl_list_n_get) {
+  struct zxid_obl_list *arg1 = (struct zxid_obl_list *) 0 ;
+  zval **args[1];
+  struct zxid_obl_list *result = 0 ;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_obl_list, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_obl_list_n_get. Expected SWIGTYPE_p_zxid_obl_list");
+    }
+  }
+  if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
+  result = (struct zxid_obl_list *) ((arg1)->n);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_zxid_obl_list, 0);
+  
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zxid_obl_list_name_set) {
+  struct zxid_obl_list *arg1 = (struct zxid_obl_list *) 0 ;
+  char *arg2 = (char *) 0 ;
+  zval **args[2];
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_obl_list, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_obl_list_name_set. Expected SWIGTYPE_p_zxid_obl_list");
+    }
+  }
+  if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
+  
+  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
+  if ((*args[1])->type==IS_NULL) {
+    arg2 = (char *) 0;
+  } else {
+    convert_to_string_ex(args[1]);
+    arg2 = (char *) Z_STRVAL_PP(args[1]);
+  }
+  /*@SWIG@*/;
+  
+  {
+    if (arg1->name) free((char *)arg1->name);
+    if (arg2) {
+      arg1->name = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->name, (const char *)arg2);
+    } else {
+      arg1->name = 0;
+    }
+  }
+  
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zxid_obl_list_name_get) {
+  struct zxid_obl_list *arg1 = (struct zxid_obl_list *) 0 ;
+  zval **args[1];
+  char *result = 0 ;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_obl_list, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_obl_list_name_get. Expected SWIGTYPE_p_zxid_obl_list");
+    }
+  }
+  if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
+  result = (char *) ((arg1)->name);
+  {
+    if(!result) {
+      ZVAL_NULL(return_value);
+    } else {
+      ZVAL_STRING(return_value, (char *)result, 1);
+    }
+  }
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zxid_obl_list_vals_set) {
+  struct zxid_obl_list *arg1 = (struct zxid_obl_list *) 0 ;
+  struct zxid_cstr_list *arg2 = (struct zxid_cstr_list *) 0 ;
+  zval **args[2];
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_obl_list, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_obl_list_vals_set. Expected SWIGTYPE_p_zxid_obl_list");
+    }
+  }
+  if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
+  {
+    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zxid_cstr_list, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_obl_list_vals_set. Expected SWIGTYPE_p_zxid_cstr_list");
+    }
+  }
+  if (arg1) (arg1)->vals = arg2;
+  
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zxid_obl_list_vals_get) {
+  struct zxid_obl_list *arg1 = (struct zxid_obl_list *) 0 ;
+  zval **args[1];
+  struct zxid_cstr_list *result = 0 ;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_obl_list, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_obl_list_vals_get. Expected SWIGTYPE_p_zxid_obl_list");
+    }
+  }
+  if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
+  result = (struct zxid_cstr_list *) ((arg1)->vals);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_zxid_cstr_list, 0);
+  
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_new_zxid_obl_list) {
+  struct zxid_obl_list *result = 0 ;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (struct zxid_obl_list *)calloc(1, sizeof(struct zxid_obl_list));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_zxid_obl_list, 1);
+  
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+/* This function is designed to be called by the zend list destructors */
+/* to typecast and do the actual destruction */
+static void __wrap_delete_zxid_obl_list(zend_rsrc_list_entry *rsrc, const char *type_name TSRMLS_DC) {
+  swig_object_wrapper *value=(swig_object_wrapper *) rsrc->ptr ;
+  void *ptr=value->ptr ;
+  int newobject=value->newobject ;
+  struct zxid_obl_list *arg1 = (struct zxid_obl_list *) 0 ;
+  
+  efree(value);
+  if (! newobject) return; /* can't delete it! */
+  arg1 = (struct zxid_obl_list *)SWIG_ZTS_ConvertResourceData(ptr,type_name,SWIGTYPE_p_zxid_obl_list TSRMLS_CC);
+  if (! arg1) zend_error(E_ERROR, "zxid_obl_list resource already free'd");
   free((char *) arg1);
   return;
 fail:
@@ -40968,6 +41159,9 @@ static ZEND_RSRC_DTOR_FUNC(_wrap_destroy_p_zx_ds_Reference_s) {
   /* No destructor for simple type _p_zx_ds_Reference_s */
   efree(rsrc->ptr);
 }
+static ZEND_RSRC_DTOR_FUNC(_wrap_destroy_p_zxid_obl_list) {
+  __wrap_delete_zxid_obl_list(rsrc, SWIGTYPE_p_zxid_obl_list->name TSRMLS_CC);
+}
 static ZEND_RSRC_DTOR_FUNC(_wrap_destroy_p_zxid_cgi) {
   /* No destructor for simple type _p_zxid_cgi */
   efree(rsrc->ptr);
@@ -41962,6 +42156,13 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zxid_cstr_list_s_set,_wrap_zxid_cstr_list_s_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_cstr_list_s_get,_wrap_zxid_cstr_list_s_get,NULL)
  SWIG_ZEND_NAMED_FE(new_zxid_cstr_list,_wrap_new_zxid_cstr_list,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_obl_list_n_set,_wrap_zxid_obl_list_n_set,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_obl_list_n_get,_wrap_zxid_obl_list_n_get,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_obl_list_name_set,_wrap_zxid_obl_list_name_set,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_obl_list_name_get,_wrap_zxid_obl_list_name_get,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_obl_list_vals_set,_wrap_zxid_obl_list_vals_set,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_obl_list_vals_get,_wrap_zxid_obl_list_vals_get,NULL)
+ SWIG_ZEND_NAMED_FE(new_zxid_obl_list,_wrap_new_zxid_obl_list,NULL)
  SWIG_ZEND_NAMED_FE(stomp_hdr_len_set,_wrap_stomp_hdr_len_set,NULL)
  SWIG_ZEND_NAMED_FE(stomp_hdr_len_get,_wrap_stomp_hdr_len_get,NULL)
  SWIG_ZEND_NAMED_FE(stomp_hdr_body_set,_wrap_stomp_hdr_body_set,NULL)
@@ -42594,6 +42795,8 @@ le_swig__p_p_char=zend_register_list_destructors_ex(_wrap_destroy_p_p_char,NULL,
 SWIG_TypeClientData(SWIGTYPE_p_p_char,&le_swig__p_p_char);
 le_swig__p_zx_ds_Reference_s=zend_register_list_destructors_ex(_wrap_destroy_p_zx_ds_Reference_s,NULL,(char *)(SWIGTYPE_p_zx_ds_Reference_s->name),module_number);
 SWIG_TypeClientData(SWIGTYPE_p_zx_ds_Reference_s,&le_swig__p_zx_ds_Reference_s);
+le_swig__p_zxid_obl_list=zend_register_list_destructors_ex(_wrap_destroy_p_zxid_obl_list,NULL,(char *)(SWIGTYPE_p_zxid_obl_list->name),module_number);
+SWIG_TypeClientData(SWIGTYPE_p_zxid_obl_list,&le_swig__p_zxid_obl_list);
 le_swig__p_zxid_cgi=zend_register_list_destructors_ex(_wrap_destroy_p_zxid_cgi,NULL,(char *)(SWIGTYPE_p_zxid_cgi->name),module_number);
 SWIG_TypeClientData(SWIGTYPE_p_zxid_cgi,&le_swig__p_zxid_cgi);
 le_swig__p_zx_sec_Token_s=zend_register_list_destructors_ex(_wrap_destroy_p_zx_sec_Token_s,NULL,(char *)(SWIGTYPE_p_zx_sec_Token_s->name),module_number);

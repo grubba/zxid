@@ -296,6 +296,9 @@ struct hiios {
 #ifdef SUNOS
   struct pollfd* evs;
 #endif
+#if defined(MACOSX) || defined(FREEBSD)
+  struct kevent* evs;
+#endif
   //int n_ios;
   int max_ios;                  /* Size of ios array = maximum number of fds */
   struct hi_io* ios;            /* Dynamically allocated array of io objects, one per fd. */

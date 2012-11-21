@@ -28,7 +28,6 @@
 #include "platform.h"
 
 #include <pthread.h>
-#include <malloc.h>
 #include <memory.h>
 #include <stdlib.h>
 //#include <unistd.h>

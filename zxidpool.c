@@ -824,7 +824,8 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
 }
 
 /*(i) Add Attributes from Querty String to Session attribute pool
- * The qs argument is parsed according to the CGI Query String rules
+ * The qs argument is parsed according to the CGI Query String rules (string
+ * is modifed to insert nul terminations and URL decoded in place)
  * and the attributes are added to the session. If apply_map is 1, the
  * INMAP configuration is applied. While this may seem a hassle, it
  * allows for specification of the values as safe_base64, etc. If values
@@ -836,40 +837,23 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
 /* Called by:  zxid_az_base_cf_ses, zxid_az_cf_ses */
 int zxid_add_qs2ses(zxid_conf* cf, zxid_ses* ses, char* qs, int apply_map)
 {
-  char *p, *n, *v, *val, *name;
+  char* n;
+  char* v;
   if (!qs || !ses)
     return 0;
 
   D("qs(%s) len=%d", qs, (int)strlen(qs));
   while (qs && *qs) {
-    for (; *qs == '&'; ++qs) ;    /* Skip over & or && */
-    if (!*qs) break;
-    
-    qs = strchr(name = qs, '=');  /* Scan name (until '=') */
-    if (!qs) break;
-    if (qs == name) {             /* Key was an empty string: skip it */
-      qs = strchr(qs, '&');       /* Scan value (until '&') *** or '?' */
-      continue;
-    }
-    for (; name < qs && *name <= ' '; ++name) ; /* Skip over initial whitespace before name */
-    n = p = name;
-    URL_DECODE(p, name, qs);
-    *p = 0;                                     /* Nul-term n (name) */
-    
-    for (val = ++qs; *qs && *qs != '&'; ++qs) ; /* Skip over = and scan value till '&' */
-    v = p = val;
-    URL_DECODE(p, val, qs);
-
-    if (*qs)
-      ++qs;
-    *p = 0;                                     /* Nul-term v (value) */
+    qs = zxid_qs_nv_scan(qs, &n, &v, 1);
+    if (!n)
+      n = "NULL_NAM_ERR";
 
     if (apply_map) {
       D("map %s=%s", n,v);
       zxid_add_attr_to_ses(cf, ses, n, zx_dup_str(cf->ctx, v));  
     } else {
       D("asis %s=%s", n,v);
-      ses->at = zxid_new_at(cf, ses->at, v-n-1, n, p-v, v, "as is3");
+      ses->at = zxid_new_at(cf, ses->at, strlen(n), n, strlen(v), v, "as is3");
     }
   }
   return 1;

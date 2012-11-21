@@ -483,8 +483,14 @@ int zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, 
   } else {
     strcpy(cn, "Unknown server cn. Misconfiguration.");
   }
-  
+
+#if 0
+  /* On some CAs the OU can not exceed 30 chars  2         3
+   *                          123456789012345678901234567890 */
   snprintf(ou, sizeof(ou)-1, "SSO Dept ZXID Auto-Cert %s", cf->url);
+#else
+  snprintf(ou, sizeof(ou)-1, "SSO Dept ZXID Auto-Cert");
+#endif
   ou[sizeof(ou)-1] = 0;  /* must terminate manually as on win32 termination is not guaranteed */
 
   ts = time(0);
@@ -497,7 +503,11 @@ int zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, 
   
   pkey=EVP_PKEY_new();
   DD("keygen preparing rsa key %s", lk);
+#if 0
   rsa = RSA_generate_key(1024 /*bits*/, 0x10001 /*65537*/, 0 /*req_cb*/, 0 /*arg*/);
+#else
+  rsa = RSA_generate_key(2048 /*bits*/, 0x10001 /*65537*/, 0 /*req_cb*/, 0 /*arg*/);
+#endif
   DD("keygen rsa key generated %s", name);
   EVP_PKEY_assign_RSA(pkey, rsa);
 
@@ -543,6 +553,8 @@ badurl:
 
   /* Construct DN part by part. We want cn=www.site.com,o=ZXID Auto-Cert */
 
+  if (cf->contact_email)
+    zxid_add_name_field(ri->subject, V_ASN1_IA5STRING, NID_pkcs9_emailAddress, cf->contact_email);
   zxid_add_name_field(ri->subject, V_ASN1_PRINTABLESTRING, NID_commonName, cn);
   zxid_add_name_field(ri->subject, V_ASN1_T61STRING, NID_organizationalUnitName, ou);
   zxid_add_name_field(ri->subject, V_ASN1_T61STRING, NID_organizationName, cf->org_name);

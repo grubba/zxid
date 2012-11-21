@@ -27,16 +27,7 @@
 
 #include "platform.h"
 
-#ifdef LINUX
-#include <sys/epoll.h>     /* See man 4 epoll (Linux 2.6) */
-#endif
-#ifdef SUNOS
-#include <sys/devpoll.h>   /* See man -s 7d poll (Solaris 8) */
-#include <sys/poll.h>
-#endif
-
 #include <pthread.h>
-#include <malloc.h>
 #include <memory.h>
 #include <stdlib.h>
 //#include <unistd.h>
@@ -246,6 +237,17 @@ struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int p
     }
   }
 #endif
+#if defined(MACOSX) || defined(FREEBSD)
+  {
+    struct kevent kev;
+    EV_SET(kev, fd, EVFILT_READ, EV_ADD, 0, 0, &zero_timeout);
+    if (kevent(hit->shf->ep, &kev, 1, 0,0,0) == -1) {
+      ERR("kevent: fd(%d): %d %s", fd, errno, STRERROR(errno));
+      close(fd);
+      return 0;
+    }
+  }
+#endif
 
   io->fd = fd;
   io->qel.kind = HI_LISTENT;
@@ -253,6 +255,10 @@ struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int p
   D("listen(%x) hs(%s)", fd, hs->specstr);
   return io;
 }
+
+#if defined(MACOSX) || defined(FREEBSD)
+const struct timespec* zero_timeout = {0,0};
+#endif
 
 /*() When poll marker is consumed from the todo, perform OS dependent epoll(2) or similar. */
 
@@ -305,6 +311,27 @@ void hi_poll(struct hi_thr* hit)
       /*if (!io->cur_pdu || io->cur_pdu->need)   *** cur_pdu is always set */
       hi_todo_produce(hit, &io->qel, "poll", 1); /* *** should the todo_mut lock be batched? */
     }
+  }
+#endif
+#if defined(MACOSX) || defined(FREEBSD)
+  hit->shf->n_evs = kevent(hit->shf->ep, 0,0, hit->shf->evs, hit->shf->max_evs, &zero_timeout);
+  if (hit->shf->n_evs == -1) {
+    if (errno == EINTR) {
+      D("EINTR fd(%x)", hit->shf->ep);
+      goto retry;
+    }
+    ERR("epoll_wait(%x): %d %s", hit->shf->ep, errno, STRERROR(errno));
+    return;
+  }
+  /* *** double check whether the evs (array of kevents) is in filedescriptor order */
+  for (i = 0; i < hit->shf->n_evs; ++i) {
+    io = (struct hi_io*)hit->shf->evs[i].data.ptr;
+    io->events = hit->shf->evs[i].events;
+    /* *** Should the todo_mut lock be batched? The advantage might not be big
+     * as we need to either do pthread_cond_signal(3) to wake up one worker
+     * or pthread_cond_broadcast(3) to wake them up all, which may be overkill.
+     * N.B. hi_todo_produce() has logic to avoid enqueuing io that is closed. */
+    hi_todo_produce(hit, &io->qel, "poll", 1);
   }
 #endif
   LOCK(hit->shf->todo_mut, "todo_poll");
@@ -360,6 +387,24 @@ struct hi_io* hi_add_fd(struct hi_thr* hit, struct hi_io* io, int fd, int kind)
   }
 #endif
 
+#if defined(MACOSX) || defined(FREEBSD)
+  {
+    struct kevent kev;
+    EV_SET(kev, fd, EVFILT_READ | EVFILT_WRITE, EV_ADD, 0, 0, &zero_timeout);
+    if (kevent(hit->shf->ep, &kev, 1, 0,0,0) == -1) {
+      ERR("kevent: fd(%d): %d %s", fd, errno, STRERROR(errno));
+#ifdef USE_OPENSSL
+      if (io->ssl) {
+	SSL_free(io->ssl);
+	io->ssl = 0;
+      }
+#endif
+      close(fd);
+      return 0;
+    }
+  }
+#endif
+
   /* memset(io, 0, sizeof(struct hi_io)); *** MUST NOT clear as there are important fields like cur_pdu and lock initializations already set. All memory was zeroed in hi_new_shuff(). After that all changes should be field by field. */
   ASSERTOPI(io->writing, ==, 0);
   ASSERTOPI(io->reading, ==, 0);
@@ -400,6 +445,15 @@ void hi_del_fd(struct hi_thr* hit, int fd)
     pfd.events = 0 /*POLLIN | POLLOUT | POLLERR | POLLHUP*/; /* *** not sure if this is right */
     if (write(hit->shf->ep, &pfd, sizeof(pfd)) == -1) {
       ERR("Unable to write to /dev/poll fd(%x): %d %s", fd, errno, STRERROR(errno));
+    }
+  }
+#endif
+#if defined(MACOSX) || defined(FREEBSD)
+  {
+    struct kevent kev;
+    EV_SET(kev, fd&0x7fffffff, EVFILT_READ | EVFILT_WRITE, EV_DEL, 0, 0, &zero_timeout);
+    if (kevent(hit->shf->ep, &kev, 1, 0,0,0) == -1) {
+      ERR("kevent: fd(%d): %d %s", fd, errno, STRERROR(errno));
     }
   }
 #endif

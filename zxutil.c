@@ -1129,6 +1129,87 @@ char* zx_url_encode(struct zx_ctx* c, int in_len, const char* in, int* out_len)
   return out;
 }
 
+
+/*() Parse one fragment of a query string (QUERY_STRING querystring).
+ *
+ * qs:: The query string to parse, modified in place to insert nul terms and URL decode.
+ * name:: result parameter pointing to the name analyzed from qs, nul terminated
+ * val:: result parameter pointing to the value analyzed from qs, nul terminated
+ * url_decode_val_flag:: 0 = do not decode, 1 = always decode, 2 = decode except SAMLResponse
+ * return:: one past val+nul or point to end of string nul (if nul, outer parsing
+ *     loop should terminate). Any error causes null pointer to be returned.
+ *
+ * Typical invocation pattern:
+ *
+ *   while (*qs) {
+ *     qs = zxid_qs_nv_scan(qs, &name, &val);
+ *     ... switch on name ...
+ *   }
+ */
+
+char* zxid_qs_nv_scan(char* qs, char** name, char** val, int url_decode_val_flag)
+{
+  char* p;
+  char* q;
+  *name = *val = 0;
+  if (!qs)
+    return 0;
+
+again:  
+  qs += strspn(qs, "& \n\t\r");                  /* Skip over & or &&, or line end */
+  if (!*qs)
+    return 0;
+    
+  if (*qs == '#') {                              /* Comment line */
+scan_end:
+    qs += strcspn(qs, "&\n\r"); /* Scan until '&' or end of line */
+    goto again;
+  }
+
+  for (; *qs == '&'; ++qs) ;                     /* Skip over & or && */
+  if (!*qs)
+    return 0;
+  
+  *name = qs;
+  qs = strchr(qs, '=');                          /* Scan name (until '=') */
+  if (!qs)
+    return 0;
+  if (qs == *name)                               /* Key was an empty string: skip it */
+    goto scan_end;
+  for (; *name < qs && **name <= ' '; ++*name) ; /* Skip over initial whitespace before name */
+  p = q = *name;
+  URL_DECODE(p, q, qs);                          /* In place mod of name */
+  *p = 0;                                        /* Nul-term *name */
+
+  *val = ++qs;
+  qs += strcspn(qs, "&\n\r"); /* Skip over = and scan val */
+
+  switch (url_decode_val_flag) {
+  case 0: p = qs; break;
+  case 2:
+    /* SAMLRequest and Response MUST NOT be URL decoded as the URL encoding
+     * is needed for redirect binding signature validation. See also unbase64_raw()
+     * for how these fields are URL decoded at later stage. */
+    if (!((*name)[0] != 'S' && (*name)[0] != 'R'
+	  || strcmp(*name, "SAMLRequest") && strcmp(*name, "SAMLResponse")
+	  && strcmp(*name, "SigAlg") && strcmp(*name, "Signature")
+	  && strcmp(*name, "RelayState"))) {
+      p = qs;
+      break;
+    }
+    /* fall thru */
+  case 1:
+    p = q = *val;
+    URL_DECODE(p, q, qs);
+    break;
+  default: NEVERNEVER("unsupported case(%d)", url_decode_val_flag);
+  }
+  *p = 0;
+  if (*qs)
+    ++qs;
+  return qs;
+}
+
 const unsigned char const * hex_trans      = (unsigned char*)"0123456789abcdef";
 const unsigned char const * ykmodhex_trans = (unsigned char*)"cbdefghijklnrtuv";  /* as of libyubikey-1.5 */
 

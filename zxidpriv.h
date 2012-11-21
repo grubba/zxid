@@ -132,6 +132,7 @@ ZXID_DECL struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, struc
 ZXID_DECL struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* index);
 ZXID_DECL struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf, struct zx_elem_s* father);
 ZXID_DECL struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf, struct zx_elem_s* father);
+
 /* zxidconf */
 
 ZXID_DECL struct zxid_map*   zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v);
@@ -149,6 +150,9 @@ ZXID_DECL struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need
 ZXID_DECL void zxid_free_need(struct zxid_conf *cf, struct zxid_need *need);
 ZXID_DECL struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsrc, char* v);
 ZXID_DECL void zxid_free_atsrc(struct zxid_conf *cf, struct zxid_atsrc *src);
+ZXID_DECL struct zxid_obl_list* zxid_load_obl_list(zxid_conf* cf, struct zxid_obl_list* ol, char* obl);
+ZXID_DECL void zxid_free_obl_list(struct zxid_conf* cf, struct zxid_obl_list* ol);
+ZXID_DECL struct zxid_obl_list* zxid_find_obl_list(struct zxid_obl_list* obl, const char* name);
 
 /* zxiduser */
 
@@ -290,6 +294,7 @@ ZXID_DECL int zxid_timestamp_chk(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Tim
 ZXID_DECL void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, const char* attrid, const char* obl);
 ZXID_DECL void zxid_add_action_from_body_child(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env);
 ZXID_DECL int zxid_query_ctlpt_pdp(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env, const char* ctlpt, const char* faultparty, struct zxid_map* pepmap);
+ZXID_DECL int zxid_eval_sol1(zxid_conf* cf, zxid_ses* ses, const char* obl, struct zxid_obl_list* req);
 
 /* zxidwsc */
 

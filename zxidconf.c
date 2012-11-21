@@ -526,7 +526,7 @@ void zxid_free_map(struct zxid_conf *cf, struct zxid_map *map)
   }
 }
 
-/*() Parse comma separated strings and add to linked list */
+/*() Parse comma separated strings (nul terminated) and add to linked list */
 
 /* Called by:  zxid_init_conf x4, zxid_parse_conf_raw x4 */
 struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list* l, char* p)
@@ -547,7 +547,7 @@ struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list*
   return l;
 }
 
-/*() Reverse of zxid_load_cstr_list(). */
+/*() Free list nodes and strings of zxid_cstr_list. */
 
 /* Called by:  zxid_free_conf x4 */
 void zxid_free_cstr_list(struct zxid_conf* cf, struct zxid_cstr_list* l)
@@ -557,6 +557,49 @@ void zxid_free_cstr_list(struct zxid_conf* cf, struct zxid_cstr_list* l)
     ZX_FREE(cf->ctx, l->s);
     ZX_FREE(cf->ctx, l);
     l = next;
+  }
+}
+
+// *** print obl_list
+
+/*() Parse and construct an obligations list with multiple values as cstr_list.
+ * The input string obl will be modified in place and used for long term reference. */
+
+struct zxid_obl_list* zxid_load_obl_list(zxid_conf* cf, struct zxid_obl_list* ol, char* obl)
+{
+  struct zxid_obl_list* ob;
+  char *val, *name;
+  DD("obl(%s) len=%d", STRNULLCHK(obl), obl?strlen(obl):-1);
+  if (!obl)
+    return 0;
+  while (obl && *obl) {
+    obl = zxid_qs_nv_scan(obl, &name, &val, 1);
+    if (!name)
+      name = "NULL_NAM_ERRO";
+    if (!strcmp(name, "reset")) {
+      ol = 0;
+      continue;
+    }
+    ob = ZX_ZALLOC(cf->ctx, struct zxid_obl_list);
+    ob->name = name;
+    ob->vals = zxid_load_cstr_list(cf, 0, val);
+    ob->n = ol;
+    ol = ob;
+  }
+  return ol;
+}
+
+/*() Free list nodes and strings of zxid_obl_list. */
+
+/* Called by:  zxid_free_conf x4 */
+void zxid_free_obl_list(struct zxid_conf* cf, struct zxid_obl_list* ol)
+{
+  while (ol) {
+    struct zxid_obl_list* next = ol->n;
+    zxid_free_cstr_list(cf, ol->vals);
+    ZX_FREE(cf->ctx, ol->name);
+    ZX_FREE(cf->ctx, ol);
+    ol = next;
   }
 }
 
@@ -767,6 +810,19 @@ struct zxid_cstr_list* zxid_find_cstr_list(struct zxid_cstr_list* cs, const char
     if (cs->s[0] == '*' && !cs->s[1] /* Wild card */
 	|| !strcmp(cs->s, name))     /* Match! */
       return cs;
+  return 0;
+}
+
+/*() Check whether name is in the obligations list. */
+
+struct zxid_obl_list* zxid_find_obl_list(struct zxid_obl_list* obl, const char* name)
+{
+  if (!name || !*name)
+    return 0;
+  for (; obl; obl = obl->n)
+    if (obl->name[0] == '*' && !obl->name[1] /* Wild card */
+	|| !strcmp(obl->name, name))     /* Match! */
+      return obl;
   return 0;
 }
 
@@ -1295,6 +1351,16 @@ static char* zxid_expand_percent(char* vorig, char* n, char* lim, int squash_typ
   return n;
 }
 
+/*(-) Convert, in place, $ to & as needed for WSC_LOCALPDP_PLEDGE */
+
+static char* zxid_dollar_to_amp(char* p)
+{
+  char* ret = p;
+  for (p = strchr(p, '$'); p; p = strchr(p, '$'))
+    *p = '&';
+  return ret;
+}
+
 /*() Parse VPATH (virtual host) related config file.
  * If the file VPATHzxid.conf does not exist (note that the specified
  * VPATH usually ends in a slash (/)), the PATH is not changed.
@@ -1367,42 +1433,22 @@ static int zxid_parse_vurl(zxid_conf* cf, char* vurl)
  * qs:: Configuration data in extended CGI Query String format. "extended"
  *     means newline can be used as separator, in addition to ampersand ("&")
  *     This argument is modified in place, changing separators to nul string
- *     terminations.
+ *     terminations and performing URL decoding.
  * return:: -1 on failure, 0 on success */
 
 /* Called by:  zxid_conf_to_cf_len x4, zxid_parse_conf, zxid_parse_conf_path_raw */
 int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
 {
   int i;
-  char *p, *n, *v, *val, *name;
+  char *p, *n, *v;
   if (qs_len != -1 && qs[qs_len]) {  /* *** access one past end of buffer */
     ERR("LIMITATION: The configuration strings MUST be nul terminated (even when length is supplied explicitly). qs_len=%d qs(%.*s)", qs_len, qs_len, qs);
     return -1;
   }
-  while (*qs) {
-    qs += strspn(qs, "& \n\t\r"); /* Skip over & or &&, or line end */
-    if (!*qs) break;
-    if (*qs == '#')
-      goto scan_end;
-    
-    qs = strchr(name = qs, '=');  /* Scan name (until '=') */
-    if (!qs) break;               /* No = ever found and at EOF. No value avail. */
-    if (qs == name) {             /* Key was an empty string: skip it */
-scan_end:
-      qs += strcspn(qs, "&\n\r"); /* Scan value (until '&') */
-      continue;
-    }
-    n = p = name;
-    URL_DECODE(p, name, qs);
-    *p = 0;
-    
-    val = ++qs;
-    qs += strcspn(qs, "&\n\r"); /* Skip over = and scan val */
-    v = p = val;
-    URL_DECODE(p, val, qs);
-    if (*qs)
-      ++qs;
-    *p = 0;
+  while (qs && *qs) {
+    qs = zxid_qs_nv_scan(qs, &n, &v, 1);
+    if (!n)
+      n = "NULL_NAME_ERR";
     
     switch (n[0]) {
     case 'A':  /* AUTHN_REQ_SIGN, ACT, AUDIENCE_FATAL, AFTER_SLOP */
@@ -1638,10 +1684,10 @@ scan_end:
       if (!strcmp(n, "WSP_SIGN"))       { SCAN_INT(v, cf->wsp_sign); break; }
       if (!strcmp(n, "WSPCGICMD"))      { cf->wspcgicmd = v; break; }
       if (!strcmp(n, "WSP_NOSIG_FATAL")) { SCAN_INT(v, cf->wsp_nosig_fatal); break; }
-      if (!strcmp(n, "WSC_LOCALPDP_OBL_PLEDGE"))  { cf->wsc_localpdp_obl_pledge = v;   break; }
-      if (!strcmp(n, "WSP_LOCALPDP_OBL_REQ"))     { cf->wsp_localpdp_obl_req    = v;   break; }
-      if (!strcmp(n, "WSP_LOCALPDP_OBL_EMIT"))    { cf->wsp_localpdp_obl_emit   = v;   break; }
-      if (!strcmp(n, "WSC_LOCALPDP_OBL_ACCEPT"))  { cf->wsc_localpdp_obl_accept = v;   break; }
+      if (!strcmp(n, "WSC_LOCALPDP_OBL_PLEDGE"))  { cf->wsc_localpdp_obl_pledge = zxid_dollar_to_amp(v);   break; }
+      if (!strcmp(n, "WSP_LOCALPDP_OBL_REQ"))     { cf->wsp_localpdp_obl_req    = zxid_load_obl_list(cf, cf->wsp_localpdp_obl_req, v);   break; }
+      if (!strcmp(n, "WSP_LOCALPDP_OBL_EMIT"))    { cf->wsp_localpdp_obl_emit   = zxid_dollar_to_amp(v);   break; }
+      if (!strcmp(n, "WSC_LOCALPDP_OBL_ACCEPT"))  { cf->wsc_localpdp_obl_accept = zxid_load_obl_list(cf, cf->wsc_localpdp_obl_accept, v);   break; }
       goto badcf;
     case 'X':  /* XASP_VERS */
       if (!strcmp(n, "XASP_VERS"))      { cf->xasp_vers = v; break; }
@@ -2020,9 +2066,9 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "LOCALPDP_IDPNID_PERMIT=\n%s\n"
 "LOCALPDP_IDPNID_DENY=\n%s\n"
 "WSC_LOCALPDP_OBL_PLEDGE=%s\n"
-"WSP_LOCALPDP_OBL_REQ=%s\n"
+//"WSP_LOCALPDP_OBL_REQ=%s\n"
 "WSP_LOCALPDP_OBL_EMIT=%s\n"
-"WSC_LOCALPDP_OBL_ACCEPT=%s\n"
+//"WSC_LOCALPDP_OBL_ACCEPT=%s\n"
 "</pre>",
 		 cf->url, eid,
 		 cf->path,
@@ -2196,9 +2242,9 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 localpdp_idpnid_permit->s,
 		 localpdp_idpnid_deny->s,
 		 STRNULLCHK(cf->wsc_localpdp_obl_pledge),
-		 STRNULLCHK(cf->wsp_localpdp_obl_req),
-		 STRNULLCHK(cf->wsp_localpdp_obl_emit),
-		 STRNULLCHK(cf->wsc_localpdp_obl_accept)
+		 //STRNULLCHK(cf->wsp_localpdp_obl_req),
+		 STRNULLCHK(cf->wsp_localpdp_obl_emit) //,
+		 //STRNULLCHK(cf->wsc_localpdp_obl_accept)
 	 );
 }
 

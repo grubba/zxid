@@ -14,7 +14,6 @@
  * /apps/graphviz/std/bin/dot -Tps <a.dot |gv
  */
 
-#include <malloc.h>
 #include <string.h>
 #include <pthread.h>
 #include <stdarg.h>

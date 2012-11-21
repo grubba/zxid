@@ -80,6 +80,7 @@ ZXID_DECL char* zxid_unbase64_inflate(struct zx_ctx* c, int in_len, const char* 
 ZXID_DECL int   zx_url_encode_len(int in_len, const char* in);
 ZXID_DECL char* zx_url_encode_raw(int in_len, const char* in, char* out);
 ZXID_DECL char* zx_url_encode(struct zx_ctx* c, int in_len, const char* in, int* out_len);
+ZXID_DECL char* zxid_qs_nv_scan(char* qs, char** name, char** val, int url_decode_val_flag);
 ZXID_DECL char* zx_hexdec(char* dst, char* src, int src_len, const unsigned char* trans);
 
 ZXID_DECL int get_file_size(fdtype fd);

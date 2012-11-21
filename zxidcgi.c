@@ -51,40 +51,14 @@
 /* Called by:  chkuid x3, main x4, zxid_decode_ssoreq, zxid_new_cgi, zxid_simple_cf_ses x3 */
 int zxid_parse_cgi(zxid_conf* cf, zxid_cgi* cgi, char* qs)
 {
-  char *p, *n, *v, *val, *name;
+  char *p, *n, *v;
   DD("qs(%s) len=%d", STRNULLCHK(qs), qs?strlen(qs):-1);
   if (!qs)
     return 0;
   while (qs && *qs) {
-    for (; *qs == '&'; ++qs) ;                  /* Skip over & or && */
-    if (!*qs) break;
-    
-    qs = strchr(name = qs, '=');                /* Scan name (until '=') */
-    if (!qs) break;
-    if (qs == name) {                           /* Key was an empty string: skip it */
-      qs = strchr(qs, '&');                     /* Scan value (until '&') *** or '?' */
-      continue;
-    }
-    for (; name < qs && *name <= ' '; ++name) ; /* Skip over initial whitespace before name */
-    n = p = name;
-    URL_DECODE(p, name, qs);
-    *p = 0;                                     /* Nul-term n (name) */
-    
-    for (val = ++qs; *qs && *qs != '&'; ++qs) ; /* Skip over = and scan value (until '&') */
-    v = p = val;
-    /* SAMLRequest and Response MUST NOT be URL decoded as the URL encoding
-     * is needed for redirect binding signature validation. See also unbase64_raw()
-     * for how these fields are URL decoded at later stage. */
-    if (n[0] != 'S' && n[0] != 'R'
-	|| strcmp(n, "SAMLRequest") && strcmp(n, "SAMLResponse")
-	&& strcmp(n, "SigAlg") && strcmp(n, "Signature") && strcmp(n, "RelayState"))
-      URL_DECODE(p, val, qs);
-    else
-      p = qs;
-
-    if (*qs)
-      ++qs;
-    *p = 0;                                     /* Nul-term v (value) */
+    qs = zxid_qs_nv_scan(qs, &n, &v, 2);
+    if (!n)
+      n = "NULL_NAME_ERROR";
     
     switch (n[0]) {
     case 'n':

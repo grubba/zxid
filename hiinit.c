@@ -15,16 +15,7 @@
 
 #include "platform.h"
 
-#ifdef LINUX
-#include <sys/epoll.h>     /* See man 4 epoll (Linux 2.6) */
-#endif
-#ifdef SUNOS
-#include <sys/devpoll.h>   /* See man -s 7d poll (Solaris 8) */
-#include <sys/poll.h>
-#endif
-
 #include <pthread.h>
-#include <malloc.h>
 #include <memory.h>
 #include <stdlib.h>
 //#include <unistd.h>
@@ -153,6 +144,11 @@ struct hiios* hi_new_shuffler(struct hi_thr* hit, int nfd, int npdu, int nch, in
   shf->ep = open("/dev/poll", O_RDWR);
   if (shf->ep == -1) { perror("open(/dev/poll)"); exit(1); }
   ZMALLOCN(shf->evs, sizeof(struct pollfd) * shf->max_evs);
+#endif
+#if defined(MACOSX) || defined(FREEBSD)
+  shf->ep = kqueue();
+  if (shf->ep == -1) { perror("kqueue()"); exit(1); }
+  ZMALLOCN(shf->evs, sizeof(struct kevent) * shf->max_evs);
 #endif
 
   pthread_mutex_init(&shf->ent_mut.ptmut, MUTEXATTR);

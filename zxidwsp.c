@@ -412,6 +412,8 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
   struct zx_e_Header_s* hdr;
   struct zx_wsse_Security_s* sec;
   zxid_cgi cgi;
+  /*struct zx_b_UsageDirective_s* ud;*/
+  struct zx_xa_Obligation_s* obl;
 
   D_INDENT("valid: ");
   GETTIMEOFDAY(&ourts, 0);
@@ -547,20 +549,35 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
   }
 
   if (hdr->UsageDirective) {
-    if (hdr->UsageDirective->Obligation && ZX_GET_CONTENT(hdr->UsageDirective->Obligation->AttributeAssignment)) {
-      ses->rcvd_usagedir = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(hdr->UsageDirective->Obligation->AttributeAssignment));
-      D("Found TAS3 UsageDirective with obligation(%s)", ses->rcvd_usagedir);
+    if (obl = hdr->UsageDirective->Obligation) {
+      if (ZX_GET_CONTENT(obl->AttributeAssignment)) {
+	ses->rcvd_usagedir = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(obl->AttributeAssignment));
+	D("Found TAS3 UsageDirective with obligation(%s)", ses->rcvd_usagedir);
+      }
+      if (obl->ObligationId
+	  && ZX_STR_EQ(&obl->ObligationId->g, TAS3_SOL1_ENGINE)) {
+	if (ses->rcvd_usagedir
+	     && obl->AttributeAssignment->AttributeId) {
+	  if (ZX_STR_EQ(&obl->AttributeAssignment->AttributeId->g, TAS3_PLEDGE)) {
+	    if (!zxid_eval_sol1(cf, ses, ses->rcvd_usagedir, cf->wsp_localpdp_obl_req)) {
+	      return 0;
+	    }
+	  } else if (ZX_STR_EQ(&obl->AttributeAssignment->AttributeId->g, TAS3_REQUIRE)) {
+	    /* *** extract inbound sticky policies */
+	    INFO("*** Extraction of inbound sticky policies at WSP not implemented yet %d", 0);
+	  } else {
+	    ERR("UsageDirective/Obligation/AttributeAssignment@AttributeId(%.*s) not understood", obl->AttributeAssignment->AttributeId->g.len, obl->AttributeAssignment->AttributeId->g.s);
+	  }
+	} else {
+	  ERR("UsageDirective/Obligation/AttributeAssignment missing %p",obl->AttributeAssignment);
+	}
+      }
     } else if (ZX_GET_CONTENT(hdr->UsageDirective)) {
       ses->rcvd_usagedir = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(hdr->UsageDirective));
       D("Found unknown UsageDirective(%s)", ses->rcvd_usagedir);
     } else {
       ERR("UsageDirective empty or not understood. %p", hdr->UsageDirective->Dict);
     }
-  }
-
-  if (hdr->UsageDirective && hdr->UsageDirective->Obligation
-      && ZX_STR_EQ(&hdr->UsageDirective->Obligation->ObligationId->g, TAS3_SOL1_ENGINE)) {
-    /* *** extract usage directive */
   }
 
   zxid_put_ses(cf, ses);

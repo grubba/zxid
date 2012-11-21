@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <wait.h>
+#include <sys/wait.h>
 
 #include "platform.h"
 #include "errmac.h"

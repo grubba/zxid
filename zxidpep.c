@@ -14,6 +14,8 @@
  * 31.5.2010,  generalized to several PEPs model --Sampo
  * 7.9.2010,   merged patches from Stijn Lievens --Sampo
  * 10.1.2011,  added TrustPDP support --Sampo
+ *
+ * See also: zxid_simple_ab_pep() in zxidpdp.c, zxidwsc.c, zxidwsp.c
  */
 
 #include "platform.h"

@@ -37,16 +37,18 @@
 vpath %.c ../zxid
 vpath %.h ../zxid
 
-default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall zxbusd zxbustailf zxbuslist zxencdectest
+default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall zxencdectest
 
 all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcgi
 
 zxbus:  zxbusd zxbustailf zxbuslist
 
+aller: all zxbus app_demo.class
+
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000111
-ZXIDREL=1.11
+ZXIDVERSION=0x000112
+ZXIDREL=1.12
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/var/zxid/$(ZXIDREL)
@@ -251,6 +253,12 @@ MOD_AUTH_SAML_LIBS=-lapr-1
 #  -lhttpd2core
 
 else
+ifeq ($(TARGET),freebsd)
+
+# Putative flags for Freebsd compile
+CDEF+=-DFREEBSD
+
+else
 ifeq ($(TARGET),xmingw)
 
 # Cross compilation for MINGW target (on Linux host). Invoke
@@ -394,6 +402,7 @@ ifeq ($(DISTRO),fedora)
 CDEF+=-DFEDORA
 endif
 
+endif
 endif
 endif
 endif

@@ -519,7 +519,7 @@ int zxid_timestamp_chk(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* 
 /*() Attach a SOL usage directive, unless the envelope already has UsageDirective
  * header. If you wish to add other UsageDirectives, you must provide all of the
  * usage directives to zxid_call() envelope argument.
- * The ud argument typically comes from cf->wsc_localpdp_obl_pledge
+ * The obl argument typically comes from cf->wsc_localpdp_obl_pledge
  * or cf->wsp_localpdp_obl_emit */
 
 /* Called by:  zxid_wsc_prep, zxid_wsf_decor */
@@ -552,6 +552,62 @@ void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_
   ud->Obligation->AttributeAssignment->AttributeId = zx_dup_attr(cf->ctx, &ud->Obligation->AttributeAssignment->gg, zx_AttributeId_ATTR, attrid);
   zx_add_content(cf->ctx, &ud->Obligation->AttributeAssignment->gg, zx_dup_str(cf->ctx, obl));
   D("Attached (%s) obligations(%s)", attrid, obl);
+}
+
+/*() Evaluate pledges from UsageDirective against the configured SOL policy.
+ *
+ * cf:: zxid configuration object
+ * ses:: session object
+ * obl:: pledges from UsageDirective in the request
+ * req:: required policies, usually from cf->wsp_localpdp_obl_req or cf->wsc_localpdp_obl_accept
+ * return:: 0 if pladges fail, 1 if pledges are compatible with the required policies
+ *
+ * All clauses in req must be satisfied by obl. If obl pledges more than required, the excess
+ * is silently ignored. If comma separated list of values is specified either as
+ * obl or req, all values on obl (pledge) must be found in req, but not all values
+ * of req need to be found in obl. This semantic would allow, for example, req to specify
+ * all acceptable uses and require each use in pledges to match some use in req.
+ * Wild cards (any value, but not prefix, suffix, or substring) in req (and obl) are possible.
+ * Negation is not supported: if it is not explicitly listed as ok, then it is rejected.
+ */
+
+/* Called by:  */
+int zxid_eval_sol1(zxid_conf* cf, zxid_ses* ses, const char* obl, struct zxid_obl_list* req)
+{
+  char* oblig;
+  struct zxid_obl_list* ol;
+  struct zxid_obl_list* ob = 0;
+  struct zxid_cstr_list* cs = 0;
+  
+  if (!obl) {
+    if (!req)
+      return 1;
+    ERR("Fail: no pledges supplied and pledges required %p", req);
+    return 0;
+  }
+
+  oblig = zx_dup_cstr(cf->ctx, obl);     /* Will be modified in place so we need copy */
+  ol = zxid_load_obl_list(cf, 0, oblig);
+  for (; req; req = req->n) {
+    ob = zxid_find_obl_list(ol, req->name);
+    if (!ob)
+      goto fail;
+    /* Validate every value of the pledge as accpteble in requirement. */
+    for (cs = ob->vals; cs; cs = cs->n)
+      if (!zxid_find_cstr_list(req->vals, cs->s))
+	goto fail;
+  }
+
+  INFO("OK: Pledges match requirements. Pledges(%s)", obl);
+  zxid_free_obl_list(cf, ol);
+  ZX_FREE(cf->ctx, oblig);
+  return 1;
+
+ fail:
+  ERR("Fail: missing required obligation(%s), value(%s). Pledge(%s)", req?req->name:"-", cs?cs->s:"*", STRNULLCHKD(obl));
+  zxid_free_obl_list(cf, ol);
+  ZX_FREE(cf->ctx, oblig);
+  return 0;
 }
 
 /*() Create Action attribute, which will be used by XACML authorization,

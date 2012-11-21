@@ -61,29 +61,13 @@ struct hrxml_cgi {
 /* Called by:  main */
 int hrxml_parse_cgi(struct hrxml_cgi* cgi, char* qs)
 {
-  char *p, *n, *v, *val, *name;
+  char *n, *v;
   D("START qs(%s)", qs);
-  while (*qs) {
-    for (; *qs == '&'; ++qs) ;                  /* Skip over & or && */
-    if (!*qs) break;
-    
-    for (name = qs; *qs && *qs != '='; ++qs) ;  /* Scan name (until '=') */
-    if (!*qs) break;
-    if (qs == name) {                           /* Key was an empty string: skip it */
-      for (; *qs && *qs != '&'; ++qs) ;         /* Scan value (until '&') */
-      continue;
-    }
-    for (; name < qs && *name <= ' '; ++name) ; /* Skip over initial whitespace before name */
-    n = p = name;
-    URL_DECODE(p, name, qs);
-    *p = 0;
-    
-    for (val = ++qs; *qs && *qs != '&'; ++qs) ; /* Skip over = and scan value (until '&') */
-    v = p = val;
-    URL_DECODE(p, val, qs);
-    if (*qs)
-      ++qs;
-    *p = 0;
+  while (qs && *qs) {
+    qs = zxid_qs_nv_scan(qs, &n, &v, 1);
+    if (!n)
+      n = "NULL_NAME_ERRX";
+
     
     printf("<input name=hrxmlselect value=\"\"><br>\n");
     printf("<p>HR-XML Data<br><textarea name=hrxmldata cols=100 rows=5>%.*s</textarea>\n", 0, "");

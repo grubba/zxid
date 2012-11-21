@@ -1668,6 +1668,49 @@ sub ACQUIRE {
 }
 
 
+############# Class : Net::SAML::zxid_obl_list ##############
+
+package Net::SAML::zxid_obl_list;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Net::SAML );
+%OWNER = ();
+%ITERATORS = ();
+*swig_n_get = *Net::SAMLc::zxid_obl_list_n_get;
+*swig_n_set = *Net::SAMLc::zxid_obl_list_n_set;
+*swig_name_get = *Net::SAMLc::zxid_obl_list_name_get;
+*swig_name_set = *Net::SAMLc::zxid_obl_list_name_set;
+*swig_vals_get = *Net::SAMLc::zxid_obl_list_vals_get;
+*swig_vals_set = *Net::SAMLc::zxid_obl_list_vals_set;
+sub new {
+    my $pkg = shift;
+    my $self = Net::SAMLc::new_zxid_obl_list(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Net::SAMLc::delete_zxid_obl_list($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
 ############# Class : Net::SAML::stomp_hdr ##############
 
 package Net::SAML::stomp_hdr;

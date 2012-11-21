@@ -625,6 +625,9 @@ zxidjava/SWIGTYPE_p_f_size_t__p_void.java
 zxidjava/SWIGTYPE_p_int.java
 zxidjava/SWIGTYPE_p_p_char.java
 zxidjava/SWIGTYPE_p_p_zx_ns_s.java
+zxidjava/SWIGTYPE_p_pthread_mutex_t.java
+zxidjava/SWIGTYPE_p_pthread_t.java
+zxidjava/SWIGTYPE_p_stomp_hdr.java
 zxidjava/SWIGTYPE_p_time_t.java
 zxidjava/SWIGTYPE_p_timeval.java
 zxidjava/SWIGTYPE_p_void.java
@@ -639,6 +642,7 @@ zxidjava/SWIGTYPE_p_zx_el_desc.java
 zxidjava/SWIGTYPE_p_zx_el_tok.java
 zxidjava/SWIGTYPE_p_zx_elem_s.java
 zxidjava/SWIGTYPE_p_zx_ff12_Assertion_s.java
+zxidjava/SWIGTYPE_p_zx_lock.java
 zxidjava/SWIGTYPE_p_zx_lu_Status_s.java
 zxidjava/SWIGTYPE_p_zx_md_EntityDescriptor_s.java
 zxidjava/SWIGTYPE_p_zx_ns_s.java
@@ -654,6 +658,7 @@ zxidjava/SWIGTYPE_p_zx_xenc_EncryptedData_s.java
 zxidjava/SWIGTYPE_p_zx_xenc_EncryptedKey_s.java
 zxidjava/SWIGTYPE_p_zxid_atsrc.java
 zxidjava/SWIGTYPE_p_zxid_attr.java
+zxidjava/SWIGTYPE_p_zxid_bus_url.java
 zxidjava/SWIGTYPE_p_zxid_cstr_list.java
 zxidjava/SWIGTYPE_p_zxid_invite.java
 zxidjava/SWIGTYPE_p_zxid_map.java
