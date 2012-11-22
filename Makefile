@@ -47,8 +47,8 @@ aller: all zxbus app_demo.class
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000112
-ZXIDREL=1.12
+ZXIDVERSION=0x000113
+ZXIDREL=1.13
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/var/zxid/$(ZXIDREL)
@@ -1664,7 +1664,7 @@ dirs: dir
 install: zxid $(LIBZXID_A) libzxid.so.0.0 dir
 	@$(ECHO) "===== Installing in $(PREFIX) (to change do make install PREFIX=/your/path)"
 	-mkdir -p $(PREFIX) $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/include/zxid $(PREFIX)/include/zx $(PREFIX)/doc
-	$(CP) zxmkdirs.sh zxcall zxpasswd zxcot zxlogview zxbusd zxbustailf zxbuslist zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl zxsizeof $(PREFIX)/bin
+	$(CP) zxmkdirs.sh zxcall zxpasswd zxcot zxlogview zxbusd zxbustailf zxbuslist zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl $(PREFIX)/bin
 	$(CP) $(LIBZXID_A) libzxid.so* $(PREFIX)/lib
 	$(CP) libzxid.so.0.0 $(PREFIX)/lib
 	$(CP) *.h c/*.h $(PREFIX)/include/zxid

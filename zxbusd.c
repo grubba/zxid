@@ -597,6 +597,9 @@ int zxbusd_main(int argc, char** argv, char** env)
 #endif
 #if !defined(MACOS) && !defined(MINGW)
 # ifdef MUTEX_DEBUG
+#  ifndef PTHREAD_MUTEX_ERRORCHECK_NP
+#   define PTHREAD_MUTEX_ERRORCHECK_NP 2
+#  endif
   if (pthread_mutexattr_init(MUTEXATTR)) NEVERNEVER("unable to initialize mutexattr %d",argc);
   if (pthread_mutexattr_settype(MUTEXATTR, PTHREAD_MUTEX_ERRORCHECK_NP))
     NEVERNEVER("unable to set mutexattr %d",argc);

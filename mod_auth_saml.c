@@ -300,6 +300,7 @@ static int chkuid(request_rec* r)
   int ret, len, uri_len, url_len, args_len;
   char* p;
   char* res;
+  char buf[256];
   const char* cookie_hdr=0;
   const char* set_cookie_hdr;
   const char* cur_auth;
@@ -309,7 +310,8 @@ static int chkuid(request_rec* r)
   ZERO(&cgi, sizeof(zxid_cgi));
   ZERO(&ses, sizeof(zxid_ses));
 
-  D("===== START %s req=%p uri(%s) args(%s) pid=%d", ZXID_REL, r, r?STRNULLCHKNULL(r->uri):"(r null)", r?STRNULLCHKNULL(r->args):"(r null)", getpid());
+  D("===== START %s req=%p uri(%s) args(%s) pid=%d cwd(%s)", ZXID_REL, r, r?STRNULLCHKNULL(r->uri):"(r null)", r?STRNULLCHKNULL(r->args):"(r null)", getpid(), getcwd(buf,sizeof(buf)));
+  chdir();  /* Ensure the working directory is not / */
   D_INDENT("chkuid: ");
 
   if (r->main) {  /* subreq can't come from net: always auth. */
@@ -516,9 +518,10 @@ process_zxid_simple_outcome:
 
 /* Called by: */
 static const char* set_debug(cmd_parms* cmd, void* st, const char* arg) {
+  char buf[256];
   D("old debug=%x, new debug(%s)", zx_debug, arg);
   sscanf(arg, "%i", &zx_debug);
-  INFO("debug=0x%x now arg(%s)", zx_debug, arg);
+  INFO("debug=0x%x now arg(%s) cwd(%s)", zx_debug, arg, getcwd(buf, sizeof(buf)));
   return 0;
 }
 

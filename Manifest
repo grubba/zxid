@@ -663,6 +663,7 @@ zxidjava/SWIGTYPE_p_zxid_cstr_list.java
 zxidjava/SWIGTYPE_p_zxid_invite.java
 zxidjava/SWIGTYPE_p_zxid_map.java
 zxidjava/SWIGTYPE_p_zxid_need.java
+zxidjava/SWIGTYPE_p_zxid_obl_list.java
 zxidjava/SWIGTYPE_p_zxid_perm.java
 zxidjava/SWIGTYPE_p_zxid_psobj.java
 zxidjava/SWIGTYPE_p_zxsig_ref.java

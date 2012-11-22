@@ -5,6 +5,8 @@
 #ifndef _platform_h
 #define _platform_h
 
+#include <stdlib.h>
+
 #ifdef MINGW
 
 #include <windows.h>
@@ -144,7 +146,11 @@ unsigned int alarm(unsigned int secs);
 #endif
 
 #if defined(MACOSX) || defined(FREEBSD)
-#include <event.h>          /* for kqueue used by zxbusd */
+#include <sys/event.h>      /* for kqueue used by zxbusd */
+#define EPOLLHUP (0)        /* *** Need to find better constant */
+#define EPOLLERR (0)        /* *** Need to find better constant */
+#define EPOLLOUT (EVFILT_WRITE)
+#define EPOLLIN  (EVFILT_READ)
 #endif
 
 #ifdef LINUX
