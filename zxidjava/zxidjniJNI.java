@@ -533,6 +533,8 @@ class zxidjniJNI {
   public final static native String zxid_conf_mgmt_end_get(long jarg1);
   public final static native void zxid_conf_dbg_set(long jarg1, String jarg2);
   public final static native String zxid_conf_dbg_get(long jarg1);
+  public final static native void zxid_conf_wd_set(long jarg1, String jarg2);
+  public final static native String zxid_conf_wd_get(long jarg1);
   public final static native void zxid_conf_bus_url_set(long jarg1, long jarg2);
   public final static native long zxid_conf_bus_url_get(long jarg1);
   public final static native void zxid_conf_bus_pw_set(long jarg1, String jarg2);

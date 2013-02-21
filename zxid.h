@@ -1,5 +1,5 @@
 /* zxid.h  -  Definitions for zxid CGI
- * Copyright (c) 2012 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -21,6 +21,7 @@
  * 13.11.2010, added ZXID_DECL for benefit of the Windows port --Sampo
  * 12.12.2010, separate zxidpriv.h and zxidutil.h from zxid.h --Sampo
  * 17.8.2012,  added audit bus configuration --Sampo
+ * 16.2.2013, added WD option --Sampo
  */
 
 #ifndef _zxid_h
@@ -291,6 +292,7 @@ struct zxid_conf {
   char* mgmt_end;      /* End of page, after version string */
 
   char* dbg;           /* Debug message that may be shown. */
+  char* wd;            /* Forced working directory. */
 
   struct zxid_bus_url* bus_url;  /* Audit bus URLs to contact. */
   char*  bus_pw;             /* Audit bus password if not using ClientTLS */

@@ -1,5 +1,5 @@
 /* zxidconf.c  -  Handwritten functions for parsing ZXID configuration file
- * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2013 Synergetics (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -24,6 +24,7 @@
  * 3.12.2011, added VPATH feature --Sampo
  * 10.12.2011, added VURL and BUTTON_URL, deleted ORG_URL except for legacy check --Sampo
  * 17.8.2012, added audit bus configuration --Sampo
+ * 16.2.2013, added WD option --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -1039,6 +1040,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
 
   cf->bare_url_entityid = ZXID_BARE_URL_ENTITYID;
   cf->show_tech         = ZXID_SHOW_TECH;
+  cf->wd                = ZXID_WD;
   cf->idp_sel_page      = ZXID_IDP_SEL_PAGE;
   cf->idp_sel_templ_file= ZXID_IDP_SEL_TEMPL_FILE;
   cf->idp_sel_templ     = ZXID_IDP_SEL_TEMPL;
@@ -1688,6 +1690,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "WSP_LOCALPDP_OBL_REQ"))     { cf->wsp_localpdp_obl_req    = zxid_load_obl_list(cf, cf->wsp_localpdp_obl_req, v);   break; }
       if (!strcmp(n, "WSP_LOCALPDP_OBL_EMIT"))    { cf->wsp_localpdp_obl_emit   = zxid_dollar_to_amp(v);   break; }
       if (!strcmp(n, "WSC_LOCALPDP_OBL_ACCEPT"))  { cf->wsc_localpdp_obl_accept = zxid_load_obl_list(cf, cf->wsc_localpdp_obl_accept, v);   break; }
+      if (!strcmp(n, "WD"))             { cf->wd = v; chdir(v); break; }
       goto badcf;
     case 'X':  /* XASP_VERS */
       if (!strcmp(n, "XASP_VERS"))      { cf->xasp_vers = v; break; }
@@ -1997,6 +2000,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "MOD_SAML_ATTR_PREFIX=%s\n"
 "BARE_URL_ENTITYID=%d\n"
 "SHOW_TECH=%d\n"
+"WD=%s\n"
 
 "IDP_LIST_METH=%d\n"
 "IDP_SEL_PAGE=%s\n"
@@ -2186,6 +2190,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 STRNULLCHK(cf->mod_saml_attr_prefix),
 		 cf->bare_url_entityid,
 		 cf->show_tech,
+		 STRNULLCHK(cf->wd),
 
 		 cf->idp_list_meth,
 		 STRNULLCHK(cf->idp_sel_page),

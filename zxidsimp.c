@@ -1,5 +1,5 @@
 /* zxidsimp.c  -  Handwritten zxid_simple() API
- * Copyright (c) 2012 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -19,6 +19,7 @@
  * 22.9.2010, added People Service invitation resolution --Sampo
  * 10.12.2011, added OAuth2, OpenID Connect, and UMA support --Sampo
  * 30.9.2012, added PTM support --Sampo
+ * 13.2.2013, added WD option --Sampo
  *
  * Login button abbreviations
  * A2 = SAML 2.0 Artifact Profile
@@ -1203,6 +1204,8 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
     ERR("FATAL: NULL pointer. You MUST supply configuration(%p), cgi(%p), and session(%p) objects (programming error)", cf, cgi, ses);
     NEVERNEVER("Bad args %p", cf);
   }
+  if (cf->wd)
+    chdir(cf->wd);
   
   /* OPs (the o= CGI field. Not to be confused with first letter of zxid_simple() return value)
    * l = local logout (form gl)
@@ -1384,6 +1387,8 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
     ERR("FATAL: NULL pointer. You MUST supply configuration(%p), cgi(%p), and session(%p) objects (programming error)", cf, cgi, ses);
     exit(1);
   }
+  if (cf->wd)
+    chdir(cf->wd);
 
   switch (cgi->op) {
   case 'M':  /* Invoke LECP or redirect to CDC reader. */

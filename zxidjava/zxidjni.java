@@ -2027,6 +2027,14 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_dbg_get(zxid_conf.getCPtr(self));
   }
 
+  public static void conf_wd_set(zxid_conf self, String value) {
+    zxidjniJNI.zxid_conf_wd_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static String conf_wd_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_wd_get(zxid_conf.getCPtr(self));
+  }
+
   public static void conf_bus_url_set(zxid_conf self, SWIGTYPE_p_zxid_bus_url value) {
     zxidjniJNI.zxid_conf_bus_url_set(zxid_conf.getCPtr(self), SWIGTYPE_p_zxid_bus_url.getCPtr(value));
   }

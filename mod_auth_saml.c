@@ -1,5 +1,5 @@
 /* mod_auth_saml.c  -  Handwritten functions for Apache mod_auth_saml module
- * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2013 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2008-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -15,6 +15,7 @@
  * 11.1.2010, refactoring and review --Sampo
  * 15.7.2010, consider passing to simple layer more data about the request --Sampo
  * 28.9.2012, changed zx_instance string to "mas", fixed parsing CGI for other page --Sampo
+ * 13.2.2013, added WD option --Sampo
  *
  * To configure this module add to httpd.conf something like
  *
@@ -311,7 +312,7 @@ static int chkuid(request_rec* r)
   ZERO(&ses, sizeof(zxid_ses));
 
   D("===== START %s req=%p uri(%s) args(%s) pid=%d cwd(%s)", ZXID_REL, r, r?STRNULLCHKNULL(r->uri):"(r null)", r?STRNULLCHKNULL(r->args):"(r null)", getpid(), getcwd(buf,sizeof(buf)));
-  chdir();  /* Ensure the working directory is not / */
+  chdir(cf->wd);  /* Ensure the working directory is not / (sometimes Apache httpd changes dir) */
   D_INDENT("chkuid: ");
 
   if (r->main) {  /* subreq can't come from net: always auth. */
@@ -447,7 +448,8 @@ static int chkuid(request_rec* r)
     }
     D("uri(%s) args(%s) rs(%s)", r->uri, STRNULLCHKNULL(r->args), p);
     /* cgi.rs will be copied to ses->rs and from there in ab_pep to resource-id.
-     * We compress and safe_base64 encode it to protect any URL special characters. */
+     * We compress and safe_base64 encode it to protect any URL special characters.
+     * *** seems that at this point the p is not just rs, but the entire local URL --Sampo */
     cgi.rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, p);
     if (cf->defaultqs && cf->defaultqs[0]) {
       if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);

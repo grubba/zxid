@@ -4,7 +4,9 @@
 # Sampo Kellomäki (sampo@iki.fi)
 # $Id: Quick,v 1.9 2010-01-08 02:10:09 sampo Exp $
 
-make all
+make dep ENA_GEN=1
+time (PATH=/usr/bin:/bin:/apps/bin LD_LIBRARY_PATH=/apps/lib make all ENA_GEN=1)
+
 time (PATH=/usr/bin:/bin:/apps/bin LD_LIBRARY_PATH=/apps/lib make all ENA_GEN=1 ENA_PG=1)
 time (LD_LIBRARY_PATH=/apps/lib make all ENA_GEN=1 ENA_PG=1)
 

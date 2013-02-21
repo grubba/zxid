@@ -1112,6 +1112,8 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_mgmt_end_set = *Net::SAMLc::zxid_conf_mgmt_end_set;
 *swig_dbg_get = *Net::SAMLc::zxid_conf_dbg_get;
 *swig_dbg_set = *Net::SAMLc::zxid_conf_dbg_set;
+*swig_wd_get = *Net::SAMLc::zxid_conf_wd_get;
+*swig_wd_set = *Net::SAMLc::zxid_conf_wd_set;
 *swig_bus_url_get = *Net::SAMLc::zxid_conf_bus_url_get;
 *swig_bus_url_set = *Net::SAMLc::zxid_conf_bus_url_set;
 *swig_bus_pw_get = *Net::SAMLc::zxid_conf_bus_pw_get;

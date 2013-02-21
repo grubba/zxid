@@ -511,6 +511,8 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_mgmt_end_set);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_mgmt_end_get);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_dbg_set);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_dbg_get);
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wd_set);
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wd_get);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_bus_url_set);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_bus_url_get);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_bus_pw_set);

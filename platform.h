@@ -51,7 +51,8 @@ typedef struct stack_st STACK;  /* MSVC seems to have some problem with openssl/
 #define getpid()  0
 #define geteuid() 0
 #define getegid() 0
-#define getcwd(b,n) "cwd on supported by Win32"
+#define chdir(path) SetCurrentDirectory(path)
+#define getcwd(b,n) "getcwd not supported on Win32"  /* *** consider GetCurrentDirectory() */
 unsigned int sleep(unsigned int secs);
 unsigned int alarm(unsigned int secs);
 
@@ -114,6 +115,7 @@ extern "C" {
  * indirectly included first. In general we believe these Unix APIs are
  * so standard that we do not need system includes and can cover
  * the very few exceptions as ifdefs right in here. --Sampo */
+int chdir(const char* path);
 int close(int);
 int dup(int);
 int dup2(int,int);

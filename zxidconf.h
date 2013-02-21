@@ -1,5 +1,5 @@
 /* zxidconf.h  -  Configuration of ZXID
- * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2013 Synergetics (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -15,6 +15,7 @@
  * 12.2.2011, added proxy IdP related options --Sampo
  * 10.12.2011, added VPATH, VURL, BUTTON_URL, delete ORG_URL --Sampo
  * 17.8.2012, added audit bus configuration --Sampo
+ * 16.2.2013, added WD option --Sampo
  *
  * Most of the configuration options can be set via configuration
  * file /var/zxid/zxid.conf or using -O command line flag(s). In
@@ -893,6 +894,13 @@
 #define ZXID_WSC_LOCALPDP_OBL_ACCEPT  0  /* String: WSC acceptable obligations in SOL notation */
 
 /* ----------------------------------------------------------------------------- */
+/*(c) Apache httpd sometimes changes working directory unpredictably (usually to /).
+ * Use this optin to change it back to whatever you desired, such as document root
+ * of a virtual host so that relative paths to templates, etc. work. 0 means not to
+ * change (i.e. leave working directory as is). */
+
+#define ZXID_WD 0
+
 /*(c) Simple API HTML customization.
  * These allow simple branding and customization.
  * If these options are not enough for you, consider simply rendering your own forms. */

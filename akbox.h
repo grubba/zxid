@@ -9,6 +9,8 @@
  *
  * 15.4.2006, created over Easter holiday --Sampo
  * 16.8.2012, modified license grant to allow use with ZXID.org --Sampo
+ *
+ * See also: ./log-pretty.pl -fn b5be:118   # decodes a FN hash
  */
 
 #ifndef _akbox_h

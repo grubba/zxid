@@ -6,6 +6,8 @@ Usual suspects: zxid.user@lists.unh.edu
 
 mini_httpd: server does not support RFC 5746, see CVE-2009-3555
 
+To do: User+Passwd --> Authorization Required
+
 To do:
     - Wishlist of built-in attributes
       1. HTTP method (GET, POST, HEAD, etc.)
@@ -60,6 +62,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
 * http://simplesamlphp.org/docs/1.5/simplesamlphp-googleapps
 * https://shibboleth.usc.edu/docs/google-apps/
 
+    - SP attr token: special attribute at IdP. The token is issued by the SP to
+      pass in reliable way attributes to SP. Signed to tie to pseudonym.
     - Use SAML2 a7n as "sticky policy" envelope, standardizing some attribute names to convey metadata such as acceptable use or purpose, obligations, right-of-access-correction-and-deletion-URL, and the authorative source.
     - zxcot should have idpdimd listing mode
     - zxpasswd should have user federation listing mode
