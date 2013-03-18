@@ -1329,6 +1329,8 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_id_set = *Net::SAMLc::zxid_cgi_id_set;
 *swig_inv_get = *Net::SAMLc::zxid_cgi_inv_get;
 *swig_inv_set = *Net::SAMLc::zxid_cgi_inv_set;
+*swig_skin_get = *Net::SAMLc::zxid_cgi_skin_get;
+*swig_skin_set = *Net::SAMLc::zxid_cgi_skin_set;
 *swig_action_url_get = *Net::SAMLc::zxid_cgi_action_url_get;
 *swig_action_url_set = *Net::SAMLc::zxid_cgi_action_url_set;
 *swig_idp_list_get = *Net::SAMLc::zxid_cgi_idp_list_get;

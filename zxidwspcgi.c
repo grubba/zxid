@@ -94,7 +94,7 @@ static int zxidwspcgi_child(zxid_conf* cf, int len, char* buf, char* sid, char* 
     setenv("idpnid", nid, 1);
     setenv("sid", sid, 1);
     D("exec(%s)", cf->wspcgicmd);
-    execl(cf->wspcgicmd, cf->wspcgicmd);
+    execl(cf->wspcgicmd, cf->wspcgicmd);     /* At least gcc-3.4.6 gives bogus "warning: not enough variable arguments to fit a sentinel [-Wformat]" on this line. AFAIK you can safely ignore the warning. --Sampo */
     perror("exec");
     ERR("Exec(%s) failed: errno=%d", cf->wspcgicmd, errno);
     return 1;

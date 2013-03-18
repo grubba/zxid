@@ -1136,12 +1136,14 @@ char* zx_url_encode(struct zx_ctx* c, int in_len, const char* in, int* out_len)
  * name:: result parameter pointing to the name analyzed from qs, nul terminated
  * val:: result parameter pointing to the value analyzed from qs, nul terminated
  * url_decode_val_flag:: 0 = do not decode, 1 = always decode, 2 = decode except SAMLResponse
- * return:: one past val+nul or point to end of string nul (if nul, outer parsing
+ * return:: pointer to beginning of the next name (one past the ampersand ending the
+ *     previous val, i.e. the nul, unless URL decode made the val shorter)
+ *     or to the end of string nul (if nul, outer parsing
  *     loop should terminate). Any error causes null pointer to be returned.
  *
  * Typical invocation pattern:
  *
- *   while (*qs) {
+ *   while (qs && *qs) {
  *     qs = zxid_qs_nv_scan(qs, &name, &val);
  *     ... switch on name ...
  *   }
@@ -1181,12 +1183,12 @@ scan_end:
   URL_DECODE(p, q, qs);                          /* In place mod of name */
   *p = 0;                                        /* Nul-term *name */
 
-  *val = ++qs;
-  qs += strcspn(qs, "&\n\r"); /* Skip over = and scan val */
+  *val = ++qs;                /* Skip over =    */
+  qs += strcspn(qs, "&\n\r"); /*   and scan val */
 
   switch (url_decode_val_flag) {
-  case 0: p = qs; break;
-  case 2:
+  case 0: p = qs; break;      /* 0 = do not decode */
+  case 2:                     /* 1 = decode except SAMLResponse etc. */
     /* SAMLRequest and Response MUST NOT be URL decoded as the URL encoding
      * is needed for redirect binding signature validation. See also unbase64_raw()
      * for how these fields are URL decoded at later stage. */
@@ -1198,15 +1200,15 @@ scan_end:
       break;
     }
     /* fall thru */
-  case 1:
+  case 1:                     /* 1 = always decode */
     p = q = *val;
     URL_DECODE(p, q, qs);
     break;
   default: NEVERNEVER("unsupported case(%d)", url_decode_val_flag);
   }
-  *p = 0;
   if (*qs)
     ++qs;
+  *p = 0;
   return qs;
 }
 

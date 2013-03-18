@@ -25779,6 +25779,78 @@ XS(_wrap_zxid_cgi_inv_get) {
 }
 
 
+XS(_wrap_zxid_cgi_skin_set) {
+  {
+    struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
+    char *arg2 = (char *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: zxid_cgi_skin_set(self,skin);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_cgi, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_cgi_skin_set" "', argument " "1"" of type '" "struct zxid_cgi *""'"); 
+    }
+    arg1 = (struct zxid_cgi *)(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_cgi_skin_set" "', argument " "2"" of type '" "char *""'");
+    }
+    arg2 = (char *)(buf2);
+    if (arg1->skin) free((char*)arg1->skin);
+    if (arg2) {
+      size_t size = strlen((const char *)(arg2)) + 1;
+      arg1->skin = (char *)(char *)memcpy((char *)malloc((size)*sizeof(char)), (const char *)(arg2), sizeof(char)*(size));
+    } else {
+      arg1->skin = 0;
+    }
+    ST(argvi) = sv_newmortal();
+    
+    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_zxid_cgi_skin_get) {
+  {
+    struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: zxid_cgi_skin_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_cgi, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_cgi_skin_get" "', argument " "1"" of type '" "struct zxid_cgi *""'"); 
+    }
+    arg1 = (struct zxid_cgi *)(argp1);
+    result = (char *) ((arg1)->skin);
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_zxid_cgi_action_url_set) {
   {
     struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
@@ -47393,6 +47465,8 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_cgi_id_get", _wrap_zxid_cgi_id_get},
 {"Net::SAMLc::zxid_cgi_inv_set", _wrap_zxid_cgi_inv_set},
 {"Net::SAMLc::zxid_cgi_inv_get", _wrap_zxid_cgi_inv_get},
+{"Net::SAMLc::zxid_cgi_skin_set", _wrap_zxid_cgi_skin_set},
+{"Net::SAMLc::zxid_cgi_skin_get", _wrap_zxid_cgi_skin_get},
 {"Net::SAMLc::zxid_cgi_action_url_set", _wrap_zxid_cgi_action_url_set},
 {"Net::SAMLc::zxid_cgi_action_url_get", _wrap_zxid_cgi_action_url_get},
 {"Net::SAMLc::zxid_cgi_idp_list_set", _wrap_zxid_cgi_idp_list_set},

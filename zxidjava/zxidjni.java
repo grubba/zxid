@@ -2757,6 +2757,14 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_cgi_inv_get(zxid_cgi.getCPtr(self));
   }
 
+  public static void cgi_skin_set(zxid_cgi self, String value) {
+    zxidjniJNI.zxid_cgi_skin_set(zxid_cgi.getCPtr(self), value);
+  }
+
+  public static String cgi_skin_get(zxid_cgi self) {
+    return zxidjniJNI.zxid_cgi_skin_get(zxid_cgi.getCPtr(self));
+  }
+
   public static void cgi_action_url_set(zxid_cgi self, String value) {
     zxidjniJNI.zxid_cgi_action_url_set(zxid_cgi.getCPtr(self), value);
   }

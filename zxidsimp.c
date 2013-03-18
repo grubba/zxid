@@ -20,6 +20,7 @@
  * 10.12.2011, added OAuth2, OpenID Connect, and UMA support --Sampo
  * 30.9.2012, added PTM support --Sampo
  * 13.2.2013, added WD option --Sampo
+ * 14.3.2013   added language/skin dependent templates --Sampo
  *
  * Login button abbreviations
  * A2 = SAML 2.0 Artifact Profile
@@ -326,6 +327,7 @@ static const char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* k
     if (BBMATCH("RS", key, lim)) return cgi->rs;
     break;
   case 'S':
+    if (BBMATCH("SKIN", key, lim)) return cgi->skin;
     if (BBMATCH("SIG", key, lim)) return cgi->sig;
     if (BBMATCH("SP_EID", key, lim)) return cgi->sp_eid;
     if (BBMATCH("SP_DPY_NAME", key, lim)) return cgi->sp_dpy_name;
@@ -354,9 +356,30 @@ struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* t
   const char* templ;
   const char* tp;
   const char* tq;
+  const char* p;
   char* pp;
   struct zx_str* ss;
-  int len, got = read_all(sizeof(buf)-1, buf, "templ", 1, "%s", templ_path);
+  int len, got = 0;
+
+  if (cgi->skin && *cgi->skin) {
+    for (pp = cgi->skin; *pp; ++pp)
+      if (*pp == '/') {  /* Squash to avoid accessing files beyond webroot */
+	ERR("Illegal character 0x%x (%c) in skin CGI variable (possible attack or misconfiguration)", *pp, *pp);
+	*pp = '_';
+      }
+
+    /* scan for end of path component, if any. */
+    for (p = templ_path + strlen(templ_path)-1;
+	 p >= templ_path && !ONE_OF_2(*p, '/', '\\');
+	 --p);
+
+    got = read_all(sizeof(buf)-1, buf, "templ", 1, "%.*s/%s%s",
+		   p-templ_path, templ_path, cgi->skin, p);
+    D("Tried to read from skin(%s), got=%d", cgi->skin, got);
+  }
+  
+  if (got <= 0)
+    got = read_all(sizeof(buf)-1, buf, "templ", 1, "%s", templ_path);
   if (got <= 0) {
     D("Template at path(%s) not found. Using default template.", templ_path);
     templ = default_templ;
@@ -567,7 +590,9 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
 
 #if 1
   if (cgi->templ && *cgi->templ) {
-    /* Template supplied by cgi Query String. Two problems:
+    /* Template supplied by cgi Query String. This is often used
+     * to implement tabbed user interface. See also cgi->skin in zxid_template_page_cf()
+     * Two problems:
      * 1. This could be an attack so we need to squash dangerous characters
      * 2. It is not very portable to give absolute paths in QS as filesystem
      *    layout and location should not be web developer's concern. Thus
@@ -596,7 +621,7 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
     }
   } else
     tf = cf->idp_sel_templ_file;
-  D("HERE tf(%s) t(%s)", STRNULLCHKNULL(tf), STRNULLCHKNULL(cf->idp_sel_templ));
+  D("HERE tf(%s) k(%s) t(%s) cgi=%p", STRNULLCHKNULL(tf), STRNULLCHKNULL(cgi->skin), STRNULLCHKNULL(cf->idp_sel_templ), cgi);
   ss = zxid_template_page_cf(cf, cgi, tf, cf->idp_sel_templ, 4096, auto_flags);
   if (please_free_tf)
     ZX_FREE(cf->ctx, tf);

@@ -21,7 +21,8 @@
  * 13.11.2010, added ZXID_DECL for benefit of the Windows port --Sampo
  * 12.12.2010, separate zxidpriv.h and zxidutil.h from zxid.h --Sampo
  * 17.8.2012,  added audit bus configuration --Sampo
- * 16.2.2013, added WD option --Sampo
+ * 16.2.2013,  added WD option --Sampo
+ * 14.3.2013   added language/skin dependent templates --Sampo
  */
 
 #ifndef _zxid_h
@@ -435,6 +436,7 @@ struct zxid_cgi {
   char* updated_time;  /* OAuth2 */
 #endif
   char* inv;           /* Invitation ID */
+  char* skin;
   char* action_url;    /* action URL in some forms, such as post.html */
   zxid_entity* idp_list;   /* IdPs from CDC */
 };

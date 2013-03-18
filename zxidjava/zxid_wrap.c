@@ -11826,6 +11826,44 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1cgi_1inv_1get(JNIEnv *
 }
 
 
+SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zxid_1cgi_1skin_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
+  struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zxid_cgi **)&jarg1; 
+  arg2 = 0;
+  if (jarg2) {
+    arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
+    if (!arg2) return ;
+  }
+  {
+    if (arg2) {
+      arg1->skin = (char *) malloc(strlen(( char *)arg2)+1);
+      strcpy((char *)arg1->skin, ( char *)arg2);
+    } else {
+      arg1->skin = 0;
+    }
+  }
+  if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, ( char *)arg2);
+}
+
+
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1cgi_1skin_1get(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jstring jresult = 0 ;
+  struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zxid_cgi **)&jarg1; 
+  result = (char *) ((arg1)->skin);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zxid_1cgi_1action_1url_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
   struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -25844,7 +25882,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1COMPILE_1DATE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "1361481573";
+  result = (char *) "1363630478";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }
@@ -25856,7 +25894,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1REV_1get(JNIEnv *jenv,
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "$Id:  20130205-193525 sampo@ $";
+  result = (char *) "$Id:  20130221-225309 sampo@ $";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }

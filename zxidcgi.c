@@ -1,5 +1,5 @@
 /* zxidcgi.c  -  Handwritten functions for parsing SP specific CGI options
- * Copyright (c) 2012 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -15,7 +15,7 @@
  * 7.10.2008,  added documentation --Sampo
  * 10.12.2011, added OAuth2, OpenID Connect, and UMA support --Sampo
  * 20.10.2012, made the fr to rs copy cause deflate safe base64 encode --Sampo
- *
+ * 14.3.2013   added language/skin dependent templates --Sampo
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
 
@@ -52,14 +52,14 @@
 int zxid_parse_cgi(zxid_conf* cf, zxid_cgi* cgi, char* qs)
 {
   char *p, *n, *v;
-  DD("qs(%s) len=%d", STRNULLCHK(qs), qs?strlen(qs):-1);
+  D("qs(%s)=%p len=%d", STRNULLCHK(qs), qs, qs?strlen(qs):-1);
   if (!qs)
     return 0;
   while (qs && *qs) {
     qs = zxid_qs_nv_scan(qs, &n, &v, 2);
     if (!n)
       n = "NULL_NAME_ERROR";
-    
+    D("n(%s)=v(%s) qs(%s)=%p len=%d", n,v, STRNULLCHKNULL(qs), qs, qs?strlen(qs):-1);
     switch (n[0]) {
     case 'n':
       if (!strcmp(n, "nonce")) { cgi->nonce = v; break; }
@@ -136,6 +136,10 @@ set_eid:
       cgi->op = 'L';
       D("cgi: login eid=%p eid(%s)", cgi->eid, cgi->eid);
       break;
+    case 'k':
+      D("k CGI field(%s) val(%s) cgi=%p", n, v, cgi);
+      if (!n[1]) { cgi->skin = v;    break; }
+      goto unknown;
     case 'i':
       if (!strcmp(n, "id_token")) { cgi->id_token = v; break; }
       if (!strcmp(n, "iss")) { cgi->iss = v; break; }
@@ -233,7 +237,7 @@ set_eid:
       }
       /* fall thru */
     unknown:
-    default:  D("Unknown CGI field(%s) val(%s)", n, v);
+    default:  D("Unknown CGI field(%s) val(%s) cgi=%p", n, v, cgi);
     }
   }
   DD("END cgi=%p cgi->eid=%p (%s) op(%c) magic=%x", cgi, cgi->eid, cgi->eid, cgi->op, cgi->magic);

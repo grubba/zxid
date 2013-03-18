@@ -370,11 +370,13 @@ static int chkuid(request_rec* r)
   }
   
   args_len = r->args?strlen(r->args):0;
+  D("HERE1 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(r->args));
   if (args_len) {
     /* leak the dup str: the cgi structure will take references to this and change &s to nuls */
     p = apr_palloc(r->pool, args_len + 1);
-    strcpy(p, args_len?r->args:"");
+    strcpy(p, r->args);
     zxid_parse_cgi(cf, &cgi, p);
+    D("HERE2 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(r->args));
   }
   /* Check if we are supposed to enter zxid due to URL suffix. To do this
    * correctly we need to ignore the query string part. We are looking
@@ -446,7 +448,7 @@ static int chkuid(request_rec* r)
       p[uri_len] = '?';
       strcpy(p+uri_len+1, r->args);
     }
-    D("uri(%s) args(%s) rs(%s)", r->uri, STRNULLCHKNULL(r->args), p);
+    D("HERE3 args_len=%d cgi=%p k(%s) uri(%s) args(%s) rs(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), r->uri, STRNULLCHKNULL(r->args), p);
     /* cgi.rs will be copied to ses->rs and from there in ab_pep to resource-id.
      * We compress and safe_base64 encode it to protect any URL special characters.
      * *** seems that at this point the p is not just rs, but the entire local URL --Sampo */
@@ -462,7 +464,7 @@ static int chkuid(request_rec* r)
     } else {
       D("No session(%s) active op(%c)", STRNULLCHK(cgi.sid), cgi.op);
     }
-    D("other page: no_ses uri(%s) templ(%s) tf(%s)", r->uri, STRNULLCHKNULL(cgi.templ), STRNULLCHKNULL(cf->idp_sel_templ_file));
+    D("other page: no_ses uri(%s) templ(%s) tf(%s) k(%s) cgi=%p", r->uri, STRNULLCHKNULL(cgi.templ), STRNULLCHKNULL(cf->idp_sel_templ_file), cgi.skin, &cgi);
   }
 step_up:
   res = zxid_simple_no_ses_cf(cf, &cgi, &ses, 0, AUTO_FLAGS);

@@ -692,6 +692,8 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_cgi_id_set);
 ZEND_NAMED_FUNCTION(_wrap_zxid_cgi_id_get);
 ZEND_NAMED_FUNCTION(_wrap_zxid_cgi_inv_set);
 ZEND_NAMED_FUNCTION(_wrap_zxid_cgi_inv_get);
+ZEND_NAMED_FUNCTION(_wrap_zxid_cgi_skin_set);
+ZEND_NAMED_FUNCTION(_wrap_zxid_cgi_skin_get);
 ZEND_NAMED_FUNCTION(_wrap_zxid_cgi_action_url_set);
 ZEND_NAMED_FUNCTION(_wrap_zxid_cgi_action_url_get);
 ZEND_NAMED_FUNCTION(_wrap_zxid_cgi_idp_list_set);
