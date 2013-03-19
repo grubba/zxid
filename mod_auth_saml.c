@@ -370,13 +370,13 @@ static int chkuid(request_rec* r)
   }
   
   args_len = r->args?strlen(r->args):0;
-  D("HERE1 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(r->args));
+  DD("HERE1 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(r->args));
   if (args_len) {
     /* leak the dup str: the cgi structure will take references to this and change &s to nuls */
     p = apr_palloc(r->pool, args_len + 1);
     strcpy(p, r->args);
     zxid_parse_cgi(cf, &cgi, p);
-    D("HERE2 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(r->args));
+    DD("HERE2 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(r->args));
   }
   /* Check if we are supposed to enter zxid due to URL suffix. To do this
    * correctly we need to ignore the query string part. We are looking
@@ -448,7 +448,7 @@ static int chkuid(request_rec* r)
       p[uri_len] = '?';
       strcpy(p+uri_len+1, r->args);
     }
-    D("HERE3 args_len=%d cgi=%p k(%s) uri(%s) args(%s) rs(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), r->uri, STRNULLCHKNULL(r->args), p);
+    DD("HERE3 args_len=%d cgi=%p k(%s) uri(%s) args(%s) rs(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), r->uri, STRNULLCHKNULL(r->args), p);
     /* cgi.rs will be copied to ses->rs and from there in ab_pep to resource-id.
      * We compress and safe_base64 encode it to protect any URL special characters.
      * *** seems that at this point the p is not just rs, but the entire local URL --Sampo */

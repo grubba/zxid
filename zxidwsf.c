@@ -586,7 +586,7 @@ int zxid_eval_sol1(zxid_conf* cf, zxid_ses* ses, const char* obl, struct zxid_ob
     return 0;
   }
 
-  oblig = zx_dup_cstr(cf->ctx, obl);     /* Will be modified in place so we need copy */
+  oblig = zx_dup_cstr(cf->ctx, obl);     /* Will be modified in place so we need a copy */
   ol = zxid_load_obl_list(cf, 0, oblig);
   for (; req; req = req->n) {
     ob = zxid_find_obl_list(ol, req->name);

@@ -564,7 +564,8 @@ void zxid_free_cstr_list(struct zxid_conf* cf, struct zxid_cstr_list* l)
 // *** print obl_list
 
 /*() Parse and construct an obligations list with multiple values as cstr_list.
- * The input string obl will be modified in place and used for long term reference. */
+ * The input string obl will be modified in place and used for long term reference,
+ * so do not pass a constant string or something that will be freed immadiately. */
 
 struct zxid_obl_list* zxid_load_obl_list(zxid_conf* cf, struct zxid_obl_list* ol, char* obl)
 {
@@ -595,10 +596,11 @@ struct zxid_obl_list* zxid_load_obl_list(zxid_conf* cf, struct zxid_obl_list* ol
 /* Called by:  zxid_free_conf x4 */
 void zxid_free_obl_list(struct zxid_conf* cf, struct zxid_obl_list* ol)
 {
+  //return; /* *** LEAK temporary fix 20130319 --Sampo */
   while (ol) {
     struct zxid_obl_list* next = ol->n;
     zxid_free_cstr_list(cf, ol->vals);
-    ZX_FREE(cf->ctx, ol->name);
+    /* ZX_FREE(cf->ctx, ol->name); BAD IDEA: the name comes from external static storage */
     ZX_FREE(cf->ctx, ol);
     ol = next;
   }

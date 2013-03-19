@@ -523,7 +523,7 @@ struct zxid_map {
   char* ext;
 };
 
-/*(s) Used for maintaining whitelists and blacklists */
+/*(s) Used for maintaining whitelists and blacklists as well as obligation values */
 
 struct zxid_cstr_list {
   struct zxid_cstr_list* n;

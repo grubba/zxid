@@ -52,14 +52,14 @@
 int zxid_parse_cgi(zxid_conf* cf, zxid_cgi* cgi, char* qs)
 {
   char *p, *n, *v;
-  D("qs(%s)=%p len=%d", STRNULLCHK(qs), qs, qs?strlen(qs):-1);
+  DD("qs(%s)=%p len=%d", STRNULLCHK(qs), qs, qs?strlen(qs):-1);
   if (!qs)
     return 0;
   while (qs && *qs) {
     qs = zxid_qs_nv_scan(qs, &n, &v, 2);
     if (!n)
       n = "NULL_NAME_ERROR";
-    D("n(%s)=v(%s) qs(%s)=%p len=%d", n,v, STRNULLCHKNULL(qs), qs, qs?strlen(qs):-1);
+    DD("n(%s)=v(%s) qs(%s)=%p len=%d", n,v, STRNULLCHKNULL(qs), qs, qs?strlen(qs):-1);
     switch (n[0]) {
     case 'n':
       if (!strcmp(n, "nonce")) { cgi->nonce = v; break; }
@@ -137,7 +137,7 @@ set_eid:
       D("cgi: login eid=%p eid(%s)", cgi->eid, cgi->eid);
       break;
     case 'k':
-      D("k CGI field(%s) val(%s) cgi=%p", n, v, cgi);
+      DD("k CGI field(%s) val(%s) cgi=%p", n, v, cgi);
       if (!n[1]) { cgi->skin = v;    break; }
       goto unknown;
     case 'i':

@@ -345,7 +345,9 @@ apache-tomcat-5.5.20/conf/context.xml (the ~reloadable~
 flag avoids having to restart Tomcat if you recompile
 the .class file):
 
-  <Context allowLinking="true" reloadable="true"/etc/tomcat6/context.xml>...
+  <Context allowLinking="true" reloadable="true">...
+
+In Tomcat6 the file might be /etc/tomcat6/context.xml
 
 > N.B. It has been reported that on Tomcat6 this is broken and
 > symlinks can not be made to work, so your only option is to
@@ -579,8 +581,11 @@ In Tomcat6 the symlink enablement receipe of Tomcat5 apparently does
 not work any longer and the web is full of confused users who loose
 hours and days wrestling with this problem. If you are stuck with
 this, do yourself a favor: just copy the directory and files that the
-symlink would have pointed to. Its sub optima, but in the end of the
+symlink would have pointed to. Its suboptimal, but in the end of the
 day it works.
+
+It is also worthwhile to explicitly check that the classes it is
+looking for have actually been compiled.
 
 9.7.2 Class Path or Java Version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
