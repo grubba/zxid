@@ -485,17 +485,17 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
       /* fall thru */
     case ZXID_IDP_LIST_POPUP:
       dd = zx_strf(cf->ctx, "%.*s"
-		   "<option value=\"%s\"> %s (%s) %s\n",
+		   "<option class=zxidplistopt value=\"%s\"> %s (%s) %s\n",
 		   ss->len, ss->s, idp->eid, STRNULLCHK(idp->dpy_name), idp->eid, mark);
       break;
     case ZXID_IDP_LIST_BUTTON:
       if (cf->show_tech) {
 	dd = zx_strf(cf->ctx, "%.*s"
-		     "<input type=submit name=\"l0%s\" value=\" Login with %s (%s)\">\n"
-		     "<input type=submit name=\"l1%s\" value=\" Login with %s (%s) (A2) \">\n"
-		     "<input type=submit name=\"l2%s\" value=\" Login with %s (%s) (P2) \">\n"
-		     "<input type=submit name=\"l5%s\" value=\" Login with %s (%s) (S2) \">\n"
-		     "<input type=submit name=\"l6%s\" value=\" Login with %s (%s) (O2) \">"
+		     "<input type=submit class=zxidplistbut name=\"l0%s\" value=\" Login with %s (%s)\">\n"
+		     "<input type=submit class=zxidplistbut name=\"l1%s\" value=\" Login with %s (%s) (A2) \">\n"
+		     "<input type=submit class=zxidplistbut name=\"l2%s\" value=\" Login with %s (%s) (P2) \">\n"
+		     "<input type=submit class=zxidplistbut name=\"l5%s\" value=\" Login with %s (%s) (S2) \">\n"
+		     "<input type=submit class=zxidplistbut name=\"l6%s\" value=\" Login with %s (%s) (O2) \">"
 		     "%s<br>\n",
 		     ss->len, ss->s,
 		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
@@ -528,15 +528,15 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
   if (cf->idp_list_meth == ZXID_IDP_LIST_POPUP) {
     if (cf->show_tech) {
       dd = zx_strf(cf->ctx, "%.*s</select>"
-		   "<input type=submit name=\"l0\" value=\" Login \">\n"
-		   "<input type=submit name=\"l1\" value=\" Login (A2) \">\n"
-		   "<input type=submit name=\"l2\" value=\" Login (P2) \">\n"
-		   "<input type=submit name=\"l5\" value=\" Login (S2) \">\n"
-		   "<input type=submit name=\"l6\" value=\" Login (O2) \"><br>\n",
+		   "<input type=submit class=zxidplistbut name=\"l0\" value=\" Login \">\n"
+		   "<input type=submit class=zxidplistbut name=\"l1\" value=\" Login (A2) \">\n"
+		   "<input type=submit class=zxidplistbut name=\"l2\" value=\" Login (P2) \">\n"
+		   "<input type=submit class=zxidplistbut name=\"l5\" value=\" Login (S2) \">\n"
+		   "<input type=submit class=zxidplistbut name=\"l6\" value=\" Login (O2) \"><br>\n",
 		   ss->len, ss->s);
     } else {
       dd = zx_strf(cf->ctx, "%.*s</select>"
-		   "<input type=submit name=\"l0\" value=\" Login \"><br>\n",
+		   "<input type=submit id=zxidplistlogin class=zxidplistbut name=\"l0\" value=\" Login \"><br>\n",
 		   ss->len, ss->s);
     }
     zx_str_free(cf->ctx, ss);
