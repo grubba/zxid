@@ -1,0 +1,37 @@
+<?php
+/**
+ * @file
+ * authn_sso.module - mod_auth_saml based login support for Drupal
+ *
+ * Copyright (c) 2013 Synergetics NV. All Rights Reserved.
+ * Author: Sampo Kellomaki (sampo@synergetics.be)
+ *
+ * Drupal module to match Apache mod_auth_saml (see zxid.org). This module
+ * will also work with HTTP Basic Auth (or anything that sets REMOTE_USER)
+ * configured at Apache httpd level.
+ *
+ * See also:
+ * http://api.drupal.org/api/drupal/includes!module.inc/group/hooks/7
+ */
+
+function authn_sso_help($path, $arg) {
+    return "Help string for authn_sso module: remember to deploy mod_auth_saml (from zxid.org) at Apache level.";
+}
+
+# This hook is supposedly too early in the process and not all prerequisites are in place, yet
+# http://api.drupal.org/api/drupal/modules!system!system.api.php/function/hook_boot/7
+#function authn_sso_boot() { }
+
+# Seems to be the appropriate hook for login tasks
+# http://api.drupal.org/api/drupal/modules!system!system.api.php/function/hook_init/7
+
+function authn_sso_init() {
+    #debug(var_dump($_SERVER));
+    #debug(print_r("<pre>".$_SERVER."</pre>"));
+    #debug(print_r($_SERVER));
+    debug($_SERVER);
+}
+
+#function authn_sso_user_logout($account) {}
+
+# EOF - authn_sso.module
