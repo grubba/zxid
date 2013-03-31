@@ -15,23 +15,66 @@
  */
 
 function authn_sso_help($path, $arg) {
-    return "Help string for authn_sso module: remember to deploy mod_auth_saml (from zxid.org) at Apache level.";
+    switch ($path) {
+    case '':
+      return t("Help string for authn_sso module: remember to deploy mod_auth_saml (from zxid.org) at Apache level.");
+    }
 }
 
-# This hook is supposedly too early in the process and not all prerequisites are in place, yet
-# http://api.drupal.org/api/drupal/modules!system!system.api.php/function/hook_boot/7
-#function authn_sso_boot() { }
+// This hook is supposedly too early in the process and not all prerequisites are in place, yet
+// http://api.drupal.org/api/drupal/modules!system!system.api.php/function/hook_boot/7
+//function authn_sso_boot() { }
 
-# Seems to be the appropriate hook for login tasks
-# http://api.drupal.org/api/drupal/modules!system!system.api.php/function/hook_init/7
+// Seems to be the appropriate hook for login tasks
+// http://api.drupal.org/api/drupal/modules!system!system.api.php/function/hook_init/7
 
 function authn_sso_init() {
-    #debug(var_dump($_SERVER));
-    #debug(print_r("<pre>".$_SERVER."</pre>"));
-    #debug(print_r($_SERVER));
-    debug($_SERVER);
+  //debug($_SERVER);
+  $account = user_load_by_name($_SERVER['REMOTE_USER']);  // HTTP Auth or its simulation
+  if (!$account) {
+    debug("Account ".$_SERVER['REMOTE_USER']." does not exist. Creating it (on-the-fly).");
+    $account = user_save($account, array('name' => $_SERVER['REMOTE_USER'], 'cn' => $_SERVER['SAML_cn']));
+    if (!$account) {
+      drupal_set_message(t("Error creating user account based on SSO."), 'error');
+      return;
+    }
+  }
+  global $user;
+  $user = $account;   // Login happens when global variable $user is set
+  //debug("Logging in as ".$_SERVER['REMOTE_USER']);
+  user_login_finalize();
+  debug($user);
 }
 
-#function authn_sso_user_logout($account) {}
+//function authn_sso_user_logout($account) {}
 
-# EOF - authn_sso.module
+/* EOF - authn_sso.module */
+
+/*
+
+'field_name_first' => 
+  array (
+    'und' => 
+    array (
+      0 => 
+      array (
+        'value' => 'Sampo',
+        'format' => NULL,
+        'safe_value' => 'Sampo',
+      ),
+    ),
+  ),
+   'field_name_last' => 
+  array (
+    'und' => 
+    array (
+      0 => 
+      array (
+        'value' => 'Kellomaki',
+        'format' => NULL,
+        'safe_value' => 'Kellomaki',
+      ),
+    ),
+  ),
+
+*/
