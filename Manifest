@@ -43,7 +43,8 @@ zxid.pem         - Certificate and privatekey combo for testing (not secure)
 favicon.ico      - A ZX/SP favicon for use in demo SPs
 tpn-client.sh    - Wrapper for calling TrustBuilder from discovery
 zxmkdirs.sh      - Create the typical directory hierarchy under /var/zxid
-zxcleanlogs.sh   - Clean away audit trail (looses audit trail, but saves space)
+zxcleanlogs.sh   - Old: Clean away all audit trail (looses audit trail, but saves space)
+zxlogclean.sh    - New log cleaning script for production deployments - study, and run from cron(8)
 covrep.sh        - Test coverage report generator
 gen-consts-from-gperf-output.pl  - Used in build process
 gen-cot-links.pl - Handy tool for creating documentative symlinks in CoT directory
@@ -486,6 +487,11 @@ intra/env.cgi
 strong/strong.html
 other/other.html
 idpsel.cgi             - Custom IdP selection script for the strong area.
+
+# Drupal modules
+
+drupal/authn_sso/authn_sso.info    - Drupal module description file
+drupal/authn_sso/authn_sso.module  - Drupal module (in PHP) for mod_auth_saml integration
 
 # Net::SAML module (zxid.i)
 
