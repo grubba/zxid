@@ -166,6 +166,7 @@ C. perl from cpan.org (only for build process and only if you
    want to generate code from .sg)
 D. plaindoc from http://zxid.org/plaindoc/pd.html (only for
    build process, for code generation from .sg, and for documentation)
+   You can also do git clone git://zxid.org/pd
 
 Although technically not needed to build zxid, you will need an IdP
 to test against. You can use the free IdP at https://zxidp.org/index-idp.html
