@@ -1288,6 +1288,9 @@ zxididp: $(ZXIDIDP_OBJ) $(LIBZXID_A)
 zxididp-static: $(ZXIDIDP_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxididp$(EXE) $(ZXIDIDP_OBJ) -static $(LIBZXID) $(LIBS)
 
+zxididp-semistatic: $(ZXIDIDP_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxididp$(EXE) $(ZXIDIDP_OBJ) -static $(LIBZXID) $(LIBS) -dynamic -lc
+
 zxidgsa: $(ZXIDGSA_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxidgsa$(EXE) $(ZXIDGSA_OBJ) $(LIBZXID) $(LIBS)
 

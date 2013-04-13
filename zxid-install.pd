@@ -126,14 +126,14 @@ This software depends on the following packages:
 5. Perl, PHP, and Java interfaces depend on the respective development
    tools but should not need any additional modules or tools.
 
-2.1.1 Additional Prerequisites for Complete Rebuild from Scratch
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2.1.1 Building from Source: Install Required Packages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 While you may compile the dependency libraries from their respective sources,
 generally you can use the libraries that come with your operating system
 distribution. In this case you need to ensure that "development" versions
 of the packages are installed (the non-development versions do not include
-header files, which are needed for compiling zxid).
+header files or .a files, which are needed for compiling zxid).
 
 Unfortunately the manner how development packages are installed is
 highly distribution dependent. Here are some commands that have
@@ -145,7 +145,7 @@ been empirically found to work (tested 2011):
   sudo apt-get install apache2-dev
   sudo apt-get install php5-dev
   sudo apt-get install openjdk-6-jdk
-  sudo apt-get install mini-httpd
+  sudo apt-get install mini-httpd     # But our patched version is better
 
   sudo yum -y install openssl-devel   # Redhat
   sudo yum -y install libcurl-devel
@@ -179,15 +179,17 @@ of Trust. Or you can compile and configure the zxididp, see zxid-idp.pd.
 * The IDP:  http://authentic.labs.libre-entreprise.org/ 
 >>
 
-2.1.2 Operating System and Platform Support
+2.1.3 Operating System and Platform Support
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As of January 2011, following platforms are "officially" supported:
 
 * Linux/Unix (default platform, also should work for other Unixes, e.g. FreeBSD, with gnu tools)
+  - Ubuntu / Debian
+  - Amazon Linux (CentOS / Redhat derivative)
 * Solaris 8 (and later) (~make TARGET=sol8~)
 * MacOS X (~make TARGET=macosx~)
-* Windows 2000 or later using mingw (~make TARGET=mingw~)
+* Windows 2000 using mingw (~make TARGET=mingw~)
 
 Many other platforms have been occasionally tested and found to work, such as
 
@@ -195,17 +197,18 @@ Many other platforms have been occasionally tested and found to work, such as
 * Windows using cygwin (~make TARGET=cygwin~)
 * Linux hosted cross compilation targets: ~xsol8~, ~xmingw~
 
-As of January 2011 most testing has been on 32bit architectures, with
-only occasional 64bit experiences. Most testing has been in little
-endian (ix86) architectures, with only occasional testing in big endian
-architectures like PowerPC and Sparc. Never-the-less, we are committed
-to support every modern architecture and OS out there.
+As of April 2013 most testing has been on x86_32 and x86_64
+architectures. The code is believed to be 64bit clean. Most testing
+has been in little endian (ix86) architectures, with only occasional
+testing in big endian architectures like PowerPC and
+Sparc. Never-the-less, we are committed to support every modern
+architecture and OS out there.
 
 > N.B. We prefer to support every supported architecture via an
-> explicit ~Makefile TARGET~ section. We believe debugging gnu autohell
-> generated ~configure~ scripts is more pain and distraction than it's
-> worth. If you add new platform support, please do so directly
-> in the ~Makefile~.
+> explicit ~make TARGET=yourarch~ section in the Makefile. We believe
+> debugging gnu autohell generated ~configure~ scripts is more pain
+> and distraction than it's worth. If you add new platform support,
+> please do so directly in the ~Makefile~.
 
 2.2 Canned Tutorial: Running ZXID as CGI under mini_httpd
 ---------------------------------------------------------
@@ -485,12 +488,18 @@ php -> php_zxid [label="gcc, ld"];
 Carefully study the ~Makefile~, and this should all start to make
 sense (no pun intended). Please note that there is *no* ~configure~
 script and GNU Auto-tools ("GNU Autohell") are not used. This is because
-they have been evaluated to be unsuitable to this project (or to
+they have been evaluated to be unsuitable for this project (or to
 author's tastes). If the ~Makefile~ does not do what you want, you
 should first study if you can change necessary variables using
 localconf.mk, or if that does not work, then just edit the ~Makefile~
-itself.  You can temporarily customize the variables in the ~Makefile~
-by providing new value on command line, e.g.
+itself.
+
+To make your life easier, the build process is +not recursive+
+and only uses single Makefile, so if you edit it, you can just say
+~make -f MyMakefile~
+
+You can temporarily customize the ~Makefile~ variables
+by providing a new value on command line, e.g.
 
   make CC=cc   # override the default of CC=gcc
 
@@ -593,7 +602,21 @@ available and its foot print is small, we have made no supported
 provision to compile without it. If you hack something together, let
 us know.
 
-5.3 Choosing Which Standards to Include (default: all)
+5.3 Building Against Dietlibc and Static Linking
+------------------------------------------------
+
+Static linking has its advantages: (i) you eliminate all library
+dependencies from install process - as well as from error reporting
+and debugging processes; (ii) you avoid the dynamic linking overhead -
+this is significant in CGI use where same executable gets launched
+over and over again. The buffer cache ensures the blocks of dll's
+(.so's) are already in memory, but that does not prevent the system
+calls to do the redundant dynamic linking step (just look at output of
+strace for forst about 200 lines on a dynamically linked
+executable). With static link, the buffer cache has the blocks and
+there is no dynamic like syscall overhead.
+
+5.4 Choosing Which Standards to Include (default: all)
 ------------------------------------------------------
 
 WARNING: Only regularly tested configuration is to compile all
@@ -631,7 +654,7 @@ ENA_WSF2=1       ID-WSF 2.0
 ENA_WSF11=1      ID-WSF 1.1
 >>
 
-5.4 localconf.mk
+5.5 localconf.mk
 ----------------
 
 You can use localconf.mk to remember your own make(1) options,
@@ -652,10 +675,10 @@ of the files in zxid/c directory. For example
 > machine and forgot to remove localconf.mk). A similar
 > problem can occur if you accidentally copied deps.dep
 > from another machine. It will reference the dependencies
-> with the paths of that machine. Just remove the deps.dep
+> with the paths of that other machine. Just remove the deps.dep
 > to solve that issue.
 
-5.5 Known Compilation Warnings
+5.6 Known Compilation Warnings
 ------------------------------
 
 This list was reated around August 2010. Things are likely to have changed since then.
@@ -692,7 +715,7 @@ zxcot.c:403: warning: passing arg 1 of `write_all_fd' makes pointer from integer
 zxcot.c:405: warning: passing arg 1 of `close_file' makes pointer from integer without a cast
 >>
 
-5.5 Tough Compilation Errors
+5.7 Tough Compilation Errors
 ----------------------------
 
 ZXID was mostly developed on gcc 3.4.6 and explicitly has not been
@@ -702,7 +725,7 @@ features in that gcc series). If you hit compile time problems with
 
 *** elaborate more - until then, mail the author
 
-5.6 Tough Linking Errors
+5.8 Tough Linking Errors
 ------------------------
 
 * There are some, yet unspecified, compilation or linking
@@ -744,7 +767,7 @@ features in that gcc series). If you hit compile time problems with
   investigate further. Either use the workaround link line or upgrade
   binutils, glibc, or both and complain to glibc authors or binutils authors.
 
-5.7 Overview of the xsd2sg.pl Tool (guru level)
+5.9 Overview of the xsd2sg.pl Tool (guru level)
 -----------------------------------------------
 
 The xsd2sg.pl tool, distributed as part of Plaindoc
@@ -763,7 +786,7 @@ call. Similarily the encoder is generated by creating many unit
 encoders for different elements. Then the parent elements will
 call the child element encoders.
 
-5.7.1 Process .sg to create %dt hash (throw away XSD output)
+5.9.1 Process .sg to create %dt hash (throw away XSD output)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 xsd2sg.pl first processes the .sg files to XSD. As a side effect it
@@ -787,7 +810,7 @@ or derived type, e.g.
   "anyAttribute$$min$1"
   "_d$$0$1$simplecontent"
 
-5.7.2 The expanding element definitions in %dt
+5.9.2 The expanding element definitions in %dt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Since the concrete goal is to generate data structures for elements
@@ -797,7 +820,7 @@ This is done by expand_element() which will in its turn call
 expand_complex_type(), expand_group() and expand_attribute_group()
 to do the job.
 
-5.7.3 Generation Phase
+5.9.3 Generation Phase
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Once %dt is in expanded form, the get_element() is called for each
