@@ -51,6 +51,8 @@
 #include "c/zxidvers.h"
 #include "c/zx-md-data.h"
 
+#include "dietstdio.h"
+
 /*() Convert configuration string ~conf~ to configuration object ~cf~.
  * cf:: Configuration object, already allocated
  * conf_len:: length of conf string, or -1 to use strlen(conf)
