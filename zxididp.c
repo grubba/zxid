@@ -83,8 +83,8 @@ int main(int argc, char** argv)
       exit(2);
     }
   }
-  //zx_debug = 1;
-  fprintf(stderr, "=================== Running zxididp %s =================== ,\n", ZXID_REL);
+  /*zx_debug = 1;*/
+  fprintf(stderr, "=================== Running zxididp %s =================== %d\n", ZXID_REL, zx_debug);
   p = getenv("ZXID_PRE_CONF");
   D("ZXID_PRE_CONF(%s)", p);
   //fprintf(stderr, "p(%s)\n", p);

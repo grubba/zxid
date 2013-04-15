@@ -211,7 +211,7 @@ int zxid_lazy_load_sign_cert_and_pkey(zxid_conf* cf, X509** cert, EVP_PKEY** pke
 int zxid_set_opt(zxid_conf* cf, int which, int val)
 {
   switch (which) {
-  case 1: zx_debug = val; return val;
+  case 1: zx_debug = val; INFO("zx_debug=%d",val); return val;
   case 5: exit(val);  /* This is typically used to force __gcov_flush() */
   case 6: zxid_set_opt_cstr(cf, 6, "/var/zxid/log/log.dbg"); return 0;
   default: ERR("zxid_set_opt: this version " ZXID_REL " does not support which=%d val=%d (ignored)", which, val);
@@ -1504,7 +1504,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "DI_ALLOW_CREATE")) { cf->di_allow_create = *v; break; }
       if (!strcmp(n, "DI_NID_FMT"))      { SCAN_INT(v, cf->di_nid_fmt); break; }
       if (!strcmp(n, "DI_A7N_ENC"))      { SCAN_INT(v, cf->di_a7n_enc); break; }
-      if (!strcmp(n, "DEBUG"))           { SCAN_INT(v, zx_debug); break; }
+      if (!strcmp(n, "DEBUG"))           { SCAN_INT(v, zx_debug); INFO("zx_debug:%d", zx_debug); break; }
       if (!strcmp(n, "DEBUG_LOG"))       { zxid_set_opt_cstr(cf, 6, v); break; }
       goto badcf;
     case 'E':  /* ERR, ERR_IN_ACT */
