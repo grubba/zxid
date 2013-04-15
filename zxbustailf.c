@@ -126,7 +126,7 @@ static void opt(int* argc, char*** argv, char*** env)
       case 'c':
 	ss = zxid_show_conf(cf);
 	if (zxbus_verbose>1) {
-	  printf("\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
+	  fprintf(stdout, "\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
 	  exit(0);
 	}
 	fprintf(stderr, "\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
@@ -196,7 +196,7 @@ static void opt(int* argc, char*** argv, char*** env)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
 help:
     if (zxbus_verbose>1) {
-      printf("%s", help);
+      fprintf(stdout, "%s", help);
       exit(0);
     }
     fprintf(stderr, "%s", help);

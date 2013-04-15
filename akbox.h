@@ -44,7 +44,7 @@
 		  + (sizeof(x)>34 ? 137*(x)[33] : 0)  + (sizeof(x)>35 ? 139*(x)[34] : 0) \
 		  + (sizeof(x)>36 ? 149*(x)[35] : 0)  + (sizeof(x)>37 ? 151*(x)[36] : 0) \
 		  + (sizeof(x)>38 ? 157*(x)[37] : 0)  + (sizeof(x)>39 ? 163*(x)[38] : 0) \
-		  ) & 0xffff))
+		  ) & 0x0000ffff))
 
 int akbox_fn(const char* fn);
 

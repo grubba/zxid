@@ -462,7 +462,8 @@ int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_Body_s* bo
   }
   
   if (zx_debug & ZXID_INOUT) INFO("SOAP_RESP(%.*s)", ss->len, ss->s);
-  printf("CONTENT-TYPE: text/xml" CRLF "CONTENT-LENGTH: %d" CRLF2 "%.*s", ss->len, ss->len, ss->s);
+  fprintf(stdout, "CONTENT-TYPE: text/xml" CRLF "CONTENT-LENGTH: %d" CRLF2 "%.*s", ss->len, ss->len, ss->s);
+  fflush(stdout);
   D("^^^^^^^^^^^^^^ Done (%d chars returned) ^^^^^^^^^^^^^", ss->len);
   return ZXID_REDIR_OK;
 }

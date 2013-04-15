@@ -69,12 +69,12 @@ int zx_dump_ns_tab(struct zx_ctx* c, int flags)
   int n_ns = c->n_ns;
   int n=0;
   for (ns = c->ns_tab; n < n_ns; ++ns) {
-    printf("%3d NS  %8.*s %.*s\n", ++n, ns->prefix_len, ns->prefix, ns->url_len, ns->url);
+    fprintf(stdout, "%3d NS  %8.*s %.*s\n", ++n, ns->prefix_len, ns->prefix, ns->url_len, ns->url);
     for (alias = ns->n; alias; alias = alias->n)
-      printf("%3d   A %8.*s %.*s\n", ++n, alias->prefix_len, alias->prefix, alias->url_len, alias->url);
+      fprintf(stdout, "%3d   A %8.*s %.*s\n", ++n, alias->prefix_len, alias->prefix, alias->url_len, alias->url);
   }
   for (alias = c->unknown_ns; alias; alias = alias->n) {
-    printf("%3d UNK %8.*s %.*s\n", ++n, alias->prefix_len, alias->prefix, alias->url_len, alias->url);
+    fprintf(stdout, "%3d UNK %8.*s %.*s\n", ++n, alias->prefix_len, alias->prefix, alias->url_len, alias->url);
   }
   return n;
 }

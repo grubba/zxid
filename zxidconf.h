@@ -923,9 +923,9 @@
 /*(c) Template for IdP Selector Page that is used if the
  * path does not work. This is really meant to be the last resort. */
 
-#define ZXID_IDP_SEL_TEMPL "<title>ZXID SP SSO: Choose IdP</title>"\
+#define ZXID_IDP_SEL_TEMPL "<title>SP SSO: Choose IdP</title>"\
   "<link type=\"text/css\" rel=stylesheet href=\"idpsel.css\"><body bgcolor=white>"\
-  "<h1 class=zxtop>ZXID SP Federated SSO (user NOT logged in, no session)</h1>"\
+  "<h1 class=zxtop>SP Federated SSO (user NOT logged in, no session)</h1>"\
   "<form method=get action=\"!!URL\">"\
   "<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>"\
   "<h3>Login Using New IdP</h3>"\
@@ -995,10 +995,10 @@
 /*(c) Template for IdP Authentication Page that is used if the
  * path does not work. This is really meant to be the last resort. */
 
-#define ZXID_AN_TEMPL "<title>ZXID IdP: Authentication</title>"\
+#define ZXID_AN_TEMPL "<title>IdP: Authentication</title>"\
   "<link type=\"text/css\" rel=stylesheet href=\"an.css\"><body bgcolor=white>"\
   "<form method=get action=\"!!URL\">"\
-  "<h1 class=zxtop>ZXID IdP Authentication for Federated SSO</h1>"\
+  "<h1 class=zxtop>IdP Authentication for Federated SSO</h1>"\
   "<p>Entity ID of this IdP (click for the IdP metadata): <a href=\"!!EID\">!!EID</a><br>"\
   "<p>Login requested by <img src=\"!!SP_BUTTON_URL\"> !!SP_DPY_NAME (<a href=\"!!SP_EID\">!!SP_EID</a>)"\
   "<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>"\
@@ -1021,11 +1021,11 @@
 /*(c) Template for POST profile age that is used if the
  * path does not work. This is really meant to be the last resort. */
 
-#define ZXID_POST_TEMPL "<title>ZXID Post Profile</title>"\
+#define ZXID_POST_TEMPL "<title>Post Profile</title>"\
   "<link type=\"text/css\" rel=stylesheet href=\"an.css\">"\
   "<body bgcolor=white OnLoad=\"document.forms[0].submit()\">"\
   "<form method=post action=\"!!ACTION_URL\">"\
-  "<h1 class=zxtop>ZXID POST Profile POST</h1>"\
+  "<h1 class=zxtop>POST Profile POST</h1>"\
   "<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>"\
   "<input type=hidden name=!!SAML_ART value=\"!!SAML_RESP\">!!RS!!SIG"\
   "<input type=submit name=ok value=\" If JavaScript is not on, please click here to complete the transaction \">"\

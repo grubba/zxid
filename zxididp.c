@@ -34,7 +34,7 @@
 char* help =
 "zxididp  -  SAML 2.0 IdP CGI (also DI, IM, and PS) - R" ZXID_REL "\n\
 SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
-Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.\n\
+Copyright (c) 2012-2013 Synergetics SA (sampo@synergetics.be), All Rights Reserved.\n\
 Copyright (c) 2008-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
@@ -83,7 +83,7 @@ int main(int argc, char** argv)
       exit(2);
     }
   }
-  zx_debug = 1;
+  //zx_debug = 1;
   fprintf(stderr, "=================== Running zxididp %s =================== ,\n", ZXID_REL);
   p = getenv("ZXID_PRE_CONF");
   D("ZXID_PRE_CONF(%s)", p);
@@ -101,7 +101,6 @@ int main(int argc, char** argv)
   strncpy(zx_instance, "idp", sizeof(zx_instance));
 #endif
 
-  //zx_debug = 1;
   res = zxid_simple(CONF, 0, 0x1fff);  /* 0xfff == full CGI automation */
   switch (res[0]) {
   default:

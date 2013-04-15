@@ -653,6 +653,9 @@ to be an attractive target.
 wget http://www.fefe.de/dietlibc/dietlibc-0.33.tar.bz2
 tar xvf dietlibc-0.33.tar.bz2
 
+N.B. Enabling WANT_DYNAMIC may trigger "no .eh_frame_hdr table will be
+created" linking error.
+
 <<diffout:
 diff -u dietfeatures.h~ dietfeatures.h
 --- dietfeatures.h~     2012-11-02 11:17:28.000000000 +0000
@@ -672,8 +675,7 @@ diff -u dietfeatures.h~ dietfeatures.h
  #define WANT_TLS
 
  /* make the startcode, etc. dynamic aware ({con,de}structors) */
--/* #define WANT_DYNAMIC */
-+#define WANT_DYNAMIC
+ /* #define WANT_DYNAMIC */
 
  /* GDB support in the dynamic linker */
  #define WANT_LD_SO_GDB_SUPPORT
@@ -905,9 +907,10 @@ sudo make install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   make clean
-  CC='diet cc' LD='diet cc' make
+  CC='diet cc' LD='diet cc' make zxididp-static
 
-  diet gcc -o zxididp zxididp.o -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib -lcurl -lssl -lcrypto -lz
+  diet gcc -o zxididp zxididp.o -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
+
 
 5.4 Choosing Which Standards to Include (default: all)
 ------------------------------------------------------

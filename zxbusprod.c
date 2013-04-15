@@ -655,15 +655,15 @@ char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
       if (zxbus_verbose) {
 	if (zxbus_ascii_color>1) {
 	  if (zxbus_verbose>1) {
-	    printf("\e[42m%.*s\e[0m\n", (int)(bu->ap - bu->m), bu->m);
+	    fprintf(stdout, "\e[42m%.*s\e[0m\n", (int)(bu->ap - bu->m), bu->m);
 	  } else {
-	    printf("\e[42m%.*s\e[0m\n", stomp.len, stomp.body);
+	    fprintf(stdout, "\e[42m%.*s\e[0m\n", stomp.len, stomp.body);
 	  }
 	} else {
 	  if (zxbus_verbose>1) {
-	    printf("%.*s\n", (int)(bu->ap - bu->m), bu->m);
+	    fprintf(stdout, "%.*s\n", (int)(bu->ap - bu->m), bu->m);
 	  } else {
-	    printf("%.*s\n", stomp.len, stomp.body);
+	    fprintf(stdout, "%.*s\n", stomp.len, stomp.body);
 	  }
 	}
       }
@@ -1215,7 +1215,7 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 	}
 
 	if (zxbus_verbose) {
-	  printf("%.*s(%.*s) got RECEIPT %d\n", 4, buf, body?body_len:0, body?body:"", bu->cur_rcpt-1);
+	  fprintf(stdout, "%.*s(%.*s) got RECEIPT %d\n", 4, buf, body?body_len:0, body?body:"", bu->cur_rcpt-1);
 	}
 	if (cf->log_rely_msg) {   /* Log the receipt */
 	  zxbus_log_receipt(cf, bu, -2, rcpt, -2, dest, sha1_buf, siglen, siglen?stomp.zx_rcpt_sig:"");

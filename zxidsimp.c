@@ -20,7 +20,8 @@
  * 10.12.2011, added OAuth2, OpenID Connect, and UMA support --Sampo
  * 30.9.2012, added PTM support --Sampo
  * 13.2.2013, added WD option --Sampo
- * 14.3.2013   added language/skin dependent templates --Sampo
+ * 14.3.2013  added language/skin dependent templates --Sampo
+ * 15.4.2013, added fflush(3) here and there to accommodate broken atexit() --Sampo
  *
  * Login button abbreviations
  * A2 = SAML 2.0 Artifact Profile
@@ -237,8 +238,9 @@ char* zxid_fed_mgmt_cf(zxid_conf* cf, int* res_len, int sid_len, char* sid, int 
 #endif
 
   if (auto_flags & ZXID_AUTO_MGMTC && auto_flags & ZXID_AUTO_MGMTH) {  /* Both H&C: CGI */
-    printf("Content-Type: text/html" CRLF "Content-Length: %d" CRLF2 "%.*s",
+    fprintf(stdout, "Content-Type: text/html" CRLF "Content-Length: %d" CRLF2 "%.*s",
 	   ss->len, ss->len, ss->s);
+    fflush(stdout);
     zx_str_free(cf->ctx, ss);
     return 0;
   }
@@ -761,8 +763,9 @@ char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_
         p++;
     }
 #endif
-    printf("Content-Type: %s" CRLF "Content-Length: %d" CRLF2 "%.*s",
+    fprintf(stdout, "Content-Type: %s" CRLF "Content-Length: %d" CRLF2 "%.*s",
 	   cont_type, ss->len+extralen, ss->len+extralen, ss->s);
+    fflush(stdout);
     if (auto_flags & ZXID_AUTO_EXIT)
       exit(0);
     zx_str_free(cf->ctx, ss);
@@ -806,7 +809,8 @@ static char* zxid_simple_redir_page(zxid_conf* cf, char* redir, char* rs, int* r
   struct zx_str* ss;
   D("cf=%p redir(%s)", cf, redir);
   if (auto_flags & ZXID_AUTO_REDIR) {
-    printf("Location: %s?%s" CRLF2, redir, STRNULLCHK(rs));
+    fprintf(stdout, "Location: %s?%s" CRLF2, redir, STRNULLCHK(rs));
+    fflush(stdout);
     if (auto_flags & ZXID_AUTO_EXIT)
       exit(0);
     if (res_len)
@@ -1340,9 +1344,9 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
     case 'L':
   redir_ok:
       if (auto_flags & ZXID_AUTO_REDIR) {
-	printf("%.*s", ss->len, ss->s);
-	zx_str_free(cf->ctx, ss);
+	fprintf(stdout, "%.*s", ss->len, ss->s);
 	fflush(stdout);
+	zx_str_free(cf->ctx, ss);
 	goto cgi_exit;
       } else
 	goto res_zx_str;
@@ -1421,14 +1425,16 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
     D("LECP check: ss(%.*s)", ss?ss->len:1, ss?ss->s:"?");
     if (ss) {
       if (auto_flags & ZXID_AUTO_REDIR) {
-	printf("%.*s", ss->len, ss->s);
+	fprintf(stdout, "%.*s", ss->len, ss->s);
+	fflush(stdout);
 	zx_str_free(cf->ctx, ss);
 	goto cgi_exit;
       } else
 	goto res_zx_str;
     } else {
       if (auto_flags & ZXID_AUTO_REDIR) {
-	printf("Location: %s?o=C" CRLF2, cf->cdc_url);
+	fprintf(stdout, "Location: %s?o=C" CRLF2, cf->cdc_url);
+	fflush(stdout);
 	goto cgi_exit;
       } else {
 	ss = zx_strf(cf->ctx, "Location: %s?o=C" CRLF2, cf->cdc_url);
@@ -1438,7 +1444,8 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
   case 'C':  /* CDC Read: Common Domain Cookie Reader */
     ss = zxid_cdc_read(cf, cgi);
     if (auto_flags & ZXID_AUTO_REDIR) {
-      printf("%.*s", ss->len, ss->s);
+      fprintf(stdout, "%.*s", ss->len, ss->s);
+      fflush(stdout);
       zx_str_free(cf->ctx, ss);
       goto cgi_exit;
     } else
@@ -1448,7 +1455,8 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
     D("LECP check: ss(%.*s)", ss?ss->len:1, ss?ss->s:"?");
     if (ss) {
       if (auto_flags & ZXID_AUTO_REDIR) {
-	printf("%.*s", ss->len, ss->s);
+	fprintf(stdout, "%.*s", ss->len, ss->s);
+	fflush(stdout);
 	zx_str_free(cf->ctx, ss);
 	goto cgi_exit;
       } else
@@ -1495,9 +1503,9 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
     case 'M': return zxid_simple_ab_pep(cf, ses, res_len, auto_flags); /* Mgmt screen case */
     case 'L':  /* Location */
       if (auto_flags & ZXID_AUTO_REDIR) {
-	printf("%.*s", ss->len, ss->s);
-	zx_str_free(cf->ctx, ss);
+	fprintf(stdout, "%.*s", ss->len, ss->s);
 	fflush(stdout);
+	zx_str_free(cf->ctx, ss);
 	goto cgi_exit;
       } else
 	goto res_zx_str;

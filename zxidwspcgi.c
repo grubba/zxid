@@ -121,7 +121,8 @@ static int zxidwspcgi_parent(zxid_conf* cf, zxid_ses* ses, int pid)
   buf[got_all] = 0;
   D("Got from child %d bytes", got_all);
   ss = zxid_wsp_decorate(cf, ses, 0, buf);
-  printf("CONTENT-TYPE: text/xml\r\nCONTENT-LENGTH: %d\r\n\r\n%.*s", ss->len, ss->len, ss->s);
+  fprintf(stdout, "CONTENT-TYPE: text/xml\r\nCONTENT-LENGTH: %d\r\n\r\n%.*s", ss->len, ss->len, ss->s);
+  fflush(stdout);
   if (waitpid(pid, &got_all, 0) == -1) {
     perror("waitpid");
   }
