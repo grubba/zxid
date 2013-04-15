@@ -1,5 +1,5 @@
 /* zxbusprod.c  -  Liberty oriented logging facility with log signing and encryption
- * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2013 Synergetics (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -34,6 +34,7 @@
 #include <netdb.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <netinet/in.h>  /* struct sockaddr_in */
 
 #ifdef USE_OPENSSL
 #include <openssl/x509.h>

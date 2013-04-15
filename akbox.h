@@ -1,5 +1,5 @@
 /* akbox.h  -  Application Black (K) Box - an inmemory multithreaded logging system
- * Copyright (c) 2006,2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2006,2012-2013 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing. See file COPYING.
@@ -9,6 +9,7 @@
  *
  * 15.4.2006, created over Easter holiday --Sampo
  * 16.8.2012, modified license grant to allow use with ZXID.org --Sampo
+ * 15.4.2013, made sure ASBOX_FN returns int so %x format can be used without warnings --Sampo
  *
  * See also: ./log-pretty.pl -fn b5be:118   # decodes a FN hash
  */
@@ -20,7 +21,7 @@
  * functions. A better hash function should be developed. This one has collisions
  * This hash function may cause compiler preprocessor and/or constant folding to run slowly ;-)
  * but the slowness is only at compile time and not at runtime. */
-#define AKBOX_FN(x) (( sizeof(x) + (x)[0]  \
+#define AKBOX_FN(x) ((int)(( sizeof(x) + (x)[0]  \
 		  + (sizeof(x)>2 ? 2*(x)[1] : 0)      + (sizeof(x)>3 ? 3*(x)[2] : 0) \
 		  + (sizeof(x)>4 ? 5*(x)[3] : 0)      + (sizeof(x)>5 ? 7*(x)[4] : 0) \
 		  + (sizeof(x)>6 ? 11*(x)[5] : 0)     + (sizeof(x)>7 ? 13*(x)[6] : 0) \
@@ -43,7 +44,7 @@
 		  + (sizeof(x)>34 ? 137*(x)[33] : 0)  + (sizeof(x)>35 ? 139*(x)[34] : 0) \
 		  + (sizeof(x)>36 ? 149*(x)[35] : 0)  + (sizeof(x)>37 ? 151*(x)[36] : 0) \
 		  + (sizeof(x)>38 ? 157*(x)[37] : 0)  + (sizeof(x)>39 ? 163*(x)[38] : 0) \
-		  ) & 0xffff)
+		  ) & 0xffff))
 
 int akbox_fn(const char* fn);
 

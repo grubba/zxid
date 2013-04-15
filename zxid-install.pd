@@ -602,7 +602,7 @@ available and its foot print is small, we have made no supported
 provision to compile without it. If you hack something together, let
 us know.
 
-5.3 Building Against Dietlibc and Static Linking
+5.3 Static Linking and Building Against Dietlibc
 ------------------------------------------------
 
 Static linking has its advantages: (i) you eliminate all library
@@ -612,9 +612,302 @@ this is significant in CGI use where same executable gets launched
 over and over again. The buffer cache ensures the blocks of dll's
 (.so's) are already in memory, but that does not prevent the system
 calls to do the redundant dynamic linking step (just look at output of
-strace for forst about 200 lines on a dynamically linked
-executable). With static link, the buffer cache has the blocks and
-there is no dynamic like syscall overhead.
+strace for first about 100 lines on a dynamically linked executable to
+get an idea). With static link, the buffer cache has the blocks and
+there is no dynamic link syscall overhead.
+
+Static linking also has its cons: (i) if any library has a
+bug, such as a critical security vulnearability, then you need to
+rebuild (and reinstall in all places where it was distributed) the
+statically linked binary - it is not enough to upgrade the offending
+library package. But this sword cuts the other way too: you will
+always know what combination of libraries is being used (because you
+built it and you kept records), thus any bugs that are due to
+interactions between versions of libraries are none of your concern.
+
+(ii) Static linking prevents some techniques adopted by modern
+libraries, such as gnu libc. For example, name resolution can not
+dynamically load resolver modules so you probably have to forget about
+YP (Sun Yellow Pages) or NIS (Sun Network Information Service - a
+newer version of YP) support. Your /etc/nsswitch.conf will no longer
+be consulted. Instead you will have a fixed static name resolution
+policy: first check /etc/hosts, then DNS. Heck, some of us wanted that
+to start with - sounds like an improvement.
+
+In bug reduction, minimality is a good thing. glibc has gotten about
+as far as possible from minimality. Luckily, competing libc projects
+have appeared. Felix Leitner's dietlibc (http://www.fefe.de/dietlibc/)
+is perhaps the most promising candidate.
+
+Dietlibc is useful for compiling statically linked binaries
+without glibc dependency. The dependency is to be avoided
+for two reasons: (i) statically linked glibc still needs dynamic
+linking for name resolution, (ii) dietlibc is a different
+code base than glibc. glibc is a fat target while dietlibc is
+used by security conscious minority - thus it is not likely
+to be an attractive target.
+
+5.3.1 dietlibc-0.33 Build
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+wget http://www.fefe.de/dietlibc/dietlibc-0.33.tar.bz2
+tar xvf dietlibc-0.33.tar.bz2
+
+<<diffout:
+diff -u dietfeatures.h~ dietfeatures.h
+--- dietfeatures.h~     2012-11-02 11:17:28.000000000 +0000
++++ dietfeatures.h      2013-04-13 17:47:37.000000000 +0000
+@@ -4,8 +4,8 @@
+ /* feel free to comment some of these out to reduce code size */
+
+ #define WANT_FLOATING_POINT_IN_PRINTF
+-#define WANT_FLOATING_POINT_IN_SCANF
+-#define WANT_CHARACTER_CLASSES_IN_SCANF
++/*#define WANT_FLOATING_POINT_IN_SCANF*/
++/*#define WANT_CHARACTER_CLASSES_IN_SCANF*/
+ #define WANT_NULL_PRINTF
+ /* #define WANT_ERROR_PRINTF */
+ #define WANT_LONGLONG_PRINTF
+@@ -29,7 +29,7 @@
+ #define WANT_TLS
+
+ /* make the startcode, etc. dynamic aware ({con,de}structors) */
+-/* #define WANT_DYNAMIC */
++#define WANT_DYNAMIC
+
+ /* GDB support in the dynamic linker */
+ #define WANT_LD_SO_GDB_SUPPORT
+@@ -46,23 +46,23 @@
+ /* 20040118: enabling this breaks User Mode Linux!  It's their fault. */
+ #define WANT_SYSENTER
+
+-#define WANT_LINKER_WARNINGS
++/*#define WANT_LINKER_WARNINGS*/
+
+ /* you need to define this if you want to run your programs with large
+  * file support on kernel 2.2 or 2.0 */
+-#define WANT_LARGEFILE_BACKCOMPAT
++/*#define WANT_LARGEFILE_BACKCOMPAT*/
+
+ /* do you want localtime(3) to read /etc/localtime?
+  * Needed for daylight saving time etc. */
+-#define WANT_TZFILE_PARSER
++/*#define WANT_TZFILE_PARSER*/
+
+ /* do you want the DNS routines to parse and use "domain" and "search"
+  * lines from /etc/resolv.conf?  Normally not used on boot floppies and
+  * embedded environments. */
+-#define WANT_FULL_RESOLV_CONF
++/*#define WANT_FULL_RESOLV_CONF*/
+
+ /* do you want IPv6 transport support in the DNS resolver? */
+-#define WANT_IPV6_DNS
++/*#define WANT_IPV6_DNS*/
+
+ /* do you want gethostbyname and friends to consult /etc/hosts? */
+ #define WANT_ETC_HOSTS
+@@ -72,10 +72,10 @@
+ #define WANT_INET_ADDR_DNS
+
+ /* do you want math functions high precision rather than fast/small? */
+-#define WANT_HIGH_PRECISION_MATH
++/*#define WANT_HIGH_PRECISION_MATH*/
+
+ /* do you want support for matherr? */
+-#define WANT_MATHERR
++/*#define WANT_MATHERR*/
+
+ /* do you want crypt(3) to use MD5 if the salt starts with "$1$"? */
+ #define WANT_CRYPT_MD5
+@@ -87,11 +87,11 @@
+ /* This enables zeroconf DNS aka Rendezvous aka Bonjour. */
+ /* This code will try zeroconf DNS if you ask for host.local or if you
+  * ask for an unqualified hostname */
+-#define WANT_PLUGPLAY_DNS
++/*#define WANT_PLUGPLAY_DNS*/
+
+ /* This enables LLMNR, the MS variant of zeroconf DNS.  This only works
+  * if you also enabled WANT_PLUGPLAY_DNS */
+-#define WANT_LLMNR
++/*#define WANT_LLMNR*/
+
+ /* Uncomment this if you want DNS lookups to fail if /etc/hosts contains
+  * an entry but it's for a different record type */
+@@ -101,7 +101,7 @@
+  * check for valgrind, and if detected, turn off optimized SIMD string
+  * routines that cause false positives in valgrind.  This enlarges and
+  * slightly slows down your code! */
+-#define WANT_VALGRIND_SUPPORT
++/*#define WANT_VALGRIND_SUPPORT*/
+
+ /* do you want that malloc(0) return a pointer to a "zero-length" object
+  * that is realloc-able; means realloc(..,size) gives a NEW object (like a
+@@ -129,7 +129,7 @@
+  * and program_invocation_name to be there.  This functionality is not
+  * portable and adds useless bloat to libc.  Help stomp out code
+  * depending on this!  util-linux, I'm looking at you here! */
+-#define WANT_GNU_STARTUP_BLOAT
++/*#define WANT_GNU_STARTUP_BLOAT*/
+
+ /* Include support for ProPolice/SSP, calls guard_setup */
+ /* ProPolice is part of gcc 4.1 and up, there were patches for earlier
+
+diff -u Makefile~ Makefile
+--- Makefile~   2006-06-18 14:32:28.000000000 -0400
++++ Makefile    2006-12-16 22:34:24.000000000 -0500
+@@ -141,6 +141,7 @@
+ COMMENT = :
+ endif
+ CFLAGS += -Wall -W -Wchar-subscripts -Wmissing-prototypes -Wmissing-declarations -Wno-switch -Wno-unused -Wredundant-decls
++CFLAGS += -march=i586
+ 
+ PWD=$(shell pwd)
+
+diff -u libcruft/res_query.c~ libcruft/res_query.c
+--- libcruft/res_query.c~       2006-12-08 16:24:56.000000000 +0000
++++ libcruft/res_query.c        2008-06-15 18:39:21.000000000 +0000
+@@ -106,8 +106,10 @@
+ #ifdef WANT_PLUGPLAY_DNS
+       if (duh[1].fd!=-1) {
+        sendto(pnpfd,packet,size,0,(struct sockaddr*)(&pnpsa4),sizeof(pnpsa4));
++#ifdef WANT_IPV6_DNS
+        if (!v4pnp)
+          sendto(pnpfd,packet,size,0,(struct sockaddr*)(&pnpsa6),sizeof(pnpsa6));
++#endif
+       }
+       /* if it doesn't work, we don't care */
+ #endif
+
+diff -u /opt/diet/include/sys/param.h~ /opt/diet/include/sys/param.h
+--- /opt/diet/include/sys/param.h~      2008-06-15 18:55:43.000000000 +0000
++++ /opt/diet/include/sys/param.h       2008-06-15 20:12:49.000000000 +0000
+@@ -26,4 +26,6 @@
+ #define roundup(x, y)   ((((x)+((y)-1))/(y))*(y))
+ #define powerof2(x)     ((((x)-1)&(x))==0)
+ 
++#define        MAXSYMLINKS     20
++
+ #endif
+
+diff -u dietlibc-0.32/libugly/gethostent.c~ dietlibc-0.32/libugly/gethostent.c
+--- libugly/gethostent.c~       2003-06-23 10:48:13.000000000 +0000
++++ libugly/gethostent.c        2010-08-25 00:12:09.000000000 +0000
+@@ -26,6 +26,8 @@
+   if (!hostmap) {
+     int hostfd=open(_PATH_HOSTS,O_RDONLY);
+     if (hostfd<0) return 0;
++    /* *** all this global variable manipulation seems rather at odds with reentrant
++     * *** nature of gethostent_r(), surely there is race here. 24.8.2010, sampo@iki.fi */
+     hostlen=lseek(hostfd,0,SEEK_END);
+     hostmap=mmap(0,hostlen,PROT_READ|PROT_WRITE,MAP_PRIVATE,hostfd,0);
+     if ((long)hostmap==(-1)) { close(hostfd); hostmap=0; goto error; }
+@@ -81,8 +83,7 @@
+       dest+=len;
+       *dest=0; ++dest;
+     }
+-    if (*cur=='\n') { ++cur; ++aliasidx; break; }
+-    if (cur>=last || !isblank(*cur)) break;
++    if (cur>=last || *cur=='\n') { ++cur; ++aliasidx; break; }
+     cur++;
+   }
+   pe->h_aliases[aliasidx]=0;
+
+>>
+
+On gcc-3.4.6 you need
+
+<<diffout:
+diff -u  Makefile~ Makefile
+--- Makefile~   2012-11-02 11:17:28.000000000 +0000
++++ Makefile    2013-04-13 19:38:26.000000000 +0000
+@@ -141,6 +141,7 @@
+ COMMENT = :
+ endif
+ CFLAGS += -W -Wall -Wextra -Wchar-subscripts -Wmissing-prototypes -Wmissing-declarations -Wno-switch -Wno-unused -Wredundant-decls
++CFLAGS += -march=i586
+
+ PWD=$(shell pwd)
+
+@@ -534,7 +535,7 @@
+ # WANT_SSP
+ # This facepalm brought to you by: Ubuntu!
+ $(OBJDIR)/stackgap.o: lib/stackgap.c dietfeatures.h
+-       $(CROSS)$(CC) $(INC) $(CFLAGS) -c lib/stackgap.c -o $@ -D__dietlibc__ -fno-stack-protector
++       $(CROSS)$(CC) $(INC) $(CFLAGS) -c lib/stackgap.c -o $@ -D__dietlibc__
+        $(COMMENT) -$(CROSS)strip -x -R .comment -R .note $@
+
+ # WANT_MALLOC_ZERO
+>>
+
+  patch --dry-run -p0 <the-patch-above-as-needed
+
+After applying patches
+
+  make prefix=/usr/local DEBUG=1
+  make prefix=/usr/local DEBUG=1 dyn
+  sudo make prefix=/usr/local install  # works
+
+5.3.2 zlib-1.2.7 linked against dietlibc
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<<console:
+wget http://zlib.net/zlib-1.2.7.tar.bz2
+tar xvf zlib-1.2.7.tar.bz2
+cd zlib-1.2.7
+# diet compile on x86_64 (amd64 as in GQ)
+cp contrib/amd64/amd64-match.S ./match.S
+CC='diet gcc' LD='diet ld' CFLAGS="-g -O3 -DASMV -D_BSD_SOURCE -DGNU_SOURCE" ./configure --static --prefix=/usr/local
+make LOC=-DASMV OBJA=match.o
+make test
+sudo make install
+>>
+
+5.3.3 OpenSSL-1.0.1e linked against dietlibc
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  tar xvf openssl-1.0.1e.tar.gz
+
+Add to Configure
+
+  "diet-debug-linux-x86_64","diet gcc:-DREF_CHECK -DCONF_DEBUG -DCRYPTO_MDEBUG -m64 -DL_ENDIAN -DTERMIO -O2 -g -Wall::-D_REENTRANT::-ldl:SIXTY_FOUR_BIT_LONG RC4_CHUNK DES_INT DES_UNROLL:${x86_64_asm}:elf:dlfcn:linux-shared:-fPIC:-m64:.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR):::64",
+
+  "diet-debug-linux-pentium", "diet gcc:-DREF_CHECK -DCONF_DEBUG -DL_ENDIAN -DTERMIO -O2 -g -march=pentium  -Wall::-D_REENTRANT::-ldl:BN_LLONG ${x86_gcc_des} ${x86_gcc_opts}:${x86_elf_asm}:dlfcn:linux-shared:-fPIC::.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
+
+N.B. -DREF_PRINT causes compilation error.
+
+<<console:
+export PATH=/usr/bin:/bin:/usr/local/bin   # /usr/local/bin is needed for diet(1) to be found
+./Configure --prefix=/usr/local enable-rc5 enable-mdc2 no-dso no-hw no-engine zlib diet-debug-linux-pentium
+./Configure --prefix=/usr/local enable-rc5 enable-mdc2 no-dso no-hw no-engine zlib diet-debug-linux-x86_64
+make depend  # fails
+make         # ?
+
+time make test  # segfaults?!?
+sudo make install
+>>
+
+5.3.4 curl-7.30.0 linked against dietlibc and openssl-1.0.1e
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<<console:
+wget http://curl.haxx.se/download/curl-7.30.0.tar.bz2
+tar xvf curl-7.30.0.tar.bz2
+cd curl-7.30.0
+
+CC='diet gcc' LD='diet ld' CPPFLAGS='-I/usr/local/include' LDFLAGS='-L/usr/local/lib' LIBS='-lssl -lcrypto -lz' ./configure --prefix=/usr/local --with-ssl=/usr/local --without-gnutls --enable-thread --enable-nonblocking --disable-shared
+
+make
+make test
+sudo make install
+>>
+
+5.3.5 zxididp against dietlibc based libraries
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  make clean
+  CC='diet cc' LD='diet cc' make
+
+  diet gcc -o zxididp zxididp.o -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib -lcurl -lssl -lcrypto -lz
 
 5.4 Choosing Which Standards to Include (default: all)
 ------------------------------------------------------
