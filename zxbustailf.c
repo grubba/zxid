@@ -40,7 +40,7 @@ Usage: zxbustailf [options] < stream-to-log   # Will stop at EOF\n\
        zxbustailf [options] /file/to/tailf\n\
        zxbustailf [options] -e MSG </dev/null\n\
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
-                   Most of the configuration is read from /var/zxid/zxid.conf\n\
+                   Most of the configuration is read from " ZXID_CONF_PATH "\n\
   -c 'BUS_URL=stomps://localhost:2229/'   -- Typical invocation\n\
   -ch CHAN         Indicate logging channel. Default is to use configuration.\n\
   -n N or -N       Output the last N lines of file - the default is to log all.\n\

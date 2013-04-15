@@ -45,7 +45,7 @@ Usage: zxcot [options] [dir]         # Gives listing of metadata\n\
        zxcot -p https://site.com/metadata.xml\n\
   [dir]            CoT directory. Default /var/zxid/cot\n\
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
-                   Most of the configuration is read from /var/zxid/zxid.conf\n\
+                   Most of the configuration is read from " ZXID_CONF_PATH "\n\
                    N.B. If VURL and/or VPATH are used, you should set\n\
                    environment variables that affect virtualization, e.g.\n\
                      HTTP_HOST=example.com:8443 SERVER_PORT=8443 SCRIPT_NAME=zxidhlo zxcot -m\n\

@@ -42,7 +42,7 @@ Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
        zxcall [options] -s SESID -im EID # Identity Mapping to EID\n\
        zxcall [options] -s SESID -l      # List session cache\n\
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
-                   Most of the configuration is read from /var/zxid/zxid.conf\n\
+                   Most of the configuration is read from " ZXID_CONF_PATH "\n\
   -s SESID         Session ID referring to a directory in /var/zxid/ses\n\
                    Use zxidhlo to do SSO and then cut and paste from there.\n\
   -a IDP USER:PW   Use Authentication service to authenticate the user and\n\

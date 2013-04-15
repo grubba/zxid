@@ -1291,6 +1291,9 @@ zxididp-static: $(ZXIDIDP_OBJ) $(LIBZXID_A)
 zxididp-semistatic: $(ZXIDIDP_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxididp$(EXE) $(ZXIDIDP_OBJ) -static $(LIBZXID) $(LIBS) -dynamic -lc
 
+zxididp-static-diet: $(ZXIDIDP_OBJ) $(LIBZXID_A)
+	diet gcc -o zxididp zxididp.o -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
+
 zxidgsa: $(ZXIDGSA_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxidgsa$(EXE) $(ZXIDGSA_OBJ) $(LIBZXID) $(LIBS)
 

@@ -35,28 +35,28 @@ NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
-Usage: zxid [options] < foo.xml\n\
-  -meta            Dump our own metadata to stdout.\n\
-  -import URL      Import metadata of others from URL, usually their Entity ID\n\
-                   or Provider ID, aka well known location. The imported metadata\n\
-                   is written to CoT cache directory.\n\
-  -C CONFPATH      Path to (optional) config file, default /var/zxid/zxid.conf\n\
-  -c OPT=VAL       Override default or config file option. Only after -C, if any.\n\
-  -t SECONDS       Timeout. Default: 0=no timeout.\n\
-  -k FDNUMBER      File descriptor for reading symmetric key. Use 0 for stdin.\n\
-  -egd PATH        Specify path of Entropy Gathering Daemon socket, default on\n\
-                   Solaris: /tmp/entropy. On Linux /dev/urandom is used instead\n\
-                   See http://www.lothar.com/tech/crypto/ or\n\
-                   http://www.aet.tu-cottbus.de/personen/jaenicke/postfix_tls/prngd.html\n\
-  -rand PATH       Location of random number seed file. On Solaris EGD is used.\n\
-                   On Linux the default is /dev/urandom. See RFC1750.\n\
-  -uid UID:GID     If run as root, drop privileges and assume specified uid and gid.\n\
-  -v               Verbose messages.\n\
-  -q               Be extra quiet.\n\
-  -d               Turn on debugging.\n\
-  -license         Show licensing details, including NATO C3 Agency disclaimer.\n\
-  -h               This help message\n\
-  --               End of options\n";
+Usage: zxidxmltool [options] < foo.xml\n\
+  -meta        Dump our own metadata to stdout.\n\
+  -import URL  Import metadata of others from URL, usually their Entity ID\n\
+               or Provider ID, aka well known location. The imported metadata\n\
+               is written to CoT cache directory.\n\
+  -C CONFPATH  Path to (optional) config file, default " ZXID_CONF_PATH "\n\
+  -c OPT=VAL   Override default or config file option. Only after -C, if any.\n\
+  -t SECONDS   Timeout. Default: 0=no timeout.\n\
+  -k FDNUMBER  File descriptor for reading symmetric key. Use 0 for stdin.\n\
+  -egd PATH    Specify path of Entropy Gathering Daemon socket, default on\n\
+               Solaris: /tmp/entropy. On Linux /dev/urandom is used instead\n\
+               See http://www.lothar.com/tech/crypto/ or\n\
+               http://www.aet.tu-cottbus.de/personen/jaenicke/postfix_tls/prngd.html\n\
+  -rand PATH   Location of random number seed file. On Solaris EGD is used.\n\
+               On Linux the default is /dev/urandom. See RFC1750.\n\
+  -uid UID:GID If run as root, drop privileges and assume specified uid and gid.\n\
+  -v           Verbose messages.\n\
+  -q           Be extra quiet.\n\
+  -d           Turn on debugging.\n\
+  -license     Show licensing details, including NATO C3 Agency disclaimer.\n\
+  -h           This help message\n\
+  --           End of options\n";
 
 int ak_buf_size = 0;
 int verbose = 1;

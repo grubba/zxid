@@ -38,6 +38,10 @@
 #include <openssl/ssl.h>
 #endif
 
+#ifndef ZXID_CONF_PATH
+#define ZXID_CONF_PATH "/var/zxid/zxid.conf"
+#endif
+
 #include <zx/zx.h>
 
 /* ZXID_DECL allows all API functions to be qualified with a declatation, such

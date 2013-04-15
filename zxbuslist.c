@@ -38,7 +38,7 @@ Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
 Usage: zxbuslist [options] > bus-traffic\n\
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
-                   Most of the configuration is read from /var/zxid/zxid.conf\n\
+                   Most of the configuration is read from " ZXID_CONF_PATH "\n\
   -c 'BUS_URL=stomps://localhost:2229/'   -- Typical invocation, indicates zxbusd to contact\n\
   -ch CHAN         Indicate channel to subscribe to\n\
   -o N             One-shot mode. Receive N messages and then exit. If -1, get all available.\n\

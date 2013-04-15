@@ -61,7 +61,7 @@ Usage: zxid [options]   (when used as CGI, no options can be supplied)\n\
                    or Provider ID, aka well known location. The imported metadata\n\
                    is written to CoT cache directory.\n\
   -fileimport FILE Import metadata of others from file.\n\
-  -C CONFPATH      Path to (optional) config file, default /var/zxid/zxid.conf\n\
+  -C CONFPATH      Path to (optional) config file, default " ZXID_CONF_PATH "\n\
   -c OPT=VAL       Override default or config file option. Only after -C, if any.\n\
   -t SECONDS       Timeout. Default: 0=no timeout.\n\
   -k FDNUMBER      File descriptor for reading symmetric key. Use 0 for stdin.\n\

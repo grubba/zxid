@@ -37,6 +37,7 @@
  * command line using -c flags (such as via shell script wrapper) or via ZXID_CONF
  * environment variable. When zxid is used as a library, it depends on application to
  * call zxid_parse_conf().
+ * See also ZXID_CONF_PATH compile time macro.
  * Generally we recommend you leave these turned on (1). */
 
 #define ZXID_CONF_FILE 1     /* (compile) */
@@ -100,7 +101,7 @@
  * The nice name may be used by IdP user interface to refer to the SP. It
  * is usually a short human readable name or description. It will also
  * appear in metadata as Organization/OrganizationDisplayName */
-#define ZXID_NICE_NAME "ZXID configuration NICE_NAME: Set this to describe your site to humans"
+#define ZXID_NICE_NAME "Configuration NICE_NAME: Set this to describe your site to humans, see " ZXID_CONF_PATH
 
 /*(c) Branding button image URL for user interfaces (optional).
  * IdP BUTTON_URL is (may be) shown in SP IdP selection screens as
@@ -163,7 +164,7 @@
  * N.B. There is no explicit way to configure Entity ID (Provider ID) for
  * the zxid SP. The Entity ID is always of form ZXID_URL?o=B, for example
  *   https://sp1.zxidsp.org:8443/zxid?o=B */
-#define ZXID_URL "https://sp1.please-set-URL-zxid.conf-variable-to-some-useful-site-dep-value.org:8443/zxidhlo"
+#define ZXID_URL "https://sp1.please-set-URL-conf-variable-to-some-useful-site-dep-value.org:8443/zxidhlo"
 
 /*(c) VURL - URL for a virtual server
  *
@@ -937,7 +938,7 @@
   "Entity ID of this SP (click on the link to fetch the SP metadata): <a href=\"!!EID\">!!EID</a>"\
   "<p>!!IDP_LIST<h3>Technical options</h3>"\
   "<input type=hidden name=fc value=1><input type=hidden name=fn value=prstnt>"\
-  "<!-- ZXID built-in defaults, see IDP_SEL_TEMPL in zxidconf.h and zxid-conf.pd for explanation -->"\
+  "<!-- built-in defaults, see IDP_SEL_TEMPL in zxidconf.h and zxid-conf.pd for explanation -->"\
   "<input type=hidden name=fr value=\"!!FR\">"\
   "<input type=hidden name=fq value=\"\">"\
   "<input type=hidden name=fy value=\"\">"\
