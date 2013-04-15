@@ -750,7 +750,7 @@ char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_
   if (auto_flags & c_mask && auto_flags & h_mask) {  /* Both H&C: CGI */
     int extralen = 0;
     D("CGI %x ss->len=%d ss->s=%p", auto_flags, ss->len, ss->s);
-    hex_dmp("ss->s: ", ss->s, ss->len, 40);
+    hexdmp("ss->s: ", ss->s, ss->len, 40);
 #ifdef MINGW
     /* It seems that Apache strips off the \n in this output when running as a CGI Script. 
      * This means the content length does not reflect reality, and we end up losing the 
