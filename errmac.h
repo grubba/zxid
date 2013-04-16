@@ -806,4 +806,57 @@ extern char* assert_msg;
 
 void zx_broken_snprintf(int n);
 
+#if 0
+/* Following come handy when printf(3) is broken or otherwise
+ * the libc support is minimal. */
+
+static char* errhexll(const char* prefix, long long x) {
+  static char buf[64];
+  char const digit[] = "0123456789abcdef";
+  char* p;
+  int i;
+  for (p = buf; prefix && *prefix; ++prefix, ++p) *p = *prefix;
+#if 0
+  *p++ = digit[(x >> 60) & 0x0f];
+  *p++ = digit[(x >> 56) & 0x0f];
+  *p++ = digit[(x >> 52) & 0x0f];
+  *p++ = digit[(x >> 48) & 0x0f];
+  *p++ = digit[(x >> 44) & 0x0f];
+  *p++ = digit[(x >> 40) & 0x0f];
+  *p++ = digit[(x >> 36) & 0x0f];
+  *p++ = digit[(x >> 32) & 0x0f];
+
+  *p++ = digit[(x >> 28) & 0x0f];
+  *p++ = digit[(x >> 24) & 0x0f];
+  *p++ = digit[(x >> 20) & 0x0f];
+  *p++ = digit[(x >> 16) & 0x0f];
+  *p++ = digit[(x >> 12) & 0x0f];
+  *p++ = digit[(x >> 8) & 0x0f];
+  *p++ = digit[(x >> 4) & 0x0f];
+  *p++ = digit[x & 0x0f];
+  *p++ = '\n';
+  write(1, buf, p-buf);
+#else
+  p+=8;
+  *p-- = '\n';
+  for (i=8; i; --i, x >>= 4) *p-- = digit[x & 0x0f];
+  write(1, buf, p+9-buf);
+#endif
+  return buf;
+}
+
+static char* errstr(const char* prefix, const char* str, int len) {
+  static char buf[64];
+  char* p;
+  int i;
+  for (p = buf; prefix && *prefix; ++prefix, ++p) *p = *prefix;
+  if (len == -2)
+    len = strlen(str);
+  for (; str && *str && len && p < buf+sizeof(buf)-1; --len) *p++ = *str++;
+  *p++ = '\n';
+  write(1, buf, p-buf);
+  return buf;
+}
+#endif
+
 #endif /* errmac.h */

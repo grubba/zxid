@@ -72,6 +72,12 @@ int main(int argc, char** argv)
     mtrace();
 #endif
 
+  /* Allocate and realase memory to calse malloc to grab bigger mmap page */
+#ifndef ZXIDIDP_PREALLOC_KB
+#define ZXIDIDP_PREALLOC_KB 300
+#endif
+  free(malloc(ZXIDIDP_PREALLOC_KB*1024));
+
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */
   /* Reopen stderr only in mini_httpd case */

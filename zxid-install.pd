@@ -814,6 +814,73 @@ diff -u dietlibc-0.32/libugly/gethostent.c~ dietlibc-0.32/libugly/gethostent.c
    }
    pe->h_aliases[aliasidx]=0;
 
+diff -u __v_printf.c.orig __v_printf.c
+--- __v_printf.c.orig   2013-04-16 15:13:12.000000000 +0000
++++ __v_printf.c        2013-04-16 16:53:49.000000000 +0000
+@@ -7,15 +7,35 @@
+ #include "dietstdio.h"
+ #include "dietwarning.h"
+
+-#define MAX_WIDTH 10*1024
+-
+ static inline unsigned long skip_to(const char *format) {
+   unsigned long nr;
+   for (nr=0; format[nr] && (format[nr]!='%'); ++nr);
+   return nr;
+ }
+
+-#define A_WRITE(fn,buf,sz)     ((fn)->put((void*)(buf),(sz),(fn)->data))
++/*#define A_WRITE(fn,buf,sz)   ((fn)->put((void*)(buf),(sz),(fn)->data))*/
++/* 20130416, sampo@zxidp.org
++ * Problem: Old A_WRITE() ignores the return value from write(2), thus leaving
++ *     open the possibility that the data was not actually written.
++ * Proposed fix: deal with error return from write style function
++ *     and keep on trying in blocking fashion until everything is written. */
++int __a_write_all(struct arg_printf* fn, const char* buf, unsigned int len) {
++  int ret, todo=len;
++  while (todo) {
++    ret = fn->put((void*)buf, todo, fn->data);
++    if (ret == -1) {
++      switch (errno) {
++      case EAGAIN: /*case EWOULDBLOCK:*/ ret=0; break;
++      default:
++       return ret;
++      }
++    }
++    todo -= ret;
++    buf += ret;
++  }
++  return len;
++}
++#define A_WRITE(fn,buf,sz)     __a_write_all((fn),(buf),(sz))
+ #define B_WRITE(fn,buf,sz)     { if ((unsigned long)(sz) > (((unsigned long)(int)(-1))>>1) || len+(int)(sz)<len) return -1; A_WRITE(fn,buf,sz); } while (0)
+
+ static const char pad_line[2][16]= { "                ", "0000000000000000", };
+@@ -123,7 +143,6 @@
+       case '9':
+        if(flag_dot) return -1;
+        width=strtoul(format-1,(char**)&s,10);
+-       if (width>MAX_WIDTH) return -1;
+        if (ch=='0' && !flag_left) padwith='0';
+        format=s;
+        goto inn_printf;
+@@ -138,7 +157,6 @@
+            flag_left=1;
+            tmp=-tmp;
+          }
+-         if ((width=(unsigned long)tmp)>MAX_WIDTH) return -1;
+          goto inn_printf;
+        }
+       case '.':
+@@ -152,7 +170,6 @@
+          preci=tmp<0?0:tmp;
+          format=s;
+        }
+-       if (preci>MAX_WIDTH) return -1;
+        goto inn_printf;
+
+       /* print a char or % */
+
 >>
 
 On gcc-3.4.6 you need
@@ -848,6 +915,114 @@ After applying patches
   make prefix=/usr/local DEBUG=1
   make prefix=/usr/local DEBUG=1 dyn
   sudo make prefix=/usr/local install  # works
+
+<<ignore: email:
+Subject dietlibc-0.33: fprintf() does not print long data
+To: dietlibc@fefe.de
+
+I have been trying to use fprintf() to print
+rather long data to a socket, e.g.
+
+  fprintf(stdout, "Content-Type: %s" CRLF "Content-Length: %d" CRLF2 "%.*s",
+	  cont_type, ss->len, ss->len, ss->s);
+
+This fails to print the data that should appear in "%.*s" format
+specifier. The fprintf() backends to __v_printf() and write(2).
+
+Examining lib/__v_printf.c I have identified two dubious points that
+are, each alone, liable to break my code:
+
+1. What is the purpose of MAX_WIDTH specification? I propose to
+   not impose any MAX_WIDTH at all. Due to the way __v_printf() is
+   implemented, there does not seem to be any buffer that could be
+   overrun. I did not find in any man page documentation a mention
+   of this MAX_WIDTH, and it does not appear in any header either.
+   Thus I suspect it to be unnecessary implementation dependent
+   restriction.
+
+2. Why does not _A_WRITE() check its return value and why does it
+   not retry write(2) until all data is written? My usual C wisdom
+   is that fprintf(3) blocks until the data is written (at least
+   into kernel). It would appear that __v_printf() as implemented
+   in 0.33 is broken in this regard. Please see my patch for a
+   fix. Basically I add a loop that retries write as many times
+   as it takes. Is there already such write all function somewhere
+   in the library? write_all() would come handy in many other
+   programming tasks.
+
+Cheers,
+--Sampo
+
+
+diff -u __v_printf.c.orig __v_printf.c
+--- __v_printf.c.orig   2013-04-16 15:13:12.000000000 +0000
++++ __v_printf.c        2013-04-16 16:53:49.000000000 +0000
+@@ -7,15 +7,35 @@
+ #include "dietstdio.h"
+ #include "dietwarning.h"
+
+-#define MAX_WIDTH 10*1024
+-
+ static inline unsigned long skip_to(const char *format) {
+   unsigned long nr;
+   for (nr=0; format[nr] && (format[nr]!='%'); ++nr);
+   return nr;
+ }
+
+-#define A_WRITE(fn,buf,sz)     ((fn)->put((void*)(buf),(sz),(fn)->data))
++/*#define A_WRITE(fn,buf,sz)   ((fn)->put((void*)(buf),(sz),(fn)->data))*/
++/* 20130416, sampo@zxidp.org
++ * Problem: Old A_WRITE() ignores the return value from write(2), thus leaving
++ *     open the possibility that the data was not actually written.
++ * Proposed fix: deal with error return from write style function
++ *     and keep on trying in blocking fashion until everything is written. */
++int __a_write_all(struct arg_printf* fn, const char* buf, unsigned int len) {
++  int ret, todo=len;
++  while (todo) {
++    ret = fn->put((void*)buf, todo, fn->data);
++    if (ret == -1) {
++      switch (errno) {
++      case EAGAIN: /*case EWOULDBLOCK:*/ ret=0; break;
++      default:
++       return ret;
++      }
++    }
++    todo -= ret;
++    buf += ret;
++  }
++  return len;
++}
++#define A_WRITE(fn,buf,sz)     __a_write_all((fn),(buf),(sz))
+ #define B_WRITE(fn,buf,sz)     { if ((unsigned long)(sz) > (((unsigned long)(int)(-1))>>1) || len+(int)(sz)<len) return -1; A_WRITE(fn,buf,sz); } while (0)
+
+ static const char pad_line[2][16]= { "                ", "0000000000000000", };
+@@ -123,7 +143,6 @@
+       case '9':
+        if(flag_dot) return -1;
+        width=strtoul(format-1,(char**)&s,10);
+-       if (width>MAX_WIDTH) return -1;
+        if (ch=='0' && !flag_left) padwith='0';
+        format=s;
+        goto inn_printf;
+@@ -138,7 +157,6 @@
+            flag_left=1;
+            tmp=-tmp;
+          }
+-         if ((width=(unsigned long)tmp)>MAX_WIDTH) return -1;
+          goto inn_printf;
+        }
+       case '.':
+@@ -152,7 +170,6 @@
+          preci=tmp<0?0:tmp;
+          format=s;
+        }
+-       if (preci>MAX_WIDTH) return -1;
+        goto inn_printf;
+
+       /* print a char or % */
+
+
+>>
 
 5.3.2 zlib-1.2.7 linked against dietlibc
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

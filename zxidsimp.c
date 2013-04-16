@@ -766,10 +766,8 @@ char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_
         p++;
     }
 #endif
-    DD("__stdio_file fd=%d flags=%x bs=%d bm=%d buflen=%d buf=%p buf(%.4s) next=%p pok=%d unget=%x ungotten=%x", stdout->fd, stdout->flags, stdout->bs, stdout->bm, stdout->buflen, stdout->buf, stdout->buf, stdout->next, stdout->popen_kludge, stdout->ungetbuf, stdout->ungotten);
     fprintf(stdout, "Content-Type: %s" CRLF "Content-Length: %d" CRLF2 "%.*s",
 	   cont_type, ss->len+extralen, ss->len+extralen, ss->s);
-    DD("__stdio_file fd=%d flags=%x bs=%d bm=%d buflen=%d buf=%p buf(%.4s) next=%p pok=%d unget=%x ungotten=%x", stdout->fd, stdout->flags, stdout->bs, stdout->bm, stdout->buflen, stdout->buf, stdout->buf, stdout->next, stdout->popen_kludge, stdout->ungetbuf, stdout->ungotten);
     fflush(stdout);
     DD("__stdio_file fd=%d flags=%x bs=%d bm=%d buflen=%d buf=%p buf(%.4s) next=%p pok=%d unget=%x ungotten=%x", stdout->fd, stdout->flags, stdout->bs, stdout->bm, stdout->buflen, stdout->buf, stdout->buf, stdout->next, stdout->popen_kludge, stdout->ungetbuf, stdout->ungotten);
     if (auto_flags & ZXID_AUTO_EXIT)
