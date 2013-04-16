@@ -1598,7 +1598,7 @@ zxsizeof-static-diet64: zxsizeof.$(OBJ_EXT)
 	diet gcc $(OUTOPT)$@$(EXE) zxsizeof.c -static
 
 xzxsizeof:
-	$(CC) $(OUTOPT)zxsizeof zxsizeof.c
+	$(CC) $(OUTOPT)zxsizeof zxsizeof.o
 
 zx/zx.h:
 	echo "zx symlink for includes (ln -s . zx) missing. Emulating by creating zx directory..."
