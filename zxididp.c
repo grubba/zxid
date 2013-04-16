@@ -72,11 +72,15 @@ int main(int argc, char** argv)
     mtrace();
 #endif
 
-  /* Allocate and realase memory to calse malloc to grab bigger mmap page */
+#if 0
+  /* Allocate and realase memory to cause malloc to grab bigger mmap page */
+  /* Apparently this trick does not work - perhaps memory allocation
+     is sorted by page size or something. --Sampo */
 #ifndef ZXIDIDP_PREALLOC_KB
 #define ZXIDIDP_PREALLOC_KB 300
 #endif
   free(malloc(ZXIDIDP_PREALLOC_KB*1024));
+#endif
 
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */
