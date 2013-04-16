@@ -1374,7 +1374,7 @@ zxbusd: $(ZXBUSD_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxbusd$(EXE) $^ $(LIBS)
 
 zxbusd-static-diet64: $(ZXBUSD_OBJ) $(LIBZXID_A)
-	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
+	diet gcc $(OUTOPT)$@$(EXE) $^ -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
 zxidhrxmlwsc: $(ZXIDHRXMLWSC_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxidhrxmlwsc$(EXE) $(ZXIDHRXMLWSC_OBJ) $(LIBZXID) $(LIBS)
