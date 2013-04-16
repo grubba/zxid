@@ -23,6 +23,7 @@
 # 15.9.2010, major hacking to support win32cl (MSVC cl compiler, link (ld), and lib (ar) --Sampo
 # 6.2.2012,  improved multiple config support --Sampo
 # 16.8.2012, added zxbusd build --Sampo
+# 16.4.2013, added diet64 statically linked targets --Sampo
 #
 # Build so far only tested on Linux, Solaris 8 and MacOS 10.3. This
 # makefile needs gmake-3.78 or newer.
@@ -44,6 +45,8 @@ all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcg
 zxbus:  zxbusd zxbustailf zxbuslist
 
 aller: all zxbus app_demo.class
+
+diet64: sizeof-static-diet64 zxbusd-static-diet64 zxbuslist-static-diet64 zxbustailf-static-diet64 zxlogview-static-diet64 zxbench-static-diet64 zxididp-static-diet64 zxidhlo-static-diet64 zxcall-static-diet64 zxpasswd-static-diet64 zxdecode-static-diet64 zxcot-static-diet64
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
@@ -1259,16 +1262,28 @@ zxid: $(ZXID_OBJ) $(LIBZXID_A)
 zxcot: zxcot.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBZXID) $(LIBS)
 
+zxcot-static-diet64: zxcot.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
+
 zxdecode: zxdecode.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $^ $(LIBZXID) $(LIBS)
 
+zxdecode-static-diet64: zxdecode.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
+
 zxpasswd: zxpasswd.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $^ $(LIBZXID) $(LIBS)
+
+zxpasswd-static-diet64: zxcot.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
 zxcall: zxcall.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBZXID) $(LIBS)
 
 # *** unresolved link problem with __gcov_fork, which is not found in 3.4.6 libgcov.a
+
+zxcall-static-diet64: zxcall.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
 zxidwspcgi: zxidwspcgi.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBZXID) $(LIBS)
@@ -1277,7 +1292,10 @@ zxidwsctool: $(ZXIDWSCTOOL_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxidwsctool$(EXE) $(ZXIDWSCTOOL_OBJ) $(LIBZXID) $(LIBS)
 
 zxidhlo: $(ZXIDHLO_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidhlo$(EXE) $(ZXIDHLO_OBJ) $(LIBZXID) $(LIBS)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $(ZXIDHLO_OBJ) $(LIBZXID) $(LIBS)
+
+zxidhlo-static-diet64: $(ZXIDHLO_OBJ) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
 zxidsp: $(ZXIDSP_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxidsp$(EXE) $(ZXIDSP_OBJ) $(LIBZXID) $(LIBS)
@@ -1291,8 +1309,10 @@ zxididp-static: $(ZXIDIDP_OBJ) $(LIBZXID_A)
 zxididp-semistatic: $(ZXIDIDP_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxididp$(EXE) $(ZXIDIDP_OBJ) -static $(LIBZXID) $(LIBS) -dynamic -lc
 
-zxididp-static-diet: $(ZXIDIDP_OBJ) $(LIBZXID_A)
-	diet gcc -o zxididp zxididp.o -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
+zxididp-static-diet64: $(ZXIDIDP_OBJ) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
+
+#	diet gcc -o zxididp zxididp.o -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
 zxidgsa: $(ZXIDGSA_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxidgsa$(EXE) $(ZXIDGSA_OBJ) $(LIBZXID) $(LIBS)
@@ -1305,6 +1325,9 @@ zxidsimple: $(ZXIDSIMPLE_OBJ) $(LIBZXID_A)
 
 zxbench: $(ZXBENCH_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxbench$(EXE) $(ZXBENCH_OBJ) $(LIBZXID) $(LIBS)
+
+zxbench-static-diet64: $(ZXBENCH_OBJ) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
 zxidssofinalizetest: $(ZXIDSSOFINALIZETEST_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxidssofinalizetest$(EXE) $(ZXIDSSOFINALIZETEST_OBJ) $(LIBZXID) $(LIBS)
@@ -1332,14 +1355,26 @@ zxidxmltool: $(ZXIDXMLTOOL_OBJ) $(LIBZXID_A)
 zxlogview: $(ZXLOGVIEW_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxlogview$(EXE) $^ $(LIBS)
 
+zxlogview-static-diet64: $(ZXLOGVIEW_OBJ) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
+
 zxbustailf: $(ZXBUSTAILF_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxbustailf$(EXE) $^ $(LIBS)
+
+zxbustailf-static-diet64: $(ZXBUSTAILD_OBJ) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
 zxbuslist: $(ZXBUSLIST_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxbuslist$(EXE) $^ $(LIBS)
 
+zxbuslist-static-diet64: $(ZXBUSLIST_OBJ) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
+
 zxbusd: $(ZXBUSD_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxbusd$(EXE) $^ $(LIBS)
+
+zxbusd-static-diet64: $(ZXBUSD_OBJ) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L/usr/local/lib -L/usr/local/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
 zxidhrxmlwsc: $(ZXIDHRXMLWSC_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxidhrxmlwsc$(EXE) $(ZXIDHRXMLWSC_OBJ) $(LIBZXID) $(LIBS)
@@ -1354,6 +1389,9 @@ smime: smime.$(OBJ_EXT) $(LIBZXID_A)
 
 sizeof:
 	$(CC) $(OUTOPT)sizeof sizeof.c
+
+sizeof-static-diet64:
+	diet gcc $(OUTOPT)$@$(EXE) sizeof.c -static
 
 ###
 ### Libraries

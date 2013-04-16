@@ -1828,7 +1828,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "MYCONF", 0, 0);
 
   if (!cf->show_conf) {
-    return zx_strf(cf->ctx, "<title>ZXID Conf disabled</title><body bgcolor=white>ZXID Conf viewing disabled using SHOW_CONF=0 option.");
+    return zx_strf(cf->ctx, "<title>Conf dump disabled</title><body bgcolor=white>Conf viewing disabled using SHOW_CONF=0 option.");
   }
 
   /* N.B. The following way of "concatenating" strings leaks memory of the intermediate
@@ -1882,7 +1882,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
   eid = zxid_my_ent_id_cstr(cf);
 
   return zx_strf(cf->ctx,
-"<title>ZXID Conf for %s</title><body bgcolor=white><h1>ZXID Conf for %s</h1>"
+"<title>Conf for %s</title><body bgcolor=white><h1>Conf for %s</h1>"
 "<p>Please see config file in %szxid.conf, and documentation in zxid-conf.pd and zxidconf.h\n"
 "<p>[ <a href=\"?o=B\">Metadata</a> | <a href=\"?o=c\">CARML</a> | <a href=\"?o=d\">This Conf Dump</a> ]\n"
 "<p>Version: R" ZXID_REL " (" ZXID_COMPILE_DATE ")\n"

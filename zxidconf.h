@@ -947,7 +947,7 @@
   "<input type=hidden name=fp value=0>"\
   "<input type=hidden name=ff value=0>"\
   "</form>"\
-  "<div class=zxbot><a class=zx href=\"http://zxid.org/\">zxid.org</a>, !!VERSION (builtin)</div>"
+  "<div class=zxbot>!!VERSION (builtin)</div>"
 
 /*(c) Choose the method for rendeing IdP list.
  * 0 = popup menu
@@ -1013,7 +1013,7 @@
   "<input type=hidden name=fq value=\"\"><input type=hidden name=fy value=\"\"><input type=hidden name=fa value=\"\"><input type=hidden name=fm value=\"\"><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see AN_TEMPL zxidconf.h-->"\
   "<input type=hidden name=ar value=\"!!SSOREQ\">"\
   "<input type=hidden name=zxapp value=\"!!ZXAPP\">"\
-  "</form><div class=zxbot><a href=\"http://zxid.org/\">zxid.org</a>, !!VERSION (builtin)</div>"
+  "</form><div class=zxbot>!!VERSION (builtin)</div>"
 
 /*(c) Path for Template for POST profile page */
 
@@ -1030,7 +1030,7 @@
   "<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>"\
   "<input type=hidden name=!!SAML_ART value=\"!!SAML_RESP\">!!RS!!SIG"\
   "<input type=submit name=ok value=\" If JavaScript is not on, please click here to complete the transaction \">"\
-  "</form><div class=zxbot><a href=\"http://zxid.org/\">zxid.org</a>, !!VERSION (builtin)</div>"
+  "</form><div class=zxbot>!!VERSION (builtin)</div>"
 
 /*(c) Error Page URL
  * If the template customization options are not sufficient, you can
@@ -1052,7 +1052,7 @@
   "<h1 class=zxtop>ZXID Error Message</h1>"\
   "<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>"\
   "<input type=hidden name=zxapp value=\"!!ZXAPP\">"\
-  "</form><div class=zxbot><a href=\"http://zxid.org/\">zxid.org</a>, !!VERSION (builtin)</div>"
+  "</form><div class=zxbot>!!VERSION (builtin)</div>"
 
 #define ZXID_MGMT_START "<title>ZXID SP Mgmt</title><link type=\"text/css\" rel=stylesheet href=\"idpsel.css\"><body bgcolor=white><h1 class=zxtop>ZXID SP Management (user logged in, session active)</h1>\n"
 
@@ -1060,7 +1060,7 @@
 
 #define ZXID_MGMT_DEFED "<input type=submit name=gt value=\" Defederate (R) \">\n<input type=submit name=gu value=\" Defederate (S) \">\n"
 
-#define ZXID_MGMT_FOOTER  "<div class=zxbot><a class=zx href=\"http://zxid.org/\">zxid.org</a>, "
+#define ZXID_MGMT_FOOTER  "<div class=zxbot>"
 #define ZXID_MGMT_END     "</div>"
 
 #endif
