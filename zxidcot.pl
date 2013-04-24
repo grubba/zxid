@@ -20,7 +20,7 @@
 $usage = <<USAGE;
 Web GUI for attribute selection and privacy preferences
 Usage: http://localhost:8081/zxidatsel.pl?QUERY_STRING
-       ./zxidatsel.pl -a QUERY_STRING
+       ./zxidcot.pl -a QUERY_STRING
          -a Ascii mode
 USAGE
     ;

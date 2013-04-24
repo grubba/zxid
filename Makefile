@@ -46,7 +46,7 @@ zxbus:  zxbusd zxbustailf zxbuslist
 
 aller: all zxbus app_demo.class
 
-diet64: zxbusd-static-diet64 zxbuslist-static-diet64 zxbustailf-static-diet64 zxlogview-static-diet64 zxbench-static-diet64 zxididp-static-diet64 zxidhlo-static-diet64 zxcall-static-diet64 zxpasswd-static-diet64 zxdecode-static-diet64 zxcot-static-diet64
+diet64: zxcot-static-diet64 zxpasswd-static-diet64 zxididp-static-diet64 zxidhlo-static-diet64 zxlogview-static-diet64 zxcall-static-diet64 zxdecode-static-diet64 zxbench-static-diet64 zxbusd-static-diet64 zxbuslist-static-diet64 zxbustailf-static-diet64
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'

@@ -51,7 +51,7 @@
 #include "c/zxidvers.h"
 #include "c/zx-md-data.h"
 
-#include "dietstdio.h"
+/*#include "dietstdio.h"*/
 
 /*() Convert configuration string ~conf~ to configuration object ~cf~.
  * cf:: Configuration object, already allocated
