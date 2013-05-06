@@ -4213,6 +4213,18 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ENC_1TYPE_1CONTENT_1get(JNIE
 }
 
 
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1CONF_1PATH_1get(JNIEnv *jenv, jclass jcls) {
+  jstring jresult = 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (char *) "/var/zxid/zxid.conf";
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
 SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_ZXID_1CONF_1MAGIC_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   int result;

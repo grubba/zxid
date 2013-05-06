@@ -18,7 +18,7 @@
  * 16.2.2013, added WD option --Sampo
  *
  * Most of the configuration options can be set via configuration
- * file /var/zxid/zxid.conf or using -O command line flag(s). In
+ * file /var/zxid/zxid.conf or using -c command line flag(s). In
  * config file or on command line you should omit the ZXID_ prefix
  * and use attribute=value syntax separated by newlines or & characters
  * (the parser implements CGI query string syntax with extension that
@@ -273,25 +273,28 @@
 
 /*(c) Metadata Fetching Options (Auto-CoT)
  * Following four boolean configuration options control how metadata
- * is obtained. The metadata can be in a cache (by default directory /var/zxid/cot)
- * or it can be fetched "on the fly" using the well known location (WKL) method.
+ * is obtained. It can be in a cache (by default directory /var/zxid/cot)
+ * or it can be fetched "on the fly" using the well known location (WKL)
+ * method.
  *
  * MD_FETCH:: controls whether fetching is performed. This necessitates
  *     that ZXID was linked with libcurl. If you do not enable fetching, you
  *     will need to populate the cache manually, perhaps by using a web browser
  *     to fetch the meta data xml files from well known location URLs (or other
- *     URLs if you know better). Or you could use zxidcot.pl?op=md or zxcot(1) tool.
+ *     URLs if you know better) and thenrunning on commandline zxcot.
+ *     Or you could use zxidcot.pl?op=md or zxcot(1) tool.
  *
  *     N.B. Even if fetching is enabled, the fetch can still fail due to
  *     network connectivity issues or due to other end not supporting it.
  *
  * MD_POPULATE_CACHE:: controls whether ZXID will write the metadata to
  *     the on-disk cache. This requires ZXID_MD_FETCH to be enabled
- *     and the file system permissions of the cache directory (e.g. /var/zxid/cot)
- *     to allow writing.
+ *     and the file system permissions of the cache directory
+ *     (e.g. /var/zxid/cot) to allow writing.
  *
  * MD_CACHE_FIRST:: controls whether cache will be checked before fetching
- *     is attempted. If cache misses, ZXID_MD_FETCH governs whether fetch is tried.
+ *     is attempted. If cache misses, ZXID_MD_FETCH governs whether fetch
+ *     is tried.
  *
  * MD_CACHE_LAST:: If true, metadata is obtained from cache
  *     if fetch was disabled or failed.
@@ -307,9 +310,9 @@
 #define ZXID_MD_CACHE_FIRST    1
 #define ZXID_MD_CACHE_LAST     1
 
-/*(c) Whether to load CoT cache from a file containing the concatenated metadata
- * of the Circle of Trust. Some real world federations distribute their
- * metadata this way. Setting this to 0 disables the feature (default).
+/*(c) Whether to load CoT cache from a file containing the concatenated
+ * metadata of the Circle of Trust. Some real world federations distribute
+ * their metadata this way. Setting this to 0 disables the feature (default).
  * Setting this to file name or path enables this feature. */
 #define ZXID_LOAD_COT_CACHE 0
 
@@ -363,7 +366,10 @@
 #define ZXID_NAMEID_ENC 0x0f
 
 /*(c) Assertion Encryption in POST
- * Whether to encrypt assertions when using POST bindings. */
+ * Whether to encrypt assertions when using POST bindings. This
+ * is enabled by default as it protects against Man-in-the-Middle
+ * attack by compromised web browser. Do not diable unless you know
+ * what you are doing. */
 #define ZXID_POST_A7N_ENC 1
 
 /*(c) When producing EncryptedID, EncruptedAssertion, or EncryptedAttribute,
@@ -494,7 +500,7 @@
  * should appear in the Set-Cookie HTTP header of HTTP response). */
 #define ZXID_PTM_COOKIE_NAME "ZXIDPTM"
 
-/*(c) Local user account management.
+/*(c) Local user account management (local user database in filesystem).
  * This is optional unless you require IdP
  * initiated ManageNameID requests to work. Local user account management
  * may be useful on its own right if your application does not yet have
@@ -536,10 +542,18 @@
 /*(c) Logging Options
  * See zxid-log.pd for further explanation. Generally you
  * need error and activity logs to know yourself what is going on.
- * You need the issue logs to know whether other's claims towards you are justified.
- * You need the rely logs to hold others responsible. The bits of the
- * value are as follows
- * 0x00    Don't log.
+ * You need the issue logs to know whether other's claims towards you are
+ * justified. You need the rely logs to hold others responsible.
+ *
+ * > N.B. In addition to act, err, rely, and issue logging, there is also
+ * > debug logging to stderr, typically found in your web server error.log
+ * > or in /var/tmp/zxid.stderr or log/xml.dbg. The debugging logs are
+ * > not conteolled by these options - they are controlled by the debug flag.
+ * > A production site should not enable debugging logs, as they may cause
+ * > exposure of sensitive material, unless there is a problem to investigate.
+ *
+ * The bits of the value are as follows
+ * 0x00    Do not log.
  * 0x01    Log enable
  * 0x06    Signing options    
  *         0:: no signing (Px)
@@ -558,18 +572,21 @@
  *         0x70:: reserved
  * 0x80    reserved
  *
- * N.B. Every encryption and signature has computational cost so be sure to factor this
- * in when doing benchmarks - or disable log enc and sign when performance is at premium.
+ * N.B. Every encryption and signature has computational cost so be
+ * sure to factor this in when doing benchmarks - or disable log enc
+ * and sign when performance is at premium.
  *
  * Log signing may help you to argue that log evidence was (not) tampered with.
- * The private key for signing must be available in /var/zxid/pem/logsign-nopw-cert.pem
+ * The private key for signing must be available
+ * in /var/zxid/pem/logsign-nopw-cert.pem
+ * Often this is just a copy of sign-nopw-cert.pem
  *
  * Log encryption may help to keep the logs confidential.
  * For RSA modes the public key for encryption must be available
  * in /var/zxid/pem/logenc-nopw-cert.pem. For symmetric encryption the key
  * is the sha1 hash of file /var/zxid/pem/logenc.key
- * All modes, except for 0, also RFC1951 zip compress the log line and safe-base64 encode
- * the result of the encryption.
+ * All modes, except 0x01, also RFC1951 zip compress the log line and
+ * safe-base64 encode the result of the encryption.
  */
 
 /* Most common combinations of the above flags. */
@@ -577,7 +594,7 @@
 #define ZXLOG_OP_LOG          0x01
 #define ZXLOG_OP_LOG_SIGN     0x05
 #define ZXLOG_OP_LOG_ENC      0x21
-#define ZXLOG_OP_LOG_SIGN_ENC 0x25
+#define ZXLOG_OP_LOG_SIGN_ENC 0x25  /* RSA-AES enc + RSA-SAH1 sign */
 
 #if 1
 /* Production settings to ship. */
@@ -596,10 +613,6 @@
 #define ZXLOG_RELY_A7N   0x41
 #define ZXLOG_RELY_MSG   0x11
 #endif
-
-/*(c) How Audit Bus receipts are issued. 0x00 = no receipt, 0x01 = plain, 0x05 = RSA-SHA1 */
-
-#define ZXBUS_RCPT 0x05
 
 /*(c) Choice of log given Error or Action
  * Each operation has its status code and generally those lines that indicate
@@ -628,12 +641,15 @@
 /*(c) Set debug option. You can also set this via zxid_set_opt().
  * 0 = debug output off
  * 1 = debug on
- * other values are reserved, experimental, or otherwise undocumented. */
+ * other values are reserved, experimental, or otherwise undocumented.
+ * Setting debug option will enable numerous, sometimes copious, debugging
+ * messages to stderr, which often ends in web server's error.log file.
+ * This option may also create log/xml.dbg file. */
 #define ZXID_DEBUG 0
 
 /*(c) Send debug output to a file. You can also set this via zxid_set_opt_cstr().
  * By default the debug output goes to stderr, which often goes to
- * web server's error_log. */
+ * web server's error.log. */
 #define ZXID_DEBUG_LOG 0
 
 /*(c) Audit Bus servers. Multiple, comma separated, URLs may be
@@ -641,15 +657,19 @@
  * If no BUS_URL is configured, no audit bus logging is performed. */
 #define ZXID_BUS_URL 0
 
-/*(c) Audit bus password if not using ClientTLS. Generally using
- * ClientTLS is RECOMMENDED and the certificate is taken from
- * metadata encryption certificate field so there is nothing
+/*(c) Audit bus password if not using ClientTLS.
+ * Generally using ClientTLS is RECOMMENDED and the certificate is taken
+ * from metadata encryption certificate field so there is nothing
  * special to configure here. However, if for some reason you
  * need to run plain TLS, with STOMP 1.1 passcode filed for authentication,
  * the set this option to the passcode. Note that using passcode is much
  * less secure than using ClientTLS. Another limitation of BUS_PW
  * approach is that it is shared across all audit bus servers. */
 #define ZXID_BUS_PW 0
+
+/*(c) How Audit Bus receipts are issued. 0x00 = no receipt, 0x01 = plain, 0x05 = RSA-SHA1 */
+
+#define ZXBUS_RCPT 0x05
 
 /*(c) Assertion validation options.
  * These MUST all be turned on (and assertions signed)
@@ -866,10 +886,10 @@
 
 /*(c) Whitelists and blacklists for the primitive SSO local PDP. Comma separated lists. */
 
-#define ZXID_LOCALPDP_ROLE_PERMIT 0   /* Whitelist of roles (empty: anything goes) */
-#define ZXID_LOCALPDP_ROLE_DENY   "local_deny"      /* Blacklist of roles */
-#define ZXID_LOCALPDP_IDPNID_PERMIT 0 /* Whitelist of permitted users (empty: anything goes) */
-#define ZXID_LOCALPDP_IDPNID_DENY "denynid" /* Blacklist of denied users */
+#define ZXID_LOCALPDP_ROLE_PERMIT 0   /* Whitelist of roles, comma separated (empty: anything goes) */
+#define ZXID_LOCALPDP_ROLE_DENY   "local_deny"      /* Blacklist of roles, comma separated */
+#define ZXID_LOCALPDP_IDPNID_PERMIT 0 /* Whitelist of permitted users, comma separated (empty: anything goes) */
+#define ZXID_LOCALPDP_IDPNID_DENY "denynid" /* Blacklist of denied users, comma separated */
 
 /*(c) Obligations we are willing to respect (unless an explicit UsageDirectives header
  * is specified by caller), require, generate, and accept. Examples:
@@ -878,15 +898,18 @@
  *   WSC_LOCALPDP_OBL_PLEDGE=urn:tas3:sol1:contract-fwk=urn:syn-trust:obl:base-contract:2012-11%26urn:tas3:sol1:xborder=urn:tas3:sol1:xdom:eu
  *   WSC_LOCALPDP_OBL_PLEDGE=urn:tas3:sol1:contract-fwk=urn:syn-trust:obl:base-contract:2012-11$urn:tas3:sol1:xborder=urn:tas3:sol1:xdom:eu
  *
- * Since SOL expressions are parsed according to URL query string rules and since
- * the configuration directives are also parsed according toquery string rules,
- * a problem arises with multipart SOL expressions. The second expression shows
- * how to use URL quoting (%26) to protect the SOL ampersand from being processed
- * by the configuration file. Since this is such a common situation, a special
- * separator dollar ($, 0x24) may be used instead, as illustrated in third example.
+ * Since SOL expressions are parsed according to URL query string
+ * rules and since the configuration directives are also parsed
+ * according toquery string rules, a problem arises with multipart SOL
+ * expressions. The second expression shows how to use URL quoting
+ * (%26) to protect the SOL ampersand from being processed by the
+ * configuration file. Since this is such a common situation, a
+ * special separator dollar ($, 0x24) may be used instead, as
+ * illustrated in third example.
  *
- * Multiple WSP_LOCALPDP_OBL_REQ and WSP_LOCALPDP_OBL_EMIT directives accumulate.
- * Special pledge name "reset" can be used to reset the list.
+ * Multiple WSP_LOCALPDP_OBL_REQ and WSP_LOCALPDP_OBL_EMIT directives
+ * accumulate.  Special pledge name "reset" can be used to reset the
+ * list.
  *
  * See further discussion in tas3-proto.pd section 2.12 Simple Obligations Language (SOL). */
 #define ZXID_WSC_LOCALPDP_OBL_PLEDGE  0  /* String: WSC pledged obligations in SOL notation */
@@ -895,10 +918,12 @@
 #define ZXID_WSC_LOCALPDP_OBL_ACCEPT  0  /* String: WSC acceptable obligations in SOL notation */
 
 /* ----------------------------------------------------------------------------- */
-/*(c) Apache httpd sometimes changes working directory unpredictably (usually to /).
- * Use this optin to change it back to whatever you desired, such as document root
- * of a virtual host so that relative paths to templates, etc. work. 0 means not to
- * change (i.e. leave working directory as is). */
+/*(c) Apache httpd sometimes changes working directory unpredictably
+ * (usually to /). This seems to be related to mod_rewrite. Use this
+ * option to change working directory back to whatever you desire,
+ * such as document root of a virtual host so that relative paths to
+ * templates, etc. work. 0 means not to change (i.e. leave working
+ * directory as-is, even if unpredictably changed to wrong value). */
 
 #define ZXID_WD 0
 

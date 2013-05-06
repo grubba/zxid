@@ -29,6 +29,7 @@
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
 
+#include <malloc.h>
 #include <memory.h>
 #include <string.h>
 #ifdef USE_CURL
@@ -214,6 +215,7 @@ int zxid_set_opt(zxid_conf* cf, int which, int val)
   case 1: zx_debug = val; INFO("zx_debug=%d",val); return val;
   case 5: exit(val);  /* This is typically used to force __gcov_flush() */
   case 6: zxid_set_opt_cstr(cf, 6, "/var/zxid/log/log.dbg"); return 0;
+  case 7: mallopt(M_CHECK_ACTION, val); return 0;  /* val==3 enables cores on bad free() */
   default: ERR("zxid_set_opt: this version " ZXID_REL " does not support which=%d val=%d (ignored)", which, val);
   }
   return -1;
@@ -587,6 +589,7 @@ struct zxid_obl_list* zxid_load_obl_list(zxid_conf* cf, struct zxid_obl_list* ol
     ob->vals = zxid_load_cstr_list(cf, 0, val);
     ob->n = ol;
     ol = ob;
+    D("ALLOC OBL(%s) %p", ol->name, ol);
   }
   return ol;
 }
@@ -601,6 +604,7 @@ void zxid_free_obl_list(struct zxid_conf* cf, struct zxid_obl_list* ol)
     struct zxid_obl_list* next = ol->n;
     zxid_free_cstr_list(cf, ol->vals);
     /* ZX_FREE(cf->ctx, ol->name); BAD IDEA: the name comes from external static storage */
+    D("FREE OBL(%s) %p", ol->name, ol);
     ZX_FREE(cf->ctx, ol);
     ol = next;
   }

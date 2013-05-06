@@ -244,6 +244,7 @@ class zxidjniJNI {
   public final static native String ENC_ENCKEY_METH_get();
   public final static native String ENC_TYPE_ELEMENT_get();
   public final static native String ENC_TYPE_CONTENT_get();
+  public final static native String ZXID_CONF_PATH_get();
   public final static native int ZXID_CONF_MAGIC_get();
   public final static native int ZXID_CGI_MAGIC_get();
   public final static native int ZXID_SES_MAGIC_get();

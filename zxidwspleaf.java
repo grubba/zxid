@@ -46,7 +46,8 @@ public class zxidwspleaf extends HttpServlet {
 	if (cf == null) {
 	    String conf = getServletConfig().getInitParameter("ZXIDConf"); 
 	    cf = zxidjni.new_conf_to_cf(conf);
-	    zxidjni.set_opt(cf, 1, 1);
+	    zxidjni.set_opt(cf, 1, 1);  // Debug on
+	    zxidjni.set_opt(cf, 7, 3);  // Cause glibc malloc/free to dump core on error
 	}
 	String scheme = req.getScheme();
 	String host_hdr = req.getHeader("HOST");
@@ -114,10 +115,11 @@ public class zxidwspleaf extends HttpServlet {
 
 	System.err.print("HERE1\n");	
 	zxidjni.set_tas3_status(cf, ses, zxidjni.mk_tas3_status(cf, null, "urn:tas3:ctlpt:app", "urn:tas3:status:deny", null, null, null));
-	System.err.print("HERE2\n");
+	System.err.print("HERE 2\n");
 
 	// Check the input for correct ID-WSF compliance
 
+	zxidjni.set_opt(cf, 7, 3);  // Cause glibc malloc/free to dump core on error
 	//System.err.print("Validating buf("+buf+")\n");	
 	String nid  = zxidjni.wsp_validate(cf, ses, "Resource=leaf", buf);
 	System.err.print("VALID3 nid("+nid+")\n");	

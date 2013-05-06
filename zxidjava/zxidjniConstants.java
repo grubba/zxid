@@ -39,6 +39,7 @@ public interface zxidjniConstants {
   public final static String ENC_ENCKEY_METH = zxidjniJNI.ENC_ENCKEY_METH_get();
   public final static String ENC_TYPE_ELEMENT = zxidjniJNI.ENC_TYPE_ELEMENT_get();
   public final static String ENC_TYPE_CONTENT = zxidjniJNI.ENC_TYPE_CONTENT_get();
+  public final static String ZXID_CONF_PATH = zxidjniJNI.ZXID_CONF_PATH_get();
   public final static int ZXID_CONF_MAGIC = zxidjniJNI.ZXID_CONF_MAGIC_get();
   public final static int ZXID_CGI_MAGIC = zxidjniJNI.ZXID_CGI_MAGIC_get();
   public final static int ZXID_SES_MAGIC = zxidjniJNI.ZXID_SES_MAGIC_get();

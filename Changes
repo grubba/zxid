@@ -33,6 +33,9 @@ To do:
     - Partial XML parsing: stop after header
       - Header removal / unwrapping vs. header extraction, but still passing through
     - Pentaho investigation, use dwh as the backing store of the PDS
+    - The FEDUSERNAME attribute should include both succinct EntityID
+      and the persistent pseudonym. Also, make mail interface for this
+      to work (run a script that fishes the stuff out).
 
 To do from EIC 2012:
     - Scopes in AuthnRequests

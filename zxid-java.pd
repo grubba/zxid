@@ -825,8 +825,8 @@ Potentially permissions error, says google, and this indeed seemed to fix it.
 In case you add debug prints, the stderr (System.err) output
 appears to go by default to apache-tomcat-5.5.20/logs/catalina.out
 
-9.9 Debugging libzxidjni.so under jdb and gdb
----------------------------------------------
+9.8.1 Debugging libzxidjni.so under jdb and gdb
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Debugging the JNI C code would appear to require running java or jdb
 under gdb and setting break points in the C code. Unfortunately this
@@ -850,6 +850,43 @@ jdb prompt.
   > next      # or step
   > print cf
   > cont
+
+9.8.2 Enabling core dumps
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How to debug
+
+  *** glibc detected *** /usr/lib/jvm/java-6-openjdk/bin/java: free(): invalid pointer: 0x09c2120c ***
+
+* First enable them at system level
+    ulimit -c unlimited
+
+* Enable glibc to dump core on malloc/free errors
+  - export MALLOC_CHECK_=3   # Note trailing underscore
+  - or edit /etc/default/tomcat6: echo 'MALLOC_CHECK_=3' >>/etc/default/tomcat6
+  - or add to code mallopt(M_CHECK_ACTION, 3). In case of Java program you do it like
+	zxidjni.set_opt(cf, 7, 3);  // Cause glibc malloc/free to dump core on error
+
+* The cores should go to current working directory, but under Tomcat
+  detemining this seems to be a nightmare. You can solve this by setting
+  systemwide default core path to known value, e.g:
+
+    echo '/tmp/core' > /proc/sys/kernel/core_pattern   # On Linux
+
+<<ignore:
+/usr/lib/jvm/java-6-openjdk/bin/java
+-Djava.util.logging.config.file=/var/lib/tomcat6/conf/logging.properties
+-Djava.awt.headless=true
+-Xmx128m
+-XX:+UseConcMarkSweepGC
+-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+-Djava.endorsed.dirs=/usr/share/tomcat6/endorsed
+-classpath /usr/share/tomcat6/bin/bootstrap.jar
+-Dcatalina.base=/var/lib/tomcat6
+-Dcatalina.home=/usr/share/tomcat6
+-Djava.io.tmpdir=/tmp/tomcat6-tmp
+org.apache.catalina.startup.Bootstrap start
+>>
 
 <<if: ZXIDBOOK>>
 <<else: >>

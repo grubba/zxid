@@ -97,10 +97,11 @@ public class app_demo extends HttpServlet {
 	}
 	
 	if (cf == null) {
-	    System.err.print("running conf\n");
+	    System.err.print("Running conf\n");
 	    String conf = getServletConfig().getInitParameter("ZXIDConf"); 
 	    cf = zxidjni.new_conf_to_cf(conf);
-	    zxidjni.set_opt(cf, 1, 1);
+	    zxidjni.set_opt(cf, 1, 1);  // Debug on
+	    zxidjni.set_opt(cf, 7, 3);  // Cause glibc malloc/free to dump core on error
 	}
 	String sid = ses.getAttribute("sesid").toString();
 	ServletOutputStream out = res.getOutputStream();
@@ -225,7 +226,8 @@ public class app_demo extends HttpServlet {
 	// Demo another web service call, this time the service by zxidwspleaf.java
 
 	if (qs.equals("leaf") || qs.equals("all")) {
-	    System.err.print("--- leaf call\n");
+	    System.err.print("--- Leaf call\n");
+	    zxidjni.set_opt(cf, 7, 3);  // Cause glibc malloc/free to dump core on error
 	    ret = zxidjni.call(cf, zxses, "x-recurs", null, null, "Resource=leaf",
 			       "<foobar>Do it!</foobar>");
 	    System.err.print("--- leaf ret("+ret+")\n");
