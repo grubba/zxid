@@ -537,7 +537,7 @@ struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list*
   char* q;
   struct zxid_cstr_list* cs;
 
-  for (; p && *p;) {
+  for (; p && *p; *p && ++p) {
     q = p;
     p = strchr(p, ',');
     if (!p)
@@ -618,7 +618,7 @@ struct zxid_bus_url* zxid_load_bus_url(zxid_conf* cf, struct zxid_bus_url* bu_ro
   char* q;
   struct zxid_bus_url* bu;
 
-  for (; p && *p;) {
+  for (; p && *p; *p && ++p) {
     q = p;
     p = strchr(p, ',');
     if (!p)
