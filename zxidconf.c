@@ -135,7 +135,7 @@ EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
   }
   if (*p == 0xd) ++p;
   if (*p != 0xa) {
-    ERR("Bad privkey missing newline ch(0x%x) at %d (%.*s) of buf(%s)", *p, p-buf, 5, p-2, buf);
+    ERR("Bad privkey missing newline ch(0x%x) at %ld (%.*s) of buf(%s)", *p, (long)(p-buf), 5, p-2, buf);
     return 0;
   }
   ++p;
