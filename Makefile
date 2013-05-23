@@ -296,7 +296,8 @@ CC=/apps/gcc/mingw/bin/i586-pc-mingw32-gcc
 LD=/apps/gcc/mingw/bin/i586-pc-mingw32-gcc
 AR=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -crs
 ARX=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -x
-CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
+#CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
+CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB
 CURL_ROOT=/apps/gcc/mingw/sysroot
 OPENSSL_ROOT=/apps/gcc/mingw/sysroot
 ZXIDJNI_SO=zxidjava/zxidjni.dll
@@ -319,6 +320,10 @@ CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-
 # http://www.1702.org/jniswigdll.html
 # http://maba.wordpress.com/2004/07/28/generating-dll-files-for-jni-under-windowscygwingcc/
 
+#/apps/gcc/mingw/bin/i586-pc-mingw32-gcc -o zxid.dll -Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib libzxid.a -Wl,-no-whole-archive -L/apps/gcc/mingw/sysroot/lib -L/apps/gcc/mingw/sysroot/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32 -mdll
+#i586-pc-mingw32-gcc: shared and mdll are not compatible
+#make: *** [zxid.dll] Error 1
+
 else
 ifeq ($(TARGET),mingw)
 
@@ -338,7 +343,6 @@ WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib $(CURL_LIBS) $(SSL_LIBS) -lwi
 LIBS= -mconsole $(WIN_LIBS) -lpthread
 SHARED_FLAGS=-Wl,--add-stdcall-alias -mdll -static -Wl,--export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
 CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -D'ZXID_PATH="$(ZXID_PATH)"'  -DMAYBE_UNUSED='__attribute__ ((unused))'
-
 
 #WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
 #LIBS= -mconsole $(WIN_LIBS)

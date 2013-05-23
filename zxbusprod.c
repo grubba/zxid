@@ -31,10 +31,15 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
-#include <netdb.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifdef MINGW
+#include <winsock.h>
+#define EINPROGRESS WSAEINPROGRESS
+#else
+#include <netdb.h>
 #include <netinet/in.h>  /* struct sockaddr_in */
+#endif
 
 #ifdef USE_OPENSSL
 #include <openssl/x509.h>

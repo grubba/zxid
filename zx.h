@@ -37,6 +37,7 @@
 #ifdef MINGW
 #include <windows.h>
 #define pthread_mutex_t CRITICAL_SECTION
+#define pthread_t DWORD
 #define fdtype HANDLE
 #else
 #include <pthread.h>

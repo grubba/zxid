@@ -215,7 +215,9 @@ int zxid_set_opt(zxid_conf* cf, int which, int val)
   case 1: zx_debug = val; INFO("zx_debug=%d",val); return val;
   case 5: exit(val);  /* This is typically used to force __gcov_flush() */
   case 6: zxid_set_opt_cstr(cf, 6, "/var/zxid/log/log.dbg"); return 0;
+#ifdef M_CHECK_ACTION  /* glibc specific */
   case 7: mallopt(M_CHECK_ACTION, val); return 0;  /* val==3 enables cores on bad free() */
+#endif
   default: ERR("zxid_set_opt: this version " ZXID_REL " does not support which=%d val=%d (ignored)", which, val);
   }
   return -1;

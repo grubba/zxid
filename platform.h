@@ -24,6 +24,10 @@ extern "C" {
 #define getegid() 0
 #define stat(X,Y) zx_stat(X,Y)
 
+#define LOCK_EX 2
+#define LOCK_UN 8
+#define O_SYNC 04010000
+
 #ifdef WIN32CL
 /* The directory handling is quite different on Windows. The following
  * posix wrappers are implemented in zxdirent.c */

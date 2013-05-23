@@ -1,5 +1,5 @@
 /* zxutil.c  -  Utility functions
- * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2013 Synergetics (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -24,7 +24,6 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/socket.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <time.h>
@@ -37,6 +36,7 @@
 #else
 #define fdtype int
 #include <sys/stat.h>
+#include <sys/socket.h>
 #endif
 
 #include "zx.h"
@@ -159,7 +159,6 @@ int read_all_fd(fdtype fd, char* p, int want, int* got_all)
   if( fdh == 0 ) // stdin
       fdh = GetStdHandle(STD_INPUT_HANDLE);
   if (!ReadFile(fdh, p, want, &got, 0)) {
-    c->zx_errno = errno ? errno : 1;
     return -1;
   }
   if (got_all) *got_all = got;
@@ -464,10 +463,10 @@ int write2_or_append_lock_c_path(const char* c_path,
     return 0;
 #ifdef MINGW
   fd = zx_CreateFile(c_path, MINGW_RW_PERM, /*0*/FILE_SHARE_READ | FILE_SHARE_WRITE /* 0  means no sharing allowed */, 0 /* security */,
-		  (flag == O_APPEND) ? OPEN_ALWAYS : CREATE_ALWAYS /* truncates, too? */,
+		  (flag & O_APPEND) ? OPEN_ALWAYS : CREATE_ALWAYS /* truncates, too? */,
 		  FILE_ATTRIBUTE_NORMAL, 0);
   if (fd == BADFD) goto badopen;
-  if (flag == O_APPEND) {
+  if (flag & O_APPEND) {
     MS_LONG zero = 0;
     SetFilePointer(fd, 0, &zero, FILE_END);  /* seek to end */
   }
