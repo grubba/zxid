@@ -41,7 +41,7 @@
 int read_all_fd(int fd, char* p, int want, int* got_all);
 int write_all_fd(int fd, char* p, int pending);
 
-CU8* help =
+const char* help =
 "zxbench  -  SAML 2.0 encoding and decoding benchmark - R" ZXID_REL "\n\
 SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
 Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
@@ -123,7 +123,7 @@ void opt(int* argc, char*** argv, char*** env)
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	zx_instance = (*argv)[0];
+	strcpy(zx_instance, (*argv)[0]);
 	continue;
       }
       break;
@@ -240,7 +240,7 @@ void opt(int* argc, char*** argv, char*** env)
       case 'i':
 	if (!strcmp((*argv)[0],"-license")) {
 	  extern char* license;
-	  fprintf(stderr, license);
+	  fprintf(stderr, "%s", license);
 	  exit(0);
 	}
 	break;
@@ -252,7 +252,7 @@ void opt(int* argc, char*** argv, char*** env)
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
   argerr:
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     exit(3);
   }
 }
