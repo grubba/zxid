@@ -301,7 +301,7 @@ int zxbuslist_main(int argc, char** argv, char** env)
   if (zxbus_oneshot == -1) {
     /* In case we hit a blocking read, then this alarm will unblock us
      * and allow return. */
-    signal(SIGALRM, (__sighandler_t)sig_alarm_to_stop_blocking_read);
+    signal(SIGALRM, (void*)sig_alarm_to_stop_blocking_read);
     alarm(1);
   }
   while (zxbus_oneshot && zxbus_listen_msg(cf, bu))
