@@ -1368,7 +1368,7 @@ zxlogview-static-diet64: $(ZXLOGVIEW_OBJ) $(LIBZXID_A)
 zxbustailf: $(ZXBUSTAILF_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxbustailf$(EXE) $^ $(LIBS)
 
-zxbustailf-static-diet64: $(ZXBUSTAILD_OBJ) $(LIBZXID_A)
+zxbustailf-static-diet64: $(ZXBUSTAILF_OBJ) $(LIBZXID_A)
 	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
 zxbuslist: $(ZXBUSLIST_OBJ) $(LIBZXID_A)
