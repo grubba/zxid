@@ -601,8 +601,10 @@ int zxbusd_main(int argc, char** argv, char** env)
 #   define PTHREAD_MUTEX_ERRORCHECK_NP 2
 #  endif
   if (pthread_mutexattr_init(MUTEXATTR)) NEVERNEVER("unable to initialize mutexattr %d",argc);
+#  ifndef __dietlibc__
   if (pthread_mutexattr_settype(MUTEXATTR, PTHREAD_MUTEX_ERRORCHECK_NP))
     NEVERNEVER("unable to set mutexattr %d",argc);
+#  endif
 # endif
 #endif
 #ifdef COMPILED_DATE
