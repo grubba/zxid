@@ -583,9 +583,9 @@ ff:: Request reauthentication of user (ForceAuthn flag)
 
 <<dia: arch-zxid-attr-brkr:bg,fg: Liberty IGF Compliant Attribute Broker fetches the needed attributes from available providers and populates them to the subprocess environment.>>
 
-As can be seen in the accompanying figure, the provision of attributes to the
-applications in the Apache subprocess environment (CGI, mod_perm, mod_php, etc.)
-is handled as follows:
+As can be seen in the accompanying figure, the provision of attributes
+to the applications in the Apache subprocess environment (CGI,
+mod_perl, mod_php, etc.)  is handled as follows:
 
 1. Configure attribute needs and names (this corresponds to CARML declaration)
 2. Configure attribute sources (this corresponds to AAPML declaration)
@@ -719,7 +719,10 @@ attribute sources include
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ~INMAP~ specification provides for various input attribute renaming and
-input attribute value decoding operations.
+input attribute value decoding operations. It is a semicolon separated
+list of stanzas, where stanza components are separated by dollar signs.
+Multiple ~INMAP~ specifications are additive, but the ~INMAP~ list can
+be cleared with special stanza with ~reset~ rule.
 
   INMAP=ns$A$rule$b$ext
 

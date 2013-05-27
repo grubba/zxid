@@ -496,11 +496,13 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
   }
   env = r->Envelope;
   if (env) {
+    D("HERE1 ENV EXISTS %p", env);
     if (!env->Body)
       env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
     if (!env->Header)
       env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   } else if (r->Body) {
+    D("HERE2 BODY EXISTS %p", env);
     env = zx_NEW_e_Envelope(cf->ctx,0);
     ZX_ADD_KID(env, Body, r->Body);
     if (r->Header)
@@ -509,6 +511,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
       env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   } else { /* Resort to stringwise attempt to add envelope. */
     ZX_FREE(cf->ctx, r);
+    D("HERE3 ADD ENV %p", env);
     if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
       for (enve += sizeof("<?xml "); *enve && !(enve[0] == '?' && enve[1] == '>'); ++enve) ;
       if (*enve)

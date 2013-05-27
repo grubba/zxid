@@ -52,8 +52,8 @@ diet64: zxcot-static-x64 zxpasswd-static-x64 zxididp-static-x64 zxidhlo-static-x
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000113
-ZXIDREL=1.13
+ZXIDVERSION=0x000114
+ZXIDREL=1.14
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/var/zxid/$(ZXIDREL)
@@ -84,30 +84,30 @@ ENA_TAS3=1
 ###
 
 TOP=$(shell pwd)
-CURL_ROOT=/usr/local
-OPENSSL_ROOT=/usr/local/ssl
-PHP_CONFIG=php-config
-CSHARP_CONFIG=true
-PY_CONFIG=true
-RUBY_CONFIG=true
-APACHE_ROOT=/usr/local/httpd
-DIET_ROOT=/usr/local/dietlibc-0.33
+CURL_ROOT?=/usr/local
+OPENSSL_ROOT?=/usr/local/ssl
+PHP_CONFIG?=php-config
+CSHARP_CONFIG?=true
+PY_CONFIG?=true
+RUBY_CONFIG?=true
+APACHE_ROOT?=/usr/local/httpd
+DIET_ROOT?=/usr/local/dietlibc-0.33
 
-ECHO=echo
-CP=cp
-PERL=perl
+ECHO?=echo
+CP?=cp
+PERL?=perl
 XSD2SG_PL= ../pd/xsd2sg.pl
 XSD2SG=$(PERL) $(XSD2SG_PL)
 PULVERIZE=$(PERL) ./pulverize.pl
-GPERF=gperf
-SWIG=swig
-AR=ar -crs
-ARX=ar -x
+GPERF?=gperf
+SWIG?=swig
+ARC?=ar -crs
+ARX?=ar -x
 #CC=ccache gcc
 CC?=gcc
-LD?=gcc
-GCOV=gcov
-LCOV=lcov
+LD=$(CC)
+GCOV?=gcov
+LCOV?=lcov
 GENHTML=genhtml
 #SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,--allow-multiple-definition
 # --export-all-symbols does not seem to work on gcc-4.6.1... try -Wl,--export-dynamic instead
@@ -115,7 +115,7 @@ SHARED_FLAGS=-shared -Wl,--export-dynamic -Wl,-whole-archive -Wl,--allow-multipl
 SHARED_CLOSE=-Wl,-no-whole-archive
 CFLAGS =  -g -fpic -fno-strict-aliasing
 #CFLAGS += -Os    # gcc-3.4.6 miscompiles with -Os on ix86 (2010 --Sampo)
-CFLAGS += -fmessage-length=0 -DMAYBE_UNUSED='__attribute__ ((unused))'
+CFLAGS += -fmessage-length=0
 CFLAGS += -Wall -Wno-parentheses -Wno-unused-label -Wno-unknown-pragmas -Wno-char-subscripts
 #LDFLAGS += -Wl,--gc-sections
 LIBZXID_A=libzxid.a
@@ -295,7 +295,7 @@ SYSROOT=/apps/gcc/mingw/sysroot
 CROSS_COMPILE=1
 CC=/apps/gcc/mingw/bin/i586-pc-mingw32-gcc
 LD=/apps/gcc/mingw/bin/i586-pc-mingw32-gcc
-AR=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -crs
+ARC=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -crs
 ARX=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -x
 #CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
 CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB
@@ -313,7 +313,7 @@ WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lw
 LIBS= -mconsole $(WIN_LIBS)
 #SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,-whole-archive
 SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
-CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing  -mno-cygwin -DMAYBE_UNUSED='__attribute__ ((unused))'
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing  -mno-cygwin
 
 # java.lang.UnsatisfiedLinkError: Given procedure could not be found
 # -mno-cygwin -mrtd -Wl,--kill-at -Wl,--add-stdcall-alias
@@ -343,12 +343,12 @@ CURL_LIBS= -lcurl -lssh2 -lidn -lwldap32
 WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib $(CURL_LIBS) $(SSL_LIBS) -lwinmm -lkernel32 -lz
 LIBS= -mconsole $(WIN_LIBS) -lpthread
 SHARED_FLAGS=-Wl,--add-stdcall-alias -mdll -static -Wl,--export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
-CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -D'ZXID_PATH="$(ZXID_PATH)"'  -DMAYBE_UNUSED='__attribute__ ((unused))'
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -D'ZXID_PATH="$(ZXID_PATH)"'
 
 #WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
 #LIBS= -mconsole $(WIN_LIBS)
 #SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
-#CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -DMAYBE_UNUSED='__attribute__ ((unused))'
+#CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin
 
 JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:/Program Files/Java/jdk1.5.0_14/include/win32"
 ZXIDJNI_SO=zxidjava/zxidjni.dll
@@ -372,7 +372,7 @@ ifeq ($(TARGET),win32cl)
 CP=copy
 CC=cl
 LD=link
-AR=lib
+ARC=lib
 CDEF+=-DMINGW -DWIN32CL -DUSE_LOCK=flock -DCURL_STATICLIB
 CURL_ROOT="G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc/"
 OPENSSL_ROOT="C:/OpenSSL/"
@@ -1281,7 +1281,7 @@ zxdecode-static-x64: zxdecode.$(OBJ_EXT) $(LIBZXID_A)
 zxpasswd: zxpasswd.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $^ $(LIBZXID) $(LIBS)
 
-zxpasswd-static-x64: zxcot.$(OBJ_EXT) $(LIBZXID_A)
+zxpasswd-static-x64: zxpasswd.$(OBJ_EXT) $(LIBZXID_A)
 	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
 zxcall: zxcall.$(OBJ_EXT) $(LIBZXID_A)
@@ -1401,26 +1401,26 @@ smime: smime.$(OBJ_EXT) $(LIBZXID_A)
 ifeq ($(PULVER),1)
 
 $(LIBZXID_A): $(ZX_OBJ) $(ZXID_LIB_OBJ)
-	cat pulver/c_saml2_dec_c.deps      | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2_enc_c.deps      | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2_aux_c.deps      | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2_getput_c.deps   | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2md_dec_c.deps    | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2md_enc_c.deps    | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2md_aux_c.deps    | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2md_getput_c.deps | xargs $(AR) $(LIBZXID_A)
-	$(AR) $(LIBZXID_A) $(ZXID_LIB_OBJ)
+	cat pulver/c_saml2_dec_c.deps      | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2_enc_c.deps      | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2_aux_c.deps      | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2_getput_c.deps   | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2md_dec_c.deps    | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2md_enc_c.deps    | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2md_aux_c.deps    | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2md_getput_c.deps | xargs $(ARC) $(LIBZXID_A)
+	$(ARC) $(LIBZXID_A) $(ZXID_LIB_OBJ)
 
-#	$(foreach fil,$^,$(shell $(AR) $(LIBZXID_A) $(fil)))
+#	$(foreach fil,$^,$(shell $(ARC) $(LIBZXID_A) $(fil)))
 
 else
 
 ifeq ($(TARGET),win32cl)
 $(LIBZXID_A): $(ZX_OBJ) $(ZX_GEN_C:.c=.obj) $(ZXID_LIB_OBJ) $(WSF_OBJ) $(OAUTH_OBJ) $(SMIME_LIB_OBJ)
-	$(AR) $(OUTOPT)zxid.lib $^
+	$(ARC) $(OUTOPT)zxid.lib $^
 else
 $(LIBZXID_A): $(ZX_OBJ) $(ZX_GEN_C:.c=.o) $(ZXID_LIB_OBJ) $(WSF_OBJ) $(OAUTH_OBJ) $(SMIME_LIB_OBJ)
-	$(AR) $(LIBZXID_A) $^
+	$(ARC) $(LIBZXID_A) $^
 endif
 endif
 
@@ -1672,7 +1672,7 @@ zxidjava/testjni.$(OBJ_EXT): zxidjava/testjni.c
 	$(CC) -c $(OUTOPT)$@ $(JNI_INC) $(CFLAGS) $<
 
 zxidjava/libtestjni.a: zxidjava/testjni.$(OBJ_EXT)
-	$(AR) $@ $^
+	$(ARC) $@ $^
 
 zxidjava/testjni.dll: zxidjava/libtestjni.a
 	$(LD) $(OUTOPT)$@ $(SHARED_FLAGS) $^ $(SHARED_CLOSE)

@@ -20,8 +20,12 @@
  * 30.10.2012, added AKBOX_FN() to logging --Sampo
  */
 
-#ifndef _macro_h
-#define _macro_h
+#ifndef _errmac_h
+#define _errmac_h
+
+#ifndef MAYBE_UNUSED
+#define MAYBE_UNUSED __attribute__ ((unused))
+#endif
 
 #ifdef MINGW
 #include <windows.h>
