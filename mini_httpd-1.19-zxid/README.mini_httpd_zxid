@@ -1,0 +1,30 @@
+README.mini_httpd_zxid
+######################
+21.6.2013 Sampo Kellomaki <sampo@zxid.org>
+
+This directory contains mini_httpd-1.19 distribution, originally
+by Jeff Poskanzer and downloaded from acme.com. Thanks Jeff for
+great code.
+
+This copy, distributed with ZXID, has been patched to play well together
+with ZXID. The ZXID enhanced version is meant to be built with the
+ZXID main Makefile (one directory up) and the binary is called
+mini_httpd_zxid to avoid confusion with the original unaltered mini_httpd.
+You can still build the original by using Jeff's Makefile in this
+directory.
+
+To build enhanced version
+
+  cd zxid  # The parent directory of this directory
+  make mini_httpd_zxid
+
+Among enhancements are
+
+* Pass through usefule environment variables such as PAOS, ZXID_PRE_CONF, ZXID_CONF
+* ZXID SSO and WSP filter mode, similar to using mod_auth_saml with Apache httpd
+* Support for dietlibc-0.33 (from Felix Leiner at fede.de) build
+* Support for mingw build (tested as cross compilation)
+* Support static linking
+
+Cheers,
+--Sampo

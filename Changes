@@ -114,6 +114,10 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Support BrowserID https://developer.mozilla.org/en-US/docs/persona
     - BUG: Passing qs args in RelayState
 
+zxid-1.15:: 21.6.2013
+    - Added wsp_pat option
+    - Added mini_httpd_zxid (derived from original by Jeff Poskanzer, see acme.com)
+
 zxid-1.13:: 14.3.2013
     - Added language/skin dependent templates
 

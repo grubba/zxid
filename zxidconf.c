@@ -25,6 +25,7 @@
  * 10.12.2011, added VURL and BUTTON_URL, deleted ORG_URL except for legacy check --Sampo
  * 17.8.2012, added audit bus configuration --Sampo
  * 16.2.2013, added WD option --Sampo
+ * 21.6.2013,  added wsp_pat --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -1699,6 +1700,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "WSP_LOCALPDP_OBL_EMIT"))    { cf->wsp_localpdp_obl_emit   = zxid_dollar_to_amp(v);   break; }
       if (!strcmp(n, "WSC_LOCALPDP_OBL_ACCEPT"))  { cf->wsc_localpdp_obl_accept = zxid_load_obl_list(cf, cf->wsc_localpdp_obl_accept, v);   break; }
       if (!strcmp(n, "WD"))             { cf->wd = v; chdir(v); break; }
+      if (!strcmp(n, "WSP_PAT"))        { cf->wsp_pat = v; break; }
       goto badcf;
     case 'X':  /* XASP_VERS */
       if (!strcmp(n, "XASP_VERS"))      { cf->xasp_vers = v; break; }
@@ -1916,6 +1918,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "REDIRECT_HACK_ZXID_URL=%s\n"
 "REDIRECT_HACK_ZXID_QS=%s\n"
 "DEFAULTQS=%s\n"
+"WSP_PAT=%s\n"
 "CDC_URL=%s\n"
 "CDC_CHOICE=%d\n"
 
@@ -2107,6 +2110,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 STRNULLCHK(cf->redirect_hack_zxid_url),
 		 STRNULLCHK(cf->redirect_hack_zxid_qs),
 		 STRNULLCHK(cf->defaultqs),
+		 STRNULLCHK(cf->wsp_pat),
 		 STRNULLCHK(cf->cdc_url),
 		 cf->cdc_choice,
 

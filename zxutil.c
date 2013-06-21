@@ -14,6 +14,7 @@
  * 21.5.2010, added file copy --Sampo
  * 20.6.2011, improved error reporting to show cwd in vopen_fd_from_path() --Sampo
  * 17.8.2012, added socket specific utilities --Sampo
+ * 21.6.2013, added wild card matcher --Sampo
  */
 
 #include "platform.h"
@@ -1315,6 +1316,29 @@ int zx_date_time_to_secs(const char* dt)
   t.tm_year -= 1900;
   --t.tm_mon;
   return zx_timegm(&t);
+}
+
+/*() Check if simple path glob wild card pattern matches.
+ * Only exact match, suffix match (*.wsp) and prefix match
+ * (/foo/bar*) are supported. Unlike in shell, the
+ * asterisk (*) matches also slash (/). */
+
+int zx_wildcard_pat_match(const char* pat, const char* target)
+{
+  int len;
+  if (!pat || !*pat)
+    return 1;
+  if (!target)
+    return 0;
+  if (!strcmp(pat, target))
+    return 1;
+  len =  strlen(target);
+  if (*pat == '*' && !strcmp(pat+1, target+len-strlen(pat+1)))
+    return 1;
+  len =  strlen(pat);
+  if (pat[len-1] == '*' && !strncmp(pat, target, len-1)
+    return 1;
+  return 0;
 }
 
 /* EOF  --  zxutil.c */

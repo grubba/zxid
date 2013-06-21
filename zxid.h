@@ -23,6 +23,7 @@
  * 17.8.2012,  added audit bus configuration --Sampo
  * 16.2.2013,  added WD option --Sampo
  * 14.3.2013   added language/skin dependent templates --Sampo
+ * 21.6.2013,  added wsp_pat --Sampo
  */
 
 #ifndef _zxid_h
@@ -237,6 +238,7 @@ struct zxid_conf {
   char* xasp_vers;
   char* trustpdp_url;
   char* defaultqs;
+  char* wsp_pat;
   char* mod_saml_attr_prefix;  /* Prefix for req variables in mod_auth_saml */
 
   struct zxid_need*  need;

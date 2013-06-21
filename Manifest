@@ -228,6 +228,36 @@ zxid-java.sh     - Shell script for wrapping zxid.java with correct paths
 zxidwsctool.c    - Command line WS Client, a tool for making ID-WSF calls (older than zxcall)
 zxidhlowsf.c     - Demonstration of calling ID-WSF services (DS and DAP)
 
+# Jeff Poskanzer's mini_httpd (from acme.com) adapted for zxid use
+
+mini_httpd-1.19-zxid/README
+mini_httpd-1.19-zxid/README.mini_httpd_zxid
+mini_httpd-1.19-zxid/FILES
+mini_httpd-1.19-zxid/Makefile
+mini_httpd-1.19-zxid/htpasswd.1
+mini_httpd-1.19-zxid/htpasswd.c
+mini_httpd-1.19-zxid/index.html
+mini_httpd-1.19-zxid/match.c
+mini_httpd-1.19-zxid/match.h
+mini_httpd-1.19-zxid/mime_encodings.h
+mini_httpd-1.19-zxid/mime_encodings.txt
+mini_httpd-1.19-zxid/mime_types.h
+mini_httpd-1.19-zxid/mime_types.txt
+mini_httpd-1.19-zxid/mini_httpd
+mini_httpd-1.19-zxid/mini_httpd.8
+mini_httpd-1.19-zxid/mini_httpd.c
+mini_httpd-1.19-zxid/mini_httpd.c.orig
+mini_httpd-1.19-zxid/mini_httpd.cnf
+mini_httpd-1.19-zxid/port.h
+mini_httpd-1.19-zxid/tdate_parse.c
+mini_httpd-1.19-zxid/tdate_parse.h
+mini_httpd-1.19-zxid/version.h
+mini_httpd-1.19-zxid/contrib/redhat-rpm/mini_httpd.init
+mini_httpd-1.19-zxid/contrib/redhat-rpm/mini_httpd.spec
+mini_httpd-1.19-zxid/scripts/500.mini_httpd-rotate
+mini_httpd-1.19-zxid/scripts/mini_httpd.sh
+mini_httpd-1.19-zxid/scripts/mini_httpd_wrapper
+
 # S/MIME Utility for Certificate Manipulations, Signing, and Encryption
 
 README.smime     - Tutorial on use of smime tool

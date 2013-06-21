@@ -16,6 +16,7 @@
  * 10.12.2011, added VPATH, VURL, BUTTON_URL, delete ORG_URL --Sampo
  * 17.8.2012, added audit bus configuration --Sampo
  * 16.2.2013, added WD option --Sampo
+ * 21.6.2013, added wsp_pat --Sampo
  *
  * Most of the configuration options can be set via configuration
  * file /var/zxid/zxid.conf or using -c command line flag(s). In
@@ -759,6 +760,12 @@
 /*(c) Query String if None Given */
 
 #define ZXID_DEFAULTQS ""   /* Default Query String used by mod_auth_saml for protected page */
+
+/*(c) WSP Pattern
+ * Any URL matching this pattern is treated as web service call rather
+ * than SSO attempt. Understood by mod_auth_saml. */
+
+#define ZXID_WSP_PAT "*.wsp"
 
 /*(c) Anonymous can see protected content
  * If ANON_OK is set and matches prefix of the local URL, SSO failure does

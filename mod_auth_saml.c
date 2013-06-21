@@ -16,6 +16,7 @@
  * 15.7.2010, consider passing to simple layer more data about the request --Sampo
  * 28.9.2012, changed zx_instance string to "mas", fixed parsing CGI for other page --Sampo
  * 13.2.2013, added WD option --Sampo
+ * 21.6.2013, added SOAP WSP capability --Sampo
  *
  * To configure this module add to httpd.conf something like
  *
@@ -293,7 +294,13 @@ static char* read_post(zxid_conf* cf, request_rec* r)
 
 /*(i) Apache hook. Called from httpd-2.2.8/server/request.c: ap_process_request_internal()
  * ap_run_check_user_id(). Return value is processed in modules/http/http_request.c
- * and redirect is in ap_die(), http_protocol.c: ap_send_error_response()  */
+ * and redirect is in ap_die(), http_protocol.c: ap_send_error_response()
+ *
+ * It seems this function will in effect be called twice by Apache internals: once
+ * to see if it would succeed and second time to actually do the work. This is rather
+ * wasteful, but we do not know any easy way to avoid it.
+ *
+ * Originally this was just for SSO, but nowdays we also support WSP mode.  */
 
 /* Called by: */
 static int chkuid(request_rec* r)
@@ -382,7 +389,7 @@ static int chkuid(request_rec* r)
    * correctly we need to ignore the query string part. We are looking
    * here at exact match, like /protected/saml, rather than any of
    * the other documents under /protected/ (which are handled in the
-   * else clause). Both then and else -claue URLs are defined as requiring
+   * else clause). Both then and else -clause URLs are defined as requiring
    * SSO by virtue of the web server configuration. */
 
   uri_len = strlen(r->uri);
@@ -435,6 +442,8 @@ static int chkuid(request_rec* r)
 	goto process_zxid_simple_outcome;
     }
     /* not logged in, fall thru */
+  } else if (zxid_wildcard_pat_match(cf->wsp_pat, r->uri)) {
+    /* WSP case */
   } else {
     /* Some other page. Just check for session. */
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->url(%s) uri_len=%d url_len=%d", r->uri, STRNULLCHKNULL(r->args), cf->url, uri_len, url_len);
