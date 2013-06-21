@@ -20,7 +20,8 @@ To build enhanced version
 
 Among enhancements are
 
-* Pass through usefule environment variables such as PAOS, ZXID_PRE_CONF, ZXID_CONF
+* Handle PAOS HTTP header
+* Pass through useful environment variables such as ZXID_PRE_CONF and ZXID_CONF
 * ZXID SSO and WSP filter mode, similar to using mod_auth_saml with Apache httpd
 * Support for dietlibc-0.33 (from Felix Leiner at fede.de) build
 * Support for mingw build (tested as cross compilation)

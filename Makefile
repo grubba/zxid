@@ -24,6 +24,7 @@
 # 6.2.2012,  improved multiple config support --Sampo
 # 16.8.2012, added zxbusd build --Sampo
 # 16.4.2013, added diet64 statically linked targets --Sampo
+# 21.6.2013, added mini_httpd --Sampo
 #
 # Build so far only tested on Linux, Solaris 8 and MacOS 10.3. This
 # makefile needs gmake-3.78 or newer.
@@ -40,7 +41,7 @@ vpath %.h ../zxid
 
 default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall zxencdectest
 
-all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcgi
+all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcgi mini_httpd_zxid
 
 zxbus:  zxbusd zxbustailf zxbuslist
 
@@ -76,6 +77,7 @@ ENA_WSF2=1
 ENA_WSF11=1
 ENA_XACML2=1
 ENA_WST=1
+ENA_MINI_HTTPD=1
 ENA_SMIME=1
 ENA_TAS3=1
 
@@ -1260,6 +1262,38 @@ apachezxid_install: mod_auth_saml.so
 	$(CP) $< $(APACHE_MODULES)
 
 ###
+### mini_httpd with ZXID support. See also mini_httpd-1.19-zxid/Makefile
+### for regular build without ZXID support
+###
+
+MINI_HTTPD_DIR?=mini_httpd-1.19-zxid
+
+# CONFIGURE: Some systems don't need -lcrypt, and indeed they get an
+# error if you try to link with it.  If you get an error about libcrypt
+# not found, try commenting out this definition.
+CRYPT_LIB ?= -lcrypt
+
+$(MINI_HTTPD_DIR)/htpasswd: $(MINI_HTTPD_DIR)/htpasswd.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(CRYPT_LIB) $(LIBZXID) $(LIBS)
+
+$(MINI_HTTPD_DIR)/mini_httpd_zxid: $(MINI_HTTPD_DIR)/mini_httpd.$(OBJ_EXT) $(MINI_HTTPD_DIR)/match.$(OBJ_EXT) $(MINI_HTTPD_DIR)/tdate_parse.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBZXID) $(LIBS)
+
+$(MINI_HTTPD_DIR)/mime_encodings.h: $(MINI_HTTPD_DIR)/mime_encodings.txt
+	rm -f $@
+	sed < $^ > $@ \
+	  -e 's/#.*//' -e 's/[ 	]*$$//' -e '/^$$/d' \
+	  -e 's/[ 	][ 	]*/", 0, "/' -e 's/^/{ "/' -e 's/$$/", 0 },/'
+
+$(MINI_HTTPD_DIR)/mime_types.h: $(MINI_HTTPD_DIR)/mime_types.txt
+	rm -f $@
+	sed < $^ > $@ \
+	  -e 's/#.*//' -e 's/[ 	]*$$//' -e '/^$$/d' \
+	  -e 's/[ 	][ 	]*/", 0, "/' -e 's/^/{ "/' -e 's/$$/", 0 },/'
+
+mini_httpd_zxid: $(MINI_HTTPD_DIR)/mini_httpd_zxid $(MINI_HTTPD_DIR)/htpasswd
+
+###
 ### Binaries
 ###
 
@@ -1718,7 +1752,7 @@ dirs: dir
 install: zxid $(LIBZXID_A) libzxid.so.0.0 dir
 	@$(ECHO) "===== Installing in $(PREFIX) (to change do make install PREFIX=/your/path)"
 	-mkdir -p $(PREFIX) $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/include/zxid $(PREFIX)/include/zx $(PREFIX)/doc
-	$(CP) zxmkdirs.sh zxcall zxpasswd zxcot zxlogview zxbusd zxbustailf zxbuslist zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl $(PREFIX)/bin
+	$(CP) zxmkdirs.sh zxcall zxpasswd zxcot zxlogview zxbusd zxbustailf zxbuslist zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl mini_httpd_zxid $(PREFIX)/bin
 	$(CP) $(LIBZXID_A) libzxid.so* $(PREFIX)/lib
 	$(CP) libzxid.so.0.0 $(PREFIX)/lib
 	$(CP) *.h c/*.h $(PREFIX)/include/zxid
@@ -1829,7 +1863,7 @@ linbindist:
 winbindist:
 	rm -rf zxid-$(ZXIDREL)-win32-bin
 	mkdir zxid-$(ZXIDREL)-win32-bin zxid-$(ZXIDREL)-win32-bin/c zxid-$(ZXIDREL)-win32-bin/zxidjava  zxid-$(ZXIDREL)-win32-bin/php
-	$(CP) zxid.dll zxidhlo zxidsimple zxididp zxcot zxpasswd zxdecode zxlogview zxbusd zxbustailf zxbuslist smime *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
+	$(CP) zxid.dll zxidhlo zxidsimple zxididp zxcot zxpasswd zxdecode zxlogview zxbusd zxbustailf zxbuslist smime mini_httpd_zxid *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
 	$(CP) zxidjava/*.class $(ZXIDJNI_SO) zxidjava/zxid_wrap.c zxid-$(ZXIDREL)-win32-bin/zxidjava
 	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay README.zxid README.zxid-win32 zxid-$(ZXIDREL)-win32-bin
 	$(CP) c/*.h zxid-$(ZXIDREL)-win32-bin/c

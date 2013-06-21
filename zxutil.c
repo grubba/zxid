@@ -1321,7 +1321,8 @@ int zx_date_time_to_secs(const char* dt)
 /*() Check if simple path glob wild card pattern matches.
  * Only exact match, suffix match (*.wsp) and prefix match
  * (/foo/bar*) are supported. Unlike in shell, the
- * asterisk (*) matches also slash (/). */
+ * asterisk (*) matches also slash (/).
+ * *** investigate whether mini_httpd's match.c by Jeff Poskanzer would be better --Sampo */
 
 int zx_wildcard_pat_match(const char* pat, const char* target)
 {
