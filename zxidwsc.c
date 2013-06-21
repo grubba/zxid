@@ -496,13 +496,13 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
   }
   env = r->Envelope;
   if (env) {
-    D("HERE1 ENV EXISTS %p", env);
+    DD("HERE1 ENV EXISTS %p", env);
     if (!env->Body)
       env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
     if (!env->Header)
       env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   } else if (r->Body) {
-    D("HERE2 BODY EXISTS %p", env);
+    DD("HERE2 BODY EXISTS %p", env);
     env = zx_NEW_e_Envelope(cf->ctx,0);
     ZX_ADD_KID(env, Body, r->Body);
     if (r->Header)
@@ -518,7 +518,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
     }
     /* Must be just payload */
     enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_body_open, enve, zx_env_body_close);
-    D("HERE3 ADD ENV(%s)", enve);
+    DD("HERE3 ADD ENV(%s)", enve);
     r = zx_dec_zx_root(cf->ctx, strlen(enve), enve, "add_env2");
     if (!r) {
       ERR("Malformed XML enve(%s)", enve);
