@@ -232,11 +232,11 @@ zxid_ses* zxid_mini_httpd_filter(zxid_conf* cf, const char* method, const char* 
     chdir(cf->wd);
   D_INDENT("minizx: ");
 
-  if (zxid_wildcard_pat_match(cf->wsp_pat, uri_path)) {
+  if (zx_wildcard_pat_match(cf->wsp_pat, uri_path)) {
     ses = zxid_mini_httpd_wsp(cf, method, uri_path, qs);
     D_DEDENT("minizx: ");
     return ses;
-  } else if (zxid_wildcard_pat_match(cf->sso_pat, uri_path)) {
+  } else if (zx_wildcard_pat_match(cf->sso_pat, uri_path)) {
     ses = zxid_mini_httpd_sso(cf, method, uri_path, qs);
     D_DEDENT("minizx: ");
     return ses;
