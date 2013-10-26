@@ -943,7 +943,8 @@ sub G {
     my ($proto, $host, $port, $localurl)
 	= $url =~ m%^(https?)://([^:/]+)(?:(\d+))?(/.*?)$%i;
     my $usessl = ($proto =~ /^https$/i ? 1 : 0);
-
+    $port ||= $usessl?443:80;
+    
     my $test = tst_link($tsti, $expl, $url);
     my $send_ts = Time::HiRes::time();
     warn "HERE1 ".Time::HiRes::time() if $timeout_trace;
@@ -972,9 +973,10 @@ sub G {
 	$timeout_trace = 1;
     } elsif ($status) {
 	tst_print('col1r', 'Conn. Err', $latency, $slow, $test, $status);
-    } elsif ($laststatus ne 'OK') {
-	tst_print('col1r', 'App Err', $latency, $slow, $test, $lasterror);
+    } elsif ($result !~ m%^HTTP/1\.[01] 200%) {
+	tst_print('col1r', 'App Err', $latency, $slow, $test, $result);
     } else {
+	$lasterror = 'len='.length($page);
 	tst_ok($latency, $slow, $test);
     }
 }

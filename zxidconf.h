@@ -340,6 +340,10 @@
  * Whether AuthnReq is signed by SP (controls both metadata and actual behavior). */
 #define ZXID_AUTHN_REQ_SIGN 1
 
+/*(c) IdP Insitence on Signed AuthnReq
+ * Must AuthnReq be signed (controls both IdP metadata and actual behavior, i.e. the check). */
+#define ZXID_WANT_AUTHN_REQ_SIGNED 1
+
 /*(c) Assertion Signing
  * Whether SP insists that SSO assertions are signed. Affects metadata. The
  * actual insistence on signing is controlled by ZXID_NOSIG_FATAL, far below.
@@ -425,7 +429,7 @@
 
 /*(c) OAUTH2 / OpenID-Connect1 id_token signing and encryption options
  * 'n': alg=none
- * 'h': alg=HS256 (HMAC using SHWA256)
+ * 'h': alg=HS256 (HMAC using SHA256)
  * 'r': alg=RS256 (RSA using SHA256)
  */
 #define ZXID_OAZ_JWT_SIGENC_ALG 'n'
@@ -532,10 +536,6 @@
 /*(c) Dummy PDP
  * Whether limited PDP functionality is enabled. */
 #define ZXID_PDP_ENA 1
-
-/*(c) IdP Insitence on Signed AuthnReq
- * Must AuthnReq be signed (controls both IdP metadata and actual behavior, i.e. the check). */
-#define ZXID_WANT_AUTHN_REQ_SIGNED 1
 
 /*() Maximum filesystem path length used in /var/zxid tree. */
 #define ZXID_MAX_BUF 1024  /* (compile) */
@@ -767,6 +767,12 @@
 
 #define ZXID_WSP_PAT "*.wsp"
 
+/*(c) mini_httpd_zxid SSO Pattern
+ * Any URL matching this pattern requires SSO. However
+ * WSP_PAT is matched first. Understood by mini_httpd_zxid. */
+
+#define ZXID_SSO_PAT "*"
+
 /*(c) Anonymous can see protected content
  * If ANON_OK is set and matches prefix of the local URL, SSO failure does
  * not block protected content from being
@@ -926,11 +932,13 @@
 
 /* ----------------------------------------------------------------------------- */
 /*(c) Apache httpd sometimes changes working directory unpredictably
- * (usually to /). This seems to be related to mod_rewrite. Use this
- * option to change working directory back to whatever you desire,
- * such as document root of a virtual host so that relative paths to
- * templates, etc. work. 0 means not to change (i.e. leave working
- * directory as-is, even if unpredictably changed to wrong value). */
+ * (usually to /). This is in violation of Apache httpd documentation,
+ * but apparently the bug has not gotten fixed as of 2013. This seems
+ * to be related to mod_rewrite. Use this option to change working
+ * directory back to whatever you desire, such as document root of a
+ * virtual host so that relative paths to templates, etc. work. 0 means
+ * not to change (i.e. leave working directory as-is, even if unpredictably
+ * changed to wrong value). */
 
 #define ZXID_WD 0
 

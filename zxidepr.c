@@ -411,6 +411,8 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
  * return:: EPR data structure on success, 0 on failure (no discovery EPR in cache, or
  *     not found by the discovery service). If more than one were found, a linked list
  *     of EPRs is returned.
+ *
+ * See also:: zxid_get_epr_address() for extracting URL as a string
  */
 
 /* Called by:  main x5, zxcall_main x2, zxid_call, zxid_map_identity_token, zxid_nidmap_identity_token */
@@ -505,7 +507,7 @@ struct zx_str* zxid_get_epr_desc(zxid_conf* cf, zxid_epr* epr) {
 
 /* Called by: */
 struct zx_str* zxid_get_epr_tas3_trust(zxid_conf* cf, zxid_epr* epr) {
-  if (!epr || !epr->Metadata)
+  if (!epr || !epr->Metadata || !epr->Metadata->Trust)
     return 0;
   return zx_easy_enc_elem_sig(cf, &epr->Metadata->Trust->gg);
 }

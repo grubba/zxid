@@ -239,6 +239,7 @@ struct zxid_conf {
   char* trustpdp_url;
   char* defaultqs;
   char* wsp_pat;
+  char* sso_pat;
   char* mod_saml_attr_prefix;  /* Prefix for req variables in mod_auth_saml */
 
   struct zxid_need*  need;

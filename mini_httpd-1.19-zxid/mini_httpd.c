@@ -41,6 +41,7 @@
 #include <sys/mman.h>
 #include <time.h>
 #include <pwd.h>
+#include <grp.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <signal.h>
@@ -69,6 +70,11 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 #endif /* USE_SSL */
+
+#ifdef USE_ZXID
+#include <zx/errmac.h>
+#include <zx/zxid.h>
+#endif
 
 extern char* crypt( const char* key, const char* setting );
 
@@ -150,12 +156,10 @@ typedef long long int64_t;
 #define DEFAULT_CHARSET "iso-8859-1"
 #endif /* DEFAULT_CHARSET */
 
-
 #define METHOD_UNKNOWN 0
 #define METHOD_GET 1
 #define METHOD_HEAD 2
 #define METHOD_POST 3
-
 
 /* A multi-family sockaddr. */
 typedef union {
@@ -187,6 +191,7 @@ static char* pidfile;
 static char* charset;
 static char* p3p;
 static int max_age;
+static int write_timeout = WRITE_TIMEOUT;
 static FILE* logfp;
 static int listen4_fd, listen6_fd;
 #ifdef USE_SSL
@@ -195,6 +200,10 @@ static char* certfile;
 static char* cipher;
 static SSL_CTX* ssl_ctx;
 #endif /* USE_SSL */
+#ifdef USE_ZXID
+static zxid_conf* zxid_cf;     /* ZXID enable flag and config string, zero initialized per POSIX */
+static zxid_ses* zxid_session; /* Non-null if SSO or session from cookie or WSP validate */
+#endif /* USE_ZXID */
 static char cwd[MAXPATHLEN];
 static int got_hup;
 
@@ -207,7 +216,11 @@ static SSL* ssl;
 static usockaddr client_addr;
 static char* request;
 static size_t request_size, request_len, request_idx;
+#ifdef DISA_MINI_HTTPD_BLOAT
+static char* method;
+#else
 static int method;
+#endif
 static char* path;
 static char* file;
 static char* pathinfo;
@@ -256,7 +269,7 @@ static char* build_env( char* fmt, char* arg );
 static void auth_check( char* dirname );
 static void send_authenticate( char* realm );
 static char* virtual_file( char* file );
-static void send_error( int s, char* title, char* extra_header, char* text );
+static void send_error_and_exit( int s, char* title, char* extra_header, char* text );
 static void send_error_body( int s, char* title, char* text );
 static int send_error_file( char* filename );
 static void send_error_tail( void );
@@ -352,11 +365,14 @@ main( int argc, char** argv )
 	    (void) printf( "%s\n", SERVER_SOFTWARE );
 	    exit( 0 );
 	    }
+#ifdef DISA_MINI_HTTPD_BLOAT
+#else
 	else if ( strcmp( argv[argn], "-C" ) == 0 && argn + 1 < argc )
 	    {
 	    ++argn;
 	    read_config( argv[argn] );
 	    }
+#endif
 	else if ( strcmp( argv[argn], "-D" ) == 0 )
 	    debug = 1;
 #ifdef USE_SSL
@@ -373,6 +389,18 @@ main( int argc, char** argv )
 	    cipher = argv[argn];
 	    }
 #endif /* USE_SSL */
+#ifdef USE_ZXID
+	else if ( strcmp( argv[argn], "-zx" ) == 0 && argn + 1 < argc )
+	    {
+	    ++argn;
+	    zxid_cf = zxid_new_conf_to_cf(argv[argn]);
+	    }
+	else if ( strcmp( argv[argn], "-T" ) == 0 && argn + 1 < argc )
+	    {
+	    ++argn;
+	    write_timeout = atoi( argv[argn] );
+	    }
+#endif /* USE_ZXID */
 	else if ( strcmp( argv[argn], "-p" ) == 0 && argn + 1 < argc )
 	    {
 	    ++argn;
@@ -858,13 +886,18 @@ static void
 usage( void )
     {
 #ifdef USE_SSL
-    (void) fprintf( stderr, "usage:  %s [-C configfile] [-D] [-S] [-E certfile] [-Y cipher] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage]\n", argv0 );
+# ifdef USE_ZXID
+      (void) fprintf( stderr, "usage:  %s [-C configfile] [-D] [-S] [-E certfile] [-Y cipher] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage] [-T write_timeout_secs] [-zx CONF]\n", argv0 );
+# else /* USE_ZXID */
+      (void) fprintf( stderr, "usage:  %s [-C configfile] [-D] [-S] [-E certfile] [-Y cipher] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage]\n", argv0 );
+# endif /* USE_ZXID */
 #else /* USE_SSL */
     (void) fprintf( stderr, "usage:  %s [-C configfile] [-D] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage]\n", argv0 );
 #endif /* USE_SSL */
     exit( 1 );
     }
 
+#ifndef DISA_MINI_HTTPD_BLOAT
 
 static void
 read_config( char* filename )
@@ -1031,7 +1064,6 @@ read_config( char* filename )
     (void) fclose( fp );
     }
 
-
 static void
 value_required( char* name, char* value )
     {
@@ -1055,7 +1087,7 @@ no_value_required( char* name, char* value )
 	exit( 1 );
 	}
     }
-
+#endif /* ndef DISA_MINI_HTTPD_BLOAT */
 
 static int
 initialize_listen_socket( usockaddr* usaP )
@@ -1144,7 +1176,11 @@ handle_request( void )
 
     /* Initialize the request variables. */
     remoteuser = (char*) 0;
+#ifdef DISA_MINI_HTTPD_BLOAT
+    method = "UNKNOWN";
+#else
     method = METHOD_UNKNOWN;
+#endif
     path = (char*) 0;
     file = (char*) 0;
     pathinfo = (char*) 0;
@@ -1202,21 +1238,21 @@ handle_request( void )
 	add_to_request( buf, r );
 	if ( strstr( request, "\015\012\015\012" ) != (char*) 0 ||
 	     strstr( request, "\012\012" ) != (char*) 0 )
-	    break;
+	    break;  /* Empty line ending headers detected. */
 	}
 
     /* Parse the first line of the request. */
     method_str = get_request_line();
     if ( method_str == (char*) 0 )
-	send_error( 400, "Bad Request", "", "Can't parse request." );
+	send_error_and_exit( 400, "Bad Request", "", "Can't parse request." );
     path = strpbrk( method_str, " \t\012\015" );
     if ( path == (char*) 0 )
-	send_error( 400, "Bad Request", "", "Can't parse request." );
+	send_error_and_exit( 400, "Bad Request", "", "Can't parse request." );
     *path++ = '\0';
     path += strspn( path, " \t\012\015" );
     protocol = strpbrk( path, " \t\012\015" );
     if ( protocol == (char*) 0 )
-	send_error( 400, "Bad Request", "", "Can't parse request." );
+	send_error_and_exit( 400, "Bad Request", "", "Can't parse request." );
     *protocol++ = '\0';
     protocol += strspn( protocol, " \t\012\015" );
     query = strchr( path, '?' );
@@ -1260,7 +1296,7 @@ handle_request( void )
 	    cp += strspn( cp, " \t" );
 	    host = cp;
 	    if ( strchr( host, '/' ) != (char*) 0 || host[0] == '.' )
-		send_error( 400, "Bad Request", "", "Can't parse request." );
+		send_error_and_exit( 400, "Bad Request", "", "Can't parse request." );
 	    }
 	else if ( strncasecmp( line, "If-Modified-Since:", 18 ) == 0 )
 	    {
@@ -1280,26 +1316,34 @@ handle_request( void )
 	    cp += strspn( cp, " \t" );
 	    useragent = cp;
 	    }
+#ifdef USE_ZXID
 	else if ( strncasecmp( line, "PAOS:", 5 ) == 0 )
 	    {
 	    cp = &line[11];
 	    cp += strspn( cp, " \t" );
 	    paos = cp;
 	    }
+#endif
 	}
 
+#ifdef DISA_MINI_HTTPD_BLOAT
+    if (      strcasecmp( method_str, "GET" ) == 0 )  method = "GET";
+    else if ( strcasecmp( method_str, "HEAD" ) == 0 ) method = "HEAD";
+    else if ( strcasecmp( method_str, "POST" ) == 0 ) method = "POST";
+#else
     if ( strcasecmp( method_str, get_method_str( METHOD_GET ) ) == 0 )
 	method = METHOD_GET;
     else if ( strcasecmp( method_str, get_method_str( METHOD_HEAD ) ) == 0 )
 	method = METHOD_HEAD;
     else if ( strcasecmp( method_str, get_method_str( METHOD_POST ) ) == 0 )
 	method = METHOD_POST;
+#endif
     else
-	send_error( 501, "Not Implemented", "", "That method is not implemented." );
+	send_error_and_exit( 501, "Not Implemented", "", "That method is not implemented." );
 
     strdecode( path, path );
     if ( path[0] != '/' )
-	send_error( 400, "Bad Request", "", "Bad filename." );
+	send_error_and_exit( 400, "Bad Request", "", "Bad filename." );
     file = &(path[1]);
     de_dotdot( file );
     if ( file[0] == '\0' )
@@ -1307,7 +1351,7 @@ handle_request( void )
     if ( file[0] == '/' ||
 	 ( file[0] == '.' && file[1] == '.' &&
 	   ( file[2] == '\0' || file[2] == '/' ) ) )
-	send_error( 400, "Bad Request", "", "Illegal filename." );
+	send_error_and_exit( 400, "Bad Request", "", "Illegal filename." );
     if ( vhost )
 	file = virtual_file( file );
 
@@ -1319,11 +1363,16 @@ handle_request( void )
 #endif /* HAVE_SIGSET */
     (void) alarm( WRITE_TIMEOUT );
 
+#ifdef USE_ZXID
+    if (zxid_cf)
+      zxid_session = zxid_mini_httpd_filter(zxid_cf, method, path, query, cookie_hdr);
+#endif /* USE_ZXID */
+
     r = stat( file, &sb );
     if ( r < 0 )
 	r = get_pathinfo();
     if ( r < 0 )
-	send_error( 404, "Not Found", "", "File not found." );
+	send_error_and_exit( 404, "Not Found", "", "File not found." );
     file_len = strlen( file );
     if ( ! S_ISDIR( sb.st_mode ) )
 	{
@@ -1350,7 +1399,7 @@ handle_request( void )
 	    else
 		(void) snprintf(
 		    location, sizeof(location), "Location: %s/", path );
-	    send_error( 302, "Found", location, "Directories must end with a slash." );
+	    send_error_and_exit( 302, "Found", location, "Directories must end with a slash." );
 	    }
 
 	/* Check for an index file. */
@@ -1482,7 +1531,7 @@ do_file( void )
 	syslog(
 	    LOG_NOTICE, "%.80s URL \"%.80s\" tried to retrieve an auth file",
 	    ntoa( &client_addr ), path );
-	send_error( 403, "Forbidden", "", "File is protected." );
+	send_error_and_exit( 403, "Forbidden", "", "File is protected." );
 	}
 
     /* Referer check. */
@@ -1495,7 +1544,7 @@ do_file( void )
 	return;
 	}
     else if ( pathinfo != (char*) 0 )
-	send_error( 404, "Not Found", "", "File not found." );
+	send_error_and_exit( 404, "Not Found", "", "File not found." );
 
     fd = open( file, O_RDONLY );
     if ( fd < 0 )
@@ -1503,7 +1552,7 @@ do_file( void )
 	syslog(
 	    LOG_INFO, "%.80s File \"%.80s\" is protected",
 	    ntoa( &client_addr ), path );
-	send_error( 403, "Forbidden", "", "File is protected." );
+	send_error_and_exit( 403, "Forbidden", "", "File is protected." );
 	}
     mime_type = figure_mime( file, mime_encodings, sizeof(mime_encodings) );
     (void) snprintf(
@@ -1521,8 +1570,13 @@ do_file( void )
 	200, "Ok", "", mime_encodings, fixed_mime_type, sb.st_size,
 	sb.st_mtime );
     send_response();
+#ifdef DISA_MINI_HTTPD_BLOAT
+    if ( *method == 'H' /* HEAD */ )
+	return;
+#else
     if ( method == METHOD_HEAD )
 	return;
+#endif
 
     if ( sb.st_size > 0 )	/* ignore zero-length files */
 	{
@@ -1565,7 +1619,7 @@ do_dir( void )
 #endif /* HAVE_SCANDIR */
 
     if ( pathinfo != (char*) 0 )
-	send_error( 404, "Not Found", "", "File not found." );
+	send_error_and_exit( 404, "Not Found", "", "File not found." );
 
     /* Check authorization for this directory. */
     auth_check( file );
@@ -1580,7 +1634,7 @@ do_dir( void )
 	syslog(
 	    LOG_INFO, "%.80s Directory \"%.80s\" is protected",
 	    ntoa( &client_addr ), path );
-	send_error( 403, "Forbidden", "", "Directory is protected." );
+	send_error_and_exit( 403, "Forbidden", "", "Directory is protected." );
 	}
 #endif /* HAVE_SCANDIR */
 
@@ -1635,7 +1689,11 @@ do_dir( void )
     add_to_buf( &contents, &contents_size, &contents_len, buf, buflen );
 
     add_headers( 200, "Ok", "", "", "text/html; charset=%s", contents_len, sb.st_mtime );
+#ifdef DISA_MINI_HTTPD_BLOAT
+    if ( *method != 'H' /*HEAD*/ )
+#else
     if ( method != METHOD_HEAD )
+#endif
 	add_to_response( contents, contents_len );
     send_response();
     }
@@ -1689,6 +1747,25 @@ strencode( char* to, size_t tosize, const char* from )
 
 #endif /* HAVE_SCANDIR */
 
+static int pipe_and_fork(int* p)
+    {
+    int r;
+
+    if ( pipe( p ) < 0 )
+	{
+	syslog( LOG_CRIT, "pipe - %m" );
+	perror( "pipe" );
+	send_error_and_exit( 500, "Internal Error", "", "Something unexpected went wrong making a pipe." );
+        }
+    r = fork();
+    if ( r < 0 )
+        {
+	syslog( LOG_CRIT, "fork - %m" );
+	perror( "fork" );
+	send_error_and_exit( 500, "Internal Error", "", "Something unexpected went wrong forking an interposer." );
+	}
+    return r;
+    }
 
 static void
 do_cgi( void )
@@ -1699,8 +1776,12 @@ do_cgi( void )
     char* binary;
     char* directory;
 
+#ifdef DISA_MINI_HTTPD_BLOAT
+    if ( *method != 'G' && *method != 'P' )
+#else
     if ( method != METHOD_GET && method != METHOD_POST )
-	send_error( 501, "Not Implemented", "", "That method is not implemented for CGI." );
+#endif
+	send_error_and_exit( 501, "Not Implemented", "", "That method is not implemented for CGI." );
 
     /* If the socket happens to be using one of the stdin/stdout/stderr
     ** descriptors, move it to another descriptor so that the dup2 calls
@@ -1730,20 +1811,21 @@ do_cgi( void )
     ** into our buffer.  We also have to do this for all SSL CGIs.
     */
 #ifdef USE_SSL
+#ifdef DISA_MINI_HTTPD_BLOAT
+    if ( ( *method == 'P' && request_len > request_idx ) || do_ssl )
+#else
     if ( ( method == METHOD_POST && request_len > request_idx ) || do_ssl )
+#endif
 #else /* USE_SSL */
+#ifdef DISA_MINI_HTTPD_BLOAT
+    if ( ( *method == 'P' && request_len > request_idx ) )
+#else
     if ( ( method == METHOD_POST && request_len > request_idx ) )
+#endif
 #endif /* USE_SSL */
 	{
 	int p[2];
-	int r;
-
-	if ( pipe( p ) < 0 )
-	    send_error( 500, "Internal Error", "", "Something unexpected went wrong making a pipe." );
-	r = fork();
-	if ( r < 0 )
-	    send_error( 500, "Internal Error", "", "Something unexpected went wrong forking an interposer." );
-	if ( r == 0 )
+	if ( pipe_and_fork(p) == 0 )
 	    {
 	    /* Interposer process. */
 	    (void) close( p[0] );
@@ -1778,14 +1860,7 @@ do_cgi( void )
 #endif /* USE_SSL */
 	{
 	int p[2];
-	int r;
-
-	if ( pipe( p ) < 0 )
-	    send_error( 500, "Internal Error", "", "Something unexpected went wrong making a pipe." );
-	r = fork();
-	if ( r < 0 )
-	    send_error( 500, "Internal Error", "", "Something unexpected went wrong forking an interposer." );
-	if ( r == 0 )
+	if ( pipe_and_fork(p) == 0 )
 	    {
 	    /* Interposer process. */
 	    (void) close( p[1] );
@@ -1855,7 +1930,7 @@ do_cgi( void )
     (void) execve( binary, argp, envp );
 
     /* Something went wrong. */
-    send_error( 500, "Internal Error", "", "Something unexpected went wrong running a CGI program." );
+    send_error_and_exit( 500, "Internal Error", "", "Something unexpected went wrong running a CGI program." );
     }
 
 
@@ -2123,7 +2198,7 @@ make_argp( void )
 static char**
 make_envp( void )
     {
-    static char* envp[50];
+    static char* envp[50+200];
     int envn;
     char* cp;
     char buf[256];
@@ -2143,7 +2218,13 @@ make_envp( void )
     (void) snprintf( buf, sizeof(buf), "%d", (int) port );
     envp[envn++] = build_env( "SERVER_PORT=%s", buf );
     envp[envn++] = build_env(
-	"REQUEST_METHOD=%s", get_method_str( method ) );
+	"REQUEST_METHOD=%s",
+#ifdef DISA_MINI_HTTPD_BLOAT
+ method
+#else
+ get_method_str( method )
+#endif
+ );
     envp[envn++] = build_env( "SCRIPT_NAME=%s", path );
     if ( pathinfo != (char*) 0 )
 	{
@@ -2158,12 +2239,6 @@ make_envp( void )
 	envp[envn++] = build_env( "HTTP_REFERER=%s", referer );
     if ( useragent[0] != '\0' )
 	envp[envn++] = build_env( "HTTP_USER_AGENT=%s", useragent );
-    if ( paos[0] != '\0' )
-	envp[envn++] = build_env( "HTTP_PAOS=%s", paos );
-    if ( getenv( "ZXID_PRE_CONF" ) != (char*) 0 )
-     envp[envn++] = build_env( "ZXID_PRE_CONF=%s", getenv( "ZXID_PRE_CONF" ) );
-    if ( getenv( "ZXID_CONF" ) != (char*) 0 )
-        envp[envn++] = build_env( "ZXID_CONF=%s", getenv( "ZXID_CONF" ) );
     if ( cookie != (char*) 0 )
 	envp[envn++] = build_env( "HTTP_COOKIE=%s", cookie );
     if ( host != (char*) 0 )
@@ -2180,8 +2255,18 @@ make_envp( void )
 	envp[envn++] = build_env( "REMOTE_USER=%s", remoteuser );
     if ( authorization != (char*) 0 )
 	envp[envn++] = build_env( "AUTH_TYPE=%s", "Basic" );
-    if ( getenv( "TZ" ) != (char*) 0 )
-	envp[envn++] = build_env( "TZ=%s", getenv( "TZ" ) );
+    if ( (cp = getenv( "TZ" )) != (char*) 0 )
+	envp[envn++] = build_env( "TZ=%s", cp );
+#ifdef USE_ZXID
+    if ( paos[0] != '\0' )
+	envp[envn++] = build_env( "HTTP_PAOS=%s", paos );
+    if ( (cp = getenv( "ZXID_PRE_CONF" )) != (char*) 0 )
+     envp[envn++] = build_env( "ZXID_PRE_CONF=%s", cp );
+    if ( (cp = getenv( "ZXID_CONF" )) != (char*) 0 )
+        envp[envn++] = build_env( "ZXID_CONF=%s", cp );
+    if (zxid_session)
+        envn = zxid_pool2env(zxid_cf, zxid_session, envp, envn, sizeof(envp)/sizeof(char*));
+#endif
 
     envp[envn] = (char*) 0;
     return envp;
@@ -2272,7 +2357,7 @@ auth_check( char* dirname )
 	syslog(
 	    LOG_ERR, "%.80s auth file %.80s could not be opened - %m",
 	    ntoa( &client_addr ), authpath );
-	send_error( 403, "Forbidden", "", "File is protected." );
+	send_error_and_exit( 403, "Forbidden", "", "File is protected." );
 	}
 
     /* Read it. */
@@ -2318,7 +2403,7 @@ send_authenticate( char* realm )
 
     (void) snprintf(
 	header, sizeof(header), "WWW-Authenticate: Basic realm=\"%s\"", realm );
-    send_error( 401, "Unauthorized", header, "Authorization required." );
+    send_error_and_exit( 401, "Unauthorized", header, "Authorization required." );
     }
 
 
@@ -2350,15 +2435,13 @@ virtual_file( char* file )
 
 
 static void
-send_error( int s, char* title, char* extra_header, char* text )
+send_error_and_exit( int s, char* title, char* extra_header, char* text )
     {
     add_headers(
 	s, title, extra_header, "", "text/html; charset=%s", (off_t) -1, (time_t) -1 );
 
     send_error_body( s, title, text );
-
     send_error_tail();
-
     send_response();
 
 #ifdef USE_SSL
@@ -2487,7 +2570,10 @@ add_headers( int s, char* title, char* extra_header, char* me, char* mt, off_t b
 	}
     if ( extra_header != (char*) 0 && extra_header[0] != '\0' )
 	{
-	buflen = snprintf( buf, sizeof(buf), "%s\015\012", extra_header );
+        for (buflen = strlen(extra_header)-1;
+	     buflen >= 0 && (extra_header[buflen] == '\015' || extra_header[buflen] == '\012');
+	     --buflen) ; /* eliminate trailing CRLFs, e.g. from zxid_simple() */
+	buflen = snprintf( buf, sizeof(buf), "%.*s\015\012", buflen, extra_header );
 	add_to_response( buf, buflen );
 	}
     if ( me != (char*) 0 && me[0] != '\0' )
@@ -2775,8 +2861,13 @@ make_log_entry( void )
     /* And write the log entry. */
     (void) fprintf( logfp,
 	"%.80s - %.80s [%s] \"%.80s %.200s %.80s\" %d %s \"%.200s\" \"%.200s\"\n",
-	ntoa( &client_addr ), ru, date, get_method_str( method ), url,
-	protocol, status, bytes_str, referer, useragent );
+	ntoa( &client_addr ), ru, date,
+#ifdef DISA_MINI_HTTPD_BLOAT
+	method,
+#else
+	get_method_str( method ),
+#endif
+	url, protocol, status, bytes_str, referer, useragent );
     (void) fflush( logfp );
     }
 
@@ -2807,7 +2898,7 @@ check_referer( void )
     syslog(
 	LOG_INFO, "%.80s non-local referer \"%.80s%.80s\" \"%.80s\"",
 	ntoa( &client_addr ), cp, path, referer );
-    send_error( 403, "Forbidden", "", "You must supply a local referer." );
+    send_error_and_exit( 403, "Forbidden", "", "You must supply a local referer." );
     }
 
 
@@ -2881,7 +2972,7 @@ really_check_referer( void )
     return 1;
     }
 
-
+#ifndef DISA_MINI_HTTPD_BLOAT
 static char*
 get_method_str( int m )
     {
@@ -2893,7 +2984,7 @@ get_method_str( int m )
 	default: return "UNKNOWN";
 	}
     }
-
+#endif
 
 struct mime_entry {
     char* ext;
@@ -3145,7 +3236,7 @@ static void
 handle_read_timeout( int sig )
     {
     syslog( LOG_INFO, "%.80s connection timed out reading", ntoa( &client_addr ) );
-    send_error(
+    send_error_and_exit(
 	408, "Request Timeout", "",
 	"No request appeared within a reasonable time period." );
     }
@@ -3163,6 +3254,14 @@ handle_write_timeout( int sig )
 static void
 lookup_hostname( usockaddr* usa4P, size_t sa4_len, int* gotv4P, usockaddr* usa6P, size_t sa6_len, int* gotv6P )
     {
+#ifdef DISA_MINI_HTTPD_BLOAT
+    (void) memset( usa4P, 0, sa4_len );
+    usa4P->sa.sa_family = AF_INET;
+    usa4P->sa_in.sin_addr.s_addr = htonl( INADDR_ANY );
+    usa4P->sa_in.sin_port = htons( port );
+    *gotv4P = 1;
+    *gotv6P = 0; /* *** how do you bind INADDR_ANY for IP6? */
+#else
 #ifdef USE_IPV6
 
     struct addrinfo hints;
@@ -3300,6 +3399,7 @@ lookup_hostname( usockaddr* usa4P, size_t sa4_len, int* gotv4P, usockaddr* usa6P
     *gotv4P = 1;
 
 #endif /* USE_IPV6 */
+#endif /* DISA_MINI_HTTPD_BLOAT */
     }
 
 
@@ -3390,7 +3490,21 @@ hexit( char c )
     return 0;           /* shouldn't happen, we're guarded by isxdigit() */
     }
 
-
+#ifdef USE_ZXID
+static int
+b64_decode( const char* str, unsigned char* space, int size )
+    {
+    char* q;
+    int len = strlen(str);
+    if (SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(len)>size)
+        {
+        ERR("Decode might exceed the buffer: estimated=%d available size=%d",SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(len),size);
+        return 0;
+        }
+    q = unbase64_raw(str, str+len, space, zx_std_index_64);
+    return q-space;
+    }
+#else
 /* Base-64 decoding.  This represents binary data as printable ASCII
 ** characters.  Three 8-bit binary bytes are turned into four 6-bit
 ** values, like so:
@@ -3470,7 +3584,7 @@ b64_decode( const char* str, unsigned char* space, int size )
 	}
     return space_idx;
     }
-
+#endif
 
 /* Set NDELAY mode on a socket. */
 static void

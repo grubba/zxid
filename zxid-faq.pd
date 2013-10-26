@@ -524,7 +524,7 @@ what user apache runs as.
 This in fact is possible. It is a bit convoluted (and not documented)
 in that it effectively works by simulating submission of the
 IdP selection screen, with the form fields and all. This is done
-by setting DEFAULT_QS configuration option. For example, following
+by setting DEFAULTQS configuration option. For example, following
 
  ZXIDConf "DEFAULTQS=l0https://idp.tas3.eu/zxididp%25%33%66o%25%33%3dB=1%26fc=1%26fn=prstnt"
 
@@ -590,6 +590,24 @@ then no dynamic metadata fetch will be attempted and you
 do not need to support o=B.
 
 See also zxid-idp.pd for registration of EPR and bootstrap.
+
+97.3.4 Two site in same domain: sessions interfere
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If two sites share a domain, they also share cookies. To avoid the
+cookies intefering with each other, use the SES_COOKIE_NAME
+configuration option to set the cookies different (the default is
+ZXIDSES). You may also have similar issue WRT PTM_COOKIE_NAME.
+
+One particular instance of this issue manifests when IdP and SP
+run on same host. On SP log right after SSO you may see
+
+  zx E get_ses: File(/var/zxid/ses/MMSESNULVSoj4lBYsqYhxCvXodNLM/.ses) not found errno=2 err(No such file or directory). flags=0x0 0, euid=443 egid=443 cwd(/var/zxid/webroot/zxid.org)
+  zx d No session(MMSESNULVSoj4lBYsqYhxCvXodNLM) active op(P)
+
+This is because the IdP already set the session cookie (IdP sessions
+usually start with "MMSES") and the SP is errornously picking it up
+and then not finding the corresponding session in its session store.
 
 97.4 API Questions
 ------------------

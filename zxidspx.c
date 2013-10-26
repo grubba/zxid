@@ -469,9 +469,10 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       return zxid_soap_cgi_resp_body(cf, ses, body);
     }
 
-    if (!zxid_wsp_validate_env(cf, ses, "Resource=Discovery", r->Envelope))
-      return 0;
-
+    if (!zxid_wsp_validate_env(cf, ses, "Resource=Discovery", r->Envelope)) {
+      return zxid_soap_cgi_resp_body(cf, ses, body); /* will include the fault */
+    }
+    
     if (bdy->Query) { /* Discovery 2.0 Query */
       ZX_ADD_KID(body, QueryResponse, zxid_di_query(cf, ses, bdy->Query));
     idwsf_resp:

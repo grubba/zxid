@@ -9,6 +9,7 @@
  * 9.2.2010, created --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
+ *           mini_httpd_filter.c
  */
 
 #include <zx/platform.h>
@@ -48,7 +49,7 @@ This C program implements a generic Web Services Provider. It is meant\n\
 to be run as a cgi script from a web server. It will validate\n\
 an incoming web service request and then pass it to sysadmin-supplied\n\
 external program on stdin. The external program could be a shell script or\n\
-perl program - whatever you want. The external program reads the payload\n\
+a perl program - whatever you want. The external program reads the payload\n\
 request from stdin and prints the payload response to stdout. zxidwspcgi\n\
 handles the pipe-in - pipe-out deadlock dilemma by forking a process to\n\
 perform the feeding in, while the original process will receive the\n\
@@ -196,6 +197,9 @@ int zxidwspcgi_main(int argc, char** argv)
 #define PROTO_STR "http://"
 #endif
 
+#if 1
+  /* Is this virtual hosting section still needed given that VHOST and VURL are
+   * supported directly by the configuration syntax? *** */
   strcpy(urlbuf, PROTO_STR);
   p = urlbuf + sizeof(PROTO_STR)-1;
   res = getenv("HTTP_HOST");
@@ -211,6 +215,7 @@ int zxidwspcgi_main(int argc, char** argv)
   if (p > urlbuf + sizeof(urlbuf))
     exit(1);
   zxid_url_set(cf, urlbuf);
+#endif
 
   //if (!memcmp(qs+cl-4, "?o=B", 4)) {
   if (qs[0] == 'o' && qs[1] == '=' && ONE_OF_2(qs[2], 'B', 'd')) {

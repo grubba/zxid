@@ -52,6 +52,7 @@ public class zxidwspaxisout extends AbstractHandler {
 	System.err.print("wsp out processing env("+env+").\n");
 	String ret = zxidjni.wsp_decorate(cf, ses, null, env);
 	System.err.print("wsp out decorated("+ret+").\n");
+	// *** Conversion of ret string to mctx.Envelope object missing
 
         return InvocationResponse.CONTINUE;
     }

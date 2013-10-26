@@ -1618,6 +1618,22 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_defaultqs_get(zxid_conf.getCPtr(self));
   }
 
+  public static void conf_wsp_pat_set(zxid_conf self, String value) {
+    zxidjniJNI.zxid_conf_wsp_pat_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static String conf_wsp_pat_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_wsp_pat_get(zxid_conf.getCPtr(self));
+  }
+
+  public static void conf_sso_pat_set(zxid_conf self, String value) {
+    zxidjniJNI.zxid_conf_sso_pat_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static String conf_sso_pat_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_sso_pat_get(zxid_conf.getCPtr(self));
+  }
+
   public static void conf_mod_saml_attr_prefix_set(zxid_conf self, String value) {
     zxidjniJNI.zxid_conf_mod_saml_attr_prefix_set(zxid_conf.getCPtr(self), value);
   }

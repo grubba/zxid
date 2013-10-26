@@ -1,4 +1,4 @@
-/* zxidwspleaf.java  -  Demonstrate server side of handling a web service cal
+/* zxidwspleaf.java  -  Demonstrate server side of handling a web service call
  * Copyright (c) 2012 Synergetics (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.

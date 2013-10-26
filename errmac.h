@@ -204,7 +204,9 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
  * 123456   WXYZwxyz  8  8     2(2)
  */
 #define SIMPLE_BASE64_LEN(x) (((x)+2) / 3 * 4)  /* exact encoded length given binary length */
-#define SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(x) ((x+3)/4*3)
+#define SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(x) (((x)+3)/4*3)
+#define DEFLATE_PESSIMISTIC_LEN(x) ((x)+((x)>>8)+12)  /* zlib worst case: orig_size * 1.001 + 12, see also compressBound() */
+#define OAEP_LEN 41 /* Overhead of PKCS#1 v2.0 OAEP padding */
 
 /* Perform URL conversion in place
  *   src = dst = buffer_where_data_is;
@@ -448,8 +450,8 @@ extern FILE* zx_debug_log;   /* Defined in zxidlib.c as 0 alias to stderr */
 #define D_XML_BLOB(cf, lk, len, xml) zxlog_debug_xml_blob((cf), __FILE__, __LINE__, __FUNCTION__, (lk), (len), (xml))
 #define DD_XML_BLOB(cf, lk, len, xml) /* Documentative */
 
-int hexdmp(const char* msg, const char* p, int len, int max);
-int hexdump(const char* msg, const char* p, const char* lim, int max);
+int hexdmp(const char* msg, const void* p, int len, int max);
+int hexdump(const char* msg, const void* p, const void* lim, int max);
 
 #define HEXDUMP(msg, p, lim, max) if (zx_debug > 1) hexdump((msg), (p), (lim), (max))
 #define DHEXDUMP(msg, p, lim, max) /* Disabled hex dump */

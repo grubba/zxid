@@ -224,6 +224,8 @@
 #define TAS3_STATUS_NOSIG   "urn:tas3:status:nosig"
 #define TAS3_STATUS_BADSIG  "urn:tas3:status:badsig"
 #define TAS3_STATUS_BADCOND "urn:tas3:status:badcond"
+#define TAS3_STATUS_EXPIRED "urn:tas3:status:expired" /* credential expired */
+#define TAS3_STATUS_REPLAY  "urn:tas3:status:replay"
 #define TAS3_STATUS_BADXML  "urn:tas3:status:badxml"
 #define TAS3_STATUS_FAULT   "urn:tas3:status:fault"
 

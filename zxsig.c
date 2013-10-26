@@ -413,7 +413,8 @@ int zx_report_openssl_err(const char* logkey)
  * c::        ZX context. Used for memory allocation.
  * len::      Length of the raw data
  * data::     Raw data to sign
- * sig::      Result parameter. Raw binary signature data will be returned via this parameter.
+ * sig::      Result parameter. Raw binary signature data, which will
+ *            be allocated, will be returned via this parameter.
  * priv_key:: Private key used for signing.
  * lk::       Log key. Used to make logs and error messages more meaningful.
  * return::   -1 on failure. Upon success the length of the raw signature data. */

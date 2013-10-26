@@ -436,6 +436,10 @@ class zxidjniJNI {
   public final static native String zxid_conf_trustpdp_url_get(long jarg1);
   public final static native void zxid_conf_defaultqs_set(long jarg1, String jarg2);
   public final static native String zxid_conf_defaultqs_get(long jarg1);
+  public final static native void zxid_conf_wsp_pat_set(long jarg1, String jarg2);
+  public final static native String zxid_conf_wsp_pat_get(long jarg1);
+  public final static native void zxid_conf_sso_pat_set(long jarg1, String jarg2);
+  public final static native String zxid_conf_sso_pat_get(long jarg1);
   public final static native void zxid_conf_mod_saml_attr_prefix_set(long jarg1, String jarg2);
   public final static native String zxid_conf_mod_saml_attr_prefix_get(long jarg1);
   public final static native void zxid_conf_need_set(long jarg1, long jarg2);

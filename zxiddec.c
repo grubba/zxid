@@ -59,7 +59,8 @@ struct zx_sa_Issuer_s* zxid_extract_issuer(zxid_conf* cf, zxid_cgi* cgi, zxid_se
 /*(i) Decode redirect or POST binding message. zxid_saml2_redir_enc()
  * performs the opposite operation. chk_dup is really flags
  * 0x01  =  Check dup
- * 0x02  =  Avoid sig check and logging */
+ * 0x02  =  Avoid sig check and logging
+ * See:  */
 
 /* Called by:  zxid_idp_dispatch, zxid_simple_idp_show_an, zxid_sp_dispatch */
 struct zx_root_s* zxid_decode_redir_or_post(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int chk_dup)

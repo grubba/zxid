@@ -171,6 +171,8 @@ struct hi_io* hi_open_listener(struct hiios* shf, struct hi_host_spec* hs, int p
 {
   struct hi_io* io;
   int fd, tmp;
+  /* socket(domain,type,proto): leaving proto as 0 chooses the appropriate
+     one given domain and type, see man 2 socket, near middle. */
   if ((fd = socket(AF_INET, SOCK_STREAM, 0))== -1) {
     ERR("listen: Unable to create socket(AF_INET, SOCK_STREAM, 0) %d %s", errno, STRERROR(errno));
     return 0;

@@ -85,7 +85,10 @@ static void chldinit(apr_pool_t* p, server_rec* s)
  * and to rename them.
  *
  * This is considered internal function to mod_auth_saml, called by chkuid().
- * You should not call this directly, unless you know what you are doing. */
+ * You should not call this directly, unless you know what you are doing.
+ *
+ * return:: Apache error code, typically OK, which allows Apache continue
+ *     processing the request. */
 
 /* Called by:  chkuid */
 static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
@@ -215,14 +218,14 @@ static int send_res(zxid_conf* cf, request_rec* r, char* res)
   apr_table_setn(r->headers_out,     "Pragma", "no-cache");
   apr_table_setn(r->err_headers_out, "Pragma", "no-cache");
 #endif
-  res += 14;
+  res += 14;  /* skip "Content-Type:" (14 chars) */
   DD("RES(%s)", res);
   p = strchr(res, '\r');
   *p = 0;
   //apr_table_setn(r->headers_out, "Content-Type", res);
   DD("CONTENT-TYPE(%s)", res);
   ap_set_content_type(r, res);
-  res = p+2 + 16;  /* Content-Length: */
+  res = p+2 + 16;  /* skip "Content-Length:" (16 chars) */
   sscanf(res, "%d", &len);
   res = strchr(res, '\r') + 4; /* skip CRFL pair before body */
   DD("CONTENT-LENGTH(%d)", len);
@@ -319,7 +322,8 @@ static int chkuid(request_rec* r)
   ZERO(&ses, sizeof(zxid_ses));
 
   D("===== START %s req=%p uri(%s) args(%s) pid=%d cwd(%s)", ZXID_REL, r, r?STRNULLCHKNULL(r->uri):"(r null)", r?STRNULLCHKNULL(r->args):"(r null)", getpid(), getcwd(buf,sizeof(buf)));
-  chdir(cf->wd);  /* Ensure the working directory is not / (sometimes Apache httpd changes dir) */
+  if (cf->wd && *cf->wd)
+    chdir(cf->wd);  /* Ensure the working dir is not / (sometimes Apache httpd changes dir) */
   D_INDENT("chkuid: ");
 
   if (r->main) {  /* subreq can't come from net: always auth. */
@@ -356,14 +360,14 @@ static int chkuid(request_rec* r)
 
   /* Redirect hack: deal with externally imposed ACS url that does not follow zxid convention. */
   
+  args_len = r->args?strlen(r->args):0;
   if (cf->redirect_hack_imposed_url && !strcmp(r->uri, cf->redirect_hack_imposed_url)) {
     D("Redirect hack: mapping(%s) imposed to zxid(%s)", r->uri, cf->redirect_hack_zxid_url);
     r->uri = cf->redirect_hack_zxid_url;
     if (cf->redirect_hack_zxid_qs && *cf->redirect_hack_zxid_qs) {
-      if (r->args && *r->args) {
+      if (args_len) {
 	/* concatenate redirect_hack_zxid_qs with existing qs */
 	len = strlen(cf->redirect_hack_zxid_qs);
-	args_len = strlen(r->args);
 	p = apr_palloc(r->pool, len+1+args_len+1);
 	strcpy(p, cf->redirect_hack_zxid_qs);
 	p[len] = '&';
@@ -372,11 +376,11 @@ static int chkuid(request_rec* r)
       } else {
 	r->args = cf->redirect_hack_zxid_qs;
       }
+      args_len = strlen(r->args);
     }
     D("After hack uri(%s) args(%s)", STRNULLCHK(r->uri), STRNULLCHK(r->args));
   }
   
-  args_len = r->args?strlen(r->args):0;
   DD("HERE1 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(r->args));
   if (args_len) {
     /* leak the dup str: the cgi structure will take references to this and change &s to nuls */
@@ -385,7 +389,8 @@ static int chkuid(request_rec* r)
     zxid_parse_cgi(cf, &cgi, p);
     DD("HERE2 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(r->args));
   }
-  /* Check if we are supposed to enter zxid due to URL suffix. To do this
+  /* Check if we are supposed to enter zxid due to URL suffix - to
+   * process protocol messages rather than ordinary pages. To do this
    * correctly we need to ignore the query string part. We are looking
    * here at exact match, like /protected/saml, rather than any of
    * the other documents under /protected/ (which are handled in the
@@ -421,7 +426,7 @@ static int chkuid(request_rec* r)
 	      *res_len = 1;
 	    goto done;
 	  }
-	  res = zx_dup_cstr(cf->ctx, ret ? "n" : "*** SOAP error (enable debug if you want to see why)"); 
+	  res = zx_dup_cstr(cf->ctx, ret ? "n" : "*** SOAP error (enable debug to see why)"); 
 	  if (res_len)
 	    *res_len = strlen(res);
 	  goto done;
@@ -444,6 +449,26 @@ static int chkuid(request_rec* r)
     /* not logged in, fall thru */
   } else if (zxid_wildcard_pat_match(cf->wsp_pat, r->uri)) {
     /* WSP case */
+    if (r->method_number == M_POST) {
+      res = read_post(cf, r);   /* Will print some debug output */
+      if (zxid_wsp_validate(cf, &ses, 0, res)) {
+	D("WSP(%s) request valid", r->uri);
+	D("WSP CALL uri(%s) filename(%s) path_info(%s)", r->uri, r->filename, r->path_info);
+	ret = pool2apache(cf, r, ses.at);
+	D_DEDENT("chkuid: ");
+	return ret;
+	/* Essentially we fall through and let CGI processing happen.
+	 * *** how to decorate the CGI return value?!? New hook needed? --Sampo */
+      } else {
+	ERR("WSP(%s) request validation failed", r->uri);
+	D_DEDENT("chkuid: ");
+	return HTTP_FORBIDDEN;
+      }
+    } else {
+      ERR("WSP(%s) must be called with POST method %d", r->uri, r->method_number);
+      D_DEDENT("chkuid: ");
+      return HTTP_METHOD_NOT_ALLOWED;
+    }
   } else {
     /* Some other page. Just check for session. */
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->url(%s) uri_len=%d url_len=%d", r->uri, STRNULLCHKNULL(r->args), cf->url, uri_len, url_len);
@@ -464,7 +489,7 @@ static int chkuid(request_rec* r)
     cgi.rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, p);
     if (cf->defaultqs && cf->defaultqs[0]) {
       if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
-      zxid_parse_cgi(cf, &cgi, cf->defaultqs);
+      zxid_parse_cgi(cf, &cgi, apr_pstrdup(r->pool, cf->defaultqs));
     }
     if (cgi.sid && cgi.sid[0] && zxid_get_ses(cf, &ses, cgi.sid)) {
       res = zxid_simple_ses_active_cf(cf, &cgi, &ses, 0, AUTO_FLAGS);
@@ -498,7 +523,7 @@ process_zxid_simple_outcome:
   case 'z':
     INFO("User not authorized %d", 0);
     D_DEDENT("chkuid: ");
-    return HTTP_UNAUTHORIZED;
+    return HTTP_FORBIDDEN;
   case 0: /* Logged in case */
     D("SSO OK pre uri(%s) filename(%s) path_info(%s)", r->uri, r->filename, r->path_info);
     ret = pool2apache(cf, r, ses.at);

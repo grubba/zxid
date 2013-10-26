@@ -25,7 +25,7 @@
  * 10.12.2011, added VURL and BUTTON_URL, deleted ORG_URL except for legacy check --Sampo
  * 17.8.2012, added audit bus configuration --Sampo
  * 16.2.2013, added WD option --Sampo
- * 21.6.2013,  added wsp_pat --Sampo
+ * 21.6.2013, added wsp_pat --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -921,7 +921,9 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->non_standard_entityid = ZXID_NON_STANDARD_ENTITYID;
   cf->redirect_hack_imposed_url = ZXID_REDIRECT_HACK_IMPOSED_URL;
   cf->redirect_hack_zxid_url = ZXID_REDIRECT_HACK_ZXID_URL;
-  cf->cdc_url       = ZXID_CDC_URL;
+  cf->defaultqs     = ZXID_DEFAULTQS;
+  cf->wsp_pat       = ZXID_WSP_PAT;
+  cf->sso_pat       = ZXID_SSO_PAT;
   cf->cdc_choice    = ZXID_CDC_CHOICE;
   cf->authn_req_sign = ZXID_AUTHN_REQ_SIGN;
   cf->want_sso_a7n_signed = ZXID_WANT_SSO_A7N_SIGNED;
@@ -1672,6 +1674,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "SHOW_CONF"))      { SCAN_INT(v, cf->show_conf); break; }
       if (!strcmp(n, "SHOW_TECH"))      { SCAN_INT(v, cf->show_tech); break; }
       if (!strcmp(n, "STATE"))          { cf->state = v; break; }
+      if (!strcmp(n, "SSO_PAT"))        { cf->sso_pat = v; break; }
       goto badcf;
     case 'T':  /* TIMEOUT_FATAL */
       if (!strcmp(n, "TIMEOUT_FATAL"))  { SCAN_INT(v, cf->timeout_fatal); break; }
@@ -1707,7 +1710,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       goto badcf;
     default:
     badcf:
-      ERR("Unknown config option(%s) val(%s), ignored.", n, v);
+      ERR("Unknown config option(%s) val(%s), ignored. qs(%.*s)", n, v);
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "S", "BADCF", n, 0);
     }
   }
@@ -1919,6 +1922,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "REDIRECT_HACK_ZXID_QS=%s\n"
 "DEFAULTQS=%s\n"
 "WSP_PAT=%s\n"
+"SSO_PAT=%s\n"
 "CDC_URL=%s\n"
 "CDC_CHOICE=%d\n"
 
@@ -2111,6 +2115,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 STRNULLCHK(cf->redirect_hack_zxid_qs),
 		 STRNULLCHK(cf->defaultqs),
 		 STRNULLCHK(cf->wsp_pat),
+		 STRNULLCHK(cf->sso_pat),
 		 STRNULLCHK(cf->cdc_url),
 		 cf->cdc_choice,
 

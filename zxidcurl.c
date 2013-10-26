@@ -1,4 +1,5 @@
 /* zxidcurl.c  -  libcurl interface for making SOAP calls and getting metadata
+ * Copyright (c) 2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -13,6 +14,7 @@
  * 4.10.2008,  added documentation --Sampo
  * 1.2.2010,   removed arbitrary limit on SOAP response size --Sampo
  * 11.12.2011, refactored HTTP GET client --Sampo
+ * 26.10.2013, improved error reporting on credential expired case --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  *           http://curl.haxx.se/libcurl/
@@ -438,6 +440,14 @@ int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_Body_s* bo
   env->Body = body;
   zx_add_kid(&env->gg, &body->gg);
   env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+
+  if (ses && ses->curflt) {
+    D("Detected curflt, abandoning previous Body content. %d", 0);
+    /* *** LEAK: Should free previous body content */
+    env->Body = (struct zx_e_Body_s*)zx_replace_kid(&env->gg, (struct zx_elem_s*)zx_NEW_e_Body(cf->ctx, 0));
+    ZX_ADD_KID(env->Body, Fault, ses->curflt);
+  }
+  
   zxid_wsf_decor(cf, ses, env, 1);
   ss = zx_easy_enc_elem_opt(cf, &env->gg);
 

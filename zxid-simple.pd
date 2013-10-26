@@ -303,11 +303,10 @@ mode depends on AUTO_PAGE and AUTO_FORM flags
   10  Complete form is generated
   11  Whole page is generated (best support)
 
-The output format in the successful SSO case depends on OFMT bits
-as follows
+The output format in the successful SSO case depends on Output
+Format (OFMT) bits as follows
 
   JQ
-  ==
   00  LDIF (default)
   01  Query String
   10  JSON

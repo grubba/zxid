@@ -642,22 +642,22 @@ linkrest:
 /*() Output a hexdump to stderr. Used for debugging purposes. */
 
 /* Called by:  hexdmp, zxsig_data x2, zxsig_verify_data x5 */
-int hexdump(const char* msg, const char* data, const char* lim, int max)
+int hexdump(const char* msg, const void* data, const void* lim, int max)
 {
   int i;
-  const char* p = data;
+  const char* p = (const char*)data;
   const char* lim16;
   char buf[3*16+1+1+16+1];
   if (!msg)
     msg = "";
-  if (lim-p > max)
+  if ((const char*)lim-p > max)
     lim = p + max;
   
   buf[sizeof(buf)-1] = '\0';
   
-  while (p<lim) {
+  while (p<(const char*)lim) {
     memset(buf, ' ', sizeof(buf)-1);
-    lim16 = MIN(p+16, lim);
+    lim16 = MIN(p+16, (const char*)lim);
     for (i = 0; p<lim16; ++p, ++i) {
       buf[3*i+(i>7?1:0)]   = HEX_DIGIT((*p >> 4) & 0x0f);
       buf[3*i+1+(i>7?1:0)] = HEX_DIGIT(*p & 0x0f);
@@ -680,7 +680,7 @@ int hexdump(const char* msg, const char* data, const char* lim, int max)
 }
 
 /* Called by:  covimp_test x2, zxsig_validate x6 */
-int hexdmp(const char* msg, const char* p, int len, int max) {
+int hexdmp(const char* msg, const void* p, int len, int max) {
   return hexdump(msg, p, p+len, max);
 }
 
@@ -803,7 +803,8 @@ unsigned char zx_std_index_64[256] = {
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX
 };
 
-/*() Raw version. Can use any decoding table. Assumes receiving buffer r has been allocated
+/*() Raw version. Can use any decoding table (such as zx_std_index_64).
+ * Assumes reciving buffer r has been allocated
  * to correct length. Is able to perform the operation in place, i.e. p and r
  * can point to the same buffer. Both canonical and safe base64 are handled.
  * If string contains URL encoding (as it might for + or =) it is automatically
@@ -914,7 +915,7 @@ char* zx_zlib_raw_deflate(struct zx_ctx* c, int in_len, const char* in, int* out
     return 0;
   }
   
-  dlen = in_len + (in_len >> 8) + 12;  /* worst case: orig_size * 1.001 + 12 */
+  dlen = in_len + (in_len >> 8) + 12;  /* worst case: orig_size * 1.001 + 12, see also compressBound() */
   out = ZX_ALLOC(c, dlen);
   z.next_out = (unsigned char*)out;
   z.avail_out = dlen;
@@ -1337,7 +1338,7 @@ int zx_wildcard_pat_match(const char* pat, const char* target)
   if (*pat == '*' && !strcmp(pat+1, target+len-strlen(pat+1)))
     return 1;
   len =  strlen(pat);
-  if (pat[len-1] == '*' && !strncmp(pat, target, len-1)
+  if (pat[len-1] == '*' && !strncmp(pat, target, len-1))
     return 1;
   return 0;
 }

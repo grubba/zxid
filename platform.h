@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 #define fdstdout (GetStdHandle(STD_OUTPUT_HANDLE))
-/*#define fdtype HANDLE   see zxid.h */
+/*#define fdtype HANDLE   see zx.h */
 #define BADFD (INVALID_HANDLE_VALUE)
 #define closefile(x) (CloseHandle(x)?0:-1)
 #define openfile_ro(path) zx_CreateFile((path), GENERIC_READ, FILE_SHARE_READ, 0 /*security*/, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0)
@@ -106,7 +106,7 @@ extern "C" {
 #endif
 
 #define fdstdout 1
-/*#define fdtype int   see zxid.h */
+/*#define fdtype int   see zx.h */
 #define BADFD (-1)
 #define closefile(x) close(x)
 #define openfile_ro(path) open((path),O_RDONLY)

@@ -1,4 +1,5 @@
 /* zxidwsp.c  -  Handwritten nitty-gritty functions for Liberty ID-WSF Web Services Provider
+ * Copyright (c) 2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -12,6 +13,7 @@
  * 7.1.2010,   added WSP signing --Sampo
  * 31.5.2010,  reworked PEPs extensively --Sampo
  * 25.1.2011,  tweaked RelatesTo header --Sampo
+ * 26.10.2013, improved error reporting on credential expired case --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -189,8 +191,8 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
  * will be passed as the contents of the body. If the string starts by
  * "<e:Body", then the <e:Envelope> and <e:Header> are automatically added. If
  * the string starts by neither of the above (be careful to use the "e:" as
- * namespace prefix), the it is assumed to be the payload content of
- * the <e:Body> and the rest of the SOAP envelope is added.
+ * namespace prefix), the it is assumed to be the payload content to be
+ * wrapped in the <e:Body> and the rest of the SOAP envelope.
  *
  * cf:: ZXID configuration object, see zxid_new_conf()
  * ses:: Session object that contains the EPR cache
@@ -202,7 +204,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
  *     option. This implements generalized (application independent)
  *     Responder Out PEP. To implement application dependent PEP features
  *     you should call zxid_az() directly.
- * env:: XML payload
+ * enve:: XML payload as a string
  * return:: SOAP Envelope of the response, as a string, ready to be
  *     sent as HTTP response. */
 
@@ -356,7 +358,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
   }
   
   if (zxid_validate_cond(cf, &cgi, ses, a7n, zxid_my_ent_id(cf), 0, 0)) {
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "Conditions did not validate.", TAS3_STATUS_BADCOND, 0, lk, 0));
+    /* Fault (ses->curflt) already set in zxid_validate_cond() */
     return 0;
   }
   
@@ -369,6 +371,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
       if (zxlog_dup_check(cf, logpath, "SSO assertion")) {
 	if (cf->dup_a7n_fatal) {
 	  zxlog_blob(cf, cf->log_rely_a7n, logpath, a7nss, "wsp_validade dup err");
+	  zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "Duplicate use of credential (assertion). Replay attack?", TAS3_STATUS_REPLAY, 0, lk, 0));
 	  return 0;
 	}
       }
@@ -513,7 +516,7 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
   } else {
     if (sec->EncryptedAssertion && !ses->a7n) {
       ERR("<sa:EncryptedAssertion> could not be decrypted. Perhaps the certificate used to encrypt does not match your private key. This could be due to IdP/Discovery service having wrong copy of your metadata. %d", 0);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "EncryptedAssertion could not be decrypted. (your metadata at the IdP/Disco has problem?)", TAS3_STATUS_BADCOND, 0, 0, 0));
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "EncryptedAssertion could not be decrypted. (your metadata at the IdP/Discovery has problem?)", TAS3_STATUS_BADCOND, 0, 0, 0));
     } else {
       /* *** should there be absolute requirement for a requester assertion to exist? */
       ERR("No Requester <sa:Assertion> found or assertion missing Subject. %p", ses->a7n);
@@ -603,7 +606,7 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
  * parts.
  *
  * cf:: ZXID configuration object, see zxid_new_conf()
- * ses:: Session object that contains the EPR cache
+ * ses:: Session object that contains the EPR cache. New data is extracted from request to session.
  * az_cred:: (Optional) Additional authorization credentials or
  *     attributes, query string format. These credentials will be populated
  *     to the attribute pool in addition to the ones obtained from token and

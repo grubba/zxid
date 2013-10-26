@@ -22,7 +22,7 @@ done
 mkdir ${ZXID_PATH}pem  # Certificates and private keys (must protect well)
 
 chmod -R 02750 ${ZXID_PATH}pem
-cp default-cot/* ${ZXID_PATH}cot
+#cp default-cot/* ${ZXID_PATH}cot
 
 echo "You may need to run"
 echo
