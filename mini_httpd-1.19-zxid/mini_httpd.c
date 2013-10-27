@@ -74,6 +74,14 @@
 #ifdef USE_ZXID
 #include <zx/errmac.h>
 #include <zx/zxid.h>
+
+zxid_ses* zxid_mini_httpd_filter(zxid_conf* cf, const char* method, const char* uri_path, const char* qs, const char* cookie_hdr);
+void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** response, size_t* response_size, size_t* response_len, int br_ix);
+int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_envn, const char* uri_path, const char* qs);
+
+static zxid_conf* zxid_cf;     /* ZXID enable flag and config string, zero initialized per POSIX */
+static zxid_ses* zxid_session; /* Non-null if SSO or session from cookie or WSP validate */
+int zxid_is_wsp;               /* Flag to trigger WSP response decoration. */
 #endif
 
 extern char* crypt( const char* key, const char* setting );
@@ -200,10 +208,6 @@ static char* certfile;
 static char* cipher;
 static SSL_CTX* ssl_ctx;
 #endif /* USE_SSL */
-#ifdef USE_ZXID
-static zxid_conf* zxid_cf;     /* ZXID enable flag and config string, zero initialized per POSIX */
-static zxid_ses* zxid_session; /* Non-null if SSO or session from cookie or WSP validate */
-#endif /* USE_ZXID */
 static char cwd[MAXPATHLEN];
 static int got_hup;
 
@@ -214,8 +218,8 @@ static int conn_fd;
 static SSL* ssl;
 #endif /* USE_SSL */
 static usockaddr client_addr;
-static char* request;
-static size_t request_size, request_len, request_idx;
+char* request;
+size_t request_size, request_len, request_idx;
 #ifdef DISA_MINI_HTTPD_BLOAT
 static char* method;
 #else
@@ -232,7 +236,7 @@ static off_t bytes;
 static char* req_hostname;
 
 static char* authorization;
-static size_t content_length;
+size_t content_length;
 static char* content_type;
 static char* cookie;
 static char* host;
@@ -246,9 +250,12 @@ static char* remoteuser;
 
 /* Forwards. */
 static void usage( void );
+#ifndef DISA_MINI_HTTPD_BLOAT
 static void read_config( char* filename );
 static void value_required( char* name, char* value );
 static void no_value_required( char* name, char* value );
+static char* get_method_str( int m );
+#endif
 static int initialize_listen_socket( usockaddr* usaP );
 static void handle_request( void );
 static void de_dotdot( char* file );
@@ -269,28 +276,27 @@ static char* build_env( char* fmt, char* arg );
 static void auth_check( char* dirname );
 static void send_authenticate( char* realm );
 static char* virtual_file( char* file );
-static void send_error_and_exit( int s, char* title, char* extra_header, char* text );
+void send_error_and_exit( int s, char* title, char* extra_header, char* text );
 static void send_error_body( int s, char* title, char* text );
 static int send_error_file( char* filename );
 static void send_error_tail( void );
 static void add_headers( int s, char* title, char* extra_header, char* me, char* mt, off_t b, time_t mod );
 static void start_request( void );
-static void add_to_request( char* str, size_t len );
+void add_to_request( char* str, size_t len );
 static char* get_request_line( void );
 static void start_response( void );
-static void add_to_response( char* str, size_t len );
+void add_to_response( char* str, size_t len );
 static void send_response( void );
 static void send_via_write( int fd, off_t size );
-static ssize_t my_read( char* buf, size_t size );
-static ssize_t my_write( char* buf, size_t size );
+ssize_t my_read( char* buf, size_t size );
+ssize_t my_write( char* buf, size_t size );
 #ifdef HAVE_SENDFILE
 static int my_sendfile( int fd, int socket, off_t offset, size_t nbytes );
 #endif /* HAVE_SENDFILE */
-static void add_to_buf( char** bufP, size_t* bufsizeP, size_t* buflenP, char* str, size_t len );
+void add_to_buf( char** bufP, size_t* bufsizeP, size_t* buflenP, char* str, size_t len );
 static void make_log_entry( void );
 static void check_referer( void );
 static int really_check_referer( void );
-static char* get_method_str( int m );
 static void init_mime( void );
 static const char* figure_mime( char* name, char* me, size_t me_size );
 static void handle_sigterm( int sig );
@@ -1355,6 +1361,11 @@ handle_request( void )
     if ( vhost )
 	file = virtual_file( file );
 
+#ifdef USE_ZXID
+    if (zxid_cf)
+      zxid_session = zxid_mini_httpd_filter(zxid_cf, method, path, query, cookie);
+#endif /* USE_ZXID */
+
     /* Set up the timeout for writing. */
 #ifdef HAVE_SIGSET
     (void) sigset( SIGALRM, handle_write_timeout );
@@ -1362,11 +1373,6 @@ handle_request( void )
     (void) signal( SIGALRM, handle_write_timeout );
 #endif /* HAVE_SIGSET */
     (void) alarm( WRITE_TIMEOUT );
-
-#ifdef USE_ZXID
-    if (zxid_cf)
-      zxid_session = zxid_mini_httpd_filter(zxid_cf, method, path, query, cookie_hdr);
-#endif /* USE_ZXID */
 
     r = stat( file, &sb );
     if ( r < 0 )
@@ -1382,7 +1388,7 @@ handle_request( void )
 	    file[file_len - 1] = '\0';
 	    --file_len;
 	    }
-	do_file();
+	do_file();  /* also handles CGI */
 	}
     else
 	{
@@ -2102,7 +2108,15 @@ cgi_interpose_output( int rfd, int parse_headers )
 	    buf, sizeof(buf), "HTTP/1.0 %d %s\015\012", status, title );
 	(void) my_write( buf, strlen( buf ) );
 
-	/* Write the saved headers. */
+#ifdef USE_ZXID
+	if (zxid_cf && zxid_session && zxid_is_wsp)
+	  {
+	  zxid_mini_httpd_wsp_response(zxid_cf, zxid_session, rfd,
+				       &headers, &headers_size, &headers_len, br-headers);
+	  goto done;
+	  }
+#endif
+	/* Write the saved headers (and any beginning of payload). */
 	(void) my_write( headers, headers_len );
 	}
 
@@ -2265,7 +2279,7 @@ make_envp( void )
     if ( (cp = getenv( "ZXID_CONF" )) != (char*) 0 )
         envp[envn++] = build_env( "ZXID_CONF=%s", cp );
     if (zxid_session)
-        envn = zxid_pool2env(zxid_cf, zxid_session, envp, envn, sizeof(envp)/sizeof(char*));
+        envn = zxid_pool2env(zxid_cf, zxid_session, envp, envn, sizeof(envp)/sizeof(char*), path, query);
 #endif
 
     envp[envn] = (char*) 0;
@@ -2434,7 +2448,7 @@ virtual_file( char* file )
     }
 
 
-static void
+void
 send_error_and_exit( int s, char* title, char* extra_header, char* text )
     {
     add_headers(
@@ -2625,7 +2639,7 @@ start_request( void )
     request_idx = 0;
     }
 
-static void
+void
 add_to_request( char* str, size_t len )
     {
     add_to_buf( &request, &request_size, &request_len, str, len );
@@ -2666,7 +2680,7 @@ start_response( void )
     response_size = 0;
     }
 
-static void
+void
 add_to_response( char* str, size_t len )
     {
     add_to_buf( &response, &response_size, &response_len, str, len );
@@ -2731,7 +2745,7 @@ send_via_write( int fd, off_t size )
     }
 
 
-static ssize_t
+ssize_t
 my_read( char* buf, size_t size )
     {
 #ifdef USE_SSL
@@ -2745,7 +2759,7 @@ my_read( char* buf, size_t size )
     }
 
 
-static ssize_t
+ssize_t
 my_write( char* buf, size_t size )
     {
 #ifdef USE_SSL
@@ -2773,7 +2787,7 @@ my_sendfile( int fd, int socket, off_t offset, size_t nbytes )
 #endif /* HAVE_SENDFILE */
 
 
-static void
+void
 add_to_buf( char** bufP, size_t* bufsizeP, size_t* buflenP, char* str, size_t len )
     {
     if ( *bufsizeP == 0 )
@@ -3491,10 +3505,13 @@ hexit( char c )
     }
 
 #ifdef USE_ZXID
+char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char* index_64);
+extern unsigned char zx_std_index_64[256];
+
 static int
 b64_decode( const char* str, unsigned char* space, int size )
     {
-    char* q;
+    unsigned char* q;
     int len = strlen(str);
     if (SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(len)>size)
         {

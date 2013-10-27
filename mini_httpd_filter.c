@@ -26,11 +26,27 @@
 
 #include <zx/platform.h>
 #include <zx/errmac.h>
+#include <zx/zx.h>
 #include <zx/zxid.h>
 #include <zx/zxidpriv.h>
 #include <zx/zxidconf.h>
 #include <zx/zxidutil.h>
 #include <zx/c/zxidvers.h>
+
+#include <errno.h>
+#include <unistd.h>
+
+/* declare stuff from mini_httpd.c */
+void send_error_and_exit(int s, char* title, char* extra_header, char* text);
+ssize_t my_read(char* buf, size_t size);
+ssize_t my_write(char* buf, size_t size);
+void add_to_buf( char** bufP, size_t* bufsizeP, size_t* buflenP, char* str, size_t len );
+void add_to_response( char* str, size_t len );
+void add_to_request( char* str, size_t len );
+extern char* request;
+extern size_t request_size, request_len, request_idx;
+extern size_t content_length;
+extern int zxid_is_wsp;               /* Flag to trigger WSP response decoration. */
 
 /*() Convert session attribute pool into mini_httpd CGI execution environment.
  *
@@ -124,7 +140,7 @@ int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_e
       D("redirect(%s) redir_to_content=%d", rs, cf->redir_to_content);
       //r->uri = apr_pstrdup(r->pool, val);
       if (cf->redir_to_content) {
-	send_error_and_exit(302, "Found", rs, "SAML Redirect" )
+	send_error_and_exit(302, "Found", rs, "SAML Redirect" );
       } else {
 	/* *** for this to be effective, it should be done much earlier, already where
 	 *     filter is called. By this time the file global has already been computed. */
@@ -152,59 +168,96 @@ int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_e
     envp[envn++] = zx_alloc_sprintf(cf->ctx, 0, "REMOTE_USER=%s", idpnid);
   }
   
-  D("SSO OK ret(%d) uri(%s) rs(%s)", ret, uri_path, STRNULLCHKQ(rs));
+  D("SSO OK uri(%s) rs(%s)", uri_path, STRNULLCHKQ(rs));
   return envn;
  enverr:
-  ERR("Statically allocated CGI environment array too small. max_envn=", max_envn);
+  ERR("Statically allocated CGI environment array too small. max_envn=%d", max_envn);
   return envn;
 }
 
-/*() Read POST input, Apache style
+/*() Read POST input
  *
- * This is considered internal function to mod_auth_saml, called by chkuid().
+ * This is considered internal function to mini_httpd_filter().
+ * It works by accessing certain request related global variables from mini_httpd.
  * You should not call this directly, unless you know what you are doing. */
 
-/* Called by:  chkuid */
-static char* read_post(zxid_conf* cf, request_rec* r)
+/* Called by: */
+static char* zxid_mini_httpd_read_post(zxid_conf* cf)
 {
-  int len, ret;
   char* res;
-  char* p;
-  /*len = apr_table_get(r->headers_in, "Content-Length");*/
-  
-  /* Ask Apache to dechunk data if it is chunked. */
-  ret = ap_setup_client_block(r, REQUEST_CHUNKED_DECHUNK);
-  if (ret != OK) {
-    ERR("ap_setup_client_block(r, REQUEST_CHUNKED_DECHUNK): %d", ret);
-    return 0;
+
+  for (;;) {
+    char buf[10000];
+    int already_read = request_len-request_idx;
+    int len = my_read(buf, MIN(sizeof(buf), content_length - already_read));
+    if (len < 0 && ONE_OF_2(errno, EINTR, EAGAIN))
+      continue;
+    if (len <= 0)
+      break;
+    add_to_request(buf, len);
   }
-  
-  /* This function will send a 100 Continue response if the client is
-   * waiting for that. If the client isn't going to send data, then this
-   * function will return 0. */
-  if (!ap_should_client_block(r)) {
-    len = 0;
-  } else {
-    len = r->remaining;
-  }
-  res = p = apr_palloc(r->pool, len + 1);
-  res[len] = 0;
-  D("remaining=%d", len);
-  
-  while (len > 0) {
-    /* Read data from the client. Returns 0 on EOF or error, the
-     * number of bytes otherwise.   */
-    ret = ap_get_client_block(r, p, len);
-    if (!ret) {
-      ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r, "Failed to read POST data from client.");
-      return 0;  /* HTTP_INTERNAL_SERVER_ERROR */
-    }
-    
-    p += ret;
-    len -= ret;
-  }
+  res = request + request_idx;
   if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("POST(%s)", res);
   return res;
+}
+
+zxid_ses* zxid_mini_httpd_wsp(zxid_conf* cf, const char* method, const char* uri_path, const char* qs)
+{  
+  char* res;
+  zxid_ses* ses = zxid_alloc_ses(cf);
+  
+  if (*method == 'P') {
+    res = zxid_mini_httpd_read_post(cf);
+    if (zxid_wsp_validate(cf, ses, 0, res)) {
+      D("WSP(%s) request valid", uri_path);
+      /* Essentially we fall through and let CGI processing happen.
+       * zxid_wsp_decorate() will be called in cgi_interpose_output() */
+    } else {
+      INFO("WSP(%s) call not authorized", uri_path);
+      send_error_and_exit(403, "Forbidden", "", "Authorization denied.");
+    }
+  } else {
+    ERR("WSP(%s) must be called with POST method (%s)", uri_path, method);
+    send_error_and_exit(405, "Method Not Allowed", "", "WSP only accepts POST method.");
+  }
+  return ses;
+}
+
+/*() Handle the WSP case of cgi_interpose_output(). Read in entire response,
+ * apply decoration, and send it on its way. */
+
+void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** response, size_t* response_size, size_t* response_len, int br_ix)
+{  
+  struct zx_str* res;
+  
+  D("DECOR START response_size=%d response_len=%d br_ix=%d response(%.*s)", *response_size, *response_len, br_ix, *response_len, *response);
+
+  /* Read until EOF */
+  for (;;) {
+    char buf[10*1024];
+    int len = read(rfd, buf, sizeof(buf));
+    if (len < 0 && ONE_OF_2(errno, EINTR, EAGAIN)) {
+      sleep(1);
+      continue;
+    }
+    if (len <= 0)
+      break;
+    add_to_buf(response, response_size, response_len, buf, len);
+  }
+  
+  D("DECOR2 response_size=%d response_len=%d br_ix=%d response(%.*s)", *response_size, *response_len, br_ix, *response_len, *response);
+
+  /* Write the saved headers (and any beginning of payload). */
+  if ((*response)[br_ix] == '\015') ++br_ix;
+  if ((*response)[br_ix] == '\012') ++br_ix;
+  if ((*response)[br_ix] == '\015') ++br_ix;
+  if ((*response)[br_ix] == '\012') ++br_ix;
+
+  D("DECOR3 response_len=%d br_ix=%d header(%.*s)", *response_len, br_ix, br_ix, *response);
+  (void) my_write(*response, br_ix);
+
+  res = zxid_wsp_decorate(cf, ses, 0, *response+br_ix);
+  (void) my_write(res->s, res->len);
 }
 
 /* 0x6000 outf QS + JSON = no output
@@ -214,76 +267,13 @@ static char* read_post(zxid_conf* cf, request_rec* r)
  * 0x0008 10 + 00 = SOAP w/headers as string + no auto redir, no exit(2) */
 #define AUTO_FLAGS 0x6ea8
 
-/*() Handle SSO or ID-WSF SSO
- * Called from mini_httpd handle_request() if zxid is configured.
- * In many cases entire situation is handled in this function
- * and exit is called. In successful SSO or WSP call function
- * may return and the regular mini_httpd processing continues.
- * In that case docgi() contains further zxid related steps to
- * pass the SSO attributes to the CGI environment. */
-
-/* Called by: */
-zxid_ses* zxid_mini_httpd_filter(zxid_conf* cf, const char* method, const char* uri_path, const char* qs, const char* cookie_hdr)
-{
-  zxid_ses* ses;
-  char buf[256];
-  D("===== START %s uri(%s) qs(%s) pid=%d gid=%d cwd(%s)", ZXID_REL, uri_path, STRNULLCHKNULL(qs), getpid(), getgid(), getcwd(buf,sizeof(buf)));
-  if (cf->wd && *cf->wd)
-    chdir(cf->wd);
-  D_INDENT("minizx: ");
-
-  if (zx_wildcard_pat_match(cf->wsp_pat, uri_path)) {
-    ses = zxid_mini_httpd_wsp(cf, method, uri_path, qs);
-    D_DEDENT("minizx: ");
-    return ses;
-  } else if (zx_wildcard_pat_match(cf->sso_pat, uri_path)) {
-    ses = zxid_mini_httpd_sso(cf, method, uri_path, qs);
-    D_DEDENT("minizx: ");
-    return ses;
-  } else {
-    D("No SSO or WSP match(%s)",uri_path);
-    D_DEDENT("minizx: ");
-    return 0;
-  }
-}
-
-zxid_ses* zxid_mini_httpd_wsp(zxid_conf* cf, chonst char* method, const char* uri_path, const char* qs)
-{  
-  int ret, len, uri_len, url_len, args_len;
-  char* p;
-  char* res;
-  const char* cookie_hdr=0;
-  const char* set_cookie_hdr;
-  const char* cur_auth;
-  zxid_ses* ses = zxid_alloc_ses(cf);
-  zxid_cgi cgi;
-  ZERO(&cgi, sizeof(zxid_cgi));
-  
-  if (*method == 'P') {
-    res = read_post(cf, r);   /* *** Will print some debug output */
-    if (zxid_wsp_validate(cf, ses, 0, res)) {
-      D("WSP(%s) request valid", uri_path);
-      /* Essentially we fall through and let CGI processing happen.
-       * *** how to decorate the CGI return value?!? New hook needed? --Sampo */
-    } else {
-      INFO("WSP(%s) call not authorized %d", uri_path);
-      send_error_and_exit(403, "Forbidden", "", "Authorization denied.");
-    }
-  } else {
-    ERR("WSP(%s) must be called with POST method %d", r->uri, r->method_number);
-    send_error_and_exit(405, "Method Not Allowed", "", "WSP only accepts POST method.");
-  }
-  return ses;
-}
-
 zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri_path, const char* qs, const char* cookie_hdr)
 {  
   int ret, len, uri_len, url_len, args_len;
   char* p;
   char* res;
-  const char* cookie_hdr=0;
-  const char* set_cookie_hdr;
-  const char* cur_auth;
+  //const char* set_cookie_hdr;
+  //const char* cur_auth;
   zxid_ses* ses = zxid_alloc_ses(cf);
   zxid_cgi cgi;
   ZERO(&cgi, sizeof(zxid_cgi));
@@ -308,7 +298,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
       if (args_len) {
 	/* concatenate redirect_hack_zxid_qs with existing qs */
 	len = strlen(cf->redirect_hack_zxid_qs);
-	p = ZX_ALLOC(cf, len+1+args_len+1);
+	p = ZX_ALLOC(cf->ctx, len+1+args_len+1);
 	strcpy(p, cf->redirect_hack_zxid_qs);
 	p[len] = '&';
 	strcpy(p+len+1, qs);
@@ -324,7 +314,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
   DD("HERE1 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(qs));
   if (args_len) {
     /* leak the dup str: the cgi structure will take references to this and change &s to nuls */
-    p = zx_dup_cstr(cf, qs);
+    p = zx_dup_cstr(cf->ctx, qs);
     zxid_parse_cgi(cf, &cgi, p);
     DD("HERE2 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(qs));
   }
@@ -344,10 +334,10 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
   if (p == cf->url)
     p = cf->url + url_len;
   
-  if (url_len >= uri_len && !memcmp(p - uri_len, r->uri, uri_len)) {  /* Suffix match */
+  if (url_len >= uri_len && !memcmp(p - uri_len, uri_path, uri_len)) {  /* Suffix match */
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->url(%s) qs(%s) rs(%s) op(%c)", uri_path, cf->url, STRNULLCHKNULL(qs), STRNULLCHKNULL(cgi.rs), cgi.op);
     if (*method == 'P') {
-      res = read_post(cf, r);   /* Will print some debug output */  // ***
+      res = zxid_mini_httpd_read_post(cf);   /* Will print some debug output */  // ***
       if (res) {
 	if (cgi.op == 'S') {
 	  ret = zxid_sp_soap_parse(cf, &cgi, ses, strlen(res), res);
@@ -393,8 +383,8 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
       D("Detect login(%s)", qs);
     } else
       cgi.op = 'E';   /* Trigger IdP selection screen */
-    p = ZX_ALLOC(cf, uri_len+1+args_len+1);
-    strcpy(p, r->uri);
+    p = ZX_ALLOC(cf->ctx, uri_len+1+args_len+1);
+    strcpy(p, uri_path);
     if (args_len) {
       p[uri_len] = '?';
       strcpy(p+uri_len+1, qs);
@@ -415,7 +405,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
     } else {
       D("No session(%s) active op(%c)", STRNULLCHK(cgi.sid), cgi.op);
     }
-    D("other page: no_ses uri(%s) templ(%s) tf(%s) k(%s) cgi=%p", r->uri, STRNULLCHKNULL(cgi.templ), STRNULLCHKNULL(cf->idp_sel_templ_file), cgi.skin, &cgi);
+    D("other page: no_ses uri(%s) templ(%s) tf(%s) k(%s) cgi=%p", uri_path, STRNULLCHKNULL(cgi.templ), STRNULLCHKNULL(cf->idp_sel_templ_file), cgi.skin, &cgi);
   }
 step_up:
   res = zxid_simple_no_ses_cf(cf, &cgi, ses, 0, AUTO_FLAGS);
@@ -429,22 +419,22 @@ process_zxid_simple_outcome:
   switch (res[0]) {
   case 'L':
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
-    send_error_and_exit(302, "Found", res, "SAML Redirect" )
+    send_error_and_exit(302, "Found", res, "SAML Redirect");
   case 'C':
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("CONTENT(%s)", res);
     res += 14;  /* skip "Content-Type:" (14 chars) */
     DD("RES(%s)", res);
     p = strchr(res, '\r');
     *p = 0;
-    mt = res;
+    //mt = res;
     DD("CONTENT-TYPE(%s)", res);
     res = p+2 + 16;  /* skip "Content-Length:" (16 chars) */
     sscanf(res, "%d", &len);
     res = strchr(res, '\r') + 4; /* skip CRFL pair before body */
     DD("CONTENT-LENGTH(%d)", len);
-    add_headers(200, "OK", "", "", mt, len, (time_t)-1);
-    add_to_response( res, buflen );
-    send_response();
+    //add_headers(200, "OK", "", "", mt, len, (time_t)-1);
+    // *** add_to_response( res, buflen );
+    // *** send_response();
 #ifdef USE_SSL
     SSL_free( ssl );
 #endif /* USE_SSL */
@@ -453,13 +443,13 @@ process_zxid_simple_outcome:
     INFO("User not authorized %d", 0);
     send_error_and_exit(403, "Forbidden", "", "Authorization denied.");
   case 0: /* Logged in case */
-    D("SSO OK pre uri(%s) filename(%s) path_info(%s)", r->uri, r->filename, r->path_info);
+    D("SSO OK pre uri(%s)", uri_path);
     //ret = pool2apache(cf, r, ses.at); // *** done in docgi()
     return 0;
 #if 0
   case 'd': /* Logged in case */
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("SSO OK LDIF(%s)", res);
-    D("SSO OK pre uri(%s) filename(%s) path_info(%s)", r->uri, r->filename, r->path_info);
+    D("SSO OK pre uri(%s)", uri_path);
     ret = ldif2apache(cf, r, res);
     return ret;
 #endif
@@ -468,6 +458,41 @@ process_zxid_simple_outcome:
     send_error_and_exit(501, "Internal Server Error", "", "Unknown zxid_simple response." );
   }
   return ses;
+}
+
+/*() Handle SSO or ID-WSF SSO
+ * Called from mini_httpd handle_request() if zxid is configured.
+ * In many cases entire situation is handled in this function
+ * and exit is called. In successful SSO or WSP call function
+ * may return and the regular mini_httpd processing continues.
+ * In that case docgi() contains further zxid related steps to
+ * pass the SSO attributes to the CGI environment. */
+
+/* Called by: */
+zxid_ses* zxid_mini_httpd_filter(zxid_conf* cf, const char* method, const char* uri_path, const char* qs, const char* cookie_hdr)
+{
+  zxid_ses* ses;
+  char buf[256];
+  D("===== START %s uri(%s) qs(%s) pid=%d gid=%d cwd(%s)", ZXID_REL, uri_path, STRNULLCHKNULL(qs), getpid(), getgid(), getcwd(buf,sizeof(buf)));
+  if (cf->wd && *cf->wd)
+    chdir(cf->wd);
+  D_INDENT("minizx: ");
+
+  zxid_is_wsp = 0;
+  if (zx_wildcard_pat_match(cf->wsp_pat, uri_path)) {
+    zxid_is_wsp = 1;
+    ses = zxid_mini_httpd_wsp(cf, method, uri_path, qs);
+    D_DEDENT("minizx: ");
+    return ses;
+  } else if (zx_wildcard_pat_match(cf->sso_pat, uri_path)) {
+    ses = zxid_mini_httpd_sso(cf, method, uri_path, qs, cookie_hdr);
+    D_DEDENT("minizx: ");
+    return ses;
+  } else {
+    D("No SSO or WSP match(%s)",uri_path);
+    D_DEDENT("minizx: ");
+    return 0;
+  }
 }
 
 /* EOF - mini_httpd_filter.c */

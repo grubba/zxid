@@ -1279,7 +1279,7 @@ $(MINI_HTTPD_DIR)/htpasswd: $(MINI_HTTPD_DIR)/htpasswd.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(CRYPT_LIB) $(LIBS)
 
 $(MINI_HTTPD_DIR)/mini_httpd_zxid: $(MINI_HTTPD_DIR)/mini_httpd.$(OBJ_EXT) $(MINI_HTTPD_DIR)/match.$(OBJ_EXT) $(MINI_HTTPD_DIR)/tdate_parse.$(OBJ_EXT) mini_httpd_filter.$(OBJ_EXT)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBZXID) $(LIBS)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $^ $(CRYPT_LIB) $(LIBZXID) $(LIBS)
 
 $(MINI_HTTPD_DIR)/mime_encodings.h: $(MINI_HTTPD_DIR)/mime_encodings.txt
 	rm -f $@
