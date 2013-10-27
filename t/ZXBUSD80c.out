@@ -1,0 +1,4 @@
+SUBS() got RECEIPT 0
+test(1,5,10)
+test(0,5,6)
+test(1,5,9)
