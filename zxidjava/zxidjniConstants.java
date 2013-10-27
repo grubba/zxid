@@ -373,6 +373,8 @@ public interface zxidjniConstants {
   public final static String TAS3_STATUS_NOSIG = zxidjniJNI.TAS3_STATUS_NOSIG_get();
   public final static String TAS3_STATUS_BADSIG = zxidjniJNI.TAS3_STATUS_BADSIG_get();
   public final static String TAS3_STATUS_BADCOND = zxidjniJNI.TAS3_STATUS_BADCOND_get();
+  public final static String TAS3_STATUS_EXPIRED = zxidjniJNI.TAS3_STATUS_EXPIRED_get();
+  public final static String TAS3_STATUS_REPLAY = zxidjniJNI.TAS3_STATUS_REPLAY_get();
   public final static String TAS3_STATUS_BADXML = zxidjniJNI.TAS3_STATUS_BADXML_get();
   public final static String TAS3_STATUS_FAULT = zxidjniJNI.TAS3_STATUS_FAULT_get();
   public final static String TAS3_SOL1_ENGINE = zxidjniJNI.TAS3_SOL1_ENGINE_get();

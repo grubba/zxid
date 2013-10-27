@@ -25880,6 +25880,30 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1STATUS_1BADCOND_1get(J
 }
 
 
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1STATUS_1EXPIRED_1get(JNIEnv *jenv, jclass jcls) {
+  jstring jresult = 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (char *) "urn:tas3:status:expired";
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1STATUS_1REPLAY_1get(JNIEnv *jenv, jclass jcls) {
+  jstring jresult = 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (char *) "urn:tas3:status:replay";
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
 SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_TAS3_1STATUS_1BADXML_1get(JNIEnv *jenv, jclass jcls) {
   jstring jresult = 0 ;
   char *result = 0 ;
@@ -25946,7 +25970,7 @@ SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_ZXID_1VERSION_1get(JNIEnv *jenv
   
   (void)jenv;
   (void)jcls;
-  result = (int) 0x000113;
+  result = (int) 0x000115;
   jresult = (jint)result; 
   return jresult;
 }
@@ -25958,7 +25982,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1REL_1get(JNIEnv *jenv,
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "1.13";
+  result = (char *) "1.15";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }
@@ -25970,7 +25994,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1COMPILE_1DATE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "1363690468";
+  result = (char *) "1382893016";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }
@@ -25982,7 +26006,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1REV_1get(JNIEnv *jenv,
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "$Id:  20130318-230130 sampo@ $";
+  result = (char *) "$Id: 1.14-4-gb587add 20131027-163722 sampo@ $";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }

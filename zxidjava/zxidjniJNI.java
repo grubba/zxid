@@ -1539,6 +1539,8 @@ class zxidjniJNI {
   public final static native String TAS3_STATUS_NOSIG_get();
   public final static native String TAS3_STATUS_BADSIG_get();
   public final static native String TAS3_STATUS_BADCOND_get();
+  public final static native String TAS3_STATUS_EXPIRED_get();
+  public final static native String TAS3_STATUS_REPLAY_get();
   public final static native String TAS3_STATUS_BADXML_get();
   public final static native String TAS3_STATUS_FAULT_get();
   public final static native String TAS3_SOL1_ENGINE_get();
