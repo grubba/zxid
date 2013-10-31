@@ -4417,7 +4417,7 @@ XS(_wrap_zx_str_n_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -4646,7 +4646,7 @@ XS(_wrap_new_zx_str) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -4743,7 +4743,7 @@ XS(_wrap_zx_attr_s_g_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -5062,7 +5062,7 @@ XS(_wrap_zx_elem_s_g_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -6083,7 +6083,7 @@ XS(_wrap_zx_ref_str) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -6125,7 +6125,7 @@ XS(_wrap_zx_ref_len_str) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -6168,7 +6168,7 @@ XS(_wrap_zx_new_len_str) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -6210,7 +6210,7 @@ XS(_wrap_zx_dup_len_str) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -6254,7 +6254,7 @@ XS(_wrap_zx_dup_str) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -6299,7 +6299,7 @@ XS(_wrap_zx_dup_zx_str) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -6346,7 +6346,7 @@ XS(_wrap_zx_strf) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -8300,7 +8300,7 @@ XS(_wrap_zx_raw_cipher) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -8367,7 +8367,7 @@ XS(_wrap_zx_rsa_pub_enc) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -8430,7 +8430,7 @@ XS(_wrap_zx_rsa_pub_dec) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -8493,7 +8493,7 @@ XS(_wrap_zx_rsa_priv_dec) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -8556,7 +8556,7 @@ XS(_wrap_zx_rsa_priv_enc) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -9226,7 +9226,7 @@ XS(_wrap_zx_EASY_ENC_elem) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -26805,7 +26805,7 @@ XS(_wrap_zxid_ses_wsp_msgid_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -28623,7 +28623,7 @@ XS(_wrap_zxid_ses_issuer_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -29292,7 +29292,7 @@ XS(_wrap_zxid_attr_map_val_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -29429,7 +29429,7 @@ XS(_wrap_zxid_attr_issuer_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -32975,7 +32975,7 @@ XS(_wrap_zxid_perm_eid_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -33047,7 +33047,7 @@ XS(_wrap_zxid_perm_qs_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -33164,7 +33164,7 @@ XS(_wrap_zxid_psobj_psobj_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -33308,7 +33308,7 @@ XS(_wrap_zxid_psobj_idpnid_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -33380,7 +33380,7 @@ XS(_wrap_zxid_psobj_dispname_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -33452,7 +33452,7 @@ XS(_wrap_zxid_psobj_tags_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -33524,7 +33524,7 @@ XS(_wrap_zxid_psobj_invids_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -33966,7 +33966,7 @@ XS(_wrap_zxid_invite_invid_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -34110,7 +34110,7 @@ XS(_wrap_zxid_invite_desc_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -34182,7 +34182,7 @@ XS(_wrap_zxid_invite_psobj_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -34254,7 +34254,7 @@ XS(_wrap_zxid_invite_ps2spredir_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -35606,7 +35606,7 @@ XS(_wrap_zxid_idp_select_zxstr_cf) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -35958,7 +35958,7 @@ XS(_wrap_zxid_template_page_cf) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -36170,7 +36170,7 @@ XS(_wrap_zxsig_ref_id_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -36242,7 +36242,7 @@ XS(_wrap_zxsig_ref_canon_get) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -36403,7 +36403,7 @@ XS(_wrap_zxenc_privkey_dec) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -36526,7 +36526,7 @@ XS(_wrap_zxenc_symkey_dec) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -38486,7 +38486,7 @@ XS(_wrap_zxid_sp_meta) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -38561,7 +38561,7 @@ XS(_wrap_zxid_sp_carml) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -38596,7 +38596,7 @@ XS(_wrap_zxid_my_ent_id) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -38707,7 +38707,7 @@ XS(_wrap_zxid_my_cdc_url) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -39358,7 +39358,7 @@ XS(_wrap_zxid_show_conf) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -39863,7 +39863,7 @@ XS(_wrap_zxid_ses_to_ldif) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -39908,7 +39908,7 @@ XS(_wrap_zxid_ses_to_json) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -39953,7 +39953,7 @@ XS(_wrap_zxid_ses_to_qs) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -40497,7 +40497,7 @@ XS(_wrap_zxid_http_post_raw) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -40748,7 +40748,7 @@ XS(_wrap_zx_easy_enc_elem_opt) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -40793,7 +40793,7 @@ XS(_wrap_zx_easy_enc_elem_sig) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -40844,7 +40844,7 @@ XS(_wrap_zxid_date_time) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -40896,7 +40896,7 @@ XS(_wrap_zxid_mk_id) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -41108,7 +41108,7 @@ XS(_wrap_zxid_saml2_post_enc) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -41179,7 +41179,7 @@ XS(_wrap_zxid_saml2_redir_enc) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -41245,7 +41245,7 @@ XS(_wrap_zxid_saml2_redir_url) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -41311,7 +41311,7 @@ XS(_wrap_zxid_saml2_redir) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -41377,7 +41377,7 @@ XS(_wrap_zxid_saml2_resp_redir) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -41541,7 +41541,7 @@ XS(_wrap_zxid_decrypt_newnym) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -42257,7 +42257,7 @@ XS(_wrap_zxid_sp_slo_redir) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -42378,7 +42378,7 @@ XS(_wrap_zxid_sp_mni_redir) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -42954,7 +42954,7 @@ XS(_wrap_zxid_mk_oauth_az_req) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -44086,7 +44086,7 @@ XS(_wrap_zxid_wsp_decorate) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -44154,7 +44154,7 @@ XS(_wrap_zxid_wsp_decoratef) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -44306,7 +44306,7 @@ XS(_wrap_zxid_call) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -44407,7 +44407,7 @@ XS(_wrap_zxid_callf) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -44488,7 +44488,7 @@ XS(_wrap_zxid_call_epr) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -44566,7 +44566,7 @@ XS(_wrap_zxid_callf_epr) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -44643,7 +44643,7 @@ XS(_wrap_zxid_wsc_prepare_call) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -44721,7 +44721,7 @@ XS(_wrap_zxid_wsc_prepare_callf) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -45016,7 +45016,7 @@ XS(_wrap_zxid_get_epr_address) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -45061,7 +45061,7 @@ XS(_wrap_zxid_get_epr_entid) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -45106,7 +45106,7 @@ XS(_wrap_zxid_get_epr_desc) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -45151,7 +45151,7 @@ XS(_wrap_zxid_get_epr_tas3_trust) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -45196,7 +45196,7 @@ XS(_wrap_zxid_get_epr_secmech) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -45701,7 +45701,7 @@ XS(_wrap_zxid_epr2str) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -45746,7 +45746,7 @@ XS(_wrap_zxid_token2str) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -45829,7 +45829,7 @@ XS(_wrap_zxid_a7n2str) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
@@ -45912,7 +45912,7 @@ XS(_wrap_zxid_nid2str) {
       if (argvi >= items) {
         EXTEND(sp,1);
       }
-      ST(argvi) = newSVpv(result->s, result->len);
+      ST(argvi) = result?newSVpv(result->s, result->len):&PL_sv_undef;  /* newSV(0) */
       /* Do not free underlying zx_str because they are usually returned by reference. */
       ++argvi;
     }
