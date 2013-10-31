@@ -900,35 +900,35 @@ updatevers:
 ifeq ($(ENA_GEN),1)
 
 Net/SAML_wrap.c Net/SAML.pm: $(ZX_GEN_H) zxid.h zxid.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	$(SWIG) -o Net/SAML_wrap.c -perl zxid.i
 	$(PERL) -pi -e 's/\*zxid_/*/i; s/\*SAML2?_/*/i' Net/SAML.pm
 
 # Net::SAML::Metadata - low level metadata APIs
 
 Metadata/Metadata_wrap.c Metadata/Metadata.pm: $(ZX_GEN_H) zxidmd.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	$(SWIG) -o Metadata/Metadata_wrap.c -perl zxidmd.i
 	$(PERL) -pi -e 's/\*SAML2?_/*/i' Metadata/Metadata.pm
 
 # Net::SAML::Raw - low level assertion and protocol APIs
 
 Raw/Raw_wrap.c Raw/Raw.pm: $(ZX_GEN_H) zxidraw.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	$(SWIG) -o Raw/Raw_wrap.c -perl zxidraw.i
 	$(PERL) -pi -e 's/\*SAML2?_/*/i' Raw/Raw.pm
 
 # Net::WSF::WSC - high level APIs for implementing WSC
 
 WSC/WSC_wrap.c WSC/WSC.pm: $(ZX_GEN_H) zxwsc.h wsc.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	$(SWIG) -o WSC/WSC_wrap.c -perl wsc.i
 	$(PERL) -pi -e 's/\*zxwsc_/*/i; s/\*SAML2?_/*/i' WSC/WSC.pm
 
 # Net::WSF::Raw - low level protocol APIs
 
 WSF_Raw/Raw_wrap.c WSF_Raw/Raw.pm: $(ZX_GEN_H) wsfraw.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	$(SWIG) -o WSF_Raw/Raw_wrap.c -perl wsfraw.i
 	$(PERL) -pi -e 's/\*zxwsc_/*/i; s/\*SAML2?_/*/i' WSF_Raw/Raw.pm
 
@@ -983,7 +983,7 @@ perlcleaner: perlclean
 ifeq ($(ENA_GEN),1)
 
 php/zxid_wrap.c php/zxid.php php/php_zxid.h php/Makefile: $(ZX_GEN_H) zxid.h phpzxid.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	cd php; $(SWIG) -o zxid_wrap.c -noproxy -php ../phpzxid.i
 
 endif
@@ -1021,7 +1021,7 @@ phpcleaner: phpclean
 ifeq ($(ENA_GEN),1)
 
 py/zxid_wrap.c py/zxid.py py/Makefile: $(ZX_GEN_H) zxid.h pyzxid.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	cd py; $(SWIG) -o zxid_wrap.c -python ../pyzxid.i
 
 endif
@@ -1052,7 +1052,7 @@ pycleaner: pyclean
 ifeq ($(ENA_GEN),1)
 
 ruby/zxid_wrap.c ruby/zxid.ruby ruby/Makefile: $(ZX_GEN_H) zxid.h rubyzxid.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	cd ruby; $(SWIG) -o zxid_wrap.c -ruby ../rubyzxid.i
 
 endif
@@ -1083,7 +1083,7 @@ rubycleaner: rubyclean
 ifeq ($(ENA_GEN),1)
 
 csharp/zxid_wrap.c csharp/zxid.csharp csharp/Makefile: $(ZX_GEN_H) zxid.h csharpzxid.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	cd csharp; $(SWIG) -o zxid_wrap.c -noproxy -csharp ../csharpzxid.i
 
 endif
@@ -1114,7 +1114,7 @@ csharpcleaner: csharpclean
 ifeq ($(ENA_GEN),1)
 
 zxidjava/zxid_wrap.c: $(ZX_GEN_H) zxid.h javazxid.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	cd zxidjava; $(SWIG) -noproxy -Dconst= -w451 -o zxid_wrap.c -java -package zxidjava ../javazxid.i
 	$(PERL) -pi -e 's/SWIGTYPE_p_zxid_conf/zxid_conf/g' zxidjava/*.java
 	mv zxidjava/SWIGTYPE_p_zxid_conf.java zxidjava/zxid_conf.java
