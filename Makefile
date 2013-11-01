@@ -190,7 +190,7 @@ APACHE_MODULES ?= $(APACHE_ROOT)/modules
 
 ### Compute options based on local modifications
 
-LIBS+= -pthread -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz
+LIBS+= -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz
 #LIBS+= -pthread -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -static -lcurl -lssl -lcrypto -lz -dynamic
 #LIBS+= -lidn -lrt
 #LIBS+=-ldl
@@ -297,14 +297,18 @@ ifeq ($(TARGET),xmingw)
 
 SYSROOT=/apps/gcc/mingw/sysroot
 CROSS_COMPILE=1
+EXE=.exe
 CC=/apps/gcc/mingw/bin/i586-pc-mingw32-gcc
 LD=/apps/gcc/mingw/bin/i586-pc-mingw32-gcc
 ARC=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -crs
 ARX=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -x
 #CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
 CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB
-CURL_ROOT=/apps/gcc/mingw/sysroot
-OPENSSL_ROOT=/apps/gcc/mingw/sysroot
+CURL_ROOT=$(SYSROOT)
+OPENSSL_ROOT=$(SYSROOT)
+ZLIB_ROOT=$(SYSROOT)
+APACHE_INCLUDE = -I$(SYSROOT)/include
+APR_INCLUDE    = -I$(SYSROOT)/srclib/apr-util/include
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
@@ -317,7 +321,7 @@ WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lw
 LIBS= -mconsole $(WIN_LIBS)
 #SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,-whole-archive
 SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
-CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing  -mno-cygwin
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin
 
 # java.lang.UnsatisfiedLinkError: Given procedure could not be found
 # -mno-cygwin -mrtd -Wl,--kill-at -Wl,--add-stdcall-alias
@@ -328,6 +332,83 @@ CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-
 #/apps/gcc/mingw/bin/i586-pc-mingw32-gcc -o zxid.dll -Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib libzxid.a -Wl,-no-whole-archive -L/apps/gcc/mingw/sysroot/lib -L/apps/gcc/mingw/sysroot/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32 -mdll
 #i586-pc-mingw32-gcc: shared and mdll are not compatible
 #make: *** [zxid.dll] Error 1
+# remove the -shared flag and it compiles
+
+else
+ifeq ($(TARGET),xmingw64)
+
+# Cross compilation for MINGW64 target (on Linux host). Invoke
+# as `make zxid.dll TARGET=xmingw64'
+# You must have the cross compiler installed. You can get one from
+# http://mingw-w64.sourceforge.net/download.php
+#
+# For best results use the same cross compiler for compiling the dependency
+# libraries like curl, openssl, and zlib. Furthermore: your cross compiler
+# should be for MinGW target, not for Cygwin (i.e. default compiler of Cygwin
+# may have trouble due to linking against cygwin dependent libraries).
+#
+# Cross compiling zlib
+#     export PATH=/apps/mingw/3.0.0-w64/bin:$PATH
+#     ./configure --prefix=/mingw
+#     CC=x86_64-w64-mingw32-gcc LD=x86_64-w64-mingw32-ld AR=x86_64-w64-mingw32-ar RANLIB=x86_64-w64-mingw32-gcc-ranlib make -e
+#     cp libz.a /apps/mingw/3.0.0-w64/mingw/lib
+#     cp zlib.h zconf.h /apps/mingw/3.0.0-w64/mingw/include
+#
+# Cross compiling openssl
+#     ./Configure --prefix=/mingw --cross-compile-prefix=x86_64-w64-mingw32- enable-rc5 enable-mdc2 zlib mingw64-cross-debug
+#     #make depend   # error, apparently not needed
+#     make
+#     #make test     # not doable since openssl.exe will not execute on Linux
+#     cp -Lr include/openssl /apps/mingw/3.0.0-w64/mingw/include
+#     cp libssl.a libcrypto.a /apps/mingw/3.0.0-w64/mingw/lib
+#     cp apps/openssl.exe /apps/mingw/3.0.0-w64/mingw/bin-w64
+#
+# Cross compiling curl
+#     CPPFLAGS='-I/apps/mingw/3.0.0-w64/mingw/include' LDFLAGS='-L/apps/mingw/3.0.0-w64/mingw/lib' LIBS='-lz' ./configure --prefix=/mingw --with-ssl=/apps/mingw/3.0.0-w64/mingw --without-gnutls -enable-debug --enable-thread --enable-nonblocking --host=x86_64-w64-mingw32 --with-random=/random.txt --disable-shared --enable-static
+#     make
+#     cp lib/.libs/libcurl* /apps/mingw/3.0.0-w64/mingw/lib
+#     cp -r include/curl/ /apps/mingw/3.0.0-w64/mingw/include
+#     cp src/curl.exe /apps/mingw/3.0.0-w64/mingw/bin-w64
+
+MINGWDIR=/apps/mingw/3.0.0-w64
+SYSROOT=$(MINGWDIR)/mingw
+CROSS_COMPILE=1
+EXE=.exe
+CC=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
+LD=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
+ARC=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -crs
+ARX=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -x
+#CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
+CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB
+CURL_ROOT=$(SYSROOT)
+OPENSSL_ROOT=$(SYSROOT)
+ZLIB_ROOT=$(SYSROOT)
+APACHE_INCLUDE = -I$(SYSROOT)/include
+APR_INCLUDE    = -I$(SYSROOT)/srclib/apr-util/include
+ZXIDJNI_SO=zxidjava/zxidjni.dll
+ifeq ($(SHARED),1)
+LIBZXID=-L. -lzxiddll
+endif
+
+-include xmingw.mk
+
+# -lws2_32 -lwldap32  -lmingw64  -u _imp__curl_easy_setopt -u _imp__curl_easy_strerror
+WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lws2_32 -lwldap32 -lwinmm -lwsock32 -lgdi32 -lkernel32
+LIBS= -mconsole $(WIN_LIBS)
+#SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,-whole-archive
+SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing
+
+# java.lang.UnsatisfiedLinkError: Given procedure could not be found
+# -mno-cygwin -mrtd -Wl,--kill-at -Wl,--add-stdcall-alias
+# http://www.inonit.com/cygwin/jni/helloWorld/c.html
+# http://www.1702.org/jniswigdll.html
+# http://maba.wordpress.com/2004/07/28/generating-dll-files-for-jni-under-windowscygwingcc/
+
+#/apps/gcc/mingw/bin/i586-pc-mingw32-gcc -o zxid.dll -Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib libzxid.a -Wl,-no-whole-archive -L/apps/gcc/mingw/sysroot/lib -L/apps/gcc/mingw/sysroot/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32 -mdll
+#i586-pc-mingw32-gcc: shared and mdll are not compatible
+#make: *** [zxid.dll] Error 1
+# remove the -shared flag and it compiles
 
 else
 ifeq ($(TARGET),mingw)
@@ -336,6 +417,7 @@ ifeq ($(TARGET),mingw)
 
 CP=ln
 ZXID_PATH=/c/zxid/
+EXE=.exe
 
 CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB
 CURL_ROOT=/usr/local
@@ -416,6 +498,7 @@ ifeq ($(DISTRO),fedora)
 CDEF+=-DFEDORA
 endif
 
+endif
 endif
 endif
 endif
@@ -1192,7 +1275,8 @@ zxidjava.jar: zxidjava/zxidjni.class zxidjava/README.zxid-java
 	$(JAR) cf zxidjava.jar zxidjava/*.class zxidjava/*.java zxidjava/COPYING zxidjava/LICENSE*
 
 zxiddemo.war: zxidjava.jar
-	mkdir -p zxidservlet/WEB-INF/classes/zxidjava/
+	mkdir -p zxidservlet/WEB-INF/classes/
+	#mkdir -p zxidservlet/WEB-INF/classes/zxidjava/
 	$(CP) -f zxidjava.jar ./zxidservlet/WEB-INF/classes/
 	$(CP) -f ./servlet/WEB-INF/web.xml ./zxidservlet/WEB-INF/
 	$(CP) -f zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidhlo.class zxidservlet/WEB-INF/classes/
@@ -1623,7 +1707,7 @@ precheck/chk-zlib.exe: precheck/chk-zlib.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
 
 precheck/chk-openssl.exe: precheck/chk-openssl.$(OBJ_EXT)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< -L$(OPENSSL_ROOT)/lib $(SSL_LIBS)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(SSL_LIBS) $(LIBS)
 
 precheck/chk-curl.exe: precheck/chk-curl.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
@@ -1806,10 +1890,11 @@ docclean:
 distclean: clean
 
 cleanbin:
-	rm -f zxid zxlogview zxbench zxencdectest zxmqtest $(LIBZXID_A) libzxid.so* sizeof zxid.stderr
+	rm -f zxid zxidsimple zxbench zxencdectest zxmqtest $(LIBZXID_A) libzxid.so* zxsizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
 	rm -f zxidwspcgi zxidxfoobarwsp zxpasswd zxcot zxcall zxbusd zxbustailf zxbuslist
-	rm -f mod_auth_saml.so zxididp zxdecode
+	rm -f mod_auth_saml.so zxididp zxdecode zxlogview zxcot zxpasswd smime
+	rm -f zxid.dll zxidjava/zxidjni.dll *.exe
 
 miniclean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean
 	@$(ECHO) ------------------ Making miniclean
@@ -1850,7 +1935,7 @@ winclean:
 
 dist zxid-$(ZXIDREL).tgz:
 	rm -rf zxid-$(ZXIDREL)
-	mkdir zxid-$(ZXIDREL) zxid-$(ZXIDREL)/c zxid-$(ZXIDREL)/sg zxid-$(ZXIDREL)/t zxid-$(ZXIDREL)/tex  zxid-$(ZXIDREL)/html zxid-$(ZXIDREL)/pulver zxid-$(ZXIDREL)/Net zxid-$(ZXIDREL)/Metadata zxid-$(ZXIDREL)/Raw zxid-$(ZXIDREL)/WSC zxid-$(ZXIDREL)/WSF_Raw zxid-$(ZXIDREL)/php zxid-$(ZXIDREL)/zxidjava zxid-$(ZXIDREL)/servlet zxid-$(ZXIDREL)/servlet/WEB-INF zxid-$(ZXIDREL)/servlet/META-INF zxid-$(ZXIDREL)/default-cot zxid-$(ZXIDREL)/py zxid-$(ZXIDREL)/ruby zxid-$(ZXIDREL)/csharp zxid-$(ZXIDREL)/precheck zxid-$(ZXIDREL)/pers zxid-$(ZXIDREL)/intra zxid-$(ZXIDREL)/protected zxid-$(ZXIDREL)/strong zxid-$(ZXIDREL)/other zxid-$(ZXIDREL)/mini_httpd-1.19-zxid  zxid-$(ZXIDREL)/mini_httpd-1.19-zxid/contrib  zxid-$(ZXIDREL)/mini_httpd-1.19-zxid/contrib/redhat-rpm zxid-$(ZXIDREL)/mini_httpd-1.19-zxid/scripts
+	mkdir zxid-$(ZXIDREL) zxid-$(ZXIDREL)/c zxid-$(ZXIDREL)/sg zxid-$(ZXIDREL)/t zxid-$(ZXIDREL)/tex  zxid-$(ZXIDREL)/html zxid-$(ZXIDREL)/pulver zxid-$(ZXIDREL)/Net zxid-$(ZXIDREL)/Metadata zxid-$(ZXIDREL)/Raw zxid-$(ZXIDREL)/WSC zxid-$(ZXIDREL)/WSF_Raw zxid-$(ZXIDREL)/php zxid-$(ZXIDREL)/zxidjava zxid-$(ZXIDREL)/servlet zxid-$(ZXIDREL)/servlet/WEB-INF zxid-$(ZXIDREL)/servlet/META-INF zxid-$(ZXIDREL)/default-cot zxid-$(ZXIDREL)/py zxid-$(ZXIDREL)/ruby zxid-$(ZXIDREL)/csharp zxid-$(ZXIDREL)/precheck zxid-$(ZXIDREL)/pers zxid-$(ZXIDREL)/intra zxid-$(ZXIDREL)/protected zxid-$(ZXIDREL)/strong zxid-$(ZXIDREL)/other zxid-$(ZXIDREL)/mini_httpd-1.19-zxid  zxid-$(ZXIDREL)/mini_httpd-1.19-zxid/contrib  zxid-$(ZXIDREL)/mini_httpd-1.19-zxid/contrib/redhat-rpm zxid-$(ZXIDREL)/mini_httpd-1.19-zxid/scripts zxid-$(ZXIDREL)/drupal zxid-$(ZXIDREL)/drupal/authn_sso
 	(cd zxid-$(ZXIDREL); ln -s . zx)
 	$(PERL) mkdist.pl zxid-$(ZXIDREL) <Manifest
 	tar czf zxid-$(ZXIDREL).tgz zxid-$(ZXIDREL)
@@ -1865,7 +1950,7 @@ linbindist:
 winbindist:
 	rm -rf zxid-$(ZXIDREL)-win32-bin
 	mkdir zxid-$(ZXIDREL)-win32-bin zxid-$(ZXIDREL)-win32-bin/c zxid-$(ZXIDREL)-win32-bin/zxidjava  zxid-$(ZXIDREL)-win32-bin/php
-	$(CP) zxid.dll zxidhlo zxidsimple zxididp zxcot zxpasswd zxdecode zxlogview zxbusd zxbustailf zxbuslist smime mini_httpd_zxid *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
+	$(CP) zxid.dll zxidhlo.exe zxidsimple.exe zxididp.exe zxcot.exe zxpasswd.exe zxdecode.exe zxlogview.exe smime.exe zxcall.exe *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
 	$(CP) zxidjava/*.class $(ZXIDJNI_SO) zxidjava/zxid_wrap.c zxid-$(ZXIDREL)-win32-bin/zxidjava
 	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay README.zxid README.zxid-win32 zxid-$(ZXIDREL)-win32-bin
 	$(CP) c/*.h zxid-$(ZXIDREL)-win32-bin/c
@@ -1873,6 +1958,9 @@ winbindist:
 
 #	$(CP) *.php mod_auth_saml.dll zxid-$(ZXIDREL)-win32-bin
 #	$(CP) php/*.php php/php_zxid.dll  zxid-$(ZXIDREL)-win32-bin/php
+
+
+common_bins: zxcot$(EXE) zxdecode$(EXE) zxpasswd$(EXE) zxlogview$(EXE) smime$(EXE) zxidhlo$(EXE) zxidsimple$(EXE) zxididp$(EXE) zxcall$(EXE)
 
 
 # To create release
@@ -1904,7 +1992,7 @@ winbindist:
 #WEBROOT=sampo@zxid.org:zxid.org
 WEBROOTHOST=sampo@zxidp.org
 WEBROOTDIR=/var/zxid/webroot
-WEBROOT=sampo@zxidp.org:/var/zxid/webroot
+WEBROOT=sampo@zxidp.org:/var/zxid/webroot/zxid.org/
 
 copydist:
 	rsync zxid-$(ZXIDREL).tgz $(WEBROOT)

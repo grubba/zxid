@@ -188,6 +188,7 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 
 
 
+#include "platform.h"
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"

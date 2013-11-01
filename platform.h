@@ -9,6 +9,7 @@
 
 #ifdef MINGW
 
+#include <winsock2.h>
 #include <windows.h>
 
 #ifdef __cplusplus

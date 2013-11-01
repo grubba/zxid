@@ -32,6 +32,9 @@
  * 6. Regression test mode
  */
 
+#include "platform.h"
+#include "errmac.h"
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,8 +46,6 @@
 #include <openssl/aes.h>
 #endif
 
-#include "platform.h"
-#include "errmac.h"
 #include "zx.h"
 #include "zxid.h"
 #include "zxidutil.h"

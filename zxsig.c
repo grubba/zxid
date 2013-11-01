@@ -15,6 +15,9 @@
  * 1.12.2010, improved logging of canonicalizations --Sampo
  */
 
+#include "platform.h"
+#include "errmac.h"
+
 #include <memory.h>
 #include <string.h>
 
@@ -28,8 +31,6 @@
 #include <openssl/err.h>
 #endif
 
-#include "errmac.h"
-#include "platform.h"
 #include "zx.h"
 #include "zxid.h"
 #include "zxidutil.h"

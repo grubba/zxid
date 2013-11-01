@@ -15,6 +15,7 @@
 %module "zxidjni"
 %{
 
+#include "platform.h"
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"
