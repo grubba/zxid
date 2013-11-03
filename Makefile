@@ -1,4 +1,4 @@
-# zxid/Makefile  -  How to build ZXID
+# zxid/Makefile  -  How to build ZXID (try: make help)
 # Copyright (c) 2012-2013 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
 # Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 # Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
@@ -25,8 +25,9 @@
 # 16.8.2012, added zxbusd build --Sampo
 # 16.4.2013, added diet64 statically linked targets --Sampo
 # 21.6.2013, added mini_httpd --Sampo
+# 4.11.2013, reformed the TARGET system; include and lib paths per Debian --Sampo
 #
-# Build so far only tested on Linux, Solaris 8 and MacOS 10.3. This
+# Build so far only tested on Linux, Solaris 8, MacOS 10.3, and mingw-w64. This
 # makefile needs gmake-3.78 or newer.
 # (See dietlibc (fefe.de) Makefile for some useful wizardry.)
 # Try `make help'
@@ -39,9 +40,9 @@
 vpath %.c ../zxid
 vpath %.h ../zxid
 
-default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall zxencdectest
+default: seehelp precheck zxid$(EXE) zxidhlo$(EXE) zxididp$(EXE) zxidhlowsf$(EXE) zxidsimple$(EXE) zxidwsctool$(EXE) zxlogview$(EXE) zxidhrxmlwsc$(EXE) zxidhrxmlwsp$(EXE) zxdecode$(EXE) zxcot$(EXE) zxpasswd$(EXE) zxcall$(EXE) zxencdectest$(EXE)
 
-all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcgi mini_httpd_zxid
+all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcgi$(EXE) mini_httpd_zxid$(EXE)
 
 zxbus:  zxbusd zxbustailf zxbuslist
 
@@ -53,8 +54,10 @@ diet64: zxcot-static-x64 zxpasswd-static-x64 zxididp-static-x64 zxidhlo-static-x
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000115
-ZXIDREL=1.15
+ZXIDVERSION=0x000116
+ZXIDREL=1.16
+
+TOP=$(shell pwd)
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/var/zxid/$(ZXIDREL)
@@ -81,89 +84,8 @@ ENA_MINI_HTTPD=1
 ENA_SMIME=1
 ENA_TAS3=1
 
-###
-### Environment dependent options and dependency packages
-###
-
-TOP=$(shell pwd)
-CURL_ROOT?=/usr/local
-OPENSSL_ROOT?=/usr/local/ssl
-PHP_CONFIG?=php-config
-CSHARP_CONFIG?=true
-PY_CONFIG?=true
-RUBY_CONFIG?=true
-APACHE_ROOT?=/usr/local/httpd
-DIET_ROOT?=/usr/local/dietlibc-0.33
-
-ECHO?=echo
-CP?=cp
-PERL?=perl
-XSD2SG_PL= ../pd/xsd2sg.pl
-XSD2SG=$(PERL) $(XSD2SG_PL)
-PULVERIZE=$(PERL) ./pulverize.pl
-GPERF?=gperf
-SWIG?=swig
-ARC?=ar -crs
-ARX?=ar -x
-#CC=ccache gcc
-CC?=gcc
-LD?=$(CC)
-GCOV?=gcov
-LCOV?=lcov
-GENHTML=genhtml
-#SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,--allow-multiple-definition
-# --export-all-symbols does not seem to work on gcc-4.6.1... try -Wl,--export-dynamic instead
-SHARED_FLAGS=-shared -Wl,--export-dynamic -Wl,-whole-archive -Wl,--allow-multiple-definition
-SHARED_CLOSE=-Wl,-no-whole-archive
-CFLAGS =  -g -fpic -fno-strict-aliasing
-#CFLAGS += -Os    # gcc-3.4.6 miscompiles with -Os on ix86 (2010 --Sampo)
-CFLAGS += -fmessage-length=0
-CFLAGS += -Wall -Wno-parentheses -Wno-unused-label -Wno-unknown-pragmas -Wno-char-subscripts
-#LDFLAGS += -Wl,--gc-sections
-LIBZXID_A=libzxid.a
-LIBZXID=-L. -lzxid
-SSL_LIBS= -lssl -lcrypto
-OBJ_EXT=o
-PLATFORM_OBJ=
-EXE=
-
-ifeq ($(ENA_PG),1)
-
-###
-### To compile for profiling your should run make ENA_PG=1
-### See also: make gcov, make lcov (and lcovhtml directory), man gcov, man gprof
-### N.B. ccache seems to be incompatible with profiling.
-###
-
-#CDEF += -DMUTEX_DEBUG
-CFLAGS += -pg -ftest-coverage -fprofile-arcs
-LDFLAGS += -pg -ftest-coverage -fprofile-arcs
-
-else
-
-# -ffunction-sections is incompatible with profiling
-
-CFLAGS += -ffunction-sections -fdata-sections
-
-endif
-
-###
-### Java options (watch out javac running out of heap)
-###
-
-JAR=jar
-JAVAC=javac
-JAVAC_FLAGS=-J-Xmx128m -g
-# JNI library name is very platform dependent (see macosx and mingw)
-ZXIDJNI_SO=zxidjava/libzxidjni.so
-# find / -name jni.h; find / -name jni_md.h
-# apt-get install openjdk-6-jdk
-JNI_INC=-I/usr/java/include -I/usr/java/include/linux
-# Path where HttpServlet supplied by your application server resides
-# find / -name servlet-api.jar
-# sudo apt-get install tomcat6
-SERVLET_PATH=../apache-tomcat-5.5.20/common/lib/servlet-api.jar
-#SERVLET_PATH=../apache-tomcat-6.0.18/lib/servlet-api.jar
+### You may supply additional defines on command line.
+###   make CDEF='-DZXID_CONF_PATH="/opt/zxid/zxid.conf"'
 
 # Advise other software, such as mini_httpd, to use ZXID specific features
 CDEF+= -DUSE_ZXID -DDISA_MINI_HTTPD_BLOAT
@@ -171,42 +93,153 @@ CDEF+= -DUSE_ZXID -DDISA_MINI_HTTPD_BLOAT
 CDEF+= -DUSE_CURL
 # Without OpenSSL signing and signature verification are not possible
 CDEF+= -DUSE_OPENSSL
-# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
-CDEF+= -DUSE_PTHREAD -pthread
 
-### To change any of the above options, you can either supply
-### alternate values on make command line, like `make PREFIX=/your/path'
-### or you can create localconf.mk file to hold your options. This
-### file is included here, but if it's missing, no problem.
+### The CDEF variable can be later overridden or modified in
+### one of the target sections or after all in localconf.mk
+### The CDEF is used for dependency computation. For actual
+### compilation it is added to CFLAGS.
 
--include localconf.mk
+### Environment dependent options and dependency packages.
+### The default values are according to their usual locations
+### in Ubuntu and Debian based Linux distributions.
 
 # Try find / -name ap_config.h; find / -name apr.h; find / -name mod_auth_basic.so
 # apt-get install libapr1-dev
 # apt-get install apache2-dev
-APACHE_INCLUDE ?= -I$(APACHE_ROOT)/include
-APR_INCLUDE    ?= -I$(APACHE_ROOT)/srclib/apr-util/include
-APACHE_MODULES ?= $(APACHE_ROOT)/modules
+APACHE_INC ?= -I/usr/include/apache2
+APR_INC    ?= -I/usr/include/apr-1.0
+APACHE_MODULES ?= /usr/lib/apache2/modules
+DIET_ROOT?=/usr/local/dietlibc-0.33
+PHP_CONFIG?=php-config
+CSHARP_CONFIG?=true
+PY_CONFIG?=true
+RUBY_CONFIG?=true
 
-### Compute options based on local modifications
+###
+### Java options (watch out javac running out of heap)
+###
 
-LIBS+= -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz
-#LIBS+= -pthread -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -static -lcurl -lssl -lcrypto -lz -dynamic
+JAR?=jar
+JAVAC?=javac
+JAVAC_FLAGS?=-J-Xmx128m -g
+ZXIDJNI_SO?=zxidjava/libzxidjni.so
+# JNI library name is very platform dependent (see macosx and mingw)
+# find / -name jni.h; find / -name jni_md.h
+# apt-get install openjdk-6-jdk
+#JNI_INC?=-I/usr/java/include -I/usr/java/include/linux
+JNI_INC?=-I/usr/lib/jvm/java-6-openjdk/include -I/usr/lib/jvm/java-6-openjdk/include/linux
+#JNI_INC?=-I/usr/lib/jvm/java-6-openjdk-i386/include -I/usr/lib/jvm/java-6-openjdk-i386/include/linux
+#JNI_INC?=-I/usr/lib/jvm/java-6-openjdk-amd64/include -I/usr/lib/jvm/java-6-openjdk-amd64/include/linux
+# Path where HttpServlet supplied by your application server resides
+# find / -name servlet-api.jar
+# sudo apt-get install tomcat6
+SERVLET_PATH=../apache-tomcat-5.5.20/common/lib/servlet-api.jar
+#SERVLET_PATH=../apache-tomcat-6.0.18/lib/servlet-api.jar
+
+### You may supply additional include paths on command line.
+### For example if you compiled the openssl and libcurl from original
+### sources, you might specify:
+###   make CINC='-I/usr/local/include -I/usr/local/ssl/include'
+CINC+=-I. -I$(TOP)
+### This CINC variable can be later overridden or modified in
+### localconf.mk or in one of the target sections. The CINC is
+### used for dependency computation. For actual compilation it
+### is added to CFLAGS.
+
+### You may supply additional libs and library paths from the command line.
+### For example if you compiled the openssl and libcurl from original
+### sources, you might specify:
+###   make LIBS='-L/usr/local/lib -L/usr/local/ssl/lib'
+### If you need some special platform dependent libraries afterwards,
+### supply them using POSTLIBS, e.g.
+###   make POSTLIBS='-lxnet -lsocket'
+LIBS+= -lcurl -lssl -lcrypto -lz $(POSTLIBS)
+#LIBS+= -pthread -lpthread -static -lcurl -lssl -lcrypto -lz -dynamic
 #LIBS+= -lidn -lrt
-#LIBS+=-ldl
-OUTOPT=-o 
+#LIBS+= -ldl
+### This LIBS variable can be later overridden or modified in
+### localconf.mk or in one of the target sections.
 
+### Where commands for build are found (override for cross compiler or Windows)
+
+#CC=ccache gcc
+CC?=gcc
+# If you want to override LD setting you must supply LD_ALT on command line or use localconf.mk
+LD_ALT?=$(CC)
+LD=$(LD_ALT)
+ARC?=ar -crs
+ARX?=ar -x
+GCOV?=gcov
+LCOV?=lcov
+ECHO?=echo
+CP?=cp
+PERL?=perl
+XSD2SG_PL?= ../pd/xsd2sg.pl
+XSD2SG=$(PERL) $(XSD2SG_PL)
+PULVERIZE=$(PERL) ./pulverize.pl
+GPERF?=gperf
+SWIG?=swig
+GENHTML?=genhtml
+
+#SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,--allow-multiple-definition
+# --export-all-symbols does not seem to work on gcc-4.6.1... try -Wl,--export-dynamic instead
+SHARED_FLAGS=-shared -Wl,--export-dynamic -Wl,-whole-archive -Wl,--allow-multiple-definition
+SHARED_CLOSE=-Wl,-no-whole-archive
+### Form CFLAGS from its components
+CDEF+= -D_REENTRANT -DDEBUG
+CDEF+= -DMUTEX_DEBUG=1
+CFLAGS+= -g -fpic -fno-strict-aliasing
+#CFLAGS += -Os    # gcc-3.4.6 miscompiles with -Os on ix86 (2010 --Sampo)
+CFLAGS+= -fmessage-length=0
+CFLAGS+= -Wall -Wno-parentheses -Wno-unused-label -Wno-unknown-pragmas -Wno-char-subscripts
+#LDFLAGS += -Wl,--gc-sections
+LIBZXID_A?=libzxid.a
+LIBZXID?=-L. -lzxid
+OUTOPT?=-o 
+OBJ_EXT?=o
+PLATFORM_OBJ?=
+EXE?=
+
+ifeq ($(ENA_PG),1)
+### To compile for profiling your should run make ENA_PG=1
+### See also: make gcov, make lcov (and lcovhtml directory), man gcov, man gprof
+### N.B. ccache seems to be incompatible with profiling.
+$(info Profiling build)
+CFLAGS+= -pg -ftest-coverage -fprofile-arcs
+LDFLAGS+= -pg -ftest-coverage -fprofile-arcs
+else
+# -ffunction-sections is incompatible with profiling
+CFLAGS+= -ffunction-sections -fdata-sections
 # Following ld flags as well as C flag -ffunction-sections are a quest to
 # eliminate unused functions from final link.
 #LDFLAGS= -Wl,-O -Wl,2 --gc-sections
+endif
 
 ####################################################################
 ### Platform dependent options (choose one with `make TARGET=foo')
 ###
 
-ifeq ($(TARGET),xsol8)
+ifeq ($(TARGET),)
+# Target guesser (only works for native builds and only of output of uname is the target name)
+TARGET=$(shell uname)
+$(warning Guessed TARGET=$(TARGET))
+endif
 
-# Cross compilation for Solaris 8 target (on Linux host). Invoke as `make TARGET=xsol8'
+ifeq ($(TARGET),Linux)
+### Flags for Linux 2.6 native compile (gcc + gnu binutils)
+CDEF+=-DLINUX
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
+ifeq ($(DISTRO),fedora)
+CDEF+=-DFEDORA
+endif
+LIBS+=-lpthread
+# Marks that target has been detected
+TARGET_FOUND=1
+endif
+
+ifeq ($(TARGET),xsol8)
+### Cross compilation for Solaris 8 target (on Linux host). Invoke as `make TARGET=xsol8'
 # You must have the cross compiler installed in /apps/gcc/sol8 and in path. Similarily
 # the cross binutils must be in path.
 #    export PATH=/apps/gcc/sol8/bin:/apps/binutils/sol8/bin:$PATH
@@ -216,38 +249,41 @@ CROSS_COMPILE=1
 CC=sparc-sun-solaris2.8-gcc
 LD=sparc-sun-solaris2.8-gcc
 CDEF+=-DSUNOS -DBYTE_ORDER=4321 -DBIG_ENDIAN=4321
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
 LIBS+=-lxnet -lsocket
+TARGET_FOUND=1
+endif
 
-else
 ifeq ($(TARGET),sol8)
-
-# Flags for Solaris 8 native compile (with gc and gnu binutils) (BIG_ENDIAN BYTE_ORDER)
-CDEF+=-DSUNOS -DBYTE_ORDER=4321 -DBIG_ENDIAN=4321
-LIBS+=-R$(CURL_ROOT)/lib -R$(OPENSSL_ROOT)/lib -lxnet -lsocket
-CURL_ROOT=/opt/sfw
-OPENSSL_ROOT=/usr/sfw
+### Flags for Solaris 8 native compile (with gc and gnu binutils) (BIG_ENDIAN BYTE_ORDER)
+CDEF+=-DSUNOS -DBYTE_ORDER=4321 -DBIG_ENDIAN=4321 -I/opt/sfw/include -I/usr/sfw/include
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
+LIBS=-R/opt/sfw/lib -R/usr/sfw/lib -lcurl -lssl -lcrypto -lz -lxnet -lsocket
 SHARED_FLAGS=-shared --export-all-symbols -Wl,-z -Wl,allextract
 SHARED_CLOSE=-Wl,-z -Wl,defaultextract
+TARGET_FOUND=1
+endif
 
-else
 ifeq ($(TARGET),sol8x86)
-
 # Flags for Solaris 8/x86 native compile (with gc and gnu binutils) (LITTLE_ENDIAN BYTE_ORDER)
-CDEF+=-DSUNOS -DBYTE_ORDER=1234
-LIBS+=-R$(CURL_ROOT)/lib -R$(OPENSSL_ROOT)/lib -lxnet -lsocket
-CURL_ROOT=/opt/csw
-OPENSSL_ROOT=/usr/sfw
+CDEF+=-DSUNOS -DBYTE_ORDER=1234 -I/opt/sfw/include -I/usr/sfw/include
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
+LIBS=-R/opt/sfw/lib -R/usr/sfw/lib -lcurl -lssl -lcrypto -lz  -lxnet -lsocket
 SHARED_FLAGS=-shared --export-all-symbols -Wl,-z -Wl,allextract
 SHARED_CLOSE=-Wl,-z -Wl,defaultextract
+endif
 
-else
 ifeq ($(TARGET),macosx)
-
-# Flags for MacOS 10 / Darwin native compile (gcc + Apple linker)
+#### Flags for MacOS 10 / Darwin native compile (gcc + Apple linker)
 #   alias ldd='otool -L'
 #   alias strace=ktrace or dtrace or dtruss
 CFLAGS=-g -fPIC -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -DMAYBE_UNUSED=''
 CDEF+=-DMACOSX
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
 JNI_INC=-I/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Headers
 SHARED_FLAGS=-dylib -all_load -bundle
 SHARED_CLOSE=
@@ -256,23 +292,52 @@ ZXIDJNI_SO=zxidjava/libzxidjni.jnilib
 #OPENSSL_ROOT=/Developer/SDKs/MacOSX10.4u.sdk/usr
 #CURL_ROOT=/Developer/SDKs/MacOSX10.4u.sdk/usr
 # Try find / -name ap_config.h; find / -name apr.h
-APACHE_INCLUDE = -I/Developer/SDKs/MacOSX10.6.sdk/usr/include/apache2
-APR_INCLUDE    = -I/Developer/SDKs/MacOSX10.6.sdk/usr/include/apr-1
+APACHE_INC = -I/Developer/SDKs/MacOSX10.6.sdk/usr/include/apache2
+APR_INC    = -I/Developer/SDKs/MacOSX10.6.sdk/usr/include/apr-1
 APACHE_MODULES = /usr/libexec/apache2
 MOD_AUTH_SAML_LIBS=-lapr-1
 #  -lhttpd2core
+TARGET_FOUND=1
+endif
 
-else
 ifeq ($(TARGET),freebsd)
-
-# Putative flags for Freebsd compile
+### Putative flags for Freebsd compile
 CDEF+=-DFREEBSD
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
+LIBS+=-lpthread
+TARGET_FOUND=1
+endif
 
-else
+ifeq ($(TARGET),cygwin)
+### Native Windows build using Cygwin environment and gcc
+CDEF+=-DCYGWIN -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DLOCK_UN=0
+MOD_AUTH_SAML_LIBS=-lapr-1 -lhttpd2core
+TARGET_FOUND=1
+endif
+
+ifeq ($(TARGET),mingw)
+### These options work with late 2010 vintage mingw (x86-mingw32-build-1.0-sh.tar.bz2?)
+CP=ln
+ZXID_PATH=/c/zxid/
+EXE=.exe
+PRECHECK_PREP=precheck_prep_win
+CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
+WIN_DLL_LIBS= -L/mingw/lib -lcurl -lssl -lcrypto -lz -lssh2 -lidn -lwldap32 -lgdi32 -lwsock32 -lwinmm -lkernel32 -lz
+LIBS= -mconsole $(WIN_DLL_LIBS) -lpthread
+SHARED_FLAGS=-Wl,--add-stdcall-alias -mdll -static -Wl,--export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -D'ZXID_PATH="$(ZXID_PATH)"'
+JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:/Program Files/Java/jdk1.5.0_14/include/win32"
+ZXIDJNI_SO=zxidjava/zxidjni.dll
+ifeq ($(SHARED),1)
+LIBZXID=-L. -lzxiddll
+endif
+TARGET_FOUND=1
+endif
+
 ifeq ($(TARGET),xmingw)
-
-# Cross compilation for MINGW target (on Linux host). Invoke
-# as `make zxid.dll TARGET=xmingw'
+### Cross compilation for MINGW 32bit target (on Linux host).
+# Invoke as `make zxid.dll TARGET=xmingw'
 # You must have the cross compiler installed in /apps/gcc/mingw and in
 # path. Similarily the cross binutils must be in path.
 #    export PATH=/apps/gcc/mingw/bin:/apps/binutils/mingw/bin:$PATH
@@ -295,29 +360,27 @@ ifeq ($(TARGET),xmingw)
 #   undefined reference to `_imp__curl_easy_strerror' --> compile with -DCURL_STATICLIB
 #   undefined reference to `timeGetTime@0'            --> add -lwinmm
 
-SYSROOT=/apps/gcc/mingw/sysroot
+MINGWDIR=/apps/gcc/mingw
+SYSROOT=$(MINGWDIR)/sysroot
 CROSS_COMPILE=1
 EXE=.exe
-CC=/apps/gcc/mingw/bin/i586-pc-mingw32-gcc
-LD=/apps/gcc/mingw/bin/i586-pc-mingw32-gcc
+CC=$(MINGWDIR)/bin/i586-pc-mingw32-gcc
+LD=$(MINGWDIR)/bin/i586-pc-mingw32-gcc
 ARC=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -crs
 ARX=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -x
+PRECHECK_PREP=precheck_prep_win
 #CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
-CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB
-CURL_ROOT=$(SYSROOT)
-OPENSSL_ROOT=$(SYSROOT)
-ZLIB_ROOT=$(SYSROOT)
-APACHE_INCLUDE = -I$(SYSROOT)/include
-APR_INCLUDE    = -I$(SYSROOT)/srclib/apr-util/include
+CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
+# All dependency libraries are assumed to be in the mingw environment
+CINC=-I. -I$(TOP) -I$(SYSROOT)/include
+APACHE_INC = -I$(SYSROOT)/include
+APR_INC    = -I$(SYSROOT)/srclib/apr-util/include
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
 endif
-
--include xmingw.mk
-
 # -lws2_32  -lmingw32  -u _imp__curl_easy_setopt -u _imp__curl_easy_strerror
-WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
+WIN_DLL_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
 LIBS= -mconsole $(WIN_LIBS)
 #SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,-whole-archive
 SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
@@ -333,12 +396,12 @@ CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-
 #i586-pc-mingw32-gcc: shared and mdll are not compatible
 #make: *** [zxid.dll] Error 1
 # remove the -shared flag and it compiles
+TARGET_FOUND=1
+endif
 
-else
 ifeq ($(TARGET),xmingw64)
-
-# Cross compilation for MINGW64 target (on Linux host). Invoke
-# as `make zxid.dll TARGET=xmingw64'
+### Cross compilation for MINGW64 target (on Linux host).
+# Invoke as `make zxid.dll TARGET=xmingw64'
 # You must have the cross compiler installed. You can get one from
 # http://mingw-w64.sourceforge.net/download.php
 #
@@ -348,16 +411,18 @@ ifeq ($(TARGET),xmingw64)
 # may have trouble due to linking against cygwin dependent libraries).
 #
 # Cross compiling zlib
-#     export PATH=/apps/mingw/3.0.0-w64/bin:$PATH
+#     export PATH=/apps/mingw/mingw-w64-bin_i686-linux_20130523/bin:$PATH
 #     ./configure --prefix=/mingw
 #     CC=x86_64-w64-mingw32-gcc LD=x86_64-w64-mingw32-ld AR=x86_64-w64-mingw32-ar RANLIB=x86_64-w64-mingw32-gcc-ranlib make -e
 #     cp libz.a /apps/mingw/3.0.0-w64/mingw/lib
 #     cp zlib.h zconf.h /apps/mingw/3.0.0-w64/mingw/include
 #
 # Cross compiling openssl
-#     ./Configure --prefix=/mingw --cross-compile-prefix=x86_64-w64-mingw32- enable-rc5 enable-mdc2 zlib mingw64-cross-debug
+#     ./Configure --prefix=/mingw --cross-compile-prefix=x86_64-w64-mingw32- enable-rc5 enable-mdc2 zlib mingw64-cross-debug -I/apps/mingw/3.0.0-w64/x86_64-w64-mingw32/include
 #     #make depend   # error, apparently not needed
 #     make
+#     # If you have syntax errors with string "<symlink>" then eliminate
+#     # symlinks from include/openssl by copying the files directly there.
 #     #make test     # not doable since openssl.exe will not execute on Linux
 #     cp -Lr include/openssl /apps/mingw/3.0.0-w64/mingw/include
 #     cp libssl.a libcrypto.a /apps/mingw/3.0.0-w64/mingw/lib
@@ -369,157 +434,213 @@ ifeq ($(TARGET),xmingw64)
 #     cp lib/.libs/libcurl* /apps/mingw/3.0.0-w64/mingw/lib
 #     cp -r include/curl/ /apps/mingw/3.0.0-w64/mingw/include
 #     cp src/curl.exe /apps/mingw/3.0.0-w64/mingw/bin-w64
+#
+# Fix illegal relocation error on linking libws2_32.a
+#  
 
-MINGWDIR=/apps/mingw/3.0.0-w64
-SYSROOT=$(MINGWDIR)/mingw
+# MinGW-W64 Runtime 3.0 (alpha - rev. 5871) 2013-05-21
+MINGWDIR=/apps/mingw/mingw-w64-bin_i686-linux_20130523
+SYSROOT=$(MINGWDIR)/x86_64-w64-mingw32
 CROSS_COMPILE=1
 EXE=.exe
 CC=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
 LD=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
 ARC=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -crs
 ARX=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -x
+PRECHECK_PREP=precheck_prep_win
 #CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
-CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB
-CURL_ROOT=$(SYSROOT)
-OPENSSL_ROOT=$(SYSROOT)
-ZLIB_ROOT=$(SYSROOT)
-APACHE_INCLUDE = -I$(SYSROOT)/include
-APR_INCLUDE    = -I$(SYSROOT)/srclib/apr-util/include
+CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
+# All dependency libraries are assumed to be in the mingw environment
+CINC=-I. -I$(TOP) -I$(SYSROOT)/include
+APACHE_INC = -I$(SYSROOT)/include
+APR_INC    = -I$(SYSROOT)/srclib/apr-util/include
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
 endif
-
--include xmingw.mk
-
-# -lws2_32 -lwldap32  -lmingw64  -u _imp__curl_easy_setopt -u _imp__curl_easy_strerror
-WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lws2_32 -lwldap32 -lwinmm -lwsock32 -lgdi32 -lkernel32
-LIBS= -mconsole $(WIN_LIBS)
+# -lws2_32 -lwldap32 -lmingw64 -lcrtdll -u _imp__curl_easy_setopt -u _imp__curl_easy_strerror
+WIN_DLL_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lws2_32 -lwldap32 -lcrypt32 -lwinmm -lwsock32 -lgdi32 -lkernel32
+LIBS= -mconsole $(WIN_DLL_LIBS)
 #SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,-whole-archive
-SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+SHARED_FLAGS=-Wl,--add-stdcall-alias -shared -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
 CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing
+TARGET_FOUND=1
+endif
 
-# java.lang.UnsatisfiedLinkError: Given procedure could not be found
-# -mno-cygwin -mrtd -Wl,--kill-at -Wl,--add-stdcall-alias
-# http://www.inonit.com/cygwin/jni/helloWorld/c.html
-# http://www.1702.org/jniswigdll.html
-# http://maba.wordpress.com/2004/07/28/generating-dll-files-for-jni-under-windowscygwingcc/
+ifeq ($(TARGET),xmingw64b)
+### Cross compilation for MINGW64 target (on Ubuntu Linux host).
+# Invoke as `make zxid.dll TARGET=xmingw64b'
+# This target was tested with Ubuntu/Debian supplied mingw-w64 cross compiler package
+#    apt-get install mingw-w64
+#
+# For best results use the same cross compiler for compiling the dependency
+# libraries like curl, openssl, and zlib. Furthermore: your cross compiler
+# should be for MinGW target, not for Cygwin (i.e. default compiler of Cygwin
+# may have trouble due to linking against cygwin dependent libraries).
+#
+# Cross compiling zlib
+#     export PATH=/usr/bin:/bin
+#     ./configure --prefix=/usr/x86_64-w64-mingw32
+#     make CC=x86_64-w64-mingw32-gcc LD=x86_64-w64-mingw32-ld AR=x86_64-w64-mingw32-ar RANLIB=x86_64-w64-mingw32-gcc-ranlib
+#     # compilation fails when trying to create .so, but the .a has been built by then
+#     cp libz.a /usr/x86_64-w64-mingw32/lib
+#     cp zlib.h zconf.h /usr/x86_64-w64-mingw32/include
+#
+# Cross compiling openssl
+#     ./Configure --prefix=/usr/x86_64-w64-mingw32 --cross-compile-prefix=x86_64-w64-mingw32- enable-rc5 enable-mdc2 zlib mingw64-cross-debug
+#     #make depend   # error, apparently not needed
+#     make
+#     # If you have syntax errors with string "<symlink>" then eliminate
+#     # symlinks from include/openssl by copying the files directly there.
+#     #make test     # not doable since openssl.exe will not execute on Linux
+#     cp -Lr include/openssl /usr/x86_64-w64-mingw32/include
+#     cp libssl.a libcrypto.a /usr/x86_64-w64-mingw32/lib
+#     cp apps/openssl.exe /usr/x86_64-w64-mingw32/bin
+#
+# Cross compiling curl
+#     CPPFLAGS='-I/usr/x86_64-w64-mingw32/include' LDFLAGS='-L/usr/x86_64-w64-mingw32/lib' LIBS='-lz' ./configure --prefix=/usr/x86_64-w64-mingw32 --with-ssl=/usr/x86_64-w64-mingw32 --without-gnutls -enable-debug --enable-thread --enable-nonblocking --host=x86_64-w64-mingw32 --with-random=/random.txt --disable-shared --enable-static
+#     make
+#     cp lib/.libs/libcurl* /usr/x86_64-w64-mingw32/lib
+#     cp -r include/curl/ /usr/x86_64-w64-mingw32/include
+#     cp src/curl.exe /usr/x86_64-w64-mingw32/bin
 
-#/apps/gcc/mingw/bin/i586-pc-mingw32-gcc -o zxid.dll -Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib libzxid.a -Wl,-no-whole-archive -L/apps/gcc/mingw/sysroot/lib -L/apps/gcc/mingw/sysroot/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32 -mdll
-#i586-pc-mingw32-gcc: shared and mdll are not compatible
-#make: *** [zxid.dll] Error 1
-# remove the -shared flag and it compiles
-
-else
-ifeq ($(TARGET),mingw)
-
-# These options work with late 2010 vintage mingw (x86-mingw32-build-1.0-sh.tar.bz2?)
-
-CP=ln
-ZXID_PATH=/c/zxid/
+# apt-get install mingw-w64
+# MinGW-W64 Runtime 1.0 (stable - rev. 0) 0000-00-00
+MINGWDIR=/usr
+SYSROOT=$(MINGWDIR)/x86_64-w64-mingw32
+CROSS_COMPILE=1
 EXE=.exe
-
-CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB
-CURL_ROOT=/usr/local
-OPENSSL_ROOT=/usr/local/ssl
-ZLIB_ROOT=/usr/local/lib/
-
-SSL_LIBS= -lssl -lcrypto -lgdi32 -lwsock32
-CURL_LIBS= -lcurl -lssh2 -lidn -lwldap32
-WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib $(CURL_LIBS) $(SSL_LIBS) -lwinmm -lkernel32 -lz
-LIBS= -mconsole $(WIN_LIBS) -lpthread
-SHARED_FLAGS=-Wl,--add-stdcall-alias -mdll -static -Wl,--export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
-CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -D'ZXID_PATH="$(ZXID_PATH)"'
-
-#WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
-#LIBS= -mconsole $(WIN_LIBS)
-#SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
-#CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin
-
-JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:/Program Files/Java/jdk1.5.0_14/include/win32"
+CC=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
+LD=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
+ARC=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -crs
+ARX=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -x
+PRECHECK_PREP=precheck_prep_win
+#CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
+CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
+# All dependency libraries are assumed to be in the mingw environment
+CINC=-I. -I$(TOP) -I$(SYSROOT)/include
+APACHE_INC = -I$(SYSROOT)/include
+APR_INC    = -I$(SYSROOT)/srclib/apr-util/include
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
 endif
+# -lws2_32 -lwldap32 -lmingw64 -lcrtdll -u _imp__curl_easy_setopt -u _imp__curl_easy_strerror
+WIN_DLL_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lws2_32 -lwldap32 -lcrypt32 -lwinmm -lwsock32 -lgdi32 -lkernel32
+LIBS= -mconsole $(WIN_DLL_LIBS)
+#SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,-whole-archive
+SHARED_FLAGS=-Wl,--add-stdcall-alias -shared -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing
+TARGET_FOUND=1
+endif
 
-else
-ifeq ($(TARGET),cygwin)
-
-CDEF+=-DCYGWIN -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DLOCK_UN=0
-CURL_ROOT=/usr/local
-OPENSSL_ROOT=/usr/local/ssl
-MOD_AUTH_SAML_LIBS=-lapr-1 -lhttpd2core
-
-else
 ifeq ($(TARGET),win32cl)
-
-# Native Compilation with Microsoft Visual C++ compiler's command line (aka msvc) (experimental)
-
+### Native Compilation with Microsoft Visual C++ compiler's command line (aka msvc)
 CP=copy
 CC=cl
 LD=link
 ARC=lib
-CDEF+=-DMINGW -DWIN32CL -DUSE_LOCK=flock -DCURL_STATICLIB
-CURL_ROOT="G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc/"
-OPENSSL_ROOT="C:/OpenSSL/"
-ZLIB_ROOT="C:/Program Files/GnuWin32/"
+CDEF+=-DMINGW -DWIN32CL -DUSE_LOCK=flock -DCURL_STATICLIB -DUSE_PTHREAD
+CURL_ROOT="G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc"
+OPENSSL_ROOT="C:/OpenSSL"
+ZLIB_ROOT="C:/Program Files/GnuWin32"
+CINC=-I. -I$(TOP) -I"$(CURL_ROOT)/include" -I"$(OPENSSL_ROOT)/include" -I"$(ZLIB_ROOT)/include"
 JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:\Program Files\Java\jdk1.5.0_14\include\win32"
-WIN_LIBS= -LIBPATH:$(CURL_ROOT)/lib/Debug -LIBPATH:$(OPENSSL_ROOT)/lib/VC -LIBPATH:$(ZLIB_ROOT)/lib curllib.lib libeay32MD.lib ssleay32MD.lib zlib.lib kernel32.lib user32.lib winmm.lib Ws2_32.lib
-LIBS= $(WIN_LIBS)
+WIN_DDL_LIBS= -LIBPATH:$(CURL_ROOT)/lib/Debug -LIBPATH:$(OPENSSL_ROOT)/lib/VC -LIBPATH:$(ZLIB_ROOT)/lib curllib.lib libeay32MD.lib ssleay32MD.lib zlib.lib kernel32.lib user32.lib winmm.lib Ws2_32.lib
+LIBS= $(WIN_DLL_LIBS)
 #SHARED_FLAGS=-LDd -MDd -shared --export-all-symbols
 #SHARED_CLOSE=/SUBSYSTEM:WINDOWS
 SHARED_FLAGS=-DLL -shared --export-all-symbols
 SHARED_CLOSE=
-CFLAGS=-Zi -WL  -DMAYBE_UNUSED=''
+CFLAGS=-Zi -WL -DMAYBE_UNUSED=''
 #CFLAGS+=-Yd
 OUTOPT=-OUT:
 OBJ_EXT=obj
 EXE=.exe
 PLATFORM_OBJ=zxdirent.obj
 LIBZXID_A=zxid.lib
-
 GPERF=gperf.exe
 SHELL="C:\Program Files\GNU Utils\bin"
 MAKESHELL="C:\Program Files\GNU Utils\bin"
-
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
 else
 LIBZXID=zxid.lib
 endif
+TARGET_FOUND=1
+endif
+
+ifeq ($(TARGET_FOUND),)
+$(error TARGET $(TARGET) not found. Run make help
+endif
+
+### To change any of the above options, you can either supply
+### alternate values on make command line, like `make PREFIX=/your/path'
+### or you can create localconf.mk file to hold your options. This
+### file is included here, but if it's missing, no problem.
+
+-include localconf.mk
+
+####################################################################
+### End of platform dependent options (mortals can look, but
+### should not edit below this line).
+
+ifeq ($(V),)
+$(info Nonverbose build (use make V=1 to enable verbose build).)
+$(info TARGET=$(TARGET))
+$(info TOP=$(TOP))
+$(info CC=$(CC))
+$(info CFLAGS=$(CFLAGS))
+$(info CDEF=$(CDEF))
+$(info CINC=$(CINC))
+$(info LD=$(LD))
+$(info LDFLAGS=$(LDFLAGS))
+$(info LIBS=$(LIBS))
+$(info --------------------------)
+endif
+#CFLAGS += $(CDEF) $(CINC)
+
+# Avoid make's built-in rules and variables; do not print entry msg
+MAKEFLAGS += -rR --no-print-directory
+
+ifeq ($(V),1)
+
+%.$(OBJ_EXT): %.c
+	$(CC) $(OUTOPT)$@ -c $< $(CFLAGS) $(CDEF) $(CINC)
+
+%$(EXE): %.$(OBJ_EXT)
+	$(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBZXID) $(LIBS)
+
+precheck/%$(EXE): precheck/%.$(OBJ_EXT)
+	$(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBS)
 
 else
 
-# Flags for Linux 2.6 native compile (gcc + gnu binutils)
-CDEF+=-DLINUX
+%.$(OBJ_EXT): %.c
+	@echo "  Compiling $<"
+	@if $(CC) $(OUTOPT)$@ -c $< $(CFLAGS) $(CDEF) $(CINC) ; then 1; else \
+	echo Failed command:; echo '$(CC) $(OUTOPT)$@ -c $< $(CFLAGS) $(CDEF) $(CINC)' ; fi
 
-ifeq ($(DISTRO),fedora)
-CDEF+=-DFEDORA
-endif
+%$(EXE): %.$(OBJ_EXT)
+	@echo "  Linking executable $<"
+	@if $(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBZXID) $(LIBS) ; then 1; else \
+	echo Failed command:; echo '$(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBZXID) $(LIBS)' ; fi
+
+precheck/%$(EXE): precheck/%.$(OBJ_EXT)
+	@echo "  Link exe $<"
+	@if $(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBS) ; then 1; else \
+	echo Failed command:; echo '$(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBS)' ; fi
 
 endif
-endif
-endif
-endif
-endif
-endif
-endif
-endif
-endif
-endif
 
-CDIR+= -I. -I$(TOP) -I$(OPENSSL_ROOT)/include -I$(CURL_ROOT)/include -I$(ZLIB_ROOT)/include
-CDIR+= $(APACHE_INCLUDE) $(APR_INCLUDE)
-CDEF+= -D_REENTRANT -DDEBUG
-CDEF += -DMUTEX_DEBUG=1
+# Avoid funny character set dependencies
+unexport LC_ALL
+LC_COLLATE=C
+LC_NUMERIC=C
+export LC_COLLATE LC_NUMERIC
 
-CFLAGS+= $(CDEF) $(CDIR)
-
-####################################################################
-### End of platform dependent options, start of dependencies and
-### targets (mortals can look, but should not edit).
-###
+### Start of dependencies and targets
 
 ZXIDHDRS=zx.h zxid.h zxidnoswig.h c/zxidvers.h
 
@@ -615,13 +736,14 @@ endif
 
 endif
 
+ZXBUSD_OBJ=zxbusd.$(OBJ_EXT) hiios.$(OBJ_EXT) hiinit.$(OBJ_EXT) hitodo.$(OBJ_EXT) hinet.$(OBJ_EXT) hiread.$(OBJ_EXT) hiwrite.$(OBJ_EXT) hiiosdump.$(OBJ_EXT) testping.$(OBJ_EXT) http.$(OBJ_EXT) smtp.$(OBJ_EXT) stomp.$(OBJ_EXT) zxbusdist.$(OBJ_EXT) zxbussubs.$(OBJ_EXT) zxbusent.$(OBJ_EXT)
+
 ZXID_OBJ=zxid.$(OBJ_EXT)
 ZXIDWSCTOOL_OBJ=zxidwsctool.$(OBJ_EXT)
 ZXIDSP_OBJ=zxidsp.$(OBJ_EXT)
 ZXIDHLO_OBJ=zxidhlo.$(OBJ_EXT)
 ZXBUSTAILF_OBJ=zxbustailf.$(OBJ_EXT)
 ZXBUSLIST_OBJ=zxbuslist.$(OBJ_EXT)
-ZXBUSD_OBJ=zxbusd.$(OBJ_EXT) hiios.$(OBJ_EXT) hiinit.$(OBJ_EXT) hitodo.$(OBJ_EXT) hinet.$(OBJ_EXT) hiread.$(OBJ_EXT) hiwrite.$(OBJ_EXT) hiiosdump.$(OBJ_EXT) testping.$(OBJ_EXT) http.$(OBJ_EXT) smtp.$(OBJ_EXT) stomp.$(OBJ_EXT) zxbusdist.$(OBJ_EXT) zxbussubs.$(OBJ_EXT) zxbusent.$(OBJ_EXT)
 ZXIDGSA_OBJ=zxidgsa.$(OBJ_EXT)
 ZXIDHLOWSF_OBJ=zxidhlowsf.$(OBJ_EXT)
 ZXIDSIMPLE_OBJ=zxidsimple.$(OBJ_EXT)
@@ -960,8 +1082,6 @@ c/license.c: LICENSE-2.0.txt sed-zxid.pl
 c/zxidvers.h: sed-zxid.pl
 	$(PERL) ./sed-zxid.pl zxidvers $(ZXIDVERSION) $(ZXIDREL) <zxrev >$@
 
-# $(ZXID_OBJ:.o=.c) $(WSF_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxidsp.c zxidsimple.c $(ZX_OBJ:.o=.c) $(ZX_GEN_H) $(ZX_GEN_C) c/zx-const.h c/zxidvers.h
-
 gen: c/zxidvers.h c/license.c c/zx-const.h c/zx-attrs.gperf
 
 genwrap: gen zxidjava/zxid_wrap.c Net/SAML_wrap.c php/zxid_wrap.c py/zxid_wrap.c ruby/zxid_wrap.c csharp/zxid_wrap.c
@@ -1225,11 +1345,11 @@ endif
 
 ifeq ($(TARGET),win32cl)
 zxidjava/zxid_wrap.$(OBJ_EXT): zxidjava/zxid_wrap.c
-	$(CC) -c -Fozxid_wrap.obj $(JNI_INC) $(CFLAGS) $<
+	$(CC) -c $< -Fozxid_wrap.obj $(JNI_INC) $(CFLAGS)
 	$(CP) zxid_wrap.obj $@
 else
 zxidjava/zxid_wrap.$(OBJ_EXT): zxidjava/zxid_wrap.c
-	$(CC) -c $(OUTOPT)$@ $(JNI_INC) $(CFLAGS) $<
+	$(CC) -c $< $(OUTOPT)$@ $(JNI_INC) $(CFLAGS)
 endif
 
 $(ZXIDJNI_SO): zxidjava/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
@@ -1329,6 +1449,9 @@ bene: benessosrvlet.class benedemo.class
 ###
 ### Apache authentication module
 ###
+
+mod_auth_saml.$(OBJ_EXT): mod_auth_saml.c $(LIBZXID_A)
+	$(CC) -o $@ $< $(APACHE_INC) $(APR_INC)
 
 mod_auth_saml.so: mod_auth_saml.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)mod_auth_saml.so $(SHARED_FLAGS) mod_auth_saml.$(OBJ_EXT) $(SHARED_CLOSE) $(LIBZXID) $(LIBS) $(MOD_AUTH_SAML_LIBS)
@@ -1548,7 +1671,9 @@ libzxid.so.0.0: $(LIBZXID_A)
 	$(LD) $(OUTOPT)libzxid.so.0.0 $(SHARED_FLAGS) $^ $(SHARED_CLOSE) $(LIBS)
 
 zxid.dll zxidimp.lib: $(LIBZXID_A)
-	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib $^ $(SHARED_CLOSE) $(WIN_LIBS) -mdll
+	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib $^ $(SHARED_CLOSE) $(WIN_DLL_LIBS)
+
+# -mdll
 
 # N.B. Failing to supply -Wl,-no-whole-archive above will cause
 # /apps/gcc/mingw/sysroot/lib/libmingw32.a(main.o):main.c:(.text+0x106): undefined reference to `WinMain@16'
@@ -1699,23 +1824,30 @@ tas3rel: tas3linuxx86pkg tas3srcpkg
 tas3copyrel: tas3rel
 	rsync $(TAS3SRC).zip $(TAS3LINUXX86).zip tas3repo:pool-in
 
+.PHONY: precheck_prep_win precheck precheckclean tas3copyrel tas3rel tas3srcpkg
+.PHONY: tas3win32pkg-mini tas3win32pkg tas3linuxx86pkg tas3idppkg tas3javapkg tas3phppkg tas3maspkg
+
 ###
 ### Precheck to help analyse compilation problems
 ###
 
-precheck/chk-zlib.exe: precheck/chk-zlib.$(OBJ_EXT)
+ifeq (IGNORE,)
+precheck/chk-zlib$(EXE): precheck/chk-zlib.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
 
-precheck/chk-openssl.exe: precheck/chk-openssl.$(OBJ_EXT)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(SSL_LIBS) $(LIBS)
-
-precheck/chk-curl.exe: precheck/chk-curl.$(OBJ_EXT)
+precheck/chk-openssl$(EXE): precheck/chk-openssl.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
+
+precheck/chk-curl$(EXE): precheck/chk-curl.$(OBJ_EXT)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
+
+else
+endif
 
 precheck/chk-apache.$(OBJ_EXT): precheck/chk-apache.c
-	$(CC) -c $(APACHE_INCLUDE) $(APR_INCLUDE) -o $@ $^
+	$(CC) $(OUTOPT)$@ -c $< $(CFLAGS) $(APACHE_INC) $(APR_INC)
 
-precheck/chk-apache.exe: precheck/chk-apache.$(OBJ_EXT)
+precheck/chk-apache$(EXE): precheck/chk-apache.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
 
 zxsizeof: zxsizeof.$(OBJ_EXT)
@@ -1735,18 +1867,28 @@ zx/zx.h:
 	$(CP) c/*.h zx/c
 
 ifeq ($(CROSS_COMPILE),1)
-precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib.exe precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl.exe precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl.exe
+precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib$(EXE) precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl$(EXE) precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl$(EXE)
 	@$(ECHO) "Cross compile simplified precheck ok."
 	@$(ECHO)
 else
-precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib.exe precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl.exe precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl.exe zx/zx.h
-	echo CC=$(CC)
+
+# Windows does not support symlinks (or the support is confusing and buggy, especially
+# when cygwin and/or mingw are involved): solution is to simply copy the headers.
+
+precheck_prep_win:
+	rm -rf zx
+	mkdir zx zx/c
+	$(CP) *.h zx/
+	$(CP) c/*.h zx/c/
+
+precheck: $(PRECHECK_PREP) precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib$(EXE) precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl$(EXE) precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl$(EXE) zx/zx.h
+	@$(ECHO) CC=$(CC)
 	which gcc
 	$(CC) -v
 	@$(ECHO)
-	precheck/chk-zlib.exe
-	precheck/chk-openssl.exe
-	precheck/chk-curl.exe
+	precheck/chk-zlib$(EXE)
+	precheck/chk-openssl$(EXE)
+	precheck/chk-curl$(EXE)
 	@$(ECHO) "Precheck ok."
 	@$(ECHO)
 endif
@@ -1789,7 +1931,7 @@ zxidjava/testjni.class: zxidjava/testjni.java
 	cd zxidjava; $(JAVAC) $(JAVAC_FLAGS) test*.java
 
 zxidjava/testjni.$(OBJ_EXT): zxidjava/testjni.c
-	$(CC) -c $(OUTOPT)$@ $(JNI_INC) $(CFLAGS) $<
+	$(CC) -c $< $(OUTOPT)$@ $(JNI_INC) $(CFLAGS)
 
 zxidjava/libtestjni.a: zxidjava/testjni.$(OBJ_EXT)
 	$(ARC) $@ $^
@@ -1859,6 +2001,8 @@ install: zxid $(LIBZXID_A) libzxid.so.0.0 dir
 	@$(ECHO)
 	@$(ECHO) "https://sp1.zxidsp.org:8443/zxid"
 	@$(ECHO)
+
+.PHONY: dir dirs installtestclean testdllclean
 
 #
 # Maintenance
@@ -1931,6 +2075,8 @@ winclean:
 	del /Q precheck\*.obj precheck\*.exe
 	del /Q *.obj c\*.obj
 
+.PHONY: winclean clean regen cleaner cleany miniclean cleanbin distclean docclean megatags tags
+
 # zxcot -n -g http://federation.njedge.net/metadata/njedge-fed-metadata.xml
 
 dist zxid-$(ZXIDREL).tgz:
@@ -1962,6 +2108,8 @@ winbindist:
 
 common_bins: zxcot$(EXE) zxdecode$(EXE) zxpasswd$(EXE) zxlogview$(EXE) smime$(EXE) zxidhlo$(EXE) zxidsimple$(EXE) zxididp$(EXE) zxcall$(EXE)
 
+
+.PHONY: winbindist linbindist dist
 
 # To create release
 #   make cleaner          # remember c/zxidvers.h
@@ -2045,6 +2193,9 @@ rsynclite:
 cvstag:
 	cvs tag ZXID_ZXIDREL_$(ZXIDVERSION)
 
+.PHONY: cvstag cleandoc docpdf doc copydist
+.PHONY: rsyncline zxidpcopytc refhtml relhtml reldoc indexrel winbinrel release
+
 ### Coverage analysis
 ### See also: make gcov, make lcov (and lcovhtml directory), man gcov, man gprof
 ###   profiling:/home/sampo/zxid/zxidconf.gcda:Version mismatch - expected 304* got 403*
@@ -2098,6 +2249,8 @@ cleangcov:
 	rm -f */*.gcno */*.gcda */*.c.gcov */*.y.gcov */*.c-ann */gmon.out
 	rm -f lcovhtml/zxid.info lcovhtml/zxid/*.html lcovhtml/zxid/c/*.html
 	rm -f gmon.out
+
+.PHONY: cleangcov gprof copylcov lcov gcov covrep
 
 ### Call graphs and reference documentation
 
@@ -2186,7 +2339,7 @@ help:
 	@$(ECHO) "N.B2: We distribute some generated files. If they are missing, you need"
 	@$(ECHO) "      to regenerate them: make cleaner; make dep ENA_GEN=1"
 	@$(ECHO)
-	@$(ECHO) "To compile for Linux 2.6: make"
+	@$(ECHO) "To compile for Linux 2.6: make or make TARGET=Linux"
 	@$(ECHO) "To compile for MacOS 10:  make TARGET=macosx"
 	@$(ECHO) "To compile for Solaris 8: make TARGET=sol8"
 	@$(ECHO) "To compile for Sparc Solaris 8 with cross compiler:"
@@ -2197,18 +2350,17 @@ help:
 	@$(ECHO) "paths that make sense in your local situation. The best way is to"
 	@$(ECHO) "first study the Makefile and then add your overrides to localconf.mk"
 	@$(ECHO) "or on make command line. Some of the most common ones:"
+	@$(ECHO) "  CFLAGS        Additional compiler flags needed on your platform"
 	@$(ECHO) "  CDEF          Additional -D flags needed on your platform"
-	@$(ECHO) "  CDIR          Additional -I flags needed on your platform"
+	@$(ECHO) "  CINC          Additional -I flags needed on your platform"
 	@$(ECHO) "  LIBS          Additional -L and -l flags needed on your platform"
-	@$(ECHO) "  CURL_ROOT     Where libcurl and its headers are installed"
-	@$(ECHO) "  OPENSSL_ROOT  Where OpenSSL and its headers are installed"
 	@$(ECHO) "  JAVAC         Where to find javac; where jdk is installed"
 	@$(ECHO) "  JNI_INC       Where jni.h and jni_md.h are found"
 	@$(ECHO) "  SERVLET_PATH  Where servlet-api.jar is found; where Tomcat is installed."
 	@$(ECHO) "  SHARED        Set to 1 for shared object (DLL) build. Default: static."
 	@$(ECHO)
 	@$(ECHO) "You may need to install dependency packages. For compilation you"
-	@$(ECHO) "need the devel versions. For example: "
+	@$(ECHO) "need the devel versions that have the headers. For example: "
 	@$(ECHO) "  sudo apt-get install build-essential  # Debian"
 	@$(ECHO) "  sudo apt-get install linux-libc-dev"
 	@$(ECHO) "  sudo apt-get install libc6-dev-i386"
@@ -2223,8 +2375,14 @@ help:
 	@$(ECHO) "  sudo yum -y install openssl-devel     # Redhat"
 	@$(ECHO) "  sudo yum -y install libcurl-devel"
 	@$(ECHO)
+	@$(ECHO) "Following platform TARGETs are available:"
+	@$(ECHO)
+	@egrep '^ifeq \(.\(TARGET\),[A-Za-z0-9-]+\)' Makefile
+	@$(ECHO)
 	@$(ECHO) "Following make targets are available:"
 	@$(ECHO)
 	@egrep '^[a-z-]+:' Makefile
+
+.PHONY: help seehelp dep deps reference refcall callgraph_zxbus callgraph callgraph_annotate
 
 #EOF

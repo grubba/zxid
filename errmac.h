@@ -660,8 +660,8 @@ extern char* assert_msg;
 # define LOCK_INIT(l)
 # define LOCK(l,lk)
 # define UNLOCK(l,lk)
-# define ZX_COND_WAIT(c,l,lk) NEVERNEVER("Program written to use pthread_cond_wait() can not work if compiled to not use it (%s).",(lk));
-#  define ZX_COND_SIG(c,lk)  NEVERNEVER("Program written to use pthread_cond_sig() can not work if compiled to not use it (%s).",(lk));
+# define ZX_COND_WAIT(c,l,lk) NEVERNEVER("Program written to use pthread_cond_wait() can not work when compiled to not use it (%s).",(lk));
+#  define ZX_COND_SIG(c,lk)  NEVERNEVER("Program written to use pthread_cond_sig() can not work when compiled to not use it (%s).",(lk));
 #endif
 
 /* =============== file system flocking =============== */

@@ -68,16 +68,16 @@ HANDLE zx_CreateFile(LPCTSTR lpFileName,
 
 #else
 #include <dirent.h>
-#endif
+#endif /* WIN32CL */
 
 /* Windows thread identification is a mess:
  * - thread ID returned by GetCurrentThreadId() is like POSIX thread ID except
- *   that almost none of the windows thread API functions accept it as argument.
+ *   that almost none of the windows thread API functions accept it as an argument.
  *   They need a handle instead.
  * - Handle can not be obtained easily. Instead GetCurrentThread() returns a
  *   pseudohandle (-1) that has only limited usability.
  * - It is not clear what _beginthread() returns. Presumably a handle.
- * In the end we adopt keeping around the thread ID and using OpenThread(0,0,tid)
+ * In the end, we adopt keeping around the thread ID and using OpenThread(0,0,tid)
  * to resolve it to a real thread handle when needed. */
 #define pthread_t DWORD    /* what pthread_self() returns, or GetCurrentThreadId() */
 #define pthread_self() GetCurrentThreadId()  /* Returns an ID, not a handle */
