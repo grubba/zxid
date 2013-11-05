@@ -142,7 +142,7 @@ CINC+=-I. -I$(TOP)
 ### supply them using POSTLIBS, e.g.
 ###   make POSTLIBS='-lxnet -lsocket'
 LIBS+= -lcurl -lssl -lcrypto -lz $(POSTLIBS)
-#LIBS+= -pthread -lpthread -static -lcurl -lssl -lcrypto -lz -dynamic
+#LIBS+= -lpthread -static -lcurl -lssl -lcrypto -lz -dynamic
 #LIBS+= -lidn -lrt
 #LIBS+= -ldl
 ### This LIBS variable can be later overridden or modified in
@@ -315,7 +315,8 @@ WIN_DLL_LIBS= -L/mingw/lib -lcurl -lssl -lcrypto -lz -lssh2 -lidn -lwldap32 -lgd
 LIBS= -mconsole $(WIN_DLL_LIBS) -lpthread
 SHARED_FLAGS=-Wl,--add-stdcall-alias -mdll -static -Wl,--export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
 CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -D'ZXID_PATH="$(ZXID_PATH)"'
-JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:/Program Files/Java/jdk1.5.0_14/include/win32"
+#JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:/Program Files/Java/jdk1.5.0_14/include/win32"
+JNI_INC=-I"/cygdrive/c/Program Files (x86)/Java/jdk1.7.0_21/include/" -I"/cygdrive/c/Program Files (x86)/Java/jdk1.7.0_21/include/win32/"
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
@@ -509,6 +510,7 @@ CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
 CINC=-I. -I$(TOP) -I$(SYSROOT)/include
 APACHE_INC = -I$(SYSROOT)/include
 APR_INC    = -I$(SYSROOT)/srclib/apr-util/include
+JNI_INC=-I$(MINGWDIR)/include
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
