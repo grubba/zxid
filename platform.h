@@ -16,11 +16,18 @@
 extern "C" {
 #endif
 
+#define fdstdin  (GetStdHandle(STD_INPUT_HANDLE))
 #define fdstdout (GetStdHandle(STD_OUTPUT_HANDLE))
 /*#define fdtype HANDLE   see zx.h */
 #define BADFD (INVALID_HANDLE_VALUE)
 #define closefile(x) (CloseHandle(x)?0:-1)
 #define openfile_ro(path) zx_CreateFile((path), GENERIC_READ, FILE_SHARE_READ, 0 /*security*/, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0)
+
+HANDLE zx_CreateFile(LPCTSTR lpFileName, 
+		     DWORD dwDesiredAccess, DWORD dwShareMode, 
+		     LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, 
+		     DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
+
 #define geteuid() 0
 #define getegid() 0
 #define stat(X,Y) zx_stat(X,Y)
@@ -30,6 +37,7 @@ extern "C" {
 #define O_SYNC 04010000
 
 #ifdef WIN32CL
+//#define intptr_t INT_PTR
 /* The directory handling is quite different on Windows. The following
  * posix wrappers are implemented in zxdirent.c */
 typedef struct DIR DIR;
@@ -60,12 +68,6 @@ typedef struct stack_st STACK;  /* MSVC seems to have some problem with openssl/
 #define getcwd(b,n) "getcwd not supported on Win32"  /* *** consider GetCurrentDirectory() */
 unsigned int sleep(unsigned int secs);
 unsigned int alarm(unsigned int secs);
-
-HANDLE zx_CreateFile(LPCTSTR lpFileName, 
-		     DWORD dwDesiredAccess, DWORD dwShareMode, 
-		     LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, 
-		     DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
-
 #else
 #include <dirent.h>
 #endif /* WIN32CL */
@@ -98,7 +100,8 @@ HANDLE zx_CreateFile(LPCTSTR lpFileName,
 
 #else
 
-/* NOT MINGW nor WIN32CL (i.e. its Unix) */
+/* ============================================================================
+ * NOT MINGW nor WIN32CL (i.e. its Unix) */
 
 #include <dirent.h>
 
@@ -106,10 +109,13 @@ HANDLE zx_CreateFile(LPCTSTR lpFileName,
 extern "C" {
 #endif
 
-#define fdstdout 1
+#define fdstdin  0  /* fileno(stdin) */
+#define fdstdout 1  /* fileno(stdout) */
 /*#define fdtype int   see zx.h */
 #define BADFD (-1)
+#define SOCKET fdtype
 #define closefile(x) close(x)
+#define closesocket(x) close(x)
 #define openfile_ro(path) open((path),O_RDONLY)
 
 #if !defined(_UNISTD_H) && !defined(_UNISTD_H_)

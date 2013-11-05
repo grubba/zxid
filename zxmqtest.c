@@ -516,7 +516,7 @@ int main(int argc, char** argv, char** env)
   exit(0);
 #endif
 
-  len = read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got_all);
+  len = read_all_fd(fdstdin, buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
   buf[got_all] = 0;
   return 0;

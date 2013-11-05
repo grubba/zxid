@@ -313,13 +313,14 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
 {
   char sha1_name[28];
   char path[ZXID_MAX_BUF];
-  int got, fd;
+  int got;
+  fdtype fd;
   struct zx_root_s* r;
   zxid_epr* epr;
   struct zx_str* ss;
   struct zx_str* tt;
   
-  read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got);  /* Read EPR */
+  read_all_fd(fdstdin, buf, sizeof(buf)-1, &got);  /* Read EPR */
   buf[got] = 0;
   
   r = zx_dec_zx_root(cf->ctx, got, buf, "cot reg_svc");
@@ -422,7 +423,8 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
 /* Called by:  zxcot_main */
 static int zxid_addmd(zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
 {
-  int got, fd;
+  int got;
+  fdtype fd;
   char* p;
   zxid_entity* ent;
   struct zx_str* ss;
@@ -430,7 +432,7 @@ static int zxid_addmd(zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
   if (mdurl) {
     ent = zxid_get_meta(cf, mdurl);
   } else {
-    read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got);
+    read_all_fd(fdstdin, buf, sizeof(buf)-1, &got);
     buf[got] = 0;
     p = buf;
     ent = zxid_parse_meta(cf, &p, buf+got);

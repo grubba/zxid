@@ -35,7 +35,7 @@
 #include <sys/stat.h>
 #ifdef MINGW
 #include <winsock.h>
-#define EINPROGRESS WSAEINPROGRESS
+/*#define EINPROGRESS WSAEINPROGRESS   mingw defines this in errno.h, nowdays*/
 #else
 #include <netdb.h>
 #include <netinet/in.h>  /* struct sockaddr_in */
@@ -298,6 +298,7 @@ static int zxbus_fmt(zxid_conf* cf,   /* 1 */
 		     va_list ap)
 {
   int n;
+  time_t secs;
   char* p;
   char sha1_name[28];
   struct tm ot;
@@ -316,8 +317,10 @@ static int zxbus_fmt(zxid_conf* cf,   /* 1 */
     srctsdefault.tv_sec = 0;
     srctsdefault.tv_usec = 501000;
   }
-  GMTIME_R(ourts->tv_sec, ot);
-  GMTIME_R(srcts->tv_sec, st);
+  GMTIME_R(secs, ot);
+  ourts->tv_sec = secs;
+  GMTIME_R(secs, st);
+  srcts->tv_sec = secs;
   
   if (entid && entid->len && entid->s) {
     sha1_safe_base64(sha1_name, entid->len, entid->s);
@@ -426,19 +429,19 @@ int zxbus_read_stomp(zxid_conf* cf, struct zxid_bus_url* bu, struct stomp_hdr* s
       if (bu->ssl) {
 	got = SSL_read(bu->ssl, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m));
 	if (got < 0) {
-	  ERR("recv(%x) bu_%p: (%d) %d %s", bu->fd, bu, got, errno, STRERROR(errno));
+	  ERR("SSL_read(%x) bu_%p: (%d) %d %s", bu->fd, bu, got, errno, STRERROR(errno));
 	  zx_report_openssl_err("zxbus_read-ssl");
 	  return 0;
 	}
       } else {
-	got = recv(bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m), 0);
+	got = recv((SOCKET)bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m), 0);
 	if (got < 0) {
 	  ERR("recv(%x) bu_%p: %d %s", bu->fd, bu, errno, STRERROR(errno));
 	  return 0;
 	}
       }
 #else
-      got = recv(bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m), 0);
+      got = recv((SOCKET)bu->fd, bu->ap, ZXBUS_BUF_SIZE - (bu->ap - bu->m), 0);
       if (got < 0) {
 	ERR("recv: %d %s", errno, STRERROR(errno));
 	return 0;
@@ -803,7 +806,7 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   sin.sin_port = htons(atoi(port+1));
   memcpy(&(sin.sin_addr.s_addr), he->h_addr, sizeof(sin.sin_addr.s_addr));
   
-  if ((bu->fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+  if ((bu->fd = (fdtype)socket(AF_INET, SOCK_STREAM, 0)) == (fdtype)-1) {
     ERR("Unable to create socket(AF_INET, SOCK_STREAM, 0) %d %s", errno, STRERROR(errno));
     return 0;
   }
@@ -815,7 +818,7 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
 #endif
 
   D("connecting(%x) hs(%s)", bu->fd, bu->s);
-  if ((connect(bu->fd, (struct sockaddr*)&sin, sizeof(sin)) == -1) && (errno != EINPROGRESS)) {
+  if ((connect((SOCKET)bu->fd, (struct sockaddr*)&sin, sizeof(sin)) == -1) && (errno != EINPROGRESS)) {
     ERR("Connection to %s failed: %d %s", bu->s, errno, STRERROR(errno));
     goto errout;
   }
@@ -878,7 +881,7 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
       zx_report_openssl_err("open_bus_url-ssl");
       goto errout;
     }
-    if (!SSL_set_fd(bu->ssl, bu->fd)) {
+    if (!SSL_set_fd(bu->ssl, (int)bu->fd)) {
       ERR("TLS/SSL connection to(%s) can not be made. SSL fd(%x) initialization problem", bu->s, bu->fd);
       zx_report_openssl_err("open_bus_url-set_fd");
       goto sslerrout;
@@ -893,7 +896,7 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
     default:
       ERR("TLS/SSL connection to(%s) can not be made. SSL connect or handshake problem (%ld)", bu->s, vfy_err);
       zx_report_openssl_err("open_bus_url-ssl_connect");
-      write(bu->fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1);
+      send((SOCKET)bu->fd, SSL_ENCRYPTED_HINT, sizeof(SSL_ENCRYPTED_HINT)-1, 0);
       goto sslerrout;
     }
 
@@ -979,7 +982,7 @@ int zxbus_open_bus_url(zxid_conf* cf, struct zxid_bus_url* bu)
   }
 #endif
  errout:
-  close(bu->fd);
+  closesocket((SOCKET)bu->fd);
   bu->fd = 0;
   return 0;
 }
@@ -1019,7 +1022,7 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
 	  bu->ssl = 0;
 	}
 #endif
-	close(bu->fd);
+	closesocket((SOCKET)bu->fd);
 	bu->fd = 0;
 	return 1;
       } else {
@@ -1042,7 +1045,7 @@ int zxbus_close(zxid_conf* cf, struct zxid_bus_url* bu)
     bu->ssl = 0;
   }
 #endif
-  close(bu->fd);
+  closesocket((SOCKET)bu->fd);
   bu->fd = 0;
   return 0;
 }
@@ -1076,6 +1079,7 @@ void zxbus_close_all(zxid_conf* cf)
 static void zxbus_log_receipt(zxid_conf* cf, struct zxid_bus_url* bu, int mid_len, const char* mid, int dest_len, const char* dest, const char* sha1_buf, int rcpt_len, const char* rcpt)
 {
   int len;
+  time_t secs;
   struct tm ot;
   struct timeval ourts;
   char sha1_name[28];
@@ -1083,7 +1087,8 @@ static void zxbus_log_receipt(zxid_conf* cf, struct zxid_bus_url* bu, int mid_le
   char c_path[ZXID_MAX_BUF];
 
   GETTIMEOFDAY(&ourts, 0);
-  GMTIME_R(ourts.tv_sec, ot);
+  GMTIME_R(secs, ot);
+  ourts.tv_sec = secs;
   sha1_safe_base64(sha1_name, -2, bu->eid);
   sha1_name[27] = 0;
 
@@ -1247,7 +1252,7 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
     bu->ssl = 0;
   }
 #endif
-  close(bu->fd);
+  closesocket((SOCKET)bu->fd);
   bu->fd = 0;
   return 0;
 }

@@ -531,7 +531,7 @@ int zxdecode_main(int argc, char** argv, char** env)
   strcpy(zx_instance, "\tzxdec");
   opt(&argc, &argv, &env);
 
-  read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got);
+  read_all_fd(fdstdin, buf, sizeof(buf)-1, &got);
   buf[got] = 0;
   lim = buf+got;
 

@@ -129,12 +129,12 @@ x509_and_pkey_to_pkcs12(const char* friendly_name,  /* e.g. foo@bar.com */
   
   /* Include the cert */
   
-  if (!(bags = sk_new (NULL))) GOTO_ERR("no memory?");  
+  if (!(bags = (STACK_OF(PKCS12_SAFEBAG)*)sk_new(NULL))) GOTO_ERR("no memory?");  
   if (!(bag = M_PKCS12_x5092certbag(x509))) GOTO_ERR("M_PKCS12_x5092certbag");
   
   if (friendly_name) PKCS12_add_friendlyname(bag, friendly_name, -1);
   PKCS12_add_localkeyid(bag, keyid, keyidlen);
-  sk_push(bags, (char *)bag);
+  sk_push((_STACK*)bags, (char*)bag);
   
   /* Turn certbags into encrypted (why?) authsafe */
   
@@ -143,11 +143,11 @@ x509_and_pkey_to_pkcs12(const char* friendly_name,  /* e.g. foo@bar.com */
 					 NULL /*salt*/, 0 /*saltlen*/,
 					 PKCS12_DEFAULT_ITER, bags)))
     GOTO_ERR("PKCS12_pack_p7encdata");
-  sk_pop_free(bags, (void (*)(void *))PKCS12_SAFEBAG_free);
+  sk_pop_free((_STACK*)bags, (void (*)(void *))PKCS12_SAFEBAG_free);
   bags = NULL;
 
-  if (!(safes = sk_new (NULL))) GOTO_ERR("no memory?");
-  sk_push (safes, (char *)authsafe);
+  if (!(safes = (STACK_OF(PKCS7)*)sk_new(NULL))) GOTO_ERR("no memory?");
+  sk_push((_STACK*)safes, (char*)authsafe);
   
   /* Make a shrouded key bag */
 
@@ -161,8 +161,8 @@ x509_and_pkey_to_pkcs12(const char* friendly_name,  /* e.g. foo@bar.com */
   PKCS8_PRIV_KEY_INFO_free(p8);
   if (friendly_name) PKCS12_add_friendlyname (bag, friendly_name, -1);
   PKCS12_add_localkeyid (bag, keyid, keyidlen);
-  if (!(bags = sk_new(NULL))) GOTO_ERR("no memory?");
-  sk_push (bags, (char *)bag);
+  if (!(bags = (STACK_OF(PKCS12_SAFEBAG)*)sk_new(NULL))) GOTO_ERR("no memory?");
+  sk_push((_STACK*)bags, (char *)bag);
   
   /* *** is this code storing private key in unencrypted bag and public
    *    key in encrypted bag? SECURITY ALERT! See also generic and
@@ -172,22 +172,22 @@ x509_and_pkey_to_pkcs12(const char* friendly_name,  /* e.g. foo@bar.com */
   /* Turn it into unencrypted safe bag */
 
   authsafe = PKCS12_pack_p7data (bags);
-  sk_pop_free(bags, (void (*)(void *))PKCS12_SAFEBAG_free);
+  sk_pop_free((_STACK*)bags, (void (*)(void *))PKCS12_SAFEBAG_free);
   bags = NULL;
-  sk_push (safes, (char *)authsafe);
+  sk_push((_STACK*)safes, (char *)authsafe);
   
   if (!(p12 = PKCS12_init(NID_pkcs7_data))) GOTO_ERR("no memory?");
   
   M_PKCS12_pack_authsafes (p12, safes);
-  sk_pop_free(safes, (void (*)(void *))PKCS7_free);
+  sk_pop_free((_STACK*)safes, (void (*)(void *))PKCS7_free);
   safes = NULL;
   PKCS12_set_mac (p12, pkcs12_passwd, -1 /*strlen*/,
 		  NULL /*salt*/, 0, 1 /*maciter*/,
 		  NULL /*md type = default (SHA1)*/);
   return p12;
 err:
-  if (bags)  sk_pop_free(bags, (void (*)(void *))PKCS12_SAFEBAG_free);
-  if (safes) sk_pop_free(safes, (void (*)(void *))PKCS7_free);
+  if (bags)  sk_pop_free((_STACK*)bags, (void (*)(void *))PKCS12_SAFEBAG_free);
+  if (safes) sk_pop_free((_STACK*)safes, (void (*)(void *))PKCS7_free);
   return NULL;
 }
 
@@ -302,7 +302,7 @@ smime_pem_to_pkcs12_generic(const char* friendly_name,  /* e.g. foo@bar.com */
 
   /* We now have loads of certificates: include them all */
 
-  if (!(bags = sk_new (NULL))) GOTO_ERR("no memory?");
+  if (!(bags = (STACK_OF(PKCS12_SAFEBAG)*)sk_new(NULL))) GOTO_ERR("no memory?");
   
   for(i = 0; i < sk_X509_num(certs); i++) {
     cert = sk_X509_value(certs, i);
@@ -314,7 +314,7 @@ smime_pem_to_pkcs12_generic(const char* friendly_name,  /* e.g. foo@bar.com */
       PKCS12_add_localkeyid(bag, keyid, keyidlen);
     } /*else if(canames && (catmp = sk_shift(canames))) 
 	PKCS12_add_friendlyname(bag, catmp, -1);*/
-    sk_push(bags, (char *)bag);
+    sk_push((_STACK*)bags, (char *)bag);
   }
   
   /*if (canames) sk_free(canames);*/
@@ -326,10 +326,10 @@ smime_pem_to_pkcs12_generic(const char* friendly_name,  /* e.g. foo@bar.com */
 					 NULL /*salt*/, 0 /*saltlen*/,
 					 PKCS12_DEFAULT_ITER, bags)))
     GOTO_ERR("PKCS12_pack_p7encdata");
-  sk_pop_free(bags, (void (*)(void *))PKCS12_SAFEBAG_free);
+  sk_pop_free((_STACK*)bags, (void (*)(void *))PKCS12_SAFEBAG_free);
 	
-  if (!(safes = sk_new (NULL))) GOTO_ERR("no memory?");
-  sk_push (safes, (char *)authsafe);
+  if (!(safes = (STACK_OF(PKCS7)*)sk_new(NULL))) GOTO_ERR("no memory?");
+  sk_push((_STACK*)safes, (char *)authsafe);
   
   /* Make a shrouded key bag */
 
@@ -344,19 +344,19 @@ smime_pem_to_pkcs12_generic(const char* friendly_name,  /* e.g. foo@bar.com */
   PKCS8_PRIV_KEY_INFO_free(p8);
   if (friendly_name) PKCS12_add_friendlyname (bag, friendly_name, -1);
   PKCS12_add_localkeyid (bag, keyid, keyidlen);
-  if (!(bags = sk_new(NULL))) GOTO_ERR("no memory?");
-  sk_push (bags, (char *)bag);
+  if (!(bags = (STACK_OF(PKCS12_SAFEBAG)*)sk_new(NULL))) GOTO_ERR("no memory?");
+  sk_push((_STACK*)bags, (char *)bag);
   
   /* Turn it into unencrypted safe bag */
 
   authsafe = PKCS12_pack_p7data (bags);
-  sk_pop_free(bags, (void (*)(void *))PKCS12_SAFEBAG_free);
-  sk_push (safes, (char *)authsafe);
+  sk_pop_free((_STACK*)bags, (void (*)(void *))PKCS12_SAFEBAG_free);
+  sk_push((_STACK*)safes, (char *)authsafe);
   
   if (!(p12 = PKCS12_init(NID_pkcs7_data))) GOTO_ERR("no memory?");
   
   M_PKCS12_pack_authsafes (p12, safes);  
-  sk_pop_free(safes, (void (*)(void *))PKCS7_free);  
+  sk_pop_free((_STACK*)safes, (void (*)(void *))PKCS7_free);  
   PKCS12_set_mac (p12, pkcs12_passwd, -1 /*strlen*/,
 		  NULL /*salt*/, 0, 1 /*maciter*/,
 		  NULL /*md type = default (SHA1)*/);
@@ -404,8 +404,8 @@ pkcs12_to_x509_and_pkey(PKCS12* p12,
    * as we see shrouded keybags decrypt and re-encrypt them and
    * write them to pkbio */
   
-  for (i = 0; i < sk_num (authsafes); i++) {
-    PKCS7* authsafe = (PKCS7*)sk_value(authsafes, i);
+  for (i = 0; i < sk_num((_STACK*)authsafes); i++) {
+    PKCS7* authsafe = (PKCS7*)sk_value((_STACK*)authsafes, i);
     int bagnid = OBJ_obj2nid(authsafe->type);
     
     if (bagnid == NID_pkcs7_data) {
@@ -418,8 +418,8 @@ pkcs12_to_x509_and_pkey(PKCS12* p12,
     
     /* Now iterate over all bags found */
     
-    for (j = 0; j < sk_num(bags); j++) {
-      PKCS12_SAFEBAG* bag = (PKCS12_SAFEBAG*)sk_value(bags, j);
+    for (j = 0; j < sk_num((_STACK*)bags); j++) {
+      PKCS12_SAFEBAG* bag = (PKCS12_SAFEBAG*)sk_value((_STACK*)bags, j);
       
       switch (M_PKCS12_bag_type(bag)) {
       case NID_keyBag:
@@ -463,16 +463,16 @@ pkcs12_to_x509_and_pkey(PKCS12* p12,
 	break;
       } /* switch bag_type */
     }
-    sk_pop_free (bags, (void (*)(void *))PKCS12_SAFEBAG_free);
+    sk_pop_free((_STACK*)bags, (void (*)(void *))PKCS12_SAFEBAG_free);
     bags = NULL;
   }
-  sk_pop_free (authsafes, (void (*)(void *))PKCS7_free);  
+  sk_pop_free((_STACK*)authsafes, (void (*)(void *))PKCS7_free);  
   return 0;
 
 err:
-  if (bags)      sk_pop_free (bags, (void (*)(void *))PKCS12_SAFEBAG_free);
+  if (bags)      sk_pop_free((_STACK*)bags, (void (*)(void *))PKCS12_SAFEBAG_free);
   if (p8)        PKCS8_PRIV_KEY_INFO_free(p8);
-  if (authsafes) sk_pop_free (authsafes, (void (*)(void *))PKCS7_free);  
+  if (authsafes) sk_pop_free((_STACK*)authsafes, (void (*)(void *))PKCS7_free);  
   return -1;
 }
 
@@ -549,8 +549,8 @@ smime_pkcs12_to_pem_generic(const char* pkcs12, int pkcs12_len,
   if (!(pkbio = BIO_new(BIO_s_mem()))) GOTO_ERR("no memory?");
   if (!(cbio = BIO_new(BIO_s_mem()))) GOTO_ERR("no memory?");
   
-  for (i = 0; i < sk_num (authsafes); i++) {
-    PKCS7* authsafe = (PKCS7*)sk_value(authsafes, i);
+  for (i = 0; i < sk_num ((_STACK*)authsafes); i++) {
+    PKCS7* authsafe = (PKCS7*)sk_value((_STACK*)authsafes, i);
     int bagnid = OBJ_obj2nid(authsafe->type);
     
     if (bagnid == NID_pkcs7_data) {
@@ -563,10 +563,10 @@ smime_pkcs12_to_pem_generic(const char* pkcs12, int pkcs12_len,
     
     /* Now iterate over all bags found */
     
-    for (j = 0; j < sk_num(bags); j++) {
+    for (j = 0; j < sk_num((_STACK*)bags); j++) {
       EVP_PKEY* pkey;
       PKCS8_PRIV_KEY_INFO *p8;
-      PKCS12_SAFEBAG* bag = (PKCS12_SAFEBAG*)sk_value(bags, j);
+      PKCS12_SAFEBAG* bag = (PKCS12_SAFEBAG*)sk_value((_STACK*)bags, j);
       
       switch (M_PKCS12_bag_type(bag)) {
       case NID_keyBag:
@@ -618,9 +618,9 @@ smime_pkcs12_to_pem_generic(const char* pkcs12, int pkcs12_len,
 	break;
       } /* switch bag_type */
     }
-    sk_pop_free (bags, (void (*)(void *))PKCS12_SAFEBAG_free);
+    sk_pop_free((_STACK*)bags, (void (*)(void *))PKCS12_SAFEBAG_free);
   }
-  sk_pop_free (authsafes, (void (*)(void *))PKCS7_free);  
+  sk_pop_free((_STACK*)authsafes, (void (*)(void *))PKCS7_free);  
   PKCS12_free(p12);
   
   if (priv_key_pem)  get_written_BIO_data(pkbio, priv_key_pem);  

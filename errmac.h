@@ -33,6 +33,7 @@
 #define MKDIR(d,p) mkdir(d)
 #define GETTIMEOFDAY(tv, tz) ((tv) ? (((tv)->tv_sec = time(0)) && ((tv)->tv_usec = 0)) : -1)
 #define GMTIME_R(secs,stm) do { struct tm* stx_tm = gmtime(&(secs)); if (stx_tm) memcpy(&stm, stx_tm, sizeof(struct tm)); } while(0)   /* *** still not thread safe */
+//#define GMTIME_R(t, res) gmtime_r(&(t),&(res))
 
 #define MINGW_RW_PERM (GENERIC_READ | GENERIC_WRITE)
 
@@ -44,6 +45,7 @@
 #define GMTIME_R(t, res) gmtime_r(&(t),&(res))
 #endif
 #include <stdio.h>    /* For stderr */
+#include <stdint.h>
 
 #ifdef USE_AKBOX_FN
 #include "akbox.h"
@@ -603,7 +605,7 @@ extern char* assert_msg;
 /* -------------------------------------------------------- */
 /* Asserting and sanity checks */
  
-#define CHK_NULL(n)    ASSERT((long int)(n))
+#define CHK_NULL(n)    ASSERT((intptr_t)(n))
 #define CHK_ERRNO(n)   CHK(((n)<0), errno)
 #define CHK_MAGIC(p,m) MB ASSERT(p); ASSERTOP((p)->magic, ==, (m), (p)->magic); ME
 

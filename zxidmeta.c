@@ -929,7 +929,7 @@ struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
  *
  * Limitation:: This function only works with CGI as it will print the
  *     serialized metadata straight to stdout. There are other
- *     methods for getting metadat without this limitation, e.g. zxid_sp_meta() */
+ *     methods for getting metadata without this limitation, e.g. zxid_sp_meta() */
 
 /* Called by:  main x2, opt x2 */
 int zxid_send_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
@@ -938,7 +938,7 @@ int zxid_send_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
   if (!ss)
     return 0;
   //write_all_fd(1, ss->s, ss->len);
-  write_all_fd(fileno(stdout), ss->s, ss->len);
+  write_all_fd(fdstdout, ss->s, ss->len);
   zx_str_free(cf->ctx, ss);
   return 0;
 }

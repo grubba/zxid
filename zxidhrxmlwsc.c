@@ -122,7 +122,7 @@ int main(int argc, char** argv)
     sscanf(qs, "%d", &cl);
 
   if (cl) {
-    read_all_fd(fileno(stdin), buf, MIN(cl, sizeof(buf)-1), &got);
+    read_all_fd(fdstdin, buf, MIN(cl, sizeof(buf)-1), &got);
     buf[got] = 0;
     qs2 = buf;
   } else {

@@ -18,9 +18,6 @@
  * 27.10.2010, re-engineered namespace handling --Sampo
  */
 
-#ifdef MINGW
-#include <windows.h>
-#endif
 #include "platform.h"  /* needed on Win32 for snprintf(), va_copy() et al. */
 
 //#include <pthread.h>

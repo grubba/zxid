@@ -1710,7 +1710,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       goto badcf;
     default:
     badcf:
-      ERR("Unknown config option(%s) val(%s), ignored. qs(%.*s)", n, v);
+      ERR("Unknown config option(%s) val(%s), ignored.", n, v);
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "S", "BADCF", n, 0);
     }
   }

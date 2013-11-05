@@ -189,6 +189,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
       }
       break;
 #endif
+#ifndef MINGW
     case 'k':
       switch ((*argv)[0][2]) {
       case '\0':
@@ -199,6 +200,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
 	continue;
       }
       break;
+#endif
 
     case 'l':
       switch ((*argv)[0][2]) {
@@ -468,7 +470,7 @@ int main(int argc, char** argv, char** env)
       cont_len = getenv("CONTENT_LENGTH");
       if (cont_len) {
 	sscanf(cont_len, "%d", &got);
-	if (read_all_fd(fileno(stdin), buf, got, &got) == -1) {
+	if (read_all_fd(fdstdin, buf, got, &got) == -1) {
 	  perror("Trouble reading post content");
 	} else {
 	  buf[got] = 0;
@@ -545,7 +547,7 @@ int main(int argc, char** argv, char** env)
     }
     break;
   case 'B':  /* Metadata */
-    write_all_fd(fileno(stdout), "Content-Type: text/xml\r\n\r\n", sizeof("Content-Type: text/xml\r\n\r\n")-1);
+    write_all_fd(fdstdout, "Content-Type: text/xml\r\n\r\n", sizeof("Content-Type: text/xml\r\n\r\n")-1);
     return zxid_send_sp_meta(cf, &cgi);
   default: D("unknown op(%c)", cgi.op);
   }

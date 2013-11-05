@@ -261,6 +261,7 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
 		     va_list ap)
 {
   int n;
+  time_t secs;
   char* p;
   char sha1_name[28];
   struct tm ot;
@@ -279,8 +280,10 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
     srctsdefault.tv_sec = 0;
     srctsdefault.tv_usec = 501000;
   }
-  GMTIME_R(ourts->tv_sec, ot);
-  GMTIME_R(srcts->tv_sec, st);
+  GMTIME_R(secs, ot);
+  ourts->tv_sec = secs;
+  GMTIME_R(secs, st);
+  srcts->tv_sec = secs;
   
   if (entid && entid->len && entid->s) {
     sha1_safe_base64(sha1_name, entid->len, entid->s);
@@ -799,6 +802,7 @@ print_it:
 char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int eid_len, const char* eid, int body_len, const char* body)
 {
   int len, zlen;
+  time_t secs;
   char* zbuf = 0;
   char* p;
   char* buf;
@@ -836,7 +840,8 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_le
   /* Prepare values */
 
   GETTIMEOFDAY(&ourts, 0);
-  GMTIME_R(ourts.tv_sec, ot);
+  GMTIME_R(secs, ot);
+  ourts.tv_sec = secs;
 
   /* Prepare timestamp prepended data for hashing */
   len = ZXLOG_TIME_SIZ+1+mid_len+1+dest_len+1+eid_len+1+body_len;

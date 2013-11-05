@@ -89,7 +89,7 @@ void test_ibm_cert_problem()  /* -r 1 */
   struct zx_root_s* r;
   struct zx_sp_LogoutRequest_s* req;
 
-  read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got_all);
+  read_all_fd(fdstdin, buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
   buf[got_all] = 0;
 
@@ -597,6 +597,7 @@ void opt(int* argc, char*** argv, char*** env)
       }
       break;
 
+#ifndef MINGW
     case 'k':
       switch ((*argv)[0][2]) {
       case '\0':
@@ -607,6 +608,7 @@ void opt(int* argc, char*** argv, char*** env)
 	continue;
       }
       break;
+#endif
 
     case 'c': if ((*argv)[0][2]) break;
       ++(*argv); --(*argc);
@@ -660,7 +662,7 @@ int main(int argc, char** argv, char** env)
   char* wo_p;
   opt(&argc, &argv, &env);
   
-  len_wo = read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got_all);
+  len_wo = read_all_fd(fdstdin, buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
   buf[got_all] = 0;
 

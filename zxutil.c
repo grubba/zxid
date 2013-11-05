@@ -358,7 +358,7 @@ int send_all_socket(fdtype fd, const char* p, int pending)
   int wrote;
   if ((fd == BADFD) || !pending || !p) return 0;
   while (pending) {
-    wrote = send(fd, (char*)p, pending, 0);
+    wrote = send((SOCKET)fd, (char*)p, pending, 0);
     if (wrote <= 0) return 0;
     pending -= wrote;
     p += wrote;
@@ -378,7 +378,7 @@ int send_all_socket(fdtype fd, const char* p, int pending)
  * Returns:: 1 on success, 0 on fail. */
 
 /* Called by:  stomp_got_ack */
-int write_all_fd_fmt(int fd, const char* logkey, int maxlen, char* buf, const char* data_fmt, ...)
+int write_all_fd_fmt(fdtype fd, const char* logkey, int maxlen, char* buf, const char* data_fmt, ...)
 {
   int len;
   va_list ap;
@@ -577,8 +577,7 @@ linkrest:
   if (fd_from == BADFD) {
       perror("openfile_ro");
       ERR("%s: Error opening from(%s) euid=%d egid=%d", logkey, from, geteuid(), getegid());
-      return BADFD;
-
+      return -1;
   }
 #ifdef MINGW
   fd_to = zx_CreateFile(to, MINGW_RW_PERM, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
@@ -588,7 +587,7 @@ linkrest:
   if (fd_to == BADFD) {
       perror("openfile_ro");
       ERR("%s: Error opening to(%s) euid=%d egid=%d", logkey, to, geteuid(), getegid());
-      return BADFD;
+      return -1;
   }
 
 #ifdef USE_STDIO
@@ -614,7 +613,7 @@ linkrest:
     p = buf;
     while (pend) {
       if (!WriteFile(fd_to, p, pend, &wrot, 0))
-	return BADFD;
+	return -1;
       pend -= wrot;
       p += wrot;
     }
