@@ -222,6 +222,7 @@ ifeq ($(DISTRO),fedora)
 CDEF+=-DFEDORA
 endif
 LIBS+=-lpthread
+SO_LIBS+=$(LIBS)
 # Marks that target has been detected
 TARGET_FOUND=1
 endif
@@ -240,6 +241,7 @@ CDEF+=-DSUNOS -DBYTE_ORDER=4321 -DBIG_ENDIAN=4321
 # Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
 CDEF+= -DUSE_PTHREAD -pthread
 LIBS+=-lxnet -lsocket
+SO_LIBS+=$(LIBS)
 TARGET_FOUND=1
 endif
 
@@ -249,6 +251,7 @@ CDEF+=-DSUNOS -DBYTE_ORDER=4321 -DBIG_ENDIAN=4321 -I/opt/sfw/include -I/usr/sfw/
 # Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
 CDEF+= -DUSE_PTHREAD -pthread
 LIBS=-R/opt/sfw/lib -R/usr/sfw/lib -lcurl -lssl -lcrypto -lz -lxnet -lsocket
+SO_LIBS+=$(LIBS)
 SHARED_FLAGS=-shared --export-all-symbols -Wl,-z -Wl,allextract
 SHARED_CLOSE=-Wl,-z -Wl,defaultextract
 TARGET_FOUND=1
@@ -260,6 +263,7 @@ CDEF+=-DSUNOS -DBYTE_ORDER=1234 -I/opt/sfw/include -I/usr/sfw/include
 # Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
 CDEF+= -DUSE_PTHREAD -pthread
 LIBS=-R/opt/sfw/lib -R/usr/sfw/lib -lcurl -lssl -lcrypto -lz  -lxnet -lsocket
+SO_LIBS+=$(LIBS)
 SHARED_FLAGS=-shared --export-all-symbols -Wl,-z -Wl,allextract
 SHARED_CLOSE=-Wl,-z -Wl,defaultextract
 endif
@@ -275,6 +279,7 @@ CDEF+= -DUSE_PTHREAD -pthread
 JNI_INC=-I/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Headers
 SHARED_FLAGS=-dylib -all_load -bundle
 SHARED_CLOSE=
+SO_LIBS+=$(LIBS)
 ZXIDJNI_SO=zxidjava/libzxidjni.jnilib
 #SHARED_FLAGS=-dylib -all_load -keep_private_externs 
 #OPENSSL_ROOT=/Developer/SDKs/MacOSX10.4u.sdk/usr
@@ -294,6 +299,7 @@ CDEF+=-DFREEBSD
 # Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
 CDEF+= -DUSE_PTHREAD -pthread
 LIBS+=-lpthread
+SO_LIBS+=$(LIBS)
 TARGET_FOUND=1
 endif
 
@@ -301,6 +307,7 @@ ifeq ($(TARGET),cygwin)
 ### Native Windows build using Cygwin environment and gcc
 CDEF+=-DCYGWIN -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DLOCK_UN=0
 MOD_AUTH_SAML_LIBS=-lapr-1 -lhttpd2core
+SO_LIBS+=$(LIBS)
 TARGET_FOUND=1
 endif
 
@@ -311,9 +318,10 @@ ZXID_PATH=/c/zxid/
 EXE=.exe
 PRECHECK_PREP=precheck_prep_win
 CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
-WIN_DLL_LIBS= -L/mingw/lib -lcurl -lssl -lcrypto -lz -lssh2 -lidn -lwldap32 -lgdi32 -lwsock32 -lwinmm -lkernel32 -lz
-LIBS= -mconsole $(WIN_DLL_LIBS) -lpthread
-SHARED_FLAGS=-Wl,--add-stdcall-alias -mdll -static -Wl,--export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+SO_LIBS= -L/mingw/lib -lcurl -lssl -lcrypto -lz -lssh2 -lidn -lwldap32 -lgdi32 -lwsock32 -lwinmm -lkernel32 -lz
+LIBS= -mconsole $(SO_LIBS) -lpthread
+# --dll  -mdll
+SHARED_FLAGS= -mdll -Wl,--add-stdcall-alias -static -Wl,--export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
 CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -D'ZXID_PATH="$(ZXID_PATH)"'
 #JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:/Program Files/Java/jdk1.5.0_14/include/win32"
 JNI_INC=-I"/cygdrive/c/Program Files (x86)/Java/jdk1.7.0_21/include/" -I"/cygdrive/c/Program Files (x86)/Java/jdk1.7.0_21/include/win32/"
@@ -369,10 +377,11 @@ ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
 endif
 # -lws2_32  -lmingw32  -u _imp__curl_easy_setopt -u _imp__curl_easy_strerror
-WIN_DLL_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
+SO_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
 LIBS= -mconsole $(WIN_LIBS)
+# --dll  -mdll
 #SHARED_FLAGS=-shared --export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,--whole-archive
-SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+SHARED_FLAGS= -shared -Wl,--add-stdcall-alias --export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
 CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin
 
 # java.lang.UnsatisfiedLinkError: Given procedure could not be found
@@ -443,15 +452,17 @@ CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
 CINC=-I. -I$(TOP) -I$(SYSROOT)/include
 APACHE_INC = -I$(SYSROOT)/include
 APR_INC    = -I$(SYSROOT)/srclib/apr-util/include
+JNI_INC=-I$(SYSROOT)/include
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
 endif
 # -lws2_32 -lwldap32 -lmingw64 -lcrtdll -u _imp__curl_easy_setopt -u _imp__curl_easy_strerror
-WIN_DLL_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lws2_32 -lwldap32 -lcrypt32 -lwinmm -lwsock32 -lgdi32 -lkernel32
-LIBS= -mconsole $(WIN_DLL_LIBS)
+SO_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lws2_32 -lwldap32 -lcrypt32 -lwinmm -lwsock32 -lgdi32 -lkernel32
+LIBS= -mconsole $(SO_LIBS)
+# --dll  -mdll
 #SHARED_FLAGS=-shared --export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,--whole-archive
-SHARED_FLAGS=-Wl,--add-stdcall-alias -shared -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+SHARED_FLAGS= -shared -Wl,--add-stdcall-alias -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
 CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing
 TARGET_FOUND=1
 endif
@@ -510,16 +521,17 @@ CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
 CINC=-I. -I$(TOP) -I$(SYSROOT)/include
 APACHE_INC = -I$(SYSROOT)/include
 APR_INC    = -I$(SYSROOT)/srclib/apr-util/include
-JNI_INC=-I$(MINGWDIR)/include
+JNI_INC=-I$(SYSROOT)/include
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
 endif
 # -lws2_32 -lwldap32 -lmingw64 -lcrtdll -u _imp__curl_easy_setopt -u _imp__curl_easy_strerror
-WIN_DLL_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lws2_32 -lwldap32 -lcrypt32 -lwinmm -lwsock32 -lgdi32 -lkernel32
-LIBS= -mconsole $(WIN_DLL_LIBS)
+SO_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lws2_32 -lwldap32 -lcrypt32 -lwinmm -lwsock32 -lgdi32 -lkernel32
+LIBS= -mconsole $(SO_LIBS)
+# --dll  -mdll
 #SHARED_FLAGS=-shared --export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,--whole-archive
-SHARED_FLAGS=-Wl,--add-stdcall-alias -shared -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+SHARED_FLAGS= -shared -Wl,--add-stdcall-alias -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
 CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing
 TARGET_FOUND=1
 endif
@@ -537,7 +549,7 @@ ZLIB_ROOT="C:/Program Files/GnuWin32"
 CINC=-I. -I$(TOP) -I"$(CURL_ROOT)/include" -I"$(OPENSSL_ROOT)/include" -I"$(ZLIB_ROOT)/include"
 JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:\Program Files\Java\jdk1.5.0_14\include\win32"
 WIN_DDL_LIBS= -LIBPATH:$(CURL_ROOT)/lib/Debug -LIBPATH:$(OPENSSL_ROOT)/lib/VC -LIBPATH:$(ZLIB_ROOT)/lib curllib.lib libeay32MD.lib ssleay32MD.lib zlib.lib kernel32.lib user32.lib winmm.lib Ws2_32.lib
-LIBS= $(WIN_DLL_LIBS)
+LIBS= $(SO_LIBS)
 #SHARED_FLAGS=-LDd -MDd -shared --export-all-symbols
 #SHARED_CLOSE=/SUBSYSTEM:WINDOWS
 SHARED_FLAGS=-DLL -shared --export-all-symbols
@@ -1345,15 +1357,18 @@ endif
 
 ifeq ($(TARGET),win32cl)
 zxidjava/zxid_wrap.$(OBJ_EXT): zxidjava/zxid_wrap.c
+	$(warning JAVAWRAP)
 	$(CC) -c $< -Fozxid_wrap.obj $(JNI_INC) $(CFLAGS) $(CDEF) $(CINC)
 	$(CP) zxid_wrap.obj $@
 else
 zxidjava/zxid_wrap.$(OBJ_EXT): zxidjava/zxid_wrap.c
+	$(warning JAVAWRAP)
 	$(CC) -c $< $(OUTOPT)$@ $(JNI_INC) $(CFLAGS) $(CDEF) $(CINC)
 endif
 
 $(ZXIDJNI_SO): zxidjava/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $(SHARED_FLAGS) $< $(SHARED_CLOSE) $(LIBZXID) $(LIBS)
+	$(warning JNILINK)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $(SHARED_FLAGS) $< $(SHARED_CLOSE) $(LIBZXID) $(SO_LIBS)
 
 #link  -OUT:zxidjava/zxidjni.dll -DLL -LDd -MDd -shared --export-all-symbols zxidjava/zxid_wrap.obj zxid.lib -LIBPATH:&quot;G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc/&quot;/lib/Debug -LIBPATH:&quot;C:/OpenSSL/&quot;/lib/VC -LIBPATH:&quot;C:/Program Files/GnuWin32/&quot;/lib curllib.lib libeay32MD.lib ssleay32MD.lib zlib.lib kernel32.lib user32.lib winmm.lib Ws2_32.lib -Wl,-no-whole-archive /SUBSYSTEM:WINDOWS /INCREMENTAL
 
@@ -1606,7 +1621,7 @@ libzxid.so.0.0: $(LIBZXID_A)
 	$(LD) $(OUTOPT)libzxid.so.0.0 $(SHARED_FLAGS) $^ $(SHARED_CLOSE) $(LIBS)
 
 zxid.dll zxidimp.lib: $(LIBZXID_A)
-	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib $^ $(SHARED_CLOSE) $(WIN_DLL_LIBS)
+	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib $^ $(SHARED_CLOSE) $(SO_LIBS)
 
 # -mdll
 

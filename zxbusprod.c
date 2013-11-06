@@ -34,11 +34,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #ifdef MINGW
-#include <winsock.h>
-/*#define EINPROGRESS WSAEINPROGRESS   mingw defines this in errno.h, nowdays*/
+# include <winsock.h>
+# ifndef EINPROGRESS
+#  define EINPROGRESS WSAEINPROGRESS   /* Missing in mingw 1.0, 3.0 defines this in errno.h*/
+# endif
 #else
-#include <netdb.h>
-#include <netinet/in.h>  /* struct sockaddr_in */
+# include <netdb.h>
+# include <netinet/in.h>  /* struct sockaddr_in */
 #endif
 
 #ifdef USE_OPENSSL

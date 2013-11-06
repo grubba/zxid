@@ -525,6 +525,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
       return 0;
     }
     env = r->Envelope;
+    zx_reverse_elem_lists(&env->gg);
   }
   ZX_FREE(cf->ctx, r);
   if (!env)
