@@ -339,7 +339,7 @@ zxid_entity* zxid_get_meta_ss(zxid_conf* cf, struct zx_str* url)
  * return:: XML data structure representing the response, or 0 upon failure
  *
  * The underlying HTTP client is libcurl. While libcurl is documented to
- * be "entirely thread safe", one limitation is that chrl handle can not
+ * be "entirely thread safe", one limitation is that curl handle can not
  * be shared between threads. Since we keep the curl handle a part
  * of the configuration object, which may be shared between threads,
  * we need to take a lock for duration of the curl operation. Thus any

@@ -603,7 +603,8 @@ $(info --------------------------)
 endif
 #CFLAGS += $(CDEF) $(CINC)
 
-# Avoid make's built-in rules and variables; do not print entry msg
+# Avoid make's built-in implicit rules and variables; do not print entry msg
+.SUFFIXES:
 MAKEFLAGS= -rR --no-print-directory
 
 ifeq ($(V),1)

@@ -91,9 +91,10 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Merge Jeroen's mega patch
     - Idea: authorization through interaction service, get it logged to audit trail as evidence
     - Idea: discovery and consent questions up-front in the beginning of the business process
-    - Improve 2 factor authn: the pin should be hashed password
+    - Improve 2 factor authn: the pin should be a hashed password
     - Paper scratch list based OTP
-    - Coordinates based authn
+    - Coordinates based authn (challenge response)
+    - Changing QR code based OTP
     - AuthnCtx comparison or matching
     - Proxy IdP AuthnCtx, RequesterID mapping
     - Config option to turn off audience restriction
@@ -113,6 +114,12 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Distressed authentication, persona selection at authentication by using prefix (pin)
     - Support BrowserID https://developer.mozilla.org/en-US/docs/persona
     - BUG: Passing qs args in RelayState
+
+zxid-1.16:: 7.11.2013
+    - Remodelled the Makefile
+    - Tested TARGET=xmingw64 builds
+    - Fixed some SOAP header ordering bugs
+    - Fixed handling of NULL returns in Net::SAML module
 
 zxid-1.15:: 26.10.2013
     - Added wsp_pat option

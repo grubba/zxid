@@ -68,7 +68,10 @@ const char* zxid_version_str()
 
 /*(i) Render any element with some options, controlled by
  * config option ENC_TAIL_OPT. Often used to generate slightly optimized
- * version for wire transfer. Not suitable for generating canonicalization. */
+ * version for wire transfer. Not suitable for generating canonicalization.
+ * The lists are assumed to be in forward order, i.e. opposite
+ * of what zx_dec_zx_root() and zx_DEC_elem() return. You should call
+ * zx_reverse_elem_lists() if needed. */
 
 /* Called by:  main x3, so_enc_dec, zxid_addmd, zxid_anoint_sso_resp, zxid_cache_epr, zxid_call_epr, zxid_idp_sso, zxid_lecp_check, zxid_map_val_ss, zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni, zxid_mni_do_ss, zxid_pep_az_base_soap_pepmap x3, zxid_pep_az_soap_pepmap x3, zxid_reg_svc, zxid_ses_to_pool x2, zxid_slo_resp_redir, zxid_snarf_eprs_from_ses, zxid_soap_call_raw, zxid_soap_cgi_resp_body, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_slo_redir, zxid_start_sso_url, zxid_write_ent_to_cache, zxid_wsc_prepare_call, zxid_wsp_decorate */
 struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x)

@@ -41,7 +41,9 @@
  *
  * env (rather than Body) is taken as argument so that caller can prepare
  * additional SOAP headers at will before calling this function. This function
- * will add Liberty ID-WSF specific SOAP headers. */
+ * will add Liberty ID-WSF specific SOAP headers.
+ * The returned lists are in reverse order, remember to call zx_reverse_elem_lists(),
+ * unless is_resp is set in which case the list is in forward order. */
 
 /* Called by:  covimp_test x2, zxid_soap_cgi_resp_body, zxid_wsc_prep, zxid_wsp_decorate */
 int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, int is_resp)
@@ -246,7 +248,7 @@ struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cr
     D_DEDENT("decor: ");
     return 0;
   }
-  zx_reverse_elem_lists(&env->Header->gg);
+  //zx_reverse_elem_lists(&env->Header->gg);  // *** Again?!? Already done in zxid_wsf_decor(is_resp)
   
   ss = zx_easy_enc_elem_opt(cf, &env->gg);
   DD("DECOR len=%d envelope(%.*s)", ss->len, ss->len, ss->s);
