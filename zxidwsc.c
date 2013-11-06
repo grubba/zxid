@@ -667,7 +667,7 @@ struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, cons
 
   epr = zxid_get_epr(cf, ses, svctype, url, di_opt, 0 /*Action*/, 1);
   if (!epr) {
-    ERR("EPR could not be discovered for svctype(%s)", svctype);
+    ERR("EPR could not be discovered for svctype(%s) (missing registration?)", svctype);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_WSC_RQ_OUT, "e:Client", "End Point for the service type could not be found. No end point has been registered? Too strict criteria for id_opt or az_cred? Permission denied? No discovery bootstrap is available?", TAS3_STATUS_EPR_NOT_FOUND, 0, url, svctype));
     return 0;
   }
