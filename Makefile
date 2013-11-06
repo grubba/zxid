@@ -183,10 +183,11 @@ CFLAGS+= -Wall -Wno-parentheses -Wno-unused-label -Wno-unknown-pragmas -Wno-char
 #LDFLAGS += -Wl,--gc-sections
 LIBZXID_A?=libzxid.a
 LIBZXID?=-L. -lzxid
+PLATFORM_OBJ?=
 OUTOPT?=-o 
 OBJ_EXT?=o
-PLATFORM_OBJ?=
 EXE?=
+SO?=.so
 
 ifeq ($(ENA_PG),1)
 ### To compile for profiling your should run make ENA_PG=1
@@ -316,6 +317,7 @@ ifeq ($(TARGET),mingw)
 CP=ln
 ZXID_PATH=/c/zxid/
 EXE=.exe
+SO=.dll
 PRECHECK_PREP=precheck_prep_win
 CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
 SO_LIBS= -L/mingw/lib -lcurl -lssl -lcrypto -lz -lssh2 -lidn -lwldap32 -lgdi32 -lwsock32 -lwinmm -lkernel32 -lz
@@ -361,6 +363,7 @@ MINGWDIR=/apps/gcc/mingw
 SYSROOT=$(MINGWDIR)/sysroot
 CROSS_COMPILE=1
 EXE=.exe
+SO=.dll
 CC=$(MINGWDIR)/bin/i586-pc-mingw32-gcc
 LD=$(MINGWDIR)/bin/i586-pc-mingw32-gcc
 ARC=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -crs
@@ -441,6 +444,7 @@ MINGWDIR=/apps/mingw/mingw-w64-bin_i686-linux_20130523
 SYSROOT=$(MINGWDIR)/x86_64-w64-mingw32
 CROSS_COMPILE=1
 EXE=.exe
+SO=.dll
 CC=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
 LD=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
 ARC=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -crs
@@ -510,6 +514,7 @@ MINGWDIR=/usr
 SYSROOT=$(MINGWDIR)/x86_64-w64-mingw32
 CROSS_COMPILE=1
 EXE=.exe
+SO=.dll
 CC=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
 LD=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
 ARC=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -crs
@@ -559,6 +564,7 @@ CFLAGS=-Zi -WL -DMAYBE_UNUSED=''
 OUTOPT=-OUT:
 OBJ_EXT=obj
 EXE=.exe
+SO=.dll
 PLATFORM_OBJ=zxdirent.obj
 LIBZXID_A=zxid.lib
 GPERF=gperf.exe
@@ -1207,17 +1213,16 @@ endif
 # -Wno-unused-label
 
 php/zxid_wrap.$(OBJ_EXT): php/zxid_wrap.c
+	$(warning PHPWRAP)
 	$(CC) -c $(OUTOPT)$@ `$(PHP_CONFIG) --includes` $(CFLAGS) $(CDEF) $(CINC) $<
 
-php/php_zxid.so: php/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)php/php_zxid.so -shared php/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
+php/php_zxid$(SO): php/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
+	$(warning PHPLINK)
+	$(LD) $(LDFLAGS) $(OUTOPT)php/php_zxid$(SO) -shared php/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
 
-phpzxid: php/php_zxid.so
+phpzxid: php/php_zxid$(SO)
 
-php/php_zxid.dll: php/php_zxid.so
-	mv php/php_zxid.so php/php_zxid.dll
-
-phpzxid_install: php/php_zxid.so
+phpzxid_install: php/php_zxid$(SO)
 	@$(ECHO) Installing in `$(PHP_CONFIG) --extension-dir`
 	mkdir -p `$(PHP_CONFIG) --extension-dir`
 	$(CP) $< `$(PHP_CONFIG) --extension-dir`
@@ -1225,7 +1230,7 @@ phpzxid_install: php/php_zxid.so
 #cp zxid.ini `$(PHP_CONFIG) --extension-dir`
 
 phpclean:
-	rm -rf php/*.$(OBJ_EXT) php/*~ php/*.so
+	rm -rf php/*.$(OBJ_EXT) php/*~ php/*$(SO)
 
 phpcleaner: phpclean
 	rm -rf php/php_zxid.h php/zxid.php php/zxid_wrap.c
@@ -1245,18 +1250,18 @@ endif
 py/zxid_wrap.$(OBJ_EXT): py/zxid_wrap.c
 	$(CC) -c $(OUTOPT)$@ `$(PY_CONFIG) --includes` $(CFLAGS) $(CDEF) $(CINC) $<
 
-py/py_zxid.so: py/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)py/py_zxid.so -shared py/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
+py/py_zxid$(SO): py/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)py/py_zxid$(SO) -shared py/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
 
-pyzxid: py/py_zxid.so
+pyzxid: py/py_zxid$(SO)
 
-pyzxid_install: py/py_zxid.so
+pyzxid_install: py/py_zxid$(SO)
 	@$(ECHO) Installing in `$(PY_CONFIG) --extension-dir`
 	mkdir -p `$(PY_CONFIG) --extension-dir`
 	$(CP) $< `$(PY_CONFIG) --extension-dir`
 
 pyclean:
-	rm -rf py/*.$(OBJ_EXT) py/*~ py/*.so
+	rm -rf py/*.$(OBJ_EXT) py/*~ py/*$(SO)
 
 pycleaner: pyclean
 	rm -rf py/zxid.py py/zxid_wrap.c
@@ -1276,18 +1281,18 @@ endif
 ruby/zxid_wrap.$(OBJ_EXT): ruby/zxid_wrap.c
 	$(CC) -c $(OUTOPT)$@ `$(RUBY_CONFIG) --includes` $(CFLAGS) $(CDEF) $(CINC) $<
 
-ruby/ruby_zxid.so: ruby/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)ruby/ruby_zxid.so -shared ruby/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
+ruby/ruby_zxid$(SO): ruby/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)ruby/ruby_zxid$(SO) -shared ruby/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
 
-rubyzxid: ruby/ruby_zxid.so
+rubyzxid: ruby/ruby_zxid$(SO)
 
-rubyzxid_install: ruby/ruby_zxid.so
+rubyzxid_install: ruby/ruby_zxid$(SO)
 	@$(ECHO) Installing in `$(RUBY_CONFIG) --extension-dir`
 	mkdir -p `$(RUBY_CONFIG) --extension-dir`
 	$(CP) $< `$(RUBY_CONFIG) --extension-dir`
 
 rubyclean:
-	rm -rf ruby/*.$(OBJ_EXT) ruby/*~ ruby/*.so
+	rm -rf ruby/*.$(OBJ_EXT) ruby/*~ ruby/*$(SO)
 
 rubycleaner: rubyclean
 	rm -rf ruby/zxid.ruby ruby/zxid_wrap.c
@@ -1307,18 +1312,18 @@ endif
 csharp/zxid_wrap.$(OBJ_EXT): csharp/zxid_wrap.c
 	$(CC) -c $(OUTOPT)$@ `$(CSHARP_CONFIG) --includes` $(CFLAGS) $(CDEF) $(CINC) $<
 
-csharp/csharp_zxid.so: csharp/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)csharp/csharp_zxid.so -shared csharp/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
+csharp/csharp_zxid$(SO): csharp/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)csharp/csharp_zxid$(SO) -shared csharp/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
 
-csharpzxid: csharp/csharp_zxid.so
+csharpzxid: csharp/csharp_zxid$(SO)
 
-csharpzxid_install: csharp/csharp_zxid.so
+csharpzxid_install: csharp/csharp_zxid$(SO)
 	@$(ECHO) Installing in `$(CSHARP_CONFIG) --extension-dir`
 	mkdir -p `$(CSHARP_CONFIG) --extension-dir`
 	$(CP) $< `$(CSHARP_CONFIG) --extension-dir`
 
 csharpclean:
-	rm -rf csharp/*.$(OBJ_EXT) csharp/*~ csharp/*.so
+	rm -rf csharp/*.$(OBJ_EXT) csharp/*~ csharp/*$(SO)
 
 csharpcleaner: csharpclean
 	rm -rf csharp/zxid.csharp csharp/zxid_wrap.c
@@ -1449,7 +1454,7 @@ gitreadd:
 	git add zxidjava/*.java zxidjava/*.c Net/Makefile Net/SAML.pm Net/*.c php/*.[hc] c/*.[hc]
 
 javaclean:
-	rm -rf zxidjava/*.$(OBJ_EXT) zxidjava/*~ zxidjava/*.so zxidjava/*.class *.class
+	rm -rf zxidjava/*.$(OBJ_EXT) zxidjava/*~ zxidjava/*$(SO) zxidjava/*.class *.class
 
 javacleaner: javaclean
 	rm -rf zxidjava/*.java zxidjava/zxid_wrap.c
@@ -1467,20 +1472,19 @@ bene: benessosrvlet.class benedemo.class
 ###
 
 mod_auth_saml.$(OBJ_EXT): mod_auth_saml.c $(LIBZXID_A)
-	$(CC) -o $@ $<  $(CFLAGS) $(CDEF) $(CINC) $(APACHE_INC) $(APR_INC)
+	$(warning MOD_AUTH_SAML COMPILE)
+	$(CC) -o $@ -c $<  $(CFLAGS) $(CDEF) $(CINC) $(APACHE_INC) $(APR_INC)
 
-mod_auth_saml.so: mod_auth_saml.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)mod_auth_saml.so $(SHARED_FLAGS) mod_auth_saml.$(OBJ_EXT) $(SHARED_CLOSE) $(LIBZXID) $(LIBS) $(MOD_AUTH_SAML_LIBS)
-
-mod_auth_saml.dll: mod_auth_saml.so
-	mv mod_auth_saml.so mod_auth_saml.dll
+mod_auth_saml$(SO): mod_auth_saml.$(OBJ_EXT) $(LIBZXID_A)
+	$(warning MOD_AUTH_SAML LINK SO)
+	$(LD) $(LDFLAGS) $(OUTOPT)mod_auth_saml$(SO) $(SHARED_FLAGS) mod_auth_saml.$(OBJ_EXT) $(SHARED_CLOSE) $(LIBZXID) $(MOD_AUTH_SAML_LIBS) $(LIBS)
 
 precheck_apache:  precheck/chk-apache.$(OBJ_EXT) precheck/chk-apache
 	precheck/chk-apache
 
-apachezxid: precheck_apache precheck mod_auth_saml.so
+apachezxid: precheck_apache precheck mod_auth_saml$(SO)
 
-apachezxid_install: mod_auth_saml.so
+apachezxid_install: mod_auth_saml$(SO)
 	$(CP) $< $(APACHE_MODULES)
 
 mod_auth_saml: apachezxid
@@ -1499,9 +1503,11 @@ MINI_HTTPD_DIR?=mini_httpd-1.19-zxid
 CRYPT_LIB ?= -lcrypt
 
 $(MINI_HTTPD_DIR)/htpasswd: $(MINI_HTTPD_DIR)/htpasswd.$(OBJ_EXT)
+	$(warning MINI_HTTPD COMPILE)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(CRYPT_LIB) $(LIBS)
 
-$(MINI_HTTPD_DIR)/mini_httpd_zxid: $(MINI_HTTPD_DIR)/mini_httpd.$(OBJ_EXT) $(MINI_HTTPD_DIR)/match.$(OBJ_EXT) $(MINI_HTTPD_DIR)/tdate_parse.$(OBJ_EXT) mini_httpd_filter.$(OBJ_EXT)
+$(MINI_HTTPD_DIR)/mini_httpd_zxid$(EXE): $(MINI_HTTPD_DIR)/mini_httpd.$(OBJ_EXT) $(MINI_HTTPD_DIR)/match.$(OBJ_EXT) $(MINI_HTTPD_DIR)/tdate_parse.$(OBJ_EXT) mini_httpd_filter.$(OBJ_EXT)
+	$(warning MINI_HTTPD LINK)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $^ $(CRYPT_LIB) $(LIBZXID) $(LIBS)
 
 $(MINI_HTTPD_DIR)/mime_encodings.h: $(MINI_HTTPD_DIR)/mime_encodings.txt
@@ -1640,21 +1646,21 @@ TAS3COMMONFILES=README.zxid-tas3 README.zxid Changes COPYING LICENSE-2.0.txt LIC
 
 TAS3MAS=T3-SSO-ZXID-MODAUTHSAML_$(ZXIDREL)
 
-tas3maspkg: mod_auth_saml.so
+tas3maspkg: mod_auth_saml$(SO)
 	rm -rf $(TAS3MAS) $(TAS3MAS).zip
 	mkdir $(TAS3MAS)
 	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-SSO-ZXID-MODAUTHSAML > $(TAS3MAS)/Manifest
-	$(CP) mod_auth_saml.so $(TAS3MAS)
+	$(CP) mod_auth_saml$(SO) $(TAS3MAS)
 	$(CP) $(TAS3COMMONFILES) $(TAS3MAS)
 	zip -r $(TAS3MAS).zip $(TAS3MAS)
 
 TAS3PHP=T3-SSO-ZXID-PHP_$(ZXIDREL)
 
-tas3phppkg: php/php_zxid.so
+tas3phppkg: php/php_zxid$(SO)
 	rm -rf $(TAS3PHP) $(TAS3PHP).zip
 	mkdir $(TAS3PHP)
 	$(PERL) ./sed-zxid.pl version $(ZXIDREL) <Manifest.T3-SSO-ZXID-PHP >$(TAS3PHP)/Manifest
-	$(CP) *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3PHP)
+	$(CP) *.php php/php_zxid$(SO) php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3PHP)
 	$(CP) $(TAS3COMMONFILES) $(TAS3PHP)
 	zip -r $(TAS3PHP).zip $(TAS3PHP)
 
@@ -1681,7 +1687,7 @@ tas3idppkg: zxididp zxpasswd zxcot zxdecode
 
 TAS3LINUXX86=T3-ZXID-LINUX-X86_$(ZXIDREL)
 
-tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/php_zxid.so $(ZXIDJNI_SO) zxidjava/zxidjni.class
+tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml$(SO) php/php_zxid$(SO) $(ZXIDJNI_SO) zxidjava/zxidjni.class
 	rm -rf $(TAS3LINUXX86) $(TAS3LINUXX86).zip
 	mkdir $(TAS3LINUXX86)
 	mkdir $(TAS3LINUXX86)/zxidjava
@@ -1690,9 +1696,9 @@ tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/
 	mkdir $(TAS3LINUXX86)/include/zx
 	mkdir $(TAS3LINUXX86)/include/zx/c
 	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-ZXID-LINUX-X86 > $(TAS3LINUXX86)/Manifest
-	$(CP) mod_auth_saml.so $(TAS3LINUXX86)
+	$(CP) mod_auth_saml$(SO) $(TAS3LINUXX86)
 	$(CP) *.php zxid-php.pd $(TAS3LINUXX86)
-	$(CP) php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php $(TAS3LINUXX86)/php
+	$(CP) php/php_zxid$(SO) php/zxid.php php/zxid.ini php/README.zxid-php $(TAS3LINUXX86)/php
 	$(CP) zxididp zxpasswd zxcot zxdecode zxlogview zxid-idp.pd $(TAS3LINUXX86)
 	$(CP) $(LIBZXID_A) $(TAS3LINUXX86)
 	$(CP) $(ZXIDHDRS) $(TAS3LINUXX86)/include/zx
@@ -1703,8 +1709,8 @@ tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/
 
 TAS3WIN32=T3-ZXID-WIN32_$(ZXIDREL)
 
-#tas3win32pkg: mod_auth_saml.so php/php_zxid.so
-#	$(CP) mod_auth_saml.so $(TAS3LINUXX86)
+#tas3win32pkg: mod_auth_saml$(SO) php/php_zxid$(SO)
+#	$(CP) mod_auth_saml$(SO) $(TAS3LINUXX86)
 #	$(CP) *.php php/php_zxid.dll php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
 
 tas3win32pkg: zxid.dll zxididp zxpasswd zxcot zxdecode zxlogview $(ZXIDJNI_SO) zxidjava/zxidjni.class zxidappdemo.class zxidjava.jar zxiddemo.war
@@ -1985,14 +1991,14 @@ cleanbin:
 	rm -f zxid zxidsimple zxbench zxencdectest zxmqtest $(LIBZXID_A) libzxid.so* zxsizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
 	rm -f zxidwspcgi zxidxfoobarwsp zxpasswd zxcot zxcall zxbusd zxbustailf zxbuslist
-	rm -f mod_auth_saml.so zxididp zxdecode zxlogview zxcot zxpasswd smime
+	rm -f mod_auth_saml$(SO) zxididp zxdecode zxlogview zxcot zxpasswd smime
 	rm -f zxid.dll zxidjava/zxidjni.dll *.exe
 
 miniclean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean
 	@$(ECHO) ------------------ Making miniclean
 	rm -f *.o *.obj zxid zxlogview zxbench zxencdectest zxmqtest $(LIBZXID_A) libzxid.so* sizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
-	rm -f mod_auth_saml.so zxididp zxbusd zxbustailf zxbuslist
+	rm -f mod_auth_saml$(SO) zxididp zxbusd zxbustailf zxbuslist
 	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar ak.*
 
 # make cleany && make genwrap ENA_GEN=1 && make all ENA_GEN=1
