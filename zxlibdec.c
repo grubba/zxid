@@ -508,7 +508,9 @@ static struct zx_elem_s* zx_el_lookup(struct zx_ctx* c, struct zx_elem_s* x, str
       goto unknown_el;
   } else {
 unknown_el:
-    INFO("Unknown element <%.*s>, child of <%.*s>", ((int)(c->p - full_name)), full_name, x->g.len, x->g.s);
+    // Unknown element warnings are quite frequent and just clutter the logs. Downgrade.
+    //INFO("Unknown element <%.*s>, child of <%.*s>", ((int)(c->p - full_name)), full_name, x->g.len, x->g.s);
+    D("Unknown element <%.*s>, child of <%.*s>", ((int)(c->p - full_name)), full_name, x->g.len, x->g.s);
     el = ZX_ZALLOC(c, struct zx_elem_s);
     tok = ZX_TOK_NOT_FOUND;
   }
