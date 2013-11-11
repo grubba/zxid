@@ -540,7 +540,7 @@ struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list*
   char* q;
   struct zxid_cstr_list* cs;
 
-  for (; p && *p; *p && ++p) {
+  for (; p && *p; *p && ++p) {  /* ignore: warning: value computed is not used [-Wunused-value] */
     q = p;
     p = strchr(p, ',');
     if (!p)
@@ -621,7 +621,7 @@ struct zxid_bus_url* zxid_load_bus_url(zxid_conf* cf, struct zxid_bus_url* bu_ro
   char* q;
   struct zxid_bus_url* bu;
 
-  for (; p && *p; *p && ++p) {
+  for (; p && *p; *p && ++p) {  /* ignore: warning: value computed is not used [-Wunused-value] */
     q = p;
     p = strchr(p, ',');
     if (!p)
@@ -1243,7 +1243,7 @@ zxid_conf* zxid_new_conf(const char* zxid_path)
 
 #if defined(ZXID_CONF_FILE) || defined(ZXID_CONF_FLAG)
 
-#define SCAN_INT(v, lval) sscanf(v,"%i",&i); lval=i /* Safe for char, too */
+#define SCAN_INT(v, lval) sscanf(v,"%i",&i); lval=i /* Safe for char, too. Decimal or hex 0x */
 
 /*(-) Helper to evaluate a new PATH. check_file_exists helps to implement
  * the sematic where PATH is not changed unless corresponding zxid.conf

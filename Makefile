@@ -76,7 +76,7 @@ ENA_TAS3=1
 ###   make CDEF='-DZXID_CONF_PATH="/opt/zxid/zxid.conf"'
 
 # Advise other software, such as mini_httpd, to use ZXID specific features
-CDEF+= -DUSE_ZXID -DDISA_MINI_HTTPD_BLOAT
+CDEF+= -DUSE_ZXID -DUSE_SSL -DDISA_MINI_HTTPD_BLOAT
 # Without cURL the Artifact Profile, WSC, and metadata fetch features are disabled.
 CDEF+= -DUSE_CURL
 # Without OpenSSL signing and signature verification are not possible
@@ -1506,7 +1506,7 @@ $(MINI_HTTPD_DIR)/htpasswd: $(MINI_HTTPD_DIR)/htpasswd.$(OBJ_EXT)
 	$(warning MINI_HTTPD COMPILE)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(CRYPT_LIB) $(LIBS)
 
-$(MINI_HTTPD_DIR)/mini_httpd_zxid$(EXE): $(MINI_HTTPD_DIR)/mini_httpd.$(OBJ_EXT) $(MINI_HTTPD_DIR)/match.$(OBJ_EXT) $(MINI_HTTPD_DIR)/tdate_parse.$(OBJ_EXT) mini_httpd_filter.$(OBJ_EXT)
+$(MINI_HTTPD_DIR)/mini_httpd_zxid$(EXE): $(MINI_HTTPD_DIR)/mini_httpd.$(OBJ_EXT) $(MINI_HTTPD_DIR)/match.$(OBJ_EXT) $(MINI_HTTPD_DIR)/tdate_parse.$(OBJ_EXT) mini_httpd_filter.$(OBJ_EXT) $(LIBZXID_A)
 	$(warning MINI_HTTPD LINK)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $^ $(CRYPT_LIB) $(LIBZXID) $(LIBS)
 

@@ -40,9 +40,11 @@
 void send_error_and_exit(int s, char* title, char* extra_header, char* text);
 ssize_t my_read(char* buf, size_t size);
 ssize_t my_write(char* buf, size_t size);
-void add_to_buf( char** bufP, size_t* bufsizeP, size_t* buflenP, char* str, size_t len );
-void add_to_response( char* str, size_t len );
-void add_to_request( char* str, size_t len );
+void add_to_buf(char** bufP, size_t* bufsizeP, size_t* buflenP, char* str, size_t len);
+void add_to_request(char* str, size_t len);
+void add_headers(int s, char* title, char* extra_header, char* me, char* mt, off_t b, time_t mod);
+void add_to_response(char* str, size_t len);
+void send_response(void);
 extern char* request;
 extern size_t request_size, request_len, request_idx;
 extern size_t content_length;
@@ -187,9 +189,13 @@ static char* zxid_mini_httpd_read_post(zxid_conf* cf)
   char* res;
 
   for (;;) {
-    char buf[10000];
+    char buf[16*1024];
     int already_read = request_len-request_idx;
-    int len = my_read(buf, MIN(sizeof(buf), content_length - already_read));
+    int len = MIN(sizeof(buf), content_length - already_read);
+    D("About to read post data content_length=%d already_read=%d sizeof(buf)=%d req=%d", content_length, already_read, sizeof(buf), len);
+    if (!len)
+      break;  /* nothing further to read */
+    len = my_read(buf, len);
     if (len < 0 && ONE_OF_2(errno, EINTR, EAGAIN))
       continue;
     if (len <= 0)
@@ -272,6 +278,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
   int ret, len, uri_len, url_len, args_len;
   char* p;
   char* res;
+  char* mt;
   //const char* set_cookie_hdr;
   //const char* cur_auth;
   zxid_ses* ses = zxid_alloc_ses(cf);
@@ -415,7 +422,7 @@ process_zxid_simple_outcome:
     D("Passing cookie(%s) to environment", cookie_hdr);
     zxid_add_attr_to_ses(cf, ses, "cookie", zx_dup_str(cf->ctx, cookie_hdr));
   }
-
+  D("res(%s)",res);
   switch (res[0]) {
   case 'L':
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
@@ -426,26 +433,25 @@ process_zxid_simple_outcome:
     DD("RES(%s)", res);
     p = strchr(res, '\r');
     *p = 0;
-    //mt = res;
+    mt = res;
     DD("CONTENT-TYPE(%s)", res);
     res = p+2 + 16;  /* skip "Content-Length:" (16 chars) */
     sscanf(res, "%d", &len);
     res = strchr(res, '\r') + 4; /* skip CRFL pair before body */
     DD("CONTENT-LENGTH(%d)", len);
-    //add_headers(200, "OK", "", "", mt, len, (time_t)-1);
-    // *** add_to_response( res, buflen );
-    // *** send_response();
-#ifdef USE_SSL
-    SSL_free( ssl );
-#endif /* USE_SSL */
-    exit(0);
+    /* *** how is set-cookie header handled? */
+
+    add_headers(200, "OK", "", "", mt?mt:"text/html; charset=%s", len, (time_t)-1);
+    add_to_response(res, len);
+    send_response();
+    exit(0);  /* This function is called in mini_httpd handle_request() subrprocess. */
   case 'z':
     INFO("User not authorized %d", 0);
     send_error_and_exit(403, "Forbidden", "", "Authorization denied.");
   case 0: /* Logged in case */
     D("SSO OK pre uri(%s)", uri_path);
     //ret = pool2apache(cf, r, ses.at); // *** done in docgi()
-    return 0;
+    break;
 #if 0
   case 'd': /* Logged in case */
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("SSO OK LDIF(%s)", res);
@@ -473,7 +479,7 @@ zxid_ses* zxid_mini_httpd_filter(zxid_conf* cf, const char* method, const char* 
 {
   zxid_ses* ses;
   char buf[256];
-  D("===== START %s uri(%s) qs(%s) pid=%d gid=%d cwd(%s)", ZXID_REL, uri_path, STRNULLCHKNULL(qs), getpid(), getgid(), getcwd(buf,sizeof(buf)));
+  D("===== START %s uri(%s) qs(%s) uid=%d pid=%d gid=%d cwd(%s)", ZXID_REL, uri_path, STRNULLCHKNULL(qs), getpid(), getuid(), getgid(), getcwd(buf,sizeof(buf)));
   if (cf->wd && *cf->wd)
     chdir(cf->wd);
   D_INDENT("minizx: ");

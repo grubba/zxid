@@ -82,6 +82,7 @@ int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_e
 static zxid_conf* zxid_cf;     /* ZXID enable flag and config string, zero initialized per POSIX */
 static zxid_ses* zxid_session; /* Non-null if SSO or session from cookie or WSP validate */
 int zxid_is_wsp;               /* Flag to trigger WSP response decoration. */
+char* zxid_conf_str = 0;
 #endif
 
 extern char* crypt( const char* key, const char* setting );
@@ -280,13 +281,13 @@ void send_error_and_exit( int s, char* title, char* extra_header, char* text );
 static void send_error_body( int s, char* title, char* text );
 static int send_error_file( char* filename );
 static void send_error_tail( void );
-static void add_headers( int s, char* title, char* extra_header, char* me, char* mt, off_t b, time_t mod );
+void add_headers( int s, char* title, char* extra_header, char* me, char* mt, off_t b, time_t mod );
 static void start_request( void );
 void add_to_request( char* str, size_t len );
 static char* get_request_line( void );
 static void start_response( void );
 void add_to_response( char* str, size_t len );
-static void send_response( void );
+void send_response( void );
 static void send_via_write( int fd, off_t size );
 ssize_t my_read( char* buf, size_t size );
 ssize_t my_write( char* buf, size_t size );
@@ -399,9 +400,9 @@ main( int argc, char** argv )
 	else if ( strcmp( argv[argn], "-zx" ) == 0 && argn + 1 < argc )
 	    {
 	    ++argn;
-	    zxid_cf = zxid_new_conf_to_cf(argv[argn]);
+	    zxid_conf_str = argv[argn];
 	    }
-	else if ( strcmp( argv[argn], "-T" ) == 0 && argn + 1 < argc )
+	else if ( strcmp( argv[argn], "-WT" ) == 0 && argn + 1 < argc )
 	    {
 	    ++argn;
 	    write_timeout = atoi( argv[argn] );
@@ -491,6 +492,13 @@ main( int argc, char** argv )
 	port = DEFAULT_HTTP_PORT;
 #endif /* USE_SSL */
 	}
+#ifdef USE_ZXID
+    {
+      char buf[16];
+      snprintf(buf, sizeof(buf), "%d", port);
+      setenv("SERVER_PORT", buf, 1);
+    }
+#endif
 
     /* If we're root and we're going to become another user, get the uid/gid
     ** now.
@@ -626,7 +634,7 @@ main( int argc, char** argv )
 #endif
 	}
     else
-#endif
+#endif /* DIET */
 	{
 	/* Even if we don't daemonize, we still want to disown our parent
 	** process.
@@ -893,7 +901,7 @@ usage( void )
     {
 #ifdef USE_SSL
 # ifdef USE_ZXID
-      (void) fprintf( stderr, "usage:  %s [-C configfile] [-D] [-S] [-E certfile] [-Y cipher] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage] [-T write_timeout_secs] [-zx CONF]\n", argv0 );
+      (void) fprintf( stderr, "usage:  %s [-C configfile] [-D] [-S] [-E certfile] [-Y cipher] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage] [-WT write_timeout_secs] [-zx CONF]\n", argv0 );
 # else /* USE_ZXID */
       (void) fprintf( stderr, "usage:  %s [-C configfile] [-D] [-S] [-E certfile] [-Y cipher] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage]\n", argv0 );
 # endif /* USE_ZXID */
@@ -1361,18 +1369,25 @@ handle_request( void )
     if ( vhost )
 	file = virtual_file( file );
 
-#ifdef USE_ZXID
-    if (zxid_cf)
-      zxid_session = zxid_mini_httpd_filter(zxid_cf, method, path, query, cookie);
-#endif /* USE_ZXID */
-
     /* Set up the timeout for writing. */
 #ifdef HAVE_SIGSET
     (void) sigset( SIGALRM, handle_write_timeout );
 #else /* HAVE_SIGSET */
     (void) signal( SIGALRM, handle_write_timeout );
 #endif /* HAVE_SIGSET */
-    (void) alarm( WRITE_TIMEOUT );
+    (void) alarm( write_timeout );
+
+#ifdef USE_ZXID
+    if (zxid_conf_str) {
+      /* We recreate the configuration every time. This is to enable
+       * features such as virtual hosting to work. */
+      setenv("HTTP_HOST", host?host:(req_hostname?req_hostname:(hostname?hostname:"UNKNOWN_HOST")), 1);  /* needed so VPATH and VURL can pick it up */
+      setenv("SCRIPT_NAME", path, 1);
+      zxid_cf = zxid_new_conf_to_cf(zxid_conf_str);
+      zxid_session = zxid_mini_httpd_filter(zxid_cf, method, path, query, cookie);
+    }
+#endif /* USE_ZXID */
+
 
     r = stat( file, &sb );
     if ( r < 0 )
@@ -2554,7 +2569,7 @@ send_error_tail( void )
     }
 
 
-static void
+void
 add_headers( int s, char* title, char* extra_header, char* me, char* mt, off_t b, time_t mod )
     {
     time_t now, expires;
@@ -2686,7 +2701,7 @@ add_to_response( char* str, size_t len )
     add_to_buf( &response, &response_size, &response_len, str, len );
     }
 
-static void
+void
 send_response( void )
     {
     (void) my_write( response, response_len );

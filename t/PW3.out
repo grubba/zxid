@@ -1,1 +1,1 @@
-md5_crypt hash ($1$) validate: fail
+plaintext password validate: fail

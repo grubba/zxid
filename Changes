@@ -120,6 +120,7 @@ zxid-1.16:: 7.11.2013
     - Tested TARGET=xmingw64 builds
     - Fixed some SOAP header ordering bugs
     - Fixed handling of NULL returns in Net::SAML module
+    - Fixed serious bugs in mini_httpd_zxid
 
 zxid-1.15:: 26.10.2013
     - Added wsp_pat option

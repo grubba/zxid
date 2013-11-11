@@ -143,6 +143,8 @@ int lseek(int fd, int offset, int whence);
 int pipe(int fd[2]);
 int read(int fd, void* buf, int count);
 int rmdir(const char *pathname);
+int getuid();
+int getgid();
 int setuid(int);
 int setgid(int);
 int symlink(const char *oldpath, const char *newpath);

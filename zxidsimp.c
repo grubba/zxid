@@ -780,12 +780,12 @@ char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_
   
   if (auto_flags & (c_mask | h_mask)) {
     if (auto_flags & h_mask) {  /* H only: return both H and C */
-      D("With headers %x", auto_flags);
+      D("With headers %x (%s)", auto_flags, ss->s);
       ss2 = zx_strf(cf->ctx, "Content-Type: %s" CRLF "Content-Length: %d" CRLF2 "%.*s",
 		    cont_type, ss->len, ss->len, ss->s);
       zx_str_free(cf->ctx, ss);
     } else {
-      D("No headers %x", auto_flags);
+      D("No headers %x (%s)", auto_flags, ss->s);
       ss2 = ss;       /* C only */
     }
     res = ss2->s;

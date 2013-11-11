@@ -13,6 +13,8 @@ time (LD_LIBRARY_PATH=/apps/lib make all ENA_GEN=1 ENA_PG=1)
 # configure your web server to recognize zxid a CGI, e.g.
 mini_httpd -p 8443 -c 'zxid*' -S -E zxid.pem -l /tmp/mini.stderr &
 mini_httpd -p 8444 -c 'zxid*' -S -E /var/zxid/pem/enc-nopw-cert.pem -l /tmp/mini.stderr &
+mini_httpd_zxid -zx 'PATH=/var/zxid/&WSP_PAT=*.wsp&SSO_PAT=*&DEBUG=0x7f' -p 8443 -c 'zxid*' -S -E /var/zxid/pem/enc-nopw-cert.pem
+https://sp.tas3.pt:8443/zxidenv.cgi
 
 echo Edit your /etc/hosts to contain
 echo 127.0.0.1 localhost sp1.zxidcommon.org sp1.zxidsp.org idp1.zxidp.org sp.tas3.pt idp.tas3.pt

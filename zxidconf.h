@@ -763,7 +763,8 @@
 
 /*(c) WSP Pattern
  * Any URL matching this pattern is treated as web service call rather
- * than SSO attempt. Understood by mod_auth_saml. */
+ * than SSO attempt. Understood by mod_auth_saml and mini_httpd_zxid.
+ * WSP_PAT is matched before SSO_PAT. */
 
 #define ZXID_WSP_PAT "*.wsp"
 

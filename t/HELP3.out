@@ -1,8 +1,9 @@
-zxcot  -  Circle-of-Trust and metadata management tool R0.78
+zxcot  -  Circle-of-Trust and metadata management tool R1.15
+Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
 Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0
 See http://www.apache.org/licenses/LICENSE-2.0
-Send well researched bug reports to the author. Home: zxid.org
+Send well researched bug reports to the author. Home: http://zxid.org
 
 Usage: zxcot [options] [dir]         # Gives listing of metadata
        zxcot -a [options] [dir] <meta.xml
@@ -14,11 +15,14 @@ Usage: zxcot [options] [dir]         # Gives listing of metadata
   [dir]            CoT directory. Default /var/zxid/cot
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)
                    Most of the configuration is read from /var/zxid/zxid.conf
-  -ci              IdP conf, synonym for -c PATH=/var/zxid/idp
+                   N.B. If VURL and/or VPATH are used, you should set
+                   environment variables that affect virtualization, e.g.
+                     HTTP_HOST=example.com:8443 SERVER_PORT=8443 SCRIPT_NAME=zxidhlo zxcot -m
+  -ci              IdP conf, synonym for -c IDP_ENA=1
   -a               Add metadata from stdin
   -b               Register Web Service, add Service EPR from stdin
   -bs              Register Web Service and Bootstrap, add Service EPR from stdin
-  -e endpoint abstract entid servicetype   Dump EPR to stdout.
+  -e endpoint abstract entid servicetype   Construct and dump EPR to stdout.
   -g URL           Do HTTP(S) GET to URL and add as metadata (if compiled w/libcurl)
   -n               Dryrun. Do not actually add the metadata. Instead print it to stdout.
   -s               Swap columns, for easier sorting by URL

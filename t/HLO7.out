@@ -1,10 +1,10 @@
 Content-Type: text/html
-Content-Length: 494
+Content-Length: 507
 
 <title>ZXID Error</title>
 <link type="text/css" rel=stylesheet href="idpsel.css">
 <body bgcolor=white>
-<form method=get action="http://sp1.zxidsp.org:8081/zxidhlo">
+<form method=get action="http://sidemo:8084/zxidhlo">
 
 <h1 class=zxtop>ZXID Error Message</h1>
 
@@ -14,4 +14,4 @@ Content-Length: 494
 
 <input type=hidden name=zxapp value="">
 </form>
-<div class=zxbot><a href="/zxidservlet/appdemo">App Demo</a> | <a href="http://zxid.org/">zxid.org</a>, 0.73 1292754986 libzxid (zxid.org)</div>
+<div class=zxbot><a href="/zxidservlet/appdemo">App Demo</a> | <a href="http://zxid.org/">zxid.org</a>, 1.15 1382893016 libe2eta ix86-32 (sampo@synergetics.be)</div>

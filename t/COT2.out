@@ -1,26 +1,6 @@
-https://nottingham.nekton.tas3.eu/idp/shibboleth   /var/zxid/cot/QjXl-TJJHvvHYzLcp_DUDzuylnM -
-http://sp1.zxidsp.org:8081/zxidhlo?o=B             /var/zxid/cot/7226zILkb6t9aGT89NyvhKvbZS0 TAS3 App Demo SP and WSC
-http://89.200.142.218:8080/pdscreation/SimpleResource?o=B /var/zxid/cot/e-zFg7QJpKDuKUfEK23B6kDhe3Q ZXID CONF NICE_NAME: Set this to describe your site to humans
-https://kent.nekton.tas3.eu/idp/shibboleth         /var/zxid/cot/YXfe5FNkf75PSHYMAbmjbhgvSC4 kent.nekton.tas3.eu
-http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B            /var/zxid/cot/THuOFn5WPO49n6esrG22rUFW6Go TAS3 App Demo SP and WSC
-http://idp.ssocircle.com                           /var/zxid/cot/s36Te-rgbzReSjVc8vDDGy89tT8 -
-http://tripod.kenteq.nl/SSO/ZXID.ashx              /var/zxid/cot/48uIfks4yTO6mjaF5IP3IQFqtW0 Kenteq is het kennis- en adviescentrum voor technisch vakmanschap. Ons doel is bij te dragen aan loopbaanontwikkeling en hoogwaardig vakmanschap in de techniek. Door kennisoverdracht, begeleiding, training, scholing en advisering. Kenteq zoekt daarbij bewust naar samenwerking.
-https://idp.symdemo.com:8880/idp.xml               /var/zxid/cot/_CBGcFVVbIEmt5oh3jUx4GEfHLM -
-https://idp.tas3.kent.ac.uk/idp/shibboleth         /var/zxid/cot/crE4cE1_K3Vd5oQkgDxi_vD6GNE -
-http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B     /var/zxid/cot/RoxLhhcxK04xzJRrW6ZuroX7Ing -
-http://idp.tas3.pt:8081/zxididp                    /var/zxid/cot/xsKJr3DL7sUPDdbdqgC2H_eP-UM TAS3 Demo IdP
-http://sp.tas3.pt:8080/zxidservlet/sso?o=B         /var/zxid/cot/9u_7LsQjkz0VaXKucmx1_sYjQnM TAS3 App Demo SP and WSC
-https://idp.tas3.eu/zxididp?o=B                    /var/zxid/cot/xOjD65W1OVltx35kfHMs7ZLD9Sg ZXIdP
-https://idp.kantarainitiative.org/simplesaml/saml2/idp/metadata.php /var/zxid/cot/JiB-7CyH0JYURjZj3slF2sl7CO4 -
-http://idp.tas3.pt:8081/zxididp                    /var/zxid/cot/HP5IP9fE_HtNMNuTisquh7oNqg4 TAS3 Demo IdP
-https://cardspace-idp.symlabs.net:8002/idp.xml     /var/zxid/cot/v1tVvR0_Z_ZjW2p0GQzQYSUDY0M -
-https://zxidp.org/idp                              /var/zxid/cot/yBeCTPt0NQ2vMuI-srKw5h4N2i8 ZXIDP - Free IdP
-ehp-stage.uhg.UMICH                                /var/zxid/cot/sVKeK_EW5Kdgt_3_dty3Pvpkvn4 TAS3 Demo IdP
-https://nekton.tas3.eu:10002/zxidservlet/sso?o=B   /var/zxid/cot/OLEGM6Dq1Zs0eK7nRhmdW-Y2q1E ZXID CONF NICE_NAME: Set this to describe your site to humans
-https://nekton.tas3.eu:13942/simplesaml/module.php/saml/sp/metadata.php/default-sp /var/zxid/cot/iehL3xyjv1v7xtqh8885nyMOiug -
-http://rolacast.labse.isti.cnr.it/meta.xml         /var/zxid/cot/JwZcQkNISe3yGNqYkRkhC6MsPI4 -
-http://saml.flexmls.com/idp/shibboleth             /var/zxid/cot/U1P0XrwXMFHdAqVbFUpnrDvDV3g -
-https://idpdemo.tas3.eu:8443/zxididp?o=B           /var/zxid/cot/kBxtAcQLGjHtsHvYvHDhOoehdTY -
-https://sp1.zxidsp.org:8443/zxidhlo?o=B            /var/zxid/cot/dgsDrHIE3WTSvxSsu8zCClSeFYg -
-http://sp.tas3.pt:8080/zxidservlet/wspleaf?o=B     /var/zxid/cot/LrmskITZZexv2pk5c7qKRvLMicw TAS3 App Demo SP and WSC
-http://auth.orange.fr                              /var/zxid/cot/ZLIYSwzbSQdzIWHISwoWtdrx6JI -
+http://?o=B                                        /var/zxid/cot/G2JpTSX_dbdJ7frhYNpKWGiMdTs Syn Test SP
+http://sp.tas3.pt:8082/zxidhlo?o=B                 /var/zxid/cot/rUPLhvYy_-J1NrzJcGSHyNElaxQ Syn Test SP
+https://sp.employeedata.eu:8444/e2eTA/sso?o=B      /var/zxid/cot/n1GTPbQfxkLs5HgjYvUfVVTobJM Employee Data Demo SP
+http://idp.tas3.pt:8081/zxididp?o=B                /var/zxid/cot/xsKJr3DL7sUPDdbdqgC2H_eP-UM Syn Test IdP
+https://sp.citizendata.eu:8445/protected/saml?o=B  /var/zxid/cot/wBSg8UMFBbbKx2hXJobTX1JCuFE Citizen Data Demo SP
+http://sidemo:8084/zxidhlo?o=B                     /var/zxid/cot/TO0G_103gISOGB0pXmMECyMxT9A antin testi

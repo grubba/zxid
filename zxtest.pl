@@ -1415,6 +1415,9 @@ ED('XML33', 'Decode-Encode SO and WO: bad-body2 malformed close', 10, 't/bad-bod
 
 # *** TODO: benchmark raw RSA performance using logging w/ zxlogview
 
+# /apps/bin/mini_httpd -p 8081 -c 'zxid*' &   # IdP
+# /apps/bin/mini_httpd -p 8082 -c 'zxid*' &   # SP
+
 # *** TODO: set up test IdP using zxcot (for disco registrations and bootstrap) and zxpasswd
 # *** TODO: set up test SP
 # *** TODO: set up test WSP

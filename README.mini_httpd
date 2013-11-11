@@ -3,6 +3,11 @@ it with dietlibc and link it statically. The following patch
 changes the Makefile to accomplish that and also to
 support PAOS http header needed for SAML 2.0 ECP operation.
 
+N.B. As of relese 1.16 (20131110) the zxid distribution includes
+an already patched (and further modified) version fo mini_httpd.
+
+  mini_httpd_zxid -zx 'PATH=/var/zxid/&WSP_PAT=*.wsp&SSO_PAT=*&DEBUG=1' -p 8443 -c 'zxid*' -S -E /var/zxid/pem/enc-nopw-cert.pem
+
 --Sampo
 
 5 mini_httpd-1.19 receipe
