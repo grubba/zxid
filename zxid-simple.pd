@@ -310,7 +310,7 @@ Format (OFMT) bits as follows
   00  LDIF (default)
   01  Query String
   10  JSON
-  11  Reserved
+  11  No output (usually used if attributes are picked from session)
 
 2.1.4 Configuration options for customizing HTML
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -18,6 +18,7 @@
  * 13.2.2013, added WD option --Sampo
  * 21.6.2013, added SOAP WSP capability --Sampo
  * 22.6.2013, created, based on mod_auth_saml.c and zxidwspcgi.c --Sampo
+ * 10.11.2013, bmany bugs fixed, much improved --Sampo
  *
  * See also: zxidwspcgi.c, mod_auth_saml.c
  */
@@ -49,6 +50,7 @@ extern char* request;
 extern size_t request_size, request_len, request_idx;
 extern size_t content_length;
 extern int zxid_is_wsp;               /* Flag to trigger WSP response decoration. */
+extern zxid_ses* zxid_session;
 
 /*() Convert session attribute pool into mini_httpd CGI execution environment.
  *
@@ -266,7 +268,7 @@ void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** 
   (void) my_write(res->s, res->len);
 }
 
-/* 0x6000 outf QS + JSON = no output
+/* 0x6000 outf QS + JSON = no output on successful sso, the attrubutes are in session
  * 0x1000 debug
  * 0x0e00 11 + 10 = Generate all HTML + Mgmt w/headers as string
  * 0x00a0 10 + 10 = Login w/headers as string + Meta w/headers as string
@@ -285,16 +287,15 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
   zxid_cgi cgi;
   ZERO(&cgi, sizeof(zxid_cgi));
 
-  /* Probe for Session ID in cookie. Also propagate the cookie to subrequests. */
+  /* Probe for Session ID in cookie. */
 
   if (cf->ses_cookie_name && *cf->ses_cookie_name) {
     if (cookie_hdr) {
       D("found cookie(%s) 3", STRNULLCHK(cookie_hdr));
       zxid_get_sid_from_cookie(cf, &cgi, cookie_hdr);
-      /*set_cookie_hdr = apr_table_get(r->headers_in, "Set-Cookie");  // for subreqs */
     }
   }
-
+  
   /* Redirect hack: deal with externally imposed ACS url that does not follow zxid convention. */
   
   args_len = qs?strlen(qs):0;
@@ -382,7 +383,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
       if (res)
 	goto process_zxid_simple_outcome;
     }
-    /* not logged in, fall thru */
+    /* not logged in, fall thru to step_up */
   } else {
     /* Some other page. Just check for session. */
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->url(%s) uri_len=%d url_len=%d", uri_path, STRNULLCHKNULL(qs), cf->url, uri_len, url_len);
@@ -441,6 +442,7 @@ process_zxid_simple_outcome:
     DD("CONTENT-LENGTH(%d)", len);
     /* *** how is set-cookie header handled? */
 
+    zxid_session = ses;
     add_headers(200, "OK", "", "", mt?mt:"text/html; charset=%s", len, (time_t)-1);
     add_to_response(res, len);
     send_response();

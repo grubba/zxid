@@ -288,7 +288,7 @@ static char* read_post(zxid_conf* cf, request_rec* r)
   return res;
 }
 
-/* 0x6000 outf QS + JSON = no output
+/* 0x6000 outf QS + JSON = no output on successful sso, the attrubutes are in session
  * 0x1000 debug
  * 0x0e00 11 + 10 = Generate all HTML + Mgmt w/headers as string
  * 0x00a0 10 + 10 = Login w/headers as string + Meta w/headers as string

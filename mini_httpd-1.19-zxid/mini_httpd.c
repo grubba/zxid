@@ -79,9 +79,9 @@ zxid_ses* zxid_mini_httpd_filter(zxid_conf* cf, const char* method, const char* 
 void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** response, size_t* response_size, size_t* response_len, int br_ix);
 int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_envn, const char* uri_path, const char* qs);
 
-static zxid_conf* zxid_cf;     /* ZXID enable flag and config string, zero initialized per POSIX */
-static zxid_ses* zxid_session; /* Non-null if SSO or session from cookie or WSP validate */
-int zxid_is_wsp;               /* Flag to trigger WSP response decoration. */
+zxid_conf* zxid_cf;      /* ZXID enable flag and config string, zero initialized per POSIX */
+zxid_ses* zxid_session;  /* Non-null if SSO or session from cookie or WSP validate */
+int zxid_is_wsp;         /* Flag to trigger WSP response decoration. */
 char* zxid_conf_str = 0;
 #endif
 
@@ -2058,7 +2058,7 @@ cgi_interpose_output( int rfd, int parse_headers )
 	size_t headers_size, headers_len;
 	char* headers;
 	char* br;
-	int status;
+	int status, buflen;
 	char* title;
 	char* cp;
 
@@ -2119,16 +2119,28 @@ cgi_interpose_output( int rfd, int parse_headers )
 	    case 503: title = "Service Temporarily Overloaded"; break;
 	    default: title = "Something"; break;
 	    }
-	(void) snprintf(
+	buflen = snprintf(
 	    buf, sizeof(buf), "HTTP/1.0 %d %s\015\012", status, title );
-	(void) my_write( buf, strlen( buf ) );
+	(void) my_write( buf, buflen );
 
 #ifdef USE_ZXID
-	if (zxid_cf && zxid_session && zxid_is_wsp)
+	if (zxid_cf && zxid_session)
 	  {
-	  zxid_mini_httpd_wsp_response(zxid_cf, zxid_session, rfd,
-				       &headers, &headers_size, &headers_len, br-headers);
-	  goto done;
+          if (zxid_is_wsp)
+            {
+	    zxid_mini_httpd_wsp_response(zxid_cf, zxid_session, rfd,
+					 &headers, &headers_size, &headers_len, br-headers);
+	    goto done;
+	    } else {
+	      if (zxid_session->setcookie) {
+		buflen = snprintf(buf, sizeof(buf), "Set-Cookie: %s\015\012", zxid_session->setcookie);
+		my_write(buf, buflen);
+	      }
+	      if (zxid_session->setptmcookie) {
+		buflen = snprintf(buf, sizeof(buf), "Set-Cookie: %s\015\012", zxid_session->setptmcookie);
+		my_write(buf, buflen);
+	      }
+	    }
 	  }
 #endif
 	/* Write the saved headers (and any beginning of payload). */
@@ -2642,6 +2654,26 @@ add_headers( int s, char* title, char* extra_header, char* me, char* mt, off_t b
 	buflen = snprintf( buf, sizeof(buf), "Last-Modified: %s\015\012", timebuf );
 	add_to_response( buf, buflen );
 	}
+#ifdef USE_ZXID
+    if (zxid_cf && zxid_session)
+	{
+          if (zxid_is_wsp)
+            {
+	    /* Nothing to add, not even likely to occur */
+	    }
+          else
+            {
+	      if (zxid_session->setcookie) {
+		buflen = snprintf(buf, sizeof(buf), "Set-Cookie: %s\015\012", zxid_session->setcookie);
+                add_to_response(buf, buflen);
+	      }
+	      if (zxid_session->setptmcookie) {
+		buflen = snprintf(buf, sizeof(buf), "Set-Cookie: %s\015\012", zxid_session->setptmcookie);
+                add_to_response(buf, buflen);
+	      }
+	    }
+	}
+#endif
     buflen = snprintf( buf, sizeof(buf), "Connection: close\015\012\015\012" );
     add_to_response( buf, buflen );
     }
