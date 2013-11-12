@@ -42,8 +42,8 @@ vpath %.h ../zxid
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000116
-ZXIDREL=1.16
+ZXIDVERSION=0x000117
+ZXIDREL=1.17
 
 TOP=$(shell pwd)
 
@@ -2062,7 +2062,7 @@ winbindist:
 #	$(CP) php/*.php php/php_zxid.dll  zxid-$(ZXIDREL)-win32-bin/php
 
 
-common_bins: zxcot$(EXE) zxdecode$(EXE) zxpasswd$(EXE) zxlogview$(EXE) smime$(EXE) zxidhlo$(EXE) zxidsimple$(EXE) zxididp$(EXE) zxcall$(EXE)
+common_bins: zxlogview$(EXE)  zxcot$(EXE) zxdecode$(EXE) zxcall$(EXE) smime$(EXE) zxidhlo$(EXE) zxidsimple$(EXE) zxididp$(EXE) zxpasswd$(EXE)
 
 
 .PHONY: winbindist linbindist dist
