@@ -749,13 +749,35 @@ Then ... ? Currently it seems you have to restart Tomcat.
 
 See
 
-* http://forums.sun.com/thread.jspa?threadID=633985
+* http://forums.sun.com/thread.jspa?threadID=633985  (gone 20131111)
+* https://forums.oracle.com/message/6471947 (still works 20131111)
 
 In essence the Java environment has arbitrary restriction that same
 library can not be used twice, e.g. due to two instances of same
 application. Most trivial way around this is to create two copies
 of the libzxidjni.so with different names.
 
+From comment 7 on https://forums.oracle.com/message/6471947:
+
+<<code:
+public String getMacAddress() throws IOException {
+if(m_EthoLib == null) {
+try {
+ClassLoader sysCL = getClass().getClassLoader().getSystemClassLoader();
+Class cb = sysCL.loadClass("settings.EthZeroMacAddress");
+EthZeroMacAddress Q = (EthZeroMacAddress) cb.newInstance();
+m_EthoLib = Q;
+} catch(ClassNotFoundException e) {
+throw new IOException(e.getMessage());
+} catch (InstantiationException e) {
+throw new IOException(e.getMessage());
+} catch (IllegalAccessException e) {
+throw new IOException(e.getMessage());
+}
+}
+return m_EthoLib.getMACaddress();
+}
+>>
 
 9.7.5 Win32 Java loanLibrary() error
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

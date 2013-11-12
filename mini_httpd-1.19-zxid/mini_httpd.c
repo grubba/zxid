@@ -226,7 +226,7 @@ static char* method;
 #else
 static int method;
 #endif
-static char* path;
+char* path;
 static char* file;
 static char* pathinfo;
 struct stat sb;

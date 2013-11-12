@@ -1527,6 +1527,7 @@ class zxidjniJNI {
   public final static native String LIBERTY_ENA_HDR_get();
   public final static native String LIBERTY_CONSENT_OBTAINED_get();
   public final static native String XMLNS_DAP_get();
+  public final static native String TAS3_WSC_RQ_OUT_get();
   public final static native String TAS3_PEP_RQ_OUT_get();
   public final static native String TAS3_PEP_RQ_IN_get();
   public final static native String TAS3_PEP_RS_PARSE_get();
@@ -1539,10 +1540,11 @@ class zxidjniJNI {
   public final static native String TAS3_STATUS_NOSIG_get();
   public final static native String TAS3_STATUS_BADSIG_get();
   public final static native String TAS3_STATUS_BADCOND_get();
-  public final static native String TAS3_STATUS_EXPIRED_get();
   public final static native String TAS3_STATUS_REPLAY_get();
   public final static native String TAS3_STATUS_BADXML_get();
   public final static native String TAS3_STATUS_FAULT_get();
+  public final static native String TAS3_STATUS_EXPIRED_get();
+  public final static native String TAS3_STATUS_EPR_NOT_FOUND_get();
   public final static native String TAS3_SOL1_ENGINE_get();
   public final static native String TAS3_PLEDGE_get();
   public final static native String TAS3_REQUIRE_get();

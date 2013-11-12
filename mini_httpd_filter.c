@@ -46,6 +46,7 @@ void add_to_request(char* str, size_t len);
 void add_headers(int s, char* title, char* extra_header, char* me, char* mt, off_t b, time_t mod);
 void add_to_response(char* str, size_t len);
 void send_response(void);
+extern char* path;
 extern char* request;
 extern size_t request_size, request_len, request_idx;
 extern size_t content_length;
@@ -191,10 +192,11 @@ static char* zxid_mini_httpd_read_post(zxid_conf* cf)
   char* res;
 
   for (;;) {
-    char buf[16*1024];
+    char buf[32*1024];
     int already_read = request_len-request_idx;
     int len = MIN(sizeof(buf), content_length - already_read);
-    D("About to read post data content_length=%d already_read=%d sizeof(buf)=%d req=%d", content_length, already_read, sizeof(buf), len);
+    D("About to read post data content_length=%d already_read=%d sizeof(buf)=%d len=%d", content_length, already_read, sizeof(buf), len);
+    D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, request_size, request, request, request_size, request_len);
     if (!len)
       break;  /* nothing further to read */
     len = my_read(buf, len);
@@ -202,7 +204,9 @@ static char* zxid_mini_httpd_read_post(zxid_conf* cf)
       continue;
     if (len <= 0)
       break;
+    D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, request_size, request, request, request_size, request_len);
     add_to_request(buf, len);
+    D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, request_size, request, request, request_size, request_len);
   }
   res = request + request_idx;
   if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("POST(%s)", res);
@@ -343,10 +347,11 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
     p = cf->url + url_len;
   
   if (url_len >= uri_len && !memcmp(p - uri_len, uri_path, uri_len)) {  /* Suffix match */
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->url(%s) qs(%s) rs(%s) op(%c)", uri_path, cf->url, STRNULLCHKNULL(qs), STRNULLCHKNULL(cgi.rs), cgi.op);
+    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s)=%p cf->url(%s) qs(%s) rs(%s) op(%c)", uri_path, uri_path, cf->url, STRNULLCHKNULL(qs), STRNULLCHKNULL(cgi.rs), cgi.op);
     if (*method == 'P') {
       res = zxid_mini_httpd_read_post(cf);   /* Will print some debug output */  // ***
       if (res) {
+	D("uri(%s)=%p", uri_path, uri_path);
 	if (cgi.op == 'S') {
 	  ret = zxid_sp_soap_parse(cf, &cgi, ses, strlen(res), res);
 	  D("POST soap parse returned %d", ret);
@@ -371,13 +376,14 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
 	} else {
 	  zxid_parse_cgi(cf, &cgi, res);
 	  D("POST CGI parsed. rs(%s)", STRNULLCHKQ(cgi.rs));
+	  D("uri(%s)=%p", uri_path, uri_path);
 	}
       }
     }
     if (ONE_OF_2(cgi.op, 'L', 'A')) /* SSO (Login, Artifact) activity overrides current session. */
       goto step_up;
     if (!cgi.sid || !zxid_get_ses(cf, ses, cgi.sid)) {
-      D("No session(%s) active op(%c)", STRNULLCHK(cgi.sid), cgi.op);
+      D("No session(%s) active op(%c) uri(%s)=%p", STRNULLCHK(cgi.sid), cgi.op, uri_path,uri_path);
     } else {
       res = zxid_simple_ses_active_cf(cf, &cgi, ses, 0, AUTO_FLAGS);
       if (res)
@@ -416,14 +422,16 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
     D("other page: no_ses uri(%s) templ(%s) tf(%s) k(%s) cgi=%p", uri_path, STRNULLCHKNULL(cgi.templ), STRNULLCHKNULL(cf->idp_sel_templ_file), cgi.skin, &cgi);
   }
 step_up:
+  D("before uri(%s)=%p", uri_path, uri_path);
   res = zxid_simple_no_ses_cf(cf, &cgi, ses, 0, AUTO_FLAGS);
+  D("after uri(%s)", uri_path);
 
 process_zxid_simple_outcome:
   if (cookie_hdr && cookie_hdr[0]) {
     D("Passing cookie(%s) to environment", cookie_hdr);
     zxid_add_attr_to_ses(cf, ses, "cookie", zx_dup_str(cf->ctx, cookie_hdr));
   }
-  D("res(%s)",res);
+  D("res(%s) uri(%s)",res,uri_path);
   switch (res[0]) {
   case 'L':
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
