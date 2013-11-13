@@ -103,7 +103,7 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       }
       break;
@@ -528,7 +528,7 @@ int zxdecode_main(int argc, char** argv, char** env)
   char* q;
   char* lim;
 
-  strcpy(zx_instance, "\tzxdec");
+  strcpy(errmac_instance, "\tzxdec");
   opt(&argc, &argv, &env);
 
   read_all_fd(fdstdin, buf, sizeof(buf)-1, &got);

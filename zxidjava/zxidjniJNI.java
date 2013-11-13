@@ -244,7 +244,11 @@ class zxidjniJNI {
   public final static native String ENC_ENCKEY_METH_get();
   public final static native String ENC_TYPE_ELEMENT_get();
   public final static native String ENC_TYPE_CONTENT_get();
+  public final static native String ZXID_PATH_get();
+  public final static native String ZXID_CONF_FILE_get();
   public final static native String ZXID_CONF_PATH_get();
+  public final static native String ZXID_PATH_OPT_get();
+  public final static native String ZXID_ENV_PREFIX_get();
   public final static native int ZXID_CONF_MAGIC_get();
   public final static native int ZXID_CGI_MAGIC_get();
   public final static native int ZXID_SES_MAGIC_get();
@@ -1097,7 +1101,7 @@ class zxidjniJNI {
   public final static native int zxlog(long jarg1, long jarg2, long jarg3, String jarg4, String jarg5, String jarg6, String jarg7, String jarg8, String jarg9, String jarg10, String jarg11, String jarg12, String jarg13);
   public final static native int zxlogwsp(long jarg1, long jarg2, String jarg3, String jarg4, String jarg5, String jarg6);
   public final static native int zxlogusr(long jarg1, String jarg2, long jarg3, long jarg4, String jarg5, String jarg6, String jarg7, String jarg8, String jarg9, String jarg10, String jarg11, String jarg12, String jarg13, String jarg14);
-  public final static native void zxlog_debug_xml_blob(long jarg1, String jarg2, int jarg3, String jarg4, String jarg5, int jarg6, String jarg7);
+  public final static native void errmac_debug_xml_blob(long jarg1, String jarg2, int jarg3, String jarg4, String jarg5, int jarg6, String jarg7);
   public final static native String zxbus_mint_receipt(long jarg1, int jarg2, String jarg3, int jarg4, String jarg5, int jarg6, String jarg7, int jarg8, String jarg9, int jarg10, String jarg11);
   public final static native int zxbus_verify_receipt(long jarg1, String jarg2, int jarg3, String jarg4, int jarg5, String jarg6, int jarg7, String jarg8, int jarg9, String jarg10, int jarg11, String jarg12);
   public final static native int zxbus_persist_msg(long jarg1, int jarg2, String jarg3, int jarg4, String jarg5, int jarg6, String jarg7);

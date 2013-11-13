@@ -162,7 +162,7 @@ int zxidwspcgi_main(int argc, char** argv)
       exit(2);
   }
   fprintf(stderr, "=================== Running zxidwspcgi %s ===================\n", ZXID_REL);
-  zx_debug = 1;
+  errmac_debug = 1;
 #endif
 
   qs = getenv("CONTENT_LENGTH");

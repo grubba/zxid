@@ -138,7 +138,7 @@ int main(int argc, char** argv)
   if (open("tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2)
     exit(2);
   fprintf(stderr, "=================== Running ===================\n");
-  zx_debug = 1;
+  errmac_debug = 1;
 #endif
 
   if (argc > 1) {

@@ -74,7 +74,7 @@ Usage: zxbench [options] <saml-assertion.xml >reencoded-a7n.xml\n\
 
 int ak_buf_size = 0;
 int verbose = 1;
-extern int zx_debug;
+extern int errmac_debug;
 int timeout = 0;
 int gcthreshold = 0;
 int leak_free = 0;
@@ -118,12 +118,12 @@ void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	strcpy(zx_instance, (*argv)[0]);
+	strcpy(errmac_instance, (*argv)[0]);
 	continue;
       }
       break;

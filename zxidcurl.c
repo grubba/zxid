@@ -67,7 +67,7 @@ size_t zxid_curl_write_data(void *buffer, size_t size, size_t nmemb, void *userp
   }
   memcpy(rc->p, buffer, len);
   rc->p += len;
-  if (zx_debug & CURL_INOUT) {
+  if (errmac_debug & CURL_INOUT) {
     INFO("RECV(%.*s) %d chars", len, (char*)buffer, len);
     D_XML_BLOB(0, "RECV", len, (char*)buffer);
   }
@@ -90,7 +90,7 @@ size_t zxid_curl_read_data(void *buffer, size_t size, size_t nmemb, void *userp)
     len = wc->lim - wc->p;
   memcpy(buffer, wc->p, len);
   wc->p += len;
-  if (zx_debug & CURL_INOUT) {
+  if (errmac_debug & CURL_INOUT) {
     INFO("SEND(%.*s) %d chars", len, (char*)buffer, len);
     D_XML_BLOB(0, "SEND", len, (char*)buffer);
   }
@@ -471,7 +471,7 @@ int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_Body_s* bo
     }
   }
   
-  if (zx_debug & ZXID_INOUT) INFO("SOAP_RESP(%.*s)", ss->len, ss->s);
+  if (errmac_debug & ERRMAC_INOUT) INFO("SOAP_RESP(%.*s)", ss->len, ss->s);
   fprintf(stdout, "CONTENT-TYPE: text/xml" CRLF "CONTENT-LENGTH: %d" CRLF2 "%.*s", ss->len, ss->len, ss->s);
   fflush(stdout);
   D("^^^^^^^^^^^^^^ Done (%d chars returned) ^^^^^^^^^^^^^", ss->len);

@@ -635,23 +635,23 @@ ifeq ($(TARGET),win32cl)
 %.obj: %.c
 	@echo "  Compiling $<"
 	@if $(CC) $(CFLAGS) $(CDEF) $(CINC) -Fo$@ -c $< ; then : ; else \
-	echo Failed command:; echo '$(CC) $(CFLAGS) $(CDEF) $(CINC) -Fo$@ -c $<' ; fi
+	echo Failed command:; echo '$(CC) $(CFLAGS) $(CDEF) $(CINC) -Fo$@ -c $<' ; false; fi
 else
 %.$(OBJ_EXT): %.c
 	@echo "  Compiling $<"
 	@if $(CC) $(OUTOPT)$@ -c $< $(CFLAGS) $(CDEF) $(CINC) ; then : ; else \
-	echo Failed command:; echo '$(CC) $(OUTOPT)$@ -c $< $(CFLAGS) $(CDEF) $(CINC)' ; fi
+	echo Failed command:; echo '$(CC) $(OUTOPT)$@ -c $< $(CFLAGS) $(CDEF) $(CINC)' ; false; fi
 endif
 
 precheck/chk-%$(EXE): precheck/chk-%.$(OBJ_EXT)
 	@echo "  Link exe  $@"
 	@if $(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBS) ; then : ; else \
-	echo Failed command:; echo '$(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBS)' ; fi
+	echo Failed command:; echo '$(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBS)' ; false; fi
 
 %$(EXE): %.$(OBJ_EXT)
 	@echo "  Linking   $@"
 	@if $(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBZXID) $(LIBS) ; then : ; else \
-	echo Failed command:; echo '$(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBZXID) $(LIBS)' ; fi
+	echo Failed command:; echo '$(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBZXID) $(LIBS)' ; false; fi
 
 endif
 
@@ -663,7 +663,7 @@ export LC_COLLATE LC_NUMERIC
 
 ### Start of dependencies and targets
 
-DEFAULT_EXE= zxid$(EXE) zxidhlo$(EXE) zxididp$(EXE) zxidhlowsf$(EXE) zxidsimple$(EXE) zxidwsctool$(EXE) zxlogview$(EXE) zxidhrxmlwsc$(EXE) zxidhrxmlwsp$(EXE) zxdecode$(EXE) zxcot$(EXE) zxpasswd$(EXE) zxcall$(EXE) zxencdectest$(EXE)
+DEFAULT_EXE= zxidhlo$(EXE) zxididp$(EXE) zxidhlowsf$(EXE) zxidsimple$(EXE) zxidwsctool$(EXE) zxlogview$(EXE) zxidhrxmlwsc$(EXE) zxidhrxmlwsp$(EXE) zxdecode$(EXE) zxcot$(EXE) zxpasswd$(EXE) zxcall$(EXE) zxencdectest$(EXE)
 
 ALL_EXE= smime$(EXE) zxidwspcgi$(EXE) mini_httpd_zxid$(EXE)
 
@@ -2253,15 +2253,15 @@ dep: $(PULVER_DEPS)
 
 deps: zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxbuslist.c zxidsimple.c $(ZX_OBJ:.o=.c) c/saml2-const.h c/saml2md-const.h c/wsf-const.h $(PULVER_DEPS) c/zxidvers.h
 	@$(ECHO) ================== Making deps
-	cat pulver/c_saml2_dec_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2_enc_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2_aux_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2_getput_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2md_dec_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2md_enc_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2md_aux_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2md_getput_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	$(CC) $(CDEF) $(CDIR) -MM zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxbuslist.c zxidsimple.c c/saml2-const.h c/saml2md-const.h >>deps.dep
+	cat pulver/c_saml2_dec_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2_enc_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2_aux_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2_getput_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2md_dec_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2md_enc_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2md_aux_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2md_getput_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	$(CC) $(CDEF) $(CINC) -MM zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxbuslist.c zxidsimple.c c/saml2-const.h c/saml2md-const.h >>deps.dep
 
 #	$(ECHO) Deps built. $(foreach fil,$^,$(shell $(fil) >>deps.dep))
 
@@ -2269,8 +2269,8 @@ else
 
 dep: deps
 
-deps: $(ZX_OBJ:.o=.c) $(ZXID_LIB_OBJ:.o=.c) $(WSF_OBJ:.o=.c) $(OAUTH_OBJ:.o=.c) $(SMIME_LIB_OBJ) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxbuslist.c zxidsp.c zxidsimple.c $(ZX_OBJ:.o=.c) $(ZX_GEN_H) $(ZX_GEN_C) c/zx-const.h c/zxidvers.h
-	$(CC) $(CDEF) $(CDIR) -MM $^ >deps.dep
+deps: $(ZX_OBJ:.o=.c) $(ZXID_LIB_OBJ:.o=.c) $(WSF_OBJ:.o=.c) $(OAUTH_OBJ:.o=.c) $(SMIME_LIB_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxbuslist.c zxidsp.c zxidsimple.c $(ZX_OBJ:.o=.c) $(ZX_GEN_H) $(ZX_GEN_C) c/zx-const.h c/zxidvers.h
+	$(CC) $(CDEF) $(CINC) -MM $^ >deps.dep
 
 # make gen ENA_GEN=1
 

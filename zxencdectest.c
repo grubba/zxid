@@ -484,12 +484,12 @@ void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	strncpy(zx_instance, (*argv)[0], sizeof(zx_instance));
+	strncpy(errmac_instance, (*argv)[0], sizeof(errmac_instance));
 	continue;
       }
       break;

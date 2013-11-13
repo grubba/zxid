@@ -93,10 +93,10 @@ int main(int argc, char** argv)
       exit(2);
     }
   }
-  /*zx_debug = 1;*/
-  fprintf(stderr, "=================== Running zxididp %s =================== %d\n", ZXID_REL, zx_debug);
-  p = getenv("ZXID_PRE_CONF");
-  D("ZXID_PRE_CONF(%s)", p);
+  /*errmac_debug = 1;*/
+  fprintf(stderr, "=================== Running zxididp %s =================== %d\n", ZXID_REL, errmac_debug);
+  p = getenv(ZXID_ENV_PREFIX "PRE_CONF");
+  D(ZXID_ENV_PREFIX "PRE_CONF(%s)", p);
   //fprintf(stderr, "p(%s)\n", p);
 #endif
 
@@ -106,9 +106,9 @@ int main(int argc, char** argv)
   }
 
 #if 0
-  strncpy(zx_instance, "\e[47midp\e[0m", sizeof(zx_instance));
+  strncpy(errmac_instance, "\e[47midp\e[0m", sizeof(errmac_instance));
 #else
-  strncpy(zx_instance, "idp", sizeof(zx_instance));
+  strncpy(errmac_instance, "idp", sizeof(errmac_instance));
 #endif
 
   res = zxid_simple(CONF, 0, 0x0fff);  /* 0xfff == full CGI automation */

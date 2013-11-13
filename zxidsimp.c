@@ -85,7 +85,7 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
 #else
   zxid_init_conf_ctx(cf, ZXID_PATH /* N.B. Often this is overridden. */);
 #endif
-#if defined(ZXID_CONF_FILE) || defined(ZXID_CONF_FLAG)
+#if defined(ZXID_CONF_FILE_ENA) || defined(ZXID_CONF_FLAG)
   /* The usual case is that config file processing is compiled in, so this code happens. */
   {
     char* buf;
@@ -100,16 +100,18 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
 
     if (!conf || conf_len < 5 || memcmp(conf, "PATH=", 5)) {
       /* No conf, or conf does not start by PATH: read from file default values */
-      buf = read_all_alloc(cf->ctx, "-conf_to_cf", 1, &len, "%szxid.conf", cf->path);
+      buf = read_all_alloc(cf->ctx, "-conf_to_cf", 1, &len, "%s" ZXID_CONF_FILE, cf->path);
+      if (!buf || !len)
+	buf = read_all_alloc(cf->ctx, "-conf_to_cf", 1, &len, "%szxid.conf", cf->path);
       if (buf && len)
 	zxid_parse_conf_raw(cf, len, buf);
     }
 
-    buf = getenv("ZXID_PRE_CONF");
-    D("Check ZXID_PRE_CONF(%s)", buf);
+    buf = getenv(ZXID_ENV_PREFIX "PRE_CONF");
+    D("Check " ZXID_ENV_PREFIX "PRE_CONF(%s)", buf);
     if (buf) {
       /* Copy the conf string because we are going to modify it in place. */
-      D("Applying ZXID_PRE_CONF(%s)", buf);
+      D("Applying " ZXID_ENV_PREFIX "PRE_CONF(%s)", buf);
       len = strlen(buf);
       cc = ZX_ALLOC(cf->ctx, len+1);
       memcpy(cc, buf, len);
@@ -125,10 +127,10 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
       zxid_parse_conf_raw(cf, conf_len, cc);
     }
 
-    buf = getenv("ZXID_CONF");
+    buf = getenv(ZXID_ENV_PREFIX "CONF");
     if (buf) {
       /* Copy the conf string because we are going to modify it in place. */
-      D("Applying ZXID_CONF(%s)", buf);
+      D("Applying " ZXID_ENV_PREFIX "CONF(%s)", buf);
       len = strlen(buf);
       cc = ZX_ALLOC(cf->ctx, len+1);
       memcpy(cc, buf, len);
@@ -1607,7 +1609,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
   if (!qs) {
     qs = getenv("QUERY_STRING");
     if (qs) {
-      D("QUERY_STRING(%s) %s %d", STRNULLCHK(qs), ZXID_REL, zx_debug);
+      D("QUERY_STRING(%s) %s %d", STRNULLCHK(qs), ZXID_REL, errmac_debug);
       zxid_parse_cgi(cf, &cgi, qs);
       if (ONE_OF_3(cgi.op, 'P', 'R', 'S')) {
 	cont_len = getenv("CONTENT_LENGTH");

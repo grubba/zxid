@@ -325,7 +325,7 @@ char* zx_alloc_vasprintf(struct zx_ctx* c, int* retlen, const char* f, va_list a
   len = vsnprintf(buf, 1, f, ap2);
   va_end(ap2);
   if (len < 0) {
-    zx_broken_snprintf(len);
+    platform_broken_snprintf(len);
     if (retlen)
       *retlen = 0;
     s = ZX_ALLOC(c, 1);

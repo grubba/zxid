@@ -38,7 +38,7 @@ extern "C" {
 
 /* zxpw */
 
-ZXID_DECL int zx_pw_authn(const char* path, char* uid, const char* passw, int fd_hint);
+ZXID_DECL int zx_password_authn(const char* path, char* uid, const char* passw, int fd_hint);
 
 /* zxidsso - trivial mapping functions */
 

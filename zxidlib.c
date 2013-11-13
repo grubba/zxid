@@ -31,10 +31,10 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
-int zx_debug = 0;              /* declared in errmac.h */
-FILE* zx_debug_log = 0;        /* declared in errmac.h, 0 means stderr will be used */
-char zx_indent[256] = "";      /* declared in errmac.h */
-char zx_instance[64] = "\tzx"; /* declared in errmac.h */
+int errmac_debug = 0;              /* declared in errmac.h */
+FILE* errmac_debug_log = 0;        /* declared in errmac.h, 0 means stderr will be used */
+char errmac_indent[256] = "";      /* declared in errmac.h */
+char errmac_instance[64] = "\tzx"; /* declared in errmac.h */
 int assert_nonfatal = 0;
 char* assert_msg = "%s: Internal error caused an ASSERT to fire. Deliberately trying to dump core.\nSorry for the inconvenience. If no core appears, try `ulimit -c unlimited'\n";
 int trace = 0;
@@ -459,7 +459,7 @@ struct zx_str* zxid_saml2_redir_url(zxid_conf* cf, struct zx_str* loc, struct zx
 			 ? "%.*s&%.*s" CRLF2
 			 : "%.*s?%.*s" CRLF2), loc->len, loc->s, rse->len, rse->s);
   D("%.*s", ss->len, ss->s);
-  if (zx_debug & ZXID_INOUT) INFO("%.*s", ss->len, ss->s);
+  if (errmac_debug & ERRMAC_INOUT) INFO("%.*s", ss->len, ss->s);
   zx_str_free(cf->ctx, rse);
   return ss;
 }
@@ -487,7 +487,7 @@ struct zx_str* zxid_saml2_redir(zxid_conf* cf, struct zx_str* loc, struct zx_str
   ss = zx_strf(cf->ctx, (memchr(loc->s, '?', loc->len)
 			 ? "Location: %.*s&%.*s" CRLF2
 			 : "Location: %.*s?%.*s" CRLF2), loc->len, loc->s, rse->len, rse->s);
-  if (zx_debug & ZXID_INOUT) INFO("%.*s", ((int)(ss->len - sizeof(CRLF2) + 1)), ss->s);
+  if (errmac_debug & ERRMAC_INOUT) INFO("%.*s", ((int)(ss->len - sizeof(CRLF2) + 1)), ss->s);
   zx_str_free(cf->ctx, rse);
   return ss;
 }
@@ -514,7 +514,7 @@ struct zx_str* zxid_saml2_resp_redir(zxid_conf* cf, struct zx_str* loc, struct z
   ss = zx_strf(cf->ctx, (memchr(loc->s, '?', loc->len)
 			 ? "Location: %.*s&%.*s" CRLF2
 			 : "Location: %.*s?%.*s" CRLF2), loc->len, loc->s, rse->len, rse->s);
-  if (zx_debug & ZXID_INOUT) INFO("%.*s", ((int)(ss->len - sizeof(CRLF2) + 1)), ss->s);
+  if (errmac_debug & ERRMAC_INOUT) INFO("%.*s", ((int)(ss->len - sizeof(CRLF2) + 1)), ss->s);
   zx_str_free(cf->ctx, rse);
   return ss;
 }

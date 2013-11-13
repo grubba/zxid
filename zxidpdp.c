@@ -116,7 +116,7 @@ char* zxid_simple_ab_pep(zxid_conf* cf, zxid_ses* ses, int* res_len, int auto_fl
   default: ERR("Unsupported output format bits %x", auto_flags & (ZXID_AUTO_FMTQ|ZXID_AUTO_FMTJ));
   case 0:               ss = zxid_ses_to_ldif(cf, ses); break;
   }
-  if (zx_debug & ZXID_INOUT)
+  if (errmac_debug & ERRMAC_INOUT)
     INFO("LDIF(%.*s)", ss?ss->len:1, ss?ss->s:"-");
   if (cf->log_level > 0)
     zxlog(cf, 0,0,0,0,0,0, ZX_GET_CONTENT(ses->nameid), "N", "K", "SHOWPC", ses->sid, 0);

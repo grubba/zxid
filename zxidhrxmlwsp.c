@@ -80,12 +80,12 @@ int main(int argc, char** argv)
   if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2)
     exit(2);
   fprintf(stderr, "=================== Running idhrxml wsp ===================\n");
-  zx_debug = 2;
+  errmac_debug = 2;
 #endif
 #if 1
-  strncpy(zx_instance, "\t\e[45mhrxml_wsp\e[0m", sizeof(zx_instance));
+  strncpy(errmac_instance, "\t\e[45mhrxml_wsp\e[0m", sizeof(errmac_instance));
 #else
-  strncpy(zx_instance, "\thrxml_wsp", sizeof(zx_instance));
+  strncpy(errmac_instance, "\thrxml_wsp", sizeof(errmac_instance));
 #endif
 
   qs = getenv("CONTENT_LENGTH");

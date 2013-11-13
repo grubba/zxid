@@ -108,9 +108,9 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
-	if (zx_debug == 2)
-	  strncpy(zx_instance, "\t\e[43mzxbuslist\e[0m", sizeof(zx_instance));
+	++errmac_debug;
+	if (errmac_debug == 2)
+	  strncpy(errmac_instance, "\t\e[43mzxbuslist\e[0m", sizeof(errmac_instance));
 	continue;
       case 'c':
 	ss = zxid_show_conf(cf);
@@ -232,7 +232,7 @@ int zxbuslist_main(int argc, char** argv, char** env)
   int len,nt,pid;
   struct zxid_bus_url* bu;
   pid_t* kids;
-  strncpy(zx_instance, "\tzxbuslist", sizeof(zx_instance));
+  strncpy(errmac_instance, "\tzxbuslist", sizeof(errmac_instance));
   zxbus_verbose = 1;
   zxid_suppress_vpath_warning = 1;
   cf = zxid_new_conf_to_cf(0);

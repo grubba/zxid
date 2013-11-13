@@ -64,7 +64,7 @@ Usage: zxbusd [options] PROTO:REMOTEHOST:PORT\n\
        echo secret | zxbusd -p sis::5066 -c AES256 -k 0 dts:/dev/se_hdlc1:S-9600-1000-8N1\n\
        zxbusd -p smtp::25 sis:localhost:5066 smtp:mail.cellmail.com:25\n\
   -c CONF          Optional configuration string (default -c PATH=" ZXBUS_PATH ")\n\
-                   Most of the configuration is read from " ZXBUS_PATH "zxid.conf\n\
+                   Most of the configuration is read from " ZXBUS_PATH ZXID_CONF_FILE "\n\
   -cp PATH         Path for message and user databases. Default: " ZXBUS_PATH "\n\
   -p  PROT:IF:PORT Protocol, network interface and TCP port for listening\n\
                    connections. If you omit interface, all interfaces are bound.\n\
@@ -108,7 +108,7 @@ char* zxbus_path = ZXBUS_PATH;
 zxid_conf* zxbus_cf;
 int ak_buf_size = 0;
 int verbose = 1;
-extern int zx_debug;
+extern int errmac_debug;
 int debugpoll = 0;
 int timeout = 0;
 int nfd = 20;
@@ -291,7 +291,7 @@ void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       case 'p':  if ((*argv)[0][3]) break;
 	++debugpoll;

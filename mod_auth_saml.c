@@ -129,7 +129,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 	apr_table_set(r->subprocess_env, name, av->map_val->s);
       }
     } else {
-      if ((zx_debug & ZX_DEBUG_MASK)>1)
+      if ((errmac_debug & ERRMAC_DEBUG_MASK)>1)
 	D("ATTR(%s)=VAL(%s)", at->name, STRNULLCHKNULL(at->val));
       else
 	D("ATTR(%s)=VAL(%.*s)", at->name, at->val?(int)MIN(35,strlen(at->val)):6, at->val?at->val:"(null)");
@@ -231,7 +231,7 @@ static int send_res(zxid_conf* cf, request_rec* r, char* res)
   DD("CONTENT-LENGTH(%d)", len);
   ap_set_content_length(r, len);
   
-  if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("LEN(%d) strlen(%d) RES(%s)", len, (int)strlen(res), res);
+  if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("LEN(%d) strlen(%d) RES(%s)", len, (int)strlen(res), res);
   
   //register_timeout("send", r);
   ap_send_http_header(r);
@@ -284,7 +284,7 @@ static char* read_post(zxid_conf* cf, request_rec* r)
     p += ret;
     len -= ret;
   }
-  if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("POST(%s)", res);
+  if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("POST(%s)", res);
   return res;
 }
 
@@ -406,7 +406,7 @@ static int chkuid(request_rec* r)
     p = cf->url + url_len;
   
   if (url_len >= uri_len && !memcmp(p - uri_len, r->uri, uri_len)) {  /* Suffix match */
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->url(%s) qs(%s) rs(%s) op(%c)", r->uri, cf->url, STRNULLCHKNULL(r->args), STRNULLCHKNULL(cgi.rs), cgi.op);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->url(%s) qs(%s) rs(%s) op(%c)", r->uri, cf->url, STRNULLCHKNULL(r->args), STRNULLCHKNULL(cgi.rs), cgi.op);
     if (r->method_number == M_POST) {
       res = read_post(cf, r);   /* Will print some debug output */
       if (res) {
@@ -471,7 +471,7 @@ static int chkuid(request_rec* r)
     }
   } else {
     /* Some other page. Just check for session. */
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->url(%s) uri_len=%d url_len=%d", r->uri, STRNULLCHKNULL(r->args), cf->url, uri_len, url_len);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->url(%s) uri_len=%d url_len=%d", r->uri, STRNULLCHKNULL(r->args), cf->url, uri_len, url_len);
     if (r->args && r->args[0] == 'l') {
       D("Detect login(%s)", r->args);
     } else
@@ -488,7 +488,7 @@ static int chkuid(request_rec* r)
      * *** seems that at this point the p is not just rs, but the entire local URL --Sampo */
     cgi.rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, p);
     if (cf->defaultqs && cf->defaultqs[0]) {
-      if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
+      if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
       zxid_parse_cgi(cf, &cgi, apr_pstrdup(r->pool, cf->defaultqs));
     }
     if (cgi.sid && cgi.sid[0] && zxid_get_ses(cf, &ses, cgi.sid)) {
@@ -511,12 +511,12 @@ process_zxid_simple_outcome:
 
   switch (res[0]) {
   case 'L':
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
     apr_table_setn(r->headers_out, "Location", res+10);
     D_DEDENT("chkuid: ");
     return HTTP_SEE_OTHER;
   case 'C':
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("CONTENT(%s)", res);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("CONTENT(%s)", res);
     ret = send_res(cf, r, res);
     D_DEDENT("chkuid: ");
     return ret;
@@ -531,7 +531,7 @@ process_zxid_simple_outcome:
     return ret;
 #if 0
   case 'd': /* Logged in case */
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("SSO OK LDIF(%s)", res);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("SSO OK LDIF(%s)", res);
     D("SSO OK pre uri(%s) filename(%s) path_info(%s)", r->uri, r->filename, r->path_info);
     ret = ldif2apache(cf, r, res);
     D_DEDENT("chkuid: ");
@@ -557,9 +557,9 @@ process_zxid_simple_outcome:
 /* Called by: */
 static const char* set_debug(cmd_parms* cmd, void* st, const char* arg) {
   char buf[256];
-  D("old debug=%x, new debug(%s)", zx_debug, arg);
-  sscanf(arg, "%i", &zx_debug);
-  INFO("debug=0x%x now arg(%s) cwd(%s)", zx_debug, arg, getcwd(buf, sizeof(buf)));
+  D("old debug=%x, new debug(%s)", errmac_debug, arg);
+  sscanf(arg, "%i", &errmac_debug);
+  INFO("debug=0x%x now arg(%s) cwd(%s)", errmac_debug, arg, getcwd(buf, sizeof(buf)));
   return 0;
 }
 
@@ -603,7 +603,7 @@ const command_rec zxid_apache_commands[] = {
 static void* dirconf(apr_pool_t* p, char* d)
 {
   zxid_conf* cf;
-  strncpy(zx_instance, "\tmas", sizeof(zx_instance));
+  strncpy(errmac_instance, "\tmas", sizeof(errmac_instance));
   cf = apr_palloc(p, sizeof(zxid_conf));
   ZERO(cf, sizeof(zxid_conf));
   cf->ctx = apr_palloc(p, sizeof(struct zx_ctx));

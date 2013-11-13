@@ -39,8 +39,33 @@
 #include <openssl/ssl.h>
 #endif
 
+/*(c) ZXID configuration and working directory path
+ * Where metadata cache and session files are created. Note that the directory
+ * is not hashed: you should use a file system that scales easily to oodles
+ * of small files in one directory. Say `make dir' to create the directory
+ * with proper layout. If you change it here, also edit Makefile. */
+#ifndef ZXID_PATH
+#ifdef MINGW
+#define ZXID_PATH  "c:/var/zxid/"
+#else
+#define ZXID_PATH  "/var/zxid/"
+#endif
+#endif
+
+#ifndef ZXID_CONF_FILE
+#define ZXID_CONF_FILE "zxid.conf"
+#endif
+
 #ifndef ZXID_CONF_PATH
-#define ZXID_CONF_PATH "/var/zxid/zxid.conf"
+#define ZXID_CONF_PATH ZXID_PATH ZXID_CONF_FILE
+#endif
+
+#ifndef ZXID_PATH_OPT
+#define ZXID_PATH_OPT "ZXPATH"
+#endif
+
+#ifndef ZXID_ENV_PREFIX
+#define ZXID_ENV_PREFIX "ZXID_"
 #endif
 
 #include <zx/zx.h>
@@ -767,7 +792,7 @@ ZXID_DECL int zxlog_blob(zxid_conf* cf, int logflag, struct zx_str* path, struct
 ZXID_DECL int zxlog(zxid_conf* cf, struct timeval* ourts, struct timeval* srcts, const char* ipport, struct zx_str* entid, struct zx_str* msgid, struct zx_str* a7nid, struct zx_str* nid, const char* sigval, const char* res, const char* op, const char* arg, const char* fmt, ...);
 ZXID_DECL int zxlogwsp(zxid_conf* cf, zxid_ses* ses, const char* res, const char* op, const char* arg, const char* fmt, ...);
 ZXID_DECL int zxlogusr(zxid_conf* cf, const char* uid, struct timeval* ourts, struct timeval* srcts, const char* ipport, struct zx_str* entid, struct zx_str* msgid, struct zx_str* a7nid, struct zx_str* nid, const char* sigval, const char* res, const char* op, const char* arg, const char* fmt, ...);
-ZXID_DECL void zxlog_debug_xml_blob(zxid_conf* cf, const char* file, int line, const char* func, const char* lk, int len, const char* xml);
+ZXID_DECL void errmac_debug_xml_blob(zxid_conf* cf, const char* file, int line, const char* func, const char* lk, int len, const char* xml);
 ZXID_DECL char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int eid_len, const char* eid, int body_len, const char* body);
 ZXID_DECL int zxbus_verify_receipt(zxid_conf* cf, const char* eid, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int deid_len, const char* deid, int body_len, const char* body);
 ZXID_DECL int zxbus_persist_msg(zxid_conf* cf, int c_path_len, char* c_path, int dest_len, const char* dest, int data_len, const char* data);

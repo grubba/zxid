@@ -989,7 +989,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxlog_blob);
 ZEND_NAMED_FUNCTION(_wrap_zxlog);
 ZEND_NAMED_FUNCTION(_wrap_zxlogwsp);
 ZEND_NAMED_FUNCTION(_wrap_zxlogusr);
-ZEND_NAMED_FUNCTION(_wrap_zxlog_debug_xml_blob);
+ZEND_NAMED_FUNCTION(_wrap_errmac_debug_xml_blob);
 ZEND_NAMED_FUNCTION(_wrap_zxbus_mint_receipt);
 ZEND_NAMED_FUNCTION(_wrap_zxbus_verify_receipt);
 ZEND_NAMED_FUNCTION(_wrap_zxbus_persist_msg);

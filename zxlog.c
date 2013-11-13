@@ -312,10 +312,10 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
 	       msgid?msgid->len:1, msgid?msgid->s:"-",
 	       a7nid?a7nid->len:1, a7nid?a7nid->s:"-",
 	       nid?nid->len:1,     nid?nid->s:"-",
-	       zx_instance, STRNULLCHKD(sigval), res, op, arg?arg:"-");
+	       errmac_instance, STRNULLCHKD(sigval), res, op, arg?arg:"-");
   logbuf[len-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   if (n <= 0 || n >= len-3) {
-    if (n < 0) zx_broken_snprintf(n);
+    if (n < 0) platform_broken_snprintf(n);
     D("Log buffer too short: %d chars needed", n);
     if (n <= 0)
       n = 0;
@@ -327,7 +327,7 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
       n = vsnprintf(p, len-n-2, fmt, ap);
       logbuf[len-1] = 0;  /* must terminate manually as on win32 nul term is not guaranteed */
       if (n <= 0 || n >= len-(p-logbuf)-2) {
-	if (n < 0) zx_broken_snprintf(n);
+	if (n < 0) platform_broken_snprintf(n);
 	D("Log buffer truncated during format print: %d chars needed", n);
 	if (n <= 0)
 	  n = p-logbuf;
@@ -678,12 +678,12 @@ int zxlog_seq = 0;
  * On Linux-2.4 and 2.6 as well as Solaris-8 the ordering is as follows, but this needs
  * to be checked on other platforms.
  *                       l_type,  l_whence, l_start, l_len */
-extern struct flock zx_rdlk; /* = { F_RDLCK, SEEK_SET, 0, 1 };*/
-extern struct flock zx_wrlk; /* = { F_WRLCK, SEEK_SET, 0, 1 };*/
-extern struct flock zx_unlk; /* = { F_UNLCK, SEEK_SET, 0, 1 };*/
+extern struct flock errmac_rdlk; /* = { F_RDLCK, SEEK_SET, 0, 1 };*/
+extern struct flock errmac_wrlk; /* = { F_WRLCK, SEEK_SET, 0, 1 };*/
+extern struct flock errmac_unlk; /* = { F_UNLCK, SEEK_SET, 0, 1 };*/
 #endif
 
-/* Called by:  zxlog_debug_xml_blob */
+/* Called by:  errmac_debug_xml_blob */
 static FILE* zx_open_xml_log_file(zxid_conf* cf)
 {
   FILE* f;
@@ -711,13 +711,13 @@ static FILE* zx_open_xml_log_file(zxid_conf* cf)
  * tailf /var/zxid/log/xml.dbg | ./xml-pretty.pl */
 
 /* Called by: */
-void zxlog_debug_xml_blob(zxid_conf* cf, const char* file, int line, const char* func, const char* lk, int len, const char* xml)
+void errmac_debug_xml_blob(zxid_conf* cf, const char* file, int line, const char* func, const char* lk, int len, const char* xml)
 {
   int bdy_len;
   const char* bdy;
   const char* p;
   const char* q;
-  if (!zx_debug || len == -1 || !xml)
+  if (!errmac_debug || len == -1 || !xml)
     return;
   if (len == -2)
     len = strlen(xml);
@@ -756,9 +756,9 @@ nobody:
 print_it:
   ++zxlog_seq;
 #ifdef USE_AKBOX_FN
-  fprintf(stderr, "t%lx %04x:%-3d %s d %s%s(%.*s) len=%d %d:%d\n", (long)pthread_self(), akbox_fn(func), __LINE__, ERRMAC_INSTANCE, zx_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+  fprintf(stderr, "t%lx %04x:%-3d %s d %s%s(%.*s) len=%d %d:%d\n", (long)pthread_self(), akbox_fn(func), __LINE__, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
 #else
-  fprintf(stderr, "p%d %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), file, line, func, ERRMAC_INSTANCE, zx_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+  fprintf(stderr, "p%d %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
 #endif
 
   if (!zx_xml_debug_log) {
@@ -774,9 +774,9 @@ print_it:
     /* Fall thru to print without locking */
   }
 #ifdef USE_AKBOX_FN
-  fprintf(zx_xml_debug_log, "<!-- XMLBEG %d:%d %04x:%-3d %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d:%d -->\n", getpid(), zxlog_seq, akbox_fn(func), line, ERRMAC_INSTANCE, zx_indent, lk, len, len, xml, getpid(), zxlog_seq);
+  fprintf(zx_xml_debug_log, "<!-- XMLBEG %d:%d %04x:%-3d %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d:%d -->\n", getpid(), zxlog_seq, akbox_fn(func), line, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, getpid(), zxlog_seq);
 #else
-  fprintf(zx_xml_debug_log, "<!-- XMLBEG %d:%d %10s:%-3d %-16s %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d:%d -->\n", getpid(), zxlog_seq, file, line, func, ERRMAC_INSTANCE, zx_indent, lk, len, len, xml, getpid(), zxlog_seq);
+  fprintf(zx_xml_debug_log, "<!-- XMLBEG %d:%d %10s:%-3d %-16s %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d:%d -->\n", getpid(), zxlog_seq, file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, getpid(), zxlog_seq);
 #endif
   fflush(zx_xml_debug_log);
   FUNLOCK(fileno(zx_xml_debug_log));
@@ -886,7 +886,7 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_le
 
     zlen = zxsig_data(cf->ctx, len, buf, &zbuf, cf->sign_pkey, "receipt");
 
-    if (zx_debug>2) HEXDUMP("zbuf:", zbuf, zbuf+zlen, 4096);
+    if (errmac_debug>2) HEXDUMP("zbuf:", zbuf, zbuf+zlen, 4096);
     len = 3+ZXLOG_TIME_SIZ+1+mid_len+1+SIMPLE_BASE64_LEN(zlen)+1;
     if (sigbuf_len < len) { ERR("Too small sigbuf_len=%d, need=%d", sigbuf_len, len); break; }
     sigbuf[3+ZXLOG_TIME_SIZ+1+mid_len] = ' ';
@@ -903,7 +903,7 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_le
   }
 
   DD("body(%.*s) body_len=%d", body_len, body_len?body:"", body_len);
-  if (zx_debug>1)
+  if (errmac_debug>1)
     D("zx-rcpt-sig(%s) sigbuf_len=%d len=%d\nbuf(%s) buflen=%d %x %x", sigbuf, (int)strlen(sigbuf), len, buf, (int)strlen(buf), cf->bus_rcpt, cf->bus_rcpt&0x06);
   else
     D("zx-rcpt-sig(%s) %x", sigbuf, cf->bus_rcpt);

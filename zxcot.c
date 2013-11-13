@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <sys/stat.h>  /* for mkdir(2) */
 
 #include "errmac.h"
 #include "zx.h"
@@ -30,18 +31,19 @@
 
 char* help =
 "zxcot  -  Circle-of-Trust and metadata management tool R" ZXID_REL "\n\
-Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.\n\
+Copyright (c) 2012-2013 Synergetics SA (sampo@synergetics.be), All Rights Reserved.\n\
 Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: http://zxid.org\n\
 \n\
-Usage: zxcot [options] [dir]         # Gives listing of metadata\n\
-       zxcot -a [options] [dir] <meta.xml\n\
-       zxcot -b [options] [dir] <epr.xml\n\
+Usage: zxcot [options] [cotdir]         # Gives listing of metadata\n\
+       zxcot -c CPATH=/var/zxid/ -dirs  # Creates directory hierarchy\n\
+       zxcot -a [options] [cotdir] <meta.xml  # Import metadata\n\
+       zxcot -b [options] [cotdir] <epr.xml   # Register EPR\n\
        curl https://site.com/metadata.xml | zxcot -a [options] [dir]\n\
        zxcot -g https://site.com/metadata.xml [options] [dir]\n\
-       zxcot -m [options] >meta.xml  # Generate our own metadata\n\
+       zxcot -m [options] >meta.xml     # Generate our own metadata\n\
        zxcot -p https://site.com/metadata.xml\n\
   [dir]            CoT directory. Default /var/zxid/cot\n\
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
@@ -50,6 +52,7 @@ Usage: zxcot [options] [dir]         # Gives listing of metadata\n\
                    environment variables that affect virtualization, e.g.\n\
                      HTTP_HOST=example.com:8443 SERVER_PORT=8443 SCRIPT_NAME=zxidhlo zxcot -m\n\
   -ci              IdP conf, synonym for -c IDP_ENA=1\n\
+  -dirs            Create configuration directory hierarchy\n\
   -a               Add metadata from stdin\n\
   -b               Register Web Service, add Service EPR from stdin\n\
   -bs              Register Web Service and Bootstrap, add Service EPR from stdin\n\
@@ -88,6 +91,8 @@ char* cotdir;
 char* dimddir;
 char* uiddir;
 zxid_conf* cf = 0;
+
+static void zxmkdirs();
 
 /* Called by:  main x8, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
@@ -181,12 +186,16 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       case 'c':
 	ss = zxid_show_conf(cf);
 	fprintf(stderr, "\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
 	continue;
+      }
+      if (!strcmp((*argv)[0],"-dirs")) {
+	zxmkdirs();
+	exit(0);
       }
       break;
 
@@ -295,6 +304,66 @@ path_to_dir:
     strcpy(uiddir, cf->path);
     strcpy(uiddir+len, ZXID_UID_DIR);
   }
+}
+
+/* --------- Make zxid config directories --------- */
+
+static const char* mkdirs_list[] = {
+"ses",
+"user",
+"uid",
+"nid",
+"log",
+"log/rely",
+"log/issue",
+"pem",
+"cot",
+"inv",
+"dimd",
+"uid/.all",
+"uid/.all/.bs",
+"tmp",
+"ch",
+"ch/default",
+"ch/default/.ack",
+"ch/default/.del"
+};
+
+static void zxmkdirs()
+{
+  char path[ZXID_MAX_BUF];
+  char* p;
+  const char** dir;
+  int len;
+#define ZXID_PATH_LENGTH_MARGIN (sizeof("ch/default/.del")+10) /* Accommodate longest subdir */
+  len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s", cf->path);
+  if (len > sizeof(path)-ZXID_PATH_LENGTH_MARGIN) {
+    ERR("CPATH %s too long. len=%d, space=%d", cf->path,len,sizeof(path)-ZXID_PATH_LENGTH_MARGIN);
+    exit(1);
+  }
+
+  for (p = path+len-1; p > path && *p != '/'; --p) ;  /* Handle CPATH=/var/zxid/idp */
+
+  if (MKDIR(path, 02770) < 0) {
+    if (errno == EEXIST) {
+      INFO("Directory %s already exists. Will still try to create hierarchy under it.", path);
+    } else {
+      ERR("Failed to create directory hierarchy at %s: %d (%s) (perhaps nonexistent parent directory or permissions problem)", path, errno, STRERROR(errno));
+      exit(1);
+    }
+  } else {
+    D("Created %s", path);
+  }
+  
+  for (dir = mkdirs_list; *dir; ++dir) {
+    len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s%s", cf->path, *dir);
+    if (MKDIR(path, 02770) < 0) {
+      ERR("Failed to create directory %s: %d (%s)", path, errno, STRERROR(errno));
+    } else {
+      D("Created %s", path);
+    }
+  }
+  INFO("Created directories. You should inspect their ownership and permissions to ensure the webserver can read and write them, yet outsiders can not access them. You may want to run  chown -R www-data %s", cf->path);
 }
 
 /* --------------- reg_svc --------------- */
@@ -568,7 +637,7 @@ extern int zxid_suppress_vpath_warning;
 /* Called by: */
 int zxcot_main(int argc, char** argv, char** env)
 {
-  strncpy(zx_instance, "cot", sizeof(zx_instance));
+  strncpy(errmac_instance, "cot", sizeof(errmac_instance));
   zxid_suppress_vpath_warning = 1;
   cf = zxid_new_conf_to_cf(0);
 

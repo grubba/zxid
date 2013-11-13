@@ -43,7 +43,7 @@
 #include "hiios.h"
 #include "errmac.h"
 
-extern int zx_debug;
+extern int errmac_debug;
 
 const char* qel_kind[] = {
   "OFF0",
@@ -106,7 +106,7 @@ struct hi_qel* hi_todo_consume(struct hi_thr* hit)
 
  deque_again:
   while (!hit->shf->todo_consume && hit->shf->poll_tok.proto == HIPROTO_POLL_OFF)  /* Empty? */
-    ZX_COND_WAIT(&hit->shf->todo_cond, hit->shf->todo_mut, "todo-cons"); /* Block until work */
+    ERRMAC_COND_WAIT(&hit->shf->todo_cond, hit->shf->todo_mut, "todo-cons"); /* Block until work */
   D("Out of cond_wait todo_mut.thr=%lx", (long)hit->shf->todo_mut.thr);
   
   if (!hit->shf->todo_consume) {
@@ -209,7 +209,7 @@ void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk, int 
 
 produce:
   hi_todo_produce_queue_inlock(hit->shf, qe);
-  ZX_COND_SIG(&hit->shf->todo_cond, "todo-prod");  /* Wake up consumers */
+  ERRMAC_COND_SIG(&hit->shf->todo_cond, "todo-prod");  /* Wake up consumers */
 
  out:
   D("%s: UNLOCK todo_mut.thr=%lx", lk, (long)hit->shf->todo_mut.thr);

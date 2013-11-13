@@ -125,7 +125,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
 	if (conf_path)
 	  read_all(sizeof(buf), buf, "new conf path in opt", 1, "%s", conf_path);
 	else
-	  read_all(sizeof(buf), buf, "no conf path in opt", 1, "%szxid.conf", cf->path);
+	  read_all(sizeof(buf), buf, "no conf path in opt", 1, "%s" ZXID_CONF_FILE, cf->path);
 	zxid_parse_conf(cf, buf);
 	conf_path = (char*)1;
       }
@@ -135,12 +135,12 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	strcpy(zx_instance, (*argv)[0]);
+	strcpy(errmac_instance, (*argv)[0]);
 	continue;
       }
       break;
@@ -428,7 +428,7 @@ int main(int argc, char** argv, char** env)
   if (got != 2)
     exit(2);
   fprintf(stderr, "=================== Running ===================\n");
-  ++zx_debug;
+  ++errmac_debug;
   zxid_set_opt(cf, 6, 0);
 #endif
   cf->nosig_fatal = 0;  // *** For SimpleSign the signature is checked at other level

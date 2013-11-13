@@ -101,7 +101,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
 	if (conf_path)
 	  read_all(sizeof(buf), buf, "new conf path in opt", 1, "%s", conf_path);
 	else
-	  read_all(sizeof(buf), buf, "no conf path in opt", 1, "%szxid.conf", cf->path);
+	  read_all(sizeof(buf), buf, "no conf path in opt", 1, "%s" ZXID_CONF_FILE, cf->path);
 	zxid_parse_conf(cf, buf);
 	conf_path = (char*)1;
       }
@@ -111,12 +111,12 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	zx_instance = (*argv)[0];
+	errmac_instance = (*argv)[0];
 	continue;
       }
       break;
@@ -277,7 +277,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
     if (conf_path)
       read_all(sizeof(buf), buf, "conf_path in end of opt", 1, "%s", conf_path);
     else
-      read_all(sizeof(buf), buf, "no conf_path in end of opt", 1, "%szxid.conf", cf->path);
+      read_all(sizeof(buf), buf, "no conf_path in end of opt", 1, "%s" ZXID_CONF_FILE, cf->path);
     zxid_parse_conf(cf, buf);
   }
 }
@@ -305,7 +305,7 @@ int main(int argc, char** argv, char** env)
   if (got != 2)
     exit(2);
   fprintf(stderr, "=================== Running ===================\n");
-  ++zx_debug;
+  ++errmac_debug;
 #endif
 
   opt(&argc, &argv, &env, cf, &cgi);

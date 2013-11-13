@@ -33475,7 +33475,7 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zxlog_debug_xml_blob) {
+ZEND_NAMED_FUNCTION(_wrap_errmac_debug_xml_blob) {
   zxid_conf *arg1 = (zxid_conf *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -33492,7 +33492,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxlog_debug_xml_blob) {
   
   {
     if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxlog_debug_xml_blob. Expected SWIGTYPE_p_zxid_conf");
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of errmac_debug_xml_blob. Expected SWIGTYPE_p_zxid_conf");
     }
   }
   
@@ -33547,7 +33547,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxlog_debug_xml_blob) {
   }
   /*@SWIG@*/;
   
-  zxlog_debug_xml_blob(arg1,(char const *)arg2,arg3,(char const *)arg4,(char const *)arg5,arg6,(char const *)arg7);
+  errmac_debug_xml_blob(arg1,(char const *)arg2,arg3,(char const *)arg4,(char const *)arg5,arg6,(char const *)arg7);
   
   return;
 fail:
@@ -42611,7 +42611,7 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zxlog,_wrap_zxlog,NULL)
  SWIG_ZEND_NAMED_FE(zxlogwsp,_wrap_zxlogwsp,NULL)
  SWIG_ZEND_NAMED_FE(zxlogusr,_wrap_zxlogusr,NULL)
- SWIG_ZEND_NAMED_FE(zxlog_debug_xml_blob,_wrap_zxlog_debug_xml_blob,NULL)
+ SWIG_ZEND_NAMED_FE(errmac_debug_xml_blob,_wrap_errmac_debug_xml_blob,NULL)
  SWIG_ZEND_NAMED_FE(zxbus_mint_receipt,_wrap_zxbus_mint_receipt,NULL)
  SWIG_ZEND_NAMED_FE(zxbus_verify_receipt,_wrap_zxbus_verify_receipt,NULL)
  SWIG_ZEND_NAMED_FE(zxbus_persist_msg,_wrap_zxbus_persist_msg,NULL)
@@ -43235,7 +43235,11 @@ SWIG_STRING_CONSTANT(ENC_KEYTRAN_ALGO, "http://www.w3.org/2001/04/xmlenc#rsa-1_5
 SWIG_STRING_CONSTANT(ENC_ENCKEY_METH, "http://www.w3.org/2001/04/xmlenc#EncryptedKey");
 SWIG_STRING_CONSTANT(ENC_TYPE_ELEMENT, "http://www.w3.org/2001/04/xmlenc#Element");
 SWIG_STRING_CONSTANT(ENC_TYPE_CONTENT, "http://www.w3.org/2001/04/xmlenc#Content");
+SWIG_STRING_CONSTANT(ZXID_PATH, "/var/zxid/");
+SWIG_STRING_CONSTANT(ZXID_CONF_FILE, "zxid.conf");
 SWIG_STRING_CONSTANT(ZXID_CONF_PATH, "/var/zxid/zxid.conf");
+SWIG_STRING_CONSTANT(ZXID_PATH_OPT, "ZXPATH");
+SWIG_STRING_CONSTANT(ZXID_ENV_PREFIX, "ZXID_");
 SWIG_LONG_CONSTANT(ZXID_CONF_MAGIC, 0x900dc07f);
 SWIG_LONG_CONSTANT(ZXID_CGI_MAGIC, 0x900d0c91);
 SWIG_LONG_CONSTANT(ZXID_SES_MAGIC, 0x900d05e5);

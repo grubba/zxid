@@ -80,7 +80,7 @@ struct zx_str* zxid_mk_oauth_az_req(zxid_conf* cf, zxid_cgi* cgi, struct zx_str*
 	       prompt?"&prompt=":"", STRNULLCHK(prompt)
 	       );
   D("OAUTH2 AZ REQ(%.*s)", ss->len, ss->s);
-  if (zx_debug & ZXID_INOUT) INFO("%.*s", ss->len, ss->s);
+  if (errmac_debug & ERRMAC_INOUT) INFO("%.*s", ss->len, ss->s);
   zx_str_free(cf->ctx, nonce);
   ZX_FREE(cf->ctx, state_b64);
   ZX_FREE(cf->ctx, eid_url_enc);

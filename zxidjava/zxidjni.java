@@ -4010,8 +4010,8 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxlogusr(zxid_conf.getCPtr(cf), uid, SWIGTYPE_p_timeval.getCPtr(ourts), SWIGTYPE_p_timeval.getCPtr(srcts), ipport, entid, msgid, a7nid, nid, sigval, res, op, arg, fmt);
   }
 
-  public static void zxlog_debug_xml_blob(zxid_conf cf, String file, int line, String func, String lk, int len, String xml) {
-    zxidjniJNI.zxlog_debug_xml_blob(zxid_conf.getCPtr(cf), file, line, func, lk, len, xml);
+  public static void errmac_debug_xml_blob(zxid_conf cf, String file, int line, String func, String lk, int len, String xml) {
+    zxidjniJNI.errmac_debug_xml_blob(zxid_conf.getCPtr(cf), file, line, func, lk, len, xml);
   }
 
   public static String zxbus_mint_receipt(zxid_conf cf, int sigbuf_len, String sigbuf, int mid_len, String mid, int dest_len, String dest, int eid_len, String eid, int body_len, String body) {

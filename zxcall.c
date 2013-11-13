@@ -146,9 +146,9 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
-	if (zx_debug == 2)
-	  strncpy(zx_instance, "\t\e[43mzxcall\e[0m", sizeof(zx_instance));
+	++errmac_debug;
+	if (errmac_debug == 2)
+	  strncpy(errmac_instance, "\t\e[43mzxcall\e[0m", sizeof(errmac_instance));
 	continue;
       case 'i':
         switch ((*argv)[0][3]) {
@@ -398,7 +398,7 @@ int zxcall_main(int argc, char** argv, char** env)
   zxid_entity* idp_meta;
   zxid_epr* epr;
 
-  strncpy(zx_instance, "\tzxcall", sizeof(zx_instance));
+  strncpy(errmac_instance, "\tzxcall", sizeof(errmac_instance));
   cf = zxid_new_conf_to_cf(0);
   opt(&argc, &argv, &env);
   

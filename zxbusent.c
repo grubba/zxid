@@ -119,7 +119,7 @@ struct hi_ent* zxbus_load_ent(struct hiios* shf, int len, const char* eid)
   return ent;
 }
 
-/*() Perform zxbus specifics to call generic zx_pw_authn() */
+/*() Perform zxbus specifics to call generic zx_password_authn() */
 
 /* Called by:  zxbus_login_ent */
 static int zxbus_pw_authn_ent(const char* eid, const char* passw, int fd_hint)
@@ -147,7 +147,7 @@ static int zxbus_pw_authn_ent(const char* eid, const char* passw, int fd_hint)
   memcpy(pw_buf, passw, len);
   pw_buf[len] = 0;
   
-  return zx_pw_authn(zxbus_path, sha1_name, pw_buf, fd_hint);
+  return zx_password_authn(zxbus_path, sha1_name, pw_buf, fd_hint);
   /* *** add password overwrite in memory */
 }
 

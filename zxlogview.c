@@ -82,7 +82,7 @@ Usage: zxlogview [options] logsign-nopw-cert.pem logenc-nopw-cert.pem <loglines\
 #define DIE(reason) MB fprintf(stderr, "%s\n", reason); exit(2); ME
 
 int verbose = 1;
-extern int zx_debug;
+extern int errmac_debug;
 int leak_free = 0;
 
 X509* log_verify_cert;
@@ -113,12 +113,12 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	strcpy(zx_instance, (*argv)[0]);
+	strcpy(errmac_instance, (*argv)[0]);
 	continue;
       }
       break;
@@ -376,7 +376,7 @@ int main(int argc, char** argv, char** env)
   struct aes_key_st aes_key;
   zxid_suppress_vpath_warning = 2;
   zxid_conf* cf = zxid_new_conf(0);
-  strcpy(zx_instance, "\tzxlogview");
+  strcpy(errmac_instance, "\tzxlogview");
   opt(&argc, &argv, &env);
   
   while (1) {

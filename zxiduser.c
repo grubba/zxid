@@ -209,7 +209,7 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   struct zx_str* ss;
 
-  if (!zx_pw_authn(cf->path, cgi->uid, cgi->pw, 0)) {
+  if (!zx_password_authn(cf->path, cgi->uid, cgi->pw, 0)) {
     cgi->err = login_failed;
     return 0;
   }

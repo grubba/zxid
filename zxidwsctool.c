@@ -74,7 +74,7 @@ int main(int argc, char** argv)
   while (argc) {
     if (argv[0][0] != '-') break;
     switch (argv[0][1]) {
-    case 'd': ++zx_debug; break;
+    case 'd': ++errmac_debug; break;
     case 's': ++simple; break;
     default:  fprintf(stderr, "Unknown option(%s)\n%s", argv[0], help); exit(1);
     }

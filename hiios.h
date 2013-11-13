@@ -450,7 +450,7 @@ int hi_sanity_hit(int mode, struct hi_thr* root_hit);
 int hi_sanity_shf(int mode, struct hiios* root_shf);
 int hi_sanity(int mode, struct hiios* root_shf, struct hi_thr* root_hit, const char* fn, int line);
 
-#define HI_SANITY(shf, hit) if (zx_debug>2) hi_sanity(255, (shf), (hit), __FUNCTION__, __LINE__)
+#define HI_SANITY(shf, hit) if (errmac_debug>2) hi_sanity(255, (shf), (hit), __FUNCTION__, __LINE__)
 #define DHI_SANITY(shf, hit) /* disabled */
 
 #endif /* _hiios_h */

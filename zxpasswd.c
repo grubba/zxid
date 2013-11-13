@@ -173,7 +173,7 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       }
       break;
@@ -372,7 +372,7 @@ int main(int argc, char** argv, char** env)
   unsigned char salt[16];
   unsigned char ch;
   
-  strcpy(zx_instance, "\tzxpw");
+  strcpy(errmac_instance, "\tzxpw");
   zxid_suppress_vpath_warning = 1;
   zx_reset_ctx(&ctx);
   opt(&argc, &argv, &env);

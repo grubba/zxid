@@ -103,7 +103,7 @@ int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_e
 					cf->mod_saml_attr_prefix, name, av->map_val->s);
       }
     } else {
-      if ((zx_debug & ZX_DEBUG_MASK)>1)
+      if ((errmac_debug & ERRMAC_DEBUG_MASK)>1)
 	D("ATTR(%s)=VAL(%s)", at->name, STRNULLCHKNULL(at->val));
       else
 	D("ATTR(%s)=VAL(%.*s)", at->name, at->val?(int)MIN(35,strlen(at->val)):6, at->val?at->val:"(null)");
@@ -209,7 +209,7 @@ static char* zxid_mini_httpd_read_post(zxid_conf* cf)
     D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, request_size, request, request, request_size, request_len);
   }
   res = request + request_idx;
-  if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("POST(%s)", res);
+  if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("POST(%s)", res);
   return res;
 }
 
@@ -347,7 +347,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
     p = cf->url + url_len;
   
   if (url_len >= uri_len && !memcmp(p - uri_len, uri_path, uri_len)) {  /* Suffix match */
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s)=%p cf->url(%s) qs(%s) rs(%s) op(%c)", uri_path, uri_path, cf->url, STRNULLCHKNULL(qs), STRNULLCHKNULL(cgi.rs), cgi.op);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s)=%p cf->url(%s) qs(%s) rs(%s) op(%c)", uri_path, uri_path, cf->url, STRNULLCHKNULL(qs), STRNULLCHKNULL(cgi.rs), cgi.op);
     if (*method == 'P') {
       res = zxid_mini_httpd_read_post(cf);   /* Will print some debug output */  // ***
       if (res) {
@@ -392,7 +392,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
     /* not logged in, fall thru to step_up */
   } else {
     /* Some other page. Just check for session. */
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->url(%s) uri_len=%d url_len=%d", uri_path, STRNULLCHKNULL(qs), cf->url, uri_len, url_len);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->url(%s) uri_len=%d url_len=%d", uri_path, STRNULLCHKNULL(qs), cf->url, uri_len, url_len);
     if (qs && qs[0] == 'l') {
       D("Detect login(%s)", qs);
     } else
@@ -409,7 +409,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
      * *** seems that at this point the p is not just rs, but the entire local URL --Sampo */
     cgi.rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, p);
     if (cf->defaultqs && cf->defaultqs[0]) {
-      if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
+      if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
       zxid_parse_cgi(cf, &cgi, cf->defaultqs);
     }
     if (cgi.sid && cgi.sid[0] && zxid_get_ses(cf, ses, cgi.sid)) {
@@ -434,10 +434,10 @@ process_zxid_simple_outcome:
   D("res(%s) uri(%s)",res,uri_path);
   switch (res[0]) {
   case 'L':
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
     send_error_and_exit(302, "Found", res, "SAML Redirect");
   case 'C':
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("CONTENT(%s)", res);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("CONTENT(%s)", res);
     res += 14;  /* skip "Content-Type:" (14 chars) */
     DD("RES(%s)", res);
     p = strchr(res, '\r');
@@ -464,7 +464,7 @@ process_zxid_simple_outcome:
     break;
 #if 0
   case 'd': /* Logged in case */
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("SSO OK LDIF(%s)", res);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("SSO OK LDIF(%s)", res);
     D("SSO OK pre uri(%s)", uri_path);
     ret = ldif2apache(cf, r, res);
     return ret;

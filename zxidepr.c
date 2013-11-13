@@ -110,7 +110,7 @@ int zxid_epr_path(zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, s
   int len = snprintf(buf, buf_len, "%s%s%s/", cf->path, dir, sid);
   buf[buf_len-1] = 0; /* must terminate manually as on win32 termination is not guaranteed */
   if (len <= 0) {
-    zx_broken_snprintf(len);
+    platform_broken_snprintf(len);
     if (buf && buf_len > 0)
       buf[0] = 0;
     return 1;

@@ -32,7 +32,7 @@
 #include "hiios.h"
 #include <zx/zx.h>   /* for zx_report_openssl_err() */
 
-extern int zx_debug;
+extern int errmac_debug;
 
 /* Alias some struct fields for headers that can not be seen together. */
 /* *** this is really STOMP 1.1 specific */

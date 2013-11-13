@@ -213,7 +213,7 @@ int zxid_lazy_load_sign_cert_and_pkey(zxid_conf* cf, X509** cert, EVP_PKEY** pke
 int zxid_set_opt(zxid_conf* cf, int which, int val)
 {
   switch (which) {
-  case 1: zx_debug = val; INFO("zx_debug=%d",val); return val;
+  case 1: errmac_debug = val; INFO("errmac_debug=%d",val); return val;
   case 5: exit(val);  /* This is typically used to force __gcov_flush() */
   case 6: zxid_set_opt_cstr(cf, 6, "/var/zxid/log/log.dbg"); return 0;
 #ifdef M_CHECK_ACTION  /* glibc specific */
@@ -235,13 +235,13 @@ char* zxid_set_opt_cstr(zxid_conf* cf, int which, char* val)
 {
   char buf[PATH_MAX];
   switch (which) {
-  case 2: strncpy(zx_instance, val, sizeof(zx_instance)); return zx_instance;
-  case 3: D_INDENT(val); return zx_indent;
-  case 4: D_DEDENT(val); return zx_indent;
+  case 2: strncpy(errmac_instance, val, sizeof(errmac_instance)); return errmac_instance;
+  case 3: D_INDENT(val); return errmac_indent;
+  case 4: D_DEDENT(val); return errmac_indent;
   case 6:
     D("Forwarding debug output to file(%s) cwd(%s)", STRNULLCHK(val), getcwd(buf, sizeof(buf)));
-    zx_debug_log = fopen(val, "a");
-    if (!zx_debug_log) {
+    errmac_debug_log = fopen(val, "a");
+    if (!errmac_debug_log) {
       perror("zxid_set_opt_cstr: failed to open new log file");
       fprintf(stderr, "zxid_set_opt_cstr: failed to open new log file(%s), euid=%d egid=%d cwd(%s)", STRNULLCHK(val), geteuid(), getegid(), getcwd(buf, sizeof(buf)));
       exit(1);
@@ -1256,8 +1256,10 @@ static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exis
   char *buf;
 
   /* N.B: The buffer read here leaks on purpose as conf parsing takes references inside it. */
-  buf = read_all_alloc(cf->ctx, "-parse_conf_raw", 1, &len, "%szxid.conf", v);
-  if (buf) {
+  buf = read_all_alloc(cf->ctx, "-parse_conf_raw", 1, &len, "%s" ZXID_CONF_FILE, v);
+  if (!buf || !len)
+    buf = read_all_alloc(cf->ctx, "-parse_conf_raw", 1, &len, "%szxid.conf", v);
+  if (buf && len) {
     cf->path = v;
     cf->path_len = strlen(v);
     ++cf->path_supplied;   /* Record level of recursion so we can avoid infinite recursion. */
@@ -1462,6 +1464,8 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
     qs = zxid_qs_nv_scan(qs, &n, &v, 1);
     if (!n)
       n = "NULL_NAME_ERR";
+
+    if (!strcmp(n, ZXID_PATH_OPT))       goto path;
     
     switch (n[0]) {
     case 'A':  /* AUTHN_REQ_SIGN, ACT, AUDIENCE_FATAL, AFTER_SLOP */
@@ -1496,6 +1500,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "BUS_PW"))          { cf->bus_pw = v; break; }
       goto badcf;
     case 'C':  /* CDC_URL, CDC_CHOICE */
+      if (!strcmp(n, "CPATH"))           goto path;
       if (!strcmp(n, "CDC_URL"))         { cf->cdc_url = v; break; }
       if (!strcmp(n, "CDC_CHOICE"))      { SCAN_INT(v, cf->cdc_choice); break; }
       if (!strcmp(n, "CONTACT_ORG"))     { cf->contact_org = v; break; }
@@ -1513,7 +1518,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "DI_ALLOW_CREATE")) { cf->di_allow_create = *v; break; }
       if (!strcmp(n, "DI_NID_FMT"))      { SCAN_INT(v, cf->di_nid_fmt); break; }
       if (!strcmp(n, "DI_A7N_ENC"))      { SCAN_INT(v, cf->di_a7n_enc); break; }
-      if (!strcmp(n, "DEBUG"))           { SCAN_INT(v, zx_debug); INFO("zx_debug:%d", zx_debug); break; }
+      if (!strcmp(n, "DEBUG"))           { SCAN_INT(v, errmac_debug); INFO("errmac_debug:%d", errmac_debug); break; }
       if (!strcmp(n, "DEBUG_LOG"))       { zxid_set_opt_cstr(cf, 6, v); break; }
       goto badcf;
     case 'E':  /* ERR, ERR_IN_ACT */
@@ -1600,10 +1605,11 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
     case 'P':  /* PATH (e.g. /var/zxid) */
       DD("PATH maybe n(%s)=v(%s)", n, v);
       if (!strcmp(n, "PATH")) {
-	DD("PATH inside file(%.*s) %d new(%s)", cf->path_len, cf->path, cf->path_supplied, v);
+    path:
+	DD("CPATH inside file(%.*s) %d new(%s)", cf->path_len, cf->path, cf->path_supplied, v);
 	if (cf->path_supplied && !memcmp(cf->path, v, cf->path_len)
 	    || cf->path_supplied > ZXID_PATH_MAX_RECURS_EXPAND_DEPTH) {
-	  D("Skipping PATH inside file(%.*s) path_supplied=%d", cf->path_len, cf->path, cf->path_supplied);
+	  D("Skipping CPATH inside file(%.*s) path_supplied=%d", cf->path_len, cf->path, cf->path_supplied);
 	  break;
 	}
 	zxid_parse_conf_path_raw(cf, v, 0);
@@ -1894,12 +1900,12 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 
   return zx_strf(cf->ctx,
 "<title>Conf for %s</title><body bgcolor=white><h1>Conf for %s</h1>"
-"<p>Please see config file in %szxid.conf, and documentation in zxid-conf.pd and zxidconf.h\n"
+"<p>Please see config file in %s" ZXID_CONF_FILE ", and documentation in zxid-conf.pd and zxidconf.h\n"
 "<p>[ <a href=\"?o=B\">Metadata</a> | <a href=\"?o=c\">CARML</a> | <a href=\"?o=d\">This Conf Dump</a> ]\n"
 "<p>Version: R" ZXID_REL " (" ZXID_COMPILE_DATE ")\n"
 
 "<pre>"
-"PATH=%s\n"
+ZXID_PATH_OPT "=%s\n"
 "URL=%s\n"
 "AFFILIATION=%s\n"
 "NICE_NAME=%s\n"

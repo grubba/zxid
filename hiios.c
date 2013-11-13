@@ -41,7 +41,7 @@
 #include "hiios.h"
 #include "errmac.h"
 
-extern int zx_debug;
+extern int errmac_debug;
 #ifdef MUTEX_DEBUG
 extern pthread_mutexattr_t MUTEXATTR_DECL;
 #endif
