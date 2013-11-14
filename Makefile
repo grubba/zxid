@@ -1412,7 +1412,7 @@ ZxidServlet.class: ZxidServlet.java zxidjava/zxidjni.class
 	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java ZxidServlet.java
 
 zxidjava.jar: zxidjava/zxidjni.class zxidjava/README.zxid-java
-	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay zxidjava/
+	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay LICENSE.curl zxidjava/
 	$(JAR) cf zxidjava.jar zxidjava/*.class zxidjava/*.java zxidjava/COPYING zxidjava/LICENSE*
 
 zxiddemo.war: zxidjava.jar
@@ -1642,7 +1642,7 @@ zxid.dll zxidimp.lib: $(LIBZXID_A)
 ### TAS3 Project Specific Targets
 ###
 
-TAS3COMMONFILES=README.zxid-tas3 README.zxid Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay Makefile zxmkdirs.sh
+TAS3COMMONFILES=README.zxid-tas3 README.zxid Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay LICENSE.curl Makefile zxmkdirs.sh
 
 TAS3MAS=T3-SSO-ZXID-MODAUTHSAML_$(ZXIDREL)
 
@@ -1765,7 +1765,7 @@ tas3srcpkg: zxid-$(ZXIDREL).tgz
 	mkdir $(TAS3SRC)
 	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-ZXID-SRC > $(TAS3SRC)/Manifest
 	$(CP) zxid-$(ZXIDREL).tgz $(TAS3SRC)
-	$(CP) README.zxid-tas3 Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay $(TAS3SRC)
+	$(CP) README.zxid-tas3 Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay LICENSE.curl $(TAS3SRC)
 	zip -r $(TAS3SRC).zip $(TAS3SRC)
 
 #tas3rel: tas3idppkg tas3javapkg tas3phppkg tas3maspkg tas3srcpkg
@@ -2054,7 +2054,7 @@ winbindist:
 	mkdir zxid-$(ZXIDREL)-win32-bin zxid-$(ZXIDREL)-win32-bin/c zxid-$(ZXIDREL)-win32-bin/zxidjava  zxid-$(ZXIDREL)-win32-bin/php
 	$(CP) zxid.dll zxidhlo.exe zxidsimple.exe zxididp.exe zxcot.exe zxpasswd.exe zxdecode.exe zxlogview.exe smime.exe zxcall.exe *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
 	$(CP) zxidjava/*.class $(ZXIDJNI_SO) zxidjava/zxid_wrap.c zxid-$(ZXIDREL)-win32-bin/zxidjava
-	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay README.zxid README.zxid-win32 zxid-$(ZXIDREL)-win32-bin
+	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay LICENSE.curl README.zxid README.zxid-win32 zxid-$(ZXIDREL)-win32-bin
 	$(CP) c/*.h zxid-$(ZXIDREL)-win32-bin/c
 	zip -r zxid-$(ZXIDREL)-win32-bin.zip zxid-$(ZXIDREL)-win32-bin
 

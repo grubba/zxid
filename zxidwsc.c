@@ -542,7 +542,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
   ZX_FREE(cf->ctx, r);
   if (!env)
     ERR("No <e:Envelope> found in input argument. enve(%s)", enve);
-  /* DO NOT: zx_reverse_elem_lists(&env->gg);  /* ensure forward order for external use */
+  /* DO NOT: zx_reverse_elem_lists(&env->gg);  * ensure forward order for external use */
   return env;
 }
 
