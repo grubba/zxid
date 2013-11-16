@@ -275,7 +275,7 @@ static void test_receipt(int* argc, char*** argv, char*** env)
 {
   char sigbuf[1024];
   char* eid;
-  zxid_conf* cf = zxid_new_conf_to_cf("PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/");
+  zxid_conf* cf = zxid_new_conf_to_cf("CPATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/");
 
   eid = zxid_my_ent_id_cstr(cf);
 

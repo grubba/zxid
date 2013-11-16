@@ -46,7 +46,7 @@ Usage: zxcot [options] [cotdir]         # Gives listing of metadata\n\
        zxcot -m [options] >meta.xml     # Generate our own metadata\n\
        zxcot -p https://site.com/metadata.xml\n\
   [dir]            CoT directory. Default /var/zxid/cot\n\
-  -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
+  -c CONF          Optional configuration string (default -c CPATH=/var/zxid/)\n\
                    Most of the configuration is read from " ZXID_CONF_PATH "\n\
                    N.B. If VURL and/or VPATH are used, you should set\n\
                    environment variables that affect virtualization, e.g.\n\
