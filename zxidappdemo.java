@@ -40,7 +40,7 @@ public class zxidappdemo extends HttpServlet {
     static final Pattern role_pat   = Pattern.compile("role:[ ]([^\\n]*)");
     static final Pattern boot_pat   = Pattern.compile("urn:liberty:disco:2006-08:DiscoveryEPR:[ ]([^\\n]*)");
 
-    static final String conf = "URL=http://sp1.zxidsp.org:8080/sso&PATH=/var/zxid/";
+    static final String conf = "URL=http://sp1.zxidsp.org:8080/sso&CPATH=/var/zxid/";
     static zxidjava.zxid_conf cf;
     static {
 	// CONFIG: You must have created /var/zxid directory hierarchy. See `make dir'

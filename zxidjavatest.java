@@ -14,12 +14,16 @@
 import zxidjava.*;
 
 public class zxidjavatest {
-  static { System.loadLibrary("zxidjni"); }
+    static zxidjava.zxid_conf cf;
+    static { System.loadLibrary("zxidjni"); }
 
   public static void main(String argv[]) throws java.io.IOException
   {
       System.err.print("Start...\n");
       System.err.print(zxidjni.version_str());
+      System.err.print("\nTrying to conf...\n");
+      cf = zxidjni.new_conf_to_cf("CPATH=/var/zxid/");
+      zxidjni.set_opt(cf, 1, 1);
       System.err.print("\nDone.\n");
   }
 }
