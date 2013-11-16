@@ -195,8 +195,8 @@ static char* zxid_mini_httpd_read_post(zxid_conf* cf)
     char buf[32*1024];
     int already_read = request_len-request_idx;
     int len = MIN(sizeof(buf), content_length - already_read);
-    D("About to read post data content_length=%d already_read=%d sizeof(buf)=%d len=%d", content_length, already_read, sizeof(buf), len);
-    D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, request_size, request, request, request_size, request_len);
+    D("About to read post data content_length=%d already_read=%d sizeof(buf)=%d len=%d", (int)content_length, already_read, (int)sizeof(buf), len);
+    D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, (int)request_size, request, request, (int)request_size, (int)request_len);
     if (!len)
       break;  /* nothing further to read */
     len = my_read(buf, len);
@@ -204,9 +204,9 @@ static char* zxid_mini_httpd_read_post(zxid_conf* cf)
       continue;
     if (len <= 0)
       break;
-    D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, request_size, request, request, request_size, request_len);
+    D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, (int)request_size, request, request, (int)request_size, (int)request_len);
     add_to_request(buf, len);
-    D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, request_size, request, request, request_size, request_len);
+    D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, (int)request_size, request, request, (int)request_size, (int)request_len);
   }
   res = request + request_idx;
   if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("POST(%s)", res);
@@ -242,7 +242,7 @@ void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** 
 {  
   struct zx_str* res;
   
-  D("DECOR START response_size=%d response_len=%d br_ix=%d response(%.*s)", *response_size, *response_len, br_ix, *response_len, *response);
+  D("DECOR START response_size=%d response_len=%d br_ix=%d response(%.*s)", (int)*response_size, (int)*response_len, br_ix, (int)*response_len, *response);
 
   /* Read until EOF */
   for (;;) {
@@ -257,7 +257,7 @@ void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** 
     add_to_buf(response, response_size, response_len, buf, len);
   }
   
-  D("DECOR2 response_size=%d response_len=%d br_ix=%d response(%.*s)", *response_size, *response_len, br_ix, *response_len, *response);
+  D("DECOR2 response_size=%d response_len=%d br_ix=%d response(%.*s)", (int)*response_size, (int)*response_len, br_ix, (int)*response_len, *response);
 
   /* Write the saved headers (and any beginning of payload). */
   if ((*response)[br_ix] == '\015') ++br_ix;
@@ -265,7 +265,7 @@ void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** 
   if ((*response)[br_ix] == '\015') ++br_ix;
   if ((*response)[br_ix] == '\012') ++br_ix;
 
-  D("DECOR3 response_len=%d br_ix=%d header(%.*s)", *response_len, br_ix, br_ix, *response);
+  D("DECOR3 response_len=%d br_ix=%d header(%.*s)", (int)*response_len, br_ix, br_ix, *response);
   (void) my_write(*response, br_ix);
 
   res = zxid_wsp_decorate(cf, ses, 0, *response+br_ix);

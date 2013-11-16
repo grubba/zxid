@@ -338,7 +338,7 @@ static void zxmkdirs()
 #define ZXID_PATH_LENGTH_MARGIN (sizeof("ch/default/.del")+10) /* Accommodate longest subdir */
   len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s", cf->path);
   if (len > sizeof(path)-ZXID_PATH_LENGTH_MARGIN) {
-    ERR("CPATH %s too long. len=%d, space=%d", cf->path,len,sizeof(path)-ZXID_PATH_LENGTH_MARGIN);
+    ERR("CPATH %s too long. len=%d, space=%d", cf->path, len, (int)sizeof(path)-ZXID_PATH_LENGTH_MARGIN);
     exit(1);
   }
 

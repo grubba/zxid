@@ -3565,7 +3565,7 @@ b64_decode( const char* str, unsigned char* space, int size )
         ERR("Decode might exceed the buffer: estimated=%d available size=%d",SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(len),size);
         return 0;
         }
-    q = unbase64_raw(str, str+len, space, zx_std_index_64);
+    q = (unsigned char*)unbase64_raw(str, str+len, (char*)space, zx_std_index_64);
     return q-space;
     }
 #else
