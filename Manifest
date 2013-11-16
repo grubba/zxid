@@ -225,6 +225,8 @@ zxid.pl          - Old SAML 2.0 SP example written in perl
 zxid.php         - Old SAML 2.0 SP example written in php
 zxid.java        - Old SAML 2.0 SP example written in java (as CGI script)
 zxid-java.sh     - Shell script for wrapping zxid.java with correct paths
+zxidjavatest.java - Simple command line java program for testing libzxidjni
+zxidjavatest.sh  - Shell script for wrapping zxidjavatest.java with correct paths
 zxidwsctool.c    - Command line WS Client, a tool for making ID-WSF calls (older than zxcall)
 zxidhlowsf.c     - Demonstration of calling ID-WSF services (DS and DAP)
 
