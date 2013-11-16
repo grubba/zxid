@@ -16,6 +16,6 @@
 #LD_LIBRARY_PATH=./zxidjava java zxidjavatest
 #LD_LIBRARY_PATH=./zxidjava java -classpath . -Djava.library.path=. zxidjavatest
 #LD_LIBRARY_PATH=./zxidjava strace -e open java -verbose -classpath .:zxidjava -Djava.library.path=.:zxidjava zxidjavatest
-LD_LIBRARY_PATH=./zxidjava java -Djava.library.path=. zxidjavatest
+LD_LIBRARY_PATH=./zxidjava java -Djava.library.path=zxidjava zxidjavatest
 
 #EOF

@@ -24,6 +24,7 @@ public class zxidjavatest {
       System.err.print("\nTrying to conf...\n");
       cf = zxidjni.new_conf_to_cf("CPATH=/var/zxid/");
       zxidjni.set_opt(cf, 1, 1);
+      System.err.print(zxidjni.show_conf(cf));
       System.err.print("\nDone.\n");
   }
 }
