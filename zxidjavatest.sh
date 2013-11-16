@@ -8,6 +8,9 @@
 # 3. Playing with -classpath and -Djava.library.path may
 #    help in locating the .class files that make up
 #    the zxidjava package
+#
+# javac -J-Xmx128m -g zxidjavatest.java
+# ./zxidjavatest.sh
 
 #java zxidjavatest
 LD_LIBRARY_PATH=./zxidjava java zxidjavatest

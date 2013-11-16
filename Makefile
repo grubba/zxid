@@ -1381,6 +1381,9 @@ $(ZXIDJNI_SO): zxidjava/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
 zxidjava/zxidjni.class: zxidjava/zxidjni.java
 	cd zxidjava; $(JAVAC) $(JAVAC_FLAGS) *.java
 
+zxidjavatest.class: zxidjavademo.java zxidjava/zxidjni.class
+	$(JAVAC) $(JAVAC_FLAGS) zxidjavademo.java
+
 zxid.class: zxid.java zxidjava/zxidjni.class
 	$(JAVAC) $(JAVAC_FLAGS) zxidjava/*.java zxid.java
 
