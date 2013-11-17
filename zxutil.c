@@ -1036,7 +1036,9 @@ char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out
 
 /*() Decode safe base64 and then decompress the content. The decompressed
  * result may be binary, but will be nul terminated anyway. out_len
- * will not reflect such termination. */
+ * will not reflect such termination. Supply in_len==-2 to use strlen(3).
+ * The return value is newly allocated string (caller frees). Inplace inflate
+ * does not make sense as the result is nearly always bigger than the input. */
 
 char* zxid_unbase64_inflate(struct zx_ctx* c, int in_len, const char* in, int* out_len)
 {

@@ -432,7 +432,7 @@ struct zxid_cgi {
   char* response_type; /* OAuth2 / OpenID-Connect */
   char* client_id;     /* OAuth2 */
   char* scope;         /* OAuth2 */
-  char* redirect_uri;  /* OAuth2 */
+  char* redirect_uri;  /* OAuth2, also decoded RelayState in SAML */
   char* nonce;         /* OAuth2 */
   char* state;         /* OAuth2 */
   char* display;       /* OAuth2 */
@@ -469,7 +469,9 @@ struct zxid_cgi {
 #endif
   char* inv;           /* Invitation ID */
   char* skin;
-  char* action_url;    /* action URL in some forms, such as post.html */
+  char* action_url;    /* <form action=URL> in some forms, such as post.html */
+  char* uri_path;      /* SCRIPT_NAME or other URI path */
+  char* qs;            /* QUERY_STRING */
   zxid_entity* idp_list;   /* IdPs from CDC */
 };
 

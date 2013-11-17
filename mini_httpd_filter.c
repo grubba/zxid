@@ -18,7 +18,7 @@
  * 13.2.2013, added WD option --Sampo
  * 21.6.2013, added SOAP WSP capability --Sampo
  * 22.6.2013, created, based on mod_auth_saml.c and zxidwspcgi.c --Sampo
- * 10.11.2013, bmany bugs fixed, much improved --Sampo
+ * 10.11.2013, many bugs fixed, much improved --Sampo
  *
  * See also: zxidwspcgi.c, mod_auth_saml.c
  */
@@ -59,19 +59,13 @@ extern zxid_ses* zxid_session;
  * OUTMAP will be applied to decide which attributes to pass to the environment
  * and to rename them.
  *
- * This is considered internal function to mod_auth_saml, called by chkuid().
+ * This is considered internal function to mini_httpd_zxid, called by make_envp() in do_cgi().
  * You should not call this directly, unless you know what you are doing. */
 
 /* Called by:  make_envp */
 int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_envn, const char* uri_path, const char* qs)
 {
-  char* rs_qs;
   char* name;
-  char* rs = 0;
-  char* setcookie = 0;
-  char* setptmcookie = 0;
-  char* cookie = 0;
-  char* idpnid = 0;
   struct zxid_map* map;
   struct zxid_attr* at;
   struct zxid_attr* av;
@@ -118,49 +112,13 @@ int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_e
 					cf->mod_saml_attr_prefix, at->name, av->val);
       }
     }
-    if (     !strcmp(at->name, "rs"))           rs = at->val;      /* Capture special */
-    else if (!strcmp(at->name, "idpnid"))       idpnid = at->val;
-    else if (!strcmp(at->name, "setcookie"))    setcookie = at->val;
-    else if (!strcmp(at->name, "setptmcookie")) setptmcookie = at->val;
-    else if (!strcmp(at->name, "cookie"))       cookie = at->val;
-  }
-
-  // *** whole relaystate processing should happen somewhere else as zxid_pool2env() only gets invoked for CGI
-  if (rs && rs[0] && rs[0] != '-') {
-    /* N.B. RelayState was set by chkuid() "some other page" section by setting cgi.rs
-     * to deflated and safe base64 encoded value which was then sent to IdP as RelayState.
-     * It then came back from IdP and was decoded as one of the SSO attributes.
-     * The decoding is controlled by <<tt: rsrc$rs$unsb64-inf$$ >>  rule in OUTMAP. */
-#if 1
-    rs = zxid_unbase64_inflate(cf->ctx, -2, rs, 0);
-    if (!rs) {
-      ERR("Bad relaystate. Error in inflate. %d", 0);
-      send_error_and_exit(400, "Bad Request", "", "Error in relaystate inflate");
-    }
-#endif
-    rs_qs = strchr(rs, '?');
-    if (rs_qs
-	?(memcmp(uri_path, rs, rs_qs-rs)||strcmp(qs?qs:"",rs_qs+1))
-	:strcmp(uri_path, rs)) {  /* Different, need external or internal redirect */
-      D("redirect(%s) redir_to_content=%d", rs, cf->redir_to_content);
-      //r->uri = apr_pstrdup(r->pool, val);
-      if (cf->redir_to_content && *rs) {
-	send_error_and_exit(302, "Found", rs, "SAML Redirect" );
-      } else {
-	/* *** for this to be effective, it should be done much earlier, already where
-	 *     filter is called. By this time the file global has already been computed.
-	 *     Also, setting a local variable does not help much. */
-	uri_path = rs;
-      }
+    if (!strcmp(at->name, "idpnid") && at->val && at->val[0] != '-') {
+      D("REMOTE_USER(%s)", at->val);
+      remoteuser = at->val;
     }
   }
   
-  if (idpnid && idpnid[0] != '-') {
-    D("REMOTE_USER(%s)", idpnid);
-    remoteuser = idpnid;
-  }
-  
-  D("SSO OK uri(%s) rs(%s)", uri_path, STRNULLCHKQ(rs));
+  D("CGI SSO OK uri(%s)", uri_path);
   return envn;
  enverr:
   ERR("Statically allocated CGI environment array too small. max_envn=%d", max_envn);
@@ -279,6 +237,8 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
   zxid_ses* ses = zxid_alloc_ses(cf);
   zxid_cgi cgi;
   ZERO(&cgi, sizeof(zxid_cgi));
+  cgi.uri_path = (char*)uri_path;
+  cgi.qs = (char*)qs;
 
   /* Probe for Session ID in cookie. */
 
@@ -295,6 +255,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
   if (cf->redirect_hack_imposed_url && !strcmp(uri_path, cf->redirect_hack_imposed_url)) {
     D("Redirect hack: mapping(%s) imposed to zxid(%s)", uri_path, cf->redirect_hack_zxid_url);
     uri_path = cf->redirect_hack_zxid_url;
+    cgi.uri_path = (char*)uri_path;
     if (cf->redirect_hack_zxid_qs && *cf->redirect_hack_zxid_qs) {
       if (args_len) {
 	/* concatenate redirect_hack_zxid_qs with existing qs */
@@ -411,9 +372,9 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
     D("other page: no_ses uri(%s) templ(%s) tf(%s) k(%s) cgi=%p", uri_path, STRNULLCHKNULL(cgi.templ), STRNULLCHKNULL(cf->idp_sel_templ_file), cgi.skin, &cgi);
   }
 step_up:
-  D("before uri(%s)=%p", uri_path, uri_path);
+  DD("before uri(%s)=%p", uri_path, uri_path);
   res = zxid_simple_no_ses_cf(cf, &cgi, ses, 0, AUTO_FLAGS);
-  D("after uri(%s)", uri_path);
+  DD("after uri(%s)", uri_path);
 
 process_zxid_simple_outcome:
   if (cookie_hdr && cookie_hdr[0]) {
@@ -448,13 +409,13 @@ process_zxid_simple_outcome:
     INFO("User not authorized %d", 0);
     send_error_and_exit(403, "Forbidden", "", "Authorization denied.");
   case 0: /* Logged in case */
-    D("SSO OK pre uri(%s)", uri_path);
-    /*ret = pool2apache(cf, r, ses.at); // *** done in docgi() */
+    D("SSO OK uri(%s)", uri_path);
+    /*ret = pool2apache(cf, r, ses.at); // will be done in do_cgi() */
     break;
 #if 0
   case 'd': /* Logged in case */
     if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("SSO OK LDIF(%s)", res);
-    D("SSO OK pre uri(%s)", uri_path);
+    D("SSO OK uri(%s)", uri_path);
     ret = ldif2apache(cf, r, res);
     return ret;
 #endif

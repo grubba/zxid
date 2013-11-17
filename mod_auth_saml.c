@@ -1,5 +1,5 @@
 /* mod_auth_saml.c  -  Handwritten functions for Apache mod_auth_saml module
- * Copyright (c) 2012-2013 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2008-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -17,6 +17,7 @@
  * 28.9.2012, changed zx_instance string to "mas", fixed parsing CGI for other page --Sampo
  * 13.2.2013, added WD option --Sampo
  * 21.6.2013, added SOAP WSP capability --Sampo
+ * 17.11.2013, move redir_to_content feature to zxid_simple() --Sampo
  *
  * To configure this module add to httpd.conf something like
  *
@@ -92,9 +93,9 @@ static void chldinit(apr_pool_t* p, server_rec* s)
 static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 {
   int ret = OK;
-  char* qs;
   char* name;
-  char* rs = 0;
+  //char* rs = 0;
+  //char* rs_qs;
   char* setcookie = 0;
   char* setptmcookie = 0;
   char* cookie = 0;
@@ -137,27 +138,26 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
       for (av = at->nv; av; av = av->n)
 	apr_table_set(r->subprocess_env, name, av->val);
     }
-    if (     !strcmp(at->name, "rs"))           rs = at->val;      /* Capture special */
-    else if (!strcmp(at->name, "idpnid"))       idpnid = at->val;
+    if      (!strcmp(at->name, "idpnid"))       idpnid = at->val;      /* Capture special */
     else if (!strcmp(at->name, "setcookie"))    setcookie = at->val;
     else if (!strcmp(at->name, "setptmcookie")) setptmcookie = at->val;
     else if (!strcmp(at->name, "cookie"))       cookie = at->val;
+    //else if (!strcmp(at->name, "rs"))         rs = at->val;
   }
+#if 0
   if (rs && rs[0] && rs[0] != '-') {
     /* N.B. RelayState was set by chkuid() "some other page" section by setting cgi.rs
      * to deflated and safe base64 encoded value which was then sent to IdP as RelayState.
      * It then came back from IdP and was decoded as one of the SSO attributes.
      * The decoding is controlled by <<tt: rsrc$rs$unsb64-inf$$ >>  rule in OUTMAP. */
-#if 1
     rs = zxid_unbase64_inflate(cf->ctx, -2, rs, 0);
     if (!rs) {
       ERR("Bad relaystate. Error in inflate. %d", 0);
       return HTTP_BAD_REQUEST;
     }
-#endif
-    qs = strchr(rs, '?');
-    if (qs
-	?(memcmp(r->uri, rs, qs-rs)||strcmp(r->args?r->args:"",qs+1))
+    rs_qs = strchr(rs, '?');
+    if (rs_qs
+	?(memcmp(r->uri, rs, rs_qs-rs)||strcmp(r->args?r->args:"",rs_qs+1))
 	:strcmp(r->uri, rs)) {  /* Different, need external or internal redirect */
       D("redirect(%s) redir_to_content=%d", rs, cf->redir_to_content);
       //r->uri = apr_pstrdup(r->pool, val);
@@ -170,6 +170,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
       }
     }
   }
+#endif
   
   if (setcookie && setcookie[0] && setcookie[0] != '-') {
     /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
@@ -196,7 +197,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
   
   //apr_table_setn(r->subprocess_env,
   //		 apr_psprintf(r->pool, "%sLDIF", cf->mod_saml_attr_prefix), ldif);
-  D("SSO OK ret(%d) uri(%s) filename(%s) path_info(%s) rs(%s)", ret, r->uri, r->filename, r->path_info, STRNULLCHKQ(rs));
+  D("SSO OK ret(%d) uri(%s) filename(%s) path_info(%s)", ret, r->uri, r->filename, r->path_info);
   return ret;
 }
 
@@ -318,6 +319,8 @@ static int chkuid(request_rec* r)
   zxid_ses ses;
   ZERO(&cgi, sizeof(zxid_cgi));
   ZERO(&ses, sizeof(zxid_ses));
+  cgi.uri_path = r?r->uri:0;
+  cgi.qs = r?r->args:0;
 
   D("===== START %s req=%p uri(%s) args(%s) pid=%d cwd(%s)", ZXID_REL, r, r?STRNULLCHKNULL(r->uri):"(r null)", r?STRNULLCHKNULL(r->args):"(r null)", getpid(), getcwd(buf,sizeof(buf)));
   if (cf->wd && *cf->wd)
@@ -370,9 +373,9 @@ static int chkuid(request_rec* r)
 	strcpy(p, cf->redirect_hack_zxid_qs);
 	p[len] = '&';
 	strcpy(p+len+1, r->args);
-	r->args = p;
+	cgi.qs = r->args = p;
       } else {
-	r->args = cf->redirect_hack_zxid_qs;
+	cgi.qs = r->args = cf->redirect_hack_zxid_qs;
       }
       args_len = strlen(r->args);
     }

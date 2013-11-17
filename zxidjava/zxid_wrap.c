@@ -12039,6 +12039,82 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1cgi_1action_1url_1get(
 }
 
 
+SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zxid_1cgi_1uri_1path_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
+  struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zxid_cgi **)&jarg1; 
+  arg2 = 0;
+  if (jarg2) {
+    arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
+    if (!arg2) return ;
+  }
+  {
+    if (arg2) {
+      arg1->uri_path = (char *) malloc(strlen(( char *)arg2)+1);
+      strcpy((char *)arg1->uri_path, ( char *)arg2);
+    } else {
+      arg1->uri_path = 0;
+    }
+  }
+  if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, ( char *)arg2);
+}
+
+
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1cgi_1uri_1path_1get(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jstring jresult = 0 ;
+  struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zxid_cgi **)&jarg1; 
+  result = (char *) ((arg1)->uri_path);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zxid_1cgi_1qs_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
+  struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zxid_cgi **)&jarg1; 
+  arg2 = 0;
+  if (jarg2) {
+    arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
+    if (!arg2) return ;
+  }
+  {
+    if (arg2) {
+      arg1->qs = (char *) malloc(strlen(( char *)arg2)+1);
+      strcpy((char *)arg1->qs, ( char *)arg2);
+    } else {
+      arg1->qs = 0;
+    }
+  }
+  if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, ( char *)arg2);
+}
+
+
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1cgi_1qs_1get(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jstring jresult = 0 ;
+  struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zxid_cgi **)&jarg1; 
+  result = (char *) ((arg1)->qs);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zxid_1cgi_1idp_1list_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
   zxid_entity *arg2 = (zxid_entity *) 0 ;

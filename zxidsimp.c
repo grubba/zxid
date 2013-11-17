@@ -22,6 +22,7 @@
  * 13.2.2013, added WD option --Sampo
  * 14.3.2013  added language/skin dependent templates --Sampo
  * 15.4.2013, added fflush(3) here and there to accommodate broken atexit() --Sampo
+ * 17.11.2013, move redir_to_content feature to zxid_simple() --Sampo
  *
  * Login button abbreviations
  * A2 = SAML 2.0 Artifact Profile
@@ -815,7 +816,7 @@ static char* zxid_simple_redir_page(zxid_conf* cf, char* redir, char* rs, int* r
   struct zx_str* ss;
   D("cf=%p redir(%s)", cf, redir);
   if (auto_flags & ZXID_AUTO_REDIR) {
-    fprintf(stdout, "Location: %s?%s" CRLF2, redir, STRNULLCHK(rs));
+    fprintf(stdout, "Location: %s%c%s" CRLF2, redir, rs?'?':0, STRNULLCHK(rs));
     fflush(stdout);
     if (auto_flags & ZXID_AUTO_EXIT)
       exit(0);
@@ -823,7 +824,7 @@ static char* zxid_simple_redir_page(zxid_conf* cf, char* redir, char* rs, int* r
       *res_len = 1;
     return zx_dup_cstr(cf->ctx, "n");
   }
-  ss = zx_strf(cf->ctx, "Location: %s?%s" CRLF2, redir, STRNULLCHK(rs));
+  ss = zx_strf(cf->ctx, "Location: %s%c%s" CRLF2, redir, rs?'?':0, STRNULLCHK(rs));
   if (res_len)
     *res_len = ss->len;
   res = ss->s;
@@ -1184,7 +1185,9 @@ static char* zxid_show_protected_content_setcookie(zxid_conf* cf, zxid_cgi* cgi,
   struct zx_str* issuer;
   struct zx_str* url;
   zxid_epr* epr;
-  
+  char* rs;
+  char* rs_qs;
+
   if (cf->ses_cookie_name && *cf->ses_cookie_name) {
     D("setcookie(%s)", cf->ses_cookie_name);
     ses->setcookie = zx_alloc_sprintf(cf->ctx, 0, "%s=%s; path=/%s",
@@ -1214,8 +1217,37 @@ static char* zxid_show_protected_content_setcookie(zxid_conf* cf, zxid_cgi* cgi,
       D("The PTM epr could not be discovered. Has it been registered at discovery service? Is there a discovery service? %p", epr);
     }
   }
- erro:
+  // *** check cf->redir_to_content here
   ses->rs = cgi->rs;
+  if (cgi->rs && cgi->rs[0] && cgi->rs[0] != '-') {
+    /* N.B. RelayState was set by chkuid() "some other page" section by setting cgi.rs
+     * to deflated and safe base64 encoded value which was then sent to IdP as RelayState.
+     * It then came back from IdP and was decoded as one of the SSO attributes.
+     * The decoding is controlled by <<tt: rsrc$rs$unsb64-inf$$ >>  rule in OUTMAP. */
+    cgi->redirect_uri = rs = zxid_unbase64_inflate(cf->ctx, -2, cgi->rs, 0);
+    if (!rs) {
+      ERR("Bad relaystate. Error in inflate. %d", 0);
+      goto erro;
+    }
+    if (!*rs) {
+      D("Empty rs %p", rs);
+      goto erro;
+    }
+    if (cgi->uri_path) {
+      rs_qs = strchr(rs, '?');
+      if (rs_qs /* if there is query string, compare differently */
+	  ?(memcmp(cgi->uri_path, rs, rs_qs-rs)||strcmp(cgi->qs?cgi->qs:"",rs_qs+1))
+	  :strcmp(cgi->uri_path, rs)) {  /* Different, need external or internal redirect */
+	D("redirect(%s) redir_to_content=%d", rs, cf->redir_to_content);
+	if (cf->redir_to_content) {
+	  return zxid_simple_redir_page(cf, rs, 0, res_len, auto_flags);
+	} else {
+	  D("*** internal redirect(%s)", rs);
+	}
+      }
+    }
+  }
+ erro:
   return zxid_simple_ab_pep(cf, ses, res_len, auto_flags);
 }
 
@@ -1666,15 +1698,19 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
   } else {
     if (qs_len == -1)
       qs_len = strlen(qs);
-    if (qs[qs_len]) {   /* *** reads one past end of buffer */
+    if (qs[qs_len]) {   /* *** may read one past end of buffer in non-nulterm case */
       ERR("IMPLEMENTATION LIMIT: Query String MUST be nul terminated len=%d", qs_len);
       exit(1);
     }
     D("QUERY_STRING(%s) %s", STRNULLCHK(qs), ZXID_REL);
     zxid_parse_cgi(cf, &cgi, qs);
   }
+  
   if (!cgi.op && !cf->bare_url_entityid)
     cgi.op = 'M';  /* By default, if no ses, check CDC and offer SSO */
+  
+  cgi.uri_path = getenv("SCRIPT_NAME");
+  cgi.qs = qs;
 
   if (!cgi.sid && cf->ses_cookie_name && *cf->ses_cookie_name)
     zxid_get_sid_from_cookie(cf, &cgi, getenv("HTTP_COOKIE"));

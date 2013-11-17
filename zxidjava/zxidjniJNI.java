@@ -728,6 +728,10 @@ class zxidjniJNI {
   public final static native String zxid_cgi_skin_get(long jarg1);
   public final static native void zxid_cgi_action_url_set(long jarg1, String jarg2);
   public final static native String zxid_cgi_action_url_get(long jarg1);
+  public final static native void zxid_cgi_uri_path_set(long jarg1, String jarg2);
+  public final static native String zxid_cgi_uri_path_get(long jarg1);
+  public final static native void zxid_cgi_qs_set(long jarg1, String jarg2);
+  public final static native String zxid_cgi_qs_get(long jarg1);
   public final static native void zxid_cgi_idp_list_set(long jarg1, long jarg2);
   public final static native long zxid_cgi_idp_list_get(long jarg1);
   public final static native long new_zxid_cgi();
