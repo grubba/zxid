@@ -29,8 +29,6 @@
  *
  * http://httpd.apache.org/docs/2.2/developer/
  * http://modules.apache.org/doc/API.html
- *
- * Idea: set REMOTE_USER header
  */
 
 #define _LARGEFILE64_SOURCE   /* So off64_t is found, see: man 3 lseek64 */
