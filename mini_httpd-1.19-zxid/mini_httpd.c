@@ -246,7 +246,7 @@ static char* referer;
 static char* useragent;
 static char* paos;
 
-static char* remoteuser;
+char* remoteuser;
 
 
 /* Forwards. */
@@ -1379,21 +1379,36 @@ handle_request( void )
 
 #ifdef USE_ZXID
     if (zxid_conf_str) {
-      /* We recreate the configuration every time. This is to enable
-       * features such as virtual hosting to work. */
-      setenv("HTTP_HOST", host?host:(req_hostname?req_hostname:(hostname?hostname:"UNKNOWN_HOST")), 1);  /* needed so VPATH and VURL can pick it up */
+      /* We recreate the configuration every time. This is to allow
+       * features such as virtual hosting (VPATH and VURL) to work. */
+      setenv("HTTP_HOST", host?host:(req_hostname?req_hostname:(hostname?hostname:"UNKNOWN_HOST")), 1);
       setenv("SCRIPT_NAME", path, 1);
+      strcpy(errmac_instance, "\e[42mminizx\e[0m");
       zxid_cf = zxid_new_conf_to_cf(zxid_conf_str);
+
+      /* Since the filter may read rest of the post data, request buffer
+       * may be reallocated, thus invalidating old pointers. Make copies
+       * to stay safe. */
+      protocol = strdup(protocol);
+      path = strdup(path);
+      file = strdup(file);
+      query = strdup(query);
+      if (authorization) authorization = strdup(authorization);
+      if (content_type)  content_type  = strdup(content_type);
+      if (cookie)    cookie = strdup(cookie);
+      if (host)      host = strdup(host);
+      if (referer)   referer = strdup(referer);
+      if (useragent) useragent = strdup(useragent);
+      if (paos)      paos = strdup(paos);
       zxid_session = zxid_mini_httpd_filter(zxid_cf, method, path, query, cookie);
     }
 #endif /* USE_ZXID */
-
 
     r = stat( file, &sb );
     if ( r < 0 )
 	r = get_pathinfo();
     if ( r < 0 )
-	send_error_and_exit( 404, "Not Found", "", "File not found." );
+	send_error_and_exit( 404, "Not Found", "", "File not found. 1" );
     file_len = strlen( file );
     if ( ! S_ISDIR( sb.st_mode ) )
 	{
@@ -1565,7 +1580,7 @@ do_file( void )
 	return;
 	}
     else if ( pathinfo != (char*) 0 )
-	send_error_and_exit( 404, "Not Found", "", "File not found." );
+	send_error_and_exit( 404, "Not Found", "", "File not found. 2" );
 
     fd = open( file, O_RDONLY );
     if ( fd < 0 )
@@ -1640,7 +1655,7 @@ do_dir( void )
 #endif /* HAVE_SCANDIR */
 
     if ( pathinfo != (char*) 0 )
-	send_error_and_exit( 404, "Not Found", "", "File not found." );
+	send_error_and_exit( 404, "Not Found", "", "File not found. 3" );
 
     /* Check authorization for this directory. */
     auth_check( file );
@@ -2292,8 +2307,6 @@ make_envp( void )
 	    buf, sizeof(buf), "%lu", (unsigned long) content_length );
 	envp[envn++] = build_env( "CONTENT_LENGTH=%s", buf );
 	}
-    if ( remoteuser != (char*) 0 )
-	envp[envn++] = build_env( "REMOTE_USER=%s", remoteuser );
     if ( authorization != (char*) 0 )
 	envp[envn++] = build_env( "AUTH_TYPE=%s", "Basic" );
     if ( (cp = getenv( "TZ" )) != (char*) 0 )
@@ -2302,12 +2315,14 @@ make_envp( void )
     if ( paos[0] != '\0' )
 	envp[envn++] = build_env( "HTTP_PAOS=%s", paos );
     if ( (cp = getenv( "ZXID_PRE_CONF" )) != (char*) 0 )
-     envp[envn++] = build_env( "ZXID_PRE_CONF=%s", cp );
+        envp[envn++] = build_env( "ZXID_PRE_CONF=%s", cp );
     if ( (cp = getenv( "ZXID_CONF" )) != (char*) 0 )
         envp[envn++] = build_env( "ZXID_CONF=%s", cp );
     if (zxid_session)
         envn = zxid_pool2env(zxid_cf, zxid_session, envp, envn, sizeof(envp)/sizeof(char*), path, query);
 #endif
+    if ( remoteuser != (char*) 0 )
+	envp[envn++] = build_env( "REMOTE_USER=%s", remoteuser );
 
     envp[envn] = (char*) 0;
     return envp;

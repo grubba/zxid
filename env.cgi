@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo $$ >/tmp/env.cgi-ran
+echo $$ >>/tmp/env.cgi-ran
 
 echo "Content-Type: text/plain"
 echo "Set-Cookie: envtest=foo; path=/; secure;"

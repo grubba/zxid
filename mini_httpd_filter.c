@@ -46,6 +46,7 @@ void add_to_request(char* str, size_t len);
 void add_headers(int s, char* title, char* extra_header, char* me, char* mt, off_t b, time_t mod);
 void add_to_response(char* str, size_t len);
 void send_response(void);
+extern char* remoteuser;
 extern char* path;
 extern char* request;
 extern size_t request_size, request_len, request_idx;
@@ -61,7 +62,7 @@ extern zxid_ses* zxid_session;
  * This is considered internal function to mod_auth_saml, called by chkuid().
  * You should not call this directly, unless you know what you are doing. */
 
-/* Called by:  chkuid */
+/* Called by:  make_envp */
 int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_envn, const char* uri_path, const char* qs)
 {
   char* rs_qs;
@@ -75,8 +76,6 @@ int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_e
   struct zxid_attr* at;
   struct zxid_attr* av;
   
-  /* Length computation pass */
-
   for (at = ses->at; at; at = at->n) {
     DD("HERE name(%s)", at->name);
     map = zxid_find_map(cf->outmap, at->name);
@@ -126,6 +125,7 @@ int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_e
     else if (!strcmp(at->name, "cookie"))       cookie = at->val;
   }
 
+  // *** whole relaystate processing should happen somewhere else as zxid_pool2env() only gets invoked for CGI
   if (rs && rs[0] && rs[0] != '-') {
     /* N.B. RelayState was set by chkuid() "some other page" section by setting cgi.rs
      * to deflated and safe base64 encoded value which was then sent to IdP as RelayState.
@@ -144,33 +144,20 @@ int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_e
 	:strcmp(uri_path, rs)) {  /* Different, need external or internal redirect */
       D("redirect(%s) redir_to_content=%d", rs, cf->redir_to_content);
       //r->uri = apr_pstrdup(r->pool, val);
-      if (cf->redir_to_content) {
+      if (cf->redir_to_content && *rs) {
 	send_error_and_exit(302, "Found", rs, "SAML Redirect" );
       } else {
 	/* *** for this to be effective, it should be done much earlier, already where
-	 *     filter is called. By this time the file global has already been computed. */
+	 *     filter is called. By this time the file global has already been computed.
+	 *     Also, setting a local variable does not help much. */
 	uri_path = rs;
       }
     }
   }
   
-#if 0
-  /* *** figure out how to influence mini_httpd response headers */
-  if (setcookie && setcookie[0] && setcookie[0] != '-') {
-    D("Set-Cookie(%s)", setcookie);
-    apr_table_addn(r->headers_out, "Set-Cookie", setcookie);
-    apr_table_addn(r->err_headers_out, "Set-Cookie", setcookie);  /* Only way to get redir to set header */
-  }
-  if (setptmcookie && setptmcookie[0] && setptmcookie[0] != '-') {
-    D("PTM Set-Cookie(%s)", setptmcookie);
-    apr_table_addn(r->headers_out, "Set-Cookie", setptmcookie);
-    apr_table_addn(r->err_headers_out, "Set-Cookie", setptmcookie);  /* Only way to get redir to set header */
-  }
-#endif
   if (idpnid && idpnid[0] != '-') {
     D("REMOTE_USER(%s)", idpnid);
-    if (envn >= max_envn) goto enverr;
-    envp[envn++] = zx_alloc_sprintf(cf->ctx, 0, "REMOTE_USER=%s", idpnid);
+    remoteuser = idpnid;
   }
   
   D("SSO OK uri(%s) rs(%s)", uri_path, STRNULLCHKQ(rs));
@@ -196,7 +183,7 @@ static char* zxid_mini_httpd_read_post(zxid_conf* cf)
     int already_read = request_len-request_idx;
     int len = MIN(sizeof(buf), content_length - already_read);
     D("About to read post data content_length=%d already_read=%d sizeof(buf)=%d len=%d", (int)content_length, already_read, (int)sizeof(buf), len);
-    D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, (int)request_size, request, request, (int)request_size, (int)request_len);
+    DD("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, (int)request_size, request, request, (int)request_size, (int)request_len);
     if (!len)
       break;  /* nothing further to read */
     len = my_read(buf, len);
@@ -204,9 +191,9 @@ static char* zxid_mini_httpd_read_post(zxid_conf* cf)
       continue;
     if (len <= 0)
       break;
-    D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, (int)request_size, request, request, (int)request_size, (int)request_len);
+    DD("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, (int)request_size, request, request, (int)request_size, (int)request_len);
     add_to_request(buf, len);
-    D("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, (int)request_size, request, request, (int)request_size, (int)request_len);
+    DD("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, (int)request_size, request, request, (int)request_size, (int)request_len);
   }
   res = request + request_idx;
   if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("POST(%s)", res);
@@ -242,6 +229,7 @@ void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** 
 {  
   struct zx_str* res;
   
+  D_INDENT("wsp_resp");
   D("DECOR START response_size=%d response_len=%d br_ix=%d response(%.*s)", (int)*response_size, (int)*response_len, br_ix, (int)*response_len, *response);
 
   /* Read until EOF */
@@ -270,6 +258,7 @@ void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** 
 
   res = zxid_wsp_decorate(cf, ses, 0, *response+br_ix);
   (void) my_write(res->s, res->len);
+  D_DEDENT("wsp_resp");
 }
 
 /* 0x6000 outf QS + JSON = no output on successful sso, the attrubutes are in session
@@ -351,7 +340,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
     if (*method == 'P') {
       res = zxid_mini_httpd_read_post(cf);   /* Will print some debug output */  // ***
       if (res) {
-	D("uri(%s)=%p", uri_path, uri_path);
+	DD("uri(%s)=%p", uri_path, uri_path);
 	if (cgi.op == 'S') {
 	  ret = zxid_sp_soap_parse(cf, &cgi, ses, strlen(res), res);
 	  D("POST soap parse returned %d", ret);
@@ -376,7 +365,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
 	} else {
 	  zxid_parse_cgi(cf, &cgi, res);
 	  D("POST CGI parsed. rs(%s)", STRNULLCHKQ(cgi.rs));
-	  D("uri(%s)=%p", uri_path, uri_path);
+	  DD("uri(%s)=%p", uri_path, uri_path);
 	}
       }
     }
@@ -460,7 +449,7 @@ process_zxid_simple_outcome:
     send_error_and_exit(403, "Forbidden", "", "Authorization denied.");
   case 0: /* Logged in case */
     D("SSO OK pre uri(%s)", uri_path);
-    //ret = pool2apache(cf, r, ses.at); // *** done in docgi()
+    /*ret = pool2apache(cf, r, ses.at); // *** done in docgi() */
     break;
 #if 0
   case 'd': /* Logged in case */
@@ -489,24 +478,20 @@ zxid_ses* zxid_mini_httpd_filter(zxid_conf* cf, const char* method, const char* 
 {
   zxid_ses* ses;
   char buf[256];
-  D("===== START %s uri(%s) qs(%s) uid=%d pid=%d gid=%d cwd(%s)", ZXID_REL, uri_path, STRNULLCHKNULL(qs), getpid(), getuid(), getgid(), getcwd(buf,sizeof(buf)));
+  D("\e[42m===== START %s uri(%s) qs(%s) uid=%d pid=%d gid=%d cwd(%s)\e[0m", ZXID_REL, uri_path, STRNULLCHKNULL(qs), getpid(), getuid(), getgid(), getcwd(buf,sizeof(buf)));
   if (cf->wd && *cf->wd)
     chdir(cf->wd);
-  D_INDENT("minizx: ");
 
   zxid_is_wsp = 0;
   if (zx_wildcard_pat_match(cf->wsp_pat, uri_path)) {
     zxid_is_wsp = 1;
     ses = zxid_mini_httpd_wsp(cf, method, uri_path, qs);
-    D_DEDENT("minizx: ");
     return ses;
   } else if (zx_wildcard_pat_match(cf->sso_pat, uri_path)) {
     ses = zxid_mini_httpd_sso(cf, method, uri_path, qs, cookie_hdr);
-    D_DEDENT("minizx: ");
     return ses;
   } else {
     D("No SSO or WSP match(%s)",uri_path);
-    D_DEDENT("minizx: ");
     return 0;
   }
 }
