@@ -151,7 +151,8 @@ char* zxid_saml2_map_authn_ctx(char* c)
 
 /*(i) Generate an authentication request and make a URL out of it.
  * cf::     Used for many configuration options and memory allocation
- * cgi::    Used to pick the desired SSO profile based on hidden fields or user input.
+ * cgi::    Used to pick the desired SSO profile based on hidden fields or user
+ *     input. The cgi->rs filed specifies the URL to redirect to after the SSO.
  * return:: Redirect URL as zx_str. Caller should eventually free this memory.
  */
 /* Called by:  zxid_start_sso, zxid_start_sso_location */
@@ -164,7 +165,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
   int sso_profile_ix;
   zxid_entity* idp_meta;
   D_INDENT("start_sso: ");
-  D("start_sso: cgi=%p cgi->eid=%p eid(%s)", cgi, cgi->eid, cgi->eid?cgi->eid:"-");
+  D("cgi=%p cgi->eid=%p eid(%s)", cgi, cgi->eid, cgi->eid?cgi->eid:"-");
   if (!cgi->pr_ix || !cgi->eid || !cgi->eid[0]) {
     D("Either protocol index or entity ID missing %d", cgi->pr_ix);
     cgi->err = "IdP URL Missing or incorrect";
@@ -203,9 +204,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
       D_DEDENT("start_sso: ");
       return 0;
     }
-    DD("HERE1 %p", sso_svc);
-    DD("HERE2 %p", sso_svc->Location);
-    DD("HERE3 len=%d (%.*s)", sso_svc->Location->g.len, sso_svc->Location->g.len, sso_svc->Location->g.s);
+    DD("HERE3 len=%d (%.*s)", sso_svc?sso_svc->Location->g.len:0, sso_svc->Location->g.len, sso_svc->Location->g.s);
     ar = zxid_mk_authn_req(cf, cgi);
     dest = zx_dup_len_attr(cf->ctx, 0, zx_Destination_ATTR, sso_svc->Location->g.len, sso_svc->Location->g.s);
     ZX_ORD_INS_ATTR(ar, Destination, dest);
@@ -235,9 +234,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
       D_DEDENT("start_sso: ");
       return 0;
     }
-    DD("HERE1 %p", sso_svc);
-    DD("HERE2 %p", sso_svc->Location);
-    DD("HERE3 len=%d (%.*s)", sso_svc->Location->g.len, sso_svc->Location->g.len, sso_svc->Location->g.s);
+    DD("HERE3 len=%d (%.*s)", sso_svc?sso_svc->Location->g.len:0, sso_svc->Location->g.len, sso_svc->Location->g.s);
     if (cf->log_level>0)
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "OANREDIR", cgi->eid, 0);
     ars = zxid_mk_oauth_az_req(cf, cgi, &sso_svc->Location->g, cgi->rs);
@@ -264,18 +261,6 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
   ars = zxid_saml2_redir_url(cf, &sso_svc->Location->g, ars, cgi->rs);
   D_DEDENT("start_sso: ");
   return ars;
-}
-
-/*() Wrapper for zxid_start_sso_url(), used in CGI scripts. */
-
-/* Called by:  main x2, zxid_simple_no_ses_cf */
-int zxid_start_sso(zxid_conf* cf, zxid_cgi* cgi)
-{
-  struct zx_str* url = zxid_start_sso_url(cf, cgi);
-  if (!url)
-    return 0;
-  printf("Location: %.*s" CRLF2, url->len, url->s);
-  return ZXID_REDIR_OK;
 }
 
 /*() Wrapper for zxid_start_sso_url(), used when Location header needs to be passed outside.

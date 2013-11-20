@@ -1383,7 +1383,7 @@ handle_request( void )
        * features such as virtual hosting (VPATH and VURL) to work. */
       setenv("HTTP_HOST", host?host:(req_hostname?req_hostname:(hostname?hostname:"UNKNOWN_HOST")), 1);
       setenv("SCRIPT_NAME", path, 1);
-      strcpy(errmac_instance, "\e[42mminizx\e[0m");
+      strcpy(errmac_instance, "\t\e[42mminizx\e[0m");
       zxid_cf = zxid_new_conf_to_cf(zxid_conf_str);
 
       /* Since the filter may read rest of the post data, request buffer

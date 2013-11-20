@@ -42111,44 +42111,6 @@ XS(_wrap_zxid_dec_a7n) {
 }
 
 
-XS(_wrap_zxid_start_sso) {
-  {
-    zxid_conf *arg1 = (zxid_conf *) 0 ;
-    zxid_cgi *arg2 = (zxid_cgi *) 0 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    void *argp2 = 0 ;
-    int res2 = 0 ;
-    int argvi = 0;
-    int result;
-    dXSARGS;
-    
-    if ((items < 2) || (items > 2)) {
-      SWIG_croak("Usage: zxid_start_sso(cf,cgi);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_start_sso" "', argument " "1"" of type '" "zxid_conf *""'"); 
-    }
-    arg1 = (zxid_conf *)(argp1);
-    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_zxid_cgi, 0 |  0 );
-    if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_start_sso" "', argument " "2"" of type '" "zxid_cgi *""'"); 
-    }
-    arg2 = (zxid_cgi *)(argp2);
-    result = (int)zxid_start_sso(arg1,arg2);
-    ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1((int)(result)); argvi++ ;
-    
-    
-    XSRETURN(argvi);
-  fail:
-    
-    
-    SWIG_croak_null();
-  }
-}
-
-
 XS(_wrap_zxid_sp_deref_art) {
   {
     zxid_conf *arg1 = (zxid_conf *) 0 ;
@@ -48163,7 +48125,6 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_extract_issuer", _wrap_zxid_extract_issuer},
 {"Net::SAMLc::zxid_decode_redir_or_post", _wrap_zxid_decode_redir_or_post},
 {"Net::SAMLc::zxid_dec_a7n", _wrap_zxid_dec_a7n},
-{"Net::SAMLc::zxid_start_sso", _wrap_zxid_start_sso},
 {"Net::SAMLc::zxid_sp_deref_art", _wrap_zxid_sp_deref_art},
 {"Net::SAMLc::zxid_as_call_ses", _wrap_zxid_as_call_ses},
 {"Net::SAMLc::zxid_as_call", _wrap_zxid_as_call},

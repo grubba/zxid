@@ -20567,22 +20567,6 @@ SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zxid_1dec_1a7n(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_zxid_1start_1sso(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
-  jint jresult = 0 ;
-  zxid_conf *arg1 = (zxid_conf *) 0 ;
-  zxid_cgi *arg2 = (zxid_cgi *) 0 ;
-  int result;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = *(zxid_conf **)&jarg1; 
-  arg2 = *(zxid_cgi **)&jarg2; 
-  result = (int)zxid_start_sso(arg1,arg2);
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_zxid_1sp_1deref_1art(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
   jint jresult = 0 ;
   zxid_conf *arg1 = (zxid_conf *) 0 ;

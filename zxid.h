@@ -944,9 +944,7 @@ ZXID_DECL zxid_a7n* zxid_dec_a7n(zxid_conf* cf, zxid_a7n* a7n, struct zx_sa_Encr
 
 /* zxidsso - SP side of SSO: consuming A7N */
 
-ZXID_DECL int zxid_start_sso(zxid_conf* cf, zxid_cgi* cgi);
 ZXID_DECL int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses);
-
 ZXID_DECL int zxid_as_call_ses(zxid_conf* cf, zxid_entity* idp_meta, zxid_cgi* cgi, zxid_ses* ses);
 ZXID_DECL zxid_ses* zxid_as_call(zxid_conf* cf, zxid_entity* idp_meta, const char* user, const char* pw);
 

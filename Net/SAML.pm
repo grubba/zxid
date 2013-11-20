@@ -251,7 +251,6 @@ package Net::SAML;
 *extract_issuer = *Net::SAMLc::zxid_extract_issuer;
 *decode_redir_or_post = *Net::SAMLc::zxid_decode_redir_or_post;
 *dec_a7n = *Net::SAMLc::zxid_dec_a7n;
-*start_sso = *Net::SAMLc::zxid_start_sso;
 *sp_deref_art = *Net::SAMLc::zxid_sp_deref_art;
 *as_call_ses = *Net::SAMLc::zxid_as_call_ses;
 *as_call = *Net::SAMLc::zxid_as_call;

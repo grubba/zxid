@@ -779,6 +779,30 @@ return m_EthoLib.getMACaddress();
 }
 >>
 
+<<email:
+From: Diana Penciuc <dianapenciuc@gmail.com>
+Date: 2013/11/18
+Subject: zxidjava.dll call from java web application
+To: sampo@zxid.org
+
+Hi Sampo,
+
+I understand you did not receive my previous email, so here we go again:
+
+I basically followed the procedure indicated here :
+http://code.google.com/p/static-dll-bootstrapper/
+
+The main idea is to create a jar containing a class from which I make the
+call to load the library. Then put this jar in the common class loader
+folder under the glassfish web server (which is ../domain/lib).
+
+I also send you an exemple of a web application I used for testing (from
+which I make the call to the class loaded in glassfish).
+
+See you soon,
+Diana
+>>
+
 9.7.5 Win32 Java loanLibrary() error
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

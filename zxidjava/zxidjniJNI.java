@@ -1200,7 +1200,6 @@ class zxidjniJNI {
   public final static native long zxid_extract_issuer(long jarg1, long jarg2, long jarg3, long jarg4);
   public final static native long zxid_decode_redir_or_post(long jarg1, long jarg2, long jarg3, int jarg4);
   public final static native long zxid_dec_a7n(long jarg1, long jarg2, long jarg3);
-  public final static native int zxid_start_sso(long jarg1, long jarg2);
   public final static native int zxid_sp_deref_art(long jarg1, long jarg2, long jarg3);
   public final static native int zxid_as_call_ses(long jarg1, long jarg2, long jarg3, long jarg4);
   public final static native long zxid_as_call(long jarg1, long jarg2, String jarg3, String jarg4);

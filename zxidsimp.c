@@ -1505,12 +1505,13 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
     D("NOT CDC %d", 0);
     break;
   case 'L':
-    if (auto_flags & ZXID_AUTO_REDIR) {
-      if (zxid_start_sso(cf, cgi))
+    if (ss = zxid_start_sso_location(cf, cgi)) {
+      if (auto_flags & ZXID_AUTO_REDIR) {
+	printf("%.*s", ss->len, ss->s);
 	goto cgi_exit;
-    } else {
-      if ((ss = zxid_start_sso_location(cf, cgi)))
+      } else {
 	goto res_zx_str;
+      }
     }
     break;
   case 'A':

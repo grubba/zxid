@@ -519,8 +519,10 @@ int main(int argc, char** argv, char** env)
       return 0;
     break;
   case 'L':
-    if (zxid_start_sso(cf, &cgi))
+    if (ss = zxid_start_sso_location(cf, cgi)) {
+      printf("%.*s", ss->len, ss->s);
       return 0;
+    }
     break;
   case 'A':
     D("Process artifact(%s)", cgi.saml_art);

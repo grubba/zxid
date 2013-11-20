@@ -931,6 +931,9 @@ char* zx_zlib_raw_deflate(struct zx_ctx* c, int in_len, const char* in, int* out
 }
 
 /*() Helper to compress and ascii armour the original request.
+ * c:: zx context for allocation
+ * len:: Length of string to process, or -2 to use strlen()
+ * s:: String to compress and ascii armour
  * return:: string that has been allocated from zx_ctx. Caller frees. */
 
 /* Called by:  zxid_deflate_safe_b64, zxid_mk_oauth_az_req */

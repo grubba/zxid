@@ -37608,37 +37608,6 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zxid_start_sso) {
-  zxid_conf *arg1 = (zxid_conf *) 0 ;
-  zxid_cgi *arg2 = (zxid_cgi *) 0 ;
-  zval **args[2];
-  int result;
-  
-  SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  {
-    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_start_sso. Expected SWIGTYPE_p_zxid_conf");
-    }
-  }
-  {
-    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zxid_cgi, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zxid_start_sso. Expected SWIGTYPE_p_zxid_cgi");
-    }
-  }
-  result = (int)zxid_start_sso(arg1,arg2);
-  {
-    ZVAL_LONG(return_value,result);
-  }
-  return;
-fail:
-  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
-}
-
-
 ZEND_NAMED_FUNCTION(_wrap_zxid_sp_deref_art) {
   zxid_conf *arg1 = (zxid_conf *) 0 ;
   zxid_cgi *arg2 = (zxid_cgi *) 0 ;
@@ -42854,7 +42823,6 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zxid_extract_issuer,_wrap_zxid_extract_issuer,NULL)
  SWIG_ZEND_NAMED_FE(zxid_decode_redir_or_post,_wrap_zxid_decode_redir_or_post,NULL)
  SWIG_ZEND_NAMED_FE(zxid_dec_a7n,_wrap_zxid_dec_a7n,NULL)
- SWIG_ZEND_NAMED_FE(zxid_start_sso,_wrap_zxid_start_sso,NULL)
  SWIG_ZEND_NAMED_FE(zxid_sp_deref_art,_wrap_zxid_sp_deref_art,NULL)
  SWIG_ZEND_NAMED_FE(zxid_as_call_ses,_wrap_zxid_as_call_ses,NULL)
  SWIG_ZEND_NAMED_FE(zxid_as_call,_wrap_zxid_as_call,NULL)

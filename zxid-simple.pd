@@ -810,7 +810,7 @@ Signature:: SAML 2.0 mandated field name for signature in redirect binding
 3.2 IdP Selection (Login) Screen
 --------------------------------
 
-These are typically embdedded or visible fields of the IdP Selection
+These are typically embdedded (hidden) or visible fields of the IdP Selection
 screen.
 
 u:: User (local login)
@@ -831,7 +831,7 @@ fq:: Affiliation ID
 fy:: Consent field
 fm:: Matching rule
 fa:: Authentication Context Class
-fr:: Relay State
+fr:: Relay State (usually used to convey the page that originally initiated the SSO)
 
 Please understand that a significant part of any SSO configuration
 is realized via f* fields, which will typically be hidden

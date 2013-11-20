@@ -228,7 +228,8 @@ void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** 
 
 zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri_path, const char* qs, const char* cookie_hdr)
 {  
-  int ret, len, uri_len, url_len, args_len;
+  int ret, len, uri_len, url_len, qs_len;
+  char* local_url;
   char* p;
   char* res;
   char* mt;
@@ -251,16 +252,16 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
   
   /* Redirect hack: deal with externally imposed ACS url that does not follow zxid convention. */
   
-  args_len = qs?strlen(qs):0;
+  qs_len = qs?strlen(qs):0;
   if (cf->redirect_hack_imposed_url && !strcmp(uri_path, cf->redirect_hack_imposed_url)) {
     D("Redirect hack: mapping(%s) imposed to zxid(%s)", uri_path, cf->redirect_hack_zxid_url);
     uri_path = cf->redirect_hack_zxid_url;
     cgi.uri_path = (char*)uri_path;
     if (cf->redirect_hack_zxid_qs && *cf->redirect_hack_zxid_qs) {
-      if (args_len) {
+      if (qs_len) {
 	/* concatenate redirect_hack_zxid_qs with existing qs */
 	len = strlen(cf->redirect_hack_zxid_qs);
-	p = ZX_ALLOC(cf->ctx, len+1+args_len+1);
+	p = ZX_ALLOC(cf->ctx, len+1+qs_len+1);
 	strcpy(p, cf->redirect_hack_zxid_qs);
 	p[len] = '&';
 	strcpy(p+len+1, qs);
@@ -268,35 +269,41 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
       } else {
 	qs = cf->redirect_hack_zxid_qs;
       }
-      args_len = strlen(qs);
+      qs_len = strlen(qs);
     }
     D("After hack uri(%s) args(%s)", STRNULLCHK(uri_path), STRNULLCHK(qs));
   }
   
-  DD("HERE1 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(qs));
-  if (args_len) {
+  D("HERE1 qs_len=%d cgi=%p k(%s) qs(%s)", qs_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(qs));
+  if (qs_len) {
     /* leak the dup str: the cgi structure will take references to this and change &s to nuls */
     p = zx_dup_cstr(cf->ctx, qs);
     zxid_parse_cgi(cf, &cgi, p);
-    DD("HERE2 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(qs));
+    D("HERE2 cgi=%p k(%s)", &cgi, STRNULLCHKNULL(cgi.skin));
   }
   /* Check if we are supposed to enter zxid due to URL suffix - to
    * process protocol messages rather than ordinary pages. To do this
    * correctly we need to ignore the query string part. We are looking
-   * here at exact match, like /protected/saml, rather than any of
+   * here at an exact match, like /protected/saml, rather than any of
    * the other documents under /protected/ (which are handled in the
    * else clause). Both then and else -clause URLs are defined as requiring
    * SSO by virtue of the web server configuration (SSO_PAT in mini_httpd_zxid). */
 
   uri_len = strlen(uri_path);
-  url_len = strlen(cf->url);
-  for (p = cf->url + url_len - 1; p > cf->url; --p)
+  for (local_url = cf->url; *local_url && *local_url != ':' && *local_url != '/'; ++local_url);
+  if (local_url[0] == ':' && local_url[1] == '/' && local_url[2] == '/') {
+    for (local_url += 3; *local_url && *local_url != '/'; ++local_url);
+  }
+  
+  url_len = strlen(local_url);
+  for (p = local_url + url_len - 1; p > local_url; --p)
     if (*p == '?')
       break;
-  if (p == cf->url)
-    p = cf->url + url_len;
-  
-  if (url_len >= uri_len && !memcmp(p - uri_len, uri_path, uri_len)) {  /* Suffix match */
+  if (p == local_url)
+    p = local_url + url_len;
+  url_len = p-local_url;
+
+  if (url_len == uri_len && !memcmp(local_url, uri_path, uri_len)) {  /* Exact match */
     if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s)=%p cf->url(%s) qs(%s) rs(%s) op(%c)", uri_path, uri_path, cf->url, STRNULLCHKNULL(qs), STRNULLCHKNULL(cgi.rs), cgi.op);
     if (*method == 'P') {
       res = zxid_mini_httpd_read_post(cf);   /* Will print some debug output */  // ***
@@ -330,11 +337,13 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
 	}
       }
     }
+    D("HERE2.1 urls_len=%d local_url(%.*s) url(%s)", url_len, url_len, local_url, cf->url);
     if (ONE_OF_2(cgi.op, 'L', 'A')) /* SSO (Login, Artifact) activity overrides current session. */
       goto step_up;
     if (!cgi.sid || !zxid_get_ses(cf, ses, cgi.sid)) {
       D("No session(%s) active op(%c) uri(%s)=%p", STRNULLCHK(cgi.sid), cgi.op, uri_path,uri_path);
     } else {
+      D("HERE2.2 %d",0);
       res = zxid_simple_ses_active_cf(cf, &cgi, ses, 0, AUTO_FLAGS);
       if (res)
 	goto process_zxid_simple_outcome;
@@ -347,13 +356,13 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
       D("Detect login(%s)", qs);
     } else
       cgi.op = 'E';   /* Trigger IdP selection screen */
-    p = ZX_ALLOC(cf->ctx, uri_len+1+args_len+1);
+    p = ZX_ALLOC(cf->ctx, uri_len+1+qs_len+1);
     strcpy(p, uri_path);
-    if (args_len) {
+    if (qs_len) {
       p[uri_len] = '?';
       strcpy(p+uri_len+1, qs);
     }
-    DD("HERE3 args_len=%d cgi=%p k(%s) uri(%s) args(%s) rs(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), uri_path, STRNULLCHKNULL(qs), p);
+    D("HERE3 qs_len=%d cgi=%p k(%s) uri(%s) args(%s) rs(%s)", qs_len, &cgi, STRNULLCHKNULL(cgi.skin), uri_path, STRNULLCHKNULL(qs), p);
     /* cgi.rs will be copied to ses->rs and from there in ab_pep to resource-id.
      * We compress and safe_base64 encode it to protect any URL special characters.
      * *** seems that at this point the p is not just rs, but the entire local URL --Sampo */

@@ -4398,10 +4398,6 @@ public class zxidjni implements zxidjniConstants {
     return (cPtr == 0) ? null : new zxid_a7n(cPtr, false);
   }
 
-  public static int start_sso(zxid_conf cf, zxid_cgi cgi) {
-    return zxidjniJNI.zxid_start_sso(zxid_conf.getCPtr(cf), zxid_cgi.getCPtr(cgi));
-  }
-
   public static int sp_deref_art(zxid_conf cf, zxid_cgi cgi, zxid_ses ses) {
     return zxidjniJNI.zxid_sp_deref_art(zxid_conf.getCPtr(cf), zxid_cgi.getCPtr(cgi), zxid_ses.getCPtr(ses));
   }

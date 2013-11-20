@@ -26,6 +26,7 @@
  * 17.8.2012, added audit bus configuration --Sampo
  * 16.2.2013, added WD option --Sampo
  * 21.6.2013, added wsp_pat --Sampo
+ * 20.11.2013, added %d expansion for VURL --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -147,6 +148,7 @@ EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
     return 0;
   }
   
+  zx_report_openssl_err("extract_private_key0"); /* *** seems something leaves errors on stack */
   p = unbase64_raw(p, e, buf, zx_std_index_64);
   if (!d2i_PrivateKey(typ, &pk, (const unsigned char**)&buf, p-buf) || !pk) {
     zx_report_openssl_err("extract_private_key"); /* *** seems d2i can leave errors on stack */
@@ -1275,10 +1277,13 @@ static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exis
 int zxid_suppress_vpath_warning = 10000;
 
 /*() Helper to evaluate environment variables for VPATH and VURL.
- * squash_type: 0=VPATH, 1=VURL */
+ * squash_type: 0=VPATH, 1=VURL
+ * Squashing conversts everything to lowercase and anything
+ * not understood to underscore ("_"). In case of VURL squash,
+ * URL characters [/:?&=] are left intact. */
 
 /* Called by:  zxid_expand_percent x3 */
-static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, char* n, char* lim, int squash_type)
+static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, char* out, char* lim, int squash_type)
 {
   int len;
   char* val = getenv(env_hdr);
@@ -1287,22 +1292,22 @@ static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, cha
     return 0;
   }
   len = strlen(val);
-  if (n + len > lim) {
+  if (out + len > lim) {
     ERR("TOO LONG: VPATH or VURL(%s) %s expansion specified env(%s) val(%s) does not fit, missing %ld bytes. SERVER_SOFTWARE(%s)", vorig, exp, env_hdr, val, (long)(lim - (n + len)), STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
     return 0;
   }
 
   /* Squash suspicious */
 
-  for (; *val; ++val, ++n)
+  for (; *val; ++val, ++out)
     if (!squash_type && IN_RANGE(*val, 'A', 'Z')) {
-      *n = *val - ('A' - 'a');  /* lowercase host names */
+      *out = *val - ('A' - 'a');  /* lowercase host names */
     } else if (IN_RANGE(*val, 'a', 'z') || IN_RANGE(*val, '0', '9') || ONE_OF_2(*val, '.', '-')) {
-      *n = *val;
+      *out = *val;
     } else if (squash_type == 1 && ONE_OF_5(*val, '/', ':', '?', '&', '=')) {
-      *n = *val;
+      *out = *val;
     } else {
-      *n = '_';
+      *out = '_';
     }
   return len;
 }
@@ -1312,18 +1317,20 @@ static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, cha
  * See CGI specification for environment variables such as
  *   %h expands to HTTP_HOST (from Host header, e.g. Host: sp.foo.bar or Host: sp.foo.bar:8443)
  *   %s expands to SCRIPT_NAME
+ *   %d expands to directory portion, without trailing slash, of SCRIPT_NAME
  */
 
 /* Called by:  zxid_parse_vpath_conf, zxid_parse_vurl */
-static char* zxid_expand_percent(char* vorig, char* n, char* lim, int squash_type)
+static char* zxid_expand_percent(char* vorig, char* out, char* lim, int squash_type)
 {
+  int len;
   char* x;
   char* p;
   char* val;
   --lim;
-  for (p = vorig; *p && n < lim; ++p) {
+  for (p = vorig; *p && out < lim; ++p) {
     if (*p != '%') {
-      *n++ = *p;
+      *out++ = *p;
       continue;
     }
     switch (*++p) {
@@ -1335,35 +1342,39 @@ static char* zxid_expand_percent(char* vorig, char* n, char* lim, int squash_typ
 	x = squash_type?"http://":"http_";
       else
 	x = squash_type?"https://":"https_";
-      if (n + strlen(x) >= lim)
+      if (out + strlen(x) >= lim)
 	goto toobig;
-      strcpy(n, x);
-      n += strlen(x);
+      strcpy(out, x);
+      out += strlen(out);
       break;
-    case 'h': n += zxid_eval_squash_env(vorig, "%h", "HTTP_HOST", n, lim, squash_type); break;
+    case 'h': out += zxid_eval_squash_env(vorig, "%h", "HTTP_HOST", out, lim, squash_type); break;
     case 'P': 
       val = getenv("SERVER_PORT");
       if (!val)
 	val = "";
       if (!strcmp(val, "443") || !strcmp(val, "80"))
 	break;     /* omit default ports */
-      if (n >= lim)
+      if (out >= lim)
 	goto toobig;
-      *n++ = ':';  /* colon in front of port, e.g. :8080 */
+      *out++ = ':';  /* colon in front of port, e.g. :8080 */
       /* fall thru */
-    case 'p': n += zxid_eval_squash_env(vorig, "%p", "SERVER_PORT", n, lim, squash_type);  break;
-    case 's': n += zxid_eval_squash_env(vorig, "%s", "SCRIPT_NAME", n, lim, squash_type);  break;
-    case '%': *n++ = '%';  break;
+    case 'p': out += zxid_eval_squash_env(vorig,"%p", "SERVER_PORT", out, lim, squash_type); break;
+    case 's': out += zxid_eval_squash_env(vorig,"%s", "SCRIPT_NAME", out, lim, squash_type); break;
+    case 'd':
+      len = zxid_eval_squash_env(vorig, "%d", "SCRIPT_NAME", out, lim, squash_type);
+      for (out += len; len && out[-1] != '/'; --out, --len) ;
+      break;
+    case '%': *out++ = '%';  break;
     default:
       ERR("VPATH or VURL(%s): Syntactically wrong percent expansion character(%c) 0x%x, ignored", vorig, p[-1], p[-1]);
     }
   }
-  *n = 0;
-  return n;
+  *out = 0;
+  return out;
  toobig:
   ERR("VPATH or VURL(%s) extrapolation does not fit in buffer", vorig);
-  *n = 0;
-  return n;
+  *out = 0;
+  return out;
 }
 
 /*(-) Convert, in place, $ to & as needed for WSC_LOCALPDP_PLEDGE */
@@ -1378,7 +1389,7 @@ static char* zxid_dollar_to_amp(char* p)
 
 /*() Parse VPATH (virtual host) related config file.
  * If the file VPATHzxid.conf does not exist (note that the specified
- * VPATH usually ends in a slash (/)), the PATH is not changed.
+ * VPATH usually ends in a slash ("/")), the PATH is not changed.
  * Effectively unconfigured VPATHs are handled by the default PATH. */
 
 /* Called by:  zxid_parse_conf_raw */

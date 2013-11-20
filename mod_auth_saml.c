@@ -483,7 +483,7 @@ static int chkuid(request_rec* r)
       p[uri_len] = '?';
       strcpy(p+uri_len+1, r->args);
     }
-    DD("HERE3 args_len=%d cgi=%p k(%s) uri(%s) args(%s) rs(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), r->uri, STRNULLCHKNULL(r->args), p);
+    D("HERE3 args_len=%d cgi=%p k(%s) uri(%s) args(%s) rs(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), r->uri, STRNULLCHKNULL(r->args), p);
     /* cgi.rs will be copied to ses->rs and from there in ab_pep to resource-id.
      * We compress and safe_base64 encode it to protect any URL special characters.
      * *** seems that at this point the p is not just rs, but the entire local URL --Sampo */
