@@ -362,7 +362,8 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
       p[uri_len] = '?';
       strcpy(p+uri_len+1, qs);
     }
-    D("HERE3 qs_len=%d cgi=%p k(%s) uri(%s) args(%s) rs(%s)", qs_len, &cgi, STRNULLCHKNULL(cgi.skin), uri_path, STRNULLCHKNULL(qs), p);
+    D("HERE3 qs_len=%d cgi=%p k(%s) uri(%s) qs(%s) rs(%s)", qs_len, &cgi, STRNULLCHKNULL(cgi.skin), uri_path, STRNULLCHKNULL(qs), p);
+#if 0
     /* cgi.rs will be copied to ses->rs and from there in ab_pep to resource-id.
      * We compress and safe_base64 encode it to protect any URL special characters.
      * *** seems that at this point the p is not just rs, but the entire local URL --Sampo */
@@ -371,6 +372,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
       if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
       zxid_parse_cgi(cf, &cgi, cf->defaultqs);
     }
+#endif
     if (cgi.sid && cgi.sid[0] && zxid_get_ses(cf, ses, cgi.sid)) {
       res = zxid_simple_ses_active_cf(cf, &cgi, ses, 0, AUTO_FLAGS);
       if (res)
@@ -378,7 +380,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
     } else {
       D("No session(%s) active op(%c)", STRNULLCHK(cgi.sid), cgi.op);
     }
-    D("other page: no_ses uri(%s) templ(%s) tf(%s) k(%s) cgi=%p", uri_path, STRNULLCHKNULL(cgi.templ), STRNULLCHKNULL(cf->idp_sel_templ_file), cgi.skin, &cgi);
+    D("other page: no_ses uri(%s) templ(%s) tf(%s) k(%s) cgi=%p rs(%s)", uri_path, STRNULLCHKNULL(cgi.templ), STRNULLCHKNULL(cf->idp_sel_templ_file), cgi.skin, &cgi, cgi.rs);
   }
 step_up:
   DD("before uri(%s)=%p", uri_path, uri_path);
@@ -387,13 +389,14 @@ step_up:
 
 process_zxid_simple_outcome:
   if (cookie_hdr && cookie_hdr[0]) {
-    D("Passing cookie(%s) to environment", cookie_hdr);
+    D("Passing previous cookie(%s) to environment", cookie_hdr);
     zxid_add_attr_to_ses(cf, ses, "cookie", zx_dup_str(cf->ctx, cookie_hdr));
   }
   D("res(%s) uri(%s)",res,uri_path);
   switch (res[0]) {
   case 'L':
     if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
+    zxid_session = ses; /* Set the session so that the mini_httpd add_headers() can set cookies */
     send_error_and_exit(302, "Found", res, "SAML Redirect");
   case 'C':
     if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("CONTENT(%s)", res);
@@ -407,9 +410,7 @@ process_zxid_simple_outcome:
     sscanf(res, "%d", &len);
     res = strchr(res, '\r') + 4; /* skip CRFL pair before body */
     DD("CONTENT-LENGTH(%d)", len);
-    /* *** how is set-cookie header handled? */
-
-    zxid_session = ses;
+    zxid_session = ses; /* Set the session so that the mini_httpd add_headers() can set cookies */
     add_headers(200, "OK", "", "", mt?mt:"text/html; charset=%s", len, (time_t)-1);
     add_to_response(res, len);
     send_response();

@@ -26,7 +26,7 @@
  * 17.8.2012, added audit bus configuration --Sampo
  * 16.2.2013, added WD option --Sampo
  * 21.6.2013, added wsp_pat --Sampo
- * 20.11.2013, added %d expansion for VURL --Sampo
+ * 20.11.2013, added %d expansion for VURL, added ECHO for debug prints --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -1293,7 +1293,7 @@ static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, cha
   }
   len = strlen(val);
   if (out + len > lim) {
-    ERR("TOO LONG: VPATH or VURL(%s) %s expansion specified env(%s) val(%s) does not fit, missing %ld bytes. SERVER_SOFTWARE(%s)", vorig, exp, env_hdr, val, (long)(lim - (n + len)), STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
+    ERR("TOO LONG: VPATH or VURL(%s) %s expansion specified env(%s) val(%s) does not fit, missing %ld bytes. SERVER_SOFTWARE(%s)", vorig, exp, env_hdr, val, (long)(lim - (out + len)), STRNULLCHKQ(getenv("SERVER_SOFTWARE")));
     return 0;
   }
 
@@ -1317,7 +1317,7 @@ static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, cha
  * See CGI specification for environment variables such as
  *   %h expands to HTTP_HOST (from Host header, e.g. Host: sp.foo.bar or Host: sp.foo.bar:8443)
  *   %s expands to SCRIPT_NAME
- *   %d expands to directory portion, without trailing slash, of SCRIPT_NAME
+ *   %d expands to directory portion of SCRIPT_NAME
  */
 
 /* Called by:  zxid_parse_vpath_conf, zxid_parse_vurl */
@@ -1466,12 +1466,13 @@ static int zxid_parse_vurl(zxid_conf* cf, char* vurl)
 int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
 {
   int i;
+  int lineno;
   char *p, *n, *v;
   if (qs_len != -1 && qs[qs_len]) {  /* *** access one past end of buffer */
     ERR("LIMITATION: The configuration strings MUST be nul terminated (even when length is supplied explicitly). qs_len=%d qs(%.*s)", qs_len, qs_len, qs);
     return -1;
   }
-  while (qs && *qs) {
+  for (lineno = 1; qs && *qs; ++lineno) {
     qs = zxid_qs_nv_scan(qs, &n, &v, 1);
     if (!n)
       n = "NULL_NAME_ERR";
@@ -1502,7 +1503,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "BARE_URL_ENTITYID")) { SCAN_INT(v, cf->bare_url_entityid); break; }
       if (!strcmp(n, "BUTTON_URL"))        {
 	if (!strstr(v, "saml2_icon_468x60") && !strstr(v, "saml2_icon_150x60") && !strstr(v, "saml2_icon_16x16"))
-	  ERR("BUTTON_URL has to specify button image and the image filename MUST contain substring \"saml2_icon\" in it (see symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC). Furthermore, this substring must specify the size, which must be one of 468x60, 150x60, or 16x16. Acceptable substrings are are \"saml2_icon_468x60\", \"saml2_icon_150x60\", \"saml2_icon_16x16\", e.g. \"https://your-domain.com/your-brand-saml2_icon_150x60.png\". Current value(%s) may be used despite this error. Only last acceptable specification of BUTTON_URL will be used.", v);
+	  ERR("BUTTON_URL has to specify button image and the image filename MUST contain substring \"saml2_icon\" in it (see symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC). Furthermore, this substring must specify the size, which must be one of 468x60, 150x60, or 16x16. Acceptable substrings are are \"saml2_icon_468x60\", \"saml2_icon_150x60\", \"saml2_icon_16x16\", e.g. \"https://your-domain.com/your-brand-saml2_icon_150x60.png\". Current value(%s) may be used despite this error. Only last acceptable specification of BUTTON_URL will be used. (conf line %d", v, lineno);
 	if (!cf->button_url || strstr(v, cf->pref_button_size)) /* Pref overrides previous. */
 	  cf->button_url = v;
 	break;
@@ -1540,6 +1541,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "ERR_PAGE"))        { cf->err_page = v; break; }
       if (!strcmp(n, "ERR_TEMPL_FILE"))  { cf->err_templ_file = v; break; }
       if (!strcmp(n, "ERR_TEMPL"))       { cf->err_templ = v; break; }
+      if (!strcmp(n, "ECHO"))            { INFO("ECHO=%s (conf line %d)", v, lineno); break; }
       goto badcf;
     case 'F':
       if (!strcmp(n, "FEDUSERNAME_SUFFIX")) { cf->fedusername_suffix = v; break; }
@@ -1607,7 +1609,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "OUTMAP"))         { cf->outmap = zxid_load_map(cf, cf->outmap, v); break; }
       if (!strcmp(n, "ORG_NAME"))       { cf->org_name = v; break; }
       if (!strcmp(n, "ORG_URL"))        {
-	ERR("Discontinued configuration option ORG_URL supplied. This option has been deleted. Use BUTTON_URL instead, but note that the URL has to specify button image instead of home page (the image filename MUST contain substring \"saml2_icon\" in it). Current value(%s)", v);
+	ERR("Discontinued configuration option ORG_URL supplied. This option has been deleted. Use BUTTON_URL instead, but note that the URL has to specify button image instead of home page (the image filename MUST contain substring \"saml2_icon\" in it). Current value(%s) (conf line %d)", v, lineno);
 	cf->button_url = v;
 	break;
       }
@@ -1639,7 +1641,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "POST_TEMPL"))        { cf->post_templ = v; break; }
       if (!strcmp(n, "PREF_BUTTON_SIZE"))        {
 	if (!strstr(v, "468x60") && !strstr(v, "150x60") && !strstr(v, "16x16"))
-	  ERR("PREF_BUTTON_SIZE should specify one of the standard button image sizes, such as 468x60, 150x60, or 16x16 (and the image filename MUST contain substring \"saml2_icon\" in it, see symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC). Current value(%s) is used despite this error.", v);
+	  ERR("PREF_BUTTON_SIZE should specify one of the standard button image sizes, such as 468x60, 150x60, or 16x16 (and the image filename MUST contain substring \"saml2_icon\" in it, see symlabs-saml-displayname-2008.pdf submitted to OASIS SSTC). Current value(%s) is used despite this error. (conf line %d", v, lineno);
 	cf->pref_button_size = v;
 	break;
       }
@@ -1656,10 +1658,10 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
 	}
 	break;
       }
-      if (!strcmp(n, "REDIR_TO_CONTENT")) { SCAN_INT(v, cf->redir_to_content); break; }
-      if (!strcmp(n, "REMOTE_USER_ENA"))  { SCAN_INT(v, cf->remote_user_ena); break; }
-      if (!strcmp(n, "RELY_A7N"))       { SCAN_INT(v, cf->log_rely_a7n); break; }
-      if (!strcmp(n, "RELY_MSG"))       { SCAN_INT(v, cf->log_rely_msg); break; }
+      if (!strcmp(n, "REDIR_TO_CONTENT"))  { SCAN_INT(v, cf->redir_to_content); break; }
+      if (!strcmp(n, "REMOTE_USER_ENA"))   { SCAN_INT(v, cf->remote_user_ena); break; }
+      if (!strcmp(n, "RELY_A7N"))          { SCAN_INT(v, cf->log_rely_a7n); break; }
+      if (!strcmp(n, "RELY_MSG"))          { SCAN_INT(v, cf->log_rely_msg); break; }
       if (!strcmp(n, "REQUIRED_AUTHNCTX")) {
 	/* Count how many */
         for (i=2, p=v; *p; ++p)
@@ -1727,7 +1729,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       goto badcf;
     default:
     badcf:
-      ERR("Unknown config option(%s) val(%s), ignored.", n, v);
+      ERR("Unknown config option(%s) val(%s), ignored (conf line %d", n, v, lineno);
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "S", "BADCF", n, 0);
     }
   }

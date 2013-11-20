@@ -783,7 +783,7 @@ char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_
   
   if (auto_flags & (c_mask | h_mask)) {
     if (auto_flags & h_mask) {  /* H only: return both H and C */
-      D("With headers %x (%s)", auto_flags, ss->s);
+      if (errmac_debug & MOD_AUTH_SAML_INOUT) D("With headers %x (%s)", auto_flags, ss->s);
       ss2 = zx_strf(cf->ctx, "Content-Type: %s" CRLF "Content-Length: %d" CRLF2 "%.*s",
 		    cont_type, ss->len, ss->len, ss->s);
       zx_str_free(cf->ctx, ss);
@@ -840,6 +840,20 @@ static char* zxid_simple_redir_page(zxid_conf* cf, char* redir, char* rs, int* r
 char* zxid_simple_show_idp_sel(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   struct zx_str* ss;
+
+  /* cgi->rs will be copied to ses->rs and from there in ab_pep to resource-id.
+   * We compress and safe_base64 encode it to protect any URL special characters.
+   * *** seems that at this point the p is not just rs, but the entire local URL --Sampo */
+  D("Previous rs(%s)", STRNULLCHKD(cgi->rs));
+  ss = zx_strf(cf->ctx, "%s%c%s", cgi->uri_path, cgi->qs&&cgi->qs[0]?'?':0, STRNULLCHK(cgi->qs));
+  cgi->rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, ss->s);
+  D("rs(%s) from(%s) uri_path(%s) qs(%s)",cgi->rs,ss->s,cgi->uri_path,STRNULLCHKD(cgi->qs));
+  zx_str_free(cf->ctx, ss);
+  if (cf->defaultqs && cf->defaultqs[0]) {
+    INFO("DEFAULTQS(%s)", cf->defaultqs);
+    zxid_parse_cgi(cf, cgi, cf->defaultqs);
+  }
+
   D("cf=%p cgi=%p templ(%s)", cf, cgi, STRNULLCHKQ(cgi->templ));
   if (cf->idp_sel_page && cf->idp_sel_page[0]) {
     D("idp_sel_page(%s) rs(%s)", cf->idp_sel_page, STRNULLCHK(cgi->rs));
@@ -1189,12 +1203,12 @@ static char* zxid_show_protected_content_setcookie(zxid_conf* cf, zxid_cgi* cgi,
   char* rs_qs;
 
   if (cf->ses_cookie_name && *cf->ses_cookie_name) {
-    D("setcookie(%s)", cf->ses_cookie_name);
     ses->setcookie = zx_alloc_sprintf(cf->ctx, 0, "%s=%s; path=/%s",
 				      cf->ses_cookie_name, ses->sid,
 				      ONE_OF_2(cf->url[4], 's', 'S')?"; secure":"");
     ses->cookie = zx_alloc_sprintf(cf->ctx, 0, "$Version=1; %s=%s",
 				   cf->ses_cookie_name, ses->sid);
+    D("setcookie(%s)=(%s) ses=%p", cf->ses_cookie_name, ses->setcookie, ses);
   }
   if (cf->ptm_cookie_name && *cf->ptm_cookie_name) {
     D("ptm_cookie_name(%s)", cf->ptm_cookie_name);

@@ -2626,9 +2626,11 @@ add_headers( int s, char* title, char* extra_header, char* me, char* mt, off_t b
 	}
     if ( extra_header != (char*) 0 && extra_header[0] != '\0' )
 	{
-        for (buflen = strlen(extra_header)-1;
-	     buflen >= 0 && (extra_header[buflen] == '\015' || extra_header[buflen] == '\012');
+        buflen = strlen(extra_header);
+#ifdef USE_ZXID
+        for (; buflen > 0 && ONE_OF_2(extra_header[buflen], '\015', '\012');
 	     --buflen) ; /* eliminate trailing CRLFs, e.g. from zxid_simple() */
+#endif
 	buflen = snprintf( buf, sizeof(buf), "%.*s\015\012", buflen, extra_header );
 	add_to_response( buf, buflen );
 	}
@@ -2670,20 +2672,24 @@ add_headers( int s, char* title, char* extra_header, char* me, char* mt, off_t b
 	add_to_response( buf, buflen );
 	}
 #ifdef USE_ZXID
+    D("zxid_cf=%p zxid_session=%p", zxid_cf, zxid_session);
     if (zxid_cf && zxid_session)
 	{
           if (zxid_is_wsp)
             {
 	    /* Nothing to add, not even likely to occur */
+	    D("zxid_is_wsp=%d", zxid_is_wsp);
 	    }
           else
             {
 	      if (zxid_session->setcookie) {
 		buflen = snprintf(buf, sizeof(buf), "Set-Cookie: %s\015\012", zxid_session->setcookie);
+		D("set-cookie(%.*s)", buflen, buf);
                 add_to_response(buf, buflen);
 	      }
 	      if (zxid_session->setptmcookie) {
 		buflen = snprintf(buf, sizeof(buf), "Set-Cookie: %s\015\012", zxid_session->setptmcookie);
+		D("set-cookie(%.*s)", buflen, buf);
                 add_to_response(buf, buflen);
 	      }
 	    }

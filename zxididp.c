@@ -106,7 +106,7 @@ int main(int argc, char** argv)
   }
 
 #if 0
-  strncpy(errmac_instance, "\e[47midp\e[0m", sizeof(errmac_instance));
+  strncpy(errmac_instance, "\t\e[47midp\e[0m", sizeof(errmac_instance));
 #else
   strncpy(errmac_instance, "idp", sizeof(errmac_instance));
 #endif
