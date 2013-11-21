@@ -29,6 +29,8 @@ HANDLE zx_CreateFile(LPCTSTR lpFileName,
 		     LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, 
 		     DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
 
+#define pipe(fds) _pipe(fds, 64*1024, _O_BINARY)
+#define mkdir(P,M)  _mkdir(P)
 #define geteuid() 0
 #define getegid() 0
 #define stat(X,Y) zx_stat(X,Y)

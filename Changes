@@ -121,6 +121,7 @@ zxid-1.18:: 20.11.2013
     - Generalized redir_to_content and moved it to zxid_simple()
     - Moved defaultqs feature feature to zxid_simple()
     - Added %d expansion for VURL
+    - Port mini_httpd to mingw
 
 zxid-1.17:: 16.11.2013
     - More bug fixing in mini_httpd_zxid

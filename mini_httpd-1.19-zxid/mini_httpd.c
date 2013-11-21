@@ -388,11 +388,17 @@ main( int argc, char** argv )
 	    handle_request();
 	    exit( 0 );
 	    }
-        if ( strcmp( argv[argn], "-cgi-child" ) == 0 )
+        if ( strcmp( argv[argn], "-cgiin-child" ) == 0 )
 	    {
-	    /* Child process to handle cgi. */
-	    client_addr = usa;
-	    handle_request(); // ***
+	    /* Child process to handle cgi input. */
+	      /* *** parent should really write captured POST input to the child */
+	    cgi_interpose_input( p[1] /* *** rather stdin? */ );
+	    exit( 0 );
+	    }
+        if ( strcmp( argv[argn], "-cgiout-child" ) == 0 )
+	    {
+	    /* Child process to handle cgi input. */
+	    cgi_interpose_output( p[1] /* *** rather stdin? */ );
 	    exit( 0 );
 	    }
 #endif
@@ -1830,7 +1836,7 @@ strencode( char* to, size_t tosize, const char* from )
 
 #endif /* HAVE_SCANDIR */
 
-static int pipe_and_fork(int* p)
+static int pipe_and_fork(int* p, const char* next_step_flag)
     {
     int r;
 
@@ -1840,10 +1846,12 @@ static int pipe_and_fork(int* p)
 	perror( "pipe" );
 	send_error_and_exit( 500, "Internal Error", "", "Something unexpected went wrong making a pipe." );
         }
+
 #ifdef MINGW
+    /* *** how to pass global variables and other processing context across the spawn? need to construct complicated environment. */
     /* *** determine whole path. for now we assume working directory contains mini_httpd */
-    r = spawnlp(P_NOWAIT, ".", argv0, "-cgi-child");
-    /* Parent comes here. child is processed where option -child is processed. */
+    r = spawnlp(P_NOWAIT, ".", argv0, next_step_flag);
+    /* Parent comes here. child is processed where option -cgiin-child is processed. */
     if (r) {
       perror( "spawnlp" );
       ERR("spawn failed to create subprocess to handle connection. r=%d errno=%d %s",r,errno,STRERROR(errno));
@@ -1920,13 +1928,14 @@ do_cgi( void )
 #endif /* USE_SSL */
 	{
 	int p[2];
-	if ( pipe_and_fork(p) == 0 )
+	if ( pipe_and_fork(p,"-cgiin-child") == 0 )
 	    {
 	    /* Child: Interposer process. */
 	    (void) close( p[0] );
 	    cgi_interpose_input( p[1] );
 	    exit( 0 );
 	    }
+	/* parent *** we should really write captured POST input to the child */
 	(void) close( p[1] );
 	if ( p[0] != STDIN_FILENO )
 	    {
@@ -1955,7 +1964,7 @@ do_cgi( void )
 #endif /* USE_SSL */
 	{
 	int p[2];
-	if ( pipe_and_fork(p) == 0 )
+	if ( pipe_and_fork(p,"-cgiout-child") == 0 )
 	    {
 	    /* Child: Interposer process. */
 	    (void) close( p[1] );
@@ -2021,7 +2030,7 @@ do_cgi( void )
     (void) signal( SIGPIPE, SIG_DFL );
 #endif /* HAVE_SIGSET */
 
-    /* Run the program. */
+    /* Run the CGI script. */
     (void) execve( binary, argp, envp );
 
     /* Something went wrong. */
