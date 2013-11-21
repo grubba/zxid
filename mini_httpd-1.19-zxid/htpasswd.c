@@ -16,7 +16,13 @@
 #include <time.h>
 #include <unistd.h>
 
+#ifdef USE_SSL
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+#define crypt(pw,salt) DES_crypt((pw),(salt))
+#else
 extern char *crypt(const char *key, const char *setting);
+#endif /* USE_SSL */
 
 #define LF 10
 #define CR 13

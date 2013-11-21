@@ -1,5 +1,6 @@
 /*
  *  $Id: platform.h,v 1.2 2009-11-24 23:53:40 sampo Exp $
+ * http://support.microsoft.com/kb/190351
  */
 
 #ifndef _platform_h
@@ -31,10 +32,21 @@ HANDLE zx_CreateFile(LPCTSTR lpFileName,
 #define geteuid() 0
 #define getegid() 0
 #define stat(X,Y) zx_stat(X,Y)
+#define openlog(a,b,c)
+#define syslog(a,...)
+#define closelog()
+#define fcntl(fd,cmd,...) (-1)  /* always fail: mingw does not have fcntl(2) */
+#define nice(x)
 
+#define F_GETFL 3
+#define F_SETFL 4
+#define F_SETFD 2
 #define LOCK_EX 2
 #define LOCK_UN 8
-#define O_SYNC 04010000
+#define O_SYNC     04010000
+#define O_NONBLOCK 04000
+#define O_NDELAY   O_NONBLOCK
+#define WNOHANG 1
 
 #ifdef WIN32CL
 //#define intptr_t INT_PTR

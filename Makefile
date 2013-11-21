@@ -454,8 +454,8 @@ PRECHECK_PREP=precheck_prep_win
 CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
 # All dependency libraries are assumed to be in the mingw environment
 CINC=-I. -I$(TOP) -I$(SYSROOT)/include
-APACHE_INC = -I$(SYSROOT)/include
-APR_INC    = -I$(SYSROOT)/srclib/apr-util/include
+APACHE_INC = -I$(SYSROOT)/include/apache2
+APR_INC    = -I$(SYSROOT)/include/apr-1
 JNI_INC=-I$(SYSROOT)/include
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
@@ -672,6 +672,8 @@ ALL_EXE= smime$(EXE) zxidwspcgi$(EXE) mini_httpd_zxid$(EXE)
 default: seehelp precheck $(DEFAULT_EXE)
 
 all: default precheck_apache samlmod phpzxid javazxid apachezxid $(ALL_EXE)
+
+all_minus_perl: default precheck_apache apachezxid phpzxid javazxid $(ALL_EXE)
 
 zxbus:  zxbusd zxbustailf zxbuslist
 
@@ -1176,6 +1178,14 @@ wscmod: WSC/WSC.pm WSC/WSC_wrap.c
 wsfrawmod: WSF_Raw/Raw.pm WSF_Raw/Raw_wrap.c
 	cd WSF_Raw; $(PERL) Makefile.PL && $(MAKE)
 
+ifeq ($(TARGET),xmingw64)
+
+Net/SAML_wrap.$(OBJ_EXT): Net/SAML_wrap.c
+	$(warning SAMLWRAP)
+	$(CC) -c $(OUTOPT)$@ $(CFLAGS) $(CDEF) $(CINC) $<
+
+endif
+
 perlmod: samlmod
 
 perlzxid: samlmod
@@ -1500,18 +1510,13 @@ mod_auth_saml: apachezxid
 
 MINI_HTTPD_DIR?=mini_httpd-1.19-zxid
 
-# CONFIGURE: Some systems don't need -lcrypt, and indeed they get an
-# error if you try to link with it.  If you get an error about libcrypt
-# not found, try commenting out this definition.
-CRYPT_LIB ?= -lcrypt
-
 $(MINI_HTTPD_DIR)/htpasswd: $(MINI_HTTPD_DIR)/htpasswd.$(OBJ_EXT)
 	$(warning MINI_HTTPD COMPILE)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(CRYPT_LIB) $(LIBS)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBS)
 
 $(MINI_HTTPD_DIR)/mini_httpd_zxid$(EXE): $(MINI_HTTPD_DIR)/mini_httpd.$(OBJ_EXT) $(MINI_HTTPD_DIR)/match.$(OBJ_EXT) $(MINI_HTTPD_DIR)/tdate_parse.$(OBJ_EXT) mini_httpd_filter.$(OBJ_EXT) $(LIBZXID_A)
 	$(warning MINI_HTTPD LINK)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $^ $(CRYPT_LIB) $(LIBZXID) $(LIBS)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $^ $(LIBZXID) $(LIBS)
 
 $(MINI_HTTPD_DIR)/mime_encodings.h: $(MINI_HTTPD_DIR)/mime_encodings.txt
 	rm -f $@

@@ -439,7 +439,7 @@ zxid_ses* zxid_mini_httpd_filter(zxid_conf* cf, const char* method, const char* 
 {
   zxid_ses* ses;
   char buf[256];
-  D("\e[42m===== START %s uri(%s) qs(%s) uid=%d pid=%d gid=%d cwd(%s)\e[0m", ZXID_REL, uri_path, STRNULLCHKNULL(qs), getpid(), getuid(), getgid(), getcwd(buf,sizeof(buf)));
+  D(CC_GREENY("===== START %s uri(%s) qs(%s) uid=%d pid=%d gid=%d cwd(%s)"), ZXID_REL, uri_path, STRNULLCHKNULL(qs), getpid(), geteuid(), getegid(), getcwd(buf,sizeof(buf)));
   if (cf->wd && *cf->wd)
     chdir(cf->wd);
 
