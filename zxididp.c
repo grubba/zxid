@@ -32,7 +32,7 @@
 #include <zx/c/zxidvers.h>
 
 char* help =
-"zxididp  -  SAML 2.0 IdP CGI (also DI, IM, and PS) - R" ZXID_REL "\n\
+"zxididp  -  SAML 2.0 IdP CGI (also DI, AS, IM, and PS) - R" ZXID_REL "\n\
 SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
 Copyright (c) 2012-2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.\n\
 Copyright (c) 2008-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
@@ -94,7 +94,7 @@ int main(int argc, char** argv)
     }
   }
   /*errmac_debug = 1;*/
-  fprintf(stderr, "=================== Running zxididp %s =================== %d\n", ZXID_REL, errmac_debug);
+  fprintf(stderr, CC_PURY("=================== Running zxididp %s =================== %x p%d qs(%s)\n"), ZXID_REL, errmac_debug, getpid(), getenv("QUERY_STRING"));
   p = getenv(ZXID_ENV_PREFIX "PRE_CONF");
   D(ZXID_ENV_PREFIX "PRE_CONF(%s)", p);
   //fprintf(stderr, "p(%s)\n", p);
@@ -105,10 +105,10 @@ int main(int argc, char** argv)
     exit(1);
   }
 
-#if 0
-  strncpy(errmac_instance, "\t\e[47midp\e[0m", sizeof(errmac_instance));
+#if 1
+  strncpy(errmac_instance, CC_PURY("\tidp"), sizeof(errmac_instance));
 #else
-  strncpy(errmac_instance, "idp", sizeof(errmac_instance));
+  strncpy(errmac_instance, "\tidp", sizeof(errmac_instance));
 #endif
 
   res = zxid_simple(CONF, 0, 0x0fff);  /* 0xfff == full CGI automation */

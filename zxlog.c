@@ -717,7 +717,7 @@ void errmac_debug_xml_blob(zxid_conf* cf, const char* file, int line, const char
   const char* bdy;
   const char* p;
   const char* q;
-  if (!errmac_debug || len == -1 || !xml)
+  if (!(errmac_debug & ERRMAC_XMLDBG) || len == -1 || !xml)
     return;
   if (len == -2)
     len = strlen(xml);
@@ -755,10 +755,18 @@ nobody:
 
 print_it:
   ++zxlog_seq;
-#ifdef USE_AKBOX_FN
+#ifdef USE_PTHREAD
+# ifdef USE_AKBOX_FN
   fprintf(stderr, "t%lx %04x:%-3d %s d %s%s(%.*s) len=%d %d:%d\n", (long)pthread_self(), akbox_fn(func), __LINE__, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+# else
+  fprintf(stderr, "t%lx %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", (long)pthread_self(), file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+# endif
 #else
+# ifdef USE_AKBOX_FN
+  fprintf(stderr, "p%d %04x:%-3d %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), akbox_fn(func), __LINE__, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+# else
   fprintf(stderr, "p%d %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+# endif
 #endif
 
   if (!zx_xml_debug_log) {
@@ -773,10 +781,18 @@ print_it:
     ERR("Locking exclusively file `%s' failed: %d %s. Check permissions and that the file system supports locking. euid=%d egid=%d", XML_LOG_FILE, errno, STRERROR(errno), geteuid(), getegid());
     /* Fall thru to print without locking */
   }
-#ifdef USE_AKBOX_FN
-  fprintf(zx_xml_debug_log, "<!-- XMLBEG %d:%d %04x:%-3d %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d:%d -->\n", getpid(), zxlog_seq, akbox_fn(func), line, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, getpid(), zxlog_seq);
+#ifdef USE_PTHREAD
+# ifdef USE_AKBOX_FN
+  fprintf(zx_xml_debug_log, "<!-- XMLBEG t%lx:%d %04x:%-3d %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND t%lx:%d -->\n", (long)pthread_self(), zxlog_seq, akbox_fn(func), line, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, (long)pthread_self(), zxlog_seq);
+# else
+  fprintf(zx_xml_debug_log, "<!-- XMLBEG t%lx:%d %10s:%-3d %-16s %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND t%lx:%d -->\n", (long)pthread_self(), zxlog_seq, file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, (long)pthread_self(), zxlog_seq);
+# endif
 #else
-  fprintf(zx_xml_debug_log, "<!-- XMLBEG %d:%d %10s:%-3d %-16s %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d:%d -->\n", getpid(), zxlog_seq, file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, getpid(), zxlog_seq);
+# ifdef USE_AKBOX_FN
+  fprintf(zx_xml_debug_log, "<!-- XMLBEG p%d:%d %04x:%-3d %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND p%d:%d -->\n", getpid(), zxlog_seq, akbox_fn(func), line, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, getpid(), zxlog_seq);
+# else
+  fprintf(zx_xml_debug_log, "<!-- XMLBEG p%d:%d %10s:%-3d %-16s %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND p%d:%d -->\n", getpid(), zxlog_seq, file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, getpid(), zxlog_seq);
+# endif
 #endif
   fflush(zx_xml_debug_log);
   FUNLOCK(fileno(zx_xml_debug_log));

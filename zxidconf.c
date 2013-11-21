@@ -1251,7 +1251,7 @@ zxid_conf* zxid_new_conf(const char* zxid_path)
  * the sematic where PATH is not changed unless corresponding zxid.conf
  * is found. This is used by VPATH. */
 
-/* Called by:  zxid_parse_conf_raw, zxid_parse_vpath_conf */
+/* Called by:  zxid_parse_conf_raw, zxid_parse_vpath */
 static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exists)
 {
   int len;
@@ -1274,7 +1274,7 @@ static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exis
   }
 }
 
-int zxid_suppress_vpath_warning = 10000;
+int zxid_suppress_vpath_warning = 30;
 
 /*() Helper to evaluate environment variables for VPATH and VURL.
  * squash_type: 0=VPATH, 1=VURL
@@ -1320,7 +1320,7 @@ static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, cha
  *   %d expands to directory portion of SCRIPT_NAME
  */
 
-/* Called by:  zxid_parse_vpath_conf, zxid_parse_vurl */
+/* Called by:  zxid_parse_vpath, zxid_parse_vurl */
 static char* zxid_expand_percent(char* vorig, char* out, char* lim, int squash_type)
 {
   int len;
@@ -1393,7 +1393,7 @@ static char* zxid_dollar_to_amp(char* p)
  * Effectively unconfigured VPATHs are handled by the default PATH. */
 
 /* Called by:  zxid_parse_conf_raw */
-static int zxid_parse_vpath_conf(zxid_conf* cf, char* vpath)
+static int zxid_parse_vpath(zxid_conf* cf, char* vpath)
 {
   char newpath[PATH_MAX];
   char *np, *lim;
@@ -1474,9 +1474,12 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
   }
   for (lineno = 1; qs && *qs; ++lineno) {
     qs = zxid_qs_nv_scan(qs, &n, &v, 1);
-    if (!n)
+    if (!n) {
+      if (!qs)
+	break;
       n = "NULL_NAME_ERR";
-
+    }
+    
     if (!strcmp(n, ZXID_PATH_OPT))       goto path;
     
     switch (n[0]) {
@@ -1706,7 +1709,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       goto badcf;
     case 'V':  /* VALID_OPT */
       if (!strcmp(n, "VALID_OPT"))      { SCAN_INT(v, cf->valid_opt); break; }
-      if (!strcmp(n, "VPATH"))          { zxid_parse_vpath_conf(cf, v); break; }
+      if (!strcmp(n, "VPATH"))          { zxid_parse_vpath(cf, v); break; }
       if (!strcmp(n, "VURL"))           { zxid_parse_vurl(cf, v); break; }
       goto badcf;
     case 'W':  /* WANT_SSO_A7N_SIGNED */
@@ -1729,7 +1732,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       goto badcf;
     default:
     badcf:
-      ERR("Unknown config option(%s) val(%s), ignored (conf line %d", n, v, lineno);
+      ERR("Unknown config option(%s) val(%s), ignored (conf line %d)", n, v, lineno);
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "S", "BADCF", n, 0);
     }
   }

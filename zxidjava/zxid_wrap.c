@@ -18614,10 +18614,11 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxbus_1listen_1msg(JNIEnv *j
 }
 
 
-SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zxid_1get_1ent_1file(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
+SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zxid_1get_1ent_1file(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3) {
   jlong jresult = 0 ;
   zxid_conf *arg1 = (zxid_conf *) 0 ;
   char *arg2 = (char *) 0 ;
+  char *arg3 = (char *) 0 ;
   zxid_entity *result = 0 ;
   
   (void)jenv;
@@ -18628,9 +18629,15 @@ SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zxid_1get_1ent_1file(JNIEnv *j
     arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
     if (!arg2) return 0;
   }
-  result = (zxid_entity *)zxid_get_ent_file(arg1,arg2);
+  arg3 = 0;
+  if (jarg3) {
+    arg3 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg3, 0);
+    if (!arg3) return 0;
+  }
+  result = (zxid_entity *)zxid_get_ent_file(arg1,arg2,arg3);
   *(zxid_entity **)&jresult = result; 
   if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, ( char *)arg2);
+  if (arg3) (*jenv)->ReleaseStringUTFChars(jenv, jarg3, ( char *)arg3);
   return jresult;
 }
 

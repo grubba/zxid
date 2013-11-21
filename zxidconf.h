@@ -517,7 +517,7 @@
 
 /*(c) Mini Authentication Service
  * Whether limited Authentication Service functionality is enabled.
- * Please note that the AuthenticationService impmenetation at present (2010)
+ * Please note that the AuthenticationService implementation at present (2010)
  * is incomplete and fails to properly authenticate and authorize the caller
  * system entity, i.e. anyone who knows a username and password can call it. */
 #define ZXID_AS_ENA 0

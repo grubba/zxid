@@ -40,9 +40,9 @@ Send well researched bug reports to the author. Home: http://zxid.org\n\
 Usage: zxcot [options] [cotdir]         # Gives listing of metadata\n\
        zxcot -c CPATH=/var/zxid/ -dirs  # Creates directory hierarchy\n\
        zxcot -a [options] [cotdir] <meta.xml  # Import metadata\n\
-       zxcot -b [options] [cotdir] <epr.xml   # Register EPR\n\
-       curl https://site.com/metadata.xml | zxcot -a [options] [dir]\n\
-       zxcot -g https://site.com/metadata.xml [options] [dir]\n\
+       zxcot -b [options] [dimddir] <epr.xml  # Register EPR\n\
+       curl https://site.com/metadata.xml | zxcot -a [options] [cotdir]\n\
+       zxcot -g https://site.com/metadata.xml [options] [cotdir]\n\
        zxcot -m [options] >meta.xml     # Generate our own metadata\n\
        zxcot -p https://site.com/metadata.xml\n\
   [dir]            CoT directory. Default /var/zxid/cot\n\

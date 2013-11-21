@@ -130,7 +130,7 @@ void test_ibm_cert_problem_enc_dec()  /* -r 2 */
   cf->enc_pkey = zxid_read_private_key(cf, "sym-idp-enc.pem");
 #else
   cf->enc_pkey = zxid_read_private_key(cf, "ibm-idp-enc.pem");
-  idp_meta = zxid_get_ent_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU"); /* IBMIdP */
+  idp_meta = zxid_get_ent_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU", "test_ibm"); /* IBMIdP */
 #endif
   
   req = zxid_mk_logout(cf, nameid, 0, idp_meta);  
@@ -396,7 +396,7 @@ void covimp_test()       /* -r 5 */
   zxid_lecp_check(cf, &cgi);        /* *** should test in realistic context */
 #endif
 
-  meta = zxid_get_ent_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU"); /* IBMIdP */
+  meta = zxid_get_ent_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU", "covimp"); /* IBMIdP */
   zxid_mk_art_deref(cf, 0, meta, "ART124121");  /* *** should test in realistic context */
   
   zxid_mk_lu_Status(cf, 0, 0, "SC2-dummy", "MSG-dummy", "REF-dummy");

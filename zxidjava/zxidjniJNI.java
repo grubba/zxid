@@ -1118,7 +1118,7 @@ class zxidjniJNI {
   public final static native int zxbus_read_stomp(long jarg1, long jarg2, long jarg3);
   public final static native int zxbus_ack_msg(long jarg1, long jarg2, long jarg3);
   public final static native String zxbus_listen_msg(long jarg1, long jarg2);
-  public final static native long zxid_get_ent_file(long jarg1, String jarg2);
+  public final static native long zxid_get_ent_file(long jarg1, String jarg2, String jarg3);
   public final static native long zxid_get_ent_cache(long jarg1, String jarg2);
   public final static native int zxid_write_ent_to_cache(long jarg1, long jarg2);
   public final static native long zxid_parse_meta(long jarg1, long jarg2, String jarg3);

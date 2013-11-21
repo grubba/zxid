@@ -23,6 +23,7 @@
  * 14.3.2013  added language/skin dependent templates --Sampo
  * 15.4.2013, added fflush(3) here and there to accommodate broken atexit() --Sampo
  * 17.11.2013, move redir_to_content feature to zxid_simple() --Sampo
+ * 20.11.2013, move defaultqs feature feature to zxid_simple() --Sampo
  *
  * Login button abbreviations
  * A2 = SAML 2.0 Artifact Profile
@@ -849,10 +850,6 @@ char* zxid_simple_show_idp_sel(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int a
   cgi->rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, ss->s);
   D("rs(%s) from(%s) uri_path(%s) qs(%s)",cgi->rs,ss->s,cgi->uri_path,STRNULLCHKD(cgi->qs));
   zx_str_free(cf->ctx, ss);
-  if (cf->defaultqs && cf->defaultqs[0]) {
-    INFO("DEFAULTQS(%s)", cf->defaultqs);
-    zxid_parse_cgi(cf, cgi, cf->defaultqs);
-  }
 
   D("cf=%p cgi=%p templ(%s)", cf, cgi, STRNULLCHKQ(cgi->templ));
   if (cf->idp_sel_page && cf->idp_sel_page[0]) {
@@ -1470,6 +1467,11 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
   }
   if (cf->wd)
     chdir(cf->wd);
+
+  if (!cgi->op && cf->defaultqs && cf->defaultqs[0]) {
+    zxid_parse_cgi(cf, cgi, cf->defaultqs);
+    INFO("DEFAULTQS(%s) op(%c)", cf->defaultqs, cgi->op);
+  }
 
   switch (cgi->op) {
   case 'M':  /* Invoke LECP or redirect to CDC reader. */

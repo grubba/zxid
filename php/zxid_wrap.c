@@ -34399,11 +34399,12 @@ fail:
 ZEND_NAMED_FUNCTION(_wrap_zxid_get_ent_file) {
   zxid_conf *arg1 = (zxid_conf *) 0 ;
   char *arg2 = (char *) 0 ;
-  zval **args[2];
+  char *arg3 = (char *) 0 ;
+  zval **args[3];
   zxid_entity *result = 0 ;
   
   SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
@@ -34422,7 +34423,17 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_get_ent_file) {
   }
   /*@SWIG@*/;
   
-  result = (zxid_entity *)zxid_get_ent_file(arg1,arg2);
+  
+  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
+  if ((*args[2])->type==IS_NULL) {
+    arg3 = (char *) 0;
+  } else {
+    convert_to_string_ex(args[2]);
+    arg3 = (char *) Z_STRVAL_PP(args[2]);
+  }
+  /*@SWIG@*/;
+  
+  result = (zxid_entity *)zxid_get_ent_file(arg1,(char const *)arg2,(char const *)arg3);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_zxid_entity_s, 0);
   

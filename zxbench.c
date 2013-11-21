@@ -309,9 +309,9 @@ int main(int argc, char** argv, char** env)
     r = zx_dec_zx_root(cf->ctx, got_all, buf, "zxbench");  /* n_decode=1000 ?!? */
     if (!r) DIE("Decode failure");
     
-    //ent = zxid_get_ent_file(cf, "YV7HPtu3bfqW3I4W_DZr-_DKMP4" /* cxp06 */);
-    //ent = zxid_get_ent_file(cf, "zIDxx57qGA-qwnsymUf4JD0Er2A" /* s-idp */);
-    //ent = zxid_get_ent_file(cf, "7S4XRMew6HHKey9j8fESiJUV-Cs" /* hp-idp */);
+    //ent = zxid_get_ent_file(cf, "YV7HPtu3bfqW3I4W_DZr-_DKMP4" /* cxp06 */, "bench");
+    //ent = zxid_get_ent_file(cf, "zIDxx57qGA-qwnsymUf4JD0Er2A" /* s-idp */, "bench");
+    //ent = zxid_get_ent_file(cf, "7S4XRMew6HHKey9j8fESiJUV-Cs" /* hp-idp */, "bench");
     //r->Envelope->Body->ArtifactResolve
     if (r->Envelope && r->Envelope->Body) {
       if (r->Envelope->Body->ArtifactResponse) {

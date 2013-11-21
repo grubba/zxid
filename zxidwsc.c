@@ -498,6 +498,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
 {
   struct zx_e_Envelope_s* env;
   struct zx_root_s* r;
+  struct zx_str* ret;
   r = zx_dec_zx_root(cf->ctx, strlen(enve), enve, "add_env");
   if (!r) {
     ERR("Malformed XML enve(%s)", enve);
@@ -506,21 +507,21 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
   /* N.B. The lists are in reverse order after the parse. */
   env = r->Envelope;
   if (env) {
-    DD("HERE1 ENV EXISTS %p", env);
-    if (!env->Header)
-      env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+    D("HERE1 ENV EXISTS %p", env);
     if (!env->Body)
       env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
-    /* N.B. Maintain the reverse order, Body is now first element of Element->kids. */
+    if (!env->Header)
+      env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+    /* N.B. Maintain the forward order, Header is now first element of Element->kids. */
   } else if (r->Body) {
-    DD("HERE2 BODY EXISTS %p", env);
+    D("HERE2 BODY EXISTS %p", env);
     env = zx_NEW_e_Envelope(cf->ctx,0);
+    ZX_ADD_KID(env, Body, r->Body);
     if (r->Header)
       ZX_ADD_KID(env, Header, r->Header);
     else
       env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
-    ZX_ADD_KID(env, Body, r->Body);
-    /* N.B. Maintain the reverse order: Body is now first element of Element->kids. */
+    /* N.B. Maintain the Forward order: Header is now first element of Element->kids. */
   } else { /* Resort to stringwise attempt to add envelope. */
     ZX_FREE(cf->ctx, r);
     if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
@@ -530,16 +531,22 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
     }
     /* Must be just payload */
     enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_body_open, enve, zx_env_body_close);
-    DD("HERE3 ADD ENV(%s)", enve);
+    D("HERE3 ADD ENV(%s)", enve);
     r = zx_dec_zx_root(cf->ctx, strlen(enve), enve, "add_env2");
     if (!r) {
       ERR("Malformed XML enve(%s)", enve);
       return 0;
     }
     env = r->Envelope;
-    /* N.B. The lists are in reverse order after the parse. */
+#if 0
+    ret=zx_easy_enc_elem_opt(cf,&env->gg); INFO("ser(%.*s) enve(%s)",ret->len,ret->s,enve); // ***
+    /* The lists are in reverse order after the parse. But since this is a text parse,
+     * wireorder is maintained, thus giving forward order, afterall. */
+    zx_reverse_elem_lists(&env->gg);
+#endif
   }
   ZX_FREE(cf->ctx, r);
+  ret = zx_easy_enc_elem_opt(cf,&env->gg); INFO("ser(%.*s) enve(%s)",ret->len,ret->s,enve); // ***
   if (!env)
     ERR("No <e:Envelope> found in input argument. enve(%s)", enve);
   /* DO NOT: zx_reverse_elem_lists(&env->gg);  * ensure forward order for external use */
@@ -573,6 +580,7 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
     D_DEDENT("call: ");
     return 0;
   }
+  ret = zx_easy_enc_elem_opt(cf, &env->gg);  INFO("sending(%.*s) enve(%s)", ret->len, ret->s, enve); // ***
   
   /* Call Rq-Out PDP */
 

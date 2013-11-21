@@ -804,6 +804,7 @@ int zxid_sp_anon_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 }
 
 /*() Authentication Service Client
+ * cgi->uid and cgi->pw contain the credentials
  * See also: zxid_idp_as_do()
  */
 

@@ -390,6 +390,38 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define ZPALLOCEXT(p,k,e)    MB PALLOCEXT((p),(k),(e)); ZERO((p), sizeof(*(p))); ME
 #define ZPALLOCEXTN(p,k,n,e) MB PALLOCEXTN((p),(k),(n),(e)); ZERO((p), (n)); ME
 
+/* =============== Console color =============== */
+/* vt100 terminal color escapes to liven up debug prints :-)
+ * See https://wiki.archlinux.org/index.php/Color_Bash_Prompt */
+
+#ifdef NOCOLOR
+#define CC_REDB(x)    x
+#define CC_YELB(x)    x 
+#define CC_GRNB(x)    x 
+#define CC_BLUB(x)    x 
+#define CC_PURB(x)    x 
+#define CC_CYNB(x)    x 
+#define CC_REDY(x)    x
+#define CC_YELY(x)    x 
+#define CC_GREENY(x)  x 
+#define CC_BLUY(x)    x 
+#define CC_PURY(x)    x 
+#define CC_CYNY(x)    x 
+#else
+#define CC_REDB(x)   "\e[1;31m" x "\e[0m" /* bold red */
+#define CC_YELB(x)   "\e[1;33m" x "\e[0m"
+#define CC_GRNB(x)   "\e[1;32m" x "\e[0m"
+#define CC_BLUB(x)   "\e[1;34m" x "\e[0m"
+#define CC_PURB(x)   "\e[1;35m" x "\e[0m"
+#define CC_CYNB(x)   "\e[1;36m" x "\e[0m"
+#define CC_REDY(x)   "\e[41m" x "\e[0m"  /* red background, black text (no bold) */
+#define CC_YELY(x)   "\e[43m" x "\e[0m"
+#define CC_GREENY(x) "\e[42m" x "\e[0m"
+#define CC_BLUY(x)   "\e[44m" x "\e[0m"
+#define CC_PURY(x)   "\e[45m" x "\e[0m"
+#define CC_CYNY(x)   "\e[46m" x "\e[0m"
+#endif
+
 /* =============== Debugging macro system =============== */
 
 #ifndef ERRMAC_INSTANCE
@@ -398,7 +430,8 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 extern char errmac_instance[64];
 #endif
 
-#define ERRMAC_DEBUG_MASK   0x0f
+#define ERRMAC_DEBUG_MASK   0x07
+#define ERRMAC_XMLDBG       0x08
 #define ERRMAC_INOUT        0x10
 #define MOD_AUTH_SAML_INOUT 0x20
 #define CURL_INOUT          0x40  /* Back Channel */

@@ -4078,8 +4078,8 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxbus_listen_msg(zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_bus_url.getCPtr(bu));
   }
 
-  public static zxid_entity get_ent_file(zxid_conf cf, String sha1_name) {
-    long cPtr = zxidjniJNI.zxid_get_ent_file(zxid_conf.getCPtr(cf), sha1_name);
+  public static zxid_entity get_ent_file(zxid_conf cf, String sha1_name, String logkey) {
+    long cPtr = zxidjniJNI.zxid_get_ent_file(zxid_conf.getCPtr(cf), sha1_name, logkey);
     return (cPtr == 0) ? null : new zxid_entity(cPtr, false);
   }
 

@@ -484,16 +484,6 @@ static int chkuid(request_rec* r)
       strcpy(p+uri_len+1, r->args);
     }
     D("HERE3 args_len=%d cgi=%p k(%s) uri(%s) args(%s) rs(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), r->uri, STRNULLCHKNULL(r->args), p);
-#if 0
-    /* cgi.rs will be copied to ses->rs and from there in ab_pep to resource-id.
-     * We compress and safe_base64 encode it to protect any URL special characters.
-     * *** seems that at this point the p is not just rs, but the entire local URL --Sampo */
-    cgi.rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, p);
-    if (cf->defaultqs && cf->defaultqs[0]) {
-      if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
-      zxid_parse_cgi(cf, &cgi, apr_pstrdup(r->pool, cf->defaultqs));
-    }
-#endif
     if (cgi.sid && cgi.sid[0] && zxid_get_ses(cf, &ses, cgi.sid)) {
       res = zxid_simple_ses_active_cf(cf, &cgi, &ses, 0, AUTO_FLAGS);
       if (res)

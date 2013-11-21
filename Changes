@@ -114,11 +114,13 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Distressed authentication, persona selection at authentication by using prefix (pin)
     - Support BrowserID https://developer.mozilla.org/en-US/docs/persona
     - BUG: Passing qs args in RelayState
+    - BANGBANG_PAT to enable bang bang expansion of outputs, even in mini_httpd_zxid
 
 zxid-1.18:: 20.11.2013
     - More bug fixing in mini_httpd_zxid
     - Generalized redir_to_content and moved it to zxid_simple()
-    - Added %d expansion for VURL --Sampo
+    - Moved defaultqs feature feature to zxid_simple()
+    - Added %d expansion for VURL
 
 zxid-1.17:: 16.11.2013
     - More bug fixing in mini_httpd_zxid

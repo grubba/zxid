@@ -206,11 +206,14 @@ static int zx_chk_el_ord(struct zx_elem_s* x)
     if (ed->el_order[j] == ZX_TOK_NOT_FOUND) {
       if (x->g.tok == ZX_TOK_NOT_FOUND || !IN_RANGE(x->g.tok & ZX_TOK_TOK_MASK, 0, zx__ELEM_MAX)) {
 	ef = zx_el_tab + MINMAX(ed->tok & ZX_TOK_TOK_MASK, 0, zx__ELEM_MAX);
-	INFO("Unknown <%.*s> token(0x%06x) as %d. child of <%s> 0x%06x (%d,%d)", x->g.len, x->g.s, x->g.tok, n, ef->name, ed->tok, i, j);
+	/* *** ideally this should be flagged as error, but problem is that we
+	 *     permit freeform bodies so there are a lot of unknown tokens like this. */
+	D("Unknown <%.*s> token(0x%06x) as %d. child of <%s> 0x%06x (%d,%d)", x->g.len, x->g.s, x->g.tok, n, ef->name, ed->tok, i, j);
       } else {
 	et = zx_el_tab + (x->g.tok & ZX_TOK_TOK_MASK);
 	ef = zx_el_tab + MINMAX(ed->tok & ZX_TOK_TOK_MASK, 0, zx__ELEM_MAX);
 	ERR("Known <%s> tok(0x%06x) in wrong place as %d. child of <%s> tok(0x%06x) (%d,%d)", et->name, x->g.tok, n, ef->name, ed->tok, i, j);
+	// *** we should really dump the whole message into log
       }
       return n;
     }
@@ -308,8 +311,8 @@ struct zx_attr_s* zx_ord_ins_at(struct zx_elem_s* x, struct zx_attr_s* in_at)
  * Thus we need to reverse them to get them to right order. We
  * take this opportunity to also check that the ordering is correct
  * and also to sort the XML attributes.
- * N.B. This function is not recursive: only one level is reveresed.
  * Called from dec-templ.c for CSE elimination.
+ * N.B. This function is not recursive: only one level is reversed.
  * N.B2. Although decoder returns lists in reverse order, we try
  * to maintain as common representation the forward ordered list. */
 

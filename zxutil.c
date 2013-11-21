@@ -1153,6 +1153,9 @@ char* zx_url_encode(struct zx_ctx* c, int in_len, const char* in, int* out_len)
  *     qs = zxid_qs_nv_scan(qs, &name, &val);
  *     ... switch on name ...
  *   }
+ *
+ * Query string separation character can be traditional ampersand or conf file
+ * oriented newline. Comment lines starting with # are also handled.
  */
 
 char* zxid_qs_nv_scan(char* qs, char** name, char** val, int url_decode_val_flag)

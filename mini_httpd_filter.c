@@ -140,7 +140,7 @@ static char* zxid_mini_httpd_read_post(zxid_conf* cf)
     char buf[32*1024];
     int already_read = request_len-request_idx;
     int len = MIN(sizeof(buf), content_length - already_read);
-    D("About to read post data content_length=%d already_read=%d sizeof(buf)=%d len=%d", (int)content_length, already_read, (int)sizeof(buf), len);
+    D("Read post already_read=%d/%d buf_siz=%d len=%d", already_read, (int)content_length, (int)sizeof(buf), len);
     DD("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, (int)request_size, request, request, (int)request_size, (int)request_len);
     if (!len)
       break;  /* nothing further to read */
@@ -363,16 +363,6 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
       strcpy(p+uri_len+1, qs);
     }
     D("HERE3 qs_len=%d cgi=%p k(%s) uri(%s) qs(%s) rs(%s)", qs_len, &cgi, STRNULLCHKNULL(cgi.skin), uri_path, STRNULLCHKNULL(qs), p);
-#if 0
-    /* cgi.rs will be copied to ses->rs and from there in ab_pep to resource-id.
-     * We compress and safe_base64 encode it to protect any URL special characters.
-     * *** seems that at this point the p is not just rs, but the entire local URL --Sampo */
-    cgi.rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, p);
-    if (cf->defaultqs && cf->defaultqs[0]) {
-      if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
-      zxid_parse_cgi(cf, &cgi, cf->defaultqs);
-    }
-#endif
     if (cgi.sid && cgi.sid[0] && zxid_get_ses(cf, ses, cgi.sid)) {
       res = zxid_simple_ses_active_cf(cf, &cgi, ses, 0, AUTO_FLAGS);
       if (res)

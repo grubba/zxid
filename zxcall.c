@@ -398,7 +398,7 @@ int zxcall_main(int argc, char** argv, char** env)
   zxid_entity* idp_meta;
   zxid_epr* epr;
 
-  strncpy(errmac_instance, "\tzxcall", sizeof(errmac_instance));
+  strncpy(errmac_instance, CC_CYNY("\tzxcall"), sizeof(errmac_instance));
   cf = zxid_new_conf_to_cf(0);
   opt(&argc, &argv, &env);
   

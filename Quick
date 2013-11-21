@@ -15,6 +15,15 @@ mini_httpd -p 8443 -c 'zxid*' -S -E zxid.pem -l /tmp/mini.stderr &
 mini_httpd -p 8444 -c 'zxid*' -S -E /var/zxid/pem/enc-nopw-cert.pem -l /tmp/mini.stderr &
 mini_httpd_zxid -zx 'PATH=/var/zxid/&WSP_PAT=*.wsp&SSO_PAT=*&DEBUG=0x7f' -p 8443 -c 'zxid*' -S -E /var/zxid/pem/enc-nopw-cert.pem
 https://sp.tas3.pt:8443/zxidenv.cgi
+https://sp.tas3.pt:8443/zxidenv.wsp
+
+./zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'TAS3 Default Discovery Service (ID-WSF 2.0)' http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 | ./zxcot -bs /var/zxid/idp.tas3.pt_8081/dimd/
+
+./zxcot -e https://sp.tas3.pt:8443/zxidenv.wsp 'WSP test' https://sp.tas3.pt:8443/saml?o=B urn:zxidenv | ./zxcot -b /var/zxid/idp.tas3.pt_8081/dimd/
+
+./zxcot -s /var/zxid/idp.tas3.pt_8081/cot/
+
+./zxcall -c 'CPATH=/var/zxid/&URL=https://sp.tas3.pt:8443/saml' -a http://idp.tas3.pt:8081/zxididp?o=B test:foo -t urn:zxidenv -e '<req/>'
 
 echo Edit your /etc/hosts to contain
 echo 127.0.0.1 localhost sp1.zxidcommon.org sp1.zxidsp.org idp1.zxidp.org sp.tas3.pt idp.tas3.pt
