@@ -227,7 +227,7 @@ int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, str
  * in zxid_wsc_pres_secmech(). All signing also happens later.
  * The header list is kept in forward order. */
 
-/* Called by:  zxid_wsc_call */
+/* Called by:  zxid_wsc_call, zxid_wsc_prepare_call */
 static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
   zxid_tok* tok;
@@ -318,7 +318,7 @@ static void zxid_choose_sectok(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, stru
  * header content varies from SOAP call retry to retry. Other
  * headers are always the same and handled in zxid_wsc_prep(). */
 
-/* Called by:  zxid_wsc_call */
+/* Called by:  zxid_wsc_call, zxid_wsc_prepare_call */
 static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
   int secmech;

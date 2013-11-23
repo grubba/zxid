@@ -329,6 +329,7 @@ static const char* mkdirs_list[] = {
 "ch/default/.del"
 };
 
+/* Called by:  opt */
 static void zxmkdirs()
 {
   char path[ZXID_MAX_BUF];

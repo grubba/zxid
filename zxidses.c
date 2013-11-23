@@ -124,7 +124,7 @@ zxid_entity* zxid_get_ses_idp(zxid_conf* cf, zxid_ses* ses)
 
 /*() Allocate memory for session object. Used with zxid_simple_cf_ses(). */
 
-/* Called by:  zxid_as_call, zxid_fetch_ses */
+/* Called by:  zxid_as_call, zxid_fetch_ses, zxid_mini_httpd_sso, zxid_mini_httpd_wsp */
 zxid_ses* zxid_alloc_ses(zxid_conf* cf)
 {
   zxid_ses* ses = ZX_ZALLOC(cf->ctx, zxid_ses);
@@ -154,7 +154,7 @@ zxid_ses* zxid_fetch_ses(zxid_conf* cf, const char* sid)
  * load the assertion, if needed. Or zxid_ses_to_pool() if you need attributes
  * as well. Returns 1 if session gotten, 0 if fail. */
 
-/* Called by:  chkuid x2, main x5, zxid_az_base_cf, zxid_az_cf, zxid_fetch_ses, zxid_find_ses, zxid_simple_cf_ses */
+/* Called by:  chkuid x2, main x5, zxid_az_base_cf, zxid_az_cf, zxid_fetch_ses, zxid_find_ses, zxid_mini_httpd_sso x2, zxid_simple_cf_ses */
 int zxid_get_ses(zxid_conf* cf, zxid_ses* ses, const char* sid)
 {
   char* p;

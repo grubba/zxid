@@ -38,7 +38,7 @@ void test_ping_reply(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   hi_send(hit, io, 0, req, resp);
 }
 
-/* Called by:  hi_read */
+/* Called by: */
 void test_ping(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* req = io->cur_pdu;

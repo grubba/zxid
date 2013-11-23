@@ -364,7 +364,7 @@ zxid_entity* zxid_get_ent_cache(zxid_conf* cf, struct zx_str* eid)
  * eid:: Entity ID whose metadata is desired
  * return:: Entity data structure, including the metadata */
 
-/* Called by:  a7n_test, x509_test, zxid_add_fed_tok2epr, zxid_chk_sig, zxid_decode_redir_or_post, zxid_get_ent, zxid_get_ses_idp, zxid_idp_dispatch, zxid_idp_sso, zxid_imreq, zxid_simple_idp_show_an, zxid_slo_resp_redir, zxid_sp_dispatch, zxid_sp_sso_finalize, zxid_ssos_anreq, zxid_wsc_valid_re_env, zxid_wsf_validate_a7n, zxid_wsp_validate_env */
+/* Called by: */
 zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
 {
   zxid_entity* old_cot;
@@ -428,7 +428,7 @@ zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
 
 /*() Wrapper for zxid_get_ent_ss(), which see. */
 
-/* Called by:  hi_vfy_peer_ssl_cred, zxbus_open_bus_url, zxbus_verify_receipt, zxcall_main, zxid_cdc_check x2, zxid_oauth2_az_server_sso, zxid_simple_idp_show_an, zxid_start_sso_url */
+/* Called by:  hi_vfy_peer_ssl_cred, zxbus_verify_receipt, zxcall_main, zxid_cdc_check x2, zxid_oauth2_az_server_sso, zxid_simple_idp_show_an, zxid_start_sso_url */
 zxid_entity* zxid_get_ent(zxid_conf* cf, const char* eid)
 {
   struct zx_str ss;
@@ -840,7 +840,7 @@ struct zx_str* zxid_my_ent_id(zxid_conf* cf)
 
 /*() Return our EntityID as c-string. Caller must free with ZX_FREE(cf->ctx, eid) */
 
-/* Called by:  main x2, stomp_got_ack, test_receipt, zxbus_open_bus_url, zxbus_send_cmdf, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_show_conf, zxid_sso_issue_jwt */
+/* Called by:  main x2, stomp_got_ack, test_receipt, zxbus_send_cmdf, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_show_conf, zxid_sso_issue_jwt */
 char* zxid_my_ent_id_cstr(zxid_conf* cf)
 {
   int len;

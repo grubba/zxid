@@ -39,7 +39,7 @@ extern int errmac_debug;
  * locking:: takes shf->pdu_mut
  * see also:: hi_pdu_free() */
 
-/* Called by:  hi_checkmore, hi_close_final, hi_new_shuffler, hi_sendf, http_encode_start, smtp_resp_wait_250_from_ehlo, smtp_resp_wait_354_from_data, smtp_send, stomp_encode_start, test_ping_reply, zxbus_sched_new_delivery, zxbus_sched_pending_delivery */
+/* Called by: */
 struct hi_pdu* hi_pdu_alloc(struct hi_thr* hit, const char* lk)
 {
   struct hi_pdu* pdu;
@@ -124,7 +124,7 @@ static void hi_checkmore(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* re
  * locking:: takes io->qel.mut
  * see also:: hi_del_from_reqs() */
 
-/* Called by:  http_decode, stomp_decode, test_ping */
+/* Called by:  http_decode, stomp_decode, stomp_frame_err, test_ping */
 void hi_add_to_reqs(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, int minlen)
 {
   LOCK(io->qel.mut, "add_to_reqs");

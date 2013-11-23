@@ -110,7 +110,7 @@ X509* zxid_extract_cert(char* buf, char* name)
 /*() Extract a private key from PEM encoded string.
  * *** This function needs to expand to handle DSA */
 
-/* Called by:  opt, test_mode, zxid_read_private_key */
+/* Called by: */
 EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
 {
   char* p;
@@ -161,7 +161,7 @@ EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
 
 /*() Extract a certificate from PEM encoded file. */
 
-/* Called by:  hi_new_shuffler, zxbus_open_bus_url, zxbus_write_line, zxid_idp_sso_desc x2, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxid_sp_sso_desc x2, zxlog_write_line */
+/* Called by:  hi_new_shuffler, zxid_idp_sso_desc x2, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxid_sp_sso_desc x2, zxlog_write_line */
 X509* zxid_read_cert(zxid_conf* cf, char* name)
 {
   char buf[4096];
@@ -173,7 +173,7 @@ X509* zxid_read_cert(zxid_conf* cf, char* name)
 
 /*() Extract a private key from PEM encoded file. */
 
-/* Called by:  hi_new_shuffler, test_ibm_cert_problem x2, test_ibm_cert_problem_enc_dec x2, zxbus_mint_receipt x2, zxbus_open_bus_url, zxbus_write_line x2, zxenc_privkey_dec, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxlog_write_line x2 */
+/* Called by:  hi_new_shuffler, test_ibm_cert_problem x2, test_ibm_cert_problem_enc_dec x2, zxbus_mint_receipt x2, zxenc_privkey_dec, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxlog_write_line x2 */
 EVP_PKEY* zxid_read_private_key(zxid_conf* cf, char* name)
 {
   char buf[4096];
@@ -536,7 +536,7 @@ void zxid_free_map(struct zxid_conf *cf, struct zxid_map *map)
 
 /*() Parse comma separated strings (nul terminated) and add to linked list */
 
-/* Called by:  zxid_init_conf x4, zxid_parse_conf_raw x4 */
+/* Called by:  zxid_init_conf x4, zxid_load_obl_list, zxid_parse_conf_raw x4 */
 struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list* l, char* p)
 {
   char* q;
@@ -557,7 +557,7 @@ struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list*
 
 /*() Free list nodes and strings of zxid_cstr_list. */
 
-/* Called by:  zxid_free_conf x4 */
+/* Called by:  zxid_free_conf x4, zxid_free_obl_list */
 void zxid_free_cstr_list(struct zxid_conf* cf, struct zxid_cstr_list* l)
 {
   while (l) {
@@ -574,6 +574,7 @@ void zxid_free_cstr_list(struct zxid_conf* cf, struct zxid_cstr_list* l)
  * The input string obl will be modified in place and used for long term reference,
  * so do not pass a constant string or something that will be freed immadiately. */
 
+/* Called by:  zxid_eval_sol1, zxid_parse_conf_raw x2 */
 struct zxid_obl_list* zxid_load_obl_list(zxid_conf* cf, struct zxid_obl_list* ol, char* obl)
 {
   struct zxid_obl_list* ob;
@@ -601,7 +602,7 @@ struct zxid_obl_list* zxid_load_obl_list(zxid_conf* cf, struct zxid_obl_list* ol
 
 /*() Free list nodes and strings of zxid_obl_list. */
 
-/* Called by:  zxid_free_conf x4 */
+/* Called by:  zxid_eval_sol1 x2 */
 void zxid_free_obl_list(struct zxid_conf* cf, struct zxid_obl_list* ol)
 {
   //return; /* *** LEAK temporary fix 20130319 --Sampo */
@@ -797,7 +798,7 @@ struct zxid_need* zxid_is_needed(struct zxid_need* need, const char* name)
  * Thus you should place most specific rules last and most generic rules first.
  * See also: zxid_load_map() and zxid_map_val() */
 
-/* Called by:  pool2apache, zxid_add_at_vals, zxid_add_attr_to_ses, zxid_add_mapped_attr x2, zxid_pepmap_extract, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
+/* Called by:  pool2apache, zxid_add_at_vals, zxid_add_attr_to_ses, zxid_add_mapped_attr x2, zxid_pepmap_extract, zxid_pool2env, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
 struct zxid_map* zxid_find_map(struct zxid_map* map, const char* name)
 {
   if (!name || !*name)
@@ -813,7 +814,7 @@ struct zxid_map* zxid_find_map(struct zxid_map* map, const char* name)
 
 /*() Check whether name is in the list. Used for Local PDP white and black lists. */
 
-/* Called by:  zxid_localpdp x4 */
+/* Called by:  zxid_eval_sol1, zxid_localpdp x4 */
 struct zxid_cstr_list* zxid_find_cstr_list(struct zxid_cstr_list* cs, const char* name)
 {
   if (!name || !*name)
@@ -827,6 +828,7 @@ struct zxid_cstr_list* zxid_find_cstr_list(struct zxid_cstr_list* cs, const char
 
 /*() Check whether name is in the obligations list. */
 
+/* Called by:  zxid_eval_sol1 */
 struct zxid_obl_list* zxid_find_obl_list(struct zxid_obl_list* obl, const char* name)
 {
   if (!name || !*name)
@@ -1282,7 +1284,7 @@ int zxid_suppress_vpath_warning = 30;
  * not understood to underscore ("_"). In case of VURL squash,
  * URL characters [/:?&=] are left intact. */
 
-/* Called by:  zxid_expand_percent x3 */
+/* Called by:  zxid_expand_percent x4 */
 static int zxid_eval_squash_env(char* vorig, const char* exp, char* env_hdr, char* out, char* lim, int squash_type)
 {
   int len;
@@ -1379,6 +1381,7 @@ static char* zxid_expand_percent(char* vorig, char* out, char* lim, int squash_t
 
 /*(-) Convert, in place, $ to & as needed for WSC_LOCALPDP_PLEDGE */
 
+/* Called by:  zxid_parse_conf_raw x2 */
 static char* zxid_dollar_to_amp(char* p)
 {
   char* ret = p;

@@ -522,7 +522,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 
 /*() Return 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 
-/* Called by:  chkuid, main x6, zxid_simple_cf_ses */
+/* Called by:  chkuid, main x6, zxid_mini_httpd_sso, zxid_simple_cf_ses */
 int zxid_sp_soap_parse(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int len, char* buf)
 {
   struct zx_root_s* r;

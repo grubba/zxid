@@ -60,7 +60,7 @@ extern int verbose;  /* defined in option parsing in zxbusd.c */
 extern zxid_conf* zxbus_cf;
 
 #if 0
-/* Called by:  stomp_got_err */
+/* Called by: */
 static struct hi_pdu* stomp_encode_start(struct hi_thr* hit)
 {
   struct hi_pdu* resp = hi_pdu_alloc(hit,"stomp_enc_start");
@@ -71,7 +71,7 @@ static struct hi_pdu* stomp_encode_start(struct hi_thr* hit)
 
 /*() Send ERROR to remote client. */
 
-/* Called by:  stomp_decode x2, stomp_got_login x2, zxbus_persist x2 */
+/* Called by:  stomp_frame_err, stomp_got_login x2, zxbus_persist x2 */
 int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const char* ecode, const char* emsg)
 {
   int len;
@@ -89,6 +89,7 @@ int stomp_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const ch
 
 /*() Send an error early on in decode process */
 
+/* Called by:  stomp_decode x2 */
 static int stomp_frame_err(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, const char* emsg)
 {
   /* At this early stage the req is still a io->cur_pdu. We need to

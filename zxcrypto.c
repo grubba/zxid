@@ -383,7 +383,7 @@ struct zx_str* zx_rsa_priv_enc(struct zx_ctx* c, struct zx_str* plain, RSA* rsa_
 /*() Obtain RSA public key from X509 certificate. The certificate must have been
  * previously read into a data structure. See zxid_read_cert() and zxid_extract_cert() */
 
-/* Called by:  zxbus_write_line, zxenc_pubkey_enc, zxlog_write_line */
+/* Called by:  zxenc_pubkey_enc, zxlog_write_line */
 RSA* zx_get_rsa_pub_from_cert(X509* cert, char* logkey)
 {
   EVP_PKEY* evp_pkey;
@@ -408,7 +408,7 @@ RSA* zx_get_rsa_pub_from_cert(X509* cert, char* logkey)
  * available. If you want to use /dev/random, which may block, you need
  * to recompile with ZXID_TRUE_RAND set to true. */
 
-/* Called by:  main x2, zx_get_symkey, zxbus_alloc_zbuf, zxbus_write_line, zxenc_pubkey_enc, zxid_mk_at_cert, zxid_mk_id, zxid_mk_id_attr, zxid_mk_self_sig_cert, zxlog_alloc_zbuf, zxlog_write_line */
+/* Called by: */
 void zx_rand(char* buf, int n_bytes)
 {
 #ifdef USE_OPENSSL
@@ -422,7 +422,7 @@ void zx_rand(char* buf, int n_bytes)
 #endif
 }
 
-/* Called by:  zxid_mk_at_cert x10, zxid_mk_self_sig_cert x6 */
+/* Called by:  zxid_mk_at_cert x10, zxid_mk_self_sig_cert x7 */
 static void zxid_add_name_field(X509_NAME* subj, int typ, int nid, char* val)
 {
   X509_NAME_ENTRY* ne;
@@ -446,7 +446,7 @@ static void zxid_add_name_field(X509_NAME* subj, int typ, int nid, char* val)
  *
  * See also: keygen() in keygen.c */
 
-/* Called by:  zxid_read_cert, zxid_read_private_key */
+/* Called by: */
 int zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, const char* name)
 {
 #ifdef USE_OPENSSL
@@ -942,7 +942,7 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
 
 extern char pw_basis_64[64];
 
-/* Called by:  zx_md5_crypt x6 */
+/* Called by:  add_password, zx_md5_crypt x6 */
 static void to64(char *s, unsigned long v, int n) {
   while (--n >= 0) {
     *s++ = pw_basis_64[v & 0x3f];

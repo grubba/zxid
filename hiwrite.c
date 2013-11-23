@@ -306,7 +306,7 @@ static void hi_pdu_free(struct hi_thr* hit, struct hi_pdu* pdu, const char* lk1,
  * c. possibility of sending a response before processing of request itself has ended
  * locking:: Called outside io->qel.mut */
 
-/* Called by:  hi_clear_iov, stomp_got_ack x2, stomp_got_nack */
+/* Called by:  hi_free_in_write, stomp_got_ack x2, stomp_got_nack */
 void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp, const char* lk1)
 {
   struct hi_pdu* pdu = resp->req->reals;
@@ -333,7 +333,7 @@ void hi_free_resp(struct hi_thr* hit, struct hi_pdu* resp, const char* lk1)
  * May be called either because individual resp was done, or because of connection close.
  * locking:: Called outside io->qel.mut */
 
-/* Called by:  hi_close_final x3, hi_free_req_fe, stomp_got_ack, stomp_got_nack, stomp_msg_deliver */
+/* Called by:  hi_close x3, hi_free_req_fe, stomp_got_ack, stomp_got_nack, stomp_msg_deliver */
 void hi_free_req(struct hi_thr* hit, struct hi_pdu* req, const char* lk1)
 {
   struct hi_pdu* pdu;
@@ -389,7 +389,7 @@ void hi_del_from_reqs(struct hi_io* io, struct hi_pdu* req)
  * Will also remove the PDU from the frontend reqs queue.
  * locking:: called outside io->qel.mut, takes it indirectly */
 
-/* Called by:  hi_clear_iov */
+/* Called by:  hi_free_in_write */
 static void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
 {
   ASSERT(req->fe);
@@ -410,7 +410,7 @@ static void hi_free_req_fe(struct hi_thr* hit, struct hi_pdu* req)
  * write when close will mean that no further writes will be attempted.
  * locking:: called outside io->qel.mut */
 
-/* Called by: hi_write, hi_clear_iov */
+/* Called by:  hi_clear_iov, hi_write */
 static void hi_free_in_write(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* req;

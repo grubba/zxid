@@ -155,7 +155,7 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
  * conf::   Configuration string
  * return:: Configuration object */
 
-/* Called by:  a7n_test, main x6, opt x2, test_receipt, ws_validations, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxidwspcgi_main x2 */
+/* Called by:  a7n_test, handle_request, main x6, opt x2, test_receipt, ws_validations, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxidwspcgi_main x2 */
 zxid_conf* zxid_new_conf_to_cf(const char* conf)
 {
   zxid_conf* cf = malloc(sizeof(zxid_conf));  /* *** direct use of malloc */
@@ -810,7 +810,7 @@ char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_
 
 /*() Helper function to redirect according to auto flags. */
 
-/* Called by:  zxid_simple_idp_an_ok_do_rest, zxid_simple_idp_new_user, zxid_simple_idp_recover_password, zxid_simple_idp_show_an, zxid_simple_show_err, zxid_simple_show_idp_sel */
+/* Called by:  zxid_show_protected_content_setcookie, zxid_simple_idp_an_ok_do_rest, zxid_simple_idp_new_user, zxid_simple_idp_recover_password, zxid_simple_idp_show_an, zxid_simple_show_err, zxid_simple_show_idp_sel */
 static char* zxid_simple_redir_page(zxid_conf* cf, char* redir, char* rs, int* res_len, int auto_flags)
 {
   char* res;
@@ -1190,7 +1190,7 @@ static char* zxid_simple_idp_recover_password(zxid_conf* cf, zxid_cgi* cgi, int*
 /*() Final steps of SSO: set the cookies and check authorization
  * before returning the LDIF. */
 
-/* Called by:  zxid_simple_no_ses_cf */
+/* Called by:  zxid_simple_no_ses_cf x2 */
 static char* zxid_show_protected_content_setcookie(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags)
 {
   struct zx_str* issuer;
@@ -1270,7 +1270,7 @@ static char* zxid_show_protected_content_setcookie(zxid_conf* cf, zxid_cgi* cgi,
  *
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
-/* Called by:  chkuid x2, zxid_simple_cf_ses, zxid_simple_idp_an_ok_do_rest, zxid_sp_dispatch, zxid_sp_oauth2_dispatch */
+/* Called by:  chkuid x2, zxid_mini_httpd_sso x2, zxid_simple_cf_ses, zxid_simple_idp_an_ok_do_rest, zxid_sp_dispatch, zxid_sp_oauth2_dispatch */
 char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags)
 {
   struct zx_str* accr;
@@ -1455,7 +1455,7 @@ res_zx_str:
  *
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
-/* Called by:  chkuid, zxid_simple_cf_ses */
+/* Called by:  chkuid, zxid_mini_httpd_sso, zxid_simple_cf_ses */
 char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags)
 {
   char* res = 0;

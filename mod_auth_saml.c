@@ -89,7 +89,7 @@ static void chldinit(apr_pool_t* p, server_rec* s)
  * return:: Apache error code, typically OK, which allows Apache continue
  *     processing the request. */
 
-/* Called by:  chkuid */
+/* Called by:  chkuid x2 */
 static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 {
   int ret = OK;
@@ -244,7 +244,7 @@ static int send_res(zxid_conf* cf, request_rec* r, char* res)
  * This is considered internal function to mod_auth_saml, called by chkuid().
  * You should not call this directly, unless you know what you are doing. */
 
-/* Called by:  chkuid */
+/* Called by:  chkuid x2 */
 static char* read_post(zxid_conf* cf, request_rec* r)
 {
   int len, ret;

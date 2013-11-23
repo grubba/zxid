@@ -1078,6 +1078,7 @@ void zxbus_close_all(zxid_conf* cf)
  *    AB1 https://buslist.zxid.org/?o=B ACK RP 20120923-170431.868 76 3aSMhrZHtsviQnl3jnb8swYuxe_5uRnegGP0_i-hgPD6pzNkLtJdC7_qA7Ry-Iz1_cSDR7L91Oe9qgQZ64CzqC1qb0l5sSVoHNVQAzUWXgXOuHvXEgkMheAoLAUT8SKM_H9cUlPCrgCkVFWPXcLAR2FHAW7sNrGe7Mcm4MFFXqM.
  */
 
+/* Called by:  zxbus_send_cmdf */
 static void zxbus_log_receipt(zxid_conf* cf, struct zxid_bus_url* bu, int mid_len, const char* mid, int dest_len, const char* dest, const char* sha1_buf, int rcpt_len, const char* rcpt)
 {
   int len;

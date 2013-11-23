@@ -388,7 +388,7 @@ vfyerr:
  * logkey:: Way for caller to indicate what the OpenSSL errors are all about
  * return:: Number of open SSL errors processed, or 0 if none. Often ignored. */
 
-/* Called by:  hi_accept_book x3, hi_new_shuffler x4, hi_open_tcp x3, hi_read x3, hi_vfy_peer_ssl_cred x3, hi_write x3, main, zx_EVP_CIPHER_key_length, zx_get_rsa_pub_from_cert x2, zx_print_X509, zx_raw_cipher, zx_rsa_priv_dec, zx_rsa_priv_enc, zx_rsa_pub_dec, zx_rsa_pub_enc, zxbus_open_bus_url x10, zxbus_read_stomp, zxbus_write_line, zxid_extract_private_key x2, zxid_mk_at_cert x2, zxid_mk_self_sig_cert x4, zxlog_write_line, zxsig_data x2, zxsig_sign x2, zxsig_validate x2, zxsig_verify_data x5 */
+/* Called by: */
 int zx_report_openssl_err(const char* logkey)
 {
   char buf[256];
@@ -420,7 +420,7 @@ int zx_report_openssl_err(const char* logkey)
  * lk::       Log key. Used to make logs and error messages more meaningful.
  * return::   -1 on failure. Upon success the length of the raw signature data. */
 
-/* Called by:  zxbus_mint_receipt, zxbus_write_line x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxlog_write_line x2 */
+/* Called by:  zxbus_mint_receipt, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxlog_write_line x2 */
 int zxsig_data(struct zx_ctx* c, int len, const char* data, char** sig, EVP_PKEY* priv_key, const char* lk)
 {
   RSA* rsa;

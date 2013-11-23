@@ -155,7 +155,7 @@ char* zxid_saml2_map_authn_ctx(char* c)
  *     input. The cgi->rs filed specifies the URL to redirect to after the SSO.
  * return:: Redirect URL as zx_str. Caller should eventually free this memory.
  */
-/* Called by:  zxid_start_sso, zxid_start_sso_location */
+/* Called by:  zxid_start_sso_location */
 struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_md_SingleSignOnService_s* sso_svc;
@@ -266,7 +266,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
 /*() Wrapper for zxid_start_sso_url(), used when Location header needs to be passed outside.
  * return:: Location header as zx_str. Caller should eventually free this memory. */
 
-/* Called by:  zxid_simple_no_ses_cf */
+/* Called by:  main x2, zxid_simple_no_ses_cf */
 struct zx_str* zxid_start_sso_location(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_str* ss;

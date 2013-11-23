@@ -571,7 +571,7 @@ void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_
  * Negation is not supported: if it is not explicitly listed as ok, then it is rejected.
  */
 
-/* Called by:  */
+/* Called by:  zxid_wsp_validate_env */
 int zxid_eval_sol1(zxid_conf* cf, zxid_ses* ses, const char* obl, struct zxid_obl_list* req)
 {
   char* oblig;
@@ -622,6 +622,7 @@ int zxid_eval_sol1(zxid_conf* cf, zxid_ses* ses, const char* obl, struct zxid_ob
  *   Action=urn:liberty:disco:2006-08:Query
  */
 
+/* Called by:  zxid_query_ctlpt_pdp */
 void zxid_add_action_from_body_child(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env)
 {
   int len = env->Body->gg.kids->g.len;
@@ -640,6 +641,7 @@ void zxid_add_action_from_body_child(zxid_conf* cf, zxid_ses* ses, struct zx_e_E
 
 /*() Query Local PDP and remote PDP (if PDP_URL is defined). */
 
+/* Called by:  zxid_call_epr, zxid_wsc_prepare_call, zxid_wsc_valid_re_env, zxid_wsp_decorate, zxid_wsp_validate_env */
 int zxid_query_ctlpt_pdp(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env, const char* ctlpt, const char* faultparty, struct zxid_map* pepmap)
 {
   /* Populate action from first subelement of body */

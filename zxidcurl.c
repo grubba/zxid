@@ -431,7 +431,7 @@ struct zx_root_s* zxid_soap_call_body(zxid_conf* cf, struct zx_str* url, struct 
  * body::   XML data structure representing the request
  * return:: 0 if fail, ZXID_REDIR_OK if success. */
 
-/* Called by:  zxid_idp_soap_dispatch x2, zxid_sp_soap_dispatch x7 */
+/* Called by:  zxid_idp_soap_dispatch x2, zxid_sp_soap_dispatch x8 */
 int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_Body_s* body)
 {
   struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx,0);

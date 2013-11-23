@@ -78,7 +78,7 @@ static struct hi_qel* hi_todo_consume_queue_inlock(struct hiios* shf)
 
 /*(-) Simple mechanics of enque operation against shf->todo_producer */
 
-/* Called by: */
+/* Called by:  hi_todo_consume, hi_todo_produce */
 static void hi_todo_produce_queue_inlock(struct hiios* shf, struct hi_qel* qe)
 {
   if (shf->todo_produce)
@@ -162,7 +162,7 @@ struct hi_qel* hi_todo_consume(struct hi_thr* hit)
  * listener, or pdu type todos there is no such consideration.
  * locking:: Takes todo_mut and io->qel.mut */
 
-/* Called by:  hi_accept, hi_accept_book, hi_in_out, hi_poll x2, hi_send0, stomp_msg_deliver, zxbus_sched_new_delivery, zxbus_sched_pending_delivery */
+/* Called by:  hi_accept, hi_accept_book, hi_close, hi_in_out, hi_poll x3, hi_send0, stomp_msg_deliver, zxbus_sched_new_delivery, zxbus_sched_pending_delivery */
 void hi_todo_produce(struct hi_thr* hit, struct hi_qel* qe, const char* lk, int from_poll)
 {
   struct hi_io* io;

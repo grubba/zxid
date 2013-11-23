@@ -593,7 +593,7 @@ static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
 /*() Add simple attribute to session's attribute pool, applying NEED, WANT, and INMAP.
  * Replaces zxid_add_attr_to_pool() */
 
-/* Called by:  chkuid, zxid_add_ldif_at2ses, zxid_add_qs2ses, zxid_ses_to_pool x25 */
+/* Called by:  chkuid, zxid_add_action_from_body_child, zxid_add_ldif_at2ses, zxid_add_qs2ses, zxid_mini_httpd_sso, zxid_ses_to_pool x26, zxid_simple_ab_pep x2 */
 void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx_str* val)
 {
   struct zxid_map* map;
@@ -702,7 +702,7 @@ static void zxid_cp_usr_eprs2ses(zxid_conf* cf, zxid_ses* ses, struct zx_str* pa
  * rendering to LDIF (or JSON). This function also implements
  * local attribute authority. */
 
-/* Called by:  zxid_as_call_ses, zxid_fetch_ses, zxid_simple_ab_pep, zxid_wsc_valid_re_env, zxid_wsp_validate_env */
+/* Called by:  zxid_as_call_ses, zxid_az_base_cf, zxid_az_cf, zxid_fetch_ses, zxid_simple_ab_pep, zxid_wsc_valid_re_env, zxid_wsp_validate_env */
 void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
 {
   char* src;
@@ -834,7 +834,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
  * nul termination. Make sure to duplicate any string constant before calling.
  * Returns 1 on success, 0 on failure (return value often not checked). */
 
-/* Called by:  zxid_az_base_cf_ses, zxid_az_cf_ses */
+/* Called by:  zxid_az_base_cf_ses, zxid_az_cf_ses, zxid_query_ctlpt_pdp x2 */
 int zxid_add_qs2ses(zxid_conf* cf, zxid_ses* ses, char* qs, int apply_map)
 {
   char* n;

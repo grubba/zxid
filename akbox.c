@@ -55,7 +55,7 @@
 
 #define AKBOX_RELEASE REL " - akbox -"
 
-/* Called by:  main x14 */
+/* Called by:  add_password, main x18 */
 void usage(char* err) {
   fputs(err, stderr);
   fputs(
@@ -147,7 +147,7 @@ void die_bfd(char* why) {
 #define BFD_DEBUG(x)
 #define BFD_DEBUG_ON(x) x
 
-/* Called by:  covimp_test, extract_a_sym x2, locate_buffers x2, zxbus_load_acks, zxid_call_trustpdp, zxid_di_query x2, zxid_map_sec_mech x3, zxid_mk_ent x5 */
+/* Called by: */
 CU8* zx_memmem(CU8* haystack, int haystacklen, CU8* needle, int needlelen)
 {
   CU8* p = haystack;

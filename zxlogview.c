@@ -310,6 +310,7 @@ static void test_receipt(int* argc, char*** argv, char*** env)
 
 /* Called by:  main x3 */
 
+/* Called by:  main x3 */
 static void zxlog_zsig_verify_print(zxid_conf* cf, int len, char* buf, char* se, char* p)
 {
   char sha1[20];

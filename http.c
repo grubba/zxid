@@ -52,7 +52,7 @@ void http_send_file(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req, in
 
 #define HTTP_MIN_PDU_SIZE ((int)sizeof("GET / HTTP/1.0\n\n")-1)
 
-/* Called by:  hi_read */
+/* Called by: */
 int http_decode(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* req = io->cur_pdu;

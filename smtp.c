@@ -333,7 +333,7 @@ static int smtp_data(struct hi_thr* hit, struct hi_io* io, struct hi_pdu* req)
   return HI_CONN_CLOSE;
 }
 
-/* Called by:  hi_read */
+/* Called by: */
 int smtp_decode_req(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* req = io->cur_pdu;
@@ -665,7 +665,7 @@ static int smtp_resp_wait_221_goodbye(struct hi_thr* hit, struct hi_io* io, stru
   return HI_CONN_CLOSE;
 }
 
-/* Called by:  hi_read */
+/* Called by: */
 int smtp_decode_resp(struct hi_thr* hit, struct hi_io* io)
 {
   struct hi_pdu* resp = io->cur_pdu;

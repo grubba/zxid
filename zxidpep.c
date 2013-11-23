@@ -381,7 +381,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
  * For simpler API, see zxid_az() family of functions.
  */
 
-/* Called by:  zxid_call_epr, zxid_pep_az_soap, zxid_simple_ab_pep, zxid_simple_ses_active_cf, zxid_wsc_prepare_call, zxid_wsc_valid_re_env, zxid_wsp_decorate, zxid_wsp_validate_env */
+/* Called by:  zxid_pep_az_soap, zxid_query_ctlpt_pdp, zxid_simple_ab_pep, zxid_simple_ses_active_cf */
 char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zxid_map* pepmap, const char* lk)
 {
   struct zx_xac_Attribute_s* subj = 0;

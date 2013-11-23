@@ -131,7 +131,7 @@ int zxid_pool2env(zxid_conf* cf, zxid_ses* ses, char** envp, int envn, int max_e
  * It works by accessing certain request related global variables from mini_httpd.
  * You should not call this directly, unless you know what you are doing. */
 
-/* Called by: */
+/* Called by:  zxid_mini_httpd_sso, zxid_mini_httpd_wsp */
 static char* zxid_mini_httpd_read_post(zxid_conf* cf)
 {
   char* res;
@@ -158,6 +158,7 @@ static char* zxid_mini_httpd_read_post(zxid_conf* cf)
   return res;
 }
 
+/* Called by:  zxid_mini_httpd_filter */
 zxid_ses* zxid_mini_httpd_wsp(zxid_conf* cf, const char* method, const char* uri_path, const char* qs)
 {  
   char* res;
@@ -183,6 +184,7 @@ zxid_ses* zxid_mini_httpd_wsp(zxid_conf* cf, const char* method, const char* uri
 /*() Handle the WSP case of cgi_interpose_output(). Read in entire response,
  * apply decoration, and send it on its way. */
 
+/* Called by:  cgi_interpose_output */
 void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** response, size_t* response_size, size_t* response_len, int br_ix)
 {  
   struct zx_str* res;
@@ -226,6 +228,7 @@ void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** 
  * 0x0008 10 + 00 = SOAP w/headers as string + no auto redir, no exit(2) */
 #define AUTO_FLAGS 0x6ea8
 
+/* Called by:  zxid_mini_httpd_filter */
 zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri_path, const char* qs, const char* cookie_hdr)
 {  
   int ret, len, uri_len, url_len, qs_len;
@@ -434,7 +437,7 @@ process_zxid_simple_outcome:
  * In that case docgi() contains further zxid related steps to
  * pass the SSO attributes to the CGI environment. */
 
-/* Called by: */
+/* Called by:  handle_request */
 zxid_ses* zxid_mini_httpd_filter(zxid_conf* cf, const char* method, const char* uri_path, const char* qs, const char* cookie_hdr)
 {
   zxid_ses* ses;

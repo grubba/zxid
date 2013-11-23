@@ -74,7 +74,7 @@ const char* zxid_version_str()
  * zx_reverse_elem_lists() if needed.
  * Wire Order is respected first, and then kids list forward order. */
 
-/* Called by:  main x3, so_enc_dec, zxid_addmd, zxid_anoint_sso_resp, zxid_cache_epr, zxid_call_epr, zxid_idp_sso, zxid_lecp_check, zxid_map_val_ss, zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni, zxid_mni_do_ss, zxid_pep_az_base_soap_pepmap x3, zxid_pep_az_soap_pepmap x3, zxid_reg_svc, zxid_ses_to_pool x2, zxid_slo_resp_redir, zxid_snarf_eprs_from_ses, zxid_soap_call_raw, zxid_soap_cgi_resp_body, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_slo_redir, zxid_start_sso_url, zxid_write_ent_to_cache, zxid_wsc_prepare_call, zxid_wsp_decorate */
+/* Called by:  main x3, so_enc_dec, zxid_add_env_if_needed x2, zxid_addmd, zxid_anoint_sso_resp, zxid_cache_epr, zxid_call_epr x2, zxid_idp_sso, zxid_lecp_check, zxid_map_val_ss, zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni, zxid_mni_do_ss, zxid_pep_az_base_soap_pepmap x3, zxid_pep_az_soap_pepmap x3, zxid_reg_svc, zxid_ses_to_pool x2, zxid_slo_resp_redir, zxid_snarf_eprs_from_ses, zxid_soap_call_raw, zxid_soap_cgi_resp_body, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_slo_redir, zxid_start_sso_url, zxid_write_ent_to_cache, zxid_wsc_prepare_call, zxid_wsp_decorate */
 struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x)
 {
   struct zx_str* ss;
@@ -912,7 +912,7 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
   return ss;
 }
 
-/* Called by:  pool2apache x2, zxid_add_mapped_attr, zxid_pepmap_extract x2, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
+/* Called by:  pool2apache x2, zxid_add_mapped_attr, zxid_pepmap_extract x2, zxid_pool2env x3, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
 struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, const char* atname, const char* val) {
   return zxid_map_val_ss(cf, ses, meta, map, atname, zx_dup_str(cf->ctx, STRNULLCHK(val)));
 }
@@ -965,7 +965,7 @@ nobody:
  * already have been allocated and MUST hold 20 characters. It will not be
  * nul terminated and in fact will contain binary data (sha1 hash output). */
 
-/* Called by:  zxbus_write_line, zxid_mk_jwt, zxid_psobj_key_setup, zxlog_write_line */
+/* Called by:  zxid_mk_jwt, zxid_psobj_key_setup, zxlog_write_line */
 char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey)
 {
   char buf[1024];
