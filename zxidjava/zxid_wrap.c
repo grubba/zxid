@@ -26134,7 +26134,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1COMPILE_1DATE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "1384716148";
+  result = (char *) "1385227874";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }
@@ -26146,7 +26146,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1REV_1get(JNIEnv *jenv,
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "$Id: 1.17-15-gd53ad95 20131117-154407 sampo@ $";
+  result = (char *) "$Id: 1.18-7-g8e5679c 20131122-155334 sampo@ $";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }

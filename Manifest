@@ -230,35 +230,16 @@ zxidjavatest.sh  - Shell script for wrapping zxidjavatest.java with correct path
 zxidwsctool.c    - Command line WS Client, a tool for making ID-WSF calls (older than zxcall)
 zxidhlowsf.c     - Demonstration of calling ID-WSF services (DS and DAP)
 
-# Jeff Poskanzer's mini_httpd (from acme.com) adapted for zxid use
+# zxid_httpd (was mini_httpd)
 
-mini_httpd-1.19-zxid/README
-mini_httpd-1.19-zxid/README.mini_httpd_zxid
-mini_httpd-1.19-zxid/FILES
-mini_httpd-1.19-zxid/Makefile
-mini_httpd-1.19-zxid/htpasswd.1
-mini_httpd-1.19-zxid/htpasswd.c
-mini_httpd-1.19-zxid/index.html
-mini_httpd-1.19-zxid/match.c
-mini_httpd-1.19-zxid/match.h
-mini_httpd-1.19-zxid/mime_encodings.h
-mini_httpd-1.19-zxid/mime_encodings.txt
-mini_httpd-1.19-zxid/mime_types.h
-mini_httpd-1.19-zxid/mime_types.txt
-mini_httpd-1.19-zxid/mini_httpd.8
-mini_httpd-1.19-zxid/mini_httpd.c       - The main httpd, modified for ZXID
-mini_httpd-1.19-zxid/mini_httpd.c.orig  - The original, in case you want to diff
-mini_httpd-1.19-zxid/mini_httpd.cnf
-mini_httpd-1.19-zxid/port.h
-mini_httpd-1.19-zxid/tdate_parse.c
-mini_httpd-1.19-zxid/tdate_parse.h
-mini_httpd-1.19-zxid/version.h
-mini_httpd-1.19-zxid/contrib/redhat-rpm/mini_httpd.init
-mini_httpd-1.19-zxid/contrib/redhat-rpm/mini_httpd.spec
-mini_httpd-1.19-zxid/scripts/500.mini_httpd-rotate
-mini_httpd-1.19-zxid/scripts/mini_httpd.sh
-mini_httpd-1.19-zxid/scripts/mini_httpd_wrapper
-mini_httpd_filter.c  -  Functions, to be called by mini_httpd_zxid, that emulate mod_auth_saml
+match.c          - simple shell-stylefilename matcher
+htpasswd.c       - Manipulate .htpasswd files (by Rob McCool)
+htpasswd.1       - man page
+port.h           - mini-httpd related portability defines
+tdate_parse.c    - Parse date in If-Modified-Since header
+zxid_httpd.8     - man page
+zxid_httpd.c     - Heavily rewritten mini_httpd.c, the httpd core
+mini_httpd_filter.c  - Functions, to be called by zxid_httpd, to emulate mod_auth_saml
 
 # S/MIME Utility for Certificate Manipulations, Signing, and Encryption
 

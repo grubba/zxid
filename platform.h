@@ -147,6 +147,7 @@ int dup2(int,int);
 int execl(const char *path, const char *arg, ...);
 int fcntl(int fd, int cmd, ...);         /* Preferred */
 int fork(void);
+int execve(const char* f, char *const argv[], char *const envp[]);
 char* getcwd(char* buf, size_t size);
 int geteuid(void);
 int getegid(void);
@@ -161,11 +162,16 @@ int getuid();
 int getgid();
 int setuid(int);
 int setgid(int);
-int symlink(const char *oldpath, const char *newpath);
-int unlink(const char *pathname);
+int setsid();
+int symlink(const char* oldpath, const char* newpath);
+int unlink(const char* pathname);
 int write(int fd, void* buf, int count);
 unsigned int sleep(unsigned int secs);
 unsigned int alarm(unsigned int secs);
+int fchown(int fd, uid_t owner, gid_t group);
+int gethostname(char* name, size_t len);
+int chroot(const char* path);
+int nice(int inc);
 #define F_LOCK 1
 #define F_ULOCK 0
 #endif

@@ -444,11 +444,11 @@ zxid_ses* zxid_mini_httpd_filter(zxid_conf* cf, const char* method, const char* 
     chdir(cf->wd);
 
   zxid_is_wsp = 0;
-  if (zx_wildcard_pat_match(cf->wsp_pat, uri_path)) {
+  if (zx_match(cf->wsp_pat, uri_path)) {
     zxid_is_wsp = 1;
     ses = zxid_mini_httpd_wsp(cf, method, uri_path, qs);
     return ses;
-  } else if (zx_wildcard_pat_match(cf->sso_pat, uri_path)) {
+  } else if (zx_match(cf->sso_pat, uri_path)) {
     ses = zxid_mini_httpd_sso(cf, method, uri_path, qs, cookie_hdr);
     return ses;
   } else {

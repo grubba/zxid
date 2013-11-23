@@ -448,7 +448,7 @@ static int chkuid(request_rec* r)
 	goto process_zxid_simple_outcome;
     }
     /* not logged in, fall thru */
-  } else if (zx_wildcard_pat_match(cf->wsp_pat, r->uri)) {
+  } else if (zx_match(cf->wsp_pat, r->uri)) {
     /* WSP case */
     if (r->method_number == M_POST) {
       res = read_post(cf, r);   /* Will print some debug output */

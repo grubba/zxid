@@ -26,6 +26,7 @@
 # 16.4.2013, added diet64 statically linked targets --Sampo
 # 21.6.2013, added mini_httpd --Sampo
 # 4.11.2013, reformed the TARGET system; include and lib paths per Debian --Sampo
+# 21.11.2013, added zxid_httpd --Sampo
 #
 # Build so far only tested on Linux, Solaris 8, MacOS 10.3, and mingw-w64. This
 # makefile needs gmake-3.78 or newer.
@@ -68,7 +69,7 @@ ENA_WSF2=1
 ENA_WSF11=1
 ENA_XACML2=1
 ENA_WST=1
-ENA_MINI_HTTPD=1
+ENA_ZXID_HTTPD=1
 ENA_SMIME=1
 ENA_TAS3=1
 
@@ -76,7 +77,7 @@ ENA_TAS3=1
 ###   make CDEF='-DZXID_CONF_PATH="/opt/zxid/zxid.conf"'
 
 # Advise other software, such as mini_httpd, to use ZXID specific features
-CDEF+= -DUSE_ZXID -DUSE_SSL -DDISA_MINI_HTTPD_BLOAT
+CDEF+= -DUSE_ZXID -DUSE_SSL
 # Without cURL the Artifact Profile, WSC, and metadata fetch features are disabled.
 CDEF+= -DUSE_CURL
 # Without OpenSSL signing and signature verification are not possible
@@ -665,7 +666,7 @@ export LC_COLLATE LC_NUMERIC
 
 DEFAULT_EXE= zxidhlo$(EXE) zxididp$(EXE) zxidhlowsf$(EXE) zxidsimple$(EXE) zxidwsctool$(EXE) zxlogview$(EXE) zxidhrxmlwsc$(EXE) zxidhrxmlwsp$(EXE) zxdecode$(EXE) zxcot$(EXE) zxpasswd$(EXE) zxcall$(EXE) zxencdectest$(EXE)
 
-ALL_EXE= smime$(EXE) zxidwspcgi$(EXE) mini_httpd_zxid$(EXE)
+ALL_EXE= smime$(EXE) zxidwspcgi$(EXE) zxid_httpd$(EXE) htpasswd$(EXE)
 
 #$(info DEFAULT_EXE=$(DEFAULT_EXE))
 
@@ -687,7 +688,7 @@ ZXIDHDRS=zx.h zxid.h zxidnoswig.h c/zxidvers.h
 
 ZXID_LIB_OBJ=zxidsimp.$(OBJ_EXT) zxidpool.$(OBJ_EXT) zxidpsso.$(OBJ_EXT) zxidsso.$(OBJ_EXT) zxidslo.$(OBJ_EXT) zxiddec.$(OBJ_EXT) zxidspx.$(OBJ_EXT) zxididpx.$(OBJ_EXT) zxidmni.$(OBJ_EXT) zxidpep.$(OBJ_EXT) zxidpdp.$(OBJ_EXT) zxidmk.$(OBJ_EXT) zxida7n.$(OBJ_EXT) zxidses.$(OBJ_EXT) zxiduser.$(OBJ_EXT) zxidcgi.$(OBJ_EXT) zxidconf.$(OBJ_EXT) zxidecp.$(OBJ_EXT) zxidcdc.$(OBJ_EXT) zxidloc.$(OBJ_EXT) zxidlib.$(OBJ_EXT) zxidmeta.$(OBJ_EXT) zxidcurl.$(OBJ_EXT) zxidepr.$(OBJ_EXT) zxida7n.$(OBJ_EXT) ykcrc.$(OBJ_EXT) ykaes.$(OBJ_EXT) $(PLATFORM_OBJ)
 
-ZX_OBJ=c/zx-ns.$(OBJ_EXT) c/zx-attrs.$(OBJ_EXT) c/zx-elems.$(OBJ_EXT) zxlibdec.$(OBJ_EXT) zxlibenc.$(OBJ_EXT) zxlib.$(OBJ_EXT) zxns.$(OBJ_EXT) zxpw.$(OBJ_EXT) zxutil.$(OBJ_EXT) zxbusprod.$(OBJ_EXT) zxlog.$(OBJ_EXT) zxsig.$(OBJ_EXT) zxcrypto.$(OBJ_EXT) akbox_fn.$(OBJ_EXT) c/license.$(OBJ_EXT)
+ZX_OBJ=c/zx-ns.$(OBJ_EXT) c/zx-attrs.$(OBJ_EXT) c/zx-elems.$(OBJ_EXT) zxlibdec.$(OBJ_EXT) zxlibenc.$(OBJ_EXT) zxlib.$(OBJ_EXT) zxns.$(OBJ_EXT) zxpw.$(OBJ_EXT) zxutil.$(OBJ_EXT) zxbusprod.$(OBJ_EXT) zxlog.$(OBJ_EXT) zxsig.$(OBJ_EXT) zxcrypto.$(OBJ_EXT) akbox_fn.$(OBJ_EXT) match.$(OBJ_EXT) c/license.$(OBJ_EXT)
 
 WSF_OBJ=zxidmkwsf.$(OBJ_EXT) zxidwsf.$(OBJ_EXT) zxidwsc.$(OBJ_EXT) zxidwsp.$(OBJ_EXT) zxiddi.$(OBJ_EXT) zxidim.$(OBJ_EXT) zxidps.$(OBJ_EXT)
 
@@ -1505,8 +1506,8 @@ mod_auth_saml: apachezxid
 
 ###
 ### mini_httpd with ZXID support. See also mini_httpd-1.19-zxid/Makefile
-### for regular build without ZXID support
-###
+### for regular build without ZXID support.
+### N.B. This is obsoleted by zxid_httpd, below.
 
 MINI_HTTPD_DIR?=mini_httpd-1.19-zxid
 
@@ -1531,6 +1532,14 @@ $(MINI_HTTPD_DIR)/mime_types.h: $(MINI_HTTPD_DIR)/mime_types.txt
 	  -e 's/[ 	][ 	]*/", 0, "/' -e 's/^/{ "/' -e 's/$$/", 0 },/'
 
 mini_httpd_zxid: $(MINI_HTTPD_DIR)/mini_httpd_zxid $(MINI_HTTPD_DIR)/htpasswd
+
+###
+### zxid_httpd (derived from mini_httd).
+###
+
+zxid_httpd$(EXE): zxid_httpd.$(OBJ_EXT) tdate_parse.$(OBJ_EXT) mini_httpd_filter.$(OBJ_EXT) $(LIBZXID_A)
+	$(warning ZXID_HTTPD LINK)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $^ $(LIBS)
 
 ###
 ### Binaries (most binaries are built by implicit rules)
