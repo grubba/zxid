@@ -17,6 +17,14 @@
 extern "C" {
 #endif
 
+#define MS_LONG LONG
+#define MKDIR(d,p) _mkdir(d)
+#define GETTIMEOFDAY(tv, tz) ((tv) ? (((tv)->tv_sec = time(0)) && ((tv)->tv_usec = 0)) : -1)
+#define GMTIME_R(secs,stm) do { struct tm* stx_tm = gmtime(&(secs)); if (stx_tm) memcpy(&stm, stx_tm, sizeof(struct tm)); } while(0)   /* *** still not thread safe */
+//#define GMTIME_R(t, res) gmtime_r(&(t),&(res))
+
+#define MINGW_RW_PERM (GENERIC_READ | GENERIC_WRITE)
+
 #define fdstdin  (GetStdHandle(STD_INPUT_HANDLE))
 #define fdstdout (GetStdHandle(STD_OUTPUT_HANDLE))
 /*#define fdtype HANDLE   see zx.h */
@@ -29,8 +37,12 @@ HANDLE zx_CreateFile(LPCTSTR lpFileName,
 		     LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, 
 		     DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
 
+  //#define read(fd, buf, siz) _read((fd),(buf),(siz))
+  //#define write(fd, buf, cnt) _write((fd),(buf),(cnt))
 #define pipe(fds) _pipe(fds, 64*1024, _O_BINARY)
-#define mkdir(P,M)  _mkdir(P)
+/*#define MKDIR(P,M)  _mkdir(P)*/
+#define uid_t int
+#define gid_t int
 #define geteuid() 0
 #define getegid() 0
 #define stat(X,Y) zx_stat(X,Y)
@@ -38,7 +50,7 @@ HANDLE zx_CreateFile(LPCTSTR lpFileName,
 #define syslog(a,...)
 #define closelog()
 #define fcntl(fd,cmd,...) (-1)  /* always fail: mingw does not have fcntl(2) */
-#define nice(x)
+#define nice(x) 0
 
 #define F_GETFL 3
 #define F_SETFL 4
@@ -122,6 +134,10 @@ unsigned int alarm(unsigned int secs);
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define MKDIR(d,p) mkdir((d),(p))
+#define GETTIMEOFDAY gettimeofday
+#define GMTIME_R(t, res) gmtime_r(&(t),&(res))
 
 #define fdstdin  0  /* fileno(stdin) */
 #define fdstdout 1  /* fileno(stdout) */

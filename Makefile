@@ -438,7 +438,9 @@ ifeq ($(TARGET),xmingw64)
 #     cp src/curl.exe /apps/mingw/3.0.0-w64/mingw/bin-w64
 #
 # Fix illegal relocation error on linking libws2_32.a
-#  
+# wget http://www.dependencywalker.com/depends22_x86.zip
+# dependes.exe /c /? zxid_httpd.exe
+# psutils
 
 # MinGW-W64 Runtime 3.0 (alpha - rev. 5871) 2013-05-21
 MINGWDIR=/apps/mingw/mingw-w64-bin_i686-linux_20130523

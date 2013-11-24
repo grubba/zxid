@@ -29,20 +29,8 @@
 
 #ifdef MINGW
 #include <windows.h>
-#define MS_LONG LONG
-#define MKDIR(d,p) mkdir(d)
-#define GETTIMEOFDAY(tv, tz) ((tv) ? (((tv)->tv_sec = time(0)) && ((tv)->tv_usec = 0)) : -1)
-#define GMTIME_R(secs,stm) do { struct tm* stx_tm = gmtime(&(secs)); if (stx_tm) memcpy(&stm, stx_tm, sizeof(struct tm)); } while(0)   /* *** still not thread safe */
-//#define GMTIME_R(t, res) gmtime_r(&(t),&(res))
-
-#define MINGW_RW_PERM (GENERIC_READ | GENERIC_WRITE)
-
 #else
-
 #include <pthread.h>
-#define MKDIR(d,p) mkdir((d),(p))
-#define GETTIMEOFDAY gettimeofday
-#define GMTIME_R(t, res) gmtime_r(&(t),&(res))
 #endif
 #include <stdio.h>    /* For stderr */
 #include <stdint.h>

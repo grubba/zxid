@@ -61,11 +61,16 @@ char script_name_buf[256];
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include <limits.h>
+#include <errno.h>
 #include <sys/param.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
+#include <dirent.h>
 #include <time.h>
+#include <signal.h>
 #ifndef MINGW
 #include <sys/mman.h>
 #include <syslog.h>
@@ -77,12 +82,7 @@ char script_name_buf[256];
 #include <sys/wait.h>
 #include <sys/socket.h>
 #include <netdb.h>
-#include <fcntl.h>
 #endif
-#include <errno.h>
-#include <signal.h>
-#include <ctype.h>
-#include <dirent.h>
 
 #include "port.h"
 extern time_t tdate_parse( char* str );
@@ -102,16 +102,6 @@ extern time_t tdate_parse( char* str );
 
 #if defined(AF_INET6) && defined(IN6_IS_ADDR_V4MAPPED)
 #define USE_IPV6
-#endif
-
-#ifndef STDIN_FILENO
-#define STDIN_FILENO 0
-#endif
-#ifndef STDOUT_FILENO
-#define STDOUT_FILENO 1
-#endif
-#ifndef STDERR_FILENO
-#define STDERR_FILENO 2
 #endif
 
 #ifndef SHUT_WR
@@ -977,15 +967,14 @@ int main(int argc, char** av)
       exit(0);
     }
     if (!strcmp(av[an], "-cgiin-child")) {
-      /* Child process to handle cgi input. */
-      /* *** parent should really write captured POST input to the child */
-      cgi_interpose_input(p[1] /* *** rather stdin? */);
-      exit(0);
+      /* Child process to handle cgi input: shuffle input from conn_fd to write end of pipeA */
+      conn_fd = atoll(av[an+1]);
+      cgi_interpose_input(atoll(av[an+3]));
     }
     if (!strcmp(av[an], "-cgiout-child")) {
-      /* Child process to handle cgi input. */
-      cgi_interpose_output(p[1] /* *** rather stdin? */);
-      exit(0);
+      /* Child process to handle cgi output: shuffle output from read end of pipeB to conn_fd */
+      conn_fd = atoll(av[an+1]);
+      cgi_interpose_output(atoll(av[an+2]), 1);
     }
 #endif
     if (!strcmp(av[an], "-V")) {
@@ -1005,7 +994,7 @@ int main(int argc, char** av)
     else if (!strcmp(av[an], "-u") && an + 1 < argc)  { ++an; user = av[an]; }
     else if (!strcmp(av[an], "-h") && an + 1 < argc)  { ++an; hostname = av[an]; }
     else if (!strcmp(av[an], "-r")) do_chroot = 1;
-    else if (!strcmp(av[an], "-v"))   vhost = 1;
+    else if (!strcmp(av[an], "-v")) vhost = 1;
     else if (!strcmp(av[an], "-l") && an + 1 < argc)  { ++an; logfile = av[an]; }
     else if (!strcmp(av[an], "-i") && an + 1 < argc)  { ++an; pidfile = av[an]; }
     else if (!strcmp(av[an], "-T") && an + 1 < argc)  { ++an; charset = av[an]; }
@@ -1201,16 +1190,14 @@ int main(int argc, char** av)
 
   syslog(LOG_NOTICE, "%.80s starting on %.80s, port %d", SERVER_SOFTWARE, hostname?hostname:"0.0.0.0", (int) port);
 
-  /* Main loop. */
+  /* ----- Main loop ----- */
   for (;;) {
-    /* Do we need to re-open the log file? */
-    if (got_hup) {
+    if (got_hup) {           /* Do we need to re-open the log file? */
       re_open_logfile();
       got_hup = 0;
     }
 
-    /* Accept the new connection (blocks). */
-    sz = sizeof(usa);
+    sz = sizeof(usa);        /* Accept the new connection (blocks). */
     conn_fd = accept(listen_fd, &usa.sa, &sz);
     if (conn_fd < 0) {
       if (errno == EINTR || errno == EAGAIN)
@@ -1218,13 +1205,13 @@ int main(int argc, char** av)
 #ifdef EPROTO
       if (errno == EPROTO)
 	continue;	/* try again */
-#endif /* EPROTO */
+#endif
       die_perror("accept");
     }
 
-    /* Fork a sub-process to handle the connection. */
+    /* Fork a sub-process to handle the connection, see handle_request() */
 #ifdef MINGW
-    /* *** determin whole path. for now we assume working directory contains mini_httpd */
+    /* *** determine whole path. For now we assume working directory contains mini_httpd */
     r = spawnlp(P_NOWAIT, ".", argv0, "-child");
     /* Parent comes here. child is processed where option -child is processed. */
     if (r) {
@@ -1246,8 +1233,8 @@ int main(int argc, char** av)
       exit(0);
     }
     (void) close(conn_fd);
-  }
 #endif
+  }
 }
 
 /*() This runs in a child process, and exits when done, so cleanup is not needed. */
@@ -1257,7 +1244,7 @@ static void handle_request(void)
   char* method_str;
   char* line;
   char* cp;
-  int r, file_len, i;
+  int ret, file_len, i;
   const char* index_names[] = {
     "index.html", "index.htm", "index.xhtml", "index.xht", "Default.htm",
     "index.cgi" };
@@ -1296,10 +1283,9 @@ static void handle_request(void)
   /* Set the TCP_NOPUSH socket option, to try and avoid the 0.2 second
   ** delay between sending the headers and sending the data.  A better
   ** solution is writev() (as used in thttpd), or send the headers with
-  ** send(MSG_MORE) (only available in Linux so far).
-  */
-  r = 1;
-  (void) setsockopt(conn_fd, IPPROTO_TCP, TCP_NOPUSH, (void*) &r, sizeof(r));
+  ** send(MSG_MORE) (only available in Linux so far). */
+  i = 1;
+  (void) setsockopt(conn_fd, IPPROTO_TCP, TCP_NOPUSH, (void*) &i, sizeof(i));
 #endif /* TCP_NOPUSH */
 
   if (do_ssl) {
@@ -1315,13 +1301,13 @@ static void handle_request(void)
   start_request();
   for (;;) {
     char buf[10000];
-    int r = my_read(buf, sizeof(buf));
-    if (r < 0 && (errno == EINTR || errno == EAGAIN))
+    int got = my_read(buf, sizeof(buf));
+    if (got < 0 && (errno == EINTR || errno == EAGAIN))
       continue;
-    if (r <= 0)
+    if (got <= 0)
       break;
     (void) alarm(read_timeout);
-    add_to_request(buf, r);
+    add_to_request(buf, got);
     if (strstr(request, "\015\012\015\012") || strstr(request, "\012\012"))
       break;  /* Empty line ending headers detected. */
   }
@@ -1330,11 +1316,11 @@ static void handle_request(void)
   method_str = get_request_line();
   if (!method_str) send_error_and_exit(400, "Bad Request", "", "Can't parse request. 1");
   path = strpbrk(method_str, " \t\012\015");
-  if (!path) send_error_and_exit(400, "Bad Request", "", "Can't parse request. 2");
+  if (!path)       send_error_and_exit(400, "Bad Request", "", "Can't parse request. 2");
   *path++ = '\0';
   path += strspn(path, " \t\012\015");
   protocol = strpbrk(path, " \t\012\015");
-  if (!protocol) send_error_and_exit(400, "Bad Request", "", "Can't parse request. 3");
+  if (!protocol)   send_error_and_exit(400, "Bad Request", "", "Can't parse request. 3");
   *protocol++ = '\0';
   protocol += strspn(protocol, " \t\012\015");
   query = strchr(path, '?');
@@ -1444,10 +1430,10 @@ static void handle_request(void)
     zxid_session = zxid_mini_httpd_filter(zxid_cf, method, path, query, cookie);
   }
 
-  r = stat(file, &sb);
-  if (r < 0)
-    r = get_pathinfo();
-  if (r < 0)
+  ret = stat(file, &sb);
+  if (ret < 0)
+    ret = get_pathinfo();
+  if (ret < 0)
     send_error_and_exit(404, "Not Found", "", "File not found. 1");
   file_len = strlen(file);
   if (! S_ISDIR(sb.st_mode)) {
@@ -1537,13 +1523,13 @@ static int get_pathinfo(void) {
       --pathinfo;
       if (pathinfo <= file) {
 	pathinfo = 0;
-	return -1;     /* exhausted file without finding slash or pathinfo */
+	return -1;      /* exhausted file without finding slash or pathinfo */
       }
     } while (*pathinfo != '/');
     *pathinfo = '\0';   /* nul terminate file */
     r = stat(file, &sb);
     if (r >= 0) {
-      ++pathinfo;  /* pathinfo is the part of the path after matching file */
+      ++pathinfo;       /* pathinfo is the part of the path after matching file */
       return r;
     } else
       *pathinfo = '/';  /* restore slash */
@@ -1577,11 +1563,9 @@ static void do_file(void) {
     send_error_and_exit(403, "Forbidden", "", "File is protected. 1");
   }
 
-  /* Referer check. */
   check_referer();
 
-  /* Is it CGI? */
-  if (cgi_pattern && zx_match(cgi_pattern, file)) {
+  if (cgi_pattern && zx_match(cgi_pattern, file)) {  /* Is it CGI? */
     do_cgi();
     return;
   }
@@ -1607,17 +1591,16 @@ static void do_file(void) {
   if (*method == 'H' /* HEAD */)
     return;
 
-  if (sb.st_size > 0)	/* ignore zero-length files */
-    {
+  if (sb.st_size > 0) {	/* ignore zero-length files */
 #ifdef HAVE_SENDFILE
-      if (do_ssl)
-	send_via_write(fd, sb.st_size);
-      else
-	(void) my_sendfile(fd, conn_fd, 0, sb.st_size);
-#else /* HAVE_SENDFILE */
+    if (do_ssl)
       send_via_write(fd, sb.st_size);
-#endif /* HAVE_SENDFILE */
-    }
+    else
+      (void) my_sendfile(fd, conn_fd, 0, sb.st_size);
+#else
+    send_via_write(fd, sb.st_size);
+#endif
+  }
 
   (void) close(fd);
 }
@@ -1657,8 +1640,7 @@ static void do_dir(void)
   buflen = snprintf(buf, sizeof(buf), "<TITLE>Index of %s</TITLE>\n\
 <BODY BGCOLOR=\"#99cc99\" TEXT=\"#000000\" LINK=\"#2020ff\" VLINK=\"#4040cc\">\n\
 <H4>Index of %s</H4>\n\
-<PRE>\n",
-		    file, file);
+<PRE>\n", file, file);
   add_to_buf(&contents, &contents_size, &contents_len, buf, buflen);
 
 #ifdef HAVE_SCANDIR
@@ -1696,33 +1678,45 @@ static void do_dir(void)
 
 /* Called by:  do_cgi x2 */
 static int pipe_and_fork(int* p, const char* next_step_flag) {
-  int r;
+  int ret;
 
   if (pipe(p) < 0) {
-    syslog(LOG_CRIT, "pipe - %m");
     perror("pipe");
-    send_error_and_exit(500, "Internal Error", "", "Something unexpected went wrong making a pipe.");
+    syslog(LOG_CRIT, "pipe - %m");
+    send_error_and_exit(500, "Internal Error","","Something unexpected went wrong making a pipe.");
   }
 
 #ifdef MINGW
   /* *** how to pass global variables and other processing context across the spawn? need to construct complicated environment. */
   /* *** determine whole path. for now we assume working directory contains mini_httpd */
-  r = spawnlp(P_NOWAIT, ".", argv0, next_step_flag);
-  /* Parent comes here. child is processed where option -cgiin-child is processed. */
-  if (r) {
-    perror("spawnlp");
-    ERR("spawn failed to create subprocess to handle connection. r=%d errno=%d %s",r,errno,STRERROR(errno));
-    send_error_and_exit(500, "Internal Error", "", "Something unexpected went wrong forking an interposer.");
+  {
+    char conn_fd_buf[32];
+    char rfd_buf[32];
+    char wfd_buf[32];
+    snprintf(conn_fd_buf, sizeof(conn_fd_buf), "%lld", (long long)conn_fd);
+    conn_fd_buf[sizeof(conn_fd_buf)-1] = 0;
+    snprintf(rfd_buf, sizeof(rfd_buf), "%lld", (long long)p[1]);
+    rfd_buf[sizeof(rfd_buf)-1] = 0;
+    snprintf(wfd_buf, sizeof(wfd_buf), "%lld", (long long)p[1]);
+    wfd_buf[sizeof(wfd_buf)-1] = 0;
+    D("spawing interposer wfd=%d conn_fd=%d", p[1], conn_fd);
+    ret = spawnlp(P_NOWAIT, ".", argv0, next_step_flag, conn_fd_buf, rfd_buf, wfd_buf);
   }
-  return 1;
+  /* Parent comes here. child is processed where option -cgiin-child is processed. */
+  if (ret) {
+    perror("spawnlp");
+    ERR("spawn failed to create subprocess (%s) to handle connection. ret=%d errno=%d %s", argv0, ret, errno, STRERROR(errno));
+    send_error_and_exit(500, "Internal Error", "", "Something unexpected went wrong spawning an interposer.");
+  }
+  return 1; /* indicate parent, the child is handled by reinvokcation with command line flag. */
 #else
-  r = fork();
-  if (r < 0) {
+  ret = fork();
+  if (ret < 0) {
     syslog(LOG_CRIT, "fork - %m");
     perror("fork");
     send_error_and_exit(500, "Internal Error", "", "Something unexpected went wrong forking an interposer.");
   }
-  return r;
+  return ret;
 #endif
 }
 
@@ -1738,26 +1732,19 @@ static void do_cgi(void) {
   if (*method != 'G' && *method != 'P')
     send_error_and_exit(501, "Not Implemented", "", "That method is not implemented for CGI.");
 
+  D("stdin_fd=%d stdout_fd=%d stderr_fd=%d conn_fd=%d", fileno(stdin), fileno(stdout), fileno(stderr), conn_fd);
   /* If the socket happens to be using one of the stdin/stdout/stderr
   ** descriptors, move it to another descriptor so that the dup2 calls
   ** below don't screw things up.  We arbitrarily pick fd 3 - if there
   ** was already something on it, we clobber it, but that doesn't matter
   ** since at this point the only fd of interest is the connection.
   ** All others will be closed on exec. */
-  if (conn_fd == STDIN_FILENO || conn_fd == STDOUT_FILENO || conn_fd == STDERR_FILENO) {
-    int newfd = dup2(conn_fd, STDERR_FILENO + 1);
+  if (conn_fd == fileno(stdin) || conn_fd == fileno(stdout) || conn_fd == fileno(stderr)) {
+    int newfd = dup2(conn_fd, fileno(stderr) + 1);
     if (newfd >= 0)
       conn_fd = newfd;
-    /* If the dup2 fails, shrug.  We'll just take our chances.
-    ** Shouldn't happen though.
-    */
+    /* If the dup2 fails, shrug.  We'll just take our chances. Shouldn't happen though. */
   }
-
-  /* Make the environment vector. */
-  envp = make_envp();
-
-  /* Make the argument vector. */
-  argp = make_argp();
 
   /* Set up stdin.  For POSTs we may have to set up a pipe from an
   ** interposer process, depending on if we've read some of the data
@@ -1766,21 +1753,22 @@ static void do_cgi(void) {
     DD("about to fork interpose_input p0=%d p1=%d", p[0], p[1]);
     if (!pipe_and_fork(p,"-cgiin-child")) {
       /* Child: Interposer process. */
-      (void) close(p[0]);
-      cgi_interpose_input(p[1]);
-      exit(0);
+      (void) close(p[0]);        /* the read end will be stdin of the CGI script */
+      cgi_interpose_input(p[1]); /* shuffle input from conn_fd to write end of the pipe */
     }
-    /* parent *** we should really write captured POST input to the child */
+    /* parent (the future CGI script) *** we should write captured POST input to the child */
     (void) close(p[1]);
-    if (p[0] != STDIN_FILENO) {
-      (void) dup2(p[0], STDIN_FILENO);
+    if (p[0] != fileno(stdin)) {           /* wire read end to be CGI stdin (if not already) */
+      (void) dup2(p[0], fileno(stdin));
       (void) close(p[0]);
     }
   } else {
-    /* Otherwise, the request socket is stdin. */
-    if (conn_fd != STDIN_FILENO)
-      (void) dup2(conn_fd, STDIN_FILENO);
+    if (conn_fd != fileno(stdin))          /* Otherwise, the request socket is stdin. */
+      (void) dup2(conn_fd, fileno(stdin));
   }
+
+  envp = make_envp();
+  argp = make_argp();
 
   /* Set up stdout/stderr.  For SSL, or if we're doing CGI header parsing,
   ** we need an output interposer too.  */
@@ -1792,24 +1780,22 @@ static void do_cgi(void) {
     DD("about to fork interpose_output p0=%d p1=%d", p[0], p[1]);
     if (!pipe_and_fork(p,"-cgiout-child")) {
       /* Child: Interposer process. */
-      (void) close(p[1]);
-      cgi_interpose_output(p[0], parse_headers);
-      exit(0);
+      (void) close(p[1]);        /* the write end will be stdout of the CGI script */
+      cgi_interpose_output(p[0], parse_headers); /* shuffle output from read end to conn_fd */
     }
     DD("Parent %d", p[0]);
-    (void) close(p[0]);
-    if (p[1] != STDOUT_FILENO)
-      (void) dup2(p[1], STDOUT_FILENO);
-    if (p[1] != STDERR_FILENO)
-      (void) dup2(p[1], STDERR_FILENO);
-    if (p[1] != STDOUT_FILENO && p[1] != STDERR_FILENO)
+    (void) close(p[0]);  /* parent (the future CGI): assign stdout to write end */
+    if (p[1] != fileno(stdout))
+      (void) dup2(p[1], fileno(stdout));
+    //if (p[1] != STDERR_FILENO)            // perhaps we do not want to capture stderr
+    //  (void) dup2(p[1], STDERR_FILENO);
+    if (p[1] != fileno(stdout) && p[1] != fileno(stderr))
       (void) close(p[1]);
   } else {
-    /* Otherwise, the request socket is stdout/stderr. */
-    if (conn_fd != STDOUT_FILENO)
-      (void) dup2(conn_fd, STDOUT_FILENO);
-    if (conn_fd != STDERR_FILENO)
-      (void) dup2(conn_fd, STDERR_FILENO);
+    if (conn_fd != fileno(stdout))
+      (void) dup2(conn_fd, fileno(stdout)); /* Otherwise, the request socket is stdout/stderr. */
+    //if (conn_fd != STDERR_FILENO)        // perhaps we do not want to capture stderr
+    //  (void) dup2(conn_fd, STDERR_FILENO);
   }
   
   /* At this point we would like to set conn_fd to be close-on-exec.
@@ -1822,12 +1808,9 @@ static void do_cgi(void) {
   ** and/or stderr, this is not a problem. */
   /* (void) fcntl(conn_fd, F_SETFD, 1); */
 
-
   if (logfp)
     (void) fclose(logfp);  /* Close the log file. */
-
   closelog();              /* Close syslog. */
-
   (void) nice(CGI_NICE);
 
   /* Split the program into directory and binary, so we can chdir()
@@ -1850,9 +1833,8 @@ static void do_cgi(void) {
 #endif /* HAVE_SIGSET */
 
   DD("about to exec CGI(%s)", cgi_binary);
-  fflush(stderr);
   (void) execve(cgi_binary, argp, envp);  /* Run the CGI script. */
-  send_error_and_exit(500, "Internal Error", "", "Something unexpected went wrong running a CGI program.");
+  send_error_and_exit(500, "Internal Error", "", "Something unexpected went wrong launching a CGI program. Bad nonexistent path to CGI? No execute permission?");
 }
 
 /* Special hack to deal with broken browsers that send a LF or CRLF
@@ -1892,10 +1874,11 @@ static void cgi_interpose_input(int wfd)
   char buf[1024];
 
   cnt = request_len - request_idx;
-  DD("write wfd=%d buffered post cnt=%d content_length=%d", wfd, cnt, content_length);
+  D("write wfd=%d buffered post cnt=%d content_length=%d", wfd, cnt, content_length);
   if (cnt > 0) {
+    // *** MINGW problem: after spawn the read buffer global is no longer available
     if ((r2 = write(wfd, request+request_idx, cnt)) != cnt)
-      return;
+      exit(0);
   }
   while ((int)cnt < (int)content_length) {  /* without the cast 0 < -1 seems to be true */
     got = my_read(buf, MIN(sizeof(buf), content_length - cnt));
@@ -1904,7 +1887,7 @@ static void cgi_interpose_input(int wfd)
       continue;
     }
     if (got <= 0)
-      return;
+      exit(0);
     for (;;) {
       DD("writing input wfd=%d cnt=%d got=%d", wfd, cnt, got);
       r2 = write(wfd, buf, got);
@@ -1914,13 +1897,14 @@ static void cgi_interpose_input(int wfd)
 	continue;
       }
       if (r2 != got)
-	return;
+	exit(0);
       break;
     }
     cnt += got;
   }
   D("done got=%d", got);
   post_post_garbage_hack();
+  exit(0);
 }
 
 /* This routine is used for parsed-header CGIs and for all SSL CGIs. */
@@ -1930,7 +1914,7 @@ static void cgi_interpose_output(int rfd, int parse_headers)
   ssize_t got, r2;
   char buf[4096];
 
-  DD("ph=%d", parse_headers);
+  D("ph=%d, rfd=%d conn_fd=%d", parse_headers, rfd, conn_fd);
   if (!parse_headers) {
     /* If we're not parsing headers, write out the default status line
     ** and proceed to the echo phase. */
@@ -1952,7 +1936,7 @@ static void cgi_interpose_output(int rfd, int parse_headers)
     char* cp;
     
     /* Slurp in all headers. */
-    headers_size = 0;
+    headers_size = 0;  /* 0 = force allocation */
     add_to_buf(&headers, &headers_size, &headers_len, 0, 0);
     for (;;) {
       DD("read rfd=%d", rfd);
@@ -1972,22 +1956,16 @@ static void cgi_interpose_output(int rfd, int parse_headers)
 	break;
     }
 
-    /* If there were no headers, bail. */
-    if (headers[0] == '\0')
-      return;
+    if (headers[0] == '\0')    /* If there were no headers, bail. */
+      goto done;
 
-      /* Figure out the status. */
     status = 200;
-    if ((cp = strstr(headers, "Status:")) &&
-	cp < br &&
-	(cp == headers || *(cp-1) == '\012')) {
+    if ((cp = strstr(headers, "Status:")) && cp < br &&	(cp == headers || *(cp-1) == '\012')) {
       cp += 7;
       cp += strspn(cp, " \t");
       status = atoi(cp);
     }
-    if ((cp = strstr(headers, "Location:")) &&
-	cp < br &&
-	(cp == headers || *(cp-1) == '\012'))
+    if ((cp = strstr(headers, "Location:")) && cp < br && (cp == headers || *(cp-1) == '\012'))
       status = 302;
 
     /* Write the status line. */
@@ -2003,11 +1981,12 @@ static void cgi_interpose_output(int rfd, int parse_headers)
     case 500: title = "Internal Error"; break;
     case 501: title = "Not Implemented"; break;
     case 503: title = "Service Temporarily Overloaded"; break;
-    default: title = "Something"; break;
+    default:  title = "Something"; break;
     }
     buflen = snprintf(buf, sizeof(buf), "HTTP/1.0 %d %s\015\012", status, title);
     (void) my_write(buf, buflen);
     
+    // *** MINGW: recreate zxid_cf and zxid_session
     if (zxid_cf && zxid_session) {
       if (zxid_is_wsp) {
 	zxid_mini_httpd_wsp_response(zxid_cf, zxid_session, rfd,
@@ -2015,11 +1994,11 @@ static void cgi_interpose_output(int rfd, int parse_headers)
 	goto done;
       } else {
 	if (zxid_session->setcookie) {
-	  buflen = snprintf(buf, sizeof(buf), "Set-Cookie: %s\015\012", zxid_session->setcookie);
+	  buflen = snprintf(buf, sizeof(buf), "Set-Cookie: %s\015\012",zxid_session->setcookie);
 	  my_write(buf, buflen);
 	}
 	if (zxid_session->setptmcookie) {
-	  buflen = snprintf(buf, sizeof(buf), "Set-Cookie: %s\015\012", zxid_session->setptmcookie);
+	  buflen = snprintf(buf, sizeof(buf), "Set-Cookie: %s\015\012",zxid_session->setptmcookie);
 	  my_write(buf, buflen);
 	}
       }
@@ -2053,12 +2032,12 @@ static void cgi_interpose_output(int rfd, int parse_headers)
  done:
   D("done conn_fd=%d", conn_fd);
   shutdown(conn_fd, SHUT_WR);
+  exit(0);
 }
 
 /* Set up CGI argument vector.  We don't have to worry about freeing
 ** stuff since we're a sub-process.  This gets done after make_envp() because
-** we scribble on query.
-*/
+** we scribble on query. */
 /* Called by:  do_cgi */
 static char** make_argp(void)
 {
@@ -2071,8 +2050,7 @@ static char** make_argp(void)
   ** one for the filename and one for the NULL, we are guaranteed to
   ** have enough.  We could actually use strlen/2.  */
   argp = (char**) malloc((strlen(query) + 2) * sizeof(char*));
-  if (argp == (char**) 0)
-    return (char**) 0;
+  if (!argp) die_oom();
 
   argp[0] = strrchr(file, '/');
   if (argp[0])

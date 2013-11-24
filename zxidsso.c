@@ -501,7 +501,7 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
 	  continue;
 	ss = ZX_GET_CONTENT(aud);
 	if (ss?ss->len:0 == myentid->len && !memcmp(ss->s, myentid->s, ss->len)) {
-	  D("Found audience. %d", 0);
+	  D("Found audience. %d", 1);
 	  goto found_audience;
 	}
       }
