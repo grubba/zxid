@@ -455,7 +455,7 @@ zxid_ses* zxid_mini_httpd_filter(zxid_conf* cf, const char* method, const char* 
     ses = zxid_mini_httpd_sso(cf, method, uri_path, qs, cookie_hdr);
     return ses;
   } else {
-    D("No SSO or WSP match(%s)",uri_path);
+    D("No SSO or WSP match(%s) wsp_pat(%s) sso_pat(%s)", uri_path, STRNULLCHK(cf->wsp_pat), STRNULLCHK(cf->sso_pat));
     return 0;
   }
 }

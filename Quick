@@ -27,6 +27,8 @@ https://sp.tas3.pt:8443/zxidenv.wsp
 
 ./zxcall -c 'CPATH=/var/zxid/&URL=https://sp.tas3.pt:8443/saml' -a http://idp.tas3.pt:8081/zxididp?o=B test:foo -t urn:zxidenv -e '<req/>'
 
+curl -v -k https://sp.tas3.pt:8443/zxidenv.wsp --data-binary '<req>Hello</req>'
+
 echo Edit your /etc/hosts to contain
 echo 127.0.0.1 localhost sp1.zxidcommon.org sp1.zxidsp.org idp1.zxidp.org sp.tas3.pt idp.tas3.pt
 echo
