@@ -758,15 +758,15 @@ print_it:
   ++zxlog_seq;
 #ifdef USE_PTHREAD
 # ifdef USE_AKBOX_FN
-  fprintf(stderr, "t%lx %04x:%-3d %s d %s%s(%.*s) len=%d %d:%d\n", (long)pthread_self(), akbox_fn(func), __LINE__, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+  fprintf(stderr, "%d.%lx %04x:%-3d %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), (long)pthread_self(), akbox_fn(func), __LINE__, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
 # else
-  fprintf(stderr, "t%lx %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", (long)pthread_self(), file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+  fprintf(stderr, "%d.%lx %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), (long)pthread_self(), file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
 # endif
 #else
 # ifdef USE_AKBOX_FN
-  fprintf(stderr, "p%d %04x:%-3d %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), akbox_fn(func), __LINE__, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+  fprintf(stderr, "%d %04x:%-3d %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), akbox_fn(func), __LINE__, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
 # else
-  fprintf(stderr, "p%d %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
+  fprintf(stderr, "%d %10s:%-3d %-16s %s d %s%s(%.*s) len=%d %d:%d\n", getpid(), file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, bdy_len, bdy, len, getpid(), zxlog_seq);
 # endif
 #endif
 
@@ -784,15 +784,15 @@ print_it:
   }
 #ifdef USE_PTHREAD
 # ifdef USE_AKBOX_FN
-  fprintf(zx_xml_debug_log, "<!-- XMLBEG t%lx:%d %04x:%-3d %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND t%lx:%d -->\n", (long)pthread_self(), zxlog_seq, akbox_fn(func), line, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, (long)pthread_self(), zxlog_seq);
+  fprintf(zx_xml_debug_log, "<!-- XMLBEG %d.%lx:%d %04x:%-3d %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d.%lx:%d %s -->\n", getpid(), (long)pthread_self(), zxlog_seq, akbox_fn(func), line, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, getpid(), (long)pthread_self(), zxlog_seq, lk);
 # else
-  fprintf(zx_xml_debug_log, "<!-- XMLBEG t%lx:%d %10s:%-3d %-16s %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND t%lx:%d -->\n", (long)pthread_self(), zxlog_seq, file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, (long)pthread_self(), zxlog_seq);
+  fprintf(zx_xml_debug_log, "<!-- XMLBEG %d.%lx:%d %10s:%-3d %-16s %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d.%lx:%d %s -->\n", getpid(), (long)pthread_self(), zxlog_seq, file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, getpid(), (long)pthread_self(), zxlog_seq, lk);
 # endif
 #else
 # ifdef USE_AKBOX_FN
-  fprintf(zx_xml_debug_log, "<!-- XMLBEG p%d:%d %04x:%-3d %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND p%d:%d -->\n", getpid(), zxlog_seq, akbox_fn(func), line, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, getpid(), zxlog_seq);
+  fprintf(zx_xml_debug_log, "<!-- XMLBEG %d:%d %04x:%-3d %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d:%d %s -->\n", getpid(), zxlog_seq, akbox_fn(func), line, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, getpid(), zxlog_seq, lk);
 # else
-  fprintf(zx_xml_debug_log, "<!-- XMLBEG p%d:%d %10s:%-3d %-16s %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND p%d:%d -->\n", getpid(), zxlog_seq, file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, getpid(), zxlog_seq);
+  fprintf(zx_xml_debug_log, "<!-- XMLBEG %d:%d %10s:%-3d %-16s %s d %s %s len=%d -->\n%.*s\n<!-- XMLEND %d:%d %s -->\n", getpid(), zxlog_seq, file, line, func, ERRMAC_INSTANCE, errmac_indent, lk, len, len, xml, getpid(), zxlog_seq, lk);
 # endif
 #endif
   fflush(zx_xml_debug_log);

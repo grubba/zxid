@@ -53,7 +53,7 @@ char server_port_buf[32];
 char http_host_buf[256];
 char script_name_buf[256];
 
-#define SERVER_SOFTWARE "zxid_httpd " ZXID_REL " (based on mini_httpd/1.19 19dec2003)"
+#define SERVER_SOFTWARE "zxid_httpd/" ZXID_REL " (based on mini_httpd/1.19 19dec2003)"
 #define SERVER_URL "http://zxid.org/"
 
 #include <unistd.h>
@@ -193,9 +193,10 @@ static char* pidfile;
 static char* charset;
 static char* p3p;
 static int max_age;
+static int read_timeout = READ_TIMEOUT;
 static int write_timeout = WRITE_TIMEOUT;
 static FILE* logfp;
-static int listen4_fd, listen6_fd;
+static int listen_fd;
 static int do_ssl;
 static char* certfile;
 static char* cipher;
@@ -241,7 +242,6 @@ static void do_file(void);
 static void do_dir(void);
 static void do_cgi(void);
 static void cgi_interpose_input(int wfd);
-static void post_post_garbage_hack(void);
 static void cgi_interpose_output(int rfd, int parse_headers);
 static char** make_argp(void);
 static char** make_envp(void);
@@ -261,7 +261,7 @@ static void check_referer(void);
 
 /* Called by:  add_password, main x18 */
 static void usage(void) {
-  (void) fprintf(stderr, "usage:  %s [-S certfile] [-Y cipher] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage] [-WT write_timeout_secs] [-zx CONF]\n", argv0);
+  (void) fprintf(stderr, "usage:  %s [-S certfile] [-Y cipher] [-p port] [-d dir] [-dd data_dir] [-c cgipat] [-u user] [-h hostname] [-r] [-v] [-l logfile] [-i pidfile] [-T charset] [-P P3P] [-M maxage] [-RT read_timeout_secs] [-WT write_timeout_secs] [-zx CONF]\n", argv0);
   exit(1);
 }
 
@@ -392,18 +392,24 @@ static char* file_details(const char* dir, const char* name) {
 
 /* Called by:  cgi_interpose_input, handle_request, zxid_mini_httpd_read_post */
 ssize_t my_read(char* buf, size_t size) {
+  DD("size=%d", size);
   if (do_ssl)
-    return SSL_read(ssl, buf, size);
+    size = SSL_read(ssl, buf, size);
   else
-    return read(conn_fd, buf, size);
+    size = read(conn_fd, buf, size);
+  DD("got size=%d buf(%.*s)", size, MIN(size, 100), buf);
+  return size;
 }
 
 /* Called by:  cgi_interpose_output x6, send_response, send_via_write x2, zxid_mini_httpd_wsp_response x2 */
 ssize_t my_write(char* buf, size_t size) {
+  DD("size=%d buf(%.*s)", size, MIN(size, 100), buf);
   if (do_ssl)
-    return SSL_write(ssl, buf, size);
+    size = SSL_write(ssl, buf, size);
   else
-    return write(conn_fd, buf, size);
+    size = write(conn_fd, buf, size);
+  DD("wrote size=%d", size);
+  return size;
 }
 
 #ifdef HAVE_SENDFILE
@@ -936,8 +942,6 @@ int main(int argc, char** av)
   usockaddr host_addr4;
   usockaddr host_addr6;
   int gotv4, gotv6;
-  fd_set lfdset;
-  int maxfd;
   usockaddr usa;
   socklen_t sz;
   int an, r;
@@ -988,10 +992,11 @@ int main(int argc, char** av)
       (void) printf("%s\n", SERVER_SOFTWARE);
       exit(0);
     }
-    if (!strcmp(av[an], "-D")) /* ignore, zxid_httpd runs always in -D mode */ ;
+    if (!strcmp(av[an], "-D")) ++errmac_debug; /* zxid_httpd runs always in -D mode */
     else if (!strcmp(av[an], "-S") && an + 1 < argc)  { ++an; certfile = av[an]; do_ssl = 1; }
     else if (!strcmp(av[an], "-Y") && an + 1 < argc)  { ++an; cipher = av[an]; }
     else if (!strcmp(av[an], "-zx") && an + 1 < argc) { ++an; zxid_conf_str = av[an]; }
+    else if (!strcmp(av[an], "-RT") && an + 1 < argc) { ++an; read_timeout = atoi(av[an]); }
     else if (!strcmp(av[an], "-WT") && an + 1 < argc) { ++an; write_timeout = atoi(av[an]); }
     else if (!strcmp(av[an], "-p") && an + 1 < argc)  { ++an; port =(unsigned short)atoi(av[an]); }
     else if (!strcmp(av[an], "-d") && an + 1 < argc)  { ++an; dir = av[an]; }
@@ -1076,18 +1081,16 @@ int main(int argc, char** av)
 
   /* Initialize listen sockets.  Try v6 first because of a Linux peculiarity;
   ** like some other systems, it has magical v6 sockets that also listen for
-  ** v4, but in Linux if you bind a v4 socket first then the v6 bind fails.
-  */
-  if (gotv6) listen6_fd = initialize_listen_socket(&host_addr6);
-  else       listen6_fd = -1;
-  if (gotv4) listen4_fd = initialize_listen_socket(&host_addr4);
-  else       listen4_fd = -1;
+  ** v4, but in Linux if you bind a v4 socket first then the v6 bind fails. */
+  if (gotv6)
+    listen_fd = initialize_listen_socket(&host_addr6);
+  else if (gotv4)
+    listen_fd = initialize_listen_socket(&host_addr4);
+  else
+    listen_fd = -1;
   /* If we didn't get any valid sockets, fail. */
-  if (listen4_fd == -1 && listen6_fd == -1) {
-    syslog(LOG_CRIT, "can't bind to any address");
-    (void) fprintf(stderr, "%s: can't bind to any address\n", argv0);
-    exit(1);
-  }
+  if (listen_fd == -1)
+    die_perror("listen(2): can't bind to any address");
 
   if (do_ssl)	{
     SSL_load_error_strings();
@@ -1189,7 +1192,7 @@ int main(int argc, char** av)
     if (! do_chroot) {
       syslog(LOG_WARNING,
 	     "started as root without requesting chroot(), warning only");
-      (void) fprintf(stderr, "%s: started as root without requesting chroot(), warning only\n", argv0);
+      (void)fprintf(stderr, "%s: started as root without chroot(), warning only\n", argv0);
     }
   }
 #endif
@@ -1206,44 +1209,9 @@ int main(int argc, char** av)
       got_hup = 0;
     }
 
-    /* Do a select() on at least one and possibly two listen fds.
-    ** If there's only one listen fd then we could skip the select
-    ** and just do the (blocking) accept(), saving one system call;
-    ** that's what happened up through version 1.18.  However there
-    ** is one slight drawback to that method: the blocking accept()
-    ** is not interrupted by a signal call.  Since we definitely want
-    ** signals to interrupt a waiting server, we use select() even
-    ** if there's only one fd.
-    */
-    FD_ZERO(&lfdset);
-    maxfd = -1;
-    if (listen4_fd != -1) {
-      FD_SET(listen4_fd, &lfdset);
-      if (listen4_fd > maxfd)
-	maxfd = listen4_fd;
-    }
-    if (listen6_fd != -1) {
-      FD_SET(listen6_fd, &lfdset);
-      if (listen6_fd > maxfd)
-	maxfd = listen6_fd;
-    }
-    if (select(maxfd + 1, &lfdset, (fd_set*) 0, (fd_set*) 0, (struct timeval*) 0) < 0) {
-      if (errno == EINTR || errno == EAGAIN)
-	continue;	/* try again */
-      die_perror("select");
-    }
-
-    /* Accept the new connection. */
+    /* Accept the new connection (blocks). */
     sz = sizeof(usa);
-    if (listen4_fd != -1 && FD_ISSET(listen4_fd, &lfdset))
-      conn_fd = accept(listen4_fd, &usa.sa, &sz);
-    else if (listen6_fd != -1 && FD_ISSET(listen6_fd, &lfdset))
-      conn_fd = accept(listen6_fd, &usa.sa, &sz);
-    else {
-      syslog(LOG_CRIT, "select failure");
-      (void) fprintf(stderr, "%s: select failure\n", argv0);
-      exit(1);
-    }
+    conn_fd = accept(listen_fd, &usa.sa, &sz);
     if (conn_fd < 0) {
       if (errno == EINTR || errno == EAGAIN)
 	continue;	/* try again */
@@ -1270,11 +1238,10 @@ int main(int argc, char** av)
     if (r < 0) die_perror("fork");
     if (!r) {
       /* Child process. */
+      DD("child for handle_request() conn_fd=%d", conn_fd);
       client_addr = usa;
-      if (listen4_fd != -1)
-	(void) close(listen4_fd);
-      if (listen6_fd != -1)
-	(void) close(listen6_fd);
+      if (listen_fd != -1)
+	(void) close(listen_fd);
       handle_request();
       exit(0);
     }
@@ -1301,7 +1268,7 @@ static void handle_request(void)
 #else /* HAVE_SIGSET */
   (void) signal(SIGALRM, handle_read_timeout);
 #endif /* HAVE_SIGSET */
-  (void) alarm(READ_TIMEOUT);
+  (void) alarm(read_timeout);
 
   /* Initialize the request variables. */
   remoteuser = 0;
@@ -1353,7 +1320,7 @@ static void handle_request(void)
       continue;
     if (r <= 0)
       break;
-    (void) alarm(READ_TIMEOUT);
+    (void) alarm(read_timeout);
     add_to_request(buf, r);
     if (strstr(request, "\015\012\015\012") || strstr(request, "\012\012"))
       break;  /* Empty line ending headers detected. */
@@ -1707,12 +1674,12 @@ static void do_dir(void)
 		    file);
     fp = popen(command, "r");
     for (;;) {
-	size_t r;
-	r = fread(buf, 1, sizeof(buf), fp);
-	if (!r)
-	  break;
-	add_to_buf(&contents, &contents_size, &contents_len, buf, r);
-      }
+      size_t r;
+      r = fread(buf, 1, sizeof(buf), fp);
+      if (!r)
+	break;
+      add_to_buf(&contents, &contents_size, &contents_len, buf, r);
+    }
     (void) pclose(fp);
   }
 #endif /* HAVE_SCANDIR */
@@ -1750,12 +1717,11 @@ static int pipe_and_fork(int* p, const char* next_step_flag) {
   return 1;
 #else
   r = fork();
-  if (r < 0)
-    {
-      syslog(LOG_CRIT, "fork - %m");
-      perror("fork");
-      send_error_and_exit(500, "Internal Error", "", "Something unexpected went wrong forking an interposer.");
-    }
+  if (r < 0) {
+    syslog(LOG_CRIT, "fork - %m");
+    perror("fork");
+    send_error_and_exit(500, "Internal Error", "", "Something unexpected went wrong forking an interposer.");
+  }
   return r;
 #endif
 }
@@ -1765,8 +1731,9 @@ static void do_cgi(void) {
   char** argp;
   char** envp;
   int parse_headers;
-  char* binary;
+  char* cgi_binary;
   char* directory;
+  int p[2];
 
   if (*method != 'G' && *method != 'P')
     send_error_and_exit(501, "Not Implemented", "", "That method is not implemented for CGI.");
@@ -1776,8 +1743,7 @@ static void do_cgi(void) {
   ** below don't screw things up.  We arbitrarily pick fd 3 - if there
   ** was already something on it, we clobber it, but that doesn't matter
   ** since at this point the only fd of interest is the connection.
-  ** All others will be closed on exec.
-  */
+  ** All others will be closed on exec. */
   if (conn_fd == STDIN_FILENO || conn_fd == STDOUT_FILENO || conn_fd == STDERR_FILENO) {
     int newfd = dup2(conn_fd, STDERR_FILENO + 1);
     if (newfd >= 0)
@@ -1795,10 +1761,9 @@ static void do_cgi(void) {
 
   /* Set up stdin.  For POSTs we may have to set up a pipe from an
   ** interposer process, depending on if we've read some of the data
-  ** into our buffer.  We also have to do this for all SSL CGIs.
-  */
+  ** into our buffer.  We also have to do this for all SSL CGIs. */
   if ((*method == 'P' && request_len > request_idx) || do_ssl) {
-    int p[2];
+    DD("about to fork interpose_input p0=%d p1=%d", p[0], p[1]);
     if (!pipe_and_fork(p,"-cgiin-child")) {
       /* Child: Interposer process. */
       (void) close(p[0]);
@@ -1818,20 +1783,20 @@ static void do_cgi(void) {
   }
 
   /* Set up stdout/stderr.  For SSL, or if we're doing CGI header parsing,
-  ** we need an output interposer too.
-  */
+  ** we need an output interposer too.  */
   if (!strncmp(argp[0], "nph-", 4))
     parse_headers = 0;
   else
     parse_headers = 1;
   if (parse_headers || do_ssl) {
-    int p[2];
+    DD("about to fork interpose_output p0=%d p1=%d", p[0], p[1]);
     if (!pipe_and_fork(p,"-cgiout-child")) {
       /* Child: Interposer process. */
       (void) close(p[1]);
       cgi_interpose_output(p[0], parse_headers);
       exit(0);
     }
+    DD("Parent %d", p[0]);
     (void) close(p[0]);
     if (p[1] != STDOUT_FILENO)
       (void) dup2(p[1], STDOUT_FILENO);
@@ -1854,30 +1819,26 @@ static void do_cgi(void) {
   ** So we'll just leave the socket as is, which under other OSs means
   ** an extra file descriptor gets passed to the child process.  Since
   ** the child probably already has that file open via stdin stdout
-  ** and/or stderr, this is not a problem.
-  */
+  ** and/or stderr, this is not a problem. */
   /* (void) fcntl(conn_fd, F_SETFD, 1); */
 
-  /* Close the log file. */
+
   if (logfp)
-    (void) fclose(logfp);
+    (void) fclose(logfp);  /* Close the log file. */
 
-  /* Close syslog. */
-  closelog();
+  closelog();              /* Close syslog. */
 
-  /* Set priority. */
   (void) nice(CGI_NICE);
 
   /* Split the program into directory and binary, so we can chdir()
   ** to the program's own directory.  This isn't in the CGI 1.1
-  ** spec, but it's what other HTTP servers do.
-  */
+  ** spec, but it's what other HTTP servers do. */
   directory = e_strdup(file);
-  binary = strrchr(directory, '/');
-  if (binary)
-    binary = file;
+  cgi_binary = strrchr(directory, '/');
+  if (!cgi_binary)
+    cgi_binary = file;
   else {
-    *binary++ = '\0';
+    *cgi_binary++ = '\0';
     (void) chdir(directory);	/* ignore errors */
   }
 
@@ -1888,53 +1849,10 @@ static void do_cgi(void) {
   (void) signal(SIGPIPE, SIG_DFL);
 #endif /* HAVE_SIGSET */
 
-  /* Run the CGI script. */
-  (void) execve(binary, argp, envp);
-
-  /* Something went wrong. */
+  DD("about to exec CGI(%s)", cgi_binary);
+  fflush(stderr);
+  (void) execve(cgi_binary, argp, envp);  /* Run the CGI script. */
   send_error_and_exit(500, "Internal Error", "", "Something unexpected went wrong running a CGI program.");
-}
-
-/* This routine is used only for POST requests.  It reads the data
-** from the request and sends it to the child process.  The only reason
-** we need to do it this way instead of just letting the child read
-** directly is that we have already read part of the data into our
-** buffer.
-**
-** Oh, and it's also used for all SSL CGIs.
-*/
-/* Called by:  do_cgi, main */
-static void cgi_interpose_input(int wfd) {
-  size_t c;
-  ssize_t r, r2;
-  char buf[1024];
-
-  c = request_len - request_idx;
-  if (c > 0) {
-    if (write(wfd, &(request[request_idx]), c) != c)
-      return;
-  }
-  while (c < content_length) {
-    r = my_read(buf, MIN(sizeof(buf), content_length - c));
-    if (r < 0 && (errno == EINTR || errno == EAGAIN)) {
-      sleep(1);
-      continue;
-    }
-    if (r <= 0)
-      return;
-    for (;;) {
-      r2 = write(wfd, buf, r);
-      if (r2 < 0 && (errno == EINTR || errno == EAGAIN)) {
-	sleep(1);
-	continue;
-      }
-      if (r2 != r)
-	return;
-      break;
-    }
-    c += r;
-  }
-  post_post_garbage_hack();
 }
 
 /* Special hack to deal with broken browsers that send a LF or CRLF
@@ -1950,25 +1868,72 @@ static void post_post_garbage_hack(void) {
 
   if (do_ssl)
     /* We don't need to do this for SSL, since the garbage has
-    ** already been read.  Probably.
-    */
+    ** already been read.  Probably. */
     return;
 
   set_ndelay(conn_fd);
-  (void) read(conn_fd, buf, sizeof(buf));
+  (void)read(conn_fd, buf, sizeof(buf));
   clear_ndelay(conn_fd);
+}
+
+/* This routine is used only for POST requests.  It reads the data
+** from the request and sends it to the child process.  The only reason
+** we need to do it this way instead of just letting the child read
+** directly is that we have already read part of the data into our
+** buffer.
+**
+** Oh, and it's also used for all SSL CGIs.
+*/
+/* Called by:  do_cgi, main */
+static void cgi_interpose_input(int wfd)
+{
+  size_t cnt;
+  ssize_t got, r2;
+  char buf[1024];
+
+  cnt = request_len - request_idx;
+  DD("write wfd=%d buffered post cnt=%d content_length=%d", wfd, cnt, content_length);
+  if (cnt > 0) {
+    if ((r2 = write(wfd, request+request_idx, cnt)) != cnt)
+      return;
+  }
+  while ((int)cnt < (int)content_length) {  /* without the cast 0 < -1 seems to be true */
+    got = my_read(buf, MIN(sizeof(buf), content_length - cnt));
+    if (got < 0 && (errno == EINTR || errno == EAGAIN)) {
+      sleep(1);
+      continue;
+    }
+    if (got <= 0)
+      return;
+    for (;;) {
+      DD("writing input wfd=%d cnt=%d got=%d", wfd, cnt, got);
+      r2 = write(wfd, buf, got);
+      DD("got r2=%d", r2);
+      if (r2 < 0 && (errno == EINTR || errno == EAGAIN)) {
+	sleep(1);
+	continue;
+      }
+      if (r2 != got)
+	return;
+      break;
+    }
+    cnt += got;
+  }
+  D("done got=%d", got);
+  post_post_garbage_hack();
 }
 
 /* This routine is used for parsed-header CGIs and for all SSL CGIs. */
 /* Called by:  do_cgi, main */
-static void cgi_interpose_output(int rfd, int parse_headers) {
-  ssize_t r, r2;
-  char buf[1024];
+static void cgi_interpose_output(int rfd, int parse_headers)
+{
+  ssize_t got, r2;
+  char buf[4096];
 
-  if (! parse_headers) {
+  DD("ph=%d", parse_headers);
+  if (!parse_headers) {
     /* If we're not parsing headers, write out the default status line
-    ** and proceed to the echo phase.
-    */
+    ** and proceed to the echo phase. */
     char http_head[] = "HTTP/1.0 200 OK\015\012";
     (void) my_write(http_head, sizeof(http_head));
   } else {
@@ -1978,8 +1943,7 @@ static void cgi_interpose_output(int rfd, int parse_headers) {
     ** first line written out, we have to accumulate all the headers
     ** and check for the special ones before writing the status.  Then
     ** we write out the saved headers and proceed to echo the rest of
-    ** the response.
-    */
+    ** the response. */
     size_t headers_size, headers_len;
     char* headers;
     char* br;
@@ -1991,16 +1955,18 @@ static void cgi_interpose_output(int rfd, int parse_headers) {
     headers_size = 0;
     add_to_buf(&headers, &headers_size, &headers_len, 0, 0);
     for (;;) {
-      r = read(rfd, buf, sizeof(buf));
-      if (r < 0 && (errno == EINTR || errno == EAGAIN)) {
+      DD("read rfd=%d", rfd);
+      got = read(rfd, buf, sizeof(buf));
+      DD("got=%d (%.*s)", got, MIN(got, 100), buf);
+      if (got < 0 && (errno == EINTR || errno == EAGAIN)) {
 	sleep(1);
 	continue;
       }
-      if (r <= 0) {
+      if (got <= 0) {
 	br = &(headers[headers_len]);
 	break;
       }
-      add_to_buf(&headers, &headers_size, &headers_len, buf, r);
+      add_to_buf(&headers, &headers_size, &headers_len, buf, got);
       if ((br = strstr(headers, "\015\012\015\012")) ||
 	  (br = strstr(headers, "\012\012")))
 	break;
@@ -2064,25 +2030,28 @@ static void cgi_interpose_output(int rfd, int parse_headers) {
 
   /* Echo the rest of the output. */
   for (;;) {
-    r = read(rfd, buf, sizeof(buf));
-    if (r < 0 && (errno == EINTR || errno == EAGAIN)) {
+    DD("read rfd=%d", rfd);
+    got = read(rfd, buf, sizeof(buf));
+    DD("got=%d (%.*s)", got, MIN(got, 100), buf);
+    if (got < 0 && (errno == EINTR || errno == EAGAIN)) {
       sleep(1);
       continue;
     }
-    if (r <= 0)
+    if (got <= 0)
       goto done;
     for (;;) {
-      r2 = my_write(buf, r);
+      r2 = my_write(buf, got);
       if (r2 < 0 && (errno == EINTR || errno == EAGAIN)) {
 	sleep(1);
 	continue;
       }
-      if (r2 != r)
+      if (r2 != got)
 	goto done;
       break;
     }
   }
  done:
+  D("done conn_fd=%d", conn_fd);
   shutdown(conn_fd, SHUT_WR);
 }
 
@@ -2091,7 +2060,8 @@ static void cgi_interpose_output(int rfd, int parse_headers) {
 ** we scribble on query.
 */
 /* Called by:  do_cgi */
-static char** make_argp(void) {
+static char** make_argp(void)
+{
   char** argp;
   int an;
   char* cp1;
@@ -2099,8 +2069,7 @@ static char** make_argp(void) {
 
   /* By allocating an arg slot for every character in the query, plus
   ** one for the filename and one for the NULL, we are guaranteed to
-  ** have enough.  We could actually use strlen/2.
-  */
+  ** have enough.  We could actually use strlen/2.  */
   argp = (char**) malloc((strlen(query) + 2) * sizeof(char*));
   if (argp == (char**) 0)
     return (char**) 0;
@@ -2115,8 +2084,7 @@ static char** make_argp(void) {
   /* According to the CGI spec at http://hoohoo.ncsa.uiuc.edu/cgi/cl.html,
   ** "The server should search the query information for a non-encoded =
   ** character to determine if the command line is to be used, if it finds
-  ** one, the command line is not to be used."
-  */
+  ** one, the command line is not to be used."  */
   if (!strchr(query, '=')) {
     for (cp1 = cp2 = query; *cp2 != '\0'; ++cp2) {
       if (*cp2 == '+') {
@@ -2137,7 +2105,8 @@ static char** make_argp(void) {
 }
 
 /* Called by:  make_envp x23 */
-static char* build_env(char* fmt, char* arg) {
+static char* build_env(char* fmt, char* arg)
+{
   char* cp;
   int size;
   static char* buf;
@@ -2160,10 +2129,10 @@ static char* build_env(char* fmt, char* arg) {
 
 /* Set up CGI environment variables. Be real careful here to avoid
 ** letting malicious clients overrun a buffer.  We don't have
-** to worry about freeing stuff since we're a sub-process.
-*/
+** to worry about freeing stuff since we're a sub-process. */
 /* Called by:  do_cgi */
-static char** make_envp(void) {
+static char** make_envp(void)
+{
   static char* envp[50+200];
   int envn;
   char* cp;

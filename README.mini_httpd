@@ -19,7 +19,10 @@ Some of the "enhancements" in zxid_httpd over mini_httpd
 * Simplified mime type handling
 * Compiles on mingw (spawn support to replace fork)
 * Log files always in GMT (aka zulu or utc)
-* Simplified IPv4 vs. IPv6 handling, removed select
+* Simplified IPv4 vs. IPv6 handling, removed select. Basically
+  zxid_httpd can only be either IPv4 or IPv6, but not both, except
+  on OS that somehow magically make IPv6 socket server also IPv4.
+  If you need both, we recommend you start two daemons.
 * Compiled with SSL and ZXID by default
 * Supports compilation using dietlibc
 
