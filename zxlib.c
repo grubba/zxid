@@ -322,10 +322,19 @@ char* zx_alloc_vasprintf(struct zx_ctx* c, int* retlen, const char* f, va_list a
   char* s;
   char buf[2]; 
   va_copy(ap2, ap);
+  /* Windows _vsnprintf() is quite different (and broken IMHO) wrt return value of vsnprintf()
+   * http://msdn.microsoft.com/en-us/library/2ts7cx93.aspx
+   * However, while undocumented, passing NULL buffer and zero size (instead of
+   * the traditional buffer of size 1) seems to produce desired result - at least
+   * on recent Windows releases (2013, Win7?). */
+#if MINGW
+  len = vsnprintf(0, 0, f, ap2);
+#else
   len = vsnprintf(buf, 1, f, ap2);
+#endif
   va_end(ap2);
   if (len < 0) {
-    platform_broken_snprintf(len);
+    platform_broken_snprintf(len, __FUNCTION__, 1, f);
     if (retlen)
       *retlen = 0;
     s = ZX_ALLOC(c, 1);

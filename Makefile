@@ -158,6 +158,7 @@ LD_ALT?=$(CC)
 LD=$(LD_ALT)
 ARC?=ar -crs
 ARX?=ar -x
+STRIP?=strip
 GCOV?=gcov
 LCOV?=lcov
 ECHO?=echo
@@ -452,6 +453,7 @@ CC=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
 LD=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
 ARC=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -crs
 ARX=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -x
+STRIP=$(MINGWDIR)/bin/x86_64-w64-mingw32-strip
 PRECHECK_PREP=precheck_prep_win
 #CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
 CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
@@ -2051,6 +2053,10 @@ winclean:
 	del /Q *.obj c\*.obj
 
 .PHONY: winclean clean regen cleaner cleany miniclean cleanbin distclean docclean megatags tags
+
+strip_bins:
+	$(ECHO) $(STRIP) $(DEFAULT_EXE) $(ALL_EXE)
+	$(STRIP) $(DEFAULT_EXE) $(ALL_EXE)
 
 # zxcot -n -g http://federation.njedge.net/metadata/njedge-fed-metadata.xml
 

@@ -59,10 +59,10 @@ int close_file(fdtype fd, const char* logkey);
 /*() Report brokenness of snprintf() */
 
 /* Called by:  vname_from_path, write_all_fd_fmt, write_all_path_fmt, zx_alloc_vasprintf, zxbus_log_receipt, zxid_epr_path */
-void platform_broken_snprintf(int n)
+void platform_broken_snprintf(int n, const char* where, int maxlen, const char* fmt)
 {
   perror("snprintf");
-  D("Broken snprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", n);
+  D("Broken snprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d. Caller: %s, maxlen=%d, format(%s)", n, where, maxlen, fmt);
 }
 
 /*() Generate formatted file name path. Returns length of path or 0 on failure. */
@@ -73,7 +73,7 @@ int vname_from_path(char* buf, int buf_len, const char* name_fmt, va_list ap)
   int len = vsnprintf(buf, buf_len, name_fmt, ap);
   buf[buf_len-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   if (len < 0) {
-    platform_broken_snprintf(len);
+    platform_broken_snprintf(len, __FUNCTION__, buf_len, name_fmt);
     return 0;
   }
   return len;
@@ -388,7 +388,7 @@ int write_all_fd_fmt(fdtype fd, const char* logkey, int maxlen, char* buf, const
   buf[maxlen-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   va_end(ap);
   if (len < 0) {
-    platform_broken_snprintf(len);
+    platform_broken_snprintf(len, __FUNCTION__, maxlen-1, data_fmt);
     len = 0;
   }
   if (write_all_fd(fd, buf, len) == -1) {
@@ -427,7 +427,7 @@ int write_all_path_fmt(const char* logkey, int maxlen, char* buf, const char* pa
   buf[maxlen-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   va_end(ap);
   if (len < 0) {
-    platform_broken_snprintf(len);
+    platform_broken_snprintf(len, __FUNCTION__, maxlen-1, data_fmt);
     len = 0;
   }
   if (write_all_fd(fd, buf, len) == -1) {

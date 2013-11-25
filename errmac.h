@@ -833,7 +833,7 @@ extern char* assert_msg;
 /* Test XML boolean field (zx_str) for XML valid "true" values */
 #define XML_TRUE_TEST(x) ((x) && (x)->s && (((x)->len == 1 && (x)->s[0] == '1') || ((x)->len == 4 && !memcmp((x)->s, "true", 4))))
 
-void platform_broken_snprintf(int n);
+void platform_broken_snprintf(int n, const char* where, int maxlen, const char* fmt);
 
 #if 0
 /* Following come handy when printf(3) is broken or otherwise

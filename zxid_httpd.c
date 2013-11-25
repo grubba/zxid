@@ -264,6 +264,9 @@ static void die_oom() {
 
 /* Called by:  main x11, re_open_logfile */
 static void die_perror(const char* what) {
+#ifdef MINGW
+  ERR("WSAGetLastError=%d", WSAGetLastError());
+#endif
   perror(what);
   syslog(LOG_CRIT, "%s - %m", what);
   exit(1);
@@ -370,8 +373,7 @@ static char* file_details(const char* dir, const char* name) {
     return "???";
   (void) strftime(f_time, sizeof(f_time), "%d%b%Y %H:%M", localtime(&sb.st_mtime));
   str_copy_and_url_encode(encname, sizeof(encname), name);
-  (void) snprintf(
-		  buf, sizeof(buf), "<A HREF=\"%s\">%-32.32s</A>    %15s %14lld\n",
+  (void) snprintf(buf, sizeof(buf), "<A HREF=\"%s\">%-32.32s</A>    %15s %14lld\n",
 		  encname, name, f_time, (int64_t) sb.st_size);
   return buf;
 }
@@ -529,6 +531,35 @@ static void send_via_write(int fd, off_t size) {
     }
 }
 
+/* ------------- name resolution ----------- */
+
+/* Called by:  main */
+static void lookup_hostname(usockaddr* usa4P, size_t sa4_len, int* gotv4P, usockaddr* usa6P, size_t sa6_len, int* gotv6P) {
+  (void) memset(usa4P, 0, sa4_len);
+  usa4P->sa.sa_family = AF_INET;
+  usa4P->sa_in.sin_addr.s_addr = htonl(INADDR_ANY);
+  usa4P->sa_in.sin_port = htons(port);
+  *gotv4P = 1;
+  *gotv6P = 0; /* *** how do you bind INADDR_ANY for IP6? */
+}
+
+/* Called by:  auth_check, check_referer, do_dir, do_file x2, handle_read_timeout, handle_write_timeout, make_envp, make_log_entry, virtual_file */
+static char* ntoa(usockaddr* usaP) {
+#ifdef USE_IPV6
+  static char str[200];
+  if (getnameinfo(&usaP->sa, sockaddr_len(usaP), str, sizeof(str), 0, 0, NI_NUMERICHOST)) {
+    str[0] = '?';
+    str[1] = '\0';
+  } else if (IN6_IS_ADDR_V4MAPPED(&usaP->sa_in6.sin6_addr) && !strncmp(str, "::ffff:", 7))
+    /* Elide IPv6ish prefix for IPv4 addresses. */
+    (void) strcpy(str, &str[7]);
+
+  return str;
+#else /* USE_IPV6 */
+  return inet_ntoa(usaP->sa_in.sin_addr);
+#endif /* USE_IPV6 */
+}
+
 /* ------------- misc io tweaking ----------- */
 
 /* Called by:  initialize_listen_socket */
@@ -553,6 +584,38 @@ static size_t sockaddr_len(usockaddr* usaP) {
   default:
     return 0;	/* shouldn't happen */
   }
+}
+
+/* Called by:  main x2 */
+static int initialize_listen_socket(usockaddr* usaP)
+{
+  int listen_fd, i=1;
+
+  if (!sockaddr_check(usaP)) {
+    syslog(LOG_ERR, "unknown sockaddr family on listen socket - %d", usaP->sa.sa_family);
+    (void) fprintf(stderr, "%s: unknown sockaddr family on listen socket - %d\n",
+		   argv0, usaP->sa.sa_family);
+    return -1;
+  }
+
+  D("bind addr(%s) family=%d", ntoa(usaP), usaP->sa.sa_family);
+  listen_fd = socket(usaP->sa.sa_family, SOCK_STREAM, 6 /* tcp */);
+  if (listen_fd < 0) return ret_crit_perror("socket");
+  (void) fcntl(listen_fd, F_SETFD, 1);  /* close on exec (FD_CLOEXEC) */
+  if (setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, (void*) &i, sizeof(i)) < 0)
+    return ret_crit_perror("setsockopt SO_REUSEADDR");
+  if (bind(listen_fd, &usaP->sa, sockaddr_len(usaP)) < 0) return ret_crit_perror("bind");
+  if (listen(listen_fd, 1024) < 0) return ret_crit_perror("listen");
+
+#ifdef HAVE_ACCEPT_FILTERS
+  {
+    struct accept_filter_arg af;
+    (void) bzero(&af, sizeof(af));
+    (void) strcpy(af.af_name, ACCEPT_FILTER_NAME);
+    (void) setsockopt(listen_fd, SOL_SOCKET, SO_ACCEPTFILTER, (char*) &af, sizeof(af));
+  }
+#endif /* HAVE_ACCEPT_FILTERS */
+  return listen_fd;
 }
 
 /* Set NDELAY mode on a socket. */
@@ -581,68 +644,24 @@ static void clear_ndelay(int fd) {
   }
 }
 
-/* Called by:  main x2 */
-static int initialize_listen_socket(usockaddr* usaP)
-{
-  int listen_fd, i=1;
+/* Special hack to deal with broken browsers that send a LF or CRLF
+** after POST data, causing TCP resets - we just read and discard up
+** to 2 bytes.  Unfortunately this doesn't fix the problem for CGIs
+** which avoid the interposer process due to their POST data being
+** short.  Creating an interposer process for all POST CGIs is
+** unacceptably expensive. */
+/* Called by:  cgi_interpose_input */
+static void post_post_garbage_hack(void) {
+  char buf[2];
 
-  if (!sockaddr_check(usaP)) {
-    syslog(LOG_ERR, "unknown sockaddr family on listen socket - %d", usaP->sa.sa_family);
-    (void) fprintf(stderr, "%s: unknown sockaddr family on listen socket - %d\n",
-		   argv0, usaP->sa.sa_family);
-    return -1;
-  }
+  if (do_ssl)
+    /* We don't need to do this for SSL, since the garbage has
+    ** already been read.  Probably. */
+    return;
 
-  listen_fd = socket(usaP->sa.sa_family, SOCK_STREAM, 0);
-  if (listen_fd < 0) return ret_crit_perror("socket");
-  (void) fcntl(listen_fd, F_SETFD, 1);  /* close on exec (FD_CLOEXEC) */
-  if (setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, (void*) &i, sizeof(i)) < 0)
-    return ret_crit_perror("setsockopt SO_REUSEADDR");
-  if (bind(listen_fd, &usaP->sa, sockaddr_len(usaP)) < 0) return ret_crit_perror("bind");
-  if (listen(listen_fd, 1024) < 0) return ret_crit_perror("listen");
-
-#ifdef HAVE_ACCEPT_FILTERS
-  {
-    struct accept_filter_arg af;
-    (void) bzero(&af, sizeof(af));
-    (void) strcpy(af.af_name, ACCEPT_FILTER_NAME);
-    (void) setsockopt(listen_fd, SOL_SOCKET, SO_ACCEPTFILTER, (char*) &af, sizeof(af));
-  }
-#endif /* HAVE_ACCEPT_FILTERS */
-  return listen_fd;
-}
-
-/* ------------- name resolution ----------- */
-
-/* Called by:  main */
-static void lookup_hostname(usockaddr* usa4P, size_t sa4_len, int* gotv4P, usockaddr* usa6P, size_t sa6_len, int* gotv6P) {
-  (void) memset(usa4P, 0, sa4_len);
-  usa4P->sa.sa_family = AF_INET;
-  usa4P->sa_in.sin_addr.s_addr = htonl(INADDR_ANY);
-  usa4P->sa_in.sin_port = htons(port);
-  *gotv4P = 1;
-  *gotv6P = 0; /* *** how do you bind INADDR_ANY for IP6? */
-}
-
-/* Called by:  auth_check, check_referer, do_dir, do_file x2, handle_read_timeout, handle_write_timeout, make_envp, make_log_entry, virtual_file */
-static char* ntoa(usockaddr* usaP) {
-#ifdef USE_IPV6
-  static char str[200];
-
-  if (getnameinfo(&usaP->sa, sockaddr_len(usaP), str, sizeof(str), 0, 0, NI_NUMERICHOST)) {
-    str[0] = '?';
-    str[1] = '\0';
-  } else if (IN6_IS_ADDR_V4MAPPED(&usaP->sa_in6.sin6_addr) && !strncmp(str, "::ffff:", 7))
-    /* Elide IPv6ish prefix for IPv4 addresses. */
-    (void) strcpy(str, &str[7]);
-
-  return str;
-
-#else /* USE_IPV6 */
-
-  return inet_ntoa(usaP->sa_in.sin_addr);
-
-#endif /* USE_IPV6 */
+  set_ndelay(conn_fd);
+  (void)read(conn_fd, buf, sizeof(buf));
+  clear_ndelay(conn_fd);
 }
 
 /* ------------- mime ----------- */
@@ -1078,8 +1097,10 @@ int main(int argc, char** av)
   else
     listen_fd = -1;
   /* If we didn't get any valid sockets, fail. */
-  if (listen_fd == -1)
+  if (listen_fd == -1) {
+    D("gotv4=%d gotv6=%d  ip4(%s) ip6(%s)", gotv4, gotv6, ntoa(&host_addr4), ntoa(&host_addr6));
     die_perror("listen(2): can't bind to any address");
+  }
 
   if (do_ssl)	{
     SSL_load_error_strings();
@@ -1837,27 +1858,6 @@ static void do_cgi(void) {
   send_error_and_exit(500, "Internal Error", "", "Something unexpected went wrong launching a CGI program. Bad nonexistent path to CGI? No execute permission?");
 }
 
-/* Special hack to deal with broken browsers that send a LF or CRLF
-** after POST data, causing TCP resets - we just read and discard up
-** to 2 bytes.  Unfortunately this doesn't fix the problem for CGIs
-** which avoid the interposer process due to their POST data being
-** short.  Creating an interposer process for all POST CGIs is
-** unacceptably expensive.
-*/
-/* Called by:  cgi_interpose_input */
-static void post_post_garbage_hack(void) {
-  char buf[2];
-
-  if (do_ssl)
-    /* We don't need to do this for SSL, since the garbage has
-    ** already been read.  Probably. */
-    return;
-
-  set_ndelay(conn_fd);
-  (void)read(conn_fd, buf, sizeof(buf));
-  clear_ndelay(conn_fd);
-}
-
 /* This routine is used only for POST requests.  It reads the data
 ** from the request and sends it to the child process.  The only reason
 ** we need to do it this way instead of just letting the child read
@@ -2205,8 +2205,7 @@ void add_headers(int s, char* title, char* extra_header, char* me, char* mt, off
     add_to_response(buf, buflen);
   }
   if (bytes >= 0) {
-    buflen = snprintf(
-		      buf, sizeof(buf), "Content-Length: %lld\015\012", (int64_t) bytes);
+    buflen = snprintf(buf, sizeof(buf), "Content-Length: %lld\015\012", (int64_t) bytes);
     add_to_response(buf, buflen);
   }
   if (p3p != 0 && p3p[0] != '\0') {
@@ -2379,8 +2378,7 @@ static void auth_check(char* dirname)
 
   fp = fopen(authpath, "r");    /* Open the password file. */
   if (fp == (FILE*) 0) {
-    syslog(LOG_ERR, "%.80s auth file %.80s could not be opened - %m",
-	   ntoa(&client_addr), authpath);
+    syslog(LOG_ERR, "%.80s auth file %.80s could not be opened - %m",ntoa(&client_addr),authpath);
     send_error_and_exit(403, "Forbidden", "", "File is protected.");
   }
 
@@ -2452,9 +2450,9 @@ static int really_check_referer(void)
       lp = req_hostname;
       if (!lp)
 	/* Oops, no hostname.  Maybe it's an old browser that
-	** doesn't send a Host: header.  We could figure out
-	** the default hostname for this IP address, but it's
-	** not worth it for the few requests like this. */
+	 * doesn't send a Host: header.  We could figure out
+	 * the default hostname for this IP address, but it's
+	 * not worth it for the few requests like this. */
 	return 1;
     }
   }
@@ -2467,8 +2465,7 @@ static int really_check_referer(void)
   return 1;
 }
 
-/* Returns if it's ok to serve the url, otherwise generates an error
- * and exits. */
+/* Returns if it's ok to serve the url, otherwise generates an error and exits. */
 /* Called by:  do_dir, do_file */
 static void check_referer(void)
 {

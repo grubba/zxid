@@ -315,7 +315,7 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
 	       errmac_instance, STRNULLCHKD(sigval), res, op, arg?arg:"-");
   logbuf[len-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   if (n <= 0 || n >= len-3) {
-    if (n < 0) platform_broken_snprintf(n);
+    if (n < 0) platform_broken_snprintf(n, __FUNCTION__, len-3, "log line");
     D("Log buffer too short: %d chars needed", n);
     if (n <= 0)
       n = 0;
@@ -327,7 +327,7 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
       n = vsnprintf(p, len-n-2, fmt, ap);
       logbuf[len-1] = 0;  /* must terminate manually as on win32 nul term is not guaranteed */
       if (n <= 0 || n >= len-(p-logbuf)-2) {
-	if (n < 0) platform_broken_snprintf(n);
+	if (n < 0) platform_broken_snprintf(n, __FUNCTION__, len-n-2, fmt);
 	D("Log buffer truncated during format print: %d chars needed", n);
 	if (n <= 0)
 	  n = p-logbuf;

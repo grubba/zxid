@@ -354,7 +354,7 @@
 		errmac_instance, STRNULLCHKD(sigval), res, op, arg?arg:"-");
    logbuf[len-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
    if (n <= 0 || n >= len-3) {
-     if (n < 0)  platform_broken_snprintf(n);
+     if (n < 0)  platform_broken_snprintf(n, __FUNCTION__, len-3, "zxbus msg frame");
      D("Log buffer too short: %d chars needed", n);
      if (n <= 0)
        n = 0;
@@ -366,7 +366,7 @@
        n = vsnprintf(p, len-n-2, fmt, ap);
        logbuf[len-1] = 0;  /* must terminate manually as on win32 nul term is not guaranteed */
        if (n <= 0 || n >= len-(p-logbuf)-2) {
-	 if (n < 0)  platform_broken_snprintf(n);
+	 if (n < 0)  platform_broken_snprintf(n, __FUNCTION__, len-n-2, fmt);
 	 D("Log buffer truncated during format print: %d chars needed", n);
 	 if (n <= 0)
 	   n = p-logbuf;
@@ -1120,7 +1120,7 @@ static void zxbus_log_receipt(zxid_conf* cf, struct zxid_bus_url* bu, int mid_le
 		 errmac_instance, "O", "K", "RCPT",
 		 rcpt_len, rcpt);
   buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
-  if (len < 0) platform_broken_snprintf(len);
+  if (len < 0) platform_broken_snprintf(len, __FUNCTION__, sizeof(buf)-1, "zxbus receipt frame");
   name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "rcpt", cf->path);
   write2_or_append_lock_c_path(c_path, len, buf, 0,0, "zxbus_send_cmdf",SEEK_END,O_APPEND);
 }

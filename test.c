@@ -14,6 +14,8 @@ struct foo foox = { "A", {1,2,3,0}};
 
 int main(int argc, char** argv)
 {
+  int n;
+  char buf[1024];
   size_t cnt = 0;
   size_t cl = -1;
   printf("t0=%d (%d < %d)\n", (0 < -1), cnt, cl);
@@ -26,6 +28,24 @@ int main(int argc, char** argv)
   printf("t9=%d\n", (cnt < cl));
   printf("sizeof(struct foo)=%d sizeof(foox)=%d\n", sizeof(struct foo), sizeof(foox));
   printf("a(%s) b0(%d) b1(%d) b2(%d) b3(%d)\n", foox.a,foox.b[0],foox.b[1],foox.b[2],foox.b[3]);
+ 
+  n = snprintf(0,0,"see%s","foo");
+  printf("snprintf 0,0=%d\n", n);
+  n = snprintf(buf,0,"see%s","foo");
+  printf("snprintf b,0=%d\n", n);
+  n = snprintf(buf,1,"see%s","foo");
+  printf("snprintf b,1=%d\n", n);
+  n = snprintf(buf,sizeof(buf),"see%s","foo");
+  printf("snprintf b,s=%d\n", n);
+
+  n = _snprintf(0,0,"see%s","foo");
+  printf("_snprintf 0,0=%d\n", n);
+  n = _snprintf(buf,0,"see%s","foo");
+  printf("_snprintf b,0=%d\n", n);
+  n = _snprintf(buf,1,"see%s","foo");
+  printf("_snprintf b,1=%d\n", n);
+  n = _snprintf(buf,sizeof(buf),"see%s","foo");
+  printf("_snprintf b,s=%d\n", n);
   return 0;
 }
 
