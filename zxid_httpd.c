@@ -531,7 +531,31 @@ static void send_via_write(int fd, off_t size) {
     }
 }
 
-/* ------------- name resolution ----------- */
+/* ------------- name resolution & misc I/O tweaking ----------- */
+
+/* Called by:  initialize_listen_socket */
+static int sockaddr_check(usockaddr* usaP) {
+  switch (usaP->sa.sa_family) {
+  case AF_INET: return 1;
+#ifdef USE_IPV6
+  case AF_INET6: return 1;
+#endif /* USE_IPV6 */
+  default:
+    return 0;
+  }
+}
+
+/* Called by:  initialize_listen_socket, ntoa */
+static size_t sockaddr_len(usockaddr* usaP) {
+  switch (usaP->sa.sa_family) {
+  case AF_INET: return sizeof(struct sockaddr_in);
+#ifdef USE_IPV6
+  case AF_INET6: return sizeof(struct sockaddr_in6);
+#endif /* USE_IPV6 */
+  default:
+    return 0;	/* shouldn't happen */
+  }
+}
 
 /* Called by:  main */
 static void lookup_hostname(usockaddr* usa4P, size_t sa4_len, int* gotv4P, usockaddr* usa6P, size_t sa6_len, int* gotv6P) {
@@ -558,32 +582,6 @@ static char* ntoa(usockaddr* usaP) {
 #else /* USE_IPV6 */
   return inet_ntoa(usaP->sa_in.sin_addr);
 #endif /* USE_IPV6 */
-}
-
-/* ------------- misc io tweaking ----------- */
-
-/* Called by:  initialize_listen_socket */
-static int sockaddr_check(usockaddr* usaP) {
-  switch (usaP->sa.sa_family) {
-  case AF_INET: return 1;
-#ifdef USE_IPV6
-  case AF_INET6: return 1;
-#endif /* USE_IPV6 */
-  default:
-    return 0;
-  }
-}
-
-/* Called by:  initialize_listen_socket, ntoa */
-static size_t sockaddr_len(usockaddr* usaP) {
-  switch (usaP->sa.sa_family) {
-  case AF_INET: return sizeof(struct sockaddr_in);
-#ifdef USE_IPV6
-  case AF_INET6: return sizeof(struct sockaddr_in6);
-#endif /* USE_IPV6 */
-  default:
-    return 0;	/* shouldn't happen */
-  }
 }
 
 /* Called by:  main x2 */

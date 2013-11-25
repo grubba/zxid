@@ -53,11 +53,11 @@ Usage: zxcot [options] [cotdir]         # Gives listing of metadata\n\
                      HTTP_HOST=example.com:8443 SERVER_PORT=8443 SCRIPT_NAME=zxidhlo zxcot -m\n\
   -ci              IdP conf, synonym for -c IDP_ENA=1\n\
   -dirs            Create configuration directory hierarchy\n\
-  -a               Add metadata from stdin\n\
+  -a               Add (someone else's) metadata from stdin\n\
   -b               Register Web Service, add Service EPR from stdin\n\
   -bs              Register Web Service and Bootstrap, add Service EPR from stdin\n\
   -e endpoint abstract entid servicetype   Construct and dump EPR to stdout.\n\
-  -g URL           Do HTTP(S) GET to URL and add as metadata (if compiled w/libcurl)\n\
+  -g URL           Do HTTP(S) GET to URL (aka WKL) and add as metadata (if compiled w/libcurl)\n\
   -n               Dryrun. Do not actually add the metadata. Instead print it to stdout.\n\
   -s               Swap columns, for easier sorting by URL\n\
   -m               Output metadata of this installation (our own metadata). Caveat: If your\n\
@@ -569,7 +569,7 @@ static int zxid_lscot_line(zxid_conf* cf, int col_swap, const char* dcot, const 
   char* p;
   int got = read_all(ZXID_MAX_MD, buf, "zxcot line", 1, "%s%s", dcot, den);
   if (!got) {
-    ERR("Zero data in file(%s%s). If cot directory does not exist consider running zxmkdirs.sh", dcot, den);
+    ERR("Zero data in file(%s%s). If cot directory does not exist consider running zxcot -dirs", dcot, den);
     return 1;
   }
   p = buf;

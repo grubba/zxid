@@ -563,7 +563,7 @@ struct zx_str* zxlog_path(zxid_conf* cf,
   memcpy(p, "log/", sizeof("log/"));
   p += sizeof("log/")-1;
   if (stat(s, &st)) {
-    ERR("zxid log directory missing path(%s): giving up (stat: %d %s; euid=%d egid=%d). Consider checking permissions and running zxmkdirs.sh", s, errno, STRERROR(errno), geteuid(), getegid());
+    ERR("zxid log directory missing path(%s): giving up (stat: %d %s; euid=%d egid=%d). Consider checking permissions and running zxcot -dirs", s, errno, STRERROR(errno), geteuid(), getegid());
     goto nodir;
   }
   

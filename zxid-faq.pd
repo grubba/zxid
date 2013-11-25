@@ -623,6 +623,25 @@ This is because the IdP already set the session cookie (IdP sessions
 usually start with "MMSES") and the SP is errornously picking it up
 and then not finding the corresponding session in its session store.
 
+97.3.5 Using HTTP or SOCKS proxy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ZXID uses libcurl as its underlying HTTP client. Although ZXID does
+not offer any proxy related options, it respects the environment
+variables ~https_proxy~, ~all_proxy~, and ~no_proxy~, because libcurl sees
+them and uses them. Thus you can
+
+  all_proxy=corpproxy:1080 zxcot -g https://some.external.com/url
+  all_proxy=corpproxy:1080 zxcall ...
+
+or you can set the variables more permently
+
+  export all_proxy=corpproxy:1080
+  export no_proxy=localhost
+  zxcot -g https://external.url/
+
+See libcurl documentation at curl.haxx.se for more information.
+
 97.4 API Questions
 ------------------
 

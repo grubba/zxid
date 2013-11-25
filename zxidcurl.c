@@ -116,6 +116,8 @@ size_t zxid_curl_read_data(void *buffer, size_t size, size_t nmemb, void *userp)
  * given configuration object can have only one HTTP request active
  * at a time. If you need more parallelism, you need more configuration
  * objects.
+ *
+ * N.B. To use proxy, set environment variable all_proxy=proxyhost:port
  */
 
 /* Called by:  zxid_get_meta, zxid_sp_dig_oauth_sso_a7n */
