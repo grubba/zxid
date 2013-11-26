@@ -230,6 +230,21 @@ SO_LIBS+=$(LIBS)
 TARGET_FOUND=1
 endif
 
+ifeq ($(TARGET),diet-linux)
+DIETDIR=/usr/local/dietlibc-0.33
+SYSROOT=$(DIETDIR)/sysroot
+CC=$(DIETDIR)/bin/diet gcc
+LD=$(DIETDIR)/bin/diet gcc
+CDEF+=-DLINUX
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
+CINC= -I$(DIETDIR)/include
+LDFLAGS= -L$(DIETDIR)/lib-i386 -L$(DIETDIR)/lib
+LIBS+=-lpthread
+# Marks that target has been detected
+TARGET_FOUND=1
+endif
+
 ifeq ($(TARGET),xsol8)
 ### Cross compilation for Solaris 8 target (on Linux host). Invoke as `make TARGET=xsol8'
 # You must have the cross compiler installed in /apps/gcc/sol8 and in path. Similarily
