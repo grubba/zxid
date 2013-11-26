@@ -178,7 +178,7 @@ SHARED_CLOSE=-Wl,--no-whole-archive
 ### Form CFLAGS from its components
 CDEF+= -D_REENTRANT -DDEBUG
 CDEF+= -DMUTEX_DEBUG=1
-CFLAGS+= -g -fpic -fno-strict-aliasing
+CFLAGS+= -g -fPIC -fno-strict-aliasing
 #CFLAGS += -Os    # gcc-3.4.6 miscompiles with -Os on ix86 (2010 --Sampo)
 CFLAGS+= -fmessage-length=0
 CFLAGS+= -Wall -Wno-parentheses -Wno-unused-label -Wno-unknown-pragmas -Wno-char-subscripts
