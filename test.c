@@ -14,6 +14,7 @@ struct foo foox = { "A", {1,2,3,0}};
 
 int main(int argc, char** argv)
 {
+#if 0
   int n;
   char buf[1024];
   size_t cnt = 0;
@@ -37,7 +38,8 @@ int main(int argc, char** argv)
   printf("snprintf b,1=%d\n", n);
   n = snprintf(buf,sizeof(buf),"see%s","foo");
   printf("snprintf b,s=%d\n", n);
-
+#endif
+#ifdef MINGW
   n = _snprintf(0,0,"see%s","foo");
   printf("_snprintf 0,0=%d\n", n);
   n = _snprintf(buf,0,"see%s","foo");
@@ -46,6 +48,8 @@ int main(int argc, char** argv)
   printf("_snprintf b,1=%d\n", n);
   n = _snprintf(buf,sizeof(buf),"see%s","foo");
   printf("_snprintf b,s=%d\n", n);
+#endif
+  printf("c=%d\n", argc);
   return 0;
 }
 

@@ -42,6 +42,12 @@
 #include <zx/zxidutil.h>
 #include <zx/c/zxidvers.h>
 
+#ifdef MINGW
+/* apr.h defines these */
+#undef uid_t
+#undef gid_t
+#endif
+
 #include "ap_config.h"
 #include "ap_compat.h"
 #include "apr_strings.h"
