@@ -42,6 +42,8 @@ ZXID Home - Open Source IdM for the Masses - TAS3 Reference Implementation - Int
 <p><b>Download Old Releases</b>
 <i>(<a href="http://www.apache.org/licenses/">Apache2</a> licensed)</i>
 <br>
+<a href="zxid-1.18.tgz">zxid-1.18.tgz</a>
+<i>20131126 - Windows and dietlibc support fixes, zxid_httpd</i><br>
 <a href="zxid-1.16.tgz">zxid-1.16.tgz</a>
 <i>20131111 - new build system, Windows support fixes</i><br>
 <a href="zxid-1.15.tgz">zxid-1.15.tgz</a>
@@ -65,7 +67,7 @@ ZXID Home - Open Source IdM for the Masses - TAS3 Reference Implementation - Int
 <a href="zxid-0.79.tgz">zxid-0.79.tgz</a>
 <i>20110301 - Fixed leap day handling in zx_timegm()</i><br>
 <a href="zxid-0.78.tgz">zxid-0.78.tgz</a>
-<i>20110223 - Fixed faul handling in zxid_call()</i><br>
+<i>20110223 - Fixed fault handling in zxid_call()</i><br>
 <a href="zxid-0.77.tgz">zxid-0.77.tgz</a>
 <i>20110216 - IdP bug fixes TAS3 #493, #494</i><br>
 <a href="zxid-0.76.tgz">zxid-0.76.tgz</a>
@@ -93,9 +95,8 @@ ZXID Home - Open Source IdM for the Masses - TAS3 Reference Implementation - Int
 </span>
 
 <p><b>Download Binaries</b><br>
-<i>Coming soon, contributed packages welcome!</i>
-<!--a href="binaries.html">Binaries and Packages Page</a><br>
-<i>Win32, some Linux distros, FreeBSD</i-->
+<a href="bins.html">Binaries and Packages Page</a><br>
+<i>Windows, some Linux distros</i>
 
 <!--a href="/zxid-0.41-win32-bin.zip">zxid-0.41-win32-bin.zip</a-->
 
@@ -103,6 +104,41 @@ ZXID Home - Open Source IdM for the Masses - TAS3 Reference Implementation - Int
 
 <a href="http://www.tas3.eu/">TAS3 Official</a>, <a href="tas3/">ZXID-TAS3 (local)</a><br>
 <i>TAS3 Architecture Docs</i>
+
+</td>
+
+<td id=sep15>&nbsp;</td>
+
+<td id=col2 valign=top width="40%"> <!-- Col2: Destaque, user testemony -->
+
+<h3>Old Releases Page</h3>
+
+<b>BUG ALERT 20110301: Leap year calculation error in 0.78 and earlier</b>
+
+A leap year calculation error is causing SSO assertions to be rejected
+starting March 1, 2011. The telltale error message in log is
+
+<blockquote>
+t zxidsso.c:476 zxid_validate_cond zx E ssof: NotBefore rejected with
+slop of 39600. Time to validity 86400 secs. Our gettimeofday: 1298938582
+secs, remote: 1299024982 secs
+</blockquote>
+
+Best fix is to upgrade to 0.79 release or latest from anon git.
+
+If you can't upgrade, use the BEFORE_SLOP to ignore the problem, i.e. put in /var/zxid/zxid.conf
+
+<p><pre>   BEFORE_SLOP=170000</pre>
+
+Sorry about that,
+--Sampo
+<hr>
+
+</td>
+
+<td id=sep25>&nbsp;</td>
+
+<td id=col3 valign=top width="*"> <!-- Col3: Related, Partners, User testemony -->
 
 <p><b>Support</b><br>
 <a href="http://listproc.unh.edu/archives/zxid.user/">ZXID mailing list</a><br>
@@ -142,57 +178,16 @@ ZXID Home - Open Source IdM for the Masses - TAS3 Reference Implementation - Int
 
 <p class=dense><a href="html/zxid-faq.html">FAQ</a> -- Frequently Asked Questions
 
-<p class=dense><b>QA & Test Coverage</b><br>
-
-<p class=dense><a href="lcovhtml-0.73/zxid/index.html">LCOV Report on 0.73</a> (20101219)<br>Line-by-line test coverage now at 63.0%
-
 <p class=dense><b>Contact</b><br>
 <span class=small>Write to Sampo Kellomäki (sampo % zxidp.org)
 <i>No spam, please!</i></span>
 
-<p><a href="index-ol.html">Old home page</a>
-
-</td>
-
-<td id=sep15>&nbsp;</td>
-
-<td id=col2 valign=top width="40%"> <!-- Col2: Destaque, user testemony -->
-
-<h3>Old Releases Page</h3>
-
-<b>BUG ALERT 20110301: Leap year calculation error in 0.78 and earlier</b>
-
-A leap year calculation error is causing SSO assertions to be rejected
-starting March 1, 2011. The telltale error message in log is
-
-<blockquote>
-t zxidsso.c:476 zxid_validate_cond zx E ssof: NotBefore rejected with
-slop of 39600. Time to validity 86400 secs. Our gettimeofday: 1298938582
-secs, remote: 1299024982 secs
-</blockquote>
-
-Best fix is to upgrade to 0.79 release or latest from anon git.
-
-If you can't upgrade, use the BEFORE_SLOP to ignore the problem, i.e. put in /var/zxid/zxid.conf
-
-<p><pre>   BEFORE_SLOP=170000</pre>
-
-Sorry about that,
---Sampo
-<hr>
-
-</td>
-
-<td id=sep25>&nbsp;</td>
-
-<td id=col3 valign=top width="*"> <!-- Col3: Related, Partners, User testemony -->
-
-(snip)
+<p><a href="index-ol.html">Ancient home page</a>
 
 </td>
 
 </tr></table>
 
 <div id=botlegal>
-Copyright © 2006-2011 Sampo Kellomäki. All Rights Reserved. Updated 20110122.
+Copyright © 2006-2013 Sampo Kellomäki. All Rights Reserved. Updated 20131126.
 </div>

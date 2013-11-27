@@ -42,10 +42,8 @@ ZXID Home - Open Source IdM for the Masses - TAS3 Reference Implementation - Int
 <p><b>Download Source</b>
 <i>(<a href="http://www.apache.org/licenses/">Apache2</a> licensed)</i>
 <br>
-<a href="zxid-1.16.tgz">zxid-1.16.tgz</a>
-<i>20131111 - new build system, Windows support fixes</i><br>
-<a href="zxid-1.15.tgz">zxid-1.15.tgz</a>
-<i>20131031 - major new developments, multiple bug fixes</i><br>
+<a href="zxid-1.18.tgz">zxid-1.18.tgz</a>
+<i>20131126 - Windows and dietlibc support fixes, zxid_httpd</i><br>
 <a href="zxid-1.11.tgz">zxid-1.11.tgz</a>
 <i>20121114 - major new developments, wrt audit bus, multiple bug fixes</i><br>
 <a href="zxid-1.05.tgz">zxid-1.05.tgz</a>
@@ -60,7 +58,8 @@ ZXID Home - Open Source IdM for the Masses - TAS3 Reference Implementation - Int
 </span>
 
 <p><b>Download Binaries</b><br>
-<a href="bins.html">Binaries and Packages Page</a> - <i>Windows, some Linux distros</i>
+<a href="bins.html">Binaries and Packages Page</a><br>
+<i>Windows, some Linux distros</i>
 
 <!--a href="/zxid-0.41-win32-bin.zip">zxid-0.41-win32-bin.zip</a-->
 
@@ -117,34 +116,11 @@ ZXID Home - Open Source IdM for the Masses - TAS3 Reference Implementation - Int
 <span class=small>Write to Sampo Kellomäki (sampo % zxidp.org)
 <i>No spam, please!</i></span>
 
-<p><a href="index-ol.html">Old home page</a>
-
 </td>
 
 <td id=sep15>&nbsp;</td>
 
 <td id=col2 valign=top width="40%"> <!-- Col2: Destaque, user testemony -->
-
-<!--b>BUG ALERT 20110301: Leap year calculation error</b>
-
-A leap year calculation error is causing SSO assertions to be rejected
-starting March 1, 2011. The telltale error message in log is
-
-<blockquote>
-t zxidsso.c:476 zxid_validate_cond zx E ssof: NotBefore rejected with
-slop of 39600. Time to validity 86400 secs. Our gettimeofday: 1298938582
-secs, remote: 1299024982 secs
-</blockquote>
-
-Best fix is to upgrade to 0.79 release or latest from anon git.
-
-If you can't upgrade, use the BEFORE_SLOP to ignore the problem, i.e. put in /var/zxid/zxid.conf
-
-<p><pre>   BEFORE_SLOP=170000</pre>
-
-Sorry about that,
---Sampo
-<hr-->
 
 <h3>TAS3 Architecture Explained (Video, 15min)</h3>
 <p>
@@ -339,7 +315,7 @@ ZXID uses <a href="http://swig.org/">SWIG</a> to generate its language bindings.
 </tr></table>
 
 <div id=botlegal>
-Copyright © 2006-2012 Sampo Kellomäki. All Rights Reserved. Updated 20121114.
+Copyright © 2006-2013 Sampo Kellomäki. All Rights Reserved. Updated 20131126.
 </div>
 <script type="text/javascript"><!--
 function vis(el, state) { document.getElementById(el).style.display=state?"block":"none"; }
