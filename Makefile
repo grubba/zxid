@@ -2063,7 +2063,7 @@ regen: clean perlcleaner phpcleaner pycleaner rubycleaner csharpcleaner javaclea
 #      zxid to be built without the tools needed to generate those files.
 clean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean cleanbin
 	@$(ECHO) ------------------ Making clean
-	rm -f *.o c/*.o *.obj c/*.obj
+	rm -f *.o */*.o *.obj */*.obj
 	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar ak.*
 
 winclean:

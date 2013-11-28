@@ -499,7 +499,7 @@ int zxcall_main(int argc, char** argv, char** env)
       return 2;
     }
     if (verbose)
-      fprintf(stderr, "Call returned %d bytes.\n", ss->len);
+      fprintf(stderr, "Done. Call returned %d bytes.\n", ss->len);
     if (out_fmt) {
       p = zxid_extract_body(cf, ss->s);
       printf("%s", p);
