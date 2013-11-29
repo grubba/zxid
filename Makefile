@@ -401,7 +401,7 @@ LIBZXID=-L. -lzxiddll
 endif
 # -lws2_32  -lmingw32  -u _imp__curl_easy_setopt -u _imp__curl_easy_strerror
 SO_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
-LIBS= -mconsole $(WIN_LIBS)
+LIBS= -mconsole $(SO_LIBS)
 # --dll  -mdll
 #SHARED_FLAGS=-shared --export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,--whole-archive
 SHARED_FLAGS= -shared -Wl,--add-stdcall-alias --export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition

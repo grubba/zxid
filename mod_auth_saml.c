@@ -81,6 +81,24 @@ static void chldinit(apr_pool_t* p, server_rec* s)
 }
 #endif
 
+static void set_cookies(zxid_conf* cf, request_rec* r, const char* setcookie, const char* setptmcookie)
+{
+  if (setcookie && setcookie[0] && setcookie[0] != '-') {
+    /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
+    D("Set-Cookie(%s)", setcookie);
+    apr_table_addn(r->headers_out, "Set-Cookie", setcookie);
+    apr_table_addn(r->err_headers_out, "Set-Cookie", setcookie);  /* Only way to get redir to set header */
+    apr_table_addn(r->headers_in,  "Set-Cookie", setcookie);  /* So subrequest can pick them up! */
+  }
+  if (setptmcookie && setptmcookie[0] && setptmcookie[0] != '-') {
+    /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
+    D("PTM Set-Cookie(%s)", setptmcookie);
+    apr_table_addn(r->headers_out, "Set-Cookie", setptmcookie);
+    apr_table_addn(r->err_headers_out, "Set-Cookie", setptmcookie);  /* Only way to get redir to set header */
+    apr_table_addn(r->headers_in,  "Set-Cookie", setptmcookie);  /* So subrequest can pick them up! */
+  }
+}
+
 /* ------------------------ Run time action -------------------------- */
 
 /*() Convert session attribute pool into Apache execution environment
@@ -177,21 +195,8 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
     }
   }
 #endif
-  
-  if (setcookie && setcookie[0] && setcookie[0] != '-') {
-    /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
-    D("Set-Cookie(%s)", setcookie);
-    apr_table_addn(r->headers_out, "Set-Cookie", setcookie);
-    apr_table_addn(r->err_headers_out, "Set-Cookie", setcookie);  /* Only way to get redir to set header */
-    apr_table_addn(r->headers_in,  "Set-Cookie", setcookie);  /* So subrequest can pick them up! */
-  }
-  if (setptmcookie && setptmcookie[0] && setptmcookie[0] != '-') {
-    /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
-    D("PTM Set-Cookie(%s)", setptmcookie);
-    apr_table_addn(r->headers_out, "Set-Cookie", setptmcookie);
-    apr_table_addn(r->err_headers_out, "Set-Cookie", setptmcookie);  /* Only way to get redir to set header */
-    apr_table_addn(r->headers_in,  "Set-Cookie", setptmcookie);  /* So subrequest can pick them up! */
-  }
+
+  set_cookies(cf, r, setcookie, setptmcookie);  
   if (cookie && cookie[0] != '-') {
     D("Cookie(%s) 2", cookie);
     apr_table_addn(r->headers_in, "Cookie", cookie);  /* so internal redirect sees it */
@@ -512,10 +517,12 @@ process_zxid_simple_outcome:
   case 'L':
     if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
     apr_table_setn(r->headers_out, "Location", res+10);
+    set_cookies(cf, r, ses.setcookie, ses.setptmcookie);  
     D_DEDENT("chkuid: ");
     return HTTP_SEE_OTHER;
   case 'C':
     if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("CONTENT(%s)", res);
+    set_cookies(cf, r, ses.setcookie, ses.setptmcookie);  
     ret = send_res(cf, r, res);
     D_DEDENT("chkuid: ");
     return ret;
