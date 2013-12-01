@@ -130,6 +130,7 @@ public class zxidwspdemo extends HttpServlet {
 	// Perform a application dependent authorization step and ship the response
 
 	if (zxidjni.az_cf_ses(cf, "Action=Call", ses) == null) {
+	    System.err.print("Explicit Az fail\n");		
 	    ret = zxidjni.wsp_decorate(cf, ses, "Resource=demo:fail",
 				       "<barfoo>"
 				       + "<lu:Status code=\"Fail\" comment=\"Denied\"></lu:Status>"

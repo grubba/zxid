@@ -975,7 +975,7 @@ char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey)
     gotall = 128 >> 3; /* 128 bits as bytes */
     zx_rand(buf, gotall);
     um = umask(0077);  /* Key material should be readable only by owner */
-    INFO("gotall=%d %s", gotall);
+    INFO("gotall=%d", gotall);
     hexdmp("symkey ", buf, gotall, 16);
     write_all_path_fmt("auto_cert", sizeof(buf), buf,
 		       "%s" ZXID_PEM_DIR "%s", cf->path, keyname, "%.*s", gotall, buf);

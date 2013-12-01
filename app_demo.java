@@ -73,7 +73,7 @@ public class app_demo extends HttpServlet {
 	//cf = zxidjni.new_conf_to_cf(conf);
 	//zxidjni.set_opt(cf, 1, 1);
 	try {
-	    ptm = ReadAll("ptm-include.html");
+	    ptm = ReadAll("ptm-include.html");  // in /var/lib/tomcat6/, restart tomcat for update
 	} catch(IOException e) {
 	    System.err.print("File not found(ptm-include.html)\n");
 	    System.err.print("Working Directory(" + System.getProperty("user.dir") + ")\n");

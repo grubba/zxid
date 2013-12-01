@@ -15,6 +15,7 @@
  * 20.6.2011, improved error reporting to show cwd in vopen_fd_from_path() --Sampo
  * 17.8.2012, added socket specific utilities --Sampo
  * 21.6.2013, added wild card matcher --Sampo
+ * 30.11.2013, fixed read 1 past end in base64_fancy_raw() found by valgrind --Sampo
  */
 
 #include "platform.h"
@@ -146,7 +147,7 @@ fdtype open_fd_from_path(int flags, int mode, const char* logkey, int reperr, co
  * want is satisfied or error happens. May block (though usually will not if
  * the file is in cache or local disk) in process. Buffer p must have been allocated.
  * Return value reflects last got, i.e. what last read(2) system call returned.
- * got_all reflects the total number of bytes received. */
+ * got_all reflects the total number of bytes received. Does not nul terninate. */
 
 /* Called by: */
 int read_all_fd(fdtype fd, char* p, int want, int* got_all)
@@ -749,10 +750,10 @@ char* base64_fancy_raw(const char* p, int len, /* input and its length */
   
   /* Post processing to handle the last line, which is often incomplete. */
   
-  c1 = *p++;
   switch (len) {
   case 2:
-    c2 = *p++;  // *** len==1 causes bug if no null term
+    c1 = *p++;
+    c2 = *p;
     *r++ = basis_64[c1>>2];
     *r++ = basis_64[((c1 & 0x0003)<< 4) | ((c2 & 0x00f0) >> 4)];
     *r++ = basis_64[(c2 & 0x000f) << 2];
@@ -760,6 +761,7 @@ char* base64_fancy_raw(const char* p, int len, /* input and its length */
       *r++ = eq_pad;
     break;
   case 1:
+    c1 = *p;
     *r++ = basis_64[c1>>2];
     *r++ = basis_64[(c1 & 0x0003)<< 4];
     if (eq_pad) {
@@ -1179,6 +1181,9 @@ scan_end:
     qs += strcspn(qs, "&\n\r"); /* Scan until '&' or end of line */
     goto again;
   }
+
+  if (*qs == '[')                                /* Section header line, treat like comment */
+    goto scan_end;
 
   for (; *qs == '&'; ++qs) ;                     /* Skip over & or && */
   if (!*qs)

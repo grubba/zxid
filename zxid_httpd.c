@@ -575,8 +575,7 @@ static char* ntoa(usockaddr* usaP) {
     str[0] = '?';
     str[1] = '\0';
   } else if (IN6_IS_ADDR_V4MAPPED(&usaP->sa_in6.sin6_addr) && !strncmp(str, "::ffff:", 7))
-    /* Elide IPv6ish prefix for IPv4 addresses. */
-    (void) strcpy(str, &str[7]);
+    (void) strcpy(str, &str[7]);     /* Elide IPv6ish prefix for IPv4 addresses. */
 
   return str;
 #else /* USE_IPV6 */
@@ -954,7 +953,6 @@ int main(int argc, char** av)
   int an, r;
   char* cp;
   
-  /* Parse args. */
   argv0 = av[0];
   port = 0;
   dir = 0;
@@ -975,6 +973,9 @@ int main(int argc, char** av)
   logfp = 0;
   do_ssl = 0;
   cipher = 0;
+  memset(&usa, 0, sizeof(usa));  /* *** avoid valgrind complaints */
+
+  /* Parse args. */
   for (an = 1; an < argc && av[an][0] == '-'; ++an) {
 #ifdef MINGW
     if (!strcmp(av[an], "-child")) {
@@ -1562,7 +1563,7 @@ static void do_file(void) {
   const char* mime_type;
   char fixed_mime_type[500];
   char* cp;
-  int fd;
+  int fd,len;
 
   /* Check authorization for this directory. */
   (void) strncpy(buf, file, sizeof(buf));
@@ -1574,9 +1575,11 @@ static void do_file(void) {
   auth_check(buf);
 
   /* Check if the filename is the AUTH_FILE itself - that's verboten. */
-  if (!strcmp(file, AUTH_FILE) ||
-      (!strcmp(&(file[strlen(file) - sizeof(AUTH_FILE) + 1]), AUTH_FILE) &&
-       file[strlen(file) - sizeof(AUTH_FILE)] == '/')) {
+  len = strlen(file);
+  if (len >= sizeof(AUTH_FILE)-1
+      &&(!strcmp(file, AUTH_FILE) ||
+	 (!strcmp(&(file[len - sizeof(AUTH_FILE) + 1]), AUTH_FILE) &&
+	  file[len - sizeof(AUTH_FILE)] == '/'))) {
     syslog(LOG_NOTICE, "%.80s URL \"%.80s\" tried to retrieve an auth file",
 	   ntoa(&client_addr), path);
     send_error_and_exit(403, "Forbidden", "", "File is protected. 1");
@@ -1868,7 +1871,8 @@ static void do_cgi(void) {
 static void cgi_interpose_input(int wfd)
 {
   size_t cnt;
-  ssize_t got, r2;
+  ssize_t r2;
+  ssize_t got = 0;
   char buf[1024];
 
   cnt = request_len - request_idx;
@@ -2148,6 +2152,7 @@ static char** make_envp(void)
   }
   if (authorization)                envp[envn++] = build_env("AUTH_TYPE=%s", "Basic");
   if (cp = getenv("TZ"))            envp[envn++] = build_env("TZ=%s", cp);
+  if (cp = getenv("MALLOC_CHECK_")) envp[envn++] = build_env("MALLOC_CHECK_=%s", cp);
   if (paos[0] != '\0')              envp[envn++] = build_env("HTTP_PAOS=%s", paos);
   if (cp = getenv("ZXID_PRE_CONF")) envp[envn++] = build_env("ZXID_PRE_CONF=%s", cp);
   if (cp = getenv("ZXID_CONF"))     envp[envn++] = build_env("ZXID_CONF=%s", cp);

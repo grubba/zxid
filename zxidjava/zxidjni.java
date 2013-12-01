@@ -2236,12 +2236,12 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_bus_rcpt_get(zxid_conf.getCPtr(self));
   }
 
-  public static void conf_pad5_set(zxid_conf self, char value) {
-    zxidjniJNI.zxid_conf_pad5_set(zxid_conf.getCPtr(self), value);
+  public static void conf_az_fail_mode_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_az_fail_mode_set(zxid_conf.getCPtr(self), value);
   }
 
-  public static char conf_pad5_get(zxid_conf self) {
-    return zxidjniJNI.zxid_conf_pad5_get(zxid_conf.getCPtr(self));
+  public static char conf_az_fail_mode_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_az_fail_mode_get(zxid_conf.getCPtr(self));
   }
 
   public static void conf_pad6_set(zxid_conf self, char value) {

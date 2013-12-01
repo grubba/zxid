@@ -1,4 +1,5 @@
 /* zxlibdec.c  -  Utility functions for generated decoders
+ * Copyright (c) 2013 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -17,6 +18,7 @@
  * 26.5.2010, added XML parse error reporting --Sampo
  * 27.10.2010, forked from zxlib.c, re-engineered namespace handling --Sampo
  * 20.11.2010, reengineered for unified simplifed decoder --Sampo
+ * 30.11.2013, fixed bondary condition of loop looking one past end (found by valgrind) --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for snprintf(), va_copy() et al. */
@@ -72,7 +74,7 @@ static int zx_scan_data(struct zx_ctx* c, struct zx_elem_s* el)
 {
   struct zx_str* ss;
   const char* d = c->p;
-  if (c->p)
+  if (*c->p)
     ZX_LOOK_FOR(c,'<');
   ss = ZX_ZALLOC(c, struct zx_str);
   ss->len = c->p - d;
@@ -150,10 +152,10 @@ static const char* zx_scan_elem_start(struct zx_ctx* c, const char* func)
   const char* name = c->p;
   int len = strcspn(c->p, " >/\n\r\t");
   c->p += len;
-  /*for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;*/
-  if (*c->p)
+  /*for (++c->p; c->p<c->lim && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;*/
+  if (c->p < c->lim)
     return name;
-  ERR("%s: Incomplete %s", func, name);
+  ERR("%s: Incomplete %.*s", func, ((int)(c->lim-name)), name);
   return 0;
 }
 
@@ -165,6 +167,8 @@ static int zx_scan_elem_end(struct zx_ctx* c, const char* start, const char* fun
   const char* name;
   const char* errloc;
   ++c->p;
+  if (c->p >= c->lim)
+    goto look_for_not_found;
   name = c->p;
   ZX_LOOK_FOR(c,'>');
   if (memcmp(start?start:"", name, c->p-name))	{
@@ -350,19 +354,21 @@ void zx_reverse_elem_lists(struct zx_elem_s* x)
 static const char* zx_dec_attr_val(struct zx_ctx* c, const char* func)
 {
   const char* data;
-  char quote;
-  quote = '=';
+  char quote = '=';
   ZX_LOOK_FOR(c,'=');
   
   ++c->p;
+  if (c->p >= c->lim)
+    goto look_for_not_found;
   if (!ONE_OF_2(*c->p, '"', '\'')) {
     zx_xml_parse_err(c, *c->p, func, "zx_dec_attr_val: Did not find expected quote char (single or double), saw");
     return 0;
   }
   quote = *c->p;
   ++c->p;
+  if (c->p >= c->lim)
+    goto look_for_not_found;
   data = c->p;	
-  
   ZX_LOOK_FOR(c, quote);
   return data;
  look_for_not_found:
@@ -543,7 +549,7 @@ void zx_DEC_elem(struct zx_ctx* c, struct zx_elem_s* x)
   if (x->g.tok != zx_root_ELEM) {
     /* The tag name has already been detected. Process attributes until '>' */
     
-    for (; c->p; ++c->p) {
+    for (; c->p < c->lim; ++c->p) {
       tok = zx_attr_lookup(c, x);
       switch (tok) {
       case ZX_TOK_XMLNS: break;
@@ -557,23 +563,27 @@ void zx_DEC_elem(struct zx_ctx* c, struct zx_elem_s* x)
       }
     }
 no_attr:
-    if (c->p) {
+    if (c->p < c->lim) {
       ++c->p;
-      if (c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
+      if (c->p < c->lim && c->p[-1] == '/' && c->p[0] == '>') {  /* <Tag/> without content */
 	++c->p;
 	goto out;
       }
     }
   }
 
-  /* Process contents until '</' */
+  /* Process contents until '</' or end of string nul */
   
-  while (c->p) {
+  while (1) {
   next_elem:
+    if (c->p >= c->lim)
+      goto out;
     /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
     if (*c->p == '<') {
     potential_tag:
       ++c->p;
+      if (c->p >= c->lim)
+	goto out;
       switch (*c->p) {
       case '?':  /* processing instruction <?xml ... ?> */
       case '!':  /* comment <!-- ... --> */

@@ -355,7 +355,8 @@ struct zxid_conf {
   char  idp_pxy_ena;
   char  oaz_jwt_sigenc_alg;  /* What signature and encryption to apply to issued JWT (OAUTH2) */
   char  bus_rcpt;            /* Audit Bus receipt enable and signing flags */
-  char  pad5; char pad6; char pad7;
+  char  az_fail_mode;        /* What to do when authorization can not be done */
+  char  pad6; char  pad7;
 
 #ifdef USE_CURL
   CURL* curl;

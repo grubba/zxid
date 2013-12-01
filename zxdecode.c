@@ -45,7 +45,7 @@ Usage: zxdecode [options] <message >decoded\n\
   -s               Enable signature validation step (reads config from -c, see below)\n\
   -s -s            Only validate hashes (check canon), do not fetch meta or check RSA\n\
   -r               Decode and validate already decoded SAML2 reponse, e.g. from audit trail\n\
-  -c CONF          For -s, optional configuration string (default -c PATH=/var/zxid/)\n\
+  -c CONF          For -s, optional configuration string (default -c CPATH=/var/zxid/)\n\
                    Most of the configuration is read from " ZXID_CONF_PATH "\n\
   -wscp            Call zxid_wsc_prepare_call() on SOAP request\n\
   -wspv            Call zxid_wsp_validate() on SOAP request\n\

@@ -149,6 +149,25 @@ char* zxid_saml2_map_authn_ctx(char* c)
   return c;
 }
 
+/*() cgi->rs will be copied to ses->rs and from there in ab_pep to resource-id.
+ * We compress and safe_base64 encode it to protect any URL special characters. */
+void zxid_sso_set_relay_state_to_return_to_this_url(zxid_conf* cf, zxid_cgi* cgi)
+{
+  struct zx_str* ss;
+  D("Previous rs(%s)", STRNULLCHKD(cgi->rs));
+  if (!cgi->rs || !cgi->rs[0]) {
+    if (!cgi->uri_path) {
+      ERR("null or empty cgi->uri_path=%p qs(%s) programming error", cgi->uri_path, STRNULLCHK(cgi->qs));
+      if (!cgi->uri_path)
+	cgi->uri_path = "";
+    }
+    ss = zx_strf(cf->ctx, "%s%c%s", cgi->uri_path, cgi->qs&&cgi->qs[0]?'?':0, STRNULLCHK(cgi->qs));
+    cgi->rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, ss->s);
+    D("rs(%s) from(%s) uri_path(%s) qs(%s)",cgi->rs,ss->s,cgi->uri_path,STRNULLCHKD(cgi->qs));
+    zx_str_free(cf->ctx, ss);
+  }
+}
+
 /*(i) Generate an authentication request and make a URL out of it.
  * cf::     Used for many configuration options and memory allocation
  * cgi::    Used to pick the desired SSO profile based on hidden fields or user
@@ -165,7 +184,8 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
   int sso_profile_ix;
   zxid_entity* idp_meta;
   D_INDENT("start_sso: ");
-  D("cgi=%p cgi->eid=%p eid(%s)", cgi, cgi->eid, cgi->eid?cgi->eid:"-");
+  D("cgi=%p cgi->eid=%p eid(%s)", cgi, cgi->eid, STRNULLCHKD(cgi->eid));
+  zxid_sso_set_relay_state_to_return_to_this_url(cf, cgi);
   if (!cgi->pr_ix || !cgi->eid || !cgi->eid[0]) {
     D("Either protocol index or entity ID missing %d", cgi->pr_ix);
     cgi->err = "IdP URL Missing or incorrect";
@@ -272,7 +292,7 @@ struct zx_str* zxid_start_sso_location(zxid_conf* cf, zxid_cgi* cgi)
   struct zx_str* ss;
   struct zx_str* url = zxid_start_sso_url(cf, cgi);
   if (!url)
-    return 0; //zx_dup_str(cf->ctx, "* ERR");
+    return 0;
   ss = zx_strf(cf->ctx, "Location: %.*s" CRLF2, url->len, url->s);
   zx_str_free(cf->ctx, url);
   return ss;

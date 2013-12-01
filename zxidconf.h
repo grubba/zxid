@@ -75,14 +75,20 @@
  *
  * VPATH is not really a configuration option on its own right (there is
  * no corresponding entry in struct zxid_conf), but rather a directive
- * that instructs on point of occurrance the PATH variable (see zxid.h)
+ * that instructs on point of occurrance of the PATH variable (see zxid.h)
  * to change and configuration file to be read.
  *
  * Default value: "%h/" (see definition of PATH for example).
- * See also: VURL
+ * See also: VURL, INCLUDE
  */
 
 #define ZXID_VPATH "%h/"
+
+/*(c) INCLUDE=file  - Include a file into configuration.
+ * This is an alternative to VPATH and inheritance for implementing multiple
+ * entities that share some common configutation, e.g. CONTACT metadata items. */
+
+/*(c) OPT_INCLUDE=file - Like INCLUDE but does not fail if the file is missing */
 
 /*(c) SP Nickname for IdP User Interface
  * IMPORTANT: You should really configure this option.
@@ -844,6 +850,25 @@
  * 0x01: prevent WS-Security header in SOAP XACML requests.  */
 #define ZXID_AZ_OPT 0
 
+/*(c) Authorization failure mode
+ * 0x00: Any failure is Deny (sane default)
+ * 0x01: Missing PDP_URL or PDP_CALL_URL is Permit (allows you to
+ *       run code that makes explicit az calls even if you do not have PDP)
+ * 0x02: Network connectivity error is Permit (emergency panic
+ *       option - do not enable unless you are willing to assume
+ *       the liability: that failure to contact PDP is interpretted as Permit
+ *       may be the express objective of the attack you are under)
+ * 0x03: Combine the two above: Missing URL or no connectivity is Permit
+ * 0x04: Always return Permit (only for development use)
+ */
+#define ZXID_AZ_FAIL_MODE 0
+
+/* Use these constants in code */
+#define ZXID_AZ_FAIL_MODE0_DENY 0
+#define ZXID_AZ_FAIL_MODE1_MISSING_URL 1
+#define ZXID_AZ_FAIL_MODE2_NET_FAIL 2
+#define ZXID_AZ_FAIL_MODE4_PERMIT_ALWAYS 4
+
 /*(c) Which version of XACML to speak, e.g. "2.0" or "2.0-cd1" or "xac-soap" */
 
 #define ZXID_XASP_VERS "2.0"
@@ -1092,5 +1117,21 @@
 
 #define ZXID_MGMT_FOOTER  "<div class=zxbot>"
 #define ZXID_MGMT_END     "</div>"
+
+/*(c) ECHO - Print to debug out that given line in configuration has been reached.
+ * Used for debugging complex sequences of VPATH and INCLUDE. */
+
+/* FYI, ERR config file option already has another meaning: error log */
+
+/*(c) INFO - Like ECHO, but prints at debug level INFO. */
+
+/*(c) WARN - Like ECHO, but prints at debug level WARN. */
+
+/*(c) DIE - Like ECHO, but prints at debug level ERR and the aborts (exits) the process. */
+
+/*(c) REM - Remark. A comment that is not printed anywhere. Alternate mechanism
+ * when compated to using hash sign ("#") in configuration files.  */
+
+/*(c) PRAGMA - Implementation dependent config parsing time option. Ignore if not understood. */
 
 #endif

@@ -548,7 +548,8 @@ int hexdump(const char* msg, const void* p, const void* lim, int max);
 /* Try to produce some exception, unless global setting says asserting is NOT ok. */
 
 extern char* assert_msg;
-#define DIE_ACTION(b) MB fprintf(ERRMAC_DEBUG_LOG, assert_msg, ERRMAC_INSTANCE); if (assert_nonfatal == 0) { *((int*)0xffffffff) = 1; } ME
+//#define DIE_ACTION(b) MB fprintf(ERRMAC_DEBUG_LOG, assert_msg, ERRMAC_INSTANCE); if (assert_nonfatal == 0) { *((int*)0xffffffff) = 1; } ME
+#define DIE_ACTION(b) MB fprintf(ERRMAC_DEBUG_LOG, assert_msg, ERRMAC_INSTANCE); if (assert_nonfatal == 0) { *((int*)-1) = 1; } ME
 
 /* Many development time sanity checks use these macros so that they
  * can be compiled away from the final version. ASSERT macros are more

@@ -9,10 +9,11 @@
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id$
  *
- * 17.8.2012, creted, based on zxlog.c --Sampo
- * 19.8.2012, added tolerance for CRLF where strictly LF is meant --Sampo
- * 6.9.2012,  added SSL support --Sampo
- * 9.9.2012,  added persist support --Sampo
+ * 17.8.2012,  creted, based on zxlog.c --Sampo
+ * 19.8.2012,  added tolerance for CRLF where strictly LF is meant --Sampo
+ * 6.9.2012,   added SSL support --Sampo
+ * 9.9.2012,   added persist support --Sampo
+ * 30.11.2013, fixed seconds handling re gmtime_r() - found by valgrind --Sampo
  *
  * Apart from formatting code, this is effectively a STOMP 1.1 client. Typically
  * it will talk to zxbusd instances configured using BUS_URL options.
@@ -300,7 +301,6 @@
 		      va_list ap)
  {
    int n;
-   time_t secs;
    char* p;
    char sha1_name[28];
    struct tm ot;
@@ -319,10 +319,8 @@
      srctsdefault.tv_sec = 0;
      srctsdefault.tv_usec = 501000;
    }
-   GMTIME_R(secs, ot);
-   ourts->tv_sec = secs;
-   GMTIME_R(secs, st);
-   srcts->tv_sec = secs;
+   GMTIME_R(ourts->tv_sec, ot);
+   GMTIME_R(srcts->tv_sec, st);
 
    if (entid && entid->len && entid->s) {
      sha1_safe_base64(sha1_name, entid->len, entid->s);
@@ -1082,7 +1080,6 @@ void zxbus_close_all(zxid_conf* cf)
 static void zxbus_log_receipt(zxid_conf* cf, struct zxid_bus_url* bu, int mid_len, const char* mid, int dest_len, const char* dest, const char* sha1_buf, int rcpt_len, const char* rcpt)
 {
   int len;
-  time_t secs;
   struct tm ot;
   struct timeval ourts;
   char sha1_name[28];
@@ -1090,8 +1087,7 @@ static void zxbus_log_receipt(zxid_conf* cf, struct zxid_bus_url* bu, int mid_le
   char c_path[ZXID_MAX_BUF];
 
   GETTIMEOFDAY(&ourts, 0);
-  GMTIME_R(secs, ot);
-  ourts.tv_sec = secs;
+  GMTIME_R(ourts.tv_sec, ot);
   sha1_safe_base64(sha1_name, -2, bu->eid);
   sha1_name[27] = 0;
 

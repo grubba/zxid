@@ -840,16 +840,8 @@ static char* zxid_simple_redir_page(zxid_conf* cf, char* redir, char* rs, int* r
 /* Called by:  zxid_ps_accept_invite, zxid_ps_finalize_invite, zxid_simple_no_ses_cf, zxid_simple_ses_active_cf x5 */
 char* zxid_simple_show_idp_sel(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
-  struct zx_str* ss;
-
-  /* cgi->rs will be copied to ses->rs and from there in ab_pep to resource-id.
-   * We compress and safe_base64 encode it to protect any URL special characters.
-   * *** seems that at this point the p is not just rs, but the entire local URL --Sampo */
-  D("Previous rs(%s)", STRNULLCHKD(cgi->rs));
-  ss = zx_strf(cf->ctx, "%s%c%s", cgi->uri_path, cgi->qs&&cgi->qs[0]?'?':0, STRNULLCHK(cgi->qs));
-  cgi->rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, ss->s);
-  D("rs(%s) from(%s) uri_path(%s) qs(%s)",cgi->rs,ss->s,cgi->uri_path,STRNULLCHKD(cgi->qs));
-  zx_str_free(cf->ctx, ss);
+  struct zx_str* ss;  
+  zxid_sso_set_relay_state_to_return_to_this_url(cf, cgi);
 
   D("cf=%p cgi=%p templ(%s)", cf, cgi, STRNULLCHKQ(cgi->templ));
   if (cf->idp_sel_page && cf->idp_sel_page[0]) {
@@ -1265,6 +1257,7 @@ static char* zxid_show_protected_content_setcookie(zxid_conf* cf, zxid_cgi* cgi,
 /* ===== Main Control Logic for Session Active and Session Inactive Cases ===== */
 
 /*() Subroutine of zxid_simple_cf() for the session active case.
+ * cgi->uri_path should have been set by the caller.
  *
  * NULL return means the "not logged in" processing is needed, see zxid_simple_no_ses_cf()
  *
@@ -1325,8 +1318,8 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
   
   if (cgi->enc_hint)
     cf->nameid_enc = cgi->enc_hint != '0';
-  D("op(%c) sesid(%s) active", cgi->op, STRNULLCHK(cgi->sid));
-  DD("session(%s) active op(%c) saml_req(%s)", cgi->sid, cgi->op, STRNULLCHK(cgi->saml_req));
+  D("op(%c) sesid(%s) active", cgi->op?cgi->op:'-', STRNULLCHK(cgi->sid));
+  DD("ses(%s) active op(%c) saml_req(%s)",cgi->sid,cgi->op?cgi->op:'-', STRNULLCHK(cgi->saml_req));
   switch (cgi->op) {
   case 'l':
     if (cf->log_level>0)
@@ -1452,6 +1445,7 @@ res_zx_str:
 }
 
 /*() Subroutine of zxid_simple_cf() for the no session detected/active case.
+ * cgi->uri_path should have been set by the caller.
  *
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
@@ -1465,14 +1459,15 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
     ERR("FATAL: NULL pointer. You MUST supply configuration(%p), cgi(%p), and session(%p) objects (programming error)", cf, cgi, ses);
     exit(1);
   }
-  if (cf->wd)
+  if (cf->wd && *cf->wd)
     chdir(cf->wd);
 
+  D("op(%c) cf=%p cgi=%p ses=%p auto=%x wd(%s)", cgi->op?cgi->op:'-', cf, cgi, ses, auto_flags, STRNULLCHKD(cf->wd));
   if (!cgi->op && cf->defaultqs && cf->defaultqs[0]) {
     zxid_parse_cgi(cf, cgi, cf->defaultqs);
-    INFO("DEFAULTQS(%s) op(%c)", cf->defaultqs, cgi->op);
+    INFO("DEFAULTQS(%s) op(%c)", cf->defaultqs, cgi->op?cgi->op:'-');
   }
-
+  
   switch (cgi->op) {
   case 'M':  /* Invoke LECP or redirect to CDC reader. */
     ss = zxid_lecp_check(cf, cgi);

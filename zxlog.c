@@ -14,7 +14,8 @@
  * 7.10.2008,  added inline documentation --Sampo
  * 29.8.2009,  added hmac chaining field --Sampo
  * 12.3.2010,  added per user logging facility --Sampo
- * 9.9.2012,  added persist support --Sampo
+ * 9.9.2012,   added persist support --Sampo
+ * 30.11.2013, fixed seconds handling re gmtime_r() - found by valgrind --Sampo
  *
  * See also: Logging chapter in README.zxid
  */
@@ -242,7 +243,8 @@ void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
     ZX_FREE(cf->ctx, sig);
 }
 
-/*() Helper function for formatting all kinds of logs. */
+/*() Helper function for formatting all kinds of logs.
+ * This is the real workhorse. */
 
 static int zxlog_fmt(zxid_conf* cf,   /* 1 */
 		     int len, char* logbuf,
@@ -261,7 +263,6 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
 		     va_list ap)
 {
   int n;
-  time_t secs;
   char* p;
   char sha1_name[28];
   struct tm ot;
@@ -280,10 +281,8 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
     srctsdefault.tv_sec = 0;
     srctsdefault.tv_usec = 501000;
   }
-  GMTIME_R(secs, ot);
-  ourts->tv_sec = secs;
-  GMTIME_R(secs, st);
-  srcts->tv_sec = secs;
+  GMTIME_R(ourts->tv_sec, ot);
+  GMTIME_R(srcts->tv_sec, st);
   
   if (entid && entid->len && entid->s) {
     sha1_safe_base64(sha1_name, entid->len, entid->s);
@@ -819,7 +818,6 @@ print_it:
 char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int eid_len, const char* eid, int body_len, const char* body)
 {
   int len, zlen;
-  time_t secs;
   char* zbuf = 0;
   char* p;
   char* buf;
@@ -857,8 +855,7 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_le
   /* Prepare values */
 
   GETTIMEOFDAY(&ourts, 0);
-  GMTIME_R(secs, ot);
-  ourts.tv_sec = secs;
+  GMTIME_R(ourts.tv_sec, ot);
 
   /* Prepare timestamp prepended data for hashing */
   len = ZXLOG_TIME_SIZ+1+mid_len+1+dest_len+1+eid_len+1+body_len;

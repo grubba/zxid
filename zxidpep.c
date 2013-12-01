@@ -368,7 +368,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
  * pool, as filtered by PEPMAP are fed to the PDP as inputs
  * for the decision. The call is using XACML SAML profile over SOAP.
  *
- * cf:: the configuration will need to have ~PEPMAP~ and ~PDP_URL~ options
+ * cf:: the configuration will need to have ~PEPMAP~
  *     set according to your situation.
  * cgi:: if non-null, will receive error and status codes
  * ses:: all attributes are obtained from the session. You may wish
@@ -400,15 +400,25 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
     zxlog(cf, 0, 0, 0, 0, 0, 0, ses?ZX_GET_CONTENT(ses->nameid):0, "N", "W", "AZSOAP", ses?ses->sid:0, " ");
   
   if (!pdp_url || !*pdp_url) {
-    ERR("%s: No PDP_URL or PDP_CALL_URL set. Deny. %p", lk, pdp_url);
-    return 0;
+    if (cf->az_fail_mode & (ZXID_AZ_FAIL_MODE1_MISSING_URL | ZXID_AZ_FAIL_MODE4_PERMIT_ALWAYS)) {
+      ERR("%s: No PDP_URL or PDP_CALL_URL set. Permit due to AZ_FAIL_MODE=%d",lk,cf->az_fail_mode);
+      goto fail_mode_permit;
+    } else {
+      ERR("%s: No PDP_URL or PDP_CALL_URL set. Deny. %p", lk, pdp_url);
+      return 0;
+    }
   }
 
   zxid_pepmap_extract(cf, cgi, ses, pepmap, &subj, &rsrc, &act, &env);
   resp = zxid_az_soap(cf, cgi, ses, pdp_url, subj, rsrc, act, env);
   if (!resp || !resp->Assertion) {
-    ERR("%s: DENY due to malformed authorization response from PDP. Either no response or response lacking assertion. %p", lk, resp);
-    return 0;
+    if (cf->az_fail_mode & (ZXID_AZ_FAIL_MODE2_NET_FAIL | ZXID_AZ_FAIL_MODE4_PERMIT_ALWAYS)) {
+      ERR("%s: Malformed or nonexistent authorization response from PDP(%s) (%p).\nWARNING: Permit due to AZ_FAIL_MODE=%d", lk, pdp_url, resp, cf->az_fail_mode);
+      goto fail_mode_permit;
+    } else {
+      ERR("%s: DENY due to malformed authorization response from PDP. Either no response or response lacking assertion. %p", lk, resp);
+      return 0;
+    }
   }
   
   az_stmt = resp->Assertion->XACMLAuthzDecisionStatement;
@@ -451,18 +461,35 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   /*if (resp->Assertion->AuthzDecisionStatement) {  }*/
   if (decision) {
     if (ZX_CONTENT_EQ_CONST(decision, "Deny")) {
-      INFO("%s: DENY found in stmt", lk);
-      return 0;
+      if (cf->az_fail_mode & ZXID_AZ_FAIL_MODE4_PERMIT_ALWAYS) {
+	ERR("%s: DENY found in stmt.\nWARNING: Permit due to AZ_FAIL_MODE=%d",lk,cf->az_fail_mode);
+	goto fail_mode_permit;
+      } else {
+	INFO("%s: DENY found in stmt", lk);
+	return 0;
+      }
     } else {
-      INFO("%s: DENY due to Other(%.*s) (treated as Deny) found in stmt", lk, ZX_GET_CONTENT_LEN(decision), ZX_GET_CONTENT_S(decision));
-      return 0;
+      if (cf->az_fail_mode & ZXID_AZ_FAIL_MODE4_PERMIT_ALWAYS) {
+	ERR("%s: DENY due to Other(%.*s).\nWARNING: Permit due to AZ_FAIL_MODE=%d", lk, ZX_GET_CONTENT_LEN(decision), ZX_GET_CONTENT_S(decision), cf->az_fail_mode);
+	goto fail_mode_permit;
+      } else {
+	INFO("%s: DENY due to Other(%.*s) (treated as Deny) found in stmt", lk, ZX_GET_CONTENT_LEN(decision), ZX_GET_CONTENT_S(decision));
+	return 0;
+      }
     }
   }
-  ERR("%s: DENY due to error or no xac:Response from PDP %p %p %p", lk, az_stmt,az_stmt_cd1,stmt);
-  return 0;
+  if (cf->az_fail_mode & ZXID_AZ_FAIL_MODE4_PERMIT_ALWAYS) {
+    ERR("%s: DENY due to error or no xac:Response from PPD.\nWARNING: Permit due to AZ_FAIL_MODE=%d", lk, cf->az_fail_mode);
+    goto fail_mode_permit;
+  } else {
+    ERR("%s: DENY due to error or no xac:Response from PDP %p %p %p", lk,az_stmt,az_stmt_cd1,stmt);
+    return 0;
+  }
  nomem:
   ERR("%s: DENY due memory allocation error. %p", lk, ss);
   return 0;
+ fail_mode_permit:
+  return zx_dup_cstr(cf->ctx,"<xac:Response xmlns:xac=\"urn:oasis:names:tc:xacml:2.0:context:schema:os\"><xac:Result><xac:Decision>Permit</xac:Decision><xac:Status><xac:StatusCode Value=\"urn:oasis:names:tc:xacml:1.0:status:ok\"/></xac:Status></xac:Result></xac:Response>");
 }
 
 /*(i) Call Policy Decision Point (PDP) to obtain an authorization decision
@@ -576,8 +603,8 @@ char* zxid_pep_az_base_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const c
  * pool, as filtered by ~PEPMAP~ are fed to the PDP as inputs
  * for the decision. Session object is passed in as an argument.
  *
- * cf:: the configuration will need to have ~PEPMAP~ and ~PDP_URL~ options
- *     set according to your situation.
+ * cf:: the configuration will need to have ~PEPMAP~ and ~PDP_URL~
+ *     or ~PDP_CALL_URL~ options set according to your situation.
  * qs:: if non-null, will resceive error and status codes
  * ses:: all attributes are obtained from the session. You may wish
  *     to add additional attributes that are not known by SSO.

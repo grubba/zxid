@@ -101,7 +101,7 @@ int hi_vfy_peer_ssl_cred(struct hi_thr* hit, struct hi_io* io, const char* eid)
   if (X509_cmp(meta->enc_cert, peer_cert)) {
     ERR("Peer certificate does not match metadata for eid(%s)", eid);
     D("compare: %d", memcmp(meta->enc_cert->sha1_hash, peer_cert->sha1_hash, SHA_DIGEST_LENGTH));
-    PEM_write_X509(ZX_DEBUG_LOG, peer_cert);
+    PEM_write_X509(ERRMAC_DEBUG_LOG, peer_cert);
     return 0;
   }
 #endif

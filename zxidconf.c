@@ -27,6 +27,7 @@
  * 16.2.2013, added WD option --Sampo
  * 21.6.2013, added wsp_pat --Sampo
  * 20.11.2013, added %d expansion for VURL, added ECHO for debug prints --Sampo
+ * 29.11.2013, added INCLUDE feature --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -986,6 +987,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->pdp_ena           = ZXID_PDP_ENA;
   cf->cpn_ena           = ZXID_CPN_ENA;
   cf->az_opt            = ZXID_AZ_OPT;
+  cf->az_fail_mode      = ZXID_AZ_FAIL_MODE;
 
   cf->loguser = ZXID_LOGUSER;
   cf->log_level = ZXLOG_LEVEL;
@@ -1254,7 +1256,7 @@ zxid_conf* zxid_new_conf(const char* zxid_path)
  * is found. This is used by VPATH. */
 
 /* Called by:  zxid_parse_conf_raw, zxid_parse_vpath */
-static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exists)
+static void zxid_parse_conf_path_raw(zxid_conf* cf, const char* v, int check_file_exists)
 {
   int len;
   char *buf;
@@ -1264,15 +1266,40 @@ static void zxid_parse_conf_path_raw(zxid_conf* cf, char* v, int check_file_exis
   if (!buf || !len)
     buf = read_all_alloc(cf->ctx, "-parse_conf_raw", 1, &len, "%szxid.conf", v);
   if (buf && len) {
-    cf->path = v;
+    cf->path = (char*)v;
     cf->path_len = strlen(v);
     ++cf->path_supplied;   /* Record level of recursion so we can avoid infinite recursion. */
     if (len)
       zxid_parse_conf_raw(cf, len, buf);  /* Recurse */
     --cf->path_supplied;
   } else if (!check_file_exists) {
-    cf->path = v;  /* Set PATH anyway. */
+    cf->path = (char*)v;   /* Set PATH anyway. */
     cf->path_len = strlen(v);
+  }
+}
+
+/*(-) Helper to parse an include file. check_file_exists helps to implement
+ * the sematic where PATH is not changed unless corresponding zxid.conf
+ * is found. This is used by VPATH. */
+
+/* Called by:  zxid_parse_conf_raw */
+static void zxid_parse_inc(zxid_conf* cf, const char* inc_file, int check_file_exists)
+{
+  int len;
+  char *buf;
+
+  /* N.B: The buffer read here leaks on purpose as conf parsing takes references inside it. */
+  buf = read_all_alloc(cf->ctx, "-parse_inc", 1, &len, "%s", inc_file);
+  if (buf && len) {
+    ++cf->path_supplied;   /* Record level of recursion so we can avoid infinite recursion. */
+    if (len)
+      zxid_parse_conf_raw(cf, len, buf);  /* Recurse */
+    --cf->path_supplied;
+  } else if (check_file_exists) {
+    ERR("Mandatory configuration include file(%s) not found. Aborting.", inc_file);
+    DIE_ACTION(errno);
+  } else {
+    ERR("Optional configuration include file(%s) not found. Ignored.", inc_file);
   }
 }
 
@@ -1502,6 +1529,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "A7NTTL"))          { SCAN_INT(v, cf->a7nttl); break; }
       if (!strcmp(n, "AS_ENA"))          { SCAN_INT(v, cf->as_ena); break; }
       if (!strcmp(n, "AZ_OPT"))          { SCAN_INT(v, cf->az_opt); break; }
+      if (!strcmp(n, "AZ_FAIL_MODE"))    { SCAN_INT(v, cf->az_fail_mode); break; }
       goto badcf;
     case 'B':  /* BEFORE_SLOP */
       if (!strcmp(n, "BEFORE_SLOP"))       { SCAN_INT(v, cf->before_slop); break; }
@@ -1538,6 +1566,8 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "DI_A7N_ENC"))      { SCAN_INT(v, cf->di_a7n_enc); break; }
       if (!strcmp(n, "DEBUG"))           { SCAN_INT(v, errmac_debug); INFO("errmac_debug:%d", errmac_debug); break; }
       if (!strcmp(n, "DEBUG_LOG"))       { zxid_set_opt_cstr(cf, 6, v); break; }
+      if (!strcmp(n, "D"))               { D("D=%s (conf line %d)", v, lineno); break; }
+      if (!strcmp(n, "DIE"))             { ERR("DIE=%s (conf line %d)", v, lineno); DIE_ACTION(1); break; }
       goto badcf;
     case 'E':  /* ERR, ERR_IN_ACT */
       if (!strcmp(n, "ERR"))             { SCAN_INT(v, cf->log_err); break; }
@@ -1575,6 +1605,8 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "IDPATOPT"))        { SCAN_INT(v, cf->idpatopt); break; }
       if (!strcmp(n, "IDP_LIST_METH"))   { SCAN_INT(v, cf->idp_list_meth); break; }
       if (!strcmp(n, "INMAP"))           { cf->inmap = zxid_load_map(cf, cf->inmap, v); break; }
+      if (!strcmp(n, "INFO"))            { INFO("INFO=%s (conf line %d)", v, lineno); break; }
+      if (!strcmp(n, "INCLUDE"))         { zxid_parse_inc(cf, v, 1); break; }
       goto badcf;
     case 'L':  /* LEVEL (log level) */
       if (!strcmp(n, "LEVEL"))     { SCAN_INT(v, cf->log_level); break; }
@@ -1620,6 +1652,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
 	break;
       }
       if (!strcmp(n, "OAZ_JWT_SIGENC_ALG")) { cf->oaz_jwt_sigenc_alg = *v; break; }
+      if (!strcmp(n, "OPT_INCLUDE"))    { zxid_parse_inc(cf, v, 0); break; }
       goto badcf;
     case 'P':  /* PATH (e.g. /var/zxid) */
       DD("PATH maybe n(%s)=v(%s)", n, v);
@@ -1652,6 +1685,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
 	break;
       }
       if (!strcmp(n, "PTM_COOKIE_NAME")) { cf->ptm_cookie_name = (!v[0] || v[0]=='0' && !v[1]) ? 0 : v; break; }
+      if (!strcmp(n, "PRAGMA"))          { D("PRAGMA(%s)", v); break; }
       goto badcf;
     case 'R':  /* RELY_A7N, RELY_MSG */
       if (!strcmp(n, "REDIRECT_HACK_IMPOSED_URL")) { cf->redirect_hack_imposed_url = v; break; }
@@ -1687,6 +1721,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "RECOVER_PASSWD")) { cf->recover_passwd = v; break; }
       if (!strcmp(n, "RELTO_FATAL"))    { SCAN_INT(v, cf->relto_fatal); break; }
       if (!strcmp(n, "RCPT"))           { SCAN_INT(v, cf->bus_rcpt); break; }
+      if (!strcmp(n, "REM"))            { /* no-op */ break; }
       goto badcf;
     case 'S':  /* SES_ARCH_DIR, SIGFAIL_IS_ERR, SIG_FATAL */
       if (!strcmp(n, "SES_ARCH_DIR"))   { cf->ses_arch_dir = (!v[0] || v[0]=='0' && !v[1]) ? 0 : v; break; }
@@ -1729,6 +1764,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "WSC_LOCALPDP_OBL_ACCEPT"))  { cf->wsc_localpdp_obl_accept = zxid_load_obl_list(cf, cf->wsc_localpdp_obl_accept, v);   break; }
       if (!strcmp(n, "WD"))             { cf->wd = v; chdir(v); break; }
       if (!strcmp(n, "WSP_PAT"))        { cf->wsp_pat = v; break; }
+      if (!strcmp(n, "WARN"))           { WARN("WARN=%s (conf line %d)", v, lineno); break; }
       goto badcf;
     case 'X':  /* XASP_VERS */
       if (!strcmp(n, "XASP_VERS"))      { cf->xasp_vers = v; break; }
@@ -1924,7 +1960,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "<p>Version: R" ZXID_REL " (" ZXID_COMPILE_DATE ")\n"
 
 "<pre>"
-ZXID_PATH_OPT "=%s\n"
+"CPATH=%s\n"
 "URL=%s\n"
 "AFFILIATION=%s\n"
 "NICE_NAME=%s\n"
@@ -1995,6 +2031,7 @@ ZXID_PATH_OPT "=%s\n"
 "PDP_ENA=%d\n"
 "CPN_ENA=%d\n"
 "AZ_OPT=%d\n"
+"AZ_FAIL_MODE=%d\n"
 "#ZXID_MAX_BUF=%d (compile)\n"
 
 /* *** should these be prefixed by LOG? */
@@ -2188,6 +2225,7 @@ ZXID_PATH_OPT "=%s\n"
 		 cf->pdp_ena,
 		 cf->cpn_ena,
 		 cf->az_opt,
+		 cf->az_fail_mode,
 		 ZXID_MAX_BUF,
 
 		 cf->log_err,

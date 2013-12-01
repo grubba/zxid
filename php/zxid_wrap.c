@@ -18709,7 +18709,7 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zxid_conf_pad5_set) {
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_az_fail_mode_set) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   char arg2 ;
   zval **args[2];
@@ -18721,7 +18721,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_pad5_set) {
   
   {
     if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_pad5_set. Expected SWIGTYPE_p_zxid_conf");
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_az_fail_mode_set. Expected SWIGTYPE_p_zxid_conf");
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
@@ -18731,7 +18731,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_pad5_set) {
   arg2 = (char) *Z_STRVAL_PP(args[1]);
   /*@SWIG@*/;
   
-  if (arg1) (arg1)->pad5 = arg2;
+  if (arg1) (arg1)->az_fail_mode = arg2;
   
   return;
 fail:
@@ -18739,7 +18739,7 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zxid_conf_pad5_get) {
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_az_fail_mode_get) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   zval **args[1];
   char result;
@@ -18751,11 +18751,11 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_pad5_get) {
   
   {
     if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_pad5_get. Expected SWIGTYPE_p_zxid_conf");
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_az_fail_mode_get. Expected SWIGTYPE_p_zxid_conf");
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
-  result = (char) ((arg1)->pad5);
+  result = (char) ((arg1)->az_fail_mode);
   {
     ZVAL_STRINGL(return_value,&result, 1, 1);
   }
@@ -42309,8 +42309,8 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zxid_conf_oaz_jwt_sigenc_alg_get,_wrap_zxid_conf_oaz_jwt_sigenc_alg_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_bus_rcpt_set,_wrap_zxid_conf_bus_rcpt_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_bus_rcpt_get,_wrap_zxid_conf_bus_rcpt_get,NULL)
- SWIG_ZEND_NAMED_FE(zxid_conf_pad5_set,_wrap_zxid_conf_pad5_set,NULL)
- SWIG_ZEND_NAMED_FE(zxid_conf_pad5_get,_wrap_zxid_conf_pad5_get,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_az_fail_mode_set,_wrap_zxid_conf_az_fail_mode_set,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_az_fail_mode_get,_wrap_zxid_conf_az_fail_mode_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_pad6_set,_wrap_zxid_conf_pad6_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_pad6_get,_wrap_zxid_conf_pad6_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_pad7_set,_wrap_zxid_conf_pad7_set,NULL)

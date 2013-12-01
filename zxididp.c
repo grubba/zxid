@@ -85,14 +85,14 @@ int main(int argc, char** argv)
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */
   /* Reopen stderr only in mini_httpd case */
-  p = getenv("SERVER_SOFTWARE");
-  if (p && !memcmp(p, "mini_httpd", sizeof("mini_httpd")-1)) {
+  //p = getenv("SERVER_SOFTWARE");
+  //if (p && !memcmp(p, "mini_httpd", sizeof("mini_httpd")-1)) {
     close(2);
     if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2) {
       perror("/var/tmp/zxid.stderr");
       exit(2);
     }
-  }
+    //}
   /*errmac_debug = 1;*/
   fprintf(stderr, CC_PURY("=================== Running zxididp %s =================== %x p%d qs(%s)\n"), ZXID_REL, errmac_debug, getpid(), getenv("QUERY_STRING"));
   p = getenv(ZXID_ENV_PREFIX "PRE_CONF");

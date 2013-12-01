@@ -590,8 +590,8 @@ class zxidjniJNI {
   public final static native char zxid_conf_oaz_jwt_sigenc_alg_get(long jarg1);
   public final static native void zxid_conf_bus_rcpt_set(long jarg1, char jarg2);
   public final static native char zxid_conf_bus_rcpt_get(long jarg1);
-  public final static native void zxid_conf_pad5_set(long jarg1, char jarg2);
-  public final static native char zxid_conf_pad5_get(long jarg1);
+  public final static native void zxid_conf_az_fail_mode_set(long jarg1, char jarg2);
+  public final static native char zxid_conf_az_fail_mode_get(long jarg1);
   public final static native void zxid_conf_pad6_set(long jarg1, char jarg2);
   public final static native char zxid_conf_pad6_get(long jarg1);
   public final static native void zxid_conf_pad7_set(long jarg1, char jarg2);

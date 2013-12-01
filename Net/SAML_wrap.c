@@ -21210,7 +21210,7 @@ XS(_wrap_zxid_conf_bus_rcpt_get) {
 }
 
 
-XS(_wrap_zxid_conf_pad5_set) {
+XS(_wrap_zxid_conf_az_fail_mode_set) {
   {
     struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
     char arg2 ;
@@ -21222,19 +21222,19 @@ XS(_wrap_zxid_conf_pad5_set) {
     dXSARGS;
     
     if ((items < 2) || (items > 2)) {
-      SWIG_croak("Usage: zxid_conf_pad5_set(self,pad5);");
+      SWIG_croak("Usage: zxid_conf_az_fail_mode_set(self,az_fail_mode);");
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_pad5_set" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_az_fail_mode_set" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
     }
     arg1 = (struct zxid_conf *)(argp1);
     ecode2 = SWIG_AsVal_char SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
     if (!SWIG_IsOK(ecode2)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "zxid_conf_pad5_set" "', argument " "2"" of type '" "char""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "zxid_conf_az_fail_mode_set" "', argument " "2"" of type '" "char""'");
     } 
     arg2 = (char)(val2);
-    if (arg1) (arg1)->pad5 = arg2;
+    if (arg1) (arg1)->az_fail_mode = arg2;
     ST(argvi) = sv_newmortal();
     
     
@@ -21247,7 +21247,7 @@ XS(_wrap_zxid_conf_pad5_set) {
 }
 
 
-XS(_wrap_zxid_conf_pad5_get) {
+XS(_wrap_zxid_conf_az_fail_mode_get) {
   {
     struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
     void *argp1 = 0 ;
@@ -21257,14 +21257,14 @@ XS(_wrap_zxid_conf_pad5_get) {
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: zxid_conf_pad5_get(self);");
+      SWIG_croak("Usage: zxid_conf_az_fail_mode_get(self);");
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_pad5_get" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_az_fail_mode_get" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
     }
     arg1 = (struct zxid_conf *)(argp1);
-    result = (char) ((arg1)->pad5);
+    result = (char) ((arg1)->az_fail_mode);
     ST(argvi) = SWIG_From_char  SWIG_PERL_CALL_ARGS_1((char)(result)); argvi++ ;
     
     XSRETURN(argvi);
@@ -47596,8 +47596,8 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_conf_oaz_jwt_sigenc_alg_get", _wrap_zxid_conf_oaz_jwt_sigenc_alg_get},
 {"Net::SAMLc::zxid_conf_bus_rcpt_set", _wrap_zxid_conf_bus_rcpt_set},
 {"Net::SAMLc::zxid_conf_bus_rcpt_get", _wrap_zxid_conf_bus_rcpt_get},
-{"Net::SAMLc::zxid_conf_pad5_set", _wrap_zxid_conf_pad5_set},
-{"Net::SAMLc::zxid_conf_pad5_get", _wrap_zxid_conf_pad5_get},
+{"Net::SAMLc::zxid_conf_az_fail_mode_set", _wrap_zxid_conf_az_fail_mode_set},
+{"Net::SAMLc::zxid_conf_az_fail_mode_get", _wrap_zxid_conf_az_fail_mode_get},
 {"Net::SAMLc::zxid_conf_pad6_set", _wrap_zxid_conf_pad6_set},
 {"Net::SAMLc::zxid_conf_pad6_get", _wrap_zxid_conf_pad6_get},
 {"Net::SAMLc::zxid_conf_pad7_set", _wrap_zxid_conf_pad7_set},
