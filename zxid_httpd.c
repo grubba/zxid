@@ -374,7 +374,7 @@ static char* file_details(const char* dir, const char* name) {
   (void) strftime(f_time, sizeof(f_time), "%d%b%Y %H:%M", localtime(&sb.st_mtime));
   str_copy_and_url_encode(encname, sizeof(encname), name);
   (void) snprintf(buf, sizeof(buf), "<A HREF=\"%s\">%-32.32s</A>    %15s %14lld\n",
-		  encname, name, f_time, (int64_t) sb.st_size);
+		  encname, name, f_time, (int64_t)sb.st_size);
   return buf;
 }
 
@@ -1876,7 +1876,7 @@ static void cgi_interpose_input(int wfd)
   char buf[1024];
 
   cnt = request_len - request_idx;
-  D("write wfd=%d buffered post cnt=%d content_length=%d", wfd, cnt, content_length);
+  D("write wfd=%d buffered post cnt=%d content_length=%d", (int)wfd, (int)cnt,(int)content_length);
   if (cnt > 0) {
     // *** MINGW problem: after spawn the read buffer global is no longer available
     if ((r2 = write(wfd, request+request_idx, cnt)) != cnt)
@@ -1904,7 +1904,7 @@ static void cgi_interpose_input(int wfd)
     }
     cnt += got;
   }
-  D("done got=%d", got);
+  D("done got=%d", (int)got);
   post_post_garbage_hack();
   exit(0);
 }

@@ -49,7 +49,7 @@ Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
                    create session. IDP is IdP's Entity ID. This is alternative to -s\n\
   -t SVCTYPE       Service Type URI. Used for discovery. Mandatory (omitting -t\n\
                    causes authorization only mode, provided that -az was specified).\n\
-  -u URL           Optional endpoint URL or ProviderID. Discovery must match this.\n\
+  -u EPURL         Optional endpoint URL or ProviderID. Discovery must match this.\n\
   -di DISCOOPTS    Optional discovery options. Query string format.\n\
   -din N           Discovery index (default: 1=pick first).\n\
   -az AZCREDS      Optional authorization credentials. Query string format.\n\
@@ -454,13 +454,13 @@ int zxcall_main(int argc, char** argv, char** env)
       epr = zxid_get_epr(cf, ses, svc, url, di, 0 /*action*/, din);
       if (!epr)
 	break;
-      ss = zxid_get_epr_address(cf, epr);
-      printf("%d. Found epr for service type(%s)\n   URL:         %.*s\n",
-	     din, STRNULLCHK(svc), ss?ss->len:0, ss?ss->s:"");
-      ss = zxid_get_epr_entid(cf, epr);
-      printf("   EntityID:    %.*s\n", ss?ss->len:0, ss?ss->s:"");
+      printf("%d. Found epr for service type(%s)\n", din, STRNULLCHK(svc));
       ss = zxid_get_epr_desc(cf, epr);
       printf("   Description: %.*s\n", ss?ss->len:0, ss?ss->s:"");
+      ss = zxid_get_epr_address(cf, epr);
+      printf("   EPURL:       %.*s\n", ss?ss->len:0, ss?ss->s:"");
+      ss = zxid_get_epr_entid(cf, epr);
+      printf("   EntityID:    %.*s\n", ss?ss->len:0, ss?ss->s:"");
     }
     return 0;
   }

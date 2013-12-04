@@ -2866,3 +2866,71 @@ Cheers,
 > Karthik
 
 >>
+
+<<ignore:
+
+From:	<sampo@hig.no>
+To:	<kyfranke@hig.no>
+Cc:	<sampo@hig.no>, <luk@synergetics.be>, <kgreene@cellmail.com>
+Date:	Tue, 3 Dec 2013 20:34:18 +0000 -- arrived: Ti 3.12. 20h34 -- 5.98K
+Subject:	Re: Fwd: Multi-use SSL certificates: More flexibility with Internet security
+Katrin Franke <katrin.franke@hig.no> said:
+> You know this all?
+
+What is there to know (do not expect me to read the links - I do not do
+this for Luk and I do not do it for you unless it seems exceptionally
+relevant)?
+
+The wildcard certs are a technique where several web sites share
+a certificate, and consequently the private key.
+
+Sharing private key increases exposure and chances of private key
+compromise. As a very minor additional threat, if private key
+is compromised, any number of bogus domains can be generated
+under the compromised wildcard cert (subject to DNS level safeguards).
+
+The increased exposure may not be as bad as it sounds as
+many or even all of the sites that are wildcarded, may be
+virtualhosted off single server, thus rendering the private
+key compromise threat equivalent to single server cert compromise.
+
+Or even if not single server, the servers may be under competent
+administration by same authority. For example, if I choose to
+put two sites, that I otherwise might virtualhost, on different
+servers, but I continue to apply same security and sysadmin
+regime on both servers, then the security has not significantly
+deteriorated when compared to virtualhosting on single server case.
+
+Depending on competence of sysadmin on virtualhosting provider,
+I would assess that CA compromise is bigger threat. Diginotar of Belgium
+even got caught pants down on this, but the problem is much
+more widespread.
+
+The Snowden revelations confirmed what I had been preaching for
+years: NSA will compromise the CAs. Thus the matter of wildcard certs
+has to be put in the perspective of the CA providers themselves
+being compromised.
+
+Net/net: no security hole that was not previously known
+and not need to chage ZXID (or Syn e2eTA) code. Additional mention
+of this threat in the manuals my be warranted, but is not urgent.
+
+Nothing new under the sun.
+
+Cheers,
+--Sampo
+
+P.S. On second reading it seems they try to sell multiuse
+certs: IMHO, all certs should be multiuse, and technically
+they can be if parties agree to ignore the restriction
+attribute fields in the certs. They are just trying to
+sell as a feature the fact that savy people have already
+bypassed their business model.
+
+>>
+
+<<ignore:
+
+
+
+>>

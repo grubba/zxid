@@ -580,7 +580,7 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
     D_DEDENT("call: ");
     return 0;
   }
-  ret = zx_easy_enc_elem_opt(cf, &env->gg);  INFO("sending(%.*s) enve(%s)", ret->len, ret->s, enve); // ***
+  if (errmac_debug > 1) { ret = zx_easy_enc_elem_opt(cf, &env->gg);  D("sending(%.*s) enve(%s)", ret->len, ret->s, enve); }
   
   /* Call Rq-Out PDP */
 
@@ -594,7 +594,7 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
   env = zxid_wsc_call(cf, ses, epr, env, &ret_enve);
   if (!env) {
     ERR("Parsing return value failed %p", env);
-    D("ret_enve(%s) len=%d", ret_enve, (int)strlen(ret_enve));
+    INFO("ret_enve(%s) len=%d", ret_enve, (int)strlen(ret_enve));
     D_DEDENT("call: ");
     if (cf->valid_opt & ZXID_VALID_OPT_SKIP_RESP_HDR) {
       ERR("WARNING! Important response security validations disabled by VALID_OPT=0x%x AND Fault occured or parsing return value failed. Pretending success anyway.", cf->valid_opt);
