@@ -2285,8 +2285,8 @@ refcall:
 
 reference: refcall
 	cd ref; pd2tex -noref -nortf -nodbx ref.pd
-	cd ref/tex; pdflatex -file-line-error-style -interaction=errorstopmode ../ref.tex # Thrice so refs and index are right
-	cd ref/tex #; pdflatex -file-line-error-style -interaction=errorstopmode ../ref.tex # Thrice so refs and index are right
+	cd ref/tex; pdflatex -file-line-error-style -interaction=errorstopmode ref.tex # Thrice so refs and index are right
+	cd ref/tex #; pdflatex -file-line-error-style -interaction=errorstopmode ref.tex # Thrice so refs and index are right
 
 ifeq ($(PULVER),1)
 

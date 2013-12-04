@@ -67,7 +67,7 @@
 extern module AP_MODULE_DECLARE_DATA auth_saml_module;
 
 #if 0
-/* This function is run when each child process of apache starts. It does
+/*(-) This function is run when each child process of apache starts. It does
  * initializations that do not survive fork(2). */
 /* Called by: */
 static void chldinit(apr_pool_t* p, server_rec* s)
@@ -80,6 +80,8 @@ static void chldinit(apr_pool_t* p, server_rec* s)
   }
 }
 #endif
+
+/*(-) Set cookies apache style. Internal. */
 
 static void set_cookies(zxid_conf* cf, request_rec* r, const char* setcookie, const char* setptmcookie)
 {
@@ -250,7 +252,7 @@ static int send_res(zxid_conf* cf, request_rec* r, char* res)
   return DONE;   /* Prevent further hooks from processing the request. */
 }
 
-/*() Read POST input, Apache style
+/*(-) Read POST input, Apache style
  *
  * This is considered internal function to mod_auth_saml, called by chkuid().
  * You should not call this directly, unless you know what you are doing. */
@@ -305,7 +307,9 @@ static char* read_post(zxid_conf* cf, request_rec* r)
  * 0x0008 10 + 00 = SOAP w/headers as string + no auto redir, no exit(2) */
 #define AUTO_FLAGS 0x6ea8
 
-/*(i) Apache hook. Called from httpd-2.2.8/server/request.c: ap_process_request_internal()
+/*(i) Apache hook. Internal function of mod_auth_saml. Do not try to call.
+ *
+ * Called from httpd-2.2.8/server/request.c: ap_process_request_internal()
  * ap_run_check_user_id(). Return value is processed in modules/http/http_request.c
  * and redirect is in ap_die(), http_protocol.c: ap_send_error_response()
  *
@@ -549,7 +553,7 @@ process_zxid_simple_outcome:
 
 /* ------------------------ CONF -------------------------- */
 
-/*() Process ZXIDDebug directive in Apache configuration file.
+/*(-) Process ZXIDDebug directive in Apache configuration file.
  *
  * This is considered internal function to mod_auth_saml. Do not call directly. */
 
@@ -567,7 +571,7 @@ static const char* set_debug(cmd_parms* cmd, void* st, const char* arg) {
   return 0;
 }
 
-/*() Process ZXIDConf directive in Apache configuration file.
+/*(-) Process ZXIDConf directive in Apache configuration file.
  * Can be called any number of times to set additional parameters.
  *
  * This is considered internal function to mod_auth_saml. Do not call directly. */
@@ -596,7 +600,7 @@ const command_rec zxid_apache_commands[] = {
 
 #define ZXID_APACHE_DEFAULT_CONF ""  /* defaults will reign, including path /var/zxid */
 
-/*() Create default configuration in response for Apache <Location> or <Directory>
+/*(-) Create default configuration in response for Apache <Location> or <Directory>
  * directives. This is then augmented by ZXIDConf directives.
  * This code may run twice: once for syntax check, and then again for
  * production use. Currently we just redo the work.
@@ -621,7 +625,7 @@ static void* dirconf(apr_pool_t* p, char* d)
 
 /* ------------------------ Hooks -------------------------- */
 
-/*() Register Apache hook for mod_auth_saml
+/*(-) Register Apache hook for mod_auth_saml
  *
  * This is considered internal function to mod_auth_saml. Do not call directly. */
 

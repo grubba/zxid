@@ -57,7 +57,7 @@ struct flock errmac_unlk = { F_UNLCK, SEEK_SET, 0, 1 };
 
 int close_file(fdtype fd, const char* logkey);
 
-/*() Report brokenness of snprintf() */
+/*(-) Report brokenness of snprintf() */
 
 /* Called by:  vname_from_path, write_all_fd_fmt, write_all_path_fmt, zx_alloc_vasprintf, zxbus_log_receipt, zxid_epr_path */
 void platform_broken_snprintf(int n, const char* where, int maxlen, const char* fmt)
