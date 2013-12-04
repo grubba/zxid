@@ -336,6 +336,8 @@ static void zxmkdirs()
   char* p;
   const char** dir;
   int len;
+  struct stat st;
+  
 #define ZXID_PATH_LENGTH_MARGIN (sizeof("ch/default/.del")+10) /* Accommodate longest subdir */
   len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s", cf->path);
   if (len > sizeof(path)-ZXID_PATH_LENGTH_MARGIN) {
@@ -364,6 +366,24 @@ static void zxmkdirs()
       D("Created %s", path);
     }
   }
+  
+  len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s" ZXID_CONF_FILE, cf->path);
+  if (stat(path, &st)) {  /* error return from stat means file does not exist, create example */
+    write_all_path_fmt("-dirs", sizeof(path), path, "%s%s", cf->path, ZXID_CONF_FILE,
+"# This is example configuration file %s" ZXID_CONF_FILE "\n"
+"# You should edit the values to suit your situation.\n"
+"NICE_NAME=Configuration NICE_NAME: Set this to describe your site to humans, see %s" ZXID_CONF_FILE "\n"
+"BUTTON_URL=https://example.com/YOUR_BRAND_saml2_icon_150x60.png\n"
+"ORG_NAME=Unspecified ORG_NAME conf variable\n"
+"LOCALITY=Lisboa\n"
+"STATE=Lisboa\n"
+"COUNTRY=PT\n"
+"CONTACT_ORG=Your organization\n"
+"CONTACT_NAME=Your Name\n"
+"CONTACT_EMAIL=your@email.com\n"
+"CONTACT_TEL=+351918731007\n", cf->path, cf->path);
+  }
+
   INFO("Created directories. You should inspect their ownership and permissions to ensure the webserver can read and write them, yet outsiders can not access them. You may want to run  chown -R www-data %s", cf->path);
 }
 

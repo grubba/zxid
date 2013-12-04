@@ -116,7 +116,7 @@
  * BUTTON_URL is typically absolute URL (relative would not make sense as it
  * is referenced from other web site referring to your web site).
  *
- * Typical value::  https://your-site.com/your_brand_saml2_icon_150x60.png
+ * Typical value::  https://your-site.com/YOUR_BRAND_saml2_icon_150x60.png
  *
  * Other possible values:: Depending on SP user interface, you may
  *     use any of
