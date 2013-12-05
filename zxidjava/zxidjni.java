@@ -961,36 +961,36 @@ public class zxidjni implements zxidjniConstants {
     return (cPtr == 0) ? null : new zxid_entity(cPtr, false);
   }
 
-  public static void conf_path_supplied_set(zxid_conf self, int value) {
-    zxidjniJNI.zxid_conf_path_supplied_set(zxid_conf.getCPtr(self), value);
+  public static void conf_cpath_supplied_set(zxid_conf self, int value) {
+    zxidjniJNI.zxid_conf_cpath_supplied_set(zxid_conf.getCPtr(self), value);
   }
 
-  public static int conf_path_supplied_get(zxid_conf self) {
-    return zxidjniJNI.zxid_conf_path_supplied_get(zxid_conf.getCPtr(self));
+  public static int conf_cpath_supplied_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_cpath_supplied_get(zxid_conf.getCPtr(self));
   }
 
-  public static void conf_path_len_set(zxid_conf self, int value) {
-    zxidjniJNI.zxid_conf_path_len_set(zxid_conf.getCPtr(self), value);
+  public static void conf_cpath_len_set(zxid_conf self, int value) {
+    zxidjniJNI.zxid_conf_cpath_len_set(zxid_conf.getCPtr(self), value);
   }
 
-  public static int conf_path_len_get(zxid_conf self) {
-    return zxidjniJNI.zxid_conf_path_len_get(zxid_conf.getCPtr(self));
+  public static int conf_cpath_len_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_cpath_len_get(zxid_conf.getCPtr(self));
   }
 
-  public static void conf_path_set(zxid_conf self, String value) {
-    zxidjniJNI.zxid_conf_path_set(zxid_conf.getCPtr(self), value);
+  public static void conf_cpath_set(zxid_conf self, String value) {
+    zxidjniJNI.zxid_conf_cpath_set(zxid_conf.getCPtr(self), value);
   }
 
-  public static String conf_path_get(zxid_conf self) {
-    return zxidjniJNI.zxid_conf_path_get(zxid_conf.getCPtr(self));
+  public static String conf_cpath_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_cpath_get(zxid_conf.getCPtr(self));
   }
 
-  public static void conf_url_set(zxid_conf self, String value) {
-    zxidjniJNI.zxid_conf_url_set(zxid_conf.getCPtr(self), value);
+  public static void conf_burl_set(zxid_conf self, String value) {
+    zxidjniJNI.zxid_conf_burl_set(zxid_conf.getCPtr(self), value);
   }
 
-  public static String conf_url_get(zxid_conf self) {
-    return zxidjniJNI.zxid_conf_url_get(zxid_conf.getCPtr(self));
+  public static String conf_burl_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_burl_get(zxid_conf.getCPtr(self));
   }
 
   public static void conf_non_standard_entityid_set(zxid_conf self, String value) {

@@ -458,7 +458,7 @@ struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp
   affil = nameid->SPNameQualifier ? &nameid->SPNameQualifier->g : zxid_my_ent_id(cf);
   
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
-  len = read_all(sizeof(uid)-1, uid, "idp_map_nid2uid", 1, "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
+  len = read_all(sizeof(uid)-1, uid, "idp_map_nid2uid", 1, "%s" ZXID_NID_DIR "%s/%.*s", cf->cpath, sp_name_buf, ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
   if (!len) {
     ERR("Can not find reverse mapping for SP,SHA1(%s) nid(%.*s)", sp_name_buf, ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
     resp->Status = zxid_mk_Status(cf, &resp->gg, "Fail", 0, 0);

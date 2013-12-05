@@ -8832,7 +8832,7 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_supplied_set) {
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_cpath_supplied_set) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   int arg2 ;
   zval **args[2];
@@ -8844,7 +8844,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_supplied_set) {
   
   {
     if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_path_supplied_set. Expected SWIGTYPE_p_zxid_conf");
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_cpath_supplied_set. Expected SWIGTYPE_p_zxid_conf");
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
@@ -8854,7 +8854,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_supplied_set) {
   arg2 = (int) Z_LVAL_PP(args[1]);
   /*@SWIG@*/;
   
-  if (arg1) (arg1)->path_supplied = arg2;
+  if (arg1) (arg1)->cpath_supplied = arg2;
   
   return;
 fail:
@@ -8862,7 +8862,7 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_supplied_get) {
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_cpath_supplied_get) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   zval **args[1];
   int result;
@@ -8874,11 +8874,11 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_supplied_get) {
   
   {
     if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_path_supplied_get. Expected SWIGTYPE_p_zxid_conf");
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_cpath_supplied_get. Expected SWIGTYPE_p_zxid_conf");
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
-  result = (int) ((arg1)->path_supplied);
+  result = (int) ((arg1)->cpath_supplied);
   {
     ZVAL_LONG(return_value,result);
   }
@@ -8888,7 +8888,7 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_len_set) {
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_cpath_len_set) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   int arg2 ;
   zval **args[2];
@@ -8900,7 +8900,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_len_set) {
   
   {
     if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_path_len_set. Expected SWIGTYPE_p_zxid_conf");
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_cpath_len_set. Expected SWIGTYPE_p_zxid_conf");
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
@@ -8910,7 +8910,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_len_set) {
   arg2 = (int) Z_LVAL_PP(args[1]);
   /*@SWIG@*/;
   
-  if (arg1) (arg1)->path_len = arg2;
+  if (arg1) (arg1)->cpath_len = arg2;
   
   return;
 fail:
@@ -8918,7 +8918,7 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_len_get) {
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_cpath_len_get) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   zval **args[1];
   int result;
@@ -8930,11 +8930,11 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_len_get) {
   
   {
     if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_path_len_get. Expected SWIGTYPE_p_zxid_conf");
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_cpath_len_get. Expected SWIGTYPE_p_zxid_conf");
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
-  result = (int) ((arg1)->path_len);
+  result = (int) ((arg1)->cpath_len);
   {
     ZVAL_LONG(return_value,result);
   }
@@ -8944,7 +8944,7 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_set) {
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_cpath_set) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   char *arg2 = (char *) 0 ;
   zval **args[2];
@@ -8956,7 +8956,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_set) {
   
   {
     if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_path_set. Expected SWIGTYPE_p_zxid_conf");
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_cpath_set. Expected SWIGTYPE_p_zxid_conf");
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
@@ -8971,12 +8971,12 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_set) {
   /*@SWIG@*/;
   
   {
-    if (arg1->path) free((char *)arg1->path);
+    if (arg1->cpath) free((char *)arg1->cpath);
     if (arg2) {
-      arg1->path = (char *) malloc(strlen((const char *)arg2)+1);
-      strcpy((char *)arg1->path, (const char *)arg2);
+      arg1->cpath = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->cpath, (const char *)arg2);
     } else {
-      arg1->path = 0;
+      arg1->cpath = 0;
     }
   }
   
@@ -8986,7 +8986,7 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_get) {
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_cpath_get) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   zval **args[1];
   char *result = 0 ;
@@ -8998,11 +8998,11 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_path_get) {
   
   {
     if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_path_get. Expected SWIGTYPE_p_zxid_conf");
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_cpath_get. Expected SWIGTYPE_p_zxid_conf");
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
-  result = (char *) ((arg1)->path);
+  result = (char *) ((arg1)->cpath);
   {
     if(!result) {
       ZVAL_NULL(return_value);
@@ -9016,7 +9016,7 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zxid_conf_url_set) {
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_burl_set) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   char *arg2 = (char *) 0 ;
   zval **args[2];
@@ -9028,7 +9028,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_url_set) {
   
   {
     if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_url_set. Expected SWIGTYPE_p_zxid_conf");
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_burl_set. Expected SWIGTYPE_p_zxid_conf");
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
@@ -9043,12 +9043,12 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_url_set) {
   /*@SWIG@*/;
   
   {
-    if (arg1->url) free((char *)arg1->url);
+    if (arg1->burl) free((char *)arg1->burl);
     if (arg2) {
-      arg1->url = (char *) malloc(strlen((const char *)arg2)+1);
-      strcpy((char *)arg1->url, (const char *)arg2);
+      arg1->burl = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->burl, (const char *)arg2);
     } else {
-      arg1->url = 0;
+      arg1->burl = 0;
     }
   }
   
@@ -9058,7 +9058,7 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zxid_conf_url_get) {
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_burl_get) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   zval **args[1];
   char *result = 0 ;
@@ -9070,11 +9070,11 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_url_get) {
   
   {
     if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_url_get. Expected SWIGTYPE_p_zxid_conf");
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_burl_get. Expected SWIGTYPE_p_zxid_conf");
     }
   }
   if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
-  result = (char *) ((arg1)->url);
+  result = (char *) ((arg1)->burl);
   {
     if(!result) {
       ZVAL_NULL(return_value);
@@ -41995,14 +41995,14 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zxid_conf_ctx_get,_wrap_zxid_conf_ctx_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_cot_set,_wrap_zxid_conf_cot_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_cot_get,_wrap_zxid_conf_cot_get,NULL)
- SWIG_ZEND_NAMED_FE(zxid_conf_path_supplied_set,_wrap_zxid_conf_path_supplied_set,NULL)
- SWIG_ZEND_NAMED_FE(zxid_conf_path_supplied_get,_wrap_zxid_conf_path_supplied_get,NULL)
- SWIG_ZEND_NAMED_FE(zxid_conf_path_len_set,_wrap_zxid_conf_path_len_set,NULL)
- SWIG_ZEND_NAMED_FE(zxid_conf_path_len_get,_wrap_zxid_conf_path_len_get,NULL)
- SWIG_ZEND_NAMED_FE(zxid_conf_path_set,_wrap_zxid_conf_path_set,NULL)
- SWIG_ZEND_NAMED_FE(zxid_conf_path_get,_wrap_zxid_conf_path_get,NULL)
- SWIG_ZEND_NAMED_FE(zxid_conf_url_set,_wrap_zxid_conf_url_set,NULL)
- SWIG_ZEND_NAMED_FE(zxid_conf_url_get,_wrap_zxid_conf_url_get,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_cpath_supplied_set,_wrap_zxid_conf_cpath_supplied_set,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_cpath_supplied_get,_wrap_zxid_conf_cpath_supplied_get,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_cpath_len_set,_wrap_zxid_conf_cpath_len_set,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_cpath_len_get,_wrap_zxid_conf_cpath_len_get,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_cpath_set,_wrap_zxid_conf_cpath_set,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_cpath_get,_wrap_zxid_conf_cpath_get,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_burl_set,_wrap_zxid_conf_burl_set,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_burl_get,_wrap_zxid_conf_burl_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_non_standard_entityid_set,_wrap_zxid_conf_non_standard_entityid_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_non_standard_entityid_get,_wrap_zxid_conf_non_standard_entityid_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_redirect_hack_imposed_url_set,_wrap_zxid_conf_redirect_hack_imposed_url_set,NULL)

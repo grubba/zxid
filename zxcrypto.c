@@ -472,7 +472,7 @@ int zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, 
   
   D("keygen start lk(%s) name(%s)", lk, name);
 
-  p = strstr(cf->url, "://");
+  p = strstr(cf->burl, "://");
   if (p) {
     p += sizeof("://")-1;
     len = strcspn(p, ":/");
@@ -487,7 +487,7 @@ int zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, 
 #if 0
   /* On some CAs the OU can not exceed 30 chars  2         3
    *                          123456789012345678901234567890 */
-  snprintf(ou, sizeof(ou)-1, "SSO Dept ZXID Auto-Cert %s", cf->url);
+  snprintf(ou, sizeof(ou)-1, "SSO Dept ZXID Auto-Cert %s", cf->burl);
 #else
   snprintf(ou, sizeof(ou)-1, "SSO Dept ZXID Auto-Cert");
 #endif
@@ -531,19 +531,19 @@ int zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, 
 #if 0 /* See cn code above */
   /* Parse domain name out of the URL: skip https:// and then scan name without port or path */
   
-  for (p = cf->url; !ONE_OF_2(*p, '/', 0); ++p) ;
+  for (p = cf->burl; !ONE_OF_2(*p, '/', 0); ++p) ;
   if (*p != '/') goto badurl;
   ++p;
   if (*p != '/') {
 badurl:
-    ERR("Malformed URL: does not start by https:// or http:// -- URL(%s)", cf->url);
+    ERR("Malformed URL: does not start by https:// or http:// -- URL(%s)", cf->burl);
     return 0;
   }
   ++p;
   for (q = cn; !ONE_OF_3(*p, ':', '/', 0) && q < cn + sizeof(cn)-1; ++q, ++p) *q = *p;
   *q = 0;
 
-  D("keygen populate DN: cn(%s) org(%s) c(%s) url=%p cn=%p p=%p q=%p", cn, cf->org_name, cf->country, cf->url, cn, p, q);
+  D("keygen populate DN: cn(%s) org(%s) c(%s) url=%p cn=%p p=%p q=%p", cn, cf->org_name, cf->country, cf->burl, cn, p, q);
 #endif
 
   /* Note on string types and allowable char sets:
@@ -655,7 +655,7 @@ badurl:
   len = BIO_get_mem_data(wbio_csr, &p);
 
   write_all_path_fmt("auto_cert csr", buflen, buf,
-		     "%s" ZXID_PEM_DIR "csr-%s", cf->path, name,
+		     "%s" ZXID_PEM_DIR "csr-%s", cf->cpath, name,
 		     "%.*s", len, p);
   BIO_free_all(wbio_csr);
 
@@ -682,7 +682,7 @@ badurl:
   lenq = BIO_get_mem_data(wbio_pkey, &q);
 
   write_all_path_fmt("auto_cert ss", buflen, buf,
-		     "%s" ZXID_PEM_DIR "%s", cf->path, name,
+		     "%s" ZXID_PEM_DIR "%s", cf->cpath, name,
 		     "%.*s%.*s", len, p, lenq, q);
 
   BIO_free_all(wbio_cert);
@@ -778,7 +778,7 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
   
   D("keygen start lk(%s) name(%s)", lk, name);
 
-  p = strstr(cf->url, "://");
+  p = strstr(cf->burl, "://");
   if (p) {
     p += sizeof("://")-1;
     len = strcspn(p, ":/");
@@ -790,7 +790,7 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
     strcpy(cn, "Unknown server cn. Misconfiguration.");
   }
   
-  snprintf(ou, sizeof(ou)-1, "SSO Dept ZXID Auto-Cert %s", cf->url);
+  snprintf(ou, sizeof(ou)-1, "SSO Dept ZXID Auto-Cert %s", cf->burl);
   ou[sizeof(ou)-1] = 0;  /* must terminate manually as on win32 termination is not guaranteed */
 
   ts = time(0);
@@ -914,7 +914,7 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
   memcpy(buf, p, MIN(len, buflen-1));
   buf[MIN(len, buflen-1)] = 0;
 
-  //***write_all_path_fmt("auto_cert ss", buflen, buf, "%s" ZXID_PEM_DIR "%s", cf->path, name,  "%.*s", len, p);
+  //***write_all_path_fmt("auto_cert ss", buflen, buf, "%s" ZXID_PEM_DIR "%s", cf->cpath, name,  "%.*s", len, p);
 
   BIO_free_all(wbio_cert);
 

@@ -291,17 +291,17 @@ static void opt(int* argc, char*** argv, char*** env)
     }
   } else {
 path_to_dir:
-    len = strlen(cf->path);
+    len = strlen(cf->cpath);
     cotdir = malloc(len+sizeof(ZXID_COT_DIR));
-    strcpy(cotdir, cf->path);
+    strcpy(cotdir, cf->cpath);
     strcpy(cotdir+len, ZXID_COT_DIR);
 
     dimddir = malloc(len+sizeof(ZXID_DIMD_DIR));
-    strcpy(dimddir, cf->path);
+    strcpy(dimddir, cf->cpath);
     strcpy(dimddir+len, ZXID_DIMD_DIR);
 
     uiddir = malloc(len+sizeof(ZXID_UID_DIR));
-    strcpy(uiddir, cf->path);
+    strcpy(uiddir, cf->cpath);
     strcpy(uiddir+len, ZXID_UID_DIR);
   }
 }
@@ -339,9 +339,9 @@ static void zxmkdirs()
   struct stat st;
   
 #define ZXID_PATH_LENGTH_MARGIN (sizeof("ch/default/.del")+10) /* Accommodate longest subdir */
-  len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s", cf->path);
+  len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s", cf->cpath);
   if (len > sizeof(path)-ZXID_PATH_LENGTH_MARGIN) {
-    ERR("CPATH %s too long. len=%d, space=%d", cf->path, len, (int)(sizeof(path)-ZXID_PATH_LENGTH_MARGIN));
+    ERR("CPATH %s too long. len=%d, space=%d", cf->cpath, len, (int)(sizeof(path)-ZXID_PATH_LENGTH_MARGIN));
     exit(1);
   }
 
@@ -359,7 +359,7 @@ static void zxmkdirs()
   }
   
   for (dir = mkdirs_list; *dir; ++dir) {
-    len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s%s", cf->path, *dir);
+    len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s%s", cf->cpath, *dir);
     if (MKDIR(path, 02770) < 0) {
       ERR("Failed to create directory %s: %d (%s)", path, errno, STRERROR(errno));
     } else {
@@ -367,9 +367,9 @@ static void zxmkdirs()
     }
   }
   
-  len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s" ZXID_CONF_FILE, cf->path);
+  len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s" ZXID_CONF_FILE, cf->cpath);
   if (stat(path, &st)) {  /* error return from stat means file does not exist, create example */
-    write_all_path_fmt("-dirs", sizeof(path), path, "%s%s", cf->path, ZXID_CONF_FILE,
+    write_all_path_fmt("-dirs", sizeof(path), path, "%s%s", cf->cpath, ZXID_CONF_FILE,
 "# This is example configuration file %s" ZXID_CONF_FILE "\n"
 "# You should edit the values to suit your situation.\n"
 "NICE_NAME=Configuration NICE_NAME: Set this to describe your site to humans, see %s" ZXID_CONF_FILE "\n"
@@ -381,10 +381,10 @@ static void zxmkdirs()
 "CONTACT_ORG=Your organization\n"
 "CONTACT_NAME=Your Name\n"
 "CONTACT_EMAIL=your@email.com\n"
-"CONTACT_TEL=+351918731007\n", cf->path, cf->path);
+"CONTACT_TEL=+351918731007\n", cf->cpath, cf->cpath);
   }
 
-  INFO("Created directories. You should inspect their ownership and permissions to ensure the webserver can read and write them, yet outsiders can not access them. You may want to run  chown -R www-data %s", cf->path);
+  INFO("Created directories. You should inspect their ownership and permissions to ensure the webserver can read and write them, yet outsiders can not access them. You may want to run  chown -R www-data %s", cf->cpath);
 }
 
 /* --------------- reg_svc --------------- */

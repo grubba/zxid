@@ -128,7 +128,7 @@ zxid_nid* zxid_get_user_nameid(zxid_conf* cf, zxid_nid* oldnid)
   mniptr = sha1_name;
 
   while (--iter && mniptr && *mniptr) {
-    read_all(ZXID_MAX_USER, buf, (const char*)__FUNCTION__, 1, "%s" ZXID_USER_DIR "%s/.mni", cf->path, mniptr);
+    read_all(ZXID_MAX_USER, buf, (const char*)__FUNCTION__, 1, "%s" ZXID_USER_DIR "%s/.mni", cf->cpath, mniptr);
     nameid = zxid_parse_mni(cf, buf, &mniptr);
     if (nameid)
       return nameid;
@@ -172,7 +172,7 @@ int zxid_put_user(zxid_conf* cf, struct zx_str* nidfmt, struct zx_str* idpent, s
   }
   
   zxid_user_sha1_name(cf, idpent, idpnid, sha1_name);
-  name_from_path(dir, sizeof(dir), "%s" ZXID_USER_DIR "%s", cf->path, sha1_name);
+  name_from_path(dir, sizeof(dir), "%s" ZXID_USER_DIR "%s", cf->cpath, sha1_name);
   if (MKDIR(dir, 0777) && errno != EEXIST) {
     ERR("Creating user directory(%s) failed: %d %s; euid=%d egid=%d", dir, errno, STRERROR(errno), geteuid(), getegid());
     return 0;
@@ -180,7 +180,7 @@ int zxid_put_user(zxid_conf* cf, struct zx_str* nidfmt, struct zx_str* idpent, s
   
   buf = ZX_ALLOC(cf->ctx, ZXID_MAX_USER);
   write_all_path_fmt("put_user", ZXID_MAX_USER, buf,
-		     "%s" ZXID_USER_DIR "%s/.mni", cf->path, sha1_name,
+		     "%s" ZXID_USER_DIR "%s/.mni", cf->cpath, sha1_name,
 		     "%.*s|%.*s|%.*s|%.*s|%s",
 		     nidfmt?nidfmt->len:0, nidfmt?nidfmt->s:"",
 		     idpent?idpent->len:0, idpent?idpent->s:"",
@@ -209,7 +209,7 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   struct zx_str* ss;
 
-  if (!zx_password_authn(cf->path, cgi->uid, cgi->pw, 0)) {
+  if (!zx_password_authn(cf->cpath, cgi->uid, cgi->pw, 0)) {
     cgi->err = login_failed;
     return 0;
   }
@@ -230,7 +230,7 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   if (cf->ses_cookie_name && *cf->ses_cookie_name) {
     ses->setcookie = zx_alloc_sprintf(cf->ctx, 0, "%s=%s; path=/%s",
 				      cf->ses_cookie_name, ses->sid,
-				      ONE_OF_2(cf->url[4], 's', 'S')?"; secure":"");
+				      ONE_OF_2(cf->burl[4], 's', 'S')?"; secure":"");
     ses->cookie = zx_alloc_sprintf(cf->ctx, 0, "$Version=1; %s=%s",
 				   cf->ses_cookie_name, ses->sid);
   }

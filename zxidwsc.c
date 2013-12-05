@@ -259,7 +259,7 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
 #if 1
   /* Mandatory for a request. */
   hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx, &hdr->gg);
-  /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));*/
+  /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->burl));*/
   hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON));
   hdr->ReplyTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->ReplyTo->actor = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
@@ -273,7 +273,7 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
 #if 0
   /* Omission means to use same address as ReplyTo */
   hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx, &hdr->gg);
-  hdr->FaultTo->Address = zx_mk_addr(cf->ctx, &hdr->FaultTo->gg, zx_strf(cf->ctx, "%s?o=P", cf->url));
+  hdr->FaultTo->Address = zx_mk_addr(cf->ctx, &hdr->FaultTo->gg, zx_strf(cf->ctx, "%s?o=P", cf->burl));
   hdr->FaultTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->FaultTo->actor = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
 #endif

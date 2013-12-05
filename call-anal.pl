@@ -131,7 +131,7 @@ sub process_func {
 #$watch2 = 'zxid_decode_redir_or_post';  # zxiddec.c
 
 sub process_doc {
-    my ($fn, $func, $doc_flag, $doc) = @_;
+    my ($fn, $func, $doc_flag, $doc, $params) = @_;
     return if $doc_flag =~ /-/;   # (-) suppresses function from documentation
     warn "DOC1 FUNC($func) ($doc)" if $func eq $watch1 || $func eq $watch2;
     #$doc =~ s/\n\/\*\sCalled\sby:[^\*\/]*?\*\/)?//;
@@ -143,16 +143,33 @@ sub process_doc {
     warn "DOC4($doc)" if $func eq $watch1 || $func eq $watch2;
     $local_graphs{$func} = 1;  # Cause call graph (2 deep) to be generated for this function
     ++$n_fn;
-    open F, ">ref/$func.pd" or die "Can't write(ref/func.pd): $!";
+    $params =~ s%\/\*.*?\*\/%%g; # zap comments
+    my @param = split /\s*,\s*/, $params;
+    for $_ (@param) {
+	s%[\w\*:\[\]\s\/.&]+?[\t ]+\**(\w+)[\t \[\]=\w:.-]*?%$1%g;
+    }
+    $params = join ', ', @param;
+    my $javaname = $func;
+    $javaname =~ s%^zxid_%zxidjni.%;
+    $javaname = "Java name: $javaname";
+    my $perlname = $func;
+    $perlname =~ s%^zxid_%Net::SAML::%;
+    $perlname = "Perl name: $perlname";
+    my $src_file = "Source file: $fn" unless $no_srcfile;
     #<<img: $func-call,H,: Call graph for $func()>>
     my $img = qq(<<img: $func-call,R: >>) if $call_size{$func};
+    open F, ">ref/$func.pd" or die "Can't write(ref/func.pd): $!";
     print F <<PD;
-1.3.$n_fn $func()
+1.3.$n_fn $func($params)
 ~~~~~~~~~~~~~~~~~~~~
 
 $doc
 
-Source file: $fn
+$javaname
+
+$perlname
+
+$src_file
 
 $img
 
@@ -205,8 +222,8 @@ sub match_funcs {
                       (?:[ \t]*\/\*[^\*\/\n]*?\*\/)?\s+  (?# ignore /* some comment */ )
                       ((\w+::)*(\w+))                 (?# 5=full name, 6=namespace, 7=localname )
                       [ \t]*\((                       (?# start parameter list-8 )
-                        (?:\s*[\w\*:\[\]\s\/.&]*?[\t ]   (?# param type )
-                           \**\w+[\t \[\]=\w:]*,?     (?# param *name[] = default assignment?, )
+                        (?:\s*[\w\*:\[\]\s\/.&]*?[\t ]+   (?# param type )
+                           \**\w+[\t \[\]=\w:.-]*,?   (?# param_name[] = default assignment?, )
                            (?:\s*\/\*[^{}]*?\*\/)? )+ (?# /* param comment */? )
                         (?:\s*\.\.\.)?                (?# more va params ... )
                       \s*)\))\s*                      (?# close 8-parameters, close 3-proto )
@@ -558,42 +575,6 @@ for $fn (sort keys %fnf) {
     } else {
 	warn "$n changes. Nothing written.\n";
     }
-}
-
-### NEVER CALLED Generate per function documentation
-
-sub process_doc_inline {
-    die "*** Never called";
-    my ($fn, $func, $doc_flag, $doc) = @_;
-    return if $doc_flag =~ /-/;   # (-) suppresses function from documentation
-    #$doc =~ s/\n\/\*\sCalled\sby:[^\*\/]*?\*\/)?//;
-    $doc =~ s/\n\/\*\sCalled\sby:.*$//s;
-    $doc =~ s/\n ?\* ?/\n/gs;
-    $local_graphs{$func} = 1;  # Cause call graph (2 deep) to be generated for this function
-    ++$n_fn;
-    open F, ">ref/$func.pd" or die "Can't write(ref/$func.pd): $!";
-    #<<img: $func-call,H,: Call graph for $func()>>
-
-    my $img = qq(<<img: $func-call,R: >>) if $call_size{$func};
-
-    print F <<PD;
-1.3.$n_fn $func()
-~~~~~~~~~~~~~~~~~~~~
-
-$doc
-
-Source file: $fn
-
-$img
-
-PD
-;
-    close F;
-
-    $doc{$func} = $doc;
-    ++$func{$func};
-    ++$important{$func} if $doc_flag =~ /i/;
-    ++$struct{$func} if $doc_flag =~ /s/;
 }
 
 ###

@@ -150,22 +150,24 @@
  * OreanizationDisplayName and EntityID displayed as well). */
 #define ZXID_PREF_BUTTON_SIZE "150x60"
 
-/*(c) Web Site URL - root of EntityID
+/*(c) Web Site Base URL - root of EntityID
  * IMPORTANT: Failure to config this option may block zxid from operating.
- * URL for most zxid operations. It must end in whatever triggers
- * the ZXID functionality in the web server. The hostname
+ * BURL is the stem for EntityID and most zxid SSO operations. It must end
+ * in whatever triggers the ZXID functionality in the web server. The hostname
  * and port number should match the server under which zxid CGI is accessible.
- * N.B. There is no explicit way to configure Entity ID (Provider ID) for
- * the zxid SP. The Entity ID is always of form ZXID_URL?o=B, for example
+ * The BURL config option may be set dynamically by VURL, see below, or from
+ * program code.
+ * N.B. There is no explicit way to configure EntityID (ProviderID) for
+ * the zxid SP. The EntityID is always of form ZXID_BURL?o=B, for example
  *   https://sp1.zxidsp.org:8443/zxid?o=B */
-#define ZXID_URL "https://sp1.please-set-URL-conf-variable-to-some-useful-site-dep-value.org:8443/zxidhlo"
+#define ZXID_BURL "https://sp1.please-set-BURL-conf-variable-to-some-useful-site-dep-value.org:8443/zxidhlo"
 
-/*(c) VURL - URL for a virtual server
+/*(c) VURL - BURL for a virtual server
  *
- * The VURL allows different URL for different
+ * The VURL allows different BURL for different
  * virtual servers (multihoming) to be generated automatically based
  * on the (CGI) environment variables. However, often you would
- * override the URL in /var/zxid/zxid.conf
+ * override the BURL in /var/zxid/zxid.conf
  *
  * In VURL each ordinary letter is rendered as is, but the
  * following % (percent) specifications are expanded inline:
@@ -185,7 +187,7 @@
  *
  * VURL is not really a configuration option on its own right (there is
  * no corresponding entry in struct zxid_conf), but rather a directive
- * that instructs, on point of its occurrance, the URL variable (see zxid.h)
+ * that instructs, on point of its occurrance, the BURL variable (see zxid.h)
  * to be computed. It will not have any effect unless evaluted at run time,
  * thus this "default value" is rather moot. You really need to specify
  * VURL in your own configuration.
@@ -197,15 +199,15 @@
 
 /*(c) Override standard EntityID Construction
  * The best practise is that SP Entity ID is chosen by the SP (and not
- * forced upon SP by IdP). In ZXID this is done by setting ZXID_URL,
+ * forced upon SP by IdP). In ZXID this is done by setting BURL,
  * see above. However, should you have to work with an obstinate IdP
  * that refuses to follow this best practise, you can use this option
  * to manually set the Entity ID. Not following the best practise
  * breaks automatic metadata exchange (Auto-CoT). Recommended
- * value: leave as 0 so that Entity ID is formed from ZXID_URL */
+ * value: leave as 0 so that Entity ID is formed from BURL */
 #define ZXID_NON_STANDARD_ENTITYID 0
 
-/*(c) Allow omission of o=B, i.e. make the URL be the entity ID. */
+/*(c) Allow omission of o=B, i.e. make the BURL be the entity ID. */
 #define ZXID_BARE_URL_ENTITYID 0
 
 /*(c) Illadviced ACS URL Hack
@@ -232,7 +234,7 @@
 #define ZXID_CONTACT_EMAIL 0
 #define ZXID_CONTACT_TEL 0
 
-/*(c) If set (by default this is always set when URL is set, you have to
+/*(c) If set (by default this is always set when BURL is set, you have to
  * explicitly unset it if you do not want it), causes IdP to include
  * fedusername attribute in the assertion. The value of this attribute
  * will be the (persistent) nameid followed by @ sign and this suffix,
@@ -928,7 +930,7 @@
  *
  * Since SOL expressions are parsed according to URL query string
  * rules and since the configuration directives are also parsed
- * according toquery string rules, a problem arises with multipart SOL
+ * according to query string rules, a problem arises with multipart SOL
  * expressions. The second expression shows how to use URL quoting
  * (%26) to protect the SOL ampersand from being processed by the
  * configuration file. Since this is such a common situation, a

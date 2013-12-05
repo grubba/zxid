@@ -107,7 +107,7 @@ int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len, struct zx_str* name, s
 /* Called by:  zxid_cache_epr, zxid_snarf_eprs_from_ses */
 int zxid_epr_path(zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, struct zx_str* svc, struct zx_str* cont)
 {
-  int len = snprintf(buf, buf_len, "%s%s%s/", cf->path, dir, sid);
+  int len = snprintf(buf, buf_len, "%s%s%s/", cf->cpath, dir, sid);
   buf[buf_len-1] = 0; /* must terminate manually as on win32 termination is not guaranteed */
   if (len <= 0) {
     platform_broken_snprintf(len, __FUNCTION__, buf_len, "%s%s%s/");
@@ -308,7 +308,7 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
   }
 #endif
   
-  if (!name_from_path(path, sizeof(path), "%s" ZXID_SES_DIR "%s", cf->path, ses->sid)) {
+  if (!name_from_path(path, sizeof(path), "%s" ZXID_SES_DIR "%s", cf->cpath, ses->sid)) {
     D_DEDENT("find_epr: ");
     return 0;
   }
@@ -343,7 +343,7 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
       continue;
     D("%d Checking EPR content file(%s)", n, de->d_name);
     epr_buf = read_all_alloc(cf->ctx, "find_epr", 1, &epr_len,
-			     "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
+			     "%s" ZXID_SES_DIR "%s/%s", cf->cpath, ses->sid, de->d_name);
     if (!epr_buf)
       continue;
     

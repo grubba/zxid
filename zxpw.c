@@ -53,13 +53,13 @@
  *
  * See: yubico.com
  *
- * path:: The configuration path from which uid directory path is formed, typically cf->path
+ * cpath:: The configuration path from which uid directory path is formed, typically cf->path
  * uid:: Both the UID and OTP concatenated
  * passw:: not used in Yubikey authentication
  * return:: 0 on failure, 1 on success  */
 
 /* Called by:  zx_password_authn */
-int zx_yubikey_authn(const char* path, char* uid, const char* passw)
+int zx_yubikey_authn(const char* cpath, char* uid, const char* passw)
 {
   unsigned char buf[256];
   unsigned char pw_buf[256];
@@ -71,7 +71,7 @@ int zx_yubikey_authn(const char* path, char* uid, const char* passw)
   uid[len - 32] = 0;
   D("yubikey user(%s) ticket(%s)", uid, pw_hash);
   
-  snprintf((char*)buf, sizeof(buf)-1, "%s" ZXID_UID_DIR "%s", path, uid);
+  snprintf((char*)buf, sizeof(buf)-1, "%s" ZXID_UID_DIR "%s", cpath, uid);
   buf[sizeof(buf)-1] = 0;
   len = read_all(sizeof(pw_buf), (char*)pw_buf, "ykspent", 0, "%s/.ykspent/%s", buf, pw_hash);
   if (len) {
@@ -161,7 +161,7 @@ static int zx_pw_chk(const char* uid, const char* pw_buf, const char* passw, int
  * return:: 0 on failure, 1 on success  */
 
 /* Called by:  zxbus_pw_authn_ent, zxid_pw_authn */
-int zx_password_authn(const char* path, char* uid, const char* passw, int fd_hint)
+int zx_password_authn(const char* cpath, char* uid, const char* passw, int fd_hint)
 {
   char pw_buf[256];
   int len;
@@ -182,14 +182,14 @@ int zx_password_authn(const char* path, char* uid, const char* passw, int fd_hin
 
   len = strlen(uid);
   if (len > 32)
-    return zx_yubikey_authn(path, uid, passw);
+    return zx_yubikey_authn(cpath, uid, passw);
   
   if (!passw || !passw[0]) {
     ERR("No password supplied. uid(%s)", uid);
     return 0;
   }
   
-  len = read_all(sizeof(pw_buf), pw_buf, "pw_authn", 1, "%s" ZXID_UID_DIR "%s/.pw", path, uid);
+  len = read_all(sizeof(pw_buf), pw_buf, "pw_authn", 1, "%s" ZXID_UID_DIR "%s/.pw", cpath, uid);
   if (len < 1) {
     ERR("No account found for uid(%s) or account does not have .pw file.", uid);
     D("io(%x) pw(%s)", fd_hint, passw);

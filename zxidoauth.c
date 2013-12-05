@@ -47,7 +47,7 @@ struct zx_str* zxid_mk_oauth_az_req(zxid_conf* cf, zxid_cgi* cgi, struct zx_str*
     return 0;
   }
   
-  redir_url_enc = zx_url_encode(cf->ctx, strlen(cf->url), cf->url, 0);
+  redir_url_enc = zx_url_encode(cf->ctx, strlen(cf->burl), cf->burl, 0);
   eid = zxid_my_ent_id(cf);
   eid_url_enc = zx_url_encode(cf->ctx, eid->len, eid->s, 0);
   zx_str_free(cf->ctx, eid);

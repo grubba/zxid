@@ -327,7 +327,7 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
   
   D_INDENT("lstses: ");
 
-  if (!name_from_path(path, sizeof(path), "%s" ZXID_SES_DIR "%s", cf->path, ses->sid)) {
+  if (!name_from_path(path, sizeof(path), "%s" ZXID_SES_DIR "%s", cf->cpath, ses->sid)) {
     D_DEDENT("lstses: ");
     return 0;
   }
@@ -349,7 +349,7 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
       continue;
     D("%d Checking EPR content file(%s)", din, de->d_name);
     epr_buf = read_all_alloc(cf->ctx, "lstses", 1, &epr_len,
-			     "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
+			     "%s" ZXID_SES_DIR "%s/%s", cf->cpath, ses->sid, de->d_name);
     if (!epr_buf)
       continue;
     

@@ -189,7 +189,7 @@ void zxid_gen_boots(zxid_conf* cf, zxid_ses* ses, struct zx_sa_AttributeStatemen
     return;  /* Discovery EPRs do not need any bootstraps. */
   }
   
-  name_from_path(mdpath, sizeof(mdpath), "%s" ZXID_DIMD_DIR, cf->path);
+  name_from_path(mdpath, sizeof(mdpath), "%s" ZXID_DIMD_DIR, cf->cpath);
   D("Looking for service metadata in dir(%s) bs_lvl=%d", mdpath, bs_lvl);
   
   dir = opendir(path);
@@ -314,7 +314,7 @@ static void zxid_add_ldif_attrs(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta,
 static struct zxid_map* zxid_read_map(zxid_conf* cf, const char* sp_name_buf, const char* mapname)
 {
   char* p;
-  char* buf = read_all_alloc(cf->ctx, "read_aamap", 0, 0, "%s" ZXID_UID_DIR ".all/%s/.cf", cf->path,sp_name_buf);
+  char* buf = read_all_alloc(cf->ctx, "read_aamap", 0, 0, "%s" ZXID_UID_DIR ".all/%s/.cf", cf->cpath,sp_name_buf);
   if (!buf)
     return 0;
   p = strstr(buf, mapname);
@@ -334,7 +334,7 @@ static struct zxid_map* zxid_read_map(zxid_conf* cf, const char* sp_name_buf, co
 static void zxid_read_ldif_attrs(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, const char* sp_name_buf, const char* uid, struct zxid_map* sp_aamap, struct zx_sa_AttributeStatement_s* at_stmt)
 {
   char* buf = read_all_alloc(cf->ctx, "read_ldif_attrs", 0, 0,
-			     "%s" ZXID_UID_DIR "%s/%s/.at", cf->path, uid, sp_name_buf);
+			     "%s" ZXID_UID_DIR "%s/%s/.at", cf->cpath, uid, sp_name_buf);
   if (buf)
     zxid_add_ldif_attrs(cf, ses, meta, &at_stmt->gg, buf, "read_ldif_attrs", sp_aamap);
 }
@@ -401,10 +401,10 @@ zxid_a7n* zxid_mk_usr_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, zxid_nid* nameid, 
   
   /* Process bootstraps */
 
-  name_from_path(dir, sizeof(dir), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, ses->uid);
+  name_from_path(dir, sizeof(dir), "%s" ZXID_UID_DIR "%s/.bs/", cf->cpath, ses->uid);
   zxid_gen_boots(cf, ses, at_stmt, dir, bs_lvl);
   
-  name_from_path(dir, sizeof(dir), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
+  name_from_path(dir, sizeof(dir), "%s" ZXID_UID_DIR ".all/.bs/", cf->cpath);
   zxid_gen_boots(cf, ses, at_stmt, dir, bs_lvl);
   
   D_DEDENT("mka7n: ");
@@ -423,14 +423,14 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
   struct zx_str* nid;
   struct zx_attr_s* idp_eid;
 
-  got = read_all(sizeof(buf)-1, buf, "idpsso", 0, "%s" ZXID_UID_DIR "%s/%s/.mni" , cf->path, uid, sp_name_buf);
+  got = read_all(sizeof(buf)-1, buf, "idpsso", 0, "%s" ZXID_UID_DIR "%s/%s/.mni" , cf->cpath, uid, sp_name_buf);
 
   if (!got) {
     if (allow_create == '1') {
 
       D_INDENT("allowcreate: ");
       
-      name_from_path(dir, sizeof(dir), "%s" ZXID_UID_DIR "%s/%s", cf->path, uid, sp_name_buf);
+      name_from_path(dir, sizeof(dir), "%s" ZXID_UID_DIR "%s/%s", cf->cpath, uid, sp_name_buf);
       if (MKDIR(dir, 0777) && errno != EEXIST) {
 	perror("mkdir for uid/sp fed");
 	ERR("Creating uid/sp federation directory(%s) failed", dir);
@@ -460,7 +460,7 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
 
       /* Create entry for reverse mapping from pseudonym nid to uid */
 
-      name_from_path(dir, sizeof(dir), "%s" ZXID_NID_DIR "%s", cf->path, sp_name_buf);
+      name_from_path(dir, sizeof(dir), "%s" ZXID_NID_DIR "%s", cf->cpath, sp_name_buf);
       if (MKDIR(dir, 0777) && errno != EEXIST) {
 	perror("mkdir for nid fed");
 	ERR("Creating nid index directory(%s) failed", dir);
@@ -469,7 +469,7 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
 	return 0;
       }
       
-      name_from_path(dir, sizeof(dir), "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, nid->len, nid->s);
+      name_from_path(dir, sizeof(dir), "%s" ZXID_NID_DIR "%s/%.*s", cf->cpath, sp_name_buf, nid->len, nid->s);
       if (!write_all_path_fmt("put_nidmap", ZXID_MAX_USER, buf, "%s", dir, 0, "%s", uid)) {
 	zxlog(cf, 0, srcts, 0, issuer, req_id, 0, nid, "N", "S", "EFILE", uid, "put_nidmap fail, permissions?");
 	D_DEDENT("allowcreate: ");
@@ -511,7 +511,7 @@ void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_
   
   /* Create entry for reverse mapping from pseudonym nid to uid */
   
-  name_from_path(dir, sizeof(dir), "%s" ZXID_NID_DIR "%s", cf->path, sp_name_buf);
+  name_from_path(dir, sizeof(dir), "%s" ZXID_NID_DIR "%s", cf->cpath, sp_name_buf);
   if (MKDIR(dir, 0777) && errno != EEXIST) {
     perror("mkdir for nid tmp");
     ERR("Creating nid index directory(%s) failed", dir);
@@ -520,7 +520,7 @@ void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_
     return;
   }
   
-  name_from_path(dir, sizeof(dir), "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, nid->len, nid->s);
+  name_from_path(dir, sizeof(dir), "%s" ZXID_NID_DIR "%s/%.*s", cf->cpath, sp_name_buf, nid->len, nid->s);
   if (!write_all_path_fmt("put_nidmap_tmp", ZXID_MAX_USER, buf, "%s", dir, 0, "%s", uid)) {
     zxlog(cf, 0, 0, 0, 0, 0, 0, nid, "N", "S", "EFILE", uid, "put_nidmap fail, permissions?");
     D_DEDENT("mk_trans: ");
@@ -903,9 +903,9 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
   if (zxid_pw_authn(cf, &cgi, &sess)) {
     D_INDENT("as: ");
     at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx, 0 /* Do not attach */);
-    name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, cgi.uid);
+    name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR "%s/.bs/", cf->cpath, cgi.uid);
     zxid_gen_boots(cf, &sess, at_stmt, path, 1);
-    name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
+    name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR ".all/.bs/", cf->cpath);
     zxid_gen_boots(cf, &sess, at_stmt, path, 1);
 
     /* Kludgy extraction of the EPRs from the attributes. */

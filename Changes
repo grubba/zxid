@@ -116,7 +116,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - BUG: Passing qs args in RelayState
     - BANGBANG_PAT to enable bang bang expansion of outputs, even in mini_httpd_zxid
 
-zxid-1.19:: 30.11.2013
+zxid-1.19:: 4.12.2013
     - Fixed setting ses and ptm cookies in mod_auth_saml redirect and internal content cases
     - Added OPT_INCLUDE and INCLUDE features to config file parsing
     - Added and documented REM, ECHO, INFO, WARN, and DIE config options
@@ -124,6 +124,7 @@ zxid-1.19:: 30.11.2013
     - Added support for PRAGMA config option
     - Cleaned up so valgrind does not complain
     - Fixed XML parser boundary condition with read 1 past end (found by valgrind)
+    - Changed URL to BURL (Base URL)
 
 zxid-1.18:: 20.11.2013
     - More bug fixing in mini_httpd_zxid

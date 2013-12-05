@@ -414,15 +414,15 @@ static int chkuid(request_rec* r)
    * SSO by virtue of the web server configuration. */
 
   uri_len = strlen(r->uri);
-  url_len = strlen(cf->url);
-  for (cp = cf->url + url_len - 1; cp > cf->url; --cp)
+  url_len = strlen(cf->burl);
+  for (cp = cf->burl + url_len - 1; cp > cf->burl; --cp)
     if (*cp == '?')
       break;
-  if (cp == cf->url)
-    cp = cf->url + url_len;
+  if (cp == cf->burl)
+    cp = cf->burl + url_len;
   
   if (url_len >= uri_len && !memcmp(cp - uri_len, r->uri, uri_len)) {  /* Suffix match */
-    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->url(%s) qs(%s) rs(%s) op(%c)", r->uri, cf->url, STRNULLCHKNULL(r->args), STRNULLCHKNULL(cgi.rs), cgi.op);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->burl(%s) qs(%s) rs(%s) op(%c)", r->uri, cf->burl, STRNULLCHKNULL(r->args), STRNULLCHKNULL(cgi.rs), cgi.op);
     if (r->method_number == M_POST) {
       res = read_post(cf, r);   /* Will print some debug output */
       if (res) {
@@ -487,7 +487,7 @@ static int chkuid(request_rec* r)
     }
   } else {
     /* Some other page. Just check for session. */
-    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->url(%s) uri_len=%d url_len=%d", r->uri, STRNULLCHKNULL(r->args), cf->url, uri_len, url_len);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->burl(%s) uri_len=%d url_len=%d", r->uri, STRNULLCHKNULL(r->args), cf->burl, uri_len, url_len);
     if (r->args && r->args[0] == 'l') {
       D("Detect login(%s)", r->args);
     } else
@@ -598,7 +598,7 @@ const command_rec zxid_apache_commands[] = {
 };
 
 
-#define ZXID_APACHE_DEFAULT_CONF ""  /* defaults will reign, including path /var/zxid */
+#define ZXID_APACHE_DEFAULT_CONF ""  /* defaults will reign, including cpath /var/zxid */
 
 /*(-) Create default configuration in response for Apache <Location> or <Directory>
  * directives. This is then augmented by ZXIDConf directives.
@@ -619,7 +619,7 @@ static void* dirconf(apr_pool_t* p, char* d)
   D("cf=%p ctx=%p d(%s)", cf, cf->ctx, STRNULLCHKD(d));
   /* *** set malloc func ptr in ctx to use apr_palloc() */
   zxid_conf_to_cf_len(cf, -1, ZXID_APACHE_DEFAULT_CONF);
-  cf->path_supplied = 0;
+  cf->cpath_supplied = 0;
   return cf;
 }
 

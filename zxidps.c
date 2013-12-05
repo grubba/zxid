@@ -176,7 +176,7 @@ int zxid_put_invite(zxid_conf* cf, struct zxid_invite* inv)
   invid_c[sizeof(invid_c)-1] = 0;
 
   write_all_path_fmt("put_inv", ZXID_MAX_USER, buf,
-		     "%s" ZXID_INV_DIR "%s", cf->path, invid_c,
+		     "%s" ZXID_INV_DIR "%s", cf->cpath, invid_c,
 		     "dn: invid=%.*s\ninvid: %.*s\nuid: %s\ndesc: %.*s\npsobj: %.*s\nps2spredir: %.*s\nmaxusage: %d\nusage: %d\nstarts: %s\nexpires: %s\n%s\n\n",
 		     inv->invid->len, inv->invid->s,
 		     inv->invid->len, inv->invid->s,
@@ -206,7 +206,7 @@ int zxid_put_psobj(zxid_conf* cf, struct zxid_psobj* obj)
   obj->mod_secs = time(0);
   
   write_all_path_fmt("put_psobj", ZXID_MAX_USER, buf,
-		     "%s" ZXID_UID_DIR "%s", cf->path, obj->uid,
+		     "%s" ZXID_UID_DIR "%s", cf->cpath, obj->uid,
 		     "dn: psobj=%.*s,uid=%s\npsobj: %.*s\nowner: %s\nidpnid: %.*s\ndispname: %.*s\nnodetype: %d\ncreated: %s\nmodified: %s\n%s%s%s%s\n\n",
 		     obj->psobj->len, obj->psobj->s, obj->uid,
 		     obj->psobj->len, obj->psobj->s, obj->uid,
@@ -431,7 +431,7 @@ char* zxid_ps_accept_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
   int now = time(0);
   struct zxid_invite inv;
   char buf[ZXID_MAX_BUF];
-  int got = read_all(sizeof(buf), buf, "accept_invite", 1, "%s" ZXID_INV_DIR "%s",cf->path,cgi->inv);
+  int got = read_all(sizeof(buf), buf, "accept_invite", 1, "%s" ZXID_INV_DIR "%s",cf->cpath,cgi->inv);
   if (!got) {
     ERR("Invitation not found(%s)", cgi->inv);
     cgi->err = "Invitation not found.";
@@ -469,7 +469,7 @@ char* zxid_ps_finalize_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* 
   int now = time(0);
   struct zxid_invite inv;
   char buf[ZXID_MAX_BUF];
-  int got = read_all(sizeof(buf), buf, "finalize_invite", 1, "%s" ZXID_INV_DIR "%s",cf->path,cgi->inv);
+  int got = read_all(sizeof(buf), buf, "finalize_invite", 1, "%s" ZXID_INV_DIR "%s",cf->cpath,cgi->inv);
   if (!got) {
     ERR("Invitation not found(%s)", cgi->inv);
     cgi->err = "Invitation not found.";
@@ -561,7 +561,7 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_ses*
   /* The invitation URL will be processed by zxid_ps_accept_invite(), see above. */
   resp->SPtoPSRedirectURL
     = zx_new_str_elem(cf->ctx, &resp->gg, zx_ps_SPtoPSRedirectURL_ELEM,
-		      zx_strf(cf->ctx, "%s?o=D&inv=%.*s", cf->url, inv->invid->len, inv->invid->s));
+		      zx_strf(cf->ctx, "%s?o=D&inv=%.*s", cf->burl, inv->invid->len, inv->invid->s));
   resp->Object = zx_NEW_ps_Object(cf->ctx, &resp->gg);
   resp->Object->ObjectID = zx_new_str_elem(cf->ctx, &resp->Object->gg, zx_ps_ObjectID_ELEM, zxid_psobj_enc(cf, ses->issuer, "ZO", obj->psobj));
   resp->Object->DisplayName = zx_NEW_ps_DisplayName(cf->ctx, &resp->Object->gg);

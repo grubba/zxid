@@ -840,21 +840,21 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
       p = map->ext;
     }
     bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
-			 "%s" ZXID_UID_DIR "%s/%s/%s", cf->path, ses->uid, buf, p);
+			 "%s" ZXID_UID_DIR "%s/%s/%s", cf->cpath, ses->uid, buf, p);
     if (!bin)
       bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
-			   "%s" ZXID_UID_DIR "%s/.bs/%s", cf->path, ses->uid, p);
+			   "%s" ZXID_UID_DIR "%s/.bs/%s", cf->cpath, ses->uid, p);
     if (!bin)
       bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
-			   "%s" ZXID_UID_DIR ".all/%s/%s", cf->path, buf, p);
+			   "%s" ZXID_UID_DIR ".all/%s/%s", cf->cpath, buf, p);
     if (!bin)
       bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
-			   "%s" ZXID_UID_DIR ".all/.bs/%s", cf->path, p);
+			   "%s" ZXID_UID_DIR ".all/.bs/%s", cf->cpath, p);
     if (bin) {
       val = zx_ref_len_str(cf->ctx, len, bin);
       D("FILE RULE uid(%s) sp_name_buf(%s) file(%s) GOT(%.*s)",ses->uid,buf,p,val->len,val->s);
     } else {
-      INFO("Attribute(%s) value not found in any file(%s" ZXID_UID_DIR "%s/%s/%s)", STRNULLCHKQ(atname), cf->path, ses->uid, buf, p);
+      INFO("Attribute(%s) value not found in any file(%s" ZXID_UID_DIR "%s/%s/%s)", STRNULLCHKQ(atname), cf->cpath, ses->uid, buf, p);
       val = zx_ref_str(cf->ctx, "");
     }
     break;
@@ -969,16 +969,16 @@ nobody:
 char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey)
 {
   char buf[1024];
-  int um, gotall = read_all(sizeof(buf), buf, "symkey", 1, "%s" ZXID_PEM_DIR "%s", cf->path, keyname);
+  int um, gotall = read_all(sizeof(buf), buf, "symkey", 1, "%s" ZXID_PEM_DIR "%s", cf->cpath, keyname);
   if (!gotall && cf->auto_cert) {
-    INFO("AUTO_CERT: generating symmetric encryption key in %s" ZXID_PEM_DIR "%s", cf->path, keyname);
+    INFO("AUTO_CERT: generating symmetric encryption key in %s" ZXID_PEM_DIR "%s", cf->cpath, keyname);
     gotall = 128 >> 3; /* 128 bits as bytes */
     zx_rand(buf, gotall);
     um = umask(0077);  /* Key material should be readable only by owner */
     INFO("gotall=%d", gotall);
     hexdmp("symkey ", buf, gotall, 16);
     write_all_path_fmt("auto_cert", sizeof(buf), buf,
-		       "%s" ZXID_PEM_DIR "%s", cf->path, keyname, "%.*s", gotall, buf);
+		       "%s" ZXID_PEM_DIR "%s", cf->cpath, keyname, "%.*s", gotall, buf);
     umask(um);
   }
   SHA1((unsigned char*)buf, gotall, (unsigned char*)symkey);

@@ -182,7 +182,7 @@ int zxid_get_ses(zxid_conf* cf, zxid_ses* ses, const char* sid)
   
   ses->sesbuf = ZX_ALLOC(cf->ctx, ZXID_MAX_SES);
   gotall = read_all(ZXID_MAX_SES-1, ses->sesbuf, "get_ses", 1,
-		    "%s" ZXID_SES_DIR "%s/.ses", cf->path, sid);
+		    "%s" ZXID_SES_DIR "%s/.ses", cf->cpath, sid);
   if (!gotall)
     return 0;
   D("ses(%.*s) len=%d sid(%s) sesptr=%p", gotall, ses->sesbuf, gotall, sid, ses);
@@ -218,7 +218,7 @@ int zxid_get_ses(zxid_conf* cf, zxid_ses* ses, const char* sid)
   ses->an_instant = atol(p);
 
  out:
-  D("GOT sesdir(%s" ZXID_SES_DIR "%s) uid(%s) nid(%s) sso_a7n_path(%s) sesix(%s) an_ctx(%s)", cf->path, ses->sid, STRNULLCHK(ses->uid), STRNULLCHK(ses->nid), STRNULLCHK(ses->sso_a7n_path), STRNULLCHK(ses->sesix), STRNULLCHK(ses->an_ctx));
+  D("GOT sesdir(%s" ZXID_SES_DIR "%s) uid(%s) nid(%s) sso_a7n_path(%s) sesix(%s) an_ctx(%s)", cf->cpath, ses->sid, STRNULLCHK(ses->uid), STRNULLCHK(ses->nid), STRNULLCHK(ses->sso_a7n_path), STRNULLCHK(ses->sesix), STRNULLCHK(ses->an_ctx));
   return 1;
 }
 
@@ -247,7 +247,7 @@ int zxid_put_ses(zxid_conf* cf, zxid_ses* ses)
     ZX_FREE(cf->ctx, ss);
   }
   
-  name_from_path(dir, sizeof(dir), "%s" ZXID_SES_DIR "%s", cf->path, ses->sid);
+  name_from_path(dir, sizeof(dir), "%s" ZXID_SES_DIR "%s", cf->cpath, ses->sid);
   if (MKDIR(dir, 0777) && errno != EEXIST) {
     ERR("Creating session directory(%s) failed: %d %s; euid=%d egid=%d", dir, errno, STRERROR(errno), geteuid(), getegid());
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "S", "EFILE", dir, "mkdir fail, permissions?");
@@ -256,7 +256,7 @@ int zxid_put_ses(zxid_conf* cf, zxid_ses* ses)
   
   buf = ZX_ALLOC(cf->ctx, ZXID_MAX_SES);
   if (!write_all_path_fmt("put_ses", ZXID_MAX_SES, buf,
-			  "%s" ZXID_SES_DIR "%s/.ses", cf->path, ses->sid,
+			  "%s" ZXID_SES_DIR "%s/.ses", cf->cpath, ses->sid,
 			  "%s|%s|%s|%s|%s|%d|",
 			  STRNULLCHK(ses->nid),
 			  STRNULLCHK(ses->sso_a7n_path),
@@ -297,7 +297,7 @@ int zxid_del_ses(zxid_conf* cf, zxid_ses* ses)
     }
   }
   
-  if (!name_from_path(old, sizeof(old), "%s" ZXID_SES_DIR "%s", cf->path, ses->sid))
+  if (!name_from_path(old, sizeof(old), "%s" ZXID_SES_DIR "%s", cf->cpath, ses->sid))
     return 0;
   
   if (cf->ses_arch_dir) {
@@ -323,7 +323,7 @@ int zxid_del_ses(zxid_conf* cf, zxid_ses* ses)
     while (de = readdir(dir)) {
       if (de->d_name[0] == '.' && ONE_OF_2(de->d_name[1], '.', 0))   /* skip . and .. */
 	continue;
-      if (!name_from_path(new, sizeof(new), "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name))
+      if (!name_from_path(new, sizeof(new), "%s" ZXID_SES_DIR "%s/%s", cf->cpath, ses->sid, de->d_name))
 	return 0;
       if (unlink(new) == -1) {
 	perror("unlink to delete files in session");
@@ -364,7 +364,7 @@ int zxid_find_ses(zxid_conf* cf, zxid_ses* ses, struct zx_str* ses_ix, struct zx
   
   D("ses_ix(%.*s) nid(%.*s)", ses_ix?ses_ix->len:0, ses_ix?ses_ix->s:"", nid?nid->len:0, nid?nid->s:"");
   
-  if (!name_from_path(buf, sizeof(buf), "%s" ZXID_SES_DIR, cf->path))
+  if (!name_from_path(buf, sizeof(buf), "%s" ZXID_SES_DIR, cf->cpath))
     return 0;
   
   dir = opendir(buf);

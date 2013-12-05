@@ -220,7 +220,7 @@ zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
 int zxid_write_ent_to_cache(zxid_conf* cf, zxid_entity* ent)
 {
   struct zx_str* ss;
-  fdtype fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "write_ent_to_cache", 1, "%s" ZXID_COT_DIR "%s", cf->path, ent->sha1_name);
+  fdtype fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "write_ent_to_cache", 1, "%s" ZXID_COT_DIR "%s", cf->cpath, ent->sha1_name);
   if (fd == BADFD) {
     perror("open metadata for writing metadata to cache");
     ERR("Failed to open file for writing: sha1_name(%s) to metadata cache", ent->sha1_name);
@@ -260,8 +260,7 @@ zxid_entity* zxid_get_ent_file(zxid_conf* cf, const char* sha1_name, const char*
   zxid_entity* ee;
 
   DD("sha1_name(%s)", sha1_name);
-  fd = open_fd_from_path(O_RDONLY, 0, logkey, 1,
-			 "%s" ZXID_COT_DIR "%s", cf->path, sha1_name);
+  fd = open_fd_from_path(O_RDONLY, 0, logkey, 1, "%s" ZXID_COT_DIR "%s", cf->cpath, sha1_name);
   if (fd == BADFD) {
     perror("open metadata to read");
     D("No metadata file found for sha1_name(%s)", sha1_name);
@@ -372,7 +371,7 @@ zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
   zxid_entity* ee;
   zxid_entity* match = 0;
   
-  D("eid(%.*s) path(%.*s) cf->magic=%x, md_cache_first(%d), cot(%p)", eid->len, eid->s, cf->path_len, cf->path, cf->magic, cf->md_cache_first, cf->cot);
+  D("eid(%.*s) path(%.*s) cf->magic=%x, md_cache_first(%d), cot(%p)", eid->len, eid->s, cf->cpath_len, cf->cpath, cf->magic, cf->md_cache_first, cf->cot);
   if (cf->md_cache_first) {
     ent = zxid_get_ent_cache(cf, eid);
     if (ent)
@@ -488,13 +487,13 @@ zxid_entity* zxid_load_cot_cache(zxid_conf* cf)
   struct dirent* de;
   DIR* dir;
   char buf[4096];
-  if (cf->path_len + sizeof(ZXID_COT_DIR) > sizeof(buf)) {
+  if (cf->cpath_len + sizeof(ZXID_COT_DIR) > sizeof(buf)) {
    ERR("Too long path(%.*s) for config dir. Has %d chars. Max allowed %d. (config problem)",
-	cf->path_len, cf->path, cf->path_len, ((int)(sizeof(buf) - sizeof(ZXID_COT_DIR))));
+	cf->cpath_len, cf->cpath, cf->cpath_len, ((int)(sizeof(buf) - sizeof(ZXID_COT_DIR))));
     return 0;
   }
-  memcpy(buf, cf->path, cf->path_len);
-  memcpy(buf + cf->path_len, ZXID_COT_DIR, sizeof(ZXID_COT_DIR));
+  memcpy(buf, cf->cpath, cf->cpath_len);
+  memcpy(buf + cf->cpath_len, ZXID_COT_DIR, sizeof(ZXID_COT_DIR));
 
   zxid_load_cot_cache_from_file(cf);
   
@@ -573,9 +572,9 @@ struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, struct zx_
 {
   struct zx_md_ArtifactResolutionService_s* d = zx_NEW_md_ArtifactResolutionService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
-  d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->url, loc);
+  d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->burl, loc);
   if (resp_loc)
-    d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
+    d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->burl, resp_loc);
   zx_reverse_elem_lists(&d->gg);
   return d;
 }
@@ -587,9 +586,9 @@ struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, struct zx_elem_
 {
   struct zx_md_SingleSignOnService_s* d = zx_NEW_md_SingleSignOnService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
-  d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->url, loc);
+  d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->burl, loc);
   if (resp_loc)
-    d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
+    d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->burl, resp_loc);
   zx_reverse_elem_lists(&d->gg);
   return d;
 }
@@ -601,9 +600,9 @@ struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, struct zx_elem_
 {
   struct zx_md_SingleLogoutService_s* d = zx_NEW_md_SingleLogoutService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
-  d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->url, loc);
+  d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->burl, loc);
   if (resp_loc)
-    d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
+    d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->burl, resp_loc);
   zx_reverse_elem_lists(&d->gg);
   return d;
 }
@@ -615,9 +614,9 @@ struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, struct zx_elem_
 {
   struct zx_md_ManageNameIDService_s* d = zx_NEW_md_ManageNameIDService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
-  d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->url, loc);
+  d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->burl, loc);
   if (resp_loc)
-    d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
+    d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->burl, resp_loc);
   zx_reverse_elem_lists(&d->gg);
   return d;
 }
@@ -629,9 +628,9 @@ struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, struct zx_el
 {
   struct zx_md_NameIDMappingService_s* d = zx_NEW_md_NameIDMappingService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
-  d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->url, loc);
+  d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->burl, loc);
   if (resp_loc)
-    d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
+    d->ResponseLocation = zx_attrf(cf->ctx, &d->gg, zx_ResponseLocation_ATTR, "%s%s", cf->burl, resp_loc);
   zx_reverse_elem_lists(&d->gg);
   return d;
 }
@@ -643,7 +642,7 @@ struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, struct zx_e
 {
   struct zx_md_AssertionConsumerService_s* d = zx_NEW_md_AssertionConsumerService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
-  d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->url, loc);
+  d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->burl, loc);
   d->index = zx_ref_attr(cf->ctx, &d->gg, zx_index_ATTR, ix);
   zx_reverse_elem_lists(&d->gg);
   return d;
@@ -657,7 +656,7 @@ struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf, struct zx_elem_s
   struct zx_md_SPSSODescriptor_s* sp_ssod = zx_NEW_md_SPSSODescriptor(cf->ctx,father);
   sp_ssod->AuthnRequestsSigned        = zx_ref_attr(cf->ctx, &sp_ssod->gg, zx_AuthnRequestsSigned_ATTR, cf->authn_req_sign?"1":"0");
   sp_ssod->WantAssertionsSigned       = zx_ref_attr(cf->ctx, &sp_ssod->gg, zx_WantAssertionsSigned_ATTR, cf->want_sso_a7n_signed?"1":"0");
-  sp_ssod->errorURL                   = zx_attrf(cf->ctx, &sp_ssod->gg, zx_errorURL_ATTR, "%s?o=E", cf->url);
+  sp_ssod->errorURL                   = zx_attrf(cf->ctx, &sp_ssod->gg, zx_errorURL_ATTR, "%s?o=E", cf->burl);
   sp_ssod->protocolSupportEnumeration = zx_ref_attr(cf->ctx, &sp_ssod->gg, zx_protocolSupportEnumeration_ATTR, SAML2_PROTO);
 
   LOCK(cf->mx, "read certs for our md");
@@ -708,7 +707,7 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf, struct zx_elem
     = zx_ref_attr(cf->ctx, &idp_ssod->gg, zx_WantAuthnRequestsSigned_ATTR,
 		  cf->want_authn_req_signed?"1":"0");
   idp_ssod->errorURL
-    = zx_attrf(cf->ctx, &idp_ssod->gg, zx_errorURL_ATTR, "%s?o=E", cf->url);
+    = zx_attrf(cf->ctx, &idp_ssod->gg, zx_errorURL_ATTR, "%s?o=E", cf->burl);
   idp_ssod->protocolSupportEnumeration
     = zx_ref_attr(cf->ctx, &idp_ssod->gg, zx_protocolSupportEnumeration_ATTR, SAML2_PROTO);
 
@@ -830,11 +829,11 @@ struct zx_str* zxid_my_ent_id(zxid_conf* cf)
     D("my_entity_id nonstd(%s)", cf->non_standard_entityid);
     return zx_strf(cf->ctx, "%s", cf->non_standard_entityid);
   } else if (cf->bare_url_entityid) {
-    D("my_entity_id bare url(%s)", cf->url);
-    return zx_strf(cf->ctx, "%s", cf->url);
+    D("my_entity_id bare url(%s)", cf->burl);
+    return zx_strf(cf->ctx, "%s", cf->burl);
   } else {
-    D("my_entity_id(%s?o=B)", cf->url);
-    return zx_strf(cf->ctx, "%s?o=B", cf->url);
+    D("my_entity_id(%s?o=B)", cf->burl);
+    return zx_strf(cf->ctx, "%s?o=B", cf->burl);
   }
 }
 
@@ -849,13 +848,13 @@ char* zxid_my_ent_id_cstr(zxid_conf* cf)
     D("my_entity_id nonstd(%s)", cf->non_standard_entityid);
     return zx_dup_cstr(cf->ctx, cf->non_standard_entityid);
   } else if (cf->bare_url_entityid) {
-    D("my_entity_id bare url(%s)", cf->url);
-    return zx_dup_cstr(cf->ctx, cf->url);
+    D("my_entity_id bare url(%s)", cf->burl);
+    return zx_dup_cstr(cf->ctx, cf->burl);
   } else {
-    D("my_entity_id(%s?o=B)", cf->url);
-    len = strlen(cf->url);
+    D("my_entity_id(%s?o=B)", cf->burl);
+    len = strlen(cf->burl);
     eid = ZX_ALLOC(cf->ctx, len+sizeof("?o=B"));
-    strcpy(eid, cf->url);
+    strcpy(eid, cf->burl);
     strcpy(eid+len, "?o=B");
     return eid;
   }
@@ -870,11 +869,11 @@ struct zx_attr_s* zxid_my_ent_id_attr(zxid_conf* cf, struct zx_elem_s* father, i
     D("my_nonstd_entity_id(%s)", cf->non_standard_entityid);
     return zx_attrf(cf->ctx, father, tok, "%s", cf->non_standard_entityid);
   } else if (cf->bare_url_entityid) {
-    D("my_entity_id bare url(%s)", cf->url);
-    return zx_attrf(cf->ctx, father, tok, "%s", cf->url);
+    D("my_entity_id bare url(%s)", cf->burl);
+    return zx_attrf(cf->ctx, father, tok, "%s", cf->burl);
   } else {
-    D("my_entity_id(%s?o=B)", cf->url);
-    return zx_attrf(cf->ctx, father, tok, "%s?o=B", cf->url);
+    D("my_entity_id(%s?o=B)", cf->burl);
+    return zx_attrf(cf->ctx, father, tok, "%s?o=B", cf->burl);
   }
 }
 

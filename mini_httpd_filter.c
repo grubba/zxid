@@ -293,7 +293,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
    * SSO by virtue of the web server configuration (SSO_PAT in mini_httpd_zxid). */
 
   uri_len = strlen(uri_path);
-  for (local_url = cf->url; *local_url && *local_url != ':' && *local_url != '/'; ++local_url);
+  for (local_url = cf->burl; *local_url && *local_url != ':' && *local_url != '/'; ++local_url);
   if (local_url[0] == ':' && local_url[1] == '/' && local_url[2] == '/') {
     for (local_url += 3; *local_url && *local_url != '/'; ++local_url);
   }
@@ -307,7 +307,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
   url_len = p-local_url;
 
   if (url_len == uri_len && !memcmp(local_url, uri_path, uri_len)) {  /* Exact match */
-    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s)=%p cf->url(%s) qs(%s) rs(%s) op(%c)", uri_path, uri_path, cf->url, STRNULLCHKNULL(qs), STRNULLCHKNULL(cgi.rs), cgi.op);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s)=%p cf->burl(%s) qs(%s) rs(%s) op(%c)", uri_path, uri_path, cf->burl, STRNULLCHKNULL(qs), STRNULLCHKNULL(cgi.rs), cgi.op);
     if (*method == 'P') {
       res = zxid_mini_httpd_read_post(cf);   /* Will print some debug output */  // ***
       if (res) {
@@ -340,7 +340,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
 	}
       }
     }
-    D("HERE2.1 urls_len=%d local_url(%.*s) url(%s)", url_len, url_len, local_url, cf->url);
+    D("HERE2.1 urls_len=%d local_url(%.*s) url(%s)", url_len, url_len, local_url, cf->burl);
     if (ONE_OF_2(cgi.op, 'L', 'A')) /* SSO (Login, Artifact) activity overrides current session. */
       goto step_up;
     if (!cgi.sid || !zxid_get_ses(cf, ses, cgi.sid)) {
@@ -354,7 +354,7 @@ zxid_ses* zxid_mini_httpd_sso(zxid_conf* cf, const char* method, const char* uri
     /* not logged in, fall thru to step_up */
   } else {
     /* Some other page. Just check for session. */
-    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->url(%s) uri_len=%d url_len=%d", uri_path, STRNULLCHKNULL(qs), cf->url, uri_len, url_len);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->burl(%s) uri_len=%d url_len=%d", uri_path, STRNULLCHKNULL(qs), cf->burl, uri_len, url_len);
     if (qs && qs[0] == 'l') {
       D("Detect login(%s)", qs);
     } else

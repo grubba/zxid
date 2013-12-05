@@ -209,7 +209,7 @@ int main(int argc, char** argv)
     
     ss = zx_easy_enc_elem_opt(cf, &r->Envelope->Body->idhrxml_Create->CreateItem->NewData->Candidate->gg);
 
-    fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "create", 1, "%shrxml/cv.xml", cf->path);
+    fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "create", 1, "%shrxml/cv.xml", cf->cpath);
     write_all_fd(fd, ss->s, ss->len);
     close_file(fd, (const char*)__FUNCTION__);
 
@@ -242,7 +242,7 @@ int main(int argc, char** argv)
     
     /* Parse the XML from the CV file into data structure and include it as Candidate. */
 
-    got = read_all(sizeof(buf), buf, "query", 1, "%shrxml/cv.xml", cf->path);
+    got = read_all(sizeof(buf), buf, "query", 1, "%shrxml/cv.xml", cf->cpath);
     if (got < 1) {
       ERR("Reading hrxml/cv.xml resulted in error or the file was empty. ret=%d", got);
 #if 0
@@ -315,7 +315,7 @@ int main(int argc, char** argv)
     
     ss = zx_easy_enc_elem_opt(cf, &r->Envelope->Body->idhrxml_Modify->ModifyItem->NewData->Candidate->gg);
 
-    fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "modify", 1, "%shrxml/cv.xml", cf->path);
+    fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "modify", 1, "%shrxml/cv.xml", cf->cpath);
     write_all_fd(fd, ss->s, ss->len);
     close_file(fd, (const char*)__FUNCTION__);
 
@@ -346,7 +346,7 @@ int main(int argc, char** argv)
 
     /* *** This mock implementation does not actually interpret the Select string. */
     
-    got = name_from_path(buf, sizeof(buf), "%shrxml/cv.xml", cf->path);
+    got = name_from_path(buf, sizeof(buf), "%shrxml/cv.xml", cf->cpath);
     unlink(buf);
 
 #if 0

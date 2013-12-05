@@ -61,9 +61,9 @@ struct zx_str* zxid_cdc_read(zxid_conf* cf, zxid_cgi* cgi)
   } else {
     D("No CDC _saml_idp in CGI environment host(%s)", STRNULLCHK(host));
   }
-  D("Location: %s?o=E&c=%s\r\n\r\n", cf->url, cdc?cdc:"(missing)");
+  D("Location: %s?o=E&c=%s\r\n\r\n", cf->burl, cdc?cdc:"(missing)");
   /* *** should prepare AuthnReq and redirect directly to the IdP (if any). */
-  return zx_strf(cf->ctx, "Location: %s?o=E&c=%s\r\n\r\n", cf->url, cdc?cdc:"");
+  return zx_strf(cf->ctx, "Location: %s?o=E&c=%s\r\n\r\n", cf->burl, cdc?cdc:"");
 }
 
 /*() Process second part of Common Domain Cookie redirection.

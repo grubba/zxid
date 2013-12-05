@@ -122,7 +122,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   hdr->From = zx_NEW_a_From(cf->ctx, &hdr->gg);
   hdr->From->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->From->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->From->actor = zx_ref_attr(cf->ctx, &hdr->From->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-  hdr->From->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));
+  hdr->From->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->burl));
 #endif
 
 #if 0

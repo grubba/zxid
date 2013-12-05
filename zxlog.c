@@ -352,11 +352,11 @@ static int zxlog_output(zxid_conf* cf, int n, const char* logbuf, const char* re
   char c_path[ZXID_MAX_BUF];
   DD("LOG(%.*s)", n-1, logbuf);
   if ((cf->log_err_in_act || res[0] == 'K') && cf->log_act) {
-    name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "act", cf->path);
+    name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "act", cf->cpath);
     zxlog_write_line(cf, c_path, cf->log_act, n, logbuf);
   }
   if (cf->log_err && (cf->log_act_in_err || res[0] != 'K')) {  /* If enabled, everything goes to err */
-    name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "err", cf->path);
+    name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "err", cf->cpath);
     zxlog_write_line(cf, c_path, cf->log_err, n, logbuf);
   }
   return 0;
@@ -497,7 +497,7 @@ int zxlogusr(zxid_conf* cf,   /* 1 */
   /* Output stage */
   
   D("UID(%s) LOG(%.*s)", uid, n-1, logbuf);
-  name_from_path(c_path, sizeof(c_path), "%s" ZXID_UID_DIR "%s/.log", cf->path, uid);
+  name_from_path(c_path, sizeof(c_path), "%s" ZXID_UID_DIR "%s/.log", cf->cpath, uid);
   zxlog_write_line(cf, c_path, cf->log_act, n, logbuf);
   return 0;
 }
@@ -547,7 +547,7 @@ struct zx_str* zxlog_path(zxid_conf* cf,
   struct stat st;
   int dir_len = strlen(dir);
   int kind_len = strlen(kind);
-  int len = cf->path_len + sizeof("log/")-1 + dir_len + 27 + kind_len + 27;
+  int len = cf->cpath_len + sizeof("log/")-1 + dir_len + 27 + kind_len + 27;
   char* s = ZX_ALLOC(cf->ctx, len+1);
   char* p;
 
@@ -557,8 +557,8 @@ struct zx_str* zxlog_path(zxid_conf* cf,
     return 0;
   }
 
-  memcpy(s, cf->path, cf->path_len);
-  p = s + cf->path_len;
+  memcpy(s, cf->cpath, cf->cpath_len);
+  p = s + cf->cpath_len;
   memcpy(p, "log/", sizeof("log/"));
   p += sizeof("log/")-1;
   if (stat(s, &st)) {
@@ -688,10 +688,10 @@ static FILE* zx_open_xml_log_file(zxid_conf* cf)
 {
   FILE* f;
   char buf[ZXID_MAX_DIR];
-  if (!cf||!cf->path) {
+  if (!cf||!cf->cpath) {
     strncpy(buf, XML_LOG_FILE, sizeof(buf));
   } else {
-    snprintf(buf, sizeof(buf)-1, "%slog/xml.dbg", cf->path);
+    snprintf(buf, sizeof(buf)-1, "%slog/xml.dbg", cf->cpath);
     buf[sizeof(buf)-1]=0;
   }
   f = fopen(buf, "a+");
@@ -1072,18 +1072,18 @@ int zxbus_persist_msg(zxid_conf* cf, int c_path_len, char* c_path, int dest_len,
   
   /* Persist the message, use Maildir style rename from tmp/ to ch/ */
   
-  len = name_from_path(c_path, c_path_len, "%s" ZXBUS_CH_DIR "%.*s/", cf->path, dest_len, dest);
+  len = name_from_path(c_path, c_path_len, "%s" ZXBUS_CH_DIR "%.*s/", cf->cpath, dest_len, dest);
   if (sizeof(c_path)-len < 28+1 /* +1 accounts for t_path having one more char (tmp vs. ch) */) {
     ERR("The c_path for persisting exceeds limit. len=%d", len);
     return 0;
   }
-  DD("c_path(%s) len=%d PATH(%s) dest(%.*s)", c_path, len, cf->path, dest_len, dest);
+  DD("c_path(%s) len=%d PATH(%s) dest(%.*s)", c_path, len, cf->cpath, dest_len, dest);
   sha1_safe_base64(c_path+len, data_len, data);
   len += 27;
   c_path[len] = 0;
   DD("c_path(%s)", c_path);
   
-  name_from_path(t_path, sizeof(t_path), "%stmp/%s", cf->path, c_path+len-27);
+  name_from_path(t_path, sizeof(t_path), "%stmp/%s", cf->cpath, c_path+len-27);
   
   /* Perform synchronous write to disk. Read man 2 open for discussion. It is not
    * completely clear, but it appears that this is still not sufficient to guarantee

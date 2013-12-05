@@ -102,9 +102,9 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
 
     if (!conf || conf_len < 5 || memcmp(conf, "PATH=", 5)) {
       /* No conf, or conf does not start by PATH: read from file default values */
-      buf = read_all_alloc(cf->ctx, "-conf_to_cf", 1, &len, "%s" ZXID_CONF_FILE, cf->path);
+      buf = read_all_alloc(cf->ctx, "-conf_to_cf", 1, &len, "%s" ZXID_CONF_FILE, cf->cpath);
       if (!buf || !len)
-	buf = read_all_alloc(cf->ctx, "-conf_to_cf", 1, &len, "%szxid.conf", cf->path);
+	buf = read_all_alloc(cf->ctx, "-conf_to_cf", 1, &len, "%szxid.conf", cf->cpath);
       if (buf && len)
 	zxid_parse_conf_raw(cf, len, buf);
     }
@@ -204,7 +204,7 @@ char* zxid_fed_mgmt_cf(zxid_conf* cf, int* res_len, int sid_len, char* sid, int 
 		 "%s%s\n"
 		 "</form>%s%s%s%s",
 		 cf->mgmt_start,
-		 cf->url,
+		 cf->burl,
 		 slen, STRNULLCHK(sid),
 		 cf->mgmt_logout, cf->mgmt_defed,
 		 cf->mgmt_footer, zxid_version_str(), STRNULLCHK(cf->dbg), cf->mgmt_end);
@@ -218,7 +218,7 @@ char* zxid_fed_mgmt_cf(zxid_conf* cf, int* res_len, int sid_len, char* sid, int 
 		 "<input type=hidden name=s value=\"%.*s\">"
 		 "%s%s\n"
 		 "</form>",
-		 cf->url,
+		 cf->burl,
 		 slen, STRNULLCHK(sid),
 		 cf->mgmt_logout, cf->mgmt_defed);
   else if (auto_flags & ZXID_AUTO_FORMF)
@@ -329,7 +329,7 @@ static const char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* k
     if (BBMATCH("MSG", key, lim)) return cgi->msg;
     break;
   case 'U':
-    if (BBMATCH("URL", key, lim)) return cf->url;
+    if (BBMATCH("URL", key, lim)) return cf->burl;
     break;
   case 'R':
     if (BBMATCH("RS", key, lim)) return cgi->rs;
@@ -655,7 +655,7 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
 		 "<input type=hidden name=fr value=\"%s\">\n"
 		 "</form>%s%s%s",
 		 cf->idp_sel_start,
-		 cf->url,
+		 cf->burl,
 		 FLDCHK(cgi, err), FLDCHK(cgi, msg), FLDCHK(cgi, dbg),
 		 cf->idp_sel_new_idp,
 		 cf->idp_sel_our_eid, STRNULLCHK(eid), STRNULLCHK(eid),
@@ -678,7 +678,7 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
 		 "%s%s"
 		 "<input type=hidden name=fr value=\"%s\">\n"
 		 "</form>",
-		 cf->url,
+		 cf->burl,
 		 FLDCHK(cgi, err), FLDCHK(cgi, msg), FLDCHK(cgi, dbg),
 		 cf->idp_sel_new_idp,
 		 cf->idp_sel_our_eid, STRNULLCHK(eid), STRNULLCHK(eid),
@@ -904,7 +904,7 @@ char* zxid_simple_show_err(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
     p = zx_alloc_sprintf(cf->ctx, 0, "zxrfr=F%s%s%s%s&zxidpurl=%s",
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
-		 cf->url);
+		 cf->burl);
     D("err_page(%s) p(%s)", cf->err_page, p);
     return zxid_simple_redir_page(cf, cf->err_page, p, res_len, auto_flags);
   }
@@ -951,7 +951,7 @@ static char* zxid_simple_idp_an_ok_do_rest(zxid_conf* cf, zxid_cgi* cgi, zxid_se
 		 cgi->ssoreq, cgi->sid,
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
-		 cf->url);
+		 cf->burl);
     D("atsel_page(%s) redir(%s)", cf->atsel_page, p);
     return zxid_simple_redir_page(cf, cf->atsel_page, p, res_len, auto_flags);
   }
@@ -1023,7 +1023,7 @@ static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len,
 		 cgi->ssoreq,
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
-		 cf->url);
+		 cf->burl);
     if (cgi->ssoreq)
       ZX_FREE(cf->ctx, cgi->ssoreq);
     D("an_page(%s) ar(%s)", cf->an_page, ar);
@@ -1142,7 +1142,7 @@ static char* zxid_simple_idp_new_user(zxid_conf* cf, zxid_cgi* cgi, int* res_len
 		 cgi->ssoreq,
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
-		 cf->url);
+		 cf->burl);
     D("new_user_page(%s) redir(%s)", cf->new_user_page, p);
     return zxid_simple_redir_page(cf, cf->new_user_page, p, res_len, auto_flags);
   }
@@ -1168,7 +1168,7 @@ static char* zxid_simple_idp_recover_password(zxid_conf* cf, zxid_cgi* cgi, int*
 		 cgi->ssoreq,
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
-		 cf->url);
+		 cf->burl);
     D("recover_passwd(%s) redir(%s)", cf->recover_passwd, p);
     return zxid_simple_redir_page(cf, cf->recover_passwd, p, res_len, auto_flags);
   }
@@ -1194,7 +1194,7 @@ static char* zxid_show_protected_content_setcookie(zxid_conf* cf, zxid_cgi* cgi,
   if (cf->ses_cookie_name && *cf->ses_cookie_name) {
     ses->setcookie = zx_alloc_sprintf(cf->ctx, 0, "%s=%s; path=/%s",
 				      cf->ses_cookie_name, ses->sid,
-				      ONE_OF_2(cf->url[4], 's', 'S')?"; secure":"");
+				      ONE_OF_2(cf->burl[4], 's', 'S')?"; secure":"");
     ses->cookie = zx_alloc_sprintf(cf->ctx, 0, "$Version=1; %s=%s",
 				   cf->ses_cookie_name, ses->sid);
     D("setcookie(%s)=(%s) ses=%p", cf->ses_cookie_name, ses->setcookie, ses);
@@ -1213,7 +1213,7 @@ static char* zxid_show_protected_content_setcookie(zxid_conf* cf, zxid_cgi* cgi,
 					   cf->ptm_cookie_name,
 					   url?url->len:0, url?url->s:"",
 					   issuer?issuer->len:0, issuer?issuer->s:"",
-					   ONE_OF_2(cf->url[4], 's', 'S')?"; secure":"");
+					   ONE_OF_2(cf->burl[4], 's', 'S')?"; secure":"");
       //ses->ptmcookie = zx_alloc_sprintf(cf->ctx,0,"$Version=1; %s=%s",cf->ptm_cookie_name,?);
       D("setptmcookie(%s)", ses->setptmcookie);
     } else {

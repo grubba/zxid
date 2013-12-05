@@ -627,7 +627,7 @@ int zxbusd_main(int argc, char** argv, char** env)
   zxbus_cf = zxid_new_conf_to_cf("PATH=" ZXBUS_PATH);
   /*openlog("zxbusd", LOG_PID, LOG_LOCAL0);     *** Do we want syslog logging? */
   opt(&argc, &argv, &env);
-  zxbus_path = zxbus_cf->path;
+  zxbus_path = zxbus_cf->cpath;
 
   /*if (stats_prefix) init_cmdline(argc, argv, env, stats_prefix);*/
   CMDLINE("init");

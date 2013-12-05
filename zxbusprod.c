@@ -1117,7 +1117,7 @@ static void zxbus_log_receipt(zxid_conf* cf, struct zxid_bus_url* bu, int mid_le
 		 rcpt_len, rcpt);
   buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   if (len < 0) platform_broken_snprintf(len, __FUNCTION__, sizeof(buf)-1, "zxbus receipt frame");
-  name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "rcpt", cf->path);
+  name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "rcpt", cf->cpath);
   write2_or_append_lock_c_path(c_path, len, buf, 0,0, "zxbus_send_cmdf",SEEK_END,O_APPEND);
 }
 
