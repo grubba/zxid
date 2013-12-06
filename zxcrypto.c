@@ -950,10 +950,10 @@ static void to64(char *s, unsigned long v, int n) {
   }
 }
 
-/*() Compute MD5-Crypt password hash (starts by $1$)
+/*() Compute MD5-Crypt password hash (starts by \$1\$)
  * 
  * pw:: Password in plain
- * salt:: 0-8 chars of salt. Preceding $1$ is automatically skipped. Salt ends in $ or nul.
+ * salt:: 0-8 chars of salt. Preceding \$1\$ is automatically skipped. Salt ends in \$ or nul.
  * buf:: must be at least 120 chars
  * return:: buf, nul terminated */
 

@@ -37,9 +37,9 @@
 
 /*() Low level Yubikey one time password token (usbkey) authentication.
  * The yubikey system requires that spent OTPs are remembered to prevent
- * replay attack. We do this by keeping per user /PATH/uid/UID/.ykspent/
+ * replay attack. We do this by keeping per user /CPATH/uid/UID/.ykspent/
  * directory: if the key is already in this directory, then fail.
- * Youbikey OTP liiks like this
+ * Yubikey OTP looks like this
  *  tructedjlkijterkbcfjevdkflenbtbtentfeilkjidt
  *  tructedjlkijftlbuviijebbjvernhghlieukckvuuhk
  *  tructedjlkijcbudcjnhbrntktctirtdgrkjbdkgjjfj
@@ -53,7 +53,7 @@
  *
  * See: yubico.com
  *
- * cpath:: The configuration path from which uid directory path is formed, typically cf->path
+ * cpath:: The configuration path from which uid directory path is formed, typically cf->cpath
  * uid:: Both the UID and OTP concatenated
  * passw:: not used in Yubikey authentication
  * return:: 0 on failure, 1 on success  */
@@ -153,7 +153,7 @@ static int zx_pw_chk(const char* uid, const char* pw_buf, const char* passw, int
 /*() Authenticate user using password like mechanism
  * Expects to get username and password in cgi->au and cgi->ap
  * respectively. User authetication is done against local database or
- * by default using /var/zxid/uid/uid/.pw file. When filesystem
+ * by default using /var/zxid/uid/UID/.pw file. When filesystem
  * backend is used, for safety reasons the uid (user) component can
  * not have certain characters, such as slash (/) or sequences like "..".
  * See also: zxpasswd.c

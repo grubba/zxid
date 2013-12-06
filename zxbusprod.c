@@ -399,7 +399,9 @@
 
  /*() Read and parse a frame from STOMP 1.1 connection (from zxbusd).
   * Blocks until frame has been read.
+  *
   * Return:: 1 on success, 0 on failure.
+  *
   * In case of failure, caller should close the connection. The PDU
   * data is left in bu->m, possibly with the following pdu as well. The
   * caller should clean the buffer without loosing the next pdu
@@ -409,6 +411,7 @@
   *   stomp->end_of_pdu = 0;
   * or by calling
   *   zxbus_shift_read_buf(cf, bu, stomp);
+  *
   * The parsed headers are returned in the struct stomp_hdr. */
 
  /* Called by:  zxbus_close, zxbus_listen_msg, zxbus_open_bus_url, zxbus_send_cmdf */
@@ -572,6 +575,7 @@
  /*() ACK a message to STOMP 1.1 connection.
   * N.B. ACK is not a command. Thus no RECEIPT is expected from server
   * end (ACK really is the receipt for MESSAGE sent by server).
+  *
   * Returns:: zero on failure and 1 on success. */
 
  /* Called by:  zxbus_listen_msg */
@@ -604,6 +608,7 @@
  /*() NACK a message to STOMP 1.1 connection, signalling trouble persisting it.
   * N.B. NACK is not a command. Thus no RECEIPT is expected from server
   * end (NACK really is the receipt for MESSAGE sent by server).
+  *
   * Returns:: zero on failure and 1 on success. */
 
  /* Called by:  zxbus_listen_msg x2 */
@@ -633,7 +638,8 @@
   * N.B. Depending on situation, you may NOT want automatic ACK.
   * In that case you should call zxbus_read() and zxbus_ack_msg()
   * directly and do your persistence in between.
-  * see also:: zxbus_persist() */
+  *
+  * See also:: zxbus_persist() */
 
  /* Called by:  zxbuslist_main */
  char* zxbus_listen_msg(zxid_conf* cf, struct zxid_bus_url* bu)
@@ -716,6 +722,7 @@
  #endif
 
  /*() Open a bus_url, i.e. STOMP 1.1 connection to zxbusd.
+  *
   * return:: 0 on failure, 1 on success. */
 
  /* Called by:  zxbus_send_cmd, zxbuslist_main */
@@ -988,6 +995,7 @@
 }
 
 /*() SEND a STOMP 1.1 DISCONNECT to audit bus and wait for RECEIPT.
+ *
  * Returns:: zero on failure and 1 on success. Connection is closed in either case. */
 
 /* Called by:  zxbus_close_all */
@@ -1062,6 +1070,7 @@ void zxbus_close_all(zxid_conf* cf)
 }
 
 /*() Log successful receipt (the message should have been logged earlier separately)
+ *
  * cf:: zxid configuration object
  * bu:: URL and eid of the destination audit bus node
  * mid:: message ID
@@ -1071,9 +1080,9 @@ void zxbus_close_all(zxid_conf* cf)
  * rcpt:: Receipt data returned by remote
  *
  * Log format is as follows
- * R1 YYYYMMDD-HHMMSS.sss URL SHA1-OF-EID MID CHANNEL SHA1-OF-MSG INST O K RCPT receipt_data
+ *   R1 YYYYMMDD-HHMMSS.sss URL SHA1-OF-EID MID CHANNEL SHA1-OF-MSG INST O K RCPT receipt_data
  * where receipt_data is like
- *    AB1 https://buslist.zxid.org/?o=B ACK RP 20120923-170431.868 76 3aSMhrZHtsviQnl3jnb8swYuxe_5uRnegGP0_i-hgPD6pzNkLtJdC7_qA7Ry-Iz1_cSDR7L91Oe9qgQZ64CzqC1qb0l5sSVoHNVQAzUWXgXOuHvXEgkMheAoLAUT8SKM_H9cUlPCrgCkVFWPXcLAR2FHAW7sNrGe7Mcm4MFFXqM.
+ *   AB1 https://buslist.zxid.org/?o=B ACK RP 20120923-170431.868 76 3aSMhrZHtsviQnl3jnb8swYuxe_5uRnegGP0_i-hgPD6pzNkLtJdC7_qA7Ry-Iz1_cSDR7L91Oe9qgQZ64CzqC1qb0l5sSVoHNVQAzUWXgXOuHvXEgkMheAoLAUT8SKM_H9cUlPCrgCkVFWPXcLAR2FHAW7sNrGe7Mcm4MFFXqM.
  */
 
 /* Called by:  zxbus_send_cmdf */
@@ -1128,6 +1137,7 @@ static void zxbus_log_receipt(zxid_conf* cf, struct zxid_bus_url* bu, int mid_le
  * separates the body.
  * Will also log the message to /var/zxid/buscli/issue/SUCCINCT/wir/SHA1
  * and receipt to /var/zxid/buscli/log/rcpt
+ *
  * return:: zero on failure and 1 on success. */
 
 /* Called by:  zxbus_send_cmd, zxbuslist_main */
@@ -1259,6 +1269,7 @@ int zxbus_send_cmdf(zxid_conf* cf, struct zxid_bus_url* bu, int body_len, const 
 /*() Send the specified STOMP 1.1 message to audit bus and wait for RECEIPT.
  * Blocks until the transaction completes (or fails). Figures out
  * from configuration, which bus daemon to contact (looks at bus_urls).
+ *
  * Returns:: zero on failure and 1 on success. */
 
 /* Called by:  zxbus_send, zxbustailf_main */
@@ -1281,6 +1292,7 @@ int zxbus_send_cmd(zxid_conf* cf, const char* cmd, const char* dest, int n, cons
 /*() SEND a STOMP 1.1 message to audit bus and wait for RECEIPT.
  * Blocks until the transaction completes (or fails). Figures out
  * from configuration, which bus daemon to contact (looks at bus_urls).
+ *
  * Returns:: zero on failure and 1 on success. */
 
 /* Called by:  zxbustailf_main x2 */

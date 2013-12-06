@@ -307,7 +307,7 @@ static char* read_post(zxid_conf* cf, request_rec* r)
  * 0x0008 10 + 00 = SOAP w/headers as string + no auto redir, no exit(2) */
 #define AUTO_FLAGS 0x6ea8
 
-/*(i) Apache hook. Internal function of mod_auth_saml. Do not try to call.
+/*() Apache hook. Internal function of mod_auth_saml. Do not try to call.
  *
  * Called from httpd-2.2.8/server/request.c: ap_process_request_internal()
  * ap_run_check_user_id(). Return value is processed in modules/http/http_request.c

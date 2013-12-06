@@ -801,6 +801,7 @@ print_it:
 /*() Generate a timestamped receipt for data.
  * Typically used for issuing receipts on audit bus. The current time
  * and our own signing certificate are used.
+ *
  * cf::         ZXID configuration object, used for memory allocation and cert mgmt
  * sigbuf_len:: Maximum length of signature buffer, e.g. 1024. On return buffer is nul terminated.
  * sigbuf::     Result parameter. Caller allocated buffer that receives the receipt. nul term.
@@ -812,7 +813,7 @@ print_it:
  * eid::        Entity ID to issue receipt about, will be part of signature.
  * body_len::   Length of data to issue receipt about (-1 to use strlen(body))
  * body::       Data to issue receipt about, i.e. data that will be signed.
- * return::     sigbuf. If there was error, sigbuf[0] is set to 'E' */
+ * return::     sigbuf. If there was error, first character of sigbuf is set to 'E' */
 
 /* Called by:  stomp_send_receipt, test_receipt x9 */
 char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_len, const char* mid, int dest_len, const char* dest, int eid_len, const char* eid, int body_len, const char* body)
@@ -928,6 +929,7 @@ char* zxbus_mint_receipt(zxid_conf* cf, int sigbuf_len, char* sigbuf, int mid_le
 }
 
 /*() Verify a receipt signature.
+ *
  * cf::         ZXID configuration object, used for memory allocation and CoT mgmt
  * eid::        EntityID of the receipt issuing party, used to lookup metadata
  * sigbuf_len:: Length of signature buffer (from zx-rcpt-sig header) or -1 for strlen(sigbuf)
@@ -1035,8 +1037,9 @@ int zxbus_persist_flag = 1;
  * operation, ala Maildir. The persisted message is a file that contains
  * the entire STOMP 1.1 PDU including headers and body. Filename is the sha1
  * hash of the contents of the file.
+ *
  * return:: 0 on failure, nonzero len of c_path on success.
- * see also:: persist feature in zxbus_listen_msg() */
+ * See also:: persist feature in zxbus_listen_msg() */
 
 /* Called by:  zxbus_persist */
 int zxbus_persist_msg(zxid_conf* cf, int c_path_len, char* c_path, int dest_len, const char* dest, int data_len, const char* data)

@@ -625,18 +625,25 @@ int zxid_eval_sol1(zxid_conf* cf, zxid_ses* ses, const char* obl, struct zxid_ob
 /* Called by:  zxid_query_ctlpt_pdp */
 void zxid_add_action_from_body_child(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env)
 {
-  int len = env->Body->gg.kids->g.len;
-  char* p = env->Body->gg.kids->g.s;
-  D("Action from Body child ns(%s) name(%.*s)", env->Body->gg.kids->ns->url, len, p);
-  if (p = memchr(env->Body->gg.kids->g.s, ':', len)) {
+  struct zx_elem_s* el;
+  int len;
+  char* p;
+
+  /* Skip over any string data, like whitespace, that may precede the element. */
+  for (el = env->Body->gg.kids; el && el->g.tok == ZX_TOK_DATA; el = (struct zx_elem_s*)el->g.n) ;
+  if (!el) {
+    ERR("No Body child element could be found for setting Action %p", env->Body->gg.kids);
+    return;
+  }
+  len = el->g.len;
+  p = el->g.s;
+
+  D("Action from Body child ns(%s) name(%.*s)", el->ns->url, len, p);
+  if (p = memchr(p, ':', len)) {
     ++p;
-    len -= p - env->Body->gg.kids->g.s;
-  } else
-    p = env->Body->gg.kids->g.s;
-  zxid_add_attr_to_ses(cf, ses, "Action",
-		       zx_strf(cf->ctx, "%s:%.*s",
-			       env->Body->gg.kids->ns->url,
-			       len, p));
+    len -= p - el->g.s;
+  }
+  zxid_add_attr_to_ses(cf, ses, "Action", zx_strf(cf->ctx, "%s:%.*s", el->ns->url, len, p));
 }
 
 /*() Query Local PDP and remote PDP (if PDP_URL is defined). */

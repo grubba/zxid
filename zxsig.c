@@ -206,13 +206,13 @@ static void zxsig_canon_crnl_inplace(struct zx_str* ss)
  * and metadata of the signing party. Trust in the certificate must have
  * been established by other means.
  *
- * c::      ZX context. Used for memory allocation.
- * cert::   Signing party's certificate (public key), typically from metadata. If NULL,
- *          then only the hashes (and hence canonicalization) are checked, but the
- *          public key crypto part is not performed, and ZXSIG_BAD_CERT is returned.
- * sig::    Parsed XML-DSIG data structure
- * n::      Number of elements in the sref array
- * sref::   An array of <reference sref, xml data structure blob> tuples that are
+ * c::    ZX context. Used for memory allocation.
+ * cert:: Signing party's certificate (public key), typically from metadata. If NULL,
+ *     then only the hashes (and hence canonicalization) are checked, but the
+ *     public key crypto part is not performed, and ZXSIG_BAD_CERT is returned.
+ * sig::  Parsed XML-DSIG data structure
+ * n::    Number of elements in the sref array
+ * sref:: An array of <reference sref, xml data structure blob> tuples that are
  *     referenced by the signature
  * return:: ZXSIG value. 0 (ZXSIG_OK) means success. Any other value is some sort of failure */
 

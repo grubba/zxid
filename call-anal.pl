@@ -146,15 +146,15 @@ sub process_doc {
     $params =~ s%\/\*.*?\*\/%%g; # zap comments
     my @param = split /\s*,\s*/, $params;
     for $_ (@param) {
-	s%[\w\*:\[\]\s\/.&]+?[\t ]+\**(\w+)[\t \[\]=\w:.-]*?%$1%g;
+	s%^[\w\*:\[\]\s\/.&]+?[\t ]+\**(\w+)[\[\]]*([\t ]*=[\w:.-]*?)?$%$1%g;
     }
     $params = join ', ', @param;
     my $javaname = $func;
-    $javaname =~ s%^zxid_%zxidjni.%;
-    $javaname = "Java name: $javaname";
+    $javaname =~ s%^zxid_%%;
+    $javaname = "Java name: zxidjni.$javaname()";
     my $perlname = $func;
-    $perlname =~ s%^zxid_%Net::SAML::%;
-    $perlname = "Perl name: $perlname";
+    $perlname =~ s%^zxid_%%;
+    $perlname = "Perl name: Net::SAML::$perlname()";
     my $src_file = "Source file: $fn" unless $no_srcfile;
     #<<img: $func-call,H,: Call graph for $func()>>
     my $img = qq(<<img: $func-call,R: >>) if $call_size{$func};
@@ -512,7 +512,7 @@ for $fn (@ARGV) {
 	#warn "  $fx[4]()\n";
 #WHOLE >>$fx[3]<<
 #BODY >>$fx[7]<<
-	print <<DEBUG if 1;
+	print <<DEBUG if 0;
 FX2 =================================================================
 NAME: >$fx[5]<
 NAMESPACE: >$fx[6]<

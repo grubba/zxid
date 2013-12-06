@@ -447,7 +447,7 @@ int write_all_path_fmt(const char* logkey, int maxlen, char* buf, const char* pa
  * (flushing the data).  Will perform file locking to ensure
  * consistent results. Will create the file if needed, but will not
  * create parent directories. Up to two items of data can
- * be written/appended. If you have only one item, supply null
+ * be written or appended. If you have only one item, supply null
  * for the second. For overwrite behaviour supply seeky=SEEK_SET and
  * flag=O_TRUNC (the seek offset is always 0). For append behaviour
  * supply seeky=SEEK_END and flag=O_APPEND.

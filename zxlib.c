@@ -33,7 +33,7 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
-/*() ZX implementation of memmem(3) for platforms that do not have this. */
+/*(-) ZX implementation of memmem(3) for platforms that do not have this. */
 
 /* Called by: */
 char* zx_memmem(const char* haystack, int haystack_len, const char* needle, int needle_len)
@@ -46,7 +46,7 @@ char* zx_memmem(const char* haystack, int haystack_len, const char* needle, int 
 }
 
 #ifdef MINGW
-/*() On windows the errno is not set. */
+/*(-) On windows the errno is not set. */
 /* Called by: */
 HANDLE zx_CreateFile(LPCTSTR lpFileName, 
 		     DWORD dwDesiredAccess, DWORD dwShareMode, 
@@ -67,7 +67,7 @@ HANDLE zx_CreateFile(LPCTSTR lpFileName,
 #endif
 #endif
 
-/*() ZX implmentation of stat for mingw which is dumb */
+/*(-) ZX implmentation of stat for mingw which is dumb */
 /* Called by: */
 int zx_stat( const char *path, struct stat *buffer )
 {

@@ -235,11 +235,11 @@ void zx_free_ctx(struct zx_ctx* ctx);	/* Wrapper for free(3C). */
 #define ZX_TOK_NO_ATTR   (-7)
 #define ZX_TOK_ATTR_ERR  (-6)
 #define ZX_TOK_XMLNS     (-4)
-#define ZX_TOK_DATA             0x0000fffd
+#define ZX_TOK_DATA             0x0000fffd  /* Decimal 65533: string data between elements */
 #define ZX_TOK_ATTR_NOT_FOUND   0x0000fffe
 #define ZX_TOK_TOK_NOT_FOUND    0x0000ffff
 #define ZX_TOK_NS_NOT_FOUND     0x00ff0000
-#define ZX_TOK_NOT_FOUND        0x00ffffff  /* Decimal 16777215 */
+#define ZX_TOK_NOT_FOUND        0x00ffffff  /* Decimal 16777215: common among payload elements */
 #define ZX_TOK_TOK_MASK         0x0000ffff
 #define ZX_TOK_NS_MASK          0x00ff0000
 #define ZX_TOK_NS_SHIFT         16

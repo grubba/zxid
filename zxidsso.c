@@ -169,6 +169,7 @@ void zxid_sso_set_relay_state_to_return_to_this_url(zxid_conf* cf, zxid_cgi* cgi
 }
 
 /*(i) Generate an authentication request and make a URL out of it.
+ *
  * cf::     Used for many configuration options and memory allocation
  * cgi::    Used to pick the desired SSO profile based on hidden fields or user
  *     input. The cgi->rs filed specifies the URL to redirect to after the SSO.

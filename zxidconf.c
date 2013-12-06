@@ -656,7 +656,7 @@ void zxid_free_bus_url(struct zxid_conf* cf, struct zxid_bus_url* bu)
 }
 
 /*() Parse ATTRSRC specification and add it to linked list
- * namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;...
+ *   namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext;...
  */
 
 /* Called by:  zxid_init_conf, zxid_parse_conf_raw */

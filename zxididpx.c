@@ -99,7 +99,7 @@ struct zx_str* zxid_idp_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, in
 }
 
 #if 0
-/*() SOAP dispatch can also handle requests and responses received via artifact
+/*(-) SOAP dispatch can also handle requests and responses received via artifact
  * resolution. However only some combinations make sense.
  * Return 0 for failure, otherwise some success code such as ZXID_SSO_OK
  * *** NOT CALLED FROM ANYWHERE. See zxid_sp_soap_dispatch() for real action */

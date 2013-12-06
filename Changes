@@ -125,6 +125,7 @@ zxid-1.19:: 4.12.2013
     - Cleaned up so valgrind does not complain
     - Fixed XML parser boundary condition with read 1 past end (found by valgrind)
     - Changed URL to BURL (Base URL)
+    - Fixed setting Action header in the case that SOAP Body does not begin with tag
 
 zxid-1.18:: 20.11.2013
     - More bug fixing in mini_httpd_zxid
