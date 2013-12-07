@@ -136,8 +136,8 @@ struct zx_str {
 /* Attributes that are unforeseen (errornous or extensions). */
 
 struct zx_attr_s {
-  struct zx_str g;
-  struct zx_ns_s* ns;        /* namespace of the attribute */
+  struct zx_str g;     /* value at g.s */
+  struct zx_ns_s* ns;  /* namespace of the attribute */
   int name_len;
   char* name;
 };
@@ -183,7 +183,6 @@ void  zx_str_free(struct zx_ctx* c, struct zx_str* ss);   /* free both ss->s and
 char* zx_str_to_c(struct zx_ctx* c, struct zx_str* ss);
 void  zx_str_conv(struct zx_str* ss, int* out_len, char** out_s);  /* SWIG typemap friendly */
 int   zx_str_ends_in(struct zx_str* ss, int len, const char* suffix);
-#define ZX_STRCMP(a, b) ((a)?((b)?((a)->len == (b)->len?memcmp((a)->s, (b)->s, (a)->len):(a)->len - (b)->len):1):((b)?-1:0))
 #define ZX_STR_EQ(ss, cstr) ((ss) && (cstr) && (ss)->s && (ss)->len == strlen(cstr) && !memcmp((cstr), (ss)->s, (ss)->len))
 #define ZX_STR_ENDS_IN_CONST(ss, suffix) zx_str_ends_in((ss), sizeof(suffix)-1, (suffix))
 
@@ -308,6 +307,8 @@ char* zx_md5_crypt(const char* pw, const char* salt, char* buf);
 
 #define ZX_ORD_INS_ATTR(b,f,k) (zx_ord_ins_at(&(b)->gg,((b)->f=(k))))
 #define ZX_ADD_KID(b,f,k)  (zx_add_kid(&(b)->gg,(struct zx_elem_s*)((b)->f=(k))))
+
+/* zxlib.c */
 
 struct zx_elem_s* zx_add_kid(struct zx_elem_s* father, struct zx_elem_s* kid);
 struct zx_elem_s* zx_add_kid_before(struct zx_elem_s* father, int before, struct zx_elem_s* kid);

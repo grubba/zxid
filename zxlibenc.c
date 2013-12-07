@@ -204,8 +204,8 @@ static char* zx_attr_wo_enc(char* p, struct zx_attr_s* attr)
 }
 
 /*() Render element into string. The XML attributes and elements are
- * processed in wire order by chasing wo pointers. This is what you want for
- * validating signatures on other people's XML documents.
+ * processed in wire order by starting with kids root and chasing g.n pointers.
+ * This is what you want for validating signatures on other people's XML documents.
  * The lists are assumed to be in forward order, i.e. opposite
  * of what zx_dec_zx_root() and zx_DEC_elem() return. You should call
  * zx_reverse_elem_lists() if needed. */

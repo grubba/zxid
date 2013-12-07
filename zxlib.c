@@ -814,7 +814,6 @@ struct zx_elem_s* zx_deep_clone_elems(struct zx_ctx* c, struct zx_elem_s* x, int
   return x;
 }
 
-
 int zx_walk_so_elems(struct zx_ctx* c, struct zx_elem_s* se, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx))
 {
   int ret;

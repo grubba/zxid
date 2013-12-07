@@ -1,6 +1,7 @@
 # zxid/sg/ws-addr-1.0.sg
 # Slightly edited, 5.9.2006, Sampo Kellomaki (sampo@iki.fi)
 # 6.2.2007, Added Discovery specifics to the Metadata --Sampo
+# 7.12.2013, added rankKey extension to EPR MD to facilitate sorting di results --Sampo
 # $Id: ws-addr-1.0.sg,v 1.9 2007-09-30 05:10:03 sampo Exp $
 
 target(a, http://www.w3.org/2005/08/addressing)
@@ -25,8 +26,8 @@ EndpointReference	 -> %a:EndpointReferenceType
   a:Address	 -> %a:AttributedURIType
   a:ReferenceParameters?
   a:Metadata?
-  @notOnOrAfter?  -> %xs:dateTime     # Added by Sampo
-  &@a:hdrs        # Added by Sampo
+  @notOnOrAfter?  -> %xs:dateTime # Added by Sampo
+  &@a:hdrs                # Added by Sampo
   any*  ns(##other)  processContents(lax)
   @any
   ;
@@ -48,6 +49,7 @@ Metadata	 -> %a:MetadataType
   di:SecurityContext?
   tas3:Trust?
   any*  processContents(lax)
+  @rankKey -> %xs:anyURI  # Added by Sampo
   @any
   ;
 

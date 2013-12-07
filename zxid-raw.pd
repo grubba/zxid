@@ -186,11 +186,15 @@ the moon and position of the trams in Helsinki. Until implementation
 matures, its better not to depend on the ordering.>>
 
 The +wire order+ structure, depicted by red hollow arrows, is
-maintained using gg.kids and gg.g.wo fields. For example
+maintained using gg.kids as root and gg.g.n for next pointer. For example
 ~sig->SignedInfo->Reference->Transforms~ keeps its kids, the
 ~zx_ds_Transform~ objects, in the original order hanging from the kids
-and linked with the ~wo~ field. As can be seen, the order kept with ~wo~
-fields can be different than the one kept using <<tt: n>> (next) fields.
+and linked with the gg.g.n field. As can be seen, the order kept with gg.g.n
+fields can be different than the one kept using <<tt: n>> (next)
+fields. <<footnote: Sometime before R1.0 the scheme changed to only
+have gg.g.n pointers and making even wireorder lists use them. Thus
+wo pointers no longer exist.>>
+
 What's more, the kids list can contain dissimilar objects, witness
 ~sig->SignedInfo->Reference->gg.kids~. The wire order representation
 is only captured when decoding the document and is mainly useful for

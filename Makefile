@@ -165,7 +165,9 @@ ECHO?=echo
 CP?=cp
 PERL?=perl
 XSD2SG_PL?= ../pd/xsd2sg.pl
-XSD2SG=$(PERL) $(XSD2SG_PL)
+XSD2SG?=$(PERL) $(XSD2SG_PL)
+PD2TEX_PL?= ../pd/pd2tex
+PD2TEX?=$(PERL) $(PD2TEX_PL)
 PULVERIZE=$(PERL) ./pulverize.pl
 GPERF?=gperf
 SWIG?=swig
@@ -2145,16 +2147,16 @@ copydist:
 	rsync zxid-$(ZXIDREL).tgz $(WEBROOT)
 
 tex/%.pdf: %.pd
-	pd2tex -noref -nortf -nodbx -nohtml $<
+	$(PD2TEX) -noref -nortf -nodbx -nohtml $<
 
 html/%.html: %.pd doc-inc.pd doc-end.pd
-	pd2tex -noref -nortf -nodbx -notex $<
+	$(PD2TEX) -noref -nortf -nodbx -notex $<
 
 tex/README.zxid.pdf: README.zxid
-	pd2tex -noref -nortf -nodbx -nohtml $<
+	$(PD2TEX) -noref -nortf -nodbx -nohtml $<
 
 html/README.zxid.html: README.zxid doc-inc.pd doc-end.pd
-	pd2tex -noref -nortf -nodbx -notex README.zxid
+	$(PD2TEX) -noref -nortf -nodbx -notex README.zxid
 
 DOC= html/README.zxid.html html/index.html html/apache.html html/mod_auth_saml.html html/zxid-simple.html html/zxid-install.html html/zxid-conf.html html/zxid-cot.html html/zxid-java.html html/zxid-log.html html/zxid-perl.html html/zxid-php.html html/zxid-raw.html html/zxid-wsf.html html/zxid-idp.html html/zxid-faq.html html/schemata.html
 
@@ -2284,7 +2286,7 @@ refcall:
 	$(PERL) ./call-anal.pl -n $(API_REF_SRC) >callgraph.dot
 
 reference: refcall
-	cd ref; pd2tex -noref -nortf -nodbx ref.pd
+	cd ref; $(PD2TEX) -noref -nortf -nodbx ref.pd
 	cd ref/tex; pdflatex -file-line-error-style -interaction=errorstopmode ref.tex # Thrice so refs and index are right
 	cd ref/tex #; pdflatex -file-line-error-style -interaction=errorstopmode ref.tex # Thrice so refs and index are right
 
