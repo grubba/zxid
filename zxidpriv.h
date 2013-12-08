@@ -48,6 +48,7 @@ struct zx_e_Fault_s;
 struct zx_tas3_Status_s;
 struct zx_a_EndpointReference_s;
 struct zx_a_Address_s;
+struct zx_a_Metadata_s;
 struct zx_sa_EncryptedAssertion_s;
 struct zx_sa_Assertion_s;
 struct zx_sa_NameID_s;
@@ -304,15 +305,17 @@ ZXID_DECL struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zx
 
 /* zxidepr */
 
-ZXID_DECL int zxid_epr_path(zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, struct zx_str* svc, struct zx_str* cont);
-
-ZXID_DECL int  zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr);
+ZXID_DECL int  zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, int rank);
 ZXID_DECL void zxid_snarf_eprs(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr);
 ZXID_DECL void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses);
 
 /* zxiddi -  Discovery Service */
 
 ZXID_DECL int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_nid* nameid, struct zx_lu_Status_s** stp);
+
+ZXID_DECL void zxid_di_set_rankKey_if_needed(zxid_conf* cf, struct zx_a_Metadata_s* md, int nth, struct dirent* de);
+
+ZXID_DECL zxid_epr* zxid_di_sort_eprs(zxid_conf* cf, zxid_epr* epr);
 
 ZXID_DECL struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_ses* ses, struct zx_di_Query_s* req);
 

@@ -148,6 +148,7 @@
 #define zx_issueTo_ATTR	0x0000a2
 #define zx_SessionNotOnOrAfter_ATTR	0x0000a4
 #define zx_resultsType_ATTR	0x0000a6
+#define zx_rankKey_ATTR	0x0000a7
 #define zx_addressCoding_ATTR	0x0000a8
 #define zx_contingency_ATTR	0x0000ab
 #define zx_Issuer_ATTR	0x0000b0

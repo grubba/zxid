@@ -231,6 +231,7 @@ function build_a_MessageID(data) {
 
 
 function parse_a_Metadata(data, x) {
+  POPATTR(x[1], 'rankKey', data.rankKey);
 
   tag = find_xml_local(x[2], 'Framework', 1);
   h =  hash [];
@@ -253,6 +254,7 @@ function parse_a_Metadata(data, x) {
 function build_a_Metadata(data) {
   attr = [];
   body = [];
+  PUSHATTR(attr, 'rankKey', data.rankKey);
 
   push body, build_sbf_Framework(data{'Framework'});
   PUSHTAG_RAW(body, 'Abstract', data.Abstract);

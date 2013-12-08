@@ -153,6 +153,7 @@ ZEND_NAMED_FUNCTION(_wrap_zx_alloc_sprintf);
 ZEND_NAMED_FUNCTION(_wrap_zx_str_free);
 ZEND_NAMED_FUNCTION(_wrap_zx_str_to_c);
 ZEND_NAMED_FUNCTION(_wrap_zx_str_conv);
+ZEND_NAMED_FUNCTION(_wrap_zx_str_cmp);
 ZEND_NAMED_FUNCTION(_wrap_zx_str_ends_in);
 ZEND_NAMED_FUNCTION(_wrap_zx_memmem);
 ZEND_NAMED_FUNCTION(_wrap_zx_alloc);

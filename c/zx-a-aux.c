@@ -904,6 +904,7 @@ void zx_DUP_STRS_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x)
   zx_dup_strs_common(c, &x->gg);
   /* *** deal with xmlns specifications in exc c14n way */
 
+  zx_dup_attr(c, x->rankKey);
 
   for (se = &x->Framework->gg;
        se && se->g.tok == zx_sbf_Framework_ELEM;
@@ -938,6 +939,7 @@ struct zx_a_Metadata_s* zx_DEEP_CLONE_a_Metadata(struct zx_ctx* c, struct zx_a_M
   x = (struct zx_a_Metadata_s*)zx_clone_elem_common(c, &x->gg, sizeof(struct zx_a_Metadata_s), dup_strs);
   /* *** deal with xmlns specifications in exc c14n way */
 
+  x->rankKey = zx_clone_attr(c, x->rankKey);
 
   for (enn = 0, e = &x->Framework->gg;
        e && e->g.tok == zx_sbf_Framework_ELEM;

@@ -230,6 +230,7 @@ int zx_DEC_ELEM_a_MessageID(struct zx_ctx* c, struct zx_a_MessageID_s* x)
 int zx_DEC_ATTR_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x)
 {
   switch (x->gg.attr->g.tok) {
+    case zx_rankKey_ATTR:  x->rankKey = x->gg.attr; return 1;
 
   default: return 0;
   }

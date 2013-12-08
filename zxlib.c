@@ -398,6 +398,25 @@ int zx_str_ends_in(struct zx_str* ss, int len, const char* suffix)
   return !memcmp(ss->s + ss->len - len, suffix, len);
 }
 
+/*() Compare two zx_strs; return -1 if a<b; 0 if a==b; 1 if a>b. */
+
+int zx_str_cmp(struct zx_str* a, struct zx_str* b)
+{
+  int r;
+  if (!a || !a->s || !a->len)
+    return 1;  /* missing parts: sort to end of list */
+  if (!b || !b->s || !b->len)
+    return -1;
+  r = memcmp(a->s, b->s, MIN(a->len, b->len));
+  if (r)
+    return r;  /* decided by differing characters */
+  if (a->len == b->len)
+    return 0;  /* equal in characters and length */
+  if (a->len < b->len)
+    return -1;
+  return 1;
+}
+
 /*() Add non-XML content to the kids list. These essentially appear as DATA items. */
 
 /* Called by:  test_ibm_cert_problem_enc_dec, x509_test, zx_new_str_elem, zxid_attach_sol1_usage_directive, zxid_az_soap x5, zxid_check_fed, zxid_issuer, zxid_mk_addr, zxid_mk_sa_attribute_ss x2, zxid_mk_subj, zxid_mk_transient_nid, zxid_new_epr, zxid_org_desc x4, zxid_parse_mni, zxid_ps_addent_invite x2, zxid_wsc_prep, zxid_wsc_prep_secmech x3, zxid_wsf_decor x4, zxsig_sign */

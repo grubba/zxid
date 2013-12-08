@@ -21,6 +21,7 @@ Id
 actor
 mustUnderstand
 notOnOrAfter
+rankKey
 RelationshipType
 duration
 number

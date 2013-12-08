@@ -115,7 +115,7 @@ int main(int argc, char** argv)
 	   epr = (void*)ZX_NEXT(epr)) {
 	if (epr->gg.g.tok != zx_a_EndpointReference_ELEM)
 	  continue;
-	zxid_cache_epr(cf, ses, epr);
+	zxid_cache_epr(cf, ses, epr, 1);
       }
     
   } else if (!strcmp(svc, XMLNS_DAP)) {

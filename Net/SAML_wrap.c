@@ -6533,6 +6533,44 @@ XS(_wrap_zx_str_conv) {
 }
 
 
+XS(_wrap_zx_str_cmp) {
+  {
+    struct zx_str *arg1 = (struct zx_str *) 0 ;
+    struct zx_str *arg2 = (struct zx_str *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    int result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: zx_str_cmp(a,b);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zx_str, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zx_str_cmp" "', argument " "1"" of type '" "struct zx_str *""'"); 
+    }
+    arg1 = (struct zx_str *)(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_zx_str, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zx_str_cmp" "', argument " "2"" of type '" "struct zx_str *""'"); 
+    }
+    arg2 = (struct zx_str *)(argp2);
+    result = (int)zx_str_cmp(arg1,arg2);
+    ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1((int)(result)); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_zx_str_ends_in) {
   {
     struct zx_str *arg1 = (struct zx_str *) 0 ;
@@ -47182,6 +47220,7 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zx_str_free", _wrap_zx_str_free},
 {"Net::SAMLc::zx_str_to_c", _wrap_zx_str_to_c},
 {"Net::SAMLc::zx_str_conv", _wrap_zx_str_conv},
+{"Net::SAMLc::zx_str_cmp", _wrap_zx_str_cmp},
 {"Net::SAMLc::zx_str_ends_in", _wrap_zx_str_ends_in},
 {"Net::SAMLc::zx_memmem", _wrap_zx_memmem},
 {"Net::SAMLc::zx_alloc", _wrap_zx_alloc},

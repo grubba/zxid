@@ -1,5 +1,5 @@
 /* zxidepr.c  -  Handwritten functions for client side EPR and bootstrap handling
- * Copyright (c) 2012 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -9,9 +9,10 @@
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id: zxidepr.c,v 1.19 2009-11-29 12:23:06 sampo Exp $
  *
- * 5.2.2007, created --Sampo
+ * 5.2.2007,  created --Sampo
  * 7.10.2008, added documentation --Sampo
  * 22.4.2012, fixed folding EPR names (to avoid folding comma) --Sampo
+ * 7.12.2013, added EPR ranking --Sampo
  *
  * See also: zxidsimp.c (attributes to LDIF), and zxida7n.c (general attribute querying)
  *
@@ -97,6 +98,7 @@ int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len, struct zx_str* name, s
  *     modified to have the path. The path will be nul terminated.
  * buf_len:: The length of the buf (including nul termination), usually sizeof(buf)
  * svc:: Service type name
+ * rank:: Ranking key, used to ensure ordering of EPRs in discovery
  * cont:: content of EPR, used to compute sha1 hash that becomes part of the file name
  * return:: 0 on success (the real return value is returned via ~buf~ result parameter)
  *
@@ -110,22 +112,38 @@ int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len, struct zx_str* name, s
  * especially if you get errors about multibyte characters. */
 
 /* Called by:  zxid_cache_epr, zxid_snarf_eprs_from_ses */
-int zxid_epr_path(zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, struct zx_str* svc, struct zx_str* cont)
+int zxid_epr_path(zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, struct zx_str* svc, int rank, struct zx_str* cont)
 {
-  // *** add rank
-  int len = snprintf(buf, buf_len, "%s%s%s/", cf->cpath, dir, sid);
-  buf[buf_len-1] = 0; /* must terminate manually as on win32 termination is not guaranteed */
+  int len = svc->len;
+  char sha1_cont[28];
+  sha1_safe_base64(sha1_cont, cont->len, cont->s);
+  sha1_cont[27] = 0;
+
+  len = snprintf(buf, buf_len, "%s%s%s/", cf->cpath, dir, sid);
   if (len <= 0) {
     platform_broken_snprintf(len, __FUNCTION__, buf_len, "%s%s%s/");
     if (buf && buf_len > 0)
       buf[0] = 0;
     return 1;
   }
-  return zxid_nice_sha1(cf, buf+len, buf_len - len, svc, cont, 0);
+  buf[buf_len-1] = 0; /* must terminate manually as on win32 termination is not guaranteed */
+
+  buf += len;
+  buf_len -= len;
+  len = snprintf(buf, buf_len, "%.*s,%04d,%s", svc->len, svc->s, rank, sha1_cont);
+  if (len <= 0) {
+    platform_broken_snprintf(len, __FUNCTION__, buf_len, "%.*s,%04d,%s");
+    if (buf && buf_len > 0)
+      buf[0] = 0;
+    return 1;
+  }
+  buf[buf_len-1] = 0; /* must terminate manually as on win32 termination is not guaranteed */
+  zxid_fold_svc(buf, len);
+  return 0;
 }
 
 /*() Serialize EPR data structure to XML and write it to session's EPR cache under
- * file name that is both unique and indicates the service type.
+ * file name that is both unique and indicates the service type and ranking.
  *
  * cf:: ZXID configuration object, also used for memory allocation
  * ses:: Session object in whose EPR cache the file will be located
@@ -133,7 +151,7 @@ int zxid_epr_path(zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, s
  * return:: 1 on success, 0 on failure */
 
 /* Called by:  main, zxid_get_epr, zxid_snarf_eprs */
-int zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
+int zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, int rank)
 {
   fdtype fd;
   struct zx_str* ss;
@@ -152,8 +170,10 @@ int zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
     ERR("Encoding EndpointReference failed %p", epr);
     return 0;
   }
+
+  // *** respect rank and detect cache duplicates
   zxid_epr_path(cf, ZXID_SES_DIR, ses->sid, path, sizeof(path),
-		ZX_GET_CONTENT(epr->Metadata->ServiceType), ss);
+		ZX_GET_CONTENT(epr->Metadata->ServiceType), rank, ss);
   //fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
   fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxid_cache_epr", 1, "%s", path);
   if (fd == BADFD) {
@@ -191,7 +211,7 @@ void zxid_snarf_eprs(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
     ss = ZX_GET_CONTENT(epr->Metadata->ServiceType);
     urlss = ZX_GET_CONTENT(epr->Address);
     D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
-    if (zxid_cache_epr(cf, ses, epr)) {
+    if (zxid_cache_epr(cf, ses, epr, wsf20)) {
       ++wsf20;
       D("%d: EPR cached svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
     }
@@ -296,12 +316,14 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
   struct zx_root_s* r;
   struct zx_str* ss;
   struct zx_str* pi;
-  int len, epr_len;
+  int len, epr_len, iter = 0;
   char path[ZXID_MAX_BUF];
   char* epr_buf;  /* MUST NOT come from stack. */
   DIR* dir;
   struct dirent * de;
+  zxid_epr* found = 0;  /* List of found eligible EPRs for sorting and nth selection */
   zxid_epr* epr = 0;
+  zxid_epr* nxt;
   struct zx_a_Metadata_s* md = 0;  
   D_INDENT("find_epr: ");
 
@@ -330,17 +352,17 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
   memcpy(path, svc, len);
   path[len] = 0;
   zxid_fold_svc(path, len);
-  D("%d Folded path prefix(%.*s) len=%d n=%d", nth, len, path, len);
+  D("%d Folded path prefix(%.*s) len=%d", iter, len, path, len);
   
-  while (de = readdir(dir)) {
-    D("%d Considering file(%s)", nth, de->d_name);
+  for (; de = readdir(dir); ++iter) {
+    D("%d Considering file(%s)", iter, de->d_name);
     if (de->d_name[0] == '.')  /* . .. and "hidden" files */
       continue;
     if (de->d_name[strlen(de->d_name)-1] == '~')  /* Ignore backups from hand edited EPRs. */
       continue;
     if (memcmp(de->d_name, path, len) || de->d_name[len] != ',')
       continue;
-    D("%d Checking EPR content file(%s)", nth, de->d_name);
+    D("%d Checking EPR content file(%s)", iter, de->d_name);
     epr_buf = read_all_alloc(cf->ctx, "find_epr", 1, &epr_len,
 			     "%s" ZXID_SES_DIR "%s/%s", cf->cpath, ses->sid, de->d_name);
     if (!epr_buf)
@@ -356,34 +378,26 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
     ZX_FREE(cf->ctx, r);
     if (!ZX_SIMPLE_ELEM_CHK(epr->Address)) {
       ERR("The EPR does not have <Address> element. Rejected. %p", epr->Address);
-      zx_free_elem(cf->ctx, &epr->gg, 0);
-      ZX_FREE(cf->ctx, epr_buf);
-      continue;
+      goto next_file;
     }
     /* *** add ID-WSF 1.1 handling */
     md = epr->Metadata;
     if (!md || !ZX_SIMPLE_ELEM_CHK(md->ServiceType)) {
       ERR("No Metadata %p or ServiceType. Failed to parse epr_buf(%.*s)", md, epr_len, epr_buf);
-      zx_free_elem(cf->ctx, &epr->gg);
-      ZX_FREE(cf->ctx, epr_buf, 0);
-      continue;
+      goto next_file;
     }
     ss = ZX_GET_CONTENT(md->ServiceType);
     if (!ss || len != ss->len || memcmp(svc, ss->s, len)) {
-      D("%d Internal svctype(%.*s) does not match desired(%s). Reject.", nth, ss?ss->len:0, ss?ss->s:"", svc);
-      zx_free_elem(cf->ctx, &epr->gg, 0);
-      ZX_FREE(cf->ctx, epr_buf);
-      continue;
+      D("%d Internal svctype(%.*s) does not match desired(%s). Reject.", iter, ss?ss->len:0, ss?ss->s:"", svc);
+      goto next_file;
     }
     
     ss = ZX_GET_CONTENT(epr->Address);
     if (url && (!ss || strlen(url) != ss->len || memcmp(url, ss->s, ss->len))) {
       pi = md?ZX_GET_CONTENT(md->ProviderID):0;
       if (pi && (strlen(url) != pi->len || memcmp(url, pi->s, pi->len))) {
-	D("%d ProviderID(%.*s) or endpoint URL(%.*s) does not match desired url(%s). Reject.", nth, pi->len, pi->s, ss?ss->len:0, ss?ss->s:"", url);
-	zx_free_elem(cf->ctx, &epr->gg, 0);
-	ZX_FREE(cf->ctx, epr_buf);
-	continue;
+	D("%d ProviderID(%.*s) or endpoint URL(%.*s) does not match desired url(%s). Reject.", iter, pi->len, pi->s, ss?ss->len:0, ss?ss->s:"", url);
+	goto next_file;
       }
     }
 
@@ -391,19 +405,108 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
 
     /* *** Evaluate action */
     
-    if (--nth) {
-      zx_free_elem(cf->ctx, &epr->gg, 0);
-      ZX_FREE(cf->ctx, epr_buf);
-      continue;
-    }    
-    D("%d Found svc(%s) url(%.*s)", nth, svc, ZX_GET_CONTENT_LEN(epr->Address), ZX_GET_CONTENT_S(epr->Address));
-    closedir(dir);
-    D_DEDENT("find_epr: ");
-    return epr;
+    /* Add to the front of the list of the eligible candidates. */
+    D("%d Add to candidate set svc(%s) url(%.*s)", iter, svc, ZX_GET_CONTENT_LEN(epr->Address), ZX_GET_CONTENT_S(epr->Address));
+    zxid_di_set_rankKey_if_needed(cf, epr->Metadata, iter, de);
+    epr->gg.g.n = &found->gg.g;
+    found = epr;
+    continue;
+
+next_file:
+    zx_free_elem(cf->ctx, &epr->gg, 0);
+    ZX_FREE(cf->ctx, epr_buf);
+    continue;
   }
   closedir(dir);
+
+  if (!found) {
+    D_DEDENT("find_epr: ");
+    return 0;
+  }
+  
+  found = zxid_di_sort_eprs(cf, found);
+  for (epr = found, iter=0; epr; ++iter, epr = nxt) {
+    nxt = (zxid_epr*)epr->gg.g.n;
+    if (iter >= nth) {
+      found = epr;
+    } else {
+      zx_free_elem(cf->ctx, &epr->gg, 0);  /* not returned, better free it! */
+      /* ZX_FREE(cf->ctx, epr_buf);  *** this pointer is already lost. No way to free. Bummer! */
+    }
+  }
+  
+  if (iter < nth) {
+    D("nth=%d beyond available result set iter=%d", nth, iter);
+    ZX_FREE(cf->ctx, epr_buf);
+    D_DEDENT("find_epr: ");
+    return 0;
+  }
+  
+  D("%d Found svc(%s) url(%.*s)", nth, svc, ZX_GET_CONTENT_LEN(found->Address), ZX_GET_CONTENT_S(found->Address));
   D_DEDENT("find_epr: ");
-  return 0;
+  return epr;
+}
+
+/*() Discover an EPR over the net.
+ *
+ * cf:: ZXID configuration object, also used for memory allocation
+ * ses:: Session object in whose EPR cache the file will be searched
+ * svc:: Service type (usually the namespace URN)
+ * url:: (Optional) If provided, this argument has to match either
+ *     the ProviderID, EntityID, or actual service endpoint URL.
+ * di_opt:: (Optional) Additional discovery options for selecting the service, query string format
+ * action:: (Optional) The action, or method, that must be invocable on the service
+ * return:: EPR data structure on success, 0 on failure (no discovery EPR in cache, or
+ *     not found by the discovery service). If more than one were found, a linked list
+ *     of EPRs is returned.
+ */
+
+zxid_epr* zxid_discover_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action)
+{
+  int wsf20 = 0;
+  struct zx_str* ss;
+  struct zx_str* urlss;
+  struct zx_e_Envelope_s* env;
+  zxid_epr* epr;
+
+  INFO("Discovering svc(%s)...", STRNULLCHK(svc));
+  env = zx_NEW_e_Envelope(cf->ctx,0);
+  env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
+  env->Body->Query = zxid_mk_di_query(cf, &env->Body->gg, svc, url, di_opt, 0);
+  if (ses->deleg_di_epr) {
+    epr = ses->deleg_di_epr;
+    D("Using delegated discovery EPR %p", epr);
+  } else {
+    epr = zxid_find_epr(cf, ses, zx_xmlns_di, 0, 0, 0, 1);
+    if (!epr) {
+      ERR("EPR for svc(%s) not found in cache and no discovery EPR in cache, thus no way to discover the svc.", STRNULLCHK(svc));
+      return 0;
+    }
+  }
+  env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+  env = zxid_wsc_call(cf, ses, epr, env, 0);
+  if (!env || !env->Body || !env->Body->QueryResponse) {
+    ERR("Discovery call failed: No di:QueryResponse seen env=%p body=%p", env, env->Body);
+    return 0;
+  }
+  for (epr = env->Body->QueryResponse->EndpointReference;
+       epr;
+       epr = (zxid_epr*)ZX_NEXT(epr)) {
+    if (epr->gg.g.tok != zx_a_EndpointReference_ELEM)
+      continue;
+    ss = ZX_GET_CONTENT(epr->Metadata->ServiceType);
+    urlss = ZX_GET_CONTENT(epr->Address);
+    D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
+    if (zxid_cache_epr(cf, ses, epr, wsf20)) {
+      ++wsf20;
+      D("%d: EPR cached svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
+    }
+  }
+  epr = env->Body->QueryResponse->EndpointReference;
+  if (!epr)
+    ERR("No end point discovered for svc(%s)", STRNULLCHK(svc));
+  D("TOTAL wsf20 EPRs discovered: %d for svc(%s)", wsf20, STRNULLCHK(svc));
+  return epr;
 }
 
 /*(i) First search epr cache, and if miss, go discover an EPR over the net.
@@ -416,7 +519,13 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
  *     the ProviderID, EntityID, or actual service endpoint URL.
  * di_opt:: (Optional) Additional discovery options for selecting the service, query string format
  * action:: (Optional) The action, or method, that must be invocable on the service
- * n:: How manieth matching instance is returned. 1 means first
+ * nth:: How manieth matching instance is returned. 1 means first. n>1 assumes
+ *     all EPRs are already in cache and prevents querying Discovery Service.
+ *     0 forces re-querying Discovery service. If nth is larger than number of entries
+ *     in the cache, then return null (0) - this allows one to first call with nth==0 to refresh
+ *     the cache and then to iterate over it. As a legacy compliance feature, if nth==1
+ *     and there is nothing in the cache, then discovery query is made anyway
+ *     to see if something could be found.
  * return:: EPR data structure on success, 0 on failure (no discovery EPR in cache, or
  *     not found by the discovery service). If more than one were found, a linked list
  *     of EPRs is returned.
@@ -425,64 +534,22 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
  */
 
 /* Called by:  main x5, zxcall_main x2, zxid_call, zxid_map_identity_token, zxid_nidmap_identity_token, zxid_show_protected_content_setcookie */
-zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
+zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int nth)
 {
-  int wsf20 = 0;
-  struct zx_str* ss;
-  struct zx_str* urlss;
-  struct zx_e_Envelope_s* env;
   zxid_epr* epr;
-  epr = zxid_find_epr(cf, ses, svc, url, di_opt, action, n);
-  if (epr)
-    return epr;
-  if (n > 1)
-    return 0;  /* Do not discover any more */
   
-  INFO("%d Discovering svc(%s)...", n, STRNULLCHK(svc));
-  env = zx_NEW_e_Envelope(cf->ctx,0);
-  env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
-  env->Body->Query = zxid_mk_di_query(cf, &env->Body->gg, svc, url, di_opt, 0);
-  if (ses->deleg_di_epr) {
-    epr = ses->deleg_di_epr;
-    D("%d: Using delegated discovery EPR", n);
-  } else {
-    epr = zxid_find_epr(cf, ses, zx_xmlns_di, 0, 0, 0, n);
-    if (!epr) {
-      ERR("EPR for svc(%s) not found in cache and no discovery EPR in cache, thus no way to discover the svc.", STRNULLCHK(svc));
-      return 0;
-    }
+  if (nth > 0) {
+    epr = zxid_find_epr(cf, ses, svc, url, di_opt, action, nth);
+    if (epr)
+      return epr;
+    if (nth > 1)
+      return 0;  /* Do not discover any more */
+    /* nth == 1 and no-epr-in-cache-case: fall thru */
   }
-  env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
-  env = zxid_wsc_call(cf, ses, epr, env, 0);
-  if (env && env->Body) {
-    if (env->Body->QueryResponse) {
-      for (epr = env->Body->QueryResponse->EndpointReference;
-	   epr;
-	   epr = (zxid_epr*)ZX_NEXT(epr)) {
-	if (epr->gg.g.tok != zx_a_EndpointReference_ELEM)
-	  continue;
-	ss = ZX_GET_CONTENT(epr->Metadata->ServiceType);
-	urlss = ZX_GET_CONTENT(epr->Address);
-	D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
-	if (zxid_cache_epr(cf, ses, epr)) {
-	  ++wsf20;
-	  D("%d: EPR cached svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
-	}
-      }
-      epr = env->Body->QueryResponse->EndpointReference;
-    } else {
-      epr = 0;
-    }
-    if (!epr)
-      ERR("No end point discovered for svc(%s)", STRNULLCHK(svc));
-    D("TOTAL wsf20 EPRs discovered: %d", wsf20);
-
-    /* We need to call zxid_find_epr() to ensure the order is always same. */
-    epr = zxid_find_epr(cf, ses, svc, url, di_opt, action, n);
-    return epr;
-  }
-  ERR("discovery call failed envelope=%p", env);
-  return 0;
+  zxid_discover_epr(cf, ses, svc, url, di_opt, action);
+  /* We need to call zxid_find_epr() to ensure the order is always same. */
+  epr = zxid_find_epr(cf, ses, svc, url, di_opt, action, nth);
+  return epr;
 }
 
 /*() Accessor function for extracting endpoint address URL. */

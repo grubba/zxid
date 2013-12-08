@@ -244,7 +244,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_ses* ses,
 	  continue;
 	}
 	ses->tgtnameid = zxid_decrypt_nameid(cf, ina7n->Subject->NameID, ina7n->Subject->EncryptedID);
-      } else if (tok->ref && !ZX_STRCMP(&tok->ref->g, &ses->a7n->ID->g)) {
+      } else if (tok->ref && !zx_str_cmp(&tok->ref->g, &ses->a7n->ID->g)) {
 	D("Token->ref(%.*s) matches invocation security token.", tok->ref->g.len, tok->ref->g.s);
 	/* N.B. This is a common optimization as it often happens that invoker (delegatee) needs to
 	 * IDMap his own token, while delegator's token can usually be found using discovery. */

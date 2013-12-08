@@ -542,6 +542,10 @@ public class zxidjni implements zxidjniConstants {
     zxidjniJNI.zx_str_conv(ss, SWIGTYPE_p_int.getCPtr(out_len), SWIGTYPE_p_p_char.getCPtr(out_s));
   }
 
+  public static int zx_str_cmp(String a, String b) {
+    return zxidjniJNI.zx_str_cmp(a, b);
+  }
+
   public static int zx_str_ends_in(String ss, int len, String suffix) {
     return zxidjniJNI.zx_str_ends_in(ss, len, suffix);
   }

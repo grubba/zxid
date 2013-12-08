@@ -444,7 +444,7 @@ int zxcall_main(int argc, char** argv, char** env)
   }
 
   if (di_only) {
-    D("Discover only. svctype(%s), index=%d", STRNULLCHK(svc), din);
+    D("Discover only. svctype(%s), dindex=%d", STRNULLCHK(svc), din);
     epr = zxid_get_epr(cf, ses, svc, url, di, 0 /*action*/, din);
     if (!epr) {
       ERR("Discovery failed to find any epr of service type(%s)", STRNULLCHK(svc));

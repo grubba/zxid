@@ -5367,6 +5367,37 @@ fail:
 }
 
 
+ZEND_NAMED_FUNCTION(_wrap_zx_str_cmp) {
+  struct zx_str *arg1 = (struct zx_str *) 0 ;
+  struct zx_str *arg2 = (struct zx_str *) 0 ;
+  zval **args[2];
+  int result;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_str, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_str_cmp. Expected SWIGTYPE_p_zx_str");
+    }
+  }
+  {
+    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zx_str, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zx_str_cmp. Expected SWIGTYPE_p_zx_str");
+    }
+  }
+  result = (int)zx_str_cmp(arg1,arg2);
+  {
+    ZVAL_LONG(return_value,result);
+  }
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
 ZEND_NAMED_FUNCTION(_wrap_zx_str_ends_in) {
   struct zx_str *arg1 = (struct zx_str *) 0 ;
   int arg2 ;
@@ -41899,6 +41930,7 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zx_str_free,_wrap_zx_str_free,NULL)
  SWIG_ZEND_NAMED_FE(zx_str_to_c,_wrap_zx_str_to_c,NULL)
  SWIG_ZEND_NAMED_FE(zx_str_conv,_wrap_zx_str_conv,NULL)
+ SWIG_ZEND_NAMED_FE(zx_str_cmp,_wrap_zx_str_cmp,NULL)
  SWIG_ZEND_NAMED_FE(zx_str_ends_in,_wrap_zx_str_ends_in,NULL)
  SWIG_ZEND_NAMED_FE(zx_memmem,_wrap_zx_memmem,NULL)
  SWIG_ZEND_NAMED_FE(zx_alloc,_wrap_zx_alloc,NULL)

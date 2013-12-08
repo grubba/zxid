@@ -11,6 +11,7 @@
  *
  * 15.11.2009, created --Sampo
  * 10.1.2011,  added TrustPDP and CPN support --Sampo
+ * 7.12.2013,  added EPR ranking --Sampo
  *
  * See also zxidepr.c for discovery client code.
  *
@@ -61,7 +62,7 @@ int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_nid* nameid, st
 /*(-) Return 1 if any requested servicetype prefix matches filename, i.e. EPR file
  * is a viable candidate. Return 0 if no match. */
 
-static int zxid_di_match_prefix(int n_discovered, struct zx_di_RequestedService_s* rs, struct dirent* de)
+static int zxid_di_match_prefix(int nth, struct zx_di_RequestedService_s* rs, struct dirent* de)
 {
   struct zx_elem_s* el;
   struct zx_str* ss;
@@ -81,9 +82,9 @@ static int zxid_di_match_prefix(int n_discovered, struct zx_di_RequestedService_
     prefix[len] = 0;
     zxid_fold_svc(prefix, len);
     if (memcmp(de->d_name, prefix, len) || de->d_name[len] != ',') {
-      D("%d:     no match prefix(%s) file(%s)", n_discovered, prefix, de->d_name);
+      D("%d:     no match prefix(%s) file(%s)", nth, prefix, de->d_name);
     } else {
-      D("%d:     candidate due to prefix(%s) file(%s)", n_discovered, prefix, de->d_name);
+      D("%d:     candidate due to prefix(%s) file(%s)", nth, prefix, de->d_name);
       return 1;
     }
   }
@@ -92,7 +93,7 @@ static int zxid_di_match_prefix(int n_discovered, struct zx_di_RequestedService_
 
 /*(-) Return 1 if any requested svctype matches svctype parsed from file. Return 0 if no match. */
 
-static int zxid_di_match_svctype(int n_discovered, struct zx_di_RequestedService_s* rs, struct zx_str* svctyp, struct dirent* de)
+static int zxid_di_match_svctype(int nth, struct zx_di_RequestedService_s* rs, struct zx_str* svctyp, struct dirent* de)
 {
   struct zx_elem_s* el;
   struct zx_str* ss;
@@ -110,19 +111,19 @@ static int zxid_di_match_svctype(int n_discovered, struct zx_di_RequestedService
     if (!ss || !ss->len)
       continue;
     if (ss->len != svctyp->len || memcmp(ss->s, svctyp->s, ss->len)) {
-      D("%d: Requested svctype(%.*s) does not match file prefix(%.*s)", n_discovered, ss->len, ss->s, svctyp->len, svctyp->s);
+      D("%d: Requested svctype(%.*s) does not match file prefix(%.*s)", nth, ss->len, ss->s, svctyp->len, svctyp->s);
       continue;
     }
-    D("%d: ServiceType matches. file(%s)", n_discovered, de->d_name);
+    D("%d: ServiceType matches. file(%s)", nth, de->d_name);
     return 1;
   }
-  D("%d: Rejected due to ServiceType. file(%s)", n_discovered, de->d_name);
+  D("%d: Rejected due to ServiceType. file(%s)", nth, de->d_name);
   return 0;
 }
 
 /*(-) Return 1 if any requested svctype matches svctype parsed from file. Return 0 if no match. */
 
-static int zxid_di_match_entid(int n_discovered, struct zx_di_RequestedService_s* rs, struct zx_str* prvid, struct zx_str* addr, struct dirent* de)
+static int zxid_di_match_entid(int nth, struct zx_di_RequestedService_s* rs, struct zx_str* prvid, struct zx_str* addr, struct dirent* de)
 {
   struct zx_elem_s* el;
   struct zx_str* ss;
@@ -140,10 +141,10 @@ static int zxid_di_match_entid(int n_discovered, struct zx_di_RequestedService_s
     if (!ss || !ss->len)
       continue;
     if (ss->len != prvid->len || memcmp(ss->s, prvid->s, ss->len)) {
-      D("%d: ProviderID(%.*s) does not match desired(%.*s)", n_discovered, prvid->len, prvid->s, ss->len, ss->s);
+      D("%d: ProviderID(%.*s) does not match desired(%.*s)", nth, prvid->len, prvid->s, ss->len, ss->s);
       continue;
     }
-    D("%d: ProviderID matches. file(%s)", n_discovered, de->d_name);
+    D("%d: ProviderID matches. file(%s)", nth, de->d_name);
     return 1;
   }
 
@@ -154,20 +155,19 @@ static int zxid_di_match_entid(int n_discovered, struct zx_di_RequestedService_s
     ss = ZX_GET_CONTENT(el);
     if (!ss || !ss->len)
       continue;
-    match = 0;
     if (ss->len != addr->len || memcmp(ss->s, addr->s, ss->len)) {
-      D("%d: Address(%.*s) does not match desired(%.*s)", n_discovered, addr->len, addr->s, ss->len, ss->s);
+      D("%d: Address(%.*s) does not match desired(%.*s)", nth, addr->len, addr->s, ss->len, ss->s);
       continue;
     }
-    D("%d: Address matches. file(%s)", n_discovered, de->d_name);
-    return 1
+    D("%d: Address matches. file(%s)", nth, de->d_name);
+    return 1;
   }
   return 0;
 }
 
 /*(-) Return 1 if Discovery Options match. Return 0 if no match. */
 
-static int zxid_di_match_options(zxid_conf* cf, zxid_ses* ses, int n_discovered, struct zx_di_RequestedService_s* rs, zxid_epr* epr, struct dirent* de)
+static int zxid_di_match_options(zxid_conf* cf, zxid_ses* ses, int nth, struct zx_di_RequestedService_s* rs, zxid_epr* epr, struct dirent* de)
 {
   struct zx_elem_s* el;
   struct zx_str* ss;
@@ -208,11 +208,11 @@ static int zxid_di_match_options(zxid_conf* cf, zxid_ses* ses, int n_discovered,
     if (cf->trustpdp_url && *cf->trustpdp_url) {
       D("Trust related discovery options(%.*s), TRUSTPDP_URL(%s)", ((int)(lim-start)), start, cf->trustpdp_url);
       if (zxid_call_trustpdp(cf, 0, ses, cf->pepmap_rsin, start, lim, epr)) {
-	D("%d: Trust PERMIT. file(%s)", n_discovered, de->d_name);
+	D("%d: Trust PERMIT. file(%s)", nth, de->d_name);
 	/* *** return trust scorings as part of the EPR */
 	continue;
       } else {
-	D("%d: Rejected due to Trust DENY. file(%s)", n_discovered, de->d_name);
+	D("%d: Rejected due to Trust DENY. file(%s)", nth, de->d_name);
 	return 0;
       }
     } else {
@@ -226,9 +226,8 @@ static int zxid_di_match_options(zxid_conf* cf, zxid_ses* ses, int n_discovered,
 /*(-) Return 1 if credentials and Privacy Negotation matches. Return 0 if no match.
  * This is a TAS3 extension. */
 
-static int zxid_di_match_cpn(zxid_conf* cf, zxid_ses* ses, int n_discovered, struct zx_str* svctyp, struct zx_str* prvid, struct dirent* de)
+static int zxid_di_match_cpn(zxid_conf* cf, zxid_ses* ses, int nth, struct zx_str* svctyp, struct zx_str* prvid, struct dirent* de)
 {
-  struct zx_elem_s* el;
   struct zx_str* ss;
   if (!cf->cpn_ena)
     return 1;
@@ -273,45 +272,51 @@ static int zxid_di_match_cpn(zxid_conf* cf, zxid_ses* ses, int n_discovered, str
  *
  * This function extracts everything after the first comma as rankKey.  */
 
-void zxid_di_set_rankKey_if_needed(zxid_conf* cf, struct zx_a_Metadata_s* md, int n_discovered, struct dirent* de)
+void zxid_di_set_rankKey_if_needed(zxid_conf* cf, struct zx_a_Metadata_s* md, int nth, struct dirent* de)
 {
   char buf[48];
   char* p;
+  if (!md) {
+    ERR("%d: EPR lacks Metadata element", nth);
+    return;
+  }
   if (md->rankKey)
     return;  /* Already set in the XML parsed from file */
   
   p = strchr(de->d_name, ',');
   if (!p) {
-    snprintf(buf, sizeof(buf), "Z%04d", n_discovered);
+    snprintf(buf, sizeof(buf), "Z%04d", nth);
     buf[sizeof(buf)-1] = 0;
   }
-  md->rankKey = zx_dup_str(cf->ctx, p);  /* strdup because the de buf is temporary */
+  md->rankKey = zx_dup_attr(cf->ctx, &md->gg, zx_rankKey_ATTR, p);  /* strdup as de buf is temp */
+}
+
+/*(-) We do not want to leak IdP internal ranking infor so clean these out. This
+ * also means better standards compliant output. The WSC can always recreate
+ * its own rankKey from the order in which the EPRs were received.
+ *
+ * See:: zxid_snarf_eprs() and zxid_get_epr() */
+
+static void zxid_di_sanitize_rankKey_out(zxid_epr* epr) {
+  for (; epr; epr = (zxid_epr*)epr->gg.g.n)
+    if (epr->Metadata)
+      epr->Metadata->rankKey = 0;  /* *** should we also free them? */
 }
 
 /*(-) Compare two EPRs by rankKey (string comparison) to help sorting discovery results.
  * Return -1 if a<b; 0 if a==b; 1 if a>b. */
 
-static int zxid_id_epr_cmp(zxid_epr* a, zxid_epr* b)
-{
-  int r;
-  if (!a || !a->md || !a->md->rankKey || !a->md->rankKey->g.s || !a->md->rankKey->g.len)
+static int zxid_id_epr_cmp(zxid_epr* a, zxid_epr* b) {
+  if (!a || !a->Metadata || !a->Metadata->rankKey)
     return 1;  /* missing parts: sort to end of list */
-  if (!b || !b->md || !b->md->rankKey || !b->md->rankKey->g.s || !b->md->rankKey->g.len)
+  if (!b || !b->Metadata || !b->Metadata->rankKey)
     return -1;
-  r = memcmp((a)->s, (b)->s, MIN((a)->len, (b)->len));
-  if (r)
-    return r;  /* decided by differing characters */
-  if (a->md->rankKey->g.len == a->md->rankKey->g.len)
-    return 0;  /* equal in characters and length */
-  if (a->md->rankKey->g.len < a->md->rankKey->g.len)
-    return -1;
-  return 1;
+  return zx_str_cmp(&a->Metadata->rankKey->g, &b->Metadata->rankKey->g);
 }
 
-/*() Sort discovery results (epr list) according to rankKey.
- * Also sanitizes the rankKey out from the results. */
+/*() Sort discovery results (epr list) according to rankKey. */
 
-zxid_epr* zxid_di_sort_results(zxid_conf* cf, zxid_epr* epr)
+zxid_epr* zxid_di_sort_eprs(zxid_conf* cf, zxid_epr* epr)
 {
   zxid_epr* out;
   zxid_epr* ep;
@@ -326,7 +331,7 @@ zxid_epr* zxid_di_sort_results(zxid_conf* cf, zxid_epr* epr)
 
   out = epr;
   epr = (zxid_epr*)epr->gg.g.n;
-  out->gg.n = 0;
+  out->gg.g.n = 0;
 
   for (; epr; epr = nxt) {
     nxt = (zxid_epr*)epr->gg.g.n;
@@ -334,19 +339,20 @@ zxid_epr* zxid_di_sort_results(zxid_conf* cf, zxid_epr* epr)
     if (zxid_id_epr_cmp(out, epr) >= 0) {
       out = epr;
       epr = (zxid_epr*)epr->gg.g.n;
-      out->gg.n = 0;
+      out->gg.g.n = 0;
       continue;
     }
     for (prv = out, ep = (zxid_epr*)out->gg.g.n;
 	 ep && zxid_id_epr_cmp(ep, epr) < 0;
 	 prv = ep, ep = (zxid_epr*)ep->gg.g.n);
-    epr->gg.g.n = prv->gg.g.n
+    epr->gg.g.n = prv->gg.g.n;
     prv->gg.g.n = &epr->gg.g;
   }
   return out;
 }
 
-/*() Server side Discovery Service Query processing. See also zxid_gen_bootstraps() */
+/*() Server side Discovery Service Query processing.
+ * See also:: zxid_gen_bootstraps(), zxid_find_epr() */
 
 /* Called by:  zxid_sp_soap_dispatch */
 struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_ses* ses,struct zx_di_Query_s* req)
@@ -354,18 +360,13 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_ses* ses,struct 
   struct zx_di_RequestedService_s* rs;
   struct zx_di_QueryResponse_s* resp = zx_NEW_di_QueryResponse(cf->ctx,0);
   struct zx_root_s* r;
-  int len, epr_len, match, n_discovered = 0;
+  int epr_len, n_discovered = 0;
   char logop[8];
   char uid[ZXID_MAX_USER];
   char mdpath[ZXID_MAX_BUF];
-  char path[ZXID_MAX_BUF];
   char* epr_buf;
-  char* p;
-  char* start;
-  char* lim;
   DIR* dir;
   struct dirent* de;
-  struct zx_elem_s* el;
   struct zx_a_Metadata_s* md = 0;  
   struct zx_str* ss;
   struct zx_str* svctyp;
@@ -389,14 +390,6 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_ses* ses,struct 
       continue;
 
     /* Look for all entities providing service */
-
-    if (ZX_SIMPLE_ELEM_CHK(rs->ServiceType)) {
-      /* *** proper handling of discovering simultaneously multiple service types? */
-    } else {
-      D("%d: No specific service type given. Looking for all. %p", n_discovered, rs->ServiceType);
-      len = 0;
-      path[0] = 0;
-    }
 
     D("%d: Looking for service metadata in dir(%s)", n_discovered, mdpath);
     dir = opendir(mdpath);
@@ -496,7 +489,10 @@ next_file:
     
     closedir(dir);
   }
-  r->EndpointReference = resp->g.kids = zxid_di_sort_results(cf, resp->g.kids);
+
+  r->EndpointReference = zxid_di_sort_eprs(cf, (zxid_epr*)resp->gg.kids);
+  resp->gg.kids = &r->EndpointReference->gg;
+  zxid_di_sanitize_rankKey_out(r->EndpointReference);
   
   ss = ZX_GET_CONTENT(req->RequestedService->ServiceType);
   D("TOTAL discovered %d svctype1(%.*s)", n_discovered, ss?ss->len:0, ss?ss->s:"");
@@ -507,4 +503,3 @@ next_file:
 }
 
 /* EOF  --  zxiddi.c */
-
