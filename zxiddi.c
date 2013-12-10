@@ -287,6 +287,7 @@ void zxid_di_set_rankKey_if_needed(zxid_conf* cf, struct zx_a_Metadata_s* md, in
   if (!p) {
     snprintf(buf, sizeof(buf), "Z%04d", nth);
     buf[sizeof(buf)-1] = 0;
+    p = buf;
   }
   md->rankKey = zx_dup_attr(cf->ctx, &md->gg, zx_rankKey_ATTR, p);  /* strdup as de buf is temp */
 }

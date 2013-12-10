@@ -544,7 +544,7 @@ struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list*
   char* q;
   struct zxid_cstr_list* cs;
 
-  for (; p && *p; *p && ++p) {  /* ignore: warning: value computed is not used [-Wunused-value] */
+  for (; p && *p; (void)(*p && ++p)) {
     q = p;
     p = strchr(p, ',');
     if (!p)
@@ -626,7 +626,7 @@ struct zxid_bus_url* zxid_load_bus_url(zxid_conf* cf, struct zxid_bus_url* bu_ro
   char* q;
   struct zxid_bus_url* bu;
 
-  for (; p && *p; *p && ++p) {  /* ignore: warning: value computed is not used [-Wunused-value] */
+  for (; p && *p; (void)(*p && ++p)) {
     q = p;
     p = strchr(p, ',');
     if (!p)
@@ -1451,8 +1451,9 @@ static int zxid_parse_vpath(zxid_conf* cf, char* vpath)
   }
   
   zxid_expand_percent(vpath, np, lim, 0);
-  if (--zxid_suppress_vpath_warning > 0)
+  if (--zxid_suppress_vpath_warning > 0) {
     INFO("VPATH(%s) alters PATH(%s) to new PATH(%s)", vpath, cf->cpath, newpath);
+  }
   zxid_parse_conf_path_raw(cf, zx_dup_cstr(cf->ctx, newpath), 1);
   return 1;
 }
@@ -1464,8 +1465,9 @@ static int zxid_parse_vurl(zxid_conf* cf, char* vurl)
 {
   char newurl[PATH_MAX];
   zxid_expand_percent(vurl, newurl, newurl + sizeof(newurl), 1);
-  if (--zxid_suppress_vpath_warning > 0)
+  if (--zxid_suppress_vpath_warning > 0) {
     INFO("VURL(%s) alters URL(%s) to new URL(%s)", vurl, cf->burl, newurl);
+  }
   cf->burl = zx_dup_cstr(cf->ctx, newurl);
   return 1;
 }

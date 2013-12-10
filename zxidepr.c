@@ -127,18 +127,26 @@ int zxid_epr_path(zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, s
     return 1;
   }
   buf[buf_len-1] = 0; /* must terminate manually as on win32 termination is not guaranteed */
-
   buf += len;
   buf_len -= len;
-  len = snprintf(buf, buf_len, "%.*s,%04d,%s", svc->len, svc->s, rank, sha1_cont);
+
+  if (buf_len < svc->len + 1 + 4 + 1 + sizeof(sha1_cont)) {
+    ERR("buf too short buf_len=%d need=%d svc(%.*s)", buf_len, svc->len + 1 + 4 + 1 + sizeof(sha1_cont), svc->len, svc->s);
+    return 1;
+  }
+  memcpy(buf, svc->s, svc->len);
+  zxid_fold_svc(buf, svc->len);
+  buf += svc->len;
+  buf_len -= svc->len;
+
+  len = snprintf(buf, buf_len, ",%04d,%s", rank, sha1_cont);
   if (len <= 0) {
-    platform_broken_snprintf(len, __FUNCTION__, buf_len, "%.*s,%04d,%s");
+    platform_broken_snprintf(len, __FUNCTION__, buf_len, ",%04d,%s");
     if (buf && buf_len > 0)
       buf[0] = 0;
     return 1;
   }
   buf[buf_len-1] = 0; /* must terminate manually as on win32 termination is not guaranteed */
-  zxid_fold_svc(buf, len);
   return 0;
 }
 
@@ -148,7 +156,13 @@ int zxid_epr_path(zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, s
  * cf:: ZXID configuration object, also used for memory allocation
  * ses:: Session object in whose EPR cache the file will be located
  * epr:: XML data structure representing the EPR
- * return:: 1 on success, 0 on failure */
+ * return:: 1 on success, 0 on failure
+ *
+ * Known bug:: If an EPR is meant to substitute a previously discovered
+ *     one, it will not as the content (and possibly rank) will be different,
+ *     thus causing the new EPR to have different name so it will not overwrite
+ *     the old one. Perhaps the simple sha1 hash of the content is not the
+ *     right solution. Better sha1 the svctype+eid+epurl? */
 
 /* Called by:  main, zxid_get_epr, zxid_snarf_eprs */
 int zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, int rank)
@@ -425,7 +439,7 @@ next_file:
   }
   
   found = zxid_di_sort_eprs(cf, found);
-  for (epr = found, iter=0; epr; ++iter, epr = nxt) {
+  for (epr = found, iter=1; epr; ++iter, epr = nxt) {
     nxt = (zxid_epr*)epr->gg.g.n;
     if (iter >= nth) {
       found = epr;
@@ -442,9 +456,9 @@ next_file:
     return 0;
   }
   
-  D("%d Found svc(%s) url(%.*s)", nth, svc, ZX_GET_CONTENT_LEN(found->Address), ZX_GET_CONTENT_S(found->Address));
+  D("%d Found svc(%s) epurl(%.*s)", nth, svc, ZX_GET_CONTENT_LEN(found->Address), ZX_GET_CONTENT_S(found->Address));
   D_DEDENT("find_epr: ");
-  return epr;
+  return found;
 }
 
 /*() Discover an EPR over the net.
@@ -469,6 +483,7 @@ zxid_epr* zxid_discover_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const
   struct zx_e_Envelope_s* env;
   zxid_epr* epr;
 
+  D_INDENT("di: ");
   INFO("Discovering svc(%s)...", STRNULLCHK(svc));
   env = zx_NEW_e_Envelope(cf->ctx,0);
   env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
@@ -480,6 +495,7 @@ zxid_epr* zxid_discover_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const
     epr = zxid_find_epr(cf, ses, zx_xmlns_di, 0, 0, 0, 1);
     if (!epr) {
       ERR("EPR for svc(%s) not found in cache and no discovery EPR in cache, thus no way to discover the svc.", STRNULLCHK(svc));
+      D_DEDENT("di: ");
       return 0;
     }
   }
@@ -487,6 +503,7 @@ zxid_epr* zxid_discover_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const
   env = zxid_wsc_call(cf, ses, epr, env, 0);
   if (!env || !env->Body || !env->Body->QueryResponse) {
     ERR("Discovery call failed: No di:QueryResponse seen env=%p body=%p", env, env->Body);
+    D_DEDENT("di: ");
     return 0;
   }
   for (epr = env->Body->QueryResponse->EndpointReference;
@@ -506,6 +523,7 @@ zxid_epr* zxid_discover_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const
   if (!epr)
     ERR("No end point discovered for svc(%s)", STRNULLCHK(svc));
   D("TOTAL wsf20 EPRs discovered: %d for svc(%s)", wsf20, STRNULLCHK(svc));
+  D_DEDENT("di: ");
   return epr;
 }
 
