@@ -567,7 +567,12 @@ struct zx_str* zxenc_symkey_dec(zxid_conf* cf, struct zx_xenc_EncryptedData_s* e
   raw.s = ZX_ALLOC(cf->ctx, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(ss->len));
   lim = unbase64_raw(ss->s, ss->s+ss->len, raw.s, zx_std_index_64);
   raw.len = lim - raw.s;
-  
+
+  if (!ed->EncryptionMethod || !ed->EncryptionMethod->Algorithm) {
+    ERR("EncryptionMethod or Algorithm element not found or malformed %p", ed->EncryptionMethod);
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "EMISS", 0, "no or bad EncryptionMethod");
+    return 0;
+  }
   ss = &ed->EncryptionMethod->Algorithm->g;
   if (sizeof(ENC_ALGO_TRIPLEDES_CBC)-1 == ss->len
       && !memcmp(ENC_ALGO_TRIPLEDES_CBC, ss->s, sizeof(ENC_ALGO_TRIPLEDES_CBC)-1)) {
@@ -591,6 +596,11 @@ struct zx_str* zxenc_symkey_dec(zxid_conf* cf, struct zx_xenc_EncryptedData_s* e
   } else {
     ERR("Unsupported key transformation method(%.*s)", ss->len, ss->s);
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "ECRYPT", 0, "unsupported key transformation method");
+    return 0;
+  }
+  if (!ss) {
+    ERR("Symmetric key decryption failure. Perhaps symmetric key derived from assymmetric level is wrong, i.e. certificate used for encryption does not match the private key %d", 0);
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "ECRYPT", 0, "symmetric decrypt failed");
     return 0;
   }
   ZX_FREE(cf->ctx, raw.s);
@@ -741,6 +751,10 @@ struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(zxid_conf* cf, struct zx_str* d
   DD("Plaintext(%.*s)", data->len, data->s);
   D_XML_BLOB(cf, "PLAINTEXT", data->len, data->s);
   ss = zx_raw_cipher(cf->ctx, "AES-128-CBC", 1, symkey, data->len, data->s, 16, 0);
+  if (!ss) {
+    ERR("Symmetric encryption failed %d",0);
+    return 0;
+  }
   b64 = zx_new_len_str(cf->ctx, SIMPLE_BASE64_LEN(ss->len));
   base64_fancy_raw(ss->s, ss->len, b64->s, std_basis_64, 0, 0, 0, '=');
   zx_str_free(cf->ctx, ss);

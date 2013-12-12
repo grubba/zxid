@@ -1055,6 +1055,8 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->remote_user_ena   = ZXID_REMOTE_USER_ENA;
   cf->max_soap_retry    = ZXID_MAX_SOAP_RETRY;
   cf->mod_saml_attr_prefix = ZXID_MOD_SAML_ATTR_PREFIX;
+  cf->wsc_action_hdr    = ZXID_WSC_ACTION_HDR;
+  cf->soap_action_hdr   = ZXID_SOAP_ACTION_HDR;
 
   cf->bare_url_entityid = ZXID_BARE_URL_ENTITYID;
   cf->show_tech         = ZXID_SHOW_TECH;
@@ -1739,6 +1741,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "SHOW_TECH"))      { SCAN_INT(v, cf->show_tech); break; }
       if (!strcmp(n, "STATE"))          { cf->state = v; break; }
       if (!strcmp(n, "SSO_PAT"))        { cf->sso_pat = v; break; }
+      if (!strcmp(n, "SOAP_ACTION_HDR")) { cf->soap_action_hdr = v; break; }
       goto badcf;
     case 'T':  /* TIMEOUT_FATAL */
       if (!strcmp(n, "TIMEOUT_FATAL"))  { SCAN_INT(v, cf->timeout_fatal); break; }
@@ -1768,6 +1771,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "WSC_LOCALPDP_OBL_ACCEPT"))  { cf->wsc_localpdp_obl_accept = zxid_load_obl_list(cf, cf->wsc_localpdp_obl_accept, v);   break; }
       if (!strcmp(n, "WD"))             { cf->wd = v; chdir(v); break; }
       if (!strcmp(n, "WSP_PAT"))        { cf->wsp_pat = v; break; }
+      if (!strcmp(n, "WSC_ACTION_HDR")) { cf->wsc_action_hdr = v; break; }
       if (!strcmp(n, "WARN"))           { WARN("WARN=%s (conf line %d)", v, lineno); break; }
       goto badcf;
     case 'X':  /* XASP_VERS */
@@ -1988,6 +1992,8 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "DEFAULTQS=%s\n"
 "WSP_PAT=%s\n"
 "SSO_PAT=%s\n"
+"WSC_ACTION_HDR=%s\n"
+"SOAP_ACTION_HDR=%s\n"
 "CDC_URL=%s\n"
 "CDC_CHOICE=%d\n"
 
@@ -2183,6 +2189,8 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 STRNULLCHK(cf->wsp_pat),
 		 STRNULLCHK(cf->sso_pat),
 		 STRNULLCHK(cf->cdc_url),
+		 STRNULLCHK(cf->wsc_action_hdr),
+		 STRNULLCHK(cf->soap_action_hdr),
 		 cf->cdc_choice,
 
 		 STRNULLCHK(cf->load_cot_cache),

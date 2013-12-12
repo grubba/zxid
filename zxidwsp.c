@@ -32,6 +32,54 @@
 
 #define BOOL_STR_TEST(x) ((x) && (x) != '0')
 
+static void zxid_add_action_hdr(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env)
+{
+  struct zx_e_Header_s* hdr = env->Header;
+  struct zx_elem_s* first;
+  struct zx_el_tok* el_tok;
+  struct zx_str* ss;
+  if (!strcmp(cf->wsc_action_hdr, "#ses")) {
+  } else if (!strcmp(cf->wsc_action_hdr, "#body1st")) {
+    if (env->Body && (first = env->Body->gg.kids)) {
+      if (first->g.s) {
+	ss = zx_ref_str(cf->ctx, first->g.s);
+      } else {
+	if (el_tok = zx_get_el_tok(first)) {
+	  ss = zx_ref_str(cf->ctx, el_tok->name);
+	} else {
+	  ERR("First child element of <e:Body> does not have tag string and is not known token %x", first->g.tok);
+	  return;
+	}
+      }
+    } else {
+      ERR("Tried to set <a:Action> SOAP header from first child of <e:Body>, but the body does not exist or does not have child element %p", env->Body);
+      return;
+    }
+  } else if (!strcmp(cf->wsc_action_hdr, "#body1stns")) {
+    if (env->Body && (first = env->Body->gg.kids)) {
+      if (first->g.s) {
+	ss = zx_strf(cf->ctx, "%s%s", first->ns&&first->ns->url?first->ns->url:"", first->g.s);
+      } else {
+	if (el_tok = zx_get_el_tok(first)) {
+	  ss = zx_strf(cf->ctx, "%s%s", first->ns&&first->ns->url?first->ns->url:"", el_tok->name);
+	} else {
+	  ERR("First child element of <e:Body> does not have tag string and is not known token %x", first->g.tok);
+	  return;
+	}
+      }
+    } else {
+      ERR("Tried to set <a:Action> SOAP header from first child of <e:Body>, but the Body does not exist or does not have child element %p", env->Body);
+      return;
+    }
+  } else {
+    ss = zx_ref_str(cf->ctx, cf->wsc_action_hdr);
+  }
+  hdr->Action = zx_NEW_a_Action(cf->ctx, &hdr->gg);
+  hdr->Action->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Action->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
+  hdr->Action->actor = zx_ref_attr(cf->ctx, &hdr->Action->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  zx_add_content(cf->ctx, &hdr->Action->gg, ss);
+}
+
 /*(i) zxid_wsf_decor() implements the main low level ID-WSF web service call logic, including
  * preparation of SOAP headers, use of sec mech (e.g. preparation of wsse:Security
  * header and signing of appropriate compoments of the message), and sequencing
@@ -125,13 +173,9 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   hdr->From->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->burl));
 #endif
 
-#if 0
-  hdr->Action = zx_NEW_a_Action(cf->ctx, &hdr->gg);
-  zx_add_content(cf->ctx, &hdr->Action->gg, zx_ref_str(cf->ctx, ***));
-  hdr->Action->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->Action->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
-  hdr->Action->actor = zx_ref_attr(cf->ctx, gghdr->Action->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-#endif
-
+  if (!is_resp && !hdr->Action && cf->wsc_action_hdr)
+    zxid_add_action_hdr(cf, ses, env);
+  
 #if 0
   hdr->ReferenceParameters = zx_NEW_a_ReferenceParameters(cf->ctx, &hdr->gg);
   hdr->ReferenceParameters->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->ReferenceParameters->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);

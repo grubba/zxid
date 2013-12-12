@@ -224,6 +224,7 @@ class zxidjniJNI {
   public final static native void zx_xml_parse_dbg(long jarg1, char jarg2, String jarg3, String jarg4);
   public final static native long zx_xmlns_detected(long jarg1, long jarg2, String jarg3);
   public final static native int zx_in_inc_ns(long jarg1, long jarg2);
+  public final static native long zx_get_el_tok(long jarg1);
   public final static native void zx_prepare_dec_ctx(long jarg1, long jarg2, int jarg3, String jarg4, String jarg5);
   public final static native long zx_dec_zx_root(long jarg1, int jarg2, String jarg3, String jarg4);
   public final static native void zx_DEC_elem(long jarg1, long jarg2);
@@ -447,6 +448,10 @@ class zxidjniJNI {
   public final static native String zxid_conf_sso_pat_get(long jarg1);
   public final static native void zxid_conf_mod_saml_attr_prefix_set(long jarg1, String jarg2);
   public final static native String zxid_conf_mod_saml_attr_prefix_get(long jarg1);
+  public final static native void zxid_conf_wsc_action_hdr_set(long jarg1, String jarg2);
+  public final static native String zxid_conf_wsc_action_hdr_get(long jarg1);
+  public final static native void zxid_conf_soap_action_hdr_set(long jarg1, String jarg2);
+  public final static native String zxid_conf_soap_action_hdr_get(long jarg1);
   public final static native void zxid_conf_need_set(long jarg1, long jarg2);
   public final static native long zxid_conf_need_get(long jarg1);
   public final static native void zxid_conf_want_set(long jarg1, long jarg2);

@@ -182,6 +182,7 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   struct zxid_curl_ctx wc;
   struct curl_slist content_type;
   struct curl_slist SOAPaction;
+  char soap_action_buf[256];
   char* urli;
   rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_SOAP_BUF+1);
   rc.lim = rc.buf + ZXID_INIT_SOAP_BUF;
@@ -223,17 +224,16 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
 
   ZERO(&content_type, sizeof(content_type));
   content_type.data = "Content-Type: text/xml";
-  ZERO(&SOAPaction, sizeof(SOAPaction));
-#if 1
-  SOAPaction.data = "SOAPAction: \"\"";  /* Empty SOAPAction is the ID-WSF (and SAML?) standard */
-#else
-  /* Evil stuff: some implementations, especially Apache AXIS, are very
-   * picky about SOAPAction header. */
-  //SOAPaction.data = "SOAPAction: \"http://ws.apache.org/axis2/TestPolicyPortType/authRequestRequest\"";
-  SOAPaction.data = "SOAPAction: \"authRequest\"";
-#endif
-  SOAPaction.next = &content_type;    //curl_slist_append(3)
-  curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &SOAPaction);
+  if (cf->soap_action_hdr && strcmp(cf->soap_action_hdr,"--")) {
+    ZERO(&SOAPaction, sizeof(SOAPaction));
+    snprintf(soap_action_buf, sizeof(soap_action_buf), "SOAPAction: \"%s\"", cf->soap_action_hdr);
+    soap_action_buf[sizeof(soap_action_buf)-1] = 0;
+    SOAPaction.data = soap_action_buf;
+    SOAPaction.next = &content_type;    //curl_slist_append(3)
+    curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &SOAPaction);
+  } else {
+    curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &content_type);
+  }
   
   INFO("----------- call(%s) -----------", urli);
   DD("SOAP_CALL post(%.*s) len=%d\n", len, data, len);

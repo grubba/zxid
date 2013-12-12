@@ -65,6 +65,10 @@ struct zx_str* zxid_psobj_enc(zxid_conf* cf, struct zx_str* eid, const char* pre
   key.len = 16;
   key.s = symkey;
   ss = zx_raw_cipher(cf->ctx, "AES-128-CBC", 1, &key, psobj->len, psobj->s, 16, 0);
+  if (!ss) {
+    ERR("Symmetric encryption failed %d", 0);
+    return 0;
+  }
   rr = zx_new_len_str(cf->ctx, prefix_len+SIMPLE_BASE64_LEN(ss->len)+1);
   strcpy(rr->s, prefix);
   lim = base64_fancy_raw(ss->s, ss->len, rr->s+prefix_len, safe_basis_64, 1<<31, 0, "", '=');

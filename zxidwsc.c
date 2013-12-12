@@ -507,21 +507,26 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
   /* N.B. The lists are in reverse order after the parse. */
   env = r->Envelope;
   if (env) {
-    D("HERE1 ENV EXISTS %p", env);
-    if (!env->Body)
-      env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
-    if (!env->Header)
+    /* N.B. Maintain the forward order, Header is 1st element of Envelope->kids. */
+    if (!env->Header) {
+      D("ENV EXISTS, no Header %p %p", env, env->Body);
+      if (!env->Body)
+	env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
       env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
-    /* N.B. Maintain the forward order, Header is now first element of Element->kids. */
+    } else {
+      D("ENV EXISTS w/Header %p %p", env, env->Body);
+      if (!env->Body)
+	env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
+    }
   } else if (r->Body) {
-    D("HERE2 BODY EXISTS %p", env);
+    D("HERE2 BODY EXISTS %p %p", env, r->Header);
     env = zx_NEW_e_Envelope(cf->ctx,0);
     ZX_ADD_KID(env, Body, r->Body);
     if (r->Header)
       ZX_ADD_KID(env, Header, r->Header);
     else
       env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
-    /* N.B. Maintain the Forward order: Header is now first element of Element->kids. */
+    /* N.B. Maintain the Forward order: Header is now first element of Envelope->kids. */
   } else { /* Resort to stringwise attempt to add envelope. */
     ZX_FREE(cf->ctx, r);
     if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
@@ -546,6 +551,12 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
 #endif
   }
   ZX_FREE(cf->ctx, r);
+  if (env->gg.kids != &env->Header->gg) {
+    D("ENV Fixing Header-Body ordering %p", env);
+    env->gg.kids = &env->Header->gg;
+    env->Header->gg.g.n = &env->Body->gg.g;
+    env->Body->gg.g.n = 0;
+  }
   ret = zx_easy_enc_elem_opt(cf,&env->gg); INFO("ser(%.*s) enve(%s)",ret->len,ret->s,enve); // ***
   if (!env)
     ERR("No <e:Envelope> found in input argument. enve(%s)", enve);

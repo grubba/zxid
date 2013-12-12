@@ -15,7 +15,6 @@
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
-
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidpriv.h"

@@ -69,10 +69,10 @@ struct zx_lock {
 
 struct zx_ns_s {
   /*int name;              / * For gperf -P (%pic) string-pool offset when in hash. */
-  const char* url;          /* Needs to be first so gperf (without -P or %pic) works */
+  const char* url;          /* Needs to be first so gperf (without -P or %pic) works. nul term */
   int url_len;              /* 0 = end of nstab */
   int prefix_len;
-  const char* prefix;
+  const char* prefix;       /* Always nul terminated (despite prefix_len field) */
   struct zx_ns_s* n;        /* Next: For holding runtime equivalences as a linked list. */
   struct zx_ns_s* master;   /* For a runtime equivalence, pointer to the master entry. */
   struct zx_ns_s* seen;     /* Pointer to other "seen" namespaces with same prefix (stack) */
@@ -344,6 +344,7 @@ void  zx_xml_parse_dbg(struct zx_ctx* c, char quote, const char* func, const cha
 struct zx_ns_s* zx_xmlns_detected(struct zx_ctx* c, struct zx_elem_s* x, const char* data);
 
 int   zx_in_inc_ns(struct zx_ctx* c, struct zx_ns_s* new_ns);
+struct zx_el_tok* zx_get_el_tok(struct zx_elem_s* x);
 
 void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, int n_ns, const char* start, const char* lim);
 struct zx_root_s* zx_dec_zx_root(struct zx_ctx* c, int len, const char* start, const char* func);

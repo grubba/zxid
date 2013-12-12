@@ -266,6 +266,8 @@ struct zxid_conf {
   char* wsp_pat;
   char* sso_pat;
   char* mod_saml_attr_prefix;  /* Prefix for req variables in mod_auth_saml */
+  char* wsc_action_hdr;
+  char* soap_action_hdr;
 
   struct zxid_need*  need;
   struct zxid_need*  want;
@@ -356,7 +358,8 @@ struct zxid_conf {
   char  oaz_jwt_sigenc_alg;  /* What signature and encryption to apply to issued JWT (OAUTH2) */
   char  bus_rcpt;            /* Audit Bus receipt enable and signing flags */
   char  az_fail_mode;        /* What to do when authorization can not be done */
-  char  pad6; char  pad7;
+  char  pad6;
+  char  pad7;
 
 #ifdef USE_CURL
   CURL* curl;

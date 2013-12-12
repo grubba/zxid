@@ -16,10 +16,10 @@
 %struct-type
 struct zx_ns_s {
   /*int name;              / * For gperf -P (%pic) string-pool offset when in hash. */
-  const char* url;          /* Needs to be first so gperf (without -P or %pic) works */
+  const char* url;          /* Needs to be first so gperf (without -P or %pic) works. nul term */
   int url_len;              /* 0 = end of nstab */
   int prefix_len;
-  const char* prefix;
+  const char* prefix;       /* Always nul terminated (despite prefix_len field) */
   struct zx_ns_s* n;        /* Next: For holding runtime equivalences as a linked list. */
   struct zx_ns_s* master;   /* For a runtime equivalence, pointer to the master entry. */
   struct zx_ns_s* seen;     /* Pointer to other "seen" namespaces with same prefix (stack) */

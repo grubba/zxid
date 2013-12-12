@@ -406,6 +406,52 @@
  * instead and leave BOOTSTRAP_LEVEL set to 1. */
 #define ZXID_BOOTSTRAP_LEVEL 1
 
+/*(c) WSC <a:Action> header generation. The most reliable way
+ * to dispatch SOAP web services is to simply look at the first
+ * child element of <e:Body>. If, however, you are cursed with
+ * having to interoperate with WSP that insists on seeing some
+ * specific Action header, this option gives you some control
+ * as to what it should be.
+ *
+ * First method of generating Action header is to pass it in as
+ * input to zxid_call(), e.g.
+ *
+ *   ret = zxid_call(cf, ses, svctype, url, 0, 0,
+ *     "<e:Envelope  xmlns:e=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+ *        "<e:Header>""
+ *           "<a:Action xmlns:a=\"http://www.w3.org/2005/08/addressing\" "
+ *               "actor=\"http://schemas.xmlsoap.org/soap/actor/next\" "
+ *               "mustUnderstand=\"1\">toimikaa</a:Action>"
+ *        "</e:Header>"
+ *        "<e:Body><r:Req xmlns:r=\"urn:test\"/></e:Body></e:Envelope>");
+ *
+ * This method overrides any other, i.e. if WSC code sees an already existing
+ * Action header, it will not replace it.
+ *
+ * Other methods depend on the WSc_ACTION_HDR option with following special values:
+ *
+ * 0 (null):: No Action header will be generated,
+ * "#ses":: Look for key "Action" in session attribute pool
+ * "#body1st":: Special value that will use the name of the first child element
+ *     of the <e:Body> tag.
+ * "#body1stns":: Same as #body1st, but will prefix by namespace URI
+ * Other values:: cause the Action header to be set to the given value. */
+#define ZXID_WSC_ACTION_HDR 0
+
+/*(c) Like WSC_ACTION_HDR, but deals with the HTTP level SOAPAction header.
+ * Dependence on HTTP layer header to say what is inside <e:Body> is poor
+ * programming and architecture. WSPs should be coded to ignore the
+ * SOAPAction http header.
+ * The ID-WSF default value for this is empty string "", which generally
+ * does not caue indigestion to the buggy softwares and causes them to
+ * route the request to default place. Possible values:
+ *
+ * 0 (null):: Do not generate SOAPAction
+ * "--":: Do not generate SOAPAction (use this in configuration)
+ * "" (empty string):: the default for ID-WSF
+ * Other values:: use the value of this config option as SOAPAction HTTP header. */
+#define ZXID_SOAP_ACTION_HDR ""
+
 /*(c) WSC Signing Options
  * Which components of a web service request should be signed by WSC
  * Bit mask:

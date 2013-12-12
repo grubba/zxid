@@ -34,8 +34,7 @@
 /* Add inclusive namespaces. */
 
 /* Called by:  TXLEN_SO_ELNAME, zx_LEN_WO_any_elem x2 */
-static int zx_len_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp)
-{
+static int zx_len_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp) {
   int len = 0;
   struct zx_ns_s* ns;
   for (ns = c->inc_ns; ns; ns = ns->inc_n)
@@ -45,8 +44,7 @@ static int zx_len_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp)
 }
 
 /* Called by:  TXENC_SO_ELNAME, zx_ENC_WO_any_elem x2 */
-static void zx_add_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp)
-{
+static void zx_add_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp) {
   struct zx_ns_s* ns;
   for (ns = c->inc_ns; ns; ns = ns->inc_n)
     zx_add_xmlns_if_not_seen(c, ns, pop_seenp);
@@ -54,8 +52,7 @@ static void zx_add_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp)
 }
 
 /* Called by:  TXENC_SO_ELNAME, zx_ENC_WO_any_elem */
-static void zx_see_attr_ns(struct zx_ctx* c, struct zx_attr_s* aa, struct zx_ns_s** pop_seenp)
-{
+static void zx_see_attr_ns(struct zx_ctx* c, struct zx_attr_s* aa, struct zx_ns_s** pop_seenp) {
   for (; aa; aa = (struct zx_attr_s*)aa->g.n)
     zx_add_xmlns_if_not_seen(c, aa->ns, pop_seenp);
 }
@@ -63,13 +60,48 @@ static void zx_see_attr_ns(struct zx_ctx* c, struct zx_attr_s* aa, struct zx_ns_
 /*() Check if a namespace is already in inclusive namespaces so we do not need to add it again. */
 
 /* Called by:  zxsig_validate */
-int zx_in_inc_ns(struct zx_ctx* c, struct zx_ns_s* new_ns)
-{
+int zx_in_inc_ns(struct zx_ctx* c, struct zx_ns_s* new_ns) {
   struct zx_ns_s* ns;
   for (ns = c->inc_ns; ns; ns = ns->inc_n)
     if (new_ns == ns)
       return 1;
   return 0;
+}
+
+/*() Convert a tok integer to namespace and el_tok descriptor from zx_el_tab[] table. */
+
+struct zx_el_tok* zx_get_el_tok(struct zx_elem_s* x)
+{
+  int ix;
+  if (!x->ns) {
+    ix = (x->g.tok >> ZX_TOK_NS_SHIFT)&(ZX_TOK_NS_MASK >> ZX_TOK_NS_SHIFT);
+    if (ix >= zx__NS_MAX) {
+      ERR("Namespace index of token(0x%06x) out of range(0x%02x)", x->g.tok, zx__NS_MAX);
+      return 0;
+    }
+    x->ns = zx_ns_tab + ix;
+  }
+  ix = x->g.tok & ZX_TOK_TOK_MASK;
+  if (ix >= zx__ELEM_MAX) {
+    ERR("Element token(0x%06x) out of range(0x%04x)", x->g.tok, zx__ELEM_MAX);
+    return 0;
+  }
+  return zx_el_tab + ix;
+}
+
+/*() Convert a tok integer to namespace and at_tok descriptor from zx_at_tab[] table. */
+
+static struct zx_at_tok* zx_get_at_tok(struct zx_attr_s* attr)
+{
+  int ix;
+  if (!attr->ns && IN_RANGE((attr->g.tok & ZX_TOK_NS_MASK) >> ZX_TOK_NS_SHIFT, 1, zx__NS_MAX))
+    attr->ns = zx_ns_tab + ((attr->g.tok & ZX_TOK_NS_MASK) >> ZX_TOK_NS_SHIFT);
+  ix = attr->g.tok & ZX_TOK_TOK_MASK;
+  if (ix >= zx__ATTR_MAX) {
+    ERR("Attribute token(0x%06x) out of range(0x%04x)", attr->g.tok, zx__ATTR_MAX);
+    return 0;
+  }
+  return zx_at_tab + ix;
 }
 
 #define D_LEN_ENA 0
@@ -114,19 +146,8 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
       /*    <   ns:elem    >                                    </  ns:elem    >    / */
       len = 1 + x->g.len + 1 + ((x->kids || !c->enc_tail_opt) ? (2 + x->g.len + 1) : 1);
     } else { /* Construct elem string from tok */
-      ix = (x->g.tok >> ZX_TOK_NS_SHIFT)&(ZX_TOK_NS_MASK >> ZX_TOK_NS_SHIFT);
-      if (ix >= zx__NS_MAX) {
-	ERR("Namespace index of token(0x%06x) out of range(0x%02x)", x->g.tok, zx__NS_MAX);
+      if (!(el_tok = zx_get_el_tok(x)))
 	return 0;
-      }
-      x->ns = zx_ns_tab + ix;
-      //ed = zx_el_desc_lookup(tok);
-      ix = x->g.tok & ZX_TOK_TOK_MASK;
-      if (ix >= zx__ELEM_MAX) {
-	ERR("Element token(0x%06x) out of range(0x%04x)", x->g.tok, zx__ELEM_MAX);
-	return 0;
-      }
-      el_tok = zx_el_tab + ix;
       len = strlen(el_tok->name);
       DD("ns prefix_len=%d el_len=%d", x->ns->prefix_len, len);
       /*    <   ns                  :   elem  >                                    </  ns                  :   elem  >    / */
@@ -145,16 +166,10 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
 	/*    sp   name             ="                "   */
 	len += 1 + attr->name_len + 2 + attr->g.len + 1;
       } else { /* Construct elem string from tok */
-	if (!attr->ns && IN_RANGE((attr->g.tok & ZX_TOK_NS_MASK) >> ZX_TOK_NS_SHIFT, 1, zx__NS_MAX))
-	  attr->ns = zx_ns_tab + ((attr->g.tok & ZX_TOK_NS_MASK) >> ZX_TOK_NS_SHIFT);
+	if (!(at_tok = zx_get_at_tok(attr)))
+	  return 0;
 	if (attr->ns)
 	  len += attr->ns->prefix_len + 1;
-	ix = attr->g.tok & ZX_TOK_TOK_MASK;
-	if (ix >= zx__ATTR_MAX) {
-	  ERR("Attribute token(0x%06x) out of range(0x%04x)", attr->g.tok, zx__ATTR_MAX);
-	  return 0;
-	}
-	at_tok = zx_at_tab + ix;
 	len += strlen(at_tok->name);
 	/*     sp ="                "   */
 	len += 1+ 2 + attr->g.len + 1;
@@ -177,23 +192,16 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
 static char* zx_attr_wo_enc(char* p, struct zx_attr_s* attr)
 {
   struct zx_at_tok* at_tok;
-  int ix;
   ZX_OUT_CH(p, ' ');
   if (attr->name) {
     ZX_OUT_MEM(p, attr->name, attr->name_len);
   } else { /* Construct elem string from tok */
-    if (!attr->ns && IN_RANGE((attr->g.tok & ZX_TOK_NS_MASK) >> ZX_TOK_NS_SHIFT, 1, zx__NS_MAX))
-      attr->ns = zx_ns_tab + ((attr->g.tok & ZX_TOK_NS_MASK) >> ZX_TOK_NS_SHIFT);
+    if (!(at_tok = zx_get_at_tok(attr)))
+      return p;
     if (attr->ns) {
       ZX_OUT_MEM(p, attr->ns->prefix, attr->ns->prefix_len);
       ZX_OUT_CH(p, ':');
     }
-    ix = attr->g.tok & ZX_TOK_TOK_MASK;
-    if (ix >= zx__ATTR_MAX) {
-      ERR("Attribute token(0x%06x) out of range(0x%04x)", attr->g.tok, zx__ATTR_MAX);
-      return p;
-    }
-    at_tok = zx_at_tab + ix;
     ZX_OUT_MEM(p, at_tok->name, strlen(at_tok->name));
   }
   ZX_OUT_CH(p, '=');
@@ -213,7 +221,6 @@ static char* zx_attr_wo_enc(char* p, struct zx_attr_s* attr)
 /* Called by:  main x2, zx_EASY_ENC_elem, zx_ENC_WO_any_elem x2 */
 char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
 {
-  //const struct zx_el_desc* ed;
   struct zx_el_tok* el_tok;
   struct zx_ns_s* pop_seen = 0;
   struct zx_attr_s* attr;
@@ -242,21 +249,8 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
     if (x->g.s) {
       ZX_OUT_MEM(p, x->g.s, x->g.len);
     } else { /* Construct elem string from tok */
-      if (!x->ns) {
-	ix = (x->g.tok >> ZX_TOK_NS_SHIFT)&(ZX_TOK_NS_MASK >> ZX_TOK_NS_SHIFT);
-	if (ix >= zx__NS_MAX) {
-	  ERR("Namespace index of token(0x%06x) out of range(0x%02x)", x->g.tok, zx__NS_MAX);
-	  return p;
-	}
-	x->ns = zx_ns_tab + ix;
-      }
-      //ed = zx_el_desc_lookup(tok);
-      ix = x->g.tok & ZX_TOK_TOK_MASK;
-      if (ix >= zx__ELEM_MAX) {
-	ERR("Element token(0x%06x) out of range(0x%04x)", x->g.tok, zx__ELEM_MAX);
+      if (!(el_tok = zx_get_el_tok(x)))
 	return p;
-      }
-      el_tok = zx_el_tab + ix;
       ZX_OUT_MEM(p, x->ns->prefix, x->ns->prefix_len);
       ZX_OUT_CH(p, ':');
       ZX_OUT_MEM(p, el_tok->name, strlen(el_tok->name));
