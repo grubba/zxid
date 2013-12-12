@@ -107,6 +107,7 @@ zxiddec.c        - Decoding redirect and POST bindings
 zxidspx.c        - SP dispatch functions
 zxididpx.c       - IdP dispatch functions
 zxidmeta.c       - Metadata generation, parsing, and cache
+zxidmda.c        - Metadata Authority
 zxidcurl.c       - Glue to libcurl
 zxidmk.c         - Handwritten constructors for SSO
 zxidmni.c        - NameID Management

@@ -463,8 +463,7 @@ zxid_entity* zxid_get_ent_by_sha1_name(zxid_conf* cf, char* sha1_name)
  * and disk caches will be tried. No network connection (WKL) will be initiated. */
 
 /* Called by:  zxid_sp_deref_art */
-zxid_entity* zxid_get_ent_by_succinct_id(zxid_conf* cf, char* raw_succinct_id)
-{
+zxid_entity* zxid_get_ent_by_succinct_id(zxid_conf* cf, char* raw_succinct_id) {
   char sha1_name[28];
   base64_fancy_raw(raw_succinct_id, 20, sha1_name, safe_basis_64, 1<<31, 0, 0, '.');
   sha1_name[27] = 0;
@@ -556,8 +555,7 @@ struct zx_ds_KeyInfo_s* zxid_key_info(zxid_conf* cf, struct zx_elem_s* father, X
 /*() Generate key descriptor metadata fragment given X509 certificate [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, struct zx_elem_s* father, char* use, X509* x)
-{
+struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, struct zx_elem_s* father, char* use, X509* x) {
   struct zx_md_KeyDescriptor_s* kd = zx_NEW_md_KeyDescriptor(cf->ctx, father);
   kd->use = zx_ref_attr(cf->ctx, &kd->gg, zx_use_ATTR, use);
   kd->KeyInfo = zxid_key_info(cf, &kd->gg, x);
@@ -568,8 +566,7 @@ struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, struct zx_elem_s* fat
 /*() Generate Artifact Resolution (AR) Descriptor idp metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc */
-struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
-{
+struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc) {
   struct zx_md_ArtifactResolutionService_s* d = zx_NEW_md_ArtifactResolutionService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->burl, loc);
@@ -582,8 +579,7 @@ struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, struct zx_
 /*() Constructor for Single Sign-On (SSO) Descriptor idp metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2 */
-struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
-{
+struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc) {
   struct zx_md_SingleSignOnService_s* d = zx_NEW_md_SingleSignOnService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->burl, loc);
@@ -596,8 +592,7 @@ struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, struct zx_elem_
 /*() Generate Single Logout (SLO) Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
-{
+struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc) {
   struct zx_md_SingleLogoutService_s* d = zx_NEW_md_SingleLogoutService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->burl, loc);
@@ -610,8 +605,7 @@ struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, struct zx_elem_
 /*() Generate Manage Name Id (MNI) Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
-{
+struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc) {
   struct zx_md_ManageNameIDService_s* d = zx_NEW_md_ManageNameIDService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->burl, loc);
@@ -624,8 +618,7 @@ struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, struct zx_elem_
 /*() Generate Name ID Mapping Service metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc */
-struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
-{
+struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc) {
   struct zx_md_NameIDMappingService_s* d = zx_NEW_md_NameIDMappingService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->burl, loc);
@@ -638,8 +631,7 @@ struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, struct zx_el
 /*() Generate Assertion Consumer Service (SSO) Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_sp_sso_desc x6 */
-struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* ix)
-{
+struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* ix) {
   struct zx_md_AssertionConsumerService_s* d = zx_NEW_md_AssertionConsumerService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, &d->gg, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, &d->gg, zx_Location_ATTR, "%s%s", cf->burl, loc);
@@ -908,6 +900,16 @@ struct zx_sa_Issuer_s* zxid_my_issuer(zxid_conf* cf, struct zx_elem_s* father) {
   return zxid_issuer(cf, father, zxid_my_ent_id(cf), cf->affiliation);
 }
 
+/*() Generate the (IdP) metadata field indicating presence of a metadata authority. */
+
+static struct zx_md_AdditionalMetadataLocation_s* zxid_md_authority_loc(zxid_conf* cf, struct zx_md_EntityDescriptor_s* ed) {
+  struct zx_md_AdditionalMetadataLocation_s* mda;
+  mda = zx_NEW_md_AdditionalMetadataLocation(cf->ctx, &ed->gg);
+  mda->namespace_is_cxx_keyword = zx_dup_attr(cf->ctx,&mda->gg,zx_namespace_ATTR,"#md-authority");
+  zx_add_content(cf->ctx, &mda->gg, zx_strf(cf->ctx, "%s?o=b&c=", cf->burl));
+  return mda;
+}
+
 /*() Generate our SP metadata and return it as a string. */
 
 /* Called by:  zxid_genmd, zxid_send_sp_meta, zxid_simple_show_meta */
@@ -922,6 +924,8 @@ struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
   ed->SPSSODescriptor = zxid_sp_sso_desc(cf, &ed->gg);
   ed->Organization = zxid_org_desc(cf, &ed->gg);
   ed->ContactPerson = zxid_contact_desc(cf, &ed->gg);
+  if (cf->md_authority_ena)
+    ed->AdditionalMetadataLocation = zxid_md_authority_loc(cf, ed);
   zx_reverse_elem_lists(&ed->gg);
   
   if (cf->log_level>0)
@@ -936,8 +940,7 @@ struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
  *     methods for getting metadata without this limitation, e.g. zxid_sp_meta() */
 
 /* Called by:  main x2, opt x2 */
-int zxid_send_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
-{
+int zxid_send_sp_meta(zxid_conf* cf, zxid_cgi* cgi) {
   struct zx_str* ss = zxid_sp_meta(cf, cgi);
   if (!ss)
     return 0;

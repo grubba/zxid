@@ -94,8 +94,7 @@ int zx_stat( const char *path, struct stat *buffer )
  * do so such that no deadlock will result even if already taken. */
 
 /* Called by:  zx_zalloc */
-void* zx_alloc(struct zx_ctx* c, int size)
-{
+void* zx_alloc(struct zx_ctx* c, int size) {
   char* p;
   p = (c&&c->malloc_func)?c->malloc_func(size):malloc(size);
   DD("malloc %p size=%d", p, size);
@@ -116,8 +115,7 @@ void* zx_alloc(struct zx_ctx* c, int size)
  * use the ZX_ALLOC() macro as much as possible. */
 
 /* Called by:  zxid_parse_conf_raw */
-void* zx_zalloc(struct zx_ctx* c, int size)
-{
+void* zx_zalloc(struct zx_ctx* c, int size) {
   char* p = zx_alloc(c, size);
   ZERO(p, size);
   return p;
@@ -132,8 +130,7 @@ void* zx_zalloc(struct zx_ctx* c, int size)
  * use the ZX_FREE() macro as much as possible. */
 
 /* Called by: */
-void* zx_free(struct zx_ctx* c, void* p)
-{
+void* zx_free(struct zx_ctx* c, void* p) {
   if (!p)
     return 0;
   if (c && c->free_func)
@@ -146,8 +143,7 @@ void* zx_free(struct zx_ctx* c, void* p)
 /*() Convert zx_str to C string. The ZX context will provide the memory. */
 
 /* Called by: */
-char* zx_str_to_c(struct zx_ctx* c, struct zx_str* ss)
-{
+char* zx_str_to_c(struct zx_ctx* c, struct zx_str* ss) {
   char* p = ZX_ALLOC(c, ss->len+1);
   memcpy(p, ss->s, ss->len);
   p[ss->len] = 0;
@@ -172,8 +168,7 @@ void zx_str_conv(struct zx_str* ss, int* out_len, char** out_s)  /* SWIG typemap
 /*() Free both the zx_str node and the underlying string data */
 
 /* Called by:  main, zx_free_elem, zx_prefix_seen_whine, zxbus_send_cmdf, zxenc_privkey_dec, zxenc_pubkey_enc, zxenc_symkey_enc, zxid_addmd x3, zxid_anoint_a7n x5, zxid_anoint_sso_resp x4, zxid_az_soap x3, zxid_cache_epr, zxid_decode_redir_or_post, zxid_deflate_safe_b64, zxid_fed_mgmt_cf x3, zxid_idp_dispatch x2, zxid_idp_list_cf_cgi x3, zxid_idp_soap, zxid_idp_soap_dispatch x2, zxid_idp_sso x4, zxid_lecp_check, zxid_mgmt x3, zxid_mk_art_deref, zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni, zxid_mk_oauth_az_req x2, zxid_psobj_dec, zxid_psobj_enc, zxid_reg_svc x3, zxid_saml2_post_enc x2, zxid_saml2_redir, zxid_saml2_redir_enc x2, zxid_saml2_redir_url, zxid_saml2_resp_redir, zxid_send_sp_meta, zxid_simple_no_ses_cf x4, zxid_simple_ses_active_cf, zxid_simple_show_idp_sel, zxid_simple_show_page x3, zxid_slo_resp_redir, zxid_snarf_eprs_from_ses, zxid_soap_call_raw, zxid_soap_cgi_resp_body x2, zxid_sp_dispatch x2, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap, zxid_sp_soap_dispatch x7, zxid_sp_sso_finalize, zxid_sso_issue_jwt x2, zxid_ssos_anreq, zxid_start_sso_location, zxid_user_sha1_name, zxid_write_ent_to_cache, zxid_wsf_validate_a7n, zxsig_sign */
-void zx_str_free(struct zx_ctx* c, struct zx_str* ss)
-{
+void zx_str_free(struct zx_ctx* c, struct zx_str* ss) {
   if (ss->s)
     ZX_FREE(c, ss->s);
   ZX_FREE(c, ss);
@@ -182,8 +177,7 @@ void zx_str_free(struct zx_ctx* c, struct zx_str* ss)
 /*() Construct zx_str from length and raw string data, which will be referenced, not copied. */
 
 /* Called by: */
-struct zx_str* zx_ref_len_str(struct zx_ctx* c, int len, const char* s)
-{
+struct zx_str* zx_ref_len_str(struct zx_ctx* c, int len, const char* s) {
   struct zx_str* ss = ZX_ZALLOC(c, struct zx_str);
   ss->s = (char*)s;  /* ref points to underlying data */
   ss->len = len;
@@ -193,8 +187,7 @@ struct zx_str* zx_ref_len_str(struct zx_ctx* c, int len, const char* s)
 /*() Construct zx_str from C string, which will be referenced, not copied. */
 
 /* Called by: */
-struct zx_str* zx_ref_str(struct zx_ctx* c, const char* s)
-{
+struct zx_str* zx_ref_str(struct zx_ctx* c, const char* s) {
   if (!s)
     return 0;
   return zx_ref_len_str(c, strlen(s), s);
@@ -203,8 +196,7 @@ struct zx_str* zx_ref_str(struct zx_ctx* c, const char* s)
 /*() Newly allocated string (node and data) of specified length, but uninitialized */
 
 /* Called by: */
-struct zx_str* zx_new_len_str(struct zx_ctx* c, int len)
-{
+struct zx_str* zx_new_len_str(struct zx_ctx* c, int len) {
   struct zx_str* ss = ZX_ZALLOC(c, struct zx_str);
   ss->s = ZX_ALLOC(c, len+1);
   ss->s[len] = 0;
@@ -215,8 +207,7 @@ struct zx_str* zx_new_len_str(struct zx_ctx* c, int len)
 /*() Construct zx_str by duplication of raw string data of given length. */
 
 /* Called by: */
-struct zx_str* zx_dup_len_str(struct zx_ctx* c, int len, const char* s)
-{
+struct zx_str* zx_dup_len_str(struct zx_ctx* c, int len, const char* s) {
   struct zx_str* ss = zx_new_len_str(c, len);
   memcpy(ss->s, s, len);
   return ss;
@@ -225,16 +216,14 @@ struct zx_str* zx_dup_len_str(struct zx_ctx* c, int len, const char* s)
 /*() Construct zx_str by duplication of C string. */
 
 /* Called by: */
-struct zx_str* zx_dup_str(struct zx_ctx* c, const char* s)
-{
+struct zx_str* zx_dup_str(struct zx_ctx* c, const char* s) {
   return zx_dup_len_str(c, strlen(s), s);
 }
 
 /*() ZX verion of strdup(). */
 
 /* Called by: */
-char* zx_dup_cstr(struct zx_ctx* c, const char* str)
-{
+char* zx_dup_cstr(struct zx_ctx* c, const char* str) {
   int len = strlen(str);
   char* s = ZX_ALLOC(c, len+1);
   memcpy(s, str, len+1);
@@ -242,8 +231,7 @@ char* zx_dup_cstr(struct zx_ctx* c, const char* str)
 }
 
 /* Called by:  zxid_call_trustpdp x3, zxid_wsp_validate_env x2 */
-struct zx_str* zx_dup_zx_str(struct zx_ctx* c, struct zx_str* ss)
-{
+struct zx_str* zx_dup_zx_str(struct zx_ctx* c, struct zx_str* ss) {
   return zx_dup_len_str(c, ss->len, ss->s);
 }
 
@@ -268,8 +256,7 @@ struct zx_attr_s* zx_ref_len_attr(struct zx_ctx* c, struct zx_elem_s* father, in
 /*() Construct zx_attr_s from C string, which will be referenced, not copied. */
 
 /* Called by: */
-struct zx_attr_s* zx_ref_attr(struct zx_ctx* c, struct zx_elem_s* father, int tok, const char* s)
-{
+struct zx_attr_s* zx_ref_attr(struct zx_ctx* c, struct zx_elem_s* father, int tok, const char* s) {
   if (!s)
     return 0;
   return zx_ref_len_attr(c, father, tok, strlen(s), s);
@@ -295,8 +282,7 @@ struct zx_attr_s* zx_new_len_attr(struct zx_ctx* c, struct zx_elem_s* father, in
 /*() Construct zx_str by duplication of raw string data of given length. */
 
 /* Called by: */
-struct zx_attr_s* zx_dup_len_attr(struct zx_ctx* c, struct zx_elem_s* father, int tok, int len, const char* s)
-{
+struct zx_attr_s* zx_dup_len_attr(struct zx_ctx* c, struct zx_elem_s* father, int tok, int len, const char* s) {
   struct zx_attr_s* ss = zx_new_len_attr(c, father, tok, len);
   memcpy(ss->g.s, s, len);
   return ss;
@@ -305,8 +291,7 @@ struct zx_attr_s* zx_dup_len_attr(struct zx_ctx* c, struct zx_elem_s* father, in
 /*() Construct zx_str by duplication of C string. */
 
 /* Called by: */
-struct zx_attr_s* zx_dup_attr(struct zx_ctx* c, struct zx_elem_s* father, int tok, const char* s)
-{
+struct zx_attr_s* zx_dup_attr(struct zx_ctx* c, struct zx_elem_s* father, int tok, const char* s) {
   return zx_dup_len_attr(c, father, tok, strlen(s), s);
 }
 

@@ -58,6 +58,7 @@ Usage: zxcot [options] [cotdir]         # Gives listing of metadata\n\
   -bs              Register Web Service and Bootstrap, add Service EPR from stdin\n\
   -e endpoint abstract entid servicetype   Construct and dump EPR to stdout.\n\
   -g URL           Do HTTP(S) GET to URL (aka WKL) and add as metadata (if compiled w/libcurl)\n\
+  -sign            Sign imported metadata (used with -a or -g). Used for Metadata Authority.\n\
   -n               Dryrun. Do not actually add the metadata. Instead print it to stdout.\n\
   -s               Swap columns, for easier sorting by URL\n\
   -m               Output metadata of this installation (our own metadata). Caveat: If your\n\
@@ -76,6 +77,7 @@ zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'TAS3 Default Discovery Service (ID
 
 #define ZXID_MAX_MD (256*1024)
 
+int sign_md = 0;
 int swap = 0;
 int addmd = 0;
 int regsvc = 0;
@@ -204,6 +206,12 @@ static void opt(int* argc, char*** argv, char*** env)
       case '\0':
 	++swap;
 	continue;
+      case 'i':
+	if (!strcmp((*argv)[0],"-sign")) {
+	  sign_md = 1;
+	  continue;
+	}
+	break;
       }
       break;
 

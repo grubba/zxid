@@ -975,6 +975,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->md_populate_cache = ZXID_MD_POPULATE_CACHE;
   cf->md_cache_first    = ZXID_MD_CACHE_FIRST;
   cf->md_cache_last     = ZXID_MD_CACHE_LAST;
+  cf->md_authority      = ZXID_MD_AUTHORITY;
   cf->load_cot_cache    = ZXID_LOAD_COT_CACHE;
   cf->auto_cert         = ZXID_AUTO_CERT;
   cf->ses_arch_dir      = ZXID_SES_ARCH_DIR;
@@ -985,6 +986,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->idp_pxy_ena       = ZXID_IDP_PXY_ENA;
   cf->imps_ena          = ZXID_IMPS_ENA;
   cf->as_ena            = ZXID_AS_ENA;
+  cf->md_authority_ena  = ZXID_MD_AUTHORITY_ENA;
   cf->pdp_ena           = ZXID_PDP_ENA;
   cf->cpn_ena           = ZXID_CPN_ENA;
   cf->az_opt            = ZXID_AZ_OPT;
@@ -1630,6 +1632,8 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "MD_POPULATE_CACHE")) { SCAN_INT(v, cf->md_populate_cache); break; }
       if (!strcmp(n, "MD_CACHE_FIRST"))    { SCAN_INT(v, cf->md_cache_first); break; }
       if (!strcmp(n, "MD_CACHE_LAST"))     { SCAN_INT(v, cf->md_cache_last); break; }
+      if (!strcmp(n, "MD_AUTHORITY_ENA"))  { SCAN_INT(v, cf->md_authority_ena); break; }
+      if (!strcmp(n, "MD_AUTHORITY")) { cf->md_authority = v; break; }
       if (!strcmp(n, "MGMT_START"))   { cf->mgmt_start = v; break; }
       if (!strcmp(n, "MGMT_LOGOUT"))  { cf->mgmt_logout = v; break; }
       if (!strcmp(n, "MGMT_DEFED"))   { cf->mgmt_defed = v; break; }
@@ -2002,6 +2006,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "MD_POPULATE_CACHE=%d\n"
 "MD_CACHE_FIRST=%d\n"
 "MD_CACHE_LAST=%d\n"
+"MD_AUTHORITY=%s\n"
 
 "AUTO_CERT=%d\n"
 "AUTHN_REQ_SIGN=%d\n"
@@ -2038,6 +2043,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "IDP_PXY_ENA=%d\n"
 "IMPS_ENA=%d\n"
 "AS_ENA=%d\n"
+"MD_AUTHORITY_ENA=%d\n"
 "PDP_ENA=%d\n"
 "CPN_ENA=%d\n"
 "AZ_OPT=%d\n"
@@ -2198,6 +2204,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->md_populate_cache,
 		 cf->md_cache_first,
 		 cf->md_cache_last,
+		 STRNULLCHK(cf->md_authority),
 
 		 cf->auto_cert,
 		 cf->authn_req_sign,
@@ -2234,6 +2241,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->idp_pxy_ena,
 		 cf->imps_ena,
 		 cf->as_ena,
+		 cf->md_authority_ena,
 		 cf->pdp_ena,
 		 cf->cpn_ena,
 		 cf->az_opt,

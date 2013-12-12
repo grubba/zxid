@@ -277,11 +277,14 @@
  *     that ZXID was linked with libcurl. If you do not enable fetching, you
  *     will need to populate the cache manually, perhaps by using a web browser
  *     to fetch the meta data xml files from well known location URLs (or other
- *     URLs if you know better) and thenrunning on commandline zxcot.
+ *     URLs if you know better) and then running on commandline zxcot -a.
  *     Or you could use zxidcot.pl?op=md or zxcot(1) tool.
  *
  *     N.B. Even if fetching is enabled, the fetch can still fail due to
  *     network connectivity issues or due to other end not supporting it.
+ *     
+ *     MD_FETCH=1:: Fetch from WKL (Auto-CoT)
+ *     MD_FETCH=2:: Fetch from metadata authority, see MD_AUTHORITY, below.
  *
  * MD_POPULATE_CACHE:: controls whether ZXID will write the metadata to
  *     the on-disk cache. This requires ZXID_MD_FETCH to be enabled
@@ -298,13 +301,30 @@
  * If you want to control manually your CoT (e.g. because human process is
  * needed to verify that all the paperwork is in place), set MD_FETCH to 0.
  *
- * If you want as automatic operation as possible, set all four to 1.
- */
+ * If you want as automatic operation as possible, set all four to 1. */
 
 #define ZXID_MD_FETCH          1   /* The Auto-CoT ena option */
 #define ZXID_MD_POPULATE_CACHE 1
 #define ZXID_MD_CACHE_FIRST    1
 #define ZXID_MD_CACHE_LAST     1
+
+/*(c) Metadata Authority EntityID
+ * If MD_FETCH=2 and this is set to an EntityID (whose metadata MUST already
+ * be in the CoT cache, typically manually populated using zxcot -a)
+ * then in situations where metadata is missing, the authority is queried
+ * for the missing metadata. The returned metadata 3rd party should be
+ * signed by the authority and the authority's own metadata is used
+ * in validating the signature.
+ *
+ * The URL from where the metadata is fetched is formed by looking at
+ * <md:AdditionalMetadataLocation> element in the authority's metadata
+ * and concatenating the succinct ID of the entity.
+ *
+ * Usually the authority is the IdP that the SP trusts. This allows
+ * centralized management of a Circle of Trust. Such IdP will know
+ * to produce the AdditionalMetadataLocation in its own metadata.
+ * See also: MD_AUTHORITY_ENA in IdP configuration. */
+#define ZXID_MD_AUTHORITY 0
 
 /*(c) Whether to load CoT cache from a file containing the concatenated
  * metadata of the Circle of Trust. Some real world federations distribute
@@ -575,6 +595,12 @@
  * is incomplete and fails to properly authenticate and authorize the caller
  * system entity, i.e. anyone who knows a username and password can call it. */
 #define ZXID_AS_ENA 0
+
+/*(c) Metadata Authority
+ * Whether IdP will serve as Metadata Authority (see also MD_AUTHORITY and MD_FETCH=2).
+ * Enables generation of <md:AdditionalMetadataLocation namespace="#md-authority">
+ * element in the metadata of the IdP. */
+#define ZXID_MD_AUTHORITY_ENA 1
 
 /*(c) Dummy PDP
  * Whether limited PDP functionality is enabled. */

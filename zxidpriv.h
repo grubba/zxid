@@ -334,6 +334,10 @@ ZXID_DECL struct zx_str* zxid_psobj_dec(zxid_conf* cf, struct zx_str* eid, const
 ZXID_DECL struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_ses* ses, struct zx_ps_AddEntityRequest_s* req);
 ZXID_DECL struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_ses* ses, struct zx_ps_ResolveIdentifierRequest_s* req);
 
+/* zxidmda - Metadata authority */
+
+ZXID_DECL char* zxid_simple_md_authority(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags);
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

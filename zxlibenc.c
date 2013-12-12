@@ -124,7 +124,6 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
   struct zx_ns_s* pop_seen = 0;
   struct zx_attr_s* attr;
   struct zx_elem_s* kid;
-  int ix;
   int len;
   //struct zx_elem_s* kid;
   switch (x->g.tok) {
@@ -225,7 +224,6 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
   struct zx_ns_s* pop_seen = 0;
   struct zx_attr_s* attr;
   struct zx_elem_s* kid;
-  int ix;
 #if D_LEN_ENA
   char* b = p;
 #endif

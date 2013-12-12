@@ -1042,6 +1042,14 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_cdc_url_get(zxid_conf.getCPtr(self));
   }
 
+  public static void conf_md_authority_set(zxid_conf self, String value) {
+    zxidjniJNI.zxid_conf_md_authority_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static String conf_md_authority_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_md_authority_get(zxid_conf.getCPtr(self));
+  }
+
   public static void conf_cdc_choice_set(zxid_conf self, char value) {
     zxidjniJNI.zxid_conf_cdc_choice_set(zxid_conf.getCPtr(self), value);
   }
@@ -2269,12 +2277,12 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_az_fail_mode_get(zxid_conf.getCPtr(self));
   }
 
-  public static void conf_pad6_set(zxid_conf self, char value) {
-    zxidjniJNI.zxid_conf_pad6_set(zxid_conf.getCPtr(self), value);
+  public static void conf_md_authority_ena_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_md_authority_ena_set(zxid_conf.getCPtr(self), value);
   }
 
-  public static char conf_pad6_get(zxid_conf self) {
-    return zxidjniJNI.zxid_conf_pad6_get(zxid_conf.getCPtr(self));
+  public static char conf_md_authority_ena_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_md_authority_ena_get(zxid_conf.getCPtr(self));
   }
 
   public static void conf_pad7_set(zxid_conf self, char value) {

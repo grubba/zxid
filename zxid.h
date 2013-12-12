@@ -182,6 +182,7 @@ struct zxid_conf {
   char* redirect_hack_zxid_url;
   char* redirect_hack_zxid_qs;
   char* cdc_url;
+  char* md_authority;
 
   char  cdc_choice;
   char  md_fetch;            /* Auto-CoT */
@@ -358,7 +359,7 @@ struct zxid_conf {
   char  oaz_jwt_sigenc_alg;  /* What signature and encryption to apply to issued JWT (OAUTH2) */
   char  bus_rcpt;            /* Audit Bus receipt enable and signing flags */
   char  az_fail_mode;        /* What to do when authorization can not be done */
-  char  pad6;
+  char  md_authority_ena;
   char  pad7;
 
 #ifdef USE_CURL
@@ -404,7 +405,7 @@ struct zxid_cgi {
   char* uid;           /* au= Form field for user. */
   char* pw;            /* ap= Form field for password. */
   char* ssoreq;        /* ar= Used for conveying original AuthnReq through authn phase. */
-  char* cdc;           /* c=  Common Domain Cookie as returned by the CDC reader */
+  char* cdc;           /* c=  Common Domain Cookie, returned by the CDC reader, also succinctID */
   char* eid;           /* e=, d= Entity ID of an IdP (typically for login) */
   char* nid_fmt;       /* fn= Name ID format */
   char* affil;         /* fq= SP NameQualifier (such as in affiliation of SPs) */

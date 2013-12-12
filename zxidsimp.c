@@ -1294,7 +1294,10 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * Q = POST request
    * R = POST request to IdP
    * S = SOAP (POST) request
+   * Y = SOAP (POST) request for PDP and misc support services
+   * Z = SOAP (POST) request for discovery
    * B = Metadata
+   * b = Metadata Authority
    *
    * M = CDC redirect and LECP detect
    * C = CDC reader
@@ -1313,7 +1316,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * F = IdP: Return SSO A7N after successful An; no ses case, generate IdP ui
    * V = Proxy IdP return
    *
-   * Still available: HJUVWXYZabcdefghijkoqwxyz
+   * Still available: HJUVWXacefghijkoqwxyz
    */
   
   if (cgi->enc_hint)
@@ -1399,6 +1402,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
   case 'c': return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
   case 'd': return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
   case 'B': return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
+  case 'b': return zxid_simple_md_authority(cf, cgi, res_len, auto_flags);
   case 'n': break;
   case 'p': break;
   default:
@@ -1566,6 +1570,7 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
   case 'c':    return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
   case 'd':    return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
   case 'B':    return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
+  case 'b':    return zxid_simple_md_authority(cf, cgi, res_len, auto_flags);
   case 'D': /*  Delegation / Invitation URL clicked. */
     return zxid_ps_accept_invite(cf, cgi, ses, res_len, auto_flags);
   case 'R':
@@ -1655,7 +1660,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
     if (qs) {
       D("QUERY_STRING(%s) %s %d", STRNULLCHK(qs), ZXID_REL, errmac_debug);
       zxid_parse_cgi(cf, &cgi, qs);
-      if (ONE_OF_3(cgi.op, 'P', 'R', 'S')) {
+      if (ONE_OF_5(cgi.op, 'P', 'R', 'S', 'Y', 'Z')) {
 	cont_len = getenv("CONTENT_LENGTH");
 	if (cont_len) {
 	  sscanf(cont_len, "%d", &got);

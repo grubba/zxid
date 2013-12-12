@@ -11222,6 +11222,78 @@ XS(_wrap_zxid_conf_cdc_url_get) {
 }
 
 
+XS(_wrap_zxid_conf_md_authority_set) {
+  {
+    struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+    char *arg2 = (char *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: zxid_conf_md_authority_set(self,md_authority);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_md_authority_set" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+    }
+    arg1 = (struct zxid_conf *)(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_conf_md_authority_set" "', argument " "2"" of type '" "char *""'");
+    }
+    arg2 = (char *)(buf2);
+    if (arg1->md_authority) free((char*)arg1->md_authority);
+    if (arg2) {
+      size_t size = strlen((const char *)(arg2)) + 1;
+      arg1->md_authority = (char *)(char *)memcpy((char *)malloc((size)*sizeof(char)), (const char *)(arg2), sizeof(char)*(size));
+    } else {
+      arg1->md_authority = 0;
+    }
+    ST(argvi) = sv_newmortal();
+    
+    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_zxid_conf_md_authority_get) {
+  {
+    struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: zxid_conf_md_authority_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_md_authority_get" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+    }
+    arg1 = (struct zxid_conf *)(argp1);
+    result = (char *) ((arg1)->md_authority);
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_zxid_conf_cdc_choice_set) {
   {
     struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
@@ -21485,7 +21557,7 @@ XS(_wrap_zxid_conf_az_fail_mode_get) {
 }
 
 
-XS(_wrap_zxid_conf_pad6_set) {
+XS(_wrap_zxid_conf_md_authority_ena_set) {
   {
     struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
     char arg2 ;
@@ -21497,19 +21569,19 @@ XS(_wrap_zxid_conf_pad6_set) {
     dXSARGS;
     
     if ((items < 2) || (items > 2)) {
-      SWIG_croak("Usage: zxid_conf_pad6_set(self,pad6);");
+      SWIG_croak("Usage: zxid_conf_md_authority_ena_set(self,md_authority_ena);");
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_pad6_set" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_md_authority_ena_set" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
     }
     arg1 = (struct zxid_conf *)(argp1);
     ecode2 = SWIG_AsVal_char SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
     if (!SWIG_IsOK(ecode2)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "zxid_conf_pad6_set" "', argument " "2"" of type '" "char""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "zxid_conf_md_authority_ena_set" "', argument " "2"" of type '" "char""'");
     } 
     arg2 = (char)(val2);
-    if (arg1) (arg1)->pad6 = arg2;
+    if (arg1) (arg1)->md_authority_ena = arg2;
     ST(argvi) = sv_newmortal();
     
     
@@ -21522,7 +21594,7 @@ XS(_wrap_zxid_conf_pad6_set) {
 }
 
 
-XS(_wrap_zxid_conf_pad6_get) {
+XS(_wrap_zxid_conf_md_authority_ena_get) {
   {
     struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
     void *argp1 = 0 ;
@@ -21532,14 +21604,14 @@ XS(_wrap_zxid_conf_pad6_get) {
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: zxid_conf_pad6_get(self);");
+      SWIG_croak("Usage: zxid_conf_md_authority_ena_get(self);");
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_pad6_get" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_md_authority_ena_get" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
     }
     arg1 = (struct zxid_conf *)(argp1);
-    result = (char) ((arg1)->pad6);
+    result = (char) ((arg1)->md_authority_ena);
     ST(argvi) = SWIG_From_char  SWIG_PERL_CALL_ARGS_1((char)(result)); argvi++ ;
     
     XSRETURN(argvi);
@@ -47512,6 +47584,8 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_conf_redirect_hack_zxid_qs_get", _wrap_zxid_conf_redirect_hack_zxid_qs_get},
 {"Net::SAMLc::zxid_conf_cdc_url_set", _wrap_zxid_conf_cdc_url_set},
 {"Net::SAMLc::zxid_conf_cdc_url_get", _wrap_zxid_conf_cdc_url_get},
+{"Net::SAMLc::zxid_conf_md_authority_set", _wrap_zxid_conf_md_authority_set},
+{"Net::SAMLc::zxid_conf_md_authority_get", _wrap_zxid_conf_md_authority_get},
 {"Net::SAMLc::zxid_conf_cdc_choice_set", _wrap_zxid_conf_cdc_choice_set},
 {"Net::SAMLc::zxid_conf_cdc_choice_get", _wrap_zxid_conf_cdc_choice_get},
 {"Net::SAMLc::zxid_conf_md_fetch_set", _wrap_zxid_conf_md_fetch_set},
@@ -47814,8 +47888,8 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_conf_bus_rcpt_get", _wrap_zxid_conf_bus_rcpt_get},
 {"Net::SAMLc::zxid_conf_az_fail_mode_set", _wrap_zxid_conf_az_fail_mode_set},
 {"Net::SAMLc::zxid_conf_az_fail_mode_get", _wrap_zxid_conf_az_fail_mode_get},
-{"Net::SAMLc::zxid_conf_pad6_set", _wrap_zxid_conf_pad6_set},
-{"Net::SAMLc::zxid_conf_pad6_get", _wrap_zxid_conf_pad6_get},
+{"Net::SAMLc::zxid_conf_md_authority_ena_set", _wrap_zxid_conf_md_authority_ena_set},
+{"Net::SAMLc::zxid_conf_md_authority_ena_get", _wrap_zxid_conf_md_authority_ena_get},
 {"Net::SAMLc::zxid_conf_pad7_set", _wrap_zxid_conf_pad7_set},
 {"Net::SAMLc::zxid_conf_pad7_get", _wrap_zxid_conf_pad7_get},
 {"Net::SAMLc::new_zxid_conf", _wrap_new_zxid_conf},

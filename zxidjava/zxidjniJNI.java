@@ -296,6 +296,8 @@ class zxidjniJNI {
   public final static native String zxid_conf_redirect_hack_zxid_qs_get(long jarg1);
   public final static native void zxid_conf_cdc_url_set(long jarg1, String jarg2);
   public final static native String zxid_conf_cdc_url_get(long jarg1);
+  public final static native void zxid_conf_md_authority_set(long jarg1, String jarg2);
+  public final static native String zxid_conf_md_authority_get(long jarg1);
   public final static native void zxid_conf_cdc_choice_set(long jarg1, char jarg2);
   public final static native char zxid_conf_cdc_choice_get(long jarg1);
   public final static native void zxid_conf_md_fetch_set(long jarg1, char jarg2);
@@ -598,8 +600,8 @@ class zxidjniJNI {
   public final static native char zxid_conf_bus_rcpt_get(long jarg1);
   public final static native void zxid_conf_az_fail_mode_set(long jarg1, char jarg2);
   public final static native char zxid_conf_az_fail_mode_get(long jarg1);
-  public final static native void zxid_conf_pad6_set(long jarg1, char jarg2);
-  public final static native char zxid_conf_pad6_get(long jarg1);
+  public final static native void zxid_conf_md_authority_ena_set(long jarg1, char jarg2);
+  public final static native char zxid_conf_md_authority_ena_get(long jarg1);
   public final static native void zxid_conf_pad7_set(long jarg1, char jarg2);
   public final static native char zxid_conf_pad7_get(long jarg1);
   public final static native long new_zxid_conf();
