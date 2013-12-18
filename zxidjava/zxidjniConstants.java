@@ -348,6 +348,7 @@ public interface zxidjniConstants {
   public final static String SB_EPUPD_COMP = zxidjniJNI.SB_EPUPD_COMP_get();
   public final static String SB_EPUPD_PART = zxidjniJNI.SB_EPUPD_PART_get();
   public final static String SB_EPUPD_NOCH = zxidjniJNI.SB_EPUPD_NOCH_get();
+  public final static String A_ANON_2005_03 = zxidjniJNI.A_ANON_2005_03_get();
   public final static String A_ANON = zxidjniJNI.A_ANON_get();
   public final static String XMLNS_CSM = zxidjniJNI.XMLNS_CSM_get();
   public final static String XMLNS_LU = zxidjniJNI.XMLNS_LU_get();

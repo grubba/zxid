@@ -231,7 +231,7 @@ public class zxidwscprepdemo extends HttpServlet {
 		String req_soap = zxidjni.wsc_prepare_call(cf, zxses, epr, null,
 							   "<foobar>Do it!</foobar>");
 		//System.err.print("CALL("+url+") req_soap("+req_soap+")\n");
-		String resp_soap = zxidjni.http_post_raw(cf, -1, url, -1, req_soap);
+		String resp_soap = zxidjni.http_post_raw(cf, -1, url, -1, req_soap, null);
 		if (zxidjni.wsc_valid_resp(cf, zxses, null, resp_soap) == 1) {
 		    if (resp_soap.indexOf("code=\"OK\"") == -1) {
 			out.print("<p>Error from call:<br>\n<textarea cols=80 rows=20>");

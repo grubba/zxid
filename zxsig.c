@@ -558,8 +558,8 @@ struct zx_str* zxenc_symkey_dec(zxid_conf* cf, struct zx_xenc_EncryptedData_s* e
     return 0;
   }
   
-  if (!symkey) {
-    ERR("Symmetric key missing. Perhaps public key operation to recover symmetric key failed (e.g. missing private key, or private key does not match public key). Perhaps the programmer simply failed to pass correct arguments to this function. %d", 0);
+  if (!symkey || !symkey->s) {
+    ERR("Symmetric key missing. Perhaps public key operation to recover symmetric key failed (e.g. missing private key, or private key does not match public key). Perhaps the programmer simply failed to pass correct arguments to this function. %p", symkey);
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "EMISS", 0, "no symkey");
     return 0;
   }

@@ -267,6 +267,8 @@ struct zxid_conf {
   char* wsp_pat;
   char* sso_pat;
   char* mod_saml_attr_prefix;  /* Prefix for req variables in mod_auth_saml */
+  char* wsc_to_hdr;
+  char* wsc_replyto_hdr;
   char* wsc_action_hdr;
   char* soap_action_hdr;
 
@@ -899,7 +901,7 @@ ZXID_DECL int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses);
 /* zxidcurl */
 
 ZXID_DECL char* zxid_http_get(zxid_conf* cf, const char* url, char** lim);
-ZXID_DECL struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data);
+ZXID_DECL struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data, const char* SOAPactionre);
 ZXID_DECL struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env, char** ret_enve);
 ZXID_DECL struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body);
 ZXID_DECL int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_Body_s* body);

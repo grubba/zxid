@@ -1659,6 +1659,22 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_mod_saml_attr_prefix_get(zxid_conf.getCPtr(self));
   }
 
+  public static void conf_wsc_to_hdr_set(zxid_conf self, String value) {
+    zxidjniJNI.zxid_conf_wsc_to_hdr_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static String conf_wsc_to_hdr_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_wsc_to_hdr_get(zxid_conf.getCPtr(self));
+  }
+
+  public static void conf_wsc_replyto_hdr_set(zxid_conf self, String value) {
+    zxidjniJNI.zxid_conf_wsc_replyto_hdr_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static String conf_wsc_replyto_hdr_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_wsc_replyto_hdr_get(zxid_conf.getCPtr(self));
+  }
+
   public static void conf_wsc_action_hdr_set(zxid_conf self, String value) {
     zxidjniJNI.zxid_conf_wsc_action_hdr_set(zxid_conf.getCPtr(self), value);
   }
@@ -4335,7 +4351,7 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_http_get(zxid_conf.getCPtr(cf), url, SWIGTYPE_p_p_char.getCPtr(lim));
   }
 
-  public static String http_post_raw(zxid_conf cf, int url_len, String url, int len, String data) { return zxidjniJNI.zxid_http_post_raw(zxid_conf.getCPtr(cf), url_len, url, len, data); }
+  public static String http_post_raw(zxid_conf cf, int url_len, String url, int len, String data, String SOAPactionre) { return zxidjniJNI.zxid_http_post_raw(zxid_conf.getCPtr(cf), url_len, url, len, data, SOAPactionre); }
 
   public static SWIGTYPE_p_zx_root_s soap_call_raw(zxid_conf cf, String url, SWIGTYPE_p_zx_e_Envelope_s env, SWIGTYPE_p_p_char ret_enve) {
     long cPtr = zxidjniJNI.zxid_soap_call_raw(zxid_conf.getCPtr(cf), url, SWIGTYPE_p_zx_e_Envelope_s.getCPtr(env), SWIGTYPE_p_p_char.getCPtr(ret_enve));

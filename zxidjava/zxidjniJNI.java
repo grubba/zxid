@@ -450,6 +450,10 @@ class zxidjniJNI {
   public final static native String zxid_conf_sso_pat_get(long jarg1);
   public final static native void zxid_conf_mod_saml_attr_prefix_set(long jarg1, String jarg2);
   public final static native String zxid_conf_mod_saml_attr_prefix_get(long jarg1);
+  public final static native void zxid_conf_wsc_to_hdr_set(long jarg1, String jarg2);
+  public final static native String zxid_conf_wsc_to_hdr_get(long jarg1);
+  public final static native void zxid_conf_wsc_replyto_hdr_set(long jarg1, String jarg2);
+  public final static native String zxid_conf_wsc_replyto_hdr_get(long jarg1);
   public final static native void zxid_conf_wsc_action_hdr_set(long jarg1, String jarg2);
   public final static native String zxid_conf_wsc_action_hdr_get(long jarg1);
   public final static native void zxid_conf_soap_action_hdr_set(long jarg1, String jarg2);
@@ -1181,7 +1185,7 @@ class zxidjniJNI {
   public final static native void zxid_user_change_nameid(long jarg1, long jarg2, String jarg3);
   public final static native int zxid_pw_authn(long jarg1, long jarg2, long jarg3);
   public final static native String zxid_http_get(long jarg1, String jarg2, long jarg3);
-  public final static native String zxid_http_post_raw(long jarg1, int jarg2, String jarg3, int jarg4, String jarg5);
+  public final static native String zxid_http_post_raw(long jarg1, int jarg2, String jarg3, int jarg4, String jarg5, String jarg6);
   public final static native long zxid_soap_call_raw(long jarg1, String jarg2, long jarg3, long jarg4);
   public final static native long zxid_soap_call_hdr_body(long jarg1, String jarg2, long jarg3, long jarg4);
   public final static native int zxid_soap_cgi_resp_body(long jarg1, long jarg2, long jarg3);
@@ -1525,6 +1529,7 @@ class zxidjniJNI {
   public final static native String SB_EPUPD_COMP_get();
   public final static native String SB_EPUPD_PART_get();
   public final static native String SB_EPUPD_NOCH_get();
+  public final static native String A_ANON_2005_03_get();
   public final static native String A_ANON_get();
   public final static native String XMLNS_CSM_get();
   public final static native String XMLNS_LU_get();

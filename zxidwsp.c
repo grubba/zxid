@@ -17,7 +17,7 @@
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
-
+#include <string.h>
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"
@@ -32,17 +32,29 @@
 
 #define BOOL_STR_TEST(x) ((x) && (x) != '0')
 
+/*() Create SOAP header Action (which is distinct from HTTP headers SOAPaction).
+ * This is driven by the configuration option WSC_ACTION_HDR */
+
 static void zxid_add_action_hdr(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env)
 {
   struct zx_e_Header_s* hdr = env->Header;
   struct zx_elem_s* first;
   struct zx_el_tok* el_tok;
   struct zx_str* ss;
+  char* p;
+  
   if (!strcmp(cf->wsc_action_hdr, "#ses")) {
+    ERR("***NOT IMPLEMENTED %d", 0);  /* *** TBD */
+    return;
   } else if (!strcmp(cf->wsc_action_hdr, "#body1st")) {
     if (env->Body && (first = env->Body->gg.kids)) {
       if (first->g.s) {
-	ss = zx_ref_str(cf->ctx, first->g.s);
+	if (!(p = memchr(first->g.s, ':', first->g.len))) {
+	  ss = &first->g;
+	} else {
+	  ++p;
+	  ss = zx_ref_len_str(cf->ctx, first->g.len - (p - first->g.s), p);
+	}
       } else {
 	if (el_tok = zx_get_el_tok(first)) {
 	  ss = zx_ref_str(cf->ctx, el_tok->name);
@@ -58,10 +70,15 @@ static void zxid_add_action_hdr(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelo
   } else if (!strcmp(cf->wsc_action_hdr, "#body1stns")) {
     if (env->Body && (first = env->Body->gg.kids)) {
       if (first->g.s) {
-	ss = zx_strf(cf->ctx, "%s%s", first->ns&&first->ns->url?first->ns->url:"", first->g.s);
+	if (!(p = memchr(first->g.s, ':', first->g.len))) {
+	  ss = zx_strf(cf->ctx, "%s:%.*s", first->ns&&first->ns->url?first->ns->url:"", first->g.len, first->g.s);
+	} else {
+	  ++p;
+	  ss = zx_strf(cf->ctx, "%s:%.*s", first->ns&&first->ns->url?first->ns->url:"", first->g.len - (p - first->g.s), p);
+	}
       } else {
 	if (el_tok = zx_get_el_tok(first)) {
-	  ss = zx_strf(cf->ctx, "%s%s", first->ns&&first->ns->url?first->ns->url:"", el_tok->name);
+	  ss = zx_strf(cf->ctx, "%s:%s", first->ns&&first->ns->url?first->ns->url:"", el_tok->name);
 	} else {
 	  ERR("First child element of <e:Body> does not have tag string and is not known token %x", first->g.tok);
 	  return;

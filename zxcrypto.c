@@ -181,6 +181,7 @@ struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, st
   if (tmplen) {
     if (iv) {
       if (iv_len != tmplen) {
+	ERR("iv len=%d does not match one required by cipher=%d", iv_len, tmplen);
 	goto clean;
       }
       ivv = iv;
@@ -202,6 +203,8 @@ struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, st
     memcpy(out->s, ivv, iv_len);
   else
     iv_len = 0;  /* When decrypting, the iv has already been stripped. */
+  
+  if ((errmac_debug&ERRMAC_DEBUG_MASK) > 2) hexdmp("symkey ", key->s, key->len, 1024);
   
   if (!EVP_CipherInit_ex(&ctx, evp_cipher, 0 /* engine */, (unsigned char*)key->s, (unsigned char*)ivv, encflag)) {
     where = "EVP_CipherInit_ex()";
@@ -272,6 +275,12 @@ struct zx_str* zx_rsa_pub_enc(struct zx_ctx* c, struct zx_str* plain, RSA* rsa_p
 {
   struct zx_str* ciphered;
   int ret, siz = RSA_size(rsa_pkey);
+
+  if ((errmac_debug&ERRMAC_DEBUG_MASK) > 2) {
+    D("pad=%d, RSA public key follows...", pad);
+    RSA_print_fp(ERRMAC_DEBUG_LOG, rsa_pkey, 0);
+  }
+
   switch (pad) {
   case RSA_PKCS1_PADDING:
   case RSA_SSLV23_PADDING:
@@ -316,6 +325,10 @@ struct zx_str* zx_rsa_pub_dec(struct zx_ctx* c, struct zx_str* ciphered, RSA* rs
   plain = zx_new_len_str(c, siz);
   if (!plain)
     return 0;
+  if ((errmac_debug&ERRMAC_DEBUG_MASK) > 2) {
+    D("pad=%d, RSA public key follows...", pad);
+    RSA_print_fp(ERRMAC_DEBUG_LOG, rsa_pkey, 0);
+  }
   ret = RSA_public_decrypt(ciphered->len, (unsigned char*)ciphered->s, (unsigned char*)plain->s, rsa_pkey, pad);
   if (ret == -1) {
     D("RSA public decrypt failed ret=%d len_cipher_data=%d",ret,ciphered->len);
@@ -345,6 +358,10 @@ struct zx_str* zx_rsa_priv_dec(struct zx_ctx* c, struct zx_str* ciphered, RSA* r
   plain = zx_new_len_str(c, siz);
   if (!plain)
     return 0;
+  if ((errmac_debug&ERRMAC_DEBUG_MASK) > 2) {
+    D("pad=%d, RSA private key follows...", pad);
+    RSA_print_fp(ERRMAC_DEBUG_LOG, rsa_pkey, 0);
+  }
   ret = RSA_private_decrypt(ciphered->len, (unsigned char*)ciphered->s, (unsigned char*)plain->s, rsa_pkey, pad);
   if (ret == -1) {
     D("RSA private decrypt failed ret=%d len_cipher_data=%d",ret,ciphered->len);
@@ -368,6 +385,10 @@ struct zx_str* zx_rsa_priv_enc(struct zx_ctx* c, struct zx_str* plain, RSA* rsa_
   ciphered = zx_new_len_str(c, siz);
   if (!ciphered)
     return 0;
+  if ((errmac_debug&ERRMAC_DEBUG_MASK) > 2) {
+    D("pad=%d, RSA private key follows...", pad);
+    RSA_print_fp(ERRMAC_DEBUG_LOG, rsa_pkey, 0);
+  }
   ret = RSA_private_encrypt(plain->len, (unsigned char*)plain->s, (unsigned char*)ciphered->s, rsa_pkey, pad);
   if (ret == -1) {
     D("RSA private encrypt failed ret=%d len_plain=%d", ret, plain->len);

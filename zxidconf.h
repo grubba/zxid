@@ -426,6 +426,41 @@
  * instead and leave BOOTSTRAP_LEVEL set to 1. */
 #define ZXID_BOOTSTRAP_LEVEL 1
 
+/*(c) WSC <a:To> header generation. The default is not to
+ * generate which, according to http://www.w3.org/TR/ws-addr-core/ section 3.2
+ * produces same semantics as http://www.w3.org/2005/08/addressing/anonymous,
+ * i.e. responding end of HTTP connection. Special values:
+ *
+ * 0 (null):: No To header generated
+ * "#inhibit":: No To header generated
+ * "#url":: To header has same value as end point URL (this is the default, see below).
+ * Other values:: The value to supply as To header.
+ *
+ * N.B. Although WS-Addressing states that this header is optional, as it is
+ * one of the signed headers, it may have significance in showing the
+ * intended recipient of the message (the Audience for the Assertion is
+ * an other place where intended recipient is expressed, albeit as
+ * entity ID rather than end point URL). */
+#define ZXID_WSC_TO_HDR "#url"
+
+/*(c) WSC <a:ReplyTo> header generation. The default is not to
+ * generate which, according to http://www.w3.org/TR/ws-addr-core/ section 3.2
+ * produces same semantics as http://www.w3.org/2005/08/addressing/anonymous,
+ * i.e. reply to the requesting end of HTTP connection. In
+ * liberty-idwsf-soap-binding-2.0-errata-v1.0.pdf value
+ * http://www.w3.org/2005/03/addressing/role/anonymous is
+ * illustrated, but this is in violation of http://www.w3.org/2005/08/addressing
+ * namespace. The Liberty specification also hints that ReplyTo can be
+ * omitted to get the default semantics. Special values:
+ *
+ * 0 (null):: No ReplyTo header generated
+ * "#inhibit":: No ReplyTo header generated
+ * "#anon":: http://www.w3.org/2005/08/addressing/anonymous
+ * "#anon_2005_03":: http://www.w3.org/2005/03/addressing/role/anonymous
+ * Other values:: The value to supply as To header.
+ */
+#define ZXID_WSC_REPLYTO_HDR 0
+
 /*(c) WSC <a:Action> header generation. The most reliable way
  * to dispatch SOAP web services is to simply look at the first
  * child element of <e:Body>. If, however, you are cursed with
@@ -448,7 +483,7 @@
  * This method overrides any other, i.e. if WSC code sees an already existing
  * Action header, it will not replace it.
  *
- * Other methods depend on the WSc_ACTION_HDR option with following special values:
+ * Other methods depend on the WSC_ACTION_HDR option with following special values:
  *
  * 0 (null):: No Action header will be generated,
  * "#ses":: Look for key "Action" in session attribute pool
@@ -456,7 +491,7 @@
  *     of the <e:Body> tag.
  * "#body1stns":: Same as #body1st, but will prefix by namespace URI
  * Other values:: cause the Action header to be set to the given value. */
-#define ZXID_WSC_ACTION_HDR 0
+#define ZXID_WSC_ACTION_HDR "#body1stns"
 
 /*(c) Like WSC_ACTION_HDR, but deals with the HTTP level SOAPAction header.
  * Dependence on HTTP layer header to say what is inside <e:Body> is poor
@@ -467,10 +502,12 @@
  * route the request to default place. Possible values:
  *
  * 0 (null):: Do not generate SOAPAction
- * "--":: Do not generate SOAPAction (use this in configuration)
+ * "#inhibit":: Do not generate SOAPAction (use this in configuration)
+ * "#same":: Same as <a:Action> SOAP header. This is often the #body1stns, i.e. the namespace
+ *     qualified name of the 1st child element of <e:Body>
  * "" (empty string):: the default for ID-WSF
  * Other values:: use the value of this config option as SOAPAction HTTP header. */
-#define ZXID_SOAP_ACTION_HDR ""
+#define ZXID_SOAP_ACTION_HDR "#same"
 
 /*(c) WSC Signing Options
  * Which components of a web service request should be signed by WSC

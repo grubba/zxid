@@ -175,7 +175,12 @@
 #define SB_EPUPD_COMP  "urn:liberty:sb:2006-08:EndpointUpdate:Complete"
 #define SB_EPUPD_PART  "urn:liberty:sb:2006-08:EndpointUpdate:Partial"
 #define SB_EPUPD_NOCH  "urn:liberty:sb:2006-08:EndpointUpdate:NoChange"
-#define A_ANON         "http://www.w3.org/2005/03/addressing/role/anonymous"
+
+/* This is the value used in liberty-idwsf-soap-binding-2.0-errata-v1.0.pdf,
+ * but is in violation of the http://www.w3.org/2005/08/addressing namespace
+ * and spec http://www.w3.org/TR/ws-addr-core/ (probably an error in Liberty specs) */
+#define A_ANON_2005_03 "http://www.w3.org/2005/03/addressing/role/anonymous"
+#define A_ANON         "http://www.w3.org/2005/08/addressing/anonymous"
 
 /* Misc */
 

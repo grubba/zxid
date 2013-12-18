@@ -256,20 +256,34 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
     }
   } /* else this is just implied by the sec mech */
 
-#if 1
-  /* Mandatory for a request. */
-  hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx, &hdr->gg);
-  /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->burl));*/
-  hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON));
-  hdr->ReplyTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
-  hdr->ReplyTo->actor = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-#endif
+  if (cf->wsc_replyto_hdr && strcmp(cf->wsc_replyto_hdr, "#inhibit")) {
+    /* Mandatory for a request (says who? - apparenly Axis2 or WSO2 has a bug of
+     * requiring this and not understanding to default it to anon).
+     * liberty-idwsf-soap-binding-2.0-errata-v1.0.pdf
+     * p.21 ll.591-595 seem to imply that ReplyTo can be omitted if value would be A_ANON. */
+    hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx, &hdr->gg);
+    /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->burl));*/
+    if (!strcmp(cf->wsc_replyto_hdr, "#anon")) {
+      hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON));
+    } else if (!strcmp(cf->wsc_replyto_hdr, "#anon_2005_03")) {
+      hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON_2005_03));
+    } else {
+      hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, cf->wsc_replyto_hdr));
+    }
+    hdr->ReplyTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
+    hdr->ReplyTo->actor = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  }
 
-  hdr->To = zx_NEW_a_To(cf->ctx, &hdr->gg);
-  zx_add_content(cf->ctx, &hdr->To->gg, ZX_GET_CONTENT(epr->Address));
-  hdr->To->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_e_mustUnderstand_ATTR,XML_TRUE);
-  hdr->To->actor = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-
+  if (cf->wsc_to_hdr && strcmp(cf->wsc_to_hdr, "#inhibit")) {
+    hdr->To = zx_NEW_a_To(cf->ctx, &hdr->gg);
+    if (!strcmp(cf->wsc_to_hdr, "#url")) {
+      zx_add_content(cf->ctx, &hdr->To->gg, ZX_GET_CONTENT(epr->Address));
+    } else {
+      zx_add_content(cf->ctx, &hdr->To->gg, zx_dup_str(cf->ctx, cf->wsc_to_hdr));
+    }
+    hdr->To->mustUnderstand = zx_ref_attr(cf->ctx,&hdr->To->gg,zx_e_mustUnderstand_ATTR,XML_TRUE);
+    hdr->To->actor = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  }
 #if 0
   /* Omission means to use same address as ReplyTo */
   hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx, &hdr->gg);

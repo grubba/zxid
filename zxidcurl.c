@@ -173,7 +173,7 @@ char* zxid_http_get(zxid_conf* cf, const char* url, char** lim)
  * returns:: HTTP body of the response */
 
 /* Called by:  zxid_soap_call_raw */
-struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data)
+struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data, const char* SOAPaction)
 {
 #ifdef USE_CURL
   struct zx_str* ret;
@@ -181,8 +181,7 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   struct zxid_curl_ctx rc;
   struct zxid_curl_ctx wc;
   struct curl_slist content_type;
-  struct curl_slist SOAPaction;
-  char soap_action_buf[256];
+  struct curl_slist SOAPaction_curl;
   char* urli;
   rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_SOAP_BUF+1);
   rc.lim = rc.buf + ZXID_INIT_SOAP_BUF;
@@ -224,13 +223,11 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
 
   ZERO(&content_type, sizeof(content_type));
   content_type.data = "Content-Type: text/xml";
-  if (cf->soap_action_hdr && strcmp(cf->soap_action_hdr,"--")) {
-    ZERO(&SOAPaction, sizeof(SOAPaction));
-    snprintf(soap_action_buf, sizeof(soap_action_buf), "SOAPAction: \"%s\"", cf->soap_action_hdr);
-    soap_action_buf[sizeof(soap_action_buf)-1] = 0;
-    SOAPaction.data = soap_action_buf;
-    SOAPaction.next = &content_type;    //curl_slist_append(3)
-    curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &SOAPaction);
+  if (SOAPaction) {
+    ZERO(&SOAPaction_curl, sizeof(SOAPaction_curl));
+    SOAPaction_curl.data = (char*)SOAPaction;
+    SOAPaction_curl.next = &content_type;    //curl_slist_append(3)
+    curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &SOAPaction_curl);
   } else {
     curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &content_type);
   }
@@ -357,10 +354,31 @@ struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct z
   struct zx_root_s* r;
   struct zx_str* ret;
   struct zx_str* ss;
+  char soap_action_buf[1024];
+  char* soap_act;
 
   ss = zx_easy_enc_elem_opt(cf, &env->gg);
   DD("ss(%.*s) len=%d", ss->len, ss->s, ss->len);
-  ret = zxid_http_post_raw(cf, url->len, url->s, ss->len, ss->s);
+
+  if (cf->soap_action_hdr && strcmp(cf->soap_action_hdr,"#inhibit")) {
+    if (!strcmp(cf->soap_action_hdr,"#same")) {
+      if (env->Header && env->Header->Action && ZX_GET_CONTENT_S(env->Header->Action)) {
+	snprintf(soap_action_buf,sizeof(soap_action_buf), "SOAPAction: \"%.*s\"", ZX_GET_CONTENT_LEN(env->Header->Action), ZX_GET_CONTENT_S(env->Header->Action));
+	soap_action_buf[sizeof(soap_action_buf)-1] = 0;
+	soap_act = soap_action_buf;
+	D("SOAPaction(%s)", soap_action_buf);
+      } else {
+	ERR("e:Envelope/e:Headers/a:Action SOAP header is malformed %p", env->Header);
+      }
+    } else {
+      snprintf(soap_action_buf,sizeof(soap_action_buf), "SOAPAction: \"%s\"", cf->soap_action_hdr);
+      soap_action_buf[sizeof(soap_action_buf)-1] = 0;
+      soap_act = soap_action_buf;
+    }
+  } else
+    soap_act = 0;
+  
+  ret = zxid_http_post_raw(cf, url->len, url->s, ss->len, ss->s, soap_act);
   zx_str_free(cf->ctx, ss);
   if (ret_enve)
     *ret_enve = ret?ret->s:0;
