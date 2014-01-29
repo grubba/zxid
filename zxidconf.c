@@ -1056,7 +1056,8 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->redir_to_content  = ZXID_REDIR_TO_CONTENT;
   cf->remote_user_ena   = ZXID_REMOTE_USER_ENA;
   cf->max_soap_retry    = ZXID_MAX_SOAP_RETRY;
-  cf->mod_saml_attr_prefix = ZXID_MOD_SAML_ATTR_PREFIX;
+  cf->mod_saml_attr_prefix  = ZXID_MOD_SAML_ATTR_PREFIX;
+  cf->wsc_soap_content_type = ZXID_WSC_SOAP_CONTENT_TYPE;
   cf->wsc_to_hdr        = ZXID_WSC_TO_HDR;
   cf->wsc_replyto_hdr   = ZXID_WSC_REPLYTO_HDR;
   cf->wsc_action_hdr    = ZXID_WSC_ACTION_HDR;
@@ -1777,6 +1778,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       if (!strcmp(n, "WSC_LOCALPDP_OBL_ACCEPT"))  { cf->wsc_localpdp_obl_accept = zxid_load_obl_list(cf, cf->wsc_localpdp_obl_accept, v);   break; }
       if (!strcmp(n, "WD"))             { cf->wd = v; chdir(v); break; }
       if (!strcmp(n, "WSP_PAT"))        { cf->wsp_pat = v; break; }
+      if (!strcmp(n, "WSC_SOAP_CONTENT_TYPE")) { cf->wsc_soap_content_type = v; break; }
       if (!strcmp(n, "WSC_TO_HDR"))     { cf->wsc_to_hdr = v; break; }
       if (!strcmp(n, "WSC_REPLYTO_HDR")) { cf->wsc_replyto_hdr = v; break; }
       if (!strcmp(n, "WSC_ACTION_HDR")) { cf->wsc_action_hdr = v; break; }
@@ -2000,6 +2002,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "DEFAULTQS=%s\n"
 "WSP_PAT=%s\n"
 "SSO_PAT=%s\n"
+"WSC_SOAP_CONTENT_TYPE=%s\n"
 "WSC_TO_HDR=%s\n"
 "WSC_REPLYTO_HDR=%s\n"
 "WSC_ACTION_HDR=%s\n"
@@ -2201,6 +2204,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 STRNULLCHK(cf->wsp_pat),
 		 STRNULLCHK(cf->sso_pat),
 		 STRNULLCHK(cf->cdc_url),
+		 STRNULLCHK(cf->wsc_soap_content_type),
 		 STRNULLCHK(cf->wsc_to_hdr),
 		 STRNULLCHK(cf->wsc_replyto_hdr),
 		 STRNULLCHK(cf->wsc_action_hdr),

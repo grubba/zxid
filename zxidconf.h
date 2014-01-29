@@ -426,6 +426,18 @@
  * instead and leave BOOTSTRAP_LEVEL set to 1. */
 #define ZXID_BOOTSTRAP_LEVEL 1
 
+/*(c) WSC Content-Type header generation
+ * For SOAP 1.1 (SOAP11) that TAS3 and IF-WSF2 use,
+ * the value should be "Content-Type: text/xml" (n.b. even
+ * the header name has to be included) per
+ * http://www.w3.org/TR/2000/NOTE-SOAP-20000508/ section 6.1.1
+ * If WSP asks this to be anything else, the chances are
+ * it is misconfigured, not standards compliant, or using SOAP 1.2.
+ * This should be fixed in WSP end. Changing the value in WSC end
+ * should only be desperate last resort as it will cause WSC
+ * to be incompatible with standards compliant WSPs. */
+#define ZXID_WSC_SOAP_CONTENT_TYPE "Content-Type: text/xml"
+
 /*(c) WSC <a:To> header generation. The default is not to
  * generate which, according to http://www.w3.org/TR/ws-addr-core/ section 3.2
  * produces same semantics as http://www.w3.org/2005/08/addressing/anonymous,
@@ -497,9 +509,13 @@
  * Dependence on HTTP layer header to say what is inside <e:Body> is poor
  * programming and architecture. WSPs should be coded to ignore the
  * SOAPAction http header.
- * The ID-WSF default value for this is empty string "", which generally
- * does not caue indigestion to the buggy softwares and causes them to
- * route the request to default place. Possible values:
+ *
+ * The ID-WSF2 default value for this is empty string "", which generally
+ * does not cause indigestion to the buggy softwares and causes them to
+ * route the request to default place. For semantics of "" and omitting, see
+ * http://www.w3.org/TR/2000/NOTE-SOAP-20000508/ section 6.1.1
+ *
+ * Possible values:
  *
  * 0 (null):: Do not generate SOAPAction
  * "#inhibit":: Do not generate SOAPAction (use this in configuration)

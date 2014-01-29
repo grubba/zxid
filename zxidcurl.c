@@ -222,7 +222,7 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   curl_easy_setopt(cf->curl, CURLOPT_READFUNCTION, zxid_curl_read_data);
 
   ZERO(&content_type, sizeof(content_type));
-  content_type.data = "Content-Type: text/xml";
+  content_type.data = cf->wsc_soap_content_type; /* SOAP11: "Content-Type: text/xml" */
   if (SOAPaction) {
     ZERO(&SOAPaction_curl, sizeof(SOAPaction_curl));
     SOAPaction_curl.data = (char*)SOAPaction;
@@ -468,7 +468,7 @@ int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_Body_s* bo
     ZX_ADD_KID(env->Body, Fault, ses->curflt);
   }
   
-  zxid_wsf_decor(cf, ses, env, 1);
+  zxid_wsf_decor(cf, ses, env, 1, 0);
   ss = zx_easy_enc_elem_opt(cf, &env->gg);
 
   if (cf->log_issue_msg) {

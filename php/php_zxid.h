@@ -431,6 +431,8 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsc_action_hdr_set);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsc_action_hdr_get);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_soap_action_hdr_set);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_soap_action_hdr_get);
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsc_soap_content_type_set);
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsc_soap_content_type_get);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_need_set);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_need_get);
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_want_set);

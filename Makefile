@@ -605,7 +605,7 @@ TARGET_FOUND=1
 endif
 
 ifeq ($(TARGET_FOUND),)
-$(error TARGET $(TARGET) not found. Run make help
+$(error TARGET $(TARGET) not found. Run make help)
 endif
 
 ### To change any of the above options, you can either supply

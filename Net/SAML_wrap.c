@@ -16739,6 +16739,78 @@ XS(_wrap_zxid_conf_soap_action_hdr_get) {
 }
 
 
+XS(_wrap_zxid_conf_wsc_soap_content_type_set) {
+  {
+    struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+    char *arg2 = (char *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: zxid_conf_wsc_soap_content_type_set(self,wsc_soap_content_type);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_wsc_soap_content_type_set" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+    }
+    arg1 = (struct zxid_conf *)(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_conf_wsc_soap_content_type_set" "', argument " "2"" of type '" "char *""'");
+    }
+    arg2 = (char *)(buf2);
+    if (arg1->wsc_soap_content_type) free((char*)arg1->wsc_soap_content_type);
+    if (arg2) {
+      size_t size = strlen((const char *)(arg2)) + 1;
+      arg1->wsc_soap_content_type = (char *)(char *)memcpy((char *)malloc((size)*sizeof(char)), (const char *)(arg2), sizeof(char)*(size));
+    } else {
+      arg1->wsc_soap_content_type = 0;
+    }
+    ST(argvi) = sv_newmortal();
+    
+    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_zxid_conf_wsc_soap_content_type_get) {
+  {
+    struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: zxid_conf_wsc_soap_content_type_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_wsc_soap_content_type_get" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+    }
+    arg1 = (struct zxid_conf *)(argp1);
+    result = (char *) ((arg1)->wsc_soap_content_type);
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_zxid_conf_need_set) {
   {
     struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
@@ -44733,6 +44805,7 @@ XS(_wrap_zxid_wsf_decor) {
     zxid_ses *arg2 = (zxid_ses *) 0 ;
     struct zx_e_Envelope_s *arg3 = (struct zx_e_Envelope_s *) 0 ;
     int arg4 ;
+    zxid_epr *arg5 = (zxid_epr *) 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -44741,12 +44814,14 @@ XS(_wrap_zxid_wsf_decor) {
     int res3 = 0 ;
     int val4 ;
     int ecode4 = 0 ;
+    void *argp5 = 0 ;
+    int res5 = 0 ;
     int argvi = 0;
     int result;
     dXSARGS;
     
-    if ((items < 4) || (items > 4)) {
-      SWIG_croak("Usage: zxid_wsf_decor(cf,ses,env,is_resp);");
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: zxid_wsf_decor(cf,ses,env,is_resp,epr);");
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
@@ -44768,14 +44843,21 @@ XS(_wrap_zxid_wsf_decor) {
       SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "zxid_wsf_decor" "', argument " "4"" of type '" "int""'");
     } 
     arg4 = (int)(val4);
-    result = (int)zxid_wsf_decor(arg1,arg2,arg3,arg4);
+    res5 = SWIG_ConvertPtr(ST(4), &argp5,SWIGTYPE_p_zx_a_EndpointReference_s, 0 |  0 );
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "zxid_wsf_decor" "', argument " "5"" of type '" "zxid_epr *""'"); 
+    }
+    arg5 = (zxid_epr *)(argp5);
+    result = (int)zxid_wsf_decor(arg1,arg2,arg3,arg4,arg5);
     ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1((int)(result)); argvi++ ;
+    
     
     
     
     
     XSRETURN(argvi);
   fail:
+    
     
     
     
@@ -47901,6 +47983,8 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_conf_wsc_action_hdr_get", _wrap_zxid_conf_wsc_action_hdr_get},
 {"Net::SAMLc::zxid_conf_soap_action_hdr_set", _wrap_zxid_conf_soap_action_hdr_set},
 {"Net::SAMLc::zxid_conf_soap_action_hdr_get", _wrap_zxid_conf_soap_action_hdr_get},
+{"Net::SAMLc::zxid_conf_wsc_soap_content_type_set", _wrap_zxid_conf_wsc_soap_content_type_set},
+{"Net::SAMLc::zxid_conf_wsc_soap_content_type_get", _wrap_zxid_conf_wsc_soap_content_type_get},
 {"Net::SAMLc::zxid_conf_need_set", _wrap_zxid_conf_need_set},
 {"Net::SAMLc::zxid_conf_need_get", _wrap_zxid_conf_need_get},
 {"Net::SAMLc::zxid_conf_want_set", _wrap_zxid_conf_want_set},

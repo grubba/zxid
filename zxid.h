@@ -271,6 +271,7 @@ struct zxid_conf {
   char* wsc_replyto_hdr;
   char* wsc_action_hdr;
   char* soap_action_hdr;
+  char* wsc_soap_content_type;
 
   struct zxid_need*  need;
   struct zxid_need*  want;
@@ -1021,7 +1022,7 @@ ZXID_DECL char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* 
 ZXID_DECL char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve);
 ZXID_DECL struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve);
 ZXID_DECL struct zx_str* zxid_wsp_decoratef(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* env_f, ...);
-ZXID_DECL int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, int is_resp);
+ZXID_DECL int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, int is_resp, zxid_epr* epri);
 
 /* zxidwsc */
 

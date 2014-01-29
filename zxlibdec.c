@@ -188,7 +188,10 @@ look_for_not_found:
  * Returns 0 if ordering is good. If ordering is bad, returns index to
  * the offending child element. This check does not verify whether all
  * mandatory child elements are present - it merely checks that the
- * order is right. */
+ * order is right.
+ *
+ * N.B. Check c/zx-elems.c for the tables that show the ordering (tables
+ * were generated from schema so hand editing them is not recommended). */
 
 /* Called by:  zx_reverse_elem_lists */
 static int zx_chk_el_ord(struct zx_elem_s* x)
@@ -205,8 +208,14 @@ static int zx_chk_el_ord(struct zx_elem_s* x)
     if (x->g.tok == ZX_TOK_DATA)
       continue;
     for (j = i; ed->el_order[j] != ZX_TOK_NOT_FOUND; ++j)
-      if (x->g.tok == ed->el_order[j])
+      if (x->g.tok == ed->el_order[j]) {
+	if ((errmac_debug & ERRMAC_DEBUG_MASK)>2) {
+	  et = zx_el_tab + (x->g.tok & ZX_TOK_TOK_MASK);
+	  ef = zx_el_tab + MINMAX(ed->tok & ZX_TOK_TOK_MASK, 0, zx__ELEM_MAX);
+	  D("Right: Known <%s> tok(0x%06x) as %d. child of <%s> tok(0x%06x) (%d,%d)", et->name, x->g.tok, n, ef->name, ed->tok, i, j);
+	}
 	break;
+      }
     if (ed->el_order[j] == ZX_TOK_NOT_FOUND) {
       if (x->g.tok == ZX_TOK_NOT_FOUND || !IN_RANGE(x->g.tok & ZX_TOK_TOK_MASK, 0, zx__ELEM_MAX)) {
 	ef = zx_el_tab + MINMAX(ed->tok & ZX_TOK_TOK_MASK, 0, zx__ELEM_MAX);
@@ -216,7 +225,7 @@ static int zx_chk_el_ord(struct zx_elem_s* x)
       } else {
 	et = zx_el_tab + (x->g.tok & ZX_TOK_TOK_MASK);
 	ef = zx_el_tab + MINMAX(ed->tok & ZX_TOK_TOK_MASK, 0, zx__ELEM_MAX);
-	ERR("Known <%s> tok(0x%06x) in wrong place as %d. child of <%s> tok(0x%06x) (%d,%d)", et->name, x->g.tok, n, ef->name, ed->tok, i, j);
+	ERR("WRONG: Known <%s> tok(0x%06x) in wrong place as %d. child of <%s> tok(0x%06x) (%d,%d)", et->name, x->g.tok, n, ef->name, ed->tok, i, j);
 	// *** we should really dump the whole message into log
       }
       return n;

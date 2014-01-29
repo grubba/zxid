@@ -443,12 +443,12 @@ void covimp_test()       /* -r 5 */
 								   0, 0, 0, 0, 1, 0),
 					     0, 0, 0, 0, 1, 0, 0));
 
-  zxid_wsf_decor(cf,0,0,0);
+  zxid_wsf_decor(cf,0,0,0,0);
   zxid_map_sec_mech(0);
   zxid_wsc_valid_re_env(cf,0,0,0,0);
   env = zx_NEW_e_Envelope(cf->ctx, 0);
   zxid_wsc_valid_re_env(cf,0,0,env,0);
-  zxid_wsf_decor(cf,0,env,0);
+  zxid_wsf_decor(cf,0,env,0,0);
   zxid_wsc_valid_re_env(cf,0,0,env,0);
   printf("covimp ok\n");
 }

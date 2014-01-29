@@ -7553,6 +7553,44 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1conf_1soap_1action_1hd
 }
 
 
+SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zxid_1conf_1wsc_1soap_1content_1type_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
+  struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zxid_conf **)&jarg1; 
+  arg2 = 0;
+  if (jarg2) {
+    arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
+    if (!arg2) return ;
+  }
+  {
+    if (arg2) {
+      arg1->wsc_soap_content_type = (char *) malloc(strlen(( char *)arg2)+1);
+      strcpy((char *)arg1->wsc_soap_content_type, ( char *)arg2);
+    } else {
+      arg1->wsc_soap_content_type = 0;
+    }
+  }
+  if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, ( char *)arg2);
+}
+
+
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1conf_1wsc_1soap_1content_1type_1get(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jstring jresult = 0 ;
+  struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zxid_conf **)&jarg1; 
+  result = (char *) ((arg1)->wsc_soap_content_type);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_zxidjava_zxidjniJNI_zxid_1conf_1need_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   struct zxid_need *arg2 = (struct zxid_need *) 0 ;
@@ -21848,12 +21886,13 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1wsp_1decoratef(JNIEnv 
 }
 
 
-SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_zxid_1wsf_1decor(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jint jarg4) {
+SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_zxid_1wsf_1decor(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jint jarg4, jlong jarg5) {
   jint jresult = 0 ;
   zxid_conf *arg1 = (zxid_conf *) 0 ;
   zxid_ses *arg2 = (zxid_ses *) 0 ;
   struct zx_e_Envelope_s *arg3 = (struct zx_e_Envelope_s *) 0 ;
   int arg4 ;
+  zxid_epr *arg5 = (zxid_epr *) 0 ;
   int result;
   
   (void)jenv;
@@ -21862,7 +21901,8 @@ SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_zxid_1wsf_1decor(JNIEnv *jenv, 
   arg2 = *(zxid_ses **)&jarg2; 
   arg3 = *(struct zx_e_Envelope_s **)&jarg3; 
   arg4 = (int)jarg4; 
-  result = (int)zxid_wsf_decor(arg1,arg2,arg3,arg4);
+  arg5 = *(zxid_epr **)&jarg5; 
+  result = (int)zxid_wsf_decor(arg1,arg2,arg3,arg4,arg5);
   jresult = (jint)result; 
   return jresult;
 }
@@ -26373,7 +26413,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1COMPILE_1DATE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "1387300239";
+  result = (char *) "1387472740";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }
@@ -26385,7 +26425,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1REV_1get(JNIEnv *jenv,
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "$Id: 1.19-11-g9096884 20131212-041844 sampo@ $";
+  result = (char *) "$Id: 1.19-12-g98a1826 20131218-100548 sampo@ $";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }

@@ -1206,4 +1206,52 @@ limitations under the License.
 <<doc-end.pd>>
 <<notapath: E.g TCP/IP a.k.a xBSD/Unix n/a Perl/mod_perl PHP/mod_php Java/Tomcat>>
 <<EOF: >>
+
+To: ZXID.User@lists.unh.edu
+Date: 20140129
+Subject: Re: ZXID as SAML SP and IDP proxy IPD
+
+Stefan Rasmusson <rasmusson.stefan@gmail.com> said:
+> I have tried to read about ZXID but I have a hard time, understanding what
+> it acctaully is, a product? som libraries? So I'll just ask based on what
+> my needs are.
+> 
+> I need to setup an identity federation with Artifact binding and SLO over
+> SOAP.
+> I would also like to set up a IDP proxy to act as a local IDP between my
+> local services.
+> 
+> Is this possible with ZXID?
+
+Main focus of ZXID is to be an SP.
+
+It is "product" in the sense that it offers mod_auth_saml that
+can be used with Apache to achive this without programming.
+
+It is also a library, which allows implementation of SP, as well as
+ID-WSF WSC and WSP, from various programming languages including
+C/C++, Java, php, and perl (Net::SAML).
+
+zxididp implements SAML IdP, including proxy IdP. It is a "product" in
+the sense that it is self contained stand-alone program.
+
+zxididp is also available on SaaS basis, see
+https://zxidp.org/index-idp.html and
+https://zxidp.org/idp?o=F
+option "Authenticate using another IdP (Proxy IdP)".
+
+The documentation at http://zxid.org/html/zxid-idp.html
+does mention the proxy IdP possibility, but does not
+really tell how to configure it. Turns out it is quite
+easy to use: basically the proxy IdP functionality is always
+latently available - you can see this by looking at the IdP
+metadata which lists SPSSODescriptor (i.e. zxididp is
+able to act as SP towards another IdP). To use the functionality,
+all you need is make it available in the user interface. Just
+edit an-main.html of the IdP. You can look at the zxidp.org login
+screen for an example.
+
+Cheers,
+--Sampo
+
 <<fi: >>

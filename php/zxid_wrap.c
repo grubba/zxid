@@ -14615,6 +14615,78 @@ fail:
 }
 
 
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsc_soap_content_type_set) {
+  struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+  char *arg2 = (char *) 0 ;
+  zval **args[2];
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_wsc_soap_content_type_set. Expected SWIGTYPE_p_zxid_conf");
+    }
+  }
+  if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
+  
+  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
+  if ((*args[1])->type==IS_NULL) {
+    arg2 = (char *) 0;
+  } else {
+    convert_to_string_ex(args[1]);
+    arg2 = (char *) Z_STRVAL_PP(args[1]);
+  }
+  /*@SWIG@*/;
+  
+  {
+    if (arg1->wsc_soap_content_type) free((char *)arg1->wsc_soap_content_type);
+    if (arg2) {
+      arg1->wsc_soap_content_type = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->wsc_soap_content_type, (const char *)arg2);
+    } else {
+      arg1->wsc_soap_content_type = 0;
+    }
+  }
+  
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zxid_conf_wsc_soap_content_type_get) {
+  struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+  zval **args[1];
+  char *result = 0 ;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_conf_wsc_soap_content_type_get. Expected SWIGTYPE_p_zxid_conf");
+    }
+  }
+  if(!arg1) SWIG_PHP_Error(E_ERROR, "this pointer is NULL");
+  result = (char *) ((arg1)->wsc_soap_content_type);
+  {
+    if(!result) {
+      ZVAL_NULL(return_value);
+    } else {
+      ZVAL_STRING(return_value, (char *)result, 1);
+    }
+  }
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
 ZEND_NAMED_FUNCTION(_wrap_zxid_conf_need_set) {
   struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
   struct zxid_need *arg2 = (struct zxid_need *) 0 ;
@@ -39934,11 +40006,12 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_wsf_decor) {
   zxid_ses *arg2 = (zxid_ses *) 0 ;
   struct zx_e_Envelope_s *arg3 = (struct zx_e_Envelope_s *) 0 ;
   int arg4 ;
-  zval **args[4];
+  zxid_epr *arg5 = (zxid_epr *) 0 ;
+  zval **args[5];
   int result;
   
   SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
@@ -39963,7 +40036,12 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_wsf_decor) {
   arg4 = (int) Z_LVAL_PP(args[3]);
   /*@SWIG@*/;
   
-  result = (int)zxid_wsf_decor(arg1,arg2,arg3,arg4);
+  {
+    if(SWIG_ConvertPtr(*args[4], (void **) &arg5, SWIGTYPE_p_zx_a_EndpointReference_s, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 5 of zxid_wsf_decor. Expected SWIGTYPE_p_zx_a_EndpointReference_s");
+    }
+  }
+  result = (int)zxid_wsf_decor(arg1,arg2,arg3,arg4,arg5);
   {
     ZVAL_LONG(return_value,result);
   }
@@ -42604,6 +42682,8 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zxid_conf_wsc_action_hdr_get,_wrap_zxid_conf_wsc_action_hdr_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_soap_action_hdr_set,_wrap_zxid_conf_soap_action_hdr_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_soap_action_hdr_get,_wrap_zxid_conf_soap_action_hdr_get,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_wsc_soap_content_type_set,_wrap_zxid_conf_wsc_soap_content_type_set,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_conf_wsc_soap_content_type_get,_wrap_zxid_conf_wsc_soap_content_type_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_need_set,_wrap_zxid_conf_need_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_need_get,_wrap_zxid_conf_need_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_conf_want_set,_wrap_zxid_conf_want_set,NULL)

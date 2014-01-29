@@ -232,11 +232,42 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
 {
   zxid_tok* tok;
   struct zx_e_Header_s* hdr;
-  if (!zxid_wsf_decor(cf, ses, env, 0))
+  if (!zxid_wsf_decor(cf, ses, env, 0, epr))
     return 0;
   hdr = env->Header;
 
+  /* 6.rq: ReplyTo (optional) */
+
+  if (cf->wsc_replyto_hdr && strcmp(cf->wsc_replyto_hdr, "#inhibit")) {
+    /* Mandatory for a request (says who? - apparenly AXIS2 or WSO2 has a bug of
+     * requiring this and not understanding to default it to anon).
+     * liberty-idwsf-soap-binding-2.0-errata-v1.0.pdf
+     * p.21 ll.591-595 seem to imply that ReplyTo can be omitted if value would be A_ANON. */
+    hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx, &hdr->gg);
+    /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->burl));*/
+    if (!strcmp(cf->wsc_replyto_hdr, "#anon")) {
+      hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON));
+    } else if (!strcmp(cf->wsc_replyto_hdr, "#anon_2005_03")) {
+      hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON_2005_03));
+    } else {
+      hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, cf->wsc_replyto_hdr));
+    }
+    hdr->ReplyTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
+    hdr->ReplyTo->actor = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  }
+
+#if 0
+  /* Omission means to use same address as ReplyTo */
+  hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx, &hdr->gg);
+  hdr->FaultTo->Address = zx_mk_addr(cf->ctx, &hdr->FaultTo->gg, zx_strf(cf->ctx, "%s?o=P", cf->burl));
+  hdr->FaultTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
+  hdr->FaultTo->actor = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+#endif
+
   if (ses->call_tgttok || ses->call_invoktok && epr && epr->Metadata && epr->Metadata->SecurityContext && epr->Metadata->SecurityContext->Token) {
+
+    /* 9.rq: Target Identity */
+    
     if (ses->call_tgttok) {
       D("TargetIdentity: Explicit specification of ses->call_tgttok %d",0);
       tok = ses->call_tgttok;
@@ -256,43 +287,10 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
     }
   } /* else this is just implied by the sec mech */
 
-  if (cf->wsc_replyto_hdr && strcmp(cf->wsc_replyto_hdr, "#inhibit")) {
-    /* Mandatory for a request (says who? - apparenly Axis2 or WSO2 has a bug of
-     * requiring this and not understanding to default it to anon).
-     * liberty-idwsf-soap-binding-2.0-errata-v1.0.pdf
-     * p.21 ll.591-595 seem to imply that ReplyTo can be omitted if value would be A_ANON. */
-    hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx, &hdr->gg);
-    /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->burl));*/
-    if (!strcmp(cf->wsc_replyto_hdr, "#anon")) {
-      hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON));
-    } else if (!strcmp(cf->wsc_replyto_hdr, "#anon_2005_03")) {
-      hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON_2005_03));
-    } else {
-      hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, cf->wsc_replyto_hdr));
-    }
-    hdr->ReplyTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
-    hdr->ReplyTo->actor = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-  }
-
-  if (cf->wsc_to_hdr && strcmp(cf->wsc_to_hdr, "#inhibit")) {
-    hdr->To = zx_NEW_a_To(cf->ctx, &hdr->gg);
-    if (!strcmp(cf->wsc_to_hdr, "#url")) {
-      zx_add_content(cf->ctx, &hdr->To->gg, ZX_GET_CONTENT(epr->Address));
-    } else {
-      zx_add_content(cf->ctx, &hdr->To->gg, zx_dup_str(cf->ctx, cf->wsc_to_hdr));
-    }
-    hdr->To->mustUnderstand = zx_ref_attr(cf->ctx,&hdr->To->gg,zx_e_mustUnderstand_ATTR,XML_TRUE);
-    hdr->To->actor = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-  }
-#if 0
-  /* Omission means to use same address as ReplyTo */
-  hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx, &hdr->gg);
-  hdr->FaultTo->Address = zx_mk_addr(cf->ctx, &hdr->FaultTo->gg, zx_strf(cf->ctx, "%s?o=P", cf->burl));
-  hdr->FaultTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
-  hdr->FaultTo->actor = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-#endif
-
+  /* 10. UsageDirective */
+  
   zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_PLEDGE, cf->wsc_localpdp_obl_pledge);
+  
   zx_reverse_elem_lists(&hdr->gg);
   return 1;
 }
@@ -425,25 +423,27 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
   struct zx_root_s* root;
   struct zx_e_Fault_s* flt;
 
-  D_INDENT("wsc_call: ");
+  D_INDENT("wsc_call rq: ");
   
   if (!zxid_wsc_prep(cf, ses, epr, env)) {
-    D_DEDENT("wsc_call: ");
+    D_DEDENT("wsc_call rq: ");
     return 0;
   }
   
   for (i=0; i < cf->max_soap_retry; ++i) {
     if (!zxid_wsc_prep_secmech(cf, ses, epr, env)) {
-      D_DEDENT("wsc_call: ");
+      D_DEDENT("wsc_call rq: ");
       return 0;
     }
     ses->wsc_msgid = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(env->Header->MessageID));
     
     root = zxid_soap_call_raw(cf, ZX_GET_CONTENT(epr->Address), env, ret_enve);
+    D_DEDENT("wsc_call rq: ");
+    D_INDENT("wsc_call rs: ");
     if (!root || !root->Envelope || !root->Envelope->Body) {
       ERR("soap call returned empty or seriously flawed response %p", root);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_PARSE, "e:Server", "Server sent empty or invalid reply. SOAP Envelope or Body can not be found.", 0, 0, 0, 0));
-      D_DEDENT("wsc_call: ");
+      D_DEDENT("wsc_call rs: ");
       return 0;
     }
     flt = root->Envelope->Body->Fault;
@@ -454,7 +454,7 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
       D("SOAP Fault(%.*s) string(%.*s) actor(%.*s)", code?code->len:1, code?code->s:"?", str?str->len:1, str?str->s:"?", actor?actor->len:1, actor?actor->s:"?");
       zxid_set_fault(cf, ses, zxid_mk_fault_zx_str(cf, 0, zx_dup_str(cf->ctx,TAS3_PEP_RS_VAL), code?code:zx_dup_str(cf->ctx,"e:Server"), str));
 
-      D_DEDENT("wsc_call: ");
+      D_DEDENT("wsc_call rs: ");
       return 0;
     }
     
@@ -462,8 +462,8 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
     res = ZXID_OK;
     switch (res) {
     case ZXID_OK:
-      D_DEDENT("wsc_call: ");
-      return root->Envelope;
+      D_DEDENT("wsc_call rs: ");
+      return root->Envelope;      /* Success case */
 #if 0
     case ZXID_NEW_CRED:
       break;
@@ -474,16 +474,16 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
 #endif
     case ZXID_REDIR_OK:
       D("Redirection requested (e.g. Interaction Service) %d", 0);
-      D_DEDENT("wsc_call: ");
+      D_DEDENT("wsc_call rs: ");
       return (void*)ZXID_REDIR_OK;
     default:
       ERR("Unknown result code: %d", res);
-      D_DEDENT("wsc_call: ");
+      D_DEDENT("wsc_call rs: ");
       return 0;
     }
   }
   ERR("Number of soap call retries exhausted max_soap_retry=%d", cf->max_soap_retry);
-  D_DEDENT("wsc_call: ");
+  D_DEDENT("wsc_call rs: ");
   return 0;
 }
 

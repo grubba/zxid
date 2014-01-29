@@ -458,6 +458,8 @@ class zxidjniJNI {
   public final static native String zxid_conf_wsc_action_hdr_get(long jarg1);
   public final static native void zxid_conf_soap_action_hdr_set(long jarg1, String jarg2);
   public final static native String zxid_conf_soap_action_hdr_get(long jarg1);
+  public final static native void zxid_conf_wsc_soap_content_type_set(long jarg1, String jarg2);
+  public final static native String zxid_conf_wsc_soap_content_type_get(long jarg1);
   public final static native void zxid_conf_need_set(long jarg1, long jarg2);
   public final static native long zxid_conf_need_get(long jarg1);
   public final static native void zxid_conf_want_set(long jarg1, long jarg2);
@@ -1252,7 +1254,7 @@ class zxidjniJNI {
   public final static native String zxid_wsp_validate(long jarg1, long jarg2, String jarg3, String jarg4);
   public final static native String zxid_wsp_decorate(long jarg1, long jarg2, String jarg3, String jarg4);
   public final static native String zxid_wsp_decoratef(long jarg1, long jarg2, String jarg3, String jarg4);
-  public final static native int zxid_wsf_decor(long jarg1, long jarg2, long jarg3, int jarg4);
+  public final static native int zxid_wsf_decor(long jarg1, long jarg2, long jarg3, int jarg4, long jarg5);
   public final static native String zxid_call(long jarg1, long jarg2, String jarg3, String jarg4, String jarg5, String jarg6, String jarg7);
   public final static native String zxid_callf(long jarg1, long jarg2, String jarg3, String jarg4, String jarg5, String jarg6, String jarg7);
   public final static native String zxid_call_epr(long jarg1, long jarg2, long jarg3, String jarg4, String jarg5);

@@ -1691,6 +1691,14 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_soap_action_hdr_get(zxid_conf.getCPtr(self));
   }
 
+  public static void conf_wsc_soap_content_type_set(zxid_conf self, String value) {
+    zxidjniJNI.zxid_conf_wsc_soap_content_type_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static String conf_wsc_soap_content_type_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_wsc_soap_content_type_get(zxid_conf.getCPtr(self));
+  }
+
   public static void conf_need_set(zxid_conf self, SWIGTYPE_p_zxid_need value) {
     zxidjniJNI.zxid_conf_need_set(zxid_conf.getCPtr(self), SWIGTYPE_p_zxid_need.getCPtr(value));
   }
@@ -4608,8 +4616,8 @@ public class zxidjni implements zxidjniConstants {
 
   public static String wsp_decoratef(zxid_conf cf, zxid_ses ses, String az_cred, String env_f) { return zxidjniJNI.zxid_wsp_decoratef(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), az_cred, env_f); }
 
-  public static int wsf_decor(zxid_conf cf, zxid_ses ses, SWIGTYPE_p_zx_e_Envelope_s env, int is_resp) {
-    return zxidjniJNI.zxid_wsf_decor(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), SWIGTYPE_p_zx_e_Envelope_s.getCPtr(env), is_resp);
+  public static int wsf_decor(zxid_conf cf, zxid_ses ses, SWIGTYPE_p_zx_e_Envelope_s env, int is_resp, zxid_epr epr) {
+    return zxidjniJNI.zxid_wsf_decor(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), SWIGTYPE_p_zx_e_Envelope_s.getCPtr(env), is_resp, zxid_epr.getCPtr(epr));
   }
 
   public static String call(zxid_conf cf, zxid_ses ses, String svctype, String url, String di_opt, String az_cred, String enve) { return zxidjniJNI.zxid_call(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), svctype, url, di_opt, az_cred, enve); }

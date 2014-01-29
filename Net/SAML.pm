@@ -1031,6 +1031,8 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_wsc_action_hdr_set = *Net::SAMLc::zxid_conf_wsc_action_hdr_set;
 *swig_soap_action_hdr_get = *Net::SAMLc::zxid_conf_soap_action_hdr_get;
 *swig_soap_action_hdr_set = *Net::SAMLc::zxid_conf_soap_action_hdr_set;
+*swig_wsc_soap_content_type_get = *Net::SAMLc::zxid_conf_wsc_soap_content_type_get;
+*swig_wsc_soap_content_type_set = *Net::SAMLc::zxid_conf_wsc_soap_content_type_set;
 *swig_need_get = *Net::SAMLc::zxid_conf_need_get;
 *swig_need_set = *Net::SAMLc::zxid_conf_need_set;
 *swig_want_get = *Net::SAMLc::zxid_conf_want_get;
