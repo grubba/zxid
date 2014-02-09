@@ -11,22 +11,31 @@
 <table>
 
 <tr><th>Attribute</th><th>Initial Value</th><th>Required?</th><th>Sharing Default</th></tr>
-<tr><th>Username</th><td><input name=au value="!!au"></td><td>Required</td><td>Internal use</td><td></td></tr>
-<tr><th>Password</th><td><input name=ap value="!!ap">
-    <i>(min. 5 characters)</i></td><td>Required</td><td>Internal use</td><td></td></tr>
-<tr><th>Reg. Source IP</th><td>!!ip</i></td><td>Detected</td><td>Internal use</td><td></td></tr>
+<tr><th>Username</th><td><input name=au value="!!au"></td><td>Required</td><td>Internal use</td></tr>
 
-<tr><th>Common Name</th>
+<!--tr><th>Password</th><td><input name=ap value="!!ap">
+    <i>(min. 5 characters)</i></td><td>Required</td><td>Internal use</td></tr-->
+
+<tr><th>Password</th><td><input type=hidden name=ap value="!!ap">!!ap
+    <i>(assigned password, can not change)</i></td><td>Required</td><td>Internal use</td></tr>
+
+<tr><th>Intervention</th>
+    <td><input type=checkbox name=humanintervention value=1 !!humaninterventionchecked> Password reset requires human intervention</td>
+    <td>Optional</td><td>&nbsp;</td></tr>
+
+<tr><th>Reg. Source IP</th><td>!!ip</i></td><td>Detected</td><td>Internal use</td></tr>
+
+<tr><th>Your Name (CN)</th>
     <td><input name=cn value="!!cn" size=40></td>
     <td>Optional*</td>
     <td><input type=checkbox name=cnshare !!cnshare> Share</td></tr>
 
-<tr><th>Org. Title</th>
+<tr><th>Title</th>
     <td><input name=title value="!!title"></td>
     <td>Optional</td>
     <td><input type=checkbox name=titleshare !!titleshare> Share</td></tr>
 
-<tr><th>Org. Tax Number</th>
+<tr><th>Tax Number</th>
     <td><input name=taxno value="!!taxno"></td>
     <td>Optional</td>
     <td><input type=checkbox name=taxnoshare !!taxnoshare> Share</td></tr>
@@ -65,8 +74,7 @@
     <td><input name=tel value="!!tel">
     <i>(e.g. +15035470202)</i></td>
     <td>Optional</td>
-    <td><input type=checkbox name=phoneshare !!telshare> Share</td>
-    <td></td></tr>
+    <td><input type=checkbox name=phoneshare !!telshare> Share</td></tr>
 
 <tr><th>Language Preference</th>
     <td><input name=lang value="!!lang" size=5><i>(2 letter code, e.g. "en")</i></td>
@@ -78,14 +86,14 @@
     <td>Optional</td>
     <td><input type=checkbox name=tagshare !!tagshare> Share</td></tr>
 
-<tr><th colspan=4>Comments or special requests (internal use)</th></tr>
+<tr><th colspan=4>Comments or special requests (internal use, reply at our discretion)</th></tr>
 <tr><td colspan=4><textarea name=comment cols=80 rows=3>!!comment</textarea></td></tr>
 
 </table>
 
 <b>*</b> Required for SP registration (optional for normal users).<br>
 <b>**</b> You have to supply email if you ever want to use
-    password recovery feature.
+    password reset feature.
 
 <p><input type=submit name=ok value="Agree to terms and conditions and register new user">
 <a href="html/zxidp-user-terms.html">Terms and Conditions for Users</a>

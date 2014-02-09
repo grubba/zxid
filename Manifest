@@ -483,6 +483,9 @@ cot-main.html
 zxidnewuser.pl
 newuser-main.html
 
+zxidrecoverpw.pl
+recoverpw-main.html
+
 index-idp.html
 
 # Apache authentication module

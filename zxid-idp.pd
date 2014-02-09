@@ -630,7 +630,9 @@ encoding you can use in mod_auth_saml, or other zxid based SP, the
 ~INMAP~ specification with +rule+ as ~unsb64-inf~ or ~unsb64~. See
 zxid-conf.pd, section "INMAP specification", for further information.
 
-The attributes from all the available sources are accumulated.
+The attributes from all the available sources are accumulated. If same
+attribute is available from multiple sources, behaviour is undefined
+(currenlty attribute becomes multivalued).
 
 4.5.5 zxidnewuser.pl web GUI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -666,6 +668,121 @@ of the web site.
 
 The underlying implementation uses the zxpasswd command
 line tool.
+
+4.5.6 Provisioning Using Grant Tokens
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In Grant Token provisioning, a user administrator pregenerates
+a grantoken and URL that points to zxidnewuser.pl. When user
+clicks on the grant token link, he is take to the GUI and
+asked if he already has an account (if user is already logged
+in, no question is pout to the user). If user does not yet
+have account, he is offered with opportunity to create one,
+see previous section.
+
+Once the user has logged in, he is asked to confirm that he
+wishes to obtain the attributes granted in the grant
+token. If he accepts, he gets the attributes and the
+grant token is consumed and can not be used again.
+
+Typically the grant token is used to give user attributes,
+like role or permission, that affect access control decisions
+at the SPs. The attributes can be global or local to a number of
+specific SPs.
+
+Basically grant token is just a pointer (sha1 hash of the contents) to
+a grant manifest stored at the IdP, preceded by the URL pointing
+to zxidnewuser.pl.
+
+Grant manifest syntax
+
+  bs * attr=value&attr=value
+  bs sp.zxidp.org_8080_zxidservlet_sso_o_B,I7fbXL2KNXOTk6YpjR3pQ4awVzY attr=value&attr=value
+
+where first line specifies global attribute and the second line specifies
+attributed granted wrt specific SP. On each line the first field, "bs",
+specifies that the attribute is to be pushed as part of the bootstrap
+on every SSO. The second field specifies the SP and third field specifies
+the attributes in Query String format.
+
+Alternative LDIF style multiline syntax is denoted by "dn:", e.g:
+
+  dn: op=bs,ent=*
+  attr: value
+  attr: value
+  
+  dn: op=bs,ent=sp.zxid.org_saml_o_B,I7fbXL2KNXOTk6YpjR3pQ4awVzY
+  attr: value
+  attr: value
+
+  dn: op=bs,ent=sp.zxid.org_saml_o_B,I7fbXL2KNXOTk6YpjR3pQ4awVzY,email=foo@bar.com
+  attr: value
+  attr: value
+
+  dn: op=bs,ent=sp.zxid.org_saml_o_B,I7fbXL2KNXOTk6YpjR3pQ4awVzY,idpnid=F32rcq2
+  attr: value
+  attr: value
+
+  dn: op=bs,ent=sp.zxid.org_saml_o_B,I7fbXL2KNXOTk6YpjR3pQ4awVzY,challenge=Meeting pincode?,response=2098
+  attr: value
+  attr: value
+
+  dn: op=bs,ent=sp.zxid.org_saml_o_B,I7fbXL2KNXOTk6YpjR3pQ4awVzY,idpnid=P32rcq2,notbefore=YYYYMMDD,expires=YYYYMMDD
+  attr: value
+  attr: value
+
+  dn: op=bs,ent=sp.zxid.org_saml_o_B,I7fbXL2KNXOTk6YpjR3pQ4awVzY,idpnid=P32rcq2
+  grantvalidator: VVNXO9Tk6YpjR
+  attr: value
+  attr: value
+
+where records are separated by empty line.
+
+When a grant token is used, it is moved to spent directory and may be appended
+with information indicating who spent it and when:
+
+  dn: grant=24rfeqwrv141A
+  uid: user-who-spent-the-token
+  ts: yyyymmdd-hhmmss             # in Zulu time (GMT/UTC)
+
+*Grant Token Generation and Distribution*
+
+As is obvious, issuance of grant tokens is of vital interest to access
+controls of the SP and SP is trusting the IdP to do the right thing.
+The SP promoter formulates grant manifest with desired attributes and
+requests from the IdP administrator generation of the grant token.
+
+The IdP administrator validates the grant manifest (and that it came
+from authentic source) and generates the grant tokens and passes them
+back to the SP promoter for distribution to the authorized people.
+Alternatively, the manifest may contain distribution instructions so
+that the IdP administrator can send the tokens directly - see
+example 3.
+
+It is important to note that grant tokens are bearer tokens,
+i.e. whoever gets their hands on them is able to acquire the attribute
+and corresponding access rights. Therefore the distribution should be
+limited.
+
+In the SP specific access token case, the SP promoter can make
+a restriction that the grant token can be consumed only by
+holder of a specific pseudonym by specifying ~idpnid~ field
+on the "dn:" line, see example 4.
+
+As a second factor of authentication, the manifest may specify a challenge
+question and answer to be supplied by the user of the token. Presumably
+the grant token would be sent by email, where it could be intercepted,
+but the answer to the challenge is shared securely or is otherwise known
+to the user, see example 5.
+
+If specified, see example 6, the grant token must be used in given
+time range.
+
+To further ensure authenticity of granted attributes, the SP can pass
+a validation attribute that somehow summarizes and signs the grant
+such that the IdP can not falsify it, see example 7. Such
+grantvalidator might for example contain grant number and time range
+and be encrypted by shared secret only known to the SP.
 
 4.6 Configuring Bootstraps and Discovery
 ----------------------------------------

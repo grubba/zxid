@@ -1168,15 +1168,18 @@
 
 #define ZXID_IDP_SEL_PAGE 0
 
-/*(c) If user clicks "Create New User" he is redirected to this page. */
+/*(c) If user clicks "Create New User" he is redirected to this page.
+ * E.g. "zxidnewuser.pl" */
 
 #define ZXID_NEW_USER_PAGE 0
 
-/*(c) If user clicks on recover password, redirect to this page. */
+/*(c) If user clicks on recover password, redirect to this page.
+ * E.g. "zxidrecoverpw.pl" */
 
 #define ZXID_RECOVER_PASSWD 0
 
-/*(c) If attribute selection is desired during SSO, redirect to this page. */
+/*(c) If attribute selection is desired during SSO, redirect to this page.
+ * E.g. "zxidatsel.pl" */
 
 #define ZXID_ATSEL_PAGE 0
 

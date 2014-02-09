@@ -7,11 +7,9 @@
 # Licensed under Apache License 2.0, see file COPYING.
 # $Id$
 #
-# 8.3.2010, created --Sampo
-# 5.2.2012, changed zxpasswd to use -n instead of -c --Sampo
-# 9.2.2014, changed to use zxpasswd -new
+# 9.2.2014, created based on zxidnewuser.pl --Sampo
 #
-# Web GUI for creating new user, possibly in middle of login sequence.
+# Web GUI for recovering password, possibly in middle of login sequence.
 # The AuthnRequest is preserved through new user creation by passing ar.
 
 $from = 'sampo-pwbot-noreply@zxid.org';
@@ -20,18 +18,12 @@ $dir = '/var/zxid/idp';
 
 $usage = <<USAGE;
 Web GUI for creating new user, possibly in middle of login sequence.
-Usage: http://localhost:8081/zxidnewuser.pl?QUERY_STRING
-       ./zxidnewuser.pl -a QUERY_STRING
+Usage: http://localhost:8081/zxidrecoverpw.pl?QUERY_STRING
+       ./zxidrecoverpw.pl -a QUERY_STRING
          -a Ascii mode
-         -t Test mode
 USAGE
     ;
 die $USAGE if $ARGV[0] =~ /^-[Hh?]/;
-if ($ARGV[0] eq '-t') {
-    warn "Sending...";
-    send_detail("Test $$");
-    exit;
-}
 
 use Data::Dumper;
 use MIME::Base64;
@@ -123,18 +115,20 @@ MAIL
 sub send_detail {
     my ($subj) = @_;
     send_mail($admin_mail, $subj, <<BODY);
+intervention: $cgi{'ivent'}
 uid: $cgi{'au'}
+pw: $pw
 ip: $ENV{REMOTE_ADDR}
-title: $cgi{'title'}
-o: $cgi{'o'}
-ou: $cgi{'ou'}
 email: $cgi{'email'}
 im: $cgi{'im'}
 tel: $cgi{'tel'}
-tag: $cgi{'tag'}
 
 Comments or special requests:
 $cgi{'comment'}
+
+Attributes:
+$at
+EOF
 BODY
     ;
 }
@@ -142,75 +136,73 @@ BODY
 ### MAIN
 
 if (length $cgi{'ok'}) {
+    if ($cgi{'ivent'} ne 'block' && $cgi{'ivent'} ne 'human' && $cgi{'ivent'} ne 'auto') {
+	warn "No intervention chosen. Redirecting back to index page.";
+	redirect("/");
+    }
+
     if (length $cgi{'au'} < 3 || length $cgi{'au'} > 40) {
 	$cgi{'ERR'} = "Username must be at least 3 characters long (and no longer than 40 chars).";
     } elsif ($cgi{'au'} !~ /^[A-Za-z0-9_-]+$/s) {
 	$cgi{'ERR'} = "Username can only contain characters [A-Za-z0-9_-]";
-    } elsif (length $cgi{'ap'} < 5 || length $cgi{'ap'} > 80) {
-	$cgi{'ERR'} = "Password must be at least 5 characters long (and no longer than 80 chars).";
-    } elsif (-e "${dir}uid/$cgi{'au'}") {
-	$cgi{'ERR'} = "Username already taken.";
+    } elsif (! -e "${dir}uid/$cgi{'au'}") {
+	$cgi{'ERR'} = "Username not known.";
     } else {
-	warn "Creating new user($cgi{'au'})";
-	open P, "|./zxpasswd -new $cgi{'au'} ${dir}uid" or die "Cant open pipe to zxpasswd: $! $?";
-	print P $cgi{'ap'};
-	close P;
-	warn "Populating user($cgi{'au'})";
-	if (-e "${dir}uid/$cgi{'au'}") {
-	    open LOG, ">${dir}uid/$cgi{'au'}/.log" or die "Cant open write .log: $!";
-	    print LOG "$ts Created $cgi{'au'} ip=$ENV{REMOTE_ADDR}\n" or die "Cant write .log: $!";
-	    close LOG or die "Cant close write .log: $!";
+	warn "Reset password for user($cgi{'au'})";
 
-	    open IP, ">${dir}uid/$cgi{'au'}/.regip" or die "Cant open write .regip: $!";
-	    print IP $ENV{REMOTE_ADDR} or die "Cant write .regip: $!";
-	    close IP or die "Cant close write .regip: $!";
+	open R, "</dev/urandom" or die "Cant open read /dev/urandom: $!";
+	sysread R, $pw, 9;
+	close R;
+	$pw = MIME::Base64::encode($pw);
+	
+	$at =  readall("${dir}uid/$cgi{'au'}/.bs/.at");
+	$at .= readall("${dir}uid/$cgi{'au'}/.bs/.optat");
+	($email) = $at =~ /^email:\s+(\S+)$/m;
+	
+	open LOG, ">>${dir}uid/$cgi{'au'}/.log" or die "Cant open write .log: $!";
+	print LOG "$ts Password reset for $cgi{'au'} email($email) ip=$ENV{REMOTE_ADDR}\n" or die "Cant write .log: $!";
+	close LOG or die "Cant close write .log: $!";
 
-	    if ($cgi{'humanintervention'} > 0) {
-		open HUMAN, ">${dir}uid/$cgi{'au'}/.human" or die "Cant open write .human: $!";
-		print HUMAN $cgi{'humanintervention'} or die "Cant write .human: $!";
-		close HUMAN or die "Cant close write .human: $!";
-	    }
-	    #mkdir "${dir}uid/$cgi{'au'}/.bs" or warn "Cant mkdir .bs: $!"; zxpasswd creates .bs
-	    open AT, ">${dir}uid/$cgi{'au'}/.bs/.at" or die "Cant write .bs/.at: $!";
-	    open OPTAT, ">${dir}uid/$cgi{'au'}/.bs/.optat" or die "Cant write .bs/.optat: $!";
-	    
-	    for $at (qw(cn title taxno o ou street citystc email im tel lang tag)) {
-		$val = $cgi{$at};
-		$val =~ s/[\r\n]//g;
-		next if !length $val;
-		if ($cgi{"${at}share"}) {
-		    print AT "$at: $val\n";
-		} else {
-		    print OPTAT "$at: $val\n";
-		}
-	    }
-	    
-	    close AT;
-	    close OPTAT;
-	    
-	    send_detail("New User $cgi{'au'}");
+	$human = readall("${dir}uid/$cgi{'au'}/.human");
+	if ($human < 1 && $cgi{'ivent'} ne 'human') {
+	    open P, "|./zxpasswd $cgi{'au'} ${dir}uid" or die "Cant open pipe to zxpasswd: $! $?";
+	    print P $pw;
+	    close P;
+	    if ($cgi{'ivent'} eq 'auto' && $email) {
+		send_mail($email, "Password reset", <<BODY);
+Your new password is: $pw
 
-	    if ($cgi{'zxidpurl'} && $cgi{'zxrfr'} && $cgi{'ar'}) {
-		warn "Created user($cgi{'au'}). Redirecting back to IdP";
-		redirect("$cgi{'zxidpurl'}?o=$cgi{'zxrfr'}&ar=$cgi{'ar'}");
-	    } else {
-		warn "Created user($cgi{'au'}). Redirecting back to index page.";
-		redirect("/");
+Please login with the new password within 24h to prevent expiration.
+
+Delete this mail, to prevent exposure of the password, as soon as
+you have confirmed that the password works. You may keep a private
+record of the password in a network inaccessible place, but please
+do not use this mail as long term record as inappropriate access
+to your mailbox could compromise your account.
+
+If you do not wish to receive passwords by email, please request
+human intervention when resetting your password.
+BODY
+;
+		# *** password expiration code
 	    }
+	    $pw = '(omitted)';
+	    send_detail("PW Reset Auto $cgi{'au'}");
 	} else {
-	    $cgi{'ERR'} = "User creation failed. System error (${dir}uid/$cgi{'au'}).";
+	    send_detail("PW Reset Human $cgi{'au'}");
+	}
+	
+	if ($cgi{'zxidpurl'} && $cgi{'zxrfr'} && $cgi{'ar'}) {
+	    warn "Created user($cgi{'au'}). Redirecting back to IdP";
+	    redirect("$cgi{'zxidpurl'}?o=$cgi{'zxrfr'}&ar=$cgi{'ar'}");
+	} else {
+	    warn "Created user($cgi{'au'}). Redirecting back to index page.";
+	    redirect("/");
 	}
     }
 }
 
-$cgi{'humaninterventionchecked'} = $cgi{'humanintervention'} eq '1' ? ' checked':'';
 $cgi{'ip'} = $ENV{REMOTE_ADDR};
-if (!length $cgi{'ap'}) {
-    open R, "</dev/urandom" or die "Cant open read /dev/urandom: $!";
-    sysread R, $pw, 9;
-    close R;
-    $cgi{'ap'} = MIME::Base64::encode($pw);  # Just a suggestion
-}
-show_templ("newuser-main.html", \%cgi);
+show_templ("recoverpw-main.html", \%cgi);
 
 __END__
