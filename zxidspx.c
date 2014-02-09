@@ -70,9 +70,9 @@ static int zxid_sp_dig_sso_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, stru
     zx_see_elem_ns(cf->ctx, &pop_seen, &resp->gg);
     return zxid_sp_sso_finalize(cf, cgi, ses, a7n, pop_seen);
   }
-  if (cf->anon_ok && cgi->rs && !strcmp(cf->anon_ok, cgi->rs))  /* Prefix match */
+  if (cf->anon_ok && cgi->rs && zx_match(cf->anon_ok, cgi->rs))
     return zxid_sp_anon_finalize(cf, cgi, ses);
-  ERR("No Assertion found and not anon_ok in SAML Response %d", 0);
+  ERR("No Assertion found in SAML Response and anon_ok does not match %p", cf->anon_ok);
   zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "C", "ERR", 0, "sid(%s) No assertion", ses->sid?ses->sid:"");
   return 0;
 }

@@ -26,7 +26,8 @@
 ** OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 ** SUCH DAMAGE.
 */
-/* 20131121 slightly modified by Sampo Kellomaki (sampo@zxid.org) for zxid project. */
+/* 20131121 slightly modified by Sampo Kellomaki (sampo@zxid.org) for zxid project.
+ * See also fnmatch(1). */
 
 #include <string.h>
 

@@ -272,7 +272,8 @@ static void zxid_add_mapped_attr(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta
     D("%s: ATTR(%s)=VAL(%s)", lk, name, val);
     if (map->dst && *map->dst && map->src && map->src[0] != '*')
       name = map->dst;
-    zxid_mk_sa_attribute_ss(cf, father, name, 0, zxid_map_val(cf, ses, meta, map, name, val));
+    zxid_mk_sa_attribute_ss(cf, father, name, 0,
+			    zxid_map_val(cf, ses, meta, map, name, val));
   } else {
     D("%s: Attribute(%s) filtered out either by del rule in aamap, or does not match aamap %p", lk, name, map);
   }

@@ -1,5 +1,5 @@
 # zxid/Makefile  -  How to build ZXID (try: make help)
-# Copyright (c) 2012-2013 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
+# Copyright (c) 2012-2014 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
 # Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 # Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
 # Author: Sampo Kellomaki (sampo@iki.fi)
@@ -27,6 +27,7 @@
 # 21.6.2013, added mini_httpd --Sampo
 # 4.11.2013, reformed the TARGET system; include and lib paths per Debian --Sampo
 # 21.11.2013, added zxid_httpd --Sampo
+# 9.2.2014,  added musl-libc compile --Sampo
 #
 # Build so far only tested on Linux, Solaris 8, MacOS 10.3, and mingw-w64. This
 # makefile needs gmake-3.78 or newer.
@@ -235,7 +236,6 @@ endif
 ifeq ($(TARGET),diet-linux)
 CROSS_COMPILE=1
 DIETDIR=/usr/local/dietlibc-0.33
-SYSROOT=$(DIETDIR)/sysroot
 CC=$(DIETDIR)/bin/diet gcc
 LD=$(DIETDIR)/bin/diet gcc
 CDEF+=-DLINUX
@@ -245,6 +245,23 @@ CINC= -I. -I$(DIETDIR)/include
 # -fno-stack-protector is needed to eliminate unwanted function plrologue code that causes segv
 CFLAGS+= -fno-stack-protector
 LDFLAGS= -L$(DIETDIR)/lib-i386 -L$(DIETDIR)/lib
+LIBS+=-lpthread
+# Marks that target has been detected
+TARGET_FOUND=1
+endif
+
+ifeq ($(TARGET),musl-linux)
+CROSS_COMPILE=1
+MUSLDIR=/usr/local/musl-0.9.15
+CC=$(MUSLDIR)/bin/musl-gcc
+LD=$(MUSLDIR)/bin/musl-gcc
+CDEF+=-DLINUX
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
+CINC= -I. -I$(MUSLDIR)/include
+# -fno-stack-protector is needed to eliminate unwanted function plrologue code that causes segv
+CFLAGS+= -fno-stack-protector
+LDFLAGS= -L$(MUSLDIR)/lib-i386 -L$(MUSLDIR)/lib
 LIBS+=-lpthread
 # Marks that target has been detected
 TARGET_FOUND=1

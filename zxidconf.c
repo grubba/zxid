@@ -1018,6 +1018,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->wsp_nosig_fatal = ZXID_WSP_NOSIG_FATAL;
   cf->notimestamp_fatal = ZXID_NOTIMESTAMP_FATAL;
   cf->anon_ok        = ZXID_ANON_OK;
+  cf->optional_login_pat = ZXID_OPTIONAL_LOGIN_PAT;
   cf->required_authnctx = ZXID_REQUIRED_AUTHNCTX;	/* NB: NULL. */
   cf->issue_authnctx_pw = ZXID_ISSUE_AUTHNCTX_PW;
   cf->idp_pref_acs_binding = ZXID_IDP_PREF_ACS_BINDING;
@@ -1666,6 +1667,7 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
       }
       if (!strcmp(n, "OAZ_JWT_SIGENC_ALG")) { cf->oaz_jwt_sigenc_alg = *v; break; }
       if (!strcmp(n, "OPT_INCLUDE"))    { zxid_parse_inc(cf, v, 0); break; }
+      if (!strcmp(n, "OPTIONAL_LOGIN_PAT")) { cf->optional_login_pat = v; D("optional_login_pat(%s)", cf->optional_login_pat); break; }
       goto badcf;
     case 'P':  /* PATH (e.g. /var/zxid) */
       DD("PATH maybe n(%s)=v(%s)", n, v);
@@ -2092,6 +2094,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "A7NTTL=%d\n"
 
 "ANON_OK=%s\n"
+"OPTIONAL_LOGIN_PAT=%s\n"
 "ISSUE_AUTHNCTX_PW=%s\n"
 "IDP_PREF_ACS_BINDING=%s\n"
 "MANDATORY_ATTR=%s\n"
@@ -2292,6 +2295,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->a7nttl,
 
 		 STRNULLCHK(cf->anon_ok),
+		 STRNULLCHK(cf->optional_login_pat),
 		 STRNULLCHK(cf->issue_authnctx_pw),
 		 STRNULLCHK(cf->idp_pref_acs_binding),
 		 STRNULLCHK(cf->mandatory_attr),

@@ -1,5 +1,5 @@
 /* mod_auth_saml.c  -  Handwritten functions for Apache mod_auth_saml module
- * Copyright (c) 2012-2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2014 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2008-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -18,6 +18,7 @@
  * 13.2.2013, added WD option --Sampo
  * 21.6.2013, added SOAP WSP capability --Sampo
  * 17.11.2013, move redir_to_content feature to zxid_simple() --Sampo
+ * 8.2.2014,  added OPTIONAL_LOGIN_PAT feature --Sampo
  *
  * To configure this module add to httpd.conf something like
  *
@@ -488,17 +489,22 @@ static int chkuid(request_rec* r)
   } else {
     /* Some other page. Just check for session. */
     if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->burl(%s) uri_len=%d url_len=%d", r->uri, STRNULLCHKNULL(r->args), cf->burl, uri_len, url_len);
-    if (r->args && r->args[0] == 'l') {
-      D("Detect login(%s)", r->args);
-    } else
-      cgi.op = 'E';   /* Trigger IdP selection screen */
     if (cgi.sid && cgi.sid[0] && zxid_get_ses(cf, &ses, cgi.sid)) {
       res = zxid_simple_ses_active_cf(cf, &cgi, &ses, 0, AUTO_FLAGS);
       if (res)
 	goto process_zxid_simple_outcome;
     } else {
       D("No active session(%s) op(%c)", STRNULLCHK(cgi.sid), cgi.op?cgi.op:'-');
+      if (cf->optional_login_pat && zx_match(cf->optional_login_pat, r->uri)) {
+	D("optional_login_pat matches ok %d", OK);
+	D_DEDENT("chkuid: ");
+	return OK;
+      }
     }
+    if (r->args && r->args[0] == 'l') {
+      D("Detect login(%s)", r->args);
+    } else
+      cgi.op = 'E';   /* Trigger IdP selection screen */
     D("other page: no_ses uri(%s) templ(%s) tf(%s) k(%s)", r->uri, STRNULLCHKNULL(cgi.templ), STRNULLCHKNULL(cf->idp_sel_templ_file), STRNULLCHKNULL(cgi.skin));
   }
 step_up:

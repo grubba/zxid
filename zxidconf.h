@@ -897,16 +897,32 @@
 #define ZXID_SSO_PAT "*"
 
 /*(c) Anonymous can see protected content
- * If ANON_OK is set and matches prefix of the local URL, SSO failure does
- * not block protected content from being
+ * If ANON_OK is set and matches the local URL - see zx_match(), SSO failure
+ * does not block protected content from being
  * shown. While this usually is a security problem, in some circumstances
  * you may want to show error message or nonpersonalized content from the
  * application layer. If application checks that the SSO really happened,
  * then there is no security problem - the responsibility is application's.
  * Typically ANON_OK=/dir/ is used with IsPassive (fp=1) to implement personalization
  * if user already has session, but allow the user to access page anonymously
- * without logging in if he does not have session. */
+ * without logging in if he does not have session.
+ *
+ * *** This option does not prevent the SSO from being tried in the
+ * *** first place and consequently, IdP selection will be invoked in any
+ * *** case - even if user has no meaningful IdP in mind. This option only
+ * *** controls what happens after IdP redirects back without having
+ * *** authenticated the user. By clever manupulation of DEFAULTQS and fp=1
+ * *** this could be made to work, if there is only one IdP. */
 #define ZXID_ANON_OK 0
+
+/*(c) If a page matching OPTIONAL_LOGIN_PAT is accessed, then
+ * a. If session is already active, session is used and attributes of session
+ *    are visible to the page.
+ * b. If no session is active, then no login is requested, unless the
+ *    URL matches BURL.
+ * N.B. This option tries to do what many people try to use ANON_OK for.
+ */
+#define ZXID_OPTIONAL_LOGIN_PAT 0
 
 /*(c) Required Authentication Context Class Ref.
  * This can be used

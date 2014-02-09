@@ -251,6 +251,7 @@ struct zxid_conf {
   char* load_cot_cache;
   char* wspcgicmd;
   char* anon_ok;
+  char* optional_login_pat;
   char** required_authnctx;  /* Array of acceptable authentication context class refs */
   char* issue_authnctx_pw;   /* What authentication context IdP issues for password authent. */
   char* idp_pref_acs_binding;
