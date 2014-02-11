@@ -221,7 +221,7 @@ if (!length $cgi{'ap'}) {
     open R, "</dev/urandom" or die "Cant open read /dev/urandom: $!";
     sysread R, $pw, 9;
     close R;
-    $cgi{'ap'} = MIME::Base64::encode($pw);  # Just a suggestion
+    $cgi{'ap'} = encode_base64($pw,'');  # Just a suggestion
 }
 show_templ("newuser-main.html", \%cgi);
 

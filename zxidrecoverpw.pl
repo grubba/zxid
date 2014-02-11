@@ -163,7 +163,7 @@ if (length $cgi{'ok'}) {
 	open R, "</dev/urandom" or die "Cant open read /dev/urandom: $!";
 	sysread R, $pw, 9;
 	close R;
-	$pw = MIME::Base64::encode($pw);
+	$pw = encode_base64($pw,'');
 	
 	$at =  readall("${dir}uid/$cgi{'au'}/.bs/.at");
 	$at .= readall("${dir}uid/$cgi{'au'}/.bs/.optat");
