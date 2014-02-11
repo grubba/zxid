@@ -139,6 +139,16 @@ BODY
     ;
 }
 
+if (length $cgi{'continue'}) {
+    if ($cgi{'zxidpurl'} && $cgi{'zxrfr'} && $cgi{'ar'}) {
+       warn "Redirecting back to IdP";
+       redirect("$cgi{'zxidpurl'}?o=$cgi{'zxrfr'}&ar=$cgi{'ar'}");
+    } else {
+       warn "Redirecting back to index page.";
+       redirect("/");
+    }
+}
+
 ### MAIN
 
 if (length $cgi{'ok'}) {
@@ -190,13 +200,15 @@ if (length $cgi{'ok'}) {
 	    
 	    send_detail("New User $cgi{'au'}");
 
-	    if ($cgi{'zxidpurl'} && $cgi{'zxrfr'} && $cgi{'ar'}) {
-		warn "Created user($cgi{'au'}). Redirecting back to IdP";
-		redirect("$cgi{'zxidpurl'}?o=$cgi{'zxrfr'}&ar=$cgi{'ar'}");
-	    } else {
-		warn "Created user($cgi{'au'}). Redirecting back to index page.";
-		redirect("/");
-	    }
+            if ($cgi{'zxidpurl'} && $cgi{'zxrfr'} && $cgi{'ar'}) {
+		warn "Created user($cgi{'au'})";
+		$cgi{MSG} = "Success! Created user $cgi{'au'}. Click Continue to get back to IdP login.";
+		show_templ("newuser-status.html", \%cgi);
+            } else {
+		warn "Created user($cgi{'au'})";
+		$cgi{MSG} = "Success! Created user $cgi{'au'}. Click Continue to get back to top.";
+		show_templ("newuser-status.html", \%cgi);
+            }
 	} else {
 	    $cgi{'ERR'} = "User creation failed. System error (${dir}uid/$cgi{'au'}).";
 	}

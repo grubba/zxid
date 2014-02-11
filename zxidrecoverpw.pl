@@ -135,6 +135,16 @@ BODY
 
 ### MAIN
 
+if (length $cgi{'continue'}) {
+    if ($cgi{'zxidpurl'} && $cgi{'zxrfr'} && $cgi{'ar'}) {
+       warn "Redirecting back to IdP";
+       redirect("$cgi{'zxidpurl'}?o=$cgi{'zxrfr'}&ar=$cgi{'ar'}");
+    } else {
+       warn "Redirecting back to index page.";
+       redirect("/");
+    }
+}
+
 if (length $cgi{'ok'}) {
     if ($cgi{'ivent'} ne 'block' && $cgi{'ivent'} ne 'human' && $cgi{'ivent'} ne 'auto') {
 	warn "No intervention chosen. Redirecting back to index page.";
@@ -193,11 +203,13 @@ BODY
 	}
 	
 	if ($cgi{'zxidpurl'} && $cgi{'zxrfr'} && $cgi{'ar'}) {
-	    warn "Created user($cgi{'au'}). Redirecting back to IdP";
-	    redirect("$cgi{'zxidpurl'}?o=$cgi{'zxrfr'}&ar=$cgi{'ar'}");
-	} else {
-	    warn "Created user($cgi{'au'}). Redirecting back to index page.";
-	    redirect("/");
+	    warn "Password reset for user($cgi{'au'})";
+	    $cgi{MSG} = "Success! Password reset for user $cgi{'au'}. Check your email (including spam folder). Click Continue to get back to IdP login.";
+	    show_templ("newuser-status.html", \%cgi);
+        } else {
+	    warn "Password reset for user($cgi{'au'})";
+	    $cgi{MSG} = "Success! Password reset for user $cgi{'au'}. Check your email (including spam folder). Click Continue to get back to top.";
+	    show_templ("newuser-status.html", \%cgi);
 	}
     }
 }
