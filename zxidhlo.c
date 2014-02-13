@@ -85,7 +85,7 @@ int main(int argc, char** argv)
       perror("/var/tmp/zxid.stderr");
       exit(2);
     }
-  }
+  //}
   fprintf(stderr, "=================== Running " ZXIDHLO " ===================\n");
 #endif
 
