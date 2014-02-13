@@ -26,7 +26,7 @@ Usage: http://localhost:8081/zxidnewuser.pl?QUERY_STRING
          -t Test mode
 USAGE
     ;
-die $USAGE if $ARGV[0] =~ /^-[Hh?]/;
+die $usage if $ARGV[0] =~ /^-[Hh?]/;
 if ($ARGV[0] eq '-t') {
     warn "Sending...";
     send_detail("Test $$");
@@ -40,7 +40,7 @@ close STDERR;
 open STDERR, ">>/var/tmp/zxid.stderr" or die "Cant open error log: $!";
 select STDERR; $|=1; select STDOUT;
 
-($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time);
+($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
 $ts = sprintf "%04d%02d%02d-%02d%02d%02d", $year+1900, $mon+1, $mday, $hour, $min, $sec;
 #warn "$$: START env: " . Dumper(\%ENV);
 

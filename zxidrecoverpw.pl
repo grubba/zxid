@@ -12,7 +12,7 @@
 # Web GUI for recovering password, possibly in middle of login sequence.
 # The AuthnRequest is preserved through new user creation by passing ar.
 
-$from = 'sampo-pwbot-noreply@zxid.org';
+$from = 'sampo-noreplybot@zxid.org';
 $admin_mail = 'sampo-pwadm@zxid.org';
 $dir = '/var/zxid/idp';
 
@@ -23,7 +23,7 @@ Usage: http://localhost:8081/zxidrecoverpw.pl?QUERY_STRING
          -a Ascii mode
 USAGE
     ;
-die $USAGE if $ARGV[0] =~ /^-[Hh?]/;
+die $usage if $ARGV[0] =~ /^-[Hh?]/;
 
 use Data::Dumper;
 use MIME::Base64;
@@ -32,9 +32,9 @@ close STDERR;
 open STDERR, ">>/var/tmp/zxid.stderr" or die "Cant open error log: $!";
 select STDERR; $|=1; select STDOUT;
 
-($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time);
+($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
 $ts = sprintf "%04d%02d%02d-%02d%02d%02d", $year+1900, $mon+1, $mday, $hour, $min, $sec;
-#warn "$$: START env: " . Dumper(\%ENV);
+#warn "$$: START $ts env: " . Dumper(\%ENV);
 
 $ENV{QUERY_STRING} ||= shift;
 cgidec($ENV{QUERY_STRING});
@@ -71,7 +71,7 @@ sub readall {
     my ($f) = @_;
     my ($pkg, $srcfile, $line) = caller;
     undef $/;         # Read all in, without breaking on lines
-    open F, "<$f" or die "$srcfile:$line: Cant read($f): $!";
+    open F, "<$f" or warn "$srcfile:$line: Cant read($f): $!";
     binmode F;
     my $x = <F>;
     close F;
@@ -95,7 +95,7 @@ sub redirect {
 
 sub send_mail {
     my ($to, $subj, $body) = @_;
-    open S, "|/usr/sbin/sendmail -i -B 8BITMIME -t" or die "No sendmail in path: $! $?";
+    open S, "|/usr/sbin/sendmail -i -B 8BITMIME -t" or do { warn "No /usr/sbin/sendmail: $! $? (apt-get install nullmailer)"; return; } ;
     $msg = <<MAIL;
 From: $from
 To: $to
@@ -107,7 +107,7 @@ Content-Transfer-Encoding: 8bit
 $body
 MAIL
 ;
-    warn "msr($msg)";
+    warn "msg($msg)";
     print S $msg;
     close S;
 }
@@ -133,15 +133,50 @@ BODY
     ;
 }
 
+sub zxpasswd {
+    my ($pw) = @_;
+    open P, "|./zxpasswd $cgi{'au'} ${dir}uid" or die "Cant open pipe to zxpasswd: $! $?";
+    print P $pw;
+    close P;
+}
+
 ### MAIN
 
 if (length $cgi{'continue'}) {
     if ($cgi{'zxidpurl'} && $cgi{'zxrfr'} && $cgi{'ar'}) {
-       warn "Redirecting back to IdP";
-       redirect("$cgi{'zxidpurl'}?o=$cgi{'zxrfr'}&ar=$cgi{'ar'}");
+	warn "Redirecting back to IdP";
+	redirect("$cgi{'zxidpurl'}?o=$cgi{'zxrfr'}&ar=$cgi{'ar'}");
     } else {
-       warn "Redirecting back to index page.";
-       redirect("/");
+	warn "Redirecting back to index page.";
+	redirect("/");
+    }    
+}
+
+if (length $cgi{'pwreset'} && length $cgi{'au'}) {
+    $pwreset = readall("${dir}uid/$cgi{'au'}/.pwreset");
+    unlink "${dir}uid/$cgi{'au'}/.pwreset";  # one time use only
+    (undef, $expires_secs, $user, $ip) = split /\s+/, $pwreset;
+    if ($expires_secs >= time()) {
+	if ($user eq $cgi{'au'}) {
+	    open R, "</dev/urandom" or die "Cant open read /dev/urandom: $!";
+	    sysread R, $pw, 9;
+	    close R;
+	    $pw = encode_base64($pw,'');
+	    zxpasswd($pw);
+	    send_detail("PW picked up ok, reset $cgi{'au'}");
+
+	    $cgi{'PW'} = $pw;
+	    $cgi{'ip'} = $ENV{REMOTE_ADDR};
+	    show_templ("recoverpw-reset.html", \%cgi);
+	} else {
+	    warn "The user from URL($cgi{'au'}) does not match user from pwreset token($user)";
+	    $cgi{ERR} = "User mismatch.";
+	    send_detail("PW pickup user mismatch $cgi{'au'}");
+	}
+    } else {
+	warn "Password reset token has expired. now=".time()." > expiry=$expires_secs";
+	$cgi{ERR} = "Password reset token has expired or already used (they can only be used once). You need to trigger the reset again.";
+	send_detail("PW pickup expiry $cgi{'au'}");
     }
 }
 
@@ -158,6 +193,7 @@ if (length $cgi{'ok'}) {
     } elsif (! -e "${dir}uid/$cgi{'au'}") {
 	$cgi{'ERR'} = "Username not known.";
     } else {
+	$cgi{ERR} = undef;
 	warn "Reset password for user($cgi{'au'})";
 
 	open R, "</dev/urandom" or die "Cant open read /dev/urandom: $!";
@@ -168,46 +204,49 @@ if (length $cgi{'ok'}) {
 	$at =  readall("${dir}uid/$cgi{'au'}/.bs/.at");
 	$at .= readall("${dir}uid/$cgi{'au'}/.bs/.optat");
 	($email) = $at =~ /^email:\s+(\S+)$/m;
+	$human = readall("${dir}uid/$cgi{'au'}/.human");
 	
 	open LOG, ">>${dir}uid/$cgi{'au'}/.log" or die "Cant open write .log: $!";
-	print LOG "$ts Password reset for $cgi{'au'} email($email) ip=$ENV{REMOTE_ADDR}\n" or die "Cant write .log: $!";
+	print LOG "$ts Password reset for $cgi{'au'} email($email) ivent($cgi{'ivent'}) ($human) ip=$ENV{REMOTE_ADDR}\n" or die "Cant write .log: $!";
 	close LOG or die "Cant close write .log: $!";
-
-	$human = readall("${dir}uid/$cgi{'au'}/.human");
-	if ($human < 1 && $cgi{'ivent'} ne 'human') {
-	    open P, "|./zxpasswd $cgi{'au'} ${dir}uid" or die "Cant open pipe to zxpasswd: $! $?";
-	    print P $pw;
-	    close P;
-	    if ($cgi{'ivent'} eq 'auto' && $email) {
-		send_mail($email, "Password reset", <<BODY);
-Your new password is: $pw
-
-Please login with the new password within 24h to prevent expiration.
-
-Delete this mail, to prevent exposure of the password, as soon as
-you have confirmed that the password works. You may keep a private
-record of the password in a network inaccessible place, but please
-do not use this mail as long term record as inappropriate access
-to your mailbox could compromise your account.
-
-If you do not wish to receive passwords by email, please request
-human intervention when resetting your password.
-BODY
-;
-		# *** password expiration code
-	    }
+	
+	if ($human >= 1 || $cgi{'ivent'} eq 'human') {
+	    send_detail("PW Reset or Block Human $cgi{'au'}");
+	} elsif ($cgi{'ivent'} eq 'block') {
+	    zxpasswd($pw);
 	    $pw = '(omitted)';
-	    send_detail("PW Reset Auto $cgi{'au'}");
-	} else {
-	    send_detail("PW Reset Human $cgi{'au'}");
+	    send_detail("PW Block $cgi{'au'}");
+	} elsif ($cgi{'ivent'} eq 'auto' && $email) {
+	    zxpasswd($pw);
+	    $pw = '(omitted)';
+	    send_detail("PW Block pending password pickup $cgi{'au'}");
+
+	    open R, "</dev/urandom" or die "Cant open read /dev/urandom: $!";
+	    sysread R, $pwurl, 9;
+	    close R;
+	    $pwurl = encode_base64($pwurl,'');
+	    
+	    $expires_secs = time()+84600;
+	    open PWRESET, ">${dir}uid/$cgi{'au'}/.pwreset" or die "Cant open write .pwreset: $!";
+	    print PWRESET "PWRESET $expires_secs $cgi{'au'} $ENV{REMOTE_ADDR} email($email)\n" or die "Cant write .pwreset: $!";
+	    close PWRESET or die "Cant close write .pwreset: $!";
+	    
+	    #$pwurl = ($ENV{HTTPS}eq'on'?'https':'http')."://$ENV{HTTP_HOST}$ENV{SCRIPT_NAME}?au=$cgi{'au'}&pwreset=$pwurl";
+	    $pwurl = (1?'https':'http')."://$ENV{HTTP_HOST}$ENV{SCRIPT_NAME}?au=$cgi{'au'}&pwreset=$pwurl";
+
+	    $template = readall("recoverpw-main.html");
+	    ($templ) = $template =~ /<!--EMAIL_BODY(.*)END_EMAIL_BODY-->/s;
+	    warn "Next step pwurl($pwurl) template($template) templ($templ)";
+	    $templ =~ s/!!pwurl/$pwurl/g;
+	    send_mail($email, "Password reset", $templ);
 	}
 	
 	if ($cgi{'zxidpurl'} && $cgi{'zxrfr'} && $cgi{'ar'}) {
 	    warn "Password reset for user($cgi{'au'})";
 	    $cgi{MSG} = "Success! Password reset for user $cgi{'au'}. Check your email (including spam folder). Click Continue to get back to IdP login.";
 	    show_templ("newuser-status.html", \%cgi);
-        } else {
-	    warn "Password reset for user($cgi{'au'})";
+	} else {
+	    warn "Password reset for user($cgi{'au'}, back to top)";
 	    $cgi{MSG} = "Success! Password reset for user $cgi{'au'}. Check your email (including spam folder). Click Continue to get back to top.";
 	    show_templ("newuser-status.html", \%cgi);
 	}

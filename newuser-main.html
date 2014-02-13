@@ -16,21 +16,19 @@
 <!--tr><th>Password</th><td><input name=ap value="!!ap">
     <i>(min. 5 characters)</i></td><td>Required</td><td>Internal use</td></tr-->
 
-<tr><th>Password</th><td><input type=hidden name=ap value="!!ap">!!ap
-    <i>(assigned password, can not change)</i></td><td>Required</td><td>Internal use</td></tr>
+<tr><th>Password</th><td><input type=hidden name=ap value="!!ap"><b>!!ap</b><br>
+    <i>(please make note***)</i></td><td>Assigned</td><td>Internal use</td></tr>
 
 <tr><th>Intervention</th>
     <td><input type=checkbox name=humanintervention value=1 !!humaninterventionchecked> Password reset requires human intervention</td>
     <td>Optional</td><td>&nbsp;</td></tr>
-
-<tr><th>Reg. Source IP</th><td>!!ip</i></td><td>Detected</td><td>Internal use</td></tr>
 
 <tr><th>Your Name (CN)</th>
     <td><input name=cn value="!!cn" size=40></td>
     <td>Optional*</td>
     <td><input type=checkbox name=cnshare !!cnshare> Share</td></tr>
 
-<tr><th>Title</th>
+<tr><th>Job Title</th>
     <td><input name=title value="!!title"></td>
     <td>Optional</td>
     <td><input type=checkbox name=titleshare !!titleshare> Share</td></tr>
@@ -86,6 +84,8 @@
     <td>Optional</td>
     <td><input type=checkbox name=tagshare !!tagshare> Share</td></tr>
 
+<tr><th>Reg. Source IP</th><td>!!ip</i></td><td>Detected</td><td>Internal use</td></tr>
+
 <tr><th colspan=4>Comments or special requests (internal use, reply at our discretion)</th></tr>
 <tr><td colspan=4><textarea name=comment cols=80 rows=3>!!comment</textarea></td></tr>
 
@@ -93,7 +93,15 @@
 
 <b>*</b> Required for SP registration (optional for normal users).<br>
 <b>**</b> You have to supply email if you ever want to use
-    password reset feature.
+    password reset feature.<br>
+<b>***</b> We follow assigned password policy (i.e. you do not get to choose
+    password - we generate random one for you) because this prevents sharing
+    password with, e.g. facebook, and prevents choice of easily guessable
+    passwords. If you let your web browser's password manager remeber
+    the password, be sure the protect the password manager with a master password.
+    If you write down the password, be sure to encrypt it or store it in
+    an otherwise safe way. <i>Make note of the password now as there will not
+    be an opportunity later in the registration.</i>
 
 <p><input type=submit name=ok value="Agree to terms and conditions and register new user">
 <a href="html/zxidp-user-terms.html">Terms and Conditions for Users</a>
