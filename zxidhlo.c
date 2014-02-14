@@ -75,7 +75,6 @@ int main(int argc, char** argv)
   char setcookie[256];
 
 #if 1
-  int ret;
   /* Helps debugging CGI scripts if you see stderr. */
   /* Reopen stderr only in mini_httpd case */
   //p = getenv("SERVER_SOFTWARE");

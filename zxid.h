@@ -433,6 +433,7 @@ struct zxid_cgi {
   char* dbg;           /* When rendering screens: used to put debug message to screen. */
   char* zxapp;         /* Deployment specific application parameter passed in some querystrings. */
   char* zxrfr;         /* ZX Referer. Indicates to some external pages why user was redirected. */
+  char* redirafter;    /* On IdP, if local login is desired, the next page */
   char* ok;            /* Ok button in some forms */
   char* templ;         /* Template name in some forms (used to implement tabs, e.g. in idpsel) */
   char* sp_eid;        /* IdP An for to generate page */

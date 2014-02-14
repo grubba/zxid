@@ -237,7 +237,7 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   INFO("LOCAL LOGIN SUCCESSFUL. sid(%s) uid(%s)", cgi->sid, cgi->uid);
   zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "K", "INEWSES", ses->sid, "uid(%s)", ses->uid);
   if (cf->loguser)
-    zxlogusr(cf, ses->uid, 0, 0, 0, 0, 0, 0, 0, "N", "K", "INEWSES", ses->sid, "uid(%s)", ses->uid);
+    zxlogusr(cf, ses->uid, 0,0,0,0,0,0,0, "N", "K", "INEWSES", ses->sid, "uid(%s)", ses->uid);
   return 1;
 }
 

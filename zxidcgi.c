@@ -69,36 +69,37 @@ int zxid_parse_cgi(zxid_conf* cf, zxid_cgi* cgi, char* qs)
       if (n[1] = 'k' && !n[2]) { cgi->ok = v;  break; }  /* ok button */
       goto unknown;
     case 'p':
-      if (!strcmp(n, "prompt")) { cgi->prompt = v; break; }
+      if (!strcmp(n, "prompt")) { cgi->prompt = v; break; }  /* OAUTH2 */
       goto unknown;
     case 'r':
-      if (!strcmp(n, "response_type")) { cgi->response_type = v; break; }
-      if (!strcmp(n, "redirect_uri"))  { cgi->redirect_uri = v;	 break; }
+      if (!strcmp(n, "response_type")) { cgi->response_type = v; break; }  /* OAUTH2 */
+      if (!strcmp(n, "redirect_uri"))  { cgi->redirect_uri = v;	 break; }  /* OAUTH2 */
+      if (!strcmp(n, "redirafter"))    { cgi->redirafter = v;	 break; }
       if (!strcmp(n, "rs"))            { cgi->rs = v; break; }
       goto unknown;
     case 's':
       if (!n[1]) { cgi->sid = v; break; }
-      if (!strcmp(n, "scope"))  { cgi->scope = v; break; }
-      if (!strcmp(n, "state"))  { cgi->state = v; break; }
-      if (!strcmp(n, "schema")) { cgi->schema = v; break; }
+      if (!strcmp(n, "scope"))  { cgi->scope = v; break; }   /* OAUTH2 */
+      if (!strcmp(n, "state"))  { cgi->state = v; break; }   /* OAUTH2 */
+      if (!strcmp(n, "schema")) { cgi->schema = v; break; }  /* OAUTH2 */
       goto unknown;
     case 't':
-      if (!strcmp(n, "token_type")) { cgi->token_type = v; break; }
+      if (!strcmp(n, "token_type")) { cgi->token_type = v; break; }  /* OAUTH2 */
       if (!strcmp(n, "templ"))   { DD("Detect templ(%s) cgi=%p",v,cgi); cgi->templ = v; break; }
       goto unknown;
     case 'u':
-      if (!strcmp(n, "user_id")) { cgi->user_id = v; break; }
+      if (!strcmp(n, "user_id")) { cgi->user_id = v; break; }   /* OAUTH2 */
       goto unknown;
     case 'c':
       if (!n[1]) { cgi->cdc = v; break; }
-      if (!strcmp(n, "client_id")) { cgi->client_id = v; break; }
+      if (!strcmp(n, "client_id")) { cgi->client_id = v; break; }    /* OAUTH2 */
       goto unknown;
       /* The following two entity IDs, combined with various login buttons
        * aim at supporting may different user interface layouts. You need to
        * understand how they interact to avoid undesired conflicts. */
     case 'e':  /* EntityID field (manual entry). Overrides 'd'. */
-      if (!strcmp(n, "expires_in")) { cgi->nonce = v; break; }
-      if (!strcmp(n, "exp"))        { cgi->exp = v; break; }
+      if (!strcmp(n, "expires_in")) { cgi->nonce = v; break; }  /* OAUTH2 */
+      if (!strcmp(n, "exp"))        { cgi->exp = v; break; }    /* OAUTH2 */
       if (!n[1]) {
 set_eid:
 	if (v[0]) cgi->eid = v;
@@ -138,14 +139,14 @@ set_eid:
       break;
     case 'k':
       DD("k CGI field(%s) val(%s) cgi=%p", n, v, cgi);
-      if (!n[1]) { cgi->skin = v;    break; }
+      if (!n[1]) { cgi->skin = v;    break; }  /* often used for lang as well */
       goto unknown;
     case 'i':
-      if (!strcmp(n, "id_token")) { cgi->id_token = v; break; }
-      if (!strcmp(n, "iss")) { cgi->iss = v; break; }
-      if (!strcmp(n, "iso29115")) { cgi->iso29115 = v; break; }
-      if (!strcmp(n, "id"))  { cgi->id = v; break; }
-      if (!strcmp(n, "inv")) { cgi->inv = v; break; }
+      if (!strcmp(n, "id_token")) { cgi->id_token = v; break; }  /* OAUTH2 */
+      if (!strcmp(n, "iss")) { cgi->iss = v; break; }            /* OAUTH2 */
+      if (!strcmp(n, "iso29115")) { cgi->iso29115 = v; break; }  /* OAUTH2 */
+      if (!strcmp(n, "id"))  { cgi->id = v; break; }             /* OAUTH2 */
+      if (!strcmp(n, "inv")) { cgi->inv = v; break; }            /* OAUTH2 */
       /* IdP and protocol index selection popup values are like P<eid>
        * N.B. If eid is omitted from button name, it may be provided using
        * d or e fields (see above). This effectively allows i to be just
@@ -156,45 +157,45 @@ set_eid:
       break;
     case 'f':  /* flags and (hidden) fields found in typical SP login form */
       if (!n[1] || n[2]) goto unknown;
-      switch (n[1]) {
-      case 'a': cgi->authn_ctx = v;       D("authn_ctx=%s", cgi->authn_ctx); break;
-      case 'c': cgi->allow_create = v[0]; D("allow_create=%c", cgi->allow_create); break;
-      case 'f': cgi->force_authn = v[0];  D("force_authn=%c", cgi->force_authn); break;
-      case 'g': cgi->get_complete = v;    break;
-      case 'h': cgi->pxy_count = v;       break;
-	/*case 'i': cgi->idp_list = v;        break;*/
-      case 'm': cgi->matching_rule = v;   break;
-      case 'n': cgi->nid_fmt = v;         D("nid_fmt=%s", cgi->nid_fmt); break;
-      case 'p': cgi->ispassive = v[0];    D("ispassive=%c", cgi->ispassive); break;
-      case 'q': cgi->affil = v;           break;
-      case 'r': cgi->rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, v); break;
-      case 'y': cgi->consent = v;         break;
+      switch (n[1]) {  /* Typical fields of SP side idp selection form (or query string) */
+      case 'a': cgi->authn_ctx = v;       D("authn_ctx=%s", cgi->authn_ctx); break; /* fa */
+      case 'c': cgi->allow_create = v[0]; D("allow_create=%c", cgi->allow_create); break; /* fc */
+      case 'f': cgi->force_authn = v[0];  D("force_authn=%c", cgi->force_authn); break; /* ff */
+      case 'g': cgi->get_complete = v;    break;   /* fg */
+      case 'h': cgi->pxy_count = v;       break;   /* fh */
+	/*case 'i': cgi->idp_list = v;    break;*/ /* fi */
+      case 'm': cgi->matching_rule = v;   break;   /* fm */
+      case 'n': cgi->nid_fmt = v;         D("nid_fmt=%s", cgi->nid_fmt); break;     /* fn */
+      case 'p': cgi->ispassive = v[0];    D("ispassive=%c", cgi->ispassive); break; /* fp */
+      case 'q': cgi->affil = v;           break;   /* fq */
+      case 'r': cgi->rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, v); break;         /* fr */
+      case 'y': cgi->consent = v;         break;   /* fy */
       }
       break;
-    case 'g':
+    case 'g':  /* management (gestion) form fields or query string arguments */
       if (!n[1] || n[2]) goto unknown;
       switch (n[1]) {
-      case 'l':
-      case 'r':
-      case 's':
-      case 't':
-      case 'u': cgi->op = n[1];           break;
-      case 'n': cgi->newnym = v;          break;
-      case 'e': cgi->enc_hint = v[0];     break;
+      case 'l': /* gl - local logout */
+      case 'r': /* gr - single logout redirect */
+      case 's': /* gs - single logout SOAP */
+      case 't': /* gt - defederate redir */
+      case 'u': cgi->op = n[1];           break; /* gu - defederate SOAP */
+      case 'n': cgi->newnym = v;          break; /* gn */
+      case 'e': cgi->enc_hint = v[0];     break; /* ge */
       }
       break;
     case 'a':
       if (!n[1]) goto unknown;
-      if (!strcmp(n, "access_token")) { cgi->access_token = v; break; }
-      if (!strcmp(n, "aud"))          { cgi->aud = v; break; }
+      if (!strcmp(n, "access_token")) { cgi->access_token = v; break; }    /* OAUTH2 */
+      if (!strcmp(n, "aud"))          { cgi->aud = v; break; }             /* OAUTH2 */
       switch (n[1]) {
-      case 'l': if (n[3]) goto unknown;  cgi->op = n[2];           break;
-      case 'u': if (n[2]) goto unknown;  if (v[0] || !cgi->uid) cgi->uid = v; break;
-      case 'p': if (n[2]) goto unknown;  cgi->pw = v;              break;
-      case 'r': if (n[2]) goto unknown;  cgi->ssoreq = v;          break;
-      case 'n': if (n[2]) goto unknown;  cgi->op = 'N';            break;
-      case 'w': if (n[2]) goto unknown;  cgi->op = 'W';            break;
-      case 't': if (n[2]) goto unknown;  cgi->atselafter = 1;      break;
+      case 'l': if (n[3]) goto unknown;  cgi->op = n[2];           break;  /* al = login */
+      case 'u': if (n[2]) goto unknown;  if (v[0] || !cgi->uid) cgi->uid = v; break; /* au =user */
+      case 'p': if (n[2]) goto unknown;  cgi->pw = v;              break;  /* ap = password */
+      case 'r': if (n[2]) goto unknown;  cgi->ssoreq = v;          break;  /* ar = AnRq */
+      case 'n': if (n[2]) goto unknown;  cgi->op = 'N';            break;  /* an = new user */
+      case 'w': if (n[2]) goto unknown;  cgi->op = 'W';            break;  /* aw = recover pw */
+      case 't': if (n[2]) goto unknown;  cgi->atselafter = 1;      break;  /* at */
       }
       break;
     case 'z':

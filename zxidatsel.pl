@@ -51,16 +51,16 @@ warn "$$: cgi: " . Dumper(\%cgi);
 $sesdata = readall("${dir}ses/$cgi{'s'}/.ses", 1);
 $persona = readall("${dir}ses/$cgi{'s'}/.persona", 1);
 if (!length $sesdata) {
-    $proto = $ENV{SERVER_PORT} =~ /443$/ ? 'https' : 'http';
-    $url = "$proto://$ENV{HTTP_HOST}$ENV{SCRIPT_NAME}";
-    warn "No session! Need to login($cgi{'s'}). url($url)";
-    $cf = Net::SAML::new_conf_to_cf("PATH=$dir&URL=$url");
+    $qs = $qs ? "$qs&" : "?";
+    $qs .= "o=F&redirafter=$ENV{SCRIPT_NAME}&s=X";
+    warn "No session! Need to login($cgi{'s'}).  qs($qs)";
+    $cf = Net::SAML::new_conf_to_cf("PATH=$dir");
     $res = Net::SAML::simple_cf($cf, -1, $qs, undef, 0x3fff); # 0x1829
     cgidec($res);
     warn "$$: SSO done($res): " . Dumper(\%cgi);
     # *** figure out the IdP session
-    $sesdata = readall("${dir}ses/XXX/.ses");
-    $persona = readall("${dir}ses/XXX/.persona");
+    $sesdata = readall("${dir}ses/XXX/.ses",1);
+    $persona = readall("${dir}ses/XXX/.persona",1);
 }
 (undef, undef, undef, undef, $uid) = split '|', $sesdata;
 warn "uid($uid)";
@@ -155,7 +155,7 @@ sub persona_menu {
 }
 
 sub readall {
-    my ($f) = @_;
+    my ($f, $nofatal) = @_;
     my ($pkg, $srcfile, $line) = caller;
     undef $/;         # Read all in, without breaking on lines
     open F, "<$f" or do { if ($nofatal) { warn "$srcfile:$line: Cant read($f): $!"; return undef; } else { die "$srcfile:$line: Cant read($f): $!"; } };

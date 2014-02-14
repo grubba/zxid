@@ -944,6 +944,7 @@ int zxid_decode_ssoreq(zxid_conf* cf, zxid_cgi* cgi)
 /* Called by:  zxid_simple_idp_pw_authn, zxid_simple_idp_show_an */
 static char* zxid_simple_idp_an_ok_do_rest(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags)
 {
+  int len;
   char* p;
   DD("idp do_rest %p", ses);
   if (cf->atsel_page && cgi->atselafter) { /* *** More sophisticated criteria needed. */
@@ -954,6 +955,16 @@ static char* zxid_simple_idp_an_ok_do_rest(zxid_conf* cf, zxid_cgi* cgi, zxid_se
 		 cf->burl);
     D("atsel_page(%s) redir(%s)", cf->atsel_page, p);
     return zxid_simple_redir_page(cf, cf->atsel_page, p, res_len, auto_flags);
+  }
+  if (cgi->redirafter && *cgi->redirafter) {
+    len = strlen(cgi->redirafter);
+    if (!strcmp(cgi->redirafter + len - sizeof("s=X") + 1, "s=X")) {
+      p = zx_alloc_sprintf(cf->ctx, 0, "%.*s%s", len-1, cgi->redirafter, cgi->sid);
+      D("redirafter(%s)", p);
+      return zxid_simple_redir_page(cf, p, 0, res_len, auto_flags);
+    } else {
+      return zxid_simple_redir_page(cf, cgi->redirafter, 0, res_len, auto_flags);
+    }
   }
   return zxid_simple_ses_active_cf(cf, cgi, ses, res_len, auto_flags); /* o=F variant */
 }
@@ -985,6 +996,13 @@ static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len,
   DD("z saml_req(%s) rs(%s) sigalg(%s) sig(%s)", cgi->saml_req, cgi->rs, cgi->sigalg, cgi->sig);  
   if (cgi->uid && zxid_pw_authn(cf, cgi, &sess)) {  /* Try login, just in case. */
     return zxid_simple_idp_an_ok_do_rest(cf, cgi, &sess, res_len, auto_flags);
+  }
+  if (cgi->redirafter) { /* Save next screen for local login (e.g. zxidatsel.pl */
+    D("zz redirafter(%s) rs(%s)", cgi->redirafter, cgi->rs);  
+    cgi->ssoreq = zxid_deflate_safe_b64(cf->ctx,
+		    zx_strf(cf->ctx,
+			    "redirafter=%s",
+			    cgi->redirafter));
   }
   if (cgi->response_type) { /* Save incoming OAUTH2 / OpenID-Connect Az request as hidden field */
     DD("zz response_type(%s) rs(%s)", cgi->response_type, cgi->rs);  
@@ -1282,8 +1300,8 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * l = local logout (form gl)
    * r = SLO redir    (form gr)
    * s = SLO soap     (form gs)
-   * t = nireg redir  (form gt)
-   * u = nireg soap   (form gu)
+   * t = nireg redir  (form gt, gn=newnym)
+   * u = nireg soap   (form gu, gn=newnym)
    * v = Az soap      (form gv)
    * c = CARML for the SP
    * d = Dump internal data, including config; debug screen

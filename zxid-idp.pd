@@ -672,12 +672,12 @@ line tool.
 4.5.6 Provisioning Using Grant Tokens
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In Grant Token provisioning, a user administrator pregenerates
-a grantoken and URL that points to zxidnewuser.pl. When user
+In Grant Token provisioning, a user administrator pre-generates
+a +grant token+ and URL that points to zxidnewuser.pl. When user
 clicks on the grant token link, he is take to the GUI and
 asked if he already has an account (if user is already logged
-in, no question is pout to the user). If user does not yet
-have account, he is offered with opportunity to create one,
+in, no question is put to the user). If user does not yet
+have an account, he is offered an opportunity to create one,
 see previous section.
 
 Once the user has logged in, he is asked to confirm that he
