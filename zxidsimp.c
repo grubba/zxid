@@ -1,5 +1,5 @@
 /* zxidsimp.c  -  Handwritten zxid_simple() API
- * Copyright (c) 2012-2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2014 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -24,6 +24,7 @@
  * 15.4.2013, added fflush(3) here and there to accommodate broken atexit() --Sampo
  * 17.11.2013, move redir_to_content feature to zxid_simple() --Sampo
  * 20.11.2013, move defaultqs feature feature to zxid_simple() --Sampo
+ * 14.2.2014,  added redirafter feature for local IdP logins (e.g. zxidatsel.pl) --Sampo
  *
  * Login button abbreviations
  * A2 = SAML 2.0 Artifact Profile

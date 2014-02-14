@@ -51,7 +51,7 @@ warn "$$: cgi: " . Dumper(\%cgi);
 $sesdata = readall("${dir}ses/$cgi{'s'}/.ses", 1);
 $persona = readall("${dir}ses/$cgi{'s'}/.persona", 1);
 if (!length $sesdata) {
-    $qs = $qs ? "$qs&" : "?";
+    $qs = $qs ? "$qs&" : "";
     $qs .= "o=F&redirafter=$ENV{SCRIPT_NAME}&s=X";
     warn "No session! Need to login($cgi{'s'}).  qs($qs)";
     $cf = Net::SAML::new_conf_to_cf("PATH=$dir");
