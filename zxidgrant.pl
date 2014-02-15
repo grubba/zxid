@@ -54,7 +54,7 @@ $confdata = readall("${cpath}zxid.conf",1);
 $ses_cookie_name ||= 'ZXIDSES';
 ($ses_from_cookie) = $ENV{HTTP_COOKIE} =~ /$ses_cookie_name=([^; \t]+)/;
 
-warn "$$ s-from-c($ses_from_cookie) cgi: " . Dumper(\%cgi);
+warn "$$ ses_from_cookie($ses_from_cookie) cgi: " . Dumper(\%cgi);
 $cf = Net::SAML::new_conf_to_cf("CPATH=$cpath");
 
 ### Due to circumstances, zxididp typically will not have set the cookie so we need to set it here
@@ -311,8 +311,8 @@ sub show_grant {
 	my ($op, $share, $eid) = $gr{'dn'} =~ /^op=(\w+),\s*share=(\w+),\s*eid=(.*?)$/;
 	$gr{'eid'} = $eid;
 	my $ent = Net::SAML::get_ent($cf, $eid);
-	$gr{'dpy_name'} = Net::SAML::zxid_entity_s_dpy_name_get($ent);
-	$gr{'button_url'} = Net::SAML::zxid_entity_s_button_url_get($ent);
+	$gr{'dpy_name'} = Net::SAML::zxid_entity_s::swig_dpy_name_get($ent);
+	$gr{'button_url'} = Net::SAML::zxid_entity_s::swig_button_url_get($ent);
 	
 	($grant_gui = $repeat_grant) =~ s/!!(\w+)/$gr{$1}/gs;
 	$grant_guis .= $grant_gui;
