@@ -77,7 +77,7 @@ $sesdata = readall("${cpath}ses/$cgi{'s'}/.ses", 1);
 $persona = readall("${cpath}ses/$cgi{'s'}/.persona", 1);
 if (!length $sesdata) {
     $qs = $qs ? "$qs&" : "";
-    $qs .= "o=F&redirafter=$ENV{SCRIPT_NAME}?g=$cgi{'g'}:s=X";
+    $qs .= "o=F&redirafter=$ENV{SCRIPT_NAME}?g=$grant:s=X";
     warn "No session! Need to login($cgi{'s'}).  qs($qs)";
     $res = Net::SAML::simple_cf($cf, -1, $qs, undef, 0x3fff); # 0x1829
     cgidec($res);
@@ -245,8 +245,8 @@ sub show_templ {
 
 sub spend_grant {
     my ($why) = @_;
-    rename "${cpath}grant/$cgi{'g'}" => "${cpath}grant/.spent/$cgi{'g'}";
-    append("${cpath}grant/.spent/$cgi{'g'}", "zx_g_spend: grant=$cgi{'g'}, uid=$uid, ts=$ts");
+    rename "${cpath}grant/$grant" => "${cpath}grant/.spent/$grant";
+    append("${cpath}grant/.spent/$grant", "zx_g_spend: grant=$grant, uid=$uid, ts=$ts");
 }
 
 ###
@@ -254,25 +254,25 @@ sub spend_grant {
 ###
 
 sub show_grant {
-    my ($uid, $hr) = @_;
+    my ($uid) = @_;
     my $templ = readall("grant-main.html");
     $templ =~ s/<!--REPEAT_GRANT-->(.*)<!--END_REPEAT_GRANT-->/!!REPEAT_GRANT/s;
     my $repeat_grant = $1;
     $repeat_grant =~ s/<!--REPEAT_ATTR-->(.*)<!--END_REPEAT_ATTR-->/!!REPEAT_ATTR/s;
     my $repeat_attr = $1;
     
-    my $grant_manifest = readall("${cpath}grant/$cgi{'g'}",1);
+    my $grant_manifest = readall("${cpath}grant/$grant",1);
     if (!length $grant_manifest) {
-	warn "Grant token not found or invalid link. (${cpath}grant/$cgi{'g'})";
+	warn "Grant token not found or invalid link. (${cpath}grant/$grant)";
 	$cgi{ERR} = "Grant token not found or invalid link. Perhaps the token has already been consumed?";
 	bangbang_templ(\$templ, \$cgi);
     }
     
     my $grant_no = 0;
     my @grants = split /\n\n/, $grant_manifest;
-    for $grant (@grants) {
+    for $gr (@grants) {
 	++$grant_no;
-	my %gr = $grant =~ /^(.+?): (.*?)$/gm;
+	my %gr = $gr =~ /^(.+?): (.*?)$/gm;
 	warn "$grant_no: grant: " . Dumper(\%gr);
 	if ($g{'zx_g_notbefore'}) {
 	    ($yyyy, $mm, $dd, $hour, $min, $sec, $msec) = $gr{'zx_g_notbefore'}
@@ -334,6 +334,9 @@ if ($cgi{'decline'}) {
     bangbang_templ(\$templ, \$cgi);
 }
 
-show_grant($uid, \%cgi);
+show_grant($uid);
 
 __END__
+
+https://zxidp.org/idpgrant.pl?g=G123abCDwd
+
