@@ -742,6 +742,8 @@ struct zx_str* zxid_get_affil_and_sp_name_buf(zxid_conf* cf, zxid_entity* meta, 
   return affil;
 }
 
+/*() Determine federation specific nameid */
+
 /* Called by:  zxid_add_fed_tok2epr, zxid_map_val_ss x2, zxid_sso_issue_a7n, zxid_sso_issue_jwt */
 zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str* affil, const char* uid, const char* sp_name_buf, int allow_create, int want_transient, struct timeval* srcts, struct zx_str* id, char* logop)
 {

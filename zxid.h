@@ -1114,6 +1114,10 @@ ZXID_DECL zxid_tok* zxid_nidmap_identity_token(zxid_conf* cf, zxid_ses* ses, con
 ZXID_DECL char* zxid_ps_accept_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags);
 ZXID_DECL char* zxid_ps_finalize_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags);
 
+/* zxidpsso */
+
+ZXID_DECL char* zxid_get_idpnid_at_eid(zxid_conf* cf, const char* uid, const char* eid, int allow_create);
+
 /* DAP scope constants are same as for LDAP, see RFC2251 */
 
 #define ZXID_DAP_SCOPE_BASE    0  /* Only what is pointed to by DN, e.g. one entry. The default. */

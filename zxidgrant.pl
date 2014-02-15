@@ -82,12 +82,17 @@ if (!length $sesdata) {
     $res = Net::SAML::simple_cf($cf, -1, $qs, undef, 0x3fff); # 0x1829
     cgidec($res);
     warn "$$: SSO done($res): " . Dumper(\%cgi);
-    # *** figure out the IdP session
-    $sesdata = readall("${cpath}ses/XXX/.ses",1);
-    $persona = readall("${cpath}ses/XXX/.persona",1);
+    $sesdata = readall("${cpath}ses/$cgi{'sid'}/.ses",1);
+    $persona = readall("${cpath}ses/$cgi{'sid'}/.persona",1);
 }
 (undef, undef, undef, undef, $uid) = split /\|/, $sesdata;
 warn "uid($uid) sesdata($sesdata)";
+$cgi{'uid'} = $uid;
+$at = readall("${cpath}uid/$uid/.bs/.at", 1);
+$at .= readall("${cpath}uid/$uid/.bs/.optat", 1);
+($cgi{'cn'}) = $at =~ /^cn:\s+(.+?)\s*$/m;
+
+### Library functions
 
 sub uridec {
     my ($val) = @_;
@@ -114,7 +119,7 @@ sub readall {
     my ($f, $nofatal) = @_;
     my ($pkg, $srcfile, $line) = caller;
     undef $/;         # Read all in, without breaking on lines
-    open F, "<$f" or do { if ($nofatal) { warn "$srcfile:$line: Cant read($f): $!"; return undef; } else { die "$srcfile:$line: Cant read($f): $!"; } };
+    open F, "<$f" or do { if ($nofatal) { warn "$$: $srcfile:$line: Cant read($f): $! (uid=$< euid=$> gid=$( egid=$)"; return undef; } else { die "$$: $srcfile:$line: Cant read($f): $! (uid=$< euid=$> gid=$( egid=$)"; } };
     binmode F;
     my $x = <F>;
     close F;
@@ -139,7 +144,7 @@ sub append {
         close T4;
         return 1;
     } else {
-        warn "$$: Cant append `$t' ($! at $f line $l)";
+        warn "$$: $f:$l: Cant append `$t' $! (uid=$< euid=$> gid=$( egid=$)";
         return 0;
     }
 }
@@ -230,7 +235,7 @@ sub bangbang_templ {
     my ($templr, $hr) = @_;
     bangbang($templr, $hr);
     my $len = length $$templr;
-    syswrite STDOUT, "Content-Type: text/html\r\nContent-Length: $len$setcookie\r\n\r\n$templr";
+    syswrite STDOUT, "Content-Type: text/html\r\nContent-Length: $len$setcookie\r\n\r\n$$templr";
     exit;
 }
 
@@ -245,8 +250,50 @@ sub show_templ {
 
 sub spend_grant {
     my ($why) = @_;
-    rename "${cpath}grant/$grant" => "${cpath}grant/.spent/$grant";
-    append("${cpath}grant/.spent/$grant", "zx_g_spend: grant=$grant, uid=$uid, ts=$ts");
+    append("${cpath}grant/$grant", "zx_g_spend: ts=$ts, grant=$grant, uid=$uid, cn=$cgi{'cn'}, why=$why\n");
+    if ($gr{'zx_g_multiuse'} ne 'inf') {
+	rename "${cpath}grant/$grant" => "${cpath}grant/.spent/$grant" or die "rename(${cpath}grant/$grant)=>(${cpath}grant/.spent/$grant): $! (uid=$< euid=$> gid=$( egid=$))";
+    }
+}
+
+sub check_grant {
+    my ($grant_no, $gr, $eid) = @_;
+    if ($$gr{'zx_g_idpnid'}) {
+	if ($eid eq '*') {
+	    warn "$grant_no: Grant for * specifies zx_g_idpnid($$gr{'zx_g_idpnid'})";
+	    $cgi{ERR} = "Grant token misformed (issuer error).";
+	    bangbang_templ(\$templ, \%cgi);
+	}
+	my $idpnid = Net::SAML::get_idpnid_at_eid($cf, $uid, $eid, 0);
+	if ($idpnid ne $$gr{'zx_g_idpnid'}) {
+	    warn "$grant_no: idpnid($idpnid) for eid($eid) does not match zx_g_idpnid($$gr{'zx_g_idpnid'})";
+	    $cgi{ERR} = "IdP user does not match requested SP user. Grant denied.";
+	    bangbang_templ(\$templ, \%cgi);
+	}
+	warn "$grant_no: idpnid($idpnid) for eid($eid) matches";
+    }
+    
+    if ($$gr{'zx_g_notbefore'}) {
+	my ($yyyy, $mm, $dd, $hour, $min, $sec, $msec) = $$gr{'zx_g_notbefore'}
+	=~ /^(\d\d\d\d)(\d\d)(\d\d)(?:-(\d\d)(?:(\d\d)(?:(\d\d)(?:\.(\d\d\d))?)?)?)?/;
+	my $secs = timegm($sec, $min, $hour, $dd, $mon-1, $yyyy-1900);
+	if (time < $secs) {
+	    warn "$grant_no: Grant token can not be spent yet. notbefore_secs=$secs";
+	    $cgi{ERR} = "Grant token can not be spent yet.";
+	    bangbang_templ(\$templ, \%cgi);
+	}
+    }
+    if ($$gr{'zx_g_expires'}) {
+	my ($yyyy, $mm, $dd, $hour, $min, $sec, $msec) = $$gr{'zx_g_expires'}
+	=~ /^(\d\d\d\d)(\d\d)(\d\d)(?:-(\d\d)(?:(\d\d)(?:(\d\d)(?:\.(\d\d\d))?)?)?)?/;
+	my $secs = timegm($sec, $min, $hour, $dd, $mon-1, $yyyy-1900);
+	if (time >= $secs) {
+	    spend_grant('expired');
+	    warn "$grant_no: Grant token has expired. expires_secs=$secs";
+	    $cgi{ERR} = "Grant token has expired.";
+	    bangbang_templ(\$templ, \%cgi);
+	}
+    }
 }
 
 ###
@@ -254,6 +301,68 @@ sub spend_grant {
 ###
 
 sub show_grant {
+    my ($uid) = @_;
+    $templ = readall("grant-main.html"); # globally visible
+    $templ =~ s/<!--REPEAT_GRANT-->(.*)<!--END_REPEAT_GRANT-->/!!REPEAT_GRANT/s;
+    my $repeat_grant = $1;
+    $repeat_grant =~ s/<!--REPEAT_ATTR-->(.*)<!--END_REPEAT_ATTR-->/!!REPEAT_ATTR/s;
+    my $repeat_attr = $1;
+    
+    my $grant_manifest = readall("${cpath}grant/$grant",1);
+    if (!length $grant_manifest) {
+	warn "Grant token not found or invalid link. (${cpath}grant/$grant)";
+	$cgi{ERR} = "Grant token not found or invalid link. Perhaps the token has already been consumed?";
+	bangbang_templ(\$templ, \%cgi);
+    }
+    
+    my $grant_no = 0;
+    my $grant_stanzas = '';
+    my @grants = split /\n\n/, $grant_manifest;
+    for $gr (@grants) {
+	++$grant_no;
+	my %gr = $gr =~ /^(.+?): (.*?)$/gm;
+	warn "$grant_no: grant: " . Dumper(\%gr);
+	$gr{'zx_g_no'} = $grant_no;
+	
+	my ($op, $share, $eid) = $gr{'dn'} =~ /^op=(\w+),\s*share=(\w+),\s*eid=([^, \t\r\n]*)/;
+	if ($eid eq '*') {
+	    $gr{'zx_g_eid'} = 'global';
+	    $gr{'zx_g_dpy_name'} = "Apply to all SPs";
+	    $gr{'zx_g_button_url'} = "/global_150x60.png";
+	} else {
+	    $gr{'zx_g_eid'} = $eid;
+	    my $ent = Net::SAML::get_ent($cf, $eid);
+	    warn "$grantno: eid($eid) ent($ent)";
+	    # perl -MNet::SAML -MData::Dumper -e 'print Dumper(\%Net::SAML::zxid_entity_s::)'
+	    $gr{'zx_g_dpy_name'} = Net::SAML::zxid_entity_s::swig_dpy_name_get($ent);
+	    $gr{'zx_g_button_url'} = Net::SAML::zxid_entity_s::swig_button_url_get($ent);
+	}
+	warn "$grant_no: dpy_name($gr{'zx_g_dpy_name'}) button_url($gr{'zx_g_button_url'})";
+
+	check_grant($grant_no, \%gr, $eid);
+	
+	my $attrs = '';
+	for my $name (sort keys %gr) {
+	    next if $name eq 'dn';
+	    next if $name =~ /^zx_g_/;
+	    next if $name =~ /^\s*\#/;  # Comments
+	    my %at = ( name => $name, val => $gr{$name}, what => $gr{"zx_g_doc_$name"} );
+	    ($attr = $repeat_attr) =~ s/!!(\w+)/$at{$1}/gs;
+	    $attrs .= $attr;
+	}
+	$gr{REPEAT_ATTR} = $attrs;
+	
+	$grant_stanza = $repeat_grant;
+	bangbang(\$grant_stanza, \%gr);
+	$grant_stanzas .= $grant_stanza;
+    }
+    
+    $cgi{REPEAT_GRANT} = $grant_stanzas;
+    $cgi{GTGUI} = 1;
+    bangbang_templ(\$templ, \%cgi);
+}
+
+sub show_accept {
     my ($uid) = @_;
     my $templ = readall("grant-main.html");
     $templ =~ s/<!--REPEAT_GRANT-->(.*)<!--END_REPEAT_GRANT-->/!!REPEAT_GRANT/s;
@@ -264,74 +373,70 @@ sub show_grant {
     my $grant_manifest = readall("${cpath}grant/$grant",1);
     if (!length $grant_manifest) {
 	warn "Grant token not found or invalid link. (${cpath}grant/$grant)";
-	$cgi{ERR} = "Grant token not found or invalid link. Perhaps the token has already been consumed?";
-	bangbang_templ(\$templ, \$cgi);
+	$cgi{ERR} = "Grant token not found or invalid link. Perhaps the token ($grant) has already been consumed?";
+	bangbang_templ(\$templ, \%cgi);
     }
     
     my $grant_no = 0;
+    my $grant_stanzas = '';
     my @grants = split /\n\n/, $grant_manifest;
     for $gr (@grants) {
 	++$grant_no;
 	my %gr = $gr =~ /^(.+?): (.*?)$/gm;
 	warn "$grant_no: grant: " . Dumper(\%gr);
-	if ($g{'zx_g_notbefore'}) {
-	    ($yyyy, $mm, $dd, $hour, $min, $sec, $msec) = $gr{'zx_g_notbefore'}
-	    =~ /^(\d\d\d\d)(\d\d)(\d\d)(?:-(\d\d)(?:(\d\d)(?:(\d\d)(?:\.(\d\d\d))?)?)?)?/;
-	    $secs = timegm($sec, $min, $hour, $dd, $mon-1, $yyyy-1900);
-	    if (time < $secs) {
-		warn "$grant_no: Grant token can not be spent yet. notbefore_secs=$secs";
-		$cgi{ERR} = "Grant token can not be spent yet.";
-		bangbang_templ(\$templ, \$cgi);
-	    }
+	$gr{'zx_g_no'} = $grant_no;
+
+	my ($op, $share, $eid) = $gr{'dn'} =~ /^op=(\w+),\s*share=(\w+),\s*eid=([^, \t\r\n]*)/;
+	if ($eid eq '*') {
+	    $gr{'zx_g_eid'} = 'global';
+	    $gr{'zx_g_dpy_name'} = "Apply to all SPs";
+	    $gr{'zx_g_button_url'} = "/global_150x60.png";
+	} else {
+	    $gr{'zx_g_eid'} = $eid;
+	    my $ent = Net::SAML::get_ent($cf, $eid);
+	    warn "$grantno: eid($eid) ent($ent)";
+	    # perl -MNet::SAML -MData::Dumper -e 'print Dumper(\%Net::SAML::zxid_entity_s::)'
+	    $gr{'zx_g_dpy_name'} = Net::SAML::zxid_entity_s::swig_dpy_name_get($ent);
+	    $gr{'zx_g_button_url'} = Net::SAML::zxid_entity_s::swig_button_url_get($ent);
 	}
-	if ($g{'zx_g_expires'}) {
-	    ($yyyy, $mm, $dd, $hour, $min, $sec, $msec) = $gr{'zx_g_expires'}
-	    =~ /^(\d\d\d\d)(\d\d)(\d\d)(?:-(\d\d)(?:(\d\d)(?:(\d\d)(?:\.(\d\d\d))?)?)?)?/;
-	    $secs = timegm($sec, $min, $hour, $dd, $mon-1, $yyyy-1900);
-	    if (time >= $secs) {
-		spend_grant('expired');
-		warn "$grant_no: Grant token has expired. expires_secs=$secs";
-		$cgi{ERR} = "Grant token has expired.";
-		bangbang_templ(\$templ, \$cgi);
-	    }
-	}
+	warn "$grant_no: dpy_name($gr{'zx_g_dpy_name'}) button_url($gr{'zx_g_button_url'})";
+
+	check_grant($grant_no, \%gr, $eid);
 	
 	my $attrs = '';
-	for my $name (sort keys %g) {
+	for my $name (sort keys %gr) {
 	    next if $name eq 'dn';
 	    next if $name =~ /^zx_g_/;
 	    next if $name =~ /^\s*\#/;  # Comments
-	    my %at = (name => $name, val => $g{$name}, what => $g{"zx_g_doc_$name"} );
+	    my %at = ( name => $name, val => $gr{$name}, what => $gr{"zx_g_doc_$name"} );
 	    ($attr = $repeat_attr) =~ s/!!(\w+)/$at{$1}/gs;
 	    $attrs .= $attr;
 	}
 	$gr{REPEAT_ATTR} = $attrs;
 	
-	$gr{'no'} = $grant_no;
-	my ($op, $share, $eid) = $gr{'dn'} =~ /^op=(\w+),\s*share=(\w+),\s*eid=(.*?)$/;
-	$gr{'eid'} = $eid;
-	my $ent = Net::SAML::get_ent($cf, $eid);
-	$gr{'dpy_name'} = Net::SAML::zxid_entity_s::swig_dpy_name_get($ent);
-	$gr{'button_url'} = Net::SAML::zxid_entity_s::swig_button_url_get($ent);
-	
-	($grant_gui = $repeat_grant) =~ s/!!(\w+)/$gr{$1}/gs;
-	$grant_guis .= $grant_gui;
+	$grant_stanza = $repeat_grant;
+	bangbang(\$grant_stanza, \%gr);
+	$grant_stanzas .= $grant_stanza;
     }
     
-    $cgi{REPEAT_GRANT} = $grant_guis;
+    spend_grant('accepted');
+    $cgi{REPEAT_GRANT} = $grant_stanzas;
     $cgi{GTGUI} = 1;
-    bangbang_templ(\$templ, \$cgi);
+    bangbang_templ(\$templ, \%cgi);
 }
 
 if ($cgi{'accept'}) {
+    warn "Grant accepted by user (grant can not be used again).";
     $cgi{MSG} = "Grant accepted by user (grant can not be used again).";
-    #show_accept($uid, \%cgi);
+    show_accept($uid, \%cgi);
 }
 
 if ($cgi{'decline'}) {
+    warn "Grant declined by user (grant can not be used again).";
+    spend_grant('declined');
     $cgi{MSG} = "Grant declined by user (grant can not be used again).";
     my $templ = readall("grant-main.html");
-    bangbang_templ(\$templ, \$cgi);
+    bangbang_templ(\$templ, \%cgi);
 }
 
 show_grant($uid);
@@ -339,4 +444,6 @@ show_grant($uid);
 __END__
 
 https://zxidp.org/idpgrant.pl?g=G123abCDwd
+
+https://zxidp.org/idpgrant.pl?g=GFOREVER
 

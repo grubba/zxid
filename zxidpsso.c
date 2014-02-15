@@ -659,6 +659,23 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
   return a7n;
 }
 
+/*() Given uid, look up the idpnid (pairwise pseudonym) as seen by given SP (eid) */
+
+char* zxid_get_idpnid_at_eid(zxid_conf* cf, const char* uid, const char* eid, int allow_create)
+{
+  zxid_nid* nameid;
+  struct zx_str* affil;
+  char sp_name_buf[ZXID_MAX_SP_NAME_BUF];
+  affil = zx_dup_str(cf->ctx, eid);
+  zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
+  nameid = zxid_check_fed(cf, affil, uid, allow_create, 0, 0, 0, sp_name_buf);
+  if (!nameid || !nameid->gg.g.len || !nameid->gg.g.s) {
+    D("No nameid for uid(%s) eid(%s) allow_create(%d) %p", STRNULLCHK(uid), STRNULLCHK(eid), allow_create, nameid);
+    return 0;
+  }
+  return zx_str_to_c(cf->ctx, &nameid->gg.g);
+}
+
 /*(i) Generate SSO assertion and ship it to SP by chosen binding. User has already
  * logged in by the time this is called. See also zxid_ssos_anreq()
  * and zxid_oauth2_az_server_sso() */
