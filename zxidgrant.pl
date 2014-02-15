@@ -1,46 +1,47 @@
 #!/usr/bin/perl
-# Copyright (c) 2010-2014 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+# Copyright (c) 2014 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 # This is confidential unpublished proprietary source code of the author.
 # NO WARRANTY, not even implied warranties. Contains trade secrets.
 # Distribution prohibited unless authorized in writing.
 # Licensed under Apache License 2.0, see file COPYING.
 # $Id$
 #
-# 13.3.2010, created --Sampo
-# 14.2.2014, perfected local login with IdP --Sampo
+# 14.2.2014, created --Sampo
 #
-# Web GUI CGI for exploring ZXID logs and audit trail
+# Process a Grant Token (see zxid-idp.pd sec 4.5.6 Provisioning Using Grant Tokens)
 #
 # CGI / QUERY_STRING variables
 #   c  $cmd    Command
-#   d  $dir    Path to ZXID config directory, e.g: /var/zxid/ or /var/zxid/idp
-#   e  $eid    Filter logs by Entity ID
-#   n  $nid    Filter logs by Name ID
-#   s  $sid    Filter logs by session ID
+#   g          Grant Token
+
+$cpath = '/var/zxid/idp';
 
 $usage = <<USAGE;
 Web GUI for attribute selection and privacy preferences
-Usage: http://localhost:8081/zxidatsel.pl?QUERY_STRING
-       ./zxidatsel.pl -a QUERY_STRING
+Usage: http://localhost:8081/zxidgrant.pl?QUERY_STRING
+       ./zxidgrant.pl -a QUERY_STRING
          -a Ascii mode
 USAGE
     ;
 die $usage if $ARGV[0] =~ /^-[Hh?]/;
 
-$cpath = '/var/zxid/idp';
-
 use Net::SAML;
+use Time::Local;
 use Data::Dumper;
 
 close STDERR;
 open STDERR, ">>/var/tmp/zxid.stderr" or die "Cant open error log: $!";
 select STDERR; $|=1; select STDOUT;
 
+($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
+$ts = sprintf "%04d%02d%02d-%02d%02d%02d", $year+1900, $mon+1, $mday, $hour, $min, $sec;
 #warn "$$: START env: " . Dumper(\%ENV);
 
 $ENV{QUERY_STRING} ||= shift;
 $qs = $ENV{QUERY_STRING};
 cgidec($qs);
+($grant, undef, $ses_from_grant) = $cgi{'g'} =~ /^(.*?)(:s=(.*?))?$/;
+$cgi{'s'} = $ses_from_grant if $ses_from_grant;
 
 if ($ENV{CONTENT_LENGTH}) {
     sysread STDIN, $qs, $ENV{CONTENT_LENGTH};
@@ -54,6 +55,7 @@ $ses_cookie_name ||= 'ZXIDSES';
 ($ses_from_cookie) = $ENV{HTTP_COOKIE} =~ /$ses_cookie_name=([^; \t]+)/;
 
 warn "$$ s-from-c($ses_from_cookie) cgi: " . Dumper(\%cgi);
+$cf = Net::SAML::new_conf_to_cf("CPATH=$cpath");
 
 ### Due to circumstances, zxididp typically will not have set the cookie so we need to set it here
 
@@ -75,9 +77,8 @@ $sesdata = readall("${cpath}ses/$cgi{'s'}/.ses", 1);
 $persona = readall("${cpath}ses/$cgi{'s'}/.persona", 1);
 if (!length $sesdata) {
     $qs = $qs ? "$qs&" : "";
-    $qs .= "o=F&redirafter=$ENV{SCRIPT_NAME}?s=X";
+    $qs .= "o=F&redirafter=$ENV{SCRIPT_NAME}?g=$cgi{'g'}:s=X";
     warn "No session! Need to login($cgi{'s'}).  qs($qs)";
-    $cf = Net::SAML::new_conf_to_cf("CPATH=$cpath");
     $res = Net::SAML::simple_cf($cf, -1, $qs, undef, 0x3fff); # 0x1829
     cgidec($res);
     warn "$$: SSO done($res): " . Dumper(\%cgi);
@@ -109,74 +110,6 @@ sub cgidec {
     }
 }
 
-# ./zxlogview /var/zxid/idppem/logsign-nopw-cert.pem /var/zxid/idppem/logenc-nopw-cert.pem </var/zxid/idpuid/Fool11/.log
-
-sub read_user_log {
-    my ($uid, $repeat, $nlog) = @_;
-    open LOG, "tail -$nlog ${cpath}uid/$uid/.log | ./zxlogview ${cpath}pem/logsign-nopw-cert.pem ${cpath}pem/logenc-nopw-cert.pem|"
-	or die "Cannot open log decoding pipe: $!";
-    $/ = "\n";
-    my ($what, $line, $x);
-    my $accu = '';
-    while ($line = <LOG>) {
-	# 0     1   2  3 4                   5                   6   7 8 9 10     mm11   v r op
-	# ----+ 104 PP - 20100217-151751.352 19700101-000000.501 -:- - - - -      zxcall N W GOTMD http://idp.tas3.eu/zxididp?o=B -
-	my ($pre, $len, $se, $sig3, $ourts, $srcts5, $ipport6, $ent, $mid, $a7nid, $nid, $mm11, $vvv, $res, $op, $para, @rest) = split /\s+/, $line;
-	#                                                                                           $para                        rest0       rest1
-	# ----+ 124 PP - 20100314-172308.720 19700101-000000.501 -:- - - - -      zxidp N K INEWSES MSESey_n-6_oVkMlBR2dQCkgAlKs uid(Fool11) pw
-	if ($op eq 'INEWSES') {
-	    if ($rest[1] eq 'yk') {
-		$what = "Authenticated using Yubikey. New session created.";
-	    } elsif ($rest[1] eq 'pw') {
-		$what = "Authenticated using password. New session created.";
-	    } else {
-		$what = "Other authn. New session created.";
-	    }
-	} elsif ($op eq 'DIA7N') {
-	    $what = "Web Service Provider Bootstrap or Discovery.";
-	} elsif ($op eq 'SSOA7N') {
-	    $what = "Single Sign-On (SSO).";
-	} else {
-	    $what = "$op $para ".join(' ', @rest);
-	}
-	my %s = (when => $ourts, sp => $ent, id => $a7nid, what => $what);
-	($x = $repeat) =~ s/!!(\w+)/$s{$1}/g;
-	$accu .= $x;
-    }
-    close LOG;
-    return $accu;
-}
-
-sub read_cot {
-    my ($repeat, $selected_sp) = @_;
-    open COT, "./zxcot ${cpath}cot|" or die "Cannot open zxcot pipe: $!";
-    $/ = "\n";
-    my ($line, $x);
-    my $accu = '';
-    while ($line = <COT>) {
-	my ($file, $eid, $dpy_name) = split /\s+/, $line;
-	my $selected = $eid eq $selected_sp ? 'selected' : '';
-	my %s = (sp => $eid, spnice => $dpy_name, selectedsp => $selected);
-	($x = $repeat) =~ s/!!(\w+)/$s{$1}/g;
-	$accu .= $x;
-    }
-    close LOG;
-    return $accu;
-}
-
-sub persona_menu {
-    my ($repeat, $selected_persona, $ar_personae) = @_;
-    my ($line, $x);
-    my $accu = '';
-    for $line (sort @{$ar_personae}) {
-	my $selected = $line eq $selected_persona ? 'selected' : '';
-	my %s = (pp => $line, selectedpp => $selected);
-	($x = $repeat) =~ s/!!(\w+)/$s{$1}/g;
-	$accu .= $x;
-    }
-    return $accu;
-}
-
 sub readall {
     my ($f, $nofatal) = @_;
     my ($pkg, $srcfile, $line) = caller;
@@ -186,6 +119,29 @@ sub readall {
     my $x = <F>;
     close F;
     return $x;
+}
+
+### Safely add a line to log
+
+sub append {
+    my ($t,$line) = @_;
+    my ($p,$f,$l)=caller;
+    #warn "LOCK append_lock ($t at $f line $l)" if $locktrace;
+    #lock $append_lock;  # Guard against file handle confusion
+    if (open(T4, ">>$t")) {
+        flock T4, 2; # Exclusive
+
+        seek(T4, 0, 2);  # Go to absolute end of file (someone could have
+                         # written to the file while we were waiting for
+                         # flock)
+        print T4 $line;
+        flock T4, 8;
+        close T4;
+        return 1;
+    } else {
+        warn "$$: Cant append `$t' ($! at $f line $l)";
+        return 0;
+    }
 }
 
 #######################################################################
@@ -270,6 +226,14 @@ sub bangbang {
 
 ### $accu .= filex::bang($templ, 'err here', A=>"b", C=>"d");
 
+sub bangbang_templ {
+    my ($templr, $hr) = @_;
+    bangbang($templr, $hr);
+    my $len = length $$templr;
+    syswrite STDOUT, "Content-Type: text/html\r\nContent-Length: $len$setcookie\r\n\r\n$templr";
+    exit;
+}
+
 sub show_templ {
     my ($templ, $hr) = @_;
     $templ = readall($templ);
@@ -279,33 +243,97 @@ sub show_templ {
     exit;
 }
 
-sub show_atsel {
-    my ($uid, $hr) = @_;
-    my $templ = readall("atsel-main.html");
-    $templ =~ s/<!--REPEAT_LOG-->(.*)<!--END_REPEAT_LOG-->/!!REPEAT_LOG/s;
-    my $repeat_log = $1;
-    $templ =~ s/<!--REPEAT_SP-->(.*)<!--END_REPEAT_SP-->/!!REPEAT_SP/s;
-    my $repeat_sp = $1;
-    $templ =~ s/<!--REPEAT_PP-->(.*)<!--END_REPEAT_PP-->/!!REPEAT_PP/s;
-    my $repeat_pp = $1;
-    $templ =~ s/<!--REPEAT_ATTR-->(.*)<!--END_REPEAT_ATTR-->/!!REPEAT_ATTR/s;
-    my $repeat_attr = $1;
-
-    $$hr{NLOG} = 10;
-    $$hr{REPEAT_LOG} = read_user_log($uid, $repeat_log, $$hr{NLOG});
-    $$hr{REPEAT_SP}  = read_cot($repeat_sp, $selected_sp);
-    $$hr{REPEAT_PP}  = read_cot($repeat_sp, $persona);
-    
-    # Scan all attributes according to algorithm
-
-    
-    
-    bangbang(\$templ, $hr);
-    my $len = length $templ;
-    syswrite STDOUT, "Content-Type: text/html\r\nContent-Length: $len$setcookie\r\n\r\n$templ";
-    exit;
+sub spend_grant {
+    my ($why) = @_;
+    rename "${cpath}grant/$cgi{'g'}" => "${cpath}grant/.spent/$cgi{'g'}";
+    append("${cpath}grant/.spent/$cgi{'g'}", "zx_g_spend: grant=$cgi{'g'}, uid=$uid, ts=$ts");
 }
 
-show_atsel($uid, \%cgi);
+###
+### MAIN
+###
+
+sub show_grant {
+    my ($uid, $hr) = @_;
+    my $templ = readall("grant-main.html");
+    $templ =~ s/<!--REPEAT_GRANT-->(.*)<!--END_REPEAT_GRANT-->/!!REPEAT_GRANT/s;
+    my $repeat_grant = $1;
+    $repeat_grant =~ s/<!--REPEAT_ATTR-->(.*)<!--END_REPEAT_ATTR-->/!!REPEAT_ATTR/s;
+    my $repeat_attr = $1;
+    
+    my $grant_manifest = readall("${cpath}grant/$cgi{'g'}",1);
+    if (!length $grant_manifest) {
+	warn "Grant token not found or invalid link. (${cpath}grant/$cgi{'g'})";
+	$cgi{ERR} = "Grant token not found or invalid link. Perhaps the token has already been consumed?";
+	bangbang_templ(\$templ, \$cgi);
+    }
+    
+    my $grant_no = 0;
+    my @grants = split /\n\n/, $grant_manifest;
+    for $grant (@grants) {
+	++$grant_no;
+	my %gr = $grant =~ /^(.+?): (.*?)$/gm;
+	warn "$grant_no: grant: " . Dumper(\%gr);
+	if ($g{'zx_g_notbefore'}) {
+	    ($yyyy, $mm, $dd, $hour, $min, $sec, $msec) = $gr{'zx_g_notbefore'}
+	    =~ /^(\d\d\d\d)(\d\d)(\d\d)(?:-(\d\d)(?:(\d\d)(?:(\d\d)(?:\.(\d\d\d))?)?)?)?/;
+	    $secs = timegm($sec, $min, $hour, $dd, $mon-1, $yyyy-1900);
+	    if (time < $secs) {
+		warn "$grant_no: Grant token can not be spent yet. notbefore_secs=$secs";
+		$cgi{ERR} = "Grant token can not be spent yet.";
+		bangbang_templ(\$templ, \$cgi);
+	    }
+	}
+	if ($g{'zx_g_expires'}) {
+	    ($yyyy, $mm, $dd, $hour, $min, $sec, $msec) = $gr{'zx_g_expires'}
+	    =~ /^(\d\d\d\d)(\d\d)(\d\d)(?:-(\d\d)(?:(\d\d)(?:(\d\d)(?:\.(\d\d\d))?)?)?)?/;
+	    $secs = timegm($sec, $min, $hour, $dd, $mon-1, $yyyy-1900);
+	    if (time >= $secs) {
+		spend_grant('expired');
+		warn "$grant_no: Grant token has expired. expires_secs=$secs";
+		$cgi{ERR} = "Grant token has expired.";
+		bangbang_templ(\$templ, \$cgi);
+	    }
+	}
+	
+	my $attrs = '';
+	for my $name (sort keys %g) {
+	    next if $name eq 'dn';
+	    next if $name =~ /^zx_g_/;
+	    next if $name =~ /^\s*\#/;  # Comments
+	    my %at = (name => $name, val => $g{$name}, what => $g{"zx_g_doc_$name"} );
+	    ($attr = $repeat_attr) =~ s/!!(\w+)/$at{$1}/gs;
+	    $attrs .= $attr;
+	}
+	$gr{REPEAT_ATTR} = $attrs;
+	
+	$gr{'no'} = $grant_no;
+	my ($op, $share, $eid) = $gr{'dn'} =~ /^op=(\w+),\s*share=(\w+),\s*eid=(.*?)$/;
+	$gr{'eid'} = $eid;
+	my $ent = Net::SAML::get_ent($cf, $eid);
+	$gr{'dpy_name'} = Net::SAML::zxid_entity_s_dpy_name_get($ent);
+	$gr{'button_url'} = Net::SAML::zxid_entity_s_button_url_get($ent);
+	
+	($grant_gui = $repeat_grant) =~ s/!!(\w+)/$gr{$1}/gs;
+	$grant_guis .= $grant_gui;
+    }
+    
+    $cgi{REPEAT_GRANT} = $grant_guis;
+    $cgi{GTGUI} = 1;
+    bangbang_templ(\$templ, \$cgi);
+}
+
+if ($cgi{'accept'}) {
+    $cgi{MSG} = "Grant accepted by user (grant can not be used again).";
+    #show_accept($uid, \%cgi);
+}
+
+if ($cgi{'decline'}) {
+    $cgi{MSG} = "Grant declined by user (grant can not be used again).";
+    my $templ = readall("grant-main.html");
+    bangbang_templ(\$templ, \$cgi);
+}
+
+show_grant($uid, \%cgi);
 
 __END__

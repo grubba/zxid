@@ -173,7 +173,7 @@ set_eid:
       }
       break;
     case 'g':  /* management (gestion) form fields or query string arguments */
-      if (!n[1] || n[2]) goto unknown;
+      if (!n[1] || n[2]) goto unknown;  /* N.B. single letter g=GrantToken in zxidgrant.pl */
       switch (n[1]) {
       case 'l': /* gl - local logout */
       case 'r': /* gr - single logout redirect */

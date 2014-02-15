@@ -884,7 +884,7 @@ int zxid_ent_cache_mx_init = 0;
 
 /*(i) Initialize configuration object, which must have already been
  * allocated, to factory defaults (i.e. compiled in defaults, see
- * zxidconf.h).
+ * zxidconf.h). Config file is not read.
  *
  * cf:: Pointer to previously allocated configuration object
  * path:: Since this configuration option is so fundamental, it can
@@ -1237,7 +1237,7 @@ zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path)
   return cf;
 }
 
-/*() Allocate conf object and initialize it with default config or config file.
+/*() Allocate conf object and initialize it with default config (config file is not read).
  * See zxid_new_conf_to_cf() for a more complete solution.
  * Just initializes the config object to factory defaults (see zxidconf.h).
  * Previous content of the config object is lost. */
