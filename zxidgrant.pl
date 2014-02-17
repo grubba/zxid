@@ -33,7 +33,8 @@ close STDERR;
 open STDERR, ">>/var/tmp/zxid.stderr" or die "Cant open error log: $!";
 select STDERR; $|=1; select STDOUT;
 
-($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
+$now = time;
+($sec,$min,$hour,$mday,$mon,$year) = gmtime($now);
 $ts = sprintf "%04d%02d%02d-%02d%02d%02d", $year+1900, $mon+1, $mday, $hour, $min, $sec;
 #warn "$$: START env: " . Dumper(\%ENV);
 
@@ -270,29 +271,31 @@ sub check_grant {
 	    $cgi{ERR} = "IdP user does not match requested SP user. Grant denied.";
 	    bangbang_templ(\$templ, \%cgi);
 	}
-	warn "$grant_no: idpnid($idpnid) for eid($eid) matches";
+	warn "$grant_no: ok idpnid($idpnid) for eid($eid) matches";
     }
     
     if ($$gr{'zx_g_notbefore'}) {
 	my ($yyyy, $mm, $dd, $hour, $min, $sec, $msec) = $$gr{'zx_g_notbefore'}
 	=~ /^(\d\d\d\d)(\d\d)(\d\d)(?:-(\d\d)(?:(\d\d)(?:(\d\d)(?:\.(\d\d\d))?)?)?)?/;
 	my $secs = timegm($sec, $min, $hour, $dd, $mon-1, $yyyy-1900);
-	if (time < $secs) {
-	    warn "$grant_no: Grant token can not be spent yet. notbefore_secs=$secs";
+	if ($now < $secs) {
+	    warn "$grant_no: Grant token can not be spent yet. notbefore_secs=$secs now=$now";
 	    $cgi{ERR} = "Grant token can not be spent yet.";
 	    bangbang_templ(\$templ, \%cgi);
 	}
+	warn "$grant_no: ok notbefore_secs=$secs now=$now";
     }
     if ($$gr{'zx_g_expires'}) {
 	my ($yyyy, $mm, $dd, $hour, $min, $sec, $msec) = $$gr{'zx_g_expires'}
 	=~ /^(\d\d\d\d)(\d\d)(\d\d)(?:-(\d\d)(?:(\d\d)(?:(\d\d)(?:\.(\d\d\d))?)?)?)?/;
 	my $secs = timegm($sec, $min, $hour, $dd, $mon-1, $yyyy-1900);
-	if (time >= $secs) {
+	if ($now >= $secs) {
+	    warn "$grant_no: Grant token has expired. expires_secs=$secs new=$now";
 	    spend_grant('expired');
-	    warn "$grant_no: Grant token has expired. expires_secs=$secs";
 	    $cgi{ERR} = "Grant token has expired.";
 	    bangbang_templ(\$templ, \%cgi);
 	}
+	warn "$grant_no: ok expires_secs=$secs now=$now";
     }
 }
 
