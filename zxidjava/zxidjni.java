@@ -1530,6 +1530,14 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_anon_ok_get(zxid_conf.getCPtr(self));
   }
 
+  public static void conf_optional_login_pat_set(zxid_conf self, String value) {
+    zxidjniJNI.zxid_conf_optional_login_pat_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static String conf_optional_login_pat_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_optional_login_pat_get(zxid_conf.getCPtr(self));
+  }
+
   public static void conf_required_authnctx_set(zxid_conf self, SWIGTYPE_p_p_char value) {
     zxidjniJNI.zxid_conf_required_authnctx_set(zxid_conf.getCPtr(self), SWIGTYPE_p_p_char.getCPtr(value));
   }
@@ -2628,6 +2636,14 @@ public class zxidjni implements zxidjniConstants {
 
   public static String cgi_zxrfr_get(zxid_cgi self) {
     return zxidjniJNI.zxid_cgi_zxrfr_get(zxid_cgi.getCPtr(self));
+  }
+
+  public static void cgi_redirafter_set(zxid_cgi self, String value) {
+    zxidjniJNI.zxid_cgi_redirafter_set(zxid_cgi.getCPtr(self), value);
+  }
+
+  public static String cgi_redirafter_get(zxid_cgi self) {
+    return zxidjniJNI.zxid_cgi_redirafter_get(zxid_cgi.getCPtr(self));
   }
 
   public static void cgi_ok_set(zxid_cgi self, String value) {
@@ -4616,8 +4632,8 @@ public class zxidjni implements zxidjniConstants {
 
   public static String wsp_decoratef(zxid_conf cf, zxid_ses ses, String az_cred, String env_f) { return zxidjniJNI.zxid_wsp_decoratef(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), az_cred, env_f); }
 
-  public static int wsf_decor(zxid_conf cf, zxid_ses ses, SWIGTYPE_p_zx_e_Envelope_s env, int is_resp, zxid_epr epr) {
-    return zxidjniJNI.zxid_wsf_decor(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), SWIGTYPE_p_zx_e_Envelope_s.getCPtr(env), is_resp, zxid_epr.getCPtr(epr));
+  public static int wsf_decor(zxid_conf cf, zxid_ses ses, SWIGTYPE_p_zx_e_Envelope_s env, int is_resp, zxid_epr epri) {
+    return zxidjniJNI.zxid_wsf_decor(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), SWIGTYPE_p_zx_e_Envelope_s.getCPtr(env), is_resp, zxid_epr.getCPtr(epri));
   }
 
   public static String call(zxid_conf cf, zxid_ses ses, String svctype, String url, String di_opt, String az_cred, String enve) { return zxidjniJNI.zxid_call(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), svctype, url, di_opt, az_cred, enve); }
@@ -4776,6 +4792,10 @@ public class zxidjni implements zxidjniConstants {
 
   public static String ps_finalize_invite(zxid_conf cf, zxid_cgi cgi, zxid_ses ses, SWIGTYPE_p_int res_len, int auto_flags) {
     return zxidjniJNI.zxid_ps_finalize_invite(zxid_conf.getCPtr(cf), zxid_cgi.getCPtr(cgi), zxid_ses.getCPtr(ses), SWIGTYPE_p_int.getCPtr(res_len), auto_flags);
+  }
+
+  public static String get_idpnid_at_eid(zxid_conf cf, String uid, String eid, int allow_create) {
+    return zxidjniJNI.zxid_get_idpnid_at_eid(zxid_conf.getCPtr(cf), uid, eid, allow_create);
   }
 
   public static String sha1_safe_base64(String out_buf, int len, String data) {

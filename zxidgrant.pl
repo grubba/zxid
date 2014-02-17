@@ -277,7 +277,7 @@ sub check_grant {
     if ($$gr{'zx_g_notbefore'}) {
 	my ($yyyy, $mm, $dd, $hour, $min, $sec, $msec) = $$gr{'zx_g_notbefore'}
 	=~ /^(\d\d\d\d)(\d\d)(\d\d)(?:-(\d\d)(?:(\d\d)(?:(\d\d)(?:\.(\d\d\d))?)?)?)?/;
-	my $secs = timegm($sec, $min, $hour, $dd, $mon-1, $yyyy-1900);
+	my $secs = timegm($sec, $min, $hour, $dd, $mm-1, $yyyy-1900);
 	if ($now < $secs) {
 	    warn "$grant_no: Grant token can not be spent yet. notbefore_secs=$secs now=$now";
 	    $cgi{ERR} = "Grant token can not be spent yet.";
@@ -288,9 +288,9 @@ sub check_grant {
     if ($$gr{'zx_g_expires'}) {
 	my ($yyyy, $mm, $dd, $hour, $min, $sec, $msec) = $$gr{'zx_g_expires'}
 	=~ /^(\d\d\d\d)(\d\d)(\d\d)(?:-(\d\d)(?:(\d\d)(?:(\d\d)(?:\.(\d\d\d))?)?)?)?/;
-	my $secs = timegm($sec, $min, $hour, $dd, $mon-1, $yyyy-1900);
+	my $secs = timegm($sec, $min, $hour, $dd, $mm-1, $yyyy-1900);
 	if ($now >= $secs) {
-	    warn "$grant_no: Grant token has expired. expires_secs=$secs new=$now";
+	    warn "$grant_no: Grant token has expired. expires_secs=$secs now=$now";
 	    spend_grant('expired');
 	    $cgi{ERR} = "Grant token has expired.";
 	    bangbang_templ(\$templ, \%cgi);
@@ -335,7 +335,7 @@ sub show_grant {
 	} else {
 	    $gr{'zx_g_eid'} = $eid;
 	    my $ent = Net::SAML::get_ent($cf, $eid);
-	    warn "$grantno: eid($eid) ent($ent)";
+	    warn "$grant_no: eid($eid) ent($ent)";
 	    # perl -MNet::SAML -MData::Dumper -e 'print Dumper(\%Net::SAML::zxid_entity_s::)'
 	    $gr{'zx_g_dpy_name'} = Net::SAML::zxid_entity_s::swig_dpy_name_get($ent);
 	    $gr{'zx_g_button_url'} = Net::SAML::zxid_entity_s::swig_button_url_get($ent);

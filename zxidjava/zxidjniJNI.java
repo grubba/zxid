@@ -418,6 +418,8 @@ class zxidjniJNI {
   public final static native String zxid_conf_wspcgicmd_get(long jarg1);
   public final static native void zxid_conf_anon_ok_set(long jarg1, String jarg2);
   public final static native String zxid_conf_anon_ok_get(long jarg1);
+  public final static native void zxid_conf_optional_login_pat_set(long jarg1, String jarg2);
+  public final static native String zxid_conf_optional_login_pat_get(long jarg1);
   public final static native void zxid_conf_required_authnctx_set(long jarg1, long jarg2);
   public final static native long zxid_conf_required_authnctx_get(long jarg1);
   public final static native void zxid_conf_issue_authnctx_pw_set(long jarg1, String jarg2);
@@ -688,6 +690,8 @@ class zxidjniJNI {
   public final static native String zxid_cgi_zxapp_get(long jarg1);
   public final static native void zxid_cgi_zxrfr_set(long jarg1, String jarg2);
   public final static native String zxid_cgi_zxrfr_get(long jarg1);
+  public final static native void zxid_cgi_redirafter_set(long jarg1, String jarg2);
+  public final static native String zxid_cgi_redirafter_get(long jarg1);
   public final static native void zxid_cgi_ok_set(long jarg1, String jarg2);
   public final static native String zxid_cgi_ok_get(long jarg1);
   public final static native void zxid_cgi_templ_set(long jarg1, String jarg2);
@@ -1298,6 +1302,7 @@ class zxidjniJNI {
   public final static native long zxid_nidmap_identity_token(long jarg1, long jarg2, String jarg3, int jarg4);
   public final static native String zxid_ps_accept_invite(long jarg1, long jarg2, long jarg3, long jarg4, int jarg5);
   public final static native String zxid_ps_finalize_invite(long jarg1, long jarg2, long jarg3, long jarg4, int jarg5);
+  public final static native String zxid_get_idpnid_at_eid(long jarg1, String jarg2, String jarg3, int jarg4);
   public final static native int ZXID_DAP_SCOPE_BASE_get();
   public final static native int ZXID_DAP_SCOPE_SINGLE_get();
   public final static native int ZXID_DAP_SCOPE_SUBTREE_get();

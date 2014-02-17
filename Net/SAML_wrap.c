@@ -15334,6 +15334,78 @@ XS(_wrap_zxid_conf_anon_ok_get) {
 }
 
 
+XS(_wrap_zxid_conf_optional_login_pat_set) {
+  {
+    struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+    char *arg2 = (char *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: zxid_conf_optional_login_pat_set(self,optional_login_pat);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_optional_login_pat_set" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+    }
+    arg1 = (struct zxid_conf *)(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_conf_optional_login_pat_set" "', argument " "2"" of type '" "char *""'");
+    }
+    arg2 = (char *)(buf2);
+    if (arg1->optional_login_pat) free((char*)arg1->optional_login_pat);
+    if (arg2) {
+      size_t size = strlen((const char *)(arg2)) + 1;
+      arg1->optional_login_pat = (char *)(char *)memcpy((char *)malloc((size)*sizeof(char)), (const char *)(arg2), sizeof(char)*(size));
+    } else {
+      arg1->optional_login_pat = 0;
+    }
+    ST(argvi) = sv_newmortal();
+    
+    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_zxid_conf_optional_login_pat_get) {
+  {
+    struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: zxid_conf_optional_login_pat_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_conf_optional_login_pat_get" "', argument " "1"" of type '" "struct zxid_conf *""'"); 
+    }
+    arg1 = (struct zxid_conf *)(argp1);
+    result = (char *) ((arg1)->optional_login_pat);
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_zxid_conf_required_authnctx_set) {
   {
     struct zxid_conf *arg1 = (struct zxid_conf *) 0 ;
@@ -24611,6 +24683,78 @@ XS(_wrap_zxid_cgi_zxrfr_get) {
     }
     arg1 = (struct zxid_cgi *)(argp1);
     result = (char *) ((arg1)->zxrfr);
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_zxid_cgi_redirafter_set) {
+  {
+    struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
+    char *arg2 = (char *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: zxid_cgi_redirafter_set(self,redirafter);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_cgi, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_cgi_redirafter_set" "', argument " "1"" of type '" "struct zxid_cgi *""'"); 
+    }
+    arg1 = (struct zxid_cgi *)(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_cgi_redirafter_set" "', argument " "2"" of type '" "char *""'");
+    }
+    arg2 = (char *)(buf2);
+    if (arg1->redirafter) free((char*)arg1->redirafter);
+    if (arg2) {
+      size_t size = strlen((const char *)(arg2)) + 1;
+      arg1->redirafter = (char *)(char *)memcpy((char *)malloc((size)*sizeof(char)), (const char *)(arg2), sizeof(char)*(size));
+    } else {
+      arg1->redirafter = 0;
+    }
+    ST(argvi) = sv_newmortal();
+    
+    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_zxid_cgi_redirafter_get) {
+  {
+    struct zxid_cgi *arg1 = (struct zxid_cgi *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: zxid_cgi_redirafter_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_cgi, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_cgi_redirafter_get" "', argument " "1"" of type '" "struct zxid_cgi *""'"); 
+    }
+    arg1 = (struct zxid_cgi *)(argp1);
+    result = (char *) ((arg1)->redirafter);
     ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
     
     XSRETURN(argvi);
@@ -44821,7 +44965,7 @@ XS(_wrap_zxid_wsf_decor) {
     dXSARGS;
     
     if ((items < 5) || (items > 5)) {
-      SWIG_croak("Usage: zxid_wsf_decor(cf,ses,env,is_resp,epr);");
+      SWIG_croak("Usage: zxid_wsf_decor(cf,ses,env,is_resp,epri);");
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
@@ -47195,6 +47339,66 @@ XS(_wrap_zxid_ps_finalize_invite) {
 }
 
 
+XS(_wrap_zxid_get_idpnid_at_eid) {
+  {
+    zxid_conf *arg1 = (zxid_conf *) 0 ;
+    char *arg2 = (char *) 0 ;
+    char *arg3 = (char *) 0 ;
+    int arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    int res3 ;
+    char *buf3 = 0 ;
+    int alloc3 = 0 ;
+    int val4 ;
+    int ecode4 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: zxid_get_idpnid_at_eid(cf,uid,eid,allow_create);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_get_idpnid_at_eid" "', argument " "1"" of type '" "zxid_conf *""'"); 
+    }
+    arg1 = (zxid_conf *)(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_get_idpnid_at_eid" "', argument " "2"" of type '" "char const *""'");
+    }
+    arg2 = (char *)(buf2);
+    res3 = SWIG_AsCharPtrAndSize(ST(2), &buf3, NULL, &alloc3);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "zxid_get_idpnid_at_eid" "', argument " "3"" of type '" "char const *""'");
+    }
+    arg3 = (char *)(buf3);
+    ecode4 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "zxid_get_idpnid_at_eid" "', argument " "4"" of type '" "int""'");
+    } 
+    arg4 = (int)(val4);
+    result = (char *)zxid_get_idpnid_at_eid(arg1,(char const *)arg2,(char const *)arg3,arg4);
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
+    
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+    if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_sha1_safe_base64) {
   {
     char *arg1 = (char *) 0 ;
@@ -47943,6 +48147,8 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_conf_wspcgicmd_get", _wrap_zxid_conf_wspcgicmd_get},
 {"Net::SAMLc::zxid_conf_anon_ok_set", _wrap_zxid_conf_anon_ok_set},
 {"Net::SAMLc::zxid_conf_anon_ok_get", _wrap_zxid_conf_anon_ok_get},
+{"Net::SAMLc::zxid_conf_optional_login_pat_set", _wrap_zxid_conf_optional_login_pat_set},
+{"Net::SAMLc::zxid_conf_optional_login_pat_get", _wrap_zxid_conf_optional_login_pat_get},
 {"Net::SAMLc::zxid_conf_required_authnctx_set", _wrap_zxid_conf_required_authnctx_set},
 {"Net::SAMLc::zxid_conf_required_authnctx_get", _wrap_zxid_conf_required_authnctx_get},
 {"Net::SAMLc::zxid_conf_issue_authnctx_pw_set", _wrap_zxid_conf_issue_authnctx_pw_set},
@@ -48213,6 +48419,8 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_cgi_zxapp_get", _wrap_zxid_cgi_zxapp_get},
 {"Net::SAMLc::zxid_cgi_zxrfr_set", _wrap_zxid_cgi_zxrfr_set},
 {"Net::SAMLc::zxid_cgi_zxrfr_get", _wrap_zxid_cgi_zxrfr_get},
+{"Net::SAMLc::zxid_cgi_redirafter_set", _wrap_zxid_cgi_redirafter_set},
+{"Net::SAMLc::zxid_cgi_redirafter_get", _wrap_zxid_cgi_redirafter_get},
 {"Net::SAMLc::zxid_cgi_ok_set", _wrap_zxid_cgi_ok_set},
 {"Net::SAMLc::zxid_cgi_ok_get", _wrap_zxid_cgi_ok_get},
 {"Net::SAMLc::zxid_cgi_templ_set", _wrap_zxid_cgi_templ_set},
@@ -48753,6 +48961,7 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_nidmap_identity_token", _wrap_zxid_nidmap_identity_token},
 {"Net::SAMLc::zxid_ps_accept_invite", _wrap_zxid_ps_accept_invite},
 {"Net::SAMLc::zxid_ps_finalize_invite", _wrap_zxid_ps_finalize_invite},
+{"Net::SAMLc::zxid_get_idpnid_at_eid", _wrap_zxid_get_idpnid_at_eid},
 {"Net::SAMLc::sha1_safe_base64", _wrap_sha1_safe_base64},
 {"Net::SAMLc::zx_url_encode", _wrap_zx_url_encode},
 {0,0}
