@@ -338,6 +338,10 @@ ZXID_DECL struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf*
 
 ZXID_DECL char* zxid_simple_md_authority(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags);
 
+/* zxidcurl */
+
+ZXID_DECL const char* zxid_locate_soap_Envelope(const char* haystack);
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

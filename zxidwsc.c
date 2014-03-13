@@ -828,7 +828,7 @@ int zxid_wsc_valid_resp(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   }
 
   D_INDENT("valid: ");
-  env = zxid_add_env_if_needed(cf, enve);
+  env = zxid_add_env_if_needed(cf, enve);  /* *** why would envelope be missing? */
   ret = zxid_wsc_valid_re_env(cf, ses, az_cred, env, enve);
   D_DEDENT("valid: ");
   return ret;

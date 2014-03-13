@@ -259,6 +259,9 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
     ERR("Failed post to url(%s) CURLcode(%d) CURLerr(%s)", urli, res, CURL_EASY_STRERR(res));
     DD("buf(%.*s)", rc.lim-rc.buf, rc.buf);
   }
+
+  /*curl_easy_getinfo(cf->curl, CURLINFO_CONTENT_TYPE, char*);*/
+
   UNLOCK(cf->curl_mx, "curl-soap");
   ZX_FREE(cf->ctx, urli);
   rc.lim = rc.p;
@@ -326,14 +329,15 @@ zxid_entity* zxid_get_meta_ss(zxid_conf* cf, struct zx_str* url)
   return zxid_get_meta(cf, zx_str_to_c(cf->ctx, url));
 }
 
-/*(-) Locate first SOAP Envelope. Typically this allows extraction
- * of SOAP envelope from deep inside MIME multipart
- * message (MTOM+xop aka SOAP with attachments) */
+/*() Locate first SOAP Envelope using simple heuristic
+ * searching for string "Envelope" (and related namespace).
+ * Typically this allows extraction of SOAP envelope from deep
+ * inside MIME multipart message (MTOM+xop aka SOAP with attachments) */
 
-static char* zxid_locate_soap_Envelope(char* haystack)
+const char* zxid_locate_soap_Envelope(const char* haystack)
 {
-  char* q;
-  char* p = strstr(haystack, zx_xmlns_e);
+  const char* q;
+  const char* p = strstr(haystack, zx_xmlns_e);
   if (p) {
     for (q = p-1; q >= haystack; --q)
       if (*q == '<') break;
@@ -361,6 +365,16 @@ static char* zxid_locate_soap_Envelope(char* haystack)
     }
   }
   return 0;
+}
+
+/*() Return Content-Type header from last HTTP response.
+ * This could be used to detect MIME multipart boundary, for example. */
+
+const char* zxid_get_last_content_type(zxid_conf* cf)
+{
+  char* ct;
+  curl_easy_getinfo(cf->curl, CURLINFO_CONTENT_TYPE, &ct);
+  return ct;
 }
 
 /* ============== SOAP Call ============= */
@@ -394,7 +408,7 @@ struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct z
   struct zx_str* ss;
   char soap_action_buf[1024];
   char* soap_act;
-  char* p;
+  const char* env_start;
 
   ss = zx_easy_enc_elem_opt(cf, &env->gg);
   DD("ss(%.*s) len=%d", ss->len, ss->s, ss->len);
@@ -424,15 +438,15 @@ struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct z
   if (!ret)
     return 0;
   
-  p = zxid_locate_soap_Envelope(ret->s);
-  if (!p) {
+  env_start = zxid_locate_soap_Envelope(ret->s);
+  if (!env_start) {
     ERR("SOAP response does not have Envelope element url(%.*s)", url->len, url->s);
     D_XML_BLOB(cf, "NO ENVELOPE SOAP RESPONSE", ret->len, ret->s);
     ZX_FREE(cf->ctx, ret);
     return 0;
   }
 
-  r = zx_dec_zx_root(cf->ctx, ret->len, ret->s, "soap_call");
+  r = zx_dec_zx_root(cf->ctx, ret->len - (env_start - ret->s), env_start, "soap_call");
   if (!r || !r->Envelope || !r->Envelope->Body) {
     ERR("Failed to parse SOAP response url(%.*s)", url->len, url->s);
     D_XML_BLOB(cf, "BAD SOAP RESPONSE", ret->len, ret->s);

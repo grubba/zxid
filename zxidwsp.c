@@ -1,5 +1,5 @@
 /* zxidwsp.c  -  Handwritten nitty-gritty functions for Liberty ID-WSF Web Services Provider
- * Copyright (c) 2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2013-2014 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -14,6 +14,7 @@
  * 31.5.2010,  reworked PEPs extensively --Sampo
  * 25.1.2011,  tweaked RelatesTo header --Sampo
  * 26.10.2013, improved error reporting on credential expired case --Sampo
+ * 12.3.2014,  added partial mime multipart support --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -754,6 +755,7 @@ char* zxid_wsp_validate_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, s
 char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve)
 {
   struct zx_str  ss;
+  const char* enve_start;
   char* p;
   char msg[256];
   struct zx_str* logpath;
@@ -763,8 +765,16 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     ERR("Missing config, session, or envelope argument %p %p %p (programmer error)", cf,ses,enve);
     return 0;
   }
-  ss.s = (char*)enve;
-  ss.len = strlen(enve);
+
+  enve_start = zxid_locate_soap_Envelope(enve);
+  if (!enve_start) {
+    ERR("SOAP request does not have Envelope element %d", 0);
+    D_XML_BLOB(cf, "NO ENVELOPE SOAP request", -2, enve);
+    return 0;
+  }
+  
+  ss.s = enve_start;
+  ss.len = strlen(enve_start);
   D_XML_BLOB(cf, "WSP_VALIDATE", ss.len, ss.s);
   r = zx_dec_zx_root(cf->ctx, ss.len, enve, "valid");
   if (!r) {

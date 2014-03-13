@@ -908,6 +908,7 @@ ZXID_DECL struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const ch
 ZXID_DECL struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env, char** ret_enve);
 ZXID_DECL struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body);
 ZXID_DECL int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_Body_s* body);
+ZXID_DECL const char* zxid_get_last_content_type(zxid_conf* cf);
 
 /* zxidlib */
 
