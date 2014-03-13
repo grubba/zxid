@@ -583,8 +583,8 @@ struct zx_str* zxid_get_epr_address(zxid_conf* cf, zxid_epr* epr) {
 
 /* Called by:  zxcall_main, zxid_print_session */
 struct zx_str* zxid_get_epr_entid(zxid_conf* cf, zxid_epr* epr) {
-  if (!epr || !epr->Metadata) {
-    D("Missing epr=%p epr->Metadata=%p", epr, epr->Metadata);
+  if (!epr || !epr->Metadata || !epr->Metadata->ProviderID) {
+    D("Missing epr=%p epr->Metadata=%p or epr->Metadata->ProviderID", epr, epr?epr->Metadata:0);
     return 0;
   }
   D("epr->Metadata->ProviderID=%p", epr->Metadata->ProviderID);
