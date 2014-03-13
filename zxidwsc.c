@@ -1,4 +1,5 @@
 /* zxidwsc.c  -  Handwritten nitty-gritty functions for Liberty ID-WSF Web Services Client
+ * Copyright (c) 2014 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -13,6 +14,7 @@
  * 7.1.2010,  added WSC signing --Sampo
  * 31.5.2010, added WSC sig validation and PDP calls --Sampo
  * 16.2.2011, added disable security option VALID_OPT --Sampo
+ * 12.3.2014, added partial mime multipart support --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -631,8 +633,12 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
     D_DEDENT("call: ");
     return 0;
   }
-  
+
+#if 1
+  ret = zx_ref_str(cf->ctx, ret_enve);
+#else  
   ret = zx_easy_enc_elem_opt(cf, &env->gg);
+#endif
   D_DEDENT("call: ");
   return ret;
 }

@@ -587,7 +587,7 @@ no_attr:
   next_elem:
     if (c->p >= c->lim)
       goto out;
-    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WS! EXC-CANON NEEDS IT. */
+    /*ZX_SKIP_WS(c,x);    DO NOT SQUASH WHITESPACE! EXC-CANON NEEDS IT. */
     if (*c->p == '<') {
     potential_tag:
       ++c->p;

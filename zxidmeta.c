@@ -906,7 +906,7 @@ static struct zx_md_AdditionalMetadataLocation_s* zxid_md_authority_loc(zxid_con
   struct zx_md_AdditionalMetadataLocation_s* mda;
   mda = zx_NEW_md_AdditionalMetadataLocation(cf->ctx, &ed->gg);
   mda->namespace_is_cxx_keyword = zx_dup_attr(cf->ctx,&mda->gg,zx_namespace_ATTR,"#md-authority");
-  zx_add_content(cf->ctx, &mda->gg, zx_strf(cf->ctx, "%s?o=b&c=", cf->burl));
+  zx_add_content(cf->ctx, &mda->gg, zx_strf(cf->ctx, "%s?o=b", cf->burl));
   return mda;
 }
 

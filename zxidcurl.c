@@ -1,5 +1,5 @@
 /* zxidcurl.c  -  libcurl interface for making SOAP calls and getting metadata
- * Copyright (c) 2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2013-2014 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -15,6 +15,7 @@
  * 1.2.2010,   removed arbitrary limit on SOAP response size --Sampo
  * 11.12.2011, refactored HTTP GET client --Sampo
  * 26.10.2013, improved error reporting on credential expired case --Sampo
+ * 12.3.2014,  added partial mime multipart support --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  *           http://curl.haxx.se/libcurl/
@@ -325,6 +326,43 @@ zxid_entity* zxid_get_meta_ss(zxid_conf* cf, struct zx_str* url)
   return zxid_get_meta(cf, zx_str_to_c(cf->ctx, url));
 }
 
+/*(-) Locate first SOAP Envelope. Typically this allows extraction
+ * of SOAP envelope from deep inside MIME multipart
+ * message (MTOM+xop aka SOAP with attachments) */
+
+static char* zxid_locate_soap_Envelope(char* haystack)
+{
+  char* q;
+  char* p = strstr(haystack, zx_xmlns_e);
+  if (p) {
+    for (q = p-1; q >= haystack; --q)
+      if (*q == '<') break;
+    if (q < haystack)
+      return 0;
+    p = zx_memmem(q, p-q, "Envelope", sizeof("Envelope")-1);
+    if (p)
+      return q;
+  } else {
+    D("Trying to detect namespaceless Envelope %d",0);
+    p = strstr(haystack, "Envelope");
+    if (p && p > haystack) {
+      --p;
+      switch (*p) {
+      case '<': return p;
+      case ':': /* Scan over namespace prefix */
+	for (--p; p > haystack; --p)
+	  if (!AZaz_09_dash(*p)) break;
+	if (*p == '<')
+	  return p;
+	/* else fall through to error */
+      default:
+	return 0;
+      }
+    }
+  }
+  return 0;
+}
+
 /* ============== SOAP Call ============= */
 
 /*(i) Send SOAP request and wait for response. Send the message to the
@@ -339,7 +377,7 @@ zxid_entity* zxid_get_meta_ss(zxid_conf* cf, struct zx_str* url)
  *
  * The underlying HTTP client is libcurl. While libcurl is documented to
  * be "entirely thread safe", one limitation is that curl handle can not
- * be shared between threads. Since we keep the curl handle a part
+ * be shared between threads. Since we keep the curl handle as a part
  * of the configuration object, which may be shared between threads,
  * we need to take a lock for duration of the curl operation. Thus any
  * given configuration object can have only one HTTP request active
@@ -356,6 +394,7 @@ struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct z
   struct zx_str* ss;
   char soap_action_buf[1024];
   char* soap_act;
+  char* p;
 
   ss = zx_easy_enc_elem_opt(cf, &env->gg);
   DD("ss(%.*s) len=%d", ss->len, ss->s, ss->len);
@@ -384,6 +423,14 @@ struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct z
     *ret_enve = ret?ret->s:0;
   if (!ret)
     return 0;
+  
+  p = zxid_locate_soap_Envelope(ret->s);
+  if (!p) {
+    ERR("SOAP response does not have Envelope element url(%.*s)", url->len, url->s);
+    D_XML_BLOB(cf, "NO ENVELOPE SOAP RESPONSE", ret->len, ret->s);
+    ZX_FREE(cf->ctx, ret);
+    return 0;
+  }
 
   r = zx_dec_zx_root(cf->ctx, ret->len, ret->s, "soap_call");
   if (!r || !r->Envelope || !r->Envelope->Body) {

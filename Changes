@@ -116,11 +116,12 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - BUG: Passing qs args in RelayState
     - BANGBANG_PAT to enable bang bang expansion of outputs, even in mini_httpd_zxid
 
-zxid-1.21:: 14.2.2014
+zxid-1.21:: 12.3.2014
     - Changed "http://www.w3.org/2005/03/addressing/role/anonymous" to "http://www.w3.org/2005/08/addressing/anonymous" to be better WSA spec compliant. Seems Liberty SOAP binding has an error in this.
     - Omitted ReplyTo SOAP header whose value is anonymous
     - added OPTIONAL_LOGIN_PAT feature
     - added redirafter feature for local IdP logins (e.g. zxidatsel.pl)
+    - added partial mime multipart support
 
 zxid-1.20:: 11.12.2013
     - Fixed segv on bad decrypt and improved error messages

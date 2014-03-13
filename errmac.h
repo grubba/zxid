@@ -157,6 +157,9 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 
 #define AZaz_09_(x) ( IN_RANGE((x), '0', '9') || ((x) == '_') || \
                     IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z') )
+#define AZaz_09_dash(x) ( IN_RANGE((x), '0', '9') || ((x) == '_') || \
+                    ((x) == '-') || \
+                    IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z') )
 #define AZaz_09_dot(x) ( IN_RANGE((x), '0', '9') || ((x) == '_') || \
                     ((x)=='.') || ((x) == '-') || \
                     IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z') )
