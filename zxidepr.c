@@ -587,7 +587,7 @@ struct zx_str* zxid_get_epr_entid(zxid_conf* cf, zxid_epr* epr) {
     D("Missing epr=%p epr->Metadata=%p", epr, epr->Metadata);
     return 0;
   }
-  D("epr->Metadata->ProviderID=%p", epr, epr->Metadata->ProviderID);
+  D("epr->Metadata->ProviderID=%p", epr->Metadata->ProviderID);
   return ZX_GET_CONTENT(epr->Metadata->ProviderID);
 }
 
