@@ -37250,6 +37250,35 @@ fail:
 }
 
 
+ZEND_NAMED_FUNCTION(_wrap_zxid_get_last_content_type) {
+  zxid_conf *arg1 = (zxid_conf *) 0 ;
+  zval **args[1];
+  char *result = 0 ;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zxid_conf, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zxid_get_last_content_type. Expected SWIGTYPE_p_zxid_conf");
+    }
+  }
+  result = (char *)zxid_get_last_content_type(arg1);
+  {
+    if(!result) {
+      ZVAL_NULL(return_value);
+    } else {
+      ZVAL_STRING(return_value, (char *)result, 1);
+    }
+  }
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
 ZEND_NAMED_FUNCTION(_wrap_zxid_version) {
   int result;
   
@@ -43536,6 +43565,7 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zxid_soap_call_raw,_wrap_zxid_soap_call_raw,NULL)
  SWIG_ZEND_NAMED_FE(zxid_soap_call_hdr_body,_wrap_zxid_soap_call_hdr_body,NULL)
  SWIG_ZEND_NAMED_FE(zxid_soap_cgi_resp_body,_wrap_zxid_soap_cgi_resp_body,NULL)
+ SWIG_ZEND_NAMED_FE(zxid_get_last_content_type,_wrap_zxid_get_last_content_type,NULL)
  SWIG_ZEND_NAMED_FE(zxid_version,_wrap_zxid_version,NULL)
  SWIG_ZEND_NAMED_FE(zxid_version_str,_wrap_zxid_version_str,NULL)
  SWIG_ZEND_NAMED_FE(zx_easy_enc_elem_opt,_wrap_zx_easy_enc_elem_opt,NULL)

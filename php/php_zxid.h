@@ -1083,6 +1083,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_http_post_raw);
 ZEND_NAMED_FUNCTION(_wrap_zxid_soap_call_raw);
 ZEND_NAMED_FUNCTION(_wrap_zxid_soap_call_hdr_body);
 ZEND_NAMED_FUNCTION(_wrap_zxid_soap_cgi_resp_body);
+ZEND_NAMED_FUNCTION(_wrap_zxid_get_last_content_type);
 ZEND_NAMED_FUNCTION(_wrap_zxid_version);
 ZEND_NAMED_FUNCTION(_wrap_zxid_version_str);
 ZEND_NAMED_FUNCTION(_wrap_zx_easy_enc_elem_opt);

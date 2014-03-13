@@ -4391,6 +4391,10 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_soap_cgi_resp_body(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), SWIGTYPE_p_zx_e_Body_s.getCPtr(body));
   }
 
+  public static String get_last_content_type(zxid_conf cf) {
+    return zxidjniJNI.zxid_get_last_content_type(zxid_conf.getCPtr(cf));
+  }
+
   public static int version() {
     return zxidjniJNI.zxid_version();
   }

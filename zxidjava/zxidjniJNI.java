@@ -1195,6 +1195,7 @@ class zxidjniJNI {
   public final static native long zxid_soap_call_raw(long jarg1, String jarg2, long jarg3, long jarg4);
   public final static native long zxid_soap_call_hdr_body(long jarg1, String jarg2, long jarg3, long jarg4);
   public final static native int zxid_soap_cgi_resp_body(long jarg1, long jarg2, long jarg3);
+  public final static native String zxid_get_last_content_type(long jarg1);
   public final static native int zxid_version();
   public final static native String zxid_version_str();
   public final static native String zx_easy_enc_elem_opt(long jarg1, long jarg2);

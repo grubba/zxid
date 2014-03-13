@@ -41490,6 +41490,34 @@ XS(_wrap_zxid_soap_cgi_resp_body) {
 }
 
 
+XS(_wrap_zxid_get_last_content_type) {
+  {
+    zxid_conf *arg1 = (zxid_conf *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: zxid_get_last_content_type(cf);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_get_last_content_type" "', argument " "1"" of type '" "zxid_conf *""'"); 
+    }
+    arg1 = (zxid_conf *)(argp1);
+    result = (char *)zxid_get_last_content_type(arg1);
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_zxid_version) {
   {
     int argvi = 0;
@@ -48854,6 +48882,7 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_soap_call_raw", _wrap_zxid_soap_call_raw},
 {"Net::SAMLc::zxid_soap_call_hdr_body", _wrap_zxid_soap_call_hdr_body},
 {"Net::SAMLc::zxid_soap_cgi_resp_body", _wrap_zxid_soap_cgi_resp_body},
+{"Net::SAMLc::zxid_get_last_content_type", _wrap_zxid_get_last_content_type},
 {"Net::SAMLc::zxid_version", _wrap_zxid_version},
 {"Net::SAMLc::zxid_version_str", _wrap_zxid_version_str},
 {"Net::SAMLc::zx_easy_enc_elem_opt", _wrap_zx_easy_enc_elem_opt},

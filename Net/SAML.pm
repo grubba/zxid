@@ -230,6 +230,7 @@ package Net::SAML;
 *soap_call_raw = *Net::SAMLc::zxid_soap_call_raw;
 *soap_call_hdr_body = *Net::SAMLc::zxid_soap_call_hdr_body;
 *soap_cgi_resp_body = *Net::SAMLc::zxid_soap_cgi_resp_body;
+*get_last_content_type = *Net::SAMLc::zxid_get_last_content_type;
 *version = *Net::SAMLc::zxid_version;
 *version_str = *Net::SAMLc::zxid_version_str;
 *zx_easy_enc_elem_opt = *Net::SAMLc::zx_easy_enc_elem_opt;

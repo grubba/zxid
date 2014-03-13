@@ -20246,6 +20246,20 @@ SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_zxid_1soap_1cgi_1resp_1body(JNI
 }
 
 
+SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_zxid_1get_1last_1content_1type(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jstring jresult = 0 ;
+  zxid_conf *arg1 = (zxid_conf *) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(zxid_conf **)&jarg1; 
+  result = (char *)zxid_get_last_content_type(arg1);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
+  return jresult;
+}
+
+
 SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_zxid_1version(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   int result;
@@ -26519,7 +26533,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1COMPILE_1DATE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "1392657062";
+  result = (char *) "1394678465";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }
@@ -26531,7 +26545,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1REV_1get(JNIEnv *jenv,
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "$Id: 1.19-27-g0a30d10 20140217-152050 sampo@ $";
+  result = (char *) "$Id: 1.21-2-g377f0a1 20140313-022443 sampo@ $";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }
