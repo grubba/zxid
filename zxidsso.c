@@ -151,10 +151,12 @@ char* zxid_saml2_map_authn_ctx(char* c)
 
 /*() cgi->rs will be copied to ses->rs and from there in ab_pep to resource-id.
  * We compress and safe_base64 encode it to protect any URL special characters. */
+
 void zxid_sso_set_relay_state_to_return_to_this_url(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_str* ss;
   D("Previous rs(%s)", STRNULLCHKD(cgi->rs));
+  // *** absolute URI consideration
   if (!cgi->rs || !cgi->rs[0]) {
     if (!cgi->uri_path) {
       ERR("null or empty cgi->uri_path=%p qs(%s) programming error", cgi->uri_path, STRNULLCHK(cgi->qs));

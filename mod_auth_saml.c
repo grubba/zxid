@@ -343,7 +343,7 @@ static int chkuid(request_rec* r)
     chdir(cf->wd);  /* Ensure the working dir is not / (sometimes Apache httpd changes dir) */
   D_INDENT("chkuid: ");
 
-  if (r->main) {  /* subreq can't come from net: always auth. */
+  if (r->main) {  /* subreq can't come from net: always auth OK. */
     D("sub ok %d", OK);
     D_DEDENT("chkuid: ");
     return OK;

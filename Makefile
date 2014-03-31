@@ -343,6 +343,10 @@ SO_LIBS+=$(LIBS)
 TARGET_FOUND=1
 endif
 
+ifeq ($(TARGET),CYGWIN_NT-6.1)
+TARGET=cygwin
+endif
+
 ifeq ($(TARGET),cygwin)
 ### Native Windows build using Cygwin environment and gcc
 CDEF+=-DCYGWIN -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DLOCK_UN=0
