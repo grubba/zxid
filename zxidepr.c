@@ -131,7 +131,7 @@ int zxid_epr_path(zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, s
   buf_len -= len;
 
   if (buf_len < svc->len + 1 + 4 + 1 + sizeof(sha1_cont)) {
-    ERR("buf too short buf_len=%d need=%d svc(%.*s)", buf_len, svc->len + 1 + 4 + 1 + sizeof(sha1_cont), svc->len, svc->s);
+    ERR("buf too short buf_len=%ld need=%ld svc(%.*s)", buf_len, svc->len + 1 + 4 + 1 + sizeof(sha1_cont), svc->len, svc->s);
     return 1;
   }
   memcpy(buf, svc->s, svc->len);

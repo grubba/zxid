@@ -361,14 +361,13 @@ static const char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* k
 /* Called by:  zxid_idp_select_zxstr_cf_cgi, zxid_saml2_post_enc, zxid_simple_idp_show_an, zxid_simple_show_err */
 struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* templ_path, const char* default_templ, int size_hint, int auto_flags)
 {
-  char buf[8192];
   const char* templ;
   const char* tp;
   const char* tq;
   const char* p;
   char* pp;
   struct zx_str* ss;
-  int len, got = 0;
+  int len;
 
   if (cgi->skin && *cgi->skin) {
     for (pp = cgi->skin; *pp; ++pp)
@@ -382,21 +381,17 @@ struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* t
 	 p >= templ_path && !ONE_OF_2(*p, '/', '\\');
 	 --p);
 
-    got = read_all(sizeof(buf)-1, buf, "templ", 1, "%.*s/%s%s",
-		   p-templ_path, templ_path, cgi->skin, p);
-    D("Tried to read from skin(%s), got=%d", cgi->skin, got);
+    templ = read_all_alloc(cf->ctx, "templ", 1, 0, "%.*s/%s%s",
+			   p-templ_path, templ_path, cgi->skin, p);
+    D("Tried to read from skin(%s) %p", cgi->skin, templ);
   }
   
-  if (got <= 0)
-    got = read_all(sizeof(buf)-1, buf, "templ", 1, "%s", templ_path);
-  if (got <= 0) {
+  if (!templ)
+    templ = read_all_alloc(cf->ctx, "templ", 1, 0, "%s", templ_path);
+  if (!templ) {
     D("Template at path(%s) not found. Using default template.", templ_path);
     templ = default_templ;
-  } else if (got == sizeof(buf)-1) {
-    ERR("Template at path(%s) does not fit in buffer of %d. Using default template.", templ_path, (int)sizeof(buf)-1);
-    templ = default_templ;
-  } else
-    templ = buf;
+  }
   while (1) {  /* Try rendering, iterate if expansion is needed. */
     tp = templ;
     ss = zx_new_len_str(cf->ctx, strlen(tp) + size_hint);
@@ -424,6 +419,8 @@ struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* t
     }
     break;
   }
+  if (templ != default_templ)
+    ZX_FREE(cf->ctx, templ);
   *pp = 0;
   ss->len = pp - ss->s;
   return ss;
