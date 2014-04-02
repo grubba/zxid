@@ -361,7 +361,7 @@ static const char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* k
 /* Called by:  zxid_idp_select_zxstr_cf_cgi, zxid_saml2_post_enc, zxid_simple_idp_show_an, zxid_simple_show_err */
 struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* templ_path, const char* default_templ, int size_hint, int auto_flags)
 {
-  const char* templ;
+  const char* templ = 0;
   const char* tp;
   const char* tq;
   const char* p;
@@ -419,7 +419,7 @@ struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* t
     }
     break;
   }
-  if (templ != default_templ)
+  if (templ && templ != default_templ)
     ZX_FREE(cf->ctx, templ);
   *pp = 0;
   ss->len = pp - ss->s;
