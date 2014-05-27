@@ -413,7 +413,7 @@ struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* t
       *pp++ = *tp++;
     }
     if (pp >= ss->s + ss->len) {
-      INFO("Expansion of template too big. Does not fit in %d. Expanding.", ss->len);
+      INFO("Expansion of template does not fit in %d. Enlarging buffer.", ss->len);
       size_hint += size_hint;  /* Double it */
       continue;
     }

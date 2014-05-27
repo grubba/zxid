@@ -1,5 +1,5 @@
 /* zxidepr.c  -  Handwritten functions for client side EPR and bootstrap handling
- * Copyright (c) 2012-2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2012-2014 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -13,6 +13,7 @@
  * 7.10.2008, added documentation --Sampo
  * 22.4.2012, fixed folding EPR names (to avoid folding comma) --Sampo
  * 7.12.2013, added EPR ranking --Sampo
+ * 27.5.2014, improved nth progessing in zxid_find_epr() --Sampo
  *
  * See also: zxidsimp.c (attributes to LDIF), and zxida7n.c (general attribute querying)
  *
@@ -131,7 +132,7 @@ int zxid_epr_path(zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, s
   buf_len -= len;
 
   if (buf_len < svc->len + 1 + 4 + 1 + sizeof(sha1_cont)) {
-    ERR("buf too short buf_len=%ld need=%ld svc(%.*s)", buf_len, svc->len + 1 + 4 + 1 + sizeof(sha1_cont), svc->len, svc->s);
+    ERR("buf too short buf_len=%ld need=%ld svc(%.*s)", (long)buf_len, svc->len + 1 + 4 + 1 + sizeof(sha1_cont), svc->len, svc->s);
     return 1;
   }
   memcpy(buf, svc->s, svc->len);
@@ -307,10 +308,10 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
   D_DEDENT("snarf_eprs: ");
 }
 
-/*() Search the EPRs cached under the session for a match. First directory is searched
+/*() Search the EPRs cached under the session for a match. First the directory is searched
  * for files whose name starts by service type. These files are opened and parsed
  * as EPR and further checks are made. The nth match is returned. 1 means first.
- * Typical name: /var/zxid/ses/SESID/SVCTYPE,RANK,SHA1
+ * Typical filename: /var/zxid/ses/SESID/SVCTYPE,RANK,SHA1
  *
  * cf:: ZXID configuration object, also used for memory allocation
  * ses:: Session object in whose EPR cache the file is searched
@@ -318,7 +319,7 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
  * url:: (Optional) If provided, this argument has to match either
  *     the ProviderID, EntityID, or actual service endpoint URL.
  * di_opt:: (Optional) Additional discovery options for selecting the service, query string format
- * action:: (Optional) The action, or method, that must be invocable on the service
+ * action:: (Optional) The action, or method, that must be invocable on the service (default: any)
  * n:: How manieth matching instance is returned. 1 means first
  * return:: EPR data structure (or linked list of EPRs) on success, 0 on failure
  *
@@ -438,10 +439,12 @@ next_file:
     return 0;
   }
   
-  found = zxid_di_sort_eprs(cf, found);
-  for (epr = found, iter=1; epr; ++iter, epr = nxt) {
+  epr = zxid_di_sort_eprs(cf, found);
+  found = 0;
+  for (iter=1; epr; ++iter, epr = nxt) {
     nxt = (zxid_epr*)epr->gg.g.n;
-    if (iter >= nth) {
+    if (iter == nth) {
+      epr->gg.g.n = 0;
       found = epr;
     } else {
       zx_free_elem(cf->ctx, &epr->gg, 0);  /* not returned, better free it! */
@@ -449,14 +452,13 @@ next_file:
     }
   }
   
-  if (iter < nth) {
+  if (!found) {
     D("nth=%d beyond available result set iter=%d", nth, iter);
-    ZX_FREE(cf->ctx, epr_buf);
     D_DEDENT("find_epr: ");
     return 0;
   }
   
-  D("%d Found svc(%s) epurl(%.*s)", nth, svc, ZX_GET_CONTENT_LEN(found->Address), ZX_GET_CONTENT_S(found->Address));
+  D("%d/%d Found svc(%s) epurl(%.*s)", nth, iter, svc, ZX_GET_CONTENT_LEN(found->Address), ZX_GET_CONTENT_S(found->Address));
   D_DEDENT("find_epr: ");
   return found;
 }
@@ -536,7 +538,7 @@ zxid_epr* zxid_discover_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const
  * url:: (Optional) If provided, this argument has to match either
  *     the ProviderID, EntityID, or actual service endpoint URL.
  * di_opt:: (Optional) Additional discovery options for selecting the service, query string format
- * action:: (Optional) The action, or method, that must be invocable on the service
+ * action:: (Optional) The action, or method, that must be invocable on the service (default: any)
  * nth:: How manieth matching instance is returned. 1 means first. n>1 assumes
  *     all EPRs are already in cache and prevents querying Discovery Service.
  *     0 forces re-querying Discovery service. If nth is larger than number of entries
@@ -563,6 +565,7 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
     if (nth > 1)
       return 0;  /* Do not discover any more */
     /* nth == 1 and no-epr-in-cache-case: fall thru */
+    D("nth=%d fallthru", nth);
   }
   zxid_discover_epr(cf, ses, svc, url, di_opt, action);
   /* We need to call zxid_find_epr() to ensure the order is always same. */
