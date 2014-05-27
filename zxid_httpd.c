@@ -1,5 +1,5 @@
 /* zxid_httpd - small zxid enabled HTTP server derived from mini_httpd-1.19
- * Copyright (c) 2013 Synergetics NV (sampo@synergetics.be)
+ * Copyright (c) 2013-2014 Synergetics NV (sampo@synergetics.be)
  * All Rights Reserverd.
  * New bugs are mine, do not bother Jef with them. --Sampo */
 /* mini_httpd - small HTTP server
@@ -220,6 +220,7 @@ static time_t if_modified_since;
 static char* referer;
 static char* useragent;
 static char* paos;
+static char* range;
 
 char* remoteuser;
 
@@ -243,7 +244,7 @@ static void start_request(void);
 void add_to_request(char* str, size_t len);
 static char* get_request_line(void);
 static void start_response(void);
-static void send_via_write(int fd, off_t size);
+static void send_via_write(int fd, off_t size, off_t start);
 static void make_log_entry(void);
 static void check_referer(void);
 
@@ -383,7 +384,7 @@ static char* file_details(const char* dir, const char* name) {
 /* ------------- Read Write Utils ----------- */
 
 /* Called by:  cgi_interpose_input, handle_request, zxid_mini_httpd_read_post */
-ssize_t my_read(char* buf, size_t size) {
+ssize_t conn_read(char* buf, size_t size) {
   DD("size=%d", size);
   if (do_ssl)
     size = SSL_read(ssl, buf, size);
@@ -394,7 +395,7 @@ ssize_t my_read(char* buf, size_t size) {
 }
 
 /* Called by:  cgi_interpose_output x6, send_response, send_via_write x2, zxid_mini_httpd_wsp_response x2 */
-ssize_t my_write(char* buf, size_t size) {
+ssize_t conn_write(char* buf, size_t size) {
   DD("size=%d buf(%.*s)", size, MIN(size, 100), buf);
   if (do_ssl)
     size = SSL_write(ssl, buf, size);
@@ -406,12 +407,11 @@ ssize_t my_write(char* buf, size_t size) {
 
 #ifdef HAVE_SENDFILE
 /* Called by:  do_file */
-static int my_sendfile(int fd, int socket, off_t offset, size_t nbytes) {
+static int conn_sendfile(int fd, size_t nbytes) {
 #ifdef HAVE_LINUX_SENDFILE
-  off_t lo = offset;
-  return sendfile(socket, fd, &lo, nbytes);
+  return sendfile(conn_fd, fd, 0, nbytes);
 #else /* HAVE_LINUX_SENDFILE */
-  return sendfile(fd, socket, offset, nbytes, (struct sf_hdtr*) 0, (off_t*) 0, 0);
+  return sendfile(fd, conn_fd, 0, nbytes, (struct sf_hdtr*) 0, (off_t*) 0, 0);
 #endif /* HAVE_LINUX_SENDFILE */
 }
 #endif /* HAVE_SENDFILE */
@@ -483,52 +483,59 @@ void add_to_response(char* str, size_t len) {
 
 /* Called by:  do_dir, do_file x2, send_error_and_exit, zxid_mini_httpd_sso */
 void send_response(void) {
-  (void) my_write(response, response_len);
+  (void) conn_write(response, response_len);
 }
 
+static void send_via_read_write(int fd, off_t size) {
+  char buf[32*1024];
+  ssize_t r, r2;
+  
+  for (;;) {
+    r = read(fd, buf, sizeof(buf));
+    if (r < 0 && (errno == EINTR || errno == EAGAIN)) {
+      sleep(1);
+      continue;
+    }
+    if (r <= 0)
+      return;
+    for (;;) {
+      r2 = conn_write(buf, r);
+      if (r2 < 0 && (errno == EINTR || errno == EAGAIN)) {
+	sleep(1);
+	continue;
+      }
+      if (r2 != r)
+	return;
+      break;
+    }
+  }
+}
+
+/*() Send file to connection.
+ * Called if sendfile(2) is not available or SSL is used.
+ * This function uses mmap(2) optimization for sending
+ * plain files. If Range causes offset (start), then mmap(2)
+ * is not used (even if by accident start would fall on page boundary). */
+
 /* Called by:  do_file x2 */
-static void send_via_write(int fd, off_t size) {
+static void send_via_write(int fd, off_t size, off_t start) {
 #ifndef MINGW
-  if (size <= SIZE_T_MAX) {
+  if (size <= SIZE_T_MAX && !start) {
     size_t size_size = (size_t) size;
     void* ptr = mmap(0, size_size, PROT_READ, MAP_PRIVATE, fd, 0);
     if (ptr != (void*) -1) {
-      (void) my_write(ptr, size_size);
+#ifdef MADV_SEQUENTIAL
+      /* If we have madvise, might as well call it.  Although sequential
+      ** access is probably already the default. */
+      (void) madvise(ptr, size_size, MADV_SEQUENTIAL|MADV_WILLNEED);
+#endif /* MADV_SEQUENTIAL */
+      (void) conn_write(ptr, size_size);
       (void) munmap(ptr, size_size);
     }
-#ifdef MADV_SEQUENTIAL
-    /* If we have madvise, might as well call it.  Although sequential
-    ** access is probably already the default.
-    */
-    (void) madvise(ptr, size_size, MADV_SEQUENTIAL);
-#endif /* MADV_SEQUENTIAL */
   } else
 #endif
-    {
-      /* mmap can't deal with files larger than 2GB. */
-      char buf[30000];
-      ssize_t r, r2;
-
-      for (;;) {
-	r = read(fd, buf, sizeof(buf));
-	if (r < 0 && (errno == EINTR || errno == EAGAIN)) {
-	  sleep(1);
-	  continue;
-	}
-	if (r <= 0)
-	  return;
-	for (;;) {
-	  r2 = my_write(buf, r);
-	  if (r2 < 0 && (errno == EINTR || errno == EAGAIN)) {
-	    sleep(1);
-	    continue;
-	  }
-	  if (r2 != r)
-	    return;
-	  break;
-	}
-      }
-    }
+    /* mmap can't deal with files larger than 2GB. */
+    send_via_read_write(fd, size);
 }
 
 /* ------------- name resolution & misc I/O tweaking ----------- */
@@ -1321,7 +1328,7 @@ static void handle_request(void)
   start_request();
   for (;;) {
     char buf[10000];
-    int got = my_read(buf, sizeof(buf));
+    int got = conn_read(buf, sizeof(buf));
     if (got < 0 && (errno == EINTR || errno == EAGAIN))
       continue;
     if (got <= 0)
@@ -1387,6 +1394,10 @@ static void handle_request(void)
       cp = &line[11];
       cp += strspn(cp, " \t");
       useragent = cp;
+    } else if (!strncasecmp(line, "Range:", 6)) {
+      cp = &line[11];
+      cp += strspn(cp, " \t");
+      range = cp;
     } else if (!strncasecmp(line, "PAOS:", 5)) {
       cp = &line[11];
       cp += strspn(cp, " \t");
@@ -1563,7 +1574,7 @@ static void do_file(void) {
   const char* mime_type;
   char fixed_mime_type[500];
   char* cp;
-  int fd,len;
+  int fd,len, rstart=-1, rend=-1;
 
   /* Check authorization for this directory. */
   (void) strncpy(buf, file, sizeof(buf));
@@ -1608,7 +1619,29 @@ static void do_file(void) {
     send_response();
     return;
   }
-  add_headers(200, "Ok", "", mime_encodings, fixed_mime_type, sb.st_size, sb.st_mtime);
+  if (range) {
+    sscanf(range, " bytes=%d-%d", &rstart, &rend);
+    if (rstart > sb.st_size)
+      send_error_and_exit(416, "Request Range Not Satisfiable", "", "Start of Range is beyond end of file");
+    if (ONE_OF_2(rend, 0, -1) || rend >= sb.st_size)
+      rend = sb.st_size-1;
+    if (rstart == -1)
+      rstart = sb.st_size - rend;
+    if (rstart == 0 && rend == sb.st_size-1) {
+      D("Range %d-%d includes whole file", rstart, rend);
+      add_headers(200, "Ok", "", mime_encodings, fixed_mime_type, sb.st_size, sb.st_mtime);
+    } else {
+      D("206 Content-Range %d-%d/%d", rstart, rend, (int)sb.st_size);
+      sprintf(buf, "Content-Range: %d-%d/%d", rstart, rend, sb.st_size);
+      add_headers(206, "Partial Content", buf, mime_encodings, fixed_mime_type,
+		  rend-rstart+1, sb.st_mtime);
+      lseek(fd, rstart, SEEK_SET);
+    }
+  } else {
+    rstart = 0;
+    rend = sb.st_size-1;
+    add_headers(200, "Ok", "", mime_encodings, fixed_mime_type, sb.st_size, sb.st_mtime);
+  }
   send_response();
   if (*method == 'H' /* HEAD */)
     return;
@@ -1616,11 +1649,11 @@ static void do_file(void) {
   if (sb.st_size > 0) {	/* ignore zero-length files */
 #ifdef HAVE_SENDFILE
     if (do_ssl)
-      send_via_write(fd, sb.st_size);
+      send_via_write(fd, rend-rstart+1, rstart);
     else
-      (void) my_sendfile(fd, conn_fd, 0, sb.st_size);
+      (void) conn_sendfile(fd, rend-rstart+1);
 #else
-    send_via_write(fd, sb.st_size);
+    send_via_write(fd, rend-rstart+1, rstart);
 #endif
   }
 
@@ -1883,7 +1916,7 @@ static void cgi_interpose_input(int wfd)
       exit(0);
   }
   while ((int)cnt < (int)content_length) {  /* without the cast 0 < -1 seems to be true */
-    got = my_read(buf, MIN(sizeof(buf), content_length - cnt));
+    got = conn_read(buf, MIN(sizeof(buf), content_length - cnt));
     if (got < 0 && (errno == EINTR || errno == EAGAIN)) {
       sleep(1);
       continue;
@@ -1921,7 +1954,7 @@ static void cgi_interpose_output(int rfd, int parse_headers)
     /* If we're not parsing headers, write out the default status line
     ** and proceed to the echo phase. */
     char http_head[] = "HTTP/1.0 200 OK\015\012";
-    (void) my_write(http_head, sizeof(http_head));
+    (void) conn_write(http_head, sizeof(http_head));
   } else {
     /* Header parsing.  The idea here is that the CGI can return special
     ** headers such as "Status:" and "Location:" which change the return
@@ -1986,7 +2019,7 @@ static void cgi_interpose_output(int rfd, int parse_headers)
     default:  title = "Something"; break;
     }
     buflen = snprintf(buf, sizeof(buf), "HTTP/1.0 %d %s\015\012", status, title);
-    (void) my_write(buf, buflen);
+    (void) conn_write(buf, buflen);
     
     // *** MINGW: recreate zxid_cf and zxid_session
     if (zxid_cf && zxid_session) {
@@ -1997,16 +2030,16 @@ static void cgi_interpose_output(int rfd, int parse_headers)
       } else {
 	if (zxid_session->setcookie) {
 	  buflen = snprintf(buf, sizeof(buf), "Set-Cookie: %s\015\012",zxid_session->setcookie);
-	  my_write(buf, buflen);
+	  conn_write(buf, buflen);
 	}
 	if (zxid_session->setptmcookie) {
 	  buflen = snprintf(buf, sizeof(buf), "Set-Cookie: %s\015\012",zxid_session->setptmcookie);
-	  my_write(buf, buflen);
+	  conn_write(buf, buflen);
 	}
       }
     }
     /* Write the saved headers (and any beginning of payload). */
-    (void) my_write(headers, headers_len);
+    (void) conn_write(headers, headers_len);
   }
 
   /* Echo the rest of the output. */
@@ -2021,7 +2054,7 @@ static void cgi_interpose_output(int rfd, int parse_headers)
     if (got <= 0)
       goto done;
     for (;;) {
-      r2 = my_write(buf, got);
+      r2 = conn_write(buf, got);
       if (r2 < 0 && (errno == EINTR || errno == EAGAIN)) {
 	sleep(1);
 	continue;
@@ -2165,8 +2198,19 @@ static char** make_envp(void)
   return envp;
 }
 
+/*() Start a response by rendering typical headers
+ *
+ * s:: status code (e.g. 200=OK)
+ * title:: status code explanation, e.g. "OK"
+ * extra_header:: One or more fully formated headers, or null for none.
+ * me:: MIME Encoding, if any, for Content-Encoding header
+ * mt:: MIME type for Content-Type header
+ * byt:: bytes for Content-Length
+ * mod:: Last-Modified time
+ */
+
 /* Called by:  do_dir, do_file x2, send_error_and_exit, zxid_mini_httpd_sso */
-void add_headers(int s, char* title, char* extra_header, char* me, char* mt, off_t b, time_t mod)
+void add_headers(int s, char* title, char* extra_header, char* me, char* mt, off_t byt, time_t mod)
 {
   time_t now, expires;
   char timebuf[100];
@@ -2176,7 +2220,7 @@ void add_headers(int s, char* title, char* extra_header, char* me, char* mt, off
   const char* rfc1123_fmt = "%a, %d %b %Y %H:%M:%S GMT";
 
   status = s;
-  bytes = b;
+  bytes = byt;
   make_log_entry();
   start_response();
   buflen = snprintf(buf, sizeof(buf), "%s %d %s\015\012", protocol, status, title);

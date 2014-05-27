@@ -39,8 +39,8 @@
 
 /* declare stuff from mini_httpd.c */
 void send_error_and_exit(int s, char* title, char* extra_header, char* text);
-ssize_t my_read(char* buf, size_t size);
-ssize_t my_write(char* buf, size_t size);
+ssize_t conn_read(char* buf, size_t size);
+ssize_t conn_write(char* buf, size_t size);
 void add_to_buf(char** bufP, size_t* bufsizeP, size_t* buflenP, char* str, size_t len);
 void add_to_request(char* str, size_t len);
 void add_headers(int s, char* title, char* extra_header, char* me, char* mt, off_t b, time_t mod);
@@ -144,7 +144,7 @@ static char* zxid_mini_httpd_read_post(zxid_conf* cf)
     DD("uri(%s)=%p buf=%p request(%.*s)=%p request_size=%d request_len=%d", path, path, buf, (int)request_size, request, request, (int)request_size, (int)request_len);
     if (!len)
       break;  /* nothing further to read */
-    len = my_read(buf, len);
+    len = conn_read(buf, len);
     if (len < 0 && ONE_OF_2(errno, EINTR, EAGAIN))
       continue;
     if (len <= 0)
@@ -214,10 +214,10 @@ void zxid_mini_httpd_wsp_response(zxid_conf* cf, zxid_ses* ses, int rfd, char** 
   if ((*response)[br_ix] == '\012') ++br_ix;
 
   D("DECOR3 response_len=%d br_ix=%d header(%.*s)", (int)*response_len, br_ix, br_ix, *response);
-  (void) my_write(*response, br_ix);
+  (void) conn_write(*response, br_ix);
 
   res = zxid_wsp_decorate(cf, ses, 0, *response+br_ix);
-  (void) my_write(res->s, res->len);
+  (void) conn_write(res->s, res->len);
   D_DEDENT("wsp_resp");
 }
 

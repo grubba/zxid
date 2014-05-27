@@ -122,7 +122,9 @@ zxid-1.21:: 27.5.2014
     - added OPTIONAL_LOGIN_PAT feature
     - added redirafter feature for local IdP logins (e.g. zxidatsel.pl)
     - added partial mime multipart support
+    - added to zxid_httpd Range support (for download resume)
     - improved nth progessing in zxid_find_epr()
+    - NOT YET RELEASED
 
 zxid-1.20:: 11.12.2013
     - Fixed segv on bad decrypt and improved error messages
