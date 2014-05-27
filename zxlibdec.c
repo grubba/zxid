@@ -545,7 +545,7 @@ unknown_el:
 /*() Element Decoder. When per element decoder is called, the c->p
  * will point to just past the element name. The element has already
  * been allocated to the correct size and the namespace prescan has
- * already been done. */
+ * already been done (except when called from zx_dec_zx_root()). */
 
 /* Called by:  zx_DEC_elem, zx_dec_zx_root */
 void zx_DEC_elem(struct zx_ctx* c, struct zx_elem_s* x)
@@ -610,14 +610,17 @@ no_attr:
 	  el = zx_el_lookup(c, (struct zx_elem_s*)x, &pop_seen);
 	  if (!el)
 	    return;
-	  zx_DEC_elem(c, el);
-	  if (!ed || !ed->el_dec(c, x)) { /* element specific subelement processing */
+	  zx_DEC_elem(c, el);  /* read the kid on syntactic level */
+	  /* element specific subelement processing: assign the kid to correct struct field */
+	  if (!ed || !ed->el_dec(c, x)) {
 	    if (el->g.tok != ZX_TOK_NOT_FOUND) {
 	      D("Known element(%.*s) tok=0x%x in wrong context(%.*s)", el->g.len, el->g.s, el->g.tok, x->g.len, x->g.s);
 	      el->g.tok = ZX_TOK_NOT_FOUND;
 	    }
 	  }
 	  zx_pop_seen(pop_seen);
+	  if (c->top1 && x->g.tok == zx_root_ELEM)  /* to stop parse after single <e:Envelope> */
+	    goto out;
 	  goto next_elem;
 	}
       }
@@ -636,8 +639,9 @@ no_attr:
  * N.B. Often you would wrap this in locks, like
  *   LOCK(cf->ctx->mx, "valid");
  *   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, n_ns, ss->s, ss->s + ss->len);
- *   r = zx_DEC_root(cf->ctx, 0, 1);
+ *   r = zx_DEC_elem(cf->ctx, &r->gg);
  *   UNLOCK(cf->ctx->mx, "valid");
+ * or just see zx_dec_zx_root()
  */
 
 /* Called by:  covimp_test, zx_dec_zx_root */

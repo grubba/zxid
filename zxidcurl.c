@@ -16,6 +16,7 @@
  * 11.12.2011, refactored HTTP GET client --Sampo
  * 26.10.2013, improved error reporting on credential expired case --Sampo
  * 12.3.2014,  added partial mime multipart support --Sampo
+ * 27.5.2014,  Added feature to stop parsing after end of first top level tag has been seen --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  *           http://curl.haxx.se/libcurl/
@@ -268,7 +269,7 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   rc.p[0] = 0;
 
   DD("SOAP_CALL got(%s)", rc.buf);
-  D_XML_BLOB(cf, "SOAPCALL GOT", -2, rc.buf);
+  D_XML_BLOB(cf, "SOAPCALL GOT", rc.lim - rc.buf, rc.buf);
   
   ret = zx_ref_len_str(cf->ctx, rc.lim - rc.buf, rc.buf);
   return ret;
@@ -446,6 +447,7 @@ struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct z
     return 0;
   }
 
+  cf->ctx->top1 = 1;  /* Stop parsing after first toplevel <e:Envelope> */
   r = zx_dec_zx_root(cf->ctx, ret->len - (env_start - ret->s), env_start, "soap_call");
   if (!r || !r->Envelope || !r->Envelope->Body) {
     ERR("Failed to parse SOAP response url(%.*s)", url->len, url->s);

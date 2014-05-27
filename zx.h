@@ -113,7 +113,8 @@ struct zx_ctx {
 #endif
   char canon_inopt;   /* Shib2 InclusiveNamespaces/@PrefixList kludge and other sundry options. */
   char enc_tail_opt;  /* In encoding, use non-canon empty tag tail optimization, e.g. <ns:foo/> */
-  char pad2; char pad3;
+  char top1;          /* There can only be one top level element, e.g. <e:Envelope> */
+  char pad3;
   int  zx_errno;      /* Outcome of last filesystem operation */
 };
 

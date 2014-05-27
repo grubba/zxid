@@ -708,7 +708,16 @@ static FILE* zx_open_xml_log_file(zxid_conf* cf)
 /*() Log a blob of XML data to auxiliary log file. This avoids
  * mega clutter in the main debug logs. You are supposed
  * to view this file with:
- * tailf /var/zxid/log/xml.dbg | ./xml-pretty.pl */
+ * tailf /var/zxid/log/xml.dbg | ./xml-pretty.pl
+ *
+ * cf:: Config (and memory allocation) object
+ * file:: Source code file, see __FILE__ in D_XML_BLOB() macro, in errmac.h
+ * line:: Source code line number, see __LINE__ in D_XML_BLOB()
+ * func:: Source code function name, see __FUNCTION__ in D_XML_BLOB()
+ * lk:: Log key
+ * len:: Length of the blob, or -1 for error or -2 to use strlen()
+ * xml:: blob data (not always XML)
+ */
 
 /* Called by: */
 void errmac_debug_xml_blob(zxid_conf* cf, const char* file, int line, const char* func, const char* lk, int len, const char* xml)
