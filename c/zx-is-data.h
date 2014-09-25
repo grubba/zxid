@@ -91,7 +91,7 @@ void zx_is_Confirm_REV_Value(struct zx_is_Confirm_s* x);
 
 #endif
 /* -------------------------- is_Help -------------------------- */
-/* refby( zx_is_Inquiry_s zx_is_Confirm_s zx_is_Text_s zx_is_Select_s ) */
+/* refby( zx_is_Confirm_s zx_is_Select_s zx_is_Inquiry_s zx_is_Text_s ) */
 #ifndef zx_is_Help_EXT
 #define zx_is_Help_EXT
 #endif
@@ -133,7 +133,7 @@ void zx_is_Help_PUT_moreLink(struct zx_is_Help_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- is_Inquiry -------------------------- */
-/* refby( zx_is_InteractionRequest_s zx_is_InteractionStatement_s ) */
+/* refby( zx_is_InteractionStatement_s zx_is_InteractionRequest_s ) */
 #ifndef zx_is_Inquiry_EXT
 #define zx_is_Inquiry_EXT
 #endif

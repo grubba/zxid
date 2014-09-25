@@ -553,7 +553,7 @@ void zx_ps_AddToCollectionResponse_REV_Status(struct zx_ps_AddToCollectionRespon
 
 #endif
 /* -------------------------- ps_CreatePSObject -------------------------- */
-/* refby( zx_ps_AddKnownEntityRequest_s zx_ps_AddEntityRequest_s ) */
+/* refby( zx_ps_AddEntityRequest_s zx_ps_AddKnownEntityRequest_s ) */
 #ifndef zx_ps_CreatePSObject_EXT
 #define zx_ps_CreatePSObject_EXT
 #endif
@@ -1063,7 +1063,7 @@ void zx_ps_NotifyResponse_REV_Extension(struct zx_ps_NotifyResponse_s* x);
 
 #endif
 /* -------------------------- ps_Object -------------------------- */
-/* refby( zx_ps_QueryObjectsResponse_s zx_ps_AddKnownEntityResponse_s zx_ps_AddCollectionRequest_s zx_ps_AddCollectionResponse_s zx_ps_ItemData_s zx_ps_AddKnownEntityRequest_s zx_ps_GetObjectInfoResponse_s zx_ps_AddEntityResponse_s zx_ps_SetObjectInfoRequest_s zx_ps_Object_s zx_ps_ListMembersResponse_s zx_ps_AddEntityRequest_s ) */
+/* refby( zx_ps_ListMembersResponse_s zx_ps_QueryObjectsResponse_s zx_ps_AddEntityResponse_s zx_ps_AddEntityRequest_s zx_ps_GetObjectInfoResponse_s zx_ps_AddCollectionResponse_s zx_ps_ItemData_s zx_ps_Object_s zx_ps_AddKnownEntityRequest_s zx_ps_AddKnownEntityResponse_s zx_ps_AddCollectionRequest_s zx_ps_SetObjectInfoRequest_s ) */
 #ifndef zx_ps_Object_EXT
 #define zx_ps_Object_EXT
 #endif
@@ -1876,7 +1876,7 @@ void zx_ps_SetObjectInfoResponse_REV_Status(struct zx_ps_SetObjectInfoResponse_s
 
 #endif
 /* -------------------------- ps_Subscription -------------------------- */
-/* refby( zx_ps_AddCollectionRequest_s zx_ps_AddToCollectionRequest_s zx_ps_AddKnownEntityRequest_s zx_ps_TestMembershipRequest_s zx_ps_SetObjectInfoRequest_s zx_ps_ListMembersRequest_s zx_ps_QueryObjectsRequest_s zx_ps_RemoveFromCollectionRequest_s zx_ps_GetObjectInfoRequest_s zx_ps_AddEntityRequest_s ) */
+/* refby( zx_ps_AddToCollectionRequest_s zx_ps_AddEntityRequest_s zx_ps_RemoveFromCollectionRequest_s zx_ps_ListMembersRequest_s zx_ps_QueryObjectsRequest_s zx_ps_GetObjectInfoRequest_s zx_ps_AddKnownEntityRequest_s zx_ps_AddCollectionRequest_s zx_ps_TestMembershipRequest_s zx_ps_SetObjectInfoRequest_s ) */
 #ifndef zx_ps_Subscription_EXT
 #define zx_ps_Subscription_EXT
 #endif

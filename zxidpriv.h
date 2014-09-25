@@ -143,6 +143,7 @@ ZXID_DECL struct zxid_map*   zxid_find_map(struct zxid_map* map, const char* nam
 ZXID_DECL struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list* l, char* p);
 ZXID_DECL void zxid_free_cstr_list(struct zxid_conf *cf, struct zxid_cstr_list *l);
 ZXID_DECL struct zxid_cstr_list* zxid_find_cstr_list(struct zxid_cstr_list* lst, const char* name);
+ZXID_DECL struct zxid_cstr_list* zxid_find_at_multival_on_cstr_list(struct zxid_cstr_list* cs, struct zxid_attr* at);
 ZXID_DECL struct zxid_attr*  zxid_find_at(struct zxid_attr* pool, const char* name);
 ZXID_DECL struct zxid_attr*  zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len, char* name, int val_len, char* val, char* lk);
 ZXID_DECL void zxid_free_at(struct zxid_conf *cf, struct zxid_attr *attr);

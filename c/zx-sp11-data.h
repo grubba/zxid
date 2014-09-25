@@ -385,7 +385,7 @@ void zx_sp11_Response_REV_Assertion(struct zx_sp11_Response_s* x);
 
 #endif
 /* -------------------------- sp11_Status -------------------------- */
-/* refby( zx_ff12_NameIdentifierMappingResponse_s zx_ff12_LogoutResponse_s zx_sp11_Response_s zx_ff12_AuthnResponse_s zx_ff12_RegisterNameIdentifierResponse_s ) */
+/* refby( zx_sp11_Response_s zx_ff12_RegisterNameIdentifierResponse_s zx_ff12_NameIdentifierMappingResponse_s zx_ff12_AuthnResponse_s zx_ff12_LogoutResponse_s ) */
 #ifndef zx_sp11_Status_EXT
 #define zx_sp11_Status_EXT
 #endif
@@ -445,7 +445,7 @@ void zx_sp11_Status_REV_StatusDetail(struct zx_sp11_Status_s* x);
 
 #endif
 /* -------------------------- sp11_StatusCode -------------------------- */
-/* refby( zx_sp11_StatusCode_s zx_sp11_Status_s ) */
+/* refby( zx_sp11_Status_s zx_sp11_StatusCode_s ) */
 #ifndef zx_sp11_StatusCode_EXT
 #define zx_sp11_StatusCode_EXT
 #endif

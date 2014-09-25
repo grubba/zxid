@@ -44,8 +44,8 @@ vpath %.h ../zxid
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000121
-ZXIDREL=1.21
+ZXIDVERSION=0x000122
+ZXIDREL=1.22
 
 TOP=$(shell pwd)
 
@@ -333,6 +333,10 @@ MOD_AUTH_SAML_LIBS=-lapr-1
 TARGET_FOUND=1
 endif
 
+ifeq ($(TARGET),FreeBSD)
+# Some freebsd guesses result "FreeBSD" so we map it to "freebsd"
+TARGET=freebsd
+endif
 ifeq ($(TARGET),freebsd)
 ### Putative flags for Freebsd compile
 CDEF+=-DFREEBSD

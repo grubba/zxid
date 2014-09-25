@@ -43,14 +43,16 @@ int zxid_localpdp(zxid_conf* cf, zxid_ses* ses)
 	INFO("DENY due to no role attribute (whitelist) nid(%s)", STRNULLCHK(ses?ses->nid:0));
 	return 0;
       }
-      if (!zxid_find_cstr_list(cf->localpdp_role_permit, at->val)) {
+      /* Permit if any of the attribute values matches any of the whitelisted roles. */
+      if (!zxid_find_at_multival_on_cstr_list(cf->localpdp_role_permit, at)) {
 	INFO("DENY: role(%s) not on whitelist nid(%s)", at->val, STRNULLCHK(ses?ses->nid:0));
 	return 0;
       }
     }
     if (cf->localpdp_role_deny) {    /* blacklist of roles: on list means deny */
-      if (at && zxid_find_cstr_list(cf->localpdp_role_deny, at->val)) {
-	INFO("DENY: role(%s) on blacklist nid(%s)", at->val, STRNULLCHK(ses?ses->nid:0));
+      /* Deny if any of the attribute values matches any of the blacklisted roles. */
+      if (at && zxid_find_at_multival_on_cstr_list(cf->localpdp_role_deny, at)) {
+	INFO("DENY: role(%s) or other multivalue on blacklist nid(%s)", at->val, STRNULLCHK(ses?ses->nid:0));
 	return 0;
       }
     }

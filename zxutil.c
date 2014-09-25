@@ -587,7 +587,7 @@ linkrest:
   fd_to = open(to, O_RDWR | O_CREAT, 0666);
 #endif
   if (fd_to == BADFD) {
-      perror("openfile_ro");
+      perror("openfile_rw");
       ERR("%s: Error opening to(%s) euid=%d egid=%d", logkey, to, geteuid(), getegid());
       return -1;
   }

@@ -310,7 +310,7 @@ void zx_di_QueryResponse_REV_EndpointReference(struct zx_di_QueryResponse_s* x);
 
 #endif
 /* -------------------------- di_RequestedService -------------------------- */
-/* refby( zx_shps_Query_s zx_di_Query_s ) */
+/* refby( zx_di_Query_s zx_shps_Query_s ) */
 #ifndef zx_di_RequestedService_EXT
 #define zx_di_RequestedService_EXT
 #endif
@@ -514,7 +514,7 @@ void zx_di_ServiceContext_REV_EndpointContext(struct zx_di_ServiceContext_s* x);
 
 #endif
 /* -------------------------- di_SvcMD -------------------------- */
-/* refby( zx_di_SvcMDQueryResponse_s zx_di_SvcMDReplace_s zx_di_SvcMDRegister_s ) */
+/* refby( zx_di_SvcMDRegister_s zx_di_SvcMDReplace_s zx_di_SvcMDQueryResponse_s ) */
 #ifndef zx_di_SvcMD_EXT
 #define zx_di_SvcMD_EXT
 #endif

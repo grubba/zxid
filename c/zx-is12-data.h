@@ -175,7 +175,7 @@ int zx_WALK_WO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x, v
 
 #endif
 /* -------------------------- is12_Help -------------------------- */
-/* refby( zx_is12_Inquiry_s zx_is12_Select_s zx_is12_Text_s zx_is12_Confirm_s ) */
+/* refby( zx_is12_Select_s zx_is12_Inquiry_s zx_is12_Confirm_s zx_is12_Text_s ) */
 #ifndef zx_is12_Help_EXT
 #define zx_is12_Help_EXT
 #endif
@@ -790,7 +790,7 @@ void zx_is12_Select_REV_Item(struct zx_is12_Select_s* x);
 
 #endif
 /* -------------------------- is12_Status -------------------------- */
-/* refby( zx_is12_InteractionResponse_s zx_is12_Status_s ) */
+/* refby( zx_is12_Status_s zx_is12_InteractionResponse_s ) */
 #ifndef zx_is12_Status_EXT
 #define zx_is12_Status_EXT
 #endif

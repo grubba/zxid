@@ -828,6 +828,17 @@ struct zxid_cstr_list* zxid_find_cstr_list(struct zxid_cstr_list* cs, const char
   return 0;
 }
 
+/*() Chech whether any of multivalues of an attribute is on the list. */
+
+struct zxid_cstr_list* zxid_find_at_multival_on_cstr_list(struct zxid_cstr_list* cs, struct zxid_attr* at)
+{
+  struct zxid_cstr_list* ret;
+  for (; at; at = at->nv)
+    if ((ret = zxid_find_cstr_list(cs, at->val)))
+      return ret;
+  return 0;
+}
+
 /*() Check whether name is in the obligations list. */
 
 /* Called by:  zxid_eval_sol1 */

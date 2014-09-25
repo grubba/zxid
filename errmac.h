@@ -1,6 +1,6 @@
 /* errmac.h  -  Utility, debugging, and error checking macros
  *
- * Copyright (c) 1998,2001,2006,2010-2013 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
+ * Copyright (c) 1998,2001,2006,2010-2014 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
  * Copyright (c) 2001-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * This is free software and comes with NO WARRANTY. Licensed under Apache2 license.
  * $Id$
@@ -69,6 +69,7 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define STRNULLCHK(s)  ((s)?(char*)(s):"")
 #define STRNULLCHKQ(s) ((s)?(char*)(s):"?")
 #define STRNULLCHKD(s) ((s)?(char*)(s):"-")
+#define STRNULLCHKZ(s) ((s)?(char*)(s):"0")
 #define STRNULLCHKNULL(s) ((s)?(char*)(s):"(null)")
 
 /* Common datatypes */

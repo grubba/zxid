@@ -676,8 +676,8 @@ struct mime_entry {
 };
 /* Keep tables in most likely first order*/
 static const struct mime_entry enc_tab[] = {
-{ "Z", "compress" },
 { "gz", "gzip" },
+{ "Z", "compress" },
 { "uu", "x-uuencode" },
 };
 static const int n_enc_tab = sizeof(enc_tab) / sizeof(*enc_tab);

@@ -299,7 +299,7 @@ zxid_entity* zxid_get_ent_file(zxid_conf* cf, const char* sha1_name, const char*
       ent = ee;
     }
     UNLOCK(cf->mx, "add ent to cot");
-    D("GOT META sha1_name(%s) eid(%s)", sha1_name, first?first->eid:"?");
+    D("GOT META sha1_name(%s) eid(%s)", sha1_name, ent?ent->eid:"?");
   }
   return first;
 

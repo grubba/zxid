@@ -289,7 +289,7 @@ void zx_cdm_BDAY_PUT_modifier(struct zx_cdm_BDAY_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- cdm_BINVAL -------------------------- */
-/* refby( zx_cdm_LOGO_s zx_cdm_PHOTO_s zx_cdm_SOUND_s ) */
+/* refby( zx_cdm_PHOTO_s zx_cdm_SOUND_s zx_cdm_LOGO_s ) */
 #ifndef zx_cdm_BINVAL_EXT
 #define zx_cdm_BINVAL_EXT
 #endif
@@ -907,7 +907,7 @@ void zx_cdm_EXTADR_PUT_group(struct zx_cdm_EXTADR_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- cdm_EXTVAL -------------------------- */
-/* refby( zx_cdm_LOGO_s zx_cdm_PHOTO_s zx_cdm_AGENT_s zx_cdm_SOUND_s ) */
+/* refby( zx_cdm_PHOTO_s zx_cdm_AGENT_s zx_cdm_SOUND_s zx_cdm_LOGO_s ) */
 #ifndef zx_cdm_EXTVAL_EXT
 #define zx_cdm_EXTVAL_EXT
 #endif
@@ -2932,7 +2932,7 @@ void zx_cdm_TITLE_PUT_group(struct zx_cdm_TITLE_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- cdm_TYPE -------------------------- */
-/* refby( zx_cdm_LOGO_s zx_cdm_KEY_s zx_cdm_PHOTO_s ) */
+/* refby( zx_cdm_KEY_s zx_cdm_PHOTO_s zx_cdm_LOGO_s ) */
 #ifndef zx_cdm_TYPE_EXT
 #define zx_cdm_TYPE_EXT
 #endif

@@ -205,7 +205,7 @@ void zx_wst_Claims_PUT_Dialect(struct zx_wst_Claims_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- wst_DelegateTo -------------------------- */
-/* refby( zx_wst_RequestSecurityToken_s zx_wst_RequestSecurityTokenResponse_s ) */
+/* refby( zx_wst_RequestSecurityTokenResponse_s zx_wst_RequestSecurityToken_s ) */
 #ifndef zx_wst_DelegateTo_EXT
 #define zx_wst_DelegateTo_EXT
 #endif
@@ -238,7 +238,7 @@ int zx_WALK_WO_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x, v
 
 #endif
 /* -------------------------- wst_Encryption -------------------------- */
-/* refby( zx_wst_RequestSecurityToken_s zx_wst_RequestSecurityTokenResponse_s ) */
+/* refby( zx_wst_RequestSecurityTokenResponse_s zx_wst_RequestSecurityToken_s ) */
 #ifndef zx_wst_Encryption_EXT
 #define zx_wst_Encryption_EXT
 #endif
@@ -271,7 +271,7 @@ int zx_WALK_WO_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x, v
 
 #endif
 /* -------------------------- wst_Entropy -------------------------- */
-/* refby( zx_wst_RequestSecurityToken_s zx_wst_RequestSecurityTokenResponse_s ) */
+/* refby( zx_wst_RequestSecurityTokenResponse_s zx_wst_RequestSecurityToken_s ) */
 #ifndef zx_wst_Entropy_EXT
 #define zx_wst_Entropy_EXT
 #endif
@@ -346,7 +346,7 @@ void zx_wst_IssuedTokens_REV_RequestSecurityTokenResponse(struct zx_wst_IssuedTo
 
 #endif
 /* -------------------------- wst_Issuer -------------------------- */
-/* refby( zx_wst_RequestSecurityToken_s zx_wst_RequestSecurityTokenResponse_s ) */
+/* refby( zx_wst_RequestSecurityTokenResponse_s zx_wst_RequestSecurityToken_s ) */
 #ifndef zx_wst_Issuer_EXT
 #define zx_wst_Issuer_EXT
 #endif
@@ -457,7 +457,7 @@ int zx_WALK_WO_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeT
 
 #endif
 /* -------------------------- wst_Lifetime -------------------------- */
-/* refby( zx_wst_RequestSecurityToken_s zx_wst_RequestSecurityTokenResponse_s ) */
+/* refby( zx_wst_RequestSecurityTokenResponse_s zx_wst_RequestSecurityToken_s ) */
 #ifndef zx_wst_Lifetime_EXT
 #define zx_wst_Lifetime_EXT
 #endif
@@ -508,7 +508,7 @@ void zx_wst_Lifetime_REV_Expires(struct zx_wst_Lifetime_s* x);
 
 #endif
 /* -------------------------- wst_OnBehalfOf -------------------------- */
-/* refby( zx_wst_RequestSecurityToken_s zx_wst_RequestSecurityTokenResponse_s ) */
+/* refby( zx_wst_RequestSecurityTokenResponse_s zx_wst_RequestSecurityToken_s ) */
 #ifndef zx_wst_OnBehalfOf_EXT
 #define zx_wst_OnBehalfOf_EXT
 #endif
@@ -658,7 +658,7 @@ int zx_WALK_WO_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x, void* c
 
 #endif
 /* -------------------------- wst_ProofEncryption -------------------------- */
-/* refby( zx_wst_RequestSecurityToken_s zx_wst_RequestSecurityTokenResponse_s ) */
+/* refby( zx_wst_RequestSecurityTokenResponse_s zx_wst_RequestSecurityToken_s ) */
 #ifndef zx_wst_ProofEncryption_EXT
 #define zx_wst_ProofEncryption_EXT
 #endif
@@ -724,7 +724,7 @@ int zx_WALK_WO_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x,
 
 #endif
 /* -------------------------- wst_Renewing -------------------------- */
-/* refby( zx_wst_RequestSecurityToken_s zx_wst_RequestSecurityTokenResponse_s ) */
+/* refby( zx_wst_RequestSecurityTokenResponse_s zx_wst_RequestSecurityToken_s ) */
 #ifndef zx_wst_Renewing_EXT
 #define zx_wst_Renewing_EXT
 #endif
@@ -1717,7 +1717,7 @@ void zx_wst_Status_REV_Reason(struct zx_wst_Status_s* x);
 
 #endif
 /* -------------------------- wst_UseKey -------------------------- */
-/* refby( zx_wst_RequestSecurityToken_s zx_wst_RequestSecurityTokenResponse_s ) */
+/* refby( zx_wst_RequestSecurityTokenResponse_s zx_wst_RequestSecurityToken_s ) */
 #ifndef zx_wst_UseKey_EXT
 #define zx_wst_UseKey_EXT
 #endif

@@ -91,7 +91,7 @@ void zx_sec12_ProxyInfoConfirmationData_REV_Signature(struct zx_sec12_ProxyInfoC
 
 #endif
 /* -------------------------- sec12_ProxySubject -------------------------- */
-/* refby( zx_sec12_ResourceAccessStatement_s zx_sec12_SessionContextStatement_s ) */
+/* refby( zx_sec12_SessionContextStatement_s zx_sec12_ResourceAccessStatement_s ) */
 #ifndef zx_sec12_ProxySubject_EXT
 #define zx_sec12_ProxySubject_EXT
 #endif
@@ -262,7 +262,7 @@ void zx_sec12_ResourceAccessStatement_REV_SessionContext(struct zx_sec12_Resourc
 
 #endif
 /* -------------------------- sec12_SessionContext -------------------------- */
-/* refby( zx_sec12_ResourceAccessStatement_s zx_sec12_SessionContextStatement_s ) */
+/* refby( zx_sec12_SessionContextStatement_s zx_sec12_ResourceAccessStatement_s ) */
 #ifndef zx_sec12_SessionContext_EXT
 #define zx_sec12_SessionContext_EXT
 #endif

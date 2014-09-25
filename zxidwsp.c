@@ -773,7 +773,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     return 0;
   }
   
-  ss.s = enve_start;
+  ss.s = (char*)enve_start;
   ss.len = strlen(enve_start);
   D_XML_BLOB(cf, "WSP_VALIDATE", ss.len, ss.s);
   r = zx_dec_zx_root(cf->ctx, ss.len, enve, "valid");

@@ -280,7 +280,10 @@ static void zxid_add_mapped_attr(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta
 }
 
 /*() Parse LDIF format and insert attributes to linked list. Return new head of the list.
- * The input is temporarily modified and then restored. Do not pass const string. */
+ * The input is temporarily modified and then restored. Do not pass const string.
+ * Multiple attribute lines by same name (meaning multivalued attribute) generate
+ * multiple <sa:Attribute> elements. At least zxid sp code will corretly interpret
+ * this as single multivalued attribute. */
 
 /* Called by:  zxid_read_ldif_attrs */
 static void zxid_add_ldif_attrs(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zx_elem_s* father, char* p, char* lk, struct zxid_map* sp_aamap)
