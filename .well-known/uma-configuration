@@ -1,0 +1,19 @@
+{
+"version":"1.0",
+"issuer":"https://zxidp.org/idp",
+"pat_profiles_supported":["bearer"],
+"aat_profiles_supported":["bearer"],
+"rpt_profiles_supported":["bearer"],
+"pat_grant_types_supported":["authorization_code"],
+"aat_grant_types_supported":["authorization_code"],
+"claim_profiles_supported":["openid","zxidclaims"],
+"uma_profiles_supported":[ "redirect_required", "prot-ext", "authz-ext", "rsrc-ext"],
+"dynamic_client_endpoint":"https://zxidp.org/idpuma?o=dyncli",
+"token_endpoint":"https://zxidp.org/idpuma?o=tokissue",
+"user_endpoint":"https://zxidp.org/idpuma?o=consent",
+"introspection_endpoint":"https://zxidp.org/idpuma?o=tokquery",
+"resource_set_registration_endpoint":"https://zxidp.org/idpuma?o=resreg",
+"permission_registration_endpoint":"https://zxidp.org/idpuma?o=permreg",
+"rpt_endpoint":"https://zxidp.org/idpuma?o=rpt",
+"authorization_request_endpoint":"https://zxidp.org/idpuma?o=azrq"
+}

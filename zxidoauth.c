@@ -28,6 +28,91 @@
 #include "saml2.h"   /* for bindings like OAUTH2_REDIR */
 #include "c/zx-data.h"
 
+#if 0
+/*() Create OAUTH2 Dynamic Client Registration request.
+ * See: https://tools.ietf.org/html/draft-ietf-oauth-dyn-reg-20 */
+
+/* Called by:  zxid_oauth2_az_server_sso */
+char* zxid_mk_oauth2_dyn_cli_reg_req(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct timeval* srcts, zxid_entity* sp_meta, struct zx_str* acsurl, zxid_nid** nameid, char* logop)
+{
+  int rawlen;
+  char* buf;
+  char* jwt;
+  char* jwt_id; /* sha1 hash of the jwt, taken from log_path */
+  struct zx_str issuer;
+  struct zx_str* affil;
+  char* eid;
+  struct zx_str* logpath;
+  struct zx_str ss;
+  struct zx_str nn;
+  struct zx_str id;
+  zxid_nid* tmpnameid;
+  char sp_name_buf[ZXID_MAX_SP_NAME_BUF];
+  D("sp_eid(%s)", sp_meta->eid);
+
+  eid = zxid_my_ent_id_cstr(cf);
+  // ,\"\":\"\"
+  buf = zx_alloc_sprintf(cf->ctx, &rawlen,
+		       "{\"redirect_uris\":[\"%s\"],"
+		       ",\"client_name\":\"%.*s\""
+		       ",\"aud\":\"%s\""
+		       ",\"exp\":%d"
+		       ",\"nonce\":\"%s\"}",
+		       eid,
+		       ZX_GET_CONTENT_LEN(*nameid), ZX_GET_CONTENT_S(*nameid),
+		       cgi->client_id,
+		       time(0) + cf->timeskew + cf->a7nttl,
+		       cgi->nonce);
+  ZX_FREE(cf->ctx, eid);
+  jwt = zxid_mk_jwt(cf, rawlen, buf);
+  ZX_FREE(cf->ctx, buf);
+
+  /* Log the issued JWT */
+
+  ss.s = jwt; ss.len = strlen(jwt);
+  logpath = zxlog_path(cf, &issuer, &ss, ZXLOG_ISSUE_DIR, ZXLOG_JWT_KIND, 1);
+  if (!logpath) {
+    ERR("Could not generate logpath for aud(%s) JWT(%s)", cgi->client_id, jwt);
+    ZX_FREE(cf->ctx, jwt);
+    return 0;
+  }
+  
+  /* Since JWT does not have explicit ID attribute, we use the sha1 hash of the
+   * contents of JWT as an ID. Since this is what logpath also does, we just
+   * use the last component of the logpath. */
+  for (jwt_id = logpath->s + logpath->len; jwt_id > logpath->s && jwt_id[-1] != '/'; --jwt_id) ;
+
+  if (cf->log_issue_a7n) {
+    if (zxlog_dup_check(cf, logpath, "sso_issue_jwt")) {
+      ERR("Duplicate JWT ID(%s)", jwt_id);
+      if (cf->dup_a7n_fatal) {
+	ERR("FATAL (by configuration): Duplicate JWT ID(%s)", jwt_id);
+	zxlog_blob(cf, 1, logpath, &ss, "sso_issue_JWT dup");
+	zx_str_free(cf->ctx, logpath);
+	ZX_FREE(cf->ctx, jwt);
+	return 0;
+      }
+    }
+    zxlog_blob(cf, 1, logpath, &ss, "sso_issue_JWT");
+  }
+
+  nn.s = cgi->nonce; nn.len = strlen(cgi->nonce);
+  id.s = jwt_id; id.len = strlen(jwt_id);
+
+  if (cf->loguser)
+    zxlogusr(cf, ses->uid, 0, 0, 0, &issuer, &nn, &id,
+	     ZX_GET_CONTENT(*nameid),
+	     (cf->oaz_jwt_sigenc_alg!='n'?"U":"N"), "K", logop, 0, 0);
+  
+  zxlog(cf, 0, 0, 0, &issuer, &nn, &id,
+	ZX_GET_CONTENT(*nameid),
+	(cf->oaz_jwt_sigenc_alg!='n'?"U":"N"), "K", logop, 0, 0);
+
+  zx_str_free(cf->ctx, logpath);
+  return jwt;
+}
+#endif
+
 /*() Interpret ZXID standard form fields to construct a XML structure for AuthnRequest */
 
 /* Called by:  zxid_start_sso_url */

@@ -13,8 +13,8 @@
 
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
-#     INC => q[-I.. -I/apps/openssl/std/include -I/apps/include]
-#     LIBS => [q[-L.. -L/apps/openssl/std/lib -L/apps/lib -lzxid -lcrypto -lcurl -ldl -lz]]
+#     INC => q[-I..]
+#     LIBS => [q[-L.. -lzxid -lcrypto -lcurl -ldl -lz]]
 #     NAME => q[Net::SAML]
 #     OBJECT => q[SAML_wrap.o]
 #     PREREQ_PM => {  }
@@ -150,7 +150,7 @@ BASEEXT = SAML
 PARENT_NAME = Net
 DLBASE = $(BASEEXT)
 VERSION_FROM = 
-INC = -I.. -I/apps/openssl/std/include -I/apps/include
+INC = -I..
 OBJECT = SAML_wrap$(OBJ_EXT)
 LDFROM = $(OBJECT)
 LINKTYPE = dynamic
@@ -187,10 +187,10 @@ PERL_ARCHIVE_AFTER =
 TO_INST_PM = SAML.pm \
 	SAML.pod
 
-PM_TO_BLIB = SAML.pm \
-	$(INST_LIB)/Net/SAML.pm \
-	SAML.pod \
-	$(INST_LIB)/Net/SAML.pod
+PM_TO_BLIB = SAML.pod \
+	$(INST_LIB)/Net/SAML.pod \
+	SAML.pm \
+	$(INST_LIB)/Net/SAML.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -289,10 +289,9 @@ MPOLLUTE =
 # Net::SAML might depend on some other libraries:
 # See ExtUtils::Liblist for details
 #
-EXTRALIBS = -L/home/sampo/zxid/Net/.. -L/apps/openssl/std/lib -L/apps/lib -lzxid -lcrypto -lcurl -lz
-LDLOADLIBS = -L/home/sampo/zxid/Net/.. -L/apps/openssl/std/lib -L/apps/lib -lzxid -lcrypto -lcurl -ldl -lz
+EXTRALIBS = -L/home/sampo/zxid/Net/.. -lzxid -lcrypto -lcurl -lz
+LDLOADLIBS = -L/home/sampo/zxid/Net/.. -lzxid -lcrypto -lcurl -ldl -lz
 BSLOADLIBS = 
-LD_RUN_PATH = /apps/lib
 
 
 # --- MakeMaker const_cccmd section:
@@ -475,7 +474,7 @@ INST_DYNAMIC_FIX =
 
 $(INST_DYNAMIC): $(OBJECT) $(MYEXTLIB) $(BOOTSTRAP) $(INST_ARCHAUTODIR)$(DFSEP).exists $(EXPORT_LIST) $(PERL_ARCHIVE) $(PERL_ARCHIVE_AFTER) $(INST_DYNAMIC_DEP)
 	$(RM_F) $@
-	LD_RUN_PATH="$(LD_RUN_PATH)" $(LD)  $(LDDLFLAGS) $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB)	\
+	$(LD)  $(LDDLFLAGS) $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB)	\
 	  $(PERL_ARCHIVE) $(LDLOADLIBS) $(PERL_ARCHIVE_AFTER) $(EXPORT_LIST)	\
 	  $(INST_DYNAMIC_FIX)
 	$(CHMOD) $(PERM_RWX) $@
@@ -534,22 +533,22 @@ clean_subdirs :
 
 clean :: clean_subdirs
 	- $(RM_F) \
-	  MYMETA.yml core.[0-9][0-9][0-9][0-9][0-9] \
-	  $(BASEEXT).def blibdirs.ts \
-	  $(BASEEXT).bso *perl.core \
-	  core so_locations \
-	  mon.out $(BOOTSTRAP) \
-	  $(BASEEXT).exp perl$(EXE_EXT) \
-	  tmon.out $(INST_ARCHAUTODIR)/extralibs.ld \
-	  core.[0-9][0-9][0-9] core.[0-9][0-9] \
-	  pm_to_blib.ts lib$(BASEEXT).def \
-	  $(MAKE_APERL_FILE) core.[0-9][0-9][0-9][0-9] \
-	  *$(LIB_EXT) perl.exe \
-	  $(INST_ARCHAUTODIR)/extralibs.all pm_to_blib \
-	  $(BASEEXT).x perl \
-	  core.[0-9] core.*perl.*.? \
-	  *$(OBJ_EXT) perlmain.c \
-	  MYMETA.json 
+	  perl$(EXE_EXT) core \
+	  *$(LIB_EXT) $(MAKE_APERL_FILE) \
+	  core.[0-9] so_locations \
+	  lib$(BASEEXT).def core.[0-9][0-9] \
+	  core.*perl.*.? perl.exe \
+	  $(INST_ARCHAUTODIR)/extralibs.all $(BASEEXT).def \
+	  blibdirs.ts $(BASEEXT).bso \
+	  *perl.core $(BASEEXT).exp \
+	  $(BASEEXT).x tmon.out \
+	  perlmain.c MYMETA.yml \
+	  $(BOOTSTRAP) pm_to_blib \
+	  *$(OBJ_EXT) perl \
+	  pm_to_blib.ts core.[0-9][0-9][0-9][0-9] \
+	  $(INST_ARCHAUTODIR)/extralibs.ld core.[0-9][0-9][0-9][0-9][0-9] \
+	  mon.out MYMETA.json \
+	  core.[0-9][0-9][0-9] 
 	- $(RM_RF) \
 	  blib 
 	- $(MV) $(FIRST_MAKEFILE) $(MAKEFILE_OLD) $(DEV_NULL)
@@ -564,7 +563,7 @@ realclean_subdirs :
 # Delete temporary files (via clean) and also delete dist files
 realclean purge ::  clean realclean_subdirs
 	- $(RM_F) \
-	  $(MAKEFILE_OLD) $(OBJECT) \
+	  $(OBJECT) $(MAKEFILE_OLD) \
 	  $(FIRST_MAKEFILE) 
 	- $(RM_RF) \
 	  $(DISTVNAME) 
@@ -1002,8 +1001,8 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  SAML.pm $(INST_LIB)/Net/SAML.pm \
-	  SAML.pod $(INST_LIB)/Net/SAML.pod 
+	  SAML.pod $(INST_LIB)/Net/SAML.pod \
+	  SAML.pm $(INST_LIB)/Net/SAML.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 

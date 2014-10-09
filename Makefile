@@ -117,7 +117,8 @@ ZXIDJNI_SO?=zxidjava/libzxidjni.so
 # find / -name jni.h; find / -name jni_md.h
 # apt-get install openjdk-6-jdk
 #JNI_INC?=-I/usr/java/include -I/usr/java/include/linux
-JNI_INC?=-I/usr/lib/jvm/java-6-openjdk/include -I/usr/lib/jvm/java-6-openjdk/include/linux
+#JNI_INC?=-I/usr/lib/jvm/java-6-openjdk/include -I/usr/lib/jvm/java-6-openjdk/include/linux
+JNI_INC?=-I/usr/lib/jvm/java-6-openjdk-amd64/include -I/usr/lib/jvm/java-6-openjdk-amd64/include/linux
 #JNI_INC?=-I/usr/lib/jvm/java-6-openjdk-i386/include -I/usr/lib/jvm/java-6-openjdk-i386/include/linux
 #JNI_INC?=-I/usr/lib/jvm/java-6-openjdk-amd64/include -I/usr/lib/jvm/java-6-openjdk-amd64/include/linux
 # Path where HttpServlet supplied by your application server resides

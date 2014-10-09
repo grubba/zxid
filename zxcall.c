@@ -163,6 +163,7 @@ static void opt(int* argc, char*** argv, char*** env)
 	  sscanf((*argv)[0], "%i", &din);
 	  continue;
 	}
+	break;
       case 'c':
 	ss = zxid_show_conf(cf);
 	if (verbose>1) {

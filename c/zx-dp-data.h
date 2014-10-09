@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- dp_Request -------------------------- */
-/* refby( zx_shps_PollResponse_s zx_prov_PollResponse_s ) */
+/* refby( zx_prov_PollResponse_s zx_shps_PollResponse_s ) */
 #ifndef zx_dp_Request_EXT
 #define zx_dp_Request_EXT
 #endif

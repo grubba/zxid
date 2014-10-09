@@ -117,7 +117,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - BANGBANG_PAT to enable bang bang expansion of outputs, even in mini_httpd_zxid
     - Expected namespaces feature for effective suppression of warnings about payload namespaces
 
-zxid-1.22:: 25.9.2014
+zxid-1.22:: 9.10.2014
     - Added to Local PDP multivalued role attribute matching
 
 zxid-1.21:: 27.5.2014
@@ -129,7 +129,6 @@ zxid-1.21:: 27.5.2014
     - Added to zxid_httpd Range support (for download resume)
     - Improved nth progessing in zxid_find_epr()
     - Added feature to stop parsing after end of first top level tag has been seen.
-    - NOT YET RELEASED
     
 zxid-1.20:: 11.12.2013
     - Fixed segv on bad decrypt and improved error messages

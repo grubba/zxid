@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- gl_AreaComparison -------------------------- */
-/* refby( zx_gl_ItemSelection_s zx_gl_QueryItem_s ) */
+/* refby( zx_gl_QueryItem_s zx_gl_ItemSelection_s ) */
 #ifndef zx_gl_AreaComparison_EXT
 #define zx_gl_AreaComparison_EXT
 #endif
@@ -85,7 +85,7 @@ void zx_gl_AreaComparison_REV_Extension(struct zx_gl_AreaComparison_s* x);
 
 #endif
 /* -------------------------- gl_Box -------------------------- */
-/* refby( zx_gl_MultiPolygon_s zx_gl_shape_s ) */
+/* refby( zx_gl_shape_s zx_gl_MultiPolygon_s ) */
 #ifndef zx_gl_Box_EXT
 #define zx_gl_Box_EXT
 #endif
@@ -196,7 +196,7 @@ void zx_gl_ChangeArea_REV_Extension(struct zx_gl_ChangeArea_s* x);
 
 #endif
 /* -------------------------- gl_CircularArcArea -------------------------- */
-/* refby( zx_gl_MultiPolygon_s zx_gl_shape_s ) */
+/* refby( zx_gl_shape_s zx_gl_MultiPolygon_s ) */
 #ifndef zx_gl_CircularArcArea_EXT
 #define zx_gl_CircularArcArea_EXT
 #endif
@@ -298,7 +298,7 @@ void zx_gl_CircularArcArea_REV_distanceUnit(struct zx_gl_CircularArcArea_s* x);
 
 #endif
 /* -------------------------- gl_CircularArea -------------------------- */
-/* refby( zx_gl_MultiPolygon_s zx_gl_shape_s ) */
+/* refby( zx_gl_shape_s zx_gl_MultiPolygon_s ) */
 #ifndef zx_gl_CircularArea_EXT
 #define zx_gl_CircularArea_EXT
 #endif
@@ -364,7 +364,7 @@ void zx_gl_CircularArea_REV_distanceUnit(struct zx_gl_CircularArea_s* x);
 
 #endif
 /* -------------------------- gl_CivilData -------------------------- */
-/* refby( zx_gl_ChangeArea_s zx_gl_pd_s zx_gl_AreaComparison_s zx_gl_geoinfo_s ) */
+/* refby( zx_gl_pd_s zx_gl_geoinfo_s zx_gl_ChangeArea_s zx_gl_AreaComparison_s ) */
 #ifndef zx_gl_CivilData_EXT
 #define zx_gl_CivilData_EXT
 #endif
@@ -1054,7 +1054,7 @@ void zx_gl_DeleteResponse_REV_Extension(struct zx_gl_DeleteResponse_s* x);
 
 #endif
 /* -------------------------- gl_EllipticalArea -------------------------- */
-/* refby( zx_gl_MultiPolygon_s zx_gl_shape_s ) */
+/* refby( zx_gl_shape_s zx_gl_MultiPolygon_s ) */
 #ifndef zx_gl_EllipticalArea_EXT
 #define zx_gl_EllipticalArea_EXT
 #endif
@@ -1147,7 +1147,7 @@ void zx_gl_EllipticalArea_REV_distanceUnit(struct zx_gl_EllipticalArea_s* x);
 
 #endif
 /* -------------------------- gl_EncryptedResourceID -------------------------- */
-/* refby( zx_gl_Query_s zx_gl_Modify_s zx_gl_Delete_s zx_gl_Create_s ) */
+/* refby( zx_gl_Delete_s zx_gl_Modify_s zx_gl_Create_s zx_gl_Query_s ) */
 #ifndef zx_gl_EncryptedResourceID_EXT
 #define zx_gl_EncryptedResourceID_EXT
 #endif
@@ -1198,7 +1198,7 @@ void zx_gl_EncryptedResourceID_REV_EncryptedKey(struct zx_gl_EncryptedResourceID
 
 #endif
 /* -------------------------- gl_Extension -------------------------- */
-/* refby( zx_gl_ChangeArea_s zx_gl_ItemSelection_s zx_gl_pd_s zx_gl_NotifyResponse_s zx_gl_QueryResponse_s zx_gl_eqop_s zx_gl_Query_s zx_gl_CreateResponse_s zx_gl_Notify_s zx_gl_CivilData_s zx_gl_Modify_s zx_gl_Delete_s zx_gl_ModifyResponse_s zx_gl_Subscription_s zx_gl_shape_s zx_gl_AreaComparison_s zx_gl_DeleteResponse_s zx_gl_Trigger_s zx_gl_Create_s zx_gl_QueryItem_s zx_gl_geoinfo_s ) */
+/* refby( zx_gl_shape_s zx_gl_eqop_s zx_gl_CivilData_s zx_gl_QueryResponse_s zx_gl_Notify_s zx_gl_QueryItem_s zx_gl_pd_s zx_gl_Delete_s zx_gl_Modify_s zx_gl_geoinfo_s zx_gl_DeleteResponse_s zx_gl_NotifyResponse_s zx_gl_ModifyResponse_s zx_gl_Trigger_s zx_gl_ChangeArea_s zx_gl_CreateResponse_s zx_gl_ItemSelection_s zx_gl_Create_s zx_gl_Query_s zx_gl_AreaComparison_s zx_gl_Subscription_s ) */
 #ifndef zx_gl_Extension_EXT
 #define zx_gl_Extension_EXT
 #endif
@@ -1339,7 +1339,7 @@ void zx_gl_Identifier_REV_edition(struct zx_gl_Identifier_s* x);
 
 #endif
 /* -------------------------- gl_ItemData -------------------------- */
-/* refby( zx_gl_Notification_s zx_gl_CreateResponse_s zx_gl_ModifyResponse_s ) */
+/* refby( zx_gl_Notification_s zx_gl_ModifyResponse_s zx_gl_CreateResponse_s ) */
 #ifndef zx_gl_ItemData_EXT
 #define zx_gl_ItemData_EXT
 #endif
@@ -1384,7 +1384,7 @@ void zx_gl_ItemData_PUT_changeFormat(struct zx_gl_ItemData_s* x, struct zx_attr_
 
 #endif
 /* -------------------------- gl_ItemSelection -------------------------- */
-/* refby( zx_gl_Modify_s zx_gl_Subscription_s zx_gl_Create_s ) */
+/* refby( zx_gl_Modify_s zx_gl_Create_s zx_gl_Subscription_s ) */
 #ifndef zx_gl_ItemSelection_EXT
 #define zx_gl_ItemSelection_EXT
 #endif
@@ -1588,7 +1588,7 @@ void zx_gl_LSt_PUT_script(struct zx_gl_LSt_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- gl_LineString -------------------------- */
-/* refby( zx_gl_MultiLineString_s zx_gl_shape_s ) */
+/* refby( zx_gl_shape_s zx_gl_MultiLineString_s ) */
 #ifndef zx_gl_LineString_EXT
 #define zx_gl_LineString_EXT
 #endif
@@ -1636,7 +1636,7 @@ void zx_gl_LineString_REV_coord(struct zx_gl_LineString_s* x);
 
 #endif
 /* -------------------------- gl_LinearRing -------------------------- */
-/* refby( zx_gl_outerBoundaryIs_s zx_gl_innerBoundaryIs_s ) */
+/* refby( zx_gl_innerBoundaryIs_s zx_gl_outerBoundaryIs_s ) */
 #ifndef zx_gl_LinearRing_EXT
 #define zx_gl_LinearRing_EXT
 #endif
@@ -2086,7 +2086,7 @@ void zx_gl_MultiPolygon_REV_EllipticalArea(struct zx_gl_MultiPolygon_s* x);
 
 #endif
 /* -------------------------- gl_NewData -------------------------- */
-/* refby( zx_gl_Modification_s zx_gl_CreateItem_s ) */
+/* refby( zx_gl_CreateItem_s zx_gl_Modification_s ) */
 #ifndef zx_gl_NewData_EXT
 #define zx_gl_NewData_EXT
 #endif
@@ -2458,7 +2458,7 @@ void zx_gl_Point_REV_coord(struct zx_gl_Point_s* x);
 
 #endif
 /* -------------------------- gl_Polygon -------------------------- */
-/* refby( zx_gl_MultiPolygon_s zx_gl_shape_s ) */
+/* refby( zx_gl_shape_s zx_gl_MultiPolygon_s ) */
 #ifndef zx_gl_Polygon_EXT
 #define zx_gl_Polygon_EXT
 #endif
@@ -2803,7 +2803,7 @@ void zx_gl_RefItem_PUT_subscriptionID(struct zx_gl_RefItem_s* x, struct zx_attr_
 
 #endif
 /* -------------------------- gl_ResourceID -------------------------- */
-/* refby( zx_gl_Query_s zx_gl_Modify_s zx_gl_Delete_s zx_gl_Create_s ) */
+/* refby( zx_gl_Delete_s zx_gl_Modify_s zx_gl_Create_s zx_gl_Query_s ) */
 #ifndef zx_gl_ResourceID_EXT
 #define zx_gl_ResourceID_EXT
 #endif
@@ -2839,7 +2839,7 @@ void zx_gl_ResourceID_PUT_id(struct zx_gl_ResourceID_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- gl_Status -------------------------- */
-/* refby( zx_gl_NotifyResponse_s zx_gl_QueryResponse_s zx_gl_Status_s zx_gl_CreateResponse_s zx_gl_ModifyResponse_s zx_gl_DeleteResponse_s ) */
+/* refby( zx_gl_QueryResponse_s zx_gl_DeleteResponse_s zx_gl_NotifyResponse_s zx_gl_ModifyResponse_s zx_gl_CreateResponse_s zx_gl_Status_s ) */
 #ifndef zx_gl_Status_EXT
 #define zx_gl_Status_EXT
 #endif
@@ -2890,7 +2890,7 @@ void zx_gl_Status_REV_Status(struct zx_gl_Status_s* x);
 
 #endif
 /* -------------------------- gl_Subscription -------------------------- */
-/* refby( zx_gl_Query_s zx_gl_Modify_s zx_gl_Create_s ) */
+/* refby( zx_gl_Modify_s zx_gl_Create_s zx_gl_Query_s ) */
 #ifndef zx_gl_Subscription_EXT
 #define zx_gl_Subscription_EXT
 #endif
@@ -3079,7 +3079,7 @@ void zx_gl_Trigger_REV_Extension(struct zx_gl_Trigger_s* x);
 
 #endif
 /* -------------------------- gl_coord -------------------------- */
-/* refby( zx_gl_Point_s zx_gl_CircularArcArea_s zx_gl_LinearRing_s zx_gl_CircularArea_s zx_gl_EllipticalArea_s zx_gl_Box_s zx_gl_LineString_s ) */
+/* refby( zx_gl_Point_s zx_gl_EllipticalArea_s zx_gl_CircularArea_s zx_gl_CircularArcArea_s zx_gl_LinearRing_s zx_gl_LineString_s zx_gl_Box_s ) */
 #ifndef zx_gl_coord_EXT
 #define zx_gl_coord_EXT
 #endif
@@ -3139,7 +3139,7 @@ void zx_gl_coord_REV_Z(struct zx_gl_coord_s* x);
 
 #endif
 /* -------------------------- gl_eqop -------------------------- */
-/* refby( zx_gl_ItemSelection_s zx_gl_QueryItem_s ) */
+/* refby( zx_gl_QueryItem_s zx_gl_ItemSelection_s ) */
 #ifndef zx_gl_eqop_EXT
 #define zx_gl_eqop_EXT
 #endif
@@ -3298,7 +3298,7 @@ void zx_gl_esrk_PUT_type(struct zx_gl_esrk_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- gl_geoinfo -------------------------- */
-/* refby( zx_gl_ItemSelection_s zx_gl_QueryItem_s ) */
+/* refby( zx_gl_QueryItem_s zx_gl_ItemSelection_s ) */
 #ifndef zx_gl_geoinfo_EXT
 #define zx_gl_geoinfo_EXT
 #endif
@@ -3445,7 +3445,7 @@ void zx_gl_innerBoundaryIs_REV_LinearRing(struct zx_gl_innerBoundaryIs_s* x);
 
 #endif
 /* -------------------------- gl_loc_type -------------------------- */
-/* refby( zx_gl_ItemSelection_s zx_gl_QueryItem_s ) */
+/* refby( zx_gl_QueryItem_s zx_gl_ItemSelection_s ) */
 #ifndef zx_gl_loc_type_EXT
 #define zx_gl_loc_type_EXT
 #endif
@@ -3685,7 +3685,7 @@ void zx_gl_pd_REV_Extension(struct zx_gl_pd_s* x);
 
 #endif
 /* -------------------------- gl_prio -------------------------- */
-/* refby( zx_gl_ItemSelection_s zx_gl_QueryItem_s ) */
+/* refby( zx_gl_QueryItem_s zx_gl_ItemSelection_s ) */
 #ifndef zx_gl_prio_EXT
 #define zx_gl_prio_EXT
 #endif
@@ -3757,7 +3757,7 @@ void zx_gl_resp_req_PUT_type(struct zx_gl_resp_req_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- gl_shape -------------------------- */
-/* refby( zx_gl_ChangeArea_s zx_gl_GeometryCollection_s zx_gl_pd_s zx_gl_AreaComparison_s zx_gl_geoinfo_s ) */
+/* refby( zx_gl_pd_s zx_gl_geoinfo_s zx_gl_GeometryCollection_s zx_gl_ChangeArea_s zx_gl_AreaComparison_s ) */
 #ifndef zx_gl_shape_EXT
 #define zx_gl_shape_EXT
 #endif

@@ -502,7 +502,7 @@ void zx_dap_ItemData_REV_Subscription(struct zx_dap_ItemData_s* x);
 
 #endif
 /* -------------------------- dap_LDIF -------------------------- */
-/* refby( zx_dap_Data_s zx_dap_ItemData_s zx_dap_NewData_s ) */
+/* refby( zx_dap_NewData_s zx_dap_Data_s zx_dap_ItemData_s ) */
 #ifndef zx_dap_LDIF_EXT
 #define zx_dap_LDIF_EXT
 #endif
@@ -1228,7 +1228,7 @@ void zx_dap_QueryResponse_REV_Data(struct zx_dap_QueryResponse_s* x);
 
 #endif
 /* -------------------------- dap_ResultQuery -------------------------- */
-/* refby( zx_dap_Modify_s zx_dap_Subscription_s zx_dap_Create_s ) */
+/* refby( zx_dap_Subscription_s zx_dap_Create_s zx_dap_Modify_s ) */
 #ifndef zx_dap_ResultQuery_EXT
 #define zx_dap_ResultQuery_EXT
 #endif
@@ -1309,7 +1309,7 @@ void zx_dap_ResultQuery_REV_Sort(struct zx_dap_ResultQuery_s* x);
 
 #endif
 /* -------------------------- dap_Select -------------------------- */
-/* refby( zx_dap_DeleteItem_s zx_dap_ModifyItem_s zx_dap_QueryItem_s zx_dap_ResultQuery_s ) */
+/* refby( zx_dap_QueryItem_s zx_dap_DeleteItem_s zx_dap_ModifyItem_s zx_dap_ResultQuery_s ) */
 #ifndef zx_dap_Select_EXT
 #define zx_dap_Select_EXT
 #endif
@@ -1378,7 +1378,7 @@ void zx_dap_Select_REV_filter(struct zx_dap_Select_s* x);
 
 #endif
 /* -------------------------- dap_Subscription -------------------------- */
-/* refby( zx_dap_Modify_s zx_dap_Data_s zx_dap_ItemData_s zx_dap_Query_s zx_dap_Create_s zx_dap_NewData_s ) */
+/* refby( zx_dap_NewData_s zx_dap_Query_s zx_dap_Data_s zx_dap_Create_s zx_dap_ItemData_s zx_dap_Modify_s ) */
 #ifndef zx_dap_Subscription_EXT
 #define zx_dap_Subscription_EXT
 #endif

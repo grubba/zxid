@@ -72,6 +72,7 @@ Usage: zxcot [options] [cotdir]         # Gives listing of metadata\n\
   -h               This help message\n\
   --               End of options\n\
 \n\
+HTTP_HOST=idp.cloud-identity.eu SCRIPT_NAME=/idp e2etacot -c 'CPATH=/d/relifex/e2eta/' -m\n\
 zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'TAS3 Default Discovery Service (ID-WSF 2.0)' http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 | zxcot -b\n\
 \n";
 
