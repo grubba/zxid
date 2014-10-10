@@ -696,7 +696,7 @@ int main(int argc, char** argv, char** env)
   printf("Re-encoded result WO (len=%d):\n%.*s\n\n", len_wo, len_wo, wo_out);
 
   if (wo_path)
-    write_all_path_fmt("WO", sizeof(buf), buf, "%s", wo_path, 0, "%.*s", len_wo, wo_out);
+    write_all_path("WO", "%s", wo_path, 0, len_wo, wo_out);
   return 0;
 }
 

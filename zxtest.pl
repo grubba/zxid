@@ -1238,6 +1238,7 @@ CMD('HELP2', 'zxpasswd -h',  "./zxpasswd -v -h");
 CMD('HELP3', 'zxcot -h',     "./zxcot -v -h");
 CMD('HELP4', 'zxdecode -h',  "./zxdecode -v -h");
 CMD('HELP5', 'zxlogview -h', "./zxlogview -v -h");
+CMD('HELP6', 'zxumacall -h', "./zxumacall -v -h");
 
 CMD('SOENC1', 'EncDec Status',     "./zxencdectest -r 3");
 CMD('ATORD1', 'Attribute sorting', "./zxencdectest -r 4");

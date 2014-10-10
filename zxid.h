@@ -482,6 +482,7 @@ struct zxid_cgi {
   char* action_url;    /* <form action=URL> in some forms, such as post.html */
   char* uri_path;      /* SCRIPT_NAME or other URI path */
   char* qs;            /* QUERY_STRING */
+  char* post;          /* Unparsed body of a POST */
   zxid_entity* idp_list;   /* IdPs from CDC */
 };
 
@@ -692,7 +693,8 @@ struct zxid_invite {
 #define ZXID_DIMD_DIR "dimd/"
 #define ZXID_INV_DIR  "inv/"
 #define ZXID_LOG_DIR  "log/"
-#define ZXID_MAX_USER (256)  /* Maximum size of .mni or user file */
+#define ZXID_DCR_DIR  "dcr/"  /* OAUTH2 Dynamic Client Registrations */
+#define ZXID_MAX_USER (256)   /* Maximum size of .mni or user file */
 #define ZXID_INIT_MD_BUF   (8*1024-1)  /* Initial size, will automatically reallocate. */
 #define ZXID_INIT_SOAP_BUF (8*1024-1)  /* Initial size, will automatically reallocate. */
 #define ZXID_MAX_CURL_BUF  (10*1024*1024-1)  /* Buffer reallocation will not grow beyond this. */
@@ -993,6 +995,7 @@ ZXID_DECL struct zx_sp_Status_s* zxid_OK(zxid_conf* cf, struct zx_elem_s* father
 ZXID_DECL struct zx_str* zxid_mk_oauth_az_req(zxid_conf* cf, zxid_cgi* cgi, struct zx_str* loc, char* relay_state);
 ZXID_DECL char* zxid_mk_jwks(zxid_conf* cf);
 ZXID_DECL char* zxid_mk_oauth2_dyn_cli_reg_req(zxid_conf* cf);
+ZXID_DECL char* zxid_mk_oauth2_dyn_cli_reg_res(zxid_conf* cf, zxid_cgi* cgi);
 
 /* zxidmkwsf */
 

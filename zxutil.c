@@ -440,6 +440,36 @@ int write_all_path_fmt(const char* logkey, int maxlen, char* buf, const char* pa
   return 1;
 }
 
+/*() Write all data to a file at the formatted path. The buf is used
+ * for formatting data. The path_fmt can have up to two %s specifiers,
+ * which will be satisfied by prepath and postpath.
+ *
+ * logkey::   Used for debug prints and error messages
+ * path_fmt:: Format string for filesystem path to the file
+ * prepath::  Argument to satisfy first %s in path_fmt
+ * postpath:: Argument to satisfy second %s in path_fmt
+ * len::      Length of the data, pass -1 to use strlen(data).
+ * data::     Data to be written. No formatting on data is performed.
+ * Returns:: 1 on success, 0 on fail. */
+
+/* Called by: */
+int write_all_path(const char* logkey, const char* path_fmt, const char* prepath, const char* postpath, int len, const char* data)
+{
+  fdtype fd;
+  fd = open_fd_from_path(O_CREAT | O_RDWR | O_TRUNC, 0666, logkey, 1, path_fmt, prepath, postpath);
+  DD("write_all_path(%s, %x)", logkey, fd);
+  if (fd == BADFD) return 0;
+  if (len == -1)
+    len = strlen(data);
+  if (write_all_fd(fd, data, len) == -1) {
+    perror("Trouble writing");
+    close_file(fd, logkey);
+    return 0;
+  }
+  close_file(fd, logkey);
+  return 1;
+}
+
 #define WRITE_FAIL_MSG "Check that all directories exist, permissions allow writing, and disk is not full or that ulimit(1) is not too low."
 
 /*() Write or append all data to a file at the already formatted path.

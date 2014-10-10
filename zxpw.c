@@ -78,7 +78,7 @@ int zx_yubikey_authn(const char* cpath, char* uid, const char* passw)
     ERR("The One Time Password has already been spent. ticket(%s%s) buf(%.*s)", uid, pw_hash, len, pw_buf);
     return 0;
   }
-  if (!write_all_path_fmt("ykspent", sizeof(pw_buf), (char*)pw_buf, "%s/.ykspent/%s", (char*)buf, (char*)pw_hash, "1"))
+  if (!write_all_path("ykspent", "%s/.ykspent/%s", (char*)buf, (char*)pw_hash, 1, "1"))
     return 0;
   
   len = read_all(sizeof(pw_buf), (char*)pw_buf, "ykaes", 1, "%s/.yk", buf);

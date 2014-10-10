@@ -747,7 +747,7 @@ char* zxid_idp_select(char* conf, int auto_flags) {
  * page is in ss. */
 
 /* Called by:  zxid_idp_oauth2_check_id, zxid_simple_idp_show_an, zxid_simple_show_carml, zxid_simple_show_conf, zxid_simple_show_err, zxid_simple_show_idp_sel, zxid_simple_show_meta */
-char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_mask, char* rets, char* cont_type, int* res_len, int auto_flags)
+char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_mask, char* rets, char* cont_type, int* res_len, int auto_flags, const char* status)
 {
   char* res;
   struct zx_str* ss2;
@@ -768,8 +768,8 @@ char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_
         p++;
     }
 #endif
-    fprintf(stdout, "Content-Type: %s" CRLF "Content-Length: %d" CRLF2 "%.*s",
-	   cont_type, ss->len+extralen, ss->len+extralen, ss->s);
+    fprintf(stdout, "%sContent-Type: %s" CRLF "Content-Length: %d" CRLF2 "%.*s",
+	    STRNULLCHK(status), cont_type, ss->len+extralen, ss->len+extralen, ss->s);
     fflush(stdout);
     DD("__stdio_file fd=%d flags=%x bs=%d bm=%d buflen=%d buf=%p buf(%.4s) next=%p pok=%d unget=%x ungotten=%x", stdout->fd, stdout->flags, stdout->bs, stdout->bm, stdout->buflen, stdout->buf, stdout->buf, stdout->next, stdout->popen_kludge, stdout->ungetbuf, stdout->ungotten);
     if (auto_flags & ZXID_AUTO_EXIT)
@@ -783,8 +783,8 @@ char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_
   if (auto_flags & (c_mask | h_mask)) {
     if (auto_flags & h_mask) {  /* H only: return both H and C */
       if (errmac_debug & MOD_AUTH_SAML_INOUT) D("With headers %x (%s)", auto_flags, ss->s);
-      ss2 = zx_strf(cf->ctx, "Content-Type: %s" CRLF "Content-Length: %d" CRLF2 "%.*s",
-		    cont_type, ss->len, ss->len, ss->s);
+      ss2 = zx_strf(cf->ctx, "%sContent-Type: %s" CRLF "Content-Length: %d" CRLF2 "%.*s",
+		    STRNULLCHK(status), cont_type, ss->len, ss->len, ss->s);
       zx_str_free(cf->ctx, ss);
     } else {
       D("No headers %x (%s)", auto_flags, ss->s);
@@ -851,7 +851,7 @@ char* zxid_simple_show_idp_sel(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int a
     : 0;
   DD("idp_select: ret(%s)", ss?ss->len:1, ss?ss->s:"?");
   return zxid_simple_show_page(cf, ss, ZXID_AUTO_LOGINC, ZXID_AUTO_LOGINH,
-			       "e", "text/html", res_len, auto_flags);
+			       "e", "text/html", res_len, auto_flags, 0);
 }
 
 
@@ -864,7 +864,7 @@ static char* zxid_simple_show_meta(zxid_conf* cf, zxid_cgi* cgi, int* res_len, i
 {
   struct zx_str* meta = zxid_sp_meta(cf, cgi);
   return zxid_simple_show_page(cf, meta, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
-			       "b", "text/xml", res_len, auto_flags);
+			       "b", "text/xml", res_len, auto_flags, 0);
 }
 
 /*() Emit CARML declaration for SP. Corresponds to "o=c" query string. */
@@ -874,7 +874,7 @@ static char* zxid_simple_show_carml(zxid_conf* cf, zxid_cgi* cgi, int* res_len, 
 {
   struct zx_str* carml = zxid_sp_carml(cf);
   return zxid_simple_show_page(cf, carml, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
-			       "c", "text/xml", res_len, auto_flags);
+			       "c", "text/xml", res_len, auto_flags, 0);
 }
 
 /*() Dump internal info and configuration. Corresponds to "o=d" query string. */
@@ -884,20 +884,33 @@ static char* zxid_simple_show_conf(zxid_conf* cf, zxid_cgi* cgi, int* res_len, i
 {
   struct zx_str* ss = zxid_show_conf(cf);
   return zxid_simple_show_page(cf, ss, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
-			       "d", "text/html", res_len, auto_flags);
+			       "d", "text/html", res_len, auto_flags, 0);
 }
 
-/*() Emit Java Web Key Set. Corresponds to "o=jwks" query string. */
+/*() Emit Java Web Key Set. Corresponds to "o=j" query string. */
 
 /* Called by:  zxid_simple_no_ses_cf, zxid_simple_ses_active_cf */
 static char* zxid_simple_show_jwks(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   struct zx_str* ss = zx_ref_str(cf->ctx, zxid_mk_jwks(cf));
   return zxid_simple_show_page(cf, ss, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
-			       "d",
+			       "j",
 			       //"text/json",
 			       "application/jwk-set+json",
-			       res_len, auto_flags);
+			       res_len, auto_flags, 0);
+}
+
+/*() Perform and reply to OAUTH2 Dynamic Client Registration. Corresponds to "o=J" query string. */
+
+/* Called by:  zxid_simple_no_ses_cf, zxid_simple_ses_active_cf */
+static char* zxid_simple_show_dynclireg(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
+{
+  struct zx_str* ss = zx_ref_str(cf->ctx, zxid_mk_oauth2_dyn_cli_reg_res(cf, cgi));
+  return zxid_simple_show_page(cf, ss, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
+			       "J",
+			       //"text/json",
+			       "application/json",
+			       res_len, auto_flags, "Status: 201 Created" CRLF);
 }
 
 /*() Show Error screen. */
@@ -922,7 +935,7 @@ char* zxid_simple_show_err(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
     
   ss = zxid_template_page_cf(cf, cgi, cf->err_templ_file, cf->err_templ, 4096, auto_flags);
   return zxid_simple_show_page(cf, ss, ZXID_AUTO_LOGINC, ZXID_AUTO_LOGINH,
-			       "g", "text/html", res_len, auto_flags);
+			       "g", "text/html", res_len, auto_flags, 0);
 }
 
 /* ----------- IdP Screens ----------- */
@@ -1128,7 +1141,7 @@ static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len,
   /* if (cgi->ssoreq) ZX_FREE(cf->ctx, cgi->ssoreq); might not be malloc'd if tabs have CGI */
   DD("an_page: ret(%s)", ss?ss->len:1, ss?ss->s:"?");
   return zxid_simple_show_page(cf, ss, ZXID_AUTO_LOGINC, ZXID_AUTO_LOGINH,
-			       "a", "text/html", res_len, auto_flags);
+			       "a", "text/html", res_len, auto_flags, 0);
 }
 
 /*() Process password authentication form and, if ssoreq (ar=) is present
@@ -1328,6 +1341,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * B = Metadata
    * b = Metadata Authority
    * j = jwks
+   * J = Dynamic client registration endpoint
    *
    * M = CDC redirect and LECP detect
    * C = CDC reader
@@ -1346,7 +1360,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * F = IdP: Return SSO A7N after successful An; no ses case, generate IdP ui
    * V = Proxy IdP return
    *
-   * Still available: HJUVWXacefghijkoqwxyz
+   * Still available: HJUVWXacefghikoqwxyz
    */
   
   if (cgi->enc_hint)
@@ -1429,6 +1443,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
     D("idp err(%.*s) (fall thru)", ss->len, ss->s);
     /* *** */
     break;
+  case 'J': return zxid_simple_show_dynclireg(cf, cgi, res_len, auto_flags);
   case 'j': return zxid_simple_show_jwks(cf, cgi, res_len, auto_flags);
   case 'c': return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
   case 'd': return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
@@ -1598,6 +1613,7 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
     }
     D("Q err (fall thru) %d", 0);
     break;
+  case 'J':    return zxid_simple_show_dynclireg(cf, cgi, res_len, auto_flags);
   case 'j':    return zxid_simple_show_jwks(cf, cgi, res_len, auto_flags);
   case 'c':    return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
   case 'd':    return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
@@ -1692,12 +1708,12 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
     if (qs) {
       D("QUERY_STRING(%s) %s %d", STRNULLCHK(qs), ZXID_REL, errmac_debug);
       zxid_parse_cgi(cf, &cgi, qs);
-      if (ONE_OF_5(cgi.op, 'P', 'R', 'S', 'Y', 'Z')) {
+      if (ONE_OF_6(cgi.op, 'J', 'P', 'R', 'S', 'Y', 'Z')) {
 	cont_len = getenv("CONTENT_LENGTH");
 	if (cont_len) {
 	  sscanf(cont_len, "%d", &got);
 	  D("o=%c cont_len=%s got=%d rel=%s", cgi.op, cont_len, got, ZXID_REL);
-	  buf = ZX_ALLOC(cf->ctx, got + 1 /* nul term */);
+	  cgi.post = buf = ZX_ALLOC(cf->ctx, got + 1 /* nul term */);
 	  if (!buf) {
 	    ERR("out of memory len=%d", got);
 	    exit(1);
@@ -1709,10 +1725,16 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
 	    DD("POST(%s) got=%d cont_len(%s)", buf, got, cont_len);
 	    D_XML_BLOB(cf, "POST", got, buf);
 	    if (buf[0] == '<') goto sp_soap;  /* No BOM and looks like XML */
+	    if (buf[0] == '{') goto json;     /* No BOM and looks like JSON */
 	    if (buf[2] == '<') {              /* UTF-16 BOM and looks like XML */
 	      got-=2; buf+=2;
 	      ERR("UTF-16 NOT SUPPORTED %x%x", buf[0], buf[1]);
 	      goto sp_soap;
+	    }
+	    if (buf[2] == '{') {              /* UTF-16 BOM and looks like JSON */
+	      got-=2; buf+=2;
+	      ERR("UTF-16 NOT SUPPORTED %x%x", buf[0], buf[1]);
+	      goto json;
 	    }
 	    if (buf[3] == '<') {              /* UTF-8 BOM and looks XML */
 	      got-=3; buf+=3;
@@ -1735,7 +1757,13 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
 		*res_len = strlen(res);
 	      goto done;
 	    }
-	    zxid_parse_cgi(cf, &cgi, buf);
+	    if (buf[3] == '{') {              /* UTF-8 BOM and looks JSON */
+	      got-=3; buf+=3;
+	    json:
+	      D("JSON detected %s", buf);
+	      /* Do not parse yet, this will be handled later in zxid_simple code. */
+	    } else
+	      zxid_parse_cgi(cf, &cgi, buf);
 	  }
 	} else {
 	  D("o=%c post, but no CONTENT_LENGTH rel=%s", cgi.op, ZXID_REL);

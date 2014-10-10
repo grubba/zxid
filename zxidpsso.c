@@ -474,7 +474,7 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
       }
       
       name_from_path(dir, sizeof(dir), "%s" ZXID_NID_DIR "%s/%.*s", cf->cpath, sp_name_buf, nid->len, nid->s);
-      if (!write_all_path_fmt("put_nidmap", ZXID_MAX_USER, buf, "%s", dir, 0, "%s", uid)) {
+      if (!write_all_path("put_nidmap", "%s", dir, 0, -1, uid)) {
 	zxlog(cf, 0, srcts, 0, issuer, req_id, 0, nid, "N", "S", "EFILE", uid, "put_nidmap fail, permissions?");
 	D_DEDENT("allowcreate: ");
 	return 0;
@@ -506,7 +506,6 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
 void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_buf, const char* uid)
 {
   struct zx_str* nid;
-  char buf[ZXID_MAX_USER];
   char dir[ZXID_MAX_DIR];
 
   D_INDENT("mk_trans: ");
@@ -525,7 +524,7 @@ void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_
   }
   
   name_from_path(dir, sizeof(dir), "%s" ZXID_NID_DIR "%s/%.*s", cf->cpath, sp_name_buf, nid->len, nid->s);
-  if (!write_all_path_fmt("put_nidmap_tmp", ZXID_MAX_USER, buf, "%s", dir, 0, "%s", uid)) {
+  if (!write_all_path("put_nidmap_tmp", "%s", dir, 0, -1, uid)) {
     zxlog(cf, 0, 0, 0, 0, 0, 0, nid, "N", "S", "EFILE", uid, "put_nidmap fail, permissions?");
     D_DEDENT("mk_trans: ");
     return;

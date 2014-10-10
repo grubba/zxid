@@ -118,7 +118,7 @@ struct zx_dap_Query_s;
 /* zxidsimp */
 
 ZXID_DECL int zxid_decode_ssoreq(zxid_conf* cf, zxid_cgi* cgi);
-ZXID_DECL char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_mask, char* rets, char* cont_type, int* res_len, int auto_flags);
+  ZXID_DECL char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_mask, char* rets, char* cont_type, int* res_len, int auto_flags, const char* status);
 
 /* zxidmeta */
 

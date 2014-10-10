@@ -675,9 +675,7 @@ badurl:
   }
   len = BIO_get_mem_data(wbio_csr, &p);
 
-  write_all_path_fmt("auto_cert csr", buflen, buf,
-		     "%s" ZXID_PEM_DIR "csr-%s", cf->cpath, name,
-		     "%.*s", len, p);
+  write_all_path("auto_cert csr", "%s" ZXID_PEM_DIR "csr-%s", cf->cpath, name, len, p);
   BIO_free_all(wbio_csr);
 
   /* Output combined self signed plus private key file. It is important
@@ -935,7 +933,7 @@ int zxid_mk_at_cert(zxid_conf* cf, int buflen, char* buf, const char* lk, zxid_n
   memcpy(buf, p, MIN(len, buflen-1));
   buf[MIN(len, buflen-1)] = 0;
 
-  //***write_all_path_fmt("auto_cert ss", buflen, buf, "%s" ZXID_PEM_DIR "%s", cf->cpath, name,  "%.*s", len, p);
+  //***write_all_path("auto_cert ss", "%s" ZXID_PEM_DIR "%s", cf->cpath, name, len, p);
 
   BIO_free_all(wbio_cert);
 

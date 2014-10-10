@@ -172,6 +172,7 @@ char* zxid_http_get(zxid_conf* cf, const char* url, char** lim)
  * url:: URL for POST
  * len:: Length of the data. If -1 is passed, strlen(data) is used
  * data:: HTTP body for the POST
+ * SOAPaction:: A way to pass in additional header, typically SOAPaction or Authorization
  * returns:: HTTP body of the response */
 
 /* Called by:  zxid_soap_call_raw */

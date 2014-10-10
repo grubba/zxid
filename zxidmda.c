@@ -92,7 +92,7 @@ char* zxid_simple_md_authority(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int a
 
 done:
   return zxid_simple_show_page(cf, ss, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
-			       "b", "text/xml", res_len, auto_flags);
+			       "b", "text/xml", res_len, auto_flags, 0);
 }
 
 /* EOF  --  zxidmda.c */

@@ -8,7 +8,7 @@
 "aat_grant_types_supported":["authorization_code"],
 "claim_profiles_supported":["openid","zxidclaims"],
 "uma_profiles_supported":[ "redirect_required", "prot-ext", "authz-ext", "rsrc-ext"],
-"dynamic_client_endpoint":"https://zxidp.org/idpuma?o=dyncli",
+"dynamic_client_endpoint":"https://zxidp.org/idpuma?o=J",
 "token_endpoint":"https://zxidp.org/idpuma?o=tokissue",
 "user_endpoint":"https://zxidp.org/idpuma?o=consent",
 "introspection_endpoint":"https://zxidp.org/idpuma?o=tokquery",

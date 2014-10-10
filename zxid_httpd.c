@@ -2183,7 +2183,10 @@ static char** make_envp(void)
     (void) snprintf(buf, sizeof(buf), "%lu", (unsigned long) content_length);
     envp[envn++] = build_env("CONTENT_LENGTH=%s", buf);
   }
-  if (authorization)                envp[envn++] = build_env("AUTH_TYPE=%s", "Basic");
+  if (authorization)                {
+    envp[envn++] = build_env("AUTH_TYPE=%s", "Basic");                 /* Of dubious value */
+    envp[envn++] = build_env("HTTP_AUTHORIZATION=%s", authorization);  /* Allow CGI to see it */
+  }
   if (cp = getenv("TZ"))            envp[envn++] = build_env("TZ=%s", cp);
   if (cp = getenv("MALLOC_CHECK_")) envp[envn++] = build_env("MALLOC_CHECK_=%s", cp);
   if (paos[0] != '\0')              envp[envn++] = build_env("HTTP_PAOS=%s", paos);

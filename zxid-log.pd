@@ -360,6 +360,10 @@ OP:: The documented operation
     KEYGEN::   Auto-Cert generation of a self-signed certificate
     NEWUSR::   New user creation
 
+    OAUTH2 and UMA related
+
+    DCR:: Dynamic Client Registration
+
 PPP:: Operation dependent one most relevant parameter. Dash ("-") if none.
 
 FMT:: Operation dependent free-form data. May contain spaces. Dash ("-") if

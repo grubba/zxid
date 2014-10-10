@@ -210,7 +210,7 @@ static void opt(int* argc, char*** argv, char*** env)
 	im_to = (*argv)[0];
 	continue;
       case 'a':
-	switch ((*argv)[0][2]) {
+	switch ((*argv)[0][3]) {
 	case 't':
 	  ++(*argv); --(*argc);
 	  if ((*argc) < 1) break;
@@ -411,6 +411,20 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
   return 0;
 }
 
+void zxumacall_dynclireg_client(zxid_conf* cf)
+{
+  struct zx_str* res;
+  char* azhdr;
+  char* req = zxid_mk_oauth2_dyn_cli_reg_req(cf);
+  if (iat) {
+    azhdr = zx_alloc_sprintf(cf->ctx, 0, "Authorization: Bearer %s", iat);
+  } else
+    azhdr = 0;
+  INFO("req(%s) iat(%s)", req, STRNULLCHKD(azhdr));
+  res = zxid_http_post_raw(cf, -1, url, -1, req, azhdr);
+  printf("%.*s", res->len, res->s);
+}
+
 #ifndef zxumacall_main
 #define zxumacall_main main
 #endif
@@ -432,8 +446,7 @@ int zxumacall_main(int argc, char** argv, char** env)
   opt(&argc, &argv, &env);
   
   if (dynclireg) {
-    p = zxid_mk_oauth2_dyn_cli_reg_req(cf);
-    printf("%s",p);
+    zxumacall_dynclireg_client(cf);
     return 0;
   }
   

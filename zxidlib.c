@@ -979,8 +979,7 @@ char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey)
     um = umask(0077);  /* Key material should be readable only by owner */
     INFO("gotall=%d", gotall);
     hexdmp("symkey ", buf, gotall, 16);
-    write_all_path_fmt("auto_cert", sizeof(buf), buf,
-		       "%s" ZXID_PEM_DIR "%s", cf->cpath, keyname, "%.*s", gotall, buf);
+    write_all_path("auto_cert", "%s" ZXID_PEM_DIR "%s", cf->cpath, keyname, gotall, buf);
     umask(um);
   }
   SHA1((unsigned char*)buf, gotall, (unsigned char*)symkey);

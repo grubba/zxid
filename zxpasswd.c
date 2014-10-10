@@ -298,7 +298,7 @@ static int authn_user(int isyk, int pwgot)
       ERR("The Yubikey One Time Password has already been spent. ticket(%s%s) buf(%.*s)", user, pw, got, buf);
       return 5;
     }
-    if (!write_all_path_fmt("ykspent", sizeof(buf), buf, "%s/.ykspent/%s", userdir, pw, "1"))
+    if (!write_all_path("ykspent", "%s/.ykspent/%s", userdir, pw, 1, "1"))
       return 1;
     
     got = read_all(sizeof(buf), buf, "ykaes", 1, "%s/%s/.yk", udir, user);
@@ -485,7 +485,7 @@ int main(int argc, char** argv, char** env)
     D("pw_hash(%s)", pw_hash);
   } else if (!strcmp(hash_type, "y")) {
     D("Provisioning yubikey aes(%s) in %s/%s/.yk", pw, udir, user);
-    if (!write_all_path_fmt("set yk", sizeof(buf), buf, "%s/%s/.yk", udir, user, "%s", pw))
+    if (!write_all_path("set yk", "%s/%s/.yk", udir, user, -1, pw))
       return 1;
     snprintf(userdir, sizeof(userdir)-1, "%s/%s/.ykspent", udir, user);
     userdir[sizeof(userdir)-1] = 0;
@@ -496,12 +496,12 @@ int main(int argc, char** argv, char** env)
   }
   
   DD("pw_hash(%s) len=%d", pw_hash, strlen(pw_hash));
-  if (!write_all_path_fmt("set pw", sizeof(buf), buf, "%s/%s/.pw", udir, user, "%s", pw_hash))
+  if (!write_all_path("set pw", "%s/%s/.pw", udir, user, -1, (char*)pw_hash))
     return 1;
   return 0;
 }
 
-/* EOF  --  zxdecode.c */
+/* EOF  --  zxpasswd.c */
 
 #if 0
 
