@@ -5,7 +5,7 @@
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
- * Distribution prohibited unless authorized in writing.
+ * Distrtion prohibited unless authorized in writing.
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id: zxutil.c,v 1.53 2009-11-29 12:23:06 sampo Exp $
  *
@@ -719,7 +719,7 @@ const char pw_basis_64[64]   = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij
  * eq_pad::   Padding character, usually equals (=). If nul (0), no padding is added.
  * return::   Pointer one past last byte written in r. This function never fails. */
 
-/* Called by:  base64_fancy, safe_base64 */
+/* Called by:  sha_safe_base64 */
 char* base64_fancy_raw(const char* p, int len, /* input and its length */
 		       char* r,                /* Output buffer. Will not be NUL terminated. */
 		       const char* basis_64,   /* 64 character alphabet to be used, see above */

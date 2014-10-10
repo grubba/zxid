@@ -151,7 +151,7 @@ void zx_ac_ActivationLimitUsages_PUT_number(struct zx_ac_ActivationLimitUsages_s
 
 #endif
 /* -------------------------- ac_ActivationPin -------------------------- */
-/* refby( zx_ac_KeyActivation_s zx_ac_PrincipalAuthenticationMechanism_s ) */
+/* refby( zx_ac_PrincipalAuthenticationMechanism_s zx_ac_KeyActivation_s ) */
 #ifndef zx_ac_ActivationPin_EXT
 #define zx_ac_ActivationPin_EXT
 #endif
@@ -889,7 +889,7 @@ void zx_ac_DigSig_REV_Extension(struct zx_ac_DigSig_s* x);
 
 #endif
 /* -------------------------- ac_Extension -------------------------- */
-/* refby( zx_ac_Token_s zx_ac_AsymmetricKeyAgreement_s zx_ac_PrivateKeyProtection_s zx_ac_AuthenticationContextStatement_s zx_ac_Password_s zx_ac_SecretKeyProtection_s zx_ac_KeyActivation_s zx_ac_HTTP_s zx_ac_ResumeSession_s zx_ac_MobileNetworkNoEncryption_s zx_ac_AsymmetricDecryption_s zx_ac_AuthenticationMethod_s zx_ac_SwitchAudit_s zx_ac_SharedSecretDynamicPlaintext_s zx_ac_DeactivationCallCenter_s zx_ac_ActivationPin_s zx_ac_OperationalProtection_s zx_ac_SSL_s zx_ac_IPSec_s zx_ac_PreviousSession_s zx_ac_MobileNetworkRadioEncryption_s zx_ac_AuthenticatorTransportProtocol_s zx_ac_WTLS_s zx_ac_SecurityAudit_s zx_ac_PrincipalAuthenticationMechanism_s zx_ac_MobileNetworkEndToEndEncryption_s zx_ac_TechnicalProtection_s zx_ac_WrittenConsent_s zx_ac_ZeroKnowledge_s zx_ac_DigSig_s zx_ac_SharedSecretChallengeResponse_s zx_ac_Identification_s zx_ac_Smartcard_s zx_ac_IPAddress_s zx_ac_Authenticator_s ) */
+/* refby( zx_ac_PrincipalAuthenticationMechanism_s zx_ac_PreviousSession_s zx_ac_SharedSecretDynamicPlaintext_s zx_ac_AuthenticationMethod_s zx_ac_Password_s zx_ac_AuthenticationContextStatement_s zx_ac_OperationalProtection_s zx_ac_TechnicalProtection_s zx_ac_MobileNetworkEndToEndEncryption_s zx_ac_ResumeSession_s zx_ac_MobileNetworkRadioEncryption_s zx_ac_ZeroKnowledge_s zx_ac_IPSec_s zx_ac_WTLS_s zx_ac_WrittenConsent_s zx_ac_SharedSecretChallengeResponse_s zx_ac_Smartcard_s zx_ac_DeactivationCallCenter_s zx_ac_PrivateKeyProtection_s zx_ac_SecretKeyProtection_s zx_ac_Token_s zx_ac_Identification_s zx_ac_AsymmetricDecryption_s zx_ac_AsymmetricKeyAgreement_s zx_ac_Authenticator_s zx_ac_SecurityAudit_s zx_ac_SwitchAudit_s zx_ac_IPAddress_s zx_ac_MobileNetworkNoEncryption_s zx_ac_AuthenticatorTransportProtocol_s zx_ac_SSL_s zx_ac_DigSig_s zx_ac_ActivationPin_s zx_ac_HTTP_s zx_ac_KeyActivation_s ) */
 #ifndef zx_ac_Extension_EXT
 #define zx_ac_Extension_EXT
 #endif

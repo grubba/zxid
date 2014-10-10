@@ -286,7 +286,7 @@ void zx_di12_EncryptResourceID_PUT_descriptionIDRefs(struct zx_di12_EncryptResou
 
 #endif
 /* -------------------------- di12_EncryptedResourceID -------------------------- */
-/* refby( zx_di12_ResourceOffering_s zx_di12_Modify_s zx_di12_Query_s zx_is12_InteractionService_s zx_sec12_ResourceAccessStatement_s ) */
+/* refby( zx_di12_Modify_s zx_is12_InteractionService_s zx_sec12_ResourceAccessStatement_s zx_di12_Query_s zx_di12_ResourceOffering_s ) */
 #ifndef zx_di12_EncryptedResourceID_EXT
 #define zx_di12_EncryptedResourceID_EXT
 #endif
@@ -541,7 +541,7 @@ void zx_di12_ModifyResponse_REV_Extension(struct zx_di12_ModifyResponse_s* x);
 
 #endif
 /* -------------------------- di12_Options -------------------------- */
-/* refby( zx_di12_ResourceOffering_s zx_di12_RequestedServiceType_s zx_is12_InteractionService_s ) */
+/* refby( zx_is12_InteractionService_s zx_di12_RequestedServiceType_s zx_di12_ResourceOffering_s ) */
 #ifndef zx_di12_Options_EXT
 #define zx_di12_Options_EXT
 #endif
@@ -796,7 +796,7 @@ void zx_di12_RequestedServiceType_REV_Options(struct zx_di12_RequestedServiceTyp
 
 #endif
 /* -------------------------- di12_ResourceID -------------------------- */
-/* refby( zx_di12_ResourceOffering_s zx_di12_Modify_s zx_di12_Query_s zx_is12_InteractionService_s zx_sec12_ResourceAccessStatement_s ) */
+/* refby( zx_di12_Modify_s zx_is12_InteractionService_s zx_sec12_ResourceAccessStatement_s zx_di12_Query_s zx_di12_ResourceOffering_s ) */
 #ifndef zx_di12_ResourceID_EXT
 #define zx_di12_ResourceID_EXT
 #endif
@@ -832,7 +832,7 @@ void zx_di12_ResourceID_PUT_id(struct zx_di12_ResourceID_s* x, struct zx_attr_s*
 
 #endif
 /* -------------------------- di12_ResourceOffering -------------------------- */
-/* refby( zx_sa_AttributeValue_s zx_di12_InsertEntry_s zx_sa11_AttributeValue_s zx_di12_QueryResponse_s ) */
+/* refby( zx_di12_InsertEntry_s zx_sa_AttributeValue_s zx_sa11_AttributeValue_s zx_di12_QueryResponse_s ) */
 #ifndef zx_di12_ResourceOffering_EXT
 #define zx_di12_ResourceOffering_EXT
 #endif
@@ -913,7 +913,7 @@ void zx_di12_ResourceOffering_REV_Abstract(struct zx_di12_ResourceOffering_s* x)
 
 #endif
 /* -------------------------- di12_ServiceInstance -------------------------- */
-/* refby( zx_di12_ResourceOffering_s zx_is12_InteractionService_s ) */
+/* refby( zx_is12_InteractionService_s zx_di12_ResourceOffering_s ) */
 #ifndef zx_di12_ServiceInstance_EXT
 #define zx_di12_ServiceInstance_EXT
 #endif
@@ -973,7 +973,7 @@ void zx_di12_ServiceInstance_REV_Description(struct zx_di12_ServiceInstance_s* x
 
 #endif
 /* -------------------------- di12_Status -------------------------- */
-/* refby( zx_di12_Status_s zx_di12_QueryResponse_s zx_di12_ModifyResponse_s ) */
+/* refby( zx_di12_Status_s zx_di12_ModifyResponse_s zx_di12_QueryResponse_s ) */
 #ifndef zx_di12_Status_EXT
 #define zx_di12_Status_EXT
 #endif

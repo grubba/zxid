@@ -175,7 +175,7 @@ void zx_di_Keys_REV_KeyDescriptor(struct zx_di_Keys_s* x);
 
 #endif
 /* -------------------------- di_Options -------------------------- */
-/* refby( zx_di_RequestedService_s zx_di_ServiceContext_s ) */
+/* refby( zx_di_ServiceContext_s zx_di_RequestedService_s ) */
 #ifndef zx_di_Options_EXT
 #define zx_di_Options_EXT
 #endif
@@ -514,7 +514,7 @@ void zx_di_ServiceContext_REV_EndpointContext(struct zx_di_ServiceContext_s* x);
 
 #endif
 /* -------------------------- di_SvcMD -------------------------- */
-/* refby( zx_di_SvcMDQueryResponse_s zx_di_SvcMDReplace_s zx_di_SvcMDRegister_s ) */
+/* refby( zx_di_SvcMDRegister_s zx_di_SvcMDQueryResponse_s zx_di_SvcMDReplace_s ) */
 #ifndef zx_di_SvcMD_EXT
 #define zx_di_SvcMD_EXT
 #endif

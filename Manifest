@@ -148,6 +148,7 @@ an.css           - Stylesheet for an-main.html, post.html, and err.html
 zxcot.c          - CoT (Circle-of-Trust) management tool: list CoT, add metadata to CoT
 zxpasswd.c       - Password creation and user management tool
 zxcall.c         - Web Service Client tool
+zxumacall.c      - UMA client and testing tool
 zxlogview.c      - Local log viewing tool with log decryption and log sig verification
 zxdecode.c       - SAML redirect and post message decoding tool
 zxbuslist.c      - Utility for listening to zxbus and sending output to stdout

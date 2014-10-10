@@ -79,15 +79,10 @@ void zxid_sha1_file(zxid_conf* cf, char* name, char* sha1)
 }
 #endif
 
-/*() Extract a certificate from PEM encoded string. */
-
-/* Called by:  opt, test_mode, zxid_read_cert */
-X509* zxid_extract_cert(char* buf, char* name)
+char* zxid_extract_cert_pem(char* buf, char* name)
 {
-  X509* x = 0;  /* Forces d2i_X509() to alloc the memory. */
   char* p;
   char* e;
-  OpenSSL_add_all_algorithms();
   p = strstr(buf, PEM_CERT_START);
   if (!p) {
     ERR("No certificate found in file(%s)\n", name);
@@ -100,9 +95,56 @@ X509* zxid_extract_cert(char* buf, char* name)
   
   e = strstr(buf, PEM_CERT_END);
   if (!e) return 0;
-  
-  p = unbase64_raw(p, e, buf, zx_std_index_64);
-  if (!d2i_X509(&x, (const unsigned char**)&buf /* *** compile warning */, p-buf) || !x) {
+  *e = 0;
+  return p;
+}
+
+/*() Extract a certificate as base64 textr from PEM encoded file. */
+
+char* zxid_read_cert_pem(zxid_conf* cf, char* name, int siz, char* buf)
+{
+  int got = read_all(siz, buf, "read_cert", 1, "%s" ZXID_PEM_DIR "%s", cf->cpath, name);
+  if (!got && cf->auto_cert)
+    zxid_mk_self_sig_cert(cf, siz, buf, "read_cert", name);
+  return zxid_extract_cert_pem(buf, name);
+}
+
+
+/*() Extract a certificate from PEM encoded string. */
+
+/* Called by:  opt, test_mode, zxid_read_cert */
+X509* zxid_extract_cert(char* buf, char* name)
+{
+  X509* x = 0;  /* Forces d2i_X509() to alloc the memory. */
+  char* p;
+  char* e;
+  p = zxid_extract_cert_pem(buf, name);
+  if (!p)
+    return 0;
+  e = unbase64_raw(p, p+strlen(p), p, zx_std_index_64);
+  OpenSSL_add_all_algorithms();
+  if (!d2i_X509(&x, (const unsigned char**)&p /* *** compile warning */, e-p) || !x) {
+    ERR("DER decoding of X509 certificate failed.\n%d", 0);
+    return 0;
+  }
+  return x;
+}
+
+/*() Extract a certificate from PEM encoded file. */
+
+/* Called by:  hi_new_shuffler, zxid_idp_sso_desc x2, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxid_sp_sso_desc x2, zxlog_write_line */
+X509* zxid_read_cert(zxid_conf* cf, char* name)
+{
+  X509* x = 0;  /* Forces d2i_X509() to alloc the memory. */
+  char buf[4096];
+  char* p;
+  char* e;
+  p = zxid_read_cert_pem(cf, name, sizeof(buf), buf);
+  if (!p)
+    return 0;
+  OpenSSL_add_all_algorithms();
+  e = unbase64_raw(p, p+strlen(p), p, zx_std_index_64);
+  if (!d2i_X509(&x, (const unsigned char**)&p /* *** compile warning */, e-p) || !x) {
     ERR("DER decoding of X509 certificate failed.\n%d", 0);
     return 0;
   }
@@ -110,7 +152,7 @@ X509* zxid_extract_cert(char* buf, char* name)
 }
 
 /*() Extract a private key from PEM encoded string.
- * *** This function needs to expand to handle DSA */
+ * *** This function needs to expand to handle DSA and EC */
 
 /* Called by: */
 EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
@@ -159,18 +201,6 @@ EVP_PKEY* zxid_extract_private_key(char* buf, char* name)
   }
   zx_report_openssl_err("extract_private_key2"); /* *** seems d2i can leave errors on stack */
   return pk; /* RSA* rsa = EVP_PKEY_get1_RSA(pk); */
-}
-
-/*() Extract a certificate from PEM encoded file. */
-
-/* Called by:  hi_new_shuffler, zxid_idp_sso_desc x2, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxid_sp_sso_desc x2, zxlog_write_line */
-X509* zxid_read_cert(zxid_conf* cf, char* name)
-{
-  char buf[4096];
-  int got = read_all(sizeof(buf), buf, "read_cert", 1, "%s" ZXID_PEM_DIR "%s", cf->cpath, name);
-  if (!got && cf->auto_cert)
-    zxid_mk_self_sig_cert(cf, sizeof(buf), buf, "read_cert", name);
-  return zxid_extract_cert(buf, name);
 }
 
 /*() Extract a private key from PEM encoded file. */

@@ -61,7 +61,7 @@ void zx_xac_Action_REV_Attribute(struct zx_xac_Action_s* x);
 
 #endif
 /* -------------------------- xac_Attribute -------------------------- */
-/* refby( zx_xac_Resource_s zx_xac_Subject_s zx_xac_Action_s zx_tas3_Credentials_s zx_xac_Environment_s ) */
+/* refby( zx_tas3_Credentials_s zx_xac_Subject_s zx_xac_Resource_s zx_xac_Action_s zx_xac_Environment_s ) */
 #ifndef zx_xac_Attribute_EXT
 #define zx_xac_Attribute_EXT
 #endif
@@ -205,7 +205,7 @@ void zx_xac_MissingAttributeDetail_REV_AttributeValue(struct zx_xac_MissingAttri
 
 #endif
 /* -------------------------- xac_Request -------------------------- */
-/* refby( zx_xasa_XACMLAuthzDecisionStatement_s zx_e_Body_s zx_xaspcd1_XACMLAuthzDecisionQuery_s zx_xaspcd1_XACMLPolicyQuery_s zx_xasacd1_XACMLAuthzDecisionStatement_s zx_xasp_XACMLPolicyQuery_s zx_sa_Statement_s zx_xasp_XACMLAuthzDecisionQuery_s ) */
+/* refby( zx_xasp_XACMLPolicyQuery_s zx_xaspcd1_XACMLPolicyQuery_s zx_xaspcd1_XACMLAuthzDecisionQuery_s zx_e_Body_s zx_xasp_XACMLAuthzDecisionQuery_s zx_xasacd1_XACMLAuthzDecisionStatement_s zx_xasa_XACMLAuthzDecisionStatement_s zx_sa_Statement_s ) */
 #ifndef zx_xac_Request_EXT
 #define zx_xac_Request_EXT
 #endif
@@ -358,7 +358,7 @@ int zx_WALK_WO_xac_ResourceContent(struct zx_ctx* c, struct zx_xac_ResourceConte
 
 #endif
 /* -------------------------- xac_Response -------------------------- */
-/* refby( zx_xasa_XACMLAuthzDecisionStatement_s zx_e_Body_s zx_xasacd1_XACMLAuthzDecisionStatement_s zx_sa_Statement_s ) */
+/* refby( zx_e_Body_s zx_xasacd1_XACMLAuthzDecisionStatement_s zx_xasa_XACMLAuthzDecisionStatement_s zx_sa_Statement_s ) */
 #ifndef zx_xac_Response_EXT
 #define zx_xac_Response_EXT
 #endif
@@ -523,7 +523,7 @@ void zx_xac_Status_REV_StatusDetail(struct zx_xac_Status_s* x);
 
 #endif
 /* -------------------------- xac_StatusCode -------------------------- */
-/* refby( zx_xac_Status_s zx_xac_StatusCode_s ) */
+/* refby( zx_xac_StatusCode_s zx_xac_Status_s ) */
 #ifndef zx_xac_StatusCode_EXT
 #define zx_xac_StatusCode_EXT
 #endif

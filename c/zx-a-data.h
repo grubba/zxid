@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- a_Action -------------------------- */
-/* refby( zx_prov_Poll_s zx_e_Header_s zx_shps_Poll_s zx_a_ProblemAction_s ) */
+/* refby( zx_shps_Poll_s zx_a_ProblemAction_s zx_e_Header_s zx_prov_Poll_s ) */
 #ifndef zx_a_Action_EXT
 #define zx_a_Action_EXT
 #endif
@@ -67,7 +67,7 @@ void zx_a_Action_PUT_mustUnderstand(struct zx_a_Action_s* x, struct zx_attr_s* y
 
 #endif
 /* -------------------------- a_Address -------------------------- */
-/* refby( zx_a_EndpointReference_s zx_prov_CallbackEPR_s zx_b_EndpointUpdate_s zx_a_FaultTo_s zx_prov_ProvisioningServiceEPR_s zx_wst_Issuer_s zx_b_InteractionService_s zx_b_ApplicationEPR_s zx_shps_CallbackEPR_s zx_a_From_s zx_a_ReplyTo_s ) */
+/* refby( zx_a_ReplyTo_s zx_a_EndpointReference_s zx_prov_CallbackEPR_s zx_a_From_s zx_a_FaultTo_s zx_wst_Issuer_s zx_b_ApplicationEPR_s zx_b_EndpointUpdate_s zx_prov_ProvisioningServiceEPR_s zx_shps_CallbackEPR_s zx_b_InteractionService_s ) */
 #ifndef zx_a_Address_EXT
 #define zx_a_Address_EXT
 #endif
@@ -115,7 +115,7 @@ void zx_a_Address_PUT_mustUnderstand(struct zx_a_Address_s* x, struct zx_attr_s*
 
 #endif
 /* -------------------------- a_EndpointReference -------------------------- */
-/* refby( zx_sa_AttributeValue_s zx_shps_Register_s zx_as_SASLResponse_s zx_shps_QueryResponse_s zx_sa11_AttributeValue_s zx_shps_UpdateItem_s zx_di_QueryResponse_s zx_shps_QueryRegisteredResponse_s ) */
+/* refby( zx_sa_AttributeValue_s zx_shps_QueryRegisteredResponse_s zx_sa11_AttributeValue_s zx_shps_QueryResponse_s zx_shps_Register_s zx_di_QueryResponse_s zx_as_SASLResponse_s zx_shps_UpdateItem_s ) */
 #ifndef zx_a_EndpointReference_EXT
 #define zx_a_EndpointReference_EXT
 #endif
@@ -397,7 +397,7 @@ void zx_a_MessageID_PUT_mustUnderstand(struct zx_a_MessageID_s* x, struct zx_att
 
 #endif
 /* -------------------------- a_Metadata -------------------------- */
-/* refby( zx_a_EndpointReference_s zx_prov_CallbackEPR_s zx_b_EndpointUpdate_s zx_a_FaultTo_s zx_prov_ProvisioningServiceEPR_s zx_wst_Issuer_s zx_b_InteractionService_s zx_b_ApplicationEPR_s zx_shps_CallbackEPR_s zx_a_From_s zx_a_ReplyTo_s ) */
+/* refby( zx_a_ReplyTo_s zx_a_EndpointReference_s zx_prov_CallbackEPR_s zx_a_From_s zx_a_FaultTo_s zx_wst_Issuer_s zx_b_ApplicationEPR_s zx_b_EndpointUpdate_s zx_prov_ProvisioningServiceEPR_s zx_shps_CallbackEPR_s zx_b_InteractionService_s ) */
 #ifndef zx_a_Metadata_EXT
 #define zx_a_Metadata_EXT
 #endif
@@ -697,7 +697,7 @@ void zx_a_ProblemURI_PUT_mustUnderstand(struct zx_a_ProblemURI_s* x, struct zx_a
 
 #endif
 /* -------------------------- a_ReferenceParameters -------------------------- */
-/* refby( zx_a_EndpointReference_s zx_prov_CallbackEPR_s zx_e_Header_s zx_b_EndpointUpdate_s zx_a_FaultTo_s zx_prov_ProvisioningServiceEPR_s zx_wst_Issuer_s zx_b_InteractionService_s zx_b_ApplicationEPR_s zx_shps_CallbackEPR_s zx_a_From_s zx_a_ReplyTo_s ) */
+/* refby( zx_a_ReplyTo_s zx_a_EndpointReference_s zx_prov_CallbackEPR_s zx_e_Header_s zx_a_From_s zx_a_FaultTo_s zx_wst_Issuer_s zx_b_ApplicationEPR_s zx_b_EndpointUpdate_s zx_prov_ProvisioningServiceEPR_s zx_shps_CallbackEPR_s zx_b_InteractionService_s ) */
 #ifndef zx_a_ReferenceParameters_EXT
 #define zx_a_ReferenceParameters_EXT
 #endif

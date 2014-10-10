@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- subs_RefItem -------------------------- */
-/* refby( zx_dap_Subscription_s zx_ps_Subscription_s zx_idhrxml_Subscription_s ) */
+/* refby( zx_idhrxml_Subscription_s zx_dap_Subscription_s zx_ps_Subscription_s ) */
 #ifndef zx_subs_RefItem_EXT
 #define zx_subs_RefItem_EXT
 #endif

@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- m20_AdditionalMetaLocation -------------------------- */
-/* refby( zx_m20_SPDescriptor_s zx_m20_IDPDescriptor_s ) */
+/* refby( zx_m20_IDPDescriptor_s zx_m20_SPDescriptor_s ) */
 #ifndef zx_m20_AdditionalMetaLocation_EXT
 #define zx_m20_AdditionalMetaLocation_EXT
 #endif
@@ -175,7 +175,7 @@ void zx_m20_AssertionConsumerServiceURL_PUT_isDefault(struct zx_m20_AssertionCon
 
 #endif
 /* -------------------------- m20_ContactPerson -------------------------- */
-/* refby( zx_m20_SPDescriptor_s zx_m20_EntityDescriptor_s zx_m20_IDPDescriptor_s ) */
+/* refby( zx_m20_IDPDescriptor_s zx_m20_SPDescriptor_s zx_m20_EntityDescriptor_s ) */
 #ifndef zx_m20_ContactPerson_EXT
 #define zx_m20_ContactPerson_EXT
 #endif
@@ -418,7 +418,7 @@ void zx_m20_EntityDescriptor_REV_Signature(struct zx_m20_EntityDescriptor_s* x);
 
 #endif
 /* -------------------------- m20_Extension -------------------------- */
-/* refby( zx_m20_SPDescriptor_s zx_m20_AffiliationDescriptor_s zx_m20_Organization_s zx_m20_ContactPerson_s zx_m20_EntityDescriptor_s zx_m20_KeyDescriptor_s zx_m20_IDPDescriptor_s ) */
+/* refby( zx_m20_Organization_s zx_m20_KeyDescriptor_s zx_m20_AffiliationDescriptor_s zx_m20_IDPDescriptor_s zx_m20_ContactPerson_s zx_m20_SPDescriptor_s zx_m20_EntityDescriptor_s ) */
 #ifndef zx_m20_Extension_EXT
 #define zx_m20_Extension_EXT
 #endif
@@ -685,7 +685,7 @@ void zx_m20_IDPDescriptor_REV_AuthnServiceURL(struct zx_m20_IDPDescriptor_s* x);
 
 #endif
 /* -------------------------- m20_KeyDescriptor -------------------------- */
-/* refby( zx_m20_SPDescriptor_s zx_m20_AffiliationDescriptor_s zx_m20_IDPDescriptor_s ) */
+/* refby( zx_m20_AffiliationDescriptor_s zx_m20_IDPDescriptor_s zx_m20_SPDescriptor_s ) */
 #ifndef zx_m20_KeyDescriptor_EXT
 #define zx_m20_KeyDescriptor_EXT
 #endif
@@ -757,7 +757,7 @@ void zx_m20_KeyDescriptor_REV_Extension(struct zx_m20_KeyDescriptor_s* x);
 
 #endif
 /* -------------------------- m20_Organization -------------------------- */
-/* refby( zx_m20_SPDescriptor_s zx_m20_EntityDescriptor_s zx_m20_IDPDescriptor_s ) */
+/* refby( zx_m20_IDPDescriptor_s zx_m20_SPDescriptor_s zx_m20_EntityDescriptor_s ) */
 #ifndef zx_m20_Organization_EXT
 #define zx_m20_Organization_EXT
 #endif

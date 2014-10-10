@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- sa11_Action -------------------------- */
-/* refby( zx_sp11_AuthorizationDecisionQuery_s zx_sa11_AuthorizationDecisionStatement_s ) */
+/* refby( zx_sa11_AuthorizationDecisionStatement_s zx_sp11_AuthorizationDecisionQuery_s ) */
 #ifndef zx_sa11_Action_EXT
 #define zx_sa11_Action_EXT
 #endif
@@ -124,7 +124,7 @@ void zx_sa11_Advice_REV_sa_Assertion(struct zx_sa11_Advice_s* x);
 
 #endif
 /* -------------------------- sa11_Assertion -------------------------- */
-/* refby( zx_sa11_Advice_s zx_b_TargetIdentity_s zx_sp11_Response_s zx_ff12_AuthnResponse_s zx_sec_Token_s zx_tas3_Credentials_s zx_wsse_Security_s zx_sa11_Evidence_s zx_sa_Advice_s ) */
+/* refby( zx_wsse_Security_s zx_sa11_Evidence_s zx_ff12_AuthnResponse_s zx_tas3_Credentials_s zx_b_TargetIdentity_s zx_sa11_Advice_s zx_sp11_Response_s zx_sec_Token_s zx_sa_Advice_s ) */
 #ifndef zx_sa11_Assertion_EXT
 #define zx_sa11_Assertion_EXT
 #endif
@@ -784,7 +784,7 @@ int zx_WALK_WO_sa11_DoNotCacheCondition(struct zx_ctx* c, struct zx_sa11_DoNotCa
 
 #endif
 /* -------------------------- sa11_Evidence -------------------------- */
-/* refby( zx_sp11_AuthorizationDecisionQuery_s zx_sa11_AuthorizationDecisionStatement_s ) */
+/* refby( zx_sa11_AuthorizationDecisionStatement_s zx_sp11_AuthorizationDecisionQuery_s ) */
 #ifndef zx_sa11_Evidence_EXT
 #define zx_sa11_Evidence_EXT
 #endif
@@ -835,7 +835,7 @@ void zx_sa11_Evidence_REV_Assertion(struct zx_sa11_Evidence_s* x);
 
 #endif
 /* -------------------------- sa11_NameIdentifier -------------------------- */
-/* refby( zx_ff12_FederationTerminationNotification_s zx_sec12_SessionSubject_s zx_ff12_NameIdentifierMappingRequest_s zx_sa11_Subject_s zx_ff12_NameIdentifierMappingResponse_s zx_ff12_LogoutRequest_s zx_ff12_Subject_s zx_sec12_ProxySubject_s ) */
+/* refby( zx_ff12_LogoutRequest_s zx_sa11_Subject_s zx_ff12_FederationTerminationNotification_s zx_ff12_Subject_s zx_ff12_NameIdentifierMappingResponse_s zx_sec12_ProxySubject_s zx_sec12_SessionSubject_s zx_ff12_NameIdentifierMappingRequest_s ) */
 #ifndef zx_sa11_NameIdentifier_EXT
 #define zx_sa11_NameIdentifier_EXT
 #endif
@@ -874,7 +874,7 @@ void zx_sa11_NameIdentifier_PUT_NameQualifier(struct zx_sa11_NameIdentifier_s* x
 
 #endif
 /* -------------------------- sa11_Subject -------------------------- */
-/* refby( zx_ff12_AuthenticationStatement_s zx_sa11_AttributeStatement_s zx_sp11_AuthorizationDecisionQuery_s zx_sp11_SubjectQuery_s zx_sa11_AuthenticationStatement_s zx_sec12_SessionContextStatement_s zx_sa11_SubjectStatement_s zx_sa11_AuthorizationDecisionStatement_s zx_sp11_AttributeQuery_s zx_sec12_ProxyTransitedStatement_s zx_sec12_ResourceAccessStatement_s zx_sp11_AuthenticationQuery_s ) */
+/* refby( zx_sp11_AuthenticationQuery_s zx_sa11_AuthorizationDecisionStatement_s zx_sec12_ProxyTransitedStatement_s zx_sa11_SubjectStatement_s zx_sec12_SessionContextStatement_s zx_sp11_SubjectQuery_s zx_ff12_AuthenticationStatement_s zx_sa11_AuthenticationStatement_s zx_sec12_ResourceAccessStatement_s zx_sa11_AttributeStatement_s zx_sp11_AttributeQuery_s zx_sp11_AuthorizationDecisionQuery_s ) */
 #ifndef zx_sa11_Subject_EXT
 #define zx_sa11_Subject_EXT
 #endif
@@ -925,7 +925,7 @@ void zx_sa11_Subject_REV_SubjectConfirmation(struct zx_sa11_Subject_s* x);
 
 #endif
 /* -------------------------- sa11_SubjectConfirmation -------------------------- */
-/* refby( zx_sec12_SessionSubject_s zx_sa11_Subject_s zx_ff12_Subject_s zx_sec12_ProxySubject_s ) */
+/* refby( zx_sa11_Subject_s zx_ff12_Subject_s zx_sec12_ProxySubject_s zx_sec12_SessionSubject_s ) */
 #ifndef zx_sa11_SubjectConfirmation_EXT
 #define zx_sa11_SubjectConfirmation_EXT
 #endif

@@ -991,6 +991,8 @@ ZXID_DECL struct zx_sp_Status_s* zxid_OK(zxid_conf* cf, struct zx_elem_s* father
 /* zxidoauth */
 
 ZXID_DECL struct zx_str* zxid_mk_oauth_az_req(zxid_conf* cf, zxid_cgi* cgi, struct zx_str* loc, char* relay_state);
+ZXID_DECL char* zxid_mk_jwks(zxid_conf* cf);
+ZXID_DECL char* zxid_mk_oauth2_dyn_cli_reg_req(zxid_conf* cf);
 
 /* zxidmkwsf */
 

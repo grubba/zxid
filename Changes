@@ -117,6 +117,10 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - BANGBANG_PAT to enable bang bang expansion of outputs, even in mini_httpd_zxid
     - Expected namespaces feature for effective suppression of warnings about payload namespaces
 
+zxid-1.30:: 10.10.2014
+    - UMA and OAUTH work
+    - NOT RELEASED YET
+
 zxid-1.22:: 9.10.2014
     - Added to Local PDP multivalued role attribute matching
 

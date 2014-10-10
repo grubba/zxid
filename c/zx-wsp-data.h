@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- wsp_All -------------------------- */
-/* refby( zx_wsp_All_s zx_wsp_ExactlyOne_s zx_wsp_Policy_s ) */
+/* refby( zx_wsp_ExactlyOne_s zx_wsp_All_s zx_wsp_Policy_s ) */
 #ifndef zx_wsp_All_EXT
 #define zx_wsp_All_EXT
 #endif
@@ -88,7 +88,7 @@ void zx_wsp_All_REV_PolicyReference(struct zx_wsp_All_s* x);
 
 #endif
 /* -------------------------- wsp_AppliesTo -------------------------- */
-/* refby( zx_wsp_PolicyAttachment_s zx_wst_RequestSecurityTokenResponse_s zx_wst_RequestSecurityToken_s ) */
+/* refby( zx_wst_RequestSecurityToken_s zx_wsp_PolicyAttachment_s zx_wst_RequestSecurityTokenResponse_s ) */
 #ifndef zx_wsp_AppliesTo_EXT
 #define zx_wsp_AppliesTo_EXT
 #endif
@@ -121,7 +121,7 @@ int zx_WALK_WO_wsp_AppliesTo(struct zx_ctx* c, struct zx_wsp_AppliesTo_s* x, voi
 
 #endif
 /* -------------------------- wsp_ExactlyOne -------------------------- */
-/* refby( zx_wsp_All_s zx_wsp_ExactlyOne_s zx_wsp_Policy_s ) */
+/* refby( zx_wsp_ExactlyOne_s zx_wsp_All_s zx_wsp_Policy_s ) */
 #ifndef zx_wsp_ExactlyOne_EXT
 #define zx_wsp_ExactlyOne_EXT
 #endif
@@ -190,7 +190,7 @@ void zx_wsp_ExactlyOne_REV_PolicyReference(struct zx_wsp_ExactlyOne_s* x);
 
 #endif
 /* -------------------------- wsp_Policy -------------------------- */
-/* refby( zx_wsp_All_s zx_wsp_PolicyAttachment_s zx_wst_RequestSecurityTokenResponse_s zx_wsp_ExactlyOne_s zx_wsp_Policy_s zx_wst_RequestSecurityToken_s ) */
+/* refby( zx_wsp_ExactlyOne_s zx_wsp_All_s zx_wst_RequestSecurityToken_s zx_wsp_PolicyAttachment_s zx_wsp_Policy_s zx_wst_RequestSecurityTokenResponse_s ) */
 #ifndef zx_wsp_Policy_EXT
 #define zx_wsp_Policy_EXT
 #endif
@@ -325,7 +325,7 @@ void zx_wsp_PolicyAttachment_REV_PolicyReference(struct zx_wsp_PolicyAttachment_
 
 #endif
 /* -------------------------- wsp_PolicyReference -------------------------- */
-/* refby( zx_wsp_All_s zx_wsp_PolicyAttachment_s zx_wst_RequestSecurityTokenResponse_s zx_wsp_ExactlyOne_s zx_wsp_Policy_s zx_wst_RequestSecurityToken_s ) */
+/* refby( zx_wsp_ExactlyOne_s zx_wsp_All_s zx_wst_RequestSecurityToken_s zx_wsp_PolicyAttachment_s zx_wsp_Policy_s zx_wst_RequestSecurityTokenResponse_s ) */
 #ifndef zx_wsp_PolicyReference_EXT
 #define zx_wsp_PolicyReference_EXT
 #endif

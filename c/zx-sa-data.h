@@ -142,7 +142,7 @@ void zx_sa_Advice_REV_ff12_Assertion(struct zx_sa_Advice_s* x);
 
 #endif
 /* -------------------------- sa_Assertion -------------------------- */
-/* refby( zx_sp_Response_s zx_gl_Credential_s zx_sa_AttributeValue_s zx_idp_AssertionItem_s zx_sa11_Advice_s zx_b_TargetIdentity_s zx_sec_Token_s zx_tas3_Credentials_s zx_wsse_Security_s zx_sa_Evidence_s zx_cb_Credential_s zx_sa_Advice_s ) */
+/* refby( zx_wsse_Security_s zx_sp_Response_s zx_sa_AttributeValue_s zx_gl_Credential_s zx_tas3_Credentials_s zx_b_TargetIdentity_s zx_idp_AssertionItem_s zx_sa11_Advice_s zx_sec_Token_s zx_cb_Credential_s zx_sa_Advice_s zx_sa_Evidence_s ) */
 #ifndef zx_sa_Assertion_EXT
 #define zx_sa_Assertion_EXT
 #endif
@@ -301,7 +301,7 @@ void zx_sa_Assertion_REV_xasacd1_XACMLPolicyStatement(struct zx_sa_Assertion_s* 
 
 #endif
 /* -------------------------- sa_Attribute -------------------------- */
-/* refby( zx_md_AttributeAuthorityDescriptor_s zx_md_IDPSSODescriptor_s zx_sp_AttributeQuery_s zx_tas3_Credentials_s zx_sa_AttributeStatement_s ) */
+/* refby( zx_tas3_Credentials_s zx_md_AttributeAuthorityDescriptor_s zx_md_IDPSSODescriptor_s zx_sp_AttributeQuery_s zx_sa_AttributeStatement_s ) */
 #ifndef zx_sa_Attribute_EXT
 #define zx_sa_Attribute_EXT
 #endif
@@ -517,7 +517,7 @@ void zx_sa_AudienceRestriction_REV_Audience(struct zx_sa_AudienceRestriction_s* 
 
 #endif
 /* -------------------------- sa_AuthnContext -------------------------- */
-/* refby( zx_sa_AuthnStatement_s zx_idp_AuthnContextRestriction_s ) */
+/* refby( zx_idp_AuthnContextRestriction_s zx_sa_AuthnStatement_s ) */
 #ifndef zx_sa_AuthnContext_EXT
 #define zx_sa_AuthnContext_EXT
 #endif
@@ -703,7 +703,7 @@ void zx_sa_AuthzDecisionStatement_REV_Evidence(struct zx_sa_AuthzDecisionStateme
 
 #endif
 /* -------------------------- sa_BaseID -------------------------- */
-/* refby( zx_sp_NameIDMappingRequest_s zx_sp_LogoutRequest_s zx_sa_SubjectConfirmation_s zx_sa_Subject_s ) */
+/* refby( zx_sa_Subject_s zx_sp_LogoutRequest_s zx_sp_NameIDMappingRequest_s zx_sa_SubjectConfirmation_s ) */
 #ifndef zx_sa_BaseID_EXT
 #define zx_sa_BaseID_EXT
 #endif
@@ -826,7 +826,7 @@ void zx_sa_Conditions_REV_SubjectRestriction(struct zx_sa_Conditions_s* x);
 
 #endif
 /* -------------------------- sa_EncryptedAssertion -------------------------- */
-/* refby( zx_sp_Response_s zx_sa_AttributeValue_s zx_b_TargetIdentity_s zx_sec_Token_s zx_tas3_Credentials_s zx_wsse_Security_s zx_sa_Evidence_s zx_sa_Advice_s ) */
+/* refby( zx_wsse_Security_s zx_sp_Response_s zx_sa_AttributeValue_s zx_tas3_Credentials_s zx_b_TargetIdentity_s zx_sec_Token_s zx_sa_Advice_s zx_sa_Evidence_s ) */
 #ifndef zx_sa_EncryptedAssertion_EXT
 #define zx_sa_EncryptedAssertion_EXT
 #endif
@@ -928,7 +928,7 @@ void zx_sa_EncryptedAttribute_REV_EncryptedKey(struct zx_sa_EncryptedAttribute_s
 
 #endif
 /* -------------------------- sa_EncryptedID -------------------------- */
-/* refby( zx_sp_NameIDMappingRequest_s zx_sp_LogoutRequest_s zx_sp_NameIDMappingResponse_s zx_sa_SubjectConfirmation_s zx_sa_Subject_s zx_sp_ManageNameIDRequest_s ) */
+/* refby( zx_sp_NameIDMappingResponse_s zx_sa_Subject_s zx_sp_LogoutRequest_s zx_sp_NameIDMappingRequest_s zx_sa_SubjectConfirmation_s zx_sp_ManageNameIDRequest_s ) */
 #ifndef zx_sa_EncryptedID_EXT
 #define zx_sa_EncryptedID_EXT
 #endif
@@ -1048,7 +1048,7 @@ void zx_sa_Evidence_REV_EncryptedAssertion(struct zx_sa_Evidence_s* x);
 
 #endif
 /* -------------------------- sa_Issuer -------------------------- */
-/* refby( zx_sp_NameIDMappingRequest_s zx_sp_SubjectQuery_s zx_sp_Response_s zx_ecp_Request_s zx_sp_ManageNameIDResponse_s zx_sp_LogoutRequest_s zx_sp_AttributeQuery_s zx_sp_AuthnRequest_s zx_sp_ArtifactResponse_s zx_sp_AuthzDecisionQuery_s zx_xaspcd1_XACMLAuthzDecisionQuery_s zx_xaspcd1_XACMLPolicyQuery_s zx_sp_AuthnQuery_s zx_xasp_XACMLPolicyQuery_s zx_sa_Assertion_s zx_sp_NameIDMappingResponse_s zx_sp_ArtifactResolve_s zx_xasp_XACMLAuthzDecisionQuery_s zx_sp_LogoutResponse_s zx_sp_AssertionIDRequest_s zx_sp_ManageNameIDRequest_s ) */
+/* refby( zx_sp_LogoutResponse_s zx_sp_Response_s zx_xasp_XACMLPolicyQuery_s zx_sp_NameIDMappingResponse_s zx_sp_LogoutRequest_s zx_sp_NameIDMappingRequest_s zx_xaspcd1_XACMLPolicyQuery_s zx_xaspcd1_XACMLAuthzDecisionQuery_s zx_sp_AuthzDecisionQuery_s zx_sp_AuthnRequest_s zx_xasp_XACMLAuthzDecisionQuery_s zx_sp_SubjectQuery_s zx_sp_ArtifactResolve_s zx_sa_Assertion_s zx_sp_AuthnQuery_s zx_ecp_Request_s zx_sp_ManageNameIDResponse_s zx_sp_AttributeQuery_s zx_sp_AssertionIDRequest_s zx_sp_ManageNameIDRequest_s zx_sp_ArtifactResponse_s ) */
 #ifndef zx_sa_Issuer_EXT
 #define zx_sa_Issuer_EXT
 #endif
@@ -1093,7 +1093,7 @@ void zx_sa_Issuer_PUT_SPProvidedID(struct zx_sa_Issuer_s* x, struct zx_attr_s* y
 
 #endif
 /* -------------------------- sa_NameID -------------------------- */
-/* refby( zx_sp_NameIDMappingRequest_s zx_sp_LogoutRequest_s zx_sp_NameIDMappingResponse_s zx_sa_SubjectConfirmation_s zx_idp_MEDInfo_s zx_sa_Subject_s zx_sp_ManageNameIDRequest_s ) */
+/* refby( zx_sp_NameIDMappingResponse_s zx_sa_Subject_s zx_sp_LogoutRequest_s zx_sp_NameIDMappingRequest_s zx_sa_SubjectConfirmation_s zx_sp_ManageNameIDRequest_s zx_idp_MEDInfo_s ) */
 #ifndef zx_sa_NameID_EXT
 #define zx_sa_NameID_EXT
 #endif
@@ -1270,7 +1270,7 @@ void zx_sa_Statement_REV_Request(struct zx_sa_Statement_s* x);
 
 #endif
 /* -------------------------- sa_Subject -------------------------- */
-/* refby( zx_sp_SubjectQuery_s zx_sp_AttributeQuery_s zx_sp_AuthnRequest_s zx_sp_AuthzDecisionQuery_s zx_sp_AuthnQuery_s zx_idp_SubjectRestriction_s zx_sa_Assertion_s ) */
+/* refby( zx_sp_AuthzDecisionQuery_s zx_sp_AuthnRequest_s zx_sp_SubjectQuery_s zx_sa_Assertion_s zx_sp_AuthnQuery_s zx_idp_SubjectRestriction_s zx_sp_AttributeQuery_s ) */
 #ifndef zx_sa_Subject_EXT
 #define zx_sa_Subject_EXT
 #endif

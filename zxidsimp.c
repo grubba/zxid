@@ -420,7 +420,7 @@ struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* t
     break;
   }
   if (templ && templ != default_templ)
-    ZX_FREE(cf->ctx, templ);
+    ZX_FREE(cf->ctx, (void*)templ);
   *pp = 0;
   ss->len = pp - ss->s;
   return ss;
@@ -887,6 +887,19 @@ static char* zxid_simple_show_conf(zxid_conf* cf, zxid_cgi* cgi, int* res_len, i
 			       "d", "text/html", res_len, auto_flags);
 }
 
+/*() Emit Java Web Key Set. Corresponds to "o=jwks" query string. */
+
+/* Called by:  zxid_simple_no_ses_cf, zxid_simple_ses_active_cf */
+static char* zxid_simple_show_jwks(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
+{
+  struct zx_str* ss = zx_ref_str(cf->ctx, zxid_mk_jwks(cf));
+  return zxid_simple_show_page(cf, ss, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
+			       "d",
+			       //"text/json",
+			       "application/jwk-set+json",
+			       res_len, auto_flags);
+}
+
 /*() Show Error screen. */
 
 /* Called by:  zxid_ps_accept_invite x4, zxid_ps_finalize_invite x4 */
@@ -1314,6 +1327,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * Z = SOAP (POST) request for discovery
    * B = Metadata
    * b = Metadata Authority
+   * j = jwks
    *
    * M = CDC redirect and LECP detect
    * C = CDC reader
@@ -1415,6 +1429,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
     D("idp err(%.*s) (fall thru)", ss->len, ss->s);
     /* *** */
     break;
+  case 'j': return zxid_simple_show_jwks(cf, cgi, res_len, auto_flags);
   case 'c': return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
   case 'd': return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
   case 'B': return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
@@ -1583,6 +1598,7 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
     }
     D("Q err (fall thru) %d", 0);
     break;
+  case 'j':    return zxid_simple_show_jwks(cf, cgi, res_len, auto_flags);
   case 'c':    return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
   case 'd':    return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
   case 'B':    return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);

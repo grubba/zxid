@@ -265,7 +265,7 @@ void zx_cb_CreateResponse_REV_Extension(struct zx_cb_CreateResponse_s* x);
 
 #endif
 /* -------------------------- cb_Credential -------------------------- */
-/* refby( zx_cb_NotifyTo_s zx_cb_NotifyAdminTo_s ) */
+/* refby( zx_cb_NotifyAdminTo_s zx_cb_NotifyTo_s ) */
 #ifndef zx_cb_Credential_EXT
 #define zx_cb_Credential_EXT
 #endif
@@ -556,7 +556,7 @@ void zx_cb_DeleteResponse_REV_Extension(struct zx_cb_DeleteResponse_s* x);
 
 #endif
 /* -------------------------- cb_EncryptedResourceID -------------------------- */
-/* refby( zx_cb_Create_s zx_cb_Modify_s zx_cb_ReportUsage_s zx_cb_Query_s zx_cb_Delete_s ) */
+/* refby( zx_cb_Delete_s zx_cb_ReportUsage_s zx_cb_Create_s zx_cb_Modify_s zx_cb_Query_s ) */
 #ifndef zx_cb_EncryptedResourceID_EXT
 #define zx_cb_EncryptedResourceID_EXT
 #endif
@@ -607,7 +607,7 @@ void zx_cb_EncryptedResourceID_REV_EncryptedKey(struct zx_cb_EncryptedResourceID
 
 #endif
 /* -------------------------- cb_Extension -------------------------- */
-/* refby( zx_cb_CreateResponse_s zx_cdm_vCard_s zx_cb_DeleteResponse_s zx_cb_Notify_s zx_cb_NotifyResponse_s zx_cb_Create_s zx_cb_Modify_s zx_cb_ModifyResponse_s zx_cb_QueryResponse_s zx_cb_Subscription_s zx_cb_Query_s zx_cb_Delete_s ) */
+/* refby( zx_cb_Delete_s zx_cb_Subscription_s zx_cb_DeleteResponse_s zx_cdm_vCard_s zx_cb_Create_s zx_cb_ModifyResponse_s zx_cb_Modify_s zx_cb_Notify_s zx_cb_QueryResponse_s zx_cb_NotifyResponse_s zx_cb_CreateResponse_s zx_cb_Query_s ) */
 #ifndef zx_cb_Extension_EXT
 #define zx_cb_Extension_EXT
 #endif
@@ -640,7 +640,7 @@ int zx_WALK_WO_cb_Extension(struct zx_ctx* c, struct zx_cb_Extension_s* x, void*
 
 #endif
 /* -------------------------- cb_ItemData -------------------------- */
-/* refby( zx_cb_CreateResponse_s zx_cb_ModifyResponse_s zx_cb_Notification_s ) */
+/* refby( zx_cb_ModifyResponse_s zx_cb_Notification_s zx_cb_CreateResponse_s ) */
 #ifndef zx_cb_ItemData_EXT
 #define zx_cb_ItemData_EXT
 #endif
@@ -694,7 +694,7 @@ void zx_cb_ItemData_REV_Card(struct zx_cb_ItemData_s* x);
 
 #endif
 /* -------------------------- cb_ItemSelection -------------------------- */
-/* refby( zx_cb_Create_s zx_cb_Modify_s zx_cb_Subscription_s ) */
+/* refby( zx_cb_Subscription_s zx_cb_Create_s zx_cb_Modify_s ) */
 #ifndef zx_cb_ItemSelection_EXT
 #define zx_cb_ItemSelection_EXT
 #endif
@@ -952,7 +952,7 @@ void zx_cb_ModifyResponse_REV_Extension(struct zx_cb_ModifyResponse_s* x);
 
 #endif
 /* -------------------------- cb_NewData -------------------------- */
-/* refby( zx_cb_Modification_s zx_cb_CreateItem_s ) */
+/* refby( zx_cb_CreateItem_s zx_cb_Modification_s ) */
 #ifndef zx_cb_NewData_EXT
 #define zx_cb_NewData_EXT
 #endif
@@ -1639,7 +1639,7 @@ void zx_cb_ReportUsageResponse_REV_Status(struct zx_cb_ReportUsageResponse_s* x)
 
 #endif
 /* -------------------------- cb_ResourceID -------------------------- */
-/* refby( zx_cb_Create_s zx_cb_Modify_s zx_cb_ReportUsage_s zx_cb_Query_s zx_cb_Delete_s ) */
+/* refby( zx_cb_Delete_s zx_cb_ReportUsage_s zx_cb_Create_s zx_cb_Modify_s zx_cb_Query_s ) */
 #ifndef zx_cb_ResourceID_EXT
 #define zx_cb_ResourceID_EXT
 #endif
@@ -1675,7 +1675,7 @@ void zx_cb_ResourceID_PUT_id(struct zx_cb_ResourceID_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- cb_Status -------------------------- */
-/* refby( zx_cb_CreateResponse_s zx_cb_DeleteResponse_s zx_cb_NotifyResponse_s zx_cb_ReportUsageResponse_s zx_cb_ModifyResponse_s zx_cb_Status_s zx_cb_QueryResponse_s ) */
+/* refby( zx_cb_DeleteResponse_s zx_cb_ModifyResponse_s zx_cb_Status_s zx_cb_ReportUsageResponse_s zx_cb_QueryResponse_s zx_cb_NotifyResponse_s zx_cb_CreateResponse_s ) */
 #ifndef zx_cb_Status_EXT
 #define zx_cb_Status_EXT
 #endif

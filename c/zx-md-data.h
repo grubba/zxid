@@ -232,7 +232,7 @@ void zx_md_AssertionConsumerService_PUT_isDefault(struct zx_md_AssertionConsumer
 
 #endif
 /* -------------------------- md_AssertionIDRequestService -------------------------- */
-/* refby( zx_md_AttributeAuthorityDescriptor_s zx_md_IDPSSODescriptor_s zx_md_AuthnAuthorityDescriptor_s zx_md_PDPDescriptor_s ) */
+/* refby( zx_md_AuthnAuthorityDescriptor_s zx_md_AttributeAuthorityDescriptor_s zx_md_PDPDescriptor_s zx_md_IDPSSODescriptor_s ) */
 #ifndef zx_md_AssertionIDRequestService_EXT
 #define zx_md_AssertionIDRequestService_EXT
 #endif
@@ -748,7 +748,7 @@ void zx_md_AuthzService_PUT_isDefault(struct zx_md_AuthzService_s* x, struct zx_
 
 #endif
 /* -------------------------- md_ContactPerson -------------------------- */
-/* refby( zx_md_RoleDescriptor_s zx_md_SPSSODescriptor_s zx_md_AttributeAuthorityDescriptor_s zx_md_IDPSSODescriptor_s zx_md_AuthnAuthorityDescriptor_s zx_md_EntityDescriptor_s zx_md_PDPDescriptor_s ) */
+/* refby( zx_md_EntityDescriptor_s zx_md_AuthnAuthorityDescriptor_s zx_md_AttributeAuthorityDescriptor_s zx_md_PDPDescriptor_s zx_md_SPSSODescriptor_s zx_md_IDPSSODescriptor_s zx_md_RoleDescriptor_s ) */
 #ifndef zx_md_ContactPerson_EXT
 #define zx_md_ContactPerson_EXT
 #endif
@@ -1126,7 +1126,7 @@ void zx_md_EntityDescriptor_REV_AdditionalMetadataLocation(struct zx_md_EntityDe
 
 #endif
 /* -------------------------- md_Extensions -------------------------- */
-/* refby( zx_md_Organization_s zx_md_RoleDescriptor_s zx_md_SPSSODescriptor_s zx_md_AttributeAuthorityDescriptor_s zx_md_IDPSSODescriptor_s zx_md_AuthnAuthorityDescriptor_s zx_md_ContactPerson_s zx_md_EntityDescriptor_s zx_md_AffiliationDescriptor_s zx_md_EntitiesDescriptor_s zx_md_PDPDescriptor_s ) */
+/* refby( zx_md_EntityDescriptor_s zx_md_AuthnAuthorityDescriptor_s zx_md_AttributeAuthorityDescriptor_s zx_md_EntitiesDescriptor_s zx_md_PDPDescriptor_s zx_md_Organization_s zx_md_SPSSODescriptor_s zx_md_ContactPerson_s zx_md_IDPSSODescriptor_s zx_md_RoleDescriptor_s zx_md_AffiliationDescriptor_s ) */
 #ifndef zx_md_Extensions_EXT
 #define zx_md_Extensions_EXT
 #endif
@@ -1363,7 +1363,7 @@ void zx_md_IDPSSODescriptor_REV_Attribute(struct zx_md_IDPSSODescriptor_s* x);
 
 #endif
 /* -------------------------- md_KeyDescriptor -------------------------- */
-/* refby( zx_md_RoleDescriptor_s zx_md_SPSSODescriptor_s zx_md_AttributeAuthorityDescriptor_s zx_md_IDPSSODescriptor_s zx_md_AuthnAuthorityDescriptor_s zx_di_Keys_s zx_md_AffiliationDescriptor_s zx_md_PDPDescriptor_s ) */
+/* refby( zx_md_AuthnAuthorityDescriptor_s zx_di_Keys_s zx_md_AttributeAuthorityDescriptor_s zx_md_PDPDescriptor_s zx_md_SPSSODescriptor_s zx_md_IDPSSODescriptor_s zx_md_RoleDescriptor_s zx_md_AffiliationDescriptor_s ) */
 #ifndef zx_md_KeyDescriptor_EXT
 #define zx_md_KeyDescriptor_EXT
 #endif
@@ -1513,7 +1513,7 @@ void zx_md_NameIDMappingService_PUT_isDefault(struct zx_md_NameIDMappingService_
 
 #endif
 /* -------------------------- md_Organization -------------------------- */
-/* refby( zx_md_RoleDescriptor_s zx_md_SPSSODescriptor_s zx_md_AttributeAuthorityDescriptor_s zx_md_IDPSSODescriptor_s zx_md_AuthnAuthorityDescriptor_s zx_md_EntityDescriptor_s zx_md_PDPDescriptor_s ) */
+/* refby( zx_md_EntityDescriptor_s zx_md_AuthnAuthorityDescriptor_s zx_md_AttributeAuthorityDescriptor_s zx_md_PDPDescriptor_s zx_md_SPSSODescriptor_s zx_md_IDPSSODescriptor_s zx_md_RoleDescriptor_s ) */
 #ifndef zx_md_Organization_EXT
 #define zx_md_Organization_EXT
 #endif

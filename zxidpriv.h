@@ -155,6 +155,8 @@ ZXID_DECL void zxid_free_atsrc(struct zxid_conf *cf, struct zxid_atsrc *src);
 ZXID_DECL struct zxid_obl_list* zxid_load_obl_list(zxid_conf* cf, struct zxid_obl_list* ol, char* obl);
 ZXID_DECL void zxid_free_obl_list(struct zxid_conf* cf, struct zxid_obl_list* ol);
 ZXID_DECL struct zxid_obl_list* zxid_find_obl_list(struct zxid_obl_list* obl, const char* name);
+ZXID_DECL char* zxid_mk_jwks(zxid_conf* cf);
+ZXID_DECL char* zxid_read_cert_pem(zxid_conf* cf, char* name, int siz, char* buf);
 
 /* zxiduser */
 

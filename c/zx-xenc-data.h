@@ -82,7 +82,7 @@ void zx_xenc_AgreementMethod_REV_RecipientKeyInfo(struct zx_xenc_AgreementMethod
 
 #endif
 /* -------------------------- xenc_CipherData -------------------------- */
-/* refby( zx_xenc_EncryptedData_s zx_xenc_EncryptedKey_s ) */
+/* refby( zx_xenc_EncryptedKey_s zx_xenc_EncryptedData_s ) */
 #ifndef zx_xenc_CipherData_EXT
 #define zx_xenc_CipherData_EXT
 #endif
@@ -214,7 +214,7 @@ void zx_xenc_DataReference_PUT_URI(struct zx_xenc_DataReference_s* x, struct zx_
 
 #endif
 /* -------------------------- xenc_EncryptedData -------------------------- */
-/* refby( zx_is12_EncryptedResourceID_s zx_sp_NewEncryptedID_s zx_di12_EncryptedResourceID_s zx_gl_EncryptedResourceID_s zx_cb_EncryptedResourceID_s zx_ff12_EncryptedNameIdentifier_s zx_sa_EncryptedID_s zx_sa_EncryptedAttribute_s zx_sa_EncryptedAssertion_s ) */
+/* refby( zx_ff12_EncryptedNameIdentifier_s zx_sa_EncryptedAttribute_s zx_cb_EncryptedResourceID_s zx_sa_EncryptedAssertion_s zx_sa_EncryptedID_s zx_sp_NewEncryptedID_s zx_gl_EncryptedResourceID_s zx_is12_EncryptedResourceID_s zx_di12_EncryptedResourceID_s ) */
 #ifndef zx_xenc_EncryptedData_EXT
 #define zx_xenc_EncryptedData_EXT
 #endif
@@ -295,7 +295,7 @@ void zx_xenc_EncryptedData_REV_EncryptionProperties(struct zx_xenc_EncryptedData
 
 #endif
 /* -------------------------- xenc_EncryptedKey -------------------------- */
-/* refby( zx_xenc_OriginatorKeyInfo_s zx_is12_EncryptedResourceID_s zx_sp_NewEncryptedID_s zx_di12_EncryptedResourceID_s zx_gl_EncryptedResourceID_s zx_cb_EncryptedResourceID_s zx_ff12_EncryptedNameIdentifier_s zx_sa_EncryptedID_s zx_sa_EncryptedAttribute_s zx_sa_EncryptedAssertion_s zx_xenc_RecipientKeyInfo_s zx_ds_KeyInfo_s ) */
+/* refby( zx_ff12_EncryptedNameIdentifier_s zx_xenc_OriginatorKeyInfo_s zx_sa_EncryptedAttribute_s zx_cb_EncryptedResourceID_s zx_sa_EncryptedAssertion_s zx_xenc_RecipientKeyInfo_s zx_sa_EncryptedID_s zx_sp_NewEncryptedID_s zx_ds_KeyInfo_s zx_gl_EncryptedResourceID_s zx_is12_EncryptedResourceID_s zx_di12_EncryptedResourceID_s ) */
 #ifndef zx_xenc_EncryptedKey_EXT
 #define zx_xenc_EncryptedKey_EXT
 #endif
@@ -397,7 +397,7 @@ void zx_xenc_EncryptedKey_REV_CarriedKeyName(struct zx_xenc_EncryptedKey_s* x);
 
 #endif
 /* -------------------------- xenc_EncryptionMethod -------------------------- */
-/* refby( zx_xenc_EncryptedData_s zx_xenc_EncryptedKey_s ) */
+/* refby( zx_xenc_EncryptedKey_s zx_xenc_EncryptedData_s ) */
 #ifndef zx_xenc_EncryptionMethod_EXT
 #define zx_xenc_EncryptionMethod_EXT
 #endif
@@ -451,7 +451,7 @@ void zx_xenc_EncryptionMethod_REV_OAEPparams(struct zx_xenc_EncryptionMethod_s* 
 
 #endif
 /* -------------------------- xenc_EncryptionProperties -------------------------- */
-/* refby( zx_xenc_EncryptedData_s zx_xenc_EncryptedKey_s ) */
+/* refby( zx_xenc_EncryptedKey_s zx_xenc_EncryptedData_s ) */
 #ifndef zx_xenc_EncryptionProperties_EXT
 #define zx_xenc_EncryptionProperties_EXT
 #endif

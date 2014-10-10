@@ -187,7 +187,7 @@ void zx_ds_DigestMethod_PUT_Algorithm(struct zx_ds_DigestMethod_s* x, struct zx_
 
 #endif
 /* -------------------------- ds_KeyInfo -------------------------- */
-/* refby( zx_sa11_SubjectConfirmation_s zx_shibmd_KeyAuthority_s zx_ds_Signature_s zx_xenc_EncryptedData_s zx_is_InteractionRequest_s zx_xenc_EncryptedKey_s zx_is12_InteractionRequest_s zx_md_KeyDescriptor_s zx_sa_SubjectConfirmationData_s zx_m20_KeyDescriptor_s ) */
+/* refby( zx_is_InteractionRequest_s zx_sa11_SubjectConfirmation_s zx_m20_KeyDescriptor_s zx_md_KeyDescriptor_s zx_is12_InteractionRequest_s zx_xenc_EncryptedKey_s zx_sa_SubjectConfirmationData_s zx_xenc_EncryptedData_s zx_shibmd_KeyAuthority_s zx_ds_Signature_s ) */
 #ifndef zx_ds_KeyInfo_EXT
 #define zx_ds_KeyInfo_EXT
 #endif
@@ -694,7 +694,7 @@ void zx_ds_SPKIData_REV_SPKISexp(struct zx_ds_SPKIData_s* x);
 
 #endif
 /* -------------------------- ds_Signature -------------------------- */
-/* refby( zx_sp_NameIDMappingRequest_s zx_ff12_FederationTerminationNotification_s zx_sp_SubjectQuery_s zx_sp_Response_s zx_ff12_RegisterNameIdentifierResponse_s zx_ff12_RegisterNameIdentifierRequest_s zx_m20_SPDescriptor_s zx_md_RoleDescriptor_s zx_sp_ManageNameIDResponse_s zx_sp_LogoutRequest_s zx_md_SPSSODescriptor_s zx_m20_AffiliationDescriptor_s zx_md_AttributeAuthorityDescriptor_s zx_prov_ProvisioningHandle_s zx_md_IDPSSODescriptor_s zx_is_InteractionStatement_s zx_sp_AttributeQuery_s zx_sp11_Response_s zx_ff12_AuthnResponse_s zx_sp_AuthnRequest_s zx_ff12_NameIdentifierMappingRequest_s zx_sp_ArtifactResponse_s zx_is12_InteractionStatement_s zx_sp_AuthzDecisionQuery_s zx_md_AuthnAuthorityDescriptor_s zx_xaspcd1_XACMLAuthzDecisionQuery_s zx_ff12_AuthnRequest_s zx_sp11_Request_s zx_ff12_NameIdentifierMappingResponse_s zx_xaspcd1_XACMLPolicyQuery_s zx_ff12_LogoutResponse_s zx_wsse_Security_s zx_sp_AuthnQuery_s zx_xasp_XACMLPolicyQuery_s zx_md_EntityDescriptor_s zx_ff12_LogoutRequest_s zx_md_AffiliationDescriptor_s zx_prov_PMDescriptor_s zx_sa_Assertion_s zx_sp_NameIDMappingResponse_s zx_sp_ArtifactResolve_s zx_xasp_XACMLAuthzDecisionQuery_s zx_m20_EntityDescriptor_s zx_sec12_ProxyInfoConfirmationData_s zx_md_EntitiesDescriptor_s zx_ff12_Assertion_s zx_md_PDPDescriptor_s zx_sp_LogoutResponse_s zx_m20_IDPDescriptor_s zx_sp_AssertionIDRequest_s zx_sp_ManageNameIDRequest_s zx_sa11_Assertion_s ) */
+/* refby( zx_sp_LogoutResponse_s zx_wsse_Security_s zx_md_EntityDescriptor_s zx_sp_Response_s zx_ff12_AuthnResponse_s zx_xasp_XACMLPolicyQuery_s zx_ff12_LogoutRequest_s zx_ff12_LogoutResponse_s zx_sp_NameIDMappingResponse_s zx_md_AuthnAuthorityDescriptor_s zx_m20_AffiliationDescriptor_s zx_m20_IDPDescriptor_s zx_md_AttributeAuthorityDescriptor_s zx_ff12_Assertion_s zx_sp_LogoutRequest_s zx_sp_NameIDMappingRequest_s zx_md_EntitiesDescriptor_s zx_is12_InteractionStatement_s zx_ff12_FederationTerminationNotification_s zx_md_PDPDescriptor_s zx_xaspcd1_XACMLPolicyQuery_s zx_xaspcd1_XACMLAuthzDecisionQuery_s zx_sp_AuthzDecisionQuery_s zx_prov_PMDescriptor_s zx_ff12_RegisterNameIdentifierResponse_s zx_sp_AuthnRequest_s zx_ff12_RegisterNameIdentifierRequest_s zx_xasp_XACMLAuthzDecisionQuery_s zx_sp_SubjectQuery_s zx_sp_ArtifactResolve_s zx_m20_SPDescriptor_s zx_sa_Assertion_s zx_ff12_NameIdentifierMappingResponse_s zx_sp_AuthnQuery_s zx_sp_ManageNameIDResponse_s zx_sp11_Response_s zx_sec12_ProxyInfoConfirmationData_s zx_md_SPSSODescriptor_s zx_is_InteractionStatement_s zx_md_IDPSSODescriptor_s zx_sp_AttributeQuery_s zx_m20_EntityDescriptor_s zx_sp_AssertionIDRequest_s zx_ff12_AuthnRequest_s zx_prov_ProvisioningHandle_s zx_sp11_Request_s zx_sp_ManageNameIDRequest_s zx_md_RoleDescriptor_s zx_sp_ArtifactResponse_s zx_ff12_NameIdentifierMappingRequest_s zx_sa11_Assertion_s zx_md_AffiliationDescriptor_s ) */
 #ifndef zx_ds_Signature_EXT
 #define zx_ds_Signature_EXT
 #endif
@@ -994,7 +994,7 @@ void zx_ds_SignedInfo_REV_Reference(struct zx_ds_SignedInfo_s* x);
 
 #endif
 /* -------------------------- ds_Transform -------------------------- */
-/* refby( zx_xenc_Transforms_s zx_ds_Transforms_s ) */
+/* refby( zx_ds_Transforms_s zx_xenc_Transforms_s ) */
 #ifndef zx_ds_Transform_EXT
 #define zx_ds_Transform_EXT
 #endif

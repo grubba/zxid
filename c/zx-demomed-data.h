@@ -352,7 +352,7 @@ void zx_demomed_Object_REV_ObjectData(struct zx_demomed_Object_s* x);
 
 #endif
 /* -------------------------- demomed_ObjectData -------------------------- */
-/* refby( zx_demomed_GetObjectResponse_s zx_demomed_Object_s ) */
+/* refby( zx_demomed_Object_s zx_demomed_GetObjectResponse_s ) */
 #ifndef zx_demomed_ObjectData_EXT
 #define zx_demomed_ObjectData_EXT
 #endif
@@ -388,7 +388,7 @@ void zx_demomed_ObjectData_PUT_objectID(struct zx_demomed_ObjectData_s* x, struc
 
 #endif
 /* -------------------------- demomed_ObjectInfo -------------------------- */
-/* refby( zx_demomed_GetObjectListResponse_s zx_demomed_Object_s ) */
+/* refby( zx_demomed_Object_s zx_demomed_GetObjectListResponse_s ) */
 #ifndef zx_demomed_ObjectInfo_EXT
 #define zx_demomed_ObjectInfo_EXT
 #endif

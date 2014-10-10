@@ -44,8 +44,8 @@ vpath %.h ../zxid
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000122
-ZXIDREL=1.22
+ZXIDVERSION=0x000130
+ZXIDREL=1.30
 
 TOP=$(shell pwd)
 
@@ -714,7 +714,7 @@ export LC_COLLATE LC_NUMERIC
 
 ### Start of dependencies and targets
 
-DEFAULT_EXE= zxidhlo$(EXE) zxididp$(EXE) zxidhlowsf$(EXE) zxidsimple$(EXE) zxidwsctool$(EXE) zxlogview$(EXE) zxidhrxmlwsc$(EXE) zxidhrxmlwsp$(EXE) zxdecode$(EXE) zxcot$(EXE) zxpasswd$(EXE) zxcall$(EXE) zxencdectest$(EXE)
+DEFAULT_EXE= zxidhlo$(EXE) zxididp$(EXE) zxidhlowsf$(EXE) zxidsimple$(EXE) zxidwsctool$(EXE) zxlogview$(EXE) zxidhrxmlwsc$(EXE) zxidhrxmlwsp$(EXE) zxdecode$(EXE) zxcot$(EXE) zxpasswd$(EXE) zxcall$(EXE) zxumacall$(EXE) zxencdectest$(EXE)
 
 ALL_EXE= smime$(EXE) zxidwspcgi$(EXE) zxid_httpd$(EXE) htpasswd$(EXE)
 
@@ -732,7 +732,7 @@ aller: all zxbus app_demo.class
 
 maymay: javazxid app_demo.class
 
-diet64: zxcot-static-x64 zxpasswd-static-x64 zxididp-static-x64 zxidhlo-static-x64 zxlogview-static-x64 zxcall-static-x64 zxdecode-static-x64 zxbusd-static-x64 zxbuslist-static-x64 zxbustailf-static-x64
+diet64: zxcot-static-x64 zxpasswd-static-x64 zxididp-static-x64 zxidhlo-static-x64 zxlogview-static-x64 zxcall-static-x64 zxumacall-static-x64 zxdecode-static-x64 zxbusd-static-x64 zxbuslist-static-x64 zxbustailf-static-x64
 
 ZXIDHDRS=zx.h zxid.h zxidnoswig.h c/zxidvers.h
 
@@ -1613,6 +1613,9 @@ zxpasswd-static-x64: zxpasswd.$(OBJ_EXT) $(LIBZXID_A)
 zxcall-static-x64: zxcall.$(OBJ_EXT) $(LIBZXID_A)
 	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
+zxumacall-static-x64: zxumacall.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
+
 zxidhlo-static-x64: zxidhlo.$(OBJ_EXT) $(LIBZXID_A)
 	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
@@ -1937,7 +1940,7 @@ t/wspcot:
 t/wsp2cot:
 	sh ./zxmkdirs.sh t/wsp2
 
-test: t/cot t/idpcot t/wsp t/wsp2 zxencdectest zxcall zxididp
+test: t/cot t/idpcot t/wsp t/wsp2 zxencdectest zxcall zxumacall zxididp
 	$(PERL) zxtest.pl -a
 
 #test: test.$(OBJ_EXT)
@@ -2001,7 +2004,7 @@ dirs: dir
 install_nodep:
 	@$(ECHO) "===== Installing in $(PREFIX) (to change do make install PREFIX=/your/path)"
 	-mkdir -p $(PREFIX) $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/include/zxid $(PREFIX)/include/zx $(PREFIX)/doc
-	$(CP) zxmkdirs.sh zxcall zxpasswd zxcot zxlogview zxbusd zxbustailf zxbuslist zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl mini_httpd_zxid $(PREFIX)/bin
+	$(CP) zxmkdirs.sh zxcall zxumacall zxpasswd zxcot zxlogview zxbusd zxbustailf zxbuslist zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl mini_httpd_zxid $(PREFIX)/bin
 	$(CP) $(LIBZXID_A) libzxid.so* $(PREFIX)/lib
 	$(CP) libzxid.so.0.0 $(PREFIX)/lib
 	$(CP) *.h c/*.h $(PREFIX)/include/zxid
@@ -2059,7 +2062,7 @@ distclean: clean
 cleanbin:
 	rm -f zxid zxidsimple zxbench zxencdectest zxmqtest $(LIBZXID_A) libzxid.so* zxsizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
-	rm -f zxidwspcgi zxidxfoobarwsp zxpasswd zxcot zxcall zxbusd zxbustailf zxbuslist
+	rm -f zxidwspcgi zxidxfoobarwsp zxpasswd zxcot zxcall zxumacall zxbusd zxbustailf zxbuslist
 	rm -f mod_auth_saml$(SO) zxididp zxdecode zxlogview zxcot zxpasswd smime
 	rm -f zxid.dll zxidjava/zxidjni.dll *.exe
 
@@ -2123,7 +2126,7 @@ linbindist:
 winbindist:
 	rm -rf zxid-$(ZXIDREL)-win32-bin
 	mkdir zxid-$(ZXIDREL)-win32-bin zxid-$(ZXIDREL)-win32-bin/c zxid-$(ZXIDREL)-win32-bin/zxidjava  zxid-$(ZXIDREL)-win32-bin/php
-	$(CP) zxid.dll zxidhlo.exe zxidsimple.exe zxididp.exe zxcot.exe zxpasswd.exe zxdecode.exe zxlogview.exe smime.exe zxcall.exe *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
+	$(CP) zxid.dll zxidhlo.exe zxidsimple.exe zxididp.exe zxcot.exe zxpasswd.exe zxdecode.exe zxlogview.exe smime.exe zxcall.exe zxumacall.exe *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
 	$(CP) zxidjava/*.class $(ZXIDJNI_SO) zxidjava/zxid_wrap.c zxid-$(ZXIDREL)-win32-bin/zxidjava
 	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay LICENSE.curl README.zxid README.zxid-win32 zxid-$(ZXIDREL)-win32-bin
 	$(CP) c/*.h zxid-$(ZXIDREL)-win32-bin/c
@@ -2133,7 +2136,7 @@ winbindist:
 #	$(CP) php/*.php php/php_zxid.dll  zxid-$(ZXIDREL)-win32-bin/php
 
 
-common_bins: zxlogview$(EXE)  zxcot$(EXE) zxdecode$(EXE) zxcall$(EXE) smime$(EXE) zxidhlo$(EXE) zxidsimple$(EXE) zxididp$(EXE) zxpasswd$(EXE)
+common_bins: zxlogview$(EXE)  zxcot$(EXE) zxdecode$(EXE) zxcall$(EXE) zxumacall$(EXE) smime$(EXE) zxidhlo$(EXE) zxidsimple$(EXE) zxididp$(EXE) zxpasswd$(EXE)
 
 
 .PHONY: winbindist linbindist dist

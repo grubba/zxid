@@ -1,5 +1,5 @@
 /* zxidoauth.c  -  Handwritten nitty-gritty functions for constructing OAUTH URLs
- * Copyright (c) 2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2011-2014 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
@@ -16,6 +16,7 @@
  * http://tools.ietf.org/html/draft-jones-json-web-encryption-01
  *
  * 11.12.2011, created --Sampo
+ * 9.10.2014, UMA related addtionas, JWK, dynamic client registration, etc. --Sampo
  */
 
 #include "platform.h"
@@ -27,89 +28,137 @@
 #include "zxidconf.h"
 #include "saml2.h"   /* for bindings like OAUTH2_REDIR */
 #include "c/zx-data.h"
+#include "c/zxidvers.h"
+#include <openssl/bn.h>
+#include <openssl/rsa.h>
+#include <openssl/x509.h>
 
-#if 0
-/*() Create OAUTH2 Dynamic Client Registration request.
- * See: https://tools.ietf.org/html/draft-ietf-oauth-dyn-reg-20 */
+#if 1
 
-/* Called by:  zxid_oauth2_az_server_sso */
-char* zxid_mk_oauth2_dyn_cli_reg_req(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct timeval* srcts, zxid_entity* sp_meta, struct zx_str* acsurl, zxid_nid** nameid, char* logop)
+char* zxid_bn2b64(zxid_conf* cf, BIGNUM* bn)
 {
-  int rawlen;
+  char* bin;
+  char* b64;
+  char* e;
+  int len;
+
+  if (!bn)
+    return zx_dup_cstr(cf->ctx, "");
+  bin = ZX_ALLOC(cf->ctx, BN_num_bytes(bn));
+  len = BN_bn2bin(bn, (unsigned char*)bin);
+  b64 = ZX_ALLOC(cf->ctx, SIMPLE_BASE64_LEN(len)+1);
+  e = base64_fancy_raw(bin, len, b64, safe_basis_64, 1000000, 0, "", '=');
+  *e = 0;
+  ZX_FREE(cf->ctx, bin);
+  return b64;
+}
+
+/*() Create JWK (json-web-key) document
+ * See: https://tools.ietf.org/html/draft-ietf-jose-json-web-key-33 */
+
+/* Called by:  */
+char* zxid_mk_jwk(zxid_conf* cf, char* pem, int enc_use)
+{
+  char derbuf[4096];
+  X509* x = 0;  /* Forces d2i_X509() to alloc the memory. */
+  RSA* rsa;
   char* buf;
-  char* jwt;
-  char* jwt_id; /* sha1 hash of the jwt, taken from log_path */
-  struct zx_str issuer;
-  struct zx_str* affil;
-  char* eid;
-  struct zx_str* logpath;
-  struct zx_str ss;
-  struct zx_str nn;
-  struct zx_str id;
-  zxid_nid* tmpnameid;
-  char sp_name_buf[ZXID_MAX_SP_NAME_BUF];
-  D("sp_eid(%s)", sp_meta->eid);
+  char* p;
+  char* e;
+  char* n_b64;
+  char* e_b64;
 
-  eid = zxid_my_ent_id_cstr(cf);
-  // ,\"\":\"\"
-  buf = zx_alloc_sprintf(cf->ctx, &rawlen,
-		       "{\"redirect_uris\":[\"%s\"],"
-		       ",\"client_name\":\"%.*s\""
-		       ",\"aud\":\"%s\""
-		       ",\"exp\":%d"
-		       ",\"nonce\":\"%s\"}",
-		       eid,
-		       ZX_GET_CONTENT_LEN(*nameid), ZX_GET_CONTENT_S(*nameid),
-		       cgi->client_id,
-		       time(0) + cf->timeskew + cf->a7nttl,
-		       cgi->nonce);
-  ZX_FREE(cf->ctx, eid);
-  jwt = zxid_mk_jwt(cf, rawlen, buf);
-  ZX_FREE(cf->ctx, buf);
-
-  /* Log the issued JWT */
-
-  ss.s = jwt; ss.len = strlen(jwt);
-  logpath = zxlog_path(cf, &issuer, &ss, ZXLOG_ISSUE_DIR, ZXLOG_JWT_KIND, 1);
-  if (!logpath) {
-    ERR("Could not generate logpath for aud(%s) JWT(%s)", cgi->client_id, jwt);
-    ZX_FREE(cf->ctx, jwt);
+  p = derbuf;
+  e = unbase64_raw(pem, pem+strlen(pem), p, zx_std_index_64);
+  OpenSSL_add_all_algorithms();
+  if (!d2i_X509(&x, (const unsigned char**)&p /* *** compile warning */, e-p) || !x) {
+    ERR("DER decoding of X509 certificate failed.\n%d", enc_use);
     return 0;
   }
   
-  /* Since JWT does not have explicit ID attribute, we use the sha1 hash of the
-   * contents of JWT as an ID. Since this is what logpath also does, we just
-   * use the last component of the logpath. */
-  for (jwt_id = logpath->s + logpath->len; jwt_id > logpath->s && jwt_id[-1] != '/'; --jwt_id) ;
+  rsa = zx_get_rsa_pub_from_cert(x, "mk_jwk");
+  n_b64 = zxid_bn2b64(cf, rsa?rsa->n:0);
+  e_b64 = zxid_bn2b64(cf, rsa?rsa->e:0);
+  X509_free(x);
 
-  if (cf->log_issue_a7n) {
-    if (zxlog_dup_check(cf, logpath, "sso_issue_jwt")) {
-      ERR("Duplicate JWT ID(%s)", jwt_id);
-      if (cf->dup_a7n_fatal) {
-	ERR("FATAL (by configuration): Duplicate JWT ID(%s)", jwt_id);
-	zxlog_blob(cf, 1, logpath, &ss, "sso_issue_JWT dup");
-	zx_str_free(cf->ctx, logpath);
-	ZX_FREE(cf->ctx, jwt);
-	return 0;
-      }
-    }
-    zxlog_blob(cf, 1, logpath, &ss, "sso_issue_JWT");
-  }
+  buf = zx_alloc_sprintf(cf->ctx, 0,
+			 "{\"kty\":\"RSA\""
+			 ",\"use\":\"%s\""
+			 //",\"key_ops\":[%s]"
+			 //",\"alg\":\"%s\""
+			 ",\"n\":\"%s\""  /* modulus */
+			 ",\"e\":\"%s\""  /* exponent */
+			 ",\"x5c\":[\"%s\"]}",
+			 enc_use?"enc":"sig",
+			 //enc_use?"\"encrypt\",\"decrypt\"":"\"sign\",\"verify\"",
+			 n_b64,
+			 e_b64,
+			 pem);
+  ZX_FREE(cf->ctx, n_b64);
+  ZX_FREE(cf->ctx, e_b64);
+  return buf;
+}
 
-  nn.s = cgi->nonce; nn.len = strlen(cgi->nonce);
-  id.s = jwt_id; id.len = strlen(jwt_id);
+/*() Create JWKS (json-web-key-set) document
+ * See: https://tools.ietf.org/html/draft-ietf-jose-json-web-key-33 */
 
-  if (cf->loguser)
-    zxlogusr(cf, ses->uid, 0, 0, 0, &issuer, &nn, &id,
-	     ZX_GET_CONTENT(*nameid),
-	     (cf->oaz_jwt_sigenc_alg!='n'?"U":"N"), "K", logop, 0, 0);
+char* zxid_mk_jwks(zxid_conf* cf)
+{
+  char  pem_buf[4096];
+  char* pem;
+  char* sig_jwk;
+  char* enc_jwk;
+  char* buf;
+  pem = zxid_read_cert_pem(cf, "sign-nopw-cert.pem", sizeof(pem_buf), pem_buf);
+  sig_jwk = zxid_mk_jwk(cf, pem, 0);
+  pem = zxid_read_cert_pem(cf, "enc-nopw-cert.pem", sizeof(pem_buf), pem_buf);
+  enc_jwk = zxid_mk_jwk(cf, pem, 1);
   
-  zxlog(cf, 0, 0, 0, &issuer, &nn, &id,
-	ZX_GET_CONTENT(*nameid),
-	(cf->oaz_jwt_sigenc_alg!='n'?"U":"N"), "K", logop, 0, 0);
+  buf = zx_alloc_sprintf(cf->ctx, 0,
+			 "{\"keys\":[\"%s\",\"%s\"]}",
+			 sig_jwk, enc_jwk);
+  ZX_FREE(cf->ctx, sig_jwk);
+  ZX_FREE(cf->ctx, enc_jwk);
+  return buf;
+}
 
-  zx_str_free(cf->ctx, logpath);
-  return jwt;
+/*() Create OAUTH2 Dynamic Client Registration request.
+ * See: https://tools.ietf.org/html/draft-ietf-oauth-dyn-reg-20 */
+
+/* Called by:  */
+char* zxid_mk_oauth2_dyn_cli_reg_req(zxid_conf* cf)
+{
+  char* jwks;
+  char* buf;
+  jwks = zxid_mk_jwks(cf);
+  buf = zx_alloc_sprintf(cf->ctx, 0,
+			 "{\"redirect_uris\":[\"%s%co=oauth_redir\"]"
+			 ",\"token_endpoint_auth_method\":\"client_secret_post\""
+			 ",\"grant_types\":[\"authorization_code\",\"implicit\",\"password\",\"client_credentials\",\"refresh_token\",\"urn:ietf:params:oauth:grant-type:jwt-bearer\",\"urn:ietf:params:oauth:grant-type:saml2-bearer\"]"
+			 ",\"response_types\":[\"code\",\"token\"]"
+			 ",\"client_name\":\"%s\""
+			 ",\"client_uri\":\"%s\""
+			 ",\"logo_uri\":\"%s\""
+			 ",\"scope\":\"read read-write\""
+			 ",\"contacts\":[\"%s\",\"%s\",\"%s\",\"%s\"]"
+			 ",\"tos_uri\":\"%s\""
+			 ",\"policy_uri\":\"%s\""
+			 ",\"jwks_uri\":\"%s%co=jwks\""
+			 ",\"jwks\":%s"
+			 ",\"software_id\":\"ZXID\""
+			 ",\"software_version\":\"" ZXID_REL "\""
+			 ",\"zxid_rev\":\"" ZXID_REV "\"}",
+			 cf->burl, strchr(cf->burl, '?')?'&':'?',
+			 cf->nice_name,
+			 "client_uri",
+			 cf->button_url,
+			 cf->contact_org, cf->contact_name, cf->contact_email, cf->contact_tel,
+			 "tos_uri",
+			 "policy_uri",
+			 cf->burl, strchr(cf->burl, '?')?'&':'?',
+			 jwks);
+  ZX_FREE(cf->ctx, jwks);
+  return buf;
 }
 #endif
 
