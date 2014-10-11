@@ -1481,6 +1481,14 @@ tA('ST','SSOHLO9', 'SP local logout', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Lo
 # http://sp.tas3.pt:8080/zxidservlet/wscprepdemo
 
 ###
+### UMA and OATH2 tests
+###
+# ./zxid_httpd -p 8081 -c 'zxid*' &
+
+tA('ST','OAZ-JWKS1', 'Java Web Key Set test',  'http://idp.tas3.pt:8081/zxididp?o=j');
+CMD('OAZ-DCR1', 'Dynamic CLient Registration', "./zxumacall -u 'http://sp.tas3.pt:8081/zxididp?o=J' -iat foobar-iat -dynclireg");
+
+###
 ### Audit bus tests
 ###
 

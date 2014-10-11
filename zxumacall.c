@@ -53,8 +53,10 @@ Usage: zxumacall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml
   -t SVCTYPE       Service Type URI. Used for discovery. Mandatory (omitting -t\n\
                    causes authorization only mode, provided that -az was specified).\n\
   -dynclireg       Invoke Dynamic Client Registration client to call Az Server's client registration endpoint\n\
-  -iat IAT         (Optional) Initial Access Token for dynamic client registration\n\
   -swstmt file     (Optional) File containing signed Software Statement for dynreg\n\
+  -iat IAT         (Optional) Initial Access Token for dynamic client registration\n\
+  -client_id ID    client_id (same as returned by dynamic client registration)\n\
+  -client_cesret SS  client_secret (same as returned by dynamic client registration)\n\
   -u EPURL         Optional endpoint URL or ProviderID. Discovery must match this.\n\
   -di DISCOOPTS    Optional discovery options. Query string format.\n\
   -din N           Discovery index (default: 1=pick first).\n\
@@ -87,6 +89,8 @@ int listses = 0;
 int dynclireg = 0;
 char* iat = 0;
 char* swstmt = 0;
+char* client_id;
+char* client_secret;
 char* entid = 0;
 char* idp   = 0;
 char* user  = 0;
@@ -149,6 +153,20 @@ static void opt(int* argc, char*** argv, char*** env)
 	if ((*argc) < 1) break;
 	zxid_parse_conf(cf, (*argv)[0]);
 	continue;
+      case 'l':
+	if (!strcmp((*argv)[0],"-client_id")) {
+	  ++(*argv); --(*argc);
+	  if ((*argc) < 1) break;
+	  client_id = (*argv)[0];
+	  continue;
+	}
+	if (!strcmp((*argv)[0],"-client_secret")) {
+	  ++(*argv); --(*argc);
+	  if ((*argc) < 1) break;
+	  client_secret = (*argv)[0];
+	  continue;
+	}
+	break;	
       }
       break;
 
@@ -411,6 +429,16 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
   return 0;
 }
 
+const char* zx_json_extract_raw(const char* hay, const char* key, int* len)
+{
+  strstr();
+}
+
+char* zx_json_extract_dup(struct zx_ctx* c, const char* hay, const char* key)
+{
+
+}
+
 void zxumacall_dynclireg_client(zxid_conf* cf)
 {
   struct zx_str* res;
@@ -420,9 +448,27 @@ void zxumacall_dynclireg_client(zxid_conf* cf)
     azhdr = zx_alloc_sprintf(cf->ctx, 0, "Authorization: Bearer %s", iat);
   } else
     azhdr = 0;
-  INFO("req(%s) iat(%s)", req, STRNULLCHKD(azhdr));
+  D("req(%s) iat(%s)", req, STRNULLCHKD(azhdr));
   res = zxid_http_post_raw(cf, -1, url, -1, req, azhdr);
   printf("%.*s", res->len, res->s);
+  /* *** extract client_id and client_secret */
+  client_id = zx_json_extract_dup(cf->ctx, res->s, "\"client_id\"");
+  client_secret = zx_json_extract_dup(cf->ctx, res->s, "\"client_secret\"");
+}
+
+void zxumacall_resreg_client(zxid_conf* cf)
+{
+  struct zx_str* res;
+  char* azhdr;
+  char* req = zxid_mk_oauth2_rsrc_reg_req(cf);
+  if (iat) {
+    azhdr = zx_alloc_sprintf(cf->ctx, 0, "Authorization: Bearer %s", client_secret);
+  } else
+    azhdr = 0;
+  D("req(%s) iat(%s)", req, STRNULLCHKD(azhdr));
+  res = zxid_http_post_raw(cf, -1, url, -1, req, azhdr);
+  printf("%.*s", res->len, res->s);
+  
 }
 
 #ifndef zxumacall_main
