@@ -220,14 +220,21 @@ struct zx_str* zx_dup_str(struct zx_ctx* c, const char* s) {
   return zx_dup_len_str(c, strlen(s), s);
 }
 
+/*() Create an allocated cstr (nul terminated) from len and ptr. */
+
+/* Called by: */
+char* zx_dup_len_cstr(struct zx_ctx* c, int len, const char* str) {
+  char* s = ZX_ALLOC(c, len+1);
+  memcpy(s, str, len+1);
+  return s;
+}
+
 /*() ZX verion of strdup(). */
 
 /* Called by: */
 char* zx_dup_cstr(struct zx_ctx* c, const char* str) {
   int len = strlen(str);
-  char* s = ZX_ALLOC(c, len+1);
-  memcpy(s, str, len+1);
-  return s;
+  return zx_dup_len_cstr(c, len, str);
 }
 
 /* Called by:  zxid_call_trustpdp x3, zxid_wsp_validate_env x2 */

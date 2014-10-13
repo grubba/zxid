@@ -200,6 +200,7 @@ void* zx_alloc(struct zx_ctx* c, int size);
 void* zx_zalloc(struct zx_ctx* c, int size);
 void* zx_free(struct zx_ctx* c, void* p);
 char* zx_dup_cstr(struct zx_ctx* c, const char* str);
+char* zx_dup_len_cstr(struct zx_ctx* c, int len, const char* str);
 #define ZX_ALLOC(c, size) zx_alloc((c), (size))
 #define ZX_ZALLOC(c, typ) ((typ*)zx_zalloc((c), sizeof(typ)))
 #define ZX_DUPALLOC(c, typ, n, o) (n) = (typ*)zx_alloc((c), sizeof(typ)); memcpy((n), (o), sizeof(typ))

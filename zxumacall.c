@@ -56,7 +56,8 @@ Usage: zxumacall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml
   -swstmt file     (Optional) File containing signed Software Statement for dynreg\n\
   -iat IAT         (Optional) Initial Access Token for dynamic client registration\n\
   -client_id ID    client_id (same as returned by dynamic client registration)\n\
-  -client_cesret SS  client_secret (same as returned by dynamic client registration)\n\
+  -client_secret SS  client_secret (same as returned by dynamic client registration)\n\
+  -rr NAME ICON_URI SCOPE TYPE Perform OAUTH2 Resource Set Registration\n\
   -u EPURL         Optional endpoint URL or ProviderID. Discovery must match this.\n\
   -di DISCOOPTS    Optional discovery options. Query string format.\n\
   -din N           Discovery index (default: 1=pick first).\n\
@@ -91,6 +92,10 @@ char* iat = 0;
 char* swstmt = 0;
 char* client_id;
 char* client_secret;
+char* rsrc_name = 0;
+char* rsrc_icon_uri = 0;
+char* rsrc_scope_url = 0;
+char* rsrc_type = 0;
 char* entid = 0;
 char* idp   = 0;
 char* user  = 0;
@@ -200,7 +205,6 @@ static void opt(int* argc, char*** argv, char*** env)
 	fprintf(stderr, "\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
 	continue;
       case 'y':
-	D("HERE(%s)", (*argv)[0]);
 	if (!strcmp((*argv)[0],"-dynclireg")) {
 	  ++(*argv); --(*argc);
 	  ++dynclireg;
@@ -287,6 +291,19 @@ static void opt(int* argc, char*** argv, char*** env)
       switch ((*argv)[0][2]) {
       case '\0':
 	verbose = 0;
+	continue;
+      }
+      break;
+
+    case 'r':
+      switch ((*argv)[0][2]) {
+      case 'r':
+	++(*argv); --(*argc);
+	if ((*argc) < 4) break;
+	rsrc_name = (*argv)[0];
+	rsrc_icon_uri = (*argv)[1];
+	rsrc_scope_url = (*argv)[2];
+	rsrc_type = (*argv)[3];
 	continue;
       }
       break;
@@ -429,14 +446,37 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
   return 0;
 }
 
+/*() Extract simple scalar string value of a json key using string
+ * matching, rather than actually parsing JSON.
+ */
+
 const char* zx_json_extract_raw(const char* hay, const char* key, int* len)
 {
-  strstr();
+  const char* s;
+  const char* p = strstr(hay, key);
+  if (!p)
+    return 0;
+  p += strspn(p, " \t\r\n");
+  if (*p != ':')
+    return 0;
+  ++p;
+  p += strspn(p, " \t\r\n");
+  if (*p != '"')
+    return 0;
+  s = ++p;
+  p = strchr(p, '"');
+  if (len)
+    *len = p-s;
+  return s;
 }
 
 char* zx_json_extract_dup(struct zx_ctx* c, const char* hay, const char* key)
 {
-
+  int len;
+  const char* p = zx_json_extract_raw(hay, key, &len);
+  if (!p)
+    return 0;
+  return zx_str_dup_len_cstr(c, len, p);
 }
 
 void zxumacall_dynclireg_client(zxid_conf* cf)
@@ -456,11 +496,11 @@ void zxumacall_dynclireg_client(zxid_conf* cf)
   client_secret = zx_json_extract_dup(cf->ctx, res->s, "\"client_secret\"");
 }
 
-void zxumacall_resreg_client(zxid_conf* cf)
+void zxumacall_rsrcreg_client(zxid_conf* cf)
 {
   struct zx_str* res;
   char* azhdr;
-  char* req = zxid_mk_oauth2_rsrc_reg_req(cf);
+  char* req = zxid_mk_oauth2_rsrc_reg_req(cf, rsrc_name, rsrc_icon_uri, rsrc_scope_url, rsrc_type);
   if (iat) {
     azhdr = zx_alloc_sprintf(cf->ctx, 0, "Authorization: Bearer %s", client_secret);
   } else
@@ -490,12 +530,19 @@ int zxumacall_main(int argc, char** argv, char** env)
   strncpy(errmac_instance, CC_CYNY("\tzxuma"), sizeof(errmac_instance));
   cf = zxid_new_conf_to_cf(0);
   opt(&argc, &argv, &env);
-  
+
   if (dynclireg) {
     zxumacall_dynclireg_client(cf);
     return 0;
   }
-  
+
+  if (rsrc_name) {
+    if (!client_secret)
+      zxumacall_dynclireg_client(cf);
+    zxumacall_rsrcreg_client(cf);
+    return 0;
+  }
+    
   if (sid) {
     D("Existing session sesid(%s)", sid);
     ses = zxid_fetch_ses(cf, sid);
