@@ -476,7 +476,7 @@ char* zx_json_extract_dup(struct zx_ctx* c, const char* hay, const char* key)
   const char* p = zx_json_extract_raw(hay, key, &len);
   if (!p)
     return 0;
-  return zx_str_dup_len_cstr(c, len, p);
+  return zx_dup_len_cstr(c, len, p);
 }
 
 void zxumacall_dynclireg_client(zxid_conf* cf)
@@ -489,6 +489,7 @@ void zxumacall_dynclireg_client(zxid_conf* cf)
   } else
     azhdr = 0;
   D("req(%s) iat(%s)", req, STRNULLCHKD(azhdr));
+  cf->wsc_soap_content_type = ZXID_JSON_CONTENT_TYPE;
   res = zxid_http_post_raw(cf, -1, url, -1, req, azhdr);
   printf("%.*s", res->len, res->s);
   /* *** extract client_id and client_secret */
@@ -506,6 +507,7 @@ void zxumacall_rsrcreg_client(zxid_conf* cf)
   } else
     azhdr = 0;
   D("req(%s) iat(%s)", req, STRNULLCHKD(azhdr));
+  cf->wsc_soap_content_type = ZXID_JSON_CONTENT_TYPE;
   res = zxid_http_post_raw(cf, -1, url, -1, req, azhdr);
   printf("%.*s", res->len, res->s);
   

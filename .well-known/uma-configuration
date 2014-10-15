@@ -12,7 +12,7 @@
 "token_endpoint":"https://zxidp.org/idpuma?o=tokissue",
 "user_endpoint":"https://zxidp.org/idpuma?o=consent",
 "introspection_endpoint":"https://zxidp.org/idpuma?o=tokquery",
-"resource_set_registration_endpoint":"https://zxidp.org/idpuma?o=JRR",
+"resource_set_registration_endpoint":"https://zxidp.org/idpuma?o=H&rest=",
 "permission_registration_endpoint":"https://zxidp.org/idpuma?o=permreg",
 "rpt_endpoint":"https://zxidp.org/idpuma?o=rpt",
 "authorization_request_endpoint":"https://zxidp.org/idpuma?o=azrq"

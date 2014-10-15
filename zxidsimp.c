@@ -761,11 +761,10 @@ char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_
      * last N bytes, where N is the number of newlines in the output
      */
     char *p = ss->s;
-    while( *p != '\0' )
-    {
-        if( *p == '\n' )
-            ++extralen;
-        p++;
+    while(*p != '\0') {
+      if(*p == '\n')
+	++extralen;
+      p++;
     }
 #endif
     fprintf(stdout, "%sContent-Type: %s" CRLF "Content-Length: %d" CRLF2 "%.*s",
@@ -911,6 +910,22 @@ static char* zxid_simple_show_dynclireg(zxid_conf* cf, zxid_cgi* cgi, int* res_l
 			       //"text/json",
 			       "application/json",
 			       res_len, auto_flags, "Status: 201 Created" CRLF);
+}
+
+/*() Perform and reply to OAUTH2 Resource Registration. Corresponds to "o=H" query string. */
+
+/* Called by:  zxid_simple_no_ses_cf, zxid_simple_ses_active_cf */
+static char* zxid_simple_show_rsrcreg(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
+{
+  char rev[256];
+  char status_etag[1024];
+  struct zx_str* ss = zx_ref_str(cf->ctx, zxid_mk_oauth2_rsrc_reg_res(cf, cgi, rev));
+  snprintf(status_etag, sizeof(status_etag), "Status: 201 Created" CRLF "Status: %s" CRLF, rev);
+  return zxid_simple_show_page(cf, ss, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
+			       "H",
+			       //"text/json",
+			       "application/json",
+			       res_len, auto_flags, status_etag);
 }
 
 /*() Show Error screen. */
@@ -1341,7 +1356,8 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * B = Metadata
    * b = Metadata Authority
    * j = jwks
-   * J = Dynamic client registration endpoint
+   * J = OAUTH2 Dynamic client registration endpoint
+   * H = OAUTH2 Resource Registration endpoint
    *
    * M = CDC redirect and LECP detect
    * C = CDC reader
@@ -1360,7 +1376,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * F = IdP: Return SSO A7N after successful An; no ses case, generate IdP ui
    * V = Proxy IdP return
    *
-   * Still available: HJUVWXacefghikoqwxyz
+   * Still available: HUVWXacefghikqwxyz
    */
   
   if (cgi->enc_hint)
@@ -1443,6 +1459,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
     D("idp err(%.*s) (fall thru)", ss->len, ss->s);
     /* *** */
     break;
+  case 'H': return zxid_simple_show_rsrcreg(cf, cgi, res_len, auto_flags);
   case 'J': return zxid_simple_show_dynclireg(cf, cgi, res_len, auto_flags);
   case 'j': return zxid_simple_show_jwks(cf, cgi, res_len, auto_flags);
   case 'c': return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
@@ -1613,12 +1630,13 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
     }
     D("Q err (fall thru) %d", 0);
     break;
-  case 'J':    return zxid_simple_show_dynclireg(cf, cgi, res_len, auto_flags);
-  case 'j':    return zxid_simple_show_jwks(cf, cgi, res_len, auto_flags);
-  case 'c':    return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
-  case 'd':    return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
-  case 'B':    return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
-  case 'b':    return zxid_simple_md_authority(cf, cgi, res_len, auto_flags);
+  case 'H': return zxid_simple_show_rsrcreg(cf, cgi, res_len, auto_flags);
+  case 'J': return zxid_simple_show_dynclireg(cf, cgi, res_len, auto_flags);
+  case 'j': return zxid_simple_show_jwks(cf, cgi, res_len, auto_flags);
+  case 'c': return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
+  case 'd': return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
+  case 'B': return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
+  case 'b': return zxid_simple_md_authority(cf, cgi, res_len, auto_flags);
   case 'D': /*  Delegation / Invitation URL clicked. */
     return zxid_ps_accept_invite(cf, cgi, ses, res_len, auto_flags);
   case 'R':
@@ -1708,7 +1726,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
     if (qs) {
       D("QUERY_STRING(%s) %s %d", STRNULLCHK(qs), ZXID_REL, errmac_debug);
       zxid_parse_cgi(cf, &cgi, qs);
-      if (ONE_OF_6(cgi.op, 'J', 'P', 'R', 'S', 'Y', 'Z')) {
+      if (ONE_OF_7(cgi.op, 'H', 'J', 'P', 'R', 'S', 'Y', 'Z')) {
 	cont_len = getenv("CONTENT_LENGTH");
 	if (cont_len) {
 	  sscanf(cont_len, "%d", &got);

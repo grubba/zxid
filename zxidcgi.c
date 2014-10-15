@@ -76,6 +76,7 @@ int zxid_parse_cgi(zxid_conf* cf, zxid_cgi* cgi, char* qs)
       if (!strcmp(n, "redirect_uri"))  { cgi->redirect_uri = v;	 break; }  /* OAUTH2 */
       if (!strcmp(n, "redirafter"))    { cgi->redirafter = v;	 break; }
       if (!strcmp(n, "rs"))            { cgi->rs = v; break; }
+      if (!strcmp(n, "rest"))          { cgi->rest = v; break; }
       goto unknown;
     case 's':
       if (!n[1]) { cgi->sid = v; break; }

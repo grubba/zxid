@@ -548,6 +548,12 @@
  */
 #define ZXID_OAZ_JWT_SIGENC_ALG 'n'
 
+/*(c) JSON client Content-Type header generation
+ * Various styles exist */
+//#define ZXID_JSON_CONTENT_TYPE "Content-Type: text/json"
+#define ZXID_JSON_CONTENT_TYPE "Content-Type: application/json"
+
+
 /*(c) Command that will be executed by zxidwspcgi to respond to a web service call. */
 #ifndef ZXID_WSPCGICMD
 #define ZXID_WSPCGICMD "./zxid-wspcgicmd.sh"

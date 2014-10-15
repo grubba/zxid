@@ -439,6 +439,7 @@ struct zxid_cgi {
   char* sp_eid;        /* IdP An for to generate page */
   char* sp_dpy_name;
   char* sp_button_url;
+  char* rest;          /* OAUTH2 Resource Set Registration: RESTful part of the URI */
   char* response_type; /* OAuth2 / OpenID-Connect */
   char* client_id;     /* OAuth2 */
   char* scope;         /* OAuth2 */
@@ -694,6 +695,7 @@ struct zxid_invite {
 #define ZXID_INV_DIR  "inv/"
 #define ZXID_LOG_DIR  "log/"
 #define ZXID_DCR_DIR  "dcr/"  /* OAUTH2 Dynamic Client Registrations */
+#define ZXID_RSR_DIR  "rsr/"  /* OAUTH2 Resource Set Registrations */
 #define ZXID_MAX_USER (256)   /* Maximum size of .mni or user file */
 #define ZXID_INIT_MD_BUF   (8*1024-1)  /* Initial size, will automatically reallocate. */
 #define ZXID_INIT_SOAP_BUF (8*1024-1)  /* Initial size, will automatically reallocate. */
@@ -996,6 +998,8 @@ ZXID_DECL struct zx_str* zxid_mk_oauth_az_req(zxid_conf* cf, zxid_cgi* cgi, stru
 ZXID_DECL char* zxid_mk_jwks(zxid_conf* cf);
 ZXID_DECL char* zxid_mk_oauth2_dyn_cli_reg_req(zxid_conf* cf);
 ZXID_DECL char* zxid_mk_oauth2_dyn_cli_reg_res(zxid_conf* cf, zxid_cgi* cgi);
+ZXID_DECL char* zxid_mk_oauth2_rsrc_reg_req(zxid_conf* cf, const char* rsrc_name, const char* rsrc_icon_uri, const char* rsrc_scope_url, const char* rsrc_type);
+  ZXID_DECL char* zxid_mk_oauth2_rsrc_reg_res(zxid_conf* cf, zxid_cgi* cgi, char* rev);
 
 /* zxidmkwsf */
 

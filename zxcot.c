@@ -329,6 +329,8 @@ static const char* mkdirs_list[] = {
 "cot",
 "inv",
 "dimd",
+"dcr",
+"rsr",
 "uid/.all",
 "uid/.all/.bs",
 "tmp",

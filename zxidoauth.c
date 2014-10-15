@@ -209,7 +209,7 @@ char* zxid_mk_oauth2_dyn_cli_reg_res(zxid_conf* cf, zxid_cgi* cgi)
   return buf;
 }
 
-/*() Create OAUTH2 Dynamic Client Registration request.
+/*() Create OAUTH2 Resource Set Registration request.
  * See: https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg-03
  * The scope URL should point to scope description (created by hand
  * and put to the server in right place), e.g. at https://server/scope/scope.json
@@ -220,9 +220,7 @@ char* zxid_mk_oauth2_dyn_cli_reg_res(zxid_conf* cf, zxid_cgi* cgi)
 /* Called by:  */
 char* zxid_mk_oauth2_rsrc_reg_req(zxid_conf* cf, const char* rsrc_name, const char* rsrc_icon_uri, const char* rsrc_scope_url, const char* rsrc_type)
 {
-  char* jwks;
   char* buf;
-  jwks = zxid_mk_jwks(cf);
   buf = zx_alloc_sprintf(cf->ctx, 0,
 			 "{\"name\":\"%s\""
 			 ",\"icon_uri\":\"%s\""
@@ -235,17 +233,15 @@ char* zxid_mk_oauth2_rsrc_reg_req(zxid_conf* cf, const char* rsrc_name, const ch
   return buf;
 }
 
-/*() Perform the registration and create OAUTH2 Dynamic Client Registration Response.
+/*() Perform the registration and create OAUTH2 Resource Set Registration Response.
  * The unparsed JSON for request is in the cgi->post field.
  * See: https://tools.ietf.org/html/draft-hardjono-oauth-resource-reg-03 */
 
-char* zxid_mk_oauth_rsrc_reg_res(zxid_conf* cf, zxid_cgi* cgi)
+char* zxid_mk_oauth2_rsrc_reg_res(zxid_conf* cf, zxid_cgi* cgi, char* rev)
 {
   char* buf;
-  char* iat;
-  struct zx_str* client_id;
-  struct zx_str* client_secret;
-  int secs = time(0);
+  char* pat;
+  struct zx_str* rs_id;
 
   /* *** check for IAT */
 
@@ -254,32 +250,27 @@ char* zxid_mk_oauth_rsrc_reg_res(zxid_conf* cf, zxid_cgi* cgi)
     return 0;
   }
 
-  client_id = zxid_mk_id(cf, "CI", ZXID_ID_BITS);
-  client_secret = zxid_mk_id(cf, "CS", ZXID_ID_BITS);
-  iat = getenv("HTTP_AUTHORIZATION");
+  rs_id = zxid_mk_id(cf, "RS", ZXID_ID_BITS);
+  pat = getenv("HTTP_AUTHORIZATION");
+  strcpy(rev, "r1");
+  D("rs_id(%.*s) rev(%s) pat(%s)", rs_id->len, rs_id->s, rev, pat);
+
+  // *** TODO: Check PAT
+  // *** TODO: Add registerer's (usually resource server) identity to path
+  if (!write_all_path("rsrc_reg", "%s" ZXID_RSR_DIR "%s", cf->cpath, rs_id->s, -1, cgi->post)) {
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "S", "RSR", rs_id->s, "writing resource reg fail, permissions?");
+  } else
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "K", "RSR", rs_id->s, "ip(%s)", cf->ipport);
+  ZX_FREE(cf->ctx, rs_id);
   
   buf = zx_alloc_sprintf(cf->ctx, 0,
-			 "{\"client_id\":\"%.*s\""
-			 ",\"client_secret\":\"%.*s\""
-			 ",\"client_id_issued_at\":%d"
-			 ",\"client_secret_expires_at\":%d"
-			 ",\"client_src_ip\":\"%s\""
-			 ",\"client_iat\":\"%s\""
-			 ",%s",
-			 client_id->len, client_id->s,
-			 client_secret->len, client_secret->s,
-			 secs,
-			 secs+86400,
-			 cf->ipport,
-			 STRNULLCHK(iat),
-			 cgi->post+1);
-
-  if (!write_all_path("dyn_cli_reg", "%s" ZXID_DCR_DIR "%s", cf->cpath, client_id->s, -1, buf)) {
-    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "S", "RR", client_id->s, "writing dyn cli reg fail, permissions?");
-  } else
-    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "K", "RR", client_id->s, "ip(%s)", cf->ipport);
-  ZX_FREE(cf->ctx, client_id);
-  ZX_FREE(cf->ctx, client_secret);
+			 "{\"status\":\"created\""
+			 ",\"_id\":\"%.*s\""
+			 ",\"_rev\":\"%s\"",
+			 ",\"policy_uri\":\"%s%co=consent\"}",
+			 rs_id->len, rs_id->s,
+			 rev,
+			 cf->burl, strchr(cf->burl, '?')?'&':'?');
   return buf;
 }
 
