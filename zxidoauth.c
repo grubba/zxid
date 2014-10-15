@@ -75,7 +75,8 @@ char* zxid_mk_jwk(zxid_conf* cf, char* pem, int enc_use)
     ERR("DER decoding of X509 certificate failed.\n%d", enc_use);
     return 0;
   }
-  
+
+  zx_zap_inplace_raw(pem, "\n\r \t");
   rsa = zx_get_rsa_pub_from_cert(x, "mk_jwk");
   n_b64 = zxid_bn2b64(cf, rsa?rsa->n:0);
   e_b64 = zxid_bn2b64(cf, rsa?rsa->e:0);

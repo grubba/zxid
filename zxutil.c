@@ -1101,6 +1101,28 @@ char* zxid_unbase64_inflate(struct zx_ctx* c, int in_len, const char* in, int* o
   return p;
 }
 
+/*() Eliminate characters in zap from the string s, in place, i.e. shifting the
+ * tail of the string left. The string is modified in place. */
+
+char* zx_zap_inplace_raw(char* s, const char* zap)
+{
+  char* ret = s;
+  char* p;
+  // *** scanning in reverse would be (marginally) more efficient
+  int n;
+  while (*s) {
+    n = strcspn(s, zap);
+    s += n;
+    if (!*s)
+      return ret;
+    n = strspn(s, zap);
+    for (p = s; *(p+n); ++p)
+      *p = *(p+n);
+    *p = 0;
+    //memmove(s, s+n);  // whish strmove existed
+  }
+}
+
 #if 1
 /* N.B. Many other Liberty implementations expect nearly everything to be URL encoded. */
 #define URL_BAD(x) (!AZaz_09_(x))

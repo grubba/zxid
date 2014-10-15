@@ -99,6 +99,7 @@ ZXID_DECL int write_all_path(const char* logkey, const char* path_fmt, const cha
 ZXID_DECL int copy_file(const char* from, const char* to, const char* logkey, int may_link);
 ZXID_DECL int close_file(fdtype fd, const char* logkey);
 ZXID_DECL int send_all_socket(fdtype fd, const char* p, int pending);
+ZXID_DECL char* zx_zap_inplace_raw(char* s, const char* zap);
 
 struct zxid_curl_ctx {
   char* p;
