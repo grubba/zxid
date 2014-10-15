@@ -114,9 +114,7 @@ char* zxid_mk_jwks(zxid_conf* cf)
   pem = zxid_read_cert_pem(cf, "enc-nopw-cert.pem", sizeof(pem_buf), pem_buf);
   enc_jwk = zxid_mk_jwk(cf, pem, 1);
   
-  buf = zx_alloc_sprintf(cf->ctx, 0,
-			 "{\"keys\":[\"%s\",\"%s\"]}",
-			 sig_jwk, enc_jwk);
+  buf = zx_alloc_sprintf(cf->ctx, 0, "{\"keys\":[%s,%s]}", sig_jwk, enc_jwk);
   ZX_FREE(cf->ctx, sig_jwk);
   ZX_FREE(cf->ctx, enc_jwk);
   return buf;
