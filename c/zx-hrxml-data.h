@@ -208,7 +208,7 @@ void zx_hrxml_AffirmativeActionPlanJobGroupId_REV_IdValue(struct zx_hrxml_Affirm
 
 #endif
 /* -------------------------- hrxml_Affix -------------------------- */
-/* refby( zx_hrxml_ContactName_s zx_hrxml_PersonName_s zx_hrxml_AlternateScript_s ) */
+/* refby( zx_hrxml_AlternateScript_s zx_hrxml_ContactName_s zx_hrxml_PersonName_s ) */
 #ifndef zx_hrxml_Affix_EXT
 #define zx_hrxml_Affix_EXT
 #endif
@@ -646,7 +646,7 @@ void zx_hrxml_Association_REV_Comments(struct zx_hrxml_Association_s* x);
 
 #endif
 /* -------------------------- hrxml_Associations -------------------------- */
-/* refby( zx_hrxml_CandidateProfile_s zx_hrxml_StructuredXMLResume_s ) */
+/* refby( zx_hrxml_StructuredXMLResume_s zx_hrxml_CandidateProfile_s ) */
 #ifndef zx_hrxml_Associations_EXT
 #define zx_hrxml_Associations_EXT
 #endif
@@ -1393,7 +1393,7 @@ void zx_hrxml_Book_REV_PublisherLocation(struct zx_hrxml_Book_s* x);
 
 #endif
 /* -------------------------- hrxml_Candidate -------------------------- */
-/* refby( zx_idhrxml_ItemData_s zx_idhrxml_Data_s zx_idhrxml_NewData_s ) */
+/* refby( zx_idhrxml_ItemData_s zx_idhrxml_NewData_s zx_idhrxml_Data_s ) */
 #ifndef zx_hrxml_Candidate_EXT
 #define zx_hrxml_Candidate_EXT
 #endif
@@ -1915,7 +1915,7 @@ void zx_hrxml_Commute_REV_Comments(struct zx_hrxml_Commute_s* x);
 
 #endif
 /* -------------------------- hrxml_Company -------------------------- */
-/* refby( zx_hrxml_PositionMatching_s zx_hrxml_PreferredPosition_s ) */
+/* refby( zx_hrxml_PreferredPosition_s zx_hrxml_PositionMatching_s ) */
 #ifndef zx_hrxml_Company_EXT
 #define zx_hrxml_Company_EXT
 #endif
@@ -2080,7 +2080,7 @@ void zx_hrxml_Compensation_REV_OtherCompensation(struct zx_hrxml_Compensation_s*
 
 #endif
 /* -------------------------- hrxml_Competency -------------------------- */
-/* refby( zx_hrxml_PositionHistory_s zx_hrxml_PositionMatching_s zx_hrxml_Qualifications_s zx_hrxml_Competency_s zx_hrxml_PreferredPosition_s ) */
+/* refby( zx_hrxml_PreferredPosition_s zx_hrxml_Qualifications_s zx_hrxml_PositionHistory_s zx_hrxml_PositionMatching_s zx_hrxml_Competency_s ) */
 #ifndef zx_hrxml_Competency_EXT
 #define zx_hrxml_Competency_EXT
 #endif
@@ -2716,7 +2716,7 @@ void zx_hrxml_ContactId_REV_IdValue(struct zx_hrxml_ContactId_s* x);
 
 #endif
 /* -------------------------- hrxml_ContactInfo -------------------------- */
-/* refby( zx_hrxml_StructuredXMLResume_s zx_hrxml_RelatedOrganization_s zx_hrxml_Verification_s ) */
+/* refby( zx_hrxml_RelatedOrganization_s zx_hrxml_Verification_s zx_hrxml_StructuredXMLResume_s ) */
 #ifndef zx_hrxml_ContactInfo_EXT
 #define zx_hrxml_ContactInfo_EXT
 #endif
@@ -2767,7 +2767,7 @@ void zx_hrxml_ContactInfo_REV_ContactMethod(struct zx_hrxml_ContactInfo_s* x);
 
 #endif
 /* -------------------------- hrxml_ContactMethod -------------------------- */
-/* refby( zx_hrxml_ContactInfo_s zx_hrxml_CandidateSupplier_s zx_hrxml_PersonMember_s zx_hrxml_Reference_s zx_hrxml_EmployerContactInfo_s zx_hrxml_DistributeTo_s zx_hrxml_PersonalData_s ) */
+/* refby( zx_hrxml_ContactInfo_s zx_hrxml_PersonalData_s zx_hrxml_DistributeTo_s zx_hrxml_CandidateSupplier_s zx_hrxml_EmployerContactInfo_s zx_hrxml_PersonMember_s zx_hrxml_Reference_s ) */
 #ifndef zx_hrxml_ContactMethod_EXT
 #define zx_hrxml_ContactMethod_EXT
 #endif
@@ -3007,7 +3007,7 @@ void zx_hrxml_ContactName_REV_AlternateScript(struct zx_hrxml_ContactName_s* x);
 
 #endif
 /* -------------------------- hrxml_Copyright -------------------------- */
-/* refby( zx_hrxml_OtherPublication_s zx_hrxml_Book_s zx_hrxml_Article_s zx_hrxml_ConferencePaper_s ) */
+/* refby( zx_hrxml_OtherPublication_s zx_hrxml_ConferencePaper_s zx_hrxml_Article_s zx_hrxml_Book_s ) */
 #ifndef zx_hrxml_Copyright_EXT
 #define zx_hrxml_Copyright_EXT
 #endif
@@ -3943,7 +3943,7 @@ void zx_hrxml_DemographicDescriptors_REV_UserArea(struct zx_hrxml_DemographicDes
 
 #endif
 /* -------------------------- hrxml_Description -------------------------- */
-/* refby( zx_hrxml_Patent_s zx_hrxml_ResumeAdditionalItem_s zx_hrxml_LocalInstitutionClassification_s zx_hrxml_RelatedOrganization_s zx_hrxml_SecurityCredential_s zx_hrxml_RelatedOrganizationalUnit_s zx_hrxml_PositionHistory_s zx_hrxml_PersonRole_s zx_hrxml_SpeakingEvent_s zx_hrxml_WorkSiteEnvironment_s zx_hrxml_TimeOffAllowance_s zx_hrxml_RelocationAssistance_s zx_hrxml_OrganizationalUnit_s zx_hrxml_CompanyVehicle_s zx_hrxml_Achievement_s zx_hrxml_SupportingMaterials_s zx_hrxml_LicenseOrCertification_s zx_hrxml_DegreeClassification_s ) */
+/* refby( zx_hrxml_Achievement_s zx_hrxml_SupportingMaterials_s zx_hrxml_ResumeAdditionalItem_s zx_hrxml_Patent_s zx_hrxml_RelocationAssistance_s zx_hrxml_CompanyVehicle_s zx_hrxml_DegreeClassification_s zx_hrxml_SpeakingEvent_s zx_hrxml_PersonRole_s zx_hrxml_WorkSiteEnvironment_s zx_hrxml_PositionHistory_s zx_hrxml_LicenseOrCertification_s zx_hrxml_RelatedOrganizationalUnit_s zx_hrxml_RelatedOrganization_s zx_hrxml_SecurityCredential_s zx_hrxml_LocalInstitutionClassification_s zx_hrxml_OrganizationalUnit_s zx_hrxml_TimeOffAllowance_s ) */
 #ifndef zx_hrxml_Description_EXT
 #define zx_hrxml_Description_EXT
 #endif
@@ -4201,7 +4201,7 @@ void zx_hrxml_DoingBusinessAs_PUT_lang(struct zx_hrxml_DoingBusinessAs_s* x, str
 
 #endif
 /* -------------------------- hrxml_DressCode -------------------------- */
-/* refby( zx_hrxml_Considerations_s zx_hrxml_PositionMatching_s zx_hrxml_PreferredPosition_s ) */
+/* refby( zx_hrxml_PreferredPosition_s zx_hrxml_PositionMatching_s zx_hrxml_Considerations_s ) */
 #ifndef zx_hrxml_DressCode_EXT
 #define zx_hrxml_DressCode_EXT
 #endif
@@ -4324,7 +4324,7 @@ void zx_hrxml_EEOCJobCategory_REV_NonStandardValue(struct zx_hrxml_EEOCJobCatego
 
 #endif
 /* -------------------------- hrxml_EducationHistory -------------------------- */
-/* refby( zx_hrxml_CandidateProfile_s zx_hrxml_StructuredXMLResume_s ) */
+/* refby( zx_hrxml_StructuredXMLResume_s zx_hrxml_CandidateProfile_s ) */
 #ifndef zx_hrxml_EducationHistory_EXT
 #define zx_hrxml_EducationHistory_EXT
 #endif
@@ -4453,7 +4453,7 @@ void zx_hrxml_EducationalMeasure_REV_GoodStudentIndicator(struct zx_hrxml_Educat
 
 #endif
 /* -------------------------- hrxml_EffectiveDate -------------------------- */
-/* refby( zx_hrxml_ResumeAdditionalItem_s zx_hrxml_SecurityCredential_s zx_hrxml_PhysicalLocation_s zx_hrxml_LicenseOrCertification_s ) */
+/* refby( zx_hrxml_PhysicalLocation_s zx_hrxml_ResumeAdditionalItem_s zx_hrxml_LicenseOrCertification_s zx_hrxml_SecurityCredential_s ) */
 #ifndef zx_hrxml_EffectiveDate_EXT
 #define zx_hrxml_EffectiveDate_EXT
 #endif
@@ -4648,7 +4648,7 @@ void zx_hrxml_EmployerOrg_REV_UserArea(struct zx_hrxml_EmployerOrg_s* x);
 
 #endif
 /* -------------------------- hrxml_EmploymentHistory -------------------------- */
-/* refby( zx_hrxml_CandidateProfile_s zx_hrxml_StructuredXMLResume_s ) */
+/* refby( zx_hrxml_StructuredXMLResume_s zx_hrxml_CandidateProfile_s ) */
 #ifndef zx_hrxml_EmploymentHistory_EXT
 #define zx_hrxml_EmploymentHistory_EXT
 #endif
@@ -4690,7 +4690,7 @@ void zx_hrxml_EmploymentHistory_REV_EmployerOrg(struct zx_hrxml_EmploymentHistor
 
 #endif
 /* -------------------------- hrxml_EndDate -------------------------- */
-/* refby( zx_hrxml_EffectiveDate_s zx_hrxml_Association_s zx_hrxml_DatesOfService_s zx_hrxml_PositionHistory_s zx_hrxml_SpeakingEvent_s zx_hrxml_AvailabilityDates_s zx_hrxml_DatesOfAttendance_s ) */
+/* refby( zx_hrxml_SpeakingEvent_s zx_hrxml_DatesOfAttendance_s zx_hrxml_Association_s zx_hrxml_PositionHistory_s zx_hrxml_EffectiveDate_s zx_hrxml_AvailabilityDates_s zx_hrxml_DatesOfService_s ) */
 #ifndef zx_hrxml_EndDate_EXT
 #define zx_hrxml_EndDate_EXT
 #endif
@@ -4960,7 +4960,7 @@ void zx_hrxml_ExpatriateBenefits_REV_ExpatriateBenefitList(struct zx_hrxml_Expat
 
 #endif
 /* -------------------------- hrxml_FamilyName -------------------------- */
-/* refby( zx_hrxml_ContactName_s zx_hrxml_PersonName_s zx_hrxml_AlternateScript_s ) */
+/* refby( zx_hrxml_AlternateScript_s zx_hrxml_ContactName_s zx_hrxml_PersonName_s ) */
 #ifndef zx_hrxml_FamilyName_EXT
 #define zx_hrxml_FamilyName_EXT
 #endif
@@ -5278,7 +5278,7 @@ int zx_WALK_WO_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_Horizo
 
 #endif
 /* -------------------------- hrxml_Id -------------------------- */
-/* refby( zx_hrxml_Shift_s zx_hrxml_PositionPosting_s zx_hrxml_Association_s zx_hrxml_LocalInstitutionClassification_s zx_hrxml_Stock_s zx_hrxml_SecurityCredential_s zx_hrxml_CandidateRecordInfo_s zx_hrxml_PhysicalLocation_s zx_hrxml_SEPPhysicalLocation_s zx_hrxml_Company_s zx_hrxml_LicenseOrCertification_s zx_hrxml_PatentMilestone_s zx_hrxml_DegreeClassification_s ) */
+/* refby( zx_hrxml_PhysicalLocation_s zx_hrxml_Company_s zx_hrxml_DegreeClassification_s zx_hrxml_CandidateRecordInfo_s zx_hrxml_PositionPosting_s zx_hrxml_PatentMilestone_s zx_hrxml_Shift_s zx_hrxml_Association_s zx_hrxml_Stock_s zx_hrxml_LicenseOrCertification_s zx_hrxml_SEPPhysicalLocation_s zx_hrxml_SecurityCredential_s zx_hrxml_LocalInstitutionClassification_s ) */
 #ifndef zx_hrxml_Id_EXT
 #define zx_hrxml_Id_EXT
 #endif
@@ -5329,7 +5329,7 @@ void zx_hrxml_Id_REV_IdValue(struct zx_hrxml_Id_s* x);
 
 #endif
 /* -------------------------- hrxml_IdValue -------------------------- */
-/* refby( zx_hrxml_Id_s zx_hrxml_MatchedObjectId_s zx_hrxml_EnvironmentId_s zx_hrxml_RoleId_s zx_hrxml_ContactId_s zx_hrxml_LegalId_s zx_hrxml_OrganizationalUnitId_s zx_hrxml_CompetencyId_s zx_hrxml_OrganizationId_s zx_hrxml_AffirmativeActionPlanJobGroupId_s zx_hrxml_SearchCriteriaId_s zx_hrxml_PersonLegalId_s zx_hrxml_ProfileId_s zx_hrxml_WorkSiteId_s zx_hrxml_SchoolId_s zx_hrxml_SupplierId_s zx_hrxml_ProgramId_s zx_hrxml_PersonId_s zx_hrxml_TaxId_s zx_hrxml_ServiceNumber_s zx_hrxml_BKZId_s zx_hrxml_SearchResultId_s zx_hrxml_UserId_s ) */
+/* refby( zx_hrxml_Id_s zx_hrxml_ProgramId_s zx_hrxml_OrganizationalUnitId_s zx_hrxml_ContactId_s zx_hrxml_BKZId_s zx_hrxml_PersonLegalId_s zx_hrxml_RoleId_s zx_hrxml_CompetencyId_s zx_hrxml_LegalId_s zx_hrxml_EnvironmentId_s zx_hrxml_ProfileId_s zx_hrxml_PersonId_s zx_hrxml_AffirmativeActionPlanJobGroupId_s zx_hrxml_ServiceNumber_s zx_hrxml_OrganizationId_s zx_hrxml_WorkSiteId_s zx_hrxml_SearchResultId_s zx_hrxml_TaxId_s zx_hrxml_SchoolId_s zx_hrxml_SupplierId_s zx_hrxml_MatchedObjectId_s zx_hrxml_UserId_s zx_hrxml_SearchCriteriaId_s ) */
 #ifndef zx_hrxml_IdValue_EXT
 #define zx_hrxml_IdValue_EXT
 #endif
@@ -5365,7 +5365,7 @@ void zx_hrxml_IdValue_PUT_name(struct zx_hrxml_IdValue_s* x, struct zx_attr_s* y
 
 #endif
 /* -------------------------- hrxml_IndustryCode -------------------------- */
-/* refby( zx_hrxml_RelatedOrganization_s zx_hrxml_RelatedOrganizationalUnit_s zx_hrxml_PositionMatching_s zx_hrxml_OrgIndustry_s zx_hrxml_OrganizationalUnit_s zx_hrxml_PreferredPosition_s ) */
+/* refby( zx_hrxml_OrgIndustry_s zx_hrxml_PreferredPosition_s zx_hrxml_PositionMatching_s zx_hrxml_RelatedOrganizationalUnit_s zx_hrxml_RelatedOrganization_s zx_hrxml_OrganizationalUnit_s ) */
 #ifndef zx_hrxml_IndustryCode_EXT
 #define zx_hrxml_IndustryCode_EXT
 #endif
@@ -5440,7 +5440,7 @@ void zx_hrxml_Insurance_PUT_type(struct zx_hrxml_Insurance_s* x, struct zx_attr_
 
 #endif
 /* -------------------------- hrxml_InternetDomainName -------------------------- */
-/* refby( zx_hrxml_School_s zx_hrxml_RelatedOrganization_s zx_hrxml_EmployerContactInfo_s ) */
+/* refby( zx_hrxml_EmployerContactInfo_s zx_hrxml_RelatedOrganization_s zx_hrxml_School_s ) */
 #ifndef zx_hrxml_InternetDomainName_EXT
 #define zx_hrxml_InternetDomainName_EXT
 #endif
@@ -5518,7 +5518,7 @@ void zx_hrxml_Inventors_REV_InventorName(struct zx_hrxml_Inventors_s* x);
 
 #endif
 /* -------------------------- hrxml_IssuingAuthority -------------------------- */
-/* refby( zx_hrxml_SecurityCredential_s zx_hrxml_PatentDetail_s zx_hrxml_Achievement_s zx_hrxml_LicenseOrCertification_s ) */
+/* refby( zx_hrxml_Achievement_s zx_hrxml_PatentDetail_s zx_hrxml_LicenseOrCertification_s zx_hrxml_SecurityCredential_s ) */
 #ifndef zx_hrxml_IssuingAuthority_EXT
 #define zx_hrxml_IssuingAuthority_EXT
 #endif
@@ -5554,7 +5554,7 @@ void zx_hrxml_IssuingAuthority_PUT_countryCode(struct zx_hrxml_IssuingAuthority_
 
 #endif
 /* -------------------------- hrxml_JobCategory -------------------------- */
-/* refby( zx_hrxml_JobCategory_s zx_hrxml_PositionHistory_s zx_hrxml_PositionMatching_s zx_hrxml_PreferredPosition_s ) */
+/* refby( zx_hrxml_JobCategory_s zx_hrxml_PreferredPosition_s zx_hrxml_PositionHistory_s zx_hrxml_PositionMatching_s ) */
 #ifndef zx_hrxml_JobCategory_EXT
 #define zx_hrxml_JobCategory_EXT
 #endif
@@ -6535,7 +6535,7 @@ void zx_hrxml_Measure_REV_MeasureValue(struct zx_hrxml_Measure_s* x);
 
 #endif
 /* -------------------------- hrxml_MilitaryHistory -------------------------- */
-/* refby( zx_hrxml_CandidateProfile_s zx_hrxml_StructuredXMLResume_s ) */
+/* refby( zx_hrxml_StructuredXMLResume_s zx_hrxml_CandidateProfile_s ) */
 #ifndef zx_hrxml_MilitaryHistory_EXT
 #define zx_hrxml_MilitaryHistory_EXT
 #endif
@@ -6862,7 +6862,7 @@ void zx_hrxml_NonXMLResume_REV_RevisionDate(struct zx_hrxml_NonXMLResume_s* x);
 
 #endif
 /* -------------------------- hrxml_NumericValue -------------------------- */
-/* refby( zx_hrxml_HighestPossibleValue_s zx_hrxml_LowestPossibleValue_s zx_hrxml_CompetencyWeight_s zx_hrxml_CompetencyEvidence_s ) */
+/* refby( zx_hrxml_CompetencyEvidence_s zx_hrxml_CompetencyWeight_s zx_hrxml_HighestPossibleValue_s zx_hrxml_LowestPossibleValue_s ) */
 #ifndef zx_hrxml_NumericValue_EXT
 #define zx_hrxml_NumericValue_EXT
 #endif
@@ -7108,7 +7108,7 @@ int zx_WALK_WO_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization
 
 #endif
 /* -------------------------- hrxml_OrganizationId -------------------------- */
-/* refby( zx_hrxml_RelatedOrganization_s zx_hrxml_RelatedOrganizationalUnit_s zx_hrxml_OrganizationalUnit_s ) */
+/* refby( zx_hrxml_RelatedOrganizationalUnit_s zx_hrxml_RelatedOrganization_s zx_hrxml_OrganizationalUnit_s ) */
 #ifndef zx_hrxml_OrganizationId_EXT
 #define zx_hrxml_OrganizationId_EXT
 #endif
@@ -8260,7 +8260,7 @@ void zx_hrxml_PersonDescriptors_REV_UserArea(struct zx_hrxml_PersonDescriptors_s
 
 #endif
 /* -------------------------- hrxml_PersonId -------------------------- */
-/* refby( zx_hrxml_PersonMember_s zx_hrxml_PersonalData_s ) */
+/* refby( zx_hrxml_PersonalData_s zx_hrxml_PersonMember_s ) */
 #ifndef zx_hrxml_PersonId_EXT
 #define zx_hrxml_PersonId_EXT
 #endif
@@ -8446,7 +8446,7 @@ void zx_hrxml_PersonMember_REV_ContactMethod(struct zx_hrxml_PersonMember_s* x);
 
 #endif
 /* -------------------------- hrxml_PersonName -------------------------- */
-/* refby( zx_hrxml_ContactInfo_s zx_hrxml_PersonMember_s zx_hrxml_Reference_s zx_hrxml_EmployerContactInfo_s zx_hrxml_Recipient_s zx_hrxml_PersonalData_s ) */
+/* refby( zx_hrxml_ContactInfo_s zx_hrxml_PersonalData_s zx_hrxml_Recipient_s zx_hrxml_EmployerContactInfo_s zx_hrxml_PersonMember_s zx_hrxml_Reference_s ) */
 #ifndef zx_hrxml_PersonName_EXT
 #define zx_hrxml_PersonName_EXT
 #endif
@@ -8695,7 +8695,7 @@ void zx_hrxml_PersonalData_REV_UserArea(struct zx_hrxml_PersonalData_s* x);
 
 #endif
 /* -------------------------- hrxml_PhysicalLocation -------------------------- */
-/* refby( zx_hrxml_PositionMatching_s zx_hrxml_PreferredPosition_s ) */
+/* refby( zx_hrxml_PreferredPosition_s zx_hrxml_PositionMatching_s ) */
 #ifndef zx_hrxml_PhysicalLocation_EXT
 #define zx_hrxml_PhysicalLocation_EXT
 #endif
@@ -9328,7 +9328,7 @@ void zx_hrxml_PositionPosting_REV_SearchResult(struct zx_hrxml_PositionPosting_s
 
 #endif
 /* -------------------------- hrxml_PositionSchedule -------------------------- */
-/* refby( zx_hrxml_PositionMatching_s zx_hrxml_PreferredPosition_s ) */
+/* refby( zx_hrxml_PreferredPosition_s zx_hrxml_PositionMatching_s ) */
 #ifndef zx_hrxml_PositionSchedule_EXT
 #define zx_hrxml_PositionSchedule_EXT
 #endif
@@ -9364,7 +9364,7 @@ void zx_hrxml_PositionSchedule_PUT_percentage(struct zx_hrxml_PositionSchedule_s
 
 #endif
 /* -------------------------- hrxml_PostalAddress -------------------------- */
-/* refby( zx_hrxml_WorkSite_s zx_hrxml_SchoolOrInstitution_s zx_hrxml_PhysicalLocation_s zx_hrxml_SEPPhysicalLocation_s zx_hrxml_ContactMethod_s ) */
+/* refby( zx_hrxml_PhysicalLocation_s zx_hrxml_SchoolOrInstitution_s zx_hrxml_ContactMethod_s zx_hrxml_SEPPhysicalLocation_s zx_hrxml_WorkSite_s ) */
 #ifndef zx_hrxml_PostalAddress_EXT
 #define zx_hrxml_PostalAddress_EXT
 #endif
@@ -9454,7 +9454,7 @@ void zx_hrxml_PostalAddress_REV_Recipient(struct zx_hrxml_PostalAddress_s* x);
 
 #endif
 /* -------------------------- hrxml_PreferredLanguage -------------------------- */
-/* refby( zx_hrxml_PositionMatching_s zx_hrxml_PreferredPosition_s ) */
+/* refby( zx_hrxml_PreferredPosition_s zx_hrxml_PositionMatching_s ) */
 #ifndef zx_hrxml_PreferredLanguage_EXT
 #define zx_hrxml_PreferredLanguage_EXT
 #endif
@@ -9928,7 +9928,7 @@ void zx_hrxml_ProgramId_REV_IdValue(struct zx_hrxml_ProgramId_s* x);
 
 #endif
 /* -------------------------- hrxml_PublicationDate -------------------------- */
-/* refby( zx_hrxml_OtherPublication_s zx_hrxml_Book_s zx_hrxml_Article_s zx_hrxml_ConferencePaper_s ) */
+/* refby( zx_hrxml_OtherPublication_s zx_hrxml_ConferencePaper_s zx_hrxml_Article_s zx_hrxml_Book_s ) */
 #ifndef zx_hrxml_PublicationDate_EXT
 #define zx_hrxml_PublicationDate_EXT
 #endif
@@ -10222,7 +10222,7 @@ void zx_hrxml_RankAchieved_REV_CurrentOrEndRank(struct zx_hrxml_RankAchieved_s* 
 
 #endif
 /* -------------------------- hrxml_RankedResult -------------------------- */
-/* refby( zx_hrxml_RankedResult_s zx_hrxml_RankedSearchResults_s ) */
+/* refby( zx_hrxml_RankedSearchResults_s zx_hrxml_RankedResult_s ) */
 #ifndef zx_hrxml_RankedResult_EXT
 #define zx_hrxml_RankedResult_EXT
 #endif
@@ -10936,7 +10936,7 @@ void zx_hrxml_RelatedPositionPostings_REV_PositionPosting(struct zx_hrxml_Relate
 
 #endif
 /* -------------------------- hrxml_Relocation -------------------------- */
-/* refby( zx_hrxml_PositionMatching_s zx_hrxml_PreferredPosition_s ) */
+/* refby( zx_hrxml_PreferredPosition_s zx_hrxml_PositionMatching_s ) */
 #ifndef zx_hrxml_Relocation_EXT
 #define zx_hrxml_Relocation_EXT
 #endif
@@ -11026,7 +11026,7 @@ void zx_hrxml_RelocationAssistance_REV_Description(struct zx_hrxml_RelocationAss
 
 #endif
 /* -------------------------- hrxml_RemunerationPackage -------------------------- */
-/* refby( zx_hrxml_PositionMatching_s zx_hrxml_PreferredPosition_s ) */
+/* refby( zx_hrxml_PreferredPosition_s zx_hrxml_PositionMatching_s ) */
 #ifndef zx_hrxml_RemunerationPackage_EXT
 #define zx_hrxml_RemunerationPackage_EXT
 #endif
@@ -12472,7 +12472,7 @@ void zx_hrxml_ServiceNumber_REV_IdValue(struct zx_hrxml_ServiceNumber_s* x);
 
 #endif
 /* -------------------------- hrxml_Shift -------------------------- */
-/* refby( zx_hrxml_PositionMatching_s zx_hrxml_PreferredPosition_s ) */
+/* refby( zx_hrxml_PreferredPosition_s zx_hrxml_PositionMatching_s ) */
 #ifndef zx_hrxml_Shift_EXT
 #define zx_hrxml_Shift_EXT
 #endif
@@ -12928,7 +12928,7 @@ void zx_hrxml_SpecifiedCompetencyReference_REV_ProficencyLevel(struct zx_hrxml_S
 
 #endif
 /* -------------------------- hrxml_StartDate -------------------------- */
-/* refby( zx_hrxml_EffectiveDate_s zx_hrxml_Association_s zx_hrxml_DatesOfService_s zx_hrxml_PositionHistory_s zx_hrxml_SpeakingEvent_s zx_hrxml_AvailabilityDates_s zx_hrxml_DatesOfAttendance_s ) */
+/* refby( zx_hrxml_SpeakingEvent_s zx_hrxml_DatesOfAttendance_s zx_hrxml_Association_s zx_hrxml_PositionHistory_s zx_hrxml_EffectiveDate_s zx_hrxml_AvailabilityDates_s zx_hrxml_DatesOfService_s ) */
 #ifndef zx_hrxml_StartDate_EXT
 #define zx_hrxml_StartDate_EXT
 #endif
@@ -13153,7 +13153,7 @@ void zx_hrxml_Stock_REV_Exchange(struct zx_hrxml_Stock_s* x);
 
 #endif
 /* -------------------------- hrxml_StringValue -------------------------- */
-/* refby( zx_hrxml_HighestPossibleValue_s zx_hrxml_LowestPossibleValue_s zx_hrxml_CompetencyWeight_s zx_hrxml_CompetencyEvidence_s ) */
+/* refby( zx_hrxml_CompetencyEvidence_s zx_hrxml_CompetencyWeight_s zx_hrxml_HighestPossibleValue_s zx_hrxml_LowestPossibleValue_s ) */
 #ifndef zx_hrxml_StringValue_EXT
 #define zx_hrxml_StringValue_EXT
 #endif
@@ -13468,7 +13468,7 @@ void zx_hrxml_SupplierId_REV_IdValue(struct zx_hrxml_SupplierId_s* x);
 
 #endif
 /* -------------------------- hrxml_SupportingMaterials -------------------------- */
-/* refby( zx_hrxml_CandidateProfile_s zx_hrxml_NonXMLResume_s zx_hrxml_StructuredXMLResume_s zx_hrxml_PersonDescriptors_s ) */
+/* refby( zx_hrxml_NonXMLResume_s zx_hrxml_PersonDescriptors_s zx_hrxml_StructuredXMLResume_s zx_hrxml_CandidateProfile_s ) */
 #ifndef zx_hrxml_SupportingMaterials_EXT
 #define zx_hrxml_SupportingMaterials_EXT
 #endif
@@ -13873,7 +13873,7 @@ void zx_hrxml_TimeOffAllowance_REV_Description(struct zx_hrxml_TimeOffAllowance_
 
 #endif
 /* -------------------------- hrxml_Travel -------------------------- */
-/* refby( zx_hrxml_PositionMatching_s zx_hrxml_PreferredPosition_s ) */
+/* refby( zx_hrxml_PreferredPosition_s zx_hrxml_PositionMatching_s ) */
 #ifndef zx_hrxml_Travel_EXT
 #define zx_hrxml_Travel_EXT
 #endif
@@ -13933,7 +13933,7 @@ void zx_hrxml_Travel_REV_TravelConsiderations(struct zx_hrxml_Travel_s* x);
 
 #endif
 /* -------------------------- hrxml_TravelDirections -------------------------- */
-/* refby( zx_hrxml_WorkSite_s zx_hrxml_PhysicalLocation_s zx_hrxml_SEPPhysicalLocation_s ) */
+/* refby( zx_hrxml_PhysicalLocation_s zx_hrxml_SEPPhysicalLocation_s zx_hrxml_WorkSite_s ) */
 #ifndef zx_hrxml_TravelDirections_EXT
 #define zx_hrxml_TravelDirections_EXT
 #endif
@@ -13969,7 +13969,7 @@ void zx_hrxml_TravelDirections_PUT_lang(struct zx_hrxml_TravelDirections_s* x, s
 
 #endif
 /* -------------------------- hrxml_UserArea -------------------------- */
-/* refby( zx_hrxml_Considerations_s zx_hrxml_ServiceDetail_s zx_hrxml_MilitaryHistory_s zx_hrxml_Candidate_s zx_hrxml_CandidateProfile_s zx_hrxml_Resume_s zx_hrxml_LegalIdentifiers_s zx_hrxml_WorkSite_s zx_hrxml_DemographicDescriptors_s zx_hrxml_RelatedOrganization_s zx_hrxml_SearchCriteria_s zx_hrxml_RelatedOrganizationalUnit_s zx_hrxml_PrehireRemuneration_s zx_hrxml_RemunerationPackage_s zx_hrxml_PositionHistory_s zx_hrxml_SchoolOrInstitution_s zx_hrxml_PersonDescriptors_s zx_hrxml_RankedResult_s zx_hrxml_WorkSiteEnvironment_s zx_hrxml_PositionMatching_s zx_hrxml_OrganizationalUnit_s zx_hrxml_BiologicalDescriptors_s zx_hrxml_Competency_s zx_hrxml_EmployerOrg_s zx_hrxml_PreferredPosition_s zx_hrxml_SearchResult_s zx_hrxml_PersonalData_s zx_hrxml_Degree_s ) */
+/* refby( zx_hrxml_MilitaryHistory_s zx_hrxml_BiologicalDescriptors_s zx_hrxml_PersonalData_s zx_hrxml_SchoolOrInstitution_s zx_hrxml_EmployerOrg_s zx_hrxml_Candidate_s zx_hrxml_PrehireRemuneration_s zx_hrxml_LegalIdentifiers_s zx_hrxml_RemunerationPackage_s zx_hrxml_PreferredPosition_s zx_hrxml_RankedResult_s zx_hrxml_Degree_s zx_hrxml_ServiceDetail_s zx_hrxml_WorkSiteEnvironment_s zx_hrxml_PositionHistory_s zx_hrxml_PositionMatching_s zx_hrxml_SearchCriteria_s zx_hrxml_RelatedOrganizationalUnit_s zx_hrxml_RelatedOrganization_s zx_hrxml_WorkSite_s zx_hrxml_Competency_s zx_hrxml_DemographicDescriptors_s zx_hrxml_Resume_s zx_hrxml_PersonDescriptors_s zx_hrxml_OrganizationalUnit_s zx_hrxml_Considerations_s zx_hrxml_CandidateProfile_s zx_hrxml_SearchResult_s ) */
 #ifndef zx_hrxml_UserArea_EXT
 #define zx_hrxml_UserArea_EXT
 #endif
@@ -14395,7 +14395,7 @@ void zx_hrxml_VisaStatus_PUT_validTo(struct zx_hrxml_VisaStatus_s* x, struct zx_
 
 #endif
 /* -------------------------- hrxml_Weight -------------------------- */
-/* refby( zx_hrxml_SearchCriterion_s zx_hrxml_RankedResult_s zx_hrxml_BiologicalDescriptors_s ) */
+/* refby( zx_hrxml_BiologicalDescriptors_s zx_hrxml_SearchCriterion_s zx_hrxml_RankedResult_s ) */
 #ifndef zx_hrxml_Weight_EXT
 #define zx_hrxml_Weight_EXT
 #endif
@@ -14440,7 +14440,7 @@ void zx_hrxml_Weight_PUT_minValue(struct zx_hrxml_Weight_s* x, struct zx_attr_s*
 
 #endif
 /* -------------------------- hrxml_WorkSite -------------------------- */
-/* refby( zx_hrxml_RelatedOrganization_s zx_hrxml_RelatedOrganizationalUnit_s zx_hrxml_OrganizationalUnit_s ) */
+/* refby( zx_hrxml_RelatedOrganizationalUnit_s zx_hrxml_RelatedOrganization_s zx_hrxml_OrganizationalUnit_s ) */
 #ifndef zx_hrxml_WorkSite_EXT
 #define zx_hrxml_WorkSite_EXT
 #endif
@@ -14632,7 +14632,7 @@ void zx_hrxml_WorkSiteEnvironment_REV_UserArea(struct zx_hrxml_WorkSiteEnvironme
 
 #endif
 /* -------------------------- hrxml_WorkSiteId -------------------------- */
-/* refby( zx_hrxml_WorkSite_s zx_hrxml_WorkSiteEnvironment_s ) */
+/* refby( zx_hrxml_WorkSiteEnvironment_s zx_hrxml_WorkSite_s ) */
 #ifndef zx_hrxml_WorkSiteId_EXT
 #define zx_hrxml_WorkSiteId_EXT
 #endif

@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- dp_Request -------------------------- */
-/* refby( zx_prov_PollResponse_s zx_shps_PollResponse_s ) */
+/* refby( zx_shps_PollResponse_s zx_prov_PollResponse_s ) */
 #ifndef zx_dp_Request_EXT
 #define zx_dp_Request_EXT
 #endif
@@ -55,7 +55,7 @@ void zx_dp_Request_PUT_itemID(struct zx_dp_Request_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- dp_Response -------------------------- */
-/* refby( zx_shps_Poll_s zx_prov_Poll_s ) */
+/* refby( zx_prov_Poll_s zx_shps_Poll_s ) */
 #ifndef zx_dp_Response_EXT
 #define zx_dp_Response_EXT
 #endif

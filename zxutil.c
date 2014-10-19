@@ -1114,13 +1114,14 @@ char* zx_zap_inplace_raw(char* s, const char* zap)
     n = strcspn(s, zap);
     s += n;
     if (!*s)
-      return ret;
+      break;
     n = strspn(s, zap);
     for (p = s; *(p+n); ++p)
       *p = *(p+n);
     *p = 0;
     //memmove(s, s+n);  // whish strmove existed
   }
+  return ret;
 }
 
 #if 1
@@ -1384,6 +1385,58 @@ int zx_date_time_to_secs(const char* dt)
   t.tm_year -= 1900;
   --t.tm_mon;
   return zx_timegm(&t);
+}
+
+/*() Extract simple scalar string value of a json key using string
+ * matching, rather than actually parsing JSON.
+ */
+
+const char* zx_json_extract_raw(const char* hay, const char* key, int* len)
+{
+  const char* s;
+  const char* p = strstr(hay, key);
+  if (!p)
+    return 0;
+  p += strspn(p, " \t\r\n");
+  if (*p != ':')
+    return 0;
+  ++p;
+  p += strspn(p, " \t\r\n");
+  if (*p != '"')
+    return 0;
+  s = ++p;
+  p = strchr(p, '"');
+  if (len)
+    *len = p-s;
+  return s;
+}
+
+/*() Extract simple scalar string from JSON document. Return newly allocated memory. */
+
+char* zx_json_extract_dup(struct zx_ctx* c, const char* hay, const char* key)
+{
+  int len;
+  const char* p = zx_json_extract_raw(hay, key, &len);
+  if (!p)
+    return 0;
+  return zx_dup_len_cstr(c, len, p);
+}
+
+/*() Extract simple scalar integer from JSON document. */
+
+int zx_json_extract_int(const char* hay, const char* key)
+{
+  int i;
+  const char* p = strstr(hay, key);
+  if (!p)
+    return 0;
+  p += strspn(p, " \t\r\n");
+  if (*p != ':')
+    return 0;
+  ++p;
+  p += strspn(p, " \t\r\n");
+  sscanf(p, "%i", &i);
+  return i;
 }
 
 /* EOF  --  zxutil.c */

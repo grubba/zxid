@@ -446,39 +446,6 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
   return 0;
 }
 
-/*() Extract simple scalar string value of a json key using string
- * matching, rather than actually parsing JSON.
- */
-
-const char* zx_json_extract_raw(const char* hay, const char* key, int* len)
-{
-  const char* s;
-  const char* p = strstr(hay, key);
-  if (!p)
-    return 0;
-  p += strspn(p, " \t\r\n");
-  if (*p != ':')
-    return 0;
-  ++p;
-  p += strspn(p, " \t\r\n");
-  if (*p != '"')
-    return 0;
-  s = ++p;
-  p = strchr(p, '"');
-  if (len)
-    *len = p-s;
-  return s;
-}
-
-char* zx_json_extract_dup(struct zx_ctx* c, const char* hay, const char* key)
-{
-  int len;
-  const char* p = zx_json_extract_raw(hay, key, &len);
-  if (!p)
-    return 0;
-  return zx_dup_len_cstr(c, len, p);
-}
-
 void zxumacall_dynclireg_client(zxid_conf* cf)
 {
   struct zx_str* res;
@@ -499,6 +466,7 @@ void zxumacall_dynclireg_client(zxid_conf* cf)
 
 void zxumacall_rsrcreg_client(zxid_conf* cf)
 {
+  char restful_url[4096];
   struct zx_str* res;
   char* azhdr;
   char* req = zxid_mk_oauth2_rsrc_reg_req(cf, rsrc_name, rsrc_icon_uri, rsrc_scope_url, rsrc_type);
@@ -508,9 +476,10 @@ void zxumacall_rsrcreg_client(zxid_conf* cf)
     azhdr = 0;
   D("req(%s) iat(%s)", req, STRNULLCHKD(azhdr));
   cf->wsc_soap_content_type = ZXID_JSON_CONTENT_TYPE;
-  res = zxid_http_post_raw(cf, -1, url, -1, req, azhdr);
-  printf("%.*s", res->len, res->s);
   
+  snprintf(restful_url, sizeof(restful_url), "%s/resource_set/%s", url, rsrc_name);
+  res = zxid_http_post_raw(cf, -1, restful_url, -1, req, azhdr);
+  printf("%.*s", res->len, res->s);
 }
 
 #ifndef zxumacall_main

@@ -188,7 +188,7 @@ char* zxid_fed_mgmt_cf(zxid_conf* cf, int* res_len, int sid_len, char* sid, int 
   struct zx_str* ss;
   struct zx_str* ss2;
   int slen = sid_len == -1 && sid ? strlen(sid) : sid_len;
-  if (auto_flags & ZXID_AUTO_DEBUG) zxid_set_opt(cf, 1, 1);
+  if (auto_flags & ZXID_AUTO_DEBUG) zxid_set_opt(cf, 1, 3);
 
   if (cf->log_level>1)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "MGMT", 0, "sid(%.*s)", sid_len, STRNULLCHK(sid));
@@ -444,7 +444,7 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
   struct zx_str* dd;
   zxid_entity* idp;
   zxid_entity* idp_cdc;
-  if (auto_flags & ZXID_AUTO_DEBUG) zxid_set_opt(cf, 1, 1);
+  if (auto_flags & ZXID_AUTO_DEBUG) zxid_set_opt(cf, 1, 3);
   idp = zxid_load_cot_cache(cf);
   if (!idp) {
     D("No IdP's found %p", res_len);
@@ -501,9 +501,11 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
 		     "<input type=submit class=zxidplistbut name=\"l1%s\" value=\" Login with %s (%s) (A2) \">\n"
 		     "<input type=submit class=zxidplistbut name=\"l2%s\" value=\" Login with %s (%s) (P2) \">\n"
 		     "<input type=submit class=zxidplistbut name=\"l5%s\" value=\" Login with %s (%s) (S2) \">\n"
-		     "<input type=submit class=zxidplistbut name=\"l6%s\" value=\" Login with %s (%s) (O2) \">"
+		     "<input type=submit class=zxidplistbut name=\"l8%s\" value=\" Login with %s (%s) (O2C) \">"
+		     "<input type=submit class=zxidplistbut name=\"l9%s\" value=\" Login with %s (%s) (O2I) \">"
 		     "%s<br>\n",
 		     ss->len, ss->s,
+		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
 		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
 		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
 		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
@@ -538,7 +540,8 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
 		   "<input type=submit class=zxidplistbut name=\"l1\" value=\" Login (A2) \">\n"
 		   "<input type=submit class=zxidplistbut name=\"l2\" value=\" Login (P2) \">\n"
 		   "<input type=submit class=zxidplistbut name=\"l5\" value=\" Login (S2) \">\n"
-		   "<input type=submit class=zxidplistbut name=\"l6\" value=\" Login (O2) \"><br>\n",
+		   "<input type=submit class=zxidplistbut name=\"l8\" value=\" Login (O2C) \">\n"
+		   "<input type=submit class=zxidplistbut name=\"l9\" value=\" Login (O2I) \"><br>\n",
 		   ss->len, ss->s);
     } else {
       dd = zx_strf(cf->ctx, "%.*s</select>"
@@ -744,7 +747,20 @@ char* zxid_idp_select(char* conf, int auto_flags) {
 
 /*() Deal with the various methods of shipping the page, including CGI stdout, or
  * as string with or without headers, as indicated by the auto_flag. The
- * page is in ss. */
+ * page is in ss.
+ *
+ * cf:: ZXID configuration object
+ * ss:: The page
+ * c_mask:: auto_flags content mask
+ * h_mask:: auto_flags headers mask
+ * rets:: Return value in case content is output (not returned)
+ * cont_type:: content-type header
+ * res_len:: Response length, pass 0 if not needed
+ * auto_flags:: flags to control if content is output or returned
+ * status:: Additional CGI headers, such as Status: 201 Created
+ * return:: Depends on autoflags and masks. Can be headers+data, data only, or rets (data
+ *     was output to stdout, cgi style)
+ */
 
 /* Called by:  zxid_idp_oauth2_check_id, zxid_simple_idp_show_an, zxid_simple_show_carml, zxid_simple_show_conf, zxid_simple_show_err, zxid_simple_show_idp_sel, zxid_simple_show_meta */
 char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_mask, char* rets, char* cont_type, int* res_len, int auto_flags, const char* status)
@@ -803,6 +819,14 @@ char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_
   if (res_len)
     *res_len = 1;
   return zx_dup_cstr(cf->ctx, rets);   /* Neither H nor C */
+}
+
+/*() Show JSON page, as often needed in OAUTH2 */
+
+char* zxid_simple_show_json(zxid_conf* cf, const char* json, int* res_len, int auto_flags, const char* status)
+{
+  struct zx_str* ss = zx_ref_str(cf->ctx, json);
+  return zxid_simple_show_page(cf, ss, ZXID_AUTO_METAC, ZXID_AUTO_METAH, "J", "application/json", res_len, auto_flags, status);
 }
 
 /*() Helper function to redirect according to auto flags. */
@@ -904,11 +928,7 @@ static char* zxid_simple_show_jwks(zxid_conf* cf, zxid_cgi* cgi, int* res_len, i
 /* Called by:  zxid_simple_no_ses_cf, zxid_simple_ses_active_cf */
 static char* zxid_simple_show_dynclireg(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
-  struct zx_str* ss = zx_ref_str(cf->ctx, zxid_mk_oauth2_dyn_cli_reg_res(cf, cgi));
-  return zxid_simple_show_page(cf, ss, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
-			       "J",
-			       //"text/json",
-			       "application/json",
+  return zxid_simple_show_json(cf, zxid_mk_oauth2_dyn_cli_reg_res(cf, cgi),
 			       res_len, auto_flags, "Status: 201 Created" CRLF);
 }
 
@@ -919,13 +939,9 @@ static char* zxid_simple_show_rsrcreg(zxid_conf* cf, zxid_cgi* cgi, int* res_len
 {
   char rev[256];
   char status_etag[1024];
-  struct zx_str* ss = zx_ref_str(cf->ctx, zxid_mk_oauth2_rsrc_reg_res(cf, cgi, rev));
-  snprintf(status_etag, sizeof(status_etag), "Status: 201 Created" CRLF "Status: %s" CRLF, rev);
-  return zxid_simple_show_page(cf, ss, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
-			       "H",
-			       //"text/json",
-			       "application/json",
-			       res_len, auto_flags, status_etag);
+  char* json = zxid_mk_oauth2_rsrc_reg_res(cf, cgi, rev);
+  snprintf(status_etag, sizeof(status_etag), "Status: 201 Created" CRLF "Etag: %s" CRLF, rev);
+  return zxid_simple_show_json(cf, json, res_len, auto_flags, status_etag);
 }
 
 /*() Show Error screen. */
@@ -1369,7 +1385,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * D = Delegation / Invitation acceptance user interface, the idp selection
    * G = Delegation / Invitation finalization after SSO (via RelayState)
    * O = OAuth2 redirect destination
-   * T = OAuth2 Check ID Endpoint
+   * T = OAuth2 Check ID / Token Endpoint
    *
    * I = used for IdP ???
    * K = used?
@@ -1606,7 +1622,7 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
     goto post_dispatch;
   case 'T':
     D("Process OAUTH2 / OpenID-Connect1 check id pid=%d", getpid());
-    return zxid_idp_oauth2_check_id(cf, cgi, ses, auto_flags);
+    return zxid_idp_oauth2_token_and_check_id(cf, cgi, ses, res_len, auto_flags);
   case 'P':    /* POST Profile Responses */
   case 'I':
   case 'K':
@@ -1709,7 +1725,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
   }
   
   /*fprintf(stderr, "qs(%s) arg, autoflags=%x\n", qs, auto_flags);*/
-  if (auto_flags & ZXID_AUTO_DEBUG) zxid_set_opt(cf, 1, 1);
+  if (auto_flags & ZXID_AUTO_DEBUG) zxid_set_opt(cf, 1, 3);
   LOCK(cf->mx, "simple ipport");
   if (!cf->ipport) {
     remote_addr = getenv("REMOTE_ADDR");

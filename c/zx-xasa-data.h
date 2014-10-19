@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- xasa_XACMLAuthzDecisionStatement -------------------------- */
-/* refby( zx_ff12_Assertion_s zx_sa_Assertion_s zx_sa11_Assertion_s ) */
+/* refby( zx_sa_Assertion_s zx_sa11_Assertion_s zx_ff12_Assertion_s ) */
 #ifndef zx_xasa_XACMLAuthzDecisionStatement_EXT
 #define zx_xasa_XACMLAuthzDecisionStatement_EXT
 #endif
@@ -70,7 +70,7 @@ void zx_xasa_XACMLAuthzDecisionStatement_REV_Request(struct zx_xasa_XACMLAuthzDe
 
 #endif
 /* -------------------------- xasa_XACMLPolicyStatement -------------------------- */
-/* refby( zx_ff12_Assertion_s zx_sa_Assertion_s zx_sa11_Assertion_s ) */
+/* refby( zx_sa_Assertion_s zx_sa11_Assertion_s zx_ff12_Assertion_s ) */
 #ifndef zx_xasa_XACMLPolicyStatement_EXT
 #define zx_xasa_XACMLPolicyStatement_EXT
 #endif

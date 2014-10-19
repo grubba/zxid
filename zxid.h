@@ -440,18 +440,21 @@ struct zxid_cgi {
   char* sp_dpy_name;
   char* sp_button_url;
   char* rest;          /* OAUTH2 Resource Set Registration: RESTful part of the URI */
-  char* response_type; /* OAuth2 / OpenID-Connect */
+  char* response_type; /* OAuth2 / OpenID-Connect (OIDC1), used to detect An/Az req */
   char* client_id;     /* OAuth2 */
   char* scope;         /* OAuth2 */
   char* redirect_uri;  /* OAuth2, also decoded RelayState in SAML */
   char* nonce;         /* OAuth2 */
-  char* state;         /* OAuth2 */
+  char* state;         /* OAuth2 (like SAML RelayState) */
   char* display;       /* OAuth2 */
   char* prompt;        /* OAuth2 */
   char* access_token;  /* OAuth2 */
+  char* refresh_token; /* OAuth2 */
   char* token_type;    /* OAuth2 */
+  char* grant_type;    /* OAuth2 */
+  char* code;          /* OAuth2 */
   char* id_token;      /* OAuth2 */
-  char* expires_in;    /* OAuth2 */
+  int   expires_in;    /* OAuth2 */
   char* iss;           /* OAuth2 */
   char* user_id;       /* OAuth2 */
   char* aud;           /* OAuth2 */
@@ -516,6 +519,8 @@ struct zxid_ses {
   zxid_nid* tgtnameid; /* From a7n or EncryptedID */
   zxid_a7n* a7n;       /* SAML 2.0 for Subject */
   zxid_a7n* tgta7n;    /* SAML 2.0 for Target */
+  char* jwt;           /* Javascript Web Token for Subject */
+  char* tgtjwt;        /* Javascript Web Token for Target */
   struct zx_sa11_Assertion_s* a7n11;
   struct zx_sa11_Assertion_s* tgta7n11;
   struct zx_ff12_Assertion_s* a7n12;
@@ -799,6 +804,7 @@ ZXID_DECL struct zx_str* zxenc_symkey_dec(zxid_conf* cf, struct zx_xenc_Encrypte
 #define ZXLOG_ISSUE_DIR "issue/"
 #define ZXLOG_A7N_KIND  "/a7n/"
 #define ZXLOG_JWT_KIND  "/jwt/"
+#define ZXLOG_AZC_KIND  "/azc/"
 #define ZXLOG_MSG_KIND  "/msg/"
 #define ZXLOG_WIR_KIND  "/wir/"
 
@@ -1143,16 +1149,23 @@ ZXID_DECL char* zxid_get_idpnid_at_eid(zxid_conf* cf, const char* uid, const cha
 #define ZXID_CDC_CHOICE_UI_NOPREF    5  /* Offer UI. Do not give preference to CDC IdPs. */
 #define ZXID_CDC_CHOICE_UI_ONLY_CDC  6  /* Offer UI. If CDC was set, only show IdPs from CDC. Otherwise show all IdPs. */
 
-#define ZXID_SAML2_ART   1
-#define ZXID_SAML2_POST  2
-#define ZXID_SAML2_PAOS  3
-#define ZXID_SAML2_SOAP  4
-#define ZXID_SAML2_POST_SIMPLE_SIGN  5
-#define ZXID_SAML2_REDIR 6   /* for function of same name, see */
-#define ZXID_SAML2_URI   7
+/* index values for selecting different bindings. These appear as index XML
+ * attribute in metadata and also in Web GUI formfield names, e.g. "l1" means
+ * HTTP-Artifact and "l6" means OpenID-Connect 1.0 (OIDC1).
+ * See also: zxid_pick_sso_profile(), cgi->pr_ix */
 
-/* Following are experimental protocol bindings (2011) */
-#define ZXID_OPID_CONNECT 8
+#define ZXID_DEFAULT_PR_IX 0
+#define ZXID_SAML2_ART 1
+#define ZXID_SAML2_POST 2
+#define ZXID_SAML2_SOAP 3
+#define ZXID_SAML2_PAOS 4
+#define ZXID_SAML2_POST_SIMPLE_SIGN 5
+#define ZXID_SAML2_REDIR 6
+#define ZXID_SAML2_URI 7
+#define ZXID_OIDC1_CODE 8
+#define ZXID_OIDC1_ID_TOK_TOK 9
+
+/* Service enumerators */
 
 #define ZXID_SLO_SVC 1
 #define ZXID_MNI_SVC 2

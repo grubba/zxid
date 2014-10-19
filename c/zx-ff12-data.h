@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- ff12_Assertion -------------------------- */
-/* refby( zx_wsse_Security_s zx_tas3_Credentials_s zx_b_TargetIdentity_s zx_sa11_Advice_s zx_sec_Token_s zx_sa_Advice_s ) */
+/* refby( zx_sa11_Advice_s zx_sec_Token_s zx_tas3_Credentials_s zx_b_TargetIdentity_s zx_sa_Advice_s zx_wsse_Security_s ) */
 #ifndef zx_ff12_Assertion_EXT
 #define zx_ff12_Assertion_EXT
 #endif
@@ -844,7 +844,7 @@ void zx_ff12_EncryptedNameIdentifier_REV_EncryptedKey(struct zx_ff12_EncryptedNa
 
 #endif
 /* -------------------------- ff12_Extension -------------------------- */
-/* refby( zx_ff12_AuthnResponse_s zx_ff12_AuthnRequestEnvelope_s zx_ff12_LogoutRequest_s zx_ff12_LogoutResponse_s zx_ff12_FederationTerminationNotification_s zx_ff12_RegisterNameIdentifierResponse_s zx_ff12_RegisterNameIdentifierRequest_s zx_ff12_NameIdentifierMappingResponse_s zx_ff12_AuthnResponseEnvelope_s zx_ff12_AuthnRequest_s zx_ff12_NameIdentifierMappingRequest_s ) */
+/* refby( zx_ff12_NameIdentifierMappingResponse_s zx_ff12_AuthnResponseEnvelope_s zx_ff12_RegisterNameIdentifierRequest_s zx_ff12_AuthnRequestEnvelope_s zx_ff12_NameIdentifierMappingRequest_s zx_ff12_FederationTerminationNotification_s zx_ff12_RegisterNameIdentifierResponse_s zx_ff12_LogoutRequest_s zx_ff12_AuthnResponse_s zx_ff12_AuthnRequest_s zx_ff12_LogoutResponse_s ) */
 #ifndef zx_ff12_Extension_EXT
 #define zx_ff12_Extension_EXT
 #endif
@@ -1123,7 +1123,7 @@ void zx_ff12_IDPList_REV_GetComplete(struct zx_ff12_IDPList_s* x);
 
 #endif
 /* -------------------------- ff12_IDPProvidedNameIdentifier -------------------------- */
-/* refby( zx_ff12_RegisterNameIdentifierRequest_s zx_ff12_Subject_s zx_sec12_SessionSubject_s ) */
+/* refby( zx_ff12_Subject_s zx_ff12_RegisterNameIdentifierRequest_s zx_sec12_SessionSubject_s ) */
 #ifndef zx_ff12_IDPProvidedNameIdentifier_EXT
 #define zx_ff12_IDPProvidedNameIdentifier_EXT
 #endif

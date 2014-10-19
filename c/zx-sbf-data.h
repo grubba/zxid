@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- sbf_Framework -------------------------- */
-/* refby( zx_e_Header_s zx_a_Metadata_s zx_di_EndpointContext_s ) */
+/* refby( zx_a_Metadata_s zx_e_Header_s zx_di_EndpointContext_s ) */
 #ifndef zx_sbf_Framework_EXT
 #define zx_sbf_Framework_EXT
 #endif

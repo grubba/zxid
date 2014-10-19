@@ -25,6 +25,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <malloc.h>
 
 #include <zx/errmac.h>
 #include <zx/zxid.h>      /* ZXID main API, including zxid_simple(). */
@@ -80,6 +81,7 @@ int main(int argc, char** argv)
 #define ZXIDIDP_PREALLOC_KB 300
 #endif
   free(malloc(ZXIDIDP_PREALLOC_KB*1024));
+  mallopt(M_CHECK_ACTION,3); /* core on bad free(3) */
 #endif
 
 #if 1

@@ -101,6 +101,10 @@ ZXID_DECL int close_file(fdtype fd, const char* logkey);
 ZXID_DECL int send_all_socket(fdtype fd, const char* p, int pending);
 ZXID_DECL char* zx_zap_inplace_raw(char* s, const char* zap);
 
+ZXID_DECL const char* zx_json_extract_raw(const char* hay, const char* key, int* len);
+ZXID_DECL char* zx_json_extract_dup(struct zx_ctx* c, const char* hay, const char* key);
+ZXID_DECL int zx_json_extract_int(const char* hay, const char* key);
+
 struct zxid_curl_ctx {
   char* p;
   char* buf;

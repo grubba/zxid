@@ -523,7 +523,7 @@ static int zx_create_dir_with_check(zxid_conf* cf, const char* dir, int create_d
 }
 
 /*() Compute path for logging. Optionally attempt to create the necessary
- * directories if they are missing (you should do `make dirs' rather than
+ * directories if they are missing (you should do `zxcot -dirs' (or `make dirs') rather than
  * depend on this).
  *
  * cf::     ZXID configuration object uded for deternining root if the logging

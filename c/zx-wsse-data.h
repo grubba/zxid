@@ -370,7 +370,7 @@ void zx_wsse_Security_REV_Timestamp(struct zx_wsse_Security_s* x);
 
 #endif
 /* -------------------------- wsse_SecurityTokenReference -------------------------- */
-/* refby( zx_wsse_Security_s zx_wsc_DerivedKeyToken_s zx_wst_RequestedUnattachedReference_s zx_wst_RequestedAttachedReference_s ) */
+/* refby( zx_wst_RequestedUnattachedReference_s zx_wsc_DerivedKeyToken_s zx_wst_RequestedAttachedReference_s zx_wsse_Security_s ) */
 #ifndef zx_wsse_SecurityTokenReference_EXT
 #define zx_wsse_SecurityTokenReference_EXT
 #endif

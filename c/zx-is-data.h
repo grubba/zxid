@@ -91,7 +91,7 @@ void zx_is_Confirm_REV_Value(struct zx_is_Confirm_s* x);
 
 #endif
 /* -------------------------- is_Help -------------------------- */
-/* refby( zx_is_Inquiry_s zx_is_Select_s zx_is_Confirm_s zx_is_Text_s ) */
+/* refby( zx_is_Confirm_s zx_is_Select_s zx_is_Text_s zx_is_Inquiry_s ) */
 #ifndef zx_is_Help_EXT
 #define zx_is_Help_EXT
 #endif

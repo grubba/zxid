@@ -125,8 +125,10 @@ zxiddi.c         - ID-WSF Discovery Service
 zxidim.c         - ID-WSF Identity Mapping Service
 zxidps.c         - ID-WSF People Service
 zxidmkwsf.c      - Constructors for WSF
-zxidoauth.c      - OAUTH2 URL construction
-zxidsimp.c       - Simple API implementation
+zxidoauth.c      - OAUTH2 URL construction, also JWT minting
+zxidoidc.c       - OpenID Connect 1.0 details
+zxiduma.c        - UMA 1.0 details
+zxidsimp.c       - The Simple API implementation
 
 # Yubikey (yubico.com) One Time Password (OTP) USB token support
 

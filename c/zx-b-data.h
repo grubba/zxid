@@ -562,7 +562,7 @@ void zx_b_Sender_PUT_mustUnderstand(struct zx_b_Sender_s* x, struct zx_attr_s* y
 
 #endif
 /* -------------------------- b_TargetIdentity -------------------------- */
-/* refby( zx_a_ReferenceParameters_s zx_e_Header_s ) */
+/* refby( zx_e_Header_s zx_a_ReferenceParameters_s ) */
 #ifndef zx_b_TargetIdentity_EXT
 #define zx_b_TargetIdentity_EXT
 #endif

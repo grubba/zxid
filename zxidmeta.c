@@ -684,7 +684,7 @@ struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf, struct zx_elem_s
   sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_SOAP, "?o=S", "3");
   sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_PAOS, "?o=P", "4");
   sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_POST_SIMPLE_SIGN, "?o=P", "5");
-  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, OAUTH2_REDIR, "?o=O", "6");
+  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, OAUTH2_REDIR, "?o=O", "8");
   zx_reverse_elem_lists(&sp_ssod->gg);
   return sp_ssod;
 }
@@ -737,7 +737,7 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf, struct zx_elem
   idp_ssod->NameIDFormat = zx_ref_elem(cf->ctx, &idp_ssod->gg, zx_md_NameIDFormat_ELEM, SAML2_TRANSIENT_NID_FMT);
 
   idp_ssod->SingleSignOnService = zxid_sso_desc(cf, &idp_ssod->gg, SAML2_REDIR, "?o=F", 0);
-  idp_ssod->SingleSignOnService = zxid_sso_desc(cf, &idp_ssod->gg, OAUTH2_REDIR, "?o=F", 0);
+  idp_ssod->SingleSignOnService = zxid_sso_desc(cf, &idp_ssod->gg, OAUTH2_REDIR, "?o=F", 0); /* Same endpoint as for SAML - the detection is from presence of CGI field response_type */
 
   if (cf->imps_ena)
     idp_ssod->NameIDMappingService = zxid_nimap_desc(cf, &idp_ssod->gg, SAML2_SOAP, "?o=S", 0);

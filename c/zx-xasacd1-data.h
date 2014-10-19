@@ -70,7 +70,7 @@ void zx_xasacd1_ReferencedPolicies_REV_PolicySet(struct zx_xasacd1_ReferencedPol
 
 #endif
 /* -------------------------- xasacd1_XACMLAuthzDecisionStatement -------------------------- */
-/* refby( zx_ff12_Assertion_s zx_sa_Assertion_s zx_sa11_Assertion_s ) */
+/* refby( zx_sa_Assertion_s zx_sa11_Assertion_s zx_ff12_Assertion_s ) */
 #ifndef zx_xasacd1_XACMLAuthzDecisionStatement_EXT
 #define zx_xasacd1_XACMLAuthzDecisionStatement_EXT
 #endif
@@ -121,7 +121,7 @@ void zx_xasacd1_XACMLAuthzDecisionStatement_REV_Request(struct zx_xasacd1_XACMLA
 
 #endif
 /* -------------------------- xasacd1_XACMLPolicyStatement -------------------------- */
-/* refby( zx_ff12_Assertion_s zx_sa_Assertion_s zx_sa11_Assertion_s ) */
+/* refby( zx_sa_Assertion_s zx_sa11_Assertion_s zx_ff12_Assertion_s ) */
 #ifndef zx_xasacd1_XACMLPolicyStatement_EXT
 #define zx_xasacd1_XACMLPolicyStatement_EXT
 #endif

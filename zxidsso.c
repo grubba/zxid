@@ -1,5 +1,5 @@
 /* zxidsso.c  -  Handwritten functions for implementing Single Sign-On logic for SP
- * Copyright (c) 2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
+ * Copyright (c) 2013-2014 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -47,8 +47,8 @@
 
 /*() This function makes the policy decision about which profile to
  * use. It is only used if there was no explicit specification in the
- * CGI form (e.g. "Login (P)" button. Currently it's a stub that
- * always picks the artifact profile. Eventually configuration options
+ * CGI form (e.g. "Login (P)" button. Currently it is a stub that
+ * always picks the SAML artifact profile. Eventually configuration options
  * or cgi input can be used to determine the profile in a more
  * sophisticated way. Often zxid_mk_authn_req() will override the
  * return value of this function by its own inspection of the CGI
@@ -57,6 +57,10 @@
 /* Called by:  zxid_start_sso_url */
 int zxid_pick_sso_profile(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* idp_meta)
 {
+  switch (cgi->pr_ix) {
+  case ZXID_OIDC1_CODE:       return ZXID_OIDC1_CODE;
+  case ZXID_OIDC1_ID_TOK_TOK: return ZXID_OIDC1_ID_TOK_TOK;
+  }
   /* More sophisticated policy may eventually go here. */
   return ZXID_SAML2_ART;
 }
@@ -187,7 +191,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
   int sso_profile_ix;
   zxid_entity* idp_meta;
   D_INDENT("start_sso: ");
-  D("cgi=%p cgi->eid=%p eid(%s)", cgi, cgi->eid, STRNULLCHKD(cgi->eid));
+  D("cgi=%p cgi->eid=%p eid(%s) pr_ix=%d", cgi, cgi->eid, STRNULLCHKD(cgi->eid), cgi->pr_ix);
   zxid_sso_set_relay_state_to_return_to_this_url(cf, cgi);
   if (!cgi->pr_ix || !cgi->eid || !cgi->eid[0]) {
     D("Either protocol index or entity ID missing %d", cgi->pr_ix);
@@ -205,6 +209,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
   case ZXID_SAML2_ART:
   case ZXID_SAML2_POST:
   case ZXID_SAML2_POST_SIMPLE_SIGN:
+    /* All of the above use redir binding for sending AnReq */
     if (!idp_meta->ed->IDPSSODescriptor) {
       ERR("Entity(%s) does not have IdP SSO Descriptor (metadata problem)", cgi->eid);
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", cgi->eid, "No IDPSSODescriptor");
@@ -234,7 +239,8 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
     ars = zx_easy_enc_elem_opt(cf, &ar->gg);
     D("AuthnReq(%.*s) %p", ars->len, ars->s, dest);
     break;
-  case ZXID_OPID_CONNECT:
+  case ZXID_OIDC1_CODE:
+  case ZXID_OIDC1_ID_TOK_TOK:
     if (!idp_meta->ed->IDPSSODescriptor) {
       ERR("Entity(%s) does not have IdP SSO Descriptor (OAUTH2) (metadata problem)", cgi->eid);
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", cgi->eid, "No IDPSSODescriptor (OAUTH2)");
@@ -624,7 +630,10 @@ struct zx_str unknown_str = {0,0,1,"??"};  /* Static string used as dummy value.
  * cgi:: CGI object. sigval and sigmsg may be set.
  * ses:: Session object. Will be modified according to new session created from the SSO assertion.
  * a7n:: Single Sign-On assertion
- * return:: 0 for failure, otherwise some success code such as ZXID_SSO_OK */
+ * return:: 0 for failure, otherwise some success code such as ZXID_SSO_OK
+ *
+ * See also: zxid_sp_sso_finalize_jwt() in zxidoauth.c
+ */
 
 /* Called by:  main, sig_validate, zxid_sp_dig_oauth_sso_a7n, zxid_sp_dig_sso_a7n */
 int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7n, struct zx_ns_s* pop_seen)
@@ -689,7 +698,7 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
   if (a7n->AuthnStatement->SessionIndex)
     ses->sesix = zx_str_to_c(cf->ctx, &a7n->AuthnStatement->SessionIndex->g);
   
-  D("SSOA7N received. NID(%s) FMT(%d) SESIX(%s)", ses->nid, ses->nidfmt, ses->sesix?ses->sesix:"");
+  D("SSOA7N received. NID(%s) FMT(%d) SESIX(%s)", ses->nid, ses->nidfmt, STRNULLCHK(ses->sesix));
   
   /* Validate signature (*** add Issuer trusted check, CA validation, etc.) */
   
@@ -763,13 +772,13 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
   zxid_put_user(cf, &ses->nameid->Format->g, &ses->nameid->NameQualifier->g, &ses->nameid->SPNameQualifier->g, ZX_GET_CONTENT(ses->nameid), 0);
   DD("Logging... %d", 0);
   zxlog(cf, &ourts, &srcts, 0, issuer, 0, &a7n->ID->g, subj,
-	cgi->sigval, "K", "NEWSES", ses->sid, "sesix(%s)", ses->sesix?ses->sesix:"-");
+	cgi->sigval, "K", "NEWSES", ses->sid, "sesix(%s)", STRNULLCHKD(ses->sesix));
   zxlog(cf, &ourts, &srcts, 0, issuer, 0, &a7n->ID->g, subj,
-	cgi->sigval, "K", ses->nidfmt?"FEDSSO":"TMPSSO", ses->sesix?ses->sesix:"-", 0);
+	cgi->sigval, "K", ses->nidfmt?"FEDSSO":"TMPSSO", STRNULLCHKD(ses->sesix), 0);
 
   if (cf->idp_ena) {  /* (PXY) Middle IdP of Proxy IdP flow */
     if (cgi->rs && cgi->rs[0]) {
-      D("ProxyIdP got RelayState(%s) ar(%s)", cgi->rs, cgi->ssoreq?cgi->ssoreq:"");
+      D("ProxyIdP got RelayState(%s) ar(%s)", cgi->rs, STRNULLCHK(cgi->ssoreq));
       cgi->saml_resp = 0;  /* Clear Response to prevent re-interpretation. We want Request. */
       cgi->ssoreq = cgi->rs;
       zxid_decode_ssoreq(cf, cgi);
@@ -787,7 +796,7 @@ erro:
   ERR("SSO fail (%s)", err);
   cgi->msg = "SSO failed. This could be due to signature, timeout, etc., technical failures, or by policy.";
   zxlog(cf, &ourts, &srcts, 0, issuer, 0, a7n?&a7n->ID->g:0, subj,
-	cgi->sigval, err, ses->nidfmt?"FEDSSO":"TMPSSO", ses->sesix?ses->sesix:"-", "Error.");
+	cgi->sigval, err, ses->nidfmt?"FEDSSO":"TMPSSO", STRNULLCHKD(ses->sesix), "Error.");
   D_DEDENT("ssof: ");
   return 0;
 }

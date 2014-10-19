@@ -180,7 +180,7 @@
  *   %p  the contents of environment variable SERVER_PORT (see CGI spec).
  *   %P  Similar to %p, but renders a colon before the portnumber, unless
  *       the SERVER_PORT is 443 or 80, in which case nothing is rendered.
- *       This deals with default ports of the http and https protocols.
+ *       This deals with default ports of the https and http protocols.
  *   %s  the contents of environment variable SCRIPT_NAME (see CGI spec)
  *
  * > N.B. All other %-specs are reserved for future expansion
@@ -1169,7 +1169,7 @@
 /*(c) IdP Selector Page URL
  * If the IDP_SEL_TEMPL_FILE or IDP_SEL_TEMPL, above, is not sufficient for
  * your customization needs, you can provide URL to page of your own design.
- *This page will receive as query string argument the relay state.
+ * This page will receive as query string argument the relay state.
  * 0 (zero) disables. */
 
 #define ZXID_IDP_SEL_PAGE 0

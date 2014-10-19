@@ -517,9 +517,9 @@ even the apache process can't read them. Recommended permissions are
   chown APACHEUSER /var/zxid/pem
   chmod -R 02750 /var/zxid/pem
 
-where APACHEUSER is distribution dependent user account used to
-run the apache process. You can do `ps axu | grep httpd' to see
-what user apache runs as.
+where APACHEUSER is distribution dependent unix user account used to
+run the apache httpd process. You can do `ps axu | grep httpd' to see
+what user apache runs as (common ones are "www-data" and "apache").
 
 97.3.2 Skipping IdP Selection: Hardwiring the IdP
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
