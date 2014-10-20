@@ -176,7 +176,6 @@ set_eid:
       }
       break;
     case 'g':  /* management (gestion) form fields or query string arguments */
-      if (!n[1] || n[2]) goto unknown;  /* N.B. single letter g=GrantToken in zxidgrant.pl */
       switch (n[1]) {
       case 'r': /* gr - single logout redirect */
 	if (!strcmp(n, "grant_type")) {    /* OAUTH2 */
@@ -189,6 +188,7 @@ set_eid:
       case 'u': cgi->op = n[1];           break; /* gu - defederate SOAP */
       case 'n': cgi->newnym = v;          break; /* gn */
       case 'e': cgi->enc_hint = v[0];     break; /* ge */
+      case 0: goto unknown; /* N.B. single letter g=GrantToken in zxidgrant.pl */
       }
       break;
     case 'a':

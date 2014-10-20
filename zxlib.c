@@ -225,7 +225,8 @@ struct zx_str* zx_dup_str(struct zx_ctx* c, const char* s) {
 /* Called by: */
 char* zx_dup_len_cstr(struct zx_ctx* c, int len, const char* str) {
   char* s = ZX_ALLOC(c, len+1);
-  memcpy(s, str, len+1);
+  memcpy(s, str, len);
+  s[len] = 0; /* nul termination */
   return s;
 }
 

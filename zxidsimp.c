@@ -1273,10 +1273,10 @@ static char* zxid_show_protected_content_setcookie(zxid_conf* cf, zxid_cgi* cgi,
     D("setcookie(%s)=(%s) ses=%p", cf->ses_cookie_name, ses->setcookie, ses);
   }
   if (cf->ptm_cookie_name && *cf->ptm_cookie_name) {
-    D("ptm_cookie_name(%s)", cf->ptm_cookie_name);
-    issuer = ZX_GET_CONTENT(ses->a7n->Issuer);
+    D("ptm_cookie_name(%s) ses->a7n=%p", cf->ptm_cookie_name, ses->a7n);
+    issuer = ses->a7n?ZX_GET_CONTENT(ses->a7n->Issuer):0;
     if (!issuer)
-      ERR("Assertion does not have Issuer. %p", ses->a7n->Issuer);
+      ERR("Assertion does not have Issuer. %p", ses->a7n);
     
     if (epr = zxid_get_epr(cf, ses, TAS3_PTM, 0, 0, 0, 1)) {
       url = zxid_get_epr_address(cf, epr);
@@ -1742,7 +1742,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
     if (qs) {
       D("QUERY_STRING(%s) %s %d", STRNULLCHK(qs), ZXID_REL, errmac_debug);
       zxid_parse_cgi(cf, &cgi, qs);
-      if (ONE_OF_7(cgi.op, 'H', 'J', 'P', 'R', 'S', 'Y', 'Z')) {
+      if (ONE_OF_8(cgi.op, 'H', 'J', 'P', 'R', 'S', 'T', 'Y', 'Z')) {
 	cont_len = getenv("CONTENT_LENGTH");
 	if (cont_len) {
 	  sscanf(cont_len, "%d", &got);

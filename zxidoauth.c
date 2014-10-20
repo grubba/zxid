@@ -749,16 +749,16 @@ static int zxid_oauth_call_token_endpoint(zxid_conf* cf, zxid_cgi* cgi, zxid_ses
   D("%.*s", res->len, res->s);
   
   /* Extract the fields as if it had been implicit mode SSO */
-  cgi->access_token = zx_json_extract_dup(cf->ctx, res->s, "access_token");
-  cgi->refresh_token = zx_json_extract_dup(cf->ctx, res->s, "refresh_token");
-  cgi->token_type = zx_json_extract_dup(cf->ctx, res->s, "token_type");
-  cgi->expires_in = zx_json_extract_int(res->s, "expires_in");
-  cgi->id_token = zx_json_extract_dup(cf->ctx, res->s, "id_token");
+  cgi->access_token = zx_json_extract_dup(cf->ctx, res->s, "\"access_token\"");
+  cgi->refresh_token = zx_json_extract_dup(cf->ctx, res->s, "\"refresh_token\"");
+  cgi->token_type = zx_json_extract_dup(cf->ctx, res->s, "\"token_type\"");
+  cgi->expires_in = zx_json_extract_int(res->s, "\"expires_in\"");
+  cgi->id_token = zx_json_extract_dup(cf->ctx, res->s, "\"id_token\"");
   // *** check validity
   return 1;
 }
 
-/*() Finalize JWT based SSO
+/*() Finalize JWT based SSO, create session from the fields available in the JWT
  * See also: zxid_sp_sso_finalize() in zxidsso.c */
 
 int zxid_sp_sso_finalize_jwt(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* jwt)
@@ -784,7 +784,8 @@ int zxid_sp_sso_finalize_jwt(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const 
     goto erro;
   }
   
-  ses->nid = zx_json_extract_dup(cf->ctx, claims, "user_id");
+  //ses->nid = zx_json_extract_dup(cf->ctx, claims, "\"sub\"");
+  ses->nid = zx_json_extract_dup(cf->ctx, claims, "\"user_id\"");
   if (!ses->nid) {
     ERR("JWT decode: no user_id found in jwt(%s)", STRNULLCHKD(jwt));
     goto erro;
@@ -795,7 +796,7 @@ int zxid_sp_sso_finalize_jwt(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const 
   ses->tgt = ses->nid;
   ses->tgtfmt = 1;  /* Assume federation */
 
-  p = zx_json_extract_dup(cf->ctx, claims, "iss");
+  p = zx_json_extract_dup(cf->ctx, claims, "\"iss\"");
   ses->issuer = zx_ref_str(cf->ctx, p);
   if (!p) {
     ERR("JWT decode: no iss found in jwt(%s)", STRNULLCHKD(jwt));
@@ -810,7 +811,7 @@ int zxid_sp_sso_finalize_jwt(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const 
   ses->sigres = ZXSIG_NO_SIG;
   
   if (cf->log_rely_a7n) {
-    D("Logging rely... %d", 0);
+    DD("Logging rely... %d", 0);
     ss.s = (char*)jwt; ss.len = strlen(jwt);
     logpath = zxlog_path(cf, ses->issuer, &ss, ZXLOG_RELY_DIR, ZXLOG_JWT_KIND, 1);
     if (logpath) {
@@ -825,14 +826,14 @@ int zxid_sp_sso_finalize_jwt(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const 
       zxlog_blob(cf, cf->log_rely_a7n, logpath, &ss, "sp_sso_finalize_jwt");
     }
   }
-  D("Creating session... %d", 0);
+  DD("Creating session... %d", 0);
   ses->ssores = 0;
   zxid_put_ses(cf, ses);
   //*** zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
   cgi->msg = "SSO completed and session created.";
   cgi->op = '-';  /* Make sure management screen does not try to redispatch. */
   zxid_put_user(cf, 0, 0, 0, zx_ref_str(cf->ctx, ses->nid), 0);
-  D("Logging... %d", 0);
+  DD("Logging... %d", 0);
   ss.s = ses->nid; ss.len = strlen(ss.s);
   zxlog(cf, &ourts, &srcts, 0, ses->issuer, 0, 0, &ss,
 	cgi->sigval, "K", "NEWSESJWT", ses->sid, "sesix(%s)", STRNULLCHKD(ses->sesix));
@@ -922,6 +923,7 @@ struct zx_str* zxid_sp_oauth2_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* s
 }
 
 /*() Handle, on IdP side, OAUTH2 / OpenID-Connect1 check_id and token requests.
+ * This function is called by AS (IdP) in response to ?o=T
  *
  * return:: a string (such as Location: header) and let the caller output it.
  *     Sometimes a dummy string is just output to indicate status, e.g.
@@ -934,7 +936,7 @@ struct zx_str* zxid_sp_oauth2_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* s
 /* Called by:  zxid_simple_no_ses_cf */
 char* zxid_idp_oauth2_token_and_check_id(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags)
 {
-  int ret = 0;
+  char  sha_buf[28];
   char* buf;
   char* azc_data;
   char* id_token;
@@ -942,12 +944,11 @@ char* zxid_idp_oauth2_token_and_check_id(zxid_conf* cf, zxid_cgi* cgi, zxid_ses*
   /* *** to find the azc we need to know the requester. Presumably this
    * would be available from Authorization header, or perhaps Client-TLS */
   char* sp_eid = "fixed"; // "http://sp.tas3.pt:8081/zxidhlo?=o=B";
-  char* sha_buf[28];
 
   if (cgi->grant_type && !strcmp(cgi->grant_type, "authorization_code") && cgi->code) {
     /* OAUTH2 / OIDC1 Authorization Code / artifact binding */
 
-    sha1_safe_base64(&sha_buf[0], -2, sp_eid);
+    sha1_safe_base64(sha_buf, -2, sp_eid);
     sha_buf[27] = 0;
     azc_data = read_all_alloc(cf->ctx, "azc-resolve", 1, 0,
 			      "%slog/" ZXLOG_ISSUE_DIR "%s" ZXLOG_AZC_KIND "%s",
@@ -989,7 +990,7 @@ char* zxid_idp_oauth2_token_and_check_id(zxid_conf* cf, zxid_cgi* cgi, zxid_ses*
   if (cgi->id_token) {  /* OAUTH2 Implicit Binding, aka OpenID-Connect1 */
     /* The id_token is directly the local filename of the corresponsing assertion. */
     
-    D("ret=%d ses=%p", ret, ses);
+    D("check_id ses=%p", ses);
 
     // *** TODO
     //return zxid_simple_show_page(cf, ss, ZXID_AUTO_METAC, ZXID_AUTO_METAH, "b", "text/xml", res_len, auto_flags, 0);

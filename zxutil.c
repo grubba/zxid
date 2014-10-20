@@ -890,7 +890,7 @@ char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char*
 }
 
 /*() The out_buf should be 28 chars in length. The buffer is not automatically nul termianated.
- * There will be 27 characters of payload, plus one termination character "." (which
+ * There will be 27 characters of payload, plus one padding character "." (which
  * caller can overwrite with nul, if you like).
  *
  * out_buf:: Buffer where result will be written. It must be 28 characters long and already allocated. The buffer will not be null terminated.
@@ -1389,29 +1389,39 @@ int zx_date_time_to_secs(const char* dt)
 
 /*() Extract simple scalar string value of a json key using string
  * matching, rather than actually parsing JSON.
+ * return: pointer to the value, but this is in the original hay buffer and is
+ *     not nul terminated. You need to look at len for the length of the string.
+ * N.B. The key specification MUST include the quotes, e.g. "\"yourkey\""
  */
 
 const char* zx_json_extract_raw(const char* hay, const char* key, int* len)
 {
   const char* s;
   const char* p = strstr(hay, key);
-  if (!p)
+  if (!p) {
+    D("key(%s) not found in json(%s)", key, hay);
     return 0;
+  }
+  p += strlen(key);
   p += strspn(p, " \t\r\n");
-  if (*p != ':')
+  if (*p != ':') {
+    D("key(%s) found in json(%s) but subsequent colon (:) not found. Did you forget the double quotes around the key? p(%s)", key, hay, p);
     return 0;
+  }
   ++p;
   p += strspn(p, " \t\r\n");
   if (*p != '"')
     return 0;
   s = ++p;
-  p = strchr(p, '"');
+  p = strchr(p, '"');  /* *** Escaped double quotes not correctly considered. */
   if (len)
     *len = p-s;
   return s;
 }
 
-/*() Extract simple scalar string from JSON document. Return newly allocated memory. */
+/*() Extract simple scalar string from JSON document. Return newly allocated memory.
+ * N.B. The key specification MUST include the quotes, e.g. "\"yourkey\""
+ */
 
 char* zx_json_extract_dup(struct zx_ctx* c, const char* hay, const char* key)
 {
@@ -1422,17 +1432,24 @@ char* zx_json_extract_dup(struct zx_ctx* c, const char* hay, const char* key)
   return zx_dup_len_cstr(c, len, p);
 }
 
-/*() Extract simple scalar integer from JSON document. */
+/*() Extract simple scalar integer from JSON document.
+ * N.B. The key specification MUST include the quotes, e.g. "\"yourkey\""
+ */
 
 int zx_json_extract_int(const char* hay, const char* key)
 {
   int i;
   const char* p = strstr(hay, key);
-  if (!p)
+  if (!p) {
+    D("key(%s) not found in json(%s)", key, hay);
     return 0;
+  }
+  p += strlen(key);
   p += strspn(p, " \t\r\n");
-  if (*p != ':')
+  if (*p != ':') {
+    D("key(%s) found in json(%s) but subsequent colon (:) not found. Did you forget the double quotes around the key? p(%s)", key, hay, p);
     return 0;
+  }
   ++p;
   p += strspn(p, " \t\r\n");
   sscanf(p, "%i", &i);
