@@ -138,7 +138,7 @@ set_eid:
 	}
       }
       cgi->op = 'L';
-      D("cgi: login eid=%p eid(%s)", cgi->eid, cgi->eid);
+      D("cgi: login eid=%p eid(%s)", cgi->eid, cgi->eid?cgi->eid:"NONE");
       break;
     case 'k':
       DD("k CGI field(%s) val(%s) cgi=%p", n, v, cgi);
