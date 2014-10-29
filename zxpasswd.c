@@ -1,4 +1,5 @@
 /* zxpasswd.c  -  Password creation and user management tool
+ * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
@@ -10,6 +11,8 @@
  * 14.11.2009, added yubikey support --Sampo
  * 16.9.2010,  added support for traditional Unix crypt(3) hashed passwords --Sampo
  * 1.2.2011,   tweaked -at option --Sampo
+ * 5.2.2012,   changed -c flag to -n to reserve -c for config (to be consistent with other utils) --Sampo
+ * 24.4.2012,  obsoleted PATH=/var/zxid/idp. From now on, just use /var/zxid/ or VPATH --Sampo
  *
  * See also: http://www.users.zetnet.co.uk/hopwood/crypto/scan/ph.html
  * http://www.usenix.org/events/usenix99/provos/provos_html/index.html
@@ -44,21 +47,22 @@
 #include "c/zx-ns.h"
 #include "yubikey.h"
 
-#define UDIR "/var/zxid/idpuid"
+#define UDIR "/var/zxid/uid/"
 
 char* help =
 "zxpasswd  -  Password creation and user management tool R" ZXID_REL "\n\
+Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.\n\
 Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
-Usage: zxpasswd [options] user [udir] <passwd    # Set user's password\n\
-       zxpasswd [options] -c user [udir] <passwd # Create user and set password\n\
-       zxpasswd [options] -a user [udir] <passwd # Authenticate as user using pw\n\
-       zxpasswd [options] -l [user [udir]]       # List information about user\n\
+Usage: zxpasswd [options] user [udir] <passwd      # Set user's password\n\
+       zxpasswd [options] -new user [udir] <passwd # Create user and set password\n\
+       zxpasswd [options] -a   user [udir] <passwd # Authenticate as user using pw\n\
+       zxpasswd [options] -l   [user [udir]]       # List information about user\n\
   [udir]           Specify zxididp user directory. Default " UDIR "\n\
-  -c               Create user\n\
+  -new             Create New user\n\
   -at 'attr: val'  Append attribute(s) to .bs/.at\n\
   -s exist_uid     Symlink user to an existing user (e.g. yubikey alias)\n\
   -a               Authenticate as user. exit(2) value 0 means success\n\
@@ -79,7 +83,7 @@ int create = 0;
 int an = 0;
 int list = 0;
 char* hash_type = "1";
-char* udir = "/var/zxid/idpuid/";
+char* udir = UDIR;
 char* user = 0;
 char* symlink_user = 0;
 char* at = 0;
@@ -89,7 +93,7 @@ char userdir[4096];
 char buf[4096];
 struct zx_ctx ctx;
 
-/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x8, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc <= 1) {
@@ -121,9 +125,9 @@ static void opt(int* argc, char*** argv, char*** env)
       }
       break;
 
-    case 'c':
+    case 'n':
       switch ((*argv)[0][2]) {
-      case '\0':
+      case 'e':
 	++create;
 	continue;
       }
@@ -169,7 +173,7 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       }
       break;
@@ -196,10 +200,10 @@ static void opt(int* argc, char*** argv, char*** env)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
   help:
     if (verbose>1) {
-      printf(help);
+      printf("%s", help);
       exit(0);
     }
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     /*fprintf(stderr, "version=0x%06x rel(%s)\n", zxid_version(), zxid_version_str());*/
     exit(3);
   }
@@ -213,7 +217,7 @@ static void opt(int* argc, char*** argv, char*** env)
 /* Called by:  main */
 static int list_user(char* userdir, char* udir)
 {
-  int got;
+  /*int got;*/
   char* at;
   struct dirent* de;
   DIR* dir;
@@ -224,7 +228,7 @@ static int list_user(char* userdir, char* udir)
     return 4;
   }
   printf("User dir:              %s\n", userdir);
-  got = read_all(sizeof(buf), buf, "pw", 0, "%s/%s/.pw", udir, user);
+  /*got =*/ read_all(sizeof(buf), buf, "pw", 0, "%s/%s/.pw", udir, user);
   printf("Password hash:         %s\n", buf);
   at = read_all_alloc(&ctx, "at", 0, 0, "%s/%s/.bs/.at", udir, user);
   if (at) printf("User attributes:       %s\n", at);
@@ -235,7 +239,7 @@ static int list_user(char* userdir, char* udir)
 
   while (de = readdir(dir))
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
-      got = read_all(sizeof(buf), buf, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
+      /*got =*/ read_all(sizeof(buf), buf, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
       printf("SP specific NameID:  %s (%s)\n", buf, de->d_name);
       at = read_all_alloc(&ctx, "sp at", 0, 0, "%s/%s/.at", userdir, de->d_name);
       if (at) printf("SP specific attrib:  %s (%s)\n", buf, de->d_name);
@@ -252,20 +256,20 @@ static int list_user(char* userdir, char* udir)
 /* Called by:  main */
 static int list_users(char* udir)
 {
-  int got;
+  /*int got;*/
   char* at;
   struct dirent* de;
   DIR* dir;
 
   dir = opendir(udir);
   if (!dir) {
-    perror("opendir for /var/zxid/idpuid (or other if configured)");
+    perror("opendir for " UDIR " (or other if configured)");
     D("failed path(%s)", udir);
     return 1;
   }
   while (de = readdir(dir))
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
-      got = read_all(sizeof(buf), buf, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
+      /*got =*/ read_all(sizeof(buf), buf, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
       printf("SP specific NameID:  %s (%s)\n", buf, de->d_name);
       at = read_all_alloc(&ctx, "sp at", 0, 0, "%s/%s/.bs/.at", userdir, de->d_name);
       if (at) printf("SP specific attrib:  %s (%s)\n", buf, de->d_name);
@@ -280,6 +284,7 @@ extern char pw_basis_64[64];
 /*() Authenticate user with the password (or other credential)
  * See also: zxid_pw_authn() in zxiduser.c */
 
+/* Called by:  main */
 static int authn_user(int isyk, int pwgot)
 {
   int got;
@@ -293,7 +298,7 @@ static int authn_user(int isyk, int pwgot)
       ERR("The Yubikey One Time Password has already been spent. ticket(%s%s) buf(%.*s)", user, pw, got, buf);
       return 5;
     }
-    if (!write_all_path_fmt("ykspent", sizeof(buf), buf, "%s/.ykspent/%s", userdir, pw, "1"))
+    if (!write_all_path("ykspent", "%s/.ykspent/%s", userdir, pw, 1, "1"))
       return 1;
     
     got = read_all(sizeof(buf), buf, "ykaes", 1, "%s/%s/.yk", udir, user);
@@ -355,6 +360,8 @@ static int authn_user(int isyk, int pwgot)
   return got;
 }
 
+extern int zxid_suppress_vpath_warning;
+
 /* Called by: */
 int main(int argc, char** argv, char** env)
 {
@@ -365,14 +372,14 @@ int main(int argc, char** argv, char** env)
   unsigned char salt[16];
   unsigned char ch;
   
-  strcpy(zx_instance, "\tzxpw");
+  strcpy(errmac_instance, "\tzxpw");
+  zxid_suppress_vpath_warning = 1;
   zx_reset_ctx(&ctx);
   opt(&argc, &argv, &env);
   if (argc)
     user = argv[0];
   else if (!list) {
-    fprintf(stderr, "Too few arguments (%d). Specify at least user name.\n", argc);
-    fprintf(stderr, help);
+    fprintf(stderr, "Too few arguments (%d). Specify at least user name.\n%s", argc, help);
     /*fprintf(stderr, "version=0x%06x rel(%s)\n", zxid_version(), zxid_version_str());*/
     exit(3);
   }
@@ -397,7 +404,7 @@ int main(int argc, char** argv, char** env)
     D("yubikey user(%s) ticket(%s)", user, pw);
     isyk = 1;
   } else if (!at || create) {
-    read_all_fd(fileno(stdin), pw, sizeof(pw)-1, &pwgot);  /* Password from stdin */
+    read_all_fd(fdstdin, pw, sizeof(pw)-1, &pwgot);  /* Password from stdin */
   }
   if (pwgot) {
     if (pw[pwgot-1] == '\012') --pwgot;
@@ -478,7 +485,7 @@ int main(int argc, char** argv, char** env)
     D("pw_hash(%s)", pw_hash);
   } else if (!strcmp(hash_type, "y")) {
     D("Provisioning yubikey aes(%s) in %s/%s/.yk", pw, udir, user);
-    if (!write_all_path_fmt("set yk", sizeof(buf), buf, "%s/%s/.yk", udir, user, "%s", pw))
+    if (!write_all_path("set yk", "%s/%s/.yk", udir, user, -1, pw))
       return 1;
     snprintf(userdir, sizeof(userdir)-1, "%s/%s/.ykspent", udir, user);
     userdir[sizeof(userdir)-1] = 0;
@@ -489,12 +496,12 @@ int main(int argc, char** argv, char** env)
   }
   
   DD("pw_hash(%s) len=%d", pw_hash, strlen(pw_hash));
-  if (!write_all_path_fmt("set pw", sizeof(buf), buf, "%s/%s/.pw", udir, user, "%s", pw_hash))
+  if (!write_all_path("set pw", "%s/%s/.pw", udir, user, -1, (char*)pw_hash))
     return 1;
   return 0;
 }
 
-/* EOF  --  zxdecode.c */
+/* EOF  --  zxpasswd.c */
 
 #if 0
 

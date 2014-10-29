@@ -17,7 +17,8 @@
 #include "platform.h"
 #include <string.h>
 #include <stdio.h>
-#include <sys/stat.h>  /* umask(2) */
+#include <sys/stat.h>     /* umask(2) */
+//#include <openssl/evp.h>  /* EVP_PKEY */
 
 #include "errmac.h"
 #include "zxid.h"
@@ -30,16 +31,20 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
-int zx_debug = 0;              /* declared in errmac.h */
-FILE* zx_debug_log = 0;        /* declared in errmac.h, 0 means stderr will be used */
-char zx_indent[256] = "";      /* declared in errmac.h */
-char zx_instance[64] = "\tzx"; /* declared in errmac.h */
+int errmac_debug = 0;              /* declared in errmac.h */
+FILE* errmac_debug_log = 0;        /* declared in errmac.h, 0 means stderr will be used */
+char errmac_indent[256] = "";      /* declared in errmac.h */
+char errmac_instance[64] = "\tzx"; /* declared in errmac.h */
 int assert_nonfatal = 0;
 char* assert_msg = "%s: Internal error caused an ASSERT to fire. Deliberately trying to dump core.\nSorry for the inconvenience. If no core appears, try `ulimit -c unlimited'\n";
 int trace = 0;
 
+#ifndef ZXID_LIBNAME
+#define ZXID_LIBNAME " libzxid (zxid.org)"
+#endif
+
 int zxid_version_var = ZXID_VERSION;
-const char* zxid_version_str_var = ZXID_REL " " ZXID_COMPILE_DATE " libzxid (zxid.org)";
+const char* zxid_version_str_var = ZXID_REL " " ZXID_COMPILE_DATE ZXID_LIBNAME;
 
 /*() Obtain the hex encoded version integer describing the libzxid. This can be
  * used to effectuate a runtime version number check. For compile time you
@@ -63,9 +68,13 @@ const char* zxid_version_str()
 
 /*(i) Render any element with some options, controlled by
  * config option ENC_TAIL_OPT. Often used to generate slightly optimized
- * version for wire transfer. Not suitable for generating canonicalization. */
+ * version for wire transfer. Not suitable for generating canonicalization.
+ * The lists are assumed to be in forward order, i.e. opposite
+ * of what zx_dec_zx_root() and zx_DEC_elem() return. You should call
+ * zx_reverse_elem_lists() if needed.
+ * Wire Order is respected first, and then kids list forward order. */
 
-/* Called by:  main x3, so_enc_dec, zxid_addmd, zxid_anoint_sso_resp, zxid_cache_epr, zxid_call_epr, zxid_idp_sso, zxid_lecp_check, zxid_map_val_ss, zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni, zxid_mni_do_ss, zxid_pep_az_base_soap_pepmap x3, zxid_pep_az_soap_pepmap x5, zxid_reg_svc, zxid_ses_to_pool x2, zxid_slo_resp_redir, zxid_snarf_eprs_from_ses, zxid_soap_call_raw, zxid_soap_cgi_resp_body, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_slo_redir, zxid_start_sso_url, zxid_write_ent_to_cache, zxid_wsc_prepare_call, zxid_wsp_decorate */
+/* Called by:  main x3, so_enc_dec, zxid_add_env_if_needed x2, zxid_addmd, zxid_anoint_sso_resp, zxid_cache_epr, zxid_call_epr x2, zxid_idp_sso, zxid_lecp_check, zxid_map_val_ss, zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni, zxid_mni_do_ss, zxid_pep_az_base_soap_pepmap x3, zxid_pep_az_soap_pepmap x3, zxid_reg_svc, zxid_ses_to_pool x2, zxid_slo_resp_redir, zxid_snarf_eprs_from_ses, zxid_soap_call_raw, zxid_soap_cgi_resp_body, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_slo_redir, zxid_start_sso_url, zxid_write_ent_to_cache, zxid_wsc_prepare_call, zxid_wsp_decorate */
 struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x)
 {
   struct zx_str* ss;
@@ -75,7 +84,7 @@ struct zx_str* zx_easy_enc_elem_opt(zxid_conf* cf, struct zx_elem_s* x)
   return ss;
 }
 
-/* Called by:  attribute_sort_test x2, zxid_a7n2str, zxid_anoint_a7n x2, zxid_anoint_sso_resp, zxid_az_soap x2, zxid_idp_sso, zxid_mk_art_deref, zxid_nid2str, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_sp_sso_finalize, zxid_ssos_anreq, zxid_token2str, zxid_wsf_validate_a7n */
+/* Called by:  attribute_sort_test x2, zxid_a7n2str, zxid_anoint_a7n x2, zxid_anoint_sso_resp, zxid_az_soap x2, zxid_epr2str, zxid_get_epr_tas3_trust, zxid_idp_sso, zxid_mk_art_deref, zxid_nid2str, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_sp_sso_finalize, zxid_ssos_anreq, zxid_token2str, zxid_wsf_validate_a7n */
 struct zx_str* zx_easy_enc_elem_sig(zxid_conf* cf, struct zx_elem_s* x)
 {
   cf->ctx->enc_tail_opt = 0;
@@ -91,7 +100,7 @@ struct zx_str* zx_easy_enc_elem_sig(zxid_conf* cf, struct zx_elem_s* x)
  *     bits should be multiple of 24 (3 bytes expands to 4 safe base64 chars)
  * return:: The identifier as zx_str. Caller should eventually free this memory.
  */
-/* Called by:  zxid_check_fed, zxid_mk_subj, zxid_mk_transient_nid, zxid_ps_addent_invite x3, zxid_ps_resolv_id, zxid_put_ses, zxid_pw_authn, zxid_ssos_anreq, zxid_wsc_prep_secmech, zxid_wsf_decor */
+/* Called by:  zxid_check_fed, zxid_mk_oauth_az_req, zxid_mk_subj, zxid_mk_transient_nid, zxid_ps_addent_invite x3, zxid_ps_resolv_id, zxid_put_ses, zxid_pw_authn, zxid_ssos_anreq, zxid_wsc_prep_secmech, zxid_wsf_decor */
 struct zx_str* zxid_mk_id(zxid_conf* cf, char* prefix, int bits)
 {
   char bit_buf[ZXID_ID_MAX_BITS/8];
@@ -130,7 +139,7 @@ struct zx_attr_s* zxid_mk_id_attr(zxid_conf* cf, struct zx_elem_s* father, int t
  *
  * See also: zx_date_time_to_secs()
  */
-/* Called by:  zxid_put_invite x2, zxid_put_psobj x2, zxid_wsc_prep_secmech, zxid_wsf_decor */
+/* Called by:  timegm_tester, zxid_az_soap, zxid_put_invite x2, zxid_put_psobj x2, zxid_wsc_prep_secmech, zxid_wsf_decor */
 struct zx_str* zxid_date_time(zxid_conf* cf, time_t secs)
 {
   struct tm t;
@@ -198,6 +207,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
   char* p;
   int alloc_len, zlen, slen, field_len, rs_len;
   zxid_cgi cgi;
+
   field_len = strlen(field);
   rs_len = relay_state?strlen(relay_state):0;
   if (rs_len) {
@@ -246,7 +256,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
     p += sizeof(ETSIGNATURE_EQ)-1;
     sig = p;
     p = base64_fancy_raw(zbuf, zlen, p, std_basis_64, 1<<31, 0, 0, '=');
-    ASSERTOP(p-url, <, alloc_len);  /* Check sig did not overrun its fixed size alloc SIG_SIZE */
+    ASSERTOPI(p-url, <, alloc_len);  /* Check sig did not overrun its fixed size alloc SIG_SIZE */
     slen = p-sig;
     ZX_FREE(cf->ctx, zbuf);
     
@@ -269,7 +279,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
 	zx_str_free(cf->ctx, logpath);
       }
     }
-    ASSERTOP(slen, <, SIG_SIZE-1);
+    ASSERTOPI(SIG_SIZE-1, >, slen);
     memcpy(sigbuf, sig, slen);
     sigbuf[slen] = 0;
   } else {
@@ -278,23 +288,20 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
 
   p = base64_fancy_raw(payload->s, payload->len, url, std_basis_64, 1<<31, 0, 0, '=');
   *p = 0;
-  ASSERTOP(p-url, <=, alloc_len);  /* Check sig did not overrun its fixed size alloc SIG_SIZE */  
+  ASSERTOPI(p-url, <=, alloc_len); /* Check sig didn't overrun its fixed size alloc SIG_SIZE */  
 
 #if 1
   /* Template based POST page, see post.html */
   ZERO(&cgi, sizeof(cgi));
   cgi.action_url = zx_str_to_c(cf->ctx, action_url);
-  cgi.saml_art  = field;
-  cgi.saml_resp = url;
+  DD("action_url(%s)", cgi.action_url);
+  cgi.saml_art   = field;
+  cgi.saml_resp  = url;
   if (rs_len) {
-    logpath = zx_strf(cf->ctx, "<input type=hidden name=RelayState value=\"%s\">", relay_state);
-    cgi.rs = logpath->s;
-    ZX_FREE(cf->ctx, logpath);
+    cgi.rs = zx_alloc_sprintf(cf->ctx, 0, "<input type=hidden name=RelayState value=\"%s\">", relay_state);
   }
   if (sign) {
-    logpath = zx_strf(cf->ctx, "<input type=hidden name=SigAlg value=\"" SIG_ALGO "\"><input type=hidden name=Signature value=\"%s\">", sigbuf);
-    cgi.sig = logpath->s;
-    ZX_FREE(cf->ctx, logpath);
+    cgi.sig = zx_alloc_sprintf(cf->ctx, 0, "<input type=hidden name=SigAlg value=\"" SIG_ALGO "\"><input type=hidden name=Signature value=\"%s\">", sigbuf);
   }
   payload = zxid_template_page_cf(cf, &cgi, cf->post_templ_file, cf->post_templ, 64*1024, 0);
 #else
@@ -388,6 +395,7 @@ struct zx_str* zxid_saml2_redir_enc(zxid_conf* cf, char* field, struct zx_str* p
     zlen = zxsig_data(cf->ctx, len, url, &zbuf, sign_pkey, "SAML2 redir");
   if (zlen == -1)
     return 0;
+  D("siglen=%d", zlen);
   
   /* Base64 and URL encode the sig. Had SAML2 specified safe base64, world would be simpler! */
   
@@ -452,7 +460,7 @@ struct zx_str* zxid_saml2_redir_url(zxid_conf* cf, struct zx_str* loc, struct zx
 			 ? "%.*s&%.*s" CRLF2
 			 : "%.*s?%.*s" CRLF2), loc->len, loc->s, rse->len, rse->s);
   D("%.*s", ss->len, ss->s);
-  if (zx_debug & ZXID_INOUT) INFO("%.*s", ss->len, ss->s);
+  if (errmac_debug & ERRMAC_INOUT) INFO("%.*s", ss->len, ss->s);
   zx_str_free(cf->ctx, rse);
   return ss;
 }
@@ -480,7 +488,7 @@ struct zx_str* zxid_saml2_redir(zxid_conf* cf, struct zx_str* loc, struct zx_str
   ss = zx_strf(cf->ctx, (memchr(loc->s, '?', loc->len)
 			 ? "Location: %.*s&%.*s" CRLF2
 			 : "Location: %.*s?%.*s" CRLF2), loc->len, loc->s, rse->len, rse->s);
-  if (zx_debug & ZXID_INOUT) INFO("%.*s", ((int)(ss->len - sizeof(CRLF2) + 1)), ss->s);
+  if (errmac_debug & ERRMAC_INOUT) INFO("%.*s", ((int)(ss->len - sizeof(CRLF2) + 1)), ss->s);
   zx_str_free(cf->ctx, rse);
   return ss;
 }
@@ -507,7 +515,7 @@ struct zx_str* zxid_saml2_resp_redir(zxid_conf* cf, struct zx_str* loc, struct z
   ss = zx_strf(cf->ctx, (memchr(loc->s, '?', loc->len)
 			 ? "Location: %.*s&%.*s" CRLF2
 			 : "Location: %.*s?%.*s" CRLF2), loc->len, loc->s, rse->len, rse->s);
-  if (zx_debug & ZXID_INOUT) INFO("%.*s", ((int)(ss->len - sizeof(CRLF2) + 1)), ss->s);
+  if (errmac_debug & ERRMAC_INOUT) INFO("%.*s", ((int)(ss->len - sizeof(CRLF2) + 1)), ss->s);
   zx_str_free(cf->ctx, rse);
   return ss;
 }
@@ -652,7 +660,7 @@ struct zx_str* zxid_decrypt_newnym(zxid_conf* cf, struct zx_str* newnym, struct 
  * manually and then call zxsig_validate() with correctly populate refs array.
  */
 
-/* Called by:  sig_validate, zxid_idp_slo_do, zxid_mni_do, zxid_sp_dig_sso_a7n, zxid_sp_slo_do, zxid_xacml_az_cd1_do, zxid_xacml_az_do */
+/* Called by:  sig_validate, zxid_idp_slo_do, zxid_mni_do, zxid_sp_dig_oauth_sso_a7n, zxid_sp_dig_sso_a7n, zxid_sp_slo_do, zxid_xacml_az_cd1_do, zxid_xacml_az_do */
 int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* elem, struct zx_ds_Signature_s* sig, struct zx_sa_Issuer_s* issue_ent, struct zx_ns_s* pop_seen, const char* lk)
 {
   struct zx_str* issuer = 0;
@@ -700,7 +708,7 @@ int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* 
   zx_see_elem_ns(cf->ctx, &refs.pop_seen, elem);
   ses->sigres = zxsig_validate(cf->ctx, idp_meta->sign_cert, sig, 1, &refs);
   zxid_sigres_map(ses->sigres, &cgi->sigval, &cgi->sigmsg);
-  D("Response sigres(%d)", ses->sigres);
+  D("Response sigres(%d) 0=ZXSIG_OK", ses->sigres);
   return 2;
 
 nosig_allow:
@@ -734,7 +742,9 @@ struct zx_str* zxid_get_affil_and_sp_name_buf(zxid_conf* cf, zxid_entity* meta, 
   return affil;
 }
 
-/* Called by:  zxid_add_fed_tok2epr, zxid_map_val_ss x2, zxid_sso_issue_a7n */
+/*() Determine federation specific nameid */
+
+/* Called by:  zxid_add_fed_tok2epr, zxid_map_val_ss x2, zxid_sso_issue_a7n, zxid_sso_issue_jwt */
 zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str* affil, const char* uid, const char* sp_name_buf, int allow_create, int want_transient, struct timeval* srcts, struct zx_str* id, char* logop)
 {
   zxid_nid* nameid = zxid_check_fed(cf, affil, uid, allow_create, srcts, prvid, id, sp_name_buf);
@@ -760,7 +770,7 @@ zxid_nid* zxid_get_fed_nameid(zxid_conf* cf, struct zx_str* prvid, struct zx_str
  * Thus you should place most specific rules last and most generic rules first.
  * See also: zxid_load_map() and zxid_find_map() */
 
-/* Called by:  zxid_add_at_values, zxid_map_val */
+/* Called by:  zxid_add_at_vals, zxid_map_val */
 struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, const char* atname, struct zx_str* val)
 {
   zxid_a7n* a7n;
@@ -832,21 +842,21 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
       p = map->ext;
     }
     bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
-			 "%s" ZXID_UID_DIR "%s/%s/%s", cf->path, ses->uid, buf, p);
+			 "%s" ZXID_UID_DIR "%s/%s/%s", cf->cpath, ses->uid, buf, p);
     if (!bin)
       bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
-			   "%s" ZXID_UID_DIR "%s/.bs/%s", cf->path, ses->uid, p);
+			   "%s" ZXID_UID_DIR "%s/.bs/%s", cf->cpath, ses->uid, p);
     if (!bin)
       bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
-			   "%s" ZXID_UID_DIR ".all/%s/%s", cf->path, buf, p);
+			   "%s" ZXID_UID_DIR ".all/%s/%s", cf->cpath, buf, p);
     if (!bin)
       bin = read_all_alloc(cf->ctx, "map_val from file", 0, &len,
-			   "%s" ZXID_UID_DIR ".all/.bs/%s", cf->path, p);
+			   "%s" ZXID_UID_DIR ".all/.bs/%s", cf->cpath, p);
     if (bin) {
       val = zx_ref_len_str(cf->ctx, len, bin);
       D("FILE RULE uid(%s) sp_name_buf(%s) file(%s) GOT(%.*s)",ses->uid,buf,p,val->len,val->s);
     } else {
-      INFO("Attribute(%s) value not found in any file(%s" ZXID_UID_DIR "%s/%s/%s)", STRNULLCHKQ(atname), cf->path, ses->uid, buf, p);
+      INFO("Attribute(%s) value not found in any file(%s" ZXID_UID_DIR "%s/%s/%s)", STRNULLCHKQ(atname), cf->cpath, ses->uid, buf, p);
       val = zx_ref_str(cf->ctx, "");
     }
     break;
@@ -872,12 +882,8 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
     base64_fancy_raw(val->s, val->len, ss->s, std_basis_64, 1<<31, 0, 0, '=');
     break;
   case ZXID_MAP_RULE_UNSB64_INF: /* Decode safebase64-inflate ([RFC3548], [RFC1951]) */
-    bin = ZX_ALLOC(cf->ctx, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(val->len));
-    p = unbase64_raw(val->s, val->s + val->len, bin, zx_std_index_64);
     ss = ZX_ZALLOC(cf->ctx, struct zx_str);
-    ss->s = zx_zlib_raw_inflate(cf->ctx, p-bin, bin, &ss->len);
-    ZX_FREE(cf->ctx, bin);
-    if (!ss->s) {
+    if (!val->len || !(ss->s = zxid_unbase64_inflate(cf->ctx, val->len, val->s, &ss->len))) {
       ss->len = 0;
       ss->s = "";
       return ss;    /* should return 0, but caller may be assuming this can not fail */
@@ -885,8 +891,7 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
     ss->s[ss->len] = 0;
     break;
   case ZXID_MAP_RULE_DEF_SB64:   /* Encode gzip-safebase64 ([RFC1951], [RFC3548]) */
-    bin = zx_zlib_raw_deflate(cf->ctx, val->len, val->s, &len);
-    if (!bin) {
+    if (!val->len || !(bin = zx_zlib_raw_deflate(cf->ctx, val->len, val->s, &len))) {
       return zx_dup_str(cf->ctx, "");
     }
     ss = zx_new_len_str(cf->ctx, SIMPLE_BASE64_LEN(len));
@@ -909,7 +914,7 @@ struct zx_str* zxid_map_val_ss(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, 
   return ss;
 }
 
-/* Called by:  pool2apache x2, zxid_add_mapped_attr, zxid_pepmap_extract x2, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
+/* Called by:  pool2apache x2, zxid_add_mapped_attr, zxid_pepmap_extract x2, zxid_pool2env x3, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
 struct zx_str* zxid_map_val(zxid_conf* cf, zxid_ses* ses, zxid_entity* meta, struct zxid_map* map, const char* atname, const char* val) {
   return zxid_map_val_ss(cf, ses, meta, map, atname, zx_dup_str(cf->ctx, STRNULLCHK(val)));
 }
@@ -962,18 +967,19 @@ nobody:
  * already have been allocated and MUST hold 20 characters. It will not be
  * nul terminated and in fact will contain binary data (sha1 hash output). */
 
-/* Called by:  zxid_psobj_key_setup, zxlog_write_line */
+/* Called by:  zxid_mk_jwt, zxid_psobj_key_setup, zxlog_write_line */
 char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey)
 {
   char buf[1024];
-  int um, gotall = read_all(sizeof(buf), buf, "symkey", 1, "%s" ZXID_PEM_DIR "%s", cf->path, keyname);
+  int um, gotall = read_all(sizeof(buf), buf, "symkey", 1, "%s" ZXID_PEM_DIR "%s", cf->cpath, keyname);
   if (!gotall && cf->auto_cert) {
-    INFO("AUTO_CERT: generating symmetric encryption key in %s" ZXID_PEM_DIR "%s", cf->path, keyname);
-    gotall = 128 >> 3;
+    INFO("AUTO_CERT: generating symmetric encryption key in %s" ZXID_PEM_DIR "%s", cf->cpath, keyname);
+    gotall = 128 >> 3; /* 128 bits as bytes */
     zx_rand(buf, gotall);
     um = umask(0077);  /* Key material should be readable only by owner */
-    write_all_path_fmt("auto_cert", sizeof(buf), buf,
-		       "%s" ZXID_PEM_DIR "%s", cf->path, keyname, "%.*s", gotall, buf);
+    INFO("gotall=%d", gotall);
+    hexdmp("symkey ", buf, gotall, 16);
+    write_all_path("auto_cert", "%s" ZXID_PEM_DIR "%s", cf->cpath, keyname, gotall, buf);
     umask(um);
   }
   SHA1((unsigned char*)buf, gotall, (unsigned char*)symkey);

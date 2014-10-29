@@ -4,12 +4,30 @@
 # Sampo Kellomäki (sampo@iki.fi)
 # $Id: Quick,v 1.9 2010-01-08 02:10:09 sampo Exp $
 
-make all
+make dep ENA_GEN=1
+time (PATH=/usr/bin:/bin:/apps/bin LD_LIBRARY_PATH=/apps/lib make all ENA_GEN=1)
+
+time (PATH=/usr/bin:/bin:/apps/bin LD_LIBRARY_PATH=/apps/lib make all ENA_GEN=1 ENA_PG=1)
 time (LD_LIBRARY_PATH=/apps/lib make all ENA_GEN=1 ENA_PG=1)
 
 # configure your web server to recognize zxid a CGI, e.g.
 mini_httpd -p 8443 -c 'zxid*' -S -E zxid.pem -l /tmp/mini.stderr &
 mini_httpd -p 8444 -c 'zxid*' -S -E /var/zxid/pem/enc-nopw-cert.pem -l /tmp/mini.stderr &
+mini_httpd_zxid -zx 'PATH=/var/zxid/&WSP_PAT=**.wsp&SSO_PAT=**&DEBUG=0x7f' -p 8443 -c 'zxid*' -S -E /var/zxid/pem/enc-nopw-cert.pem
+./zxid_httpd -zx 'PATH=/var/zxid/&WSP_PAT=*.wsp&SSO_PAT=*&DEBUG=8' -p 8443 -c 'zxid*' -S /var/zxid/pem/enc-nopw-cert.pem
+curl -k https://sp.tas3.pt:8443/zxidenv.cgi
+https://sp.tas3.pt:8443/zxidenv.cgi
+https://sp.tas3.pt:8443/zxidenv.wsp
+
+./zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'TAS3 Default Discovery Service (ID-WSF 2.0)' http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 | ./zxcot -bs /var/zxid/idp.tas3.pt_8081/dimd/
+
+./zxcot -e https://sp.tas3.pt:8443/zxidenv.wsp 'WSP test' https://sp.tas3.pt:8443/saml?o=B urn:zxidenv | ./zxcot -b /var/zxid/idp.tas3.pt_8081/dimd/
+
+./zxcot -s /var/zxid/idp.tas3.pt_8081/cot/
+
+./zxcall -c 'CPATH=/var/zxid/&URL=https://sp.tas3.pt:8443/saml' -a http://idp.tas3.pt:8081/zxididp?o=B test:foo -t urn:zxidenv -e '<req/>'
+
+curl -v -k https://sp.tas3.pt:8443/zxidenv.wsp --data-binary '<req>Hello</req>'
 
 echo Edit your /etc/hosts to contain
 echo 127.0.0.1 localhost sp1.zxidcommon.org sp1.zxidsp.org idp1.zxidp.org sp.tas3.pt idp.tas3.pt
@@ -43,12 +61,19 @@ STD TEST SETUP
 
 export LD_LIBRARY_PATH=/apps/lib
 ulimit -c unlimited
-mini_httpd -p 8081 -c 'zxid*' &
+mini_httpd -p 8081 -c 'zxid*' &   # IdP
+mini_httpd -p 8082 -c 'zxid*' &   # SP
+./zxid_httpd -p 8081 -c 'zxid*' & # IdP
+./zxid_httpd -p 8082 -c 'zxid*' & # SP
 tailf /var/tmp/zxid.stderr &
 tailf /var/zxid/log/xml.dbg | ~/zxid/xml-pretty.pl &
 tailf /var/log/apache2/error.log | perl -pe 's/((zxidp)|(eid))/\e[1;31m$1\e[0m/g; s/, referer: .*?$//' &
 tail -f tmp/err-httpd &
 tailf ~/error.log | perl -pe 'substr($_,0,60)=""; s/((zxidp)|(eid))/\e[1;31m$1\e[0m/g; s/, referer: .*?$//' &
+
+http://idp.tas3.pt:8081/zxididp?o=B
+http://idp.tas3.pt:8081/zxididp?o=F
+http://sp.tas3.pt:8082/zxidhlo?o=E
 
 Testing
 -------

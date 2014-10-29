@@ -1,4 +1,5 @@
 /* zxlogview.c  -  Encrypted and signed log decoder
+ * Copyright (c) 2012 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -9,7 +10,8 @@
  * $Id: zxlogview.c,v 1.15 2009-11-24 23:53:40 sampo Exp $
  *
  * 19.11.2006, started --Sampo
- * 29.8.2009, added hmac chaining field --Sampo
+ * 29.8.2009,  added hmac chaining field --Sampo
+ * 6.9.2012,   added tests for receipts --Sampo
  *
  * TODO Ideas
  *
@@ -30,6 +32,9 @@
  * 6. Regression test mode
  */
 
+#include "platform.h"
+#include "errmac.h"
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,17 +46,23 @@
 #include <openssl/aes.h>
 #endif
 
-#include "platform.h"
-#include "errmac.h"
 #include "zx.h"
 #include "zxid.h"
 #include "zxidutil.h"
 #include "c/zxidvers.h"
 
+/*
+       zxlogview -rv sign-nopw-cert.pem receipt body  # Check receipt\n\
+       zxlogview -rg sign-nopw-cert.pem receipt body  # Generate receipt\n\
+  -rv CERT RCPT BODY  Receipt verification mode.\n\
+  -rg PRIV RCPT BODY  Receipt generation mode.\n\
+*/
+
 char* help =
 "zxlogview  -  Decrypt logs and validate log signatures - R" ZXID_REL "\n\
 SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
-Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
+Copyright (c) 2012 Synergetics NV (sampo@synergetics.be), All Rights Reserved.\n\
+Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
 Author: Sampo Kellomaki (sampo@iki.fi)\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
@@ -59,6 +70,7 @@ See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
 Usage: zxlogview [options] logsign-nopw-cert.pem logenc-nopw-cert.pem <loglines\n\
+       zxlogview -t sign-nopw-cert.pem sign-nopw-cert.pem\n\
   -t        Test mode. The certificates are interpretted from enc & sign perspective.\n\
   -v        Verbose messages.\n\
   -q        Be extra quiet.\n\
@@ -70,7 +82,7 @@ Usage: zxlogview [options] logsign-nopw-cert.pem logenc-nopw-cert.pem <loglines\
 #define DIE(reason) MB fprintf(stderr, "%s\n", reason); exit(2); ME
 
 int verbose = 1;
-extern int zx_debug;
+extern int errmac_debug;
 int leak_free = 0;
 
 X509* log_verify_cert;
@@ -79,8 +91,9 @@ char  log_symkey[20];
 char  buf[4096];
 
 static void test_mode(int* argc, char*** argv, char*** env);
+static void test_receipt(int* argc, char*** argv, char*** env);
 
-/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x8, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   int gotall;
@@ -100,12 +113,12 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	strcpy(zx_instance, (*argv)[0]);
+	strcpy(errmac_instance, (*argv)[0]);
 	continue;
       }
       break;
@@ -129,7 +142,7 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'r':
       switch ((*argv)[0][2]) {
       case 'f':
-	/*AFR_TS(LEAK, 0, "memory leaks enabled");*/
+	/*AK_TS(LEAK, 0, "memory leaks enabled");*/
 #if 1
 	ERR("*** WARNING: You have turned memory frees to memory leaks. We will (eventually) run out of memory. Using -rf is not recommended. %d\n", 0);
 #endif
@@ -153,7 +166,7 @@ static void opt(int* argc, char*** argv, char*** env)
 #endif
       case 'a':
 	if ((*argv)[0][3] == 0) {
-	  /*AFR_TS(ASSERT_NONFATAL, 0, "assert nonfatal enabled");*/
+	  /*AK_TS(ASSERT_NONFATAL, 0, "assert nonfatal enabled");*/
 #if 1
 	  ERR("*** WARNING: YOU HAVE TURNED ASSERTS OFF USING -ra FLAG. THIS MEANS THAT YOU WILL NOT BE ABLE TO OBTAIN ANY SUPPORT. IF PROGRAM NOW TRIES TO ASSERT IT MAY MYSTERIOUSLY AND UNPREDICTABLY CRASH INSTEAD, AND NOBODY WILL BE ABLE TO FIGURE OUT WHAT WENT WRONG OR HOW MUCH DAMAGE MAY BE DONE. USING -ra IS NOT RECOMMENDED. %d\n", assert_nonfatal);
 #endif
@@ -169,24 +182,29 @@ static void opt(int* argc, char*** argv, char*** env)
       case 'i':
 	if (!strcmp((*argv)[0],"-license")) {
 	  extern char* license;
-	  fprintf(stderr, license);
+	  fprintf(stderr, "%s", license);
 	  exit(0);
 	}
 	break;
       }
       break;
       
-    case 't': test_mode(argc, argv, env);
+    case 't':
+      switch ((*argv)[0][2]) {
+      case '\0': test_mode(argc, argv, env);
+      case '1':  test_receipt(argc, argv, env);
+      }
+      break;
     } 
     /* fall thru means unrecognized flag */
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
   argerr:
     if (verbose>1) {
-      printf(help);
+      printf("%s", help);
       exit(0);
     }
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     exit(3);
   }
 
@@ -219,15 +237,17 @@ static void test_mode(int* argc, char*** argv, char*** env)
     if ((*argv)[0][0]) {
       read_all(sizeof(buf), buf, "logview test_mode private key", 1, "%s", (*argv)[0]);
       cf->log_sign_pkey = zxid_extract_private_key(buf, (*argv)[0]);
+      cf->sign_pkey = cf->enc_pkey = cf->log_sign_pkey;
     }
     ++(*argv); --(*argc);
   }
   
   if (*argc) {  /* Log encryption key (logenc-nopw-cert.pem) */
     if ((*argv)[0][0]) {
-      gotall = read_all(sizeof(buf), buf, "logview test_mode key", 1, "%s", (*argv)[0]);
+      gotall = read_all(sizeof(buf), buf, "logview test_mode cert", 1, "%s", (*argv)[0]);
       SHA1((unsigned char*)buf, gotall, (unsigned char*)cf->log_symkey);
       cf->log_enc_cert = zxid_extract_cert(buf, (*argv)[0]);
+      cf->sign_cert = cf->enc_cert = cf->log_enc_cert;
     }
     ++(*argv); --(*argc);
   }
@@ -247,9 +267,48 @@ static void test_mode(int* argc, char*** argv, char*** env)
   zxlog_write_line(cf, "zxlogview-test.out", 0x41, -2, "test10 AES none\n");
   zxlog_write_line(cf, "zxlogview-test.out", 0x43, -2, "test11 AES SHA1\n");
   zxlog_write_line(cf, "zxlogview-test.out", 0x45, -2, "test12 AES RSA sig\n");
+  exit(0);
+}
+
+/* Called by:  opt */
+static void test_receipt(int* argc, char*** argv, char*** env)
+{
+  char sigbuf[1024];
+  char* eid;
+  zxid_conf* cf = zxid_new_conf_to_cf("CPATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/");
+
+  eid = zxid_my_ent_id_cstr(cf);
+
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "test13");
+  printf("13 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "test13"));
+  //exit(0);
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "", -1, "d", -1, "", -1, "");
+  printf("14 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "", -1, "", -1, "", -1, ""));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t15");
+  printf("15 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t15"));
+  sigbuf[3] = '0';
+  printf("15fail expected vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t15"));
+
+  cf->bus_rcpt = 3;
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "test16");
+  printf("16 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "test16"));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "");
+  printf("17 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, ""));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t18");
+  printf("18 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t18"));
+
+  cf->bus_rcpt = 1;
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "test19");
+  printf("19 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "test19"));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "");
+  printf("20 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, ""));
+  zxbus_mint_receipt(cf, sizeof(sigbuf), sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t21");
+  printf("21 vfy=%d\n", zxbus_verify_receipt(cf, eid, -1, sigbuf, -1, "mid1", -1, "default", -1, "eid1", -1, "t21"));
 
   exit(0);
 }
+
+/* Called by:  main x3 */
 
 /* Called by:  main x3 */
 static void zxlog_zsig_verify_print(zxid_conf* cf, int len, char* buf, char* se, char* p)
@@ -302,6 +361,8 @@ static void zxlog_zsig_verify_print(zxid_conf* cf, int len, char* buf, char* se,
 
 /* ============== M A I N ============== */
 
+extern int zxid_suppress_vpath_warning;
+
 /*(-) Control starts here */
 /* Called by: */
 int main(int argc, char** argv, char** env)
@@ -314,8 +375,9 @@ int main(int argc, char** argv, char** env)
   char ses[16];
   char sha1[20];
   struct aes_key_st aes_key;
+  zxid_suppress_vpath_warning = 2;
   zxid_conf* cf = zxid_new_conf(0);
-  strcpy(zx_instance, "\tzxlogview");
+  strcpy(errmac_instance, "\tzxlogview");
   opt(&argc, &argv, &env);
   
   while (1) {
@@ -376,7 +438,7 @@ int main(int argc, char** argv, char** env)
       seslen = RSA_private_decrypt(seslen, (unsigned char*)buf+2, (unsigned char*)ses, rsa, RSA_PKCS1_OAEP_PADDING);
       if (seslen < 0) {
 	ERR("RSA dec fail %x", seslen);
-	zx_report_openssl_error("zxlog rsa enc");
+	zx_report_openssl_err("zxlog rsa enc");
 	break;
       }
       D("decrypted session key len(%d)", seslen);

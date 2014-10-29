@@ -61,7 +61,7 @@ Usage: zxid [options]   (when used as CGI, no options can be supplied)\n\
                    or Provider ID, aka well known location. The imported metadata\n\
                    is written to CoT cache directory.\n\
   -fileimport FILE Import metadata of others from file.\n\
-  -C CONFPATH      Path to (optional) config file, default /var/zxid/zxid.conf\n\
+  -C CONFPATH      Path to (optional) config file, default " ZXID_CONF_PATH "\n\
   -c OPT=VAL       Override default or config file option. Only after -C, if any.\n\
   -t SECONDS       Timeout. Default: 0=no timeout.\n\
   -k FDNUMBER      File descriptor for reading symmetric key. Use 0 for stdin.\n\
@@ -79,7 +79,7 @@ Usage: zxid [options]   (when used as CGI, no options can be supplied)\n\
   -h               This help message\n\
   --               End of options\n";
 
-int afr_buf_size = 0;
+int ak_buf_size = 0;
 int verbose = 1;
 int timeout = 0;
 int gcthreshold = 0;
@@ -95,7 +95,7 @@ char buf[32*1024];
 /* N.B. This options processing is a skeleton. In reality CGI scripts do not have
  * an opportunity to process any options. */
 
-/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x8, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
 {
   char* conf_path = 0;
@@ -125,7 +125,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
 	if (conf_path)
 	  read_all(sizeof(buf), buf, "new conf path in opt", 1, "%s", conf_path);
 	else
-	  read_all(sizeof(buf), buf, "no conf path in opt", 1, "%szxid.conf", cf->path);
+	  read_all(sizeof(buf), buf, "no conf path in opt", 1, "%s" ZXID_CONF_FILE, cf->cpath);
 	zxid_parse_conf(cf, buf);
 	conf_path = (char*)1;
       }
@@ -135,12 +135,12 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	strcpy(zx_instance, (*argv)[0]);
+	strcpy(errmac_instance, (*argv)[0]);
 	continue;
       }
       break;
@@ -189,6 +189,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
       }
       break;
 #endif
+#ifndef MINGW
     case 'k':
       switch ((*argv)[0][2]) {
       case '\0':
@@ -199,13 +200,14 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
 	continue;
       }
       break;
+#endif
 
     case 'l':
       switch ((*argv)[0][2]) {
       case 'i':
 	if (!strcmp((*argv)[0],"-license")) {
 	  extern char* license;
-	  fprintf(stderr, license);
+	  fprintf(stderr, "%s", license);
 	  exit(0);
 	}
 	break;
@@ -235,7 +237,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
     case 'r':
       switch ((*argv)[0][2]) {
       case 'f':
-	/*AFR_TS(LEAK, 0, "memory leaks enabled");*/
+	/*AK_TS(LEAK, 0, "memory leaks enabled");*/
 	ERR("*** WARNING: You have turned memory frees to memory leaks. We will (eventually) run out of memory. Using -rf is not recommended. %d\n", 0);
 	++leak_free;
 	continue;
@@ -265,7 +267,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
 	continue;
       case 'a': /* -ra */
 	if ((*argv)[0][3] == 0) {
-	  /*AFR_TS(ASSERT_NONFATAL, 0, "assert nonfatal enabled");*/
+	  /*AK_TS(ASSERT_NONFATAL, 0, "assert nonfatal enabled");*/
 #if 1
 	  ERR("*** WARNING: YOU HAVE TURNED ASSERTS OFF USING -ra FLAG. THIS MEANS THAT YOU WILL NOT BE ABLE TO OBTAIN ANY SUPPORT. IF PROGRAM NOW TRIES TO ASSERT IT MAY MYSTERIOUSLY AND UNPREDICTABLY CRASH INSTEAD, AND NOBODY WILL BE ABLE TO FIGURE OUT WHAT WENT WRONG OR HOW MUCH DAMAGE MAY BE DONE. USING -ra IS NOT RECOMMENDED. %d\n", assert_nonfatal);
 #endif
@@ -318,7 +320,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
     if (conf_path)
       read_all(sizeof(buf), buf, "conf_path in end of opt", 1, "%s", conf_path);
     else
-      read_all(sizeof(buf), buf, "no conf_path in end of opt", 1, "%szxid.conf", cf->path);
+      read_all(sizeof(buf), buf, "no conf_path in end of opt", 1, "%szxid.conf", cf->cpath);
     zxid_parse_conf(cf, buf);
   }
 }
@@ -416,6 +418,7 @@ int main(int argc, char** argv, char** env)
   char* qs;
   char* cont_len;
   struct zx_str* ss;
+  char* eid;
   zxid_entity* idp;
   
 #if 1
@@ -425,7 +428,7 @@ int main(int argc, char** argv, char** env)
   if (got != 2)
     exit(2);
   fprintf(stderr, "=================== Running ===================\n");
-  ++zx_debug;
+  ++errmac_debug;
   zxid_set_opt(cf, 6, 0);
 #endif
   cf->nosig_fatal = 0;  // *** For SimpleSign the signature is checked at other level
@@ -462,12 +465,12 @@ int main(int argc, char** argv, char** env)
   qs = getenv("QUERY_STRING");
   if (qs) {
     D("QS(%s)", qs);
-    zxid_parse_cgi(&cgi, qs);
+    zxid_parse_cgi(cf, &cgi, qs);
     if (cgi.op == 'P') {
       cont_len = getenv("CONTENT_LENGTH");
       if (cont_len) {
 	sscanf(cont_len, "%d", &got);
-	if (read_all_fd(fileno(stdin), buf, got, &got) == -1) {
+	if (read_all_fd(fdstdin, buf, got, &got) == -1) {
 	  perror("Trouble reading post content");
 	} else {
 	  buf[got] = 0;
@@ -481,7 +484,7 @@ int main(int argc, char** argv, char** env)
 	  if (buf[3] == '<') {  /* UTF-8 BOM and looks XML */
 	    return zxid_sp_soap_parse(cf, &cgi, &ses, got-3, buf+3);
 	  }
-	  zxid_parse_cgi(&cgi, buf);
+	  zxid_parse_cgi(cf, &cgi, buf);
 	}
       }
     }
@@ -516,8 +519,10 @@ int main(int argc, char** argv, char** env)
       return 0;
     break;
   case 'L':
-    if (zxid_start_sso(cf, &cgi))
+    if (ss = zxid_start_sso_location(cf, cgi)) {
+      printf("%.*s", ss->len, ss->s);
       return 0;
+    }
     break;
   case 'A':
     D("Process artifact(%s)", cgi.saml_art);
@@ -544,7 +549,7 @@ int main(int argc, char** argv, char** env)
     }
     break;
   case 'B':  /* Metadata */
-    write_all_fd(fileno(stdout), "Content-Type: text/xml\r\n\r\n", sizeof("Content-Type: text/xml\r\n\r\n")-1);
+    write_all_fd(fdstdout, "Content-Type: text/xml\r\n\r\n", sizeof("Content-Type: text/xml\r\n\r\n")-1);
     return zxid_send_sp_meta(cf, &cgi);
   default: D("unknown op(%c)", cgi.op);
   }
@@ -594,9 +599,8 @@ int main(int argc, char** argv, char** env)
 #endif
 
   printf("<h3>CoT configuration parameters your IdP may need to know</h3>\n");
-  ss = zxid_my_ent_id(cf);
-  printf("Entity ID of this SP: <a href=\"%.*s\">%.*s</a> (Click on the link to fetch SP metadata.)\n",
-	 ss->len, ss->s, ss->len, ss->s);
+  eid = zxid_my_ent_id_cstr(cf);
+  printf("Entity ID of this SP: <a href=\"%s\">%s</a> (Click on the link to fetch SP metadata.)\n", eid, eid);
 
   printf("<h3>Technical options (typically hidden fields on production site)</h3>\n");
   printf("<input type=checkbox name=fc value=1 checked> Allow new federation to be created<br>\n");

@@ -55,6 +55,7 @@ public class zxidwspaxisin extends AbstractHandler {
 	String env = mctx.getEnvelope().toString();
 	System.err.print("wsp in processing env("+env+").\n");
 	String nid = zxidjni.wsp_validate(cf, ses, null, env);
+	// *** validation error not handled
 	System.err.print("Doing work for user nid("+nid+").\n");
         return InvocationResponse.CONTINUE;
     }

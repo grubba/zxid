@@ -65,6 +65,10 @@ struct zx_str* zxid_psobj_enc(zxid_conf* cf, struct zx_str* eid, const char* pre
   key.len = 16;
   key.s = symkey;
   ss = zx_raw_cipher(cf->ctx, "AES-128-CBC", 1, &key, psobj->len, psobj->s, 16, 0);
+  if (!ss) {
+    ERR("Symmetric encryption failed %d", 0);
+    return 0;
+  }
   rr = zx_new_len_str(cf->ctx, prefix_len+SIMPLE_BASE64_LEN(ss->len)+1);
   strcpy(rr->s, prefix);
   lim = base64_fancy_raw(ss->s, ss->len, rr->s+prefix_len, safe_basis_64, 1<<31, 0, "", '=');
@@ -130,7 +134,7 @@ char* zxid_render_perms(zxid_conf* cf, struct zxid_perm* perms)
     p += n;
   }
   
-  ASSERTOP(p-ret, ==, len);
+  ASSERTOPI(p-ret, ==, len);
   *p = 0; /* nul terminate */
   return ret;
 }
@@ -159,7 +163,7 @@ char* zxid_render_str_list(zxid_conf* cf, struct zx_str* strs, const char* attr_
     p += n;
   }
   
-  ASSERTOP(p-ret, ==, len);
+  ASSERTOPI(p-ret, ==, len);
   *p = 0; /* nul terminate */
   return ret;
 }
@@ -176,7 +180,7 @@ int zxid_put_invite(zxid_conf* cf, struct zxid_invite* inv)
   invid_c[sizeof(invid_c)-1] = 0;
 
   write_all_path_fmt("put_inv", ZXID_MAX_USER, buf,
-		     "%s" ZXID_INV_DIR "%s", cf->path, invid_c,
+		     "%s" ZXID_INV_DIR "%s", cf->cpath, invid_c,
 		     "dn: invid=%.*s\ninvid: %.*s\nuid: %s\ndesc: %.*s\npsobj: %.*s\nps2spredir: %.*s\nmaxusage: %d\nusage: %d\nstarts: %s\nexpires: %s\n%s\n\n",
 		     inv->invid->len, inv->invid->s,
 		     inv->invid->len, inv->invid->s,
@@ -206,7 +210,7 @@ int zxid_put_psobj(zxid_conf* cf, struct zxid_psobj* obj)
   obj->mod_secs = time(0);
   
   write_all_path_fmt("put_psobj", ZXID_MAX_USER, buf,
-		     "%s" ZXID_UID_DIR "%s", cf->path, obj->uid,
+		     "%s" ZXID_UID_DIR "%s", cf->cpath, obj->uid,
 		     "dn: psobj=%.*s,uid=%s\npsobj: %.*s\nowner: %s\nidpnid: %.*s\ndispname: %.*s\nnodetype: %d\ncreated: %s\nmodified: %s\n%s%s%s%s\n\n",
 		     obj->psobj->len, obj->psobj->s, obj->uid,
 		     obj->psobj->len, obj->psobj->s, obj->uid,
@@ -430,7 +434,6 @@ char* zxid_ps_accept_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
 {
   int now = time(0);
   struct zxid_invite inv;
-  struct zx_str* ss;
   char buf[ZXID_MAX_BUF];
   int got;
 
@@ -466,10 +469,7 @@ char* zxid_ps_accept_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
   
   cgi->msg = "This screen aims to complete the invitation process you started by clicking on the invitation link. Once completed, you will be redirected to the web site where the delegated resource is available. To complete invitation, People Service needs to authenticate you with your Identity Provider (IdP). Please choose your Identity Provider from popup menu (or enter the IdP URL in the space provided) and click Login.";
   
-  ss = zx_strf(cf->ctx, "o=G&inv=%s", cgi->inv);
-  cgi->rs = ss->s;
-  ZX_FREE(cf->ctx, ss);
-
+  cgi->rs = zx_alloc_sprintf(cf->ctx, 0, "o=G&inv=%s", cgi->inv);
   return zxid_simple_show_idp_sel(cf, cgi, res_len, auto_flags);
 }
 
@@ -481,9 +481,8 @@ char* zxid_ps_finalize_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* 
 {
   int now = time(0);
   struct zxid_invite inv;
-  struct zx_str* ss;
   char buf[ZXID_MAX_BUF];
-  int got = read_all(sizeof(buf), buf, "finalize_invite", 1, "%s" ZXID_INV_DIR "%s",cf->path,cgi->inv);
+  int got = read_all(sizeof(buf), buf, "finalize_invite", 1, "%s" ZXID_INV_DIR "%s",cf->cpath,cgi->inv);
   if (!got) {
     ERR("Invitation not found(%s)", cgi->inv);
     cgi->err = "Invitation not found.";
@@ -508,10 +507,7 @@ char* zxid_ps_finalize_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* 
   
   cgi->msg = "This screen aims to complete the invitation process you started by clicking on the invitation link. Once completed, you will be redirected to the web site where the delegated resource is available. To complete invitation, People Service needs to authenticate you with your Identity Provider (IdP). Please choose your Identity Provider from popup menu (or enter the IdP URL in the space provided) and click Login.";
   
-  ss = zx_strf(cf->ctx, "o=G&inv=%s", cgi->inv);
-  cgi->rs = ss->s;
-  ZX_FREE(cf->ctx, ss);
-
+  cgi->rs = zx_alloc_sprintf(cf->ctx, 0, "o=G&inv=%s", cgi->inv);
   return zxid_simple_show_idp_sel(cf, cgi, res_len, auto_flags);
 }
 
@@ -578,7 +574,7 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_ses*
   /* The invitation URL will be processed by zxid_ps_accept_invite(), see above. */
   resp->SPtoPSRedirectURL
     = zx_new_str_elem(cf->ctx, &resp->gg, zx_ps_SPtoPSRedirectURL_ELEM,
-		      zx_strf(cf->ctx, "%s?o=D&inv=%.*s", cf->url, inv->invid->len, inv->invid->s));
+		      zx_strf(cf->ctx, "%s?o=D&inv=%.*s", cf->burl, inv->invid->len, inv->invid->s));
   resp->Object = zx_NEW_ps_Object(cf->ctx, &resp->gg);
   resp->Object->ObjectID = zx_new_str_elem(cf->ctx, &resp->Object->gg, zx_ps_ObjectID_ELEM, zxid_psobj_enc(cf, ses->issuer, "ZO", obj->psobj));
   resp->Object->DisplayName = zx_NEW_ps_DisplayName(cf->ctx, &resp->Object->gg);

@@ -48,7 +48,7 @@ document.
 9.1 Installing Binaries or from Package
 ---------------------------------------
 
-Currently (2009) ZXID.org itself does not distribute relevant binaries. However,
+Currently (2011) ZXID.org itself does not distribute relevant binaries. However,
 we may in future. You are also welcome to contribute binaries so we distribute
 them, or point people to them in this documentation.
 
@@ -75,7 +75,7 @@ localconf.mk) and ~javac~ must be in path (or you must set ~JAVAC~
 variable). For the servlet or Tomcat support, you must make sure
 ~SERVLET_PATH~ points to your servlet-api.jar file. The ZXID Java
 interface has been mainly tested with ~j2sdk1.4.2~ and some versions
-of Java SDK 1.5.
+of Java SDK 1.5 and 1.6.
 
 > *Advanced compile*:
 > If you have done changes that require regeneration of the
@@ -251,37 +251,67 @@ file (servlet/WEB-INF/web.xml in zxid source tree). Consider
 06   <servlet>
 07     <servlet-name>zxidsrvlet</servlet-name>
 08     <servlet-class>zxidsrvlet</servlet-class>
-09   </servlet>
-10 
-11   <servlet-mapping>
-12     <servlet-name>zxidsrvlet</servlet-name>
-13     <url-pattern>/sso</url-pattern>
-14   </servlet-mapping>
-15 
-16   <servlet>
-17     <servlet-name>zxidappdemo</servlet-name>
-18     <servlet-class>zxidappdemo</servlet-class>
-19   </servlet>
-20 
-21   <servlet-mapping>
-22     <servlet-name>zxidappdemo</servlet-name>
-23     <url-pattern>/appdemo</url-pattern>
-24   </servlet-mapping>
-25 
-26 </web-app>
+09     <init-param>
+10       <param-name>ZXIDConf</param-name>
+11       <param-value>PATH=/home/sampo/sidemo/zxid/sp.employeedata.eu:8444/</param-value>
+12     </init-param>
+13   </servlet>
+14 
+15   <servlet-mapping>
+16     <servlet-name>zxidsrvlet</servlet-name>
+17     <url-pattern>/sso</url-pattern>
+18   </servlet-mapping>
+19 
+20   <servlet>
+21     <servlet-name>zxidappdemo</servlet-name>
+22     <servlet-class>zxidappdemo</servlet-class>
+23     <init-param>
+24       <param-name>ZXIDConf</param-name>
+25       <param-value>PATH=/home/sampo/sidemo/zxid/sp.employeedata.eu:8444/</param-value>
+26     </init-param>
+27   </servlet>
+28 
+29   <servlet-mapping>
+30     <servlet-name>zxidappdemo</servlet-name>
+31     <url-pattern>/appdemo</url-pattern>
+32   </servlet-mapping>
+33 
+34 </web-app>
 >>
 
-Here lines 16-24 represent your own payload application.  The
+Here lines 20-32 represent your own payload application.  The
 <servlet-name> is used to match together <servlet> and the
 <servlet-mapping> sections. <servlet-class> points to the Java class
-file that implements the servler, in this case
-zxidappdemo.class. Finally <url-pattern> specifies where in the web
-servers hierarchy the servlet will appear. Here you have to realize
-that the pattern will be prefixed by the directory path where the
-servlet lives (i.e. in our example the actual path is
-/zxidservlet/appdemo).
+file that implements the servler, in this case zxidappdemo.class.
+You can pass configuration data using <init-data> element: use ZXIDConf
+as <param-name> and ZXID configruation syntax for <param-value>. These
+configuration options are additive to default config and previously read config
+files, such as /var/zxid/zxid.conf. You only need to specify what changes
+viz-a-viz the already read configuration. You application needs to
+use the getServletConfig().getInitParameter("ZXIDConf") Java method to actually
+pull in the config string. If your servlet hardcodes the config string,
+then the <init-params> does not have any effect.
 
-ll.06-14 represent the SSO servlet. As can be seen, the corresponding
+> N.B. Unlike in Apache2 httpd.conf where ZXIDConf directive
+> can appear multiple times, you can have only one init param
+> called "ZXIDConf". Thus if you have more than one parameter,
+> you have to combine them using URL syntax, i.e. with "&" (ampersand) as separator,
+> but this in turn causes complication because "&" is used in XML entity
+> escapes, so actually you have to write &amp;, for example:
+>
+>   <init-param>
+>     <param-name>ZXIDConf</param-name>
+>     <param-value>PATH=/home/sampo/sidemo/zxid/sp.employeedata.eu:8444/&amp;URL=sp.employeedata.eu:8444/e2eTA/sso&amp;NICE_NAME=Nice+Example</param-value>
+>   </init-param>
+>
+> Confused yet?
+
+Finally <url-pattern> specifies where in the web servers hierarchy the
+servlet will appear. Here you have to realize that the pattern will be
+prefixed by the directory path where the servlet lives (i.e. in our
+example the actual path is /zxidservlet/appdemo).
+
+ll.06-18 represent the SSO servlet. As can be seen, the corresponding
 class file is zxidsrvlet.class, which you will find at top level
 of the zxid distribution after compiling. The <url-pattern>
 and the servlet directory MUST match the redirection on l.16
@@ -289,7 +319,7 @@ of the servlet code example above. If application servlet and
 the SSO servlet live in the same directory, mere local redirect
 will do the trick, as illustrated on l.16.
 
-The <url-patterm> also MUST correspond to the URL parameter in the
+The <url-pattern> also MUST correspond to the URL parameter in the
 /var/zxid/zxid.conf file (the URL parameter is also prefix of the
 EntityID which is also the Well Know Location (WKL) for metadata
 exchange).
@@ -316,6 +346,20 @@ flag avoids having to restart Tomcat if you recompile
 the .class file):
 
   <Context allowLinking="true" reloadable="true">...
+
+In Tomcat6 the file might be /etc/tomcat6/context.xml
+
+> N.B. It has been reported that on Tomcat6 this is broken and
+> symlinks can not be made to work, so your only option is to
+> simply copy the files over, e.g.
+>
+>   cd /var/lib/tomcat6/webapps
+>   cp -r ~/zxid-1.10/servlet zxidservlet
+>   cd /var/lib/tomcat6/webapps/zxidservlet/WEB-INF
+>   mkdir classes # if not existing yet
+>   cp -r ~/zxid-1.10/*.class ~/zxid-0.34/zxidjava classes/
+>   sudo cp ~/zxid-1.10/zxidjava/libzxidjni.so /usr/lib
+>   sudo chmod a+rx /usr/lib/libzxidjni.so
 
 The file servlet/WEB-INF/web.xml describes the example zxid
 application. The actual application lives in servlet/WEB-INF/classes
@@ -500,7 +544,7 @@ If you get
 
 Then you forgot to turn on the symlinks (see ~allowLinking~, above). Or you
 forgot to make the symlinks (e.g. ln -s ../.. classes). Alternately can
-just copy the files aqnd directories to the right place in the Tomcat tree.
+just copy the files and directories to the right place in the Tomcat tree.
 See section "Running as servlet under Tomcat", above.
 
 Following is another manifestation of the same problem:
@@ -529,6 +573,19 @@ Following is another manifestation of the same problem:
 	org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)
 	java.lang.Thread.run(Thread.java:534)
 
+Overall, it is incomprehensible why Tomcat developers hate symlinks so
+much that they make every effort to deny the developers benefit of
+this useful mechanism.
+
+In Tomcat6 the symlink enablement receipe of Tomcat5 apparently does
+not work any longer and the web is full of confused users who loose
+hours and days wrestling with this problem. If you are stuck with
+this, do yourself a favor: just copy the directory and files that the
+symlink would have pointed to. Its suboptimal, but in the end of the
+day it works.
+
+It is also worthwhile to explicitly check that the classes it is
+looking for have actually been compiled.
 
 9.7.2 Class Path or Java Version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -655,9 +712,12 @@ Then it is not finding zxidjava/libzxidjni.so. Either say
 
   export LD_LIBRARY_PATH=~/zxid-0.34/zxidjava:$LD_LIBRARY_PATH
 
-or place libzxidjni.so in $CATALINA_HOME/shared/lib. Note that the
-library file name really is libzxidjni.so despite the misleading exception
-suggesting just "zxidjni".
+or place libzxidjni.so in $CATALINA_HOME/shared/lib or even /usr/lib
+(perhaps overkill, but if you are desperate). Make sure the library
+has at least read and execute permissions for the tomcat user, or make
+it world readable and executable. Note that the library file name
+really is libzxidjni.so despite the misleading exception suggesting
+just "zxidjni".
 
 9.7.4 Native Library Already Loaded
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -689,13 +749,59 @@ Then ... ? Currently it seems you have to restart Tomcat.
 
 See
 
-* http://forums.sun.com/thread.jspa?threadID=633985
+* http://forums.sun.com/thread.jspa?threadID=633985  (gone 20131111)
+* https://forums.oracle.com/message/6471947 (still works 20131111)
 
 In essence the Java environment has arbitrary restriction that same
 library can not be used twice, e.g. due to two instances of same
 application. Most trivial way around this is to create two copies
 of the libzxidjni.so with different names.
 
+From comment 7 on https://forums.oracle.com/message/6471947:
+
+<<code:
+public String getMacAddress() throws IOException {
+if(m_EthoLib == null) {
+try {
+ClassLoader sysCL = getClass().getClassLoader().getSystemClassLoader();
+Class cb = sysCL.loadClass("settings.EthZeroMacAddress");
+EthZeroMacAddress Q = (EthZeroMacAddress) cb.newInstance();
+m_EthoLib = Q;
+} catch(ClassNotFoundException e) {
+throw new IOException(e.getMessage());
+} catch (InstantiationException e) {
+throw new IOException(e.getMessage());
+} catch (IllegalAccessException e) {
+throw new IOException(e.getMessage());
+}
+}
+return m_EthoLib.getMACaddress();
+}
+>>
+
+<<email:
+From: Diana Penciuc <dianapenciuc@gmail.com>
+Date: 2013/11/18
+Subject: zxidjava.dll call from java web application
+To: sampo@zxid.org
+
+Hi Sampo,
+
+I understand you did not receive my previous email, so here we go again:
+
+I basically followed the procedure indicated here :
+http://code.google.com/p/static-dll-bootstrapper/
+
+The main idea is to create a jar containing a class from which I make the
+call to load the library. Then put this jar in the common class loader
+folder under the glassfish web server (which is ../domain/lib).
+
+I also send you an exemple of a web application I used for testing (from
+which I make the call to the class loaded in glassfish).
+
+See you soon,
+Diana
+>>
 
 9.7.5 Win32 Java loanLibrary() error
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -708,14 +814,65 @@ of the libzxidjni.so with different names.
 No documented solution to this mystery error. It is believed to come
 from Windows dynamic linker.
 
+9.7.6 Mystery
+~~~~~~~~~~~~~
+
+java.lang.IllegalArgumentException: Document base /var/lib/tomcat6/webapps/e2eTA does not exist or is not a readable directory
+       at org.apache.naming.resources.FileDirContext.setDocBase(FileDirContext.java:142)
+       at org.apache.catalina.core.StandardContext.resourcesStart(StandardContext.java:4249)
+       at org.apache.catalina.core.StandardContext.start(StandardContext.java:4418)
+       at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:791)
+       at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:771)
+       at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:546)
+       at org.apache.catalina.startup.HostConfig.deployDirectory(HostConfig.java:1041)
+       at org.apache.catalina.startup.HostConfig.deployDirectories(HostConfig.java:964)
+       at org.apache.catalina.startup.HostConfig.deployApps(HostConfig.java:502)
+       at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1345)
+       at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:303)
+       at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:119)
+       at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1337)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1601)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1610)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1590)
+       at java.lang.Thread.run(Thread.java:636)
+07-Feb-2012 11:52:49 org.apache.catalina.core.StandardContext resourcesStart
+SEVERE: Error starting static Resources
+java.lang.IllegalArgumentException: Document base /var/lib/tomcat6/webapps/e2eTA does not exist or is not a readable directory
+       at org.apache.naming.resources.FileDirContext.setDocBase(FileDirContext.java:142)
+       at org.apache.catalina.core.StandardContext.resourcesStart(StandardContext.java:4249)
+       at org.apache.catalina.core.StandardContext.start(StandardContext.java:4418)
+       at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:791)
+       at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:771)
+       at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:546)
+       at org.apache.catalina.startup.HostConfig.deployDirectory(HostConfig.java:1041)
+       at org.apache.catalina.startup.HostConfig.deployDirectories(HostConfig.java:964)
+       at org.apache.catalina.startup.HostConfig.deployApps(HostConfig.java:502)
+       at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1345)
+       at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:303)
+       at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:119)
+       at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1337)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1601)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1610)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1590)
+       at java.lang.Thread.run(Thread.java:636)
+
+Yet the directory /var/lib/tomcat6/webapps/e2eTA does exist and has WEB-INF subdirectory
+with web.xml in it.
+
+Seems the problem was that the e2eTA was a symlink. Despite being correctly made
+and despite <Context allowLinking="true" reloadable="true"> being set, it still
+would not work until I copied the link's destination to its place.
+
+Potentially permissions error, says google, and this indeed seemed to fix it.
+
 9.8 Logging and Debugging Tips
 ------------------------------
 
 In case you add debug prints, the stderr (System.err) output
 appears to go by default to apache-tomcat-5.5.20/logs/catalina.out
 
-9.9 Debugging libzxidjni.so under jdb and gdb
----------------------------------------------
+9.8.1 Debugging libzxidjni.so under jdb and gdb
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Debugging the JNI C code would appear to require running java or jdb
 under gdb and setting break points in the C code. Unfortunately this
@@ -739,6 +896,43 @@ jdb prompt.
   > next      # or step
   > print cf
   > cont
+
+9.8.2 Enabling core dumps
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How to debug
+
+  *** glibc detected *** /usr/lib/jvm/java-6-openjdk/bin/java: free(): invalid pointer: 0x09c2120c ***
+
+* First enable them at system level
+    ulimit -c unlimited
+
+* Enable glibc to dump core on malloc/free errors
+  - export MALLOC_CHECK_=3   # Note trailing underscore
+  - or edit /etc/default/tomcat6: echo 'MALLOC_CHECK_=3' >>/etc/default/tomcat6
+  - or add to code mallopt(M_CHECK_ACTION, 3). In case of Java program you do it like
+	zxidjni.set_opt(cf, 7, 3);  // Cause glibc malloc/free to dump core on error
+
+* The cores should go to current working directory, but under Tomcat
+  detemining this seems to be a nightmare. You can solve this by setting
+  systemwide default core path to known value, e.g:
+
+    echo '/tmp/core' > /proc/sys/kernel/core_pattern   # On Linux
+
+<<ignore:
+/usr/lib/jvm/java-6-openjdk/bin/java
+-Djava.util.logging.config.file=/var/lib/tomcat6/conf/logging.properties
+-Djava.awt.headless=true
+-Xmx128m
+-XX:+UseConcMarkSweepGC
+-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+-Djava.endorsed.dirs=/usr/share/tomcat6/endorsed
+-classpath /usr/share/tomcat6/bin/bootstrap.jar
+-Dcatalina.base=/var/lib/tomcat6
+-Dcatalina.home=/usr/share/tomcat6
+-Djava.io.tmpdir=/tmp/tomcat6-tmp
+org.apache.catalina.startup.Bootstrap start
+>>
 
 <<if: ZXIDBOOK>>
 <<else: >>

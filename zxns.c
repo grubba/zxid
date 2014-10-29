@@ -69,12 +69,12 @@ int zx_dump_ns_tab(struct zx_ctx* c, int flags)
   int n_ns = c->n_ns;
   int n=0;
   for (ns = c->ns_tab; n < n_ns; ++ns) {
-    printf("%3d NS  %8.*s %.*s\n", ++n, ns->prefix_len, ns->prefix, ns->url_len, ns->url);
+    fprintf(stdout, "%3d NS  %8.*s %.*s\n", ++n, ns->prefix_len, ns->prefix, ns->url_len, ns->url);
     for (alias = ns->n; alias; alias = alias->n)
-      printf("%3d   A %8.*s %.*s\n", ++n, alias->prefix_len, alias->prefix, alias->url_len, alias->url);
+      fprintf(stdout, "%3d   A %8.*s %.*s\n", ++n, alias->prefix_len, alias->prefix, alias->url_len, alias->url);
   }
   for (alias = c->unknown_ns; alias; alias = alias->n) {
-    printf("%3d UNK %8.*s %.*s\n", ++n, alias->prefix_len, alias->prefix, alias->url_len, alias->url);
+    fprintf(stdout, "%3d UNK %8.*s %.*s\n", ++n, alias->prefix_len, alias->prefix, alias->url_len, alias->url);
   }
   return n;
 }
@@ -228,7 +228,7 @@ struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, const char* pref
 	ns->n = c->unknown_ns;
 	c->unknown_ns = ns;
 	D("Undefined namespace prefix(%.*s). NS not known from any context. Creating dummy ns(%.*s).", len, prefix, url->len, url->s);
-	ZX_FREE(c, url);
+	zx_str_free(c, url);
       } else {
 	D("Undefined namespace prefix(%.*s) at(%s). NS not known from any context.", len, prefix, logkey);
 	return 0;
@@ -291,7 +291,7 @@ void zx_pop_seen(struct zx_ns_s* ns)
 
 /*() Collect namespaces from element */
 
-/* Called by:  sig_validate x3, zxid_chk_sig, zxid_sp_dig_sso_a7n, zxid_sp_sso_finalize */
+/* Called by:  sig_validate x3, zxid_chk_sig, zxid_sp_dig_oauth_sso_a7n, zxid_sp_dig_sso_a7n, zxid_sp_sso_finalize */
 void zx_see_elem_ns(struct zx_ctx* c, struct zx_ns_s** pop_seen, struct zx_elem_s* el)
 {
   struct zx_ns_s* ns;

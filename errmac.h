@@ -1,16 +1,15 @@
 /* errmac.h  -  Utility, debugging, and error checking macros
  *
- * Copyright (c) 1998,2001,2006,2010-2011 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
+ * Copyright (c) 1998,2001,2006,2010-2014 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
  * Copyright (c) 2001-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
- * This is free software and comes with NO WARRANTY. For licensing
- * see file COPYING in the distribution directory.
- * $Id: errmac.h,v 1.24 2009-11-29 12:23:06 sampo Exp $
+ * This is free software and comes with NO WARRANTY. Licensed under Apache2 license.
+ * $Id$
  *
  * 10.1.2003, added option to make ASSERT nonfatal --Sampo
  * 4.6.2003,  added STRERROR() macro --Sampo
  * 11.7.2003, added MUTEX_DEBUG, ASSERT_THR(), ASSERT_NOT_IN_LOCK() --Sampo
  * 6.10.2003, added ALIGN128 (16 byte alignment) --Sampo
- * 12.12.2003, added AFR support to asserts --Sampo
+ * 12.12.2003, added AK support to asserts --Sampo
  * 15.1.2004, added STRNULLCHK() --Sampo
  * 24.2.2006, made some definitions conditional --Sampo
  * 15.4.2006, new adaptation over Easter holiday --Sampo
@@ -18,28 +17,27 @@
  * 22.3.2008, renamed debug to zx_debug to avoid conflicts in any .so module usage --Sampo
  * 4.12.2010, fixed bug in locking where range was zero length --Sampo
  * 4.12.2011, fixed bug in TOUPPER() macro --Sampo
+ * 30.10.2012, added AKBOX_FN() to logging --Sampo
  */
 
-#ifndef _macro_h
-#define _macro_h
+#ifndef _errmac_h
+#define _errmac_h
+
+#ifndef MAYBE_UNUSED
+#define MAYBE_UNUSED __attribute__ ((unused))
+#endif
 
 #ifdef MINGW
 #include <windows.h>
-#define MS_LONG LONG
-#define MKDIR(d,p) mkdir(d)
-#define GETTIMEOFDAY(tv, tz) ((tv) ? (((tv)->tv_sec = time(0)) && ((tv)->tv_usec = 0)) : -1)
-#define GMTIME_R(secs,stm) do { struct tm* stx_tm = gmtime(&(secs)); if (stx_tm) memcpy(&stm, stx_tm, sizeof(struct tm)); } while(0)   /* *** still not thread safe */
-
-#define MINGW_RW_PERM (GENERIC_READ | GENERIC_WRITE)
-
 #else
-
 #include <pthread.h>
-#define MKDIR(d,p) mkdir((d),(p))
-#define GETTIMEOFDAY gettimeofday
-#define GMTIME_R(t, res) gmtime_r(&(t),&(res))
 #endif
 #include <stdio.h>    /* For stderr */
+#include <stdint.h>
+
+#ifdef USE_AKBOX_FN
+#include "akbox.h"
+#endif
 
 /* CONFIG */
 
@@ -71,6 +69,7 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define STRNULLCHK(s)  ((s)?(char*)(s):"")
 #define STRNULLCHKQ(s) ((s)?(char*)(s):"?")
 #define STRNULLCHKD(s) ((s)?(char*)(s):"-")
+#define STRNULLCHKZ(s) ((s)?(char*)(s):"0")
 #define STRNULLCHKNULL(s) ((s)?(char*)(s):"(null)")
 
 /* Common datatypes */
@@ -140,6 +139,8 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define ONE_OF_4(x,a,b,c,d) (ONE_OF_2((x),(a),(b)) || ONE_OF_2((x),(c),(d)))
 #define ONE_OF_5(x,a,b,c,d,e) (ONE_OF_3((x),(a),(b),(c)) || ONE_OF_2((x),(d),(e)))
 #define ONE_OF_6(x,a,b,c,d,e,f) (ONE_OF_3((x),(a),(b),(c)) || ONE_OF_3((x),(d),(e),(f)))
+#define ONE_OF_7(x,a,b,c,d,e,f,g)   (ONE_OF_4((x),(a),(b),(c),(g)) || ONE_OF_3((x),(d),(e),(f)))
+#define ONE_OF_8(x,a,b,c,d,e,f,g,h) (ONE_OF_4((x),(a),(b),(c),(g)) || ONE_OF_4((x),(d),(e),(f),(h)))
 
 #define THREE_IN_ROW(p,a,b,c) ((p)[0] == (a) && (p)[1] == (b) && (p)[2] == (c))
 
@@ -158,6 +159,9 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
  
 
 #define AZaz_09_(x) ( IN_RANGE((x), '0', '9') || ((x) == '_') || \
+                    IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z') )
+#define AZaz_09_dash(x) ( IN_RANGE((x), '0', '9') || ((x) == '_') || \
+                    ((x) == '-') || \
                     IN_RANGE((x), 'A', 'Z') || IN_RANGE((x), 'a', 'z') )
 #define AZaz_09_dot(x) ( IN_RANGE((x), '0', '9') || ((x) == '_') || \
                     ((x)=='.') || ((x) == '-') || \
@@ -196,7 +200,9 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
  * 123456   WXYZwxyz  8  8     2(2)
  */
 #define SIMPLE_BASE64_LEN(x) (((x)+2) / 3 * 4)  /* exact encoded length given binary length */
-#define SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(x) ((x+3)/4*3)
+#define SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(x) (((x)+3)/4*3)
+#define DEFLATE_PESSIMISTIC_LEN(x) ((x)+((x)>>8)+12)  /* zlib worst case: orig_size * 1.001 + 12, see also compressBound() */
+#define OAEP_LEN 41 /* Overhead of PKCS#1 v2.0 OAEP padding */
 
 /* Perform URL conversion in place
  *   src = dst = buffer_where_data_is;
@@ -224,11 +230,11 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define REVERSE_LIST(root,nodes) REVERSE_LIST_NEXT((root),(nodes),next)
 
 #if 0
-#define DLIST_ADD(head,x) MB (x)->next = (head).next;  /* add to head of doubly linked list */ \
+# define DLIST_ADD(head,x) MB (x)->next = (head).next;  /* add to head of doubly linked list */ \
                              ((x)->prev) = (void*)&(head); \
  	                     (head).next->prev = (x); \
 	                     (head).next = (x);  ME
-#define DLIST_DEL(prv,nxt) MB (nxt)->prev = (prv); (prv)->next = (nxt); (prv)=(nxt)=0; ME
+# define DLIST_DEL(prv,nxt) MB (nxt)->prev = (prv); (prv)->next = (nxt); (prv)=(nxt)=0; ME
 #endif
 
 #define DPDU_ADD(head,x) MB (x)->g.pdunext = (head).pdunext;  /* add to head of doubly linked list */ \
@@ -256,25 +262,26 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
                       else   CHK_NULL((p)=malloc(sizeof(*(p)))); ME
 
 #if 0
-#define MALLOCN(p,n) CHK_NULL((void*)(p)=malloc(n))
-#define REALLOCN(p,n) MB if (p) CHK_NULL((void*)(p)=realloc((p),(n))); \
+# define MALLOCN(p,n) CHK_NULL((void*)(p)=malloc(n))
+# define REALLOCN(p,n) MB if (p) CHK_NULL((void*)(p)=realloc((p),(n))); \
 		         else   CHK_NULL((void*)(p)=malloc(n)); ME
-#define STRDUP(d,s) MB (d) = strdup(s); ME
+# define STRDUP(d,s) MB (d) = strdup(s); ME
 #else
 /* Catch mallocs of zero size */
-#define MALLOCN(p,n) MB ASSERT(n); CHK_NULL((p)=malloc(n)); ME
-#define REALLOCN(p,n) MB ASSERT(n); if (p) CHK_NULL((p)=realloc((p),(n))); \
+# define MALLOCN(p,n) MB ASSERT(n); CHK_NULL((p)=malloc(n)); ME
+# define REALLOCN(p,n) MB ASSERT(n); if (p) CHK_NULL((p)=realloc((p),(n))); \
 		                    else   CHK_NULL((p)=malloc(n)); ME
-#define STRDUP(d,s) MB (d) = strdup(s); ME
+# define STRDUP(d,s) MB (d) = strdup(s); ME
 #endif
+
 #define DUPN(d,s,n) MB MALLOCN(d,n); if (d) memcpy((d),(s),(n)); ME
 
 #if 1
-#define FREE(p) (p) = ds_free(p, __FUNCTION__)
-#define FREE_EXPR(p) ds_free(p, __FUNCTION__)
+# define FREE(p) (p) = 0; free(p)
+# define FREE_EXPR(p) free(p)
 #else
-#define FREE(p) 0
-#define FREE_EXPR(p) (0)
+# define FREE(p) 0
+# define FREE_EXPR(p) (0)
 #endif
 
 #define ZERO(p,n) memset((p), 0, (n))
@@ -377,92 +384,111 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 #define ZPALLOCEXT(p,k,e)    MB PALLOCEXT((p),(k),(e)); ZERO((p), sizeof(*(p))); ME
 #define ZPALLOCEXTN(p,k,n,e) MB PALLOCEXTN((p),(k),(n),(e)); ZERO((p), (n)); ME
 
-/* =============== pthread locking =============== */
+/* =============== Console color =============== */
+/* vt100 terminal color escapes to liven up debug prints :-)
+ * See https://wiki.archlinux.org/index.php/Color_Bash_Prompt */
 
-#ifdef USE_PTHREAD
-/*#define LOCK_STATIC(l) pthread_mutex_t l = PTHREAD_MUTEX_INITIALIZER  do not use */
-#define LOCK_INIT(l) pthread_mutex_init(&(l), 0)
-#define LOCK(l,lk)   if (pthread_mutex_lock(&(l)))   NEVERNEVER("DEADLOCK(%s)", (lk))
-#define UNLOCK(l,lk) if (pthread_mutex_unlock(&(l))) NEVERNEVER("UNLOCK-TWICE(%s)", (lk))
+#ifdef NOCOLOR
+#define CC_REDB(x)    x
+#define CC_YELB(x)    x 
+#define CC_GRNB(x)    x 
+#define CC_BLUB(x)    x 
+#define CC_PURB(x)    x 
+#define CC_CYNB(x)    x 
+#define CC_REDY(x)    x
+#define CC_YELY(x)    x 
+#define CC_GREENY(x)  x 
+#define CC_BLUY(x)    x 
+#define CC_PURY(x)    x 
+#define CC_CYNY(x)    x 
 #else
-#define LOCK_STATIC(l) 
-#define LOCK_INIT(l)
-#define LOCK(l,lk)
-#define UNLOCK(l,lk)
-#endif
-
-/* =============== file system flocking =============== */
-
-#ifndef USE_LOCK
-#if 0
-#define FLOCKEX(fd) lockf((fd), F_LOCK, 1)
-#define FUNLOCK(fd) lockf((fd), F_ULOCK, 1)
-#else
-#define FLOCKEX(fd) fcntl((fd), F_SETLKW, &zx_rdlk)
-#define FUNLOCK(fd) fcntl((fd), F_SETLKW, &zx_unlk)
-#endif
-#else
-/* If you have neither flock() nor lockf(), then -DUSE-LOCK=dummy_no_flock
- * but beware that this means NO file locking will be done, possibly
- * leading to corrupt audit logs, or other files. You need to judge
- * the probability of this happening as well as the cost of clean-up. */
-#define dummy_no_flock(x,y) (0)  /* no file locking where locking should be */
-#define FLOCKEX(fd) USE_LOCK((fd), LOCK_EX)
-#define FUNLOCK(fd) USE_LOCK((fd), LOCK_UN)
+#define CC_REDB(x)   "\e[1;31m" x "\e[0m" /* bold red */
+#define CC_YELB(x)   "\e[1;33m" x "\e[0m"
+#define CC_GRNB(x)   "\e[1;32m" x "\e[0m"
+#define CC_BLUB(x)   "\e[1;34m" x "\e[0m"
+#define CC_PURB(x)   "\e[1;35m" x "\e[0m"
+#define CC_CYNB(x)   "\e[1;36m" x "\e[0m"
+#define CC_REDY(x)   "\e[41m" x "\e[0m"  /* red background, black text (no bold) */
+#define CC_YELY(x)   "\e[43m" x "\e[0m"
+#define CC_GREENY(x) "\e[42m" x "\e[0m"
+#define CC_BLUY(x)   "\e[44m" x "\e[0m"
+#define CC_PURY(x)   "\e[45m" x "\e[0m"
+#define CC_CYNY(x)   "\e[46m" x "\e[0m"
 #endif
 
 /* =============== Debugging macro system =============== */
 
 #ifndef ERRMAC_INSTANCE
 /*#define ERRMAC_INSTANCE "\tzx"*/
-#define ERRMAC_INSTANCE zx_instance
-extern char zx_instance[64];
+#define ERRMAC_INSTANCE errmac_instance
+extern char errmac_instance[64];
 #endif
 
-#define ZX_DEBUG_MASK       0x0f
-#define ZXID_INOUT          0x10
+#define ERRMAC_DEBUG_MASK   0x03  /* 0 = no debug, 1=minimal info debug, 2=bit more, 3=lot more */
+#define ERRMAC_XMLDBG       0x04
+#define ERRMAC_RESERVED     0x08
+#define ERRMAC_INOUT        0x10
 #define MOD_AUTH_SAML_INOUT 0x20
-#define CURL_INOUT          0x40   /* Back Channel */
+#define CURL_INOUT          0x40  /* Back Channel */
 
-extern int zx_debug;         /* Defined in zxidlib.c */
-extern char zx_indent[256];  /* Defined in zxidlib.c *** Locking issues? */
-extern FILE* zx_debug_log;   /* Defined in zxidlib.c as 0 alias to stderr */
-#define ZX_DEBUG_LOG (zx_debug_log?zx_debug_log:(stderr))
+extern int errmac_debug;          /* Defined in zxidlib.c */
+extern char errmac_indent[256];   /* Defined in zxidlib.c *** Locking issues? */
+extern FILE* errmac_debug_log;    /* Defined in zxidlib.c as 0 alias to stderr */
+#define ERRMAC_DEBUG_LOG (errmac_debug_log?errmac_debug_log:(stderr))
 #if 1
-/* In some scenarios multithreaded access can cause zx_indent to be scrambled.
+/* In some scenarios multithreaded access can cause errmac_indent to be scrambled.
  * However, it should not under- or overflow. Thus no lock. */
-#define D_INDENT(s) strncat(zx_indent, (s), sizeof(zx_indent)-1)
-#define D_DEDENT(s) (zx_indent[MAX(0, strlen(zx_indent)-sizeof(s)+1)] = 0)
+#define D_INDENT(s) strncat(errmac_indent, (s), sizeof(errmac_indent)-1)
+#define D_DEDENT(s) (errmac_indent[MAX(0, strlen(errmac_indent)-sizeof(s)+1)] = 0)
 #else
 #define D_INDENT(s) /* no locking issues */
 #define D_DEDENT(s)
 #endif
+
 #ifdef VERBOSE
-#define D(format,...) (void)((fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
-#define DD D
+# define D(format,...) (void)((fprintf(ERRMAC_DEBUG_LOG, "%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, errmac_indent, ## __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG)))
+# define DD D
 #else
-#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, ## __VA_ARGS__), fflush(ZX_DEBUG_LOG)))
-/*#define D(format,...) (void)(zx_debug&ZX_DEBUG_MASK && (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s d " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG)))*/
-#define DD(format,...)  /* Documentative */
+# ifdef USE_PTHREAD
+#  ifdef USE_AKBOX_FN
+#   define D(format,...) (void)((errmac_debug&ERRMAC_DEBUG_MASK)>1 && (fprintf(ERRMAC_DEBUG_LOG, "%d.%lx %04x:%-4d %s d %s" format "\n", getpid(), (long)pthread_self(), AKBOX_FN(__FUNCTION__), __LINE__, ERRMAC_INSTANCE, errmac_indent, __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG)))
+#  else
+#   define D(format,...) (void)((errmac_debug&ERRMAC_DEBUG_MASK)>1 && (fprintf(ERRMAC_DEBUG_LOG, "%d.%lx %10s:%-3d %-16s %s d %s" format "\n", getpid(), (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, errmac_indent, __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG)))
+#  endif
+# else
+#  define D(format,...) (void)((errmac_debug&ERRMAC_DEBUG_MASK)>1 && (fprintf(ERRMAC_DEBUG_LOG, "%d %10s:%-3d %-16s %s d %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, errmac_indent, ## __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG)))
+# endif
+# define DD(format,...)  /* Documentative */
 #endif
 
-#define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s E %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
-/*#define ERR(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s E " format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, __VA_ARGS__), fflush(ZX_DEBUG_LOG))*/
-#define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "p%d %10s:%-3d %-16s %s I %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))
-/*#define INFO(format,...) (fprintf(ZX_DEBUG_LOG, "t%x %10s:%-3d %-16s %s I %s" format "\n", (int)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, zx_indent, __VA_ARGS__), fflush(ZX_DEBUG_LOG))*/
+#ifdef USE_PTHREAD
+# ifdef USE_AKBOX_FN
+#  define ERR(format,...) (fprintf(ERRMAC_DEBUG_LOG, "%d.%lx %04x:%-4d %s E %s" format "\n", getpid(), (long)pthread_self(), AKBOX_FN(__FUNCTION__), __LINE__, ERRMAC_INSTANCE, errmac_indent, __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG))
+#  define WARN(format,...) (fprintf(ERRMAC_DEBUG_LOG, "%d.%lx %04x:%-4d %s W %s" format "\n", getpid(), (long)pthread_self(), AKBOX_FN(__FUNCTION__), __LINE__, ERRMAC_INSTANCE, errmac_indent, __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG))
+#  define INFO(format,...) (void)(errmac_debug&ERRMAC_DEBUG_MASK && (fprintf(ERRMAC_DEBUG_LOG, "%d.%lx %04x:%-4d %s I %s" format "\n", getpid(), (long)pthread_self(), AKBOX_FN(__FUNCTION__), __LINE__, ERRMAC_INSTANCE, errmac_indent, __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG)))
+# else
+#  define ERR(format,...) (fprintf(ERRMAC_DEBUG_LOG, "%d.%lx %10s:%-3d %-16s %s E %s" format "\n", getpid(), (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, errmac_indent, __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG))
+#  define WARN(format,...) (fprintf(ERRMAC_DEBUG_LOG, "%d.%lx %10s:%-3d %-16s %s W %s" format "\n", getpid(), (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, errmac_indent, __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG))
+#  define INFO(format,...) (void)(errmac_debug&ERRMAC_DEBUG_MASK && (fprintf(ERRMAC_DEBUG_LOG, "%d.%lx %10s:%-3d %-16s %s I %s" format "\n", getpid(), (long)pthread_self(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, errmac_indent, __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG)))
+# endif
+#else
+# define ERR(format,...) (fprintf(ERRMAC_DEBUG_LOG, "%d %10s:%-3d %-16s %s E %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, errmac_indent, __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG))
+# define WARN(format,...) (fprintf(ERRMAC_DEBUG_LOG, "%d %10s:%-3d %-16s %s W %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, errmac_indent, __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG))
+# define INFO(format,...) (void)(errmac_debug&ERRMAC_DEBUG_MASK && (fprintf(ERRMAC_DEBUG_LOG, "%d %10s:%-3d %-16s %s I %s" format "\n", getpid(), __FILE__, __LINE__, __FUNCTION__, ERRMAC_INSTANCE, errmac_indent, __VA_ARGS__), fflush(ERRMAC_DEBUG_LOG)))
+#endif
 
-#define D_XML_BLOB(cf, lk, len, xml) zxlog_debug_xml_blob((cf), __FILE__, __LINE__, __FUNCTION__, (lk), (len), (xml))
+#define D_XML_BLOB(cf, lk, len, xml) errmac_debug_xml_blob((cf), __FILE__, __LINE__, __FUNCTION__, (lk), (len), (xml))
 #define DD_XML_BLOB(cf, lk, len, xml) /* Documentative */
 
-int hexdmp(char* msg, char* p, int len, int max);
-int hexdump(char* msg, char* p, char* lim, int max);
+int hexdmp(const char* msg, const void* p, int len, int max);
+int hexdump(const char* msg, const void* p, const void* lim, int max);
 
-#define HEXDUMP(msg, p, lim, max) (zx_debug > 1 && hexdump((msg), (p), (lim), (max)))
+#define HEXDUMP(msg, p, lim, max) if ((errmac_debug&ERRMAC_DEBUG_MASK) > 1) hexdump((msg), (p), (lim), (max))
 #define DHEXDUMP(msg, p, lim, max) /* Disabled hex dump */
 
 #define DUMP_CORE() ASSERT(0)
 #define NEVER(explanation,val) D(explanation,(val))
-#define NEVERNEVER(explanation,val) MB ERR(explanation,(val)); DUMP_CORE(); ME
+#define NEVERNEVER(explanation,val) MB ERR(explanation,(val)); fflush(stdout); fflush(ERRMAC_DEBUG_LOG); DUMP_CORE(); ME
 
 #define CMDLINE(x)
 
@@ -472,16 +498,16 @@ int hexdump(char* msg, char* p, char* lim, int max);
 #define SET_MUTEX_INFO(name, msg)
 /*#define SET_MUTEX_INFO(name, msg) name ## info = __FILE__ " " msg; name ## line = __LINE__; name ## thr = pthread_self();*/
 # ifdef STDOUT_DEBUG
-#  define LOG ZX_DEBUG_LOG,
+#  define LOG ERRMAC_DEBUG_LOG,
 #  define OPEN_LOG()
 #  define CLOSE_LOG()
 #  define FLUSH() fflush(stdout)
 # else
-#  define LOG ZX_DEBUG_LOG,
+#  define LOG ERRMAC_DEBUG_LOG,
 #  define LOG_FILE HOME "foo.log"
-#  define OPEN_LOG() MB TR { if ((zx_debug_log = fopen(LOG_FILE, "a")) == NULL) trace = 0; } ME
-#  define CLOSE_LOG() MB TR if (zx_debug_log) { fclose(zx_debug_log); debug_log=0; trace = 0; } ME
-#  define FLUSH() MB if (zx_debug_log) fflush(zx_debug_log); ME
+#  define OPEN_LOG() MB TR { if ((errmac_debug_log = fopen(LOG_FILE, "a")) == NULL) trace = 0; } ME
+#  define CLOSE_LOG() MB TR if (errmac_debug_log) { fclose(errmac_debug_log); debug_log=0; trace = 0; } ME
+#  define FLUSH() MB if (errmac_debug_log) fflush(errmac_debug_log); ME
 # endif
  
 #define TR  if (trace)
@@ -501,14 +527,14 @@ int hexdump(char* msg, char* p, char* lim, int max);
 #define OPEN_LOG()
 #define CLOSE_LOG()
 # ifdef STDOUT_DEBUG
-#  define LOG ZX_DEBUG_LOG,
-#  define FLUSH() fflush(zx_debug_log)
+#  define LOG ERRMAC_DEBUG_LOG,
+#  define FLUSH() fflush(errmac_debug_log)
 # else
 
    /* N.B. these macros assume existence of global variable debug_log, unless STDOUT_DEBUG
     *      is defined. */
-#  define LOG ZX_DEBUG_LOG,
-#  define FLUSH() fflush(zx_debug_log)
+#  define LOG ERRMAC_DEBUG_LOG,
+#  define FLUSH() fflush(errmac_debug_log)
 # endif
 #define PR fprintf
 #define PRMEM(f,buf,len) MB char b[256]; memcpy(b, (buf), MIN(254, (len))); \
@@ -528,34 +554,63 @@ int hexdump(char* msg, char* p, char* lim, int max);
 /* Try to produce some exception, unless global setting says asserting is NOT ok. */
 
 extern char* assert_msg;
-#define DIE_ACTION(b) MB fprintf(ZX_DEBUG_LOG, assert_msg, ERRMAC_INSTANCE); if (assert_nonfatal == 0) { *((int*)0xffffffff) = 1; } ME
+//#define DIE_ACTION(b) MB fprintf(ERRMAC_DEBUG_LOG, assert_msg, ERRMAC_INSTANCE); if (assert_nonfatal == 0) { *((int*)0xffffffff) = 1; } ME
+#define DIE_ACTION(b) MB fprintf(ERRMAC_DEBUG_LOG, assert_msg, ERRMAC_INSTANCE); if (assert_nonfatal == 0) { *((int*)-1) = 1; } ME
 
-/* Many development time sanity checks use these macros so that they can be compiled away from
- * the final version. ASSERT macros are more convenient than their library counter
- * parts, such as assert(3), in that core is dumped in the function where the ASSERT
- * fired, rather than somewhere deep inside a library. N.B. Since these are macros,
- * any arguments may get evaluated zero or more times, producing no, one, or multiple
- * side effects, depending on circumstances. Therefore arguments, should NOT have
- * any side effects. Otherwise "Heisenbugs" will result that manifest depending
+/* Many development time sanity checks use these macros so that they
+ * can be compiled away from the final version. ASSERT macros are more
+ * convenient than their library counter parts, such as assert(3), in
+ * that core is dumped in the function where the ASSERT fired, rather
+ * than somewhere deep inside a library. N.B. Since these are macros,
+ * any arguments may get evaluated zero or more times, producing no,
+ * one, or multiple side effects, depending on
+ * circumstances. Therefore arguments, should NOT have any side
+ * effects. Otherwise "Heisenbugs" will result that manifest depending
  * on whether ASSERTs are enabled or not. */
 
-#if 0
-#define CHK(cond,err) MB if ((cond)) { \
-      afr_ts(AFR_FUNCNO(__FUNCTION__), __LINE__, AFR_ASSERT_RAZ, "CHK FAIL: " #cond, ""); \
-      DIE_ACTION((err)); } ME
+#if 1  /* More verbose versions */
+# define CHK(cond,err) MB if ((cond)) { \
+      /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERT_RAZ, "CHK FAIL: " #cond, "");*/ \
+      ERR("CHK FAIL: " #cond " %x", err); \
+      DIE_ACTION(err); } ME
 
-#define ASSERTOP(a,op,b) MB if (!((a) op (b))) { \
-      afr_ts(AFR_FUNCNO(__FUNCTION__), __LINE__, AFR_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b); \
+# define ASSERT(c) MB if (!(c)) { \
+      /*ak_ts(AK_NFN(__FUNCTION__), __LINE__,AK_ASSERT_RAZ,(char*)(int)(a),"ASSERT FAIL: " #c);*/ \
+      ERR("ASSERT FAIL: " #c " %d", 0); \
       DIE_ACTION(1); } ME
 
-#define FAIL(x,why) MB afr_ts(AFR_FUNCNO(__FUNCTION__), __LINE__, AFR_FAIL_RAZ, (char*)(x), why); DIE_ACTION(1); ME
+# define ASSERTOP(a,op,b,err) MB if (!((a) op (b))) { \
+      /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b);*/ \
+      ERR("ASSERTOP FAIL: " #a #op #b " %x", (int)(err)); \
+      DIE_ACTION(1); } ME
+
+# define ASSERTOPI(a,op,b) MB if (!((a) op (b))) { \
+      /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b);*/ \
+      ERR("ASSERTOP FAIL: " #a #op #b " %x", (int)(a)); \
+      DIE_ACTION(1); } ME
+
+# define ASSERTOPL(a,op,b) MB if (!((a) op (b))) { \
+      /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b);*/ \
+      ERR("ASSERTOP FAIL: " #a #op #b " %lx", (long)(a)); \
+      DIE_ACTION(1); } ME
+
+# define ASSERTOPP(a,op,b) MB if (!((a) op (b))) { \
+      /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_ASSERTOP_RAZ, (char*)(int)(a), "ASSERTOP FAIL: " #a #op #b);*/ \
+      ERR("ASSERTOPP FAIL: " #a #op #b " %p", (a)); \
+      DIE_ACTION(1); } ME
+
+# define FAIL(x,why) MB /*ak_ts(AK_NFN(__FUNCTION__), __LINE__, AK_FAIL_RAZ, (char*)(x), why);*/ DIE_ACTION(1); ME
 
 /* SANITY_CHK is a smaller assert which checks a condition but will not force an abort */
-#define SANITY_CHK(cond,...) MB if (!(cond)) \
-  afr_tsf(AFR_FUNCNO(__FUNCTION__), __LINE__, AFR_SANITY_RAZ, #cond, __VA_ARGS__); ME
-#else
-# define CHK(cond,err) MB if ((cond)) { DIE_ACTION((err)); } ME
-# define ASSERTOP(a,op,b) MB if (!((a) op (b))) { DIE_ACTION(1); } ME
+# define SANITY_CHK(cond,...) MB if (!(cond)) \
+  /*ak_tsf(AK_NFN(__FUNCTION__), __LINE__, AK_SANITY_RAZ, #cond, __VA_ARGS__);*/ 1; ME
+#else  /* More sterile versions */
+# define CHK(cond,err) MB if (cond) { DIE_ACTION(err); } ME
+# define ASSERT(c) MB if (!(c)) { DIE_ACTION(1); } ME
+# define ASSERTOP(a,op,b,err) MB if (!((a) op (b))) { DIE_ACTION(err); } ME
+# define ASSERTOPI(a,op,b) MB if (!((a) op (b))) { DIE_ACTION(1); } ME
+# define ASSERTOPL(a,op,b) MB if (!((a) op (b))) { DIE_ACTION(1); } ME
+# define ASSERTOPP(a,op,b) MB if (!((a) op (b))) { DIE_ACTION(1); } ME
 # define FAIL(x,why) MB DIE_ACTION(1); ME
 # define SANITY_CHK(cond,...) MB if (!(cond)) NEVER("insanity %d",0); ME
 #endif
@@ -567,7 +622,11 @@ extern char* assert_msg;
 
 #else /* ---------------- no debug --------------- */
 # define CHK(cond,err)
-# define ASSERTOP(a,op,b)
+# define ASSERT(c)
+# define ASSERTOP(a,op,b,err)
+# define ASSERTOPI(a,op,b)
+# define ASSERTOPL(a,op,b)
+# define ASSERTOPP(a,op,b)
 # define FAIL(format)
 # define BOGUS_UNINITIALIZED_WARNING_0
 #endif /* DEBUG */
@@ -575,19 +634,23 @@ extern char* assert_msg;
 /* -------------------------------------------------------- */
 /* Asserting and sanity checks */
  
-#define ASSERT(c)      CHK(!(c), 1)
-#define CHK_NULL(n)    ASSERT((long int)(n))
+#define CHK_NULL(n)    ASSERT((intptr_t)(n))
 #define CHK_ERRNO(n)   CHK(((n)<0), errno)
-#define CHK_MAGIC(p,m) MB ASSERT(p); ASSERTOP((p)->magic, ==, (m)); ME
+#define CHK_MAGIC(p,m) MB ASSERT(p); ASSERTOP((p)->magic, ==, (m), (p)->magic); ME
 
-#define ASSERT_THR(t)  ASSERTOP(pthread_self(), ==, (t))
-/* following macro assumes that each lock is accompanied by a variable describing who holds it.
- * This macro takes that variable as an argument (e.g. shuff_locked). */
+#define ASSERT_THR(t)  ASSERTOP(pthread_self(), ==, (t), (t))
+/* Following macro assumes that each lock is accompanied by a variable
+ * describing who holds it. This macro takes that variable as an
+ * argument (e.g. shuff_locked). */
 #define ASSERT_NOT_IN_LOCK(t) ASSERT((unsigned)(t) != (unsigned)pthread_self())
-#define ASSERT_IN_LOCK(t) ASSERTOP((unsigned)(t), ==, (unsigned)pthread_self())
+#define ASSERT_IN_LOCK(t) ASSERTOP((unsigned)(t), ==, (unsigned)pthread_self(),(t))
 
 /* DASSERT family is "documentative" assert, i.e. not compiled in even in debug mode */
 #define DASSERT(c)
+#define DASSERTOP(a,op,b,err)
+#define DASSERTOPI(a,op,b)
+#define DASSERTOPL(a,op,b)
+#define DASSERTOPP(a,op,b)
 #define DASSERT_THR(t)
 #define DASSERT_NOT_IN_LOCK(t)
 #define DASSERT_IN_LOCK(t)
@@ -600,6 +663,57 @@ extern char* assert_msg;
 # define MUTEXATTR 0
 #endif
 #define MUTEXATTR_DECL debug_mutexattr
+
+/* =============== pthread locking =============== */
+
+#ifdef USE_PTHREAD
+# if 1
+/*#define LOCK_STATIC(l) pthread_mutex_t l.ptmut = PTHREAD_MUTEX_INITIALIZER  do not use */
+#  define LOCK_INIT(l) pthread_mutex_init(&(l).ptmut, 0)
+#  define LOCK(l,lk)   MB if (pthread_mutex_lock(&(l).ptmut))   NEVERNEVER("DEADLOCK(%s)", (lk)); (l).func = __FUNCTION__; (l).line = __LINE__; (l).thr = pthread_self(); ME
+#  define UNLOCK(l,lk) MB ASSERTOPL((long)((l).thr), ==, (long)pthread_self()); /*(l).func = __FUNCTION__; (l).line = __LINE__;*/ (l).thr = 0; if (pthread_mutex_unlock(&(l).ptmut)) NEVERNEVER("UNLOCK-ERR(%s)", (lk)); ME
+  /* pthread_cond_wait(3) does some important magic: it unlocks the mutex (l)
+   * so that other threads may move. But it will reacquire the lock before
+   * returning. Due to this, other threads may have set lock debugging variables,
+   * so we need to reset them back here. */
+#  define ERRMAC_COND_WAIT(c,l,lk) MB pthread_cond_wait((c), &(l).ptmut); (l).func = __FUNCTION__; (l).line = __LINE__; (l).thr = pthread_self(); ME
+#  define ERRMAC_COND_SIG(c,lk) pthread_cond_signal(c)
+# else
+/*#define LOCK_STATIC(l) pthread_mutex_t l = PTHREAD_MUTEX_INITIALIZER  do not use */
+#  define LOCK_INIT(l) pthread_mutex_init(&(l), 0)
+#  define LOCK(l,lk)   if (pthread_mutex_lock(&(l)))   NEVERNEVER("DEADLOCK(%s)", (lk))
+#  define UNLOCK(l,lk) if (pthread_mutex_unlock(&(l))) NEVERNEVER("UNLOCK-TWICE(%s)", (lk))
+#  define ERRMAC_COND_WAIT(c,l,lk) pthread_cond_wait((c), &(l).ptmut)
+#  define ERRMAC_COND_SIG(c,lk) pthread_cond_signal(c)
+# endif
+#else
+# define LOCK_STATIC(l) 
+# define LOCK_INIT(l)
+# define LOCK(l,lk)
+# define UNLOCK(l,lk)
+# define ERRMAC_COND_WAIT(c,l,lk) NEVERNEVER("Program written to use pthread_cond_wait() can not work when compiled to not use it (%s).",(lk));
+#  define ERRMAC_COND_SIG(c,lk)  NEVERNEVER("Program written to use pthread_cond_sig() can not work when compiled to not use it (%s).",(lk));
+#endif
+
+/* =============== file system flocking =============== */
+
+#ifndef USE_LOCK
+#if 0
+#define FLOCKEX(fd) lockf((fd), F_LOCK, 1)
+#define FUNLOCK(fd) lockf((fd), F_ULOCK, 1)
+#else
+#define FLOCKEX(fd) fcntl((fd), F_SETLKW, &errmac_rdlk)
+#define FUNLOCK(fd) fcntl((fd), F_SETLKW, &errmac_unlk)
+#endif
+#else
+/* If you have neither flock() nor lockf(), then -DUSE-LOCK=dummy_no_flock
+ * but beware that this means NO file locking will be done, possibly
+ * leading to corrupt audit logs, or other files. You need to judge
+ * the probability of this happening as well as the cost of clean-up. */
+#define dummy_no_flock(x,y) (0)  /* no file locking where locking should be */
+#define FLOCKEX(fd) USE_LOCK((fd), LOCK_EX)
+#define FUNLOCK(fd) USE_LOCK((fd), LOCK_UN)
+#endif
 
 /* Nibble and bit arrays */
 
@@ -684,14 +798,14 @@ extern char* assert_msg;
 /* Encode length in BER */
 
 #define BER_LEN_WRITE(p,x) MB if ((x) <= 0x7f) { *((p)++) = (U8)(x); } \
-  else if ((x) <= 255U)  { *((p)++) = 0x81; *((p)++) = (U8)(x); } \
+  else if ((x) <= 255U)   { *((p)++) = 0x81; *((p)++) = (U8)(x); } \
   else if ((x) <= 65535U) { *((p)++) = 0x82; \
-                           *((p)++) = ((x) >> 8) & 0xff;  \
-                           *((p)++) =  (x) & 0xff; }      \
+                            *((p)++) = ((x) >> 8) & 0xff;  \
+                            *((p)++) =  (x) & 0xff; }      \
   else if ((x) <= 16777215U) { *((p)++) = 0x83; \
-                              *((p)++) = ((x) >> 16) & 0xff; \
-                              *((p)++) = ((x) >> 8) & 0xff;  \
-                              *((p)++) =  (x) & 0xff; }      \
+                               *((p)++) = ((x) >> 16) & 0xff; \
+                               *((p)++) = ((x) >> 8) & 0xff;  \
+                               *((p)++) =  (x) & 0xff; }      \
   else if ((x) <= 4294967295U) { *((p)++) = 0x84; \
                                  *((p)++) = ((x) >> 24) & 0xff; \
                                  *((p)++) = ((x) >> 16) & 0xff; \
@@ -727,5 +841,59 @@ extern char* assert_msg;
 /* Test XML boolean field (zx_str) for XML valid "true" values */
 #define XML_TRUE_TEST(x) ((x) && (x)->s && (((x)->len == 1 && (x)->s[0] == '1') || ((x)->len == 4 && !memcmp((x)->s, "true", 4))))
 
+void platform_broken_snprintf(int n, const char* where, int maxlen, const char* fmt);
+
+#if 0
+/* Following come handy when printf(3) is broken or otherwise
+ * the libc support is minimal. */
+
+static char* errhexll(const char* prefix, long long x) {
+  static char buf[64];
+  char const digit[] = "0123456789abcdef";
+  char* p;
+  int i;
+  for (p = buf; prefix && *prefix; ++prefix, ++p) *p = *prefix;
+#if 0
+  *p++ = digit[(x >> 60) & 0x0f];
+  *p++ = digit[(x >> 56) & 0x0f];
+  *p++ = digit[(x >> 52) & 0x0f];
+  *p++ = digit[(x >> 48) & 0x0f];
+  *p++ = digit[(x >> 44) & 0x0f];
+  *p++ = digit[(x >> 40) & 0x0f];
+  *p++ = digit[(x >> 36) & 0x0f];
+  *p++ = digit[(x >> 32) & 0x0f];
+
+  *p++ = digit[(x >> 28) & 0x0f];
+  *p++ = digit[(x >> 24) & 0x0f];
+  *p++ = digit[(x >> 20) & 0x0f];
+  *p++ = digit[(x >> 16) & 0x0f];
+  *p++ = digit[(x >> 12) & 0x0f];
+  *p++ = digit[(x >> 8) & 0x0f];
+  *p++ = digit[(x >> 4) & 0x0f];
+  *p++ = digit[x & 0x0f];
+  *p++ = '\n';
+  write(1, buf, p-buf);
+#else
+  p+=8;
+  *p-- = '\n';
+  for (i=8; i; --i, x >>= 4) *p-- = digit[x & 0x0f];
+  write(1, buf, p+9-buf);
+#endif
+  return buf;
+}
+
+static char* errstr(const char* prefix, const char* str, int len) {
+  static char buf[64];
+  char* p;
+  int i;
+  for (p = buf; prefix && *prefix; ++prefix, ++p) *p = *prefix;
+  if (len == -2)
+    len = strlen(str);
+  for (; str && *str && len && p < buf+sizeof(buf)-1; --len) *p++ = *str++;
+  *p++ = '\n';
+  write(1, buf, p-buf);
+  return buf;
+}
+#endif
 
 #endif /* errmac.h */

@@ -7,6 +7,30 @@
 # PDP_URL=http://idp.tas3.pt:8082/mockpdp.pl
 # PEPMAP=subj$eduPersonEntitlement$rename$role$
 #
+# The $policy points to XML policy in proprietary format (not XACML)
+#
+#   <authority>
+#     <user name="End-User">
+#        <aspect name="Competency" right="display"/>
+#        <aspect name="Interests" right="display"/>
+#        <aspect name="Demographics" right="display"/>
+#        <aspect name="Product" right="no"/>
+#        <aspect name="Address" right="no"/>
+#        <aspect name="Affiliations" right="no"/>
+#        <aspect name="ContactInfo" right="no"/>
+#     </user>
+#     <user name="CareerCoach">
+#        <aspect name="Competency" right="display"/>
+#        <aspect name="Interests" right="display"/>
+#     </user>
+#   </authority>
+#
+# where the <user> element really describes a role and is matched by name against role
+# field from the XACML request. <aspect> is matched by name against resource from
+# the XACML request and the right is matched against action from XACML request.
+# An exact match results Permit, otherwise Deny is issued.
+# Special values 'no' and empty string also result Deny.
+#
 # ./zxcall -a https://idp.tas3.eu/zxididp?o=B bh:betty -az 'eduPersonEntitlement=user1&rs=Interests&Action=display'
 
 use XML::Simple;
@@ -40,14 +64,18 @@ if ($len) {
 
 #warn "IN($data)";
 
+### Read in policy
+
 undef $/;
-open POLICY, "<$policy" or die "Cant read policy from($polcy)";
+open POLICY, "<$policy" or die "Cant read policy from($policy)";
 $pol = <POLICY>;
 close POLICY;
 
 $xx = XMLin $pol, KeepRoot=>0, ForceArray=>['user','aspect'], KeyAttr=>{ 'user'=>'name', 'aspect'=>'name' }, ValueAttr=>{'aspect'=>'right'}, GroupTags => { 'aspect' => 'right' } ;
 # , ForceArray=>['user']
 #warn "Policy: ".Dumper($xx);
+
+### Parse request
 
 if (length $data) {
     $rxx = XMLin $data, ForceArray=>['xac:Attribute'], KeepRoot=>0, KeyAttr=>{ 'xac:Attribute'=>'AttributeId' }, GroupTags => { 'xac:Action' => 'xac:Attribute', 'xac:Subject' => 'xac:Attribute', 'xac:Resource' => 'xac:Attribute', 'xac:Environment' => 'xac:Attribute' } ;
@@ -63,6 +91,8 @@ $action = $$xac_req{'xac:Action'}{'urn:oasis:names:tc:xacml:1.0:action:action-id
 $resource = $$xac_req{'xac:Resource'}{'urn:oasis:names:tc:xacml:1.0:resource:resource-id'}{'xac:AttributeValue'};
 $role = $$xac_req{'xac:Subject'}{'role'}{'xac:AttributeValue'};
 
+### Actual policy evaluation
+
 $perm = $$xx{'user'}{$role}{'aspect'}{$resource}{'right'};
 warn "perm($perm) from role($role) resource($resource) action($action)";
 
@@ -73,6 +103,8 @@ if ($perm eq 'no' || !length $perm) {
 } else {
     $decision = 'Deny';
 }
+
+### Response
 
 $instant  = datetime(time);
 $notafter = datetime(time+3*3600);

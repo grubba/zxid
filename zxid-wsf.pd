@@ -249,6 +249,8 @@ n:: Ordinal. If more than one EPR is available, specifies
 Return Value:: An EPR object (URL of the service, security mechanism,
     and possibly security token (SAML assertion)).
 
+See also:: zxid_get_epr_address() for extracting URL as a string
+
 13.4 ID-DAP Interface
 ---------------------
 

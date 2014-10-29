@@ -74,7 +74,7 @@ int main(int argc, char** argv)
   while (argc) {
     if (argv[0][0] != '-') break;
     switch (argv[0][1]) {
-    case 'd': ++zx_debug; break;
+    case 'd': ++errmac_debug; break;
     case 's': ++simple; break;
     default:  fprintf(stderr, "Unknown option(%s)\n%s", argv[0], help); exit(1);
     }
@@ -115,7 +115,7 @@ int main(int argc, char** argv)
 	   epr = (void*)ZX_NEXT(epr)) {
 	if (epr->gg.g.tok != zx_a_EndpointReference_ELEM)
 	  continue;
-	zxid_cache_epr(cf, ses, epr);
+	zxid_cache_epr(cf, ses, epr, 1);
       }
     
   } else if (!strcmp(svc, XMLNS_DAP)) {

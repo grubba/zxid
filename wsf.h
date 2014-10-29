@@ -39,6 +39,7 @@
 #define WSF11_DI_RO "DiscoveryResourceOffering"               /* Name of bootstrap attribute */
 #define WSF20_DI_RO "urn:liberty:disco:2006-08:DiscoveryEPR"
 #define TAS3_EPR    "urn:tas3:epr"
+#define TAS3_PTM    "urn:tas3:ptm:2012"
 
 #define IMPLIED_RSC        "urn:liberty:isf:implied-resource"
 #define XMLNS_DISCO_1_1    "urn:liberty:disco:2003-08"
@@ -174,7 +175,12 @@
 #define SB_EPUPD_COMP  "urn:liberty:sb:2006-08:EndpointUpdate:Complete"
 #define SB_EPUPD_PART  "urn:liberty:sb:2006-08:EndpointUpdate:Partial"
 #define SB_EPUPD_NOCH  "urn:liberty:sb:2006-08:EndpointUpdate:NoChange"
-#define A_ANON         "http://www.w3.org/2005/03/addressing/role/anonymous"
+
+/* This is the value used in liberty-idwsf-soap-binding-2.0-errata-v1.0.pdf,
+ * but is in violation of the http://www.w3.org/2005/08/addressing namespace
+ * and spec http://www.w3.org/TR/ws-addr-core/ (probably an error in Liberty specs) */
+#define A_ANON_2005_03 "http://www.w3.org/2005/03/addressing/role/anonymous"
+#define A_ANON         "http://www.w3.org/2005/08/addressing/anonymous"
 
 /* Misc */
 
@@ -208,6 +214,7 @@
 
 /* control point enumerators */
 
+#define TAS3_WSC_RQ_OUT   "urn:tas3:ctlpt:wsc:rq:out"
 #define TAS3_PEP_RQ_OUT   "urn:tas3:ctlpt:pep:rq:out"
 #define TAS3_PEP_RQ_IN    "urn:tas3:ctlpt:pep:rq:in"
 #define TAS3_PEP_RS_PARSE "urn:tas3:ctlpt:pep:rs:parse"
@@ -223,8 +230,11 @@
 #define TAS3_STATUS_NOSIG   "urn:tas3:status:nosig"
 #define TAS3_STATUS_BADSIG  "urn:tas3:status:badsig"
 #define TAS3_STATUS_BADCOND "urn:tas3:status:badcond"
+#define TAS3_STATUS_REPLAY  "urn:tas3:status:replay"
 #define TAS3_STATUS_BADXML  "urn:tas3:status:badxml"
 #define TAS3_STATUS_FAULT   "urn:tas3:status:fault"
+#define TAS3_STATUS_EXPIRED "urn:tas3:status:expired" /* credential expired */
+#define TAS3_STATUS_EPR_NOT_FOUND "urn:tas3:status:epr-not-found"
 
 /* Special value for ObligationId to identify the SOL1 processing engine. */
 

@@ -30,7 +30,7 @@
 char* help =
 "zxcall  -  Web Service Client tool R" ZXID_REL "\n\
 SAML 2.0 and ID-WSF 2.0 are standards for federated identity and web services.\n\
-Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
+Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
@@ -41,15 +41,15 @@ Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
        zxcall [options] -a IDP USER:PW   # Authentication only\n\
        zxcall [options] -s SESID -im EID # Identity Mapping to EID\n\
        zxcall [options] -s SESID -l      # List session cache\n\
-  -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
-                   Most of the configuration is read from /var/zxid/zxid.conf\n\
+  -c CONF          Optional configuration string (default -c CPATH=/var/zxid/)\n\
+                   Most of the configuration is read from " ZXID_CONF_PATH "\n\
   -s SESID         Session ID referring to a directory in /var/zxid/ses\n\
                    Use zxidhlo to do SSO and then cut and paste from there.\n\
   -a IDP USER:PW   Use Authentication service to authenticate the user and\n\
                    create session. IDP is IdP's Entity ID. This is alternative to -s\n\
   -t SVCTYPE       Service Type URI. Used for discovery. Mandatory (omitting -t\n\
                    causes authorization only mode, provided that -az was specified).\n\
-  -u URL           Optional endpoint URL or ProviderID. Discovery must match this.\n\
+  -u EPURL         Optional endpoint URL or ProviderID. Discovery must match this.\n\
   -di DISCOOPTS    Optional discovery options. Query string format.\n\
   -din N           Discovery index (default: 1=pick first).\n\
   -az AZCREDS      Optional authorization credentials. Query string format.\n\
@@ -91,7 +91,7 @@ char* nidmap_to = 0;
 char* bdy = 0;
 zxid_conf* cf;
 
-/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x8, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   struct zx_str* ss;
@@ -146,9 +146,9 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
-	if (zx_debug == 2)
-	  strncpy(zx_instance, "\t\e[43mzxcall\e[0m", sizeof(zx_instance));
+	++errmac_debug;
+	if (errmac_debug == 2)
+	  strncpy(errmac_instance, "\t\e[43mzxcall\e[0m", sizeof(errmac_instance));
 	continue;
       case 'i':
         switch ((*argv)[0][3]) {
@@ -163,6 +163,7 @@ static void opt(int* argc, char*** argv, char*** env)
 	  sscanf((*argv)[0], "%i", &din);
 	  continue;
 	}
+	break;
       case 'c':
 	ss = zxid_show_conf(cf);
 	if (verbose>1) {
@@ -290,10 +291,10 @@ static void opt(int* argc, char*** argv, char*** env)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
 help:
     if (verbose>1) {
-      printf(help);
+      printf("%s", help);
       exit(0);
     }
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     /*fprintf(stderr, "version=0x%06x rel(%s)\n", zxid_version(), zxid_version_str());*/
     exit(3);
   }
@@ -327,7 +328,7 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
   
   D_INDENT("lstses: ");
 
-  if (!name_from_path(path, sizeof(path), "%s" ZXID_SES_DIR "%s", cf->path, ses->sid)) {
+  if (!name_from_path(path, sizeof(path), "%s" ZXID_SES_DIR "%s", cf->cpath, ses->sid)) {
     D_DEDENT("lstses: ");
     return 0;
   }
@@ -349,7 +350,7 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
       continue;
     D("%d Checking EPR content file(%s)", din, de->d_name);
     epr_buf = read_all_alloc(cf->ctx, "lstses", 1, &epr_len,
-			     "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
+			     "%s" ZXID_SES_DIR "%s/%s", cf->cpath, ses->sid, de->d_name);
     if (!epr_buf)
       continue;
     
@@ -398,7 +399,7 @@ int zxcall_main(int argc, char** argv, char** env)
   zxid_entity* idp_meta;
   zxid_epr* epr;
 
-  strncpy(zx_instance, "\tzxcall", sizeof(zx_instance));
+  strncpy(errmac_instance, CC_CYNY("\tzxcall"), sizeof(errmac_instance));
   cf = zxid_new_conf_to_cf(0);
   opt(&argc, &argv, &env);
   
@@ -424,6 +425,7 @@ int zxcall_main(int argc, char** argv, char** env)
       ERR("Login using Authentication Service failed idp(%s)", idp);
       return 1;
     }
+    INFO("Logged in. NameID(%s) Session in %s" ZXID_SES_DIR "%s", ses->nid, cf->cpath, ses->sid);
   }
 
   if (listses)
@@ -444,7 +446,7 @@ int zxcall_main(int argc, char** argv, char** env)
   }
 
   if (di_only) {
-    D("Discover only. svctype(%s), index=%d", STRNULLCHK(svc), din);
+    D("Discover only. svctype(%s), dindex=%d", STRNULLCHK(svc), din);
     epr = zxid_get_epr(cf, ses, svc, url, di, 0 /*action*/, din);
     if (!epr) {
       ERR("Discovery failed to find any epr of service type(%s)", STRNULLCHK(svc));
@@ -454,13 +456,13 @@ int zxcall_main(int argc, char** argv, char** env)
       epr = zxid_get_epr(cf, ses, svc, url, di, 0 /*action*/, din);
       if (!epr)
 	break;
-      ss = zxid_get_epr_address(cf, epr);
-      printf("%d. Found epr for service type(%s)\n   URL:         %.*s\n",
-	     din, STRNULLCHK(svc), ss?ss->len:0, ss?ss->s:"");
-      ss = zxid_get_epr_entid(cf, epr);
-      printf("   EntityID:    %.*s\n", ss?ss->len:0, ss?ss->s:"");
+      printf("%d. Found epr for service type(%s)\n", din, STRNULLCHK(svc));
       ss = zxid_get_epr_desc(cf, epr);
       printf("   Description: %.*s\n", ss?ss->len:0, ss?ss->s:"");
+      ss = zxid_get_epr_address(cf, epr);
+      printf("   EPURL:       %.*s\n", ss?ss->len:0, ss?ss->s:"");
+      ss = zxid_get_epr_entid(cf, epr);
+      printf("   EntityID:    %.*s\n", ss?ss->len:0, ss?ss->s:"");
     }
     return 0;
   }
@@ -473,7 +475,7 @@ int zxcall_main(int argc, char** argv, char** env)
       siz = 4096;
       p = bdy = ZX_ALLOC(cf->ctx, siz);
       while (1) {
-	n = read_all_fd(fileno(stdin), p, siz+bdy-p-1, &got);
+	n = read_all_fd(fdstdin, p, siz+bdy-p-1, &got);
 	if (n == -1) {
 	  perror("reading SOAP req from stdin");
 	  break;
@@ -499,7 +501,7 @@ int zxcall_main(int argc, char** argv, char** env)
       return 2;
     }
     if (verbose)
-      fprintf(stderr, "Call returned %d bytes.\n", ss->len);
+      fprintf(stderr, "Done. Call returned %d bytes.\n", ss->len);
     if (out_fmt) {
       p = zxid_extract_body(cf, ss->s);
       printf("%s", p);

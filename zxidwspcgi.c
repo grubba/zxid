@@ -9,6 +9,7 @@
  * 9.2.2010, created --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
+ *           mini_httpd_filter.c
  */
 
 #include <zx/platform.h>
@@ -48,7 +49,7 @@ This C program implements a generic Web Services Provider. It is meant\n\
 to be run as a cgi script from a web server. It will validate\n\
 an incoming web service request and then pass it to sysadmin-supplied\n\
 external program on stdin. The external program could be a shell script or\n\
-perl program - whatever you want. The external program reads the payload\n\
+a perl program - whatever you want. The external program reads the payload\n\
 request from stdin and prints the payload response to stdout. zxidwspcgi\n\
 handles the pipe-in - pipe-out deadlock dilemma by forking a process to\n\
 perform the feeding in, while the original process will receive the\n\
@@ -94,7 +95,7 @@ static int zxidwspcgi_child(zxid_conf* cf, int len, char* buf, char* sid, char* 
     setenv("idpnid", nid, 1);
     setenv("sid", sid, 1);
     D("exec(%s)", cf->wspcgicmd);
-    execl(cf->wspcgicmd, cf->wspcgicmd);
+    execl(cf->wspcgicmd, cf->wspcgicmd);     /* At least gcc-3.4.6 gives bogus "warning: not enough variable arguments to fit a sentinel [-Wformat]" on this line. AFAIK you can safely ignore the warning. --Sampo */
     perror("exec");
     ERR("Exec(%s) failed: errno=%d", cf->wspcgicmd, errno);
     return 1;
@@ -121,7 +122,8 @@ static int zxidwspcgi_parent(zxid_conf* cf, zxid_ses* ses, int pid)
   buf[got_all] = 0;
   D("Got from child %d bytes", got_all);
   ss = zxid_wsp_decorate(cf, ses, 0, buf);
-  printf("CONTENT-TYPE: text/xml\r\nCONTENT-LENGTH: %d\r\n\r\n%.*s", ss->len, ss->len, ss->s);
+  fprintf(stdout, "CONTENT-TYPE: text/xml\r\nCONTENT-LENGTH: %d\r\n\r\n%.*s", ss->len, ss->len, ss->s);
+  fflush(stdout);
   if (waitpid(pid, &got_all, 0) == -1) {
     perror("waitpid");
   }
@@ -160,7 +162,7 @@ int zxidwspcgi_main(int argc, char** argv)
       exit(2);
   }
   fprintf(stderr, "=================== Running zxidwspcgi %s ===================\n", ZXID_REL);
-  zx_debug = 1;
+  errmac_debug = 1;
 #endif
 
   qs = getenv("CONTENT_LENGTH");
@@ -168,7 +170,7 @@ int zxidwspcgi_main(int argc, char** argv)
     sscanf(qs, "%d", &cl);
 
   if (cl) {
-    read_all_fd(fileno(stdin), buf, MIN(cl, sizeof(buf)-1), &got);
+    read_all_fd(fdstdin, buf, MIN(cl, sizeof(buf)-1), &got);
     buf[got] = 0;
     qs2 = buf;
   } else {
@@ -195,6 +197,9 @@ int zxidwspcgi_main(int argc, char** argv)
 #define PROTO_STR "http://"
 #endif
 
+#if 1
+  /* Is this virtual hosting section still needed given that VHOST and VURL are
+   * supported directly by the configuration syntax? *** */
   strcpy(urlbuf, PROTO_STR);
   p = urlbuf + sizeof(PROTO_STR)-1;
   res = getenv("HTTP_HOST");
@@ -210,6 +215,7 @@ int zxidwspcgi_main(int argc, char** argv)
   if (p > urlbuf + sizeof(urlbuf))
     exit(1);
   zxid_url_set(cf, urlbuf);
+#endif
 
   //if (!memcmp(qs+cl-4, "?o=B", 4)) {
   if (qs[0] == 'o' && qs[1] == '=' && ONE_OF_2(qs[2], 'B', 'd')) {

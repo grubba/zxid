@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- mm7_AdditionalInformation -------------------------- */
-/* refby( zx_mm7_ReplaceReq_s zx_mm7_extendedReplaceReq_s zx_mm7_SubmitReq_s zx_mm7_DeliverReq_s ) */
+/* refby( zx_mm7_ReplaceReq_s zx_mm7_DeliverReq_s zx_mm7_extendedReplaceReq_s zx_mm7_SubmitReq_s ) */
 #ifndef zx_mm7_AdditionalInformation_EXT
 #define zx_mm7_AdditionalInformation_EXT
 #endif
@@ -358,7 +358,7 @@ void zx_mm7_Cc_REV_Extension(struct zx_mm7_Cc_s* x);
 
 #endif
 /* -------------------------- mm7_Content -------------------------- */
-/* refby( zx_mm7_ReplaceReq_s zx_mm7_extendedReplaceReq_s zx_mm7_SubmitReq_s zx_mm7_DeliverReq_s ) */
+/* refby( zx_mm7_ReplaceReq_s zx_mm7_DeliverReq_s zx_mm7_extendedReplaceReq_s zx_mm7_SubmitReq_s ) */
 #ifndef zx_mm7_Content_EXT
 #define zx_mm7_Content_EXT
 #endif
@@ -1006,7 +1006,7 @@ void zx_mm7_DeliveryReportRsp_REV_Extension(struct zx_mm7_DeliveryReportRsp_s* x
 
 #endif
 /* -------------------------- mm7_Details -------------------------- */
-/* refby( zx_mm7_Status_s zx_mm7_QueryStatusRsp_s ) */
+/* refby( zx_mm7_QueryStatusRsp_s zx_mm7_Status_s ) */
 #ifndef zx_mm7_Details_EXT
 #define zx_mm7_Details_EXT
 #endif
@@ -1039,7 +1039,7 @@ int zx_WALK_WO_mm7_Details(struct zx_ctx* c, struct zx_mm7_Details_s* x, void* c
 
 #endif
 /* -------------------------- mm7_Extension -------------------------- */
-/* refby( zx_mm7_Cc_s zx_mm7_ReplaceReq_s zx_mm7_CancelReq_s zx_mm7_SenderAddress_s zx_mm7_SubmitReq_s zx_mm7_Bcc_s zx_mm7_ThirdPartyPayer_s zx_mm7_ReadReplyReq_s zx_mm7_Sender_s zx_mm7_RSErrorRsp_s zx_mm7_DeliveryReportReq_s zx_mm7_ReplaceRsp_s zx_mm7_UserAgent_s zx_mm7_Recipient_s zx_mm7_To_s zx_mm7_DeliverRsp_s zx_mm7_DeliveryReportRsp_s zx_mm7_ReadReplyRsp_s zx_mm7_CancelRsp_s zx_mm7_VASPErrorRsp_s zx_mm7_DeliverReq_s zx_mm7_extendedCancelReq_s zx_mm7_SubmitRsp_s ) */
+/* refby( zx_mm7_ReplaceRsp_s zx_mm7_ReplaceReq_s zx_mm7_DeliveryReportReq_s zx_mm7_DeliverReq_s zx_mm7_Cc_s zx_mm7_ReadReplyReq_s zx_mm7_UserAgent_s zx_mm7_Recipient_s zx_mm7_extendedCancelReq_s zx_mm7_DeliverRsp_s zx_mm7_CancelReq_s zx_mm7_SubmitRsp_s zx_mm7_Sender_s zx_mm7_CancelRsp_s zx_mm7_SenderAddress_s zx_mm7_RSErrorRsp_s zx_mm7_VASPErrorRsp_s zx_mm7_SubmitReq_s zx_mm7_Bcc_s zx_mm7_DeliveryReportRsp_s zx_mm7_To_s zx_mm7_ThirdPartyPayer_s zx_mm7_ReadReplyRsp_s ) */
 #ifndef zx_mm7_Extension_EXT
 #define zx_mm7_Extension_EXT
 #endif
@@ -1132,7 +1132,7 @@ void zx_mm7_IdentityAddressingToken_REV_CredentialRef(struct zx_mm7_IdentityAddr
 
 #endif
 /* -------------------------- mm7_MessageExtraData -------------------------- */
-/* refby( zx_mm7_ReplaceReq_s zx_mm7_extendedReplaceReq_s zx_mm7_SubmitReq_s zx_mm7_Extension_s zx_mm7_DeliverReq_s ) */
+/* refby( zx_mm7_ReplaceReq_s zx_mm7_DeliverReq_s zx_mm7_Extension_s zx_mm7_extendedReplaceReq_s zx_mm7_SubmitReq_s ) */
 #ifndef zx_mm7_MessageExtraData_EXT
 #define zx_mm7_MessageExtraData_EXT
 #endif
@@ -1174,7 +1174,7 @@ void zx_mm7_MessageExtraData_REV_element(struct zx_mm7_MessageExtraData_s* x);
 
 #endif
 /* -------------------------- mm7_Number -------------------------- */
-/* refby( zx_mm7_Cc_s zx_mm7_SenderAddress_s zx_mm7_Bcc_s zx_mm7_ThirdPartyPayer_s zx_mm7_Sender_s zx_mm7_UserAgent_s zx_mm7_Recipient_s zx_mm7_To_s ) */
+/* refby( zx_mm7_Cc_s zx_mm7_UserAgent_s zx_mm7_Recipient_s zx_mm7_Sender_s zx_mm7_SenderAddress_s zx_mm7_Bcc_s zx_mm7_To_s zx_mm7_ThirdPartyPayer_s ) */
 #ifndef zx_mm7_Number_EXT
 #define zx_mm7_Number_EXT
 #endif
@@ -1516,7 +1516,7 @@ void zx_mm7_QueryStatusRsp_REV_Details(struct zx_mm7_QueryStatusRsp_s* x);
 
 #endif
 /* -------------------------- mm7_RFC2822Address -------------------------- */
-/* refby( zx_mm7_Cc_s zx_mm7_SenderAddress_s zx_mm7_Bcc_s zx_mm7_ThirdPartyPayer_s zx_mm7_Sender_s zx_mm7_UserAgent_s zx_mm7_Recipient_s zx_mm7_To_s ) */
+/* refby( zx_mm7_Cc_s zx_mm7_UserAgent_s zx_mm7_Recipient_s zx_mm7_Sender_s zx_mm7_SenderAddress_s zx_mm7_Bcc_s zx_mm7_To_s zx_mm7_ThirdPartyPayer_s ) */
 #ifndef zx_mm7_RFC2822Address_EXT
 #define zx_mm7_RFC2822Address_EXT
 #endif
@@ -1819,7 +1819,7 @@ void zx_mm7_ReadReplyRsp_REV_Extension(struct zx_mm7_ReadReplyRsp_s* x);
 
 #endif
 /* -------------------------- mm7_Recipient -------------------------- */
-/* refby( zx_mm7_ReadReplyReq_s zx_mm7_DeliveryReportReq_s ) */
+/* refby( zx_mm7_DeliveryReportReq_s zx_mm7_ReadReplyReq_s ) */
 #ifndef zx_mm7_Recipient_EXT
 #define zx_mm7_Recipient_EXT
 #endif
@@ -1888,7 +1888,7 @@ void zx_mm7_Recipient_REV_Extension(struct zx_mm7_Recipient_s* x);
 
 #endif
 /* -------------------------- mm7_Recipients -------------------------- */
-/* refby( zx_mm7_CancelReq_s zx_mm7_SubmitReq_s zx_mm7_DeliverReq_s ) */
+/* refby( zx_mm7_DeliverReq_s zx_mm7_CancelReq_s zx_mm7_SubmitReq_s ) */
 #ifndef zx_mm7_Recipients_EXT
 #define zx_mm7_Recipients_EXT
 #endif
@@ -2233,7 +2233,7 @@ void zx_mm7_ReplyCharging_PUT_replyDeadline(struct zx_mm7_ReplyCharging_s* x, st
 
 #endif
 /* -------------------------- mm7_Sender -------------------------- */
-/* refby( zx_mm7_ReadReplyReq_s zx_mm7_DeliveryReportReq_s zx_mm7_DeliverReq_s ) */
+/* refby( zx_mm7_DeliveryReportReq_s zx_mm7_DeliverReq_s zx_mm7_ReadReplyReq_s ) */
 #ifndef zx_mm7_Sender_EXT
 #define zx_mm7_Sender_EXT
 #endif
@@ -2371,7 +2371,7 @@ void zx_mm7_SenderAddress_REV_Extension(struct zx_mm7_SenderAddress_s* x);
 
 #endif
 /* -------------------------- mm7_SenderIdentification -------------------------- */
-/* refby( zx_mm7_ReplaceReq_s zx_mm7_CancelReq_s zx_mm7_SubmitReq_s zx_mm7_extendedCancelReq_s ) */
+/* refby( zx_mm7_ReplaceReq_s zx_mm7_extendedCancelReq_s zx_mm7_CancelReq_s zx_mm7_SubmitReq_s ) */
 #ifndef zx_mm7_SenderIdentification_EXT
 #define zx_mm7_SenderIdentification_EXT
 #endif
@@ -2431,7 +2431,7 @@ void zx_mm7_SenderIdentification_REV_SenderAddress(struct zx_mm7_SenderIdentific
 
 #endif
 /* -------------------------- mm7_ServiceCode -------------------------- */
-/* refby( zx_mm7_ReplaceReq_s zx_mm7_extendedReplaceReq_s zx_mm7_SubmitReq_s zx_mm7_DeliverRsp_s ) */
+/* refby( zx_mm7_ReplaceReq_s zx_mm7_DeliverRsp_s zx_mm7_extendedReplaceReq_s zx_mm7_SubmitReq_s ) */
 #ifndef zx_mm7_ServiceCode_EXT
 #define zx_mm7_ServiceCode_EXT
 #endif
@@ -2464,7 +2464,7 @@ int zx_WALK_WO_mm7_ServiceCode(struct zx_ctx* c, struct zx_mm7_ServiceCode_s* x,
 
 #endif
 /* -------------------------- mm7_ShortCode -------------------------- */
-/* refby( zx_mm7_Cc_s zx_mm7_SenderAddress_s zx_mm7_Bcc_s zx_mm7_ThirdPartyPayer_s zx_mm7_Sender_s zx_mm7_UserAgent_s zx_mm7_Recipient_s zx_mm7_To_s ) */
+/* refby( zx_mm7_Cc_s zx_mm7_UserAgent_s zx_mm7_Recipient_s zx_mm7_Sender_s zx_mm7_SenderAddress_s zx_mm7_Bcc_s zx_mm7_To_s zx_mm7_ThirdPartyPayer_s ) */
 #ifndef zx_mm7_ShortCode_EXT
 #define zx_mm7_ShortCode_EXT
 #endif
@@ -2506,7 +2506,7 @@ void zx_mm7_ShortCode_PUT_id(struct zx_mm7_ShortCode_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- mm7_Status -------------------------- */
-/* refby( zx_mm7_extendedCancelRsp_s zx_mm7_extendedReplaceRsp_s zx_mm7_RSErrorRsp_s zx_mm7_ReplaceRsp_s zx_mm7_DeliverRsp_s zx_mm7_DeliveryReportRsp_s zx_mm7_ReadReplyRsp_s zx_mm7_CancelRsp_s zx_mm7_VASPErrorRsp_s zx_mm7_SubmitRsp_s ) */
+/* refby( zx_mm7_ReplaceRsp_s zx_mm7_extendedReplaceRsp_s zx_mm7_DeliverRsp_s zx_mm7_SubmitRsp_s zx_mm7_CancelRsp_s zx_mm7_RSErrorRsp_s zx_mm7_VASPErrorRsp_s zx_mm7_DeliveryReportRsp_s zx_mm7_extendedCancelRsp_s zx_mm7_ReadReplyRsp_s ) */
 #ifndef zx_mm7_Status_EXT
 #define zx_mm7_Status_EXT
 #endif
@@ -3067,7 +3067,7 @@ void zx_mm7_To_REV_Extension(struct zx_mm7_To_s* x);
 
 #endif
 /* -------------------------- mm7_TransactionID -------------------------- */
-/* refby( zx_mm7_QueryStatusReq_s zx_mm7_QueryStatusRsp_s zx_e_Header_s ) */
+/* refby( zx_mm7_QueryStatusRsp_s zx_e_Header_s zx_mm7_QueryStatusReq_s ) */
 #ifndef zx_mm7_TransactionID_EXT
 #define zx_mm7_TransactionID_EXT
 #endif

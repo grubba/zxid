@@ -1,10 +1,10 @@
 Content-Type: text/html
-Content-Length: 3630
+Content-Length: 1795
 
 <title>ZXID SP SSO: Choose IdP</title>
 <link type="text/css" rel=stylesheet href="idpsel.css"><body bgcolor=white>
 <h1 class=zxtop>ZXID SP Federated SSO (user NOT logged in, no session)</h1>
-<form method=get action="http://sp1.zxidsp.org:8081/zxidhlo">
+<form method=get action="http://sidemo:8084/zxidhlo">
 <div class=zxerr>IdP URL Missing or incorrect</div><div class=zxmsg></div><div class=zxdbg></div>
 
 <h3>Login Using New IdP</h3>
@@ -15,24 +15,11 @@ well known location method. You will need to ask the adminstrator of
 the IdP to tell you what the EntityID is.</i>
 <p>IdP URL <input name=e size=60><input type=submit name=l0 value=" Login "><br>
 
-Entity ID of this SP (click on the link to fetch the SP metadata): <a href="http://sp1.zxidsp.org:8081/zxidhlo?o=B">http://sp1.zxidsp.org:8081/zxidhlo?o=B</a>
+Entity ID of this SP (click on the link to fetch the SP metadata): <a href="http://sidemo:8084/zxidhlo?o=B">http://sidemo:8084/zxidhlo?o=B</a>
 
-<h3>Login Using Known IdP</h3>
-<input type=submit name="l0http://auth.orange.fr" value=" Login with  (http://auth.orange.fr) "><br>
-<input type=submit name="l0https://idpdemo.tas3.eu:8443/zxididp?o=B" value=" Login with  (https://idpdemo.tas3.eu:8443/zxididp?o=B) "><br>
-<input type=submit name="l0http://saml.flexmls.com/idp/shibboleth" value=" Login with  (http://saml.flexmls.com/idp/shibboleth) "><br>
-<input type=submit name="l0http://rolacast.labse.isti.cnr.it/meta.xml" value=" Login with  (http://rolacast.labse.isti.cnr.it/meta.xml) "><br>
-<input type=submit name="l0ehp-stage.uhg.UMICH" value=" Login with TAS3 Demo IdP (ehp-stage.uhg.UMICH) "><br>
-<input type=submit name="l0https://zxidp.org/idp" value=" Login with ZXIDP - Free IdP (https://zxidp.org/idp) "><br>
-<input type=submit name="l0https://cardspace-idp.symlabs.net:8002/idp.xml" value=" Login with  (https://cardspace-idp.symlabs.net:8002/idp.xml) "><br>
-<input type=submit name="l0https://idp.kantarainitiative.org/simplesaml/saml2/idp/metadata.php" value=" Login with  (https://idp.kantarainitiative.org/simplesaml/saml2/idp/metadata.php) "><br>
-<input type=submit name="l0https://idp.tas3.eu/zxididp?o=B" value=" Login with ZXIdP (https://idp.tas3.eu/zxididp?o=B) "><br>
-<input type=submit name="l0http://idp.tas3.pt:8081/zxididp" value=" Login with TAS3 Demo IdP (http://idp.tas3.pt:8081/zxididp) "><br>
-<input type=submit name="l0https://idp.tas3.kent.ac.uk/idp/shibboleth" value=" Login with  (https://idp.tas3.kent.ac.uk/idp/shibboleth) "><br>
-<input type=submit name="l0https://idp.symdemo.com:8880/idp.xml" value=" Login with  (https://idp.symdemo.com:8880/idp.xml) "><br>
-<input type=submit name="l0http://idp.ssocircle.com" value=" Login with  (http://idp.ssocircle.com) "><br>
-<input type=submit name="l0https://kent.nekton.tas3.eu/idp/shibboleth" value=" Login with kent.nekton.tas3.eu (https://kent.nekton.tas3.eu/idp/shibboleth) "><br>
-<input type=submit name="l0https://nottingham.nekton.tas3.eu/idp/shibboleth" value=" Login with  (https://nottingham.nekton.tas3.eu/idp/shibboleth) "><br>
+<p><select name=d>
+<option class=zxidplistopt value="http://idp.tas3.pt:8081/zxididp?o=B"> Syn Test IdP (http://idp.tas3.pt:8081/zxididp?o=B) 
+</select><input type=submit id=zxidplistlogin class=zxidplistbut name="l0" value=" Login "><br>
 
 
 <h3>Technical options</h3>
@@ -52,5 +39,5 @@ Entity ID of this SP (click on the link to fetch the SP metadata): <a href="http
 <input type=hidden name=fm value="">
 <input type=hidden name=fp value=0>
 <input type=hidden name=ff value=0>
-
-<div class=zxbot><a class=zx href="http://zxid.org/">zxid.org</a>, 0.82 1299689956 libzxid (zxid.org)</div>
+</form>
+<div class=zxbot><a class=zx href="http://zxid.org/">zxid.org</a>, 1.15 1382893016 libe2eta ix86-32 (sampo@synergetics.be)</div>

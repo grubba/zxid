@@ -42,7 +42,7 @@ static struct zx_paos_Request_s* zxid_mk_paos_Request_hdr(zxid_conf* cf)
   hdr->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
   hdr->actor   = zx_ref_attr(cf->ctx, &hdr->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->service = zx_ref_attr(cf->ctx, &hdr->gg, zx_service_ATTR, SAML2_SSO_ECP);
-  hdr->responseConsumerURL = zx_attrf(cf->ctx, &hdr->gg, zx_responseConsumerURL_ATTR, "%s?o=P", cf->url);
+  hdr->responseConsumerURL = zx_attrf(cf->ctx, &hdr->gg, zx_responseConsumerURL_ATTR, "%s?o=P", cf->burl);
   /*hdr->messageID = zx_ref_str(cf->ctx, "1"); OPTIONAL */
   return hdr;
 }

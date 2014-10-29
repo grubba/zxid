@@ -15,6 +15,7 @@
 %module "zxidjni"
 %{
 
+#include "platform.h"
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"
@@ -66,7 +67,7 @@
   $1 = (*jenv)->GetStringUTFLength(jenv, (jstring)$input);
   $2 = (char*)(*jenv)->GetStringUTFChars(jenv, (jstring)$input, 0);
   // *** Whether we can free, or not, the obtained string depends
-  //     on whether the zxid API will take reference to the string.
+  //     on whether the zxid API will take reference to the const string.
 %}
 %typemap (freearg) (int len, const char* s) "(*jenv)->ReleaseStringUTFChars(jenv, (jstring)$input, $2);"
 

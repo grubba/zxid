@@ -1,4 +1,5 @@
 /* zxidsso.c  -  Handwritten functions for implementing Single Sign-On logic for SP
+ * Copyright (c) 2013-2014 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -15,6 +16,7 @@
  * 7.10.2008, added documentation --Sampo
  * 1.2.2010,  added authentication service client --Sampo
  * 9.3.2011,  added Proxy IdP processing --Sampo
+ * 26.10.2013, improved error reporting on credential expired case --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
@@ -36,6 +38,7 @@
 #include "zxidutil.h"
 #include "zxidconf.h"
 #include "saml2.h"
+#include "wsf.h"
 #include "c/zx-const.h"
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
@@ -44,8 +47,8 @@
 
 /*() This function makes the policy decision about which profile to
  * use. It is only used if there was no explicit specification in the
- * CGI form (e.g. "Login (P)" button. Currently it's a stub that
- * always picks the artifact profile. Eventually configuration options
+ * CGI form (e.g. "Login (P)" button. Currently it is a stub that
+ * always picks the SAML artifact profile. Eventually configuration options
  * or cgi input can be used to determine the profile in a more
  * sophisticated way. Often zxid_mk_authn_req() will override the
  * return value of this function by its own inspection of the CGI
@@ -54,6 +57,10 @@
 /* Called by:  zxid_start_sso_url */
 int zxid_pick_sso_profile(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* idp_meta)
 {
+  switch (cgi->pr_ix) {
+  case ZXID_OIDC1_CODE:       return ZXID_OIDC1_CODE;
+  case ZXID_OIDC1_ID_TOK_TOK: return ZXID_OIDC1_ID_TOK_TOK;
+  }
   /* More sophisticated policy may eventually go here. */
   return ZXID_SAML2_ART;
 }
@@ -146,12 +153,35 @@ char* zxid_saml2_map_authn_ctx(char* c)
   return c;
 }
 
+/*() cgi->rs will be copied to ses->rs and from there in ab_pep to resource-id.
+ * We compress and safe_base64 encode it to protect any URL special characters. */
+
+void zxid_sso_set_relay_state_to_return_to_this_url(zxid_conf* cf, zxid_cgi* cgi)
+{
+  struct zx_str* ss;
+  D("Previous rs(%s)", STRNULLCHKD(cgi->rs));
+  // *** absolute URI consideration
+  if (!cgi->rs || !cgi->rs[0]) {
+    if (!cgi->uri_path) {
+      ERR("null or empty cgi->uri_path=%p qs(%s) programming error", cgi->uri_path, STRNULLCHK(cgi->qs));
+      if (!cgi->uri_path)
+	cgi->uri_path = "";
+    }
+    ss = zx_strf(cf->ctx, "%s%c%s", cgi->uri_path, cgi->qs&&cgi->qs[0]?'?':0, STRNULLCHK(cgi->qs));
+    cgi->rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, ss->s);
+    D("rs(%s) from(%s) uri_path(%s) qs(%s)",cgi->rs,ss->s,cgi->uri_path,STRNULLCHKD(cgi->qs));
+    zx_str_free(cf->ctx, ss);
+  }
+}
+
 /*(i) Generate an authentication request and make a URL out of it.
+ *
  * cf::     Used for many configuration options and memory allocation
- * cgi::    Used to pick the desired SSO profile based on hidden fields or user input.
+ * cgi::    Used to pick the desired SSO profile based on hidden fields or user
+ *     input. The cgi->rs filed specifies the URL to redirect to after the SSO.
  * return:: Redirect URL as zx_str. Caller should eventually free this memory.
  */
-/* Called by:  zxid_start_sso, zxid_start_sso_location */
+/* Called by:  zxid_start_sso_location */
 struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_md_SingleSignOnService_s* sso_svc;
@@ -161,7 +191,8 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
   int sso_profile_ix;
   zxid_entity* idp_meta;
   D_INDENT("start_sso: ");
-  D("start_sso: cgi=%p cgi->eid=%p eid(%s)", cgi, cgi->eid, cgi->eid?cgi->eid:"-");
+  D("cgi=%p cgi->eid=%p eid(%s) pr_ix=%d", cgi, cgi->eid, STRNULLCHKD(cgi->eid), cgi->pr_ix);
+  zxid_sso_set_relay_state_to_return_to_this_url(cf, cgi);
   if (!cgi->pr_ix || !cgi->eid || !cgi->eid[0]) {
     D("Either protocol index or entity ID missing %d", cgi->pr_ix);
     cgi->err = "IdP URL Missing or incorrect";
@@ -178,6 +209,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
   case ZXID_SAML2_ART:
   case ZXID_SAML2_POST:
   case ZXID_SAML2_POST_SIMPLE_SIGN:
+    /* All of the above use redir binding for sending AnReq */
     if (!idp_meta->ed->IDPSSODescriptor) {
       ERR("Entity(%s) does not have IdP SSO Descriptor (metadata problem)", cgi->eid);
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", cgi->eid, "No IDPSSODescriptor");
@@ -200,16 +232,15 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
       D_DEDENT("start_sso: ");
       return 0;
     }
-    DD("HERE1 %p", sso_svc);
-    DD("HERE2 %p", sso_svc->Location);
-    DD("HERE3 len=%d (%.*s)", sso_svc->Location->g.len, sso_svc->Location->g.len, sso_svc->Location->g.s);
+    DD("HERE3 len=%d (%.*s)", sso_svc?sso_svc->Location->g.len:0, sso_svc->Location->g.len, sso_svc->Location->g.s);
     ar = zxid_mk_authn_req(cf, cgi);
     dest = zx_dup_len_attr(cf->ctx, 0, zx_Destination_ATTR, sso_svc->Location->g.len, sso_svc->Location->g.s);
     ZX_ORD_INS_ATTR(ar, Destination, dest);
     ars = zx_easy_enc_elem_opt(cf, &ar->gg);
     D("AuthnReq(%.*s) %p", ars->len, ars->s, dest);
     break;
-  case ZXID_OPID_CONNECT:
+  case ZXID_OIDC1_CODE:
+  case ZXID_OIDC1_ID_TOK_TOK:
     if (!idp_meta->ed->IDPSSODescriptor) {
       ERR("Entity(%s) does not have IdP SSO Descriptor (OAUTH2) (metadata problem)", cgi->eid);
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", cgi->eid, "No IDPSSODescriptor (OAUTH2)");
@@ -232,9 +263,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
       D_DEDENT("start_sso: ");
       return 0;
     }
-    DD("HERE1 %p", sso_svc);
-    DD("HERE2 %p", sso_svc->Location);
-    DD("HERE3 len=%d (%.*s)", sso_svc->Location->g.len, sso_svc->Location->g.len, sso_svc->Location->g.s);
+    DD("HERE3 len=%d (%.*s)", sso_svc?sso_svc->Location->g.len:0, sso_svc->Location->g.len, sso_svc->Location->g.s);
     if (cf->log_level>0)
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "OANREDIR", cgi->eid, 0);
     ars = zxid_mk_oauth_az_req(cf, cgi, &sso_svc->Location->g, cgi->rs);
@@ -263,28 +292,16 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
   return ars;
 }
 
-/*() Wrapper for zxid_start_sso_url(), used in CGI scripts. */
-
-/* Called by:  main x2, zxid_simple_no_ses_cf */
-int zxid_start_sso(zxid_conf* cf, zxid_cgi* cgi)
-{
-  struct zx_str* url = zxid_start_sso_url(cf, cgi);
-  if (!url)
-    return 0;
-  printf("Location: %.*s" CRLF2, url->len, url->s);
-  return ZXID_REDIR_OK;
-}
-
 /*() Wrapper for zxid_start_sso_url(), used when Location header needs to be passed outside.
  * return:: Location header as zx_str. Caller should eventually free this memory. */
 
-/* Called by:  zxid_simple_no_ses_cf */
+/* Called by:  main x2, zxid_simple_no_ses_cf */
 struct zx_str* zxid_start_sso_location(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_str* ss;
   struct zx_str* url = zxid_start_sso_url(cf, cgi);
   if (!url)
-    return 0; //zx_dup_str(cf->ctx, "* ERR");
+    return 0;
   ss = zx_strf(cf->ctx, "Location: %.*s" CRLF2, url->len, url->s);
   zx_str_free(cf->ctx, url);
   return ss;
@@ -513,7 +530,7 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
 	  continue;
 	ss = ZX_GET_CONTENT(aud);
 	if (ss?ss->len:0 == myentid->len && !memcmp(ss->s, myentid->s, ss->len)) {
-	  D("Found audience. %d", 0);
+	  D("Found audience. %d", 1);
 	  goto found_audience;
 	}
       }
@@ -528,6 +545,9 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
       ERR("SSO error: AudienceRestriction wrong. My entityID(%.*s)", myentid->len, myentid->s);
       if (err)
 	*err = "P";
+      if (ses) {
+	zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "Audience Restriction is wrong. Configuration or implementation error.", TAS3_STATUS_BADCOND, 0, "a7n", 0));
+      }
       return ZXSIG_AUDIENCE;
     } else {
       INFO("SSO warn: AudienceRestriction wrong. My entityID(%.*s). Configured to ignore this (AUDIENCE_FATAL=0).", myentid->len, myentid->s);
@@ -541,16 +561,22 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
     secs = zx_date_time_to_secs(a7n->Conditions->NotOnOrAfter->g.s);
     if (secs <= ourts->tv_sec) {
       if (secs + cf->after_slop <= ourts->tv_sec) {
-	ERR("NotOnOrAfter rejected with slop of %d. Time to expiry %ld secs. Our gettimeofday: %ld secs, remote: %d secs", cf->after_slop, secs - ourts->tv_sec, ourts->tv_sec, secs);
+	ERR("NotOnOrAfter rejected with slop of %d. Time to expiry %ld secs. Our gettimeofday: %ld secs, remote: %d secs. Relogin to refresh the session?", cf->after_slop, secs - ourts->tv_sec, ourts->tv_sec, secs);
 	if (cgi) {
 	  cgi->sigval = "V";
-	  cgi->sigmsg = "Assertion has expired.";
+	  cgi->sigmsg = "Assertion has expired. Relogin to refresh the session?";
 	}
 	if (ses)
 	  ses->sigres = ZXSIG_TIMEOUT;
 	if (cf->timeout_fatal) {
 	  if (err)
 	    *err = "P";
+	  if (ses) {
+	    /* This is the only problem fixable by the user so emit a special
+	     * informative message with distinctive error code. It may even be
+	     * possible for the client end to automatically refresh the credential. */
+	    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "Assertion has expired (or clock synchrony problem between servers). Perhaps relogin to refresh the session will fix the problem?", TAS3_STATUS_EXPIRED, 0, "a7n", 0));
+	  }
 	  return ZXSIG_TIMEOUT;
 	}
       } else {
@@ -570,13 +596,16 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
 	ERR("NotBefore rejected with slop of %d. Time to validity %ld secs. Our gettimeofday: %ld secs, remote: %d secs", cf->before_slop, secs - ourts->tv_sec, ourts->tv_sec, secs);
 	if (cgi) {
 	  cgi->sigval = "V";
-	  cgi->sigmsg = "Assertion is not valid yet (too soon).";
+	  cgi->sigmsg = "Assertion is not valid yet (too soon). Clock synchrony problem between servers?";
 	}
 	if (ses)
 	  ses->sigres = ZXSIG_TIMEOUT;
 	if (cf->timeout_fatal) {
 	  if (err)
 	    *err = "P";
+	  if (ses) {
+	    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "Assertion is not valid yet (too soon). Clock synchrony problem between servers?", TAS3_STATUS_BADCOND, 0, "a7n", 0));
+	  }
 	  return ZXSIG_TIMEOUT;
 	}
       } else {
@@ -601,9 +630,12 @@ struct zx_str unknown_str = {0,0,1,"??"};  /* Static string used as dummy value.
  * cgi:: CGI object. sigval and sigmsg may be set.
  * ses:: Session object. Will be modified according to new session created from the SSO assertion.
  * a7n:: Single Sign-On assertion
- * return:: 0 for failure, otherwise some success code such as ZXID_SSO_OK */
+ * return:: 0 for failure, otherwise some success code such as ZXID_SSO_OK
+ *
+ * See also: zxid_sp_sso_finalize_jwt() in zxidoauth.c
+ */
 
-/* Called by:  main, sig_validate, zxid_sp_dig_sso_a7n */
+/* Called by:  main, sig_validate, zxid_sp_dig_oauth_sso_a7n, zxid_sp_dig_sso_a7n */
 int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7n, struct zx_ns_s* pop_seen)
 {
   char* err = "S"; /* See: RES in zxid-log.pd, section "ZXID Log Format" */
@@ -666,7 +698,7 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
   if (a7n->AuthnStatement->SessionIndex)
     ses->sesix = zx_str_to_c(cf->ctx, &a7n->AuthnStatement->SessionIndex->g);
   
-  D("SSOA7N received. NID(%s) FMT(%d) SESIX(%s)", ses->nid, ses->nidfmt, ses->sesix?ses->sesix:"");
+  D("SSOA7N received. NID(%s) FMT(%d) SESIX(%s)", ses->nid, ses->nidfmt, STRNULLCHK(ses->sesix));
   
   /* Validate signature (*** add Issuer trusted check, CA validation, etc.) */
   
@@ -740,13 +772,13 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
   zxid_put_user(cf, &ses->nameid->Format->g, &ses->nameid->NameQualifier->g, &ses->nameid->SPNameQualifier->g, ZX_GET_CONTENT(ses->nameid), 0);
   DD("Logging... %d", 0);
   zxlog(cf, &ourts, &srcts, 0, issuer, 0, &a7n->ID->g, subj,
-	cgi->sigval, "K", "NEWSES", ses->sid, "sesix(%s)", ses->sesix?ses->sesix:"-");
+	cgi->sigval, "K", "NEWSES", ses->sid, "sesix(%s)", STRNULLCHKD(ses->sesix));
   zxlog(cf, &ourts, &srcts, 0, issuer, 0, &a7n->ID->g, subj,
-	cgi->sigval, "K", ses->nidfmt?"FEDSSO":"TMPSSO", ses->sesix?ses->sesix:"-", 0);
+	cgi->sigval, "K", ses->nidfmt?"FEDSSO":"TMPSSO", STRNULLCHKD(ses->sesix), 0);
 
   if (cf->idp_ena) {  /* (PXY) Middle IdP of Proxy IdP flow */
     if (cgi->rs && cgi->rs[0]) {
-      D("ProxyIdP got RelayState(%s) ar(%s)", cgi->rs, cgi->ssoreq?cgi->ssoreq:"");
+      D("ProxyIdP got RelayState(%s) ar(%s)", cgi->rs, STRNULLCHK(cgi->ssoreq));
       cgi->saml_resp = 0;  /* Clear Response to prevent re-interpretation. We want Request. */
       cgi->ssoreq = cgi->rs;
       zxid_decode_ssoreq(cf, cgi);
@@ -764,7 +796,7 @@ erro:
   ERR("SSO fail (%s)", err);
   cgi->msg = "SSO failed. This could be due to signature, timeout, etc., technical failures, or by policy.";
   zxlog(cf, &ourts, &srcts, 0, issuer, 0, a7n?&a7n->ID->g:0, subj,
-	cgi->sigval, err, ses->nidfmt?"FEDSSO":"TMPSSO", ses->sesix?ses->sesix:"-", "Error.");
+	cgi->sigval, err, ses->nidfmt?"FEDSSO":"TMPSSO", STRNULLCHKD(ses->sesix), "Error.");
   D_DEDENT("ssof: ");
   return 0;
 }
@@ -777,7 +809,7 @@ erro:
  * ses:: Session object. Will be modified according to new session created from the SSO assertion.
  * return:: 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 
-/* Called by:  covimp_test, zxid_sp_dig_sso_a7n */
+/* Called by:  covimp_test, zxid_sp_dig_oauth_sso_a7n, zxid_sp_dig_sso_a7n */
 int zxid_sp_anon_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   D_INDENT("anon_ssof: ");
@@ -804,6 +836,7 @@ int zxid_sp_anon_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 }
 
 /*() Authentication Service Client
+ * cgi->uid and cgi->pw contain the credentials
  * See also: zxid_idp_as_do()
  */
 

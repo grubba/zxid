@@ -68,7 +68,8 @@ int main(int argc, char** argv)
   char* res;
   char buf[256*1024];  /* *** should figure the size dynamically */
   char urlbuf[256];
-  int got, fd, cl=0;
+  int got, cl=0;
+  fdtype fd;
   char* qs;
   char* qs2;
   ZERO(ses, sizeof(zxid_ses));
@@ -79,12 +80,12 @@ int main(int argc, char** argv)
   if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2)
     exit(2);
   fprintf(stderr, "=================== Running idhrxml wsp ===================\n");
-  zx_debug = 2;
+  errmac_debug = 2;
 #endif
 #if 1
-  strncpy(zx_instance, "\t\e[45mhrxml_wsp\e[0m", sizeof(zx_instance));
+  strncpy(errmac_instance, "\t\e[45mhrxml_wsp\e[0m", sizeof(errmac_instance));
 #else
-  strncpy(zx_instance, "\thrxml_wsp", sizeof(zx_instance));
+  strncpy(errmac_instance, "\thrxml_wsp", sizeof(errmac_instance));
 #endif
 
   qs = getenv("CONTENT_LENGTH");
@@ -92,7 +93,7 @@ int main(int argc, char** argv)
     sscanf(qs, "%d", &cl);
 
   if (cl) {
-    read_all_fd(fileno(stdin), buf, MIN(cl, sizeof(buf)-1), &got);
+    read_all_fd(fdstdin, buf, MIN(cl, sizeof(buf)-1), &got);
     buf[got] = 0;
     qs2 = buf;
   } else {
@@ -208,7 +209,7 @@ int main(int argc, char** argv)
     
     ss = zx_easy_enc_elem_opt(cf, &r->Envelope->Body->idhrxml_Create->CreateItem->NewData->Candidate->gg);
 
-    fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "create", 1, "%shrxml/cv.xml", cf->path);
+    fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "create", 1, "%shrxml/cv.xml", cf->cpath);
     write_all_fd(fd, ss->s, ss->len);
     close_file(fd, (const char*)__FUNCTION__);
 
@@ -241,7 +242,7 @@ int main(int argc, char** argv)
     
     /* Parse the XML from the CV file into data structure and include it as Candidate. */
 
-    got = read_all(sizeof(buf), buf, "query", 1, "%shrxml/cv.xml", cf->path);
+    got = read_all(sizeof(buf), buf, "query", 1, "%shrxml/cv.xml", cf->cpath);
     if (got < 1) {
       ERR("Reading hrxml/cv.xml resulted in error or the file was empty. ret=%d", got);
 #if 0
@@ -314,7 +315,7 @@ int main(int argc, char** argv)
     
     ss = zx_easy_enc_elem_opt(cf, &r->Envelope->Body->idhrxml_Modify->ModifyItem->NewData->Candidate->gg);
 
-    fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "modify", 1, "%shrxml/cv.xml", cf->path);
+    fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "modify", 1, "%shrxml/cv.xml", cf->cpath);
     write_all_fd(fd, ss->s, ss->len);
     close_file(fd, (const char*)__FUNCTION__);
 
@@ -345,7 +346,7 @@ int main(int argc, char** argv)
 
     /* *** This mock implementation does not actually interpret the Select string. */
     
-    got = name_from_path(buf, sizeof(buf), "%shrxml/cv.xml", cf->path);
+    got = name_from_path(buf, sizeof(buf), "%shrxml/cv.xml", cf->cpath);
     unlink(buf);
 
 #if 0

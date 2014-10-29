@@ -113,7 +113,7 @@ xtime (unsigned char b)
   return (b & 0x80) ? ((b << 1) ^ 0x1b) : (b << 1);
 }
 
-/* Called by:  main, zxid_pw_authn */
+/* Called by:  authn_user, zx_yubikey_authn */
 void
 yubikey_aes_decrypt (unsigned char * state, const unsigned char * key)
 {

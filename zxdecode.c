@@ -1,4 +1,5 @@
 /* zxdecode.c  -  SAML Decoding tool
+ * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2008-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
@@ -9,6 +10,7 @@
  * 25.11.2008, created --Sampo
  * 4.10.2010, added -s and ss modes, as well as -i N selector --Sampo
  * 25.1.2011, added -wsc and -wsp validation options --Sampo
+ * 7.2.2012,  improved decoding encrypted SAML responses --Sampo
  */
 
 #include <string.h>
@@ -30,6 +32,7 @@
 
 char* help =
 "zxdecode  -  Decode SAML Redirect and POST Messages R" ZXID_REL "\n\
+Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.\n\
 Copyright (c) 2008-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
@@ -41,8 +44,9 @@ Usage: zxdecode [options] <message >decoded\n\
   -i N             Pick Nth detected decodable structure, default: 1=first\n\
   -s               Enable signature validation step (reads config from -c, see below)\n\
   -s -s            Only validate hashes (check canon), do not fetch meta or check RSA\n\
-  -c CONF          For -s, optional configuration string (default -c PATH=/var/zxid/)\n\
-                   Most of the configuration is read from /var/zxid/zxid.conf\n\
+  -r               Decode and validate already decoded SAML2 reponse, e.g. from audit trail\n\
+  -c CONF          For -s, optional configuration string (default -c CPATH=/var/zxid/)\n\
+                   Most of the configuration is read from " ZXID_CONF_PATH "\n\
   -wscp            Call zxid_wsc_prepare_call() on SOAP request\n\
   -wspv            Call zxid_wsp_validate() on SOAP request\n\
   -wspd            Call zxid_wsp_decorate() on SOAP response\n\
@@ -63,11 +67,12 @@ int verbose = 1;
 int ix = 1;
 int sig_flag = 0;  /* No sig checking by default. */
 int sha1_flag = 0;
+int resp_flag = 0;
 char valid_opt = 0;
 zxid_conf* cf = 0;
 char buf[256*1024];
 
-/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x8, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc <= 1) return;
@@ -98,7 +103,7 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       }
       break;
@@ -122,6 +127,14 @@ static void opt(int* argc, char*** argv, char*** env)
 	continue;
       case 'h':
 	++sha1_flag;
+	continue;
+      }
+      break;
+
+    case 'r':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	++resp_flag;
 	continue;
       }
       break;
@@ -220,10 +233,10 @@ static void opt(int* argc, char*** argv, char*** env)
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
     if (verbose>1) {
-      printf(help);
+      printf("%s", help);
       exit(0);
     }
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     /*fprintf(stderr, "version=0x%06x rel(%s)\n", zxid_version(), zxid_version_str());*/
     exit(3);
   }
@@ -308,7 +321,9 @@ static int wsse_sec_validate(struct zx_e_Envelope_s* env)
   return ret?0:6;
 }
 
-/* Called by:  decode */
+/*() Process SAML2 response */
+
+/* Called by:  decode, zxdecode_main */
 static int sig_validate(int len, char* p)
 {
   int ret;
@@ -330,7 +345,7 @@ static int sig_validate(int len, char* p)
   }
 
   if (r->Response)
-    resp = r->Response;
+    resp = r->Response;  /* Normal SAML2 Response, e.g. from POST */
   else if (r->Envelope && r->Envelope->Body) {
     if (r->Envelope->Body->Response)
       resp = r->Envelope->Body->Response;
@@ -446,7 +461,7 @@ static int decode(char* msg, char* q)
     D("decode_base64 skipped at user request %d",0);
     break;
   case 1:
-    D("decode_base64 foreced at user request %d",0);
+    D("decode_base64 forced at user request %d",0);
 b64_dec:
     /* msglen = q - msg; */
     p = unbase64_raw(msg, q, msg, zx_std_index_64);  /* inplace */
@@ -455,9 +470,9 @@ b64_dec:
     break;
   case 2:
     if (*msg == '<') {
-      D("decode_base64 auto detect no decode due to initial < %p %p", msg, p);
+      D("decode_base64 auto detect: no decode due to initial < %p %p", msg, p);
     } else {
-      D("decode_base64 auto detect decode due to initial 0x%x",*msg);
+      D("decode_base64 auto detect: decode due to initial 0x%x", *msg);
       goto b64_dec;
     }
     break;
@@ -467,7 +482,7 @@ b64_dec:
   case 0:
     len = p-msg;
     p = msg;
-    D("No decompression by user choice len=%d",len);
+    D("No decompression by user choice len=%d", len);
     break;
   case 1:
     D("Decompressing... (force) %d",0);
@@ -513,10 +528,10 @@ int zxdecode_main(int argc, char** argv, char** env)
   char* q;
   char* lim;
 
-  strcpy(zx_instance, "\tzxdec");
+  strcpy(errmac_instance, "\tzxdec");
   opt(&argc, &argv, &env);
 
-  read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got);
+  read_all_fd(fdstdin, buf, sizeof(buf)-1, &got);
   buf[got] = 0;
   lim = buf+got;
 
@@ -527,9 +542,11 @@ int zxdecode_main(int argc, char** argv, char** env)
     return 0;
   }
 
-  if (valid_opt) {
+  if (resp_flag)
+    return sig_validate(got, buf);
+
+  if (valid_opt)
     return ws_validations();
-  }
 
   /* Try to detect relevant input, iterating if -i N was specified.
    * The detection is supposed to pick SAMLRequest or SAMLResponse from

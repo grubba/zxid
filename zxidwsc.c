@@ -1,4 +1,5 @@
 /* zxidwsc.c  -  Handwritten nitty-gritty functions for Liberty ID-WSF Web Services Client
+ * Copyright (c) 2014 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -13,6 +14,7 @@
  * 7.1.2010,  added WSC signing --Sampo
  * 31.5.2010, added WSC sig validation and PDP calls --Sampo
  * 16.2.2011, added disable security option VALID_OPT --Sampo
+ * 12.3.2014, added partial mime multipart support --Sampo
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
@@ -29,8 +31,9 @@
 #include "c/zx-data.h"
 #include "c/zx-e-data.h"
 
-/*() WSC response validation work horse. This check the ID-WSF [SOAPbind2] specified
- * criteria, as well as additional criteria and calls PDP, if configured.
+/*() WSC response validation work horse.
+ * Checks the ID-WSF [SOAPbind2] specified criteria, as well
+ * as additional criteria and calls PDP, if configured.
  *
  * cf:: ZXID configuration object, see zxid_new_conf()
  * ses:: Session object, used for attributes passed to az, and for recording errors
@@ -196,18 +199,9 @@ int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, str
   }
   
   /* Call Rs-In PDP */
-  
-  if (!zxid_localpdp(cf, ses)) {
-    ERR("RSIN4 Deny by local PDP %d",0);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Client", "Response denied by WSC local policy", TAS3_STATUS_DENY, 0, 0, 0));
+
+  if (!zxid_query_ctlpt_pdp(cf, ses, az_cred, env, TAS3_PEP_RS_IN, "e:Client", cf->pepmap_rsin)) {
     return 0;
-  } else if (cf->pdp_url && *cf->pdp_url) {
-    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
-    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rsin)) {
-      ERR("RSIN4 Deny %d", 0);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_IN, "e:Client", "Response denied by WSC policy at PDP", TAS3_STATUS_DENY, 0, 0, 0));
-      return 0;
-    }
   }
   
   /* *** execute (or store for future execution) the obligations. */
@@ -230,18 +224,52 @@ int zxid_wsc_valid_re_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, str
   return 1;
 }
 
-/*() Prepare some headers for WSC call */
+/*() Prepare some headers for WSC call. Some of the headers, such
+ * as MessageID and Security, will receive their final content
+ * in zxid_wsc_pres_secmech(). All signing also happens later.
+ * The header list is kept in forward order. */
 
-/* Called by:  zxid_wsc_call */
+/* Called by:  zxid_wsc_call, zxid_wsc_prepare_call */
 static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
   zxid_tok* tok;
   struct zx_e_Header_s* hdr;
-  if (!zxid_wsf_decor(cf, ses, env, 0))
+  if (!zxid_wsf_decor(cf, ses, env, 0, epr))
     return 0;
   hdr = env->Header;
 
+  /* 6.rq: ReplyTo (optional) */
+
+  if (cf->wsc_replyto_hdr && strcmp(cf->wsc_replyto_hdr, "#inhibit")) {
+    /* Mandatory for a request (says who? - apparenly AXIS2 or WSO2 has a bug of
+     * requiring this and not understanding to default it to anon).
+     * liberty-idwsf-soap-binding-2.0-errata-v1.0.pdf
+     * p.21 ll.591-595 seem to imply that ReplyTo can be omitted if value would be A_ANON. */
+    hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx, &hdr->gg);
+    /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->burl));*/
+    if (!strcmp(cf->wsc_replyto_hdr, "#anon")) {
+      hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON));
+    } else if (!strcmp(cf->wsc_replyto_hdr, "#anon_2005_03")) {
+      hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON_2005_03));
+    } else {
+      hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, cf->wsc_replyto_hdr));
+    }
+    hdr->ReplyTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
+    hdr->ReplyTo->actor = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  }
+
+#if 0
+  /* Omission means to use same address as ReplyTo */
+  hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx, &hdr->gg);
+  hdr->FaultTo->Address = zx_mk_addr(cf->ctx, &hdr->FaultTo->gg, zx_strf(cf->ctx, "%s?o=P", cf->burl));
+  hdr->FaultTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
+  hdr->FaultTo->actor = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+#endif
+
   if (ses->call_tgttok || ses->call_invoktok && epr && epr->Metadata && epr->Metadata->SecurityContext && epr->Metadata->SecurityContext->Token) {
+
+    /* 9.rq: Target Identity */
+    
     if (ses->call_tgttok) {
       D("TargetIdentity: Explicit specification of ses->call_tgttok %d",0);
       tok = ses->call_tgttok;
@@ -261,32 +289,16 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
     }
   } /* else this is just implied by the sec mech */
 
-#if 1
-  /* Mandatory for a request. */
-  hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx, &hdr->gg);
-  /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));*/
-  hdr->ReplyTo->Address = zxid_mk_addr(cf, &hdr->ReplyTo->gg, zx_dup_str(cf->ctx, A_ANON));
-  hdr->ReplyTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
-  hdr->ReplyTo->actor = zx_ref_attr(cf->ctx, &hdr->ReplyTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-#endif
-
-  hdr->To = zx_NEW_a_To(cf->ctx, &hdr->gg);
-  zx_add_content(cf->ctx, &hdr->To->gg, ZX_GET_CONTENT(epr->Address));
-  hdr->To->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_e_mustUnderstand_ATTR,XML_TRUE);
-  hdr->To->actor = zx_ref_attr(cf->ctx, &hdr->To->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-
-#if 0
-  /* Omission means to use same address as ReplyTo */
-  hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx, &hdr->gg);
-  hdr->FaultTo->Address = zx_mk_addr(cf->ctx, &hdr->FaultTo->gg, zx_strf(cf->ctx, "%s?o=P", cf->url));
-  hdr->FaultTo->mustUnderstand = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_mustUnderstand_ATTR, XML_TRUE);
-  hdr->FaultTo->actor = zx_ref_attr(cf->ctx, &hdr->FaultTo->gg, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
-#endif
-
+  /* 10. UsageDirective */
+  
   zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_PLEDGE, cf->wsc_localpdp_obl_pledge);
+  
   zx_reverse_elem_lists(&hdr->gg);
   return 1;
 }
+
+/*(-) Use EncryptedAssertion if available, otherwise plain Assertion.
+ * ses->call_invoktok allows other token to be specified, as an override. */
 
 /* Called by:  zxid_wsc_prep_secmech x2 */
 static void zxid_choose_sectok(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_wsse_Security_s* sec)
@@ -314,9 +326,13 @@ static void zxid_choose_sectok(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, stru
     ERR("No <sa:EncryptedAssertion> or <sa:Assertion> found in <sec:Token> %p", tok);
 }
 
-/*() Perform security mechanism related processing for a WSC call */
+/*() Perform security mechanism related processing for a WSC call.
+ * This function will add Liberty ID-WSF specific content to already
+ * existing SOAP headers, namely in Security and MessageID. This
+ * header content varies from SOAP call retry to retry. Other
+ * headers are always the same and handled in zxid_wsc_prep(). */
 
-/* Called by:  zxid_wsc_call */
+/* Called by:  zxid_wsc_call, zxid_wsc_prepare_call */
 static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
   int secmech;
@@ -397,8 +413,7 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
  * function again to continue the web service call after interaction.
  *
  * env (rather than Body) is taken as argument so that caller can prepare
- * additional SOAP headers at will before calling this function. This function
- * will add Liberty ID-WSF specific SOAP headers. */
+ * additional SOAP headers at will before calling this function. */
 
 /* Called by:  main x9, zxid_call_epr, zxid_get_epr, zxid_map_identity_token, zxid_nidmap_identity_token */
 struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env, char** ret_enve)
@@ -410,25 +425,27 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
   struct zx_root_s* root;
   struct zx_e_Fault_s* flt;
 
-  D_INDENT("wsc_call: ");
+  D_INDENT("wsc_call rq: ");
   
   if (!zxid_wsc_prep(cf, ses, epr, env)) {
-    D_DEDENT("wsc_call: ");
+    D_DEDENT("wsc_call rq: ");
     return 0;
   }
   
   for (i=0; i < cf->max_soap_retry; ++i) {
     if (!zxid_wsc_prep_secmech(cf, ses, epr, env)) {
-      D_DEDENT("wsc_call: ");
+      D_DEDENT("wsc_call rq: ");
       return 0;
     }
     ses->wsc_msgid = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(env->Header->MessageID));
     
     root = zxid_soap_call_raw(cf, ZX_GET_CONTENT(epr->Address), env, ret_enve);
+    D_DEDENT("wsc_call rq: ");
+    D_INDENT("wsc_call rs: ");
     if (!root || !root->Envelope || !root->Envelope->Body) {
       ERR("soap call returned empty or seriously flawed response %p", root);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RS_PARSE, "e:Server", "Server sent empty or invalid reply. SOAP Envelope or Body can not be found.", 0, 0, 0, 0));
-      D_DEDENT("wsc_call: ");
+      D_DEDENT("wsc_call rs: ");
       return 0;
     }
     flt = root->Envelope->Body->Fault;
@@ -439,7 +456,7 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
       D("SOAP Fault(%.*s) string(%.*s) actor(%.*s)", code?code->len:1, code?code->s:"?", str?str->len:1, str?str->s:"?", actor?actor->len:1, actor?actor->s:"?");
       zxid_set_fault(cf, ses, zxid_mk_fault_zx_str(cf, 0, zx_dup_str(cf->ctx,TAS3_PEP_RS_VAL), code?code:zx_dup_str(cf->ctx,"e:Server"), str));
 
-      D_DEDENT("wsc_call: ");
+      D_DEDENT("wsc_call rs: ");
       return 0;
     }
     
@@ -447,8 +464,8 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
     res = ZXID_OK;
     switch (res) {
     case ZXID_OK:
-      D_DEDENT("wsc_call: ");
-      return root->Envelope;
+      D_DEDENT("wsc_call rs: ");
+      return root->Envelope;      /* Success case */
 #if 0
     case ZXID_NEW_CRED:
       break;
@@ -459,16 +476,16 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
 #endif
     case ZXID_REDIR_OK:
       D("Redirection requested (e.g. Interaction Service) %d", 0);
-      D_DEDENT("wsc_call: ");
+      D_DEDENT("wsc_call rs: ");
       return (void*)ZXID_REDIR_OK;
     default:
       ERR("Unknown result code: %d", res);
-      D_DEDENT("wsc_call: ");
+      D_DEDENT("wsc_call rs: ");
       return 0;
     }
   }
   ERR("Number of soap call retries exhausted max_soap_retry=%d", cf->max_soap_retry);
-  D_DEDENT("wsc_call: ");
+  D_DEDENT("wsc_call rs: ");
   return 0;
 }
 
@@ -488,6 +505,8 @@ static char zx_env_close[] = "</e:Envelope>";
  * automatically added. If the string starts by neither of the above (be
  * careful to use the "e:" as namespace prefix), then it is assumed to be the
  * payload content of the <e:Body> and the rest of the SOAP envelope is added.
+ * Supplying <e:Header>, but not <e:Body>, is not supported.
+ * N.B. The lists are returned in forward order.
  */
 
 /* Called by:  zxid_call_epr, zxid_wsc_prepare_call, zxid_wsc_valid_resp, zxid_wsp_decorate */
@@ -495,24 +514,35 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
 {
   struct zx_e_Envelope_s* env;
   struct zx_root_s* r;
+  struct zx_str* ret;
   r = zx_dec_zx_root(cf->ctx, strlen(enve), enve, "add_env");
   if (!r) {
     ERR("Malformed XML enve(%s)", enve);
     return 0;
   }
+  /* N.B. The lists are in reverse order after the parse. */
   env = r->Envelope;
   if (env) {
-    if (!env->Body)
-      env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
-    if (!env->Header)
+    /* N.B. Maintain the forward order, Header is 1st element of Envelope->kids. */
+    if (!env->Header) {
+      D("ENV EXISTS, no Header %p %p", env, env->Body);
+      if (!env->Body)
+	env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
       env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+    } else {
+      D("ENV EXISTS w/Header %p %p", env, env->Body);
+      if (!env->Body)
+	env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
+    }
   } else if (r->Body) {
+    D("HERE2 BODY EXISTS %p %p", env, r->Header);
     env = zx_NEW_e_Envelope(cf->ctx,0);
     ZX_ADD_KID(env, Body, r->Body);
     if (r->Header)
       ZX_ADD_KID(env, Header, r->Header);
     else
       env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+    /* N.B. Maintain the Forward order: Header is now first element of Envelope->kids. */
   } else { /* Resort to stringwise attempt to add envelope. */
     ZX_FREE(cf->ctx, r);
     if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
@@ -522,16 +552,31 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
     }
     /* Must be just payload */
     enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_body_open, enve, zx_env_body_close);
+    D("HERE3 ADD ENV(%s)", enve);
     r = zx_dec_zx_root(cf->ctx, strlen(enve), enve, "add_env2");
     if (!r) {
       ERR("Malformed XML enve(%s)", enve);
       return 0;
     }
     env = r->Envelope;
+#if 0
+    ret=zx_easy_enc_elem_opt(cf,&env->gg); INFO("ser(%.*s) enve(%s)",ret->len,ret->s,enve); // ***
+    /* The lists are in reverse order after the parse. But since this is a text parse,
+     * wireorder is maintained, thus giving forward order, afterall. */
+    zx_reverse_elem_lists(&env->gg);
+#endif
   }
   ZX_FREE(cf->ctx, r);
+  if (env->gg.kids != &env->Header->gg) {
+    D("ENV Fixing Header-Body ordering %p", env);
+    env->gg.kids = &env->Header->gg;
+    env->Header->gg.g.n = &env->Body->gg.g;
+    env->Body->gg.g.n = 0;
+  }
+  ret = zx_easy_enc_elem_opt(cf,&env->gg); INFO("ser(%.*s) enve(%s)",ret->len,ret->s,enve); // ***
   if (!env)
     ERR("No <e:Envelope> found in input argument. enve(%s)", enve);
+  /* DO NOT: zx_reverse_elem_lists(&env->gg);  * ensure forward order for external use */
   return env;
 }
 
@@ -562,22 +607,13 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
     D_DEDENT("call: ");
     return 0;
   }
+  if (errmac_debug > 1) { ret = zx_easy_enc_elem_opt(cf, &env->gg);  D("sending(%.*s) enve(%s)", ret->len, ret->s, enve); }
   
   /* Call Rq-Out PDP */
-  
-  if (!zxid_localpdp(cf, ses)) {
-    ERR("RQOUT1 Deny by local PDP %d",0);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC local policy", TAS3_STATUS_DENY, 0, 0, 0));
+
+  if (!zxid_query_ctlpt_pdp(cf, ses, az_cred, env, TAS3_PEP_RQ_OUT,"e:Client", cf->pepmap_rqout)) {
     D_DEDENT("call: ");
     return 0;
-  } else if (cf->pdp_url && *cf->pdp_url) {
-    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
-    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqout)) {
-      ERR("RQOUT1 Deny %d", 0);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC policy", TAS3_STATUS_DENY, 0, 0, 0));
-      D_DEDENT("call: ");
-      return 0;
-    }
   }
 
   /* *** add usage directives */
@@ -585,7 +621,7 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
   env = zxid_wsc_call(cf, ses, epr, env, &ret_enve);
   if (!env) {
     ERR("Parsing return value failed %p", env);
-    D("ret_enve(%s) len=%d", ret_enve, (int)strlen(ret_enve));
+    INFO("ret_enve(%s) len=%d", ret_enve, (int)strlen(ret_enve));
     D_DEDENT("call: ");
     if (cf->valid_opt & ZXID_VALID_OPT_SKIP_RESP_HDR) {
       ERR("WARNING! Important response security validations disabled by VALID_OPT=0x%x AND Fault occured or parsing return value failed. Pretending success anyway.", cf->valid_opt);
@@ -597,8 +633,12 @@ struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const 
     D_DEDENT("call: ");
     return 0;
   }
-  
+
+#if 1
+  ret = zx_ref_str(cf->ctx, ret_enve);
+#else  
   ret = zx_easy_enc_elem_opt(cf, &env->gg);
+#endif
   D_DEDENT("call: ");
   return ret;
 }
@@ -648,7 +688,7 @@ struct zx_str* zxid_callf_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const
  *     configuration option. This implementes generalized (application
  *     independent) Requestor Out and Requestor In PEPs. To implement
  *     application dependent PEP features you should call zxid_az() directly.
- * env:: XML payload
+ * enve:: XML payload as string
  * return:: SOAP Envelope of the response, as a string. You can parse this
  *     string to obtain all returned SOAP headers as well as the Body and its
  *     content. NULL on failure. ses->curflt and/or ses->curstatus contain
@@ -666,7 +706,8 @@ struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, cons
 
   epr = zxid_get_epr(cf, ses, svctype, url, di_opt, 0 /*Action*/, 1);
   if (!epr) {
-    ERR("EPR could not be discovered for svctype(%s)", svctype);
+    ERR("EPR could not be discovered for svctype(%s) (missing registration?)", svctype);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_WSC_RQ_OUT, "e:Client", "End Point for the service type could not be found. No end point has been registered? Too strict criteria for id_opt or az_cred? Permission denied? No discovery bootstrap is available?", TAS3_STATUS_EPR_NOT_FOUND, 0, url, svctype));
     return 0;
   }
   
@@ -712,8 +753,11 @@ struct zx_str* zxid_callf(zxid_conf* cf, zxid_ses* ses, const char* svctype, con
  *     configuration option. This implementes generalized (application
  *     independent) Requestor Out and Requestor In PEPs. To implement
  *     application dependent PEP features you should call zxid_az() directly.
- * env:: XML payload as a string
- * return:: SOAP Envelope ready to be sent to the WSP. You can pass this to HTTP client. */
+ * env:: XML payload (or SOAP Envelope) as a string
+ * return:: SOAP Envelope ready to be sent to the WSP. You can pass this to HTTP client.
+ *
+ * N.B. If the ID-WSF call for some reason needs to be retried, this function
+ * should be called for each retry. */
 
 /* Called by:  ws_validations, zxid_wsc_prepare_callf */
 struct zx_str* zxid_wsc_prepare_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* enve)
@@ -732,7 +776,14 @@ struct zx_str* zxid_wsc_prepare_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr
     return 0;
   }
   
-  //*** Needs thought and development
+  /* Call Rq-Out PDP */
+  
+  if (!zxid_query_ctlpt_pdp(cf, ses, az_cred, env, TAS3_PEP_RQ_OUT,"e:Client", cf->pepmap_rqout)) {
+    D_DEDENT("prep: ");
+    return 0;
+  }
+  
+  /* *** add usage directives */
 
   if (!zxid_wsc_prep(cf, ses, epr, env)) {
     D_DEDENT("prep: ");
@@ -743,25 +794,6 @@ struct zx_str* zxid_wsc_prepare_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr
     return 0;
   }
   ses->wsc_msgid = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(env->Header->MessageID));
-
-  /* Call Rq-Out PDP */
-  
-  if (!zxid_localpdp(cf, ses)) {
-    ERR("RQOUT1 Deny by local PDP %d",0);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC local policy", TAS3_STATUS_DENY, 0, 0, 0));
-    D_DEDENT("prep: ");
-    return 0;
-  } else if (cf->pdp_url && *cf->pdp_url) {
-    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
-    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqout)) {
-      ERR("RQOUT1 Deny %d", 0);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "Request denied by WSC policy", TAS3_STATUS_DENY, 0, 0, 0));
-      D_DEDENT("prep: ");
-      return 0;
-    }
-  }
-  
-  /* *** add usage directives */
 
   ret = zx_easy_enc_elem_opt(cf, &env->gg);
   D_DEDENT("prep: ");
@@ -796,7 +828,7 @@ int zxid_wsc_valid_resp(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   }
 
   D_INDENT("valid: ");
-  env = zxid_add_env_if_needed(cf, enve);
+  env = zxid_add_env_if_needed(cf, enve);  /* *** why would envelope be missing? */
   ret = zxid_wsc_valid_re_env(cf, ses, az_cred, env, enve);
   D_DEDENT("valid: ");
   return ret;

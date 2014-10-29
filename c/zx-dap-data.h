@@ -442,7 +442,7 @@ void zx_dap_DeleteResponse_REV_Extension(struct zx_dap_DeleteResponse_s* x);
 
 #endif
 /* -------------------------- dap_ItemData -------------------------- */
-/* refby( zx_dap_ModifyResponse_s zx_dap_CreateResponse_s zx_dap_Notification_s ) */
+/* refby( zx_dap_ModifyResponse_s zx_dap_Notification_s zx_dap_CreateResponse_s ) */
 #ifndef zx_dap_ItemData_EXT
 #define zx_dap_ItemData_EXT
 #endif
@@ -502,7 +502,7 @@ void zx_dap_ItemData_REV_Subscription(struct zx_dap_ItemData_s* x);
 
 #endif
 /* -------------------------- dap_LDIF -------------------------- */
-/* refby( zx_dap_NewData_s zx_dap_ItemData_s zx_dap_Data_s ) */
+/* refby( zx_dap_ItemData_s zx_dap_NewData_s zx_dap_Data_s ) */
 #ifndef zx_dap_LDIF_EXT
 #define zx_dap_LDIF_EXT
 #endif
@@ -763,7 +763,7 @@ void zx_dap_ModifyResponse_REV_ItemData(struct zx_dap_ModifyResponse_s* x);
 
 #endif
 /* -------------------------- dap_NewData -------------------------- */
-/* refby( zx_dap_ModifyItem_s zx_dap_CreateItem_s ) */
+/* refby( zx_dap_CreateItem_s zx_dap_ModifyItem_s ) */
 #ifndef zx_dap_NewData_EXT
 #define zx_dap_NewData_EXT
 #endif
@@ -1228,7 +1228,7 @@ void zx_dap_QueryResponse_REV_Data(struct zx_dap_QueryResponse_s* x);
 
 #endif
 /* -------------------------- dap_ResultQuery -------------------------- */
-/* refby( zx_dap_Create_s zx_dap_Subscription_s zx_dap_Modify_s ) */
+/* refby( zx_dap_Modify_s zx_dap_Create_s zx_dap_Subscription_s ) */
 #ifndef zx_dap_ResultQuery_EXT
 #define zx_dap_ResultQuery_EXT
 #endif
@@ -1309,7 +1309,7 @@ void zx_dap_ResultQuery_REV_Sort(struct zx_dap_ResultQuery_s* x);
 
 #endif
 /* -------------------------- dap_Select -------------------------- */
-/* refby( zx_dap_ResultQuery_s zx_dap_ModifyItem_s zx_dap_DeleteItem_s zx_dap_QueryItem_s ) */
+/* refby( zx_dap_QueryItem_s zx_dap_ResultQuery_s zx_dap_DeleteItem_s zx_dap_ModifyItem_s ) */
 #ifndef zx_dap_Select_EXT
 #define zx_dap_Select_EXT
 #endif
@@ -1378,7 +1378,7 @@ void zx_dap_Select_REV_filter(struct zx_dap_Select_s* x);
 
 #endif
 /* -------------------------- dap_Subscription -------------------------- */
-/* refby( zx_dap_Create_s zx_dap_NewData_s zx_dap_ItemData_s zx_dap_Data_s zx_dap_Query_s zx_dap_Modify_s ) */
+/* refby( zx_dap_Modify_s zx_dap_ItemData_s zx_dap_Query_s zx_dap_Create_s zx_dap_NewData_s zx_dap_Data_s ) */
 #ifndef zx_dap_Subscription_EXT
 #define zx_dap_Subscription_EXT
 #endif

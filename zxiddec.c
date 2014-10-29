@@ -59,7 +59,8 @@ struct zx_sa_Issuer_s* zxid_extract_issuer(zxid_conf* cf, zxid_cgi* cgi, zxid_se
 /*(i) Decode redirect or POST binding message. zxid_saml2_redir_enc()
  * performs the opposite operation. chk_dup is really flags
  * 0x01  =  Check dup
- * 0x02  =  Avoid sig check and logging */
+ * 0x02  =  Avoid sig check and logging
+ * See:  */
 
 /* Called by:  zxid_idp_dispatch, zxid_simple_idp_show_an, zxid_sp_dispatch */
 struct zx_root_s* zxid_decode_redir_or_post(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int chk_dup)
@@ -216,7 +217,7 @@ log_msg:
   
   DD("Signed data(%.*s) len=%d sig(%s)", ss->len, ss->s, ss->len, cgi->sig);
   p2 = unbase64_raw(cgi->sig, cgi->sig + strlen(cgi->sig), sigbuf, zx_std_index_64);
-  ASSERTOP(p2-sigbuf, <, sizeof(sigbuf));
+  ASSERTOPI(p2-sigbuf, <, sizeof(sigbuf));
   
   /* strcmp(cgi->sigalg, SIG_ALGO_RSA_SHA1) would be the right test, but as
    * SigAlg can be arbitrarily URL encoded, we make the match fuzzier. */

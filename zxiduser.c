@@ -1,4 +1,5 @@
 /* zxiduser.c  -  Handwritten functions for SP user local account management
+ * Copyright (c) 2012 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -12,6 +13,7 @@
  * 7.10.2008,  added documentation --Sampo
  * 14.11.2009, added yubikey (yubico.com) support --Sampo
  * 23.9.2010,  added delegation support --Sampo
+ * 1.9.2012,   distilled the authentication backend to an independent module zxpw.c --Sampo
  */
 
 #include "platform.h"  /* for dirent.h */
@@ -31,7 +33,6 @@
 #include "zxid.h"
 #include "zxidutil.h"
 #include "zxidconf.h"
-#include "yubikey.h"   /* from libyubikey-1.5 */
 #include "c/zx-sa-data.h"
 
 /*() Parse a line from .mni and form a NameID, unless there is mniptr */
@@ -127,7 +128,7 @@ zxid_nid* zxid_get_user_nameid(zxid_conf* cf, zxid_nid* oldnid)
   mniptr = sha1_name;
 
   while (--iter && mniptr && *mniptr) {
-    read_all(ZXID_MAX_USER, buf, (const char*)__FUNCTION__, 1, "%s" ZXID_USER_DIR "%s/.mni", cf->path, mniptr);
+    read_all(ZXID_MAX_USER, buf, (const char*)__FUNCTION__, 1, "%s" ZXID_USER_DIR "%s/.mni", cf->cpath, mniptr);
     nameid = zxid_parse_mni(cf, buf, &mniptr);
     if (nameid)
       return nameid;
@@ -171,16 +172,15 @@ int zxid_put_user(zxid_conf* cf, struct zx_str* nidfmt, struct zx_str* idpent, s
   }
   
   zxid_user_sha1_name(cf, idpent, idpnid, sha1_name);
-  name_from_path(dir, sizeof(dir), "%s" ZXID_USER_DIR "%s", cf->path, sha1_name);
+  name_from_path(dir, sizeof(dir), "%s" ZXID_USER_DIR "%s", cf->cpath, sha1_name);
   if (MKDIR(dir, 0777) && errno != EEXIST) {
-    perror("mkdir for user");
-    ERR("Creating user directory(%s) failed", dir);
+    ERR("Creating user directory(%s) failed: %d %s; euid=%d egid=%d", dir, errno, STRERROR(errno), geteuid(), getegid());
     return 0;
   }
   
   buf = ZX_ALLOC(cf->ctx, ZXID_MAX_USER);
   write_all_path_fmt("put_user", ZXID_MAX_USER, buf,
-		     "%s" ZXID_USER_DIR "%s/.mni", cf->path, sha1_name,
+		     "%s" ZXID_USER_DIR "%s/.mni", cf->cpath, sha1_name,
 		     "%.*s|%.*s|%.*s|%.*s|%s",
 		     nidfmt?nidfmt->len:0, nidfmt?nidfmt->s:"",
 		     idpent?idpent->len:0, idpent?idpent->s:"",
@@ -207,131 +207,11 @@ static char* login_failed = "Login failed. Check username and password. Make sur
 /* Called by:  zxid_idp_as_do, zxid_simple_idp_pw_authn, zxid_simple_idp_show_an */
 int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
-  const char* meth = "??";
   struct zx_str* ss;
-  unsigned char buf[ZXID_MAX_BUF];
-  unsigned char pw_buf[256];
-  unsigned char pw_hash[120];
-  yubikey_token_st yktok;
-  int len;
 
-  if (!cgi->uid || !cgi->uid[0]) {
-    ERR("No uid (user's login name) supplied. %d", 0);
-    cgi->err = login_failed;
-    D("no user name pw(%s)", STRNULLCHK(cgi->pw));
-    return 0;
-  }
-
-  /* Check for filesystem unsafe characters. (*** Is this list complete?) */
-  if (strstr(cgi->uid, "..") || strchr(cgi->uid, '/')
-      || strchr(cgi->uid, '\\') || strchr(cgi->uid, '~')) {
-    ERR("uid(%s) is not filesystem safe", cgi->uid);
-    D("pw(%s)", STRNULLCHK(cgi->pw));
+  if (!zx_password_authn(cf->cpath, cgi->uid, cgi->pw, 0)) {
     cgi->err = login_failed;
     return 0;
-  }
-
-  len = strlen(cgi->uid);
-  if (len > 32) {  /* Yubikey */
-    meth = "yk";
-    strcpy((char*)pw_hash, cgi->uid + len - 32);
-    cgi->uid[len - 32] = 0;
-    D("yubikey user(%s) ticket(%s)", cgi->uid, pw_hash);
-
-    snprintf((char*)buf, sizeof(buf)-1, "%suid/%s", cf->path, cgi->uid);
-    buf[sizeof(buf)-1] = 0;
-    len = read_all(sizeof(pw_buf), (char*)pw_buf, "ykspent", 1, "%s/.ykspent/%s", buf, pw_hash);
-    if (len) {
-      ERR("The One Time Password has already been spent. ticket(%s%s) buf(%.*s)", cgi->uid, pw_hash, len, pw_buf);
-      cgi->err = login_failed;
-      return 0;
-    }
-    if (!write_all_path_fmt("ykspent", sizeof(pw_buf), (char*)pw_buf, "%s/.ykspent/%s", (char*)buf, (char*)pw_hash, "1"))
-      return 0;
-    
-    len = read_all(sizeof(pw_buf), (char*)pw_buf, "ykaes", 1, "%s/.yk", buf);
-    D("buf    (%s) got=%d", pw_buf, len);
-    if (len < 32) {
-      ERR("User's %s/.yk file must contain aes128 key as 32 hexadecimal characters. Too few characters %d ticket(%s)", cgi->uid, len, pw_hash);
-      cgi->err = login_failed;
-      return 0;
-    }
-    if (len > 32) {
-      INFO("User's %s/.yk file must contain aes128 key as 32 hexadecimal characters. Too many characters %d ticket(%s). Truncating.", cgi->uid, len, pw_hash);
-      len = 32;
-      pw_buf[len] = 0;
-    }
-    zx_hexdec((char*)pw_buf, (char*)pw_buf, len, hex_trans);
-    ZERO (&yktok, sizeof(yktok));
-    zx_hexdec((void*)&yktok, (char*)pw_hash, 32, ykmodhex_trans);
-    yubikey_aes_decrypt((void*)&yktok, pw_buf);
-    D("internal uid %02x %02x %02x %02x %02x %02x counter=%d 0x%x timestamp=%d (hi=%x lo=%x) use=%d 0x%x rnd=0x%x crc=0x%x", yktok.uid[0], yktok.uid[1], yktok.uid[2], yktok.uid[3], yktok.uid[4], yktok.uid[5], yktok.ctr, yktok.ctr, (yktok.tstph << 16) | yktok.tstpl, yktok.tstph, yktok.tstpl, yktok.use, yktok.use, yktok.rnd, yktok.crc);
-    
-    if (!yubikey_crc_ok_p((unsigned char*)&yktok)) {
-      D("yubikey ticket validation failure %d", 0);
-      cgi->err = login_failed;
-      return 0;
-    }
-  } else {
-    if (!cgi->pw || !cgi->pw[0]) {
-      ERR("No password supplied. uid(%s)", cgi->uid);
-      cgi->err = login_failed;
-      return 0;
-    }
-  
-    /* *** Add here support for other authentication backends */
-
-    meth = "pw";
-
-    len = read_all(sizeof(pw_buf), (char*)pw_buf, "pw_authn", 1,
-		   "%s" ZXID_UID_DIR "%s/.pw", cf->path, cgi->uid);
-    if (len < 1) {
-      ERR("No account found for uid(%s) or account does not have .pw file.", cgi->uid);
-      D("pw(%s)", cgi->pw);
-      cgi->err = login_failed;
-      return 0;
-    }
-    
-    if (len) {
-      if (pw_buf[len-1] == '\012') --len;
-      if (pw_buf[len-1] == '\015') --len;
-    }
-    pw_buf[len] = 0;
-    D("pw_buf (%s) len=%d", pw_buf, len);
-
-    if (!memcmp(pw_buf, "$1$", sizeof("$1$")-1)) {
-      zx_md5_crypt(cgi->pw, (char*)pw_buf, (char*)pw_hash);
-      D("pw_hash(%s)", pw_hash);
-      if (strcmp((char*)pw_buf, (char*)pw_hash)) {
-	ERR("Bad password. uid(%s)", cgi->uid);
-	D("md5 pw(%s) .pw(%s) pw_hash(%s)", cgi->pw, pw_buf, pw_hash);
-	cgi->err = login_failed;
-	return 0;
-      }
-#ifdef USE_OPENSSL
-    } else if (!memcmp(pw_buf, "$c$", sizeof("$c$")-1)) {
-      DES_fcrypt(cgi->pw, (char*)pw_buf+3, (char*)pw_hash);
-      D("pw_hash(%s)", pw_hash);
-      if (strcmp((char*)buf+3, (char*)pw_hash)) {
-	ERR("Bad password for uid(%s)", cgi->uid);
-	D("crypt pw(%s) .pw(%s) pw_hash(%s)", cgi->pw, pw_buf, pw_hash);
-	cgi->err = login_failed;
-	return 0;
-      }
-#endif
-    } else if (ONE_OF_2(pw_buf[0], '$', '_')) {
-      ERR("Unsupported password hash. uid(%s)", cgi->uid);
-      D("pw(%s) .pw(%s)", cgi->pw, pw_buf);
-      cgi->err = login_failed;
-      return 0;
-    } else {
-      if (strcmp((char*)pw_buf, cgi->pw)) {
-	ERR("Bad password. uid(%s)", cgi->uid);
-	D("pw(%s) .pw(%s)", cgi->pw, pw_buf);
-	cgi->err = login_failed;
-	return 0;
-      }
-    }
   }
 
   /* Successful login. Establish session. */
@@ -350,14 +230,14 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   if (cf->ses_cookie_name && *cf->ses_cookie_name) {
     ses->setcookie = zx_alloc_sprintf(cf->ctx, 0, "%s=%s; path=/%s",
 				      cf->ses_cookie_name, ses->sid,
-				      ONE_OF_2(cf->url[4], 's', 'S')?"; secure":"");
+				      ONE_OF_2(cf->burl[4], 's', 'S')?"; secure":"");
     ses->cookie = zx_alloc_sprintf(cf->ctx, 0, "$Version=1; %s=%s",
 				   cf->ses_cookie_name, ses->sid);
   }
-  INFO("LOCAL LOGIN SUCCESSFUL. sid(%s) uid(%s) %s", cgi->sid, cgi->uid, meth);
-  zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "K", "INEWSES", ses->sid, "uid(%s) %s", ses->uid, meth);
+  INFO("LOCAL LOGIN SUCCESSFUL. sid(%s) uid(%s)", cgi->sid, cgi->uid);
+  zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "K", "INEWSES", ses->sid, "uid(%s)", ses->uid);
   if (cf->loguser)
-    zxlogusr(cf, ses->uid, 0, 0, 0, 0, 0, 0, 0, "N", "K", "INEWSES", ses->sid, "uid(%s) %s", ses->uid, meth);
+    zxlogusr(cf, ses->uid, 0,0,0,0,0,0,0, "N", "K", "INEWSES", ses->sid, "uid(%s)", ses->uid);
   return 1;
 }
 

@@ -16,7 +16,6 @@
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
-
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidpriv.h"
@@ -32,7 +31,7 @@
 /*() Local Policy Decision Point - decide on role and idpnid.
  * Return: 0 for Deny and 1 for Permit.  */
 
-/* Called by:  zxid_call_epr, zxid_simple_ab_pep, zxid_wsc_prepare_call, zxid_wsc_valid_re_env, zxid_wsp_decorate, zxid_wsp_validate_env */
+/* Called by:  zxid_query_ctlpt_pdp, zxid_simple_ab_pep */
 int zxid_localpdp(zxid_conf* cf, zxid_ses* ses)
 {
   struct zxid_attr* at = 0;
@@ -44,14 +43,16 @@ int zxid_localpdp(zxid_conf* cf, zxid_ses* ses)
 	INFO("DENY due to no role attribute (whitelist) nid(%s)", STRNULLCHK(ses?ses->nid:0));
 	return 0;
       }
-      if (!zxid_find_cstr_list(cf->localpdp_role_permit, at->val)) {
+      /* Permit if any of the attribute values matches any of the whitelisted roles. */
+      if (!zxid_find_at_multival_on_cstr_list(cf->localpdp_role_permit, at)) {
 	INFO("DENY: role(%s) not on whitelist nid(%s)", at->val, STRNULLCHK(ses?ses->nid:0));
 	return 0;
       }
     }
     if (cf->localpdp_role_deny) {    /* blacklist of roles: on list means deny */
-      if (at && zxid_find_cstr_list(cf->localpdp_role_deny, at->val)) {
-	INFO("DENY: role(%s) on blacklist nid(%s)", at->val, STRNULLCHK(ses?ses->nid:0));
+      /* Deny if any of the attribute values matches any of the blacklisted roles. */
+      if (at && zxid_find_at_multival_on_cstr_list(cf->localpdp_role_deny, at)) {
+	INFO("DENY: role(%s) or other multivalue on blacklist nid(%s)", at->val, STRNULLCHK(ses?ses->nid:0));
 	return 0;
       }
     }
@@ -84,7 +85,7 @@ int zxid_localpdp(zxid_conf* cf, zxid_ses* ses)
 /*(i) Postprocessing of SSO: Attribute Broker handles attributes and PEP/PDP
  * decide on authorization. */
 
-/* Called by:  chkuid, zxid_simple_cf_ses, zxid_simple_no_ses_cf x2, zxid_simple_ses_active_cf */
+/* Called by:  chkuid, zxid_mini_httpd_sso, zxid_show_protected_content_setcookie, zxid_simple_cf_ses, zxid_simple_no_ses_cf, zxid_simple_ses_active_cf */
 char* zxid_simple_ab_pep(zxid_conf* cf, zxid_ses* ses, int* res_len, int auto_flags)
 {
   char* res;
@@ -100,9 +101,9 @@ char* zxid_simple_ab_pep(zxid_conf* cf, zxid_ses* ses, int* res_len, int auto_fl
   }
 
   if (cf->pdp_url && *cf->pdp_url) {
-    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
-    //zxid_add_attr_to_pool(cf, ses, "URL", zx_dup_str(cf->ctx, ses->rs));
-    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap)) {
+    //zxid_add_attr_to_ses(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
+    //zxid_add_attr_to_ses(cf, ses, "URL", zx_dup_str(cf->ctx, ses->rs));
+    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap, "sso az")) {
       INFO("DENY by remote PDP %d", 0);
       D_DEDENT("ab_pep: ");
       return "z";
@@ -116,7 +117,7 @@ char* zxid_simple_ab_pep(zxid_conf* cf, zxid_ses* ses, int* res_len, int auto_fl
   default: ERR("Unsupported output format bits %x", auto_flags & (ZXID_AUTO_FMTQ|ZXID_AUTO_FMTJ));
   case 0:               ss = zxid_ses_to_ldif(cf, ses); break;
   }
-  if (zx_debug & ZXID_INOUT)
+  if (errmac_debug & ERRMAC_INOUT)
     INFO("LDIF(%.*s)", ss?ss->len:1, ss?ss->s:"-");
   if (cf->log_level > 0)
     zxlog(cf, 0,0,0,0,0,0, ZX_GET_CONTENT(ses->nameid), "N", "K", "SHOWPC", ses->sid, 0);

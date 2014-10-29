@@ -9,7 +9,7 @@
 ZXID_PATH=$1
 if [ "x$ZXID_PATH" = "x" ] ; then ZXID_PATH=/var/zxid/; fi
 
-ZXDIR="ses user uid nid log log/rely log/issue cot inv dimd uid/.all uid/.all/.bs"
+ZXDIR="ses user uid nid log log/rely log/issue cot inv dimd uid/.all uid/.all/.bs tmp ch ch/default ch/default/.ack ch/default/.del"
 
 mkdir -p $ZXID_PATH
 
@@ -22,7 +22,7 @@ done
 mkdir ${ZXID_PATH}pem  # Certificates and private keys (must protect well)
 
 chmod -R 02750 ${ZXID_PATH}pem
-cp default-cot/* ${ZXID_PATH}cot
+#cp default-cot/* ${ZXID_PATH}cot
 
 echo "You may need to run"
 echo

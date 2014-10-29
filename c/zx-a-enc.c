@@ -1039,6 +1039,7 @@ int zx_LEN_SO_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x )
   if (1)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_a_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
+  len += zx_attr_so_len(c, x->rankKey, sizeof("rankKey")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1100,6 +1101,7 @@ char* zx_ENC_SO_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x, char* p 
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
+  p = zx_attr_so_enc(p, x->rankKey, " rankKey=\"", sizeof(" rankKey=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
     if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)

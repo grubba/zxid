@@ -71,8 +71,8 @@ struct zx_sp_AuthnRequest_s* zxid_mk_authn_req(zxid_conf* cf, zxid_cgi* cgi)
     if (cgi->matching_rule && cgi->matching_rule[0])
       ar->RequestedAuthnContext->Comparison = zx_ref_attr(cf->ctx, &ar->RequestedAuthnContext->gg, zx_Comparison_ATTR, cgi->matching_rule);
   }
-  if (cgi->pr_ix && cgi->pr_ix != '0') {
-    index[0] = cgi->pr_ix;
+  if (cgi->pr_ix) {
+    index[0] = cgi->pr_ix+'0';
     ar->AssertionConsumerServiceIndex = zx_dup_attr(cf->ctx, &ar->gg, zx_AssertionConsumerServiceIndex_ATTR, index);
   }
   if (cgi->get_complete && cgi->get_complete[0]

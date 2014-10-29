@@ -1,4 +1,5 @@
 /* zxididp.c  -  CGI binary for SAML 2 IdP
+ * Copyright (c) 2012-2013 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2008-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
@@ -24,6 +25,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <malloc.h>
 
 #include <zx/errmac.h>
 #include <zx/zxid.h>      /* ZXID main API, including zxid_simple(). */
@@ -31,8 +33,9 @@
 #include <zx/c/zxidvers.h>
 
 char* help =
-"zxididp  -  SAML 2.0 IdP CGI (also DI, IM, and PS) - R" ZXID_REL "\n\
+"zxididp  -  SAML 2.0 IdP CGI (also DI, AS, IM, and PS) - R" ZXID_REL "\n\
 SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
+Copyright (c) 2012-2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.\n\
 Copyright (c) 2008-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
@@ -48,10 +51,12 @@ Usage: zxididp [options]   (when used as CGI, no options can be supplied)\n\
 /* CONFIG: You must edit the URL to match your domain name and port */
 
 #ifdef MINGW
-#define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=c:/var/zxid/idp"
+#define CONF "URL=https://idp1.zxidp.org:8443/zxididp&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=c:/var/zxid/idp"
 #else
 /*#define CONF "URL=https://idp1.zxidp.org:8443/zxididp&NICE_NAME=ZXIdP&NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=/var/zxid/idp"*/
-#define CONF "NOSIG_FATAL=0&SES_COOKIE_NAME=ZXIDPSES&IDP_ENA=1&PDP_ENA=1&PATH=/var/zxid/idp&VPATH=/var/zxid/%h/&VURL=%a%h%s"
+//#define CONF "IDP_ENA=1&VPATH=%h/&VURL=%a%h%s"
+//#define CONF "IDP_ENA=1&PATH=/var/zxid/idp&VPATH=/var/zxid/%h/&VURL=%a%h%s"
+#define CONF "IDP_ENA=1"
 #endif
 
 /* Called by: */
@@ -63,16 +68,37 @@ int main(int argc, char** argv)
   char* res;
   char* setcookie;
 
+#ifdef _GNU_SOURCE
+  if (getenv("MALLOC_TRACE"))
+    mtrace();
+#endif
+
+#if 0
+  /* Allocate and realase memory to cause malloc to grab bigger mmap page */
+  /* Apparently this trick does not work - perhaps memory allocation
+     is sorted by page size or something. --Sampo */
+#ifndef ZXIDIDP_PREALLOC_KB
+#define ZXIDIDP_PREALLOC_KB 300
+#endif
+  free(malloc(ZXIDIDP_PREALLOC_KB*1024));
+  mallopt(M_CHECK_ACTION,3); /* core on bad free(3) */
+#endif
+
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */
   /* Reopen stderr only in mini_httpd case */
-  p = getenv("SERVER_SOFTWARE");
-  if (p && !memcmp(p, "mini_httpd", sizeof("mini_httpd")-1)) {
+  //p = getenv("SERVER_SOFTWARE");
+  //if (p && !memcmp(p, "mini_httpd", sizeof("mini_httpd")-1)) {
     close(2);
-    if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2)
+    if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2) {
+      perror("/var/tmp/zxid.stderr");
       exit(2);
-  }
-  fprintf(stderr, "=================== Running zxididp %s ===================\n", ZXID_REL);
+    }
+    //}
+  /*errmac_debug = 1;*/
+  fprintf(stderr, CC_PURY("=================== Running zxididp %s =================== %x p%d qs(%s)\n"), ZXID_REL, errmac_debug, getpid(), getenv("QUERY_STRING"));
+  p = getenv(ZXID_ENV_PREFIX "PRE_CONF");
+  D(ZXID_ENV_PREFIX "PRE_CONF(%s)", p);
   //fprintf(stderr, "p(%s)\n", p);
 #endif
 
@@ -81,13 +107,13 @@ int main(int argc, char** argv)
     exit(1);
   }
 
-#if 0
-  strncpy(zx_instance, "\t\e[47mzxidp\e[0m", sizeof(zx_instance));
+#if 1
+  strncpy(errmac_instance, CC_PURY("\tidp"), sizeof(errmac_instance));
 #else
-  strncpy(zx_instance, "\tzxidp", sizeof(zx_instance));
+  strncpy(errmac_instance, "\tidp", sizeof(errmac_instance));
 #endif
-  //zx_debug = 1;
-  res = zxid_simple(CONF, 0, 0x1fff);  /* 0xfff == full CGI automation */
+
+  res = zxid_simple(CONF, 0, 0x0fff);  /* 0xfff == full CGI automation */
   switch (res[0]) {
   default:
     ERR("Unknown zxid_simple() response(%s)", res);

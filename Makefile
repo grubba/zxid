@@ -1,4 +1,5 @@
-# zxid/Makefile  -  How to build ZXID
+# zxid/Makefile  -  How to build ZXID (try: make help)
+# Copyright (c) 2012-2014 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
 # Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 # Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
 # Author: Sampo Kellomaki (sampo@iki.fi)
@@ -20,8 +21,15 @@
 # 12.2.2010, added pthread support --Sampo
 # 25.2.2010, added gcov support --Sampo
 # 15.9.2010, major hacking to support win32cl (MSVC cl compiler, link (ld), and lib (ar) --Sampo
+# 6.2.2012,  improved multiple config support --Sampo
+# 16.8.2012, added zxbusd build --Sampo
+# 16.4.2013, added diet64 statically linked targets --Sampo
+# 21.6.2013, added mini_httpd --Sampo
+# 4.11.2013, reformed the TARGET system; include and lib paths per Debian --Sampo
+# 21.11.2013, added zxid_httpd --Sampo
+# 9.2.2014,  added musl-libc compile --Sampo
 #
-# Build so far only tested on Linux, Solaris 8 and MacOS 10.3. This
+# Build so far only tested on Linux, Solaris 8, MacOS 10.3, and mingw-w64. This
 # makefile needs gmake-3.78 or newer.
 # (See dietlibc (fefe.de) Makefile for some useful wizardry.)
 # Try `make help'
@@ -34,14 +42,12 @@
 vpath %.c ../zxid
 vpath %.h ../zxid
 
-default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall zxencdectest
-
-all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcgi
-
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000110
-ZXIDREL=1.10
+ZXIDVERSION=0x000130
+ZXIDREL=1.30
+
+TOP=$(shell pwd)
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/var/zxid/$(ZXIDREL)
@@ -64,122 +70,206 @@ ENA_WSF2=1
 ENA_WSF11=1
 ENA_XACML2=1
 ENA_WST=1
+ENA_ZXID_HTTPD=1
 ENA_SMIME=1
 ENA_TAS3=1
 
-###
-### Environment dependent options and dependency packages
-###
+### You may supply additional defines on command line.
+###   make CDEF='-DZXID_CONF_PATH="/opt/zxid/zxid.conf"'
 
-TOP=$(shell pwd)
-CURL_ROOT=/usr/local
-OPENSSL_ROOT=/usr/local/ssl
-PHP_CONFIG=php-config
-CSHARP_CONFIG=true
-PY_CONFIG=true
-RUBY_CONFIG=true
-APACHE_ROOT=/usr/local/httpd
+# Advise other software, such as mini_httpd, to use ZXID specific features
+CDEF+= -DUSE_ZXID -DUSE_SSL
+# Without cURL the Artifact Profile, WSC, and metadata fetch features are disabled.
+CDEF+= -DUSE_CURL
+# Without OpenSSL signing and signature verification are not possible
+CDEF+= -DUSE_OPENSSL
 
-ECHO=echo
-CP=cp
-PERL=perl
-XSD2SG_PL= ../pd/xsd2sg.pl
-XSD2SG=$(PERL) $(XSD2SG_PL)
-PULVERIZE=$(PERL) ./pulverize.pl
-GPERF=gperf
-SWIG=swig
-AR=ar -crs
-ARX=ar -x
-#CC=ccache gcc
-CC=gcc
-LD=gcc
-GCOV=gcov
-LCOV=lcov
-GENHTML=genhtml
-SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,--allow-multiple-definition
-SHARED_CLOSE=-Wl,-no-whole-archive
-CFLAGS=-g -fpic -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing
-#CFLAGS += -Os    # gcc-3.4.6 miscompiles with -Os on ix86
-CFLAGS += -Wall -Wno-parentheses -DMAYBE_UNUSED='__attribute__ ((unused))'
-#LDFLAGS += -Wl,--gc-sections
-LIBZXID_A=libzxid.a
-LIBZXID=-L. -lzxid
-SSL_LIBS= -lssl -lcrypto
-OBJ_EXT=o
-PLATFORM_OBJ=
-EXE=
+### The CDEF variable can be later overridden or modified in
+### one of the target sections or after all in localconf.mk
+### The CDEF is used for dependency computation. For actual
+### compilation it is added to CFLAGS.
 
-ifeq ($(ENA_PG),1)
+### Environment dependent options and dependency packages.
+### The default values are according to their usual locations
+### in Ubuntu and Debian based Linux distributions.
 
-###
-### To compile for profiling your should run make ENA_PG=1
-### See also: make gcov, make lcov (and lcovhtml directory), man gcov, man gprof
-### N.B. ccache seems to be incompatible with profiling.
-###
-
-#CDEF += -DMUTEX_DEBUG
-CFLAGS += -pg -ftest-coverage -fprofile-arcs
-LDFLAGS += -pg -ftest-coverage -fprofile-arcs
-
-else
-
-# -ffunction-sections is incompatible with profiling
-
-CFLAGS += -ffunction-sections -fdata-sections
-
-endif
+# Try find / -name ap_config.h; find / -name apr.h; find / -name mod_auth_basic.so
+# apt-get install libapr1-dev
+# apt-get install apache2-dev
+APACHE_INC ?= -I/usr/include/apache2
+APR_INC    ?= -I/usr/include/apr-1.0
+APACHE_MODULES ?= /usr/lib/apache2/modules
+DIET_ROOT?=/usr/local/dietlibc-0.33
+PHP_CONFIG?=php-config
+CSHARP_CONFIG?=true
+PY_CONFIG?=true
+RUBY_CONFIG?=true
 
 ###
 ### Java options (watch out javac running out of heap)
 ###
 
-JAR=jar
-JAVAC=javac
-JAVAC_FLAGS=-J-Xmx128m -g
+JAR?=jar
+JAVAC?=javac
+JAVAC_FLAGS?=-J-Xmx128m -g
+ZXIDJNI_SO?=zxidjava/libzxidjni.so
 # JNI library name is very platform dependent (see macosx and mingw)
-ZXIDJNI_SO=zxidjava/libzxidjni.so
 # find / -name jni.h; find / -name jni_md.h
-JNI_INC=-I/usr/java/include -I/usr/java/include/linux
-# Path where HttpServlet supplied by your application server resides: find / -name servlet-api.jar
+# apt-get install openjdk-6-jdk
+#JNI_INC?=-I/usr/java/include -I/usr/java/include/linux
+#JNI_INC?=-I/usr/lib/jvm/java-6-openjdk/include -I/usr/lib/jvm/java-6-openjdk/include/linux
+JNI_INC?=-I/usr/lib/jvm/java-6-openjdk-amd64/include -I/usr/lib/jvm/java-6-openjdk-amd64/include/linux
+#JNI_INC?=-I/usr/lib/jvm/java-6-openjdk-i386/include -I/usr/lib/jvm/java-6-openjdk-i386/include/linux
+#JNI_INC?=-I/usr/lib/jvm/java-6-openjdk-amd64/include -I/usr/lib/jvm/java-6-openjdk-amd64/include/linux
+# Path where HttpServlet supplied by your application server resides
+# find / -name servlet-api.jar
+# sudo apt-get install tomcat6
 SERVLET_PATH=../apache-tomcat-5.5.20/common/lib/servlet-api.jar
 #SERVLET_PATH=../apache-tomcat-6.0.18/lib/servlet-api.jar
 
-# Without cURL the Artifact Profile, WSC, and metadata fetch features are disabled.
-CDEF+= -DUSE_CURL
-# Without OpenSSL signing and signature verification are not possible
-CDEF+= -DUSE_OPENSSL
-# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
-CDEF+= -DUSE_PTHREAD
+### You may supply additional include paths on command line.
+### For example if you compiled the openssl and libcurl from original
+### sources, you might specify:
+###   make CINC='-I/usr/local/include -I/usr/local/ssl/include'
+CINC+=-I. -I$(TOP)
+### This CINC variable can be later overridden or modified in
+### localconf.mk or in one of the target sections. The CINC is
+### used for dependency computation. For actual compilation it
+### is added to CFLAGS.
 
-### To change any of the above options, you can either supply
-### alternate values on make command line, like `make PREFIX=/your/path'
-### or you can create localconf.mk file to hold your options. This
-### file is included here, but if it's missing, no problem.
+### You may supply additional libs and library paths from the command line.
+### For example if you compiled the openssl and libcurl from original
+### sources, you might specify:
+###   make LIBS='-L/usr/local/lib -L/usr/local/ssl/lib'
+### If you need some special platform dependent libraries afterwards,
+### supply them using POSTLIBS, e.g.
+###   make POSTLIBS='-lxnet -lsocket'
+LIBS+= -lcurl -lssl -lcrypto -lz $(POSTLIBS)
+#LIBS+= -lpthread -static -lcurl -lssl -lcrypto -lz -dynamic
+#LIBS+= -lidn -lrt
+#LIBS+= -ldl
+### This LIBS variable can be later overridden or modified in
+### localconf.mk or in one of the target sections.
 
--include localconf.mk
+### Where commands for build are found (override for cross compiler or Windows)
 
-# Try find / -name ap_config.h; find / -name apr.h
-APACHE_INCLUDE ?= -I$(APACHE_ROOT)/include
-APR_INCLUDE    ?= -I$(APACHE_ROOT)/srclib/apr-util/include
-APACHE_MODULES ?= $(APACHE_ROOT)/modules
+#CC=ccache gcc
+CC?=gcc
+# If you want to override LD setting you must supply LD_ALT on command line or use localconf.mk
+LD_ALT?=$(CC)
+LD=$(LD_ALT)
+ARC?=ar -crs
+ARX?=ar -x
+STRIP?=strip
+GCOV?=gcov
+LCOV?=lcov
+ECHO?=echo
+CP?=cp
+PERL?=perl
+XSD2SG_PL?= ../pd/xsd2sg.pl
+XSD2SG?=$(PERL) $(XSD2SG_PL)
+PD2TEX_PL?= ../pd/pd2tex
+PD2TEX?=$(PERL) $(PD2TEX_PL)
+PULVERIZE=$(PERL) ./pulverize.pl
+GPERF?=gperf
+SWIG?=swig
+GENHTML?=genhtml
 
-### Compute options based on local modifications
+#SHARED_FLAGS=-shared --export-all-symbols -Wl,--whole-archive -Wl,--allow-multiple-definition
+# --export-all-symbols does not seem to work on gcc-4.6.1... try -Wl,--export-dynamic instead
+SHARED_FLAGS=-shared -Wl,--export-dynamic -Wl,--whole-archive -Wl,--allow-multiple-definition
+SHARED_CLOSE=-Wl,--no-whole-archive
+### Form CFLAGS from its components
+CDEF+= -D_REENTRANT -DDEBUG
+CDEF+= -DMUTEX_DEBUG=1
+CFLAGS+= -g -fPIC -fno-strict-aliasing
+#CFLAGS += -Os    # gcc-3.4.6 miscompiles with -Os on ix86 (2010 --Sampo)
+CFLAGS+= -fmessage-length=0
+CFLAGS+= -Wall -Wno-parentheses -Wno-unused-label -Wno-unknown-pragmas -Wno-char-subscripts
+#LDFLAGS += -Wl,--gc-sections
+LIBZXID_A?=libzxid.a
+LIBZXID?=-L. -lzxid
+PLATFORM_OBJ?=
+OUTOPT?=-o 
+OBJ_EXT?=o
+EXE?=
+SO?=.so
 
-LIBS+= -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz
-#LIBS+=-ldl
-OUTOPT=-o 
-
+ifeq ($(ENA_PG),1)
+### To compile for profiling your should run make ENA_PG=1
+### See also: make gcov, make lcov (and lcovhtml directory), man gcov, man gprof
+### N.B. ccache seems to be incompatible with profiling.
+$(info Profiling build)
+CFLAGS+= -pg -ftest-coverage -fprofile-arcs
+LDFLAGS+= -pg -ftest-coverage -fprofile-arcs
+else
+# -ffunction-sections is incompatible with profiling
+CFLAGS+= -ffunction-sections -fdata-sections
 # Following ld flags as well as C flag -ffunction-sections are a quest to
 # eliminate unused functions from final link.
 #LDFLAGS= -Wl,-O -Wl,2 --gc-sections
+endif
 
 ####################################################################
 ### Platform dependent options (choose one with `make TARGET=foo')
 ###
 
-ifeq ($(TARGET),xsol8)
+ifeq ($(TARGET),)
+# Target guesser (only works for native builds and only of output of uname is the target name)
+TARGET=$(shell uname)
+$(warning Guessed TARGET=$(TARGET))
+endif
 
-# Cross compilation for Solaris 8 target (on Linux host). Invoke as `make TARGET=xsol8'
+ifeq ($(TARGET),Linux)
+### Flags for Linux 2.6 native compile (gcc + gnu binutils)
+CDEF+=-DLINUX
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
+ifeq ($(DISTRO),fedora)
+CDEF+=-DFEDORA
+endif
+LIBS+=-lpthread
+SO_LIBS+=$(LIBS)
+# Marks that target has been detected
+TARGET_FOUND=1
+endif
+
+ifeq ($(TARGET),diet-linux)
+CROSS_COMPILE=1
+DIETDIR=/usr/local/dietlibc-0.33
+CC=$(DIETDIR)/bin/diet gcc
+LD=$(DIETDIR)/bin/diet gcc
+CDEF+=-DLINUX
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
+CINC= -I. -I$(DIETDIR)/include
+# -fno-stack-protector is needed to eliminate unwanted function plrologue code that causes segv
+CFLAGS+= -fno-stack-protector
+LDFLAGS= -L$(DIETDIR)/lib-i386 -L$(DIETDIR)/lib
+LIBS+=-lpthread
+# Marks that target has been detected
+TARGET_FOUND=1
+endif
+
+ifeq ($(TARGET),musl-linux)
+CROSS_COMPILE=1
+MUSLDIR=/usr/local/musl-0.9.15
+CC=$(MUSLDIR)/bin/musl-gcc
+LD=$(MUSLDIR)/bin/musl-gcc
+CDEF+=-DLINUX
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
+CINC= -I. -I$(MUSLDIR)/include
+# -fno-stack-protector is needed to eliminate unwanted function plrologue code that causes segv
+CFLAGS+= -fno-stack-protector
+LDFLAGS= -L$(MUSLDIR)/lib-i386 -L$(MUSLDIR)/lib
+LIBS+=-lpthread
+# Marks that target has been detected
+TARGET_FOUND=1
+endif
+
+ifeq ($(TARGET),xsol8)
+### Cross compilation for Solaris 8 target (on Linux host). Invoke as `make TARGET=xsol8'
 # You must have the cross compiler installed in /apps/gcc/sol8 and in path. Similarily
 # the cross binutils must be in path.
 #    export PATH=/apps/gcc/sol8/bin:/apps/binutils/sol8/bin:$PATH
@@ -189,57 +279,112 @@ CROSS_COMPILE=1
 CC=sparc-sun-solaris2.8-gcc
 LD=sparc-sun-solaris2.8-gcc
 CDEF+=-DSUNOS -DBYTE_ORDER=4321 -DBIG_ENDIAN=4321
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
 LIBS+=-lxnet -lsocket
+SO_LIBS+=$(LIBS)
+TARGET_FOUND=1
+endif
 
-else
 ifeq ($(TARGET),sol8)
-
-# Flags for Solaris 8 native compile (with gc and gnu binutils) (BIG_ENDIAN BYTE_ORDER)
-CDEF+=-DSUNOS -DBYTE_ORDER=4321 -DBIG_ENDIAN=4321
-LIBS+=-R$(CURL_ROOT)/lib -R$(OPENSSL_ROOT)/lib -lxnet -lsocket
-CURL_ROOT=/opt/sfw
-OPENSSL_ROOT=/usr/sfw
+### Flags for Solaris 8 native compile (with gc and gnu binutils) (BIG_ENDIAN BYTE_ORDER)
+CDEF+=-DSUNOS -DBYTE_ORDER=4321 -DBIG_ENDIAN=4321 -I/opt/sfw/include -I/usr/sfw/include
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
+LIBS=-R/opt/sfw/lib -R/usr/sfw/lib -lcurl -lssl -lcrypto -lz -lxnet -lsocket
+SO_LIBS+=$(LIBS)
 SHARED_FLAGS=-shared --export-all-symbols -Wl,-z -Wl,allextract
 SHARED_CLOSE=-Wl,-z -Wl,defaultextract
+TARGET_FOUND=1
+endif
 
-else
 ifeq ($(TARGET),sol8x86)
-
 # Flags for Solaris 8/x86 native compile (with gc and gnu binutils) (LITTLE_ENDIAN BYTE_ORDER)
-CDEF+=-DSUNOS -DBYTE_ORDER=1234
-LIBS+=-R$(CURL_ROOT)/lib -R$(OPENSSL_ROOT)/lib -lxnet -lsocket
-CURL_ROOT=/opt/csw
-OPENSSL_ROOT=/usr/sfw
+CDEF+=-DSUNOS -DBYTE_ORDER=1234 -I/opt/sfw/include -I/usr/sfw/include
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
+LIBS=-R/opt/sfw/lib -R/usr/sfw/lib -lcurl -lssl -lcrypto -lz  -lxnet -lsocket
+SO_LIBS+=$(LIBS)
 SHARED_FLAGS=-shared --export-all-symbols -Wl,-z -Wl,allextract
 SHARED_CLOSE=-Wl,-z -Wl,defaultextract
+endif
 
-else
 ifeq ($(TARGET),macosx)
-
-# Flags for MacOS 10 / Darwin native compile (gcc + Apple linker)
+#### Flags for MacOS 10 / Darwin native compile (gcc + Apple linker)
 #   alias ldd='otool -L'
 #   alias strace=ktrace or dtrace or dtruss
 CFLAGS=-g -fPIC -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -DMAYBE_UNUSED=''
 CDEF+=-DMACOSX
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
 JNI_INC=-I/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Headers
 SHARED_FLAGS=-dylib -all_load -bundle
 SHARED_CLOSE=
+SO_LIBS+=$(LIBS)
 ZXIDJNI_SO=zxidjava/libzxidjni.jnilib
 #SHARED_FLAGS=-dylib -all_load -keep_private_externs 
 #OPENSSL_ROOT=/Developer/SDKs/MacOSX10.4u.sdk/usr
 #CURL_ROOT=/Developer/SDKs/MacOSX10.4u.sdk/usr
 # Try find / -name ap_config.h; find / -name apr.h
-APACHE_INCLUDE = -I/Developer/SDKs/MacOSX10.6.sdk/usr/include/apache2
-APR_INCLUDE    = -I/Developer/SDKs/MacOSX10.6.sdk/usr/include/apr-1
+APACHE_INC = -I/Developer/SDKs/MacOSX10.6.sdk/usr/include/apache2
+APR_INC    = -I/Developer/SDKs/MacOSX10.6.sdk/usr/include/apr-1
 APACHE_MODULES = /usr/libexec/apache2
 MOD_AUTH_SAML_LIBS=-lapr-1
 #  -lhttpd2core
+TARGET_FOUND=1
+endif
 
-else
+ifeq ($(TARGET),FreeBSD)
+# Some freebsd guesses result "FreeBSD" so we map it to "freebsd"
+TARGET=freebsd
+endif
+ifeq ($(TARGET),freebsd)
+### Putative flags for Freebsd compile
+CDEF+=-DFREEBSD
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD -pthread
+LIBS+=-lpthread
+SO_LIBS+=$(LIBS)
+TARGET_FOUND=1
+endif
+
+ifeq ($(TARGET),CYGWIN_NT-6.1)
+TARGET=cygwin
+endif
+
+ifeq ($(TARGET),cygwin)
+### Native Windows build using Cygwin environment and gcc
+CDEF+=-DCYGWIN -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DLOCK_UN=0
+MOD_AUTH_SAML_LIBS=-lapr-1 -lhttpd2core
+SO_LIBS+=$(LIBS)
+TARGET_FOUND=1
+endif
+
+ifeq ($(TARGET),mingw)
+### These options work with late 2010 vintage mingw (x86-mingw32-build-1.0-sh.tar.bz2?)
+CP=ln
+ZXID_PATH=/c/zxid/
+EXE=.exe
+SO=.dll
+PRECHECK_PREP=precheck_prep_win
+CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
+SO_LIBS= -L/mingw/lib -lcurl -lssl -lcrypto -lz -lssh2 -lidn -lwldap32 -lgdi32 -lwsock32 -lwinmm -lkernel32 -lz
+LIBS= -mconsole $(SO_LIBS) -lpthread
+# --dll  -mdll
+SHARED_FLAGS= -mdll -Wl,--add-stdcall-alias -static -Wl,--export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -D'ZXID_PATH="$(ZXID_PATH)"'
+#JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:/Program Files/Java/jdk1.5.0_14/include/win32"
+JNI_INC=-I"/cygdrive/c/Program Files (x86)/Java/jdk1.7.0_21/include/" -I"/cygdrive/c/Program Files (x86)/Java/jdk1.7.0_21/include/win32/"
+ZXIDJNI_SO=zxidjava/zxidjni.dll
+ifeq ($(SHARED),1)
+LIBZXID=-L. -lzxiddll
+endif
+TARGET_FOUND=1
+endif
+
 ifeq ($(TARGET),xmingw)
-
-# Cross compilation for MINGW target (on Linux host). Invoke
-# as `make zxid.dll TARGET=xmingw'
+### Cross compilation for MINGW 32bit target (on Linux host).
+# Invoke as `make zxid.dll TARGET=xmingw'
 # You must have the cross compiler installed in /apps/gcc/mingw and in
 # path. Similarily the cross binutils must be in path.
 #    export PATH=/apps/gcc/mingw/bin:/apps/binutils/mingw/bin:$PATH
@@ -250,40 +395,45 @@ ifeq ($(TARGET),xmingw)
 # may have trouble due to linking against cygwin dependent libraries).
 #
 # Cross compiling curl
-#   CPPFLAGS='-I/apps/gcc/mingw/sysroot/include' LDFLAGS='-L/apps/gcc/mingw/sysroot/lib' LIBS='-lz' ./configure --prefix=/usr --with-ssl=/apps/gcc/mingw/sysroot --without-gnutls --enable-thread --enable-nonblocking --host=i586-pc-mingw32 --with-random=/random.txt --disable-shared -enable-static
+#   CPPFLAGS='-I/apps/gcc/mingw/sysroot/include' LDFLAGS='-L/apps/gcc/mingw/sysroot/lib' LIBS='-lz' ./configure --prefix=/usr --with-ssl=/apps/gcc/mingw/sysroot --without-gnutls --enable-thread --enable-nonblocking --host=i586-pc-mingw32 --with-random=/random.txt --disable-shared --enable-static
 #   # Despite apparent misdetection of ar, the compile finishes
 #   make
 #   cp lib/.libs/libcurl* /apps/gcc/mingw/sysroot/lib
 #   cp -r include/curl/ /apps/gcc/mingw/sysroot/include
 #
 # Symbol hunting
-#   undefined reference to `WinMain@16'               --> add -Wl,-no-whole-archive after all libs
+#   undefined reference to `WinMain@16'               --> add -Wl,--no-whole-archive after all libs
 #   undefined reference to `_imp__curl_easy_setopt'   --> compile with -DCURL_STATICLIB
 #   undefined reference to `_imp__curl_easy_strerror' --> compile with -DCURL_STATICLIB
 #   undefined reference to `timeGetTime@0'            --> add -lwinmm
 
-SYSROOT=/apps/gcc/mingw/sysroot
+MINGWDIR=/apps/gcc/mingw
+SYSROOT=$(MINGWDIR)/sysroot
 CROSS_COMPILE=1
-CC=/apps/gcc/mingw/bin/i586-pc-mingw32-gcc
-LD=/apps/gcc/mingw/bin/i586-pc-mingw32-gcc
-AR=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -crs
+EXE=.exe
+SO=.dll
+CC=$(MINGWDIR)/bin/i586-pc-mingw32-gcc
+LD=$(MINGWDIR)/bin/i586-pc-mingw32-gcc
+ARC=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -crs
 ARX=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -x
-CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
-CURL_ROOT=/apps/gcc/mingw/sysroot
-OPENSSL_ROOT=/apps/gcc/mingw/sysroot
+PRECHECK_PREP=precheck_prep_win
+#CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
+CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
+# All dependency libraries are assumed to be in the mingw environment
+CINC=-I. -I$(TOP) -I$(SYSROOT)/include
+APACHE_INC = -I$(SYSROOT)/include
+APR_INC    = -I$(SYSROOT)/srclib/apr-util/include
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
 endif
-
--include xmingw.mk
-
 # -lws2_32  -lmingw32  -u _imp__curl_easy_setopt -u _imp__curl_easy_strerror
-WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
-LIBS= -mconsole $(WIN_LIBS)
-#SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,-whole-archive
-SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
-CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing  -mno-cygwin -DMAYBE_UNUSED='__attribute__ ((unused))'
+SO_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
+LIBS= -mconsole $(SO_LIBS)
+# --dll  -mdll
+#SHARED_FLAGS=-shared --export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,--whole-archive
+SHARED_FLAGS= -shared -Wl,--add-stdcall-alias --export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin
 
 # java.lang.UnsatisfiedLinkError: Given procedure could not be found
 # -mno-cygwin -mrtd -Wl,--kill-at -Wl,--add-stdcall-alias
@@ -291,119 +441,304 @@ CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-
 # http://www.1702.org/jniswigdll.html
 # http://maba.wordpress.com/2004/07/28/generating-dll-files-for-jni-under-windowscygwingcc/
 
-else
-ifeq ($(TARGET),mingw)
+#/apps/gcc/mingw/bin/i586-pc-mingw32-gcc -o zxid.dll -Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib libzxid.a -Wl,-no-whole-archive -L/apps/gcc/mingw/sysroot/lib -L/apps/gcc/mingw/sysroot/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32 -mdll
+#i586-pc-mingw32-gcc: shared and mdll are not compatible
+#make: *** [zxid.dll] Error 1
+# remove the -shared flag and it compiles
+TARGET_FOUND=1
+endif
 
-# These options work with late 2010 vintage mingw (x86-mingw32-build-1.0-sh.tar.bz2?)
+ifeq ($(TARGET),xmingw64)
+### Cross compilation for MINGW64 target (on Linux host).
+# Invoke as `make zxid.dll TARGET=xmingw64'
+# You must have the cross compiler installed. You can get one from
+# http://mingw-w64.sourceforge.net/download.php
+#
+# For best results use the same cross compiler for compiling the dependency
+# libraries like curl, openssl, and zlib. Furthermore: your cross compiler
+# should be for MinGW target, not for Cygwin (i.e. default compiler of Cygwin
+# may have trouble due to linking against cygwin dependent libraries).
+#
+# Cross compiling zlib
+#     export PATH=/apps/mingw/mingw-w64-bin_i686-linux_20130523/bin:$PATH
+#     ./configure --prefix=/mingw
+#     CC=x86_64-w64-mingw32-gcc LD=x86_64-w64-mingw32-ld AR=x86_64-w64-mingw32-ar RANLIB=x86_64-w64-mingw32-gcc-ranlib make -e
+#     cp libz.a /apps/mingw/3.0.0-w64/mingw/lib
+#     cp zlib.h zconf.h /apps/mingw/3.0.0-w64/mingw/include
+#
+# Cross compiling openssl
+#     ./Configure --prefix=/mingw --cross-compile-prefix=x86_64-w64-mingw32- enable-rc5 enable-mdc2 zlib mingw64-cross-debug -I/apps/mingw/3.0.0-w64/x86_64-w64-mingw32/include
+#     #make depend   # error, apparently not needed
+#     make
+#     # If you have syntax errors with string "<symlink>" then eliminate
+#     # symlinks from include/openssl by copying the files directly there.
+#     #make test     # not doable since openssl.exe will not execute on Linux
+#     cp -Lr include/openssl /apps/mingw/3.0.0-w64/mingw/include
+#     cp libssl.a libcrypto.a /apps/mingw/3.0.0-w64/mingw/lib
+#     cp apps/openssl.exe /apps/mingw/3.0.0-w64/mingw/bin-w64
+#
+# Cross compiling curl
+#     CPPFLAGS='-I/apps/mingw/3.0.0-w64/mingw/include' LDFLAGS='-L/apps/mingw/3.0.0-w64/mingw/lib' LIBS='-lz' ./configure --prefix=/mingw --with-ssl=/apps/mingw/3.0.0-w64/mingw --without-gnutls -enable-debug --enable-thread --enable-nonblocking --host=x86_64-w64-mingw32 --with-random=/random.txt --disable-shared --enable-static
+#     make
+#     cp lib/.libs/libcurl* /apps/mingw/3.0.0-w64/mingw/lib
+#     cp -r include/curl/ /apps/mingw/3.0.0-w64/mingw/include
+#     cp src/curl.exe /apps/mingw/3.0.0-w64/mingw/bin-w64
+#
+# Fix illegal relocation error on linking libws2_32.a
+# wget http://www.dependencywalker.com/depends22_x86.zip
+# dependes.exe /c /? zxid_httpd.exe
+# psutils
 
-CP=ln
-ZXID_PATH=/c/zxid/
-
-CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB
-CURL_ROOT=/usr/local
-OPENSSL_ROOT=/usr/local/ssl
-ZLIB_ROOT=/usr/local/lib/
-
-SSL_LIBS= -lssl -lcrypto -lgdi32 -lwsock32
-CURL_LIBS= -lcurl -lssh2 -lidn -lwldap32
-WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib $(CURL_LIBS) $(SSL_LIBS) -lwinmm -lkernel32 -lz
-LIBS= -mconsole $(WIN_LIBS) -lpthread
-SHARED_FLAGS=-Wl,--add-stdcall-alias -mdll -static -Wl,--export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
-CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -D'ZXID_PATH="$(ZXID_PATH)"'  -DMAYBE_UNUSED='__attribute__ ((unused))'
-
-
-#WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
-#LIBS= -mconsole $(WIN_LIBS)
-#SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
-#CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -DMAYBE_UNUSED='__attribute__ ((unused))'
-
-JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:/Program Files/Java/jdk1.5.0_14/include/win32"
+# MinGW-W64 Runtime 3.0 (alpha - rev. 5871) 2013-05-21
+MINGWDIR=/apps/mingw/mingw-w64-bin_i686-linux_20130523
+SYSROOT=$(MINGWDIR)/x86_64-w64-mingw32
+CROSS_COMPILE=1
+EXE=.exe
+SO=.dll
+CC=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
+LD=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
+ARC=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -crs
+ARX=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -x
+STRIP=$(MINGWDIR)/bin/x86_64-w64-mingw32-strip
+PRECHECK_PREP=precheck_prep_win
+#CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
+CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
+# All dependency libraries are assumed to be in the mingw environment
+CINC=-I. -I$(TOP) -I$(SYSROOT)/include
+APACHE_INC = -I$(SYSROOT)/include/apache2
+APR_INC    = -I$(SYSROOT)/include/apr-1
+JNI_INC=-I$(SYSROOT)/include
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
 endif
+# -lws2_32 -lwldap32 -lmingw64 -lcrtdll -u _imp__curl_easy_setopt -u _imp__curl_easy_strerror
+SO_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lws2_32 -lwldap32 -lcrypt32 -lwinmm -lwsock32 -lgdi32 -lkernel32
+LIBS= -mconsole $(SO_LIBS)
+# --dll  -mdll
+#SHARED_FLAGS=-shared --export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,--whole-archive
+SHARED_FLAGS= -shared -Wl,--add-stdcall-alias -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing
+TARGET_FOUND=1
+endif
 
-else
-ifeq ($(TARGET),cygwin)
+ifeq ($(TARGET),xmingw64b)
+### Cross compilation for MINGW64 target (on Ubuntu Linux host).
+# Invoke as `make zxid.dll TARGET=xmingw64b'
+# This target was tested with Ubuntu/Debian supplied mingw-w64 cross compiler package
+#    apt-get install mingw-w64
+#
+# For best results use the same cross compiler for compiling the dependency
+# libraries like curl, openssl, and zlib. Furthermore: your cross compiler
+# should be for MinGW target, not for Cygwin (i.e. default compiler of Cygwin
+# may have trouble due to linking against cygwin dependent libraries).
+#
+# Cross compiling zlib
+#     export PATH=/usr/bin:/bin
+#     ./configure --prefix=/usr/x86_64-w64-mingw32
+#     make CC=x86_64-w64-mingw32-gcc LD=x86_64-w64-mingw32-ld AR=x86_64-w64-mingw32-ar RANLIB=x86_64-w64-mingw32-gcc-ranlib
+#     # compilation fails when trying to create .so, but the .a has been built by then
+#     cp libz.a /usr/x86_64-w64-mingw32/lib
+#     cp zlib.h zconf.h /usr/x86_64-w64-mingw32/include
+#
+# Cross compiling openssl
+#     ./Configure --prefix=/usr/x86_64-w64-mingw32 --cross-compile-prefix=x86_64-w64-mingw32- enable-rc5 enable-mdc2 zlib mingw64-cross-debug
+#     #make depend   # error, apparently not needed
+#     make
+#     # If you have syntax errors with string "<symlink>" then eliminate
+#     # symlinks from include/openssl by copying the files directly there.
+#     #make test     # not doable since openssl.exe will not execute on Linux
+#     cp -Lr include/openssl /usr/x86_64-w64-mingw32/include
+#     cp libssl.a libcrypto.a /usr/x86_64-w64-mingw32/lib
+#     cp apps/openssl.exe /usr/x86_64-w64-mingw32/bin
+#
+# Cross compiling curl
+#     CPPFLAGS='-I/usr/x86_64-w64-mingw32/include' LDFLAGS='-L/usr/x86_64-w64-mingw32/lib' LIBS='-lz' ./configure --prefix=/usr/x86_64-w64-mingw32 --with-ssl=/usr/x86_64-w64-mingw32 --without-gnutls -enable-debug --enable-thread --enable-nonblocking --host=x86_64-w64-mingw32 --with-random=/random.txt --disable-shared --enable-static
+#     make
+#     cp lib/.libs/libcurl* /usr/x86_64-w64-mingw32/lib
+#     cp -r include/curl/ /usr/x86_64-w64-mingw32/include
+#     cp src/curl.exe /usr/x86_64-w64-mingw32/bin
 
-CDEF+=-DCYGWIN -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DLOCK_UN=0
-CURL_ROOT=/usr/local
-OPENSSL_ROOT=/usr/local/ssl
-MOD_AUTH_SAML_LIBS=-lapr-1 -lhttpd2core
+# apt-get install mingw-w64
+# MinGW-W64 Runtime 1.0 (stable - rev. 0) 0000-00-00
+MINGWDIR=/usr
+SYSROOT=$(MINGWDIR)/x86_64-w64-mingw32
+CROSS_COMPILE=1
+EXE=.exe
+SO=.dll
+CC=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
+LD=$(MINGWDIR)/bin/x86_64-w64-mingw32-gcc
+ARC=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -crs
+ARX=$(MINGWDIR)/bin/x86_64-w64-mingw32-ar -x
+PRECHECK_PREP=precheck_prep_win
+#CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
+CDEF+=-DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -DUSE_PTHREAD
+# All dependency libraries are assumed to be in the mingw environment
+CINC=-I. -I$(TOP) -I$(SYSROOT)/include
+APACHE_INC = -I$(SYSROOT)/include
+APR_INC    = -I$(SYSROOT)/srclib/apr-util/include
+JNI_INC=-I$(SYSROOT)/include
+ZXIDJNI_SO=zxidjava/zxidjni.dll
+ifeq ($(SHARED),1)
+LIBZXID=-L. -lzxiddll
+endif
+# -lws2_32 -lwldap32 -lmingw64 -lcrtdll -u _imp__curl_easy_setopt -u _imp__curl_easy_strerror
+SO_LIBS= -L$(SYSROOT)/lib -lcurl -lssl -lcrypto -lz -lws2_32 -lwldap32 -lcrypt32 -lwinmm -lwsock32 -lgdi32 -lkernel32
+LIBS= -mconsole $(SO_LIBS)
+# --dll  -mdll
+#SHARED_FLAGS=-shared --export-all-symbols -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,--whole-archive
+SHARED_FLAGS= -shared -Wl,--add-stdcall-alias -Wl,--whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing
+TARGET_FOUND=1
+endif
 
-else
 ifeq ($(TARGET),win32cl)
-
-# Native Compilation with Microsoft Visual C++ compiler's command line (aka msvc) (experimental)
-
+### Native Compilation with Microsoft Visual C++ compiler's command line (aka msvc)
 CP=copy
 CC=cl
 LD=link
-AR=lib
-CDEF+=-DMINGW -DWIN32CL -DUSE_LOCK=flock -DCURL_STATICLIB
-CURL_ROOT="G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc/"
-OPENSSL_ROOT="C:/OpenSSL/"
-ZLIB_ROOT="C:/Program Files/GnuWin32/"
+ARC=lib
+CDEF+=-DMINGW -DWIN32CL -DUSE_LOCK=flock -DCURL_STATICLIB -DUSE_PTHREAD
+CURL_ROOT="G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc"
+OPENSSL_ROOT="C:/OpenSSL"
+ZLIB_ROOT="C:/Program Files/GnuWin32"
+CINC=-I. -I$(TOP) -I"$(CURL_ROOT)/include" -I"$(OPENSSL_ROOT)/include" -I"$(ZLIB_ROOT)/include"
 JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:\Program Files\Java\jdk1.5.0_14\include\win32"
-WIN_LIBS= -LIBPATH:$(CURL_ROOT)/lib/Debug -LIBPATH:$(OPENSSL_ROOT)/lib/VC -LIBPATH:$(ZLIB_ROOT)/lib curllib.lib libeay32MD.lib ssleay32MD.lib zlib.lib kernel32.lib user32.lib winmm.lib Ws2_32.lib
-LIBS= $(WIN_LIBS)
+WIN_DDL_LIBS= -LIBPATH:$(CURL_ROOT)/lib/Debug -LIBPATH:$(OPENSSL_ROOT)/lib/VC -LIBPATH:$(ZLIB_ROOT)/lib curllib.lib libeay32MD.lib ssleay32MD.lib zlib.lib kernel32.lib user32.lib winmm.lib Ws2_32.lib
+LIBS= $(SO_LIBS)
 #SHARED_FLAGS=-LDd -MDd -shared --export-all-symbols
 #SHARED_CLOSE=/SUBSYSTEM:WINDOWS
 SHARED_FLAGS=-DLL -shared --export-all-symbols
 SHARED_CLOSE=
-CFLAGS=-Zi -WL  -DMAYBE_UNUSED=''
+CFLAGS=-Zi -WL -DMAYBE_UNUSED=''
 #CFLAGS+=-Yd
 OUTOPT=-OUT:
 OBJ_EXT=obj
 EXE=.exe
+SO=.dll
 PLATFORM_OBJ=zxdirent.obj
 LIBZXID_A=zxid.lib
-
 GPERF=gperf.exe
 SHELL="C:\Program Files\GNU Utils\bin"
 MAKESHELL="C:\Program Files\GNU Utils\bin"
-
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
 else
 LIBZXID=zxid.lib
 endif
+TARGET_FOUND=1
+endif
+
+ifeq ($(TARGET_FOUND),)
+$(error TARGET $(TARGET) not found. Run make help)
+endif
+
+### To change any of the above options, you can either supply
+### alternate values on make command line, like `make PREFIX=/your/path'
+### or you can create localconf.mk file to hold your options. This
+### file is included here, but if it's missing, no problem.
+
+-include localconf.mk
+
+####################################################################
+### End of platform dependent options (mortals can look, but
+### should not edit below this line).
+
+ifeq ($(V),)
+$(info Nonverbose build (use make V=1 to enable verbose build).)
+$(info TARGET=$(TARGET))
+$(info TOP=$(TOP))
+$(info CC=$(CC))
+$(info CFLAGS=$(CFLAGS))
+$(info CDEF=$(CDEF))
+$(info CINC=$(CINC))
+$(info LD=$(LD))
+$(info LDFLAGS=$(LDFLAGS))
+$(info LIBS=$(LIBS))
+$(info --------------------------)
+endif
+#CFLAGS += $(CDEF) $(CINC)
+
+# Avoid make's built-in implicit rules and variables; do not print entry msg
+.SUFFIXES:
+MAKEFLAGS= -rR --no-print-directory
+
+ifeq ($(V),1)
+
+ifeq ($(TARGET),win32cl)
+%.obj: %.c
+	$(CC) $(CFLAGS) $(CDEF) $(CINC) -Fo$@ -c $<
+else
+%.$(OBJ_EXT): %.c
+	$(CC) $(OUTOPT)$@ -c $< $(CFLAGS) $(CDEF) $(CINC)
+endif
+
+%$(EXE): %.$(OBJ_EXT)
+	$(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBZXID) $(LIBS)
+
+precheck/%$(EXE): precheck/%.$(OBJ_EXT)
+	$(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBS)
 
 else
 
-# Flags for Linux 2.6 native compile (gcc + gnu binutils)
-CDEF+=-DLINUX
-
-ifeq ($(DISTRO),fedora)
-CDEF+=-DFEDORA
+ifeq ($(TARGET),win32cl)
+%.obj: %.c
+	@echo "  Compiling $<"
+	@if $(CC) $(CFLAGS) $(CDEF) $(CINC) -Fo$@ -c $< ; then : ; else \
+	echo Failed command:; echo '$(CC) $(CFLAGS) $(CDEF) $(CINC) -Fo$@ -c $<' ; false; fi
+else
+%.$(OBJ_EXT): %.c
+	@echo "  Compiling $<"
+	@if $(CC) $(OUTOPT)$@ -c $< $(CFLAGS) $(CDEF) $(CINC) ; then : ; else \
+	echo Failed command:; echo '$(CC) $(OUTOPT)$@ -c $< $(CFLAGS) $(CDEF) $(CINC)' ; false; fi
 endif
 
-endif
-endif
-endif
-endif
-endif
-endif
-endif
+precheck/chk-%$(EXE): precheck/chk-%.$(OBJ_EXT)
+	@echo "  Link exe  $@"
+	@if $(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBS) ; then : ; else \
+	echo Failed command:; echo '$(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBS)' ; false; fi
+
+%$(EXE): %.$(OBJ_EXT)
+	@echo "  Linking   $@"
+	@if $(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBZXID) $(LIBS) ; then : ; else \
+	echo Failed command:; echo '$(LD) $(OUTOPT)$@ $< $(LDFLAGS) $(LIBZXID) $(LIBS)' ; false; fi
+
 endif
 
-CDIR+= -I. -I$(TOP) -I$(OPENSSL_ROOT)/include -I$(CURL_ROOT)/include -I$(ZLIB_ROOT)/include
-CDIR+= $(APACHE_INCLUDE) $(APR_INCLUDE)
-CDEF+= -D_REENTRANT -DDEBUG
+# Avoid funny character set dependencies
+unexport LC_ALL
+LC_COLLATE=C
+LC_NUMERIC=C
+export LC_COLLATE LC_NUMERIC
 
-CFLAGS+= $(CDEF) $(CDIR)
+### Start of dependencies and targets
 
-####################################################################
-### End of platform dependent options, start of dependencies and
-### targets (mortals can look, but should not edit).
-###
+DEFAULT_EXE= zxidhlo$(EXE) zxididp$(EXE) zxidhlowsf$(EXE) zxidsimple$(EXE) zxidwsctool$(EXE) zxlogview$(EXE) zxidhrxmlwsc$(EXE) zxidhrxmlwsp$(EXE) zxdecode$(EXE) zxcot$(EXE) zxpasswd$(EXE) zxcall$(EXE) zxumacall$(EXE) zxencdectest$(EXE)
+
+ALL_EXE= smime$(EXE) zxidwspcgi$(EXE) zxid_httpd$(EXE) htpasswd$(EXE)
+
+#$(info DEFAULT_EXE=$(DEFAULT_EXE))
+
+default: seehelp precheck $(DEFAULT_EXE)
+
+all: default precheck_apache samlmod phpzxid javazxid apachezxid $(ALL_EXE)
+
+all_minus_perl: default precheck_apache apachezxid phpzxid javazxid $(ALL_EXE)
+
+zxbus:  zxbusd zxbustailf zxbuslist
+
+aller: all zxbus app_demo.class
+
+maymay: javazxid app_demo.class
+
+diet64: zxcot-static-x64 zxpasswd-static-x64 zxididp-static-x64 zxidhlo-static-x64 zxlogview-static-x64 zxcall-static-x64 zxumacall-static-x64 zxdecode-static-x64 zxbusd-static-x64 zxbuslist-static-x64 zxbustailf-static-x64
 
 ZXIDHDRS=zx.h zxid.h zxidnoswig.h c/zxidvers.h
 
-ZXID_LIB_OBJ=zxidsimp.$(OBJ_EXT) zxidpool.$(OBJ_EXT) zxidpsso.$(OBJ_EXT) zxidsso.$(OBJ_EXT) zxidslo.$(OBJ_EXT) zxiddec.$(OBJ_EXT) zxidspx.$(OBJ_EXT) zxididpx.$(OBJ_EXT) zxidmni.$(OBJ_EXT) zxidpep.$(OBJ_EXT) zxidpdp.$(OBJ_EXT) zxidmk.$(OBJ_EXT) zxida7n.$(OBJ_EXT) zxidses.$(OBJ_EXT) zxiduser.$(OBJ_EXT) zxidcgi.$(OBJ_EXT) zxidconf.$(OBJ_EXT) zxidecp.$(OBJ_EXT) zxidcdc.$(OBJ_EXT) zxidloc.$(OBJ_EXT) zxidlib.$(OBJ_EXT) zxidmeta.$(OBJ_EXT) zxidcurl.$(OBJ_EXT) zxidepr.$(OBJ_EXT) zxida7n.$(OBJ_EXT) ykcrc.$(OBJ_EXT) ykaes.$(OBJ_EXT) $(PLATFORM_OBJ)
+ZXID_LIB_OBJ=zxidsimp.$(OBJ_EXT) zxidpool.$(OBJ_EXT) zxidpsso.$(OBJ_EXT) zxidsso.$(OBJ_EXT) zxidslo.$(OBJ_EXT) zxiddec.$(OBJ_EXT) zxidspx.$(OBJ_EXT) zxididpx.$(OBJ_EXT) zxidmni.$(OBJ_EXT) zxidpep.$(OBJ_EXT) zxidpdp.$(OBJ_EXT) zxidmk.$(OBJ_EXT) zxida7n.$(OBJ_EXT) zxidses.$(OBJ_EXT) zxiduser.$(OBJ_EXT) zxidcgi.$(OBJ_EXT) zxidconf.$(OBJ_EXT) zxidecp.$(OBJ_EXT) zxidcdc.$(OBJ_EXT) zxidloc.$(OBJ_EXT) zxidlib.$(OBJ_EXT) zxidmeta.$(OBJ_EXT) zxidmda.$(OBJ_EXT) zxidcurl.$(OBJ_EXT) zxidepr.$(OBJ_EXT) zxida7n.$(OBJ_EXT) ykcrc.$(OBJ_EXT) ykaes.$(OBJ_EXT) $(PLATFORM_OBJ)
 
-ZX_OBJ=c/zx-ns.$(OBJ_EXT) c/zx-attrs.$(OBJ_EXT) c/zx-elems.$(OBJ_EXT) zxlibdec.$(OBJ_EXT) zxlibenc.$(OBJ_EXT) zxlib.$(OBJ_EXT) zxns.$(OBJ_EXT) zxutil.$(OBJ_EXT) zxlog.$(OBJ_EXT) zxsig.$(OBJ_EXT) zxcrypto.$(OBJ_EXT) c/license.$(OBJ_EXT)
+ZX_OBJ=c/zx-ns.$(OBJ_EXT) c/zx-attrs.$(OBJ_EXT) c/zx-elems.$(OBJ_EXT) zxlibdec.$(OBJ_EXT) zxlibenc.$(OBJ_EXT) zxlib.$(OBJ_EXT) zxns.$(OBJ_EXT) zxpw.$(OBJ_EXT) zxutil.$(OBJ_EXT) zxbusprod.$(OBJ_EXT) zxlog.$(OBJ_EXT) zxsig.$(OBJ_EXT) zxcrypto.$(OBJ_EXT) akbox_fn.$(OBJ_EXT) match.$(OBJ_EXT) c/license.$(OBJ_EXT)
 
 WSF_OBJ=zxidmkwsf.$(OBJ_EXT) zxidwsf.$(OBJ_EXT) zxidwsc.$(OBJ_EXT) zxidwsp.$(OBJ_EXT) zxiddi.$(OBJ_EXT) zxidim.$(OBJ_EXT) zxidps.$(OBJ_EXT)
 
@@ -493,23 +828,7 @@ endif
 
 endif
 
-ZXID_OBJ=zxid.$(OBJ_EXT)
-ZXIDWSCTOOL_OBJ=zxidwsctool.$(OBJ_EXT)
-ZXIDSP_OBJ=zxidsp.$(OBJ_EXT)
-ZXIDHLO_OBJ=zxidhlo.$(OBJ_EXT)
-ZXIDGSA_OBJ=zxidgsa.$(OBJ_EXT)
-ZXIDHLOWSF_OBJ=zxidhlowsf.$(OBJ_EXT)
-ZXIDSIMPLE_OBJ=zxidsimple.$(OBJ_EXT)
-ZXBENCH_OBJ=zxbench.$(OBJ_EXT)
-ZXIDSSOFINALIZETEST_OBJ=zxidssofinalizetest.$(OBJ_EXT)
-ZXENCDECTEST_OBJ=zxencdectest.$(OBJ_EXT)
-ZXMQTEST_OBJ=zxmqtest.$(OBJ_EXT)
-ZXIDXMLTOOL_OBJ=zxidxmltool.$(OBJ_EXT)
-ZXLOGVIEW_OBJ=zxlogview.$(OBJ_EXT) $(ZX_OBJ)
-ZXIDHRXMLWSC_OBJ=zxidhrxmlwsc.$(OBJ_EXT)
-ZXIDHRXMLWSP_OBJ=zxidhrxmlwsp.$(OBJ_EXT)
-ZXIDIDP_OBJ=zxididp.$(OBJ_EXT)
-
+ZXBUSD_OBJ=zxbusd.$(OBJ_EXT) hiios.$(OBJ_EXT) hiinit.$(OBJ_EXT) hitodo.$(OBJ_EXT) hinet.$(OBJ_EXT) hiread.$(OBJ_EXT) hiwrite.$(OBJ_EXT) hiiosdump.$(OBJ_EXT) testping.$(OBJ_EXT) http.$(OBJ_EXT) smtp.$(OBJ_EXT) stomp.$(OBJ_EXT) zxbusdist.$(OBJ_EXT) zxbussubs.$(OBJ_EXT) zxbusent.$(OBJ_EXT)
 
 #
 # Schemata and potential xml document roots.
@@ -835,8 +1154,6 @@ c/license.c: LICENSE-2.0.txt sed-zxid.pl
 c/zxidvers.h: sed-zxid.pl
 	$(PERL) ./sed-zxid.pl zxidvers $(ZXIDVERSION) $(ZXIDREL) <zxrev >$@
 
-# $(ZXID_OBJ:.o=.c) $(WSF_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxidsp.c zxidsimple.c $(ZX_OBJ:.o=.c) $(ZX_GEN_H) $(ZX_GEN_C) c/zx-const.h c/zxidvers.h
-
 gen: c/zxidvers.h c/license.c c/zx-const.h c/zx-attrs.gperf
 
 genwrap: gen zxidjava/zxid_wrap.c Net/SAML_wrap.c php/zxid_wrap.c py/zxid_wrap.c ruby/zxid_wrap.c csharp/zxid_wrap.c
@@ -858,35 +1175,35 @@ updatevers:
 ifeq ($(ENA_GEN),1)
 
 Net/SAML_wrap.c Net/SAML.pm: $(ZX_GEN_H) zxid.h zxid.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	$(SWIG) -o Net/SAML_wrap.c -perl zxid.i
 	$(PERL) -pi -e 's/\*zxid_/*/i; s/\*SAML2?_/*/i' Net/SAML.pm
 
 # Net::SAML::Metadata - low level metadata APIs
 
 Metadata/Metadata_wrap.c Metadata/Metadata.pm: $(ZX_GEN_H) zxidmd.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	$(SWIG) -o Metadata/Metadata_wrap.c -perl zxidmd.i
 	$(PERL) -pi -e 's/\*SAML2?_/*/i' Metadata/Metadata.pm
 
 # Net::SAML::Raw - low level assertion and protocol APIs
 
 Raw/Raw_wrap.c Raw/Raw.pm: $(ZX_GEN_H) zxidraw.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	$(SWIG) -o Raw/Raw_wrap.c -perl zxidraw.i
 	$(PERL) -pi -e 's/\*SAML2?_/*/i' Raw/Raw.pm
 
 # Net::WSF::WSC - high level APIs for implementing WSC
 
 WSC/WSC_wrap.c WSC/WSC.pm: $(ZX_GEN_H) zxwsc.h wsc.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	$(SWIG) -o WSC/WSC_wrap.c -perl wsc.i
 	$(PERL) -pi -e 's/\*zxwsc_/*/i; s/\*SAML2?_/*/i' WSC/WSC.pm
 
 # Net::WSF::Raw - low level protocol APIs
 
 WSF_Raw/Raw_wrap.c WSF_Raw/Raw.pm: $(ZX_GEN_H) wsfraw.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	$(SWIG) -o WSF_Raw/Raw_wrap.c -perl wsfraw.i
 	$(PERL) -pi -e 's/\*zxwsc_/*/i; s/\*SAML2?_/*/i' WSF_Raw/Raw.pm
 
@@ -911,6 +1228,14 @@ wscmod: WSC/WSC.pm WSC/WSC_wrap.c
 
 wsfrawmod: WSF_Raw/Raw.pm WSF_Raw/Raw_wrap.c
 	cd WSF_Raw; $(PERL) Makefile.PL && $(MAKE)
+
+ifeq ($(TARGET),xmingw64)
+
+Net/SAML_wrap.$(OBJ_EXT): Net/SAML_wrap.c
+	$(warning SAMLWRAP)
+	$(CC) -c $(OUTOPT)$@ $(CFLAGS) $(CDEF) $(CINC) $<
+
+endif
 
 perlmod: samlmod
 
@@ -941,7 +1266,7 @@ perlcleaner: perlclean
 ifeq ($(ENA_GEN),1)
 
 php/zxid_wrap.c php/zxid.php php/php_zxid.h php/Makefile: $(ZX_GEN_H) zxid.h phpzxid.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	cd php; $(SWIG) -o zxid_wrap.c -noproxy -php ../phpzxid.i
 
 endif
@@ -949,17 +1274,16 @@ endif
 # -Wno-unused-label
 
 php/zxid_wrap.$(OBJ_EXT): php/zxid_wrap.c
-	$(CC) -c $(OUTOPT)$@ `$(PHP_CONFIG) --includes` $(CFLAGS) $<
+	$(warning PHPWRAP)
+	$(CC) -c $(OUTOPT)$@ `$(PHP_CONFIG) --includes` $(CFLAGS) $(CDEF) $(CINC) $<
 
-php/php_zxid.so: php/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)php/php_zxid.so -shared php/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
+php/php_zxid$(SO): php/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
+	$(warning PHPLINK)
+	$(LD) $(LDFLAGS) $(OUTOPT)php/php_zxid$(SO) -shared php/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
 
-phpzxid: php/php_zxid.so
+phpzxid: php/php_zxid$(SO)
 
-php/php_zxid.dll: php/php_zxid.so
-	mv php/php_zxid.so php/php_zxid.dll
-
-phpzxid_install: php/php_zxid.so
+phpzxid_install: php/php_zxid$(SO)
 	@$(ECHO) Installing in `$(PHP_CONFIG) --extension-dir`
 	mkdir -p `$(PHP_CONFIG) --extension-dir`
 	$(CP) $< `$(PHP_CONFIG) --extension-dir`
@@ -967,7 +1291,7 @@ phpzxid_install: php/php_zxid.so
 #cp zxid.ini `$(PHP_CONFIG) --extension-dir`
 
 phpclean:
-	rm -rf php/*.$(OBJ_EXT) php/*~ php/*.so
+	rm -rf php/*.$(OBJ_EXT) php/*~ php/*$(SO)
 
 phpcleaner: phpclean
 	rm -rf php/php_zxid.h php/zxid.php php/zxid_wrap.c
@@ -979,26 +1303,26 @@ phpcleaner: phpclean
 ifeq ($(ENA_GEN),1)
 
 py/zxid_wrap.c py/zxid.py py/Makefile: $(ZX_GEN_H) zxid.h pyzxid.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	cd py; $(SWIG) -o zxid_wrap.c -python ../pyzxid.i
 
 endif
 
 py/zxid_wrap.$(OBJ_EXT): py/zxid_wrap.c
-	$(CC) -c $(OUTOPT)$@ `$(PY_CONFIG) --includes` $(CFLAGS) $<
+	$(CC) -c $(OUTOPT)$@ `$(PY_CONFIG) --includes` $(CFLAGS) $(CDEF) $(CINC) $<
 
-py/py_zxid.so: py/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)py/py_zxid.so -shared py/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
+py/py_zxid$(SO): py/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)py/py_zxid$(SO) -shared py/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
 
-pyzxid: py/py_zxid.so
+pyzxid: py/py_zxid$(SO)
 
-pyzxid_install: py/py_zxid.so
+pyzxid_install: py/py_zxid$(SO)
 	@$(ECHO) Installing in `$(PY_CONFIG) --extension-dir`
 	mkdir -p `$(PY_CONFIG) --extension-dir`
 	$(CP) $< `$(PY_CONFIG) --extension-dir`
 
 pyclean:
-	rm -rf py/*.$(OBJ_EXT) py/*~ py/*.so
+	rm -rf py/*.$(OBJ_EXT) py/*~ py/*$(SO)
 
 pycleaner: pyclean
 	rm -rf py/zxid.py py/zxid_wrap.c
@@ -1010,26 +1334,26 @@ pycleaner: pyclean
 ifeq ($(ENA_GEN),1)
 
 ruby/zxid_wrap.c ruby/zxid.ruby ruby/Makefile: $(ZX_GEN_H) zxid.h rubyzxid.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	cd ruby; $(SWIG) -o zxid_wrap.c -ruby ../rubyzxid.i
 
 endif
 
 ruby/zxid_wrap.$(OBJ_EXT): ruby/zxid_wrap.c
-	$(CC) -c $(OUTOPT)$@ `$(RUBY_CONFIG) --includes` $(CFLAGS) $<
+	$(CC) -c $(OUTOPT)$@ `$(RUBY_CONFIG) --includes` $(CFLAGS) $(CDEF) $(CINC) $<
 
-ruby/ruby_zxid.so: ruby/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)ruby/ruby_zxid.so -shared ruby/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
+ruby/ruby_zxid$(SO): ruby/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)ruby/ruby_zxid$(SO) -shared ruby/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
 
-rubyzxid: ruby/ruby_zxid.so
+rubyzxid: ruby/ruby_zxid$(SO)
 
-rubyzxid_install: ruby/ruby_zxid.so
+rubyzxid_install: ruby/ruby_zxid$(SO)
 	@$(ECHO) Installing in `$(RUBY_CONFIG) --extension-dir`
 	mkdir -p `$(RUBY_CONFIG) --extension-dir`
 	$(CP) $< `$(RUBY_CONFIG) --extension-dir`
 
 rubyclean:
-	rm -rf ruby/*.$(OBJ_EXT) ruby/*~ ruby/*.so
+	rm -rf ruby/*.$(OBJ_EXT) ruby/*~ ruby/*$(SO)
 
 rubycleaner: rubyclean
 	rm -rf ruby/zxid.ruby ruby/zxid_wrap.c
@@ -1041,26 +1365,26 @@ rubycleaner: rubyclean
 ifeq ($(ENA_GEN),1)
 
 csharp/zxid_wrap.c csharp/zxid.csharp csharp/Makefile: $(ZX_GEN_H) zxid.h csharpzxid.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	cd csharp; $(SWIG) -o zxid_wrap.c -noproxy -csharp ../csharpzxid.i
 
 endif
 
 csharp/zxid_wrap.$(OBJ_EXT): csharp/zxid_wrap.c
-	$(CC) -c $(OUTOPT)$@ `$(CSHARP_CONFIG) --includes` $(CFLAGS) $<
+	$(CC) -c $(OUTOPT)$@ `$(CSHARP_CONFIG) --includes` $(CFLAGS) $(CDEF) $(CINC) $<
 
-csharp/csharp_zxid.so: csharp/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)csharp/csharp_zxid.so -shared csharp/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
+csharp/csharp_zxid$(SO): csharp/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)csharp/csharp_zxid$(SO) -shared csharp/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
 
-csharpzxid: csharp/csharp_zxid.so
+csharpzxid: csharp/csharp_zxid$(SO)
 
-csharpzxid_install: csharp/csharp_zxid.so
+csharpzxid_install: csharp/csharp_zxid$(SO)
 	@$(ECHO) Installing in `$(CSHARP_CONFIG) --extension-dir`
 	mkdir -p `$(CSHARP_CONFIG) --extension-dir`
 	$(CP) $< `$(CSHARP_CONFIG) --extension-dir`
 
 csharpclean:
-	rm -rf csharp/*.$(OBJ_EXT) csharp/*~ csharp/*.so
+	rm -rf csharp/*.$(OBJ_EXT) csharp/*~ csharp/*$(SO)
 
 csharpcleaner: csharpclean
 	rm -rf csharp/zxid.csharp csharp/zxid_wrap.c
@@ -1072,7 +1396,7 @@ csharpcleaner: csharpclean
 ifeq ($(ENA_GEN),1)
 
 zxidjava/zxid_wrap.c: $(ZX_GEN_H) zxid.h javazxid.i
-	@which $(SWIG) || ( echo "You need to install swig from swig.org. Not found $(SWIG)" && exit 2 )
+	@which $(SWIG) || ( echo "You need to install swig-1.3.x from swig.org. Not found $(SWIG)" && exit 2 )
 	cd zxidjava; $(SWIG) -noproxy -Dconst= -w451 -o zxid_wrap.c -java -package zxidjava ../javazxid.i
 	$(PERL) -pi -e 's/SWIGTYPE_p_zxid_conf/zxid_conf/g' zxidjava/*.java
 	mv zxidjava/SWIGTYPE_p_zxid_conf.java zxidjava/zxid_conf.java
@@ -1100,20 +1424,26 @@ endif
 
 ifeq ($(TARGET),win32cl)
 zxidjava/zxid_wrap.$(OBJ_EXT): zxidjava/zxid_wrap.c
-	$(CC) -c -Fozxid_wrap.obj $(JNI_INC) $(CFLAGS) $<
+	$(warning JAVAWRAP)
+	$(CC) -c $< -Fozxid_wrap.obj $(JNI_INC) $(CFLAGS) $(CDEF) $(CINC)
 	$(CP) zxid_wrap.obj $@
 else
 zxidjava/zxid_wrap.$(OBJ_EXT): zxidjava/zxid_wrap.c
-	$(CC) -c $(OUTOPT)$@ $(JNI_INC) $(CFLAGS) $<
+	$(warning JAVAWRAP)
+	$(CC) -c $< $(OUTOPT)$@ $(JNI_INC) $(CFLAGS) $(CDEF) $(CINC)
 endif
 
 $(ZXIDJNI_SO): zxidjava/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $(SHARED_FLAGS) $< $(LIBZXID) $(LIBS) $(SHARED_CLOSE)
+	$(warning JNILINK)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $(SHARED_FLAGS) $< $(SHARED_CLOSE) $(LIBZXID) $(SO_LIBS)
 
 #link  -OUT:zxidjava/zxidjni.dll -DLL -LDd -MDd -shared --export-all-symbols zxidjava/zxid_wrap.obj zxid.lib -LIBPATH:&quot;G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc/&quot;/lib/Debug -LIBPATH:&quot;C:/OpenSSL/&quot;/lib/VC -LIBPATH:&quot;C:/Program Files/GnuWin32/&quot;/lib curllib.lib libeay32MD.lib ssleay32MD.lib zlib.lib kernel32.lib user32.lib winmm.lib Ws2_32.lib -Wl,-no-whole-archive /SUBSYSTEM:WINDOWS /INCREMENTAL
 
 zxidjava/zxidjni.class: zxidjava/zxidjni.java
 	cd zxidjava; $(JAVAC) $(JAVAC_FLAGS) *.java
+
+zxidjavatest.class: zxidjavatest.java zxidjava/zxidjni.class
+	$(JAVAC) $(JAVAC_FLAGS) zxidjavatest.java
 
 zxid.class: zxid.java zxidjava/zxidjni.class
 	$(JAVAC) $(JAVAC_FLAGS) zxidjava/*.java zxid.java
@@ -1146,18 +1476,19 @@ ZxidServlet.class: ZxidServlet.java zxidjava/zxidjni.class
 	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java ZxidServlet.java
 
 zxidjava.jar: zxidjava/zxidjni.class zxidjava/README.zxid-java
-	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay zxidjava/
+	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay LICENSE.curl zxidjava/
 	$(JAR) cf zxidjava.jar zxidjava/*.class zxidjava/*.java zxidjava/COPYING zxidjava/LICENSE*
 
 zxiddemo.war: zxidjava.jar
-	mkdir -p zxidservlet/WEB-INF/classes/zxidjava/
+	mkdir -p zxidservlet/WEB-INF/classes/
+	#mkdir -p zxidservlet/WEB-INF/classes/zxidjava/
 	$(CP) -f zxidjava.jar ./zxidservlet/WEB-INF/classes/
 	$(CP) -f ./servlet/WEB-INF/web.xml ./zxidservlet/WEB-INF/
 	$(CP) -f zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidhlo.class zxidservlet/WEB-INF/classes/
 	cd ./zxidservlet ; $(JAR) cf ../zxiddemo.war *; cd ../
 	rm -rf zxidservlet
 
-javazxid: $(ZXIDJNI_SO) zxidjava/zxidjni.class zxidhlo.class zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidjava.jar zxiddemo.war
+javazxid: $(ZXIDJNI_SO) zxidjava/zxidjni.class zxidhlo.class zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidjavatest.class zxidjava.jar zxiddemo.war
 
 # ZxidSSOFilter.class ZxidServlet.class
 
@@ -1187,7 +1518,7 @@ gitreadd:
 	git add zxidjava/*.java zxidjava/*.c Net/Makefile Net/SAML.pm Net/*.c php/*.[hc] c/*.[hc]
 
 javaclean:
-	rm -rf zxidjava/*.$(OBJ_EXT) zxidjava/*~ zxidjava/*.so zxidjava/*.class *.class
+	rm -rf zxidjava/*.$(OBJ_EXT) zxidjava/*~ zxidjava/*$(SO) zxidjava/*.class *.class
 
 javacleaner: javaclean
 	rm -rf zxidjava/*.java zxidjava/zxid_wrap.c
@@ -1204,110 +1535,134 @@ bene: benessosrvlet.class benedemo.class
 ### Apache authentication module
 ###
 
-mod_auth_saml.so: mod_auth_saml.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)mod_auth_saml.so $(SHARED_FLAGS) mod_auth_saml.$(OBJ_EXT) $(SHARED_CLOSE) $(LIBZXID) $(LIBS) $(MOD_AUTH_SAML_LIBS)
+mod_auth_saml.$(OBJ_EXT): mod_auth_saml.c $(LIBZXID_A)
+	$(warning MOD_AUTH_SAML COMPILE)
+	$(CC) -o $@ -c $<  $(CFLAGS) $(CDEF) $(CINC) $(APACHE_INC) $(APR_INC)
 
-mod_auth_saml.dll: mod_auth_saml.so
-	mv mod_auth_saml.so mod_auth_saml.dll
-
-mod_auth_saml:
-	@$(ECHO) "mod_auth_saml: not an official target. Use make apachezxid"
+mod_auth_saml$(SO): mod_auth_saml.$(OBJ_EXT) $(LIBZXID_A)
+	$(warning MOD_AUTH_SAML LINK SO)
+	$(LD) $(LDFLAGS) $(OUTOPT)mod_auth_saml$(SO) $(SHARED_FLAGS) mod_auth_saml.$(OBJ_EXT) $(SHARED_CLOSE) $(LIBZXID) $(MOD_AUTH_SAML_LIBS) $(LIBS)
 
 precheck_apache:  precheck/chk-apache.$(OBJ_EXT) precheck/chk-apache
 	precheck/chk-apache
 
-apachezxid: precheck_apache precheck mod_auth_saml.so
+apachezxid: precheck_apache precheck mod_auth_saml$(SO)
 
-apachezxid_install: mod_auth_saml.so
+apachezxid_install: mod_auth_saml$(SO)
 	$(CP) $< $(APACHE_MODULES)
 
+mod_auth_saml: apachezxid
+	@$(ECHO) "mod_auth_saml: not an official target. Use make apachezxid"
+
 ###
-### Binaries
+### mini_httpd with ZXID support. See also mini_httpd-1.19-zxid/Makefile
+### for regular build without ZXID support.
+### N.B. This is obsoleted by zxid_httpd, below.
+
+MINI_HTTPD_DIR?=mini_httpd-1.19-zxid
+
+$(MINI_HTTPD_DIR)/htpasswd: $(MINI_HTTPD_DIR)/htpasswd.$(OBJ_EXT)
+	$(warning MINI_HTTPD COMPILE)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBS)
+
+$(MINI_HTTPD_DIR)/mini_httpd_zxid$(EXE): $(MINI_HTTPD_DIR)/mini_httpd.$(OBJ_EXT) $(MINI_HTTPD_DIR)/match.$(OBJ_EXT) $(MINI_HTTPD_DIR)/tdate_parse.$(OBJ_EXT) mini_httpd_filter.$(OBJ_EXT) $(LIBZXID_A)
+	$(warning MINI_HTTPD LINK)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $^ $(LIBZXID) $(LIBS)
+
+$(MINI_HTTPD_DIR)/mime_encodings.h: $(MINI_HTTPD_DIR)/mime_encodings.txt
+	rm -f $@
+	sed < $^ > $@ \
+	  -e 's/#.*//' -e 's/[ 	]*$$//' -e '/^$$/d' \
+	  -e 's/[ 	][ 	]*/", 0, "/' -e 's/^/{ "/' -e 's/$$/", 0 },/'
+
+$(MINI_HTTPD_DIR)/mime_types.h: $(MINI_HTTPD_DIR)/mime_types.txt
+	rm -f $@
+	sed < $^ > $@ \
+	  -e 's/#.*//' -e 's/[ 	]*$$//' -e '/^$$/d' \
+	  -e 's/[ 	][ 	]*/", 0, "/' -e 's/^/{ "/' -e 's/$$/", 0 },/'
+
+mini_httpd_zxid: $(MINI_HTTPD_DIR)/mini_httpd_zxid $(MINI_HTTPD_DIR)/htpasswd
+
+###
+### zxid_httpd (derived from mini_httd).
 ###
 
-zxid: $(ZXID_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxid$(EXE) $(ZXID_OBJ) $(LIBZXID) $(LIBS)
+zxid_httpd$(EXE): zxid_httpd.$(OBJ_EXT) tdate_parse.$(OBJ_EXT) mini_httpd_filter.$(OBJ_EXT) $(LIBZXID_A)
+	$(warning ZXID_HTTPD LINK)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $^ $(LIBS)
 
-zxcot: zxcot.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBZXID) $(LIBS)
+###
+### Binaries (most binaries are built by implicit rules)
+###
 
-zxdecode: zxdecode.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $^ $(LIBZXID) $(LIBS)
+#zxid$(EXE): zxid.$(OBJ_EXT) $(LIBZXID_A)
 
-zxpasswd: zxpasswd.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $^ $(LIBZXID) $(LIBS)
+$(DEFAULT_EXE) $(ALL_EXE): $(LIBZXID_A)
 
-zxcall: zxcall.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBZXID) $(LIBS)
+zxcot-static-x64: zxcot.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
+
+zxdecode-static-x64: zxdecode.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
+
+zxpasswd-static-x64: zxpasswd.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
 # *** unresolved link problem with __gcov_fork, which is not found in 3.4.6 libgcov.a
 
-zxidwspcgi: zxidwspcgi.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBZXID) $(LIBS)
+zxcall-static-x64: zxcall.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
-zxidwsctool: $(ZXIDWSCTOOL_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidwsctool$(EXE) $(ZXIDWSCTOOL_OBJ) $(LIBZXID) $(LIBS)
+zxumacall-static-x64: zxumacall.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
-zxidhlo: $(ZXIDHLO_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidhlo$(EXE) $(ZXIDHLO_OBJ) $(LIBZXID) $(LIBS)
+zxidhlo-static-x64: zxidhlo.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@$(EXE) $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
-zxidsp: $(ZXIDSP_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidsp$(EXE) $(ZXIDSP_OBJ) $(LIBZXID) $(LIBS)
+zxididp-static$(EXE): zxididp.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< -static $(LIBZXID) $(LIBS)
 
-zxididp: $(ZXIDIDP_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxididp$(EXE) $(ZXIDIDP_OBJ) $(LIBZXID) $(LIBS)
+zxididp-semistatic$(EXE): zxididp.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< -static $(LIBZXID) $(LIBS) -dynamic -lc
 
-zxidgsa: $(ZXIDGSA_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidgsa$(EXE) $(ZXIDGSA_OBJ) $(LIBZXID) $(LIBS)
+zxididp-static-x64: zxididp.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@ $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
-zxidhlowsf: $(ZXIDHLOWSF_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidhlowsf$(EXE) $(ZXIDHLOWSF_OBJ) $(LIBZXID) $(LIBS)
+#	diet gcc -o zxididp zxididp.o -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
-zxidsimple: $(ZXIDSIMPLE_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidsimple$(EXE) $(ZXIDSIMPLE_OBJ) $(LIBZXID) $(LIBS)
+zxbench-static-x64: zxbench.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@ $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
-zxbench: $(ZXBENCH_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxbench$(EXE) $(ZXBENCH_OBJ) $(LIBZXID) $(LIBS)
-
-zxidssofinalizetest: $(ZXIDSSOFINALIZETEST_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidssofinalizetest$(EXE) $(ZXIDSSOFINALIZETEST_OBJ) $(LIBZXID) $(LIBS)
-
-ifneq ($(TARGET),mingw)
-zxencdectest: $(ZXENCDECTEST_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxencdectest$(EXE) $^ $(LIBZXID) $(LIBS)
-else
+ifeq ($(TARGET),mingw)
 zxencdectest:
 	echo "Port this for mingw" > zxencdectest
 endif
 
-zxmqtest-zmq: $(ZXMQTEST_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxmqtest-zmq$(EXE) $^ -lzmq $(LIBZXID) $(LIBS)
+zxmqtest-zmq$(EXE): zxmqtest.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $^ -lzmq $(LIBZXID) $(LIBS)
 
-zxmqtest.o: zxmqtest.c
-	$(CC) $(CFLAGS) -DOPENAMQ -I/apps/openamq/std/include -c $^ -o zxmqtest.o
+zxmqtest.$(OBJ_EXT): zxmqtest.c
+	$(CC)  $(OUTOPT)$@ -c $^ $(CFLAGS) $(CDEF) $(CINC) -DOPENAMQ -I/apps/openamq/std/include
 
-zxmqtest-amq: $(ZXMQTEST_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxmqtest-amq$(EXE) $^ -L/apps/openamq/std/lib -lamq_wireapi -lamq_common -lsmt -lasl -lipr -licl -lpcre -laprutil -lapr -lcrypt -lm $(LIBZXID) $(LIBS)
+zxmqtest-amq$(EXE): zxmqtest.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $^ -L/apps/openamq/std/lib -lamq_wireapi -lamq_common -lsmt -lasl -lipr -licl -lpcre -laprutil -lapr -lcrypt -lm $(LIBZXID) $(LIBS)
 
-zxidxmltool: $(ZXIDXMLTOOL_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidxmltool$(EXE) $^ $(LIBS)
+zxlogview-static-x64: zxlogview.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@ $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
-zxlogview: $(ZXLOGVIEW_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxlogview$(EXE) $^ $(LIBS)
+zxbustailf-static-x64: zxbustailf.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@ $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
-zxidhrxmlwsc: $(ZXIDHRXMLWSC_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidhrxmlwsc$(EXE) $(ZXIDHRXMLWSC_OBJ) $(LIBZXID) $(LIBS)
+zxbuslist-static-x64: zxbuslist.$(OBJ_EXT) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@ $< -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
-zxidhrxmlwsp: $(ZXIDHRXMLWSP_OBJ) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidhrxmlwsp$(EXE) $(ZXIDHRXMLWSP_OBJ) $(LIBZXID) $(LIBS)
+zxbusd: $(ZXBUSD_OBJ) $(LIBZXID_A)
+	$(CC) $(OUTOPT)$@ $^ $(LIBS)
+
+zxbusd-static-x64: $(ZXBUSD_OBJ) $(LIBZXID_A)
+	diet gcc $(OUTOPT)$@ $^ -static -L. -lzxid -pthread -lpthread -L$(DIET_ROOT)/lib -L$(DIET_ROOT)/ssl/lib-x86_64 -lcurl -lssl -lcrypto -lz
 
 zxidhrxml: zxidhrxmlwsc zxidhrxmlwsp
-
-smime: smime.$(OBJ_EXT) $(LIBZXID_A)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBZXID) $(LIBS)
-
-sizeof:
-	$(CC) $(OUTOPT)sizeof sizeof.c
 
 ###
 ### Libraries
@@ -1316,26 +1671,26 @@ sizeof:
 ifeq ($(PULVER),1)
 
 $(LIBZXID_A): $(ZX_OBJ) $(ZXID_LIB_OBJ)
-	cat pulver/c_saml2_dec_c.deps      | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2_enc_c.deps      | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2_aux_c.deps      | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2_getput_c.deps   | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2md_dec_c.deps    | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2md_enc_c.deps    | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2md_aux_c.deps    | xargs $(AR) $(LIBZXID_A)
-	cat pulver/c_saml2md_getput_c.deps | xargs $(AR) $(LIBZXID_A)
-	$(AR) $(LIBZXID_A) $(ZXID_LIB_OBJ)
+	cat pulver/c_saml2_dec_c.deps      | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2_enc_c.deps      | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2_aux_c.deps      | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2_getput_c.deps   | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2md_dec_c.deps    | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2md_enc_c.deps    | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2md_aux_c.deps    | xargs $(ARC) $(LIBZXID_A)
+	cat pulver/c_saml2md_getput_c.deps | xargs $(ARC) $(LIBZXID_A)
+	$(ARC) $(LIBZXID_A) $(ZXID_LIB_OBJ)
 
-#	$(foreach fil,$^,$(shell $(AR) $(LIBZXID_A) $(fil)))
+#	$(foreach fil,$^,$(shell $(ARC) $(LIBZXID_A) $(fil)))
 
 else
 
 ifeq ($(TARGET),win32cl)
 $(LIBZXID_A): $(ZX_OBJ) $(ZX_GEN_C:.c=.obj) $(ZXID_LIB_OBJ) $(WSF_OBJ) $(OAUTH_OBJ) $(SMIME_LIB_OBJ)
-	$(AR) $(OUTOPT)zxid.lib $^
+	$(ARC) $(OUTOPT)zxid.lib $^
 else
 $(LIBZXID_A): $(ZX_OBJ) $(ZX_GEN_C:.c=.o) $(ZXID_LIB_OBJ) $(WSF_OBJ) $(OAUTH_OBJ) $(SMIME_LIB_OBJ)
-	$(AR) $(LIBZXID_A) $^
+	$(ARC) $(LIBZXID_A) $^
 endif
 endif
 
@@ -1343,7 +1698,9 @@ libzxid.so.0.0: $(LIBZXID_A)
 	$(LD) $(OUTOPT)libzxid.so.0.0 $(SHARED_FLAGS) $^ $(SHARED_CLOSE) $(LIBS)
 
 zxid.dll zxidimp.lib: $(LIBZXID_A)
-	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib $^ $(SHARED_CLOSE) $(WIN_LIBS) -mdll
+	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib $^ $(SHARED_CLOSE) $(SO_LIBS)
+
+# -mdll
 
 # N.B. Failing to supply -Wl,-no-whole-archive above will cause
 # /apps/gcc/mingw/sysroot/lib/libmingw32.a(main.o):main.c:(.text+0x106): undefined reference to `WinMain@16'
@@ -1355,25 +1712,25 @@ zxid.dll zxidimp.lib: $(LIBZXID_A)
 ### TAS3 Project Specific Targets
 ###
 
-TAS3COMMONFILES=README.zxid-tas3 README.zxid Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay Makefile zxmkdirs.sh
+TAS3COMMONFILES=README.zxid-tas3 README.zxid Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay LICENSE.curl Makefile zxmkdirs.sh
 
 TAS3MAS=T3-SSO-ZXID-MODAUTHSAML_$(ZXIDREL)
 
-tas3maspkg: mod_auth_saml.so
+tas3maspkg: mod_auth_saml$(SO)
 	rm -rf $(TAS3MAS) $(TAS3MAS).zip
 	mkdir $(TAS3MAS)
 	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-SSO-ZXID-MODAUTHSAML > $(TAS3MAS)/Manifest
-	$(CP) mod_auth_saml.so $(TAS3MAS)
+	$(CP) mod_auth_saml$(SO) $(TAS3MAS)
 	$(CP) $(TAS3COMMONFILES) $(TAS3MAS)
 	zip -r $(TAS3MAS).zip $(TAS3MAS)
 
 TAS3PHP=T3-SSO-ZXID-PHP_$(ZXIDREL)
 
-tas3phppkg: php/php_zxid.so
+tas3phppkg: php/php_zxid$(SO)
 	rm -rf $(TAS3PHP) $(TAS3PHP).zip
 	mkdir $(TAS3PHP)
 	$(PERL) ./sed-zxid.pl version $(ZXIDREL) <Manifest.T3-SSO-ZXID-PHP >$(TAS3PHP)/Manifest
-	$(CP) *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3PHP)
+	$(CP) *.php php/php_zxid$(SO) php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3PHP)
 	$(CP) $(TAS3COMMONFILES) $(TAS3PHP)
 	zip -r $(TAS3PHP).zip $(TAS3PHP)
 
@@ -1400,7 +1757,7 @@ tas3idppkg: zxididp zxpasswd zxcot zxdecode
 
 TAS3LINUXX86=T3-ZXID-LINUX-X86_$(ZXIDREL)
 
-tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/php_zxid.so $(ZXIDJNI_SO) zxidjava/zxidjni.class
+tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml$(SO) php/php_zxid$(SO) $(ZXIDJNI_SO) zxidjava/zxidjni.class
 	rm -rf $(TAS3LINUXX86) $(TAS3LINUXX86).zip
 	mkdir $(TAS3LINUXX86)
 	mkdir $(TAS3LINUXX86)/zxidjava
@@ -1409,9 +1766,9 @@ tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/
 	mkdir $(TAS3LINUXX86)/include/zx
 	mkdir $(TAS3LINUXX86)/include/zx/c
 	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-ZXID-LINUX-X86 > $(TAS3LINUXX86)/Manifest
-	$(CP) mod_auth_saml.so $(TAS3LINUXX86)
+	$(CP) mod_auth_saml$(SO) $(TAS3LINUXX86)
 	$(CP) *.php zxid-php.pd $(TAS3LINUXX86)
-	$(CP) php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php $(TAS3LINUXX86)/php
+	$(CP) php/php_zxid$(SO) php/zxid.php php/zxid.ini php/README.zxid-php $(TAS3LINUXX86)/php
 	$(CP) zxididp zxpasswd zxcot zxdecode zxlogview zxid-idp.pd $(TAS3LINUXX86)
 	$(CP) $(LIBZXID_A) $(TAS3LINUXX86)
 	$(CP) $(ZXIDHDRS) $(TAS3LINUXX86)/include/zx
@@ -1422,8 +1779,8 @@ tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/
 
 TAS3WIN32=T3-ZXID-WIN32_$(ZXIDREL)
 
-#tas3win32pkg: mod_auth_saml.so php/php_zxid.so
-#	$(CP) mod_auth_saml.so $(TAS3LINUXX86)
+#tas3win32pkg: mod_auth_saml$(SO) php/php_zxid$(SO)
+#	$(CP) mod_auth_saml$(SO) $(TAS3LINUXX86)
 #	$(CP) *.php php/php_zxid.dll php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
 
 tas3win32pkg: zxid.dll zxididp zxpasswd zxcot zxdecode zxlogview $(ZXIDJNI_SO) zxidjava/zxidjni.class zxidappdemo.class zxidjava.jar zxiddemo.war
@@ -1478,7 +1835,7 @@ tas3srcpkg: zxid-$(ZXIDREL).tgz
 	mkdir $(TAS3SRC)
 	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-ZXID-SRC > $(TAS3SRC)/Manifest
 	$(CP) zxid-$(ZXIDREL).tgz $(TAS3SRC)
-	$(CP) README.zxid-tas3 Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay $(TAS3SRC)
+	$(CP) README.zxid-tas3 Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay LICENSE.curl $(TAS3SRC)
 	zip -r $(TAS3SRC).zip $(TAS3SRC)
 
 #tas3rel: tas3idppkg tas3javapkg tas3phppkg tas3maspkg tas3srcpkg
@@ -1494,27 +1851,40 @@ tas3rel: tas3linuxx86pkg tas3srcpkg
 tas3copyrel: tas3rel
 	rsync $(TAS3SRC).zip $(TAS3LINUXX86).zip tas3repo:pool-in
 
+.PHONY: precheck_prep_win precheck precheckclean tas3copyrel tas3rel tas3srcpkg
+.PHONY: tas3win32pkg-mini tas3win32pkg tas3linuxx86pkg tas3idppkg tas3javapkg tas3phppkg tas3maspkg
+
 ###
 ### Precheck to help analyse compilation problems
 ###
 
-precheck/chk-zlib.exe: precheck/chk-zlib.$(OBJ_EXT)
+ifeq (IGNORE,)
+precheck/chk-zlib$(EXE): precheck/chk-zlib.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
 
-precheck/chk-openssl.exe: precheck/chk-openssl.$(OBJ_EXT)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(SSL_LIBS)
-
-precheck/chk-curl.exe: precheck/chk-curl.$(OBJ_EXT)
+precheck/chk-openssl$(EXE): precheck/chk-openssl.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
+
+precheck/chk-curl$(EXE): precheck/chk-curl.$(OBJ_EXT)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
+
+else
+endif
 
 precheck/chk-apache.$(OBJ_EXT): precheck/chk-apache.c
-	$(CC) -c $(APACHE_INCLUDE) $(APR_INCLUDE) -o $@ $^
+	$(CC) $(OUTOPT)$@ -c $< $(CFLAGS) $(APACHE_INC) $(APR_INC)
 
-precheck/chk-apache.exe: precheck/chk-apache.$(OBJ_EXT)
+precheck/chk-apache$(EXE): precheck/chk-apache.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
 
 zxsizeof: zxsizeof.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBZXID) $(LIBS)
+
+zxsizeof-static-x64: zxsizeof.$(OBJ_EXT)
+	diet gcc $(OUTOPT)$@$(EXE) zxsizeof.c -static
+
+xzxsizeof:
+	$(CC) $(OUTOPT)zxsizeof zxsizeof.o
 
 zx/zx.h:
 	echo "zx symlink for includes (ln -s . zx) missing. Emulating by creating zx directory..."
@@ -1524,18 +1894,28 @@ zx/zx.h:
 	$(CP) c/*.h zx/c
 
 ifeq ($(CROSS_COMPILE),1)
-precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib.exe precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl.exe precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl.exe
+precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib$(EXE) precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl$(EXE) precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl$(EXE)
 	@$(ECHO) "Cross compile simplified precheck ok."
 	@$(ECHO)
 else
-precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib.exe precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl.exe precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl.exe zx/zx.h
-	echo CC=$(CC)
+
+# Windows does not support symlinks (or the support is confusing and buggy, especially
+# when cygwin and/or mingw are involved): solution is to simply copy the headers.
+
+precheck_prep_win:
+	rm -rf zx
+	mkdir zx zx/c
+	$(CP) *.h zx/
+	$(CP) c/*.h zx/c/
+
+precheck: $(PRECHECK_PREP) precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib$(EXE) precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl$(EXE) precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl$(EXE) zx/zx.h
+	@$(ECHO) CC=$(CC)
 	which gcc
 	$(CC) -v
 	@$(ECHO)
-	precheck/chk-zlib.exe
-	precheck/chk-openssl.exe
-	precheck/chk-curl.exe
+	precheck/chk-zlib$(EXE)
+	precheck/chk-openssl$(EXE)
+	precheck/chk-curl$(EXE)
 	@$(ECHO) "Precheck ok."
 	@$(ECHO)
 endif
@@ -1543,9 +1923,6 @@ endif
 precheckclean:
 	rm -f precheck/*.$(OBJ_EXT)
 	rm -f precheck/chk-zlib.exe precheck/chk-openssl.exe precheck/chk-curl.exe precheck/chk-apache.exe
-
-%.obj: %.c
-	$(CC) $(CFLAGS) -Fo$@ -c $<
 
 ###
 ### Test suite
@@ -1563,7 +1940,7 @@ t/wspcot:
 t/wsp2cot:
 	sh ./zxmkdirs.sh t/wsp2
 
-test: t/cot t/idpcot t/wsp t/wsp2 zxencdectest zxcall zxididp
+test: t/cot t/idpcot t/wsp t/wsp2 zxencdectest zxcall zxumacall zxididp
 	$(PERL) zxtest.pl -a
 
 #test: test.$(OBJ_EXT)
@@ -1578,10 +1955,10 @@ zxidjava/testjni.class: zxidjava/testjni.java
 	cd zxidjava; $(JAVAC) $(JAVAC_FLAGS) test*.java
 
 zxidjava/testjni.$(OBJ_EXT): zxidjava/testjni.c
-	$(CC) -c $(OUTOPT)$@ $(JNI_INC) $(CFLAGS) $<
+	$(CC) -c $< $(OUTOPT)$@ $(JNI_INC) $(CFLAGS) $(CDEF) $(CINC)
 
 zxidjava/libtestjni.a: zxidjava/testjni.$(OBJ_EXT)
-	$(AR) $@ $^
+	$(ARC) $@ $^
 
 zxidjava/testjni.dll: zxidjava/libtestjni.a
 	$(LD) $(OUTOPT)$@ $(SHARED_FLAGS) $^ $(SHARED_CLOSE)
@@ -1624,10 +2001,10 @@ dir:
 dirs: dir
 	@$(ECHO) "You should use `make dir' instead!"
 
-install: zxid $(LIBZXID_A) libzxid.so.0.0 dir
+install_nodep:
 	@$(ECHO) "===== Installing in $(PREFIX) (to change do make install PREFIX=/your/path)"
 	-mkdir -p $(PREFIX) $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/include/zxid $(PREFIX)/include/zx $(PREFIX)/doc
-	$(CP) zxmkdirs.sh zxcall zxpasswd zxcot zxlogview zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl zxsizeof $(PREFIX)/bin
+	$(CP) zxmkdirs.sh zxcall zxumacall zxpasswd zxcot zxlogview zxbusd zxbustailf zxbuslist zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl mini_httpd_zxid $(PREFIX)/bin
 	$(CP) $(LIBZXID_A) libzxid.so* $(PREFIX)/lib
 	$(CP) libzxid.so.0.0 $(PREFIX)/lib
 	$(CP) *.h c/*.h $(PREFIX)/include/zxid
@@ -1649,15 +2026,20 @@ install: zxid $(LIBZXID_A) libzxid.so.0.0 dir
 	@$(ECHO) "https://sp1.zxidsp.org:8443/zxid"
 	@$(ECHO)
 
+install:  $(DEFAULT_EXE) $(LIBZXID_A) libzxid.so.0.0 dir install_nodep
+
+.PHONY: dir dirs installtestclean testdllclean
+
 #
 # Maintenance
 #
 
 tags:
-	etags *.[hc] c/*.[hc]
+	etags *.[hc] c/*.[hc] mini_httpd-1.19-zxid/*.[hc]
 
 #SSL=/aino/openssl-0.9.8g
-SSL=/aino/openssl-1.0.0c
+#SSL=/aino/openssl-1.0.0c
+SSL=/home/sampo/openssl-1.0.1c
 BB=/aino/busybox-1.11.1
 #DS=~/ds
 #DS=/d/sampo/ds4/ds
@@ -1667,8 +2049,9 @@ PD=/home/sampo/pd
 APACHE=/aino/httpd-2.2.8
 
 megatags:
-	etags *.[hc] c/*.[hc] c/*.ds $(SSL)/*/*.[hc] $(SSL)/*/*/*.[hc] $(DS)/*/*.[hc] $(DS)/*/*.ds $(DS)/io/dsproxy-test.pl $(SLIM)/*/*.ds $(SLIM)/conf/*/*.ds $(PD)/xsd2sg.pl $(PD)/pd2tex $(BB)/*/*.[hc] $(BB)/*/*/*.[hc] $(BB)/*/*/*/*.[hc]
+	etags *.[hc] c/*.[hc] c/*.ds  mini_httpd-1.19-zxid/*.[hc] $(SSL)/*/*.[hc] $(SSL)/*/*/*.[hc] $(PD)/xsd2sg.pl $(PD)/pd2tex $(BB)/*/*.[hc] $(BB)/*/*/*.[hc] $(BB)/*/*/*/*.[hc]
 
+# $(DS)/*/*.[hc] $(DS)/*/*.ds $(DS)/io/dsproxy-test.pl $(SLIM)/*/*.ds $(SLIM)/conf/*/*.ds
 # $(APACHE)/*/*.[hc] $(APACHE)/*/*/*.[hc] $(APACHE)/*/*/*/*.[hc] $(APACHE)/*/*/*/*/*.[hc] $(APACHE)/*/*/*/*/*/*.[hc]
 
 docclean:
@@ -1677,17 +2060,18 @@ docclean:
 distclean: clean
 
 cleanbin:
-	rm -f zxid zxlogview zxbench zxencdectest zxmqtest $(LIBZXID_A) libzxid.so* sizeof zxid.stderr
+	rm -f zxid zxidsimple zxbench zxencdectest zxmqtest $(LIBZXID_A) libzxid.so* zxsizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
-	rm -f zxidwspcgi zxidxfoobarwsp zxpasswd zxcot zxcall
-	rm -f mod_auth_saml.so zxididp zxdecode
+	rm -f zxidwspcgi zxidxfoobarwsp zxpasswd zxcot zxcall zxumacall zxbusd zxbustailf zxbuslist
+	rm -f mod_auth_saml$(SO) zxididp zxdecode zxlogview zxcot zxpasswd smime
+	rm -f zxid.dll zxidjava/zxidjni.dll *.exe
 
 miniclean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean
 	@$(ECHO) ------------------ Making miniclean
 	rm -f *.o *.obj zxid zxlogview zxbench zxencdectest zxmqtest $(LIBZXID_A) libzxid.so* sizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
-	rm -f mod_auth_saml.so zxididp
-	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar afr.*
+	rm -f mod_auth_saml$(SO) zxididp zxbusd zxbustailf zxbuslist
+	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar ak.*
 
 # make cleany && make genwrap ENA_GEN=1 && make all ENA_GEN=1
 # make cleany && make gen ENA_GEN=1 && make all ENA_GEN=1
@@ -1710,18 +2094,24 @@ regen: clean perlcleaner phpcleaner pycleaner rubycleaner csharpcleaner javaclea
 #      zxid to be built without the tools needed to generate those files.
 clean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean cleanbin
 	@$(ECHO) ------------------ Making clean
-	rm -f *.o c/*.o *.obj c/*.obj
-	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar afr.*
+	rm -f *.o */*.o *.obj */*.obj
+	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar ak.*
 
 winclean:
 	del /Q precheck\*.obj precheck\*.exe
 	del /Q *.obj c\*.obj
 
+.PHONY: winclean clean regen cleaner cleany miniclean cleanbin distclean docclean megatags tags
+
+strip_bins:
+	$(ECHO) $(STRIP) $(DEFAULT_EXE) $(ALL_EXE)
+	$(STRIP) $(DEFAULT_EXE) $(ALL_EXE)
+
 # zxcot -n -g http://federation.njedge.net/metadata/njedge-fed-metadata.xml
 
 dist zxid-$(ZXIDREL).tgz:
 	rm -rf zxid-$(ZXIDREL)
-	mkdir zxid-$(ZXIDREL) zxid-$(ZXIDREL)/c zxid-$(ZXIDREL)/sg zxid-$(ZXIDREL)/t zxid-$(ZXIDREL)/tex  zxid-$(ZXIDREL)/html zxid-$(ZXIDREL)/pulver zxid-$(ZXIDREL)/Net zxid-$(ZXIDREL)/Metadata zxid-$(ZXIDREL)/Raw zxid-$(ZXIDREL)/WSC zxid-$(ZXIDREL)/WSF_Raw zxid-$(ZXIDREL)/php zxid-$(ZXIDREL)/zxidjava zxid-$(ZXIDREL)/servlet zxid-$(ZXIDREL)/servlet/WEB-INF zxid-$(ZXIDREL)/servlet/META-INF zxid-$(ZXIDREL)/default-cot zxid-$(ZXIDREL)/py zxid-$(ZXIDREL)/ruby zxid-$(ZXIDREL)/csharp zxid-$(ZXIDREL)/precheck zxid-$(ZXIDREL)/pers zxid-$(ZXIDREL)/intra zxid-$(ZXIDREL)/protected zxid-$(ZXIDREL)/strong zxid-$(ZXIDREL)/other
+	mkdir zxid-$(ZXIDREL) zxid-$(ZXIDREL)/c zxid-$(ZXIDREL)/sg zxid-$(ZXIDREL)/t zxid-$(ZXIDREL)/tex  zxid-$(ZXIDREL)/html zxid-$(ZXIDREL)/pulver zxid-$(ZXIDREL)/Net zxid-$(ZXIDREL)/Metadata zxid-$(ZXIDREL)/Raw zxid-$(ZXIDREL)/WSC zxid-$(ZXIDREL)/WSF_Raw zxid-$(ZXIDREL)/php zxid-$(ZXIDREL)/zxidjava zxid-$(ZXIDREL)/servlet zxid-$(ZXIDREL)/servlet/WEB-INF zxid-$(ZXIDREL)/servlet/META-INF zxid-$(ZXIDREL)/default-cot zxid-$(ZXIDREL)/py zxid-$(ZXIDREL)/ruby zxid-$(ZXIDREL)/csharp zxid-$(ZXIDREL)/precheck zxid-$(ZXIDREL)/pers zxid-$(ZXIDREL)/intra zxid-$(ZXIDREL)/protected zxid-$(ZXIDREL)/strong zxid-$(ZXIDREL)/other zxid-$(ZXIDREL)/mini_httpd-1.19-zxid  zxid-$(ZXIDREL)/mini_httpd-1.19-zxid/contrib  zxid-$(ZXIDREL)/mini_httpd-1.19-zxid/contrib/redhat-rpm zxid-$(ZXIDREL)/mini_httpd-1.19-zxid/scripts zxid-$(ZXIDREL)/drupal zxid-$(ZXIDREL)/drupal/authn_sso
 	(cd zxid-$(ZXIDREL); ln -s . zx)
 	$(PERL) mkdist.pl zxid-$(ZXIDREL) <Manifest
 	tar czf zxid-$(ZXIDREL).tgz zxid-$(ZXIDREL)
@@ -1736,15 +2126,20 @@ linbindist:
 winbindist:
 	rm -rf zxid-$(ZXIDREL)-win32-bin
 	mkdir zxid-$(ZXIDREL)-win32-bin zxid-$(ZXIDREL)-win32-bin/c zxid-$(ZXIDREL)-win32-bin/zxidjava  zxid-$(ZXIDREL)-win32-bin/php
-	$(CP) zxid.dll zxidhlo zxidsimple zxididp zxcot zxpasswd zxdecode zxlogview smime *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
+	$(CP) zxid.dll zxidhlo.exe zxidsimple.exe zxididp.exe zxcot.exe zxpasswd.exe zxdecode.exe zxlogview.exe smime.exe zxcall.exe zxumacall.exe *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
 	$(CP) zxidjava/*.class $(ZXIDJNI_SO) zxidjava/zxid_wrap.c zxid-$(ZXIDREL)-win32-bin/zxidjava
-	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay README.zxid README.zxid-win32 zxid-$(ZXIDREL)-win32-bin
+	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay LICENSE.curl README.zxid README.zxid-win32 zxid-$(ZXIDREL)-win32-bin
 	$(CP) c/*.h zxid-$(ZXIDREL)-win32-bin/c
 	zip -r zxid-$(ZXIDREL)-win32-bin.zip zxid-$(ZXIDREL)-win32-bin
 
 #	$(CP) *.php mod_auth_saml.dll zxid-$(ZXIDREL)-win32-bin
 #	$(CP) php/*.php php/php_zxid.dll  zxid-$(ZXIDREL)-win32-bin/php
 
+
+common_bins: zxlogview$(EXE)  zxcot$(EXE) zxdecode$(EXE) zxcall$(EXE) zxumacall$(EXE) smime$(EXE) zxidhlo$(EXE) zxidsimple$(EXE) zxididp$(EXE) zxpasswd$(EXE)
+
+
+.PHONY: winbindist linbindist dist
 
 # To create release
 #   make cleaner          # remember c/zxidvers.h
@@ -1775,22 +2170,22 @@ winbindist:
 #WEBROOT=sampo@zxid.org:zxid.org
 WEBROOTHOST=sampo@zxidp.org
 WEBROOTDIR=/var/zxid/webroot
-WEBROOT=sampo@zxidp.org:/var/zxid/webroot
+WEBROOT=sampo@zxidp.org:/var/zxid/webroot/zxid.org/
 
 copydist:
 	rsync zxid-$(ZXIDREL).tgz $(WEBROOT)
 
 tex/%.pdf: %.pd
-	pd2tex -noref -nortf -nodbx -nohtml $<
+	$(PD2TEX) -noref -nortf -nodbx -nohtml $<
 
 html/%.html: %.pd doc-inc.pd doc-end.pd
-	pd2tex -noref -nortf -nodbx -notex $<
+	$(PD2TEX) -noref -nortf -nodbx -notex $<
 
 tex/README.zxid.pdf: README.zxid
-	pd2tex -noref -nortf -nodbx -nohtml $<
+	$(PD2TEX) -noref -nortf -nodbx -nohtml $<
 
 html/README.zxid.html: README.zxid doc-inc.pd doc-end.pd
-	pd2tex -noref -nortf -nodbx -notex README.zxid
+	$(PD2TEX) -noref -nortf -nodbx -notex README.zxid
 
 DOC= html/README.zxid.html html/index.html html/apache.html html/mod_auth_saml.html html/zxid-simple.html html/zxid-install.html html/zxid-conf.html html/zxid-cot.html html/zxid-java.html html/zxid-log.html html/zxid-perl.html html/zxid-php.html html/zxid-raw.html html/zxid-wsf.html html/zxid-idp.html html/zxid-faq.html html/schemata.html
 
@@ -1823,10 +2218,13 @@ zxidpcopytc: html/zxidp-user-terms.html html/zxidp-sp-terms.html
 	rsync html/zxidp-user-terms.html html/zxidp-sp-terms.html $(WEBROOT)/html
 
 rsynclite:
-	cd ..; rsync -a '--exclude=*.o' '--exclude=*.zip' '--exclude=TAGS' '--exclude=*.tgz' '--exclude=*.class' '--exclude=*.so' '--exclude=*.a'  '--exclude=zxlogview' '--exclude=zxidsimple'  '--exclude=zxidhlowsf'  '--exclude=zxidhlo' '--exclude=zxidsp' zxid mesozoic.homeip.net:
+	cd ..; rsync -a '--exclude=*.o' '--exclude=*.zip' '--exclude=TAGS' '--exclude=*.tgz' '--exclude=*.class' '--exclude=*.so' '--exclude=*.a'  '--exclude=zxlogview' '--exclude=zxidsimple'  '--exclude=zxidhlowsf'  '--exclude=zxidhlo' '--exclude=zxidsp' '--exclude=zxbusd' '--exclude=zxbustailf' '--exclude=zxbuslist' zxid mesozoic.homeip.net:
 
 cvstag:
 	cvs tag ZXID_ZXIDREL_$(ZXIDVERSION)
+
+.PHONY: cvstag cleandoc docpdf doc copydist
+.PHONY: rsyncline zxidpcopytc refhtml relhtml reldoc indexrel winbinrel release
 
 ### Coverage analysis
 ### See also: make gcov, make lcov (and lcovhtml directory), man gcov, man gprof
@@ -1882,6 +2280,8 @@ cleangcov:
 	rm -f lcovhtml/zxid.info lcovhtml/zxid/*.html lcovhtml/zxid/c/*.html
 	rm -f gmon.out
 
+.PHONY: cleangcov gprof copylcov lcov gcov covrep
+
 ### Call graphs and reference documentation
 
 function.list: 
@@ -1895,6 +2295,12 @@ callgraph:
 	dot -Tps main-call.dot -o main-call.ps
 	dot -Tps callgraph.dot -o callgraph.ps  # slow
 
+callgraph_zxbus: 
+	$(PERL) ./call-anal.pl -n *.c >callgraph.dot
+	dot -Tps ref/hi_shuffle-call.dot       -o ref/hi_shuffle-call.ps
+	dot -Tps ref/zxbus_listen_msg-call.dot -o ref/zxbus_listen_msg-call.ps
+	dot -Tps ref/zxid_simple_cf-call.dot   -o ref/zxid_simple_cf-call.ps
+
 API_REF_SRC=aux-templ.c dec-templ.c enc-templ.c getput-templ.c \
  mod_auth_saml.c \
  zxcrypto.c zxida7n.c zxidcdc.c zxidcgi.c zxidconf.c zxidcurl.c \
@@ -1903,15 +2309,15 @@ API_REF_SRC=aux-templ.c dec-templ.c enc-templ.c getput-templ.c \
  zxidses.c zxidsimp.c zxidpool.c zxidslo.c zxidspx.c zxididpx.c zxiddec.c \
  zxidsso.c zxidpsso.c zxiddi.c   zxidim.c  zxidps.c \
  zxiduser.c zxidwsc.c zxidwsp.c \
- zxlib.c zxlibdec.c zxlibenc.c zxlog.c zxlogview.c zxns.c zxsig.c zxutil.c
+ zxlib.c zxlibdec.c zxlibenc.c zxbusprod.c zxlog.c zxlogview.c zxns.c zxpw.c zxsig.c zxutil.c
 
 refcall:
 	$(PERL) ./call-anal.pl -n $(API_REF_SRC) >callgraph.dot
 
 reference: refcall
-	cd ref; pd2tex -noref -nortf -nodbx ref.pd
-	cd ref/tex; pdflatex -file-line-error-style -interaction=errorstopmode ../ref.tex # Thrice so refs and index are right
-	cd ref/tex #; pdflatex -file-line-error-style -interaction=errorstopmode ../ref.tex # Thrice so refs and index are right
+	cd ref; $(PD2TEX) -noref -nortf -nodbx ref.pd
+	cd ref/tex; pdflatex -file-line-error-style -interaction=errorstopmode ref.tex # Thrice so refs and index are right
+	cd ref/tex #; pdflatex -file-line-error-style -interaction=errorstopmode ref.tex # Thrice so refs and index are right
 
 ifeq ($(PULVER),1)
 
@@ -1919,17 +2325,17 @@ dep: $(PULVER_DEPS)
 	rm -f deps.dep
 	$(MAKE) deps.dep
 
-deps: $(ZXID_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxidsimple.c $(ZX_OBJ:.o=.c) c/saml2-const.h c/saml2md-const.h c/wsf-const.h $(PULVER_DEPS) c/zxidvers.h
+deps: zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxbuslist.c zxidsimple.c $(ZX_OBJ:.o=.c) c/saml2-const.h c/saml2md-const.h c/wsf-const.h $(PULVER_DEPS) c/zxidvers.h
 	@$(ECHO) ================== Making deps
-	cat pulver/c_saml2_dec_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2_enc_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2_aux_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2_getput_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2md_dec_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2md_enc_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2md_aux_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	cat pulver/c_saml2md_getput_c.deps | xargs $(CC) $(CDEF) $(CDIR) -MM >>deps.dep
-	$(CC) $(CDEF) $(CDIR) -MM $(ZXID_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxidsimple.c c/saml2-const.h c/saml2md-const.h >>deps.dep
+	cat pulver/c_saml2_dec_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2_enc_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2_aux_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2_getput_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2md_dec_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2md_enc_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2md_aux_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	cat pulver/c_saml2md_getput_c.deps | xargs $(CC) $(CDEF) $(CINC) -MM >>deps.dep
+	$(CC) $(CDEF) $(CINC) -MM zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxbuslist.c zxidsimple.c c/saml2-const.h c/saml2md-const.h >>deps.dep
 
 #	$(ECHO) Deps built. $(foreach fil,$^,$(shell $(fil) >>deps.dep))
 
@@ -1937,8 +2343,8 @@ else
 
 dep: deps
 
-deps: $(ZXID_OBJ:.o=.c) $(ZX_OBJ:.o=.c) $(ZXID_LIB_OBJ:.o=.c) $(WSF_OBJ:.o=.c) $(OAUTH_OBJ:.o=.c) $(SMIME_LIB_OBJ) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxidsp.c zxidsimple.c $(ZX_OBJ:.o=.c) $(ZX_GEN_H) $(ZX_GEN_C) c/zx-const.h c/zxidvers.h
-	$(CC) $(CDEF) $(CDIR) -MM $^ >deps.dep
+deps: $(ZX_OBJ:.o=.c) $(ZXID_LIB_OBJ:.o=.c) $(WSF_OBJ:.o=.c) $(OAUTH_OBJ:.o=.c) $(SMIME_LIB_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxbusd.c zxbustailf.c zxbuslist.c zxidsp.c zxidsimple.c $(ZX_OBJ:.o=.c) $(ZX_GEN_H) $(ZX_GEN_C) c/zx-const.h c/zxidvers.h
+	$(CC) $(CDEF) $(CINC) -MM $^ >deps.dep
 
 # make gen ENA_GEN=1
 
@@ -1963,7 +2369,7 @@ help:
 	@$(ECHO) "N.B2: We distribute some generated files. If they are missing, you need"
 	@$(ECHO) "      to regenerate them: make cleaner; make dep ENA_GEN=1"
 	@$(ECHO)
-	@$(ECHO) "To compile for Linux 2.6: make"
+	@$(ECHO) "To compile for Linux 2.6: make or make TARGET=Linux"
 	@$(ECHO) "To compile for MacOS 10:  make TARGET=macosx"
 	@$(ECHO) "To compile for Solaris 8: make TARGET=sol8"
 	@$(ECHO) "To compile for Sparc Solaris 8 with cross compiler:"
@@ -1974,32 +2380,39 @@ help:
 	@$(ECHO) "paths that make sense in your local situation. The best way is to"
 	@$(ECHO) "first study the Makefile and then add your overrides to localconf.mk"
 	@$(ECHO) "or on make command line. Some of the most common ones:"
+	@$(ECHO) "  CFLAGS        Additional compiler flags needed on your platform"
 	@$(ECHO) "  CDEF          Additional -D flags needed on your platform"
-	@$(ECHO) "  CDIR          Additional -I flags needed on your platform"
+	@$(ECHO) "  CINC          Additional -I flags needed on your platform"
 	@$(ECHO) "  LIBS          Additional -L and -l flags needed on your platform"
-	@$(ECHO) "  CURL_ROOT     Where libcurl and its headers are installed"
-	@$(ECHO) "  OPENSSL_ROOT  Where OpenSSL and its headers are installed"
 	@$(ECHO) "  JAVAC         Where to find javac; where jdk is installed"
 	@$(ECHO) "  JNI_INC       Where jni.h and jni_md.h are found"
 	@$(ECHO) "  SERVLET_PATH  Where servlet-api.jar is found; where Tomcat is installed."
 	@$(ECHO) "  SHARED        Set to 1 for shared object (DLL) build. Default: static."
 	@$(ECHO)
 	@$(ECHO) "You may need to install dependency packages. For compilation you"
-	@$(ECHO) "need the devel versions. For example: "
-	@$(ECHO) "  sudo apt-get install libssl-dev     # Debian"
+	@$(ECHO) "need the devel versions that have the headers. For example: "
+	@$(ECHO) "  sudo apt-get install build-essential  # Debian"
+	@$(ECHO) "  sudo apt-get install linux-libc-dev"
+	@$(ECHO) "  sudo apt-get install libc6-dev-i386"
+	@$(ECHO) "  sudo apt-get install libgcrypt-dev"
+	@$(ECHO) "  sudo apt-get install libssl-dev"
 	@$(ECHO) "  sudo apt-get install libcurl4-openssl-dev"
-	@$(ECHO) "  sudo yum -y install openssl-devel   # Redhat"
+	@$(ECHO) "  sudo apt-get install libapr1-dev"
+	@$(ECHO) "  sudo apt-get install apache2-dev"
+	@$(ECHO) "  sudo apt-get install php5-dev"
+	@$(ECHO) "  sudo apt-get install openjdk-6-jdk"
+	@$(ECHO) "  sudo apt-get install mini-httpd"
+	@$(ECHO) "  sudo yum -y install openssl-devel     # Redhat"
 	@$(ECHO) "  sudo yum -y install libcurl-devel"
-	@$(ECHO) "  "
-	@$(ECHO) "  "
-	@$(ECHO) "  "
-	@$(ECHO) "  "
-	@$(ECHO) "  "
-	@$(ECHO) "  "
-	@$(ECHO) "  "
+	@$(ECHO)
+	@$(ECHO) "Following platform TARGETs are available:"
+	@$(ECHO)
+	@egrep '^ifeq \(.\(TARGET\),[A-Za-z0-9-]+\)' Makefile
 	@$(ECHO)
 	@$(ECHO) "Following make targets are available:"
 	@$(ECHO)
 	@egrep '^[a-z-]+:' Makefile
+
+.PHONY: help seehelp dep deps reference refcall callgraph_zxbus callgraph callgraph_annotate
 
 #EOF

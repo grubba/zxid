@@ -1,4 +1,5 @@
 /* zxidhlo.c  -  Hello World CGI binary for SAML 2 SP
+ * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -14,6 +15,9 @@
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  *           README-zxid, section 10 "zxid_simple() API"
+ *
+ * make zxidhlo CDEF="-DZX_CONF='\"URL=http://sp1.zxid.org/demohlo&NICE_NAME=ZXID SP Hello\"'"
+ * cp zxidhlo /var/zxid/webroot/demohlo
  */
 
 #include <zx/platform.h>
@@ -34,6 +38,7 @@
 char* help =
 "zxidhlo  -  SAML 2.0 SP CGI - R" ZXID_REL "\n\
 SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
+Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.\n\
 Copyright (c) 2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
 Author: Sampo Kellomaki (sampo@iki.fi)\n\
@@ -51,12 +56,13 @@ Usage: zxidhlo [options]   (when used as CGI, no options can be supplied)\n\
 /* CONFIG: You must edit the URL to match your domain name and port */
 
 #define ZXIDHLO "zxidhlo"
-//#define CONF "PATH=/var/zxid/&URL=http://sp1.zxid.org/demohlo"
-#ifndef CONF
-#define CONF "VPATH=%h/&VURL=%a%h%s&NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
+//#define ZX_CONF "PATH=/var/zxid/&URL=http://sp1.zxid.org/demohlo"
+#ifndef ZX_CONF
+//#define ZX_CONF "VPATH=%h/&VURL=%a%h%s&NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
+#define ZX_CONF "NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0&OUTMAP=$*$$$;$IdPSesID$unsb64-inf$IdPsesid$;$testa7nsb64$unsb64$$;$testfeide$feidedec$$;$testfilefeide$del$$"
 #endif
-//#define CONF "URL=https://sp1.zxidsp.org:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
-//#define CONF "URL=https://lima.tas3.eu:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
+//#define ZX_CONF "URL=https://sp1.zxidsp.org:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
+//#define ZX_CONF "URL=https://lima.tas3.eu:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
 
 /* Called by: */
 int main(int argc, char** argv)
@@ -71,12 +77,14 @@ int main(int argc, char** argv)
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */
   /* Reopen stderr only in mini_httpd case */
-  p = getenv("SERVER_SOFTWARE");
-  if (p && !memcmp(p, "mini_httpd", sizeof("mini_httpd")-1)) {
+  //p = getenv("SERVER_SOFTWARE");
+  //if (p && (!memcmp(p, "mini_httpd", sizeof("mini_httpd")-1)||!memcmp(p, "zxid_httpd", sizeof("zxid_httpd")-1))) {
     close(2);
-    if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2)
+    if (open("/var/tmp/zxid.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2) {
+      perror("/var/tmp/zxid.stderr");
       exit(2);
-  }
+    }
+  //}
   fprintf(stderr, "=================== Running " ZXIDHLO " ===================\n");
 #endif
 
@@ -85,7 +93,7 @@ int main(int argc, char** argv)
     exit(1);
   }
   
-  res = zxid_simple(CONF, 0, 0x1fff);  /* 0xfff == full CGI automation */
+  res = zxid_simple(ZX_CONF, 0, 0x1fff);  /* 0xfff == full CGI automation */
   switch (res[0]) {
   default:
     ERR("Unknown zxid_simple() response(%s)", res);
@@ -97,13 +105,15 @@ int main(int argc, char** argv)
   p = strstr(res, "sesid: ");
   if (p) {
     p += sizeof("sesid: ")-1;
-    q = strchr(sid, '\n');
+    q = strchr(p, '\n');
     if (q) {
       memcpy(sid, p, MIN(q-p, sizeof(sid)-1));
       sid[MIN(q-p, sizeof(sid)-1)] = 0;
+      D("sid(%s)",sid);
     } else {
       strncpy(sid, p, sizeof(sid));
       sid[sizeof(sid)-1] = 0;
+      D("sid(%s)",sid);
     }
   } else
     sid[0] = 0;
@@ -111,13 +121,15 @@ int main(int argc, char** argv)
   p = strstr(res, "idpnid: ");
   if (p) {
     p += sizeof("idpnid: ")-1;
-    q = strchr(nid, '\n');
+    q = strchr(p, '\n');
     if (q) {
       memcpy(nid, p, MIN(q-p, sizeof(nid)-1));
       nid[MIN(q-p, sizeof(nid)-1)] = 0;
+      D("nid(%s)",nid);
     } else {
       strncpy(nid, p, sizeof(nid));
       nid[sizeof(nid)-1] = 0;
+      D("nid(%s)",nid);
     }
   } else
     nid[0] = 0;
@@ -125,13 +137,15 @@ int main(int argc, char** argv)
   p = strstr(res, "setcookie: ");
   if (p) {
     p += sizeof("setcookie: ")-1;
-    q = strchr(setcookie, '\n');
+    q = strchr(p, '\n');
     if (q) {
       memcpy(setcookie, p, MIN(q-p, sizeof(setcookie)-1));
       setcookie[MIN(q-p, sizeof(setcookie)-1)] = 0;
+      D("setcookie(%s)",setcookie);
     } else {
       strncpy(setcookie, p, sizeof(setcookie));
       setcookie[sizeof(setcookie)-1] = 0;
+      D("setcookie(%s)",setcookie);
     }
   } else
     setcookie[0] = 0;

@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- wsu_Created -------------------------- */
-/* refby( zx_wst_Lifetime_s zx_wsu_Timestamp_s ) */
+/* refby( zx_wsu_Timestamp_s zx_wst_Lifetime_s ) */
 #ifndef zx_wsu_Created_EXT
 #define zx_wsu_Created_EXT
 #endif
@@ -61,7 +61,7 @@ void zx_wsu_Created_PUT_Id(struct zx_wsu_Created_s* x, struct zx_attr_s* y);
 
 #endif
 /* -------------------------- wsu_Expires -------------------------- */
-/* refby( zx_wst_Lifetime_s zx_wsu_Timestamp_s ) */
+/* refby( zx_wsu_Timestamp_s zx_wst_Lifetime_s ) */
 #ifndef zx_wsu_Expires_EXT
 #define zx_wsu_Expires_EXT
 #endif

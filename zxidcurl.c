@@ -1,4 +1,5 @@
 /* zxidcurl.c  -  libcurl interface for making SOAP calls and getting metadata
+ * Copyright (c) 2013-2014 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -13,6 +14,9 @@
  * 4.10.2008,  added documentation --Sampo
  * 1.2.2010,   removed arbitrary limit on SOAP response size --Sampo
  * 11.12.2011, refactored HTTP GET client --Sampo
+ * 26.10.2013, improved error reporting on credential expired case --Sampo
+ * 12.3.2014,  added partial mime multipart support --Sampo
+ * 27.5.2014,  Added feature to stop parsing after end of first top level tag has been seen --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  *           http://curl.haxx.se/libcurl/
@@ -65,7 +69,7 @@ size_t zxid_curl_write_data(void *buffer, size_t size, size_t nmemb, void *userp
   }
   memcpy(rc->p, buffer, len);
   rc->p += len;
-  if (zx_debug & CURL_INOUT) {
+  if (errmac_debug & CURL_INOUT) {
     INFO("RECV(%.*s) %d chars", len, (char*)buffer, len);
     D_XML_BLOB(0, "RECV", len, (char*)buffer);
   }
@@ -88,7 +92,7 @@ size_t zxid_curl_read_data(void *buffer, size_t size, size_t nmemb, void *userp)
     len = wc->lim - wc->p;
   memcpy(buffer, wc->p, len);
   wc->p += len;
-  if (zx_debug & CURL_INOUT) {
+  if (errmac_debug & CURL_INOUT) {
     INFO("SEND(%.*s) %d chars", len, (char*)buffer, len);
     D_XML_BLOB(0, "SEND", len, (char*)buffer);
   }
@@ -114,9 +118,11 @@ size_t zxid_curl_read_data(void *buffer, size_t size, size_t nmemb, void *userp)
  * given configuration object can have only one HTTP request active
  * at a time. If you need more parallelism, you need more configuration
  * objects.
+ *
+ * N.B. To use proxy, set environment variable all_proxy=proxyhost:port
  */
 
-/* Called by:  */
+/* Called by:  zxid_get_meta, zxid_sp_dig_oauth_sso_a7n */
 char* zxid_http_get(zxid_conf* cf, const char* url, char** lim)
 {
 #ifdef USE_CURL
@@ -125,7 +131,7 @@ char* zxid_http_get(zxid_conf* cf, const char* url, char** lim)
 
   rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_MD_BUF+1);
   rc.lim = rc.buf + ZXID_INIT_MD_BUF;
-  LOCK(cf->curl_mx, "curl http_get");
+  LOCK(cf->curl_mx, "curl-http_get");
   curl_easy_reset(cf->curl);
   curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
   curl_easy_setopt(cf->curl, CURLOPT_WRITEFUNCTION, zxid_curl_write_data);
@@ -140,7 +146,7 @@ char* zxid_http_get(zxid_conf* cf, const char* url, char** lim)
   if (cf->log_level>1)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "GETMD", url, 0);
   res = curl_easy_perform(cf->curl);
-  UNLOCK(cf->curl_mx, "curl http_get");
+  UNLOCK(cf->curl_mx, "curl-http_get");
   rc.lim = rc.p;
   rc.p[1] = 0;
   rc.p = rc.buf;
@@ -166,10 +172,11 @@ char* zxid_http_get(zxid_conf* cf, const char* url, char** lim)
  * url:: URL for POST
  * len:: Length of the data. If -1 is passed, strlen(data) is used
  * data:: HTTP body for the POST
+ * SOAPaction:: A way to pass in additional header, typically SOAPaction or Authorization
  * returns:: HTTP body of the response */
 
 /* Called by:  zxid_soap_call_raw */
-struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data)
+struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data, const char* SOAPaction)
 {
 #ifdef USE_CURL
   struct zx_str* ret;
@@ -177,7 +184,7 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   struct zxid_curl_ctx rc;
   struct zxid_curl_ctx wc;
   struct curl_slist content_type;
-  struct curl_slist SOAPaction;
+  struct curl_slist SOAPaction_curl;
   char* urli;
   rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_SOAP_BUF+1);
   rc.lim = rc.buf + ZXID_INIT_SOAP_BUF;
@@ -185,9 +192,9 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   cf->curl = curl_easy_init();
   curl_easy_reset(cf->curl);
   LOCK_INIT(cf->curl_mx);
-  LOCK(cf->curl_mx, "curl soap");
+  LOCK(cf->curl_mx, "curl-soap");
 #else
-  LOCK(cf->curl_mx, "curl soap");
+  LOCK(cf->curl_mx, "curl-soap");
   curl_easy_reset(cf->curl);
 #endif
   curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
@@ -218,20 +225,17 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   curl_easy_setopt(cf->curl, CURLOPT_READFUNCTION, zxid_curl_read_data);
 
   ZERO(&content_type, sizeof(content_type));
-  content_type.data = "Content-Type: text/xml";
-  ZERO(&SOAPaction, sizeof(SOAPaction));
-#if 1
-  SOAPaction.data = "SOAPAction: \"\"";  /* Empty SOAPAction is the ID-WSF (and SAML?) standard */
-#else
-  /* Evil stuff: some implementations, especially Apache AXIS, are very
-   * picky about SOAPAction header. */
-  //SOAPaction.data = "SOAPAction: \"http://ws.apache.org/axis2/TestPolicyPortType/authRequestRequest\"";
-  SOAPaction.data = "SOAPAction: \"authRequest\"";
-#endif
-  SOAPaction.next = &content_type;    //curl_slist_append(3)
-  curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &SOAPaction);
+  content_type.data = cf->wsc_soap_content_type; /* SOAP11: "Content-Type: text/xml" */
+  if (SOAPaction) {
+    ZERO(&SOAPaction_curl, sizeof(SOAPaction_curl));
+    SOAPaction_curl.data = (char*)SOAPaction;
+    SOAPaction_curl.next = &content_type;    //curl_slist_append(3)
+    curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &SOAPaction_curl);
+  } else {
+    curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &content_type);
+  }
   
-  D("----------- url(%s) -----------", urli);
+  INFO("----------- call(%s) -----------", urli);
   DD("SOAP_CALL post(%.*s) len=%d\n", len, data, len);
   D_XML_BLOB(cf, "SOAPCALL POST", len, data);
   res = curl_easy_perform(cf->curl);  /* <========= Actual call, blocks. */
@@ -257,13 +261,16 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
     ERR("Failed post to url(%s) CURLcode(%d) CURLerr(%s)", urli, res, CURL_EASY_STRERR(res));
     DD("buf(%.*s)", rc.lim-rc.buf, rc.buf);
   }
-  UNLOCK(cf->curl_mx, "curl soap");
+
+  /*curl_easy_getinfo(cf->curl, CURLINFO_CONTENT_TYPE, char*);*/
+
+  UNLOCK(cf->curl_mx, "curl-soap");
   ZX_FREE(cf->ctx, urli);
   rc.lim = rc.p;
   rc.p[0] = 0;
 
   DD("SOAP_CALL got(%s)", rc.buf);
-  D_XML_BLOB(cf, "SOAPCALL GOT", -2, rc.buf);
+  D_XML_BLOB(cf, "SOAPCALL GOT", rc.lim - rc.buf, rc.buf);
   
   ret = zx_ref_len_str(cf->ctx, rc.lim - rc.buf, rc.buf);
   return ret;
@@ -324,6 +331,54 @@ zxid_entity* zxid_get_meta_ss(zxid_conf* cf, struct zx_str* url)
   return zxid_get_meta(cf, zx_str_to_c(cf->ctx, url));
 }
 
+/*() Locate first SOAP Envelope using simple heuristic
+ * searching for string "Envelope" (and related namespace).
+ * Typically this allows extraction of SOAP envelope from deep
+ * inside MIME multipart message (MTOM+xop aka SOAP with attachments) */
+
+const char* zxid_locate_soap_Envelope(const char* haystack)
+{
+  const char* q;
+  const char* p = strstr(haystack, zx_xmlns_e);
+  if (p) {
+    for (q = p-1; q >= haystack; --q)
+      if (*q == '<') break;
+    if (q < haystack)
+      return 0;
+    p = zx_memmem(q, p-q, "Envelope", sizeof("Envelope")-1);
+    if (p)
+      return q;
+  } else {
+    D("Trying to detect namespaceless Envelope %d",0);
+    p = strstr(haystack, "Envelope");
+    if (p && p > haystack) {
+      --p;
+      switch (*p) {
+      case '<': return p;
+      case ':': /* Scan over namespace prefix */
+	for (--p; p > haystack; --p)
+	  if (!AZaz_09_dash(*p)) break;
+	if (*p == '<')
+	  return p;
+	/* else fall through to error */
+      default:
+	return 0;
+      }
+    }
+  }
+  return 0;
+}
+
+/*() Return Content-Type header from last HTTP response.
+ * This could be used to detect MIME multipart boundary, for example. */
+
+const char* zxid_get_last_content_type(zxid_conf* cf)
+{
+  char* ct;
+  curl_easy_getinfo(cf->curl, CURLINFO_CONTENT_TYPE, &ct);
+  return ct;
+}
+
 /* ============== SOAP Call ============= */
 
 /*(i) Send SOAP request and wait for response. Send the message to the
@@ -337,8 +392,8 @@ zxid_entity* zxid_get_meta_ss(zxid_conf* cf, struct zx_str* url)
  * return:: XML data structure representing the response, or 0 upon failure
  *
  * The underlying HTTP client is libcurl. While libcurl is documented to
- * be "entirely thread safe", one limitation is that chrl handle can not
- * be shared between threads. Since we keep the curl handle a part
+ * be "entirely thread safe", one limitation is that curl handle can not
+ * be shared between threads. Since we keep the curl handle as a part
  * of the configuration object, which may be shared between threads,
  * we need to take a lock for duration of the curl operation. Thus any
  * given configuration object can have only one HTTP request active
@@ -353,17 +408,48 @@ struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct z
   struct zx_root_s* r;
   struct zx_str* ret;
   struct zx_str* ss;
+  char soap_action_buf[1024];
+  char* soap_act;
+  const char* env_start;
 
   ss = zx_easy_enc_elem_opt(cf, &env->gg);
   DD("ss(%.*s) len=%d", ss->len, ss->s, ss->len);
-  ret = zxid_http_post_raw(cf, url->len, url->s, ss->len, ss->s);
+
+  if (cf->soap_action_hdr && strcmp(cf->soap_action_hdr,"#inhibit")) {
+    if (!strcmp(cf->soap_action_hdr,"#same")) {
+      if (env->Header && env->Header->Action && ZX_GET_CONTENT_S(env->Header->Action)) {
+	snprintf(soap_action_buf,sizeof(soap_action_buf), "SOAPAction: \"%.*s\"", ZX_GET_CONTENT_LEN(env->Header->Action), ZX_GET_CONTENT_S(env->Header->Action));
+	soap_action_buf[sizeof(soap_action_buf)-1] = 0;
+	soap_act = soap_action_buf;
+	D("SOAPaction(%s)", soap_action_buf);
+      } else {
+	ERR("e:Envelope/e:Headers/a:Action SOAP header is malformed %p", env->Header);
+      }
+    } else {
+      snprintf(soap_action_buf,sizeof(soap_action_buf), "SOAPAction: \"%s\"", cf->soap_action_hdr);
+      soap_action_buf[sizeof(soap_action_buf)-1] = 0;
+      soap_act = soap_action_buf;
+    }
+  } else
+    soap_act = 0;
+  
+  ret = zxid_http_post_raw(cf, url->len, url->s, ss->len, ss->s, soap_act);
   zx_str_free(cf->ctx, ss);
   if (ret_enve)
     *ret_enve = ret?ret->s:0;
   if (!ret)
     return 0;
+  
+  env_start = zxid_locate_soap_Envelope(ret->s);
+  if (!env_start) {
+    ERR("SOAP response does not have Envelope element url(%.*s)", url->len, url->s);
+    D_XML_BLOB(cf, "NO ENVELOPE SOAP RESPONSE", ret->len, ret->s);
+    ZX_FREE(cf->ctx, ret);
+    return 0;
+  }
 
-  r = zx_dec_zx_root(cf->ctx, ret->len, ret->s, "soap_call");
+  cf->ctx->top1 = 1;  /* Stop parsing after first toplevel <e:Envelope> */
+  r = zx_dec_zx_root(cf->ctx, ret->len - (env_start - ret->s), env_start, "soap_call");
   if (!r || !r->Envelope || !r->Envelope->Body) {
     ERR("Failed to parse SOAP response url(%.*s)", url->len, url->s);
     D_XML_BLOB(cf, "BAD SOAP RESPONSE", ret->len, ret->s);
@@ -429,7 +515,7 @@ struct zx_root_s* zxid_soap_call_body(zxid_conf* cf, struct zx_str* url, struct 
  * body::   XML data structure representing the request
  * return:: 0 if fail, ZXID_REDIR_OK if success. */
 
-/* Called by:  zxid_idp_soap_dispatch x2, zxid_sp_soap_dispatch x7 */
+/* Called by:  zxid_idp_soap_dispatch x2, zxid_sp_soap_dispatch x8 */
 int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_Body_s* body)
 {
   struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx,0);
@@ -438,7 +524,15 @@ int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_Body_s* bo
   env->Body = body;
   zx_add_kid(&env->gg, &body->gg);
   env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
-  zxid_wsf_decor(cf, ses, env, 1);
+
+  if (ses && ses->curflt) {
+    D("Detected curflt, abandoning previous Body content. %d", 0);
+    /* *** LEAK: Should free previous body content */
+    env->Body = (struct zx_e_Body_s*)zx_replace_kid(&env->gg, (struct zx_elem_s*)zx_NEW_e_Body(cf->ctx, 0));
+    ZX_ADD_KID(env->Body, Fault, ses->curflt);
+  }
+  
+  zxid_wsf_decor(cf, ses, env, 1, 0);
   ss = zx_easy_enc_elem_opt(cf, &env->gg);
 
   if (cf->log_issue_msg) {
@@ -461,8 +555,10 @@ int zxid_soap_cgi_resp_body(zxid_conf* cf, zxid_ses* ses, struct zx_e_Body_s* bo
     }
   }
   
-  if (zx_debug & ZXID_INOUT) INFO("SOAP_RESP(%.*s)", ss->len, ss->s);
-  printf("CONTENT-TYPE: text/xml" CRLF "CONTENT-LENGTH: %d" CRLF2 "%.*s", ss->len, ss->len, ss->s);
+  if (errmac_debug & ERRMAC_INOUT) INFO("SOAP_RESP(%.*s)", ss->len, ss->s);
+  fprintf(stdout, "CONTENT-TYPE: text/xml" CRLF "CONTENT-LENGTH: %d" CRLF2 "%.*s", ss->len, ss->len, ss->s);
+  fflush(stdout);
+  D("^^^^^^^^^^^^^^ Done (%d chars returned) ^^^^^^^^^^^^^", ss->len);
   return ZXID_REDIR_OK;
 }
 

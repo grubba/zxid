@@ -1278,3 +1278,88 @@ his privacy is protected.
 
 
 --Sampo
+
+
+
+=============
+20120416
+
+{{Multiple issues|notability = November 2011|self-published = November 2011|cleanup = January 2012}}
+
+{{Infobox software
+| name                   = ZXID
+| logo                   = [[Image:zxid-tas3-ios.png]]
+| released               = {{release date|mf=yes|2005|08|01}}
+| frequently updated     = Yes
+| latest release version = Release 1.03
+| latest release date    = {{release date|mf=yes|2011|08|12}}
+| operating system       = [[Cross-platform]]
+| programming language   = C/C++, Java, CSharp, PHP, Perl, others per SWIG
+| language               = English
+| status                 = Active
+| genre                  = [[Identity and access management]]
+| license                = [[Apache License|Apache2]]
+| website                = http://zxid.org/
+}}
+
+'''ZXID'''.org<ref>Sampo Kellomäki: "ZXID", http://zxid.org/</ref> Identity Management toolkit implements standalone [[SAML 2.0]],
+Liberty [[ID-WSF|ID-WSF 2.0]], and [[XACML]] 2.0 stacks and aims at implementing all popular
+federation, [[Single sign-on|SSO]], and ID Web Services protocols.  It is a C implementation
+with minimal external dependencies - OpenSSL, CURL, and zlib -
+ensuring easy deployment (no [[DLL hell]]). Due to its small footprint and
+efficient and accurate schema driven implementation, it is suitable
+for embedded and high volume applications. Language bindings to all
+popular highlevel languages such as [[PHP]], [[Perl]], and [[Java (programming language)|Java]], are provided
+via [[SWIG]].  ZXID implements, as of Nov 2011, SP, IdP, WSC, WSP,
+Discovery, PEP, and PDP roles. ZXID is the reference implementation
+of the core security architecture of the [[TAS3|TAS3.eu]] project.
+
+==Research and Projects==
+
+TAS3 architecture, and ZXID as a reference implementation, has been used by various research efforts, including
+
+* <ref>A. Bertolino, et al.: "Enhancing Service Federation Trustworthiness through Online Testing", IEEE Computer, January 2012 (vol. 45 no. 1)
+pp. 66-72, 2012. [http://doi.ieeecomputersociety.org/10.1109/MC.2011.227 Enhancing Service Federation Trustworthiness through Online Testing]</ref>
+
+* <ref>I. Ciuciu, et al.: "Ontology Based Interoperation for Securely Shared Services\u201d, in Proceedings of the 4th International Conference on New Technologies, Mobility and Security, Paris, France, February 2011</ref>
+* <ref>C. Hütter, R. Lorch and K. . Böhm: "Evolving Cooperation through Reciprocity Using a Centrality-based Reputation System", in Proceedings of the IEEE/WIC/ACM International Conference on Intelligent Agent Technology (IAT), 2011. </ref>
+* <ref>D. W. Chadwick, S. F. Lievens, J. I. den Hartog, A. Pashalidis and J. Alhadeff: "My Private Cloud Overview \u2013 A Trust, Privacy and Security Infrastructure for the Cloud", in Proc IEEE 4th Int Conf on Cloud Computing (IEEE Cloud 2011), Washiongton DC, USA, Jul. 2011, pp. 752-753.</ref>
+* <ref>A. Pashalidis, B. Preneel: "Evaluating Tag-Based Preference Obfuscation Systems", IEEE Transactions on Knowledge Engineering, Jun. 2011.</ref>
+
+* <ref>J. Müller, et al.: "Secure Business Processes in Service-Oriented Architectures \u2013 A Requirements Analysis", in Proceedings of the 8th IEEE European Conference on Web Services, Cyprus, 2010, pp. 35-42.</ref>
+* <ref>S. Winfield, T. Kirkham: "Let\u2019s Keep It Personal: ePortfolio Data in Next Generation Distributed Computing Applications", in Learning Forum London 2010 Proceedings, 2010, pp. 219-220.</ref>
+* <ref>Q. Reul, G. Zhao: "Enabling Access to Web Resources through SecPODE-Based Annotations", in Proceedings of the 6th International Workshop on Semantic Web and Web Semantics, Crete, Greece, 2010, pp. 596-605.</ref>
+* <ref>D. W. Chadwick, G. Inman and P. Coxwell: "CardSpace in the cloud", in Proceedings of the 17th ACM conference on Computer and communications security, New York, NY, 2010, pp. 657-659.</ref>
+
+* <ref>T. Kirkham, S. Winfield and M. Santos: "Developing user centered management of personal data in a distributed student placement application", in 5th Int. Summer School organised jointly by the PrimeLife EU project, in cooperation with the IFIP WG 9.2, 9.6/11.7 11.4, 11.6., Privacy and Identity Management for Life, Nice, France, 2009.</ref>
+* <ref>A. Bertolino, G. De Angelis and A. Polini: "On-line validation of service oriented systems in the European Project TAS³", in International Workshop on Principles of Engineering Service Oriented Systems, Vancouver, Canada, 2009, pp. 107-110.</ref>
+* <ref>P. Ferdinand, et al.: "Accomplishing Privacy and Security requirements in ROLE with TAS³ findings", in Stellar Alpine Rendez-vous, Garmisch-Partenkirchen, Germany, 2009.</ref>
+
+* For full list of publications, see http://vds1628.sivit.org/tas3/?page_id=10
+
+ZXID.org has been deployed commercially by various enterprise customers in US (e.g. Symlabs Inc., LightSquared, etc.), Europe (Synergetics NV, Levelview Lda, zxidp.org, etc.), and Asia (e.g.Sri Lanka Hotels & Resorts).
+
+==IPR Status==
+
+Apache2 Open Source License. All dependency libraries (OpenSSL, libcurl, zlib) are under
+similarly liberal open source license.
+
+The underlying standards are all [[Royalty Free]] as specified in Libery Alliance and OASIS IPR policies.
+The TAS3 architecture, of which ZXID is the reference implementation, is covered by TAS3 Consortium "Royalty free to implement and use" pledge at www.tas3.eu section "Install and configure" (http://vds1628.sivit.org/tas3/?page_id=150#section3)
+
+:: In TAS3 General Assembly of 2010-09-13, following declaration was made:
+
+::: "TAS3 architecture and specifications, as described in public deliverables D2.1, D2.4, and D7.1, are licensed free for implementation and use by anyone. Up to June 2010, TAS3 consortium partners do not hold patents nor will exercise patents that cover implementation and use of the TAS3 architecture and specifications of those deliverables. This license is only granted for the specific purpose of correct implementations of TAS3 specifications." <ref>[http://vds1628.sivit.org/tas3/?page_id=138 TAS3 Consortium General Assembly minutes from 2010-09-13, as excerpted on tas3.eu section "Software" (old ref good as of late 2011)]</ref><ref>[http://vds1628.sivit.org/tas3/?page_id=150#section3 TAS3 Consortium General Assembly minutes from 2010-09-13, as excerpted on tas3.eu section "Install and Configure" (new ref, worked on 20120416)]</ref>
+
+==History==
+
+ZXID was started in 2005 by Sampo Kellomäki while still working with Symlabs. Sampo obtained in 2006
+from Symlabs commitment to release the code under Apache2 license, which effectively
+made ZXID an open source project. In 2009 TAS3 project adopted ZXID as the
+reference implementation of TAS3 core security technologies. The 1.0 release and end of initial development phase happened in May 2011. ZXID is considered to be stable with respect to SAML2, ID-WSF2, and XACML2 features. ZXID continues to be
+an active open source project (as of November 2011) and new features, some of which may not be stable, continue to be added.
+
+==References==
+{{reflist}}
+
+[[Category:Free software projects]]

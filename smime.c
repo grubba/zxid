@@ -94,9 +94,6 @@ SMIME_VERSION "\n"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#ifndef macintosh
-# include <malloc.h>
-#endif
 
 #define DETACHED_SIG_TYPE_FILE  "application/x-detached-file-signature-file"
 

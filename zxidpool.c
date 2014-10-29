@@ -138,7 +138,7 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
 	p += av->map_val->len;
 	*p++ = '\n';
 
-	DD("len 2=%d", ((int)(p-ss->s)));
+	DD("len 2=%d", (int)(p-ss->s));
       }
 
 
@@ -154,7 +154,7 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
       }
       *p++ = '\n';
 
-      DD("len 3=%d name_len=%d name(%s)", ((int)(p-ss->s)), name_len, at->name);
+      DD("len 3=%d name_len=%d name(%s)", (int)(p-ss->s), name_len, at->name);
       
       for (av = at->nv; av; av = av->n) {
 	strcpy(p, at->name);
@@ -167,22 +167,25 @@ static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
 	}
 	*p++ = '\n';
 
-	D("len 4=%d", ((int)(p-ss->s)));
+	D("len 4=%d", (int)(p-ss->s));
       }
 
     }
   }
-  DD("len Fin=%d", ((int)(p-ss->s)));
+  DD("len Fin=%d", (int)(p-ss->s));
 
-  ASSERTOP(p, ==, ss->s+len);
+  ASSERTOPP(p, ==, ss->s+len);
   return ss;
 }
 
-static int zxid_json_strlen(char* string)
+/*(-) Length computation of JSON string */
+
+/* Called by:  zxid_pool_to_json x9 */
+static int zxid_json_strlen(char* js)
 {
   int res = 0;
-  for (;*string;string++, res++) {
-    int c = *(unsigned char*)string;
+  for (; *js; ++js, ++res) {
+    int c = *(unsigned char*)js;
     if (c < ' ') {
       if ((c == '\n') || (c == '\r') || (c == '\t') ||
 	  (c == '\b') || (c == '\f')) {
@@ -195,22 +198,25 @@ static int zxid_json_strlen(char* string)
     } else if ((c == '\'') || (c == '\"') || (c == '\\')) {
       /* \X */
       res++;
-    } else if ((c == 0xe2) && (((unsigned char*)string)[1] == 0x80) &&
-	       ((((unsigned char*)string)[2] & 0xfe) == 0xa8)) {
+    } else if ((c == 0xe2) && (((unsigned char*)js)[1] == 0x80) &&
+	       ((((unsigned char*)js)[2] & 0xfe) == 0xa8)) {
       /* Some java-script based JSON decoders don't like
        * unescaped \u2028 and \u2029. */
       /* \uXXXX */
       res += 5;
-      string += 2;
+      js += 2;
     }
   }
   return res;
 }
 
-static char* zxid_json_strcpy(char* dest, char* string)
+/*(-) Copy JSON string */
+
+/* Called by:  zxid_pool_to_json x8 */
+static char* zxid_json_strcpy(char* dest, char* js)
 {
-  for (;*string; string++) {
-    int c = *(unsigned char*)string;
+  for (; *js; ++js) {
+    int c = *(unsigned char*)js;
     if (c < ' ') {
       /* Control character. */
       *dest++ = '\\';
@@ -228,13 +234,13 @@ static char* zxid_json_strcpy(char* dest, char* string)
     } else if ((c == '\'') || (c == '\"') || (c == '\\')) {
       /* \X */
       *dest++ = '\\';
-    } else if ((c == 0xe2) && (((unsigned char*)string)[1] == 0x80) &&
-	       ((((unsigned char*)string)[2] & 0xfe) == 0xa8)) {
+    } else if ((c == 0xe2) && (((unsigned char*)js)[1] == 0x80) &&
+	       ((((unsigned char*)js)[2] & 0xfe) == 0xa8)) {
       /* Some java-script based JSON decoders don't like
        * unescaped \u2028 and \u2029. */
       /* \uXXXX */
-      sprintf(dest, "\\u%04x", 0x2028 | (string[2] & 1));
-      string += 2;
+      sprintf(dest, "\\u%04x", 0x2028 | (js[2] & 1));
+      js += 2;
       dest += 6;
       continue;
     }
@@ -371,7 +377,7 @@ static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
     *p++ = ',';
   }
   p[-1] = '}';   /* Overwrites last comma */
-  ASSERTOP(p, ==, ss->s+len);
+  ASSERTOPP(p, ==, ss->s+len);
   return ss;
 }
 
@@ -476,8 +482,8 @@ static struct zx_str* zxid_pool_to_qs(zxid_conf* cf, struct zxid_attr* pool)
     }
   }
   D("p=%p == %p ss=%p len=%d", p, ss->s+len, ss->s, len);
-  D("p(%.*s)", len, ss->s);
-  ASSERTOP(p, ==, ss->s+len);
+  DD("p(%.*s)", len, ss->s);
+  ASSERTOPP(p, ==, ss->s+len);
   *p = 0;  /* Zap last & */
   return ss;
 }
@@ -503,14 +509,15 @@ struct zx_str* zxid_ses_to_qs(zxid_conf* cf, zxid_ses* ses) {
   return zxid_pool_to_qs(cf, ses?ses->at:0);
 }
 
-/*() Add values, applying NEED, WANT, and INMAP */
+/*() Add values to session attribute pool, applying NEED, WANT, and INMAP */
 
 /* Called by:  zxid_add_a7n_at_to_pool x2 */
-static int zxid_add_at_values(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribute_s* at, char* name, struct zx_str* issuer)
+static int zxid_add_at_vals(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribute_s* at, char* name, struct zx_str* issuer)
 {
   struct zx_str* ss;
   struct zxid_map* map;
   struct zx_sa_AttributeValue_s* av;
+  struct zxid_attr* ses_at;
   
   /* Attribute must be needed or wanted */
 
@@ -525,30 +532,37 @@ static int zxid_add_at_values(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribu
     return 0;
   }
   
+  /* Locate existing session pool attribute by name or mapped name, or create
+   * empty one if needed. N.B. The value is not assigned here yet. */
+  
   if (map && map->dst && *map->dst && map->src && map->src[0] != '*') {
-    ses->at = zxid_new_at(cf, ses->at, strlen(map->dst), map->dst, 0, 0, "mapped");
+    ses_at = zxid_find_at(ses->at, map->dst);
+    if (!ses_at)
+      ses->at = ses_at = zxid_new_at(cf, ses->at, strlen(map->dst), map->dst, 0, 0, "mappd");
   } else {
-    ses->at = zxid_new_at(cf, ses->at, strlen(name), name, 0, 0, "as is");
+    ses_at = zxid_find_at(ses->at, name);
+    if (!ses_at)
+      ses->at = ses_at = zxid_new_at(cf, ses->at, strlen(name), name, 0, 0, "as is");
   }
-  ses->at->orig = at;
-  ses->at->issuer = issuer;
+  ses_at->orig = at;
+  ses_at->issuer = issuer;
   
   for (av = at->AttributeValue;
        av;
        av = (struct zx_sa_AttributeValue_s*)ZX_NEXT(av)) {
     if (av->gg.g.tok != zx_sa_AttributeValue_ELEM)
       continue;
-    D("Adding value: %p", ZX_GET_CONTENT(av));
+    DD("  adding value: %p", ZX_GET_CONTENT(av));
     if (av->EndpointReference || av->ResourceOffering)
       continue;  /* Skip bootstraps. They are handled elsewhere, see zxid_snarf_eprs_from_ses(). */
     if (ZX_GET_CONTENT(av)) {
-      ss = zxid_map_val_ss(cf, ses, 0, map, ses->at->name, ZX_GET_CONTENT(av));
-      if (ses->at->val) {
-	D("map val(%.*s)", ss->len, ss->s);
-	ses->at->nv = zxid_new_at(cf, ses->at->nv, 0, 0, ss->len, ss->s, "multival");
+      ss = zxid_map_val_ss(cf, ses, 0, map, ses_at->name, ZX_GET_CONTENT(av));
+      if (ses_at->val) {
+	D("  multival(%.*s)", ss->len, ss->s);
+	ses->at->nv = zxid_new_at(cf, ses_at->nv, 0, 0, ss->len, ss->s, "multival");
       } else {
-	D("copy val(%.*s)", ss->len, ss->s);
-	COPYVAL(ses->at->val, ss->s, ss->s+ss->len);
+	D("  1st val(%.*s)", ss->len, ss->s);
+	COPYVAL(ses_at->val, ss->s, ss->s+ss->len);
       }
     }
   }
@@ -556,7 +570,7 @@ static int zxid_add_at_values(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribu
   return 1;
 }
 
-/*() Add Attribute Statements of an Assertion to pool, applying NEED, WANT, and INMAP */
+/*() Add Attribute Statements of an Assertion to session attribute pool, applying NEED, WANT, and INMAP */
 
 /* Called by:  zxid_ses_to_pool */
 static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
@@ -577,16 +591,17 @@ static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
       if (at->gg.g.tok != zx_sa_Attribute_ELEM)
 	continue;
       if (at->Name)
-	zxid_add_at_values(cf, ses, at, zx_str_to_c(cf->ctx, &at->Name->g), ZX_GET_CONTENT(a7n->Issuer));
+	zxid_add_at_vals(cf, ses, at, zx_str_to_c(cf->ctx, &at->Name->g), ZX_GET_CONTENT(a7n->Issuer));
       if (at->FriendlyName)
-	zxid_add_at_values(cf, ses, at, zx_str_to_c(cf->ctx, &at->FriendlyName->g), ZX_GET_CONTENT(a7n->Issuer));
+	zxid_add_at_vals(cf, ses, at, zx_str_to_c(cf->ctx, &at->FriendlyName->g), ZX_GET_CONTENT(a7n->Issuer));
     }
   }
 }
 
-/*() Add simple attribute to pool, applying NEED, WANT, and INMAP */
+/*() Add simple attribute to session's attribute pool, applying NEED, WANT, and INMAP.
+ * Replaces zxid_add_attr_to_pool() */
 
-/* Called by:  zxid_add_ldif_at2ses, zxid_add_qs_to_ses, zxid_ses_to_pool x25 */
+/* Called by:  chkuid, zxid_add_action_from_body_child, zxid_add_ldif_at2ses, zxid_add_qs2ses, zxid_mini_httpd_sso, zxid_ses_to_pool x26, zxid_simple_ab_pep x2 */
 void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx_str* val)
 {
   struct zxid_map* map;
@@ -599,7 +614,7 @@ void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx
       D("attribute(%s) filtered out by del rule in INMAP", at_name);
     } else {
       if (map && map->dst && *map->dst && map->src && map->src[0] != '*') {
-	ses->at = zxid_new_at(cf, ses->at, strlen(map->dst), map->dst, val->len, val->s, "mapd2");
+	ses->at = zxid_new_at(cf, ses->at, strlen(map->dst), map->dst, val->len, val->s, "mappd2");
       } else {
 	ses->at = zxid_new_at(cf, ses->at, strlen(at_name), at_name, val->len, val->s, "as is2");
       }
@@ -638,7 +653,7 @@ static void zxid_add_ldif_at2ses(zxid_conf* cf, zxid_ses* ses, const char* prefi
     val = p+2;
     p = strchr(val, '\n');  /* *** parsing LDIF is fragile if values are multiline */
     len = p?(p-val):strlen(val);
-    D("%s: ATTR(%s)=VAL(%.*s)", lk, name_buf, len, val);
+    D("%s: ATTR(%s)=(%.*s)", lk, name_buf, len, val);
     zxid_add_attr_to_ses(cf, ses, name_buf,  zx_dup_len_str(cf->ctx, len, val));
   }
 }
@@ -654,7 +669,7 @@ static void zxid_add_ldif_at2ses(zxid_conf* cf, zxid_ses* ses, const char* prefi
  * a given SP some EPR. Naturally such EPR can not have per user
  * or short time credential. This can have security implications.
  *
- * cf:: Config object for cf->path, and for memory allocation
+ * cf:: Config object for cf->cpath, and for memory allocation
  * ses:: Session object. ses->sid is used to determine desitmation directory.
  * path:: Path to the user directory (in /var/zxid/user/<sha1_safe_base64(idpnid)>/)
  */
@@ -689,13 +704,13 @@ static void zxid_cp_usr_eprs2ses(zxid_conf* cf, zxid_ses* ses, struct zx_str* pa
   closedir(dir);
 }
 
-/*(i) Process attributes from the AttributeStatements of the session
- * SSO Assertion and insert them to the pool. NEED, WANT, and INMAP
+/*(i) Process attributes from the AttributeStatements of the session's
+ * SSO Assertion and insert them to the session's attribute pool. NEED, WANT, and INMAP
  * are applied. The pool is suitable for use by PEP or eventually
  * rendering to LDIF (or JSON). This function also implements
  * local attribute authority. */
 
-/* Called by:  zxid_as_call_ses, zxid_fetch_ses, zxid_simple_ab_pep, zxid_wsc_valid_re_env, zxid_wsp_validate_env */
+/* Called by:  zxid_as_call_ses, zxid_az_base_cf, zxid_az_cf, zxid_fetch_ses, zxid_simple_ab_pep, zxid_wsc_valid_re_env, zxid_wsp_validate_env */
 void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
 {
   char* src;
@@ -737,7 +752,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   zxid_add_attr_to_ses(cf, ses, "nidfmt", zx_dup_str(cf->ctx, ses->nidfmt?"P":"T"));
   if (nid) {  
     zxid_user_sha1_name(cf, affid, nid, sha1_name);
-    path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR "%s", cf->path, sha1_name);
+    path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR "%s", cf->cpath, sha1_name);
     zxid_add_attr_to_ses(cf, ses, "localpath",   path);
     buf = read_all_alloc(cf->ctx, "splocal_user_at", 0, 0, "%.*s/.bs/.at", path->len, path->s);
     if (buf) {
@@ -771,7 +786,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   zxid_add_attr_to_ses(cf, ses, "tgtfmt",    zx_dup_str(cf->ctx, ses->tgtfmt?"P":"T"));
   if (tgtnid) {
     zxid_user_sha1_name(cf, tgtaffid, tgtnid, sha1_name);
-    path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR "%s", cf->path, sha1_name);
+    path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR "%s", cf->cpath, sha1_name);
     zxid_add_attr_to_ses(cf, ses, "tgtpath",   path);
     buf = read_all_alloc(cf->ctx, "sptgt_user_at", 0, 0, "%.*s/.bs/.at", path->len, path->s);
     if (buf) {
@@ -785,12 +800,12 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   //accr = a7n&&a7n->AuthnStatement&&a7n->AuthnStatement->AuthnContext&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content?a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content:0;
   zxid_add_attr_to_ses(cf, ses, "authnctxlevel", accr);
   
-  buf = read_all_alloc(cf->ctx, "splocal.all", 0, 0, "%s" ZXID_USER_DIR ".all/.bs/.at" , cf->path);
+  buf = read_all_alloc(cf->ctx, "splocal.all", 0,0, "%s" ZXID_USER_DIR ".all/.bs/.at" , cf->cpath);
   if (buf) {
     zxid_add_ldif_at2ses(cf, ses, 0, buf, "splocal.all");
     ZX_FREE(cf->ctx, buf);
   }
-  path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR ".all", cf->path);
+  path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR ".all", cf->cpath);
   zxid_cp_usr_eprs2ses(cf, ses, path);
   
   zxid_add_attr_to_ses(cf, ses, "eid",        zxid_my_ent_id(cf));
@@ -798,10 +813,11 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   zxid_add_attr_to_ses(cf, ses, "ssores",     zx_strf(cf->ctx, "%x", ses->ssores));
   if (ses->sid && *ses->sid) {
     zxid_add_attr_to_ses(cf, ses, "sesid",    zx_dup_str(cf->ctx, STRNULLCHK(ses->sid)));
-    zxid_add_attr_to_ses(cf, ses, "sespath",  zx_strf(cf->ctx, "%s" ZXID_SES_DIR "%s", cf->path, STRNULLCHK(ses->sid)));
+    zxid_add_attr_to_ses(cf, ses, "sespath",  zx_strf(cf->ctx, "%s" ZXID_SES_DIR "%s", cf->cpath, STRNULLCHK(ses->sid)));
   }
   zxid_add_attr_to_ses(cf, ses, "sesix",      zx_dup_str(cf->ctx, STRNULLCHK(ses->sesix)));
   zxid_add_attr_to_ses(cf, ses, "setcookie",  zx_dup_str(cf->ctx, STRNULLCHK(ses->setcookie)));
+  zxid_add_attr_to_ses(cf, ses, "setptmcookie",zx_dup_str(cf->ctx,STRNULLCHK(ses->setptmcookie)));
   if (ses->cookie && ses->cookie[0])
     zxid_add_attr_to_ses(cf, ses, "cookie",   zx_dup_str(cf->ctx, ses->cookie));
   zxid_add_attr_to_ses(cf, ses, "msgid",      ses->wsp_msgid);
@@ -816,7 +832,8 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
 }
 
 /*(i) Add Attributes from Querty String to Session attribute pool
- * The qs argument is parsed according to the CGI Query String rules
+ * The qs argument is parsed according to the CGI Query String rules (string
+ * is modifed to insert nul terminations and URL decoded in place)
  * and the attributes are added to the session. If apply_map is 1, the
  * INMAP configuration is applied. While this may seem a hassle, it
  * allows for specification of the values as safe_base64, etc. If values
@@ -825,43 +842,26 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
  * nul termination. Make sure to duplicate any string constant before calling.
  * Returns 1 on success, 0 on failure (return value often not checked). */
 
-/* Called by:  zxid_az_base_cf_ses, zxid_az_cf_ses */
-int zxid_add_qs_to_ses(zxid_conf* cf, zxid_ses* ses, char* qs, int apply_map)
+/* Called by:  zxid_az_base_cf_ses, zxid_az_cf_ses, zxid_query_ctlpt_pdp x2 */
+int zxid_add_qs2ses(zxid_conf* cf, zxid_ses* ses, char* qs, int apply_map)
 {
-  char *p, *n, *v, *val, *name;
+  char* n;
+  char* v;
   if (!qs || !ses)
     return 0;
 
   D("qs(%s) len=%d", qs, (int)strlen(qs));
   while (qs && *qs) {
-    for (; *qs == '&'; ++qs) ;    /* Skip over & or && */
-    if (!*qs) break;
-    
-    qs = strchr(name = qs, '=');  /* Scan name (until '=') */
-    if (!qs) break;
-    if (qs == name) {             /* Key was an empty string: skip it */
-      qs = strchr(qs, '&');       /* Scan value (until '&') *** or '?' */
-      continue;
-    }
-    for (; name < qs && *name <= ' '; ++name) ; /* Skip over initial whitespace before name */
-    n = p = name;
-    URL_DECODE(p, name, qs);
-    *p = 0;                                     /* Nul-term n (name) */
-    
-    for (val = ++qs; *qs && *qs != '&'; ++qs) ; /* Skip over = and scan value till '&' */
-    v = p = val;
-    URL_DECODE(p, val, qs);
-
-    if (*qs)
-      ++qs;
-    *p = 0;                                     /* Nul-term v (value) */
+    qs = zxid_qs_nv_scan(qs, &n, &v, 1);
+    if (!n)
+      n = "NULL_NAM_ERR";
 
     if (apply_map) {
       D("map %s=%s", n,v);
       zxid_add_attr_to_ses(cf, ses, n, zx_dup_str(cf->ctx, v));  
     } else {
       D("asis %s=%s", n,v);
-      ses->at = zxid_new_at(cf, ses->at, v-n-1, n, p-v, v, "as is");
+      ses->at = zxid_new_at(cf, ses->at, strlen(n), n, strlen(v), v, "as is3");
     }
   }
   return 1;

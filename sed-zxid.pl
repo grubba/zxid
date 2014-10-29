@@ -41,7 +41,8 @@ if ($op eq 'license') {
     chop; chop; chop;
     print <<LICENSE;
 char* license = "\\n\\
-Copyright (c) 2010 Sampo Kellomaki (sampo\@iki.fi), All Rights Reserved.\\n\\
+Copyright (c) 2012-2013 Synergetics SA (sampo@synergetics.be), All Rights Reserved.\\n\\
+Copyright (c) 2010-2012 Sampo Kellomaki (sampo\@iki.fi), All Rights Reserved.\\n\\
 Copyright (c) 2006-2009 Symlabs (symlabs\@symlabs.com), All Rights Reserved.\\n\\
 Author: Sampo Kellomaki (sampo\@iki.fi), All Rights Reserved.\\n\\
 $_\\n";
@@ -66,4 +67,5 @@ ZXIDVERS
 ;
 
 }
+
 __END__

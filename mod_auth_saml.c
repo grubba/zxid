@@ -1,4 +1,5 @@
 /* mod_auth_saml.c  -  Handwritten functions for Apache mod_auth_saml module
+ * Copyright (c) 2012-2014 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2008-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -13,6 +14,11 @@
  * 25.8.2009, add attribute passing and pep call --Sampo
  * 11.1.2010, refactoring and review --Sampo
  * 15.7.2010, consider passing to simple layer more data about the request --Sampo
+ * 28.9.2012, changed zx_instance string to "mas", fixed parsing CGI for other page --Sampo
+ * 13.2.2013, added WD option --Sampo
+ * 21.6.2013, added SOAP WSP capability --Sampo
+ * 17.11.2013, move redir_to_content feature to zxid_simple() --Sampo
+ * 8.2.2014,  added OPTIONAL_LOGIN_PAT feature --Sampo
  *
  * To configure this module add to httpd.conf something like
  *
@@ -25,17 +31,23 @@
  *
  * http://httpd.apache.org/docs/2.2/developer/
  * http://modules.apache.org/doc/API.html
- *
- * Idea: set REMOTE_USER header
  */
 
 #define _LARGEFILE64_SOURCE   /* So off64_t is found, see: man 3 lseek64 */
 
+#include <zx/platform.h>
 #include <zx/errmac.h>
 #include <zx/zxid.h>
 #include <zx/zxidpriv.h>
 #include <zx/zxidconf.h>
+#include <zx/zxidutil.h>
 #include <zx/c/zxidvers.h>
+
+#ifdef MINGW
+/* apr.h defines these */
+#undef uid_t
+#undef gid_t
+#endif
 
 #include "ap_config.h"
 #include "ap_compat.h"
@@ -56,7 +68,7 @@
 extern module AP_MODULE_DECLARE_DATA auth_saml_module;
 
 #if 0
-/* This function is run when each child process of apache starts. It does
+/*(-) This function is run when each child process of apache starts. It does
  * initializations that do not survive fork(2). */
 /* Called by: */
 static void chldinit(apr_pool_t* p, server_rec* s)
@@ -70,6 +82,26 @@ static void chldinit(apr_pool_t* p, server_rec* s)
 }
 #endif
 
+/*(-) Set cookies apache style. Internal. */
+
+static void set_cookies(zxid_conf* cf, request_rec* r, const char* setcookie, const char* setptmcookie)
+{
+  if (setcookie && setcookie[0] && setcookie[0] != '-') {
+    /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
+    D("Set-Cookie(%s)", setcookie);
+    apr_table_addn(r->headers_out, "Set-Cookie", setcookie);
+    apr_table_addn(r->err_headers_out, "Set-Cookie", setcookie);  /* Only way to get redir to set header */
+    apr_table_addn(r->headers_in,  "Set-Cookie", setcookie);  /* So subrequest can pick them up! */
+  }
+  if (setptmcookie && setptmcookie[0] && setptmcookie[0] != '-') {
+    /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
+    D("PTM Set-Cookie(%s)", setptmcookie);
+    apr_table_addn(r->headers_out, "Set-Cookie", setptmcookie);
+    apr_table_addn(r->err_headers_out, "Set-Cookie", setptmcookie);  /* Only way to get redir to set header */
+    apr_table_addn(r->headers_in,  "Set-Cookie", setptmcookie);  /* So subrequest can pick them up! */
+  }
+}
+
 /* ------------------------ Run time action -------------------------- */
 
 /*() Convert session attribute pool into Apache execution environment
@@ -79,15 +111,20 @@ static void chldinit(apr_pool_t* p, server_rec* s)
  * and to rename them.
  *
  * This is considered internal function to mod_auth_saml, called by chkuid().
- * You should not call this directly, unless you know what you are doing. */
+ * You should not call this directly, unless you know what you are doing.
+ *
+ * return:: Apache error code, typically OK, which allows Apache continue
+ *     processing the request. */
 
-/* Called by:  chkuid */
+/* Called by:  chkuid x2 */
 static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 {
   int ret = OK;
   char* name;
-  char* rs = 0;
+  //char* rs = 0;
+  //char* rs_qs;
   char* setcookie = 0;
+  char* setptmcookie = 0;
   char* cookie = 0;
   char* idpnid = 0;
   struct zxid_map* map;
@@ -97,6 +134,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
   /* Length computation pass */
 
   for (at = pool; at; at = at->n) {
+    DD("HERE name(%s)", at->name);
     map = zxid_find_map(cf->outmap, at->name);
     if (map) {
       if (map->rule == ZXID_MAP_RULE_DEL) {
@@ -117,22 +155,37 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 	apr_table_set(r->subprocess_env, name, av->map_val->s);
       }
     } else {
-
-      D("ATTR(%s)=VAL(%s)", at->name, at->val);
+      if ((errmac_debug & ERRMAC_DEBUG_MASK)>1)
+	D("ATTR(%s)=VAL(%s)", at->name, STRNULLCHKNULL(at->val));
+      else
+	D("ATTR(%s)=VAL(%.*s)", at->name, at->val?(int)MIN(35,strlen(at->val)):6, at->val?at->val:"(null)");
       /* *** handling of multivalued attributes (right now only last is preserved) */
       name = apr_psprintf(r->pool, "%s%s", cf->mod_saml_attr_prefix, at->name);
       apr_table_set(r->subprocess_env, name, at->val);
       for (av = at->nv; av; av = av->n)
 	apr_table_set(r->subprocess_env, name, av->val);
     }
-    if (     !strcmp(at->name, "rs"))        rs = at->val;        /* Capture special */
-    else if (!strcmp(at->name, "idpnid"))    idpnid = at->val;
-    else if (!strcmp(at->name, "setcookie")) setcookie = at->val;
-    else if (!strcmp(at->name, "cookie"))    cookie = at->val;
+    if      (!strcmp(at->name, "idpnid"))       idpnid = at->val;      /* Capture special */
+    else if (!strcmp(at->name, "setcookie"))    setcookie = at->val;
+    else if (!strcmp(at->name, "setptmcookie")) setptmcookie = at->val;
+    else if (!strcmp(at->name, "cookie"))       cookie = at->val;
+    //else if (!strcmp(at->name, "rs"))         rs = at->val;
   }
-
+#if 0
   if (rs && rs[0] && rs[0] != '-') {
-    if (strcmp(r->uri, rs)) {  /* Different, need external or internal redirect */
+    /* N.B. RelayState was set by chkuid() "some other page" section by setting cgi.rs
+     * to deflated and safe base64 encoded value which was then sent to IdP as RelayState.
+     * It then came back from IdP and was decoded as one of the SSO attributes.
+     * The decoding is controlled by <<tt: rsrc$rs$unsb64-inf$$ >>  rule in OUTMAP. */
+    rs = zxid_unbase64_inflate(cf->ctx, -2, rs, 0);
+    if (!rs) {
+      ERR("Bad relaystate. Error in inflate. %d", 0);
+      return HTTP_BAD_REQUEST;
+    }
+    rs_qs = strchr(rs, '?');
+    if (rs_qs
+	?(memcmp(r->uri, rs, rs_qs-rs)||strcmp(r->args?r->args:"",rs_qs+1))
+	:strcmp(r->uri, rs)) {  /* Different, need external or internal redirect */
       D("redirect(%s) redir_to_content=%d", rs, cf->redir_to_content);
       //r->uri = apr_pstrdup(r->pool, val);
       if (cf->redir_to_content) {
@@ -144,13 +197,9 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
       }
     }
   }
-  if (setcookie && setcookie[0] != '-') {
-    /* http://dev.ariel-networks.com/apr/apr-tutorial/html/apr-tutorial-19.html */
-    D("Set-Cookie(%s)", setcookie);
-    apr_table_addn(r->headers_out, "Set-Cookie", setcookie);
-    apr_table_addn(r->err_headers_out, "Set-Cookie", setcookie);  /* Only way to get redir to set header */
-    apr_table_addn(r->headers_in,  "Set-Cookie", setcookie);  /* So subrequest can pick them up! */
-  }
+#endif
+
+  set_cookies(cf, r, setcookie, setptmcookie);  
   if (cookie && cookie[0] != '-') {
     D("Cookie(%s) 2", cookie);
     apr_table_addn(r->headers_in, "Cookie", cookie);  /* so internal redirect sees it */
@@ -162,7 +211,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
   
   //apr_table_setn(r->subprocess_env,
   //		 apr_psprintf(r->pool, "%sLDIF", cf->mod_saml_attr_prefix), ldif);
-  D("SSO OK ret(%d) uri(%s) filename(%s) path_info(%s) rs(%s)", ret, r->uri, r->filename, r->path_info, STRNULLCHKQ(rs));
+  D("SSO OK ret(%d) uri(%s) filename(%s) path_info(%s)", ret, r->uri, r->filename, r->path_info);
   return ret;
 }
 
@@ -182,20 +231,20 @@ static int send_res(zxid_conf* cf, request_rec* r, char* res)
   apr_table_setn(r->headers_out,     "Pragma", "no-cache");
   apr_table_setn(r->err_headers_out, "Pragma", "no-cache");
 #endif
-  res += 14;
+  res += 14;  /* skip "Content-Type:" (14 chars) */
   DD("RES(%s)", res);
   p = strchr(res, '\r');
   *p = 0;
   //apr_table_setn(r->headers_out, "Content-Type", res);
   DD("CONTENT-TYPE(%s)", res);
   ap_set_content_type(r, res);
-  res = p+2 + 16;  /* Content-Length: */
+  res = p+2 + 16;  /* skip "Content-Length:" (16 chars) */
   sscanf(res, "%d", &len);
   res = strchr(res, '\r') + 4; /* skip CRFL pair before body */
   DD("CONTENT-LENGTH(%d)", len);
   ap_set_content_length(r, len);
   
-  if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("LEN(%d) strlen(%d) RES(%s)", len, (int)strlen(res), res);
+  if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("LEN(%d) strlen(%d) RES(%s)", len, (int)strlen(res), res);
   
   //register_timeout("send", r);
   ap_send_http_header(r);
@@ -204,12 +253,12 @@ static int send_res(zxid_conf* cf, request_rec* r, char* res)
   return DONE;   /* Prevent further hooks from processing the request. */
 }
 
-/*() Read POST input, Apache style
+/*(-) Read POST input, Apache style
  *
  * This is considered internal function to mod_auth_saml, called by chkuid().
  * You should not call this directly, unless you know what you are doing. */
 
-/* Called by:  chkuid */
+/* Called by:  chkuid x2 */
 static char* read_post(zxid_conf* cf, request_rec* r)
 {
   int len, ret;
@@ -248,41 +297,53 @@ static char* read_post(zxid_conf* cf, request_rec* r)
     p += ret;
     len -= ret;
   }
-  if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("POST(%s)", res);
+  if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("POST(%s)", res);
   return res;
 }
 
-/* 0x6000 outf QS + JSON = no output
+/* 0x6000 outf QS + JSON = no output on successful sso, the attrubutes are in session
  * 0x1000 debug
  * 0x0e00 11 + 10 = Generate all HTML + Mgmt w/headers as string
  * 0x00a0 10 + 10 = Login w/headers as string + Meta w/headers as string
  * 0x0008 10 + 00 = SOAP w/headers as string + no auto redir, no exit(2) */
 #define AUTO_FLAGS 0x6ea8
 
-/*(i) Apache hook. Called from httpd-2.2.8/server/request.c: ap_process_request_internal()
+/*() Apache hook. Internal function of mod_auth_saml. Do not try to call.
+ *
+ * Called from httpd-2.2.8/server/request.c: ap_process_request_internal()
  * ap_run_check_user_id(). Return value is processed in modules/http/http_request.c
- * and redirect is in ap_die(), http_protocol.c: ap_send_error_response()  */
+ * and redirect is in ap_die(), http_protocol.c: ap_send_error_response()
+ *
+ * It seems this function will in effect be called twice by Apache internals: once
+ * to see if it would succeed and second time to actually do the work. This is rather
+ * wasteful, but we do not know any easy way to avoid it.
+ *
+ * Originally this was just for SSO, but nowdays we also support WSP mode.  */
 
 /* Called by: */
 static int chkuid(request_rec* r)
 {
-  int ret, uri_len, url_len;
-  char* p;
+  int ret, len, uri_len, url_len, args_len;
+  char* cp;
   char* res;
+  char buf[256];
   const char* cookie_hdr=0;
   const char* set_cookie_hdr;
   const char* cur_auth;
-  struct zx_str* ss;
   zxid_conf* cf = dir_cf(r);
   zxid_cgi cgi;
   zxid_ses ses;
   ZERO(&cgi, sizeof(zxid_cgi));
   ZERO(&ses, sizeof(zxid_ses));
+  cgi.uri_path = r?r->uri:0;
+  cgi.qs = r?r->args:0;
 
-  D("===== START %s req=%p uri(%s) args(%s)", ZXID_REL, r, r?STRNULLCHK(r->uri):"", r?STRNULLCHK(r->args):"");
+  D("===== START %s req=%p uri(%s) args(%s) pid=%d cwd(%s)", ZXID_REL, r, r?STRNULLCHKNULL(r->uri):"(r null)", r?STRNULLCHKNULL(r->args):"(r null)", getpid(), getcwd(buf,sizeof(buf)));
+  if (cf->wd && *cf->wd)
+    chdir(cf->wd);  /* Ensure the working dir is not / (sometimes Apache httpd changes dir) */
   D_INDENT("chkuid: ");
 
-  if (r->main) {  /* subreq can't come from net: always auth. */
+  if (r->main) {  /* subreq can't come from net: always auth OK. */
     D("sub ok %d", OK);
     D_DEDENT("chkuid: ");
     return OK;
@@ -296,6 +357,8 @@ static int chkuid(request_rec* r)
   }
   r->ap_auth_type = "saml";
   
+  /* Probe for Session ID in cookie. Also propagate the cookie to subrequests. */
+
   if (cf->ses_cookie_name && *cf->ses_cookie_name) {
     cookie_hdr = apr_table_get(r->headers_in, "Cookie");
     if (cookie_hdr) {
@@ -312,36 +375,55 @@ static int chkuid(request_rec* r)
     }
   }
 
-  /* Redirect hack */
+  /* Redirect hack: deal with externally imposed ACS url that does not follow zxid convention. */
   
+  args_len = r->args?strlen(r->args):0;
   if (cf->redirect_hack_imposed_url && !strcmp(r->uri, cf->redirect_hack_imposed_url)) {
     D("Redirect hack: mapping(%s) imposed to zxid(%s)", r->uri, cf->redirect_hack_zxid_url);
     r->uri = cf->redirect_hack_zxid_url;
-    if (cf->redirect_hack_zxid_qs) {
-      if (r->args) {
-	ss = zx_strf(cf->ctx, "%s&%s", cf->redirect_hack_zxid_qs, r->args);
-	r->args = ss->s;
-	ZX_FREE(cf->ctx, ss);
+    if (cf->redirect_hack_zxid_qs && *cf->redirect_hack_zxid_qs) {
+      if (args_len) {
+	/* concatenate redirect_hack_zxid_qs with existing qs */
+	len = strlen(cf->redirect_hack_zxid_qs);
+	cp = apr_palloc(r->pool, len+1+args_len+1);
+	strcpy(cp, cf->redirect_hack_zxid_qs);
+	cp[len] = '&';
+	strcpy(cp+len+1, r->args);
+	cgi.qs = r->args = cp;
       } else {
-	r->args = cf->redirect_hack_zxid_qs;
+	cgi.qs = r->args = cf->redirect_hack_zxid_qs;
       }
+      args_len = strlen(r->args);
     }
     D("After hack uri(%s) args(%s)", STRNULLCHK(r->uri), STRNULLCHK(r->args));
   }
   
-  /* Check if we are supposed to enter zxid due to URL suffix. To do this
-   * correctly we need to ignore the query string part. */
+  DD("HERE1 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(r->args));
+  if (args_len) {
+    /* leak the dup str: the cgi structure will take references to this and change &s to nuls */
+    cp = apr_palloc(r->pool, args_len + 1);
+    strcpy(cp, r->args);
+    zxid_parse_cgi(cf, &cgi, cp);
+    DD("HERE2 args_len=%d cgi=%p k(%s) args(%s)", args_len, &cgi, STRNULLCHKNULL(cgi.skin), STRNULLCHKNULL(r->args));
+  }
+  /* Check if we are supposed to enter zxid due to URL suffix - to
+   * process protocol messages rather than ordinary pages. To do this
+   * correctly we need to ignore the query string part. We are looking
+   * here at exact match, like /protected/saml, rather than any of
+   * the other documents under /protected/ (which are handled in the
+   * else clause). Both then and else -clause URLs are defined as requiring
+   * SSO by virtue of the web server configuration. */
+
   uri_len = strlen(r->uri);
-  url_len = strlen(cf->url);
-  for (p = cf->url + url_len - 1; p > cf->url; --p)
-    if (*p == '?')
+  url_len = strlen(cf->burl);
+  for (cp = cf->burl + url_len - 1; cp > cf->burl; --cp)
+    if (*cp == '?')
       break;
-  if (p == cf->url)
-    p = cf->url + url_len;
+  if (cp == cf->burl)
+    cp = cf->burl + url_len;
   
-  if (url_len >= uri_len && !memcmp(p - uri_len, r->uri, uri_len)) {  /* Suffix match */
-    zxid_parse_cgi(&cgi, r->args);
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->url(%s) qs(%s) rs(%s) op(%c)", r->uri, cf->url, r->args, cgi.rs, cgi.op);
+  if (url_len >= uri_len && !memcmp(cp - uri_len, r->uri, uri_len)) {  /* Suffix match */
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->burl(%s) qs(%s) rs(%s) op(%c)", r->uri, cf->burl, STRNULLCHKNULL(r->args), STRNULLCHKNULL(cgi.rs), cgi.op);
     if (r->method_number == M_POST) {
       res = read_post(cf, r);   /* Will print some debug output */
       if (res) {
@@ -361,13 +443,13 @@ static int chkuid(request_rec* r)
 	      *res_len = 1;
 	    goto done;
 	  }
-	  res = zx_dup_cstr(cf->ctx, ret ? "n" : "*** SOAP error (enable debug if you want to see why)"); 
+	  res = zx_dup_cstr(cf->ctx, ret ? "n" : "*** SOAP error (enable debug to see why)"); 
 	  if (res_len)
 	    *res_len = strlen(res);
 	  goto done;
 #endif
 	} else {
-	  zxid_parse_cgi(&cgi, res);
+	  zxid_parse_cgi(cf, &cgi, res);
 	  D("POST CGI parsed. rs(%s)", STRNULLCHKQ(cgi.rs));
 	}
       }
@@ -382,48 +464,75 @@ static int chkuid(request_rec* r)
 	goto process_zxid_simple_outcome;
     }
     /* not logged in, fall thru */
+  } else if (zx_match(cf->wsp_pat, r->uri)) {
+    /* WSP case */
+    if (r->method_number == M_POST) {
+      res = read_post(cf, r);   /* Will print some debug output */
+      if (zxid_wsp_validate(cf, &ses, 0, res)) {
+	D("WSP(%s) request valid", r->uri);
+	D("WSP CALL uri(%s) filename(%s) path_info(%s)", r->uri, r->filename, r->path_info);
+	ret = pool2apache(cf, r, ses.at);
+	D_DEDENT("chkuid: ");
+	return ret;
+	/* Essentially we fall through and let CGI processing happen.
+	 * *** how to decorate the CGI return value?!? New hook needed? --Sampo */
+      } else {
+	ERR("WSP(%s) request validation failed", r->uri);
+	D_DEDENT("chkuid: ");
+	return HTTP_FORBIDDEN;
+      }
+    } else {
+      ERR("WSP(%s) must be called with POST method %d", r->uri, r->method_number);
+      D_DEDENT("chkuid: ");
+      return HTTP_METHOD_NOT_ALLOWED;
+    }
   } else {
     /* Some other page. Just check for session. */
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->url(%s) uri_len=%d url_len=%d", r->uri, STRNULLCHKNULL(r->args), cf->url, uri_len, url_len);
-    cgi.op = 'E';
-    cgi.rs = r->uri;  /* Will be copied to ses->rs and from there in ab_pep to resource-id */
-    if (cf->defaultqs && cf->defaultqs[0]) {
-      if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
-      zxid_parse_cgi(&cgi, cf->defaultqs);
-    }
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->burl(%s) uri_len=%d url_len=%d", r->uri, STRNULLCHKNULL(r->args), cf->burl, uri_len, url_len);
     if (cgi.sid && cgi.sid[0] && zxid_get_ses(cf, &ses, cgi.sid)) {
       res = zxid_simple_ses_active_cf(cf, &cgi, &ses, 0, AUTO_FLAGS);
       if (res)
 	goto process_zxid_simple_outcome;
     } else {
-      D("No session(%s) active op(%c)", STRNULLCHK(cgi.sid), cgi.op);
+      D("No active session(%s) op(%c)", STRNULLCHK(cgi.sid), cgi.op?cgi.op:'-');
+      if (cf->optional_login_pat && zx_match(cf->optional_login_pat, r->uri)) {
+	D("optional_login_pat matches ok %d", OK);
+	D_DEDENT("chkuid: ");
+	return OK;
+      }
     }
-    D("other page: no_ses uri(%s)", r->uri);
+    if (r->args && r->args[0] == 'l') {
+      D("Detect login(%s)", r->args);
+    } else
+      cgi.op = 'E';   /* Trigger IdP selection screen */
+    D("other page: no_ses uri(%s) templ(%s) tf(%s) k(%s)", r->uri, STRNULLCHKNULL(cgi.templ), STRNULLCHKNULL(cf->idp_sel_templ_file), STRNULLCHKNULL(cgi.skin));
   }
 step_up:
   res = zxid_simple_no_ses_cf(cf, &cgi, &ses, 0, AUTO_FLAGS);
 
 process_zxid_simple_outcome:
   if (cookie_hdr && cookie_hdr[0]) {
-    D("Passing cookie(%s) to environment", cookie_hdr);
+    D("Passing previous cookie(%s) to environment", cookie_hdr);
     zxid_add_attr_to_ses(cf, &ses, "cookie", zx_dup_str(cf->ctx, cookie_hdr));
   }
 
   switch (res[0]) {
   case 'L':
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("REDIR(%s)", res);
     apr_table_setn(r->headers_out, "Location", res+10);
+    set_cookies(cf, r, ses.setcookie, ses.setptmcookie);  
     D_DEDENT("chkuid: ");
     return HTTP_SEE_OTHER;
   case 'C':
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("CONTENT(%s)", res);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("CONTENT(%s)", res);
+    set_cookies(cf, r, ses.setcookie, ses.setptmcookie);  
     ret = send_res(cf, r, res);
     D_DEDENT("chkuid: ");
     return ret;
   case 'z':
     INFO("User not authorized %d", 0);
     D_DEDENT("chkuid: ");
-    return HTTP_UNAUTHORIZED;
+    return HTTP_FORBIDDEN;
   case 0: /* Logged in case */
     D("SSO OK pre uri(%s) filename(%s) path_info(%s)", r->uri, r->filename, r->path_info);
     ret = pool2apache(cf, r, ses.at);
@@ -431,7 +540,7 @@ process_zxid_simple_outcome:
     return ret;
 #if 0
   case 'd': /* Logged in case */
-    if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("SSO OK LDIF(%s)", res);
+    if (errmac_debug & MOD_AUTH_SAML_INOUT) INFO("SSO OK LDIF(%s)", res);
     D("SSO OK pre uri(%s) filename(%s) path_info(%s)", r->uri, r->filename, r->path_info);
     ret = ldif2apache(cf, r, res);
     D_DEDENT("chkuid: ");
@@ -450,19 +559,25 @@ process_zxid_simple_outcome:
 
 /* ------------------------ CONF -------------------------- */
 
-/*() Process ZXIDDebug directive in Apache configuration file.
+/*(-) Process ZXIDDebug directive in Apache configuration file.
  *
  * This is considered internal function to mod_auth_saml. Do not call directly. */
 
 /* Called by: */
 static const char* set_debug(cmd_parms* cmd, void* st, const char* arg) {
-  D("old debug=%x, new debug(%s)", zx_debug, arg);
-  sscanf(arg, "%i", &zx_debug);
-  INFO("debug=0x%x now arg(%s)", zx_debug, arg);
+  char buf[256];
+  D("old debug=%x, new debug(%s)", errmac_debug, arg);
+  sscanf(arg, "%i", &errmac_debug);
+  INFO("debug=0x%x now arg(%s) cwd(%s)", errmac_debug, arg, getcwd(buf, sizeof(buf)));
+  {
+    struct rlimit rlim;
+    getrlimit(RLIMIT_CORE, &rlim);
+    D("MALLOC_CHECK_(%s) core_rlimit=%d,%d", getenv("MALLOC_CHECK_"), (int)rlim.rlim_cur, (int)rlim.rlim_max);
+  }
   return 0;
 }
 
-/*() Process ZXIDConf directive in Apache configuration file.
+/*(-) Process ZXIDConf directive in Apache configuration file.
  * Can be called any number of times to set additional parameters.
  *
  * This is considered internal function to mod_auth_saml. Do not call directly. */
@@ -489,32 +604,34 @@ const command_rec zxid_apache_commands[] = {
 };
 
 
-#define ZXID_APACHE_DEFAULT_CONF ""  /* defaults will reign, including path /var/zxid */
+#define ZXID_APACHE_DEFAULT_CONF ""  /* defaults will reign, including cpath /var/zxid */
 
-/*() Create default configuration in response for Apache <Location> or <Directory>
+/*(-) Create default configuration in response for Apache <Location> or <Directory>
  * directives. This is then augmented by ZXIDConf directives.
  * This code may run twice: once for syntax check, and then again for
- * production use. Curently we just redo the work.
+ * production use. Currently we just redo the work.
  *
  * This is considered internal function to mod_auth_saml. Do not call directly. */
 
 /* Called by: */
 static void* dirconf(apr_pool_t* p, char* d)
 {
-  zxid_conf* cf = apr_palloc(p, sizeof(zxid_conf));
+  zxid_conf* cf;
+  strncpy(errmac_instance, "\tmas", sizeof(errmac_instance));
+  cf = apr_palloc(p, sizeof(zxid_conf));
   ZERO(cf, sizeof(zxid_conf));
   cf->ctx = apr_palloc(p, sizeof(struct zx_ctx));
   zx_reset_ctx(cf->ctx);
   D("cf=%p ctx=%p d(%s)", cf, cf->ctx, STRNULLCHKD(d));
   /* *** set malloc func ptr in ctx to use apr_palloc() */
   zxid_conf_to_cf_len(cf, -1, ZXID_APACHE_DEFAULT_CONF);
-  cf->path_supplied = 0;
+  cf->cpath_supplied = 0;
   return cf;
 }
 
 /* ------------------------ Hooks -------------------------- */
 
-/*() Register Apache hook for mod_auth_saml
+/*(-) Register Apache hook for mod_auth_saml
  *
  * This is considered internal function to mod_auth_saml. Do not call directly. */
 

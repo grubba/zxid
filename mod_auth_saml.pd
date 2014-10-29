@@ -123,10 +123,12 @@ modules/ subdirectory of the Apache installation.
 2.1.1 httpd.conf
 ~~~~~~~~~~~~~~~~
 
-First you have to make sure mod_auth_saml.so is located in the modules/
-directory of your Apache httpd installation
-(e.g. /usr/local/httpd/modules/mod_auth_saml.so). Then you should pull
-the module into the configuration with directive:
+First you have to make sure mod_auth_saml.so is located in the
+modules/ directory of your Apache httpd installation
+(e.g. /usr/local/httpd/modules/mod_auth_saml.so in Apache httpd
+compiled from source or /usr/lib/apache2/modules/mod_auth_saml.so in
+some distributions). Then you should pull the module into the
+configuration with directive:
 
   LoadModule auth_saml_module modules/mod_auth_saml.so
 

@@ -1,16 +1,17 @@
 #!/usr/bin/perl
 # 2.2.2010, Sampo Kellomaki (sampo@iki.fi)
 # 18.11.2010, greatly enchanced --Sampo
+# 28.8.2012, added some features from hitest.pl, added zxbusd tests --Sampo
 #
 # Test suite for ZXID
 
 $usage = <<USAGE;
 Test driver for ZXID
-Usage: http://localhost:8081/zxtest.pl?tst=XML1
-       ./zxtest.pl -a [-x] [-dx] tst=XML1    # Run specific test
-       ./zxtest.pl -a [-x] [-dx] ntst=XML    # Run all tests except specified
+Usage: http://localhost:8081/zxtest.pl?tst=XML1  # Run as CGI with HTML putput
+       ./zxtest.pl -a [-a] [-x] [-dx] tst=XML1   # Run specific test
+       ./zxtest.pl -a [-a] [-x] [-dx] ntst=XML   # Run all tests except specified
          -a  Ascii mode (give twice for colored ascii)
-         -x  Print exec command lines to stderr
+         -x  Print exec(2) command lines to stderr
          -dx Proprietary per character color diff (default: system diff -u)
          N.B. Positional order of even optional arguments is significant.
 USAGE
@@ -29,11 +30,11 @@ sub greeny { $ascii > 1 ? "\e[42m$_[0]\e[0m" : $_[0]; }
 
 use Encode;
 use Digest::MD5;
-use Digest::SHA1;
+use Digest::SHA1;  # apt-get install libdigest-sha1-perl
 use Net::SSLeay qw(get_httpx post_httpx make_headers make_form);  # Need Net::SSLeay-1.24
-use WWW::Curl::Easy;    # HTTP client library, see curl.haxx.se
+use WWW::Curl::Easy;    # HTTP client library, see curl.haxx.se. apt-get install libwww-curl-perl
 use WWW::Curl::Multi;
-use XML::Simple;
+use XML::Simple;   # apt-get install libxml-simple-perl
 #use Net::SMTP;
 #use MIME::Base64;  # plain=decode_base64(b64)   # RFC3548
 #sub decode_safe_base64 { my ($x) = @_; $x=~tr[-_][+/]; return decode_base64 $x; }
@@ -43,6 +44,11 @@ use Time::HiRes;
 
 die $usage if $ARGV[0] =~ /^--?[hH?]/;
 $trace = 0;
+
+if ($ARGV[0] eq '-t') {
+    warn "Test: ".check_diff("ZXBUSM64", 60, 10, '10x10x20');
+    exit;
+}
 
 # Where error log goes tail -f zxtest.err
 #open STDERR, ">>zxtest.err";
@@ -65,7 +71,9 @@ syswrite STDOUT, "Content-Type: text/html\r\n\r\n" if !$ascii;
 $uname_minus_s = `uname -s`;
 chop $uname_minus_s;
 
+###
 ### Library Functions
+###
 
 sub writeall {
     my ($f,$d) = @_;
@@ -78,7 +86,7 @@ sub writeall {
 }
 
 sub readall {
-    my ($f) = @_;
+    my ($f,$silent) = @_;
     my ($pkg, $srcfile, $line) = caller;
     undef $/;         # Read all in, without breaking on lines
     if (open F, "<$f") {
@@ -89,7 +97,9 @@ sub readall {
 	close F;
 	return $x;
     } else {
+	return undef if $silent;
 	warn "$srcfile:$line: Cant read($f): $!";
+	warn "pwd(".`pwd`.")";
 	return undef;
     }
 }
@@ -131,6 +141,146 @@ sub urienc {
     my ($val) = @_;
     $val =~ s/([^A-Za-z0-9.,_-])/sprintf("%%%02x",ord($1))/gsex; # URI enc
     return $val;
+}
+
+###
+### Custome diff package
+###
+
+# Erase some common innocent differences
+
+sub blot_out_std_diffs {
+    my ($x) = @_;
+    #warn "len=".length($x);
+    $x =~ s/(ID)=".*?"/$1=""/g;
+    $x =~ s/(IssueInstant)=".*?"/$1=""/g;
+    
+    $x =~ s/0\.\d+ 12\d+ libzxid \(zxid\.org\)/0./g;
+    $x =~ s/R0\.\d+ \(\d+\)/R0./g;
+    $x =~ s/R0\.\d+/R0./g;
+    
+    $x =~ s/^(msgid: ).+/$1/gm;
+    $x =~ s/^(sespath: ).+/$1/gm;
+    $x =~ s/^(sesid: ).+/$1/gm;
+    $x =~ s/^(tgta7npath: ).+/$1/gm;
+    $x =~ s/^(ssoa7npath: ).+/$1/gm;
+    $x =~ s/^(zxididp: 0\.).+/$1/gm;
+
+    $x =~ s%<wsu:Created>.*?</wsu:Created>%CREATED_TS%g;
+    $x =~ s%<a:MessageID[^>]*>.*?</a:MessageID>%MessageID%g;
+    $x =~ s%<a:InReplyTo[^>]*>.*?</a:InReplyTo>%InReplyTo%g;
+    $x =~ s%<ds:DigestValue>.*?</ds:DigestValue>%DIGESTVAL%g;
+    $x =~ s%<ds:SignatureValue>.*?</ds:SignatureValue>%SIGVAL%g;
+    $x =~ s%<xenc:CipherValue>.*?</xenc:CipherValue>%CIPHERVALUE%g;
+
+    # zxbusd hiiosdump related
+
+    #warn "len=".length($x);
+    $x =~ s%(shf_0x)[0-9a-f]+%$1%g;
+    $x =~ s%(io_0x)[0-9a-f]+%$1%g;
+    $x =~ s%(hit_0x)[0-9a-f]+%$1%g;
+    $x =~ s%(tid_)[0-9a-f]+%$1%g;
+    $x =~ s%(pdu_0x)[0-9a-f]+%$1%g;
+    $x =~ s%(-> pdu_0x  // \()[A-Z]+\)%$1)%g;
+    $x =~ s%(// fd=0x)[0-9a-f]+%$1%g;
+
+    #warn "len=".length($x);
+    $x =~ s%test\(-?\d+,\d+,\d+\)%test(,,)%g;
+    $x =~ s%RECEIPT \d+%RECEIPT %g;
+    #warn "len=".length($x);
+    return $x;
+}
+
+sub ediffy {   # The main diff algo
+    my ($a,$b) = @_;
+    return 0 if $a eq $b;
+
+    # Ignore some common innocent differences
+
+    $a = blot_out_std_diffs($a);
+    $b = blot_out_std_diffs($b);
+    return 0 if $a eq $b;
+
+    warn "enter heavy diff -u tmp/a tmp/b; len1=".length($a)." len2=".length($b);
+    writeall("tmp/a", $a);
+    writeall("tmp/b", $b);
+
+    my $ret = 0;
+
+    eval {
+	local $SIG{ALRM} = sub { die "TIMEOUT\n"; };
+	alarm 60;   # The ediff algorithm seems exponential time, so lets not wait forever.
+	require Algorithm::Diff;
+	my @seq1 = split //, $a;
+	my @seq2 = split //, $b;
+	my $diff = Algorithm::Diff->new( \@seq1, \@seq2 );
+	
+	$diff->Base(1);   # Return line numbers, not indices
+	while(  $diff->Next()  ) {
+	    if (@sames = $diff->Same()) {
+		print @sames;
+		next;
+	    }
+	    if (@dels = $diff->Items(1)) {
+		print redy(join '', @dels);
+		++$ret;;
+	    }
+	    if (@adds = $diff->Items(2)) {
+		print greeny(join '', @adds);
+		++$ret;
+	    }
+	}
+    };
+    alarm 0;
+    print "\n" if $ret;
+    return $ret;
+}
+
+sub ediffy_read {
+    my ($file1,$file2) = @_;
+    my $data1 = readall $file1;
+    my $data2 = readall $file2;
+    return ediffy($data1,$data2);
+}
+
+sub isdiff_read {
+    my ($file1,$file2,$silent) = @_;
+    my $data1 = readall($file1,$silent);
+    my $data2 = readall($file2,$silent);
+    #warn "len1($file1)=".length($data1)." def1=".defined($data1)." len2($file2)=".length($data2)." def2=".defined($data2).".";
+    return -6 if !defined($data1) || !defined($data2);
+    #warn "data1($data1)\ndata2($data2)" if $data1 && $data2;
+    $data1 = blot_out_std_diffs($data1);
+    $data2 = blot_out_std_diffs($data2);
+    return 0 if $data1 eq $data2;
+    return (length($data1)-length($data2)) || -5;
+}
+
+sub check_diff {
+    my ($tsti, $latency, $slow, $test) = @_;
+    my $ret;
+    $ok_lvl = '';
+    return 0 if !($ret = isdiff_read("t/$tsti.out", "tmp/$tsti.out"));
+    $ok_lvl = 2;
+    return 0 if !isdiff_read("t/$tsti.out2", "tmp/$tsti.out", 1);  # second truth matches
+    $ok_lvl = 3;
+    return 0 if !isdiff_read("t/$tsti.out3", "tmp/$tsti.out", 1);  # third truth
+    if ($diffx) {
+	if ($ret = ediffy_read("t/$tsti.out", "tmp/$tsti.out")) {
+	    tst_print('col1r', 'Diff ERR', $latency, $slow, $test, "$ret lines of diff");
+	    return 1;
+	}
+    } elsif ($diffmeth eq 'diffu') {
+	if (system "/usr/bin/diff t/$tsti.out tmp/$tsti.out") {
+	    tst_print('col1r', 'Diff Err', $latency, $slow, $test, '');
+	    return 1;
+	}
+    } else {
+	tst_print('col1r', (abs($ret)>5)?'Size ERR':'Diff ERR', $latency, $slow, $test, ($ret==-5?'':"Difference in size: $ret"));
+	return 1;
+    }
+    $ok_lvl = 4;
+    return 0;
 }
 
 ### HTTP clients
@@ -185,7 +335,7 @@ sub test_http {
 	tst_print('col1r', 'Timeout', $latency, $slow, $test, '');
 	$@ = 0;
 	warn "Timeout ($@) ".Time::HiRes::time();
-	$timeout_trace = 1;
+	#$timeout_trace = 1;
 	curl_reset_all($curl);
     } elsif ($status) {
 	tst_print('col1r', 'Conn. Err', $latency, $slow, $test, $status);
@@ -513,18 +663,114 @@ sub process_sent_response {
 }
 } # Close if (0) several pages above
 
+###
+### Daemon management routines
+###
+
+### Persist in killing a child process
+
+sub kill_child {
+    my ($pid,$sig) = @_;
+    return 1 unless $pid;
+    $sig ||= USR1;  # 1 = SIGHUP, 10 = SIGUSR1 (which cause gcov friendly exit(3))
+    #warn "KILL CHILD $pid";
+    kill $sig, $pid;
+    eval {
+	local $SIG{ALRM} = sub { die "timeout\n"; };
+	alarm 5;
+	waitpid $pid,0;
+	alarm 0;
+    };
+    if ($@) {
+	die "waitpid $pid failed: $@ / $!" unless $@ eq "timeout\n";
+	warn "Die hard process $pid refuses to die. Trying kill -9";
+	kill 9, $pid for (1..3);
+	alarm 5;       # If it won't die, its an error so do not catch the timeout
+	waitpid $pid,0;
+	alarm 0;
+    }
+    return 1;
+}
+
+### Check that the port numbers and take them out of the message (because
+### port numbers could be variable and cause test log comparison to fail).
+
+sub check_ports {
+   my ($m) = @_;
+   my @a=split (/\n/,$m);
+   my %port;
+   my $cont=0;
+   my $fin='';
+   for my $m (@a) {
+       my @aux = split (/:/,$m);
+       if ($aux[0] eq "search_port"){
+	  if ($cont == 0){    #The first port is used to compare
+	     $cont=$aux[1];
+	  }else{
+       	     $port{$aux[1]}++;
+	  }
+       }else{
+           $fin .= "$m\n";
+       }
+   }
+
+   $fin .= "\n";
+
+   my $number = keys(%port);
+   $fin.= "There are $number ports\n";
+   $fin.="\n";
+   for my $p (keys(%port)){
+	if ($p < $cont){
+	   $fin.= "One port minor than first port \n";
+	   $fin.="\n";
+	}else {  #It should not be the same port
+	   $fin.= "One port mayor than first port \n";
+	   $fin.="\n";
+	}
+   }
+   return $fin;
+}
+
+sub check_nums {
+   my ($m) = @_;
+   my @a=split (/\n/,$m);
+   my %nums;
+   my $cont=0;
+   my $fin='';
+   for my $m (@a) {
+       my @aux = split (/:/,$m);
+       if ($aux[0] eq "numorder"){
+       	     $nums{$aux[1]}++;
+       }
+   }
+
+   $fin .= "\n";
+
+   my $number = keys(%nums);
+   $fin.= "There are $number nums\n";
+   $fin.="\n";
+   for my $p (keys(%nums)){
+	   $fin.= "$p,";
+   }
+   $fin.="\n";
+   return $fin;
+}
 
 sub check_for_listener {
     my $port = shift @_;
-    return 1 if $always_external_test_servers;  # avoid netstat 'cause it oopes Linux 2.5.74
+    return 1 if $always_external_test_servers;  # avoid netstat because it oopes Linux 2.5.74
     if ($uname_minus_s eq "SunOS" || $uname_minus_s eq "Darwin" || $uname_minus_s eq "AIX" || $uname_minus_s eq "Interix") {
 	if (`netstat -an` =~ /\.$port\s+.+LISTEN$/m) {
 	    return 1;
 	}
     } elsif ($uname_minus_s eq "Linux") {
-	if (`netstat -an` =~ /\:$port\s+.+LISTEN\s*/) {
+	my $netstat = `netstat -ln --inet`;
+	if ($netstat =~ /(\:$port\s+.+LISTEN\s*)/) {
+	    #warn "MATCH netstat($netstat)";
+	    #warn "matched($1)";
 	    return 1;
 	}
+	#warn "NO MATCH netstat($netstat)";
     } elsif (substr($uname_minus_s, 0, 9) eq "CYGWIN_NT" || $uname_minus_s eq "Windows") {
 	if (`netstat -an` =~ /\:$port\s+.+LISTENING\s*/) {
 	    return 1;
@@ -533,6 +779,89 @@ sub check_for_listener {
 	die "Can't determine system type($uname_minus_s)";
     }
     return 0;
+}
+
+sub check_for_udp {
+    my $port = shift @_;
+    return 1 if $always_external_test_servers;  # avoid netstat 'cause it oopes Linux 2.5.74
+    if ($uname_minus_s eq "SunOS") {         # Solaris8
+	if (`netstat -an -P udp` =~ /^\s+\*.$port\s+Idle\s*$/m) {
+	    return 1;
+	}
+    } elsif ($uname_minus_s eq "Darwin") {   # this probably works for SunOS 2.6, too
+	if (`netstat -an` =~ /^udp[\d\s.]+\.$port\s+/m) {
+	    return 1;
+	}
+    } elsif ($uname_minus_s eq "Linux") {
+	my $x = `netstat -an`;
+	#warn ">>$x<<";
+	if ($x =~ /^udp[0-9. \t]+\:$port\s+/m) {
+	    return 1;
+	}
+    } else {
+	die "Unknown system type($uname_minus_s)";
+    }
+    return 0;
+}
+
+### Wait for a network service to ramp up and start listening for a port
+
+$port_wait_secs = 10;
+
+sub wait_for_port {
+    my ($p) = @_;
+    #return 1 if $host ne 'localhost';
+    my $ret;
+    my $iter = 0;
+    my $sleep = 0.05;
+    # sleep 10; return;
+    eval {
+	local $SIG{ALRM} = sub { die "timeout\n"; };
+	alarm $port_wait_secs;
+	while (1) {
+	    last if $ret = check_for_listener($p);
+	    #warn "Waiting for exe to come up on TCP port $p" if $iter++>6;
+	    warn "Waiting for exe to come up on TCP port $p" if $iter++>1;
+	    select(undef, undef, undef, $sleep);
+	    $sleep += 0.05;
+	}
+	alarm 0;
+	#warn "out of check_for_listener($ret)";
+    };
+    if ($@) {
+	die "wait for port $p failed: $@ / $!" unless $@ eq "timeout\n";
+	warn "Port number $p did not come up LISTENing in reasonable time";
+	#success_report();
+	return undef;
+    }
+    return 1;
+}
+
+sub wait_for_udp {
+    my ($p) = @_;
+    #return 1 if $host ne 'localhost';
+    my $iter = 0;
+    my $sleep = 0.05;
+    # sleep 10; return;
+    eval {
+	local $SIG{ALRM} = sub { die "timeout\n"; };
+	alarm $port_wait_secs;
+	while (1) {
+	    last if (&check_for_udp($p));
+	    warn "Waiting for exe to come up on UDP port $p" if $iter++>6;
+	    select(undef, undef, undef, $sleep);
+	    $sleep += 0.05;
+	}
+	alarm 0;
+    };
+    if ($@) {
+	die "wait for port $p failed: $@ / $!" unless $@ eq "timeout\n";
+	warn "Port number $p did not come up LISTENing in reasonable time";
+	#success_report();
+	return undef;
+    }
+    #warn "udp $p came up";
+    return 1;
 }
 
 # Launches a server, unless one is already listening on the targeted port,
@@ -550,7 +879,7 @@ sub launch_server {
     }
     return if $host ne 'localhost';   # Presumably it was set up somewhere else
     return if check_for_listener($port);
-    success_report() && die "Test server (port $port) died. Tried to relaunch"
+    die "Test server (port $port) died. Tried to relaunch"
 	if $relaunch_testserver{$port}++;
     #warn "Launching @cmd_line";
     if ($pid = fork) {
@@ -568,12 +897,37 @@ sub launch_server {
     die "exec($port) failed: $!";
 }
 
-#only kill the "ldap server", proxy that runs testserver.ldif
+sub launch_udp_server {
+#   for some tests to work with -e flag
+#   my ($port, $log_file, @cmd_line,$file) = @_;
+#   @cmd_line = "@cmd_line" . "$file";
+    my ($port, $log_file, @cmd_line) = @_;
+    my $pid;
+    return if $host ne 'localhost';   # Presumably it was set up somewhere else
+    return if check_for_udp($port);
+    die "Test server died (port $port). Tried to relaunch"
+	if $relaunch_testserver{$port}++;
+    #warn "Launching @cmd_line";
+    if ($pid = fork) {
+	wait_for_udp($port) or kill_child($pid) and exit 1;
+	return $pid;
+    }
+    die "fork($port) failed: $!" unless defined $pid;
+    open STDIN, "</dev/null";  # Keep fd 0 occupied as it has special meaning
+    warn "\nEXEC @cmd_line (>$log_file pid=$$)\n" if $show_exec;
+    open STDOUT, ">>$log_file"
+	or die "Redirect of STDOUT to $log_file failed: $!";
+    open STDERR, ">&STDOUT" or die "Redirect of STDERR failed: $!";
+    exec @cmd_line;
+    die "exec($port) failed: $!";
+}
+
+#only kill the zxbusd that runs foo
 sub kill_server {
-    my @process=split ' ',`ps -efa | grep dsproxy | grep testserver.ldif | grep -v "ps -efa"`;
+    my @process=split ' ',`ps -efa | grep zxbusd | grep foo | grep -v "ps -efa"`;
     my $proc=$process[1];
     if ($proc){
-	kill_child ($proc);
+	kill_child($proc);
 	#The next line initialize the relaunch counter
 	$relaunch_testserver{$testserver_port}=0;
     }
@@ -589,7 +943,8 @@ sub G {
     my ($proto, $host, $port, $localurl)
 	= $url =~ m%^(https?)://([^:/]+)(?:(\d+))?(/.*?)$%i;
     my $usessl = ($proto =~ /^https$/i ? 1 : 0);
-
+    $port ||= $usessl?443:80;
+    
     my $test = tst_link($tsti, $expl, $url);
     my $send_ts = Time::HiRes::time();
     warn "HERE1 ".Time::HiRes::time() if $timeout_trace;
@@ -618,9 +973,10 @@ sub G {
 	$timeout_trace = 1;
     } elsif ($status) {
 	tst_print('col1r', 'Conn. Err', $latency, $slow, $test, $status);
-    } elsif ($laststatus ne 'OK') {
-	tst_print('col1r', 'App Err', $latency, $slow, $test, $lasterror);
+    } elsif ($result !~ m%^HTTP/1\.[01] 200%) {
+	tst_print('col1r', 'App Err', $latency, $slow, $test, $result);
     } else {
+	$lasterror = 'len='.length($page);
 	tst_ok($latency, $slow, $test);
     }
 }
@@ -650,7 +1006,7 @@ sub call_system {
 	tst_print('col1r', 'Timeout', $latency, $slow, $test, '');
 	$@ = 0;
 	warn "Timeout ($@) ".Time::HiRes::time();
-	$timeout_trace = 1;
+	#$timeout_trace = 1;
 	return -1;
     } elsif ($@) {
 	tst_print('col1r', 'Conn. Err', $latency, $slow, $test, $@);
@@ -662,7 +1018,7 @@ sub call_system {
     return $latency;
 }
 
-sub C {
+sub C { # simple command
     my ($tsti, $expl, $timeout, $slow, $command_line) = @_;
     return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
     return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
@@ -672,95 +1028,6 @@ sub C {
     my $latency = call_system($test, $timeout, $slow, $command_line);
     return if $latency == -1;
     tst_ok($latency, $slow, $test);
-}
-
-# Erase some common innocent differences
-
-sub blot_out_std_diffs {
-    my ($x) = @_;
-    $x =~ s/(ID)=".*?"/$1=""/g;
-    $x =~ s/(IssueInstant)=".*?"/$1=""/g;
-    
-    $x =~ s/0\.\d+ 12\d+ libzxid \(zxid\.org\)/0./g;
-    $x =~ s/R0\.\d+ \(\d+\)/R0./g;
-    $x =~ s/R0\.\d+/R0./g;
-    
-    $x =~ s/^(msgid: ).+/$1/gm;
-    $x =~ s/^(sespath: ).+/$1/gm;
-    $x =~ s/^(sesid: ).+/$1/gm;
-    $x =~ s/^(tgta7npath: ).+/$1/gm;
-    $x =~ s/^(ssoa7npath: ).+/$1/gm;
-    $x =~ s/^(zxididp: 0\.).+/$1/gm;
-
-    $x =~ s%<wsu:Created>.*?</wsu:Created>%CREATED_TS%g;
-    $x =~ s%<a:MessageID[^>]*>.*?</a:MessageID>%MessageID%g;
-    $x =~ s%<a:InReplyTo[^>]*>.*?</a:InReplyTo>%InReplyTo%g;
-    $x =~ s%<ds:DigestValue>.*?</ds:DigestValue>%DIGESTVAL%g;
-    $x =~ s%<ds:SignatureValue>.*?</ds:SignatureValue>%SIGVAL%g;
-    $x =~ s%<xenc:CipherValue>.*?</xenc:CipherValue>%CIPHERVALUE%g;
-    return $x;
-}
-
-sub ediffy {
-    my ($a,$b) = @_;
-    return 0 if $a eq $b;
-
-    # Ignore some common innocent differences
-
-    $a = blot_out_std_diffs($a);
-    $b = blot_out_std_diffs($b);
-    return 0 if $a eq $b;
-
-    warn "enter heavy diff -u tmp/a tmp/b; len1=".length($a)." len2=".length($b);
-    writeall("tmp/a", $a);
-    writeall("tmp/b", $b);
-
-    my $ret = 0;
-
-    eval {
-	local $SIG{ALRM} = sub { die "TIMEOUT\n"; };
-	alarm 60;   # The ediff algorithm seems exponential time, so lets not wait forever.
-	require Algorithm::Diff;
-	my @seq1 = split //, $a;
-	my @seq2 = split //, $b;
-	my $diff = Algorithm::Diff->new( \@seq1, \@seq2 );
-	
-	$diff->Base(1);   # Return line numbers, not indices
-	while(  $diff->Next()  ) {
-	    if (@sames = $diff->Same()) {
-		print @sames;
-		next;
-	    }
-	    if (@dels = $diff->Items(1)) {
-		print redy(join '', @dels);
-		++$ret;;
-	    }
-	    if (@adds = $diff->Items(2)) {
-		print greeny(join '', @adds);
-		++$ret;
-	    }
-	}
-    };
-    alarm 0;
-    print "\n" if $ret;
-    return $ret;
-}
-
-sub ediffy_read {
-    my ($file1,$file2) = @_;
-    my $data1 = readall $file1;
-    my $data2 = readall $file2;
-    return ediffy($data1,$data2);
-}
-
-sub isdiff_read {
-    my ($file1,$file2) = @_;
-    my $data1 = readall $file1;
-    my $data2 = readall $file2;
-    $data1 = blot_out_std_diffs($data1);
-    $data2 = blot_out_std_diffs($data2);
-    return 0 if $data1 eq $data2;
-    return 1;
 }
 
 sub ED {  # enc-dec command with diff
@@ -773,25 +1040,9 @@ sub ED {  # enc-dec command with diff
     
     unlink "tmp/$tsti.out";
     
-    my $latency = call_system($test, $timeout, $slow, "./zxencdectest -i $n_iter <$file >tmp/$tsti.out 2>tmp/tst.err", $exitval);
+    my $latency = call_system($test, $timeout, $slow, "./zxencdectest -i $n_iter <$file >tmp/$tsti.out 2>tmp/$tsti.err", $exitval);
     return if $latency == -1;
-
-    if ($diffx) {
-	if (ediffy_read("t/$tsti.out", "tmp/$tsti.out")) {
-	    tst_print('col1r', 'Diff ERR', $latency, $slow, $test, '');
-	    return;
-	}
-    } elsif ($diffmeth eq 'diffu') {
-	if (system "/usr/bin/diff t/$tsti.out tmp/$tsti.out") {
-	    tst_print('col1r', 'Diff Err', $latency, $slow, $test, '');
-	    return;
-	}
-    } else {
-	if (isdiff_read("t/$tsti.out", "tmp/$tsti.out")) {
-	    tst_print('col1r', 'Diff ERR', $latency, $slow, $test, '');
-	    return;
-	}
-    }
+    return if check_diff($tsti, $latency, $slow, $test);
     tst_ok($latency, $slow, $test);
 }
 
@@ -805,7 +1056,7 @@ sub ZXC {  # zxcall
     unlink "tmp/$tsti.out";
     
     #my $latency = call_system($test, 60, $slow, "./zxcall -a http://idp.tas3.pt:8081/zxididp?o=B tastest:tas123 $arg <$file >tmp/$tsti.out 2>tmp/tst.err");
-    my $latency = call_system($test, 60, $slow, "./zxcall -a http://idp.tas3.pt:8081/zxididp tastest:tas123 $arg <$file >tmp/$tsti.out 2>tmp/tst.err");
+    my $latency = call_system($test, 60, $slow, "./zxcall -a http://idp.tas3.pt:8081/zxididp tastest:tas123 $arg <$file >tmp/$tsti.out 2>tmp/$tsti.err");
     return if $latency == -1;
     
     #if (system "/usr/bin/diff -u t/$tsti.out tmp/$tsti.out") {
@@ -815,7 +1066,7 @@ sub ZXC {  # zxcall
     tst_ok($latency, $slow, $test);
 }
 
-sub CMD {  # zxpasswd command with diff
+sub CMD {  # command with diff
     my ($tsti, $expl, $cmd, $exitval, $timeout, $slow) = @_;
     return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
     return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
@@ -825,25 +1076,73 @@ sub CMD {  # zxpasswd command with diff
 
     unlink "tmp/$tsti.out";
     
-    my $latency = call_system($test,$timeout,$slow, "$cmd >tmp/$tsti.out 2>tmp/tst.err", $exitval);
+    my $latency = call_system($test,$timeout,$slow, "$cmd >tmp/$tsti.out 2>tmp/$tsti.err", $exitval);
     return if $latency == -1;
-    
-    if ($diffx) {
-	if (ediffy_read("t/$tsti.out", "tmp/$tsti.out")) {
-	    tst_print('col1r', 'Diff ERR', $latency, $slow, $test, '');
-	    return;
-	}
-    } elsif ($diffmeth eq 'diffu') {
-	if (system "/usr/bin/diff t/$tsti.out tmp/$tsti.out") {
-	    tst_print('col1r', 'Diff Err', $latency, $slow, $test, '');
-	    return;
-	}
-    } else {
-	if (isdiff_read("t/$tsti.out", "tmp/$tsti.out")) {
-	    tst_print('col1r', 'Diff ERR', $latency, $slow, $test, '');
-	    return;
+    return if check_diff($tsti, $latency, $slow, $test);
+    tst_ok($latency, $slow, $test);
+}
+
+sub DAEMON {  # launch a daemon that can be used as test target by clients. See also KILLD.
+    my ($tsti, $expl, $port, $cmd, $exitval, $timeout, $slow) = @_;
+    return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
+    return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
+    my $test = tst_link($tsti, $expl, '');
+    $slow ||= 0.1;
+    $timeout ||= 60;
+
+    unlink "tmp/$tsti.out";
+    unlink "tmp/$tsti.pid";
+
+    if ($port != -1) {
+	if (check_for_listener($port)) {
+	    warn "Some on is already using the port($port). Waiting a bit...";
+	    sleep 1;
+	    if (check_for_listener($port)) {
+		die "Some on is already using the port($port). Test can not continue. killall...";
+	    }
 	}
     }
+    $send_ts{$tsti} = Time::HiRes::time();
+    my $latency = call_system($test,$timeout,$slow, "$cmd >tmp/$tsti.out 2>tmp/$tsti.err &", $exitval);
+    return if $latency == -1;
+    
+    if ($port != -1) {
+	#warn "port($port)";
+	die "Daemon not up in time" unless wait_for_port($port);
+    }
+    tst_ok($latency, $slow, $test);
+}
+
+sub STILL {  # Check that daemon is still alive, but do not reap its results
+    my ($tsti, $expl) = @_;
+    return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
+    return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
+    my $test = tst_link($tsti, $expl, '');
+    
+    $pid = readall("tmp/$tsti.pid");
+    if (!kill(0, $pid)) {
+	tst_print('col1r', 'Daemon dead', 0, 0, $test, '');
+	return;
+    }
+    tst_ok(0,0, $test);
+}
+
+sub KILLD {  # Collect results of a daemon (see DAEMON) after client tests.
+    my ($tsti, $expl, $cmd, $exitval, $timeout, $slow) = @_;
+    return unless $tst eq 'all' || $tst eq substr("$tsti ",0,length $tst);
+    return if $ntst && $ntst eq substr("$tsti ",0,length $ntst);
+    my $test = tst_link($tsti, $expl, '');
+    $slow ||= 60;
+    $timeout ||= 600;
+    my $latency = substr(Time::HiRes::time() - $send_ts{$tsti}, 0, 5);
+
+    $pid = readall("tmp/$tsti.pid");
+    if (!kill(0, $pid)) {
+	tst_print('col1r', 'Daemon dead', $latency, $slow, $test, '');
+	return;
+    }
+    kill_child($pid);
+    return if check_diff($tsti, $latency, $slow, $test);
     tst_ok($latency, $slow, $test);
 }
 
@@ -899,9 +1198,9 @@ sub tst_ok {
     my ($latency, $slow, $test) = @_;
     ++$n_tst_ok;
     if ($latency > $slow) {
-	tst_print('col1y', 'OK slow', $latency, $slow, $test, $lasterror);
+	tst_print('col1y', "OK slow$ok_lvl", $latency, $slow, $test, $lasterror);
     } else {
-	tst_print('col1g', 'OK', $latency, $slow, $test, $lasterror);
+	tst_print('col1g', "OK $ok_lvl", $latency, $slow, $test, $lasterror);
     }
 }
 
@@ -913,6 +1212,16 @@ sub tst_print {
 	printf "%s %-5s %-5s %-50s %s\n", $status, $latency, $slow, $test, $lasterror;
     } else {
 	syswrite STDOUT, "<table class=line><tr><td class=$class1>$status</td><td class=col2>$latency</td><td class=col3>$slow</td><td class=col4>$test</td><td class=col5>$lasterror&nbsp;</td></tr></table>\n";
+    }
+    $tst_nl_called = 0;
+}
+
+sub tst_nl {
+    return if $tst_nl_called++;
+    if ($ascii) {
+	print "\n";
+    } else {
+	syswrite STDOUT, "<hr>\n";
     }
 }
 
@@ -929,6 +1238,7 @@ CMD('HELP2', 'zxpasswd -h',  "./zxpasswd -v -h");
 CMD('HELP3', 'zxcot -h',     "./zxcot -v -h");
 CMD('HELP4', 'zxdecode -h',  "./zxdecode -v -h");
 CMD('HELP5', 'zxlogview -h', "./zxlogview -v -h");
+CMD('HELP6', 'zxumacall -h', "./zxumacall -v -h");
 
 CMD('SOENC1', 'EncDec Status',     "./zxencdectest -r 3");
 CMD('ATORD1', 'Attribute sorting', "./zxencdectest -r 4");
@@ -980,7 +1290,8 @@ CMD('COT10', 'zxcot my meta',      "./zxcot -p http://localhost:1234/?o=B");
 CMD('COT11', 'zxcot list s2',      "./zxcot -s /var/zxid/idpcot");
 
 CMD('LOG1', 'zxlogview list',      "./zxlogview /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem <t/act");
-CMD('LOG2', 'zxlogview list',      "./zxlogview -t /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem");
+CMD('LOG2', 'zxlogview test',      "./zxlogview -t /var/zxid/pem/logsign-nopw-cert.pem /var/zxid/pem/logenc-nopw-cert.pem");
+CMD('LOG3', 'zxlogview receipt',   "./zxlogview -t1");
 
 # See also README.smime for tutorial of these commands
 CMD('SMIME1', 'smime key gen ca',  "echo 'commonName=TestCA|emailAddress=test\@test.com' | ./smime -kg 'description=CA' passwd tmp/careq.pem >tmp/capriv_ss.pem; wc -l tmp/capriv_ss.pem");
@@ -1105,6 +1416,9 @@ ED('XML33', 'Decode-Encode SO and WO: bad-body2 malformed close', 10, 't/bad-bod
 
 # *** TODO: benchmark raw RSA performance using logging w/ zxlogview
 
+# /apps/bin/mini_httpd -p 8081 -c 'zxid*' &   # IdP
+# /apps/bin/mini_httpd -p 8082 -c 'zxid*' &   # SP
+
 # *** TODO: set up test IdP using zxcot (for disco registrations and bootstrap) and zxpasswd
 # *** TODO: set up test SP
 # *** TODO: set up test WSP
@@ -1133,7 +1447,6 @@ CMD('ZXC-WS7', 'AS + WSF call hr-xml create', "./zxcall -d -a http://idp.tas3.pt
 CMD('ZXC-WS8', 'AS + WSF call hr-xml query', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Query xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:QueryItem><idhrxml:Select>test query</idhrxml:Select></idhrxml:QueryItem></idhrxml:Query>' -b");
 CMD('ZXC-WS9', 'AS + WSF call hr-xml mod', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Modify xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:ModifyItem><idhrxml:Select>test query</idhrxml:Select><idhrxml:NewData><hrxml:Candidate xmlns:hrxml=\"http://ns.hr-xml.org/2007-04-15\">test mod</hrxml:Candidate></idhrxml:NewData></idhrxml:ModifyItem></idhrxml:Modify>' -b");
 CMD('ZXC-WS10', 'AS + WSF call hr-xml mod', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t urn:id-sis-idhrxml:2007-06:dst-2.1 -e '<idhrxml:Delete xmlns:idhrxml=\"urn:id-sis-idhrxml:2007-06:dst-2.1\"><idhrxml:DeleteItem><idhrxml:Select>test query</idhrxml:Select></idhrxml:DeleteItem></idhrxml:Delete>' -b");
-
 
 ### Simulated browsing tests (a bit fragile)
 
@@ -1166,6 +1479,600 @@ tA('ST','SSOHLO9', 'SP local logout', 'http://sp1.zxidsp.org:8081/zxidhlo?gl=+Lo
 # http://sp.tas3.pt:8080/zxidservlet/appdemo
 # http://sp.tas3.pt:8080/zxidservlet/wscprepdemo
 
+###
+### UMA and OATH2 tests
+###
+# ./zxid_httpd -p 8081 -c 'zxid*' &
+
+tA('ST','OAZ-JWKS1', 'Java Web Key Set test',  'http://idp.tas3.pt:8081/zxididp?o=j');
+CMD('OAZ-DCR1', 'Dynamic CLient Registration', "./zxumacall -u 'http://sp.tas3.pt:8081/zxididp?o=J' -iat foobar-iat -dynclireg");
+
+###
+### Audit bus tests
+###
+
+# N.B. Although the nonSSL port should be 2228, we use 2229 so we can use same metadata
+$busd_conf = "PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/";
+$bus_cli_conf = "PATH=/var/zxid/buscli/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buscli.zxid.org/";
+$bus_list_conf = "PATH=/var/zxid/buslist/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist.zxid.org/";
+$bus_list2_conf = "PATH=/var/zxid/buslist2/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist2.zxid.org/";
+
+# For SSL tests it is important to NOT supply BUS_PW so that ClientTLS takes precedence.
+$bussd_conf = "PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomps://localhost:2229/";
+$buss_cli_conf = "PATH=/var/zxid/buscli/&BUS_URL=stomps://localhost:2229/&URL=https://buscli.zxid.org/";
+$buss_list_conf = "PATH=/var/zxid/buslist/&BUS_URL=stomps://localhost:2229/&URL=https://buslist.zxid.org/";
+$buss_list2_conf = "PATH=/var/zxid/buslist2/&BUS_URL=stomps://localhost:2229/&URL=https://buslist2.zxid.org/";
+
+# Metadata exchange
+# ./zxcot -c 'PATH=/var/zxid/buscli/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buscli.zxid.org/' -m | ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -a
+# ./zxcot -c 'PATH=/var/zxid/buslist/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist.zxid.org/' -m | ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -a
+# ./zxcot -c "PATH=/var/zxid/buslist2/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist2.zxid.org/" -m | ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -a
+
+# ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -m | ./zxcot -c 'PATH=/var/zxid/buscli/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buscli.zxid.org/' -a
+# ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -m | ./zxcot -c 'PATH=/var/zxid/buslist/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist.zxid.org/' -a
+# ./zxcot -c 'PATH=/var/zxid/bus/&NON_STANDARD_ENTITYID=stomp://localhost:2229/' -m | ./zxcot -c 'PATH=/var/zxid/buslist2/&BUS_URL=stomp://localhost:2229/&BUS_PW=pw123&URL=https://buslist2.zxid.org/' -a
+
+
+# To create bus users, you should follow these steps
+# 0. Create dir: ./zxmkdirs.sh /var/zxid/buslist2/
+# 1. Run ./zxbuslist -c 'URL=https://sp.foo.com/' -dc to determine the entity ID
+# 2. Convert entity ID to SHA1 hash: ./zxcot -p 'http://sp.foo.com?o=B'
+# 3. Create the user: ./zxpasswd -at 'eid: http://sp.foo.com?o=B' -new G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/ <passwd  # N.B. the default password is pw123
+# 4. To enable ClientTLS authentication, determine the subject_hash of
+#    the encryption certificate and symlink that to the main account:
+#      > openssl x509 -subject_hash -noout </var/zxid/buscli/pem/enc-nopw-cert.pem
+#      162553b8
+#      > ln -s /var/zxid/bus/uid/G2JpTSX_dbdJ7frhYNpKWGiMdTs /var/zxid/bus/uid/162553b8
+
+### Single client, various numbers of threads at zxbusd
+
+CMD('ZXBUS00', 'Clean', "rm -f /var/zxid/bus/ch/default/*  /var/zxid/bus/ch/default/.del/*  /var/zxid/bus/ch/default/.ack/*");
+CMD('ZXBUS01', 'Fail connect tailf', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'failbar'", 256);
+CMD('ZXBUS02', 'Fail connect list',  "./zxbuslist -d -d -c '$bus_list_conf'", 256);
+
+tst_nl();
+DAEMON('ZXBUS10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUS10.pid -c '$busd_conf' -d -d -nthr 1 -nfd 11 -npdu 500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS10b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUS10b.pid -d -d -c '$bus_list_conf'");
+CMD('ZXBUS11', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
+STILL('ZXBUS10b', 'zxbuslist 1 still there');
+CMD('ZXBUS12', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS13', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS14', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
+CMD('ZXBUS15', 'len2',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS10b', 'collect zxbuslist 1');
+KILLD('ZXBUS10', 'collect zxbusd 1');
+
+# 20 two thread debug
+
+tst_nl();
+DAEMON('ZXBUS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUS20.pid -c '$busd_conf' -d -d -nthr 2 -nfd 11 -npdu 700 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS20b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUS20b.pid -d -d -c '$bus_list_conf'");
+CMD('ZXBUS21', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS21b','zxbuslist 2 one shot', "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'");
+CMD('ZXBUS22', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS23', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS24', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 40, 10);
+CMD('ZXBUS25', 'len2',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS29', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS20b', 'collect zxbuslist 1');
+KILLD('ZXBUS20', 'collect zxbusd 2');
+
+# 30 single thread nodebug, two listeners
+
+tst_nl();
+DAEMON('ZXBUS30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUS30.pid -c '$busd_conf' -nthr 1 -nfd 1000 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS30b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS30b.pid -c '$bus_list_conf'");
+CMD('ZXBUS31', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
+DAEMON('ZXBUS31b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS31b.pid -c '$bus_list2_conf'");
+CMD('ZXBUS32', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS33', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS34', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 40, 10);
+CMD('ZXBUS35', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS39', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS30b', 'collect zxbuslist 1');
+KILLD('ZXBUS31b', 'collect zxbuslist 2');
+KILLD('ZXBUS30', 'collect zxbusd 3');
+
+# 40 two thread nodebug, two listeners
+
+tst_nl();
+DAEMON('ZXBUS40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUS40.pid -c '$busd_conf' -nthr 2 -nfd 1000 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS40b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS40b.pid -c '$bus_list_conf'");
+CMD('ZXBUS41', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
+sleep(1);
+CMD('ZXBUS41b','zxbuslist 2 one shot', "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'", 0, 10, 1);
+CMD('ZXBUS42', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
+DAEMON('ZXBUS42b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS42b.pid -c '$bus_list2_conf'");
+CMD('ZXBUS43', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS44', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
+CMD('ZXBUS45', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS40b', 'collect zxbuslist 1');
+KILLD('ZXBUS42b', 'collect zxbuslist 2');
+KILLD('ZXBUS40', 'collect zxbusd 4');
+
+# *** add tests with some listeners offline and coming back online later
+
+# 50 three thread debug
+
+tst_nl();
+DAEMON('ZXBUS50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUS50.pid -c '$busd_conf' -d -d -nthr 3 -nfd 1000 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS50b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS50b.pid -d -d -c '$bus_list_conf'");
+CMD('ZXBUS51', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS52', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS52b','zxbuslist 2 one shot',  "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'", 0, 10, 1);
+CMD('ZXBUS52c','zxbuslist 2 one shot2', "./zxbuslist -o -1 -d -d -c '$bus_list2_conf'", 0, 10, 1);
+CMD('ZXBUS53', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+DAEMON('ZXBUS53b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS53b.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUS54', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 40, 10);
+CMD('ZXBUS55', 'len2',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS59', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS50b', 'collect zxbuslist 1');
+KILLD('ZXBUS53b', 'collect zxbuslist 2');
+KILLD('ZXBUS50', 'collect zxbusd 5');
+
+# 60 three thread nodebug
+
+tst_nl();
+DAEMON('ZXBUS60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUS60.pid -c '$busd_conf' -nthr 3 -nfd 1000 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS60b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS60b.pid -d -d -c '$bus_list_conf'");
+CMD('ZXBUS61', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS62', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS62b','zxbuslist 2 one shot',  "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'", 0, 10, 1);
+CMD('ZXBUS63', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+DAEMON('ZXBUS63b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS63b.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUS64', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 40, 10);
+CMD('ZXBUS65', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS69', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS60b', 'collect zxbuslist 1');
+KILLD('ZXBUS63b', 'collect zxbuslist 2');
+KILLD('ZXBUS60', 'collect zxbusd 6');
+
+# 70 ten thread debug
+
+tst_nl();
+DAEMON('ZXBUS70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUS70.pid -c '$busd_conf' -d -d -nthr 10 -nfd 1000 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS70b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS70b.pid -d -d -c '$bus_list_conf'");
+CMD('ZXBUS71', 'One shot', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS72', 'zero len', "./zxbustailf -d -d -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS72b','zxbuslist 2 one shot',  "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'", 0, 10, 1);
+CMD('ZXBUS73', 'len1',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+DAEMON('ZXBUS73b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS73b.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUS74', '10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 40, 10);
+CMD('ZXBUS75', 'len2',     "./zxbustailf -d -d -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS79', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS70b', 'collect zxbuslist 1');
+KILLD('ZXBUS73b', 'collect zxbuslist 2');
+KILLD('ZXBUS70', 'collect zxbusd 7');
+
+# 80 ten thread nodebug
+
+tst_nl();
+DAEMON('ZXBUS80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUS80.pid -c '$busd_conf' -nthr 10 -nfd 1000 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUS80b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUS80b.pid -d -d -c '$bus_list_conf'");
+CMD('ZXBUS81', 'One shot', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar'");
+CMD('ZXBUS82', 'zero len', "./zxbustailf -c '$bus_cli_conf' -e ''");
+CMD('ZXBUS82b','zxbuslist 2 one shot',  "./zxbuslist -o 1 -d -d -c '$bus_list2_conf'", 0, 10, 1);
+CMD('ZXBUS83', 'len1',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+DAEMON('ZXBUS83b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUS83b.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUS84', '10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 40, 10);
+CMD('ZXBUS85', 'len2',     "./zxbustailf -c '$bus_cli_conf' -e 'F'");
+CMD('ZXBUS89', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUS80b', 'collect zxbuslist 1');
+KILLD('ZXBUS83b', 'collect zxbuslist 2');
+KILLD('ZXBUS80', 'collect zxbusd 8');
+
+### Single client using SSL, various numbers of threads at zxbusd
+
+tst_nl();
+CMD('ZXBUSS00', 'Clean', "rm -f /var/zxid/bus/ch/default/*  /var/zxid/bus/ch/default/.del/*  /var/zxid/bus/ch/default/.ack/*");
+CMD('ZXBUSS01', 'Fail connect tailf', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'failbar'", 256);
+CMD('ZXBUSS02', 'Fail connect list',  "./zxbuslist -d -d -c '$buss_list_conf'", 256);
+
+DAEMON('ZXBUSS10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUSS10.pid -c '$bussd_conf' -d -d -nthr 1 -nfd 13 -npdu 500 -p stomps:0.0.0.0:2229");
+# *** The current version (20120911) has a bug in that first SSL connection fails.
+# *** Thus we send this priming connection to enable all the rest work.
+#CMD('ZXBUSS10a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
+DAEMON('ZXBUSS10b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUSS10b.pid -d -d -c '$buss_list_conf'");
+CMD('ZXBUSS11', 'One shot', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar'");
+STILL('ZXBUSS10b', 'zxbuslist 1 still there');
+CMD('ZXBUSS12', 'zero len', "./zxbustailf -d -d -c '$buss_cli_conf' -e ''");
+CMD('ZXBUSS13', 'len1',     "./zxbustailf -d -d -c '$buss_cli_conf' -e 'F'");
+CMD('ZXBUSS14', '10x20 battery', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
+CMD('ZXBUSS15', 'len2',     "./zxbustailf -d -d -c '$buss_cli_conf' -e 'F'");
+CMD('ZXBUSS19', 'dump',     "./zxbustailf -c '$buss_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSS10b', 'collect zxbuslist 1');
+KILLD('ZXBUSS10', 'collect zxbusd 1');
+
+# 20 two thread debug
+
+tst_nl();
+DAEMON('ZXBUSS20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSS20.pid -c '$bussd_conf' -d -d -nthr 2 -nfd 13 -npdu 900 -p stomps:0.0.0.0:2229");
+#CMD('ZXBUSS20a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
+DAEMON('ZXBUSS20b', 'zxbuslist 1', -1, "./zxbuslist -pid tmp/ZXBUSS20b.pid -d -d -c '$buss_list_conf'");
+CMD('ZXBUSS21', 'One shot', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar'");
+CMD('ZXBUSS21b','zxbuslist 2 one shot', "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'");
+CMD('ZXBUSS22', 'zero len', "./zxbustailf -d -d -c '$buss_cli_conf' -e ''");
+CMD('ZXBUSS23', 'len1',     "./zxbustailf -d -d -c '$buss_cli_conf' -e 'F'");
+CMD('ZXBUSS24', '10x20 battery', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
+CMD('ZXBUSS25', 'len2',     "./zxbustailf -d -d -c '$buss_cli_conf' -e 'F'");
+CMD('ZXBUSS29', 'dump',     "./zxbustailf -c '$buss_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSS20b', 'collect zxbuslist 1');
+KILLD('ZXBUSS20', 'collect zxbusd 2');
+
+# 30 single thread nodebug, two listener clients
+
+tst_nl();
+DAEMON('ZXBUSS30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUSS30.pid -c '$bussd_conf' -nthr 1 -nfd 1000 -npdu 5000 -p stomps:0.0.0.0:2229");
+#CMD('ZXBUSS30a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
+DAEMON('ZXBUSS30b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSS30b.pid -c '$buss_list_conf'");
+CMD('ZXBUSS31', 'One shot', "./zxbustailf -c '$buss_cli_conf' -e 'foo bar'");
+DAEMON('ZXBUSS31b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSS31b.pid -c '$buss_list2_conf'");
+CMD('ZXBUSS32', 'zero len', "./zxbustailf -c '$buss_cli_conf' -e ''");
+CMD('ZXBUSS33', 'len1',     "./zxbustailf -c '$buss_cli_conf' -e 'F'");
+CMD('ZXBUSS34', '10x20 battery', "./zxbustailf -c '$buss_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
+CMD('ZXBUSS35', 'len2',     "./zxbustailf -c '$buss_cli_conf' -e 'F'");
+CMD('ZXBUSS39', 'dump',     "./zxbustailf -c '$buss_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSS30b', 'collect zxbuslist 1');
+KILLD('ZXBUSS31b', 'collect zxbuslist 2');
+KILLD('ZXBUSS30', 'collect zxbusd 3');
+
+# 40 two thread nodebug, two listeners
+
+tst_nl();
+DAEMON('ZXBUSS40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUSS40.pid -c '$bussd_conf' -nthr 2 -nfd 1000 -npdu 5000 -p stomps:0.0.0.0:2229");
+#CMD('ZXBUSS40a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
+DAEMON('ZXBUSS40b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSS40b.pid -c '$buss_list_conf'");
+CMD('ZXBUSS41', 'One shot', "./zxbustailf -c '$buss_cli_conf' -e 'foo bar'");
+sleep(1);
+CMD('ZXBUSS41b','zxbuslist 2 one shot', "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'", 0, 10, 1);
+CMD('ZXBUSS42', 'zero len', "./zxbustailf -c '$buss_cli_conf' -e ''");
+DAEMON('ZXBUSS42b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSS42b.pid -c '$buss_list2_conf'");
+CMD('ZXBUSS43', 'len1',     "./zxbustailf -c '$buss_cli_conf' -e 'F'");
+CMD('ZXBUSS44', '10x20 battery', "./zxbustailf -c '$buss_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
+CMD('ZXBUSS45', 'len2',     "./zxbustailf -c '$buss_cli_conf' -e 'F'");
+CMD('ZXBUSS49', 'dump',     "./zxbustailf -c '$buss_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSS40b', 'collect zxbuslist 1');
+KILLD('ZXBUSS42b', 'collect zxbuslist 2');
+KILLD('ZXBUSS40', 'collect zxbusd 4');
+
+# *** add tests with some listeners offline and coming back online later
+
+# 50 three thread debug
+
+tst_nl();
+DAEMON('ZXBUSS50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUSS50.pid -c '$bussd_conf' -d -d -nthr 3 -nfd 1000 -npdu 5000 -p stomps:0.0.0.0:2229");
+#CMD('ZXBUSS50a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
+DAEMON('ZXBUSS50b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSS50b.pid -d -d -c '$buss_list_conf'");
+CMD('ZXBUSS51', 'One shot', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar'");
+CMD('ZXBUSS52', 'zero len', "./zxbustailf -d -d -c '$buss_cli_conf' -e ''");
+CMD('ZXBUSS52b','zxbuslist 2 one shot',  "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'", 0, 10, 1);
+CMD('ZXBUSS52c','zxbuslist 2 one shot2', "./zxbuslist -o -1 -d -d -c '$buss_list2_conf'", 0, 10, 1);
+CMD('ZXBUSS53', 'len1',     "./zxbustailf -d -d -c '$buss_cli_conf' -e 'F'");
+DAEMON('ZXBUSS53b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSS53b.pid -d -d -c '$buss_list2_conf'");
+CMD('ZXBUSS54', '10x20 battery', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
+CMD('ZXBUSS55', 'len2',     "./zxbustailf -d -d -c '$buss_cli_conf' -e 'F'");
+CMD('ZXBUSS59', 'dump',     "./zxbustailf -c '$buss_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSS50b', 'collect zxbuslist 1');
+KILLD('ZXBUSS53b', 'collect zxbuslist 2');
+KILLD('ZXBUSS50', 'collect zxbusd 5');
+
+# 60 three thread nodebug
+
+tst_nl();
+DAEMON('ZXBUSS60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUSS60.pid -c '$bussd_conf' -nthr 3 -nfd 1000 -npdu 5000 -p stomps:0.0.0.0:2229");
+#CMD('ZXBUSS60a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
+DAEMON('ZXBUSS60b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSS60b.pid -d -d -c '$buss_list_conf'");
+CMD('ZXBUSS61', 'One shot', "./zxbustailf -c '$buss_cli_conf' -e 'foo bar'");
+CMD('ZXBUSS62', 'zero len', "./zxbustailf -c '$buss_cli_conf' -e ''");
+CMD('ZXBUSS62b','zxbuslist 2 one shot',  "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'", 0, 10, 1);
+CMD('ZXBUSS63', 'len1',     "./zxbustailf -c '$buss_cli_conf' -e 'F'");
+DAEMON('ZXBUSS63b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSS63b.pid -d -d -c '$buss_list2_conf'");
+CMD('ZXBUSS64', '10x20 battery', "./zxbustailf -c '$buss_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
+CMD('ZXBUSS65', 'len2',     "./zxbustailf -c '$buss_cli_conf' -e 'F'");
+CMD('ZXBUSS69', 'dump',     "./zxbustailf -c '$buss_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSS60b', 'collect zxbuslist 1');
+KILLD('ZXBUSS63b', 'collect zxbuslist 2');
+KILLD('ZXBUSS60', 'collect zxbusd 6');
+
+# 70 ten thread debug
+
+tst_nl();
+DAEMON('ZXBUSS70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUSS70.pid -c '$bussd_conf' -d -d -nthr 10 -nfd 1000 -npdu 5000 -p stomps:0.0.0.0:2229");
+#CMD('ZXBUSS70a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
+DAEMON('ZXBUSS70b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSS70b.pid -d -d -c '$buss_list_conf'");
+CMD('ZXBUSS71', 'One shot', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar'");
+CMD('ZXBUSS72', 'zero len', "./zxbustailf -d -d -c '$buss_cli_conf' -e ''");
+CMD('ZXBUSS72b','zxbuslist 2 one shot',  "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'", 0, 10, 1);
+CMD('ZXBUSS73', 'len1',     "./zxbustailf -d -d -c '$buss_cli_conf' -e 'F'");
+DAEMON('ZXBUSS73b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSS73b.pid -d -d -c '$buss_list2_conf'");
+CMD('ZXBUSS74', '10x20 battery', "./zxbustailf -d -d -c '$buss_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
+CMD('ZXBUSS75', 'len2',     "./zxbustailf -d -d -c '$buss_cli_conf' -e 'F'");
+CMD('ZXBUSS79', 'dump',     "./zxbustailf -c '$buss_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSS70b', 'collect zxbuslist 1');
+KILLD('ZXBUSS73b', 'collect zxbuslist 2');
+KILLD('ZXBUSS70', 'collect zxbusd 7');
+
+# 80 ten thread nodebug
+
+tst_nl();
+DAEMON('ZXBUSS80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUSS80.pid -c '$bussd_conf' -nthr 10 -nfd 1000 -npdu 5000 -p stomps:0.0.0.0:2229");
+#CMD('ZXBUSS80a','zxbuslist 1 prime-bug', "./zxbuslist -o -1 -d -d -c '$buss_list_conf'", 36096);
+DAEMON('ZXBUSS80b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSS80b.pid -d -d -c '$buss_list_conf'");
+CMD('ZXBUSS81', 'One shot', "./zxbustailf -c '$buss_cli_conf' -e 'foo bar'");
+CMD('ZXBUSS82', 'zero len', "./zxbustailf -c '$buss_cli_conf' -e ''");
+CMD('ZXBUSS82b','zxbuslist 2 one shot',  "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'", 0, 10, 1);
+CMD('ZXBUSS83', 'len1',     "./zxbustailf -c '$buss_cli_conf' -e 'F'");
+DAEMON('ZXBUSS83b','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSS83b.pid -d -d -c '$buss_list2_conf'");
+CMD('ZXBUSS84', '10x20 battery', "./zxbustailf -c '$buss_cli_conf' -e 'foo bar' -i 10 -is 20", 0, 60, 10);
+CMD('ZXBUSS85', 'len2',     "./zxbustailf -c '$buss_cli_conf' -e 'F'");
+CMD('ZXBUSS89', 'dump',     "./zxbustailf -c '$buss_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSS80b', 'collect zxbuslist 1');
+KILLD('ZXBUSS83b', 'collect zxbuslist 2');
+KILLD('ZXBUSS80', 'collect zxbusd 8');
+
+### Dual threaded client, various numbers of threads at zxbusd
+
+tst_nl();
+CMD('ZXBUSD00', 'Clean', "rm -f /var/zxid/bus/ch/default/*  /var/zxid/bus/ch/default/.del/*  /var/zxid/bus/ch/default/.ack/*");
+
+tst_nl();
+DAEMON('ZXBUSD10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUSD10.pid -c '$busd_conf' -d -d -nthr 1 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD10b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD10b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD10c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD10c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD12', 'zxbuslist 2 fail one shot',  "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'", 256, 10, 1);
+CMD('ZXBUSD14', '2x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 90, 10);
+CMD('ZXBUSD19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD10b', 'collect zxbuslist 1');
+KILLD('ZXBUSD10c', 'collect zxbuslist 2');
+KILLD('ZXBUSD10',  'collect zxbusd 1');
+
+tst_nl();
+DAEMON('ZXBUSD20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSD20.pid -c '$busd_conf' -d -d -nthr 2 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD20b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD20b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD20c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD20c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD24', '2x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 180, 10);
+CMD('ZXBUSD29', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD20b', 'collect zxbuslist 1');
+KILLD('ZXBUSD20c', 'collect zxbuslist 2');
+KILLD('ZXBUSD20', 'collect zxbusd 2');
+
+tst_nl();
+DAEMON('ZXBUSD30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUSD30.pid -c '$busd_conf' -nthr 1 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD30b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD30b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD30c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD30c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD34', '2x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 120, 10);
+CMD('ZXBUSD39', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD30b', 'collect zxbuslist 1');
+KILLD('ZXBUSD30c', 'collect zxbuslist 2');
+KILLD('ZXBUSD30', 'collect zxbusd 3');
+
+tst_nl();
+DAEMON('ZXBUSD40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUSD40.pid -c '$busd_conf' -nthr 2 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD40b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD40b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD40c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD40c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD44', '2x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 120, 10);
+CMD('ZXBUSD49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD40b', 'collect zxbuslist 1');
+KILLD('ZXBUSD40c', 'collect zxbuslist 2');
+KILLD('ZXBUSD40', 'collect zxbusd 4');
+
+tst_nl();
+DAEMON('ZXBUSD50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUSD50.pid -c '$busd_conf' -d -d -nthr 3 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD50b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD50b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD50c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD50c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD54', '2x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 120, 10);
+CMD('ZXBUSD59', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD50b', 'collect zxbuslist 1');
+KILLD('ZXBUSD50c', 'collect zxbuslist 2');
+KILLD('ZXBUSD50', 'collect zxbusd 5');
+
+tst_nl();
+DAEMON('ZXBUSD60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUSD60.pid -c '$busd_conf' -nthr 3 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD60b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD60b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD60c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD60c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD64', '2x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 120, 10);
+CMD('ZXBUSD69', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD60b', 'collect zxbuslist 1');
+KILLD('ZXBUSD60c', 'collect zxbuslist 2');
+KILLD('ZXBUSD60', 'collect zxbusd 6');
+
+tst_nl();
+DAEMON('ZXBUSD70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUSD70.pid -c '$busd_conf' -d -d -nthr 10 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD70b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD70b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD70c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD70c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD74', '2x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 120, 10);
+CMD('ZXBUSD79', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD70b', 'collect zxbuslist 1');
+KILLD('ZXBUSD70c', 'collect zxbuslist 2');
+KILLD('ZXBUSD70', 'collect zxbusd 7');
+
+tst_nl();
+DAEMON('ZXBUSD80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUSD80.pid -c '$busd_conf' -nthr 10 -nfd 30 -npdu 1000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSD80b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSD80b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSD80c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSD80c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSD84', '2x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 2 -i 10 -is 20", 0, 120, 10);
+CMD('ZXBUSD89', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSD80b', 'collect zxbuslist 1');
+KILLD('ZXBUSD80c', 'collect zxbuslist 2');
+KILLD('ZXBUSD80', 'collect zxbusd 8');
+
+### Triple threaded client, various numbers of threads at zxbusd
+
+tst_nl();
+CMD('ZXBUST00', 'Clean', "rm -f /var/zxid/bus/ch/default/*  /var/zxid/bus/ch/default/.del/*  /var/zxid/bus/ch/default/.ack/*");
+
+tst_nl();
+DAEMON('ZXBUST10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUST10.pid -c '$busd_conf' -d -d -nthr 1 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST10b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST10b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST10c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST10c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST12', 'zxbuslist 2 fail one shot',  "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'", 256, 10, 1);
+CMD('ZXBUST14', '3x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
+CMD('ZXBUST19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST10b', 'collect zxbuslist 1');
+KILLD('ZXBUST10c', 'collect zxbuslist 2');
+KILLD('ZXBUST10',  'collect zxbusd 1');
+
+tst_nl();
+DAEMON('ZXBUST20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUST20.pid -c '$busd_conf' -d -d -nthr 2 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST20b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST20b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST20c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST20c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST24', '3x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
+CMD('ZXBUST29', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST20b', 'collect zxbuslist 1');
+KILLD('ZXBUST20c', 'collect zxbuslist 2');
+KILLD('ZXBUST20', 'collect zxbusd 2');
+
+tst_nl();
+DAEMON('ZXBUST30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUST30.pid -c '$busd_conf' -nthr 1 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST30b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST30b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST30c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST30c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST34', '3x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
+CMD('ZXBUST39', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST30b', 'collect zxbuslist 1');
+KILLD('ZXBUST30c', 'collect zxbuslist 2');
+KILLD('ZXBUST30', 'collect zxbusd 3');
+
+tst_nl();
+DAEMON('ZXBUST40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUST40.pid -c '$busd_conf' -nthr 2 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST40b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST40b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST40c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST40c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST44', '3x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
+CMD('ZXBUST49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST40b', 'collect zxbuslist 1');
+KILLD('ZXBUST40c', 'collect zxbuslist 2');
+KILLD('ZXBUST40', 'collect zxbusd 4');
+
+tst_nl();
+DAEMON('ZXBUST50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUST50.pid -c '$busd_conf' -d -d -nthr 3 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST50b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST50b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST50c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST50c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST54', '3x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
+CMD('ZXBUST59', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST50b', 'collect zxbuslist 1');
+KILLD('ZXBUST50c', 'collect zxbuslist 2');
+KILLD('ZXBUST50', 'collect zxbusd 5');
+
+tst_nl();
+DAEMON('ZXBUST60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUST60.pid -c '$busd_conf' -nthr 3 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST60b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST60b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST60c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST60c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST64', '3x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
+CMD('ZXBUST69', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST60b', 'collect zxbuslist 1');
+KILLD('ZXBUST60c', 'collect zxbuslist 2');
+KILLD('ZXBUST60', 'collect zxbusd 6');
+
+tst_nl();
+DAEMON('ZXBUST70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUST70.pid -c '$busd_conf' -d -d -nthr 10 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST70b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST70b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST70c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST70c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST74', '3x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
+CMD('ZXBUST79', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST70b', 'collect zxbuslist 1');
+KILLD('ZXBUST70c', 'collect zxbuslist 2');
+KILLD('ZXBUST70', 'collect zxbusd 7');
+
+tst_nl();
+DAEMON('ZXBUST80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUST80.pid -c '$busd_conf' -nthr 10 -nfd 30 -npdu 1500 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUST80b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUST80b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUST80c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUST80c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUST84', '3x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 3 -i 10 -is 20", 0, 240, 10);
+CMD('ZXBUST89', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUST80b', 'collect zxbuslist 1');
+KILLD('ZXBUST80c', 'collect zxbuslist 2');
+KILLD('ZXBUST80', 'collect zxbusd 8');
+
+### Multi threaded (10) client, various numbers of threads at zxbusd
+
+tst_nl();
+CMD('ZXBUSM00', 'Clean', "rm -f /var/zxid/bus/ch/default/*  /var/zxid/bus/ch/default/.del/*  /var/zxid/bus/ch/default/.ack/*");
+
+tst_nl();
+DAEMON('ZXBUSM10', 'zxbusd 1', 2229, "./zxbusd -pid tmp/ZXBUSM10.pid -c '$busd_conf' -d -d -nthr 1 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM10b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM10b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM10c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM10c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM12', 'zxbuslist 2 fail one shot',  "./zxbuslist -o 1 -d -d -c '$buss_list2_conf'", 256, 10, 1);
+CMD('ZXBUSM14', '10x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
+CMD('ZXBUSM19', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM10b', 'collect zxbuslist 1');
+KILLD('ZXBUSM10c', 'collect zxbuslist 2');
+KILLD('ZXBUSM10',  'collect zxbusd 1');
+
+tst_nl();
+DAEMON('ZXBUSM20', 'zxbusd 2', 2229, "./zxbusd -pid tmp/ZXBUSM20.pid -c '$busd_conf' -d -d -nthr 2 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM20b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM20b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM20c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM20c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM24', '10x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
+CMD('ZXBUSM29', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM20b', 'collect zxbuslist 1');
+KILLD('ZXBUSM20c', 'collect zxbuslist 2');
+KILLD('ZXBUSM20', 'collect zxbusd 2');
+
+tst_nl();
+DAEMON('ZXBUSM30', 'zxbusd 3', 2229, "./zxbusd -pid tmp/ZXBUSM30.pid -c '$busd_conf' -nthr 1 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM30b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM30b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM30c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM30c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM34', '10x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
+CMD('ZXBUSM39', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM30b', 'collect zxbuslist 1');
+KILLD('ZXBUSM30c', 'collect zxbuslist 2');
+KILLD('ZXBUSM30', 'collect zxbusd 3');
+
+tst_nl();
+DAEMON('ZXBUSM40', 'zxbusd 4', 2229, "./zxbusd -pid tmp/ZXBUSM40.pid -c '$busd_conf' -nthr 2 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM40b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM40b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM40c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM40c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM44', '10x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
+CMD('ZXBUSM49', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM40b', 'collect zxbuslist 1');
+KILLD('ZXBUSM40c', 'collect zxbuslist 2');
+KILLD('ZXBUSM40', 'collect zxbusd 4');
+
+tst_nl();
+DAEMON('ZXBUSM50', 'zxbusd 5', 2229, "./zxbusd -pid tmp/ZXBUSM50.pid -c '$busd_conf' -d -d -nthr 3 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM50b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM50b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM50c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM50c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM54', '10x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
+CMD('ZXBUSM59', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM50b', 'collect zxbuslist 1');
+KILLD('ZXBUSM50c', 'collect zxbuslist 2');
+KILLD('ZXBUSM50', 'collect zxbusd 5');
+
+tst_nl();
+DAEMON('ZXBUSM60', 'zxbusd 6', 2229, "./zxbusd -pid tmp/ZXBUSM60.pid -c '$busd_conf' -nthr 3 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM60b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM60b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM60c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM60c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM64', '10x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
+CMD('ZXBUSM69', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM60b', 'collect zxbuslist 1');
+KILLD('ZXBUSM60c', 'collect zxbuslist 2');
+KILLD('ZXBUSM60', 'collect zxbusd 6');
+
+tst_nl();
+DAEMON('ZXBUSM70', 'zxbusd 7', 2229, "./zxbusd -pid tmp/ZXBUSM70.pid -c '$busd_conf' -d -d -nthr 10 -nfd 50 -npdu 5000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM70b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM70b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM70c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM70c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM74', '10x10x20 battery', "./zxbustailf -d -d -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
+CMD('ZXBUSM79', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM70b', 'collect zxbuslist 1');
+KILLD('ZXBUSM70c', 'collect zxbuslist 2');
+KILLD('ZXBUSM70', 'collect zxbusd 7');
+
+tst_nl();
+DAEMON('ZXBUSM80', 'zxbusd 8', 2229, "./zxbusd -pid tmp/ZXBUSM80.pid -c '$busd_conf' -nthr 10 -nfd 1000 -npdu 7000 -p stomp:0.0.0.0:2229");
+DAEMON('ZXBUSM80b','zxbuslist 1',-1,"./zxbuslist -pid tmp/ZXBUSM80b.pid -d -d -c '$bus_list_conf'");
+DAEMON('ZXBUSM80c','zxbuslist 2',-1,"./zxbuslist -pid tmp/ZXBUSM80c.pid -d -d -c '$bus_list2_conf'");
+CMD('ZXBUSM84', '10x10x20 battery', "./zxbustailf -c '$bus_cli_conf' -e 'foo bar' -it 10 -i 10 -is 20", 0, 3600, 10);
+CMD('ZXBUSM89', 'dump',     "./zxbustailf -c '$bus_cli_conf' -ctl 'dump'");
+KILLD('ZXBUSM80b', 'collect zxbuslist 1');
+KILLD('ZXBUSM80c', 'collect zxbuslist 2');
+KILLD('ZXBUSM80', 'collect zxbusd 8');
+
+### Unit test code that did not get tested otherwise
+
+tst_nl();
 CMD('COVIMP1', 'Silly tests just to improve test coverage', "./zxcovimp.sh", 0, 60, 10);
 
 if (0) {

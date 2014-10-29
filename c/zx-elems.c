@@ -1,5 +1,5 @@
 /* C code produced by gperf version 3.0.1 */
-/* Command-line: gperf c/zx-elems.gperf  */
+/* Command-line: /apps/bin/gperf c/zx-elems.gperf  */
 /* Computed positions: -k'1-5,7-8,11,$' */
 
 #if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \

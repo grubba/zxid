@@ -303,15 +303,14 @@ mode depends on AUTO_PAGE and AUTO_FORM flags
   10  Complete form is generated
   11  Whole page is generated (best support)
 
-The output format in the successful SSO case depends on OFMT bits
-as follows
+The output format in the successful SSO case depends on Output
+Format (OFMT) bits as follows
 
   JQ
-  ==
   00  LDIF (default)
   01  Query String
   10  JSON
-  11  Reserved
+  11  No output (usually used if attributes are picked from session)
 
 2.1.4 Configuration options for customizing HTML
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -657,8 +656,6 @@ See also zxid-perl.pd
 34 CONTENT-TYPE: text/html
 35
 36 <title>ZXID SP PERL HLO SSO IdP Selection</title>
-37 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-38 <link type="text/css" rel=stylesheet href="idpsel.css">
 39 <body bgcolor=white><font face=sans>
 40 <h1>ZXID SP Perl HLO Federated SSO IdP Selection (user NOT logged in, no session.)</h1>
 41 <form method=get action="zxidhlo.pl">
@@ -813,7 +810,7 @@ Signature:: SAML 2.0 mandated field name for signature in redirect binding
 3.2 IdP Selection (Login) Screen
 --------------------------------
 
-These are typically embdedded or visible fields of the IdP Selection
+These are typically embdedded (hidden) or visible fields of the IdP Selection
 screen.
 
 u:: User (local login)
@@ -834,7 +831,7 @@ fq:: Affiliation ID
 fy:: Consent field
 fm:: Matching rule
 fa:: Authentication Context Class
-fr:: Relay State
+fr:: Relay State (usually used to convey the page that originally initiated the SSO)
 
 Please understand that a significant part of any SSO configuration
 is realized via f* fields, which will typically be hidden

@@ -12,6 +12,7 @@ Right now the following has been accomplished
 1. Compiles cleanly (xmingw cross compile)
 2. CGI executables such as zxid and zxidhlo are produced (but not tested)
 3. zxid.dll is produced
+4. zxidjni.dll is produced
 
 *Todo*
 
@@ -100,3 +101,37 @@ C# Calling
 
 * Turning code "unsafe"
 * pinvoke
+
+
+-----
+
+/apps/gcc/mingw/bin/i586-pc-mingw32-gcc -g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing  -mno-cygwin -DUSE_ZXID -DDISA_MINI_HTTPD_BLOAT -DUSE_CURL -DUSE_OPENSSL -DUSE_PTHREAD -pthread -DZXID_LIBNAME='" libe2eta ix86-32 (sampo@synergetics.be)"' -DZXID_CONF_PATH='"/var/zxid/zxid.conf"' -DUSE_AKBOX_FN=1 -DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -D_REENTRANT -DDEBUG -DMUTEX_DEBUG=1 -I. -I/home/sampo/zxid -I/apps/gcc/mingw/sysroot/include -I/apps/gcc/mingw/sysroot/include -I/apps/include -I/usr/include/apache2 -I/usr/include/apr-1.0   -c -o zxpw.o zxpw.c
+i586-pc-mingw32-gcc: unrecognized option `-pthread'
+In file included from /apps/include/curl/curl.h:34,
+                 from zxid.h:36,
+                 from zxpw.c:33:
+/apps/include/curl/curlbuild.h:152:26: sys/socket.h: No such file or directory
+In file included from /apps/include/curl/curl.h:34,
+                 from zxid.h:36,
+                 from zxpw.c:33:
+/apps/include/curl/curlbuild.h:165: error: syntax error before "curl_socklen_t"
+/apps/include/curl/curlbuild.h:165: warning: data definition has no type or storage class
+make: *** [zxpw.o] Error 1
+
+# fix: remove -shared
+
+/apps/gcc/mingw/bin/i586-pc-mingw32-gcc -c -o zxidjava/zxid_wrap.o -I /usr/lib/jvm/java-6-openjdk/include -I/usr/lib/jvm/java-6-openjdk/include/linux -g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin -DUSE_ZXID -DDISA_MINI_HTTPD_BLOAT -DUSE_CURL -DUSE_OPENSSL -DUSE_PTHREAD -pthread -DZXID_LIBNAME='" libe2eta ix86-32 (sampo@synergetics.be)"' -DZXID_CONF_PATH='"/var/zxid/zxid.conf"' -DUSE_AKBOX_FN=1 -DMINGW -DUSE_LOCK=dummy_no_flock -DCURL_STATICLIB -D_REENTRANT -DDEBUG -DMUTEX_DEBUG=1 -I. -I/home/sampo/zxid -I/apps/gcc/mingw/sysroot/include -I/apps/gcc/mingw/sysroot/include -I/apps/gcc/mingw/sysroot/include -I/apps/gcc/mingw/sysroot/include -I/apps/gcc/mingw/sysroot/srclib/apr-util/include zxidjava/zxid_wrap.c
+
+i586-pc-mingw32-gcc: unrecognized option `-pthread'
+zxidjava/zxid_wrap.c: In function `Java_zxidjava_zxidjniJNI_zxid_1bus_1url_1fd_1set':
+zxidjava/zxid_wrap.c:14851: warning: assignment makes pointer from integer without a cast
+
+/apps/gcc/mingw/bin/i586-pc-mingw32-gcc  -o zxidjava/zxidjni.dll -Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition zxidjava/zxid_wrap.o -L. -lzxid -mconsole -L/apps/gcc/mingw/sysroot/lib -L/apps/gcc/mingw/sysroot/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32 -Wl,-no-whole-archive
+
+zxidjava/zxid_wrap.o: In function `Java_zxidjava_zxidjniJNI_zx_1str_1n_1get':/home/sampo/zxid/zxidjava/zxid_wrap.c:1276: undefined reference to `pthread_self'
+zxidjava/zxid_wrap.o: In function `Java_zxidjava_zxidjniJNI_new_1zx_1str':/home/sampo/zxid/zxidjava/zxid_wrap.c:1394: undefined reference to `pthread_self'
+zxidjava/zxid_wrap.o: In function `Java_zxidjava_zxidjniJNI_zx_1attr_1s_1g_1get':/home/sampo/zxid/zxidjava/zxid_wrap.c:1446: undefined reference to `pthread_self'
+zxidjava/zxid_wrap.o: In function `Java_zxidjava_zxidjniJNI_zx_1elem_1s_1g_1get':/home/sampo/zxid/zxidjava/zxid_wrap.c:1600: undefined reference to `pthread_self'
+zxidjava/zxid_wrap.o: In function `Java_zxidjava_zxidjniJNI_zx_1ref_1str':/home/sampo/zxid/zxidjava/zxid_wrap.c:2058: undefined reference to `pthread_self'
+zxidjava/zxid_wrap.o:/home/sampo/zxid/zxidjava/zxid_wrap.c:2098: more undefined references to `pthread_self' follow
+make: *** [zxidjava/zxidjni.dll] Error 1

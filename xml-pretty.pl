@@ -113,7 +113,7 @@ sub xml_pretty {
 		$indent .= '  ';
 	    }
 	} else {
-	    die "unprocessable start tag($x)";
+	    die "unprocessable start tag($x) (tag must be completely on one line)";
 	}
     }
     return $res;

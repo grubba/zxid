@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+# Copyright (c) 2010-2014 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
 # This is confidential unpublished proprietary source code of the author.
 # NO WARRANTY, not even implied warranties. Contains trade secrets.
 # Distribution prohibited unless authorized in writing.
@@ -7,6 +7,7 @@
 # $Id$
 #
 # 13.3.2010, created --Sampo
+# 14.2.2014, perfected local login with IdP --Sampo
 #
 # Web GUI CGI for exploring ZXID logs and audit trail
 #
@@ -24,9 +25,9 @@ Usage: http://localhost:8081/zxidatsel.pl?QUERY_STRING
          -a Ascii mode
 USAGE
     ;
-die $USAGE if $ARGV[0] =~ /^-[Hh?]/;
+die $usage if $ARGV[0] =~ /^-[Hh?]/;
 
-$dir = '/var/zxid/idp';
+$cpath = '/var/zxid/idp';
 
 use Net::SAML;
 use Data::Dumper;
@@ -46,24 +47,46 @@ if ($ENV{CONTENT_LENGTH}) {
     #warn "GOT($qs) $ENV{CONTENT_LENGTH}";
     cgidec($qs);
 }
-warn "$$: cgi: " . Dumper(\%cgi);
 
-$sesdata = readall("${dir}ses/$cgi{'s'}/.ses", 1);
-$persona = readall("${dir}ses/$cgi{'s'}/.persona", 1);
+$confdata = readall("${cpath}zxid.conf",1);
+($ses_cookie_name) = $confdata =~ /^SES_COOKIE_NAME=(.*)$/m;
+$ses_cookie_name ||= 'ZXIDSES';
+($ses_from_cookie) = $ENV{HTTP_COOKIE} =~ /$ses_cookie_name=([^; \t]+)/;
+
+warn "$$ s-from-c($ses_from_cookie) cgi: " . Dumper(\%cgi);
+
+### Due to circumstances, zxididp typically will not have set the cookie so we need to set it here
+
+if (!$ses_from_cookie) {
+    $ses_from_cookie = $cgi{'s'};
+    $setcookie = "\r\nSet-Cookie: $ses_cookie_name=$ses_from_cookie";
+}
+if ($cgi{'s'}) {
+    if ($cgi{'s'} ne $ses_from_cookie) {
+	$cgi{'s'} = $ses_from_cookie;
+	$setcookie = "\r\nSet-Cookie: $ses_cookie_name=$ses_from_cookie";
+    }
+} else {
+    $cgi{'s'} = $ses_from_cookie;
+    $setcookie = "\r\nSet-Cookie: $ses_cookie_name=$ses_from_cookie";
+}
+
+$sesdata = readall("${cpath}ses/$cgi{'s'}/.ses", 1);
+$persona = readall("${cpath}ses/$cgi{'s'}/.persona", 1);
 if (!length $sesdata) {
-    $proto = $ENV{SERVER_PORT} =~ /443$/ ? 'https' : 'http';
-    $url = "$proto://$ENV{HTTP_HOST}$ENV{SCRIPT_NAME}";
-    warn "No session! Need to login($cgi{'s'}). url($url)";
-    $cf = Net::SAML::new_conf_to_cf("PATH=$dir&URL=$url");
+    $qs = $qs ? "$qs&" : "";
+    $qs .= "o=F&redirafter=$ENV{SCRIPT_NAME}?s=X";
+    warn "No session! Need to login($cgi{'s'}).  qs($qs)";
+    $cf = Net::SAML::new_conf_to_cf("CPATH=$cpath");
     $res = Net::SAML::simple_cf($cf, -1, $qs, undef, 0x3fff); # 0x1829
     cgidec($res);
     warn "$$: SSO done($res): " . Dumper(\%cgi);
     # *** figure out the IdP session
-    $sesdata = readall("${dir}ses/XXX/.ses");
-    $persona = readall("${dir}ses/XXX/.persona");
+    $sesdata = readall("${cpath}ses/XXX/.ses",1);
+    $persona = readall("${cpath}ses/XXX/.persona",1);
 }
-(undef, undef, undef, undef, $uid) = split '|', $sesdata;
-warn "uid($uid)";
+(undef, undef, undef, undef, $uid) = split /\|/, $sesdata;
+warn "uid($uid) sesdata($sesdata)";
 
 sub uridec {
     my ($val) = @_;
@@ -90,7 +113,7 @@ sub cgidec {
 
 sub read_user_log {
     my ($uid, $repeat, $nlog) = @_;
-    open LOG, "tail -$nlog ${dir}uid/$uid/.log | ./zxlogview ${dir}pem/logsign-nopw-cert.pem ${dir}pem/logenc-nopw-cert.pem|"
+    open LOG, "tail -$nlog ${cpath}uid/$uid/.log | ./zxlogview ${cpath}pem/logsign-nopw-cert.pem ${cpath}pem/logenc-nopw-cert.pem|"
 	or die "Cannot open log decoding pipe: $!";
     $/ = "\n";
     my ($what, $line, $x);
@@ -126,7 +149,7 @@ sub read_user_log {
 
 sub read_cot {
     my ($repeat, $selected_sp) = @_;
-    open COT, "./zxcot ${dir}cot|" or die "Cannot open zxcot pipe: $!";
+    open COT, "./zxcot ${cpath}cot|" or die "Cannot open zxcot pipe: $!";
     $/ = "\n";
     my ($line, $x);
     my $accu = '';
@@ -155,7 +178,7 @@ sub persona_menu {
 }
 
 sub readall {
-    my ($f) = @_;
+    my ($f, $nofatal) = @_;
     my ($pkg, $srcfile, $line) = caller;
     undef $/;         # Read all in, without breaking on lines
     open F, "<$f" or do { if ($nofatal) { warn "$srcfile:$line: Cant read($f): $!"; return undef; } else { die "$srcfile:$line: Cant read($f): $!"; } };
@@ -252,7 +275,7 @@ sub show_templ {
     $templ = readall($templ);
     $templ =~ s/!!(\w+)/$$hr{$1}/gs;
     my $len = length $templ;
-    syswrite STDOUT, "Content-Type: text/html\r\nContent-Length: $len\r\n\r\n$templ";
+    syswrite STDOUT, "Content-Type: text/html\r\nContent-Length: $len$setcookie\r\n\r\n$templ";
     exit;
 }
 
@@ -279,10 +302,9 @@ sub show_atsel {
     
     bangbang(\$templ, $hr);
     my $len = length $templ;
-    syswrite STDOUT, "Content-Type: text/html\r\nContent-Length: $len\r\n\r\n$templ";
+    syswrite STDOUT, "Content-Type: text/html\r\nContent-Length: $len$setcookie\r\n\r\n$templ";
     exit;
 }
-
 
 show_atsel($uid, \%cgi);
 

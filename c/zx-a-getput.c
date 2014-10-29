@@ -2201,6 +2201,10 @@ void zx_a_Metadata_DEL_Trust(struct zx_a_Metadata_s* x, int n)
 
 #endif
 
+/* FUNC(zx_a_Metadata_GET_rankKey) */
+struct zx_attr_s* zx_a_Metadata_GET_rankKey(struct zx_a_Metadata_s* x) { return x->rankKey; }
+/* FUNC(zx_a_Metadata_PUT_rankKey) */
+void zx_a_Metadata_PUT_rankKey(struct zx_a_Metadata_s* x, struct zx_attr_s* y) { x->rankKey = y; }
 
 
 

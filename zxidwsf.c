@@ -15,7 +15,6 @@
  */
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
-
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidpriv.h"
@@ -471,7 +470,7 @@ void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec
     if (bdy && (sign_flags & ZXID_SIGN_BDY))
       ZXID_ADD_ID(bdy,"BDY");
    
-    ASSERTOP(n_refs, <=, ZXID_N_WSF_SIGNED_HEADERS);
+    ASSERTOPI(ZXID_N_WSF_SIGNED_HEADERS, >=, n_refs);
 
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert wsc")) {
       sec->Signature = zxsig_sign(cf->ctx, n_refs, refs, sign_cert, sign_pkey);
@@ -519,7 +518,7 @@ int zxid_timestamp_chk(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* 
 /*() Attach a SOL usage directive, unless the envelope already has UsageDirective
  * header. If you wish to add other UsageDirectives, you must provide all of the
  * usage directives to zxid_call() envelope argument.
- * The ud argument typically comes from cf->wsc_localpdp_obl_pledge
+ * The obl argument typically comes from cf->wsc_localpdp_obl_pledge
  * or cf->wsp_localpdp_obl_emit */
 
 /* Called by:  zxid_wsc_prep, zxid_wsf_decor */
@@ -552,6 +551,129 @@ void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_
   ud->Obligation->AttributeAssignment->AttributeId = zx_dup_attr(cf->ctx, &ud->Obligation->AttributeAssignment->gg, zx_AttributeId_ATTR, attrid);
   zx_add_content(cf->ctx, &ud->Obligation->AttributeAssignment->gg, zx_dup_str(cf->ctx, obl));
   D("Attached (%s) obligations(%s)", attrid, obl);
+}
+
+/*() Evaluate pledges from UsageDirective against the configured SOL policy.
+ *
+ * cf:: zxid configuration object
+ * ses:: session object
+ * obl:: pledges from UsageDirective in the request
+ * req:: required policies, usually from cf->wsp_localpdp_obl_req or cf->wsc_localpdp_obl_accept
+ * return:: 0 if pladges fail, 1 if pledges are compatible with the required policies
+ *
+ * All clauses in req must be satisfied by obl. If obl pledges more than required, the excess
+ * is silently ignored. If comma separated list of values is specified either as
+ * obl or req, all values on obl (pledge) must be found in req, but not all values
+ * of req need to be found in obl. This semantic would allow, for example, req to specify
+ * all acceptable uses and require each use in pledges to match some use in req.
+ * Wild cards (any value, but not prefix, suffix, or substring) in req (and obl) are possible.
+ * Negation is not supported: if it is not explicitly listed as ok, then it is rejected.
+ */
+
+/* Called by:  zxid_wsp_validate_env */
+int zxid_eval_sol1(zxid_conf* cf, zxid_ses* ses, const char* obl, struct zxid_obl_list* req)
+{
+  char* oblig;
+  struct zxid_obl_list* ol;
+  struct zxid_obl_list* ob = 0;
+  struct zxid_cstr_list* cs = 0;
+  
+  if (!obl) {
+    if (!req)
+      return 1;
+    ERR("Fail: no pledges supplied and pledges required %p", req);
+    return 0;
+  }
+
+  oblig = zx_dup_cstr(cf->ctx, obl);     /* Will be modified in place so we need a copy */
+  ol = zxid_load_obl_list(cf, 0, oblig);
+  for (; req; req = req->n) {
+    ob = zxid_find_obl_list(ol, req->name);
+    if (!ob)
+      goto fail;
+    /* Validate every value of the pledge as accpteble in requirement. */
+    for (cs = ob->vals; cs; cs = cs->n)
+      if (!zxid_find_cstr_list(req->vals, cs->s))
+	goto fail;
+  }
+
+  INFO("OK: Pledges match requirements. Pledges(%s)", obl);
+  zxid_free_obl_list(cf, ol);
+  ZX_FREE(cf->ctx, oblig);
+  return 1;
+
+ fail:
+  ERR("Fail: missing required obligation(%s), value(%s). Pledge(%s)", req?req->name:"-", cs?cs->s:"*", STRNULLCHKD(obl));
+  zxid_free_obl_list(cf, ol);
+  ZX_FREE(cf->ctx, oblig);
+  return 0;
+}
+
+/*() Create Action attribute, which will be used by XACML authorization,
+ * by concatenating the namespace URL and first child of SOAP Body. As
+ * the first child usually is the action verb in many SOAP Requests,
+ * we get a usable action. This convention is also recommended
+ * in Liberty Alliance Data Services Template 2.1 section 9 "Actions".
+ *
+ * Example:
+ *   ...<e:Body><di:Query xmlns:di="urn:liberty:disco:2006-08">...
+ * results
+ *   Action=urn:liberty:disco:2006-08:Query
+ */
+
+/* Called by:  zxid_query_ctlpt_pdp */
+void zxid_add_action_from_body_child(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env)
+{
+  struct zx_elem_s* el;
+  int len;
+  char* p;
+
+  /* Skip over any string data, like whitespace, that may precede the element. */
+  for (el = env->Body->gg.kids; el && el->g.tok == ZX_TOK_DATA; el = (struct zx_elem_s*)el->g.n) ;
+  if (!el) {
+    ERR("No Body child element could be found for setting Action %p", env->Body->gg.kids);
+    return;
+  }
+  len = el->g.len;
+  p = el->g.s;
+
+  D("Action from Body child ns(%s) name(%.*s)", el->ns->url, len, p);
+  if (p = memchr(p, ':', len)) {
+    ++p;
+    len -= p - el->g.s;
+  }
+  zxid_add_attr_to_ses(cf, ses, "Action", zx_strf(cf->ctx, "%s:%.*s", el->ns->url, len, p));
+}
+
+/*() Query Local PDP and remote PDP (if PDP_URL is defined). */
+
+/* Called by:  zxid_call_epr, zxid_wsc_prepare_call, zxid_wsc_valid_re_env, zxid_wsp_decorate, zxid_wsp_validate_env */
+int zxid_query_ctlpt_pdp(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env, const char* ctlpt, const char* faultparty, struct zxid_map* pepmap)
+{
+  /* Populate action from first subelement of body */
+  if (env->Body && env->Body->gg.kids) {
+    zxid_add_action_from_body_child(cf, ses, env);
+  } else {
+    ERR("SOAP Body does not appear to have any subelements?!? %p", env->Body);
+  }
+
+  /* Populate other attributes, such as rs to indicate resource. */
+  if (az_cred)
+    zxid_add_qs2ses(cf, ses, zx_dup_cstr(cf->ctx, az_cred), 1);
+  zxid_add_qs2ses(cf, ses, zx_alloc_sprintf(cf->ctx, 0, "urn:tas3:ctlpt=%s", ctlpt), 1);
+  
+  if (!zxid_localpdp(cf, ses)) {
+    ERR("%s: Deny by local PDP", ctlpt);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, ctlpt, faultparty, "Denied by local policy", TAS3_STATUS_DENY, 0, 0, 0));
+    return 0;
+  } else if (cf->pdp_url && *cf->pdp_url) {
+    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, pepmap, ctlpt)) {
+      ERR("%s: Deny", ctlpt);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, ctlpt, faultparty, "Denied by policy at PDP", TAS3_STATUS_DENY, 0, 0, 0));
+      return 0;
+    }
+  }
+  return 1;
 }
 
 /* EOF  --  zxidwsf.c */

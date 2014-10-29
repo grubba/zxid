@@ -19,7 +19,7 @@
 #endif
 
 /* -------------------------- sec_Token -------------------------- */
-/* refby( zx_ps_ResolveInput_s zx_di_SecurityContext_s zx_ps_AddKnownEntityRequest_s zx_ps_TestMembershipRequest_s zx_ps_ResolveOutput_s zx_im_MappingInput_s zx_im_MappingOutput_s ) */
+/* refby( zx_ps_AddKnownEntityRequest_s zx_ps_ResolveOutput_s zx_di_SecurityContext_s zx_im_MappingInput_s zx_ps_ResolveInput_s zx_im_MappingOutput_s zx_ps_TestMembershipRequest_s ) */
 #ifndef zx_sec_Token_EXT
 #define zx_sec_Token_EXT
 #endif
@@ -97,7 +97,7 @@ void zx_sec_Token_REV_ff12_Assertion(struct zx_sec_Token_s* x);
 
 #endif
 /* -------------------------- sec_TokenPolicy -------------------------- */
-/* refby( zx_ps_ResolveInput_s zx_ps_AddKnownEntityRequest_s zx_im_MappingInput_s zx_ps_AddEntityRequest_s ) */
+/* refby( zx_ps_AddKnownEntityRequest_s zx_im_MappingInput_s zx_ps_AddEntityRequest_s zx_ps_ResolveInput_s ) */
 #ifndef zx_sec_TokenPolicy_EXT
 #define zx_sec_TokenPolicy_EXT
 #endif

@@ -202,7 +202,7 @@ struct zx_str* zxid_sp_loc_by_index_raw(zxid_conf* cf, zxid_cgi* cgi,
  *
  * return:: URL for the protocol end point, or 0 on failure */
 
-/* Called by:  zxid_idp_dispatch, zxid_idp_sso x2, zxid_slo_resp_redir, zxid_sp_loc x3 */
+/* Called by:  zxid_idp_dispatch, zxid_idp_sso x2, zxid_oauth2_az_server_sso, zxid_slo_resp_redir, zxid_sp_loc x3 */
 struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* sp_meta, int svc_type, char* binding, int req)
 {
   struct zx_str* loc;

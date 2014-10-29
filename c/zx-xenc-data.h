@@ -214,7 +214,7 @@ void zx_xenc_DataReference_PUT_URI(struct zx_xenc_DataReference_s* x, struct zx_
 
 #endif
 /* -------------------------- xenc_EncryptedData -------------------------- */
-/* refby( zx_gl_EncryptedResourceID_s zx_is12_EncryptedResourceID_s zx_di12_EncryptedResourceID_s zx_ff12_EncryptedNameIdentifier_s zx_sa_EncryptedID_s zx_sa_EncryptedAttribute_s zx_sp_NewEncryptedID_s zx_cb_EncryptedResourceID_s zx_sa_EncryptedAssertion_s ) */
+/* refby( zx_sp_NewEncryptedID_s zx_di12_EncryptedResourceID_s zx_sa_EncryptedAttribute_s zx_gl_EncryptedResourceID_s zx_sa_EncryptedID_s zx_ff12_EncryptedNameIdentifier_s zx_is12_EncryptedResourceID_s zx_sa_EncryptedAssertion_s zx_cb_EncryptedResourceID_s ) */
 #ifndef zx_xenc_EncryptedData_EXT
 #define zx_xenc_EncryptedData_EXT
 #endif
@@ -295,7 +295,7 @@ void zx_xenc_EncryptedData_REV_EncryptionProperties(struct zx_xenc_EncryptedData
 
 #endif
 /* -------------------------- xenc_EncryptedKey -------------------------- */
-/* refby( zx_ds_KeyInfo_s zx_gl_EncryptedResourceID_s zx_is12_EncryptedResourceID_s zx_di12_EncryptedResourceID_s zx_ff12_EncryptedNameIdentifier_s zx_xenc_OriginatorKeyInfo_s zx_sa_EncryptedID_s zx_sa_EncryptedAttribute_s zx_xenc_RecipientKeyInfo_s zx_sp_NewEncryptedID_s zx_cb_EncryptedResourceID_s zx_sa_EncryptedAssertion_s ) */
+/* refby( zx_ds_KeyInfo_s zx_sp_NewEncryptedID_s zx_di12_EncryptedResourceID_s zx_sa_EncryptedAttribute_s zx_gl_EncryptedResourceID_s zx_sa_EncryptedID_s zx_ff12_EncryptedNameIdentifier_s zx_is12_EncryptedResourceID_s zx_sa_EncryptedAssertion_s zx_xenc_RecipientKeyInfo_s zx_cb_EncryptedResourceID_s zx_xenc_OriginatorKeyInfo_s ) */
 #ifndef zx_xenc_EncryptedKey_EXT
 #define zx_xenc_EncryptedKey_EXT
 #endif

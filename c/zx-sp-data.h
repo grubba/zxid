@@ -472,7 +472,7 @@ void zx_sp_AuthnQuery_REV_RequestedAuthnContext(struct zx_sp_AuthnQuery_s* x);
 
 #endif
 /* -------------------------- sp_AuthnRequest -------------------------- */
-/* refby( zx_idp_GetAssertion_s zx_e_Body_s ) */
+/* refby( zx_e_Body_s zx_idp_GetAssertion_s ) */
 #ifndef zx_sp_AuthnRequest_EXT
 #define zx_sp_AuthnRequest_EXT
 #endif
@@ -718,7 +718,7 @@ void zx_sp_AuthzDecisionQuery_REV_Evidence(struct zx_sp_AuthzDecisionQuery_s* x)
 
 #endif
 /* -------------------------- sp_Extensions -------------------------- */
-/* refby( zx_sp_ArtifactResolve_s zx_sp_SubjectQuery_s zx_xaspcd1_XACMLPolicyQuery_s zx_sp_AuthnRequest_s zx_sp_NameIDMappingResponse_s zx_xasp_XACMLPolicyQuery_s zx_sp_NameIDMappingRequest_s zx_xaspcd1_XACMLAuthzDecisionQuery_s zx_sp_AuthnQuery_s zx_xasp_XACMLAuthzDecisionQuery_s zx_sp_AuthzDecisionQuery_s zx_sp_AttributeQuery_s zx_sp_ManageNameIDResponse_s zx_sp_AssertionIDRequest_s zx_sp_LogoutRequest_s zx_sp_ArtifactResponse_s zx_sp_LogoutResponse_s zx_sp_Response_s zx_sp_ManageNameIDRequest_s ) */
+/* refby( zx_sp_NameIDMappingRequest_s zx_sp_Response_s zx_sp_ManageNameIDResponse_s zx_sp_AttributeQuery_s zx_sp_LogoutRequest_s zx_sp_AssertionIDRequest_s zx_sp_NameIDMappingResponse_s zx_sp_SubjectQuery_s zx_sp_LogoutResponse_s zx_sp_ArtifactResponse_s zx_sp_ArtifactResolve_s zx_sp_ManageNameIDRequest_s zx_xasp_XACMLAuthzDecisionQuery_s zx_sp_AuthnRequest_s zx_xaspcd1_XACMLAuthzDecisionQuery_s zx_sp_AuthnQuery_s zx_xaspcd1_XACMLPolicyQuery_s zx_sp_AuthzDecisionQuery_s zx_xasp_XACMLPolicyQuery_s ) */
 #ifndef zx_sp_Extensions_EXT
 #define zx_sp_Extensions_EXT
 #endif
@@ -1471,7 +1471,7 @@ void zx_sp_NameIDMappingResponse_REV_EncryptedID(struct zx_sp_NameIDMappingRespo
 
 #endif
 /* -------------------------- sp_NameIDPolicy -------------------------- */
-/* refby( zx_sp_AuthnRequest_s zx_sp_NameIDMappingRequest_s zx_sec_TokenPolicy_s ) */
+/* refby( zx_sp_NameIDMappingRequest_s zx_sp_AuthnRequest_s zx_sec_TokenPolicy_s ) */
 #ifndef zx_sp_NameIDPolicy_EXT
 #define zx_sp_NameIDPolicy_EXT
 #endif
@@ -1564,7 +1564,7 @@ void zx_sp_NewEncryptedID_REV_EncryptedKey(struct zx_sp_NewEncryptedID_s* x);
 
 #endif
 /* -------------------------- sp_RequestedAuthnContext -------------------------- */
-/* refby( zx_sp_AuthnRequest_s zx_as_SASLRequest_s zx_sp_AuthnQuery_s zx_b_CredentialsContext_s ) */
+/* refby( zx_as_SASLRequest_s zx_b_CredentialsContext_s zx_sp_AuthnRequest_s zx_sp_AuthnQuery_s ) */
 #ifndef zx_sp_RequestedAuthnContext_EXT
 #define zx_sp_RequestedAuthnContext_EXT
 #endif
@@ -1777,7 +1777,7 @@ void zx_sp_Scoping_REV_RequesterID(struct zx_sp_Scoping_s* x);
 
 #endif
 /* -------------------------- sp_Status -------------------------- */
-/* refby( zx_sp_NameIDMappingResponse_s zx_sp_ManageNameIDResponse_s zx_sp_ArtifactResponse_s zx_sp_LogoutResponse_s zx_sp_Response_s ) */
+/* refby( zx_sp_Response_s zx_sp_ManageNameIDResponse_s zx_sp_NameIDMappingResponse_s zx_sp_LogoutResponse_s zx_sp_ArtifactResponse_s ) */
 #ifndef zx_sp_Status_EXT
 #define zx_sp_Status_EXT
 #endif
@@ -1837,7 +1837,7 @@ void zx_sp_Status_REV_StatusDetail(struct zx_sp_Status_s* x);
 
 #endif
 /* -------------------------- sp_StatusCode -------------------------- */
-/* refby( zx_sp_StatusCode_s zx_sp_Status_s ) */
+/* refby( zx_sp_Status_s zx_sp_StatusCode_s ) */
 #ifndef zx_sp_StatusCode_EXT
 #define zx_sp_StatusCode_EXT
 #endif

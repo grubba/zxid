@@ -73,8 +73,8 @@ generoiduin rajapinnoin. ZXID tukee (Marraskuu 2011) SP
 (webbipalvelunkutsuja), WSP (webbipalveluntarjoaja), Discovery
 (webbipalveluiden löytäminen), PEP (käyttöoikeuden
 tarkistus), ja PDP (käyttöoikeuden päätös) rooleja.
-ZXID on TAS3.eu projektin referenssi toteutis turvallisuus ja
-luottamus teknologioissa.
+ZXID on TAS3.eu projektin referenssi toteutus turvallisuus- ja
+luottamusteknologioissa.
 
 >>
 
@@ -314,14 +314,34 @@ WS Security Utility 1.0
 xml    http://www.w3.org/XML/1998/namespace           http://www.w3.org/2001/xml.xsd
 xsi    http://www.w3.org/2001/XMLSchema-instance
 xs     http://www.w3.org/2001/XMLSchema               Namespace only, no code
+xop    http://www.w3.org/2004/08/xop/include          MOTM-XOP include tag
 
+bpel
+http://docs.oasis-open.org/wsbpel/2.0/process/executable
+Business Process Execution Language v2.0
 igf0   urn:LibertyAlliance:igf:0.3:core               Early draft 01, WIP
 carml0 urn:LibertyAlliance:igf:0.3:carml              Early draft 03, WIP
 tas3   http://tas3.eu/tas3/200911/                    TAS3 Credentials passing
 
 tas3sol
 http://tas3.eu/tas3sol/200911/
-TAS3 Simple Obligations Language
+TAS3 Simple Obligations Language 1
+sol    urn:tas3:sol                                   Simple Obligations Language Generic
+sol1   urn:tas3:sol1                                  Simple Obligations Language 1
+
+tas3spl
+http://tas3.eu/tas3sol/201111/
+TAS3 Simple Policy Language 1
+spl    urn:tas3:spl                                   Simple Policy Language Generic
+spl1   urn:tas3:spl1                                  Simple Policy Language 1
+
+sup
+http://schemas.suplight.eu/plugin/common/2013-05/xs
+Suplight Common Schema
+
+px
+http://schemas.suplight.eu/plugin/ExamplePlugin/2013-05/xs
+Suplight ExamplePlugin Schema
 >>
 
 

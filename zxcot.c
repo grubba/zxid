@@ -1,4 +1,5 @@
 /* zxcot.c  -  CoT (Circle-of-Trust) management tool: list CoT, add metadata to CoT
+ * Copyright (c) 2012 Synergetics SA (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
@@ -7,6 +8,7 @@
  * $Id: zxcot.c,v 1.5 2009-11-29 12:23:06 sampo Exp $
  *
  * 27.8.2009, created --Sampo
+ * 24.4.2012, obsoleted PATH=/var/zxid/idp. From now on, just use /var/zxid/ or VPATH --Sampo
  */
 
 #include "platform.h"  /* for dirent.h */
@@ -15,6 +17,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <sys/stat.h>  /* for mkdir(2) */
 
 #include "errmac.h"
 #include "zx.h"
@@ -28,27 +31,34 @@
 
 char* help =
 "zxcot  -  Circle-of-Trust and metadata management tool R" ZXID_REL "\n\
+Copyright (c) 2012-2013 Synergetics SA (sampo@synergetics.be), All Rights Reserved.\n\
 Copyright (c) 2009-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: http://zxid.org\n\
 \n\
-Usage: zxcot [options] [dir]         # Gives listing of metadata\n\
-       zxcot -a [options] [dir] <meta.xml\n\
-       zxcot -b [options] [dir] <epr.xml\n\
-       curl https://site.com/metadata.xml | zxcot -a [options] [dir]\n\
-       zxcot -g https://site.com/metadata.xml [options] [dir]\n\
-       zxcot -m [options] >meta.xml  # Generate our own metadata\n\
+Usage: zxcot [options] [cotdir]         # Gives listing of metadata\n\
+       zxcot -c CPATH=/var/zxid/ -dirs  # Creates directory hierarchy\n\
+       zxcot -a [options] [cotdir] <meta.xml  # Import metadata\n\
+       zxcot -b [options] [dimddir] <epr.xml  # Register EPR\n\
+       curl https://site.com/metadata.xml | zxcot -a [options] [cotdir]\n\
+       zxcot -g https://site.com/metadata.xml [options] [cotdir]\n\
+       zxcot -m [options] >meta.xml     # Generate our own metadata\n\
        zxcot -p https://site.com/metadata.xml\n\
   [dir]            CoT directory. Default /var/zxid/cot\n\
-  -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
-                   Most of the configuration is read from /var/zxid/zxid.conf\n\
-  -ci              IdP conf, synonym for -c PATH=/var/zxid/idp&IDP_ENA=1\n\
-  -a               Add metadata from stdin\n\
+  -c CONF          Optional configuration string (default -c CPATH=/var/zxid/)\n\
+                   Most of the configuration is read from " ZXID_CONF_PATH "\n\
+                   N.B. If VURL and/or VPATH are used, you should set\n\
+                   environment variables that affect virtualization, e.g.\n\
+                     HTTP_HOST=example.com:8443 SERVER_PORT=8443 SCRIPT_NAME=zxidhlo zxcot -m\n\
+  -ci              IdP conf, synonym for -c IDP_ENA=1\n\
+  -dirs            Create configuration directory hierarchy\n\
+  -a               Add (someone else's) metadata from stdin\n\
   -b               Register Web Service, add Service EPR from stdin\n\
   -bs              Register Web Service and Bootstrap, add Service EPR from stdin\n\
   -e endpoint abstract entid servicetype   Construct and dump EPR to stdout.\n\
-  -g URL           Do HTTP(S) GET to URL and add as metadata (if compiled w/libcurl)\n\
+  -g URL           Do HTTP(S) GET to URL (aka WKL) and add as metadata (if compiled w/libcurl)\n\
+  -sign            Sign imported metadata (used with -a or -g). Used for Metadata Authority.\n\
   -n               Dryrun. Do not actually add the metadata. Instead print it to stdout.\n\
   -s               Swap columns, for easier sorting by URL\n\
   -m               Output metadata of this installation (our own metadata). Caveat: If your\n\
@@ -62,21 +72,22 @@ Usage: zxcot [options] [dir]         # Gives listing of metadata\n\
   -h               This help message\n\
   --               End of options\n\
 \n\
+HTTP_HOST=idp.cloud-identity.eu SCRIPT_NAME=/idp e2etacot -c 'CPATH=/d/relifex/e2eta/' -m\n\
 zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'TAS3 Default Discovery Service (ID-WSF 2.0)' http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 | zxcot -b\n\
 \n";
 
 #define ZXID_MAX_MD (256*1024)
 
+int sign_md = 0;
 int swap = 0;
 int addmd = 0;
 int regsvc = 0;
 int regbs = 0;
 int genmd = 0;
 int dryrun = 0;
-int explicit_conf = 0;
 int inflate_flag = 2;  /* Auto */
 int verbose = 1;
-char buf[ZXID_MAX_MD+1] = "PATH=/var/zxid/idp";
+char buf[ZXID_MAX_MD+1] = "PATH=/var/zxid/";
 char* mdurl = 0;
 char* entid = 0;
 char* cotdir;
@@ -84,7 +95,9 @@ char* dimddir;
 char* uiddir;
 zxid_conf* cf = 0;
 
-/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
+static void zxmkdirs();
+
+/* Called by:  main x8, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   int len;
@@ -116,13 +129,9 @@ static void opt(int* argc, char*** argv, char*** env)
       case 's':
 	++regsvc;
 	++regbs;
-	if (!explicit_conf)
-	  cf->path = ZXID_PATH "idp";
 	continue;
       case '\0':
 	++regsvc;
-	if (!explicit_conf)
-	  cf->path = ZXID_PATH "idp";
 	continue;
       }
       break;
@@ -133,8 +142,7 @@ static void opt(int* argc, char*** argv, char*** env)
 	switch ((*argv)[0][3]) {
 	case '\0':
 	  cf->idp_ena = 1;
-	  zxid_parse_conf(cf, buf); /* buf was statically initialised to "PATH=/var/zxid/idp" */
-	  ++explicit_conf;
+	  zxid_parse_conf(cf, buf); /* buf was statically initialised to "PATH=/var/zxid/" */
 	  continue;
 	}
 	break;
@@ -142,7 +150,6 @@ static void opt(int* argc, char*** argv, char*** env)
 	++(*argv); --(*argc);
 	if ((*argc) < 1) break;
 	zxid_parse_conf(cf, (*argv)[0]);
-	++explicit_conf;
 	continue;
       }
       break;
@@ -182,12 +189,16 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       case 'c':
 	ss = zxid_show_conf(cf);
 	fprintf(stderr, "\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
 	continue;
+      }
+      if (!strcmp((*argv)[0],"-dirs")) {
+	zxmkdirs();
+	exit(0);
       }
       break;
 
@@ -196,6 +207,12 @@ static void opt(int* argc, char*** argv, char*** env)
       case '\0':
 	++swap;
 	continue;
+      case 'i':
+	if (!strcmp((*argv)[0],"-sign")) {
+	  sign_md = 1;
+	  continue;
+	}
+	break;
       }
       break;
 
@@ -260,10 +277,10 @@ static void opt(int* argc, char*** argv, char*** env)
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
     if (verbose>1) {
-      printf(help);
+      printf("%s", help);
       exit(0);
     }
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     /*fprintf(stderr, "version=0x%06x rel(%s)\n", zxid_version(), zxid_version_str());*/
     exit(3);
   }
@@ -283,19 +300,102 @@ static void opt(int* argc, char*** argv, char*** env)
     }
   } else {
 path_to_dir:
-    len = strlen(cf->path);
+    len = strlen(cf->cpath);
     cotdir = malloc(len+sizeof(ZXID_COT_DIR));
-    strcpy(cotdir, cf->path);
+    strcpy(cotdir, cf->cpath);
     strcpy(cotdir+len, ZXID_COT_DIR);
 
     dimddir = malloc(len+sizeof(ZXID_DIMD_DIR));
-    strcpy(dimddir, cf->path);
+    strcpy(dimddir, cf->cpath);
     strcpy(dimddir+len, ZXID_DIMD_DIR);
 
     uiddir = malloc(len+sizeof(ZXID_UID_DIR));
-    strcpy(uiddir, cf->path);
+    strcpy(uiddir, cf->cpath);
     strcpy(uiddir+len, ZXID_UID_DIR);
   }
+}
+
+/* --------- Make zxid config directories --------- */
+
+static const char* mkdirs_list[] = {
+"ses",
+"user",
+"uid",
+"nid",
+"log",
+"log/rely",
+"log/issue",
+"pem",
+"cot",
+"inv",
+"dimd",
+"dcr",
+"rsr",
+"uid/.all",
+"uid/.all/.bs",
+"tmp",
+"ch",
+"ch/default",
+"ch/default/.ack",
+"ch/default/.del"
+};
+
+/* Called by:  opt */
+static void zxmkdirs()
+{
+  char path[ZXID_MAX_BUF];
+  char* p;
+  const char** dir;
+  int len;
+  struct stat st;
+  
+#define ZXID_PATH_LENGTH_MARGIN (sizeof("ch/default/.del")+10) /* Accommodate longest subdir */
+  len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s", cf->cpath);
+  if (len > sizeof(path)-ZXID_PATH_LENGTH_MARGIN) {
+    ERR("CPATH %s too long. len=%d, space=%d", cf->cpath, len, (int)(sizeof(path)-ZXID_PATH_LENGTH_MARGIN));
+    exit(1);
+  }
+
+  for (p = path+len-1; p > path && *p != '/'; --p) ;  /* Handle CPATH=/var/zxid/idp */
+
+  if (MKDIR(path, 02770) < 0) {
+    if (errno == EEXIST) {
+      INFO("Directory %s already exists. Will still try to create hierarchy under it.", path);
+    } else {
+      ERR("Failed to create directory hierarchy at %s: %d (%s) (perhaps nonexistent parent directory or permissions problem)", path, errno, STRERROR(errno));
+      exit(1);
+    }
+  } else {
+    D("Created %s", path);
+  }
+  
+  for (dir = mkdirs_list; *dir; ++dir) {
+    len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s%s", cf->cpath, *dir);
+    if (MKDIR(path, 02770) < 0) {
+      ERR("Failed to create directory %s: %d (%s)", path, errno, STRERROR(errno));
+    } else {
+      D("Created %s", path);
+    }
+  }
+  
+  len = snprintf(path, sizeof(path)-ZXID_PATH_LENGTH_MARGIN, "%s" ZXID_CONF_FILE, cf->cpath);
+  if (stat(path, &st)) {  /* error return from stat means file does not exist, create example */
+    write_all_path_fmt("-dirs", sizeof(path), path, "%s%s", cf->cpath, ZXID_CONF_FILE,
+"# This is example configuration file %s" ZXID_CONF_FILE "\n"
+"# You should edit the values to suit your situation.\n"
+"NICE_NAME=Configuration NICE_NAME: Set this to describe your site to humans, see %s" ZXID_CONF_FILE "\n"
+"BUTTON_URL=https://example.com/YOUR_BRAND_saml2_icon_150x60.png\n"
+"ORG_NAME=Unspecified ORG_NAME conf variable\n"
+"LOCALITY=Lisboa\n"
+"STATE=Lisboa\n"
+"COUNTRY=PT\n"
+"CONTACT_ORG=Your organization\n"
+"CONTACT_NAME=Your Name\n"
+"CONTACT_EMAIL=your@email.com\n"
+"CONTACT_TEL=+351918731007\n", cf->cpath, cf->cpath);
+  }
+
+  INFO("Created directories. You should inspect their ownership and permissions to ensure the webserver can read and write them, yet outsiders can not access them. You may want to run  chown -R www-data %s", cf->cpath);
 }
 
 /* --------------- reg_svc --------------- */
@@ -314,16 +414,15 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
 {
   char sha1_name[28];
   char path[ZXID_MAX_BUF];
-  char* p;
-  int got, fd;
+  int got;
+  fdtype fd;
   struct zx_root_s* r;
   zxid_epr* epr;
   struct zx_str* ss;
   struct zx_str* tt;
   
-  read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got);  /* Read EPR */
+  read_all_fd(fdstdin, buf, sizeof(buf)-1, &got);  /* Read EPR */
   buf[got] = 0;
-  p = buf;
   
   r = zx_dec_zx_root(cf->ctx, got, buf, "cot reg_svc");
   if (!r || !r->EndpointReference) {
@@ -425,7 +524,8 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
 /* Called by:  zxcot_main */
 static int zxid_addmd(zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
 {
-  int got, fd;
+  int got;
+  fdtype fd;
   char* p;
   zxid_entity* ent;
   struct zx_str* ss;
@@ -433,7 +533,7 @@ static int zxid_addmd(zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
   if (mdurl) {
     ent = zxid_get_meta(cf, mdurl);
   } else {
-    read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got);
+    read_all_fd(fdstdin, buf, sizeof(buf)-1, &got);
     buf[got] = 0;
     p = buf;
     ent = zxid_parse_meta(cf, &p, buf+got);
@@ -500,7 +600,7 @@ static int zxid_lscot_line(zxid_conf* cf, int col_swap, const char* dcot, const 
   char* p;
   int got = read_all(ZXID_MAX_MD, buf, "zxcot line", 1, "%s%s", dcot, den);
   if (!got) {
-    ERR("Zero data in file(%s%s). If cot directory does not exist consider running zxmkdirs.sh", dcot, den);
+    ERR("Zero data in file(%s%s). If cot directory does not exist consider running zxcot -dirs", dcot, den);
     return 1;
   }
   p = buf;
@@ -562,13 +662,15 @@ static int zxid_lscot(zxid_conf* cf, int col_swap, const char* dcot)
 #ifndef zxcot_main
 #define zxcot_main main
 #endif
+extern int zxid_suppress_vpath_warning;
 
 /*() Circle of Trust management tool */
 
 /* Called by: */
 int zxcot_main(int argc, char** argv, char** env)
 {
-  strncpy(zx_instance, "\tzxcot", sizeof(zx_instance));
+  strncpy(errmac_instance, "cot", sizeof(errmac_instance));
+  zxid_suppress_vpath_warning = 1;
   cf = zxid_new_conf_to_cf(0);
 
   opt(&argc, &argv, &env);

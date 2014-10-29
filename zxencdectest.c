@@ -15,13 +15,13 @@
  * Test encoding and decoding SAML 2.0 assertions and other related stuff.
  */
 
+#include "platform.h"  /* This needs to appear first to avoid mingw64 problems. */
+#include "errmac.h"
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-
-#include "platform.h"
-#include "errmac.h"
 
 #include "zx.h"
 #include "zxid.h"
@@ -32,8 +32,6 @@
 #include "c/zx-data.h"
 #include "c/zx-const.h"
 #include "c/zx-ns.h"
-
-int read_all_fd(int fd, char* p, int want, int* got_all);
 
 char* help =
 "zxencdectest  -  ZX encoding and decoding tester - R" ZXID_REL "\n\
@@ -66,7 +64,7 @@ Usage: zxencdectest [options] <foo.xml >reencoded-foo.xml\n\
 
 #define DIE(reason) MB fprintf(stderr, "%s\n", reason); exit(2); ME
 
-int afr_buf_size = 0;
+int ak_buf_size = 0;
 int verbose = 1;
 extern int debug;
 int timeout = 0;
@@ -86,12 +84,12 @@ char buf[256*1024];
 /* Called by:  opt */
 void test_ibm_cert_problem()  /* -r 1 */
 {
-  int len, got_all;
+  int got_all;
   zxid_conf* cf;
   struct zx_root_s* r;
   struct zx_sp_LogoutRequest_s* req;
 
-  len = read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got_all);
+  read_all_fd(fdstdin, buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
   buf[got_all] = 0;
 
@@ -132,7 +130,7 @@ void test_ibm_cert_problem_enc_dec()  /* -r 2 */
   cf->enc_pkey = zxid_read_private_key(cf, "sym-idp-enc.pem");
 #else
   cf->enc_pkey = zxid_read_private_key(cf, "ibm-idp-enc.pem");
-  idp_meta = zxid_get_ent_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU"); /* IBMIdP */
+  idp_meta = zxid_get_ent_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU", "test_ibm"); /* IBMIdP */
 #endif
   
   req = zxid_mk_logout(cf, nameid, 0, idp_meta);  
@@ -237,6 +235,7 @@ void x509_test()      /* -r 7 */
   printf("%s",buf);
 }
 
+/* Called by:  timegm_test x16 */
 int timegm_tester(zxid_conf* cf, const char* date_time)
 {
   struct zx_str* ss;
@@ -254,10 +253,12 @@ int timegm_tester(zxid_conf* cf, const char* date_time)
   }
 }
 
+/* Called by:  timegm_test */
 int leap_test(int aa) {
   return LEAP(aa);
 }
 
+/* Called by:  opt */
 void timegm_test()      /* -r 8 */
 {
   int aa;
@@ -331,8 +332,10 @@ void covimp_test()       /* -r 5 */
   ss = zx_ref_str(cf->ctx, "abc");
   zx_str_conv(ss, &outlen, &out);
   zxid_wsp_decorate(cf, &sess, 0, "<foo/>");
+#ifndef MINGW
   setenv("HTTP_COOKIE", "_liberty_idp=\"test8\"", 1);
   zxid_cdc_read(cf, &cgi);
+#endif
   cgi.cdc = "test9";
   zxid_cdc_check(cf, &cgi);
   zxid_new_cgi(cf, "=test10&ok=1&okx=2&s=S123&c=test11&e=abc&d=def&&l=x&l1=y&l1foo=z&inv=qwe&fg=1&fh=7&fr=RS&gu=1&gn=asa&ge=1&an=&aw=&at=&SAMLart=artti&SAMLResponse=respis");
@@ -388,10 +391,12 @@ void covimp_test()       /* -r 5 */
 
   printf("fake_sso=%d\n", zxid_sp_anon_finalize(cf, &cgi, &sess));
 
+#ifndef MINGW
   setenv("HTTP_PAOS", SAML2_SSO_ECP, 1);
   zxid_lecp_check(cf, &cgi);        /* *** should test in realistic context */
+#endif
 
-  meta = zxid_get_ent_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU"); /* IBMIdP */
+  meta = zxid_get_ent_file(cf, "N9zsU-AwbI1O-U3mvjLmOALtbtU", "covimp"); /* IBMIdP */
   zxid_mk_art_deref(cf, 0, meta, "ART124121");  /* *** should test in realistic context */
   
   zxid_mk_lu_Status(cf, 0, 0, "SC2-dummy", "MSG-dummy", "REF-dummy");
@@ -438,17 +443,17 @@ void covimp_test()       /* -r 5 */
 								   0, 0, 0, 0, 1, 0),
 					     0, 0, 0, 0, 1, 0, 0));
 
-  zxid_wsf_decor(cf,0,0,0);
+  zxid_wsf_decor(cf,0,0,0,0);
   zxid_map_sec_mech(0);
   zxid_wsc_valid_re_env(cf,0,0,0,0);
   env = zx_NEW_e_Envelope(cf->ctx, 0);
   zxid_wsc_valid_re_env(cf,0,0,env,0);
-  zxid_wsf_decor(cf,0,env,0);
+  zxid_wsf_decor(cf,0,env,0,0);
   zxid_wsc_valid_re_env(cf,0,0,env,0);
   printf("covimp ok\n");
 }
 
-/* Called by:  main x8, zxcall_main, zxcot_main, zxdecode_main */
+/* Called by:  main x8, zxbusd_main, zxbuslist_main, zxbustailf_main, zxcall_main, zxcot_main, zxdecode_main */
 void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc < 1) goto argerr;
@@ -479,12 +484,12 @@ void opt(int* argc, char*** argv, char*** env)
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
-	++zx_debug;
+	++errmac_debug;
 	continue;
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	strncpy(zx_instance, (*argv)[0], sizeof(zx_instance));
+	strncpy(errmac_instance, (*argv)[0], sizeof(errmac_instance));
 	continue;
       }
       break;
@@ -533,7 +538,7 @@ void opt(int* argc, char*** argv, char*** env)
 	exit(0);
 
       case 'f':
-	/*AFR_TS(LEAK, 0, "memory leaks enabled");*/
+	/*AK_TS(LEAK, 0, "memory leaks enabled");*/
 #if 1
 	ERR("*** WARNING: You have turned memory frees to memory leaks. We will (eventually) run out of memory. Using -rf is not recommended. %d\n", 0);
 #endif
@@ -565,7 +570,7 @@ void opt(int* argc, char*** argv, char*** env)
 	continue;
       case 'a':
 	if ((*argv)[0][3] == 0) {
-	  /*AFR_TS(ASSERT_NONFATAL, 0, "assert nonfatal enabled");*/
+	  /*AK_TS(ASSERT_NONFATAL, 0, "assert nonfatal enabled");*/
 #if 1
 	  ERR("*** WARNING: YOU HAVE TURNED ASSERTS OFF USING -ra FLAG. THIS MEANS THAT YOU WILL NOT BE ABLE TO OBTAIN ANY SUPPORT. IF PROGRAM NOW TRIES TO ASSERT IT MAY MYSTERIOUSLY AND UNPREDICTABLY CRASH INSTEAD, AND NOBODY WILL BE ABLE TO FIGURE OUT WHAT WENT WRONG OR HOW MUCH DAMAGE MAY BE DONE. USING -ra IS NOT RECOMMENDED. %d\n", assert_nonfatal);
 #endif
@@ -592,6 +597,7 @@ void opt(int* argc, char*** argv, char*** env)
       }
       break;
 
+#ifndef MINGW
     case 'k':
       switch ((*argv)[0][2]) {
       case '\0':
@@ -602,6 +608,7 @@ void opt(int* argc, char*** argv, char*** env)
 	continue;
       }
       break;
+#endif
 
     case 'c': if ((*argv)[0][2]) break;
       ++(*argv); --(*argc);
@@ -626,7 +633,7 @@ void opt(int* argc, char*** argv, char*** env)
       case 'i':
 	if (!strcmp((*argv)[0],"-license")) {
 	  extern char* license;
-	  fprintf(stderr, license);
+	  fprintf(stderr, "%s", license);
 	  exit(0);
 	}
 	break;
@@ -638,7 +645,7 @@ void opt(int* argc, char*** argv, char*** env)
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
   argerr:
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     exit(3);
   }
 }
@@ -655,7 +662,7 @@ int main(int argc, char** argv, char** env)
   char* wo_p;
   opt(&argc, &argv, &env);
   
-  len_wo = read_all_fd(fileno(stdin), buf, sizeof(buf)-1, &got_all);
+  len_wo = read_all_fd(fdstdin, buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
   buf[got_all] = 0;
 
@@ -689,7 +696,7 @@ int main(int argc, char** argv, char** env)
   printf("Re-encoded result WO (len=%d):\n%.*s\n\n", len_wo, len_wo, wo_out);
 
   if (wo_path)
-    write_all_path_fmt("WO", sizeof(buf), buf, "%s", wo_path, 0, "%.*s", len_wo, wo_out);
+    write_all_path("WO", "%s", wo_path, 0, len_wo, wo_out);
   return 0;
 }
 

@@ -442,7 +442,7 @@ void zx_idhrxml_DeleteResponse_REV_Extension(struct zx_idhrxml_DeleteResponse_s*
 
 #endif
 /* -------------------------- idhrxml_ItemData -------------------------- */
-/* refby( zx_idhrxml_Notification_s zx_idhrxml_ModifyResponse_s zx_idhrxml_CreateResponse_s ) */
+/* refby( zx_idhrxml_CreateResponse_s zx_idhrxml_Notification_s zx_idhrxml_ModifyResponse_s ) */
 #ifndef zx_idhrxml_ItemData_EXT
 #define zx_idhrxml_ItemData_EXT
 #endif
@@ -709,7 +709,7 @@ void zx_idhrxml_ModifyResponse_REV_ItemData(struct zx_idhrxml_ModifyResponse_s* 
 
 #endif
 /* -------------------------- idhrxml_NewData -------------------------- */
-/* refby( zx_idhrxml_CreateItem_s zx_idhrxml_ModifyItem_s ) */
+/* refby( zx_idhrxml_ModifyItem_s zx_idhrxml_CreateItem_s ) */
 #ifndef zx_idhrxml_NewData_EXT
 #define zx_idhrxml_NewData_EXT
 #endif
@@ -1174,7 +1174,7 @@ void zx_idhrxml_QueryResponse_REV_Data(struct zx_idhrxml_QueryResponse_s* x);
 
 #endif
 /* -------------------------- idhrxml_ResultQuery -------------------------- */
-/* refby( zx_idhrxml_Create_s zx_idhrxml_Modify_s zx_idhrxml_Subscription_s ) */
+/* refby( zx_idhrxml_Subscription_s zx_idhrxml_Modify_s zx_idhrxml_Create_s ) */
 #ifndef zx_idhrxml_ResultQuery_EXT
 #define zx_idhrxml_ResultQuery_EXT
 #endif
@@ -1255,7 +1255,7 @@ void zx_idhrxml_ResultQuery_REV_Sort(struct zx_idhrxml_ResultQuery_s* x);
 
 #endif
 /* -------------------------- idhrxml_Subscription -------------------------- */
-/* refby( zx_idhrxml_Data_s zx_idhrxml_ItemData_s zx_idhrxml_Create_s zx_idhrxml_NewData_s zx_idhrxml_Query_s zx_idhrxml_Modify_s ) */
+/* refby( zx_idhrxml_ItemData_s zx_idhrxml_NewData_s zx_idhrxml_Query_s zx_idhrxml_Modify_s zx_idhrxml_Create_s zx_idhrxml_Data_s ) */
 #ifndef zx_idhrxml_Subscription_EXT
 #define zx_idhrxml_Subscription_EXT
 #endif

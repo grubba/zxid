@@ -41,7 +41,7 @@
   if (argvi >= items) {
     EXTEND(sp,1);
   }
-  $result = newSVpv($1->s, $1->len);
+  $result = $1?newSVpv($1->s, $1->len):&PL_sv_undef;  /* newSV(0) */
   /* Do not free underlying zx_str because they are usually returned by reference. */
   ++argvi;
 }

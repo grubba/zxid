@@ -1,4 +1,5 @@
 /* zxidcgi.c  -  Handwritten functions for parsing SP specific CGI options
+ * Copyright (c) 2012-2013 Synergetics NV (sampo@synergetics.be), All Rights Reserved.
  * Copyright (c) 2010-2011 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -8,12 +9,13 @@
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id: zxidcgi.c,v 1.33 2010-01-08 02:10:09 sampo Exp $
  *
- * 12.8.2006, created --Sampo
- * 16.1.2007, split from zxidlib.c --Sampo
+ * 12.8.2006,  created --Sampo
+ * 16.1.2007,  split from zxidlib.c --Sampo
  * 12.10.2007, added cookie scanning --Sampo
- * 7.10.2008, added documentation --Sampo
+ * 7.10.2008,  added documentation --Sampo
  * 10.12.2011, added OAuth2, OpenID Connect, and UMA support --Sampo
- *
+ * 20.10.2012, made the fr to rs copy cause deflate safe base64 encode --Sampo
+ * 14.3.2013   added language/skin dependent templates --Sampo
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
 
@@ -23,61 +25,41 @@
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidconf.h"
+#include "zxidutil.h"
 
 /* ============== CGI Parsing ============== */
 
 /*(i) Parse query string or form POST and detect parameters relevant for ZXID.
  * N.B. This CGI parsing is very specific for needs of ZXID. It is not generic.
  *
+ * cf:: ZXID configuration object, for occasional memory allocation.
  * cgi:: Already allocated CGI structure where results of this function
  *     are deposited. Note that this structure is not cleared. Thus it is
  *     possible to call zxid_parse_cgi() multiple times to accumulate
  *     results from multiple sources, e.g. foirst for query string, and then
  *     for form POST.
  * qs:: CGI formatted input. Usually query string or form POST content.
+ *     qs is modified in-place  e.g. to perform url decoding and nul termination.
+ *     References to the qs will be taken, e.g. pointers in cgi struct point
+ *     to it, thus qs MUST NOT be freed before cgi struct is freed, which
+ *     may be long after the call to zxid_parse_cgi().
  * return:: 0 on success. Other values reserved. Usually return value is
  *     ignored as there really is no way for this function to fail. Unrecognized
  *     CGI arguments are simply ignored with assumption that some other processing
  *     layer will pick them up - hence no need to flag error. */
 
-/* Called by:  chkuid x3, main x4, zxid_decode_ssoreq, zxid_new_cgi, zxid_simple_cf_ses x3 */
-int zxid_parse_cgi(zxid_cgi* cgi, char* qs)
+/* Called by:  chkuid x2, main x4, zxid_decode_ssoreq, zxid_mini_httpd_sso x2, zxid_new_cgi, zxid_simple_cf_ses x3, zxid_simple_no_ses_cf */
+int zxid_parse_cgi(zxid_conf* cf, zxid_cgi* cgi, char* qs)
 {
-  char *p, *n, *v, *val, *name;
-  DD("qs(%s) len=%d", STRNULLCHK(qs), qs?strlen(qs):-1);
+  char *p, *n, *v;
+  DD("qs(%s)=%p len=%d", STRNULLCHK(qs), qs, qs?strlen(qs):-1);
   if (!qs)
     return 0;
   while (qs && *qs) {
-    for (; *qs == '&'; ++qs) ;                  /* Skip over & or && */
-    if (!*qs) break;
-    
-    qs = strchr(name = qs, '=');                /* Scan name (until '=') */
-    if (!qs) break;
-    if (qs == name) {                           /* Key was an empty string: skip it */
-      qs = strchr(qs, '&');                     /* Scan value (until '&') *** or '?' */
-      continue;
-    }
-    for (; name < qs && *name <= ' '; ++name) ; /* Skip over initial whitespace before name */
-    n = p = name;
-    URL_DECODE(p, name, qs);
-    *p = 0;                                     /* Nul-term n (name) */
-    
-    for (val = ++qs; *qs && *qs != '&'; ++qs) ; /* Skip over = and scan value (until '&') */
-    v = p = val;
-    /* SAMLRequest and Response MUST NOT be URL decoded as the URL encoding
-     * is needed for redirect binding signature validation. See also unbase64_raw()
-     * for how these fields are URL decoded at later stage. */
-    if (n[0] != 'S' && n[0] != 'R'
-	|| strcmp(n, "SAMLRequest") && strcmp(n, "SAMLResponse")
-	&& strcmp(n, "SigAlg") && strcmp(n, "Signature") && strcmp(n, "RelayState"))
-      URL_DECODE(p, val, qs);
-    else
-      p = qs;
-
-    if (*qs)
-      ++qs;
-    *p = 0;                                     /* Nul-term v (value) */
-    
+    qs = zxid_qs_nv_scan(qs, &n, &v, 2);
+    if (!n)
+      n = "NULL_NAME_ERROR";
+    DD("n(%s)=v(%s) qs(%s)=%p len=%d", n,v, STRNULLCHKNULL(qs), qs, qs?strlen(qs):-1);
     switch (n[0]) {
     case 'n':
       if (!strcmp(n, "nonce")) { cgi->nonce = v; break; }
@@ -87,34 +69,40 @@ int zxid_parse_cgi(zxid_cgi* cgi, char* qs)
       if (n[1] = 'k' && !n[2]) { cgi->ok = v;  break; }  /* ok button */
       goto unknown;
     case 'p':
-      if (!strcmp(n, "prompt")) { cgi->prompt = v; break; }
+      if (!strcmp(n, "prompt")) { cgi->prompt = v; break; }  /* OAUTH2 */
       goto unknown;
     case 'r':
-      if (!strcmp(n, "response_type")) { cgi->response_type = v; break; }
-      if (!strcmp(n, "redirect_uri"))  { cgi->redirect_uri = v;	 break; }
+      if (!strcmp(n, "response_type")) { cgi->response_type = v; break; }  /* OAUTH2/OIDC1 */
+      if (!strcmp(n, "redirect_uri"))  { cgi->redirect_uri = v;	 break; }  /* OAUTH2 */
+      if (!strcmp(n, "redirafter"))    { cgi->redirafter = v;	 break; }
+      if (!strcmp(n, "rs"))            { cgi->rs = v; break; }
+      if (!strcmp(n, "rest"))          { cgi->rest = v; break; }
+      if (!strcmp(n, "refresh_token")) { cgi->refresh_token = v; break; }  /* OAUTH2 */
       goto unknown;
     case 's':
       if (!n[1]) { cgi->sid = v; break; }
-      if (!strcmp(n, "scope"))  { cgi->scope = v; break; }
-      if (!strcmp(n, "state"))  { cgi->state = v; break; }
-      if (!strcmp(n, "schema")) { cgi->schema = v; break; }
+      if (!strcmp(n, "scope"))  { cgi->scope = v; break; }   /* OAUTH2 */
+      if (!strcmp(n, "state"))  { cgi->state = v; break; }   /* OAUTH2 */
+      if (!strcmp(n, "schema")) { cgi->schema = v; break; }  /* OAUTH2 */
       goto unknown;
     case 't':
-      if (!strcmp(n, "token_type")) { cgi->token_type = v; break; }
+      if (!strcmp(n, "token_type")) { cgi->token_type = v; break; }  /* OAUTH2 */
+      if (!strcmp(n, "templ"))   { DD("Detect templ(%s) cgi=%p",v,cgi); cgi->templ = v; break; }
       goto unknown;
     case 'u':
-      if (!strcmp(n, "user_id")) { cgi->user_id = v; break; }
+      if (!strcmp(n, "user_id")) { cgi->user_id = v; break; }   /* OAUTH2 */
       goto unknown;
     case 'c':
       if (!n[1]) { cgi->cdc = v; break; }
-      if (!strcmp(n, "client_id")) { cgi->client_id = v; break; }
+      if (!strcmp(n, "client_id")) { cgi->client_id = v; break; }    /* OAUTH2 */
+      if (!strcmp(n, "code"))      { cgi->code = v;      break; }    /* OAUTH2 */
       goto unknown;
       /* The following two entity IDs, combined with various login buttons
        * aim at supporting may different user interface layouts. You need to
        * understand how they interact to avoid undesired conflicts. */
     case 'e':  /* EntityID field (manual entry). Overrides 'd'. */
-      if (!strcmp(n, "expires_in")) { cgi->nonce = v; break; }
-      if (!strcmp(n, "exp"))        { cgi->exp = v; break; }
+      if (!strcmp(n, "expires_in")) { cgi->expires_in = atoi(v); break; }  /* OAUTH2 */
+      if (!strcmp(n, "exp"))        { cgi->exp = v; break; }    /* OAUTH2 */
       if (!n[1]) {
 set_eid:
 	if (v[0]) cgi->eid = v;
@@ -137,67 +125,84 @@ set_eid:
        * protocol profile designator, and <eid> is Entity ID of the IdP.
        * N.B. If eid is omitted from button name, it may be provided using
        * d or e fields (see above). */
-      cgi->pr_ix = n[1];
-      if (n[2])
+      cgi->pr_ix = n[1]-'0';
+      if (n[2]) {
 	cgi->eid = n+2;
+	/*if (cf->idp_list_meth == ZXID_IDP_LIST_BRAND)*/
+	/* We need to remove the .x and/or .y from the end (image map coordinates) */
+	p = strchr(cgi->eid, 0);  /* Pointer to end of string */
+	DD("p[-2]=%x (%c%c) n=%p p=%p name(%s) val(%s)", p[-2], p[-2], p[-1], n, p, n, v);
+	if (p[-2] == '.' && ONE_OF_2(p[-1], 'x', 'y')) {
+	  p[-2] = 0;
+	  DD("eid=%p eid(%s) p[-2]=%x n=%p p=%p v=%p (%s)=(%s)", cgi->eid, cgi->eid, p[-2], n, p, v, n, v);
+	}
+      }
       cgi->op = 'L';
-      D("cgi: login eid(%s)", cgi->eid);
+      D("cgi: login eid=%p eid(%s)", cgi->eid, cgi->eid);
       break;
+    case 'k':
+      DD("k CGI field(%s) val(%s) cgi=%p", n, v, cgi);
+      if (!n[1]) { cgi->skin = v;    break; }  /* often used for lang as well */
+      goto unknown;
     case 'i':
-      if (!strcmp(n, "id_token")) { cgi->id_token = v; break; }
-      if (!strcmp(n, "iss")) { cgi->iss = v; break; }
-      if (!strcmp(n, "iso29115")) { cgi->iso29115 = v; break; }
-      if (!strcmp(n, "id"))  { cgi->id = v; break; }
-      if (!strcmp(n, "inv")) { cgi->inv = v; break; }
+      if (!strcmp(n, "id_token")) { cgi->id_token = v; break; }  /* OAUTH2 */
+      if (!strcmp(n, "iss")) { cgi->iss = v; break; }            /* OAUTH2 */
+      if (!strcmp(n, "iso29115")) { cgi->iso29115 = v; break; }  /* OAUTH2 */
+      if (!strcmp(n, "id"))  { cgi->id = v; break; }             /* OAUTH2 */
+      if (!strcmp(n, "inv")) { cgi->inv = v; break; }            /* OAUTH2 */
       /* IdP and protocol index selection popup values are like P<eid>
        * N.B. If eid is omitted from button name, it may be provided using
        * d or e fields (see above). This effectively allows i to be just
        * a protocol selection popup. */
-      cgi->pr_ix = v[0];
+      cgi->pr_ix = v[0]-'0';
       if (v[1])
 	cgi->eid = v+1;
       break;
     case 'f':  /* flags and (hidden) fields found in typical SP login form */
       if (!n[1] || n[2]) goto unknown;
-      switch (n[1]) {
-      case 'a': cgi->authn_ctx = v;       D("authn_ctx=%s", cgi->authn_ctx); break;
-      case 'c': cgi->allow_create = v[0]; D("allow_create=%c", cgi->allow_create); break;
-      case 'f': cgi->force_authn = v[0];  D("force_authn=%c", cgi->force_authn); break;
-      case 'g': cgi->get_complete = v;    break;
-      case 'h': cgi->pxy_count = v;       break;
-	/*case 'i': cgi->idp_list = v;        break;*/
-      case 'm': cgi->matching_rule = v;   break;
-      case 'n': cgi->nid_fmt = v;         D("nid_fmt=%s", cgi->nid_fmt); break;
-      case 'p': cgi->ispassive = v[0];    D("ispassive=%c", cgi->ispassive); break;
-      case 'q': cgi->affil = v;           break;
-      case 'r': cgi->rs = v;              break;
-      case 'y': cgi->consent = v;         break;
+      switch (n[1]) {  /* Typical fields of SP side idp selection form (or query string) */
+      case 'a': cgi->authn_ctx = v;       D("authn_ctx=%s", cgi->authn_ctx); break; /* fa */
+      case 'c': cgi->allow_create = v[0]; D("allow_create=%c", cgi->allow_create); break; /* fc */
+      case 'f': cgi->force_authn = v[0];  D("force_authn=%c", cgi->force_authn); break; /* ff */
+      case 'g': cgi->get_complete = v;    break;   /* fg */
+      case 'h': cgi->pxy_count = v;       break;   /* fh */
+	/*case 'i': cgi->idp_list = v;    break;*/ /* fi */
+      case 'm': cgi->matching_rule = v;   break;   /* fm */
+      case 'n': cgi->nid_fmt = v;         D("nid_fmt=%s", cgi->nid_fmt); break;     /* fn */
+      case 'p': cgi->ispassive = v[0];    D("ispassive=%c", cgi->ispassive); break; /* fp */
+      case 'q': cgi->affil = v;           break;   /* fq */
+      case 'r': cgi->rs = zxid_deflate_safe_b64_raw(cf->ctx, -2, v); break;         /* fr */
+      case 'y': cgi->consent = v;         break;   /* fy */
       }
       break;
-    case 'g':
-      if (!n[1] || n[2]) goto unknown;
+    case 'g':  /* management (gestion) form fields or query string arguments */
       switch (n[1]) {
-      case 'l':
-      case 'r':
-      case 's':
-      case 't':
-      case 'u': cgi->op = n[1];           break;
-      case 'n': cgi->newnym = v;          break;
-      case 'e': cgi->enc_hint = v[0];     break;
+      case 'r': /* gr - single logout redirect */
+	if (!strcmp(n, "grant_type")) {    /* OAUTH2 */
+	  cgi->grant_type = v;
+	  break;
+	}
+      case 'l': /* gl - local logout */
+      case 's': /* gs - single logout SOAP */
+      case 't': /* gt - defederate redir */
+      case 'u': cgi->op = n[1];           break; /* gu - defederate SOAP */
+      case 'n': cgi->newnym = v;          break; /* gn */
+      case 'e': cgi->enc_hint = v[0];     break; /* ge */
+      case 0: goto unknown; /* N.B. single letter g=GrantToken in zxidgrant.pl */
       }
       break;
     case 'a':
       if (!n[1]) goto unknown;
-      if (!strcmp(n, "access_token")) { cgi->access_token = v; break; }
-      if (!strcmp(n, "aud"))          { cgi->aud = v; break; }
+      if (!strcmp(n, "access_token")) { cgi->access_token = v; break; }    /* OAUTH2 */
+      if (!strcmp(n, "aud"))          { cgi->aud = v; break; }             /* OAUTH2 */
       switch (n[1]) {
-      case 'l': if (n[3]) goto unknown;  cgi->op = n[2];           break;
-      case 'u': if (n[2]) goto unknown;  if (v[0] || !cgi->uid) cgi->uid = v; break;
-      case 'p': if (n[2]) goto unknown;  cgi->pw = v;              break;
-      case 'r': if (n[2]) goto unknown;  cgi->ssoreq = v;          break;
-      case 'n': if (n[2]) goto unknown;  cgi->op = 'N';            break;
-      case 'w': if (n[2]) goto unknown;  cgi->op = 'W';            break;
-      case 't': if (n[2]) goto unknown;  cgi->atselafter = 1;      break;
+      case 'l': if (n[3]) goto unknown;  cgi->op = n[2];           break;  /* al = login */
+      case 'u': if (n[2]) goto unknown;  if (v[0] || !cgi->uid) cgi->uid = v; break; /* au =user */
+      case 'p': if (n[2]) goto unknown;  cgi->pw = v;              break;  /* ap = password */
+      case 'r': if (n[2]) goto unknown;  cgi->ssoreq = v;          break;  /* ar = AnRq */
+      case 'n': if (n[2]) goto unknown;  cgi->op = 'N';            break;  /* an = new user */
+      case 'w': if (n[2]) goto unknown;  cgi->op = 'W';            break;  /* aw = recover pw */
+      case 't': if (n[2]) goto unknown;  cgi->atselafter = 1;      break;  /* at */
       }
       break;
     case 'z':
@@ -240,7 +245,7 @@ set_eid:
       }
       /* fall thru */
     unknown:
-    default:  D("Unknown CGI field(%s) val(%s)", n, v);
+    default:  D("Unknown CGI field(%s) val(%s) cgi=%p", n, v, cgi);
     }
   }
   DD("END cgi=%p cgi->eid=%p (%s) op(%c) magic=%x", cgi, cgi->eid, cgi->eid, cgi->op, cgi->magic);
@@ -258,7 +263,7 @@ zxid_cgi* zxid_new_cgi(zxid_conf* cf, char* qs)
     qqs = ZX_ALLOC(cf->ctx, len+1);
     memcpy(qqs, qs, len);
     qqs[len] = 0;
-    zxid_parse_cgi(cgi, qqs);
+    zxid_parse_cgi(cf, cgi, qqs);
   }
   return cgi;
 }
@@ -277,7 +282,7 @@ zxid_cgi* zxid_new_cgi(zxid_conf* cf, char* qs)
  *    ONE_COOKIE=aaa; ZXIDSES=S12cvd324; SOME_OTHER_COOKIE=...
  */
 
-/* Called by:  chkuid, zxid_simple_cf_ses */
+/* Called by:  chkuid, zxid_mini_httpd_sso, zxid_simple_cf_ses */
 void zxid_get_sid_from_cookie(zxid_conf* cf, zxid_cgi* cgi, const char* cookie)
 {
   char* q;

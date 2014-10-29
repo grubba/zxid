@@ -1,0 +1,290 @@
+README.mini_httpd
+#################
+
+20131121 Sampo kellomäki <sampo@zxid.org>
+
+I used to recommend mini_httpd as a web server to use with ZXID
+if you do not have a reason to use something heavier like Apache httpd.
+
+Now, since I like mini_httpd so much, I have directly integrated
+it to zxid: it is now called zxid_httpd and is built by default.
+No need to do separate download or patching. You can invoke it thus
+
+  zxid_httpd -zx 'PATH=/var/zxid/&WSP_PAT=*.wsp&SSO_PAT=*&DEBUG=1' -p 8443 -c 'zxid*' -S -E /var/zxid/pem/enc-nopw-cert.pem
+
+Some of the "enhancements" in zxid_httpd over mini_httpd
+
+* Always starts in "debugging" mode (-D)
+* Dropped config file support
+* Simplified mime type handling
+* Compiles on mingw (spawn support to replace fork)
+* Log files always in GMT (aka zulu or utc)
+* Simplified IPv4 vs. IPv6 handling, removed select. Basically
+  zxid_httpd can only be either IPv4 or IPv6, but not both, except
+  on OS that somehow magically make IPv6 socket server also IPv4.
+  If you need both, we recommend you start two daemons.
+* Compiled with SSL and ZXID by default
+* Supports compilation using dietlibc
+
+--Sampo
+
+README.mini_httpd_zxid
+----------------------
+
+21.6.2013 Sampo Kellomaki <sampo@zxid.org>
+
+This directory contains mini_httpd-1.19 distribution, originally
+by Jeff Poskanzer and downloaded from acme.com. Thanks Jeff for
+great code.
+
+This copy, distributed with ZXID, has been patched to play well together
+with ZXID. The ZXID enhanced version is meant to be built with the
+ZXID main Makefile (one directory up) and the binary is called
+mini_httpd_zxid to avoid confusion with the original unaltered mini_httpd.
+You can still build the original by using Jeff's Makefile in this
+directory.
+
+To build enhanced version
+
+  cd zxid  # The parent directory of this directory
+  make mini_httpd_zxid
+
+Among enhancements are
+
+* Handle PAOS HTTP header
+* Pass through useful environment variables such as ZXID_PRE_CONF and ZXID_CONF
+* ZXID SSO and WSP filter mode, similar to using mod_auth_saml with Apache httpd
+* Support for dietlibc-0.33 (from Felix Leiner at fede.de) build
+* Support for mingw build (tested as cross compilation)
+* Support static linking
+
+Cheers,
+--Sampo
+
+README from mini_httpd-1.19
+---------------------------
+
+                    mini_httpd - small HTTP server
+                      version 1.19 of 19dec2003
+
+mini_httpd is a small HTTP server.  Its performance is not great, but for
+low or medium traffic sites it's quite adequate. It implements all the
+basic features of an HTTP server, including:
+
+  * GET, HEAD, and POST methods.
+  * CGI.
+  * Basic authentication.
+  * Security against ".." filename snooping.
+  * The common MIME types.
+  * Trailing-slash redirection.
+  * index.html, index.htm, index.cgi
+  * Directory listings.
+  * Multihoming / virtual hosting.
+  * Standard logging.
+  * Custom error pages.
+
+It can also be configured to do SSL/HTTPS.
+
+mini_httpd was written for a couple reasons.  One, as an experiment
+to see just how slow an old-fashioned forking web server would be
+with today's operating systems.  The answer is, surprisingly, not
+that slow - on FreeBSD 3.2, mini_httpd benchmarks at about 90% the
+speed of Apache.  The other main reason for writing mini_httpd was
+to get a simple platform for experimenting with new web server
+technology, for instance SSL.
+
+See the manual entry for more details.
+
+Files in this distribution:
+
+    README              this
+    Makefile            guess
+    mini_httpd.c        source file for server
+    mini_httpd.8        manual entry for server
+    version.h           version defines
+    port.h              portability defines
+    mime_types.txt      list of MIME types
+    htpasswd.c          source file for password changer
+    htpasswd.1          manual entry for password changer
+    index.html          sample index file
+
+To build: If you're on a SysV-like machine (which includes old Linux systems
+but not new Linux systems), edit the Makefile and uncomment the SYSVLIBS line.
+If you're doing SSL, uncomment those lines too.  Otherwise, just do a make.
+
+On Red Hat Linux systems you can use RPM to install mini_httpd, like so:
+    cd /usr/src/redhat/SOURCES
+    wget http://www.acme.com/software/mini_httpd/mini_httpd-1.19.tar.gz
+    rpm -ta mini_httpd-1.19.tar.gz
+    rpm -i /usr/src/redhat/RPMS/i386/mini_httpd-1.19-1.i386.rpm
+
+Feedback is welcome - send bug reports, enhancements, checks, money
+orders, etc. to the addresses below.
+
+    Jef Poskanzer  jef@acme.com  http://www.acme.com/jef/
+
+copyright statement from mini_httpd-1.19
+----------------------------------------
+
+mini_httpd - small HTTP server
+
+Copyright © 1999,2000 by Jef Poskanzer <jef@acme.com>.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+Old README.mini_httpd
+---------------------
+
+I recommend using mini_httpd for SSL use. I usually compile
+it with dietlibc and link it statically. The following patch
+changes the Makefile to accomplish that and also to
+support PAOS http header needed for SAML 2.0 ECP operation.
+
+N.B. As of relese 1.16 (20131110) the zxid distribution includes
+an already patched (and further modified) version fo mini_httpd.
+
+  mini_httpd_zxid -zx 'PATH=/var/zxid/&WSP_PAT=*.wsp&SSO_PAT=*&DEBUG=1' -p 8443 -c 'zxid*' -S -E /var/zxid/pem/enc-nopw-cert.pem
+
+--Sampo
+
+5 mini_httpd-1.19 receipe
+=========================
+http://www.acme.com/software/mini_httpd/
+
+diff -u Makefile.orig Makefile
+--- Makefile.orig       2005-01-10 01:18:11.000000000 -0500
++++ Makefile    2005-01-10 02:17:32.927714400 -0500
+@@ -14,16 +14,16 @@
+ # http://www.openssl.org/  Make sure the SSL_TREE definition points to the
+ # tree with your OpenSSL installation - depending on how you installed it,
+ # it may be in /usr/local instead of /usr/local/ssl.
+-#SSL_TREE =    /usr/local/ssl
+-#SSL_DEFS =    -DUSE_SSL
+-#SSL_INC =     -I${SSL_TREE}/include
+-#SSL_LIBS =    -L${SSL_TREE}/lib -lssl -lcrypto
++SSL_TREE =     /opt/diet
++SSL_DEFS =     -DUSE_SSL
++SSL_INC =      -I${SSL_TREE}/include
++SSL_LIBS =     -L${SSL_TREE}/lib -lssl -lcrypto -lz
+ 
+ 
+-BINDIR =       /usr/local/sbin
+-MANDIR =       /usr/local/man
+-CC =           gcc
+-CDEFS =                ${SSL_DEFS} ${SSL_INC}
++BINDIR =       /usr/sbin
++MANDIR =       /usr/man
++CC =           diet gcc
++CDEFS =                ${SSL_DEFS} ${SSL_INC} -DDIET
+ CFLAGS =       -O ${CDEFS}
+ #CFLAGS =      -g ${CDEFS}
+ LDFLAGS =      -s
+
+diff -u mini_httpd.c.orig mini_httpd.c
+--- mini_httpd.c.orig   2007-02-07 20:37:26.000000000 -0800
++++ mini_httpd.c        2007-02-07 20:45:10.000000000 -0800
+@@ -226,6 +226,7 @@
+ static time_t if_modified_since;
+ static char* referer;
+ static char* useragent;
++static char* paos;
+ 
+ static char* remoteuser;
+ 
+@@ -562,6 +563,7 @@
+        }
+ #endif /* USE_SSL */
+ 
++#ifndef DIET
+     if ( ! debug )
+        {
+        /* Make ourselves a daemon. */
+@@ -590,6 +592,7 @@
+ #endif
+        }
+     else
++#endif
+        {
+        /* Even if we don't daemonize, we still want to disown our parent
+        ** process.
+@@ -612,10 +615,10 @@
+         (void) fprintf( pidfp, "%d\n", (int) getpid() );
+         (void) fclose( pidfp );
+         }
+-
++#ifndef DIET
+     /* Read zone info now, in case we chroot(). */
+     tzset();
+-
++#endif
+     /* If we're root, start becoming someone else. */
+     if ( getuid() == 0 )
+        {
+@@ -1159,6 +1162,7 @@
+     if_modified_since = (time_t) -1;
+     referer = "";
+     useragent = "";
++    paos = "";
+ 
+ #ifdef TCP_NOPUSH
+     /* Set the TCP_NOPUSH socket option, to try and avoid the 0.2 second
+@@ -1276,6 +1280,12 @@
+            cp += strspn( cp, " \t" );
+            useragent = cp;
+            }
++       else if ( strncasecmp( line, "PAOS:", 5 ) == 0 )
++           {
++           cp = &line[11];
++           cp += strspn( cp, " \t" );
++           paos = cp;
++           }
+        }
+ 
+     if ( strcasecmp( method_str, get_method_str( METHOD_GET ) ) == 0 )
+@@ -2148,6 +2158,12 @@
+        envp[envn++] = build_env( "HTTP_REFERER=%s", referer );
+     if ( useragent[0] != '\0' )
+        envp[envn++] = build_env( "HTTP_USER_AGENT=%s", useragent );
++    if ( paos[0] != '\0' )
++       envp[envn++] = build_env( "HTTP_PAOS=%s", paos );
++    if ( getenv( "ZXID_PRE_CONF" ) != (char*) 0 )
++       envp[envn++] = build_env( "ZXID_PRE_CONF=%s", getenv( "ZXID_PRE_CONF" ) );
++    if ( getenv( "ZXID_CONF" ) != (char*) 0 )
++       envp[envn++] = build_env( "ZXID_CONF=%s", getenv( "ZXID_CONF" ) );
+     if ( cookie != (char*) 0 )
+        envp[envn++] = build_env( "HTTP_COOKIE=%s", cookie );
+     if ( host != (char*) 0 )
+
+make
+make cert
+
+# N.B. It is very important that the mini_httpd is made against openssl built against diet. Else
+# endless linking problems will arise and solving them with ../provide_ctype.o is wrong!
+# no-dso option to openssl/Configure seems promising, too.
+
+./mini_httpd -p 443 -d /d/mn/ssl -c '**.x' -l /var/log/mini_https.log -S -E /etc/mini_httpd.pem -D
+
+#!/bin/sh
+exec 2>&1
+exec envuidgid Gtinydns envdir ./env softlimit -d300000 /usr/bin/tinydns
+

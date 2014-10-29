@@ -1,5 +1,5 @@
 /* zxsizeof.c  -  Print sizes of various data types
- * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010-2012 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id$
  */
@@ -9,6 +9,7 @@
 #include <zx/c/zx-ns.h>
 #include <zx/c/zx-data.h>
 #include <zx/c/zxidvers.h>
+#include <zx/hiios.h>
 
 /* Called by: */
 int main(int argc, char** argv)
@@ -40,6 +41,16 @@ int main(int argc, char** argv)
   printf("  -- sizeof(struct zx_el_desc): %d\n", sizeof(struct zx_el_desc));
   printf("  --   fyll: %d/%d (%.1f%%); n_el_descs=%d\n", zx_N_ELEM, zx__ELEM_MAX, 100.0*zx_N_ELEM/zx__ELEM_MAX, zx_N_EL_DESC);
 
+  printf("\n  -- sizeof(struct hi_io): %d\n", sizeof(struct hi_io));
+  printf("  -- sizeof(struct hi_pdu): %d\n", sizeof(struct hi_pdu));
+  printf("  -- sizeof(struct hi_qel): %d\n", sizeof(struct hi_qel));
+  printf("  -- sizeof(struct hi_lock): %d\n", sizeof(struct hi_lock));
+  printf("  -- sizeof(struct hi_ent): %d\n", sizeof(struct hi_ent));
+  printf("  -- sizeof(struct hi_ch): %d\n", sizeof(struct hi_ch));
+  printf("  -- sizeof(struct hi_ack): %d\n", sizeof(struct hi_ack));
+  printf("  -- sizeof(struct hi_host_spec): %d\n", sizeof(struct hi_host_spec));
+  printf("  -- sizeof(struct hi_thr): %d\n", sizeof(struct hi_thr));
+  printf("  -- sizeof(struct hiios): %d\n", sizeof(struct hiios));
   return 0;
 }
 
