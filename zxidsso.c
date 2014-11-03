@@ -193,8 +193,8 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
   D_INDENT("start_sso: ");
   D("cgi=%p cgi->eid=%p eid(%s) pr_ix=%d", cgi, cgi->eid, STRNULLCHKD(cgi->eid), cgi->pr_ix);
   zxid_sso_set_relay_state_to_return_to_this_url(cf, cgi);
-  if (!cgi->pr_ix || !cgi->eid || !cgi->eid[0]) {
-    D("Either protocol index or entity ID missing %d", cgi->pr_ix);
+  if (!cgi->eid || !cgi->eid[0]) {
+    D("Entity ID missing. Protocol index: %d", cgi->pr_ix);
     cgi->err = "IdP URL Missing or incorrect";
     D_DEDENT("start_sso: ");
     return 0;
