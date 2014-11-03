@@ -324,7 +324,6 @@ static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
 
       *p++ = '"';
       p = zxid_json_strcpy(p, name);
-      p += strlen(name);
       *p++ = '"';
       *p++ = ':';
       if (at->nv) {
