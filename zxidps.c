@@ -444,7 +444,7 @@ char* zxid_ps_accept_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
   }
 
   got = read_all(sizeof(buf), buf, "accept_invite", 1,
-		 "%s" ZXID_INV_DIR "%s",cf->path,cgi->inv);
+		 "%s" ZXID_INV_DIR "%s", cf->cpath, cgi->inv);
   if (!got) {
     ERR("Invitation not found(%s)", cgi->inv);
     cgi->err = "Invitation not found.";
