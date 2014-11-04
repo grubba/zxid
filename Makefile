@@ -288,7 +288,7 @@ endif
 
 ifeq ($(TARGET),sol8)
 ### Flags for Solaris 8 native compile (with gc and gnu binutils) (BIG_ENDIAN BYTE_ORDER)
-CDEF+=-DSUNOS -DBYTE_ORDER=4321 -DBIG_ENDIAN=4321 -I/opt/sfw/include -I/usr/sfw/include
+CDEF+=-DSUNOS -DBYTE_ORDER=4321 -DBIG_ENDIAN=4321 -DPATH_MAX=2048 -I/opt/sfw/include -I/usr/sfw/include
 # Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
 CDEF+= -DUSE_PTHREAD -pthread
 LIBS=-R/opt/sfw/lib -R/usr/sfw/lib -lcurl -lssl -lcrypto -lz -lxnet -lsocket
@@ -300,13 +300,14 @@ endif
 
 ifeq ($(TARGET),sol8x86)
 # Flags for Solaris 8/x86 native compile (with gc and gnu binutils) (LITTLE_ENDIAN BYTE_ORDER)
-CDEF+=-DSUNOS -DBYTE_ORDER=1234 -I/opt/sfw/include -I/usr/sfw/include
+CDEF+=-DSUNOS -DBYTE_ORDER=1234 -DPATH_MAX=2048 -I/opt/sfw/include -I/usr/sfw/include
 # Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
 CDEF+= -DUSE_PTHREAD -pthread
 LIBS=-R/opt/sfw/lib -R/usr/sfw/lib -lcurl -lssl -lcrypto -lz  -lxnet -lsocket
 SO_LIBS+=$(LIBS)
 SHARED_FLAGS=-shared --export-all-symbols -Wl,-z -Wl,allextract
 SHARED_CLOSE=-Wl,-z -Wl,defaultextract
+TARGET_FOUND=1
 endif
 
 ifeq ($(TARGET),macosx)
