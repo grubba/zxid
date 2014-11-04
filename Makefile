@@ -2005,7 +2005,13 @@ dirs: dir
 install_nodep:
 	@$(ECHO) "===== Installing in $(PREFIX) (to change do make install PREFIX=/your/path)"
 	-mkdir -p $(PREFIX) $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/include/zxid $(PREFIX)/include/zx $(PREFIX)/doc
-	$(CP) zxmkdirs.sh zxcall zxumacall zxpasswd zxcot zxlogview zxbusd zxbustailf zxbuslist zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl smime send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxidwspcgi zxtest.pl mini_httpd_zxid $(PREFIX)/bin
+	$(CP) zxmkdirs.sh zxcall zxumacall zxpasswd zxcot zxlogview zxdecode zxencdectest zxcleanlogs.sh zximport-htpasswd.pl zximport-ldif.pl xml-pretty.pl diffy.pl send.pl xacml2ldif.pl mockpdp.pl env.cgi zxid-java.sh zxidatsel.pl zxidnewuser.pl zxidcot.pl zxiddash.pl zxidexplo.pl zxidhlo zxidhlo.pl zxidhlo.php zxidhlo.sh zxidhlo-java.sh zxidhlocgi.php zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxididp zxidsimple zxidwsctool zxtest.pl $(PREFIX)/bin
+	test \! -f zxbusd || $(CP) zxbusd $(PREFIX)/bin
+	test \! -f zxbustailf || $(CP) zxbustailf $(PREFIX)/bin
+	test \! -f zxbuslist || $(CP) zxbuslist $(PREFIX)/bin
+	test \! -f smime || $(CP) smime $(PREFIX)/bin
+	test \! -f zxidwspcgi || $(CP) zxidwspcgi $(PREFIX)/bin
+	test \! -f mini_httpd_zxid || $(CP) mini_httpd_zxid $(PREFIX)/bin
 	$(CP) $(LIBZXID_A) libzxid.so* $(PREFIX)/lib
 	$(CP) libzxid.so.0.0 $(PREFIX)/lib
 	$(CP) *.h c/*.h $(PREFIX)/include/zxid
