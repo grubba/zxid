@@ -196,7 +196,7 @@ static char* zx_attr_wo_enc(char* p, struct zx_attr_s* attr)
     ZX_OUT_MEM(p, attr->name, attr->name_len);
   } else { /* Construct elem string from tok */
     if (!(at_tok = zx_get_at_tok(attr)))
-      return p;
+      return --p;
     if (attr->ns) {
       ZX_OUT_MEM(p, attr->ns->prefix, attr->ns->prefix_len);
       ZX_OUT_CH(p, ':');
@@ -248,7 +248,7 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
       ZX_OUT_MEM(p, x->g.s, x->g.len);
     } else { /* Construct elem string from tok */
       if (!(el_tok = zx_get_el_tok(x)))
-	return p;
+	return --p;
       ZX_OUT_MEM(p, x->ns->prefix, x->ns->prefix_len);
       ZX_OUT_CH(p, ':');
       ZX_OUT_MEM(p, el_tok->name, strlen(el_tok->name));
@@ -286,6 +286,7 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
       ZX_OUT_CH(p, '/');  /* Also an XML legal way to terminate an empty tag, e.g. <ns:foo/> */
     }
     ZX_OUT_CH(p, '>');
+    break;
   }
   zx_pop_seen(pop_seen);
   D_LEN("%06x   final: %d", x->g.tok, p-b);
