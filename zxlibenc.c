@@ -141,16 +141,19 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
       return 0;
     /* fall thru */
   default:
+    /* < */
+    len = 1;
     if (x->g.s) {
-      /*    <   ns:elem    >                                    </  ns:elem    >    / */
-      len = 1 + x->g.len + 1 + ((x->kids || !c->enc_tail_opt) ? (2 + x->g.len + 1) : 1);
+      /*     ns:elem */
+      len += x->g.len;
     } else { /* Construct elem string from tok */
       if (!(el_tok = zx_get_el_tok(x)))
 	return 0;
-      len = strlen(el_tok->name);
       DD("ns prefix_len=%d el_len=%d", x->ns->prefix_len, len);
-      /*    <   ns                  :   elem  >                                    </  ns                  :   elem  >    / */
-      len = 1 + x->ns->prefix_len + 1 + len + 1 + ((x->kids || !c->enc_tail_opt) ? (2 + x->ns->prefix_len + 1 + len + 1) : 1);
+      /*     ns                  : */
+      len += x->ns->prefix_len + 1;
+      /*     elem */
+      len += strlen(el_tok->name);
     }
     D_LEN("%06x ** tag start: %d", x->g.tok, len);
     len += zx_len_xmlns_if_not_seen(c, x->ns, &pop_seen);
@@ -161,12 +164,13 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
     D_LEN("%06x after inc_ns: %d", x->g.tok, len);
 
     for (attr = x->attr; attr; attr = (struct zx_attr_s*)attr->g.n) {
+      /* zx_attr_wo_len */
       if (attr->name) {
 	/*    sp   name             ="                "   */
 	len += 1 + attr->name_len + 2 + attr->g.len + 1;
       } else { /* Construct elem string from tok */
 	if (!(at_tok = zx_get_at_tok(attr)))
-	  return 0;
+	  continue;
 	if (attr->ns)
 	  len += attr->ns->prefix_len + 1;
 	len += strlen(at_tok->name);
@@ -177,9 +181,28 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
     }
     D_LEN("%06x after attrs: %d", x->g.tok, len);
 
-    for (kid = x->kids; kid; kid = ((struct zx_elem_s*)(kid->g.n)))
-      len += zx_LEN_WO_any_elem(c, kid);
-    
+    if (x->kids || !c->enc_tail_opt) {
+      len++;
+
+      for (kid = x->kids; kid; kid = ((struct zx_elem_s*)(kid->g.n)))
+	len += zx_LEN_WO_any_elem(c, kid);
+
+      /*    </ */
+      len += 2;
+
+      if (x->g.s) {
+	/*     ns:elem */
+	len += x->g.len;
+      } else {
+	/*     ns                  :   elem */
+	len += x->ns->prefix_len + 1 + strlen(el_tok->name);
+      }
+    } else {
+      /* / */
+      len++;
+    }
+    /* > */
+    len++;
     break;
   }
   zx_pop_seen(pop_seen);
