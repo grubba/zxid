@@ -97,7 +97,7 @@ CDEF+= -DUSE_OPENSSL
 # apt-get install libapr1-dev
 # apt-get install apache2-dev
 APACHE_INC ?= -I/usr/include/apache2
-APR_INC    ?= -I/usr/include/apr-1.0
+APR_INC    ?= -I/usr/include/apr-1.0 -I/usr/include/apr-1
 APACHE_MODULES ?= /usr/lib/apache2/modules
 DIET_ROOT?=/usr/local/dietlibc-0.33
 PHP_CONFIG?=php-config
