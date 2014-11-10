@@ -129,7 +129,7 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
   switch (x->g.tok) {
   case zx_root_ELEM:
     len = 0;
-    if (c->inc_ns_len)
+    if (c->inc_ns)
       len += zx_len_inc_ns(c, &pop_seen);
     for (kid = x->kids; kid; kid = ((struct zx_elem_s*)(kid->g.n)))
       len += zx_LEN_WO_any_elem(c, kid);
