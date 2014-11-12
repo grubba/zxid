@@ -1164,6 +1164,12 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
 /* Called by: */
 void zxid_free_conf(zxid_conf *cf)
 {
+#ifdef USE_CURL
+  if (cf->curl) {
+    curl_easy_cleanup(cf->curl);
+    cf->curl = NULL;
+  }
+#endif
   zxid_free_need(cf, cf->need);
   zxid_free_need(cf, cf->want);
   zxid_free_atsrc(cf, cf->attrsrc);
