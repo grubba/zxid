@@ -1602,6 +1602,7 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
     if (ss = zxid_start_sso_location(cf, cgi)) {
       if (auto_flags & ZXID_AUTO_REDIR) {
 	printf("%.*s", ss->len, ss->s);
+	zx_str_free(cf->ctx, ss);
 	goto cgi_exit;
       } else {
 	goto res_zx_str;
@@ -1632,8 +1633,12 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
   post_dispatch:
     D("POST dispatch_loc(%s)", ss->s);
     switch (ss->s[0]) {
-    case 'O': return zxid_show_protected_content_setcookie(cf, cgi, ses, res_len, auto_flags);
-    case 'M': return zxid_simple_ab_pep(cf, ses, res_len, auto_flags); /* Mgmt screen case */
+    case 'O':
+      zx_str_free(cf->ctx, ss);
+      return zxid_show_protected_content_setcookie(cf, cgi, ses, res_len, auto_flags);
+    case 'M':
+      zx_str_free(cf->ctx, ss);
+      return zxid_simple_ab_pep(cf, ses, res_len, auto_flags); /* Mgmt screen case */
     case 'L':  /* Location */
       if (auto_flags & ZXID_AUTO_REDIR) {
 	fprintf(stdout, "%.*s", ss->len, ss->s);
@@ -1642,8 +1647,11 @@ char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
 	goto cgi_exit;
       } else
 	goto res_zx_str;
-    case 'I': goto idp;
+    case 'I':
+      zx_str_free(cf->ctx, ss);
+      goto idp;
     }
+    zx_str_free(cf->ctx, ss);
     D("Q err (fall thru) %d", 0);
     break;
   case 'H': return zxid_simple_show_rsrcreg(cf, cgi, res_len, auto_flags);
