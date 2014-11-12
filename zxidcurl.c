@@ -328,7 +328,10 @@ zxid_entity* zxid_get_meta(zxid_conf* cf, const char* url)
 /* Called by:  zxid_get_ent_ss */
 zxid_entity* zxid_get_meta_ss(zxid_conf* cf, struct zx_str* url)
 {
-  return zxid_get_meta(cf, zx_str_to_c(cf->ctx, url));
+  char *cstr = zx_str_to_c(cf->ctx, url);
+  zxid_entity *res = zxid_get_meta(cf, cstr);
+  free(cstr);
+  return res;
 }
 
 /*() Locate first SOAP Envelope using simple heuristic
