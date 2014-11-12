@@ -388,19 +388,19 @@ zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
 	if (eid->len == strlen(ent->eid) && !memcmp(eid->s, ent->eid, eid->len)) {
 	  match = ent;
 	}
+	ee = ent->n;
 	/* Check whether entity is already in the cache. */
 	if (zxid_get_ent_cache(cf, &ent->ed->entityID->g)) {
 	  INFO("While fetching metadata for eid(%.*s) got metadata for eid(%s), but the metadata was already in the cache. NEW METADATA IGNORED.", eid->len, eid->s, ent->eid);
-	  ent = ent->n;
+	  ZX_FREE(cf->ctx, ent);
 	} else {
 	  INFO("While fetching metadata for eid(%.*s) got metadata for eid(%s). New metadata cached.", eid->len, eid->s, ent->eid);
-	  ee = ent->n;
 	  LOCK(cf->mx, "add fetched ent to cot");
 	  ent->n = cf->cot;
 	  cf->cot = ent;
 	  UNLOCK(cf->mx, "add fetched ent to cot");
-	  ent = ee;
 	}
+	ent = ee;
       }
       
       if (cf->md_populate_cache) {
