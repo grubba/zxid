@@ -497,7 +497,7 @@ void zxid_sigres_map(int sigres, char** sigval, char** sigmsg)
  * cgi::     Optional CGI object. If non-NULL, sigval and sigmsg will be set.
  * ses::     Optional session object. If non-NULL, then sigres code will be set.
  * a7n::     Assertion whose conditions are checked.
- * myentid:: Entity ID used for checking audience restriction. Typically from zxid_my_ent_id(cf)
+ * myentid:: Entity ID used for checking audience restriction. Typically from zxid_my_ent_id(cf). Freed before return.
  * ourts::   Timestamp for validating NotOnOrAfter and NotBefore.
  * err::     Result argument: Error letter (as may appear in audit log entry). The returned
  *     string will be a constant and MUST NOT be freed by the caller.
@@ -557,6 +557,7 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
       if (ses) {
 	zxid_set_fault(cf, ses, zxid_mk_fault(cf, 0, TAS3_PEP_RQ_IN, "e:Client", "Audience Restriction is wrong. Configuration or implementation error.", TAS3_STATUS_BADCOND, 0, "a7n", 0));
       }
+      zx_str_free(cf->ctx, myentid);
       return ZXSIG_AUDIENCE;
     } else {
       INFO("SSO warn: AudienceRestriction wrong. My entityID(%.*s). Configured to ignore this (AUDIENCE_FATAL=0).", myentid->len, myentid->s);
@@ -566,6 +567,8 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
   }
  found_audience:
   
+  zx_str_free(cf->ctx, myentid);
+
   if (a7n->Conditions->NotOnOrAfter && a7n->Conditions->NotOnOrAfter->g.len > 18) {
     secs = zx_date_time_to_secs(a7n->Conditions->NotOnOrAfter->g.s);
     if (secs <= ourts->tv_sec) {
