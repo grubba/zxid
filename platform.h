@@ -130,6 +130,7 @@ unsigned int alarm(unsigned int secs);
  * NOT MINGW nor WIN32CL (i.e. its Unix) */
 
 #include <dirent.h>
+#include <unistd.h>
 
 #ifdef __cplusplus
 extern "C" {
