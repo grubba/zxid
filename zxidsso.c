@@ -215,7 +215,6 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", cgi->eid, "No IDPSSODescriptor");
       cgi->err = "Bad IdP metadata. Try different IdP.";
       D_DEDENT("start_sso: ");
-      ZX_FREE(cf->ctx, idp_meta);
       return 0;
     }
     for (sso_svc = idp_meta->ed->IDPSSODescriptor->SingleSignOnService;
@@ -231,7 +230,6 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", cgi->eid, "No redir binding");
       cgi->err = "Bad IdP metadata. Try different IdP.";
       D_DEDENT("start_sso: ");
-      ZX_FREE(cf->ctx, idp_meta);
       return 0;
     }
     DD("HERE3 len=%d (%.*s)", sso_svc?sso_svc->Location->g.len:0, sso_svc->Location->g.len, sso_svc->Location->g.s);
@@ -248,7 +246,6 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", cgi->eid, "No IDPSSODescriptor (OAUTH2)");
       cgi->err = "Bad IdP metadata (OAUTH). Try different IdP.";
       D_DEDENT("start_sso: ");
-      ZX_FREE(cf->ctx, idp_meta);
       return 0;
     }
     for (sso_svc = idp_meta->ed->IDPSSODescriptor->SingleSignOnService;
@@ -259,9 +256,6 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
       if (sso_svc->Binding && !memcmp(OAUTH2_REDIR,sso_svc->Binding->g.s,sso_svc->Binding->g.len))
 	break;
     }
-
-    ZX_FREE(cf->ctx, idp_meta);
-
     if (!sso_svc) {
       ERR("IdP Entity(%s) does not have any IdP SSO Service with " OAUTH2_REDIR " binding (metadata problem)", cgi->eid);
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", cgi->eid, "No OAUTH2 redir binding");
@@ -280,12 +274,9 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
     NEVER("Inappropriate SSO profile: %d", sso_profile_ix);
     cgi->err = "Inappropriate SSO profile. Bad metadata?";
     D_DEDENT("start_sso: ");
-    ZX_FREE(cf->ctx, idp_meta);
     return 0;
   }
   
-  ZX_FREE(cf->ctx, idp_meta);
-
   if (cf->idp_ena) {  /* (PXY) Middle IdP of Proxy IdP scenario */
     if (cgi->rs) {
       ERR("Attempt to supply RelayState(%s) in middle IdP of Proxy IdP flow. Ignored.", cgi->rs);
