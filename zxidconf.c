@@ -33,7 +33,7 @@
 
 #include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
 
-#include <malloc.h>
+#include <stdlib.h>
 #include <memory.h>
 #include <string.h>
 #ifdef USE_CURL
